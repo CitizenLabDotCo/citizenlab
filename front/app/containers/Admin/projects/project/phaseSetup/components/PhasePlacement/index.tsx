@@ -1,19 +1,14 @@
 import React, { useState } from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
-import { useQueryClient } from '@tanstack/react-query';
-import { CLErrors } from 'typings';
 
-import { IPhaseData, PhasePlacementType } from 'api/phases/types';
-import usePhases from 'api/phases/usePhases';
-import useUpdatePhase from 'api/phases/useUpdatePhase';
-import { getPreviousTimelinePhase, isTimelinePhase } from 'api/phases/utils';
-import projectPageLayoutKeys from 'api/project_page_layout/keys';
-import useProjectPageLayout from 'api/project_page_layout/useProjectPageLayout';
+import { IPhaseData } from 'api/phases/types';
+import { isTimelinePhase } from 'api/phases/utils';
+
+import placementMessages from 'containers/Admin/projects/_shared/components/PhasePlacement/messages';
+import { canChangePlacement } from 'containers/Admin/projects/_shared/components/PhasePlacement/utils';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
-import { linkedSurveyPhaseIds } from 'components/ProjectPageBuilder/Widgets/SpotlightSurveys/linkedSurveyPhaseIds';
-import Error from 'components/UI/Error';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -28,52 +23,10 @@ interface Props {
 
 const PhasePlacement = ({ phase, hasUnsavedChanges }: Props) => {
   const [modalOpened, setModalOpened] = useState(false);
-  const [errors, setErrors] = useState<CLErrors | null>(null);
-  const { mutate: updatePhase, isPending } = useUpdatePhase();
-  const queryClient = useQueryClient();
-  const projectId = phase.relationships.project.data.id;
-  const isSurvey = phase.attributes.participation_method === 'native_survey';
+
+  if (!canChangePlacement(phase)) return null;
+
   const onTimeline = isTimelinePhase(phase);
-  const canMoveOntoTimeline = isSurvey && !onTimeline;
-  // Only a standalone survey can be shown in a project page block.
-  const { data: layout } = useProjectPageLayout(projectId, canMoveOntoTimeline);
-  const { data: timelinePhases } = usePhases(
-    canMoveOntoTimeline ? projectId : undefined,
-    'on_timeline'
-  );
-
-  // Only surveys can run alongside the timeline, so no other method can be moved.
-  if (!isSurvey) return null;
-
-  const target: PhasePlacementType = onTimeline ? 'standalone' : 'on_timeline';
-  const previousPhase =
-    timelinePhases && getPreviousTimelinePhase(timelinePhases.data, phase);
-  // Moving onto the timeline ends an open-ended previous phase where this one starts.
-  const phaseToClose =
-    previousPhase && !previousPhase.attributes.end_at
-      ? previousPhase
-      : undefined;
-
-  const handleConfirm = () => {
-    setErrors(null);
-    updatePhase(
-      { phaseId: phase.id, placement_type: target },
-      {
-        onSuccess: () => {
-          // Moving onto the timeline drops the project page block that showed
-          // this survey, so the cached layout is stale.
-          queryClient.invalidateQueries({
-            queryKey: projectPageLayoutKeys.item({ projectId }),
-          });
-          setModalOpened(false);
-        },
-        onError: (error) => {
-          setErrors(error.errors);
-          setModalOpened(false);
-        },
-      }
-    );
-  };
 
   return (
     <SectionField>
@@ -84,7 +37,7 @@ const PhasePlacement = ({ phase, hasUnsavedChanges }: Props) => {
         <FormattedMessage
           {...(onTimeline
             ? messages.placementOnTimelineDescription
-            : messages.placementStandaloneDescription)}
+            : messages.placementSpotlightDescription)}
         />
       </Text>
       <Box display="flex">
@@ -100,8 +53,8 @@ const PhasePlacement = ({ phase, hasUnsavedChanges }: Props) => {
         >
           <FormattedMessage
             {...(onTimeline
-              ? messages.moveOffTimelineButton
-              : messages.moveOnTimelineButton)}
+              ? placementMessages.moveToSpotlightSurveys
+              : placementMessages.moveToTimeline)}
           />
         </Button>
       </Box>
@@ -110,26 +63,9 @@ const PhasePlacement = ({ phase, hasUnsavedChanges }: Props) => {
           <FormattedMessage {...messages.moveSaveChangesFirst} />
         </Text>
       )}
-      <Error apiErrors={errors?.base} />
-      <Error apiErrors={errors?.participation_method} />
-      <Error apiErrors={errors?.end_at} />
-      {errors?.previous_phase && (
-        <Error
-          text={<FormattedMessage {...messages.movePreviousPhaseError} />}
-        />
+      {modalOpened && (
+        <ConfirmMoveModal phase={phase} onClose={() => setModalOpened(false)} />
       )}
-      <ConfirmMoveModal
-        opened={modalOpened}
-        target={target}
-        shownOnProjectPage={linkedSurveyPhaseIds(
-          layout?.data.attributes.craftjs_json
-        ).has(phase.id)}
-        phaseToClose={phaseToClose}
-        surveyStartAt={phase.attributes.start_at}
-        processing={isPending}
-        onConfirm={handleConfirm}
-        onClose={() => setModalOpened(false)}
-      />
     </SectionField>
   );
 };
