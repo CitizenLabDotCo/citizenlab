@@ -2675,6 +2675,7 @@
   "app.errors.no_invites_specified": "Could not find any email address.",
   "app.errors.no_previewer_phone": "A preview goes to your own phone. Add a phone number to your profile first.",
   "app.errors.no_recipients": "The campaign can't be sent out because there are no recipients. The group you're sending to is either empty, or nobody has consented to receiving emails.",
+  "app.errors.not_supported_in_standalone_phase": "Only surveys can run alongside the timeline. This participation method needs to be a phase on the timeline.",
   "app.errors.number_invalid": "Please enter a valid number.",
   "app.errors.password_blank": "This cannot be empty",
   "app.errors.password_invalid": "Please check your current password again.",
