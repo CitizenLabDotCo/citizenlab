@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 
+import SpotlightSurveys from 'containers/Admin/projects/project/projectPage/SpotlightSurveys';
 import TimelinePhases from 'containers/Admin/projects/project/projectPage/TimelinePhases';
 
 import { useIntl } from 'utils/cl-intl';
@@ -34,6 +35,7 @@ const ProjectTimeline = ({ projectId }: Props) => {
           withPhaseOptions
         />
       </Box>
+      <SpotlightSurveys projectId={projectId} variant="backofficeRedesign" />
       <Box mx="8px" my="24px" borderTop={`1px solid ${colors.grey200}`} />
       <TimelineEvents projectId={projectId} />
       <SelectMethodModal
