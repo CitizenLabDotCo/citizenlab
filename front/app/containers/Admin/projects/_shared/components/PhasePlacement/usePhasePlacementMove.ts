@@ -16,7 +16,6 @@ const usePhasePlacementMove = (phase: IPhaseData) => {
   const queryClient = useQueryClient();
   const projectId = phase.relationships.project.data.id;
   const onTimeline = isTimelinePhase(phase);
-  // Only a spotlight survey can be shown in a project page block.
   const { data: layout } = useProjectPageLayout(projectId, !onTimeline);
   const { data: timelinePhases } = usePhases(projectId, 'on_timeline');
 
@@ -39,8 +38,6 @@ const usePhasePlacementMove = (phase: IPhaseData) => {
       { phaseId: phase.id, placement_type: target },
       {
         onSuccess: () => {
-          // Moving to the timeline drops the project page block that showed
-          // this survey, so the cached layout is stale.
           queryClient.invalidateQueries({
             queryKey: projectPageLayoutKeys.item({ projectId }),
           });
