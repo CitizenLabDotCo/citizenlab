@@ -1,17 +1,17 @@
 import React, { lazy } from 'react';
 
-import { Multiloc } from 'typings';
 import { useTheme } from 'styled-components';
+import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
 
-import PageBreakBox from '../PageBreakBox';
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
+import PageBreakBox from '../PageBreakBox';
 
 import messages from './messages';
-import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 
 interface Props {
   text?: Multiloc;

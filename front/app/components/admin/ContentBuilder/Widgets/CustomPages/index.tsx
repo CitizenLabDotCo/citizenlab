@@ -7,15 +7,16 @@ import useCustomPages from 'api/custom_pages/useCustomPages';
 
 import useLocalize from 'hooks/useLocalize';
 
+import EmptyState from 'components/admin/ContentBuilder/Widgets/_shared/EmptyState';
+
+import { CARD_ICON_SIZE } from './constants';
 import CustomPageCard from './CustomPageCard';
 import GridContainer, { Grid } from './GridContainer';
 import messages from './messages';
-import { CARD_ICON_SIZE } from './constants';
 import { CustomPageItem } from './typings';
 
 // Lazy, as the settings (page search, icon upload) are only needed in the
 // builder, not on the homepage.
-import EmptyState from 'components/admin/ContentBuilder/Widgets/_shared/EmptyState';
 const Settings = lazy(() => import('./Settings'));
 
 type SkeletonProps = {

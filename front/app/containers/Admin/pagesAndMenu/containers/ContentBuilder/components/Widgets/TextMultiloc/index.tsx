@@ -5,15 +5,14 @@ import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
-import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
-import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
-import messages from 'components/admin/ContentBuilder/Widgets/TextMultiloc/messages';
-import QuillEditedContent from 'components/UI/QuillEditedContent';
-
 import {
   BUILDER_CONTENT_MAX_WIDTH,
   DEFAULT_Y_PADDING,
 } from 'components/admin/ContentBuilder/constants';
+import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
+import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
+import messages from 'components/admin/ContentBuilder/Widgets/TextMultiloc/messages';
+import QuillEditedContent from 'components/UI/QuillEditedContent';
 
 interface Props {
   text?: Multiloc;
@@ -43,7 +42,9 @@ const TextMultiloc = ({ text }: Props) => {
 };
 
 // Lazy, as the rich text editor is only needed in the builder, not on the homepage.
-const Settings = lazy(() => import('./Settings'));
+const Settings = lazy(
+  () => import('components/admin/ContentBuilder/Widgets/TextMultiloc/Settings')
+);
 
 TextMultiloc.craft = {
   props: {

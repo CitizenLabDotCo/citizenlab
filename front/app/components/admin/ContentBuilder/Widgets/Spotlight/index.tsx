@@ -2,18 +2,18 @@ import React, { lazy } from 'react';
 
 import { Multiloc } from 'typings';
 
-import useProjectById from 'api/projects/useProjectById';
-import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import useProjectFolderImage from 'api/project_folder_images/useProjectFolderImage';
+import useProjectFolderById from 'api/project_folders/useProjectFolderById';
 import useProjectImage from 'api/project_images/useProjectImage';
+import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
-import SpotlightProjectInner from './Spotlight';
 import messages from './messages';
+import SpotlightProjectInner from './Spotlight';
 
 // Lazy, as the settings use the rich text editor, which is only needed in the
 // builder, not on the homepage.
