@@ -14,7 +14,9 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
     {
       read_only_hint: false,
       destructive_hint: true,
-      idempotent_hint: true,
+      # Not idempotent: entries without ids create a new field on every call, so a
+      # blind retry of the same payload duplicates them.
+      idempotent_hint: false,
       open_world_hint: false
     }
   end
