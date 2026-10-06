@@ -1361,7 +1361,6 @@
   "app.containers.AccessibilityStatement.userGeneratedContent": "Felhasználó által generált tartalom",
   "app.containers.AccessibilityStatement.workshops": "Workshopok",
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Gépeléssel kereshet projekteket",
-  "app.containers.AdminPage.ProjectDescription.linkText": "Szerkessze a leírást a Content Builderben",
   "app.containers.AdminPage.ProjectDescription.saveError": "Hiba történt a projektleírás mentése közben.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Projekt megtekintése",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "A felmérés vége",

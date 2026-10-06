@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useCustomPageBySlug from 'api/custom_pages/useCustomPageBySlug';
+import { isContentBuilderPage } from 'api/custom_pages/util';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -38,12 +39,9 @@ const CustomPageShow = () => {
   const { data: appConfiguration } = useAppConfiguration();
   const localize = useLocalize();
   const { data: page, isError } = useCustomPageBySlug(pageSlugToUse);
-  // Only global custom pages are on the Content Builder, mirroring the backend's provisioning
-  // guard. The other pages served here must not wait on a request that can only 404.
-  const isGlobalCustomPage =
-    page?.data.attributes.code === 'custom' && !page.data.attributes.project_id;
+  // Pages off the builder must not wait on a layout request that can only 404.
   const builderContent = useCustomPageBuilderContent(
-    isGlobalCustomPage ? page.data.id : undefined
+    page && isContentBuilderPage(page.data) ? page.data.id : undefined
   );
 
   // when neither have loaded

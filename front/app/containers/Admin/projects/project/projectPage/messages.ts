@@ -9,14 +9,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.settingsNav',
     defaultMessage: 'Settings',
   },
-  editPageContent: {
-    id: 'app.containers.Admin.projects.project.editPageContent',
-    defaultMessage: 'Edit page content',
-  },
-  edit: {
-    id: 'app.containers.Admin.projects.project.edit',
-    defaultMessage: 'Edit',
-  },
   editProjectPageInContentBuilder: {
     id: 'app.containers.Admin.projects.project.editProjectPageInContentBuilder',
     defaultMessage: 'Edit the project page in the content builder',

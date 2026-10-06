@@ -1361,7 +1361,6 @@
   "app.containers.AccessibilityStatement.userGeneratedContent": "Sadržaj kojeg generira korisnik",
   "app.containers.AccessibilityStatement.workshops": "Radionice",
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Upišite tekst za pretraživanje projekata",
-  "app.containers.AdminPage.ProjectDescription.linkText": "Uredite opis u Content Builderu",
   "app.containers.AdminPage.ProjectDescription.saveError": "Nešto nije u redu prilikom spremanja opisa projekta.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Pogledaj projekt",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Završetak upitnika",

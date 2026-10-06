@@ -94,9 +94,21 @@ describe('CustomPageShow', () => {
     expect(screen.getByTestId('builderContent')).toBeInTheDocument();
   });
 
+  it.each([
+    ['About', 'about'],
+    ['FAQ', 'faq'],
+  ])('renders the builder content for the %s page', (_label, code) => {
+    hasContent = true;
+    pageAttributes = { ...globalCustomPage, code };
+    render(<CustomPageShow />);
+
+    expect(screen.getByTestId('builderContent')).toBeInTheDocument();
+    expect(screen.queryByTestId('legacyInfoSection')).not.toBeInTheDocument();
+  });
+
   // Policy and project-scoped pages are not on the Content Builder.
   it.each([
-    ['a policy page', { code: 'faq' }],
+    ['a policy page', { code: 'terms-and-conditions' }],
     ['a project-scoped page', { project_id: 'project-1' }],
   ])('renders the legacy sections for %s', (_label, overrides) => {
     hasContent = true;
