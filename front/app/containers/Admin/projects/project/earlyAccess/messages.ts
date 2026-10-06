@@ -17,6 +17,6 @@ export default defineMessages({
   feedbackNotice: {
     id: 'app.containers.Admin.projects.project.earlyAccess.feedbackNotice',
     defaultMessage:
-      '<b>You are using the new project back office.</b> It is a work in progress, so expect rough edges. Your feedback is valuable at any point: share it in the #dev-tandem-uxui-revamp Slack channel. To go back to the current back office, turn it off under "Early access" in your {profileSettingsLink}.',
+      '<b>You are using the new project back office.</b> We are still improving it, and your feedback at any point helps shape it: share it in the {slackChannelLink} Slack channel. To go back to the current back office, turn it off under "Early access" in your {profileSettingsLink}.',
   },
 });
