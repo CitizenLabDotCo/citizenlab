@@ -198,6 +198,51 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
           .to raise_error(Analysis::LLM::UnsupportedAttachmentError, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
       end
     end
+
+    context 'text files' do
+      it 'sends a markdown file as text, since it has no preview to send instead' do
+        file = create(:global_file, name: 'notes.md')
+        message = Analysis::LLM::Message.new('Summarize this transcript', file)
+
+        expect(service.response_client)
+          .to receive(:create).with(parameters: hash_including(input: [{
+            role: 'user', content: [
+              { type: 'input_text', text: 'Summarize this transcript' },
+              { type: 'input_text', text: start_with("File: notes.md\n\n").and(include('Bike lanes incomplete')) }
+            ]
+          }])).and_return(nil)
+
+        service.chat(message)
+      end
+
+      it 'does not raise on bytes that are not valid UTF-8' do
+        file = create(:global_file, name: 'notes_latin1.md')
+        message = Analysis::LLM::Message.new('Summarize this transcript', file)
+
+        allow(service.response_client).to receive(:create).and_return(nil)
+
+        expect { service.chat(message) }.not_to raise_error
+      end
+
+      it 'keeps using the preview for a text format LibreOffice can convert' do
+        file = create(:global_file, name: 'notes.txt')
+        file.reload.preview.update!(
+          status: 'completed',
+          content: Rails.root.join('spec/fixtures/minimal_pdf.pdf').open
+        )
+        message = Analysis::LLM::Message.new('Summarize this transcript', file)
+
+        expect(service.response_client)
+          .to receive(:create).with(parameters: hash_including(input: [{
+            role: 'user', content: [
+              { type: 'input_text', text: 'Summarize this transcript' },
+              { type: 'input_file', filename: 'notes.txt', file_data: start_with('data:application/pdf;base64,') }
+            ]
+          }])).and_return(nil)
+
+        service.chat(message)
+      end
+    end
   end
 
   describe 'usable_context_window' do
