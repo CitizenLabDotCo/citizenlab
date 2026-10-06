@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { Text, Spinner, Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { FormattedMessage } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
 
 import messages from '../../messages';
 
+import PaginatedReport from './PaginatedReport';
 import Report from './Report';
 
 const PreparingBox = styled(Box)`
@@ -44,18 +47,23 @@ export interface Props {
 
 export const PrintReport = ({ reportId, _print = true }: Props) => {
   const [isPrintReady, setIsPrintReady] = useState(false);
+  const llmReportingEnabled = useFeatureFlag({ name: 'llm_reporting' });
 
+  const handlePaginated = useCallback(() => setIsPrintReady(true), []);
+
+  // A paginated report says when its pages are drawn. Without pagination there is
+  // nothing to wait for, so printing falls back to a fixed delay.
   useEffect(() => {
     if (!_print) return;
 
     if (isPrintReady) {
       window.print();
-    } else {
+    } else if (!llmReportingEnabled) {
       setTimeout(() => {
         setIsPrintReady(true);
       }, 5000);
     }
-  }, [_print, isPrintReady]);
+  }, [_print, isPrintReady, llmReportingEnabled]);
 
   useEffect(() => {
     if (!_print) return;
@@ -87,7 +95,11 @@ export const PrintReport = ({ reportId, _print = true }: Props) => {
           </Text>
         </PreparingBox>
       )}
-      <Report reportId={reportId} />
+      {llmReportingEnabled ? (
+        <PaginatedReport reportId={reportId} onPaginated={handlePaginated} />
+      ) : (
+        <Report reportId={reportId} />
+      )}
     </>
   );
 };
