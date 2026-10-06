@@ -259,6 +259,13 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         StaticPagesSpace
       ],
 
+      # AI-authored page builder blocks are tenant-wide CMS content, not scoped to
+      # a project. A query snapshot is a cached answer, rebuilt on demand. A chat and
+      # a generation transcript record how a report was written, not the report.
+      llm_reporting: %w[
+        ReportBuilder::GenerationTranscript
+      ],
+
       # Per-tenant admin moderation runtime (internal comments on ideas — not
       # part of project content surfaced to end users).
       admin_runtime: %w[

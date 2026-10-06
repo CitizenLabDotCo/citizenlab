@@ -68,28 +68,30 @@
 #  fk_rails_...  (space_id => spaces.id)
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
-module FlagInappropriateContent
-  module Notifications
-    class InappropriateContentFlagged < Notification
-      ACTIVITY_TRIGGERS = { 'FlagInappropriateContent::InappropriateContentFlag' => { 'created' => true } }
-      EVENT_NAME = 'Inappropriate content flagged'
+module Notifications
+  # Tells the admin who asked for a report that the LLM has finished writing it.
+  #
+  # Composing a report takes minutes and runs in the background, so the admin is
+  # told to walk away. This is how they learn it is done without watching the tab.
+  class ReportGenerated < Notification
+    validates :report, :project, presence: true
 
-      validates :inappropriate_content_flag, presence: true
+    ACTIVITY_TRIGGERS = { 'ReportBuilder::Report' => { 'generated' => true } }
+    EVENT_NAME = 'Report generated'
 
-      def self.recipient_ids(flaggable)
-        ::UserRoleService.new.moderators_for(flaggable).ids
-      end
+    def self.make_notifications_on(activity)
+      report = activity.item
+      # The admin who started the run; nobody else asked for this.
+      recipient_id = activity.user_id
+      project = report&.reported_project
+      return [] if report.nil? || recipient_id.nil? || project.nil?
 
-      def self.make_notifications_on(activity)
-        flag = activity.item
-        recipient_ids(flag.flaggable).map do |recipient_id|
-          new(
-            recipient_id: recipient_id,
-            initiating_user_id: activity.user_id,
-            inappropriate_content_flag: flag
-          )
-        end
-      end
+      [new(
+        recipient_id: recipient_id,
+        report: report,
+        project: project,
+        phase: report.phase
+      )]
     end
   end
 end
