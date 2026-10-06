@@ -4265,10 +4265,48 @@ CREATE VIEW public.reporting_projects AS
     p.listed,
     p.visible_to,
     ap.first_published_at,
-    p.created_at
-   FROM (((public.projects p
+    p.created_at,
+    COALESCE(NULLIF((f.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(f.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS folder_title,
+    ARRAY( SELECT COALESCE(NULLIF((gt.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+                   FROM public.app_configurations ac
+                 LIMIT 1)), ''::text), ( SELECT t.value
+                   FROM jsonb_each_text(gt.title_multiloc) t(key, value)
+                  WHERE (t.value <> ''::text)
+                  ORDER BY t.key
+                 LIMIT 1)) AS "coalesce"
+           FROM (public.projects_global_topics pgt
+             JOIN public.global_topics gt ON ((gt.id = pgt.global_topic_id)))
+          WHERE (pgt.project_id = p.id)
+          ORDER BY gt.ordering) AS topics,
+    ARRAY( SELECT COALESCE(NULLIF((a.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+                   FROM public.app_configurations ac
+                 LIMIT 1)), ''::text), ( SELECT t.value
+                   FROM jsonb_each_text(a.title_multiloc) t(key, value)
+                  WHERE (t.value <> ''::text)
+                  ORDER BY t.key
+                 LIMIT 1)) AS "coalesce"
+           FROM public.areas a
+          WHERE (p.include_all_areas OR (EXISTS ( SELECT 1
+                   FROM public.areas_projects ap2
+                  WHERE ((ap2.project_id = p.id) AND (ap2.area_id = a.id)))))
+          ORDER BY a.ordering) AS areas,
+    (ARRAY( SELECT methods.participation_method
+           FROM ( SELECT ph.participation_method,
+                    min(ph.start_at) AS first_start_at
+                   FROM public.phases ph
+                  WHERE (ph.project_id = p.id)
+                  GROUP BY ph.participation_method) methods
+          ORDER BY methods.first_start_at))::text[] AS participation_methods
+   FROM ((((public.projects p
      LEFT JOIN public.admin_publications ap ON (((ap.publication_id = p.id) AND ((ap.publication_type)::text = 'Project'::text))))
      LEFT JOIN public.admin_publications folder_ap ON ((folder_ap.id = ap.parent_id)))
+     LEFT JOIN public.project_folders_folders f ON ((f.id = folder_ap.publication_id)))
      LEFT JOIN ( SELECT ph.project_id,
             min(ph.start_at) AS start_at,
                 CASE
@@ -9699,6 +9737,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261006160100'),
 ('20261006140200'),
 ('20261006140100'),
 ('20261006120200'),

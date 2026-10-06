@@ -4,18 +4,22 @@
 #
 # Table name: reporting_projects
 #
-#  id                 :uuid             primary key
-#  title              :text
-#  title_multiloc     :jsonb
-#  publication_status :string
-#  start_at           :datetime
-#  end_at             :datetime
-#  folder_id          :uuid
-#  hidden             :boolean
-#  listed             :boolean
-#  visible_to         :string
-#  first_published_at :datetime
-#  created_at         :datetime
+#  id                    :uuid             primary key
+#  title                 :text
+#  title_multiloc        :jsonb
+#  publication_status    :string
+#  start_at              :datetime
+#  end_at                :datetime
+#  folder_id             :uuid
+#  hidden                :boolean
+#  listed                :boolean
+#  visible_to            :string
+#  first_published_at    :datetime
+#  created_at            :datetime
+#  folder_title          :text
+#  topics                :text             is an Array
+#  areas                 :text             is an Array
+#  participation_methods :text             is an Array
 #
 module Analytics
   module Reporting
@@ -50,7 +54,7 @@ module Analytics
             when any phase is open-ended, meaning the project has no planned end.
             A project is finished when end_at is in the past.
           DOC
-          'folder_id' => 'The folder this project is grouped under, or NULL when not in a folder.',
+          'folder_id' => 'The folder this project is grouped under, or NULL when not in a folder. Its name is in folder_title.',
           'hidden' => <<~DOC.squish,
             TRUE for internal system projects that residents never see as projects, currently
             used for the project that holds the community monitor survey. Exclude hidden projects
@@ -62,7 +66,26 @@ module Analytics
             of selected user groups), or 'admins' (only admins and moderators).
           DOC
           'first_published_at' => 'When the project first went live (UTC). NULL for projects that were never published.',
-          'created_at' => 'When the project was created as a draft (UTC), which can be well before first_published_at.'
+          'created_at' => 'When the project was created as a draft (UTC), which can be well before first_published_at.',
+          'folder_title' => 'Title of the folder the project is in, resolved to the platform primary locale. NULL when not in a folder.',
+          'topics' => <<~DOC.squish,
+            The project's topics (themes such as 'Mobility' or 'Nature'), resolved
+            to the platform primary locale. An empty array when none. Filter
+            with 'Mobility' = ANY(topics), or count per topic with
+            unnest(topics). Not the same as the tags on inputs (see reporting_input_tags).
+          DOC
+          'areas' => <<~DOC.squish,
+            The geographic areas the project is about, resolved to the platform
+            primary locale. A project that admins marked as being about all
+            areas lists every area, matching how the platform filters projects
+            by area. An empty array when none. Filter with 'North' = ANY(areas).
+          DOC
+          'participation_methods' => <<~DOC.squish
+            The distinct participation methods of the project's phases, in the
+            order they first appear on the timeline (see
+            reporting_phases.participation_method for values). An empty array
+            when the project has no phases.
+          DOC
         }
       end
 

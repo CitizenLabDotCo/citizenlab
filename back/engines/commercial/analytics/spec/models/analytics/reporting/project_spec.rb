@@ -67,6 +67,63 @@ RSpec.describe Analytics::Reporting::Project do
     end
   end
 
+  describe 'folder_title' do
+    it 'is NULL for a project outside any folder' do
+      expect(row.folder_title).to be_nil
+    end
+
+    it 'is the folder title for a project in a folder' do
+      create(:project_folder, projects: [project], title_multiloc: { 'en' => 'Recovery' })
+
+      expect(row.folder_title).to eq 'Recovery'
+    end
+  end
+
+  describe 'topics' do
+    it 'is empty when the project has no topics' do
+      expect(row.topics).to eq []
+    end
+
+    it 'lists the topic titles in topic order' do
+      project.global_topics << create(:global_topic, title_multiloc: { 'en' => 'Nature' }, ordering: 2)
+      project.global_topics << create(:global_topic, title_multiloc: { 'en' => 'Mobility' }, ordering: 1)
+
+      expect(row.topics).to eq %w[Mobility Nature]
+    end
+  end
+
+  describe 'areas' do
+    let!(:north) { create(:area, title_multiloc: { 'en' => 'North' }) }
+
+    before { create(:area, title_multiloc: { 'en' => 'South' }) }
+
+    it 'lists only the linked areas' do
+      project.areas << north
+
+      expect(row.areas).to eq %w[North]
+    end
+
+    it 'lists every area for a project about all areas' do
+      project.update!(include_all_areas: true)
+
+      expect(row.areas).to match_array %w[North South]
+    end
+  end
+
+  describe 'participation_methods' do
+    it 'is empty for a project without phases' do
+      expect(row.participation_methods).to eq []
+    end
+
+    it 'lists each method once, in timeline order' do
+      create(:information_phase, project: project, start_at: '2026-01-01', end_at: '2026-01-31')
+      create(:native_survey_phase, project: project, start_at: '2026-02-01', end_at: '2026-02-28')
+      create(:information_phase, project: project, start_at: '2026-03-01', end_at: '2026-03-31')
+
+      expect(row.participation_methods).to eq %w[information native_survey]
+    end
+  end
+
   it 'exposes the visibility flags' do
     expect(row.hidden).to be false
     expect(row.listed).to be true
