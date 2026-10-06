@@ -239,6 +239,7 @@
   "app.components.ErrorBoundary.errorFormTitle": "Det ser ut som det er et problem.",
   "app.components.ErrorBoundary.genericErrorWithForm": "Det oppstod en feil, og vi kan ikke vise dette innholdet. Vennligst prøv igjen, eller {openForm}",
   "app.components.ErrorBoundary.openFormText": "Hjelp oss å finne ut av det",
+  "app.components.ErrorBoundary.reloadPage": "Last siden på nytt",
   "app.components.ErrorToast.budgetExceededError": "Du har ikke nok budsjett",
   "app.components.ErrorToast.votesExceededError": "Du har ikke nok stemmer igjen",
   "app.components.EsriMap.drawOnMap": "Tegn",

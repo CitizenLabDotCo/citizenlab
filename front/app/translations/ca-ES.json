@@ -239,6 +239,7 @@
   "app.components.ErrorBoundary.errorFormTitle": "Sembla que hi ha un problema.",
   "app.components.ErrorBoundary.genericErrorWithForm": "S'ha produït un error i no podem mostrar aquest contingut. Si us plau, torneu-ho a provar, o bé {openForm}",
   "app.components.ErrorBoundary.openFormText": "ajudeu-nos a esbrinar-ho",
+  "app.components.ErrorBoundary.reloadPage": "Torna a carregar la pàgina",
   "app.components.ErrorToast.budgetExceededError": "No tens prou pressupost",
   "app.components.ErrorToast.votesExceededError": "No et queden prou vots",
   "app.components.EsriMap.drawOnMap": "Dibuixa",

@@ -239,6 +239,7 @@
   "app.components.ErrorBoundary.errorFormTitle": "Izskatās, ka ir problēma.",
   "app.components.ErrorBoundary.genericErrorWithForm": "Radās kļūda, un mēs nevaram parādīt šo saturu. Lūdzu, mēģiniet vēlreiz vai {openForm}",
   "app.components.ErrorBoundary.openFormText": "palīdziet mums to noskaidrot",
+  "app.components.ErrorBoundary.reloadPage": "Pārlādēt lapu",
   "app.components.ErrorToast.budgetExceededError": "Jums nav pietiekama budžeta",
   "app.components.ErrorToast.votesExceededError": "Jums vairs nav pietiekami daudz balsu",
   "app.components.EsriMap.drawOnMap": "Zīmēt",

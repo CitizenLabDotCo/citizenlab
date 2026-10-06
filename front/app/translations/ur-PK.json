@@ -239,6 +239,7 @@
   "app.components.ErrorBoundary.errorFormTitle": "ایسا لگتا ہے کہ کوئی مسئلہ ہے۔",
   "app.components.ErrorBoundary.genericErrorWithForm": "ایک خرابی پیش آگئی اور ہم اس مواد کو ظاہر نہیں کر سکتے۔ براہ کرم دوبارہ کوشش کریں، یا {openForm}",
   "app.components.ErrorBoundary.openFormText": "اس کا پتہ لگانے میں ہماری مدد کریں۔",
+  "app.components.ErrorBoundary.reloadPage": "صفحہ دوبارہ لوڈ کریں",
   "app.components.ErrorToast.budgetExceededError": "آپ کے پاس کافی بجٹ نہیں ہے۔",
   "app.components.ErrorToast.votesExceededError": "آپ کے پاس کافی ووٹ باقی نہیں ہیں۔",
   "app.components.EsriMap.drawOnMap": "ڈرا کریں",
