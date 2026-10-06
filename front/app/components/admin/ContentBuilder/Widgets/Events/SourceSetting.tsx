@@ -28,11 +28,9 @@ const SourceSetting = () => {
     props,
   } = useNode((node) => ({ props: node.data.props as EventsProps }));
 
-  const { projectId, customPageId } = useParams({ strict: false });
+  const { projectId } = useParams({ strict: false });
   const advancedCustomPages = useFeatureFlag({ name: 'advanced_custom_pages' });
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
-
-  const filteringEnabled = !customPageId || advancedCustomPages;
 
   const source = props.source ?? 'all';
   const ids = props.ids ?? [];
@@ -47,7 +45,7 @@ const SourceSetting = () => {
 
   const options: { value: EventsSource; label: string }[] = [
     { value: 'all', label: formatMessage(messages.everyProject) },
-    ...(filteringEnabled
+    ...(advancedCustomPages
       ? [
           { value: 'areas' as const, label: formatMessage(messages.byArea) },
           {
