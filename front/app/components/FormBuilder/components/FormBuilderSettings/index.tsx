@@ -154,7 +154,7 @@ const FormBuilderSettings = ({
         !builderConfig.isLogicEnabled || // TODO: Fix this the next time the file is edited.
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         (showTabbedSettings && currentTab === 'content')) && (
-        <ContentSettings field={field} />
+        <ContentSettings field={field} builderConfig={builderConfig} />
       )}
       {showTabbedSettings && currentTab === 'logic' && (
         <LogicSettings

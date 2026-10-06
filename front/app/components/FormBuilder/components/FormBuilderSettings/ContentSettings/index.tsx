@@ -9,7 +9,10 @@ import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
 import { SectionField } from 'components/admin/Section';
-import { getAdditionalSettings } from 'components/FormBuilder/utils';
+import {
+  getAdditionalSettings,
+  ResolvedFormBuilderConfig,
+} from 'components/FormBuilder/utils';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Toggle from 'components/HookForm/Toggle';
@@ -24,9 +27,10 @@ import FieldTypeSwitcher from '../FieldTypeSwitcher';
 
 type ContentSettingsProps = {
   field: IFlatCustomFieldWithIndex;
+  builderConfig: ResolvedFormBuilderConfig;
 };
 
-const ContentSettings = ({ field }: ContentSettingsProps) => {
+const ContentSettings = ({ field, builderConfig }: ContentSettingsProps) => {
   const { projectId } = useParams({ strict: false });
 
   const locales = useAppConfigurationLocales();
@@ -113,7 +117,9 @@ const ContentSettings = ({ field }: ContentSettingsProps) => {
           />
         </SectionField>
       )}
-      {!isFieldGrouping && <AnswerVisibilityToggle field={field} />}
+      {builderConfig.isParticipationPublic && (
+        <AnswerVisibilityToggle field={field} />
+      )}
     </Box>
   );
 };
