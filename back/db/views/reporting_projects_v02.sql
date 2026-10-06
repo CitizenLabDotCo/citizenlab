@@ -53,7 +53,7 @@ SELECT
             WHERE ph.project_id = p.id
             GROUP BY ph.participation_method
         ) methods
-        ORDER BY methods.first_start_at
+        ORDER BY methods.first_start_at, methods.participation_method
     )::text[] AS participation_methods
 FROM projects p
 LEFT JOIN admin_publications ap

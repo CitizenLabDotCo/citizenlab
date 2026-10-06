@@ -129,6 +129,13 @@ RSpec.describe Analytics::Reporting::Project do
 
       expect(row.participation_methods).to eq %w[information native_survey]
     end
+
+    it 'orders methods that start on the same date by name' do
+      create(:native_survey_phase, :standalone, project: project, start_at: '2026-01-01', end_at: '2026-01-31')
+      create(:information_phase, project: project, start_at: '2026-01-01', end_at: '2026-01-31')
+
+      expect(row.participation_methods).to eq %w[information native_survey]
+    end
   end
 
   it 'exposes the visibility flags' do

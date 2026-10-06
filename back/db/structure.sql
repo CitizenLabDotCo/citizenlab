@@ -4325,7 +4325,7 @@ CREATE VIEW public.reporting_projects AS
                    FROM public.phases ph
                   WHERE (ph.project_id = p.id)
                   GROUP BY ph.participation_method) methods
-          ORDER BY methods.first_start_at))::text[] AS participation_methods
+          ORDER BY methods.first_start_at, methods.participation_method))::text[] AS participation_methods
    FROM ((((public.projects p
      LEFT JOIN public.admin_publications ap ON (((ap.publication_id = p.id) AND ((ap.publication_type)::text = 'Project'::text))))
      LEFT JOIN public.admin_publications folder_ap ON ((folder_ap.id = ap.parent_id)))
