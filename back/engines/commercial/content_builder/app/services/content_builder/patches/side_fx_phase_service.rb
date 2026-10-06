@@ -5,12 +5,14 @@ module ContentBuilder
     module SideFxPhaseService
       def after_update(phase, user)
         super
-        ContentBuilder::SpotlightSurveyWidgetCleanupService.new.cleanup_moved(phase)
+        return unless phase.placement_type_previously_changed? && phase.on_timeline?
+
+        ContentBuilder::LayoutService.new.clean_project_page_when_survey_phase_removed(phase)
       end
 
       def after_destroy(frozen_phase, user)
         super
-        ContentBuilder::SpotlightSurveyWidgetCleanupService.new.cleanup_destroyed(frozen_phase)
+        ContentBuilder::LayoutService.new.clean_project_page_when_survey_phase_removed(frozen_phase)
       end
     end
   end
