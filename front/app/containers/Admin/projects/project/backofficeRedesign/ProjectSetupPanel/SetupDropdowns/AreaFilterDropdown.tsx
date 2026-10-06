@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
   Box,
@@ -14,11 +14,12 @@ import useUpdateProject from 'api/projects/useUpdateProject';
 
 import useLocalize from 'hooks/useLocalize';
 
+import generalMessages from 'containers/Admin/projects/project/general/messages';
+
 import OptionPicker from 'components/UI/OptionPicker';
 
 import { useIntl } from 'utils/cl-intl';
 
-import generalMessages from '../../../general/messages';
 import messages from '../../messages';
 import PanelHeading from '../PanelHeading';
 
@@ -44,7 +45,22 @@ const AreaFilterDropdown = ({ project }: Props) => {
   const { data: areas } = useAreas({});
   const { mutate: updateProject } = useUpdateProject();
   const [selectingAreas, setSelectingAreas] = useState(false);
+  const [pickedAreaIds, setPickedAreaIds] = useState<string[]>();
+  const unsavedAreaIds = useRef<string[] | null>(null);
   const justPickedSelection = useRef(false);
+
+  const saveAreas = useCallback(() => {
+    const areaIdsToSave = unsavedAreaIds.current;
+    if (!areaIdsToSave) return;
+
+    unsavedAreaIds.current = null;
+    updateProject(
+      { projectId: project.id, area_ids: areaIdsToSave },
+      { onError: () => setPickedAreaIds(undefined) }
+    );
+  }, [project.id, updateProject]);
+
+  useEffect(() => saveAreas, [saveAreas]);
 
   // scrollIntoView on the area list when the user picks "Selected areas"
   const revealAreaList = (element: HTMLDivElement | null) => {
@@ -57,7 +73,8 @@ const AreaFilterDropdown = ({ project }: Props) => {
   if (!areas) return null;
 
   const areaType = getAreaType(project, selectingAreas);
-  const areaIds = project.relationships.areas.data.map((area) => area.id);
+  const areaIds =
+    pickedAreaIds ?? project.relationships.areas.data.map((area) => area.id);
 
   const selectedAreaTitles = areas.data
     .filter((area) => areaIds.includes(area.id))
@@ -66,6 +83,8 @@ const AreaFilterDropdown = ({ project }: Props) => {
   const handleAreaTypeChange = (value: AreaType) => {
     setSelectingAreas(value === 'selection');
     justPickedSelection.current = value === 'selection';
+    unsavedAreaIds.current = null;
+    setPickedAreaIds([]);
     updateProject({
       projectId: project.id,
       area_ids: [],
@@ -74,13 +93,13 @@ const AreaFilterDropdown = ({ project }: Props) => {
   };
 
   const toggleArea = (areaId: string) => {
+    const newAreaIds = areaIds.includes(areaId)
+      ? areaIds.filter((id) => id !== areaId)
+      : [...areaIds, areaId];
+
     setSelectingAreas(true);
-    updateProject({
-      projectId: project.id,
-      area_ids: areaIds.includes(areaId)
-        ? areaIds.filter((id) => id !== areaId)
-        : [...areaIds, areaId],
-    });
+    setPickedAreaIds(newAreaIds);
+    unsavedAreaIds.current = newAreaIds;
   };
 
   return (
@@ -123,6 +142,7 @@ const AreaFilterDropdown = ({ project }: Props) => {
         }
         keepOpenFor="selection"
         onChange={handleAreaTypeChange}
+        onClose={saveAreas}
       >
         {areaType === 'selection' && (
           <Box

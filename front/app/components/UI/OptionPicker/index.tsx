@@ -80,6 +80,7 @@ interface Props<T extends string> {
   triggerLabel?: string;
   triggerIcon?: IconNames;
   keepOpenFor?: T;
+  onClose?: () => void;
   children?: React.ReactNode;
 }
 
@@ -93,6 +94,7 @@ const OptionPicker = <T extends string>({
   triggerLabel,
   triggerIcon,
   keepOpenFor,
+  onClose,
   children,
 }: Props<T>) => {
   const { formatMessage } = useIntl();
@@ -103,8 +105,10 @@ const OptionPicker = <T extends string>({
   const [search, setSearch] = useState('');
 
   const close = () => {
+    if (!opened) return;
     setOpened(false);
     setSearch('');
+    onClose?.();
   };
 
   // flip the dropdown to open upwards if there is not enough space below

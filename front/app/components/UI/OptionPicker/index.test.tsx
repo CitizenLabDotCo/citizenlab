@@ -169,4 +169,28 @@ describe('OptionPicker', () => {
     expect(screen.getByRole('radiogroup')).toBeInTheDocument();
     expect(screen.getByText('Pick groups')).toBeInTheDocument();
   });
+
+  it('reports each close once, but not opening', async () => {
+    const onClose = jest.fn();
+    render(
+      <OptionPicker
+        title="Who can find it"
+        description="Whether residents can discover this project."
+        options={options}
+        value="public"
+        onChange={onChange}
+        onClose={onClose}
+      />
+    );
+
+    await userEvent.click(trigger());
+    expect(onClose).not.toHaveBeenCalled();
+
+    await userEvent.keyboard('{Escape}');
+    expect(onClose).toHaveBeenCalledTimes(1);
+
+    await userEvent.click(trigger());
+    await userEvent.click(openTrigger());
+    expect(onClose).toHaveBeenCalledTimes(2);
+  });
 });
