@@ -11,6 +11,7 @@ import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import useEnsureCustomPageLayout from 'components/CustomPageBuilder/useEnsureCustomPageLayout';
 
+import { type TypedLinkProps } from 'utils/cl-router/Link';
 import { useLocation, useParams } from 'utils/router';
 
 import CustomPageBuilderPage from './CustomPageBuilderPage';
@@ -45,19 +46,18 @@ const CustomPageBuilder = () => {
       ? `${adminProjectsProjectPath(projectId)}/pages/${customPageId}`
       : adminCustomPageSettingsPath(customPageId)
   }${searchStr}`;
+  const previewLink: TypedLinkProps = project
+    ? {
+        to: '/projects/$slug/pages/$pageSlug',
+        params: { slug: project.data.attributes.slug, pageSlug },
+      }
+    : { to: '/pages/$slug', params: { slug: pageSlug } };
 
   return (
     <CustomPageBuilderPage
       staticPageId={customPageId}
       backPath={backPath}
-      previewLink={
-        project
-          ? {
-              to: '/projects/$slug/pages/$pageSlug',
-              params: { slug: project.data.attributes.slug, pageSlug },
-            }
-          : { to: '/pages/$slug', params: { slug: pageSlug } }
-      }
+      previewLink={previewLink}
       titleMultiloc={customPage.data.attributes.title_multiloc}
     />
   );
