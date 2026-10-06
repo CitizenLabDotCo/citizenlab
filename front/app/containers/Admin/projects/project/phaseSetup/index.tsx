@@ -236,12 +236,8 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
       const { placement_type: _placementType, ...phaseData } = formData;
 
       updatePhase(
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         {
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          phaseId: phase?.data.id,
+          phaseId: phase.data.id,
           ...phaseData,
         },
         {
