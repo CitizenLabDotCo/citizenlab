@@ -263,6 +263,8 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
       # a project. A query snapshot is a cached answer, rebuilt on demand. A chat and
       # a generation transcript record how a report was written, not the report.
       llm_reporting: %w[
+        ContentBuilder::CustomBlock
+        ContentBuilder::CustomBlockVersion
         ContentBuilder::QuerySnapshot
         ReportBuilder::GenerationTranscript
       ],
