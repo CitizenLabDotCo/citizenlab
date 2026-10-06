@@ -701,6 +701,7 @@ DROP TABLE IF EXISTS public.schema_migrations;
 DROP VIEW IF EXISTS public.reporting_user_question_answers;
 DROP VIEW IF EXISTS public.reporting_users;
 DROP VIEW IF EXISTS public.reporting_sessions;
+DROP VIEW IF EXISTS public.reporting_reports;
 DROP VIEW IF EXISTS public.reporting_projects;
 DROP VIEW IF EXISTS public.reporting_phases;
 DROP VIEW IF EXISTS public.reporting_participants;
@@ -4315,6 +4316,25 @@ CREATE VIEW public.reporting_projects AS
                 END AS end_at
            FROM public.phases ph
           GROUP BY ph.project_id) phase_bounds ON ((phase_bounds.project_id = p.id)));
+
+
+--
+-- Name: reporting_reports; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_reports AS
+ SELECT r.id,
+    r.name,
+    r.phase_id,
+    ph.project_id,
+    r.visible,
+    r.year,
+    r.quarter,
+    r.community_monitor,
+    r.created_at,
+    r.updated_at
+   FROM (public.report_builder_reports r
+     LEFT JOIN public.phases ph ON ((ph.id = r.phase_id)));
 
 
 --
@@ -9737,6 +9757,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261006170200'),
+('20261006170100'),
 ('20261006160100'),
 ('20261006140200'),
 ('20261006140100'),
