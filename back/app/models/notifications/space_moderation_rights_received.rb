@@ -26,6 +26,7 @@
 #  cosponsorship_id              :uuid
 #  project_review_id             :uuid
 #  space_id                      :uuid
+#  report_id                     :uuid
 #
 # Indexes
 #
@@ -61,6 +62,7 @@
 #  fk_rails_...  (project_id => projects.id)
 #  fk_rails_...  (project_review_id => project_reviews.id)
 #  fk_rails_...  (recipient_id => users.id)
+#  fk_rails_...  (report_id => report_builder_reports.id)
 #  fk_rails_...  (space_id => spaces.id)
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
