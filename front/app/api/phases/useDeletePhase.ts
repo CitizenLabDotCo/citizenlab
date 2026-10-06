@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import projectPageLayoutKeys from 'api/project_page_layout/keys';
 import projectsKeys from 'api/projects/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -27,6 +28,12 @@ const useDeletePhase = () => {
       });
       queryClient.invalidateQueries({
         queryKey: phasesKeys.list({ projectId: variables.projectId }),
+      });
+      // Deleting a spotlight survey removes its block from the project page.
+      queryClient.invalidateQueries({
+        queryKey: projectPageLayoutKeys.item({
+          projectId: variables.projectId,
+        }),
       });
     },
   });
