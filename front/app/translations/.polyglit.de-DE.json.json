@@ -3824,6 +3824,11 @@
     "verified_at": "2026-07-07T07:11:38.305285Z",
     "verified_by": "Jelena"
   },
+  "app.components.UI.FeatureCallout.dismiss": {
+    "state": "verified",
+    "verified_at": "2026-10-06T13:48:15.440516Z",
+    "verified_by": "Jelena"
+  },
   "app.components.UI.FileAttachments.FileDisplay.ariaLabel": {
     "state": "verified",
     "verified_at": "2026-05-12T13:10:35.984484Z",
@@ -12472,6 +12477,16 @@
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": {
     "state": "verified",
     "verified_at": "2026-09-22T12:40:42.537618Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-06T13:48:15.440516Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignTitle": {
+    "state": "verified",
+    "verified_at": "2026-10-06T13:48:15.440516Z",
     "verified_by": "Jelena"
   },
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": {
