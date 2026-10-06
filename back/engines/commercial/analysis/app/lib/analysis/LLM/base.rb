@@ -44,6 +44,24 @@ module Analysis
       def enabled?
         true
       end
+
+      private
+
+      # A text file is sent as text only when it has no PDF preview to send
+      # instead. Formats LibreOffice can convert (txt, csv) keep going through
+      # their preview; markdown cannot be converted, so it never gets one.
+      # @param file [Files::File]
+      def text_without_preview?(file)
+        file.text? && file.preview.nil?
+      end
+
+      # The uploader hands back ASCII-8BIT bytes, which cannot be joined with
+      # UTF-8 prompt text, and the bytes are not guaranteed to be valid UTF-8.
+      # @param file [Files::File]
+      def text_file_content(file)
+        content = file.content.read.force_encoding(Encoding::UTF_8).scrub
+        "File: #{file.name}\n\n#{content}"
+      end
     end
   end
 end
