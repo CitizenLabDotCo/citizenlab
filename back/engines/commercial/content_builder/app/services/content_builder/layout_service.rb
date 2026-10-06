@@ -38,8 +38,6 @@ module ContentBuilder
         end
     end
 
-    # Removes the ExtraSurveysWidget blocks showing a survey that moved onto the timeline or was
-    # deleted: that widget can only show a standalone survey, so it would be left blank.
     def clean_project_page_when_survey_phase_removed(phase)
       layout = Layout.find_by(
         content_buildable_type: 'Project',
