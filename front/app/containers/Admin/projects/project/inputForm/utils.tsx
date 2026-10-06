@@ -50,7 +50,6 @@ export const ideationConfig: FormBuilderConfig = {
     'idea_files_attributes',
   ],
   showStatusBadge: false,
-  isLogicEnabled: false,
   isFormPhaseSpecific: false,
   getWarningNotice: () => {
     return (
@@ -105,7 +104,6 @@ export const proposalsConfig: FormBuilderConfig = {
     'cosponsor_ids',
   ],
   showStatusBadge: false,
-  isLogicEnabled: false,
   isFormPhaseSpecific: true,
 
   getWarningNotice: () => {

@@ -56,7 +56,6 @@ export const nativeSurveyConfig: FormBuilderConfig = {
   displayBuiltInFields: false,
   builtInFields: [],
   showStatusBadge: true,
-  isLogicEnabled: true,
   isFormPhaseSpecific: true,
   getWarningNotice: () => {
     return (

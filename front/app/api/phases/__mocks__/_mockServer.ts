@@ -60,6 +60,7 @@ export const phasesData: IPhaseData[] = [
       user_data_collection: 'all_data',
       voting_filtering_enabled: false,
       user_fields_in_form_enabled: false,
+      supports_form_logic: false,
       supports_public_visibility: true,
     },
     relationships: {
@@ -112,6 +113,7 @@ export const phasesData: IPhaseData[] = [
       user_data_collection: 'all_data',
       voting_filtering_enabled: false,
       user_fields_in_form_enabled: false,
+      supports_form_logic: false,
       supports_public_visibility: false,
     },
     relationships: {
@@ -160,6 +162,7 @@ export const phasesData: IPhaseData[] = [
       user_data_collection: 'all_data',
       voting_filtering_enabled: false,
       user_fields_in_form_enabled: false,
+      supports_form_logic: false,
       supports_public_visibility: true,
     },
     relationships: {
@@ -213,6 +216,7 @@ export const mockPhaseInformationData: IPhaseData = {
     user_data_collection: 'all_data',
     voting_filtering_enabled: false,
     user_fields_in_form_enabled: false,
+    supports_form_logic: false,
     supports_public_visibility: false,
   },
   relationships: {
@@ -265,6 +269,7 @@ export const mockPhaseIdeationData: IPhaseData = {
     user_data_collection: 'all_data',
     voting_filtering_enabled: false,
     user_fields_in_form_enabled: false,
+    supports_form_logic: false,
     supports_public_visibility: true,
   },
   relationships: {
@@ -319,6 +324,7 @@ export const mockPhaseSurveyTypeformData: IPhaseData = {
     user_data_collection: 'all_data',
     voting_filtering_enabled: false,
     user_fields_in_form_enabled: false,
+    supports_form_logic: false,
     supports_public_visibility: false,
   },
   relationships: {
@@ -373,6 +379,7 @@ export const mockPhaseSurveyGoogleFormData: IPhaseData = {
     user_data_collection: 'all_data',
     voting_filtering_enabled: false,
     user_fields_in_form_enabled: false,
+    supports_form_logic: false,
     supports_public_visibility: false,
   },
   relationships: {
@@ -446,6 +453,7 @@ const votingPhase: IPhaseData = {
     user_data_collection: 'all_data',
     voting_filtering_enabled: true,
     user_fields_in_form_enabled: false,
+    supports_form_logic: false,
     supports_public_visibility: true,
   },
   relationships: {

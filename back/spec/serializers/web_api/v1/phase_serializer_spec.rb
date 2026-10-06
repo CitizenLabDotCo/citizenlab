@@ -77,6 +77,7 @@ describe WebApi::V1::PhaseSerializer do
 
     it 'includes what its participation method supports' do
       expect(result.dig(:data, :attributes)).to include(
+        supports_form_logic: false,
         supports_public_visibility: true,
         supports_survey_form: false
       )
@@ -93,6 +94,7 @@ describe WebApi::V1::PhaseSerializer do
         :native_survey_button_multiloc
       )
       expect(result.dig(:data, :attributes)).to include(
+        supports_form_logic: true,
         supports_public_visibility: false,
         supports_survey_form: true
       )
@@ -125,6 +127,7 @@ describe WebApi::V1::PhaseSerializer do
         :native_survey_button_multiloc
       )
       expect(result.dig(:data, :attributes)).to include(
+        supports_form_logic: false,
         supports_public_visibility: false,
         supports_survey_form: true
       )
