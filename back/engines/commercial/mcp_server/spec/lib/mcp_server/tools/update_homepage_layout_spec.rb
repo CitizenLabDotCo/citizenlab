@@ -111,40 +111,30 @@ describe McpServer::Tools::UpdateHomepageLayout do
     end
     let(:root_with_events) { layout.craftjs_json['ROOT'].merge('nodes' => %w[HOMEPAGEBANNER PROJECTS EVENTS]) }
 
-    it 'refuses it without advanced_custom_pages, saving nothing' do
-      SettingsService.new.deactivate_feature!('advanced_custom_pages')
-      response = run(nodes: { 'ROOT' => root_with_events, 'EVENTS' => area_events })
-
-      expect(response).to be_error
-      expect(response.content.first[:text]).to include('advanced_custom_pages')
-      expect(layout.reload.craftjs_json).not_to have_key('EVENTS')
-    end
-
-    it 'saves it with advanced_custom_pages' do
+    # Filtering is for custom pages, so not even the paid plan unlocks it here.
+    it 'refuses it, even with advanced_custom_pages, saving nothing' do
       SettingsService.new.activate_feature!('advanced_custom_pages')
       response = run(nodes: { 'ROOT' => root_with_events, 'EVENTS' => area_events })
 
-      expect(response).not_to be_error
-      expect(layout.reload.craftjs_json.dig('EVENTS', 'props', 'source')).to eq('areas')
+      expect(response).to be_error
+      expect(response.content.first[:text]).to include('cannot be filtered')
+      expect(layout.reload.craftjs_json).not_to have_key('EVENTS')
     end
 
-    # A filter set while the feature was on must not block edits to the rest of the page.
-    it 'still saves an unrelated edit once the feature is off' do
-      layout.update!(craftjs_json: layout.craftjs_json.merge('ROOT' => root_with_events, 'EVENTS' => area_events))
-      SettingsService.new.deactivate_feature!('advanced_custom_pages')
-      text = craftjs_node('TextMultiloc', parent: 'ROOT', props: { 'text' => { 'en' => '<p>Hi</p>' } })
-      root = root_with_events.merge('nodes' => %w[HOMEPAGEBANNER PROJECTS EVENTS NEW])
-
-      response = run(nodes: { 'ROOT' => root, 'NEW' => text })
-
-      expect(response).not_to be_error
-      expect(layout.reload.craftjs_json).to have_key('NEW')
-    end
-
-    context 'when the widget already filters and the feature is off' do
+    context 'when the widget already filters' do
       before do
         layout.update!(craftjs_json: layout.craftjs_json.merge('ROOT' => root_with_events, 'EVENTS' => area_events))
-        SettingsService.new.deactivate_feature!('advanced_custom_pages')
+      end
+
+      # A filter set before filtering left the homepage must not block edits to the rest of the page.
+      it 'still saves an unrelated edit' do
+        text = craftjs_node('TextMultiloc', parent: 'ROOT', props: { 'text' => { 'en' => '<p>Hi</p>' } })
+        root = root_with_events.merge('nodes' => %w[HOMEPAGEBANNER PROJECTS EVENTS NEW])
+
+        response = run(nodes: { 'ROOT' => root, 'NEW' => text })
+
+        expect(response).not_to be_error
+        expect(layout.reload.craftjs_json).to have_key('NEW')
       end
 
       # Clients send a node in full, so editing anything else on it re-sends its filter.
@@ -164,6 +154,15 @@ describe McpServer::Tools::UpdateHomepageLayout do
 
         expect(response).to be_error
         expect(layout.reload.craftjs_json.dig('EVENTS', 'props', 'source')).to eq('areas')
+      end
+
+      it 'saves resetting it to every project' do
+        reset = area_events.deep_merge('props' => { 'source' => 'all', 'ids' => [] })
+
+        response = run(nodes: { 'EVENTS' => reset })
+
+        expect(response).not_to be_error
+        expect(layout.reload.craftjs_json.dig('EVENTS', 'props', 'source')).to eq('all')
       end
     end
   end

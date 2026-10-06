@@ -107,11 +107,10 @@ class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
       end
     end
 
-    # Filtering events is part of advanced_custom_pages, as in the builder. Like the builder, a
-    # widget keeps a filter it already has, so only a new or switched filter is refused.
+    # The homepage lists events from every project; filtering is for custom pages, as in the
+    # builder. Like the builder, a widget keeps a filter it already has, so only a new or switched
+    # filter is refused.
     def protect_events_filtering!(stored)
-      return if AppConfiguration.instance.feature_activated?('advanced_custom_pages')
-
       id, = patch_nodes.find do |node_id, node|
         next false unless node.is_a?(Hash) && resolved_name(node) == 'EventsList'
 
@@ -121,8 +120,8 @@ class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
       end
       return unless id
 
-      raise PatchError, "node #{id}: filtering events needs the advanced_custom_pages feature, which this " \
-                        'platform does not have. Use "source":"all".'
+      raise PatchError, "node #{id}: the homepage events widget lists events from every project and cannot " \
+                        'be filtered. Use "source":"all".'
     end
 
     # A fixed widget may have its props edited but not be restructured: no type change, no
