@@ -2675,6 +2675,7 @@
   "app.errors.no_invites_specified": "Não foi encontrado nenhum endereço de e-mail.",
   "app.errors.no_previewer_phone": "Uma prévia é enviada para o seu próprio telefone. Adicione um número de telefone ao seu perfil primeiro.",
   "app.errors.no_recipients": "A campanha não pode ser enviada porque não há destinatários. O grupo para o qual você está enviando está vazio ou ninguém deu consentimento para receber e-mails.",
+  "app.errors.not_supported_in_standalone_phase": "Apenas questionários podem ser realizados paralelamente à linha do tempo. Este método de participação precisa ser uma fase na linha do tempo.",
   "app.errors.number_invalid": "Digite um número válido.",
   "app.errors.password_blank": "Não pode estar vazio",
   "app.errors.password_invalid": "Verifique novamente a sua senha atual.",

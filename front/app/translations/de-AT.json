@@ -2675,6 +2675,7 @@
   "app.errors.no_invites_specified": "Es konnten keine E-Mail-Adressen gefunden werden.",
   "app.errors.no_previewer_phone": "Eine Vorschau wird an Ihr eigenes Handy gesendet. Fügen Sie zuerst eine Handynummer zu Ihrem Profil hinzu.",
   "app.errors.no_recipients": "Die Kampagne kann nicht versendet werden, da es keine Empfänger*innen gibt. Die Gruppe, an die Sie senden, ist entweder leer oder niemand hat dem Erhalt von E-Mails zugestimmt.",
+  "app.errors.not_supported_in_standalone_phase": "Nur Umfragen können parallel zur Zeitleiste laufen. Diese Beteiligungsmethode muss eine Phase in der Zeitleiste sein.",
   "app.errors.number_invalid": "Bitte geben Sie eine gültige Nummer ein.",
   "app.errors.password_blank": "Dies kann nicht leer sein",
   "app.errors.password_invalid": "Bitte überprüfen Sie noch einmal Ihr aktuelles Passwort.",

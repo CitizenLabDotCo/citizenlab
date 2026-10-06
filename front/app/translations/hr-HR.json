@@ -2675,6 +2675,7 @@
   "app.errors.no_invites_specified": "Nismo uspjeli pronaći bilo koju adresu e-pošte.",
   "app.errors.no_previewer_phone": "Pregled se šalje na vaš telefon. Prvo dodajte broj telefona u svoj profil.",
   "app.errors.no_recipients": "Kampanja se ne može poslati jer nema primatelja. Grupa kojoj šaljete je ili prazna ili nitko nije dao privolu za primanje e-pošte.",
+  "app.errors.not_supported_in_standalone_phase": "Samo se ankete mogu odvijati usporedno s vremenskom lentom. Ova metoda sudjelovanja mora biti faza na vremenskoj lenti.",
   "app.errors.number_invalid": "Unesite važeći broj.",
   "app.errors.password_blank": "Ovo ne može biti prazno",
   "app.errors.password_invalid": "Ponovno provjerite svoju trenutačnu lozinku.",
