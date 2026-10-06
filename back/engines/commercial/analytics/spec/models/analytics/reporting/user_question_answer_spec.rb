@@ -23,17 +23,21 @@ RSpec.describe Analytics::Reporting::UserQuestionAnswer do
     expect(described_class.where(user_id: user.id).pluck(:answer_value)).to match_array %w[option1 option2]
   end
 
-  it 'labels (multi)select answers with the option title' do
+  it 'labels single-select answers with the option title' do
     gender = create(:custom_field_gender)
     create(:custom_field_option, custom_field: gender, key: 'female', title_multiloc: { 'en' => 'Woman' })
+    user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'female')])
+
+    expect(described_class.find_by!(user_id: user.id).answer_label).to eq 'Woman'
+  end
+
+  it 'labels multi-select answers with the option title' do
     race = create(:custom_field_multiselect)
     create(:custom_field_option, custom_field: race, key: 'race_1', title_multiloc: { 'en' => 'Black or African American' })
-    user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'female')])
+    user = create(:user)
     user.custom_field_answers.create!(key: race.key, value: %w[race_1])
-    rows = described_class.where(user_id: user.id)
 
-    expect(rows.find_by!(question_id: gender.id).answer_label).to eq 'Woman'
-    expect(rows.find_by!(question_id: race.id).answer_label).to eq 'Black or African American'
+    expect(described_class.find_by!(user_id: user.id).answer_label).to eq 'Black or African American'
   end
 
   it 'labels domicile answers with the area title' do

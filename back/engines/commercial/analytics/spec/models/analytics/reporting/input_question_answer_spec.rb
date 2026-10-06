@@ -35,13 +35,18 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
         .to match_array %w[option1 option2]
     end
 
-    it 'labels (multi)select answers with the option title' do
+    it 'labels single-select answers with the option title' do
       select_question.options.find_by!(key: 'option1').update!(title_multiloc: { 'en' => 'Yes' })
-      multiselect_question.options.find_by!(key: 'option2').update!(title_multiloc: { 'en' => 'Cycling' })
-      rows = described_class.where(input_id: response.id)
+      row = described_class.find_by!(input_id: response.id, question_id: select_question.id)
 
-      expect(rows.find_by!(question_id: select_question.id).value_label).to eq 'Yes'
-      expect(rows.find_by!(question_id: multiselect_question.id, value_text: 'option2').value_label).to eq 'Cycling'
+      expect(row.value_label).to eq 'Yes'
+    end
+
+    it 'labels multi-select answers with the option title' do
+      multiselect_question.options.find_by!(key: 'option2').update!(title_multiloc: { 'en' => 'Cycling' })
+      row = described_class.find_by!(input_id: response.id, question_id: multiselect_question.id, value_text: 'option2')
+
+      expect(row.value_label).to eq 'Cycling'
     end
 
     it 'labels relabelled options with the current title, not the key' do
