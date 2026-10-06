@@ -119,7 +119,7 @@ RSpec.describe ParticipationMethod::Information do
   its(:destroy_ideas_on_phase_destroy?) { is_expected.to be false }
   its(:use_reactions_as_votes?) { is_expected.to be false }
   its(:supports_private_attributes_in_export?) { is_expected.to be false }
-  its(:form_logic_enabled?) { is_expected.to be false }
+  its(:supports_form_logic?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be false }
   its(:supports_custom_field_categories?) { is_expected.to be false }
   its(:user_fields_in_form_enabled?) { is_expected.to be false }

@@ -74,7 +74,7 @@ module ParticipationMethod
       context.custom_form || CustomForm.new(participation_context: context)
     end
 
-    def form_logic_enabled?
+    def supports_form_logic?
       false
     end
 
