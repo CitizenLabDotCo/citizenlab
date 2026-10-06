@@ -32,6 +32,43 @@ resource 'Ideas' do
       assert_status 200
       expect(response_data[:id]).to eq(input.id)
     end
+
+    context 'when the input is a draft' do
+      let(:author) { user }
+      let!(:input) do
+        create(
+          :idea,
+          author: author,
+          project: project,
+          creation_phase: creation_phase,
+          phases: [creation_phase],
+          publication_status: 'draft'
+        )
+      end
+
+      example_request 'Get your own draft input by id' do
+        assert_status 200
+        expect(response_data[:id]).to eq(input.id)
+      end
+
+      context 'when the user is not the author' do
+        let(:author) { create(:user) }
+
+        example_request '[error] Try to get a draft input of another resident', document: false do
+          assert_status 401
+        end
+      end
+
+      context 'when not logged in' do
+        let(:author) { create(:user) }
+
+        example '[error] Try to get a draft input as a visitor', document: false do
+          header 'Authorization', nil
+          do_request
+          assert_status 401
+        end
+      end
+    end
   end
 
   get 'web_api/v1/ideas/by_slug/:slug' do
@@ -51,6 +88,23 @@ resource 'Ideas' do
     example_request 'Get one input by slug' do
       assert_status 200
       expect(response_data[:id]).to eq(input.id)
+    end
+
+    context 'when the input is a draft of another resident' do
+      let!(:input) do
+        create(
+          :idea,
+          author: create(:user),
+          project: project,
+          creation_phase: creation_phase,
+          phases: [creation_phase],
+          publication_status: 'draft'
+        )
+      end
+
+      example_request '[error] Try to get a draft input of another resident by slug', document: false do
+        assert_status 401
+      end
     end
   end
 

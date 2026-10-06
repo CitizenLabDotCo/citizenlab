@@ -257,6 +257,93 @@ describe IdeaPolicy do
         end
       end
     end
+
+    context 'when the idea is in draft status' do
+      let(:author) { create(:user) }
+      let!(:idea) { create(:idea, project: project, phases: project.phases, publication_status: 'draft', author: author) }
+
+      describe 'show' do
+        context 'for the author' do
+          let(:user) { author }
+
+          it do
+            is_expected.to permit(:show)
+            is_expected.to permit(:by_slug)
+            is_expected.to permit(:draft_by_phase)
+          end
+        end
+
+        context 'for the author who did not complete registration' do
+          let(:user) do
+            author.update(registration_completed_at: nil)
+            author
+          end
+
+          it do
+            is_expected.to permit(:show)
+            is_expected.to permit(:by_slug)
+            is_expected.to permit(:draft_by_phase)
+          end
+        end
+
+        context 'for a resident who is not the author' do
+          let(:user) { create(:user) }
+
+          it do
+            is_expected.not_to permit(:show)
+            is_expected.not_to permit(:by_slug)
+          end
+        end
+
+        context 'for a visitor' do
+          let(:user) { nil }
+
+          it do
+            is_expected.not_to permit(:show)
+            is_expected.not_to permit(:by_slug)
+          end
+        end
+
+        context 'for a cosponsor of the idea' do
+          let(:user) { create(:user) }
+
+          before { idea.cosponsors << user }
+
+          it do
+            is_expected.to permit(:show)
+            is_expected.to permit(:by_slug)
+          end
+        end
+
+        context 'for an admin' do
+          let(:user) { create(:admin) }
+
+          it do
+            is_expected.to permit(:show)
+            is_expected.to permit(:by_slug)
+            is_expected.not_to permit(:draft_by_phase)
+          end
+        end
+
+        context 'for a project moderator who can moderate' do
+          let(:user) { create(:project_moderator, projects: [project]) }
+
+          it do
+            is_expected.to permit(:show)
+            is_expected.to permit(:by_slug)
+          end
+        end
+
+        context 'for a project moderator who cannot moderate' do
+          let(:user) { create(:project_moderator) }
+
+          it do
+            is_expected.not_to permit(:show)
+            is_expected.not_to permit(:by_slug)
+          end
+        end
+      end
+    end
   end
 
   context 'on a published native survey response in a public project' do
@@ -316,6 +403,18 @@ describe IdeaPolicy do
         it do
           is_expected.to permit(:create)
         end
+      end
+    end
+
+    context 'for the response author who did not complete registration' do
+      let(:user) do
+        idea.author.update(registration_completed_at: nil)
+        idea.author
+      end
+
+      it do
+        is_expected.not_to permit(:show)
+        is_expected.not_to permit(:by_slug)
       end
     end
 
@@ -455,6 +554,89 @@ describe IdeaPolicy do
 
       it 'raises' do
         expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError, /user_not_in_group/)
+      end
+    end
+
+    describe 'show' do
+      let(:author) { create(:user) }
+      let(:idea) do
+        create(
+          :native_survey_response,
+          publication_status: 'draft',
+          project: project,
+          creation_phase: phase,
+          author: author
+        )
+      end
+
+      context 'for the author' do
+        let(:user) { author }
+
+        it do
+          is_expected.to permit(:show)
+          is_expected.to permit(:by_slug)
+          is_expected.to permit(:draft_by_phase)
+        end
+      end
+
+      context 'for the author who did not complete registration' do
+        let(:user) do
+          author.update(registration_completed_at: nil)
+          author
+        end
+
+        it do
+          is_expected.to permit(:show)
+          is_expected.to permit(:by_slug)
+          is_expected.to permit(:draft_by_phase)
+        end
+      end
+
+      context 'for a resident who is not the author' do
+        let(:user) { create(:user) }
+
+        it do
+          is_expected.not_to permit(:show)
+          is_expected.not_to permit(:by_slug)
+        end
+      end
+
+      context 'for a visitor' do
+        let(:author) { nil }
+        let(:user) { nil }
+
+        it do
+          is_expected.not_to permit(:show)
+          is_expected.not_to permit(:by_slug)
+        end
+      end
+
+      context 'for an admin' do
+        let(:user) { create(:admin) }
+
+        it do
+          is_expected.to permit(:show)
+          is_expected.to permit(:by_slug)
+          is_expected.not_to permit(:draft_by_phase)
+        end
+      end
+
+      context 'for a project moderator who can moderate' do
+        let(:user) { create(:project_moderator, projects: [project]) }
+
+        it do
+          is_expected.to permit(:show)
+          is_expected.to permit(:by_slug)
+        end
+      end
+
+      context 'for a project moderator who cannot moderate' do
+        let(:user) { create(:project_moderator) }
+
+        it do
+          is_expected.not_to permit(:show)
+          is_expected.not_to permit(:by_slug)
+        end
       end
     end
 
@@ -606,6 +788,37 @@ describe IdeaPolicy do
       let(:user) { create(:space_moderator) }
 
       it_behaves_like 'moderator on private admins idea outside their scope'
+    end
+
+    context 'when the idea is in draft status' do
+      let!(:idea) { create(:idea, project: project, publication_status: 'draft') }
+
+      describe 'show' do
+        # A draft is only ever readable by its author, so the project visibility
+        # check that applies to published inputs adds nothing here.
+        context "for the author, who can no longer see the idea's project" do
+          let(:user) { idea.author }
+
+          it do
+            is_expected.to permit(:show)
+            is_expected.to permit(:by_slug)
+            is_expected.to permit(:draft_by_phase)
+          end
+        end
+
+        context 'for the author who did not complete registration' do
+          let(:user) do
+            idea.author.update(registration_completed_at: nil)
+            idea.author
+          end
+
+          it do
+            is_expected.to permit(:show)
+            is_expected.to permit(:by_slug)
+            is_expected.to permit(:draft_by_phase)
+          end
+        end
+      end
     end
   end
 
