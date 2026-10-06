@@ -36,3 +36,5 @@ CLAUDE.local.md
 # MCP local files
 .serena/
 .playwright-mcp/
+# Compiled output of the custom block sandbox (built into its image)
+/custom-block-sandbox/dist
