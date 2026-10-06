@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Text, Toggle } from '@citizenlab/cl2-component-library';
+import { Toggle } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
@@ -48,11 +48,8 @@ const AnswerVisibilityToggle = ({ field, builderConfig }: Props) => {
             shouldDirty: true,
           })
         }
-        label={
-          <Text as="span" variant="bodyM" my="0px">
-            {formatMessage(messages.publicAnswers)}
-          </Text>
-        }
+        label={formatMessage(messages.publicAnswers)}
+        description={formatMessage(messages.publicAnswersDescription)}
       />
     </SectionField>
   );

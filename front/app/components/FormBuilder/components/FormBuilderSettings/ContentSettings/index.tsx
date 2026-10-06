@@ -109,10 +109,9 @@ const ContentSettings = ({ field, builderConfig }: ContentSettingsProps) => {
           <Toggle
             name={`customFields.${field.index}.required`}
             disabled={lockedAttributes.includes('required')}
-            label={
-              <Text as="span" variant="bodyM" my="0px">
-                <FormattedMessage {...messages.requiredToggleLabel} />
-              </Text>
+            label={<FormattedMessage {...messages.requiredToggleLabel} />}
+            description={
+              <FormattedMessage {...messages.requiredToggleDescription} />
             }
           />
         </SectionField>

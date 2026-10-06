@@ -19,6 +19,22 @@ describe('<Toggle />', () => {
     expect(handleOnChange).toHaveBeenCalledTimes(1);
   });
 
+  it('renders the description inside the label', () => {
+    render(
+      <Toggle
+        checked={false}
+        label="Public answers"
+        description="Shown to other participants."
+        onChange={jest.fn()}
+      />
+    );
+
+    expect(screen.getByText('Public answers')).toBeInTheDocument();
+    expect(
+      screen.getByText('Shown to other participants.').closest('label')
+    ).toBe(screen.getByText('Public answers').closest('label'));
+  });
+
   it('does not toggle when disabled', () => {
     const handleOnChange = jest.fn();
     render(<Toggle checked={false} disabled onChange={handleOnChange} />);

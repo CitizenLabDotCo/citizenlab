@@ -195,6 +195,10 @@ export default defineMessages({
     id: 'app.components.formBuilder.requiredToggleLabel',
     defaultMessage: 'Make answering this question required',
   },
+  requiredToggleDescription: {
+    id: 'app.components.formBuilder.requiredToggleDescription',
+    defaultMessage: 'Participants must answer to continue.',
+  },
   deleteButtonLabel: {
     id: 'app.components.formBuilder.deleteButtonLabel',
     defaultMessage: 'Delete',

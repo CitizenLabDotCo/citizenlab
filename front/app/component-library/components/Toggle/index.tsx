@@ -1,4 +1,4 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { PureComponent, FormEvent, ReactNode } from 'react';
 
 import { hideVisually, darken } from 'polished';
 import styled, { css } from 'styled-components';
@@ -108,10 +108,17 @@ const Label = styled.label<{ labelTextColor?: string }>`
   `}
 `;
 
+const Description = styled.span`
+  display: block;
+  color: ${colors.textSecondary};
+  font-size: ${fontSizes.s}px;
+`;
+
 interface Props {
   checked: boolean;
   disabled?: boolean | undefined;
   label?: string | JSX.Element | null | undefined;
+  description?: ReactNode;
   labelTextColor?: string;
   size?: Size;
   onChange: (event: FormEvent) => void;
@@ -132,6 +139,7 @@ class Toggle extends PureComponent<Props> {
       checked,
       disabled,
       label,
+      description,
       labelTextColor,
       className,
       id,
@@ -174,6 +182,7 @@ class Toggle extends PureComponent<Props> {
             data-cy={id}
           >
             {label}
+            {description && <Description>{description}</Description>}
           </Label>
         )}
       </Container>
