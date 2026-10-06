@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
-# Derives a `custom_page` Content Builder layout for every page on the builder (global custom pages,
-# About and FAQ), from the banner, title, info sections and attachments the page renders. It derives
-# whatever CustomPageLayoutService emits. A layout derived before a widget existed lacks its node;
-# `overwrite` re-derives it, which is the upgrade path for an already-migrated page.
+# Derives a `custom_page` Content Builder layout for every page on the builder (custom pages,
+# project-scoped ones included, About and FAQ), from the banner, title, info sections and
+# attachments the page renders. It derives whatever CustomPageLayoutService emits. A layout
+# derived before a widget existed lacks its node; `overwrite` re-derives it, which is the upgrade
+# path for an already-migrated page.
 #
 # Run it while `custom_page_builder` is still off for the tenant: no admin can have opened the
 # builder, so there is no builder edit for a re-derive to overwrite. `overwrite` refuses a
@@ -13,13 +14,17 @@
 # with any page that fails to derive keeps the flag off, so no tenant ends up half migrated. A
 # tenant whose flag is already on is skipped, so a failed run can be re-run as is.
 #
+# Pages that joined the builder after a tenant was switched on (project pages, on a tenant cut
+# over before they were included) are left out by `cutover` and `overwrite` alike. A plain
+# `execute` run creates their missing layouts and leaves every existing one alone.
+#
 #     rake single_use:migrate_custom_pages_to_content_builder                             # dry run, all tenants
 #     rake 'single_use:migrate_custom_pages_to_content_builder[execute]'                  # create, all tenants
 #     rake 'single_use:migrate_custom_pages_to_content_builder[execute,foo.com]'          # create, one tenant
 #     rake 'single_use:migrate_custom_pages_to_content_builder[execute,foo.com,overwrite]' # re-derive existing layouts
 #     rake 'single_use:migrate_custom_pages_to_content_builder[execute,,cutover]'         # re-derive and switch on, all tenants (empty host)
 namespace :single_use do
-  desc "Derive Content Builder layouts for custom, About and FAQ pages. Dry run unless passed 'execute'."
+  desc "Derive Content Builder layouts for custom (incl. project), About and FAQ pages. Dry run unless passed 'execute'."
   task :migrate_custom_pages_to_content_builder, %i[execute host mode force] => [:environment] do |_t, args|
     cutover = args[:mode] == 'cutover'
     overwrite = cutover || args[:mode] == 'overwrite'
@@ -142,6 +147,7 @@ namespace :single_use do
       description: 'deriving Content Builder layouts for custom, About and FAQ pages',
       summary: summary
     ) do |tenant, script|
+      puts "Processing #{tenant.host}..."
       flag_active = AppConfiguration.instance.feature_activated?('custom_page_builder')
       if cutover && flag_active
         already_on << tenant.host
@@ -165,6 +171,7 @@ namespace :single_use do
       rescue StandardError => e
         # Carry on, so one run lists every page that needs fixing before the tenant can switch.
         failures += 1
+        puts "❌ ERROR on #{tenant.host}, page #{page.id} (#{page.slug}): #{e.class}: #{e.message}"
         script.reporter.add_error("#{e.class}: #{e.message}", context: { tenant: tenant.host, page_id: page.id, slug: page.slug })
       end
       next unless cutover

@@ -13,13 +13,22 @@ describe SideFxStaticPageService do
         .to have_enqueued_job(LogActivityJob).with(page, 'created', user, page.created_at.to_i)
     end
 
-    it 'provisions an enabled Content Builder layout for a global custom page (content_builder patch)' do
+    it 'provisions an enabled Content Builder layout for a custom page (content_builder patch)' do
       SettingsService.new.activate_feature!('custom_page_builder')
 
       service.after_create(page, user)
 
       layout = ContentBuilder::Layout.find_by(content_buildable: page, code: 'custom_page')
       expect(layout&.enabled).to be(true)
+    end
+
+    it 'provisions a layout for a project-scoped page (content_builder patch)' do
+      SettingsService.new.activate_feature!('custom_page_builder')
+      project_page = create(:static_page, :project_scoped)
+
+      service.after_create(project_page, user)
+
+      expect(ContentBuilder::Layout.find_by(content_buildable: project_page, code: 'custom_page')).to be_present
     end
 
     it 'provisions a layout for the FAQ page (content_builder patch)' do
