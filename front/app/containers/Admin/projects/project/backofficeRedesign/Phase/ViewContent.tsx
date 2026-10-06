@@ -39,10 +39,12 @@ interface Responses {
 // Polls and volunteering have no phase count, so they're only checked on Insights.
 const isPhaseEmpty = (
   { attributes }: IPhaseData,
+  view: Props['view'],
   { causes, pollResponses }: Responses
 ) => {
   switch (attributes.participation_method) {
     case 'voting':
+      if (view === 'manage') return attributes.ideas_count === 0;
       return (
         attributes.total_votes_amount === 0 && !attributes.manual_voters_amount
       );
@@ -102,7 +104,7 @@ const ViewContent = ({ phase, view, children }: Props) => {
     pollResponses: checksPoll ? pollQuery.data : undefined,
   };
 
-  if (!isPhaseEmpty(phase, responses)) {
+  if (!isPhaseEmpty(phase, view, responses)) {
     return <>{children}</>;
   }
 
