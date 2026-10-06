@@ -105,6 +105,43 @@ describe McpServer::Tools::UpdateHomepageLayout do
     expect(layout.reload.craftjs_json).not_to have_key('BAD')
   end
 
+  context 'with an events widget filtered by area' do
+    let(:area_events) do
+      craftjs_node('EventsList', parent: 'ROOT', props: { 'source' => 'areas', 'ids' => [create(:area).id] })
+    end
+    let(:root_with_events) { layout.craftjs_json['ROOT'].merge('nodes' => %w[HOMEPAGEBANNER PROJECTS EVENTS]) }
+
+    it 'refuses it without advanced_custom_pages, saving nothing' do
+      SettingsService.new.deactivate_feature!('advanced_custom_pages')
+      response = run(nodes: { 'ROOT' => root_with_events, 'EVENTS' => area_events })
+
+      expect(response).to be_error
+      expect(response.content.first[:text]).to include('advanced_custom_pages')
+      expect(layout.reload.craftjs_json).not_to have_key('EVENTS')
+    end
+
+    it 'saves it with advanced_custom_pages' do
+      SettingsService.new.activate_feature!('advanced_custom_pages')
+      response = run(nodes: { 'ROOT' => root_with_events, 'EVENTS' => area_events })
+
+      expect(response).not_to be_error
+      expect(layout.reload.craftjs_json.dig('EVENTS', 'props', 'source')).to eq('areas')
+    end
+
+    # A filter set while the feature was on must not block edits to the rest of the page.
+    it 'still saves an unrelated edit once the feature is off' do
+      layout.update!(craftjs_json: layout.craftjs_json.merge('ROOT' => root_with_events, 'EVENTS' => area_events))
+      SettingsService.new.deactivate_feature!('advanced_custom_pages')
+      text = craftjs_node('TextMultiloc', parent: 'ROOT', props: { 'text' => { 'en' => '<p>Hi</p>' } })
+      root = root_with_events.merge('nodes' => %w[HOMEPAGEBANNER PROJECTS EVENTS NEW])
+
+      response = run(nodes: { 'ROOT' => root, 'NEW' => text })
+
+      expect(response).not_to be_error
+      expect(layout.reload.craftjs_json).to have_key('NEW')
+    end
+  end
+
   it 'refuses on a non-demo/trial platform' do
     change_lifecycle_stage('active')
     response = run(nodes: { 'PROJECTS' => layout.craftjs_json['PROJECTS'] })
