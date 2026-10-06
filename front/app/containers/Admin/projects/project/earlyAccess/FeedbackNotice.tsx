@@ -1,35 +1,39 @@
 import React from 'react';
 
-import useAuthUser from 'api/me/useAuthUser';
+import useDismissed from 'hooks/useDismissed';
+import useEarlyAccess from 'hooks/useEarlyAccess';
 
-import ProjectBackofficeFeedbackLink from 'components/admin/ProjectBackofficeFeedbackLink';
+import FeatureCallout from 'components/UI/FeatureCallout';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import DismissibleNotice from './DismissibleNotice';
 import messages from './messages';
 import ProfileSettingsLink from './ProfileSettingsLink';
+import SlackChannelLink from './SlackChannelLink';
 
 const FeedbackNotice = () => {
-  const { data: authUser } = useAuthUser();
-
-  const optedIn = !!authUser?.data.attributes.early_access_opt_ins?.includes(
-    'project_backoffice_redesign'
+  const { optedIn } = useEarlyAccess('project_backoffice_redesign');
+  const { dismissed, dismiss } = useDismissed(
+    'project_backoffice_redesign_feedback_notice_dismissed'
   );
 
-  if (!optedIn) return null;
+  if (!optedIn || dismissed) return null;
 
   return (
-    <DismissibleNotice storageKey="project_backoffice_redesign_feedback_notice_dismissed">
-      <FormattedMessage
-        {...messages.feedbackNotice}
-        values={{
-          b: (chunks) => <b>{chunks}</b>,
-          profileSettingsLink: <ProfileSettingsLink />,
-          slackChannelLink: <ProjectBackofficeFeedbackLink />,
-        }}
-      />
-    </DismissibleNotice>
+    <FeatureCallout
+      icon="info-outline"
+      title={<FormattedMessage {...messages.feedbackNoticeTitle} />}
+      description={
+        <FormattedMessage
+          {...messages.feedbackNoticeDescription}
+          values={{
+            profileSettingsLink: <ProfileSettingsLink />,
+            slackChannelLink: <SlackChannelLink />,
+          }}
+        />
+      }
+      onDismiss={dismiss}
+    />
   );
 };
 

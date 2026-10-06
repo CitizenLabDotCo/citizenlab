@@ -1,35 +1,35 @@
 import React from 'react';
 
-import useAuthUser from 'api/me/useAuthUser';
+import useDismissed from 'hooks/useDismissed';
+import useEarlyAccess from 'hooks/useEarlyAccess';
+
+import FeatureCallout from 'components/UI/FeatureCallout';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
-import DismissibleNotice from './DismissibleNotice';
 import messages from './messages';
 import ProfileSettingsLink from './ProfileSettingsLink';
 
 const TurnOnNotice = () => {
-  const { data: authUser } = useAuthUser();
-  const attributes = authUser?.data.attributes;
-
-  const offered =
-    !!attributes?.offered_early_access_features?.project_backoffice_redesign;
-  const optedIn = !!attributes?.early_access_opt_ins?.includes(
-    'project_backoffice_redesign'
+  const { offered, optedIn } = useEarlyAccess('project_backoffice_redesign');
+  const { dismissed, dismiss } = useDismissed(
+    'project_backoffice_redesign_turn_on_notice_dismissed'
   );
 
-  if (!offered || optedIn) return null;
+  if (!offered || optedIn || dismissed) return null;
 
   return (
-    <DismissibleNotice storageKey="project_backoffice_redesign_turn_on_notice_dismissed">
-      <FormattedMessage
-        {...messages.turnOnNotice}
-        values={{
-          b: (chunks) => <b>{chunks}</b>,
-          profileSettingsLink: <ProfileSettingsLink />,
-        }}
-      />
-    </DismissibleNotice>
+    <FeatureCallout
+      icon="info-outline"
+      title={<FormattedMessage {...messages.turnOnNoticeTitle} />}
+      description={
+        <FormattedMessage
+          {...messages.turnOnNoticeDescription}
+          values={{ profileSettingsLink: <ProfileSettingsLink /> }}
+        />
+      }
+      onDismiss={dismiss}
+    />
   );
 };
 

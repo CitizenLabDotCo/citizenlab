@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProjectBackofficeFeedbackLink = () => (
+const SlackChannelLink = () => (
   <a
     href="https://go-vocal.slack.com/archives/C0BRBG0TGM8"
     target="_blank"
@@ -10,4 +10,4 @@ const ProjectBackofficeFeedbackLink = () => (
   </a>
 );
 
-export default ProjectBackofficeFeedbackLink;
+export default SlackChannelLink;
