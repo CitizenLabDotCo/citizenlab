@@ -2,16 +2,10 @@
 
 class WebApi::V1::CustomFieldSerializer < WebApi::V1::BaseSerializer
   attributes :key, :input_type, :title_multiloc, :required, :ordering,
-    :enabled, :code, :created_at, :updated_at, :logic, :random_option_ordering, :include_in_printed_form
+    :enabled, :code, :created_at, :updated_at, :logic, :random_option_ordering, :include_in_printed_form, :answers_visible_to
 
   attribute :description_multiloc do |field|
     TextImageService.new.render_data_images_multiloc field.description_multiloc, field: :description_multiloc, imageable: field
-  end
-
-  attribute :visible_to_public, if: proc { |_field, params|
-    params[:supports_answer_visible_to]
-  } do |field|
-    field.visible_to_public?
   end
 
   attribute :hidden, if: proc { |object, _params|

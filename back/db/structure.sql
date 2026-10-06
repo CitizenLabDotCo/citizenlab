@@ -1501,7 +1501,8 @@ CREATE TABLE public.projects (
     listed boolean DEFAULT true NOT NULL,
     track_participation_location boolean DEFAULT false NOT NULL,
     live_auto_input_topics_enabled boolean DEFAULT false NOT NULL,
-    space_id uuid
+    space_id uuid,
+    completed_setup_steps jsonb DEFAULT '[]'::jsonb NOT NULL
 );
 
 
@@ -2555,7 +2556,8 @@ CREATE TABLE public.custom_fields (
     question_category character varying,
     include_in_printed_form boolean DEFAULT true NOT NULL,
     min_characters integer,
-    max_characters integer
+    max_characters integer,
+    answers_visible_to character varying DEFAULT 'moderators'::character varying NOT NULL
 );
 
 
@@ -9824,12 +9826,14 @@ SET search_path TO public,shared_extensions;
 INSERT INTO "schema_migrations" (version) VALUES
 ('20260930100000'),
 ('20260930090000'),
+('20260928120000'),
 ('20260915134812'),
 ('20260915120000'),
 ('20260915103146'),
 ('20260915081521'),
 ('20260910103205'),
 ('20260910082118'),
+('20260909100000'),
 ('20260908144646'),
 ('20260904074654'),
 ('20260827120000'),

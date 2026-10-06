@@ -66,7 +66,7 @@ const TableHead = ({
                   p="0px"
                   m="0px"
                   id={`${id}-linear-scale-option-${visualIndex}`}
-                  aria-pressed={isSelected}
+                  ariaPressed={isSelected}
                   width="100%"
                   tabIndex={-1}
                   onClick={() => {

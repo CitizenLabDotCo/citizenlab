@@ -48,6 +48,10 @@ const SentimentScaleField = ({ question, scrollErrorIntoView }: Props) => {
             <SentimentScale
               question={question}
               {...field}
+              // field.value falls back to the value the field had when it first appeared
+              // whenever the answer is cleared, so the old answer stays selected.
+              // watch() always gives the real current value.
+              value={value}
               onChange={(value) => {
                 // On reset value, also reset follow up value
                 if (value === undefined) {

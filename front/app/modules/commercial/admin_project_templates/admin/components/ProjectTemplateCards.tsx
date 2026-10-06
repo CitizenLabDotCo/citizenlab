@@ -97,6 +97,7 @@ interface Props {
   onDepartmentFilterChange: (departments: string[]) => void;
   onParticipationLevelFilterChange: (participationLevels: string[]) => void;
   templates: Templates;
+  onUseTemplate: (projectTemplateId: string, title: string) => void;
 }
 
 const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
@@ -111,6 +112,7 @@ const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
     onPurposeFilterChange,
     onDepartmentFilterChange,
     onParticipationLevelFilterChange,
+    onUseTemplate,
   }) => {
     const searchPlaceholder = intl.formatMessage(messages.searchPlaceholder);
     const searchAriaLabel = intl.formatMessage(messages.searchPlaceholder);
@@ -162,6 +164,7 @@ const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
                       imageUrl={cardImage}
                       title={localize(titleMultiloc)}
                       body={localize(subtitleMultiloc)}
+                      onUse={onUseTemplate}
                     />
                   );
                 }

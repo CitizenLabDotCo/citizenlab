@@ -92,10 +92,6 @@ namespace :cl2_back do
           enabled: false,
           allowed: true
         },
-        google_analytics: {
-          enabled: false,
-          allowed: true
-        },
         google_tag_manager: {
           enabled: false,
           allowed: false
@@ -375,6 +371,10 @@ namespace :cl2_back do
         configurable_dropdown: {
           enabled: true,
           allowed: true
+        },
+        project_backoffice_redesign: {
+          enabled: false,
+          allowed: true
         }
       }
     )
@@ -402,6 +402,11 @@ namespace :cl2_back do
       admin = User.find_by(email: 'admin@govocal.com')
       UserService.update_in_tenant_template!(admin) if admin
       Analytics::PopulateDimensionsService.run
+
+      # Otherwise the first admin request that needs the community monitor creates it, and that
+      # request saves every setting as it read them at its start, reverting any change saved
+      # meanwhile — such as an e2e spec switching a feature on.
+      CommunityMonitorService.new.create_and_set_project
     end
 
     MultiTenancy::TenantService.new.finalize_creation(tenant)

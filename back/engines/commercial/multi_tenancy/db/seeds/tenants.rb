@@ -114,11 +114,6 @@ module MultiTenancy
               allowed: true,
               write_key: ENV.fetch('DEFAULT_SATISMETER_WRITE_KEY')
             },
-            google_analytics: {
-              enabled: true,
-              allowed: true,
-              tracking_id: ENV.fetch('DEFAULT_GA_TRACKING_ID')
-            },
             google_tag_manager: {
               enabled: true,
               allowed: true,
@@ -452,6 +447,10 @@ module MultiTenancy
             },
             configurable_dropdown: {
               enabled: true,
+              allowed: true
+            },
+            project_backoffice_redesign: {
+              enabled: false,
               allowed: true
             }
           })
