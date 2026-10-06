@@ -141,12 +141,30 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
     # entries to persisted fields by key, then refuse edits that would destroy data.
     # Returns an error response, or nil when the payload is safe.
     def guard_live_form(pmethod, custom_form, responses_count)
-      materialize_default_fields!(pmethod, custom_form)
-      remap_fields_by_key!(custom_form)
+      default_fields = pmethod.default_fields(custom_form)
+      materialize_default_fields!(custom_form, default_fields)
 
-      built_in_keys = pmethod.default_fields(custom_form).map(&:key)
-      removed_built_ins, removed_customs = removed_persisted_fields(custom_form)
+      persisted_fields = custom_form.custom_fields.to_a
+      persisted_by_id = persisted_fields.index_by(&:id)
+      remap_fields_by_key!(persisted_fields, persisted_by_id)
+
+      duplicate_ids = normalized_fields.filter_map { |field| field['id'] }
+        .tally.filter_map { |id, count| id if count > 1 }
+      if duplicate_ids.any?
+        return error(<<~MSG.squish)
+          Multiple fields in the payload resolve to the same existing field:
+          #{duplicate_ids.map { |id| persisted_by_id[id]&.key || id }.join(', ')}.
+          Give each new field a unique `key` and echo each existing field exactly once.
+        MSG
+      end
+
+      strip_noop_question_categories!(persisted_by_id)
+
+      built_in_keys = default_fields.map(&:key)
+      removed_built_ins, removed_customs = removed_persisted_fields(persisted_fields)
         .partition { |field| built_in_keys.include?(field.key) }
+      # Page breaks carry no answers, so removing or re-keying a custom page is data-safe.
+      removed_customs = removed_customs.reject(&:page?)
 
       return built_in_removed_error(removed_built_ins.map(&:key)) if removed_built_ins.any?
 
@@ -158,7 +176,7 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
         MSG
       end
 
-      rekeyed = rekeyed_persisted_customs(custom_form, built_in_keys)
+      rekeyed = rekeyed_persisted_customs(persisted_by_id, built_in_keys)
       if rekeyed.any? && responses_count.positive?
         return error(<<~MSG.squish)
           Cannot change the key of field(s) #{rekeyed.join(', ')}: #{responses_count}
@@ -166,25 +184,21 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
         MSG
       end
 
-      edited = edited_built_ins(custom_form, built_in_keys)
+      edited = edited_built_ins(persisted_by_id, built_in_keys)
       return built_in_edited_error(edited) if edited.any?
 
       nil
     end
 
-    def materialize_default_fields!(pmethod, custom_form)
+    def materialize_default_fields!(custom_form, default_fields)
       return if custom_form.custom_fields.exists?
 
-      pmethod.default_fields(custom_form).reverse_each do |field|
-        field.save!
-        field.move_to_top
-      end
+      default_fields.each(&:save!)
       custom_form.custom_fields.reload
     end
 
-    def remap_fields_by_key!(custom_form)
-      persisted_by_id = custom_form.custom_fields.index_by(&:id)
-      persisted_by_key = custom_form.custom_fields.index_by(&:key)
+    def remap_fields_by_key!(persisted_fields, persisted_by_id)
+      persisted_by_key = persisted_fields.index_by(&:key)
 
       normalized_fields.each do |field|
         next if persisted_by_id.key?(field['id'])
@@ -194,17 +208,27 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
       end
     end
 
-    def removed_persisted_fields(custom_form)
-      payload_ids = normalized_fields.filter_map { |field| field['id'] }
-      custom_form.custom_fields.reject { |field| payload_ids.include?(field.id) }
+    # CustomField#question_category coerces a stored NULL to 'other', so a faithful echo
+    # of 'other' over NULL would dirty and save every such field on a no-op replace.
+    def strip_noop_question_categories!(persisted_by_id)
+      normalized_fields.each do |field|
+        next unless field['question_category'] == 'other'
+
+        persisted = persisted_by_id[field['id']]
+        field.delete('question_category') if persisted && persisted.read_attribute(:question_category).nil?
+      end
     end
 
-    def rekeyed_persisted_customs(custom_form, built_in_keys)
-      persisted_by_id = custom_form.custom_fields.index_by(&:id)
+    def removed_persisted_fields(persisted_fields)
+      payload_ids = normalized_fields.filter_map { |field| field['id'] }
+      persisted_fields.reject { |field| payload_ids.include?(field.id) }
+    end
 
+    def rekeyed_persisted_customs(persisted_by_id, built_in_keys)
       normalized_fields.filter_map do |field|
         persisted = persisted_by_id[field['id']]
         next unless persisted && built_in_keys.exclude?(persisted.key)
+        next if persisted.page?
         next unless field.key?('key') && field['key'] != persisted.key
 
         persisted.key
@@ -213,14 +237,16 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
 
     # Built-in questions must stay enabled and keep their key: disabling one removes it
     # from the live survey, and re-keying one orphans its answers and breaks the
-    # standard-monitor reporting.
-    def edited_built_ins(custom_form, built_in_keys)
-      persisted_by_id = custom_form.custom_fields.index_by(&:id)
-
+    # standard-monitor reporting. Only the enabled true→false transition is refused, so
+    # a faithful echo of a form whose built-in was already disabled elsewhere still works.
+    def edited_built_ins(persisted_by_id, built_in_keys)
       normalized_fields.filter_map do |field|
         persisted = persisted_by_id[field['id']]
         next unless persisted && built_in_keys.include?(persisted.key)
-        next unless field['enabled'] == false || (field.key?('key') && field['key'] != persisted.key)
+
+        disabling = field.key?('enabled') && field['enabled'] == false && persisted.enabled
+        rekeying = field.key?('key') && field['key'] != persisted.key
+        next unless disabling || rekeying
 
         persisted.key
       end

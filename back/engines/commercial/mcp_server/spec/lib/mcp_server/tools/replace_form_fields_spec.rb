@@ -198,6 +198,51 @@ describe McpServer::Tools::ReplaceFormFields do
         expect(response.content.sole[:text]).to include('Cannot disable or re-key built-in', 'place_to_live')
       end
 
+      it 'accepts a faithful echo of a built-in that was already disabled elsewhere' do
+        expect(replace_cm(fetch_cm_fields)).not_to be_error
+        cm_phase.custom_form.custom_fields.find_by(key: 'access_to_parks').update!(enabled: false)
+
+        response = replace_cm(fetch_cm_fields)
+
+        expect(response).not_to be_error
+        expect(cm_phase.custom_form.custom_fields.find_by(key: 'access_to_parks').enabled).to be(false)
+      end
+
+      it 'refuses a new field whose key collides with an existing field' do
+        fields = fetch_cm_fields
+        clashing = fields.find { |field| field[:key] == 'place_to_live' }.dup
+        clashing.delete(:id)
+        clashing[:title_multiloc] = { 'en' => 'Sneaky overwrite' }
+        fields.insert(-2, clashing)
+
+        response = replace_cm(fields)
+
+        expect(response).to be_error
+        expect(response.content.sole[:text]).to include('resolve to the same existing field', 'place_to_live')
+        title = cm_phase.custom_form.custom_fields.find_by(key: 'place_to_live').title_multiloc
+        expect(title).not_to eq('en' => 'Sneaky overwrite')
+      end
+
+      it 'allows removing a custom page even after responses exist' do
+        fields = fetch_cm_fields
+        fields.insert(-2, { input_type: 'page', page_layout: 'default', title_multiloc: { 'en' => 'Extra page' } })
+        expect(replace_cm(fields)).not_to be_error
+        create(:idea, project: cm_phase.project, phases: [cm_phase], creation_phase: cm_phase)
+
+        response = replace_cm(fetch_cm_fields.reject { |field| field[:title_multiloc]['en'] == 'Extra page' })
+
+        expect(response).not_to be_error
+        expect(cm_phase.custom_form.custom_fields.reload.map { |field| field.title_multiloc['en'] }).not_to include('Extra page')
+      end
+
+      it 'keeps an unset question_category NULL on a faithful echo' do
+        expect(replace_cm(fetch_cm_fields)).not_to be_error
+        expect(replace_cm(fetch_cm_fields)).not_to be_error
+
+        pages = cm_phase.custom_form.custom_fields.select(&:page?)
+        expect(pages.map { |field| field.read_attribute(:question_category) }).to all(be_nil)
+      end
+
       context 'with a custom question on the form' do
         def add_custom_question!
           fields = fetch_cm_fields
