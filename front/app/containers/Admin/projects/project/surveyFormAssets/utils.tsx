@@ -53,8 +53,6 @@ export const nativeSurveyConfig: FormBuilderConfig = {
     'line',
     'polygon',
   ],
-  formCustomFields: undefined,
-
   displayBuiltInFields: false,
   builtInFields: [],
   showStatusBadge: true,

@@ -49,8 +49,6 @@ export const ideationConfig: FormBuilderConfig = {
     'idea_images_attributes',
     'idea_files_attributes',
   ],
-  formCustomFields: undefined,
-
   showStatusBadge: false,
   isLogicEnabled: false,
   isParticipationPublic: true,
@@ -107,8 +105,6 @@ export const proposalsConfig: FormBuilderConfig = {
     'idea_files_attributes',
     'cosponsor_ids',
   ],
-  formCustomFields: undefined,
-
   showStatusBadge: false,
   isLogicEnabled: false,
   isParticipationPublic: true,

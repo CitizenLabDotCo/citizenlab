@@ -51,7 +51,6 @@ export type FormBuilderConfig = {
   pagesLogicHelperText?: MessageDescriptor;
 
   toolboxFieldsToInclude: ICustomFieldInputType[];
-  formCustomFields: IFlatCustomField[] | undefined | Error;
 
   displayBuiltInFields: boolean;
   builtInFields: BuiltInKeyType[];
@@ -63,8 +62,6 @@ export type FormBuilderConfig = {
   each survey phase within a project can have a different form */
   isFormPhaseSpecific: boolean;
 
-  goBackUrl?: string;
-
   getDeletionNotice?: (projectId: string) => React.JSX.Element;
   getWarningNotice?: () => React.JSX.Element;
   getAccessRightsNotice?: (
@@ -74,6 +71,18 @@ export type FormBuilderConfig = {
   ) => React.JSX.Element | null;
   getUserFieldsNotice?: () => React.ReactNode;
 };
+
+export type ResolvedFormBuilderConfig = FormBuilderConfig & {
+  goBackUrl: string;
+};
+
+export const resolveFormBuilderConfig = (
+  config: FormBuilderConfig,
+  goBackUrl: string
+): ResolvedFormBuilderConfig => ({
+  ...config,
+  goBackUrl,
+});
 
 export const getIsPostingEnabled = (
   phase?: IPhaseData | Error | null | undefined

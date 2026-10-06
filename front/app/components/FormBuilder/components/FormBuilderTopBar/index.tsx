@@ -22,7 +22,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import DownloadPDFButtonWithModal from 'components/admin/FormSync/DownloadPDFButtonWithModal';
 import {
-  FormBuilderConfig,
+  ResolvedFormBuilderConfig,
   getIsPostingEnabled,
 } from 'components/FormBuilder/utils';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -48,7 +48,7 @@ const StyledStatusLabel = styled(StatusLabel)`
 
 type FormBuilderTopBarProps = {
   isSubmitting: boolean;
-  builderConfig: FormBuilderConfig;
+  builderConfig: ResolvedFormBuilderConfig;
   viewFormLink: TypedLinkProps;
   autosaveEnabled: boolean;
   setAutosaveEnabled: Dispatch<SetStateAction<boolean>>;
