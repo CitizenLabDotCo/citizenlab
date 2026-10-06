@@ -267,6 +267,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         ContentBuilder::CustomBlockVersion
         ContentBuilder::QuerySnapshot
         ReportBuilder::GenerationTranscript
+        ReportBuilder::ReportChat
       ],
 
       # Per-tenant admin moderation runtime (internal comments on ideas — not
