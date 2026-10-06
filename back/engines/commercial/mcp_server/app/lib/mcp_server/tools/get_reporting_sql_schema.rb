@@ -10,6 +10,7 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
   REPORTING_TABLES = [
     Analytics::Reporting::Project,
     Analytics::Reporting::Phase,
+    Analytics::Reporting::Event,
     Analytics::Reporting::Session,
     Analytics::Reporting::Pageview,
     Analytics::Reporting::Contribution,
@@ -36,7 +37,7 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
       tool can query: a documented relational model of the platform's participation
       data (contributions and participants, inputs with their answers, tags, statuses,
       votes, reactions and official feedback, users with their demographics, visitor sessions and
-      pageviews, projects and phases). Call this before writing SQL; the returned
+      pageviews, projects, phases and events). Call this before writing SQL; the returned
       table and column comments carry the semantics queries should follow, and the
       relationships map shows how the tables join.
     DOC

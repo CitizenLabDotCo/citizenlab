@@ -711,6 +711,7 @@ DROP VIEW IF EXISTS public.reporting_input_votes;
 DROP VIEW IF EXISTS public.reporting_input_tags;
 DROP VIEW IF EXISTS public.reporting_input_reactions;
 DROP VIEW IF EXISTS public.reporting_input_question_answers;
+DROP VIEW IF EXISTS public.reporting_events;
 DROP VIEW IF EXISTS public.reporting_contributions;
 DROP TABLE IF EXISTS public.report_builder_reports;
 DROP TABLE IF EXISTS public.report_builder_published_graph_data_units;
@@ -3876,7 +3877,7 @@ UNION ALL
              LEFT JOIN public.ideas ri ON ((((reactions.reactable_type)::text = 'Idea'::text) AND (ri.id = reactions.reactable_id))))
              LEFT JOIN public.comments rc ON ((((reactions.reactable_type)::text = 'Comment'::text) AND (rc.id = reactions.reactable_id))))
              LEFT JOIN public.ideas rci ON ((rci.id = rc.idea_id)))
-          WHERE ((reactions.reactable_type)::text = ANY (ARRAY[('Idea'::character varying)::text, ('Comment'::character varying)::text]))) r
+          WHERE ((reactions.reactable_type)::text = ANY ((ARRAY['Idea'::character varying, 'Comment'::character varying])::text[]))) r
      LEFT JOIN public.phases input_creation_ph ON ((input_creation_ph.id = r.input_creation_phase_id)))
      LEFT JOIN public.phases inferred_ph ON (((inferred_ph.project_id = r.project_id) AND ((inferred_ph.placement_type)::text = 'on_timeline'::text) AND (r.created_at >= inferred_ph.start_at) AND ((inferred_ph.end_at IS NULL) OR (r.created_at < inferred_ph.end_at)))))
 UNION ALL
@@ -3927,8 +3928,8 @@ UNION ALL
 UNION ALL
  SELECT ea.id,
     'attendance'::text AS type,
-    NULL::text AS parent_type,
-    NULL::uuid AS parent_id,
+    'event'::text AS parent_type,
+    ea.event_id AS parent_id,
     ea.created_at AS contributed_at,
     ea.created_at,
     NULL::character varying AS participation_method,
@@ -3938,6 +3939,38 @@ UNION ALL
     (ea.attendee_id)::text AS participant_id
    FROM (public.events_attendances ea
      LEFT JOIN public.events e ON ((e.id = ea.event_id)));
+
+
+--
+-- Name: reporting_events; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_events AS
+ SELECT id,
+    project_id,
+    COALESCE(NULLIF((title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(e.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS title,
+    title_multiloc,
+    start_at,
+    end_at,
+    COALESCE(NULLIF((address_1)::text, ''::text), NULLIF((location_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(e.location_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS location,
+    NULLIF((online_link)::text, ''::text) AS online_link,
+    NULLIF((using_url)::text, ''::text) AS external_registration_url,
+    attendees_count,
+    maximum_attendees,
+    created_at
+   FROM public.events e;
 
 
 --
@@ -9666,6 +9699,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261006140200'),
+('20261006140100'),
 ('20261006120200'),
 ('20261006120100'),
 ('20261006090100'),
