@@ -43,26 +43,26 @@ const SourceSetting = () => {
   // toolbox and the EventsWidget shim both write `currentProject` for this surface.
   if (projectId) return null;
 
+  // A stored dimension stays listed once its feature is off: the widget still filters by it, so
+  // dropping it would read as unset, and picking another discards the ids.
+  const offers = (dimension: EventsSource, featureOn: boolean) =>
+    featureOn || source === dimension;
+
   const options: { value: EventsSource; label: string }[] = [
     { value: 'all', label: formatMessage(messages.everyProject) },
-    ...(advancedCustomPages
+    ...(offers('areas', advancedCustomPages)
+      ? [{ value: 'areas' as const, label: formatMessage(messages.byArea) }]
+      : []),
+    ...(offers('global_topics', advancedCustomPages)
       ? [
-          { value: 'areas' as const, label: formatMessage(messages.byArea) },
           {
             value: 'global_topics' as const,
             label: formatMessage(messages.byTopic),
           },
-          // A stored dimension stays listed once its feature is off: the widget still filters
-          // by it, so dropping it would read as unset, and picking another discards the ids.
-          ...(spacesEnabled || source === 'spaces'
-            ? [
-                {
-                  value: 'spaces' as const,
-                  label: formatMessage(messages.bySpace),
-                },
-              ]
-            : []),
         ]
+      : []),
+    ...(offers('spaces', advancedCustomPages && spacesEnabled)
+      ? [{ value: 'spaces' as const, label: formatMessage(messages.bySpace) }]
       : []),
   ];
 

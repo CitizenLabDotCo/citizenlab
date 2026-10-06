@@ -345,10 +345,10 @@ describe('Events widget', () => {
     cy.contains('Include events from archived projects').should('not.exist');
   });
 
-  // A widget already filtering by spaces keeps that option once the feature goes, so the panel
-  // shows what the page is doing. Drop it and nothing is selected, and the next click clears
-  // the stored ids.
-  it('keeps a stored spaces filter selectable once the feature is off', () => {
+  // A widget already filtering by spaces keeps that option once spaces, and then filtering
+  // itself, are switched off, so the panel shows what the page is doing. Drop it and nothing is
+  // selected, and the next click clears the stored ids.
+  it('keeps a stored spaces filter selectable once its features are off', () => {
     setFiltering(true);
     setSpaces(true);
     cy.apiUpdateHomepageLayout({ craftjs_json: homepageWithoutEvents() });
@@ -368,6 +368,17 @@ describe('Events widget', () => {
       .click({ force: true });
 
     cy.get('#events-source-spaces').should('exist').and('be.checked');
+
+    setFiltering(false);
+    goToHomepageBuilder();
+    cy.dataCy('e2e-events-widget')
+      .parents('.e2e-render-node')
+      .first()
+      .click({ force: true });
+
+    cy.get('#events-source-spaces').should('exist').and('be.checked');
+    cy.get('label[for="events-source-all"]').should('exist');
+    cy.get('label[for="events-source-areas"]').should('not.exist');
   });
 
   // A query that is switched off keeps serving its last result, so a bucket has to be read
