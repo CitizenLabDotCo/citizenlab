@@ -9,13 +9,12 @@ const endTime = (phase: IPhaseData) =>
 const otherTimelinePhases = (survey: IPhaseData, phases: IPhaseData[]) =>
   phases.filter((phase) => phase.id !== survey.id && isTimelinePhase(phase));
 
-// Only surveys can run alongside the timeline, so no other method can move.
 export const canChangePlacement = (phase: IPhaseData) =>
   phase.attributes.participation_method === 'native_survey';
 
-// Mirrors the timeline rules the back end enforces on save (see
-// Phase#validate_no_other_overlapping_phases, #validate_end_at and
-// #close_previous_open_phase), so the admin learns about them before moving.
+// Mirrors the timeline rules the back end enforces on save
+// (Phase#validate_no_other_overlapping_phases, #validate_end_at and
+// #close_previous_open_phase); keep them in sync.
 export const checkMoveToTimeline = (
   survey: IPhaseData,
   timelinePhases: IPhaseData[]
@@ -26,7 +25,6 @@ export const checkMoveToTimeline = (
 
   const overlappingPhases = others.filter((other) => {
     const otherStart = time(other.attributes.start_at);
-    // An open-ended phase that starts earlier gets closed instead.
     if (!other.attributes.end_at && otherStart < start) return false;
     return start < endTime(other) && otherStart < end;
   });
