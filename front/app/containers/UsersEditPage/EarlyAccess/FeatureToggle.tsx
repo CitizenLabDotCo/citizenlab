@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import {
   Box,
@@ -17,7 +17,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 type Props = {
   title: MessageDescriptor;
-  description: MessageDescriptor;
+  description: ReactNode;
   tier?: EarlyAccessTier;
   checked: boolean;
   disabled?: boolean;
@@ -49,7 +49,7 @@ const FeatureToggle = ({
         <EarlyAccessBadge tier={tier} />
       </Box>
       <Text fontSize="s" color="textSecondary" mt="4px">
-        <FormattedMessage {...description} />
+        {description}
       </Text>
     </Box>
   </Box>
