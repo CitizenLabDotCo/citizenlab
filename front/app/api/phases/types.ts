@@ -184,6 +184,7 @@ export const participationMethods = [
   'document_annotation',
   'proposals',
 ] as const;
+
 export type ParticipationMethod = (typeof participationMethods)[number];
 
 export type PhasePlacementType = 'on_timeline' | 'standalone';
