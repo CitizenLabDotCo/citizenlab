@@ -40,6 +40,16 @@ module ReportBuilder
     # A report is about a phase or about a whole project, never both.
     belongs_to :project, optional: true
     has_many :published_graph_data_units, dependent: :destroy
+    has_many :generation_transcripts, class_name: 'ReportBuilder::GenerationTranscript',
+      dependent: :destroy, inverse_of: :report
+
+    # The "your report is ready" notification points at the report, so deleting one
+    # would otherwise be refused by the foreign key. Nullifying is tried first and
+    # fails — ReportGenerated validates the report's presence — which leaves the
+    # notification to be destroyed along with the report it was about.
+    # before_destroy must be declared above the association: rails/rails#5205.
+    before_destroy :remove_notifications
+    has_many :notifications, class_name: '::Notification', dependent: :nullify
 
     has_one(
       :layout,
@@ -73,11 +83,22 @@ module ReportBuilder
       project || phase&.project
     end
 
+    # The run that wrote what the report holds now, if a model wrote it.
+    def last_generation
+      generation_transcripts.generations.finished.newest_first.first
+    end
+
     def public?
       phase? && phase.started? && visible?
     end
 
     private
+
+    def remove_notifications
+      notifications.each do |notification|
+        notification.destroy! unless notification.update(report: nil)
+      end
+    end
 
     def supports_multiple_phase_reports?
       phase&.pmethod&.supports_multiple_phase_reports?
