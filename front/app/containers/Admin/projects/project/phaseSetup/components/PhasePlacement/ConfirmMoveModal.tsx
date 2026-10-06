@@ -1,98 +1,54 @@
 import React from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 
-import { IPhaseData, PhasePlacementType } from 'api/phases/types';
+import { IPhaseData } from 'api/phases/types';
 
-import useLocalize from 'hooks/useLocalize';
+import placementMessages from 'containers/Admin/projects/_shared/components/PhasePlacement/messages';
+import MovePhaseSummary from 'containers/Admin/projects/_shared/components/PhasePlacement/MovePhaseSummary';
+import usePhasePlacementMove from 'containers/Admin/projects/_shared/components/PhasePlacement/usePhasePlacementMove';
 
 import Modal from 'components/UI/Modal';
-import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
-
 interface Props {
-  opened: boolean;
-  target: PhasePlacementType;
-  shownOnProjectPage: boolean;
-  phaseToClose?: IPhaseData;
-  surveyStartAt: string;
-  processing: boolean;
-  onConfirm: () => void;
+  phase: IPhaseData;
   onClose: () => void;
 }
 
-const ConfirmMoveModal = ({
-  opened,
-  target,
-  shownOnProjectPage,
-  phaseToClose,
-  surveyStartAt,
-  processing,
-  onConfirm,
-  onClose,
-}: Props) => {
-  const { formatMessage, formatDate } = useIntl();
-  const localize = useLocalize();
-  const movingOntoTimeline = target === 'on_timeline';
+const ConfirmMoveModal = ({ phase, onClose }: Props) => {
+  const { formatMessage } = useIntl();
+  const placementMove = usePhasePlacementMove(phase);
+  const { onTimeline, loaded, blocked, move, isPending } = placementMove;
 
   return (
     <Modal
-      opened={opened}
+      opened
       close={onClose}
       width="450px"
       header={formatMessage(
-        movingOntoTimeline
-          ? messages.moveOnTimelineModalTitle
-          : messages.moveOffTimelineModalTitle
+        onTimeline
+          ? placementMessages.moveToSpotlightSurveysTitle
+          : placementMessages.moveToTimelineTitle
       )}
       closeOnClickOutside
     >
       <Box padding="20px">
-        <Text mt="0">
-          {formatMessage(
-            movingOntoTimeline
-              ? messages.moveOnTimelineExplanation
-              : messages.moveOffTimelineExplanation
-          )}
-        </Text>
-        <Warning>
-          <Box as="ul" m="0" pl="20px">
-            <Text as="li" m="0">
-              {formatMessage(messages.moveWarningVisibility)}
-            </Text>
-            {movingOntoTimeline && shownOnProjectPage && (
-              <Text as="li" m="0">
-                {formatMessage(messages.moveWarningWidgetRemoved)}
-              </Text>
-            )}
-            {movingOntoTimeline && (
-              <Text as="li" m="0">
-                {formatMessage(messages.moveWarningTimelineOverlap)}
-              </Text>
-            )}
-            {movingOntoTimeline && phaseToClose && (
-              <Text as="li" m="0">
-                {formatMessage(messages.moveWarningPreviousPhaseEnds, {
-                  phaseName: localize(phaseToClose.attributes.title_multiloc),
-                  date: formatDate(surveyStartAt, { dateStyle: 'long' }),
-                })}
-              </Text>
-            )}
-          </Box>
-        </Warning>
+        <MovePhaseSummary phase={phase} placementMove={placementMove} />
         <Box display="flex" gap="8px" mt="20px" flexDirection="column">
-          <Button
-            onClick={onConfirm}
-            processing={processing}
-            data-cy="e2e-phase-placement-confirm"
-          >
-            {formatMessage(messages.moveConfirmButton)}
-          </Button>
+          {!blocked && (
+            <Button
+              onClick={() => move({ onSuccess: onClose })}
+              disabled={!loaded}
+              processing={isPending}
+              data-cy="e2e-phase-placement-confirm"
+            >
+              {formatMessage(placementMessages.confirmButton)}
+            </Button>
+          )}
           <Button buttonStyle="secondary-outlined" onClick={onClose}>
-            {formatMessage(messages.moveCancelButton)}
+            {formatMessage(placementMessages.cancelButton)}
           </Button>
         </Box>
       </Box>
