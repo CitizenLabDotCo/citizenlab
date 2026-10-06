@@ -129,9 +129,8 @@ describe('Space moderator: permissions', () => {
       const folderId = folderAdminUrl.split('/folders/')[1].split(/[/?#]/)[0];
 
       cy.visit(`/admin/projects/folders/${folderId}/settings`);
-      cy.get('#e2e-project-description-builder-link')
-        .should('be.visible')
-        .click();
+      // The button only shows while the preview is hovered, which Cypress cannot do.
+      cy.dataCy('e2e-edit-page-content').click({ force: true });
       cy.get('.e2e-text-box').click('center');
       cy.get('.ql-editor').click();
       cy.get('.ql-editor').type(folderDescription, { force: true });

@@ -62,8 +62,18 @@ describe 'single_use:migrate_custom_pages_to_content_builder' do
     expect(existing.reload.craftjs_json).to eq({ 'ROOT' => {} })
   end
 
+  it 'derives the About and FAQ pages too' do
+    about_page = create(:static_page, code: 'about')
+    faq_page = create(:static_page, code: 'faq')
+
+    task.invoke('execute')
+
+    expect(layout_for(about_page)).to be_present
+    expect(layout_for(faq_page)).to be_present
+  end
+
   it 'ignores policy pages and project-scoped pages' do
-    policy_page = create(:static_page, code: 'faq')
+    policy_page = create(:static_page, code: 'terms-and-conditions')
     project_page = create(:static_page, :project_scoped, code: 'custom')
 
     task.invoke('execute')
@@ -193,6 +203,105 @@ describe 'single_use:migrate_custom_pages_to_content_builder' do
       task.invoke('execute', nil, 'overwrite', 'force')
 
       expect(layout_for(page)).to be_present
+    end
+  end
+
+  context 'with cutover' do
+    subject(:run) { task.invoke('execute', nil, 'cutover') }
+
+    def flag_active?
+      AppConfiguration.instance.reload.feature_activated?('custom_page_builder')
+    end
+
+    it 're-derives every page, then switches the flag on' do
+      existing = ContentBuilder::Layout.create!(
+        content_buildable: page, code: code, enabled: true, craftjs_json: { 'ROOT' => {} }
+      )
+
+      run
+
+      expect(existing.reload.craftjs_json).to eq service.craftjs_json_for(page)
+      expect(flag_active?).to be true
+    end
+
+    it 'switches no flag on a dry run' do
+      task.invoke(nil, nil, 'cutover')
+
+      expect(flag_active?).to be false
+      expect(report(dry_run: true)['changes'].map { |change| change.dig('context', 'feature') }).to include('custom_page_builder')
+    end
+
+    it 'keeps the flag off when a page fails to derive, and still derives the others' do
+      broken = create(:static_page, code: 'custom')
+      allow(service).to receive(:craftjs_json_for).and_call_original
+      allow(service).to receive(:craftjs_json_for).with(having_attributes(id: broken.id), anything).and_raise('boom')
+      allow(ContentBuilder::CustomPageLayoutService).to receive(:new).and_return(service)
+
+      run
+
+      expect(flag_active?).to be false
+      expect(layout_for(page)).to be_present
+      expect(report['errors'].map { |error| error['context'] }).to include(
+        a_hash_including('page_id' => broken.id),
+        { 'tenant' => Tenant.current.host, 'feature' => 'custom_page_builder' }
+      )
+    end
+
+    it 'does not report the flag as switched when the switch fails' do
+      allow_any_instance_of(SettingsService).to receive(:activate_feature!).and_raise('boom')
+
+      expect { run }.to output(/Tenants switched on: 0/).to_stdout
+
+      expect(report['changes'].map { |change| change.dig('context', 'feature') }).not_to include('custom_page_builder')
+      expect(report['errors'].first['error']).to match(/boom/)
+    end
+
+    it 'skips a tenant whose flag is already on' do
+      SettingsService.new.activate_feature!('custom_page_builder')
+      existing = ContentBuilder::Layout.create!(
+        content_buildable: page, code: code, enabled: true, craftjs_json: { 'ROOT' => {} }
+      )
+
+      run
+
+      expect(existing.reload.craftjs_json).to eq({ 'ROOT' => {} })
+      expect(report['errors']).to be_empty
+    end
+
+    it 'lists the tenants it skipped because the flag was already on' do
+      SettingsService.new.activate_feature!('custom_page_builder')
+
+      expect { run }.to output(/already active\): 1\n\s+- #{Regexp.escape(Tenant.current.host)}/).to_stdout
+    end
+
+    context 'when a page is edited between its derivation and the switch' do
+      let(:edited) { { 'en' => '<p>Edited</p>' } }
+
+      # The edit lands as the flag is switched, after the page was derived.
+      def edit_page_on_switch(&also)
+        allow_any_instance_of(SettingsService).to receive(:activate_feature!).and_wrap_original do |original, *args|
+          page.update!(top_info_section_multiloc: edited)
+          also&.call
+          original.call(*args)
+        end
+      end
+
+      it 're-derives the page when its layout is unchanged' do
+        edit_page_on_switch
+
+        run
+
+        expect(layout_for(page).craftjs_json).to eq service.craftjs_json_for(page.reload)
+      end
+
+      it 'leaves the layout alone when it has changed since, and reports the page' do
+        edit_page_on_switch { layout_for(page).update!(craftjs_json: { 'ROOT' => {} }) }
+
+        run
+
+        expect(layout_for(page).craftjs_json).to eq({ 'ROOT' => {} })
+        expect(report['errors'].first['context']).to include('page_id' => page.id)
+      end
     end
   end
 end

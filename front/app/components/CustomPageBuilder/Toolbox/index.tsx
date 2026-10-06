@@ -10,10 +10,17 @@ import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
+import Areas, {
+  areasTitle,
+} from 'components/admin/ContentBuilder/Widgets/Areas';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import CallToAction, {
   callToActionTitle,
 } from 'components/admin/ContentBuilder/Widgets/CallToAction';
+import CommunityMonitorCTA, {
+  communityMonitorCTATitle,
+} from 'components/admin/ContentBuilder/Widgets/CommunityMonitorCTA';
+import communityMonitorMessages from 'components/admin/ContentBuilder/Widgets/CommunityMonitorCTA/messages';
 import CustomPages, {
   customPagesTitle,
 } from 'components/admin/ContentBuilder/Widgets/CustomPages';
@@ -22,6 +29,10 @@ import eventsMessages from 'components/admin/ContentBuilder/Widgets/Events/messa
 import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
 import FinishedOrArchived from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived';
 import finishedOrArchivedMessages from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived/messages';
+import FollowedItems, {
+  followedItemsTitle,
+} from 'components/admin/ContentBuilder/Widgets/FollowedItems';
+import followedItemsMessages from 'components/admin/ContentBuilder/Widgets/FollowedItems/messages';
 import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
@@ -61,6 +72,10 @@ import {
 
 const CustomPageBuilderToolbox = () => {
   const { formatMessage } = useIntl();
+  const followEnabled = useFeatureFlag({ name: 'follow' });
+  const communityMonitorEnabled = useFeatureFlag({
+    name: 'community_monitor',
+  });
   const isHtmlBlockMultilocEnabled = useFeatureFlag({
     name: 'html_block_in_content_builder',
   });
@@ -148,6 +163,24 @@ const CustomPageBuilderToolbox = () => {
           )}
         />
         <DraggableElement
+          id="e2e-draggable-followed-items"
+          component={
+            <FollowedItems
+              titleMultiloc={toMultiloc(followedItemsMessages.defaultTitle)}
+            />
+          }
+          icon="notification"
+          label={formatMessage(followedItemsTitle)}
+        />
+        {followEnabled && (
+          <DraggableElement
+            id="e2e-draggable-areas"
+            component={<Areas titleMultiloc={toMultiloc(areasTitle)} />}
+            icon="home"
+            label={formatMessage(areasTitle)}
+          />
+        )}
+        <DraggableElement
           id="e2e-draggable-published"
           component={<Published titleMultiloc={toMultiloc(publishedTitle)} />}
           icon="check-circle"
@@ -191,6 +224,26 @@ const CustomPageBuilderToolbox = () => {
           icon="button"
           label={formatMessage(callToActionTitle)}
         />
+        {communityMonitorEnabled && (
+          <DraggableElement
+            id="e2e-draggable-community-monitor-cta"
+            component={
+              <CommunityMonitorCTA
+                title={toMultiloc(
+                  communityMonitorMessages.communityMonitorCtaDefaultTitle
+                )}
+                description={toMultiloc(
+                  communityMonitorMessages.communityMonitorCtaDefaultDescription
+                )}
+                surveyButtonText={toMultiloc(
+                  communityMonitorMessages.communityMonitorCtaDefaultSurveyButtonText
+                )}
+              />
+            }
+            icon="survey"
+            label={formatMessage(communityMonitorCTATitle)}
+          />
+        )}
       </Section>
       <Section>
         <DraggableElement

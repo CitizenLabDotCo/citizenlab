@@ -25,19 +25,9 @@ module ContentBuilder
       # a pass over every node — taking the whole route down — so anything validating a
       # project layout works from PROJECT_PAGE_SPECS instead.
       CUSTOM_PAGE_WIDGETS = %w[
-        ProjectsByFilter
-        Spotlight
-        Selection
-        CustomPages
-        Published
-        OpenToParticipation
-        FinishedOrArchived
-        CallToAction
-        VideoEmbed
-        CustomPageRoot
-        CustomPageBanner
-        CustomPageTitle
-        CustomPageBody
+        ProjectsByFilter Spotlight Selection CustomPages Published OpenToParticipation FinishedOrArchived
+        FollowedItems Areas CommunityMonitorCTA CallToAction VideoEmbed
+        CustomPageRoot CustomPageBanner CustomPageTitle CustomPageBody
       ].freeze
 
       SPECS = {
@@ -106,6 +96,9 @@ module ContentBuilder
           'multilocs' => %w[titleMultiloc],
           'enums' => { 'filterBy' => %w[finished archived finished_and_archived] }
         },
+        'FollowedItems' => { 'multilocs' => %w[titleMultiloc] },
+        'Areas' => { 'multilocs' => %w[titleMultiloc] },
+        'CommunityMonitorCTA' => { 'multilocs' => %w[title description surveyButtonText] },
         'CallToAction' => { 'multilocs' => %w[title description primaryButtonText secondaryButtonText] },
         'VideoEmbed' => {},
         # The project page scaffold (no rules: nodes patches may not add, move or delete).
