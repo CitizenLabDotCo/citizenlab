@@ -82,6 +82,7 @@ class McpServer::HomepageWidgets
         source "all" needs no ids. "projects" → project ids (list_projects), "areas" → area ids
         (list_areas), "global_topics" → topic ids (list_global_topics), "spaces" → space ids
         (list_spaces; only when the spaces feature is enabled). Renders the matching events automatically.
+        Any source other than "all" needs the advanced_custom_pages feature.
     DOC
     'Spotlight' => <<~DOC
       Spotlight — highlights one project or folder.
