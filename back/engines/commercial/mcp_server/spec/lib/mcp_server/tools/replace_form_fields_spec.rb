@@ -208,6 +208,20 @@ describe McpServer::Tools::ReplaceFormFields do
         expect(cm_phase.custom_form.custom_fields.find_by(key: 'place_to_live').enabled).to be(false)
       end
 
+      it 'treats a same-key field of a different type as a removal, not an update' do
+        expect(replace_cm(fetch_cm_fields)).not_to be_error
+        create(:idea, project: cm_phase.project, phases: [cm_phase], creation_phase: cm_phase)
+
+        fields = fetch_cm_fields.reject { |field| field[:key] == 'place_to_live' }
+        fields.insert(1, { input_type: 'page', page_layout: 'default', key: 'place_to_live', title_multiloc: { 'en' => 'Now a page' } })
+
+        response = replace_cm(fields)
+
+        expect(response).to be_error
+        expect(response.content.sole[:text]).to include('place_to_live')
+        expect(cm_phase.custom_form.custom_fields.find_by(key: 'place_to_live').input_type).to eq('sentiment_linear_scale')
+      end
+
       it 'refuses a new field whose key collides with an existing field' do
         fields = fetch_cm_fields
         clashing = fields.find { |field| field[:key] == 'place_to_live' }.dup

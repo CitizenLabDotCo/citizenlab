@@ -87,7 +87,7 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
       responses_count = container.ideas_count.to_i
       if !pmethod.form_editable_after_responses? && responses_count.positive?
         return error(<<~MSG.squish)
-          Cannot replace form fields: #{container.ideas_count} response(s) already
+          Cannot replace form fields: #{responses_count} response(s) already
           submitted to this #{params[:container_type]}. Replacing the fields would
           orphan their answers.
         MSG
@@ -185,7 +185,9 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
     def materialize_default_fields!(pmethod, custom_form)
       return if custom_form.custom_fields.exists?
 
-      pmethod.default_fields(custom_form).each(&:save!)
+      ActiveRecord::Base.transaction do
+        pmethod.default_fields(custom_form).each(&:save!)
+      end
       custom_form.custom_fields.reload
     end
 
@@ -196,7 +198,9 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
         next if persisted_by_id.key?(field['id'])
 
         match = field['key'] && persisted_by_key[field['key']]
-        field['id'] = match.id if match
+        # Same key but another input_type is a different question, not a stale echo:
+        # treat it as remove-and-create so the removal guard gets to judge it.
+        field['id'] = match.id if match && match.input_type == field['input_type']
       end
     end
 
