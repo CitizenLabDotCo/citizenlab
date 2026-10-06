@@ -65,7 +65,11 @@ module Analysis
           when String
             texts << input
           when Files::File
-            file_paths << file_to_tempfile(input)
+            if text_without_preview?(input)
+              texts << text_file_content(input)
+            else
+              file_paths << file_to_tempfile(input)
+            end
           else
             raise ArgumentError, "Unsupported content type: #{input.class}. Must be String or Files::File."
           end
