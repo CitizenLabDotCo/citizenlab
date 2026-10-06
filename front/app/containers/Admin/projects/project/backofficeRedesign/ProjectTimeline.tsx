@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 
-import { Box, Title, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
+import usePhases from 'api/phases/usePhases';
+
+import projectPageMessages from 'containers/Admin/projects/project/projectPage/messages';
 import SpotlightSurveys from 'containers/Admin/projects/project/projectPage/SpotlightSurveys';
 import TimelinePhases from 'containers/Admin/projects/project/projectPage/TimelinePhases';
 
@@ -18,17 +21,32 @@ interface Props {
 const ProjectTimeline = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
   const [methodModalOpened, setMethodModalOpened] = useState(false);
+  const { data: phases } = usePhases(projectId);
+  const hasPhases = !!phases && phases.data.length > 0;
 
   return (
-    <Box py="24px" px="16px">
+    <Box pt="16px" pb="24px" px="12px">
       <Box className="intercom-product-tour-project-timeline">
         <TimelinePhases
           projectId={projectId}
+          variant="backofficeRedesign"
           heading={
-            <Box px="8px" mb="12px">
-              <Title variant="h4" fontSize="s" fontWeight="semi-bold" m="0">
-                {formatMessage(messages.participationMethods)}
-              </Title>
+            <Box
+              display="flex"
+              alignItems="center"
+              h="32px"
+              px="12px"
+              mb="16px"
+            >
+              <Box as="h4" m="0">
+                <Text as="span" variant="boSection" m="0">
+                  {formatMessage(
+                    hasPhases
+                      ? projectPageMessages.timeline
+                      : messages.participationMethods
+                  )}
+                </Text>
+              </Box>
             </Box>
           }
           onNewPhase={() => setMethodModalOpened(true)}

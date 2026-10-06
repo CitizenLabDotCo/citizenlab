@@ -3,7 +3,7 @@ import React from 'react';
 import {
   Box,
   Text,
-  Title,
+  bo,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
@@ -27,6 +27,11 @@ import {
   PHASE_TAB_ROUTES,
   PhaseDot,
   Row,
+  SurveyDot,
+  SurveyMeta,
+  SurveyRow,
+  SurveyTitle,
+  formatDatePair,
   formatDateRange,
   phaseStatus,
 } from '../phaseRowUtils';
@@ -55,6 +60,12 @@ const SpotlightSurveys = ({ projectId, variant = 'sidebar' }: Props) => {
   );
 
   const redesign = variant === 'backofficeRedesign';
+  const RowElement = redesign ? SurveyRow : Row;
+  const MetaElement = redesign ? SurveyMeta : Text;
+  const formatSidebarDates = (startAt: string, endAt: string | null) =>
+    endAt
+      ? formatDateRange(startAt, endAt, dateLocale)
+      : formatMessage(messages.ongoing);
 
   if (redesign && sortedPhases.length === 0) return null;
 
@@ -65,14 +76,13 @@ const SpotlightSurveys = ({ projectId, variant = 'sidebar' }: Props) => {
       borderTop={redesign ? 'none' : `1px solid ${colors.grey200}`}
     >
       {redesign ? (
-        <>
-          <Box mx="8px" my="24px" borderTop={`1px solid ${colors.grey200}`} />
-          <Box px="8px" mb="12px">
-            <Title variant="h4" fontSize="s" fontWeight="semi-bold" m="0">
+        <Box px="12px" mt="32px" mb="12px">
+          <Box as="h4" m="0">
+            <Text as="span" variant="boSection" m="0">
               {formatMessage(messages.extras)}
-            </Title>
+            </Text>
           </Box>
-        </>
+        </Box>
       ) : (
         <Text
           m="0 0 8px 0"
@@ -89,10 +99,17 @@ const SpotlightSurveys = ({ projectId, variant = 'sidebar' }: Props) => {
         {sortedPhases.map((phase) => {
           const status = phaseStatus(phase);
           const { start_at, end_at } = phase.attributes;
-          const dateText = end_at
-            ? formatDateRange(start_at, end_at, dateLocale)
-            : formatMessage(messages.ongoing);
+          const dateText = redesign
+            ? formatDatePair(
+                start_at,
+                end_at,
+                'd MMM yyyy',
+                dateLocale,
+                formatMessage(messages.ongoing)
+              )
+            : formatSidebarDates(start_at, end_at);
           const onProjectPage = linkedPhaseIds.has(phase.id);
+          const title = localize(phase.attributes.title_multiloc);
 
           return (
             <Link
@@ -100,18 +117,41 @@ const SpotlightSurveys = ({ projectId, variant = 'sidebar' }: Props) => {
               to={PHASE_TAB_ROUTES[getPhaseLandingTab(phase)]}
               params={{ projectId, phaseId: phase.id }}
             >
-              <Row selected={phase.id === phaseId}>
-                <PhaseDot status={status} />
-                <Box flexGrow={1} pb="4px">
-                  <Text
-                    as="span"
-                    m="0"
-                    fontSize="s"
-                    color={status === 'past' ? 'textSecondary' : 'textPrimary'}
+              <RowElement selected={phase.id === phaseId}>
+                {redesign ? (
+                  <SurveyDot status={status} />
+                ) : (
+                  <PhaseDot status={status} />
+                )}
+                <Box flexGrow={1} pb={redesign ? '0' : '4px'}>
+                  {redesign ? (
+                    <SurveyTitle
+                      style={{
+                        color:
+                          status === 'past'
+                            ? colors.coolGrey600
+                            : bo.colors.textHeadingStrong,
+                      }}
+                    >
+                      {title}
+                    </SurveyTitle>
+                  ) : (
+                    <Text
+                      as="span"
+                      m="0"
+                      fontSize="s"
+                      color={
+                        status === 'past' ? 'textSecondary' : 'textPrimary'
+                      }
+                    >
+                      {title}
+                    </Text>
+                  )}
+                  <MetaElement
+                    m="2px 0 0 0"
+                    fontSize="xs"
+                    color="textSecondary"
                   >
-                    {localize(phase.attributes.title_multiloc)}
-                  </Text>
-                  <Text m="2px 0 0 0" fontSize="xs" color="textSecondary">
                     {dateText}
                     {!onProjectPage && (
                       <>
@@ -127,15 +167,15 @@ const SpotlightSurveys = ({ projectId, variant = 'sidebar' }: Props) => {
                         </Text>
                       </>
                     )}
-                  </Text>
+                  </MetaElement>
                 </Box>
-              </Row>
+              </RowElement>
             </Link>
           );
         })}
       </Box>
 
-      <Box display="flex" mt="4px">
+      <Box display="flex" mt={redesign ? '0' : '4px'}>
         {redesign ? (
           <ButtonWithLink
             className="intercom-product-tour-project-new-survey-button"
@@ -144,7 +184,7 @@ const SpotlightSurveys = ({ projectId, variant = 'sidebar' }: Props) => {
             search={{ placement: 'standalone' }}
             buttonStyle="bo-text"
             height="32px"
-            padding="0 8px"
+            padding="0 12px"
             fontSize={`${fontSizes.xs}px`}
             icon="plus"
             width="auto"

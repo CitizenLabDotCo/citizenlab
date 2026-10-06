@@ -69,6 +69,18 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.ongoing',
     defaultMessage: 'Ongoing',
   },
+  phaseDone: {
+    id: 'app.containers.Admin.projects.project.phaseDone',
+    defaultMessage: 'Done',
+  },
+  phaseInProgress: {
+    id: 'app.containers.Admin.projects.project.phaseInProgress',
+    defaultMessage: 'In progress',
+  },
+  phaseUpcoming: {
+    id: 'app.containers.Admin.projects.project.phaseUpcoming',
+    defaultMessage: 'Upcoming',
+  },
   notOnProjectPage: {
     id: 'app.containers.Admin.projects.project.notOnProjectPage',
     defaultMessage: 'Not on the project page',

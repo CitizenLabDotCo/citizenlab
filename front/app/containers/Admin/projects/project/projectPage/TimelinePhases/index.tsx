@@ -33,9 +33,10 @@ import {
   phaseStatus,
 } from '../phaseRowUtils';
 
+import DeletePhaseButton from './DeletePhaseButton';
 import EmptyState from './EmptyState';
-import PhaseOptionsMenu from './PhaseOptionsMenu';
 import PhaseRowWithOptions from './PhaseRowWithOptions';
+import PhaseStep from './PhaseStep';
 
 const METHOD_LABELS: Record<ParticipationMethod, MessageDescriptor> = {
   ideation: methodMessages.ideation,
@@ -53,6 +54,7 @@ const METHOD_LABELS: Record<ParticipationMethod, MessageDescriptor> = {
 
 interface Props {
   projectId: string;
+  variant?: 'sidebar' | 'backofficeRedesign';
   heading?: React.ReactNode;
   onNewPhase?: () => void;
   withPhaseOptions?: boolean;
@@ -60,6 +62,7 @@ interface Props {
 
 const TimelinePhases = ({
   projectId,
+  variant = 'sidebar',
   heading,
   onNewPhase,
   withPhaseOptions = false,
@@ -78,6 +81,7 @@ const TimelinePhases = ({
     a.attributes.start_at.localeCompare(b.attributes.start_at)
   );
   const noEndLabel = formatMessage(messages.phaseNoEndDate);
+  const redesign = variant === 'backofficeRedesign';
 
   return (
     <Box>
@@ -119,36 +123,49 @@ const TimelinePhases = ({
               to={PHASE_TAB_ROUTES[getPhaseLandingTab(phase)]}
               params={{ projectId, phaseId: phase.id }}
             >
-              <Row selected={isSelected}>
-                {sortedPhases.length > 1 && (
-                  <Connector isFirst={index === 0} isLast={isLast} />
-                )}
-                <PhaseDot status={status} />
-                <Box
-                  flexGrow={1}
-                  pb="4px"
-                  pr={withPhaseOptions ? '24px' : undefined}
-                >
-                  <Text
-                    as="span"
-                    m="0"
-                    fontSize="s"
-                    color={status === 'past' ? 'textSecondary' : 'textPrimary'}
+              {redesign ? (
+                <PhaseStep
+                  phase={phase}
+                  selected={isSelected}
+                  isLast={isLast}
+                  withOptions={withPhaseOptions}
+                />
+              ) : (
+                <Row selected={isSelected}>
+                  {sortedPhases.length > 1 && (
+                    <Connector isFirst={index === 0} isLast={isLast} />
+                  )}
+                  <PhaseDot status={status} />
+                  <Box
+                    flexGrow={1}
+                    pb="4px"
+                    pr={withPhaseOptions ? '24px' : undefined}
                   >
-                    {localize(phase.attributes.title_multiloc)}
-                  </Text>
-                  <Text m="2px 0 0 0" fontSize="xs" color="textSecondary">
-                    {dateText} · {methodLabel}
-                  </Text>
-                </Box>
-              </Row>
+                    <Text
+                      as="span"
+                      m="0"
+                      fontSize="s"
+                      color={
+                        status === 'past' ? 'textSecondary' : 'textPrimary'
+                      }
+                    >
+                      {localize(phase.attributes.title_multiloc)}
+                    </Text>
+                    <Text m="2px 0 0 0" fontSize="xs" color="textSecondary">
+                      {dateText} · {methodLabel}
+                    </Text>
+                  </Box>
+                </Row>
+              )}
             </Link>
           );
 
           return withPhaseOptions ? (
             <PhaseRowWithOptions
               key={phase.id}
-              options={<PhaseOptionsMenu projectId={projectId} phase={phase} />}
+              options={
+                <DeletePhaseButton projectId={projectId} phase={phase} />
+              }
             >
               {row}
             </PhaseRowWithOptions>
@@ -160,14 +177,14 @@ const TimelinePhases = ({
 
       <Box
         display="flex"
-        mt="4px"
+        mt={redesign ? '0' : '4px'}
         className="intercom-product-tour-project-timeline-new-phase"
       >
         {onNewPhase ? (
           <Button
             buttonStyle="bo-text"
             height="32px"
-            padding="0 8px"
+            padding="0 12px"
             fontSize={`${fontSizes.xs}px`}
             icon="plus"
             width="auto"

@@ -4,7 +4,6 @@ import {
   Box,
   Icon,
   Text,
-  Title,
   colors,
   fontSizes,
 } from '@citizenlab/cl2-component-library';
@@ -64,11 +63,13 @@ const TimelineEvents = ({ projectId }: Props) => {
 
   return (
     <Box>
-      <Box px="8px" mb="12px">
+      <Box px="12px" mb="12px">
         <Link to="/admin/projects/$projectId/events" params={{ projectId }}>
-          <Title variant="h4" fontSize="s" fontWeight="semi-bold" m="0">
-            {formatMessage(messages.eventsSection)}
-          </Title>
+          <Box as="h4" m="0">
+            <Text as="span" variant="boSection" m="0">
+              {formatMessage(messages.eventsSection)}
+            </Text>
+          </Box>
         </Link>
       </Box>
 
@@ -122,7 +123,7 @@ const TimelineEvents = ({ projectId }: Props) => {
           params={{ projectId }}
           buttonStyle="bo-text"
           height="32px"
-          padding="0 8px"
+          padding="0 12px"
           fontSize={`${fontSizes.xs}px`}
           icon="plus"
           width="auto"
