@@ -21,6 +21,7 @@ export function isTimelinePhase(phase: IPhaseData) {
   return phase.attributes.placement_type === 'on_timeline';
 }
 
+// Mirrors TimelineService#previous_phase on the back end; keep the two in sync.
 export function getPreviousTimelinePhase(
   phases: IPhaseData[],
   phase: IPhaseData
