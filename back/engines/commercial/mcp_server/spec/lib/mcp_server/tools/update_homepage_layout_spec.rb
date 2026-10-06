@@ -140,6 +140,32 @@ describe McpServer::Tools::UpdateHomepageLayout do
       expect(response).not_to be_error
       expect(layout.reload.craftjs_json).to have_key('NEW')
     end
+
+    context 'when the widget already filters and the feature is off' do
+      before do
+        layout.update!(craftjs_json: layout.craftjs_json.merge('ROOT' => root_with_events, 'EVENTS' => area_events))
+        SettingsService.new.deactivate_feature!('advanced_custom_pages')
+      end
+
+      # Clients send a node in full, so editing anything else on it re-sends its filter.
+      it 'saves an edit that keeps its filter' do
+        edited = area_events.deep_merge('props' => { 'limit' => 6 })
+
+        response = run(nodes: { 'EVENTS' => edited })
+
+        expect(response).not_to be_error
+        expect(layout.reload.craftjs_json.dig('EVENTS', 'props')).to include('source' => 'areas', 'limit' => 6)
+      end
+
+      it 'refuses switching it to another filter' do
+        switched = area_events.deep_merge('props' => { 'source' => 'global_topics', 'ids' => [] })
+
+        response = run(nodes: { 'EVENTS' => switched })
+
+        expect(response).to be_error
+        expect(layout.reload.craftjs_json.dig('EVENTS', 'props', 'source')).to eq('areas')
+      end
+    end
   end
 
   it 'refuses on a non-demo/trial platform' do

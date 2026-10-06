@@ -56,7 +56,7 @@ class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
       graph = patched_graph(stored)
       preserve_no_delete!(stored, graph)
       protect_fixed_structure!(stored, graph)
-      protect_events_filtering!
+      protect_events_filtering!(stored)
       validate!(graph)
 
       layout.craftjs_json = graph
@@ -107,13 +107,17 @@ class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
       end
     end
 
-    # Filtering events is part of advanced_custom_pages, as in the builder. Only patched nodes are
-    # checked, so a filter stored earlier never blocks an unrelated edit.
-    def protect_events_filtering!
+    # Filtering events is part of advanced_custom_pages, as in the builder. Like the builder, a
+    # widget keeps a filter it already has, so only a new or switched filter is refused.
+    def protect_events_filtering!(stored)
       return if AppConfiguration.instance.feature_activated?('advanced_custom_pages')
 
-      id, = patch_nodes.find do |_id, node|
-        node.is_a?(Hash) && resolved_name(node) == 'EventsList' && [nil, 'all'].exclude?(node.dig('props', 'source'))
+      id, = patch_nodes.find do |node_id, node|
+        next false unless node.is_a?(Hash) && resolved_name(node) == 'EventsList'
+
+        source = node.dig('props', 'source')
+        stored_source = stored[node_id].dig('props', 'source') if stored[node_id].is_a?(Hash)
+        [nil, 'all'].exclude?(source) && source != stored_source
       end
       return unless id
 
