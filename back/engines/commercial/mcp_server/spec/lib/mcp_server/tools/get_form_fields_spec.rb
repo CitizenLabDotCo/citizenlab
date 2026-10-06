@@ -32,6 +32,22 @@ describe McpServer::Tools::GetFormFields do
       title_multiloc_locks = response.structured_content.dig(:constraints, :title_multiloc, :locks)
       expect(title_multiloc_locks).to be_present
     end
+
+    it 'returns fields that replace_form_fields accepts as input' do
+      response = run_mcp_tool(
+        described_class,
+        params: { container_type: 'project', container_id: project.id },
+        current_user:
+      )
+      replace_tool = McpServer::Tools::ReplaceFormFields.for(current_user:, token_scopes: [])
+      arguments = JSON.parse({
+        container_type: 'project',
+        container_id: project.id,
+        fields: response.structured_content[:fields]
+      }.to_json)
+
+      expect { replace_tool.input_schema.validate_arguments(arguments) }.not_to raise_error
+    end
   end
 
   context 'with a native survey phase' do

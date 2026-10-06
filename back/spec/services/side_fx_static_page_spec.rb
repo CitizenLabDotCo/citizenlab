@@ -22,9 +22,18 @@ describe SideFxStaticPageService do
       expect(layout&.enabled).to be(true)
     end
 
+    it 'provisions a layout for the FAQ page (content_builder patch)' do
+      SettingsService.new.activate_feature!('custom_page_builder')
+      faq_page = create(:static_page, code: 'faq', slug: 'faq')
+
+      service.after_create(faq_page, user)
+
+      expect(ContentBuilder::Layout.find_by(content_buildable: faq_page, code: 'custom_page')).to be_present
+    end
+
     it 'does not provision a layout for a policy page (content_builder patch)' do
       SettingsService.new.activate_feature!('custom_page_builder')
-      policy_page = create(:static_page, code: 'faq', slug: 'faq')
+      policy_page = create(:static_page, code: 'terms-and-conditions', slug: 'terms-and-conditions')
 
       service.after_create(policy_page, user)
 

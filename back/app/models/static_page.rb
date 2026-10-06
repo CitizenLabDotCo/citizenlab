@@ -46,10 +46,14 @@ class StaticPage < ApplicationRecord
 
   CODES = %w[about cookie-policy terms-and-conditions privacy-policy faq custom].freeze
   RESERVED_SLUGS = (CODES - %w[custom]).freeze
+  # Pages whose content is authored in the content builder. The policy pages keep their own editor.
+  CONTENT_BUILDER_CODES = %w[custom about faq].freeze
 
   slug from: proc { |page| page.title_multiloc&.values&.find(&:present?) }, except: RESERVED_SLUGS
 
   enum :projects_filter_type, { no_filter: 'no_filter', areas: 'areas', global_topics: 'topics', spaces: 'spaces' }
+
+  scope :content_builder_pages, -> { where(code: CONTENT_BUILDER_CODES, project_id: nil) }
 
   has_many_text_images from: :top_info_section_multiloc, as: :top_info_section_text_images
   has_many_text_images from: :bottom_info_section_multiloc, as: :bottom_info_section_text_images
@@ -161,6 +165,10 @@ class StaticPage < ApplicationRecord
 
   def custom?
     code == 'custom'
+  end
+
+  def content_builder_page?
+    code.in?(CONTENT_BUILDER_CODES) && !project_scoped?
   end
 
   def project_scoped?
