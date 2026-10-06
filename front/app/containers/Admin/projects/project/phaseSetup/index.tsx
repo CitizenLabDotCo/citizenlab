@@ -1,6 +1,7 @@
 import React, { FormEvent, useEffect, useRef, useState } from 'react';
 
 import { Box, Title, colors } from '@citizenlab/cl2-component-library';
+import { CLErrors, Multiloc } from 'typings';
 
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
 import { IPhase, IUpdatedPhaseProperties } from 'api/phases/types';
@@ -12,6 +13,10 @@ import { getPhaseLandingTab, isTimelinePhase } from 'api/phases/utils';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
+
+import usePhaseFileAttachments, {
+  fileAttachmentErrors,
+} from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
 
 import {
   Section,
@@ -34,22 +39,12 @@ import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import DateSetup from './components/DateSetup';
 import PhaseParticipationConfig from './components/PhaseParticipationConfig';
-import {
-  ideationDefaultConfig,
-} from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
+import { ideationDefaultConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
 import PhasePlacement from './components/PhasePlacement';
 import messages from './messages';
+import { getNewPhaseDefaults, localizedDefaults } from './newPhaseDefaults';
 import { SubmitStateType, ValidationErrors } from './typings';
 import validate from './validate';
-
-import usePhaseFileAttachments, {
-  fileAttachmentErrors,
-} from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
-import { getNewPhaseDefaults, localizedDefaults } from './newPhaseDefaults';
-
-} from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
-} from 'components/admin/Section';
-} from 'utils/cl-intl';
 
 interface Props {
   projectId: string;
