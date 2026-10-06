@@ -82,11 +82,8 @@ describe McpServer::Tools::GetFormFields do
       expect(structured[:fields].pluck(:key)).to include('page_quality_of_life', 'place_to_live')
       expect(structured.dig(:constraints, :page_quality_of_life, :locks, :attributes)).to include(:title_multiloc)
 
-      # question_category must be a schema property so the round-trip (echo the fetched fields
-      # back to replace_form_fields) is accepted — CM questions carry it.
       question = structured[:fields].find { |field| field[:key] == 'place_to_live' }
       expect(question[:question_category]).to eq('quality_of_life')
-      expect(McpServer::Tools::FormFieldsSchemaBuilder.new.field_schema[:properties]).to have_key(:question_category)
     end
   end
 

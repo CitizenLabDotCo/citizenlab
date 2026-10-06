@@ -14,7 +14,9 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
     {
       read_only_hint: false,
       destructive_hint: true,
-      idempotent_hint: true,
+      # Not idempotent: an entry with neither id nor key is created anew on every call
+      # (auto-generated keys get a fresh suffix), so a blind retry duplicates it.
+      idempotent_hint: false,
       open_world_hint: false
     }
   end
