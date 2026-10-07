@@ -14,7 +14,8 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import sharedMessages from 'utils/messages';
-import { useParams } from 'utils/router';
+
+import useWidgetProjectId from '../../useWidgetProjectId';
 
 import messages from './messages';
 import SourceSetting from './SourceSetting';
@@ -40,7 +41,7 @@ export const defaultHeadingMessage = (
 
 const EventsSettings = () => {
   const { formatMessage } = useIntl();
-  const { projectId } = useParams({ strict: false });
+  const projectId = useWidgetProjectId();
   // craft stores props as untyped JSON; this widget is their only writer.
   const {
     actions: { setProp },

@@ -6,8 +6,11 @@ describe('Project page builder', () => {
   const projectTitle = randomString();
   const pageTitle = randomString();
   const bodyText = randomString();
+  const eventTitle = `Event ${randomString()}`;
+  const otherEventTitle = `Other ${randomString()}`;
 
   let projectId = '';
+  let otherProjectId = '';
   let projectSlug = '';
   let pageId = '';
   let pageSlug = '';
@@ -38,6 +41,15 @@ describe('Project page builder', () => {
       projectId = project.body.data.id;
       projectSlug = project.body.data.attributes.slug;
 
+      cy.apiCreateEvent({
+        projectId,
+        title: eventTitle,
+        description: eventTitle,
+        location: 'Brussels',
+        startDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        endDate: new Date(Date.now() + 8 * 24 * 60 * 60 * 1000),
+      });
+
       cy.apiCreateCustomPage(pageTitle, projectId).then((page) => {
         pageId = page.body.data.id;
         pageSlug = page.body.data.attributes.slug;
@@ -47,12 +59,30 @@ describe('Project page builder', () => {
         });
       });
     });
+
+    // Sooner than this project's event, so a widget listing every project would show it.
+    cy.apiCreateProject({
+      title: `Other ${randomString()}`,
+      descriptionPreview: 'Other project',
+      publicationStatus: 'published',
+    }).then((project) => {
+      otherProjectId = project.body.data.id;
+      cy.apiCreateEvent({
+        projectId: otherProjectId,
+        title: otherEventTitle,
+        description: otherEventTitle,
+        location: 'Brussels',
+        startDate: new Date(Date.now() + 60 * 1000),
+        endDate: new Date(Date.now() + 60 * 60 * 1000),
+      });
+    });
   });
 
   after(() => {
     setFeatures(false, projectPagesWasEnabled);
     if (pageId) cy.apiRemoveCustomPage(pageId);
     if (projectId) cy.apiRemoveProject(projectId);
+    if (otherProjectId) cy.apiRemoveProject(otherProjectId);
   });
 
   it('edits the page from one page with a preview, and opens the builder', () => {
@@ -84,6 +114,28 @@ describe('Project page builder', () => {
       'include',
       `/admin/projects/${projectId}/pages/${pageId}`
     );
+  });
+
+  // A project's page is about that project, as its project page is: an events widget lists that
+  // project's events and offers no other source.
+  it('adds an events widget about its project', () => {
+    setFeatures(true, true);
+    cy.setAdminLoginCookie();
+    cy.visit(`/admin/custom-page-builder/pages/${pageId}`);
+    cy.get('div#ROOT');
+    cy.get('#e2e-draggable-text');
+
+    cy.get('#e2e-draggable-events').dragAndDrop(
+      '[data-cy="e2e-custom-page-body"]',
+      { position: 'inside' }
+    );
+
+    // A dropped widget is selected, so its settings panel is open.
+    cy.get('#events-limit-all').should('exist');
+    cy.get('label[for="events-source-all"]').should('not.exist');
+    cy.dataCy('e2e-events-widget')
+      .should('contain', eventTitle)
+      .and('not.contain', otherEventTitle);
   });
 
   it('renders the derived layout on the published page, under its project', () => {
