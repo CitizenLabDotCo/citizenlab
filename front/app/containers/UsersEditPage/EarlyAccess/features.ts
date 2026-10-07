@@ -14,6 +14,6 @@ export const EARLY_ACCESS_FEATURES: EarlyAccessFeature[] = [
   {
     name: 'project_backoffice_redesign',
     title: messages.projectBackofficeRedesignTitle,
-    description: messages.projectBackofficeRedesignDescription,
+    description: messages.projectBackofficeRedesignDescription2,
   },
 ];

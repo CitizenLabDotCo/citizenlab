@@ -14,8 +14,8 @@ export default defineMessages({
     id: 'app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignTitle',
     defaultMessage: 'New project back office',
   },
-  projectBackofficeRedesignDescription: {
-    id: 'app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignDescription',
+  projectBackofficeRedesignDescription2: {
+    id: 'app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignDescription2',
     defaultMessage:
       'A new, easier to understand way to set up and manage projects. We are still improving it.',
   },
