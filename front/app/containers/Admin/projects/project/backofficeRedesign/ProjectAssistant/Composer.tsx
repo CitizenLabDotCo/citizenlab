@@ -25,12 +25,9 @@ const MAX_FILES = 3;
 const MAX_FILE_SIZE_MB = 10;
 export const MAX_PROMPT_LENGTH = 5000;
 
-// The textarea keeps room at its bottom-left for the attach control that sits
-// inside the box, chat-composer style.
 const ComposerField = styled(Box)`
   textarea {
     min-height: 140px;
-    padding-bottom: 44px;
     border-radius: 10px;
     transition: border-color 120ms ease, box-shadow 120ms ease;
   }
@@ -38,6 +35,32 @@ const ComposerField = styled(Box)`
   &:focus-within textarea {
     border-color: ${colors.teal400};
     box-shadow: 0 0 0 3px ${colors.teal100};
+  }
+`;
+
+// A labelled attach control below the field — "paperclip" alone doesn't tell a
+// manager they can hand the assistant a brief. Drag-and-drop still works on the
+// whole composer for anyone who prefers it.
+const AttachButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: ${colors.white};
+  border: 1px solid ${colors.grey300};
+  border-radius: 8px;
+  color: ${colors.textPrimary};
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 120ms ease, border-color 120ms ease;
+
+  &:hover:not(:disabled) {
+    background: ${colors.grey100};
+    border-color: ${colors.grey400};
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
   }
 `;
 
@@ -101,7 +124,7 @@ const Composer = ({
         </Box>
       )}
 
-      <ComposerField position="relative">
+      <ComposerField>
         <TextArea
           value={prompt}
           onChange={onPromptChange}
@@ -110,19 +133,23 @@ const Composer = ({
           maxCharCount={MAX_PROMPT_LENGTH}
           disabled={busy}
         />
-        {/* Attach control lives inside the field, bottom-left. */}
-        <Box position="absolute" bottom="10px" left="10px" zIndex="2">
-          <IconButton
-            iconName="paperclip"
-            buttonType="button"
-            iconColor={colors.grey700}
-            iconColorOnHover={colors.textPrimary}
-            a11y_buttonActionMessage={formatMessage(messages.attachFile)}
-            onClick={open}
-            disabled={busy}
-          />
-        </Box>
       </ComposerField>
+
+      <Box mt="10px">
+        <AttachButton
+          type="button"
+          onClick={open}
+          disabled={busy || files.length >= MAX_FILES}
+        >
+          <Icon
+            name="paperclip"
+            width="16px"
+            height="16px"
+            fill={colors.grey700}
+          />
+          {formatMessage(messages.attachFile)}
+        </AttachButton>
+      </Box>
 
       {files.length > 0 && (
         <Box display="flex" flexWrap="wrap" gap="6px" mt="8px">

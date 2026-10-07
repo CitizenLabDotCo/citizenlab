@@ -42,6 +42,7 @@ import messages from './messages';
 import Transcript from './Transcript';
 import { Exchange } from './types';
 import useDemoGeneration from './useDemoGeneration';
+import UserMessage from './UserMessage';
 
 // By default the Draft button plays a simulated run (progress + result report)
 // so the preview link always shows the polished experience. Add `?live` to the
@@ -232,6 +233,12 @@ const ProjectAssistant = ({ project }: Props) => {
     }
   };
 
+  // On staging the Draft button plays a simulated run instead of hitting the
+  // backend; these mirror the live running/succeeded states so the panel below
+  // renders the same way for both.
+  const demoRunning = demo.status === 'running';
+  const demoDone = demo.status === 'done';
+
   const busy = sending || !!runningJob || jobsQuery.isLoading;
   const showTranscript = exchanges.length > 0 || !!runningJob;
   const hasInput = prompt.trim() !== '' || files.length > 0;
@@ -240,7 +247,7 @@ const ProjectAssistant = ({ project }: Props) => {
   // Once a draft has landed this session, the panel switches from the brief
   // composer to the review surface: the assistant's summary of what it built
   // (+ why), the review links, and a box to redraft with more direction.
-  const hasDraft = lastExchange?.outcome === 'succeeded';
+  const hasDraft = demoDone || lastExchange?.outcome === 'succeeded';
   const showDraftReview = hasDraft && !runningJob && !sending;
 
   const setLever = (id: LeverId, value: number) =>
@@ -294,6 +301,18 @@ const ProjectAssistant = ({ project }: Props) => {
       return;
     }
     send();
+  };
+
+  // The redraft button: on staging it replays the simulated run; live, it
+  // sends the brief + new direction back to the engine.
+  const handleRegenerate = () => {
+    if (DEMO_MODE) {
+      setRefineText('');
+      setReferenceProjects([]);
+      demo.start();
+      return;
+    }
+    regenerateWithChanges();
   };
 
   // Redraft with more direction: the original brief plus the manager's new
@@ -377,18 +396,14 @@ const ProjectAssistant = ({ project }: Props) => {
         </Box>
       </Box>
 
-      {demo.status !== 'idle' ? (
-        /* Progress + result live inline in the dock, as the assistant's reply
-           to the brief — not a modal that would cover the project page. */
+      {demoRunning ? (
+        /* Progress lives inline in the dock, as the assistant's reply to the
+           brief — not a modal that would cover the project page. */
         <GenerationPanel
-          status={demo.status}
           steps={demo.steps}
           activeIndex={demo.activeIndex}
-          report={demo.report}
           prompt={prompt}
           fileNames={files.map((file) => file.name)}
-          projectId={projectId}
-          onClose={demo.reset}
         />
       ) : (
         <>
@@ -398,14 +413,30 @@ const ProjectAssistant = ({ project }: Props) => {
               runningJobStartedAt={runningJob?.attributes.created_at}
             />
           ) : (
-            <Text m="0px" color="textSecondary" lineHeight="1.55">
-              {formatMessage(messages.intro)}
-            </Text>
+            !hasDraft && (
+              <Text m="0px" color="textSecondary" lineHeight="1.55">
+                {formatMessage(messages.intro)}
+              </Text>
+            )
+          )}
+
+          {/* The simulated run has no live transcript, so show the brief as the
+              manager's own message above the summary, as the live flow does. */}
+          {demoDone && (prompt.trim() !== '' || files.length > 0) && (
+            <UserMessage
+              prompt={prompt.trim()}
+              fileNames={files.map((file) => file.name)}
+            />
           )}
 
           {/* After a draft lands: the assistant's summary of what it built and
               why + the review links, then a box to redraft with more direction. */}
-          {showDraftReview && <DraftReview projectId={projectId} />}
+          {showDraftReview && (
+            <DraftReview
+              projectId={projectId}
+              demoReport={demoDone ? demo.report : undefined}
+            />
+          )}
 
           {hasDraft && !runningJob && (
             <Box display="flex" flexDirection="column" gap="10px">
@@ -449,7 +480,7 @@ const ProjectAssistant = ({ project }: Props) => {
                 type="button"
                 width="100%"
                 icon="stars"
-                onClick={regenerateWithChanges}
+                onClick={handleRegenerate}
                 processing={sending}
                 disabled={sending}
               >

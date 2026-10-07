@@ -27,8 +27,8 @@ export default defineMessages({
     defaultMessage: 'Draft my project',
   },
   attachFile: {
-    id: `${scope}.attachFile`,
-    defaultMessage: 'Attach a document',
+    id: `${scope}.attachFileV2`,
+    defaultMessage: 'Attach brief or memo',
   },
   removeFile: {
     id: `${scope}.removeFile`,

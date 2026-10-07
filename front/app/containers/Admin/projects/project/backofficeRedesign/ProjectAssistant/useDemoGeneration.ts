@@ -17,89 +17,31 @@ export const DEMO_STEPS = [
 
 const STEP_MS = 1150;
 
-export type DemoArtifact = {
-  icon: 'sidebar-pages-menu' | 'calendar' | 'survey-matrix' | 'lock';
-  title: string;
-  detail: string;
-};
-
-// Where a next-step row takes the manager. GenerationPanel turns each target
-// into the real editor route (survey builder, page content builder, …).
-export type NextStepTarget = 'description' | 'survey' | 'phases' | 'access';
-
-export type DemoNextStep = {
-  icon: 'edit' | 'survey-matrix' | 'calendar' | 'lock';
-  title: string;
-  detail: string;
-  target: NextStepTarget;
-};
-
+// The demo's result mirrors the real engine's manager-facing briefing
+// (ai_generation_summary): a headline + pedagogical "why" highlights in the
+// participation-expert voice, plus the concrete plan and access. DraftReview
+// renders this with exactly the same layout it uses for a live draft.
 export type DemoReport = {
-  archetype: string;
-  rationale: string;
-  artifacts: DemoArtifact[];
-  surveyScore: number;
-  surveyNote: string;
-  nextSteps: DemoNextStep[];
+  headline: string;
+  highlights: string[];
+  steps: string[];
+  visibility: string;
 };
 
 // prototype data — a plausible result for a "we decide together / rough
-// direction" consultation brief.
+// direction" consultation brief, written as the participation expert would
+// explain it: no internal terms, each line teaches why the choice was made.
 const REPORT: DemoReport = {
-  archetype: 'Consultation',
-  rationale:
-    'You chose “we decide together” on a rough direction, so I led with a survey to gather structured input, then a short phase to review it and share back what you heard — closing the loop with residents.',
-  artifacts: [
-    {
-      icon: 'sidebar-pages-menu',
-      title: 'Project page',
-      detail: 'Intro, the context, and a clear “what happens next”.',
-    },
-    {
-      icon: 'calendar',
-      title: '3 phases',
-      detail: 'Survey (2 weeks) → Review input (1 week) → Share what we heard.',
-    },
-    {
-      icon: 'survey-matrix',
-      title: 'Survey with 8 questions',
-      detail: 'A mix of multiple-choice and two open questions.',
-    },
-    {
-      icon: 'lock',
-      title: 'Access',
-      detail: 'Open to all residents, no registration wall.',
-    },
+  headline:
+    'I’ve set this up as a two-way consultation: you gather structured input first, then close the loop by showing residents what you heard and what it changed.',
+  highlights: [
+    'Across thousands of engagement projects, the biggest driver of trust isn’t the survey itself — it’s whether people see what happened to their input. That’s why I ended with a “what we heard” phase, not the survey.',
+    'I led with a focused survey rather than open idea-collection: your brief points to a decision you’ve already largely framed, so structured questions give you input you can actually compare and act on.',
+    'The survey stays short and mostly multiple-choice, with two open questions at the end — completion drops sharply past ~8 questions, and free text is far costlier to make sense of at scale.',
+    'I kept it open to anyone with no sign-up wall: a registration barrier is the most common reason first-time participation stalls. You can always tighten access to verified residents later if you need to.',
   ],
-  surveyScore: 86,
-  surveyNote:
-    'Strong on clarity and neutral wording. Consider shortening question 5 and adding one demographic question.',
-  nextSteps: [
-    {
-      icon: 'edit',
-      title: 'Polish the project page',
-      detail: 'Tweak the intro and add your own image.',
-      target: 'description',
-    },
-    {
-      icon: 'survey-matrix',
-      title: 'Review the 8 survey questions',
-      detail: 'Edit wording or reorder in the survey builder.',
-      target: 'survey',
-    },
-    {
-      icon: 'calendar',
-      title: 'Confirm the phase dates',
-      detail: 'I used sensible defaults — set the real start and end.',
-      target: 'phases',
-    },
-    {
-      icon: 'lock',
-      title: 'Check who can participate',
-      detail: 'Open it up further or restrict to a group.',
-      target: 'access',
-    },
-  ],
+  steps: ['Survey (14 days)', 'Review input (7 days)', 'Share what we heard'],
+  visibility: 'anyone who visits',
 };
 
 const useDemoGeneration = () => {

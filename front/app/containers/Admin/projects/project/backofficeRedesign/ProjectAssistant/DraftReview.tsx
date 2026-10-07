@@ -8,6 +8,7 @@ import useProjectById from 'api/projects/useProjectById';
 import useLocalize from 'hooks/useLocalize';
 
 import ReviewPanel from './ReviewPanel';
+import { DemoReport } from './useDemoGeneration';
 
 // After a draft lands, the assistant — the "participation expert" — explains
 // what it built and why it works, then hands over the review links. The headline
@@ -37,14 +38,17 @@ const daysBetween = (start: string, end: string | null) => {
 
 interface Props {
   projectId: string;
+  // On staging there's no engine behind the button, so the demo passes a
+  // ready-made briefing + plan that stands in for the real project's data.
+  demoReport?: DemoReport;
 }
 
-const DraftReview = ({ projectId }: Props) => {
+const DraftReview = ({ projectId, demoReport }: Props) => {
   const localize = useLocalize();
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
 
-  const steps = (phases?.data ?? []).map((phase) => {
+  const realSteps = (phases?.data ?? []).map((phase) => {
     const method = phase.attributes.participation_method;
     const label = METHOD_LABELS[method] ?? method;
     const days = daysBetween(phase.attributes.start_at, phase.attributes.end_at);
@@ -56,11 +60,16 @@ const DraftReview = ({ projectId }: Props) => {
   const previewText = attributes
     ? localize(attributes.description_preview_multiloc)
     : '';
-  const headline = summary?.headline || previewText || 'Here’s the project I drafted';
-  const highlights = summary?.highlights ?? [];
-  const visibility = attributes
-    ? VISIBILITY_LABELS[attributes.visible_to]
-    : undefined;
+  const headline =
+    demoReport?.headline ||
+    summary?.headline ||
+    previewText ||
+    'Here’s the project I drafted';
+  const highlights = demoReport?.highlights ?? summary?.highlights ?? [];
+  const steps = demoReport?.steps ?? realSteps;
+  const visibility =
+    demoReport?.visibility ??
+    (attributes ? VISIBILITY_LABELS[attributes.visible_to] : undefined);
 
   return (
     <Box display="flex" flexDirection="column" gap="12px">
