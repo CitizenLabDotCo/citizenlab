@@ -85,6 +85,14 @@ const ProjectPage = () => {
   }
 
   const slug = project.data.attributes.slug;
+  // The preview is a live iframe of the front-office page. A static src never
+  // reloads, so edits made elsewhere (e.g. the AI generator writing the page
+  // and phases) only appeared after a manual refresh. Tie the src to the
+  // project's updated_at so the iframe reloads whenever the project changes.
+  const search = window.location.search;
+  const cacheBust = `${search ? '&' : '?'}u=${encodeURIComponent(
+    project.data.attributes.updated_at
+  )}`;
 
   const openContentBuilder = () => {
     clHistory.push(
@@ -95,7 +103,7 @@ const ProjectPage = () => {
   return (
     <Preview
       dataCy="e2e-project-page-preview"
-      src={`/${locale}/projects/${slug}${window.location.search}`}
+      src={`/${locale}/projects/${slug}${search}${cacheBust}`}
       title={formatMessage(messages.projectPagePreviewTitle)}
     >
       <CornerEditButton

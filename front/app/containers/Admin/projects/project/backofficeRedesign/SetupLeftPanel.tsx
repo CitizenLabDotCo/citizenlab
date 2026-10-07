@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Box, Icon, Text, bo, colors } from '@citizenlab/cl2-component-library';
 
 import usePhases from 'api/phases/usePhases';
+import useProjectGenerationJob from 'api/project_generations/useProjectGenerationJob';
 import { IProjectData } from 'api/projects/types';
 
 import { HeaderDropdownName } from './Header/HeaderDropdown';
@@ -70,16 +71,21 @@ const TabButton = ({ active, label, icon, onClick }: TabButtonProps) => (
 
 const SetupLeftPanel = ({ project, onOpenDropdown }: Props) => {
   const { data: phases } = usePhases(project.id);
+  const { data: jobs } = useProjectGenerationJob(project.id);
   const [tab, setTab] = useState<Tab | null>(null);
 
   // A fresh, empty draft opens on the assistant (the "draft from a brief"
-  // on-ramp); anything with content opens on Setup. The user's own tab choice
-  // always wins once made.
+  // on-ramp). A project the assistant has drafted also opens on the assistant,
+  // so the manager lands back on the chat (with its summary + review of what
+  // was built) rather than on Setup once phases exist. Anything else opens on
+  // Setup. The user's own tab choice always wins once made.
   const isEmptyDraft =
     project.attributes.publication_status === 'draft' &&
     phases !== undefined &&
     phases.data.length === 0;
-  const activeTab: Tab = tab ?? (isEmptyDraft ? 'assistant' : 'setup');
+  const hasGeneration = (jobs?.data.length ?? 0) > 0;
+  const activeTab: Tab =
+    tab ?? (isEmptyDraft || hasGeneration ? 'assistant' : 'setup');
 
   return (
     <Box
