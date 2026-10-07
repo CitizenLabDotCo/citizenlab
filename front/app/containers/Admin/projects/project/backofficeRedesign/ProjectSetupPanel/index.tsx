@@ -72,7 +72,7 @@ const ProjectSetupPanel = ({ project, onOpenDropdown }: Props) => {
         />
       )}
 
-      <SetupCards project={project} />
+      <SetupCards key={project.id} project={project} />
 
       <ProjectSettingsModal
         project={project}
