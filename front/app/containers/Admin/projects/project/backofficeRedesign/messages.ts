@@ -507,10 +507,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.unsavedChangesTitle',
     defaultMessage: 'Unsaved changes',
   },
-  unsavedChangesDescription: {
-    id: 'app.containers.Admin.projects.project.unsavedChangesDescription',
-    defaultMessage:
-      'This phase has unsaved changes. Leaving now discards them.',
+  unsavedChangesDescription2: {
+    id: 'app.containers.Admin.projects.project.unsavedChangesDescription2',
+    defaultMessage: 'You have unsaved changes. Leaving now discards them.',
   },
   unsavedChangesCancel: {
     id: 'app.containers.Admin.projects.project.unsavedChangesCancel',
