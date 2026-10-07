@@ -101,7 +101,9 @@ class McpServer::LayoutWidgets
         stacking two "colored" bands together.
     DOC
     'EventsList' => <<~DOC,
-      EventsList — the project's upcoming and past events. props: {}
+      EventsList — the project's upcoming and past events.
+        props: {"source":"currentProject","timeFilters":["upcoming","past"],"limit":"all"}
+        Missing props are filled in with these values; any other source is refused.
         custom: {"title":{"id":"app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle","defaultMessage":"Events"},"noPointerEvents":true}
         Renders entirely from the project's events (create them with create_event); it renders
         nothing when there are none. Renders on white; it has no background setting.

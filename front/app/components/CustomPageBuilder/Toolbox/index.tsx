@@ -214,12 +214,21 @@ const CustomPageBuilderToolbox = () => {
         <DraggableElement
           id="e2e-draggable-events"
           component={
-            <EventsList
-              source="all"
-              timeFilters={['upcoming']}
-              limit={3}
-              projectPublicationStatuses={['published']}
-            />
+            // A project's page is about that project, as its project page is.
+            isProjectPage ? (
+              <EventsList
+                source="currentProject"
+                timeFilters={['upcoming', 'past']}
+                limit="all"
+              />
+            ) : (
+              <EventsList
+                source="all"
+                timeFilters={['upcoming']}
+                limit={3}
+                projectPublicationStatuses={['published']}
+              />
+            )
           }
           icon="calendar"
           label={formatMessage(eventsMessages.eventsListTitle)}
