@@ -5,7 +5,7 @@
 # as new uploads are.
 #
 # Files keep their names, so records and layouts that point to them keep working. Images that
-# already fit are stored again unchanged.
+# already fit are left alone, and only the ones that will shrink are reported.
 #
 #     rake single_use:reprocess_layout_images                     # dry run, all tenants
 #     rake 'single_use:reprocess_layout_images[execute]'          # reprocess, all tenants
@@ -18,9 +18,22 @@ namespace :single_use do
       args: args,
       description: 'shrinking layout images'
     ) do |tenant, script|
+      max_size = ContentBuilder::LayoutImageUploader::MAX_SIZE
+
       ContentBuilder::LayoutImage.where.not(image: nil).find_each do |layout_image|
         identifier = layout_image.read_attribute(:image)
-        script.reporter.add_change(identifier, identifier, context: { tenant: tenant.host, layout_image_id: layout_image.id })
+        # A project copy still in progress holds the source image's URL, not a stored file.
+        next if CarrierwaveTempRemote.url?(identifier)
+        next if File.extname(identifier).casecmp?('.svg')
+
+        uploader = layout_image.image
+        width, height = MiniMagick::Image.read(uploader.file.read).dimensions
+        next if width <= max_size && height <= max_size
+
+        script.reporter.add_change(
+          identifier, identifier,
+          context: { tenant: tenant.host, layout_image_id: layout_image.id, width: width, height: height }
+        )
         next if script.dry_run?
 
         # BaseImageUploader names new files after a token kept on the model. Setting it to the
@@ -28,7 +41,6 @@ namespace :single_use do
         layout_image.instance_variable_set(:@image_secure_token, File.basename(identifier, '.*'))
 
         # Caching the stored file is what runs the processing.
-        uploader = layout_image.image
         uploader.cache_stored_file!
         uploader.retrieve_from_cache!(uploader.cache_name)
         uploader.store!(uploader.file)

@@ -15,20 +15,17 @@ compressible_content_type = %r{\A(text/|application/(json|vnd\.api\+json|javascr
 Rails.application.config.middleware.insert_after Rack::Sendfile, Rack::Deflater,
   sync: false,
   if: lambda { |_env, _status, headers, _body|
-    next false unless ENV['API_GZIP'] == 'true'
-
-    content_length = headers['Content-Length']
-
-    headers['Content-Type'].to_s.match?(compressible_content_type) &&
-      (content_length.nil? || content_length.to_i > 1024)
+    ENV['API_GZIP'] == 'true' && headers['Content-Type'].to_s.match?(compressible_content_type)
   }
 
 # Rack::Deflater has no option for the compression level and always uses zlib's
 # default (6). Level 1 (BEST_SPEED) is only ~10-20% larger on our JSON responses
 # for a fraction of the CPU.
+raise "RackDeflaterBestSpeed copies rack 2.2 code, check it against rack #{Rack.release}" unless Rack.release.start_with?('2.2')
+
 module RackDeflaterBestSpeed
   # Copy of Rack::Deflater::GzipStream#each (rack 2.2), with the compression level
-  # set. Revisit when upgrading rack.
+  # set.
   def each(&block)
     @writer = block
     gzip = ::Zlib::GzipWriter.new(self, ::Zlib::BEST_SPEED)

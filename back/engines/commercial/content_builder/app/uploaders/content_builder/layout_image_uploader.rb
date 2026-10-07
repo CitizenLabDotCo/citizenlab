@@ -6,7 +6,6 @@ module ContentBuilder
     # Admins often upload photos straight from a camera (5000px+ wide, several MB).
     # No layout shows an image wider than this, even on high-density screens.
     MAX_SIZE = 2400
-    QUALITY = 85
 
     process :sanitize_svg
     process :limit_size
@@ -44,13 +43,16 @@ module ContentBuilder
     def limit_size
       return if svg?
 
-      width, height = ::MiniMagick::Image.new(current_path).dimensions
+      image = ::MiniMagick::Image.new(current_path)
+      width, height = image.dimensions
       return if width <= MAX_SIZE && height <= MAX_SIZE
 
       if @file.content_type == 'image/gif'
         gif_safe_transform! { |img| img.resize "#{MAX_SIZE}x#{MAX_SIZE}>" }
       else
-        resize_to_limit(MAX_SIZE, MAX_SIZE, combine_options: { quality: QUALITY })
+        # ImageMagick can read the quality of a JPEG only. Left unset, it keeps the source's.
+        combine_options = jpeg? && image['%Q'].to_i > JPEG_MAX_QUALITY ? { quality: JPEG_MAX_QUALITY } : {}
+        resize_to_limit(MAX_SIZE, MAX_SIZE, combine_options: combine_options)
       end
     end
 

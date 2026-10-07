@@ -47,5 +47,24 @@ describe 'single_use:reprocess_layout_images rake task' do
 
     expect(layout_image.reload.image).to have_dimensions(3000, 2000)
   end
+
+  it 'reports only the images that will shrink' do
+    create(:layout_image)
+
+    run_task(dry_run: true)
+
+    report = JSON.parse(Rails.root.join('reprocess_layout_images_dry_run.json').read)
+    expect(report['changes'].pluck('new_value')).to eq [layout_image.read_attribute(:image)]
+  end
+
+  it 'skips an image still being copied from another project' do
+    layout_image.update_column(:image, 'https://example.com/uploads/photo.jpg')
+
+    run_task
+
+    report = JSON.parse(Rails.root.join('reprocess_layout_images.json').read)
+    expect(report['changes']).to be_empty
+    expect(report['errors']).to be_empty
+  end
 end
 # rubocop:enable RSpec/DescribeClass

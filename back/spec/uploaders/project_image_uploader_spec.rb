@@ -15,11 +15,12 @@ RSpec.describe ProjectImageUploader do
 
   after { FileUtils.rm_rf(tmp_dir) }
 
-  def generate_image(name, quality: nil)
+  def generate_image(name, quality: nil, define: nil)
     path = File.join(tmp_dir, name)
     MiniMagick::Tool::Convert.new do |convert|
       convert << '-size' << '1200x900' << 'gradient:red-blue'
       convert << '-quality' << quality.to_s if quality
+      convert << '-define' << define if define
       convert << path
     end
     File.open(path)
@@ -32,13 +33,20 @@ RSpec.describe ProjectImageUploader do
   it 'saves a JPEG version at a lower quality' do
     uploader.store! generate_image('photo.jpg', quality: 95)
 
-    expect(quality(uploader.large)).to eq BaseImageUploader::VERSION_QUALITY
+    expect(quality(uploader.large)).to eq BaseImageUploader::JPEG_MAX_QUALITY
   end
 
   it 'does not re-encode a JPEG already at a lower quality' do
     uploader.store! generate_image('photo.jpg', quality: 60)
 
     expect(quality(uploader.large)).to eq 60
+  end
+
+  # ImageMagick reports 100 for a lossless WebP and 92 for any lossy one.
+  it 'keeps a lossless WebP version lossless' do
+    uploader.store! generate_image('graphic.webp', define: 'webp:lossless=true')
+
+    expect(quality(uploader.large)).to eq 100
   end
 
   it 'keeps a PNG version a PNG' do
