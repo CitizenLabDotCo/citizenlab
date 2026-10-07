@@ -25,8 +25,11 @@ const Transcript = ({ exchanges, runningJobStartedAt }: Props) => {
       {exchanges.map((exchange) => (
         <React.Fragment key={exchange.id}>
           <UserMessage prompt={exchange.prompt} fileNames={exchange.fileNames} />
-          {exchange.outcome && (
-            <ResultMessage succeeded={exchange.outcome === 'succeeded'} />
+          {/* A succeeded draft is shown by the review card below the transcript
+              (describe + approve/reject), so only surface a line for failures. */}
+          {exchange.outcome === 'failed' && <ResultMessage succeeded={false} />}
+          {exchange.decision === 'approved' && (
+            <ResultMessage succeeded approved />
           )}
         </React.Fragment>
       ))}

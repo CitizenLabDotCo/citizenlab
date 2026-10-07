@@ -6,4 +6,7 @@ export type Exchange = {
   // The newest job before this request was sent, to recognise the job it started.
   previousJobId: string | undefined;
   outcome?: 'succeeded' | 'failed';
+  // The manager's call on a succeeded draft: approve it, or reject (which opens
+  // the refine box and produces a fresh request).
+  decision?: 'approved' | 'rejected';
 };

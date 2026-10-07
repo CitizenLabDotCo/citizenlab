@@ -9,9 +9,9 @@ export default defineMessages({
     defaultMessage: 'Project assistant',
   },
   intro: {
-    id: `${scope}.introV2`,
+    id: `${scope}.introV3`,
     defaultMessage:
-      'Tell me what you want to achieve and I’ll draft the whole project for you — page, phases and a survey, ready to review. Every draft is grounded in local best practice and ten years of data on what actually drives participation.',
+      'Tell me what you want to achieve and I’ll draft the whole project for you — project page, phases, method configuration and survey questions, ready to review. Every draft is grounded in local best practice and ten years of data on what actually drives participation.',
   },
   tagline: {
     id: `${scope}.tagline`,
