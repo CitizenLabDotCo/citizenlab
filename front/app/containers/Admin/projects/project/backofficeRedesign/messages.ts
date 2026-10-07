@@ -86,10 +86,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.participationMethods',
     defaultMessage: 'Participation methods',
   },
-  newParticipationMethod: {
-    id: 'app.containers.Admin.projects.project.newParticipationMethod',
-    defaultMessage: 'New participation method',
-  },
   newEvent: {
     id: 'app.containers.Admin.projects.project.newEvent',
     defaultMessage: 'New event',
