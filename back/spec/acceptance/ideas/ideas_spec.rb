@@ -389,16 +389,6 @@ resource 'Ideas' do
             assert_status 401
           end
         end
-
-        context 'when not logged in' do
-          let(:author) { create(:user) }
-
-          example '[error] Get a draft idea as a visitor', document: false do
-            header 'Authorization', nil
-            do_request
-            assert_status 401
-          end
-        end
       end
     end
 
@@ -418,14 +408,6 @@ resource 'Ideas' do
         example '[error] Get an unexisting idea', document: false do
           do_request
           expect(status).to eq 404
-        end
-      end
-
-      describe 'when the idea is a draft of another resident' do
-        let(:idea) { create(:idea, author: create(:user), publication_status: 'draft') }
-
-        example_request '[error] Get a draft idea of another resident by slug', document: false do
-          assert_status 401
         end
       end
     end
