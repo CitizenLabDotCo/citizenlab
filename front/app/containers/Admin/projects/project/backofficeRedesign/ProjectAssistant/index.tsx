@@ -7,6 +7,7 @@ import customFieldsKeys from 'api/custom_fields/keys';
 import customFormKeys from 'api/custom_form/keys';
 import useAddFile from 'api/files/useAddFile';
 import phasesKeys from 'api/phases/keys';
+import usePhases from 'api/phases/usePhases';
 import useAddProjectGeneration from 'api/project_generations/useAddProjectGeneration';
 import useProjectGenerationJob from 'api/project_generations/useProjectGenerationJob';
 import { isProjectGenerationInProgress } from 'api/project_generations/util';
@@ -25,6 +26,10 @@ import { getBase64FromFile } from 'utils/fileUtils';
 
 import Composer, { MAX_PROMPT_LENGTH } from './Composer';
 import GenerationPanel from './GenerationPanel';
+import ReferenceProjectsControl, {
+  ReferenceProject,
+} from './ReferenceProjectsControl';
+import ReviewPanel from './ReviewPanel';
 import Intake from './Intake';
 import {
   INTAKE_QUESTIONS,
@@ -60,17 +65,24 @@ const ProjectAssistant = ({ project }: Props) => {
   const { formatMessage } = useIntl();
   const queryClient = useQueryClient();
   const jobsQuery = useProjectGenerationJob(projectId);
+  const { data: phases } = usePhases(projectId);
   const { mutateAsync: addFile } = useAddFile();
   const { mutateAsync: addProjectGeneration } = useAddProjectGeneration();
 
   const demo = useDemoGeneration();
   const [prompt, setPrompt] = useState('');
   const [files, setFiles] = useState<File[]>([]);
+  const [referenceProjects, setReferenceProjects] = useState<ReferenceProject[]>(
+    []
+  );
   const [levers, setLevers] = useState(DEFAULT_LEVERS);
   const [answers, setAnswers] = useState<IntakeAnswers>({});
   const [exchanges, setExchanges] = useState<Exchange[]>([]);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState<string>();
+  // A project that already has phases was generated (or built) before, so a new
+  // run is a full re-generation — it replaces everything. Ask once to confirm.
+  const [confirmingRegen, setConfirmingRegen] = useState(false);
   // The running job this panel has seen, so that its completion is handled once.
   const watchedJobIdRef = useRef<string>();
 
@@ -120,9 +132,11 @@ const ProjectAssistant = ({ project }: Props) => {
       );
     }
 
-    if (succeeded) {
-      refreshWorkspace();
-    }
+    // Refresh even on partial failure: the generator usually persists most of
+    // the project (phases, survey, page) before a non-fatal tool error, so the
+    // workspace should always reflect what was actually created — not stay on
+    // the pre-generation empty state until a manual reload.
+    refreshWorkspace();
   });
 
   const uploadFile = async (file: File) =>
@@ -169,9 +183,22 @@ const ProjectAssistant = ({ project }: Props) => {
       // The intake answers ride along as plain-language context appended to the
       // brief, so the engine reads them in the same words the manager would use.
       const extra = briefSupplement();
-      const fullPrompt = (
-        extra.length ? [prompt.trim(), '', ...extra].join('\n') : prompt.trim()
-      ).slice(0, MAX_PROMPT_LENGTH);
+      // Selected platform projects ride along as reference context, in the same
+      // plain words a manager would use ("make one like these").
+      const referenceLines = referenceProjects.length
+        ? [
+            'Use these existing projects on the platform as reference and context:',
+            ...referenceProjects.map((reference) =>
+              reference.description
+                ? `- ${reference.title}: ${reference.description}`
+                : `- ${reference.title}`
+            ),
+          ]
+        : [];
+      const sections = [prompt.trim()];
+      if (extra.length) sections.push('', ...extra);
+      if (referenceLines.length) sections.push('', ...referenceLines);
+      const fullPrompt = sections.join('\n').slice(0, MAX_PROMPT_LENGTH);
       await addProjectGeneration({
         projectId,
         prompt: fullPrompt,
@@ -191,6 +218,7 @@ const ProjectAssistant = ({ project }: Props) => {
       ]);
       setPrompt('');
       setFiles([]);
+      setReferenceProjects([]);
       // A fresh brief starts a fresh conversation.
       setAnswers({});
       setLevers(DEFAULT_LEVERS);
@@ -205,6 +233,7 @@ const ProjectAssistant = ({ project }: Props) => {
   const showTranscript = exchanges.length > 0 || !!runningJob;
   const hasInput = prompt.trim() !== '' || files.length > 0;
   const canDraft = hasInput && !busy;
+  const hasExistingContent = (phases?.data.length ?? 0) > 0;
 
   const setLever = (id: LeverId, value: number) =>
     setLevers((previous) => ({ ...previous, [id]: value }));
@@ -241,6 +270,13 @@ const ProjectAssistant = ({ project }: Props) => {
     });
 
   const handleDraft = () => {
+    // On a project that already has content, the first click arms a confirm —
+    // re-generating fully replaces the current page, phases and survey.
+    if (hasExistingContent && !confirmingRegen) {
+      setConfirmingRegen(true);
+      return;
+    }
+    setConfirmingRegen(false);
     if (DEMO_MODE) {
       demo.start();
       return;
@@ -294,6 +330,10 @@ const ProjectAssistant = ({ project }: Props) => {
         />
       ) : (
         <>
+          {/* Once the project has content, lead with quick review actions so the
+              manager walks through the draft rather than hunting for it. */}
+          {hasExistingContent && <ReviewPanel projectId={projectId} />}
+
           {showTranscript ? (
             <Transcript
               exchanges={exchanges}
@@ -315,6 +355,13 @@ const ProjectAssistant = ({ project }: Props) => {
                 onFilesChange={setFiles}
               />
 
+              <ReferenceProjectsControl
+                selected={referenceProjects}
+                onChange={setReferenceProjects}
+                excludeProjectId={projectId}
+                disabled={busy}
+              />
+
               {/* The conversational intake opens once there's a brief to shape;
                   before that, a quiet teaser so the reveal feels intentional.
                   Keyed by the round so each new brief starts a fresh chat. */}
@@ -334,7 +381,21 @@ const ProjectAssistant = ({ project }: Props) => {
                 </Text>
               )}
 
-              {/* Draft is the final commit, after the shaping choices. */}
+              {/* Draft is the final commit, after the shaping choices. On a
+                  project that already has content it becomes a guarded
+                  re-generate: the first click arms the warning below. */}
+              {confirmingRegen && (
+                <Box
+                  p="12px"
+                  borderRadius="8px"
+                  style={{ background: '#FFF4E5', border: '1px solid #F5C87E' }}
+                >
+                  <Text m="0px" fontSize="s" color="textPrimary">
+                    ⚠️ This fully regenerates the project — the current page,
+                    phases and survey will be replaced.
+                  </Text>
+                </Box>
+              )}
               <ButtonWithLink
                 type="button"
                 width="100%"
@@ -343,8 +404,30 @@ const ProjectAssistant = ({ project }: Props) => {
                 disabled={!canDraft}
                 processing={busy}
               >
-                <FormattedMessage {...messages.draftButton} />
+                {confirmingRegen ? (
+                  'Yes, regenerate everything'
+                ) : hasExistingContent ? (
+                  'Regenerate project'
+                ) : (
+                  <FormattedMessage {...messages.draftButton} />
+                )}
               </ButtonWithLink>
+              {confirmingRegen && (
+                <button
+                  type="button"
+                  onClick={() => setConfirmingRegen(false)}
+                  style={{
+                    border: 'none',
+                    background: 'transparent',
+                    color: colors.textSecondary,
+                    cursor: 'pointer',
+                    textDecoration: 'underline',
+                    fontSize: '14px',
+                  }}
+                >
+                  Cancel
+                </button>
+              )}
             </>
           )}
 

@@ -17,7 +17,6 @@ import ProjectWorkspace from './backofficeRedesign';
 import { PhaseSaveProvider } from './backofficeRedesign/_shared/PhaseSaveContext';
 import NewPhase from './backofficeRedesign/NewPhase';
 import PhaseSetup from './backofficeRedesign/Phase/PhaseSetup';
-import ProjectAssistant from './backofficeRedesign/ProjectAssistant';
 import ProjectTimeline from './backofficeRedesign/ProjectTimeline';
 import UnsavedChangesGuard from './backofficeRedesign/UnsavedChangesGuard';
 import ProjectHeader from './projectHeader';
@@ -40,14 +39,6 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
 
   const selectedPhase = phaseId ? phase?.data : undefined;
 
-  // The assistant takes the side panel of a draft project: one you have just
-  // created and not yet published. It stays available even after it drafts
-  // phases, so its result report keeps showing alongside the generated plan.
-  const showAssistant =
-    aiProjectGeneratorEnabled &&
-    !selectedPhase &&
-    project.attributes.publication_status === 'draft';
-
   if (!canModerateProject(project, authUser)) {
     return null;
   }
@@ -62,7 +53,6 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
           <ProjectWorkspace
             project={project}
             phase={selectedPhase}
-            sidePanelWidth={showAssistant ? '460px' : undefined}
             sidePanel={
               selectedPhase ? (
                 <PhaseSetup
@@ -70,8 +60,6 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
                   projectId={projectId}
                   phase={selectedPhase}
                 />
-              ) : showAssistant ? (
-                <ProjectAssistant project={project} />
               ) : (
                 <ProjectTimeline projectId={projectId} />
               )

@@ -14,7 +14,7 @@ import messages from './messages';
 // already understands, and it adds one plain-language line to the brief, so the
 // generation engine gets the context in the same words the manager would use.
 
-export type IntakeQuestionId = 'outcome' | 'audience' | 'timing';
+export type IntakeQuestionId = 'stage' | 'audience' | 'timing';
 
 export type IntakeOption = {
   id: string;
@@ -39,26 +39,40 @@ export type IntakeQuestionConfig = {
 
 export const INTAKE_QUESTIONS: IntakeQuestionConfig[] = [
   {
-    id: 'outcome',
-    ask: messages.intakeOutcomeAsk,
+    // The decision-making stage — the GSM framework from the intake skill.
+    // It's asked first because it's what most steers the archetype the engine
+    // picks (the backend prompt maps Problem/Solution/Decision/Implementation
+    // to a method). Each option also nudges the funnel-appropriate levers.
+    id: 'stage',
+    ask: messages.intakeStageAsk,
     options: [
       {
-        id: 'understand',
-        label: messages.intakeOutcomeUnderstand,
-        levers: { influence: 0, how_fixed: 0 },
-        brief: messages.intakeOutcomeUnderstandBrief,
+        id: 'problem',
+        label: messages.intakeStageProblem,
+        // Nothing decided yet; listen widely.
+        levers: { influence: 1, how_fixed: 0, format: 2 },
+        brief: messages.intakeStageProblemBrief,
       },
       {
-        id: 'inform-decision',
-        label: messages.intakeOutcomeInform,
-        levers: { influence: 1, how_fixed: 1 },
-        brief: messages.intakeOutcomeInformBrief,
+        id: 'solution',
+        label: messages.intakeStageSolution,
+        // Problem is clear; co-create ideas in the open.
+        levers: { influence: 1, how_fixed: 0, format: 0 },
+        brief: messages.intakeStageSolutionBrief,
       },
       {
-        id: 'residents-decide',
-        label: messages.intakeOutcomeDecide,
-        levers: { influence: 2 },
-        brief: messages.intakeOutcomeDecideBrief,
+        id: 'decision',
+        label: messages.intakeStageDecision,
+        // Options exist; residents help choose between them.
+        levers: { influence: 2, how_fixed: 1 },
+        brief: messages.intakeStageDecisionBrief,
+      },
+      {
+        id: 'implementation',
+        label: messages.intakeStageImplementation,
+        // The plan is set; consult on how to roll it out.
+        levers: { influence: 1, how_fixed: 2 },
+        brief: messages.intakeStageImplementationBrief,
       },
     ],
   },

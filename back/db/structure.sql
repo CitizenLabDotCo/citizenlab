@@ -9562,6 +9562,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261002120000'),
 ('20260915134812'),
 ('20260915120000'),
 ('20260915103146'),

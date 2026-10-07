@@ -6,9 +6,14 @@
   duration/tone -> survey design -> scoring rubric), distilled to fit the backend's
   CLOSED output schema (see ProjectGeneration::ProjectGenerator::RESPONSE_SCHEMA).
 
+  Now ported: survey option randomisation / "Other" / dropdown / select-count, the ideation
+  "map" input view (presentation_mode), proposals thresholds, and optional demographics
+  (the platform's profile questions attached as a final survey page).
+
   Deliberately NOT ported, because the schema/orchestration does not cover them yet:
-    - image-choice and spatial (point/line/polygon) survey question types, map/perspectives
-      ideation views, project imagery, and the Notion GSM-report workflow.
+    - image-choice questions (no MCP tool creates the option images), spatial point/line/polygon
+      questions and the "map" survey page (no MCP tool creates the required map_config), the
+      ideation "feed" view beyond the flag, project imagery, and the Notion GSM-report workflow.
   Voting and common_ground phases ARE created (the draft sets the phase + config; the
   voting options and agree/disagree statements are added by an admin after the upstream
   phase). When the items above land in the generator, widen this prompt and bump the marker.
@@ -44,7 +49,8 @@ Design the project in these steps.
    - gather_input — "what matters? what should we work on / prioritise?"; agenda-setting with no fixed proposal. Influence 2-4.
    - co_create — shape a specific plan, design or site with residents, iteratively. Influence 3-4.
    - prioritize — residents decide between options, allocate a budget, or back proposals to steer where effort/money goes (the devolved, closest-to-deciding case). Influence 4-5.
-   Weigh the brief's purpose first, then how_fixed, then influence. A high how_fixed with low influence points to inform/consult; an open how_fixed with higher influence points to gather_input or co_create; a decision between competing options or a "let residents decide" framing points to prioritize. A celebration / identity / community-cohesion brief has no dedicated code — pick the closest (usually gather_input or co_create) and make sure it closes with a visible showcase. State a one or two sentence rationale citing the lever(s) and brief wording that drove the call, and set the influence language honestly later — never imply more influence than the archetype and levers support.
+   Weigh the brief's purpose first, then how_fixed, then influence. A high how_fixed with low influence points to inform/consult; an open how_fixed with higher influence points to gather_input or co_create; a decision between competing options or a "let residents decide" framing points to prioritize. A celebration / identity / community-cohesion brief has no dedicated code — pick the closest (usually gather_input or co_create) and make sure it closes with a visible showcase.
+   If the brief signals where the government is in its decision — the stage framing managers use, Problem / Solution / Decision / Implementation — let it steer the archetype: Problem (understand an issue or opportunity before anything is shaped) -> gather_input; Solution (find solutions to a problem that is already clear) -> gather_input or co_create; Decision (choose between options the government has already developed) -> prioritize; Implementation (roll out a decision well, in a way that fits the community) -> co_create or consult. State a one or two sentence rationale citing the lever(s) and brief wording that drove the call, and set the influence language honestly later — never imply more influence than the archetype and levers support.
 
 2. Choose the phases and a method for each. A project is a sequence of 1 to 5 phases, each with one participation method. Use only these methods and match them to the format and influence levers:
    - information — a read-only phase that sets context or reports back. Collects no input.
@@ -67,6 +73,10 @@ Design the project in these steps.
    Duration defaults by archetype (override only on a clear signal in the brief, e.g. a hard deadline): inform 2-4 weeks; consult 3-6 weeks; gather_input 4-8 weeks; co_create 6-12 weeks; prioritize 8-12 weeks. Distribute the total across phases; give engagement phases more time than information phases. If the brief names a deadline, work back from it and shorten proportionally.
 
    Every phase carries a voting object. For a voting phase, set it: voting_method is single_voting (approval — pick the ones we should do; the simple, accessible default), multiple_voting (residents spend several votes/tokens to show how strongly they prefer options) or budgeting (options carry a cost and residents allocate a fixed budget — participatory budgeting, only when the brief names a real budget). Set voting_max_total to the per-voter allowance (for budgeting, the total budget / pot); set voting_min_total (0 if none); set voting_max_votes_per_idea only for multiple_voting (0 otherwise); choose a vote_term (vote, point, token, credit or percent). Never invent monetary amounts the brief did not give — leave voting_max_total at 0 for budgeting if unknown and the manager will set the pot. For any phase that is NOT voting, fill the voting object with voting_method single_voting, vote_term vote, and every number 0.
+   Set the remaining per-phase fields deliberately (use the neutral default when a phase does not use them):
+   - presentation_mode (ideation / proposals / voting) — how residents browse the inputs: "map" when inputs are tied to real locations (sites, streets, facilities) and seeing them placed on a map genuinely helps; "feed" for a running, discussion-led stream (ideation only); "card" otherwise. Use "" for methods that do not show an input list (information, native_survey, common_ground).
+   - proposals_reacting_threshold and proposals_expire_days (proposals only) — the number of likes a proposal needs to be considered, and the number of days it has to reach that. Scale them to the community and the brief's timeline (a small town needs a lower threshold than a big city); leave 0 to accept the platform default. 0 for other methods.
+   - collect_demographics — set true on a native_survey (or another account-based phase) when a representative read matters and the reach is broad, to append the platform's demographic questions as an optional final page. Never set it on a phase anyone can take part in without an account, and never hand-author demographic questions yourself. false otherwise.
 
 3. For every native_survey phase, design the survey. Match each question to the insight you are after and the respondent's experience — do NOT default to short-answer / single-choice, and deliberately vary the types across the form (a wall of identical questions kills completion). Only use these question types:
    - text — a short free-text answer (a word or phrase).
@@ -82,7 +92,10 @@ Design the project in these steps.
    Form length by archetype: inform 0-2 quick questions; consult 2-5; gather_input 3-5 open-ended/prioritised; co_create 6-10 mixed qualitative + quantitative; prioritize 2-5. Reaching for breadth (reach = 2) -> fewer, simpler questions; depth (small group) -> a richer mix. At most 20 questions.
    Per-question configuration (set deliberately on every question):
    - required — default to optional. Mark required: true only for the few questions essential to the phase's purpose. Open-ended and any sensitive questions are always optional.
-   - option order — for select / multiselect / ranking, randomising removes primacy bias, but the schema has no order flag, so instead author the options already in a neutral order (do NOT lead with the option you expect to win); keep a meaningful order only when it carries meaning (ordinal scales, days/months, long alphabetical lists for findability), and always place "Other" / "None" / "Prefer not to say" last.
+   - random_option_ordering — for select / multiselect, set true by default: randomising removes primacy bias. Set false only when the order carries meaning (ordinal scales, days/months, a long alphabetical list for findability). Author the options already in a neutral order either way (do NOT lead with the option you expect to win). Not used for ranking or scales — set false there.
+   - allow_other — for select / multiselect, set true when the listed options may not be exhaustive, so a resident can add their own; the platform keeps "Other" last, so do NOT also hand-author an "Other", "None" or "Prefer not to say" option. Set false for an intentionally closed set and for all other types.
+   - dropdown_layout — for select / multiselect with a long option list (roughly 8+), set true to render a dropdown instead of a long list of radios / checkboxes. False otherwise.
+   - min_select / max_select — multiselect only: cap how many options a resident may pick when the ask is "choose up to N" or "pick your top N" (max_select = N; set min_select only when a minimum is genuinely needed). 0 / 0 for no limit, and for every other type.
    Run every question through this quality check before returning it, and fix wording yourself when the fix is unambiguous:
    - wording: no leading phrasing ("Don't you agree…"), no loaded words ("dangerous", "world-class"), no double-barrelled asks (split them), no jargon/acronyms, no double negatives, no vague quantifiers (give concrete anchors), plain language at roughly a 12-year-old reading level.
    - scales: balanced labels with equal positive and negative sides around the centre; 5-7 points for most scales (the allowed range is 2-11; sentiment is always 5); add a neutral / "don't know" path (or mark the question optional) rather than forcing a false pick.

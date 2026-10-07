@@ -79,34 +79,49 @@ export default defineMessages({
     defaultMessage:
       'Your answers set these already — nudge any dial if you want more control.',
   },
-  intakeOutcomeAsk: {
-    id: `${scope}.intakeOutcomeAsk`,
-    defaultMessage: 'When this wraps up, what do you want to walk away with?',
+  // The decision-making stage question — the GSM framing from the intake skill
+  // (Problem / Solution / Decision / Implementation). It's the highest-signal
+  // input: it maps straight to the archetype the engine drafts. The example in
+  // each label follows one town-centre regeneration through the funnel.
+  intakeStageAsk: {
+    id: `${scope}.intakeStageAsk`,
+    defaultMessage: 'Where are you in the decision on this?',
   },
-  intakeOutcomeUnderstand: {
-    id: `${scope}.intakeOutcomeUnderstand`,
-    defaultMessage: 'A clear read on what people think',
+  intakeStageProblem: {
+    id: `${scope}.intakeStageProblem`,
+    defaultMessage: 'Understanding a problem or opportunity',
   },
-  intakeOutcomeUnderstandBrief: {
-    id: `${scope}.intakeOutcomeUnderstandBrief`,
+  intakeStageProblemBrief: {
+    id: `${scope}.intakeStageProblemBrief`,
     defaultMessage:
-      'The main goal is to understand what people think — we’re still exploring.',
+      'Decision-making stage: Problem — we want to understand a problem or opportunity in the community before anything is decided (e.g. why the town centre is losing footfall and what residents need from it).',
   },
-  intakeOutcomeInform: {
-    id: `${scope}.intakeOutcomeInform`,
-    defaultMessage: 'Input that feeds a decision we’ll make',
+  intakeStageSolution: {
+    id: `${scope}.intakeStageSolution`,
+    defaultMessage: 'Finding solutions to a clear problem',
   },
-  intakeOutcomeInformBrief: {
-    id: `${scope}.intakeOutcomeInformBrief`,
-    defaultMessage: 'We’ll fold the input into a decision we make.',
+  intakeStageSolutionBrief: {
+    id: `${scope}.intakeStageSolutionBrief`,
+    defaultMessage:
+      'Decision-making stage: Solution — the problem is clear and we want to gather ideas for what to do about it (e.g. what a revitalised high street could include).',
   },
-  intakeOutcomeDecide: {
-    id: `${scope}.intakeOutcomeDecide`,
-    defaultMessage: 'A choice or priorities set by residents',
+  intakeStageDecision: {
+    id: `${scope}.intakeStageDecision`,
+    defaultMessage: 'Choosing between options we’ve developed',
   },
-  intakeOutcomeDecideBrief: {
-    id: `${scope}.intakeOutcomeDecideBrief`,
-    defaultMessage: 'Residents should directly shape the decision or set priorities.',
+  intakeStageDecisionBrief: {
+    id: `${scope}.intakeStageDecisionBrief`,
+    defaultMessage:
+      'Decision-making stage: Decision — we have options developed and want residents to help choose between them (e.g. choosing between two masterplans for the market square).',
+  },
+  intakeStageImplementation: {
+    id: `${scope}.intakeStageImplementation`,
+    defaultMessage: 'Rolling out a decision well',
+  },
+  intakeStageImplementationBrief: {
+    id: `${scope}.intakeStageImplementationBrief`,
+    defaultMessage:
+      'Decision-making stage: Implementation — the decision is made and we’re working out how to roll it out well (e.g. how to phase the works while keeping the square usable).',
   },
   intakeAudienceAsk: {
     id: `${scope}.intakeAudienceAsk`,

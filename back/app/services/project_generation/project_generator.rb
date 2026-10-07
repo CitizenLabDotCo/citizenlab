@@ -41,12 +41,17 @@ module ProjectGeneration
     # (create_phase requires voting_max_total for multiple_voting and budgeting).
     DEFAULT_VOTING_MAX_TOTAL = { 'multiple_voting' => 7, 'budgeting' => 1000 }.freeze
     VISIBILITIES = %w[public groups admins].freeze
+    # Input-list views for ideation / proposals / voting (mirrors Phase::PRESENTATION_MODES).
+    PRESENTATION_MODES = %w[card map feed].freeze
 
     QUESTION_TYPES = %w[
       text multiline_text number select multiselect ranking
       linear_scale rating matrix_linear_scale sentiment_linear_scale
     ].freeze
     OPTION_TYPES = %w[select multiselect ranking].freeze
+    # Nominal choice types: randomising, dropdown layout and an "Other" option
+    # apply here (ranking is ordinal, so none of those do).
+    NOMINAL_OPTION_TYPES = %w[select multiselect].freeze
     LABELED_SCALE_TYPES = %w[linear_scale matrix_linear_scale sentiment_linear_scale].freeze
     SCALE_TYPES = [*LABELED_SCALE_TYPES, 'rating'].freeze
     SENTIMENT_SCALE_MAXIMUM = 5
@@ -75,13 +80,18 @@ module ProjectGeneration
     QUESTION_SCHEMA = {
       type: 'object',
       additionalProperties: false,
-      required: %w[input_type title description required options statements scale_maximum scale_labels],
+      required: %w[input_type title description required options allow_other random_option_ordering dropdown_layout min_select max_select statements scale_maximum scale_labels],
       properties: {
         input_type: { type: 'string', enum: QUESTION_TYPES },
         title: { type: 'string' },
         description: { type: 'string', description: 'Optional help text. Empty string if none.' },
         required: { type: 'boolean' },
         options: { type: 'array', items: { type: 'string' } },
+        allow_other: { type: 'boolean', description: 'select / multiselect only: add an "Other" free-text option (kept last). Use when the listed options may not be exhaustive. false otherwise.' },
+        random_option_ordering: { type: 'boolean', description: 'select / multiselect only: randomise option order to remove primacy bias. Default true for nominal options; false for options with a meaningful order (ordinal, sequential, long alphabetical). false for other types.' },
+        dropdown_layout: { type: 'boolean', description: 'select / multiselect only: render as a dropdown rather than radio buttons / checkboxes. Use for long option lists (roughly 8+). false otherwise.' },
+        min_select: { type: 'integer', description: 'multiselect only: minimum number of options a resident must pick. 0 for no minimum.' },
+        max_select: { type: 'integer', description: 'multiselect only: maximum number of options a resident may pick (e.g. "pick your top 3" -> 3). 0 for no limit.' },
         statements: { type: 'array', items: { type: 'string' } },
         scale_maximum: { type: 'integer' },
         scale_labels: { type: 'array', items: { type: 'string' } }
@@ -114,12 +124,16 @@ module ProjectGeneration
     PHASE_SCHEMA = {
       type: 'object',
       additionalProperties: false,
-      required: %w[title description participation_method duration_days survey voting],
+      required: %w[title description participation_method duration_days presentation_mode proposals_reacting_threshold proposals_expire_days collect_demographics survey voting],
       properties: {
         title: { type: 'string' },
         description: { type: 'string', description: 'One or two sentences, plain text.' },
         participation_method: { type: 'string', enum: PARTICIPATION_METHODS },
         duration_days: { type: 'integer', description: 'Length of the phase in days.' },
+        presentation_mode: { type: 'string', enum: [*PRESENTATION_MODES, ''], description: 'ideation / proposals / voting only: how residents see the list of inputs. "map" for place-based input tied to locations; "feed" for a discussion feel (ideation only); "card" (the default) otherwise. Empty string for other methods.' },
+        proposals_reacting_threshold: { type: 'integer', description: 'proposals only: likes a proposal needs to reach to be considered. 0 to use the platform default.' },
+        proposals_expire_days: { type: 'integer', description: 'proposals only: days a proposal has to reach the threshold before it expires. 0 to use the platform default.' },
+        collect_demographics: { type: 'boolean', description: "true to attach the platform's demographic profile questions as an optional final page (good for a representative survey with a broad reach). false otherwise. Ignored when anyone can take part without an account." },
         survey: { **SURVEY_SCHEMA, description: 'Only used when participation_method is native_survey; otherwise leave title empty and questions empty.' },
         voting: { **VOTING_SCHEMA, description: 'Only used when participation_method is voting; otherwise fill with single_voting, vote and zeros.' }
       }
@@ -237,6 +251,12 @@ module ProjectGeneration
     def persist(plan)
       errors = []
 
+      # Re-generation fully replaces the project: now that we have a valid new
+      # plan, clear the previously generated phases (and their surveys/voting)
+      # and events. The page layout is overwritten by update_layout below, so
+      # it is left in place for the update_project_layout tool to patch.
+      reset_generated_content!
+
       phases = create_phases(plan['phases'], errors)
       return GenerationResult.new(errors: errors, failed: true) if phases.empty?
 
@@ -249,6 +269,13 @@ module ProjectGeneration
       update_access(phases, plan['audience_index'], errors)
 
       GenerationResult.new(errors: errors, failed: core_failed)
+    end
+
+    # On a re-generation, wipe what a previous run created so the new plan is a
+    # clean replacement rather than a second set of phases stacked on the first.
+    def reset_generated_content!
+      @project.phases.destroy_all
+      @project.events.destroy_all
     end
 
     # Creates the phases in sequence, back to back from today. Returns the created phases
@@ -292,6 +319,23 @@ module ProjectGeneration
       end
 
       args.merge!(voting_args(phase_plan['voting'])) if method == 'voting'
+
+      # Input-list view (card / map / feed) for the methods that show a list of
+      # inputs. 'feed' is ideation-only, so fall back to 'card' elsewhere.
+      if %w[ideation proposals voting].include?(method)
+        mode = phase_plan['presentation_mode']
+        mode = 'card' if mode == 'feed' && method != 'ideation'
+        args[:presentation_mode] = mode if PRESENTATION_MODES.include?(mode)
+      end
+
+      # Proposals thresholds: only override the platform defaults when the model
+      # gave a positive value.
+      if method == 'proposals'
+        threshold = phase_plan['proposals_reacting_threshold'].to_i
+        expire = phase_plan['proposals_expire_days'].to_i
+        args[:reacting_threshold] = threshold if threshold.positive?
+        args[:expire_days_limit] = expire if expire.positive?
+      end
 
       args
     end
@@ -412,13 +456,21 @@ module ProjectGeneration
 
     def update_access(phases, audience_index, errors)
       permitted_by = PERMITTED_BY_BY_INDEX[audience_index.to_i.clamp(0, 2)]
-      return if permitted_by == 'users' # the platform default; nothing to change
 
       phases.each do |phase|
         action = PRIMARY_ACTION[phase[:plan]['participation_method']]
         next if action.nil?
 
+        # Demographics only apply when there is an account to read them from —
+        # not when anyone can take part anonymously. Passing null attaches the
+        # platform's configured profile questions as an optional final page.
+        wants_demographics = phase[:plan]['collect_demographics'] == true && permitted_by != 'everyone'
+
+        # Nothing to change for the default audience unless we're adding demographics.
+        next if permitted_by == 'users' && !wants_demographics
+
         args = { phase_id: phase[:id], action: action, permitted_by: permitted_by }
+        args[:demographic_questions] = nil if wants_demographics
         response = call_tool(McpServer::Tools::UpdatePhasePermission, args)
         errors << "update_phase_permission: #{response.content.to_json}" if response.error?
       end
@@ -496,6 +548,29 @@ module ProjectGeneration
 
       if OPTION_TYPES.include?(input_type)
         field[:options] = question['options'].map { |option| { title_multiloc: multiloc(option) } }
+      end
+
+      # Nominal choice questions carry the survey-design levers: an optional
+      # "Other" (pinned last by the platform), randomised order to cut primacy
+      # bias, and a dropdown layout for long lists.
+      if NOMINAL_OPTION_TYPES.include?(input_type)
+        if question['allow_other'] == true
+          other_label = I18n.t('project_generation.other_option', locale: @locale, default: 'Other')
+          field[:options] << { title_multiloc: multiloc(other_label), other: true }
+        end
+        field[:random_option_ordering] = question['random_option_ordering'] == true
+        field[:dropdown_layout] = question['dropdown_layout'] == true
+      end
+
+      # "Pick up to N" limits — only multiselect supports a select count.
+      if input_type == 'multiselect'
+        max_select = question['max_select'].to_i
+        min_select = question['min_select'].to_i
+        if max_select.positive?
+          field[:select_count_enabled] = true
+          field[:maximum_select_count] = max_select
+          field[:minimum_select_count] = min_select if min_select.positive?
+        end
       end
 
       if input_type == 'matrix_linear_scale'

@@ -4,7 +4,7 @@
 # (including epic preview tenants, which persist across redeploys) so the
 # real ?live generation can run end to end. Apartment invokes this once per
 # tenant schema, so we only touch the current tenant's AppConfiguration.
-class EnableAiProjectGeneratorFeature < ActiveRecord::Migration[7.1]
+class EnableAIProjectGeneratorFeature < ActiveRecord::Migration[7.1]
   def up
     return if Apartment::Tenant.current == 'public'
 

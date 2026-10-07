@@ -5,6 +5,8 @@ import { Box, bo, colors } from '@citizenlab/cl2-component-library';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
+import useAiProjectGenerator from 'hooks/useAiProjectGenerator';
+
 import { useLocation } from 'utils/router';
 
 import { usePhaseSave } from './_shared/PhaseSaveContext';
@@ -15,6 +17,7 @@ import { HeaderDropdownName } from './Header/HeaderDropdown';
 import MethodSettings from './Phase/MethodSettings';
 import { viewFromPathname } from './Phase/usePhaseViews';
 import ProjectSetupPanel from './ProjectSetupPanel';
+import SetupLeftPanel from './SetupLeftPanel';
 
 const PROJECT_PANEL_WIDTH = '332px';
 const PHASE_PANEL_WIDTH = '560px';
@@ -50,6 +53,8 @@ const ProjectWorkspace = ({
   );
   const markSetupStep = useMarkSetupStep(project);
   const phaseSave = usePhaseSave();
+  // Premium gate: when on, the left column adds an Assistant tab next to Setup.
+  const aiProjectGeneratorEnabled = useAiProjectGenerator();
 
   const showDropdown = (dropdown: HeaderDropdownName | null) => {
     setOpenDropdown(dropdown);
@@ -75,18 +80,23 @@ const ProjectWorkspace = ({
     <ProjectSetupPanel project={project} onOpenDropdown={showDropdown} />
   );
 
-  const setupSlot = !section && (
-    <Box
-      flex={`0 0 ${PROJECT_PANEL_WIDTH}`}
-      width={PROJECT_PANEL_WIDTH}
-      minHeight="0"
-      overflowY="auto"
-      borderRadius={bo.panelBorderRadius}
-      background={colors.white}
-    >
-      {settingsPanel}
-    </Box>
-  );
+  const setupSlot = !section &&
+    (aiProjectGeneratorEnabled ? (
+      // Premium: left column becomes Assistant + Setup tabs (Setup still the
+      // full manual checklist, so building from scratch stays one click away).
+      <SetupLeftPanel project={project} onOpenDropdown={showDropdown} />
+    ) : (
+      <Box
+        flex={`0 0 ${PROJECT_PANEL_WIDTH}`}
+        width={PROJECT_PANEL_WIDTH}
+        minHeight="0"
+        overflowY="auto"
+        borderRadius={bo.panelBorderRadius}
+        background={colors.white}
+      >
+        {settingsPanel}
+      </Box>
+    ));
   const timelineSlot = sidePanel && (
     <Box
       flex={`0 0 ${sidePanelWidth}`}
