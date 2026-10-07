@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { colors } from '@citizenlab/cl2-component-library';
+import { IconButton, colors } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
 import useDeletePhase from 'api/phases/useDeletePhase';
@@ -9,7 +9,6 @@ import useLocalize from 'hooks/useLocalize';
 
 import phaseMessages from 'containers/Admin/projects/project/phase/messages';
 
-import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 import TypedDeleteConfirmationModal from 'components/UI/TypedDeleteConfirmationModal';
 import typedDeleteConfirmationMessages from 'components/UI/TypedDeleteConfirmationModal/messages';
 
@@ -22,7 +21,7 @@ interface Props {
   phase: IPhaseData;
 }
 
-const PhaseOptionsMenu = ({ projectId, phase }: Props) => {
+const DeletePhaseButton = ({ projectId, phase }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { phaseId } = useParams({ strict: false });
@@ -47,17 +46,17 @@ const PhaseOptionsMenu = ({ projectId, phase }: Props) => {
 
   return (
     <>
-      <MoreActionsMenu
-        showLabel={false}
-        color={colors.coolGrey500}
-        ideaTitle={title}
-        menuRight="-12px"
-        actions={[
-          {
-            label: formatMessage(phaseMessages.deletePhase),
-            handler: () => setShowDeleteModal(true),
-          },
-        ]}
+      <IconButton
+        iconName="delete"
+        iconWidth="20px"
+        iconHeight="20px"
+        iconColor={colors.coolGrey600}
+        iconColorOnHover={colors.textPrimary}
+        p="8px"
+        a11y_buttonActionMessage={`${formatMessage(
+          phaseMessages.deletePhase
+        )}: ${title}`}
+        onClick={() => setShowDeleteModal(true)}
       />
       <TypedDeleteConfirmationModal
         opened={showDeleteModal}
@@ -75,4 +74,4 @@ const PhaseOptionsMenu = ({ projectId, phase }: Props) => {
   );
 };
 
-export default PhaseOptionsMenu;
+export default DeletePhaseButton;

@@ -54,17 +54,6 @@ class CustomFieldService
     end
   end
 
-  # @param [Hash<String, _>] custom_field_values
-  # @return [Hash<String, _>]
-  def self.remove_hidden_custom_fields(custom_field_values)
-    # The key to performance here is that the SQL request that gets 'all_hidden_keys' is always the same (it does not
-    # depend on the parameters). As a consequence, if this method is called several times for processing a single
-    # request, the result of the request is cached and the request is not repeated.
-    all_hidden_keys = CustomField.hidden.pluck(:key)
-    hidden_keys = all_hidden_keys & custom_field_values.keys
-    custom_field_values.except(*hidden_keys)
-  end
-
   # Drops values for registration fields this platform does not have. An identity
   # provider can return such a key, and once stored it makes the profile form refuse
   # every later save.
@@ -73,43 +62,6 @@ class CustomFieldService
   def self.remove_unknown_registration_custom_fields(custom_field_values)
     values = custom_field_values.to_h.stringify_keys
     values.slice(*CustomField.registration.where(key: values.keys).pluck(:key))
-  end
-
-  # NOTE: Needs refactor. This is called by idea serializer so will have an n+1 issue
-  def self.remove_not_visible_fields(idea, current_user)
-    custom_field_values = CustomFieldValuesTransitionService.new.custom_field_values(idea)
-    return custom_field_values if idea.draft?
-
-    # If super admin, we return all custom fields.
-    # This is mostly for debugging purposes, and to allow checking
-    # this behavior in the e2e tests.
-    return custom_field_values if current_user&.super_admin?
-
-    fields = IdeaCustomFieldsService.new(idea.custom_form).enabled_public_fields
-    if can_see_admin_answers?(idea, current_user)
-      fields = IdeaCustomFieldsService.new(idea.custom_form).enabled_fields
-    end
-
-    visible_keys = []
-    fields.each do |field|
-      visible_keys << field.key
-
-      if field.supports_other_option?
-        visible_keys << "#{field.key}_other"
-      end
-
-      if field.supports_follow_up?
-        visible_keys << "#{field.key}_follow_up"
-      end
-    end
-
-    custom_field_values.slice(*visible_keys)
-  end
-
-  def self.can_see_admin_answers?(idea, current_user)
-    return false unless current_user
-
-    idea.author_id == current_user.id || UserRoleService.new.can_moderate_project?(idea.project, current_user)
   end
 
   # Fallback to another locale title if current locale is missing

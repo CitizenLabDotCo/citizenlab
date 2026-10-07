@@ -32,6 +32,22 @@ describe McpServer::Tools::GetFormFields do
       title_multiloc_locks = response.structured_content.dig(:constraints, :title_multiloc, :locks)
       expect(title_multiloc_locks).to be_present
     end
+
+    it 'returns fields that replace_form_fields accepts as input' do
+      response = run_mcp_tool(
+        described_class,
+        params: { container_type: 'project', container_id: project.id },
+        current_user:
+      )
+      replace_tool = McpServer::Tools::ReplaceFormFields.for(current_user:, token_scopes: [])
+      arguments = JSON.parse({
+        container_type: 'project',
+        container_id: project.id,
+        fields: response.structured_content[:fields]
+      }.to_json)
+
+      expect { replace_tool.input_schema.validate_arguments(arguments) }.not_to raise_error
+    end
   end
 
   context 'with a native survey phase' do
@@ -82,11 +98,8 @@ describe McpServer::Tools::GetFormFields do
       expect(structured[:fields].pluck(:key)).to include('page_quality_of_life', 'place_to_live')
       expect(structured.dig(:constraints, :page_quality_of_life, :locks, :attributes)).to include(:title_multiloc)
 
-      # question_category must be a schema property so the round-trip (echo the fetched fields
-      # back to replace_form_fields) is accepted — CM questions carry it.
       question = structured[:fields].find { |field| field[:key] == 'place_to_live' }
       expect(question[:question_category]).to eq('quality_of_life')
-      expect(McpServer::Tools::FormFieldsSchemaBuilder.new.field_schema[:properties]).to have_key(:question_category)
     end
   end
 

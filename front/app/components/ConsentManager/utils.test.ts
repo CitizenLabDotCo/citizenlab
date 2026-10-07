@@ -11,7 +11,7 @@ const mockAppConfiguration = {
         allowed: true,
         enabled: true,
       },
-      google_analytics: {
+      google_tag_manager: {
         allowed: true,
         enabled: true,
       },
@@ -31,13 +31,13 @@ const matomoConfig: IDestinationConfig = {
 };
 registerDestination(matomoConfig);
 
-const gaConfig: IDestinationConfig = {
-  key: 'google_analytics',
+const gtmConfig: IDestinationConfig = {
+  key: 'google_tag_manager',
   category: 'analytics',
-  feature_flag: 'google_analytics',
-  name: () => 'Google Analytics',
+  feature_flag: 'google_tag_manager',
+  name: () => 'Google Tag Manager',
 };
-registerDestination(gaConfig);
+registerDestination(gtmConfig);
 
 const intercomConfig: IDestinationConfig = {
   key: 'intercom',
@@ -53,7 +53,7 @@ describe('getActiveDestinations', () => {
   it('works correctly without user', () => {
     const output = getActiveDestinations(mockAppConfiguration, null);
 
-    expect(output).toEqual([matomoConfig, gaConfig]);
+    expect(output).toEqual([matomoConfig, gtmConfig]);
   });
 
   it('works correctly with regular user', () => {
@@ -64,7 +64,7 @@ describe('getActiveDestinations', () => {
       },
     } as any);
 
-    expect(output).toEqual([matomoConfig, gaConfig]);
+    expect(output).toEqual([matomoConfig, gtmConfig]);
   });
 
   it('works correctly with admin user', () => {
@@ -74,6 +74,6 @@ describe('getActiveDestinations', () => {
       },
     } as any);
 
-    expect(output).toEqual([matomoConfig, gaConfig, intercomConfig]);
+    expect(output).toEqual([matomoConfig, gtmConfig, intercomConfig]);
   });
 });

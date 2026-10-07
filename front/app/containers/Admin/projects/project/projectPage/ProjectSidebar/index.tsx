@@ -27,7 +27,13 @@ const ProjectSidebar = ({ projectId }: Props) => {
     >
       <Box flex="1 1 auto" minHeight="0" overflowY="auto">
         <ProjectNavRail projectId={projectId} />
-        <TimelinePhases projectId={projectId} />
+        <Box
+          className="intercom-product-tour-project-timeline"
+          p="12px"
+          borderTop={`1px solid ${colors.grey200}`}
+        >
+          <TimelinePhases projectId={projectId} />
+        </Box>
         <SpotlightSurveys projectId={projectId} />
       </Box>
     </Box>

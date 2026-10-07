@@ -14,7 +14,9 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
     {
       read_only_hint: false,
       destructive_hint: true,
-      idempotent_hint: true,
+      # Not idempotent: an entry with neither id nor key is created anew on every call
+      # (auto-generated keys get a fresh suffix), so a blind retry duplicates it.
+      idempotent_hint: false,
       open_world_hint: false
     }
   end
@@ -27,12 +29,15 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
       created (use temp_id to reference them from logic rules).
 
       Fails if any responses (ideas) exist on the container — except for community monitors,
-      which run continuously and can be edited after responses. On a community monitor the 3
-      category pages and the built-in questions cannot be removed (echo them back from
-      get_form_fields); custom questions (sentiment_linear_scale) can be added on top.
+      which run continuously and stay editable. A community monitor form can be freely
+      reshaped while no responses exist (the default questions and category pages may be
+      removed); once responses exist, removing or re-keying a question is refused here,
+      because that permanently deletes or orphans its submitted answers — an admin can
+      still do it deliberately in the admin UI.
 
       Call `get_form_fields` first to see the current shape and the participation method's
-      constraints.
+      constraints, and pass its `fields_last_updated_at` back on every call so a concurrent
+      edit of the form fails this call instead of being overwritten.
     DESC
   end
 
@@ -48,7 +53,11 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
         },
         fields_last_updated_at: {
           type: 'string',
-          description: 'Optional stale-data guard. If set, the call fails when the form was modified server-side after this timestamp.'
+          description: <<~DESC.squish
+            Stale-data guard: pass the value returned by get_form_fields. If set, the call
+            fails when the form was modified server-side after this timestamp. Strongly
+            recommended for community monitors, which stay editable while responses come in.
+          DESC
         }
       },
       required: %w[container_type container_id fields]
@@ -62,10 +71,6 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
   end
 
   class Runner < McpServer::BaseTool::Runner
-    # Survey forms are frozen once responses exist (editing would orphan answers). Community
-    # monitor is the exception — it runs continuously and stays editable (the admin UI too).
-    RESPONSES_LOCK_EXEMPT_METHODS = %w[community_monitor_survey].freeze
-
     def run
       container = CONTAINER_TYPES
         .fetch(params[:container_type])
@@ -81,9 +86,10 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
       pmethod = container.pmethod
       return unsupported_error(pmethod) unless SUPPORTED_METHODS.include?(pmethod.class.method_str)
 
-      if responses_lock?(pmethod) && container.ideas_count.to_i.positive?
+      responses_count = container.ideas_count.to_i
+      if !pmethod.form_editable_after_responses? && responses_count.positive?
         return error(<<~MSG.squish)
-          Cannot replace form fields: #{container.ideas_count} response(s) already
+          Cannot replace form fields: #{responses_count} response(s) already
           submitted to this #{params[:container_type]}. Replacing the fields would
           orphan their answers.
         MSG
@@ -92,8 +98,10 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
       custom_form = CustomForm.find_or_initialize_by(participation_context: container)
       custom_form.save! if custom_form.new_record?
 
-      missing = missing_built_in_keys(pmethod, custom_form)
-      return built_in_removed_error(missing) if missing.any?
+      if pmethod.form_editable_after_responses?
+        guard_error = guard_live_form(pmethod, custom_form, responses_count)
+        return guard_error if guard_error
+      end
 
       result = IdeaCustomFields::UpdateAllService.new(
         custom_form,
@@ -128,27 +136,101 @@ class McpServer::Tools::ReplaceFormFields < McpServer::BaseTool
 
     private
 
-    def responses_lock?(pmethod)
-      RESPONSES_LOCK_EXEMPT_METHODS.exclude?(pmethod.class.method_str)
+    # A live form's fields carry submitted answers, and UpdateAllService hard-deletes the
+    # answers of any persisted field whose id is missing from the payload. Persist the
+    # default fields first (a never-saved form serves virtual fields whose ids change on
+    # every read, so an echoed payload could never match them by id), re-attach payload
+    # entries to persisted fields by key, then refuse edits that would destroy data.
+    # Returns an error response, or nil when the payload is safe.
+    def guard_live_form(pmethod, custom_form, responses_count)
+      materialize_default_fields!(pmethod, custom_form)
+
+      persisted_fields = custom_form.custom_fields.to_a
+      persisted_by_id = persisted_fields.index_by(&:id)
+      remap_fields_by_key!(persisted_fields, persisted_by_id)
+
+      duplicate_ids = normalized_fields.filter_map { |field| field['id'] }
+        .tally.filter_map { |id, count| id if count > 1 }
+      if duplicate_ids.any?
+        return error(<<~MSG.squish)
+          Multiple fields in the payload resolve to the same existing field:
+          #{duplicate_ids.map { |id| persisted_by_id[id]&.key || id }.join(', ')}.
+          Give each new field a unique `key` and echo each existing field exactly once.
+        MSG
+      end
+
+      strip_noop_question_categories!(persisted_by_id)
+
+      return nil unless responses_count.positive?
+
+      # Page breaks carry no answers, so removing or re-keying one is data-safe.
+      removed = removed_persisted_fields(persisted_fields).reject(&:page?)
+      if removed.any?
+        return error(<<~MSG.squish)
+          Cannot remove field(s) #{removed.map(&:key).join(', ')}: #{responses_count}
+          response(s) already submitted, and removing a field permanently deletes its
+          answers. If that is really intended, remove the field in the admin UI.
+        MSG
+      end
+
+      rekeyed = rekeyed_persisted_fields(persisted_by_id)
+      if rekeyed.any?
+        return error(<<~MSG.squish)
+          Cannot change the key of field(s) #{rekeyed.join(', ')}: #{responses_count}
+          response(s) already submitted, and changing a field's key orphans its answers.
+        MSG
+      end
+
+      nil
     end
 
-    # The community monitor's built-in fields (3 category pages + the default questions) must
-    # stay. This is an MCP-only guard so the LLM caller can't drop them — stricter than the admin
-    # UI, which does allow it. Matched by key, not id: the virtual default fields regenerate ids
-    # on every call, so ids aren't stable across the get→replace round-trip.
-    def missing_built_in_keys(pmethod, custom_form)
-      return [] unless pmethod.class.method_str == 'community_monitor_survey'
+    def materialize_default_fields!(pmethod, custom_form)
+      return if custom_form.custom_fields.exists?
 
-      built_in_keys = pmethod.default_fields(custom_form).map(&:key)
-      present = IdeaCustomFieldsService.new(custom_form).all_fields.map(&:key) & built_in_keys
-      present - normalized_fields.filter_map { |field| field['key'] }
+      ActiveRecord::Base.transaction do
+        pmethod.default_fields(custom_form).each(&:save!)
+      end
+      custom_form.custom_fields.reload
     end
 
-    def built_in_removed_error(missing)
-      error(<<~MSG.squish)
-        Cannot remove built-in community monitor field(s): #{missing.join(', ')}.
-        These are part of the standard monitor and must be kept — echo them back from get_form_fields.
-      MSG
+    def remap_fields_by_key!(persisted_fields, persisted_by_id)
+      persisted_by_key = persisted_fields.index_by(&:key)
+
+      normalized_fields.each do |field|
+        next if persisted_by_id.key?(field['id'])
+
+        match = field['key'] && persisted_by_key[field['key']]
+        # Same key but another input_type is a different question, not a stale echo:
+        # treat it as remove-and-create so the removal guard gets to judge it.
+        field['id'] = match.id if match && match.input_type == field['input_type']
+      end
+    end
+
+    # CustomField#question_category coerces a stored NULL to 'other', so a faithful echo
+    # of 'other' over NULL would dirty and save every such field on a no-op replace.
+    def strip_noop_question_categories!(persisted_by_id)
+      normalized_fields.each do |field|
+        next unless field['question_category'] == 'other'
+
+        persisted = persisted_by_id[field['id']]
+        field.delete('question_category') if persisted && persisted.read_attribute(:question_category).nil?
+      end
+    end
+
+    def removed_persisted_fields(persisted_fields)
+      payload_ids = normalized_fields.filter_map { |field| field['id'] }
+      persisted_fields.reject { |field| payload_ids.include?(field.id) }
+    end
+
+    def rekeyed_persisted_fields(persisted_by_id)
+      normalized_fields.filter_map do |field|
+        persisted = persisted_by_id[field['id']]
+        next unless persisted
+        next if persisted.page?
+        next unless field.key?('key') && field['key'] != persisted.key
+
+        persisted.key
+      end
     end
 
     # Actionable prose for the form-level error keys of IdeaCustomFields::UpdateAllService.

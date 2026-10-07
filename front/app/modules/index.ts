@@ -2,7 +2,6 @@ import { loadModules } from 'utils/moduleUtils';
 
 import adminProjectTemplatesConfiguration from './commercial/admin_project_templates';
 import flagInappropriateContentConfiguration from './commercial/flag_inappropriate_content';
-import googleAnalyticsConfiguration from './commercial/google_analytics';
 import googleTagManagerConfiguration from './commercial/google_tag_manager';
 import idBogusConfiguration from './commercial/id_bogus';
 import idBosaFasConfiguration from './commercial/id_bosa_fas';
@@ -36,9 +35,6 @@ export default loadModules([
   },
   {
     configuration: posthogUserTrackingConfiguration,
-  },
-  {
-    configuration: googleAnalyticsConfiguration,
   },
   {
     configuration: intercomConfiguration,
