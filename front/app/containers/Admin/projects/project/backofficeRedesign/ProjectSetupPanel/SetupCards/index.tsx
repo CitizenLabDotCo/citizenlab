@@ -12,7 +12,7 @@ interface Props {
   project: IProjectData;
 }
 
-const SetupDropdowns = ({ project }: Props) => (
+const SetupCards = ({ project }: Props) => (
   <Box>
     <ListingCard projectId={project.id} />
     <Box py="16px">
@@ -22,4 +22,4 @@ const SetupDropdowns = ({ project }: Props) => (
   </Box>
 );
 
-export default SetupDropdowns;
+export default SetupCards;
