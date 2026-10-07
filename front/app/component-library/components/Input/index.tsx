@@ -39,10 +39,11 @@ const boInputStyle = css`
 
   input {
     height: 36px;
-    padding: 0 12px;
+    padding: 0 11px;
     border: 1px solid ${colors.grey300};
     border-radius: ${bo.borderRadius};
-    font-size: ${fontSizes.s}px;
+    font-size: ${fontSizes.xs}px;
+    line-height: 1.5;
     color: ${bo.colors.textHeadingStrong};
     transition: border-color 100ms ease-out, box-shadow 100ms ease-out;
 

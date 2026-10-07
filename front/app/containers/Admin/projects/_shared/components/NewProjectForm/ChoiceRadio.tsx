@@ -35,13 +35,13 @@ const ChoiceRadio = <T extends string>({
       label={
         <Box display="flex" flexDirection="column" gap="2px">
           <Text
-            variant={checked ? 'boSection' : 'boLabel'}
-            fontWeight="normal"
+            variant="boControl"
+            color={checked ? undefined : 'coolGrey700'}
             m="0px"
           >
             {formatMessage(option.label)}
           </Text>
-          <Text variant="boMicro" m="0px">
+          <Text variant="boMicro" color="coolGrey500" lineHeight="16px" m="0px">
             {formatMessage(option.description)}
           </Text>
         </Box>

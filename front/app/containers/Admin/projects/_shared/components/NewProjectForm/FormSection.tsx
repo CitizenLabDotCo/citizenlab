@@ -18,7 +18,13 @@ const FormSection = ({ label, children }: Props) => {
       flexDirection="column"
       gap="12px"
     >
-      <Text id={labelId} variant="boMicro" m="0px">
+      <Text
+        id={labelId}
+        variant="boMicro"
+        color="coolGrey500"
+        lineHeight="1.5"
+        m="0px"
+      >
         {label}
       </Text>
       {children}

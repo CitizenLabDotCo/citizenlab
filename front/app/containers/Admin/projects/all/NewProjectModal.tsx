@@ -1,6 +1,6 @@
 import React, { useId, useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box, Button, bo } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import useAddProjectGroup from 'api/project_groups/useAddProjectGroup';
@@ -88,6 +88,9 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
           <Box w="100%" display="flex" justifyContent="flex-end">
             <Button
               buttonStyle="bo-primary"
+              height={bo.buttonMedium.height}
+              padding={bo.buttonMedium.padding}
+              fontSize={bo.buttonMedium.fontSize}
               type="submit"
               form={formId}
               processing={processing}

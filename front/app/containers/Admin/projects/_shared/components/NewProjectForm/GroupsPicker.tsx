@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
@@ -23,6 +23,14 @@ const GroupsPicker = ({ groupIds, showError, onChange }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: groups } = useGroups({});
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    containerRef.current?.scrollIntoView({
+      block: 'nearest',
+      behavior: 'smooth',
+    });
+  }, []);
 
   const options = (groups?.data ?? []).map((group) => ({
     value: group.id,
@@ -30,7 +38,7 @@ const GroupsPicker = ({ groupIds, showError, onChange }: Props) => {
   }));
 
   return (
-    <Box ml="24px">
+    <Box ref={containerRef} ml="24px" style={{ scrollMarginBottom: '24px' }}>
       <PillPicker
         options={options}
         selected={groupIds}

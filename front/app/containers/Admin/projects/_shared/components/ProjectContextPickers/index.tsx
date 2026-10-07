@@ -39,7 +39,7 @@ const ProjectContextPickers = ({
       <Box display="flex" flexWrap="wrap" alignItems="center" gap="24px">
         {spacePicker && (
           <Box display="flex" alignItems="center" gap="12px" minWidth="0">
-            <Text as="span" variant="boLabel" m="0px">
+            <Text as="span" variant="boControl" lineHeight="1.35" m="0px">
               {formatMessage(contextMessages.spaceLabel)}
             </Text>
             {spacePicker}
@@ -47,7 +47,7 @@ const ProjectContextPickers = ({
         )}
 
         <Box display="flex" alignItems="center" gap="12px" minWidth="0">
-          <Text as="span" variant="boLabel" m="0px">
+          <Text as="span" variant="boControl" lineHeight="1.35" m="0px">
             {formatMessage(contextMessages.folderLabel)}
           </Text>
           {folderPicker}
