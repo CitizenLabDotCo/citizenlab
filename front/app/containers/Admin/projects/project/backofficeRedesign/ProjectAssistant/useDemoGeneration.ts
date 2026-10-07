@@ -6,16 +6,26 @@ import { useEffect, useRef, useState } from 'react';
 
 export type DemoStatus = 'idle' | 'running' | 'done';
 
+// The narration leads with the proprietary intelligence — the evidence base and
+// the lookup of comparable consultations — before the drafting steps, so the
+// wait reads as expert work, not a dead spinner. Mirrors the live loader.
 export const DEMO_STEPS = [
-  'Reading your brief',
-  'Choosing the right approach',
-  'Writing the project page',
-  'Designing the survey',
+  'Reading your brief and what you want to learn',
+  'Drawing on 10 years and 20,000+ consultations of what works',
+  'Looking for high-quality projects similar to yours',
+  'Identifying the patterns that made them work',
+  'Choosing the right participation method for your goal',
+  'Drafting the project page — intro, context and the ask',
+  'Writing the questionnaire',
+  'Checking the questions for clarity and bias',
   'Setting phases, dates & access',
-  'Running the quality check',
+  'Running a final quality check',
 ];
 
-const STEP_MS = 1150;
+// Slow and even: each step holds long enough to read, the questionnaire gets
+// two steps so it doesn't flash past, and the jump to the finished draft no
+// longer feels abrupt.
+const STEP_MS = 3000;
 
 // The demo's result mirrors the real engine's manager-facing briefing
 // (ai_generation_summary): a headline + pedagogical "why" highlights in the

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import {
   Box,
+  Icon,
+  IconNames,
   Spinner,
   Text,
   colors,
@@ -12,76 +14,199 @@ type Props = {
   startedAt: string;
 };
 
-// prototype data — a plain-language narration of what the engine is actually
-// doing behind the scenes, so the wait reads as considered work rather than a
-// dead spinner. Each stage starts at its `after` second and holds until the
-// next; the last one holds until the draft lands.
-const STAGES: { after: number; label: string }[] = [
-  { after: 0, label: 'Reading your brief and what you want to learn' },
+// Each stage narrates a slice of what the generator is doing. It leads with the
+// proprietary intelligence — the evidence base and the lookup of comparable
+// consultations — before the drafting steps, so the wait reads as expert work.
+// The copy stays generic on the method on purpose: this loader cannot know
+// whether the drafted project ends up with a survey, so it never promises one.
+//
+// `start` is the elapsed-second mark at which a stage becomes the active one.
+// The marks are spaced roughly evenly (~7s apart) so the narration doesn't
+// clump at the front and then jump to "done". Real generation is variable
+// (~30–90s); the last stage is a graceful hold that can sit without feeling
+// stuck until the backend job actually completes (handled outside this
+// component) and the project appears.
+type Stage = {
+  start: number;
+  label: string;
+  icon: IconNames;
+  fill: string;
+  bg: string;
+};
+
+const STAGES: Stage[] = [
   {
-    after: 5,
-    label: 'Drawing on 10 years and 20,000+ consultations of what works',
+    start: 0,
+    label: 'Reading your brief',
+    icon: 'book',
+    fill: colors.teal500,
+    bg: colors.teal50,
   },
-  { after: 13, label: 'Choosing the right participation method for your goal' },
   {
-    after: 22,
-    label: 'Drafting the project page — the intro, the context and the ask',
+    start: 7,
+    label: 'Drawing on 10 years and 20,000+ consultations',
+    icon: 'stars',
+    fill: colors.teal700,
+    bg: colors.teal100,
   },
-  { after: 34, label: 'Writing the survey questions' },
-  { after: 46, label: 'Setting up the phases and timeline' },
-  { after: 56, label: 'Setting who can see it and who can take part' },
-  { after: 66, label: 'Adding the finishing touches' },
+  {
+    start: 15,
+    label: 'Looking for high-quality projects similar to yours',
+    icon: 'search',
+    fill: colors.blue500,
+    bg: colors.blue10,
+  },
+  {
+    start: 24,
+    label: 'Identifying the patterns that made them work',
+    icon: 'idea',
+    fill: colors.teal400,
+    bg: colors.teal100,
+  },
+  {
+    start: 33,
+    label: 'Choosing the right participation method',
+    icon: 'bullseye',
+    fill: colors.blue500,
+    bg: colors.blue10,
+  },
+  {
+    start: 42,
+    label: 'Drafting the project page',
+    icon: 'page',
+    fill: colors.teal500,
+    bg: colors.teal50,
+  },
+  {
+    start: 51,
+    label: 'Writing the questionnaire',
+    icon: 'list',
+    fill: colors.teal700,
+    bg: colors.teal100,
+  },
+  {
+    start: 62,
+    label: 'Checking the questions for clarity and bias',
+    icon: 'eye',
+    fill: colors.blue500,
+    bg: colors.blue10,
+  },
+  {
+    start: 72,
+    label: 'Setting up phases, dates & access',
+    icon: 'timeline',
+    fill: colors.teal400,
+    bg: colors.teal100,
+  },
+  {
+    start: 81,
+    label: 'Adding the finishing touches',
+    icon: 'check-circle',
+    fill: colors.green600,
+    bg: colors.green100,
+  },
 ];
 
 const secondsSince = (startedAt: string) =>
   Math.max(0, Math.floor((Date.now() - new Date(startedAt).getTime()) / 1000));
 
-const stageFor = (seconds: number) =>
-  STAGES.reduce(
-    (current, stage) => (seconds >= stage.after ? stage.label : current),
-    STAGES[0].label
-  );
+const activeStageIndex = (seconds: number) => {
+  let index = 0;
+  for (let i = 0; i < STAGES.length; i++) {
+    if (seconds >= STAGES[i].start) index = i;
+  }
+  return index;
+};
+
+// Eases toward — but never reaches — 100%. The asymptote keeps the bar always
+// nudging forward during a variable-length job, so the final jump to a finished
+// project never looks like the bar "completed" early.
+const progressPercent = (seconds: number) => {
+  const eased = 1 - Math.exp(-seconds / 36);
+  return Math.min(96, Math.round(eased * 96));
+};
 
 const WorkingIndicator = ({ startedAt }: Props) => {
   const [seconds, setSeconds] = useState(() => secondsSince(startedAt));
 
   useEffect(() => {
-    const interval = setInterval(() => setSeconds(secondsSince(startedAt)), 1000);
+    const interval = setInterval(
+      () => setSeconds(secondsSince(startedAt)),
+      1000
+    );
     return () => clearInterval(interval);
   }, [startedAt]);
 
-  const label = stageFor(seconds);
+  const index = activeStageIndex(seconds);
+  const stage = STAGES[index];
+  const isLastStage = index === STAGES.length - 1;
+  const progress = progressPercent(seconds);
 
   return (
     <Box
       role="status"
       display="flex"
-      alignItems="flex-start"
+      flexDirection="column"
       gap="12px"
-      p="14px"
+      p="16px"
       bgColor={colors.white}
       border={`1px solid ${colors.borderLight}`}
       borderRadius={stylingConsts.borderRadius}
     >
-      <Box flex="0 0 auto" mt="2px">
-        <Spinner size="20px" />
-      </Box>
-      <Box flex="1" minWidth="0">
-        {/* key re-mounts the line on each stage so the change fades in */}
-        <Text
-          key={label}
-          m="0px"
-          color="textPrimary"
-          lineHeight="1.4"
-          style={{ animation: 'cl-assistant-fade 400ms ease' }}
+      <Box display="flex" alignItems="center" gap="12px">
+        <Box
+          flexShrink="0"
+          width="36px"
+          height="36px"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          borderRadius="50%"
+          bgColor={stage.bg}
+          style={{ transition: 'background-color 400ms ease' }}
         >
-          {label}…
-        </Text>
-        <Text m="4px 0 0" fontSize="s" color="textSecondary">
-          Drafting your project — this usually takes under a minute · {seconds}s
-        </Text>
+          <Icon
+            name={stage.icon}
+            width="20px"
+            height="20px"
+            fill={stage.fill}
+            my="0px"
+          />
+        </Box>
+
+        <Box flex="1" minWidth="0">
+          <Box display="flex" alignItems="center" gap="8px">
+            <Text m="0px" fontWeight="semi-bold" color="textPrimary">
+              {stage.label}
+            </Text>
+            <Spinner size="16px" />
+          </Box>
+          <Text m="0px" mt="2px" fontSize="s" color="textSecondary">
+            {isLastStage
+              ? `Almost there — putting it all together · ${seconds}s`
+              : `Working on your project · ${seconds}s elapsed`}
+          </Text>
+        </Box>
       </Box>
-      <style>{`@keyframes cl-assistant-fade { from { opacity: 0 } to { opacity: 1 } }`}</style>
+
+      {/* Thin, continuously-easing progress affordance. */}
+      <Box
+        width="100%"
+        height="4px"
+        borderRadius="2px"
+        bgColor={colors.grey200}
+        overflow="hidden"
+      >
+        <Box
+          height="100%"
+          borderRadius="2px"
+          bgColor={colors.teal500}
+          style={{
+            width: `${progress}%`,
+            transition: 'width 900ms ease',
+          }}
+        />
+      </Box>
     </Box>
   );
 };
