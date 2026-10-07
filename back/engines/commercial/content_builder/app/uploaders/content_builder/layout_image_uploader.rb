@@ -3,9 +3,6 @@
 module ContentBuilder
   class LayoutImageUploader < BaseImageUploader
     SVG_CONTENT_TYPE = 'image/svg+xml'
-    # Admins often upload photos straight from a camera (5000px+ wide, several MB).
-    # No layout shows an image wider than this, even on high-density screens.
-    MAX_SIZE = 2400
 
     process :sanitize_svg
     process :limit_size
@@ -40,20 +37,11 @@ module ContentBuilder
       raise CarrierWave::IntegrityError, e.message
     end
 
+    # SVGs scale to any size, and ImageMagick cannot read their dimensions.
     def limit_size
       return if svg?
 
-      image = ::MiniMagick::Image.new(current_path)
-      width, height = image.dimensions
-      return if width <= MAX_SIZE && height <= MAX_SIZE
-
-      if @file.content_type == 'image/gif'
-        gif_safe_transform! { |img| img.resize "#{MAX_SIZE}x#{MAX_SIZE}>" }
-      else
-        # ImageMagick can read the quality of a JPEG only. Left unset, it keeps the source's.
-        combine_options = jpeg? && image['%Q'].to_i > JPEG_MAX_QUALITY ? { quality: JPEG_MAX_QUALITY } : {}
-        resize_to_limit(MAX_SIZE, MAX_SIZE, combine_options: combine_options)
-      end
+      super
     end
 
     private

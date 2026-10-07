@@ -10,6 +10,10 @@ class BaseImageUploader < BaseUploader
   # it needs to be, with no visible difference. Only ever lowered: raising it grows
   # the file for no gain.
   JPEG_MAX_QUALITY = 80
+  # For originals that are served as they are. Admins often upload photos straight
+  # from a camera (5000px+ wide, several MB), and no page shows an image wider than
+  # this, even on high-density screens.
+  MAX_SIZE = 2400
 
   # Using process at the class level applies it to all versions, including the original.
   process :strip
@@ -47,6 +51,20 @@ class BaseImageUploader < BaseUploader
     manipulate! do |image|
       image.quality(JPEG_MAX_QUALITY) if image['%Q'].to_i > JPEG_MAX_QUALITY
       image
+    end
+  end
+
+  def limit_size
+    image = ::MiniMagick::Image.new(current_path)
+    width, height = image.dimensions
+    return if width <= MAX_SIZE && height <= MAX_SIZE
+
+    if @file.content_type == 'image/gif'
+      gif_safe_transform! { |img| img.resize "#{MAX_SIZE}x#{MAX_SIZE}>" }
+    else
+      # ImageMagick can read the quality of a JPEG only. Left unset, it keeps the source's.
+      combine_options = jpeg? && image['%Q'].to_i > JPEG_MAX_QUALITY ? { quality: JPEG_MAX_QUALITY } : {}
+      resize_to_limit(MAX_SIZE, MAX_SIZE, combine_options: combine_options)
     end
   end
 
