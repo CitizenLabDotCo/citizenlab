@@ -2435,6 +2435,7 @@
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": "Allannguut taanna toqqorsinnaanngilarput. Atortoq una ilinnut atorneqarsinnaajunnaarsimassagunarpoq. Qupperneq nutarteruk ooqattaaqqillunilu.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Atuutilersussat suli naammassineqanngitsut misilikkit. Maani ikititavit illit kisivit takusatit allanngortissavaat, platformimi atuisut allat takusaat allanngortinnagit.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Siusissukkut atuisinnaaneq",
+  "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignDescription2": "Suliniutinik pilersitsinermut aqutsinermullu periuseq nutaaq paasiuminarnerusorlu. Suli pitsanngorsarparput.",
   "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignTitle": "Pilersaarutinik aqutsisoqarfik nutaaq",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Profilinnut assi peeruk",
   "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Your votes on proposals that are still open for voting will be deleted. Votes on proposals where the voting period has closed will not be deleted.",
