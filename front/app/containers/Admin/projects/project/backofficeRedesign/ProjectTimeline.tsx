@@ -46,7 +46,7 @@ const ProjectTimeline = ({ projectId }: Props) => {
           </Text>
         </Box>
         <Tooltip
-          content={formatMessage(messages.newParticipationMethod)}
+          content={formatMessage(projectPageMessages.newParticipationMethod)}
           theme="dark"
           placement="bottom"
         >
@@ -57,7 +57,9 @@ const ProjectTimeline = ({ projectId }: Props) => {
             width="32px"
             height="32px"
             padding="0"
-            ariaLabel={formatMessage(messages.newParticipationMethod)}
+            ariaLabel={formatMessage(
+              projectPageMessages.newParticipationMethod
+            )}
             onClick={() => setMethodModalOpened(true)}
           />
         </Tooltip>
