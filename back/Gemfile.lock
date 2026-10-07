@@ -496,7 +496,7 @@ GEM
       addressable
       ssrf_filter (~> 1.5)
     csv (3.3.0)
-    dalli (3.2.10)
+    dalli (3.2.13)
       logger
     database_cleaner (2.1.0)
       database_cleaner-active_record (>= 2, < 3)
@@ -1300,7 +1300,7 @@ DEPENDENCIES
   csv (~> 3.3.0)
   custom_id_methods!
   custom_maps!
-  dalli (~> 3.2.10)
+  dalli (~> 3.2.13)
   database_cleaner (~> 2.1.0)
   debug
   decidim_importer!
