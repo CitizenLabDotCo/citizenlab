@@ -29,6 +29,14 @@ const ringColor = (color: string) =>
   `0 0 0 3px color-mix(in srgb, ${color} 16%, transparent)`;
 
 const boInputStyle = css`
+  > label {
+    font-size: ${fontSizes.xs}px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: ${colors.coolGrey600};
+    margin-bottom: 12px;
+  }
+
   input {
     height: 36px;
     padding: 0 12px;

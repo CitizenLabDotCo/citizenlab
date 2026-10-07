@@ -27,6 +27,8 @@ const Search = styled(Box)`
 `;
 
 const GAP = 4;
+const MAX_HEIGHT = 320;
+const DROPDOWN_MARGIN = 20;
 
 const TriggerContent = styled(Box)`
   min-width: 0;
@@ -110,16 +112,17 @@ const OptionPicker = <T extends string>({
   const [opened, setOpened] = useState(false);
   const [openUp, setOpenUp] = useState(false);
   const [alignRight, setAlignRight] = useState(false);
+  const [maxHeight, setMaxHeight] = useState(MAX_HEIGHT);
   const [search, setSearch] = useState('');
 
   const close = () => {
     if (!opened) return;
     setOpened(false);
+    setMaxHeight(MAX_HEIGHT);
     setSearch('');
     onClose?.();
   };
 
-  // flip the dropdown upwards, or align it to the trigger's right edge
   useLayoutEffect(() => {
     if (!opened) return;
 
@@ -131,9 +134,12 @@ const OptionPicker = <T extends string>({
     const bounds = getVisibleBounds(triggerElement);
     const spaceBelow = bounds.bottom - trigger.bottom - GAP;
     const spaceAbove = trigger.top - bounds.top - GAP;
-    setOpenUp(
-      panel.offsetHeight > spaceBelow && panel.offsetHeight <= spaceAbove
-    );
+    const fitsBelow = panel.offsetHeight <= spaceBelow;
+    const fitsAbove = panel.offsetHeight <= spaceAbove;
+    setOpenUp(!fitsBelow && (fitsAbove || spaceAbove > spaceBelow));
+    if (!fitsBelow && !fitsAbove) {
+      setMaxHeight(Math.max(spaceAbove, spaceBelow) - DROPDOWN_MARGIN);
+    }
     setAlignRight(trigger.left + panel.offsetWidth > bounds.right - GAP);
   }, [opened]);
 
@@ -198,7 +204,7 @@ const OptionPicker = <T extends string>({
         left={alignRight ? undefined : '0px'}
         right={alignRight ? '0px' : undefined}
         width="288px"
-        maxHeight="320px"
+        maxHeight={`${maxHeight}px`}
         zIndex="1000"
         borderRadius={bo.borderRadius}
         content={

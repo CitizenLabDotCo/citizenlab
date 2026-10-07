@@ -176,6 +176,7 @@ const SearchInput = ({
   };
 
   const isLabelFloating = isFocused || !!internalSearchTerm;
+  const showLabel = !hideLabel && variant !== 'bo';
 
   return (
     <Box
@@ -185,7 +186,7 @@ const SearchInput = ({
       role="search"
     >
       <StyledInputWrapper>
-        {!hideLabel && (
+        {showLabel && (
           <StyledLabel
             htmlFor={id}
             isFloating={isLabelFloating}
@@ -199,7 +200,7 @@ const SearchInput = ({
           className="e2e-search-input"
           type="search"
           aria-label={ariaLabel}
-          placeholder={isLabelFloating && !hideLabel ? '' : placeholder}
+          placeholder={isLabelFloating && showLabel ? '' : placeholder}
           value={internalSearchTerm || ''}
           onChange={handleOnChange}
           size={size}

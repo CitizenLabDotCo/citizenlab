@@ -111,6 +111,7 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
         opened={mode === 'template'}
         close={close}
         width={1000}
+        variant="bo"
         header={formatMessage(messages.fromTemplate)}
       >
         <Box p="24px">
@@ -118,6 +119,7 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
             id="app.containers.Admin.projects.all.createProject"
             selectedTabValue="template"
             onDone={close}
+            variant="bo"
           />
         </Box>
       </Modal>
