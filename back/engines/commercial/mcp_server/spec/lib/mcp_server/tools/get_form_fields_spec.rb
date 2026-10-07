@@ -32,6 +32,22 @@ describe McpServer::Tools::GetFormFields do
       title_multiloc_locks = response.structured_content.dig(:constraints, :title_multiloc, :locks)
       expect(title_multiloc_locks).to be_present
     end
+
+    it 'returns fields that replace_form_fields accepts as input' do
+      response = run_mcp_tool(
+        described_class,
+        params: { container_type: 'project', container_id: project.id },
+        current_user:
+      )
+      replace_tool = McpServer::Tools::ReplaceFormFields.for(current_user:, token_scopes: [])
+      arguments = JSON.parse({
+        container_type: 'project',
+        container_id: project.id,
+        fields: response.structured_content[:fields]
+      }.to_json)
+
+      expect { replace_tool.input_schema.validate_arguments(arguments) }.not_to raise_error
+    end
   end
 
   context 'with a native survey phase' do
@@ -63,6 +79,27 @@ describe McpServer::Tools::GetFormFields do
       expect(fields.pluck(:id)).to eq([field_a.id, field_b.id, select_field.id])
       expect(fields.first).to include(:input_type, :title_multiloc, :required)
       expect(fields.last[:options].pluck(:id)).to match_array(select_field.options.pluck(:id))
+    end
+  end
+
+  context 'with a community monitor phase' do
+    let(:phase) { create(:community_monitor_survey_phase) }
+
+    it 'returns the community monitor form with its categories and questions' do
+      response = run_mcp_tool(
+        described_class,
+        params: { container_type: 'phase', container_id: phase.id },
+        current_user:
+      )
+
+      expect(response).not_to be_error
+      structured = response.structured_content
+      expect(structured[:participation_method]).to eq('community_monitor_survey')
+      expect(structured[:fields].pluck(:key)).to include('page_quality_of_life', 'place_to_live')
+      expect(structured.dig(:constraints, :page_quality_of_life, :locks, :attributes)).to include(:title_multiloc)
+
+      question = structured[:fields].find { |field| field[:key] == 'place_to_live' }
+      expect(question[:question_category]).to eq('quality_of_life')
     end
   end
 

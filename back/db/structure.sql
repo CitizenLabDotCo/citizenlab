@@ -207,6 +207,7 @@ DROP INDEX IF EXISTS public.index_verification_verifications_on_hashed_uid;
 DROP INDEX IF EXISTS public.index_users_on_unique_code;
 DROP INDEX IF EXISTS public.index_users_on_token_expiry_key;
 DROP INDEX IF EXISTS public.index_users_on_slug;
+DROP INDEX IF EXISTS public.index_users_on_roles;
 DROP INDEX IF EXISTS public.index_users_on_registration_completed_at;
 DROP INDEX IF EXISTS public.index_users_on_phone;
 DROP INDEX IF EXISTS public.index_users_on_email;
@@ -803,7 +804,6 @@ DROP TABLE IF EXISTS public.areas_projects;
 DROP TABLE IF EXISTS public.areas;
 DROP TABLE IF EXISTS public.ar_internal_metadata;
 DROP TABLE IF EXISTS public.app_configurations;
-DROP TABLE IF EXISTS public.analytics_fact_visits;
 DROP VIEW IF EXISTS public.analytics_fact_sessions;
 DROP TABLE IF EXISTS public.impact_tracking_sessions;
 DROP VIEW IF EXISTS public.analytics_fact_registrations;
@@ -827,6 +827,7 @@ DROP TABLE IF EXISTS public.email_campaigns_deliveries;
 DROP TABLE IF EXISTS public.email_campaigns_campaigns;
 DROP VIEW IF EXISTS public.analytics_dimension_users;
 DROP TABLE IF EXISTS public.users;
+DROP TABLE IF EXISTS public.analytics_fact_visits;
 DROP TABLE IF EXISTS public.analytics_dimension_types;
 DROP VIEW IF EXISTS public.analytics_dimension_statuses;
 DROP TABLE IF EXISTS public.idea_statuses;
@@ -1554,6 +1555,27 @@ CREATE TABLE public.analytics_dimension_types (
 
 
 --
+-- Name: analytics_fact_visits; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.analytics_fact_visits (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    visitor_id character varying NOT NULL,
+    dimension_user_id uuid,
+    dimension_referrer_type_id uuid NOT NULL,
+    dimension_date_first_action_id date NOT NULL,
+    dimension_date_last_action_id date NOT NULL,
+    duration integer NOT NULL,
+    pages_visited integer NOT NULL,
+    returning_visitor boolean DEFAULT false NOT NULL,
+    referrer_name character varying,
+    referrer_url character varying,
+    matomo_visit_id integer NOT NULL,
+    matomo_last_action_time timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1600,10 +1622,13 @@ CREATE TABLE public.users (
 --
 
 CREATE VIEW public.analytics_dimension_users AS
- SELECT id,
-    COALESCE(((roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
-    invite_status
-   FROM public.users;
+ SELECT u.id,
+    COALESCE(((u.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
+    u.invite_status,
+    (users_with_visits.dimension_user_id IS NOT NULL) AS has_visits
+   FROM (public.users u
+     LEFT JOIN ( SELECT DISTINCT analytics_fact_visits.dimension_user_id
+           FROM public.analytics_fact_visits) users_with_visits ON ((users_with_visits.dimension_user_id = u.id)));
 
 
 --
@@ -2151,27 +2176,6 @@ CREATE VIEW public.analytics_fact_sessions AS
 
 
 --
--- Name: analytics_fact_visits; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.analytics_fact_visits (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    visitor_id character varying NOT NULL,
-    dimension_user_id uuid,
-    dimension_referrer_type_id uuid NOT NULL,
-    dimension_date_first_action_id date NOT NULL,
-    dimension_date_last_action_id date NOT NULL,
-    duration integer NOT NULL,
-    pages_visited integer NOT NULL,
-    returning_visitor boolean DEFAULT false NOT NULL,
-    referrer_name character varying,
-    referrer_url character varying,
-    matomo_visit_id integer NOT NULL,
-    matomo_last_action_time timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: app_configurations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2477,7 +2481,8 @@ CREATE TABLE public.custom_fields (
     question_category character varying,
     include_in_printed_form boolean DEFAULT true NOT NULL,
     min_characters integer,
-    max_characters integer
+    max_characters integer,
+    answers_visible_to character varying DEFAULT 'moderators'::character varying NOT NULL
 );
 
 
@@ -7998,6 +8003,13 @@ CREATE INDEX index_users_on_registration_completed_at ON public.users USING btre
 
 
 --
+-- Name: index_users_on_roles; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_roles ON public.users USING gin (roles);
+
+
+--
 -- Name: index_users_on_slug; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -9559,7 +9571,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20261005100000'),
+('20260928120000'),
+('20260922150448'),
 ('20260915134812'),
 ('20260915120000'),
 ('20260915103146'),

@@ -40,6 +40,7 @@ module MultiTenancy
           include_in_printed_form
           min_characters
           max_characters
+          answers_visible_to
         ]
 
         # Enigmatic comment from the previous implementation:

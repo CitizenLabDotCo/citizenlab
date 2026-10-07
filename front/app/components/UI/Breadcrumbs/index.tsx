@@ -5,8 +5,10 @@ import {
   Icon,
   IconNames,
   Text,
+  bo,
   colors,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import Link, { typedStyled, type WrapperTo } from 'utils/cl-router/Link';
 
@@ -32,12 +34,53 @@ type TBreadcrumb = {
 
 export type TBreadcrumbs = TBreadcrumb[];
 
+type Variant = 'default' | 'backofficeRedesign';
+
+const ICON_AND_SEPARATOR: Record<
+  Variant,
+  {
+    iconSize: string;
+    iconGap: string;
+    chevronSize: string;
+    chevronColor: string;
+    chevronMargin: string;
+  }
+> = {
+  default: {
+    iconSize: '18px',
+    iconGap: '8px',
+    chevronSize: '16px',
+    chevronColor: colors.coolGrey500,
+    chevronMargin: '0 8px',
+  },
+  backofficeRedesign: {
+    iconSize: '15px',
+    iconGap: '5px',
+    chevronSize: '13px',
+    chevronColor: bo.colors.crumbSeparator,
+    chevronMargin: '0 0 0 4px',
+  },
+};
+
+// The back office redesign's header text size has no Text font size.
+const HeaderCrumb = styled.span`
+  font-size: ${bo.headerFontSize};
+  font-weight: 400;
+  line-height: 1.5;
+`;
+
+const HeaderCurrentCrumb = styled(HeaderCrumb)`
+  font-weight: 500;
+  color: ${bo.colors.textHeadingStrong};
+`;
+
 interface Props {
   breadcrumbs: TBreadcrumbs;
   icon?: IconNames;
   separator?: 'slash' | 'chevron';
   fontSize?: 's' | 'm';
   highlightCurrentPage?: boolean;
+  variant?: Variant;
 }
 
 const Breadcrumbs = ({
@@ -46,20 +89,25 @@ const Breadcrumbs = ({
   separator = 'slash',
   fontSize = 'm',
   highlightCurrentPage = false,
+  variant = 'default',
 }: Props) => {
   if (breadcrumbs.length === 0) {
     return null;
   }
+
+  const redesign = variant === 'backofficeRedesign';
+  const { iconSize, iconGap, chevronSize, chevronColor, chevronMargin } =
+    ICON_AND_SEPARATOR[variant];
 
   return (
     <Box display="flex" alignItems="center">
       {icon && (
         <Icon
           name={icon}
-          width="18px"
-          height="18px"
+          width={iconSize}
+          height={iconSize}
           fill={colors.coolGrey500}
-          mr="8px"
+          mr={iconGap}
         />
       )}
       {breadcrumbs.map(({ label, link }, index) => {
@@ -74,7 +122,18 @@ const Breadcrumbs = ({
             color="textSecondary"
             data-cy={`breadcrumbs-${label}`}
           >
-            {link && (
+            {link && redesign && (
+              <HeaderCrumb>
+                <StyledLink
+                  to={link.to}
+                  params={link.params}
+                  search={link.search}
+                >
+                  {label}
+                </StyledLink>
+              </HeaderCrumb>
+            )}
+            {link && !redesign && (
               <Text fontSize={fontSize} as="span" mb="0">
                 <StyledLink
                   to={link.to}
@@ -85,12 +144,18 @@ const Breadcrumbs = ({
                 </StyledLink>
               </Text>
             )}
-            {!link && !isHeading && (
+            {!link && !isHeading && redesign && (
+              <HeaderCrumb>{label}</HeaderCrumb>
+            )}
+            {!link && !isHeading && !redesign && (
               <Text color="textSecondary" fontSize={fontSize} as="span" mb="0">
                 {label}
               </Text>
             )}
-            {isHeading && (
+            {isHeading && redesign && (
+              <HeaderCurrentCrumb>{label}</HeaderCurrentCrumb>
+            )}
+            {isHeading && !redesign && (
               <Text variant="boSection" as="span">
                 {label}
               </Text>
@@ -99,10 +164,10 @@ const Breadcrumbs = ({
               (separator === 'chevron' ? (
                 <Icon
                   name="chevron-right"
-                  width="16px"
-                  height="16px"
-                  fill={colors.coolGrey500}
-                  mx="8px"
+                  width={chevronSize}
+                  height={chevronSize}
+                  fill={chevronColor}
+                  m={chevronMargin}
                 />
               ) : (
                 <Text

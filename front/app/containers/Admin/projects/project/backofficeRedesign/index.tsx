@@ -14,6 +14,7 @@ import WorkspaceHeader from './Header';
 import { HeaderDropdownName } from './Header/HeaderDropdown';
 import MethodSettings from './Phase/MethodSettings';
 import { viewFromPathname } from './Phase/usePhaseViews';
+import ViewContent from './Phase/ViewContent';
 import ProjectSetupPanel from './ProjectSetupPanel';
 
 const PROJECT_PANEL_WIDTH = '332px';
@@ -111,6 +112,21 @@ const ProjectWorkspace = ({
     </Box>
   );
 
+  const mainSlot = (
+    <Box
+      flexGrow={1}
+      minWidth="0"
+      minHeight="0"
+      overflowY="auto"
+      display="flex"
+      flexDirection="column"
+      borderRadius={bo.panelBorderRadius}
+      background={colors.grey100}
+    >
+      {children}
+    </Box>
+  );
+
   return (
     <Box
       display="flex"
@@ -140,18 +156,13 @@ const ProjectWorkspace = ({
       >
         {!inPhase && setupSlot}
 
-        <Box
-          flexGrow={1}
-          minWidth="0"
-          minHeight="0"
-          overflowY="auto"
-          display="flex"
-          flexDirection="column"
-          borderRadius={bo.panelBorderRadius}
-          background={colors.grey100}
-        >
-          {children}
-        </Box>
+        {phase && activeView !== 'build' ? (
+          <ViewContent project={project} phase={phase} view={activeView}>
+            {mainSlot}
+          </ViewContent>
+        ) : (
+          mainSlot
+        )}
 
         {inPhase ? phaseSlot : timelineSlot}
       </Box>

@@ -26,12 +26,12 @@ class WebApi::V1::IdeasController < ApplicationController
       :input_topics,
       :idea_status,
       :manual_votes_last_updated_by,
-      :custom_field_answers,
       {
+        custom_field_answers: :custom_field,
         phases: { permissions: [:groups] },
         creation_phase: { permissions: [:groups] },
         project: [:phases, { phases: { permissions: [:groups] } }, { custom_form: [:custom_fields] }],
-        author: %i[unread_notifications custom_field_answers]
+        author: [:unread_notifications, { custom_field_answers: :custom_field }]
       }
     )
     ideas = ideas.includes(:idea_import) unless current_user&.normal_user? # defined through BulkImportIdeas engine

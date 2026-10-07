@@ -13,15 +13,7 @@ describe Export::Xlsx::ValueVisitor do
 
   describe '#default' do
     context 'for a built-in field' do
-      let(:field) do
-        create(
-          :custom_field,
-          :for_custom_form,
-          input_type: 'number',
-          key: 'proposed_budget',
-          code: 'proposed_budget'
-        )
-      end
+      let(:field) { create(:default_input_field, code: 'proposed_budget') }
       let(:model) { instance_double Idea, proposed_budget: 1234 }
 
       it 'returns the field value from the model' do
@@ -42,17 +34,7 @@ describe Export::Xlsx::ValueVisitor do
 
   context 'visit_xxx methods' do
     let(:field_key) { 'field_1' }
-    let(:code) { nil }
-    let(:resource_type) { 'CustomForm' }
-    let!(:field) do
-      create(
-        :custom_field,
-        resource_type: resource_type,
-        input_type: input_type,
-        key: field_key,
-        code: code
-      )
-    end
+    let!(:field) { create(:custom_field, resource_type: 'CustomForm', input_type: input_type, key: field_key) }
     let(:answers) { value.nil? ? [] : [build(:custom_field_answer, key: field_key, value: value)] }
     let(:model) { build(:idea, custom_field_answers: answers) }
 
@@ -204,8 +186,7 @@ describe Export::Xlsx::ValueVisitor do
       let(:input_type) { 'select' }
 
       context 'when the code is domicile' do
-        let(:resource_type) { 'User' }
-        let(:code) { 'domicile' }
+        let!(:field) { create(:custom_field_domicile) }
         let(:field_key) { :domicile }
         let(:model) { create(:user, custom_field_answers: answers) }
 
@@ -430,7 +411,7 @@ describe Export::Xlsx::ValueVisitor do
       let(:input_type) { 'files' }
 
       context 'when the code is idea_files_attributes' do
-        let(:code) { 'idea_files_attributes' }
+        let!(:field) { create(:default_input_field, code: 'idea_files_attributes') }
         let(:model) { create(:idea) }
 
         context 'when there is no value' do
