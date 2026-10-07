@@ -1110,6 +1110,7 @@
   "app.components.formBuilder.rating": "Rating",
   "app.components.formBuilder.removeAnswer": "Remove answer",
   "app.components.formBuilder.required": "Required",
+  "app.components.formBuilder.requiredToggleDescription": "Participants must answer to continue.",
   "app.components.formBuilder.requiredToggleLabel": "Make answering this question required",
   "app.components.formBuilder.ruleForAnswerLabel": "If answer is:",
   "app.components.formBuilder.ruleForAnswerLabelMultiselect": "If answers include:",
