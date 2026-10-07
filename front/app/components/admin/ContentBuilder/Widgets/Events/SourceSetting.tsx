@@ -16,8 +16,6 @@ import MultiSelect from 'components/UI/MultiSelect';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
 
-import useWidgetProjectId from '../../useWidgetProjectId';
-
 import messages from './messages';
 import { EventsProps, EventsSource } from './types';
 
@@ -31,7 +29,6 @@ const SourceSetting = () => {
   } = useNode((node) => ({ props: node.data.props as EventsProps }));
 
   const { customPageId } = useParams({ strict: false });
-  const widgetProjectId = useWidgetProjectId();
   const advancedCustomPages = useFeatureFlag({ name: 'advanced_custom_pages' });
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
@@ -42,9 +39,9 @@ const SourceSetting = () => {
   const { data: topics, isLoading: topicsLoading } = useGlobalTopics();
   const { data: spaces, isLoading: spacesLoading } = useSpaces();
 
-  // A project's page, project page or static page, is about that project, so there is nothing
-  // to choose. The toolboxes and the EventsWidget shim write `currentProject` for these surfaces.
-  if (widgetProjectId) return null;
+  // A widget about its own project, on a project page or a project's static page, has nothing to
+  // choose. The toolboxes and the EventsWidget shim write `currentProject` for these surfaces.
+  if (source === 'currentProject') return null;
 
   // The homepage lists events from every project; filtering is for custom pages. A homepage
   // widget that already filters still shows its filter, so it can be read and reset.
