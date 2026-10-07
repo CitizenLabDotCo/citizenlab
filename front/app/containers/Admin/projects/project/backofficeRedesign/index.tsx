@@ -154,7 +154,7 @@ const ProjectWorkspace = ({
         minHeight="0"
         overflow="hidden"
       >
-        {!inPhase && setupSlot}
+        {inPhase ? phaseSlot : setupSlot}
 
         {phase && activeView !== 'build' ? (
           <ViewContent project={project} phase={phase} view={activeView}>
@@ -164,7 +164,7 @@ const ProjectWorkspace = ({
           mainSlot
         )}
 
-        {inPhase ? phaseSlot : timelineSlot}
+        {!inPhase && timelineSlot}
       </Box>
     </Box>
   );
