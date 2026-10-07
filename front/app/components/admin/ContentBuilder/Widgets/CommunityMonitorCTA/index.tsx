@@ -18,12 +18,17 @@ import { getPhaseActionDescriptor } from 'api/phases/utils';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
+import {
+  BUILDER_CONTENT_MAX_WIDTH,
+  CUSTOM_PAGE_BUILDER_PATH,
+} from 'components/admin/ContentBuilder/constants';
 import SurveyTimeToComplete from 'components/SurveyTimeToComplete';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { removeUrlLocale } from 'utils/removeUrlLocale';
+import { useLocation } from 'utils/router';
 
 import SentimentQuestionPreview from './assets/SentimentQuestionPreview.png';
 import messages from './messages';
@@ -54,12 +59,15 @@ const CommunityMonitorCTA = ({
   const { data: phase } = usePhase(phaseId);
 
   const isSurveyLive = phase?.data.attributes.submission_enabled;
+  const { pathname } = useLocation();
 
   const goToCommunityMonitorSurvey = () => {
     if (phaseId) {
-      // Track the homepage CTA interaction
+      // Kept apart so the homepage event still counts only homepage clicks.
       trackEventByName(
-        tracks.communityMonitorHomepageWidgetClickedAndRedirected
+        removeUrlLocale(pathname) === '/'
+          ? tracks.communityMonitorHomepageWidgetClickedAndRedirected
+          : tracks.communityMonitorCustomPageWidgetClickedAndRedirected
       );
 
       // Redirect to the survey page
@@ -69,12 +77,13 @@ const CommunityMonitorCTA = ({
     }
   };
 
-  // Check if we're currently in the homepage builder
-  const onHomepageBuilder =
-    window.location.pathname.includes('homepage-builder/');
+  // A builder always shows the widget, so it can be placed and configured while no survey runs.
+  const inBuilder =
+    pathname.includes('homepage-builder/') ||
+    pathname.includes(CUSTOM_PAGE_BUILDER_PATH);
 
-  // If the survey is not live and we're not on the homepage builder, don't render the CTA
-  if (!isSurveyLive && !onHomepageBuilder) {
+  // If the survey is not live and we're not in a builder, don't render the CTA
+  if (!isSurveyLive && !inBuilder) {
     return null;
   }
 

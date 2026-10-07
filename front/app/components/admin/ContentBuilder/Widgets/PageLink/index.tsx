@@ -167,7 +167,14 @@ const PageLinkSettings = () => {
 
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const { projectId } = useParams({ strict: false });
+  const { projectId: routeProjectId, customPageId } = useParams({
+    strict: false,
+  });
+  // On a project's own page, the project comes from the page rather than the route.
+  const { data: customPage, isLoading: isLoadingPage } =
+    useCustomPageById(customPageId);
+  const projectId =
+    routeProjectId ?? customPage?.data.attributes.project_id ?? undefined;
 
   const {
     data: pages,
@@ -180,14 +187,16 @@ const PageLinkSettings = () => {
   const pageOptions = useMemo(() => {
     if (!pages) return [];
 
-    return pages.data.map((page) => ({
-      value: page.id,
-      label: localize(page.attributes.title_multiloc),
-    }));
-  }, [pages, localize]);
+    return pages.data
+      .filter((page) => page.id !== customPageId)
+      .map((page) => ({
+        value: page.id,
+        label: localize(page.attributes.title_multiloc),
+      }));
+  }, [pages, localize, customPageId]);
 
   // Full-panel spinner on initial load only; refetches keep the panel visible.
-  if (!pages) {
+  if (isLoadingPage || !pages) {
     return <Spinner />;
   }
 

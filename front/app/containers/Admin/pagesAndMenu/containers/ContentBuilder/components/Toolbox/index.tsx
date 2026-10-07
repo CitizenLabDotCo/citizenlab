@@ -15,12 +15,19 @@ import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import AccordionMultiloc, {
   accordionMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
+import Areas, {
+  areasTitle,
+} from 'components/admin/ContentBuilder/Widgets/Areas';
 import ButtonMultiloc, {
   buttonMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import CallToAction, {
   callToActionTitle,
 } from 'components/admin/ContentBuilder/Widgets/CallToAction';
+import CommunityMonitorCTA, {
+  communityMonitorCTATitle,
+} from 'components/admin/ContentBuilder/Widgets/CommunityMonitorCTA';
+import communityMonitorMessages from 'components/admin/ContentBuilder/Widgets/CommunityMonitorCTA/messages';
 import CustomPages, {
   customPagesTitle,
 } from 'components/admin/ContentBuilder/Widgets/CustomPages';
@@ -29,6 +36,10 @@ import FinishedOrArchived, {
   finishedOrArchivedTitle,
 } from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived';
 import finishedOrArchivedMessages from 'components/admin/ContentBuilder/Widgets/FinishedOrArchived/messages';
+import FollowedItems, {
+  followedItemsTitle,
+} from 'components/admin/ContentBuilder/Widgets/FollowedItems';
+import followedItemsMessages from 'components/admin/ContentBuilder/Widgets/FollowedItems/messages';
 import HtmlBlockMultiloc, {
   htmlBlockMultilocTitle,
 } from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
@@ -72,12 +83,6 @@ import {
 } from 'utils/cl-intl';
 
 import messages from '../../messages';
-import Areas, { areasTitle } from '../Widgets/Areas';
-import CommunityMonitorCTA, {
-  communityMonitorCTATitle,
-} from '../Widgets/CommunityMonitorCTA';
-import FollowedItems, { followedItemsTitle } from '../Widgets/FollowedItems';
-import followedItemsMessages from '../Widgets/FollowedItems/messages';
 import HomepageBanner, { homepageBannerTitle } from '../Widgets/HomepageBanner';
 import {
   getHomepageBannerDefaultImage,
@@ -237,12 +242,14 @@ const HomepageBuilderToolbox = () => {
             id="e2e-draggable-community-monitor-cta"
             component={
               <CommunityMonitorCTA
-                title={toMultiloc(messages.communityMonitorCtaDefaultTitle)}
+                title={toMultiloc(
+                  communityMonitorMessages.communityMonitorCtaDefaultTitle
+                )}
                 description={toMultiloc(
-                  messages.communityMonitorCtaDefaultDescription
+                  communityMonitorMessages.communityMonitorCtaDefaultDescription
                 )}
                 surveyButtonText={toMultiloc(
-                  messages.communityMonitorCtaDefaultSurveyButtonText
+                  communityMonitorMessages.communityMonitorCtaDefaultSurveyButtonText
                 )}
               />
             }

@@ -286,15 +286,16 @@ describe('Custom page builder', () => {
       .should('have.class', 'e2e-signed-out-header-title');
   });
 
-  // With filtering off, a stored events node keeps its filter but offers no source choice, and the
-  // projects list leaves the toolbox.
+  // With filtering off, a stored events node keeps its filter, still shown so it can be reset, but
+  // no other filter is offered, and the projects list leaves the toolbox.
   it('withdraws the filtering choices once the tenant loses advanced_custom_pages', () => {
     setFiltering(false);
     openBuilder();
 
     selectNodeContaining(() => cy.dataCy('e2e-events-widget'));
-    cy.get('label[for="events-source-areas"]').should('not.exist');
-    cy.get('label[for="events-source-all"]').should('not.exist');
+    cy.get('#events-source-areas').should('be.checked');
+    cy.get('label[for="events-source-all"]').should('exist');
+    cy.get('label[for="events-source-global_topics"]').should('not.exist');
 
     cy.get('#e2e-draggable-events').should('exist');
     cy.get('#e2e-draggable-projects-by-filter').should('not.exist');
@@ -329,5 +330,35 @@ describe('Custom page builder', () => {
     cy.visit(`/pages/${pageSlug}`);
     cy.get('.e2e-published-projects-and-folders').should('exist');
     cy.contains(buttonText).should('be.visible');
+  });
+
+  // With the builder on, one page replaces the settings and content tabs: the settings form beside
+  // a preview, and the builder one click away.
+  it('edits the page from one page with a preview', () => {
+    cy.setAdminLoginCookie();
+    cy.visit(`/admin/pages-menu/pages/${pageId}/settings`);
+
+    cy.get('[data-testid="customPageSettingsForm"]').should('be.visible');
+    cy.get('.e2e-resource-tabs').should('not.exist');
+    // The builder's widgets list projects and events, so the form's linked items are gone.
+    cy.get('[id^="projects_filter_type_"]').should('not.exist');
+    cy.dataCy('e2e-custom-page-preview')
+      .find('iframe')
+      .should('have.attr', 'src')
+      .and('include', `/pages/${pageSlug}`);
+
+    // The button only shows while the preview is hovered, which Cypress cannot do.
+    cy.dataCy('e2e-edit-page-content').click({ force: true });
+    cy.location('pathname').should(
+      'include',
+      `/admin/custom-page-builder/pages/${pageId}`
+    );
+    cy.get('#e2e-draggable-text');
+
+    cy.get('#e2e-go-back-button').click();
+    cy.location('pathname').should(
+      'include',
+      `/admin/pages-menu/pages/${pageId}/settings`
+    );
   });
 });
