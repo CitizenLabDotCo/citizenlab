@@ -13,10 +13,15 @@ export default defineMessages({
     id: 'app.components.FormBuilder.components.AnswerVisibilityToggle.confirmTitle',
     defaultMessage: 'Show answers already collected',
   },
-  confirmExplanation: {
-    id: 'app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation',
+  confirmSubmissions: {
+    id: 'app.components.FormBuilder.components.AnswerVisibilityToggle.confirmSubmissions',
     defaultMessage:
-      'Participants answered this question while it was private. Turning this on also shows those answers, not only the ones given from now on.',
+      'This form has {count, plural, one {# submission} other {# submissions}} so far.',
+  },
+  confirmExplanation: {
+    id: 'app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2',
+    defaultMessage:
+      'Participants may have answered this question while it was private. Turning this on also shows those answers, not only the ones given from now on.',
   },
   cancel: {
     id: 'app.components.FormBuilder.components.AnswerVisibilityToggle.cancel',
