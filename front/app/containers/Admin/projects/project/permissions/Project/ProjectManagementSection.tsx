@@ -2,16 +2,16 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import ProjectManagement from 'containers/Admin/projects/project/permissions/Project/ProjectManagement';
-
 import Outlet from 'components/Outlet';
+
+import ProjectManagement from './ProjectManagement';
 
 interface Props {
   projectId: string;
 }
 
-const ManagementSection = ({ projectId }: Props) => (
-  <Box>
+const ProjectManagementSection = ({ projectId }: Props) => (
+  <>
     <Outlet
       id="app.containers.Admin.project.edit.permissions.moderatorRights"
       projectId={projectId}
@@ -23,7 +23,7 @@ const ManagementSection = ({ projectId }: Props) => (
       }
     </Outlet>
     <ProjectManagement projectId={projectId} />
-  </Box>
+  </>
 );
 
-export default ManagementSection;
+export default ProjectManagementSection;

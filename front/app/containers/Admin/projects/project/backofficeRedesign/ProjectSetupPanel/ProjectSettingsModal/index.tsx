@@ -11,6 +11,7 @@ import useUpdateProject from 'api/projects/useUpdateProject';
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import { useValidateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
 import generalMessages from 'containers/Admin/projects/project/general/messages';
+import ProjectManagementSection from 'containers/Admin/projects/project/permissions/Project/ProjectManagementSection';
 import ProjectInputTopics from 'containers/Admin/projects/project/topics';
 
 import SettingsModal, {
@@ -24,7 +25,6 @@ import { validateSlug } from 'utils/textUtils';
 import messages from '../../messages';
 
 import GeneralSection from './GeneralSection';
-import ManagementSection from './ManagementSection';
 import ResetSection from './ResetSection';
 import ResourcesSection from './ResourcesSection';
 
@@ -148,7 +148,11 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       name: 'management',
       label: messages.settingsManagement,
       icon: 'user',
-      content: <ManagementSection projectId={projectId} />,
+      content: (
+        <Box>
+          <ProjectManagementSection projectId={projectId} />
+        </Box>
+      ),
     },
     {
       name: 'input-tags',
