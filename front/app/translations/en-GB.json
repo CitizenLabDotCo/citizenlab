@@ -2435,7 +2435,6 @@
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": "We could not save that change. This feature may no longer be available to you. Reload the page and try again.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Try out features we are still finishing. What you switch on here only changes what you see, not what anyone else on the platform sees.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Early access",
-  "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignDescription": "A new, easier-to-understand way to set up and manage projects. This is a work in progress: share your feedback in the #dev-tandem-uxui-revamp Slack channel.",
   "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignTitle": "New project back office",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Remove profile picture",
   "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Your votes on proposals that are still open for voting will be deleted. Votes on proposals where the voting period has closed will not be deleted.",

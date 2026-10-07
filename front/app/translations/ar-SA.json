@@ -2435,7 +2435,6 @@
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": "لم نتمكن من حفظ هذا التغيير. قد لا تكون هذه الميزة متاحة لك بعد الآن. أعد تحميل الصفحة وحاول مرة أخرى.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "جرب الميزات التي لا نزال نعمل على إنهائها. ما تقوم بتفعيله هنا يغير ما تراه أنت فقط، ولا يؤثر على ما يراه أي شخص آخر على المنصة.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "الوصول المبكر",
-  "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignDescription": "طريقة جديدة وأسهل فهمًا لإعداد المشاريع وإدارتها. هذا العمل لا يزال قيد التطوير: شاركنا ملاحظاتك في قناة Slack #dev-tandem-uxui-revamp.",
   "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignTitle": "واجهة إدارة المشاريع الجديدة",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "إزالة صورة ملف التعريف",
   "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "سيتم حذف أصواتك على المقترحات التي لا تزال مفتوحة للتصويت. لن يتم حذف الأصوات على المقترحات التي أغلقت فيها فترة التصويت.",

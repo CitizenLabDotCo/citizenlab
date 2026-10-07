@@ -2435,7 +2435,6 @@
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": "ਅਸੀਂ ਉਹ ਬਦਲਾਅ ਸੇਵ ਨਹੀਂ ਕਰ ਸਕੇ। ਹੋ ਸਕਦਾ ਹੈ ਕਿ ਇਹ ਵਿਸ਼ੇਸ਼ਤਾ ਹੁਣ ਤੁਹਾਡੇ ਲਈ ਉਪਲਬਧ ਨਾ ਹੋਵੇ। ਪੰਨੇ ਨੂੰ ਰੀਲੋਡ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "ਉਹਨਾਂ ਵਿਸ਼ੇਸ਼ਤਾਵਾਂ ਨੂੰ ਅਜ਼ਮਾਓ ਜਿਨ੍ਹਾਂ ਨੂੰ ਅਸੀਂ ਅਜੇ ਪੂਰਾ ਕਰ ਰਹੇ ਹਾਂ। ਤੁਸੀਂ ਇੱਥੇ ਜੋ ਵੀ ਚਾਲੂ ਕਰਦੇ ਹੋ, ਉਹ ਸਿਰਫ਼ ਤੁਹਾਡੇ ਲਈ ਬਦਲੇਗਾ, ਪਲੇਟਫਾਰਮ 'ਤੇ ਕਿਸੇ ਹੋਰ ਲਈ ਨਹੀਂ।",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "ਅਗੇਤੀ ਪਹੁੰਚ",
-  "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignDescription": "ਪ੍ਰੋਜੈਕਟਾਂ ਨੂੰ ਸੈੱਟਅੱਪ ਕਰਨ ਅਤੇ ਪ੍ਰਬੰਧਿਤ ਕਰਨ ਦਾ ਇੱਕ ਨਵਾਂ, ਸਮਝਣ ਵਿੱਚ ਆਸਾਨ ਤਰੀਕਾ। ਇਸ 'ਤੇ ਅਜੇ ਕੰਮ ਚੱਲ ਰਿਹਾ ਹੈ: ਆਪਣੀ ਫੀਡਬੈਕ #dev-tandem-uxui-revamp ਸਲੈਕ ਚੈਨਲ ਵਿੱਚ ਸਾਂਝੀ ਕਰੋ।",
   "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignTitle": "ਨਵਾਂ ਪ੍ਰੋਜੈਕਟ ਬੈਕ ਆਫਿਸ",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "ਪ੍ਰੋਫਾਈਲ ਤਸਵੀਰ ਹਟਾਓ",
   "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "ਉਹਨਾਂ ਪ੍ਰਸਤਾਵਾਂ 'ਤੇ ਤੁਹਾਡੀਆਂ ਵੋਟਾਂ ਜੋ ਅਜੇ ਵੀ ਵੋਟਿੰਗ ਲਈ ਖੁੱਲ੍ਹੀਆਂ ਹਨ, ਮਿਟਾ ਦਿੱਤੀਆਂ ਜਾਣਗੀਆਂ। ਉਹਨਾਂ ਪ੍ਰਸਤਾਵਾਂ 'ਤੇ ਵੋਟਾਂ ਜਿੱਥੇ ਵੋਟਿੰਗ ਦੀ ਮਿਆਦ ਬੰਦ ਹੋ ਗਈ ਹੈ, ਨੂੰ ਮਿਟਾਇਆ ਨਹੀਂ ਜਾਵੇਗਾ।",

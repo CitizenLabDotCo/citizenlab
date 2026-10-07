@@ -2435,7 +2435,6 @@
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": "Vi kunne ikke gemme den ændring. Denne funktion er muligvis ikke længere tilgængelig for dig. Genindlæs siden, og prøv igen.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Prøv funktioner, som vi stadig er ved at færdiggøre. Det, du slår til her, ændrer kun det, du ser, og ikke hvad andre på platformen ser.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Tidlig adgang",
-  "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignDescription": "En ny måde at opsætte og administrere projekter på, som er lettere at forstå. Dette er et igangværende arbejde: Del din feedback i Slack-kanalen #dev-tandem-uxui-revamp.",
   "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignTitle": "Nyt projekt-backoffice",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Fjern profilbillede",
   "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "{tenantName, select, KøbenhavnsKommune {Dine stemmer på københavnerforslag, der stadig er åbne for afstemning, vil blive slettet. Stemmer på københavnerforslag, hvor afstemningsperioden er afsluttet, vil ikke blive slettet.} other {Dine stemmer på forslag, der stadig er åbne for afstemning, vil blive slettet. Stemmer på forslag, hvor afstemningsperioden er afsluttet, vil ikke blive slettet.}}",

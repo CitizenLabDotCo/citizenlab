@@ -2435,7 +2435,6 @@
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": "Muutosta ei voitu tallentaa. Tämä ominaisuus ei ehkä ole enää käytettävissäsi. Lataa sivu uudelleen ja yritä uudelleen.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Kokeile ominaisuuksia, joita viimeistelemme vielä. Täällä käyttöön ottamasi ominaisuudet vaikuttavat vain siihen, mitä itse näet, eivätkä ne vaikuta muihin alustan käyttäjiin.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Ennakkopääsy",
-  "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignDescription": "Uusi, helpommin ymmärrettävä tapa luoda ja hallinnoida projekteja. Tämä on vielä keskeneräinen: jaa palautteesi #dev-tandem-uxui-revamp-Slack-kanavalla.",
   "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignTitle": "Uusi projektien taustahallinta",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Poista profiilikuva",
   "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Äänestyksenne ehdotuksista, jotka ovat vielä äänestettävänä, poistetaan. Äänestystä ehdotuksista, joissa äänestysaika on päättynyt, ei poisteta.",

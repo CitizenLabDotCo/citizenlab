@@ -2435,7 +2435,6 @@
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": "Vi kunde inte spara ändringen. Den här funktionen är kanske inte längre tillgänglig för dig. Ladda om sidan och försök igen.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Prova funktioner som vi fortfarande arbetar med. Det du aktiverar här ändrar bara vad du ser, inte vad någon annan på plattformen ser.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Tidig åtkomst",
-  "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignDescription": "Ett nytt, mer lättförståeligt sätt att skapa och hantera projekt. Detta är ett pågående arbete: dela din feedback i Slack-kanalen #dev-tandem-uxui-revamp.",
   "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignTitle": "Nytt backoffice för projekt",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Ta bort profilbild",
   "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Dina röster på förslag som fortfarande är öppna för omröstning kommer att raderas. Röster på förslag där omröstningsperioden har avslutats kommer inte att raderas.",

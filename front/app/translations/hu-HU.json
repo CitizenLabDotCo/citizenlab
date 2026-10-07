@@ -2435,7 +2435,6 @@
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": "Nem sikerült menteni a módosítást. Lehet, hogy ez a funkció már nem érhető el számodra. Frissítsd az oldalt, és próbáld újra.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Próbálja ki a még fejlesztés alatt álló funkciókat. Amit itt bekapcsol, az csak az Ön számára módosítja a megjelenítést, a platformon senki más számára nem.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Korai hozzáférés",
-  "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignDescription": "Egy új, könnyebben érthető mód a projektek beállítására és kezelésére. Ez még fejlesztés alatt áll: oszd meg visszajelzésedet a #dev-tandem-uxui-revamp Slack csatornán.",
   "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignTitle": "Új projektkezelő felület",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Profilkép eltávolítása",
   "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "A még szavazásra váró javaslatokra leadott szavazatait töröljük. Azokra a javaslatokra vonatkozó szavazatokat, amelyeknél a szavazási időszak lejárt, nem töröljük.",
