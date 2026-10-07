@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Text,
+  Tooltip,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import usePhases from 'api/phases/usePhases';
 
@@ -26,30 +32,49 @@ const ProjectTimeline = ({ projectId }: Props) => {
 
   return (
     <Box pt="16px" pb="24px" px="12px">
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        h="32px"
+        pl="12px"
+        mb="16px"
+      >
+        <Box as="h4" m="0">
+          <Text as="span" variant="boSection" m="0">
+            {formatMessage(messages.participationMethods)}
+          </Text>
+        </Box>
+        <Tooltip
+          content={formatMessage(messages.newParticipationMethod)}
+          theme="dark"
+          placement="bottom"
+        >
+          <Button
+            className="intercom-product-tour-project-timeline-new-phase"
+            buttonStyle="bo-text"
+            icon="plus"
+            width="32px"
+            height="32px"
+            padding="0"
+            ariaLabel={formatMessage(messages.newParticipationMethod)}
+            onClick={() => setMethodModalOpened(true)}
+          />
+        </Tooltip>
+      </Box>
       <Box className="intercom-product-tour-project-timeline">
         <TimelinePhases
           projectId={projectId}
           variant="backofficeRedesign"
           heading={
-            <Box
-              display="flex"
-              alignItems="center"
-              h="32px"
-              px="12px"
-              mb="16px"
-            >
-              <Box as="h4" m="0">
-                <Text as="span" variant="boSection" m="0">
-                  {formatMessage(
-                    hasPhases
-                      ? projectPageMessages.timeline
-                      : messages.participationMethods
-                  )}
+            hasPhases && (
+              <Box px="12px" mb="8px">
+                <Text variant="boHelper" color="textSecondary" m="0">
+                  {formatMessage(projectPageMessages.timeline)}
                 </Text>
               </Box>
-            </Box>
+            )
           }
-          onNewPhase={() => setMethodModalOpened(true)}
           withPhaseOptions
         />
       </Box>
