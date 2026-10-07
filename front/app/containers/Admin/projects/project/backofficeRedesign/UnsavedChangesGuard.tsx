@@ -77,7 +77,7 @@ const UnsavedChangesGuard = () => {
     >
       <Box p="24px">
         <Text variant="boHelper">
-          {formatMessage(messages.unsavedChangesDescription)}
+          {formatMessage(messages.unsavedChangesDescription2)}
         </Text>
       </Box>
     </Modal>
