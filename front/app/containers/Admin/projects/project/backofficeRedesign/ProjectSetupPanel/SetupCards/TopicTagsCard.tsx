@@ -16,14 +16,27 @@ interface Props {
 
 const TopicTagsCard = ({ project }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutate: updateProject } = useUpdateProject();
+  const { mutate: updateProject, isPending } = useUpdateProject();
   // Each click saves the whole list, so quick clicks must build on the
   // previous pick rather than on project data that hasn't refetched yet.
   const [pickedTopicIds, setPickedTopicIds] = useState<string[]>();
 
-  const topicIds =
-    pickedTopicIds ??
-    project.relationships.global_topics.data.map((topic) => topic.id);
+  const savedTopicIds = project.relationships.global_topics.data.map(
+    (topic) => topic.id
+  );
+
+  // Once saving is done and the saved list matches the pick, drop the pick, so
+  // later changes made elsewhere show up here.
+  if (
+    !isPending &&
+    pickedTopicIds &&
+    pickedTopicIds.length === savedTopicIds.length &&
+    pickedTopicIds.every((id) => savedTopicIds.includes(id))
+  ) {
+    setPickedTopicIds(undefined);
+  }
+
+  const topicIds = pickedTopicIds ?? savedTopicIds;
 
   const handleChange = (global_topic_ids: string[]) => {
     setPickedTopicIds(global_topic_ids);
