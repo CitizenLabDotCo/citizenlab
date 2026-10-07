@@ -7,13 +7,16 @@
   CLOSED output schema (see ProjectGeneration::ProjectGenerator::RESPONSE_SCHEMA).
 
   Now ported: survey option randomisation / "Other" / dropdown / select-count, the ideation
-  "map" input view (presentation_mode), proposals thresholds, and optional demographics
-  (the platform's profile questions attached as a final survey page).
+  "map" input view (presentation_mode), proposals thresholds, optional demographics (the
+  platform's profile questions attached as a final survey page), the statutory modifier
+  (references/statutory.md: pinned formal-input channel, legal minimum duration, honest
+  influence ceiling), and the "verified" access rung (require_verification for one-person-one-vote).
 
   Deliberately NOT ported, because the schema/orchestration does not cover them yet:
     - image-choice questions (no MCP tool creates the option images), spatial point/line/polygon
       questions and the "map" survey page (no MCP tool creates the required map_config), the
-      ideation "feed" view beyond the flag, project imagery, and the Notion GSM-report workflow.
+      "everyone_confirmed_email" access rung (the permission tool ties confirmed-email to the
+      users rung), project imagery, and the Notion GSM-report workflow.
   Voting and common_ground phases ARE created (the draft sets the phase + config; the
   voting options and agree/disagree statements are added by an admin after the upstream
   phase). When the items above land in the generator, widen this prompt and bump the marker.
@@ -67,6 +70,12 @@ Design the project in these steps.
    - Do NOT prepend a redundant leading information phase. The project page description already carries the why / what's-open / how-input-is-used framing, so start directly with the engagement phase (ideation / proposals / native_survey). Only lead with an information phase when the brief calls for staging substantial material first (a document to read, a complex plan to present). The CLOSING information phase is different — keep it always.
    - Breadth vs depth: native_survey reaches more people (good when reach = 2 or the brief wants numbers); ideation/proposals reach fewer but enable higher influence (good when influence = 2 or the brief wants co-design). Pick by the levers.
    Typical shapes to adapt (never copy blindly): gather_input -> ideation -> information; co_create -> ideation -> ideation -> information; prioritize -> ideation -> voting -> information (the canonical participatory-budgeting shape), or proposals -> information when it is petition-style backing; a survey-led breadth project -> native_survey -> information; to find consensus, add common_ground after the engagement phase, e.g. ideation -> common_ground -> information.
+   Statutory / legally-required consultations: if the brief frames this as a statutory or legally-required public consultation (e.g. "statutory", "openbaar onderzoek", "enquête publique", "formal consultation", "Bürgerbeteiligung", a named legal instrument, or the intake marks it so), apply this overlay ON TOP of the archetype's recipe — never instead of it:
+   - Pin a formal-input native_survey phase running the full legal minimum (default 30 days; use 42 or 60 when the brief names a jurisdiction or instrument that requires longer). This is the legally defensible channel and runs alongside any engagement phases, never in place of them. Running a native_survey alone is the statutory anti-pattern — always pair it with a closing information phase.
+   - Always end with an information phase that publishes the response: what was heard and how it was taken into account.
+   - Keep the influence language honest: a statutory channel on its own is consult-level (realistic influence ~3) — do not imply residents decide. Promise more only if the brief adds real co-design phases alongside the statutory channel.
+   - For a binding vote or where one-person-one-vote matters, set audience_index 1 and verification_required true; otherwise leave verification_required false.
+   - In archetype_rationale, note that a statutory floor applies and that the manager must confirm the exact legal duration and notice requirements for the jurisdiction before publishing.
 
    For each phase give a short title, a plain-language description, and a realistic length in days. Each phase description must say (a) what residents are asked to do in THIS phase specifically and (b) how it contributes to the whole. For every ideation / proposals / native_survey phase, add one short, in-tone line inviting in-person participation on paper (paper forms are collected and imported later) — e.g. "Prefer pen and paper? Paper forms will be available for anyone who'd rather take part in person." Keep each phase description roughly 200-500 characters.
 

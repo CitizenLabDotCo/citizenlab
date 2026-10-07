@@ -14,7 +14,14 @@ import messages from './messages';
 // already understands, and it adds one plain-language line to the brief, so the
 // generation engine gets the context in the same words the manager would use.
 
-export type IntakeQuestionId = 'stage' | 'audience' | 'timing';
+export type IntakeQuestionId =
+  | 'stage'
+  | 'audience'
+  | 'closing'
+  | 'timing'
+  | 'tone'
+  | 'distinctiveness'
+  | 'statutory';
 
 export type IntakeOption = {
   id: string;
@@ -103,6 +110,31 @@ export const INTAKE_QUESTIONS: IntakeQuestionConfig[] = [
     detailBrief: messages.intakeAudienceDetailBrief,
   },
   {
+    // Closing the loop — what residents hear back. No lever; it ensures the
+    // brief states the feedback commitment the engine should design toward.
+    id: 'closing',
+    ask: messages.intakeClosingAsk,
+    options: [
+      {
+        id: 'summary',
+        label: messages.intakeClosingSummary,
+        brief: messages.intakeClosingSummaryBrief,
+      },
+      {
+        id: 'shaped',
+        label: messages.intakeClosingShaped,
+        brief: messages.intakeClosingShapedBrief,
+      },
+      {
+        id: 'decision',
+        label: messages.intakeClosingDecision,
+        brief: messages.intakeClosingDecisionBrief,
+      },
+    ],
+    detailPlaceholder: messages.intakeClosingDetailPlaceholder,
+    detailBrief: messages.intakeClosingDetailBrief,
+  },
+  {
     id: 'timing',
     ask: messages.intakeTimingAsk,
     options: [
@@ -124,6 +156,78 @@ export const INTAKE_QUESTIONS: IntakeQuestionConfig[] = [
     ],
     detailPlaceholder: messages.intakeTimingDetailPlaceholder,
     detailBrief: messages.intakeTimingDetailBrief,
+  },
+  {
+    // Tone — the backend prompt already branches on tone; this feeds it.
+    id: 'tone',
+    ask: messages.intakeToneAsk,
+    options: [
+      {
+        id: 'warm',
+        label: messages.intakeToneWarm,
+        brief: messages.intakeToneWarmBrief,
+      },
+      {
+        id: 'neutral',
+        label: messages.intakeToneNeutral,
+        brief: messages.intakeToneNeutralBrief,
+      },
+      {
+        id: 'formal',
+        label: messages.intakeToneFormal,
+        brief: messages.intakeToneFormalBrief,
+      },
+    ],
+  },
+  {
+    // Audience distinctiveness — grounds the draft in THIS community. The chip
+    // gives signal on its own; the free-text detail carries the specifics.
+    id: 'distinctiveness',
+    ask: messages.intakeDistinctAsk,
+    options: [
+      {
+        id: 'place',
+        label: messages.intakeDistinctPlace,
+        brief: messages.intakeDistinctPlaceBrief,
+      },
+      {
+        id: 'multilingual',
+        label: messages.intakeDistinctMultilingual,
+        brief: messages.intakeDistinctMultilingualBrief,
+      },
+      {
+        id: 'sensitive',
+        label: messages.intakeDistinctSensitive,
+        brief: messages.intakeDistinctSensitiveBrief,
+      },
+      {
+        id: 'none',
+        label: messages.intakeDistinctNone,
+        brief: messages.intakeDistinctNoneBrief,
+      },
+    ],
+    detailPlaceholder: messages.intakeDistinctDetailPlaceholder,
+    detailBrief: messages.intakeDistinctDetailBrief,
+  },
+  {
+    // Statutory — flags a legally-required consultation; the brief line
+    // triggers the backend's statutory overlay (legal minimum + formal channel).
+    id: 'statutory',
+    ask: messages.intakeStatutoryAsk,
+    options: [
+      {
+        id: 'no',
+        label: messages.intakeStatutoryNo,
+        brief: messages.intakeStatutoryNoBrief,
+      },
+      {
+        id: 'yes',
+        label: messages.intakeStatutoryYes,
+        brief: messages.intakeStatutoryYesBrief,
+      },
+    ],
+    detailPlaceholder: messages.intakeStatutoryDetailPlaceholder,
+    detailBrief: messages.intakeStatutoryDetailBrief,
   },
 ];
 

@@ -261,7 +261,11 @@ const ProjectAssistant = ({ project }: Props) => {
       const answer = answers[question.id];
       const option = question.options.find((o) => o.id === answer?.optionId);
       if (!option) return [];
-      const lines = [formatMessage(option.brief)];
+      // Some options (e.g. "No", "Nothing in particular") carry an empty brief —
+      // they record an answer without adding a line. Drop those blanks.
+      const lines: string[] = [];
+      const briefText = formatMessage(option.brief).trim();
+      if (briefText) lines.push(briefText);
       const detail = answer?.detail?.trim();
       if (detail && question.detailBrief) {
         lines.push(formatMessage(question.detailBrief, { detail }));

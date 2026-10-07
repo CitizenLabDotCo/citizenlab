@@ -169,7 +169,7 @@ module ProjectGeneration
     RESPONSE_SCHEMA = {
       type: 'object',
       additionalProperties: false,
-      required: %w[archetype archetype_rationale title description_preview page_blocks phases events visibility audience_index rubric],
+      required: %w[archetype archetype_rationale title description_preview page_blocks phases events visibility audience_index verification_required rubric],
       properties: {
         archetype: { type: 'string', enum: ARCHETYPES },
         archetype_rationale: { type: 'string' },
@@ -192,6 +192,7 @@ module ProjectGeneration
         events: { type: 'array', items: EVENT_SCHEMA },
         visibility: { type: 'string', enum: VISIBILITIES },
         audience_index: { type: 'integer', description: 'Who should take part: 0 anyone, 1 registered users, 2 admins only.' },
+        verification_required: { type: 'boolean', description: 'true to require identity verification to take part (one-person-one-vote: statutory consultations, binding votes). Only takes effect with audience_index 1. false otherwise.' },
         rubric: RUBRIC_SCHEMA
       }
     }.freeze
@@ -266,7 +267,7 @@ module ProjectGeneration
 
       create_events(plan['events'], errors)
       update_project_settings(plan, errors)
-      update_access(phases, plan['audience_index'], errors)
+      update_access(phases, plan['audience_index'], plan['verification_required'], errors)
 
       GenerationResult.new(errors: errors, failed: core_failed)
     end
@@ -454,8 +455,10 @@ module ProjectGeneration
       errors << "update_project: #{response.content.to_json}" if response.error?
     end
 
-    def update_access(phases, audience_index, errors)
+    def update_access(phases, audience_index, verification_required, errors)
       permitted_by = PERMITTED_BY_BY_INDEX[audience_index.to_i.clamp(0, 2)]
+      # Identity verification (one-person-one-vote) only applies to signed-in users.
+      require_verification = verification_required == true && permitted_by == 'users'
 
       phases.each do |phase|
         action = PRIMARY_ACTION[phase[:plan]['participation_method']]
@@ -466,11 +469,13 @@ module ProjectGeneration
         # platform's configured profile questions as an optional final page.
         wants_demographics = phase[:plan]['collect_demographics'] == true && permitted_by != 'everyone'
 
-        # Nothing to change for the default audience unless we're adding demographics.
-        next if permitted_by == 'users' && !wants_demographics
+        # Nothing to change for the default audience unless we're adding
+        # demographics or requiring verification.
+        next if permitted_by == 'users' && !wants_demographics && !require_verification
 
         args = { phase_id: phase[:id], action: action, permitted_by: permitted_by }
         args[:demographic_questions] = nil if wants_demographics
+        args[:require_verification] = true if require_verification
         response = call_tool(McpServer::Tools::UpdatePhasePermission, args)
         errors << "update_phase_permission: #{response.content.to_json}" if response.error?
       end

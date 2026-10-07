@@ -195,6 +195,155 @@ export default defineMessages({
     id: `${scope}.intakeTimingDetailBrief`,
     defaultMessage: 'Timed around: {detail}.',
   },
+  // Closing the loop — what residents hear back + when. Feeds the
+  // closes_the_loop rubric dimension directly (intake skill Q11).
+  intakeClosingAsk: {
+    id: `${scope}.intakeClosingAsk`,
+    defaultMessage: 'When this closes, what will residents hear back?',
+  },
+  intakeClosingSummary: {
+    id: `${scope}.intakeClosingSummary`,
+    defaultMessage: 'A summary of what we heard',
+  },
+  intakeClosingSummaryBrief: {
+    id: `${scope}.intakeClosingSummaryBrief`,
+    defaultMessage:
+      'When it closes, residents will hear back a summary of what the community said.',
+  },
+  intakeClosingShaped: {
+    id: `${scope}.intakeClosingShaped`,
+    defaultMessage: 'How their input shaped the decision',
+  },
+  intakeClosingShapedBrief: {
+    id: `${scope}.intakeClosingShapedBrief`,
+    defaultMessage:
+      'When it closes, we’ll show residents how their input shaped the decision.',
+  },
+  intakeClosingDecision: {
+    id: `${scope}.intakeClosingDecision`,
+    defaultMessage: 'The final decision and the reasoning',
+  },
+  intakeClosingDecisionBrief: {
+    id: `${scope}.intakeClosingDecisionBrief`,
+    defaultMessage:
+      'When it closes, we’ll share the final decision and the reasoning behind it.',
+  },
+  intakeClosingDetailPlaceholder: {
+    id: `${scope}.intakeClosingDetailPlaceholder`,
+    defaultMessage: 'By when? e.g. within 2 weeks of close, at the June council meeting',
+  },
+  intakeClosingDetailBrief: {
+    id: `${scope}.intakeClosingDetailBrief`,
+    defaultMessage: 'Feedback timing: {detail}.',
+  },
+  // Tone — the prompt already branches on tone; this gives it a signal.
+  intakeToneAsk: {
+    id: `${scope}.intakeToneAsk`,
+    defaultMessage: 'What tone should the draft strike?',
+  },
+  intakeToneWarm: {
+    id: `${scope}.intakeToneWarm`,
+    defaultMessage: 'Warm and community',
+  },
+  intakeToneWarmBrief: {
+    id: `${scope}.intakeToneWarmBrief`,
+    defaultMessage: 'Tone: warm and community-minded.',
+  },
+  intakeToneNeutral: {
+    id: `${scope}.intakeToneNeutral`,
+    defaultMessage: 'Neutral and factual',
+  },
+  intakeToneNeutralBrief: {
+    id: `${scope}.intakeToneNeutralBrief`,
+    defaultMessage: 'Tone: neutral and factual.',
+  },
+  intakeToneFormal: {
+    id: `${scope}.intakeToneFormal`,
+    defaultMessage: 'Formal and institutional',
+  },
+  intakeToneFormalBrief: {
+    id: `${scope}.intakeToneFormalBrief`,
+    defaultMessage: 'Tone: formal and institutional — no emoji.',
+  },
+  // Audience distinctiveness — what makes the draft name THIS community
+  // (intake skill Q7).
+  intakeDistinctAsk: {
+    id: `${scope}.intakeDistinctAsk`,
+    defaultMessage: 'Anything distinctive about this community to reflect?',
+  },
+  intakeDistinctPlace: {
+    id: `${scope}.intakeDistinctPlace`,
+    defaultMessage: 'A specific place or area',
+  },
+  intakeDistinctPlaceBrief: {
+    id: `${scope}.intakeDistinctPlaceBrief`,
+    defaultMessage:
+      'This centres on a specific place or neighbourhood — name it where possible.',
+  },
+  intakeDistinctMultilingual: {
+    id: `${scope}.intakeDistinctMultilingual`,
+    defaultMessage: 'A multilingual community',
+  },
+  intakeDistinctMultilingualBrief: {
+    id: `${scope}.intakeDistinctMultilingualBrief`,
+    defaultMessage: 'The community is multilingual — keep the language simple and plain.',
+  },
+  intakeDistinctSensitive: {
+    id: `${scope}.intakeDistinctSensitive`,
+    defaultMessage: 'Sensitive or low trust',
+  },
+  intakeDistinctSensitiveBrief: {
+    id: `${scope}.intakeDistinctSensitiveBrief`,
+    defaultMessage:
+      'There’s sensitivity or low trust here — be especially transparent and acknowledge past friction.',
+  },
+  intakeDistinctNone: {
+    id: `${scope}.intakeDistinctNone`,
+    defaultMessage: 'Nothing in particular',
+  },
+  intakeDistinctNoneBrief: {
+    id: `${scope}.intakeDistinctNoneBrief`,
+    defaultMessage: '',
+  },
+  intakeDistinctDetailPlaceholder: {
+    id: `${scope}.intakeDistinctDetailPlaceholder`,
+    defaultMessage: 'Local specifics — landmarks, history, who’s affected',
+  },
+  intakeDistinctDetailBrief: {
+    id: `${scope}.intakeDistinctDetailBrief`,
+    defaultMessage: 'Local context: {detail}.',
+  },
+  // Statutory — flags a legally-required consultation, which triggers the
+  // backend's statutory overlay (legal minimum duration + formal channel).
+  intakeStatutoryAsk: {
+    id: `${scope}.intakeStatutoryAsk`,
+    defaultMessage: 'Is this a legally required (statutory) consultation?',
+  },
+  intakeStatutoryNo: {
+    id: `${scope}.intakeStatutoryNo`,
+    defaultMessage: 'No',
+  },
+  intakeStatutoryNoBrief: {
+    id: `${scope}.intakeStatutoryNoBrief`,
+    defaultMessage: '',
+  },
+  intakeStatutoryYes: {
+    id: `${scope}.intakeStatutoryYes`,
+    defaultMessage: 'Yes — legally required',
+  },
+  intakeStatutoryYesBrief: {
+    id: `${scope}.intakeStatutoryYesBrief`,
+    defaultMessage:
+      'This is a statutory / legally-required public consultation — apply the legal minimum duration and a formal input channel.',
+  },
+  intakeStatutoryDetailPlaceholder: {
+    id: `${scope}.intakeStatutoryDetailPlaceholder`,
+    defaultMessage: 'Which instrument or legal minimum, if known? e.g. openbaar onderzoek, 6 weeks',
+  },
+  intakeStatutoryDetailBrief: {
+    id: `${scope}.intakeStatutoryDetailBrief`,
+    defaultMessage: 'Statutory details: {detail}.',
+  },
   leverInfluenceQuestion: {
     id: `${scope}.leverInfluenceQuestion`,
     defaultMessage: 'How much influence will residents have?',
