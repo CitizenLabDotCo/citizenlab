@@ -130,9 +130,15 @@ describe('Project page builder', () => {
       { position: 'inside' }
     );
 
-    // A dropped widget is selected, so its settings panel is open.
+    // A dropped widget is selected, so its settings panel is open. A widget not pinned to its
+    // project shows either the source choice or, without filtering, the every-project note, and
+    // the archived toggle; whatever the flags or the events on the platform, none of them shows.
     cy.get('#events-limit-all').should('exist');
     cy.get('label[for="events-source-all"]').should('not.exist');
+    cy.contains('This widget shows events from every project').should(
+      'not.exist'
+    );
+    cy.contains('Include events from archived projects').should('not.exist');
     cy.dataCy('e2e-events-widget')
       .should('contain', eventTitle)
       .and('not.contain', otherEventTitle);
