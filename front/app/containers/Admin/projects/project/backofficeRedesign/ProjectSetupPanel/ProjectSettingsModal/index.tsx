@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Button } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
 
@@ -9,8 +9,6 @@ import projectsKeys from 'api/projects/keys';
 import { IProjectData, IUpdatedProjectProperties } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
-import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
-import { useValidateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
 import useSyncProjectImages from 'containers/Admin/projects/_shared/useSyncProjectImages';
 import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
 import ProjectInputTopics from 'containers/Admin/projects/project/topics';
@@ -43,13 +41,11 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
   const { data: remoteProjectImages } = useProjectImages(projectId);
   const { mutateAsync: updateProject } = useUpdateProject();
   const syncProjectImages = useSyncProjectImages();
-  const validateProjectContext = useValidateProjectContext();
 
   const [processing, setProcessing] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors>({});
   const [projectAttributesDiff, setProjectAttributesDiff] =
     useState<IUpdatedProjectProperties>({});
-  const [projectContextError, setProjectContextError] = useState(false);
 
   const [slug, setSlug] = useState(project.attributes.slug);
   const [showSlugErrorMessage, setShowSlugErrorMessage] = useState(false);
@@ -64,9 +60,6 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
   const [croppedCardBase64, setCroppedCardBase64] = useState<string | null>(
     null
   );
-
-  const projectInRoot =
-    !project.attributes.space_id && !project.attributes.folder_id;
 
   const loadRemoteCardImage = useCallback(async () => {
     setCardImage(null);
@@ -102,11 +95,6 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
     setShowSlugErrorMessage(!validateSlug(nextSlug));
   };
 
-  const handleContextChange = (spaceAndFolderId: SpaceAndFolderId) => {
-    applyDiff(spaceAndFolderId);
-    setProjectContextError(false);
-  };
-
   const handleCardImageAdd = (images: UploadFile[]) => {
     setCardImage(images[0]);
     setCroppedCardBase64(images[0].base64);
@@ -118,21 +106,8 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
     if (image.remote) setCardImageToRemove(image);
   };
 
-  const projectAttrs = { ...project.attributes, ...projectAttributesDiff };
-
   const handleSave = async () => {
     if (processing) return;
-
-    if (
-      !validateProjectContext({
-        spaceId: projectAttrs.space_id,
-        folderId: projectAttrs.folder_id,
-        projectInRoot,
-      })
-    ) {
-      setProjectContextError(true);
-      return;
-    }
 
     if (showSlugErrorMessage) return;
 
@@ -170,7 +145,6 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
     setProjectAttributesDiff({});
     setSlug(project.attributes.slug);
     setShowSlugErrorMessage(false);
-    setProjectContextError(false);
     setApiErrors({});
     setCardImageToRemove(null);
     setCroppedCardBase64(null);
@@ -188,12 +162,10 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       content: (
         <FrontOfficeSection
           selectedTopicIds={getSelectedTopicIds(projectAttributesDiff, project)}
-          areaIds={projectAttrs.area_ids}
           cardImage={cardImage}
           cardImageAltText={cardImageAltText}
           cardImageShouldBeSaved={cardImage ? !cardImage.remote : false}
           onTopicsChange={(global_topic_ids) => applyDiff({ global_topic_ids })}
-          onProjectAttributesDiffChange={applyDiff}
           onCardImageAdd={handleCardImageAdd}
           onCardImageRemove={handleCardImageRemove}
           onCardImageCropped={setCroppedCardBase64}
@@ -207,15 +179,10 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       icon: 'settings',
       content: (
         <GeneralSection
-          spaceId={projectAttrs.space_id}
-          folderId={projectAttrs.folder_id}
-          projectInRoot={projectInRoot}
-          contextError={projectContextError}
           slug={slug}
           currentSlug={project.attributes.slug}
           showSlugErrorMessage={showSlugErrorMessage}
           apiErrors={apiErrors}
-          onContextChange={handleContextChange}
           onSlugChange={handleSlugChange}
         />
       ),
@@ -241,24 +208,15 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       header={formatMessage(messages.projectSettings)}
       sections={sections}
       footer={
-        <Box display="flex" gap="8px">
-          <Button
-            buttonStyle="bo-secondary"
-            width="auto"
-            onClick={handleCancel}
-          >
-            {formatMessage(messages.settingsCancel)}
-          </Button>
-          <Button
-            buttonStyle="bo-primary"
-            width="auto"
-            processing={processing}
-            onClick={handleSave}
-            id="e2e-project-settings-save"
-          >
-            {formatMessage(messages.settingsSaveChanges)}
-          </Button>
-        </Box>
+        <Button
+          buttonStyle="bo-primary"
+          width="auto"
+          processing={processing}
+          onClick={handleSave}
+          id="e2e-project-settings-save"
+        >
+          {formatMessage(messages.settingsSaveChanges)}
+        </Button>
       }
     />
   );

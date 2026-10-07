@@ -2075,7 +2075,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "Αποθηκεύστε τη φάση για να προσθέσετε ερωτήσεις και να εισαγάγετε δεδομένα εκτός σύνδεσης.",
   "app.containers.Admin.projects.project.saveToEditSettings": "Τα δικαιώματα πρόσβασης, οι ειδοποιήσεις και άλλες ρυθμίσεις γίνονται διαθέσιμα μόλις αποθηκεύσετε τη φάση.",
   "app.containers.Admin.projects.project.selectMethodContinue": "Συνέχεια",
-  "app.containers.Admin.projects.project.settingsCancel": "Ακύρωση",
   "app.containers.Admin.projects.project.settingsFrontOffice": "Δημόσια σελίδα",
   "app.containers.Admin.projects.project.settingsGeneral": "Γενικά",
   "app.containers.Admin.projects.project.settingsIdeaTags": "Ετικέτες ιδεών",

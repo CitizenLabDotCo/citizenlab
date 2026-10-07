@@ -2075,7 +2075,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "Cadwch y cyfnod i ychwanegu cwestiynau a mewnforio mewnbwn all-lein.",
   "app.containers.Admin.projects.project.saveToEditSettings": "Bydd hawliau mynediad, hysbysiadau a gosodiadau eraill ar gael unwaith y byddwch yn cadw'r cam.",
   "app.containers.Admin.projects.project.selectMethodContinue": "Parhau",
-  "app.containers.Admin.projects.project.settingsCancel": "Canslo",
   "app.containers.Admin.projects.project.settingsFrontOffice": "Swyddfa flaen",
   "app.containers.Admin.projects.project.settingsGeneral": "Cyffredinol",
   "app.containers.Admin.projects.project.settingsIdeaTags": "Tagiau syniadau",

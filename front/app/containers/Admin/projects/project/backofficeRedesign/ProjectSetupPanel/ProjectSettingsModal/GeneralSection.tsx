@@ -1,57 +1,38 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
-import ProjectContextSection from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection';
-import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
-import { StyledSectionField } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/styling';
-import generalMessages from 'containers/Admin/projects/project/general/messages';
-
-import { SubSectionTitle } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../../messages';
 
 interface Props {
-  spaceId?: string | null;
-  folderId?: string | null;
-  projectInRoot: boolean;
-  contextError: boolean;
   slug: string;
   currentSlug: string;
   showSlugErrorMessage: boolean;
   apiErrors: CLErrors;
-  onContextChange: (spaceAndFolderId: SpaceAndFolderId) => void;
   onSlugChange: (slug: string) => void;
 }
 
 const GeneralSection = ({
-  spaceId,
-  folderId,
-  projectInRoot,
-  contextError,
   slug,
   currentSlug,
   showSlugErrorMessage,
   apiErrors,
-  onContextChange,
   onSlugChange,
-}: Props) => (
-  <Box>
-    <ProjectContextSection
-      spaceId={spaceId}
-      folderId={folderId}
-      projectInRoot={projectInRoot}
-      error={contextError}
-      onChange={onContextChange}
-    />
+}: Props) => {
+  const { formatMessage } = useIntl();
 
-    <StyledSectionField>
-      <SubSectionTitle>
-        <FormattedMessage {...generalMessages.url} />
-      </SubSectionTitle>
+  return (
+    <Box>
+      <Text variant="boSection" mt="0px" mb="12px">
+        {formatMessage(messages.settingsUrlSlug)}
+      </Text>
       <SlugInput
+        variant="bo"
         slug={slug}
         pathnameWithoutSlug="projects"
         apiErrors={apiErrors}
@@ -59,8 +40,8 @@ const GeneralSection = ({
         onSlugChange={onSlugChange}
         showSlugChangedWarning={slug !== currentSlug}
       />
-    </StyledSectionField>
-  </Box>
-);
+    </Box>
+  );
+};
 
 export default GeneralSection;

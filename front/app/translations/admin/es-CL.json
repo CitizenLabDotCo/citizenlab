@@ -2075,7 +2075,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "Guarda la fase para añadir preguntas e importar aportaciones offline.",
   "app.containers.Admin.projects.project.saveToEditSettings": "Los permisos de acceso, las notificaciones y otros ajustes estarán disponibles una vez que guardes la fase.",
   "app.containers.Admin.projects.project.selectMethodContinue": "Continuar",
-  "app.containers.Admin.projects.project.settingsCancel": "Cancelar",
   "app.containers.Admin.projects.project.settingsFrontOffice": "Interfaz pública",
   "app.containers.Admin.projects.project.settingsGeneral": "General",
   "app.containers.Admin.projects.project.settingsIdeaTags": "Etiquetas de ideas",

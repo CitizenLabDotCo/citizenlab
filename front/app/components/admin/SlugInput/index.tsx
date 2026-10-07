@@ -25,6 +25,7 @@ export interface Props {
   showSlugErrorMessage: boolean;
   onSlugChange: (slug: string) => void;
   showSlugChangedWarning: boolean;
+  variant?: 'default' | 'bo';
 }
 
 const SlugInput = ({
@@ -35,6 +36,7 @@ const SlugInput = ({
   showSlugErrorMessage,
   onSlugChange,
   showSlugChangedWarning,
+  variant = 'default',
 }: Props) => {
   const locale = useLocale();
   const { data: appConfig } = useAppConfiguration();
@@ -43,21 +45,30 @@ const SlugInput = ({
   if (appConfig) {
     const hostName = appConfig.data.attributes.host;
     const previewUrl = `${hostName}/${locale}/${pathnameWithoutSlug}/${slug}`;
+    const isDefault = variant === 'default';
+    const label = formatMessage(slugInputMessages.urlSlugLabel);
 
     return (
       <>
         <Input
+          variant={variant}
           label={
-            <span className={intercomLabelClassname}>
-              {formatMessage(slugInputMessages.urlSlugLabel)}
-            </span>
+            isDefault ? (
+              <span className={intercomLabelClassname}>{label}</span>
+            ) : null
           }
-          labelTooltipText={formatMessage(slugInputMessages.slugTooltip)}
+          labelTooltipText={
+            isDefault ? formatMessage(slugInputMessages.slugTooltip) : null
+          }
+          ariaLabel={isDefault ? undefined : label}
           type="text"
           onChange={onSlugChange}
           value={slug}
         />
-        <Text mb={showSlugChangedWarning ? '16px' : '0'}>
+        <Text
+          variant={variant === 'bo' ? 'boMicro' : undefined}
+          mb={showSlugChangedWarning ? '16px' : '0'}
+        >
           <i>
             <FormattedMessage {...slugInputMessages.resultingURL} />
           </i>

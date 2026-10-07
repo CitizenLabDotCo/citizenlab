@@ -2075,7 +2075,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "Speichere die Phase, um Fragen hinzuzufügen und Offline-Beiträge zu importieren.",
   "app.containers.Admin.projects.project.saveToEditSettings": "Zugriffsrechte, Benachrichtigungen und andere Einstellungen werden verfügbar, sobald Sie die Phase speichern.",
   "app.containers.Admin.projects.project.selectMethodContinue": "Weiter",
-  "app.containers.Admin.projects.project.settingsCancel": "Abbrechen",
   "app.containers.Admin.projects.project.settingsFrontOffice": "Front-Office",
   "app.containers.Admin.projects.project.settingsGeneral": "Allgemein",
   "app.containers.Admin.projects.project.settingsIdeaTags": "Ideen-Tags",

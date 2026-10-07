@@ -33,6 +33,7 @@ const ResetSection = ({ projectId }: Props) => {
       <Button
         buttonStyle="bo-delete"
         width="auto"
+        justifyWrapper="left"
         onClick={() => setConfirmOpened(true)}
         id="e2e-reset-participation-data"
       >
