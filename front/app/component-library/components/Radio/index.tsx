@@ -49,6 +49,23 @@ const CustomRadio = styled.div<{ borderColor: string | undefined }>`
     opacity: 0.5;
     cursor: not-allowed;
   }
+
+  &.bo {
+    flex-basis: 16px;
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    margin-right: 8px;
+    border-color: ${colors.grey400};
+  }
+
+  &.bo.checked {
+    border-color: ${({ theme }) => theme.colors.tenantPrimary};
+  }
+
+  &.bo.enabled:hover {
+    border-color: ${({ theme }) => theme.colors.tenantPrimary};
+  }
 `;
 
 const Checked = styled.div`
@@ -57,6 +74,12 @@ const Checked = styled.div`
   height: 12px;
   background: ${(props) => props.color};
   border-radius: 50%;
+
+  &.bo {
+    flex-basis: 8px;
+    width: 8px;
+    height: 8px;
+  }
 `;
 
 const Label = styled.label`
@@ -72,6 +95,10 @@ const Label = styled.label`
 
   & > :not(last-child) {
     margin-right: 7px;
+  }
+
+  &.bo {
+    margin-bottom: 0;
   }
 
   &.enabled {
@@ -107,6 +134,7 @@ export type Props = {
   onClick?: () => void;
   dataCy?: string;
   autoFocus?: boolean;
+  variant?: 'default' | 'bo';
 } & BoxPaddingProps &
   BoxMarginProps;
 
@@ -127,9 +155,11 @@ const Radio = ({
   onClick,
   dataCy,
   autoFocus,
+  variant = 'default',
   ...rest
 }: Props) => {
   const theme = useTheme();
+  const isBo = variant === 'bo';
   const [inputFocused, setInputFocused] = useState(false);
   const uuid = useInstanceId();
 
@@ -190,11 +220,16 @@ const Radio = ({
         className={`${inputFocused ? 'focused' : ''}
             ${checked ? 'checked' : ''}
             ${disabled ? 'disabled' : 'enabled'}
+            ${isBo ? 'bo' : ''}
             circle`}
         borderColor={usePrimaryBorder ? theme.colors.tenantPrimary : undefined}
       >
         {checked && (
-          <Checked aria-hidden color={buttonColor || colors.success} />
+          <Checked
+            aria-hidden
+            className={isBo ? 'bo' : ''}
+            color={buttonColor || colors.success}
+          />
         )}
       </CustomRadio>
       {label && (
@@ -203,7 +238,8 @@ const Radio = ({
           className={`
           ${className || ''}
           text
-          ${disabled ? 'disabled' : 'enabled'}`}
+          ${disabled ? 'disabled' : 'enabled'}
+          ${isBo ? 'bo' : ''}`}
           data-testid={testEnv('radio-label')}
         >
           {label}

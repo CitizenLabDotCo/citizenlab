@@ -47,20 +47,27 @@ const CLIPPING_OVERFLOW = ['auto', 'scroll', 'hidden', 'clip', 'overlay'];
 const getVisibleBounds = (element: HTMLElement) => {
   let top = 0;
   let bottom = window.innerHeight;
+  let right = window.innerWidth;
 
   for (
     let ancestor = element.parentElement;
     ancestor && ancestor !== document.body;
     ancestor = ancestor.parentElement
   ) {
-    if (CLIPPING_OVERFLOW.includes(getComputedStyle(ancestor).overflowY)) {
-      const rect = ancestor.getBoundingClientRect();
-      top = Math.max(top, rect.top);
-      bottom = Math.min(bottom, rect.bottom);
+    const { overflowX, overflowY } = getComputedStyle(ancestor);
+    const rect = ancestor.getBoundingClientRect();
+    const clientTop = rect.top + ancestor.clientTop;
+    const clientLeft = rect.left + ancestor.clientLeft;
+    if (CLIPPING_OVERFLOW.includes(overflowY)) {
+      top = Math.max(top, clientTop);
+      bottom = Math.min(bottom, clientTop + ancestor.clientHeight);
+    }
+    if (CLIPPING_OVERFLOW.includes(overflowX)) {
+      right = Math.min(right, clientLeft + ancestor.clientWidth);
     }
   }
 
-  return { top, bottom };
+  return { top, bottom, right };
 };
 
 export interface PickerOption<T extends string> {
@@ -102,6 +109,7 @@ const OptionPicker = <T extends string>({
   const contentRef = useRef<HTMLDivElement>(null);
   const [opened, setOpened] = useState(false);
   const [openUp, setOpenUp] = useState(false);
+  const [alignRight, setAlignRight] = useState(false);
   const [search, setSearch] = useState('');
 
   const close = () => {
@@ -111,7 +119,7 @@ const OptionPicker = <T extends string>({
     onClose?.();
   };
 
-  // flip the dropdown to open upwards if there is not enough space below
+  // flip the dropdown upwards, or align it to the trigger's right edge
   useLayoutEffect(() => {
     if (!opened) return;
 
@@ -126,6 +134,7 @@ const OptionPicker = <T extends string>({
     setOpenUp(
       panel.offsetHeight > spaceBelow && panel.offsetHeight <= spaceAbove
     );
+    setAlignRight(trigger.left + panel.offsetWidth > bounds.right - GAP);
   }, [opened]);
 
   const dismiss = () => {
@@ -186,7 +195,8 @@ const OptionPicker = <T extends string>({
         }}
         top={openUp ? undefined : `calc(100% + ${GAP}px)`}
         bottom={openUp ? `calc(100% + ${GAP}px)` : undefined}
-        left="0px"
+        left={alignRight ? undefined : '0px'}
+        right={alignRight ? '0px' : undefined}
         width="288px"
         maxHeight="320px"
         zIndex="1000"

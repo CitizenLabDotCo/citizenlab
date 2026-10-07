@@ -1,29 +1,16 @@
 import React from 'react';
 
-import { Box, Divider, IconNames } from '@citizenlab/cl2-component-library';
-import { IOption } from 'typings';
+import { Box, Divider } from '@citizenlab/cl2-component-library';
 
 import { IProjectData } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
+import useContextPickers from 'containers/Admin/projects/_shared/components/ProjectContextPickers/useContextPickers';
 import contextMessages from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/messages';
-import useProjectContext, {
-  NONE,
-} from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/useProjectContext';
 
-import OptionPicker, { PickerOption } from 'components/UI/OptionPicker';
-import Warning from 'components/UI/Warning';
+import { useIntl } from 'utils/cl-intl';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import messages from '../../messages';
 import PanelHeading from '../PanelHeading';
-
-const withIcon = (
-  options: IOption[],
-  icon: IconNames
-): PickerOption<string>[] =>
-  options.map(({ value, label }) => ({ value, label, icon }));
 
 interface Props {
   project: IProjectData;
@@ -35,7 +22,7 @@ const ContextDropdowns = ({ project }: Props) => {
 
   const { space_id: spaceId, folder_id: folderId } = project.attributes;
 
-  const projectContext = useProjectContext({
+  const pickers = useContextPickers({
     spaceId,
     folderId,
     projectInRoot: !spaceId && !folderId,
@@ -43,16 +30,7 @@ const ContextDropdowns = ({ project }: Props) => {
       updateProject({ projectId: project.id, ...spaceAndFolderId }),
   });
 
-  if (!projectContext) return null;
-
-  const {
-    showSpaceSelect,
-    spaceOptions,
-    folderOptions,
-    handleSpaceChange,
-    handleFolderChange,
-    showApprovalWarning,
-  } = projectContext;
+  if (!pickers) return null;
 
   return (
     <>
@@ -63,47 +41,9 @@ const ContextDropdowns = ({ project }: Props) => {
         alignItems="flex-start"
         gap="8px"
       >
-        {showSpaceSelect && (
-          <OptionPicker
-            title={formatMessage(contextMessages.spaceLabel)}
-            description={formatMessage(messages.contextSpaceDescription)}
-            searchPlaceholder={formatMessage(messages.contextSearchSpaces)}
-            options={withIcon(
-              [
-                { value: NONE, label: formatMessage(messages.contextNoSpace) },
-                ...spaceOptions,
-              ],
-              'spaces'
-            )}
-            value={spaceId ?? NONE}
-            onChange={handleSpaceChange}
-          />
-        )}
-
-        <OptionPicker
-          title={formatMessage(contextMessages.folderLabel)}
-          description={formatMessage(messages.contextFolderDescription)}
-          searchPlaceholder={formatMessage(messages.contextSearchFolders)}
-          options={withIcon(
-            [
-              { value: NONE, label: formatMessage(messages.contextNoFolder) },
-              ...folderOptions,
-            ],
-            'folder-outline'
-          )}
-          value={folderId ?? NONE}
-          onChange={handleFolderChange}
-        />
-
-        {showApprovalWarning && (
-          <Warning>
-            <FormattedMessage
-              {...(showSpaceSelect
-                ? contextMessages.approvalNeededWithSpaces
-                : contextMessages.approvalNeededWithoutSpaces)}
-            />
-          </Warning>
-        )}
+        {pickers.spacePicker}
+        {pickers.folderPicker}
+        {pickers.approvalWarning}
       </Box>
       <Divider />
     </>

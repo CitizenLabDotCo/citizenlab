@@ -6,17 +6,18 @@ import { IProjectData } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
 import { useCanEditProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
-
-import OptionPicker, { PickerOption } from 'components/UI/OptionPicker';
-
-import { useIntl } from 'utils/cl-intl';
-
 import {
   FIND_OPTIONS,
   Listed,
   OPEN_OPTIONS,
   VisibilityOption,
-} from '../../_shared/visibilityOptions';
+} from 'containers/Admin/projects/_shared/visibilityOptions';
+import visibilityMessages from 'containers/Admin/projects/_shared/visibilityOptions/messages';
+
+import OptionPicker, { PickerOption } from 'components/UI/OptionPicker';
+
+import { useIntl } from 'utils/cl-intl';
+
 import messages from '../../messages';
 import PanelHeading from '../PanelHeading';
 
@@ -59,8 +60,10 @@ const SetupDropdowns = ({ project }: Props) => {
         gap="8px"
       >
         <OptionPicker<Listed>
-          title={formatMessage(messages.publishWhoCanFind)}
-          description={formatMessage(messages.publishWhoCanFindDescription)}
+          title={formatMessage(visibilityMessages.publishWhoCanFind)}
+          description={formatMessage(
+            visibilityMessages.publishWhoCanFindDescription
+          )}
           options={FIND_OPTIONS.map(formatOption)}
           value={listed ? 'listed' : 'unlisted'}
           onChange={(value) =>
@@ -69,8 +72,10 @@ const SetupDropdowns = ({ project }: Props) => {
         />
 
         <OptionPicker
-          title={formatMessage(messages.publishWhoCanOpen)}
-          description={formatMessage(messages.publishWhoCanOpenDescription)}
+          title={formatMessage(visibilityMessages.publishWhoCanOpen)}
+          description={formatMessage(
+            visibilityMessages.publishWhoCanOpenDescription
+          )}
           options={OPEN_OPTIONS.map(formatOption)}
           value={visible_to}
           onChange={(value) =>

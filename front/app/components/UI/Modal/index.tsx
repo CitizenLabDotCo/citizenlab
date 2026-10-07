@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import {
   Box,
+  bo,
   media,
   colors,
   fontSizes,
@@ -81,6 +82,12 @@ const StyledCloseIconButton = styled(CloseIconButton)`
      use the shared border-based ring instead. */
   &.focus-visible {
     ${focusRingBorder}
+  }
+
+  &.bo {
+    right: 20px;
+    width: 28px;
+    height: 28px;
   }
 
   &.no-header {
@@ -214,6 +221,15 @@ const HeaderTitle = styled.h1`
     margin-right: 74px;
   `}
 
+  &.bo {
+    color: ${bo.colors.textHeadingStrong};
+    font-size: ${fontSizes.s}px;
+    font-weight: 500;
+    letter-spacing: normal;
+    line-height: 28px;
+    margin-right: 48px;
+  }
+
   ${isRtl`
     text-align: right;
     margin: 0;
@@ -268,6 +284,7 @@ const ModalContentContainerSwitch = ({
 
 interface BaseProps {
   'data-testid'?: string;
+  variant?: 'default' | 'bo';
   opened: boolean;
   fixedHeight?: boolean;
   fillContent?: boolean;
@@ -296,6 +313,7 @@ type Props =
 
 const Modal: React.FC<Props> = ({
   'data-testid': dataTestId,
+  variant = 'default',
   opened,
   fixedHeight = false,
   fillContent = false,
@@ -424,9 +442,10 @@ const Modal: React.FC<Props> = ({
     [close]
   );
 
+  const isBo = variant === 'bo';
   const closeButtonClassName = `e2e-modal-close-button${
     header ? '' : ' no-header'
-  }`;
+  }${isBo ? ' bo' : ''}`;
 
   const closeButton = hideCloseButton ? null : (
     <StyledCloseIconButton
@@ -489,11 +508,15 @@ const Modal: React.FC<Props> = ({
                 flexDirection="column"
                 alignItems="stretch"
                 justifyContent="center"
-                minHeight="65px"
-                padding="14px 18px"
-                borderBottom={`solid 1px ${colors.grey200}`}
+                minHeight={isBo ? undefined : '65px'}
+                padding={isBo ? '16px 24px 12px' : '14px 18px'}
+                borderBottom={`solid 1px ${
+                  isBo ? colors.grey100 : colors.grey200
+                }`}
               >
-                <HeaderTitle id="modal-header">{header}</HeaderTitle>
+                <HeaderTitle id="modal-header" className={isBo ? 'bo' : ''}>
+                  {header}
+                </HeaderTitle>
                 {closeButton}
               </Box>
             ) : (

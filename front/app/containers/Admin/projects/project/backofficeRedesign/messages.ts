@@ -224,65 +224,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.publishStateArchived',
     defaultMessage: 'Archived',
   },
-  publishWhoCanFind: {
-    id: 'app.containers.Admin.projects.project.publishWhoCanFind',
-    defaultMessage: 'Who can find it',
-  },
-  publishWhoCanFindDescription: {
-    id: 'app.containers.Admin.projects.project.publishWhoCanFindDescription',
-    defaultMessage:
-      'Whether residents can discover this project, or only reach it by link.',
-  },
-  publishFindPublic: {
-    id: 'app.containers.Admin.projects.project.publishFindPublic',
-    defaultMessage: 'Public',
-  },
-  publishFindPublicDescription: {
-    id: 'app.containers.Admin.projects.project.publishFindPublicDescription',
-    defaultMessage:
-      'Appears on the homepage, in the project list and in search.',
-  },
-  publishFindPrivate: {
-    id: 'app.containers.Admin.projects.project.publishFindPrivate',
-    defaultMessage: 'Private',
-  },
-  publishFindPrivateDescription: {
-    id: 'app.containers.Admin.projects.project.publishFindPrivateDescription',
-    defaultMessage:
-      'Hidden from those places. Only people with the link can reach it.',
-  },
-  publishWhoCanOpen: {
-    id: 'app.containers.Admin.projects.project.publishWhoCanOpen',
-    defaultMessage: 'Who can open it',
-  },
-  publishWhoCanOpenDescription: {
-    id: 'app.containers.Admin.projects.project.publishWhoCanOpenDescription',
-    defaultMessage: 'Who is allowed to open this project and take part.',
-  },
-  publishOpenEveryone: {
-    id: 'app.containers.Admin.projects.project.publishOpenEveryone',
-    defaultMessage: 'Everyone',
-  },
-  publishOpenEveryoneDescription: {
-    id: 'app.containers.Admin.projects.project.publishOpenEveryoneDescription',
-    defaultMessage: 'Any resident can open it and take part.',
-  },
-  publishOpenAdmins: {
-    id: 'app.containers.Admin.projects.project.publishOpenAdmins',
-    defaultMessage: 'Admins & managers',
-  },
-  publishOpenAdminsDescription: {
-    id: 'app.containers.Admin.projects.project.publishOpenAdminsDescription',
-    defaultMessage: 'Only administrators and project managers.',
-  },
-  publishOpenGroups: {
-    id: 'app.containers.Admin.projects.project.publishOpenGroups',
-    defaultMessage: 'Selected groups',
-  },
-  publishOpenGroupsDescription: {
-    id: 'app.containers.Admin.projects.project.publishOpenGroupsDescription',
-    defaultMessage: 'Only people in the groups you choose.',
-  },
   publishSendEmail: {
     id: 'app.containers.Admin.projects.project.publishSendEmail',
     defaultMessage: 'Send a "Project published" email',
@@ -541,31 +482,6 @@ export default defineMessages({
   areaFilterChooseAreas: {
     id: 'app.containers.Admin.projects.project.areaFilterChooseAreas',
     defaultMessage: 'Choose which area filters it shows in',
-  },
-  contextSpaceDescription: {
-    id: 'app.containers.Admin.projects.project.contextSpaceDescription',
-    defaultMessage:
-      'Where this project lives at the top level of your platform.',
-  },
-  contextFolderDescription: {
-    id: 'app.containers.Admin.projects.project.contextFolderDescription',
-    defaultMessage: 'A folder groups related projects inside a space.',
-  },
-  contextNoSpace: {
-    id: 'app.containers.Admin.projects.project.contextNoSpace',
-    defaultMessage: 'No space',
-  },
-  contextNoFolder: {
-    id: 'app.containers.Admin.projects.project.contextNoFolder',
-    defaultMessage: 'No folder',
-  },
-  contextSearchSpaces: {
-    id: 'app.containers.Admin.projects.project.contextSearchSpaces',
-    defaultMessage: 'Search spaces',
-  },
-  contextSearchFolders: {
-    id: 'app.containers.Admin.projects.project.contextSearchFolders',
-    defaultMessage: 'Search folders',
   },
   noInputsYet: {
     id: 'app.containers.Admin.projects.project.noInputsYet',
