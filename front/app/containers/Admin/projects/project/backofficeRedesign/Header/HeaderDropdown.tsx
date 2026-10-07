@@ -44,6 +44,10 @@ const HeaderDropdown = ({
       <Box ref={triggerRef} display="inline-block">
         <Button
           buttonStyle={buttonStyle}
+          height={bo.buttonMedium.height}
+          padding={bo.buttonMedium.padding}
+          fontSize={bo.buttonMedium.fontSize}
+          iconSize={bo.buttonMedium.iconSize}
           icon={icon}
           iconPos="right"
           onClick={() => onOpenChange(!opened)}
@@ -56,7 +60,7 @@ const HeaderDropdown = ({
       <Dropdown
         opened={opened}
         onClickOutside={handleClickOutside}
-        top="40px"
+        top="36px"
         right="0px"
         width={width}
         maxHeight="none"

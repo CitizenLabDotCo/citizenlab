@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, Dropdown } from '@citizenlab/cl2-component-library';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import Button from 'components/UI/ButtonWithLink';
 
@@ -14,9 +14,7 @@ import OptionCard from './OptionCard';
 
 const NewProjectButton = () => {
   const { formatMessage } = useIntl();
-  const redesignEnabled = useFeatureFlag({
-    name: 'project_backoffice_redesign',
-  });
+  const redesignEnabled = useProjectBackofficeRedesign();
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const [mode, setMode] = useState<NewProjectMode | null>(null);
 

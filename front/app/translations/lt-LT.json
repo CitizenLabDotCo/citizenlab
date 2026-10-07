@@ -1361,7 +1361,6 @@
   "app.containers.AccessibilityStatement.userGeneratedContent": "Vartotojo sukurtas turinys",
   "app.containers.AccessibilityStatement.workshops": "Seminarai",
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Projektų paieškos tipas",
-  "app.containers.AdminPage.ProjectDescription.linkText": "Redaguoti aprašymą Turinio kūrimo įrankyje",
   "app.containers.AdminPage.ProjectDescription.saveError": "Išsaugant projekto aprašymą kažkas nutiko ne taip.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Peržiūrėti projektą",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Apklausos pabaiga",

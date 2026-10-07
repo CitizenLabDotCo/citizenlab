@@ -1361,7 +1361,6 @@
   "app.containers.AccessibilityStatement.userGeneratedContent": "ਉਪਭੋਗਤਾ ਦੁਆਰਾ ਤਿਆਰ ਕੀਤੀ ਸਮੱਗਰੀ",
   "app.containers.AccessibilityStatement.workshops": "ਵਰਕਸ਼ਾਪਾਂ",
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "ਪ੍ਰੋਜੈਕਟ ਖੋਜਣ ਲਈ ਟਾਈਪ ਕਰੋ",
-  "app.containers.AdminPage.ProjectDescription.linkText": "ਸਮਗਰੀ ਨਿਰਮਾਤਾ ਵਿੱਚ ਵਰਣਨ ਦਾ ਸੰਪਾਦਨ ਕਰੋ",
   "app.containers.AdminPage.ProjectDescription.saveError": "ਪ੍ਰੋਜੈਕਟ ਵਰਣਨ ਨੂੰ ਰੱਖਿਅਤ ਕਰਨ ਦੌਰਾਨ ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ।",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "ਪ੍ਰੋਜੈਕਟ ਦੇਖੋ",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "ਸਰਵੇਖਣ ਸਮਾਪਤ",

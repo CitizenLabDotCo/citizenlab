@@ -1361,7 +1361,6 @@
   "app.containers.AccessibilityStatement.userGeneratedContent": "Contenu généré par les utilisateurs",
   "app.containers.AccessibilityStatement.workshops": "Ateliers",
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Commencez à taper pour rechercher un projet ",
-  "app.containers.AdminPage.ProjectDescription.linkText": "Modifier la description dans l'éditeur sur-mesure",
   "app.containers.AdminPage.ProjectDescription.saveError": "Un problème s'est produit lors de l'enregistrement de la description du projet.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Visualiser le projet",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Fin de l'enquête",

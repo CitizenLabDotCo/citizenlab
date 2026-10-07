@@ -2,27 +2,32 @@ import React, { ReactNode } from 'react';
 
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
-import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
-
 import useFitPhonePreview, {
   PHONE_LOGICAL_HEIGHT,
   PHONE_LOGICAL_WIDTH,
   PHONE_PREVIEW_PADDING,
 } from './useFitPhonePreview';
 
-const DOTTED_BACKGROUND = `radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.04) 1px, transparent 0) 0 0 / 18px 18px, ${colors.background}`;
-
 interface Props {
   src: string;
   title: string;
   className?: string;
   dataCy?: string;
+  // Starts the phone at the top of the area, to line up with content beside it. The area then
+  // takes its height from the phone, so nothing is clipped and a hover ring can show at the top.
+  alignTop?: boolean;
   children?: ReactNode;
 }
 
-const PhonePreview = ({ src, title, className, dataCy, children }: Props) => {
+const PhonePreview = ({
+  src,
+  title,
+  className,
+  dataCy,
+  alignTop = false,
+  children,
+}: Props) => {
   const { scale, containerRef } = useFitPhonePreview();
-  const redesign = useProjectBackofficeRedesign();
 
   return (
     <Box
@@ -30,11 +35,11 @@ const PhonePreview = ({ src, title, className, dataCy, children }: Props) => {
       h="100%"
       minHeight="100%"
       display="flex"
-      alignItems="center"
+      alignItems={alignTop ? 'flex-start' : 'center'}
       justifyContent="center"
-      overflow="hidden"
+      overflow={alignTop ? 'visible' : 'hidden'}
       p={`${PHONE_PREVIEW_PADDING}px`}
-      background={redesign ? colors.grey100 : DOTTED_BACKGROUND}
+      pt={alignTop ? '0px' : `${PHONE_PREVIEW_PADDING}px`}
     >
       <Box
         className={className}

@@ -1361,7 +1361,6 @@
   "app.containers.AccessibilityStatement.userGeneratedContent": "Περιεχόμενο που δημιουργείται από χρήστες",
   "app.containers.AccessibilityStatement.workshops": "Σεμινάρια",
   "app.containers.AdminPage.DashboardPage.typeToSearchProjects": "Πληκτρολογήστε για να αναζητήσετε έργα",
-  "app.containers.AdminPage.ProjectDescription.linkText": "Επεξεργασία περιγραφής στο Content Builder",
   "app.containers.AdminPage.ProjectDescription.saveError": "Κάτι πήγε στραβά κατά την αποθήκευση της περιγραφής του έργου.",
   "app.containers.AdminPage.ProjectDescription.viewPublicProject": "Προβολή έργου",
   "app.containers.AdminPage.ProjectEdit.formBuilder.surveyEnd": "Τέλος της έρευνας",

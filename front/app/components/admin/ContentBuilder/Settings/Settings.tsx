@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import {
   Title,
@@ -60,7 +60,11 @@ const Settings = ({ selectedNode, onClose, onDelete }: Props) => {
             <FormattedMessage {...selectedNode.title} />
           </Title>
         )}
-        {selectedNode.settings && React.createElement(selectedNode.settings)}
+        {/* Some widgets load their settings lazily, so that public pages showing
+            the widget don't download editor code (e.g. the rich text editor). */}
+        <Suspense fallback={null}>
+          {selectedNode.settings && React.createElement(selectedNode.settings)}
+        </Suspense>
         {selectedNode.isDeletable ? (
           <Box display="flex">
             <ButtonWithLink
