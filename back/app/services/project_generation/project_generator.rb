@@ -166,10 +166,23 @@ module ProjectGeneration
       }
     }.freeze
 
+    # The manager-facing briefing the assistant shows back in the dock after a
+    # generation — the "participation expert" explaining what it built and why
+    # it works. Plain language, no internal terms (see the prompt for the voice).
+    ASSISTANT_SUMMARY_SCHEMA = {
+      type: 'object',
+      additionalProperties: false,
+      required: %w[headline highlights],
+      properties: {
+        headline: { type: 'string', description: 'One plain sentence: what this project is and what it will achieve for the manager.' },
+        highlights: { type: 'array', items: { type: 'string' }, description: '2-4 short points, each a concrete design choice and why it works, teaching the manager the thinking.' }
+      }
+    }.freeze
+
     RESPONSE_SCHEMA = {
       type: 'object',
       additionalProperties: false,
-      required: %w[archetype archetype_rationale title description_preview page_blocks phases events visibility audience_index verification_required rubric],
+      required: %w[archetype archetype_rationale title description_preview page_blocks phases events visibility audience_index verification_required assistant_summary rubric],
       properties: {
         archetype: { type: 'string', enum: ARCHETYPES },
         archetype_rationale: { type: 'string' },
@@ -193,6 +206,7 @@ module ProjectGeneration
         visibility: { type: 'string', enum: VISIBILITIES },
         audience_index: { type: 'integer', description: 'Who should take part: 0 anyone, 1 registered users, 2 admins only.' },
         verification_required: { type: 'boolean', description: 'true to require identity verification to take part (one-person-one-vote: statutory consultations, binding votes). Only takes effect with audience_index 1. false otherwise.' },
+        assistant_summary: ASSISTANT_SUMMARY_SCHEMA,
         rubric: RUBRIC_SCHEMA
       }
     }.freeze
@@ -268,8 +282,27 @@ module ProjectGeneration
       create_events(plan['events'], errors)
       update_project_settings(plan, errors)
       update_access(phases, plan['audience_index'], plan['verification_required'], errors)
+      store_assistant_summary(plan)
 
       GenerationResult.new(errors: errors, failed: core_failed)
+    end
+
+    # The dock shows this back to the manager as the assistant's own account of
+    # what it drafted and why. Written straight (update_columns) so it does not
+    # trip project validations; the explicit updated_at bump also refreshes the
+    # project page preview.
+    def store_assistant_summary(plan)
+      summary = plan['assistant_summary']
+      return unless summary.is_a?(Hash)
+
+      headline = summary['headline'].to_s.strip
+      highlights = Array(summary['highlights']).map { |line| line.to_s.strip }.reject(&:blank?)
+      return if headline.blank? && highlights.empty?
+
+      @project.update_columns(
+        ai_generation_summary: { 'headline' => headline, 'highlights' => highlights },
+        updated_at: Time.current
+      )
     end
 
     # On a re-generation, wipe what a previous run created so the new plan is a

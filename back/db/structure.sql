@@ -1477,7 +1477,8 @@ CREATE TABLE public.projects (
     track_participation_location boolean DEFAULT false NOT NULL,
     live_auto_input_topics_enabled boolean DEFAULT false NOT NULL,
     space_id uuid,
-    completed_setup_steps jsonb DEFAULT '[]'::jsonb NOT NULL
+    completed_setup_steps jsonb DEFAULT '[]'::jsonb NOT NULL,
+    ai_generation_summary jsonb
 );
 
 
@@ -9562,6 +9563,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261007120000'),
 ('20261002120000'),
 ('20260915134812'),
 ('20260915120000'),

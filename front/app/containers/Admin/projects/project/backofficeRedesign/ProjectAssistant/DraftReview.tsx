@@ -9,10 +9,11 @@ import useLocalize from 'hooks/useLocalize';
 
 import ReviewPanel from './ReviewPanel';
 
-// After a draft lands, the assistant describes what it built (and why, from the
-// project's own summary) and hands over the review links — the "describe" half
-// of the approve / reject loop. The decision buttons live in the parent so the
-// refine flow stays next to the send logic.
+// After a draft lands, the assistant — the "participation expert" — explains
+// what it built and why it works, then hands over the review links. The headline
+// + highlights come from the engine's own manager-facing briefing
+// (ai_generation_summary); the plan and access are concrete detail from the
+// created phases/project.
 const METHOD_LABELS: Record<string, string> = {
   information: 'Information',
   ideation: 'Idea collection',
@@ -50,11 +51,15 @@ const DraftReview = ({ projectId }: Props) => {
     return days ? `${label} (${days} days)` : label;
   });
 
-  const why = project
-    ? localize(project.data.attributes.description_preview_multiloc)
+  const attributes = project?.data.attributes;
+  const summary = attributes?.ai_generation_summary ?? null;
+  const previewText = attributes
+    ? localize(attributes.description_preview_multiloc)
     : '';
-  const visibility = project
-    ? VISIBILITY_LABELS[project.data.attributes.visible_to]
+  const headline = summary?.headline || previewText || 'Here’s the project I drafted';
+  const highlights = summary?.highlights ?? [];
+  const visibility = attributes
+    ? VISIBILITY_LABELS[attributes.visible_to]
     : undefined;
 
   return (
@@ -76,32 +81,64 @@ const DraftReview = ({ projectId }: Props) => {
         <Box
           flex="1"
           minWidth="0"
-          p="12px 14px"
+          p="14px 16px"
           borderRadius="4px 14px 14px 14px"
           bgColor={colors.grey100}
         >
-          <Text m="0px" fontWeight="bold" color="textPrimary">
-            Here’s the project I drafted
+          <Text m="0px" color="textPrimary" lineHeight="1.5" fontWeight="bold">
+            {headline}
           </Text>
-          {why && (
-            <Text m="6px 0 0" color="textPrimary" lineHeight="1.5">
-              {why}
-            </Text>
+
+          {highlights.length > 0 && (
+            <Box as="ul" m="12px 0 0" p="0px" style={{ listStyle: 'none' }}>
+              {highlights.map((highlight, index) => (
+                <Box
+                  as="li"
+                  key={index}
+                  display="flex"
+                  gap="8px"
+                  alignItems="flex-start"
+                  mb={index === highlights.length - 1 ? '0px' : '8px'}
+                >
+                  <Box flex="0 0 auto" mt="3px">
+                    <Icon
+                      name="check-circle"
+                      width="15px"
+                      height="15px"
+                      fill={colors.teal500}
+                    />
+                  </Box>
+                  <Text m="0px" color="textPrimary" lineHeight="1.45">
+                    {highlight}
+                  </Text>
+                </Box>
+              ))}
+            </Box>
           )}
+
           {steps.length > 0 && (
-            <>
-              <Text m="10px 0 2px" fontSize="s" fontWeight="bold" color="textSecondary">
+            <Box
+              mt="12px"
+              pt="12px"
+              borderTop={`1px solid ${colors.grey300}`}
+            >
+              <Text
+                m="0px 0 2px"
+                fontSize="s"
+                fontWeight="bold"
+                color="textSecondary"
+              >
                 The plan
               </Text>
               <Text m="0px" color="textPrimary" lineHeight="1.5">
                 {steps.join('  →  ')}
               </Text>
-            </>
-          )}
-          {visibility && (
-            <Text m="8px 0 0" fontSize="s" color="textSecondary">
-              Open to {visibility}.
-            </Text>
+              {visibility && (
+                <Text m="6px 0 0" fontSize="s" color="textSecondary">
+                  Open to {visibility}.
+                </Text>
+              )}
+            </Box>
           )}
         </Box>
       </Box>

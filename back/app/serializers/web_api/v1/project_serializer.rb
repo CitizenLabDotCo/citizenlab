@@ -89,6 +89,8 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 
   attribute :preview_token, if: proc { |object, params| can_moderate? object, params }
   attribute :completed_setup_steps, if: proc { |object, params| can_moderate? object, params }
+  # The AI assistant's own briefing on what it drafted — managers only.
+  attribute :ai_generation_summary, if: proc { |object, params| can_moderate? object, params }
 
   has_one :admin_publication
 

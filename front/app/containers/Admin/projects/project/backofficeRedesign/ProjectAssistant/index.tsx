@@ -83,9 +83,8 @@ const ProjectAssistant = ({ project }: Props) => {
   // A project that already has phases was generated (or built) before, so a new
   // run is a full re-generation — it replaces everything. Ask once to confirm.
   const [confirmingRegen, setConfirmingRegen] = useState(false);
-  // After a draft lands the manager approves or rejects it; rejecting opens a
-  // refine box whose feedback drives a fresh (replacing) generation.
-  const [refining, setRefining] = useState(false);
+  // After a draft lands, the manager can redraft with more direction; this box's
+  // text (plus any added context) drives a fresh, replacing generation.
   const [refineText, setRefineText] = useState('');
   // The running job this panel has seen, so that its completion is handled once.
   const watchedJobIdRef = useRef<string>();
@@ -238,15 +237,11 @@ const ProjectAssistant = ({ project }: Props) => {
   const hasInput = prompt.trim() !== '' || files.length > 0;
   const canDraft = hasInput && !busy;
   const hasExistingContent = (phases?.data.length ?? 0) > 0;
-  // The latest succeeded draft still awaiting the manager's decision. While it's
-  // pending, the panel shows the review card + approve/reject instead of the
-  // composer. The card stays visible once approved too (for the review links).
-  const reviewExchange =
-    lastExchange?.outcome === 'succeeded' && !lastExchange.decision
-      ? lastExchange
-      : undefined;
-  const showDraftReview =
-    lastExchange?.outcome === 'succeeded' && !runningJob && !sending;
+  // Once a draft has landed this session, the panel switches from the brief
+  // composer to the review surface: the assistant's summary of what it built
+  // (+ why), the review links, and a box to redraft with more direction.
+  const hasDraft = lastExchange?.outcome === 'succeeded';
+  const showDraftReview = hasDraft && !runningJob && !sending;
 
   const setLever = (id: LeverId, value: number) =>
     setLevers((previous) => ({ ...previous, [id]: value }));
@@ -301,34 +296,31 @@ const ProjectAssistant = ({ project }: Props) => {
     send();
   };
 
-  const handleApprove = () => {
-    if (!reviewExchange) return;
-    setExchanges((previous) =>
-      previous.map((exchange) =>
-        exchange.id === reviewExchange.id
-          ? { ...exchange, decision: 'approved' as const }
-          : exchange
-      )
-    );
-  };
-
-  // Rejecting regenerates: the original brief plus the manager's feedback go
-  // back to the engine as a fresh (replacing) run, and the old draft is marked
-  // rejected so a new review round opens when it lands.
+  // Redraft with more direction: the original brief plus the manager's new
+  // direction and any added reference projects go back as a fresh, replacing
+  // run. The direction shows as the next message in the conversation.
   const regenerateWithChanges = async () => {
-    const feedback = refineText.trim();
-    if (!feedback || !reviewExchange) return;
     setSendError(undefined);
     setSending(true);
     try {
-      const fullPrompt = [
-        reviewExchange.prompt,
-        '',
-        'Please revise the previous draft based on this feedback:',
-        feedback,
-      ]
-        .join('\n')
-        .slice(0, MAX_PROMPT_LENGTH);
+      const feedback = refineText.trim();
+      const originalBrief = exchanges[0]?.prompt ?? '';
+      const referenceLines = referenceProjects.length
+        ? [
+            'Use these existing projects on the platform as reference and context:',
+            ...referenceProjects.map((reference) =>
+              reference.description
+                ? `- ${reference.title}: ${reference.description}`
+                : `- ${reference.title}`
+            ),
+          ]
+        : [];
+      const sections = [originalBrief];
+      if (feedback) {
+        sections.push('', 'Please revise the previous draft with this direction:', feedback);
+      }
+      if (referenceLines.length) sections.push('', ...referenceLines);
+      const fullPrompt = sections.join('\n').slice(0, MAX_PROMPT_LENGTH);
       await addProjectGeneration({
         projectId,
         prompt: fullPrompt,
@@ -337,20 +329,16 @@ const ProjectAssistant = ({ project }: Props) => {
         levers,
       });
       setExchanges((previous) => [
-        ...previous.map((exchange) =>
-          exchange.id === reviewExchange.id
-            ? { ...exchange, decision: 'rejected' as const }
-            : exchange
-        ),
+        ...previous,
         {
           id: String(Date.now()),
-          prompt: feedback,
+          prompt: feedback || 'Regenerate the project',
           fileNames: [],
           previousJobId: newestJob?.id,
         },
       ]);
-      setRefining(false);
       setRefineText('');
+      setReferenceProjects([]);
     } catch (error) {
       setSendError(getSendErrorMessage(error));
     } finally {
@@ -415,84 +403,62 @@ const ProjectAssistant = ({ project }: Props) => {
             </Text>
           )}
 
-          {/* After a draft lands: describe what was built, then approve or
-              reject. The card stays after approval for the review links. */}
+          {/* After a draft lands: the assistant's summary of what it built and
+              why + the review links, then a box to redraft with more direction. */}
           {showDraftReview && <DraftReview projectId={projectId} />}
 
-          {reviewExchange &&
-            !runningJob &&
-            (refining ? (
-              <Box display="flex" flexDirection="column" gap="8px">
-                <Text m="0px" fontSize="s" color="textSecondary">
-                  What should change? I’ll revise the draft.
+          {hasDraft && !runningJob && (
+            <Box display="flex" flexDirection="column" gap="10px">
+              <Text m="0px" fontSize="s" color="textSecondary" lineHeight="1.5">
+                Not quite right? Give me more direction or context and I’ll redraft
+                the whole project.
+              </Text>
+              <textarea
+                value={refineText}
+                onChange={(event) => setRefineText(event.target.value)}
+                placeholder="e.g. focus on young families, make the survey shorter, add an in-person workshop"
+                rows={3}
+                disabled={sending}
+                style={{
+                  width: '100%',
+                  fontFamily: 'inherit',
+                  fontSize: '14px',
+                  padding: '10px 12px',
+                  borderRadius: '8px',
+                  border: `1px solid ${colors.grey300}`,
+                  resize: 'vertical',
+                }}
+              />
+              <ReferenceProjectsControl
+                selected={referenceProjects}
+                onChange={setReferenceProjects}
+                excludeProjectId={projectId}
+                disabled={sending}
+              />
+              <Box
+                p="10px 12px"
+                borderRadius="8px"
+                style={{ background: '#FFF4E5', border: '1px solid #F5C87E' }}
+              >
+                <Text m="0px" fontSize="s" color="textPrimary">
+                  ⚠️ Regenerating replaces the whole project — the current page,
+                  phases and survey.
                 </Text>
-                <textarea
-                  value={refineText}
-                  onChange={(event) => setRefineText(event.target.value)}
-                  placeholder="e.g. make the survey shorter, add a workshop, open it to anyone"
-                  rows={3}
-                  disabled={sending}
-                  style={{
-                    width: '100%',
-                    fontFamily: 'inherit',
-                    fontSize: '14px',
-                    padding: '10px 12px',
-                    borderRadius: '8px',
-                    border: `1px solid ${colors.grey300}`,
-                    resize: 'vertical',
-                  }}
-                />
-                <Box display="flex" gap="12px" alignItems="center">
-                  <ButtonWithLink
-                    type="button"
-                    icon="stars"
-                    onClick={regenerateWithChanges}
-                    processing={sending}
-                    disabled={!refineText.trim() || sending}
-                  >
-                    Regenerate with changes
-                  </ButtonWithLink>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setRefining(false);
-                      setRefineText('');
-                    }}
-                    style={{
-                      border: 'none',
-                      background: 'transparent',
-                      color: colors.textSecondary,
-                      cursor: 'pointer',
-                      textDecoration: 'underline',
-                      fontSize: '14px',
-                    }}
-                  >
-                    Cancel
-                  </button>
-                </Box>
               </Box>
-            ) : (
-              <Box display="flex" gap="10px">
-                <ButtonWithLink
-                  type="button"
-                  icon="check"
-                  onClick={handleApprove}
-                  disabled={sending}
-                >
-                  Approve draft
-                </ButtonWithLink>
-                <ButtonWithLink
-                  type="button"
-                  buttonStyle="secondary-outlined"
-                  onClick={() => setRefining(true)}
-                  disabled={sending}
-                >
-                  Reject & refine
-                </ButtonWithLink>
-              </Box>
-            ))}
+              <ButtonWithLink
+                type="button"
+                width="100%"
+                icon="stars"
+                onClick={regenerateWithChanges}
+                processing={sending}
+                disabled={sending}
+              >
+                Regenerate project
+              </ButtonWithLink>
+            </Box>
+          )}
 
-          {!runningJob && !reviewExchange && (
+          {!runningJob && !hasDraft && (
             <>
               <Composer
                 prompt={prompt}
