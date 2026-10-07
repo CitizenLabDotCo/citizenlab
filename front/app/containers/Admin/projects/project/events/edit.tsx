@@ -34,7 +34,7 @@ import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocale from 'hooks/useLocale';
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
-import { useRegisterPhaseSaver } from 'containers/Admin/projects/project/backofficeRedesign/_shared/PhaseSaveContext';
+import { useRegisterPageSaver } from 'containers/Admin/projects/project/backofficeRedesign/_shared/PageSaveContext';
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
@@ -645,7 +645,7 @@ const AdminProjectEventEdit = () => {
 
   // In the redesigned back office, leaving the page with unsaved changes asks
   // to save or discard them. Saving from there stays on the page they picked.
-  useRegisterPhaseSaver('event', {
+  useRegisterPageSaver('event', {
     dirty: submitState === 'enabled' || submitState === 'error',
     save: () =>
       new Promise<void>((resolve, reject) =>

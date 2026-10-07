@@ -13,7 +13,7 @@ import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { Outlet as RouterOutlet, useMatchRoute, useParams } from 'utils/router';
 
 import ProjectWorkspace from './backofficeRedesign';
-import { PhaseSaveProvider } from './backofficeRedesign/_shared/PhaseSaveContext';
+import { PageSaveProvider } from './backofficeRedesign/_shared/PageSaveContext';
 import NewPhase from './backofficeRedesign/NewPhase';
 import PhaseSetup from './backofficeRedesign/Phase/PhaseSetup';
 import ProjectTimeline from './backofficeRedesign/ProjectTimeline';
@@ -40,7 +40,7 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
 
   if (workspaceEnabled) {
     return (
-      <PhaseSaveProvider>
+      <PageSaveProvider>
         <UnsavedChangesGuard />
         {onNewPhaseRoute ? (
           <NewPhase project={project} />
@@ -63,7 +63,7 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
             <RouterOutlet />
           </ProjectWorkspace>
         )}
-      </PhaseSaveProvider>
+      </PageSaveProvider>
     );
   }
 

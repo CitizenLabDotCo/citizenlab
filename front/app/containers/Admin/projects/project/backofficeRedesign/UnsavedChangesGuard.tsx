@@ -9,13 +9,13 @@ import Modal from 'components/UI/Modal';
 import { useIntl } from 'utils/cl-intl';
 import { useBlocker } from 'utils/router';
 
-import { usePhaseSave } from './_shared/PhaseSaveContext';
+import { usePageSave } from './_shared/PageSaveContext';
 import messages from './messages';
 
 const UnsavedChangesGuard = () => {
   const { formatMessage } = useIntl();
-  const phaseSave = usePhaseSave();
-  const dirty = !!phaseSave?.dirty;
+  const pageSave = usePageSave();
+  const dirty = !!pageSave?.dirty;
   const leaving = useRef(false);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const UnsavedChangesGuard = () => {
     withResolver: true,
   });
 
-  if (!phaseSave || blocker.status !== 'blocked') return null;
+  if (!pageSave || blocker.status !== 'blocked') return null;
 
   const proceed = () => {
     leaving.current = true;
@@ -37,7 +37,7 @@ const UnsavedChangesGuard = () => {
   };
 
   const handleSave = async () => {
-    const saved = await phaseSave.saveAll('leave');
+    const saved = await pageSave.saveAll('leave');
     if (saved) {
       proceed();
     } else {
@@ -59,7 +59,7 @@ const UnsavedChangesGuard = () => {
           <Button
             buttonStyle="bo-secondary"
             onClick={() => {
-              phaseSave.discardAll();
+              pageSave.discardAll();
               proceed();
             }}
           >
@@ -67,7 +67,7 @@ const UnsavedChangesGuard = () => {
           </Button>
           <Button
             buttonStyle="bo-primary"
-            processing={phaseSave.saving}
+            processing={pageSave.saving}
             onClick={handleSave}
           >
             {formatMessage(phaseSetupMessages.saveChangesLabel)}
