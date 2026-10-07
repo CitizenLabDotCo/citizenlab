@@ -49,7 +49,7 @@ const usePhasePlacementMove = (phase: IPhaseData) => {
 
   return {
     onTimeline,
-    loaded: !!timelinePhases,
+    loaded: !!timelinePhases && (onTimeline || !!layout),
     toTimelineCheck,
     toSpotlightCheck,
     blocked,
