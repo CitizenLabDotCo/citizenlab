@@ -2435,7 +2435,7 @@
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError": "Bu değişikliği kaydedemedik. Bu özellik artık kullanımınıza sunulmuyor olabilir. Sayfayı yenileyip tekrar deneyin.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessSubtitle": "Henüz tamamlamakta olduğumuz özellikleri deneyin. Burada açtığınız özellikler yalnızca sizin gördüklerinizi değiştirir, platformdaki diğer kullanıcıların gördüklerini etkilemez.",
   "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": "Erken erişim",
-  "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignDescription2": "Projeleri oluşturmak ve yönetmek için yeni, anlaşılması daha kolay bir yöntem. Hâlâ geliştirmeye devam ediyoruz.",
+  "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignDescription2": "Projeleri kurmanın ve yönetmenin yeni ve daha kolay anlaşılır bir yolu. Hâlâ geliştirmeye devam ediyoruz.",
   "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignTitle": "Yeni proje yönetim paneli",
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": "Profil resmini kaldır",
   "app.containers.UsersEditPage.activeProposalVotesWillBeDeleted": "Hala oylamaya açık olan tekliflere verdiğiniz oylar silinecektir. Oylama süresi sona eren tekliflere verilen oylar silinmeyecektir.",
