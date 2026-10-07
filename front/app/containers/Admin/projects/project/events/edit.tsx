@@ -34,6 +34,7 @@ import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocale from 'hooks/useLocale';
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
+import { useRegisterPhaseSaver } from 'containers/Admin/projects/project/backofficeRedesign/_shared/PhaseSaveContext';
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
@@ -464,7 +465,13 @@ const AdminProjectEventEdit = () => {
     );
   };
 
-  const handleOnSubmit = async (e: FormEvent) => {
+  const submit = async ({
+    goBackAfterSave,
+    done,
+  }: {
+    goBackAfterSave: boolean;
+    done: (saved: boolean) => void;
+  }) => {
     const locationPointChanged =
       locationPoint !== event?.data.attributes.location_point_geojson;
     const locationPointUpdated =
@@ -473,8 +480,6 @@ const AdminProjectEventEdit = () => {
     const imageChanged =
       (uploadedImage !== null && !uploadedImage.remote) ||
       (uploadedImage === null && remoteEventImage !== undefined);
-
-    e.preventDefault();
 
     // Set saving to true and reset submit state
     setSaving(true);
@@ -496,6 +501,7 @@ const AdminProjectEventEdit = () => {
         await addOrDeleteEventImage(event);
         setSaving(false);
         setSubmitState('success');
+        done(true);
         return;
       }
 
@@ -503,6 +509,7 @@ const AdminProjectEventEdit = () => {
         await updateImage(event);
         setSaving(false);
         setSubmitState('success');
+        done(true);
         return;
       }
 
@@ -542,19 +549,22 @@ const AdminProjectEventEdit = () => {
                   setSaving(false);
                   setSubmitState('success');
                   setFileAttachmentsChanged(false);
+                  done(true);
 
-                  if (redesignEnabled) {
+                  if (redesignEnabled && goBackAfterSave) {
                     setTimeout(goToProjectPage, 1000);
                   }
                 } catch (error) {
                   setSaving(false);
                   setSubmitState('error');
+                  done(false);
                 }
               },
               onError: async (errors) => {
                 setSaving(false);
                 setErrors(errors.errors);
                 setSubmitState('error');
+                done(false);
               },
             }
           );
@@ -585,6 +595,9 @@ const AdminProjectEventEdit = () => {
                   setSubmitState('success');
                   setSaving(false);
                   setFileAttachmentsChanged(false);
+                  done(true);
+
+                  if (!goBackAfterSave) return;
 
                   // Navigate after a short delay to show success state
                   setTimeout(() => {
@@ -597,12 +610,14 @@ const AdminProjectEventEdit = () => {
                 } catch (error) {
                   setSaving(false);
                   setSubmitState('error');
+                  done(false);
                 }
               },
               onError: async (errors) => {
                 setSaving(false);
                 setErrors(errors.errors);
                 setSubmitState('error');
+                done(false);
               },
             }
           );
@@ -611,6 +626,7 @@ const AdminProjectEventEdit = () => {
         // No changes to save
         setSaving(false);
         setSubmitState('disabled');
+        done(true);
       }
     } catch (errors) {
       setSaving(false);
@@ -618,8 +634,28 @@ const AdminProjectEventEdit = () => {
         setApiErrors(errors.errors);
       }
       setSubmitState('error');
+      done(false);
     }
   };
+
+  const handleOnSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    submit({ goBackAfterSave: true, done: () => {} });
+  };
+
+  // In the redesigned back office, leaving the page with unsaved changes asks
+  // to save or discard them. Saving from there stays on the page they picked.
+  useRegisterPhaseSaver('event', {
+    dirty: submitState === 'enabled' || submitState === 'error',
+    save: () =>
+      new Promise<void>((resolve, reject) =>
+        submit({
+          goBackAfterSave: false,
+          done: (saved) =>
+            saved ? resolve() : reject(new Error('Event not saved')),
+        })
+      ),
+  });
 
   const handleEventImageAltTextChange = (altTextMultiloc: Multiloc) => {
     setSubmitState('enabled');
