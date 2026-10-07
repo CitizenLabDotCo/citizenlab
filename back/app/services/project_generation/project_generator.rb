@@ -255,7 +255,8 @@ module ProjectGeneration
         locale: @locale,
         instructions: prompt,
         levers: clean_levers(levers),
-        source_texts: text_files.map { |file| file.content.read.force_encoding('UTF-8').scrub }
+        source_texts: text_files.map { |file| file.content.read.force_encoding('UTF-8').scrub },
+        organisation_rules: organisation_rules
       )
 
       ::Analysis::LLM::Message.new(text, *pdf_files)
@@ -703,6 +704,13 @@ module ProjectGeneration
 
     def llm
       @llm ||= LLMSelector.new.llm_class_for_use_case('project_generation').new
+    end
+
+    # Organisation-wide "house rules" an admin set under Settings -> General. Applied to
+    # every AI-generated project and injected into the prompt with strong precedence (see
+    # the <organisation_rules> block in project_generation.erb). Blank when unset.
+    def organisation_rules
+      AppConfiguration.instance.settings('core', 'ai_project_rules').to_s.strip
     end
   end
 end

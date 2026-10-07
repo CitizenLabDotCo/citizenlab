@@ -104,6 +104,27 @@ const SettingsGeneralTab = () => {
     }
   };
 
+  const handleAiProjectRulesBlur = (
+    event: React.FocusEvent<HTMLTextAreaElement>
+  ) => {
+    if (isNilOrError(appConfiguration)) return;
+
+    const value = event.target.value;
+    const currentValue =
+      appConfiguration.data.attributes.settings.core.ai_project_rules ?? '';
+    if (value === currentValue) return;
+
+    reset();
+    updateAppConfiguration(
+      {
+        settings: {
+          core: { ai_project_rules: value },
+        },
+      },
+      { onSuccess: () => setSettingsUpdatedSuccessFully(true) }
+    );
+  };
+
   const onChangeAnonymousNameScheme = (scheme: string) => {
     if (!isNilOrError(appConfiguration)) {
       updateAppConfiguration(
@@ -159,6 +180,36 @@ const SettingsGeneralTab = () => {
           }}
           onSubmit={handleOnSubmit}
         />
+        <StyledSection>
+          <SubSectionTitle>AI project rules</SubSectionTitle>
+          <Text mt="-10px" color="textSecondary">
+            House rules that apply to every project drafted by the AI project
+            generator. These take precedence over the generator&apos;s built-in
+            guidance when they conflict.
+          </Text>
+          <textarea
+            defaultValue={
+              appConfiguration.data.attributes.settings.core
+                .ai_project_rules ?? ''
+            }
+            onBlur={handleAiProjectRulesBlur}
+            placeholder={
+              'e.g. Write at a 6th-grade reading level. Use British English. Every project page must say how to request the information in another format or language. Avoid jargon and acronyms. Keep a warm, respectful, non-partisan tone. Never imply a decision is final when it isn’t.'
+            }
+            rows={6}
+            style={{
+              width: '100%',
+              maxWidth: '600px',
+              padding: '10px',
+              border: '1px solid #ccc',
+              borderRadius: '3px',
+              fontFamily: 'inherit',
+              fontSize: '16px',
+              lineHeight: '1.4',
+            }}
+          />
+        </StyledSection>
+
         <StyledSection>
           <SubSectionTitle>
             <FormattedMessage {...messages.contentModeration} />
