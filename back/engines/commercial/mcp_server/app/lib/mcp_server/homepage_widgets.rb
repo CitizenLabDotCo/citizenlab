@@ -77,11 +77,10 @@ class McpServer::HomepageWidgets
         imageUrl, existing = keep dataCode).
     DOC
     'EventsList' => <<~DOC,
-      EventsList — upcoming and past events across a chosen scope.
-        props: {"source":"all"|"projects"|"areas"|"global_topics"|"spaces","ids":["<id>", ...]}
-        source "all" needs no ids. "projects" → project ids (list_projects), "areas" → area ids
-        (list_areas), "global_topics" → topic ids (list_global_topics), "spaces" → space ids
-        (list_spaces; only when the spaces feature is enabled). Renders the matching events automatically.
+      EventsList — upcoming and past events from every project.
+        props: {"source":"all"}
+        Renders the platform's events automatically. It cannot be filtered on the homepage: a new
+        or changed source other than "all" is refused.
     DOC
     'Spotlight' => <<~DOC
       Spotlight — highlights one project or folder.

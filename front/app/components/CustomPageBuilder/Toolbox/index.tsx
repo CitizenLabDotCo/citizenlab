@@ -1,5 +1,7 @@
 import React from 'react';
 
+import useCustomPageById from 'api/custom_pages/useCustomPageById';
+
 import useAppConfigurationLocales, {
   createMultiloc,
 } from 'hooks/useAppConfigurationLocales';
@@ -40,6 +42,7 @@ import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCar
 import OpenToParticipation, {
   openToParticipationTitle,
 } from 'components/admin/ContentBuilder/Widgets/OpenToParticipation';
+import PageLink from 'components/admin/ContentBuilder/Widgets/PageLink';
 import Published, {
   publishedTitle,
 } from 'components/admin/ContentBuilder/Widgets/Published';
@@ -69,8 +72,13 @@ import {
   useFormatMessageWithLocale,
   MessageDescriptor,
 } from 'utils/cl-intl';
+import { useParams } from 'utils/router';
 
 const CustomPageBuilderToolbox = () => {
+  const { customPageId } = useParams({ strict: false });
+  const { data: customPage } = useCustomPageById(customPageId);
+  // Page link lists the pages of one project, so only a project's own page can offer it.
+  const isProjectPage = !!customPage?.data.attributes.project_id;
   const { formatMessage } = useIntl();
   const followEnabled = useFeatureFlag({ name: 'follow' });
   const communityMonitorEnabled = useFeatureFlag({
@@ -312,6 +320,14 @@ const CustomPageBuilderToolbox = () => {
           icon="paperclip"
           label={formatMessage(FileAttachment.craft.custom.title)}
         />
+        {isProjectPage && (
+          <DraggableElement
+            id="e2e-draggable-page-link"
+            component={<PageLink />}
+            icon="file"
+            label={formatMessage(PageLink.craft.custom.title)}
+          />
+        )}
         <DraggableElement
           id="e2e-draggable-two-column"
           component={<TwoColumn columnLayout="1-1" />}
