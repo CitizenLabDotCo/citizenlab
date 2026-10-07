@@ -31,6 +31,9 @@ interface Props {
   phase?: IPhaseData;
   draft?: Draft;
   sidePanel?: ReactNode;
+  // Lets a side panel ask for a wider column than the default (e.g. the
+  // AI project assistant, which needs more room to breathe).
+  sidePanelWidth?: string;
   children: ReactNode;
 }
 
@@ -39,6 +42,7 @@ const ProjectWorkspace = ({
   phase,
   draft,
   sidePanel,
+  sidePanelWidth = PROJECT_PANEL_WIDTH,
   children,
 }: Props) => {
   const { pathname } = useLocation();
@@ -86,8 +90,8 @@ const ProjectWorkspace = ({
   );
   const timelineSlot = sidePanel && (
     <Box
-      flex={`0 0 ${PROJECT_PANEL_WIDTH}`}
-      width={PROJECT_PANEL_WIDTH}
+      flex={`0 0 ${sidePanelWidth}`}
+      width={sidePanelWidth}
       minHeight="0"
       overflowY="auto"
       borderRadius={bo.panelBorderRadius}
