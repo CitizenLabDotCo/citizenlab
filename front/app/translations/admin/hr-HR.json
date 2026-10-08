@@ -1999,7 +1999,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Nije moguće prikazati uvezenu datoteku. Pregled uvezenih datoteka dostupan je samo za uvoze PDF-a.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Faza:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Odabrana faza ne može sadržavati ulaze. Odaberite drugu.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Nedavno odobreno ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "Ukloni sve unose",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Poništi odobrenje",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Ovaj projekt ne sadrži nijednu fazu koja može sadržavati ideje.",
