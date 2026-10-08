@@ -3,6 +3,7 @@ import React, { ReactNode } from 'react';
 import {
   Box,
   Icon,
+  IconButton,
   IconNames,
   Text,
   Tooltip,
@@ -12,7 +13,10 @@ import {
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
+import { useIntl } from 'utils/cl-intl';
 import { type TypedLinkProps } from 'utils/cl-router/Link';
+
+import messages from './messages';
 
 interface Props extends TypedLinkProps {
   icon: IconNames;
@@ -22,6 +26,7 @@ interface Props extends TypedLinkProps {
   linkTo?: string;
   disabledTooltipContent?: ReactNode;
   tooltipDisabled?: boolean;
+  onDismiss?: () => void;
 }
 
 const FeatureCallout = ({
@@ -35,7 +40,9 @@ const FeatureCallout = ({
   linkTo,
   disabledTooltipContent,
   tooltipDisabled,
+  onDismiss,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const iconElement = (
     <Icon name={icon} fill={colors.teal700} height="20px" mt="2px" />
   );
@@ -85,6 +92,17 @@ const FeatureCallout = ({
         >
           {linkText}
         </ButtonWithLink>
+      )}
+
+      {onDismiss && (
+        <IconButton
+          ml="auto"
+          iconName="close"
+          iconColor={colors.teal700}
+          iconColorOnHover={colors.textPrimary}
+          a11y_buttonActionMessage={formatMessage(messages.dismiss)}
+          onClick={onDismiss}
+        />
       )}
     </Box>
   );
