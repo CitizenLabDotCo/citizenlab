@@ -24,6 +24,44 @@ describe AIAssistant::Runner do
     expect(bedrock_requests.sole['system'].first['text']).to include('Go Vocal assistant', phase.title_multiloc['en'])
   end
 
+  it 'runs read-only tools right away, pinned to the conversation record' do
+    other_phase = create(:native_survey_phase)
+    stub_bedrock(
+      bedrock_tool_use({ id: 'read_1', name: 'get_form_fields', input: { container_type: 'phase', container_id: other_phase.id } }),
+      bedrock_text('The survey has one question.')
+    )
+
+    runner.run
+
+    tool_call = AIAssistant::ToolCall.find_by!(tool_use_id: 'read_1')
+    expect(tool_call).to have_attributes(status: 'auto_executed', arguments: {})
+    expect(tool_call.result).to include(phase.id)
+    expect(tool_call.result).not_to include(other_phase.id)
+    tool_result = last_request_messages.last['content'].sole['toolResult']
+    expect(tool_result).to include('toolUseId' => 'read_1')
+    expect(conversation.reload.status).to eq('idle')
+  end
+
+  it 'marks calls to unknown tools as failed' do
+    stub_bedrock(bedrock_tool_use({ id: 'x_1', name: 'delete_everything', input: {} }), bedrock_text('Never mind.'))
+
+    runner.run
+
+    expect(AIAssistant::ToolCall.sole).to have_attributes(status: 'failed', result: include('delete_everything'))
+  end
+
+  it 'stops the turn after too many tool calls' do
+    stub_const("#{described_class}::MAX_TOOL_CALLS", 1)
+    stub_bedrock(
+      bedrock_tool_use({ id: 'read_1', name: 'get_form_fields' }, { id: 'read_2', name: 'get_form_fields' })
+    )
+
+    runner.run
+
+    expect(AIAssistant::ToolCall.order(:tool_use_id).pluck(:status)).to eq(%w[auto_executed failed])
+    expect(conversation.reload).to have_attributes(status: 'failed', last_error_code: 'tool_budget_exceeded')
+  end
+
   it 'fails when the context is no longer available' do
     phase.update_columns(participation_method: 'information')
 
