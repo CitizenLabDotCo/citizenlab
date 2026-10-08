@@ -306,18 +306,18 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.EmailBounces.emailBounces',
     defaultMessage: 'Email bounces',
   },
-  emailBouncesSubtitle: {
-    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesSubtitle',
+  emailBouncesDescription: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesDescription',
     defaultMessage:
-      'Email addresses that permanently bounced. The platform does not send any emails to these addresses.',
+      'Email addresses that permanently bounced. The platform does not send any emails to these addresses. A high number of bounces may impact the deliverability of other emails from the platform.',
+  },
+  emailBouncesDelete: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesDelete',
+    defaultMessage: 'Delete',
   },
   emailBouncesName: {
     id: 'app.containers.Admin.Users.EmailBounces.emailBouncesName',
     defaultMessage: 'Name',
-  },
-  emailBouncesEmail: {
-    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesEmail',
-    defaultMessage: 'Email',
   },
   emailBouncesBouncedAt: {
     id: 'app.containers.Admin.Users.EmailBounces.emailBouncesBouncedAt',
@@ -327,12 +327,28 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.EmailBounces.emailBouncesReason',
     defaultMessage: 'Reason',
   },
+  emailBouncesStatus: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesStatus',
+    defaultMessage: 'Status',
+  },
+  emailBouncesStatusPendingInvite: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesStatusPendingInvite',
+    defaultMessage: 'Pending invite',
+  },
+  emailBouncesStatusAwaitingConfirmation: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesStatusAwaitingConfirmation',
+    defaultMessage: 'Awaiting confirmation',
+  },
+  emailBouncesStatusRegistrationIncomplete: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesStatusRegistrationIncomplete',
+    defaultMessage: 'Registration incomplete',
+  },
+  emailBouncesStatusRegistered: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesStatusRegistered',
+    defaultMessage: 'Registered',
+  },
   emailBouncesNone: {
     id: 'app.containers.Admin.Users.EmailBounces.emailBouncesNone',
     defaultMessage: 'No email addresses have bounced.',
-  },
-  emailBouncesDeleteUser: {
-    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesDeleteUser',
-    defaultMessage: 'Delete user',
   },
 });

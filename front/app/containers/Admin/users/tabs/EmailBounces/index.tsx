@@ -2,17 +2,15 @@ import React, { useState } from 'react';
 
 import {
   Box,
+  Divider,
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
-  Td,
   Text,
-  colors,
-  stylingConsts,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useUsers from 'api/users/useUsers';
 
@@ -26,6 +24,11 @@ import UsersHeader from '../../_shared/UsersHeader';
 import messages from '../../messages';
 
 import EmailBounceRow from './EmailBounceRow';
+
+// Same header style as the registered users table
+const Uppercase = styled.span`
+  text-transform: uppercase;
+`;
 
 const EmailBounces = () => {
   const { formatMessage } = useIntl();
@@ -48,31 +51,48 @@ const EmailBounces = () => {
     <>
       <UsersHeader
         title={messages.emailBounces}
-        subtitle={messages.emailBouncesSubtitle}
+        subtitle={messages.emailBouncesDescription}
       />
-      <Box p="20px">
-        <Box mb="24px">
-          <SearchInput
-            onChange={(value) => {
-              setSearch(value ?? undefined);
-              setPageNumber(1);
-            }}
-            a11y_numberOfSearchResults={users.data.length}
-          />
-        </Box>
-        {users.data.length > 0 ? (
-          <Table
-            border={`1px solid ${colors.grey300}`}
-            borderRadius={stylingConsts.borderRadius}
-            innerBorders={{ headerCells: true, bodyRows: true }}
-          >
+      <Box width="100%" display="flex" justifyContent="flex-end">
+        <SearchInput
+          onChange={(value) => {
+            setSearch(value ?? undefined);
+            setPageNumber(1);
+          }}
+          a11y_numberOfSearchResults={users.data.length}
+        />
+      </Box>
+      <Divider />
+      {users.data.length > 0 ? (
+        <Box mb="30px">
+          <Table mt="20px">
             <Thead>
-              <Tr background={colors.grey50}>
-                <Th>{formatMessage(messages.emailBouncesName)}</Th>
-                <Th>{formatMessage(messages.emailBouncesEmail)}</Th>
-                <Th>{formatMessage(messages.emailBouncesBouncedAt)}</Th>
-                <Th>{formatMessage(messages.emailBouncesReason)}</Th>
-                <Th />
+              <Tr>
+                <Th>
+                  <Uppercase>
+                    {formatMessage(messages.emailBouncesName)}
+                  </Uppercase>
+                </Th>
+                <Th>
+                  <Uppercase>
+                    {formatMessage(messages.emailBouncesStatus)}
+                  </Uppercase>
+                </Th>
+                <Th>
+                  <Uppercase>
+                    {formatMessage(messages.emailBouncesBouncedAt)}
+                  </Uppercase>
+                </Th>
+                <Th>
+                  <Uppercase>
+                    {formatMessage(messages.emailBouncesReason)}
+                  </Uppercase>
+                </Th>
+                <Th style={{ textAlign: 'center' }}>
+                  <Uppercase>
+                    {formatMessage(messages.emailBouncesDelete)}
+                  </Uppercase>
+                </Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -80,24 +100,20 @@ const EmailBounces = () => {
                 <EmailBounceRow key={user.id} user={user} />
               ))}
             </Tbody>
-            {currentPage && lastPage && lastPage > 1 && (
-              <Tfoot>
-                <Tr background={colors.grey50}>
-                  <Td colSpan={5}>
-                    <Pagination
-                      currentPage={currentPage}
-                      totalPages={lastPage}
-                      loadPage={setPageNumber}
-                    />
-                  </Td>
-                </Tr>
-              </Tfoot>
-            )}
           </Table>
-        ) : (
-          <Text>{formatMessage(messages.emailBouncesNone)}</Text>
-        )}
-      </Box>
+          {currentPage && lastPage && lastPage > 1 && (
+            <Box mt="12px">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={lastPage}
+                loadPage={setPageNumber}
+              />
+            </Box>
+          )}
+        </Box>
+      ) : (
+        <Text>{formatMessage(messages.emailBouncesNone)}</Text>
+      )}
     </>
   );
 };
