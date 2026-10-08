@@ -21,6 +21,7 @@ describe('Custom page builder', () => {
   let projectId = '';
   let otherProjectId = '';
   let areaId = '';
+  let builderWasEnabled = false;
   let filteringWasEnabled = false;
 
   const setBuilderFeature = (enabled: boolean) =>
@@ -69,12 +70,15 @@ describe('Custom page builder', () => {
     // Created with the builder flag off, so no layout is provisioned and the page is shaped
     // like the legacy pages the migration has to cope with: content in the columns, no graph.
     // Filtering has to be on when the layout is derived, or the lists are not derived at all.
-    setBuilderFeature(false);
     cy.apiGetAppConfiguration().then((config) => {
+      builderWasEnabled =
+        config.body.data.attributes.settings.custom_page_builder?.enabled ===
+        true;
       filteringWasEnabled =
         config.body.data.attributes.settings.advanced_custom_pages?.enabled ===
         true;
     });
+    setBuilderFeature(false);
     setFiltering(true);
 
     cy.apiCreateArea(areaTitle).then((area) => {
@@ -139,7 +143,7 @@ describe('Custom page builder', () => {
   });
 
   after(() => {
-    setBuilderFeature(false);
+    setBuilderFeature(builderWasEnabled);
     setFiltering(filteringWasEnabled);
     if (pageId) cy.apiRemoveCustomPage(pageId);
     if (projectId) cy.apiRemoveProject(projectId);
@@ -286,16 +290,16 @@ describe('Custom page builder', () => {
       .should('have.class', 'e2e-signed-out-header-title');
   });
 
-  // With filtering off, a stored events node keeps its filter, still shown so it can be reset, but
-  // no other filter is offered, and the projects list leaves the toolbox.
-  it('withdraws the filtering choices once the tenant loses advanced_custom_pages', () => {
+  // The events filters do not depend on advanced_custom_pages; the projects list does, so it leaves
+  // the toolbox.
+  it('keeps the events filters once the tenant loses advanced_custom_pages', () => {
     setFiltering(false);
     openBuilder();
 
     selectNodeContaining(() => cy.dataCy('e2e-events-widget'));
     cy.get('#events-source-areas').should('be.checked');
     cy.get('label[for="events-source-all"]').should('exist');
-    cy.get('label[for="events-source-global_topics"]').should('not.exist');
+    cy.get('label[for="events-source-global_topics"]').should('exist');
 
     cy.get('#e2e-draggable-events').should('exist');
     cy.get('#e2e-draggable-projects-by-filter').should('not.exist');
