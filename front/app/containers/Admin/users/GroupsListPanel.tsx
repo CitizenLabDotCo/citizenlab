@@ -12,6 +12,7 @@ import styled from 'styled-components';
 
 import useBlockedUsercount from 'api/blocked_users/useBlockedUsersCount';
 import useEmailBansCount from 'api/email_bans/useEmailBansCount';
+import useEmailBouncedUsersCount from 'api/email_bounced_users/useEmailBouncedUsersCount';
 import { IGroupData } from 'api/groups/types';
 import useGroups from 'api/groups/useGroups';
 import useUsersCount from 'api/users_count/useUsersCount';
@@ -180,6 +181,12 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
     name: 'user_blocking',
   });
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
+  // Bounces are only recorded from Mailgun webhooks, so tenants sending through
+  // their own SMTP server never have any.
+  const isCustomSmtpEnabled = useFeatureFlag({ name: 'custom_smtp' });
+  const { data: emailBouncedUsersCount } = useEmailBouncedUsersCount({
+    enabled: !isCustomSmtpEnabled,
+  });
 
   useEffect(() => {
     const subs: Subscription[] = [];
@@ -282,6 +289,21 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
           <MembersCount>{bannedEmailsCount.data.attributes.count}</MembersCount>
         )}
       </MenuLink>
+      {!isCustomSmtpEnabled && (
+        <MenuLink
+          to="/admin/users/email-bounces"
+          data-testid="email-bounces-link"
+        >
+          <GroupName>
+            <FormattedMessage {...messages.emailBounces} />
+          </GroupName>
+          {emailBouncedUsersCount && (
+            <MembersCount>
+              {emailBouncedUsersCount.data.attributes.count}
+            </MembersCount>
+          )}
+        </MenuLink>
+      )}
       <Separator />
       <MenuTitle className="intercom-users-groups-sidebar-section">
         <FormattedMessage tagName="h2" {...messages.groupsTitle} />

@@ -149,11 +149,12 @@ Rails.application.routes.draw do
 
           get 'by_invite/:token', to: 'users#by_invite'
           get 'blocked_count'
+          get 'email_bounced_count'
           get :check_if_exceeds_seats
         end
 
         member do
-          patch :block, :unblock
+          patch :block, :unblock, :clear_email_bounce
           get 'ideas_count'
           get 'comments_count'
           get 'participation_stats'

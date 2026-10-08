@@ -757,6 +757,7 @@ resource 'Users' do
         parameter :admins_only, 'Return only admins', required: false
         parameter :project_reviewer, 'Return only admins that are project reviewers', required: false
         parameter :blocked, 'Return only blocked users', required: false
+        parameter :only_email_bounced, 'Return only users whose email permanently bounced', required: false
 
         example 'List all users' do
           %w[Bednar Cole Hagenes MacGyver Oberbrunner].each { |l| create(:user, last_name: l) }
@@ -774,6 +775,18 @@ resource 'Users' do
           expect(json_response[:data][0][:attributes]).to have_key(:block_start_at)
           expect(json_response[:data][0][:attributes]).to have_key(:block_end_at)
           expect(json_response[:data][0][:attributes]).to have_key(:block_reason)
+        end
+
+        example 'List users whose email bounced, including pending invitees' do
+          bounced = create(:user, email_bounced_at: 1.day.ago)
+          bounced_invitee = create(:invited_user, email_bounced_at: 1.day.ago)
+          create(:user)
+
+          do_request only_email_bounced: true, include_inactive: true
+
+          expect(status).to eq 200
+          expect(response_data.pluck(:id)).to contain_exactly(bounced.id, bounced_invitee.id)
+          expect(response_data.first[:attributes]).to include(:email_bounced_at, :email_bounce_reason)
         end
 
         example 'Get all users on the second page with fixed page size' do
@@ -1538,6 +1551,31 @@ resource 'Users' do
         end
       end
 
+      get 'web_api/v1/users/email_bounced_count' do
+        example 'Get count of users whose email bounced' do
+          create_list(:user, 2, email_bounced_at: 1.day.ago)
+          create(:user)
+
+          do_request
+
+          expect(status).to eq 200
+          expect(response_data.dig(:attributes, :count)).to eq 2
+        end
+      end
+
+      patch 'web_api/v1/users/:id/clear_email_bounce' do
+        let!(:user) { create(:user, email_bounced_at: 1.day.ago, email_bounce_reason: '550 No such user') }
+        let(:id) { user.id }
+
+        example 'Clear the email bounce of a user' do
+          do_request
+
+          expect(status).to eq 200
+          expect(response_data.dig(:attributes, :email_bounced_at)).to be_nil
+          expect(user.reload).to have_attributes(email_bounced_at: nil, email_bounce_reason: nil)
+        end
+      end
+
       patch 'web_api/v1/users/:id/block' do
         with_options scope: 'user' do
           parameter :block_reason, 'Reason for blocking & any additional information', required: false
@@ -1937,6 +1975,22 @@ resource 'Users' do
       get 'web_api/v1/users/blocked_count' do
         example_request 'Get count of blocked users' do
           expect(status).to eq 401
+        end
+      end
+
+      get 'web_api/v1/users/email_bounced_count' do
+        example_request '[error] Get count of users whose email bounced' do
+          assert_status :unauthorized
+        end
+      end
+
+      patch 'web_api/v1/users/:id/clear_email_bounce' do
+        let(:user) { create(:user, email_bounced_at: 1.day.ago) }
+        let(:id) { user.id }
+
+        example_request '[error] Clear the email bounce of a user' do
+          assert_status :unauthorized
+          expect(user.reload.email_bounced_at).to be_present
         end
       end
 

@@ -82,5 +82,19 @@ RSpec.describe EmailCampaigns::InviteReminderMailer do
         expect(mail_body(mail)).to include('CLICK THE BUTTON')
       end
     end
+
+    context 'when the recipient email bounced' do
+      let(:bounced_recipient) { create(:invited_user, email_bounced_at: 1.day.ago) }
+      let(:bounced_mail) do
+        described_class
+          .with(command: command.merge(recipient: bounced_recipient), campaign: campaign)
+          .campaign_mail
+      end
+
+      it 'renders the email but does not send it' do
+        expect(bounced_mail.subject).to be_present
+        expect { bounced_mail.deliver_now }.not_to change { ActionMailer::Base.deliveries.count }
+      end
+    end
   end
 end

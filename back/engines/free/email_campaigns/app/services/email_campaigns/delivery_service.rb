@@ -207,6 +207,8 @@ module EmailCampaigns
     # Renders and delivers the campaign's email synchronously. Runs Trackable
     # hooks so a Delivery record is saved.
     def send_email_now_to_user(campaign, recipient, event_payload = {})
+      return if campaign.mailer_class.undeliverable_to?(recipient)
+
       command = { recipient: recipient, event_payload: event_payload, time: Time.zone.now }
       campaign.run_before_send_hooks(command)
       campaign.mailer_class
@@ -231,6 +233,7 @@ module EmailCampaigns
       valid_campaigns           = filter_campaigns(campaign_candidates, options)
       campaigns_with_recipients = assign_campaigns_recipients(valid_campaigns, options)
       campaigns_with_command    = assign_campaigns_command(campaigns_with_recipients, options)
+      campaigns_with_command    = reject_undeliverable(campaigns_with_command)
 
       ExamplesService.new.save_examples(campaigns_with_command)
       process_send_campaigns(campaigns_with_command)
@@ -251,6 +254,13 @@ module EmailCampaigns
       campaigns_with_recipients.flat_map do |(recipient, campaign)|
         generate_commands(campaign, recipient, options)
           .zip([campaign].cycle)
+      end
+    end
+
+    # Before the send hooks, so no delivery is recorded for an email that is never sent.
+    def reject_undeliverable(campaigns_with_command)
+      campaigns_with_command.reject do |(command, campaign)|
+        campaign.respond_to?(:mailer_class) && campaign.mailer_class.undeliverable_to?(command[:recipient])
       end
     end
 

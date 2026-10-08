@@ -13,7 +13,15 @@ interface Props {
 }
 
 const InviteBadge = ({ user }: Props) => {
-  const { invite_status } = user.attributes;
+  const { invite_status, email_bounced_at } = user.attributes;
+
+  if (email_bounced_at) {
+    return (
+      <Badge color={colors.error}>
+        <FormattedMessage {...messages.inviteStatusEmailBounced} />
+      </Badge>
+    );
+  }
 
   if (invite_status === 'pending') {
     return (

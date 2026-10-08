@@ -6,7 +6,7 @@ class WebApi::V1::UsersController < ApplicationController
   include EnforceUserSso
 
   before_action :sso_enforced?, only: %i[check_email create]
-  before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock participation_stats]
+  before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock clear_email_bounce participation_stats]
   skip_before_action :authenticate_user, only: %i[create create_phone show check_email check_phone by_invite ideas_count comments_count]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -19,6 +19,7 @@ class WebApi::V1::UsersController < ApplicationController
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.registered unless params[:include_inactive]
     @users = @users.blocked if params[:only_blocked]
+    @users = @users.email_bounced if params[:only_email_bounced]
     @users = @users.search_by_all(params[:search]) if params[:search].present?
 
     # Filter by project participants
@@ -307,6 +308,13 @@ class WebApi::V1::UsersController < ApplicationController
     end
   end
 
+  def clear_email_bounce
+    authorize @user, :clear_email_bounce?
+    EmailCampaigns::EmailBounceService.new.clear(@user)
+
+    render json: WebApi::V1::UserSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash
+  end
+
   def ideas_count
     ideas = policy_scope(IdeasFinder.new({}, scope: @user.ideas.published, current_user: current_user).find_records)
     render json: raw_json({ count: ideas.count }), status: :ok
@@ -315,6 +323,11 @@ class WebApi::V1::UsersController < ApplicationController
   def blocked_count
     authorize :user, :blocked_count?
     render json: raw_json({ count: User.all.blocked.count }, type: 'blocked_users_count'), status: :ok
+  end
+
+  def email_bounced_count
+    authorize :user, :email_bounced_count?
+    render json: raw_json({ count: policy_scope(User).email_bounced.count }, type: 'email_bounced_users_count'), status: :ok
   end
 
   def comments_count

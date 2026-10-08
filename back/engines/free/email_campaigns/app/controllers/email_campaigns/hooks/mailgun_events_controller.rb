@@ -21,6 +21,9 @@ module EmailCampaigns
     }.freeze
 
     def create
+      # Before the delivery lookup: emails that aren't tracked as deliveries can bounce too.
+      EmailBounceService.new.record(params[:'event-data'])
+
       campaigns_recipient = Delivery.find_by(
         id: params[:'event-data'][:'user-variables'][:cl_delivery_id]
       )

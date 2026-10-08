@@ -54,6 +54,55 @@ resource 'Mailgun Events' do
       expect(delivery.reload.delivery_status).to eq 'opened'
     end
 
+    context 'for a failed delivery' do
+      let(:user) { create(:user, email: 'Bounce@Example.com') }
+      let(:delivery) { create(:delivery, user: user) }
+      let(:severity) { 'permanent' }
+
+      before do
+        mailgun_event[:'event-data'].merge!(
+          event: 'failed',
+          severity: severity,
+          recipient: 'bounce@example.com',
+          'delivery-status': { code: 550, description: 'The email account does not exist.' }
+        )
+      end
+
+      example 'Records a permanent bounce on the user' do
+        do_request(mailgun_event)
+
+        expect(response_status).to eq 200
+        expect(delivery.reload.delivery_status).to eq 'failed'
+        expect(user.reload).to have_attributes(
+          email_bounced_at: be_present,
+          email_bounce_reason: '550 The email account does not exist.'
+        )
+      end
+
+      context 'when the email was not tracked as a delivery' do
+        let(:delivery_id) { nil }
+
+        example 'Still records the bounce' do
+          user # create before the request
+          do_request(mailgun_event)
+
+          expect(response_status).to eq 406
+          expect(user.reload.email_bounced_at).to be_present
+        end
+      end
+
+      context 'when the failure is temporary' do
+        let(:severity) { 'temporary' }
+
+        example 'Does not record a bounce' do
+          do_request(mailgun_event)
+
+          expect(response_status).to eq 200
+          expect(user.reload.email_bounced_at).to be_nil
+        end
+      end
+    end
+
     context '[error] for a non-existing tenant' do
       let!(:cl_tenant_id) { '70abacb2-69e8-4c2d-93cc-c0aeab657f02' }
 

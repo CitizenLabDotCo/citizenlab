@@ -302,4 +302,58 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.Seats.seatsOverview',
     defaultMessage: 'Seats overview',
   },
+  emailBounces: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBounces',
+    defaultMessage: 'Email bounces',
+  },
+  emailBouncesSubtitle: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesSubtitle',
+    defaultMessage:
+      'Email addresses that permanently bounced. The platform does not send any emails to these addresses.',
+  },
+  emailBouncesName: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesName',
+    defaultMessage: 'Name',
+  },
+  emailBouncesEmail: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesEmail',
+    defaultMessage: 'Email',
+  },
+  emailBouncesBouncedAt: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesBouncedAt',
+    defaultMessage: 'Bounced on',
+  },
+  emailBouncesReason: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesReason',
+    defaultMessage: 'Reason',
+  },
+  emailBouncesNone: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesNone',
+    defaultMessage: 'No email addresses have bounced.',
+  },
+  clearEmailBounce: {
+    id: 'app.containers.Admin.Users.EmailBounces.clearEmailBounce',
+    defaultMessage: 'Clear bounce',
+  },
+  clearEmailBounceTitle: {
+    id: 'app.containers.Admin.Users.EmailBounces.clearEmailBounceTitle',
+    defaultMessage: 'Clear email bounce for {email}?',
+  },
+  clearEmailBounceBouncedOn: {
+    id: 'app.containers.Admin.Users.EmailBounces.clearEmailBounceBouncedOn',
+    defaultMessage: 'This email address permanently bounced on {date}.',
+  },
+  clearEmailBounceReason: {
+    id: 'app.containers.Admin.Users.EmailBounces.clearEmailBounceReason',
+    defaultMessage: 'Reason: {reason}',
+  },
+  clearEmailBounceWarning: {
+    id: 'app.containers.Admin.Users.EmailBounces.clearEmailBounceWarning',
+    defaultMessage:
+      "Only clear this if you're confident the address now works. Sending to addresses that bounce can damage the platform's email sending reputation and lead to email sending being suspended.",
+  },
+  clearEmailBounceCancel: {
+    id: 'app.containers.Admin.Users.EmailBounces.clearEmailBounceCancel',
+    defaultMessage: 'Cancel',
+  },
 });
