@@ -4,8 +4,8 @@ import {
   Box,
   Icon,
   Text,
+  Tooltip,
   colors,
-  fontSizes,
 } from '@citizenlab/cl2-component-library';
 import { Locale, format, isSameDay, isThisYear } from 'date-fns';
 
@@ -63,7 +63,13 @@ const TimelineEvents = ({ projectId }: Props) => {
 
   return (
     <Box>
-      <Box px="12px" mb="12px">
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        pl="12px"
+        mb="12px"
+      >
         <Link to="/admin/projects/$projectId/events" params={{ projectId }}>
           <Box as="h4" m="0">
             <Text as="span" variant="boSection" m="0">
@@ -71,6 +77,22 @@ const TimelineEvents = ({ projectId }: Props) => {
             </Text>
           </Box>
         </Link>
+        <Tooltip
+          content={formatMessage(messages.newEvent)}
+          theme="dark"
+          placement="bottom"
+        >
+          <ButtonWithLink
+            to="/admin/projects/$projectId/events/new"
+            params={{ projectId }}
+            buttonStyle="bo-text"
+            icon="plus"
+            width="32px"
+            height="32px"
+            padding="0"
+            ariaLabel={formatMessage(messages.newEvent)}
+          />
+        </Tooltip>
       </Box>
 
       <Box display="flex" flexDirection="column">
@@ -115,21 +137,6 @@ const TimelineEvents = ({ projectId }: Props) => {
             </Link>
           );
         })}
-      </Box>
-
-      <Box display="flex">
-        <ButtonWithLink
-          to="/admin/projects/$projectId/events/new"
-          params={{ projectId }}
-          buttonStyle="bo-text"
-          height="32px"
-          padding="0 12px"
-          fontSize={`${fontSizes.xs}px`}
-          icon="plus"
-          width="auto"
-        >
-          {formatMessage(messages.newEvent)}
-        </ButtonWithLink>
       </Box>
     </Box>
   );
