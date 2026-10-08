@@ -35,6 +35,16 @@ class BaseImageUploader < BaseUploader
     CarrierwaveTempRemote.url(identifier, version_name) || super
   end
 
+  # A resize saves the file again, so the JPEG quality is lowered in the same save.
+  # Lowering it in a separate step would save the image twice.
+  def resize_to_fill(width, height, gravity = 'Center', combine_options: {}, &)
+    super(width, height, gravity, combine_options: jpeg_quality_options.merge(combine_options), &)
+  end
+
+  def resize_to_limit(width, height, combine_options: {}, &)
+    super(width, height, combine_options: jpeg_quality_options.merge(combine_options), &)
+  end
+
   protected
 
   def secure_token
@@ -42,29 +52,23 @@ class BaseImageUploader < BaseUploader
     model.instance_variable_get(var) or model.instance_variable_set(var, SecureRandom.uuid)
   end
 
-  # For versions. Only JPEGs: PNGs are often logos or graphics, where lossy
-  # compression shows, and ImageMagick can't read a WebP's quality (it reports 92
-  # for any lossy WebP and 100 for a lossless one).
-  def compress
-    return unless jpeg?
+  # Only JPEGs: PNGs are often logos or graphics, where lossy compression shows,
+  # and ImageMagick can't read a WebP's quality (it reports 92 for any lossy WebP
+  # and 100 for a lossless one).
+  def jpeg_quality_options
+    return {} unless jpeg? && ::MiniMagick::Image.new(current_path)['%Q'].to_i > JPEG_MAX_QUALITY
 
-    manipulate! do |image|
-      image.quality(JPEG_MAX_QUALITY) if image['%Q'].to_i > JPEG_MAX_QUALITY
-      image
-    end
+    { quality: JPEG_MAX_QUALITY }
   end
 
   def limit_size
-    image = ::MiniMagick::Image.new(current_path)
-    width, height = image.dimensions
+    width, height = ::MiniMagick::Image.new(current_path).dimensions
     return if width <= MAX_SIZE && height <= MAX_SIZE
 
     if @file.content_type == 'image/gif'
       gif_safe_transform! { |img| img.resize "#{MAX_SIZE}x#{MAX_SIZE}>" }
     else
-      # ImageMagick can read the quality of a JPEG only. Left unset, it keeps the source's.
-      combine_options = jpeg? && image['%Q'].to_i > JPEG_MAX_QUALITY ? { quality: JPEG_MAX_QUALITY } : {}
-      resize_to_limit(MAX_SIZE, MAX_SIZE, combine_options: combine_options)
+      resize_to_limit(MAX_SIZE, MAX_SIZE)
     end
   end
 
