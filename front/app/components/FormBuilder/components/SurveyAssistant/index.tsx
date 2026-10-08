@@ -9,12 +9,14 @@ import phasesKeys from 'api/phases/keys';
 import AssistantPanel from 'components/AiAssistant/AssistantPanel';
 import { AiAssistantToolViews } from 'components/AiAssistant/types';
 
+import FormOutlinePreview from './FormOutlinePreview';
 import messages from './messages';
 
 const TOOL_VIEWS: AiAssistantToolViews = {
   get_form_fields: { label: messages.readSurvey },
   replace_form_fields: {
     label: messages.replaceSurvey,
+    Preview: FormOutlinePreview,
     approveWarning: messages.replaceWarning,
   },
 };
