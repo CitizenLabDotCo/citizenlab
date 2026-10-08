@@ -1943,7 +1943,7 @@
   "app.containers.Admin.projects.project.newSurvey": "Neue Umfrage",
   "app.containers.Admin.projects.project.newSurveyCrumb": "Neue Umfrage",
   "app.containers.Admin.projects.project.nextActions": "Nächste Schritte",
-  "app.containers.Admin.projects.project.noAttachments": "Keine Anhänge",
+  "app.containers.Admin.projects.project.noAttachments": "Keine Dateien",
   "app.containers.Admin.projects.project.noInputToAnalyse": "In dieser Phase werden keine Beiträge gesammelt, daher gibt es nichts zu analysieren.",
   "app.containers.Admin.projects.project.noInputToManage": "In dieser Phase wird kein Beitrag gesammelt, daher gibt es nichts zu verwalten.",
   "app.containers.Admin.projects.project.noInputsYet": "Noch keine Beiträge",
