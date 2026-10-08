@@ -342,7 +342,12 @@ class User < ApplicationRecord
   # @return [Hash] the features this user may opt into, mapped to the tier they are offered in
   def offered_early_access_features
     tiers = early_access_tiers
-    AppConfiguration::Settings.early_access_tiers.select { |_name, tier| tiers.include?(tier) }
+    return {} if tiers.empty?
+
+    config = AppConfiguration.instance
+    AppConfiguration::Settings.early_access_tiers.select do |name, tier|
+      tiers.include?(tier) && !config.feature_activated_on_platform?(name)
+    end
   end
 
   # The opt-ins that still apply: a feature can stop being offered after the user opted in.

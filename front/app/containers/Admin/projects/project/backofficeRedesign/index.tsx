@@ -7,15 +7,17 @@ import { IProjectData } from 'api/projects/types';
 
 import { useLocation } from 'utils/router';
 
-import { usePageSave } from './_shared/PageSaveContext';
-import { sectionFromPathname } from './_shared/sections';
-import useMarkSetupStep from './_shared/useMarkSetupStep';
-import WorkspaceHeader from './Header';
-import { HeaderDropdownName } from './Header/HeaderDropdown';
+import FeedbackNotice from '../earlyAccess/FeedbackNotice';
+
 import MethodSettings from './Phase/MethodSettings';
-import { viewFromPathname } from './Phase/usePhaseViews';
-import ViewContent from './Phase/ViewContent';
 import ProjectSetupPanel from './ProjectSetupPanel';
+import ViewContent from './Phase/ViewContent';
+import WorkspaceHeader from './Header';
+import useMarkSetupStep from './_shared/useMarkSetupStep';
+import { HeaderDropdownName } from './Header/HeaderDropdown';
+import { sectionFromPathname } from './_shared/sections';
+import { usePageSave } from './_shared/PageSaveContext';
+import { viewFromPathname } from './Phase/usePhaseViews';
 
 const PROJECT_PANEL_WIDTH = '332px';
 const PHASE_PANEL_WIDTH = '560px';
@@ -137,6 +139,7 @@ const ProjectWorkspace = ({
       overflow="hidden"
       background={colors.background}
     >
+      <FeedbackNotice />
       <WorkspaceHeader
         project={project}
         phase={phase}
