@@ -29,6 +29,7 @@ module AIAssistant
     MAX_CONTENT_LENGTH = 5000
 
     belongs_to :conversation, class_name: 'AIAssistant::Conversation', inverse_of: :messages
+    has_many :tool_calls, -> { order(:created_at, :id) }, class_name: 'AIAssistant::ToolCall', dependent: :destroy, inverse_of: :message
 
     enum :role, ROLES.index_by(&:itself)
 
