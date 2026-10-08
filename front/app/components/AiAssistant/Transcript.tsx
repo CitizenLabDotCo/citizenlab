@@ -53,7 +53,11 @@ const Transcript = ({ conversation, toolViews, onToolExecuted }: Props) => {
     <Box display="flex" flexDirection="column" gap="12px">
       {messages.map((message) =>
         message.attributes.role === 'user' ? (
-          <UserMessage key={message.id} content={message.attributes.content} />
+          <UserMessage
+            key={message.id}
+            content={message.attributes.content}
+            fileIds={message.attributes.file_ids}
+          />
         ) : (
           <Box key={message.id} display="flex" flexDirection="column" gap="8px">
             {message.attributes.content && (
