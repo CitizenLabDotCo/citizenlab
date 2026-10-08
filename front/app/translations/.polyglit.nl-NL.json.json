@@ -1099,6 +1099,36 @@
     "verified_at": "2026-03-27T12:42:54.137591Z",
     "verified_by": "Luuc"
   },
+  "app.components.CustomPageBuilder.Widgets.CustomPageTitle.hiddenNote": {
+    "state": "verified",
+    "verified_at": "2026-10-01T15:12:00.035444Z",
+    "verified_by": "Pauline"
+  },
+  "app.components.CustomPageBuilder.Widgets.CustomPageTitle.lockedNote": {
+    "state": "verified",
+    "verified_at": "2026-10-01T15:12:00.035444Z",
+    "verified_by": "Pauline"
+  },
+  "app.components.CustomPageBuilder.Widgets.CustomPageTitle.showTitleLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-01T15:12:00.035444Z",
+    "verified_by": "Pauline"
+  },
+  "app.components.CustomPageBuilder.Widgets.CustomPageTitle.title": {
+    "state": "verified",
+    "verified_at": "2026-10-01T15:12:00.035444Z",
+    "verified_by": "Pauline"
+  },
+  "app.components.CustomPageBuilder.Widgets.CustomPageTitle.titleLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-01T15:12:00.035444Z",
+    "verified_by": "Pauline"
+  },
+  "app.components.CustomPageBuilder.Widgets.CustomPageTitle.untitledPage": {
+    "state": "verified",
+    "verified_at": "2026-10-01T15:12:00.035444Z",
+    "verified_by": "Pauline"
+  },
   "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.description": {
     "state": "verified",
     "verified_at": "2026-09-16T16:56:09.773876Z",
@@ -3809,6 +3839,11 @@
     "verified_at": "2026-07-07T14:52:42.215163Z",
     "verified_by": "Luuc"
   },
+  "app.components.UI.FeatureCallout.dismiss": {
+    "state": "verified",
+    "verified_at": "2026-10-08T07:46:40.658208Z",
+    "verified_by": "Pauline"
+  },
   "app.components.UI.FileAttachments.FileDisplay.ariaLabel": {
     "state": "verified",
     "verified_at": "2026-05-12T17:19:24.452298Z",
@@ -3843,6 +3878,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.components.UI.OptionPicker.noResults": {
+    "state": "verified",
+    "verified_at": "2026-10-01T15:12:00.035444Z",
+    "verified_by": "Pauline"
   },
   "app.components.UI.PhaseFilter.noAppropriatePhases": {
     "state": "verified",
@@ -12468,6 +12508,16 @@
     "state": "verified",
     "verified_at": "2026-09-23T16:51:52.310206Z",
     "verified_by": "Luuc"
+  },
+  "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignDescription2": {
+    "state": "verified",
+    "verified_at": "2026-10-08T07:46:40.658208Z",
+    "verified_by": "Pauline"
+  },
+  "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignTitle": {
+    "state": "verified",
+    "verified_at": "2026-10-08T07:46:40.658208Z",
+    "verified_by": "Pauline"
   },
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": {
     "state": "verified",

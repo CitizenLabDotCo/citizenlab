@@ -354,7 +354,9 @@ module BulkImportIdeas::Exporters
     end
 
     def print_visibility_disclaimer(field)
-      @phase.pmethod.supports_public_visibility? && !field.visible_to_public? ? "*#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.this_answer') }}" : ''
+      return '' if !field.supports_submission? || !@phase.pmethod.supports_public_visibility? || field.answers_visible_to_public?
+
+      "*#{I18n.with_locale(@locale) { I18n.t('form_builder.pdf_export.this_answer') }}"
     end
 
     def select_print_instructions(field)

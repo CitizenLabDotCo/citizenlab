@@ -10,6 +10,13 @@ module ContentBuilder
     BODY_ID = 'PROJECT_PAGE_BODY'
     PHASES_ID = 'PROJECT_PAGE_PHASES'
     EVENTS_ID = 'PROJECT_PAGE_EVENTS'
+    # A project page's events widget shows that project's events: the widget itself defaults to
+    # every project's.
+    EVENTS_PROPS = {
+      'source' => 'currentProject',
+      'timeFilters' => %w[upcoming past],
+      'limit' => 'all'
+    }.freeze
 
     INTRO_COLUMNS_ID = 'PROJECT_PAGE_INTRO_COLUMNS'
     INTRO_LEFT_ID = 'PROJECT_PAGE_INTRO_LEFT'
@@ -116,6 +123,23 @@ module ContentBuilder
 
       injected_top_level_ids.each { |id| injected_nodes[id]['parent'] = BODY_ID }
       canonical_nodes(injected_top_level_ids).merge(injected_nodes)
+    end
+
+    # Clears the ProjectBanner node's image so the banner renders from the record's header_bg.
+    # The FE does the equivalent when it saves the builder (stripProjectAttributeDrafts in
+    # front/app/components/ProjectPageBuilder/projectAttributeDrafts.ts), so a normal save already
+    # arrives stripped; this is for callers that set header_bg without that flow (the MCP tools).
+    # `alt` has no record fallback, so it's left alone.
+    def reset_banner_image!(project)
+      layout = ContentBuilder::Layout.find_by(content_buildable: project, code: CODE)
+      return if layout&.craftjs_json.blank?
+
+      json = layout.craftjs_json.deep_dup
+      banner_id = find_node_id(json, 'ProjectBanner')
+      return if banner_id.nil? || json.dig(banner_id, 'props', 'image').blank?
+
+      json[banner_id]['props']['image'] = {}
+      layout.update!(craftjs_json: json)
     end
 
     private
@@ -401,14 +425,7 @@ module ContentBuilder
           'displayName' => 'PhasesWidget',
           'linkedNodes' => {}
         },
-        EVENTS_ID => Craftjs::Nodes.events(
-          {
-            'source' => 'currentProject',
-            'timeFilters' => %w[upcoming past],
-            'limit' => 'all'
-          },
-          BODY_ID
-        )
+        EVENTS_ID => Craftjs::Nodes.events(EVENTS_PROPS.deep_dup, BODY_ID)
       }
     end
 

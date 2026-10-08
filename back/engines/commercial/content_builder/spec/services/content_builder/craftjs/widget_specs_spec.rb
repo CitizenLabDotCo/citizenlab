@@ -6,16 +6,22 @@ describe ContentBuilder::Craftjs::WidgetSpecs do
   # Spelled out rather than derived from each other: PROJECT_PAGE_SPECS is SPECS minus
   # CUSTOM_PAGE_WIDGETS by definition, so comparing the three would pass whatever the lists held.
   describe 'CUSTOM_PAGE_WIDGETS' do
-    it 'lists the widgets and scaffold only the custom page builder resolves' do
+    it 'lists the custom page widgets and scaffold the project page builder does not resolve' do
       expect(described_class::CUSTOM_PAGE_WIDGETS).to match_array(
-        %w[ProjectsByFilter CustomPageRoot CustomPageBanner CustomPageTitle CustomPageBody]
+        %w[
+          ProjectsByFilter Spotlight Selection CustomPages Published OpenToParticipation FinishedOrArchived
+          FollowedItems Areas CommunityMonitorCTA CallToAction VideoEmbed
+          CustomPageRoot CustomPageBanner CustomPageTitle CustomPageBody
+        ]
       )
     end
 
     # Naming a widget that no longer exists would silently stop excluding anything.
     it 'names only widgets that are actually specified' do
       expect(described_class::SPECS.keys).to include(
-        'ProjectsByFilter', 'CustomPageRoot', 'CustomPageBanner', 'CustomPageTitle', 'CustomPageBody'
+        'ProjectsByFilter', 'Spotlight', 'Selection', 'CustomPages', 'Published', 'OpenToParticipation',
+        'FinishedOrArchived', 'FollowedItems', 'Areas', 'CommunityMonitorCTA', 'CallToAction', 'VideoEmbed',
+        'CustomPageRoot', 'CustomPageBanner', 'CustomPageTitle', 'CustomPageBody'
       )
     end
 

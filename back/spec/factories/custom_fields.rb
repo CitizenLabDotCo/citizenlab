@@ -421,4 +421,17 @@ FactoryBot.define do
       input_type { 'select' }
     end
   end
+
+  # A default input field as the form's participation method defines it; overrides apply on top.
+  factory :default_input_field, class: 'CustomField' do
+    transient do
+      code { 'title_multiloc' }
+    end
+    resource { association(:custom_form) }
+
+    initialize_with do
+      resource.participation_context.pmethod.default_fields(resource).find { it.code == code } ||
+        raise(ArgumentError, "No default input field with code #{code.inspect}")
+    end
+  end
 end

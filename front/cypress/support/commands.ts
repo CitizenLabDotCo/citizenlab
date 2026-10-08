@@ -238,7 +238,7 @@ function setModeratorLoginCookie() {
 function setConsentCookie() {
   cy.setCookie(
     'cl2_consent',
-    '{%22analytics%22:true%2C%22advertising%22:true%2C%22functional%22:true%2C%22savedChoices%22:{%22google_tag_manager%22:true%2C%22matomo%22:true%2C%22google_analytics%22:true%2C%22intercom%22:true%2C%22segment%22:true}}'
+    '{%22analytics%22:true%2C%22advertising%22:true%2C%22functional%22:true%2C%22savedChoices%22:{%22google_tag_manager%22:true%2C%22matomo%22:true%2C%22intercom%22:true%2C%22segment%22:true}}'
   );
 }
 
@@ -1201,7 +1201,7 @@ function apiRemoveFolder(folderId: string) {
   });
 }
 
-function apiCreateCustomPage(title: string) {
+function apiCreateCustomPage(title: string, projectId?: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1222,6 +1222,7 @@ function apiCreateCustomPage(title: string) {
             'nl-NL': title,
             'fr-BE': title,
           },
+          ...(projectId && { project_id: projectId }),
         },
       },
     });

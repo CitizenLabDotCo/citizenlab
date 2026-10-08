@@ -44,6 +44,7 @@
 #  include_in_printed_form        :boolean          default(TRUE), not null
 #  min_characters                 :integer
 #  max_characters                 :integer
+#  answers_visible_to             :string           default("moderators"), not null
 #
 # Indexes
 #
@@ -123,6 +124,9 @@ class CustomField < ApplicationRecord
   validates :max_characters, comparison: { greater_than: 0 }, if: :supports_text?, allow_nil: true
   validate :max_characters_greater_than_min_characters, if: :supports_text?
   validate :maximum_select_count_greater_than_or_equal_to_minimum, if: :select_count_enabled_and_supported?
+  validate :validate_answers_visible_to
+
+  enum :answers_visible_to, { public: 'public', moderators: 'moderators' }, prefix: true, validate: true
 
   before_validation :set_default_enabled
   # Declared ahead of `generate_key`, which builds the key from the first title value.
@@ -229,14 +233,6 @@ class CustomField < ApplicationRecord
     required
   end
 
-  def visible_to_public?
-    return true if %w[author_id budget].include?(code)
-    return true if page? # It's possible that this line can be removed (but we would need to properly test to be sure)
-    return true if custom_form_type? && built_in?
-
-    false
-  end
-
   def domicile?
     s = UserFieldsInFormService
     (key == 'domicile' && code == 'domicile') || key == s.prefix_key('domicile')
@@ -316,7 +312,8 @@ class CustomField < ApplicationRecord
       resource: resource,
       title_multiloc: title_multiloc,
       required: true,
-      enabled: true
+      enabled: true,
+      answers_visible_to: answers_visible_to
     )
   end
 
@@ -333,7 +330,8 @@ class CustomField < ApplicationRecord
       input_type: 'multiline_text',
       title_multiloc: title_multiloc,
       required: false,
-      enabled: true
+      enabled: true,
+      answers_visible_to: answers_visible_to
     )
   end
 
@@ -409,6 +407,14 @@ class CustomField < ApplicationRecord
 
   def set_default_enabled
     self.enabled = true if enabled.nil?
+  end
+
+  # Only the custom questions of an input form choose who sees their answers.
+  def validate_answers_visible_to
+    return if custom_form_type? && supports_submission? && !built_in?
+
+    fixed_value = custom_form_type? && supports_submission? ? 'public' : 'moderators'
+    errors.add(:answers_visible_to, :inclusion, value: answers_visible_to) if answers_visible_to != fixed_value
   end
 
   def generate_key

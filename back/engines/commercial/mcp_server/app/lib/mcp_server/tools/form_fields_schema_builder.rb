@@ -117,8 +117,9 @@ class McpServer::Tools::FormFieldsSchemaBuilder
       key: {
         type: %w[string null],
         description: <<~DESC.squish
-          Stable slug. Auto-generated from title if omitted on new fields. null for page
-          break fields.
+          Stable slug. Auto-generated from title if omitted on new fields; echo it back
+          unchanged on existing fields (community-monitor pages and the form_end page
+          carry keys). May be null on plain page breaks.
         DESC
       },
       input_type: {
@@ -134,6 +135,7 @@ class McpServer::Tools::FormFieldsSchemaBuilder
           - ideation: page, number, linear_scale, rating, text, multiline_text,
             select, multiselect, multiselect_image, ranking, sentiment_linear_scale,
             matrix_linear_scale
+          - community_monitor_survey: page, sentiment_linear_scale
 
           The types text_multiloc, html_multiloc, image_files, files, topic_ids, and
           cosponsor_ids are reserved for built-in fields (identified by a non-null
@@ -213,6 +215,16 @@ class McpServer::Tools::FormFieldsSchemaBuilder
         description: <<~DESC.squish
           Only for sentiment_linear_scale. When true, the participant gets a free-text
           follow-up input after selecting their sentiment.
+        DESC
+      },
+      question_category: {
+        type: %w[string null],
+        enum: [*CustomField::QUESTION_CATEGORIES, nil],
+        description: <<~DESC.squish
+          Community monitor only — any other participation method must omit it (validation
+          rejects it there). Reporting category the question is grouped under. Echo it back
+          unchanged for built-in questions; set it on a custom question to group it, or
+          omit it to report the question under 'Other'.
         DESC
       },
 

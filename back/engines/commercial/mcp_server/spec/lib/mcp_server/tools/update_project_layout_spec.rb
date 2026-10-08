@@ -127,6 +127,40 @@ describe McpServer::Tools::UpdateProjectLayout do
         expect(layout.reload.craftjs_json).to eq(initial_graph)
       end
 
+      # The widget alone lists every project's events, so an events node sent bare must be pinned
+      # to the project, as the builder writes it.
+      it 'gives a new events widget sent without props the project defaults' do
+        events = craftjs_node('EventsList', parent: body, props: {})
+
+        response = patch(nodes: { body => body_with(%w[T1 EV2]), 'EV2' => events })
+
+        expect(response).not_to be_error
+        expect(layout.reload.craftjs_json.dig('EV2', 'props')).to eq(
+          'source' => 'currentProject', 'timeFilters' => %w[upcoming past], 'limit' => 'all'
+        )
+      end
+
+      it 'keeps the props an events widget is sent with' do
+        events = initial_graph['PROJECT_PAGE_EVENTS'].merge('props' => { 'timeFilters' => ['upcoming'] })
+
+        response = patch(nodes: { 'PROJECT_PAGE_EVENTS' => events })
+
+        expect(response).not_to be_error
+        expect(layout.reload.craftjs_json.dig('PROJECT_PAGE_EVENTS', 'props')).to include(
+          'source' => 'currentProject', 'timeFilters' => ['upcoming']
+        )
+      end
+
+      it 'rejects an events widget showing other projects' do
+        events = craftjs_node('EventsList', parent: body, props: { 'source' => 'areas', 'ids' => [] })
+
+        response = patch(nodes: { body => body_with(%w[T1 EV2]), 'EV2' => events })
+
+        expect(response).to be_error
+        expect(response.content.first[:text]).to include('must be "currentProject"')
+        expect(layout.reload.craftjs_json).to eq(initial_graph)
+      end
+
       it 'inserts a second phases widget, so a deleted one can be put back' do
         response = patch(nodes: {
           body => body_with(%w[T1 PH2]),
@@ -205,6 +239,40 @@ describe McpServer::Tools::UpdateProjectLayout do
           expect(response).to be_error
           expect(response.content.first[:text]).to include(alternative)
           expect(layout.reload.craftjs_json).not_to have_key('NEW')
+        end
+      end
+
+      describe 'slot widgets' do
+        # A TwoColumn with both columns wired through linkedNodes Containers, as the FE writes them.
+        def two_column
+          {
+            'TC1' => craftjs_node('TwoColumn', parent: body, props: { 'columnLayout' => '1-1' },
+              linkedNodes: { 'left' => 'L1', 'right' => 'R1' }),
+            'L1' => craftjs_node('Container', parent: 'TC1', isCanvas: true, nodes: ['LT1']),
+            'LT1' => text_node(parent: 'L1', text: { 'en' => '<p>Left</p>' }),
+            'R1' => craftjs_node('Container', parent: 'TC1', isCanvas: true)
+          }
+        end
+
+        it 'saves a TwoColumn whose columns are wired through linkedNodes' do
+          response = patch(nodes: { body => body_with(%w[T1 TC1]), **two_column })
+
+          expect(response).not_to be_error
+          expect(layout.reload.craftjs_json.dig('TC1', 'linkedNodes')).to eq('left' => 'L1', 'right' => 'R1')
+        end
+
+        it "rejects a TwoColumn with its content wired through 'nodes', saving nothing" do
+          nodes_wired = {
+            'TC1' => craftjs_node('TwoColumn', parent: body, props: { 'columnLayout' => '1-1' }, nodes: %w[LT1 RT1]),
+            'LT1' => text_node(parent: 'TC1', text: { 'en' => '<p>Left</p>' }),
+            'RT1' => text_node(parent: 'TC1', text: { 'en' => '<p>Right</p>' })
+          }
+
+          response = patch(nodes: { body => body_with(%w[T1 TC1]), **nodes_wired })
+
+          expect(response).to be_error
+          expect(response.content.first[:text]).to include('linkedNodes')
+          expect(layout.reload.craftjs_json).to eq(initial_graph)
         end
       end
 
@@ -462,16 +530,16 @@ describe McpServer::Tools::UpdateProjectLayout do
         end
 
         it 'accepts a graph with exactly the maximum number of nodes' do
-          patch = patch_with_children(described_class::MAX_NODES - seeded_ids.size)
+          patch = patch_with_children(McpServer::LayoutPatching::MAX_NODES - seeded_ids.size)
 
           response = patch(nodes: patch)
 
           expect(response).not_to be_error
-          expect(layout.reload.craftjs_json.size).to eq(described_class::MAX_NODES)
+          expect(layout.reload.craftjs_json.size).to eq(McpServer::LayoutPatching::MAX_NODES)
         end
 
         it 'rejects a graph one node above the cap' do
-          patch = patch_with_children(described_class::MAX_NODES - seeded_ids.size + 1)
+          patch = patch_with_children(McpServer::LayoutPatching::MAX_NODES - seeded_ids.size + 1)
 
           response = patch(nodes: patch)
 

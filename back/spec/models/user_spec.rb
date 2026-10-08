@@ -1077,6 +1077,16 @@ RSpec.describe User do
       end
     end
 
+    describe '#offered_early_access_features' do
+      it 'does not offer a feature the platform already has on' do
+        allow(AppConfiguration::Settings).to receive(:early_access_tiers)
+          .and_return({ 'analysis' => 'general', 'general_feature' => 'general' })
+        SettingsService.new.activate_feature!('analysis')
+
+        expect(build(:admin).offered_early_access_features).to eq({ 'general_feature' => 'general' })
+      end
+    end
+
     describe '#early_access_overrides' do
       it 'returns what an admin opted into' do
         admin = build(:admin, early_access_opt_ins: ['general_feature'])

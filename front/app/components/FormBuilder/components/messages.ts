@@ -199,10 +199,6 @@ export default defineMessages({
     id: 'app.components.formBuilder.requiredToggleLabel',
     defaultMessage: 'Make answering this question required',
   },
-  showResponseToUsersToggleLabel: {
-    id: 'app.components.formBuilder.showResponseToUsersToggleLabel',
-    defaultMessage: 'Show response to users',
-  },
   deleteButtonLabel: {
     id: 'app.components.formBuilder.deleteButtonLabel',
     defaultMessage: 'Delete',
