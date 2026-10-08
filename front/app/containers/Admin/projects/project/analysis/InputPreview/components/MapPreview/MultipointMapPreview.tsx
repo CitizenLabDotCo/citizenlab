@@ -19,34 +19,29 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 type Props = {
-  rawValue: MultiPoint;
+  rawValue: MultiPoint | undefined;
 };
 
 const MultipointMapPreview = ({ rawValue }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const multipoint = rawValue;
+  const coordinates = rawValue?.coordinates;
 
   // Create esri graphic from the multipoint
   const featureCollection: GeoJSON.FeatureCollection = useMemo(
     () => ({
       type: 'FeatureCollection',
-      features: [
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'MultiPoint',
-            // TODO: Fix this the next time the file is edited.
-            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-            coordinates: multipoint?.coordinates,
-          },
-          properties: null,
-        },
-      ],
+      features: coordinates
+        ? [
+            {
+              type: 'Feature',
+              geometry: { type: 'MultiPoint', coordinates },
+              properties: null,
+            },
+          ]
+        : [],
     }),
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    [multipoint?.coordinates]
+    [coordinates]
   );
 
   const mapLayer: IMapLayerAttributes = useMemo(
@@ -73,9 +68,7 @@ const MultipointMapPreview = ({ rawValue }: Props) => {
 
   return (
     <Box>
-      {/* TODO: Fix this the next time the file is edited. */}
-      {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-      {multipoint?.coordinates?.length ? (
+      {coordinates?.length ? (
         <EsriMap
           layers={layers}
           initialData={{
@@ -83,7 +76,7 @@ const MultipointMapPreview = ({ rawValue }: Props) => {
             showFullscreenOption: true,
             center: {
               type: 'Point',
-              coordinates: multipoint.coordinates[0],
+              coordinates: coordinates[0],
             },
           }}
           height="180px"

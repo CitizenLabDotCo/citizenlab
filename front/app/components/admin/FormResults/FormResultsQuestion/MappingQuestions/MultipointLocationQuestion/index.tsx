@@ -57,9 +57,7 @@ const MultipointLocationQuestion = ({
 
   // Add reset button to the map
   useEffect(() => {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    mapView?.ui?.add(resetButtonRef?.current || '', 'top-right');
+    mapView?.ui.add(resetButtonRef.current || '', 'top-right');
   }, [mapView?.ui, resetButtonRef]);
 
   // Either get the custom map configuration or project level one
@@ -74,9 +72,7 @@ const MultipointLocationQuestion = ({
   // Every pin is plotted on its own, so pins from one respondent are not grouped.
   // The GeoJSON export keeps the per-response grouping.
   const points: GeoJSON.Point[] = useMemo(() => {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    return (multipointResponses ?? []).flatMap(({ answer }) =>
+    return multipointResponses.flatMap(({ answer }) =>
       answer.coordinates.map((coordinates) => ({
         type: 'Point' as const,
         coordinates,

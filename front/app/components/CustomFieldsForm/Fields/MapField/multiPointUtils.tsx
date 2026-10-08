@@ -324,14 +324,12 @@ export const updateMultiPointsDataAndDisplay = ({
   tenantPrimaryColor,
   isMobileOrSmaller,
 }: UpdateMultiPointsDataAndDisplayProps) => {
-  const coordinates = data;
+  const coordinates = data ?? [];
 
   // Create graphics for the user input points. A multipoint's points are
   // standalone locations, so they get the same pin as a single point question;
   // a line or polygon's points are vertices of a shape, so they stay dots.
-  // TODO: Fix this the next time the file is edited.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const pointGraphics = coordinates?.map((coordinates) => {
+  const pointGraphics = coordinates.map((coordinates) => {
     if (inputType === 'multipoint') {
       return newPinPointGraphic(
         { type: 'Point', coordinates },
@@ -358,17 +356,13 @@ export const updateMultiPointsDataAndDisplay = ({
   const connectingGraphics: Graphic[] = [];
 
   if (isLineOrPolygonInput(inputType)) {
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-    const pointsForLine = coordinates?.map((coordinates) => [
+    const pointsForLine = coordinates.map((coordinates) => [
       coordinates[0],
       coordinates[1],
     ]);
     // If we have a polygon, we want to close the shape by connecting the first and last points
     if (inputType === 'polygon') {
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      pointsForLine?.push(coordinates[0]);
+      pointsForLine.push(coordinates[0]);
     }
     // Create the Esri line object
     const polyline = new Polyline({
@@ -416,7 +410,7 @@ export const updateMultiPointsDataAndDisplay = ({
 };
 
 type UpdateMultiPointsDataAndDisplayProps = {
-  data: number[][];
+  data: number[][] | undefined;
   mapView: MapView | null | undefined;
   inputType: MapInputType;
   tenantPrimaryColor: string;
