@@ -325,21 +325,25 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.sharePreviewLink',
     defaultMessage: 'Share a preview link',
   },
-  settingsFrontOffice: {
-    id: 'app.containers.Admin.projects.project.settingsFrontOffice',
-    defaultMessage: 'Front office',
-  },
   settingsGeneral: {
     id: 'app.containers.Admin.projects.project.settingsGeneral',
     defaultMessage: 'General',
   },
-  settingsIdeaTags: {
-    id: 'app.containers.Admin.projects.project.settingsIdeaTags',
-    defaultMessage: 'Idea tags',
+  settingsResources: {
+    id: 'app.containers.Admin.projects.project.settingsResources',
+    defaultMessage: 'Resources',
   },
-  settingsReset: {
-    id: 'app.containers.Admin.projects.project.settingsReset',
-    defaultMessage: 'Reset',
+  settingsManagement: {
+    id: 'app.containers.Admin.projects.project.settingsManagement',
+    defaultMessage: 'Management',
+  },
+  listing: {
+    id: 'app.containers.Admin.projects.project.listing',
+    defaultMessage: 'Listing',
+  },
+  topicTags: {
+    id: 'app.containers.Admin.projects.project.topicTags',
+    defaultMessage: 'Topic tags',
   },
   settingsCancel: {
     id: 'app.containers.Admin.projects.project.settingsCancel',
@@ -449,10 +453,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.unsavedChangesTitle',
     defaultMessage: 'Unsaved changes',
   },
-  unsavedChangesDescription: {
-    id: 'app.containers.Admin.projects.project.unsavedChangesDescription',
-    defaultMessage:
-      'This phase has unsaved changes. Leaving now discards them.',
+  unsavedChangesDescription2: {
+    id: 'app.containers.Admin.projects.project.unsavedChangesDescription2',
+    defaultMessage: 'You have unsaved changes. Leaving now discards them.',
   },
   unsavedChangesCancel: {
     id: 'app.containers.Admin.projects.project.unsavedChangesCancel',
@@ -461,10 +464,6 @@ export default defineMessages({
   discardChanges: {
     id: 'app.containers.Admin.projects.project.discardChanges',
     defaultMessage: 'Discard changes',
-  },
-  visibility: {
-    id: 'app.containers.Admin.projects.project.visibility',
-    defaultMessage: 'Visibility',
   },
   areaFilterDescription: {
     id: 'app.containers.Admin.projects.project.areaFilterDescription',
