@@ -804,6 +804,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.atLeastOnePinRequired": {
+    "state": "verified",
+    "verified_at": "2026-10-08T12:35:33.395285Z",
+    "verified_by": "stephanie"
+  },
   "app.components.CustomFieldsForm.atLeastThreePointsRequired": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -848,6 +853,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": {
+    "state": "verified",
+    "verified_at": "2026-10-08T12:35:33.395285Z",
+    "verified_by": "stephanie"
   },
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": {
     "state": "verified",
@@ -914,10 +924,20 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.maximumPinsAllowed": {
+    "state": "verified",
+    "verified_at": "2026-10-08T12:35:33.395285Z",
+    "verified_by": "stephanie"
+  },
   "app.components.CustomFieldsForm.minimumCoordinates2": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.CustomFieldsForm.minimumPinsRequired": {
+    "state": "verified",
+    "verified_at": "2026-10-08T12:35:33.395285Z",
+    "verified_by": "stephanie"
   },
   "app.components.CustomFieldsForm.notPublic1": {
     "state": "verified",
@@ -989,6 +1009,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.tapOnMapToAddMultiplePins": {
+    "state": "verified",
+    "verified_at": "2026-10-08T12:35:33.395285Z",
+    "verified_by": "stephanie"
+  },
   "app.components.CustomFieldsForm.tapOnMapToAddOrType": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -1008,6 +1033,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.CustomFieldsForm.tapToAddPins": {
+    "state": "verified",
+    "verified_at": "2026-10-08T12:35:33.395285Z",
+    "verified_by": "stephanie"
   },
   "app.components.CustomFieldsForm.titleMaxLength": {
     "state": "verified",
@@ -4829,6 +4859,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.formBuilder.dropMultiplePins": {
+    "state": "verified",
+    "verified_at": "2026-10-08T12:35:33.395285Z",
+    "verified_by": "stephanie"
+  },
   "app.components.formBuilder.dropPin": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -5079,6 +5114,16 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.formBuilder.limitNumberPins": {
+    "state": "verified",
+    "verified_at": "2026-10-08T12:35:33.395285Z",
+    "verified_by": "stephanie"
+  },
+  "app.components.formBuilder.limitNumberPinsTooltip": {
+    "state": "verified",
+    "verified_at": "2026-10-08T12:35:33.395285Z",
+    "verified_by": "stephanie"
+  },
   "app.components.formBuilder.limitNumberTags": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -5313,6 +5358,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.formBuilder.pinCount.maximum": {
+    "state": "verified",
+    "verified_at": "2026-10-08T12:35:33.395285Z",
+    "verified_by": "stephanie"
+  },
+  "app.components.formBuilder.pinCount.minimum": {
+    "state": "verified",
+    "verified_at": "2026-10-08T12:35:33.395285Z",
+    "verified_by": "stephanie"
   },
   "app.components.formBuilder.preview": {
     "state": "verified",
@@ -11534,7 +11589,6 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Projects.seeVolunteering": {
     "state": "verified",
     "verified_at": "2026-09-16T20:00:57.828023Z",
@@ -12910,7 +12964,6 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
-
   "app.containers.landing.editHomepage": {
     "state": "verified",
     "verified_at": "2026-09-14T08:15:27.223655Z",
