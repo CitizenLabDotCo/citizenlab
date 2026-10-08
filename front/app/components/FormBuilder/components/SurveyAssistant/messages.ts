@@ -1,10 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  intro: {
-    id: 'app.components.formBuilder.surveyAssistant.intro',
+  intro2: {
+    id: 'app.components.formBuilder.surveyAssistant.intro2',
     defaultMessage:
-      'Describe what you want to learn. The assistant proposes the questions, and nothing changes until you approve.',
+      'Describe what you want to learn, or attach a document. The assistant proposes the questions, and nothing changes until you approve.',
   },
   readSurvey: {
     id: 'app.components.formBuilder.surveyAssistant.readSurvey',
