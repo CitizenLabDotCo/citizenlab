@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, IconTooltip, Label } from '@citizenlab/cl2-component-library';
-import { useFormContext } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 import styled from 'styled-components';
 
 import Input from 'components/HookForm/Input';
@@ -29,7 +29,8 @@ const PinCountSettings = ({
   selectCountToggleName,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { watch } = useFormContext();
+  const isPinLimitEnabled = useWatch({ name: selectCountToggleName });
+  const minimumPins = useWatch({ name: minimumSelectCountName });
 
   const handleKeyDown = (event: React.KeyboardEvent<Element>) => {
     // We want to prevent the form builder from being closed when enter is pressed
@@ -57,7 +58,7 @@ const PinCountSettings = ({
         />
       </Box>
 
-      {watch(selectCountToggleName) && (
+      {isPinLimitEnabled && (
         <Box ml="16px">
           <Box mb="8px" display="flex">
             <Box minWidth="100px" my="auto">
@@ -87,7 +88,7 @@ const PinCountSettings = ({
               name={maximumSelectCountName}
               type="number"
               size="small"
-              min={watch(minimumSelectCountName)}
+              min={minimumPins}
               onKeyDown={handleKeyDown}
             />
           </Box>
