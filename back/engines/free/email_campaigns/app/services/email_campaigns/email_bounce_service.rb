@@ -5,9 +5,13 @@ module EmailCampaigns
   # addresses that cannot receive mail. Repeated bounces hurt the sending
   # reputation and can get sending suspended.
   class EmailBounceService
+    # Other permanent failures (unsubscribes, spam complaints, emails rejected
+    # as spam) say nothing about whether the address exists.
+    BOUNCE_REASONS = %w[bounce suppress-bounce].freeze
+
     # @param event_data [Hash] the `event-data` of a Mailgun webhook event
     def handle_mailgun_event(event_data)
-      return unless permanent_failure?(event_data)
+      return unless bounce?(event_data)
 
       user = User.find_by_cimail(event_data[:recipient])
       return unless user
@@ -26,8 +30,10 @@ module EmailCampaigns
 
     private
 
-    def permanent_failure?(event_data)
-      event_data[:event] == 'failed' && event_data[:severity] == 'permanent'
+    def bounce?(event_data)
+      event_data[:event] == 'failed' &&
+        event_data[:severity] == 'permanent' &&
+        BOUNCE_REASONS.include?(event_data[:reason])
     end
 
     def reason(event_data)
@@ -40,7 +46,9 @@ module EmailCampaigns
 
       settings = ActionMailer::Base.mailgun_settings
       client = Mailgun::Client.new(settings[:api_key], settings[:api_host])
-      client.delete("#{settings[:domain]}/bounces/#{ERB::Util.url_encode(email)}")
+      # Mailgun keeps a bounce list per sending domain, and each tenant sends
+      # under the domain of its own from email.
+      client.delete("#{::ApplicationMailer.new.domain}/bounces/#{ERB::Util.url_encode(email)}")
     rescue Mailgun::CommunicationError => e
       # 404: Mailgun has no bounce for this address. Any other failure is
       # reported but doesn't block the clear: if Mailgun still suppresses the

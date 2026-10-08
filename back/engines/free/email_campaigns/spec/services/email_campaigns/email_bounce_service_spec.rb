@@ -11,6 +11,7 @@ describe EmailCampaigns::EmailBounceService do
       {
         event: 'failed',
         severity: 'permanent',
+        reason: 'bounce',
         recipient: 'someone@example.com',
         'delivery-status': { code: 550, message: '', description: 'No such user' }
       }
@@ -25,6 +26,22 @@ describe EmailCampaigns::EmailBounceService do
       event_data[:'delivery-status'] = { code: 605, message: 'Not delivering to previously bounced address' }
       service.handle_mailgun_event(event_data)
       expect(user.reload.email_bounce_reason).to eq('605 Not delivering to previously bounced address')
+    end
+
+    it 'marks addresses Mailgun skips because they bounced before' do
+      service.handle_mailgun_event(event_data.merge(reason: 'suppress-bounce'))
+      expect(user.reload.email_bounced_at).to be_present
+    end
+
+    context 'when the permanent failure is not a bounce' do
+      where(:reason) { %w[suppress-unsubscribe suppress-complaint generic] }
+
+      with_them do
+        it 'does not mark the user as bounced' do
+          service.handle_mailgun_event(event_data.merge(reason: reason))
+          expect(user.reload.email_bounced_at).to be_nil
+        end
+      end
     end
 
     it 'ignores temporary failures' do
@@ -55,6 +72,10 @@ describe EmailCampaigns::EmailBounceService do
       let(:client) { instance_double(Mailgun::Client) }
 
       before do
+        settings = AppConfiguration.instance.settings
+        settings['core']['from_email'] = 'noreply@mail.city.example.org'
+        AppConfiguration.instance.update!(settings: settings)
+
         allow(ActionMailer::Base).to receive_messages(
           delivery_method: :mailgun,
           mailgun_settings: { api_key: 'key', api_host: 'api.eu.mailgun.net', domain: 'mail.example.org' }
@@ -62,8 +83,8 @@ describe EmailCampaigns::EmailBounceService do
         allow(Mailgun::Client).to receive(:new).with('key', 'api.eu.mailgun.net').and_return(client)
       end
 
-      it 'removes the address from the Mailgun bounce list' do
-        expect(client).to receive(:delete).with("mail.example.org/bounces/#{ERB::Util.url_encode(user.email)}")
+      it "removes the address from the bounce list of the tenant's sending domain" do
+        expect(client).to receive(:delete).with("mail.city.example.org/bounces/#{ERB::Util.url_encode(user.email)}")
         service.clear(user)
         expect(user.reload.email_bounced_at).to be_nil
       end

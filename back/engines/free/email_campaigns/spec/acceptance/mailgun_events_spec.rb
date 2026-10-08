@@ -63,6 +63,7 @@ resource 'Mailgun Events' do
         mailgun_event[:'event-data'].merge!(
           event: 'failed',
           severity: severity,
+          reason: 'bounce',
           recipient: 'bounce@example.com',
           'delivery-status': { code: 550, description: 'The email account does not exist.' }
         )

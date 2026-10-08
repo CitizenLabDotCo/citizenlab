@@ -205,7 +205,8 @@ module EmailCampaigns
     private
 
     # Renders and delivers the campaign's email synchronously. Runs Trackable
-    # hooks so a Delivery record is saved.
+    # hooks so a Delivery record is saved. Sends nothing if the recipient's
+    # email bounced.
     def send_email_now_to_user(campaign, recipient, event_payload = {})
       return if campaign.mailer_class.undeliverable_to?(recipient)
 
