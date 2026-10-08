@@ -203,13 +203,14 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def submission_count
-    count = if @phase.pmethod.supports_survey_form?
-      @phase.ideas.supports_survey.published.count
+    # Transitive methods share the project's form, the others have their own.
+    inputs = if @phase.pmethod.transitive?
+      @phase.project.ideas.transitive
     else
-      @phase.ideas.transitive.published.count
+      Idea.where(creation_phase: @phase)
     end
 
-    render json: raw_json({ totalSubmissions: count })
+    render json: raw_json({ totalSubmissions: inputs.submitted_or_published.count })
   end
 
   def index_xlsx

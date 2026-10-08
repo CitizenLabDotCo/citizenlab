@@ -16,7 +16,7 @@ import WorkspaceHeader from './Header';
 import useMarkSetupStep from './_shared/useMarkSetupStep';
 import { HeaderDropdownName } from './Header/HeaderDropdown';
 import { sectionFromPathname } from './_shared/sections';
-import { usePhaseSave } from './_shared/PhaseSaveContext';
+import { usePageSave } from './_shared/PageSaveContext';
 import { viewFromPathname } from './Phase/usePhaseViews';
 
 const PROJECT_PANEL_WIDTH = '332px';
@@ -48,7 +48,7 @@ const ProjectWorkspace = ({
     null
   );
   const markSetupStep = useMarkSetupStep(project);
-  const phaseSave = usePhaseSave();
+  const pageSave = usePageSave();
 
   const showDropdown = (dropdown: HeaderDropdownName | null) => {
     setOpenDropdown(dropdown);
@@ -67,7 +67,7 @@ const ProjectWorkspace = ({
     <MethodSettings
       // Its unsaved settings belong to one method: a switch, or
       // discarding the changes, starts them over.
-      key={`${phase.id}-${phase.attributes.participation_method}-${phaseSave?.revision}`}
+      key={`${phase.id}-${phase.attributes.participation_method}-${pageSave?.revision}`}
       phase={phase}
     />
   ) : (
@@ -157,7 +157,7 @@ const ProjectWorkspace = ({
         minHeight="0"
         overflow="hidden"
       >
-        {!inPhase && setupSlot}
+        {inPhase ? phaseSlot : setupSlot}
 
         {phase && activeView !== 'build' ? (
           <ViewContent project={project} phase={phase} view={activeView}>
@@ -167,7 +167,7 @@ const ProjectWorkspace = ({
           mainSlot
         )}
 
-        {inPhase ? phaseSlot : timelineSlot}
+        {!inPhase && timelineSlot}
       </Box>
     </Box>
   );
