@@ -26,6 +26,8 @@ export const getErrorMessage = (
       return messages.errorSurfaceUnavailable;
     case 'turn_timed_out':
       return messages.errorTurnTimedOut;
+    case 'tool_budget_exceeded':
+      return messages.errorToolBudgetExceeded;
     case 'conversation_busy':
       return messages.errorConversationBusy;
     case 'too_long':
