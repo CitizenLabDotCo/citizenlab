@@ -1307,7 +1307,6 @@
   "app.containers.Admin.pagesAndMenu.components.PagesMenuTabs.menuTab": "ਮੀਨੂ",
   "app.containers.Admin.pagesAndMenu.components.PagesMenuTabs.pagesTab": "ਪੰਨੇ",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription2": "ਇਹ ਵਿਜੇਟ ਪੰਨੇ 'ਤੇ ਸਿਰਫ਼ ਉਦੋਂ ਹੀ ਦਿਖਾਈ ਦੇਵੇਗਾ ਜਦੋਂ ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਹੁੰਗਾਰੇ ਸਵੀਕਾਰ ਕਰ ਰਿਹਾ ਹੋਵੇਗਾ।",
-  "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTADescription2": "ਇਹ ਵਿਜੇਟ ਪੰਨੇ 'ਤੇ ਸਿਰਫ਼ ਉਦੋਂ ਹੀ ਦਿਖਾਈ ਦੇਵੇਗਾ ਜਦੋਂ ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ ਹੁੰਗਾਰੇ ਸਵੀਕਾਰ ਕਰ ਰਿਹਾ ਹੋਵੇਗਾ।",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorCTATitle2": "ਕਮਿਊਨਿਟੀ ਮਾਨੀਟਰ",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorDescription": "ਵੇਰਵਾ",
   "app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.CraftComponents.CommunityMonitor.communityMonitorSubmitBtnText": "ਬਟਨ",
