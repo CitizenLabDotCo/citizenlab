@@ -93,6 +93,7 @@ class Phase < ApplicationRecord
   has_one :custom_form, as: :participation_context, dependent: :destroy # native_survey only
 
   has_many :baskets, dependent: :destroy
+  has_many :ai_assistant_conversations, class_name: 'AIAssistant::Conversation', as: :context, dependent: :destroy
   has_many :permissions, as: :permission_scope, dependent: :destroy
   has_many :ideas_phases, dependent: :destroy
   has_many :ideas, through: :ideas_phases
