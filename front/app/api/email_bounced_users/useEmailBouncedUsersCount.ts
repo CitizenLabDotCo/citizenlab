@@ -12,7 +12,7 @@ const fetchEmailBouncedUsersCount = () =>
     action: 'get',
   });
 
-const useEmailBouncedUsersCount = ({ enabled = true } = {}) => {
+const useEmailBouncedUsersCount = () => {
   return useQuery<
     IEmailBouncedUsersCount,
     CLErrors,
@@ -21,7 +21,6 @@ const useEmailBouncedUsersCount = ({ enabled = true } = {}) => {
   >({
     queryKey: emailBouncedUsersCountKeys.items(),
     queryFn: () => fetchEmailBouncedUsersCount(),
-    enabled,
   });
 };
 

@@ -16,8 +16,6 @@ import {
 
 import useUsers from 'api/users/useUsers';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import Pagination from 'components/Pagination';
 import SearchInput from 'components/UI/SearchInput';
 
@@ -33,7 +31,6 @@ const EmailBounces = () => {
   const { formatMessage } = useIntl();
   const [search, setSearch] = useState<string | undefined>();
   const [pageNumber, setPageNumber] = useState(1);
-  const isCustomSmtpEnabled = useFeatureFlag({ name: 'custom_smtp' });
 
   const { data: users } = useUsers({
     only_email_bounced: true,
@@ -42,7 +39,7 @@ const EmailBounces = () => {
     pageNumber,
   });
 
-  if (isCustomSmtpEnabled || !users) return null;
+  if (!users) return null;
 
   const currentPage = getPageNumberFromUrl(users.links.self);
   const lastPage = getPageNumberFromUrl(users.links.last);
@@ -56,7 +53,10 @@ const EmailBounces = () => {
       <Box p="20px">
         <Box mb="24px">
           <SearchInput
-            onChange={(value) => setSearch(value ?? undefined)}
+            onChange={(value) => {
+              setSearch(value ?? undefined);
+              setPageNumber(1);
+            }}
             a11y_numberOfSearchResults={users.data.length}
           />
         </Box>

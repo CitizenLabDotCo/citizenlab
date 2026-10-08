@@ -181,12 +181,14 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
     name: 'user_blocking',
   });
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
-  // Bounces are only recorded from Mailgun webhooks, so tenants sending through
-  // their own SMTP server never have any.
   const isCustomSmtpEnabled = useFeatureFlag({ name: 'custom_smtp' });
-  const { data: emailBouncedUsersCount } = useEmailBouncedUsersCount({
-    enabled: !isCustomSmtpEnabled,
-  });
+  const { data: emailBouncedUsersCount } = useEmailBouncedUsersCount();
+  // Bounces are only recorded from Mailgun webhooks. A tenant on its own SMTP
+  // server only has the ones left from before it switched, and they still
+  // block sending, so the link stays until they're cleared.
+  const showEmailBounces =
+    !isCustomSmtpEnabled ||
+    (emailBouncedUsersCount?.data.attributes.count ?? 0) > 0;
 
   useEffect(() => {
     const subs: Subscription[] = [];
@@ -289,7 +291,7 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
           <MembersCount>{bannedEmailsCount.data.attributes.count}</MembersCount>
         )}
       </MenuLink>
-      {!isCustomSmtpEnabled && (
+      {showEmailBounces && (
         <MenuLink
           to="/admin/users/email-bounces"
           data-testid="email-bounces-link"
