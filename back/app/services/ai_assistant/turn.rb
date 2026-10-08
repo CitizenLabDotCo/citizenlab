@@ -2,16 +2,18 @@
 
 module AIAssistant
   # One turn of a conversation: replays the stored messages to the model, lets it call tools,
-  # and stores what it does. The turn ends with a reply.
+  # and stores what it does. The turn ends with a reply, or with proposals that wait for the
+  # user's decision.
   class Turn
     # Stops RubyLLM's loop from a callback, which has no other way to end it.
     class ToolBudgetExceededError < StandardError; end
 
     MAX_TOOL_CALLS = 10
     MAX_OUTPUT_TOKENS = 16_000
+    PROPOSED_TEXT = 'Proposed to the user, who will approve or reject it.'
     BUDGET_TEXT = { error: 'Too many tool calls in one turn. Stop and summarise for the user.' }.to_json
-    # Bedrock refuses two user turns in a row, which happens when a turn failed before the
-    # user wrote again.
+    # Bedrock refuses two user turns in a row, which happens when a turn failed or its
+    # proposals expired before the user wrote again.
     NO_REPLY_TEXT = '(No reply.)'
 
     attr_reader :conversation
@@ -40,9 +42,17 @@ module AIAssistant
       conversation.fail_turn!('tool_budget_exceeded')
     end
 
-    # Runs a call of +tool+ by the model right away, as the conversation's user.
+    # Read-only tools run right away, as the conversation's user. Write tools never run here:
+    # the call is stored as a proposal and the turn stops, until the user approves or rejects
+    # it (see ToolCallDecider).
     def handle_tool_call(tool, args)
-      run_read_tool(tool, args.except(*tool.pinned.keys))
+      arguments = args.except(*tool.hidden_keys)
+
+      if tool.read_only?
+        run_read_tool(tool, arguments)
+      else
+        propose(tool, arguments)
+      end
     end
 
     private
@@ -141,6 +151,21 @@ module AIAssistant
       result.text
     end
 
+    def propose(tool, arguments)
+      snapshot = tool.snapshot
+      error = tool.validation_error(@user, arguments.merge(snapshot))
+
+      if error
+        # Sent back to the model, so it fixes the call before the user is asked.
+        text = "Error: #{error}"
+        @current_tool_call.update!(status: 'failed', arguments:, result: text)
+        text
+      else
+        @current_tool_call.update!(status: 'proposed', arguments:, pinned_arguments: snapshot)
+        RubyLLM::Tool::Halt.new(PROPOSED_TEXT)
+      end
+    end
+
     # The tools store their own results. A call still pending here never reached a tool,
     # e.g. because the model asked for a tool that doesn't exist.
     def persist_tool_result(message)
@@ -151,7 +176,11 @@ module AIAssistant
     end
 
     def finish
-      conversation.update!(status: 'idle', last_error_code: nil)
+      if conversation.tool_calls.proposed.exists?
+        conversation.update!(status: 'awaiting_approval', last_error_code: nil)
+      else
+        conversation.update!(status: 'idle', last_error_code: nil)
+      end
     end
 
     def text_of(content)
