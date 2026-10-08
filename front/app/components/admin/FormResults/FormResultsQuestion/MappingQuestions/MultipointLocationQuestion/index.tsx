@@ -81,7 +81,7 @@ const MultipointLocationQuestion = ({
   }, [multipointResponses]);
 
   return (
-    <Box>
+    <Box data-cy="e2e-multipoint-results-map">
       <Box mt="-32px" display="flex" justifyContent="flex-end" mb="8px">
         <Box display="flex" gap="24px">
           <ExportGeoJSONButton

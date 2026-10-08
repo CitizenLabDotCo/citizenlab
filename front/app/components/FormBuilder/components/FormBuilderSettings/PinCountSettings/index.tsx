@@ -41,7 +41,7 @@ const PinCountSettings = ({
 
   return (
     <Box mb="24px">
-      <Box mb="16px">
+      <Box mb="16px" data-cy="e2e-pin-count-toggle">
         <Toggle
           name={selectCountToggleName}
           label={
@@ -59,7 +59,7 @@ const PinCountSettings = ({
       </Box>
 
       {isPinLimitEnabled && (
-        <Box ml="16px">
+        <Box ml="16px" data-cy="e2e-pin-count-fields">
           <Box mb="8px" display="flex">
             <Box minWidth="100px" my="auto">
               <StyledLabel
