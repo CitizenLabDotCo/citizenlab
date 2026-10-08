@@ -182,7 +182,6 @@
   "app.components.CustomFieldsForm.fileSizeLimit": "La taille maximale des fichiers est de {maxFileSize} Mo.",
   "app.components.CustomFieldsForm.imageRequired": "L'image est obligatoire",
   "app.components.CustomFieldsForm.minimumCoordinates2": "Un minimum de {numPoints} points est requis.",
-  "app.components.CustomFieldsForm.notPublic1": "*Cette réponse sera partagée uniquement avec les gestionnaires de projet, et non avec le public.",
   "app.components.CustomFieldsForm.otherArea": "Autre lieu",
   "app.components.CustomFieldsForm.progressBarLabel": "Progression",
   "app.components.CustomFieldsForm.removeAnswer": "Supprimer la réponse",

@@ -182,7 +182,6 @@
   "app.components.CustomFieldsForm.fileSizeLimit": "Limit rozmiaru pliku wynosi {maxFileSize} MB.",
   "app.components.CustomFieldsForm.imageRequired": "Obraz jest wymagany",
   "app.components.CustomFieldsForm.minimumCoordinates2": "Wymagana jest minimalna liczba punktów na mapie {numPoints} .",
-  "app.components.CustomFieldsForm.notPublic1": "*Ta odpowiedź zostanie udostępniona tylko kierownikom projektów, a nie publicznie.",
   "app.components.CustomFieldsForm.otherArea": "Gdzieś indziej",
   "app.components.CustomFieldsForm.progressBarLabel": "Postęp",
   "app.components.CustomFieldsForm.removeAnswer": "Usuń odpowiedź",
