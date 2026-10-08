@@ -20,7 +20,8 @@ class WebApi::V1::AIAssistant::ConversationsController < ApplicationController
     render json: serialize(conversation)
   end
 
-  # Starts a new conversation ("New chat").
+  # Starts a new conversation ("New chat"). Proposals left in the user's previous
+  # conversations about the same record can no longer be decided on.
   def create
     surface_class = ::AIAssistant::Surface.find!(conversation_params[:surface_key])
     subject = surface_class.subject_class.find(conversation_params[:subject_id])
@@ -37,7 +38,10 @@ class WebApi::V1::AIAssistant::ConversationsController < ApplicationController
     elsif AppConfiguration.instance.settings('core', 'locales').exclude?(conversation.locale)
       render json: { errors: { locale: [{ error: 'inclusion' }] } }, status: :unprocessable_entity
     else
-      conversation.save!
+      ActiveRecord::Base.transaction do
+        previous_conversations(conversation).each(&:expire_proposals!)
+        conversation.save!
+      end
       render json: serialize(conversation), status: :created
     end
   rescue ::AIAssistant::Surface::UnknownKeyError
@@ -49,6 +53,14 @@ class WebApi::V1::AIAssistant::ConversationsController < ApplicationController
 
   def conversation_params
     params.require(:ai_assistant_conversation).permit(:surface_key, :subject_id, :locale)
+  end
+
+  def previous_conversations(conversation)
+    ::AIAssistant::Conversation.awaiting_approval.where(
+      user: conversation.user,
+      context: conversation.context,
+      context_key: conversation.context_key
+    )
   end
 
   def serialize(conversation)
