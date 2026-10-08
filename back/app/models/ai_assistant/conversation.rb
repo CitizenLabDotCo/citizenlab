@@ -26,7 +26,7 @@
 #
 module AIAssistant
   # A chat between a user and the AI assistant about one record (the context), e.g. the
-  # survey of a phase. +context_key+ says which assistant context (its prompt) applies.
+  # survey of a phase. +context_key+ says which assistant context (prompt and tools) applies.
   class Conversation < ApplicationRecord
     STATUSES = %w[idle running failed].freeze
 
@@ -34,6 +34,7 @@ module AIAssistant
     belongs_to :context, polymorphic: true
 
     has_many :messages, -> { order(:position) }, class_name: 'AIAssistant::Message', dependent: :destroy, inverse_of: :conversation
+    has_many :tool_calls, through: :messages
 
     enum :status, STATUSES.index_by(&:itself)
 

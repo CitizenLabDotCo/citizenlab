@@ -118,6 +118,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
       ai_assistant: %w[
         AIAssistant::Conversation
         AIAssistant::Message
+        AIAssistant::ToolCall
       ],
 
       # AI analysis, insights and embeddings — derived from user content.
