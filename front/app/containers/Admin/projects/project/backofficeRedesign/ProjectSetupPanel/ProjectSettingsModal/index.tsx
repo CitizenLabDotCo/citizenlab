@@ -1,18 +1,17 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box, Button, Divider } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
-import { CLErrors, Multiloc, UploadFile } from 'typings';
+import { CLErrors } from 'typings';
 
-import useProjectImages from 'api/project_images/useProjectImages';
 import projectsKeys from 'api/projects/keys';
 import { IProjectData, IUpdatedProjectProperties } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import { useValidateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
-import useSyncProjectImages from 'containers/Admin/projects/_shared/useSyncProjectImages';
-import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
+import generalMessages from 'containers/Admin/projects/project/general/messages';
+import ProjectManagementSection from 'containers/Admin/projects/project/permissions/Project/ProjectManagementSection';
 import ProjectInputTopics from 'containers/Admin/projects/project/topics';
 
 import SettingsModal, {
@@ -21,14 +20,13 @@ import SettingsModal, {
 
 import { useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
-import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 import { validateSlug } from 'utils/textUtils';
 
 import messages from '../../messages';
 
-import FrontOfficeSection from './FrontOfficeSection';
 import GeneralSection from './GeneralSection';
 import ResetSection from './ResetSection';
+import ResourcesSection from './ResourcesSection';
 
 interface Props {
   project: IProjectData;
@@ -40,9 +38,7 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const projectId = project.id;
 
-  const { data: remoteProjectImages } = useProjectImages(projectId);
   const { mutateAsync: updateProject } = useUpdateProject();
-  const syncProjectImages = useSyncProjectImages();
   const validateProjectContext = useValidateProjectContext();
 
   const [processing, setProcessing] = useState(false);
@@ -54,44 +50,8 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
   const [slug, setSlug] = useState(project.attributes.slug);
   const [showSlugErrorMessage, setShowSlugErrorMessage] = useState(false);
 
-  const [cardImage, setCardImage] = useState<UploadFile | null>(null);
-  const [cardImageAltText, setCardImageAltText] = useState<Multiloc | null>(
-    null
-  );
-  const [cardImageToRemove, setCardImageToRemove] = useState<UploadFile | null>(
-    null
-  );
-  const [croppedCardBase64, setCroppedCardBase64] = useState<string | null>(
-    null
-  );
-
   const projectInRoot =
     !project.attributes.space_id && !project.attributes.folder_id;
-
-  const loadRemoteCardImage = useCallback(async () => {
-    setCardImage(null);
-    setCardImageAltText(null);
-
-    for (const projectImage of remoteProjectImages?.data ?? []) {
-      const url = projectImage.attributes.versions.large;
-      if (!url) continue;
-
-      const uploadFile = await convertUrlToUploadFile(
-        url,
-        projectImage.id,
-        null
-      );
-      if (isUploadFile(uploadFile)) {
-        setCardImage(uploadFile);
-        setCardImageAltText(projectImage.attributes.alt_text_multiloc);
-        break;
-      }
-    }
-  }, [remoteProjectImages]);
-
-  useEffect(() => {
-    loadRemoteCardImage();
-  }, [loadRemoteCardImage]);
 
   const applyDiff = (diff: IUpdatedProjectProperties) =>
     setProjectAttributesDiff((current) => ({ ...current, ...diff }));
@@ -105,17 +65,6 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
   const handleContextChange = (spaceAndFolderId: SpaceAndFolderId) => {
     applyDiff(spaceAndFolderId);
     setProjectContextError(false);
-  };
-
-  const handleCardImageAdd = (images: UploadFile[]) => {
-    setCardImage(images[0]);
-    setCroppedCardBase64(images[0].base64);
-  };
-
-  const handleCardImageRemove = (image: UploadFile) => {
-    setCardImage(null);
-    setCroppedCardBase64(null);
-    if (image.remote) setCardImageToRemove(image);
   };
 
   const projectAttrs = { ...project.attributes, ...projectAttributesDiff };
@@ -143,21 +92,11 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
         await updateProject({ projectId, ...projectAttributesDiff });
       }
 
-      await syncProjectImages({
-        croppedProjectCardBase64: croppedCardBase64,
-        projectCardImageAltText: cardImageAltText,
-        projectCardImageToUpdate: cardImage,
-        projectCardImageToRemove: cardImageToRemove,
-        projectId,
-      });
-
       queryClient.invalidateQueries({
         queryKey: projectsKeys.item({ slug: project.attributes.slug }),
       });
 
       setProjectAttributesDiff({});
-      setCardImageToRemove(null);
-      setCroppedCardBase64(null);
       setProcessing(false);
       onClose();
     } catch (errors) {
@@ -172,65 +111,54 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
     setShowSlugErrorMessage(false);
     setProjectContextError(false);
     setApiErrors({});
-    setCardImageToRemove(null);
-    setCroppedCardBase64(null);
-    // The modal stays mounted between openings, so the card image the manager
-    // edited has to be read back from the server to undo it.
-    loadRemoteCardImage();
     onClose();
   };
 
   const sections: SettingsModalSection[] = [
     {
-      name: 'front-office',
-      label: messages.settingsFrontOffice,
-      icon: 'globe',
-      content: (
-        <FrontOfficeSection
-          selectedTopicIds={getSelectedTopicIds(projectAttributesDiff, project)}
-          areaIds={projectAttrs.area_ids}
-          cardImage={cardImage}
-          cardImageAltText={cardImageAltText}
-          cardImageShouldBeSaved={cardImage ? !cardImage.remote : false}
-          onTopicsChange={(global_topic_ids) => applyDiff({ global_topic_ids })}
-          onProjectAttributesDiffChange={applyDiff}
-          onCardImageAdd={handleCardImageAdd}
-          onCardImageRemove={handleCardImageRemove}
-          onCardImageCropped={setCroppedCardBase64}
-          onCardImageAltTextChange={setCardImageAltText}
-        />
-      ),
-    },
-    {
       name: 'general',
       label: messages.settingsGeneral,
       icon: 'settings',
       content: (
-        <GeneralSection
-          spaceId={projectAttrs.space_id}
-          folderId={projectAttrs.folder_id}
-          projectInRoot={projectInRoot}
-          contextError={projectContextError}
-          slug={slug}
-          currentSlug={project.attributes.slug}
-          showSlugErrorMessage={showSlugErrorMessage}
-          apiErrors={apiErrors}
-          onContextChange={handleContextChange}
-          onSlugChange={handleSlugChange}
-        />
+        <>
+          <GeneralSection
+            spaceId={projectAttrs.space_id}
+            folderId={projectAttrs.folder_id}
+            projectInRoot={projectInRoot}
+            contextError={projectContextError}
+            slug={slug}
+            currentSlug={project.attributes.slug}
+            showSlugErrorMessage={showSlugErrorMessage}
+            apiErrors={apiErrors}
+            onContextChange={handleContextChange}
+            onSlugChange={handleSlugChange}
+          />
+          <Divider />
+          <ResetSection projectId={projectId} />
+        </>
       ),
     },
     {
-      name: 'idea-tags',
-      label: messages.settingsIdeaTags,
-      icon: 'label',
-      content: <ProjectInputTopics />,
+      name: 'resources',
+      label: messages.settingsResources,
+      icon: 'paperclip',
+      content: <ResourcesSection projectId={projectId} />,
     },
     {
-      name: 'reset',
-      label: messages.settingsReset,
-      icon: 'refresh',
-      content: <ResetSection projectId={projectId} />,
+      name: 'management',
+      label: messages.settingsManagement,
+      icon: 'user',
+      content: (
+        <Box>
+          <ProjectManagementSection projectId={projectId} />
+        </Box>
+      ),
+    },
+    {
+      name: 'input-tags',
+      label: generalMessages.inputTags,
+      icon: 'label',
+      content: <ProjectInputTopics />,
     },
   ];
 
