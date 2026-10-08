@@ -68,7 +68,7 @@ resource 'AI assistant conversations' do
           'ai_assistant_message', 'ai_assistant_message', 'ai_assistant_tool_call'
         )
         tool_call = json_response_body[:included].find { |resource| resource[:type] == 'ai_assistant_tool_call' }
-        expect(tool_call[:attributes].keys).to contain_exactly(:name, :arguments, :status, :created_at)
+        expect(tool_call[:attributes].keys).to contain_exactly(:name, :arguments, :status, :reason, :decided_at, :created_at)
       end
     end
 
