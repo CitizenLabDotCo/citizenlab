@@ -27,7 +27,8 @@
 #
 module AIAssistant
   # A chat between a user and the AI assistant about one record (the subject), e.g. the
-  # survey of a phase. +surface_key+ says where the assistant is used, which decides its prompt.
+  # survey of a phase. +surface_key+ says where the assistant is used, which decides its
+  # prompt and tools.
   class Conversation < ApplicationRecord
     STATUSES = %w[idle running failed].freeze
     # A running turn stores a message more often than this, unless its job was lost.
@@ -37,6 +38,7 @@ module AIAssistant
     belongs_to :subject, polymorphic: true
 
     has_many :messages, -> { order(:position) }, class_name: 'AIAssistant::Message', dependent: :destroy, inverse_of: :conversation
+    has_many :tool_calls, through: :messages
 
     enum :status, STATUSES.index_by(&:itself)
 
