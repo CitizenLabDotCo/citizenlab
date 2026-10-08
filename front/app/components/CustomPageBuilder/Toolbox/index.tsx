@@ -87,9 +87,7 @@ const CustomPageBuilderToolbox = () => {
   const isHtmlBlockMultilocEnabled = useFeatureFlag({
     name: 'html_block_in_content_builder',
   });
-  // The legacy project-list section is itself the paid capability, unlike events where only
-  // the filtering is, so the whole entry is gated.
-  const filteredProjectsEnabled = useFeatureFlag({
+  const advancedCustomPagesEnabled = useFeatureFlag({
     name: 'advanced_custom_pages',
   });
   const formatMessageWithLocale = useFormatMessageWithLocale();
@@ -126,16 +124,16 @@ const CustomPageBuilderToolbox = () => {
           icon="image"
           label={formatMessage(heroBannerMessages.bannerWidgetTitle)}
         />
-        {filteredProjectsEnabled && (
-          <DraggableElement
-            id="e2e-draggable-projects-by-filter"
-            component={<ProjectsByFilter />}
-            icon="projects"
-            label={formatMessage(projectsMessages.filteredProjects)}
-          />
-        )}
+        <DraggableElement
+          id="e2e-draggable-projects-by-filter"
+          disabled={!advancedCustomPagesEnabled}
+          component={<ProjectsByFilter />}
+          icon="projects"
+          label={formatMessage(projectsMessages.filteredProjects)}
+        />
         <DraggableElement
           id="e2e-draggable-selection"
+          disabled={!advancedCustomPagesEnabled}
           component={
             <Selection
               titleMultiloc={toMultiloc(selectionTitle)}
@@ -147,6 +145,7 @@ const CustomPageBuilderToolbox = () => {
         />
         <DraggableElement
           id="e2e-draggable-open-to-participation"
+          disabled={!advancedCustomPagesEnabled}
           component={
             <OpenToParticipation
               titleMultiloc={toMultiloc(openToParticipationTitle)}
@@ -157,6 +156,7 @@ const CustomPageBuilderToolbox = () => {
         />
         <DraggableElement
           id="e2e-draggable-finished-or-archived"
+          disabled={!advancedCustomPagesEnabled}
           component={
             <FinishedOrArchived
               titleMultiloc={toMultiloc(
@@ -172,6 +172,7 @@ const CustomPageBuilderToolbox = () => {
         />
         <DraggableElement
           id="e2e-draggable-followed-items"
+          disabled={!advancedCustomPagesEnabled}
           component={
             <FollowedItems
               titleMultiloc={toMultiloc(followedItemsMessages.defaultTitle)}
@@ -183,6 +184,7 @@ const CustomPageBuilderToolbox = () => {
         {followEnabled && (
           <DraggableElement
             id="e2e-draggable-areas"
+            disabled={!advancedCustomPagesEnabled}
             component={<Areas titleMultiloc={toMultiloc(areasTitle)} />}
             icon="home"
             label={formatMessage(areasTitle)}
@@ -190,12 +192,14 @@ const CustomPageBuilderToolbox = () => {
         )}
         <DraggableElement
           id="e2e-draggable-published"
+          disabled={!advancedCustomPagesEnabled}
           component={<Published titleMultiloc={toMultiloc(publishedTitle)} />}
           icon="check-circle"
           label={formatMessage(publishedTitle)}
         />
         <DraggableElement
           id="e2e-draggable-spotlight"
+          disabled={!advancedCustomPagesEnabled}
           component={
             <Spotlight
               buttonTextMultiloc={toMultiloc(buttonTextDefault)}
@@ -207,12 +211,14 @@ const CustomPageBuilderToolbox = () => {
         />
         <DraggableElement
           id="e2e-draggable-custom-pages"
+          disabled={!advancedCustomPagesEnabled}
           component={<CustomPages customPages={[]} />}
           icon="page"
           label={formatMessage(customPagesTitle)}
         />
         <DraggableElement
           id="e2e-draggable-events"
+          disabled={!advancedCustomPagesEnabled}
           component={
             // A project's page is about that project, as its project page is.
             isProjectPage ? (
@@ -235,6 +241,7 @@ const CustomPageBuilderToolbox = () => {
         />
         <DraggableElement
           id="e2e-draggable-call-to-action"
+          disabled={!advancedCustomPagesEnabled}
           component={
             <CallToAction primaryButtonText={{}} secondaryButtonText={{}} />
           }

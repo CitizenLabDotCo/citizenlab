@@ -14,7 +14,9 @@ describe('Project page builder', () => {
   let projectSlug = '';
   let pageId = '';
   let pageSlug = '';
+  let builderWasEnabled = false;
   let projectPagesWasEnabled = false;
+  let advancedWasEnabled = false;
 
   const setFeatures = (enabled: boolean, projectPages: boolean) =>
     cy.apiUpdateAppConfiguration({
@@ -24,12 +26,20 @@ describe('Project page builder', () => {
       },
     });
 
+  // The events widget can only be dragged in with advanced_custom_pages on.
+  const setAdvancedCustomPages = (enabled: boolean) =>
+    cy.apiUpdateAppConfiguration({
+      settings: { advanced_custom_pages: { allowed: enabled, enabled } },
+    });
+
   before(() => {
     cy.apiGetAppConfiguration().then((config) => {
-      projectPagesWasEnabled =
-        config.body.data.attributes.settings.project_static_pages?.enabled ===
-        true;
+      const settings = config.body.data.attributes.settings;
+      builderWasEnabled = settings.custom_page_builder?.enabled === true;
+      projectPagesWasEnabled = settings.project_static_pages?.enabled === true;
+      advancedWasEnabled = settings.advanced_custom_pages?.enabled === true;
     });
+    setAdvancedCustomPages(true);
 
     // Created with the builder off, so the page starts with legacy content and no layout.
     setFeatures(false, true);
@@ -79,7 +89,8 @@ describe('Project page builder', () => {
   });
 
   after(() => {
-    setFeatures(false, projectPagesWasEnabled);
+    setFeatures(builderWasEnabled, projectPagesWasEnabled);
+    setAdvancedCustomPages(advancedWasEnabled);
     if (pageId) cy.apiRemoveCustomPage(pageId);
     if (projectId) cy.apiRemoveProject(projectId);
     if (otherProjectId) cy.apiRemoveProject(otherProjectId);
@@ -131,13 +142,10 @@ describe('Project page builder', () => {
     );
 
     // A dropped widget is selected, so its settings panel is open. A widget not pinned to its
-    // project shows either the source choice or, without filtering, the every-project note, and
-    // the archived toggle; whatever the flags or the events on the platform, none of them shows.
+    // project shows the source choice and the archived toggle; whatever the events on the
+    // platform, neither shows.
     cy.get('#events-limit-all').should('exist');
     cy.get('label[for="events-source-all"]').should('not.exist');
-    cy.contains('This widget shows events from every project').should(
-      'not.exist'
-    );
     cy.contains('Include events from archived projects').should('not.exist');
     cy.dataCy('e2e-events-widget')
       .should('contain', eventTitle)

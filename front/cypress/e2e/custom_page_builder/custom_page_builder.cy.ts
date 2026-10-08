@@ -290,9 +290,9 @@ describe('Custom page builder', () => {
       .should('have.class', 'e2e-signed-out-header-title');
   });
 
-  // The events filters do not depend on advanced_custom_pages; the projects list does, so it leaves
-  // the toolbox.
-  it('keeps the events filters once the tenant loses advanced_custom_pages', () => {
+  // The widgets stay listed, greyed out with an upsell, and one already on the page keeps its
+  // settings.
+  it('greys out its widgets once the tenant loses advanced_custom_pages', () => {
     setFiltering(false);
     openBuilder();
 
@@ -301,8 +301,16 @@ describe('Custom page builder', () => {
     cy.get('label[for="events-source-all"]').should('exist');
     cy.get('label[for="events-source-global_topics"]').should('exist');
 
-    cy.get('#e2e-draggable-events').should('exist');
-    cy.get('#e2e-draggable-projects-by-filter').should('not.exist');
+    cy.get('#e2e-draggable-events').should(
+      'have.attr',
+      'aria-disabled',
+      'true'
+    );
+    cy.get('#e2e-draggable-projects-by-filter')
+      .should('have.attr', 'aria-disabled', 'true')
+      .trigger('mouseenter');
+    cy.contains('not included in your current plan').should('be.visible');
+    cy.get('#e2e-draggable-text').should('not.have.attr', 'aria-disabled');
   });
 
   // The Call to action is the homepage widget worth checking on a published page: its buttons
@@ -310,6 +318,7 @@ describe('Custom page builder', () => {
   // published custom page does.
   it('renders homepage widgets added in the builder on the published page', () => {
     const buttonText = `Go ${randomString()}`;
+    setFiltering(true);
     openBuilder();
 
     cy.get('#e2e-draggable-published').dragAndDrop(
