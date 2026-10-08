@@ -6,7 +6,7 @@ module EmailCampaigns
   # reputation and can get sending suspended.
   class EmailBounceService
     # @param event_data [Hash] the `event-data` of a Mailgun webhook event
-    def record(event_data)
+    def handle_mailgun_event(event_data)
       return unless permanent_failure?(event_data)
 
       user = User.find_by_cimail(event_data[:recipient])
