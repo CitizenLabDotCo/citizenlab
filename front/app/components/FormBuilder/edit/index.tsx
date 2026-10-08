@@ -417,6 +417,7 @@ const FormEdit = ({
                       <Box display={selectedField ? 'none' : 'block'}>
                         <SurveyAssistant
                           phaseId={phaseId}
+                          projectId={projectId}
                           onFormReplaced={() => {
                             setSelectedField(undefined);
                             setIsUpdatingForm(true);
