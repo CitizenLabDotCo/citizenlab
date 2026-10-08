@@ -1,0 +1,125 @@
+import React from 'react';
+
+import {
+  IAiAssistantConversation,
+  IAiAssistantConversationData,
+} from 'api/ai_assistant_conversations/types';
+
+import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+
+import AssistantPanel from './AssistantPanel';
+
+jest.mock('react-markdown', () => ({ children }: { children: string }) => (
+  <p>{children}</p>
+));
+
+let mockConversation: IAiAssistantConversation | undefined;
+jest.mock('api/ai_assistant_conversations/useAiAssistantConversations', () =>
+  jest.fn(() => ({
+    data: { data: mockConversation ? [mockConversation.data] : [] },
+  }))
+);
+jest.mock('api/ai_assistant_conversations/useAiAssistantConversation', () =>
+  jest.fn(() => ({ data: mockConversation }))
+);
+jest.mock('api/ai_assistant_conversations/useAddAiAssistantConversation', () =>
+  jest.fn(() => ({ mutateAsync: jest.fn(), isPending: false }))
+);
+jest.mock('api/ai_assistant_messages/useAddAiAssistantMessage', () =>
+  jest.fn(() => ({ mutateAsync: jest.fn() }))
+);
+
+const conversation = (
+  attributes: IAiAssistantConversationData['attributes']
+): IAiAssistantConversation => ({
+  data: {
+    id: 'conversation-1',
+    type: 'ai_assistant_conversation',
+    attributes,
+    relationships: {
+      messages: {
+        data: [
+          { id: 'message-1', type: 'ai_assistant_message' },
+          { id: 'message-2', type: 'ai_assistant_message' },
+        ],
+      },
+    },
+  },
+  included: [
+    {
+      id: 'message-1',
+      type: 'ai_assistant_message',
+      attributes: {
+        role: 'user',
+        content: 'Create a survey about our park.',
+        position: 1,
+        created_at: '2026-10-01T08:00:00.000Z',
+      },
+    },
+    {
+      id: 'message-2',
+      type: 'ai_assistant_message',
+      attributes: {
+        role: 'assistant',
+        content: 'Here is a first draft.',
+        position: 2,
+        created_at: '2026-10-01T08:00:10.000Z',
+      },
+    },
+  ],
+});
+
+const baseAttributes = {
+  context_key: 'survey_builder',
+  locale: 'en',
+  created_at: '2026-10-01T08:00:00.000Z',
+  updated_at: '2026-10-01T08:00:00.000Z',
+} as const;
+
+const renderPanel = () =>
+  render(
+    <AssistantPanel
+      contextKey="survey_builder"
+      contextId="phase-1"
+      intro={{ id: 'test.intro', defaultMessage: 'Describe your survey' }}
+      starters={[{ id: 'test.starter', defaultMessage: 'A survey on bikes' }]}
+    />
+  );
+
+describe('AssistantPanel', () => {
+  it('fills the composer with a starter prompt', () => {
+    mockConversation = undefined;
+    renderPanel();
+
+    fireEvent.click(screen.getByRole('button', { name: /A survey on bikes/ }));
+
+    expect(screen.getByRole('textbox')).toHaveValue('A survey on bikes');
+  });
+
+  it('blocks new messages while the assistant works', () => {
+    mockConversation = conversation({
+      ...baseAttributes,
+      status: 'running',
+      last_error_code: null,
+    });
+    renderPanel();
+
+    expect(screen.getByText('Here is a first draft.')).toBeInTheDocument();
+    expect(screen.getByRole('textbox')).toBeDisabled();
+  });
+
+  it('shows why the last turn failed', () => {
+    mockConversation = conversation({
+      ...baseAttributes,
+      status: 'failed',
+      last_error_code: 'context_too_long',
+    });
+    renderPanel();
+
+    expect(
+      screen.getByText(
+        'This chat has become too long. Start a new chat to continue.'
+      )
+    ).toBeInTheDocument();
+  });
+});
