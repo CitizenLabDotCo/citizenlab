@@ -230,7 +230,6 @@
   "app.components.admin.ContentBuilder.Widgets.Events.byTopic": "Seçili etiketlere sahip projeler",
   "app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle": "Etkinlikler",
   "app.components.admin.ContentBuilder.Widgets.Events.everyProject": "Tüm projeler",
-  "app.components.admin.ContentBuilder.Widgets.Events.everyProjectOnly": "Bu araç tüm projelerdeki etkinlikleri gösterir. Alan, etiket veya çalışma alanına göre filtreleme ücretli bir planın parçasıdır.",
   "app.components.admin.ContentBuilder.Widgets.Events.heading": "Başlık",
   "app.components.admin.ContentBuilder.Widgets.Events.howMany": "Kaç tane gösterilsin",
   "app.components.admin.ContentBuilder.Widgets.Events.howManyAtMost": "En fazla",

@@ -230,7 +230,6 @@
   "app.components.admin.ContentBuilder.Widgets.Events.byTopic": "Valittujen avainsanojen hankkeet",
   "app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle": "Tapahtumat",
   "app.components.admin.ContentBuilder.Widgets.Events.everyProject": "Kaikki hankkeet",
-  "app.components.admin.ContentBuilder.Widgets.Events.everyProjectOnly": "Tämä widget näyttää kaikkien hankkeiden tapahtumat. Alueen, avainsanan tai tilan mukaan suodattaminen kuuluu maksulliseen tilaukseen.",
   "app.components.admin.ContentBuilder.Widgets.Events.heading": "Otsikko",
   "app.components.admin.ContentBuilder.Widgets.Events.howMany": "Näytettävä määrä",
   "app.components.admin.ContentBuilder.Widgets.Events.howManyAtMost": "Näytä enintään",

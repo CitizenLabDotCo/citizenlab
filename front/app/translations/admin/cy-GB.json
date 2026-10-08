@@ -230,7 +230,6 @@
   "app.components.admin.ContentBuilder.Widgets.Events.byTopic": "Prosiectau gyda thagiau a ddewiswyd",
   "app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle": "Digwyddiadau",
   "app.components.admin.ContentBuilder.Widgets.Events.everyProject": "Pob prosiect",
-  "app.components.admin.ContentBuilder.Widgets.Events.everyProjectOnly": "Mae'r teclyn hwn yn dangos digwyddiadau o bob prosiect. Mae hidlo yn ôl ardal, tag neu ofod yn rhan o gynllun taledig.",
   "app.components.admin.ContentBuilder.Widgets.Events.heading": "Pennawd",
   "app.components.admin.ContentBuilder.Widgets.Events.howMany": "Sawl un i'w dangos",
   "app.components.admin.ContentBuilder.Widgets.Events.howManyAtMost": "Dangos hyd at",

@@ -230,7 +230,6 @@
   "app.components.admin.ContentBuilder.Widgets.Events.byTopic": "المشاريع ذات الوسوم المختارة",
   "app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle": "أحداث",
   "app.components.admin.ContentBuilder.Widgets.Events.everyProject": "كل المشاريع",
-  "app.components.admin.ContentBuilder.Widgets.Events.everyProjectOnly": "تعرض هذه الأداة أحداثاً من كل المشاريع. تصفية النتائج حسب المنطقة أو الوسم أو الفضاء هي ميزة ضمن الخطط المدفوعة.",
   "app.components.admin.ContentBuilder.Widgets.Events.heading": "عنوان",
   "app.components.admin.ContentBuilder.Widgets.Events.howMany": "العدد المراد عرضه",
   "app.components.admin.ContentBuilder.Widgets.Events.howManyAtMost": "عرض على الأكثر",

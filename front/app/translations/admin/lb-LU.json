@@ -230,7 +230,6 @@
   "app.components.admin.ContentBuilder.Widgets.Events.byTopic": "Projeten mat de gewielten Tags",
   "app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle": "Eventer",
   "app.components.admin.ContentBuilder.Widgets.Events.everyProject": "All Projet",
-  "app.components.admin.ContentBuilder.Widgets.Events.everyProjectOnly": "Dëse Widget weist Eventer vun all Projet un. D'Filteren no Beräich, Tag oder Space ass Deel vun engem bezuelte Plang.",
   "app.components.admin.ContentBuilder.Widgets.Events.heading": "Iwwerschrëft",
   "app.components.admin.ContentBuilder.Widgets.Events.howMany": "Wéi vill solle gewise ginn",
   "app.components.admin.ContentBuilder.Widgets.Events.howManyAtMost": "Maximal weisen",

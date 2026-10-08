@@ -230,7 +230,6 @@
   "app.components.admin.ContentBuilder.Widgets.Events.byTopic": "Projetos com as tags escolhidas",
   "app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle": "Eventos",
   "app.components.admin.ContentBuilder.Widgets.Events.everyProject": "Todos os projetos",
-  "app.components.admin.ContentBuilder.Widgets.Events.everyProjectOnly": "Este widget mostra eventos de todos os projetos. Filtrar por área, tag ou espaço faz parte de um plano pago.",
   "app.components.admin.ContentBuilder.Widgets.Events.heading": "Título",
   "app.components.admin.ContentBuilder.Widgets.Events.howMany": "Quantos exibir",
   "app.components.admin.ContentBuilder.Widgets.Events.howManyAtMost": "Mostrar no máximo",

@@ -230,7 +230,6 @@
   "app.components.admin.ContentBuilder.Widgets.Events.byTopic": "Projectes amb les etiquetes seleccionades",
   "app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle": "Esdeveniments",
   "app.components.admin.ContentBuilder.Widgets.Events.everyProject": "Tots els projectes",
-  "app.components.admin.ContentBuilder.Widgets.Events.everyProjectOnly": "Aquest giny mostra esdeveniments de tots els projectes. El filtratge per àrea, etiqueta o espai forma part d'un pla de pagament.",
   "app.components.admin.ContentBuilder.Widgets.Events.heading": "Encapçalament",
   "app.components.admin.ContentBuilder.Widgets.Events.howMany": "Quants se n'han de mostrar",
   "app.components.admin.ContentBuilder.Widgets.Events.howManyAtMost": "Mostra'n com a màxim",
