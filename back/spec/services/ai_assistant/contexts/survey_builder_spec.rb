@@ -12,6 +12,12 @@ describe AIAssistant::Contexts::SurveyBuilder do
     expect(described_class.new(create(:phase))).not_to be_available
   end
 
+  it 'hides the pinned arguments from the model' do
+    get_form_fields = context.tool('get_form_fields')
+
+    expect(get_form_fields.llm_schema).to include('properties' => {}, 'required' => [], 'additionalProperties' => false)
+  end
+
   it 'describes the survey in the system prompt' do
     prompt = context.system_prompt(locale: 'en')
 
