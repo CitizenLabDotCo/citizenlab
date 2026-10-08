@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
 import Modal from 'components/UI/Modal';
 
@@ -27,35 +27,30 @@ const ConfirmPublicAnswersModal = ({
     <Modal
       opened={opened}
       close={onCancel}
-      header={
-        <Title color="primary" variant="h4" m="0px">
-          {formatMessage(messages.confirmTitle)}
-        </Title>
-      }
-    >
-      <Box p="20px">
-        <Box mb="20px">
-          <Text m="0px" textAlign="center">
-            {formatMessage(messages.confirmSubmissions, {
-              count: submissionCount,
-            })}
-          </Text>
-          <Text textAlign="center">
-            {formatMessage(messages.confirmExplanation)}
-          </Text>
-        </Box>
-        <Box display="flex" justifyContent="center" gap="8px">
-          <Button buttonStyle="secondary" onClick={onCancel}>
+      width={520}
+      header={formatMessage(messages.confirmTitle)}
+      footer={
+        <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
+          <Button buttonStyle="secondary-outlined" onClick={onCancel}>
             {formatMessage(messages.cancel)}
           </Button>
           <Button
             data-cy="e2e-confirm-public-answers"
-            buttonStyle="admin-dark"
+            buttonStyle="primary"
             onClick={onConfirm}
           >
             {formatMessage(messages.confirm)}
           </Button>
         </Box>
+      }
+    >
+      <Box p="24px">
+        <Text m="0" mb="12px">
+          {formatMessage(messages.confirmSubmissions, {
+            count: submissionCount,
+          })}
+        </Text>
+        <Text m="0">{formatMessage(messages.confirmExplanation)}</Text>
       </Box>
     </Modal>
   );
