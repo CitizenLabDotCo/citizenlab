@@ -10,3 +10,7 @@ export interface IAiAssistantToolCallData {
     created_at: string;
   };
 }
+
+export interface IAiAssistantToolCall {
+  data: IAiAssistantToolCallData;
+}
