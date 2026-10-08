@@ -9224,6 +9224,31 @@
     "verified_at": "2026-09-23T16:57:15.518005Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.earlyAccess.feedbackNoticeDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-08T07:46:40.731334Z",
+    "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.project.earlyAccess.feedbackNoticeTitle": {
+    "state": "verified",
+    "verified_at": "2026-10-08T07:46:40.731334Z",
+    "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.project.earlyAccess.profileSettingsLink": {
+    "state": "verified",
+    "verified_at": "2026-10-08T07:46:40.731334Z",
+    "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.project.earlyAccess.turnOnNoticeDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-08T07:46:40.731334Z",
+    "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.project.earlyAccess.turnOnNoticeTitle": {
+    "state": "verified",
+    "verified_at": "2026-10-08T07:46:40.731334Z",
+    "verified_by": "Pauline"
+  },
   "app.containers.Admin.projects.project.edit": {
     "state": "verified",
     "verified_at": "2026-06-29T09:12:16.498966Z",
