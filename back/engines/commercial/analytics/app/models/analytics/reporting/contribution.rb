@@ -46,10 +46,11 @@ module Analytics
           DOC
           'parent_type' => <<~DOC.squish,
             What the action targets: 'input' for comments, votes and reactions
-            on inputs; 'comment' for reactions on comments; NULL for standalone
-            actions (inputs, volunteering, poll responses, attendances).
+            on inputs; 'comment' for reactions on comments; 'event' for event
+            attendances; NULL for standalone actions (inputs, volunteering,
+            poll responses).
           DOC
-          'parent_id' => 'Id of the parent input or comment.',
+          'parent_id' => 'Id of the parent input, comment or event.',
           'contributed_at' => 'When the resident performed the action (UTC). For inputs: submission, falling back to publication.',
           'created_at' => 'When the underlying record was first created (UTC); can predate contributed_at for drafts.',
           'participation_method' => <<~DOC.squish,
@@ -83,7 +84,8 @@ module Analytics
           'phase_id' => 'reporting_phases.id',
           'user_id' => 'reporting_users.id',
           'participant_id' => 'reporting_participants.id',
-          'parent_id' => "reporting_inputs.id when parent_type = 'input', reporting_contributions.id when parent_type = 'comment'"
+          'parent_id' => "reporting_inputs.id when parent_type = 'input', reporting_contributions.id when parent_type = 'comment', " \
+                         "reporting_events.id when parent_type = 'event'"
         }
       end
     end
