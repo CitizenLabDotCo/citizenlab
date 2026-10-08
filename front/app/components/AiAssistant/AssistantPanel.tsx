@@ -26,15 +26,22 @@ import Composer from './Composer';
 import { getErrorMessage, getRequestErrorCode } from './errors';
 import messages from './messages';
 import Transcript from './Transcript';
+import { AiAssistantToolViews } from './types';
 
 type Props = {
   contextKey: AiAssistantContextKey;
   // The record the conversation is about, e.g. the phase of a survey.
   contextId: string;
   intro: MessageDescriptor;
+  toolViews: AiAssistantToolViews;
 };
 
-const AssistantPanel = ({ contextKey, contextId, intro }: Props) => {
+const AssistantPanel = ({
+  contextKey,
+  contextId,
+  intro,
+  toolViews,
+}: Props) => {
   const locale = useLocale();
   const { formatMessage } = useIntl();
   const { data: conversations } = useAiAssistantConversations({
@@ -122,7 +129,7 @@ const AssistantPanel = ({ contextKey, contextId, intro }: Props) => {
       </Box>
       <Box flex="1" overflowY="auto">
         {conversation && hasMessages ? (
-          <Transcript conversation={conversation} />
+          <Transcript conversation={conversation} toolViews={toolViews} />
         ) : (
           <Text m="0px">
             <FormattedMessage {...intro} />

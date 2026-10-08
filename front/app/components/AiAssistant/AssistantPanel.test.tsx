@@ -55,6 +55,7 @@ const conversation = (
         position: 1,
         created_at: '2026-10-01T08:00:00.000Z',
       },
+      relationships: { tool_calls: { data: [] } },
     },
     {
       id: 'message-2',
@@ -63,6 +64,21 @@ const conversation = (
         role: 'assistant',
         content: 'Here is a first draft.',
         position: 2,
+        created_at: '2026-10-01T08:00:10.000Z',
+      },
+      relationships: {
+        tool_calls: {
+          data: [{ id: 'call-1', type: 'ai_assistant_tool_call' }],
+        },
+      },
+    },
+    {
+      id: 'call-1',
+      type: 'ai_assistant_tool_call',
+      attributes: {
+        name: 'get_form_fields',
+        arguments: {},
+        status: 'auto_executed',
         created_at: '2026-10-01T08:00:10.000Z',
       },
     },
@@ -82,6 +98,7 @@ const renderPanel = () =>
       contextKey="survey_builder"
       contextId="phase-1"
       intro={{ id: 'test.intro', defaultMessage: 'Describe your survey' }}
+      toolViews={{}}
     />
   );
 
@@ -102,6 +119,7 @@ describe('AssistantPanel', () => {
     renderPanel();
 
     expect(screen.getByText('Here is a first draft.')).toBeInTheDocument();
+    expect(screen.getByText('Read: get_form_fields')).toBeInTheDocument();
     expect(screen.getByRole('textbox')).toBeDisabled();
   });
 

@@ -25,6 +25,18 @@ export default defineMessages({
     id: 'app.components.aiAssistant.elapsed',
     defaultMessage: '{seconds, plural, one {# second} other {# seconds}}',
   },
+  statusAutoExecuted: {
+    id: 'app.components.aiAssistant.statusAutoExecuted',
+    defaultMessage: 'Read: {tool}',
+  },
+  statusFailed: {
+    id: 'app.components.aiAssistant.statusFailed',
+    defaultMessage: 'Failed: {tool}',
+  },
+  statusInProgress: {
+    id: 'app.components.aiAssistant.statusInProgress',
+    defaultMessage: 'In progress: {tool}',
+  },
   errorLlmUnavailable: {
     id: 'app.components.aiAssistant.errorLlmUnavailable',
     defaultMessage:
@@ -43,6 +55,11 @@ export default defineMessages({
   errorContextUnavailable: {
     id: 'app.components.aiAssistant.errorContextUnavailable',
     defaultMessage: 'The assistant is not available here.',
+  },
+  errorToolBudgetExceeded: {
+    id: 'app.components.aiAssistant.errorToolBudgetExceeded',
+    defaultMessage:
+      'The assistant needed too many steps for this request. Try a smaller request.',
   },
   errorConversationBusy: {
     id: 'app.components.aiAssistant.errorConversationBusy',
