@@ -7,14 +7,17 @@ import { IProjectData } from 'api/projects/types';
 
 import { useLocation } from 'utils/router';
 
-import { usePhaseSave } from './_shared/PhaseSaveContext';
-import { sectionFromPathname } from './_shared/sections';
-import useMarkSetupStep from './_shared/useMarkSetupStep';
-import WorkspaceHeader from './Header';
-import { HeaderDropdownName } from './Header/HeaderDropdown';
+import FeedbackNotice from '../earlyAccess/FeedbackNotice';
+
 import MethodSettings from './Phase/MethodSettings';
-import { viewFromPathname } from './Phase/usePhaseViews';
 import ProjectSetupPanel from './ProjectSetupPanel';
+import ViewContent from './Phase/ViewContent';
+import WorkspaceHeader from './Header';
+import useMarkSetupStep from './_shared/useMarkSetupStep';
+import { HeaderDropdownName } from './Header/HeaderDropdown';
+import { sectionFromPathname } from './_shared/sections';
+import { usePageSave } from './_shared/PageSaveContext';
+import { viewFromPathname } from './Phase/usePhaseViews';
 
 const PROJECT_PANEL_WIDTH = '332px';
 const PHASE_PANEL_WIDTH = '560px';
@@ -45,7 +48,7 @@ const ProjectWorkspace = ({
     null
   );
   const markSetupStep = useMarkSetupStep(project);
-  const phaseSave = usePhaseSave();
+  const pageSave = usePageSave();
 
   const showDropdown = (dropdown: HeaderDropdownName | null) => {
     setOpenDropdown(dropdown);
@@ -64,7 +67,7 @@ const ProjectWorkspace = ({
     <MethodSettings
       // Its unsaved settings belong to one method: a switch, or
       // discarding the changes, starts them over.
-      key={`${phase.id}-${phase.attributes.participation_method}-${phaseSave?.revision}`}
+      key={`${phase.id}-${phase.attributes.participation_method}-${pageSave?.revision}`}
       phase={phase}
     />
   ) : (
@@ -111,6 +114,21 @@ const ProjectWorkspace = ({
     </Box>
   );
 
+  const mainSlot = (
+    <Box
+      flexGrow={1}
+      minWidth="0"
+      minHeight="0"
+      overflowY="auto"
+      display="flex"
+      flexDirection="column"
+      borderRadius={bo.panelBorderRadius}
+      background={colors.grey100}
+    >
+      {children}
+    </Box>
+  );
+
   return (
     <Box
       display="flex"
@@ -121,6 +139,7 @@ const ProjectWorkspace = ({
       overflow="hidden"
       background={colors.background}
     >
+      <FeedbackNotice />
       <WorkspaceHeader
         project={project}
         phase={phase}
@@ -138,22 +157,17 @@ const ProjectWorkspace = ({
         minHeight="0"
         overflow="hidden"
       >
-        {!inPhase && setupSlot}
+        {inPhase ? phaseSlot : setupSlot}
 
-        <Box
-          flexGrow={1}
-          minWidth="0"
-          minHeight="0"
-          overflowY="auto"
-          display="flex"
-          flexDirection="column"
-          borderRadius={bo.panelBorderRadius}
-          background={colors.grey100}
-        >
-          {children}
-        </Box>
+        {phase && activeView !== 'build' ? (
+          <ViewContent project={project} phase={phase} view={activeView}>
+            {mainSlot}
+          </ViewContent>
+        ) : (
+          mainSlot
+        )}
 
-        {inPhase ? phaseSlot : timelineSlot}
+        {!inPhase && timelineSlot}
       </Box>
     </Box>
   );

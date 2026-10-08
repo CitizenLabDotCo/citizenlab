@@ -286,15 +286,16 @@ describe('Custom page builder', () => {
       .should('have.class', 'e2e-signed-out-header-title');
   });
 
-  // With filtering off, a stored events node keeps its filter but offers no source choice, and the
-  // projects list leaves the toolbox.
+  // With filtering off, a stored events node keeps its filter, still shown so it can be reset, but
+  // no other filter is offered, and the projects list leaves the toolbox.
   it('withdraws the filtering choices once the tenant loses advanced_custom_pages', () => {
     setFiltering(false);
     openBuilder();
 
     selectNodeContaining(() => cy.dataCy('e2e-events-widget'));
-    cy.get('label[for="events-source-areas"]').should('not.exist');
-    cy.get('label[for="events-source-all"]').should('not.exist');
+    cy.get('#events-source-areas').should('be.checked');
+    cy.get('label[for="events-source-all"]').should('exist');
+    cy.get('label[for="events-source-global_topics"]').should('not.exist');
 
     cy.get('#e2e-draggable-events').should('exist');
     cy.get('#e2e-draggable-projects-by-filter').should('not.exist');

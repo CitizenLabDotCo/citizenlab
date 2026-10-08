@@ -1,15 +1,17 @@
 import React from 'react';
 
-import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
 import { getPhaseLandingTab } from 'api/phases/utils';
 
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import methodMessages from 'containers/Admin/inspirationHub/messages';
 
+import { getLocale } from 'components/admin/DatePickers/_shared/locales';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -26,9 +28,10 @@ import {
   phaseStatus,
 } from '../phaseRowUtils';
 
+import DeletePhaseButton from './DeletePhaseButton';
 import EmptyState from './EmptyState';
-import PhaseOptionsMenu from './PhaseOptionsMenu';
 import PhaseRowWithOptions from './PhaseRowWithOptions';
+import PhaseStep from './PhaseStep';
 
 const METHOD_LABELS: Record<ParticipationMethod, MessageDescriptor> = {
   ideation: methodMessages.ideation,
@@ -46,17 +49,20 @@ const METHOD_LABELS: Record<ParticipationMethod, MessageDescriptor> = {
 
 interface Props {
   projectId: string;
-  onNewPhase?: () => void;
+  variant?: 'sidebar' | 'backofficeRedesign';
+  heading?: React.ReactNode;
   withPhaseOptions?: boolean;
 }
 
 const TimelinePhases = ({
   projectId,
-  onNewPhase,
+  variant = 'sidebar',
+  heading,
   withPhaseOptions = false,
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const dateLocale = getLocale(useLocale());
   const { phaseId } = useParams({ strict: false });
   const { data: phases } = usePhases(projectId);
 
@@ -68,22 +74,21 @@ const TimelinePhases = ({
     a.attributes.start_at.localeCompare(b.attributes.start_at)
   );
   const noEndLabel = formatMessage(messages.phaseNoEndDate);
+  const redesign = variant === 'backofficeRedesign';
 
   return (
-    <Box
-      className="intercom-product-tour-project-timeline"
-      p="12px"
-      borderTop={`1px solid ${colors.grey200}`}
-    >
-      <Text
-        m="0 0 8px 0"
-        px="10px"
-        fontSize="s"
-        fontWeight="bold"
-        color="textPrimary"
-      >
-        {formatMessage(messages.timeline)}
-      </Text>
+    <Box>
+      {heading ?? (
+        <Text
+          m="0 0 8px 0"
+          px="10px"
+          fontSize="s"
+          fontWeight="bold"
+          color="textPrimary"
+        >
+          {formatMessage(messages.timeline)}
+        </Text>
+      )}
 
       {sortedPhases.length === 0 && <EmptyState />}
 
@@ -99,6 +104,7 @@ const TimelinePhases = ({
           const dateText = formatDateRange(
             phase.attributes.start_at,
             phase.attributes.end_at,
+            dateLocale,
             noEndLabel
           );
           const methodLabel = formatMessage(
@@ -110,36 +116,49 @@ const TimelinePhases = ({
               to={PHASE_TAB_ROUTES[getPhaseLandingTab(phase)]}
               params={{ projectId, phaseId: phase.id }}
             >
-              <Row selected={isSelected}>
-                {sortedPhases.length > 1 && (
-                  <Connector isFirst={index === 0} isLast={isLast} />
-                )}
-                <PhaseDot status={status} />
-                <Box
-                  flexGrow={1}
-                  pb="4px"
-                  pr={withPhaseOptions ? '24px' : undefined}
-                >
-                  <Text
-                    as="span"
-                    m="0"
-                    fontSize="s"
-                    color={status === 'past' ? 'textSecondary' : 'textPrimary'}
+              {redesign ? (
+                <PhaseStep
+                  phase={phase}
+                  selected={isSelected}
+                  isLast={isLast}
+                  withOptions={withPhaseOptions}
+                />
+              ) : (
+                <Row selected={isSelected}>
+                  {sortedPhases.length > 1 && (
+                    <Connector isFirst={index === 0} isLast={isLast} />
+                  )}
+                  <PhaseDot status={status} />
+                  <Box
+                    flexGrow={1}
+                    pb="4px"
+                    pr={withPhaseOptions ? '24px' : undefined}
                   >
-                    {localize(phase.attributes.title_multiloc)}
-                  </Text>
-                  <Text m="2px 0 0 0" fontSize="xs" color="textSecondary">
-                    {dateText} · {methodLabel}
-                  </Text>
-                </Box>
-              </Row>
+                    <Text
+                      as="span"
+                      m="0"
+                      fontSize="s"
+                      color={
+                        status === 'past' ? 'textSecondary' : 'textPrimary'
+                      }
+                    >
+                      {localize(phase.attributes.title_multiloc)}
+                    </Text>
+                    <Text m="2px 0 0 0" fontSize="xs" color="textSecondary">
+                      {dateText} · {methodLabel}
+                    </Text>
+                  </Box>
+                </Row>
+              )}
             </Link>
           );
 
           return withPhaseOptions ? (
             <PhaseRowWithOptions
               key={phase.id}
-              options={<PhaseOptionsMenu projectId={projectId} phase={phase} />}
+              options={
+                <DeletePhaseButton projectId={projectId} phase={phase} />
+              }
             >
               {row}
             </PhaseRowWithOptions>
@@ -149,22 +168,12 @@ const TimelinePhases = ({
         })}
       </Box>
 
-      <Box
-        display="flex"
-        mt="4px"
-        className="intercom-product-tour-project-timeline-new-phase"
-      >
-        {onNewPhase ? (
-          <Button
-            buttonStyle="text"
-            size="s"
-            icon="plus"
-            width="auto"
-            onClick={onNewPhase}
-          >
-            {formatMessage(messages.newParticipationMethod)}
-          </Button>
-        ) : (
+      {!redesign && (
+        <Box
+          display="flex"
+          mt="4px"
+          className="intercom-product-tour-project-timeline-new-phase"
+        >
           <ButtonWithLink
             to="/admin/projects/$projectId/phases/new"
             params={{ projectId }}
@@ -175,8 +184,8 @@ const TimelinePhases = ({
           >
             {formatMessage(messages.newPhase)}
           </ButtonWithLink>
-        )}
-      </Box>
+        </Box>
+      )}
     </Box>
   );
 };

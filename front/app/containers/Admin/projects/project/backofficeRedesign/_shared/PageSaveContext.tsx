@@ -13,7 +13,7 @@ export type SaveReason = 'button' | 'leave';
 
 type SaveFn = (reason: SaveReason) => Promise<void>;
 
-interface PhaseSaveContextValue {
+interface PageSaveContextValue {
   register: (key: string, save: SaveFn) => () => void;
   setDirty: (key: string, dirty: boolean) => void;
   dirty: boolean;
@@ -23,11 +23,12 @@ interface PhaseSaveContextValue {
   revision: number;
 }
 
-const PhaseSaveContext = createContext<PhaseSaveContextValue | null>(null);
+const PageSaveContext = createContext<PageSaveContextValue | null>(null);
 
-// The panels of a phase keep their own unsaved changes. This collects them, so
-// one button in the header saves them all and leaving the page can be stopped.
-export const PhaseSaveProvider = ({ children }: { children: ReactNode }) => {
+// The panels of a page (a phase's, or an event's) keep their own unsaved
+// changes. This collects them, so one button in the header saves them all and
+// leaving the page can be stopped.
+export const PageSaveProvider = ({ children }: { children: ReactNode }) => {
   const savers = useRef(new Map<string, SaveFn>());
   const [dirtyKeys, setDirtyKeys] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
@@ -81,19 +82,19 @@ export const PhaseSaveProvider = ({ children }: { children: ReactNode }) => {
   }, [register, setDirty, dirtyKeys, saving, saveAll, revision]);
 
   return (
-    <PhaseSaveContext.Provider value={value}>
+    <PageSaveContext.Provider value={value}>
       {children}
-    </PhaseSaveContext.Provider>
+    </PageSaveContext.Provider>
   );
 };
 
-export const usePhaseSave = () => useContext(PhaseSaveContext);
+export const usePageSave = () => useContext(PageSaveContext);
 
-export const useRegisterPhaseSaver = (
+export const useRegisterPageSaver = (
   key: string,
   { dirty, save }: { dirty: boolean; save: SaveFn }
 ) => {
-  const context = usePhaseSave();
+  const context = usePageSave();
   const saveRef = useRef(save);
   saveRef.current = save;
 

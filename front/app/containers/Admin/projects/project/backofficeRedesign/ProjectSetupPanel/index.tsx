@@ -19,8 +19,7 @@ import messages from '../messages';
 import GetStarted from './GetStarted';
 import NextActions from './NextActions';
 import ProjectSettingsModal from './ProjectSettingsModal';
-import SectionLinks from './SectionLinks';
-import SetupDropdowns from './SetupDropdowns';
+import SetupCards from './SetupCards';
 
 interface Props {
   project: IProjectData;
@@ -73,9 +72,7 @@ const ProjectSetupPanel = ({ project, onOpenDropdown }: Props) => {
         />
       )}
 
-      <SetupDropdowns project={project} />
-
-      <SectionLinks projectId={project.id} />
+      <SetupCards key={project.id} project={project} />
 
       <ProjectSettingsModal
         project={project}
