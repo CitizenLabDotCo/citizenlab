@@ -19,4 +19,25 @@ export default defineMessages({
     defaultMessage:
       'Approving replaces all current questions and saves the survey. Unsaved changes in the editor are lost.',
   },
+  outlineSummary: {
+    id: 'app.components.formBuilder.surveyAssistant.outlineSummary',
+    defaultMessage:
+      '{pages, plural, one {# page} other {# pages}}, {questions, plural, one {# question} other {# questions}}',
+  },
+  pageNumber: {
+    id: 'app.components.formBuilder.surveyAssistant.pageNumber',
+    defaultMessage: 'Page {number}',
+  },
+  endPage: {
+    id: 'app.components.formBuilder.surveyAssistant.endPage',
+    defaultMessage: 'End page',
+  },
+  untitled: {
+    id: 'app.components.formBuilder.surveyAssistant.untitled',
+    defaultMessage: 'Untitled',
+  },
+  required: {
+    id: 'app.components.formBuilder.surveyAssistant.required',
+    defaultMessage: 'Required',
+  },
 });
