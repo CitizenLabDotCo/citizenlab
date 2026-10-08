@@ -67,6 +67,15 @@ describe 'single_use:reprocess_large_images rake task' do
     )
   end
 
+  it 'removes the tempfiles it reads image sizes from' do
+    tempfiles = -> { Dir.glob(File.join(MiniMagick.tmpdir, 'mini_magick*')) }
+    existing = tempfiles.call
+
+    run_task(dry_run: true)
+
+    expect(tempfiles.call - existing).to be_empty
+  end
+
   it 'skips an image still being copied from another project' do
     layout_image.update_column(:image, 'https://example.com/uploads/photo.jpg')
     text_image.update_column(:image, 'https://example.com/uploads/photo.jpg')

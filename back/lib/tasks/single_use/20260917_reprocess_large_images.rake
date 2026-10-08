@@ -29,7 +29,8 @@ namespace :single_use do
           next if File.extname(identifier).casecmp?('.svg')
 
           uploader = record.image
-          width, height = MiniMagick::Image.read(uploader.file.read).dimensions
+          image = MiniMagick::Image.read(uploader.file.read)
+          width, height = image.dimensions
           next if width <= max_size && height <= max_size
 
           script.reporter.add_change(identifier, identifier, context: context.merge(width: width, height: height))
@@ -45,6 +46,9 @@ namespace :single_use do
           uploader.store!(uploader.file)
         rescue StandardError => e
           script.reporter.add_error("#{e.class}: #{e.message}", context: context)
+        ensure
+          # MiniMagick leaves its tempfile for the garbage collector, and these can be several MB each.
+          image&.destroy!
         end
       end
     end
