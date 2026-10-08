@@ -22,7 +22,11 @@ export type AiAssistantErrorCode =
   | 'unexpected_error';
 
 type ConversationState =
-  | { status: 'idle'; last_error_code: null; turn_started_at: string | null }
+  | {
+      status: 'idle' | 'awaiting_approval';
+      last_error_code: null;
+      turn_started_at: string | null;
+    }
   | { status: 'running'; last_error_code: null; turn_started_at: string }
   | {
       status: 'failed';

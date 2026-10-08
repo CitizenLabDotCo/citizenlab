@@ -1,4 +1,12 @@
-export type AiAssistantToolCallStatus = 'pending' | 'auto_executed' | 'failed';
+export type AiAssistantToolCallStatus =
+  | 'pending'
+  | 'auto_executed'
+  | 'proposed'
+  | 'approved'
+  | 'executed'
+  | 'failed'
+  | 'rejected'
+  | 'expired';
 
 export interface IAiAssistantToolCallData {
   id: string;
@@ -7,6 +15,8 @@ export interface IAiAssistantToolCallData {
     name: string;
     arguments: Record<string, unknown>;
     status: AiAssistantToolCallStatus;
+    reason: string | null;
+    decided_at: string | null;
     created_at: string;
   };
 }
