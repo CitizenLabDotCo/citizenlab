@@ -381,3 +381,6 @@ en:
       in_the_past: "must be in the future"
       max_must_be_greater_than_min_characters: "The maximum must be greater than the minimum."
       max_must_be_greater_than_or_equal_to_min_select_count: "The maximum must be greater than or equal to the minimum."
+      not_found: "were not found"
+      ai_processing_not_allowed: "may not be processed by AI"
+      unsupported_file_type: "must be PDF, Markdown or text files of at most 4 MB"
