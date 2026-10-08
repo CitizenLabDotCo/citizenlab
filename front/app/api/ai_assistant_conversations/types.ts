@@ -1,6 +1,7 @@
 import { ILinks, IRelationship, SupportedLocale } from 'typings';
 
 import { IAiAssistantMessageData } from 'api/ai_assistant_messages/types';
+import { IAiAssistantToolCallData } from 'api/ai_assistant_tool_calls/types';
 
 import { Keys } from 'utils/cl-react-query/types';
 
@@ -17,6 +18,7 @@ export type AiAssistantErrorCode =
   | 'llm_request_rejected'
   | 'context_too_long'
   | 'surface_unavailable'
+  | 'tool_budget_exceeded'
   | 'unexpected_error';
 
 type ConversationState =
@@ -44,7 +46,7 @@ export interface IAiAssistantConversationData {
 
 export interface IAiAssistantConversation {
   data: IAiAssistantConversationData;
-  included: IAiAssistantMessageData[];
+  included: (IAiAssistantMessageData | IAiAssistantToolCallData)[];
 }
 
 export interface IAiAssistantConversationsParameters {
