@@ -180,6 +180,7 @@ tr-TR:
       logic_no_further_questions: Yanıtlarınıza bağlı olarak, başka bir soru yanıtlamanıza <strong>gerek yoktur</strong>.
       logic_section: Bölüm %{letter}
       matrix_print_description: Her sıra için, tercihinizi belirtmek üzere bir daireyi çarpı ile işaretleyin.
+      multipoint_print_description: Lütfen eklemek istediğiniz her konum için aşağıdaki haritaya bir X çizin.
       optional: isteğe bağlı
       page: Sayfa
       permission: İzin

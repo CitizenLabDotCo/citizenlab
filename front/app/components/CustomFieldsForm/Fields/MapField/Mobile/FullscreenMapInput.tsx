@@ -44,7 +44,7 @@ import InstructionAnimation from '../components/InstructionAnimation';
 import UndoButton from '../components/UndoButton';
 import {
   handleMapClickMultipoint,
-  isLineOrPolygonInput,
+  isMultiPointInput,
   setupPointDrag,
 } from '../multiPointUtils';
 import { clearPointData, handleMapClickPoint } from '../pointUtils';
@@ -126,7 +126,7 @@ const FullscreenMapInput = memo<Props>(
         }
         if (inputType === 'point') {
           handleMapClickPoint(event, mapView, handleSinglePointChange);
-        } else if (isLineOrPolygonInput(inputType)) {
+        } else if (isMultiPointInput(inputType)) {
           handleMapClickMultipoint(event, mapView, handleMultiPointChange);
         }
       },
@@ -218,12 +218,15 @@ const FullscreenMapInput = memo<Props>(
             Array.isArray(data.coordinates[0]) &&
             data.coordinates[0].length >= 4
           );
+        case 'multipoint':
+          // A single pin is a complete answer; the min/max are validated on submit
+          return data.coordinates.length >= 1;
       }
     };
 
     // Attach behaviour for when a user edits a point by dragging it
     useEffect(() => {
-      isLineOrPolygonInput(inputType) &&
+      isMultiPointInput(inputType) &&
         handleMultiPointChange &&
         setupPointDrag({
           mapView,
@@ -329,7 +332,7 @@ const FullscreenMapInput = memo<Props>(
                       {formatMessage(messages.back)}
                     </Button>
                   )}
-                  {data && isLineOrPolygonInput(inputType) && (
+                  {data && isMultiPointInput(inputType) && (
                     <UndoButton
                       handleMultiPointChange={handleMultiPointChange}
                       mapView={mapView}

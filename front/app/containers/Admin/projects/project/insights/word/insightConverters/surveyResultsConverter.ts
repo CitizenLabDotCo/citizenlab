@@ -34,7 +34,7 @@ export interface MapImageData {
 
 export type MapImageMap = Map<string, MapImageData>;
 
-const MAPPING_INPUT_TYPES = new Set(['point', 'line', 'polygon']);
+const MAPPING_INPUT_TYPES = new Set(['point', 'line', 'polygon', 'multipoint']);
 
 const UUID_REGEX =
   /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i;

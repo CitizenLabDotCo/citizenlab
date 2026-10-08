@@ -539,6 +539,11 @@
     "verified_at": "2026-03-18T12:49:36.745075Z",
     "verified_by": "Admin"
   },
+  "form_builder.pdf_export.multipoint_print_description": {
+    "state": "verified",
+    "verified_at": "2026-10-03T15:29:50.754670Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "form_builder.pdf_export.optional": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.745075Z",

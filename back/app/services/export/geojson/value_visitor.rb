@@ -70,6 +70,10 @@ module Export
         value_for(field)
       end
 
+      def visit_multipoint(field)
+        value_for(field)
+      end
+
       private
 
       attr_reader :model, :option_index, :multiloc_service

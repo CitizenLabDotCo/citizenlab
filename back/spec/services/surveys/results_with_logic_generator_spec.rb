@@ -26,7 +26,7 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
         page_field.update!(logic: { next_page_id: last_page_field.id })
         page_result = generator.generate_results[:results][result_index(page_field)]
         expect(page_result[:inputType]).to eq 'page'
-        expect(page_result[:logic]).to eq({ nextPageNumber: 4, numQuestionsSkipped: 13 })
+        expect(page_result[:logic]).to eq({ nextPageNumber: 4, numQuestionsSkipped: 14 })
       end
 
       it 'uses the logic IDs correctly to flag hidden fields' do
@@ -62,19 +62,19 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
         results = generator.generate_results[:results]
 
         # Page logic
-        expect(results[result_index(mid_page_field1)][:logic]).to eq({ nextPageNumber: 4, numQuestionsSkipped: 10 })
+        expect(results[result_index(mid_page_field1)][:logic]).to eq({ nextPageNumber: 4, numQuestionsSkipped: 11 })
 
         # Linear scale logic
         expect(results[result_index(linear_scale_field)][:logic]).to eq({
           answer: {
-            'no_answer' => { id: "#{linear_scale_field.id}_no_answer", nextPageNumber: 4, numQuestionsSkipped: 13 },
+            'no_answer' => { id: "#{linear_scale_field.id}_no_answer", nextPageNumber: 4, numQuestionsSkipped: 14 },
             2 => { id: "#{linear_scale_field.id}_2", nextPageNumber: 3, numQuestionsSkipped: 3 }
           }
         })
 
         # Correct response counts
         expect(results.pluck(:totalResponseCount)).to eq(
-          [27, 27, 27, 27, 27, 17, 17, 17, 17, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
+          [27, 27, 27, 27, 27, 17, 17, 17, 17, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5]
         )
       end
 
@@ -92,13 +92,13 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
         expect(results[result_index(linear_scale_field)][:logic]).to eq({
           answer: {
             3 => { id: "#{linear_scale_field.id}_3", nextPageNumber: 3, numQuestionsSkipped: 3 },
-            4 => { id: "#{linear_scale_field.id}_4", nextPageNumber: 4, numQuestionsSkipped: 13 }
+            4 => { id: "#{linear_scale_field.id}_4", nextPageNumber: 4, numQuestionsSkipped: 14 }
           }
         })
 
         # Correct response counts
         expect(results.pluck(:totalResponseCount)).to eq(
-          [27, 27, 27, 27, 27, 18, 18, 18, 18, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26]
+          [27, 27, 27, 27, 27, 18, 18, 18, 18, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26, 26]
         )
       end
 
@@ -140,14 +140,14 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
         # Select logic
         expect(results[result_index(select_field)][:logic]).to eq({
           answer: {
-            'la' => { id: select_field.options[0].id, nextPageNumber: 4, numQuestionsSkipped: 10 },
-            'ny' => { id: select_field.options[1].id, nextPageNumber: 2, numQuestionsSkipped: 10 }
+            'la' => { id: select_field.options[0].id, nextPageNumber: 4, numQuestionsSkipped: 11 },
+            'ny' => { id: select_field.options[1].id, nextPageNumber: 2, numQuestionsSkipped: 11 }
           }
         })
 
         # Correct response counts
         expect(results.pluck(:totalResponseCount)).to eq(
-          [27, 27, 27, 27, 27, 27, 27, 27, 27, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24]
+          [27, 27, 27, 27, 27, 27, 27, 27, 27, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24]
         )
       end
 
@@ -176,7 +176,8 @@ RSpec.describe Surveys::ResultsWithLogicGenerator do
             ranking_field.id,
             matrix_linear_scale_field.id,
             rating_field.id,
-            sentiment_linear_scale_field.id
+            sentiment_linear_scale_field.id,
+            multipoint_field.id
           ]
         )
       end

@@ -90,7 +90,7 @@ module BulkImportIdeas::Parsers::Pdf
     # Input types that can be present in a printable form but cannot be extracted
     # from a scanned PDF (map geometries, file uploads, topic pickers, etc.).
     KNOWN_UNSUPPORTED_INPUT_TYPES = %w[
-      point line polygon shapefile_upload
+      point line polygon multipoint shapefile_upload
       file_upload files image_files
       topic_ids
     ].freeze
