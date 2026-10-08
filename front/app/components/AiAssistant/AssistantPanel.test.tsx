@@ -58,6 +58,7 @@ const conversation = (
       attributes: {
         role: 'user',
         content: 'Create a survey about our park.',
+        file_ids: [],
         position: 1,
         created_at: '2026-10-01T08:00:00.000Z',
       },
@@ -69,6 +70,7 @@ const conversation = (
       attributes: {
         role: 'assistant',
         content: 'Here is a first draft.',
+        file_ids: [],
         position: 2,
         created_at: '2026-10-01T08:00:10.000Z',
       },
@@ -105,6 +107,7 @@ const renderPanel = () =>
     <AssistantPanel
       contextKey="survey_builder"
       contextId="phase-1"
+      projectId="project-1"
       intro={{ id: 'test.intro', defaultMessage: 'Describe your survey' }}
       toolViews={{}}
       onToolExecuted={jest.fn()}
