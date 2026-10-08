@@ -1652,6 +1652,18 @@
           "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false }
         }
+      },
+
+      "ai_assistant": {
+        "type": "object",
+        "title": "AI assistant",
+        "description": "An AI chat assistant in the back office that proposes changes, such as a survey's questions, for the admin to approve. Only available to super admins for now.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
       }
     },
   "dependencies": {
