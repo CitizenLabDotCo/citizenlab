@@ -84,9 +84,8 @@ export default defineMessages({
     defaultMessage: 'Field only visible to admins',
   },
   notPublic: {
-    id: 'app.components.CustomFieldsForm.notPublic1',
-    defaultMessage:
-      '*This answer will only be shared with project managers, and not to the public.',
+    id: 'app.components.CustomFieldsForm.notPublic2',
+    defaultMessage: 'Only project moderators see this answer',
   },
   selectBetween: {
     id: 'app.components.CustomFieldsForm.selectBetween',
