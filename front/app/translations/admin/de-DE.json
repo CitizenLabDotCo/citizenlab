@@ -1727,7 +1727,7 @@
   "app.containers.Admin.projects.project.extras2": "Zusätzliche Umfragen",
   "app.containers.Admin.projects.project.filesCount": "{count, plural, one {# Datei} other {# Dateien}}",
   "app.containers.Admin.projects.project.filesDescription": "Dokumente und Aufnahmen, die diesem Projekt als zusätzlicher Beitrag hinzugefügt wurden.",
-  "app.containers.Admin.projects.project.filesSection": "360-Input",
+  "app.containers.Admin.projects.project.filesSection": "Datenportal",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Bitte wählen Sie einen Bereich aus.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Space",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.tooltip3": "Sie können den Ordner einem Space hinzufügen",
