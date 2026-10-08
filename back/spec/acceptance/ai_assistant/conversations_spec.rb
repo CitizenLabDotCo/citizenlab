@@ -131,6 +131,15 @@ resource 'AI assistant conversations' do
         )
       end
 
+      example 'Expire the proposals of the previous conversation', document: false do
+        previous = create(:ai_assistant_tool_call, message: create(:ai_assistant_message, role: 'assistant', conversation: create(:ai_assistant_conversation, user: super_admin, subject: phase, status: 'awaiting_approval')))
+
+        do_request
+
+        assert_status 201
+        expect(previous.reload.status).to eq('expired')
+      end
+
       example '[error] Start a conversation on an unknown surface', document: false do
         do_request(ai_assistant_conversation: { surface_key: 'nope', subject_id:, locale: })
         assert_status 422
