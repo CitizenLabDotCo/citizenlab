@@ -87,9 +87,17 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf',
     defaultMessage: 'Download PDF',
   },
-  recentlyApprovedTitle: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle',
-    defaultMessage: 'Recently approved ({count})',
+  approvedInputsTitle: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.approvedInputsTitle',
+    defaultMessage: 'Approved inputs',
+  },
+  approvedReadOnlyNotice: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.approvedReadOnlyNotice',
+    defaultMessage: 'This input is approved. Undo the approval to edit it.',
+  },
+  showMoreApprovedInputs: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs',
+    defaultMessage: 'Show more',
   },
   undoApproval: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval',

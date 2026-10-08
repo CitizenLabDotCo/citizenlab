@@ -4,7 +4,7 @@ import { Box, Title, Text, colors } from '@citizenlab/cl2-component-library';
 
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import useApprovedImportedIdeas from 'api/import_ideas/useApprovedImportedIdeas';
 import useApproveImportedIdeas from 'api/import_ideas/useApproveImportedIdeas';
 import useDeleteAllDraftImportedIdeas from 'api/import_ideas/useDeleteAllDraftImportedIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
@@ -18,13 +18,13 @@ import WarningModal from 'components/WarningModal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
 
+import ApprovedInputsList from './ApprovedInputsList';
 import EmptyState from './EmptyState';
 import IdeaEditor from './IdeaEditor';
 import IdeaList from './IdeaList';
 import ImportStatus from './ImportStatus';
 import messages from './messages';
 import PDFViewer from './PDFViewer';
-import RecentlyApprovedList, { ApprovedIdea } from './RecentlyApprovedList';
 
 const ReviewSection = ({
   onClickPDFImport,
@@ -43,16 +43,14 @@ const ReviewSection = ({
   const [confirmAction, setConfirmAction] = useState<
     'approveAll' | 'removeAll' | null
   >(null);
-  const [approvedThisSession, setApprovedThisSession] = useState<
-    ApprovedIdea[]
-  >([]);
-  const [undoingId, setUndoingId] = useState<string | null>(null);
 
   const {
     data: ideas,
     refetch: refetchIdeas,
     isLoading: isLoadingIdeas,
   } = useImportedIdeas({ projectId, phaseId });
+  const { data: approvedIdeas, isLoading: isLoadingApprovedIdeas } =
+    useApprovedImportedIdeas({ projectId, phaseId });
 
   const {
     importing,
@@ -64,7 +62,6 @@ const ReviewSection = ({
   } = useTrackImportJobProgress(phaseId);
 
   const { mutate: deleteIdea } = useDeleteIdea();
-  const { mutateAsync: updateIdea } = useUpdateIdea();
   const { mutate: approveIdeas, isPending: isApproving } =
     useApproveImportedIdeas();
   const { mutate: deleteAllIdeas, isPending: isDeleting } =
@@ -80,8 +77,18 @@ const ReviewSection = ({
   if (ideas === undefined) return null;
 
   const numIdeas = ideas.data.length;
+  const numApprovedIdeas =
+    approvedIdeas?.pages.flatMap((page) => page.data).length ?? 0;
 
-  if (!importing && !importHasErrors && numIdeas === 0) {
+  // Past approvals keep the review UI reachable: their list is the way back to
+  // an approved input's PDF and answers.
+  if (
+    !importing &&
+    !importHasErrors &&
+    numIdeas === 0 &&
+    !isLoadingApprovedIdeas &&
+    numApprovedIdeas === 0
+  ) {
     return (
       <EmptyState
         onClickPDFImport={onClickPDFImport}
@@ -112,7 +119,6 @@ const ReviewSection = ({
         setApprovals(data.data.attributes);
         setIdeaId(null);
         setConfirmAction(null);
-        refetchIdeas();
       },
     });
   };
@@ -125,23 +131,6 @@ const ReviewSection = ({
         refetchIdeas();
       },
     });
-  };
-
-  const handleIdeaApproved = (approved: ApprovedIdea) => {
-    setApprovedThisSession((prev) => [approved, ...prev]);
-  };
-
-  const handleUndoApproval = async (id: string) => {
-    setUndoingId(id);
-    try {
-      await updateIdea({
-        id,
-        requestBody: { publication_status: 'draft' },
-      });
-      setApprovedThisSession((prev) => prev.filter((i) => i.id !== id));
-    } finally {
-      setUndoingId(null);
-    }
   };
 
   return (
@@ -240,10 +229,9 @@ const ReviewSection = ({
               onDeleteIdea={handleDeleteIdea}
             />
           </Box>
-          <RecentlyApprovedList
-            ideas={approvedThisSession}
-            onUndo={handleUndoApproval}
-            undoingId={undoingId}
+          <ApprovedInputsList
+            selectedIdeaId={ideaId}
+            onSelectIdea={handleSelectIdea}
           />
         </Box>
         <Box
@@ -254,11 +242,7 @@ const ReviewSection = ({
           alignItems="center"
           h="100%"
         >
-          <IdeaEditor
-            ideaId={ideaId}
-            setIdeaId={setIdeaId}
-            onIdeaApproved={handleIdeaApproved}
-          />
+          <IdeaEditor ideaId={ideaId} setIdeaId={setIdeaId} />
         </Box>
         <Box w="40%">
           {ideaMetadata && ideaId && importType === 'pdf' && (

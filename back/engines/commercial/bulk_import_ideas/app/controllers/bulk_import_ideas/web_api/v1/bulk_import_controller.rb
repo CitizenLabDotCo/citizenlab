@@ -3,7 +3,7 @@
 module BulkImportIdeas
   class WebApi::V1::BulkImportController < ApplicationController
     skip_before_action :authenticate_user, only: %i[export_form]
-    before_action :authorize_bulk_import_ideas, only: %i[bulk_create_async export_form draft_records approve_all delete_all]
+    before_action :authorize_bulk_import_ideas, only: %i[bulk_create_async export_form draft_records approved_records approve_all delete_all]
 
     CONSTANTIZER = {
       'idea' => {
@@ -111,6 +111,17 @@ module BulkImportIdeas
       )
     end
 
+    def approved_records
+      send_not_found unless supported_model?
+
+      render json: linked_json(
+        paginate(imported_approved_records),
+        serializer,
+        include: %i[author idea_import],
+        params: jsonapi_serializer_params
+      )
+    end
+
     # Show the metadata of a single imported idea
     # NOTE: When other model types (eg comments) are supported, IdeaImport & IdeaImportFile will need to be made polymorphic
     def show_idea_import
@@ -207,6 +218,23 @@ module BulkImportIdeas
           .includes(%i[project idea_import author ideas_phases phases input_topics idea_images])
           .includes([idea_import: :file])
           .order(:created_at)
+      end
+    end
+
+    # Published is part of the predicate on purpose: undoing an approval flips the idea
+    # back to draft but does not clear approved_at.
+    def imported_approved_records
+      if params[:model] == 'idea'
+        phase = Phase.find(params[:id])
+        creation_phase_id = phase.pmethod.transitive? ? nil : phase.id
+        Idea
+          .published
+          .in_phase(phase)
+          .joins(:idea_import)
+          .where.not(idea_imports: { approved_at: nil })
+          .where(project_id: @project.id, creation_phase_id: creation_phase_id)
+          .includes(%i[author idea_import])
+          .order('idea_imports.approved_at DESC')
       end
     end
   end

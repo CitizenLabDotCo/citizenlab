@@ -10,6 +10,7 @@ export type ImportedIdeaMetadataKeys = Keys<typeof importedIdeaMetadataKeys>;
 export interface QueryParams {
   projectId?: string;
   phaseId?: string;
+  approved?: boolean;
 }
 
 export interface ImportedIdeaMetadataQueryParams {
