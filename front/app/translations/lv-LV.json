@@ -182,7 +182,6 @@
   "app.components.CustomFieldsForm.fileSizeLimit": "Faila lieluma ierobežojums ir {maxFileSize} MB.",
   "app.components.CustomFieldsForm.imageRequired": "Attēls ir nepieciešams",
   "app.components.CustomFieldsForm.minimumCoordinates2": "Nepieciešams vismaz {numPoints} kartes punktu.",
-  "app.components.CustomFieldsForm.notPublic1": "*Šī atbilde tiks izpausta tikai projektu vadītājiem, bet ne sabiedrībai.",
   "app.components.CustomFieldsForm.otherArea": "Kaut kur citur",
   "app.components.CustomFieldsForm.progressBarLabel": "Progress",
   "app.components.CustomFieldsForm.removeAnswer": "Noņemt atbildi",
