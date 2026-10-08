@@ -10,4 +10,13 @@ export default defineMessages({
     id: 'app.components.formBuilder.surveyAssistant.readSurvey',
     defaultMessage: 'the current survey',
   },
+  replaceSurvey: {
+    id: 'app.components.formBuilder.surveyAssistant.replaceSurvey',
+    defaultMessage: 'new survey questions',
+  },
+  replaceWarning: {
+    id: 'app.components.formBuilder.surveyAssistant.replaceWarning',
+    defaultMessage:
+      'Approving replaces all current questions and saves the survey. Unsaved changes in the editor are lost.',
+  },
 });

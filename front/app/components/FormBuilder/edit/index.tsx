@@ -415,7 +415,13 @@ const FormEdit = ({
                     {/* Hidden, not unmounted, so a typed request survives editing a field. */}
                     {assistantEnabled && (
                       <Box display={selectedField ? 'none' : 'block'}>
-                        <SurveyAssistant phaseId={phaseId} />
+                        <SurveyAssistant
+                          phaseId={phaseId}
+                          onFormReplaced={() => {
+                            setSelectedField(undefined);
+                            setIsUpdatingForm(true);
+                          }}
+                        />
                       </Box>
                     )}
                   </Box>
