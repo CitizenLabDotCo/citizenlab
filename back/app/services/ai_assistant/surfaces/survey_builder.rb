@@ -16,7 +16,17 @@ module AIAssistant
         subject.participation_method == 'native_survey'
       end
 
+      def tools
+        @tools ||= [
+          ContextTool.new(tool_class: McpServer::Tools::GetFormFields, bound: container)
+        ]
+      end
+
       private
+
+      def container
+        { container_type: 'phase', container_id: subject.id }
+      end
 
       def surface_prompt(locale:)
         multiloc_service = MultilocService.new
