@@ -17,8 +17,8 @@ FactoryBot.define do
   factory :ai_assistant_tool_call, class: 'AIAssistant::ToolCall' do
     message { association :ai_assistant_message, role: 'assistant', content: nil }
     sequence(:tool_use_id) { |n| "tooluse_#{n}" }
-    name { 'get_form_fields' }
-    arguments { {} }
-    status { 'auto_executed' }
+    name { 'replace_form_fields' }
+    arguments { { 'fields' => [] } }
+    status { 'proposed' }
   end
 end

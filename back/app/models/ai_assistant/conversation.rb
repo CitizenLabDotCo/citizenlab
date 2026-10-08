@@ -30,7 +30,7 @@ module AIAssistant
   # survey of a phase. +surface_key+ says where the assistant is used, which decides its
   # prompt and tools.
   class Conversation < ApplicationRecord
-    STATUSES = %w[idle running failed].freeze
+    STATUSES = %w[idle running awaiting_approval failed].freeze
     # A running turn stores a message more often than this, unless its job was lost.
     TURN_TIMEOUT = 10.minutes
 
@@ -56,6 +56,16 @@ module AIAssistant
       return unless running? && updated_at < TURN_TIMEOUT.ago
 
       fail_turn!('turn_timed_out')
+    end
+
+    # The proposals can no longer be decided on: the model will see them as expired.
+    def expire_proposals!
+      transaction do
+        tool_calls.proposed.find_each do |tool_call|
+          tool_call.update!(status: 'expired', result: { expired: true }.to_json)
+        end
+        update!(status: 'idle') if awaiting_approval?
+      end
     end
   end
 end
