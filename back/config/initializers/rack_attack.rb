@@ -274,6 +274,18 @@ class Rack::Attack
     end
   end
 
+  # AI assistant turns (a new message, or a decision on a proposed change), which run LLM
+  # calls.
+  AI_ASSISTANT_TURN_PATH = %r{\A/web_api/v1/ai_assistant_(conversations/[^/]+/messages|tool_calls/[^/]+/(approve|reject))\z}
+
+  throttle('ai_assistant_turns/user', limit: 60, period: 1.hour) do |req|
+    USER_ID_FROM_JWT.call(req) if req.post? && AI_ASSISTANT_TURN_PATH.match?(req.path)
+  end
+
+  throttle('ai_assistant_turns/ip', limit: 120, period: 1.hour) do |req|
+    req.remote_ip if req.post? && AI_ASSISTANT_TURN_PATH.match?(req.path)
+  end
+
   # Similar inputs responses by IP.
   throttle('similar_ideas/ip', limit: 5, period: 1.second) do |req|
     if %r{\A/web_api/v1/phases/[^/]+/inputs/similar\z}.match?(req.path) && req.post?
