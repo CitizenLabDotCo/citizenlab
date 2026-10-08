@@ -331,29 +331,8 @@ export default defineMessages({
     id: 'app.containers.Admin.Users.EmailBounces.emailBouncesNone',
     defaultMessage: 'No email addresses have bounced.',
   },
-  clearEmailBounce: {
-    id: 'app.containers.Admin.Users.EmailBounces.clearEmailBounce',
-    defaultMessage: 'Clear bounce',
-  },
-  clearEmailBounceTitle: {
-    id: 'app.containers.Admin.Users.EmailBounces.clearEmailBounceTitle',
-    defaultMessage: 'Clear email bounce for {email}?',
-  },
-  clearEmailBounceBouncedOn: {
-    id: 'app.containers.Admin.Users.EmailBounces.clearEmailBounceBouncedOn',
-    defaultMessage: 'This email address permanently bounced on {date}.',
-  },
-  clearEmailBounceReason: {
-    id: 'app.containers.Admin.Users.EmailBounces.clearEmailBounceReason',
-    defaultMessage: 'Reason: {reason}',
-  },
-  clearEmailBounceWarning: {
-    id: 'app.containers.Admin.Users.EmailBounces.clearEmailBounceWarning',
-    defaultMessage:
-      "Only clear this if you're confident the address now works. Sending to addresses that bounce can damage the platform's email sending reputation and lead to email sending being suspended.",
-  },
-  clearEmailBounceCancel: {
-    id: 'app.containers.Admin.Users.EmailBounces.clearEmailBounceCancel',
-    defaultMessage: 'Cancel',
+  emailBouncesDeleteUser: {
+    id: 'app.containers.Admin.Users.EmailBounces.emailBouncesDeleteUser',
+    defaultMessage: 'Delete user',
   },
 });

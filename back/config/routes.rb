@@ -154,7 +154,7 @@ Rails.application.routes.draw do
         end
 
         member do
-          patch :block, :unblock, :clear_email_bounce
+          patch :block, :unblock
           get 'ideas_count'
           get 'comments_count'
           get 'participation_stats'

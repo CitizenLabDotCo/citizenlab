@@ -3,14 +3,15 @@ import React, { useState } from 'react';
 import { Tr, Td, Button } from '@citizenlab/cl2-component-library';
 import { FormattedDate } from 'react-intl';
 
+import useAuthUser from 'api/me/useAuthUser';
 import { IUserData } from 'api/users/types';
+
+import UserDeleteModal from 'components/admin/UserDeleteModal';
 
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
 import messages from '../../messages';
-
-import ClearEmailBounceModal from './ClearEmailBounceModal';
 
 interface Props {
   user: IUserData;
@@ -19,6 +20,7 @@ interface Props {
 const EmailBounceRow = ({ user }: Props) => {
   const { formatMessage } = useIntl();
   const [modalOpened, setModalOpened] = useState(false);
+  const { data: authUser } = useAuthUser();
   const { email, email_bounced_at, email_bounce_reason } = user.attributes;
 
   if (!email || !email_bounced_at) return null;
@@ -32,20 +34,19 @@ const EmailBounceRow = ({ user }: Props) => {
       </Td>
       <Td>{email_bounce_reason}</Td>
       <Td>
-        <Button
-          buttonStyle="secondary-outlined"
-          size="s"
-          onClick={() => setModalOpened(true)}
-        >
-          {formatMessage(messages.clearEmailBounce)}
-        </Button>
+        {/* Matches the users table: admins can't delete themselves */}
+        {authUser?.data.id !== user.id && (
+          <Button
+            buttonStyle="delete"
+            icon="delete"
+            size="s"
+            onClick={() => setModalOpened(true)}
+          >
+            {formatMessage(messages.emailBouncesDeleteUser)}
+          </Button>
+        )}
         {modalOpened && (
-          <ClearEmailBounceModal
-            user={user}
-            email={email}
-            bouncedAt={email_bounced_at}
-            setClose={() => setModalOpened(false)}
-          />
+          <UserDeleteModal user={user} setClose={() => setModalOpened(false)} />
         )}
       </Td>
     </Tr>

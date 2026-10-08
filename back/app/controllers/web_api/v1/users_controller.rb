@@ -6,7 +6,7 @@ class WebApi::V1::UsersController < ApplicationController
   include EnforceUserSso
 
   before_action :sso_enforced?, only: %i[check_email create]
-  before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock clear_email_bounce participation_stats]
+  before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock participation_stats]
   skip_before_action :authenticate_user, only: %i[create create_phone show check_email check_phone by_invite ideas_count comments_count]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -306,13 +306,6 @@ class WebApi::V1::UsersController < ApplicationController
     else
       render json: { errors: @user.errors.details }, status: :unprocessable_entity
     end
-  end
-
-  def clear_email_bounce
-    authorize @user, :clear_email_bounce?
-    EmailCampaigns::EmailBounceService.new.clear(@user)
-
-    render json: WebApi::V1::UserSerializer.new(@user, params: jsonapi_serializer_params).serializable_hash
   end
 
   def ideas_count
