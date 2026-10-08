@@ -3,16 +3,16 @@ import React, { ReactNode } from 'react';
 import { act, renderHook } from 'utils/testUtils/rtl';
 
 import {
-  PhaseSaveProvider,
+  PageSaveProvider,
   SaveReason,
-  usePhaseSave,
-  useRegisterPhaseSaver,
-} from './PhaseSaveContext';
+  usePageSave,
+  useRegisterPageSaver,
+} from './PageSaveContext';
 
 type Saver = { dirty: boolean; save: (reason: SaveReason) => Promise<void> };
 
 const wrapper = ({ children }: { children: ReactNode }) => (
-  <PhaseSaveProvider>{children}</PhaseSaveProvider>
+  <PageSaveProvider>{children}</PageSaveProvider>
 );
 
 const clean: Saver = { dirty: false, save: () => Promise.resolve() };
@@ -22,14 +22,14 @@ type Panels = { build?: Saver; settings?: Saver };
 const renderPanels = (panels: Panels) =>
   renderHook(
     ({ build = clean, settings = clean }: Panels) => {
-      useRegisterPhaseSaver('build', build);
-      useRegisterPhaseSaver('settings', settings);
-      return usePhaseSave();
+      useRegisterPageSaver('build', build);
+      useRegisterPageSaver('settings', settings);
+      return usePageSave();
     },
     { wrapper, initialProps: panels }
   );
 
-describe('PhaseSaveContext', () => {
+describe('PageSaveContext', () => {
   it('is dirty while any panel has changes', () => {
     const save = jest.fn().mockResolvedValue(undefined);
     const { result, rerender } = renderPanels({

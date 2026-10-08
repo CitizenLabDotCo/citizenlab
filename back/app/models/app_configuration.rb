@@ -159,6 +159,10 @@ class AppConfiguration < ApplicationRecord
   def feature_activated?(setting_name)
     return true if Current.early_access_overrides.include?(setting_name)
 
+    feature_activated_on_platform?(setting_name)
+  end
+
+  def feature_activated_on_platform?(setting_name)
     settings[setting_name]&.values_at('enabled', 'allowed')&.all?
   end
 
