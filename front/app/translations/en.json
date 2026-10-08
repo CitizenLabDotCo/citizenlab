@@ -1157,7 +1157,7 @@
   "app.components.formBuilder.stronglyDisagree": "Strongly disagree",
   "app.components.formBuilder.supportArticleLinkText": "this page",
   "app.components.formBuilder.surveyAssistant.endPage": "End page",
-  "app.components.formBuilder.surveyAssistant.intro": "Describe what you want to learn. The assistant proposes the questions, and nothing changes until you approve.",
+  "app.components.formBuilder.surveyAssistant.intro2": "Describe what you want to learn, or attach a document. The assistant proposes the questions, and nothing changes until you approve.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# page} other {# pages}}, {questions, plural, one {# question} other {# questions}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "Page {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "the current survey",
