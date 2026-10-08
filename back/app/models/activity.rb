@@ -28,8 +28,9 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Activity < ApplicationRecord
-  # Activity origin: 'mcp' for MCP-originated, nil for the web/API path.
-  CHANNELS = %w[mcp].freeze
+  # Activity origin: 'mcp' for MCP-originated, 'ai_assistant' for tools run by the in-app
+  # AI assistant, nil for the web/API path.
+  CHANNELS = %w[mcp ai_assistant].freeze
 
   MANAGEMENT_FILTERS = [
     { item_type: 'Idea', actions: %w[created changed deleted] },
