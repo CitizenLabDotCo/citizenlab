@@ -2,7 +2,7 @@
 
 module AIAssistant
   # Where the assistant is used (e.g. the survey builder): which record it is about (the
-  # subject), who may use it there, and its instructions.
+  # subject), who may use it there, its instructions, and the tools it may call.
   class Surface
     class UnknownKeyError < StandardError; end
 
@@ -38,6 +38,14 @@ module AIAssistant
 
     def accessible_by?(user)
       Pundit.policy!(user, subject).update?
+    end
+
+    def tools
+      raise NotImplementedError
+    end
+
+    def tool(name)
+      tools.find { |tool| tool.name == name }
     end
 
     def system_prompt(locale:)
