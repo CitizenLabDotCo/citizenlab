@@ -28,7 +28,7 @@ module AIAssistant
   # A chat between a user and the AI assistant about one record (the context), e.g. the
   # survey of a phase. +context_key+ says which assistant context (prompt and tools) applies.
   class Conversation < ApplicationRecord
-    STATUSES = %w[idle running failed].freeze
+    STATUSES = %w[idle running awaiting_approval failed].freeze
 
     belongs_to :user
     belongs_to :context, polymorphic: true
@@ -39,5 +39,15 @@ module AIAssistant
     enum :status, STATUSES.index_by(&:itself)
 
     validates :context_key, :locale, presence: true
+
+    # The proposals can no longer be decided on: the model will see them as expired.
+    def expire_proposals!
+      transaction do
+        tool_calls.proposed.find_each do |tool_call|
+          tool_call.update!(status: 'expired', result: { expired: true }.to_json)
+        end
+        update!(status: 'idle') if awaiting_approval?
+      end
+    end
   end
 end
