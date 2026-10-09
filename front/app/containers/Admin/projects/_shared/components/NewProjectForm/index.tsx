@@ -1,41 +1,45 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 
-import { Box, Button, Radio, Text } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
 
-import { IUpdatedProjectProperties } from 'api/projects/types';
+import { Visibility } from 'api/projects/types';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 
 import generalMessages from 'containers/Admin/projects/project/general/messages';
 
-import { SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
 import validateTitle from 'utils/validateTitle';
 
-import ProjectContextSection from '../ProjectSetupForm/ProjectContextSection';
+import { FIND_OPTIONS, Listed, OPEN_OPTIONS } from '../../visibilityOptions';
+import visibilityMessages from '../../visibilityOptions/messages';
+import ProjectContextPickers from '../ProjectContextPickers';
 import { SpaceAndFolderId } from '../ProjectSetupForm/ProjectContextSection/types';
-import ProjectNameInput from '../ProjectSetupForm/ProjectNameInput';
 
+import ChoiceRadio from './ChoiceRadio';
+import FormSection from './FormSection';
+import GroupsPicker from './GroupsPicker';
 import messages from './messages';
 
-interface Props {
-  processing: boolean;
-  failed: boolean;
-  apiErrors: CLErrors;
-  onCancel: () => void;
-  onSubmit: (attributes: IUpdatedProjectProperties) => void;
+export interface NewProjectValues extends SpaceAndFolderId {
+  title_multiloc: Multiloc;
+  listed: boolean;
+  visible_to: Visibility;
+  groupIds: string[];
 }
 
-const NewProjectForm = ({
-  processing,
-  failed,
-  apiErrors,
-  onCancel,
-  onSubmit,
-}: Props) => {
+interface Props {
+  id: string;
+  failed: boolean;
+  apiErrors: CLErrors;
+  onSubmit: (values: NewProjectValues) => void;
+}
+
+const NewProjectForm = ({ id, failed, apiErrors, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
   const locales = useAppConfigurationLocales();
 
@@ -45,7 +49,10 @@ const NewProjectForm = ({
     space_id: null,
     folder_id: null,
   });
-  const [listed, setListed] = useState(true);
+  const [listed, setListed] = useState<Listed>('listed');
+  const [visibleTo, setVisibleTo] = useState<Visibility>('admins');
+  const [groupIds, setGroupIds] = useState<string[]>([]);
+  const [groupsError, setGroupsError] = useState(false);
 
   if (!locales) return null;
 
@@ -54,94 +61,108 @@ const NewProjectForm = ({
     setTitleError(null);
   };
 
-  const handleSubmit = () => {
+  const handleGroupsChange = (groupIds: string[]) => {
+    setGroupIds(groupIds);
+    setGroupsError(false);
+  };
+
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+
     const error = validateTitle(
       locales,
       titleMultiloc,
-      formatMessage(generalMessages.noTitleErrorMessage)
+      formatMessage(
+        locales.length === 1
+          ? messages.titleRequiredSingleLocale
+          : messages.titleRequired
+      )
     );
+    const hasTitleError = Object.keys(error).length > 0;
+    const hasGroupsError = visibleTo === 'groups' && groupIds.length === 0;
 
-    if (Object.keys(error).length > 0) {
-      setTitleError(error);
-      return;
-    }
+    setTitleError(hasTitleError ? error : null);
+    setGroupsError(hasGroupsError);
+    if (hasTitleError || hasGroupsError) return;
 
-    onSubmit({ title_multiloc: titleMultiloc, listed, ...context });
+    onSubmit({
+      title_multiloc: titleMultiloc,
+      listed: listed === 'listed',
+      visible_to: visibleTo,
+      groupIds: visibleTo === 'groups' ? groupIds : [],
+      ...context,
+    });
   };
 
   return (
-    <Box display="flex" flexDirection="column" gap="24px">
-      <ProjectNameInput
-        titleMultiloc={titleMultiloc}
-        titleError={titleError}
-        apiErrors={apiErrors}
-        handleTitleMultilocOnChange={handleTitleChange}
-      />
-
-      <ProjectContextSection
-        spaceId={context.space_id}
-        folderId={context.folder_id}
-        projectInRoot
-        error={false}
-        onChange={setContext}
-      />
-
+    <Box
+      as="form"
+      id={id}
+      onSubmit={handleSubmit}
+      display="flex"
+      flexDirection="column"
+      gap="24px"
+      className="intercom-projects-new-project-name"
+    >
       <Box>
-        <SubSectionTitle>
-          {formatMessage(messages.whoCanFindIt)}
-        </SubSectionTitle>
-        <Radio
-          name="project-discoverability"
-          value={true}
-          currentValue={listed}
-          label={
-            <Box>
-              <Text color="primary" fontWeight="bold" mt="-1px" mb="0px">
-                {formatMessage(messages.public)}
-              </Text>
-              <Text color="primary" fontSize="s" mt="4px" mb="0px">
-                {formatMessage(messages.publicDescription)}
-              </Text>
-            </Box>
-          }
-          onChange={() => setListed(true)}
+        <InputMultilocWithLocaleSwitcher
+          id="e2e-project-title-setting-field"
+          type="text"
+          variant="bo"
+          valueMultiloc={titleMultiloc}
+          onChange={handleTitleChange}
+          placeholder={formatMessage(messages.titlePlaceholder)}
+          ariaLabel={formatMessage(generalMessages.projectName)}
+          errorMultiloc={titleError}
+          autoFocus
         />
-        <Radio
-          name="project-discoverability"
-          value={false}
-          currentValue={listed}
-          label={
-            <Box>
-              <Text color="primary" fontWeight="bold" mt="-1px" mb="0px">
-                {formatMessage(messages.private)}
-              </Text>
-              <Text color="primary" fontSize="s" mt="4px" mb="0px">
-                {formatMessage(messages.privateDescription)}
-              </Text>
-            </Box>
-          }
-          onChange={() => setListed(false)}
+        <Error
+          fieldName="title_multiloc"
+          apiErrors={apiErrors.title_multiloc}
         />
       </Box>
+
+      <FormSection label={formatMessage(messages.context)}>
+        <ProjectContextPickers
+          spaceId={context.space_id}
+          folderId={context.folder_id}
+          projectInRoot
+          onChange={setContext}
+        />
+      </FormSection>
+
+      <FormSection label={formatMessage(visibilityMessages.publishWhoCanFind)}>
+        {FIND_OPTIONS.map((option) => (
+          <ChoiceRadio<Listed>
+            key={option.value}
+            name="new-project-find"
+            option={option}
+            currentValue={listed}
+            onChange={setListed}
+          />
+        ))}
+      </FormSection>
+
+      <FormSection label={formatMessage(visibilityMessages.publishWhoCanOpen)}>
+        {OPEN_OPTIONS.map((option) => (
+          <ChoiceRadio<Visibility>
+            key={option.value}
+            name="new-project-open"
+            option={option}
+            currentValue={visibleTo}
+            onChange={setVisibleTo}
+          />
+        ))}
+        {visibleTo === 'groups' && (
+          <GroupsPicker
+            groupIds={groupIds}
+            showError={groupsError}
+            onChange={handleGroupsChange}
+          />
+        )}
+      </FormSection>
 
       {failed && <Error text={formatMessage(messages.createError)} />}
-
-      <Box display="flex" justifyContent="flex-end" gap="8px">
-        <Button
-          buttonStyle="secondary-outlined"
-          onClick={onCancel}
-          disabled={processing}
-        >
-          {formatMessage(messages.cancel)}
-        </Button>
-        <Button
-          buttonStyle="admin-dark"
-          onClick={handleSubmit}
-          processing={processing}
-        >
-          {formatMessage(messages.createProject)}
-        </Button>
-      </Box>
     </Box>
   );
 };

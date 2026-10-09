@@ -54,21 +54,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.projects.all.createProjectFolder',
     defaultMessage: 'New folder',
   },
-  fromScratch: {
-    id: 'app.containers.Admin.projects.all.NewProjectModal.fromScratch',
-    defaultMessage: 'Start from scratch',
-  },
-  fromScratchDescription: {
-    id: 'app.containers.Admin.projects.all.NewProjectModal.fromScratchDescription',
-    defaultMessage: 'An empty project you set up yourself.',
+  fromScratchMenuItem: {
+    id: 'app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem',
+    defaultMessage: 'From scratch',
   },
   fromTemplate: {
     id: 'app.containers.Admin.projects.all.NewProjectModal.fromTemplate',
     defaultMessage: 'Start from a template',
   },
-  fromTemplateDescription: {
-    id: 'app.containers.Admin.projects.all.NewProjectModal.fromTemplateDescription',
-    defaultMessage: 'A project that already has its phases and questions.',
+  useTemplateMenuItem: {
+    id: 'app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem',
+    defaultMessage: 'Use a template',
   },
   newProject: {
     id: 'app.containers.AdminPage.ProjectEdit.createProject',
@@ -77,5 +73,9 @@ export default defineMessages({
   newSpace: {
     id: 'app.containers.AdminPage.projects.all.newSpace',
     defaultMessage: 'New space',
+  },
+  createProject: {
+    id: 'app.containers.AdminPage.projects.all.createProject',
+    defaultMessage: 'Create',
   },
 });

@@ -98,6 +98,7 @@ interface Props {
   onParticipationLevelFilterChange: (participationLevels: string[]) => void;
   templates: Templates;
   onUseTemplate: (projectTemplateId: string, title: string) => void;
+  variant?: 'default' | 'bo';
 }
 
 const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
@@ -113,6 +114,7 @@ const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
     onDepartmentFilterChange,
     onParticipationLevelFilterChange,
     onUseTemplate,
+    variant,
   }) => {
     const searchPlaceholder = intl.formatMessage(messages.searchPlaceholder);
     const searchAriaLabel = intl.formatMessage(messages.searchPlaceholder);
@@ -136,6 +138,7 @@ const ProjectTemplateCards = memo<Props & WrappedComponentProps>(
               placeholder={searchPlaceholder}
               ariaLabel={searchAriaLabel}
               onChange={onSearchChange}
+              variant={variant}
               // TODO: Fix this the next time the file is edited.
               // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               a11y_numberOfSearchResults={templates?.edges.length || 0}

@@ -205,6 +205,7 @@ export const focusRing = css`
 
 // Back office theme
 const BO_HEADER_FONT_SIZE = '13px';
+const BO_CONTROL_FONT_SIZE = 13;
 
 export const bo = {
   colors: {
@@ -219,6 +220,7 @@ export const bo = {
   borderRadius: '8px',
   panelBorderRadius: '12px',
   headerFontSize: BO_HEADER_FONT_SIZE,
+  controlFontSize: BO_CONTROL_FONT_SIZE,
   buttonMedium: {
     height: '32px',
     padding: '0 16px',

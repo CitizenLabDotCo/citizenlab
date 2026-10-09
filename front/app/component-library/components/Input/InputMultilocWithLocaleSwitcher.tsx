@@ -124,6 +124,7 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
               <StyledLocaleSwitcher
                 onSelectedLocaleChange={handleOnSelectedLocaleChange}
                 locales={!isNilOrError(locales) ? locales : []}
+                variant={props.variant}
                 selectedLocale={selectedLocale}
                 values={{
                   input_field: valueMultiloc as Multiloc,

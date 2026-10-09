@@ -242,9 +242,15 @@ const projectIndexRoute = createRoute({
   component: ProjectIndexRedirect,
 });
 
+const projectPageSearchSchema = yup.object({
+  groups_failed: yup.string().optional(),
+});
+
 const projectPageRoute = createRoute({
   getParentRoute: () => projectRoute,
   path: 'project-page',
+  validateSearch: (search: Record<string, unknown>) =>
+    projectPageSearchSchema.validateSync(search),
   component: () => (
     <PageLoading>
       <AdminProjectPage />

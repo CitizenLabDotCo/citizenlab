@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Dropdown } from '@citizenlab/cl2-component-library';
+import { Box, Dropdown, bo } from '@citizenlab/cl2-component-library';
 
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
@@ -9,8 +9,8 @@ import Button from 'components/UI/ButtonWithLink';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import NewProjectMenuItem from './NewProjectMenuItem';
 import NewProjectModal, { NewProjectMode } from './NewProjectModal';
-import OptionCard from './OptionCard';
 
 const NewProjectButton = () => {
   const { formatMessage } = useIntl();
@@ -45,6 +45,8 @@ const NewProjectButton = () => {
         icon="plus-circle"
         buttonStyle="admin-dark"
         onClick={() => setDropdownOpened(!dropdownOpened)}
+        aria-haspopup="menu"
+        aria-expanded={dropdownOpened}
       >
         <FormattedMessage {...messages.newProject} />
       </Button>
@@ -52,20 +54,20 @@ const NewProjectButton = () => {
       <Dropdown
         opened={dropdownOpened}
         onClickOutside={() => setDropdownOpened(false)}
-        width="380px"
+        top="calc(100% + 6px)"
         right="0px"
+        width="200px"
+        borderRadius={bo.borderRadius}
         content={
-          <Box>
-            <OptionCard
-              icon="plus"
-              title={formatMessage(messages.fromScratch)}
-              description={formatMessage(messages.fromScratchDescription)}
+          <Box role="menu">
+            <NewProjectMenuItem
+              icon="page"
+              label={formatMessage(messages.fromScratchMenuItem)}
               onClick={() => openModal('scratch')}
             />
-            <OptionCard
-              icon="copy"
-              title={formatMessage(messages.fromTemplate)}
-              description={formatMessage(messages.fromTemplateDescription)}
+            <NewProjectMenuItem
+              icon="grid"
+              label={formatMessage(messages.useTemplateMenuItem)}
               onClick={() => openModal('template')}
             />
           </Box>
