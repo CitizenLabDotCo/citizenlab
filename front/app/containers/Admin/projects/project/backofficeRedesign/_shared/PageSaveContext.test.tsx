@@ -102,4 +102,21 @@ describe('PageSaveContext', () => {
     expect(result.current?.dirty).toBe(false);
     expect(result.current?.revision).toBe(1);
   });
+
+  it('lets one navigation through after leave, until the changes change', () => {
+    const save = jest.fn().mockResolvedValue(undefined);
+    const { result, rerender } = renderPanels({ build: { dirty: true, save } });
+
+    expect(result.current?.isLeaving()).toBe(false);
+
+    act(() => {
+      result.current?.leave();
+    });
+
+    expect(result.current?.isLeaving()).toBe(true);
+
+    rerender({ build: { dirty: false, save } });
+
+    expect(result.current?.isLeaving()).toBe(false);
+  });
 });

@@ -35,6 +35,8 @@ interface Props {
   project: IProjectData;
   phase?: IPhaseData;
   draftLabel?: string;
+  draftParentLabel?: string;
+  saveLabel?: string;
   activeView: PhaseViewKey;
   section?: ProjectSection;
   openDropdown: HeaderDropdownName | null;
@@ -45,6 +47,8 @@ const WorkspaceHeader = ({
   project,
   phase,
   draftLabel,
+  draftParentLabel,
+  saveLabel,
   activeView,
   section,
   openDropdown,
@@ -63,6 +67,7 @@ const WorkspaceHeader = ({
         params: { projectId: project.id },
       },
     },
+    ...(draftParentLabel ? [{ label: draftParentLabel }] : []),
     ...(phase ? [{ label: localize(phase.attributes.title_multiloc) }] : []),
     ...(draftLabel ? [{ label: draftLabel }] : []),
   ];
@@ -118,6 +123,7 @@ const WorkspaceHeader = ({
             />
             <Breadcrumbs
               breadcrumbs={phaseCrumbs}
+              separator={draftParentLabel ? 'chevron' : 'slash'}
               variant="backofficeRedesign"
               highlightCurrentPage
             />
@@ -152,7 +158,7 @@ const WorkspaceHeader = ({
         gap="8px"
       >
         {inPhase ? (
-          <SaveChangesButton />
+          <SaveChangesButton label={saveLabel} />
         ) : (
           <>
             <Tooltip

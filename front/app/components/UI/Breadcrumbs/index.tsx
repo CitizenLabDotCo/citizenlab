@@ -67,11 +67,15 @@ const HeaderCrumb = styled.span`
   font-size: ${bo.headerFontSize};
   font-weight: 400;
   line-height: 1.5;
+  color: ${colors.textSecondary};
 `;
 
 const HeaderCurrentCrumb = styled(HeaderCrumb)`
   font-weight: 500;
   color: ${bo.colors.textHeadingStrong};
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 interface Props {
@@ -100,7 +104,7 @@ const Breadcrumbs = ({
     ICON_AND_SEPARATOR[variant];
 
   return (
-    <Box display="flex" alignItems="center">
+    <Box display="flex" alignItems="center" minWidth="0">
       {icon && (
         <Icon
           name={icon}
@@ -119,6 +123,7 @@ const Breadcrumbs = ({
             key={label}
             display="flex"
             alignItems="center"
+            minWidth={isLastBreadcrumb ? '0' : undefined}
             color="textSecondary"
             data-cy={`breadcrumbs-${label}`}
           >

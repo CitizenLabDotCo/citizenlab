@@ -8,7 +8,11 @@ import { useIntl } from 'utils/cl-intl';
 
 import { usePageSave } from '../_shared/PageSaveContext';
 
-const SaveChangesButton = () => {
+interface Props {
+  label?: string;
+}
+
+const SaveChangesButton = ({ label }: Props) => {
   const { formatMessage } = useIntl();
   const pageSave = usePageSave();
 
@@ -25,7 +29,7 @@ const SaveChangesButton = () => {
       processing={pageSave.saving}
       onClick={() => pageSave.saveAll('button')}
     >
-      {formatMessage(phaseSetupMessages.saveChangesLabel)}
+      {label ?? formatMessage(phaseSetupMessages.saveChangesLabel)}
     </Button>
   );
 };

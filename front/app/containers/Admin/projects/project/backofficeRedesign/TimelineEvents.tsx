@@ -70,13 +70,11 @@ const TimelineEvents = ({ projectId }: Props) => {
         pl="12px"
         mb="12px"
       >
-        <Link to="/admin/projects/$projectId/events" params={{ projectId }}>
-          <Box as="h4" m="0">
-            <Text as="span" variant="boSection" m="0">
-              {formatMessage(messages.eventsSection)}
-            </Text>
-          </Box>
-        </Link>
+        <Box as="h4" m="0">
+          <Text as="span" variant="boSection" m="0">
+            {formatMessage(messages.eventsSection)}
+          </Text>
+        </Box>
         <Tooltip
           content={formatMessage(messages.newEvent)}
           theme="dark"

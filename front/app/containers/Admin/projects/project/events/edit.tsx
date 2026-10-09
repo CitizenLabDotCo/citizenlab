@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FormEvent, lazy } from 'react';
+import React, { FormEvent, lazy } from 'react';
 
 import {
   Box,
@@ -12,29 +12,12 @@ import {
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { isEmpty, get, isError } from 'lodash-es';
 import { useTheme } from 'styled-components';
-import { Multiloc, UploadFile } from 'typings';
+import { Multiloc } from 'typings';
 
-import useAddEventImage from 'api/event_images/useAddEventImage';
-import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
-import useEventImage from 'api/event_images/useEventImage';
-import useUpdateEventImage from 'api/event_images/useUpdateEventImage';
-import { IEvent, IEventProperties } from 'api/events/types';
-import useAddEvent from 'api/events/useAddEvent';
-import useEvent from 'api/events/useEvent';
-import useUpdateEvent from 'api/events/useUpdateEvent';
-import { IFileAttachmentData } from 'api/file_attachments/types';
-import useFileAttachments from 'api/file_attachments/useFileAttachments';
-import { IFileData } from 'api/files/types';
-import useAddFile from 'api/files/useAddFile';
-
-import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocale from 'hooks/useLocale';
-import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
-import { useRegisterPageSaver } from 'containers/Admin/projects/project/backofficeRedesign/_shared/PageSaveContext';
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
@@ -51,627 +34,49 @@ import QuillMultilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMult
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import {
-  convertUrlToUploadFile,
-  generateTemporaryFileAttachment,
-} from 'utils/fileUtils';
 import { isNilOrError } from 'utils/helperUtils';
-import { geocode } from 'utils/locationTools';
 import { useParams } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import DateTimeSelection from './components/DateTimeSelection';
 import messages from './messages';
-import { SubmitState, ErrorType, ApiErrorType } from './types';
-import { initializeEventTimes } from './utils';
+import useEventForm from './useEventForm';
 
 const EventMap = lazy(() => import('./components/EventMap'));
 
 const AdminProjectEventEdit = () => {
-  const { id: eventId, projectId } = useParams({ strict: false });
-
-  const isCreatingNewEvent = !eventId;
-
-  const { width, containerRef } = useContainerWidthAndHeight();
+  const { projectId } = useParams({
+    from: '/$locale/admin/projects/$projectId',
+  });
+  const { id: eventId } = useParams({ strict: false });
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const locale = useLocale();
-  const redesignEnabled = useProjectBackofficeRedesign();
+  const { width, containerRef } = useContainerWidthAndHeight();
+  const form = useEventForm({ projectId, eventId });
+  const { attributes, errors } = form;
 
-  const { mutate: addEvent } = useAddEvent();
-  const { data: event, isLoading } = useEvent(eventId);
-  const { mutate: updateEvent } = useUpdateEvent();
-
-  // event file attachments
-  const syncEventFiles = useSyncFiles();
-  const { mutate: addFile, isPending: isAddingFile } = useAddFile();
-  const { data: remoteEventFileAttachments } = useFileAttachments({
-    attachable_id: event?.data.id,
-    attachable_type: 'Event',
-  });
-
-  // event image
-  const { mutate: addEventImage } = useAddEventImage();
-  const { mutate: updateEventImage } = useUpdateEventImage();
-  const { mutate: deleteEventImage } = useDeleteEventImage();
-  const { data: remoteEventImage } = useEventImage(event?.data);
-
-  // state
-  const [errors, setErrors] = useState<ErrorType>({});
-  const [apiErrors, setApiErrors] = useState<ApiErrorType>({});
-  const [saving, setSaving] = useState<boolean>(false);
-  const [submitState, setSubmitState] = useState<SubmitState>('disabled');
-  const [eventFileAttachments, setEventFileAttachments] = useState<
-    IFileAttachmentData[]
-  >(remoteEventFileAttachments?.data || []);
-  const [fileAttachmentsChanged, setFileAttachmentsChanged] = useState(false);
-  const [croppedImgBase64, setCroppedImgBase64] = useState<string | null>(null);
-
-  const [attributeDiff, setAttributeDiff] = useState<IEventProperties>(
-    isCreatingNewEvent ? initializeEventTimes() : {}
-  );
-
-  const [registerButtonOptionsVisible, setRegisterButtonOptionsVisible] =
-    useState(false);
-  const [registrationLimitVisible, setRegistrationLimitVisible] =
-    useState(false);
-  const [uploadedImage, setUploadedImage] = useState<UploadFile | null>(null);
-  const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>(
-    event?.data.attributes.location_point_geojson || null
-  );
-  const [geocodedPoint, setGeocodedPoint] = useState<GeoJSON.Point | null>(
-    null
-  );
-  const [eventFileAttachmentsToRemove, setEventFileAttachmentsToRemove] =
-    useState<IFileAttachmentData[]>([]);
-  const [successfulGeocode, setSuccessfulGeocode] = useState(false);
-  const [eventImageAltText, setEventImagealtText] = useState<Multiloc | null>(
-    null
-  );
-  const [hasAltTextChanged, setHasAltTextChanged] = useState(false);
-
-  // Remote values
-  const remotePoint = event?.data.attributes.location_point_geojson;
-
-  const eventAttrs = event
-    ? // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      {
-        ...event.data.attributes,
-        ...attributeDiff,
-      }
-    : { ...attributeDiff };
-
-  // Set image value to remote image if present
-  useEffect(() => {
-    async function convertRemoteImage() {
-      if (remoteEventImage) {
-        const imageUrl = remoteEventImage.data.attributes.versions.medium;
-        const altTextValue = remoteEventImage.data.attributes.alt_text_multiloc;
-        if (imageUrl) {
-          const imageFile = await convertUrlToUploadFile(imageUrl);
-          setUploadedImage(imageFile);
-          setEventImagealtText(altTextValue);
-          setHasAltTextChanged(false);
-        }
-      }
-    }
-    if (remoteEventImage) {
-      convertRemoteImage();
-    }
-  }, [remoteEventImage]);
-
-  // If there is already a remote point, set successful geocode value to true
-  useEffect(() => {
-    if (!isNilOrError(remotePoint)) {
-      setLocationPoint(() => remotePoint);
-      setSuccessfulGeocode(true);
-    }
-  }, [remotePoint]);
-
-  useEffect(() => {
-    if (typeof eventAttrs.maximum_attendees === 'number') {
-      // If we have a maximum number of attendees, we want to ensure the toggle is on
-      setRegistrationLimitVisible(true);
-    }
-  }, [eventAttrs.maximum_attendees]);
-
-  // If there is a custom button url, set the state accordingly
-  useEffect(() => {
-    if (eventAttrs.using_url) {
-      setRegisterButtonOptionsVisible(true);
-    }
-  }, [eventAttrs.using_url]);
-
-  // When address 1 is updated, geocode the location point to match
-  useEffect(() => {
-    if (eventAttrs.address_1 !== event?.data.attributes.address_1) {
-      const delayDebounceFn = setTimeout(async () => {
-        const point = eventAttrs.address_1
-          ? await geocode(eventAttrs.address_1)
-          : null;
-        setGeocodedPoint(point);
-        setLocationPoint(point);
-        setSuccessfulGeocode(!!point);
-      }, 500);
-
-      return () => clearTimeout(delayDebounceFn);
-    }
-    setSuccessfulGeocode(false);
-    return;
-  }, [eventAttrs.address_1, event]);
-
-  // Set event file attachments to remote event file attachments
-  useEffect(() => {
-    if (!isNilOrError(remoteEventFileAttachments)) {
-      setEventFileAttachments(remoteEventFileAttachments.data);
-    }
-  }, [remoteEventFileAttachments]);
-
-  const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
-    setSubmitState('enabled');
-    setAttributeDiff({
-      ...attributeDiff,
-      title_multiloc: titleMultiloc,
-    });
-  };
-
-  const handleAddress2OnChange = (address2: Multiloc) => {
-    setSubmitState('enabled');
-    setAttributeDiff({
-      ...attributeDiff,
-      address_2_multiloc: address2,
-    });
-  };
-
-  const handleOnlineLinkOnChange = async (onlineLink: string) => {
-    setSubmitState('enabled');
-    setAttributeDiff({
-      ...attributeDiff,
-      online_link: onlineLink,
-    });
-    setErrors({});
-  };
-
-  const handleAddress1OnChange = async (location: string) => {
-    setSubmitState('enabled');
-    setAttributeDiff({
-      ...attributeDiff,
-      address_1: location,
-    });
-  };
-
-  const handleDescriptionMultilocOnChange = (descriptionMultiloc: Multiloc) => {
-    setSubmitState('enabled');
-    setAttributeDiff({
-      ...attributeDiff,
-      description_multiloc: descriptionMultiloc,
-    });
-  };
-
-  const handleLimitToggleOnChange = (toggleValue: boolean) => {
-    setSubmitState('enabled');
-    setRegistrationLimitVisible(toggleValue);
-    setAttributeDiff({
-      ...attributeDiff,
-      maximum_attendees: toggleValue === false ? null : 100,
-    });
-  };
-
-  const handleMaximumRegistrantsChange = (maximum_attendees: string) => {
-    setSubmitState('enabled');
-    setAttributeDiff({
-      ...attributeDiff,
-      // If maximum_attendees is an empty string, set it to 0.
-      // Number('') returns 0.
-      maximum_attendees: Number(maximum_attendees),
-    });
-    setErrors({});
-  };
-
-  const handleCustomButtonToggleOnChange = (toggleValue: boolean) => {
-    setSubmitState('enabled');
-    setRegisterButtonOptionsVisible(toggleValue);
-    setAttributeDiff({
-      ...attributeDiff,
-      using_url: '',
-    });
-  };
-
-  const handleCustomButtonMultilocOnChange = (buttonMultiloc: Multiloc) => {
-    setSubmitState('enabled');
-    setAttributeDiff({
-      ...attributeDiff,
-      attend_button_multiloc: buttonMultiloc,
-    });
-  };
-
-  const handleCustomButtonLinkOnChange = (url: string) => {
-    setSubmitState('enabled');
-    setAttributeDiff({
-      ...attributeDiff,
-      using_url: url,
-    });
-    setErrors({});
-  };
-
-  const handleDateTimePickerOnChange = (
-    value: React.SetStateAction<IEventProperties>
-  ) => {
-    setSubmitState('enabled');
-    setAttributeDiff(value);
-    setErrors({});
-  };
-
-  const handleOnImageAdd = (imageFiles: UploadFile[]) => {
-    setSubmitState('enabled');
-    setUploadedImage(imageFiles[0]);
-    setCroppedImgBase64(imageFiles[0].base64);
-  };
-
-  const handleOnImageRemove = () => {
-    setSubmitState('enabled');
-    setUploadedImage(null);
-  };
-
-  const handleEventFileOnAdd = (fileToAdd: UploadFile) => {
-    // Upload the file to the Data Repository, so we can make the attachment later.
-    addFile(
-      {
-        content: fileToAdd.base64,
-        project: projectId,
-        name: fileToAdd.name,
-        category: 'other', // Default to 'other' when added from phase setup
-        ai_processing_allowed: false, // Default to false when added from phase setup
-      },
-      {
-        onSuccess: (newFile) => {
-          // Create a temporary file attachment to add to the state, so the user sees it in the list.
-          const temporaryFileAttachment = generateTemporaryFileAttachment({
-            fileId: newFile.data.id,
-            attachableId: eventId,
-            attachableType: 'Event',
-            position: eventFileAttachments.length,
-          });
-
-          const isDuplicate = eventFileAttachments.some((fileAttachment) => {
-            return (
-              fileAttachment.relationships.file.data.id ===
-              temporaryFileAttachment.relationships.file.data.id
-            );
-          });
-
-          setEventFileAttachments(
-            isDuplicate
-              ? eventFileAttachments
-              : [...eventFileAttachments, temporaryFileAttachment]
-          );
-
-          setSubmitState(isDuplicate ? submitState : 'enabled');
-          setFileAttachmentsChanged(true);
-        },
-      }
-    );
-  };
-
-  const handleEventFileOnRemove = (
-    eventFileAttachmentToRemove: IFileAttachmentData
-  ) => {
-    setSubmitState('enabled');
-    setEventFileAttachmentsToRemove([
-      ...eventFileAttachmentsToRemove,
-      eventFileAttachmentToRemove,
-    ]);
-    setEventFileAttachments(
-      eventFileAttachments.filter(
-        (eventFileAttachment) =>
-          eventFileAttachment.id !== eventFileAttachmentToRemove.id
-      )
-    );
-    setFileAttachmentsChanged(true);
-  };
-
-  const handleFilesReorder = (
-    updatedFileAttachments: IFileAttachmentData[]
-  ) => {
-    // Update the position of the updated file attachments
-    const updatedFileAttachmentsWithPosition = updatedFileAttachments.map(
-      (fileAttachment, index) => ({
-        ...fileAttachment,
-        attributes: {
-          ...fileAttachment.attributes,
-          position: index,
-        },
-      })
-    );
-
-    setEventFileAttachments(updatedFileAttachmentsWithPosition);
-    setSubmitState('enabled');
-    setFileAttachmentsChanged(true);
-  };
-
-  const handleEventFileOnAttach = (file: IFileData) => {
-    const isDuplicate = eventFileAttachments.some((fileAttachment) => {
-      return fileAttachment.relationships.file.data.id === file.id;
-    });
-
-    if (isDuplicate) return;
-
-    const temporaryFileAttachment = generateTemporaryFileAttachment({
-      fileId: file.id,
-      attachableId: eventId,
-      attachableType: 'Phase',
-      position: eventFileAttachments.length,
-    });
-
-    setEventFileAttachments((eventFileAttachments) => [
-      ...eventFileAttachments,
-      temporaryFileAttachment,
-    ]);
-    setSubmitState('enabled');
-    setFileAttachmentsChanged(true);
-  };
-
-  const addOrDeleteEventImage = async (data: IEvent) => {
-    const hasRemoteImage = !isNilOrError(remoteEventImage);
-    const remoteImageId = hasRemoteImage
-      ? event?.data.relationships.event_images.data[0].id
-      : undefined;
-    if (
-      (uploadedImage === null || !uploadedImage.remote) &&
-      hasRemoteImage &&
-      remoteImageId &&
-      eventId
-    ) {
-      deleteEventImage({
-        eventId,
-        imageId: remoteImageId,
-      });
-    }
-    if (uploadedImage && croppedImgBase64 && !uploadedImage.remote) {
-      addEventImage({
-        eventId: data.data.id,
-        image: {
-          image: croppedImgBase64 || '',
-          ...(eventImageAltText
-            ? { alt_text_multiloc: eventImageAltText }
-            : {}),
-        },
-      });
-    }
-  };
-
-  const updateImage = async (data: IEvent) => {
-    const hasRemoteImage = !isNilOrError(remoteEventImage);
-    const remoteImageId = hasRemoteImage
-      ? event?.data.relationships.event_images.data[0].id
-      : undefined;
-
-    if (remoteImageId && uploadedImage && eventImageAltText) {
-      updateEventImage({
-        eventId: data.data.id,
-        imageId: remoteImageId,
-        image: {
-          image: uploadedImage.base64,
-          alt_text_multiloc: eventImageAltText,
-        },
-      });
-    }
-  };
-
-  const goToProjectPage = () => {
-    clHistory.push(
-      `/admin/projects/${projectId}/events?project_backoffice_redesign`
-    );
-  };
-
-  const submit = async ({
-    goBackAfterSave,
-    done,
-  }: {
-    goBackAfterSave: boolean;
-    done: (saved: boolean) => void;
-  }) => {
-    const locationPointChanged =
-      locationPoint !== event?.data.attributes.location_point_geojson;
-    const locationPointUpdated =
-      eventAttrs.address_1 || successfulGeocode ? locationPoint : null;
-
-    const imageChanged =
-      (uploadedImage !== null && !uploadedImage.remote) ||
-      (uploadedImage === null && remoteEventImage !== undefined);
-
-    // Set saving to true and reset submit state
-    setSaving(true);
-    setSubmitState('disabled'); // Prevent multiple submissions
-    setErrors({});
-    setApiErrors({});
+  const handleOnSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    const isNew = !form.event;
 
     try {
-      // Handle event file attachments first
-      const initialFileAttachmentOrdering: Record<string, number | undefined> =
-        Object.fromEntries(
-          remoteEventFileAttachments?.data
-            .filter((file) => file.id)
-            .map((file) => [file.id!, file.attributes.position]) ?? []
-        );
+      await form.save();
+    } catch {
+      return;
+    }
 
-      // If only image has changed
-      if (isEmpty(attributeDiff) && imageChanged && event) {
-        await addOrDeleteEventImage(event);
-        setSaving(false);
-        setSubmitState('success');
-        done(true);
-        return;
-      }
-
-      if (hasAltTextChanged && !imageChanged && event) {
-        await updateImage(event);
-        setSaving(false);
-        setSubmitState('success');
-        done(true);
-        return;
-      }
-
-      // non-file input fields have changed
-      if (
-        !isEmpty(attributeDiff) ||
-        locationPointChanged ||
-        fileAttachmentsChanged
-      ) {
-        // event already exists (in the state)
-        if (event) {
-          // Sync files
-          await syncEventFiles({
-            attachableId: eventId,
-            attachableType: 'Event',
-            fileAttachments: eventFileAttachments,
-            fileAttachmentsToRemove: eventFileAttachmentsToRemove,
-            fileAttachmentOrdering: initialFileAttachmentOrdering,
-          });
-
-          setEventFileAttachmentsToRemove([]);
-
-          updateEvent(
-            {
-              eventId: event.data.id,
-              event: {
-                ...attributeDiff,
-                location_point_geojson: locationPointChanged
-                  ? locationPointUpdated
-                  : event.data.attributes.location_point_geojson,
-              },
-            },
-            {
-              onSuccess: async (data) => {
-                try {
-                  await addOrDeleteEventImage(data);
-                  setSaving(false);
-                  setSubmitState('success');
-                  setFileAttachmentsChanged(false);
-                  done(true);
-
-                  if (redesignEnabled && goBackAfterSave) {
-                    setTimeout(goToProjectPage, 1000);
-                  }
-                } catch (error) {
-                  setSaving(false);
-                  setSubmitState('error');
-                  done(false);
-                }
-              },
-              onError: async (errors) => {
-                setSaving(false);
-                setErrors(errors.errors);
-                setSubmitState('error');
-                done(false);
-              },
-            }
-          );
-        } else if (projectId) {
-          // event doesn't exist, create with project id
-          addEvent(
-            {
-              projectId,
-              event: {
-                ...attributeDiff,
-                location_point_geojson: locationPointUpdated || null,
-              },
-            },
-            {
-              onSuccess: async (data) => {
-                try {
-                  await addOrDeleteEventImage(data);
-
-                  // Sync files
-                  await syncEventFiles({
-                    attachableId: data.data.id,
-                    attachableType: 'Event',
-                    fileAttachments: eventFileAttachments,
-                    fileAttachmentsToRemove: eventFileAttachmentsToRemove,
-                    fileAttachmentOrdering: initialFileAttachmentOrdering,
-                  });
-
-                  setSubmitState('success');
-                  setSaving(false);
-                  setFileAttachmentsChanged(false);
-                  done(true);
-
-                  if (!goBackAfterSave) return;
-
-                  // Navigate after a short delay to show success state
-                  setTimeout(() => {
-                    if (redesignEnabled) {
-                      goToProjectPage();
-                    } else {
-                      clHistory.push(`/admin/projects/${projectId}/events`);
-                    }
-                  }, 1000);
-                } catch (error) {
-                  setSaving(false);
-                  setSubmitState('error');
-                  done(false);
-                }
-              },
-              onError: async (errors) => {
-                setSaving(false);
-                setErrors(errors.errors);
-                setSubmitState('error');
-                done(false);
-              },
-            }
-          );
-        }
-      } else {
-        // No changes to save
-        setSaving(false);
-        setSubmitState('disabled');
-        done(true);
-      }
-    } catch (errors) {
-      setSaving(false);
-      if (errors?.errors) {
-        setApiErrors(errors.errors);
-      }
-      setSubmitState('error');
-      done(false);
+    if (isNew) {
+      // Navigate after a short delay to show the success state
+      setTimeout(() => {
+        clHistory.push(`/admin/projects/${projectId}/events`);
+      }, 1000);
     }
   };
 
-  const handleOnSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    submit({ goBackAfterSave: true, done: () => {} });
-  };
-
-  // In the redesigned back office, leaving the page with unsaved changes asks
-  // to save or discard them. Saving from there stays on the page they picked.
-  useRegisterPageSaver('event', {
-    dirty: submitState === 'enabled' || submitState === 'error',
-    save: () =>
-      new Promise<void>((resolve, reject) =>
-        submit({
-          goBackAfterSave: false,
-          done: (saved) =>
-            saved ? resolve() : reject(new Error('Event not saved')),
-        })
-      ),
-  });
-
-  const handleEventImageAltTextChange = (altTextMultiloc: Multiloc) => {
-    setSubmitState('enabled');
-    setEventImagealtText(altTextMultiloc);
-    setHasAltTextChanged(true);
-  };
-
-  const handleImageCropChange = (imgBase64: string) => {
-    setCroppedImgBase64(imgBase64);
-  };
-
-  if (isLoading) {
+  if (form.isLoading) {
     return <Spinner />;
   }
-
-  const imageShouldBeSaved = uploadedImage ? !uploadedImage.remote : false;
 
   return (
     <Box mt="44px" mx="44px">
@@ -684,8 +89,8 @@ const AdminProjectEventEdit = () => {
         )}
         <Box ref={containerRef}>
           <SectionTitle>
-            {event && <FormattedMessage {...messages.editEventTitle} />}
-            {!event && <FormattedMessage {...messages.newEventTitle} />}
+            {form.event && <FormattedMessage {...messages.editEventTitle} />}
+            {!form.event && <FormattedMessage {...messages.newEventTitle} />}
           </SectionTitle>
 
           <form className="e2e-project-event-edit" onSubmit={handleOnSubmit}>
@@ -695,10 +100,12 @@ const AdminProjectEventEdit = () => {
                   id="title"
                   label={<FormattedMessage {...messages.titleLabel} />}
                   type="text"
-                  valueMultiloc={eventAttrs.title_multiloc}
-                  onChange={handleTitleMultilocOnChange}
+                  valueMultiloc={attributes.title_multiloc}
+                  onChange={(title_multiloc: Multiloc) =>
+                    form.updateAttributes({ title_multiloc })
+                  }
                 />
-                <ErrorComponent apiErrors={get(errors, 'title_multiloc')} />
+                <ErrorComponent apiErrors={errors?.title_multiloc} />
               </SectionField>
 
               <SectionField className="fullWidth">
@@ -706,45 +113,45 @@ const AdminProjectEventEdit = () => {
                   <QuillMultilocWithLocaleSwitcher
                     id="description"
                     label={<FormattedMessage {...messages.descriptionLabel} />}
-                    valueMultiloc={eventAttrs.description_multiloc}
-                    onChange={handleDescriptionMultilocOnChange}
+                    valueMultiloc={attributes.description_multiloc}
+                    onChange={(description_multiloc: Multiloc) =>
+                      form.updateAttributes({ description_multiloc })
+                    }
                     withCTAButton
                   />
                 </Box>
-                <ErrorComponent
-                  apiErrors={get(errors, 'description_multiloc')}
-                />
+                <ErrorComponent apiErrors={errors?.description_multiloc} />
               </SectionField>
               <SectionField>
                 <Label>{formatMessage(messages.eventImage)}</Label>
 
-                {!imageShouldBeSaved && (
+                {!form.imageNeedsCrop && (
                   <ImagesDropzone
-                    images={uploadedImage ? [uploadedImage] : []}
+                    images={form.image ? [form.image] : []}
                     maxImagePreviewWidth="360px"
                     objectFit="contain"
                     acceptedFileTypes={{
                       'image/*': ['.jpg', '.jpeg', '.png'],
                     }}
-                    onAdd={handleOnImageAdd}
-                    onRemove={handleOnImageRemove}
+                    onAdd={form.addImage}
+                    onRemove={form.removeImage}
                     imagePreviewRatio={1 / 3}
                   />
                 )}
 
-                {imageShouldBeSaved && (
+                {form.imageNeedsCrop && (
                   <Box display="flex" flexDirection="column" gap="8px">
                     <ImageCropperContainer
-                      image={uploadedImage}
-                      onComplete={handleImageCropChange}
+                      image={form.image}
+                      onComplete={form.cropImage}
                       aspectRatioWidth={3}
                       aspectRatioHeight={1}
-                      onRemove={handleOnImageRemove}
+                      onRemove={form.removeImage}
                     />
                   </Box>
                 )}
               </SectionField>
-              {uploadedImage && (
+              {form.image && (
                 <SectionField>
                   <Label>
                     <FormattedMessage {...messages.eventImageAltTextTitle} />
@@ -758,9 +165,9 @@ const AdminProjectEventEdit = () => {
                   </Label>
                   <InputMultilocWithLocaleSwitcher
                     type="text"
-                    valueMultiloc={eventImageAltText}
+                    valueMultiloc={form.imageAltText}
                     label={<FormattedMessage {...projectMessages.altText} />}
-                    onChange={handleEventImageAltTextChange}
+                    onChange={form.changeImageAltText}
                   />
                 </SectionField>
               )}
@@ -768,12 +175,12 @@ const AdminProjectEventEdit = () => {
               <Title variant="h4" color="primary" fontWeight="semi-bold">
                 {formatMessage(messages.eventDates)}
               </Title>
-              {eventAttrs.start_at && eventAttrs.end_at && (
+              {attributes.start_at && attributes.end_at && (
                 <DateTimeSelection
-                  startAt={eventAttrs.start_at}
-                  endAt={eventAttrs.end_at}
+                  startAt={attributes.start_at}
+                  endAt={attributes.end_at}
                   errors={errors}
-                  setAttributeDiff={handleDateTimePickerOnChange}
+                  setAttributeDiff={form.updateAttributeDiff}
                 />
               )}
 
@@ -786,15 +193,17 @@ const AdminProjectEventEdit = () => {
                     id="event-location"
                     label={formatMessage(messages.onlineEventLinkLabel)}
                     type="text"
-                    value={eventAttrs.online_link}
-                    onChange={handleOnlineLinkOnChange}
+                    value={attributes.online_link}
+                    onChange={(online_link: string) =>
+                      form.updateAttributes({ online_link })
+                    }
                     labelTooltipText={formatMessage(
                       messages.onlineEventLinkTooltip
                     )}
                     placeholder={'https://...'}
                   />
                 </Box>
-                <ErrorComponent apiErrors={get(errors, 'online_link')} />
+                <ErrorComponent apiErrors={errors?.online_link} />
               </SectionField>
 
               <SectionField>
@@ -812,27 +221,29 @@ const AdminProjectEventEdit = () => {
                     id="event-location-picker"
                     className="e2e-event-location-input"
                     value={
-                      eventAttrs.address_1
+                      attributes.address_1
                         ? {
-                            value: eventAttrs.address_1,
-                            label: eventAttrs.address_1,
+                            value: attributes.address_1,
+                            label: attributes.address_1,
                           }
                         : null
                     }
                     onChange={(option: Option | null) => {
-                      handleAddress1OnChange(option?.value ? option.value : '');
+                      form.updateAttributes({ address_1: option?.value ?? '' });
                     }}
                     placeholder={formatMessage(messages.searchForLocation)}
                   />
 
-                  <ErrorComponent apiErrors={get(errors, 'address_1')} />
+                  <ErrorComponent apiErrors={errors?.address_1} />
                   <Box mt="20px" mb="8px">
                     <InputMultilocWithLocaleSwitcher
                       id="event-address-2"
                       label={formatMessage(messages.addressTwoLabel)}
                       type="text"
-                      valueMultiloc={eventAttrs.address_2_multiloc}
-                      onChange={handleAddress2OnChange}
+                      valueMultiloc={attributes.address_2_multiloc}
+                      onChange={(address_2_multiloc: Multiloc) =>
+                        form.updateAttributes({ address_2_multiloc })
+                      }
                       labelTooltipText={formatMessage(
                         messages.addressTwoTooltip
                       )}
@@ -841,7 +252,7 @@ const AdminProjectEventEdit = () => {
                       )}
                     />
                   </Box>
-                  {locationPoint && (
+                  {form.hasLocationPoint && (
                     <Box maxWidth="400px" zIndex="0">
                       <Box display="flex">
                         <Text color="coolGrey600" my="4px" mr="4px">
@@ -857,14 +268,8 @@ const AdminProjectEventEdit = () => {
                       <Box>
                         <EventMap
                           mapHeight="230px"
-                          setSubmitState={setSubmitState}
-                          setLocationPoint={setLocationPoint}
-                          position={
-                            geocodedPoint || // Present when an address is geocoded but hasn't been saved yet
-                            // TODO: Fix this the next time the file is edited.
-                            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                            event?.data?.attributes?.location_point_geojson
-                          }
+                          setLocationPoint={form.moveLocationPoint}
+                          position={form.mapPosition}
                         />
                       </Box>
                     </Box>
@@ -894,24 +299,22 @@ const AdminProjectEventEdit = () => {
                       </Box>
                     </Box>
                   }
-                  checked={registrationLimitVisible}
-                  onChange={() => {
-                    handleLimitToggleOnChange(!registrationLimitVisible);
-                  }}
+                  checked={form.registrationLimitOn}
+                  onChange={form.toggleRegistrationLimit}
                 />
               </SectionField>
-              {registrationLimitVisible && (
+              {form.registrationLimitOn && (
                 <SectionField>
                   <Input
                     id="maximum_attendees"
                     label={formatMessage(messages.maximumRegistrants)}
                     type="number"
-                    value={eventAttrs.maximum_attendees?.toString()}
-                    onChange={handleMaximumRegistrantsChange}
+                    value={attributes.maximum_attendees?.toString()}
+                    onChange={form.setMaximumAttendees}
                   />
                   <ErrorComponent
                     fieldName="maximum_attendees"
-                    apiErrors={get(errors, 'maximum_attendees')}
+                    apiErrors={errors?.maximum_attendees}
                   />
                 </SectionField>
               )}
@@ -938,15 +341,11 @@ const AdminProjectEventEdit = () => {
                       </Box>
                     </Box>
                   }
-                  checked={registerButtonOptionsVisible}
-                  onChange={() => {
-                    handleCustomButtonToggleOnChange(
-                      !registerButtonOptionsVisible
-                    );
-                  }}
+                  checked={form.customButtonOn}
+                  onChange={form.toggleCustomButton}
                 />
               </SectionField>
-              {registerButtonOptionsVisible && (
+              {form.customButtonOn && (
                 <>
                   <SectionField>
                     <Box maxWidth="400px">
@@ -954,8 +353,10 @@ const AdminProjectEventEdit = () => {
                         id="custom-button-text"
                         label={formatMessage(messages.customButtonText)}
                         type="text"
-                        valueMultiloc={eventAttrs.attend_button_multiloc}
-                        onChange={handleCustomButtonMultilocOnChange}
+                        valueMultiloc={attributes.attend_button_multiloc}
+                        onChange={(attend_button_multiloc: Multiloc) =>
+                          form.updateAttributes({ attend_button_multiloc })
+                        }
                         labelTooltipText={formatMessage(
                           messages.customButtonTextTooltip3
                         )}
@@ -968,15 +369,17 @@ const AdminProjectEventEdit = () => {
                       <Input
                         label={formatMessage(messages.customButtonLink)}
                         type="text"
-                        value={eventAttrs.using_url}
-                        onChange={handleCustomButtonLinkOnChange}
+                        value={attributes.using_url}
+                        onChange={(using_url: string) =>
+                          form.updateAttributes({ using_url })
+                        }
                         labelTooltipText={formatMessage(
                           messages.customButtonLinkTooltip
                         )}
                         placeholder={'https://...'}
                       />
                     </Box>
-                    <ErrorComponent apiErrors={get(errors, 'using_url')} />
+                    <ErrorComponent apiErrors={errors?.using_url} />
                   </SectionField>
                   {!isNilOrError(locale) && (
                     <Box display="flex" flexWrap="wrap">
@@ -985,26 +388,12 @@ const AdminProjectEventEdit = () => {
                       </Box>
                       <ButtonWithLink
                         minWidth="160px"
-                        iconPos={'right'}
-                        icon={
-                          // TODO: Fix this the next time the file is edited.
-                          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                          registerButtonOptionsVisible
-                            ? undefined
-                            : 'plus-circle'
-                        }
-                        iconSize="20px"
                         bgColor={theme.colors.tenantPrimary}
-                        linkTo={eventAttrs.using_url}
+                        linkTo={attributes.using_url}
                         openLinkInNewTab={true}
                       >
-                        {/* TODO: Fix this the next time the file is edited. */}
-                        {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
-                        {eventAttrs?.attend_button_multiloc?.[locale]
-                          ? // TODO: Fix this the next time the file is edited.
-                            // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-                            eventAttrs?.attend_button_multiloc[locale]
-                          : formatMessage(messages.register)}
+                        {attributes.attend_button_multiloc?.[locale] ||
+                          formatMessage(messages.register)}
                       </ButtonWithLink>
                     </Box>
                   )}
@@ -1030,15 +419,15 @@ const AdminProjectEventEdit = () => {
                 </Label>
                 <FileRepositorySelectAndUpload
                   id="project-events-edit-form-file-uploader"
-                  onFileAdd={handleEventFileOnAdd}
-                  onFileRemove={handleEventFileOnRemove}
-                  onFileReorder={handleFilesReorder}
-                  onFileAttach={handleEventFileOnAttach}
-                  fileAttachments={eventFileAttachments}
+                  onFileAdd={form.files.uploadFile}
+                  onFileRemove={form.files.removeFile}
+                  onFileReorder={form.files.reorderFiles}
+                  onFileAttach={form.files.attachFile}
+                  fileAttachments={form.files.attachments}
                   enableDragAndDrop
-                  apiErrors={isError(apiErrors) ? undefined : apiErrors}
+                  apiErrors={errors}
                   maxSizeMb={10}
-                  isUploadingFile={isAddingFile}
+                  isUploadingFile={form.files.isUploadingFile}
                 />
               </SectionField>
             </Section>
@@ -1055,8 +444,8 @@ const AdminProjectEventEdit = () => {
             >
               <Box py="8px" px={`${defaultAdminCardPadding}px`}>
                 <SubmitWrapper
-                  loading={saving}
-                  status={submitState}
+                  loading={form.saving}
+                  status={form.status}
                   messages={{
                     buttonSave: messages.saveButtonLabel,
                     buttonSuccess: messages.saveSuccessLabel,
