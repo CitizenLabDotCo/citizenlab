@@ -5,8 +5,6 @@
 # It makes it easier to understand what and when can happen to user.
 #
 class UserService
-  STORE_ACCESSOR_CUSTOM_FIELDS = %i[gender birthyear domicile].freeze
-
   class << self
     def upsert_in_web_api(new_or_existing_user, user_params, &)
       custom_field_values = user_params.delete(:custom_field_values)
