@@ -686,7 +686,6 @@ DROP TABLE IF EXISTS public.wise_voice_flags;
 DROP TABLE IF EXISTS public.webhooks_subscriptions;
 DROP TABLE IF EXISTS public.webhooks_deliveries;
 DROP TABLE IF EXISTS public.verification_verifications;
-DROP TABLE IF EXISTS public.user_custom_fields_representativeness_ref_distributions;
 DROP TABLE IF EXISTS public.text_images;
 DROP TABLE IF EXISTS public.tenants;
 DROP TABLE IF EXISTS public.surveys_responses;
@@ -702,6 +701,8 @@ DROP VIEW IF EXISTS public.reporting_user_question_answers;
 DROP VIEW IF EXISTS public.reporting_users;
 DROP VIEW IF EXISTS public.reporting_sessions;
 DROP VIEW IF EXISTS public.reporting_reports;
+DROP VIEW IF EXISTS public.reporting_reference_distributions;
+DROP TABLE IF EXISTS public.user_custom_fields_representativeness_ref_distributions;
 DROP VIEW IF EXISTS public.reporting_projects;
 DROP VIEW IF EXISTS public.reporting_phases;
 DROP VIEW IF EXISTS public.reporting_participants;
@@ -710,10 +711,14 @@ DROP VIEW IF EXISTS public.reporting_official_feedbacks;
 DROP VIEW IF EXISTS public.reporting_inputs;
 DROP VIEW IF EXISTS public.reporting_input_votes;
 DROP VIEW IF EXISTS public.reporting_input_tags;
+DROP VIEW IF EXISTS public.reporting_input_status_changes;
 DROP VIEW IF EXISTS public.reporting_input_reactions;
-DROP VIEW IF EXISTS public.reporting_input_question_answers;
+DROP VIEW IF EXISTS public.reporting_input_phases;
+DROP VIEW IF EXISTS public.reporting_input_imports;
 DROP VIEW IF EXISTS public.reporting_events;
 DROP VIEW IF EXISTS public.reporting_contributions;
+DROP VIEW IF EXISTS public.reporting_community_monitor_scores;
+DROP VIEW IF EXISTS public.reporting_input_question_answers;
 DROP TABLE IF EXISTS public.report_builder_reports;
 DROP TABLE IF EXISTS public.report_builder_published_graph_data_units;
 DROP TABLE IF EXISTS public.que_values;
@@ -3780,6 +3785,146 @@ CREATE TABLE public.report_builder_reports (
 
 
 --
+-- Name: reporting_input_question_answers; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_input_question_answers AS
+ WITH form_inputs AS (
+         SELECT i.id,
+            COALESCE(phase_form.id, project_form.id) AS form_id,
+            form_ph.participation_method AS form_participation_method
+           FROM (((public.ideas i
+             LEFT JOIN public.custom_forms phase_form ON ((((phase_form.participation_context_type)::text = 'Phase'::text) AND (phase_form.participation_context_id = i.creation_phase_id))))
+             LEFT JOIN public.custom_forms project_form ON ((((project_form.participation_context_type)::text = 'Project'::text) AND (project_form.participation_context_id = i.project_id))))
+             LEFT JOIN public.phases form_ph ON (((phase_form.id IS NOT NULL) AND (form_ph.id = i.creation_phase_id))))
+          WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]))
+        )
+ SELECT i.id AS input_id,
+    q.id AS question_id,
+    q.key AS question_key,
+    q.input_type AS question_type,
+    COALESCE(NULLIF((q.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(q.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS question_label,
+        CASE
+            WHEN ((q.input_type)::text = ANY ((ARRAY['number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying])::text[])) THEN NULL::text
+            ELSE (a.value #>> '{}'::text[])
+        END AS value_text,
+        CASE
+            WHEN (((q.input_type)::text = ANY ((ARRAY['number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying])::text[])) AND (jsonb_typeof(a.value) = 'number'::text)) THEN ((a.value #>> '{}'::text[]))::numeric
+            ELSE NULL::numeric
+        END AS value_numeric,
+    COALESCE(NULLIF((label.multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(label.multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS value_label,
+        CASE
+            WHEN ((i.form_participation_method)::text = 'community_monitor_survey'::text) THEN COALESCE(q.question_category, 'other'::character varying)
+            ELSE NULL::character varying
+        END AS question_category
+   FROM (((form_inputs i
+     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY ((ARRAY['text'::character varying, 'multiline_text'::character varying, 'select'::character varying, 'select_image'::character varying, 'checkbox'::character varying, 'date'::character varying, 'number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying])::text[])))))
+     JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
+     CROSS JOIN LATERAL ( SELECT
+                CASE
+                    WHEN ((q.input_type)::text = ANY ((ARRAY['select'::character varying, 'select_image'::character varying])::text[])) THEN ( SELECT o.title_multiloc
+                       FROM public.custom_field_options o
+                      WHERE ((o.custom_field_id = q.id) AND ((o.key)::text = (a.value #>> '{}'::text[]))))
+                    WHEN (((q.input_type)::text = ANY ((ARRAY['linear_scale'::character varying, 'sentiment_linear_scale'::character varying])::text[])) AND (jsonb_typeof(a.value) = 'number'::text)) THEN
+                    CASE (a.value #>> '{}'::text[])
+                        WHEN '1'::text THEN q.linear_scale_label_1_multiloc
+                        WHEN '2'::text THEN q.linear_scale_label_2_multiloc
+                        WHEN '3'::text THEN q.linear_scale_label_3_multiloc
+                        WHEN '4'::text THEN q.linear_scale_label_4_multiloc
+                        WHEN '5'::text THEN q.linear_scale_label_5_multiloc
+                        WHEN '6'::text THEN q.linear_scale_label_6_multiloc
+                        WHEN '7'::text THEN q.linear_scale_label_7_multiloc
+                        WHEN '8'::text THEN q.linear_scale_label_8_multiloc
+                        WHEN '9'::text THEN q.linear_scale_label_9_multiloc
+                        WHEN '10'::text THEN q.linear_scale_label_10_multiloc
+                        WHEN '11'::text THEN q.linear_scale_label_11_multiloc
+                        ELSE NULL::jsonb
+                    END
+                    ELSE NULL::jsonb
+                END AS multiloc) label)
+UNION ALL
+ SELECT i.id AS input_id,
+    q.id AS question_id,
+    q.key AS question_key,
+    q.input_type AS question_type,
+    COALESCE(NULLIF((q.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(q.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS question_label,
+    selected.value AS value_text,
+    NULL::numeric AS value_numeric,
+    COALESCE(NULLIF((o.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(o.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS value_label,
+        CASE
+            WHEN ((i.form_participation_method)::text = 'community_monitor_survey'::text) THEN COALESCE(q.question_category, 'other'::character varying)
+            ELSE NULL::character varying
+        END AS question_category
+   FROM ((((form_inputs i
+     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY ((ARRAY['multiselect'::character varying, 'multiselect_image'::character varying])::text[])))))
+     JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
+     CROSS JOIN LATERAL jsonb_array_elements_text(a.value) selected(value))
+     LEFT JOIN public.custom_field_options o ON (((o.custom_field_id = q.id) AND ((o.key)::text = selected.value))))
+  WHERE (jsonb_typeof(a.value) = 'array'::text);
+
+
+--
+-- Name: reporting_community_monitor_scores; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_community_monitor_scores AS
+ WITH responses AS (
+         SELECT ph.id AS phase_id,
+            ((i.created_at AT TIME ZONE 'UTC'::text) AT TIME ZONE COALESCE(( SELECT ((ac.settings -> 'core'::text) ->> 'timezone'::text)
+                   FROM public.app_configurations ac
+                 LIMIT 1), 'UTC'::text)) AS local_created_at,
+            a.question_id,
+            a.question_label,
+            a.question_category,
+            a.value_numeric,
+            COALESCE((u.roles <> '[]'::jsonb), false) AS staff
+           FROM (((((public.reporting_input_question_answers a
+             JOIN public.ideas i ON ((i.id = a.input_id)))
+             JOIN public.phases ph ON ((ph.id = i.creation_phase_id)))
+             JOIN public.ideas_phases ip ON (((ip.idea_id = i.id) AND (ip.phase_id = ph.id))))
+             JOIN public.custom_fields q ON ((q.id = a.question_id)))
+             LEFT JOIN public.users u ON ((u.id = i.author_id)))
+          WHERE (((ph.participation_method)::text = 'community_monitor_survey'::text) AND ((i.publication_status)::text = 'published'::text) AND ((a.question_type)::text = 'sentiment_linear_scale'::text) AND (a.value_numeric IS NOT NULL) AND q.enabled)
+        )
+ SELECT phase_id,
+    (EXTRACT(year FROM local_created_at))::integer AS year,
+    (EXTRACT(quarter FROM local_created_at))::integer AS quarter,
+    question_id,
+    question_label,
+    question_category,
+    staff,
+    (count(*))::integer AS answer_count,
+    sum(value_numeric) AS answer_sum,
+    round((sum(value_numeric) / (count(*))::numeric), 1) AS average
+   FROM responses
+  GROUP BY phase_id, ((EXTRACT(year FROM local_created_at))::integer), ((EXTRACT(quarter FROM local_created_at))::integer), question_id, question_label, question_category, staff;
+
+
+--
 -- Name: reporting_contributions; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -3982,106 +4127,37 @@ CREATE VIEW public.reporting_events AS
 
 
 --
--- Name: reporting_input_question_answers; Type: VIEW; Schema: public; Owner: -
+-- Name: reporting_input_imports; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW public.reporting_input_question_answers AS
- WITH form_inputs AS (
-         SELECT i.id,
-            COALESCE(phase_form.id, project_form.id) AS form_id,
-            form_ph.participation_method AS form_participation_method
-           FROM (((public.ideas i
-             LEFT JOIN public.custom_forms phase_form ON ((((phase_form.participation_context_type)::text = 'Phase'::text) AND (phase_form.participation_context_id = i.creation_phase_id))))
-             LEFT JOIN public.custom_forms project_form ON ((((project_form.participation_context_type)::text = 'Project'::text) AND (project_form.participation_context_id = i.project_id))))
-             LEFT JOIN public.phases form_ph ON (((phase_form.id IS NOT NULL) AND (form_ph.id = i.creation_phase_id))))
-          WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]))
-        )
- SELECT i.id AS input_id,
-    q.id AS question_id,
-    q.key AS question_key,
-    q.input_type AS question_type,
-    COALESCE(NULLIF((q.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
-           FROM public.app_configurations ac
-         LIMIT 1)), ''::text), ( SELECT t.value
-           FROM jsonb_each_text(q.title_multiloc) t(key, value)
-          WHERE (t.value <> ''::text)
-          ORDER BY t.key
-         LIMIT 1)) AS question_label,
-        CASE
-            WHEN ((q.input_type)::text = ANY ((ARRAY['number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying])::text[])) THEN NULL::text
-            ELSE (a.value #>> '{}'::text[])
-        END AS value_text,
-        CASE
-            WHEN (((q.input_type)::text = ANY ((ARRAY['number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying])::text[])) AND (jsonb_typeof(a.value) = 'number'::text)) THEN ((a.value #>> '{}'::text[]))::numeric
-            ELSE NULL::numeric
-        END AS value_numeric,
-    COALESCE(NULLIF((label.multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
-           FROM public.app_configurations ac
-         LIMIT 1)), ''::text), ( SELECT t.value
-           FROM jsonb_each_text(label.multiloc) t(key, value)
-          WHERE (t.value <> ''::text)
-          ORDER BY t.key
-         LIMIT 1)) AS value_label,
-        CASE
-            WHEN ((i.form_participation_method)::text = 'community_monitor_survey'::text) THEN COALESCE(q.question_category, 'other'::character varying)
-            ELSE NULL::character varying
-        END AS question_category
-   FROM (((form_inputs i
-     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY ((ARRAY['text'::character varying, 'multiline_text'::character varying, 'select'::character varying, 'select_image'::character varying, 'checkbox'::character varying, 'date'::character varying, 'number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying])::text[])))))
-     JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
-     CROSS JOIN LATERAL ( SELECT
-                CASE
-                    WHEN ((q.input_type)::text = ANY ((ARRAY['select'::character varying, 'select_image'::character varying])::text[])) THEN ( SELECT o.title_multiloc
-                       FROM public.custom_field_options o
-                      WHERE ((o.custom_field_id = q.id) AND ((o.key)::text = (a.value #>> '{}'::text[]))))
-                    WHEN (((q.input_type)::text = ANY ((ARRAY['linear_scale'::character varying, 'sentiment_linear_scale'::character varying])::text[])) AND (jsonb_typeof(a.value) = 'number'::text)) THEN
-                    CASE (a.value #>> '{}'::text[])
-                        WHEN '1'::text THEN q.linear_scale_label_1_multiloc
-                        WHEN '2'::text THEN q.linear_scale_label_2_multiloc
-                        WHEN '3'::text THEN q.linear_scale_label_3_multiloc
-                        WHEN '4'::text THEN q.linear_scale_label_4_multiloc
-                        WHEN '5'::text THEN q.linear_scale_label_5_multiloc
-                        WHEN '6'::text THEN q.linear_scale_label_6_multiloc
-                        WHEN '7'::text THEN q.linear_scale_label_7_multiloc
-                        WHEN '8'::text THEN q.linear_scale_label_8_multiloc
-                        WHEN '9'::text THEN q.linear_scale_label_9_multiloc
-                        WHEN '10'::text THEN q.linear_scale_label_10_multiloc
-                        WHEN '11'::text THEN q.linear_scale_label_11_multiloc
-                        ELSE NULL::jsonb
-                    END
-                    ELSE NULL::jsonb
-                END AS multiloc) label)
-UNION ALL
- SELECT i.id AS input_id,
-    q.id AS question_id,
-    q.key AS question_key,
-    q.input_type AS question_type,
-    COALESCE(NULLIF((q.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
-           FROM public.app_configurations ac
-         LIMIT 1)), ''::text), ( SELECT t.value
-           FROM jsonb_each_text(q.title_multiloc) t(key, value)
-          WHERE (t.value <> ''::text)
-          ORDER BY t.key
-         LIMIT 1)) AS question_label,
-    selected.value AS value_text,
-    NULL::numeric AS value_numeric,
-    COALESCE(NULLIF((o.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
-           FROM public.app_configurations ac
-         LIMIT 1)), ''::text), ( SELECT t.value
-           FROM jsonb_each_text(o.title_multiloc) t(key, value)
-          WHERE (t.value <> ''::text)
-          ORDER BY t.key
-         LIMIT 1)) AS value_label,
-        CASE
-            WHEN ((i.form_participation_method)::text = 'community_monitor_survey'::text) THEN COALESCE(q.question_category, 'other'::character varying)
-            ELSE NULL::character varying
-        END AS question_category
-   FROM ((((form_inputs i
-     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY ((ARRAY['multiselect'::character varying, 'multiselect_image'::character varying])::text[])))))
-     JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
-     CROSS JOIN LATERAL jsonb_array_elements_text(a.value) selected(value))
-     LEFT JOIN public.custom_field_options o ON (((o.custom_field_id = q.id) AND ((o.key)::text = selected.value))))
-  WHERE (jsonb_typeof(a.value) = 'array'::text);
+CREATE VIEW public.reporting_input_imports AS
+ SELECT ii.id,
+    ii.idea_id AS input_id,
+    f.import_type AS source,
+    (f.parsed_value ->> 'parser'::text) AS parser,
+    ii.import_user_id AS user_id,
+    ii.user_created,
+    ii.locale,
+    ii.approved_at,
+    ii.created_at
+   FROM ((public.idea_imports ii
+     JOIN public.ideas i ON ((i.id = ii.idea_id)))
+     LEFT JOIN public.idea_import_files f ON ((f.id = ii.file_id)))
+  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
+
+
+--
+-- Name: reporting_input_phases; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_input_phases AS
+ SELECT ip.id,
+    ip.idea_id AS input_id,
+    ip.phase_id,
+    ip.created_at
+   FROM (public.ideas_phases ip
+     JOIN public.ideas i ON ((i.id = ip.idea_id)))
+  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
 
 
 --
@@ -4096,6 +4172,68 @@ CREATE VIEW public.reporting_input_reactions AS
     mode
    FROM public.reactions r
   WHERE ((reactable_type)::text = 'Idea'::text);
+
+
+--
+-- Name: reporting_input_status_changes; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_input_status_changes AS
+ WITH changes AS (
+         SELECT a.id,
+            a.item_id AS input_id,
+            a.action,
+                CASE
+                    WHEN ((a.action)::text = 'changed_status'::text) THEN ((a.payload -> 'change'::text) ->> 0)
+                    ELSE NULL::text
+                END AS from_id,
+                CASE
+                    WHEN ((a.action)::text = 'changed_status'::text) THEN ((a.payload -> 'change'::text) ->> 1)
+                    ELSE NULL::text
+                END AS to_id,
+            (a.payload ->> 'input_status_from_code'::text) AS from_code,
+            (a.payload ->> 'input_status_to_code'::text) AS to_code,
+            a.acted_at
+           FROM (public.activities a
+             JOIN public.ideas i ON ((i.id = a.item_id)))
+          WHERE (((a.item_type)::text = 'Idea'::text) AND ((a.action)::text = ANY ((ARRAY['changed_status'::character varying, 'changed_input_status'::character varying])::text[])) AND ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[])))
+        )
+ SELECT c.id,
+    c.input_id,
+    from_s.id AS from_status_id,
+    COALESCE(NULLIF((from_s.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(from_s.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS from_status_label,
+    COALESCE(from_s.code, (c.from_code)::character varying) AS from_status_code,
+    to_s.id AS to_status_id,
+    COALESCE(NULLIF((to_s.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(to_s.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS to_status_label,
+    COALESCE(to_s.code, (c.to_code)::character varying) AS to_status_code,
+    c.acted_at AS changed_at
+   FROM ((changes c
+     LEFT JOIN LATERAL ( SELECT s.id,
+            s.title_multiloc,
+            s.code
+           FROM public.idea_statuses s
+          WHERE ((((c.action)::text = 'changed_status'::text) AND ((s.id)::text = c.from_id)) OR (((c.action)::text = 'changed_input_status'::text) AND ((s.participation_method)::text = 'proposals'::text) AND ((s.code)::text = c.from_code)))
+          ORDER BY s.ordering
+         LIMIT 1) from_s ON (true))
+     LEFT JOIN LATERAL ( SELECT s.id,
+            s.title_multiloc,
+            s.code
+           FROM public.idea_statuses s
+          WHERE ((((c.action)::text = 'changed_status'::text) AND ((s.id)::text = c.to_id)) OR (((c.action)::text = 'changed_input_status'::text) AND ((s.participation_method)::text = 'proposals'::text) AND ((s.code)::text = c.to_code)))
+          ORDER BY s.ordering
+         LIMIT 1) to_s ON (true));
 
 
 --
@@ -4129,7 +4267,8 @@ CREATE VIEW public.reporting_input_votes AS
     bi.idea_id AS input_id,
     b.user_id,
     b.submitted_at AS voted_at,
-    bi.votes AS weight
+    bi.votes AS weight,
+    b.phase_id
    FROM (public.baskets_ideas bi
      JOIN public.baskets b ON ((b.id = bi.basket_id)))
   WHERE (b.submitted_at IS NOT NULL);
@@ -4338,6 +4477,74 @@ CREATE VIEW public.reporting_projects AS
                 END AS end_at
            FROM public.phases ph
           GROUP BY ph.project_id) phase_bounds ON ((phase_bounds.project_id = p.id)));
+
+
+--
+-- Name: user_custom_fields_representativeness_ref_distributions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_custom_fields_representativeness_ref_distributions (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    custom_field_id uuid NOT NULL,
+    distribution jsonb NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    type character varying
+);
+
+
+--
+-- Name: reporting_reference_distributions; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_reference_distributions AS
+ WITH current_distributions AS (
+         SELECT DISTINCT ON (rd.custom_field_id) rd.id,
+            rd.custom_field_id,
+            rd.type,
+            rd.distribution,
+            rd.updated_at
+           FROM public.user_custom_fields_representativeness_ref_distributions rd
+          ORDER BY rd.custom_field_id, rd.created_at DESC
+        )
+ SELECT ((d.id || ':'::text) || o.id) AS id,
+    q.id AS question_id,
+    q.key AS question_key,
+        CASE
+            WHEN ((q.key)::text = 'domicile'::text) THEN (COALESCE((ar.id)::text, 'outside'::text))::character varying
+            ELSE o.key
+        END AS answer_value,
+    COALESCE(NULLIF((COALESCE(ar.title_multiloc, o.title_multiloc) ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(COALESCE(ar.title_multiloc, o.title_multiloc)) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS answer_label,
+    NULL::integer AS min_age,
+    NULL::integer AS max_age,
+    (counts.value)::integer AS population_count,
+    d.updated_at
+   FROM ((((current_distributions d
+     JOIN public.custom_fields q ON (((q.id = d.custom_field_id) AND q.enabled)))
+     CROSS JOIN LATERAL jsonb_each_text(d.distribution) counts(option_id, value))
+     JOIN public.custom_field_options o ON (((o.id)::text = counts.option_id)))
+     LEFT JOIN public.areas ar ON ((((q.key)::text = 'domicile'::text) AND (ar.custom_field_option_id = o.id))))
+  WHERE ((d.type)::text = 'UserCustomFields::Representativeness::CategoricalDistribution'::text)
+UNION ALL
+ SELECT ((d.id || ':'::text) || (bin.idx - 1)) AS id,
+    q.id AS question_id,
+    q.key AS question_key,
+    NULL::character varying AS answer_value,
+    NULL::text AS answer_label,
+    COALESCE((((d.distribution -> 'bins'::text) ->> ((bin.idx - 1))::integer))::integer, 0) AS min_age,
+    (((d.distribution -> 'bins'::text) ->> (bin.idx)::integer))::integer AS max_age,
+    (bin.count)::integer AS population_count,
+    d.updated_at
+   FROM ((current_distributions d
+     JOIN public.custom_fields q ON (((q.id = d.custom_field_id) AND q.enabled)))
+     CROSS JOIN LATERAL jsonb_array_elements_text((d.distribution -> 'counts'::text)) WITH ORDINALITY bin(count, idx))
+  WHERE ((d.type)::text = 'UserCustomFields::Representativeness::BinnedDistribution'::text);
 
 
 --
@@ -4662,20 +4869,6 @@ CREATE TABLE public.text_images (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     text_reference character varying NOT NULL
-);
-
-
---
--- Name: user_custom_fields_representativeness_ref_distributions; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.user_custom_fields_representativeness_ref_distributions (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    custom_field_id uuid NOT NULL,
-    distribution jsonb NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    type character varying
 );
 
 
@@ -9781,6 +9974,13 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261009200000'),
+('20261009150100'),
+('20261009140100'),
+('20261009130100'),
+('20261009120100'),
+('20261009110100'),
+('20261009100100'),
 ('20261006190100'),
 ('20261006180100'),
 ('20261006170100'),
