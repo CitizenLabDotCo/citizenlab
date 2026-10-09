@@ -87,9 +87,22 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf',
     defaultMessage: 'Download PDF',
   },
-  approvedInputsTitle: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.approvedInputsTitle',
-    defaultMessage: 'Approved inputs',
+  toReviewTab: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab',
+    defaultMessage: 'To review',
+  },
+  approvedTab: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.approvedTab',
+    defaultMessage: 'Approved',
+  },
+  allInputsApprovedHint: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.allInputsApprovedHint',
+    defaultMessage:
+      'All imported inputs have been approved. You can find them in the Approved tab.',
+  },
+  noApprovedInputsYet: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.noApprovedInputsYet',
+    defaultMessage: 'No approved inputs yet.',
   },
   approvedReadOnlyNotice: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.approvedReadOnlyNotice',

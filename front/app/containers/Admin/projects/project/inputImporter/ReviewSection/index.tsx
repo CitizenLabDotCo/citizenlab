@@ -13,6 +13,10 @@ import useTrackImportJobProgress from 'api/import_ideas/useTrackImportJobProgres
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
+import Tabs, {
+  getDefaultTabId,
+  getDefaultTabPanelId,
+} from 'components/UI/FilterTabs';
 import WarningModal from 'components/WarningModal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -39,6 +43,7 @@ const ReviewSection = ({
   };
   const { formatMessage } = useIntl();
   const [ideaId, setIdeaId] = useState<string | null>(null);
+  const [currentTab, setCurrentTab] = useState('toReview');
   const [approvals, setApprovals] = useState({ approved: 0, not_approved: 0 });
   const [confirmAction, setConfirmAction] = useState<
     'approveAll' | 'removeAll' | null
@@ -113,6 +118,11 @@ const ReviewSection = ({
 
   const importType = ideaMetadata?.data.attributes.import_type;
 
+  const tabData = {
+    toReview: { label: messages.toReviewTab, count: numIdeas },
+    approved: { label: messages.approvedTab },
+  };
+
   const handleApproveAll = () => {
     approveIdeas(phaseId, {
       onSuccess: (data) => {
@@ -156,6 +166,8 @@ const ReviewSection = ({
       </Box>
 
       <Box px="25px" borderBottom={`5px ${colors.grey200} solid`}>
+        {/* The bulk actions only act on the pending queue, so they are disabled
+            (not hidden, to keep the layout stable) on the Approved tab. */}
         <Box display="flex">
           <Box w="100%" display="flex" alignItems="center">
             <Box pl="15px" py="10px">
@@ -163,7 +175,12 @@ const ReviewSection = ({
                 bgColor={colors.primary}
                 icon="check"
                 processing={isApproving}
-                disabled={isApproving || isDeleting || importing}
+                disabled={
+                  isApproving ||
+                  isDeleting ||
+                  importing ||
+                  currentTab === 'approved'
+                }
                 onClick={() => setConfirmAction('approveAll')}
               >
                 <FormattedMessage
@@ -177,7 +194,12 @@ const ReviewSection = ({
                 buttonStyle="admin-dark-outlined"
                 icon="delete"
                 processing={isDeleting}
-                disabled={isApproving || isDeleting || importing}
+                disabled={
+                  isApproving ||
+                  isDeleting ||
+                  importing ||
+                  currentTab === 'approved'
+                }
                 onClick={() => setConfirmAction('removeAll')}
               >
                 <FormattedMessage {...messages.removeAllInputs} />
@@ -212,27 +234,56 @@ const ReviewSection = ({
           flexDirection="column"
           minHeight="0"
         >
-          <Box flex="1" minHeight="0" overflowY="auto">
-            {(importing || importHasErrors) && (
-              <ImportStatus
-                hasErrors={importHasErrors}
-                progress={importProgress}
-                total={importTotal}
-                errorCount={errorCount}
-                errors={importErrors}
+          <Tabs
+            currentTab={currentTab}
+            availableTabs={['toReview', 'approved']}
+            tabData={tabData}
+            onChangeTab={setCurrentTab}
+            showCount
+            fullWidth
+          />
+          <Box
+            flex="1"
+            minHeight="0"
+            overflowY="auto"
+            role="tabpanel"
+            id={getDefaultTabPanelId(currentTab)}
+            aria-labelledby={getDefaultTabId(currentTab)}
+          >
+            {currentTab === 'toReview' ? (
+              <>
+                {(importing || importHasErrors) && (
+                  <ImportStatus
+                    hasErrors={importHasErrors}
+                    progress={importProgress}
+                    total={importTotal}
+                    errorCount={errorCount}
+                    errors={importErrors}
+                  />
+                )}
+                {!importing &&
+                !importHasErrors &&
+                numIdeas === 0 &&
+                numApprovedIdeas > 0 ? (
+                  <Text m="0" p="12px" color="coolGrey600" fontSize="s">
+                    <FormattedMessage {...messages.allInputsApprovedHint} />
+                  </Text>
+                ) : (
+                  <IdeaList
+                    ideaId={ideaId}
+                    ideas={ideas}
+                    onSelectIdea={handleSelectIdea}
+                    onDeleteIdea={handleDeleteIdea}
+                  />
+                )}
+              </>
+            ) : (
+              <ApprovedInputsList
+                selectedIdeaId={ideaId}
+                onSelectIdea={handleSelectIdea}
               />
             )}
-            <IdeaList
-              ideaId={ideaId}
-              ideas={ideas}
-              onSelectIdea={handleSelectIdea}
-              onDeleteIdea={handleDeleteIdea}
-            />
           </Box>
-          <ApprovedInputsList
-            selectedIdeaId={ideaId}
-            onSelectIdea={handleSelectIdea}
-          />
         </Box>
         <Box
           w="35%"
