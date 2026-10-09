@@ -41,8 +41,8 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
     <<~DOC.squish
       Gets the SQL schema of the reporting tables that the `run_reporting_sql_query`
       tool can query: a documented relational model of the platform's participation
-      data (contributions and participants, inputs with their answers, phases, tags,
-      statuses and status history, imports, votes, reactions and official feedback,
+      data (contributions and participants, inputs with their answers, tags, statuses
+      and status history, imports, votes, reactions and official feedback,
       users with their demographics and the population base data to compare them
       with, visitor sessions and pageviews, projects, phases, events, published
       reports and community monitor scores). Call this before writing SQL; the
