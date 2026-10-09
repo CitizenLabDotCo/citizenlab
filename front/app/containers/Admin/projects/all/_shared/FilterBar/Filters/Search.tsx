@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 
@@ -16,22 +16,11 @@ interface Props {
 
 const Search = ({ placeholder }: Props) => {
   const searchValue = useParam('search');
-  const lastTypedValue = useRef(searchValue);
-  const [resetKey, setResetKey] = useState(0);
-
-  useEffect(() => {
-    if (!searchValue && lastTypedValue.current) {
-      lastTypedValue.current = undefined;
-      setResetKey((key) => key + 1);
-    }
-  }, [searchValue]);
 
   return (
     <SearchInput
-      key={resetKey}
-      defaultValue={searchValue}
+      value={searchValue ?? null}
       onChange={(search) => {
-        lastTypedValue.current = search ?? undefined;
         setParam('search', search ?? undefined);
         trackEventByName(tracks.setSearch, { search });
       }}
