@@ -3,6 +3,12 @@
 require 'rails_helper'
 
 describe AIAssistant::ContextTool do
+  it 'treats tools without annotations as write tools' do
+    tool_class = Class.new(McpServer::Tools::GetFormFields) { def annotations = nil }
+
+    expect(described_class.new(tool_class:)).not_to be_read_only
+  end
+
   it 'tags the activities of the tools it runs with the assistant channel' do
     phase = create(:native_survey_phase, project: create(:project, :draft))
     tool = described_class.new(tool_class: McpServer::Tools::ReplaceFormFields)

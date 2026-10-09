@@ -28,6 +28,12 @@ jest.mock('api/ai_assistant_conversations/useAddAiAssistantConversation', () =>
 jest.mock('api/ai_assistant_messages/useAddAiAssistantMessage', () =>
   jest.fn(() => ({ mutateAsync: jest.fn() }))
 );
+jest.mock('api/ai_assistant_tool_calls/useApproveAiAssistantToolCall', () =>
+  jest.fn(() => ({ mutate: jest.fn(), isPending: false, error: null }))
+);
+jest.mock('api/ai_assistant_tool_calls/useRejectAiAssistantToolCall', () =>
+  jest.fn(() => ({ mutate: jest.fn(), isPending: false, error: null }))
+);
 
 const conversation = (
   attributes: IAiAssistantConversationData['attributes']
@@ -76,9 +82,11 @@ const conversation = (
       id: 'call-1',
       type: 'ai_assistant_tool_call',
       attributes: {
-        name: 'get_form_fields',
-        arguments: {},
-        status: 'auto_executed',
+        name: 'replace_form_fields',
+        arguments: { fields: [] },
+        status: 'proposed',
+        reason: null,
+        decided_at: null,
         created_at: '2026-10-01T08:00:10.000Z',
       },
     },
@@ -99,6 +107,7 @@ const renderPanel = () =>
       contextId="phase-1"
       intro={{ id: 'test.intro', defaultMessage: 'Describe your survey' }}
       toolViews={{}}
+      onToolExecuted={jest.fn()}
     />
   );
 
@@ -110,16 +119,19 @@ describe('AssistantPanel', () => {
     expect(screen.getByText('Describe your survey')).toBeInTheDocument();
   });
 
-  it('blocks new messages while the assistant works', () => {
+  it('blocks new messages until the proposal is decided on', () => {
     mockConversation = conversation({
       ...baseAttributes,
-      status: 'running',
+      status: 'awaiting_approval',
       last_error_code: null,
     });
     renderPanel();
 
     expect(screen.getByText('Here is a first draft.')).toBeInTheDocument();
-    expect(screen.getByText('Read: get_form_fields')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Approve/ })).toBeInTheDocument();
+    expect(
+      screen.getByText('Approve or reject the proposed change to continue.')
+    ).toBeInTheDocument();
     expect(screen.getByRole('textbox')).toBeDisabled();
   });
 

@@ -10,7 +10,7 @@ class WebApi::V1::AIAssistant::MessagesController < ApplicationController
     authorize(message)
 
     status = conversation.with_lock do
-      next :busy if conversation.running?
+      next :busy if conversation.running? || conversation.awaiting_approval?
       next :invalid unless message.save
 
       conversation.update!(status: 'running', last_error_code: nil)
