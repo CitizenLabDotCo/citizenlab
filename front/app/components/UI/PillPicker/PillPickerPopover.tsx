@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  RefObject,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import {
   Box,
@@ -13,6 +19,7 @@ import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 
+import getPopoverPlacement, { PopoverPlacement } from './getPopoverPlacement';
 import messages from './messages';
 
 const Option = styled.div`
@@ -36,8 +43,13 @@ const Option = styled.div`
   }
 `;
 
+const GAP = 8;
+const LIST_MAX_HEIGHT = 248;
+
 const List = styled.div`
-  max-height: 248px;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: ${LIST_MAX_HEIGHT}px;
   overflow-y: auto;
   margin: 0 -6px;
   padding: 0 6px;
@@ -50,6 +62,7 @@ export interface PillOption {
 }
 
 interface Props {
+  triggerRef: RefObject<HTMLButtonElement>;
   options: PillOption[];
   selected: string[];
   searchPlaceholder: string;
@@ -59,6 +72,7 @@ interface Props {
 }
 
 const PillPickerPopover = ({
+  triggerRef,
   options,
   selected,
   searchPlaceholder,
@@ -70,10 +84,35 @@ const PillPickerPopover = ({
   const [search, setSearch] = useState('');
   const searchRef = useRef<HTMLInputElement | null>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const [placement, setPlacement] = useState<PopoverPlacement>({
+    openUp: false,
+    alignRight: false,
+  });
+
+  useLayoutEffect(() => {
+    const trigger = triggerRef.current;
+    const popover = popoverRef.current;
+    const list = listRef.current;
+    if (!trigger || !popover || !list) return;
+
+    // Measure the full height, including list rows a previous maxHeight hid.
+    const hiddenListHeight =
+      Math.min(list.scrollHeight, LIST_MAX_HEIGHT) - list.clientHeight;
+    setPlacement(
+      getPopoverPlacement(
+        trigger,
+        {
+          height: popover.offsetHeight + hiddenListHeight,
+          width: popover.offsetWidth,
+        },
+        GAP
+      )
+    );
+  }, [triggerRef, selected]);
 
   useEffect(() => {
     searchRef.current?.focus({ preventScroll: true });
-    popoverRef.current?.scrollIntoView({ block: 'nearest' });
   }, []);
 
   const query = search.trim().toLowerCase();
@@ -85,10 +124,13 @@ const PillPickerPopover = ({
     <Box
       ref={popoverRef}
       position="absolute"
-      top="calc(100% + 8px)"
-      left="0"
-      right="0"
-      mx="auto"
+      top={placement.openUp ? undefined : `calc(100% + ${GAP}px)`}
+      bottom={placement.openUp ? `calc(100% + ${GAP}px)` : undefined}
+      left={placement.alignRight ? undefined : '0'}
+      right={placement.alignRight ? '0' : undefined}
+      maxHeight={placement.maxHeight ? `${placement.maxHeight}px` : undefined}
+      display="flex"
+      flexDirection="column"
       zIndex="10"
       w="328px"
       p="12px"
@@ -110,7 +152,7 @@ const PillPickerPopover = ({
         />
       </Box>
 
-      <List>
+      <List ref={listRef}>
         {visibleOptions.map(({ value, label }) => (
           <Option key={value}>
             <CheckboxWithLabel
