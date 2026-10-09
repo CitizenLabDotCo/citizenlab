@@ -32,7 +32,7 @@ const StyledBox = styled(Box)<{ selected: boolean; $disabled?: boolean }>`
   ${({ $disabled }) =>
     $disabled &&
     `
-    background-color: #f9f9f9;
+    background-color: ${colors.grey100};
 
     &:hover {
       box-shadow: none;

@@ -4,6 +4,7 @@ import {
   Icon,
   fontSizes,
   defaultStyles,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -26,7 +27,7 @@ const FakeInput = styled.div`
   position: relative;
   opacity: 1;
   color: #666;
-  background-color: #f9f9f9;
+  background-color: ${colors.grey100};
   cursor: text;
   margin-bottom: 20px;
 `;

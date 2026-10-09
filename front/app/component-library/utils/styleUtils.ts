@@ -299,7 +299,7 @@ export const defaultInputStyle = css`
   &.disabled {
     opacity: 1;
     color: #666;
-    background-color: #f9f9f9;
+    background-color: ${colors.grey100};
     border-color: #ccc;
     cursor: not-allowed;
   }

@@ -40,7 +40,7 @@ function getSelectStyles(theme: DefaultTheme, settings?: Settings) {
       borderRadius: stylingConsts.borderRadius,
       minHeight,
       // Matches the disabled style of defaultInputStyle (e.g. Input)
-      backgroundColor: isDisabled ? '#f9f9f9' : '#fff',
+      backgroundColor: isDisabled ? `${colors.grey100}` : '#fff',
       boxShadow: 'none',
       cursor: 'pointer',
       '&:hover': {
