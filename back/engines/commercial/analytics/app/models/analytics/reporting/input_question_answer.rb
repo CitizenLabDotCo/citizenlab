@@ -4,13 +4,15 @@
 #
 # Table name: reporting_input_question_answers
 #
-#  input_id       :uuid
-#  question_id    :uuid
-#  question_key   :string
-#  question_type  :string
-#  question_label :text
-#  value_text     :text
-#  value_numeric  :decimal(, )
+#  input_id          :uuid
+#  question_id       :uuid
+#  question_key      :string
+#  question_type     :string
+#  question_label    :text
+#  value_text        :text
+#  value_numeric     :decimal(, )
+#  value_label       :text
+#  question_category :string
 #
 module Analytics
   module Reporting
@@ -42,12 +44,27 @@ module Analytics
           'value_text' => <<~DOC.squish,
             Textual answer: the option key for (multi)select questions, free
             text for text questions, 'true'/'false' for checkboxes. NULL for
-            numeric question types.
+            numeric question types. Option keys are stable ids, not what
+            participants saw: report value_label instead.
           DOC
-          'value_numeric' => <<~DOC.squish
+          'value_numeric' => <<~DOC.squish,
             Numeric answer for 'number', 'linear_scale', 'rating' and
             'sentiment_linear_scale' questions (scales run from 1 upwards).
             Aggregate with AVG for scores. NULL for textual question types.
+          DOC
+          'value_label' => <<~DOC.squish,
+            The answer as participants saw it, resolved to the platform primary
+            locale: the option title for (multi)select questions, the label of
+            the chosen point for 'linear_scale' and 'sentiment_linear_scale'
+            questions (often only the end points have one). NULL when there is
+            no label. Always use it rather than the option key in reports: keys
+            are fixed when an option is created, so they can contradict a label
+            that was edited later.
+          DOC
+          'question_category' => <<~DOC.squish
+            Theme of a community monitor question: 'quality_of_life',
+            'service_delivery', 'governance_and_trust' or 'other'. NULL for
+            questions outside the community monitor survey.
           DOC
         }
       end

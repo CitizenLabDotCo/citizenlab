@@ -1,35 +1,33 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  whoCanFindIt: {
-    id: 'app.containers.Admin.projects.NewProjectForm.whoCanFindIt',
-    defaultMessage: 'Who can find it',
+  titlePlaceholder: {
+    id: 'app.containers.Admin.projects.NewProjectForm.titlePlaceholder',
+    defaultMessage: 'Add a project title',
   },
-  public: {
-    id: 'app.containers.Admin.projects.NewProjectForm.public',
-    defaultMessage: 'Public',
+  titleRequired: {
+    id: 'app.containers.Admin.projects.NewProjectForm.titleRequired',
+    defaultMessage: 'Add a project title in every language.',
   },
-  publicDescription: {
-    id: 'app.containers.Admin.projects.NewProjectForm.publicDescription',
-    defaultMessage:
-      'Appears on the homepage, in the project list and in search.',
+  context: {
+    id: 'app.containers.Admin.projects.NewProjectForm.context',
+    defaultMessage: 'Context',
   },
-  private: {
-    id: 'app.containers.Admin.projects.NewProjectForm.private',
-    defaultMessage: 'Private',
+  chooseGroups: {
+    id: 'app.containers.Admin.projects.NewProjectForm.chooseGroups',
+    defaultMessage: 'Choose groups',
   },
-  privateDescription: {
-    id: 'app.containers.Admin.projects.NewProjectForm.privateDescription',
-    defaultMessage:
-      'Hidden from those places. Only people with the link can reach it.',
+  searchGroups: {
+    id: 'app.containers.Admin.projects.NewProjectForm.searchGroups',
+    defaultMessage: 'Search groups',
   },
-  cancel: {
-    id: 'app.containers.Admin.projects.NewProjectForm.cancel',
-    defaultMessage: 'Cancel',
+  noGroupsMatch: {
+    id: 'app.containers.Admin.projects.NewProjectForm.noGroupsMatch',
+    defaultMessage: 'No groups match your search.',
   },
-  createProject: {
-    id: 'app.containers.Admin.projects.NewProjectForm.createProject',
-    defaultMessage: 'Create project',
+  groupsRequired: {
+    id: 'app.containers.Admin.projects.NewProjectForm.groupsRequired',
+    defaultMessage: 'Choose at least one group.',
   },
   createError: {
     id: 'app.containers.Admin.projects.NewProjectForm.createError',

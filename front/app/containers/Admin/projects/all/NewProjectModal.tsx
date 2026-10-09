@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useId, useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Button, bo } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
-import { IProject, IUpdatedProjectProperties } from 'api/projects/types';
+import useAddProjectGroup from 'api/project_groups/useAddProjectGroup';
+import { IProject } from 'api/projects/types';
 import useAddProject from 'api/projects/useAddProject';
 
-import NewProjectForm from 'containers/Admin/projects/_shared/components/NewProjectForm';
+import NewProjectForm, {
+  NewProjectValues,
+} from 'containers/Admin/projects/_shared/components/NewProjectForm';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import Outlet from 'components/Outlet';
@@ -27,7 +30,9 @@ interface Props {
 
 const NewProjectModal = ({ mode, onClose }: Props) => {
   const { formatMessage } = useIntl();
+  const formId = useId();
   const { mutateAsync: addProject } = useAddProject();
+  const { mutateAsync: addProjectGroup } = useAddProjectGroup();
 
   const [processing, setProcessing] = useState(false);
   const [failed, setFailed] = useState(false);
@@ -40,7 +45,10 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
     onClose();
   };
 
-  const handleSubmit = async (attributes: IUpdatedProjectProperties) => {
+  const handleSubmit = async ({
+    groupIds,
+    ...attributes
+  }: NewProjectValues) => {
     setProcessing(true);
     setFailed(false);
     setApiErrors({});
@@ -52,6 +60,11 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
         ...attributes,
         admin_publication_attributes: { publication_status: 'draft' },
       });
+      await Promise.all(
+        groupIds.map((groupId) =>
+          addProjectGroup({ groupId, projectId: project.data.id })
+        )
+      );
     } catch (error) {
       setApiErrors(isCLErrorsWrapper(error) ? error.errors : {});
       setFailed(true);
@@ -68,15 +81,30 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
       <Modal
         opened={mode === 'scratch'}
         close={close}
-        width={600}
-        header={formatMessage(messages.fromScratch)}
+        width={560}
+        variant="bo"
+        header={formatMessage(messages.newProject)}
+        footer={
+          <Box w="100%" display="flex" justifyContent="flex-end">
+            <Button
+              buttonStyle="bo-primary"
+              height={bo.buttonMedium.height}
+              padding={bo.buttonMedium.padding}
+              fontSize={bo.buttonMedium.fontSize}
+              type="submit"
+              form={formId}
+              processing={processing}
+            >
+              {formatMessage(messages.createProject)}
+            </Button>
+          </Box>
+        }
       >
         <Box p="24px">
           <NewProjectForm
-            processing={processing}
+            id={formId}
             failed={failed}
             apiErrors={apiErrors}
-            onCancel={close}
             onSubmit={handleSubmit}
           />
         </Box>
@@ -86,6 +114,7 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
         opened={mode === 'template'}
         close={close}
         width={1000}
+        variant="bo"
         header={formatMessage(messages.fromTemplate)}
       >
         <Box p="24px">
@@ -93,6 +122,7 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
             id="app.containers.Admin.projects.all.createProject"
             selectedTabValue="template"
             onDone={close}
+            variant="bo"
           />
         </Box>
       </Modal>
