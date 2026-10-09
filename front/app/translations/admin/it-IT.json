@@ -1553,7 +1553,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.groups": "Gruppi",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.label": "Visibilità",
   "app.containers.Admin.projects.all.new.Projects.Filters.addFilter": "Aggiungi filtro",
-  "app.containers.Admin.projects.all.new.Projects.Filters.clear": "Pulisci",
   "app.containers.Admin.projects.all.new.Projects.Filters.noMoreFilters": "Non ci sono più filtri da aggiungere",
   "app.containers.Admin.projects.all.new.Projects.Table.admins": "Amministratori",
   "app.containers.Admin.projects.all.new.Projects.Table.allProjectsHaveLoaded": "Tutti i progetti sono stati caricati",

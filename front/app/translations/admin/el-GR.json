@@ -1553,7 +1553,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.groups": "Ομάδες",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.label": "Ορατότητα",
   "app.containers.Admin.projects.all.new.Projects.Filters.addFilter": "Προσθήκη φίλτρου",
-  "app.containers.Admin.projects.all.new.Projects.Filters.clear": "Εκκαθάριση",
   "app.containers.Admin.projects.all.new.Projects.Filters.noMoreFilters": "Δεν υπάρχουν άλλα φίλτρα για προσθήκη",
   "app.containers.Admin.projects.all.new.Projects.Table.admins": "Διαχειριστές",
   "app.containers.Admin.projects.all.new.Projects.Table.allProjectsHaveLoaded": "Όλα τα έργα έχουν φορτωθεί",

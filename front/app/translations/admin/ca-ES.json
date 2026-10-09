@@ -1553,7 +1553,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.groups": "Grups",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.label": "Visibilitat",
   "app.containers.Admin.projects.all.new.Projects.Filters.addFilter": "Afegeix un filtre",
-  "app.containers.Admin.projects.all.new.Projects.Filters.clear": "Neteja",
   "app.containers.Admin.projects.all.new.Projects.Filters.noMoreFilters": "No hi ha més filtres per afegir",
   "app.containers.Admin.projects.all.new.Projects.Table.admins": "Administradors",
   "app.containers.Admin.projects.all.new.Projects.Table.allProjectsHaveLoaded": "S'han carregat tots els projectes",

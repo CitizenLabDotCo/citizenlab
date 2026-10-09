@@ -1553,7 +1553,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.groups": "Grupper",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.label": "Synlighet",
   "app.containers.Admin.projects.all.new.Projects.Filters.addFilter": "Legg til filter",
-  "app.containers.Admin.projects.all.new.Projects.Filters.clear": "Klar",
   "app.containers.Admin.projects.all.new.Projects.Filters.noMoreFilters": "Ingen flere filtre å legge til",
   "app.containers.Admin.projects.all.new.Projects.Table.admins": "Administratorer",
   "app.containers.Admin.projects.all.new.Projects.Table.allProjectsHaveLoaded": "Alle prosjekter er lastet inn",

@@ -1553,7 +1553,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.groups": "المجموعات",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.label": "الظهور",
   "app.containers.Admin.projects.all.new.Projects.Filters.addFilter": "زيد فلتر",
-  "app.containers.Admin.projects.all.new.Projects.Filters.clear": "مسح",
   "app.containers.Admin.projects.all.new.Projects.Filters.noMoreFilters": "لا توجد فلاتر إضافية لإضافتها",
   "app.containers.Admin.projects.all.new.Projects.Table.admins": "المشرفين",
   "app.containers.Admin.projects.all.new.Projects.Table.allProjectsHaveLoaded": "كاع المشاريع تم التحميل ديالها",

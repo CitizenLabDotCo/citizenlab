@@ -1553,7 +1553,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.groups": "Grúpaí",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.label": "Infheictheacht",
   "app.containers.Admin.projects.all.new.Projects.Filters.addFilter": "Cuir scagaire leis",
-  "app.containers.Admin.projects.all.new.Projects.Filters.clear": "Glan",
   "app.containers.Admin.projects.all.new.Projects.Filters.noMoreFilters": "Níl aon scagairí eile le cur leis",
   "app.containers.Admin.projects.all.new.Projects.Table.admins": "Riarthóirí",
   "app.containers.Admin.projects.all.new.Projects.Table.allProjectsHaveLoaded": "Tá na tionscadail uile luchtaithe",

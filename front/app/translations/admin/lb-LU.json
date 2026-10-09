@@ -1553,7 +1553,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.groups": "Gruppen",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.label": "Sichtbarkeet",
   "app.containers.Admin.projects.all.new.Projects.Filters.addFilter": "Filter dobäisetzen",
-  "app.containers.Admin.projects.all.new.Projects.Filters.clear": "Läschen",
   "app.containers.Admin.projects.all.new.Projects.Filters.noMoreFilters": "Keng weider Filtere fir bäizefügen",
   "app.containers.Admin.projects.all.new.Projects.Table.admins": "Adminen",
   "app.containers.Admin.projects.all.new.Projects.Table.allProjectsHaveLoaded": "All Projete goufe gelueden",

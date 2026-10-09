@@ -1553,7 +1553,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.groups": "Grupas",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.label": "Redzamība",
   "app.containers.Admin.projects.all.new.Projects.Filters.addFilter": "Pievienot filtru",
-  "app.containers.Admin.projects.all.new.Projects.Filters.clear": "Skaidrs",
   "app.containers.Admin.projects.all.new.Projects.Filters.noMoreFilters": "Neviens filtrs vairs nav jāpievieno",
   "app.containers.Admin.projects.all.new.Projects.Table.admins": "Administratori",
   "app.containers.Admin.projects.all.new.Projects.Table.allProjectsHaveLoaded": "Visi projekti ir ielādēti",
