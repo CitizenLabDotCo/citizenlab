@@ -32,10 +32,6 @@ module CustomIdMethods::Franceconnect
     SSO_VERIFICATION_PARAM_VALUE = 'true'
 
     def profile_to_user_attrs(auth)
-      # birthyear and gender have to travel in custom_field_values, even though User
-      # exposes them as store accessors: UserService.update_in_sso! writes through
-      # User#update_merging_custom_fields!, which rebuilds custom_field_values from the
-      # user's current values and so overwrites whatever a store accessor just set.
       enabled_codes = CustomField.registration.enabled.pluck(:code)
       custom_field_values = {}
 

@@ -70,21 +70,12 @@ module IdMethods
 
     # @return [Array<Symbol>] Returns a list of user attributes that can be updated from the auth response hash
     #
-    # Every locked attribute is updateable: a locked attribute we never write stays
-    # blank forever, since the user cannot fill it in either. Overrides only add the
-    # attributes this method updates *without* locking them, and must call `super`.
-    #
-    # Locked custom fields work the same way, except that they are not listed here
-    # individually: they are all written through the single :custom_field_values key.
-    # (User exposes gender, birthyear and domicile as store accessors too, but
-    # User#update_merging_custom_fields! overwrites those, so they are no use here.)
+    # Every locked attribute is updateable, and if there is at least 1 locked custom field,
+    # :custom_field_values will be included in the list of updateable attributes.
     def updateable_user_attrs
       result = respond_to?(:locked_attributes) ? locked_attributes.dup : []
       result << :custom_field_values if respond_to?(:locked_custom_fields) && locked_custom_fields.any?
-      # Same rule again, enforced by a feature flag rather than by a lock list: with
-      # password_login disabled users cannot change their email on the UI, so the SSO is
-      # the only thing that can keep it up to date.
-      #
+
       # :email is also the one attribute here that listing does not get written. Every
       # other one lands as-is through the slice in UserService.update_in_sso!, whereas
       # UserService#resolve_sso_email! takes the address from here and then decides for
