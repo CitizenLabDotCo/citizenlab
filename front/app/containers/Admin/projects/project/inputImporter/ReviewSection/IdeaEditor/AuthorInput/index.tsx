@@ -26,7 +26,7 @@ const FakeInput = styled.div`
   width: 100%;
   position: relative;
   opacity: 1;
-  color: #666;
+  color: ${colors.grey700};
   background-color: ${colors.grey100};
   cursor: text;
   margin-bottom: 20px;
@@ -34,7 +34,7 @@ const FakeInput = styled.div`
 
 const StyledIcon = styled(Icon)`
   cursor: pointer;
-  fill: #666;
+  fill: ${colors.grey700};
   &:hover {
     fill: black;
   }

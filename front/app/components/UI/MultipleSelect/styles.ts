@@ -51,7 +51,7 @@ function getSelectStyles(theme: DefaultTheme, settings?: Settings) {
     }),
     singleValue: (base, { isDisabled }) => ({
       ...base,
-      color: isDisabled ? '#666' : base.color,
+      color: isDisabled ? colors.grey700 : base.color,
     }),
     indicatorSeparator: () => ({
       display: 'none',

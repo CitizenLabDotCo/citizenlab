@@ -298,7 +298,7 @@ export const defaultInputStyle = css`
   &:disabled,
   &.disabled {
     opacity: 1;
-    color: #666;
+    color: ${colors.grey700};
     background-color: ${colors.grey100};
     border-color: ${colors.grey400};
     cursor: not-allowed;
