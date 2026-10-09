@@ -43,11 +43,9 @@ const SurveyFormBuilder = ({
 
   return (
     <FormBuilder
-      builderConfig={{
-        ...nativeSurveyConfig,
-        formCustomFields: newCustomFields,
-        goBackUrl,
-      }}
+      builderConfig={nativeSurveyConfig}
+      formCustomFields={newCustomFields}
+      goBackUrl={goBackUrl}
       viewFormLink={{
         to: '/projects/$slug/surveys/new',
         params: { slug: project.data.attributes.slug },

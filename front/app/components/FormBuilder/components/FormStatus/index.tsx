@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form';
 
 import useFormSubmissionCount from 'api/submission_count/useSubmissionCount';
 
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import { ResolvedFormBuilderConfig } from 'components/FormBuilder/utils';
 import Feedback from 'components/HookForm/Feedback';
 import SuccessFeedback from 'components/HookForm/Feedback/SuccessFeedback';
 import Error from 'components/UI/Error';
@@ -19,7 +19,7 @@ type FormStatusProps = {
   successMessageIsVisible: boolean;
   isSubmitting: boolean;
   setSuccessMessageIsVisible: (visible: boolean) => void;
-  builderConfig: FormBuilderConfig;
+  builderConfig: ResolvedFormBuilderConfig;
   projectId: string;
   phaseId: string;
 };

@@ -45,7 +45,11 @@ import { DragAndDrop, Drop } from '../components/DragAndDrop';
 import { pageDNDType } from '../components/FormFields/constants';
 import FormStatus from '../components/FormStatus';
 import messages from '../messages';
-import { FormBuilderConfig } from '../utils';
+import {
+  FormBuilderConfig,
+  ResolvedFormBuilderConfig,
+  resolveFormBuilderConfig,
+} from '../utils';
 
 import {
   getReorderedFields,
@@ -66,7 +70,7 @@ type FormEditProps = {
   defaultValues: {
     customFields: IFlatCustomField[];
   };
-  builderConfig: FormBuilderConfig;
+  builderConfig: ResolvedFormBuilderConfig;
   totalSubmissions: number;
   viewFormLink: TypedLinkProps;
   phase: IPhaseData;
@@ -414,11 +418,15 @@ const FormEdit = ({
 
 type FormBuilderPageProps = {
   builderConfig: FormBuilderConfig;
+  formCustomFields: IFlatCustomField[] | undefined | Error;
+  goBackUrl: string;
   viewFormLink: TypedLinkProps;
 };
 
 const FormBuilderPage = ({
   builderConfig,
+  formCustomFields,
+  goBackUrl,
   viewFormLink,
 }: FormBuilderPageProps) => {
   const modalPortalElement = document.getElementById('modal-portal');
@@ -427,8 +435,6 @@ const FormBuilderPage = ({
     phaseId,
   });
   const { data: phase } = usePhase(phaseId);
-
-  const formCustomFields = builderConfig.formCustomFields;
 
   if (!phase) {
     return null;
@@ -443,7 +449,11 @@ const FormBuilderPage = ({
         <FormEdit
           defaultValues={{ customFields: formCustomFields }}
           phase={phase.data}
-          builderConfig={builderConfig}
+          builderConfig={resolveFormBuilderConfig(
+            builderConfig,
+            phase.data,
+            goBackUrl
+          )}
           totalSubmissions={submissionCount.data.attributes.totalSubmissions}
           viewFormLink={viewFormLink}
         />,

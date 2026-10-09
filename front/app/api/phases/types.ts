@@ -92,6 +92,8 @@ export interface IPhaseAttributes {
   similarity_enabled?: boolean;
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
+  supports_form_logic: boolean;
+  supports_public_visibility: boolean;
   user_data_collection: UserDataCollection;
   user_fields_in_form_enabled: boolean;
   action_descriptors: PhaseActionDescriptors;

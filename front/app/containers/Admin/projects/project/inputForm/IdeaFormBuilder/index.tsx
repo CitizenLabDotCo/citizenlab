@@ -44,11 +44,9 @@ const IdeaFormBuilder = ({
 
   return (
     <FormBuilder
-      builderConfig={{
-        ...config,
-        formCustomFields,
-        goBackUrl,
-      }}
+      builderConfig={config}
+      formCustomFields={formCustomFields}
+      goBackUrl={goBackUrl}
       viewFormLink={{
         to: '/projects/$slug/ideas/new',
         params: { slug: projectSlug },
