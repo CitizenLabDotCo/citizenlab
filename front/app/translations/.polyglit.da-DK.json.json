@@ -13659,6 +13659,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.errors.not_supported_in_standalone_phase": {
+    "state": "verified",
+    "verified_at": "2026-10-09T13:13:55.556106Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.errors.number_invalid": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
