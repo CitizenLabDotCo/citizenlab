@@ -49,6 +49,7 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
     groupIds,
     ...attributes
   }: NewProjectValues) => {
+    if (processing) return;
     setProcessing(true);
     setFailed(false);
     setApiErrors({});
