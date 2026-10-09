@@ -9539,6 +9539,11 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.insights.konveioParticipationDataNotice": {
+    "state": "verified",
+    "verified_at": "2026-10-09T15:39:04.282783Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.projects.project.insights.last7Days": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -9778,6 +9783,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.insights.visitorsOverTime": {
+    "state": "verified",
+    "verified_at": "2026-10-09T15:39:04.282783Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Admin.projects.project.insights.volunteerings": {
     "state": "verified",
