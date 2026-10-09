@@ -4526,7 +4526,7 @@ CREATE VIEW public.reporting_reference_distributions AS
     (counts.value)::integer AS population_count,
     d.updated_at
    FROM ((((current_distributions d
-     JOIN public.custom_fields q ON ((q.id = d.custom_field_id)))
+     JOIN public.custom_fields q ON (((q.id = d.custom_field_id) AND q.enabled)))
      CROSS JOIN LATERAL jsonb_each_text(d.distribution) counts(option_id, value))
      JOIN public.custom_field_options o ON (((o.id)::text = counts.option_id)))
      LEFT JOIN public.areas ar ON ((((q.key)::text = 'domicile'::text) AND (ar.custom_field_option_id = o.id))))
@@ -4542,7 +4542,7 @@ UNION ALL
     (bin.count)::integer AS population_count,
     d.updated_at
    FROM ((current_distributions d
-     JOIN public.custom_fields q ON ((q.id = d.custom_field_id)))
+     JOIN public.custom_fields q ON (((q.id = d.custom_field_id) AND q.enabled)))
      CROSS JOIN LATERAL jsonb_array_elements_text((d.distribution -> 'counts'::text)) WITH ORDINALITY bin(count, idx))
   WHERE ((d.type)::text = 'UserCustomFields::Representativeness::BinnedDistribution'::text);
 

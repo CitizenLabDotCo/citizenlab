@@ -8,7 +8,7 @@ RSpec.describe 'reporting_reference_distributions parity with the representative
   # Follows the recipe in Analytics::Reporting::ReferenceDistribution.table_description.
   def recipe_rscore(question_key, answers_sql)
     sql = <<~SQL.squish
-      SELECT MIN(rate) / MAX(rate) AS rscore
+      SELECT MIN(rate) / NULLIF(MAX(rate), 0) AS rscore
       FROM (
         SELECT COUNT(u.user_id)::numeric / d.population_count AS rate
         FROM reporting_reference_distributions d
@@ -17,7 +17,7 @@ RSpec.describe 'reporting_reference_distributions parity with the representative
         GROUP BY d.id, d.population_count
       ) rates
     SQL
-    ActiveRecord::Base.connection.select_value(sql).to_f
+    ActiveRecord::Base.connection.select_value(sql)&.to_f
   end
 
   it 'gives the dashboard R-score for a categorical distribution' do
@@ -34,6 +34,20 @@ RSpec.describe 'reporting_reference_distributions parity with the representative
     end
 
     expect(rscore).to be_within(0.0001).of(distribution.compute_rscore(User.all).value)
+  end
+
+  it 'gives no score, instead of failing, when no user matches any row' do
+    gender = create(:custom_field_gender, :with_options)
+    male, female = %w[male female].map { |key| gender.options.find_by!(key: key) }
+    distribution = create(:categorical_distribution, custom_field: gender, distribution: { male.id => 480, female.id => 520 })
+    create(:user)
+
+    rscore = recipe_rscore('gender', 'SELECT user_id, question_id, answer_value FROM reporting_user_question_answers') do
+      'u.question_id = d.question_id AND u.answer_value = d.answer_value'
+    end
+
+    expect(rscore).to be_nil
+    expect(distribution.compute_rscore(User.all).value).to be_nan
   end
 
   it 'gives the dashboard R-score for an age distribution' do

@@ -25,6 +25,14 @@ RSpec.describe Analytics::Reporting::ReferenceDistribution do
     expect(described_class.where(question_id: gender.id).pluck(:population_count)).to contain_exactly(480, 520)
   end
 
+  it 'leaves out the base data of disabled questions' do
+    gender = create(:custom_field_gender, :with_options, enabled: false)
+    male, female = %w[male female].map { |key| gender.options.find_by!(key: key) }
+    create(:categorical_distribution, custom_field: gender, distribution: { male.id => 480, female.id => 520 })
+
+    expect(described_class.where(question_id: gender.id)).to be_empty
+  end
+
   it 'uses area ids and outside as the domicile answer values' do
     domicile = create(:custom_field_domicile)
     area = create(:area, title_multiloc: { 'en' => 'North' })

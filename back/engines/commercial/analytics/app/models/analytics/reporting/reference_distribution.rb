@@ -36,16 +36,19 @@ module Analytics
       def self.table_description
         <<~DOC.squish
           The population base data (census figures) administrators uploaded for
-          the representativeness dashboard: one row per option of a select
-          registration question, or per age group for 'birthyear'. Compare it
-          with reporting_user_question_answers to tell how representative
-          participants are. Empty for a question when no base data was
-          uploaded: then say so and suggest uploading it, rather than looking
-          up census figures. Representativeness score (R-score) as the
-          dashboard computes it: count the compared users per row, divide by
-          population_count to get a participation rate, and take the lowest
-          rate divided by the highest. A row without users gives a rate of 0,
-          and users whose answer has no row are left out. For age, put each
+          the representativeness dashboard: one row per option of an enabled
+          select registration question, or per age group for 'birthyear'.
+          Compare it with reporting_user_question_answers to tell how
+          representative participants are. Empty for a question when no base
+          data was uploaded or the question is disabled: then say so and
+          suggest uploading it, rather than looking up census figures.
+          Representativeness score (R-score) as the dashboard computes it:
+          count the compared users per row, divide by population_count to get a
+          participation rate, and take the lowest rate divided by the highest,
+          as MIN(rate) / NULLIF(MAX(rate), 0). A row without users gives a rate
+          of 0, and users whose answer has no row are left out. When no
+          compared user matches any row there is no score (the dashboard shows
+          0): report it as no data, not as a score of 0. For age, put each
           user in the row where min_age <= age and (max_age IS NULL or
           age < max_age), with age = #{AGE_SQL} on the user's 'birthyear'
           answer_value. Use it exactly as given: it returns NULL for a

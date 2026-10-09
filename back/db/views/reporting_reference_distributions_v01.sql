@@ -1,6 +1,9 @@
 -- Reporting view: the population base data behind the representativeness
--- dashboard, one row per option or age group of each registration question's
--- current distribution (its latest upload, as CustomField#current_ref_distribution).
+-- dashboard, one row per option or age group of each enabled registration
+-- question's current distribution (its latest upload, as
+-- CustomField#current_ref_distribution). Disabled questions are left out, as
+-- on the dashboard and in reporting_user_question_answers, since no user
+-- answers could be compared with them.
 --
 -- Categorical distributions map option ids to counts. answer_value and
 -- answer_label match reporting_user_question_answers, so rows join on
@@ -36,7 +39,7 @@ SELECT
     counts.value::integer AS population_count,
     d.updated_at
 FROM current_distributions d
-INNER JOIN custom_fields q ON q.id = d.custom_field_id
+INNER JOIN custom_fields q ON q.id = d.custom_field_id AND q.enabled
 CROSS JOIN LATERAL jsonb_each_text(d.distribution) AS counts(option_id, value)
 INNER JOIN custom_field_options o ON o.id::text = counts.option_id
 LEFT JOIN areas ar ON q.key = 'domicile' AND ar.custom_field_option_id = o.id
@@ -55,6 +58,6 @@ SELECT
     bin.count::integer AS population_count,
     d.updated_at
 FROM current_distributions d
-INNER JOIN custom_fields q ON q.id = d.custom_field_id
+INNER JOIN custom_fields q ON q.id = d.custom_field_id AND q.enabled
 CROSS JOIN LATERAL jsonb_array_elements_text(d.distribution -> 'counts') WITH ORDINALITY AS bin(count, idx)
 WHERE d.type = 'UserCustomFields::Representativeness::BinnedDistribution'
