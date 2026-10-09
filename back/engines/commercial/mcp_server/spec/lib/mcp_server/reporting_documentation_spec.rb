@@ -17,7 +17,8 @@ RSpec.describe 'Reporting schema documentation' do # rubocop:disable RSpec/Descr
     'reporting_input_tags' => %w[tag_id parent_tag_id],
     'reporting_input_status_changes' => %w[from_status_id to_status_id],
     'reporting_user_question_answers' => %w[question_id],
-    'reporting_input_question_answers' => %w[question_id]
+    'reporting_input_question_answers' => %w[question_id],
+    'reporting_community_monitor_scores' => %w[question_id]
   }
 
   reporting_tables = McpServer::Tools::GetReportingSqlSchema::REPORTING_TABLES

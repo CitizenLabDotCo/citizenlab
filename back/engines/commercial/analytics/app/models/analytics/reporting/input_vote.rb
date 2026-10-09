@@ -9,6 +9,7 @@
 #  user_id  :uuid
 #  voted_at :datetime
 #  weight   :integer
+#  phase_id :uuid
 #
 module Analytics
   module Reporting
