@@ -5,7 +5,7 @@ import {
   IAiAssistantConversationData,
 } from 'api/ai_assistant_conversations/types';
 
-import { render, screen, fireEvent } from 'utils/testUtils/rtl';
+import { render, screen } from 'utils/testUtils/rtl';
 
 import AssistantPanel from './AssistantPanel';
 
@@ -82,18 +82,15 @@ const renderPanel = () =>
       contextKey="survey_builder"
       contextId="phase-1"
       intro={{ id: 'test.intro', defaultMessage: 'Describe your survey' }}
-      starters={[{ id: 'test.starter', defaultMessage: 'A survey on bikes' }]}
     />
   );
 
 describe('AssistantPanel', () => {
-  it('fills the composer with a starter prompt', () => {
+  it('shows the intro before the first message', () => {
     mockConversation = undefined;
     renderPanel();
 
-    fireEvent.click(screen.getByRole('button', { name: /A survey on bikes/ }));
-
-    expect(screen.getByRole('textbox')).toHaveValue('A survey on bikes');
+    expect(screen.getByText('Describe your survey')).toBeInTheDocument();
   });
 
   it('blocks new messages while the assistant works', () => {
