@@ -1460,8 +1460,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.projectContext": "Projektkontext",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceLabel": "Space",
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "Ein Ordner bleibt immer in seinem eigenen Space, daher wird durch die Auswahl eines Ordners auch der Space festgelegt. Das Ändern des Spaces löscht den ausgewählten Ordner.",
-  "app.containers.Admin.projects.all.NewProjectModal.fromScratch": "Von Grund auf neu",
-  "app.containers.Admin.projects.all.NewProjectModal.fromScratchDescription": "Ein leeres Projekt, das Sie selbst einrichten.",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "Mit einer Vorlage beginnen",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Space löschen",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "Keine Spaces gefunden",
