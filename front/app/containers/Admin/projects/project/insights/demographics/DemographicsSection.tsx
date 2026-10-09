@@ -28,6 +28,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 import { usePdfExportContext } from '../pdf/PdfExportContext';
+import { tracksParticipants } from '../utils';
 import { useWordSection, type WordSection } from '../word/useWordSection';
 import WordExportableInsight from '../word/WordExportableInsight';
 import { useWordExportContext } from '../word/WordExportContext';
@@ -100,6 +101,9 @@ const DemographicsSection = ({ phase }: Props) => {
   const userDataCollection =
     phase?.attributes.user_data_collection || 'anonymous';
 
+  const showDemographics =
+    !phase || tracksParticipants(phase.attributes.participation_method);
+
   const {
     data: response,
     isLoading,
@@ -152,11 +156,16 @@ const DemographicsSection = ({ phase }: Props) => {
 
       return sections;
     },
-    { skip: isLoading || !!error || fields.length === 0 }
+    { skip: isLoading || !!error || fields.length === 0 || !showDemographics }
   );
 
   // Hide demographics when private attributes export is disabled
   if (!privateAttributesInExport) {
+    return null;
+  }
+
+  // A phase with no participants of its own has no audience to describe
+  if (!showDemographics) {
     return null;
   }
 

@@ -352,7 +352,7 @@ const InsightsContent = () => {
           </PageBreakBox>
 
           <PageBreakBox>
-            <ParticipantsTimeline phaseId={phase.data.id} />
+            <ParticipantsTimeline phase={phase.data} />
           </PageBreakBox>
 
           <DemographicsSection phase={phase.data} />
