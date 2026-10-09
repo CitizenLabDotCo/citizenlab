@@ -23,7 +23,6 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import Composer from './Composer';
-import EmptyState from './EmptyState';
 import { getErrorMessage, getRequestErrorCode } from './errors';
 import messages from './messages';
 import Transcript from './Transcript';
@@ -33,10 +32,9 @@ type Props = {
   // The record the conversation is about, e.g. the phase of a survey.
   contextId: string;
   intro: MessageDescriptor;
-  starters: MessageDescriptor[];
 };
 
-const AssistantPanel = ({ contextKey, contextId, intro, starters }: Props) => {
+const AssistantPanel = ({ contextKey, contextId, intro }: Props) => {
   const locale = useLocale();
   const { formatMessage } = useIntl();
   const { data: conversations } = useAiAssistantConversations({
@@ -126,11 +124,9 @@ const AssistantPanel = ({ contextKey, contextId, intro, starters }: Props) => {
         {conversation && hasMessages ? (
           <Transcript conversation={conversation} />
         ) : (
-          <EmptyState
-            intro={intro}
-            starters={starters}
-            onSelectStarter={setPrompt}
-          />
+          <Text m="0px">
+            <FormattedMessage {...intro} />
+          </Text>
         )}
       </Box>
       <Box mt="16px">
