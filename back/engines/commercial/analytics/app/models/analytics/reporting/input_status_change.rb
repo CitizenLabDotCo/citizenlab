@@ -40,18 +40,14 @@ module Analytics
         {
           'id' => 'Primary key.',
           'input_id' => 'The input whose status changed.',
-          'from_status_id' => <<~DOC.squish,
-            The status before the change. NULL when that status was deleted
-            since, or for older automatic proposal changes that only recorded
-            the status code.
-          DOC
+          'from_status_id' => 'The status before the change. NULL when that status was deleted since.',
           'from_status_label' => 'Name of the status before the change, resolved to the platform primary locale. NULL when from_status_id is NULL.',
           'from_status_code' => <<~DOC.squish,
             Locale-independent category of the status before the change (see
             reporting_inputs.status_code for values). NULL when that status was
             deleted since.
           DOC
-          'to_status_id' => 'The status after the change. NULL in the same cases as from_status_id.',
+          'to_status_id' => 'The status after the change. NULL when that status was deleted since.',
           'to_status_label' => 'Name of the status after the change, resolved to the platform primary locale. NULL when to_status_id is NULL.',
           'to_status_code' => <<~DOC.squish,
             Locale-independent category of the status after the change (see
