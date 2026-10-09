@@ -2677,6 +2677,7 @@
   "app.errors.no_invites_specified": "Kon geen e-mailadres(sen) vinden.",
   "app.errors.no_previewer_phone": "Een voorbeeld wordt naar je eigen telefoon gestuurd. Voeg eerst een telefoonnummer toe aan je profiel.",
   "app.errors.no_recipients": "De campagne kan niet worden verzonden omdat er geen ontvangers zijn. De groep waarnaar je verzendt is leeg, of niemand heeft toestemming gegeven voor het ontvangen van e-mails.",
+  "app.errors.not_supported_in_standalone_phase": "Alleen vragenlijsten kunnen naast de tijdlijn worden geplaatst. Deze participatiemethode moet een fase op de tijdlijn zijn.",
   "app.errors.number_invalid": "Voer een geldig nummer in.",
   "app.errors.password_blank": "Dit mag niet leeg zijn",
   "app.errors.password_invalid": "Controleer uw huidige wachtwoord opnieuw.",

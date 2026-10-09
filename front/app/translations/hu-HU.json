@@ -2677,6 +2677,7 @@
   "app.errors.no_invites_specified": "Nem található e-mail cím.",
   "app.errors.no_previewer_phone": "Az előnézet a saját telefonjára érkezik. Előbb adjon meg egy telefonszámot a profiljában.",
   "app.errors.no_recipients": "A kampány nem küldhető ki, mert nincsenek címzettek. A csoport, amelynek küldeni szeretné, vagy üres, vagy senki sem járult hozzá az e-mailek fogadásához.",
+  "app.errors.not_supported_in_standalone_phase": "Csak kérdőívek futhatnak az idővonal mellett. Ennek a részvételi módnak az idővonal egyik szakaszának kell lennie.",
   "app.errors.number_invalid": "Kérjük, adjon meg egy érvényes számot.",
   "app.errors.password_blank": "Ez nem lehet üres",
   "app.errors.password_invalid": "Kérjük, ellenőrizze újra jelenlegi jelszavát.",

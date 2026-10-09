@@ -2677,6 +2677,7 @@
   "app.errors.no_invites_specified": "Methu dod o hyd i unrhyw gyfeiriad e-bost.",
   "app.errors.no_previewer_phone": "Anfonir rhagolwg i'ch ffôn eich hun. Ychwanegwch rif ffôn i'ch proffil yn gyntaf.",
   "app.errors.no_recipients": "Ni ellir anfon yr ymgyrch oherwydd nad oes unrhyw dderbynwyr. Mae'r grŵp rydych chi'n anfon ato naill ai'n wag, neu nid oes neb wedi cydsynio i dderbyn e-byst.",
+  "app.errors.not_supported_in_standalone_phase": "Dim ond arolygon sy'n gallu rhedeg ochr yn ochr â'r llinell amser. Mae angen i'r dull cyfranogi hwn fod yn gyfnod ar y llinell amser.",
   "app.errors.number_invalid": "Rhowch rif dilys.",
   "app.errors.password_blank": "Ni all hwn fod yn wag",
   "app.errors.password_invalid": "Gwiriwch eich cyfrinair cyfredol eto.",

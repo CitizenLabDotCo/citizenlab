@@ -2677,6 +2677,7 @@
   "app.errors.no_invites_specified": "Herhangi bir e-posta adresi bulunamadı.",
   "app.errors.no_previewer_phone": "Önizleme kendi telefonunuza gönderilir. Önce profilinize bir telefon numarası ekleyin.",
   "app.errors.no_recipients": "Alıcı bulunmadığı için kampanya gönderilemiyor. Gönderim yaptığınız grup ya boş ya da kimse e-posta almayı onaylamadı.",
+  "app.errors.not_supported_in_standalone_phase": "Sadece anketler zaman çizelgesiyle birlikte yürütülebilir. Bu katılım yönteminin zaman çizelgesinde bir aşama olması gerekir.",
   "app.errors.number_invalid": "Lütfen geçerli bir numara girin.",
   "app.errors.password_blank": "Bu boş olamaz",
   "app.errors.password_invalid": "Lütfen mevcut şifrenizi tekrar kontrol edin.",

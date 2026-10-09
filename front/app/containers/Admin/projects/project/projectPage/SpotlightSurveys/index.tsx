@@ -10,6 +10,7 @@ import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';
+import { linkedSurveyPhaseIds } from 'components/ProjectPageBuilder/Widgets/SpotlightSurveys/linkedSurveyPhaseIds';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
@@ -29,15 +30,20 @@ import {
   formatDateRange,
   phaseStatus,
 } from '../phaseRowUtils';
-
-import { linkedSurveyPhaseIds } from './linkedSurveyPhaseIds';
+import PhaseOptionsMenu from '../TimelinePhases/PhaseOptionsMenu';
+import PhaseRowWithOptions from '../TimelinePhases/PhaseRowWithOptions';
 
 interface Props {
   projectId: string;
+  withPhaseOptions?: boolean;
   variant?: 'sidebar' | 'backofficeRedesign';
 }
 
-const SpotlightSurveys = ({ projectId, variant = 'sidebar' }: Props) => {
+const SpotlightSurveys = ({
+  projectId,
+  withPhaseOptions = false,
+  variant = 'sidebar',
+}: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const dateLocale = getLocale(useLocale());
@@ -105,9 +111,8 @@ const SpotlightSurveys = ({ projectId, variant = 'sidebar' }: Props) => {
           const onProjectPage = linkedPhaseIds.has(phase.id);
           const title = localize(phase.attributes.title_multiloc);
 
-          return (
+          const row = (
             <Link
-              key={phase.id}
               to={PHASE_TAB_ROUTES[getPhaseLandingTab(phase)]}
               params={{ projectId, phaseId: phase.id }}
             >
@@ -117,7 +122,11 @@ const SpotlightSurveys = ({ projectId, variant = 'sidebar' }: Props) => {
                 ) : (
                   <PhaseDot status={status} />
                 )}
-                <Box flexGrow={1} pb={redesign ? '0' : '4px'}>
+                <Box
+                  flexGrow={1}
+                  pb={redesign ? '0' : '4px'}
+                  pr={withPhaseOptions ? '24px' : undefined}
+                >
                   {redesign ? (
                     <SurveyTitle
                       style={{
@@ -165,6 +174,17 @@ const SpotlightSurveys = ({ projectId, variant = 'sidebar' }: Props) => {
                 </Box>
               </RowElement>
             </Link>
+          );
+
+          return withPhaseOptions ? (
+            <PhaseRowWithOptions
+              key={phase.id}
+              options={<PhaseOptionsMenu projectId={projectId} phase={phase} />}
+            >
+              {row}
+            </PhaseRowWithOptions>
+          ) : (
+            <React.Fragment key={phase.id}>{row}</React.Fragment>
           );
         })}
       </Box>

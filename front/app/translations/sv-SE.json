@@ -2677,6 +2677,7 @@
   "app.errors.no_invites_specified": "Ingen e-postadress hittades.",
   "app.errors.no_previewer_phone": "En förhandsgranskning skickas till din egen telefon. Lägg till ett telefonnummer i din profil först.",
   "app.errors.no_recipients": "Kampanjen kan inte skickas ut eftersom det saknas mottagare. Gruppen du skickar till är antingen tom, eller så har ingen samtyckt till att ta emot e-post.",
+  "app.errors.not_supported_in_standalone_phase": "Endast enkäter kan köras parallellt med tidslinjen. Denna deltagandemetod måste vara en fas i tidslinjen.",
   "app.errors.number_invalid": "Vänligen ange ett giltigt nummer.",
   "app.errors.password_blank": "Det här får inte vara tomt",
   "app.errors.password_invalid": "Kontrollera ditt nuvarande lösenord igen.",

@@ -80,7 +80,11 @@ const ProjectTimeline = ({ projectId }: Props) => {
           withPhaseOptions
         />
       </Box>
-      <SpotlightSurveys projectId={projectId} variant="backofficeRedesign" />
+      <SpotlightSurveys
+        projectId={projectId}
+        variant="backofficeRedesign"
+        withPhaseOptions
+      />
       <Box mx="8px" my="24px" borderTop={`1px solid ${colors.grey200}`} />
       <TimelineEvents projectId={projectId} />
       <SelectMethodModal

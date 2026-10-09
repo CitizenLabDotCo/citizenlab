@@ -107,7 +107,7 @@ export interface IPhase {
 
 export interface IUpdatedPhaseProperties {
   project_id?: string;
-  placement_type?: PhasePlacementType; // Only settable on creation.
+  placement_type?: PhasePlacementType;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   draft_description_multiloc?: Multiloc;

@@ -2677,6 +2677,7 @@
   "app.errors.no_invites_specified": "Kunne ikke finde nogen e-mailadresse.",
   "app.errors.no_previewer_phone": "En forhåndsvisning sendes til din egen telefon. Tilføj først et telefonnummer til din profil.",
   "app.errors.no_recipients": "Kampagnen kan ikke sendes ud, da der ikke er nogen modtagere. Den gruppe, du sender til, er enten tom, eller også har ingen givet samtykke til at modtage e-mails.",
+  "app.errors.not_supported_in_standalone_phase": "Kun spørgeskemaer kan køre sideløbende med tidslinjen. Denne deltagelsesmetode skal være en fase på tidslinjen.",
   "app.errors.number_invalid": "Indtast venligst et gyldigt nummer.",
   "app.errors.password_blank": "Dette kan ikke være tomt",
   "app.errors.password_invalid": "Kontroller venligst din nuværende adgangskode igen.",

@@ -2677,6 +2677,7 @@
   "app.errors.no_invites_specified": "Keng E-Mail-Adress fonnt.",
   "app.errors.no_previewer_phone": "Eng Virschau gëtt op Ären eegenen Telefon geschéckt. Füügt fir d'éischt eng Telefonsnummer an Äre Profil bäi.",
   "app.errors.no_recipients": "D'Kampagne kann net verschéckt ginn, well keng Empfänger do sinn. De Grupp, un deen Dir schéckt, ass entweder eidel oder et huet kee seng Zoustëmmung ginn, fir E-Mailen ze kréien.",
+  "app.errors.not_supported_in_standalone_phase": "Nëmmen Ëmfroe kënne parallel zur Timeline lafen. Dës Participatiounsmethod muss eng Phas op der Timeline sinn.",
   "app.errors.number_invalid": "Gitt weg eng valabel Zuel.",
   "app.errors.password_blank": "Dëst dierf net eidel sinn",
   "app.errors.password_invalid": "Wgl. iwwerpréift Äert neit Passwuert nach eng Kéier.",

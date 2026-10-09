@@ -2677,6 +2677,7 @@
   "app.errors.no_invites_specified": "No se ha podido encontrar ninguna dirección de correo.",
   "app.errors.no_previewer_phone": "Se envía una vista previa a tu propio teléfono. Primero añade un número de teléfono a tu perfil.",
   "app.errors.no_recipients": "No se puede enviar la campaña porque no hay destinatarios. El grupo al que la estás enviando está vacío o nadie ha dado su consentimiento para recibir correos.",
+  "app.errors.not_supported_in_standalone_phase": "Solo las encuestas pueden ejecutarse en paralelo a la cronología. Este método de participación debe ser una fase de la cronología.",
   "app.errors.number_invalid": "Introduce un número válido.",
   "app.errors.password_blank": "Esto no puede estar vacío",
   "app.errors.password_invalid": "Compruebe de nuevo su contraseña actual.",

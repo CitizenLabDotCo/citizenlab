@@ -2677,6 +2677,7 @@
   "app.errors.no_invites_specified": "Nepavyko rasti jokio el. pašto adreso.",
   "app.errors.no_previewer_phone": "Peržiūra siunčiama į jūsų telefoną. Pirmiausia pridėkite telefono numerį savo profilyje.",
   "app.errors.no_recipients": "Kampanijos negalima išsiųsti, nes nėra gavėjų. Grupė, kuriai siunčiate, yra arba tuščia, arba niekas nedavė sutikimo gauti el. laiškus.",
+  "app.errors.not_supported_in_standalone_phase": "Tik apklausos gali vykti kartu su laiko juosta. Šis dalyvavimo būdas turi būti laiko juostos etapas.",
   "app.errors.number_invalid": "Įveskite galiojantį numerį.",
   "app.errors.password_blank": "Ši reikšmė negali būti tuščia",
   "app.errors.password_invalid": "Dar kartą patikrinkite dabartinį slaptažodį.",

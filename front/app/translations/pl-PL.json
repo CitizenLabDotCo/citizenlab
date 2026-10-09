@@ -2677,6 +2677,7 @@
   "app.errors.no_invites_specified": "Nie znaleziono żadnego adresu e-mail.",
   "app.errors.no_previewer_phone": "Podgląd zostanie wysłany na Twój telefon. Najpierw dodaj numer telefonu do swojego profilu.",
   "app.errors.no_recipients": "Kampania nie może zostać wysłana, ponieważ nie ma odbiorców. Grupa, do której wysyłasz, jest pusta lub nikt nie wyraził zgody na otrzymywanie wiadomości e-mail.",
+  "app.errors.not_supported_in_standalone_phase": "Tylko ankiety mogą trwać równolegle do osi czasu. Ta metoda partycypacji musi być etapem na osi czasu.",
   "app.errors.number_invalid": "Wprowadź prawidłowy numer.",
   "app.errors.password_blank": "To pole nie może być puste",
   "app.errors.password_invalid": "Proszę sprawdzić ponownie swoje aktualne hasło.",

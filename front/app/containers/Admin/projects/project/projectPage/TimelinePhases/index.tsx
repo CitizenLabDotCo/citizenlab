@@ -28,8 +28,8 @@ import {
   phaseStatus,
 } from '../phaseRowUtils';
 
-import DeletePhaseButton from './DeletePhaseButton';
 import EmptyState from './EmptyState';
+import PhaseOptionsMenu from './PhaseOptionsMenu';
 import PhaseRowWithOptions from './PhaseRowWithOptions';
 import PhaseStep from './PhaseStep';
 
@@ -156,9 +156,7 @@ const TimelinePhases = ({
           return withPhaseOptions ? (
             <PhaseRowWithOptions
               key={phase.id}
-              options={
-                <DeletePhaseButton projectId={projectId} phase={phase} />
-              }
+              options={<PhaseOptionsMenu projectId={projectId} phase={phase} />}
             >
               {row}
             </PhaseRowWithOptions>
