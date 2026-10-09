@@ -191,4 +191,29 @@ describe('Project page builder', () => {
     cy.location('pathname').should('eq', `/en/projects/${projectSlug}`);
     cy.dataCy('e2e-events-widget').should('contain', eventTitle);
   });
+
+  // The section holds a Participation box, so the editor has to resolve one or the drop crashes
+  // the builder.
+  it('adds the Info & accordions section', () => {
+    setFeatures(true, true);
+    cy.setAdminLoginCookie();
+    cy.visit(`/admin/custom-page-builder/pages/${pageId}`);
+    cy.get('div#ROOT');
+    cy.get('#e2e-draggable-text');
+
+    cy.get('#e2e-draggable-info-accordions').dragAndDrop(
+      '[data-cy="e2e-custom-page-body"]',
+      { position: 'inside' }
+    );
+    cy.get('#ROOT .e2e-accordion').should('have.length', 3);
+
+    cy.intercept('**/content_builder_layouts/custom_page/upsert').as(
+      'saveCustomPageLayout'
+    );
+    cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveCustomPageLayout');
+
+    cy.visit(`/projects/${projectSlug}/pages/${pageSlug}`);
+    cy.get('.e2e-accordion').should('have.length', 3);
+  });
 });

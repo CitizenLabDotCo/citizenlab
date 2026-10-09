@@ -65,7 +65,6 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           AccordionMultiloc,
           WhiteSpace,
           InfoWithAccordions,
-          // Not in the toolbox, but InfoWithAccordions places one in its right column.
           AboutBox,
           // Bridge widget: resolvable so derived layouts render, absent from the toolbox.
           RichTextMultiloc,

@@ -345,27 +345,6 @@ describe('Custom page builder', () => {
     cy.contains(buttonText).should('be.visible');
   });
 
-  // The section places a Participation box, which is not in this toolbox. The editor has to
-  // resolve it anyway, or dropping the section crashes the builder.
-  it('adds the Info & accordions section and renders it on the published page', () => {
-    openBuilder();
-
-    cy.get('#e2e-draggable-info-accordions').dragAndDrop(
-      '[data-cy="e2e-custom-page-body"]',
-      { position: 'inside' }
-    );
-    cy.get('#ROOT .e2e-accordion').should('have.length', 3);
-
-    cy.intercept('**/content_builder_layouts/custom_page/upsert').as(
-      'saveCustomPageLayout'
-    );
-    cy.get('#e2e-content-builder-topbar-save').click();
-    cy.wait('@saveCustomPageLayout');
-
-    cy.visit(`/pages/${pageSlug}`);
-    cy.get('.e2e-accordion').should('have.length', 3);
-  });
-
   // With the builder on, one page replaces the settings and content tabs: the settings form beside
   // a preview, and the builder one click away.
   it('edits the page from one page with a preview', () => {

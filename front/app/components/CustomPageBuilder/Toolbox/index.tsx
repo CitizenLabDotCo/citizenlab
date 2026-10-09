@@ -80,8 +80,8 @@ import { useParams } from 'utils/router';
 const CustomPageBuilderToolbox = () => {
   const { customPageId } = useParams({ strict: false });
   const { data: customPage } = useCustomPageById(customPageId);
-  // Page link and the Participation box are about one project, so only a project's own page can
-  // offer them.
+  // Page link, the Participation box and Info & accordions (which holds one) are about one
+  // project, so only a project's own page can offer them.
   const isProjectPage = !!customPage?.data.attributes.project_id;
   const { formatMessage } = useIntl();
   const followEnabled = useFeatureFlag({ name: 'follow' });
@@ -374,12 +374,14 @@ const CustomPageBuilderToolbox = () => {
           icon="accordion"
           label={formatMessage(AccordionMultiloc.craft.custom.title)}
         />
-        <DraggableElement
-          id="e2e-draggable-info-accordions"
-          component={<InfoWithAccordions />}
-          icon="section-info-accordion"
-          label={formatMessage(messages.infoWithAccordions)}
-        />
+        {isProjectPage && (
+          <DraggableElement
+            id="e2e-draggable-info-accordions"
+            component={<InfoWithAccordions />}
+            icon="section-info-accordion"
+            label={formatMessage(messages.infoWithAccordions)}
+          />
+        )}
         <DraggableElement
           id="e2e-draggable-image-text-cards"
           component={<ImageTextCards />}
