@@ -161,10 +161,17 @@ describe('Custom page builder', () => {
   // again, possibly with different features.
   it('derives the page content into the builder', () => {
     setBuilderFeature(true);
+    cy.intercept('GET', `**/static_pages/${pageId}`).as('getPage');
+    cy.intercept(
+      'GET',
+      `**/static_pages/${pageId}/content_builder_layouts/custom_page`
+    ).as('getLayout');
     cy.intercept('POST', '**/content_builder_layouts/custom_page/upsert').as(
       'deriveLayout'
     );
     openBuilder();
+    // Deriving only starts once the page and the layout lookup have both answered.
+    cy.wait(['@getPage', '@getLayout']);
     cy.wait('@deriveLayout');
 
     // The canvas scrolls inside a fixed frame, so anything below the banner needs scrolling
