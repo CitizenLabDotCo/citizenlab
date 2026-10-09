@@ -11,13 +11,22 @@ import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isAdmin } from 'utils/permissions/roles';
 
-import { useParams, setParam } from '../params';
+import { DEFAULT_SORT } from '../constants';
+import { Parameter, useParams, setParam } from '../params';
 
 import ActiveFilter from './ActiveFilter';
 import AddFilterDropdown from './AddFilterDropdown';
 import { FILTER_KEYS, FilterKey } from './constants';
 import messages from './messages';
 import tracks from './tracks';
+
+// Filters that are always shown in the filter bar, rather than added through
+// the "Add filter" dropdown.
+const DEFAULT_FILTERS: Parameter[] = [
+  'review_state',
+  'min_start_date',
+  'max_start_date',
+];
 
 const DynamicFilters = () => {
   const { data: authUser } = useAuthUser();
@@ -39,7 +48,13 @@ const DynamicFilters = () => {
     });
   });
 
-  const showClearButton = activeFilters.length > 0;
+  const hasDefaultFilterValue = DEFAULT_FILTERS.some(
+    (paramName) => !!params[paramName]
+  );
+  const hasNonDefaultSort = !!params.sort && params.sort !== DEFAULT_SORT;
+
+  const showClearButton =
+    activeFilters.length > 0 || hasDefaultFilterValue || hasNonDefaultSort;
 
   const handleAddFilter = (filterKey: FilterKey) => {
     if (!activeFilters.includes(filterKey)) {
@@ -63,8 +78,8 @@ const DynamicFilters = () => {
   };
 
   const handleClearAll = () => {
-    // Clear all parameters
-    removeSearchParams(activeFilters);
+    // Clear all parameters, including the default filters and the sort
+    removeSearchParams([...activeFilters, ...DEFAULT_FILTERS, 'sort']);
     // Clear all active filters
     setActiveFilters([]);
 
