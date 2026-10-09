@@ -75,8 +75,14 @@ const DynamicFilters = () => {
   };
 
   const handleClearAll = () => {
-    // Clear all parameters, including the default filters and the sort
-    removeSearchParams([...activeFilters, ...DEFAULT_FILTERS, 'sort']);
+    // Clear all parameters, including the default filters, the sort and the
+    // search
+    removeSearchParams([
+      ...activeFilters,
+      ...DEFAULT_FILTERS,
+      'sort',
+      'search',
+    ]);
     // Clear all active filters
     setActiveFilters([]);
 

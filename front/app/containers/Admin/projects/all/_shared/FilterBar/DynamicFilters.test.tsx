@@ -35,8 +35,8 @@ describe('DynamicFilters — clear button', () => {
     expect(screen.queryByText('Clear')).not.toBeInTheDocument();
   });
 
-  it('does not show the clear button for the default sort or only a search', () => {
-    mockSearch = { sort: 'recently_viewed', search: 'park' };
+  it('does not show the clear button for the default sort', () => {
+    mockSearch = { sort: 'recently_viewed' };
     render(<DynamicFilters />);
 
     expect(screen.queryByText('Clear')).not.toBeInTheDocument();
@@ -48,6 +48,7 @@ describe('DynamicFilters — clear button', () => {
     ['a minimum start date', { min_start_date: '2026-01-01' }],
     ['a maximum start date', { max_start_date: '2026-12-31' }],
     ['a non-default sort', { sort: 'alphabetically_asc' }],
+    ['a search', { search: 'park' }],
   ])('shows the clear button for %s', (_, search) => {
     mockSearch = search;
     render(<DynamicFilters />);
@@ -55,7 +56,7 @@ describe('DynamicFilters — clear button', () => {
     expect(screen.getByText('Clear')).toBeInTheDocument();
   });
 
-  it('clears the added filters, the default filters and the sort, but not the search', () => {
+  it('clears the added filters, the default filters, the sort and the search', () => {
     mockSearch = {
       status: ['published'],
       review_state: 'pending',
@@ -72,6 +73,7 @@ describe('DynamicFilters — clear button', () => {
       'min_start_date',
       'max_start_date',
       'sort',
+      'search',
     ]);
   });
 });

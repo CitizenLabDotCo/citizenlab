@@ -1,14 +1,12 @@
 import { countActiveFilters } from './activeFilters';
 
 describe('countActiveFilters', () => {
-  it('is 0 without filters, for the default sort, or for only a search', () => {
+  it('is 0 without filters or for the default sort', () => {
     expect(countActiveFilters({}, undefined)).toBe(0);
-    expect(
-      countActiveFilters({ sort: 'recently_viewed', search: 'park' }, undefined)
-    ).toBe(0);
+    expect(countActiveFilters({ sort: 'recently_viewed' }, undefined)).toBe(0);
   });
 
-  it('counts the projects filters, a date range and a non-default sort', () => {
+  it('counts the projects filters, a date range, the search and a non-default sort', () => {
     expect(
       countActiveFilters(
         {
@@ -22,7 +20,7 @@ describe('countActiveFilters', () => {
         },
         undefined
       )
-    ).toBe(5);
+    ).toBe(6);
   });
 
   it('counts the same for the calendar as for the projects tab', () => {
@@ -46,12 +44,13 @@ describe('countActiveFilters', () => {
         {
           status: ['published'],
           space_ids: ['space-1'],
+          search: 'park',
           review_state: 'pending',
           sort: 'alphabetically_asc',
         },
         'folders'
       )
-    ).toBe(2);
+    ).toBe(3);
   });
 
   it('is 0 for tabs without filters', () => {

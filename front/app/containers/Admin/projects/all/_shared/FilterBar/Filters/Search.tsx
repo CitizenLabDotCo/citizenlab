@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 
@@ -16,11 +16,25 @@ interface Props {
 
 const Search = ({ placeholder }: Props) => {
   const searchValue = useParam('search');
+  const lastTypedValue = useRef(searchValue);
+  const [resetKey, setResetKey] = useState(0);
+
+  // SearchInput only reads defaultValue on mount. When the search is removed
+  // from the URL by something other than typing ("Clear", switching tabs),
+  // remount it so the input is emptied too.
+  useEffect(() => {
+    if (!searchValue && lastTypedValue.current) {
+      lastTypedValue.current = undefined;
+      setResetKey((key) => key + 1);
+    }
+  }, [searchValue]);
 
   return (
     <SearchInput
+      key={resetKey}
       defaultValue={searchValue}
       onChange={(search) => {
+        lastTypedValue.current = search ?? undefined;
         setParam('search', search ?? undefined);
         trackEventByName(tracks.setSearch, { search });
       }}

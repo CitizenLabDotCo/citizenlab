@@ -60,14 +60,14 @@ describe('Folders Filters — clear button', () => {
     expect(screen.queryByText('Clear')).not.toBeInTheDocument();
   });
 
-  it('does not show the clear button when only the search is set', () => {
+  it('shows the clear button when only the search is set', () => {
     mockSearch = { search: 'park' };
     render(<Filters />);
 
-    expect(screen.queryByText('Clear')).not.toBeInTheDocument();
+    expect(screen.getByText('Clear')).toBeInTheDocument();
   });
 
-  it('clears the folder filters but not the search', () => {
+  it('clears the folder filters and the search', () => {
     mockSearch = { status: ['published'], search: 'park' };
     render(<Filters />);
 
@@ -77,6 +77,7 @@ describe('Folders Filters — clear button', () => {
       'managers',
       'status',
       'space_ids',
+      'search',
     ]);
   });
 });

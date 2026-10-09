@@ -4,15 +4,19 @@ import { DEFAULT_SORT } from './constants';
 import { FILTER_KEYS } from './FilterBar/constants';
 import { Parameter } from './params';
 
-// The search box in the header is not counted as a filter: it is always
-// visible, and "Clear" leaves it alone.
-export const FOLDER_FILTERS: Parameter[] = ['managers', 'status', 'space_ids'];
+export const FOLDER_FILTERS: Parameter[] = [
+  'managers',
+  'status',
+  'space_ids',
+  'search',
+];
 
 // Each group counts as one filter, so a date range is a single filter.
 const PROJECT_FILTER_GROUPS: Parameter[][] = [
   ...FILTER_KEYS.map((key) => [key]),
   ['review_state'],
   ['min_start_date', 'max_start_date'],
+  ['search'],
 ];
 
 const hasValue = (value: unknown) =>

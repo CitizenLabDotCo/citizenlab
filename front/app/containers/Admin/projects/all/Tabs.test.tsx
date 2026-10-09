@@ -25,7 +25,7 @@ describe('Tabs — active filter count', () => {
   });
 
   it('does not show a count without active filters', () => {
-    mockSearch = { sort: 'recently_viewed', search: 'park' };
+    mockSearch = { sort: 'recently_viewed' };
     render(<Tabs />);
 
     expect(getBadge()).not.toBeInTheDocument();
@@ -40,11 +40,12 @@ describe('Tabs — active filter count', () => {
       status: ['published'],
       review_state: 'pending',
       sort: 'alphabetically_asc',
+      search: 'park',
     };
     render(<Tabs />);
 
     const badge = getBadge();
-    expect(badge).toHaveTextContent(/^3 filters$/);
+    expect(badge).toHaveTextContent(/^4 filters$/);
     expect(
       getByDataCy(
         tab
