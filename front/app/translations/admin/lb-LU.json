@@ -1999,7 +1999,6 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.pdfNotAvailable": "Déi importéiert Datei kann net ugewisen ginn. D'Uweise vun importéierte Dateien ass nëmme fir PDF-Importer méiglech.",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phase": "Phas:",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.phaseNotAllowed2": "Déi gewielte Phas kann keng Bäiträg enthalen. Wielt wgl. eng aner aus.",
-  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle": "Viru kuerzem guttgeheescht ({count})",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.removeAllInputs": "All Inputen ewechhuelen",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Approbatioun réckgängeg maachen",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "Dëse Projet enthält keng Phasen, déi Iddien enthalen kënnen.",
