@@ -60,11 +60,6 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
         ...attributes,
         admin_publication_attributes: { publication_status: 'draft' },
       });
-      await Promise.all(
-        groupIds.map((groupId) =>
-          addProjectGroup({ groupId, projectId: project.data.id })
-        )
-      );
     } catch (error) {
       setApiErrors(isCLErrorsWrapper(error) ? error.errors : {});
       setFailed(true);
@@ -72,7 +67,20 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
       return;
     }
 
-    clHistory.push(adminProjectsProjectPath(project.data.id));
+    const projectId = project.data.id;
+
+    // The project exists at this point, so a group failure must not keep the
+    // modal open: submitting again would create a second project.
+    try {
+      await Promise.all(
+        groupIds.map((groupId) => addProjectGroup({ groupId, projectId }))
+      );
+      clHistory.push(adminProjectsProjectPath(projectId));
+    } catch {
+      clHistory.push(
+        `/admin/projects/${projectId}/project-page?groups_failed=true`
+      );
+    }
     close();
   };
 
