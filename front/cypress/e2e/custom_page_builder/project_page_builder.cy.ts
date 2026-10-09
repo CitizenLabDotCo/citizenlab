@@ -185,5 +185,10 @@ describe('Project page builder', () => {
 
     cy.visit(`/projects/${projectSlug}/pages/${pageSlug}`);
     cy.get('#e2e-project-sidebar').should('exist');
+
+    // The events it links to are on the project's page, not this one.
+    cy.get('#e2e-project-see-events-button').click();
+    cy.location('pathname').should('eq', `/en/projects/${projectSlug}`);
+    cy.dataCy('e2e-events-widget').should('contain', eventTitle);
   });
 });

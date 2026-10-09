@@ -31,6 +31,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
@@ -415,8 +416,16 @@ const ProjectActionButtons = memo<Props>(
           <ButtonWithLink
             id="e2e-project-see-events-button"
             buttonStyle="secondary-outlined"
+            // The box can also be on another of the project's pages, which may have no events
+            // widget. Events belong to no phase, so the selected phase is kept.
             onClick={() => {
-              scrollToElement({ id: EVENTS_WIDGET_ANCHOR_ID });
+              if (document.getElementById(EVENTS_WIDGET_ANCHOR_ID)) {
+                scrollToElement({ id: EVENTS_WIDGET_ANCHOR_ID });
+              } else {
+                clHistory.push(
+                  `/projects/${project.data.attributes.slug}#${EVENTS_WIDGET_ANCHOR_ID}`
+                );
+              }
             }}
             fontWeight="500"
             mb="8px"
