@@ -153,6 +153,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.insights.participationOverTime',
     defaultMessage: 'Participation over time',
   },
+  visitorsOverTime: {
+    id: 'app.containers.Admin.projects.project.insights.visitorsOverTime',
+    defaultMessage: 'Visitors over time',
+  },
   openForResponses: {
     id: 'app.containers.Admin.projects.project.insights.openForResponses',
     defaultMessage: 'Open for responses',
@@ -282,5 +286,10 @@ export default defineMessages({
   downloadWord: {
     id: 'app.containers.Admin.projects.project.insights.downloadWord',
     defaultMessage: 'Download as Word',
+  },
+  konveioParticipationDataNotice: {
+    id: 'app.containers.Admin.projects.project.insights.konveioParticipationDataNotice',
+    defaultMessage:
+      'Konveio keeps the participation data for this document on its side, so only visitor numbers are available here. After the phase closes, visit your Konveio dashboard for a summary of the feedback and to download the raw participation data.',
   },
 });
