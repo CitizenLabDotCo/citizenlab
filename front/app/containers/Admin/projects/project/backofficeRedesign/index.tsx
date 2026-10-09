@@ -9,15 +9,15 @@ import { useLocation } from 'utils/router';
 
 import FeedbackNotice from '../earlyAccess/FeedbackNotice';
 
-import MethodSettings from './Phase/MethodSettings';
-import ProjectSetupPanel from './ProjectSetupPanel';
-import ViewContent from './Phase/ViewContent';
-import WorkspaceHeader from './Header';
-import useMarkSetupStep from './_shared/useMarkSetupStep';
-import { HeaderDropdownName } from './Header/HeaderDropdown';
-import { sectionFromPathname } from './_shared/sections';
 import { usePageSave } from './_shared/PageSaveContext';
+import { sectionFromPathname } from './_shared/sections';
+import useMarkSetupStep from './_shared/useMarkSetupStep';
+import WorkspaceHeader from './Header';
+import { HeaderDropdownName } from './Header/HeaderDropdown';
+import MethodSettings from './Phase/MethodSettings';
 import { viewFromPathname } from './Phase/usePhaseViews';
+import ViewContent from './Phase/ViewContent';
+import ProjectSetupPanel from './ProjectSetupPanel';
 
 const PROJECT_PANEL_WIDTH = '332px';
 const PHASE_PANEL_WIDTH = '560px';
@@ -25,7 +25,9 @@ const PANEL_GAP = '8px';
 
 interface Draft {
   label: string;
-  methodSettings: ReactNode;
+  parentLabel?: string;
+  saveLabel?: string;
+  methodSettings?: ReactNode;
 }
 
 interface Props {
@@ -110,7 +112,9 @@ const ProjectWorkspace = ({
       background={colors.white}
     >
       {sidePanel}
-      <Box borderTop={`1px solid ${colors.grey200}`}>{settingsPanel}</Box>
+      {settingsPanel && (
+        <Box borderTop={`1px solid ${colors.grey200}`}>{settingsPanel}</Box>
+      )}
     </Box>
   );
 
@@ -144,6 +148,8 @@ const ProjectWorkspace = ({
         project={project}
         phase={phase}
         draftLabel={draft?.label}
+        draftParentLabel={draft?.parentLabel}
+        saveLabel={draft?.saveLabel}
         activeView={activeView}
         section={section}
         openDropdown={openDropdown}

@@ -8,17 +8,14 @@ import { useTheme } from 'styled-components';
 import EsriMap from 'components/EsriMap';
 import { getMapPinSymbol } from 'components/EsriMap/utils';
 
-import { SubmitState } from '../types';
-
 export interface Props {
   mapHeight?: string;
-  setSubmitState?: (state: SubmitState) => void;
   position?: GeoJSON.Point | null;
   setLocationPoint?: (locationPoint: GeoJSON.Point) => void;
 }
 
 const EventMap = memo<Props>(
-  ({ position, mapHeight, setLocationPoint, setSubmitState }: Props) => {
+  ({ position, mapHeight, setLocationPoint }: Props) => {
     const theme = useTheme();
     const locationPoint = useRef<GeoJSON.Point | null>(position || null);
 
@@ -60,15 +57,13 @@ const EventMap = memo<Props>(
         mapView.graphics.removeAll();
         mapView.graphics.add(graphic);
 
-        // Update the locationPoint and submitState in the parent form component
-        setSubmitState?.('enabled');
-
+        // Update the locationPoint in the parent form component
         setLocationPoint?.({
           type: 'Point',
           coordinates: [event.mapPoint.longitude, event.mapPoint.latitude],
         });
       },
-      [setLocationPoint, setSubmitState, theme.colors.tenantPrimary]
+      [setLocationPoint, theme.colors.tenantPrimary]
     );
 
     return (
