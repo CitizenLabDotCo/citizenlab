@@ -33,7 +33,7 @@ function getSelectStyles(theme: DefaultTheme, settings?: Settings) {
       fontSize: `${fontSize}px`,
       borderWidth: isFocused ? '2px' : '1px',
       borderColor: isDisabled
-        ? '#ccc'
+        ? colors.grey400
         : isFocused
         ? theme.colors.tenantPrimary
         : `${colors.borderDark}`,
@@ -44,7 +44,9 @@ function getSelectStyles(theme: DefaultTheme, settings?: Settings) {
       boxShadow: 'none',
       cursor: 'pointer',
       '&:hover': {
-        borderColor: isDisabled ? '#ccc' : `${theme.colors.tenantPrimary}`,
+        borderColor: isDisabled
+          ? colors.grey400
+          : `${theme.colors.tenantPrimary}`,
       },
     }),
     singleValue: (base, { isDisabled }) => ({
@@ -57,7 +59,7 @@ function getSelectStyles(theme: DefaultTheme, settings?: Settings) {
     dropdownIndicator: (base, { isFocused, isDisabled }) => ({
       ...base,
       color: isDisabled
-        ? '#ccc'
+        ? colors.grey400
         : isFocused
         ? `${theme.colors.tenantPrimary}`
         : `${colors.borderDark}`,
@@ -101,7 +103,7 @@ function getSelectStyles(theme: DefaultTheme, settings?: Settings) {
       ...base,
       fontSize: `${fontSize}px`,
       ':hover': {
-        background: '#ccc',
+        background: colors.grey400,
       },
     }),
   };

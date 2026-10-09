@@ -363,7 +363,7 @@ const FormEdit = ({
                   </Box>
                   <Box
                     flex="1.8"
-                    border="1px solid #ccc"
+                    border={`1px solid ${colors.grey400}`}
                     overflowY="auto"
                     zIndex="2"
                     margin="0px"

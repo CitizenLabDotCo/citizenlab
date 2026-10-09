@@ -300,7 +300,7 @@ export const defaultInputStyle = css`
     opacity: 1;
     color: #666;
     background-color: ${colors.grey100};
-    border-color: #ccc;
+    border-color: ${colors.grey400};
     cursor: not-allowed;
   }
   ${(props: { size?: InputSize }) =>

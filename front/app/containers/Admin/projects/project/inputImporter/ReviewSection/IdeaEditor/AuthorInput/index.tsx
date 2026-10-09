@@ -17,7 +17,7 @@ const FakeInput = styled.div`
   font-weight: 400;
   padding: ${defaultStyles.inputPadding};
   border-radius: ${(props) => props.theme.borderRadius};
-  border: solid 1px #ccc;
+  border: solid 1px ${colors.grey400};
   outline: none;
   appearance: none;
   -moz-appearance: none;

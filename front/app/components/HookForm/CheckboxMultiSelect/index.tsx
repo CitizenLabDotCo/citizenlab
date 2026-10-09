@@ -92,10 +92,10 @@ const CheckboxMultiSelect = ({
                   border={
                     checkedOptions.includes(option.value)
                       ? `2px solid ${
-                          disabled ? '#ccc' : theme.colors.tenantPrimary
+                          disabled ? colors.grey400 : theme.colors.tenantPrimary
                         }`
                       : `1px solid ${
-                          disabled ? '#ccc' : theme.colors.borderDark
+                          disabled ? colors.grey400 : theme.colors.borderDark
                         }`
                   }
                   key={option.value}

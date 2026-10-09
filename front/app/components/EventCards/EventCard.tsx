@@ -3,6 +3,7 @@ import React, { memo } from 'react';
 import {
   defaultCardHoverStyle,
   defaultCardStyle,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -25,7 +26,7 @@ const Container = styled.li`
   display: flex;
   flex-direction: column;
   box-shadow: none;
-  border: solid 1px #ccc;
+  border: solid 1px ${colors.grey400};
   border-radius: 6px;
   overflow: hidden; // Ensures image and inner content respect border radius
   position: relative;

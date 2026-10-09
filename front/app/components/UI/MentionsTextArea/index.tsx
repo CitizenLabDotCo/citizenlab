@@ -154,7 +154,7 @@ const MentionsTextArea = ({
         suggestions: {
           list: {
             backgroundColor: 'white',
-            border: '1px solid #ccc',
+            border: `1px solid ${colors.grey400}`,
             borderRadius: '3px',
             overflow: 'hidden',
             boxShadow: '0px 0px 15px rgba(0, 0, 0, 0.15)',
@@ -163,7 +163,7 @@ const MentionsTextArea = ({
             fontSize: '15px',
             lineHeight: '22px',
             padding: '5px 15px',
-            borderBottom: '1px solid #ccc',
+            borderBottom: `1px solid ${colors.grey400}`,
 
             '&focused': {
               backgroundColor: '#f4f4f4',
