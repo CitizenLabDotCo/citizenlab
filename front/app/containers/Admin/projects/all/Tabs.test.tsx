@@ -7,7 +7,6 @@ import Tabs from './Tabs';
 jest.mock('api/me/useAuthUser');
 jest.mock('hooks/useFeatureFlag', () => () => true);
 
-// The tabs read the admin projects search params; there is no router here.
 let mockSearch: Record<string, unknown> = {};
 jest.mock('utils/router', () => ({
   ...jest.requireActual('utils/router'),

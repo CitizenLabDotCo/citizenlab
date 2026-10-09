@@ -4,7 +4,6 @@ import { act, fireEvent, render, screen } from 'utils/testUtils/rtl';
 
 import Search from './Search';
 
-// The search reads the admin projects search params; there is no router here.
 let mockSearch: Record<string, unknown> = {};
 jest.mock('utils/router', () => ({
   ...jest.requireActual('utils/router'),
@@ -34,7 +33,6 @@ describe('Search', () => {
     const { rerender } = render(<Search placeholder="Search projects" />);
     expect(getInput()).toHaveValue('park');
 
-    // E.g. "Clear" or switching tabs
     mockSearch = {};
     rerender(<Search placeholder="Search projects" />);
 

@@ -5,8 +5,8 @@ import { projectSortableParams } from 'api/projects_mini_admin/types';
 
 // Projects index (list) - filter params for the project list page.
 // Multiselect params (status, managers, etc.) are stored as JSON-encoded
-// strings in the URL; the useParam/useParams hooks in params.ts handle
-// parsing. Also used to validate the params restored by usePersistedParams.
+// strings in the URL; the useParam/useParams hooks in params.ts
+// handle parsing.
 export const projectsIndexSearchSchema = yup.object({
   tab: yup
     .string()

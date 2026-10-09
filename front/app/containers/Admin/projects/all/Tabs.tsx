@@ -39,7 +39,6 @@ const FOLDER_PARAMS: Parameter[] = [
   'space_ids',
 ];
 
-// Styled like components/UI/CountBadge, which only fits a number.
 const FilterCountBadge = styled.span`
   padding: 0 6px;
   height: 16px;
@@ -129,8 +128,6 @@ const Tabs = () => {
   if (!user) return null;
 
   const userIsAdmin = isAdmin(user);
-  // Filters only apply to the tab they were set on, so only that tab shows
-  // the count.
   const activeFilterCount = countActiveFilters(params, tab);
 
   const { highest_role } = user.data.attributes;

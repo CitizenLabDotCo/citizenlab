@@ -11,7 +11,6 @@ export const FOLDER_FILTERS: Parameter[] = [
   'search',
 ];
 
-// Each group counts as one filter, so a date range is a single filter.
 const PROJECT_FILTER_GROUPS: Parameter[][] = [
   ...FILTER_KEYS.map((key) => [key]),
   ['review_state'],
@@ -22,11 +21,6 @@ const PROJECT_FILTER_GROUPS: Parameter[][] = [
 const hasValue = (value: unknown) =>
   (typeof value === 'string' || Array.isArray(value)) && value.length > 0;
 
-/**
- * The number of filters applied to the given overview tab (projects, which
- * shares its filters with the calendar, or folders). A non-default sort
- * counts as a filter too.
- */
 export const countActiveFilters = (
   params: Partial<Parameters>,
   tab: string | undefined

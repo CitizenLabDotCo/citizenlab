@@ -18,8 +18,6 @@ type CountParams = Omit<
   'sort' | 'locale' | 'page[number]' | 'page[size]'
 >;
 
-// Sorting by creation date is the cheapest sort, and the order doesn't
-// matter for counting.
 const COUNT_SORT = 'recently_created_desc';
 
 // The endpoint doesn't return a total count. With one project per page, the
@@ -66,16 +64,9 @@ const ProjectCount = ({
   );
 };
 
-/**
- * "x of y projects": how many projects match the filters, out of all the
- * projects the admin would see without them. Only shown (and fetched) while
- * filters are active.
- */
 const FilteredProjectCount = () => {
   const { sort: _sort, ...params } = useParams();
 
-  // The sort doesn't change which projects are shown, so it doesn't count
-  // here. Projects and calendar share their filters.
   if (countActiveFilters(params, undefined) === 0) return null;
 
   return <ProjectCount {...params} />;

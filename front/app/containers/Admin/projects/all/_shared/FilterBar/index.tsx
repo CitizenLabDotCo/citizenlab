@@ -22,8 +22,6 @@ import PendingApproval from './Filters/PendingApproval';
 import Sort from './Filters/Sort';
 import tracks from './tracks';
 
-// Filters that are always shown in the filter bar, rather than added through
-// the "Add filter" dropdown.
 const DEFAULT_FILTERS: Parameter[] = [
   'review_state',
   'min_start_date',
@@ -55,14 +53,11 @@ const FilterBar = ({ user }: Props) => {
     });
   });
 
-  // Also show it for an added filter without a value yet, so it can be
-  // removed again.
   const showClearButton =
     activeFilters.length > 0 || countActiveFilters(params, undefined) > 0;
 
   const handleClearAll = () => {
-    // Clear all parameters, including the default filters, the sort and the
-    // search
+    // Clear all parameters
     removeSearchParams([
       ...activeFilters,
       ...DEFAULT_FILTERS,

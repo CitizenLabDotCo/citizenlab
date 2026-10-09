@@ -7,7 +7,6 @@ import FilterBar from '.';
 jest.mock('hooks/useFeatureFlag', () => () => true);
 jest.mock('api/me/useAuthUser');
 
-// The filters read the admin projects search params; there is no router here.
 let mockSearch: Record<string, unknown> = {};
 jest.mock('utils/router', () => ({
   ...jest.requireActual('utils/router'),
@@ -19,7 +18,6 @@ jest.mock('utils/cl-router/removeSearchParams', () => ({
   removeSearchParams: (params: string[]) => mockRemoveSearchParams(params),
 }));
 
-// The individual filters and the count are not under test here.
 jest.mock('./ActiveFilter', () => () => null);
 jest.mock('./AddFilterDropdown', () => () => null);
 jest.mock('./Filters/Sort', () => () => null);

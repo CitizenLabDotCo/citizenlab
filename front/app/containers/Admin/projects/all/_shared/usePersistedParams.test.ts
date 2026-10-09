@@ -47,7 +47,6 @@ describe('usePersistedParams', () => {
     expect(mockUpdateSearchParams).toHaveBeenCalledWith(stored);
     expect(result.current.isRestoring).toBe(true);
 
-    // The router picks up the restored params
     mockSearch = { ...stored };
     rerender();
 

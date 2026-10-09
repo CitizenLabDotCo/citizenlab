@@ -12,8 +12,6 @@ import { FILTER_KEYS, FilterKey } from './constants';
 import tracks from './tracks';
 
 interface Props {
-  // The filters added through the "Add filter" dropdown. Kept by the filter
-  // bar, as its "Clear filters" button removes them too.
   activeFilters: FilterKey[];
   setActiveFilters: (activeFilters: FilterKey[]) => void;
 }

@@ -45,7 +45,6 @@ const useInfiniteProjectsMiniAdmin = (
     QueryKey,
     number
   >({
-    // The page size changes what each page holds, so it is part of the key.
     queryKey: miniProjectsKeys.list({
       ...paramsWithLocale,
       'page[size]': pageSize,

@@ -19,9 +19,6 @@ const Search = ({ placeholder }: Props) => {
   const lastTypedValue = useRef(searchValue);
   const [resetKey, setResetKey] = useState(0);
 
-  // SearchInput only reads defaultValue on mount. When the search is removed
-  // from the URL by something other than typing ("Clear", switching tabs),
-  // remount it so the input is emptied too.
   useEffect(() => {
     if (!searchValue && lastTypedValue.current) {
       lastTypedValue.current = undefined;

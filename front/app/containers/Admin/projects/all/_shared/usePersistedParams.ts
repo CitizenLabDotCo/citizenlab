@@ -8,8 +8,6 @@ import { useSearch } from 'utils/router';
 import { PARAMS } from './params';
 import { projectsIndexSearchSchema } from './searchSchema';
 
-// The tab is persisted along with the filters, so returning to the overview
-// lands on the tab (projects, folders, calendar, …) the admin was working in.
 const PERSISTED_PARAMS = ['tab', ...PARAMS] as const;
 
 type PersistedParams = Partial<
@@ -35,8 +33,6 @@ const pickPersistedParams = (
 
 const isEmpty = (params: PersistedParams) => Object.keys(params).length === 0;
 
-// sessionStorage is per browser tab, so the persisted params naturally reset
-// when the admin opens a new tab or closes this one.
 const loadPersistedParams = (userId: string) => {
   try {
     const stored = sessionStorage.getItem(getStorageKey(userId));
@@ -44,9 +40,6 @@ const loadPersistedParams = (userId: string) => {
 
     const params = pickPersistedParams(JSON.parse(stored));
 
-    // Stored params might no longer be valid (e.g. a sort option was removed
-    // in a later release). Restoring them would make the route's
-    // validateSearch throw, so drop them instead.
     if (isEmpty(params) || !projectsIndexSearchSchema.isValidSync(params)) {
       sessionStorage.removeItem(getStorageKey(userId));
       return null;
@@ -66,23 +59,12 @@ const savePersistedParams = (userId: string, params: PersistedParams) => {
       sessionStorage.setItem(getStorageKey(userId), JSON.stringify(params));
     }
   } catch {
-    // Ignore storage errors (e.g. storage disabled or full)
+    // Ignore storage errors
   }
 };
 
 type Status = 'pending' | 'restoring' | 'done';
 
-/**
- * Keeps the overview's filters, sort and tab across visits within the
- * browser tab's session. The URL stays the source of truth: every change to
- * it is mirrored to sessionStorage, and when the overview is opened without
- * any of these params (e.g. via the admin sidebar), the stored ones are put
- * back into the URL. A URL that already has params (a shared link, Back
- * navigation) is left alone and becomes the new stored state.
- *
- * Returns `isRestoring`: the overview should not render its tabs and filters
- * until it is false, as the filter bar only reads the params on mount.
- */
 const usePersistedParams = () => {
   const searchParams = useSearch({
     from: '/$locale/admin/projects/',
@@ -94,10 +76,7 @@ const usePersistedParams = () => {
   const currentParams = pickPersistedParams(searchParams);
   const hasParams = !isEmpty(currentParams);
 
-  // Decide once, on mount, whether to restore the stored params.
   useEffect(() => {
-    // Wait for the user to load. Signed out (null), there is nothing to
-    // restore.
     if (status !== 'pending' || authUser === undefined) return;
 
     const storedParams =
@@ -111,15 +90,12 @@ const usePersistedParams = () => {
     }
   }, [status, authUser, userId, hasParams]);
 
-  // The restore is done once the router has picked up the restored params.
   useEffect(() => {
     if (status === 'restoring' && hasParams) {
       setStatus('done');
     }
   }, [status, hasParams]);
 
-  // Mirror every change to the params (setting/removing a filter, clearing
-  // all, switching tabs) to storage.
   useEffect(() => {
     if (status !== 'done' || !userId) return;
 

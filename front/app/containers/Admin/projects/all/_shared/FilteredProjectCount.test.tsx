@@ -4,7 +4,6 @@ import { render, screen } from 'utils/testUtils/rtl';
 
 import FilteredProjectCount from './FilteredProjectCount';
 
-// The count reads the admin projects search params; there is no router here.
 let mockSearch: Record<string, unknown> = {};
 jest.mock('utils/router', () => ({
   ...jest.requireActual('utils/router'),
@@ -12,7 +11,6 @@ jest.mock('utils/router', () => ({
 }));
 jest.mock('hooks/useFeatureFlag', () => () => true);
 
-// With one project per page, the last page number is the project count.
 const page = (count: number) => ({
   pages: [
     {
