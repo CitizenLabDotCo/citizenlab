@@ -91,10 +91,12 @@ export const themeColors = {
    * Green
    */
   green700: '#024D2B',
+  green600: '#096F03',
   green500: '#04884C', // formerly clGreen
   green400: '#32B67A',
   green300: '#62C462',
   green100: '#e4f7ef', // formerly clGreenSuccessBackground
+  greenMint: '#CAE0CD',
 
   /**
    * Orange
@@ -145,6 +147,7 @@ export type Color =
   | 'inherit';
 
 export const fontSizes = {
+  xxs: 10,
   xs: 12,
   s: 14,
   base: 16,
@@ -199,6 +202,30 @@ export const focusRing = css`
   outline-offset: 2px;
   box-shadow: 0 0 0 2px ${colors.white};
 `;
+
+// Back office theme
+const BO_HEADER_FONT_SIZE = '13px';
+
+export const bo = {
+  colors: {
+    textHeadingStrong: '#1E1E1E',
+    textHeading: '#474747',
+    statusFill: '#E2EEE1',
+    stepHalo: '#D7E3E7',
+    liveHalo: '#DAF2E7',
+    stepBorder: '#D4D9DD',
+    crumbSeparator: '#8D9EAC',
+  },
+  borderRadius: '8px',
+  panelBorderRadius: '12px',
+  headerFontSize: BO_HEADER_FONT_SIZE,
+  buttonMedium: {
+    height: '32px',
+    padding: '0 16px',
+    fontSize: BO_HEADER_FONT_SIZE,
+    iconSize: '14px',
+  },
+};
 
 export const stylingConsts = {
   menuHeight: 78,

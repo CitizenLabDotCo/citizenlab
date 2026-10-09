@@ -167,6 +167,8 @@ const DraftPhaseDescription = ({
             display="flex"
             justifyContent="space-between"
             alignItems="center"
+            flexWrap="wrap"
+            gap="8px"
             mt="8px"
           >
             <Button

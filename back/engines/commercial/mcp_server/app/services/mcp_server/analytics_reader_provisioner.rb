@@ -56,9 +56,9 @@ module McpServer
       # Relations missing from the schema are skipped rather than raised on:
       # REPORTING_TABLE_NAMES reflects the newest code, but during a fresh
       # `db:migrate` an older provisioning migration runs before the migrations
-      # that create the newer reporting views. Every view-adding change ships
-      # its own provision! migration, so skipped grants are always picked up by
-      # a later step in the same stream.
+      # that create the newer reporting views. Every set of new views is
+      # followed by a provision! migration, so skipped grants are always picked
+      # up by a later step in the same stream.
       def grant!(schema = Apartment::Tenant.current)
         execute("GRANT USAGE ON SCHEMA #{quote_ident(schema)} TO #{quoted_role}")
         reporting_tables.each do |table|

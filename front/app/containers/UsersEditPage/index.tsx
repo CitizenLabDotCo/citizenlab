@@ -11,6 +11,7 @@ import Unauthorized from 'components/Unauthorized';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { FormattedMessage } from 'utils/cl-intl';
 
+import EarlyAccess from './EarlyAccess';
 import LoginCredentials from './LoginCredentials';
 import messages from './messages';
 import ProfileDeletion from './ProfileDeletion';
@@ -61,6 +62,7 @@ const UsersEditPage = () => {
             <CampaignsConsentForm
               trackEventName={tracks.defaultSettingsChanged}
             />
+            <EarlyAccess />
           </div>
         </Container>
       </main>

@@ -12,7 +12,10 @@ import getStatusCounts from 'api/admin_publications_status_counts/util/getAdminP
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
+import {
+  BAND_Y_PADDING,
+  BUILDER_CONTENT_MAX_WIDTH,
+} from 'components/admin/ContentBuilder/constants';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 import WidgetPlaceholder from 'components/admin/ContentBuilder/Widgets/WidgetPlaceholder';
 import {
@@ -86,7 +89,7 @@ const ProjectsByFilterInner = ({
       maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       margin="0 auto"
       px={padding}
-      py="40px"
+      py={BAND_Y_PADDING}
     >
       <ProjectAndFolderCardsInner
         statusCounts={allStatusCountsWithoutFilters}

@@ -161,10 +161,17 @@ describe('Custom page builder', () => {
   // again, possibly with different features.
   it('derives the page content into the builder', () => {
     setBuilderFeature(true);
+    cy.intercept('GET', `**/static_pages/${pageId}`).as('getPage');
+    cy.intercept(
+      'GET',
+      `**/static_pages/${pageId}/content_builder_layouts/custom_page`
+    ).as('getLayout');
     cy.intercept('POST', '**/content_builder_layouts/custom_page/upsert').as(
       'deriveLayout'
     );
     openBuilder();
+    // Deriving only starts once the page and the layout lookup have both answered.
+    cy.wait(['@getPage', '@getLayout']);
     cy.wait('@deriveLayout');
 
     // The canvas scrolls inside a fixed frame, so anything below the banner needs scrolling
@@ -286,17 +293,79 @@ describe('Custom page builder', () => {
       .should('have.class', 'e2e-signed-out-header-title');
   });
 
-  // With filtering off, a stored events node keeps its filter but offers no source choice, and the
-  // projects list leaves the toolbox.
+  // With filtering off, a stored events node keeps its filter, still shown so it can be reset, but
+  // no other filter is offered, and the projects list leaves the toolbox.
   it('withdraws the filtering choices once the tenant loses advanced_custom_pages', () => {
     setFiltering(false);
     openBuilder();
 
     selectNodeContaining(() => cy.dataCy('e2e-events-widget'));
-    cy.get('label[for="events-source-areas"]').should('not.exist');
-    cy.get('label[for="events-source-all"]').should('not.exist');
+    cy.get('#events-source-areas').should('be.checked');
+    cy.get('label[for="events-source-all"]').should('exist');
+    cy.get('label[for="events-source-global_topics"]').should('not.exist');
 
     cy.get('#e2e-draggable-events').should('exist');
     cy.get('#e2e-draggable-projects-by-filter').should('not.exist');
+  });
+
+  // The Call to action is the homepage widget worth checking on a published page: its buttons
+  // used to render only while the editor was enabled, which the homepage never turns off but a
+  // published custom page does.
+  it('renders homepage widgets added in the builder on the published page', () => {
+    const buttonText = `Go ${randomString()}`;
+    openBuilder();
+
+    cy.get('#e2e-draggable-published').dragAndDrop(
+      '[data-cy="e2e-custom-page-body"]',
+      { position: 'inside' }
+    );
+    cy.get('#e2e-draggable-call-to-action').dragAndDrop(
+      '[data-cy="e2e-custom-page-body"]',
+      { position: 'inside' }
+    );
+
+    // A dropped widget is selected, so its settings panel is open.
+    cy.get('#highlight_primaryButtonText').type(buttonText);
+    cy.get('#highlight_primaryButtonLink').type('/projects');
+
+    cy.intercept('**/content_builder_layouts/custom_page/upsert').as(
+      'saveCustomPageLayout'
+    );
+    cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveCustomPageLayout');
+
+    cy.visit(`/pages/${pageSlug}`);
+    cy.get('.e2e-published-projects-and-folders').should('exist');
+    cy.contains(buttonText).should('be.visible');
+  });
+
+  // With the builder on, one page replaces the settings and content tabs: the settings form beside
+  // a preview, and the builder one click away.
+  it('edits the page from one page with a preview', () => {
+    cy.setAdminLoginCookie();
+    cy.visit(`/admin/pages-menu/pages/${pageId}/settings`);
+
+    cy.get('[data-testid="customPageSettingsForm"]').should('be.visible');
+    cy.get('.e2e-resource-tabs').should('not.exist');
+    // The builder's widgets list projects and events, so the form's linked items are gone.
+    cy.get('[id^="projects_filter_type_"]').should('not.exist');
+    cy.dataCy('e2e-custom-page-preview')
+      .find('iframe')
+      .should('have.attr', 'src')
+      .and('include', `/pages/${pageSlug}`);
+
+    // The button only shows while the preview is hovered, which Cypress cannot do.
+    cy.dataCy('e2e-edit-page-content').click({ force: true });
+    cy.location('pathname').should(
+      'include',
+      `/admin/custom-page-builder/pages/${pageId}`
+    );
+    cy.get('#e2e-draggable-text');
+
+    cy.get('#e2e-go-back-button').click();
+    cy.location('pathname').should(
+      'include',
+      `/admin/pages-menu/pages/${pageId}/settings`
+    );
   });
 });

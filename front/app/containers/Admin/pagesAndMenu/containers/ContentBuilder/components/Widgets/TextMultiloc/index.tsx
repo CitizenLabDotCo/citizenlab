@@ -1,19 +1,18 @@
-import React from 'react';
+import React, { lazy } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
-import { useNode } from '@craftjs/core';
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
+import {
+  BUILDER_CONTENT_MAX_WIDTH,
+  DEFAULT_Y_PADDING,
+} from 'components/admin/ContentBuilder/constants';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import messages from 'components/admin/ContentBuilder/Widgets/TextMultiloc/messages';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
-import QuillMutilocWithLocaleSwitcher from 'components/UI/QuillEditor/QuillMultilocWithLocaleSwitcher';
-
-import { DEFAULT_Y_PADDING } from '../constants';
 
 interface Props {
   text?: Multiloc;
@@ -30,7 +29,7 @@ const TextMultiloc = ({ text }: Props) => {
     <PageBreakBox
       className="e2e-text-box"
       minHeight="26px"
-      maxWidth="1200px"
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       margin="0 auto"
       px={craftComponentDefaultPadding}
       py={DEFAULT_Y_PADDING}
@@ -42,36 +41,17 @@ const TextMultiloc = ({ text }: Props) => {
   );
 };
 
-const TextMultilocSettings = () => {
-  const {
-    actions: { setProp },
-    text,
-  } = useNode((node) => ({
-    text: node.data.props.text,
-  }));
-
-  return (
-    <Box background="#ffffff" marginBottom="20px">
-      <QuillMutilocWithLocaleSwitcher
-        maxHeight="300px"
-        noImages
-        noVideos
-        id="quill-editor"
-        valueMultiloc={text}
-        onChange={(value) => {
-          setProp((props: Props) => (props.text = value));
-        }}
-      />
-    </Box>
-  );
-};
+// Lazy, as the rich text editor is only needed in the builder, not on the homepage.
+const Settings = lazy(
+  () => import('components/admin/ContentBuilder/Widgets/TextMultiloc/Settings')
+);
 
 TextMultiloc.craft = {
   props: {
     text: {},
   },
   related: {
-    settings: TextMultilocSettings,
+    settings: Settings,
   },
 };
 

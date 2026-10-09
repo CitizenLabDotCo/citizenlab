@@ -104,6 +104,30 @@ RSpec.describe Project do
     end
   end
 
+  describe 'completed_setup_steps validation' do
+    it 'is valid when every step is a known setup step' do
+      expect(build(:project, completed_setup_steps: Project::SETUP_STEPS)).to be_valid
+    end
+
+    it 'is valid when empty' do
+      expect(build(:project, completed_setup_steps: [])).to be_valid
+    end
+
+    it '[error] is invalid when it holds an unknown step' do
+      project = build(:project, completed_setup_steps: %w[share not-a-step])
+
+      expect(project).to be_invalid
+      expect(project.errors[:completed_setup_steps]).to include('contains unknown setup steps')
+    end
+
+    it '[error] is invalid when it is not an array' do
+      project = build(:project, completed_setup_steps: 'share')
+
+      expect(project).to be_invalid
+      expect(project.errors[:completed_setup_steps]).to include('must be an array')
+    end
+  end
+
   describe 'Project without admin publication' do
     it 'is invalid' do
       project = create(:project)
@@ -225,6 +249,30 @@ RSpec.describe Project do
 
       expect(project.preview_token).to be_present
       expect(project.preview_token).not_to eq(old_token)
+    end
+  end
+
+  describe 'listed default' do
+    it 'is listed by default' do
+      expect(described_class.new.listed).to be true
+    end
+
+    it 'is unlisted by default when the platform setting is enabled' do
+      config = AppConfiguration.instance
+      config.settings['core']['projects_unlisted_by_default'] = true
+      config.save!
+
+      expect(described_class.new.listed).to be false
+      expect(described_class.new(listed: true).listed).to be true
+    end
+
+    it 'keeps the stored value of existing projects' do
+      project = create(:project, listed: true)
+      config = AppConfiguration.instance
+      config.settings['core']['projects_unlisted_by_default'] = true
+      config.save!
+
+      expect(described_class.find(project.id).listed).to be true
     end
   end
 

@@ -271,6 +271,12 @@
             "type": "boolean",
             "default": false
           },
+          "projects_unlisted_by_default":  {
+            "title": "Make new projects unlisted by default",
+            "description": "When enabled, new projects are unlisted when created: they are only reachable by direct link and don't show up in project listings. Admins can still change this per project.",
+            "type": "boolean",
+            "default": false
+          },
           "min_user_age": {
             "title": "Minimum user age",
             "description": "Used to determine the available birthyears in the birthyear registration question",
@@ -576,25 +582,6 @@
         }
       },
 
-      "google_analytics": {
-        "type": "object",
-        "title": "Google Analytics Integration",
-        "description":  "Integrates Google Analytics data collection to the front-end",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["tracking_id"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true},
-          "tracking_id": {
-            "type": "string",
-            "description": "The tracking ID the front-end send it's data to. Format UA-XXXXXXXXX-XX",
-            "pattern": "^(UA|YT|MO)-[0-9]+-[0-9]+$",
-            "default": "<%= ENV.fetch('DEFAULT_GA_TRACKING_ID', '')%>"
-          }
-        }
-      },
-
       "polls": {
         "type": "object",
         "title": "Polls",
@@ -847,6 +834,19 @@
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true}
+        }
+      },
+
+      "project_backoffice_redesign": {
+        "type": "object",
+        "title": "Project Backoffice Redesign [DO NOT ENABLE]",
+        "description": "Show the project back office as a single three-pane workspace instead of a page per setting. Still under development, not ready for customer use.",
+        "early_access": "internal",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
         }
       },
 

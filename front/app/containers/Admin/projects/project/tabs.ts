@@ -48,9 +48,7 @@ export const getTabs = (
       name: 'form',
       className: 'intercom-phase-form-tab',
     },
-    (phase.attributes.participation_method === 'ideation' ||
-      phase.attributes.participation_method === 'voting' ||
-      phase.attributes.participation_method === 'proposals') && {
+    getMethodConfig(phase.attributes.participation_method).supportsMapView && {
       label: formatMessage(messages.mapTab),
       url: 'map',
       name: 'map',

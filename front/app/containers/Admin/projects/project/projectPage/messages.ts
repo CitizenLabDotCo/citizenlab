@@ -9,14 +9,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.settingsNav',
     defaultMessage: 'Settings',
   },
-  editPageContent: {
-    id: 'app.containers.Admin.projects.project.editPageContent',
-    defaultMessage: 'Edit page content',
-  },
-  edit: {
-    id: 'app.containers.Admin.projects.project.edit',
-    defaultMessage: 'Edit',
-  },
   editProjectPageInContentBuilder: {
     id: 'app.containers.Admin.projects.project.editProjectPageInContentBuilder',
     defaultMessage: 'Edit the project page in the content builder',
@@ -32,6 +24,10 @@ export default defineMessages({
   newPhase: {
     id: 'app.containers.Admin.projects.project.newPhase',
     defaultMessage: 'New phase',
+  },
+  newParticipationMethod: {
+    id: 'app.containers.Admin.projects.project.newParticipationMethod',
+    defaultMessage: 'New participation method',
   },
   timelineEmptyDescription2: {
     id: 'app.containers.Admin.projects.project.timelineEmptyDescription2',
@@ -64,6 +60,18 @@ export default defineMessages({
   ongoing: {
     id: 'app.containers.Admin.projects.project.ongoing',
     defaultMessage: 'Ongoing',
+  },
+  phaseDone: {
+    id: 'app.containers.Admin.projects.project.phaseDone',
+    defaultMessage: 'Done',
+  },
+  phaseInProgress: {
+    id: 'app.containers.Admin.projects.project.phaseInProgress',
+    defaultMessage: 'In progress',
+  },
+  phaseUpcoming: {
+    id: 'app.containers.Admin.projects.project.phaseUpcoming',
+    defaultMessage: 'Upcoming',
   },
   notOnProjectPage: {
     id: 'app.containers.Admin.projects.project.notOnProjectPage',

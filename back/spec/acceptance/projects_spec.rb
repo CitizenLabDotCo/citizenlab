@@ -25,6 +25,7 @@ resource 'Projects' do
       parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned', required: false
       parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)'
       parameter :live_auto_input_topics_enabled, 'Whether the project should automatically detect topics and assign inputs to them. Defaults to false.', required: false
+      parameter :completed_setup_steps, "Steps of the admin setup checklist the manager has been through, a subset of #{Project::SETUP_STEPS.join(', ')}.", required: false
     end
 
     with_options scope: %i[project admin_publication_attributes] do
@@ -370,6 +371,20 @@ resource 'Projects' do
           expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'archived'
           expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
           expect(json_response.dig(:data, :attributes, :live_auto_input_topics_enabled)).to be true
+        end
+
+        example 'Mark a setup step as gone through' do
+          do_request(project: { completed_setup_steps: %w[share] })
+
+          assert_status 200
+          expect(json_response.dig(:data, :attributes, :completed_setup_steps)).to eq ['share']
+          expect(@project.reload.completed_setup_steps).to eq ['share']
+        end
+
+        example '[error] Mark an unknown setup step as gone through', document: false do
+          do_request(project: { completed_setup_steps: %w[not-a-step] })
+
+          assert_status 422
         end
 
         example 'Add a project to a folder' do
