@@ -11,7 +11,7 @@ import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isAdmin } from 'utils/permissions/roles';
 
-import { DEFAULT_SORT } from '../constants';
+import { countActiveFilters } from '../activeFilters';
 import { Parameter, useParams, setParam } from '../params';
 
 import ActiveFilter from './ActiveFilter';
@@ -48,13 +48,10 @@ const DynamicFilters = () => {
     });
   });
 
-  const hasDefaultFilterValue = DEFAULT_FILTERS.some(
-    (paramName) => !!params[paramName]
-  );
-  const hasNonDefaultSort = !!params.sort && params.sort !== DEFAULT_SORT;
-
+  // Also show it for an added filter without a value yet, so it can be
+  // removed again.
   const showClearButton =
-    activeFilters.length > 0 || hasDefaultFilterValue || hasNonDefaultSort;
+    activeFilters.length > 0 || countActiveFilters(params, undefined) > 0;
 
   const handleAddFilter = (filterKey: FilterKey) => {
     if (!activeFilters.includes(filterKey)) {

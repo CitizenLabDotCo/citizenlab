@@ -8,25 +8,23 @@ import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
+import {
+  countActiveFilters,
+  FOLDER_FILTERS,
+} from '../../_shared/activeFilters';
 import Manager from '../../_shared/FilterBar/Filters/Manager';
 import Spaces from '../../_shared/FilterBar/Filters/Spaces';
 import Status from '../../_shared/FilterBar/Filters/Status';
 import messages from '../../_shared/FilterBar/messages';
 import tracks from '../../_shared/FilterBar/tracks';
-import { Parameter, useParams } from '../../_shared/params';
-
-// The search box in the header is not one of the filters, so "Clear" leaves
-// it alone (like on the projects tab).
-const FOLDER_FILTERS: Parameter[] = ['managers', 'status', 'space_ids'];
+import { useParams } from '../../_shared/params';
 
 const Filters = () => {
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
   const { formatMessage } = useIntl();
   const params = useParams();
 
-  const showClearButton = FOLDER_FILTERS.some(
-    (paramName) => (params[paramName]?.length ?? 0) > 0
-  );
+  const showClearButton = countActiveFilters(params, 'folders') > 0;
 
   const handleClearAll = () => {
     removeSearchParams(FOLDER_FILTERS);

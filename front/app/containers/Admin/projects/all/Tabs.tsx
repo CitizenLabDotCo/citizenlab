@@ -4,8 +4,10 @@ import {
   Box,
   Button,
   colors,
+  fontSizes,
   IconNames,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { HighestRole } from 'api/users/types';
@@ -21,7 +23,12 @@ import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isAdmin } from 'utils/permissions/roles';
 import { useSearch } from 'utils/router';
 
-import { Parameter, PARAMS as PROJECT_PARAMS } from './_shared/params';
+import { countActiveFilters } from './_shared/activeFilters';
+import {
+  Parameter,
+  PARAMS as PROJECT_PARAMS,
+  useParams,
+} from './_shared/params';
 import messages from './messages';
 import tracks from './tracks';
 
@@ -32,19 +39,44 @@ const FOLDER_PARAMS: Parameter[] = [
   'space_ids',
 ];
 
+// Styled like components/UI/CountBadge, which only fits a number.
+const FilterCountBadge = styled.span`
+  padding: 0 6px;
+  height: 16px;
+  font-size: ${fontSizes.xs}px;
+  font-weight: 500;
+  border-radius: 3px;
+  margin-left: 6px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  color: ${colors.white};
+  background: ${colors.primary};
+`;
+
 interface TabProps {
   message: MessageDescriptor;
   active: boolean;
   icon: IconNames;
   dataCy?: string;
+  activeFilterCount?: number;
   onClick: () => void;
 }
 
-const Tab = ({ message, active, icon, dataCy, onClick }: TabProps) => {
+const Tab = ({
+  message,
+  active,
+  icon,
+  dataCy,
+  activeFilterCount = 0,
+  onClick,
+}: TabProps) => {
   const { formatMessage } = useIntl();
 
   return (
     <Box
+      display="flex"
+      alignItems="center"
       borderBottom={active ? `2px solid ${colors.primary}` : undefined}
       pb="4px"
       mr="20px"
@@ -62,6 +94,11 @@ const Tab = ({ message, active, icon, dataCy, onClick }: TabProps) => {
       >
         {formatMessage(message)}
       </Button>
+      {activeFilterCount > 0 && (
+        <FilterCountBadge data-cy="projects-overview-active-filter-count">
+          {formatMessage(messages.filterCount, { count: activeFilterCount })}
+        </FilterCountBadge>
+      )}
     </Box>
   );
 };
@@ -85,12 +122,16 @@ const Tabs = () => {
     from: '/$locale/admin/projects/',
   });
   const tab = searchParams.tab;
+  const params = useParams();
   const { data: user } = useAuthUser();
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
   if (!user) return null;
 
   const userIsAdmin = isAdmin(user);
+  // Filters only apply to the tab they were set on, so only that tab shows
+  // the count.
+  const activeFilterCount = countActiveFilters(params, tab);
 
   const { highest_role } = user.data.attributes;
   if (!highest_role) return null;
@@ -108,6 +149,7 @@ const Tabs = () => {
         message={messages.projects}
         icon="projects"
         active={tab === undefined}
+        activeFilterCount={tab === undefined ? activeFilterCount : 0}
         dataCy="projects-overview-projects-tab"
         onClick={() => {
           if (tab === 'folders') {
@@ -123,6 +165,7 @@ const Tabs = () => {
           message={messages.folders}
           icon="folder-outline"
           active={tab === 'folders'}
+          activeFilterCount={tab === 'folders' ? activeFilterCount : 0}
           dataCy="projects-overview-folders-tab"
           onClick={() => {
             if (tab === undefined || tab === 'calendar') {
@@ -159,6 +202,7 @@ const Tabs = () => {
         message={messages.calendar}
         icon="calendar"
         active={tab === 'calendar'}
+        activeFilterCount={tab === 'calendar' ? activeFilterCount : 0}
         dataCy="projects-overview-calendar-tab"
         onClick={() => {
           if (tab === 'folders') {
