@@ -352,7 +352,13 @@ const CustomFields = ({
                 )}
               </Box>
               {answerNotPublic && (
-                <Box display="flex" alignItems="center" gap="8px" mt="8px">
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  gap="8px"
+                  mt="8px"
+                  data-cy="e2e-private-answer-note"
+                >
                   <Icon
                     name="lock"
                     width="16px"

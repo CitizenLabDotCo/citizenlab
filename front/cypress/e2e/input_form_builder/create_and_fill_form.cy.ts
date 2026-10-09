@@ -245,7 +245,8 @@ describe('Input form builder', () => {
   it('lets a custom question show its answers publicly', () => {
     const publicQuestion = randomString();
     const privateQuestion = randomString();
-    const confirmationTitle = 'Show answers already collected';
+
+    cy.intercept('POST', '**/web_api/v1/phases/*/inputs').as('ideaSubmission');
 
     // Add a public and a private question. Nothing has been submitted yet, so
     // switching the first one on needs no confirmation.
@@ -254,7 +255,7 @@ describe('Input form builder', () => {
     cy.addItemToFormBuilder('#toolbox_text');
     cy.get('#e2e-title-multiloc').type(publicQuestion, { force: true });
     cy.get('#e2e-public-answers-toggle').find('input').click({ force: true });
-    cy.contains(confirmationTitle).should('not.exist');
+    cy.dataCy('e2e-confirm-public-answers').should('not.exist');
     cy.get('#e2e-public-answers-toggle').find('input').should('be.checked');
 
     cy.addItemToFormBuilder('#toolbox_text');
@@ -262,5 +263,33 @@ describe('Input form builder', () => {
 
     cy.get('form').submit();
     cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
+
+    // Only the private question tells the participant who sees the answer
+    cy.visit(`/projects/${projectSlug}/ideas/new`);
+    cy.get('#idea-form');
+    cy.get('#title_multiloc ').click().type(ideaTitle, { delay: 0 });
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.get('#body_multiloc .ql-editor').type(ideaContent);
+    cy.get('#body_multiloc .ql-editor').contains(ideaContent);
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.dataCy('e2e-next-page').should('be.visible').click();
+
+    cy.contains(publicQuestion)
+      .parents('[data-question-id]')
+      .find('[data-cy="e2e-private-answer-note"]')
+      .should('not.exist');
+    cy.contains(privateQuestion)
+      .parents('[data-question-id]')
+      .find('[data-cy="e2e-private-answer-note"]')
+      .should('exist');
+
+    cy.get(`*[id^="${publicQuestion}"]:not([id$="-label"])`)
+      .first()
+      .type(answer, { force: true });
+    cy.get(`*[id^="${privateQuestion}"]:not([id$="-label"])`)
+      .first()
+      .type(answer, { force: true });
+    cy.dataCy('e2e-submit-form').click();
+    cy.wait('@ideaSubmission');
   });
 });
