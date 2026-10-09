@@ -269,10 +269,14 @@ describe('Input form builder', () => {
     cy.get('#idea-form');
     cy.get('#title_multiloc ').click().type(ideaTitle, { delay: 0 });
     cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.dataCy('e2e-page-number-2').should('exist');
     cy.get('#body_multiloc .ql-editor').type(ideaContent);
     cy.get('#body_multiloc .ql-editor').contains(ideaContent);
     cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.dataCy('e2e-page-number-3').should('exist');
+    cy.get('#e2e-idea-image-upload').should('exist');
     cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.dataCy('e2e-page-number-4').should('exist');
 
     cy.contains(publicQuestion)
       .parents('[data-question-id]')
