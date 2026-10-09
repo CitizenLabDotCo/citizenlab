@@ -72,7 +72,11 @@ const NewProjectForm = ({ id, failed, apiErrors, onSubmit }: Props) => {
     const error = validateTitle(
       locales,
       titleMultiloc,
-      formatMessage(messages.titleRequired)
+      formatMessage(
+        locales.length === 1
+          ? messages.titleRequiredSingleLocale
+          : messages.titleRequired
+      )
     );
     const hasTitleError = Object.keys(error).length > 0;
     const hasGroupsError = visibleTo === 'groups' && groupIds.length === 0;

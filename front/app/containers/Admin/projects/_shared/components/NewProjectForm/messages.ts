@@ -6,8 +6,12 @@ export default defineMessages({
     defaultMessage: 'Add a project title',
   },
   titleRequired: {
-    id: 'app.containers.Admin.projects.NewProjectForm.titleRequired',
-    defaultMessage: 'Add a project title in every language.',
+    id: 'app.containers.Admin.projects.NewProjectForm.titleRequired2',
+    defaultMessage: 'Add a project title in all languages.',
+  },
+  titleRequiredSingleLocale: {
+    id: 'app.containers.Admin.projects.NewProjectForm.titleRequiredSingleLocale',
+    defaultMessage: 'Add a project title.',
   },
   context: {
     id: 'app.containers.Admin.projects.NewProjectForm.context',
