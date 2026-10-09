@@ -60,7 +60,7 @@ module Analytics
           'min_age' => 'For age groups: the lowest age in the group, inclusive. NULL for options.',
           'max_age' => 'For age groups: the age where the group ends, exclusive; NULL for the open-ended last group and for options.',
           'population_count' => 'Number of people in the population with this answer. Only the proportions between rows matter.',
-          'updated_at' => 'When the base data was last uploaded (UTC). Mention its age in reports, as census figures go out of date.'
+          'updated_at' => 'When the base data was last uploaded or changed (UTC). Mention its age in reports, as census figures go out of date.'
         }
       end
 

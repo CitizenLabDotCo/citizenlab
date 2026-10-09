@@ -24,8 +24,8 @@ module Analytics
         <<~DOC.squish
           One row per imported input: an input an administrator brought in
           from a file (for example paper forms) instead of a participant
-          posting it online. Imports only count once an administrator
-          approved them. Use it to report how much participation came in
+          posting it online. Imports still waiting for an administrator's
+          approval are left out. Use it to report how much participation came in
           offline, and through which import tool.
         DOC
       end
@@ -41,9 +41,9 @@ module Analytics
             platform.
           DOC
           'parser' => <<~DOC.squish,
-            For 'pdf' imports, which reader extracted the answers (an AI model
-            name, or 'google' / 'gpt' for older imports). NULL for spreadsheets,
-            and for PDFs imported before the reader was recorded.
+            For 'pdf' imports, which reader extracted the answers: an AI model
+            name, or 'claude', 'gpt' or 'google' for older imports. NULL for
+            spreadsheets, and for PDFs imported before the reader was recorded.
           DOC
           'user_id' => <<~DOC.squish,
             The staff member who ran the import, not the input's author (that is

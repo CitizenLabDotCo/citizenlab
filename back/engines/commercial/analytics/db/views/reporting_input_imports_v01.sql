@@ -1,7 +1,7 @@
 -- Reporting view: one row per imported input, with where it came from. Imports
--- stay drafts until an administrator approves them, and drafts are excluded,
--- so every row joins reporting_inputs. Leaves out content_changes and
--- extra_info, which can hold the respondent's personal data.
+-- waiting for approval are drafts, and drafts are excluded, so every row joins
+-- reporting_inputs. Leaves out content_changes and extra_info, which can hold
+-- the respondent's personal data.
 SELECT
     ii.id,
     ii.idea_id AS input_id,

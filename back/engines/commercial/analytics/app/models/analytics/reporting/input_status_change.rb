@@ -28,7 +28,8 @@ module Analytics
           reporting_official_feedbacks to show how and how fast inputs got an
           answer. History only goes back as far as the platform's activity
           log, so an input without rows can still have a status other than
-          its first one (set before logging started, or by an import).
+          the default (set before logging started, or when it was created,
+          for example by an import).
         DOC
       end
 
@@ -42,10 +43,18 @@ module Analytics
             the status code.
           DOC
           'from_status_label' => 'Name of the status before the change, resolved to the platform primary locale. NULL when from_status_id is NULL.',
-          'from_status_code' => 'Locale-independent category of the status before the change (see reporting_inputs.status_code for values).',
+          'from_status_code' => <<~DOC.squish,
+            Locale-independent category of the status before the change (see
+            reporting_inputs.status_code for values). NULL when that status was
+            deleted since.
+          DOC
           'to_status_id' => 'The status after the change. NULL in the same cases as from_status_id.',
           'to_status_label' => 'Name of the status after the change, resolved to the platform primary locale. NULL when to_status_id is NULL.',
-          'to_status_code' => 'Locale-independent category of the status after the change (see reporting_inputs.status_code for values).',
+          'to_status_code' => <<~DOC.squish,
+            Locale-independent category of the status after the change (see
+            reporting_inputs.status_code for values). NULL when that status was
+            deleted since.
+          DOC
           'changed_at' => 'When the status changed (UTC).'
         }
       end

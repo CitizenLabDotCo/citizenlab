@@ -57,7 +57,10 @@ module Analytics
             answers and answers by deleted users count as FALSE, as on the dashboard.
           DOC
           'answer_count' => 'Number of answers to the question in this group.',
-          'answer_sum' => 'Sum of the answers (each 1 to 5). Use it with answer_count to pool averages across rows.',
+          'answer_sum' => <<~DOC.squish,
+            Sum of the answers (each from 1 to the question's maximum, usually 5).
+            Use it with answer_count to pool averages across rows.
+          DOC
           'average' => 'Average answer for this question and group, rounded to 1 decimal like the dashboard.'
         }
       end
