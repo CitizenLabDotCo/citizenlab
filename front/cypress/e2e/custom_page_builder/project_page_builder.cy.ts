@@ -88,11 +88,18 @@ describe('Project page builder', () => {
   it('edits the page from one page with a preview, and opens the builder', () => {
     setFeatures(true, true);
     cy.setAdminLoginCookie();
+    cy.intercept('GET', `**/static_pages/${pageId}`).as('getPage');
+    cy.intercept(
+      'GET',
+      `**/static_pages/${pageId}/content_builder_layouts/custom_page`
+    ).as('getLayout');
     cy.intercept('POST', '**/content_builder_layouts/custom_page/upsert').as(
       'deriveLayout'
     );
     cy.visit(`/admin/projects/${projectId}/pages/${pageId}`);
-    // The first visit derives the layout from the page's content.
+    // The first visit finds no layout and derives one from the page's content. That only starts
+    // once the page and the layout lookup have both answered, so wait for them first.
+    cy.wait(['@getPage', '@getLayout']);
     cy.wait('@deriveLayout');
 
     cy.dataCy('e2e-save-project-page').should('exist');
