@@ -4,7 +4,7 @@ import { Box, Title, Text, colors } from '@citizenlab/cl2-component-library';
 
 import useDeleteIdea from 'api/ideas/useDeleteIdea';
 import useIdeaById from 'api/ideas/useIdeaById';
-import useUpdateIdea from 'api/ideas/useUpdateIdea';
+import useApprovedImportedIdeas from 'api/import_ideas/useApprovedImportedIdeas';
 import useApproveImportedIdeas from 'api/import_ideas/useApproveImportedIdeas';
 import useDeleteAllDraftImportedIdeas from 'api/import_ideas/useDeleteAllDraftImportedIdeas';
 import useImportedIdeaMetadata from 'api/import_ideas/useImportedIdeaMetadata';
@@ -13,18 +13,22 @@ import useTrackImportJobProgress from 'api/import_ideas/useTrackImportJobProgres
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
+import Tabs, {
+  getDefaultTabId,
+  getDefaultTabPanelId,
+} from 'components/UI/FilterTabs';
 import WarningModal from 'components/WarningModal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
 
+import ApprovedInputsList from './ApprovedInputsList';
 import EmptyState from './EmptyState';
 import IdeaEditor from './IdeaEditor';
 import IdeaList from './IdeaList';
 import ImportStatus from './ImportStatus';
 import messages from './messages';
 import PDFViewer from './PDFViewer';
-import RecentlyApprovedList, { ApprovedIdea } from './RecentlyApprovedList';
 
 const ReviewSection = ({
   onClickPDFImport,
@@ -39,20 +43,19 @@ const ReviewSection = ({
   };
   const { formatMessage } = useIntl();
   const [ideaId, setIdeaId] = useState<string | null>(null);
+  const [currentTab, setCurrentTab] = useState('toReview');
   const [approvals, setApprovals] = useState({ approved: 0, not_approved: 0 });
   const [confirmAction, setConfirmAction] = useState<
     'approveAll' | 'removeAll' | null
   >(null);
-  const [approvedThisSession, setApprovedThisSession] = useState<
-    ApprovedIdea[]
-  >([]);
-  const [undoingId, setUndoingId] = useState<string | null>(null);
 
   const {
     data: ideas,
     refetch: refetchIdeas,
     isLoading: isLoadingIdeas,
   } = useImportedIdeas({ projectId, phaseId });
+  const { data: approvedIdeas, isLoading: isLoadingApprovedIdeas } =
+    useApprovedImportedIdeas({ projectId, phaseId });
 
   const {
     importing,
@@ -64,7 +67,6 @@ const ReviewSection = ({
   } = useTrackImportJobProgress(phaseId);
 
   const { mutate: deleteIdea } = useDeleteIdea();
-  const { mutateAsync: updateIdea } = useUpdateIdea();
   const { mutate: approveIdeas, isPending: isApproving } =
     useApproveImportedIdeas();
   const { mutate: deleteAllIdeas, isPending: isDeleting } =
@@ -80,8 +82,18 @@ const ReviewSection = ({
   if (ideas === undefined) return null;
 
   const numIdeas = ideas.data.length;
+  const numApprovedIdeas =
+    approvedIdeas?.pages.flatMap((page) => page.data).length ?? 0;
 
-  if (!importing && !importHasErrors && numIdeas === 0) {
+  // Past approvals keep the review UI reachable: their list is the way back to
+  // an approved input's PDF and answers.
+  if (
+    !importing &&
+    !importHasErrors &&
+    numIdeas === 0 &&
+    !isLoadingApprovedIdeas &&
+    numApprovedIdeas === 0
+  ) {
     return (
       <EmptyState
         onClickPDFImport={onClickPDFImport}
@@ -106,13 +118,17 @@ const ReviewSection = ({
 
   const importType = ideaMetadata?.data.attributes.import_type;
 
+  const tabData = {
+    toReview: { label: messages.toReviewTab, count: numIdeas },
+    approved: { label: messages.approvedTab },
+  };
+
   const handleApproveAll = () => {
     approveIdeas(phaseId, {
       onSuccess: (data) => {
         setApprovals(data.data.attributes);
         setIdeaId(null);
         setConfirmAction(null);
-        refetchIdeas();
       },
     });
   };
@@ -125,23 +141,6 @@ const ReviewSection = ({
         refetchIdeas();
       },
     });
-  };
-
-  const handleIdeaApproved = (approved: ApprovedIdea) => {
-    setApprovedThisSession((prev) => [approved, ...prev]);
-  };
-
-  const handleUndoApproval = async (id: string) => {
-    setUndoingId(id);
-    try {
-      await updateIdea({
-        id,
-        requestBody: { publication_status: 'draft' },
-      });
-      setApprovedThisSession((prev) => prev.filter((i) => i.id !== id));
-    } finally {
-      setUndoingId(null);
-    }
   };
 
   return (
@@ -167,6 +166,8 @@ const ReviewSection = ({
       </Box>
 
       <Box px="25px" borderBottom={`5px ${colors.grey200} solid`}>
+        {/* The bulk actions only act on the pending queue, so they are disabled
+            (not hidden, to keep the layout stable) on the Approved tab. */}
         <Box display="flex">
           <Box w="100%" display="flex" alignItems="center">
             <Box pl="15px" py="10px">
@@ -174,7 +175,12 @@ const ReviewSection = ({
                 bgColor={colors.primary}
                 icon="check"
                 processing={isApproving}
-                disabled={isApproving || isDeleting || importing}
+                disabled={
+                  isApproving ||
+                  isDeleting ||
+                  importing ||
+                  currentTab === 'approved'
+                }
                 onClick={() => setConfirmAction('approveAll')}
               >
                 <FormattedMessage
@@ -188,7 +194,12 @@ const ReviewSection = ({
                 buttonStyle="admin-dark-outlined"
                 icon="delete"
                 processing={isDeleting}
-                disabled={isApproving || isDeleting || importing}
+                disabled={
+                  isApproving ||
+                  isDeleting ||
+                  importing ||
+                  currentTab === 'approved'
+                }
                 onClick={() => setConfirmAction('removeAll')}
               >
                 <FormattedMessage {...messages.removeAllInputs} />
@@ -223,28 +234,56 @@ const ReviewSection = ({
           flexDirection="column"
           minHeight="0"
         >
-          <Box flex="1" minHeight="0" overflowY="auto">
-            {(importing || importHasErrors) && (
-              <ImportStatus
-                hasErrors={importHasErrors}
-                progress={importProgress}
-                total={importTotal}
-                errorCount={errorCount}
-                errors={importErrors}
+          <Tabs
+            currentTab={currentTab}
+            availableTabs={['toReview', 'approved']}
+            tabData={tabData}
+            onChangeTab={setCurrentTab}
+            showCount
+            fullWidth
+          />
+          <Box
+            flex="1"
+            minHeight="0"
+            overflowY="auto"
+            role="tabpanel"
+            id={getDefaultTabPanelId(currentTab)}
+            aria-labelledby={getDefaultTabId(currentTab)}
+          >
+            {currentTab === 'toReview' ? (
+              <>
+                {(importing || importHasErrors) && (
+                  <ImportStatus
+                    hasErrors={importHasErrors}
+                    progress={importProgress}
+                    total={importTotal}
+                    errorCount={errorCount}
+                    errors={importErrors}
+                  />
+                )}
+                {!importing &&
+                !importHasErrors &&
+                numIdeas === 0 &&
+                numApprovedIdeas > 0 ? (
+                  <Text m="0" p="12px" color="coolGrey600" fontSize="s">
+                    <FormattedMessage {...messages.allInputsApprovedHint} />
+                  </Text>
+                ) : (
+                  <IdeaList
+                    ideaId={ideaId}
+                    ideas={ideas}
+                    onSelectIdea={handleSelectIdea}
+                    onDeleteIdea={handleDeleteIdea}
+                  />
+                )}
+              </>
+            ) : (
+              <ApprovedInputsList
+                selectedIdeaId={ideaId}
+                onSelectIdea={handleSelectIdea}
               />
             )}
-            <IdeaList
-              ideaId={ideaId}
-              ideas={ideas}
-              onSelectIdea={handleSelectIdea}
-              onDeleteIdea={handleDeleteIdea}
-            />
           </Box>
-          <RecentlyApprovedList
-            ideas={approvedThisSession}
-            onUndo={handleUndoApproval}
-            undoingId={undoingId}
-          />
         </Box>
         <Box
           w="35%"
@@ -254,11 +293,7 @@ const ReviewSection = ({
           alignItems="center"
           h="100%"
         >
-          <IdeaEditor
-            ideaId={ideaId}
-            setIdeaId={setIdeaId}
-            onIdeaApproved={handleIdeaApproved}
-          />
+          <IdeaEditor ideaId={ideaId} setIdeaId={setIdeaId} />
         </Box>
         <Box w="40%">
           {ideaMetadata && ideaId && importType === 'pdf' && (

@@ -15,6 +15,10 @@ module BulkImportIdeas
         active_moderator?
       end
 
+      def approved_records?
+        active_moderator?
+      end
+
       def approve_all?
         active_moderator?
       end
