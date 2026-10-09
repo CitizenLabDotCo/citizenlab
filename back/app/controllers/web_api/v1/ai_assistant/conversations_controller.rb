@@ -15,7 +15,7 @@ class WebApi::V1::AIAssistant::ConversationsController < ApplicationController
   end
 
   def show
-    conversation = authorize(::AIAssistant::Conversation.includes(:messages).find(params[:id]))
+    conversation = authorize(::AIAssistant::Conversation.includes(messages: :tool_calls).find(params[:id]))
     render json: serialize(conversation)
   end
 
@@ -54,7 +54,7 @@ class WebApi::V1::AIAssistant::ConversationsController < ApplicationController
     serializer.new(
       conversation,
       params: jsonapi_serializer_params,
-      include: %i[messages]
+      include: %i[messages messages.tool_calls]
     ).serializable_hash
   end
 

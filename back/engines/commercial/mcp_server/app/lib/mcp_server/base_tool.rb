@@ -34,9 +34,10 @@ class McpServer::BaseTool
   def meta = nil
   def annotations = nil
 
-  # Called once per request and per tool, by the controller.
+  # Called once per request and per tool, by the controller (and by the in-app AI
+  # assistant, which passes its own activity channel).
   # Builds the SDK-side tool class dynamically.
-  def self.for(current_user:, token_scopes:)
+  def self.for(current_user:, token_scopes:, channel: 'mcp')
     definition = new(current_user:, token_scopes:)
     runner_class = const_get(:Runner)
 
@@ -54,9 +55,9 @@ class McpServer::BaseTool
       params = ReadonlyStrip.strip_readonly(kwargs, definition.input_schema)
       runner = runner_class.new(params:, server_context:, current_user:, token_scopes:)
 
-      # Tag activities from this tool run as MCP-originated (LogActivityJob reads this).
+      # Tag activities from this tool run with their origin (LogActivityJob reads this).
       # Set here, not in McpController, so the run_mcp_tool spec helper hits the same path.
-      Current.activity_channel = 'mcp'
+      Current.activity_channel = channel
 
       locale_error = McpServer::LocaleGuard.error_message(kwargs)
       locale_error ? runner.error(locale_error) : runner.run

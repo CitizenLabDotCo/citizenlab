@@ -24,6 +24,8 @@ export const getErrorMessage = (
       return messages.errorContextTooLong;
     case 'context_unavailable':
       return messages.errorContextUnavailable;
+    case 'tool_budget_exceeded':
+      return messages.errorToolBudgetExceeded;
     case 'conversation_busy':
       return messages.errorConversationBusy;
     case 'too_long':

@@ -53,18 +53,22 @@ resource 'AI assistant conversations' do
 
     before do
       create(:ai_assistant_message, conversation:)
-      create(:ai_assistant_message, conversation:, role: 'assistant')
+      create(:ai_assistant_tool_call, message: create(:ai_assistant_message, conversation:, role: 'assistant'), result: 'secret result')
     end
 
     context 'when the owner' do
       before { header_token_for(super_admin) }
 
-      example 'Get a conversation with its messages' do
+      example 'Get a conversation with its messages and tool calls' do
         do_request
 
         assert_status 200
         expect(response_data[:attributes]).to include(context_key: 'survey_builder', status: 'idle')
-        expect(json_response_body[:included].pluck(:type)).to contain_exactly('ai_assistant_message', 'ai_assistant_message')
+        expect(json_response_body[:included].pluck(:type)).to contain_exactly(
+          'ai_assistant_message', 'ai_assistant_message', 'ai_assistant_tool_call'
+        )
+        tool_call = json_response_body[:included].find { |resource| resource[:type] == 'ai_assistant_tool_call' }
+        expect(tool_call[:attributes].keys).to contain_exactly(:name, :arguments, :status, :created_at)
       end
     end
 
