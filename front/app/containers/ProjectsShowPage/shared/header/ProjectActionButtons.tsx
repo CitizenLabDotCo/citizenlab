@@ -36,7 +36,7 @@ import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
 import { isAdmin } from 'utils/permissions/roles';
-import { useLocation } from 'utils/router';
+import { useLocation, useParams } from 'utils/router';
 import { scrollToElement } from 'utils/scroll';
 
 import { excludeHidden, groupSpotlightSurveys } from './participationOptions';
@@ -60,6 +60,8 @@ const ProjectActionButtons = memo<Props>(
     const localize = useLocalize();
     const { data: standalonePhases } = usePhases(projectId, 'standalone');
     const { pathname, hash: divId } = useLocation();
+    // Set when the box is on one of the project's other pages rather than on the project page.
+    const { pageSlug } = useParams({ strict: false });
     const { data: events } = useEvents({
       projectIds: [projectId],
       currentAndFutureOnly: true,
@@ -416,15 +418,19 @@ const ProjectActionButtons = memo<Props>(
           <ButtonWithLink
             id="e2e-project-see-events-button"
             buttonStyle="secondary-outlined"
-            // The box can also be on another of the project's pages, which may have no events
-            // widget. Events belong to no phase, so the selected phase is kept.
+            // Another of the project's pages may have no events widget, so go to the project page.
+            // On the project page the widget may still be loading, and leaving would drop the
+            // selected phase.
             onClick={() => {
-              if (document.getElementById(EVENTS_WIDGET_ANCHOR_ID)) {
-                scrollToElement({ id: EVENTS_WIDGET_ANCHOR_ID });
-              } else {
+              if (
+                pageSlug &&
+                !document.getElementById(EVENTS_WIDGET_ANCHOR_ID)
+              ) {
                 clHistory.push(
                   `/projects/${project.data.attributes.slug}#${EVENTS_WIDGET_ANCHOR_ID}`
                 );
+              } else {
+                scrollToElement({ id: EVENTS_WIDGET_ANCHOR_ID });
               }
             }}
             fontWeight="500"
