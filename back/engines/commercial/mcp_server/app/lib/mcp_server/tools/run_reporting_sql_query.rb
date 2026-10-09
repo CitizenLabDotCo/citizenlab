@@ -39,8 +39,8 @@ class McpServer::Tools::RunReportingSqlQuery < McpServer::BaseTool
       connected Go Vocal platform. Reference the reporting tables by their plain,
       unqualified names. All timestamps are in UTC. Count participants with
       COUNT(DISTINCT participant_id) on reporting_contributions. Not available in
-      this model: emails, invitations, events as entities, and participation through
-      embedded third-party surveys or document annotation. At most #{ROW_LIMIT} rows
+      this model: emails, invitations, and participation through embedded
+      third-party surveys or document annotation. At most #{ROW_LIMIT} rows
       are returned, so aggregate in SQL rather than fetching raw rows.
     DOC
   end
