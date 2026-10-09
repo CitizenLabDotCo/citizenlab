@@ -34,7 +34,6 @@ import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { pastPresentOrFuture } from 'utils/dateUtils';
-import { isNilOrError } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
 import { isAdmin } from 'utils/permissions/roles';
 import { useLocation, useParams } from 'utils/router';
@@ -84,7 +83,7 @@ const ProjectActionButtons = memo<Props>(
       }
     }, [divId]);
 
-    if (isNilOrError(project)) {
+    if (!project) {
       return null;
     }
 
