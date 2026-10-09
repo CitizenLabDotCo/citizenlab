@@ -28,7 +28,7 @@ interface ContainerProps {
 const ringColor = (color: string) =>
   `0 0 0 3px color-mix(in srgb, ${color} 16%, transparent)`;
 
-const boInputStyle = css`
+const boLabelStyle = css`
   > label {
     font-size: ${fontSizes.xs}px;
     font-weight: 400;
@@ -36,42 +36,42 @@ const boInputStyle = css`
     color: ${colors.coolGrey600};
     margin-bottom: 12px;
   }
+`;
 
-  input {
-    height: 36px;
-    padding: 0 11px;
-    border: 1px solid ${colors.grey300};
-    border-radius: ${bo.borderRadius};
-    font-size: ${fontSizes.xs}px;
-    line-height: 1.5;
-    color: ${bo.colors.textHeadingStrong};
-    transition: border-color 100ms ease-out, box-shadow 100ms ease-out;
+const boInputStyle = css`
+  height: 36px;
+  padding: 0 11px;
+  border: 1px solid ${colors.grey300};
+  border-radius: ${bo.borderRadius};
+  background: ${colors.white};
+  font-size: ${fontSizes.xs}px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: ${bo.colors.textHeadingStrong};
+  cursor: text;
+  outline: none;
+  appearance: none;
+  transition: border-color 100ms ease-out, box-shadow 100ms ease-out;
 
-    &::placeholder {
-      color: ${colors.coolGrey500};
-    }
+  &::placeholder {
+    color: ${colors.coolGrey500};
   }
 
-  input:not(:disabled):not(.disabled):not(.error):hover {
-    border-color: ${colors.grey300};
-  }
-
-  input:not(:disabled):not(.disabled):not(.error):focus {
-    border: 1px solid ${({ theme }) => theme.colors.tenantPrimary};
+  &:focus {
+    border-color: ${({ theme }) => theme.colors.tenantPrimary};
     box-shadow: ${({ theme }) => ringColor(theme.colors.tenantPrimary)};
   }
 
-  input:not(:disabled):not(.disabled).error,
-  input:not(:disabled):not(.disabled).error:focus {
-    border: 1px solid ${colors.red600};
+  &.error {
+    border-color: ${colors.red600};
     box-shadow: ${ringColor(colors.red600)};
   }
 
-  input:disabled,
-  input.disabled {
+  &:disabled,
+  &.disabled {
     background: ${colors.grey50};
     color: ${colors.coolGrey500};
-    border-color: ${colors.grey300};
+    cursor: not-allowed;
   }
 `;
 
@@ -90,10 +90,10 @@ const Container = styled.div<ContainerProps>`
           padding-right: ${defaultStyles.inputPadding};
           padding-left: 62px;
       }`}
-    ${defaultInputStyle};
+    ${({ variant }) => (variant === 'bo' ? boInputStyle : defaultInputStyle)};
   }
 
-  ${({ variant }) => variant === 'bo' && boInputStyle}
+  ${({ variant }) => variant === 'bo' && boLabelStyle}
 `;
 
 const CharCount = styled.div<{ inputSize?: InputSize }>`
