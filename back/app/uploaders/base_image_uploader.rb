@@ -6,13 +6,10 @@ class BaseImageUploader < BaseUploader
   include CarrierWave::MiniMagick
 
   ALLOWED_TYPES = %w[jpg jpeg gif png webp avif]
-  # Cameras and image editors often save at 90+, which makes a file much bigger than
-  # it needs to be, with no visible difference. Only ever lowered: raising it grows
-  # the file for no gain.
+  # Cameras often save at 90+, which is much bigger for no visible gain. Only ever lowered.
   JPEG_MAX_QUALITY = 80
-  # For originals that are served as they are. Admins often upload photos straight
-  # from a camera (5000px+ wide, several MB), and no page shows an image wider than
-  # this, even on high-density screens.
+  # For originals served as they are. Camera photos can be 5000px+ wide, and no page
+  # shows an image wider than this, even on high-density screens.
   MAX_SIZE = 2400
 
   # Using process at the class level applies it to all versions, including the original.
@@ -35,8 +32,7 @@ class BaseImageUploader < BaseUploader
     CarrierwaveTempRemote.url(identifier, version_name) || super
   end
 
-  # A resize saves the file again, so the JPEG quality is lowered in the same save.
-  # Lowering it in a separate step would save the image twice.
+  # Lower the JPEG quality in the resize itself, so the image is only saved once.
   def resize_to_fill(width, height, gravity = 'Center', combine_options: {}, &)
     super(width, height, gravity, combine_options: jpeg_quality_options.merge(combine_options), &)
   end
@@ -52,9 +48,13 @@ class BaseImageUploader < BaseUploader
     model.instance_variable_get(var) or model.instance_variable_set(var, SecureRandom.uuid)
   end
 
-  # Only JPEGs: PNGs are often logos or graphics, where lossy compression shows,
-  # and ImageMagick can't read a WebP's quality (it reports 92 for any lossy WebP
-  # and 100 for a lossless one).
+  # How a resize saves each format (only JPEGs get a quality here):
+  # - JPEG: keeps the source's quality, capped at JPEG_MAX_QUALITY.
+  # - PNG: stays lossless (often logos or graphics, where lossy compression shows).
+  # - WebP: lossy files don't store their quality, so libwebp saves at its default
+  #   of 75. Lossless stays lossless.
+  # - AVIF: our ImageMagick can't write AVIF, so it saves JPEG data under the .avif
+  #   name, without the quality cap. Browsers still show it.
   def jpeg_quality_options
     return {} unless jpeg? && ::MiniMagick::Image.new(current_path)['%Q'].to_i > JPEG_MAX_QUALITY
 
@@ -94,7 +94,7 @@ class BaseImageUploader < BaseUploader
 
       yield image
 
-      image.layers 'Optimize' # Coalesced frames are full canvases, so a GIF grows several times without this.
+      image.layers 'Optimize' # Re-optimise, or the coalesced GIF grows several times.
       image << @file.path
     end
   end
