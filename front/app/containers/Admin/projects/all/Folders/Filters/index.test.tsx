@@ -57,21 +57,21 @@ describe('Folders Filters — clear button', () => {
   it('does not show the clear button when no filter is set', () => {
     render(<Filters />);
 
-    expect(screen.queryByText('Clear')).not.toBeInTheDocument();
+    expect(screen.queryByText('Clear filters')).not.toBeInTheDocument();
   });
 
   it('shows the clear button when only the search is set', () => {
     mockSearch = { search: 'park' };
     render(<Filters />);
 
-    expect(screen.getByText('Clear')).toBeInTheDocument();
+    expect(screen.getByText('Clear filters')).toBeInTheDocument();
   });
 
   it('clears the folder filters and the search', () => {
     mockSearch = { status: ['published'], search: 'park' };
     render(<Filters />);
 
-    fireEvent.click(screen.getByText('Clear'));
+    fireEvent.click(screen.getByText('Clear filters'));
 
     expect(mockRemoveSearchParams).toHaveBeenCalledWith([
       'managers',

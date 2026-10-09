@@ -1,27 +1,25 @@
 import React from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { trackEventByName } from 'utils/analytics';
-import { useIntl } from 'utils/cl-intl';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import {
   countActiveFilters,
   FOLDER_FILTERS,
 } from '../../_shared/activeFilters';
+import ClearFiltersButton from '../../_shared/FilterBar/ClearFiltersButton';
 import Manager from '../../_shared/FilterBar/Filters/Manager';
 import Spaces from '../../_shared/FilterBar/Filters/Spaces';
 import Status from '../../_shared/FilterBar/Filters/Status';
-import messages from '../../_shared/FilterBar/messages';
 import tracks from '../../_shared/FilterBar/tracks';
 import { useParams } from '../../_shared/params';
 
 const Filters = () => {
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
-  const { formatMessage } = useIntl();
   const params = useParams();
 
   const showClearButton = countActiveFilters(params, 'folders') > 0;
@@ -43,11 +41,8 @@ const Filters = () => {
         <Status mr="8px" />
         {spacesEnabled && <Spaces mr="8px" />}
         {showClearButton && (
-          <Button
-            buttonStyle="text"
+          <ClearFiltersButton
             onClick={handleClearAll}
-            text={formatMessage(messages.clear)}
-            m="0"
             dataCy="projects-overview-folders-clear-filters"
           />
         )}

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { fireEvent, render, screen } from 'utils/testUtils/rtl';
 
-import DynamicFilters from './DynamicFilters';
+import FilterBar from '.';
 
 jest.mock('hooks/useFeatureFlag', () => () => true);
 jest.mock('api/me/useAuthUser');
@@ -19,27 +19,33 @@ jest.mock('utils/cl-router/removeSearchParams', () => ({
   removeSearchParams: (params: string[]) => mockRemoveSearchParams(params),
 }));
 
-// The individual filters are not under test here.
+// The individual filters and the count are not under test here.
 jest.mock('./ActiveFilter', () => () => null);
 jest.mock('./AddFilterDropdown', () => () => null);
+jest.mock('./Filters/Sort', () => () => null);
+jest.mock('./Filters/PendingApproval', () => () => null);
+jest.mock('./Filters/Dates', () => () => null);
+jest.mock('../FilteredProjectCount', () => () => (
+  <span data-cy="filtered-project-count" />
+));
 
-describe('DynamicFilters — clear button', () => {
+describe('FilterBar — clear filters button', () => {
   beforeEach(() => {
     mockSearch = {};
     mockRemoveSearchParams.mockReset();
   });
 
   it('does not show the clear button when nothing is set', () => {
-    render(<DynamicFilters />);
+    render(<FilterBar />);
 
-    expect(screen.queryByText('Clear')).not.toBeInTheDocument();
+    expect(screen.queryByText('Clear filters')).not.toBeInTheDocument();
   });
 
   it('does not show the clear button for the default sort', () => {
     mockSearch = { sort: 'recently_viewed' };
-    render(<DynamicFilters />);
+    render(<FilterBar />);
 
-    expect(screen.queryByText('Clear')).not.toBeInTheDocument();
+    expect(screen.queryByText('Clear filters')).not.toBeInTheDocument();
   });
 
   it.each([
@@ -51,9 +57,9 @@ describe('DynamicFilters — clear button', () => {
     ['a search', { search: 'park' }],
   ])('shows the clear button for %s', (_, search) => {
     mockSearch = search;
-    render(<DynamicFilters />);
+    render(<FilterBar />);
 
-    expect(screen.getByText('Clear')).toBeInTheDocument();
+    expect(screen.getByText('Clear filters')).toBeInTheDocument();
   });
 
   it('clears the added filters, the default filters, the sort and the search', () => {
@@ -63,9 +69,9 @@ describe('DynamicFilters — clear button', () => {
       sort: 'alphabetically_asc',
       search: 'park',
     };
-    render(<DynamicFilters />);
+    render(<FilterBar />);
 
-    fireEvent.click(screen.getByText('Clear'));
+    fireEvent.click(screen.getByText('Clear filters'));
 
     expect(mockRemoveSearchParams).toHaveBeenCalledWith([
       'status',
@@ -75,5 +81,15 @@ describe('DynamicFilters — clear button', () => {
       'sort',
       'search',
     ]);
+  });
+
+  it('shows the button on the same line as the project count', () => {
+    mockSearch = { status: ['published'] };
+    render(<FilterBar />);
+
+    expect(
+      document.querySelector('[data-cy="filtered-project-count"]')
+        ?.parentElement
+    ).toContainElement(screen.getByText('Clear filters').closest('button'));
   });
 });
