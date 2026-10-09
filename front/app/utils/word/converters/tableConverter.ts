@@ -28,6 +28,23 @@ interface TableOptions {
   headerBackground?: string;
 }
 
+/**
+ * Word lays a table out from its column grid, and docx defaults that grid to
+ * 100 twips per column, which squeezes the table down to its text. Cell
+ * percentages alone do not undo that, so the grid needs real widths.
+ */
+export function columnWidthsInTwips(
+  columnCount: number,
+  percentages?: number[]
+): number[] {
+  const shares =
+    percentages?.length === columnCount
+      ? percentages
+      : Array.from({ length: columnCount }, () => 100 / columnCount);
+
+  return shares.map((share) => Math.round((WORD_CONTENT_WIDTH * share) / 100));
+}
+
 function createTable(
   rows: WordTableRowData[],
   options: TableOptions = {}
@@ -40,16 +57,9 @@ function createTable(
     headerBackground = WORD_TABLE_STYLES.headerBackground,
   } = options;
 
-  // Word lays a table out from its column grid, and docx defaults that grid to
-  // 100 twips per column, which squeezes the table down to its text. Cell
-  // percentages alone do not undo that, so hand it real widths.
-  const columnCount = Math.max(0, ...rows.map((row) => row.cells.length));
-  const percentages =
-    columnWidths?.length === columnCount
-      ? columnWidths
-      : Array.from({ length: columnCount }, () => 100 / columnCount);
-  const widths = percentages.map((percentage) =>
-    Math.round((WORD_CONTENT_WIDTH * percentage) / 100)
+  const widths = columnWidthsInTwips(
+    Math.max(0, ...rows.map((row) => row.cells.length)),
+    columnWidths
   );
 
   const tableRows = rows.map((row, rowIndex) => {
