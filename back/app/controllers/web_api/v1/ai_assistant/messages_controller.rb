@@ -8,6 +8,7 @@ class WebApi::V1::AIAssistant::MessagesController < ApplicationController
     conversation = ::AIAssistant::Conversation.find(params[:ai_assistant_conversation_id])
     message = conversation.messages.new(role: 'user', **message_params)
     authorize(message)
+    message.files.each { |file| authorize(file, :show?) }
 
     status = conversation.with_lock do
       next :busy if conversation.running? || conversation.awaiting_approval?
@@ -31,6 +32,6 @@ class WebApi::V1::AIAssistant::MessagesController < ApplicationController
   private
 
   def message_params
-    params.require(:ai_assistant_message).permit(:content).to_h.symbolize_keys
+    params.require(:ai_assistant_message).permit(:content, file_ids: []).to_h.symbolize_keys
   end
 end

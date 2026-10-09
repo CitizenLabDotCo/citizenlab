@@ -23,11 +23,12 @@ const TOOL_VIEWS: AiAssistantToolViews = {
 
 type Props = {
   phaseId: string;
+  projectId: string;
   // Called once the approved survey is saved, to reload the builder.
   onFormReplaced: () => void;
 };
 
-const SurveyAssistant = ({ phaseId, onFormReplaced }: Props) => {
+const SurveyAssistant = ({ phaseId, projectId, onFormReplaced }: Props) => {
   const queryClient = useQueryClient();
 
   const handleToolExecuted = async (toolName: string) => {
@@ -45,7 +46,8 @@ const SurveyAssistant = ({ phaseId, onFormReplaced }: Props) => {
     <AssistantPanel
       contextKey="survey_builder"
       contextId={phaseId}
-      intro={messages.intro}
+      projectId={projectId}
+      intro={messages.intro2}
       toolViews={TOOL_VIEWS}
       onToolExecuted={handleToolExecuted}
     />

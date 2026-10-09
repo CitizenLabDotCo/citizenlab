@@ -32,6 +32,10 @@ export const getErrorMessage = (
       return messages.errorToolCallExpired;
     case 'tool_call_not_proposed':
       return messages.errorToolCallNotProposed;
+    case 'ai_processing_not_allowed':
+      return messages.errorAiProcessingNotAllowed;
+    case 'unsupported_file_type':
+      return messages.errorUnsupportedFileType;
     case 'too_long':
       return messages.errorTooLong;
     default:

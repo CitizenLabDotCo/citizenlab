@@ -6,6 +6,7 @@ export interface IAiAssistantMessageData {
   attributes: {
     role: 'user' | 'assistant';
     content: string | null;
+    file_ids: string[];
     position: number;
     created_at: string;
   };
@@ -21,4 +22,5 @@ export interface IAiAssistantMessage {
 export interface IAiAssistantMessageAdd {
   conversationId: string;
   content: string;
+  fileIds: string[];
 }
