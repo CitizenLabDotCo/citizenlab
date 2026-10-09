@@ -16,7 +16,7 @@ import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import CloseIconButton from 'components/UI/CloseIconButton';
 
@@ -60,7 +60,9 @@ export const ModalContentContainer = styled.div<{
   `}
 `;
 
-const StyledCloseIconButton = styled(CloseIconButton)`
+type Variant = 'default' | 'bo';
+
+const StyledCloseIconButton = styled(CloseIconButton)<{ variant: Variant }>`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -84,12 +86,6 @@ const StyledCloseIconButton = styled(CloseIconButton)`
     ${focusRingBorder}
   }
 
-  &.bo {
-    right: 20px;
-    width: 28px;
-    height: 28px;
-  }
-
   &.no-header {
     top: 12px;
     transform: none;
@@ -107,6 +103,14 @@ const StyledCloseIconButton = styled(CloseIconButton)`
   ${media.phone`
     right: 15px;
   `}
+
+  ${({ variant }) =>
+    variant === 'bo' &&
+    css`
+      right: 20px;
+      width: 28px;
+      height: 28px;
+    `}
 `;
 
 const StyledFocusOn = styled(FocusOn)<{
@@ -207,7 +211,7 @@ const Overlay = styled.div<{ zIndex?: number }>`
   }
 `;
 
-const HeaderTitle = styled.h1`
+const HeaderTitle = styled.h1<{ variant: Variant }>`
   color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.l}px;
   font-weight: 400;
@@ -221,15 +225,6 @@ const HeaderTitle = styled.h1`
     margin-right: 74px;
   `}
 
-  &.bo {
-    color: ${bo.colors.textHeadingStrong};
-    font-size: ${fontSizes.s}px;
-    font-weight: 500;
-    letter-spacing: normal;
-    line-height: 28px;
-    margin-right: 48px;
-  }
-
   ${isRtl`
     text-align: right;
     margin: 0;
@@ -239,6 +234,17 @@ const HeaderTitle = styled.h1`
       margin-left: 74px;
     `}
   `}
+
+  ${({ variant }) =>
+    variant === 'bo' &&
+    css`
+      color: ${bo.colors.textHeadingStrong};
+      font-size: ${fontSizes.s}px;
+      font-weight: 500;
+      letter-spacing: normal;
+      line-height: 28px;
+      margin-right: 48px;
+    `}
 `;
 
 const Skip = styled.div`
@@ -284,7 +290,7 @@ const ModalContentContainerSwitch = ({
 
 interface BaseProps {
   'data-testid'?: string;
-  variant?: 'default' | 'bo';
+  variant?: Variant;
   opened: boolean;
   fixedHeight?: boolean;
   fillContent?: boolean;
@@ -445,11 +451,12 @@ const Modal: React.FC<Props> = ({
   const isBo = variant === 'bo';
   const closeButtonClassName = `e2e-modal-close-button${
     header ? '' : ' no-header'
-  }${isBo ? ' bo' : ''}`;
+  }`;
 
   const closeButton = hideCloseButton ? null : (
     <StyledCloseIconButton
       className={closeButtonClassName}
+      variant={variant}
       onClick={clickCloseButton}
       iconColor={colors.textSecondary}
       iconColorOnHover={colors.textSecondary}
@@ -514,7 +521,7 @@ const Modal: React.FC<Props> = ({
                   isBo ? colors.grey100 : colors.grey200
                 }`}
               >
-                <HeaderTitle id="modal-header" className={isBo ? 'bo' : ''}>
+                <HeaderTitle id="modal-header" variant={variant}>
                   {header}
                 </HeaderTitle>
                 {closeButton}

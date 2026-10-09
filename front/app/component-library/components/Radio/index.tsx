@@ -3,17 +3,22 @@ import React, { FormEvent, useState } from 'react';
 import useInstanceId from 'component-library/hooks/useInstanceId';
 import { get } from 'lodash-es';
 import { hideVisually } from 'polished';
-import styled, { useTheme } from 'styled-components';
+import styled, { css, useTheme } from 'styled-components';
 
 import { fontSizes, colors, focusRing, isRtl } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import Box, { BoxPaddingProps, BoxMarginProps } from '../Box';
 
+type Variant = 'default' | 'bo';
+
 const HiddenRadio = styled.input.attrs({ type: 'radio' })`
   ${hideVisually()};
 `;
 
-const CustomRadio = styled.div<{ borderColor: string | undefined }>`
+const CustomRadio = styled.div<{
+  borderColor: string | undefined;
+  variant: Variant;
+}>`
   flex: 0 0 20px;
   width: 20px;
   height: 20px;
@@ -50,39 +55,40 @@ const CustomRadio = styled.div<{ borderColor: string | undefined }>`
     cursor: not-allowed;
   }
 
-  &.bo {
-    flex-basis: 16px;
-    width: 16px;
-    height: 16px;
-    margin-top: 2px;
-    margin-right: 8px;
-    border-color: ${colors.grey400};
-  }
+  ${({ variant }) =>
+    variant === 'bo' &&
+    css`
+      flex-basis: 16px;
+      width: 16px;
+      height: 16px;
+      margin-top: 2px;
+      margin-right: 8px;
+      border-color: ${colors.grey400};
 
-  &.bo.checked {
-    border-color: ${({ theme }) => theme.colors.tenantPrimary};
-  }
-
-  &.bo.enabled:hover {
-    border-color: ${({ theme }) => theme.colors.tenantPrimary};
-  }
+      &.checked,
+      &.enabled:hover {
+        border-color: ${({ theme }) => theme.colors.tenantPrimary};
+      }
+    `}
 `;
 
-const Checked = styled.div`
+const Checked = styled.div<{ variant: Variant }>`
   flex: 0 0 12px;
   width: 12px;
   height: 12px;
   background: ${(props) => props.color};
   border-radius: 50%;
 
-  &.bo {
-    flex-basis: 8px;
-    width: 8px;
-    height: 8px;
-  }
+  ${({ variant }) =>
+    variant === 'bo' &&
+    css`
+      flex-basis: 8px;
+      width: 8px;
+      height: 8px;
+    `}
 `;
 
-const Label = styled.label`
+const Label = styled.label<{ variant: Variant }>`
   display: flex;
   font-size: ${fontSizes.base}px;
   font-weight: 400;
@@ -97,10 +103,6 @@ const Label = styled.label`
     margin-right: 7px;
   }
 
-  &.bo {
-    margin-bottom: 0;
-  }
-
   &.enabled {
     cursor: pointer;
 
@@ -110,6 +112,12 @@ const Label = styled.label`
       }
     }
   }
+
+  ${({ variant }) =>
+    variant === 'bo' &&
+    css`
+      margin-bottom: 0;
+    `}
 `;
 
 export type Props = {
@@ -134,7 +142,7 @@ export type Props = {
   onClick?: () => void;
   dataCy?: string;
   autoFocus?: boolean;
-  variant?: 'default' | 'bo';
+  variant?: Variant;
 } & BoxPaddingProps &
   BoxMarginProps;
 
@@ -159,7 +167,6 @@ const Radio = ({
   ...rest
 }: Props) => {
   const theme = useTheme();
-  const isBo = variant === 'bo';
   const [inputFocused, setInputFocused] = useState(false);
   const uuid = useInstanceId();
 
@@ -220,14 +227,14 @@ const Radio = ({
         className={`${inputFocused ? 'focused' : ''}
             ${checked ? 'checked' : ''}
             ${disabled ? 'disabled' : 'enabled'}
-            ${isBo ? 'bo' : ''}
             circle`}
+        variant={variant}
         borderColor={usePrimaryBorder ? theme.colors.tenantPrimary : undefined}
       >
         {checked && (
           <Checked
             aria-hidden
-            className={isBo ? 'bo' : ''}
+            variant={variant}
             color={buttonColor || colors.success}
           />
         )}
@@ -238,8 +245,8 @@ const Radio = ({
           className={`
           ${className || ''}
           text
-          ${disabled ? 'disabled' : 'enabled'}
-          ${isBo ? 'bo' : ''}`}
+          ${disabled ? 'disabled' : 'enabled'}`}
+          variant={variant}
           data-testid={testEnv('radio-label')}
         >
           {label}
