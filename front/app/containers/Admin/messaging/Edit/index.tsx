@@ -5,14 +5,12 @@ import {
   Button,
   colors,
   IconTooltip,
-  LocaleSwitcher,
   StatusLabel,
   Title,
   Text,
   Success,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-import { SupportedLocale } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { EmailCampaignFormValues } from 'api/campaigns/email/types';
@@ -21,14 +19,11 @@ import useSendEmailCampaignPreview from 'api/campaigns/email/useSendEmailCampaig
 import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
 import { isEmailCampaignDraft } from 'api/campaigns/email/util';
 
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useLocale from 'hooks/useLocale';
-
 import AutomatedCampaignForm from 'containers/Admin/messaging/AutomatedEmails/CampaignForm';
 import CustomCampaignForm from 'containers/Admin/messaging/CustomEmails/CampaignForm';
 import messages from 'containers/Admin/messaging/messages';
 
-import PreviewFrame from 'components/admin/Email/PreviewFrame';
+import PreviewFrameWithLocaleSwitcher from 'components/admin/Email/PreviewFrameWithLocaleSwitcher';
 import T from 'components/T';
 import GoBackButton from 'components/UI/GoBackButton';
 
@@ -48,17 +43,10 @@ const Edit = ({ campaignType }: EditProps) => {
   const { mutateAsync: updateCampaign, isPending } = useUpdateEmailCampaign();
 
   const [previewSent, setPreviewSent] = useState(false);
-  const locale = useLocale();
-  const locales = useAppConfigurationLocales();
-  const [previewLocale, setPreviewLocale] = useState<SupportedLocale>(locale);
 
   const { mutate: sendCampaignPreview, isPending: isSendingCampaignPreview } =
     useSendEmailCampaignPreview();
   const { formatMessage } = useIntl();
-
-  const handlePreviewLocaleChange = (locale: SupportedLocale) => {
-    setPreviewLocale(locale);
-  };
 
   const handleSendPreviewEmail = () => {
     sendCampaignPreview(campaignId, {
@@ -186,23 +174,10 @@ const Edit = ({ campaignType }: EditProps) => {
               </Button>
             </Box>
           </Box>
-          {locales && (
-            <Box mb="12px">
-              <LocaleSwitcher
-                locales={locales}
-                selectedLocale={previewLocale}
-                onSelectedLocaleChange={handlePreviewLocaleChange}
-              />
-            </Box>
-          )}
-          <Box>
-            <PreviewFrame
-              campaignId={campaign.data.id}
-              showHeaders={true}
-              height="740px"
-              locale={previewLocale}
-            />
-          </Box>
+          <PreviewFrameWithLocaleSwitcher
+            campaignId={campaign.data.id}
+            height="740px"
+          />
         </Box>
       </Box>
     </Box>

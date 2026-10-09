@@ -273,6 +273,16 @@ resource 'Campaigns' do
           assert_status 200
           expect(response_data.dig(:attributes, :subject)).to eq 'English subject'
         end
+
+        context 'for an automated campaign' do
+          let(:campaign) { create(:invite_received_campaign, subject_multiloc: { 'en' => 'English invite', 'nl-NL' => 'Dutch invite' }) }
+
+          example 'Get an automated campaign HTML preview in another locale', document: false do
+            do_request(locale: 'nl-NL')
+            assert_status 200
+            expect(response_data.dig(:attributes, :subject)).to eq 'Dutch invite'
+          end
+        end
       end
     end
 
