@@ -1132,8 +1132,6 @@
   "app.components.formBuilder.stronglyDisagree": "Strongly disagree",
   "app.components.formBuilder.supportArticleLinkText": "this page",
   "app.components.formBuilder.surveyAssistant.intro": "Describe what you want to learn. The assistant proposes the questions, and nothing changes until you approve.",
-  "app.components.formBuilder.surveyAssistant.starterBikeLanes": "A short survey on how residents feel about new protected bike lanes",
-  "app.components.formBuilder.surveyAssistant.starterParkRedesign": "Help us prioritise features for the redesign of our central park",
   "app.components.formBuilder.tags": "Tags",
   "app.components.formBuilder.title": "Title",
   "app.components.formBuilder.toLabel": "to",
