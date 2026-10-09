@@ -37,7 +37,7 @@ const Container = styled.div`
   cursor: pointer;
   position: relative;
   ${defaultCardStyle}
-  border: solid 1px #ccc;
+  border: solid 1px ${colors.grey400};
 
   &:hover,
   &.hover {

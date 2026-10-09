@@ -194,6 +194,23 @@ describe UserService do
       expect(user.reload.custom_field_answers.pluck(:key, :value)).to eq [[field.key, 'kept']]
     end
 
+    it 'writes gender and birthyear returned as top-level attributes' do
+      create(:custom_field_gender, :with_options)
+      create(:custom_field_birthyear)
+      user = create(:user)
+      authver_method = instance_double(
+        IdMethods::Base,
+        updateable_user_attrs: %i[custom_field_values],
+        profile_to_user_attrs: { gender: 'male', birthyear: 1980, custom_field_values: {} },
+        email_confirmed?: false
+      )
+
+      service.update_in_sso!(user, auth, authver_method)
+
+      expect(CustomFieldValuesTransitionService.new.custom_field_values(user.reload))
+        .to include('gender' => 'male', 'birthyear' => 1980)
+    end
+
     context 'when the user has a confirmed email' do
       let(:user) { create(:user, email: existing_email) }
 

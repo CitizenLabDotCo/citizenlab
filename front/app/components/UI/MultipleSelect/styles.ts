@@ -28,28 +28,39 @@ function getSelectStyles(theme: DefaultTheme, settings?: Settings) {
     input: (base) => ({
       ...base,
     }),
-    control: (base, { isFocused }) => ({
+    control: (base, { isFocused, isDisabled }) => ({
       ...base,
       fontSize: `${fontSize}px`,
       borderWidth: isFocused ? '2px' : '1px',
-      borderColor: isFocused
+      borderColor: isDisabled
+        ? colors.grey400
+        : isFocused
         ? theme.colors.tenantPrimary
         : `${colors.borderDark}`,
       borderRadius: stylingConsts.borderRadius,
       minHeight,
-      backgroundColor: '#fff',
+      // Matches the disabled style of defaultInputStyle (e.g. Input)
+      backgroundColor: isDisabled ? `${colors.grey100}` : '#fff',
       boxShadow: 'none',
       cursor: 'pointer',
       '&:hover': {
-        borderColor: `${theme.colors.tenantPrimary}`,
+        borderColor: isDisabled
+          ? colors.grey400
+          : `${theme.colors.tenantPrimary}`,
       },
+    }),
+    singleValue: (base, { isDisabled }) => ({
+      ...base,
+      color: isDisabled ? colors.grey700 : base.color,
     }),
     indicatorSeparator: () => ({
       display: 'none',
     }),
-    dropdownIndicator: (base, { isFocused }) => ({
+    dropdownIndicator: (base, { isFocused, isDisabled }) => ({
       ...base,
-      color: isFocused
+      color: isDisabled
+        ? colors.grey400
+        : isFocused
         ? `${theme.colors.tenantPrimary}`
         : `${colors.borderDark}`,
       '&:hover': {
@@ -92,7 +103,7 @@ function getSelectStyles(theme: DefaultTheme, settings?: Settings) {
       ...base,
       fontSize: `${fontSize}px`,
       ':hover': {
-        background: '#ccc',
+        background: colors.grey400,
       },
     }),
   };

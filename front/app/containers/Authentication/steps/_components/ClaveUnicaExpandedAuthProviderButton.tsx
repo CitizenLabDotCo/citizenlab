@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useState } from 'react';
 
-import { fontSizes } from '@citizenlab/cl2-component-library';
+import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IdMethodName } from 'api/id_methods/types';
@@ -21,7 +21,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: stretch;
   border-radius: ${(props) => props.theme.borderRadius};
-  border: solid 1px #ccc;
+  border: solid 1px ${colors.grey400};
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.05);
   background: #fff;
   transition: all 100ms ease-out;

@@ -1,5 +1,6 @@
 import { logIn } from '../../support/auth';
-import { randomString } from '../../support/commands';
+import { randomEmail, randomString } from '../../support/commands';
+import { fakeSSOAuth } from './utils';
 
 const adminEmail = 'admin@govocal.com';
 
@@ -69,5 +70,33 @@ describe('Sign in page', () => {
       'contain',
       'The provided information is not correct'
     );
+  });
+});
+
+describe('Sign in with SSO to an existing email account', () => {
+  // Signed up with email (POST /users + email confirmation), then logged in with
+  // an SSO that returns the same, verified email. The existing account is matched,
+  // and the fields the SSO method locks must be filled in, custom fields included.
+  it('fills in the locked attributes and custom fields returned by the SSO', () => {
+    const email = randomEmail();
+    cy.apiSignup(randomString(), randomString(), email, randomString());
+
+    cy.goToLandingPage();
+    cy.get('#e2e-navbar-login-menu-item').click();
+    fakeSSOAuth(cy, 'john_doe', { email });
+
+    cy.get('#e2e-user-menu-container').should('exist');
+
+    cy.getAuthUser().then((user) => {
+      const attributes = user.body.data.attributes;
+      expect(attributes.email).to.eq(email);
+      expect(attributes.verified).to.eq(true);
+      expect(attributes.first_name).to.eq('John');
+      expect(attributes.last_name).to.eq('Doe');
+      expect(attributes.custom_field_values).to.include({
+        gender: 'male',
+        birthyear: 2000,
+      });
+    });
   });
 });

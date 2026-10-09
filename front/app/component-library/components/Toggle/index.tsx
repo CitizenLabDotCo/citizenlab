@@ -43,7 +43,7 @@ const StyledToggle = styled.i<{
   padding: ${padding}px;
   padding-right: ${(props) => props.sizeInPixels}px;
   border-radius: ${(props) => props.sizeInPixels + padding}px;
-  background-color: #ccc;
+  background-color: ${colors.grey400};
   border: solid 1px transparent;
   transition: padding 150ms cubic-bezier(0.165, 0.84, 0.44, 1),
     background-color 80ms ease-out;

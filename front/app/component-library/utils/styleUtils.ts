@@ -298,9 +298,9 @@ export const defaultInputStyle = css`
   &:disabled,
   &.disabled {
     opacity: 1;
-    color: #666;
-    background-color: #f9f9f9;
-    border-color: #ccc;
+    color: ${colors.grey700};
+    background-color: ${colors.grey100};
+    border-color: ${colors.grey400};
     cursor: not-allowed;
   }
   ${(props: { size?: InputSize }) =>

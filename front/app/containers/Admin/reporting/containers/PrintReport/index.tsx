@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Text, Spinner, Box } from '@citizenlab/cl2-component-library';
+import { Text, Spinner, Box, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
@@ -18,7 +18,7 @@ const PreparingBox = styled(Box)`
   left: 0;
   width: 100%;
   height: 100%;
-  border: 1px solid #ccc;
+  border: 1px solid ${colors.grey400};
   background: #fff;
   padding-top: 50px;
   text-align: center;
