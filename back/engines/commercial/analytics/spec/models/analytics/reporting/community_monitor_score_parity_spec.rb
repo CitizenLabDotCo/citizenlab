@@ -33,27 +33,30 @@ RSpec.describe 'reporting_community_monitor_scores parity with Surveys::AverageG
     end
   end
 
-  [false, true].each do |exclude_staff|
-    context "when admins and moderators are #{exclude_staff ? 'excluded' : 'included'}" do
-      it 'gives the same overall and per-category averages as the dashboard' do
-        rows = Analytics::Reporting::CommunityMonitorScore.where(phase_id: phase.id).to_a
-        rows = rows.reject(&:staff) if exclude_staff
-        product = Surveys::AverageGenerator.new(
-          phase, input_type: 'sentiment_linear_scale', exclude_admins_and_moderators: exclude_staff
-        ).summary_averages_by_quarter
+  # exclude_staff mirrors the setting that leaves out admins' and moderators' answers.
+  where(:exclude_staff) do
+    [[false], [true]]
+  end
 
-        overall = pooled(rows) { |row| "#{row.year}-#{row.quarter}" }
-        expect(overall).to eq product[:overall][:averages]
+  with_them do
+    it 'gives the same overall and per-category averages as the dashboard' do
+      rows = Analytics::Reporting::CommunityMonitorScore.where(phase_id: phase.id).to_a
+      rows = rows.reject(&:staff) if exclude_staff
+      product = Surveys::AverageGenerator.new(
+        phase, input_type: 'sentiment_linear_scale', exclude_admins_and_moderators: exclude_staff
+      ).summary_averages_by_quarter
 
-        product[:categories][:averages].each do |category, by_quarter|
-          category_rows = rows.select { |row| row.question_category == category }
-          scores = pooled(category_rows) { |row| "#{row.year}-#{row.quarter}" }
+      overall = pooled(rows) { |row| "#{row.year}-#{row.quarter}" }
+      expect(overall).to eq product[:overall][:averages]
 
-          # The dashboard shows 0.0 for a category without answers in a
-          # quarter; the view has no rows for it.
-          expect(by_quarter.except(*scores.keys).values).to all(eq 0.0)
-          expect(scores).to eq by_quarter.slice(*scores.keys)
-        end
+      product[:categories][:averages].each do |category, by_quarter|
+        category_rows = rows.select { |row| row.question_category == category }
+        scores = pooled(category_rows) { |row| "#{row.year}-#{row.quarter}" }
+
+        # The dashboard shows 0.0 for a category without answers in a
+        # quarter; the view has no rows for it.
+        expect(by_quarter.except(*scores.keys).values).to all(eq 0.0)
+        expect(scores).to eq by_quarter.slice(*scores.keys)
       end
     end
   end
