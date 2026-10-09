@@ -11,6 +11,9 @@ import heroBannerMessages from 'components/admin/BannerFields/messages';
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
+import AboutBox, {
+  aboutBoxTitle,
+} from 'components/admin/ContentBuilder/Widgets/AboutBox';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import Areas, {
   areasTitle,
@@ -77,7 +80,8 @@ import { useParams } from 'utils/router';
 const CustomPageBuilderToolbox = () => {
   const { customPageId } = useParams({ strict: false });
   const { data: customPage } = useCustomPageById(customPageId);
-  // Page link lists the pages of one project, so only a project's own page can offer it.
+  // Page link and the Participation box are about one project, so only a project's own page can
+  // offer them.
   const isProjectPage = !!customPage?.data.attributes.project_id;
   const { formatMessage } = useIntl();
   const followEnabled = useFeatureFlag({ name: 'follow' });
@@ -342,6 +346,14 @@ const CustomPageBuilderToolbox = () => {
             component={<PageLink />}
             icon="file"
             label={formatMessage(PageLink.craft.custom.title)}
+          />
+        )}
+        {isProjectPage && (
+          <DraggableElement
+            id="e2e-draggable-about-box"
+            component={<AboutBox />}
+            icon="info-solid"
+            label={formatMessage(aboutBoxTitle)}
           />
         )}
         <DraggableElement

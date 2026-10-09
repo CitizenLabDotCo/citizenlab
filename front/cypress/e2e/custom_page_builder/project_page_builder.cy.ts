@@ -161,4 +161,29 @@ describe('Project page builder', () => {
     cy.contains(bodyText).should('be.visible');
     cy.contains('a', projectTitle).should('be.visible');
   });
+
+  // The box finds its project through the page in the builder, and through the URL once
+  // published. Without a project it renders nothing.
+  it('adds a participation box about its project', () => {
+    setFeatures(true, true);
+    cy.setAdminLoginCookie();
+    cy.visit(`/admin/custom-page-builder/pages/${pageId}`);
+    cy.get('div#ROOT');
+    cy.get('#e2e-draggable-text');
+
+    cy.get('#e2e-draggable-about-box').dragAndDrop(
+      '[data-cy="e2e-custom-page-body"]',
+      { position: 'inside' }
+    );
+    cy.get('#ROOT #e2e-project-sidebar').should('exist');
+
+    cy.intercept('**/content_builder_layouts/custom_page/upsert').as(
+      'saveCustomPageLayout'
+    );
+    cy.get('#e2e-content-builder-topbar-save').click();
+    cy.wait('@saveCustomPageLayout');
+
+    cy.visit(`/projects/${projectSlug}/pages/${pageSlug}`);
+    cy.get('#e2e-project-sidebar').should('exist');
+  });
 });
