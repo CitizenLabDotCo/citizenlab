@@ -4,6 +4,7 @@ import { Box, Select, Tooltip } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
+import { supportsPublicAnswers } from 'api/custom_fields/util';
 import useFormSubmissionsCount from 'api/submission_count/useSubmissionCount';
 
 import { useIntl } from 'utils/cl-intl';
@@ -69,9 +70,17 @@ const FieldTypeSwitcher = ({ field }: Props) => {
                   shouldDirty: true,
                 }
               );
-              // TODO: Fix this the next time the file is edited.
-              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-              setValue(inputTypeName, value?.value, { shouldDirty: true });
+              setValue(inputTypeName, value.value, { shouldDirty: true });
+              // Only some types can show their answers publicly, and the
+              // visibility toggle is hidden for the others. Reset it so the
+              // new field does not keep a public value that can't be seen.
+              if (!supportsPublicAnswers(value.value)) {
+                setValue(
+                  `customFields.${field.index}.answers_visible_to`,
+                  'moderators',
+                  { shouldDirty: true }
+                );
+              }
             }}
             value={watch(inputTypeName)}
             label={formatMessage(messages.type)}

@@ -182,7 +182,6 @@
   "app.components.CustomFieldsForm.fileSizeLimit": "Is é {maxFileSize} MB an teorainn ar mhéid an chomhaid.",
   "app.components.CustomFieldsForm.imageRequired": "Tá an íomhá riachtanach",
   "app.components.CustomFieldsForm.minimumCoordinates2": "Tá gá le íosmhéid pointí léarscáile {numPoints}.",
-  "app.components.CustomFieldsForm.notPublic1": "*Ní roinnfear an freagra seo ach le bainisteoirí tionscadail, agus ní leis an bpobal.",
   "app.components.CustomFieldsForm.otherArea": "Áit éigin eile",
   "app.components.CustomFieldsForm.progressBarLabel": "Dul Chun Cinn",
   "app.components.CustomFieldsForm.removeAnswer": "Bain an freagra",

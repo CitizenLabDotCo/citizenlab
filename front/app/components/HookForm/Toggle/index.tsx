@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Toggle as ToggleComponent } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
@@ -12,6 +12,7 @@ export interface ToggleProps {
   className?: string;
   disabled?: boolean | undefined;
   label?: string | JSX.Element | null | undefined;
+  description?: ReactNode;
   labelTextColor?: string;
 }
 

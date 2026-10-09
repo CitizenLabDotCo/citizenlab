@@ -182,7 +182,6 @@
   "app.components.CustomFieldsForm.fileSizeLimit": "Grensen for filstørrelse er {maxFileSize} MB.",
   "app.components.CustomFieldsForm.imageRequired": "Bildet er påkrevd",
   "app.components.CustomFieldsForm.minimumCoordinates2": "Det kreves minst {numPoints} kartpunkter.",
-  "app.components.CustomFieldsForm.notPublic1": "*Dette svaret vil kun bli delt med prosjektledere, og ikke med offentligheten.",
   "app.components.CustomFieldsForm.otherArea": "Et annet sted",
   "app.components.CustomFieldsForm.progressBarLabel": "Fremgang",
   "app.components.CustomFieldsForm.removeAnswer": "Fjern svar",

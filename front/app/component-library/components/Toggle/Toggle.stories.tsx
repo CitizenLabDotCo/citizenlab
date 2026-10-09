@@ -34,6 +34,15 @@ export const WithLabel: Story = {
   },
 };
 
+export const WithDescription: Story = {
+  args: {
+    checked: false,
+    label: 'A toggle with label',
+    description: 'And a description of what it does.',
+    onChange: () => {},
+  },
+};
+
 export const Disabled: Story = {
   args: {
     checked: false,

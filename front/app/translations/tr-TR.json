@@ -182,7 +182,6 @@
   "app.components.CustomFieldsForm.fileSizeLimit": "Dosya boyutu sınırı {maxFileSize} MB'dir.",
   "app.components.CustomFieldsForm.imageRequired": "Görüntü gereklidir",
   "app.components.CustomFieldsForm.minimumCoordinates2": "En az {numPoints} harita noktası gereklidir.",
-  "app.components.CustomFieldsForm.notPublic1": "*Bu cevap sadece proje yöneticileriyle paylaşılacak, kamuoyuyla paylaşılmayacaktır.",
   "app.components.CustomFieldsForm.otherArea": "Başka bir yerde",
   "app.components.CustomFieldsForm.progressBarLabel": "İlerleme",
   "app.components.CustomFieldsForm.removeAnswer": "Cevabı kaldır",
