@@ -255,6 +255,25 @@ resource 'Campaigns' do
         expect(response_data.dig(:attributes, :html)).to be_present
         expect(response_data.dig(:attributes, :subject)).to be_present
       end
+
+      context 'with a locale' do
+        parameter :locale, 'Render the preview in this platform locale instead of the current user\'s locale', required: false
+
+        let(:campaign) { create(:manual_campaign, subject_multiloc: { 'en' => 'English subject', 'nl-NL' => 'Dutch subject' }) }
+
+        example 'Get a campaign HTML preview in another locale' do
+          do_request(locale: 'nl-NL')
+          assert_status 200
+          expect(response_data.dig(:attributes, :subject)).to eq 'Dutch subject'
+          expect(@user.reload.locale).to eq 'en'
+        end
+
+        example 'Ignores a locale that is not configured on the platform', document: false do
+          do_request(locale: 'xx-XX')
+          assert_status 200
+          expect(response_data.dig(:attributes, :subject)).to eq 'English subject'
+        end
+      end
     end
 
     post 'web_api/v1/campaigns' do

@@ -5,12 +5,14 @@ import {
   Button,
   colors,
   IconTooltip,
+  LocaleSwitcher,
   StatusLabel,
   Title,
   Text,
   Success,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
+import { SupportedLocale } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { EmailCampaignFormValues } from 'api/campaigns/email/types';
@@ -18,6 +20,9 @@ import useEmailCampaign from 'api/campaigns/email/useEmailCampaign';
 import useSendEmailCampaignPreview from 'api/campaigns/email/useSendEmailCampaignPreview';
 import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
 import { isEmailCampaignDraft } from 'api/campaigns/email/util';
+
+import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
+import useLocale from 'hooks/useLocale';
 
 import AutomatedCampaignForm from 'containers/Admin/messaging/AutomatedEmails/CampaignForm';
 import CustomCampaignForm from 'containers/Admin/messaging/CustomEmails/CampaignForm';
@@ -43,10 +48,17 @@ const Edit = ({ campaignType }: EditProps) => {
   const { mutateAsync: updateCampaign, isPending } = useUpdateEmailCampaign();
 
   const [previewSent, setPreviewSent] = useState(false);
+  const locale = useLocale();
+  const locales = useAppConfigurationLocales();
+  const [previewLocale, setPreviewLocale] = useState<SupportedLocale>(locale);
 
   const { mutate: sendCampaignPreview, isPending: isSendingCampaignPreview } =
     useSendEmailCampaignPreview();
   const { formatMessage } = useIntl();
+
+  const handlePreviewLocaleChange = (locale: SupportedLocale) => {
+    setPreviewLocale(locale);
+  };
 
   const handleSendPreviewEmail = () => {
     sendCampaignPreview(campaignId, {
@@ -174,11 +186,21 @@ const Edit = ({ campaignType }: EditProps) => {
               </Button>
             </Box>
           </Box>
+          {locales && (
+            <Box mb="12px">
+              <LocaleSwitcher
+                locales={locales}
+                selectedLocale={previewLocale}
+                onSelectedLocaleChange={handlePreviewLocaleChange}
+              />
+            </Box>
+          )}
           <Box>
             <PreviewFrame
               campaignId={campaign.data.id}
               showHeaders={true}
               height="740px"
+              locale={previewLocale}
             />
           </Box>
         </Box>
