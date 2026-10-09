@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import {
   Box,
   Button,
-  Icon,
+  CheckboxWithLabel,
   SearchInput,
   Text,
   bo,
@@ -15,55 +15,24 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
-const CheckBox = styled.span`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 17px;
-  height: 17px;
-  border: 1px solid ${colors.coolGrey300};
-  border-radius: 5px;
-  opacity: 0;
-  transition: opacity 0.1s, background 0.12s, border-color 0.12s;
-
-  svg {
-    opacity: 0;
-  }
-`;
-
-const Option = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 8px;
-  border: 0;
+const Option = styled.div`
   border-radius: ${bo.borderRadius};
-  background: none;
-  font: inherit;
   font-size: 13px;
   line-height: 1.5;
-  text-align: left;
   color: ${bo.colors.textHeadingStrong};
-  cursor: pointer;
 
   &:hover {
     background: ${colors.grey100};
   }
 
-  &:hover ${CheckBox}, &:focus-visible ${CheckBox} {
-    opacity: 1;
+  .e2e-checkbox:not(.checked) {
+    opacity: 0;
+    transition: opacity 0.1s;
   }
 
-  &[aria-checked='true'] ${CheckBox} {
+  &:hover .e2e-checkbox,
+  input.focus-visible + .e2e-checkbox {
     opacity: 1;
-    background: ${colors.primary};
-    border-color: ${colors.primary};
-
-    svg {
-      opacity: 1;
-    }
   }
 `;
 
@@ -143,22 +112,15 @@ const PillPickerPopover = ({
 
       <List>
         {visibleOptions.map(({ value, label }) => (
-          <Option
-            key={value}
-            type="button"
-            role="checkbox"
-            aria-checked={selected.includes(value)}
-            onClick={() => onToggle(value)}
-          >
-            <CheckBox>
-              <Icon
-                name="check"
-                width="11px"
-                height="11px"
-                fill={colors.white}
-              />
-            </CheckBox>
-            {label}
+          <Option key={value}>
+            <CheckboxWithLabel
+              p="8px"
+              size="17px"
+              checkedColor="primary"
+              checked={selected.includes(value)}
+              onChange={() => onToggle(value)}
+              label={label}
+            />
           </Option>
         ))}
         {visibleOptions.length === 0 && (
