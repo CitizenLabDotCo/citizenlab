@@ -61,7 +61,7 @@ const AnswerVisibilityToggle = ({ field, builderConfig }: Props) => {
   };
 
   return (
-    <SectionField>
+    <SectionField id="e2e-public-answers-toggle">
       <Toggle
         id={name}
         checked={isPublic}

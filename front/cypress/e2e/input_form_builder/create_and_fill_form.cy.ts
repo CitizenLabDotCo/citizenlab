@@ -241,4 +241,26 @@ describe('Input form builder', () => {
     // Verify that the answer is not shown on the idea page
     cy.contains(questionTitle).should('not.exist');
   });
+
+  it('lets a custom question show its answers publicly', () => {
+    const publicQuestion = randomString();
+    const privateQuestion = randomString();
+    const confirmationTitle = 'Show answers already collected';
+
+    // Add a public and a private question. Nothing has been submitted yet, so
+    // switching the first one on needs no confirmation.
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
+    cy.dataCy('e2e-edit-input-form').click();
+    cy.addItemToFormBuilder('#toolbox_text');
+    cy.get('#e2e-title-multiloc').type(publicQuestion, { force: true });
+    cy.get('#e2e-public-answers-toggle').find('input').click({ force: true });
+    cy.contains(confirmationTitle).should('not.exist');
+    cy.get('#e2e-public-answers-toggle').find('input').should('be.checked');
+
+    cy.addItemToFormBuilder('#toolbox_text');
+    cy.get('#e2e-title-multiloc').type(privateQuestion, { force: true });
+
+    cy.get('form').submit();
+    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
+  });
 });
