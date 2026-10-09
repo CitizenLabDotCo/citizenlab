@@ -43,6 +43,13 @@ const PromptInput = styled(TextareaAutosize)`
   font-size: ${fontSizes.base}px;
   line-height: 1.5;
 
+  // The Frame shows focus instead; the global white ring would hide its border.
+  &.focus-visible,
+  &:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+
   &:disabled {
     cursor: not-allowed;
   }
