@@ -129,6 +129,7 @@ module Analysis
         case input
         in String then format_text(input)
         in Files::File if input.image? then format_image(input)
+        in Files::File if text_without_preview?(input) then format_text(text_file_content(input))
         in Files::File then format_file(input)
         else raise ArgumentError, <<~MSG.squish
           Unsupported content type: #{input.class}.
