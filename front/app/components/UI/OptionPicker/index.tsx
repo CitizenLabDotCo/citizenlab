@@ -28,6 +28,7 @@ const Search = styled(Box)`
 
 const GAP = 4;
 const MAX_HEIGHT = 320;
+const MIN_HEIGHT = 120;
 const DROPDOWN_MARGIN = 20;
 
 const TriggerContent = styled(Box)`
@@ -138,7 +139,9 @@ const OptionPicker = <T extends string>({
     const fitsAbove = panel.offsetHeight <= spaceAbove;
     setOpenUp(!fitsBelow && (fitsAbove || spaceAbove > spaceBelow));
     if (!fitsBelow && !fitsAbove) {
-      setMaxHeight(Math.max(spaceAbove, spaceBelow) - DROPDOWN_MARGIN);
+      setMaxHeight(
+        Math.max(Math.max(spaceAbove, spaceBelow) - DROPDOWN_MARGIN, MIN_HEIGHT)
+      );
     }
     setAlignRight(trigger.left + panel.offsetWidth > bounds.right - GAP);
   }, [opened]);
