@@ -41,4 +41,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Folders.Table.managers',
     defaultMessage: 'Managers',
   },
+  filteredProjectCount: {
+    id: 'app.containers.Admin.projects.all.new.filteredProjectCount',
+    defaultMessage:
+      '{filteredCount} of {totalCount, plural, one {# project} other {# projects}}',
+  },
 });

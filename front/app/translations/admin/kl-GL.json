@@ -1553,7 +1553,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.groups": "Eqimattat",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.label": "Takuneqarsinnaassusia",
   "app.containers.Admin.projects.all.new.Projects.Filters.addFilter": "Filterimik ikkussigit",
-  "app.containers.Admin.projects.all.new.Projects.Filters.clear": "Peeruk",
   "app.containers.Admin.projects.all.new.Projects.Filters.noMoreFilters": "Filterinik ilanngussassaqanngilaq",
   "app.containers.Admin.projects.all.new.Projects.Table.admins": "Aqutsisut",
   "app.containers.Admin.projects.all.new.Projects.Table.allProjectsHaveLoaded": "Pilersaarutit tamarmik aaneqarput",

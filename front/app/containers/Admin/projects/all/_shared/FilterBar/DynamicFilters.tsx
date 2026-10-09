@@ -1,45 +1,23 @@
-import React, { useState } from 'react';
-
-import { Button } from '@citizenlab/cl2-component-library';
-
-import useAuthUser from 'api/me/useAuthUser';
+import React from 'react';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { trackEventByName } from 'utils/analytics';
-import { useIntl } from 'utils/cl-intl';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import { isAdmin } from 'utils/permissions/roles';
 
-import { useParams, setParam } from '../params';
+import { setParam } from '../params';
 
 import ActiveFilter from './ActiveFilter';
 import AddFilterDropdown from './AddFilterDropdown';
 import { FILTER_KEYS, FilterKey } from './constants';
-import messages from './messages';
 import tracks from './tracks';
 
-const DynamicFilters = () => {
-  const { data: authUser } = useAuthUser();
-  const isUserAdmin = isAdmin(authUser);
+interface Props {
+  activeFilters: FilterKey[];
+  setActiveFilters: (activeFilters: FilterKey[]) => void;
+}
 
-  const params = useParams();
-  const { formatMessage } = useIntl();
+const DynamicFilters = ({ activeFilters, setActiveFilters }: Props) => {
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
-
-  const [activeFilters, setActiveFilters] = useState(() => {
-    return FILTER_KEYS.filter((key) => {
-      const paramValue = params[key];
-
-      if (!isUserAdmin && key === 'managers') {
-        return false; // Skip manager filter for non-admin users
-      }
-
-      return paramValue !== undefined && paramValue.length > 0;
-    });
-  });
-
-  const showClearButton = activeFilters.length > 0;
 
   const handleAddFilter = (filterKey: FilterKey) => {
     if (!activeFilters.includes(filterKey)) {
@@ -60,15 +38,6 @@ const DynamicFilters = () => {
     trackEventByName(tracks.removeFilter, {
       filter: filterKey,
     });
-  };
-
-  const handleClearAll = () => {
-    // Clear all parameters
-    removeSearchParams(activeFilters);
-    // Clear all active filters
-    setActiveFilters([]);
-
-    trackEventByName(tracks.clearFilters);
   };
 
   const getAvailableFilters = () => {
@@ -101,15 +70,6 @@ const DynamicFilters = () => {
         availableFilters={availableFilters}
         onAddFilter={handleAddFilter}
       />
-      {showClearButton && (
-        <Button
-          buttonStyle="text"
-          onClick={handleClearAll}
-          text={formatMessage(messages.clear)}
-          m="0"
-          ml="-16px"
-        />
-      )}
     </>
   );
 };

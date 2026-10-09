@@ -1553,7 +1553,6 @@
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.groups": "Gruplar",
   "app.containers.Admin.projects.all.new.Projects.Filters.Visibility.label": "Görünürlük",
   "app.containers.Admin.projects.all.new.Projects.Filters.addFilter": "Filtre ekle",
-  "app.containers.Admin.projects.all.new.Projects.Filters.clear": "Temiz",
   "app.containers.Admin.projects.all.new.Projects.Filters.noMoreFilters": "Eklenecek başka filtre yok",
   "app.containers.Admin.projects.all.new.Projects.Table.admins": "Yöneticiler",
   "app.containers.Admin.projects.all.new.Projects.Table.allProjectsHaveLoaded": "Tüm projeler yüklendi",
