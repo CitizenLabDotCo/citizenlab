@@ -26,7 +26,10 @@ module Analytics
           automatically (for example a proposal reaching its vote threshold).
           Order by changed_at to follow an input's history, and combine with
           reporting_official_feedbacks to show how and how fast inputs got an
-          answer. History only goes back as far as the platform's activity
+          answer. Changes to 'threshold_reached' or 'expired' are automatic
+          proposal transitions (administrators cannot set those statuses on the
+          platform): leave them out when measuring how administrators
+          responded. History only goes back as far as the platform's activity
           log, so an input without rows can still have a status other than
           the default (set before logging started, or when it was created,
           for example by an import).
