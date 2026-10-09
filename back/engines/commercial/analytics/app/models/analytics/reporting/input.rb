@@ -55,7 +55,7 @@ module Analytics
           'creation_phase_id' => <<~DOC.squish,
             The phase the input was created in, for phase-specific methods like
             surveys. NULL for ideation and proposals inputs, which live across
-            phases.
+            phases: reporting_input_phases lists every phase an input belongs to.
           DOC
           'participation_method' => <<~DOC.squish,
             The participation method the input was originally posted through

@@ -713,6 +713,7 @@ DROP VIEW IF EXISTS public.reporting_input_tags;
 DROP VIEW IF EXISTS public.reporting_input_status_changes;
 DROP VIEW IF EXISTS public.reporting_input_reactions;
 DROP VIEW IF EXISTS public.reporting_input_question_answers;
+DROP VIEW IF EXISTS public.reporting_input_phases;
 DROP VIEW IF EXISTS public.reporting_events;
 DROP VIEW IF EXISTS public.reporting_contributions;
 DROP TABLE IF EXISTS public.report_builder_reports;
@@ -3983,6 +3984,20 @@ CREATE VIEW public.reporting_events AS
 
 
 --
+-- Name: reporting_input_phases; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_input_phases AS
+ SELECT ip.id,
+    ip.idea_id AS input_id,
+    ip.phase_id,
+    ip.created_at
+   FROM (public.ideas_phases ip
+     JOIN public.ideas i ON ((i.id = ip.idea_id)))
+  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
+
+
+--
 -- Name: reporting_input_question_answers; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -4192,7 +4207,8 @@ CREATE VIEW public.reporting_input_votes AS
     bi.idea_id AS input_id,
     b.user_id,
     b.submitted_at AS voted_at,
-    bi.votes AS weight
+    bi.votes AS weight,
+    b.phase_id
    FROM (public.baskets_ideas bi
      JOIN public.baskets b ON ((b.id = bi.basket_id)))
   WHERE (b.submitted_at IS NOT NULL);
@@ -9845,6 +9861,8 @@ SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20261009200000'),
+('20261009120100'),
+('20261009110100'),
 ('20261009100100'),
 ('20261006190100'),
 ('20261006180100'),

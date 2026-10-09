@@ -13,6 +13,7 @@ RSpec.describe Analytics::Reporting::InputVote do
     expect(row.voted_at).to eq baskets_idea.basket.submitted_at
     expect(row.weight).to eq baskets_idea.votes
     expect(row.weight).to eq baskets_idea.idea.budget
+    expect(row.phase_id).to eq baskets_idea.basket.phase_id
   end
 
   it 'excludes votes in unsubmitted baskets' do
