@@ -52,6 +52,10 @@ export const WORD_PAGE_SIZE = {
   height: 16838, // 297mm in twips
 };
 
+// Width a full-bleed element can take up between the margins, in twips
+export const WORD_CONTENT_WIDTH =
+  WORD_PAGE_SIZE.width - WORD_MARGINS.left - WORD_MARGINS.right;
+
 // Standard spacing values in twips
 export const WORD_SPACING = {
   paragraphAfter: 200, // ~14pt after paragraphs

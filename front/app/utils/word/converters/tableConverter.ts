@@ -15,6 +15,7 @@ import {
   WORD_FONTS,
   WORD_FONT_SIZES,
   WORD_COLORS,
+  WORD_CONTENT_WIDTH,
 } from '../utils/styleConstants';
 
 import type { WordCellContent, WordTableRowData } from './types';
@@ -39,6 +40,18 @@ function createTable(
     headerBackground = WORD_TABLE_STYLES.headerBackground,
   } = options;
 
+  // Word lays a table out from its column grid, and docx defaults that grid to
+  // 100 twips per column, which squeezes the table down to its text. Cell
+  // percentages alone do not undo that, so hand it real widths.
+  const columnCount = Math.max(0, ...rows.map((row) => row.cells.length));
+  const percentages =
+    columnWidths?.length === columnCount
+      ? columnWidths
+      : Array.from({ length: columnCount }, () => 100 / columnCount);
+  const widths = percentages.map((percentage) =>
+    Math.round((WORD_CONTENT_WIDTH * percentage) / 100)
+  );
+
   const tableRows = rows.map((row, rowIndex) => {
     const isHeader = row.isHeader ?? (headerRow && rowIndex === 0);
     const isAlternate = !isHeader && alternateRowColors && rowIndex % 2 === 1;
@@ -59,7 +72,7 @@ function createTable(
           backgroundColor,
           textColor,
           bold: isHeader,
-          width: columnWidths?.[cellIndex],
+          width: widths[cellIndex],
           borderColor,
         })
       ),
@@ -68,6 +81,7 @@ function createTable(
 
   return new Table({
     rows: tableRows,
+    columnWidths: widths,
     width: {
       size: 100,
       type: WidthType.PERCENTAGE,
@@ -91,7 +105,7 @@ interface CellOptions {
   backgroundColor?: string;
   textColor?: string;
   bold?: boolean;
-  width?: number; // Percentage
+  width?: number; // In twips
   borderColor?: string;
   alignment?: 'left' | 'center' | 'right';
 }
@@ -140,7 +154,7 @@ function createTableCell(
     width: width
       ? {
           size: width,
-          type: WidthType.PERCENTAGE,
+          type: WidthType.DXA,
         }
       : undefined,
     borders: {
