@@ -230,7 +230,6 @@
   "app.components.admin.ContentBuilder.Widgets.Events.byTopic": "Projektai su pasirinktomis žymomis",
   "app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle": "Renginiai",
   "app.components.admin.ContentBuilder.Widgets.Events.everyProject": "Visi projektai",
-  "app.components.admin.ContentBuilder.Widgets.Events.everyProjectOnly": "Šis valdiklis rodo visų projektų renginius. Filtravimas pagal sritį, žymą ar erdvę yra mokamo plano dalis.",
   "app.components.admin.ContentBuilder.Widgets.Events.heading": "Antraštė",
   "app.components.admin.ContentBuilder.Widgets.Events.howMany": "Kiek rodyti",
   "app.components.admin.ContentBuilder.Widgets.Events.howManyAtMost": "Rodyti daugiausiai",

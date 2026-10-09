@@ -230,7 +230,6 @@
   "app.components.admin.ContentBuilder.Widgets.Events.byTopic": "Projekt med valda taggar",
   "app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle": "Evenemang",
   "app.components.admin.ContentBuilder.Widgets.Events.everyProject": "Alla projekt",
-  "app.components.admin.ContentBuilder.Widgets.Events.everyProjectOnly": "Den här widgeten visar evenemang från alla projekt. Filtrering efter område, tagg eller yta ingår i en betalplan.",
   "app.components.admin.ContentBuilder.Widgets.Events.heading": "Rubrik",
   "app.components.admin.ContentBuilder.Widgets.Events.howMany": "Hur många som ska visas",
   "app.components.admin.ContentBuilder.Widgets.Events.howManyAtMost": "Visa högst",

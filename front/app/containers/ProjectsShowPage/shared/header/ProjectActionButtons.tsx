@@ -23,6 +23,7 @@ import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrol
 import messages from 'containers/ProjectsShowPage/messages';
 
 import { EVENTS_WIDGET_ANCHOR_ID } from 'components/admin/ContentBuilder/Widgets/Events';
+import useCustomPageHasEventsWidget from 'components/CustomPageBuilder/useCustomPageHasEventsWidget';
 import IdeaButton from 'components/IdeaButton';
 import EmptyParticipationPreview from 'components/ProjectPageBuilder/Widgets/EmptyState/EmptyParticipationPreview';
 import useHasEventsWidget from 'components/ProjectPageBuilder/Widgets/Events/useHasEventsWidget';
@@ -31,11 +32,11 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 import { pastPresentOrFuture } from 'utils/dateUtils';
-import { isNilOrError } from 'utils/helperUtils';
 import { getInputTermMessage } from 'utils/i18n';
 import { isAdmin } from 'utils/permissions/roles';
-import { useLocation } from 'utils/router';
+import { useLocation, useParams } from 'utils/router';
 import { scrollToElement } from 'utils/scroll';
 
 import { excludeHidden, groupSpotlightSurveys } from './participationOptions';
@@ -59,12 +60,15 @@ const ProjectActionButtons = memo<Props>(
     const localize = useLocalize();
     const { data: standalonePhases } = usePhases(projectId, 'standalone');
     const { pathname, hash: divId } = useLocation();
+    // Set when the box is on one of the project's other pages rather than on the project page.
+    const { pageSlug } = useParams({ strict: false });
     const { data: events } = useEvents({
       projectIds: [projectId],
       currentAndFutureOnly: true,
       sort: 'start_at',
     });
     const hasEventsWidget = useHasEventsWidget(projectId);
+    const pageHasEventsWidget = useCustomPageHasEventsWidget(pageSlug);
 
     useEffect(() => {
       setCurrentPhase(
@@ -79,7 +83,7 @@ const ProjectActionButtons = memo<Props>(
       }
     }, [divId]);
 
-    if (isNilOrError(project)) {
+    if (!project) {
       return null;
     }
 
@@ -92,7 +96,8 @@ const ProjectActionButtons = memo<Props>(
     );
 
     const canSeeEmptyState = isAdmin(authUser);
-    const showEventsCTAButton = !!events?.data.length && hasEventsWidget;
+    const showEventsCTAButton =
+      !!events?.data.length && (hasEventsWidget || pageHasEventsWidget);
 
     if (
       !currentPhase &&
@@ -415,8 +420,16 @@ const ProjectActionButtons = memo<Props>(
           <ButtonWithLink
             id="e2e-project-see-events-button"
             buttonStyle="secondary-outlined"
+            // From another of the project's pages without its own events widget, go to the
+            // project page. Leaving the project page itself would drop the selected phase.
             onClick={() => {
-              scrollToElement({ id: EVENTS_WIDGET_ANCHOR_ID });
+              if (pageSlug && !pageHasEventsWidget) {
+                clHistory.push(
+                  `/projects/${project.data.attributes.slug}#${EVENTS_WIDGET_ANCHOR_ID}`
+                );
+              } else {
+                scrollToElement({ id: EVENTS_WIDGET_ANCHOR_ID });
+              }
             }}
             fontWeight="500"
             mb="8px"

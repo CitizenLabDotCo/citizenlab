@@ -4,6 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { SerializedNodes } from '@craftjs/core';
 
 import { VerticalRhythmContext } from 'components/admin/ContentBuilder/verticalRhythm';
+import AboutBox from 'components/admin/ContentBuilder/Widgets/AboutBox';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import Areas from 'components/admin/ContentBuilder/Widgets/Areas';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
@@ -64,6 +65,7 @@ const Editor = ({ onNodesChange, isPreview, children }: EditorProps) => {
           AccordionMultiloc,
           WhiteSpace,
           InfoWithAccordions,
+          AboutBox,
           // Bridge widget: resolvable so derived layouts render, absent from the toolbox.
           RichTextMultiloc,
           HtmlBlockMultiloc,

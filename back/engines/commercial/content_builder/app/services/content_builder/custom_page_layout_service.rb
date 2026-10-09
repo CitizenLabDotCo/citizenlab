@@ -158,8 +158,7 @@ module ContentBuilder
     end
 
     # `hideProjects` in CustomPageProjectsAndEvents returns null above *both* blocks, despite its
-    # name, so neither list renders without the feature or without a project filter. Deriving
-    # either would also hand a tenant without the feature a live area filter it has no setting for.
+    # name, so neither list renders without the feature or without a project filter.
     def project_lists_rendered?(static_page)
       static_page.projects_filter_type != 'no_filter' &&
         AppConfiguration.instance.feature_activated?('advanced_custom_pages')

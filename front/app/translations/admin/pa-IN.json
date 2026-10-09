@@ -230,7 +230,6 @@
   "app.components.admin.ContentBuilder.Widgets.Events.byTopic": "ਚੁਣੇ ਹੋਏ ਟੈਗਾਂ ਵਾਲੇ ਪ੍ਰੋਜੈਕਟ",
   "app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle": "ਸਮਾਗਮ",
   "app.components.admin.ContentBuilder.Widgets.Events.everyProject": "ਹਰ ਪ੍ਰੋਜੈਕਟ",
-  "app.components.admin.ContentBuilder.Widgets.Events.everyProjectOnly": "ਇਹ ਵਿਜੇਟ ਹਰ ਪ੍ਰੋਜੈਕਟ ਦੇ ਸਮਾਗਮ ਦਿਖਾਉਂਦਾ ਹੈ। ਖੇਤਰ, ਟੈਗ ਜਾਂ ਸਪੇਸ ਮੁਤਾਬਕ ਫਿਲਟਰ ਕਰਨਾ ਪੇਡ ਪਲਾਨ ਦਾ ਹਿੱਸਾ ਹੈ।",
   "app.components.admin.ContentBuilder.Widgets.Events.heading": "ਸਿਰਲੇਖ",
   "app.components.admin.ContentBuilder.Widgets.Events.howMany": "ਕਿੰਨੇ ਦਿਖਾਉਣੇ ਹਨ",
   "app.components.admin.ContentBuilder.Widgets.Events.howManyAtMost": "ਵੱਧ ਤੋਂ ਵੱਧ ਦਿਖਾਓ",

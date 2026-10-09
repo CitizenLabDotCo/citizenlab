@@ -10,9 +10,12 @@ import {
 import { useEditor } from '@craftjs/core';
 import styled from 'styled-components';
 
-const StyledBox = styled(Box)`
+import UpsellTooltip from 'components/UpsellTooltip';
+
+const StyledBox = styled(Box)<{ disabled: boolean }>`
   &:hover {
-    background-color: ${colors.grey200};
+    background-color: ${({ disabled }) =>
+      disabled ? 'transparent' : colors.grey200};
     transition: background-color 80ms ease-out 0s;
   }
 `;
@@ -21,11 +24,12 @@ interface ToolboxItemProps {
   label: string;
   icon: IconNames;
   labelSuffix?: React.ReactNode;
+  disabled?: boolean;
 }
 
 const ToolboxItem = forwardRef(
   (
-    { icon, label, labelSuffix }: ToolboxItemProps,
+    { icon, label, labelSuffix, disabled = false }: ToolboxItemProps,
     ref: React.RefObject<HTMLDivElement>
   ) => {
     return (
@@ -35,18 +39,19 @@ const ToolboxItem = forwardRef(
         paddingLeft="10px"
         alignItems="center"
         ref={ref}
+        disabled={disabled}
       >
         <Box>
           <Icon
             marginRight="16px"
             width="20px"
             height="20px"
-            fill={colors.primary}
+            fill={disabled ? colors.disabled : colors.primary}
             name={icon}
           />
         </Box>
 
-        <Text color="textPrimary" lineHeight="1">
+        <Text color={disabled ? 'disabled' : 'textPrimary'} lineHeight="1">
           {label}
         </Text>
 
@@ -76,11 +81,34 @@ const DraggableElement = ({
   icon,
   label,
   labelSuffix,
+  disabled = false,
 }: Props) => {
   const {
     connectors,
     actions: { selectNode },
   } = useEditor();
+
+  // Its own element, never wired to the editor, so a connector from an enabled render can't linger.
+  if (disabled) {
+    return (
+      // On the body, as the scrolling toolbox would clip it.
+      <UpsellTooltip
+        disabled={false}
+        placement="right"
+        width="100%"
+        appendTo={() => document.body}
+      >
+        <DraggableContainer id={id} disabled aria-disabled>
+          <ToolboxItem
+            icon={icon}
+            label={label}
+            labelSuffix={labelSuffix}
+            disabled
+          />
+        </DraggableContainer>
+      </UpsellTooltip>
+    );
+  }
 
   return (
     <DraggableContainer

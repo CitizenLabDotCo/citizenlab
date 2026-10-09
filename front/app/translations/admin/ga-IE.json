@@ -230,7 +230,6 @@
   "app.components.admin.ContentBuilder.Widgets.Events.byTopic": "Tionscadail le clibeanna roghnaithe",
   "app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle": "Imeachtaí",
   "app.components.admin.ContentBuilder.Widgets.Events.everyProject": "Gach tionscadal",
-  "app.components.admin.ContentBuilder.Widgets.Events.everyProjectOnly": "Taispeánann an ghiuirléid seo imeachtaí ó gach tionscadal. Is cuid de phlean íoctha é scagadh de réir ceantair, clibe nó spáis.",
   "app.components.admin.ContentBuilder.Widgets.Events.heading": "Ceannteideal",
   "app.components.admin.ContentBuilder.Widgets.Events.howMany": "Cé mhéad le taispeáint",
   "app.components.admin.ContentBuilder.Widgets.Events.howManyAtMost": "Taispeáin ar a mhéad",

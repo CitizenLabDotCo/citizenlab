@@ -230,7 +230,6 @@
   "app.components.admin.ContentBuilder.Widgets.Events.byTopic": "Projektek a kiválasztott címkékkel",
   "app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle": "Események",
   "app.components.admin.ContentBuilder.Widgets.Events.everyProject": "Minden projekt",
-  "app.components.admin.ContentBuilder.Widgets.Events.everyProjectOnly": "Ez a modul minden projekt eseményeit megjeleníti. A terület, címke vagy tér szerinti szűrés a fizetős csomag része.",
   "app.components.admin.ContentBuilder.Widgets.Events.heading": "Címsor",
   "app.components.admin.ContentBuilder.Widgets.Events.howMany": "Megjelenítendő elemek száma",
   "app.components.admin.ContentBuilder.Widgets.Events.howManyAtMost": "Legfeljebb ennyi megjelenítése",

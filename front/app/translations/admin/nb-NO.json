@@ -230,7 +230,6 @@
   "app.components.admin.ContentBuilder.Widgets.Events.byTopic": "Prosjekter med valgte tagger",
   "app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle": "Arrangementer",
   "app.components.admin.ContentBuilder.Widgets.Events.everyProject": "Alle prosjekter",
-  "app.components.admin.ContentBuilder.Widgets.Events.everyProjectOnly": "Denne widgeten viser arrangementer fra alle prosjekter. Filtrering etter område, tagg eller rom er en del av en betalt plan.",
   "app.components.admin.ContentBuilder.Widgets.Events.heading": "Overskrift",
   "app.components.admin.ContentBuilder.Widgets.Events.howMany": "Hvor mange som skal vises",
   "app.components.admin.ContentBuilder.Widgets.Events.howManyAtMost": "Vis maksimalt",
