@@ -19,6 +19,7 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
     Analytics::Reporting::InputTag,
     Analytics::Reporting::InputVote,
     Analytics::Reporting::InputReaction,
+    Analytics::Reporting::InputStatusChange,
     Analytics::Reporting::OfficialFeedback,
     Analytics::Reporting::Report,
     Analytics::Reporting::User,
@@ -36,8 +37,8 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
     <<~DOC.squish
       Gets the SQL schema of the reporting tables that the `run_reporting_sql_query`
       tool can query: a documented relational model of the platform's participation
-      data (contributions and participants, inputs with their answers, tags, statuses,
-      votes, reactions and official feedback, users with their demographics, visitor
+      data (contributions and participants, inputs with their answers, tags, statuses
+      and status history, votes, reactions and official feedback, users with their demographics, visitor
       sessions and pageviews, projects, phases, events and published reports). Call
       this before writing SQL; the returned table and column comments carry the
       semantics queries should follow, and the relationships map shows how the tables

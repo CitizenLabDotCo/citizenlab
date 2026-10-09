@@ -81,7 +81,8 @@ module Analytics
             TRUE when an administrator gave official feedback on the input or
             changed its status. Only meaningful for publicly visible methods
             (ideation, proposals). The feedback texts are in
-            reporting_official_feedbacks.
+            reporting_official_feedbacks, the status changes in
+            reporting_input_status_changes.
           DOC
           'likes_count' => 'Number of likes on the input.',
           'dislikes_count' => 'Number of dislikes on the input.',
