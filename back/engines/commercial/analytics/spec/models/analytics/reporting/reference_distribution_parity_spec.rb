@@ -41,17 +41,33 @@ RSpec.describe 'reporting_reference_distributions parity with the representative
     [1990, 1990, 1960, 1960, 1960, 1940, Time.zone.today.year - 10].each do |year|
       create(:user).custom_field_answers.create!(key: 'birthyear', value: year)
     end
+    # Validation only runs on save, so older data can hold malformed years.
+    create(:user).custom_field_answers.build(key: 'birthyear', value: 'unknown').save!(validate: false)
 
     age = Analytics::Reporting::ReferenceDistribution::AGE_SQL
     ages_sql = <<~SQL.squish
       SELECT user_id, #{age} AS age
       FROM reporting_user_question_answers
-      WHERE question_key = 'birthyear' AND answer_value ~ '^[0-9]+$'
+      WHERE question_key = 'birthyear'
     SQL
     rscore = recipe_rscore('birthyear', ages_sql) do
       'u.age >= d.min_age AND (d.max_age IS NULL OR u.age < d.max_age)'
     end
 
     expect(rscore).to be_within(0.0001).of(distribution.compute_rscore(User.all).value)
+  end
+
+  it 'treats an invalid numeric birth year as unknown instead of failing the age recipe' do
+    create(:binned_distribution, bins: [nil, 25, 50, nil], counts: [30, 40, 30])
+    create(:user).custom_field_answers.create!(key: 'birthyear', value: 1990)
+    create(:user).custom_field_answers.build(key: 'birthyear', value: 0).save!(validate: false)
+
+    age = Analytics::Reporting::ReferenceDistribution::AGE_SQL
+    ages = ActiveRecord::Base.connection.select_values(<<~SQL.squish)
+      SELECT #{age} FROM reporting_user_question_answers WHERE question_key = 'birthyear'
+    SQL
+
+    expect(ages.compact.size).to eq 1
+    expect(ages.size).to eq 2
   end
 end

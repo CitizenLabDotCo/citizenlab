@@ -22,9 +22,15 @@ module Analytics
 
       # How the representativeness dashboard computes a user's age
       # (UserCustomFields::AgeCounter#convert_to_age): years since 1 July of
-      # the birth year, counting a year as 365.2425 days.
+      # the birth year, counting a year as 365.2425 days. Anything but a
+      # four-digit year gives NULL (unknown age) instead of failing the whole
+      # query on a cast or date error. The product also treats non-numbers as
+      # unknown, but turns an invalid number like 0 into a huge age; valid
+      # answers are 1900 to last year, so only old, unvalidated data differs.
       AGE_SQL = <<~SQL.squish
-        GREATEST(EXTRACT(EPOCH FROM now() - make_date(answer_value::integer, 7, 1)) / 31556952, 0)
+        CASE WHEN answer_value ~ '^[0-9]{4}$' THEN
+          GREATEST(EXTRACT(EPOCH FROM now() - make_date(answer_value::integer, 7, 1)) / 31556952, 0)
+        END
       SQL
 
       def self.table_description
@@ -42,7 +48,9 @@ module Analytics
           and users whose answer has no row are left out. For age, put each
           user in the row where min_age <= age and (max_age IS NULL or
           age < max_age), with age = #{AGE_SQL} on the user's 'birthyear'
-          answer_value (non-numeric years count as unknown).
+          answer_value. Use it exactly as given: it returns NULL for a
+          malformed year, which then matches no row, like an unknown age on
+          the dashboard.
         DOC
       end
 
