@@ -76,7 +76,11 @@ module Analytics
             'answered', 'ineligible'. Prefer this over status_label for
             filtering.
           DOC
-          'imported' => 'TRUE when the input was imported by an administrator (e.g. from paper forms) rather than posted online.',
+          'imported' => <<~DOC.squish,
+            TRUE when the input was imported by an administrator (e.g. from paper
+            forms) rather than posted online. Import details are in
+            reporting_input_imports.
+          DOC
           'received_feedback' => <<~DOC.squish,
             TRUE when an administrator gave official feedback on the input or
             changed its status. Only meaningful for publicly visible methods
