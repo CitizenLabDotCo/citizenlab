@@ -9,7 +9,6 @@ module Analytics
       post: FactPost,
       project_status: FactProjectStatus,
       registration: FactRegistration,
-      visit: FactVisit,
       session: FactSession
     }.freeze
 

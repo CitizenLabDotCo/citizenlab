@@ -8,7 +8,6 @@ export interface QuerySchema {
   fact:
     | 'post'
     | 'participation'
-    | 'visit'
     | 'registration'
     | 'event'
     | 'project_status'
