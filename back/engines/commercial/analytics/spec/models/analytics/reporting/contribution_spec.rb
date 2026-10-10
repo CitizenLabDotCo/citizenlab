@@ -183,11 +183,13 @@ RSpec.describe Analytics::Reporting::Contribution do
       expect(row.project_id).to eq response.phase.project_id
     end
 
-    it 'exposes event attendances with their project but no phase' do
+    it 'exposes event attendances with their event and project but no phase' do
       attendance = create(:event_attendance)
       row = described_class.find(attendance.id)
 
       expect(row.type).to eq 'attendance'
+      expect(row.parent_type).to eq 'event'
+      expect(row.parent_id).to eq attendance.event_id
       expect(row.phase_id).to be_nil
       expect(row.project_id).to eq attendance.event.project_id
       expect(row.participant_id).to eq attendance.attendee_id
