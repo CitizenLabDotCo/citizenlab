@@ -19,6 +19,7 @@ class WebApi::V1::UsersController < ApplicationController
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.registered unless params[:include_inactive]
     @users = @users.blocked if params[:only_blocked]
+    @users = @users.email_bounced if params[:only_email_bounced]
     @users = @users.search_by_all(params[:search]) if params[:search].present?
 
     # Filter by project participants
@@ -315,6 +316,11 @@ class WebApi::V1::UsersController < ApplicationController
   def blocked_count
     authorize :user, :blocked_count?
     render json: raw_json({ count: User.all.blocked.count }, type: 'blocked_users_count'), status: :ok
+  end
+
+  def email_bounced_count
+    authorize :user, :email_bounced_count?
+    render json: raw_json({ count: policy_scope(User).email_bounced.count }, type: 'email_bounced_users_count'), status: :ok
   end
 
   def comments_count

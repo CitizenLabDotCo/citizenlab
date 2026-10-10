@@ -31,4 +31,16 @@ RSpec.describe EmailCampaigns::NewEmailConfirmationMailer do
       expect(mail.body.encoded).to match('1234')
     end
   end
+
+  context 'when the current email bounced' do
+    let(:recipient) { create(:user, email_bounced_at: 1.day.ago, new_email: 'fixed@email.com') }
+    let(:campaign) { create(:new_email_confirmation_campaign) }
+    let(:command) { { recipient: recipient, event_payload: { code: '1234' } } }
+
+    it 'still sends to the new email address' do
+      expect { described_class.with(command: command, campaign: campaign).campaign_mail.deliver_now }
+        .to change { ActionMailer::Base.deliveries.count }.by(1)
+      expect(ActionMailer::Base.deliveries.last.to).to eq(['fixed@email.com'])
+    end
+  end
 end

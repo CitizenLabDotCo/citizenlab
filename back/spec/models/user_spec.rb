@@ -425,6 +425,26 @@ RSpec.describe User do
     end
   end
 
+  describe 'email bounce' do
+    let(:user) { create(:user, email: 'bounced@example.com', email_bounced_at: 1.day.ago, email_bounce_reason: '550 No such user') }
+
+    it 'is cleared when the email changes' do
+      user.update_columns(new_email: 'fixed@example.com')
+      user.update!(email: 'fixed@example.com')
+      expect(user.reload).to have_attributes(email_bounced_at: nil, email_bounce_reason: nil)
+    end
+
+    it 'is kept when the email only changes case' do
+      user.update!(email: 'Bounced@Example.com')
+      expect(user.reload.email_bounced_at).to be_present
+    end
+
+    it 'is kept when other attributes change' do
+      user.update!(first_name: 'Someone')
+      expect(user.reload).to be_email_bounced
+    end
+  end
+
   describe 'new_email' do
     it 'is invalid when new record and the domain is on our blacklist' do
       user = build(:user, new_email: 'xwrknecgyq_1542135485@039b1ee.netsolhost.com')
