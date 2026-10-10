@@ -807,6 +807,7 @@ DROP TABLE IF EXISTS public.areas_projects;
 DROP TABLE IF EXISTS public.areas;
 DROP TABLE IF EXISTS public.ar_internal_metadata;
 DROP TABLE IF EXISTS public.app_configurations;
+DROP TABLE IF EXISTS public.analytics_fact_visits;
 DROP VIEW IF EXISTS public.analytics_fact_sessions;
 DROP TABLE IF EXISTS public.impact_tracking_sessions;
 DROP VIEW IF EXISTS public.analytics_fact_registrations;
@@ -830,7 +831,6 @@ DROP TABLE IF EXISTS public.email_campaigns_deliveries;
 DROP TABLE IF EXISTS public.email_campaigns_campaigns;
 DROP VIEW IF EXISTS public.analytics_dimension_users;
 DROP TABLE IF EXISTS public.users;
-DROP TABLE IF EXISTS public.analytics_fact_visits;
 DROP TABLE IF EXISTS public.analytics_dimension_types;
 DROP VIEW IF EXISTS public.analytics_dimension_statuses;
 DROP TABLE IF EXISTS public.idea_statuses;
@@ -1558,27 +1558,6 @@ CREATE TABLE public.analytics_dimension_types (
 
 
 --
--- Name: analytics_fact_visits; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.analytics_fact_visits (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    visitor_id character varying NOT NULL,
-    dimension_user_id uuid,
-    dimension_referrer_type_id uuid NOT NULL,
-    dimension_date_first_action_id date NOT NULL,
-    dimension_date_last_action_id date NOT NULL,
-    duration integer NOT NULL,
-    pages_visited integer NOT NULL,
-    returning_visitor boolean DEFAULT false NOT NULL,
-    referrer_name character varying,
-    referrer_url character varying,
-    matomo_visit_id integer NOT NULL,
-    matomo_last_action_time timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1625,13 +1604,10 @@ CREATE TABLE public.users (
 --
 
 CREATE VIEW public.analytics_dimension_users AS
- SELECT u.id,
-    COALESCE(((u.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
-    u.invite_status,
-    (users_with_visits.dimension_user_id IS NOT NULL) AS has_visits
-   FROM (public.users u
-     LEFT JOIN ( SELECT DISTINCT analytics_fact_visits.dimension_user_id
-           FROM public.analytics_fact_visits) users_with_visits ON ((users_with_visits.dimension_user_id = u.id)));
+ SELECT id,
+    COALESCE(((roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
+    invite_status
+   FROM public.users;
 
 
 --
@@ -2176,6 +2152,27 @@ CREATE VIEW public.analytics_fact_sessions AS
     (updated_at)::date AS dimension_date_updated_id,
     user_id AS dimension_user_id
    FROM public.impact_tracking_sessions;
+
+
+--
+-- Name: analytics_fact_visits; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.analytics_fact_visits (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    visitor_id character varying NOT NULL,
+    dimension_user_id uuid,
+    dimension_referrer_type_id uuid NOT NULL,
+    dimension_date_first_action_id date NOT NULL,
+    dimension_date_last_action_id date NOT NULL,
+    duration integer NOT NULL,
+    pages_visited integer NOT NULL,
+    returning_visitor boolean DEFAULT false NOT NULL,
+    referrer_name character varying,
+    referrer_url character varying,
+    matomo_visit_id integer NOT NULL,
+    matomo_last_action_time timestamp without time zone NOT NULL
+);
 
 
 --
@@ -9788,6 +9785,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20261006140100'),
 ('20261006120100'),
 ('20261006090100'),
+('20261005100000'),
 ('20260928120000'),
 ('20260922150448'),
 ('20260915134812'),

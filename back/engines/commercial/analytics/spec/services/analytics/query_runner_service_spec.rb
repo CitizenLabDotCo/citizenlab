@@ -79,15 +79,15 @@ describe Analytics::QueryRunnerService do
       query_param = {
         aggregations: {
           all: 'count',
-          'dimension_date_first_action.date': 'first'
+          'dimension_date_created.date': 'first'
         },
-        fact: 'visit'
+        fact: 'session'
       }
 
       query = Analytics::Query.new(query_param)
 
       results, * = described_class.new.run(query)
-      expect(results).to eq([{ 'count' => 0, 'first_dimension_date_first_action_date' => nil }])
+      expect(results).to eq([{ 'count' => 0, 'first_dimension_date_created_date' => nil }])
     end
 
     context 'result limiting and paging' do
