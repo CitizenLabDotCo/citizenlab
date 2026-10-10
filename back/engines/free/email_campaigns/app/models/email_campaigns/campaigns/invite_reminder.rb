@@ -92,7 +92,7 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.7_days_after_invite_is_sent'
+      'email_campaigns.admin_labels.trigger.3_days_after_invite_is_sent'
     end
   end
 end
