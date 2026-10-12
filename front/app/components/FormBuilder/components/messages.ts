@@ -112,8 +112,8 @@ export default defineMessages({
     defaultMessage: 'Draw area',
   },
   dropMultiplePins: {
-    id: 'app.components.formBuilder.dropMultiplePins',
-    defaultMessage: 'Drop multiple pins',
+    id: 'app.components.formBuilder.dropMultiplePins1',
+    defaultMessage: 'Drop pins',
   },
   bodyMultiloc: {
     id: 'app.components.formBuilder.bodyMultiloc',
