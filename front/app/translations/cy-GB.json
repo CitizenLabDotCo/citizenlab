@@ -999,7 +999,6 @@
   "app.components.formBuilder.errorMessage": "Mae yna broblem, os gwelwch yn dda trwsio'r mater er mwyn gallu arbed eich newidiadau",
   "app.components.formBuilder.fieldGroup.description": "Disgrifiad (dewisol)",
   "app.components.formBuilder.fieldGroup.title": "Teitl (dewisol)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "Ar hyn o bryd, dim ond yn y ffeil excel a allforiwyd ar y Rheolwr Mewnbwn y mae atebion i'r cwestiynau hyn ar gael, ac nid yw'r defnyddwyr yn gallu eu gweld.",
   "app.components.formBuilder.fieldLabel": "Ateb dewisiadau",
   "app.components.formBuilder.fieldLabelStatement": "Datganiadau",
   "app.components.formBuilder.fileUpload": "Uwchlwytho ffeil",

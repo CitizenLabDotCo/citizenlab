@@ -999,7 +999,6 @@
   "app.components.formBuilder.errorMessage": "Iškilo problema, ištaisykite ją, kad galėtumėte išsaugoti pakeitimus.",
   "app.components.formBuilder.fieldGroup.description": "Aprašymas (neprivaloma)",
   "app.components.formBuilder.fieldGroup.title": "Pavadinimas (neprivaloma)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "Šiuo metu atsakymus į šiuos klausimus galima rasti tik \"Input Manager\" eksportuotame \"Excel\" faile, tačiau jie nėra matomi naudotojams.",
   "app.components.formBuilder.fieldLabel": "Atsakymų variantai",
   "app.components.formBuilder.fieldLabelStatement": "Pareiškimai",
   "app.components.formBuilder.fileUpload": "Failų įkėlimas",

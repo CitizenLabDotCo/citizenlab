@@ -999,7 +999,6 @@
   "app.components.formBuilder.errorMessage": "Υπάρχει πρόβλημα, παρακαλούμε διορθώστε το πρόβλημα για να μπορέσετε να αποθηκεύσετε τις αλλαγές σας.",
   "app.components.formBuilder.fieldGroup.description": "Περιγραφή (προαιρετική)",
   "app.components.formBuilder.fieldGroup.title": "Τίτλος (προαιρετικά)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "Επί του παρόντος, οι απαντήσεις σε αυτές τις ερωτήσεις είναι διαθέσιμες μόνο στο εξαγόμενο αρχείο excel στο Input Manager και δεν είναι ορατές στους χρήστες.",
   "app.components.formBuilder.fieldLabel": "Επιλογές απαντήσεων",
   "app.components.formBuilder.fieldLabelStatement": "Δηλώσεις",
   "app.components.formBuilder.fileUpload": "Ανέβασμα αρχείου",

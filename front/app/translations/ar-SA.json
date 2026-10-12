@@ -999,7 +999,6 @@
   "app.components.formBuilder.errorMessage": "توجد مشكلة، يرجى حل المشكلة لتتمكن من حفظ التغييرات التي أجريتها",
   "app.components.formBuilder.fieldGroup.description": "الوصف (اختياري)",
   "app.components.formBuilder.fieldGroup.title": "العنوان (اختياري)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "لا تتوفر إجابات هذه الأسئلة حاليًا إلا في ملف excel الذي تم تصديره في مدير المدخلات، ولا يمكن للمستخدمين رؤيتها.",
   "app.components.formBuilder.fieldLabel": "خيارات الإجابة",
   "app.components.formBuilder.fieldLabelStatement": "تصريحات",
   "app.components.formBuilder.fileUpload": "تحميل ملف",

@@ -999,7 +999,6 @@
   "app.components.formBuilder.errorMessage": "Wystąpił problem, proszę naprawić problem, aby móc zapisać zmiany",
   "app.components.formBuilder.fieldGroup.description": "Opis (opcjonalnie)",
   "app.components.formBuilder.fieldGroup.title": "Tytuł (opcjonalnie)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "Obecnie odpowiedzi na te pytania są dostępne tylko w wyeksportowanym pliku excel w programie Input Manager, a nie są widoczne dla użytkowników.",
   "app.components.formBuilder.fieldLabel": "Wybór odpowiedzi",
   "app.components.formBuilder.fieldLabelStatement": "Oświadczenia",
   "app.components.formBuilder.fileUpload": "Przesyłanie plików",
