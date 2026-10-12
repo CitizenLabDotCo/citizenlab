@@ -206,6 +206,19 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
       expect(counts).to eq product_counts.to_h
     end
 
+    # The view's point-label lookups have one WHEN per point. If scales can go
+    # higher, this fails: add the new points to both lookups.
+    it 'labels the top point of the largest scale allowed' do
+      top = CustomField::LINEAR_SCALE_MAX_RANGE.max
+      label_attribute = "linear_scale_label_#{top}_multiloc"
+      scale = create(:custom_field_linear_scale, resource: form, maximum: top, label_attribute => { 'en' => 'Top' })
+      matrix = create(:custom_field_matrix_linear_scale, resource: form, maximum: top, label_attribute => { 'en' => 'Top' })
+      response.custom_field_answers.create!(key: scale.key, value: top)
+      response.custom_field_answers.create!(key: matrix.key, value: { 'send_more_animals_to_space' => top })
+
+      expect(described_class.where(input_id: response.id).pluck(:value_label)).to eq %w[Top Top]
+    end
+
     it 'records a file upload answer without the file name' do
       file_upload = create(:custom_field_file_upload, resource: form)
       response.custom_field_answers.create!(key: file_upload.key, value: { 'id' => SecureRandom.uuid, 'name' => 'jane_doe_cv.pdf' })

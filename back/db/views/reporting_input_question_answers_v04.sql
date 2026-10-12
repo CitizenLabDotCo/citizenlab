@@ -84,6 +84,8 @@ CROSS JOIN LATERAL (
             SELECT o.title_multiloc FROM custom_field_options o
             WHERE o.custom_field_id = q.id AND o.key = a.value #>> '{}'
         )
+        -- Needs one WHEN per point a scale allows (CustomField::LINEAR_SCALE_MAX_RANGE),
+        -- or the extra points get no label. The matrix lookup below needs the same.
         WHEN q.input_type IN ('linear_scale', 'sentiment_linear_scale') AND jsonb_typeof(a.value) = 'number'
         THEN CASE a.value #>> '{}'
             WHEN '1' THEN q.linear_scale_label_1_multiloc
@@ -223,6 +225,7 @@ CROSS JOIN LATERAL jsonb_each(a.value) AS answered(key, value)
 INNER JOIN custom_field_matrix_statements s
     ON s.custom_field_id = q.id
     AND s.key = answered.key
+-- Needs one WHEN per point a scale allows, like the linear scale lookup above.
 CROSS JOIN LATERAL (
     SELECT CASE answered.value #>> '{}'
         WHEN '1' THEN q.linear_scale_label_1_multiloc
