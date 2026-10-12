@@ -185,7 +185,14 @@ const MapField = ({
         </Label>
       </Box>
       {isLoadingMapConfig && question.map_config_id && <Spinner />}
-
+      {validationError && (
+        <Error
+          marginTop="8px"
+          marginBottom="8px"
+          text={validationError}
+          scrollIntoView={requiredError ? scrollErrorIntoView : false}
+        />
+      )}
       <Controller
         name={name}
         control={control}
@@ -216,14 +223,6 @@ const MapField = ({
           </>
         )}
       />
-      {validationError && (
-        <Error
-          marginTop="8px"
-          marginBottom="8px"
-          text={validationError}
-          scrollIntoView={requiredError ? scrollErrorIntoView : false}
-        />
-      )}
       {apiError && (
         <Error
           fieldName={name as TFieldName}
