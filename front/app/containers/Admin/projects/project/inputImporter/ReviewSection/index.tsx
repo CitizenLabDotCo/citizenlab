@@ -106,6 +106,13 @@ const ReviewSection = ({
     setIdeaId(ideaId);
   };
 
+  // The selection belongs to the list it was made in, so switching tabs
+  // clears it and empties the editor and PDF panes.
+  const handleChangeTab = (tab: string) => {
+    setCurrentTab(tab);
+    setIdeaId(null);
+  };
+
   const handleDeleteIdea = (idToBeDeleted: string) => {
     deleteIdea(idToBeDeleted, {
       onSuccess: () => {
@@ -238,7 +245,7 @@ const ReviewSection = ({
             currentTab={currentTab}
             availableTabs={['toReview', 'approved']}
             tabData={tabData}
-            onChangeTab={setCurrentTab}
+            onChangeTab={handleChangeTab}
             showCount
             fullWidth
           />
