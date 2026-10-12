@@ -1748,7 +1748,7 @@
   "app.containers.Admin.projects.project.general.components.UnlistedInput.unlisted": "Unlisted",
   "app.containers.Admin.projects.project.general.components.UnlistedInput.whoCanFindThisProject": "Who can find this project?",
   "app.containers.Admin.projects.project.getStarted": "Get started",
-  "app.containers.Admin.projects.project.groupsNotAdded": "Project created. The selected groups couldn't be added, so please add them again.",
+  "app.containers.Admin.projects.project.groupsNotAdded2": "Project created. These groups couldn't be added, so please add them again: {groups}.",
   "app.containers.Admin.projects.project.groupsNotAddedOk": "OK",
   "app.containers.Admin.projects.project.groupsNotAddedTitle": "Groups not added",
   "app.containers.Admin.projects.project.ideas.analysisAction1": "Open AI analysis",
