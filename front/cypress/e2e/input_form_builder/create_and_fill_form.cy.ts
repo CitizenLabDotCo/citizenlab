@@ -1,4 +1,4 @@
-import { randomString } from '../../support/commands';
+import { randomString, randomEmail } from '../../support/commands';
 import moment = require('moment');
 
 describe('Input form builder', () => {
@@ -296,7 +296,31 @@ describe('Input form builder', () => {
     cy.clickInputFormPageButton('e2e-submit-form');
     cy.wait('@ideaSubmission');
 
+    // The admin sees both answers on the idea page, the private one marked
+    cy.visit(`/ideas/${ideaTitle}`);
+    cy.dataCy('e2e-custom-field-answer').should('have.length', 2);
+    cy.contains('[data-cy="e2e-custom-field-answer"]', publicQuestion)
+      .should('contain.text', answer)
+      .find('[data-cy="e2e-private-answer-note"]')
+      .should('not.exist');
+    cy.contains('[data-cy="e2e-custom-field-answer"]', privateQuestion)
+      .should('contain.text', answer)
+      .find('[data-cy="e2e-private-answer-note"]')
+      .should('exist');
+
+    // A resident only gets the public answer
+    const email = randomEmail();
+    const password = randomString();
+    cy.apiSignup(randomString(), randomString(), email, password);
+    cy.setLoginCookie(email, password);
+    cy.visit(`/ideas/${ideaTitle}`);
+    cy.dataCy('e2e-custom-field-answer')
+      .should('have.length', 1)
+      .should('contain.text', publicQuestion);
+    cy.dataCy('e2e-private-answer-note').should('not.exist');
+
     // With a submission in, showing the private answers asks for confirmation
+    cy.setAdminLoginCookie();
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
     cy.dataCy('e2e-edit-input-form').click();
     cy.get('#e2e-warning-notice').should('exist');
