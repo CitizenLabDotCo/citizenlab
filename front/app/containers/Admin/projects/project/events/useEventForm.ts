@@ -303,6 +303,7 @@ const useEventForm = ({ projectId, eventId }: Options) => {
     },
 
     image,
+    croppedImage,
     imageAltText,
     imageNeedsCrop: !!image && !image.remote,
     addImage: (images: UploadFile[]) => {

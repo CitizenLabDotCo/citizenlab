@@ -69,6 +69,42 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.event.previewEventImage',
     defaultMessage: 'Event image',
   },
+  crop: {
+    id: 'app.containers.Admin.projects.project.event.crop',
+    defaultMessage: 'Crop',
+  },
+  cropImage: {
+    id: 'app.containers.Admin.projects.project.event.cropImage',
+    defaultMessage: 'Crop image',
+  },
+  done: {
+    id: 'app.containers.Admin.projects.project.event.done',
+    defaultMessage: 'Done',
+  },
+  replace: {
+    id: 'app.containers.Admin.projects.project.event.replace',
+    defaultMessage: 'Replace',
+  },
+  replaceImage: {
+    id: 'app.containers.Admin.projects.project.event.replaceImage',
+    defaultMessage: 'Replace image',
+  },
+  delete: {
+    id: 'app.containers.Admin.projects.project.event.delete',
+    defaultMessage: 'Delete',
+  },
+  deleteImage: {
+    id: 'app.containers.Admin.projects.project.event.deleteImage',
+    defaultMessage: 'Delete image',
+  },
+  altText: {
+    id: 'app.containers.Admin.projects.project.event.altText',
+    defaultMessage: 'Alt text',
+  },
+  altTextPlaceholder: {
+    id: 'app.containers.Admin.projects.project.event.altTextPlaceholder',
+    defaultMessage: 'Describe the image for people using screen readers',
+  },
   dropImage: {
     id: 'app.containers.Admin.projects.project.event.dropImage',
     defaultMessage: 'Drop an image or click to upload',
