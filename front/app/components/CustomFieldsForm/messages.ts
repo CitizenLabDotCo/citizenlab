@@ -83,10 +83,6 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.adminFieldTooltip',
     defaultMessage: 'Field only visible to admins',
   },
-  notPublic: {
-    id: 'app.components.CustomFieldsForm.notPublic2',
-    defaultMessage: 'Only project moderators see this answer',
-  },
   selectBetween: {
     id: 'app.components.CustomFieldsForm.selectBetween',
     defaultMessage: '*Select between { minItems } and { maxItems } options',

@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  Icon,
-  IconTooltip,
-  Text,
-} from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
+import { Box, IconTooltip, Text } from '@citizenlab/cl2-component-library';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
@@ -42,6 +36,7 @@ import SingleFileUploadField from './Fields/SingleFileUploadField';
 import SingleSelectField from './Fields/SingleSelectField';
 import InputIQ from './InputIQ';
 import messages from './messages';
+import ModeratorsOnlyAnswerNote from './ModeratorsOnlyAnswerNote';
 import { getInstructionMessage } from './util';
 
 const renderField = ({
@@ -271,7 +266,6 @@ const CustomFields = ({
 }) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const theme = useTheme();
   return (
     <>
       {questions
@@ -351,25 +345,7 @@ const CustomFields = ({
                   />
                 )}
               </Box>
-              {answerNotPublic && (
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  gap="8px"
-                  mt="8px"
-                  data-cy="e2e-private-answer-note"
-                >
-                  <Icon
-                    name="lock"
-                    width="16px"
-                    height="16px"
-                    fill={theme.colors.tenantPrimary}
-                  />
-                  <Text m="0px" fontSize="s" color="tenantPrimary">
-                    <FormattedMessage {...messages.notPublic} />
-                  </Text>
-                </Box>
-              )}
+              {answerNotPublic && <ModeratorsOnlyAnswerNote />}
               {question.code && inputIqFields.includes(question.code) && (
                 <InputIQ phase={phase} field={question} />
               )}
