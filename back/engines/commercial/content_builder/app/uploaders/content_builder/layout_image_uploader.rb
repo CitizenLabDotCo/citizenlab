@@ -5,6 +5,7 @@ module ContentBuilder
     SVG_CONTENT_TYPE = 'image/svg+xml'
 
     process :sanitize_svg
+    process :limit_size
 
     # Widgets such as the custom pages cards render layout images at icon size,
     # where a vector stays crisp on any screen density, so SVG is accepted here
@@ -34,6 +35,13 @@ module ContentBuilder
     rescue SvgSanitizationService::InvalidSvgError => e
       # Surfaces as a validation error on the mounted attribute rather than a 500.
       raise CarrierWave::IntegrityError, e.message
+    end
+
+    # SVGs scale to any size, and ImageMagick cannot read their dimensions.
+    def limit_size
+      return if svg?
+
+      super
     end
 
     private
