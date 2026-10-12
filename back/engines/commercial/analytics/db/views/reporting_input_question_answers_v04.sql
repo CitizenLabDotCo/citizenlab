@@ -142,7 +142,9 @@ WHERE jsonb_typeof(a.value) = 'array'
 UNION ALL
 
 -- ranking questions: one row per ranked option, value_numeric is its rank
--- (1 = ranked first), as in CustomField#average_rankings
+-- (1 = ranked first). Average ranks must match the survey results page
+-- (CustomField#average_rankings), or reports built on this view will disagree
+-- with it.
 SELECT
     i.id AS input_id,
     q.id AS question_id,

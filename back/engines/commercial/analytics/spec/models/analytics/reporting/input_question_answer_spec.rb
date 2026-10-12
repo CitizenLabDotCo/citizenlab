@@ -163,6 +163,17 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
         .to eq [['by_bike', 1, 'By bike'], ['by_train', 2, 'By train']]
     end
 
+    it 'gives the same average ranks as the survey results page' do
+      ranking = create(:custom_field_ranking, :with_options, resource: form)
+      create(:idea_status_proposed)
+      [%w[by_bike by_train], %w[by_train by_bike], %w[by_bike by_train]].each do |value|
+        create(:native_survey_response, project: project).custom_field_answers.create!(custom_field: ranking, key: ranking.key, value: value)
+      end
+      averages = described_class.where(question_id: ranking.id).group(:value_text).average(:value_numeric)
+
+      expect(averages).to eq ranking.average_rankings(Idea.where(project: project))
+    end
+
     it 'explodes matrix answers into one row per answered statement, with point and statement labels' do
       matrix = create(:custom_field_matrix_linear_scale, resource: form)
       response.custom_field_answers.create!(key: matrix.key, value: { 'send_more_animals_to_space' => 1, 'ride_bicycles_more_often' => 3 })
