@@ -182,9 +182,13 @@ class UserService
       return if values.nil?
 
       values = values.to_h
+      # Only the answers this request changes: a stored answer can stop matching its field
+      # (e.g. after the field changed type) and must not block unrelated updates.
+      stored_values = CustomFieldValuesTransitionService.new.custom_field_values(user)
+      changed_values = values.reject { |key, value| stored_values[key] == value }
       errors = CustomFieldValuesValidationService.new.json_schema_validation_errors(
         CustomField.registration.includes(:options),
-        values
+        changed_values
       )
       errors.each do |error|
         user.errors.add(:custom_field_values, error, value: values)
