@@ -61,9 +61,13 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.event.goToProject',
     defaultMessage: 'Go to the project',
   },
-  addEventImage: {
-    id: 'app.containers.Admin.projects.project.event.addEventImage',
-    defaultMessage: 'Add an event image',
+  previewEventName: {
+    id: 'app.containers.Admin.projects.project.event.previewEventName',
+    defaultMessage: 'Event name',
+  },
+  previewEventImage: {
+    id: 'app.containers.Admin.projects.project.event.previewEventImage',
+    defaultMessage: 'Event image',
   },
   dropImage: {
     id: 'app.containers.Admin.projects.project.event.dropImage',
@@ -73,9 +77,13 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.event.addDescription',
     defaultMessage: 'Add a description',
   },
-  addLocation: {
-    id: 'app.containers.Admin.projects.project.event.addLocation',
-    defaultMessage: 'Add a location',
+  previewDescription: {
+    id: 'app.containers.Admin.projects.project.event.previewDescription',
+    defaultMessage: 'Event description',
+  },
+  previewLocation: {
+    id: 'app.containers.Admin.projects.project.event.previewLocation',
+    defaultMessage: 'Event location',
   },
   onlineEvent: {
     id: 'app.containers.Admin.projects.project.event.onlineEvent',

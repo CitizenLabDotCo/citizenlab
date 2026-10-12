@@ -115,7 +115,7 @@ const PreviewInfoCard = ({
           <Row icon="globe">{formatMessage(messages.onlineEvent)}</Row>
         )}
         <Row icon="position" empty={!address1}>
-          {address1 || formatMessage(messages.addLocation)}
+          {address1 || formatMessage(messages.previewLocation)}
           {address1 && addressDetails && (
             <Box as="span" display="block">
               {addressDetails}

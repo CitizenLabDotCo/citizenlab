@@ -29,6 +29,7 @@ import { stripHtml } from 'utils/textUtils';
 
 import AdminOnlyPlaceholder from './AdminOnlyPlaceholder';
 import messages from './messages';
+import PreviewAttachment from './PreviewAttachment';
 import PreviewInfoCard from './PreviewInfoCard';
 
 interface Props {
@@ -83,7 +84,7 @@ const EventPreview = ({ project, form }: Props) => {
                 m="0"
                 color={title ? 'textPrimary' : 'coolGrey300'}
               >
-                {title || formatMessage(messages.addEventName)}
+                {title || formatMessage(messages.previewEventName)}
               </Title>
 
               <Box display="flex" gap="10px" alignItems="flex-start">
@@ -130,7 +131,7 @@ const EventPreview = ({ project, form }: Props) => {
                 />
               ) : (
                 <AdminOnlyPlaceholder
-                  title={formatMessage(messages.addEventImage)}
+                  title={formatMessage(messages.previewEventImage)}
                 />
               )}
 
@@ -140,9 +141,16 @@ const EventPreview = ({ project, form }: Props) => {
                 </QuillEditedContent>
               ) : (
                 <AdminOnlyPlaceholder
-                  title={formatMessage(messages.addDescription)}
+                  title={formatMessage(messages.previewDescription)}
                 />
               )}
+
+              {form.files.attachments.map((attachment) => (
+                <PreviewAttachment
+                  key={attachment.id}
+                  attachment={attachment}
+                />
+              ))}
 
               {attributes.start_at && attributes.end_at && (
                 <PreviewInfoCard

@@ -98,12 +98,12 @@ const EventSetup = ({ projectId, form }: Props) => {
           {hasAttachmentsBody && (
             <FileRepositorySelectAndUpload
               id="event-file-uploader"
+              variant="bo"
               onFileAdd={form.files.uploadFile}
               onFileRemove={form.files.removeFile}
               onFileReorder={form.files.reorderFiles}
               onFileAttach={form.files.attachFile}
               fileAttachments={form.files.attachments}
-              enableDragAndDrop
               apiErrors={errors}
               maxSizeMb={10}
               isUploadingFile={form.files.isUploadingFile}
