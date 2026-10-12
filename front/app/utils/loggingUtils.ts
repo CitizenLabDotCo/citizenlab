@@ -28,3 +28,26 @@ export function reportError(error: any) {
     });
   }
 }
+
+// Shared by our Sentry reporters, so their events can be filtered the same way.
+
+function isFramed() {
+  try {
+    return window.self !== window.top;
+  } catch {
+    // Cross-origin parents throw on access, which means we are framed.
+    return true;
+  }
+}
+
+export function secondsSincePageLoad() {
+  return Math.round(performance.now() / 1000);
+}
+
+// Tags are indexed by Sentry, so these are searchable on every report.
+export function baseReportTags() {
+  return {
+    tenant_host: window.location.hostname,
+    in_iframe: isFramed(),
+  };
+}

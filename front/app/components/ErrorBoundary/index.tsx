@@ -11,7 +11,11 @@ import styled from 'styled-components';
 
 import { FormattedMessage, injectIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
-import { reportError } from 'utils/loggingUtils';
+import {
+  baseReportTags,
+  reportError,
+  secondsSincePageLoad,
+} from 'utils/loggingUtils';
 import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
@@ -63,21 +67,12 @@ const weglotLang = (): string | null => {
   }
 };
 
-const isFramed = (): boolean => {
-  try {
-    return window.self !== window.top;
-  } catch {
-    return true;
-  }
-};
-
 // Tags are indexed by Sentry, so these are the values worth filtering on.
 const errorBoundaryTags = () => ({
-  tenant_host: window.location.hostname,
+  ...baseReportTags(),
   route: window.location.pathname,
   weglot_active: !!window.Weglot,
   weglot_lang: weglotLang() ?? 'none',
-  in_iframe: isFramed(),
 });
 
 const errorBoundaryContext = () => ({
@@ -88,7 +83,7 @@ const errorBoundaryContext = () => ({
   viewport: `${window.innerWidth}x${window.innerHeight}`,
   device_pixel_ratio: window.devicePixelRatio,
   touch_points: navigator.maxTouchPoints,
-  seconds_since_page_load: Math.round(performance.now() / 1000),
+  seconds_since_page_load: secondsSincePageLoad(),
 });
 
 class ErrorBoundary extends Component<Props & WrappedComponentProps, State> {
