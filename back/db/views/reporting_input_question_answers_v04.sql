@@ -58,8 +58,9 @@ SELECT
         NULLIF(label.multiloc ->> (SELECT ac.settings -> 'core' -> 'locales' ->> 0 FROM app_configurations ac LIMIT 1), ''),
         (SELECT t.value FROM jsonb_each_text(label.multiloc) t WHERE t.value <> '' ORDER BY t.key LIMIT 1)
     ) AS value_label,
-    -- Mirrors CustomField#question_category: only community monitor questions
-    -- are categorised, and an unset category there means 'other'.
+    -- Categories must match what the product shows (CustomField#question_category
+    -- and the community monitor dashboard), or reports built on this view will
+    -- disagree with it. An unset category reads as 'other'.
     CASE
         WHEN i.form_participation_method = 'community_monitor_survey' THEN COALESCE(q.question_category, 'other')
     END AS question_category,

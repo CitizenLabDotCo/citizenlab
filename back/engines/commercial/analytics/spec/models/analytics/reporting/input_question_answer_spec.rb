@@ -81,8 +81,11 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
       end
     end
 
-    it 'has no question_category outside the community monitor' do
-      expect(described_class.where(input_id: response.id).pluck(:question_category).uniq).to eq [nil]
+    it 'has no question_category outside the community monitor, as CustomField#question_category' do
+      row = described_class.find_by!(input_id: response.id, question_id: scale_question.id)
+
+      expect(row.question_category).to be_nil
+      expect(scale_question.reload.question_category).to be_nil
     end
 
     it 'has no rows for skipped questions' do
@@ -97,7 +100,7 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
     let(:project) { create(:community_monitor_project) }
     let(:form) { create(:custom_form, participation_context: project.phases.first) }
 
-    it 'exposes the question category, defaulting to other' do
+    it 'gives the same question category as CustomField#question_category' do
       categorised = create(:custom_field_sentiment_linear_scale, resource: form, question_category: 'governance_and_trust')
       uncategorised = create(:custom_field_sentiment_linear_scale, resource: form)
       create(:idea_status_proposed)
@@ -106,8 +109,20 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
       response.custom_field_answers.create!(key: uncategorised.key, value: 5)
       rows = described_class.where(input_id: response.id)
 
-      expect(rows.find_by!(question_id: categorised.id).question_category).to eq 'governance_and_trust'
-      expect(rows.find_by!(question_id: uncategorised.id).question_category).to eq 'other'
+      expect(rows.find_by!(question_id: categorised.id).question_category).to eq categorised.reload.question_category
+      expect(rows.find_by!(question_id: uncategorised.id).question_category).to eq uncategorised.reload.question_category
+    end
+
+    # The view sets question_category only for community monitor survey
+    # questions. It names that method directly because the database can't run
+    # the Ruby check supports_custom_field_categories?. If another method starts
+    # supporting categories, this fails: add that method to the view too.
+    it 'categorises only the participation methods that support categories' do
+      supporting = ParticipationMethod::Base.all_methods
+        .select { |method| method.new(Phase.new).supports_custom_field_categories? }
+        .map(&:method_str)
+
+      expect(supporting).to eq ['community_monitor_survey']
     end
 
     it 'documents every question category' do
