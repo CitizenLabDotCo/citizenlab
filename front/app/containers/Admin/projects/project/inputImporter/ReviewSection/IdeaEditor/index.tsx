@@ -22,10 +22,11 @@ import useUserById from 'api/users/useUserById';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import { useParams } from 'utils/router';
 
+import hasEngagement from '../hasEngagement';
 import messages from '../messages';
 
 import IdeaForm from './IdeaForm';
@@ -49,6 +50,7 @@ type FormValues = Record<string, any>;
 
 const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const [ideaFormDataValid, setIdeaFormDataValid] = useState(false);
   const [loadingUndoApproval, setLoadingUndoApproval] = useState(false);
   const setError = useRef<UseFormSetError<FormValues>>();
@@ -86,6 +88,8 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
   // An approved input is read-only until the approval is undone: its answers
   // are live data, so nothing in the editor may write to it.
   const isApproved = idea?.data.attributes.publication_status === 'published';
+  const undoDisabledByEngagement =
+    !!idea && isApproved && hasEngagement(idea.data.attributes);
 
   const userFormData = getUserFormValues(
     ideaId,
@@ -319,15 +323,24 @@ const IdeaEditor = ({ ideaId, setIdeaId }: Props) => {
       >
         {ideaId &&
           (isApproved ? (
-            <Button
-              buttonStyle="secondary-outlined"
-              icon="undo"
-              w="100%"
-              processing={loadingUndoApproval}
-              onClick={onUndoApproval}
+            <Tooltip
+              disabled={!undoDisabledByEngagement}
+              placement="top"
+              content={formatMessage(messages.undoApprovalDisabledEngagement)}
             >
-              <FormattedMessage {...messages.undoApproval} />
-            </Button>
+              <div>
+                <Button
+                  buttonStyle="secondary-outlined"
+                  icon="undo"
+                  w="100%"
+                  processing={loadingUndoApproval}
+                  disabled={undoDisabledByEngagement}
+                  onClick={onUndoApproval}
+                >
+                  <FormattedMessage {...messages.undoApproval} />
+                </Button>
+              </div>
+            </Tooltip>
           ) : (
             <Tooltip
               disabled={!disabledReason}

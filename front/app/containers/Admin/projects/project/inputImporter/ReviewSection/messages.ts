@@ -100,6 +100,11 @@ export default defineMessages({
     defaultMessage:
       'All imported inputs have been approved. You can find them in the Approved tab.',
   },
+  undoApprovalDisabledEngagement: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApprovalDisabledEngagement',
+    defaultMessage:
+      'This input has comments, reactions or votes, so its approval can no longer be undone.',
+  },
   noApprovedInputsYet: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.noApprovedInputsYet',
     defaultMessage: 'No approved inputs yet.',

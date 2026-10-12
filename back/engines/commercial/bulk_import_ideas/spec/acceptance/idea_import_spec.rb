@@ -164,8 +164,10 @@ resource 'BulkImportIdeasImportIdeas' do
         # Still awaiting review: excluded.
         draft = create(:idea, project: project, creation_phase: phase, phases: [phase], publication_status: 'draft')
         draft.update!(idea_import: create(:idea_import, idea: draft))
-        # Approval undone (back to draft, approved_at still set): excluded.
+        # Approval undone: excluded, and the approval timestamp is cleared so a
+        # re-approval behaves like a first approval.
         approved_ideas[2].update!(publication_status: 'draft')
+        expect(approved_ideas[2].idea_import.reload.approved_at).to be_nil
 
         do_request
         assert_status 200
@@ -181,6 +183,22 @@ resource 'BulkImportIdeasImportIdeas' do
         do_request
         assert_status 200
         expect(response_data.pluck(:id)).to match_array approved_ideas.map(&:id)
+      end
+
+      example 'Undoing and re-approving stamps a fresh approval and keeps earlier content changes' do
+        idea = approved_ideas[0]
+
+        idea.update!(publication_status: 'draft')
+        idea.update!(publication_status: 'published', title_multiloc: { 'en' => 'Fixed title' })
+        first_reapproval = idea.idea_import.reload
+        expect(first_reapproval.approved_at).to be_present
+        expect(first_reapproval.content_changes).to have_key('title_multiloc')
+
+        idea.update!(publication_status: 'draft')
+        idea.update!(publication_status: 'published', body_multiloc: { 'en' => '<p>Fixed body</p>' })
+        content_changes = idea.idea_import.reload.content_changes
+        expect(content_changes).to have_key('title_multiloc')
+        expect(content_changes).to have_key('body_multiloc')
       end
 
       example 'Paginates the approved ideas' do

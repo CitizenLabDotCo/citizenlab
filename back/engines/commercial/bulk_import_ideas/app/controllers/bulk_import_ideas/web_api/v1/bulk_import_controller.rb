@@ -221,8 +221,8 @@ module BulkImportIdeas
       end
     end
 
-    # Published is part of the predicate on purpose: undoing an approval flips the idea
-    # back to draft but does not clear approved_at.
+    # Undoing an approval clears approved_at again; the published filter stays as a
+    # second guard for any other path that takes an imported idea out of publication.
     def imported_approved_records
       if params[:model] == 'idea'
         phase = Phase.find(params[:id])

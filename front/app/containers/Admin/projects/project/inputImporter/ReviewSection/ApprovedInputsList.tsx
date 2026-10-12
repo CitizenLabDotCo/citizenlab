@@ -8,6 +8,7 @@ import useApprovedImportedIdeas from 'api/import_ideas/useApprovedImportedIdeas'
 import { useIntl } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
 
+import hasEngagement from './hasEngagement';
 import ImportedInputRow from './ImportedInputRow';
 import messages from './messages';
 
@@ -56,6 +57,11 @@ const ApprovedInputsList = ({ selectedIdeaId, onSelectIdea }: Props) => {
           selected={idea.id === selectedIdeaId}
           actionIcon="undo"
           actionInProgress={undoingId === idea.id}
+          actionDisabledExplanation={
+            hasEngagement(idea.attributes)
+              ? formatMessage(messages.undoApprovalDisabledEngagement)
+              : undefined
+          }
           onSelect={onSelectIdea}
           onAction={handleUndo}
         />

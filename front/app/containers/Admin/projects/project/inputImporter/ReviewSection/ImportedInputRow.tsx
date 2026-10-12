@@ -7,6 +7,7 @@ import {
   IconNames,
   colors,
   Spinner,
+  Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { format } from 'date-fns';
 import styled from 'styled-components';
@@ -48,6 +49,8 @@ interface Props {
   selected: boolean;
   actionIcon: IconNames;
   actionInProgress: boolean;
+  // When given, the action button is disabled and explains itself on hover.
+  actionDisabledExplanation?: string;
   onSelect: (ideaId: string) => void;
   onAction: (ideaId: string) => void;
 }
@@ -60,6 +63,7 @@ const ImportedInputRow = ({
   selected,
   actionIcon,
   actionInProgress,
+  actionDisabledExplanation,
   onSelect,
   onAction,
 }: Props) => {
@@ -118,15 +122,24 @@ const ImportedInputRow = ({
         {actionInProgress ? (
           <Spinner size="15px" />
         ) : (
-          <StyledButton
-            icon={actionIcon}
-            iconSize="12px"
-            padding="2px"
-            borderRadius="10px"
-            marginRight="8px"
-            bgColor={colors.teal200}
-            onClick={handleAction}
-          />
+          <Tooltip
+            disabled={!actionDisabledExplanation}
+            placement="top"
+            content={actionDisabledExplanation}
+          >
+            <div>
+              <StyledButton
+                icon={actionIcon}
+                iconSize="12px"
+                padding="2px"
+                borderRadius="10px"
+                marginRight="8px"
+                bgColor={colors.teal200}
+                disabled={!!actionDisabledExplanation}
+                onClick={handleAction}
+              />
+            </div>
+          </Tooltip>
         )}
       </Box>
     </StyledBox>
