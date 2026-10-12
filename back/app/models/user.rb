@@ -39,10 +39,13 @@ require Rails.root.join('lib/email_domain_blacklist')
 #  phone_confirmed_at        :datetime
 #  early_access_opt_ins      :jsonb            not null
 #  merge_target_email        :string
+#  email_bounced_at          :datetime
+#  email_bounce_reason       :string
 #
 # Indexes
 #
 #  index_users_on_email                      (email)
+#  index_users_on_email_bounced_at           (email_bounced_at) WHERE (email_bounced_at IS NOT NULL)
 #  index_users_on_phone                      (phone) UNIQUE WHERE (phone IS NOT NULL)
 #  index_users_on_registration_completed_at  (registration_completed_at)
 #  index_users_on_roles                      (roles) USING gin
@@ -225,6 +228,9 @@ class User < ApplicationRecord
   before_validation :auto_confirm_on_invite_accept, if: ->(user) { user.invite_status_change&.last == 'accepted' }, prepend: true
   before_validation :complete_registration
 
+  # A bounce belongs to the address, so a different address starts clean.
+  before_save :clear_email_bounce, if: -> { persisted? && email_changed? && !email_changed_only_in_case? }
+
   has_many :identities, dependent: :destroy
   has_many :spam_reports, dependent: :nullify
   has_many :activities, dependent: :nullify
@@ -283,6 +289,7 @@ class User < ApplicationRecord
   scope :blocked, -> { where('? < block_end_at', Time.zone.now) }
   scope :not_blocked, -> { where(block_end_at: nil).or(where('? > block_end_at', Time.zone.now)) }
   scope :active, -> { registered.not_blocked }
+  scope :email_bounced, -> { where.not(email_bounced_at: nil) }
 
   def to_token_payload
     # Converting into hours to avoid issues when crossing DST boundaries. In other words,
@@ -322,6 +329,10 @@ class User < ApplicationRecord
     invite_status != 'pending'
   end
 
+  def email_bounced?
+    email_bounced_at.present?
+  end
+
   def full_name
     return [first_name, last_name].compact.join(' ') unless no_name?
 
@@ -342,7 +353,12 @@ class User < ApplicationRecord
   # @return [Hash] the features this user may opt into, mapped to the tier they are offered in
   def offered_early_access_features
     tiers = early_access_tiers
-    AppConfiguration::Settings.early_access_tiers.select { |_name, tier| tiers.include?(tier) }
+    return {} if tiers.empty?
+
+    config = AppConfiguration.instance
+    AppConfiguration::Settings.early_access_tiers.select do |name, tier|
+      tiers.include?(tier) && !config.feature_activated_on_platform?(name)
+    end
   end
 
   # The opt-ins that still apply: a feature can stop being offered after the user opted in.
@@ -555,6 +571,11 @@ class User < ApplicationRecord
 
   def sanitize_last_name
     self.last_name = SanitizationService.new.strip_to_plain_text(last_name)
+  end
+
+  def clear_email_bounce
+    self.email_bounced_at = nil
+    self.email_bounce_reason = nil
   end
 
   def email_or_new_email_changed?

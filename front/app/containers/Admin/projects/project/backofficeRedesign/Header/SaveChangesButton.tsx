@@ -6,13 +6,13 @@ import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/mes
 
 import { useIntl } from 'utils/cl-intl';
 
-import { usePhaseSave } from '../_shared/PhaseSaveContext';
+import { usePageSave } from '../_shared/PageSaveContext';
 
 const SaveChangesButton = () => {
   const { formatMessage } = useIntl();
-  const phaseSave = usePhaseSave();
+  const pageSave = usePageSave();
 
-  if (!phaseSave) return null;
+  if (!pageSave) return null;
 
   return (
     <Button
@@ -21,9 +21,9 @@ const SaveChangesButton = () => {
       padding={bo.buttonMedium.padding}
       fontSize={bo.buttonMedium.fontSize}
       width="auto"
-      disabled={!phaseSave.dirty}
-      processing={phaseSave.saving}
-      onClick={() => phaseSave.saveAll('button')}
+      disabled={!pageSave.dirty}
+      processing={pageSave.saving}
+      onClick={() => pageSave.saveAll('button')}
     >
       {formatMessage(phaseSetupMessages.saveChangesLabel)}
     </Button>

@@ -171,6 +171,9 @@ const PageLinkSettings = () => {
   const localize = useLocalize();
   const { customPageId } = useParams({ strict: false });
   const projectId = useWidgetProjectId();
+  // On a project's own page the project comes from the page, so wait for it
+  // before listing pages.
+  const { isLoading: isLoadingPage } = useCustomPageById(customPageId);
 
   const {
     data: pages,
@@ -192,7 +195,7 @@ const PageLinkSettings = () => {
   }, [pages, localize, customPageId]);
 
   // Full-panel spinner on initial load only; refetches keep the panel visible.
-  if (!pages) {
+  if (isLoadingPage || !pages) {
     return <Spinner />;
   }
 
