@@ -239,6 +239,7 @@
   "app.components.ErrorBoundary.errorFormTitle": "Bir sorun var.",
   "app.components.ErrorBoundary.genericErrorWithForm": "Bir hata oluştu ve bu içeriği görüntüleyemiyoruz. Lütfen tekrar deneyin veya {openForm}",
   "app.components.ErrorBoundary.openFormText": "sorunu anlamamıza yardımcı olun",
+  "app.components.ErrorBoundary.reloadPage": "Sayfayı yenile",
   "app.components.ErrorToast.budgetExceededError": "Yeterli bütçeniz yok",
   "app.components.ErrorToast.votesExceededError": "Yeterli oyunuz kalmadı.",
   "app.components.EsriMap.drawOnMap": "Çiz",

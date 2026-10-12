@@ -239,6 +239,7 @@
   "app.components.ErrorBoundary.errorFormTitle": "يبدو أنّ هناك مشكلة ما.",
   "app.components.ErrorBoundary.genericErrorWithForm": "حدث خطأ ما، ولا يمكننا عرض هذا المحتوى. يُرجى المحاولة مجددًا، أو {openForm}!",
   "app.components.ErrorBoundary.openFormText": "ساعدنا في تحديد الخلل",
+  "app.components.ErrorBoundary.reloadPage": "إعادة تحميل الصفحة",
   "app.components.ErrorToast.budgetExceededError": "ليس لديك ميزانية كافية",
   "app.components.ErrorToast.votesExceededError": "ليس لديك ما يكفي من الأصوات المتبقية",
   "app.components.EsriMap.drawOnMap": "رسم",

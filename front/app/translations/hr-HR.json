@@ -239,6 +239,7 @@
   "app.components.ErrorBoundary.errorFormTitle": "Čini se da je došlo do problema.",
   "app.components.ErrorBoundary.genericErrorWithForm": "Došlo je do pogreške te ne možemo prikazati ovaj sadržaj. Pokušajte ponovo ili {openForm}",
   "app.components.ErrorBoundary.openFormText": "pomognite nam da shvatimo",
+  "app.components.ErrorBoundary.reloadPage": "Ponovno učitaj stranicu",
   "app.components.ErrorToast.budgetExceededError": "Nemate dovoljno proračuna",
   "app.components.ErrorToast.votesExceededError": "Nemate dovoljno glasova",
   "app.components.EsriMap.drawOnMap": "Crtaj",

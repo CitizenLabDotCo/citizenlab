@@ -239,6 +239,7 @@
   "app.components.ErrorBoundary.errorFormTitle": "Atrodo, kad yra problema.",
   "app.components.ErrorBoundary.genericErrorWithForm": "Įvyko klaida, todėl negalime rodyti šio turinio. Pabandykite dar kartą arba {openForm}",
   "app.components.ErrorBoundary.openFormText": "padėkite mums tai išsiaiškinti",
+  "app.components.ErrorBoundary.reloadPage": "Perkrauti puslapį",
   "app.components.ErrorToast.budgetExceededError": "Neturite pakankamai biudžeto",
   "app.components.ErrorToast.votesExceededError": "Jums neliko pakankamai balsų",
   "app.components.EsriMap.drawOnMap": "Piešti",

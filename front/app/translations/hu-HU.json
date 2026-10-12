@@ -239,6 +239,7 @@
   "app.components.ErrorBoundary.errorFormTitle": "Úgy tűnik, valami probléma van.",
   "app.components.ErrorBoundary.genericErrorWithForm": "Hiba történt, és nem tudjuk megjeleníteni ezt a tartalmat. Kérjük, próbálja újra, vagy {openForm}",
   "app.components.ErrorBoundary.openFormText": "segítsen kitalálni",
+  "app.components.ErrorBoundary.reloadPage": "Oldal újratöltése",
   "app.components.ErrorToast.budgetExceededError": "Nincs elég költségvetése",
   "app.components.ErrorToast.votesExceededError": "Nincs elég szavazatod",
   "app.components.EsriMap.drawOnMap": "Rajzolás",
