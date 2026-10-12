@@ -268,14 +268,14 @@ describe('Input form builder', () => {
     cy.visit(`/projects/${projectSlug}/ideas/new`);
     cy.get('#idea-form');
     cy.get('#title_multiloc ').click().type(ideaTitle, { delay: 0 });
-    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.clickInputFormPageButton('e2e-next-page');
     cy.dataCy('e2e-page-number-2').should('exist');
     cy.get('#body_multiloc .ql-editor').type(ideaContent);
     cy.get('#body_multiloc .ql-editor').contains(ideaContent);
-    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.clickInputFormPageButton('e2e-next-page');
     cy.dataCy('e2e-page-number-3').should('exist');
     cy.get('#e2e-idea-image-upload').should('exist');
-    cy.dataCy('e2e-next-page').should('be.visible').click();
+    cy.clickInputFormPageButton('e2e-next-page');
     cy.dataCy('e2e-page-number-4').should('exist');
 
     cy.contains(publicQuestion)
@@ -293,7 +293,7 @@ describe('Input form builder', () => {
     cy.get(`*[id^="${privateQuestion}"]:not([id$="-label"])`)
       .first()
       .type(answer, { force: true });
-    cy.dataCy('e2e-submit-form').click();
+    cy.clickInputFormPageButton('e2e-submit-form');
     cy.wait('@ideaSubmission');
 
     // With a submission in, showing the private answers asks for confirmation
