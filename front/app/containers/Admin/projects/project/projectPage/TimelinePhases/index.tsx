@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  Button,
-  Text,
-  fontSizes,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { ParticipationMethod } from 'api/phases/types';
 import usePhases from 'api/phases/usePhases';
@@ -56,7 +51,6 @@ interface Props {
   projectId: string;
   variant?: 'sidebar' | 'backofficeRedesign';
   heading?: React.ReactNode;
-  onNewPhase?: () => void;
   withPhaseOptions?: boolean;
 }
 
@@ -64,7 +58,6 @@ const TimelinePhases = ({
   projectId,
   variant = 'sidebar',
   heading,
-  onNewPhase,
   withPhaseOptions = false,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -175,24 +168,12 @@ const TimelinePhases = ({
         })}
       </Box>
 
-      <Box
-        display="flex"
-        mt={redesign ? '0' : '4px'}
-        className="intercom-product-tour-project-timeline-new-phase"
-      >
-        {onNewPhase ? (
-          <Button
-            buttonStyle="bo-text"
-            height="32px"
-            padding="0 12px"
-            fontSize={`${fontSizes.xs}px`}
-            icon="plus"
-            width="auto"
-            onClick={onNewPhase}
-          >
-            {formatMessage(messages.newPhase)}
-          </Button>
-        ) : (
+      {!redesign && (
+        <Box
+          display="flex"
+          mt="4px"
+          className="intercom-product-tour-project-timeline-new-phase"
+        >
           <ButtonWithLink
             to="/admin/projects/$projectId/phases/new"
             params={{ projectId }}
@@ -203,8 +184,8 @@ const TimelinePhases = ({
           >
             {formatMessage(messages.newPhase)}
           </ButtonWithLink>
-        )}
-      </Box>
+        </Box>
+      )}
     </Box>
   );
 };

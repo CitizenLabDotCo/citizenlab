@@ -18,7 +18,7 @@ import { validateDates } from 'containers/Admin/projects/project/phaseSetup/vali
 
 import { useIntl } from 'utils/cl-intl';
 
-import { useRegisterPhaseSaver } from '../../_shared/PhaseSaveContext';
+import { useRegisterPageSaver } from '../../_shared/PageSaveContext';
 
 import BuildFields from './BuildFields';
 import SwitchSurveyMethodModal from './SwitchSurveyMethodModal';
@@ -92,7 +92,7 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
     }
   };
 
-  useRegisterPhaseSaver('build', { dirty, save });
+  useRegisterPageSaver('build', { dirty, save });
 
   return (
     <Box display="flex" flexDirection="column" flexGrow={1} minHeight="0">

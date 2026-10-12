@@ -90,7 +90,7 @@ const InsightBody = ({
       )}
 
       {fileIds && fileIds.length > 0 && (
-        <Box display="flex" gap="4px">
+        <Box display="flex" gap="4px" flexWrap="wrap">
           {fileIds.map((fileId) => (
             <FileItem key={fileId} fileId={fileId} />
           ))}

@@ -63,9 +63,12 @@ class McpServer::BaseTool::Runner
     PUBLISHED_WRITABLE_LIFECYCLES.include?(AppConfiguration.instance.lifecycle_stage)
   end
 
-  # The record whose admin_publication the draft rule reads: a folder is its own
-  # publication owner; everything else resolves to its project (via source_project
-  # where it exists, so attachables like Analysis keep their own derivation).
+  # Maps a record an MCP tool is about to mutate — a project or folder itself, or
+  # anything living inside one (a phase, event, input, image, or a file attachment's
+  # attachable) — to the project or folder whose admin_publication the draft rule
+  # reads, for authorize_project!. A folder is its own publication owner; everything
+  # else resolves to its project (via source_project where it exists, so attachables
+  # like Analysis keep their own derivation).
   def publication_owner_for(record)
     return record if record.is_a?(ProjectFolders::Folder)
     return record.source_project if record.respond_to?(:source_project)

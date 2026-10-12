@@ -4,6 +4,10 @@ module EmailCampaigns
   class MergeAccountConfirmationMailer < ApplicationMailer
     include EditableWithPreview
 
+    def self.undeliverable_to?(_recipient)
+      false
+    end
+
     def editable
       # No button: a confirmation-code email contains a code, not a link.
       %i[subject_multiloc title_multiloc intro_multiloc]

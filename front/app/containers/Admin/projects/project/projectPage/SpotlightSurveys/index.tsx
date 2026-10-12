@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  Text,
-  bo,
-  colors,
-  fontSizes,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, bo, colors } from '@citizenlab/cl2-component-library';
 
 import usePhases from 'api/phases/usePhases';
 import { getPhaseLandingTab } from 'api/phases/utils';
@@ -175,23 +169,8 @@ const SpotlightSurveys = ({ projectId, variant = 'sidebar' }: Props) => {
         })}
       </Box>
 
-      <Box display="flex" mt={redesign ? '0' : '4px'}>
-        {redesign ? (
-          <ButtonWithLink
-            className="intercom-product-tour-project-new-survey-button"
-            to="/admin/projects/$projectId/phases/new"
-            params={{ projectId }}
-            search={{ placement: 'standalone' }}
-            buttonStyle="bo-text"
-            height="32px"
-            padding="0 12px"
-            fontSize={`${fontSizes.xs}px`}
-            icon="plus"
-            width="auto"
-          >
-            {formatMessage(messages.newSurvey)}
-          </ButtonWithLink>
-        ) : (
+      {!redesign && (
+        <Box display="flex" mt="4px">
           <ButtonWithLink
             className="intercom-product-tour-project-new-survey-button"
             to="/admin/projects/$projectId/phases/new"
@@ -204,8 +183,8 @@ const SpotlightSurveys = ({ projectId, variant = 'sidebar' }: Props) => {
           >
             {formatMessage(messages.newSurvey)}
           </ButtonWithLink>
-        )}
-      </Box>
+        </Box>
+      )}
     </Box>
   );
 };

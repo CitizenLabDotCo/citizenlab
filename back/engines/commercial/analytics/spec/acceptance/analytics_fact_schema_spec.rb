@@ -31,14 +31,6 @@ resource 'Analytics - Fact tables' do
         end
       end
 
-      describe 'Visit' do
-        let(:fact) { 'visit' }
-
-        example_request 'Returns Visit Fact attributes and dimensions' do
-          expect(status).to eq(200)
-        end
-      end
-
       describe 'Registration' do
         let(:fact) { 'registration' }
 

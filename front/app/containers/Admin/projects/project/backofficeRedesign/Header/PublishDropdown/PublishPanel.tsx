@@ -15,11 +15,16 @@ import useProjectPublicationRecipientCount from 'api/project_publication_recipie
 import { IProjectData, Visibility } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
+import {
+  FIND_OPTIONS,
+  OPEN_OPTIONS,
+} from 'containers/Admin/projects/_shared/visibilityOptions';
+import visibilityMessages from 'containers/Admin/projects/_shared/visibilityOptions/messages';
+
 import OptionRow from 'components/UI/OptionRow';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import { FIND_OPTIONS, OPEN_OPTIONS } from '../../_shared/visibilityOptions';
 import messages from '../../messages';
 
 import { ConfirmableStatus } from './ConfirmStatusChangeModal';
@@ -121,7 +126,7 @@ const PublishPanel = ({
       </Text>
 
       <Text variant="boSection" mb="4px">
-        {formatMessage(messages.publishWhoCanFind)}
+        {formatMessage(visibilityMessages.publishWhoCanFind)}
       </Text>
       <Box role="radiogroup" display="flex" flexDirection="column">
         {FIND_OPTIONS.map((option) => {
@@ -141,7 +146,7 @@ const PublishPanel = ({
       </Box>
 
       <Text variant="boSection" mt="12px" mb="4px">
-        {formatMessage(messages.publishWhoCanOpen)}
+        {formatMessage(visibilityMessages.publishWhoCanOpen)}
       </Text>
       <Box role="radiogroup" display="flex" flexDirection="column">
         {OPEN_OPTIONS.map((option) => (
