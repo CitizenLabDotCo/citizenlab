@@ -31,7 +31,7 @@ module AIAssistant
       }
     end
 
-    # Runs the tool as +user+, who must be allowed to do so by the tool's own authorization.
+    # Runs the tool as +user+, whose access to the context is checked by the assistant's policies.
     def call(user, args)
       tool = tool(user)
       # Direct calls skip the argument validation that the MCP server does.
