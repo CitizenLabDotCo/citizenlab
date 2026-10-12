@@ -18,7 +18,7 @@ const statData = {
 };
 const server = setupServer(
   http.get(apiPath, () => {
-    return HttpResponse.json({ data: statData }, { status: 200 });
+    return HttpResponse.json(statData, { status: 200 });
   })
 );
 
@@ -36,7 +36,7 @@ describe('useEmailBouncedUsersCount', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(result.current.isLoading).toBe(false);
-    expect(result.current.data?.data).toEqual(statData);
+    expect(result.current.data).toEqual(statData);
   });
 
   it('returns error correctly', async () => {

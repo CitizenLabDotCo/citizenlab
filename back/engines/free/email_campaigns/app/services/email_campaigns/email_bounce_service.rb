@@ -14,11 +14,14 @@ module EmailCampaigns
       return unless bounce?(event_data)
 
       user = User.find_by_cimail(event_data[:recipient])
-      return unless user
+      # Mailgun can report the same address more than once; keep the first bounce.
+      return if !user || user.email_bounced?
 
+      bounce_reason = reason(event_data)
       # Skips validations: a user with unrelated invalid data must still stop
       # receiving emails.
-      user.update_columns(email_bounced_at: Time.zone.now, email_bounce_reason: reason(event_data))
+      user.update_columns(email_bounced_at: Time.zone.now, email_bounce_reason: bounce_reason)
+      LogActivityJob.perform_later(user, 'email_bounced', nil, Time.now.to_i, payload: { reason: bounce_reason })
     end
 
     private

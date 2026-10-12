@@ -22,6 +22,20 @@ describe EmailCampaigns::EmailBounceService do
       expect(user.reload).to have_attributes(email_bounced_at: be_present, email_bounce_reason: '550 No such user')
     end
 
+    it 'logs an activity with the reason' do
+      expect { service.handle_mailgun_event(event_data) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(user, 'email_bounced', nil, anything, { payload: { reason: '550 No such user' } })
+    end
+
+    it 'keeps the first bounce when the address bounces again' do
+      first_bounce = 2.days.ago.change(usec: 0)
+      user.update_columns(email_bounced_at: first_bounce, email_bounce_reason: 'first')
+
+      expect { service.handle_mailgun_event(event_data) }.not_to have_enqueued_job(LogActivityJob)
+      expect(user.reload).to have_attributes(email_bounced_at: first_bounce, email_bounce_reason: 'first')
+    end
+
     it 'falls back to the status message when there is no description' do
       event_data[:'delivery-status'] = { code: 605, message: 'Not delivering to previously bounced address' }
       service.handle_mailgun_event(event_data)
