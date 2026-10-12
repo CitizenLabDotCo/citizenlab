@@ -20,9 +20,9 @@ module Analytics
       self.table_name = 'reporting_reference_distributions'
       self.primary_key = :id
 
-      # How the representativeness dashboard computes a user's age
-      # (UserCustomFields::AgeCounter#convert_to_age): years since 1 July of
-      # the birth year, counting a year as 365.2425 days. Anything but a
+      # Must give the ages the representativeness dashboard uses
+      # (UserCustomFields::AgeCounter#convert_to_age), or age R-scores will
+      # disagree with it: years since 1 July of the birth year, counting a year as 365.2425 days. Anything but a
       # four-digit year gives NULL (unknown age) instead of failing the whole
       # query on a cast or date error. The product also treats non-numbers as
       # unknown, but turns an invalid number like 0 into a huge age; valid

@@ -1,12 +1,13 @@
 -- Reporting view: the population base data behind the representativeness
 -- dashboard, one row per option or age group of each enabled registration
--- question's current distribution (its latest upload, as
--- CustomField#current_ref_distribution). Disabled questions are left out, as
--- on the dashboard and in reporting_user_question_answers, since no user
--- answers could be compared with them.
+-- question's current distribution. Rows must be the base data the dashboard
+-- uses, or R-scores computed from this view will disagree with it: only each
+-- question's latest upload (CustomField#current_ref_distribution), and no
+-- disabled questions (the dashboard hides them, and
+-- reporting_user_question_answers has no answers to compare with them).
 --
 -- Categorical distributions map option ids to counts. answer_value and
--- answer_label match reporting_user_question_answers, so rows join on
+-- answer_label must match reporting_user_question_answers, since rows join on
 -- question_id + answer_value; for domicile that means the area id (or
 -- 'outside' for the option without an area), not the option key.
 -- Binned distributions (birthyear only) hold age boundaries: bins has one more

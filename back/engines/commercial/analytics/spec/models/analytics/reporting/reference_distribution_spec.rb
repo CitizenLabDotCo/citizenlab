@@ -14,15 +14,16 @@ RSpec.describe Analytics::Reporting::ReferenceDistribution do
       .to contain_exactly(['gender', 'male', 'Male', 480], ['gender', 'female', 'Female', 520])
   end
 
-  it 'only exposes the latest distribution of a question' do
+  it 'only exposes the distribution the dashboard uses, CustomField#current_ref_distribution' do
     gender = create(:custom_field_gender, :with_options)
     male, female = %w[male female].map { |key| gender.options.find_by!(key: key) }
     create(:categorical_distribution, custom_field: gender, distribution: { male.id => 1, female.id => 1 }, created_at: 1.year.ago)
     # Validation allows one distribution per question, but no constraint enforces it.
     build(:categorical_distribution, custom_field: gender, distribution: { male.id => 480, female.id => 520 })
       .save!(validate: false)
+    distribution_ids = described_class.where(question_id: gender.id).map { |row| row.id.split(':').first }
 
-    expect(described_class.where(question_id: gender.id).pluck(:population_count)).to contain_exactly(480, 520)
+    expect(distribution_ids.uniq).to eq [gender.reload.current_ref_distribution.id]
   end
 
   it 'leaves out the base data of disabled questions' do
@@ -43,6 +44,24 @@ RSpec.describe Analytics::Reporting::ReferenceDistribution do
 
     expect(rows.map { |row| [row.answer_value, row.answer_label, row.population_count] })
       .to contain_exactly([area.id, 'North', 70], ['outside', 'Somewhere else', 30])
+  end
+
+  it 'joins domicile rows to the user answers on question_id and answer_value' do
+    domicile = create(:custom_field_domicile)
+    area = create(:area)
+    outside = create(:custom_field_option, custom_field: domicile, key: 'somewhere_else')
+    create(:categorical_distribution, custom_field: domicile, distribution: { area.custom_field_option_id => 70, outside.id => 30 })
+    [area.id, area.id, 'outside'].each { |value| create(:user).custom_field_answers.create!(key: 'domicile', value: value) }
+
+    users_per_row = described_class.where(question_id: domicile.id)
+      .joins(<<~SQL.squish)
+        INNER JOIN reporting_user_question_answers u
+          ON u.question_id = reporting_reference_distributions.question_id
+          AND u.answer_value = reporting_reference_distributions.answer_value
+      SQL
+      .group(:answer_value).count
+
+    expect(users_per_row).to eq(area.id => 2, 'outside' => 1)
   end
 
   it 'exposes one row per age group of a binned distribution' do
