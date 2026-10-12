@@ -2029,6 +2029,7 @@
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": "Show more",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": "To review",
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": "Undo approval",
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApprovalDisabledEngagement": "This input has comments, reactions or votes, so its approval can no longer be undone.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": "This project does not contain any phases that can contain ideas.",
   "app.containers.Admin.projects.project.offlineInputs.TopBar.selectAPhase": "Please select to which phase you want to add these inputs.",
   "app.containers.Admin.projects.project.offlineInputs.inputImporter": "Input importer",
