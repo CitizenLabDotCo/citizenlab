@@ -2100,6 +2100,37 @@ resource 'Users' do
             expect(json_response.dig(:data, :attributes, :custom_field_values, cf.key.to_sym)).to eq 'some_value'
             expect(json_response.dig(:data, :attributes, :custom_field_values, cf_req.key.to_sym)).to be_nil
           end
+
+          context 'when a stored answer no longer matches its field' do
+            let!(:checkbox) { create(:custom_field_checkbox) }
+
+            before do
+              create(:custom_field_answer, answerable: @user, key: checkbox.key, value: 'true')
+            end
+
+            example 'Updating other attributes still works', document: false do
+              do_request(user: { first_name: 'Edmond' })
+
+              assert_status 200
+              expect(@user.reload.first_name).to eq 'Edmond'
+              expect(@user.answer_for_key(checkbox.key).value).to eq 'true'
+            end
+
+            example 'Updating other custom field values still works', document: false do
+              cf = create(:custom_field)
+              do_request(user: { custom_field_values: { cf.key => 'some_value' } })
+
+              assert_status 200
+              expect(@user.reload.answer_for_key(cf.key).value).to eq 'some_value'
+            end
+
+            example '[error] Submitting an invalid value for that field is rejected', document: false do
+              do_request(user: { custom_field_values: { checkbox.key => 'false' } })
+
+              assert_status 422
+              expect(@user.reload.answer_for_key(checkbox.key).value).to eq 'true'
+            end
+          end
         end
 
         describe 'when user_avatars is enabled' do
