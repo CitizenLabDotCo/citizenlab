@@ -115,6 +115,21 @@ RSpec.describe Analytics::Reporting::Project do
 
       expect(row.areas).to match_array %w[North South]
     end
+
+    it 'lists the areas the product area filter matches each project on' do
+      project.areas << north
+      all_areas_project = create(:project, include_all_areas: true)
+      create(:project)
+
+      Area.find_each do |area|
+        title = area.title_multiloc['en']
+        filtered = ProjectsFilteringService.new.filter(Project.all, areas: [area.id]).pluck(:id)
+        listed = described_class.where('? = ANY(areas)', title).pluck(:id)
+
+        expect(filtered).to include(all_areas_project.id)
+        expect(listed).to match_array(filtered), "area #{title}"
+      end
+    end
   end
 
   describe 'participation_methods' do
