@@ -2,7 +2,6 @@ import React from 'react';
 
 import {
   Box,
-  Button,
   Icon,
   Image,
   Text,
@@ -123,11 +122,9 @@ const EventPreview = ({ project, form }: Props) => {
 
               {image ? (
                 <Image
-                  src={image.base64}
+                  src={form.croppedImage ?? image.base64}
                   alt=""
                   width="100%"
-                  height="150px"
-                  style={{ objectFit: 'cover' }}
                 />
               ) : (
                 <AdminOnlyPlaceholder
@@ -159,18 +156,16 @@ const EventPreview = ({ project, form }: Props) => {
                   attendeesCount={form.event?.attributes.attendees_count ?? 0}
                   address1={attributes.address_1}
                   address2Multiloc={attributes.address_2_multiloc}
+                  hasLocationPoint={form.hasLocationPoint}
                   onlineLink={attributes.online_link}
+                  buttonText={
+                    (form.customButtonOn &&
+                      localize(attributes.attend_button_multiloc)) ||
+                    formatMessage(eventMessages.register)
+                  }
+                  showButtonIcon={!form.customButtonOn}
                 />
               )}
-
-              <Button
-                bgColor={theme.colors.tenantPrimary}
-                width="100%"
-                tabIndex={-1}
-              >
-                {localize(attributes.attend_button_multiloc) ||
-                  formatMessage(eventMessages.register)}
-              </Button>
             </Box>
           </Box>
         }

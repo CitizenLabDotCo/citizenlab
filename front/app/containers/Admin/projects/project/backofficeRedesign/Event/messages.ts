@@ -105,6 +105,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.event.altTextPlaceholder',
     defaultMessage: 'Describe the image for people using screen readers',
   },
+  onlyAdminsSeeThis: {
+    id: 'app.containers.Admin.projects.project.event.onlyAdminsSeeThis',
+    defaultMessage: 'Only admins can see this',
+  },
   dropImage: {
     id: 'app.containers.Admin.projects.project.event.dropImage',
     defaultMessage: 'Drop an image or click to upload',
@@ -121,8 +125,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.event.previewLocation',
     defaultMessage: 'Event location',
   },
-  onlineEvent: {
-    id: 'app.containers.Admin.projects.project.event.onlineEvent',
-    defaultMessage: 'Online event',
+  linkToOnlineEvent: {
+    id: 'app.containers.Admin.projects.project.event.linkToOnlineEvent',
+    defaultMessage: 'Link to online event',
   },
 });
