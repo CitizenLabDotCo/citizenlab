@@ -141,7 +141,7 @@ const PublishPanel = ({
       </Box>
 
       <Text variant="boSection" mt="12px" mb="4px">
-        {formatMessage(messages.publishWhoCanOpen)}
+        {formatMessage(messages.publishWhoCanSee)}
       </Text>
       <Box role="radiogroup" display="flex" flexDirection="column">
         {OPEN_OPTIONS.map((option) => (
