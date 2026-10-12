@@ -165,7 +165,9 @@ const OptionPicker = <T extends string>({
       display="inline-block"
       maxWidth="100%"
       onKeyDown={(event: React.KeyboardEvent) => {
-        if (event.key === 'Escape' && opened) dismiss();
+        if (event.key !== 'Escape' || !opened) return;
+        event.stopPropagation();
+        dismiss();
       }}
     >
       <Button
