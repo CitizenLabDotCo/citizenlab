@@ -3844,6 +3844,11 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.Invitations.inviteStatusEmailBounced": {
+    "state": "verified",
+    "verified_at": "2026-10-09T13:19:14.359996Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.Invitations.inviteStatusPending": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
@@ -5008,6 +5013,66 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBounces": {
+    "state": "verified",
+    "verified_at": "2026-10-09T13:19:14.359996Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesBouncedAt": {
+    "state": "verified",
+    "verified_at": "2026-10-09T13:19:14.359996Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesDelete": {
+    "state": "verified",
+    "verified_at": "2026-10-09T13:19:14.359996Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-09T13:19:14.359996Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesName": {
+    "state": "verified",
+    "verified_at": "2026-10-09T13:19:14.359996Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesNone": {
+    "state": "verified",
+    "verified_at": "2026-10-09T13:19:14.359996Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesReason": {
+    "state": "verified",
+    "verified_at": "2026-10-09T13:19:14.359996Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesStatus": {
+    "state": "verified",
+    "verified_at": "2026-10-09T13:19:14.359996Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesStatusAwaitingConfirmation": {
+    "state": "verified",
+    "verified_at": "2026-10-09T13:19:14.359996Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesStatusPendingInvite": {
+    "state": "verified",
+    "verified_at": "2026-10-09T13:19:14.359996Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesStatusRegistered": {
+    "state": "verified",
+    "verified_at": "2026-10-09T13:19:14.359996Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.Users.EmailBounces.emailBouncesStatusRegistrationIncomplete": {
+    "state": "verified",
+    "verified_at": "2026-10-09T13:19:14.359996Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": {
     "state": "verified",

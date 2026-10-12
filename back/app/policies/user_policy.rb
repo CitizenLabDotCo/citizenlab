@@ -92,6 +92,10 @@ class UserPolicy < ApplicationPolicy
     index?
   end
 
+  def email_bounced_count?
+    index?
+  end
+
   def ideas_count?
     true
   end
