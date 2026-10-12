@@ -13,6 +13,8 @@
 #  value_numeric     :decimal(, )
 #  value_label       :text
 #  question_category :string
+#  statement_key     :text
+#  statement_label   :text
 #
 module Analytics
   module Reporting
@@ -23,9 +25,10 @@ module Analytics
       def self.table_description
         <<~DOC.squish
           One row per answer to a form question of an input: survey answers and
-          extra idea-form fields. Multi-select questions produce one row per
-          selected option. Structurally complex question types (ranking,
-          matrix, mapping, file upload) are not included. Inputs that skipped a
+          extra idea-form fields. Multi-select and ranking questions produce one
+          row per selected or ranked option, matrix questions one row per
+          answered statement. File upload answers only record that a file was
+          attached. Mapping questions are not included. Inputs that skipped a
           question have no row for it.
         DOC
       end
@@ -37,34 +40,50 @@ module Analytics
           'question_key' => 'Stable machine key of the question within its form.',
           'question_type' => <<~DOC.squish,
             Answer format: 'select', 'select_image', 'multiselect',
-            'multiselect_image', 'checkbox', 'text', 'multiline_text', 'date',
-            'number', 'linear_scale', 'rating' or 'sentiment_linear_scale'.
+            'multiselect_image', 'ranking', 'checkbox', 'text', 'multiline_text',
+            'date', 'number', 'linear_scale', 'rating', 'sentiment_linear_scale',
+            'matrix_linear_scale' or 'file_upload'.
           DOC
           'question_label' => 'Question text, resolved to the platform primary locale.',
           'value_text' => <<~DOC.squish,
-            Textual answer: the option key for (multi)select questions, free
-            text for text questions, 'true'/'false' for checkboxes. NULL for
-            numeric question types. Option keys are stable ids, not what
-            participants saw: report value_label instead.
+            Textual answer: the option key for (multi)select and ranking
+            questions, free text for text questions, 'true'/'false' for
+            checkboxes. NULL for numeric, matrix and file upload questions.
+            Option keys are stable ids, not what participants saw: report
+            value_label instead.
           DOC
           'value_numeric' => <<~DOC.squish,
-            Numeric answer for 'number', 'linear_scale', 'rating' and
-            'sentiment_linear_scale' questions (scales run from 1 upwards).
-            Aggregate with AVG for scores. NULL for textual question types.
+            Numeric answer for 'number', 'linear_scale', 'rating',
+            'sentiment_linear_scale' and 'matrix_linear_scale' questions (scales
+            run from 1 upwards). Aggregate with AVG for scores. For 'ranking'
+            questions, the rank the participant gave the option (1 = ranked
+            first): AVG per option gives its average rank, lower is better. NULL
+            for other question types.
           DOC
           'value_label' => <<~DOC.squish,
             The answer as participants saw it, resolved to the platform primary
-            locale: the option title for (multi)select questions, the label of
-            the chosen point for 'linear_scale' and 'sentiment_linear_scale'
-            questions (often only the end points have one). NULL when there is
-            no label. Always use it rather than the option key in reports: keys
-            are fixed when an option is created, so they can contradict a label
-            that was edited later.
+            locale: the option title for (multi)select and ranking questions,
+            the label of the chosen point for 'linear_scale',
+            'sentiment_linear_scale' and 'matrix_linear_scale' questions (often
+            only the end points have one). NULL when there is no label. Always
+            use it rather than the option key in reports: keys are fixed when an
+            option is created, so they can contradict a label that was edited
+            later.
           DOC
-          'question_category' => <<~DOC.squish
+          'question_category' => <<~DOC.squish,
             Theme of a community monitor question: 'quality_of_life',
             'service_delivery', 'governance_and_trust' or 'other'. NULL for
             questions outside the community monitor survey.
+          DOC
+          'statement_key' => <<~DOC.squish,
+            For 'matrix_linear_scale' questions, the stable key of the statement
+            this row answers. Group on question_id and statement_key to
+            aggregate per statement. NULL for other question types.
+          DOC
+          'statement_label' => <<~DOC.squish
+            For 'matrix_linear_scale' questions, the statement text, resolved to
+            the platform primary locale. Report it rather than statement_key.
+            NULL for other question types.
           DOC
         }
       end

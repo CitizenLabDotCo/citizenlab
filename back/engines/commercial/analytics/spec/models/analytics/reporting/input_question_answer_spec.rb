@@ -131,14 +131,48 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
     end
   end
 
-  it 'excludes structurally complex question types' do
-    project = create(:single_phase_native_survey_project)
-    form = create(:custom_form, participation_context: project.phases.first)
-    ranking = create(:custom_field_ranking, :with_options, resource: form)
-    create(:idea_status_proposed)
-    response = create(:native_survey_response, project: project)
-    response.custom_field_answers.create!(key: ranking.key, value: %w[option1 option2])
+  describe 'structurally complex question types' do
+    let(:project) { create(:single_phase_native_survey_project) }
+    let(:form) { create(:custom_form, participation_context: project.phases.first) }
+    let(:response) do
+      create(:idea_status_proposed)
+      create(:native_survey_response, project: project)
+    end
 
-    expect(described_class.where(input_id: response.id)).to be_empty
+    it 'explodes ranking answers into one row per option, with its rank and title' do
+      ranking = create(:custom_field_ranking, :with_options, resource: form)
+      response.custom_field_answers.create!(key: ranking.key, value: %w[by_bike by_train])
+      rows = described_class.where(input_id: response.id).order(:value_numeric)
+
+      expect(rows.pluck(:value_text, :value_numeric, :value_label))
+        .to eq [['by_bike', 1, 'By bike'], ['by_train', 2, 'By train']]
+    end
+
+    it 'explodes matrix answers into one row per answered statement, with point and statement labels' do
+      matrix = create(:custom_field_matrix_linear_scale, resource: form)
+      response.custom_field_answers.create!(key: matrix.key, value: { 'send_more_animals_to_space' => 1, 'ride_bicycles_more_often' => 3 })
+      rows = described_class.where(input_id: response.id).order(:value_numeric)
+
+      expect(rows.pluck(:statement_key, :statement_label, :value_numeric, :value_label, :value_text)).to eq [
+        ['send_more_animals_to_space', 'We should send more animals into space', 1, 'Strongly disagree', nil],
+        ['ride_bicycles_more_often', 'We should ride our bicycles more often', 3, nil, nil]
+      ]
+    end
+
+    it 'records a file upload answer without the file name' do
+      file_upload = create(:custom_field_file_upload, resource: form)
+      response.custom_field_answers.create!(key: file_upload.key, value: { 'id' => SecureRandom.uuid, 'name' => 'jane_doe_cv.pdf' })
+      row = described_class.find_by!(input_id: response.id)
+
+      expect(row.question_type).to eq 'file_upload'
+      expect(row.attributes.values).not_to include(a_string_including('jane_doe'))
+    end
+
+    it 'excludes mapping questions' do
+      point = create(:custom_field_point, resource: form)
+      response.custom_field_answers.create!(key: point.key, value: { 'type' => 'Point', 'coordinates' => [4.35, 50.85] })
+
+      expect(described_class.where(input_id: response.id)).to be_empty
+    end
   end
 end
