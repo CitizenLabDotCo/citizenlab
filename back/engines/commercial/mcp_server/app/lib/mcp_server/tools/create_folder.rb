@@ -14,9 +14,10 @@ class McpServer::Tools::CreateFolder < McpServer::BaseTool
 
   def description
     <<~DESC.squish
-      Creates a project folder to group related projects. Created as a draft; publish it from the
-      admin UI once it has projects. Put a project in it by passing this folder's id as folder_id
-      when you create the project (create_project).
+      Creates a project folder to group related projects. Created as a draft; publish it once it
+      has projects (set_publication_status on demo/trial platforms, the admin UI elsewhere). Put a
+      project in it by passing this folder's id as folder_id when you create the project
+      (create_project).
     DESC
   end
 
