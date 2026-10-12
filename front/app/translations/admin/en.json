@@ -1733,6 +1733,7 @@
   "app.containers.Admin.projects.project.event.attachments": "Attachments",
   "app.containers.Admin.projects.project.event.create": "Create",
   "app.containers.Admin.projects.project.event.deleteEvent": "Delete event",
+  "app.containers.Admin.projects.project.event.dropImage": "Drop an image or click to upload",
   "app.containers.Admin.projects.project.event.eventSetup": "Event setup",
   "app.containers.Admin.projects.project.event.fromProject": "From \"{project}\"",
   "app.containers.Admin.projects.project.event.goToProject": "Go to the project",
