@@ -13,6 +13,19 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.editProjectPageInContentBuilder',
     defaultMessage: 'Edit the project page in the content builder',
   },
+  groupsNotAddedTitle: {
+    id: 'app.containers.Admin.projects.project.groupsNotAddedTitle',
+    defaultMessage: 'Groups not added',
+  },
+  groupsNotAddedOk: {
+    id: 'app.containers.Admin.projects.project.groupsNotAddedOk',
+    defaultMessage: 'OK',
+  },
+  groupsNotAdded2: {
+    id: 'app.containers.Admin.projects.project.groupsNotAdded2',
+    defaultMessage:
+      "Project created. These groups couldn't be added, so please add them again: {groups}.",
+  },
   projectPagePreviewTitle: {
     id: 'app.containers.Admin.projects.project.projectPagePreviewTitle',
     defaultMessage: 'Project page preview',

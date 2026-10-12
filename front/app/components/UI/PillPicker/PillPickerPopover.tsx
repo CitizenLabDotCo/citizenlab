@@ -1,9 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {
+  KeyboardEvent,
+  RefObject,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import {
   Box,
   Button,
-  Icon,
+  CheckboxWithLabel,
   SearchInput,
   Text,
   bo,
@@ -13,62 +20,37 @@ import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 
+import getPopoverPlacement, { PopoverPlacement } from './getPopoverPlacement';
 import messages from './messages';
 
-const CheckBox = styled.span`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 17px;
-  height: 17px;
-  border: 1px solid ${colors.coolGrey300};
-  border-radius: 5px;
-  opacity: 0;
-  transition: opacity 0.1s, background 0.12s, border-color 0.12s;
-
-  svg {
-    opacity: 0;
-  }
-`;
-
-const Option = styled.button`
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  width: 100%;
-  padding: 8px;
-  border: 0;
+const Option = styled.div`
   border-radius: ${bo.borderRadius};
-  background: none;
-  font: inherit;
   font-size: 13px;
   line-height: 1.5;
-  text-align: left;
   color: ${bo.colors.textHeadingStrong};
-  cursor: pointer;
 
   &:hover {
     background: ${colors.grey100};
   }
 
-  &:hover ${CheckBox}, &:focus-visible ${CheckBox} {
-    opacity: 1;
+  .e2e-checkbox:not(.checked) {
+    opacity: 0;
+    transition: opacity 0.1s;
   }
 
-  &[aria-checked='true'] ${CheckBox} {
+  &:hover .e2e-checkbox,
+  input.focus-visible + .e2e-checkbox {
     opacity: 1;
-    background: ${colors.primary};
-    border-color: ${colors.primary};
-
-    svg {
-      opacity: 1;
-    }
   }
 `;
 
+const GAP = 8;
+const LIST_MAX_HEIGHT = 248;
+
 const List = styled.div`
-  max-height: 248px;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: ${LIST_MAX_HEIGHT}px;
   overflow-y: auto;
   margin: 0 -6px;
   padding: 0 6px;
@@ -81,6 +63,7 @@ export interface PillOption {
 }
 
 interface Props {
+  triggerRef: RefObject<HTMLButtonElement>;
   options: PillOption[];
   selected: string[];
   searchPlaceholder: string;
@@ -90,6 +73,7 @@ interface Props {
 }
 
 const PillPickerPopover = ({
+  triggerRef,
   options,
   selected,
   searchPlaceholder,
@@ -101,11 +85,40 @@ const PillPickerPopover = ({
   const [search, setSearch] = useState('');
   const searchRef = useRef<HTMLInputElement | null>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const [placement, setPlacement] = useState<PopoverPlacement>({
+    openUp: false,
+    alignRight: false,
+  });
+
+  useLayoutEffect(() => {
+    const trigger = triggerRef.current;
+    const popover = popoverRef.current;
+    const list = listRef.current;
+    if (!trigger || !popover || !list) return;
+
+    // Measure the full height, including list rows a previous maxHeight hid.
+    const hiddenListHeight =
+      Math.min(list.scrollHeight, LIST_MAX_HEIGHT) - list.clientHeight;
+    setPlacement(
+      getPopoverPlacement(
+        trigger,
+        {
+          height: popover.offsetHeight + hiddenListHeight,
+          width: popover.offsetWidth,
+        },
+        GAP
+      )
+    );
+  }, [triggerRef, selected]);
 
   useEffect(() => {
     searchRef.current?.focus({ preventScroll: true });
-    popoverRef.current?.scrollIntoView({ block: 'nearest' });
   }, []);
+
+  const handleSearchKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key === 'Enter') event.preventDefault();
+  };
 
   const query = search.trim().toLowerCase();
   const visibleOptions = options.filter(({ label }) =>
@@ -116,10 +129,13 @@ const PillPickerPopover = ({
     <Box
       ref={popoverRef}
       position="absolute"
-      top="calc(100% + 8px)"
-      left="0"
-      right="0"
-      mx="auto"
+      top={placement.openUp ? undefined : `calc(100% + ${GAP}px)`}
+      bottom={placement.openUp ? `calc(100% + ${GAP}px)` : undefined}
+      left={placement.alignRight ? undefined : '0'}
+      right={placement.alignRight ? '0' : undefined}
+      maxHeight={placement.maxHeight ? `${placement.maxHeight}px` : undefined}
+      display="flex"
+      flexDirection="column"
       zIndex="10"
       w="328px"
       p="12px"
@@ -128,7 +144,7 @@ const PillPickerPopover = ({
       borderRadius="12px"
       boxShadow="0 8px 28px rgba(20, 25, 40, 0.14)"
     >
-      <Box mb="8px">
+      <Box mb="8px" onKeyDown={handleSearchKeyDown}>
         <SearchInput
           variant="bo"
           hideLabel
@@ -141,24 +157,17 @@ const PillPickerPopover = ({
         />
       </Box>
 
-      <List>
+      <List ref={listRef}>
         {visibleOptions.map(({ value, label }) => (
-          <Option
-            key={value}
-            type="button"
-            role="checkbox"
-            aria-checked={selected.includes(value)}
-            onClick={() => onToggle(value)}
-          >
-            <CheckBox>
-              <Icon
-                name="check"
-                width="11px"
-                height="11px"
-                fill={colors.white}
-              />
-            </CheckBox>
-            {label}
+          <Option key={value}>
+            <CheckboxWithLabel
+              p="8px"
+              size="17px"
+              checkedColor="primary"
+              checked={selected.includes(value)}
+              onChange={() => onToggle(value)}
+              label={label}
+            />
           </Option>
         ))}
         {visibleOptions.length === 0 && (
@@ -193,6 +202,7 @@ const PillPickerPopover = ({
           {formatMessage(messages.selectedCount, { count: selected.length })}
         </Text>
         <Button
+          type="button"
           buttonStyle="bo-text"
           width="auto"
           height="auto"

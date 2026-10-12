@@ -214,6 +214,7 @@ const SearchInput = ({
           {internalSearchTerm ? (
             <IconButton
               iconName="close"
+              buttonType="button"
               onClick={handleOnReset}
               iconColor={colors.textSecondary}
               iconColorOnHover="#000"

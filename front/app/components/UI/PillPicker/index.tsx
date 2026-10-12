@@ -106,7 +106,6 @@ const PillPicker = ({
 
   return (
     <Box
-      position="relative"
       display="flex"
       flexWrap="wrap"
       alignItems="center"
@@ -131,32 +130,35 @@ const PillPicker = ({
         onClickOutside={() => setOpened(false)}
         closeOnClickOutsideEnabled={opened}
       >
-        <AddButton
-          ref={addButtonRef}
-          type="button"
-          aria-expanded={opened}
-          aria-haspopup="dialog"
-          onClick={() => (opened ? close() : setOpened(true))}
-        >
-          <Icon name="plus" width="13px" height="13px" />
-          {addLabel}
-        </AddButton>
-        {opened && (
-          <PillPickerPopover
-            options={options}
-            selected={selected}
-            searchPlaceholder={searchPlaceholder}
-            noMatchLabel={noMatchLabel}
-            onToggle={(value) =>
-              onChange(
-                selected.includes(value)
-                  ? selected.filter((id) => id !== value)
-                  : [...selected, value]
-              )
-            }
-            onClose={close}
-          />
-        )}
+        <Box position="relative">
+          <AddButton
+            ref={addButtonRef}
+            type="button"
+            aria-expanded={opened}
+            aria-haspopup="dialog"
+            onClick={() => (opened ? close() : setOpened(true))}
+          >
+            <Icon name="plus" width="13px" height="13px" />
+            {addLabel}
+          </AddButton>
+          {opened && (
+            <PillPickerPopover
+              triggerRef={addButtonRef}
+              options={options}
+              selected={selected}
+              searchPlaceholder={searchPlaceholder}
+              noMatchLabel={noMatchLabel}
+              onToggle={(value) =>
+                onChange(
+                  selected.includes(value)
+                    ? selected.filter((id) => id !== value)
+                    : [...selected, value]
+                )
+              }
+              onClose={close}
+            />
+          )}
+        </Box>
       </ClickOutside>
     </Box>
   );
