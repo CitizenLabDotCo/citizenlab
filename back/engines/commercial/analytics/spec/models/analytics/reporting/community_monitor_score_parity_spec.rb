@@ -11,17 +11,26 @@ RSpec.describe 'reporting_community_monitor_scores parity with Surveys::AverageG
   let!(:quality) { create(:custom_field_sentiment_linear_scale, resource: form, question_category: 'quality_of_life') }
   let!(:service) { create(:custom_field_sentiment_linear_scale, resource: form, question_category: 'service_delivery') }
   let!(:uncategorised) { create(:custom_field_sentiment_linear_scale, resource: form) }
+  let!(:disabled) { create(:custom_field_sentiment_linear_scale, resource: form, question_category: 'quality_of_life', enabled: false) }
 
   before do
+    settings = AppConfiguration.instance.settings
+    settings['core']['timezone'] = 'America/New_York'
+    AppConfiguration.instance.update_column(:settings, settings)
     create(:idea_status_proposed)
     [
-      ['2026-02-10', create(:user), { quality => 2, service => 3, uncategorised => 4 }],
-      ['2026-03-05', create(:admin), { quality => 5, service => 5 }],
-      ['2026-03-20', nil, { quality => 1, uncategorised => 2 }],
-      ['2026-05-02', create(:user), { quality => 4, service => 1 }],
-      ['2026-06-11', create(:project_moderator), { service => 2, uncategorised => 5 }]
-    ].each do |date, author, answers|
-      response = create(:native_survey_response, project: phase.project, creation_phase: phase, author: author, created_at: Time.zone.parse("#{date} 12:00"))
+      [Time.utc(2026, 2, 10, 12), create(:user), { quality => 2, service => 3, uncategorised => 4, disabled => 1 }],
+      [Time.utc(2026, 3, 5, 12), create(:admin), { quality => 5, service => 5 }],
+      [Time.utc(2026, 3, 20, 12), nil, { quality => 1, uncategorised => 2 }],
+      # 31 March, 22:00 in New York: the first quarter there, the second in UTC.
+      [Time.utc(2026, 4, 1, 2), create(:user), { quality => 5, service => 4 }],
+      [Time.utc(2026, 5, 2, 12), create(:user), { quality => 4, service => 1 }],
+      [Time.utc(2026, 5, 20, 12), create(:project_folder_moderator), { quality => 1 }],
+      [Time.utc(2026, 6, 11, 12), create(:project_moderator), { service => 2, uncategorised => 5 }],
+      [Time.utc(2026, 6, 15, 12), create(:space_moderator), { service => 5 }],
+      [Time.utc(2026, 6, 20, 12), create(:user), { quality => 1, service => 1 }, { publication_status: 'submitted' }]
+    ].each do |created_at, author, answers, attributes = {}|
+      response = create(:native_survey_response, project: phase.project, creation_phase: phase, author: author, created_at: created_at, **attributes)
       answers.each { |field, value| response.custom_field_answers.create!(key: field.key, value: value) }
     end
   end
@@ -42,9 +51,12 @@ RSpec.describe 'reporting_community_monitor_scores parity with Surveys::AverageG
     it 'gives the same overall and per-category averages as the dashboard' do
       rows = Analytics::Reporting::CommunityMonitorScore.where(phase_id: phase.id).to_a
       rows = rows.reject(&:staff) if exclude_staff
-      product = Surveys::AverageGenerator.new(
-        phase, input_type: 'sentiment_linear_scale', exclude_admins_and_moderators: exclude_staff
-      ).summary_averages_by_quarter
+      # On a request, switching tenant sets Time.zone to the platform timezone.
+      product = Time.use_zone(AppConfiguration.timezone) do
+        Surveys::AverageGenerator.new(
+          phase, input_type: 'sentiment_linear_scale', exclude_admins_and_moderators: exclude_staff
+        ).summary_averages_by_quarter
+      end
 
       overall = pooled(rows) { |row| "#{row.year}-#{row.quarter}" }
       expect(overall).to eq product[:overall][:averages]
