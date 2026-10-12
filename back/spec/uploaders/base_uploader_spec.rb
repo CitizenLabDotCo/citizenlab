@@ -40,4 +40,21 @@ RSpec.describe BaseUploader do
       expect(uploader.use_fog_engine?).to be(true)
     end
   end
+
+  describe '#fog_attributes' do
+    it 'makes CloudFront check images with S3 on every request' do
+      image_uploader = BaseImageUploader.new(build_stubbed(:user), :avatar)
+
+      expect(image_uploader.fog_attributes).to eq('Cache-Control' => 'no-cache')
+    end
+
+    it 'makes CloudFront check files with S3 on every request, and keeps their download name' do
+      file_uploader = BaseFileUploader.new(build_stubbed(:file_upload, name: 'my  report.pdf'), :file)
+
+      expect(file_uploader.fog_attributes).to eq(
+        'Cache-Control' => 'no-cache',
+        'Content-Disposition' => 'inline; filename="my report.pdf"'
+      )
+    end
+  end
 end
