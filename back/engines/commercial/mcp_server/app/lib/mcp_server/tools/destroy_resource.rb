@@ -3,6 +3,7 @@
 class McpServer::Tools::DestroyResource < McpServer::BaseTool
   RESOURCE_TYPES = {
     'project' => Project,
+    'folder' => ProjectFolders::Folder,
     'phase' => Phase,
     'event' => Event,
     'cause' => Volunteering::Cause,
@@ -16,6 +17,7 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
 
   SIDE_FX_SERVICES = {
     Project => SideFxProjectService,
+    ProjectFolders::Folder => ProjectFolders::SideFxProjectFolderService,
     Phase => SideFxPhaseService,
     Event => SideFxEventService,
     Volunteering::Cause => Volunteering::SideFxCauseService,
@@ -24,6 +26,10 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
     Files::FileAttachment => Files::SideFxFileAttachmentService
   }.freeze
   private_constant :SIDE_FX_SERVICES
+
+  FOLDER_DEMO_ONLY_MESSAGE = 'Destroying folders via MCP is only available on demo and trial ' \
+                             'platforms. On live platforms, folder deletion stays a human ' \
+                             'action in the admin UI.'
 
   def name = 'destroy_resource'
 
@@ -41,6 +47,8 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
       Deletes a resource by id. Only works on resources whose target project or folder is
       in draft, except on demo and trial platforms, where published ones can be targeted too.
       Destroying a project or a phase fails if any of its inputs would be deleted along with it.
+      Folders can only be destroyed on demo and trial platforms, and only when they contain
+      no projects — move them out first (update_project's folder_id) or destroy them too.
     DESC
   end
 
@@ -61,11 +69,16 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
         return not_found_error("Resource (#{params[:resource_type]})", params[:id])
       end
 
+      if record.is_a?(ProjectFolders::Folder) && !published_writable_platform?
+        return error(FOLDER_DEMO_ONLY_MESSAGE)
+      end
+
       authorize_project!(guard_target(record))
       authorize(record, :destroy?)
 
       assert_can_destroy_project!(record) if record.is_a?(Project)
       assert_can_destroy_phase!(record) if record.is_a?(Phase)
+      assert_can_destroy_folder!(record) if record.is_a?(ProjectFolders::Folder)
 
       destroy_with_sidefx!(record)
 
@@ -90,6 +103,16 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
       return if input_count.zero?
 
       message = 'Cannot destroy project: it has inputs that would be deleted along with it.'
+      raise Pundit::NotAuthorizedErrorWithReason, reason: message, message: message
+    end
+
+    # The web UI cascades folder destruction to the contained projects; via the MCP we
+    # refuse instead, so losing projects stays a deliberate, per-project action.
+    def assert_can_destroy_folder!(folder)
+      return unless folder.projects.exists?
+
+      message = 'Cannot destroy folder: it contains projects. Move them out first ' \
+                '(update_project with folder_id: null) or destroy them individually.'
       raise Pundit::NotAuthorizedErrorWithReason, reason: message, message: message
     end
 

@@ -26,7 +26,10 @@ class McpServer::Tools::CreateFolder < McpServer::BaseTool
       properties: {
         title_multiloc: { **multiloc_schema, description: 'Folder name.' },
         description_preview_multiloc: { **multiloc_schema, description: 'Short folder description shown on its card and page (HTML).' },
-        remote_header_bg_url: { type: 'string', format: 'uri', description: 'Public URL of the image to download and use as the header background.' }
+        remote_header_bg_url: { type: %w[string null], format: 'uri', description: <<~DESC.squish }
+          Public URL of the image to download and use as the header background.
+          Pass null to remove the existing header background when updating.
+        DESC
       },
       required: %w[title_multiloc],
       additionalProperties: false
