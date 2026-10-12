@@ -1,4 +1,5 @@
 import React, {
+  KeyboardEvent,
   RefObject,
   useEffect,
   useLayoutEffect,
@@ -115,6 +116,10 @@ const PillPickerPopover = ({
     searchRef.current?.focus({ preventScroll: true });
   }, []);
 
+  const handleSearchKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key === 'Enter') event.preventDefault();
+  };
+
   const query = search.trim().toLowerCase();
   const visibleOptions = options.filter(({ label }) =>
     label.toLowerCase().includes(query)
@@ -139,7 +144,7 @@ const PillPickerPopover = ({
       borderRadius="12px"
       boxShadow="0 8px 28px rgba(20, 25, 40, 0.14)"
     >
-      <Box mb="8px">
+      <Box mb="8px" onKeyDown={handleSearchKeyDown}>
         <SearchInput
           variant="bo"
           hideLabel
@@ -197,6 +202,7 @@ const PillPickerPopover = ({
           {formatMessage(messages.selectedCount, { count: selected.length })}
         </Text>
         <Button
+          type="button"
           buttonStyle="bo-text"
           width="auto"
           height="auto"
