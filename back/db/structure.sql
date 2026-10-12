@@ -210,6 +210,7 @@ DROP INDEX IF EXISTS public.index_users_on_slug;
 DROP INDEX IF EXISTS public.index_users_on_roles;
 DROP INDEX IF EXISTS public.index_users_on_registration_completed_at;
 DROP INDEX IF EXISTS public.index_users_on_phone;
+DROP INDEX IF EXISTS public.index_users_on_email_bounced_at;
 DROP INDEX IF EXISTS public.index_users_on_email;
 DROP INDEX IF EXISTS public.index_ucf_representativeness_ref_distributions_on_custom_field;
 DROP INDEX IF EXISTS public.index_tenants_on_host;
@@ -1595,7 +1596,9 @@ CREATE TABLE public.users (
     new_phone character varying,
     phone_confirmed_at timestamp(6) without time zone,
     early_access_opt_ins jsonb DEFAULT '[]'::jsonb NOT NULL,
-    merge_target_email character varying
+    merge_target_email character varying,
+    email_bounced_at timestamp(6) without time zone,
+    email_bounce_reason character varying
 );
 
 
@@ -8196,6 +8199,13 @@ CREATE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
+-- Name: index_users_on_email_bounced_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_email_bounced_at ON public.users USING btree (email_bounced_at) WHERE (email_bounced_at IS NOT NULL);
+
+
+--
 -- Name: index_users_on_phone; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -9778,6 +9788,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261012120000'),
+('20261008120000'),
 ('20261006190100'),
 ('20261006180100'),
 ('20261006170100'),
