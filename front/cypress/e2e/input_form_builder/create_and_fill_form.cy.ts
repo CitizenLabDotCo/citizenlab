@@ -295,5 +295,25 @@ describe('Input form builder', () => {
       .type(answer, { force: true });
     cy.dataCy('e2e-submit-form').click();
     cy.wait('@ideaSubmission');
+
+    // With a submission in, showing the private answers asks for confirmation
+    cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form`);
+    cy.dataCy('e2e-edit-input-form').click();
+    cy.get('#e2e-warning-notice').should('exist');
+    cy.dataCy('e2e-form-fields').contains(privateQuestion).click();
+    cy.get('#e2e-public-answers-toggle').find('input').click({ force: true });
+    cy.dataCy('e2e-confirm-public-answers').should('be.visible');
+    cy.get('#e2e-public-answers-toggle').find('input').should('not.be.checked');
+
+    cy.contains('button', 'Cancel').click();
+    cy.dataCy('e2e-confirm-public-answers').should('not.exist');
+    cy.get('#e2e-public-answers-toggle').find('input').should('not.be.checked');
+
+    cy.get('#e2e-public-answers-toggle').find('input').click({ force: true });
+    cy.dataCy('e2e-confirm-public-answers').click();
+    cy.get('#e2e-public-answers-toggle').find('input').should('be.checked');
+
+    cy.get('form').submit();
+    cy.get('[data-testid="feedbackSuccessMessage"]').should('exist');
   });
 });
