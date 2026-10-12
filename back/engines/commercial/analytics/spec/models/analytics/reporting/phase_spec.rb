@@ -41,6 +41,35 @@ RSpec.describe Analytics::Reporting::Phase do
     expect(row.end_at).to be_nil
   end
 
+  describe 'voters' do
+    let(:voting_phase) { create(:single_voting_phase) }
+    let(:voting_row) { described_class.find(voting_phase.id) }
+
+    it 'counts online voters as the voting results do, keeping voters whose picks were deleted' do
+      kept, deleted = create_list(:idea, 2, project: voting_phase.project, phases: [voting_phase])
+      create(:baskets_idea, basket: create(:basket, phase: voting_phase), idea: kept)
+      create(:baskets_idea, basket: create(:basket, phase: voting_phase), idea: deleted)
+      deleted.destroy!
+      Basket.update_counts(voting_phase)
+
+      expect(voting_row.online_voters_count).to eq 2
+      expect(voting_row.online_voters_count).to eq voting_phase.reload.baskets_count
+      expect(Analytics::Reporting::Contribution.where(type: 'vote', phase_id: voting_phase.id).distinct.count(:participant_id)).to eq 1
+    end
+
+    it 'exposes the offline voters an administrator entered' do
+      voting_phase.set_manual_voters(3, create(:admin))
+      voting_phase.save!
+
+      expect(voting_row.manual_voters_amount).to eq 3
+      expect(voting_row.manual_voters_last_updated_at).to eq voting_phase.reload.manual_voters_last_updated_at
+    end
+
+    it 'has no voters for other participation methods' do
+      expect([row.online_voters_count, row.manual_voters_amount, row.manual_voters_last_updated_at]).to eq [0, nil, nil]
+    end
+  end
+
   it 'documents every possible participation method' do
     description = described_class.field_descriptions['participation_method']
     expect(description).to include(*Phase::PARTICIPATION_METHODS)
