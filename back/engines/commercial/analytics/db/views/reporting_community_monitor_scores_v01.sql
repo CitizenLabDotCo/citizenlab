@@ -1,13 +1,15 @@
 -- Reporting view: community monitor scores, one row per phase, quarter,
--- question and author group (staff or not). Mirrors Surveys::AverageGenerator
--- as used by the community monitor dashboard: published responses only,
--- enabled sentiment questions only, and quarters taken from the response's
--- creation time in the platform timezone.
+-- question and author group (staff or not). Scores must match the community
+-- monitor dashboard (Surveys::AverageGenerator), or reports built on this view
+-- will disagree with it. Like the dashboard, it counts published responses
+-- only and enabled sentiment questions only, and takes quarters from the
+-- response's creation time in the platform timezone.
 --
 -- Built on reporting_input_question_answers so the question_category rule
 -- lives in one place. The dashboard can leave out admins' and moderators'
--- responses (a platform setting); this view never filters on that setting but
--- splits rows by staff, so both results can be computed.
+-- responses (a platform setting), treating anyone with a role as staff
+-- (User.not_normal_user). This view never filters on that setting but splits
+-- rows by staff the same way, so both results can be computed.
 WITH responses AS (
     SELECT
         ph.id AS phase_id,
