@@ -32,6 +32,7 @@ type Variant =
   | 'bodyXs'
   | 'boSection'
   | 'boLabel'
+  | 'boControl'
   | 'boHelper'
   | 'boMicro';
 
@@ -75,6 +76,12 @@ const BO_ROLES: Partial<Record<Variant, Role>> = {
     fontWeight: 400,
     lineHeight: 1.4,
     color: bo.colors.textHeading,
+  },
+  boControl: {
+    fontSize: bo.controlFontSize,
+    fontWeight: 400,
+    lineHeight: 1.5,
+    color: bo.colors.textHeadingStrong,
   },
   boHelper: {
     fontSize: fontSizes.s,

@@ -4,7 +4,7 @@ import { Visibility } from 'api/projects/types';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
-import messages from '../messages';
+import messages from './messages';
 
 export interface VisibilityOption<T extends string> {
   value: T;

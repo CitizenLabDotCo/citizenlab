@@ -18,6 +18,7 @@ export interface Props {
   onChange: (arg: string | null) => void;
   className?: string;
   size?: SearchInputProps['size'];
+  variant?: SearchInputProps['variant'];
   labelColor?: string;
   // This prop will ensure that screen readers
   // get notified when the number of results have changed.
@@ -37,6 +38,7 @@ const SearchInputWrapper = ({
   onChange,
   className,
   size,
+  variant,
   a11y_numberOfSearchResults,
   setInputRef,
   labelColor,
@@ -96,6 +98,7 @@ const SearchInputWrapper = ({
         onChange={onChange}
         a11y_closeIconTitle={formatMessage(messages.removeSearchTerm)}
         size={size}
+        variant={variant}
         setInputRef={setInputRef}
         labelColor={labelColor}
         hideLabel={hideLabel}
