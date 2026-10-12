@@ -185,6 +185,27 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
       ]
     end
 
+    it 'gives the same matrix counts as the survey results page' do
+      matrix = create(:custom_field_matrix_linear_scale, resource: form)
+      create(:idea_status_proposed)
+      [
+        { 'send_more_animals_to_space' => 1, 'ride_bicycles_more_often' => 3 },
+        { 'send_more_animals_to_space' => 5, 'ride_bicycles_more_often' => 3, 'deleted_statement' => 2 },
+        { 'send_more_animals_to_space' => 7 }
+      ].each do |value|
+        create(:native_survey_response, project: project).custom_field_answers.create!(custom_field: matrix, key: matrix.key, value: value)
+      end
+      counts = described_class.where(question_id: matrix.id).group(:statement_key, :value_numeric).count
+        .transform_keys { |statement_key, point| [statement_key, point.to_i] }
+
+      product = Surveys::ResultsGenerator.new(project.phases.first).generate_result_for_field(matrix.id)
+      product_counts = product[:linear_scales].flat_map do |statement_key, statement|
+        statement[:answers].select { |answer| answer[:answer] && answer[:count] > 0 }
+          .map { |answer| [[statement_key, answer[:answer]], answer[:count]] }
+      end
+      expect(counts).to eq product_counts.to_h
+    end
+
     it 'records a file upload answer without the file name' do
       file_upload = create(:custom_field_file_upload, resource: form)
       response.custom_field_answers.create!(key: file_upload.key, value: { 'id' => SecureRandom.uuid, 'name' => 'jane_doe_cv.pdf' })

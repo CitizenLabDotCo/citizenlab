@@ -183,7 +183,10 @@ WHERE jsonb_typeof(a.value) = 'array'
 UNION ALL
 
 -- matrix questions: one row per answered statement, value_numeric is the
--- chosen point on the shared scale
+-- chosen point on the shared scale. Counts must match the survey results page
+-- (Surveys::ResultsGenerator), or reports built on this view will disagree with
+-- it: like that page, only count the question's current statements and points
+-- from 1 to its maximum.
 SELECT
     i.id AS input_id,
     q.id AS question_id,
@@ -217,7 +220,7 @@ INNER JOIN custom_field_answers a
     AND a.answerable_id = i.id
     AND a.key = q.key
 CROSS JOIN LATERAL jsonb_each(a.value) AS answered(key, value)
-LEFT JOIN custom_field_matrix_statements s
+INNER JOIN custom_field_matrix_statements s
     ON s.custom_field_id = q.id
     AND s.key = answered.key
 CROSS JOIN LATERAL (
@@ -236,4 +239,7 @@ CROSS JOIN LATERAL (
     END AS multiloc
 ) label
 WHERE jsonb_typeof(a.value) = 'object'
-    AND jsonb_typeof(answered.value) = 'number'
+    AND CASE
+        WHEN jsonb_typeof(answered.value) = 'number'
+        THEN (answered.value #>> '{}')::numeric BETWEEN 1 AND q.maximum
+    END

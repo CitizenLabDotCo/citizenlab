@@ -3959,7 +3959,7 @@ UNION ALL
      JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = 'matrix_linear_scale'::text))))
      JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
      CROSS JOIN LATERAL jsonb_each(a.value) answered(key, value))
-     LEFT JOIN public.custom_field_matrix_statements s ON (((s.custom_field_id = q.id) AND ((s.key)::text = answered.key))))
+     JOIN public.custom_field_matrix_statements s ON (((s.custom_field_id = q.id) AND ((s.key)::text = answered.key))))
      CROSS JOIN LATERAL ( SELECT
                 CASE (answered.value #>> '{}'::text[])
                     WHEN '1'::text THEN q.linear_scale_label_1_multiloc
@@ -3975,7 +3975,11 @@ UNION ALL
                     WHEN '11'::text THEN q.linear_scale_label_11_multiloc
                     ELSE NULL::jsonb
                 END AS multiloc) label)
-  WHERE ((jsonb_typeof(a.value) = 'object'::text) AND (jsonb_typeof(answered.value) = 'number'::text));
+  WHERE ((jsonb_typeof(a.value) = 'object'::text) AND
+        CASE
+            WHEN (jsonb_typeof(answered.value) = 'number'::text) THEN ((((answered.value #>> '{}'::text[]))::numeric >= (1)::numeric) AND (((answered.value #>> '{}'::text[]))::numeric <= (q.maximum)::numeric))
+            ELSE NULL::boolean
+        END);
 
 
 --
@@ -10072,9 +10076,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20261012100100'),
 ('20261012120000'),
-('20261008120000'),
+('20261012100100'),
 ('20261009200000'),
 ('20261009150100'),
 ('20261009140100'),
@@ -10082,6 +10085,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20261009120100'),
 ('20261009110100'),
 ('20261009100100'),
+('20261008120000'),
 ('20261006190100'),
 ('20261006180100'),
 ('20261006170100'),
