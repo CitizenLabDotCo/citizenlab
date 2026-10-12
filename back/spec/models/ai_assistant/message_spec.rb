@@ -19,4 +19,11 @@ describe AIAssistant::Message do
     expect(message).not_to be_valid
     expect(message.errors.details[:content]).to include(error: :blank)
   end
+
+  it 'limits the length of user messages only' do
+    long_content = 'a' * (described_class::MAX_CONTENT_LENGTH + 1)
+
+    expect(build(:ai_assistant_message, conversation:, content: long_content)).not_to be_valid
+    expect(build(:ai_assistant_message, conversation:, role: 'assistant', content: long_content)).to be_valid
+  end
 end

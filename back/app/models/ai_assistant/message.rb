@@ -32,8 +32,7 @@ module AIAssistant
 
     enum :role, ROLES.index_by(&:itself)
 
-    validates :content, length: { maximum: MAX_CONTENT_LENGTH }
-    validates :content, presence: true, if: :user?
+    validates :content, presence: true, length: { maximum: MAX_CONTENT_LENGTH }, if: :user?
 
     before_validation :assign_position, on: :create
 
