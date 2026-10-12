@@ -49,7 +49,6 @@ const boFrameStyle = css`
     border-color: ${({ theme }) => theme.colors.tenantPrimary} !important;
   }
 
-  // The line between toolbar and text stays light, also when focused.
   && div.ql-container,
   &&.focus div.ql-container {
     border-top-color: ${colors.grey200} !important;

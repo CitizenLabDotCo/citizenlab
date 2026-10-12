@@ -22,7 +22,6 @@ const ImageCard = ({ form }: Props) => {
   const { formatMessage } = useIntl();
   const [cropOpen, setCropOpen] = useState(false);
 
-  // A new image has to be cropped to 3:1 before it is saved.
   const addImage = (images: UploadFile[]) => {
     form.addImage(images);
     setCropOpen(true);

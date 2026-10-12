@@ -13,7 +13,6 @@ interface Props {
   children: ReactNode;
 }
 
-// Mirrors an icon row of the event page's information card.
 const PreviewInfoRow = ({ icon, empty = false, children }: Props) => (
   <Box display="flex" alignItems="flex-start" gap="8px">
     <Box flex="0 0 24px" mt="2px" display="flex">

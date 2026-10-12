@@ -29,7 +29,6 @@ const EventMap = lazy(
   () => import('containers/Admin/projects/project/events/components/EventMap')
 );
 
-// Matches the label of the bo inputs around it.
 const AddressLabel = styled(Label)`
   margin-bottom: 4px;
   font-size: ${fontSizes.xs}px;

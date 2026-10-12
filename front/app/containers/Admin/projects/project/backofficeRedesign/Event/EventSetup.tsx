@@ -30,7 +30,6 @@ interface Props {
 const EventSetup = ({ projectId, form }: Props) => {
   const { formatMessage } = useIntl();
   const { attributes, errors } = form;
-  // Without files the card is just its header with the add button.
   const hasAttachmentsBody =
     form.files.attachments.length > 0 ||
     form.files.isUploadingFile ||

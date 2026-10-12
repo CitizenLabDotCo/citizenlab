@@ -57,7 +57,6 @@ const EventMap = memo<Props>(
         mapView.graphics.removeAll();
         mapView.graphics.add(graphic);
 
-        // Update the locationPoint in the parent form component
         setLocationPoint?.({
           type: 'Point',
           coordinates: [event.mapPoint.longitude, event.mapPoint.latitude],
