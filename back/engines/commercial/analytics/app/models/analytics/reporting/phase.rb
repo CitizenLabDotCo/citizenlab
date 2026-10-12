@@ -22,10 +22,29 @@ module Analytics
       self.table_name = 'reporting_phases'
       self.primary_key = :id
 
+      # Must give the visitors the phase insights show (Insights::VisitsService
+      # for the phase's project and dates), or reports will disagree with them:
+      # visitors with a pageview of the project from start_at up to, not
+      # including, end_at.
+      VISITORS_SQL = <<~SQL.squish
+        SELECT COUNT(DISTINCT s.visitor_id)
+        FROM reporting_phases ph
+        JOIN reporting_pageviews pv
+          ON pv.project_id = ph.project_id
+          AND pv.created_at >= ph.start_at
+          AND (ph.end_at IS NULL OR pv.created_at < ph.end_at)
+        JOIN reporting_sessions s ON s.id = pv.session_id
+        WHERE ph.id = '<phase id>'
+      SQL
+
       def self.table_description
         <<~DOC.squish
           A phase is a consecutive step in a project's
           timeline with exactly one participation method.
+          A phase has no pageviews of its own: count its visitors (reach) as
+          the phase insights do, with #{VISITORS_SQL}. Use it exactly as given,
+          replacing <phase id>. To leave out platform staff, as the insights
+          can, add AND (s.highest_role IS NULL OR s.highest_role = 'user').
         DOC
       end
 

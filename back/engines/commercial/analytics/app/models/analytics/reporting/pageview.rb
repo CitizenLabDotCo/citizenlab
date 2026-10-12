@@ -33,7 +33,8 @@ module Analytics
           'project_id' => <<~DOC.squish,
             The project the page belongs to, or NULL for pages outside any
             project (such as the home page). Use this to count visitors or
-            pageviews per project.
+            pageviews per project. For a phase's visitors, use the recipe in
+            the reporting_phases description.
           DOC
           'locale' => <<~DOC.squish
             Interface language of the pageview, parsed from the path (for
