@@ -1965,6 +1965,8 @@
   "app.containers.IdeasShow.issueTwitterMessage1": "Support this issue: {postTitle}",
   "app.containers.IdeasShow.issueWhatsAppMessage1": "Support this issue: {postTitle}",
   "app.containers.IdeasShow.metaTitle": "Input: {inputTitle} | {orgName}",
+  "app.containers.IdeasShow.moreFromThisSubmission": "More from this submission",
+  "app.containers.IdeasShow.notAnswered": "Not answered",
   "app.containers.IdeasShow.observationEmailSharingBody": "Support this observation '{ideaTitle}' at {ideaUrl}!",
   "app.containers.IdeasShow.observationEmailSharingSubject": "Support this observation: {ideaTitle}",
   "app.containers.IdeasShow.observationSharingModalTitle": "Thanks for submitting your observation!",
