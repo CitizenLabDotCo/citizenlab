@@ -1,8 +1,9 @@
 import React, { memo, useState, useCallback, useEffect } from 'react';
 
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { isNilOrError } from '../../utils/helperUtils';
+import { colors, fontSizes } from '../../utils/styleUtils';
 import { Locale, Multiloc } from '../../utils/typings';
 import Box from '../Box';
 import IconTooltip from '../IconTooltip';
@@ -18,9 +19,18 @@ const LabelContainer = styled.div`
   flex-wrap: wrap;
 `;
 
-const StyledLabel = styled(Label)`
+const boLabelStyle = css`
+  margin-bottom: 0;
+  font-size: ${fontSizes.xs}px;
+  line-height: 1.4;
+  color: ${colors.coolGrey600};
+`;
+
+const StyledLabel = styled(Label)<{ variant: InputProps['variant'] }>`
   flex: 1;
   padding-bottom: 0px;
+
+  ${({ variant }) => variant === 'bo' && boLabelStyle}
 `;
 
 const Spacer = styled.div`
@@ -110,10 +120,10 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
   if (selectedLocale) {
     return (
       <Box className={className}>
-        <Box mb="10px">
+        <Box mb={props.variant === 'bo' ? '4px' : '10px'}>
           <LabelContainer>
             {label ? (
-              <StyledLabel htmlFor={id}>
+              <StyledLabel htmlFor={id} variant={props.variant}>
                 <span>{label}</span>
                 {labelTooltipText && <IconTooltip content={labelTooltipText} />}
               </StyledLabel>

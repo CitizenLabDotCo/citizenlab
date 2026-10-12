@@ -34,7 +34,7 @@ const boInputStyle = css`
     font-weight: 400;
     line-height: 1.4;
     color: ${colors.coolGrey600};
-    margin-bottom: 12px;
+    margin-bottom: 4px;
   }
 
   input {

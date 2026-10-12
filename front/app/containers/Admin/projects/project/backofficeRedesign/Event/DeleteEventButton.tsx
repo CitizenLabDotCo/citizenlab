@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Box, Button, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 
 import useDeleteEvent from 'api/events/useDeleteEvent';
 
@@ -37,10 +42,25 @@ const DeleteEventButton = ({ projectId, eventId }: Props) => {
   };
 
   return (
-    <Box display="flex" pt="16px" borderTop={`1px solid ${colors.grey200}`}>
+    <Box
+      position="sticky"
+      bottom="0"
+      zIndex="1"
+      display="flex"
+      mt="auto"
+      mx="-18px"
+      px="18px"
+      py="12px"
+      bgColor={colors.grey50}
+      borderTop={`1px solid ${colors.grey200}`}
+    >
       <Button
-        buttonStyle="bo-delete"
-        icon="delete"
+        buttonStyle="bo-text"
+        textColor={colors.red600}
+        textHoverColor={colors.red600}
+        fontSize={`${fontSizes.xs}px`}
+        fontWeight="600"
+        padding="6px"
         width="auto"
         processing={isPending}
         onClick={handleDelete}

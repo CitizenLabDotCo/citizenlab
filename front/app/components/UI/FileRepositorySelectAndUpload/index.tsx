@@ -29,6 +29,7 @@ export interface Props {
   maxSizeMb?: number;
   dataCy?: string;
   isUploadingFile?: boolean;
+  hideTrigger?: boolean;
 }
 
 const FileRepositorySelectAndUpload = ({
@@ -44,6 +45,7 @@ const FileRepositorySelectAndUpload = ({
   maxSizeMb,
   dataCy,
   isUploadingFile,
+  hideTrigger = false,
 }: Props) => {
   const [fileAttachments, setFileAttachments] = useState(
     initialFileAttachments
@@ -124,14 +126,16 @@ const FileRepositorySelectAndUpload = ({
       data-cy="e2e-file-uploader-container"
       w="100%"
     >
-      <FileSelectOrUploadModal
-        fileAttachments={fileAttachments}
-        onFileAdd={handleFileOnAdd}
-        onFileAttach={handleFileOnAttach}
-        maxSizeMb={maxSizeMb}
-        dataCy={dataCy}
-        isDisabled={isUploadingFile}
-      />
+      {!hideTrigger && (
+        <FileSelectOrUploadModal
+          fileAttachments={fileAttachments}
+          onFileAdd={handleFileOnAdd}
+          onFileAttach={handleFileOnAttach}
+          maxSizeMb={maxSizeMb}
+          dataCy={dataCy}
+          isDisabled={isUploadingFile}
+        />
+      )}
 
       <Error fieldName="file" apiErrors={apiErrors?.file} />
 

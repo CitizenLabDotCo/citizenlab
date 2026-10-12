@@ -1,6 +1,14 @@
 import React from 'react';
 
-import { Box, Button, Select, Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Select,
+  Text,
+  Tooltip,
+  bo,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import { UploadFile } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
@@ -23,6 +31,7 @@ type Props = {
   maxSizeMb?: number;
   dataCy?: string;
   isDisabled?: boolean;
+  iconOnly?: boolean;
 };
 
 const FileSelectOrUploadModal = ({
@@ -32,6 +41,7 @@ const FileSelectOrUploadModal = ({
   fileAttachments,
   isDisabled,
   dataCy,
+  iconOnly = false,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [modalOpen, setModalOpen] = React.useState(false);
@@ -68,15 +78,34 @@ const FileSelectOrUploadModal = ({
 
   return (
     <>
-      <Button
-        onClick={() => setModalOpen(true)}
-        id={'e2e-open-file-upload-modal-button'}
-        buttonStyle="secondary"
-        icon="file-add"
-        disabled={isDisabled}
-      >
-        {formatMessage(messages.addFile)}
-      </Button>
+      {iconOnly ? (
+        <Tooltip content={formatMessage(messages.addFile)} theme="dark">
+          <Button
+            onClick={() => setModalOpen(true)}
+            id={'e2e-open-file-upload-modal-button'}
+            buttonStyle="bo-text"
+            icon="plus"
+            iconSize="16px"
+            iconColor={colors.coolGrey500}
+            iconHoverColor={bo.colors.textHeadingStrong}
+            width="28px"
+            height="28px"
+            padding="0"
+            ariaLabel={formatMessage(messages.addFile)}
+            disabled={isDisabled}
+          />
+        </Tooltip>
+      ) : (
+        <Button
+          onClick={() => setModalOpen(true)}
+          id={'e2e-open-file-upload-modal-button'}
+          buttonStyle="secondary"
+          icon="file-add"
+          disabled={isDisabled}
+        >
+          {formatMessage(messages.addFile)}
+        </Button>
+      )}
       <Modal
         closeOnClickOutside={true}
         close={() => setModalOpen(false)}

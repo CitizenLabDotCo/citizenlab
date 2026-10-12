@@ -1,16 +1,85 @@
 import React from 'react';
 
 import {
+  bo,
   colors,
+  fontSizes,
   invisibleA11yText,
   isRtl,
   quillEditedContent,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+
+export type QuillVariant = 'default' | 'bo';
+
+const boFrameStyle = css`
+  && .ql-toolbar.ql-snow {
+    padding: 0 4px;
+    background: ${colors.grey50};
+    border-color: ${colors.grey300};
+    border-radius: ${bo.borderRadius} ${bo.borderRadius} 0 0;
+
+    .ql-stroke {
+      stroke: ${colors.coolGrey600};
+    }
+
+    .ql-fill {
+      fill: ${colors.coolGrey600};
+    }
+
+    .ql-picker-label {
+      font-size: ${fontSizes.xs}px;
+      color: ${colors.coolGrey600};
+    }
+  }
+
+  // createQuill sets an inline border on the container, so these colors need
+  // !important to win.
+  && div.ql-container {
+    border-color: ${colors.grey300} !important;
+    border-radius: 0 0 ${bo.borderRadius} ${bo.borderRadius};
+  }
+
+  &&.focus .ql-toolbar.ql-snow,
+  &&.focus div.ql-container {
+    border-color: ${({ theme }) => theme.colors.tenantPrimary} !important;
+  }
+
+  // The line between toolbar and text stays light, also when focused.
+  && div.ql-container,
+  &&.focus div.ql-container {
+    border-top-color: ${colors.grey200} !important;
+  }
+
+  && div.ql-container > div.ql-editor {
+    padding: 9px 11px;
+
+    &,
+    p,
+    li {
+      font-size: ${fontSizes.xs}px;
+      color: ${colors.grey800};
+    }
+
+    &.ql-blank::before {
+      left: 11px;
+      right: 11px;
+      font-size: ${fontSizes.xs}px;
+      font-style: normal;
+      color: ${colors.coolGrey500};
+    }
+  }
+
+  // The frame shows focus; the editor's own focus ring would paint over it.
+  &&.focus div.ql-container > div.ql-editor {
+    border: none;
+    box-shadow: none;
+  }
+`;
 
 const Container = styled.div<{
   videoPrompt: string;
@@ -21,6 +90,7 @@ const Container = styled.div<{
   remove: string;
   maxHeight?: string;
   minHeight?: string;
+  variant: QuillVariant;
 }>`
   .ql-snow.ql-toolbar button:hover .ql-stroke,
   .ql-snow .ql-toolbar button:hover .ql-stroke,
@@ -181,12 +251,15 @@ const Container = styled.div<{
   .ql-sr-only {
     ${invisibleA11yText()}
   }
+
+  ${({ variant }) => variant === 'bo' && boFrameStyle}
 `;
 
 interface Props {
   maxHeight?: string;
   minHeight?: string;
   className: string;
+  variant?: QuillVariant;
   children: React.ReactNode;
   onMouseLeave: React.MouseEventHandler<HTMLDivElement>;
 }
@@ -195,6 +268,7 @@ const StyleContainer = ({
   maxHeight,
   minHeight,
   className,
+  variant = 'default',
   children,
   onMouseLeave,
 }: Props) => {
@@ -205,6 +279,7 @@ const StyleContainer = ({
       maxHeight={maxHeight}
       minHeight={minHeight}
       className={className}
+      variant={variant}
       videoPrompt={formatMessage(messages.videoPrompt)}
       linkPrompt={formatMessage(messages.linkPrompt)}
       visitPrompt={formatMessage(messages.visitPrompt)}

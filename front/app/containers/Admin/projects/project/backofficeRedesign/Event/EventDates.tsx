@@ -6,9 +6,13 @@ import {
   Icon,
   Text,
   Tooltip,
+  bo,
   colors,
+  fontSizes,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { addMinutes, isSameDay } from 'date-fns';
+import styled from 'styled-components';
 import { CLErrors } from 'typings';
 
 import { IEventProperties } from 'api/events/types';
@@ -34,8 +38,64 @@ const withTimeOf = (date: Date, time: Date) => {
 };
 
 const Arrow = () => (
-  <Icon name="arrow-right" width="14px" height="14px" fill={colors.grey500} />
+  <Icon
+    name="arrow-right"
+    width="14px"
+    height="14px"
+    fill={bo.colors.crumbSeparator}
+  />
 );
+
+// The date and time pickers render their own bordered trigger buttons. Inside
+// the row they read as plain text segments, so the row draws the only border.
+// Their popups mount inside the segment too, so the rules skip those.
+const FieldRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 36px;
+  padding: 0 6px 0 12px;
+  box-sizing: border-box;
+  border: 1px solid ${colors.grey300};
+  border-radius: ${bo.borderRadius};
+  background: ${colors.white};
+
+  &:focus-within {
+    border-color: ${({ theme }) => theme.colors.tenantPrimary};
+  }
+`;
+
+const Segment = styled.div`
+  && button:not([data-tippy-root] button) {
+    height: 28px;
+    padding: 0 6px;
+    border: none;
+    border-radius: ${stylingConsts.borderRadius};
+    box-shadow: none;
+    background: transparent;
+    font-size: ${fontSizes.xs}px;
+    color: ${bo.colors.textHeadingStrong};
+    white-space: nowrap;
+
+    &:focus {
+      border: none;
+    }
+
+    &:hover,
+    &:focus-visible {
+      background: ${colors.grey100};
+      color: ${bo.colors.textHeadingStrong};
+    }
+
+    > div {
+      margin-right: 0;
+    }
+
+    svg {
+      display: none;
+    }
+  }
+`;
 
 interface Props {
   startAt: string;
@@ -45,7 +105,14 @@ interface Props {
 }
 
 const EventDates = ({ startAt, endAt, errors, setAttributeDiff }: Props) => {
-  const { formatMessage } = useIntl();
+  const { formatMessage, formatDate } = useIntl();
+  const formatLongDate = (date: Date) =>
+    formatDate(date, {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
   const {
     platformTimezone,
     startAtDate,
@@ -68,43 +135,72 @@ const EventDates = ({ startAt, endAt, errors, setAttributeDiff }: Props) => {
 
   return (
     <SetupCard title={formatMessage(eventMessages.eventDates)}>
-      <Box display="flex" alignItems="center" gap="8px">
-        <DateSinglePicker
-          id="event-start-date"
-          selectedDate={startAtDate}
-          onChange={(date) => updateStartAt(withTimeOf(date, startAtDate))}
-        />
+      <FieldRow>
+        <Box display="flex" mr="4px">
+          <Icon
+            name="calendar"
+            width="16px"
+            height="16px"
+            fill={colors.coolGrey500}
+          />
+        </Box>
+        <Segment>
+          <DateSinglePicker
+            id="event-start-date"
+            selectedDate={startAtDate}
+            formatDate={formatLongDate}
+            onChange={(date) => updateStartAt(withTimeOf(date, startAtDate))}
+          />
+        </Segment>
         {multiDay && (
           <>
             <Arrow />
-            <DateSinglePicker
-              id="event-end-date"
-              selectedDate={endAtDate}
-              onChange={(date) => updateEndAt(withTimeOf(date, endAtDate))}
-            />
-            <Tooltip
-              content={formatMessage(messages.removeEndDate)}
-              theme="dark"
-            >
-              <Button
-                buttonStyle="bo-text"
-                icon="close"
-                width="32px"
-                height="32px"
-                padding="0"
-                ariaLabel={formatMessage(messages.removeEndDate)}
-                onClick={removeEndDate}
+            <Segment>
+              <DateSinglePicker
+                id="event-end-date"
+                selectedDate={endAtDate}
+                formatDate={formatLongDate}
+                onChange={(date) => updateEndAt(withTimeOf(date, endAtDate))}
               />
-            </Tooltip>
+            </Segment>
+            <Box ml="auto">
+              <Tooltip
+                content={formatMessage(messages.removeEndDate)}
+                theme="dark"
+              >
+                <Button
+                  buttonStyle="bo-text"
+                  icon="close"
+                  iconSize="14px"
+                  width="24px"
+                  height="24px"
+                  padding="0"
+                  ariaLabel={formatMessage(messages.removeEndDate)}
+                  onClick={removeEndDate}
+                />
+              </Tooltip>
+            </Box>
           </>
         )}
-      </Box>
+      </FieldRow>
 
-      <Box display="flex" alignItems="center" gap="8px">
-        <TimeInput selectedTime={startAtDate} onChange={updateStartAt} />
+      <FieldRow>
+        <Box display="flex" mr="4px">
+          <Icon
+            name="clock"
+            width="16px"
+            height="16px"
+            fill={colors.coolGrey500}
+          />
+        </Box>
+        <Segment>
+          <TimeInput selectedTime={startAtDate} onChange={updateStartAt} />
+        </Segment>
         <Arrow />
-        <TimeInput selectedTime={endAtDate} onChange={updateEndAt} />
-      </Box>
+        <Segment>
+          <TimeInput selectedTime={endAtDate} onChange={updateEndAt} />
+        </Segment>
+      </FieldRow>
       <Error apiErrors={errors?.start_at} />
       <Error apiErrors={errors?.end_at} />
 
@@ -114,7 +210,12 @@ const EventDates = ({ startAt, endAt, errors, setAttributeDiff }: Props) => {
         ) : (
           <Button
             buttonStyle="bo-text"
-            padding="0 8px"
+            padding="2px"
+            height="auto"
+            fontSize={`${bo.controlFontSize}px`}
+            fontWeight="400"
+            textColor={colors.coolGrey600}
+            textHoverColor={bo.colors.textHeadingStrong}
             onClick={() => setEndDateAdded(true)}
           >
             {formatMessage(messages.addEndDate)}
@@ -135,7 +236,7 @@ const EventDates = ({ startAt, endAt, errors, setAttributeDiff }: Props) => {
                 height="14px"
                 fill={colors.coolGrey600}
               />
-              <Text as="span" m="0" fontSize="s" color="coolGrey600">
+              <Text as="span" m="0" fontSize="xs" color="coolGrey600">
                 {formatMessage(messages.platformTime, {
                   timezone: platformTimezone,
                 })}

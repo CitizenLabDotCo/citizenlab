@@ -5,11 +5,12 @@ import {
   colors,
   fontSizes,
   defaultOutline,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { size, isEmpty, uniqBy, forEach } from 'lodash-es';
 import Dropzone, { Accept, FileRejection } from 'react-dropzone';
 import { WrappedComponentProps } from 'react-intl';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { UploadFile } from 'typings';
 
 import Error from 'components/UI/Error';
@@ -150,7 +151,65 @@ const Image = styled.div<{
   transition: all 100ms ease-out;
 `;
 
-const Box = styled.div<{ maxWidth: string | undefined; ratio: number }>`
+const DropzoneIconFrame = styled.span`
+  display: none;
+`;
+
+const compactDropzoneStyle = css`
+  ${DropzoneContent} {
+    height: auto;
+    padding-bottom: 0;
+    min-height: 53px;
+    border-color: ${colors.grey300};
+    border-radius: ${stylingConsts.borderRadius};
+
+    &:not(.disabled):hover {
+      border-color: ${colors.coolGrey300};
+
+      ${DropzoneLabel} {
+        color: ${colors.coolGrey500};
+      }
+    }
+  }
+
+  ${DropzoneContentInner} {
+    position: static;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 12px;
+    padding: 8px;
+  }
+
+  ${DropzoneLabelIcon} {
+    display: none;
+  }
+
+  ${DropzoneIconFrame} {
+    flex: none;
+    width: 44px;
+    height: 35px;
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+    border: 1px dashed ${colors.grey300};
+    border-radius: ${stylingConsts.borderRadius};
+  }
+
+  ${DropzoneLabel} {
+    flex: 1;
+    min-width: 0;
+    width: auto;
+    font-size: ${fontSizes.xs}px;
+    text-align: left;
+    color: ${colors.coolGrey500};
+  }
+`;
+
+const Box = styled.div<{
+  maxWidth: string | undefined;
+  ratio: number;
+  compact?: boolean;
+}>`
   width: 100%;
   max-width: ${({ maxWidth }) => (maxWidth ? maxWidth : '100%')};
   position: relative;
@@ -165,6 +224,8 @@ const Box = styled.div<{ maxWidth: string | undefined; ratio: number }>`
     height: ${({ maxWidth, ratio }) => (ratio !== 1 ? 'auto' : maxWidth)};
     padding-bottom: ${({ ratio }) => `${Math.round(ratio * 100)}%`};
   }
+
+  ${({ compact }) => compact && compactDropzoneStyle}
 `;
 
 export interface Props {
@@ -186,6 +247,7 @@ export interface Props {
   removeIconAriaTitle?: string;
   className?: string;
   previewOverlayElement?: JSX.Element | null;
+  compact?: boolean;
 }
 
 interface State {
@@ -380,6 +442,7 @@ class ImagesDropzone extends PureComponent<
       borderRadius,
       className,
       previewOverlayElement,
+      compact,
     } = this.props;
     const { formatMessage } = this.props.intl;
     const { errorMessage } = this.state;
@@ -405,6 +468,7 @@ class ImagesDropzone extends PureComponent<
             <Box
               maxWidth={maxImagePreviewWidth}
               ratio={imagePreviewRatio}
+              compact={compact}
               className={
                 images && maxNumberOfImages > 1 && images.length > 0
                   ? 'hasRightMargin'
@@ -436,6 +500,14 @@ class ImagesDropzone extends PureComponent<
                       />
                       <DropzoneContentInner>
                         <DropzoneLabelIcon name="upload-image" ariaHidden />
+                        <DropzoneIconFrame aria-hidden>
+                          <Icon
+                            name="upload-file"
+                            width="12px"
+                            height="12px"
+                            fill={colors.coolGrey500}
+                          />
+                        </DropzoneIconFrame>
                         <DropzoneLabel>{label}</DropzoneLabel>
                         {remainingImages && (
                           <DropzoneImagesRemaining>

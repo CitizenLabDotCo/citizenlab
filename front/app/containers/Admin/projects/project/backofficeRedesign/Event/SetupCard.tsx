@@ -4,25 +4,38 @@ import { Box, Text, bo, colors } from '@citizenlab/cl2-component-library';
 
 interface Props {
   title: string;
-  children: ReactNode;
+  action?: ReactNode;
+  children?: ReactNode;
 }
 
-const SetupCard = ({ title, children }: Props) => (
+const SetupCard = ({ title, action, children }: Props) => (
   <Box
     as="section"
     display="flex"
     flexDirection="column"
-    gap="12px"
-    p="16px"
-    border={`1px solid ${colors.grey300}`}
+    border={`1px solid ${colors.grey200}`}
     borderRadius={bo.borderRadius}
   >
-    <Box as="h3" m="0">
-      <Text as="span" variant="boSection" m="0">
-        {title}
-      </Text>
+    <Box
+      display="flex"
+      alignItems="center"
+      justifyContent="space-between"
+      gap="10px"
+      minHeight="44px"
+      p="8px 8px 8px 12px"
+    >
+      <Box as="h3" m="0">
+        <Text as="span" variant="boControl" fontSize="xs" m="0">
+          {title}
+        </Text>
+      </Box>
+      {action}
     </Box>
-    {children}
+    {children && (
+      <Box display="flex" flexDirection="column" gap="12px" p="2px 12px 14px">
+        {children}
+      </Box>
+    )}
   </Box>
 );
 

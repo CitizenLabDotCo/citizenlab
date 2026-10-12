@@ -65,6 +65,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.event.addEventImage',
     defaultMessage: 'Add an event image',
   },
+  dropImage: {
+    id: 'app.containers.Admin.projects.project.event.dropImage',
+    defaultMessage: 'Drop an image or click to upload',
+  },
   addDescription: {
     id: 'app.containers.Admin.projects.project.event.addDescription',
     defaultMessage: 'Add a description',

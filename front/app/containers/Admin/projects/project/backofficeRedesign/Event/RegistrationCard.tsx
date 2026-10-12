@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Input, Toggle } from '@citizenlab/cl2-component-library';
+import { Input, Text, Toggle } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
 import eventMessages from 'containers/Admin/projects/project/events/messages';
@@ -25,7 +25,12 @@ const RegistrationCard = ({ form }: Props) => {
   return (
     <SetupCard title={formatMessage(messages.registration)}>
       <Toggle
-        label={formatMessage(eventMessages.toggleRegistrationLimitLabel)}
+        size="small"
+        label={
+          <Text as="span" variant="boControl" m="0">
+            {formatMessage(eventMessages.toggleRegistrationLimitLabel)}
+          </Text>
+        }
         checked={form.registrationLimitOn}
         onChange={form.toggleRegistrationLimit}
       />
@@ -33,6 +38,7 @@ const RegistrationCard = ({ form }: Props) => {
         <>
           <Input
             id="maximum_attendees"
+            variant="bo"
             label={formatMessage(eventMessages.maximumRegistrants)}
             type="number"
             value={attributes.maximum_attendees?.toString()}
@@ -46,7 +52,12 @@ const RegistrationCard = ({ form }: Props) => {
       )}
 
       <Toggle
-        label={formatMessage(eventMessages.toggleCustomRegisterButtonLabel)}
+        size="small"
+        label={
+          <Text as="span" variant="boControl" m="0">
+            {formatMessage(eventMessages.toggleCustomRegisterButtonLabel)}
+          </Text>
+        }
         checked={form.customButtonOn}
         onChange={form.toggleCustomButton}
       />
@@ -54,6 +65,7 @@ const RegistrationCard = ({ form }: Props) => {
         <>
           <Input
             id="event-custom-button-link"
+            variant="bo"
             label={formatMessage(eventMessages.customButtonLink)}
             labelTooltipText={formatMessage(
               eventMessages.customButtonLinkTooltip
@@ -69,6 +81,7 @@ const RegistrationCard = ({ form }: Props) => {
           <InputMultilocWithLocaleSwitcher
             id="event-custom-button-text"
             type="text"
+            variant="bo"
             label={formatMessage(eventMessages.customButtonText)}
             labelTooltipText={formatMessage(
               eventMessages.customButtonTextTooltip3

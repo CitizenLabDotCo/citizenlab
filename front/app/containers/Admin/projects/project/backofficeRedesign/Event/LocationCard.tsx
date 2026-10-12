@@ -6,7 +6,10 @@ import {
   Input,
   Label,
   Text,
+  colors,
+  fontSizes,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
 import eventMessages from 'containers/Admin/projects/project/events/messages';
@@ -26,6 +29,14 @@ const EventMap = lazy(
   () => import('containers/Admin/projects/project/events/components/EventMap')
 );
 
+// Matches the label of the bo inputs around it.
+const AddressLabel = styled(Label)`
+  margin-bottom: 4px;
+  font-size: ${fontSizes.xs}px;
+  line-height: 1.4;
+  color: ${colors.coolGrey600};
+`;
+
 interface Props {
   form: EventForm;
 }
@@ -39,6 +50,7 @@ const LocationCard = ({ form }: Props) => {
       <Box>
         <Input
           id="event-online-link"
+          variant="bo"
           label={formatMessage(eventMessages.onlineEventLinkLabel)}
           labelTooltipText={formatMessage(eventMessages.onlineEventLinkTooltip)}
           type="text"
@@ -52,15 +64,16 @@ const LocationCard = ({ form }: Props) => {
       </Box>
 
       <Box>
-        <Label htmlFor="event-location-picker">
+        <AddressLabel htmlFor="event-location-picker">
           {formatMessage(messages.address)}
           <IconTooltip
             content={formatMessage(eventMessages.addressOneTooltip)}
           />
-        </Label>
+        </AddressLabel>
         <LocationInput
           id="event-location-picker"
           className="e2e-event-location-input"
+          variant="bo"
           value={
             attributes.address_1
               ? { value: attributes.address_1, label: attributes.address_1 }
@@ -77,6 +90,7 @@ const LocationCard = ({ form }: Props) => {
       <InputMultilocWithLocaleSwitcher
         id="event-address-2"
         type="text"
+        variant="bo"
         label={formatMessage(messages.addressDetails)}
         labelTooltipText={formatMessage(eventMessages.addressTwoTooltip)}
         placeholder={formatMessage(eventMessages.addressTwoPlaceholder)}
@@ -89,7 +103,7 @@ const LocationCard = ({ form }: Props) => {
       {form.hasLocationPoint && (
         <Box>
           <Box display="flex" alignItems="center" gap="4px" mb="4px">
-            <Text as="span" m="0" color="coolGrey600" fontSize="s">
+            <Text as="span" m="0" color="coolGrey600" fontSize="xs">
               {formatMessage(eventMessages.refineOnMap)}
             </Text>
             <IconTooltip
