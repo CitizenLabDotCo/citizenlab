@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 import { CLErrors, Multiloc, UploadFile } from 'typings';
 
@@ -36,9 +36,12 @@ interface Options {
 // The form state of an event. The values a user hasn't touched yet are
 // `undefined`, so they fall back to the saved event.
 const useEventForm = ({ projectId, eventId }: Options) => {
-  const { data: event, isLoading } = useEvent(eventId);
+  const [createdEventId, setCreatedEventId] = useState<string>();
+  const currentEventId = eventId ?? createdEventId;
+
+  const { data: event, isLoading } = useEvent(currentEventId);
   const { data: savedAttachments } = useFileAttachments({
-    attachable_id: eventId,
+    attachable_id: currentEventId,
     attachable_type: 'Event',
   });
   const { data: remoteImage } = useEventImage(event?.data);
@@ -68,15 +71,11 @@ const useEventForm = ({ projectId, eventId }: Options) => {
   const [geocodedPoint, setGeocodedPoint] = useState<GeoJSON.Point | null>(
     null
   );
-  // A new event is created once: saving again updates it.
-  const createdEventId = useRef<string>();
-
   const markDirty = () => {
     setStatus('enabled');
     setErrors(null);
   };
 
-  // Attachment changes wait here until the event is saved.
   const [stagedAttachments, setStagedAttachments] =
     useState<IFileAttachmentData[]>();
   const [attachmentsToRemove, setAttachmentsToRemove] = useState<
@@ -103,14 +102,13 @@ const useEventForm = ({ projectId, eventId }: Options) => {
             ...current,
             generateTemporaryFileAttachment({
               fileId: file.id,
-              attachableId: eventId,
+              attachableId: currentEventId,
               attachableType: 'Event',
               position: current.length,
             }),
           ]
     );
 
-  // Uploads to the project's files first, so the attachment can point to it.
   const uploadFile = (fileToAdd: UploadFile) =>
     addFile(
       {
@@ -177,7 +175,6 @@ const useEventForm = ({ projectId, eventId }: Options) => {
     };
   }, [remoteImageUrl]);
 
-  // A changed address moves the map pin to it, once the typing stops.
   const changedAddress = attributeDiff.address_1;
   useEffect(() => {
     if (changedAddress === undefined) return;
@@ -249,13 +246,11 @@ const useEventForm = ({ projectId, eventId }: Options) => {
         location_point_geojson: attributes.address_1 ? locationPoint : null,
       }),
     };
-    const existingEventId = eventId ?? createdEventId.current;
-
     try {
-      let savedEventId = existingEventId;
+      let savedEventId = currentEventId;
       if (!savedEventId) {
         savedEventId = (await addEvent({ projectId, event: changes })).data.id;
-        createdEventId.current = savedEventId;
+        setCreatedEventId(savedEventId);
       } else if (Object.keys(changes).length > 0) {
         // Only the image or files may have changed, and the API refuses an
         // empty update.
@@ -283,7 +278,9 @@ const useEventForm = ({ projectId, eventId }: Options) => {
 
   return {
     event: event?.data,
-    isLoading,
+    // Only the first load of an existing event; loading the event just
+    // created must not unmount the form.
+    isLoading: !!eventId && isLoading,
     attributes,
     errors,
     status,

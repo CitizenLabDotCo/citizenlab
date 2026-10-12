@@ -58,7 +58,7 @@ const AdminProjectEventEdit = () => {
 
   const handleOnSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const isNew = !form.event;
+    const isNew = !eventId;
 
     try {
       await form.save();
