@@ -76,6 +76,7 @@ lb-LU:
         users_who_follow_the_project: Benotzer déi de Projet verfollegen
         users_who_follow_the_proposal: Benotzer déi d'Propositioun verfollegen
       trigger:
+        3_days_after_invite_is_sent: 3 Deeg nodeems d'Invitatioun verschéckt gouf
         7_days_after_invite_is_sent: 7 Deeg no der Invitatioun geschéckt
         7_days_before_phase_starts: 7 Deeg ier eng Phas ufänkt
         7_days_before_the_project_changes_phase: 7 Deeg virum Projet Ännerungen Phas
