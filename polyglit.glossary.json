@@ -30,6 +30,9 @@
   "draft": {
     "nl-NL": "concept"
   },
+  "Communtiy Monitor": {
+    "de-DE": "Stimmungsbarometer"
+  },
   "content builder": {
     "nl-NL": "content builder"
   },
@@ -285,6 +288,7 @@
     "nl-NL": "initiatief"
   },
   "spotlight survey": {
+    "de-DE": "zusätzliche Umfrage",
     "nl-NL": "uitgelichte vragenlijst"
   },
   "early access": {

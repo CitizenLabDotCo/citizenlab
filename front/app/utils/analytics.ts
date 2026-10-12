@@ -150,3 +150,39 @@ export function trackEventByName(
     name: eventName,
   });
 }
+
+/** Events that are safe to push to tools outside our control
+ * The only events pushed to the customer's GTM dataLayer. They are a
+ * public contract: don't rename them, fire them only on success, and pass
+ * ids only, never personal data or free text. Names are snake_case because
+ * GA4 only accepts letters, numbers and underscores; `login` and `sign_up`
+ * are GA4's recommended names. */
+export const customerAnalyticsEvents = {
+  ideaStarted: 'idea_started',
+  ideaSubmitted: 'idea_submitted',
+  surveyStarted: 'survey_started',
+  surveySubmitted: 'survey_submitted',
+  commentPosted: 'comment_posted',
+  reactionAdded: 'reaction_added',
+  votingStarted: 'voting_started',
+  votingSubmitted: 'voting_submitted',
+  pollSubmitted: 'poll_submitted',
+  volunteered: 'volunteered',
+  eventAttendanceRegistered: 'event_attendance_registered',
+  ideaFollowed: 'idea_followed',
+  projectFollowed: 'project_followed',
+  login: 'login',
+  signUp: 'sign_up',
+} as const;
+
+type CustomerAnalyticsEvent =
+  (typeof customerAnalyticsEvents)[keyof typeof customerAnalyticsEvents];
+
+const customerAnalyticsEventNames: string[] = Object.values(
+  customerAnalyticsEvents
+);
+
+export const isCustomerAnalyticsEvent = (
+  eventName: string
+): eventName is CustomerAnalyticsEvent =>
+  customerAnalyticsEventNames.includes(eventName);

@@ -42,6 +42,8 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   attribute :block_start_at, if: PRIVATE
   attribute :block_end_at, if: PRIVATE
   attribute :block_reason, if: PRIVATE
+  attribute :email_bounced_at, if: PRIVATE
+  attribute :email_bounce_reason, if: PRIVATE
   attribute :verified, if: PRIVATE
   attribute :followings_count, if: PRIVATE
   attribute :onboarding, if: PRIVATE
@@ -52,8 +54,11 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
     object.no_password?
   end
 
-  attribute :custom_field_values, if: PRIVATE do |object|
-    CustomFieldService.remove_hidden_custom_fields(CustomFieldValuesTransitionService.new.custom_field_values(object))
+  attribute :custom_field_values do |object, params|
+    user = current_user(params)
+    object.custom_field_answers
+      .select { |answer| CustomFieldAnswerPolicy.new(user, answer).show? }
+      .to_h { [it.key, it.value] }
   end
 
   attribute :unread_notifications, if: PRIVATE do |object|

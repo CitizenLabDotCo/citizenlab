@@ -45,6 +45,7 @@ class Project < ApplicationRecord
   include PlainTextMultiloc
 
   attribute :preview_token, :string, default: -> { generate_preview_token }
+  attribute :listed, :boolean, default: -> { !AppConfiguration.instance.settings('core', 'projects_unlisted_by_default') }
 
   VISIBLE_TOS = %w[public groups admins].freeze
 

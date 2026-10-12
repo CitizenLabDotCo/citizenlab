@@ -33,6 +33,7 @@ import {
 
 import { restoreLocationAfterAuthReturn } from './restoreLocationAfterAuthReturn';
 import { getStepConfig } from './stepConfig';
+import { trackAuthenticated } from './stepConfig/utils';
 
 let initialized = false;
 
@@ -338,6 +339,10 @@ export default function useSteps() {
       };
 
       const flow = sso_flow ?? 'signin';
+
+      if (search.sso_success === 'true') {
+        trackAuthenticated(flow, 'sso');
+      }
 
       transition(currentStep, 'RESUME_FLOW_AFTER_SSO')(flow);
 

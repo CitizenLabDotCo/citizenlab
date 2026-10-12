@@ -1,11 +1,12 @@
 import React, { PureComponent, FormEvent, KeyboardEvent } from 'react';
 
 import { isNil, isEmpty, size as lodashSize, isBoolean } from 'lodash-es';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Placement } from 'tippy.js';
 
 import { ScreenReaderOnly } from '../../utils/a11y';
 import {
+  bo,
   colors,
   fontSizes,
   defaultInputStyle,
@@ -17,9 +18,62 @@ import Error from '../Error';
 import IconTooltip from '../IconTooltip';
 import Label from '../Label';
 
+type Variant = 'default' | 'bo';
+
 interface ContainerProps {
   size: InputSize;
+  variant: Variant;
 }
+
+const ringColor = (color: string) =>
+  `0 0 0 3px color-mix(in srgb, ${color} 16%, transparent)`;
+
+const boLabelStyle = css`
+  > label {
+    font-size: ${fontSizes.xs}px;
+    font-weight: 400;
+    line-height: 1.4;
+    color: ${colors.coolGrey600};
+    margin-bottom: 12px;
+  }
+`;
+
+const boInputStyle = css`
+  height: 36px;
+  padding: 0 11px;
+  border: 1px solid ${colors.grey300};
+  border-radius: ${bo.borderRadius};
+  background: ${colors.white};
+  font-size: ${fontSizes.xs}px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: ${bo.colors.textHeadingStrong};
+  cursor: text;
+  outline: none;
+  appearance: none;
+  transition: border-color 100ms ease-out, box-shadow 100ms ease-out;
+
+  &::placeholder {
+    color: ${colors.coolGrey500};
+  }
+
+  &:focus {
+    border-color: ${({ theme }) => theme.colors.tenantPrimary};
+    box-shadow: ${({ theme }) => ringColor(theme.colors.tenantPrimary)};
+  }
+
+  &.error {
+    border-color: ${colors.red600};
+    box-shadow: ${ringColor(colors.red600)};
+  }
+
+  &:disabled,
+  &.disabled {
+    background: ${colors.grey50};
+    color: ${colors.coolGrey500};
+    cursor: not-allowed;
+  }
+`;
 
 const Container = styled.div<ContainerProps>`
   width: 100%;
@@ -36,8 +90,10 @@ const Container = styled.div<ContainerProps>`
           padding-right: ${defaultStyles.inputPadding};
           padding-left: 62px;
       }`}
-    ${defaultInputStyle};
+    ${({ variant }) => (variant === 'bo' ? boInputStyle : defaultInputStyle)};
   }
+
+  ${({ variant }) => variant === 'bo' && boLabelStyle}
 `;
 
 const CharCount = styled.div<{ inputSize?: InputSize }>`
@@ -116,6 +172,7 @@ export interface InputProps {
   a11yCharactersLeftMessage?: string;
   className?: string;
   size?: InputSize;
+  variant?: Variant;
   'data-testid'?: string;
   'data-cy'?: string;
 }
@@ -170,6 +227,7 @@ class Input extends PureComponent<InputProps> {
       required,
       autocomplete,
       size = 'medium',
+      variant = 'default',
       'data-testid': dataTestId,
       'data-cy': dataCy,
       onChange,
@@ -191,6 +249,7 @@ class Input extends PureComponent<InputProps> {
       <Container
         className={className || ''}
         size={size}
+        variant={variant}
         data-testid={dataTestId}
         data-cy={dataCy}
       >

@@ -17,6 +17,7 @@ jest.mock('@sentry/react', () => ({
 }));
 
 jest.mock('utils/loggingUtils', () => ({
+  ...jest.requireActual('utils/loggingUtils'),
   reportError: jest.fn(),
 }));
 

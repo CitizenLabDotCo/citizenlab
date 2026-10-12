@@ -14,7 +14,6 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import sharedMessages from 'utils/messages';
-import { useParams } from 'utils/router';
 
 import messages from './messages';
 import SourceSetting from './SourceSetting';
@@ -40,7 +39,6 @@ export const defaultHeadingMessage = (
 
 const EventsSettings = () => {
   const { formatMessage } = useIntl();
-  const { projectId } = useParams({ strict: false });
   // craft stores props as untyped JSON; this widget is their only writer.
   const {
     actions: { setProp },
@@ -132,7 +130,7 @@ const EventsSettings = () => {
       </Box>
 
       {/* Under `currentProject` the widget pins the statuses itself, so there is nothing to set. */}
-      {!projectId && (
+      {props.source !== 'currentProject' && (
         <CheckboxWithLabel
           label={formatMessage(messages.includeArchived)}
           checked={statuses.includes('archived')}

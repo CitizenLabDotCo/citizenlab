@@ -13,7 +13,7 @@ module Analysis
           @inputs = InputsFinder.new(@analysis, filters).execute
           filtered_count = @inputs.count
           @inputs = @inputs.order(published_at: :asc)
-          @inputs = @inputs.includes(:author, :custom_field_answers)
+          @inputs = @inputs.includes(:author, custom_field_answers: :custom_field)
           @inputs = paginate @inputs
 
           render json: linked_json(

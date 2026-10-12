@@ -5,6 +5,7 @@ import commentKeys from 'api/comments/keys';
 import ideasKeys from 'api/ideas/keys';
 import userCommentsCount from 'api/user_comments_count/keys';
 
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import { INewComment, IComment } from './types';
@@ -39,6 +40,10 @@ const useAddCommentToIdea = () => {
           queryKey: commentKeys.list({ commentId: variables.parent_id }),
         });
       }
+
+      trackEventByName(customerAnalyticsEvents.commentPosted, {
+        idea_id: variables.ideaId,
+      });
     },
   });
 };

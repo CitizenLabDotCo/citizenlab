@@ -10,6 +10,15 @@ export default defineMessages({
     defaultMessage:
       'Try out features we are still finishing. What you switch on here only changes what you see, not what anyone else on the platform sees.',
   },
+  projectBackofficeRedesignTitle: {
+    id: 'app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignTitle',
+    defaultMessage: 'New project back office',
+  },
+  projectBackofficeRedesignDescription2: {
+    id: 'app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignDescription2',
+    defaultMessage:
+      'A new, easier to understand way to set up and manage projects. We are still improving it.',
+  },
   earlyAccessSaveError: {
     id: 'app.containers.UsersEditPage.EarlyAccess.earlyAccessSaveError',
     defaultMessage:

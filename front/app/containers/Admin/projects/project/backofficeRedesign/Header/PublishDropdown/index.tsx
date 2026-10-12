@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import { IProjectData } from 'api/projects/types';
 
@@ -62,9 +62,9 @@ const PublishDropdown = ({ project, opened, onOpenChange }: Props) => {
         id="e2e-publish-dropdown-toggle"
         width="380px"
         label={
-          <Box display="flex" alignItems="center" gap="6px">
+          <Box display="flex" alignItems="center" gap="7px">
             {dotColor && (
-              <Icon name="dot" width="14px" height="14px" fill={dotColor} />
+              <Box w="7px" h="7px" borderRadius="50%" background={dotColor} />
             )}
             {formatMessage(TRIGGER_MESSAGES[publicationState])}
           </Box>

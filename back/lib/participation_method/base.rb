@@ -74,6 +74,14 @@ module ParticipationMethod
       context.custom_form || CustomForm.new(participation_context: context)
     end
 
+    # Whether editing the form once responses exist is part of the method's normal
+    # operation (continuously-running methods). When false, automated channels (the
+    # MCP form tools) refuse such edits because they could destroy submitted answers;
+    # the admin UI is not bound by this and allows them behind an explicit warning.
+    def form_editable_after_responses?
+      false
+    end
+
     def form_logic_enabled?
       false
     end
@@ -107,10 +115,6 @@ module ParticipationMethod
       campaigns += %w[idea_published mention_in_official_feedback official_feedback_on_idea_you_follow] if supports_public_visibility?
       campaigns += %w[status_change_on_idea_you_follow] if supports_status?
       campaigns
-    end
-
-    def supports_answer_visible_to?
-      false
     end
 
     def supports_assignment?

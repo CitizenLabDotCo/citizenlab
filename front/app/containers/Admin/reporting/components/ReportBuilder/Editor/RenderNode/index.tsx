@@ -27,12 +27,20 @@ const StyledBox = styled(Box)<{ isRoot: boolean; outlineColor?: string }>`
       `
       : 'cursor: move;'}
 
+  /*
+   * Doubled class, for specificity. The focus-visible polyfill sets
+   * \`* :not(.focus-visible) { outline: none }\` in a global stylesheet, which ties
+   * with a single component class and wins on source order — so a plain rule here
+   * leaves a selected widget with no outline at all.
+   */
   ${({ outlineColor }) =>
     outlineColor
       ? `
-      outline: 1px solid ${outlineColor};
+      && {
+        outline: 1px solid ${outlineColor};
+      }
     `
-      : 'outline: none;'}
+      : '&& { outline: none; }'}
 
   margin-bottom: 3px;
 `;

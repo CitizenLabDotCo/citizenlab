@@ -123,6 +123,7 @@ module IdeaCustomFields
         :ask_follow_up,
         :question_category,
         :include_in_printed_form,
+        :answers_visible_to,
         :min_characters,
         :max_characters,
         { title_multiloc: CL2_SUPPORTED_LOCALES,
@@ -177,7 +178,7 @@ module IdeaCustomFields
 
     def serializer_params(custom_form)
       participation_method = custom_form.participation_context.pmethod
-      jsonapi_serializer_params({ constraints: participation_method.constraints, supports_answer_visible_to: participation_method.supports_answer_visible_to? })
+      jsonapi_serializer_params({ constraints: participation_method.constraints })
     end
 
     def geojson_generator

@@ -26,7 +26,7 @@ import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isCLErrorsWrapper } from 'utils/errorUtils';
 
-import { useRegisterPhaseSaver } from '../_shared/PhaseSaveContext';
+import { useRegisterPageSaver } from '../_shared/PageSaveContext';
 import messages from '../messages';
 
 import EditAccessButton from './EditAccessButton';
@@ -105,7 +105,7 @@ const MethodSettings = ({ phase }: Props) => {
     }
   };
 
-  useRegisterPhaseSaver('settings', {
+  useRegisterPageSaver('settings', {
     dirty: Object.keys(changes).length > 0,
     save,
   });

@@ -10,6 +10,13 @@ module ContentBuilder
     BODY_ID = 'PROJECT_PAGE_BODY'
     PHASES_ID = 'PROJECT_PAGE_PHASES'
     EVENTS_ID = 'PROJECT_PAGE_EVENTS'
+    # A project page's events widget shows that project's events: the widget itself defaults to
+    # every project's.
+    EVENTS_PROPS = {
+      'source' => 'currentProject',
+      'timeFilters' => %w[upcoming past],
+      'limit' => 'all'
+    }.freeze
 
     INTRO_COLUMNS_ID = 'PROJECT_PAGE_INTRO_COLUMNS'
     INTRO_LEFT_ID = 'PROJECT_PAGE_INTRO_LEFT'
@@ -418,14 +425,7 @@ module ContentBuilder
           'displayName' => 'PhasesWidget',
           'linkedNodes' => {}
         },
-        EVENTS_ID => Craftjs::Nodes.events(
-          {
-            'source' => 'currentProject',
-            'timeFilters' => %w[upcoming past],
-            'limit' => 'all'
-          },
-          BODY_ID
-        )
+        EVENTS_ID => Craftjs::Nodes.events(EVENTS_PROPS.deep_dup, BODY_ID)
       }
     end
 

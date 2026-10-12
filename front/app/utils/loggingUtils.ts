@@ -1,6 +1,8 @@
 import { captureMessage, captureException, withScope } from '@sentry/react';
 import { isEmpty, isError, isObject } from 'lodash-es';
 
+import checkIfFramed from 'utils/checkIfFramed';
+
 function isErrorOrErrorEvent(wat: any) {
   return (
     isError(wat) ||
@@ -31,15 +33,6 @@ export function reportError(error: any) {
 
 // Shared by our Sentry reporters, so their events can be filtered the same way.
 
-function isFramed() {
-  try {
-    return window.self !== window.top;
-  } catch {
-    // Cross-origin parents throw on access, which means we are framed.
-    return true;
-  }
-}
-
 export function secondsSincePageLoad() {
   return Math.round(performance.now() / 1000);
 }
@@ -48,6 +41,6 @@ export function secondsSincePageLoad() {
 export function baseReportTags() {
   return {
     tenant_host: window.location.hostname,
-    in_iframe: isFramed(),
+    in_iframe: checkIfFramed(),
   };
 }

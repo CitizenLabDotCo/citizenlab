@@ -195,6 +195,7 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   its(:transitive?) { is_expected.to be false }
   its(:destroy_ideas_on_phase_destroy?) { is_expected.to be true }
   its(:form_logic_enabled?) { is_expected.to be true }
+  its(:form_editable_after_responses?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be false }
   its(:supports_custom_field_categories?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }

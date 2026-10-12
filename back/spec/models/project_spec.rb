@@ -252,6 +252,30 @@ RSpec.describe Project do
     end
   end
 
+  describe 'listed default' do
+    it 'is listed by default' do
+      expect(described_class.new.listed).to be true
+    end
+
+    it 'is unlisted by default when the platform setting is enabled' do
+      config = AppConfiguration.instance
+      config.settings['core']['projects_unlisted_by_default'] = true
+      config.save!
+
+      expect(described_class.new.listed).to be false
+      expect(described_class.new(listed: true).listed).to be true
+    end
+
+    it 'keeps the stored value of existing projects' do
+      project = create(:project, listed: true)
+      config = AppConfiguration.instance
+      config.settings['core']['projects_unlisted_by_default'] = true
+      config.save!
+
+      expect(described_class.find(project.id).listed).to be true
+    end
+  end
+
   describe "'not in draft folder' scope" do
     let!(:project1) { create(:project) }
     let!(:draft_folder) do

@@ -28,11 +28,9 @@ const SourceSetting = () => {
     props,
   } = useNode((node) => ({ props: node.data.props as EventsProps }));
 
-  const { projectId, customPageId } = useParams({ strict: false });
+  const { customPageId } = useParams({ strict: false });
   const advancedCustomPages = useFeatureFlag({ name: 'advanced_custom_pages' });
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
-
-  const filteringEnabled = !customPageId || advancedCustomPages;
 
   const source = props.source ?? 'all';
   const ids = props.ids ?? [];
@@ -41,30 +39,36 @@ const SourceSetting = () => {
   const { data: topics, isLoading: topicsLoading } = useGlobalTopics();
   const { data: spaces, isLoading: spacesLoading } = useSpaces();
 
-  // A project page's events widget is about that project, so there is nothing to choose. The
-  // toolbox and the EventsWidget shim both write `currentProject` for this surface.
-  if (projectId) return null;
+  // A widget about its own project, on a project page or a project's static page, has nothing to
+  // choose. The toolboxes and the EventsWidget shim write `currentProject` for these surfaces.
+  if (source === 'currentProject') return null;
+
+  // The homepage lists events from every project; filtering is for custom pages. A homepage
+  // widget that already filters still shows its filter, so it can be read and reset.
+  if (!customPageId && source === 'all') return null;
+
+  const filteringOffered = !!customPageId && advancedCustomPages;
+
+  // A stored dimension stays listed once its feature is off: the widget still filters by it, so
+  // dropping it would read as unset, and picking another discards the ids.
+  const offers = (dimension: EventsSource, featureOn: boolean) =>
+    featureOn || source === dimension;
 
   const options: { value: EventsSource; label: string }[] = [
     { value: 'all', label: formatMessage(messages.everyProject) },
-    ...(filteringEnabled
+    ...(offers('areas', filteringOffered)
+      ? [{ value: 'areas' as const, label: formatMessage(messages.byArea) }]
+      : []),
+    ...(offers('global_topics', filteringOffered)
       ? [
-          { value: 'areas' as const, label: formatMessage(messages.byArea) },
           {
             value: 'global_topics' as const,
             label: formatMessage(messages.byTopic),
           },
-          // A stored dimension stays listed once its feature is off: the widget still filters
-          // by it, so dropping it would read as unset, and picking another discards the ids.
-          ...(spacesEnabled || source === 'spaces'
-            ? [
-                {
-                  value: 'spaces' as const,
-                  label: formatMessage(messages.bySpace),
-                },
-              ]
-            : []),
         ]
+      : []),
+    ...(offers('spaces', filteringOffered && spacesEnabled)
+      ? [{ value: 'spaces' as const, label: formatMessage(messages.bySpace) }]
       : []),
   ];
 
