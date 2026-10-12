@@ -9,9 +9,11 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
+import useGroupsByIds from 'api/groups/useGroupsByIds';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import PhonePreviewBackdrop from 'containers/Admin/projects/_shared/components/PhonePreviewBackdrop';
@@ -27,15 +29,19 @@ import { useParams, useSearch } from 'utils/router';
 import messages from '../messages';
 
 const ProjectPage = () => {
-  const { formatMessage } = useIntl();
+  const { formatMessage, formatList } = useIntl();
   const locale = useLocale();
+  const localize = useLocalize();
   const { projectId } = useParams({
     from: '/$locale/admin/projects/$projectId/project-page',
   });
   const { groups_failed: groupsFailedParam } = useSearch({
     from: '/$locale/admin/projects/$projectId/project-page',
   });
-  const [groupsFailed, setGroupsFailed] = useState(!!groupsFailedParam);
+  const [failedGroupIds, setFailedGroupIds] = useState(
+    groupsFailedParam ? groupsFailedParam.split(',') : []
+  );
+  const failedGroups = useGroupsByIds(failedGroupIds);
   const { data: project } = useProjectById(projectId);
   const redesign = useProjectBackofficeRedesign();
 
@@ -59,7 +65,10 @@ const ProjectPage = () => {
 
   const slug = project.data.attributes.slug;
 
-  const closeGroupsFailed = () => setGroupsFailed(false);
+  const closeGroupsFailed = () => setFailedGroupIds([]);
+  const failedGroupTitles = failedGroups.flatMap((group) =>
+    group ? [localize(group.data.attributes.title_multiloc)] : []
+  );
 
   // Keep groups_failed out of the preview, or the iframe reloads once it is removed.
   const searchParams = new URLSearchParams(window.location.search);
@@ -76,7 +85,7 @@ const ProjectPage = () => {
   return (
     <PhonePreviewBackdrop>
       <Modal
-        opened={groupsFailed}
+        opened={failedGroupIds.length > 0 && failedGroups.every(Boolean)}
         close={closeGroupsFailed}
         width={480}
         variant="bo"
@@ -97,7 +106,9 @@ const ProjectPage = () => {
       >
         <Box p="24px">
           <Text m="0" fontSize="s" color="coolGrey600">
-            {formatMessage(messages.groupsNotAdded)}
+            {formatMessage(messages.groupsNotAdded2, {
+              groups: formatList(failedGroupTitles, { type: 'conjunction' }),
+            })}
           </Text>
         </Box>
       </Modal>

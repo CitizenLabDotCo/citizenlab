@@ -21,10 +21,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.groupsNotAddedOk',
     defaultMessage: 'OK',
   },
-  groupsNotAdded: {
-    id: 'app.containers.Admin.projects.project.groupsNotAdded',
+  groupsNotAdded2: {
+    id: 'app.containers.Admin.projects.project.groupsNotAdded2',
     defaultMessage:
-      "Project created. The selected groups couldn't be added, so please add them again.",
+      "Project created. These groups couldn't be added, so please add them again: {groups}.",
   },
   projectPagePreviewTitle: {
     id: 'app.containers.Admin.projects.project.projectPagePreviewTitle',

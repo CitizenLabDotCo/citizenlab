@@ -72,15 +72,21 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
 
     // The project exists at this point, so a group failure must not keep the
     // modal open: submitting again would create a second project.
-    try {
-      await Promise.all(
-        groupIds.map((groupId) => addProjectGroup({ groupId, projectId }))
-      );
-      clHistory.push(adminProjectsProjectPath(projectId));
-    } catch {
+    const results = await Promise.allSettled(
+      groupIds.map((groupId) => addProjectGroup({ groupId, projectId }))
+    );
+    const failedGroupIds = groupIds.filter(
+      (_groupId, index) => results[index].status === 'rejected'
+    );
+
+    if (failedGroupIds.length > 0) {
       clHistory.push(
-        `/admin/projects/${projectId}/project-page?groups_failed=true`
+        `/admin/projects/${projectId}/project-page?groups_failed=${failedGroupIds.join(
+          ','
+        )}`
       );
+    } else {
+      clHistory.push(adminProjectsProjectPath(projectId));
     }
     close();
   };
