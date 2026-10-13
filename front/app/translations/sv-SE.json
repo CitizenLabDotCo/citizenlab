@@ -999,7 +999,6 @@
   "app.components.formBuilder.errorMessage": "Det finns ett problem – åtgärda problemet för att kunna spara dina ändringar",
   "app.components.formBuilder.fieldGroup.description": "Beskrivning (valfritt)",
   "app.components.formBuilder.fieldGroup.title": "Titel (valfritt)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "För närvarande är svaren på de här frågorna endast tillgängliga i den exporterade Excel-filen i Indatahanteraren, och visas inte för användarna.",
   "app.components.formBuilder.fieldLabel": "Svarsval",
   "app.components.formBuilder.fieldLabelStatement": "Uttalanden",
   "app.components.formBuilder.fileUpload": "Filuppladdning",

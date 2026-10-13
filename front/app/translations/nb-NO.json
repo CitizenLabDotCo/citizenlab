@@ -999,7 +999,6 @@
   "app.components.formBuilder.errorMessage": "Det er et problem, vennligst fiks problemet for å kunne lagre endringene dine",
   "app.components.formBuilder.fieldGroup.description": "Beskrivelse (valgfritt)",
   "app.components.formBuilder.fieldGroup.title": "Tittel (valgfritt)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "For øyeblikket er svarene på disse spørsmålene bare tilgjengelige i den eksporterte Excel-filen i Input Manager, og er ikke synlige for brukerne.",
   "app.components.formBuilder.fieldLabel": "Svaralternativer",
   "app.components.formBuilder.fieldLabelStatement": "Alternativer",
   "app.components.formBuilder.fileUpload": "Filopplasting",

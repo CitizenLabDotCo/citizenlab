@@ -999,7 +999,6 @@
   "app.components.formBuilder.errorMessage": "ਇੱਕ ਸਮੱਸਿਆ ਹੈ, ਕਿਰਪਾ ਕਰਕੇ ਆਪਣੀਆਂ ਤਬਦੀਲੀਆਂ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰਨ ਦੇ ਯੋਗ ਹੋਣ ਲਈ ਸਮੱਸਿਆ ਨੂੰ ਠੀਕ ਕਰੋ",
   "app.components.formBuilder.fieldGroup.description": "ਵਰਣਨ (ਵਿਕਲਪਿਕ)",
   "app.components.formBuilder.fieldGroup.title": "ਸਿਰਲੇਖ (ਵਿਕਲਪਿਕ)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "ਵਰਤਮਾਨ ਵਿੱਚ, ਇਹਨਾਂ ਸਵਾਲਾਂ ਦੇ ਜਵਾਬ ਕੇਵਲ ਇਨਪੁਟ ਮੈਨੇਜਰ 'ਤੇ ਨਿਰਯਾਤ ਐਕਸਲ ਫਾਈਲ ਵਿੱਚ ਉਪਲਬਧ ਹਨ, ਅਤੇ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਦਿਖਾਈ ਨਹੀਂ ਦਿੰਦੇ ਹਨ।",
   "app.components.formBuilder.fieldLabel": "ਜਵਾਬ ਵਿਕਲਪ",
   "app.components.formBuilder.fieldLabelStatement": "ਬਿਆਨ",
   "app.components.formBuilder.fileUpload": "ਫਾਈਲ ਅਪਲੋਡ ਕਰੋ",

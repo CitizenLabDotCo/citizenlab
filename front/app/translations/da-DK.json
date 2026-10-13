@@ -999,7 +999,6 @@
   "app.components.formBuilder.errorMessage": "Der er et problem, udbedre problemet for at kunne gemme dine ændringer",
   "app.components.formBuilder.fieldGroup.description": "Beskrivelse (valgfrit)",
   "app.components.formBuilder.fieldGroup.title": "Titel (valgfrit)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "I øjeblikket er svarene på disse spørgsmål kun tilgængelige i den eksporterede excel-fil på Input Manager og ikke synlige for brugerne.",
   "app.components.formBuilder.fieldLabel": "Valg af svar",
   "app.components.formBuilder.fieldLabelStatement": "Udtalelser",
   "app.components.formBuilder.fileUpload": "Upload af fil",

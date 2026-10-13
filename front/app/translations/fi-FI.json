@@ -999,7 +999,6 @@
   "app.components.formBuilder.errorMessage": "On ongelma. Korjaa ongelma, jotta voit tallentaa muutokset",
   "app.components.formBuilder.fieldGroup.description": "kuvaus (vapaaehtoinen)",
   "app.components.formBuilder.fieldGroup.title": "Otsikko (valinnainen)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "Tällä hetkellä vastaukset näihin kysymyksiin ovat saatavilla vain viedyssä Excel-tiedostossa Input Managerissa, eivätkä ne näy käyttäjille.",
   "app.components.formBuilder.fieldLabel": "Vastausvaihtoehdot",
   "app.components.formBuilder.fieldLabelStatement": "lausunnot",
   "app.components.formBuilder.fileUpload": "Tiedoston lataus",

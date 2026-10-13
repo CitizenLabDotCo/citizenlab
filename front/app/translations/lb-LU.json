@@ -999,7 +999,6 @@
   "app.components.formBuilder.errorMessage": "Et gëtt e Problem, wgl. behieft de Problem, fir Är Ännerunge späicheren ze kënnen",
   "app.components.formBuilder.fieldGroup.description": "Beschreiwung (optionell)",
   "app.components.formBuilder.fieldGroup.title": "Titel (optionell)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "Momentan sinn Äntwerten op dës Froen nëmmen an der exportéierter Excel-Datei am Input Manager disponibel, a fir Benotzer net siichtbar.",
   "app.components.formBuilder.fieldLabel": "Äntwertenauswiel",
   "app.components.formBuilder.fieldLabelStatement": "Aussoen",
   "app.components.formBuilder.fileUpload": "Datei-Upload",

@@ -999,7 +999,6 @@
   "app.components.formBuilder.errorMessage": "Bir sorun var, değişikliklerinizi kaydedebilmek için lütfen sorunu düzeltin",
   "app.components.formBuilder.fieldGroup.description": "Açıklama (isteğe bağlı)",
   "app.components.formBuilder.fieldGroup.title": "Başlık (isteğe bağlı)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "Şu anda, bu soruların yanıtları yalnızca Input Manager'daki dışa aktarılan excel dosyasında mevcuttur ve kullanıcılar tarafından görülemez.",
   "app.components.formBuilder.fieldLabel": "Cevap seçenekleri",
   "app.components.formBuilder.fieldLabelStatement": "Açıklamalar",
   "app.components.formBuilder.fileUpload": "Dosya yükleme",

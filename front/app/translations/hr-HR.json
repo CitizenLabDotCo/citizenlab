@@ -999,7 +999,6 @@
   "app.components.formBuilder.errorMessage": "Došlo je do problema, riješite problem kako biste mogli spremiti svoje promjene",
   "app.components.formBuilder.fieldGroup.description": "Opis (nije obvezno)",
   "app.components.formBuilder.fieldGroup.title": "Naslov (nije obvezno)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "Trenutačno su odgovori na ova pitanja dostupni samo u izvezenoj excel datoteci na Input Manageru i nisu vidljivi korisnicima.",
   "app.components.formBuilder.fieldLabel": "Izbori odgovora",
   "app.components.formBuilder.fieldLabelStatement": "Izjave",
   "app.components.formBuilder.fileUpload": "Prijenos datoteke",

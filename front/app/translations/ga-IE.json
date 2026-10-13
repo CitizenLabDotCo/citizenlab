@@ -999,7 +999,6 @@
   "app.components.formBuilder.errorMessage": "Tá fadhb ann, réitigh an cheist le do thoil chun go mbeidh tú in ann do chuid athruithe a shábháil.",
   "app.components.formBuilder.fieldGroup.description": "Cur síos (roghnach)",
   "app.components.formBuilder.fieldGroup.title": "Teideal (roghnach)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "Faoi láthair, níl freagraí na gceisteanna seo ar fáil ach amháin sa chomhad excel easpórtáilte ar Input Manager, agus níl siad le feiceáil ag úsáideoirí.",
   "app.components.formBuilder.fieldLabel": "Roghanna freagraí",
   "app.components.formBuilder.fieldLabelStatement": "Ráitis",
   "app.components.formBuilder.fileUpload": "Uaslódáil comhaid",

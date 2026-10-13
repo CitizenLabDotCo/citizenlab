@@ -999,7 +999,6 @@
   "app.components.formBuilder.errorMessage": "Hiba történt. Kérjük, javítsa ki a hibát, hogy el tudja menteni a módosításokat",
   "app.components.formBuilder.fieldGroup.description": "Leírás (nem kötelező)",
   "app.components.formBuilder.fieldGroup.title": "Cím (nem kötelező)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "Jelenleg ezekre a kérdésekre a válaszok csak az Input Manager exportált Excel fájljában érhetők el, a felhasználók számára nem láthatók.",
   "app.components.formBuilder.fieldLabel": "Válaszlehetőségek",
   "app.components.formBuilder.fieldLabelStatement": "Nyilatkozatok",
   "app.components.formBuilder.fileUpload": "Fájl feltöltése",

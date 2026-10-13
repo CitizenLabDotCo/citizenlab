@@ -999,7 +999,6 @@
   "app.components.formBuilder.errorMessage": "Pastāv problēma, lūdzu, novērsiet problēmu, lai varētu saglabāt izmaiņas.",
   "app.components.formBuilder.fieldGroup.description": "Apraksts (pēc izvēles)",
   "app.components.formBuilder.fieldGroup.title": "Nosaukums (pēc izvēles)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "Pašlaik atbildes uz šiem jautājumiem ir pieejamas tikai eksportētajā Excel failā ievades pārvaldniekā, bet nav redzamas lietotājiem.",
   "app.components.formBuilder.fieldLabel": "Atbildes variantu izvēle",
   "app.components.formBuilder.fieldLabelStatement": "Paziņojumi",
   "app.components.formBuilder.fileUpload": "Failu augšupielāde",

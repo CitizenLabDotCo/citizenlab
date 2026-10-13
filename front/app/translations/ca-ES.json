@@ -999,7 +999,6 @@
   "app.components.formBuilder.errorMessage": "Hi ha un problema, solucioneu-lo per poder desar els vostres canvis",
   "app.components.formBuilder.fieldGroup.description": "descripció (opcional)",
   "app.components.formBuilder.fieldGroup.title": "Títol (opcional)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "Actualment, les respostes a aquestes preguntes només estan disponibles al fitxer Excel exportat a Input Manager i no són visibles per als usuaris.",
   "app.components.formBuilder.fieldLabel": "Opcions de resposta",
   "app.components.formBuilder.fieldLabelStatement": "Declaracions",
   "app.components.formBuilder.fileUpload": "Càrrega de fitxers",

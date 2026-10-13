@@ -859,7 +859,6 @@
   "app.components.formBuilder.errorMessage": "Постоји проблем, решите проблем да бисте могли да сачувате промене",
   "app.components.formBuilder.fieldGroup.description": "Опис (опционо)",
   "app.components.formBuilder.fieldGroup.title": "Наслов (опционо)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "Тренутно су одговори на ова питања доступни само у извезеној екцел датотеци на Инпут Манагер-у и нису видљиви корисницима.",
   "app.components.formBuilder.fieldLabel": "Избори одговора",
   "app.components.formBuilder.fieldLabelStatement": "Statements",
   "app.components.formBuilder.fileUpload": "Отпремање датотеке",

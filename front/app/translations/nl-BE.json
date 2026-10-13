@@ -999,7 +999,6 @@
   "app.components.formBuilder.errorMessage": "Er is een probleem opgetreden, los de fout op om je wijzigingen op te slaan",
   "app.components.formBuilder.fieldGroup.description": "Beschrijving (optioneel)",
   "app.components.formBuilder.fieldGroup.title": "Titel (optioneel)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "Momenteel zijn de antwoorden op deze vragen alleen beschikbaar in het geëxporteerde Excel-bestand op de Input Manager, en niet zichtbaar voor de gebruikers.",
   "app.components.formBuilder.fieldLabel": "Antwoordmogelijkheden",
   "app.components.formBuilder.fieldLabelStatement": "Stellingen",
   "app.components.formBuilder.fileUpload": "Bestanden uploaden",

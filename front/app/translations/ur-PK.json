@@ -999,7 +999,6 @@
   "app.components.formBuilder.errorMessage": "ایک مسئلہ ہے، براہ کرم اپنی تبدیلیاں محفوظ کرنے کے لیے مسئلہ کو ٹھیک کریں۔",
   "app.components.formBuilder.fieldGroup.description": "تفصیل (اختیاری)",
   "app.components.formBuilder.fieldGroup.title": "عنوان (اختیاری)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "فی الحال، ان سوالوں کے جواب صرف ان پٹ مینیجر پر برآمد شدہ ایکسل فائل میں دستیاب ہیں، اور صارفین کو نظر نہیں آتے۔",
   "app.components.formBuilder.fieldLabel": "انتخاب کے جوابات دیں۔",
   "app.components.formBuilder.fieldLabelStatement": "بیانات",
   "app.components.formBuilder.fileUpload": "فائل اپ لوڈ کریں۔",
