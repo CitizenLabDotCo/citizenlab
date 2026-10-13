@@ -40,11 +40,18 @@ resource 'Feedback prompts' do
       expect(json_response_body[:errors].keys).to contain_exactly(:trigger, :ui_version)
     end
 
-    example 'Drop an admin area that is not a route pattern', document: false do
+    example 'Ignore an admin area that is not a route pattern', document: false do
       prompt = create(:feedback_prompt, user: user)
       do_request(admin_area: '/en/admin/projects/some-slug')
-      assert_status 200
-      expect(prompt.reload.admin_area).to be_nil
+      assert_status 204
+      expect(prompt.reload.status).to eq 'pending'
+    end
+
+    example 'Do not show a project prompt outside the project back office', document: false do
+      prompt = create(:feedback_prompt, user: user)
+      do_request(admin_area: '/:locale/admin/dashboard/overview')
+      assert_status 204
+      expect(prompt.reload.status).to eq 'pending'
     end
 
     context 'when the user is a resident' do
