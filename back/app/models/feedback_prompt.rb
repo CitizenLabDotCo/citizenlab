@@ -42,15 +42,28 @@ class FeedbackPrompt < ApplicationRecord
   # - audience: who may be asked, a key of AUDIENCES.
   # - subject_type: the record the prompt is about, if any. A subject gets at most one prompt.
   # - triggers: the moments the prompt may be shown at, from TRIGGERS.
+  # - admin_area: only show it on (or right after leaving) back office pages under
+  #   this route pattern, so the question matches what the user was doing. nil: anywhere.
   # - cooldown: how long before the same user can be shown this prompt again.
   #   Each prompt has its own cooldown; prompts don't hold each other back.
   # - expires_after: how long a due prompt waits to be shown before it's dropped.
+  PROJECT_ADMIN_AREA = '/:locale/admin/projects/:projectId'
   PROMPTS = {
     'project_setup_ease' => {
-      audience: 'managers', subject_type: 'Project', triggers: %w[save], cooldown: 60.days, expires_after: 1.day
+      audience: 'managers',
+      subject_type: 'Project',
+      triggers: %w[save],
+      admin_area: PROJECT_ADMIN_AREA,
+      cooldown: 60.days,
+      expires_after: 1.day
     },
     'return_findability' => {
-      audience: 'managers', subject_type: nil, triggers: %w[save project_exit], cooldown: 30.days, expires_after: 14.days
+      audience: 'managers',
+      subject_type: nil,
+      triggers: %w[save project_exit],
+      admin_area: PROJECT_ADMIN_AREA,
+      cooldown: 30.days,
+      expires_after: 14.days
     }
   }.freeze
 
@@ -95,8 +108,11 @@ class FeedbackPrompt < ApplicationRecord
   def shown? = status == 'shown'
   def answered? = status == 'answered'
 
-  def self.shown_on?(key, trigger)
-    PROMPTS.dig(key, :triggers).include?(trigger)
+  def self.shown_on?(key, trigger, admin_area)
+    prompt = PROMPTS.fetch(key)
+    return false unless prompt[:triggers].include?(trigger)
+
+    prompt[:admin_area].nil? || admin_area.to_s.start_with?(prompt[:admin_area])
   end
 
   def self.cooling_down?(key, user)
