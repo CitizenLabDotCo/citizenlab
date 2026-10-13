@@ -17,6 +17,7 @@ import {
   shutdownFor,
   tenantInfo,
 } from 'utils/analytics';
+import fetcher from 'utils/cl-react-query/fetcher';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
@@ -38,13 +39,32 @@ const destinationConfig: IDestinationConfig = {
   name: () => 'Intercom',
 };
 
+interface IIntercomToken {
+  data: {
+    type: 'intercom_token';
+    attributes: { token: string };
+  };
+}
+
+const fetchIntercomToken = async () => {
+  try {
+    const { data } = await fetcher<IIntercomToken>({
+      path: '/users/me/intercom_token',
+      action: 'get',
+    });
+    return data.attributes.token;
+  } catch {
+    return undefined;
+  }
+};
+
 const configuration: ModuleConfiguration = {
   beforeMountApplication: () => {
     combineLatest([
       appConfigurationStream,
       authUserStream,
       initializeFor('intercom'),
-    ]).subscribe(([tenant, user, _]) => {
+    ]).subscribe(async ([tenant, user, _]) => {
       if (!INTERCOM_APP_ID) return;
 
       (function () {
@@ -85,6 +105,8 @@ const configuration: ModuleConfiguration = {
       })();
 
       if (tenant && window.Intercom) {
+        const intercomUserJwt = user ? await fetchIntercomToken() : undefined;
+
         window.Intercom('boot', {
           app_id: INTERCOM_APP_ID,
           api_base: 'https://api-iam.eu.intercom.io',
@@ -98,6 +120,9 @@ const configuration: ModuleConfiguration = {
                 lastName: user.data.attributes.last_name,
                 locale: user.data.attributes.locale,
                 ...tenantInfo(tenant.data),
+                ...(intercomUserJwt
+                  ? { intercom_user_jwt: intercomUserJwt }
+                  : {}),
               }
             : {}),
           company: {
