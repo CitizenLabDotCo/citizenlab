@@ -116,6 +116,7 @@ module McpServer
       McpServer::Tools::UpdateResource,
       McpServer::Tools::UpdateProject,
       McpServer::Tools::UpdateFolder,
+      McpServer::Tools::UpdateArea,
       McpServer::Tools::UpdatePhase,
       McpServer::Tools::GetResource,
       McpServer::Tools::GetPlatformConfig,
