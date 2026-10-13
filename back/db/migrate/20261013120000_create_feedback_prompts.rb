@@ -8,17 +8,21 @@ class CreateFeedbackPrompts < ActiveRecord::Migration[7.2]
       t.references :subject, polymorphic: true, type: :uuid, index: false
       t.string :status, null: false, default: 'pending'
       t.datetime :shown_at
+      t.datetime :responded_at
       t.integer :score
       t.text :comment
 
       # Snapshot of the circumstances, frozen at the time the prompt is shown, so
       # reporting doesn't depend on flags or roles that change or disappear later.
+      t.string :trigger
+      t.string :admin_area
       t.string :ui_version
       t.boolean :staff, null: false, default: false
       t.string :role
       t.string :locale
       t.integer :days_since_last_active
       t.string :project_origin
+      t.integer :previously_shown_count
 
       t.timestamps
     end
