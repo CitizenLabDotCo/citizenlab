@@ -11,6 +11,7 @@ import { IProjectData } from 'api/projects/types';
 import useLocalize from 'hooks/useLocalize';
 
 import ModeratorsOnlyAnswerNote from 'components/CustomFieldsForm/ModeratorsOnlyAnswerNote';
+import { isUserField } from 'components/CustomFieldsForm/util';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
@@ -18,6 +19,7 @@ import { usePermission } from 'utils/permissions';
 import messages from '../../messages';
 import BodySectionTitle from '../BodySectionTitle';
 
+import AnswersForm from './AnswersForm';
 import AnswerValue from './AnswerValue';
 
 interface Props {
@@ -46,7 +48,13 @@ const CustomFieldAnswers = ({ ideaId, project, compact }: Props) => {
 
   const answers: Record<string, unknown> = idea.data.attributes;
   const rows = customFields.flatMap((field) => {
-    if (field.code || !supportsPublicAnswers(field.input_type)) return [];
+    if (
+      field.code ||
+      isUserField(field) ||
+      !supportsPublicAnswers(field.input_type)
+    ) {
+      return [];
+    }
 
     const answer = answers[field.key];
     const isPrivate = field.answers_visible_to !== 'public';
@@ -62,28 +70,30 @@ const CustomFieldAnswers = ({ ideaId, project, compact }: Props) => {
       <BodySectionTitle>
         <FormattedMessage {...messages.moreFromThisSubmission} />
       </BodySectionTitle>
-      {rows.map(({ field, answer }) => (
-        <Box
-          key={field.key}
-          py="16px"
-          borderTop={`1px solid ${colors.divider}`}
-          data-cy="e2e-custom-field-answer"
-        >
-          <Text m="0px" mb="4px" fontSize="s" color="textSecondary">
-            {localize(field.title_multiloc)}
-          </Text>
-          {answer === undefined ? (
-            <Text m="0px" color="textSecondary">
-              <FormattedMessage {...messages.notAnswered} />
+      <AnswersForm answers={answers}>
+        {rows.map(({ field, answer }) => (
+          <Box
+            key={field.key}
+            py="16px"
+            borderTop={`1px solid ${colors.divider}`}
+            data-cy="e2e-custom-field-answer"
+          >
+            <Text m="0px" mb="4px" fontSize="s" color="textSecondary">
+              {localize(field.title_multiloc)}
             </Text>
-          ) : (
-            <AnswerValue field={field} answer={answer} />
-          )}
-          {field.answers_visible_to !== 'public' && (
-            <ModeratorsOnlyAnswerNote />
-          )}
-        </Box>
-      ))}
+            {answer === undefined ? (
+              <Text m="0px" color="textSecondary">
+                <FormattedMessage {...messages.notAnswered} />
+              </Text>
+            ) : (
+              <AnswerValue field={field} answer={answer} />
+            )}
+            {field.answers_visible_to !== 'public' && (
+              <ModeratorsOnlyAnswerNote />
+            )}
+          </Box>
+        ))}
+      </AnswersForm>
     </Box>
   );
 };

@@ -41,7 +41,7 @@ export const isNewCustomFieldObject = (
 ): element is IFlatCustomFieldWithIndex =>
   doesObjectHaveProperties(element, properties);
 
-const PUBLIC_ANSWER_INPUT_TYPES: ICustomFieldInputType[] = ['text'];
+const PUBLIC_ANSWER_INPUT_TYPES: ICustomFieldInputType[] = ['text', 'select'];
 
 export const supportsPublicAnswers = (inputType: ICustomFieldInputType) =>
   PUBLIC_ANSWER_INPUT_TYPES.includes(inputType);
