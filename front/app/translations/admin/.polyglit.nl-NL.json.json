@@ -3769,6 +3769,51 @@
     "verified_at": "2026-03-18T11:49:32.383601Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.FeedbackPrompt.close": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:27.528754Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.FeedbackPrompt.commentLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:27.528754Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:27.528754Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion2": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:27.528754Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.FeedbackPrompt.scaleHint": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:27.528754Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.FeedbackPrompt.send": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:27.528754Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.FeedbackPrompt.thanks": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:27.528754Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.FeedbackPrompt.veryEasy": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:27.528754Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.FeedbackPrompt.veryHard": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:27.528754Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.Insights.tabReports": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.383601Z",
