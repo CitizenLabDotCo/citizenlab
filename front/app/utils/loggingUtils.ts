@@ -1,6 +1,8 @@
 import { captureMessage, captureException, withScope } from '@sentry/react';
 import { isEmpty, isError, isObject } from 'lodash-es';
 
+import checkIfFramed from 'utils/checkIfFramed';
+
 function isErrorOrErrorEvent(wat: any) {
   return (
     isError(wat) ||
@@ -27,4 +29,18 @@ export function reportError(error: any) {
       captureMessage('Something wrong happened');
     });
   }
+}
+
+// Shared by our Sentry reporters, so their events can be filtered the same way.
+
+export function secondsSincePageLoad() {
+  return Math.round(performance.now() / 1000);
+}
+
+// Tags are indexed by Sentry, so these are searchable on every report.
+export function baseReportTags() {
+  return {
+    tenant_host: window.location.hostname,
+    in_iframe: checkIfFramed(),
+  };
 }

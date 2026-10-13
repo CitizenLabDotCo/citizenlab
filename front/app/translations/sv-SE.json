@@ -239,6 +239,7 @@
   "app.components.ErrorBoundary.errorFormTitle": "Det verkar som att det finns ett problem.",
   "app.components.ErrorBoundary.genericErrorWithForm": "Ett fel uppstod och vi kan inte visa det här innehållet. Försök igen, eller {openForm}",
   "app.components.ErrorBoundary.openFormText": "hjälp oss att ta reda på det",
+  "app.components.ErrorBoundary.reloadPage": "Ladda om sidan",
   "app.components.ErrorToast.budgetExceededError": "Du har inte tillräckligt med budget",
   "app.components.ErrorToast.votesExceededError": "Du har inte tillräckligt med röster kvar",
   "app.components.EsriMap.drawOnMap": "Rita",
