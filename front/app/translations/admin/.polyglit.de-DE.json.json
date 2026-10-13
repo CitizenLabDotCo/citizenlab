@@ -9644,6 +9644,11 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.insights.konveioParticipationDataNotice": {
+    "state": "verified",
+    "verified_at": "2026-10-13T09:33:40.607376Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.insights.last7Days": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -9883,6 +9888,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.project.insights.visitorsOverTime": {
+    "state": "verified",
+    "verified_at": "2026-10-13T09:33:40.607376Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.project.insights.volunteerings": {
     "state": "verified",
