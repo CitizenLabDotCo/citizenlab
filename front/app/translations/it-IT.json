@@ -239,6 +239,7 @@
   "app.components.ErrorBoundary.errorFormTitle": "Sembra che ci sia un problema.",
   "app.components.ErrorBoundary.genericErrorWithForm": "Si è verificato un errore e non possiamo visualizzare questo contenuto. Per favore riprova, o {openForm}",
   "app.components.ErrorBoundary.openFormText": "aiutaci a capirlo",
+  "app.components.ErrorBoundary.reloadPage": "Ricarica la pagina",
   "app.components.ErrorToast.budgetExceededError": "Non hai un budget sufficiente",
   "app.components.ErrorToast.votesExceededError": "Non hai abbastanza voti a disposizione",
   "app.components.EsriMap.drawOnMap": "Disegna",

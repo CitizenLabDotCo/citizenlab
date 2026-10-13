@@ -239,6 +239,7 @@
   "app.components.ErrorBoundary.errorFormTitle": "Ajornartorsiuteqarpasippugut.",
   "app.components.ErrorBoundary.genericErrorWithForm": "Akornuteqalerpoq uumallu imarisaa nuisissinnaanngilarput. Misileqqilaaruk imaluunniit {openForm}!",
   "app.components.ErrorBoundary.openFormText": "ajornartorsiut aaqqinniarlugu ikiortigut",
+  "app.components.ErrorBoundary.reloadPage": "Qupperneq nutaarteriuk",
   "app.components.ErrorToast.budgetExceededError": "You don't have enough budget",
   "app.components.ErrorToast.votesExceededError": "You don't have enough votes left",
   "app.components.EsriMap.drawOnMap": "Titartaagit",

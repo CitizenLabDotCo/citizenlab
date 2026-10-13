@@ -55,10 +55,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        idea_author_change: {
-          enabled: true,
-          allowed: true
-        },
         blocking_profanity: {
           enabled: true,
           allowed: true
