@@ -187,8 +187,9 @@ UNION ALL
 -- matrix questions: one row per answered statement, value_numeric is the
 -- chosen point on the shared scale. Counts must match the survey results page
 -- (Surveys::ResultsGenerator), or reports built on this view will disagree with
--- it: like that page, only count the question's current statements and points
--- from 1 to its maximum.
+-- it: like that page, only count the question's current statements and
+-- whole-number points from 1 to its maximum. Points are compared as JSON
+-- values, as that page groups them, so 3.0 counts as 3 and 2.5 not at all.
 SELECT
     i.id AS input_id,
     q.id AS question_id,
@@ -199,9 +200,9 @@ SELECT
         (SELECT t.value FROM jsonb_each_text(q.title_multiloc) t WHERE t.value <> '' ORDER BY t.key LIMIT 1)
     ) AS question_label,
     NULL AS value_text,
-    -- Guarded like the WHERE below: Postgres can push an outer filter on
-    -- value_numeric into this branch ahead of the WHERE, and one non-numeric
-    -- answer would then fail the whole query.
+    -- Guarded because Postgres can push an outer filter on value_numeric into
+    -- this branch ahead of the WHERE, and one non-numeric answer would then
+    -- fail the whole query.
     CASE WHEN jsonb_typeof(answered.value) = 'number' THEN (answered.value #>> '{}')::numeric END AS value_numeric,
     COALESCE(
         NULLIF(label.multiloc ->> (SELECT ac.settings -> 'core' -> 'locales' ->> 0 FROM app_configurations ac LIMIT 1), ''),
@@ -230,7 +231,7 @@ INNER JOIN custom_field_matrix_statements s
     AND s.key = answered.key
 -- Needs one WHEN per point a scale allows, like the linear scale lookup above.
 CROSS JOIN LATERAL (
-    SELECT CASE answered.value #>> '{}'
+    SELECT CASE answered.value
         WHEN '1' THEN q.linear_scale_label_1_multiloc
         WHEN '2' THEN q.linear_scale_label_2_multiloc
         WHEN '3' THEN q.linear_scale_label_3_multiloc
@@ -245,7 +246,4 @@ CROSS JOIN LATERAL (
     END AS multiloc
 ) label
 WHERE jsonb_typeof(a.value) = 'object'
-    AND CASE
-        WHEN jsonb_typeof(answered.value) = 'number'
-        THEN (answered.value #>> '{}')::numeric BETWEEN 1 AND q.maximum
-    END
+    AND answered.value IN (SELECT to_jsonb(generate_series(1, q.maximum)))

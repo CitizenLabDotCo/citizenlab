@@ -191,7 +191,8 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
       [
         { 'send_more_animals_to_space' => 1, 'ride_bicycles_more_often' => 3 },
         { 'send_more_animals_to_space' => 5, 'ride_bicycles_more_often' => 3, 'deleted_statement' => 2 },
-        { 'send_more_animals_to_space' => 7 }
+        { 'send_more_animals_to_space' => 7, 'ride_bicycles_more_often' => 2.5 },
+        { 'ride_bicycles_more_often' => 3.0 }
       ].each do |value|
         create(:native_survey_response, project: project).custom_field_answers.create!(custom_field: matrix, key: matrix.key, value: value)
       end
@@ -204,6 +205,13 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
           .map { |answer| [[statement_key, answer[:answer]], answer[:count]] }
       end
       expect(counts).to eq product_counts.to_h
+    end
+
+    it 'labels a matrix point stored as a decimal like the whole point' do
+      matrix = create(:custom_field_matrix_linear_scale, resource: form)
+      response.custom_field_answers.create!(key: matrix.key, value: { 'send_more_animals_to_space' => 5.0 })
+
+      expect(described_class.find_by!(input_id: response.id).value_label).to eq 'Strongly agree'
     end
 
     # Matrix answers aren't type-checked on write, so the API can store any value.

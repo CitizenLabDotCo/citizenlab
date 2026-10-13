@@ -3964,25 +3964,21 @@ UNION ALL
      CROSS JOIN LATERAL jsonb_each(a.value) answered(key, value))
      JOIN public.custom_field_matrix_statements s ON (((s.custom_field_id = q.id) AND ((s.key)::text = answered.key))))
      CROSS JOIN LATERAL ( SELECT
-                CASE (answered.value #>> '{}'::text[])
-                    WHEN '1'::text THEN q.linear_scale_label_1_multiloc
-                    WHEN '2'::text THEN q.linear_scale_label_2_multiloc
-                    WHEN '3'::text THEN q.linear_scale_label_3_multiloc
-                    WHEN '4'::text THEN q.linear_scale_label_4_multiloc
-                    WHEN '5'::text THEN q.linear_scale_label_5_multiloc
-                    WHEN '6'::text THEN q.linear_scale_label_6_multiloc
-                    WHEN '7'::text THEN q.linear_scale_label_7_multiloc
-                    WHEN '8'::text THEN q.linear_scale_label_8_multiloc
-                    WHEN '9'::text THEN q.linear_scale_label_9_multiloc
-                    WHEN '10'::text THEN q.linear_scale_label_10_multiloc
-                    WHEN '11'::text THEN q.linear_scale_label_11_multiloc
+                CASE answered.value
+                    WHEN '1'::jsonb THEN q.linear_scale_label_1_multiloc
+                    WHEN '2'::jsonb THEN q.linear_scale_label_2_multiloc
+                    WHEN '3'::jsonb THEN q.linear_scale_label_3_multiloc
+                    WHEN '4'::jsonb THEN q.linear_scale_label_4_multiloc
+                    WHEN '5'::jsonb THEN q.linear_scale_label_5_multiloc
+                    WHEN '6'::jsonb THEN q.linear_scale_label_6_multiloc
+                    WHEN '7'::jsonb THEN q.linear_scale_label_7_multiloc
+                    WHEN '8'::jsonb THEN q.linear_scale_label_8_multiloc
+                    WHEN '9'::jsonb THEN q.linear_scale_label_9_multiloc
+                    WHEN '10'::jsonb THEN q.linear_scale_label_10_multiloc
+                    WHEN '11'::jsonb THEN q.linear_scale_label_11_multiloc
                     ELSE NULL::jsonb
                 END AS multiloc) label)
-  WHERE ((jsonb_typeof(a.value) = 'object'::text) AND
-        CASE
-            WHEN (jsonb_typeof(answered.value) = 'number'::text) THEN ((((answered.value #>> '{}'::text[]))::numeric >= (1)::numeric) AND (((answered.value #>> '{}'::text[]))::numeric <= (q.maximum)::numeric))
-            ELSE NULL::boolean
-        END);
+  WHERE ((jsonb_typeof(a.value) = 'object'::text) AND (answered.value IN ( SELECT to_jsonb(generate_series(1, q.maximum)) AS to_jsonb)));
 
 
 --
