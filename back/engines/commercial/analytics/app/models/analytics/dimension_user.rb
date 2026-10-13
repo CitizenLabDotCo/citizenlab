@@ -7,7 +7,6 @@
 #  id            :uuid             primary key
 #  role          :text
 #  invite_status :string
-#  has_visits    :boolean
 #
 module Analytics
   class DimensionUser < Analytics::ApplicationRecordView
@@ -30,13 +29,9 @@ module Analytics
           or space_moderator, or citizen for ordinary users with no role at all. Reliable for
           telling citizens apart from users with any role, not for telling roles apart.
         DOC
-        'invite_status' => <<~DOC.squish,
+        'invite_status' => <<~DOC.squish
           Invitation state: pending (invited, not yet accepted), accepted, or NULL when the user
           registered directly rather than by invitation.
-        DOC
-        'has_visits' => <<~DOC.squish
-          True when the user has at least one recorded visit. Visits here come from the Matomo-based
-          visits fact, which can differ from the visitor numbers shown on dashboards (a different source).
         DOC
       }
     end

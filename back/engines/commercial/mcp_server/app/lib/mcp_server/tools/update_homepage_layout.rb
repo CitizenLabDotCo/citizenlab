@@ -56,6 +56,7 @@ class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
       graph = patched_graph(stored)
       preserve_no_delete!(stored, graph)
       protect_fixed_structure!(stored, graph)
+      protect_events_filtering!(stored)
       validate!(graph)
 
       layout.craftjs_json = graph
@@ -104,6 +105,23 @@ class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
         graph[id]['custom'] ||= {}
         graph[id]['custom']['noDelete'] = true
       end
+    end
+
+    # The homepage lists events from every project; filtering is for custom pages, as in the
+    # builder. Like the builder, a widget keeps a filter it already has, so only a new or switched
+    # filter is refused.
+    def protect_events_filtering!(stored)
+      id, = patch_nodes.find do |node_id, node|
+        next false unless node.is_a?(Hash) && resolved_name(node) == 'EventsList'
+
+        source = node.dig('props', 'source')
+        stored_source = stored[node_id].dig('props', 'source') if stored[node_id].is_a?(Hash)
+        [nil, 'all'].exclude?(source) && source != stored_source
+      end
+      return unless id
+
+      raise PatchError, "node #{id}: the homepage events widget lists events from every project and cannot " \
+                        'be filtered. Use "source":"all".'
     end
 
     # A fixed widget may have its props edited but not be restructured: no type change, no

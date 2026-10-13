@@ -91,7 +91,8 @@ const WorkspaceHeader = ({
       alignItems="center"
       flex={`0 0 ${HEADER_HEIGHT}`}
       height={HEADER_HEIGHT}
-      px="16px"
+      pl="26px"
+      pr="20px"
       background={colors.white}
       borderRadius={bo.panelBorderRadius}
     >
@@ -110,13 +111,14 @@ const WorkspaceHeader = ({
               params={{ projectId: project.id }}
               buttonStyle="bo-secondary"
               icon="arrow-left"
-              width="36px"
+              width={bo.buttonMedium.height}
+              height={bo.buttonMedium.height}
               padding="0"
               ariaLabel={formatMessage(messages.backToProjectSetup)}
             />
             <Breadcrumbs
               breadcrumbs={phaseCrumbs}
-              fontSize="s"
+              variant="backofficeRedesign"
               highlightCurrentPage
             />
           </>
@@ -125,7 +127,7 @@ const WorkspaceHeader = ({
             breadcrumbs={projectCrumbs}
             icon="folder-outline"
             separator="chevron"
-            fontSize="s"
+            variant="backofficeRedesign"
             highlightCurrentPage
           />
         )}
@@ -147,7 +149,7 @@ const WorkspaceHeader = ({
         display="flex"
         alignItems="center"
         justifyContent="flex-end"
-        gap="10px"
+        gap="8px"
       >
         {inPhase ? (
           <SaveChangesButton />
@@ -163,14 +165,15 @@ const WorkspaceHeader = ({
                 params={{ slug: project.attributes.slug }}
                 buttonStyle="bo-text"
                 icon="eye"
-                width="36px"
+                width={bo.buttonMedium.height}
+                height={bo.buttonMedium.height}
                 padding="0"
                 bgHoverColor={colors.grey100}
                 iconHoverColor={colors.textPrimary}
                 ariaLabel={formatMessage(messages.previewProject)}
               />
             </Tooltip>
-            <Box position="relative" display="flex" gap="10px">
+            <Box position="relative" display="flex" gap="8px">
               <ShareDropdown
                 project={project}
                 opened={openDropdown === 'share'}

@@ -4,8 +4,23 @@ ignore:
   - GHSA-47m2-wp7j-p9vc # rubyzip < 3.4.0: the flawed prefix check is 2.4+/3.x code (Entry#extract_v3);
   # 1.3.0 has no such check. Both our extract sites validate the destination
   # themselves with a separator-terminated prefix guard. Revisit with the rubyzip 3 bump.
-  - GHSA-42r3-x6vx-x49x # ruby_llm 1.16.0: ReDoS in the camelCase->snake_case regex.
-  # The three call sites (tool.rb, agent.rb, chat.rb) only ever receive Ruby class
-  # names, and we use neither Tool nor Agent. The advisory targets Ruby 3.1.x; the
-  # regex is linear on our Ruby 3.4.7. The only patched release is 2.0.0.rc*, a
-  # prerelease major. Revisit when 2.0 is stable or if a 1.16.x backport lands.
+
+  # ruby_llm 1.16.0: three ReDoS reports filed together, all describing
+  # polynomial-time regex behaviour on Ruby 3.1.x. We run 3.4.7, where all three
+  # are linear (measured on the 1.16.0 code: doubling the input doubles the time).
+  # Each affected path is also unreachable for us — through ruby_llm we only ever
+  # use the bedrock and vertexai providers:
+  #   - 42r3: Utils.underscore. Call sites only ever receive Ruby class names, and
+  #     we use neither Tool nor Agent.
+  #   - 5m38: <think> tag parsing. It lives in the OpenAI provider's chat parsing,
+  #     which neither Bedrock nor VertexAI includes; our GPT models go through the
+  #     separate `openai` gem instead.
+  #   - 57hg: Mistral capability matching. Only reached while listing models for
+  #     the Mistral provider, which requires mistral_api_key and is therefore
+  #     skipped as unconfigured.
+  # Patched only in 2.0.0; there is no 1.16.x backport. That bump is a breaking
+  # major for us (RubyLLM::Content removed, refresh! renamed, structured output
+  # moves from `content` to `parsed`) and is tracked as its own piece of work.
+  - GHSA-42r3-x6vx-x49x
+  - GHSA-5m38-526f-3498
+  - GHSA-57hg-jgw4-wcqw

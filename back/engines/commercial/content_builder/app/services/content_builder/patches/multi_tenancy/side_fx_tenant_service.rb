@@ -5,7 +5,7 @@ module ContentBuilder
     module MultiTenancy
       module SideFxTenantService
         # Once a tenant's template has been applied, give every project its page, every
-        # folder its description and every custom page its layout on the Content Builder —
+        # folder its description and every custom, About and FAQ page its layout on the Content Builder —
         # templates carry no layouts of their own. Errors are reported but swallowed so
         # provisioning can never abort tenant creation.
         def after_apply_template(tenant, template, current_user = nil)

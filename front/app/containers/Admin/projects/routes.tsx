@@ -242,9 +242,15 @@ const projectIndexRoute = createRoute({
   component: ProjectIndexRedirect,
 });
 
+const projectPageSearchSchema = yup.object({
+  groups_failed: yup.string().optional(),
+});
+
 const projectPageRoute = createRoute({
   getParentRoute: () => projectRoute,
   path: 'project-page',
+  validateSearch: (search: Record<string, unknown>) =>
+    projectPageSearchSchema.validateSync(search),
   component: () => (
     <PageLoading>
       <AdminProjectPage />
@@ -498,14 +504,24 @@ const projectEventsNewRoute = createRoute({
   ),
 });
 
+// Keyed by event so moving between events starts a fresh form instead of
+// carrying one event's unsaved edits over to the next.
+const ProjectEventEditPage = () => {
+  const { id } = useParams({
+    from: '/$locale/admin/projects/$projectId/events/$id',
+  });
+
+  return (
+    <PageLoading>
+      <AdminProjectEventsEdit key={id} />
+    </PageLoading>
+  );
+};
+
 const projectEventsEditRoute = createRoute({
   getParentRoute: () => projectRoute,
   path: 'events/$id',
-  component: () => (
-    <PageLoading>
-      <AdminProjectEventsEdit />
-    </PageLoading>
-  ),
+  component: ProjectEventEditPage,
 });
 
 // --- Phases layout ---

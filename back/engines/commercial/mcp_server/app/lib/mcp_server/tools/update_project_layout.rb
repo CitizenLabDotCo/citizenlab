@@ -81,6 +81,7 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
       stored = layout.craftjs_json || {}
       protect_scaffold!(stored)
       protect_legacy_widgets!(stored)
+      pin_events_to_project!
       graph = patched_graph(stored)
       protect_content_placement!(graph)
       validate!(graph)
@@ -157,6 +158,24 @@ class McpServer::Tools::UpdateProjectLayout < McpServer::BaseTool
 
         raise PatchError, "node #{id}: #{widget} is a legacy node type kept only for pages that " \
                           "already contain one; new ones cannot be created — #{alternative}."
+      end
+    end
+
+    # Like the builder, an events widget here shows the project's own events, so a node sent without
+    # them gets the project defaults (the widget alone would list every project's events), and any
+    # other source is refused.
+    def pin_events_to_project!
+      patch_nodes.each do |id, node|
+        next unless resolved_name(node) == ContentBuilder::Craftjs::Nodes::EVENTS_WIDGET_NAME
+
+        props = node['props'] || {}
+        source = props['source']
+        if source && source != 'currentProject'
+          raise PatchError, "node #{id}: an EventsList on a project page shows that project's events; " \
+                            "its source must be \"currentProject\", not \"#{source}\"."
+        end
+
+        node['props'] = ContentBuilder::ProjectPageLayoutService::EVENTS_PROPS.deep_dup.merge(props)
       end
     end
 

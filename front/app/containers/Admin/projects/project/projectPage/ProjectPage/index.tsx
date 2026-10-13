@@ -1,74 +1,53 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Box,
   Button,
   Spinner,
+  Text,
+  bo,
   colors,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
+import useGroupsByIds from 'api/groups/useGroupsByIds';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
-import PhonePreview from 'containers/Admin/projects/_shared/components/PhonePreview';
+import PhonePreviewBackdrop from 'containers/Admin/projects/_shared/components/PhonePreviewBackdrop';
+
+import PagePreview from 'components/admin/PagePreview';
+import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { useParams } from 'utils/router';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { useParams, useSearch } from 'utils/router';
 
 import messages from '../messages';
 
-const Preview = styled(PhonePreview)`
-  transition: transform 150ms ease-out, box-shadow 150ms ease-out;
-
-  &:hover,
-  &:focus-within {
-    transform: translateY(-2px);
-    box-shadow: 0 0 0 3px rgba(44, 110, 125, 0.42),
-      0 18px 42px rgba(20, 25, 40, 0.16);
-  }
-`;
-
-const CornerEditButton = styled(Button)`
-  transition: opacity 140ms ease-out;
-
-  ${Preview}:hover &,
-  ${Preview}:focus-within & {
-    opacity: 0;
-    pointer-events: none;
-  }
-`;
-
-const Overlay = styled(Box)`
-  transition: opacity 160ms ease-out, visibility 160ms ease-out;
-
-  ${Preview}:hover &,
-  ${Preview}:focus-within & {
-    opacity: 1;
-    visibility: visible;
-  }
-`;
-
-const CtaWrapper = styled(Box)`
-  transition: transform 160ms ease-out;
-
-  ${Preview}:hover &,
-  ${Preview}:focus-within & {
-    transform: translateY(0);
-  }
-`;
-
 const ProjectPage = () => {
-  const { formatMessage } = useIntl();
+  const { formatMessage, formatList } = useIntl();
   const locale = useLocale();
+  const localize = useLocalize();
   const { projectId } = useParams({
     from: '/$locale/admin/projects/$projectId/project-page',
   });
+  const { groups_failed: groupsFailedParam } = useSearch({
+    from: '/$locale/admin/projects/$projectId/project-page',
+  });
+  const [failedGroupIds, setFailedGroupIds] = useState(
+    groupsFailedParam ? groupsFailedParam.split(',') : []
+  );
+  const failedGroups = useGroupsByIds(failedGroupIds);
   const { data: project } = useProjectById(projectId);
   const redesign = useProjectBackofficeRedesign();
+
+  useEffect(() => {
+    if (groupsFailedParam) removeSearchParams(['groups_failed']);
+  }, [groupsFailedParam]);
 
   if (!project) {
     return (
@@ -86,6 +65,17 @@ const ProjectPage = () => {
 
   const slug = project.data.attributes.slug;
 
+  const closeGroupsFailed = () => setFailedGroupIds([]);
+  const failedGroupTitles = failedGroups.flatMap((group) =>
+    group ? [localize(group.data.attributes.title_multiloc)] : []
+  );
+
+  // Keep groups_failed out of the preview, or the iframe reloads once it is removed.
+  const searchParams = new URLSearchParams(window.location.search);
+  searchParams.delete('groups_failed');
+  const previewSearch = searchParams.toString();
+  const search = previewSearch ? `?${previewSearch}` : '';
+
   const openContentBuilder = () => {
     clHistory.push(
       `/admin/project-page-builder/projects/${projectId}${window.location.search}`
@@ -93,57 +83,46 @@ const ProjectPage = () => {
   };
 
   return (
-    <Preview
-      dataCy="e2e-project-page-preview"
-      src={`/${locale}/projects/${slug}${window.location.search}`}
-      title={formatMessage(messages.projectPagePreviewTitle)}
-    >
-      <CornerEditButton
-        position="absolute"
-        top="12px"
-        right="12px"
-        buttonStyle="primary"
-        size="s"
-        icon="edit"
-        iconSize="16px"
-        borderColor={colors.grey300}
-        borderRadius="6px"
-        padding="4px 10px"
-        fontSize="12px"
-        onClick={openContentBuilder}
-        text={formatMessage(messages.edit)}
-      />
-      <Overlay
-        position="absolute"
-        top="0"
-        right="0"
-        bottom="0"
-        left="0"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        background="rgba(18, 38, 44, 0.3)"
-        opacity={0}
-        visibility="hidden"
-        // Let wheel/scroll fall through to the iframe so the preview stays scrollable
-        pointerEvents="none"
+    <PhonePreviewBackdrop>
+      <Modal
+        opened={failedGroupIds.length > 0 && failedGroups.every(Boolean)}
+        close={closeGroupsFailed}
+        width={480}
+        variant="bo"
+        header={formatMessage(messages.groupsNotAddedTitle)}
+        footer={
+          <Box w="100%" display="flex" justifyContent="flex-end">
+            <Button
+              buttonStyle="bo-primary"
+              height={bo.buttonMedium.height}
+              padding={bo.buttonMedium.padding}
+              fontSize={bo.buttonMedium.fontSize}
+              onClick={closeGroupsFailed}
+            >
+              {formatMessage(messages.groupsNotAddedOk)}
+            </Button>
+          </Box>
+        }
       >
-        <CtaWrapper
-          className="intercom-product-tour-project-edit-project"
-          pointerEvents="auto"
-          transform="translateY(7px)"
-        >
-          <Button
-            icon="edit"
-            buttonStyle="primary"
-            onClick={openContentBuilder}
-            ariaLabel={formatMessage(messages.editProjectPageInContentBuilder)}
-            dataCy="e2e-edit-page-content"
-            text={formatMessage(messages.editPageContent)}
-          />
-        </CtaWrapper>
-      </Overlay>
-    </Preview>
+        <Box p="24px">
+          <Text m="0" fontSize="s" color="coolGrey600">
+            {formatMessage(messages.groupsNotAdded2, {
+              groups: formatList(failedGroupTitles, { type: 'conjunction' }),
+            })}
+          </Text>
+        </Box>
+      </Modal>
+      <PagePreview
+        src={`/${locale}/projects/${slug}${search}`}
+        iframeTitle={formatMessage(messages.projectPagePreviewTitle)}
+        editPageContentAriaLabel={formatMessage(
+          messages.editProjectPageInContentBuilder
+        )}
+        onEdit={openContentBuilder}
+        dataCy="e2e-project-page-preview"
+        editPageContentClassName="intercom-product-tour-project-edit-project"
+      />
+    </PhonePreviewBackdrop>
   );
 };
 

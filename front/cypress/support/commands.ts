@@ -1201,7 +1201,7 @@ function apiRemoveFolder(folderId: string) {
   });
 }
 
-function apiCreateCustomPage(title: string) {
+function apiCreateCustomPage(title: string, projectId?: string) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -1222,6 +1222,7 @@ function apiCreateCustomPage(title: string) {
             'nl-NL': title,
             'fr-BE': title,
           },
+          ...(projectId && { project_id: projectId }),
         },
       },
     });

@@ -82,9 +82,34 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.eventsSection',
     defaultMessage: 'Events',
   },
+  participationMethods: {
+    id: 'app.containers.Admin.projects.project.participationMethods',
+    defaultMessage: 'Participation methods',
+  },
+  newEvent: {
+    id: 'app.containers.Admin.projects.project.newEvent',
+    defaultMessage: 'New event',
+  },
   filesSection: {
     id: 'app.containers.Admin.projects.project.filesSection',
     defaultMessage: '360 Input',
+  },
+  filesDescription: {
+    id: 'app.containers.Admin.projects.project.filesDescription',
+    defaultMessage:
+      'Documents and recordings added to this project as extra input.',
+  },
+  noAttachments: {
+    id: 'app.containers.Admin.projects.project.noAttachments',
+    defaultMessage: 'No attachments',
+  },
+  filesCount: {
+    id: 'app.containers.Admin.projects.project.filesCount',
+    defaultMessage: '{count, plural, one {# file} other {# files}}',
+  },
+  addFiles: {
+    id: 'app.containers.Admin.projects.project.addFiles',
+    defaultMessage: 'Add files',
   },
   messagingSection: {
     id: 'app.containers.Admin.projects.project.messagingSection',
@@ -199,65 +224,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.publishStateArchived',
     defaultMessage: 'Archived',
   },
-  publishWhoCanFind: {
-    id: 'app.containers.Admin.projects.project.publishWhoCanFind',
-    defaultMessage: 'Who can find it',
-  },
-  publishWhoCanFindDescription: {
-    id: 'app.containers.Admin.projects.project.publishWhoCanFindDescription',
-    defaultMessage:
-      'Whether residents can discover this project, or only reach it by link.',
-  },
-  publishFindPublic: {
-    id: 'app.containers.Admin.projects.project.publishFindPublic',
-    defaultMessage: 'Public',
-  },
-  publishFindPublicDescription: {
-    id: 'app.containers.Admin.projects.project.publishFindPublicDescription',
-    defaultMessage:
-      'Appears on the homepage, in the project list and in search.',
-  },
-  publishFindPrivate: {
-    id: 'app.containers.Admin.projects.project.publishFindPrivate',
-    defaultMessage: 'Private',
-  },
-  publishFindPrivateDescription: {
-    id: 'app.containers.Admin.projects.project.publishFindPrivateDescription',
-    defaultMessage:
-      'Hidden from those places. Only people with the link can reach it.',
-  },
-  publishWhoCanOpen: {
-    id: 'app.containers.Admin.projects.project.publishWhoCanOpen',
-    defaultMessage: 'Who can open it',
-  },
-  publishWhoCanOpenDescription: {
-    id: 'app.containers.Admin.projects.project.publishWhoCanOpenDescription',
-    defaultMessage: 'Who is allowed to open this project and take part.',
-  },
-  publishOpenEveryone: {
-    id: 'app.containers.Admin.projects.project.publishOpenEveryone',
-    defaultMessage: 'Everyone',
-  },
-  publishOpenEveryoneDescription: {
-    id: 'app.containers.Admin.projects.project.publishOpenEveryoneDescription',
-    defaultMessage: 'Any resident can open it and take part.',
-  },
-  publishOpenAdmins: {
-    id: 'app.containers.Admin.projects.project.publishOpenAdmins',
-    defaultMessage: 'Admins & managers',
-  },
-  publishOpenAdminsDescription: {
-    id: 'app.containers.Admin.projects.project.publishOpenAdminsDescription',
-    defaultMessage: 'Only administrators and project managers.',
-  },
-  publishOpenGroups: {
-    id: 'app.containers.Admin.projects.project.publishOpenGroups',
-    defaultMessage: 'Selected groups',
-  },
-  publishOpenGroupsDescription: {
-    id: 'app.containers.Admin.projects.project.publishOpenGroupsDescription',
-    defaultMessage: 'Only people in the groups you choose.',
-  },
   publishSendEmail: {
     id: 'app.containers.Admin.projects.project.publishSendEmail',
     defaultMessage: 'Send a "Project published" email',
@@ -359,21 +325,25 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.sharePreviewLink',
     defaultMessage: 'Share a preview link',
   },
-  settingsFrontOffice: {
-    id: 'app.containers.Admin.projects.project.settingsFrontOffice',
-    defaultMessage: 'Front office',
-  },
   settingsGeneral: {
     id: 'app.containers.Admin.projects.project.settingsGeneral',
     defaultMessage: 'General',
   },
-  settingsIdeaTags: {
-    id: 'app.containers.Admin.projects.project.settingsIdeaTags',
-    defaultMessage: 'Idea tags',
+  settingsResources: {
+    id: 'app.containers.Admin.projects.project.settingsResources',
+    defaultMessage: 'Resources',
   },
-  settingsReset: {
-    id: 'app.containers.Admin.projects.project.settingsReset',
-    defaultMessage: 'Reset',
+  settingsManagement: {
+    id: 'app.containers.Admin.projects.project.settingsManagement',
+    defaultMessage: 'Management',
+  },
+  listing: {
+    id: 'app.containers.Admin.projects.project.listing',
+    defaultMessage: 'Listing',
+  },
+  topicTags: {
+    id: 'app.containers.Admin.projects.project.topicTags',
+    defaultMessage: 'Topic tags',
   },
   settingsCancel: {
     id: 'app.containers.Admin.projects.project.settingsCancel',
@@ -483,10 +453,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.unsavedChangesTitle',
     defaultMessage: 'Unsaved changes',
   },
-  unsavedChangesDescription: {
-    id: 'app.containers.Admin.projects.project.unsavedChangesDescription',
-    defaultMessage:
-      'This phase has unsaved changes. Leaving now discards them.',
+  unsavedChangesDescription2: {
+    id: 'app.containers.Admin.projects.project.unsavedChangesDescription2',
+    defaultMessage: 'You have unsaved changes. Leaving now discards them.',
   },
   unsavedChangesCancel: {
     id: 'app.containers.Admin.projects.project.unsavedChangesCancel',
@@ -496,33 +465,44 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.discardChanges',
     defaultMessage: 'Discard changes',
   },
-  visibility: {
-    id: 'app.containers.Admin.projects.project.visibility',
-    defaultMessage: 'Visibility',
-  },
-  contextSpaceDescription: {
-    id: 'app.containers.Admin.projects.project.contextSpaceDescription',
+  areaFilterDescription: {
+    id: 'app.containers.Admin.projects.project.areaFilterDescription',
     defaultMessage:
-      'Where this project lives at the top level of your platform.',
+      'Where this project surfaces when residents filter by their area.',
   },
-  contextFolderDescription: {
-    id: 'app.containers.Admin.projects.project.contextFolderDescription',
-    defaultMessage: 'A folder groups related projects inside a space.',
+  areaFilterAllAreas: {
+    id: 'app.containers.Admin.projects.project.areaFilterAllAreas',
+    defaultMessage: 'All areas',
   },
-  contextNoSpace: {
-    id: 'app.containers.Admin.projects.project.contextNoSpace',
-    defaultMessage: 'No space',
+  areaFilterSelectedAreas: {
+    id: 'app.containers.Admin.projects.project.areaFilterSelectedAreas',
+    defaultMessage: 'Selected areas',
   },
-  contextNoFolder: {
-    id: 'app.containers.Admin.projects.project.contextNoFolder',
-    defaultMessage: 'No folder',
+  areaFilterChooseAreas: {
+    id: 'app.containers.Admin.projects.project.areaFilterChooseAreas',
+    defaultMessage: 'Choose which area filters it shows in',
   },
-  contextSearchSpaces: {
-    id: 'app.containers.Admin.projects.project.contextSearchSpaces',
-    defaultMessage: 'Search spaces',
+  noInputsYet: {
+    id: 'app.containers.Admin.projects.project.noInputsYet',
+    defaultMessage: 'No inputs yet',
   },
-  contextSearchFolders: {
-    id: 'app.containers.Admin.projects.project.contextSearchFolders',
-    defaultMessage: 'Search folders',
+  noInputsYetDescription: {
+    id: 'app.containers.Admin.projects.project.noInputsYetDescription',
+    defaultMessage:
+      'Inputs appear here as participants take part. You can follow each one and add the ones collected offline.',
+  },
+  noInsightsYet: {
+    id: 'app.containers.Admin.projects.project.noInsightsYet',
+    defaultMessage: 'No insights yet',
+  },
+  noInsightsYetDescription: {
+    id: 'app.containers.Admin.projects.project.noInsightsYetDescription',
+    defaultMessage:
+      'As participants take part, this page shows participation over time, demographics and a summary of their input.',
+  },
+  recommendedActionsHint: {
+    id: 'app.containers.Admin.projects.project.recommendedActionsHint',
+    defaultMessage:
+      'Recommended actions appear here once participants take part.',
   },
 });

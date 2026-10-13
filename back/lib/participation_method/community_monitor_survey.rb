@@ -41,6 +41,10 @@ module ParticipationMethod
       }
     end
 
+    def form_editable_after_responses?
+      true
+    end
+
     def form_logic_enabled?
       false
     end

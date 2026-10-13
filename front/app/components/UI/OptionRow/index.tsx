@@ -11,6 +11,10 @@ import {
 import styled from 'styled-components';
 
 const Row = styled(Box)`
+  & > svg {
+    flex: none;
+  }
+
   &:hover {
     background: ${colors.grey100};
   }

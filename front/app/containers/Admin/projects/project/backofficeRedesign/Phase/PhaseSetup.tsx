@@ -3,7 +3,7 @@ import React from 'react';
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
 import { IPhaseData } from 'api/phases/types';
 
-import { usePhaseSave } from '../_shared/PhaseSaveContext';
+import { usePageSave } from '../_shared/PageSaveContext';
 
 import BuildPanel from './BuildPanel';
 
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const PhaseSetup = ({ projectId, phase }: Props) => {
-  const phaseSave = usePhaseSave();
+  const pageSave = usePageSave();
   const { data: fileAttachments } = useFileAttachments({
     attachable_id: phase.id,
     attachable_type: 'Phase',
@@ -24,7 +24,7 @@ const PhaseSetup = ({ projectId, phase }: Props) => {
   return (
     <BuildPanel
       // Discarding changes starts the fields over from the saved phase.
-      key={phaseSave?.revision}
+      key={pageSave?.revision}
       projectId={projectId}
       phase={phase}
       savedAttachments={fileAttachments.data}

@@ -42,6 +42,8 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   attribute :block_start_at, if: PRIVATE
   attribute :block_end_at, if: PRIVATE
   attribute :block_reason, if: PRIVATE
+  attribute :email_bounced_at, if: PRIVATE
+  attribute :email_bounce_reason, if: PRIVATE
   attribute :verified, if: PRIVATE
   attribute :followings_count, if: PRIVATE
   attribute :onboarding, if: PRIVATE

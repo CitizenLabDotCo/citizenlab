@@ -18,7 +18,7 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import ProjectWorkspace from '..';
-import { SaveReason, useRegisterPhaseSaver } from '../_shared/PhaseSaveContext';
+import { SaveReason, useRegisterPageSaver } from '../_shared/PageSaveContext';
 import BuildFields from '../Phase/BuildPanel/BuildFields';
 import DraftMethodSettings from '../Phase/DraftMethodSettings';
 import PhasePreview from '../Phase/PhasePreview';
@@ -106,7 +106,7 @@ const NewPhaseWorkspace = ({
     }
   };
 
-  useRegisterPhaseSaver('draft', { dirty, save });
+  useRegisterPageSaver('draft', { dirty, save });
 
   return (
     <ProjectWorkspace

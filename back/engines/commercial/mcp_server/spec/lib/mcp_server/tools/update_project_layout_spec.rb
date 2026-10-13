@@ -127,6 +127,40 @@ describe McpServer::Tools::UpdateProjectLayout do
         expect(layout.reload.craftjs_json).to eq(initial_graph)
       end
 
+      # The widget alone lists every project's events, so an events node sent bare must be pinned
+      # to the project, as the builder writes it.
+      it 'gives a new events widget sent without props the project defaults' do
+        events = craftjs_node('EventsList', parent: body, props: {})
+
+        response = patch(nodes: { body => body_with(%w[T1 EV2]), 'EV2' => events })
+
+        expect(response).not_to be_error
+        expect(layout.reload.craftjs_json.dig('EV2', 'props')).to eq(
+          'source' => 'currentProject', 'timeFilters' => %w[upcoming past], 'limit' => 'all'
+        )
+      end
+
+      it 'keeps the props an events widget is sent with' do
+        events = initial_graph['PROJECT_PAGE_EVENTS'].merge('props' => { 'timeFilters' => ['upcoming'] })
+
+        response = patch(nodes: { 'PROJECT_PAGE_EVENTS' => events })
+
+        expect(response).not_to be_error
+        expect(layout.reload.craftjs_json.dig('PROJECT_PAGE_EVENTS', 'props')).to include(
+          'source' => 'currentProject', 'timeFilters' => ['upcoming']
+        )
+      end
+
+      it 'rejects an events widget showing other projects' do
+        events = craftjs_node('EventsList', parent: body, props: { 'source' => 'areas', 'ids' => [] })
+
+        response = patch(nodes: { body => body_with(%w[T1 EV2]), 'EV2' => events })
+
+        expect(response).to be_error
+        expect(response.content.first[:text]).to include('must be "currentProject"')
+        expect(layout.reload.craftjs_json).to eq(initial_graph)
+      end
+
       it 'inserts a second phases widget, so a deleted one can be put back' do
         response = patch(nodes: {
           body => body_with(%w[T1 PH2]),
