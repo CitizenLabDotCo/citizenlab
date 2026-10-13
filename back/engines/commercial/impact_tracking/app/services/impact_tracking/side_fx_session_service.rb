@@ -15,7 +15,11 @@ module ImpactTracking
     private
 
     def update_user_last_active_at(user)
-      user&.update!(last_active_at: Time.zone.now)
+      return unless user
+
+      last_active_at_was = user.last_active_at
+      user.update!(last_active_at: Time.zone.now)
+      FeedbackPromptService.new.after_session_start(user, last_active_at_was)
     end
   end
 end
