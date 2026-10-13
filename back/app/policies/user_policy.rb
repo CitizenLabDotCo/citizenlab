@@ -35,6 +35,15 @@ class UserPolicy < ApplicationPolicy
     active_admin?
   end
 
+  # Admins (incl. super admins) and moderators: the users the front end boots
+  # the Intercom Messenger for.
+  def intercom_token?
+    active? &&
+      UserRoleService.new.moderates_something?(user) &&
+      AppConfiguration.instance.feature_activated?('intercom') &&
+      IntercomMessengerTokenService.new.configured?
+  end
+
   def index_xlsx?
     active_admin?
   end

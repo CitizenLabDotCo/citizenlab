@@ -5,13 +5,9 @@
 class IntercomMessengerTokenService
   TOKEN_LIFETIME = 1.hour
 
-  # @param [User, nil] user
   # @return [Boolean]
-  def issue_token?(user)
-    return false unless user && secret.present?
-    return false unless AppConfiguration.instance.feature_activated?('intercom')
-
-    UserRoleService.new.moderates_something?(user)
+  def configured?
+    secret.present?
   end
 
   # @param [User] user

@@ -13,10 +13,7 @@ describe IntercomMessengerTokenService do
     allow(ENV).to receive(:fetch).with('INTERCOM_MESSENGER_SECRET', nil).and_return(value)
   end
 
-  before do
-    stub_secret(secret)
-    SettingsService.new.activate_feature!('intercom')
-  end
+  before { stub_secret(secret) }
 
   describe '#token' do
     it 'is signed with the secret using HS256 and contains the user and company claims' do
@@ -64,44 +61,19 @@ describe IntercomMessengerTokenService do
     end
   end
 
-  describe '#issue_token?' do
-    it 'is true for admins' do
-      expect(service.issue_token?(admin)).to be true
-    end
-
-    it 'is true for super admins' do
-      expect(service.issue_token?(create(:super_admin))).to be true
-    end
-
-    it 'is true for project moderators' do
-      expect(service.issue_token?(create(:project_moderator))).to be true
-    end
-
-    it 'is true for folder moderators' do
-      expect(service.issue_token?(create(:project_folder_moderator))).to be true
-    end
-
-    it 'is false for normal users' do
-      expect(service.issue_token?(create(:user))).to be false
-    end
-
-    it 'is false without a user' do
-      expect(service.issue_token?(nil)).to be false
-    end
-
-    it 'is false when the intercom feature is not active' do
-      SettingsService.new.deactivate_feature!('intercom')
-      expect(service.issue_token?(admin)).to be false
+  describe '#configured?' do
+    it 'is true when the secret is set' do
+      expect(service.configured?).to be true
     end
 
     it 'is false when the secret is missing' do
       stub_secret(nil)
-      expect(service.issue_token?(admin)).to be false
+      expect(service.configured?).to be false
     end
 
     it 'is false when the secret is blank' do
       stub_secret('')
-      expect(service.issue_token?(admin)).to be false
+      expect(service.configured?).to be false
     end
   end
 end

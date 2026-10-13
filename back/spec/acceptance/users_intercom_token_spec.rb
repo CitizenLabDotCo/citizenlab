@@ -41,13 +41,13 @@ resource 'Users' do
       example '[error] Get an Intercom Messenger token when the intercom feature is not active' do
         SettingsService.new.deactivate_feature!('intercom')
         do_request
-        assert_status 404
+        assert_status 401
       end
 
       example '[error] Get an Intercom Messenger token when the secret is missing' do
         stub_secret(nil)
         do_request
-        assert_status 404
+        assert_status 401
       end
     end
 
@@ -66,7 +66,7 @@ resource 'Users' do
       before { header_token_for create(:user) }
 
       example_request '[error] Get an Intercom Messenger token as a normal user' do
-        assert_status 404
+        assert_status 401
       end
     end
   end

@@ -118,14 +118,10 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   def intercom_token
-    skip_authorization
+    authorize :user, :intercom_token?
 
-    service = IntercomMessengerTokenService.new
-    if service.issue_token?(current_user)
-      render json: { data: { type: 'intercom_token', attributes: { token: service.token(current_user) } } }
-    else
-      head :not_found
-    end
+    token = IntercomMessengerTokenService.new.token(current_user)
+    render json: { data: { type: 'intercom_token', attributes: { token: token } } }
   end
 
   def me
