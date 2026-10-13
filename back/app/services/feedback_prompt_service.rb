@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
 class FeedbackPromptService
-  # Max one prompt shown per user in this period, across all prompts.
-  COOLDOWN = 30.days
   RETURNING_USER_ABSENCE = 60.days
 
   # Marks a prompt as due for the user. It is shown later, on the user's next
   # saved change in the back office (see #show_next).
   def enqueue(user, key, subject: nil, days_since_last_active: nil)
     return unless FeedbackPrompt.askable?(key, user)
+    return if FeedbackPrompt.cooling_down?(key, user)
     return if subject && FeedbackPrompt.exists?(key: key, subject: subject)
     return if subject.nil? && user.feedback_prompts.pending.where(key: key).any? { |prompt| !prompt.expired? }
 
@@ -47,19 +46,23 @@ class FeedbackPromptService
     enqueue(user, 'return_findability', days_since_last_active: days)
   end
 
-  # Returns the oldest due prompt, marked as shown with a snapshot of the current
-  # context, or nil when there is nothing to show or the user was asked recently.
-  def show_next(user, ui_version:)
-    return if user.feedback_prompts.displayed.exists?(shown_at: COOLDOWN.ago..)
-
+  # Returns the oldest prompt that is due and may be shown at this trigger, marked
+  # as shown with a snapshot of the current context, or nil when there is none.
+  def show_next(user, trigger:, ui_version:, admin_area: nil)
     prompt = user.feedback_prompts.pending.order(:created_at).find do |p|
-      !p.expired? && FeedbackPrompt.askable?(p.key, user)
+      !p.expired? &&
+        FeedbackPrompt.shown_on?(p.key, trigger) &&
+        FeedbackPrompt.askable?(p.key, user) &&
+        !FeedbackPrompt.cooling_down?(p.key, user)
     end
     return unless prompt
 
     prompt.update!(
       status: 'shown',
       shown_at: Time.zone.now,
+      previously_shown_count: user.feedback_prompts.displayed.count,
+      trigger: trigger,
+      admin_area: admin_area,
       ui_version: ui_version,
       staff: user.govocal_or_citizenlab_email?,
       role: user.highest_role.to_s,
