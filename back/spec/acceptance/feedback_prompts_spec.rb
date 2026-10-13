@@ -12,15 +12,20 @@ resource 'Feedback prompts' do
   before { header_token_for(user) }
 
   post 'web_api/v1/feedback_prompts/show_next' do
+    parameter :trigger, "The moment the check happens: 'save' or 'project_exit'", required: true
     parameter :ui_version, 'The back office version the user is in', required: true
+    parameter :admin_area, 'The route pattern of the back office page the user is on (or just left)'
 
+    let(:trigger) { 'save' }
     let(:ui_version) { 'project_backoffice_v1' }
+    let(:admin_area) { '/:locale/admin/projects/:projectId/general' }
 
     example 'Show the next due prompt' do
       prompt = create(:feedback_prompt, user: user)
       do_request
       assert_status 200
       expect(response_data).to include(id: prompt.id, attributes: { key: 'return_findability', status: 'shown' })
+      expect(prompt.reload).to have_attributes(trigger: 'save', admin_area: '/:locale/admin/projects/:projectId/general')
     end
 
     example 'Return no prompt when none is due', document: false do
@@ -28,10 +33,18 @@ resource 'Feedback prompts' do
       assert_status 204
     end
 
-    example '[error] Show the next prompt with an unknown ui_version', document: false do
+    example '[error] Show the next prompt with invalid parameters', document: false do
       create(:feedback_prompt, user: user)
-      do_request(ui_version: 'unknown')
+      do_request(trigger: 'unknown', ui_version: 'unknown')
       assert_status 422
+      expect(json_response_body[:errors].keys).to contain_exactly(:trigger, :ui_version)
+    end
+
+    example 'Drop an admin area that is not a route pattern', document: false do
+      prompt = create(:feedback_prompt, user: user)
+      do_request(admin_area: '/en/admin/projects/some-slug')
+      assert_status 200
+      expect(prompt.reload.admin_area).to be_nil
     end
 
     context 'when the user is a resident' do
@@ -57,6 +70,7 @@ resource 'Feedback prompts' do
     example_request 'Answer a prompt' do
       assert_status 200
       expect(prompt.reload).to have_attributes(status: 'answered', score: 6, comment: 'Found it quickly')
+      expect(prompt.responded_at).to be_present
     end
 
     example '[error] Answer with an invalid score', document: false do
@@ -87,7 +101,7 @@ resource 'Feedback prompts' do
 
     example_request 'Dismiss a prompt' do
       assert_status 200
-      expect(prompt.reload.status).to eq 'dismissed'
+      expect(prompt.reload).to have_attributes(status: 'dismissed', responded_at: be_present)
     end
   end
 end
