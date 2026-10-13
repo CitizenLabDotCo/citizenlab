@@ -3935,7 +3935,10 @@ UNION ALL
           ORDER BY t.key
          LIMIT 1)) AS question_label,
     NULL::text AS value_text,
-    ((answered.value #>> '{}'::text[]))::numeric AS value_numeric,
+        CASE
+            WHEN (jsonb_typeof(answered.value) = 'number'::text) THEN ((answered.value #>> '{}'::text[]))::numeric
+            ELSE NULL::numeric
+        END AS value_numeric,
     COALESCE(NULLIF((label.multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
            FROM public.app_configurations ac
          LIMIT 1)), ''::text), ( SELECT t.value

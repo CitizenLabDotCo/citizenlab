@@ -206,6 +206,14 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
       expect(counts).to eq product_counts.to_h
     end
 
+    # Matrix answers aren't type-checked on write, so the API can store any value.
+    it 'keeps filters on value_numeric working when a matrix answer is not a number' do
+      matrix = create(:custom_field_matrix_linear_scale, resource: form)
+      response.custom_field_answers.create!(key: matrix.key, value: { 'send_more_animals_to_space' => 'abc', 'ride_bicycles_more_often' => 4 })
+
+      expect(described_class.where('value_numeric >= 4').pluck(:statement_key)).to eq ['ride_bicycles_more_often']
+    end
+
     # The view's point-label lookups have one WHEN per point. If scales can go
     # higher, this fails: add the new points to both lookups.
     it 'labels the top point of the largest scale allowed' do

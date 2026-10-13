@@ -199,7 +199,10 @@ SELECT
         (SELECT t.value FROM jsonb_each_text(q.title_multiloc) t WHERE t.value <> '' ORDER BY t.key LIMIT 1)
     ) AS question_label,
     NULL AS value_text,
-    (answered.value #>> '{}')::numeric AS value_numeric,
+    -- Guarded like the WHERE below: Postgres can push an outer filter on
+    -- value_numeric into this branch ahead of the WHERE, and one non-numeric
+    -- answer would then fail the whole query.
+    CASE WHEN jsonb_typeof(answered.value) = 'number' THEN (answered.value #>> '{}')::numeric END AS value_numeric,
     COALESCE(
         NULLIF(label.multiloc ->> (SELECT ac.settings -> 'core' -> 'locales' ->> 0 FROM app_configurations ac LIMIT 1), ''),
         (SELECT t.value FROM jsonb_each_text(label.multiloc) t WHERE t.value <> '' ORDER BY t.key LIMIT 1)
