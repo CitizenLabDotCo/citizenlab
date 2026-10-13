@@ -70,6 +70,9 @@ export type FormBuilderConfig = {
   getUserFieldsNotice?: () => React.ReactNode;
 };
 
+// A FormBuilderConfig is a constant per builder, written before any data is
+// loaded. These values depend on the phase, which the backend decides per
+// participation method, so they are only known once the phase has loaded.
 export type ResolvedFormBuilderConfig = FormBuilderConfig & {
   goBackUrl: string;
   isLogicEnabled: boolean;
