@@ -230,7 +230,6 @@
   "app.components.admin.ContentBuilder.Widgets.Events.byTopic": "Έργα με τις επιλεγμένες ετικέτες",
   "app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle": "Εκδηλώσεις",
   "app.components.admin.ContentBuilder.Widgets.Events.everyProject": "Κάθε έργο",
-  "app.components.admin.ContentBuilder.Widgets.Events.everyProjectOnly": "Αυτό το γραφικό στοιχείο εμφανίζει εκδηλώσεις από κάθε έργο. Το φιλτράρισμα ανά περιοχή, ετικέτα ή χώρο αποτελεί μέρος ενός συνδρομητικού προγράμματος.",
   "app.components.admin.ContentBuilder.Widgets.Events.heading": "Επικεφαλίδα",
   "app.components.admin.ContentBuilder.Widgets.Events.howMany": "Πόσα να εμφανίζονται",
   "app.components.admin.ContentBuilder.Widgets.Events.howManyAtMost": "Εμφάνιση το πολύ",

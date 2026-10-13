@@ -230,7 +230,6 @@
   "app.components.admin.ContentBuilder.Widgets.Events.byTopic": "Projekti ar izvēlētajām birkām",
   "app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle": "Pasākumi",
   "app.components.admin.ContentBuilder.Widgets.Events.everyProject": "Visi projekti",
-  "app.components.admin.ContentBuilder.Widgets.Events.everyProjectOnly": "Šis logrīks rāda pasākumus no visiem projektiem. Filtrēšana pēc apkaimes, birkas vai telpas ir pieejama maksas plānā.",
   "app.components.admin.ContentBuilder.Widgets.Events.heading": "Virsraksts",
   "app.components.admin.ContentBuilder.Widgets.Events.howMany": "Cik rādīt",
   "app.components.admin.ContentBuilder.Widgets.Events.howManyAtMost": "Rādīt ne vairāk kā",

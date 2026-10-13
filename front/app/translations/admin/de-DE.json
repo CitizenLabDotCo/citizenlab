@@ -230,7 +230,6 @@
   "app.components.admin.ContentBuilder.Widgets.Events.byTopic": "Projekte mit ausgewählten Tags",
   "app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle": "Veranstaltungen",
   "app.components.admin.ContentBuilder.Widgets.Events.everyProject": "Alle Projekte",
-  "app.components.admin.ContentBuilder.Widgets.Events.everyProjectOnly": "Dieses Widget zeigt Veranstaltungen aus allen Gebieten an. Das Filtern nach Gebiet, Tag oder Space ist Teil einer erweiterten Lizenz.",
   "app.components.admin.ContentBuilder.Widgets.Events.heading": "Überschrift",
   "app.components.admin.ContentBuilder.Widgets.Events.howMany": "Wie viele angezeigt werden sollen",
   "app.components.admin.ContentBuilder.Widgets.Events.howManyAtMost": "Maximal anzeigen",

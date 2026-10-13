@@ -230,7 +230,6 @@
   "app.components.admin.ContentBuilder.Widgets.Events.byTopic": "منتخب کردہ ٹیگز والے منصوبے",
   "app.components.admin.ContentBuilder.Widgets.Events.eventsListTitle": "ایونٹس",
   "app.components.admin.ContentBuilder.Widgets.Events.everyProject": "ہر منصوبہ",
-  "app.components.admin.ContentBuilder.Widgets.Events.everyProjectOnly": "یہ ویجیٹ ہر منصوبے کے ایونٹس دکھاتا ہے۔ علاقہ، ٹیگ یا سپیس کے لحاظ سے فلٹر کرنا بامعاوضہ پلان کا حصہ ہے۔",
   "app.components.admin.ContentBuilder.Widgets.Events.heading": "سرخی",
   "app.components.admin.ContentBuilder.Widgets.Events.howMany": "کتنے دکھانے ہیں",
   "app.components.admin.ContentBuilder.Widgets.Events.howManyAtMost": "زیادہ سے زیادہ دکھائیں",
