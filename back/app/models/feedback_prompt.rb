@@ -11,14 +11,18 @@
 #  subject_id             :uuid
 #  status                 :string           default("pending"), not null
 #  shown_at               :datetime
+#  responded_at           :datetime
 #  score                  :integer
 #  comment                :text
+#  trigger                :string
+#  admin_area             :string
 #  ui_version             :string
 #  staff                  :boolean          default(FALSE), not null
 #  role                   :string
 #  locale                 :string
 #  days_since_last_active :integer
 #  project_origin         :string
+#  previously_shown_count :integer
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #
@@ -37,10 +41,17 @@ class FeedbackPrompt < ApplicationRecord
   # question in front/app/containers/Admin/FeedbackPrompt/questions.ts.
   # - audience: who may be asked, a key of AUDIENCES.
   # - subject_type: the record the prompt is about, if any. A subject gets at most one prompt.
+  # - triggers: the moments the prompt may be shown at, from TRIGGERS.
+  # - cooldown: how long before the same user can be shown this prompt again.
+  #   Each prompt has its own cooldown; prompts don't hold each other back.
   # - expires_after: how long a due prompt waits to be shown before it's dropped.
   PROMPTS = {
-    'project_setup_ease' => { audience: 'managers', subject_type: 'Project', expires_after: 1.day },
-    'return_findability' => { audience: 'managers', subject_type: nil, expires_after: 14.days }
+    'project_setup_ease' => {
+      audience: 'managers', subject_type: 'Project', triggers: %w[save], cooldown: 60.days, expires_after: 1.day
+    },
+    'return_findability' => {
+      audience: 'managers', subject_type: nil, triggers: %w[save project_exit], cooldown: 30.days, expires_after: 14.days
+    }
   }.freeze
 
   AUDIENCES = {
@@ -48,10 +59,15 @@ class FeedbackPrompt < ApplicationRecord
     'managers' => ->(user) { user.admin? || user.moderator? }
   }.freeze
 
+  # save: after a successful save in the back office.
+  # project_exit: after leaving a project's back office pages, having spent some time there.
+  TRIGGERS = %w[save project_exit].freeze
   STATUSES = %w[pending shown answered dismissed].freeze
   SCORES = (1..7)
   UI_VERSIONS = %w[project_backoffice_v1 project_backoffice_v2].freeze
   PROJECT_ORIGINS = %w[blank template copy].freeze
+  # A back office route pattern, never an actual URL, so no ids or slugs end up in reporting.
+  ADMIN_AREA_FORMAT = %r{\A/:locale/admin(/[\w:-]+)*\z}
 
   belongs_to :user
   belongs_to :subject, polymorphic: true, optional: true
@@ -60,6 +76,8 @@ class FeedbackPrompt < ApplicationRecord
   validates :status, inclusion: { in: STATUSES }
   validates :score, inclusion: { in: SCORES }, allow_nil: true
   validates :score, presence: true, if: :answered?
+  validates :trigger, inclusion: { in: TRIGGERS }, allow_nil: true
+  validates :admin_area, format: { with: ADMIN_AREA_FORMAT }, length: { maximum: 255 }, allow_nil: true
   validates :ui_version, inclusion: { in: UI_VERSIONS }, allow_nil: true
   validates :project_origin, inclusion: { in: PROJECT_ORIGINS }, allow_nil: true
   validate :subject_matches_prompt, on: :create
@@ -76,6 +94,14 @@ class FeedbackPrompt < ApplicationRecord
   def pending? = status == 'pending'
   def shown? = status == 'shown'
   def answered? = status == 'answered'
+
+  def self.shown_on?(key, trigger)
+    PROMPTS.dig(key, :triggers).include?(trigger)
+  end
+
+  def self.cooling_down?(key, user)
+    user.feedback_prompts.displayed.exists?(key: key, shown_at: PROMPTS.dig(key, :cooldown).ago..)
+  end
 
   def expired?
     pending? && created_at < PROMPTS.dig(key, :expires_after).ago
