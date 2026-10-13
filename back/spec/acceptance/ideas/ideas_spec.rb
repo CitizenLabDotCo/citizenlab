@@ -368,6 +368,30 @@ resource 'Ideas' do
       end
     end
 
+    get 'web_api/v1/ideas/:id' do
+      describe 'when the idea is a draft' do
+        let(:project) { create(:single_phase_ideation_project) }
+        let(:author) { @user }
+        let!(:idea) do
+          create(:idea, project: project, phases: project.phases, author: author, publication_status: 'draft')
+        end
+        let(:id) { idea.id }
+
+        example_request 'Get your own draft idea by id' do
+          assert_status 200
+          expect(response_data[:id]).to eq idea.id
+        end
+
+        context 'when the user is not the author' do
+          let(:author) { create(:user) }
+
+          example_request '[error] Get a draft idea of another resident', document: false do
+            assert_status 401
+          end
+        end
+      end
+    end
+
     get 'web_api/v1/ideas/by_slug/:slug' do
       let(:idea) { create(:idea) }
       let(:slug) { idea.slug }
@@ -400,6 +424,7 @@ resource 'Ideas' do
 
         phase
       end
+
       let(:phase_id) { phase.id }
 
       context 'idea authored by user' do
