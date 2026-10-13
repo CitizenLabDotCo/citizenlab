@@ -14,6 +14,7 @@ export interface Props {
   placeholder?: string;
   id?: string;
   inputId?: string;
+  variant?: 'default' | 'bo';
   // Exclude users that can moderate the project/folder/space
   // from selectable users.
   // We pass the projectId/folderId/spaceId here.
@@ -28,6 +29,7 @@ const UserSelect = ({
   placeholder,
   id,
   inputId,
+  variant,
   isNotProjectModeratorOfProjectId,
   isNotFolderModeratorOfFolderId,
   isNotSpaceModeratorOfFolderId,
@@ -65,6 +67,7 @@ const UserSelect = ({
     <BaseUserSelect
       id={id}
       inputId={inputId}
+      variant={variant}
       // We check if selectedUserId is present because setting it to null won't trigger a refetch so will have old data.
       // I'm preferring this over refetching on clear because it's faster and avoids a fetch that we technically don't need.
       value={(selectedUserId && selectedUser?.data) || null}

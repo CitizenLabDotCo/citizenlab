@@ -1,10 +1,15 @@
 import React, { KeyboardEvent, useId, useRef, useState } from 'react';
 
-import { Box, IconNames, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconNames,
+  Text,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import Modal from 'components/UI/Modal';
 
-import { MessageDescriptor } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import NavItem from './NavItem';
 
@@ -13,6 +18,8 @@ export interface SettingsModalSection {
   label: MessageDescriptor;
   icon: IconNames;
   content: React.ReactNode;
+  /** Sections that share a group are listed under its label in the sidebar. */
+  group?: MessageDescriptor;
 }
 
 interface Props {
@@ -32,8 +39,9 @@ const SettingsModal = ({
   sections,
   initialSection,
   footer,
-  width = 'min(866px, 94vw)',
+  width = 'min(760px, 94vw)',
 }: Props) => {
+  const { formatMessage } = useIntl();
   const idPrefix = useId();
   const navRef = useRef<HTMLDivElement>(null);
   const [selectedSection, setSelectedSection] = useState(
@@ -94,11 +102,12 @@ const SettingsModal = ({
           </Box>
         )
       }
+      variant="bo"
       width={width}
-      fixedHeight
+      height="590px"
       fillContent
     >
-      <Box display="flex" flex="1 1 auto">
+      <Box display="flex" flex="1 1 auto" minHeight="0">
         <Box
           ref={navRef}
           role="tablist"
@@ -106,26 +115,45 @@ const SettingsModal = ({
           onKeyDown={handleKeyDown}
           display="flex"
           flexDirection="column"
-          gap="3px"
-          flex="0 0 auto"
-          w="210px"
-          py="16px"
-          px="12px"
+          gap="4px"
+          flex="0 0 168px"
+          p="8px"
           background={colors.grey50}
           borderRight={`1px solid ${colors.grey200}`}
           overflowY="auto"
         >
-          {sections.map(({ name, label, icon }, index) => (
-            <NavItem
-              key={name}
-              tabId={tabId(name)}
-              panelId={panelId(name)}
-              label={label}
-              icon={icon}
-              selected={index === selectedIndex}
-              onSelect={() => select(index)}
-            />
-          ))}
+          {sections.map(({ name, label, icon, group }, index) => {
+            const isFirst = index === 0;
+            const startsGroup = group && group !== sections[index - 1]?.group;
+
+            return (
+              <React.Fragment key={name}>
+                {startsGroup && (
+                  <Box
+                    px="12px"
+                    pt={isFirst ? '8px' : '16px'}
+                    pb="4px"
+                    mt={isFirst ? '0px' : '12px'}
+                    borderTop={
+                      isFirst ? undefined : `1px solid ${colors.grey200}`
+                    }
+                  >
+                    <Text variant="boMicro" color="coolGrey500" m="0px">
+                      {formatMessage(group)}
+                    </Text>
+                  </Box>
+                )}
+                <NavItem
+                  tabId={tabId(name)}
+                  panelId={panelId(name)}
+                  label={label}
+                  icon={icon}
+                  selected={index === selectedIndex}
+                  onSelect={() => select(index)}
+                />
+              </React.Fragment>
+            );
+          })}
         </Box>
         <Box
           key={section.name}
@@ -134,9 +162,8 @@ const SettingsModal = ({
           aria-labelledby={tabId(section.name)}
           tabIndex={0}
           flex="1 1 auto"
-          pt="32px"
-          px="32px"
-          pb="24px"
+          minWidth="0"
+          p="24px"
           overflowY="auto"
         >
           {section.content}

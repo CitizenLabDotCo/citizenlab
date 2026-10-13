@@ -1,10 +1,11 @@
 import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 
 import useFiles from 'api/files/useFiles';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -20,31 +21,45 @@ const ResourcesSection = ({ projectId }: Props) => {
 
   if (!files) return null;
 
+  const count = files.data.length;
+
   return (
-    <Box>
-      <Text variant="boSection" mb="8px">
-        {formatMessage(messages.filesSection)}
-      </Text>
-      <Text variant="boHelper" mb="16px">
-        {formatMessage(messages.filesDescription)}
-      </Text>
-      <Box display="flex" alignItems="center" gap="12px">
+    <SettingsSection
+      title={formatMessage(messages.filesSection)}
+      description={formatMessage(messages.filesDescription)}
+      action={
         <ButtonWithLink
           to="/admin/projects/$projectId/files"
           params={{ projectId }}
           buttonStyle="bo-secondary"
-          icon="paperclip"
           width="auto"
         >
-          {formatMessage(messages.addFiles)}
+          {formatMessage(count > 0 ? messages.manageFiles : messages.addFiles)}
         </ButtonWithLink>
-        <Text variant="boHelper" m="0">
-          {files.data.length > 0
-            ? formatMessage(messages.filesCount, { count: files.data.length })
-            : formatMessage(messages.noAttachments)}
-        </Text>
-      </Box>
-    </Box>
+      }
+    >
+      {count > 0 && (
+        <Box
+          display="inline-flex"
+          alignItems="center"
+          gap="4px"
+          h="24px"
+          px="8px"
+          borderRadius="999px"
+          background={colors.teal50}
+        >
+          <Icon
+            name="paperclip"
+            width="14px"
+            height="14px"
+            fill={colors.teal700}
+          />
+          <Text variant="boMicro" color="teal700" m="0px">
+            {formatMessage(messages.filesCount, { count })}
+          </Text>
+        </Box>
+      )}
+    </SettingsSection>
   );
 };
 

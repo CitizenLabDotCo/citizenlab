@@ -1,25 +1,27 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
-import ProjectContextSection from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection';
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
-import { StyledSectionField } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/styling';
-import generalMessages from 'containers/Admin/projects/project/general/messages';
 
-import { SubSectionTitle } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
+import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
+import SettingsSections from 'components/UI/SettingsModal/SettingsSections';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
+
+import messages from '../../messages';
+
+import ContextSection from './ContextSection';
+import ResetSection from './ResetSection';
 
 interface Props {
-  spaceId?: string | null;
-  folderId?: string | null;
+  projectId: string;
+  spaceId: string | null;
+  folderId: string | null;
   projectInRoot: boolean;
   contextError: boolean;
   slug: string;
-  currentSlug: string;
   showSlugErrorMessage: boolean;
   apiErrors: CLErrors;
   onContextChange: (spaceAndFolderId: SpaceAndFolderId) => void;
@@ -27,40 +29,42 @@ interface Props {
 }
 
 const GeneralSection = ({
+  projectId,
   spaceId,
   folderId,
   projectInRoot,
   contextError,
   slug,
-  currentSlug,
   showSlugErrorMessage,
   apiErrors,
   onContextChange,
   onSlugChange,
-}: Props) => (
-  <Box>
-    <ProjectContextSection
-      spaceId={spaceId}
-      folderId={folderId}
-      projectInRoot={projectInRoot}
-      error={contextError}
-      onChange={onContextChange}
-    />
+}: Props) => {
+  const { formatMessage } = useIntl();
 
-    <StyledSectionField>
-      <SubSectionTitle>
-        <FormattedMessage {...generalMessages.url} />
-      </SubSectionTitle>
-      <SlugInput
-        slug={slug}
-        pathnameWithoutSlug="projects"
-        apiErrors={apiErrors}
-        showSlugErrorMessage={showSlugErrorMessage}
-        onSlugChange={onSlugChange}
-        showSlugChangedWarning={slug !== currentSlug}
+  return (
+    <SettingsSections>
+      <SettingsSection title={formatMessage(messages.settingsProjectUrl)}>
+        <SlugInput
+          variant="bo"
+          slug={slug}
+          pathnameWithoutSlug="projects"
+          apiErrors={apiErrors}
+          showSlugErrorMessage={showSlugErrorMessage}
+          onSlugChange={onSlugChange}
+          showSlugChangedWarning={false}
+        />
+      </SettingsSection>
+      <ContextSection
+        spaceId={spaceId}
+        folderId={folderId}
+        projectInRoot={projectInRoot}
+        error={contextError}
+        onChange={onContextChange}
       />
-    </StyledSectionField>
-  </Box>
-);
+      <ResetSection projectId={projectId} />
+    </SettingsSections>
+  );
+};
 
 export default GeneralSection;
