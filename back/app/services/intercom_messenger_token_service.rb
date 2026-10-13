@@ -1,17 +1,12 @@
 # frozen_string_literal: true
 
-# Signs the JWT the front end passes to the Intercom Messenger to verify the
-# identity of the user (Intercom "Messenger security").
 class IntercomMessengerTokenService
   TOKEN_LIFETIME = 1.hour
 
-  # @return [Boolean]
   def configured?
     secret.present?
   end
 
-  # @param [User] user
-  # @return [String]
   def token(user)
     JWT.encode(payload(user), secret, 'HS256')
   end
@@ -21,12 +16,9 @@ class IntercomMessengerTokenService
   def payload(user)
     tenant = Tenant.current
     {
-      # Must be the same id we use as +external_id+ in TrackIntercomService,
-      # otherwise Intercom creates duplicate contacts.
       user_id: user.id,
       email: user.email,
       exp: TOKEN_LIFETIME.from_now.to_i,
-      # Intercom ignores flat company claims, it must be a nested object.
       company: {
         company_id: tenant.id,
         name: tenant.name,
