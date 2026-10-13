@@ -11,11 +11,12 @@ describe McpServer::Tools::UpdateProject do
   end
 
   describe '#input_schema' do
-    it "reuses create_project's schema without folder_id" do
-      create_properties = McpServer::Tools::CreateProject.new.input_schema[:properties].except(:folder_id)
+    it "reuses create_project's schema with a nullable folder_id" do
+      create_properties = McpServer::Tools::CreateProject.new.input_schema[:properties]
       schema = described_class.new.input_schema
 
       expect(schema[:properties].keys).to eq([:project_id, *create_properties.keys])
+      expect(schema[:properties][:folder_id][:type]).to eq(%w[string null])
       expect(schema[:required]).to eq(%w[project_id])
       expect(schema[:additionalProperties]).to be(false)
     end
@@ -80,6 +81,38 @@ describe McpServer::Tools::UpdateProject do
 
       expect(response).not_to be_error
       expect(layout.reload.craftjs_json.dig(banner_id, 'props', 'image')).to eq('imageUrl' => 'https://example.com/baked.jpg')
+    end
+  end
+
+  describe 'folder moves' do
+    let(:folder) { create(:project_folder, admin_publication_attributes: { publication_status: 'draft' }) }
+
+    it 'moves the project into a folder' do
+      response = nil
+      expect { response = run(project_id: project.id, folder_id: folder.id) }
+        .to change { project.reload.folder_id }.from(nil).to(folder.id)
+
+      expect(response).not_to be_error
+      expect(response.structured_content).to include(folder_id: folder.id)
+    end
+
+    it 'moves the project out of its folder' do
+      project.update!(folder_id: folder.id)
+
+      response = nil
+      expect { response = run(project_id: project.id, folder_id: nil) }
+        .to change { project.reload.folder_id }.from(folder.id).to(nil)
+
+      expect(response).not_to be_error
+      expect(response.structured_content).to include(folder_id: nil)
+    end
+
+    it 'returns a not-found error for a folder id that does not exist' do
+      response = nil
+      expect { response = run(project_id: project.id, folder_id: SecureRandom.uuid) }
+        .not_to change { project.reload.folder_id }
+
+      expect(response).to be_not_found('Folder')
     end
   end
 

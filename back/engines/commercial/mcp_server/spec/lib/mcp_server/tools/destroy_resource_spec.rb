@@ -87,6 +87,39 @@ describe McpServer::Tools::DestroyResource do
     expect(image.reload).to be_present
   end
 
+  it 'destroys an empty folder on a demo platform' do
+    change_lifecycle_stage('demo')
+    folder = create(:project_folder)
+
+    response = nil
+    expect { response = destroy('folder', folder.id) }
+      .to have_enqueued_job(LogActivityJob).at_least(:once)
+
+    expect(response).not_to be_error
+    expect { folder.reload }.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
+  it 'refuses to destroy a folder outside demo and trial platforms, even a draft one' do
+    folder = create(:project_folder, admin_publication_attributes: { publication_status: 'draft' })
+
+    response = destroy('folder', folder.id)
+
+    expect(response).to be_error
+    expect(response.content.sole[:text]).to include('demo and trial')
+    expect { folder.reload }.not_to raise_error
+  end
+
+  it 'refuses to destroy a folder that contains projects' do
+    change_lifecycle_stage('demo')
+    folder = create(:project_folder)
+    create(:project, folder_id: folder.id)
+
+    response = destroy('folder', folder.id)
+
+    expect(response).to be_unauthorized(/Cannot destroy folder/)
+    expect { folder.reload }.not_to raise_error
+  end
+
   it 'destroys a file attachment on a folder' do
     folder = create(:project_folder, admin_publication_attributes: { publication_status: 'draft' })
     attachment = create(:file_attachment, file: create(:file), attachable: folder)

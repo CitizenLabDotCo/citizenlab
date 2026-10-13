@@ -115,6 +115,7 @@ module McpServer
       McpServer::Tools::DestroyResource,
       McpServer::Tools::UpdateResource,
       McpServer::Tools::UpdateProject,
+      McpServer::Tools::UpdateFolder,
       McpServer::Tools::UpdatePhase,
       McpServer::Tools::GetResource,
       McpServer::Tools::GetPlatformConfig,
