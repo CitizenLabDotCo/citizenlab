@@ -19,18 +19,28 @@ import messages from './messages';
 
 import { Props, Figure } from '.';
 
+// Normalized on the way in and on the way out, so the indices the edits below
+// address stay lined up with the rows on screen. See readFigures in the widget.
+const toFigures = (figures: unknown): Figure[] =>
+  Array.isArray(figures)
+    ? figures.filter(
+        (figure): figure is Figure =>
+          typeof figure === 'object' && figure !== null
+      )
+    : [];
+
 const Settings = () => {
   const { formatMessage } = useIntl();
   const {
     actions: { setProp },
     figures,
   } = useNode((node) => ({
-    figures: ((node.data.props as Props).figures ?? []) as Figure[],
+    figures: toFigures((node.data.props as Props).figures),
   }));
 
   const edit = (index: number, patch: Partial<Figure>) => {
     setProp((props: Props) => {
-      const next = [...(props.figures ?? [])];
+      const next = toFigures(props.figures);
       next[index] = { ...next[index], ...patch };
       props.figures = next;
     });
@@ -53,7 +63,7 @@ const Settings = () => {
               iconColorOnHover={colors.red600}
               onClick={() => {
                 setProp((props: Props) => {
-                  props.figures = (props.figures ?? []).filter(
+                  props.figures = toFigures(props.figures).filter(
                     (_, position) => position !== index
                   );
                 });
@@ -64,7 +74,7 @@ const Settings = () => {
             <Input
               type="text"
               label={formatMessage(messages.valueLabel)}
-              value={figure.value ?? ''}
+              value={typeof figure.value === 'string' ? figure.value : ''}
               onChange={(value) => edit(index, { value })}
             />
           </Box>
@@ -86,7 +96,7 @@ const Settings = () => {
         icon="plus"
         onClick={() => {
           setProp((props: Props) => {
-            props.figures = [...(props.figures ?? []), { value: '' }];
+            props.figures = [...toFigures(props.figures), { value: '' }];
           });
         }}
       >

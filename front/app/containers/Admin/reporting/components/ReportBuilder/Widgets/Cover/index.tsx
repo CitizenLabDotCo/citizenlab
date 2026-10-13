@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
+import { useEditor } from '@craftjs/core';
 import { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
 
@@ -37,6 +38,9 @@ const Cover = ({
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { data: appConfiguration } = useAppConfiguration();
+  const { inBuilder } = useEditor((state) => ({
+    inBuilder: state.options.enabled,
+  }));
 
   const accent = theme.colors.tenantPrimary;
   const logoUrl = appConfiguration?.data.attributes.logo?.medium;
@@ -86,14 +90,17 @@ const Cover = ({
           which is where a title page reads best. */}
       <Box flexGrow={1} minHeight="32px" />
 
-      <Title
-        variant="h1"
-        m="0"
-        color="tenantPrimary"
-        style={{ fontSize: '40px', lineHeight: 1.15 }}
-      >
-        {titleText || formatMessage(messages.titlePlaceholder)}
-      </Title>
+      {/* A published cover reading "Report title" is worse than one with no title. */}
+      {(titleText || inBuilder) && (
+        <Title
+          variant="h1"
+          m="0"
+          color="tenantPrimary"
+          style={{ fontSize: '40px', lineHeight: 1.15 }}
+        >
+          {titleText || formatMessage(messages.titlePlaceholder)}
+        </Title>
+      )}
 
       {localize(subtitle) && (
         <Text m="16px 0 0" fontSize="xl" color="textSecondary">

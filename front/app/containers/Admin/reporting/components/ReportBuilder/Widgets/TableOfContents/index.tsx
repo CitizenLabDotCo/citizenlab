@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 
 import { Box, Text, Title, colors } from '@citizenlab/cl2-component-library';
+import { useEditor } from '@craftjs/core';
 import styled, { useTheme } from 'styled-components';
 import { Multiloc } from 'typings';
+import { v4 as uuidv4 } from 'uuid';
 
 import useLocalize from 'hooks/useLocalize';
 
@@ -53,8 +55,10 @@ const readHeadings = (root: ParentNode): Entry[] =>
         !heading.closest('.e2e-table-of-contents') &&
         !heading.closest('.e2e-report-cover')
     )
-    .map((heading, index) => {
-      const id = heading.id || `report-section-${index}`;
+    .map((heading) => {
+      // Not the position: the id stays on the heading, so a heading inserted
+      // above an existing one would take the id that one already carries.
+      const id = heading.id || `report-section-${uuidv4()}`;
       heading.id = id;
       return {
         id,
@@ -75,11 +79,14 @@ const TableOfContents = ({ title }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const [entries, setEntries] = useState<Entry[]>([]);
+  const { inBuilder } = useEditor((state) => ({
+    inBuilder: state.options.enabled,
+  }));
   const accent = theme.colors.tenantPrimary;
 
-  // One pass after the report has rendered. The entries must exist before the
-  // paginator runs, so that filling in the page numbers cannot change the
-  // layout that produced them.
+  // Reads the headings once the report has rendered, and again whenever it
+  // changes. The entries must exist before the paginator runs, so that filling in
+  // the page numbers cannot change the layout that produced them.
   useEffect(() => {
     const frame = document.querySelector('#e2e-content-builder-frame');
     if (!frame) return;
@@ -102,7 +109,8 @@ const TableOfContents = ({ title }: Props) => {
         {localize(title) || formatMessage(messages.contents)}
       </Title>
 
-      {entries.length === 0 && (
+      {/* Guidance for the admin placing the widget, not for a reader of the PDF. */}
+      {entries.length === 0 && inBuilder && (
         <Text m="0" fontSize="base" color="textSecondary">
           <FormattedMessage {...messages.empty} />
         </Text>

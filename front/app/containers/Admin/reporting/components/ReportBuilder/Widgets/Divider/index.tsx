@@ -6,7 +6,9 @@ import { useTheme } from 'styled-components';
 import messages from './messages';
 import Settings from './Settings';
 
-export type DividerVariant = 'section' | 'hairline' | 'dots';
+export const DIVIDER_VARIANTS = ['section', 'hairline', 'dots'] as const;
+
+export type DividerVariant = (typeof DIVIDER_VARIANTS)[number];
 
 export interface Props {
   variant?: DividerVariant;
