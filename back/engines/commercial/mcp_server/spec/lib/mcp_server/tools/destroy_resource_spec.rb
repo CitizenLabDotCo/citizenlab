@@ -144,16 +144,18 @@ describe McpServer::Tools::DestroyResource do
     expect { area.reload }.not_to raise_error
   end
 
-  it 'surfaces an error when the area is used by a static page project filter' do
+  it 'refuses to destroy an area used by a static page project filter, before any side effects' do
     change_lifecycle_stage('demo')
+    create(:custom_field_domicile)
     area = create(:area)
+    user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'domicile', value: area.id)])
     create(:static_page, projects_filter_type: 'areas', areas: [area])
 
     response = destroy('area', area.id)
 
-    expect(response).to be_error
-    expect(response.structured_content[:errors]).to be_present
+    expect(response).to be_unauthorized(/Cannot destroy area/)
     expect { area.reload }.not_to raise_error
+    expect(user.reload.custom_field_answers.pluck(:key, :value)).to eq [['domicile', area.id]]
   end
 
   it 'destroys a file attachment on a folder' do

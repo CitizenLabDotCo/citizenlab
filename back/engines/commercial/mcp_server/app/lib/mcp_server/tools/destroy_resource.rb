@@ -55,7 +55,8 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
       Folders can only be destroyed on demo and trial platforms, and only when they contain
       no projects — move them out first (update_project's folder_id) or destroy them too.
       Areas can also only be destroyed on demo and trial platforms; destroying one detaches
-      it from its projects and deletes users' matching 'domicile' answers.
+      it from its projects and deletes users' matching 'domicile' answers. It fails while a
+      custom page uses the area as a project filter.
     DESC
   end
 
@@ -88,13 +89,15 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
       assert_can_destroy_project!(record) if record.is_a?(Project)
       assert_can_destroy_phase!(record) if record.is_a?(Phase)
       assert_can_destroy_folder!(record) if record.is_a?(ProjectFolders::Folder)
+      assert_can_destroy_area!(record) if record.is_a?(Area)
 
       destroy_with_sidefx!(record)
 
       response("Destroyed #{params[:resource_type]} #{params[:id]}")
     rescue ActiveRecord::RecordNotDestroyed => e
-      # `dependent: :restrict_with_error` associations (e.g. a static page whose project
-      # filter uses the area) block destruction with errors on the record.
+      # Safety net only: `dependent: :restrict_with_error` aborts inside destroy!, after
+      # before_destroy side effects already ran. Known restrictions get a pre-check above
+      # so they refuse before any side effect.
       invalid_record_error(e.record)
     end
 
@@ -126,6 +129,17 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
 
       message = 'Cannot destroy folder: it contains projects. Move them out first ' \
                 '(update_project with folder_id: null) or destroy them individually.'
+      raise Pundit::NotAuthorizedErrorWithReason, reason: message, message: message
+    end
+
+    # Checked before destroy_with_sidefx!: the restrict_with_error on the static page
+    # association only aborts inside destroy!, after before_destroy side effects have
+    # already deleted users' matching 'domicile' answers.
+    def assert_can_destroy_area!(area)
+      return unless area.static_pages.exists?
+
+      message = 'Cannot destroy area: one or more custom pages use it as a project filter. ' \
+                'Remove it from those pages first.'
       raise Pundit::NotAuthorizedErrorWithReason, reason: message, message: message
     end
 
