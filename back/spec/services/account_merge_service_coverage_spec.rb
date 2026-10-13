@@ -17,7 +17,6 @@ describe 'AccountMergeService coverage' do # rubocop:disable RSpec/DescribeClass
 
     {
       'admin_publications.scheduled_by_id' => admin_reason,
-      'content_builder_custom_blocks.created_by_id' => admin_reason,
       'email_bans.banned_by_id' => admin_reason,
       'email_campaigns_campaigns.author_id' => admin_reason,
       'idea_imports.import_user_id' => admin_reason,

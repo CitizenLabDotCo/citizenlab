@@ -37,7 +37,8 @@ module ReportBuilder
 
     belongs_to :owner, class_name: 'User', optional: true
     belongs_to :phase, class_name: 'Phase', optional: true
-    # A report is about a phase or about a whole project, never both.
+    # A report is about a phase, a whole project, or neither (a global report);
+    # never both.
     belongs_to :project, optional: true
     has_many :published_graph_data_units, dependent: :destroy
 
