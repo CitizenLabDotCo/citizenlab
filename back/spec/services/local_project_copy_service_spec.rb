@@ -325,8 +325,11 @@ describe LocalProjectCopyService do
     end
 
     it 'shifts timelines of phases to start first phase on day of copying' do
-      # Make sure to use a timeline that doesn't cross a DST boundary for this test.
-      freeze_time do
+      # Pinned to midsummer: the copy shifts the timeline forward to today, so the
+      # shifted window has to stay on one side of a DST change too. Shifting adds
+      # calendar days, which keeps the wall-clock time and would otherwise move the
+      # span by an hour.
+      travel_to Time.zone.local(2026, 6, 15, 12) do
         project = create(:project)
         create(:phase, project: project, start_at: 10.days.ago, end_at: 5.days.ago)
         create(:phase, project: project, participation_method: 'information', start_at: 5.days.ago, end_at: 5.days.from_now)
