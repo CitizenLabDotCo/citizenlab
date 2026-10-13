@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Title } from '@citizenlab/cl2-component-library';
 
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import { ResolvedFormBuilderConfig } from 'components/FormBuilder/utils';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -11,7 +11,7 @@ import messages from '../messages';
 import ToolboxItem from './ToolboxItem';
 
 interface BuiltInFieldsProps {
-  builderConfig: FormBuilderConfig;
+  builderConfig: ResolvedFormBuilderConfig;
 }
 
 const LayoutFields = ({ builderConfig }: BuiltInFieldsProps) => {

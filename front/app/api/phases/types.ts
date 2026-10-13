@@ -92,6 +92,8 @@ export interface IPhaseAttributes {
   similarity_enabled?: boolean;
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
+  supports_form_logic: boolean;
+  supports_public_visibility: boolean;
   user_data_collection: UserDataCollection;
   user_fields_in_form_enabled: boolean;
   action_descriptors: PhaseActionDescriptors;
@@ -171,18 +173,21 @@ export type TSurveyService =
   | 'microsoft_forms'
   | 'snap_survey';
 
-export type ParticipationMethod =
-  | 'ideation'
-  | 'common_ground'
-  | 'information'
-  | 'native_survey'
-  | 'community_monitor_survey'
-  | 'survey'
-  | 'voting'
-  | 'poll'
-  | 'volunteering'
-  | 'document_annotation'
-  | 'proposals';
+export const participationMethods = [
+  'ideation',
+  'common_ground',
+  'information',
+  'native_survey',
+  'community_monitor_survey',
+  'survey',
+  'voting',
+  'poll',
+  'volunteering',
+  'document_annotation',
+  'proposals',
+] as const;
+
+export type ParticipationMethod = (typeof participationMethods)[number];
 
 export type PhasePlacementType = 'on_timeline' | 'standalone';
 

@@ -29,7 +29,7 @@ const StatCard = styled.div`
   align-items: center;
 `;
 
-const StatCardPercentage = styled.div`
+const StatCardCount = styled.div`
   font-size: ${fontSizes.s}px;
   color: ${colors.textSecondary};
 `;
@@ -41,7 +41,7 @@ const StatCardTitle = styled.h3`
   margin: 0;
 `;
 
-const StatCardCount = styled.div`
+const StatCardPercentage = styled.div`
   font-size: ${fontSizes.xl}px;
 `;
 
@@ -68,10 +68,10 @@ const Stats = ({ campaignId, className }: Props) => {
 
         return (
           <StatCard key={message.id}>
+            <StatCardCount>{count}</StatCardCount>
             <StatCardPercentage>
               <FormattedNumber style="percent" value={share} />
             </StatCardPercentage>
-            <StatCardCount>{count}</StatCardCount>
             <StatCardTitle>
               <FormattedMessage {...message} />
             </StatCardTitle>

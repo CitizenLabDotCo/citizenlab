@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IconTooltip, Box } from '@citizenlab/cl2-component-library';
+import { IconTooltip, Box, Spinner } from '@citizenlab/cl2-component-library';
 
 import useInheritPhasePermission from 'api/phase_permissions/useInheritPhasePermission';
 import useOverridePhasePermission from 'api/phase_permissions/useOverridePhasePermission';
@@ -9,6 +9,7 @@ import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermis
 import usePhase from 'api/phases/usePhase';
 
 import ActionForm from 'components/admin/ActionForm';
+import Centerer from 'components/UI/Centerer';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
@@ -22,11 +23,20 @@ type Props = {
 
 const ActionForms = ({ phaseId }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: phase } = usePhase(phaseId);
-  const { data: permissions } = usePhasePermissions({ phaseId });
+  const { data: phase, isLoading: isLoadingPhase } = usePhase(phaseId);
+  const { data: permissions, isLoading: isLoadingPermissions } =
+    usePhasePermissions({ phaseId });
   const { mutateAsync: updatePhasePermission } = useUpdatePhasePermission();
   const { mutateAsync: overridePhasePermission } = useOverridePhasePermission();
   const { mutateAsync: inheritPhasePermission } = useInheritPhasePermission();
+
+  if (isLoadingPermissions || isLoadingPhase) {
+    return (
+      <Centerer height="200px">
+        <Spinner />
+      </Centerer>
+    );
+  }
 
   if (!permissions || !phase) return null;
 

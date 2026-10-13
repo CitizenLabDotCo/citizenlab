@@ -11,6 +11,7 @@ import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';
 
@@ -33,7 +34,7 @@ const Accordion = ({ title, openByDefault = false }: AccordionProps) => {
   return (
     <AccordionComponent
       w="auto"
-      maxWidth="1200px"
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       margin={`0 ${
         componentDefaultPadding === '0px' ? 'auto' : componentDefaultPadding
       }`}

@@ -146,6 +146,61 @@ describe SortByParamsService do
       end
     end
 
+    describe do
+      let(:user) { create(:user, locale: 'en') }
+      let(:ideas) do
+        [
+          { 'en' => 'banana', 'nl-BE' => 'appel' },
+          { 'nl-BE' => 'zonder engelse titel' },
+          { 'en' => 'Apple' },
+          { 'en' => 'cherry' }
+        ].map do |title_multiloc|
+          create(:idea, project: timeline_project, title_multiloc: title_multiloc)
+        end
+      end
+
+      describe 'title' do
+        let(:sort) { 'title' }
+
+        it 'orders by the title in the user locale, missing titles last' do
+          expect(result_record_ids).to eq [ideas[3], ideas[0], ideas[2], ideas[1]].map(&:id)
+        end
+      end
+
+      describe '-title' do
+        let(:sort) { '-title' }
+
+        it 'orders by the title in the user locale, missing titles last' do
+          expect(result_record_ids).to eq [ideas[2], ideas[0], ideas[3], ideas[1]].map(&:id)
+        end
+      end
+    end
+
+    describe do
+      let(:admin_named) { ->(first_name) { create(:admin, first_name: first_name, last_name: 'Smith') } }
+      let(:ideas) do
+        [admin_named.call('bea'), nil, admin_named.call('Adam')].map do |assignee|
+          create(:idea, project: timeline_project, assignee: assignee)
+        end
+      end
+
+      describe 'assignee' do
+        let(:sort) { 'assignee' }
+
+        it 'orders by the assignee name, unassigned last' do
+          expect(result_record_ids).to eq [ideas[0], ideas[2], ideas[1]].map(&:id)
+        end
+      end
+
+      describe '-assignee' do
+        let(:sort) { '-assignee' }
+
+        it 'orders by the assignee name, unassigned last' do
+          expect(result_record_ids).to eq [ideas[2], ideas[0], ideas[1]].map(&:id)
+        end
+      end
+    end
+
     describe 'popular' do
       let(:sort) { 'popular' }
       let(:expected_record_ids) { [ideas[0].id, ideas[2].id, ideas[1].id] }

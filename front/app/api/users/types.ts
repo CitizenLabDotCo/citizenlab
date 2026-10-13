@@ -1,11 +1,19 @@
 import { ImageSizes, SupportedLocale, Multiloc } from 'typings';
 
+import { TAppConfigurationSetting } from 'api/app_configuration/types';
+
 import { Keys } from 'utils/cl-react-query/types';
 import { TRole } from 'utils/permissions/roles';
 
 import usersKeys from './keys';
 
 export type UsersKeys = Keys<typeof usersKeys>;
+
+export type EarlyAccessTier = 'general' | 'internal';
+
+export type OfferedEarlyAccessFeatures = Partial<
+  Record<TAppConfigurationSetting, EarlyAccessTier>
+>;
 
 export interface UserCheckResponse {
   data: {
@@ -44,6 +52,8 @@ export interface IUserAttributes {
   block_reason?: string;
   block_start_at?: string;
   blocked?: boolean;
+  email_bounced_at?: string | null;
+  email_bounce_reason?: string | null;
   registration_completed_at: string | null;
   created_at: string;
   updated_at: string;
@@ -52,6 +62,8 @@ export interface IUserAttributes {
   confirmation_required: boolean;
   custom_field_values?: Record<string, any>;
   onboarding?: OnboardingType;
+  early_access_opt_ins?: TAppConfigurationSetting[];
+  offered_early_access_features?: OfferedEarlyAccessFeatures;
   avatar?: ImageSizes;
   roles?: TRole[];
   email?: string;
@@ -107,6 +119,7 @@ export interface IUserUpdate {
   bio_multiloc?: Multiloc;
   custom_field_values?: Record<string, any>;
   onboarding?: OnboardingType;
+  early_access_opt_ins?: TAppConfigurationSetting[];
   phone?: string;
 }
 
@@ -137,6 +150,7 @@ export interface IQueryParameters {
   can_moderate?: true;
   admins_only?: boolean;
   only_blocked?: boolean;
+  only_email_bounced?: boolean;
   not_citizenlab_member?: boolean;
   include_inactive?: boolean;
   // Pass project/folder/space id to exclude all users who are

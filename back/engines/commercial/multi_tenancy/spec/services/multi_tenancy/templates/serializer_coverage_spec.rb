@@ -72,13 +72,17 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
       ], # manual-vote operational state
 
       'Project' => %w[
+        completed_setup_steps
         default_assignee_id
         preview_token
-      ], # admin reference / regenerated token
+      ], # setup checklist progress / admin reference / regenerated token
 
       'User' => %w[
         block_end_at
         confirmation_required
+        early_access_opt_ins
+        email_bounce_reason
+        email_bounced_at
         email_confirmed_at
         imported
         invite_status
@@ -92,7 +96,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         reset_password_token
         roles
         token_expiry_key
-      ] # auth/session/role/contact state — deliberately not templated (privacy/security)
+      ] # auth/session/role/contact state and personal settings — deliberately not templated (privacy/security)
     }.freeze
   end
 
@@ -110,12 +114,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
       # rebuilt downstream — never seeded from a template.
       analytics: %w[
         Analytics::DimensionDate
-        Analytics::DimensionLocale
-        Analytics::DimensionLocalesFactVisits
-        Analytics::DimensionProjectsFactVisits
-        Analytics::DimensionReferrerType
         Analytics::DimensionType
-        Analytics::FactVisit
       ],
 
       # AI analysis, insights and embeddings — derived from user content.

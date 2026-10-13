@@ -16,12 +16,16 @@ const fetchQuestions = ({ phaseId }: IPollQuestionParameters) =>
     action: 'get',
   });
 
-const usePollQuestions = ({ phaseId }: IPollQuestionParameters) => {
+const usePollQuestions = ({
+  phaseId,
+  enabled = true,
+}: IPollQuestionParameters & { enabled?: boolean }) => {
   return useQuery<IPollQuestions, CLErrors, IPollQuestions, PollQuestionsKeys>({
     queryKey: pollOptionsKeys.list({
       phaseId,
     }),
     queryFn: () => fetchQuestions({ phaseId }),
+    enabled,
   });
 };
 

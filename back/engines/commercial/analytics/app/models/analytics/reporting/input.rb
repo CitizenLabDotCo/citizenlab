@@ -80,7 +80,8 @@ module Analytics
           'received_feedback' => <<~DOC.squish,
             TRUE when an administrator gave official feedback on the input or
             changed its status. Only meaningful for publicly visible methods
-            (ideation, proposals).
+            (ideation, proposals). The feedback texts are in
+            reporting_official_feedbacks.
           DOC
           'likes_count' => 'Number of likes on the input.',
           'dislikes_count' => 'Number of dislikes on the input.',

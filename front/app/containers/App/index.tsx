@@ -33,6 +33,7 @@ import {
 import Authentication from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
 
+import { HOMEPAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/constants';
 import ConsentManager from 'components/ConsentManager';
 import ErrorBoundary from 'components/ErrorBoundary';
 
@@ -330,9 +331,7 @@ const App = ({ children }: Props) => {
 
   const isAdminPage = isPage('admin', pathname);
   const isPagesAndMenuPage = isPage('pages_menu', pathname);
-  const isHomePageBuilderRoute = pathname.match(
-    /\/admin\/pages-menu\/homepage-builder/
-  );
+  const isHomePageBuilderRoute = pathname.includes(HOMEPAGE_BUILDER_PATH);
   const isIdeaFormPage = isPage('idea_form', pathname);
   const isIdeaEditPage = isPage('idea_edit', pathname);
   const isNativeSurveyPage = isPage('native_survey', pathname);

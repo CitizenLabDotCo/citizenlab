@@ -21,7 +21,7 @@ const CustomPageBuilderEditModePreview = React.forwardRef<
 
   return (
     <EditModePreview
-      iframeSrc={`/${locale}/${CUSTOM_PAGE_BUILDER_PATH}/pages/${staticPageId}/preview?selected_locale=${locale}`}
+      iframeSrc={`/${locale}${CUSTOM_PAGE_BUILDER_PATH}/pages/${staticPageId}/preview?selected_locale=${locale}`}
       ref={ref}
     />
   );

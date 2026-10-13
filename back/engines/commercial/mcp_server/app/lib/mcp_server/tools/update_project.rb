@@ -48,6 +48,9 @@ class McpServer::Tools::UpdateProject < McpServer::BaseTool
       project.save!
       SideFxProjectService.new.after_update(project, current_user)
 
+      # The ProjectBanner node's own image would otherwise override the header_bg set here.
+      ContentBuilder::ProjectPageLayoutService.new.reset_banner_image!(project) if params.key?(:remote_header_bg_url)
+
       response(
         "Updated project #{project.id}",
         structured: McpServer::Serializers::Project.serialize(project, params: { current_user: })

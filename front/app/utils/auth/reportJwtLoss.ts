@@ -1,6 +1,8 @@
 import { captureMessage, withScope } from '@sentry/react';
 import { jwtDecode } from 'jwt-decode';
 
+import { baseReportTags, secondsSincePageLoad } from 'utils/loggingUtils';
+
 // A tenant's cookie-consent tool (typically loaded via their GTM container) can
 // enumerate document.cookie and delete everything not on its own allow-list. Our
 // auth cookie is not on those lists, so it gets deleted and the user is silently
@@ -51,14 +53,6 @@ const scriptHosts = (): string[] => {
   return [...hosts];
 };
 
-const isFramed = (): boolean => {
-  try {
-    return window.self !== window.top;
-  } catch {
-    return true;
-  }
-};
-
 /**
  * Reports that the auth cookie vanished while we still expected it to be there.
  * Natural expiry and deliberate sign-out are not reported.
@@ -77,14 +71,11 @@ export const reportUnexpectedJwtLoss = () => {
 
   withScope((scope) => {
     scope.setLevel('error');
-    scope.setTags({
-      tenant_host: window.location.hostname,
-      in_iframe: isFramed(),
-    });
+    scope.setTags(baseReportTags());
     scope.setContext('jwt_loss', {
       path: window.location.pathname,
       seconds_until_expiry: secondsUntilExpiry,
-      seconds_since_page_load: Math.round(performance.now() / 1000),
+      seconds_since_page_load: secondsSincePageLoad(),
       remaining_cookies: remainingCookies,
       consent_cookie_also_gone: !remainingCookies.includes('cl2_consent'),
       script_hosts: scriptHosts(),

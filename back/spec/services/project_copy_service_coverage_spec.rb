@@ -64,12 +64,16 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
       ], # status/moderation operational state
 
       'Project' => %w[
+        completed_setup_steps
         default_assignee_id
         preview_token
-      ], # admin reference / regenerated token
+      ], # setup checklist progress / admin reference / regenerated token
 
       'User' => %w[
         confirmation_required
+        early_access_opt_ins
+        email_bounce_reason
+        email_bounced_at
         email_confirmed_at
         imported
         invite_status
@@ -83,7 +87,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         reset_password_token
         roles
         token_expiry_key
-      ] # auth/session/role/contact state — deliberately not exported (privacy/security)
+      ] # auth/session/role/contact state and personal settings — deliberately not exported (privacy/security)
     }.freeze
   end
 
@@ -103,12 +107,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
       # and rebuilt downstream — never seeded from a project copy.
       analytics: %w[
         Analytics::DimensionDate
-        Analytics::DimensionLocale
-        Analytics::DimensionLocalesFactVisits
-        Analytics::DimensionProjectsFactVisits
-        Analytics::DimensionReferrerType
         Analytics::DimensionType
-        Analytics::FactVisit
       ],
 
       # AI analysis, insights and embeddings — derived from user content.

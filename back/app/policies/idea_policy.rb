@@ -72,12 +72,11 @@ class IdeaPolicy < ApplicationPolicy
   end
 
   def show?
+    return true if record.draft? && owner?
+
     if record.participation_method_on_creation.supports_public_visibility?
-      project_show = policy_for(record.project).show?
-      return true if project_show && %w[draft published].include?(record.publication_status)
+      return true if record.published? && policy_for(record.project).show?
       return true if record.cosponsors.include?(user)
-    elsif record.draft?
-      return true
     end
 
     active? && (owner? || UserRoleService.new.can_moderate_project?(record.project, user))

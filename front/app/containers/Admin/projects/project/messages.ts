@@ -216,6 +216,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.inputReactingEnabled',
     defaultMessage: 'Reacting to inputs',
   },
+  attendingEventAction: {
+    id: 'app.containers.AdminPage.ProjectEdit.attendingEventAction',
+    defaultMessage: 'Attending an event',
+  },
   likingMethodTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.likingMethodTitle',
     defaultMessage: 'Number of likes per participant',

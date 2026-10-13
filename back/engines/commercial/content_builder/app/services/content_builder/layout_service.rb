@@ -2,6 +2,13 @@
 
 module ContentBuilder
   class LayoutService
+    # Layouts that can hold the Spotlight and Selection widgets, which point at projects and folders.
+    PUBLICATION_WIDGET_LAYOUT_CODES = [
+      Layout::HOMEPAGE_CODE,
+      CustomPageLayoutService::CODE,
+      LayoutProvisioningService::FOLDER_LAYOUT_CODE
+    ].freeze
+
     def select_craftjs_elements_for_types(craftjs, types)
       craftjs.select do |key, elt|
         key != 'ROOT' && craftjs_element_of_types?(elt, types)
@@ -12,42 +19,42 @@ module ContentBuilder
       elt.is_a?(Hash) && elt['type'].is_a?(Hash) && types.include?(elt.dig('type', 'resolvedName'))
     end
 
-    def clean_homepage_layout_when_publication_deleted(publication)
-      homepage_layout = ContentBuilder::Layout.find_by(code: ContentBuilder::Layout::HOMEPAGE_CODE)
-      return unless homepage_layout
+    # Removes Spotlight widgets showing the deleted project or folder, and drops it from Selection widgets.
+    def clean_layouts_when_publication_deleted(publication)
+      admin_publication_id = publication.admin_publication.id
 
-      remove_admin_publication_id_from_homepage_layout(publication, homepage_layout)
-      remove_spotlight_widgets_for_publication(publication, homepage_layout)
+      Layout
+        .where(code: PUBLICATION_WIDGET_LAYOUT_CODES)
+        .with_widget_type('Spotlight', 'Selection')
+        .find_each do |layout|
+          json = layout.craftjs_json.deep_dup
+          remove_spotlights_for_publication(json, publication.id)
+          remove_from_selections(json, admin_publication_id)
+          next if json == layout.craftjs_json
+
+          # update_column: this runs while a project or folder is being deleted, and an unrelated
+          # widget failing validation must not be able to block that deletion.
+          layout.update_column(:craftjs_json, json)
+        end
     end
 
     private
 
-    def remove_admin_publication_id_from_homepage_layout(publication, homepage_layout)
-      admin_publication_id = publication.admin_publication.id
+    def remove_spotlights_for_publication(json, publication_id)
+      state = Craftjs::State.new(json)
+      state.nodes_by_resolved_name('Spotlight').each do |id, node|
+        next unless node.dig('props', 'publicationId') == publication_id
 
-      homepage_layout.craftjs_json = homepage_layout.craftjs_json.each_value do |node|
-        next unless node['type']['resolvedName'] == 'Selection'
-
-        node['props']['adminPublicationIds'].delete(admin_publication_id)
+        # A stored graph may reference a parent it no longer holds; drop the node alone then.
+        json.key?(node['parent']) ? state.delete_node(id) : json.delete(id)
       end
-
-      homepage_layout.save!
     end
 
-    def remove_spotlight_widgets_for_publication(publication, homepage_layout)
-      publication_id = publication.id
-
-      homepage_layout.craftjs_json.each do |key, node|
-        next unless node['type']['resolvedName'] == 'Spotlight'
-
-        # Delete the key-node pair, and the reference to it, if it's a spotlight widget for the publication
-        if node['props']['publicationId'] == publication_id
-          homepage_layout.craftjs_json.delete(key)
-          homepage_layout.craftjs_json['ROOT']['nodes'].delete(key)
-        end
+    def remove_from_selections(json, admin_publication_id)
+      Craftjs::State.new(json).nodes_by_resolved_name('Selection').each_value do |node|
+        ids = node.dig('props', 'adminPublicationIds')
+        ids.delete(admin_publication_id) if ids.is_a?(Array)
       end
-
-      homepage_layout.save!
     end
   end
 end

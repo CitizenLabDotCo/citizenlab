@@ -7,7 +7,11 @@ import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { CUSTOM_PAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/constants';
+import {
+  BUILDER_CONTENT_MAX_WIDTH,
+  CUSTOM_PAGE_BUILDER_PATH,
+  PROJECT_PAGE_BUILDER_PATH,
+} from 'components/admin/ContentBuilder/constants';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -44,10 +48,10 @@ const StyledBox = styled(Box)`
 const HtmlBlockMultiloc = ({ html }: Props) => {
   const localize = useLocalize();
   const { pathname } = useLocation();
-  // Only the custom page path is a constant so far, because the sidebar and preview checks
-  // share it. The other two are still literals; unify when the builder paths are tidied up.
+  // The homepage builder is matched by its whole admin section, which is wider than
+  // HOMEPAGE_BUILDER_PATH. Narrowing it would change where the block is editable.
   const enabled =
-    pathname.includes('admin/project-page-builder') ||
+    pathname.includes(PROJECT_PAGE_BUILDER_PATH) ||
     pathname.includes(CUSTOM_PAGE_BUILDER_PATH) ||
     pathname.includes('admin/pages-menu');
 
@@ -56,7 +60,7 @@ const HtmlBlockMultiloc = ({ html }: Props) => {
       isEditing={enabled}
       className="e2e-html-block"
       minHeight="26px"
-      maxWidth="1200px"
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       margin="0 auto"
     >
       <div dangerouslySetInnerHTML={{ __html: localize(html) }} />

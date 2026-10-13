@@ -1,0 +1,57 @@
+import React from 'react';
+
+import {
+  Box,
+  Button,
+  colors,
+  IconNames,
+  Tooltip,
+} from '@citizenlab/cl2-component-library';
+
+interface Props {
+  icon: IconNames;
+  label: string;
+  onClick: () => void;
+  active?: boolean;
+  showDot?: boolean;
+  dataCy?: string;
+}
+
+const ToolbarIconButton = ({
+  icon,
+  label,
+  onClick,
+  active = false,
+  showDot = false,
+  dataCy,
+}: Props) => (
+  <Tooltip content={label} placement="bottom" theme="dark">
+    <Box position="relative">
+      <Button
+        buttonStyle="bo-secondary"
+        icon={icon}
+        width="36px"
+        padding="0"
+        onClick={onClick}
+        ariaLabel={label}
+        ariaExpanded={active}
+        dataCy={dataCy}
+        bgColor={active ? colors.grey100 : colors.white}
+      />
+      {showDot && (
+        <Box
+          position="absolute"
+          top="-2px"
+          right="-2px"
+          width="8px"
+          height="8px"
+          borderRadius="50%"
+          background={colors.teal500}
+          border={`2px solid ${colors.white}`}
+        />
+      )}
+    </Box>
+  </Tooltip>
+);
+
+export default ToolbarIconButton;

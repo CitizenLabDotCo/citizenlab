@@ -9,12 +9,13 @@ import { colors, fontSizes, media, isRtl } from '../../utils/styleUtils';
 const timeout = 200;
 
 const Container = styled(ClickOutside)<ContainerProps>`
-  border-radius: ${(props) => props.theme.borderRadius};
+  border-radius: ${(props) => props.borderRadius ?? props.theme.borderRadius};
   background-color: #fff;
   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.18);
   z-index: ${(props) => props.zIndex};
   position: absolute;
   top: ${(props) => props.top};
+  bottom: ${(props) => props.bottom};
   left: ${(props) => props.left};
   right: ${(props) => props.right};
   transition: none;
@@ -115,11 +116,13 @@ const Footer = styled.div`
 // Props interfaces
 interface ContainerProps {
   top: string;
+  bottom: string;
   left: string;
   right: string;
   mobileLeft: string;
   mobileRight: string;
   zIndex: string;
+  borderRadius?: string;
 }
 
 interface ContainerInnerProps {
@@ -139,10 +142,12 @@ interface Props {
   maxHeight?: string;
   mobileMaxHeight?: string;
   top?: string;
+  bottom?: string;
   left?: string;
   mobileLeft?: string;
   right?: string;
   mobileRight?: string;
+  borderRadius?: string;
   content: JSX.Element;
   footer?: React.ReactNode;
   zIndex?: string;
@@ -158,10 +163,12 @@ const Dropdown: React.FC<Props> = ({
   maxHeight = '320px',
   mobileMaxHeight = '280px',
   top = 'auto',
+  bottom = 'auto',
   left = 'auto',
   mobileLeft = 'auto',
   right = 'auto',
   mobileRight = 'auto',
+  borderRadius,
   content,
   footer,
   id,
@@ -221,10 +228,12 @@ const Dropdown: React.FC<Props> = ({
       <Container
         id={id}
         top={top}
+        bottom={bottom}
         left={left}
         mobileLeft={mobileLeft}
         right={right}
         mobileRight={mobileRight}
+        borderRadius={borderRadius}
         closeOnClickOutsideEnabled={opened}
         onClickOutside={close}
         zIndex={zIndex}

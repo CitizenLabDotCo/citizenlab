@@ -757,6 +757,7 @@ resource 'Users' do
         parameter :admins_only, 'Return only admins', required: false
         parameter :project_reviewer, 'Return only admins that are project reviewers', required: false
         parameter :blocked, 'Return only blocked users', required: false
+        parameter :only_email_bounced, 'Return only users whose email permanently bounced', required: false
 
         example 'List all users' do
           %w[Bednar Cole Hagenes MacGyver Oberbrunner].each { |l| create(:user, last_name: l) }
@@ -774,6 +775,18 @@ resource 'Users' do
           expect(json_response[:data][0][:attributes]).to have_key(:block_start_at)
           expect(json_response[:data][0][:attributes]).to have_key(:block_end_at)
           expect(json_response[:data][0][:attributes]).to have_key(:block_reason)
+        end
+
+        example 'List users whose email bounced, including pending invitees' do
+          bounced = create(:user, email_bounced_at: 1.day.ago)
+          bounced_invitee = create(:invited_user, email_bounced_at: 1.day.ago)
+          create(:user)
+
+          do_request only_email_bounced: true, include_inactive: true
+
+          expect(status).to eq 200
+          expect(response_data.pluck(:id)).to contain_exactly(bounced.id, bounced_invitee.id)
+          expect(response_data.first[:attributes]).to include(:email_bounced_at, :email_bounce_reason)
         end
 
         example 'Get all users on the second page with fixed page size' do
@@ -1538,6 +1551,18 @@ resource 'Users' do
         end
       end
 
+      get 'web_api/v1/users/email_bounced_count' do
+        example 'Get count of users whose email bounced' do
+          create_list(:user, 2, email_bounced_at: 1.day.ago)
+          create(:user)
+
+          do_request
+
+          expect(status).to eq 200
+          expect(response_data.dig(:attributes, :count)).to eq 2
+        end
+      end
+
       patch 'web_api/v1/users/:id/block' do
         with_options scope: 'user' do
           parameter :block_reason, 'Reason for blocking & any additional information', required: false
@@ -1600,6 +1625,73 @@ resource 'Users' do
 
         let(:id) { @user.id }
         let(:first_name) { 'Edmond' }
+
+        describe 'early access' do
+          # Stand-ins for whatever is in early access at the time: the registry is
+          # stubbed, so only the tier each name is offered in matters here.
+          let(:feature) { 'spaces' }
+          let(:internal_feature) { 'project_planning_calendar' }
+
+          before do
+            allow(AppConfiguration::Settings).to receive(:early_access_tiers)
+              .and_return({ feature => 'general', internal_feature => 'internal' })
+          end
+
+          example 'Opt into an early access feature' do
+            do_request(user: { early_access_opt_ins: [feature] })
+
+            assert_status 200
+            expect(response_data.dig(:attributes, :early_access_opt_ins)).to eq [feature]
+            expect(@user.reload.early_access_opt_ins).to eq [feature]
+          end
+
+          example 'Opt out of an early access feature again', document: false do
+            @user.update!(early_access_opt_ins: [feature])
+            do_request(user: { early_access_opt_ins: [] })
+
+            assert_status 200
+            expect(@user.reload.early_access_opt_ins).to eq []
+          end
+
+          example '[error] Opt into a feature that is not in early access', document: false do
+            do_request(user: { early_access_opt_ins: ['analysis'] })
+
+            assert_status 422
+            expect(@user.reload.early_access_opt_ins).to eq []
+          end
+
+          example '[error] Opt into a feature reserved for Go Vocal staff', document: false do
+            do_request(user: { early_access_opt_ins: [internal_feature] })
+
+            assert_status 422
+            expect(@user.reload.early_access_opt_ins).to eq []
+          end
+
+          example 'Opt into a Go Vocal only feature as a Go Vocal admin', document: false do
+            govocal_admin = create(:super_admin)
+            header_token_for govocal_admin
+            do_request(id: govocal_admin.id, user: { early_access_opt_ins: [internal_feature] })
+
+            assert_status 200
+            expect(govocal_admin.reload.early_access_opt_ins).to eq [internal_feature]
+          end
+
+          example 'Silently ignore opting another admin into an early access feature', document: false do
+            other_admin = create(:admin)
+            do_request(id: other_admin.id, user: { early_access_opt_ins: [feature] })
+
+            assert_status 200
+            expect(other_admin.reload.early_access_opt_ins).to eq []
+          end
+
+          example "Does not report another admin's opt-ins", document: false do
+            other_admin = create(:admin, early_access_opt_ins: [feature])
+            do_request(id: other_admin.id)
+
+            assert_status 200
+            expect(response_data[:attributes]).not_to have_key(:early_access_opt_ins)
+          end
+        end
 
         describe do
           let(:custom_field_values) { { birthyear: 1984 } }
@@ -1870,6 +1962,12 @@ resource 'Users' do
       get 'web_api/v1/users/blocked_count' do
         example_request 'Get count of blocked users' do
           expect(status).to eq 401
+        end
+      end
+
+      get 'web_api/v1/users/email_bounced_count' do
+        example_request '[error] Get count of users whose email bounced' do
+          assert_status :unauthorized
         end
       end
 

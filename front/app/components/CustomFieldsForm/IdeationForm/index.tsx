@@ -13,12 +13,11 @@ import usePhase from 'api/phases/usePhase';
 
 import useLocale from 'hooks/useLocale';
 
-import { trackEventByName } from 'utils/analytics';
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { weglotTranslateIdeaSubmission } from 'utils/weglot';
 
 import { FormValues } from '../Page/types';
-import tracks from '../tracks';
 import { convertCustomFieldsToNestedPages } from '../util';
 
 import IdeationPage from './IdeationPage';
@@ -105,7 +104,11 @@ const IdeationForm = ({
           },
         });
         updateSearchParams({ idea_id: idea.data.id });
-        trackEventByName(tracks.ideaFormSubmitted);
+        trackEventByName(customerAnalyticsEvents.ideaSubmitted, {
+          project_id: projectId,
+          phase_id: phase.data.id,
+          participation_method: participationMethod,
+        });
       } else {
         // Strip away idea_files_attributes from the form values
         // as they are handled via separate API calls

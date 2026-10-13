@@ -16,16 +16,18 @@ import PiiToggle from './PiiToggle';
 
 interface Props {
   permission: IPermissionData;
+  defaultOpen?: boolean;
   onChange: (changes: Changes) => void;
 }
 
-const PersonalInfoSection = ({ permission, onChange }: Props) => {
+const PersonalInfoSection = ({ permission, defaultOpen, onChange }: Props) => {
   const { attributes } = permission;
   const { formatMessage } = useIntl();
 
   return (
     <Expander
       dataCy="e2e-personal-info-section"
+      defaultOpen={defaultOpen}
       icon="user-circle"
       title={formatMessage(messages.personalInfo)}
       summary={formatMessage(

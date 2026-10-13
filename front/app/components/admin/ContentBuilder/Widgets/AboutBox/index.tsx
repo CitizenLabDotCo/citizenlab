@@ -16,6 +16,7 @@ import {
 } from 'containers/ProjectsShowPage/shared/header/participationOptions';
 import ProjectInfoSideBar from 'containers/ProjectsShowPage/shared/header/ProjectInfoSideBar';
 
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
@@ -43,7 +44,7 @@ const AboutBox = ({
   return (
     <Box
       id="e2e-about-box"
-      maxWidth="1200px"
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       margin="0 auto"
       px={componentDefaultPadding}
     >

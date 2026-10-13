@@ -27,6 +27,24 @@ describe IdeasFinder do
         expect(result_record_ids).to match_array unassigned_ideas.map(&:id)
       end
     end
+
+    describe 'filtering on several assignees' do
+      let(:other_assignee) { create(:admin) }
+      let!(:other_assigned_idea) { create(:idea, assignee: other_assignee) }
+      let(:params) { { assignee: [assignee.id, other_assignee.id] } }
+
+      it 'returns the ideas of any of them' do
+        expect(result_record_ids).to match_array [*assigned_ideas, other_assigned_idea].map(&:id)
+      end
+    end
+
+    describe 'filtering on an assignee and unassigned' do
+      let(:params) { { assignee: [assignee.id, 'unassigned'] } }
+
+      it 'returns the assigned and the unassigned ideas' do
+        expect(result_record_ids).to match_array [*assigned_ideas, *unassigned_ideas].map(&:id)
+      end
+    end
   end
 
   describe 'base filtering' do

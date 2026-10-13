@@ -1,3 +1,4 @@
+import { getResolvedName } from 'components/admin/ContentBuilder/resolvedName';
 import { CraftJson } from 'components/admin/ContentBuilder/typings';
 
 export const linkedSurveyPhaseIds = (
@@ -7,8 +8,7 @@ export const linkedSurveyPhaseIds = (
 
   Object.values(craftjsJson ?? {}).forEach((node) => {
     if (
-      typeof node.type === 'object' &&
-      node.type.resolvedName === 'ExtraSurveysWidget' &&
+      getResolvedName(node) === 'ExtraSurveysWidget' &&
       typeof node.props.surveyPhaseId === 'string'
     ) {
       ids.add(node.props.surveyPhaseId);

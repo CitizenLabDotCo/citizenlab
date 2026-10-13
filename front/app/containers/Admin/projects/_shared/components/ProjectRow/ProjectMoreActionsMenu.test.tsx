@@ -152,6 +152,7 @@ describe('ProjectMoreActionsMenu', () => {
             project_folder_id: mockProject.attributes.folder_id,
           },
         ];
+        mockUserData.attributes.highest_role = 'project_folder_moderator';
         render(
           <ProjectMoreActionsMenu
             {...defaultProps}
@@ -183,6 +184,7 @@ describe('ProjectMoreActionsMenu', () => {
             project_folder_id: 'aDifferentFolderId',
           },
         ];
+        mockUserData.attributes.highest_role = 'project_folder_moderator';
         render(<ProjectMoreActionsMenu {...defaultProps} />);
         const threeDotsButton = screen.queryByTestId('moreOptionsButton');
 
@@ -200,6 +202,7 @@ describe('ProjectMoreActionsMenu', () => {
             project_id: mockProject.id,
           },
         ];
+        mockUserData.attributes.highest_role = 'project_moderator';
         render(<ProjectMoreActionsMenu {...defaultProps} />);
         const threeDotsButton = screen.queryByTestId('moreOptionsButton');
 
@@ -215,6 +218,7 @@ describe('ProjectMoreActionsMenu', () => {
             project_id: 'aDifferentProjectId',
           },
         ];
+        mockUserData.attributes.highest_role = 'project_moderator';
         render(<ProjectMoreActionsMenu {...defaultProps} />);
         const threeDotsButton = screen.queryByTestId('moreOptionsButton');
 

@@ -39,13 +39,13 @@ const ShareResultsToggle = ({
       <SubSectionTitleWithDescription>
         <FormattedMessage {...messages.resultSharing} />
       </SubSectionTitleWithDescription>
-      <Box mt="12px" mb="4px" width="1000px">
+      <Box mt="12px" mb="4px" maxWidth="1000px">
         <Toggle
           checked={!!autoshare_results_enabled}
           onChange={toggleAutoshareResultsEnabled}
           label={
             <Box display="flex" gap="12px">
-              <Box>
+              <Box minWidth="0">
                 <Text fontWeight="bold" color="blue500" m="0px">
                   {formatMessage(messages.autoshareResults)}
                 </Text>
@@ -54,9 +54,9 @@ const ShareResultsToggle = ({
                 </Text>
               </Box>
               {autoshare_results_enabled ? (
-                <Image src={VoteSharingEnabledSvg} alt={''} />
+                <Image src={VoteSharingEnabledSvg} alt={''} maxWidth="100%" />
               ) : (
-                <Image src={VoteSharingDisabledSvg} alt={''} />
+                <Image src={VoteSharingDisabledSvg} alt={''} maxWidth="100%" />
               )}
             </Box>
           }

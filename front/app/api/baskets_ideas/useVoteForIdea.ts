@@ -8,6 +8,7 @@ import basketsIdeasKeys from 'api/baskets_ideas/keys';
 import phasesKeys from 'api/phases/keys';
 import { IPhaseData } from 'api/phases/types';
 
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import basketsKeys from '../baskets/keys';
@@ -55,6 +56,12 @@ const useVoteForIdeaMutation = () => {
 
         queryClient.invalidateQueries({
           queryKey: phasesKeys.list({ projectId: project_id }),
+        });
+
+        // The first vote in a phase creates the basket.
+        trackEventByName(customerAnalyticsEvents.votingStarted, {
+          project_id,
+          phase_id,
         });
       }
     },

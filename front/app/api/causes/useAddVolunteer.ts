@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import causeKeys from './keys';
@@ -23,6 +24,10 @@ const useAddVolunteer = () => {
       });
       queryClient.invalidateQueries({
         queryKey: causeKeys.item({ id: causeId }),
+      });
+
+      trackEventByName(customerAnalyticsEvents.volunteered, {
+        cause_id: causeId,
       });
     },
   });

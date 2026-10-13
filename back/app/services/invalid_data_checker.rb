@@ -4,7 +4,6 @@ class InvalidDataChecker
   SKIP_CLASSES = %w[
     EmailCampaigns::Delivery
     CommonPassword
-    Analytics::FactVisit
   ].freeze
 
   def check_global(summary: nil)

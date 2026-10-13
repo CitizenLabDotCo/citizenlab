@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import {
   Box,
+  bo,
   media,
   colors,
   fontSizes,
@@ -15,7 +16,7 @@ import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import CloseIconButton from 'components/UI/CloseIconButton';
 
@@ -36,6 +37,7 @@ const mobileEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 export const ModalContentContainer = styled.div<{
   padding?: string;
+  fillContent?: boolean;
 }>`
   flex: 1 1 auto;
   width: 100%;
@@ -44,12 +46,23 @@ export const ModalContentContainer = styled.div<{
   -webkit-overflow-scrolling: touch;
   padding: ${({ padding }) => padding || '8px 24px 24px'};
 
+  /* Children scroll on their own, so this box stops being the scroller and
+     becomes their flex parent, which gives them a definite height to fill. */
+  ${({ fillContent }) =>
+    fillContent &&
+    `
+      display: flex;
+      overflow: hidden;
+    `}
+
   ${media.phone`
     padding: ${({ padding }) => padding || '8px 20px 20px'};
   `}
 `;
 
-const StyledCloseIconButton = styled(CloseIconButton)`
+type Variant = 'default' | 'bo';
+
+const StyledCloseIconButton = styled(CloseIconButton)<{ variant: Variant }>`
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -90,6 +103,14 @@ const StyledCloseIconButton = styled(CloseIconButton)`
   ${media.phone`
     right: 15px;
   `}
+
+  ${({ variant }) =>
+    variant === 'bo' &&
+    css`
+      right: 20px;
+      width: 28px;
+      height: 28px;
+    `}
 `;
 
 const StyledFocusOn = styled(FocusOn)<{
@@ -190,7 +211,7 @@ const Overlay = styled.div<{ zIndex?: number }>`
   }
 `;
 
-const HeaderTitle = styled.h1`
+const HeaderTitle = styled.h1<{ variant: Variant }>`
   color: ${({ theme }) => theme.colors.tenantText};
   font-size: ${fontSizes.l}px;
   font-weight: 400;
@@ -213,6 +234,17 @@ const HeaderTitle = styled.h1`
       margin-left: 74px;
     `}
   `}
+
+  ${({ variant }) =>
+    variant === 'bo' &&
+    css`
+      color: ${bo.colors.textHeadingStrong};
+      font-size: ${fontSizes.s}px;
+      font-weight: 500;
+      letter-spacing: normal;
+      line-height: 28px;
+      margin-right: 48px;
+    `}
 `;
 
 const Skip = styled.div`
@@ -258,8 +290,10 @@ const ModalContentContainerSwitch = ({
 
 interface BaseProps {
   'data-testid'?: string;
+  variant?: Variant;
   opened: boolean;
   fixedHeight?: boolean;
+  fillContent?: boolean;
   width?: number | string;
   close: () => void;
   className?: string;
@@ -285,8 +319,10 @@ type Props =
 
 const Modal: React.FC<Props> = ({
   'data-testid': dataTestId,
+  variant = 'default',
   opened,
   fixedHeight = false,
+  fillContent = false,
   width = 650,
   close,
   className,
@@ -302,7 +338,7 @@ const Modal: React.FC<Props> = ({
   ariaLabelledBy,
   returnFocusRef,
 }) => {
-  const nodeRef = useRef(null); // Needed to fix React StrictMode warning
+  const nodeRef = useRef<HTMLDivElement>(null); // Needed to fix React StrictMode warning
   const [modalHasBeenOpened, setModalHasBeenOpened] = useState(false);
   const [windowDimensions, setWindowDimensions] = useState({
     windowWidth: window.innerWidth,
@@ -321,14 +357,30 @@ const Modal: React.FC<Props> = ({
     close();
   }, [close]);
 
+  // Modals portal into one shared container as siblings, so a dismiss aimed at
+  // a modal stacked on top of this one also reaches this one. Only the topmost
+  // modal may act on it.
+  const isTopmostModal = useCallback(() => {
+    const openModals = document
+      .getElementById('modal-portal')
+      ?.querySelectorAll('[aria-modal="true"]');
+
+    if (!openModals?.length) return true;
+
+    const topmost = openModals[openModals.length - 1];
+    return nodeRef.current?.contains(topmost) ?? true;
+  }, []);
+
   const handleKeypress = useCallback(
     (event: KeyboardEvent) => {
       if (event.type === 'keydown' && event.key === 'Escape') {
+        if (!isTopmostModal()) return;
+
         event.preventDefault();
         close();
       }
     },
-    [close]
+    [close, isTopmostModal]
   );
 
   const cleanup = useCallback(() => {
@@ -378,11 +430,13 @@ const Modal: React.FC<Props> = ({
   }, [opened, handleResize, handlePopstateEvent, handleKeypress, cleanup]);
 
   const clickOutsideModal = useCallback(() => {
+    if (!isTopmostModal()) return;
+
     if (closeOnClickOutside) {
       trackEventByName(tracks.clickOutsideModal);
       close();
     }
-  }, [closeOnClickOutside, close]);
+  }, [closeOnClickOutside, close, isTopmostModal]);
 
   const clickCloseButton = useCallback(
     (event: React.MouseEvent<any>) => {
@@ -394,6 +448,7 @@ const Modal: React.FC<Props> = ({
     [close]
   );
 
+  const isBo = variant === 'bo';
   const closeButtonClassName = `e2e-modal-close-button${
     header ? '' : ' no-header'
   }`;
@@ -401,6 +456,7 @@ const Modal: React.FC<Props> = ({
   const closeButton = hideCloseButton ? null : (
     <StyledCloseIconButton
       className={closeButtonClassName}
+      variant={variant}
       onClick={clickCloseButton}
       iconColor={colors.textSecondary}
       iconColorOnHover={colors.textSecondary}
@@ -459,18 +515,25 @@ const Modal: React.FC<Props> = ({
                 flexDirection="column"
                 alignItems="stretch"
                 justifyContent="center"
-                minHeight="65px"
-                padding="14px 18px"
-                borderBottom={`solid 1px ${colors.grey200}`}
+                minHeight={isBo ? undefined : '65px'}
+                padding={isBo ? '16px 24px 12px' : '14px 18px'}
+                borderBottom={`solid 1px ${
+                  isBo ? colors.grey100 : colors.grey200
+                }`}
               >
-                <HeaderTitle id="modal-header">{header}</HeaderTitle>
+                <HeaderTitle id="modal-header" variant={variant}>
+                  {header}
+                </HeaderTitle>
                 {closeButton}
               </Box>
             ) : (
               closeButton
             )}
 
-            <ModalContentContainer padding={calculatedPadding}>
+            <ModalContentContainer
+              padding={calculatedPadding}
+              fillContent={fillContent}
+            >
               {children}
             </ModalContentContainer>
 

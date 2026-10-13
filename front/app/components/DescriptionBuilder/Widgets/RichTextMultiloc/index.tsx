@@ -7,6 +7,7 @@ import { Multiloc } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
 import PageBreakBox from 'components/admin/ContentBuilder/Widgets/PageBreakBox';
 import QuillEditedContent from 'components/UI/QuillEditedContent';
@@ -41,7 +42,7 @@ const RichTextMultiloc: UserComponent<Props> = ({ text }) => {
     <PageBreakBox
       className="e2e-rich-text-box"
       minHeight="26px"
-      maxWidth="1200px"
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       margin="0 auto"
       px={craftComponentDefaultPadding}
     >

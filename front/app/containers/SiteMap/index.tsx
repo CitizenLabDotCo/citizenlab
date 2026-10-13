@@ -55,7 +55,7 @@ const Title = styled.h1`
 `;
 
 const TOC = styled.div`
-  border: 1px solid #ccc;
+  border: 1px solid ${colors.grey400};
   padding: 20px;
   margin-bottom: 30px;
 `;

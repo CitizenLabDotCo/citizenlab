@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { bo, colors, fontSizes } from '../../utils/styleUtils';
 import { render, screen, fireEvent } from '../../utils/testUtils/rtl';
 
 import Button from '.';
@@ -64,5 +65,60 @@ describe('<Button />', () => {
     fireEvent.click(button);
 
     expect(handleClick).toHaveBeenCalledTimes(0);
+  });
+
+  describe('back office styles', () => {
+    const geometry = {
+      height: '36px',
+      padding: '0 16px',
+      'border-radius': bo.borderRadius,
+    };
+
+    it('renders bo-primary to spec', () => {
+      render(<Button buttonStyle="bo-primary">Publish</Button>);
+
+      expect(screen.getByRole('button')).toHaveStyle({
+        ...geometry,
+        'border-width': '0',
+        background: colors.primary,
+      });
+    });
+
+    it('renders bo-secondary to spec', () => {
+      render(<Button buttonStyle="bo-secondary">Share</Button>);
+
+      expect(screen.getByRole('button')).toHaveStyle({
+        ...geometry,
+        'border-width': '1px',
+        'border-color': colors.grey300,
+        background: colors.white,
+      });
+    });
+
+    it('renders bo-status to spec', () => {
+      render(<Button buttonStyle="bo-status">Live</Button>);
+
+      expect(screen.getByRole('button')).toHaveStyle({
+        ...geometry,
+        'border-width': '0',
+        background: bo.colors.statusFill,
+      });
+      expect(screen.getByText('Live')).toHaveStyle({ color: colors.green700 });
+    });
+
+    it('labels every back office style at 14px / 500', () => {
+      render(<Button buttonStyle="bo-primary">Publish</Button>);
+
+      expect(screen.getByText('Publish')).toHaveStyle({
+        'font-size': `${fontSizes.s}px`,
+        'font-weight': '500',
+      });
+    });
+
+    it('lets the call site override the geometry', () => {
+      render(<Button buttonStyle="bo-text" padding="0" ariaLabel="Settings" />);
+
+      expect(screen.getByRole('button')).toHaveStyle({ padding: '0' });
+    });
   });
 });

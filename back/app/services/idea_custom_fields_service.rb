@@ -37,10 +37,6 @@ class IdeaCustomFieldsService
     all_fields.filter(&:supports_geojson?)
   end
 
-  def visible_fields
-    enabled_fields
-  end
-
   def submittable_fields
     enabled_fields.select(&:supports_submission?)
   end
@@ -73,14 +69,6 @@ class IdeaCustomFieldsService
 
   def enabled_fields_with_other_options(print_version: false)
     insert_other_option_text_fields(enabled_fields, print_version:)
-  end
-
-  def enabled_public_fields
-    enabled_fields.select(&:visible_to_public?)
-  end
-
-  def extra_visible_fields
-    visible_fields.reject(&:built_in?)
   end
 
   def survey_results_fields(structure_by_category: false)

@@ -1,0 +1,159 @@
+import React, { useRef, useState } from 'react';
+
+import { Box } from '@citizenlab/cl2-component-library';
+import { CLErrors } from 'typings';
+
+import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
+import useAddPhase from 'api/phases/useAddPhase';
+import usePhases from 'api/phases/usePhases';
+import { IProjectData } from 'api/projects/types';
+
+import usePhaseFileAttachments, {
+  fileAttachmentErrors,
+} from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
+import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
+import validate from 'containers/Admin/projects/project/phaseSetup/validate';
+
+import { useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
+
+import ProjectWorkspace from '..';
+import { SaveReason, useRegisterPageSaver } from '../_shared/PageSaveContext';
+import BuildFields from '../Phase/BuildPanel/BuildFields';
+import DraftMethodSettings from '../Phase/DraftMethodSettings';
+import PhasePreview from '../Phase/PhasePreview';
+
+interface Props {
+  project: IProjectData;
+  participationMethod: ParticipationMethod;
+  label: string;
+  standalone: boolean;
+  initialFormData: IUpdatedPhaseProperties;
+  defaultsForMethod: (
+    participationMethod: ParticipationMethod
+  ) => IUpdatedPhaseProperties;
+}
+
+const NewPhaseWorkspace = ({
+  project,
+  participationMethod: initialParticipationMethod,
+  label,
+  standalone,
+  initialFormData,
+  defaultsForMethod,
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const projectId = project.id;
+  const { data: phases } = usePhases(projectId);
+  const { mutateAsync: addPhase } = useAddPhase();
+
+  const [participationMethod, setParticipationMethod] = useState(
+    initialParticipationMethod
+  );
+  const [formData, setFormData] = useState(initialFormData);
+  const [dirty, setDirty] = useState(false);
+  const [errors, setErrors] = useState<CLErrors | null>(null);
+  const [validationErrors, setValidationErrors] = useState<ValidationErrors>(
+    {}
+  );
+  const createdPhaseId = useRef<string>();
+
+  const files = usePhaseFileAttachments({
+    projectId,
+    phaseId: undefined,
+    savedAttachments: undefined,
+    onStage: () => setDirty(true),
+  });
+
+  const updateFormData = (newData: Partial<IUpdatedPhaseProperties>) => {
+    setDirty(true);
+    setFormData((formData) => ({ ...formData, ...newData }));
+  };
+
+  const createPhase = async () => {
+    if (createdPhaseId.current) return createdPhaseId.current;
+
+    const { data: phase } = await addPhase({ projectId, ...formData });
+    createdPhaseId.current = phase.id;
+    return phase.id;
+  };
+
+  const save = async (reason: SaveReason) => {
+    if (!createdPhaseId.current) {
+      const { isValidated, errors } = validate(
+        formData,
+        phases,
+        formatMessage,
+        undefined,
+        standalone
+      );
+
+      setValidationErrors(errors);
+      if (!isValidated) throw new Error('Invalid phase');
+    }
+
+    try {
+      const phaseId = await createPhase();
+      await files.save(phaseId);
+      setDirty(false);
+
+      if (reason === 'button') {
+        clHistory.push(`/admin/projects/${projectId}/phases/${phaseId}/setup`);
+      }
+    } catch (error) {
+      setErrors(fileAttachmentErrors(error));
+      throw error;
+    }
+  };
+
+  useRegisterPageSaver('draft', { dirty, save });
+
+  return (
+    <ProjectWorkspace
+      project={project}
+      draft={{
+        label,
+        methodSettings: (
+          <DraftMethodSettings
+            formData={formData}
+            validationErrors={validationErrors}
+            apiErrors={errors}
+            onChange={updateFormData}
+            setValidationErrors={setValidationErrors}
+          />
+        ),
+      }}
+      sidePanel={
+        <Box p="20px">
+          <BuildFields
+            projectId={projectId}
+            participationMethod={participationMethod}
+            formData={formData}
+            errors={errors}
+            validationErrors={validationErrors}
+            standalone={standalone}
+            files={files}
+            surveyMethodSwitch={{
+              onSelect: (method) => {
+                setParticipationMethod(method);
+                updateFormData(defaultsForMethod(method));
+              },
+            }}
+            onChange={updateFormData}
+            onDatesChange={(dates) => {
+              setValidationErrors((errors) => ({
+                ...errors,
+                phaseDateError: undefined,
+              }));
+              updateFormData(dates);
+            }}
+          />
+        </Box>
+      }
+    >
+      <PhasePreview projectId={projectId} />
+    </ProjectWorkspace>
+  );
+};
+
+export default NewPhaseWorkspace;

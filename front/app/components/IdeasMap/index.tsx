@@ -31,6 +31,7 @@ import usePhase from 'api/phases/usePhase';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { PROJECT_PAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/constants';
 import LayerHoverLabel from 'components/ConfigurationMap/components/LayerHoverLabel';
 import EsriMap from 'components/EsriMap';
 import {
@@ -187,9 +188,7 @@ const IdeasMap = memo<Props>(
     // viewport width. Inside the project page builder canvas that would overflow
     // the editor, so the breakout is disabled there.
     const { pathname } = useLocation();
-    const inProjectPageBuilder = pathname.includes(
-      'admin/project-page-builder'
-    );
+    const inProjectPageBuilder = pathname.includes(PROJECT_PAGE_BUILDER_PATH);
 
     const containerRef = useRef<HTMLDivElement | null>(null);
     const [containerWidth, setContainerWidth] = useState(initialContainerWidth);

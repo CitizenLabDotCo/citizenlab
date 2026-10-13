@@ -149,9 +149,17 @@ export default defineMessages({
     id: 'app.containers.AdminPage.FoldersEdit.folderName',
     defaultMessage: 'Folder name',
   },
-  folderDescription: {
-    id: 'app.containers.AdminPage.FoldersEdit.folderDescriptions2',
-    defaultMessage: 'Folder Description',
+  folderPreviewTitle: {
+    id: 'app.containers.AdminPage.FoldersEdit.folderPreviewTitle',
+    defaultMessage: 'Folder preview',
+  },
+  editDescription: {
+    id: 'app.containers.AdminPage.FoldersEdit.editDescription',
+    defaultMessage: 'Edit description',
+  },
+  editDescriptionInContentBuilder: {
+    id: 'app.containers.AdminPage.FoldersEdit.editDescriptionInContentBuilder',
+    defaultMessage: 'Edit the folder description in the content builder',
   },
   url: {
     id: 'app.containers.AdminPage.FoldersEdit.url',

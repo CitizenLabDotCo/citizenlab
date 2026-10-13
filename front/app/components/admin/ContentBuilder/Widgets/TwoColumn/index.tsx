@@ -11,6 +11,8 @@ import {
 import { useNode, Element } from '@craftjs/core';
 import styled from 'styled-components';
 
+import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
+
 import { FormattedMessage } from 'utils/cl-intl';
 
 import { ColumnLayout } from '../../typings';
@@ -50,7 +52,7 @@ export const TwoColumn = ({ columnLayout, children }: TwoColumnProps) => {
       className="e2e-two-column"
       columnLayout={columnLayout}
       px={componentDefaultPadding}
-      maxWidth="1200px"
+      maxWidth={BUILDER_CONTENT_MAX_WIDTH}
       margin="0 auto"
     >
       {children || (

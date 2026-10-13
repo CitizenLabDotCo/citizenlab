@@ -19,6 +19,7 @@ import DataSection from './DataSection';
 import { buildSummary, useVisibleSecurityRequirements } from './logic';
 import messages from './messages';
 import PlatformDefaultsHeader from './PlatformDefaultsHeader';
+import PlatformDefaultsNote from './PlatformDefaultsNote';
 import RevertToDefaultsModal from './RevertToDefaultsModal';
 import { Changes, Props } from './types';
 import { Chip, ReadOnlyOverlay } from './ui';
@@ -28,6 +29,7 @@ const ActionForm = ({
   permissionData,
   title,
   defaultOpen = false,
+  variant = 'card',
   onChange,
   onOverride,
   onRevertToDefaults,
@@ -133,6 +135,42 @@ const ActionForm = ({
     </>
   );
 
+  const revertModal = onRevertToDefaults && (
+    <RevertToDefaultsModal
+      opened={revertModalOpened}
+      processing={processing}
+      onClose={() => setRevertModalOpened(false)}
+      onConfirm={handleRevertToDefaults}
+    />
+  );
+
+  if (variant === 'plain') {
+    return (
+      <Box>
+        {usingPlatformDefaults && <PlatformDefaultsNote mb="16px" />}
+        {usingPlatformDefaults ? (
+          <ReadOnlyOverlay>{body}</ReadOnlyOverlay>
+        ) : (
+          body
+        )}
+        {usingPlatformDefaults && (
+          <Box mt="24px">
+            <Button
+              buttonStyle="secondary-outlined"
+              icon="edit"
+              width="auto"
+              processing={processing}
+              onClick={handleOverride}
+            >
+              {formatMessage(messages.override)}
+            </Button>
+          </Box>
+        )}
+        {revertModal}
+      </Box>
+    );
+  }
+
   return (
     <Box
       maxWidth="900px"
@@ -222,14 +260,7 @@ const ActionForm = ({
         )}
       </Box>
 
-      {onRevertToDefaults && (
-        <RevertToDefaultsModal
-          opened={revertModalOpened}
-          processing={processing}
-          onClose={() => setRevertModalOpened(false)}
-          onConfirm={handleRevertToDefaults}
-        />
-      )}
+      {revertModal}
     </Box>
   );
 };

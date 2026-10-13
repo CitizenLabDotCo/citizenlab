@@ -2,7 +2,7 @@
 
 class CommunityMonitorService
   def enabled?
-    settings.dig('community_monitor', 'enabled') || false
+    AppConfiguration.instance.feature_activated?('community_monitor') || false
   end
 
   def project_id

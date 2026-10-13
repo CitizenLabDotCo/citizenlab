@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 
 import {
   Box,
@@ -13,12 +13,15 @@ import usePhases from 'api/phases/usePhases';
 import { getCurrentPhase } from 'api/phases/utils';
 import { IProject } from 'api/projects/types';
 
+import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
+
 import NewIdeaHeading from 'containers/IdeaHeading/NewIdeaHeading';
 import InputDetailView from 'containers/IdeasNewPage/SimilarInputs/InputDetailView';
 import { calculateDynamicHeight } from 'containers/IdeasNewSurveyPage/IdeasNewSurveyForm/utils';
 
 import { FORM_PAGE_CHANGE_EVENT } from 'components/CustomFieldsForm/PageControlButtons/events';
 
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import eventEmitter from 'utils/eventEmitter';
@@ -54,7 +57,8 @@ const IdeasNewIdeationForm = ({
   participationMethod,
 }: Props) => {
   const { data: phases } = usePhases(project.data.id);
-  const { data: phase } = usePhase(phaseId);
+  const phaseQuery = usePhase(phaseId);
+  const { data: phase } = phaseQuery;
   const isSmallerThanPhone = useBreakpoint('phone');
   const [usingMapView, setUsingMapView] = useState(false);
   const searchParams = useSearch({
@@ -62,6 +66,18 @@ const IdeasNewIdeationForm = ({
   });
   const selectedIdeaId = searchParams.selected_idea_id;
   const participationMethodConfig = getConfig(phase?.data, phases);
+
+  const hasTrackedStart = useRef(false);
+  useOnQuerySuccess(phaseQuery, () => {
+    if (hasTrackedStart.current || !phase) return;
+    hasTrackedStart.current = true;
+
+    trackEventByName(customerAnalyticsEvents.ideaStarted, {
+      project_id: project.data.id,
+      phase_id: phase.data.id,
+      participation_method: phase.data.attributes.participation_method,
+    });
+  });
 
   const handleCloseDetail = () => {
     updateSearchParams({ selected_idea_id: null });

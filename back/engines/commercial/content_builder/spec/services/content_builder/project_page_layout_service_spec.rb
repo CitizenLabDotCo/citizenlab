@@ -313,4 +313,36 @@ describe ContentBuilder::ProjectPageLayoutService do
       expect(service.append_file_nodes(json, project)).to eq(json)
     end
   end
+
+  describe '#reset_banner_image!' do
+    let(:project) { create(:project) }
+    let(:banner_id) { described_class::BANNER_ID }
+
+    def create_layout(banner_props)
+      json = service.craftjs_json_from_body({})
+      json[banner_id]['props'] = banner_props
+      create(:layout, project: project, code: described_class::CODE, craftjs_json: json)
+    end
+
+    it 'clears a baked banner image so the record header_bg renders, leaving alt untouched' do
+      layout = create_layout('image' => { 'imageUrl' => 'https://example.com/x.jpg' }, 'alt' => { 'en' => 'A' })
+      expect(layout.craftjs_json.dig(banner_id, 'props', 'image')).to eq('imageUrl' => 'https://example.com/x.jpg')
+
+      service.reset_banner_image!(project)
+
+      props = layout.reload.craftjs_json.dig(banner_id, 'props')
+      expect(props['image']).to eq({})
+      expect(props['alt']).to eq('en' => 'A')
+    end
+
+    it 'does not re-save the layout when the banner image is already empty' do
+      layout = create_layout('image' => {}, 'alt' => {})
+
+      expect { service.reset_banner_image!(project) }.not_to(change { layout.reload.updated_at })
+    end
+
+    it 'is a no-op when the project has no project page layout' do
+      expect { service.reset_banner_image!(project) }.not_to raise_error
+    end
+  end
 end

@@ -96,8 +96,9 @@ const SettingsModal = ({
       }
       width={width}
       fixedHeight
+      fillContent
     >
-      <Box display="flex" h="100%">
+      <Box display="flex" flex="1 1 auto">
         <Box
           ref={navRef}
           role="tablist"

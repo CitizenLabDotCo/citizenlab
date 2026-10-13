@@ -22,6 +22,7 @@ const usePollResponses = ({ phaseId }: IPollResponseParameters) => {
       phaseId,
     }),
     queryFn: () => fetchResponses({ phaseId }),
+    enabled: !!phaseId,
   });
 };
 

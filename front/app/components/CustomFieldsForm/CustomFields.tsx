@@ -303,7 +303,7 @@ const CustomFields = ({
           };
 
           const answerNotPublic =
-            !question.visible_to_public &&
+            question.answers_visible_to !== 'public' &&
             participationMethod &&
             participationMethod !== 'native_survey';
           const inputIqFields = ['title_multiloc', 'body_multiloc'];

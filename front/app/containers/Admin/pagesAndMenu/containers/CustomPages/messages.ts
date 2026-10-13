@@ -119,6 +119,14 @@ export default defineMessages({
     id: 'app.containers.Admin.PagesAndMenu.containers.CustomPages.pageContentTab',
     defaultMessage: 'Page content',
   },
+  customPagePreviewTitle: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CustomPages.customPagePreviewTitle',
+    defaultMessage: 'Custom page preview',
+  },
+  editCustomPageInContentBuilder: {
+    id: 'app.containers.Admin.PagesAndMenu.containers.CustomPages.editCustomPageInContentBuilder',
+    defaultMessage: 'Edit the page in the content builder',
+  },
   editCustomPagePageTitle: {
     id: 'app.containers.Admin.PagesAndMenu.containers.CreateCustomPage.editCustomPagePageTitle',
     defaultMessage: 'Edit custom page',

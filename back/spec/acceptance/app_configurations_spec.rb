@@ -38,6 +38,59 @@ resource 'AppConfigurations' do
     end
   end
 
+  context 'with a feature in early access, off for the tenant' do
+    let(:feature) { 'spaces' }
+    let(:admin) { create(:admin) }
+
+    before do
+      allow(AppConfiguration::Settings).to receive(:early_access_tiers).and_return({ feature => 'general' })
+      config = AppConfiguration.instance
+      config.settings[feature] = { 'allowed' => false, 'enabled' => false }
+      config.save!
+      header_token_for admin
+    end
+
+    get 'web_api/v1/app_configuration' do
+      example 'Reports the feature as on for the admin who opted into it' do
+        admin.update!(early_access_opt_ins: [feature])
+        do_request
+
+        assert_status 200
+        expect(response_data.dig(:attributes, :settings, feature.to_sym))
+          .to include(allowed: true, enabled: true)
+      end
+
+      example 'Reports the feature as off for an admin who did not', document: false do
+        do_request
+
+        assert_status 200
+        expect(response_data.dig(:attributes, :settings, feature.to_sym))
+          .to include(allowed: false, enabled: false)
+      end
+    end
+
+    patch 'web_api/v1/app_configuration' do
+      example '[error] Change a feature the admin only sees through early access', document: false do
+        admin.update!(early_access_opt_ins: [feature])
+        do_request(app_configuration: { settings: { feature => { enabled: true } } })
+
+        assert_status 422
+        expect(json_parse(response_body).dig(:errors, :settings))
+          .to include({ error: 'early_access_override', value: [feature] })
+        expect(AppConfiguration.instance.reload.settings(feature))
+          .to include('allowed' => false, 'enabled' => false)
+      end
+
+      example 'Change other settings while opted into early access', document: false do
+        admin.update!(early_access_opt_ins: [feature])
+        do_request(app_configuration: { settings: { core: { organization_name: { 'en' => 'Early town' } } } })
+
+        assert_status 200
+        expect(AppConfiguration.instance.reload.settings('core', 'organization_name', 'en')).to eq 'Early town'
+      end
+    end
+  end
+
   patch 'web_api/v1/app_configuration' do
     with_options scope: :app_configuration do
       parameter :logo, 'Base64 encoded logo'

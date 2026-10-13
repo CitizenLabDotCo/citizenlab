@@ -714,7 +714,9 @@ describe Permissions::UserRequirementsService do
 
           it 'requires verification again after more than 30 days' do
             verified_permission.update!(verification_expiry: 30)
-            travel_to Time.now + 30.days + 1.second do
+            # from_now, not Time.now + 30.days: adding days to a zoned time spans the extra hour
+            # of a DST fall-back, as the service's expiry arithmetic does.
+            travel_to (30.days + 1.second).from_now do
               requirements = service.requirements(verified_permission, user)
               expect(service.permitted?(requirements)).to be false
               expect(requirements[:authentication][:permitted_by]).to eq 'users'
@@ -907,7 +909,9 @@ describe Permissions::UserRequirementsService do
 
         it 'requires re-confirmation after the expiry window' do
           user # confirm the email at the real current time, before traveling past the expiry window
-          travel_to Time.now + 30.days + 1.second do
+          # from_now, not Time.now + 30.days: adding days to a zoned time spans the extra hour
+          # of a DST fall-back, as the service's expiry arithmetic does.
+          travel_to (30.days + 1.second).from_now do
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be false
             expect(requirements[:authentication][:email_action_required]).to eq :reconfirm_email
@@ -976,7 +980,9 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'requires re-confirmation after the expiry window' do
-          travel_to Time.now + 30.days + 1.second do
+          # from_now, not Time.now + 30.days: adding days to a zoned time spans the extra hour
+          # of a DST fall-back, as the service's expiry arithmetic does.
+          travel_to (30.days + 1.second).from_now do
             requirements = service.requirements(permission, user)
             expect(service.permitted?(requirements)).to be false
             expect(requirements[:authentication][:phone_action_required]).to eq :reconfirm_phone

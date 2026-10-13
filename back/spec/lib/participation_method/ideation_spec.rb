@@ -165,27 +165,12 @@ RSpec.describe ParticipationMethod::Ideation do
         proposed_budget
       ]
     end
-  end
 
-  describe '#author_in_form?' do
-    it 'returns false for a visitor when idea_author_change is activated' do
-      SettingsService.new.activate_feature! 'idea_author_change'
-      expect(participation_method.author_in_form?(nil)).to be false
-    end
-
-    it 'returns false for a resident when idea_author_change is activated' do
-      SettingsService.new.activate_feature! 'idea_author_change'
-      expect(participation_method.author_in_form?(create(:user))).to be false
-    end
-
-    it 'returns false for a moderator when idea_author_change is deactivated' do
-      SettingsService.new.deactivate_feature! 'idea_author_change'
-      expect(participation_method.author_in_form?(create(:admin))).to be false
-    end
-
-    it 'returns true for a moderator when idea_author_change is activated' do
-      SettingsService.new.activate_feature! 'idea_author_change'
-      expect(participation_method.author_in_form?(create(:admin))).to be true
+    it 'shows the answers of the built-in questions publicly' do
+      fields = participation_method.default_fields(create(:custom_form, participation_context: phase))
+      questions, pages = fields.partition(&:supports_submission?)
+      expect(questions.map(&:answers_visible_to).uniq).to eq ['public']
+      expect(pages.map(&:answers_visible_to).uniq).to eq ['moderators']
     end
   end
 
@@ -284,7 +269,7 @@ RSpec.describe ParticipationMethod::Ideation do
   its(:transitive?) { is_expected.to be true }
   its(:destroy_ideas_on_phase_destroy?) { is_expected.to be false }
   its(:supports_private_attributes_in_export?) { is_expected.to be true }
-  its(:form_logic_enabled?) { is_expected.to be false }
+  its(:supports_form_logic?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be true }
   its(:supports_custom_field_categories?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }

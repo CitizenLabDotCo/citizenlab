@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import ideasKeys from 'api/ideas/keys';
 import ideaFilterCountsKeys from 'api/ideas_filter_counts/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -18,10 +19,11 @@ const useDeleteIdeaOfficialFeedback = () => {
   return useMutation({
     mutationFn: deleteIdeaOfficialFeedback,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.all() });
+      queryClient.invalidateQueries({ queryKey: ideaFilterCountsKeys.items() });
       queryClient.invalidateQueries({
         queryKey: ideaOfficialFeedbackKeys.lists(),
       });
+      queryClient.invalidateQueries({ queryKey: ideasKeys.all() });
     },
   });
 };

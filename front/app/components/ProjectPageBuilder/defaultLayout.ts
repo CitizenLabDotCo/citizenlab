@@ -1,5 +1,9 @@
 import { SerializedNodes, SerializedNode } from '@craftjs/core';
 
+import {
+  findNodeIdByName,
+  getResolvedName,
+} from 'components/admin/ContentBuilder/resolvedName';
 import aboutBoxMessages from 'components/admin/ContentBuilder/Widgets/AboutBox/messages';
 import textMultilocMessages from 'components/admin/ContentBuilder/Widgets/TextMultiloc/messages';
 import twoColumnMessages from 'components/admin/ContentBuilder/Widgets/TwoColumn/messages';
@@ -219,12 +223,6 @@ export const defaultProjectPageLayout = (): SerializedNodes => ({
   [EVENTS_NODE_ID]: eventsNode(BODY_NODE_ID),
 });
 
-const resolvedNameOf = (node: SerializedNode) =>
-  typeof node.type === 'object' ? node.type.resolvedName : undefined;
-
-export const findNodeIdByName = (nodes: SerializedNodes, name: string) =>
-  Object.keys(nodes).find((id) => resolvedNameOf(nodes[id]) === name);
-
 const CANONICAL_CUSTOM: Record<string, Record<string, unknown>> = {
   ProjectBanner: {
     title: widgetMessages.bannerWidgetTitle,
@@ -261,7 +259,7 @@ const REMOVED_WIDGETS = [
 const collectRemovedIds = (nodes: SerializedNodes) => {
   const removed = new Set<string>();
   const queue = Object.keys(nodes).filter((id) =>
-    REMOVED_WIDGETS.includes(resolvedNameOf(nodes[id]) ?? '')
+    REMOVED_WIDGETS.includes(getResolvedName(nodes[id]) ?? '')
   );
 
   for (const id of queue) {
@@ -287,7 +285,7 @@ export const normalizeProjectPageLayout = (
   const next: SerializedNodes = {};
   Object.entries(nodes).forEach(([id, node]) => {
     if (removedIds.has(id)) return;
-    const name = resolvedNameOf(node) ?? '';
+    const name = getResolvedName(node) ?? '';
     const canonical = name in CANONICAL_CUSTOM ? CANONICAL_CUSTOM[name] : null;
     const cleaned =
       removedIds.size > 0

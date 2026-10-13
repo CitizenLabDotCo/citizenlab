@@ -13,6 +13,7 @@ import useLocale from 'hooks/useLocale';
 
 import { CUSTOM_PAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/constants';
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
+import DropPlacementOverlay from 'components/admin/ContentBuilder/DropFeedback/DropPlacementOverlay';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import { normalizeCustomPageLayout } from 'components/CustomPageBuilder/defaultLayout';
@@ -167,6 +168,7 @@ const CustomPageBuilderPage = ({
               editorData={editorData}
             />
             <ContentBuilderSettings />
+            <DropPlacementOverlay />
           </Box>
         </Editor>
         <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>

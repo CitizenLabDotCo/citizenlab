@@ -50,12 +50,6 @@ module ParticipationMethod
       phase.similarity_threshold_body ||= 0.4
     end
 
-    def author_in_form?(user)
-      AppConfiguration.instance.feature_activated?('idea_author_change') \
-      && !!user \
-      && UserRoleService.new.can_moderate_project?(phase.project, user)
-    end
-
     def budget_in_form?(user)
       phase.project.phases.any? do |phase|
         phase.participation_method == 'voting' && Factory.instance.voting_method_for(phase).budget_in_form?(user)
@@ -115,6 +109,7 @@ module ParticipationMethod
           resource: custom_form,
           key: 'title_multiloc',
           code: 'title_multiloc',
+          answers_visible_to: 'public',
           input_type: 'text_multiloc',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.title.title',
@@ -148,6 +143,7 @@ module ParticipationMethod
           resource: custom_form,
           key: 'body_multiloc',
           code: 'body_multiloc',
+          answers_visible_to: 'public',
           input_type: 'html_multiloc',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.body.title',
@@ -179,6 +175,7 @@ module ParticipationMethod
           resource: custom_form,
           key: 'idea_images_attributes',
           code: 'idea_images_attributes',
+          answers_visible_to: 'public',
           input_type: 'image_files',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.images.title',
@@ -194,6 +191,7 @@ module ParticipationMethod
           resource: custom_form,
           key: 'idea_files_attributes',
           code: 'idea_files_attributes',
+          answers_visible_to: 'public',
           input_type: 'files',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.attachments.title',
@@ -225,6 +223,7 @@ module ParticipationMethod
           resource: custom_form,
           key: 'topic_ids',
           code: 'topic_ids',
+          answers_visible_to: 'public',
           input_type: 'topic_ids',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.topic_ids.title',
@@ -240,6 +239,7 @@ module ParticipationMethod
           resource: custom_form,
           key: 'location_description',
           code: 'location_description',
+          answers_visible_to: 'public',
           input_type: 'text',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.location.title',
@@ -257,6 +257,7 @@ module ParticipationMethod
           resource: custom_form,
           key: 'proposed_budget',
           code: 'proposed_budget',
+          answers_visible_to: 'public',
           input_type: 'number',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.proposed_budget.title',
@@ -275,6 +276,7 @@ module ParticipationMethod
           resource: custom_form,
           key: 'cosponsor_ids',
           code: 'cosponsor_ids',
+          answers_visible_to: 'public',
           input_type: 'cosponsor_ids',
           title_multiloc: multiloc_service.i18n_to_multiloc(
             'custom_fields.ideas.consponsor_ids.title',
@@ -312,10 +314,6 @@ module ParticipationMethod
 
     def supported_email_campaigns
       super + %w[your_input_in_screening]
-    end
-
-    def supports_answer_visible_to?
-      true
     end
 
     def supports_assignment?
@@ -367,10 +365,6 @@ module ParticipationMethod
     end
 
     def supports_input_pdf_export?
-      true
-    end
-
-    def supports_input_topics?
       true
     end
 

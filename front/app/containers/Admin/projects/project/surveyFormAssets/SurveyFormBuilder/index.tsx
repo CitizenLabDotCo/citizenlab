@@ -8,6 +8,7 @@ import FormBuilder from 'components/FormBuilder/edit';
 
 import { useParams, useSearch } from 'utils/router';
 
+import useFormBuilderGoBackUrl from '../../../_shared/useFormBuilderGoBackUrl';
 import { nativeSurveyConfig, clearOptionAndStatementIds } from '../utils';
 
 const SurveyFormBuilder = ({
@@ -22,6 +23,7 @@ const SurveyFormBuilder = ({
   });
   const { data: phase } = usePhase(phaseId);
   const { data: project } = useProjectById(projectId);
+  const goBackUrl = useFormBuilderGoBackUrl(projectId, phaseId, 'survey-form');
 
   const { data: formCustomFields } = useFormCustomFields({
     projectId,
@@ -41,11 +43,9 @@ const SurveyFormBuilder = ({
 
   return (
     <FormBuilder
-      builderConfig={{
-        ...nativeSurveyConfig,
-        formCustomFields: newCustomFields,
-        goBackUrl: `/admin/projects/${projectId}/phases/${phaseId}/survey-form`,
-      }}
+      builderConfig={nativeSurveyConfig}
+      formCustomFields={newCustomFields}
+      goBackUrl={goBackUrl}
       viewFormLink={{
         to: '/projects/$slug/surveys/new',
         params: { slug: project.data.attributes.slug },

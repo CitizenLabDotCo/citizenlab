@@ -1,16 +1,13 @@
 import React from 'react';
 
 import { colors, IOption, Select } from '@citizenlab/cl2-component-library';
-import { memoize } from 'lodash-es';
 import styled from 'styled-components';
 
-import useAuthUser from 'api/me/useAuthUser';
-import { IUser, IUsers } from 'api/users/types';
-import useUsers from 'api/users/useUsers';
-
 import { useIntl } from 'utils/cl-intl';
+import { getFullName } from 'utils/textUtils';
 
 import messages from '../../messages';
+import useAssigneeOptions, { UNASSIGNED } from '../../useAssigneeOptions';
 
 const StyledSelect = styled(Select)`
   width: 160px;
@@ -34,59 +31,26 @@ interface Props {
 
 const AssigneeSelect = ({ projectId, assigneeId, onAssigneeChange }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: authUser } = useAuthUser();
-  const { data: prospectAssignees } = useUsers({
-    // If we have a projectId, we want to filter the users to only those who
-    // can moderate the project. If we don't have a projectId (proposals), we want to
-    // filter to only admins and mods.
-    ...(typeof projectId === 'string'
-      ? { can_moderate_project: projectId }
-      : { admins_only: true }),
-  });
-
-  if (!prospectAssignees || !authUser) return null;
-
-  const getAssigneeOptions = memoize(
-    (prospectAssignees: IUsers, authUser: IUser) => {
-      const dynamicOptions = prospectAssignees.data
-        .filter((assignee) => assignee.id !== authUser.data.id)
-        .map((assignee) => ({
-          value: assignee.id,
-          label: formatMessage(messages.assignedTo, {
-            assigneeName: `${assignee.attributes.first_name} ${assignee.attributes.last_name}`,
-          }),
-        }));
-
-      // Order of assignee filter options:
-      // Assigned to me > Unassigned > Assigned to X (other admins/mods)
-      return [
-        {
-          value: authUser.data.id,
-          label: formatMessage(messages.assignedToMe),
-        },
-        {
-          value: 'unassigned',
-          label: formatMessage(messages.noOne),
-        },
-        ...dynamicOptions,
-      ];
-    }
+  const options = useAssigneeOptions(projectId, (assignee) =>
+    formatMessage(messages.assignedTo, {
+      assigneeName: getFullName(assignee),
+    })
   );
+
+  if (options.length === 0) return null;
 
   const handleOnAssigneeChange = (option: IOption) => {
     if (typeof option.value === 'string') {
-      onAssigneeChange(
-        option.value === 'unassigned' ? undefined : option.value
-      );
+      onAssigneeChange(option.value === UNASSIGNED ? undefined : option.value);
     }
   };
 
   return (
     <StyledSelect
       id={'post-row-select-assignee'}
-      options={getAssigneeOptions(prospectAssignees, authUser)}
+      options={options}
       onChange={handleOnAssigneeChange}
-      value={assigneeId || 'unassigned'}
+      value={assigneeId || UNASSIGNED}
       className="fluid e2e-post-manager-post-row-assignee-select"
     />
   );

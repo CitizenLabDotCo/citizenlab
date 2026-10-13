@@ -110,6 +110,23 @@ describe McpServer::Serializers::LayoutOutline do
 
       expect(locked).to include('PROJECT_PAGE_PHASES' => nil, 'T1' => nil)
     end
+
+    context 'with a custom protected predicate (e.g. the homepage noDelete rule)' do
+      let(:json) do
+        {
+          'ROOT' => craftjs_root(%w[A B]),
+          'A' => text_node(parent: 'ROOT', text: '<p>Fixed</p>', custom: { 'noDelete' => true }),
+          'B' => text_node(parent: 'ROOT', text: '<p>Free</p>')
+        }
+      end
+
+      it 'marks the nodes the predicate matches instead of the project scaffold' do
+        entries = described_class.new(json, protected: ->(node) { node.dig('custom', 'noDelete') == true }).entries
+        marked = entries.to_h { |entry| [entry[:id], entry[:locked]] }
+
+        expect(marked).to include('A' => true, 'B' => nil, 'ROOT' => nil)
+      end
+    end
   end
 
   describe 'text snippets' do

@@ -6,6 +6,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { MiniProjectFolder } from 'api/project_folders_mini/types';
+import { HighestRole } from 'api/users/types';
 
 import { TRole } from 'utils/permissions/roles';
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
@@ -13,6 +14,7 @@ import { render, screen, userEvent } from 'utils/testUtils/rtl';
 import Row from './Row';
 
 let mockAuthUserRoles: TRole[] = [];
+let mockAuthUserHighestRole: HighestRole = 'user';
 let mockSpacesEnabled = true;
 
 jest.mock('api/me/useAuthUser', () => () => ({
@@ -24,7 +26,7 @@ jest.mock('api/me/useAuthUser', () => () => ({
         first_name: 'Test',
         last_name: 'User',
         roles: mockAuthUserRoles,
-        highest_role: 'user',
+        highest_role: mockAuthUserHighestRole,
       },
     },
   },
@@ -72,12 +74,14 @@ const renderRow = () =>
 describe('Folders table Row — space link', () => {
   beforeEach(() => {
     mockAuthUserRoles = [];
+    mockAuthUserHighestRole = 'user';
     mockSpacesEnabled = true;
     mockPush.mockClear();
   });
 
   it('navigates to the space when a moderator of that space clicks it', async () => {
     mockAuthUserRoles = [{ type: 'space_moderator', space_id: 'space-1' }];
+    mockAuthUserHighestRole = 'space_moderator';
     renderRow();
 
     await userEvent.click(screen.getByText('Test space'));
@@ -87,6 +91,7 @@ describe('Folders table Row — space link', () => {
 
   it('navigates to the space when an admin clicks it', async () => {
     mockAuthUserRoles = [{ type: 'admin' }];
+    mockAuthUserHighestRole = 'admin';
     renderRow();
 
     await userEvent.click(screen.getByText('Test space'));
@@ -96,6 +101,7 @@ describe('Folders table Row — space link', () => {
 
   it('falls through to the folder when a non-moderator clicks the space', async () => {
     mockAuthUserRoles = [];
+    mockAuthUserHighestRole = 'user';
     renderRow();
 
     await userEvent.click(screen.getByText('Test space'));
@@ -106,6 +112,7 @@ describe('Folders table Row — space link', () => {
 
   it('does not link to the space for a moderator of a different space', async () => {
     mockAuthUserRoles = [{ type: 'space_moderator', space_id: 'other-space' }];
+    mockAuthUserHighestRole = 'space_moderator';
     renderRow();
 
     await userEvent.click(screen.getByText('Test space'));

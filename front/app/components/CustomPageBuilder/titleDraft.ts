@@ -1,7 +1,7 @@
 import { SerializedNodes } from '@craftjs/core';
 import { Multiloc } from 'typings';
 
-import { findNodeIdByName } from './defaultLayout';
+import { findNodeIdByName } from 'components/admin/ContentBuilder/resolvedName';
 
 // The title renders from the page record, which also names the page in the admin list and the nav
 // bar. The settings panel keeps edits in a prop; saving commits it to the page and strips it from

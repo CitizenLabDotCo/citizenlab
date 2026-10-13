@@ -28,7 +28,7 @@ describe CustomIdMethods::Google::GoogleOmniauth do
 
       expect(user_attrs).to include({
         locale: 'fr-FR',
-        gender: 'female',
+        custom_field_values: { 'gender' => 'female' },
         remote_avatar_url: 'http://www.josnet.com/my-picture'
       })
     end

@@ -35,7 +35,7 @@ const GraphCard = styled.div`
   align-items: center;
 `;
 
-const GraphCardPercentage = styled.div`
+const GraphCardCount = styled.div`
   font-size: ${fontSizes.s}px;
   color: ${colors.textSecondary};
 `;
@@ -52,7 +52,7 @@ const GraphCardTitle = styled.h3`
   }
 `;
 
-const GraphCardCount = styled.div`
+const GraphCardPercentage = styled.div`
   font-size: ${fontSizes.xl}px;
 `;
 
@@ -80,21 +80,18 @@ const CampaignStats = ({ campaignId, className }: Props) => {
 
   if (!stats) return null;
 
+  const { total } = stats.data.attributes;
+  const share = (count: number) => (total > 0 ? count / total : 0);
+  const failedCount =
+    stats.data.attributes.failed + stats.data.attributes.bounced;
+
   return (
     <Container className={className}>
       <GraphCard key="failed">
+        <GraphCardCount>{failedCount}</GraphCardCount>
         <GraphCardPercentage>
-          <FormattedNumber
-            style="percent"
-            value={
-              (stats.data.attributes.failed + stats.data.attributes.bounced) /
-              stats.data.attributes.total
-            }
-          />
+          <FormattedNumber style="percent" value={share(failedCount)} />
         </GraphCardPercentage>
-        <GraphCardCount>
-          {stats.data.attributes.failed + stats.data.attributes.bounced}
-        </GraphCardCount>
         <GraphCardTitle>
           <FormattedMessage {...messages.deliveryStatus_failed} />
         </GraphCardTitle>
@@ -109,17 +106,13 @@ const CampaignStats = ({ campaignId, className }: Props) => {
               isGreyedOut ? { opacity: 0.4, pointerEvents: 'none' } : undefined
             }
           >
+            <GraphCardCount>{stats.data.attributes[status]}</GraphCardCount>
             <GraphCardPercentage>
-              {stats.data.attributes[status]}
-            </GraphCardPercentage>
-            <GraphCardCount>
               <FormattedNumber
                 style="percent"
-                value={
-                  stats.data.attributes[status] / stats.data.attributes.total
-                }
+                value={share(stats.data.attributes[status])}
               />
-            </GraphCardCount>
+            </GraphCardPercentage>
             <GraphCardTitle>
               <FormattedMessage {...messages[`deliveryStatus_${status}`]} />
               {status === 'opened' && (
