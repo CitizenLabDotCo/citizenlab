@@ -85,7 +85,11 @@ module Analytics
             For 'voting' phases, the number of people who voted offline (for
             example on paper), as entered by an administrator. Administrators
             can only enter it for participatory budgeting. 0 when none was
-            entered (offline_voters_updated_at tells an entered 0 apart). The
+            entered (offline_voters_updated_at tells an entered 0 apart). For
+            single and multiple voting there is no such count: admins enter only
+            offline votes per input (reporting_inputs.offline_votes_count), with
+            no number of people behind them. Never work out offline voters from
+            offline votes. The
             platform never shows a total of online and offline voters: it only
             uses online_voters_count + offline_voters_count to work out each
             input's share of voters in budgeting results. Report offline voters
