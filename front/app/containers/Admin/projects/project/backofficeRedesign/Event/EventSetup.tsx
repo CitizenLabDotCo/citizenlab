@@ -89,7 +89,7 @@ const EventSetup = ({ projectId, form }: Props) => {
               onFileAdd={form.files.uploadFile}
               onFileAttach={form.files.attachFile}
               maxSizeMb={10}
-              isDisabled={form.files.isUploadingFile}
+              isDisabled={form.files.isUploadingFile || form.saving}
               iconOnly
             />
           }
@@ -106,6 +106,7 @@ const EventSetup = ({ projectId, form }: Props) => {
               apiErrors={errors}
               maxSizeMb={10}
               isUploadingFile={form.files.isUploadingFile}
+              disabled={form.saving}
               hideTrigger
             />
           )}

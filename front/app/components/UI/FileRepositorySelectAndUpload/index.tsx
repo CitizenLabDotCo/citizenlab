@@ -30,6 +30,7 @@ export interface Props {
   maxSizeMb?: number;
   dataCy?: string;
   isUploadingFile?: boolean;
+  disabled?: boolean;
   hideTrigger?: boolean;
   variant?: 'default' | 'bo';
 }
@@ -47,6 +48,7 @@ const FileRepositorySelectAndUpload = ({
   maxSizeMb,
   dataCy,
   isUploadingFile,
+  disabled = false,
   hideTrigger = false,
   variant = 'default',
 }: Props) => {
@@ -136,7 +138,7 @@ const FileRepositorySelectAndUpload = ({
           onFileAttach={handleFileOnAttach}
           maxSizeMb={maxSizeMb}
           dataCy={dataCy}
-          isDisabled={isUploadingFile}
+          isDisabled={isUploadingFile || disabled}
         />
       )}
 
@@ -152,6 +154,7 @@ const FileRepositorySelectAndUpload = ({
               moveRow={handleDragRow}
               dropRow={handleDragEnd}
               onDeleteClick={handleFileOnRemove(fileAttachment)}
+              disabled={disabled}
             />
           ))}
         </Box>

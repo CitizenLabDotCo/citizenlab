@@ -35,6 +35,7 @@ interface Props {
   moveRow: (fromIndex: number, toIndex: number) => void;
   dropRow: () => void;
   onDeleteClick: (event: React.MouseEvent) => void;
+  disabled: boolean;
 }
 
 const BoFileAttachmentDisplay = ({
@@ -43,6 +44,7 @@ const BoFileAttachmentDisplay = ({
   moveRow,
   dropRow,
   onDeleteClick,
+  disabled,
 }: Props) => {
   const { formatMessage } = useIntl();
   const ref = useRef<HTMLDivElement | null>(null);
@@ -68,6 +70,7 @@ const BoFileAttachmentDisplay = ({
   const [{ isDragging }, drag] = useDrag({
     type: DRAG_TYPE,
     item: { index },
+    canDrag: !disabled,
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
     end: dropRow,
   });
@@ -86,7 +89,7 @@ const BoFileAttachmentDisplay = ({
       gap="8px"
       minHeight="28px"
       mr="-4px"
-      cursor="grab"
+      cursor={disabled ? undefined : 'grab'}
       opacity={isDragging ? 0 : 1}
     >
       <Icon
@@ -131,6 +134,7 @@ const BoFileAttachmentDisplay = ({
         ariaLabel={formatMessage(messages.removeFileAriaLabel, {
           fileName: name,
         })}
+        disabled={disabled}
         onClick={onDeleteClick}
       />
     </Box>

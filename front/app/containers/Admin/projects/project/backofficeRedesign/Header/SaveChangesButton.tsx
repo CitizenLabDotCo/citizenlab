@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Button, bo } from '@citizenlab/cl2-component-library';
 
@@ -7,6 +7,7 @@ import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/mes
 import { useIntl } from 'utils/cl-intl';
 
 import { usePageSave } from '../_shared/PageSaveContext';
+import messages from '../messages';
 
 interface Props {
   label?: string;
@@ -15,8 +16,17 @@ interface Props {
 const SaveChangesButton = ({ label }: Props) => {
   const { formatMessage } = useIntl();
   const pageSave = usePageSave();
+  const [saved, setSaved] = useState(false);
 
   if (!pageSave) return null;
+
+  const handleClick = async () => {
+    setSaved(false);
+    setSaved(await pageSave.saveAll('button'));
+  };
+
+  // A new edit makes the page dirty again, which brings the label back.
+  const showSaved = saved && !pageSave.dirty && !pageSave.saving;
 
   return (
     <Button
@@ -25,11 +35,14 @@ const SaveChangesButton = ({ label }: Props) => {
       padding={bo.buttonMedium.padding}
       fontSize={bo.buttonMedium.fontSize}
       width="auto"
+      icon={showSaved ? 'check' : undefined}
       disabled={!pageSave.dirty}
       processing={pageSave.saving}
-      onClick={() => pageSave.saveAll('button')}
+      onClick={handleClick}
     >
-      {label ?? formatMessage(phaseSetupMessages.saveChangesLabel)}
+      {showSaved
+        ? formatMessage(messages.savedLabel)
+        : label ?? formatMessage(phaseSetupMessages.saveChangesLabel)}
     </Button>
   );
 };

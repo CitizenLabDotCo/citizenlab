@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { IProjectData } from 'api/projects/types';
 
@@ -21,29 +21,31 @@ import messages from './messages';
 interface Props {
   project: IProjectData;
   eventId?: string;
+  onCreate: (eventId: string) => void;
 }
 
-const EventWorkspace = ({ project, eventId }: Props) => {
+const EventWorkspace = ({ project, eventId, onCreate }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const pageSave = usePageSave();
-  const form = useEventForm({ projectId: project.id, eventId });
+  const form = useEventForm({ projectId: project.id, eventId, onCreate });
 
-  useRegisterPageSaver('event', {
-    dirty: form.dirty,
-    save: async (reason) => {
-      await form.save();
-      if (reason === 'button') {
-        pageSave?.leave();
-        clHistory.push(`/admin/projects/${project.id}`);
-      }
-    },
-  });
+  useRegisterPageSaver('event', { dirty: form.dirty, save: form.save });
+
+  // A new event moves to its own URL once nothing is left to save, so the
+  // guard against leaving with unsaved changes doesn't stop it.
+  const createdEventId = eventId ? undefined : form.event?.id;
+  const settled = !pageSave?.dirty && !pageSave?.saving;
+  useEffect(() => {
+    if (!createdEventId || !settled || pageSave?.isLeaving()) return;
+    // Replace, so going back doesn't open an empty new event form.
+    clHistory.replace(`/admin/projects/${project.id}/events/${createdEventId}`);
+  }, [createdEventId, settled, pageSave, project.id]);
 
   if (form.isLoading) return null;
 
   const title = localize(form.attributes.title_multiloc);
-  const fallbackTitle = eventId
+  const fallbackTitle = form.event
     ? messages.untitledEvent
     : projectMessages.newEvent;
 
@@ -54,7 +56,7 @@ const EventWorkspace = ({ project, eventId }: Props) => {
         label: title || formatMessage(fallbackTitle),
         parentLabel: formatMessage(projectMessages.eventsSection),
         saveLabel: formatMessage(
-          eventId ? eventMessages.saveButtonLabel : messages.create
+          form.event ? eventMessages.saveButtonLabel : messages.create
         ),
       }}
       sidePanel={<EventSetup projectId={project.id} form={form} />}

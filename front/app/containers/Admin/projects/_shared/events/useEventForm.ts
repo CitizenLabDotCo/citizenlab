@@ -27,15 +27,32 @@ import { geocode } from 'utils/locationTools';
 import { SubmitState } from './types';
 import { initializeEventTimes } from './utils';
 
+interface QueuedSave {
+  promise: Promise<void>;
+  resolve: () => void;
+  reject: (error: unknown) => void;
+}
+
+const createQueuedSave = (): QueuedSave => {
+  let resolve: () => void = () => {};
+  let reject: (error: unknown) => void = () => {};
+  const promise = new Promise<void>((res, rej) => {
+    resolve = res;
+    reject = rej;
+  });
+  return { promise, resolve, reject };
+};
+
 interface Options {
   projectId: string;
   /** Absent for an event that isn't created yet. */
   eventId?: string;
+  onCreate?: (eventId: string) => void;
 }
 
 // The form state of an event. The values a user hasn't touched yet are
 // `undefined`, so they fall back to the saved event.
-const useEventForm = ({ projectId, eventId }: Options) => {
+const useEventForm = ({ projectId, eventId, onCreate }: Options) => {
   const [createdEventId, setCreatedEventId] = useState<string>();
   const currentEventId = eventId ?? createdEventId;
 
@@ -57,6 +74,9 @@ const useEventForm = ({ projectId, eventId }: Options) => {
   const [status, setStatus] = useState<SubmitState>('disabled');
   const [saving, setSaving] = useState(false);
   const pendingSave = useRef<Promise<void> | null>(null);
+  const queuedSave = useRef<QueuedSave | null>(null);
+  const editCount = useRef(0);
+  const savedEditCount = useRef(0);
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [attributeDiff, setAttributeDiff] = useState<IEventProperties>(() =>
     eventId ? {} : initializeEventTimes()
@@ -72,7 +92,11 @@ const useEventForm = ({ projectId, eventId }: Options) => {
   const [geocodedPoint, setGeocodedPoint] = useState<GeoJSON.Point | null>(
     null
   );
+  const geocodedAddress = useRef<string | null>();
+  // Undefined until this form saves an image change.
+  const savedImageId = useRef<string | null>();
   const markDirty = () => {
+    editCount.current += 1;
     setStatus('enabled');
     setErrors(null);
   };
@@ -152,8 +176,22 @@ const useEventForm = ({ projectId, eventId }: Options) => {
         ])
       ),
     });
-    setStagedAttachments(undefined);
-    setAttachmentsToRemove([]);
+    // An upload that finishes during the save is staged on top of what was
+    // sent. Keep it, but drop what was sent, or the next save adds it again.
+    const sent = new Set(
+      [
+        ...stagedAttachments.filter(({ id }) => id.startsWith('TEMP-')),
+        ...attachmentsToRemove,
+      ].map(({ id }) => id)
+    );
+    setStagedAttachments((staged) =>
+      staged === stagedAttachments
+        ? undefined
+        : staged?.filter(({ id }) => !sent.has(id))
+    );
+    setAttachmentsToRemove((toRemove) =>
+      toRemove.filter(({ id }) => !sent.has(id))
+    );
   };
 
   const savedAttributes = event?.data.attributes;
@@ -178,15 +216,44 @@ const useEventForm = ({ projectId, eventId }: Options) => {
 
   const changedAddress = attributeDiff.address_1;
   useEffect(() => {
-    if (changedAddress === undefined) return;
+    if (
+      changedAddress === undefined ||
+      geocodedAddress.current === changedAddress
+    ) {
+      return;
+    }
 
+    let cancelled = false;
     const timeout = setTimeout(async () => {
+      if (geocodedAddress.current === changedAddress) return;
       const point = changedAddress ? await geocode(changedAddress) : null;
+      if (cancelled || geocodedAddress.current === changedAddress) return;
+      geocodedAddress.current = changedAddress;
       setGeocodedPoint(point);
       setLocationPoint(point);
     }, 500);
-    return () => clearTimeout(timeout);
+    return () => {
+      cancelled = true;
+      clearTimeout(timeout);
+    };
   }, [changedAddress]);
+
+  // Saving right after an address change must not wait for the delayed
+  // lookup above, or the event is saved with the previous point.
+  const locationPointToSave = async () => {
+    if (
+      changedAddress === undefined ||
+      geocodedAddress.current === changedAddress
+    ) {
+      return locationPoint;
+    }
+
+    const point = changedAddress ? await geocode(changedAddress) : null;
+    geocodedAddress.current = changedAddress;
+    setGeocodedPoint(point);
+    setLocationPoint(point);
+    return point;
+  };
 
   const updateAttributeDiff: Dispatch<SetStateAction<IEventProperties>> = (
     update
@@ -207,62 +274,86 @@ const useEventForm = ({ projectId, eventId }: Options) => {
       : altText;
 
   const saveImage = async (savedEventId: string) => {
-    const remoteImageId = event?.data.relationships.event_images.data.at(0)?.id;
+    // The loaded event lags behind this form's own saves, so a save that runs
+    // right after another works on the image that one left.
+    const imageId =
+      savedImageId.current === undefined
+        ? event?.data.relationships.event_images.data.at(0)?.id
+        : savedImageId.current;
 
     if (localImage !== undefined) {
-      if (remoteImageId) {
-        await deleteEventImage({
-          eventId: savedEventId,
-          imageId: remoteImageId,
-        });
+      if (imageId) {
+        await deleteEventImage({ eventId: savedEventId, imageId });
+        savedImageId.current = null;
       }
       if (localImage && croppedImage) {
-        await addEventImage({
+        const added = await addEventImage({
           eventId: savedEventId,
           image: {
             image: croppedImage,
             ...(imageAltText ? { alt_text_multiloc: imageAltText } : {}),
           },
         });
+        savedImageId.current = added.data.id;
       }
-    } else if (altText && remoteImageId && image) {
+    } else if (altText && imageId && image) {
       await updateEventImage({
         eventId: savedEventId,
-        imageId: remoteImageId,
+        imageId,
         image: { image: image.base64, alt_text_multiloc: altText },
       });
     }
 
-    setLocalImage(undefined);
-    setAltText(undefined);
+    // Keep an image or alt text chosen during the save for the next one.
+    setLocalImage((current) => (current === localImage ? undefined : current));
+    setAltText((current) => (current === altText ? undefined : current));
   };
 
-  // A second save while a new event is still being created would create it
-  // twice, so callers share the pending save instead.
+  // Two saves at once would create a new event twice, so a save asked for
+  // while another runs is queued until that one ends.
   const save = () => {
     if (!pendingSave.current) {
-      pendingSave.current = saveChanges().finally(() => {
-        pendingSave.current = null;
-      });
+      pendingSave.current = saveChanges();
+      return pendingSave.current;
     }
-    return pendingSave.current;
+    queuedSave.current ??= createQueuedSave();
+    return queuedSave.current.promise;
   };
+
+  // The queued save runs only after the re-render that follows the first
+  // save, so it reads the state that save left behind, like the id of the
+  // event it created.
+  useEffect(() => {
+    const queued = queuedSave.current;
+    if (saving || pendingSave.current || !queued) return;
+
+    queuedSave.current = null;
+    if (editCount.current === savedEditCount.current) {
+      queued.resolve();
+    } else {
+      save().then(queued.resolve, queued.reject);
+    }
+  });
 
   const saveChanges = async () => {
     setSaving(true);
     setErrors(null);
+    const editsAtStart = editCount.current;
 
-    const changes: IEventProperties = {
-      ...attributeDiff,
-      ...(locationPoint !== undefined && {
-        location_point_geojson: attributes.address_1 ? locationPoint : null,
-      }),
-    };
     try {
+      const point = await locationPointToSave();
+      const changes: IEventProperties = {
+        ...attributeDiff,
+        ...(point !== undefined && {
+          location_point_geojson: attributes.address_1 ? point : null,
+        }),
+      };
+
       let savedEventId = currentEventId;
       if (!savedEventId) {
         savedEventId = (await addEvent({ projectId, event: changes })).data.id;
         setCreatedEventId(savedEventId);
+        onCreate?.(savedEventId);
       } else if (Object.keys(changes).length > 0) {
         // Only the image or files may have changed, and the API refuses an
         // empty update.
@@ -274,7 +365,9 @@ const useEventForm = ({ projectId, eventId }: Options) => {
         saveImage(savedEventId),
       ]);
 
-      setStatus('success');
+      savedEditCount.current = editsAtStart;
+      // Edits made during the save weren't sent, so the form stays unsaved.
+      if (editCount.current === editsAtStart) setStatus('success');
     } catch (error) {
       setErrors(
         isCLErrorsWrapper(error)
@@ -284,6 +377,7 @@ const useEventForm = ({ projectId, eventId }: Options) => {
       setStatus('error');
       throw error;
     } finally {
+      pendingSave.current = null;
       setSaving(false);
     }
   };
