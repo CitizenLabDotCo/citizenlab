@@ -7,6 +7,7 @@ module AIAssistant
   class Runner
     MAX_TOOL_CALLS = 10
     MAX_OUTPUT_TOKENS = 16_000
+    ATTACHMENTS_ONLY_TEXT = 'See the attached document(s).'
     # Bedrock refuses two user turns in a row, which happens when a turn failed or its
     # proposals expired before the user wrote again.
     NO_REPLY_TEXT = '(No reply.)'
@@ -67,7 +68,7 @@ module AIAssistant
       conversation.messages.includes(:tool_calls).each do |message|
         if message.user?
           chat.add_message(role: :assistant, content: NO_REPLY_TEXT) if user_turn_open
-          chat.add_message(role: :user, content: message.content)
+          chat.add_message(role: :user, content: user_content(message))
           user_turn_open = true
         else
           tool_calls = message.tool_calls.to_a
@@ -81,6 +82,14 @@ module AIAssistant
           user_turn_open = tool_calls.any?
         end
       end
+    end
+
+    def user_content(message)
+      content = RubyLLM::Content.new(message.content.presence || ATTACHMENTS_ONLY_TEXT)
+      message.files.each do |file|
+        content.add_attachment(StringIO.new(file.content.read), filename: file.name)
+      end
+      content
     end
 
     def llm_tool_calls(tool_calls)

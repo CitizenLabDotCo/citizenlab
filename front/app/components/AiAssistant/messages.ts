@@ -17,6 +17,28 @@ export default defineMessages({
     id: 'app.components.aiAssistant.send',
     defaultMessage: 'Send',
   },
+  attachFile: {
+    id: 'app.components.aiAssistant.attachFile',
+    defaultMessage: 'Attach a file',
+  },
+  removeFile: {
+    id: 'app.components.aiAssistant.removeFile',
+    defaultMessage: 'Remove {fileName}',
+  },
+  dropFiles: {
+    id: 'app.components.aiAssistant.dropFiles',
+    defaultMessage: 'Drop PDF, Markdown or text files here',
+  },
+  filesNotice: {
+    id: 'app.components.aiAssistant.filesNotice',
+    defaultMessage:
+      "Attached files are added to this project's files and shared with AI.",
+  },
+  filesRejected: {
+    id: 'app.components.aiAssistant.filesRejected',
+    defaultMessage:
+      'Only PDF, Markdown (.md) and text (.txt) files of up to {maxSizeMb} MB can be attached, {maxFiles} at most.',
+  },
   awaitingApprovalHint: {
     id: 'app.components.aiAssistant.awaitingApprovalHint',
     defaultMessage: 'Approve or reject the proposed change to continue.',
@@ -119,9 +141,22 @@ export default defineMessages({
     id: 'app.components.aiAssistant.errorToolCallNotProposed',
     defaultMessage: 'A decision was already made on this proposal.',
   },
+  errorAiProcessingNotAllowed: {
+    id: 'app.components.aiAssistant.errorAiProcessingNotAllowed',
+    defaultMessage: 'One of the files may not be shared with AI.',
+  },
+  errorUnsupportedFileType: {
+    id: 'app.components.aiAssistant.errorUnsupportedFileType',
+    defaultMessage:
+      'Only PDF, Markdown (.md) and text (.txt) files of up to 4 MB can be used.',
+  },
   errorTooLong: {
     id: 'app.components.aiAssistant.errorTooLong',
     defaultMessage: 'Your message is too long.',
+  },
+  errorUpload: {
+    id: 'app.components.aiAssistant.errorUpload',
+    defaultMessage: '{fileName} could not be uploaded.',
   },
   errorGeneric: {
     id: 'app.components.aiAssistant.errorGeneric',
