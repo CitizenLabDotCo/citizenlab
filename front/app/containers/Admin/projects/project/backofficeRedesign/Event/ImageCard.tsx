@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { UploadFile } from 'typings';
 
-import { EventForm } from 'containers/Admin/projects/project/events/useEventForm';
+import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm';
 
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';

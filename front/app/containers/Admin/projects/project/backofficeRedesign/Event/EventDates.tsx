@@ -17,9 +17,9 @@ import { CLErrors } from 'typings';
 
 import { IEventProperties } from 'api/events/types';
 
+import useEventDateTimes from 'containers/Admin/projects/_shared/events/useEventDateTimes';
 import dateTimeMessages from 'containers/Admin/projects/project/events/components/DateTimeSelection/messages';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
-import useEventDateTimes from 'containers/Admin/projects/project/events/useEventDateTimes';
 
 import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
 import TimeInput from 'components/admin/TimeSelection/TimeInput';

@@ -12,8 +12,8 @@ import {
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
+import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
-import { EventForm } from 'containers/Admin/projects/project/events/useEventForm';
 
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';

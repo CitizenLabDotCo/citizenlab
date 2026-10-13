@@ -18,6 +18,7 @@ import { Multiloc } from 'typings';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useLocale from 'hooks/useLocale';
 
+import useEventForm from 'containers/Admin/projects/_shared/events/useEventForm';
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
@@ -40,7 +41,6 @@ import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import DateTimeSelection from './components/DateTimeSelection';
 import messages from './messages';
-import useEventForm from './useEventForm';
 
 const EventMap = lazy(() => import('./components/EventMap'));
 

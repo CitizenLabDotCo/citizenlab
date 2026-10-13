@@ -16,8 +16,8 @@ import { IProjectData } from 'api/projects/types';
 import useLocalize from 'hooks/useLocalize';
 
 import PhonePreviewBackdrop from 'containers/Admin/projects/_shared/components/PhonePreviewBackdrop';
+import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
-import { EventForm } from 'containers/Admin/projects/project/events/useEventForm';
 
 import PhonePreviewFrame from 'components/admin/PhonePreview/PhonePreviewFrame';
 import T from 'components/T';

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 import { CLErrors, Multiloc, UploadFile } from 'typings';
 
@@ -56,6 +56,7 @@ const useEventForm = ({ projectId, eventId }: Options) => {
 
   const [status, setStatus] = useState<SubmitState>('disabled');
   const [saving, setSaving] = useState(false);
+  const pendingSave = useRef<Promise<void> | null>(null);
   const [errors, setErrors] = useState<CLErrors | null>(null);
   const [attributeDiff, setAttributeDiff] = useState<IEventProperties>(() =>
     eventId ? {} : initializeEventTimes()
@@ -236,7 +237,18 @@ const useEventForm = ({ projectId, eventId }: Options) => {
     setAltText(undefined);
   };
 
-  const save = async () => {
+  // A second save while a new event is still being created would create it
+  // twice, so callers share the pending save instead.
+  const save = () => {
+    if (!pendingSave.current) {
+      pendingSave.current = saveChanges().finally(() => {
+        pendingSave.current = null;
+      });
+    }
+    return pendingSave.current;
+  };
+
+  const saveChanges = async () => {
     setSaving(true);
     setErrors(null);
 

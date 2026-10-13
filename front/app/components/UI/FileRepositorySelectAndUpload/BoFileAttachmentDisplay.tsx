@@ -1,19 +1,13 @@
 import React, { useRef } from 'react';
 
-import {
-  Box,
-  Button,
-  Icon,
-  Text,
-  Tooltip,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 import { useDrag, useDrop } from 'react-dnd';
 import styled from 'styled-components';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileById from 'api/files/useFileById';
+
+import IconAction from 'components/UI/IconAction';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -131,22 +125,14 @@ const BoFileAttachmentDisplay = ({
           </FileLink>
         </Text>
       </Box>
-      <Tooltip content={formatMessage(messages.removeFile)} theme="dark">
-        <Button
-          buttonStyle="bo-text"
-          icon="close"
-          iconSize="16px"
-          iconColor={colors.coolGrey500}
-          iconHoverColor={bo.colors.textHeadingStrong}
-          width="28px"
-          height="28px"
-          padding="0"
-          ariaLabel={formatMessage(messages.removeFileAriaLabel, {
-            fileName: name,
-          })}
-          onClick={onDeleteClick}
-        />
-      </Tooltip>
+      <IconAction
+        icon="close"
+        tooltip={formatMessage(messages.removeFile)}
+        ariaLabel={formatMessage(messages.removeFileAriaLabel, {
+          fileName: name,
+        })}
+        onClick={onDeleteClick}
+      />
     </Box>
   );
 };

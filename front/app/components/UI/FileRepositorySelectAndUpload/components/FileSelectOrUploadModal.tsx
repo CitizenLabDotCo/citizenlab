@@ -1,20 +1,13 @@
 import React from 'react';
 
-import {
-  Box,
-  Button,
-  Select,
-  Text,
-  Tooltip,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Button, Select, Text } from '@citizenlab/cl2-component-library';
 import { UploadFile } from 'typings';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import { IFileData } from 'api/files/types';
 import useFiles from 'api/files/useFiles';
 
+import IconAction from 'components/UI/IconAction';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
@@ -79,22 +72,14 @@ const FileSelectOrUploadModal = ({
   return (
     <>
       {iconOnly ? (
-        <Tooltip content={formatMessage(messages.addFile)} theme="dark">
-          <Button
-            onClick={() => setModalOpen(true)}
-            id={'e2e-open-file-upload-modal-button'}
-            buttonStyle="bo-text"
-            icon="plus"
-            iconSize="16px"
-            iconColor={colors.coolGrey500}
-            iconHoverColor={bo.colors.textHeadingStrong}
-            width="28px"
-            height="28px"
-            padding="0"
-            ariaLabel={formatMessage(messages.addFile)}
-            disabled={isDisabled}
-          />
-        </Tooltip>
+        <IconAction
+          id="e2e-open-file-upload-modal-button"
+          icon="plus"
+          tooltip={formatMessage(messages.addFile)}
+          ariaLabel={formatMessage(messages.addFile)}
+          disabled={isDisabled}
+          onClick={() => setModalOpen(true)}
+        />
       ) : (
         <Button
           onClick={() => setModalOpen(true)}

@@ -6,14 +6,14 @@ import { CLErrors } from 'typings';
 
 import { IEventProperties } from 'api/events/types';
 
+import useEventDateTimes from 'containers/Admin/projects/_shared/events/useEventDateTimes';
+
 import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
 import TimeInput from 'components/admin/TimeSelection/TimeInput';
 import ErrorComponent from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
 import { getGmtOffset } from 'utils/dateUtils';
-
-import useEventDateTimes from '../../useEventDateTimes';
 
 import messages from './messages';
 

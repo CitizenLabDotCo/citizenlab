@@ -10,12 +10,12 @@ import {
 import { UploadFile } from 'typings';
 
 import Error from 'components/UI/Error';
+import IconAction from 'components/UI/IconAction';
 import imagesDropzoneMessages from 'components/UI/ImagesDropzone/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import { getBase64FromFile, returnFileSize } from 'utils/fileUtils';
 
-import IconAction from './IconAction';
 import messages from './messages';
 
 const MAX_FILE_SIZE_MB = 10;

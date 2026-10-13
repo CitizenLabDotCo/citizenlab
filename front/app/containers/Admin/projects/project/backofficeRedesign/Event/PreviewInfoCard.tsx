@@ -17,7 +17,7 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
-import { toPlatformWallClock } from 'containers/Admin/projects/project/events/useEventDateTimes';
+import { toPlatformWallClock } from 'containers/Admin/projects/_shared/events/useEventDateTimes';
 
 import calendarMessages from 'components/AddEventToCalendarButton/messages';
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';

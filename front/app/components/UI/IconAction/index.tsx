@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 
 import {
   Button,
@@ -12,12 +12,22 @@ interface Props {
   icon: IconNames;
   tooltip: string;
   ariaLabel: string;
-  onClick: () => void;
+  onClick: (event: MouseEvent) => void;
+  id?: string;
+  disabled?: boolean;
 }
 
-const IconAction = ({ icon, tooltip, ariaLabel, onClick }: Props) => (
+const IconAction = ({
+  icon,
+  tooltip,
+  ariaLabel,
+  onClick,
+  id,
+  disabled,
+}: Props) => (
   <Tooltip content={tooltip} theme="dark">
     <Button
+      id={id}
       buttonStyle="bo-text"
       icon={icon}
       iconSize="16px"
@@ -27,6 +37,7 @@ const IconAction = ({ icon, tooltip, ariaLabel, onClick }: Props) => (
       height="28px"
       padding="0"
       ariaLabel={ariaLabel}
+      disabled={disabled}
       onClick={onClick}
     />
   </Tooltip>
