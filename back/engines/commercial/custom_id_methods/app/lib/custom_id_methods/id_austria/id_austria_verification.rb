@@ -58,9 +58,5 @@ module CustomIdMethods::IdAustria
     def locked_custom_fields
       []
     end
-
-    def updateable_user_attrs
-      super + %i[first_name last_name]
-    end
   end
 end
