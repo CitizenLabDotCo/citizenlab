@@ -56,7 +56,12 @@ module Analytics
           'value_numeric' => <<~DOC.squish,
             Numeric answer for 'number', 'linear_scale', 'rating',
             'sentiment_linear_scale' and 'matrix_linear_scale' questions (scales
-            run from 1 upwards). Aggregate with AVG for scores. For 'ranking'
+            run from 1 upwards). Aggregate with AVG for scores. If admins
+            shortened a 'linear_scale', 'rating' or 'sentiment_linear_scale'
+            question after people answered, older answers can be above the
+            current top point. They are kept, so AVG matches the averages the
+            platform shows, but the platform's per-point counts leave them out:
+            mention such points rather than drop them silently. For 'ranking'
             questions, the rank the participant gave the option (1 = ranked
             first): AVG per option gives its average rank, lower is better. NULL
             for other question types.
