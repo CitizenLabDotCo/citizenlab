@@ -1,5 +1,7 @@
 export type FeedbackPromptKey = 'project_setup_ease' | 'return_findability';
 
+export type FeedbackPromptTrigger = 'save' | 'project_exit';
+
 export type FeedbackPromptUiVersion =
   | 'project_backoffice_v1'
   | 'project_backoffice_v2';
@@ -15,6 +17,12 @@ export interface IFeedbackPromptData {
 
 export interface IFeedbackPrompt {
   data: IFeedbackPromptData;
+}
+
+export interface IShowNextFeedbackPrompt {
+  trigger: FeedbackPromptTrigger;
+  uiVersion: FeedbackPromptUiVersion;
+  adminArea?: string;
 }
 
 export interface IFeedbackPromptAnswer {
