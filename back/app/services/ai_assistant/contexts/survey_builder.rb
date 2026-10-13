@@ -18,7 +18,12 @@ module AIAssistant
 
       def tools
         @tools ||= [
-          ContextTool.new(tool_class: McpServer::Tools::GetFormFields, bound: container)
+          ContextTool.new(tool_class: McpServer::Tools::GetFormFields, bound: container),
+          ContextTool.new(
+            tool_class: McpServer::Tools::ReplaceFormFields,
+            bound: container,
+            guards: { fields_last_updated_at: -> { record.custom_form&.fields_last_updated_at&.iso8601 } }
+          )
         ]
       end
 
@@ -36,8 +41,15 @@ module AIAssistant
           phase_title: multiloc_service.t(record.title_multiloc, locale),
           project_title: multiloc_service.t(record.project.title_multiloc, locale),
           responses_count: record.ideas_count.to_i,
+          writable: writable?,
           platform_locales: AppConfiguration.instance.settings('core', 'locales')
         )
+      end
+
+      # Mirrors the draft-only rule of the MCP tools that change projects.
+      def writable?
+        record.project.admin_publication.draft? ||
+          McpServer::BaseTool::Runner::PUBLISHED_WRITABLE_LIFECYCLES.include?(AppConfiguration.instance.lifecycle_stage)
       end
     end
   end

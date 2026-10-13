@@ -28,6 +28,10 @@ export const getErrorMessage = (
       return messages.errorToolBudgetExceeded;
     case 'conversation_busy':
       return messages.errorConversationBusy;
+    case 'tool_call_expired':
+      return messages.errorToolCallExpired;
+    case 'tool_call_not_proposed':
+      return messages.errorToolCallNotProposed;
     case 'too_long':
       return messages.errorTooLong;
     default:

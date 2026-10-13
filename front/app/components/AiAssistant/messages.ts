@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.components.aiAssistant.send',
     defaultMessage: 'Send',
   },
+  awaitingApprovalHint: {
+    id: 'app.components.aiAssistant.awaitingApprovalHint',
+    defaultMessage: 'Approve or reject the proposed change to continue.',
+  },
   working: {
     id: 'app.components.aiAssistant.working',
     defaultMessage: 'Working on it…',
@@ -25,17 +29,57 @@ export default defineMessages({
     id: 'app.components.aiAssistant.elapsed',
     defaultMessage: '{seconds, plural, one {# second} other {# seconds}}',
   },
+  proposedChange: {
+    id: 'app.components.aiAssistant.proposedChange',
+    defaultMessage: 'Proposed change',
+  },
+  approve: {
+    id: 'app.components.aiAssistant.approve',
+    defaultMessage: 'Approve',
+  },
+  reject: {
+    id: 'app.components.aiAssistant.reject',
+    defaultMessage: 'Reject',
+  },
+  rejectReasonLabel: {
+    id: 'app.components.aiAssistant.rejectReasonLabel',
+    defaultMessage: 'What should change? (optional)',
+  },
+  confirmReject: {
+    id: 'app.components.aiAssistant.confirmReject',
+    defaultMessage: 'Reject and tell the assistant',
+  },
+  cancel: {
+    id: 'app.components.aiAssistant.cancel',
+    defaultMessage: 'Cancel',
+  },
   statusAutoExecuted: {
     id: 'app.components.aiAssistant.statusAutoExecuted',
     defaultMessage: 'Read: {tool}',
+  },
+  statusExecuted: {
+    id: 'app.components.aiAssistant.statusExecuted',
+    defaultMessage: 'Applied: {tool}',
+  },
+  statusRejected: {
+    id: 'app.components.aiAssistant.statusRejected',
+    defaultMessage: 'Rejected: {tool}',
   },
   statusFailed: {
     id: 'app.components.aiAssistant.statusFailed',
     defaultMessage: 'Failed: {tool}',
   },
+  statusExpired: {
+    id: 'app.components.aiAssistant.statusExpired',
+    defaultMessage: 'Expired: {tool}',
+  },
   statusInProgress: {
     id: 'app.components.aiAssistant.statusInProgress',
     defaultMessage: 'In progress: {tool}',
+  },
+  showDetails: {
+    id: 'app.components.aiAssistant.showDetails',
+    defaultMessage: 'Show details',
   },
   errorLlmUnavailable: {
     id: 'app.components.aiAssistant.errorLlmUnavailable',
@@ -65,6 +109,15 @@ export default defineMessages({
     id: 'app.components.aiAssistant.errorConversationBusy',
     defaultMessage:
       'The assistant is still working, or waiting for your decision on a proposed change.',
+  },
+  errorToolCallExpired: {
+    id: 'app.components.aiAssistant.errorToolCallExpired',
+    defaultMessage:
+      'This proposal has expired. Ask the assistant again to get a new one.',
+  },
+  errorToolCallNotProposed: {
+    id: 'app.components.aiAssistant.errorToolCallNotProposed',
+    defaultMessage: 'A decision was already made on this proposal.',
   },
   errorTooLong: {
     id: 'app.components.aiAssistant.errorTooLong',

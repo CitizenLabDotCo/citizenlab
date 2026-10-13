@@ -2,12 +2,13 @@
 
 module AIAssistant
   # Runs one turn of a conversation: replays the stored messages to the model, lets it call
-  # tools, and stores what it does. The turn ends with a reply.
+  # tools, and stores what it does. The turn ends with a reply, or with proposals that wait
+  # for the user's decision.
   class Runner
     MAX_TOOL_CALLS = 10
     MAX_OUTPUT_TOKENS = 16_000
-    # Bedrock refuses two user turns in a row, which happens when a turn failed before the
-    # user wrote again.
+    # Bedrock refuses two user turns in a row, which happens when a turn failed or its
+    # proposals expired before the user wrote again.
     NO_REPLY_TEXT = '(No reply.)'
 
     attr_reader :conversation, :user, :current_tool_call
@@ -51,7 +52,9 @@ module AIAssistant
     end
 
     def finish
-      if over_tool_budget?
+      if conversation.tool_calls.proposed.exists?
+        conversation.update!(status: 'awaiting_approval', last_error_code: nil)
+      elsif over_tool_budget?
         conversation.update!(status: 'failed', last_error_code: 'tool_budget_exceeded')
       else
         conversation.update!(status: 'idle', last_error_code: nil)

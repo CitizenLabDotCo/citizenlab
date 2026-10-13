@@ -9,6 +9,14 @@ describe AIAssistant::Runner do
   let(:phase) { conversation.context }
   let!(:user_message) { create(:ai_assistant_message, conversation:, content: 'Create a survey about our park.') }
 
+  let(:valid_fields) do
+    [
+      { input_type: 'page', page_layout: 'default', title_multiloc: {} },
+      { input_type: 'text', title_multiloc: { 'en' => 'What do you like about the park?' }, required: false, enabled: true },
+      { input_type: 'page', page_layout: 'default', key: 'form_end', title_multiloc: {} }
+    ]
+  end
+
   def last_request_messages
     bedrock_requests.last['messages']
   end
@@ -42,6 +50,43 @@ describe AIAssistant::Runner do
     expect(conversation.reload.status).to eq('idle')
   end
 
+  it 'only proposes write tool calls, and stops the turn' do
+    stub_bedrock(bedrock_tool_use({ id: 'write_1', name: 'replace_form_fields', input: { fields: valid_fields } }, text: 'Here is a first draft.'))
+
+    expect { runner.run }.not_to change { phase.reload.custom_form }
+
+    tool_call = AIAssistant::ToolCall.find_by!(tool_use_id: 'write_1')
+    expect(tool_call).to have_attributes(status: 'proposed', result: nil)
+    expect(tool_call.arguments['fields'].size).to eq(3)
+    expect(tool_call.bound_arguments).to eq('container_type' => 'phase', 'container_id' => phase.id)
+    expect(tool_call.message.content).to eq('Here is a first draft.')
+    expect(bedrock_requests.size).to eq(1)
+    expect(conversation.reload.status).to eq('awaiting_approval')
+  end
+
+  it 'snapshots the form version with the proposal' do
+    form = create(:custom_form, participation_context: phase, fields_last_updated_at: 1.hour.ago)
+    stub_bedrock(bedrock_tool_use({ id: 'write_1', name: 'replace_form_fields', input: { fields: valid_fields } }))
+
+    runner.run
+
+    expect(AIAssistant::ToolCall.sole.bound_arguments['fields_last_updated_at']).to eq(form.fields_last_updated_at.iso8601)
+  end
+
+  it 'sends invalid write calls back to the model instead of proposing them' do
+    stub_bedrock(
+      bedrock_tool_use({ id: 'write_1', name: 'replace_form_fields', input: { fields: 'not a list' } }),
+      bedrock_text('Sorry, let me try again later.')
+    )
+
+    runner.run
+
+    expect(AIAssistant::ToolCall.sole).to have_attributes(status: 'failed', result: start_with('Error:'))
+    tool_result = last_request_messages.last['content'].sole['toolResult']
+    expect(tool_result['content'].sole['text']).to start_with('Error:')
+    expect(conversation.reload.status).to eq('idle')
+  end
+
   it 'marks calls to unknown tools as failed' do
     stub_bedrock(bedrock_tool_use({ id: 'x_1', name: 'delete_everything', input: {} }), bedrock_text('Never mind.'))
 
@@ -71,6 +116,25 @@ describe AIAssistant::Runner do
   end
 
   describe 'replaying the conversation' do
+    it 'continues after a decision with the outcome as tool result, without a new user message' do
+      assistant_message = create(:ai_assistant_message, conversation:, role: 'assistant', content: 'A first draft.')
+      create(
+        :ai_assistant_tool_call,
+        message: assistant_message,
+        tool_use_id: 'write_1',
+        status: 'rejected',
+        result: { denied: true, reason: 'Fewer questions' }.to_json
+      )
+      stub_bedrock(bedrock_text('I will make it shorter.'))
+
+      runner.run
+
+      messages = last_request_messages
+      expect(messages.pluck('role')).to eq(%w[user assistant user])
+      expect(messages[1]['content'].pluck('toolUse').compact.sole).to include('toolUseId' => 'write_1')
+      expect(messages[2]['content'].sole['toolResult']['content'].sole['text']).to include('Fewer questions')
+    end
+
     it 'adds a placeholder reply between two user messages' do
       create(:ai_assistant_message, conversation:, content: 'Are you there?')
       stub_bedrock(bedrock_text('Yes.'))
