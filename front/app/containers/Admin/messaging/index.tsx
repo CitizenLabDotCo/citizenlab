@@ -21,6 +21,7 @@ const MessagingDashboard = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
   const smsAvailability = useSmsAvailability();
+  const smsTabOpacity = smsAvailability === 'upsell' ? 0.5 : 1;
 
   const tabs: (ITab & { disabledTooltipText?: string; badge?: ReactNode })[] = [
     {
@@ -39,7 +40,11 @@ const MessagingDashboard = () => {
       ? [
           {
             name: 'sms',
-            label: formatMessage(messages.tabSms),
+            label: (
+              <Box as="span" opacity={smsTabOpacity}>
+                {formatMessage(messages.tabSms)}
+              </Box>
+            ),
             url: '/admin/messaging/sms',
             className: 'intercom-messaging-sms',
             badge: (
@@ -47,6 +52,7 @@ const MessagingDashboard = () => {
                 as="span"
                 display="inline-flex"
                 ml="8px"
+                opacity={smsTabOpacity}
                 // Nudged up to line up with the tab label's text.
                 style={{
                   verticalAlign: 'middle',
