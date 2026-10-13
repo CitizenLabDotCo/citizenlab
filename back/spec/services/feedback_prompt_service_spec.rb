@@ -36,6 +36,11 @@ describe FeedbackPromptService do
       expect(service.enqueue(user, 'return_findability')).to be_nil
     end
 
+    it 'does not create a prompt the user was shown within its cooldown' do
+      create(:feedback_prompt, :shown, user: user, key: 'project_setup_ease', subject: create(:project), shown_at: 10.days.ago)
+      expect(service.enqueue(user, 'project_setup_ease', subject: create(:project))).to be_nil
+    end
+
     it 'creates a new pending prompt when the previous one expired' do
       travel_to(15.days.ago) { service.enqueue(user, 'return_findability') }
       expect(service.enqueue(user, 'return_findability')).to be_present
@@ -121,7 +126,7 @@ describe FeedbackPromptService do
       older = create(:feedback_prompt, user: user, key: 'project_setup_ease', subject: project, created_at: 2.hours.ago)
       create(:feedback_prompt, user: user, created_at: 1.hour.ago)
 
-      prompt = service.show_next(user, ui_version: 'project_backoffice_v2')
+      prompt = service.show_next(user, trigger: 'save', ui_version: 'project_backoffice_v2')
 
       expect(prompt).to eq older
       expect(prompt.reload).to have_attributes(
@@ -137,38 +142,70 @@ describe FeedbackPromptService do
     it 'flags Go Vocal staff' do
       staff = create(:super_admin)
       create(:feedback_prompt, user: staff)
-      expect(service.show_next(staff, ui_version: 'project_backoffice_v1')).to have_attributes(staff: true, role: 'super_admin')
+      expect(service.show_next(staff, trigger: 'save', ui_version: 'project_backoffice_v1')).to have_attributes(staff: true, role: 'super_admin')
     end
 
-    it 'returns nil when a prompt was shown within the last 30 days' do
-      create(:feedback_prompt, :shown, user: user, shown_at: 29.days.ago)
+    it 'does not show a prompt again within its cooldown' do
+      create(:feedback_prompt, :shown, user: user, key: 'project_setup_ease', subject: create(:project), shown_at: 59.days.ago)
       create(:feedback_prompt, user: user, key: 'project_setup_ease', subject: create(:project))
-      expect(service.show_next(user, ui_version: 'project_backoffice_v1')).to be_nil
+      expect(service.show_next(user, trigger: 'save', ui_version: 'project_backoffice_v1')).to be_nil
     end
 
-    it 'shows a prompt again after 30 days' do
-      create(:feedback_prompt, :shown, user: user, shown_at: 31.days.ago)
+    it 'shows a prompt again once its cooldown has passed' do
+      create(:feedback_prompt, :shown, user: user, key: 'project_setup_ease', subject: create(:project), shown_at: 61.days.ago)
       create(:feedback_prompt, user: user, key: 'project_setup_ease', subject: create(:project))
-      expect(service.show_next(user, ui_version: 'project_backoffice_v1')).to be_present
+      expect(service.show_next(user, trigger: 'save', ui_version: 'project_backoffice_v1')).to be_present
+    end
+
+    it 'shows a prompt even when another prompt was shown recently' do
+      create(:feedback_prompt, :shown, user: user, key: 'project_setup_ease', subject: create(:project), shown_at: 1.day.ago)
+      create(:feedback_prompt, user: user, key: 'return_findability')
+      expect(service.show_next(user, trigger: 'save', ui_version: 'project_backoffice_v1')).to have_attributes(key: 'return_findability')
+    end
+
+    it 'only shows a prompt at one of its triggers' do
+      create(:feedback_prompt, user: user, key: 'project_setup_ease', subject: create(:project))
+      expect(service.show_next(user, trigger: 'project_exit', ui_version: 'project_backoffice_v1')).to be_nil
+    end
+
+    it 'records the trigger and admin area' do
+      create(:feedback_prompt, user: user, key: 'return_findability')
+      prompt = service.show_next(
+        user,
+        trigger: 'project_exit',
+        ui_version: 'project_backoffice_v1',
+        admin_area: '/:locale/admin/projects/:projectId/phases/:phaseId/insights'
+      )
+      expect(prompt).to have_attributes(
+        trigger: 'project_exit',
+        admin_area: '/:locale/admin/projects/:projectId/phases/:phaseId/insights'
+      )
+    end
+
+    it 'records how many prompts the user saw before' do
+      create(:feedback_prompt, :shown, user: user, key: 'project_setup_ease', subject: create(:project), shown_at: 90.days.ago)
+      create(:feedback_prompt, :shown, user: user, key: 'return_findability', shown_at: 40.days.ago, status: 'dismissed')
+      create(:feedback_prompt, user: user)
+      expect(service.show_next(user, trigger: 'save', ui_version: 'project_backoffice_v1').previously_shown_count).to eq 2
     end
 
     it 'skips expired pending prompts' do
       create(:feedback_prompt, user: user, created_at: 15.days.ago)
-      expect(service.show_next(user, ui_version: 'project_backoffice_v1')).to be_nil
+      expect(service.show_next(user, trigger: 'save', ui_version: 'project_backoffice_v1')).to be_nil
     end
 
     it 'records a project created from a template as such' do
       project = create(:project)
       BulkImportIdeas::ProjectImport.create!(project: project, import_type: 'project_copy', log: [])
       create(:feedback_prompt, user: user, key: 'project_setup_ease', subject: project)
-      expect(service.show_next(user, ui_version: 'project_backoffice_v1').project_origin).to eq 'template'
+      expect(service.show_next(user, trigger: 'save', ui_version: 'project_backoffice_v1').project_origin).to eq 'template'
     end
 
     it 'records a copied project as such' do
       project = create(:project)
       create(:activity, item: project, action: 'local_copy_created')
       create(:feedback_prompt, user: user, key: 'project_setup_ease', subject: project)
-      expect(service.show_next(user, ui_version: 'project_backoffice_v1').project_origin).to eq 'copy'
+      expect(service.show_next(user, trigger: 'save', ui_version: 'project_backoffice_v1').project_origin).to eq 'copy'
     end
   end
 end
