@@ -17,7 +17,6 @@ import {
   shutdownFor,
   tenantInfo,
 } from 'utils/analytics';
-import { isNilOrError } from 'utils/helperUtils';
 import { ModuleConfiguration } from 'utils/moduleUtils';
 import { isAdmin, isRegularUser } from 'utils/permissions/roles';
 import { getFullName } from 'utils/textUtils';
@@ -85,13 +84,12 @@ const configuration: ModuleConfiguration = {
         }
       })();
 
-      tenant &&
-        window.Intercom &&
+      if (tenant && window.Intercom) {
         window.Intercom('boot', {
           app_id: INTERCOM_APP_ID,
           api_base: 'https://api-iam.eu.intercom.io',
           region: 'eu',
-          ...(!isNilOrError(user)
+          ...(user
             ? {
                 email: user.data.attributes.email,
                 user_id: user.data.id,
@@ -102,16 +100,13 @@ const configuration: ModuleConfiguration = {
                 ...tenantInfo(tenant.data),
               }
             : {}),
-          ...(!isNilOrError(tenant)
-            ? {
-                company: {
-                  company_id: tenant.data.id,
-                  name: tenant.data.attributes.name,
-                  ...tenantInfo(tenant.data),
-                },
-              }
-            : {}),
+          company: {
+            company_id: tenant.data.id,
+            name: tenant.data.attributes.name,
+            ...tenantInfo(tenant.data),
+          },
         });
+      }
     });
 
     shutdownFor('intercom').subscribe(() => {
@@ -124,7 +119,7 @@ const configuration: ModuleConfiguration = {
       bufferUntilInitialized('intercom', events$),
       appConfigurationStream,
     ]).subscribe(([event, tenant]) => {
-      if (!isNilOrError(tenant) && window.Intercom) {
+      if (tenant && window.Intercom) {
         const properties = {
           ...tenantInfo(tenant.data),
           ...event.properties,
@@ -136,7 +131,7 @@ const configuration: ModuleConfiguration = {
     pageChanges$
       .pipe(withLatestFrom(appConfigurationStream))
       .subscribe(([_pageChange, tenant]) => {
-        if (window.Intercom && !isNilOrError(tenant)) {
+        if (window.Intercom && tenant) {
           window.Intercom('update', {
             last_request_at: new Date().getTime() / 1000,
             company: {
