@@ -6,10 +6,11 @@ RSpec.describe FeedbackPrompt do
   describe 'PROMPTS' do
     described_class::PROMPTS.each do |key, definition|
       it "defines a valid prompt for #{key}" do
-        expect(definition.keys).to contain_exactly(:audience, :subject_type, :triggers, :cooldown, :expires_after)
+        expect(definition.keys).to contain_exactly(:audience, :subject_type, :triggers, :admin_area, :cooldown, :expires_after)
         expect(described_class::AUDIENCES).to have_key(definition[:audience])
         expect(definition[:triggers]).to be_present
         expect(definition[:triggers] - described_class::TRIGGERS).to be_empty
+        expect(definition[:admin_area]).to match(described_class::ADMIN_AREA_FORMAT) if definition[:admin_area]
         expect(definition[:cooldown]).to be_a(ActiveSupport::Duration)
         expect(definition[:expires_after]).to be_a(ActiveSupport::Duration)
         expect(definition[:subject_type]&.safe_constantize).to be_present if definition[:subject_type]
@@ -28,7 +29,7 @@ RSpec.describe FeedbackPrompt do
     end
 
     it 'only asks admins for a prompt meant for admins' do
-      stub_const('FeedbackPrompt::PROMPTS', { 'admin_only' => { audience: 'admins', subject_type: nil, triggers: %w[save], cooldown: 1.day, expires_after: 1.day } })
+      stub_const('FeedbackPrompt::PROMPTS', { 'admin_only' => { audience: 'admins', subject_type: nil, triggers: %w[save], admin_area: nil, cooldown: 1.day, expires_after: 1.day } })
       expect(described_class.askable?('admin_only', create(:admin))).to be true
       expect(described_class.askable?('admin_only', create(:project_moderator))).to be false
     end
