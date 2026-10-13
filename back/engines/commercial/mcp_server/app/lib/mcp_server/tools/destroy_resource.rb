@@ -4,6 +4,7 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
   RESOURCE_TYPES = {
     'project' => Project,
     'folder' => ProjectFolders::Folder,
+    'area' => Area,
     'phase' => Phase,
     'event' => Event,
     'cause' => Volunteering::Cause,
@@ -18,6 +19,7 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
   SIDE_FX_SERVICES = {
     Project => SideFxProjectService,
     ProjectFolders::Folder => ProjectFolders::SideFxProjectFolderService,
+    Area => SideFxAreaService,
     Phase => SideFxPhaseService,
     Event => SideFxEventService,
     Volunteering::Cause => Volunteering::SideFxCauseService,
@@ -27,9 +29,12 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
   }.freeze
   private_constant :SIDE_FX_SERVICES
 
-  FOLDER_DEMO_ONLY_MESSAGE = 'Destroying folders via MCP is only available on demo and trial ' \
-                             'platforms. On live platforms, folder deletion stays a human ' \
-                             'action in the admin UI.'
+  # Deleting these stays a human action on live platforms: folders are navigation
+  # structure, and deleting an area also deletes users' matching 'domicile' answers.
+  DEMO_ONLY_TYPES = %w[folder area].freeze
+  DEMO_ONLY_MESSAGE = 'Destroying %<type>ss via MCP is only available on demo and trial ' \
+                      'platforms. On live platforms, %<type>s deletion stays a human ' \
+                      'action in the admin UI.'
 
   def name = 'destroy_resource'
 
@@ -49,6 +54,8 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
       Destroying a project or a phase fails if any of its inputs would be deleted along with it.
       Folders can only be destroyed on demo and trial platforms, and only when they contain
       no projects — move them out first (update_project's folder_id) or destroy them too.
+      Areas can also only be destroyed on demo and trial platforms; destroying one detaches
+      it from its projects and deletes users' matching 'domicile' answers.
     DESC
   end
 
@@ -69,11 +76,13 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
         return not_found_error("Resource (#{params[:resource_type]})", params[:id])
       end
 
-      if record.is_a?(ProjectFolders::Folder) && !published_writable_platform?
-        return error(FOLDER_DEMO_ONLY_MESSAGE)
+      if DEMO_ONLY_TYPES.include?(params[:resource_type]) && !published_writable_platform?
+        return error(format(DEMO_ONLY_MESSAGE, type: params[:resource_type]))
       end
 
-      authorize_project!(guard_target(record))
+      # Areas are platform-wide (no admin_publication), so the demo/trial gate above is
+      # their whole MCP guard; the draft rule only applies to publication-owned records.
+      authorize_project!(guard_target(record)) unless record.is_a?(Area)
       authorize(record, :destroy?)
 
       assert_can_destroy_project!(record) if record.is_a?(Project)
@@ -83,6 +92,10 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
       destroy_with_sidefx!(record)
 
       response("Destroyed #{params[:resource_type]} #{params[:id]}")
+    rescue ActiveRecord::RecordNotDestroyed => e
+      # `dependent: :restrict_with_error` associations (e.g. a static page whose project
+      # filter uses the area) block destruction with errors on the record.
+      invalid_record_error(e.record)
     end
 
     private
