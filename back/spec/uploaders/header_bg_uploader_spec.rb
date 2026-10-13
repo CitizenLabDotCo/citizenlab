@@ -35,4 +35,8 @@ RSpec.describe HeaderBgUploader do
   it 'creates a small version' do
     expect(uploader.small).to have_dimensions(520, 250)
   end
+
+  it 'lowers the quality of JPEG versions' do
+    expect(MiniMagick::Image.new(uploader.large.path)['%Q'].to_i).to eq BaseImageUploader::JPEG_MAX_QUALITY
+  end
 end

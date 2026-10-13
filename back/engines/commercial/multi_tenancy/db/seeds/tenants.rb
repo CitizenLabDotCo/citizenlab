@@ -89,10 +89,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            idea_author_change: {
-              enabled: true,
-              allowed: true
-            },
             machine_translations: {
               enabled: true,
               allowed: true
