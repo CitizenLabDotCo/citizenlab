@@ -239,6 +239,7 @@
   "app.components.ErrorBoundary.errorFormTitle": "Näyttää siltä, että tässä on ongelma.",
   "app.components.ErrorBoundary.genericErrorWithForm": "Tapahtui virhe, emmekä voi näyttää tätä sisältöä. Yritä uudelleen tai {openForm}",
   "app.components.ErrorBoundary.openFormText": "auta meitä selvittämään se",
+  "app.components.ErrorBoundary.reloadPage": "Lataa sivu uudelleen",
   "app.components.ErrorToast.budgetExceededError": "Sinulla ei ole tarpeeksi budjettia",
   "app.components.ErrorToast.votesExceededError": "Sinulla ei ole tarpeeksi ääniä jäljellä",
   "app.components.EsriMap.drawOnMap": "Piirrä",
