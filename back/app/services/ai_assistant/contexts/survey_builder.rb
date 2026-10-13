@@ -16,7 +16,17 @@ module AIAssistant
         record.participation_method == 'native_survey'
       end
 
+      def tools
+        @tools ||= [
+          ContextTool.new(tool_class: McpServer::Tools::GetFormFields, bound: container)
+        ]
+      end
+
       private
+
+      def container
+        { container_type: 'phase', container_id: record.id }
+      end
 
       def context_prompt(locale:)
         multiloc_service = MultilocService.new

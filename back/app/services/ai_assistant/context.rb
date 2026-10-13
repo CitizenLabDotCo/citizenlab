@@ -2,7 +2,7 @@
 
 module AIAssistant
   # Where the assistant is used (e.g. the survey builder of a phase): which record it is
-  # about, who may use it there, and its instructions.
+  # about, who may use it there, its instructions, and the tools it may call.
   class Context
     def self.all
       [Contexts::SurveyBuilder]
@@ -36,6 +36,14 @@ module AIAssistant
 
     def accessible_by?(user)
       Pundit.policy!(user, record).update?
+    end
+
+    def tools
+      raise NotImplementedError
+    end
+
+    def tool(name)
+      tools.find { |tool| tool.name == name }
     end
 
     def system_prompt(locale:)

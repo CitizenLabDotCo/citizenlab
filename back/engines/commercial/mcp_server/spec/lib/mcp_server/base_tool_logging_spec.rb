@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-# BaseTool.for cross-cutting behaviour: activities tagged channel 'mcp' (Layer 2), and
+# BaseTool.for cross-cutting behaviour: activities tagged with their channel (Layer 2), and
 # unexpected tool errors reported to Sentry + re-raised, expected ones not (Layer 3).
 describe McpServer::BaseTool do
   let(:current_user) { create(:super_admin) }
@@ -17,6 +17,14 @@ describe McpServer::BaseTool do
         )
       end.to have_enqueued_job(LogActivityJob)
         .with(an_instance_of(Project), 'created', current_user, a_kind_of(Integer), a_hash_including(channel: 'mcp'))
+    end
+
+    it 'tags activities with the channel given by the caller' do
+      tool = McpServer::Tools::CreateProject.for(current_user:, token_scopes: [], channel: 'ai_assistant')
+
+      expect { tool.call(server_context: {}, title_multiloc: { 'en' => 'New project' }) }
+        .to have_enqueued_job(LogActivityJob)
+        .with(an_instance_of(Project), 'created', current_user, a_kind_of(Integer), a_hash_including(channel: 'ai_assistant'))
     end
 
     it 'resets the channel after the tool run' do
