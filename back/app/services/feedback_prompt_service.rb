@@ -51,7 +51,7 @@ class FeedbackPromptService
   def show_next(user, trigger:, ui_version:, admin_area: nil)
     prompt = user.feedback_prompts.pending.order(:created_at).find do |p|
       !p.expired? &&
-        FeedbackPrompt.shown_on?(p.key, trigger) &&
+        FeedbackPrompt.shown_on?(p.key, trigger, admin_area) &&
         FeedbackPrompt.askable?(p.key, user) &&
         !FeedbackPrompt.cooling_down?(p.key, user)
     end
