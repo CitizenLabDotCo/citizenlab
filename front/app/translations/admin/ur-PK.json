@@ -690,7 +690,6 @@
   "app.containers.Admin.FeedbackPrompt.close": "اس سوال کو بند کریں",
   "app.containers.Admin.FeedbackPrompt.commentLabel": "کیا آپ کچھ مزید شامل کرنا چاہیں گے؟ (اختیاری)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "اس پروجیکٹ کو ترتیب دینا کتنا آسان رہا؟",
-  "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion": "آج آپ کو اپنی ضرورت کی چیز تلاش کرنا کتنا آسان رہا؟",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "1 بہت مشکل ہے، 7 بہت آسان ہے",
   "app.containers.Admin.FeedbackPrompt.send": "بھیجیں",
   "app.containers.Admin.FeedbackPrompt.thanks": "آپ کی رائے کا شکریہ!",

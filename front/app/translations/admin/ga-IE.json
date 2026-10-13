@@ -690,7 +690,6 @@
   "app.containers.Admin.FeedbackPrompt.close": "Dún an cheist seo",
   "app.containers.Admin.FeedbackPrompt.commentLabel": "An bhfuil aon rud eile ar mhaith leat a chur leis? (roghnach)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "Cé chomh héasca is a bhí sé an tionscadal seo a bhunú?",
-  "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion": "Cé chomh héasca is a bhí sé teacht ar an méid a bhí uait inniu?",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "Is é 1 an-deacair, is é 7 an-éasca",
   "app.containers.Admin.FeedbackPrompt.send": "Seol",
   "app.containers.Admin.FeedbackPrompt.thanks": "Go raibh maith agat as d’aiseolas!",

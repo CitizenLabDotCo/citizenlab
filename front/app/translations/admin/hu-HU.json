@@ -690,7 +690,6 @@
   "app.containers.Admin.FeedbackPrompt.close": "Kérdés bezárása",
   "app.containers.Admin.FeedbackPrompt.commentLabel": "Szeretne még valamit hozzátenni? (opcionális)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "Mennyire volt egyszerű beállítani ezt a projektet?",
-  "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion": "Mennyire volt egyszerű megtalálni ma, amire szüksége volt?",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "Az 1-es nagyon nehéz, a 7-es nagyon egyszerű",
   "app.containers.Admin.FeedbackPrompt.send": "Küldés",
   "app.containers.Admin.FeedbackPrompt.thanks": "Köszönjük a visszajelzését!",

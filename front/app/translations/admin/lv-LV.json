@@ -690,7 +690,6 @@
   "app.containers.Admin.FeedbackPrompt.close": "Aizvērt šo jautājumu",
   "app.containers.Admin.FeedbackPrompt.commentLabel": "Vai vēlaties vēl kaut ko piebilst? (neobligāti)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "Cik viegli bija iestatīt šo projektu?",
-  "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion": "Cik viegli šodien bija atrast nepieciešamo?",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "1 ir ļoti grūti, 7 ir ļoti viegli",
   "app.containers.Admin.FeedbackPrompt.send": "Nosūtīt",
   "app.containers.Admin.FeedbackPrompt.thanks": "Paldies par jūsu atsauksmi!",

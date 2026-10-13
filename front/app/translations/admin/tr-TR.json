@@ -690,7 +690,6 @@
   "app.containers.Admin.FeedbackPrompt.close": "Bu soruyu kapat",
   "app.containers.Admin.FeedbackPrompt.commentLabel": "Eklemek istediğiniz başka bir şey var mı? (isteğe bağlı)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "Bu projeyi kurmak ne kadar kolaydı?",
-  "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion": "Bugün ihtiyacınız olanı bulmak ne kadar kolaydı?",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "1 çok zor, 7 çok kolay",
   "app.containers.Admin.FeedbackPrompt.send": "Gönder",
   "app.containers.Admin.FeedbackPrompt.thanks": "Geri bildiriminiz için teşekkür ederiz!",

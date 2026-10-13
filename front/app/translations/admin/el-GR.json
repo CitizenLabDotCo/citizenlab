@@ -690,7 +690,6 @@
   "app.containers.Admin.FeedbackPrompt.close": "Κλείσιμο αυτής της ερώτησης",
   "app.containers.Admin.FeedbackPrompt.commentLabel": "Θα θέλατε να προσθέσετε κάτι άλλο; (προαιρετικό)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "Πόσο εύκολο ήταν να στήσετε αυτό το έργο;",
-  "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion": "Πόσο εύκολο ήταν να βρείτε αυτό που χρειαζόσασταν σήμερα;",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "Το 1 είναι πολύ δύσκολο, το 7 είναι πολύ εύκολο",
   "app.containers.Admin.FeedbackPrompt.send": "Αποστολή",
   "app.containers.Admin.FeedbackPrompt.thanks": "Σας ευχαριστούμε για τα σχόλιά σας!",

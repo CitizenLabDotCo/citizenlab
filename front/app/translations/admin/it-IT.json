@@ -690,7 +690,6 @@
   "app.containers.Admin.FeedbackPrompt.close": "Chiudi questa domanda",
   "app.containers.Admin.FeedbackPrompt.commentLabel": "Vuoi aggiungere altro? (facoltativo)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "Quanto è stato facile configurare questo progetto?",
-  "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion": "Quanto è stato facile trovare quello che ti serviva oggi?",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "1 è molto difficile, 7 è molto facile",
   "app.containers.Admin.FeedbackPrompt.send": "Invia",
   "app.containers.Admin.FeedbackPrompt.thanks": "Grazie per il tuo feedback!",

@@ -690,7 +690,6 @@
   "app.containers.Admin.FeedbackPrompt.close": "Sulje tämä kysymys",
   "app.containers.Admin.FeedbackPrompt.commentLabel": "Haluatko lisätä jotain muuta? (valinnainen)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "Kuinka helppoa tämän projektin määrittäminen oli?",
-  "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion": "Kuinka helppoa tarvitsemasi löytäminen oli tänään?",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "1 on erittäin vaikeaa, 7 on erittäin helppoa",
   "app.containers.Admin.FeedbackPrompt.send": "Lähetä",
   "app.containers.Admin.FeedbackPrompt.thanks": "Kiitos palautteestasi!",

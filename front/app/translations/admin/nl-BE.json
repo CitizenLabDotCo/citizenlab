@@ -690,7 +690,6 @@
   "app.containers.Admin.FeedbackPrompt.close": "Deze vraag sluiten",
   "app.containers.Admin.FeedbackPrompt.commentLabel": "Wil je nog iets toevoegen? (optioneel)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "Hoe gemakkelijk was het om dit project op te zetten?",
-  "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion": "Hoe gemakkelijk was het om vandaag te vinden wat je nodig had?",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "1 is heel moeilijk, 7 is heel gemakkelijk",
   "app.containers.Admin.FeedbackPrompt.send": "Verzenden",
   "app.containers.Admin.FeedbackPrompt.thanks": "Bedankt voor je feedback!",

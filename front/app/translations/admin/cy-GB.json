@@ -690,7 +690,6 @@
   "app.containers.Admin.FeedbackPrompt.close": "Cau'r cwestiwn hwn",
   "app.containers.Admin.FeedbackPrompt.commentLabel": "Unrhyw beth yr hoffech ei ychwanegu? (dewisol)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "Pa mor hawdd oedd hi i sefydlu'r prosiect hwn?",
-  "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion": "Pa mor hawdd oedd hi i ddod o hyd i'r hyn roedd ei angen arnoch chi heddiw?",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "Mae 1 yn anodd iawn, mae 7 yn hawdd iawn",
   "app.containers.Admin.FeedbackPrompt.send": "Anfon",
   "app.containers.Admin.FeedbackPrompt.thanks": "Diolch am eich adborth!",
