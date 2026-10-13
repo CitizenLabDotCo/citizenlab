@@ -239,6 +239,7 @@
   "app.components.ErrorBoundary.errorFormTitle": "Mae'n edrych fel bod yna broblem.",
   "app.components.ErrorBoundary.genericErrorWithForm": "Digwyddodd gwall ac ni allwn arddangos y cynnwys hwn. Ceisiwch eto, neu {openForm}",
   "app.components.ErrorBoundary.openFormText": "helpwch ni i ddarganfod y peth",
+  "app.components.ErrorBoundary.reloadPage": "Ail-lwytho'r dudalen",
   "app.components.ErrorToast.budgetExceededError": "Nid oes gennych ddigon o gyllideb",
   "app.components.ErrorToast.votesExceededError": "Nid oes gennych ddigon o bleidleisiau ar ôl",
   "app.components.EsriMap.drawOnMap": "Llunio",

@@ -239,6 +239,7 @@
   "app.components.ErrorBoundary.errorFormTitle": "Et gesäit aus, wéi wann et e Problem géing ginn. ",
   "app.components.ErrorBoundary.genericErrorWithForm": "E Feeler ass opgetratt a mir kënnen den Inhalt net duerstellen. Wgl. probéiert nach eng Kéier, oder {openForm}",
   "app.components.ErrorBoundary.openFormText": "Hëlleft eis ze verstoen wat geschitt ass ",
+  "app.components.ErrorBoundary.reloadPage": "D'Säit nei lueden",
   "app.components.ErrorToast.budgetExceededError": "Dir hutt net genuch Budget",
   "app.components.ErrorToast.votesExceededError": "Dir hutt net genuch Stëmmen méi",
   "app.components.EsriMap.drawOnMap": "Zeechnen",
