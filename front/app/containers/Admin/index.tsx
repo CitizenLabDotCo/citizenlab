@@ -15,6 +15,7 @@ import clHistory from 'utils/cl-router/history';
 import { usePermission } from 'utils/permissions';
 import { Outlet as RouterOutlet, useLocation } from 'utils/router';
 
+import FeedbackPrompt from './FeedbackPrompt';
 import Sidebar from './sideBar/';
 
 const Container = styled.div`
@@ -180,6 +181,7 @@ const AdminPage = memo<Props>(({ className }) => {
       >
         <RouterOutlet />
       </RightColumn>
+      <FeedbackPrompt />
     </Container>
   );
 });
