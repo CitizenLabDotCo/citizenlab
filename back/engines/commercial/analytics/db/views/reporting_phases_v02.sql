@@ -1,10 +1,10 @@
 -- Reporting view: one row per phase (a participation step within a project).
 --
--- For voting phases, the voter total must match the product's voting results,
--- online voters plus offline voters, or reports built on this view will
--- disagree with them. So online_voters_count is the product's own count of
--- submitted baskets, not a recount of reporting_contributions: a submitted
--- basket stays counted after every input it picked is deleted.
+-- For voting phases, online_voters_count must match the voter count the
+-- product shows, or reports built on this view will disagree with it. So it is
+-- the product's own count of submitted baskets, not a recount of
+-- reporting_contributions: a submitted basket stays counted after every input
+-- it picked is deleted. The product never adds offline voters to that count.
 SELECT
     ph.id,
     ph.project_id,

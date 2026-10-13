@@ -74,18 +74,24 @@ module Analytics
           'created_at' => 'When the phase was created by an admin (UTC), not when it starts (see start_at).',
           'online_voters_count' => <<~DOC.squish,
             For 'voting' phases, the number of people who submitted their votes
-            on the platform, as the voting results show it. 0 for other phases.
-            Use it, plus manual_voters_amount, for a phase's voter total. Count
-            reporting_contributions vote rows only to break voters down (for
-            example by demographics): those rows can miss a voter whose picked
-            inputs were all deleted later, whom this count keeps.
+            on the platform: the figure residents see on the phase as "people
+            submitted their votes online". 0 for other phases. Report it as the
+            phase's number of voters. Count reporting_contributions vote rows
+            only to break voters down (for example by demographics): those rows
+            can miss a voter whose picked inputs were all deleted later, whom
+            this count keeps.
           DOC
           'manual_voters_amount' => <<~DOC.squish,
             For 'voting' phases, the number of people who voted offline (for
-            example on paper), as entered by an administrator. NULL when none was
-            entered. The voter total the platform shows is online_voters_count +
-            COALESCE(manual_voters_amount, 0). Offline voters have no rows in
-            any other table, so they can't be broken down.
+            example on paper), as entered by an administrator. Administrators
+            can only enter it for participatory budgeting. NULL when none was
+            entered. The platform never shows a total of online and offline
+            voters: it only uses online_voters_count +
+            COALESCE(manual_voters_amount, 0) to work out each input's share of
+            voters in budgeting results. Report offline voters separately from
+            online_voters_count, and say so if you add them together. Offline
+            voters have no rows in any other table, so they can't be broken
+            down.
           DOC
           'manual_voters_last_updated_at' => 'When an administrator last changed manual_voters_amount (UTC), or NULL if never.'
         }
