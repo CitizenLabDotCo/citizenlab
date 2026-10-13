@@ -4499,8 +4499,8 @@ CREATE VIEW public.reporting_phases AS
             WHEN ((participation_method)::text = 'voting'::text) THEN baskets_count
             ELSE 0
         END AS online_voters_count,
-    manual_voters_amount,
-    manual_voters_last_updated_at
+    COALESCE(manual_voters_amount, 0) AS offline_voters_count,
+    manual_voters_last_updated_at AS offline_voters_updated_at
    FROM public.phases ph;
 
 

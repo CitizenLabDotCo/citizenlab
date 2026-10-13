@@ -4,17 +4,17 @@
 #
 # Table name: reporting_phases
 #
-#  id                            :uuid             primary key
-#  project_id                    :uuid
-#  title                         :text
-#  title_multiloc                :jsonb
-#  start_at                      :datetime
-#  end_at                        :datetime
-#  participation_method          :string
-#  created_at                    :datetime
-#  online_voters_count           :integer
-#  manual_voters_amount          :integer
-#  manual_voters_last_updated_at :datetime
+#  id                        :uuid             primary key
+#  project_id                :uuid
+#  title                     :text
+#  title_multiloc            :jsonb
+#  start_at                  :datetime
+#  end_at                    :datetime
+#  participation_method      :string
+#  created_at                :datetime
+#  online_voters_count       :integer
+#  offline_voters_count      :integer
+#  offline_voters_updated_at :datetime
 #
 module Analytics
   module Reporting
@@ -81,19 +81,19 @@ module Analytics
             can miss a voter whose picked inputs were all deleted later, whom
             this count keeps.
           DOC
-          'manual_voters_amount' => <<~DOC.squish,
+          'offline_voters_count' => <<~DOC.squish,
             For 'voting' phases, the number of people who voted offline (for
             example on paper), as entered by an administrator. Administrators
-            can only enter it for participatory budgeting. NULL when none was
-            entered. The platform never shows a total of online and offline
-            voters: it only uses online_voters_count +
-            COALESCE(manual_voters_amount, 0) to work out each input's share of
-            voters in budgeting results. Report offline voters separately from
-            online_voters_count, and say so if you add them together. Offline
-            voters have no rows in any other table, so they can't be broken
-            down.
+            can only enter it for participatory budgeting. 0 when none was
+            entered (offline_voters_updated_at tells an entered 0 apart). The
+            platform never shows a total of online and offline voters: it only
+            uses online_voters_count + offline_voters_count to work out each
+            input's share of voters in budgeting results. Report offline voters
+            separately from online_voters_count, and say so if you add them
+            together. Offline voters have no rows in any other table, so they
+            can't be broken down.
           DOC
-          'manual_voters_last_updated_at' => 'When an administrator last changed manual_voters_amount (UTC), or NULL if never.'
+          'offline_voters_updated_at' => 'When an administrator last changed offline_voters_count (UTC), or NULL if never.'
         }
       end
 

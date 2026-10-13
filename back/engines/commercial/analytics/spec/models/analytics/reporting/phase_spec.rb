@@ -61,8 +61,8 @@ RSpec.describe Analytics::Reporting::Phase do
       voting_phase.set_manual_voters(3, create(:admin))
       voting_phase.save!
 
-      expect(voting_row.manual_voters_amount).to eq 3
-      expect(voting_row.manual_voters_last_updated_at).to eq voting_phase.reload.manual_voters_last_updated_at
+      expect(voting_row.offline_voters_count).to eq 3
+      expect(voting_row.offline_voters_updated_at).to eq voting_phase.reload.manual_voters_last_updated_at
     end
 
     it 'has no online voters once a phase stops being a voting phase' do
@@ -75,7 +75,7 @@ RSpec.describe Analytics::Reporting::Phase do
     end
 
     it 'has no voters for other participation methods' do
-      expect([row.online_voters_count, row.manual_voters_amount, row.manual_voters_last_updated_at]).to eq [0, nil, nil]
+      expect([row.online_voters_count, row.offline_voters_count, row.offline_voters_updated_at]).to eq [0, 0, nil]
     end
   end
 
