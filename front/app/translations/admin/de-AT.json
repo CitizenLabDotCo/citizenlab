@@ -2053,7 +2053,7 @@
   "app.containers.Admin.projects.project.publishOpenAdmins": "Admins & Manager*innen",
   "app.containers.Admin.projects.project.publishOpenAdminsDescription": "Nur Admins und Projektmanager*innen.",
   "app.containers.Admin.projects.project.publishOpenEveryone": "Alle",
-  "app.containers.Admin.projects.project.publishOpenEveryoneDescription2": "Jede:r Einwohner:in kann es sehen.",
+  "app.containers.Admin.projects.project.publishOpenEveryoneDescription2": "Jede Person kann es sehen.",
   "app.containers.Admin.projects.project.publishOpenGroups": "Ausgewählte Gruppen",
   "app.containers.Admin.projects.project.publishOpenGroupsDescription": "Nur Personen in den von Ihnen ausgewählten Gruppen.",
   "app.containers.Admin.projects.project.publishRestoreToDraft": "Als Entwurf wiederherstellen",
