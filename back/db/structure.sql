@@ -2707,14 +2707,18 @@ CREATE TABLE public.feedback_prompts (
     subject_id uuid,
     status character varying DEFAULT 'pending'::character varying NOT NULL,
     shown_at timestamp(6) without time zone,
+    responded_at timestamp(6) without time zone,
     score integer,
     comment text,
+    trigger character varying,
+    admin_area character varying,
     ui_version character varying,
     staff boolean DEFAULT false NOT NULL,
     role character varying,
     locale character varying,
     days_since_last_active integer,
     project_origin character varying,
+    previously_shown_count integer,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
