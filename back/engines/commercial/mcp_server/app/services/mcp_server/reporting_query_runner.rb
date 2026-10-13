@@ -8,12 +8,14 @@ module McpServer
   #   single SELECT over the unqualified whitelisted reporting views with allowlisted
   #   functions, and rejects with a message the model can correct itself from.
   #
-  #   Layer 2 (here): the real security boundary, enforced by Postgres. The query runs
-  #   in a transaction under the `analytics_reader` role (SELECT only on the reporting
-  #   views) with resource limits. Apartment has already pinned `search_path` to the
-  #   current tenant schema, so unqualified names resolve there; we only assert up
-  #   front that we are in a real tenant. The role and limits are `SET LOCAL`, so they
-  #   revert when the transaction ends and the pooled connection returns clean.
+  #   Layer 2 (here): enforced by Postgres, but it rests on layer 1. The query runs in
+  #   a transaction under the `analytics_reader` role (SELECT only on the reporting
+  #   views) with a statement and lock timeout. The role is shared by every tenant:
+  #   Apartment's `search_path` and layer 1's ban on qualified names are what keep a
+  #   query inside its own tenant, and we assert up front that we are in one. Layer 1's
+  #   function allowlist is also what stops a query resetting the role through
+  #   `set_config`. The settings are `SET LOCAL`, so the block rolls back to drop them
+  #   when it returns, rather than leaving them on a caller's transaction.
   class ReportingQueryRunner
     class Rejected < StandardError; end
 
@@ -28,6 +30,7 @@ module McpServer
     # @raise [Rejected] if the query is not a valid sandboxed reporting query. The
     #   message is written for the model that wrote the query.
     # @raise [ActiveRecord::StatementInvalid] if Postgres refuses to run it.
+    # @raise [RuntimeError] if there is no tenant to run it in.
     def self.run(query)
       new(query).run
     end
@@ -71,6 +74,10 @@ module McpServer
 
         capped_sql = "SELECT * FROM (#{normalized_sql}) reporting_query LIMIT #{ROW_LIMIT + 1}"
         result = conn.exec_query(capped_sql)
+        # Roll back rather than commit. Inside an outer transaction this block is only
+        # a savepoint, and releasing one leaves the role and the timeouts in force for
+        # whatever the caller runs next. The query reads, so nothing is lost.
+        raise ActiveRecord::Rollback
       end
 
       result
@@ -80,10 +87,9 @@ module McpServer
     # the request's tenant schema; this guards the edge case (e.g. a public-schema
     # context) where the query would otherwise hit the shared reporting views.
     def ensure_tenant_context!
-      schema = Apartment::Tenant.current
-      return if Apartment.tenant_names.include?(schema)
+      return if Tenant.safe_current
 
-      raise ActiveRecord::StatementInvalid, "No tenant context for reporting query (schema: #{schema})."
+      raise "No tenant context for reporting query (schema: #{Apartment::Tenant.current})."
     end
   end
 end

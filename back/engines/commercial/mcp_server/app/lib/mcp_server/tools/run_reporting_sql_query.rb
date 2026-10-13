@@ -1,25 +1,8 @@
 # frozen_string_literal: true
 
 # Runs a read-only reporting query written by the client AI against the curated
-# reporting views, behind a two-layer sandbox:
-#
-#   Layer 1 (McpServer::SqlSandboxer): a pg_query AST validator that accepts only
-#   a single SELECT over the unqualified whitelisted reporting views with
-#   allowlisted functions. Returns an actionable rejection the LLM
-#   can self-correct from.
-#
-#   Layer 2 (here): the real security boundary, enforced by Postgres. Each query
-#   runs in a transaction under the `analytics_reader` role (SELECT only on the
-#   reporting views), with resource limits set. Apartment has already pinned
-#   `search_path` to the current tenant schema, so unqualified names resolve there;
-#   we only assert up front that we are in a real tenant. The role and limits are
-#   `SET LOCAL`, so they auto-revert when the transaction ends and the pooled
-#   connection returns clean.
-#
-# NOTE: layer 2 depends on the `analytics_reader` role and its per-tenant-schema
-# grants existing in the database. Until that provisioning migration lands, valid
-# queries fail closed with a clear "role not provisioned" error rather than
-# running with the app's full privileges.
+# reporting views. Validation and execution, including both sandbox layers, live in
+# McpServer::ReportingQueryRunner.
 class McpServer::Tools::RunReportingSqlQuery < McpServer::BaseTool
   ROW_LIMIT = McpServer::ReportingQueryRunner::ROW_LIMIT
 
@@ -59,7 +42,7 @@ class McpServer::Tools::RunReportingSqlQuery < McpServer::BaseTool
 
       response(
         "Returned #{result.rows.size} row(s)" \
-        "#{result.truncated ? " (truncated to #{ReportingQueryRunner::ROW_LIMIT})" : ''}.",
+        "#{result.truncated ? " (truncated to #{ROW_LIMIT})" : ''}.",
         structured: {
           columns: result.columns,
           rows: result.rows,
