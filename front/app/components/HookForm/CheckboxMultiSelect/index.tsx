@@ -34,6 +34,7 @@ const CheckboxMultiSelect = ({
   name,
   options,
   scrollErrorIntoView,
+  disabled,
   'aria-required': ariaRequired,
 }: Props) => {
   const {
@@ -94,6 +95,7 @@ const CheckboxMultiSelect = ({
                     }
                     ariaLabel={option.label}
                     checked={checkedOptions.includes(option.value)}
+                    disabled={disabled}
                     usePrimaryBorder={false}
                     setRef={index === 0 ? (el) => ref(el) : undefined}
                     ariaInvalid={!!fieldState.error}
