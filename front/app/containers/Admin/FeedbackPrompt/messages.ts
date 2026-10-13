@@ -5,9 +5,10 @@ export default defineMessages({
     id: 'app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion',
     defaultMessage: 'How easy was it to set up this project?',
   },
-  returnFindabilityQuestion: {
-    id: 'app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion',
-    defaultMessage: 'How easy was it to find what you needed today?',
+  returnFindabilityQuestion2: {
+    id: 'app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion2',
+    defaultMessage:
+      'How easy was it to find what you needed in the project today?',
   },
   veryHard: {
     id: 'app.containers.Admin.FeedbackPrompt.veryHard',
