@@ -26,4 +26,19 @@ describe('<Toggle />', () => {
     fireEvent.click(screen.getByTestId('toggle'));
     expect(handleOnChange).not.toHaveBeenCalled();
   });
+
+  it('calls onChange when clicked with the bo variant', () => {
+    const handleOnChange = jest.fn();
+    render(
+      <Toggle
+        checked={false}
+        variant="bo"
+        label="Submitting ideas"
+        onChange={handleOnChange}
+      />
+    );
+
+    fireEvent.click(screen.getByText('Submitting ideas'));
+    expect(handleOnChange).toHaveBeenCalledTimes(1);
+  });
 });
