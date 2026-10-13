@@ -690,6 +690,7 @@
   "app.containers.Admin.FeedbackPrompt.close": "إغلاق هذا السؤال",
   "app.containers.Admin.FeedbackPrompt.commentLabel": "هل هناك أي شيء آخر تود إضافته؟ (اختياري)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "ما مدى سهولة إعداد هذا المشروع؟",
+  "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion2": "ما مدى سهولة العثور على ما كنت تحتاجه في المشروع اليوم؟",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "1 صعب جداً، 7 سهل جداً",
   "app.containers.Admin.FeedbackPrompt.send": "إرسال",
   "app.containers.Admin.FeedbackPrompt.thanks": "شكراً على ملاحظاتك!",

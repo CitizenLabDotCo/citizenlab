@@ -690,6 +690,7 @@
   "app.containers.Admin.FeedbackPrompt.close": "Aperkut una matuuk",
   "app.containers.Admin.FeedbackPrompt.commentLabel": "Ilassutissaqarpiuk? (piumaguit)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "Suliniut una piareersassallugu qanoq ajornanngitsigiva?",
+  "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion2": "Ullumi suliniummi pisariaqartitannik nassaarnissat qanoq ajornanngitsigiva?",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "1 ajornakusoortupilussuuvoq, 7 ajornanngilluinnartuulluni",
   "app.containers.Admin.FeedbackPrompt.send": "Nassiuguk",
   "app.containers.Admin.FeedbackPrompt.thanks": "Qujanaq oqaaseqaatinnut!",

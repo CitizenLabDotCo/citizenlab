@@ -690,6 +690,7 @@
   "app.containers.Admin.FeedbackPrompt.close": "Uždaryti šį klausimą",
   "app.containers.Admin.FeedbackPrompt.commentLabel": "Ar norėtumėte dar ką nors pridurti? (neprivaloma)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "Kaip lengva buvo parengti šį projektą?",
+  "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion2": "Kaip lengva šiandien buvo rasti tai, ko jums reikėjo projekte?",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "1 yra labai sunku, 7 yra labai lengva",
   "app.containers.Admin.FeedbackPrompt.send": "Siųsti",
   "app.containers.Admin.FeedbackPrompt.thanks": "Dėkojame už jūsų atsiliepimą!",

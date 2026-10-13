@@ -690,6 +690,7 @@
   "app.containers.Admin.FeedbackPrompt.close": "Zatvori ovo pitanje",
   "app.containers.Admin.FeedbackPrompt.commentLabel": "Želite li još nešto dodati? (neobavezno)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "Koliko je bilo lako postaviti ovaj projekt?",
+  "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion2": "Koliko je bilo jednostavno pronaći ono što Vam je danas trebalo u projektu?",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "1 je vrlo teško, 7 je vrlo lako",
   "app.containers.Admin.FeedbackPrompt.send": "Pošalji",
   "app.containers.Admin.FeedbackPrompt.thanks": "Hvala vam na povratnim informacijama!",
