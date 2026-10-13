@@ -94,7 +94,7 @@ namespace :single_use do
         pvs = ImpactTracking::Pageview.where(session_id: ids)
 
         # Reject the hash if any of its pageviews is NOT a homepage — the monitor only loaded homepages.
-        next if pvs.where('path !~ ?', home_re).exists?
+        next if pvs.exists?(['path !~ ?', home_re])
 
         if strict
           combos = anon.where(monthly_user_hash: hash).distinct.pluck(:browser_name, :os_name)
@@ -103,7 +103,7 @@ namespace :single_use do
 
         pv_count = pvs.count
         with_pid = pvs.where.not(project_id: nil).count
-        browser, os = anon.where(monthly_user_hash: hash).distinct.pluck(:browser_name, :os_name).first
+        browser, os = anon.where(monthly_user_hash: hash).distinct.pick(:browser_name, :os_name)
         times = anon.where(monthly_user_hash: hash).order(:created_at).pluck(:created_at)
 
         matched_ids.concat(ids)
