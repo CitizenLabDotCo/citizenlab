@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Select } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 import { IOption } from 'typings';
 
 import useProjectById from 'api/projects/useProjectById';
@@ -14,15 +13,12 @@ import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
 
-const StyledSelect = styled(Select)`
-  width: 300px;
-`;
-
 interface Props {
   projectId: string;
+  variant?: 'default' | 'bo';
 }
 
-const IdeaAssignment = ({ projectId }: Props) => {
+const IdeaAssignment = ({ projectId, variant }: Props) => {
   const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);
   const { data: adminsAndMods } = useUsers({ can_moderate_project: projectId });
@@ -71,10 +67,11 @@ const IdeaAssignment = ({ projectId }: Props) => {
       typeof defaultAssigneeId === 'string' ? defaultAssigneeId : 'unassigned';
 
     return (
-      <StyledSelect
+      <Select
         options={getOptions()}
         value={defaultAssigneeValue}
         onChange={onAssigneeChange}
+        variant={variant}
       />
     );
   }

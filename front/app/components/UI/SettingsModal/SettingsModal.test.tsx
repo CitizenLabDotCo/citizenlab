@@ -13,6 +13,14 @@ const messages = {
     id: 'app.components.UI.SettingsModal.test.notifications',
     defaultMessage: 'Notifications',
   },
+  phase: {
+    id: 'app.components.UI.SettingsModal.test.phase',
+    defaultMessage: 'Phase',
+  },
+  emails: {
+    id: 'app.components.UI.SettingsModal.test.emails',
+    defaultMessage: 'Emails',
+  },
 };
 
 const sections: SettingsModalSection[] = [
@@ -143,6 +151,27 @@ describe('SettingsModal', () => {
     expect(
       screen.queryByRole('button', { name: 'Save changes' })
     ).not.toBeInTheDocument();
+  });
+
+  it('labels each group once, and arrow keys move across groups', async () => {
+    renderModal({
+      sections: [
+        { ...sections[0], group: messages.phase },
+        { ...sections[1], group: messages.emails },
+      ],
+    });
+
+    expect(screen.getByText('Phase')).toBeInTheDocument();
+    expect(screen.getByText('Emails')).toBeInTheDocument();
+    expect(screen.getAllByRole('tab')).toHaveLength(2);
+
+    await userEvent.click(screen.getByRole('tab', { name: 'Moderation' }));
+    await userEvent.keyboard('{ArrowDown}');
+
+    expect(screen.getByRole('tab', { name: 'Notifications' })).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
   });
 
   it('renders nothing when there are no sections', () => {

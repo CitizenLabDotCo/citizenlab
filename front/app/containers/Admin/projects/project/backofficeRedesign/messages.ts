@@ -99,10 +99,6 @@ export default defineMessages({
     defaultMessage:
       'Documents and recordings added to this project as extra input.',
   },
-  noAttachments: {
-    id: 'app.containers.Admin.projects.project.noAttachments',
-    defaultMessage: 'No attachments',
-  },
   filesCount: {
     id: 'app.containers.Admin.projects.project.filesCount',
     defaultMessage: '{count, plural, one {# file} other {# files}}',
@@ -345,9 +341,74 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.topicTags',
     defaultMessage: 'Topic tags',
   },
-  settingsCancel: {
-    id: 'app.containers.Admin.projects.project.settingsCancel',
-    defaultMessage: 'Cancel',
+  settingsTitle: {
+    id: 'app.containers.Admin.projects.project.settingsTitle',
+    defaultMessage: 'Settings',
+  },
+  settingsSave: {
+    id: 'app.containers.Admin.projects.project.settingsSave',
+    defaultMessage: 'Save',
+  },
+  settingsProjectGroup: {
+    id: 'app.containers.Admin.projects.project.settingsProjectGroup',
+    defaultMessage: 'Project',
+  },
+  settingsInputsGroup: {
+    id: 'app.containers.Admin.projects.project.settingsInputsGroup',
+    defaultMessage: 'Inputs',
+  },
+  settingsTags: {
+    id: 'app.containers.Admin.projects.project.settingsTags',
+    defaultMessage: 'Tags',
+  },
+  settingsPerspectives: {
+    id: 'app.containers.Admin.projects.project.settingsPerspectives',
+    defaultMessage: 'Perspectives',
+  },
+  settingsProjectUrl: {
+    id: 'app.containers.Admin.projects.project.settingsProjectUrl',
+    defaultMessage: 'Project URL',
+  },
+  settingsProjectContext: {
+    id: 'app.containers.Admin.projects.project.settingsProjectContext',
+    defaultMessage: 'Project context',
+  },
+  settingsClearParticipationData: {
+    id: 'app.containers.Admin.projects.project.settingsClearParticipationData',
+    defaultMessage: 'Clear participation data',
+  },
+  settingsReset: {
+    id: 'app.containers.Admin.projects.project.settingsReset',
+    defaultMessage: 'Reset',
+  },
+  resetDataModalTitle: {
+    id: 'app.containers.Admin.projects.project.resetDataModalTitle',
+    defaultMessage: 'Reset all participation data?',
+  },
+  resetDataModalDescription: {
+    id: 'app.containers.Admin.projects.project.resetDataModalDescription',
+    defaultMessage:
+      'This permanently deletes all inputs, comments, votes, reactions, survey and poll responses, volunteers and event registrants from this project. This can’t be undone.',
+  },
+  resetDataConfirmationWord: {
+    id: 'app.containers.Admin.projects.project.resetDataConfirmationWord',
+    defaultMessage: 'Reset',
+  },
+  resetDataButton: {
+    id: 'app.containers.Admin.projects.project.resetDataButton',
+    defaultMessage: 'Reset data',
+  },
+  settingsCreateAndManageTags: {
+    id: 'app.containers.Admin.projects.project.settingsCreateAndManageTags',
+    defaultMessage: 'Create and manage',
+  },
+  settingsAddTag: {
+    id: 'app.containers.Admin.projects.project.settingsAddTag',
+    defaultMessage: 'Add tag',
+  },
+  manageFiles: {
+    id: 'app.containers.Admin.projects.project.manageFiles',
+    defaultMessage: 'Manage files',
   },
   settingsSaveChanges: {
     id: 'app.containers.Admin.projects.project.settingsSaveChanges',

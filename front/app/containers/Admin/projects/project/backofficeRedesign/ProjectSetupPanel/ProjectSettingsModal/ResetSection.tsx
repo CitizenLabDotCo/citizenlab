@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Text, Title } from '@citizenlab/cl2-component-library';
+import { Button, bo } from '@citizenlab/cl2-component-library';
 
 import useResetProject from 'api/projects/useResetProject';
 
 import dataMessages from 'containers/Admin/projects/project/data/messages';
 
-import Modal from 'components/UI/Modal';
+import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
+import TypedDeleteConfirmationModal from 'components/UI/TypedDeleteConfirmationModal';
 
 import { useIntl } from 'utils/cl-intl';
+
+import messages from '../../messages';
 
 interface Props {
   projectId: string;
@@ -20,63 +23,41 @@ const ResetSection = ({ projectId }: Props) => {
   const { mutate: resetProject, isPending } = useResetProject();
 
   return (
-    <Box>
-      <Text variant="boSection" mb="8px">
-        {formatMessage(dataMessages.dataTitle)}
-      </Text>
-      <Text variant="boHelper" mb="4px">
-        {formatMessage(dataMessages.dataDescription)}
-      </Text>
-      <Text variant="boHelper" color="error" mb="16px">
-        {formatMessage(dataMessages.confirmationDescription)}
-      </Text>
-      <Button
-        buttonStyle="bo-delete"
-        width="auto"
-        onClick={() => setConfirmOpened(true)}
-        id="e2e-reset-participation-data"
-      >
-        {formatMessage(dataMessages.resetParticipationData)}
-      </Button>
-
-      <Modal
-        opened={confirmOpened}
-        close={() => setConfirmOpened(false)}
-        ariaLabelledBy="reset-participation-data-title"
-      >
-        <Title
-          id="reset-participation-data-title"
-          variant="h4"
-          fontWeight="semi-bold"
-        >
-          {formatMessage(dataMessages.confirmationTitle)}
-        </Title>
-        <Text variant="boHelper" mb="16px">
-          {formatMessage(dataMessages.confirmationDescription)}
-        </Text>
-        <Box display="flex" justifyContent="flex-end" gap="12px">
+    <>
+      <SettingsSection
+        title={formatMessage(messages.settingsClearParticipationData)}
+        description={formatMessage(dataMessages.dataDescription)}
+        action={
           <Button
             buttonStyle="bo-secondary"
             width="auto"
-            onClick={() => setConfirmOpened(false)}
+            height={bo.buttonMedium.height}
+            padding={bo.buttonMedium.padding}
+            fontSize={bo.buttonMedium.fontSize}
+            onClick={() => setConfirmOpened(true)}
+            id="e2e-reset-participation-data"
           >
-            {formatMessage(dataMessages.confirmationNo)}
+            {formatMessage(messages.settingsReset)}
           </Button>
-          <Button
-            buttonStyle="bo-delete"
-            width="auto"
-            processing={isPending}
-            onClick={() =>
-              resetProject(projectId, {
-                onSuccess: () => setConfirmOpened(false),
-              })
-            }
-          >
-            {formatMessage(dataMessages.confirmationYes)}
-          </Button>
-        </Box>
-      </Modal>
-    </Box>
+        }
+      />
+
+      <TypedDeleteConfirmationModal
+        variant="bo"
+        opened={confirmOpened}
+        onClose={() => setConfirmOpened(false)}
+        onConfirm={() =>
+          resetProject(projectId, {
+            onSuccess: () => setConfirmOpened(false),
+          })
+        }
+        title={messages.resetDataModalTitle}
+        mainWarning={messages.resetDataModalDescription}
+        confirmationWord={messages.resetDataConfirmationWord}
+        deleteButtonText={messages.resetDataButton}
+        isDeleting={isPending}
+      />
+    </>
   );
 };
 

@@ -28,7 +28,7 @@ interface ContainerProps {
 const ringColor = (color: string) =>
   `0 0 0 3px color-mix(in srgb, ${color} 16%, transparent)`;
 
-const boLabelStyle = css`
+export const boLabelStyle = css`
   > label {
     font-size: ${fontSizes.xs}px;
     font-weight: 400;
@@ -38,7 +38,7 @@ const boLabelStyle = css`
   }
 `;
 
-const boInputStyle = css`
+export const boInputStyle = css`
   height: 36px;
   padding: 0 11px;
   border: 1px solid ${colors.grey300};

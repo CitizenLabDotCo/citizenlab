@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Divider } from '@citizenlab/cl2-component-library';
+import { Button } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { CLErrors } from 'typings';
 
@@ -8,11 +8,10 @@ import projectsKeys from 'api/projects/keys';
 import { IProjectData, IUpdatedProjectProperties } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import { useValidateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
-import generalMessages from 'containers/Admin/projects/project/general/messages';
-import ProjectManagementSection from 'containers/Admin/projects/project/permissions/Project/ProjectManagementSection';
-import ProjectInputTopics from 'containers/Admin/projects/project/topics';
 
 import SettingsModal, {
   SettingsModalSection,
@@ -25,8 +24,10 @@ import { validateSlug } from 'utils/textUtils';
 import messages from '../../messages';
 
 import GeneralSection from './GeneralSection';
-import ResetSection from './ResetSection';
+import ManagementSection from './ManagementSection';
+import PerspectivesSection from './PerspectivesSection';
 import ResourcesSection from './ResourcesSection';
+import TagsSection from './TagsSection';
 
 interface Props {
   project: IProjectData;
@@ -40,6 +41,9 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
 
   const { mutateAsync: updateProject } = useUpdateProject();
   const validateProjectContext = useValidateProjectContext();
+  const perspectivesActive = useFeatureFlag({
+    name: 'live_auto_input_topics',
+  });
 
   const [processing, setProcessing] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors>({});
@@ -117,76 +121,74 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
   const sections: SettingsModalSection[] = [
     {
       name: 'general',
+      group: messages.settingsProjectGroup,
       label: messages.settingsGeneral,
       icon: 'settings',
       content: (
-        <>
-          <GeneralSection
-            spaceId={projectAttrs.space_id}
-            folderId={projectAttrs.folder_id}
-            projectInRoot={projectInRoot}
-            contextError={projectContextError}
-            slug={slug}
-            currentSlug={project.attributes.slug}
-            showSlugErrorMessage={showSlugErrorMessage}
-            apiErrors={apiErrors}
-            onContextChange={handleContextChange}
-            onSlugChange={handleSlugChange}
-          />
-          <Divider />
-          <ResetSection projectId={projectId} />
-        </>
+        <GeneralSection
+          projectId={projectId}
+          spaceId={projectAttrs.space_id ?? null}
+          folderId={projectAttrs.folder_id ?? null}
+          projectInRoot={projectInRoot}
+          contextError={projectContextError}
+          slug={slug}
+          showSlugErrorMessage={showSlugErrorMessage}
+          apiErrors={apiErrors}
+          onContextChange={handleContextChange}
+          onSlugChange={handleSlugChange}
+        />
       ),
     },
     {
+      name: 'management',
+      group: messages.settingsProjectGroup,
+      label: messages.settingsManagement,
+      icon: 'users',
+      content: <ManagementSection projectId={projectId} />,
+    },
+    {
       name: 'resources',
+      group: messages.settingsProjectGroup,
       label: messages.settingsResources,
       icon: 'paperclip',
       content: <ResourcesSection projectId={projectId} />,
     },
     {
-      name: 'management',
-      label: messages.settingsManagement,
-      icon: 'user',
-      content: (
-        <Box>
-          <ProjectManagementSection projectId={projectId} />
-        </Box>
-      ),
-    },
-    {
-      name: 'input-tags',
-      label: generalMessages.inputTags,
+      name: 'tags',
+      group: messages.settingsInputsGroup,
+      label: messages.settingsTags,
       icon: 'label',
-      content: <ProjectInputTopics />,
+      content: <TagsSection projectId={projectId} />,
     },
+    ...(perspectivesActive
+      ? [
+          {
+            name: 'perspectives',
+            group: messages.settingsInputsGroup,
+            label: messages.settingsPerspectives,
+            icon: 'stars',
+            content: <PerspectivesSection projectId={projectId} />,
+          } satisfies SettingsModalSection,
+        ]
+      : []),
   ];
 
   return (
     <SettingsModal
       opened={opened}
       close={handleCancel}
-      header={formatMessage(messages.projectSettings)}
+      header={formatMessage(messages.settingsTitle)}
       sections={sections}
       footer={
-        <Box display="flex" gap="8px">
-          <Button
-            buttonStyle="bo-secondary"
-            width="auto"
-            onClick={handleCancel}
-          >
-            {formatMessage(messages.settingsCancel)}
-          </Button>
-          <Button
-            buttonStyle="bo-primary"
-            width="auto"
-            processing={processing}
-            onClick={handleSave}
-            id="e2e-project-settings-save"
-          >
-            {formatMessage(messages.settingsSaveChanges)}
-          </Button>
-        </Box>
+        <Button
+          buttonStyle="bo-primary"
+          width="auto"
+          processing={processing}
+          onClick={handleSave}
+          id="e2e-project-settings-save"
+        >
+          {formatMessage(messages.settingsSave)}
+        </Button>
       }
     />
   );

@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Text, Input } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Text,
+  Input,
+} from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -25,6 +30,7 @@ export interface Props {
   showSlugErrorMessage: boolean;
   onSlugChange: (slug: string) => void;
   showSlugChangedWarning: boolean;
+  variant?: 'default' | 'bo';
 }
 
 const SlugInput = ({
@@ -35,50 +41,93 @@ const SlugInput = ({
   showSlugErrorMessage,
   onSlugChange,
   showSlugChangedWarning,
+  variant = 'default',
 }: Props) => {
   const locale = useLocale();
   const { data: appConfig } = useAppConfiguration();
   const { formatMessage } = useIntl();
 
-  if (appConfig) {
-    const hostName = appConfig.data.attributes.host;
-    const previewUrl = `${hostName}/${locale}/${pathnameWithoutSlug}/${slug}`;
+  if (!appConfig) return null;
 
+  const hostName = appConfig.data.attributes.host;
+  const urlPrefix = `${hostName}/${locale}/${pathnameWithoutSlug}/`;
+  const slugLabel = formatMessage(slugInputMessages.urlSlugLabel);
+
+  const errors = (
+    <>
+      {/* Backend error */}
+      {apiErrors && <Error fieldName="slug" apiErrors={apiErrors.slug} />}
+      {/* Frontend error */}
+      {showSlugErrorMessage && (
+        <Error text={formatMessage(messages.regexError)} />
+      )}
+    </>
+  );
+
+  if (variant === 'bo') {
     return (
       <>
-        <Input
-          label={
-            <span className={intercomLabelClassname}>
-              {formatMessage(slugInputMessages.urlSlugLabel)}
-            </span>
-          }
-          labelTooltipText={formatMessage(slugInputMessages.slugTooltip)}
-          type="text"
-          onChange={onSlugChange}
-          value={slug}
-        />
-        <Text mb={showSlugChangedWarning ? '16px' : '0'}>
-          <i>
-            <FormattedMessage {...slugInputMessages.resultingURL} />
-          </i>
-          : {previewUrl}
-        </Text>
+        <Box display="flex" alignItems="center" gap="4px" mb="4px">
+          <Text variant="boMicro" color="textPrimary" m="0px">
+            {slugLabel}
+          </Text>
+          <IconTooltip
+            content={formatMessage(slugInputMessages.slugTooltip)}
+            iconSize="14px"
+          />
+        </Box>
+        <Box display="flex" alignItems="center" gap="8px">
+          <Text
+            variant="boMicro"
+            color="coolGrey500"
+            whiteSpace="nowrap"
+            m="0px"
+          >
+            {urlPrefix}
+          </Text>
+          <Box flex="1" minWidth="0">
+            <Input
+              variant="bo"
+              type="text"
+              ariaLabel={slugLabel}
+              value={slug}
+              onChange={onSlugChange}
+            />
+          </Box>
+        </Box>
         {showSlugChangedWarning && (
-          <Warning>
-            <FormattedMessage {...slugInputMessages.urlSlugBrokenLinkWarning} />
-          </Warning>
+          <Text variant="boMicro" color="coolGrey700" mt="8px" mb="0px">
+            {formatMessage(slugInputMessages.urlSlugBrokenLinkWarning)}
+          </Text>
         )}
-        {/* Backend error */}
-        {apiErrors && <Error fieldName="slug" apiErrors={apiErrors.slug} />}
-        {/* Frontend error */}
-        {showSlugErrorMessage && (
-          <Error text={formatMessage(messages.regexError)} />
-        )}
+        {errors}
       </>
     );
   }
 
-  return null;
+  return (
+    <>
+      <Input
+        label={<span className={intercomLabelClassname}>{slugLabel}</span>}
+        labelTooltipText={formatMessage(slugInputMessages.slugTooltip)}
+        type="text"
+        onChange={onSlugChange}
+        value={slug}
+      />
+      <Text mb={showSlugChangedWarning ? '16px' : '0'}>
+        <i>
+          <FormattedMessage {...slugInputMessages.resultingURL} />
+        </i>
+        : {`${urlPrefix}${slug}`}
+      </Text>
+      {showSlugChangedWarning && (
+        <Warning>
+          <FormattedMessage {...slugInputMessages.urlSlugBrokenLinkWarning} />
+        </Warning>
+      )}
+      {errors}
+    </>
+  );
 };
 
 export default SlugInput;
