@@ -3856,6 +3856,19 @@ CREATE VIEW public.reporting_input_question_answers AS
                     END
                     ELSE NULL::jsonb
                 END AS multiloc) label)
+  WHERE (((q.input_type)::text <> 'file_upload'::text) OR (EXISTS ( SELECT 1
+           FROM public.file_attachments fa
+          WHERE (fa.id =
+                CASE
+                    WHEN ((a.value ->> 'id'::text) ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'::text) THEN ((a.value ->> 'id'::text))::uuid
+                    ELSE NULL::uuid
+                END))) OR (EXISTS ( SELECT 1
+           FROM public.idea_files f
+          WHERE (f.id =
+                CASE
+                    WHEN ((a.value ->> 'id'::text) ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'::text) THEN ((a.value ->> 'id'::text))::uuid
+                    ELSE NULL::uuid
+                END))))
 UNION ALL
  SELECT i.id AS input_id,
     q.id AS question_id,
@@ -4117,7 +4130,7 @@ UNION ALL
              LEFT JOIN public.ideas ri ON ((((reactions.reactable_type)::text = 'Idea'::text) AND (ri.id = reactions.reactable_id))))
              LEFT JOIN public.comments rc ON ((((reactions.reactable_type)::text = 'Comment'::text) AND (rc.id = reactions.reactable_id))))
              LEFT JOIN public.ideas rci ON ((rci.id = rc.idea_id)))
-          WHERE ((reactions.reactable_type)::text = ANY ((ARRAY['Idea'::character varying, 'Comment'::character varying])::text[]))) r
+          WHERE ((reactions.reactable_type)::text = ANY (ARRAY[('Idea'::character varying)::text, ('Comment'::character varying)::text]))) r
      LEFT JOIN public.phases input_creation_ph ON ((input_creation_ph.id = r.input_creation_phase_id)))
      LEFT JOIN public.phases inferred_ph ON (((inferred_ph.project_id = r.project_id) AND ((inferred_ph.placement_type)::text = 'on_timeline'::text) AND (r.created_at >= inferred_ph.start_at) AND ((inferred_ph.end_at IS NULL) OR (r.created_at < inferred_ph.end_at)))))
 UNION ALL
@@ -4237,7 +4250,7 @@ CREATE VIEW public.reporting_input_imports AS
    FROM ((public.idea_imports ii
      JOIN public.ideas i ON ((i.id = ii.idea_id)))
      LEFT JOIN public.idea_import_files f ON ((f.id = ii.file_id)))
-  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
+  WHERE ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text]));
 
 
 --
@@ -4251,7 +4264,7 @@ CREATE VIEW public.reporting_input_phases AS
     ip.created_at
    FROM (public.ideas_phases ip
      JOIN public.ideas i ON ((i.id = ip.idea_id)))
-  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
+  WHERE ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text]));
 
 
 --
@@ -4290,7 +4303,7 @@ CREATE VIEW public.reporting_input_status_changes AS
             a.acted_at
            FROM (public.activities a
              JOIN public.ideas i ON ((i.id = a.item_id)))
-          WHERE (((a.item_type)::text = 'Idea'::text) AND ((a.action)::text = ANY ((ARRAY['changed_status'::character varying, 'changed_input_status'::character varying])::text[])) AND ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[])))
+          WHERE (((a.item_type)::text = 'Idea'::text) AND ((a.action)::text = ANY (ARRAY[('changed_status'::character varying)::text, ('changed_input_status'::character varying)::text])) AND ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text])))
         )
  SELECT c.id,
     c.input_id,
@@ -4442,7 +4455,7 @@ CREATE VIEW public.reporting_official_feedbacks AS
     ofb.updated_at
    FROM (public.official_feedbacks ofb
      JOIN public.ideas i ON ((i.id = ofb.idea_id)))
-  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
+  WHERE ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text]));
 
 
 --

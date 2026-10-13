@@ -27,8 +27,9 @@ module Analytics
           One row per answer to a form question of an input: survey answers and
           extra idea-form fields. Multi-select and ranking questions produce one
           row per selected or ranked option, matrix questions one row per
-          answered statement. File upload answers only record that a file was
-          attached. Mapping questions are not included. Inputs that skipped a
+          answered statement. File upload answers only record that a file is
+          attached, and only while that file still exists, as on the survey
+          results page. Mapping questions are not included. Inputs that skipped a
           question have no row for it.
         DOC
       end

@@ -3,8 +3,8 @@
 -- key. The form is resolved from the input's creation phase, falling back to
 -- the project form. Multi-select and ranking questions produce one row per
 -- selected or ranked option, matrix questions one row per answered statement.
--- File upload answers only record that a file was attached: the stored file
--- name can hold personal data. Mapping questions (point, line, polygon,
+-- File upload answers only record that a file is attached (the stored file
+-- name can hold personal data), and only while that file still exists. Mapping questions (point, line, polygon,
 -- shapefile upload) and pages are not included.
 --
 -- value_label is the text residents saw for the answer: the option title for
@@ -102,6 +102,25 @@ CROSS JOIN LATERAL (
         END
     END AS multiloc
 ) label
+-- File upload answers must count the files the survey results page counts
+-- (Surveys::ResultsGenerator#visit_file_upload): deleting a file leaves its
+-- answer behind, so only keep answers whose file still exists. The id is cast
+-- only when it is a UUID, since the API accepts any string there.
+WHERE q.input_type <> 'file_upload'
+    OR EXISTS (
+        SELECT 1 FROM file_attachments fa
+        WHERE fa.id = CASE
+            WHEN a.value ->> 'id' ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+            THEN (a.value ->> 'id')::uuid
+        END
+    )
+    OR EXISTS (
+        SELECT 1 FROM idea_files f
+        WHERE f.id = CASE
+            WHEN a.value ->> 'id' ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+            THEN (a.value ->> 'id')::uuid
+        END
+    )
 
 UNION ALL
 

@@ -237,11 +237,26 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
 
     it 'records a file upload answer without the file name' do
       file_upload = create(:custom_field_file_upload, resource: form)
-      response.custom_field_answers.create!(key: file_upload.key, value: { 'id' => SecureRandom.uuid, 'name' => 'jane_doe_cv.pdf' })
+      response.custom_field_answers.create!(key: file_upload.key, value: { 'id' => create(:file_attachment).id, 'name' => 'jane_doe_cv.pdf' })
       row = described_class.find_by!(input_id: response.id)
 
       expect(row.question_type).to eq 'file_upload'
       expect(row.attributes.values).not_to include(a_string_including('jane_doe'))
+    end
+
+    it 'counts the file uploads the survey results page counts' do
+      file_upload = create(:custom_field_file_upload, resource: form)
+      create(:idea_status_proposed)
+      kept, deleted = create_list(:file_attachment, 2)
+      [kept.id, deleted.id, create(:idea_file).id, 'not-a-uuid'].each do |id|
+        create(:native_survey_response, project: project)
+          .custom_field_answers.create!(custom_field: file_upload, key: file_upload.key, value: { 'id' => id, 'name' => 'upload.pdf' })
+      end
+      deleted.destroy!
+      product = Surveys::ResultsGenerator.new(project.phases.first).generate_result_for_field(file_upload.id)
+
+      expect(described_class.where(question_id: file_upload.id).count).to eq product[:questionResponseCount]
+      expect(product[:questionResponseCount]).to eq 2
     end
 
     it 'excludes mapping questions' do
