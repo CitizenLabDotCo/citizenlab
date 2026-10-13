@@ -21,6 +21,7 @@ class SideFxProjectService
     CheckProjectPublicationConsistencyJob.perform_later(project.id)
 
     after_publish project, user if project.admin_publication.published?
+    FeedbackPromptService.new.after_project_create(project, user)
   end
 
   def after_copy(source_project, copied_project, user, start_time)
@@ -83,6 +84,7 @@ class SideFxProjectService
     # We don't want to send out the "project published" campaign when e.g. changing from "archived" to "published"
     after_publish project, user if project.admin_publication.published? && @publication_status_was == 'draft'
     enqueue_scheduled_transition(project.admin_publication)
+    FeedbackPromptService.new.after_project_update(project, user)
   end
 
   def before_destroy(project, user); end
