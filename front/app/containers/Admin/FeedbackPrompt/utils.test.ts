@@ -1,4 +1,9 @@
-import { getAdminArea, getProjectPage } from './utils';
+import {
+  getAdminArea,
+  getProjectPage,
+  saveProjectExit,
+  takeProjectExit,
+} from './utils';
 
 jest.mock('utils/getRoutePattern', () => ({
   getRoutePattern: (path: string) =>
@@ -44,5 +49,25 @@ describe('getAdminArea', () => {
       '/:locale/admin/dashboard/overview'
     );
     expect(getAdminArea('/en/projects/my-project')).toBeUndefined();
+  });
+});
+
+describe('takeProjectExit', () => {
+  beforeEach(() => sessionStorage.clear());
+
+  it('returns a saved exit once', () => {
+    const exit = {
+      projectId: 'p1',
+      adminArea: '/:locale/admin/projects/:projectId/general',
+    };
+    saveProjectExit(exit);
+
+    expect(takeProjectExit()).toEqual(exit);
+    expect(takeProjectExit()).toBeNull();
+  });
+
+  it('ignores a malformed value', () => {
+    sessionStorage.setItem('feedback_prompt_project_exit', '{"projectId":1}');
+    expect(takeProjectExit()).toBeNull();
   });
 });

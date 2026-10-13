@@ -19,24 +19,21 @@ import {
   ProjectPage,
   getAdminArea,
   getProjectPage,
+  saveProjectExit,
+  takeProjectExit,
 } from './utils';
 
 interface ProjectVisit extends ProjectPage {
   startedAt: number;
 }
 
-// Asks admins and project managers short questions about how the back office
-// works for them. Due prompts are decided by the back-end; we check for one at
-// the moments a task is likely done: after a successful save, and after leaving
-// a project's back office.
 const FeedbackPrompt = () => {
   const queryClient = useQueryClient();
   const isBackofficeRedesign = useProjectBackofficeRedesign();
-  const { mutate: showNext } = useShowNextFeedbackPrompt();
+  const { mutateAsync: showNext } = useShowNextFeedbackPrompt();
   const [prompt, setPrompt] = useState<IFeedbackPromptData | null>(null);
   const busy = useRef(false);
   const adminArea = useRef(getAdminArea(window.location.pathname));
-  const projectVisit = useRef<ProjectVisit | null>(null);
 
   const uiVersion: FeedbackPromptUiVersion = isBackofficeRedesign
     ? 'project_backoffice_v2'
@@ -50,27 +47,34 @@ const FeedbackPrompt = () => {
       if (busy.current) return;
 
       busy.current = true;
-      showNext(
-        { trigger, uiVersion, adminArea: area },
-        {
-          onSuccess: (response) => {
-            if (response) {
-              setPrompt(response.data);
-            } else {
-              busy.current = false;
-            }
-          },
-          onError: () => {
+      // mutate's call-site callbacks are dropped when the observer unsubscribes
+      // (e.g. StrictMode's remount), losing a prompt the server marked as shown.
+      showNext({ trigger, uiVersion, adminArea: area })
+        .then((response) => {
+          if (response) {
+            setPrompt(response.data);
+          } else {
             busy.current = false;
-          },
-        }
-      );
+          }
+        })
+        .catch(() => {
+          busy.current = false;
+        });
     };
 
+    let visit: ProjectVisit | null = null;
     const startVisit = (page: ProjectPage | null) => {
-      projectVisit.current = page && { ...page, startedAt: Date.now() };
+      visit = page && { ...page, startedAt: Date.now() };
     };
-    startVisit(getProjectPage(window.location.pathname));
+    const isLongVisit = (v: ProjectVisit | null): v is ProjectVisit =>
+      !!v && Date.now() - v.startedAt >= MIN_PROJECT_VISIT_MS;
+
+    const currentPage = getProjectPage(window.location.pathname);
+    const exit = takeProjectExit();
+    if (exit && exit.projectId !== currentPage?.projectId) {
+      requestPrompt('project_exit', exit.adminArea);
+    }
+    startVisit(currentPage);
 
     const unsubscribeMutations = queryClient
       .getMutationCache()
@@ -86,15 +90,21 @@ const FeedbackPrompt = () => {
     const pageChanges = pageChanges$.subscribe(({ path }) => {
       adminArea.current = getAdminArea(path);
       const page = getProjectPage(path);
-      const visit = projectVisit.current;
 
       if (visit && visit.projectId === page?.projectId) {
         visit.adminArea = page.adminArea;
         return;
       }
 
-      if (visit && Date.now() - visit.startedAt >= MIN_PROJECT_VISIT_MS) {
-        requestPrompt('project_exit', visit.adminArea);
+      // Leaving the back office unmounts this component, either before or just
+      // after this event, which would drop a prompt the server already marked
+      // as shown. So such an exit is checked on the next back office visit.
+      if (isLongVisit(visit)) {
+        if (adminArea.current) {
+          requestPrompt('project_exit', visit.adminArea);
+        } else {
+          saveProjectExit(visit);
+        }
       }
       startVisit(page);
     });
@@ -102,6 +112,7 @@ const FeedbackPrompt = () => {
     return () => {
       unsubscribeMutations();
       pageChanges.unsubscribe();
+      if (isLongVisit(visit)) saveProjectExit(visit);
     };
   }, [queryClient, showNext, uiVersion]);
 
