@@ -374,6 +374,12 @@ Rails.application.routes.draw do
 
       resources :experiments, only: %i[index create]
 
+      resources :feedback_prompts, only: [] do
+        post :show_next, on: :collection
+        patch :answer, on: :member
+        patch :dismiss, on: :member
+      end
+
       scope 'stats' do
         with_options controller: 'stats_users' do
           get 'users_count'
