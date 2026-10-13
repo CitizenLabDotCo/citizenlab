@@ -82,6 +82,7 @@ class Project < ApplicationRecord
   # https://citizenlabco.slack.com/archives/C015M14HYSF/p1674228018666059
   has_many :project_images, -> { order(:ordering) }, dependent: :destroy
   has_many :project_files, -> { order(:ordering) }, dependent: :destroy
+  has_many :feedback_prompts, as: :subject, dependent: :nullify
   has_many :followers, as: :followable, dependent: :destroy
   has_many :impact_tracking_pageviews, class_name: 'ImpactTracking::Pageview', dependent: :nullify
   has_many :jobs_trackers, class_name: 'Jobs::Tracker', dependent: :destroy
