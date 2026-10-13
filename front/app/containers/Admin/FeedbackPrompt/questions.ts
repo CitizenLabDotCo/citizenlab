@@ -9,7 +9,7 @@ import messages from './messages';
 // 7 (very easy) scale, so questions should be phrased as "How easy was it to…".
 const questions: Record<FeedbackPromptKey, MessageDescriptor> = {
   project_setup_ease: messages.projectSetupEaseQuestion,
-  return_findability: messages.returnFindabilityQuestion,
+  return_findability: messages.returnFindabilityQuestion2,
 };
 
 export default questions;
