@@ -5,13 +5,18 @@ class WebApi::V1::FeedbackPromptsController < ApplicationController
 
   def show_next
     authorize FeedbackPrompt
-    ui_version = params.require(:ui_version)
-    unless FeedbackPrompt::UI_VERSIONS.include?(ui_version)
-      render json: { errors: { ui_version: [{ error: 'inclusion' }] } }, status: :unprocessable_entity
+    errors = show_next_param_errors
+    if errors.present?
+      render json: { errors: errors }, status: :unprocessable_entity
       return
     end
 
-    prompt = FeedbackPromptService.new.show_next(current_user, ui_version: ui_version)
+    prompt = FeedbackPromptService.new.show_next(
+      current_user,
+      trigger: params[:trigger],
+      ui_version: params[:ui_version],
+      admin_area: admin_area_param
+    )
 
     if prompt
       render json: serialize(prompt)
@@ -21,7 +26,7 @@ class WebApi::V1::FeedbackPromptsController < ApplicationController
   end
 
   def answer
-    if @feedback_prompt.update(answer_params.merge(status: 'answered'))
+    if @feedback_prompt.update(answer_params.merge(status: 'answered', responded_at: Time.zone.now))
       render json: serialize(@feedback_prompt)
     else
       render json: { errors: @feedback_prompt.errors.details }, status: :unprocessable_entity
@@ -29,7 +34,7 @@ class WebApi::V1::FeedbackPromptsController < ApplicationController
   end
 
   def dismiss
-    @feedback_prompt.update!(status: 'dismissed')
+    @feedback_prompt.update!(status: 'dismissed', responded_at: Time.zone.now)
     render json: serialize(@feedback_prompt)
   end
 
@@ -38,6 +43,22 @@ class WebApi::V1::FeedbackPromptsController < ApplicationController
   def set_feedback_prompt
     @feedback_prompt = FeedbackPrompt.find(params[:id])
     authorize @feedback_prompt
+  end
+
+  # Checked upfront, since an invalid value would only fail once a due prompt is
+  # being marked as shown.
+  def show_next_param_errors
+    errors = {}
+    errors[:trigger] = [{ error: 'inclusion' }] unless FeedbackPrompt::TRIGGERS.include?(params[:trigger])
+    errors[:ui_version] = [{ error: 'inclusion' }] unless FeedbackPrompt::UI_VERSIONS.include?(params[:ui_version])
+    errors
+  end
+
+  # Dropped rather than rejected: a page whose route doesn't fit the format
+  # shouldn't cost the answer, and only route patterns may be stored.
+  def admin_area_param
+    admin_area = params[:admin_area].to_s
+    admin_area if FeedbackPrompt::ADMIN_AREA_FORMAT.match?(admin_area)
   end
 
   def answer_params
