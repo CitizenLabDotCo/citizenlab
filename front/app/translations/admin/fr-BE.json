@@ -1911,7 +1911,7 @@
   "app.containers.Admin.projects.project.insights.totalPopulation": "Population totale",
   "app.containers.Admin.projects.project.insights.totalVotes": "Total des votes",
   "app.containers.Admin.projects.project.insights.visitors": "Visiteurs",
-  "app.containers.Admin.projects.project.insights.visitorsOverTime": "Visiteurs au fil du temps",
+  "app.containers.Admin.projects.project.insights.visitorsOverTime": "Évolution des visites",
   "app.containers.Admin.projects.project.insights.volunteerings": "Volontaires",
   "app.containers.Admin.projects.project.insights.voters": "Votants",
   "app.containers.Admin.projects.project.insights.votes": "Votes",
