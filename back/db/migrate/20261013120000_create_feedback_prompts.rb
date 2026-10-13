@@ -12,8 +12,6 @@ class CreateFeedbackPrompts < ActiveRecord::Migration[7.2]
       t.integer :score
       t.text :comment
 
-      # Snapshot of the circumstances, frozen at the time the prompt is shown, so
-      # reporting doesn't depend on flags or roles that change or disappear later.
       t.string :trigger
       t.string :admin_area
       t.string :ui_version

@@ -39,14 +39,6 @@ class FeedbackPrompt < ApplicationRecord
   # The registry of prompts. Adding a prompt takes an entry here, a call to
   # FeedbackPromptService#enqueue at the moment it should be asked, and its
   # question in front/app/containers/Admin/FeedbackPrompt/questions.ts.
-  # - audience: who may be asked, a key of AUDIENCES.
-  # - subject_type: the record the prompt is about, if any. A subject gets at most one prompt.
-  # - triggers: the moments the prompt may be shown at, from TRIGGERS.
-  # - admin_area: only show it on (or right after leaving) back office pages under
-  #   this route pattern, so the question matches what the user was doing. nil: anywhere.
-  # - cooldown: how long before the same user can be shown this prompt again.
-  #   Each prompt has its own cooldown; prompts don't hold each other back.
-  # - expires_after: how long a due prompt waits to be shown before it's dropped.
   PROJECT_ADMIN_AREA = '/:locale/admin/projects/:projectId'
   PROMPTS = {
     'project_setup_ease' => {
@@ -72,8 +64,6 @@ class FeedbackPrompt < ApplicationRecord
     'managers' => ->(user) { user.admin? || user.moderator? }
   }.freeze
 
-  # save: after a successful save in the back office.
-  # project_exit: after leaving a project's back office pages, having spent some time there.
   TRIGGERS = %w[save project_exit].freeze
   STATUSES = %w[pending shown answered dismissed].freeze
   SCORES = (1..7)

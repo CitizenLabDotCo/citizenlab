@@ -54,8 +54,6 @@ class WebApi::V1::FeedbackPromptsController < ApplicationController
     errors
   end
 
-  # Dropped rather than rejected: a page whose route doesn't fit the format
-  # shouldn't cost the answer, and only route patterns may be stored.
   def admin_area_param
     admin_area = params[:admin_area].to_s
     admin_area if FeedbackPrompt::ADMIN_AREA_FORMAT.match?(admin_area)

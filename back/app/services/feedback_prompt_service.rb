@@ -3,8 +3,6 @@
 class FeedbackPromptService
   RETURNING_USER_ABSENCE = 60.days
 
-  # Marks a prompt as due for the user. It is shown later, on the user's next
-  # saved change in the back office (see #show_next).
   def enqueue(user, key, subject: nil, days_since_last_active: nil)
     return unless FeedbackPrompt.askable?(key, user)
     return if FeedbackPrompt.cooling_down?(key, user)
@@ -23,9 +21,6 @@ class FeedbackPromptService
     enqueue(user, 'project_setup_ease', subject: project)
   end
 
-  # Asked after the project's setup is done: when it's published or scheduled to be
-  # published for the first time. A scheduled launch going live later doesn't count,
-  # since the setup work happened when it was scheduled.
   def after_project_update(project, user)
     admin_pub = project.admin_publication
     just_published = admin_pub.saved_change_to_first_published_at? &&
@@ -38,7 +33,6 @@ class FeedbackPromptService
     enqueue(user, 'project_setup_ease', subject: project)
   end
 
-  # Called when a session starts, with the user's last activity before it.
   def after_session_start(user, last_active_at_was)
     return if last_active_at_was.nil? || last_active_at_was > RETURNING_USER_ABSENCE.ago
 
@@ -46,8 +40,6 @@ class FeedbackPromptService
     enqueue(user, 'return_findability', days_since_last_active: days)
   end
 
-  # Returns the oldest prompt that is due and may be shown at this trigger, marked
-  # as shown with a snapshot of the current context, or nil when there is none.
   def show_next(user, trigger:, ui_version:, admin_area: nil)
     prompt = user.feedback_prompts.pending.order(:created_at).find do |p|
       !p.expired? &&
