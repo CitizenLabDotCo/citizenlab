@@ -48,6 +48,34 @@ describe McpServer::Tools::AttachImage do
     expect(idea.idea_images.first.image.file.read).to eq(fixture_path.binread)
   end
 
+  it 'attaches an image to a folder' do
+    folder = create(:project_folder, admin_publication_attributes: { publication_status: 'draft' })
+
+    response = run_mcp_tool(
+      described_class,
+      params: { resource_type: 'folder', resource_id: folder.id, remote_url: remote_url, alt_text_multiloc: { 'en' => 'A pool' } },
+      current_user:
+    )
+
+    expect(response).not_to be_error
+    expect(folder.reload.images.count).to eq(1)
+    expect(folder.images.first.image.file.read).to eq(fixture_path.binread)
+    expect(folder.images.first.alt_text_multiloc).to eq('en' => 'A pool')
+  end
+
+  it 'refuses when the folder is published' do
+    folder = create(:project_folder)
+
+    response = run_mcp_tool(
+      described_class,
+      params: { resource_type: 'folder', resource_id: folder.id, remote_url: remote_url },
+      current_user:
+    )
+
+    expect(response).to be_unauthorized_project
+    expect(folder.reload.images.count).to eq(0)
+  end
+
   it 'ignores alt text for inputs, which have no alt-text field' do
     idea = create(:idea, project: project)
 

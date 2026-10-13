@@ -81,6 +81,8 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         block_end_at
         confirmation_required
         early_access_opt_ins
+        email_bounce_reason
+        email_bounced_at
         email_confirmed_at
         imported
         invite_status
@@ -112,12 +114,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
       # rebuilt downstream — never seeded from a template.
       analytics: %w[
         Analytics::DimensionDate
-        Analytics::DimensionLocale
-        Analytics::DimensionLocalesFactVisits
-        Analytics::DimensionProjectsFactVisits
-        Analytics::DimensionReferrerType
         Analytics::DimensionType
-        Analytics::FactVisit
       ],
 
       # AI analysis, insights and embeddings — derived from user content.

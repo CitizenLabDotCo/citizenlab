@@ -53,10 +53,6 @@ module ParticipationMethod
       # Default is to do nothing.
     end
 
-    def author_in_form?(_user)
-      false
-    end
-
     def budget_in_form?(_user)
       false
     end
@@ -82,7 +78,7 @@ module ParticipationMethod
       false
     end
 
-    def form_logic_enabled?
+    def supports_form_logic?
       false
     end
 
@@ -248,10 +244,6 @@ module ParticipationMethod
     end
 
     def supports_custom_field_categories?
-      false
-    end
-
-    def supports_input_topics?
       false
     end
 
