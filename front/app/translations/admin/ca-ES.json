@@ -2339,7 +2339,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.published": "Publicat",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.sort": "Ordena per",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.TableOfContents.contents": "Continguts",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.TableOfContents.empty": "Els encapçalaments de secció es llistaran aquí, amb els seus números de pàgina, quan s'exporti l'informe.",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.TableOfContents.empty": "Els encapçalaments de secció apareixeran aquí, amb els seus números de pàgina, quan s'exporti l'informe.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.TableOfContents.headingLabel": "Encapçalament",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.description": "Descripció:",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeFolders": "Exclou carpetes",

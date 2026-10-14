@@ -2339,7 +2339,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.published": "Publicado",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsWidget.sort": "Ordenar por",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.TableOfContents.contents": "Índice",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.TableOfContents.empty": "Los encabezados de sección se enumerarán aquí, con sus números de página, cuando se exporte el informe.",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.TableOfContents.empty": "Los encabezados de sección aparecerán aquí, con sus números de página, cuando se exporte el informe.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.TableOfContents.headingLabel": "Encabezado",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.description": "Descripción:",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets._shared.excludeFolders": "Excluir carpetas",
