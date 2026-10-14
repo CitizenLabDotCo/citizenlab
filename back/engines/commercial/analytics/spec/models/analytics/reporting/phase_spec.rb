@@ -65,13 +65,15 @@ RSpec.describe Analytics::Reporting::Phase do
       expect(voting_row.offline_voters_updated_at).to eq voting_phase.reload.manual_voters_last_updated_at
     end
 
-    it 'has no online voters once a phase stops being a voting phase' do
+    it 'has no voters once a phase stops being a voting phase' do
       create(:basket, phase: voting_phase)
       Basket.update_counts(voting_phase)
+      voting_phase.set_manual_voters(3, create(:admin))
+      voting_phase.save!
       voting_phase.update!(participation_method: 'ideation')
 
-      expect(voting_phase.reload.baskets_count).to eq 1
-      expect(voting_row.online_voters_count).to eq 0
+      expect(voting_phase.reload).to have_attributes(baskets_count: 1, manual_voters_amount: 3, manual_voters_last_updated_at: be_present)
+      expect([voting_row.online_voters_count, voting_row.offline_voters_count, voting_row.offline_voters_updated_at]).to eq [0, 0, nil]
     end
 
     it 'has no voters for other participation methods' do

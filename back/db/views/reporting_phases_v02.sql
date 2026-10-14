@@ -17,8 +17,8 @@ SELECT
     ph.end_at,
     ph.participation_method,
     ph.created_at,
-    -- baskets_count isn't reset when a phase stops being a voting phase.
+    -- The phase keeps these values when it stops being a voting phase.
     CASE WHEN ph.participation_method = 'voting' THEN ph.baskets_count ELSE 0 END AS online_voters_count,
-    COALESCE(ph.manual_voters_amount, 0) AS offline_voters_count,
-    ph.manual_voters_last_updated_at AS offline_voters_updated_at
+    CASE WHEN ph.participation_method = 'voting' THEN COALESCE(ph.manual_voters_amount, 0) ELSE 0 END AS offline_voters_count,
+    CASE WHEN ph.participation_method = 'voting' THEN ph.manual_voters_last_updated_at END AS offline_voters_updated_at
 FROM phases ph

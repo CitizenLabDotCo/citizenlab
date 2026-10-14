@@ -84,8 +84,9 @@ module Analytics
           'offline_voters_count' => <<~DOC.squish,
             For 'voting' phases, the number of people who voted offline (for
             example on paper), as entered by an administrator. Administrators
-            can only enter it for participatory budgeting. 0 when none was
-            entered (offline_voters_updated_at tells an entered 0 apart). For
+            can only enter it for participatory budgeting. 0 for other phases,
+            and 0 when none was entered (offline_voters_updated_at tells an
+            entered 0 apart). For
             single and multiple voting there is no such count: admins enter only
             offline votes per input (reporting_inputs.offline_votes_count), with
             no number of people behind them. Never work out offline voters from
@@ -97,7 +98,10 @@ module Analytics
             together. Offline voters have no rows in any other table, so they
             can't be broken down.
           DOC
-          'offline_voters_updated_at' => 'When an administrator last changed offline_voters_count (UTC), or NULL if never.'
+          'offline_voters_updated_at' => <<~DOC.squish
+            When an administrator last changed offline_voters_count (UTC), or
+            NULL if never. NULL for other phases.
+          DOC
         }
       end
 

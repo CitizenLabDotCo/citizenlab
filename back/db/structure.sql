@@ -4512,8 +4512,14 @@ CREATE VIEW public.reporting_phases AS
             WHEN ((participation_method)::text = 'voting'::text) THEN baskets_count
             ELSE 0
         END AS online_voters_count,
-    COALESCE(manual_voters_amount, 0) AS offline_voters_count,
-    manual_voters_last_updated_at AS offline_voters_updated_at
+        CASE
+            WHEN ((participation_method)::text = 'voting'::text) THEN COALESCE(manual_voters_amount, 0)
+            ELSE 0
+        END AS offline_voters_count,
+        CASE
+            WHEN ((participation_method)::text = 'voting'::text) THEN manual_voters_last_updated_at
+            ELSE NULL::timestamp without time zone
+        END AS offline_voters_updated_at
    FROM public.phases ph;
 
 
