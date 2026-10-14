@@ -51,6 +51,10 @@ module ReportBuilder
       report.layout.craftjs_json = craftjs_json
       raise ActiveRecord::RecordInvalid, report unless ReportSaver.new(report, tracker.owner).save
 
+      # Only now is this run what the report holds — which is the question the chat
+      # history and the "is it whole" notice both ask.
+      run_record.report_saved!
+
       SideFxReportService.new.after_generate(report, tracker.owner)
       track_progress
       mark_as_complete!
