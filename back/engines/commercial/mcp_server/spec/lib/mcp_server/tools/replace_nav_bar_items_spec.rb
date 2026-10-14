@@ -94,6 +94,17 @@ describe McpServer::Tools::ReplaceNavBarItems do
     expect(response.content.sole[:text]).to include('exactly one of')
   end
 
+  it 'drops blank target ids instead of writing them' do
+    project = create(:project)
+
+    response = run(items: [home, { static_page_id: '', project_id: project.id }])
+
+    expect(response).not_to be_error
+    item = NavBarItem.top_level.order(:ordering).last
+    expect(item.static_page_id).to be_nil
+    expect(item.project_id).to eq project.id
+  end
+
   it 'refuses a built-in item with a target or children' do
     page = create(:static_page)
 

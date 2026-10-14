@@ -60,6 +60,8 @@ class McpServer::Tools::ReplaceNavBarItems < McpServer::BaseTool
   end
 
   class Runner < McpServer::BaseTool::Runner
+    include McpServer::Tools::NavBarItemsResponse
+
     TARGET_KEYS = %i[static_page_id project_id project_folder_id].freeze
 
     def run
@@ -67,7 +69,7 @@ class McpServer::Tools::ReplaceNavBarItems < McpServer::BaseTool
 
       authorize(NavBarItem, :create?)
 
-      items = params[:items].map { |entry| entry.to_h.deep_symbolize_keys }
+      items = params[:items].map(&:deep_symbolize_keys)
 
       shape_error = items_error(items)
       return error(shape_error) if shape_error
@@ -77,17 +79,7 @@ class McpServer::Tools::ReplaceNavBarItems < McpServer::BaseTool
 
       rebuild!(items)
 
-      fresh_items = NavBarItem.top_level
-        .includes(:static_page, :project, :project_folder, children: %i[static_page project project_folder])
-        .order(:ordering)
-
-      response(
-        "Replaced the navbar: #{fresh_items.size} top-level item(s)",
-        structured: {
-          items: McpServer::Serializers::NavBarItem.serialize(fresh_items, params: { current_user: }),
-          nav_last_updated_at: NavBarItem.maximum(:updated_at)
-        }
-      )
+      nav_bar_items_response('Replaced the navbar: %<count>s top-level item(s)')
     rescue ActiveRecord::RecordInvalid => e
       invalid_record_error(e.record)
     end
@@ -100,7 +92,7 @@ class McpServer::Tools::ReplaceNavBarItems < McpServer::BaseTool
                "its admin UI are built around that cap); got #{items.size}."
       end
 
-      if items.first&.[](:code) != 'home'
+      if items.first&.dig(:code) != 'home'
         return "The first item must be the built-in 'home' item; the admin UI locks it in first position."
       end
 
@@ -149,7 +141,11 @@ class McpServer::Tools::ReplaceNavBarItems < McpServer::BaseTool
     def staleness_error
       return unless params[:nav_last_updated_at]
 
-      sent_at = Time.zone.parse(params[:nav_last_updated_at])
+      sent_at = begin
+        Time.zone.parse(params[:nav_last_updated_at])
+      rescue ArgumentError
+        nil
+      end
       return "'#{params[:nav_last_updated_at]}' is not a valid nav_last_updated_at timestamp." unless sent_at
 
       # Whole-second compare, like replace_form_fields. Known gap: deleting the newest
@@ -159,8 +155,6 @@ class McpServer::Tools::ReplaceNavBarItems < McpServer::BaseTool
       return unless current_at && current_at.to_i > sent_at.to_i
 
       'The navbar changed since you fetched it. Call get_nav_bar_items again and re-apply your edits.'
-    rescue ArgumentError
-      "'#{params[:nav_last_updated_at]}' is not a valid nav_last_updated_at timestamp."
     end
 
     def rebuild!(items)
@@ -184,7 +178,9 @@ class McpServer::Tools::ReplaceNavBarItems < McpServer::BaseTool
       item = NavBarItem.create!(
         code: entry[:code] || 'custom',
         title_multiloc: entry[:title_multiloc],
-        **entry.slice(*TARGET_KEYS)
+        # compact_blank: the shape check counts a blank id as "no target", so writing
+        # it would sneak an empty string past the model into a uuid column.
+        **entry.slice(*TARGET_KEYS).compact_blank
       )
       LogActivityJob.perform_later(item, 'created', current_user, item.created_at.to_i)
 
@@ -192,7 +188,7 @@ class McpServer::Tools::ReplaceNavBarItems < McpServer::BaseTool
         item.children.create!(
           code: 'custom',
           title_multiloc: child[:title_multiloc],
-          **child.slice(*TARGET_KEYS)
+          **child.slice(*TARGET_KEYS).compact_blank
         )
       end
     end

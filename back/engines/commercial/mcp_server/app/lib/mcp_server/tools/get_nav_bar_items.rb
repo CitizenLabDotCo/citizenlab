@@ -40,19 +40,10 @@ class McpServer::Tools::GetNavBarItems < McpServer::BaseTool
   end
 
   class Runner < McpServer::BaseTool::Runner
-    def run
-      items = policy_scope(NavBarItem)
-        .top_level
-        .includes(:static_page, :project, :project_folder, children: %i[static_page project project_folder])
-        .order(:ordering)
+    include McpServer::Tools::NavBarItemsResponse
 
-      response(
-        "Found #{items.size} navbar item(s)",
-        structured: {
-          items: McpServer::Serializers::NavBarItem.serialize(items, params: { current_user: }),
-          nav_last_updated_at: NavBarItem.maximum(:updated_at)
-        }
-      )
+    def run
+      nav_bar_items_response('Found %<count>s navbar item(s)')
     end
   end
 end
