@@ -46,7 +46,14 @@ module ReportBuilder
 
     # Past this, the oldest chat turns are left out of what the model is sent. The
     # first generation always stays: it is where the charts were written.
-    MAX_HISTORY_MESSAGES = 400
+    #
+    # Measured in characters rather than messages, because messages are not a size:
+    # a turn that patches a layout or writes a chart is orders of magnitude bigger
+    # than a one-word reply, so a message count puts no real ceiling on the prompt.
+    # Four characters to a token is the usual rough proxy, which puts this around
+    # 100k tokens and leaves the rest of the window for the system prompt, the docs
+    # and the reply.
+    MAX_HISTORY_CHARS = 400_000
 
     belongs_to :report, class_name: 'ReportBuilder::Report', inverse_of: :generation_transcripts
 
@@ -58,25 +65,31 @@ module ReportBuilder
     scope :generations, -> { where(kind: 'generation') }
     scope :running, -> { where(stopped_because: nil) }
     scope :finished, -> { where.not(stopped_because: nil) }
+    scope :not_failed, -> { where.not(stopped_because: 'failed') }
 
     # The runs that make up a report's conversation so far: the latest finished
     # generation and the finished turns after it, oldest first. Runs before that
     # generation are about a report that no longer exists.
     #
+    # Failed runs are left out altogether. One wrote nothing and deleted what it had
+    # started, so its messages refer to blocks that are no longer there; taken as the
+    # start of a session it would also drop the generation that did produce the
+    # report, along with every turn since.
+    #
     # @return [Array<GenerationTranscript>]
     def self.session_runs_for(report)
-      runs = report.generation_transcripts.finished.oldest_first.to_a
+      runs = report.generation_transcripts.finished.not_failed.oldest_first.to_a
       start = runs.rindex(&:generation?)
       return [] if start.nil?
 
       generation, *revisions = runs[start..]
       kept = [generation]
-      budget = MAX_HISTORY_MESSAGES - generation.messages.size
+      budget = MAX_HISTORY_CHARS - generation.size_in_chars
       revisions.reverse_each do |run|
-        break if budget < run.messages.size
+        break if budget < run.size_in_chars
 
         kept.insert(1, run)
-        budget -= run.messages.size
+        budget -= run.size_in_chars
       end
 
       kept
@@ -93,6 +106,9 @@ module ReportBuilder
     def rounds
       messages.count { |message| message['role'] == 'assistant' }
     end
+
+    # What this run adds to a prompt that replays it, near enough to budget by.
+    def size_in_chars = messages.to_json.size
 
     # What the run cost, once the provider's cache is taken into account. A cache read
     # figure of zero on a multi-round run means the prompt is not stable and every

@@ -107,12 +107,37 @@ RSpec.describe ReportBuilder::GenerationTranscript do
       expect(described_class.session_runs_for(report)).to eq []
     end
 
+    it 'starts at the generation that wrote the report, not a later one that failed' do
+      generation = run('generation', at: 3.hours.ago)
+      turn = run('revision', at: 2.hours.ago)
+      run('generation', stopped: 'failed', at: 1.hour.ago)
+
+      expect(described_class.session_runs_for(report)).to eq [generation, turn]
+    end
+
     it 'drops the oldest turns once the conversation would not fit, never the generation' do
-      generation = run('generation', messages: described_class::MAX_HISTORY_MESSAGES - 3, at: 3.hours.ago)
-      run('revision', messages: 2, at: 2.hours.ago)
-      newest = run('revision', messages: 2, at: 1.hour.ago)
+      generation = run('generation', at: 3.hours.ago)
+      oldest_turn = run('revision', at: 2.hours.ago)
+      newest = run('revision', at: 1.hour.ago)
+      # Room for the generation and one turn, not for two.
+      stub_const(
+        "#{described_class}::MAX_HISTORY_CHARS",
+        generation.size_in_chars + newest.size_in_chars
+      )
 
       expect(described_class.session_runs_for(report)).to eq [generation, newest]
+      expect(described_class.session_runs_for(report)).not_to include oldest_turn
+    end
+
+    # The budget is characters because a turn that patches a layout is worth many
+    # ordinary turns; counting messages would let one of them blow the prompt.
+    it 'measures a turn by its size, not by how many messages it holds' do
+      short = run('revision', messages: 2)
+      long = create(:generation_transcript, report: report, kind: 'revision',
+        stopped_because: 'done',
+        messages: [{ 'role' => 'user', 'content' => 'x' * 10_000 }])
+
+      expect(long.size_in_chars).to be > short.size_in_chars
     end
   end
 

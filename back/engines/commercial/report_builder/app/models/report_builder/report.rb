@@ -41,8 +41,11 @@ module ReportBuilder
     # never both.
     belongs_to :project, optional: true
     has_many :published_graph_data_units, dependent: :destroy
+    # delete_all, not destroy: a transcript holds a run's whole message history and
+    # has no callbacks, so loading every one of them to delete them one at a time
+    # buys nothing. The foreign key cascades anyway.
     has_many :generation_transcripts, class_name: 'ReportBuilder::GenerationTranscript',
-      dependent: :destroy, inverse_of: :report
+      dependent: :delete_all, inverse_of: :report
 
     # The "your report is ready" notification points at the report, so deleting one
     # would otherwise be refused by the foreign key. Nullifying is tried first and
@@ -84,9 +87,11 @@ module ReportBuilder
       project || phase&.project
     end
 
-    # The run that wrote what the report holds now, if a model wrote it.
+    # The latest generation that ran to a stop without failing. A failed run is
+    # skipped: it wrote nothing, so what the report holds is still the work of the
+    # run before it, and that is what the "is this report whole" answer is about.
     def last_generation
-      generation_transcripts.generations.finished.newest_first.first
+      generation_transcripts.generations.finished.not_failed.newest_first.first
     end
 
     def public?

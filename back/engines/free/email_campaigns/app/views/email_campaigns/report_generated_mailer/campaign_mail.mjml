@@ -13,7 +13,7 @@
     </mj-text>
     <% if event.stopped_early %>
       <mj-text>
-        <p><%= t('.stopped_early') %></p>
+        <p><%= format_message('stopped_early') %></p>
       </mj-text>
     <% end %>
   </mj-column>
