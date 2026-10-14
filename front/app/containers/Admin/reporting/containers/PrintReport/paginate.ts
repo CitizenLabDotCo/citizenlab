@@ -1,5 +1,10 @@
 import { Previewer } from 'pagedjs';
 
+import {
+  TOC_PAGE_CLASS,
+  TOC_ROW_CLASS,
+} from '../../components/ReportBuilder/Widgets/TableOfContents';
+
 // A4 with room for the page number in the bottom margin.
 //
 // These rules have to live here rather than in the components. Paged.js decides
@@ -42,7 +47,7 @@ const PAGE_CSS = `
 
   .e2e-text-box,
   .e2e-custom-block,
-  .e2e-toc-row {
+  .${TOC_ROW_CLASS} {
     break-inside: avoid;
   }
 
@@ -52,15 +57,6 @@ const PAGE_CSS = `
     display: none !important;
   }
 `;
-
-export interface PaginationResult {
-  pageCount: number;
-  // Heading text to the page it landed on, in document order. What the table of
-  // contents is filled from.
-  headings: { id: string; text: string; page: number }[];
-}
-
-const HEADING_SELECTOR = 'h1, h2, h3';
 
 const pageStylesheetUrl = () =>
   URL.createObjectURL(new Blob([PAGE_CSS], { type: 'text/css' }));
@@ -78,26 +74,22 @@ export const fillTableOfContents = (target: HTMLElement) => {
   };
 
   target.querySelectorAll<HTMLElement>('[data-toc-ref]').forEach((row) => {
-    const cell = row.querySelector<HTMLElement>('.e2e-toc-page');
+    const cell = row.querySelector<HTMLElement>(`.${TOC_PAGE_CLASS}`);
     const page = row.dataset.tocRef ? pageOfId(row.dataset.tocRef) : null;
     if (cell && page) cell.textContent = page;
   });
 };
 
-const readHeadings = (target: HTMLElement): PaginationResult['headings'] => {
-  const pages = [...target.querySelectorAll<HTMLElement>('.pagedjs_page')];
-  const pageOf = (element: Element) => {
-    const page = pages.find((candidate) => candidate.contains(element));
-    return page ? Number(page.dataset.pageNumber) : 0;
-  };
-
-  return [...target.querySelectorAll<HTMLElement>(HEADING_SELECTOR)]
-    .map((heading) => ({
-      id: heading.id,
-      text: heading.textContent.trim(),
-      page: pageOf(heading),
-    }))
-    .filter((heading) => heading.text !== '');
+// Paged.js measures the source exactly as it finds it, and an image that has not
+// decoded yet is zero high, so whatever page it lands on is laid out around
+// nothing. Waiting costs a moment and is the difference between a map or a cover
+// having a size and having none.
+const decodeImages = async (source: HTMLElement) => {
+  await Promise.all(
+    [...source.querySelectorAll('img')].map((image) =>
+      image.decode().catch(() => undefined)
+    )
+  );
 };
 
 // Lays the report out as real pages: paged.js copies `source` into page-sized
@@ -109,7 +101,9 @@ const readHeadings = (target: HTMLElement): PaginationResult['headings'] => {
 export const paginateReport = async (
   source: HTMLElement,
   target: HTMLElement
-): Promise<PaginationResult> => {
+): Promise<void> => {
+  await decodeImages(source);
+
   const stylesheetUrl = pageStylesheetUrl();
 
   try {
@@ -120,9 +114,4 @@ export const paginateReport = async (
   }
 
   fillTableOfContents(target);
-
-  return {
-    pageCount: target.querySelectorAll('.pagedjs_page').length,
-    headings: readHeadings(target),
-  };
 };

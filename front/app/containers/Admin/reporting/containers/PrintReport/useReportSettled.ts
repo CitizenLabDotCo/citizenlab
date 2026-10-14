@@ -24,20 +24,15 @@ const useReportSettled = ({ quietMs = 900, maxMs = 30_000 }: Options = {}) => {
 
   useEffect(() => {
     if (settled) return;
-
-    if (Date.now() - startedAt.current > maxMs) {
-      setSettled(true);
-      return;
-    }
-
     if (isFetching > 0) return;
 
     const timer = setTimeout(() => setSettled(true), quietMs);
     return () => clearTimeout(timer);
-  }, [isFetching, settled, quietMs, maxMs]);
+  }, [isFetching, settled, quietMs]);
 
-  // While queries keep starting and stopping the effect re-runs and the timer
-  // restarts, so a busy report simply waits longer.
+  // While queries keep starting and stopping the effect above re-runs and its
+  // timer restarts, so a busy report simply waits longer. This is the deadline
+  // that ends that, whatever is still in flight.
   useEffect(() => {
     if (settled) return;
 

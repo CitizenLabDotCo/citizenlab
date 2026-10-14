@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Spinner } from '@citizenlab/cl2-component-library';
+import { Spinner, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useReportLayout from 'api/report_layout/useReportLayout';
@@ -8,20 +8,21 @@ import useReport from 'api/reports/useReport';
 
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 
+import { captureAllMapScreenshots } from 'utils/mapViewRegistry';
+
 import Editor from '../../components/ReportBuilder/Editor';
 import { ReportContextProvider } from '../../context/ReportContext';
 
-import { paginateReport, PaginationResult } from './paginate';
+import { paginateReport } from './paginate';
 import useReportSettled from './useReportSettled';
 
 // The report is built here at the page's content width and then laid out into
 // page boxes. Paged.js copies what it finds rather than moving it, so once the
 // pages exist the source is taken out of the document entirely — left in place
 // it would print a second, unpaginated copy of the whole report after the pages.
-const Source = styled.div<{ $paginated: boolean }>`
+const Source = styled.div`
   width: 182mm;
   margin: 0 auto;
-  ${({ $paginated }) => ($paginated ? 'display: none;' : '')}
 `;
 
 // Layout only, deliberately no background. Paged.js rebuilds the whole ancestor
@@ -37,13 +38,13 @@ const Stage = styled.div`
 // print-color-adjust, so a background meant for the screen is printed rather
 // than dropped the way Chrome normally drops one.
 const Pages = styled.div`
-  background: #f6f7f8;
+  background: ${colors.grey100};
   padding: 12mm 0;
   min-height: 100vh;
 
   .pagedjs_page {
     margin: 0 auto 12mm;
-    background: #fff;
+    background: ${colors.white};
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
   }
 
@@ -70,7 +71,9 @@ const Pages = styled.div`
 
 export interface Props {
   reportId: string;
-  onPaginated?: (result: PaginationResult) => void;
+  // The pages are as good as they are going to get, print now. Fires whether
+  // pagination succeeded or gave up, because the caller waits on it either way.
+  onPaginated?: () => void;
 }
 
 export const PaginatedReport = ({ reportId, onPaginated }: Props) => {
@@ -81,35 +84,60 @@ export const PaginatedReport = ({ reportId, onPaginated }: Props) => {
   const sourceRef = useRef<HTMLDivElement>(null);
   const pagesRef = useRef<HTMLDivElement>(null);
   const [paginated, setPaginated] = useState(false);
+  const [mapsCaptured, setMapsCaptured] = useState(false);
+  const capturing = useRef(false);
   const started = useRef(false);
 
+  // Screenshot every live map before anything is copied. An ArcGIS map draws on a
+  // WebGL canvas and a copied canvas is blank, so the pages show these images
+  // instead. Failing to capture must not stop the report: a map that has no
+  // screenshot simply does not appear, which beats never printing at all.
   useEffect(() => {
-    if (!settled || started.current) return;
+    if (!settled || capturing.current) return;
+
+    capturing.current = true;
+    captureAllMapScreenshots().finally(() => setMapsCaptured(true));
+  }, [settled]);
+
+  useEffect(() => {
+    if (!mapsCaptured || started.current) return;
     const source = sourceRef.current;
     const pages = pagesRef.current;
     if (!source || !pages) return;
 
     started.current = true;
     paginateReport(source, pages)
-      .then((result) => {
+      .then(() => {
         setPaginated(true);
-        onPaginated?.(result);
+        onPaginated?.();
       })
       .catch(() => {
-        // Leave the un-paginated report on screen: a readable single column
-        // beats an empty page.
+        // Leave the un-paginated report on screen and print that: a readable
+        // single column beats an empty page. Half-built pages are cleared, or
+        // they would print underneath it, and the caller is still told we are
+        // done, or it would wait for a pagination that is never coming.
+        pages.innerHTML = '';
         setPaginated(false);
+        onPaginated?.();
       });
-  }, [settled, onPaginated]);
+    // report and reportLayout are not read here, but the refs are null until they
+    // have rendered. Without them a report that outlasts the settle deadline runs
+    // this once against the Spinner and never again.
+  }, [mapsCaptured, onPaginated, report, reportLayout]);
 
   if (!report || !reportLayout) return <Spinner />;
 
   const phaseId = report.data.relationships.phase?.data?.id;
 
   return (
-    <ReportContextProvider width="pdf" reportId={reportId} phaseId={phaseId}>
+    <ReportContextProvider
+      width="pdf"
+      reportId={reportId}
+      phaseId={phaseId}
+      mapsCaptured={mapsCaptured}
+    >
       <Stage>
-        <Source ref={sourceRef} $paginated={paginated}>
+        <Source ref={sourceRef} hidden={paginated}>
           <Editor isPreview>
             <ContentBuilderFrame
               editorData={reportLayout.data.attributes.craftjs_json}
