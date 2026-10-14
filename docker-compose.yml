@@ -119,6 +119,31 @@ services:
     # Production Gotenberg needs the same flag in its own deploy config.
     command: ["gotenberg", "--api-timeout=600s"]
 
+  # Builds and checks the custom blocks the report generation loop writes.
+  # Its own container because it executes model-generated JavaScript, which must
+  # not run inside the Rails process.
+  custom_block_sandbox:
+    container_name: ${WORKTREE_PREFIX:-cl}-custom-block-sandbox
+    build:
+      # The repository root, so the image can take the SDK type definitions from
+      # the front-end tree.
+      context: .
+      dockerfile: custom-block-sandbox/Dockerfile
+    restart: always
+    environment:
+      # Rails authenticates with this header; both sides read the same variable.
+      CUSTOM_BLOCK_SANDBOX_SECRET: ${CUSTOM_BLOCK_SANDBOX_SECRET:-development-sandbox-secret}
+      PORT: 3100
+      SDK_TYPES_PATH: /app/sdk/gv-sdk.d.ts
+      # The tenant is `localhost` here, which inside this container means this
+      # container. Point the browser at the machine running the front end instead.
+      RENDER_HOST_RESOLVER_RULES: ${RENDER_HOST_RESOLVER_RULES:-MAP localhost host-gateway}
+    extra_hosts:
+      - "host-gateway:host-gateway"
+    volumes:
+      # So editing the contract does not need an image rebuild in development.
+      - ./front/app/components/admin/ContentBuilder/CustomBlocks/sdk/v1/gv-sdk.d.ts:/app/sdk/gv-sdk.d.ts:ro
+
   # Fake OIDC provider used by the `fake_sso` verification/auth method.
   # Only starts if you run `docker compose --profile fake_sso up`
   # (or via `make up-fake-sso` / `make e2e-setup-and-up-fake-sso`).
