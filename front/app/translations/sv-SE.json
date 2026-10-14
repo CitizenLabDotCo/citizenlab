@@ -994,7 +994,6 @@
   "app.components.formBuilder.dragAndDrop": "Lägg till frågor i formuläret genom att dra och släppa elementen i menyn till vänster i formuläret.",
   "app.components.formBuilder.drawArea": "Rita område",
   "app.components.formBuilder.drawRoute": "Rita rutt",
-  "app.components.formBuilder.dropMultiplePins": "Placera flera nålar",
   "app.components.formBuilder.dropPin": "Släppstift",
   "app.components.formBuilder.editButtonLabel": "Redigera",
   "app.components.formBuilder.emptyImageOptionError": "Ange minst 1 svar. Observera att varje svar måste ha en rubrik.",

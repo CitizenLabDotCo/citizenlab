@@ -994,7 +994,6 @@
   "app.components.formBuilder.dragAndDrop": "فارم میں سوالات شامل کرنے کے لیے ڈریگ کریں اور بائیں جانب کے مینو میں موجود عناصر کو فارم میں ڈراپ کریں۔",
   "app.components.formBuilder.drawArea": "علاقہ ڈرا کریں۔",
   "app.components.formBuilder.drawRoute": "راستہ کھینچنا",
-  "app.components.formBuilder.dropMultiplePins": "متعدد پن لگائیں",
   "app.components.formBuilder.dropPin": "ڈراپ پن",
   "app.components.formBuilder.editButtonLabel": "ترمیم کریں۔",
   "app.components.formBuilder.emptyImageOptionError": "کم از کم 1 جواب فراہم کریں۔ براہ کرم نوٹ کریں کہ ہر جواب کا عنوان ہونا چاہیے۔",

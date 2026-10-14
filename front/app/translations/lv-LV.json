@@ -994,7 +994,6 @@
   "app.components.formBuilder.dragAndDrop": "Lai veidlapai pievienotu jautājumus, DRAG un DROP elementus, kas atrodami kreisās puses izvēlnē, ievietojiet veidlapā.",
   "app.components.formBuilder.drawArea": "Zīmēšanas apgabals",
   "app.components.formBuilder.drawRoute": "Zīmēšanas maršruts",
-  "app.components.formBuilder.dropMultiplePins": "Ievietot vairākas piespraudes",
   "app.components.formBuilder.dropPin": "Palikt pīne",
   "app.components.formBuilder.editButtonLabel": "Rediģēt",
   "app.components.formBuilder.emptyImageOptionError": "Sniedziet vismaz 1 atbildi. Lūdzu, ņemiet vērā, ka katrai atbildei ir jābūt nosaukumam.",

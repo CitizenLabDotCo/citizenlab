@@ -994,7 +994,6 @@
   "app.components.formBuilder.dragAndDrop": "Fir Froen an de Formulaire bäizefügen, ZÉITT an OFLEET d'Elementer, déi Dir am Menü op der lénkser Säit fannt, an de Formulaire.",
   "app.components.formBuilder.drawArea": "Zeechnen Beräich",
   "app.components.formBuilder.drawRoute": "Streck zeechnen",
-  "app.components.formBuilder.dropMultiplePins": "Méi Pins setzen",
   "app.components.formBuilder.dropPin": "Drop Pin",
   "app.components.formBuilder.editButtonLabel": "Editéieren",
   "app.components.formBuilder.emptyImageOptionError": "Gitt op d'mannst 1 Äntwert. Maacht weg datt all Äntwert en Titel muss hunn.",

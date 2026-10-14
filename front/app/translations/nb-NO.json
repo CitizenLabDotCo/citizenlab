@@ -994,7 +994,6 @@
   "app.components.formBuilder.dragAndDrop": "For å legge til spørsmål i skjemaet DRAG og DROP elementene som finnes i menyen til venstre, inn i skjemaet.",
   "app.components.formBuilder.drawArea": "Tegn område",
   "app.components.formBuilder.drawRoute": "Tegn rute",
-  "app.components.formBuilder.dropMultiplePins": "Sett ut flere nåler",
   "app.components.formBuilder.dropPin": "Slippnål",
   "app.components.formBuilder.editButtonLabel": "Rediger",
   "app.components.formBuilder.emptyImageOptionError": "Oppgi minst 1 svar. Vær oppmerksom på at hvert svar må ha en tittel.",

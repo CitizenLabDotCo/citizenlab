@@ -994,7 +994,6 @@
   "app.components.formBuilder.dragAndDrop": "Faites glisser et déposez les éléments du menu de gauche vers le canevas pour ajouter des questions au formulaire.",
   "app.components.formBuilder.drawArea": "Zone de dessin",
   "app.components.formBuilder.drawRoute": "Dessiner un tracé",
-  "app.components.formBuilder.dropMultiplePins": "Placer plusieurs repères",
   "app.components.formBuilder.dropPin": "Placer un repère",
   "app.components.formBuilder.editButtonLabel": "Modifier",
   "app.components.formBuilder.emptyImageOptionError": "Fournissez au moins une réponse. Veuillez noter que chaque réponse doit avoir un titre.",

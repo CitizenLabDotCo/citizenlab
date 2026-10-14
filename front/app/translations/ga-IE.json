@@ -994,7 +994,6 @@
   "app.components.formBuilder.dragAndDrop": "Chun ceisteanna a chur leis an bhfoirm TARRAING agus SCAIGH na heilimintí atá le fáil sa roghchlár ar chlé isteach san fhoirm.",
   "app.components.formBuilder.drawArea": "Limistéar tarraingthe",
   "app.components.formBuilder.drawRoute": "Tarraing bealach",
-  "app.components.formBuilder.dropMultiplePins": "Cuir bioráin iolracha síos",
   "app.components.formBuilder.dropPin": "biorán titim",
   "app.components.formBuilder.editButtonLabel": "Cuir in Eagar",
   "app.components.formBuilder.emptyImageOptionError": "Tabhair freagra amháin ar a laghad. Tabhair faoi deara go gcaithfidh teideal a bheith ag gabháil le gach freagra.",

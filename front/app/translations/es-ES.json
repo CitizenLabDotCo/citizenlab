@@ -994,7 +994,6 @@
   "app.components.formBuilder.dragAndDrop": "Para añadir preguntas al formulario, arrastra y suelta los elementos del menú de la izquierda en el formulario.",
   "app.components.formBuilder.drawArea": "Área de dibujo",
   "app.components.formBuilder.drawRoute": "Trazar ruta",
-  "app.components.formBuilder.dropMultiplePins": "Colocar varios pines",
   "app.components.formBuilder.dropPin": "Alfiler de caída",
   "app.components.formBuilder.editButtonLabel": "Editar",
   "app.components.formBuilder.emptyImageOptionError": "Proporciona al menos 1 respuesta. Ten en cuenta que cada respuesta debe tener un título.",

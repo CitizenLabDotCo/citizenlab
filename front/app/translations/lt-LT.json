@@ -994,7 +994,6 @@
   "app.components.formBuilder.dragAndDrop": "Norėdami į formą įtraukti klausimus, į formą DRAG and DROP (nuvilkite ir numeskite) kairiajame meniu esančius elementus.",
   "app.components.formBuilder.drawArea": "Brėžinio plotas",
   "app.components.formBuilder.drawRoute": "Nubrėžti maršrutą",
-  "app.components.formBuilder.dropMultiplePins": "Pridėti kelis smeigtukus",
   "app.components.formBuilder.dropPin": "Įspaudžiamas kaištis",
   "app.components.formBuilder.editButtonLabel": "Redaguoti",
   "app.components.formBuilder.emptyImageOptionError": "Pateikite bent 1 atsakymą. Atkreipkite dėmesį, kad kiekvienas atsakymas turi turėti pavadinimą.",

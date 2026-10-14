@@ -994,7 +994,6 @@
   "app.components.formBuilder.dragAndDrop": "For at tilføje spørgsmål til formularen TRÆK og SLIP de elementer, der findes i menuen til venstre, ind i formularen.",
   "app.components.formBuilder.drawArea": "Tegn område",
   "app.components.formBuilder.drawRoute": "Tegn en rute",
-  "app.components.formBuilder.dropMultiplePins": "Sæt flere knappenåle",
   "app.components.formBuilder.dropPin": "Drop pin",
   "app.components.formBuilder.editButtonLabel": "Rediger",
   "app.components.formBuilder.emptyImageOptionError": "Giv mindst 1 svar. Bemærk venligst, at hvert svar skal have en titel.",
