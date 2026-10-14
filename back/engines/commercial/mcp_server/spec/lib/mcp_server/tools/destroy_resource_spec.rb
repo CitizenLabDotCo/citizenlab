@@ -71,6 +71,30 @@ describe McpServer::Tools::DestroyResource do
     expect { image.reload }.to raise_error(ActiveRecord::RecordNotFound)
   end
 
+  it 'destroys a folder image' do
+    folder = create(:project_folder, admin_publication_attributes: { publication_status: 'draft' })
+    image = create(:project_folder_image, project_folder: folder)
+    response = destroy('folder_image', image.id)
+    expect(response).not_to be_error
+    expect { image.reload }.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
+  it 'refuses when the target folder is published' do
+    folder = create(:project_folder)
+    image = create(:project_folder_image, project_folder: folder)
+    response = destroy('folder_image', image.id)
+    expect(response).to be_unauthorized_project
+    expect(image.reload).to be_present
+  end
+
+  it 'destroys a file attachment on a folder' do
+    folder = create(:project_folder, admin_publication_attributes: { publication_status: 'draft' })
+    attachment = create(:file_attachment, file: create(:file), attachable: folder)
+    response = destroy('file_attachment', attachment.id)
+    expect(response).not_to be_error
+    expect { attachment.reload }.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
   it 'destroys a file attachment but keeps the file in the project pool' do
     file = create(:file, projects: [draft_project])
     attachment = create(:file_attachment, file: file, attachable: draft_project)

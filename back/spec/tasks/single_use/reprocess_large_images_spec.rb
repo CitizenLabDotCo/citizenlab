@@ -27,9 +27,10 @@ describe 'single_use:reprocess_large_images rake task' do
     File.open(path)
   end
 
-  def run_task(dry_run: false)
+  # The generated images are a single colour, so they compress to a few KB: below the 2 MB default.
+  def run_task(dry_run: false, min_mb: '0')
     [ContentBuilder::LayoutImageUploader, TextImageUploader].each { _1.enable_processing = true }
-    Rake::Task['single_use:reprocess_large_images'].invoke(dry_run ? nil : 'execute', nil)
+    Rake::Task['single_use:reprocess_large_images'].invoke(dry_run ? nil : 'execute', nil, min_mb)
   ensure
     [ContentBuilder::LayoutImageUploader, TextImageUploader].each { _1.enable_processing = false }
   end
@@ -64,6 +65,22 @@ describe 'single_use:reprocess_large_images rake task' do
 
     expect(report(dry_run: true)['changes'].pluck('new_value')).to contain_exactly(
       layout_image.read_attribute(:image), text_image.read_attribute(:image)
+    )
+  end
+
+  it 'skips files under 2 MB by default' do
+    run_task(min_mb: nil)
+
+    expect(layout_image.reload.image).to have_dimensions(3000, 2000)
+    expect(text_image.reload.image).to have_dimensions(3000, 2000)
+    expect(report['changes']).to be_empty
+  end
+
+  it 'reports the file size of the images that will shrink' do
+    run_task(dry_run: true)
+
+    expect(report(dry_run: true)['changes'].pluck('context').pluck('bytes')).to contain_exactly(
+      layout_image.image.file.size, text_image.image.file.size
     )
   end
 

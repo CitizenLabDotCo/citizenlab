@@ -3909,6 +3909,12 @@
     "verified_at": "2026-03-18T16:34:36.160245Z",
     "verified_by": "Admin"
   },
+
+  "app.containers.Admin.Invitations.inviteStatusEmailBounced": {
+    "state": "verified",
+    "verified_at": "2026-10-09T15:08:21.281530Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.Invitations.inviteStatusPending": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -5083,6 +5089,78 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
+  },
+
+  "app.containers.Admin.Users.EmailBounces.emailBounces": {
+    "state": "verified",
+    "verified_at": "2026-10-09T15:08:21.281530Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.Users.EmailBounces.emailBouncesBouncedAt": {
+    "state": "verified",
+    "verified_at": "2026-10-09T15:08:21.281530Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.Users.EmailBounces.emailBouncesDelete": {
+    "state": "verified",
+    "verified_at": "2026-10-09T15:08:21.281530Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.Users.EmailBounces.emailBouncesDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-09T15:08:21.281530Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.Users.EmailBounces.emailBouncesName": {
+    "state": "verified",
+    "verified_at": "2026-10-09T15:08:21.281530Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.Users.EmailBounces.emailBouncesNone": {
+    "state": "verified",
+    "verified_at": "2026-10-09T15:08:21.281530Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.Users.EmailBounces.emailBouncesReason": {
+    "state": "verified",
+    "verified_at": "2026-10-09T15:08:21.281530Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.Users.EmailBounces.emailBouncesStatus": {
+    "state": "verified",
+    "verified_at": "2026-10-09T15:08:21.281530Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.Users.EmailBounces.emailBouncesStatusAwaitingConfirmation": {
+    "state": "verified",
+    "verified_at": "2026-10-09T15:08:21.281530Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.Users.EmailBounces.emailBouncesStatusPendingInvite": {
+    "state": "verified",
+    "verified_at": "2026-10-09T15:08:21.281530Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.Users.EmailBounces.emailBouncesStatusRegistered": {
+    "state": "verified",
+    "verified_at": "2026-10-09T15:08:21.281530Z",
+    "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.Users.EmailBounces.emailBouncesStatusRegistrationIncomplete": {
+    "state": "verified",
+    "verified_at": "2026-10-09T15:08:21.281530Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.Users.GroupsHeader.deleteGroup": {
     "state": "verified",
@@ -10668,6 +10746,18 @@
     "state": "verified",
     "verified_at": "2026-04-20T15:54:43.434836Z",
     "verified_by": "Luuc"
+  },
+
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationCommunityMonitor": {
+    "state": "verified",
+    "verified_at": "2026-10-02T14:11:00.327675Z",
+    "verified_by": "Pauline"
+  },
+
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights": {
+    "state": "verified",
+    "verified_at": "2026-09-28T07:13:04.571677Z",
+    "verified_by": "Pauline"
   },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll": {
     "state": "verified",

@@ -7,12 +7,19 @@
 # Files keep their names, so records, layouts and rich text that point to them keep working.
 # Images that already fit are left alone, and only the ones that will shrink are reported.
 #
-#     rake single_use:reprocess_large_images                     # dry run, all tenants
-#     rake 'single_use:reprocess_large_images[execute]'          # reprocess, all tenants
-#     rake 'single_use:reprocess_large_images[execute,foo.com]'  # reprocess, one tenant
+# Files under `min_mb` (default 2) are skipped without being downloaded: reading their size is a
+# HEAD request, while measuring dimensions means fetching the whole file. An image small in bytes
+# loads fast whatever its dimensions, so it is not worth the download.
+#
+#     rake single_use:reprocess_large_images                         # dry run, all tenants
+#     rake 'single_use:reprocess_large_images[execute]'              # reprocess, all tenants
+#     rake 'single_use:reprocess_large_images[execute,foo.com]'      # reprocess, one tenant
+#     rake 'single_use:reprocess_large_images[,,0.5]'                # dry run, files of 0.5 MB and up
 namespace :single_use do
   desc "Shrink layout and text images larger than the maximum size. Dry run unless passed 'execute'."
-  task :reprocess_large_images, %i[execute host] => [:environment] do |_t, args|
+  task :reprocess_large_images, %i[execute host min_mb] => [:environment] do |_t, args|
+    min_bytes = (Float(args[:min_mb].presence || 2) * 1.megabyte).to_i
+
     TenantScript.run(
       'reprocess_large_images',
       args: args,
@@ -29,11 +36,16 @@ namespace :single_use do
           next if File.extname(identifier).casecmp?('.svg')
 
           uploader = record.image
+          bytes = uploader.file.size
+          next if bytes < min_bytes
+
           image = MiniMagick::Image.read(uploader.file.read)
           width, height = image.dimensions
           next if width <= max_size && height <= max_size
 
-          script.reporter.add_change(identifier, identifier, context: context.merge(width: width, height: height))
+          script.reporter.add_change(
+            identifier, identifier, context: context.merge(width: width, height: height, bytes: bytes)
+          )
           next if script.dry_run?
 
           # BaseImageUploader names new files after a token kept on the model. Setting it to the

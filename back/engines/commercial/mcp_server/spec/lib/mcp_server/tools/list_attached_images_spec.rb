@@ -31,6 +31,17 @@ describe McpServer::Tools::ListAttachedImages do
     expect(ids).to match_array(images.map(&:id))
   end
 
+  it 'lists images on a folder' do
+    folder = create(:project_folder)
+    images = create_list(:project_folder_image, 2, project_folder: folder)
+
+    response = list(resource_type: 'folder', resource_id: folder.id)
+
+    expect(response).not_to be_error
+    ids = response.structured_content[:data].pluck(:id)
+    expect(ids).to match_array(images.map(&:id))
+  end
+
   it_behaves_like 'a paginated list tool' do
     let(:base_params) { { resource_type: 'project', resource_id: project.id } }
   end

@@ -19,10 +19,16 @@ interface Props {
   className?: string;
   graphqlTenantLocales: string[];
   onDone?: () => void;
+  variant?: 'default' | 'bo';
 }
 
 const CreateProjectFromTemplate = memo(
-  ({ graphqlTenantLocales, className, onDone }: Props): ReactElement => {
+  ({
+    graphqlTenantLocales,
+    className,
+    onDone,
+    variant,
+  }: Props): ReactElement => {
     const { data: appConfig } = useAppConfiguration();
     const [namedTemplate, setNamedTemplate] = useState<{
       id: string;
@@ -162,6 +168,7 @@ const CreateProjectFromTemplate = memo(
             handleParticipationLevelFilterOnChange
           }
           onUseTemplate={handleUseTemplate}
+          variant={variant}
         />
 
         {namedTemplate && (
@@ -170,6 +177,7 @@ const CreateProjectFromTemplate = memo(
             opened
             close={handleNameModalOnClose}
             onCreated={() => setCreated(true)}
+            variant={variant}
           />
         )}
       </>
@@ -188,6 +196,7 @@ const CreateProjectFromTemplateWithGraphqlLocales = memo(
         graphqlTenantLocales={graphqlTenantLocales}
         className={props.className}
         onDone={props.onDone}
+        variant={props.variant}
       />
     );
   }

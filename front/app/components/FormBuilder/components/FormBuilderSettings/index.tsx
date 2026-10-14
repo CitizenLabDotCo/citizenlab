@@ -16,7 +16,7 @@ import {
 
 import {
   getTranslatedStringKey,
-  FormBuilderConfig,
+  ResolvedFormBuilderConfig,
 } from 'components/FormBuilder/utils';
 import CloseIconButton from 'components/UI/CloseIconButton';
 
@@ -33,7 +33,7 @@ import PrintSupportTooltip from './PrintSupportTooltip';
 interface Props {
   field: IFlatCustomFieldWithIndex;
   closeSettings: (triggerAutosave?: boolean) => void;
-  builderConfig: FormBuilderConfig;
+  builderConfig: ResolvedFormBuilderConfig;
 }
 
 const FormBuilderSettings = ({
