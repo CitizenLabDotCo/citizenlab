@@ -10,7 +10,7 @@ module ContentBuilder
   # by letting them query.
   class ReportingQueryPolicy < ApplicationPolicy
     def create?
-      CustomBlockPolicy.feature_activated? && active? && admin?
+      AppConfiguration.instance.feature_activated?('llm_reporting') && active? && admin?
     end
   end
 end
