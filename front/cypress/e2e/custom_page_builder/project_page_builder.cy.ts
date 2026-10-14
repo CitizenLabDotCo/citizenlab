@@ -99,22 +99,15 @@ describe('Project page builder', () => {
   it('edits the page from one page with a preview, and opens the builder', () => {
     setFeatures(true, true);
     cy.setAdminLoginCookie();
-    cy.intercept('GET', `**/static_pages/${pageId}`).as('getPage');
-    cy.intercept(
-      'GET',
-      `**/static_pages/${pageId}/content_builder_layouts/custom_page`
-    ).as('getLayout');
-    cy.intercept('POST', '**/content_builder_layouts/custom_page/upsert').as(
-      'deriveLayout'
-    );
     cy.visit(`/admin/projects/${projectId}/pages/${pageId}`);
-    // The first visit finds no layout and derives one from the page's content. That only starts
-    // once the page and the layout lookup have both answered, so wait for them first.
-    cy.wait(['@getPage', '@getLayout']);
-    cy.wait('@deriveLayout');
 
     cy.dataCy('e2e-save-project-page').should('exist');
-    cy.dataCy('e2e-project-page-preview-panel')
+    // The first visit finds no layout and derives one from the page's content, and the preview
+    // renders only once the page has a layout. So waiting for the preview waits for that
+    // derivation through the result it leaves behind, which every attempt can observe. Waiting
+    // for the derivation request instead would only work on the attempt that triggers it: it
+    // runs once per page, so a retry finds the layout already there and waits forever.
+    cy.get('[data-cy="e2e-project-page-preview-panel"]', { timeout: 30000 })
       .find('iframe')
       .should('have.attr', 'src')
       .and('include', `/projects/${projectSlug}/pages/${pageSlug}`);
