@@ -9,21 +9,10 @@ resource 'Phase insights' do
     travel_to(Time.zone.parse('2025-12-02 12:00:00'))
   end
 
+  # Registered so the empty demographics below are the phase's own doing, not an
+  # absence of fields to report on.
   let!(:custom_field_gender) { create(:custom_field, resource_type: 'User', key: 'gender', input_type: 'select', title_multiloc: { en: 'Gender' }) }
-  let!(:custom_field_option_male) { create(:custom_field_option, custom_field: custom_field_gender, key: 'male', title_multiloc: { en: 'Male' }) }
-  let!(:custom_field_option_female) { create(:custom_field_option, custom_field: custom_field_gender, key: 'female', title_multiloc: { en: 'Female' }) }
-  let!(:custom_field_option_other) { create(:custom_field_option, custom_field: custom_field_gender, key: 'unspecified', title_multiloc: { en: 'Unspecified' }) }
-
   let!(:custom_field_birthyear) { create(:custom_field, resource_type: 'User', key: 'birthyear', input_type: 'number', title_multiloc: { en: 'Birthyear' }) }
-
-  let!(:binned_distribution) do
-    create(
-      :binned_distribution,
-      custom_field: custom_field_birthyear,
-      bins: [18, 25, 35, 45, 55, 65, nil],
-      counts: [50, 200, 400, 300, 50, 700]
-    )
-  end
 
   let(:document_annotation_phase) do
     create(:document_annotation_phase, start_at: 20.days.ago, end_at: 3.days.ago, with_permissions: true).tap do |phase|
@@ -70,31 +59,10 @@ resource 'Phase insights' do
       })
     end
 
-    example_request 'returns the demographic fields with empty series' do
+    example_request 'returns no demographic fields, as the audience behind the visits is unknown' do
       demographics = json_response_body.dig(:data, :attributes, :demographics)
 
-      expect(demographics[:fields]).to contain_exactly({
-        id: custom_field_gender.id,
-        key: 'gender',
-        code: nil,
-        input_type: 'select',
-        title_multiloc: { en: 'Gender' },
-        series: { male: 0, female: 0, unspecified: 0, _blank: 0 },
-        options: {
-          male: { title_multiloc: { en: 'Male' }, ordering: 0 },
-          female: { title_multiloc: { en: 'Female' }, ordering: 1 },
-          unspecified: { title_multiloc: { en: 'Unspecified' }, ordering: 2 }
-        },
-        reference_distribution: nil
-      }, {
-        id: custom_field_birthyear.id,
-        key: 'birthyear',
-        code: nil,
-        input_type: 'number',
-        title_multiloc: { en: 'Birthyear' },
-        series: { '18-24': 0, '25-34': 0, '35-44': 0, '45-54': 0, '55-64': 0, '65+': 0, _blank: 0 },
-        reference_distribution: { '18-24': 50, '25-34': 200, '35-44': 400, '45-54': 300, '55-64': 50, '65+': 700 }
-      })
+      expect(demographics[:fields]).to eq([])
     end
   end
 end

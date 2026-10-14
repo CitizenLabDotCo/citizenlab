@@ -21,6 +21,12 @@ RSpec.describe Insights::DocumentAnnotationPhaseInsightsService do
     end
   end
 
+  describe '#demographics_data' do
+    it 'describes no audience, as the participants behind the visits are unknown' do
+      expect(service.send(:demographics_data, [], [])).to eq []
+    end
+  end
+
   describe '#call' do
     it 'reports the participant metrics as unknown rather than zero' do
       metrics = service.call[:metrics]

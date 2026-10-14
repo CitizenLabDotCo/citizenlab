@@ -24,5 +24,11 @@ module Insights
         participation_rate_7_day_percent_change: nil
       )
     end
+
+    # No participants means no audience to describe, so skip the permission and
+    # custom field queries the base class would run for an empty set.
+    def demographics_data(_participations, _participant_ids)
+      []
+    end
   end
 end
