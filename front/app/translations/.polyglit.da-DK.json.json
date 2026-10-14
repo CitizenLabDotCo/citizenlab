@@ -5054,6 +5054,11 @@
     "verified_at": "2026-10-03T15:29:50.333082Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.components.formBuilder.dropMultiplePins1": {
+    "state": "verified",
+    "verified_at": "2026-10-14T11:26:27.187771Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.formBuilder.dropPin": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
