@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class IntercomMessengerTokenService
+  # Force BE redeploy
   TOKEN_LIFETIME = 1.hour
 
   def configured?
