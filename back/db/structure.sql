@@ -703,6 +703,7 @@ DROP VIEW IF EXISTS public.reporting_users;
 DROP VIEW IF EXISTS public.reporting_staff_activities;
 DROP VIEW IF EXISTS public.reporting_sessions;
 DROP VIEW IF EXISTS public.reporting_reports;
+DROP VIEW IF EXISTS public.reporting_registrations;
 DROP VIEW IF EXISTS public.reporting_reference_distributions;
 DROP TABLE IF EXISTS public.user_custom_fields_representativeness_ref_distributions;
 DROP VIEW IF EXISTS public.reporting_projects;
@@ -4746,6 +4747,57 @@ UNION ALL
      JOIN public.custom_fields q ON (((q.id = d.custom_field_id) AND q.enabled)))
      CROSS JOIN LATERAL jsonb_array_elements_text((d.distribution -> 'counts'::text)) WITH ORDINALITY bin(count, idx))
   WHERE ((d.type)::text = 'UserCustomFields::Representativeness::BinnedDistribution'::text);
+
+
+--
+-- Name: reporting_registrations; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_registrations AS
+ WITH sign_ups AS (
+         SELECT DISTINCT ON (a.item_id) a.item_id AS account_id,
+            a.acted_at,
+            (a.payload ->> 'flow'::text) AS flow,
+            (a.payload ->> 'method'::text) AS provider
+           FROM public.activities a
+          WHERE (((a.item_type)::text = 'User'::text) AND ((a.action)::text = 'created'::text) AND ((a.payload ->> 'flow'::text) IS DISTINCT FROM 'importer'::text))
+          ORDER BY a.item_id, a.acted_at
+        ), accepted_invitees AS (
+         SELECT DISTINCT activities.user_id AS account_id
+           FROM public.activities
+          WHERE (((activities.item_type)::text = 'Invite'::text) AND ((activities.action)::text = 'accepted'::text) AND (activities.user_id IS NOT NULL))
+        ), completed AS (
+         SELECT DISTINCT activities.item_id AS account_id
+           FROM public.activities
+          WHERE (((activities.item_type)::text = 'User'::text) AND ((activities.action)::text = 'completed_registration'::text))
+        )
+ SELECT (((s.acted_at AT TIME ZONE 'UTC'::text) AT TIME ZONE COALESCE(( SELECT ((ac.settings -> 'core'::text) ->> 'timezone'::text)
+           FROM public.app_configurations ac
+         LIMIT 1), 'UTC'::text)))::date AS started_date,
+        CASE
+            WHEN ((s.flow = 'invitation'::text) OR (ai.account_id IS NOT NULL)) THEN 'invitation'::text
+            ELSE s.flow
+        END AS sign_up_method,
+        CASE
+            WHEN ((s.flow = 'sso'::text) AND (ai.account_id IS NULL)) THEN s.provider
+            ELSE NULL::text
+        END AS sso_provider,
+    (count(*))::integer AS started_count,
+    (count(c.account_id))::integer AS completed_count
+   FROM ((sign_ups s
+     LEFT JOIN accepted_invitees ai ON ((ai.account_id = s.account_id)))
+     LEFT JOIN completed c ON ((c.account_id = s.account_id)))
+  GROUP BY ((((s.acted_at AT TIME ZONE 'UTC'::text) AT TIME ZONE COALESCE(( SELECT ((ac.settings -> 'core'::text) ->> 'timezone'::text)
+           FROM public.app_configurations ac
+         LIMIT 1), 'UTC'::text)))::date),
+        CASE
+            WHEN ((s.flow = 'invitation'::text) OR (ai.account_id IS NOT NULL)) THEN 'invitation'::text
+            ELSE s.flow
+        END,
+        CASE
+            WHEN ((s.flow = 'sso'::text) AND (ai.account_id IS NULL)) THEN s.provider
+            ELSE NULL::text
+        END;
 
 
 --
@@ -10223,6 +10275,7 @@ SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
 ('20261014200000'),
+('20261014130100'),
 ('20261014120100'),
 ('20261014110100'),
 ('20261014100100'),
