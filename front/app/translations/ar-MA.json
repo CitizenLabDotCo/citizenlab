@@ -994,6 +994,7 @@
   "app.components.formBuilder.dragAndDrop": "لإضافة أسئلة إلى النموذج، اسحب وأفلِت العناصر الموجودة في القائمة الجانبية اليسرى داخل النموذج.",
   "app.components.formBuilder.drawArea": "منطقة الرسم",
   "app.components.formBuilder.drawRoute": "ارسم الطريق",
+  "app.components.formBuilder.dropMultiplePins1": "وضع دبابيس",
   "app.components.formBuilder.dropPin": "إسقاط دبوس",
   "app.components.formBuilder.editButtonLabel": "تعديل",
   "app.components.formBuilder.emptyImageOptionError": "قم بتقديم إجابة واحدة على الأقل. يرجى ملاحظة أن كل إجابة يجب أن يكون لها عنوان.",

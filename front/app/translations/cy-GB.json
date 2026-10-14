@@ -994,6 +994,7 @@
   "app.components.formBuilder.dragAndDrop": "I ychwanegu cwestiynau at y ffurflen, LLUSGOWCH a GOLWNGWCH yr elfennau a geir yn y ddewislen ar yr ochr chwith i'r ffurflen.",
   "app.components.formBuilder.drawArea": "Man tynnu",
   "app.components.formBuilder.drawRoute": "Tynnu llwybr",
+  "app.components.formBuilder.dropMultiplePins1": "Gollwng pinnau",
   "app.components.formBuilder.dropPin": "Gollwng pin",
   "app.components.formBuilder.editButtonLabel": "Golygu",
   "app.components.formBuilder.emptyImageOptionError": "Rhowch o leiaf 1 ateb. Sylwch fod yn rhaid i bob ateb gael teitl.",
