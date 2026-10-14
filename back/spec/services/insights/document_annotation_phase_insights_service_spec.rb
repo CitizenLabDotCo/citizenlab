@@ -22,13 +22,15 @@ RSpec.describe Insights::DocumentAnnotationPhaseInsightsService do
   end
 
   describe '#call' do
-    it 'returns the visit based metrics without raising' do
+    it 'reports the participant metrics as unknown rather than zero' do
       metrics = service.call[:metrics]
 
       expect(metrics).to include(
         visitors: 0,
-        participants: 0,
-        participation_rate_as_percent: 'participant_count_compared_with_zero_visitors',
+        participants: nil,
+        participants_7_day_percent_change: nil,
+        participation_rate_as_percent: nil,
+        participation_rate_7_day_percent_change: nil,
         'document_annotation' => {}
       )
     end
@@ -41,8 +43,8 @@ RSpec.describe Insights::DocumentAnnotationPhaseInsightsService do
       metrics = service.call[:metrics]
 
       expect(metrics[:visitors]).to eq 1
-      expect(metrics[:participants]).to eq 0
-      expect(metrics[:participation_rate_as_percent]).to eq 0.0
+      expect(metrics[:participants]).to be_nil
+      expect(metrics[:participation_rate_as_percent]).to be_nil
     end
   end
 end

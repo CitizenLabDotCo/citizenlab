@@ -51,16 +51,18 @@ resource 'Phase insights' do
       expect(metrics).to eq({
         visitors: 2,
         visitors_7_day_percent_change: 100.0, # from 1 unique visitor 7-days ago to 2 now = 100% change
-        participants: 0, # annotations are kept by Konveio, so none can be counted
-        participants_7_day_percent_change: 0.0,
-        participation_rate_as_percent: 0.0,
-        participation_rate_7_day_percent_change: 0.0,
+        participants: nil, # annotations are kept by Konveio, so participants are unknown rather than zero
+        participants_7_day_percent_change: nil,
+        participation_rate_as_percent: nil,
+        participation_rate_7_day_percent_change: nil,
         document_annotation: {}
       })
 
       participants_and_visitors_chart_data = json_response_body.dig(:data, :attributes, :participants_and_visitors_chart_data)
       expect(participants_and_visitors_chart_data).to eq({
         resolution: 'day',
+        # The participant series stays at 0 rather than reporting unknowns: the
+        # metrics above are what tells a consumer to leave the line unplotted.
         timeseries: [
           { participants: 0, visitors: 1, date_group: '2025-11-20' },
           { participants: 0, visitors: 1, date_group: '2025-11-27' }
