@@ -52,9 +52,12 @@ RSpec.describe Analytics::Reporting::Phase do
       deleted.destroy!
       Basket.update_counts(voting_phase)
 
-      expect(voting_row.online_voters_count).to eq 2
-      expect(voting_row.online_voters_count).to eq voting_phase.reload.baskets_count
-      expect(Analytics::Reporting::Contribution.where(type: 'vote', phase_id: voting_phase.id).distinct.count(:participant_id)).to eq 1
+      view_voters = voting_row.online_voters_count
+      voting_results_voters = voting_phase.reload.baskets_count
+      vote_row_voters = Analytics::Reporting::Contribution.where(type: 'vote', phase_id: voting_phase.id).distinct.count(:participant_id)
+
+      expect(view_voters).to eq voting_results_voters
+      expect([view_voters, vote_row_voters]).to eq [2, 1]
     end
 
     it 'exposes the offline voters an administrator entered' do

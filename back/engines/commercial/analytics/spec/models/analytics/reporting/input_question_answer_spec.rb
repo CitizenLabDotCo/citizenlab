@@ -107,10 +107,10 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
       response = create(:native_survey_response, project: project)
       response.custom_field_answers.create!(key: categorised.key, value: 2)
       response.custom_field_answers.create!(key: uncategorised.key, value: 5)
-      rows = described_class.where(input_id: response.id)
+      view_categories = described_class.where(input_id: response.id).pluck(:question_id, :question_category).to_h
+      custom_field_categories = [categorised, uncategorised].to_h { |question| [question.id, question.reload.question_category] }
 
-      expect(rows.find_by!(question_id: categorised.id).question_category).to eq categorised.reload.question_category
-      expect(rows.find_by!(question_id: uncategorised.id).question_category).to eq uncategorised.reload.question_category
+      expect(view_categories).to eq custom_field_categories
     end
 
     # The view sets question_category only for community monitor survey
@@ -169,9 +169,10 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
       [%w[by_bike by_train], %w[by_train by_bike], %w[by_bike by_train]].each do |value|
         create(:native_survey_response, project: project).custom_field_answers.create!(custom_field: ranking, key: ranking.key, value: value)
       end
-      averages = described_class.where(question_id: ranking.id).group(:value_text).average(:value_numeric)
+      view_averages = described_class.where(question_id: ranking.id).group(:value_text).average(:value_numeric)
+      results_page_averages = ranking.average_rankings(Idea.where(project: project))
 
-      expect(averages).to eq ranking.average_rankings(Idea.where(project: project))
+      expect(view_averages).to eq results_page_averages
     end
 
     it 'explodes matrix answers into one row per answered statement, with point and statement labels' do
@@ -196,15 +197,16 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
       ].each do |value|
         create(:native_survey_response, project: project).custom_field_answers.create!(custom_field: matrix, key: matrix.key, value: value)
       end
-      counts = described_class.where(question_id: matrix.id).group(:statement_key, :value_numeric).count
+      view_counts = described_class.where(question_id: matrix.id).group(:statement_key, :value_numeric).count
         .transform_keys { |statement_key, point| [statement_key, point.to_i] }
 
-      product = Surveys::ResultsGenerator.new(project.phases.first).generate_result_for_field(matrix.id)
-      product_counts = product[:linear_scales].flat_map do |statement_key, statement|
+      results_page = Surveys::ResultsGenerator.new(project.phases.first).generate_result_for_field(matrix.id)
+      results_page_counts = results_page[:linear_scales].flat_map do |statement_key, statement|
         statement[:answers].select { |answer| answer[:answer] && answer[:count] > 0 }
           .map { |answer| [[statement_key, answer[:answer]], answer[:count]] }
-      end
-      expect(counts).to eq product_counts.to_h
+      end.to_h
+
+      expect(view_counts).to eq results_page_counts
     end
 
     it 'labels a matrix point stored as a decimal like the whole point' do
@@ -253,10 +255,11 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
           .custom_field_answers.create!(custom_field: file_upload, key: file_upload.key, value: { 'id' => id, 'name' => 'upload.pdf' })
       end
       deleted.destroy!
-      product = Surveys::ResultsGenerator.new(project.phases.first).generate_result_for_field(file_upload.id)
+      view_count = described_class.where(question_id: file_upload.id).count
+      results_page_count = Surveys::ResultsGenerator.new(project.phases.first).generate_result_for_field(file_upload.id)[:questionResponseCount]
 
-      expect(described_class.where(question_id: file_upload.id).count).to eq product[:questionResponseCount]
-      expect(product[:questionResponseCount]).to eq 2
+      expect(view_count).to eq results_page_count
+      expect(results_page_count).to eq 2
     end
 
     it 'excludes mapping questions' do

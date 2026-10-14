@@ -37,12 +37,13 @@ RSpec.describe 'reporting_phases visitors parity with the phase insights' do # r
     it 'gives the same visitors as the phase insights' do
       sql = Analytics::Reporting::Phase::VISITORS_SQL.sub('<phase id>', phase.id)
       sql += " AND (s.highest_role IS NULL OR s.highest_role = 'user')" if exclude_staff
-      product = Insights::VisitsService.new(
+      view_visitors = ActiveRecord::Base.connection.select_value(sql)
+      insights_visitors = Insights::VisitsService.new(
         phase.project_id, start_at: phase.start_at, end_at: phase.end_at, exclude_admins_and_moderators: exclude_staff
       ).total_visits[:visitors]
 
-      expect(ActiveRecord::Base.connection.select_value(sql)).to eq product
-      expect(product).to eq(exclude_staff ? 2 : 4)
+      expect(view_visitors).to eq insights_visitors
+      expect(insights_visitors).to eq(exclude_staff ? 2 : 4)
     end
   end
 end

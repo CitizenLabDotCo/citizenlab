@@ -123,11 +123,11 @@ RSpec.describe Analytics::Reporting::Project do
 
       Area.find_each do |area|
         title = area.title_multiloc['en']
-        filtered = ProjectsFilteringService.new.filter(Project.all, areas: [area.id]).pluck(:id)
-        listed = described_class.where('? = ANY(areas)', title).pluck(:id)
+        view_ids = described_class.where('? = ANY(areas)', title).pluck(:id)
+        area_filter_ids = ProjectsFilteringService.new.filter(Project.all, areas: [area.id]).pluck(:id)
 
-        expect(filtered).to include(all_areas_project.id)
-        expect(listed).to match_array(filtered), "area #{title}"
+        expect(view_ids).to match_array(area_filter_ids), "area #{title}"
+        expect(area_filter_ids).to include(all_areas_project.id)
       end
     end
   end
