@@ -103,6 +103,24 @@ RSpec.describe ReportBuilder::GenerateReportJob do
         expect(ReportBuilder::GenerationTranscript.last.stopped_because).to eq 'failed'
       end
 
+      it 'marks the run as the one the report holds, once it is actually saved' do
+        enqueue_job.perform_now
+
+        expect(ReportBuilder::GenerationTranscript.last.report_saved_at).to be_present
+      end
+
+      # The report is already saved by then: failing here would rerun minutes of
+      # paid work to fix a bookkeeping row.
+      it 'does not take the run down if it cannot be marked as saved' do
+        allow_any_instance_of(ReportBuilder::GenerationTranscript).to receive(:update!).and_call_original
+        allow_any_instance_of(ReportBuilder::GenerationTranscript)
+          .to receive(:update!).with(hash_including(:report_saved_at))
+          .and_raise(ActiveRecord::RecordInvalid)
+
+        expect { enqueue_job.perform_now }.not_to raise_error
+        expect(report.reload.layout.craftjs_json).to eq composed_layout
+      end
+
       it 'does not take the run down if the record cannot be filled in' do
         allow_any_instance_of(ReportBuilder::GenerationTranscript).to receive(:update!).and_raise(ActiveRecord::RecordInvalid)
 

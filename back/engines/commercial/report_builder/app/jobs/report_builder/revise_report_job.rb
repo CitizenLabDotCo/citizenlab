@@ -49,7 +49,7 @@ module ReportBuilder
       end
 
       changed = result[:layout].present?
-      save_layout!(report, result[:layout]) if changed
+      save_layout!(report, result[:layout], run_record) if changed
       answer(chat, reply_for(result, composer.stopped_because), changed_layout: changed)
 
       track_progress
@@ -62,9 +62,11 @@ module ReportBuilder
 
     private
 
-    def save_layout!(report, craftjs_json)
+    def save_layout!(report, craftjs_json, run_record)
       report.layout.craftjs_json = craftjs_json
       raise ActiveRecord::RecordInvalid, report unless ReportSaver.new(report, tracker.owner).save
+
+      run_record.report_saved!
     end
 
     # Reload before appending: the controller wrote the admin's turn after this job
