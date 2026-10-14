@@ -105,10 +105,7 @@ const configuration: ModuleConfiguration = {
       })();
 
       if (tenant && window.Intercom) {
-        const intercomUserJwt =
-          user && window.location.host === 'demo.stg.govocal.com'
-            ? await fetchIntercomToken()
-            : undefined;
+        const intercomUserJwt = user ? await fetchIntercomToken() : undefined;
 
         window.Intercom('boot', {
           app_id: INTERCOM_APP_ID,
