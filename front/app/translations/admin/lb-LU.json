@@ -690,6 +690,7 @@
   "app.containers.Admin.FeedbackPrompt.commentLabel": "Wëllt Dir soss nach eppes dobäisetzen? (optional)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "Wéi einfach war et, dëse Projet opzesetzen?",
   "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion2": "Wéi einfach war et haut, dat am Projet ze fannen, wat Dir gebraucht hutt?",
+  "app.containers.Admin.FeedbackPrompt.saveError": "Äre Feedback konnt net gespäichert ginn. Probéiert et wgl. nach eng Kéier.",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "1 ass ganz schwéier, 7 ass ganz einfach",
   "app.containers.Admin.FeedbackPrompt.send": "Schécken",
   "app.containers.Admin.FeedbackPrompt.thanks": "Merci fir Äre Feedback!",

@@ -690,6 +690,7 @@
   "app.containers.Admin.FeedbackPrompt.commentLabel": "Szeretne még valamit hozzátenni? (opcionális)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "Mennyire volt egyszerű beállítani ezt a projektet?",
   "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion2": "Mennyire volt könnyű megtalálni, amire ma szüksége volt a projektben?",
+  "app.containers.Admin.FeedbackPrompt.saveError": "Nem sikerült menteni a visszajelzését. Kérjük, próbálja újra.",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "Az 1-es nagyon nehéz, a 7-es nagyon egyszerű",
   "app.containers.Admin.FeedbackPrompt.send": "Küldés",
   "app.containers.Admin.FeedbackPrompt.thanks": "Köszönjük a visszajelzését!",

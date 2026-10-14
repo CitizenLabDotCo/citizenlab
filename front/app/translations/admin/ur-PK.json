@@ -690,6 +690,7 @@
   "app.containers.Admin.FeedbackPrompt.commentLabel": "کیا آپ کچھ مزید شامل کرنا چاہیں گے؟ (اختیاری)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "اس پروجیکٹ کو ترتیب دینا کتنا آسان رہا؟",
   "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion2": "آج پروجیکٹ میں اپنی ضرورت کی چیزیں تلاش کرنا کتنا آسان تھا؟",
+  "app.containers.Admin.FeedbackPrompt.saveError": "آپ کی رائے محفوظ نہیں کی جا سکی۔ براہ کرم دوبارہ کوشش کریں۔",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "1 بہت مشکل ہے، 7 بہت آسان ہے",
   "app.containers.Admin.FeedbackPrompt.send": "بھیجیں",
   "app.containers.Admin.FeedbackPrompt.thanks": "آپ کی رائے کا شکریہ!",

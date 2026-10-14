@@ -690,6 +690,7 @@
   "app.containers.Admin.FeedbackPrompt.commentLabel": "Har du något mer du vill lägga till? (valfritt)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "Hur enkelt var det att sätta upp det här projektet?",
   "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion2": "Hur enkelt var det att hitta det du behövde i projektet idag?",
+  "app.containers.Admin.FeedbackPrompt.saveError": "Din feedback kunde inte sparas. Försök igen.",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "1 är mycket svårt, 7 är mycket enkelt",
   "app.containers.Admin.FeedbackPrompt.send": "Skicka",
   "app.containers.Admin.FeedbackPrompt.thanks": "Tack för din feedback!",

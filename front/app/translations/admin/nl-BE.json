@@ -690,6 +690,7 @@
   "app.containers.Admin.FeedbackPrompt.commentLabel": "Wil je nog iets toevoegen? (optioneel)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "Hoe gemakkelijk was het om dit project op te zetten?",
   "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion2": "Hoe makkelijk was het om vandaag in het project te vinden wat je nodig had?",
+  "app.containers.Admin.FeedbackPrompt.saveError": "Je feedback kon niet worden opgeslagen. Probeer het opnieuw.",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "1 is heel moeilijk, 7 is heel gemakkelijk",
   "app.containers.Admin.FeedbackPrompt.send": "Verzenden",
   "app.containers.Admin.FeedbackPrompt.thanks": "Bedankt voor je feedback!",

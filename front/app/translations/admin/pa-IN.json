@@ -690,6 +690,7 @@
   "app.containers.Admin.FeedbackPrompt.commentLabel": "ਕੀ ਤੁਸੀਂ ਕੁਝ ਹੋਰ ਜੋੜਨਾ ਚਾਹੁੰਦੇ ਹੋ? (ਵਿਕਲਪਿਕ)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "ਇਸ ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਸੈੱਟਅੱਪ ਕਰਨਾ ਕਿੰਨਾ ਆਸਾਨ ਸੀ?",
   "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion2": "ਅੱਜ ਪ੍ਰੋਜੈਕਟ ਵਿੱਚ ਤੁਹਾਨੂੰ ਲੋੜੀਂਦੀ ਚੀਜ਼ ਲੱਭਣਾ ਕਿੰਨਾ ਸੌਖਾ ਸੀ?",
+  "app.containers.Admin.FeedbackPrompt.saveError": "ਤੁਹਾਡੀ ਫੀਡਬੈਕ ਸੇਵ ਨਹੀਂ ਕੀਤੀ ਜਾ ਸਕੀ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "1 ਬਹੁਤ ਔਖਾ ਹੈ, 7 ਬਹੁਤ ਆਸਾਨ ਹੈ",
   "app.containers.Admin.FeedbackPrompt.send": "ਭੇਜੋ",
   "app.containers.Admin.FeedbackPrompt.thanks": "ਤੁਹਾਡੀ ਫੀਡਬੈਕ ਲਈ ਧੰਨਵਾਦ!",

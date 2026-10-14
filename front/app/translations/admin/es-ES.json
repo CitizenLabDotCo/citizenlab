@@ -690,6 +690,7 @@
   "app.containers.Admin.FeedbackPrompt.commentLabel": "¿Quieres añadir algo más? (opcional)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "¿Cómo de fácil te ha resultado configurar este proyecto?",
   "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion2": "¿Cómo de fácil te ha resultado encontrar lo que necesitabas hoy en el proyecto?",
+  "app.containers.Admin.FeedbackPrompt.saveError": "No se ha podido guardar tu valoración. Inténtalo de nuevo.",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "1 es muy difícil, 7 es muy fácil",
   "app.containers.Admin.FeedbackPrompt.send": "Enviar",
   "app.containers.Admin.FeedbackPrompt.thanks": "¡Gracias por tus comentarios!",

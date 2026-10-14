@@ -690,6 +690,7 @@
   "app.containers.Admin.FeedbackPrompt.commentLabel": "هل تود إضافة أي شيء آخر؟ (اختياري)",
   "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": "ما مدى سهولة إعداد هذا المشروع؟",
   "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion2": "ما مدى سهولة العثور على ما كنت تحتاجه في المشروع اليوم؟",
+  "app.containers.Admin.FeedbackPrompt.saveError": "تعذر حفظ ملاحظاتك. يرجى المحاولة مرة أخرى.",
   "app.containers.Admin.FeedbackPrompt.scaleHint": "1 تعني صعب جداً، و7 تعني سهل جداً",
   "app.containers.Admin.FeedbackPrompt.send": "إرسال",
   "app.containers.Admin.FeedbackPrompt.thanks": "شكراً لك على ملاحظاتك!",
