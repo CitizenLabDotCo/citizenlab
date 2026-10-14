@@ -105,6 +105,27 @@ describe McpServer::Tools::ReplaceNavBarItems do
     expect(item.project_id).to eq project.id
   end
 
+  it 'refuses a malformed target id instead of silently creating a target-less item' do
+    response = run(items: [home, { project_id: 'not-a-uuid' }])
+
+    expect(response).to be_error
+    expect(response.content.sole[:text]).to include('not a valid target id')
+    expect(NavBarItem.count).to eq 0
+  end
+
+  it 'refuses the same target linked from two items' do
+    folder = create(:project_folder)
+
+    response = run(items: [
+      home,
+      { project_folder_id: folder.id },
+      { title_multiloc: { 'en' => 'Departments' }, children: [{ project_folder_id: folder.id }] }
+    ])
+
+    expect(response).to be_error
+    expect(response.content.sole[:text]).to include('linked from more than one item')
+  end
+
   it 'refuses a built-in item with a target or children' do
     page = create(:static_page)
 

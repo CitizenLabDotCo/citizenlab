@@ -34,6 +34,8 @@ class McpServer::Tools::ReplaceNavBarItems < McpServer::BaseTool
       - Dropdown: title_multiloc plus children (each child a custom link); no target of
         its own. Dropdowns cannot nest.
 
+      Each page, project or folder can be linked from only one item.
+
       Only available on demo and trial platforms.
 
       Call `get_nav_bar_items` first to see the current menu, and pass its
@@ -63,6 +65,7 @@ class McpServer::Tools::ReplaceNavBarItems < McpServer::BaseTool
     include McpServer::Tools::NavBarItemsResponse
 
     TARGET_KEYS = %i[static_page_id project_id project_folder_id].freeze
+    UUID_REGEX = /\A\h{8}-\h{4}-\h{4}-\h{4}-\h{12}\z/
 
     def run
       return error(DEMO_ONLY_MESSAGE) unless published_writable_platform?
@@ -100,6 +103,24 @@ class McpServer::Tools::ReplaceNavBarItems < McpServer::BaseTool
         message = entry_error(entry, index)
         return message if message
       end
+
+      targets_error(items)
+    end
+
+    # Rails casts a malformed uuid to nil on assignment, which would silently create a
+    # target-less item; and when a target is destroyed, its has_one cleanup removes only
+    # one navbar item, so a duplicate would block the deletion with an FK violation.
+    def targets_error(items)
+      ids = items
+        .flat_map { |entry| [entry, *entry[:children]] }
+        .flat_map { |node| node.values_at(*TARGET_KEYS) }
+        .compact_blank
+
+      malformed = ids.grep_v(UUID_REGEX)
+      return "'#{malformed.first}' is not a valid target id. Use IDs from the list_* tools." if malformed.any?
+
+      duplicate = ids.tally.find { |_id, count| count > 1 }&.first
+      return "Target #{duplicate} is linked from more than one item. Link each page, project or folder once." if duplicate
 
       nil
     end
