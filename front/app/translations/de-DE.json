@@ -994,6 +994,7 @@
   "app.components.formBuilder.dragAndDrop": "Um dem Formular Fragen hinzuzufügen, ZIEHEN Sie die Elemente aus dem Menü auf der linken Seite in das Formular und legen Sie sie dort ab.",
   "app.components.formBuilder.drawArea": "Fläche zeichnen",
   "app.components.formBuilder.drawRoute": "Route zeichnen",
+  "app.components.formBuilder.dropMultiplePins1": "Standorte hinzufügen",
   "app.components.formBuilder.dropPin": "Pin setzen",
   "app.components.formBuilder.editButtonLabel": "Bearbeiten",
   "app.components.formBuilder.emptyImageOptionError": "Geben Sie mindestens 1 Antwort. Bitte beachten Sie, dass jede Antwort einen Titel haben muss.",
