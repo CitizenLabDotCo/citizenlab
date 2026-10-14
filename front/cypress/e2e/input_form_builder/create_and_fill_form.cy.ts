@@ -329,7 +329,7 @@ describe('Input form builder', () => {
     cy.dataCy('e2e-confirm-public-answers').should('be.visible');
     cy.get('#e2e-public-answers-toggle').find('input').should('not.be.checked');
 
-    cy.contains('button', 'Cancel').click();
+    cy.get('.e2e-modal-close-button').click();
     cy.dataCy('e2e-confirm-public-answers').should('not.exist');
     cy.get('#e2e-public-answers-toggle').find('input').should('not.be.checked');
 
