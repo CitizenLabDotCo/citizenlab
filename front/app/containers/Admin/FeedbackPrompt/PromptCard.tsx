@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import {
   Box,
   Button,
-  Radio,
   Text,
   colors,
-  defaultStyles,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
@@ -34,25 +32,41 @@ const PromptCard = ({ prompt, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const [score, setScore] = useState<number>();
   const [comment, setComment] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const hasSavedScore = useRef(false);
   const {
     mutate: answer,
     isPending: isSending,
-    isSuccess: isAnswered,
+    isError,
   } = useAnswerFeedbackPrompt();
   const { mutate: dismiss } = useDismissFeedbackPrompt();
 
   const question = formatMessage(questions[prompt.attributes.key]);
-  const radioName = `feedback-prompt-score-${prompt.id}`;
+  const scoreId = `feedback-prompt-score-${prompt.id}`;
 
   const handleClose = () => {
-    if (!isAnswered && !isSending) dismiss(prompt.id);
+    if (!hasSavedScore.current && !isSending) dismiss(prompt.id);
     onClose();
   };
 
-  // The shared Radio keeps its input read-only, so arrow keys need wiring to
-  // behave like a native radio group.
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-    const current = score ?? 0;
+  const handleScore = (value: number) => {
+    if (isSending) return;
+
+    setScore(value);
+    answer(
+      { id: prompt.id, score: value },
+      {
+        onSuccess: () => {
+          hasSavedScore.current = true;
+        },
+      }
+    );
+  };
+
+  const handleKeyDown = (
+    event: React.KeyboardEvent<HTMLElement>,
+    current: number
+  ) => {
     const next = {
       ArrowLeft: current - 1,
       ArrowUp: current - 1,
@@ -65,31 +79,43 @@ const PromptCard = ({ prompt, onClose }: Props) => {
 
     event.preventDefault();
     const clamped = Math.min(Math.max(next, 1), SCORES.length);
-    setScore(clamped);
-    document.getElementById(`${radioName}-${clamped}`)?.focus();
+    handleScore(clamped);
+    document
+      .getElementById(`${scoreId}-${clamped}`)
+      ?.querySelector('button')
+      ?.focus();
   };
 
   const handleSend = () => {
     if (score === undefined) return;
-    answer({ id: prompt.id, score, comment: comment.trim() || undefined });
+    answer(
+      { id: prompt.id, score, comment: comment.trim() || undefined },
+      {
+        onSuccess: () => {
+          hasSavedScore.current = true;
+          setIsSubmitted(true);
+        },
+      }
+    );
   };
 
   return (
     <Box
       as="section"
+      data-cy="feedback-prompt"
       aria-label={question}
       position="fixed"
       bottom="24px"
       right="24px"
       zIndex="1000"
-      width="360px"
+      width="420px"
       maxWidth="calc(100vw - 48px)"
-      p="20px"
+      p="24px"
       bgColor={colors.white}
       borderRadius={stylingConsts.borderRadius}
-      boxShadow={defaultStyles.boxShadowHoverBig}
+      border={`1px solid ${colors.grey200}`}
     >
-      <Box position="absolute" top="12px" right="12px">
+      <Box data-cy="feedback-close" position="absolute" top="12px" right="12px">
         <CloseIconButton
           onClick={handleClose}
           a11y_buttonActionMessage={messages.close}
@@ -98,7 +124,7 @@ const PromptCard = ({ prompt, onClose }: Props) => {
         />
       </Box>
       <Box aria-live="polite">
-        {isAnswered ? (
+        {isSubmitted ? (
           <Text m="0" pr="24px">
             {formatMessage(messages.thanks)}
           </Text>
@@ -112,24 +138,46 @@ const PromptCard = ({ prompt, onClose }: Props) => {
                 {` (${formatMessage(messages.scaleHint)})`}
               </ScreenReaderOnly>
             </Box>
+            <Box display="flex" gap="6px">
+              {SCORES.map((value) => (
+                <Button
+                  key={value}
+                  dataCy={`feedback-score-${value}`}
+                  id={`${scoreId}-${value}`}
+                  type="button"
+                  buttonStyle="secondary-outlined"
+                  ariaPressed={score === value}
+                  onClick={() => handleScore(value)}
+                  onKeyDown={(event) => handleKeyDown(event, value)}
+                  disabled={isSending}
+                  width="100%"
+                  fullWidth
+                  height="40px"
+                  padding="0"
+                  fontSize="16px"
+                  fontWeight="500"
+                  borderRadius={stylingConsts.borderRadius}
+                  borderColor={
+                    score === value ? colors.teal500 : colors.grey300
+                  }
+                  borderHoverColor={colors.teal500}
+                  bgColor={score === value ? colors.teal50 : colors.white}
+                  bgHoverColor={colors.teal50}
+                  textColor={
+                    score === value ? colors.teal700 : colors.coolGrey600
+                  }
+                  textHoverColor={colors.teal700}
+                >
+                  {value}
+                </Button>
+              ))}
+            </Box>
             <Box
               display="flex"
               justifyContent="space-between"
-              onKeyDown={handleKeyDown}
+              mt="8px"
+              aria-hidden
             >
-              {SCORES.map((value) => (
-                <Radio
-                  key={value}
-                  id={`${radioName}-${value}`}
-                  name={radioName}
-                  value={value}
-                  currentValue={score}
-                  label={String(value)}
-                  onChange={setScore}
-                />
-              ))}
-            </Box>
-            <Box display="flex" justifyContent="space-between" aria-hidden>
               <Text m="0" fontSize="s" color="textSecondary">
                 {formatMessage(messages.veryHard)}
               </Text>
@@ -137,8 +185,17 @@ const PromptCard = ({ prompt, onClose }: Props) => {
                 {formatMessage(messages.veryEasy)}
               </Text>
             </Box>
+            {isError && (
+              <Text role="alert" color="red600" fontSize="s">
+                {formatMessage(messages.saveError)}
+              </Text>
+            )}
             {score !== undefined && (
-              <Box mt="16px">
+              <Box
+                mt="20px"
+                pt="20px"
+                borderTop={`1px solid ${colors.grey200}`}
+              >
                 <TextArea
                   id={`feedback-prompt-comment-${prompt.id}`}
                   label={formatMessage(messages.commentLabel)}
@@ -148,7 +205,9 @@ const PromptCard = ({ prompt, onClose }: Props) => {
                 />
                 <Box display="flex" justifyContent="flex-end" mt="12px">
                   <Button
-                    buttonStyle="primary"
+                    buttonStyle="admin-dark"
+                    type="button"
+                    dataCy="feedback-send"
                     onClick={handleSend}
                     processing={isSending}
                   >

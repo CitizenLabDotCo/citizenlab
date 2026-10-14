@@ -34,6 +34,10 @@ export default defineMessages({
     id: 'app.containers.Admin.FeedbackPrompt.close',
     defaultMessage: 'Close this question',
   },
+  saveError: {
+    id: 'app.containers.Admin.FeedbackPrompt.saveError',
+    defaultMessage: 'Your feedback could not be saved. Please try again.',
+  },
   thanks: {
     id: 'app.containers.Admin.FeedbackPrompt.thanks',
     defaultMessage: 'Thank you for your feedback!',

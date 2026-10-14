@@ -26,7 +26,7 @@ class WebApi::V1::FeedbackPromptsController < ApplicationController
   end
 
   def answer
-    if @feedback_prompt.update(answer_params.merge(status: 'answered', responded_at: Time.zone.now))
+    if @feedback_prompt.update(answer_params.merge(status: 'answered', responded_at: @feedback_prompt.responded_at || Time.zone.now))
       render json: serialize(@feedback_prompt)
     else
       render json: { errors: @feedback_prompt.errors.details }, status: :unprocessable_entity

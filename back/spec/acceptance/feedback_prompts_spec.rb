@@ -80,6 +80,17 @@ resource 'Feedback prompts' do
       expect(prompt.responded_at).to be_present
     end
 
+    example 'Save a score before adding a comment', document: false do
+      do_request(feedback_prompt: { score: 6, comment: nil })
+      assert_status 200
+      expect(prompt.reload).to have_attributes(status: 'answered', score: 6, comment: nil)
+      responded_at = prompt.responded_at
+
+      do_request(feedback_prompt: { score: 7, comment: 'Found it quickly' })
+      assert_status 200
+      expect(prompt.reload).to have_attributes(score: 7, comment: 'Found it quickly', responded_at: responded_at)
+    end
+
     example '[error] Answer with an invalid score', document: false do
       do_request(feedback_prompt: { score: 8 })
       assert_status 422
@@ -105,6 +116,15 @@ resource 'Feedback prompts' do
   patch 'web_api/v1/feedback_prompts/:id/dismiss' do
     let(:prompt) { create(:feedback_prompt, :shown, user: user) }
     let(:id) { prompt.id }
+
+    context 'when the score was already saved' do
+      let(:prompt) { create(:feedback_prompt, :shown, user: user, status: 'answered', score: 6) }
+
+      example_request '[error] Dismiss an answered prompt', document: false do
+        assert_status 401
+        expect(prompt.reload).to have_attributes(status: 'answered', score: 6)
+      end
+    end
 
     example_request 'Dismiss a prompt' do
       assert_status 200

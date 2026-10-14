@@ -6,16 +6,16 @@ class FeedbackPromptPolicy < ApplicationPolicy
   end
 
   def answer?
-    owned_and_shown?
+    owned? && (record.shown? || record.answered?)
   end
 
   def dismiss?
-    owned_and_shown?
+    owned? && record.shown?
   end
 
   private
 
-  def owned_and_shown?
-    user&.active? && record.user_id == user.id && record.shown?
+  def owned?
+    user&.active? && record.user_id == user.id
   end
 end

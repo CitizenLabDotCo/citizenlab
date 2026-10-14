@@ -48,6 +48,14 @@ describe FeedbackPromptPolicy do
     let(:user) { owner }
     let(:prompt) { create(:feedback_prompt, :shown, user: owner, status: 'answered', score: 5) }
 
+    it { is_expected.to permit(:answer) }
+    it { is_expected.not_to permit(:dismiss) }
+  end
+
+  context 'for the owner of a dismissed prompt' do
+    let(:user) { owner }
+    let(:prompt) { create(:feedback_prompt, :shown, user: owner, status: 'dismissed') }
+
     it { is_expected.not_to permit(:answer) }
     it { is_expected.not_to permit(:dismiss) }
   end
@@ -57,6 +65,13 @@ describe FeedbackPromptPolicy do
 
     it { is_expected.not_to permit(:answer) }
     it { is_expected.not_to permit(:dismiss) }
+  end
+
+  context 'for another admin viewing an answered prompt' do
+    let(:user) { create(:admin) }
+    let(:prompt) { create(:feedback_prompt, :shown, user: owner, status: 'answered', score: 5) }
+
+    it { is_expected.not_to permit(:answer) }
   end
 
   context 'for a blocked owner' do
