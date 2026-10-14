@@ -56,9 +56,10 @@ RSpec.describe Analytics::Reporting::EmailDelivery do
 
     email_classes.each do |klass|
       campaign.update_column(:type, klass.name)
-      row = described_class.find_by!(campaign_id: campaign.id)
+      view_type_and_manual = described_class.where(campaign_id: campaign.id).pick(:campaign_type, :manual)
+      class_type_and_manual = [klass.campaign_name, klass.new.manual?]
 
-      expect([row.campaign_type, row.manual]).to eq([klass.campaign_name, klass.new.manual?]), klass.name
+      expect(view_type_and_manual).to eq(class_type_and_manual), klass.name
     end
   end
 
