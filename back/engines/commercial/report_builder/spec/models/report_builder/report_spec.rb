@@ -167,6 +167,37 @@ RSpec.describe ReportBuilder::Report do
     end
   end
 
+  describe '#last_generation' do
+    def generation(stopped:, saved:, at:)
+      create(:generation_transcript, report: report, kind: 'generation',
+        stopped_because: stopped, report_saved_at: saved ? at : nil, created_at: at)
+    end
+
+    let(:report) { create(:report) }
+
+    it 'is the run whose work the report holds' do
+      wrote_it = generation(stopped: 'done', saved: true, at: 2.hours.ago)
+
+      expect(report.last_generation).to eq wrote_it
+    end
+
+    # Whatever the reason it stopped, a run that saved nothing did not write what is
+    # on screen — so it is not what "is this report whole" is asking about.
+    it 'skips a later run that stopped without saving' do
+      wrote_it = generation(stopped: 'done', saved: true, at: 2.hours.ago)
+      generation(stopped: 'round_cap', saved: false, at: 1.hour.ago)
+      generation(stopped: 'failed', saved: false, at: 30.minutes.ago)
+
+      expect(report.last_generation).to eq wrote_it
+    end
+
+    it 'is nothing while no run has saved' do
+      generation(stopped: 'failed', saved: false, at: 1.hour.ago)
+
+      expect(report.last_generation).to be_nil
+    end
+  end
+
   describe 'deletion' do
     it 'takes its ready notifications with it, rather than being refused by the foreign key' do
       report = create(:report, :with_phase)
