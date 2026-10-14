@@ -28,7 +28,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 import { usePdfExportContext } from '../pdf/PdfExportContext';
-import { tracksParticipants } from '../utils';
 import { useWordSection, type WordSection } from '../word/useWordSection';
 import WordExportableInsight from '../word/WordExportableInsight';
 import { useWordExportContext } from '../word/WordExportContext';
@@ -101,9 +100,6 @@ const DemographicsSection = ({ phase }: Props) => {
   const userDataCollection =
     phase?.attributes.user_data_collection || 'anonymous';
 
-  const showDemographics =
-    !phase || tracksParticipants(phase.attributes.participation_method);
-
   const {
     data: response,
     isLoading,
@@ -111,6 +107,11 @@ const DemographicsSection = ({ phase }: Props) => {
   } = usePhaseInsights({
     phaseId: phase?.id || '',
   });
+
+  // A phase whose participants went unmeasured has no audience to describe.
+  // Undefined until the metrics land, so the section loads before it decides.
+  const showDemographics =
+    response?.data.attributes.metrics.participants !== null;
 
   const blankLabel = formatMessage(messages.noAnswer);
   const demographicsData = useMemo(() => {
@@ -156,16 +157,12 @@ const DemographicsSection = ({ phase }: Props) => {
 
       return sections;
     },
-    { skip: isLoading || !!error || fields.length === 0 || !showDemographics }
+    { skip: isLoading || !!error || fields.length === 0 }
   );
 
-  // Hide demographics when private attributes export is disabled
-  if (!privateAttributesInExport) {
-    return null;
-  }
-
-  // A phase with no participants of its own has no audience to describe
-  if (!showDemographics) {
+  // Hidden when private attributes are kept out of exports, and when the phase
+  // has no audience to describe
+  if (!privateAttributesInExport || !showDemographics) {
     return null;
   }
 

@@ -13,7 +13,6 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 import { usePdfExportContext } from './pdf/PdfExportContext';
-import { tracksParticipants } from './utils';
 import WordExportableInsight from './word/WordExportableInsight';
 
 interface Props {
@@ -30,12 +29,6 @@ const ParticipantsTimeline = ({ phase }: Props) => {
   const graphRef = useRef<SVGElement>(null);
 
   const { data, isPending, error } = usePhaseInsights({ phaseId: phase.id });
-  const showParticipants = tracksParticipants(
-    phase.attributes.participation_method
-  );
-  const title = formatMessage(
-    showParticipants ? messages.participationOverTime : messages.visitorsOverTime
-  );
 
   if (isPending) {
     return (
@@ -57,10 +50,16 @@ const ParticipantsTimeline = ({ phase }: Props) => {
     );
   }
 
-  const chartDataFromApi =
-    data.data.attributes.participants_and_visitors_chart_data;
+  const { metrics, participants_and_visitors_chart_data: chartDataFromApi } =
+    data.data.attributes;
   const timeSeries = chartDataFromApi.timeseries;
   const resolution = chartDataFromApi.resolution;
+  // null when the back end could not measure participants, as opposed to
+  // measuring none, which leaves the visits as the only story to tell
+  const showParticipants = metrics.participants !== null;
+  const title = formatMessage(
+    showParticipants ? messages.participationOverTime : messages.visitorsOverTime
+  );
 
   const chartData = timeSeries.map((row) => ({
     date: row.date_group,
