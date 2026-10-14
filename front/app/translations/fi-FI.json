@@ -994,6 +994,7 @@
   "app.components.formBuilder.dragAndDrop": "Lisää kysymyksiä lomakkeeseen VETÄMÄLLÄ ja PUDOTTAMALLA vasemmanpuoleisen valikon elementit lomakkeeseen.",
   "app.components.formBuilder.drawArea": "Piirrä alue",
   "app.components.formBuilder.drawRoute": "Piirrä reitti",
+  "app.components.formBuilder.dropMultiplePins1": "Pudota nastoja",
   "app.components.formBuilder.dropPin": "Pudotusneula",
   "app.components.formBuilder.editButtonLabel": "Muokkaa",
   "app.components.formBuilder.emptyImageOptionError": "Anna vähintään 1 vastaus. Huomaa, että jokaisella vastauksella on oltava otsikko.",

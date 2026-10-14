@@ -994,6 +994,7 @@
   "app.components.formBuilder.dragAndDrop": "Per afegir preguntes al formulari, ARROSSEGA i DEIXA SOLTAR els elements que es troben al menú de l'esquerra al formulari.",
   "app.components.formBuilder.drawArea": "Zona de dibuix",
   "app.components.formBuilder.drawRoute": "Dibuixa la ruta",
+  "app.components.formBuilder.dropMultiplePins1": "Col·locar marcadors",
   "app.components.formBuilder.dropPin": "Caiguda de pin",
   "app.components.formBuilder.editButtonLabel": "Edita",
   "app.components.formBuilder.emptyImageOptionError": "Proporcioneu almenys 1 resposta. Tingueu en compte que cada resposta ha de tenir un títol.",

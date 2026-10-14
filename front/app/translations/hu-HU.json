@@ -994,6 +994,7 @@
   "app.components.formBuilder.dragAndDrop": "Kérdések űrlaphoz adásához HÚZZA ÉS DOBJA át a bal oldali menüben található elemeket az űrlapra.",
   "app.components.formBuilder.drawArea": "Rajzolj területet",
   "app.components.formBuilder.drawRoute": "Útvonal rajzolása",
+  "app.components.formBuilder.dropMultiplePins1": "Gombostűk elhelyezése",
   "app.components.formBuilder.dropPin": "Csepp tű",
   "app.components.formBuilder.editButtonLabel": "Szerkesztés",
   "app.components.formBuilder.emptyImageOptionError": "Adjon meg legalább 1 választ. Kérjük, vegye figyelembe, hogy minden válasznak címet kell adni.",

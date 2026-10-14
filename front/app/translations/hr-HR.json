@@ -994,6 +994,7 @@
   "app.components.formBuilder.dragAndDrop": "Za dodavanje pitanja u obrazac, POVUCITE i ISPUSTITE elemente iz izbornika s lijeve strane u obrazac.",
   "app.components.formBuilder.drawArea": "Područje crtanja",
   "app.components.formBuilder.drawRoute": "Nacrtaj rutu",
+  "app.components.formBuilder.dropMultiplePins1": "Postavi pribadače",
   "app.components.formBuilder.dropPin": "Spustite iglu",
   "app.components.formBuilder.editButtonLabel": "Uredi",
   "app.components.formBuilder.emptyImageOptionError": "Navedite barem 1 odgovor. Napominjemo da svaki odgovor mora imati naslov.",

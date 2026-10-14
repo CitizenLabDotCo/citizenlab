@@ -994,6 +994,7 @@
   "app.components.formBuilder.dragAndDrop": "Για να προσθέσετε ερωτήσεις στη φόρμα, σύρετε και αφήστε τα στοιχεία που βρίσκονται στο μενού της αριστερής πλευράς στη φόρμα.",
   "app.components.formBuilder.drawArea": "Περιοχή κλήρωσης",
   "app.components.formBuilder.drawRoute": "Διαδρομή κλήρωσης",
+  "app.components.formBuilder.dropMultiplePins1": "Τοποθέτηση πινεζών",
   "app.components.formBuilder.dropPin": "Καρφίτσα πτώσης",
   "app.components.formBuilder.editButtonLabel": "Επεξεργασία",
   "app.components.formBuilder.emptyImageOptionError": "Δώστε τουλάχιστον 1 απάντηση. Σημειώστε ότι κάθε απάντηση πρέπει να έχει τίτλο.",
