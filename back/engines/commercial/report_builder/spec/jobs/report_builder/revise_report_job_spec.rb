@@ -115,12 +115,15 @@ RSpec.describe ReportBuilder::ReviseReportJob do
     end
 
     it 'passes the conversation so far, tool calls included, so a turn continues the last one' do
-      create(:generation_transcript, report: report, kind: 'generation', stopped_because: 'done', messages: [
-        { 'role' => 'user', 'content' => [{ 'text' => 'Generate the report.' }] },
-        { 'role' => 'assistant', 'content' => [{ 'tool_use' => { 'tool_use_id' => 't1', 'name' => 'get_layout', 'input' => {} } }] },
-        { 'role' => 'user', 'content' => [{ 'tool_result' => { 'tool_use_id' => 't1', 'content' => [{ 'text' => 'empty' }], 'status' => 'success' } }] },
-        { 'role' => 'assistant', 'content' => [{ 'text' => 'Wrote it.' }] }
-      ])
+      # report_saved_at is what marks this run as the one the report holds, and so
+      # the one the conversation continues from.
+      create(:generation_transcript, report: report, kind: 'generation', stopped_because: 'done',
+        report_saved_at: Time.current, messages: [
+          { 'role' => 'user', 'content' => [{ 'text' => 'Generate the report.' }] },
+          { 'role' => 'assistant', 'content' => [{ 'tool_use' => { 'tool_use_id' => 't1', 'name' => 'get_layout', 'input' => {} } }] },
+          { 'role' => 'user', 'content' => [{ 'tool_result' => { 'tool_use_id' => 't1', 'content' => [{ 'text' => 'empty' }], 'status' => 'success' } }] },
+          { 'role' => 'assistant', 'content' => [{ 'text' => 'Wrote it.' }] }
+        ])
       expect_any_instance_of(ReportBuilder::Composition::ReportComposer)
         .to receive(:revise)
         .with(hash_including(instruction: 'make it shorter', history: [

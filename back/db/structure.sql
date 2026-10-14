@@ -3920,7 +3920,8 @@ CREATE TABLE public.report_builder_generation_transcripts (
     stopped_because character varying,
     cancel_requested_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    report_saved_at timestamp(6) without time zone
 );
 
 
@@ -10728,6 +10729,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20261014120100'),
 ('20261014110100'),
 ('20261014100100'),
+('20261014100000'),
 ('20261012130100'),
 ('20261012120000'),
 ('20261012100100'),
