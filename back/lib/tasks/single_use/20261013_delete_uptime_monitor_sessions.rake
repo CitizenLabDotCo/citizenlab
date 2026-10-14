@@ -63,6 +63,16 @@ namespace :single_use do
       gaps.size.odd? ? gaps[mid] : ((gaps[mid - 1] + gaps[mid]) / 2)
     end
 
+    # Echo the effective config up front, so every run shows exactly what it used.
+    # If these don't reflect your ENV overrides, Spring swallowed them — prefix the
+    # command with DISABLE_SPRING=1 (or run `spring stop` first) and re-run.
+    # rubocop:disable Rails/Output
+    puts "   Window:       #{start_t.to_date}..#{end_t.to_date}"
+    puts "   MIN_SESSIONS: #{min_sessions}"
+    puts "   MONITOR_IP:   #{monitor_ips.join(', ')}"
+    puts "   STRICT:       #{strict}"
+    # rubocop:enable Rails/Output
+
     TenantScript.run(
       'delete_uptime_monitor_sessions',
       args: args,
