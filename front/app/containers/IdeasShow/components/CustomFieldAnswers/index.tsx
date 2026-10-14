@@ -33,6 +33,9 @@ const CustomFieldAnswers = ({ ideaId, project, compact }: Props) => {
   const { data: authUser } = useAuthUser();
   const { data: idea } = useIdeaById(ideaId);
   const { data: customFields } = useCustomFields({
+    // Ideas of transitive methods have no creation phase yet, so they
+    // fall back to the project's form.
+    phaseId: idea?.data.relationships.creation_phase.data?.id,
     projectId: project.id,
     publicFields: true,
   });
