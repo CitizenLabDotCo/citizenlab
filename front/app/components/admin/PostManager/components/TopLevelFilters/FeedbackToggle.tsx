@@ -44,7 +44,7 @@ const ToggleContainer = styled.div<{ checked: boolean }>`
     padding-right: ${size}px;
     transition: all ease 0.15s;
     border-radius: ${size + padding}px;
-    background: #ccc;
+    background: ${colors.grey400};
     transform: translate3d(0, 0, 0);
 
     &:before {

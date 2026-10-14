@@ -64,10 +64,6 @@ module CustomIdMethods::Keycloak
       auth['uid']
     end
 
-    def updateable_user_attrs
-      super + %i[first_name last_name]
-    end
-
     def ui_method_name
       case config[:provider]
       when 'idporten'

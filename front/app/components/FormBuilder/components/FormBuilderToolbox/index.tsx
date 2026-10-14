@@ -12,7 +12,7 @@ import { get } from 'lodash-es';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import { ResolvedFormBuilderConfig } from 'components/FormBuilder/utils';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -26,7 +26,7 @@ import LayoutFields from './LayoutFields';
 import ToolboxItem from './ToolboxItem';
 
 interface FormBuilderToolboxProps {
-  builderConfig: FormBuilderConfig;
+  builderConfig: ResolvedFormBuilderConfig;
 }
 
 const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
