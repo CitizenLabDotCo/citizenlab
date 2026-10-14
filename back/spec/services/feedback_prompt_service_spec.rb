@@ -122,12 +122,35 @@ describe FeedbackPromptService do
   end
 
   describe '#show_next' do
+    it 'only shows setup feedback in the project it belongs to' do
+      project = create(:project)
+      prompt = create(:feedback_prompt, user: user, key: 'project_setup_ease', subject: project)
+      other_project = create(:project)
+      expect(service.show_next(user, trigger: 'save', admin_area: project_area, project_id: other_project.id, ui_version: 'project_backoffice_v1')).to be_nil
+      expect(prompt.reload.status).to eq 'pending'
+      expect(service.show_next(user, trigger: 'save', admin_area: project_area, project_id: project.id, ui_version: 'project_backoffice_v1')).to eq prompt
+    end
+
+    it 'expires setup feedback for a deleted project' do
+      project = create(:project)
+      prompt = create(:feedback_prompt, user: user, key: 'project_setup_ease', subject: project)
+      project.destroy!
+      expect(service.show_next(user, trigger: 'save', admin_area: project_area, project_id: project.id, ui_version: 'project_backoffice_v1')).to be_nil
+      expect(prompt.reload.status).to eq 'expired'
+    end
+
+    it 'cannot show a prompt twice' do
+      create(:feedback_prompt, user: user)
+      expect(service.show_next(user, trigger: 'save', admin_area: project_area, ui_version: 'project_backoffice_v1')).to be_present
+      expect(service.show_next(user, trigger: 'save', admin_area: project_area, ui_version: 'project_backoffice_v1')).to be_nil
+    end
+
     it 'marks the oldest pending prompt as shown, with a context snapshot' do
       project = create(:project)
       older = create(:feedback_prompt, user: user, key: 'project_setup_ease', subject: project, created_at: 2.hours.ago)
       create(:feedback_prompt, user: user, created_at: 1.hour.ago)
 
-      prompt = service.show_next(user, trigger: 'save', admin_area: project_area, ui_version: 'project_backoffice_v2')
+      prompt = service.show_next(user, trigger: 'save', admin_area: project_area, project_id: project.id, ui_version: 'project_backoffice_v2')
 
       expect(prompt).to eq older
       expect(prompt.reload).to have_attributes(
@@ -148,14 +171,14 @@ describe FeedbackPromptService do
 
     it 'does not show a prompt again within its cooldown' do
       create(:feedback_prompt, :shown, user: user, key: 'project_setup_ease', subject: create(:project), shown_at: 59.days.ago)
-      create(:feedback_prompt, user: user, key: 'project_setup_ease', subject: create(:project))
-      expect(service.show_next(user, trigger: 'save', admin_area: project_area, ui_version: 'project_backoffice_v1')).to be_nil
+      pending = create(:feedback_prompt, user: user, key: 'project_setup_ease', subject: create(:project))
+      expect(service.show_next(user, trigger: 'save', admin_area: project_area, project_id: pending.subject_id, ui_version: 'project_backoffice_v1')).to be_nil
     end
 
     it 'shows a prompt again once its cooldown has passed' do
       create(:feedback_prompt, :shown, user: user, key: 'project_setup_ease', subject: create(:project), shown_at: 61.days.ago)
-      create(:feedback_prompt, user: user, key: 'project_setup_ease', subject: create(:project))
-      expect(service.show_next(user, trigger: 'save', admin_area: project_area, ui_version: 'project_backoffice_v1')).to be_present
+      pending = create(:feedback_prompt, user: user, key: 'project_setup_ease', subject: create(:project))
+      expect(service.show_next(user, trigger: 'save', admin_area: project_area, project_id: pending.subject_id, ui_version: 'project_backoffice_v1')).to be_present
     end
 
     it 'shows a prompt even when another prompt was shown recently' do
@@ -197,22 +220,24 @@ describe FeedbackPromptService do
     end
 
     it 'skips expired pending prompts' do
-      create(:feedback_prompt, user: user, created_at: 15.days.ago)
+      expired = create(:feedback_prompt, user: user, created_at: 15.days.ago)
       expect(service.show_next(user, trigger: 'save', admin_area: project_area, ui_version: 'project_backoffice_v1')).to be_nil
+      expect(expired.reload.status).to eq 'expired'
+      expect(FeedbackPrompt.cooling_down?('return_findability', user)).to be false
     end
 
-    it 'records a project created from a template as such' do
+    it 'does not guess the origin of an ambiguous project import' do
       project = create(:project)
       BulkImportIdeas::ProjectImport.create!(project: project, import_type: 'project_copy', log: [])
       create(:feedback_prompt, user: user, key: 'project_setup_ease', subject: project)
-      expect(service.show_next(user, trigger: 'save', admin_area: project_area, ui_version: 'project_backoffice_v1').project_origin).to eq 'template'
+      expect(service.show_next(user, trigger: 'save', admin_area: project_area, project_id: project.id, ui_version: 'project_backoffice_v1').project_origin).to eq 'unknown'
     end
 
     it 'records a copied project as such' do
       project = create(:project)
       create(:activity, item: project, action: 'local_copy_created')
       create(:feedback_prompt, user: user, key: 'project_setup_ease', subject: project)
-      expect(service.show_next(user, trigger: 'save', admin_area: project_area, ui_version: 'project_backoffice_v1').project_origin).to eq 'copy'
+      expect(service.show_next(user, trigger: 'save', admin_area: project_area, project_id: project.id, ui_version: 'project_backoffice_v1').project_origin).to eq 'copy'
     end
   end
 end

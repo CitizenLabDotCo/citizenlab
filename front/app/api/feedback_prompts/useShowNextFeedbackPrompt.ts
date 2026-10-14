@@ -11,11 +11,17 @@ const showNextFeedbackPrompt = ({
   trigger,
   uiVersion,
   adminArea,
+  projectId,
 }: IShowNextFeedbackPrompt) =>
   fetcher<IFeedbackPrompt | null>({
     path: '/feedback_prompts/show_next',
     action: 'post',
-    body: { trigger, ui_version: uiVersion, admin_area: adminArea },
+    body: {
+      trigger,
+      ui_version: uiVersion,
+      admin_area: adminArea,
+      project_id: projectId,
+    },
   });
 
 const useShowNextFeedbackPrompt = () => {

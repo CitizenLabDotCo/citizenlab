@@ -11,7 +11,7 @@ export interface IFeedbackPromptData {
   type: 'feedback_prompt';
   attributes: {
     key: FeedbackPromptKey;
-    status: 'pending' | 'shown' | 'answered' | 'dismissed';
+    status: 'pending' | 'shown' | 'answered' | 'dismissed' | 'expired';
   };
 }
 
@@ -23,6 +23,7 @@ export interface IShowNextFeedbackPrompt {
   trigger: FeedbackPromptTrigger;
   uiVersion: FeedbackPromptUiVersion;
   adminArea?: string;
+  projectId?: string;
 }
 
 export interface IFeedbackPromptAnswer {

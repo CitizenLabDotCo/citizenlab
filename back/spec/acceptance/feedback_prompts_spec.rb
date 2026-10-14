@@ -14,6 +14,7 @@ resource 'Feedback prompts' do
   post 'web_api/v1/feedback_prompts/show_next' do
     parameter :trigger, "The moment the check happens: 'save' or 'project_exit'", required: true
     parameter :ui_version, 'The back office version the user is in', required: true
+    parameter :project_id, 'The current project, or the project being left'
     parameter :admin_area, 'The route pattern of the back office page the user is on (or just left)'
 
     let(:trigger) { 'save' }
@@ -26,6 +27,15 @@ resource 'Feedback prompts' do
       assert_status 200
       expect(response_data).to include(id: prompt.id, attributes: { key: 'return_findability', status: 'shown' })
       expect(prompt.reload).to have_attributes(trigger: 'save', admin_area: '/:locale/admin/projects/:projectId/general')
+    end
+
+    example "Do not return another project's setup question", document: false do
+      project = create(:project)
+      create(:feedback_prompt, user: user, key: 'project_setup_ease', subject: project)
+      do_request(project_id: create(:project).id)
+      assert_status 204
+      do_request(project_id: project.id)
+      assert_status 200
     end
 
     example 'Return no prompt when none is due', document: false do

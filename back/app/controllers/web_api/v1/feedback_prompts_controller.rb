@@ -15,7 +15,8 @@ class WebApi::V1::FeedbackPromptsController < ApplicationController
       current_user,
       trigger: params[:trigger],
       ui_version: params[:ui_version],
-      admin_area: admin_area_param
+      admin_area: admin_area_param,
+      project_id: params[:project_id]
     )
 
     if prompt
@@ -56,7 +57,7 @@ class WebApi::V1::FeedbackPromptsController < ApplicationController
 
   def admin_area_param
     admin_area = params[:admin_area].to_s
-    admin_area if FeedbackPrompt::ADMIN_AREA_FORMAT.match?(admin_area)
+    admin_area if FeedbackPrompt::ADMIN_AREAS.include?(admin_area)
   end
 
   def answer_params

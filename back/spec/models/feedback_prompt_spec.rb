@@ -10,7 +10,7 @@ RSpec.describe FeedbackPrompt do
         expect(described_class::AUDIENCES).to have_key(definition[:audience])
         expect(definition[:triggers]).to be_present
         expect(definition[:triggers] - described_class::TRIGGERS).to be_empty
-        expect(definition[:admin_area]).to match(described_class::ADMIN_AREA_FORMAT) if definition[:admin_area]
+        expect(described_class::ADMIN_AREAS).to include(definition[:admin_area]) if definition[:admin_area]
         expect(definition[:cooldown]).to be_a(ActiveSupport::Duration)
         expect(definition[:expires_after]).to be_a(ActiveSupport::Duration)
         expect(definition[:subject_type]&.safe_constantize).to be_present if definition[:subject_type]
@@ -57,6 +57,9 @@ RSpec.describe FeedbackPrompt do
     it 'rejects an actual URL as admin area' do
       expect(build(:feedback_prompt, admin_area: '/en/admin/projects/0b3e-41/general?x=1')).not_to be_valid
       expect(build(:feedback_prompt, admin_area: '/:locale/projects/:slug')).not_to be_valid
+      expect(build(:feedback_prompt, admin_area: '/:locale/admin/projects/550e8400-e29b-41d4-a716-446655440000/general')).not_to be_valid
+      expect(build(:feedback_prompt, admin_area: '/:locale/admin/projects/:projectId/private-project-slug')).not_to be_valid
+      expect(build(:feedback_prompt, admin_area: '/:locale/admin/projects/:projectId/phases/550e8400-e29b-41d4-a716-446655440000/insights')).not_to be_valid
     end
 
     it 'requires a score once answered' do
