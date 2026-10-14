@@ -14,6 +14,7 @@
 #  cancel_requested_at :datetime
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
+#  report_saved_at     :datetime
 #
 # Indexes
 #
@@ -66,23 +67,30 @@ module ReportBuilder
     scope :running, -> { where(stopped_because: nil) }
     scope :finished, -> { where.not(stopped_because: nil) }
     scope :not_failed, -> { where.not(stopped_because: 'failed') }
+    scope :saved_the_report, -> { where.not(report_saved_at: nil) }
 
     # The runs that make up a report's conversation so far: the latest finished
     # generation and the finished turns after it, oldest first. Runs before that
     # generation are about a report that no longer exists.
     #
-    # Failed runs are left out altogether. One wrote nothing and deleted what it had
-    # started, so its messages refer to blocks that are no longer there; taken as the
-    # start of a session it would also drop the generation that did produce the
-    # report, along with every turn since.
+    # The session opens at the latest generation that actually saved a report, not
+    # merely the latest that stopped. A generation that saved nothing wrote no blocks
+    # and deleted the ones it had started, so its messages refer to things that are
+    # no longer there — and taken as the start it would also drop the generation that
+    # did produce the report, along with every turn since. Failed runs are left out
+    # for the same reason.
     #
     # @return [Array<GenerationTranscript>]
     def self.session_runs_for(report)
       runs = report.generation_transcripts.finished.not_failed.oldest_first.to_a
-      start = runs.rindex(&:generation?)
+      start = runs.rindex { |run| run.generation? && run.saved_the_report? }
       return [] if start.nil?
 
-      generation, *revisions = runs[start..]
+      generation = runs[start]
+      # Only the chat turns after it. Any later generation saved nothing — had it
+      # saved, it would be the one this session opens at — so it describes work the
+      # report does not hold.
+      revisions = runs[(start + 1)..].reject(&:generation?)
       kept = [generation]
       budget = MAX_HISTORY_CHARS - generation.size_in_chars
       revisions.reverse_each do |run|
@@ -96,6 +104,20 @@ module ReportBuilder
     end
 
     def generation? = kind == 'generation'
+
+    # This run's work is what the report holds, as opposed to a run that stopped for
+    # a respectable reason and still wrote nothing.
+    def saved_the_report? = report_saved_at.present?
+
+    # Called once the layout this run produced has been written. Best effort, like
+    # the transcript itself: the report is already saved by this point, and failing
+    # the job over a bookkeeping row would rerun minutes of paid work to fix it.
+    def report_saved!
+      update!(report_saved_at: Time.current)
+    rescue StandardError => e
+      ErrorReporter.report(e, extra: { report_id: report_id })
+    end
+
     def running? = stopped_because.nil?
     def cancel_requested? = cancel_requested_at.present?
 

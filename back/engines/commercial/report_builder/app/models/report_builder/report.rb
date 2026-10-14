@@ -123,11 +123,11 @@ module ReportBuilder
       project || phase&.project
     end
 
-    # The latest generation that ran to a stop without failing. A failed run is
-    # skipped: it wrote nothing, so what the report holds is still the work of the
-    # run before it, and that is what the "is this report whole" answer is about.
+    # The run that wrote what the report holds now, if a model wrote it. A run that
+    # stopped without saving is not it, however it stopped: what the report holds is
+    # still the work of the last run that did save.
     def last_generation
-      generation_transcripts.generations.finished.not_failed.newest_first.first
+      generation_transcripts.generations.saved_the_report.newest_first.first
     end
 
     def public?
