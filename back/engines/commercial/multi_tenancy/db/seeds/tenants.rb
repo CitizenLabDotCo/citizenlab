@@ -420,6 +420,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            llm_reporting: {
+              enabled: true,
+              allowed: true
+            },
             sms: {
               enabled: true,
               allowed: true,
