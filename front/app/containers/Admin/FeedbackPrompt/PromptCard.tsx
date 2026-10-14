@@ -8,7 +8,11 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 
-import { IFeedbackPromptData } from 'api/feedback_prompts/types';
+import {
+  IFeedbackPrompt,
+  IFeedbackPromptAnswer,
+  IFeedbackPromptData,
+} from 'api/feedback_prompts/types';
 import useAnswerFeedbackPrompt from 'api/feedback_prompts/useAnswerFeedbackPrompt';
 import useDismissFeedbackPrompt from 'api/feedback_prompts/useDismissFeedbackPrompt';
 
@@ -34,8 +38,9 @@ const PromptCard = ({ prompt, onClose }: Props) => {
   const [comment, setComment] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const hasSavedScore = useRef(false);
+  const saveRequest = useRef<Promise<IFeedbackPrompt> | null>(null);
   const {
-    mutate: answer,
+    mutateAsync: answer,
     isPending: isSending,
     isError,
   } = useAnswerFeedbackPrompt();
@@ -45,22 +50,39 @@ const PromptCard = ({ prompt, onClose }: Props) => {
   const scoreId = `feedback-prompt-score-${prompt.id}`;
 
   const handleClose = () => {
-    if (!hasSavedScore.current && !isSending) dismiss(prompt.id);
+    if (!hasSavedScore.current) {
+      if (saveRequest.current) {
+        // A close during saving must become a dismissal if that save fails.
+        saveRequest.current.catch(() => dismiss(prompt.id));
+      } else {
+        dismiss(prompt.id);
+      }
+    }
     onClose();
   };
 
+  const saveAnswer = (body: IFeedbackPromptAnswer, onSuccess?: () => void) => {
+    if (saveRequest.current) return;
+
+    const request = answer(body);
+    saveRequest.current = request;
+    request
+      .then(() => {
+        hasSavedScore.current = true;
+        onSuccess?.();
+      })
+      .catch(() => {})
+      .finally(() => {
+        saveRequest.current = null;
+      });
+  };
+
   const handleScore = (value: number) => {
-    if (isSending) return;
+    if (saveRequest.current) return;
+    if (score === value && hasSavedScore.current && !isError) return;
 
     setScore(value);
-    answer(
-      { id: prompt.id, score: value },
-      {
-        onSuccess: () => {
-          hasSavedScore.current = true;
-        },
-      }
-    );
+    saveAnswer({ id: prompt.id, score: value });
   };
 
   const handleKeyDown = (
@@ -78,6 +100,8 @@ const PromptCard = ({ prompt, onClose }: Props) => {
     if (next === undefined) return;
 
     event.preventDefault();
+    if (saveRequest.current) return;
+
     const clamped = Math.min(Math.max(next, 1), SCORES.length);
     handleScore(clamped);
     document
@@ -88,14 +112,9 @@ const PromptCard = ({ prompt, onClose }: Props) => {
 
   const handleSend = () => {
     if (score === undefined) return;
-    answer(
+    saveAnswer(
       { id: prompt.id, score, comment: comment.trim() || undefined },
-      {
-        onSuccess: () => {
-          hasSavedScore.current = true;
-          setIsSubmitted(true);
-        },
-      }
+      () => setIsSubmitted(true)
     );
   };
 

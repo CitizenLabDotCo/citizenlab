@@ -33,23 +33,33 @@ const FeedbackPrompt = () => {
   const { mutateAsync: showNext } = useShowNextFeedbackPrompt();
   const [prompt, setPrompt] = useState<IFeedbackPromptData | null>(null);
   const busy = useRef(false);
-  const adminArea = useRef(getAdminArea(window.location.pathname));
+  const projectPage = useRef(getProjectPage(window.location.pathname));
 
   const uiVersion: FeedbackPromptUiVersion = isBackofficeRedesign
     ? 'project_backoffice_v2'
     : 'project_backoffice_v1';
 
+  const uiVersionRef = useRef(uiVersion);
+  useEffect(() => {
+    uiVersionRef.current = uiVersion;
+  }, [uiVersion]);
+
   useEffect(() => {
     const requestPrompt = (
       trigger: FeedbackPromptTrigger,
-      area: string | undefined
+      page: ProjectPage
     ) => {
       if (busy.current) return;
 
       busy.current = true;
       // mutate's call-site callbacks are dropped when the observer unsubscribes
       // (e.g. StrictMode's remount), losing a prompt the server marked as shown.
-      showNext({ trigger, uiVersion, adminArea: area })
+      showNext({
+        trigger,
+        uiVersion: uiVersionRef.current,
+        adminArea: page.adminArea,
+        projectId: page.projectId,
+      })
         .then((response) => {
           if (response) {
             setPrompt(response.data);
@@ -72,7 +82,7 @@ const FeedbackPrompt = () => {
     const currentPage = getProjectPage(window.location.pathname);
     const exit = takeProjectExit();
     if (exit && exit.projectId !== currentPage?.projectId) {
-      requestPrompt('project_exit', exit.adminArea);
+      requestPrompt('project_exit', exit);
     }
     startVisit(currentPage);
 
@@ -84,12 +94,12 @@ const FeedbackPrompt = () => {
         }
         if (event.mutation.options.meta?.feedbackPrompt) return;
 
-        requestPrompt('save', adminArea.current);
+        if (projectPage.current) requestPrompt('save', projectPage.current);
       });
 
     const pageChanges = pageChanges$.subscribe(({ path }) => {
-      adminArea.current = getAdminArea(path);
       const page = getProjectPage(path);
+      projectPage.current = page;
 
       if (visit && visit.projectId === page?.projectId) {
         visit.adminArea = page.adminArea;
@@ -100,8 +110,8 @@ const FeedbackPrompt = () => {
       // after this event, which would drop a prompt the server already marked
       // as shown. So such an exit is checked on the next back office visit.
       if (isLongVisit(visit)) {
-        if (adminArea.current) {
-          requestPrompt('project_exit', visit.adminArea);
+        if (getAdminArea(path)) {
+          requestPrompt('project_exit', visit);
         } else {
           saveProjectExit(visit);
         }
@@ -114,7 +124,7 @@ const FeedbackPrompt = () => {
       pageChanges.unsubscribe();
       if (isLongVisit(visit)) saveProjectExit(visit);
     };
-  }, [queryClient, showNext, uiVersion]);
+  }, [queryClient, showNext]);
 
   if (!prompt) return null;
 
