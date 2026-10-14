@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class IntercomMessengerTokenService
-  TOKEN_LIFETIME = 24.hour
+  # Force BE redeploy
+  TOKEN_LIFETIME = 1.hour
 
   def configured?
     secret.present?
