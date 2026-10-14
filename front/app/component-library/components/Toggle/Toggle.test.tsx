@@ -19,7 +19,7 @@ describe('<Toggle />', () => {
     expect(handleOnChange).toHaveBeenCalledTimes(1);
   });
 
-  it('renders the description inside the label', () => {
+  it('describes the control with the description', () => {
     render(
       <Toggle
         checked={false}
@@ -29,10 +29,10 @@ describe('<Toggle />', () => {
       />
     );
 
-    expect(screen.getByText('Public answers')).toBeInTheDocument();
-    expect(
-      screen.getByText('Shown to other participants.').closest('label')
-    ).toBe(screen.getByText('Public answers').closest('label'));
+    const checkbox = screen.getByRole('checkbox', { name: 'Public answers' });
+    expect(checkbox).toHaveAccessibleDescription(
+      'Shown to other participants.'
+    );
   });
 
   it('does not toggle when disabled', () => {
