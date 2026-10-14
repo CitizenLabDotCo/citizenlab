@@ -101,7 +101,12 @@ describe('Project page builder', () => {
     cy.setAdminLoginCookie();
     cy.visit(`/admin/projects/${projectId}/pages/${pageId}`);
 
-    cy.dataCy('e2e-save-project-page').should('exist');
+    // This admin route is lazily loaded and renders nothing until the project and the page have
+    // both answered, which is the slowest moment of the test under CI contention. The suite's
+    // 15s default has been seen to run out here, so the form gets a window of its own.
+    cy.get('[data-cy="e2e-save-project-page"]', { timeout: 30000 }).should(
+      'exist'
+    );
     // The first visit finds no layout and derives one from the page's content, and the preview
     // renders only once the page has a layout. So waiting for the preview waits for that
     // derivation through the result it leaves behind, which every attempt can observe. Waiting
