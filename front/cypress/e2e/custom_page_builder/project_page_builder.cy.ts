@@ -101,17 +101,14 @@ describe('Project page builder', () => {
     cy.setAdminLoginCookie();
     cy.visit(`/admin/projects/${projectId}/pages/${pageId}`);
 
-    // This admin route is lazily loaded and renders nothing until the project and the page have
-    // both answered, which is the slowest moment of the test under CI contention. The suite's
-    // 15s default has been seen to run out here, so the form gets a window of its own.
+    // The route is lazily loaded and renders nothing until the project and the page answer,
+    // which under CI contention has outlasted the suite's 15s default.
     cy.get('[data-cy="e2e-save-project-page"]', { timeout: 30000 }).should(
       'exist'
     );
-    // The first visit finds no layout and derives one from the page's content, and the preview
-    // renders only once the page has a layout. So waiting for the preview waits for that
-    // derivation through the result it leaves behind, which every attempt can observe. Waiting
-    // for the derivation request instead would only work on the attempt that triggers it: it
-    // runs once per page, so a retry finds the layout already there and waits forever.
+    // The first visit derives a layout from the page's content, and the preview renders only
+    // once there is one. Waiting on the preview picks that up through what it leaves behind:
+    // the request itself fires once per page, so a retry would wait for one that never comes.
     cy.get('[data-cy="e2e-project-page-preview-panel"]', { timeout: 30000 })
       .find('iframe')
       .should('have.attr', 'src')
