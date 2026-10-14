@@ -994,7 +994,7 @@
   "app.components.formBuilder.dragAndDrop": "Per aggiungere domande, trascina e rilascia nel modulo gli elementi che trovi nel menu a sinistra.",
   "app.components.formBuilder.drawArea": "Disegna l'area",
   "app.components.formBuilder.drawRoute": "Traccia un percorso",
-  "app.components.formBuilder.dropMultiplePins1": "Inserisci segnaposti",
+  "app.components.formBuilder.dropMultiplePins1": "Posiziona puntine",
   "app.components.formBuilder.dropPin": "Segnaposto",
   "app.components.formBuilder.editButtonLabel": "Modifica",
   "app.components.formBuilder.emptyImageOptionError": "Fornisci almeno 1 risposta. Ricorda che ogni risposta deve avere un titolo.",
