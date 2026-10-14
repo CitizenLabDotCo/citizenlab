@@ -3629,6 +3629,11 @@
     "verified_at": "2026-10-13T09:36:14.610250Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.FeedbackPrompt.saveError": {
+    "state": "verified",
+    "verified_at": "2026-10-14T14:08:22.726011Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.FeedbackPrompt.scaleHint": {
     "state": "verified",
     "verified_at": "2026-10-13T09:36:14.610250Z",
