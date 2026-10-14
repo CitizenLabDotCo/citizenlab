@@ -10,7 +10,7 @@ import messages from './messages';
 
 type Props = {
   opened: boolean;
-  submissionCount: number;
+  submissionCount?: number;
   onCancel: () => void;
   onConfirm: () => void;
 };
@@ -45,11 +45,13 @@ const ConfirmPublicAnswersModal = ({
       }
     >
       <Box p="24px">
-        <Text m="0" mb="12px">
-          {formatMessage(messages.confirmSubmissions, {
-            count: submissionCount,
-          })}
-        </Text>
+        {submissionCount !== undefined && (
+          <Text m="0" mb="12px">
+            {formatMessage(messages.confirmSubmissions, {
+              count: submissionCount,
+            })}
+          </Text>
+        )}
         <Text m="0">{formatMessage(messages.confirmExplanation)}</Text>
       </Box>
     </Modal>

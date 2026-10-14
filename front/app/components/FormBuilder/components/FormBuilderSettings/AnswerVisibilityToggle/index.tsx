@@ -39,13 +39,12 @@ const AnswerVisibilityToggle = ({ field, builderConfig }: Props) => {
     !isEnabled ||
     !builderConfig.isParticipationPublic ||
     field.code ||
-    !supportsPublicAnswers(inputType) ||
-    !submissionCount
+    !supportsPublicAnswers(inputType)
   ) {
     return null;
   }
 
-  const totalSubmissions = submissionCount.data.attributes.totalSubmissions;
+  const totalSubmissions = submissionCount?.data.attributes.totalSubmissions;
 
   const setVisibility = (value: 'public' | 'moderators') =>
     setValue(name, value, { shouldDirty: true });
@@ -53,10 +52,10 @@ const AnswerVisibilityToggle = ({ field, builderConfig }: Props) => {
   const handleChange = () => {
     if (isPublic) {
       setVisibility('moderators');
-    } else if (totalSubmissions > 0) {
-      setConfirming(true);
-    } else {
+    } else if (totalSubmissions === 0) {
       setVisibility('public');
+    } else {
+      setConfirming(true);
     }
   };
 
