@@ -4,17 +4,18 @@
 #
 # Table name: content_builder_custom_block_versions
 #
-#  id              :uuid             not null, primary key
-#  custom_block_id :uuid             not null
-#  number          :integer          not null
-#  sdk_version     :string           default("v1"), not null
-#  source          :text             not null
-#  bundle          :text             not null
-#  manifest        :jsonb            not null
-#  messages        :jsonb            not null
-#  toolchain       :jsonb            not null
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  id                       :uuid             not null, primary key
+#  custom_block_id          :uuid             not null
+#  number                   :integer          not null
+#  sdk_version              :string           default("v1"), not null
+#  source                   :text             not null
+#  bundle                   :text             not null
+#  manifest                 :jsonb            not null
+#  messages                 :jsonb            not null
+#  toolchain                :jsonb            not null
+#  generation_transcript_id :uuid
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
 #
 # Indexes
 #
