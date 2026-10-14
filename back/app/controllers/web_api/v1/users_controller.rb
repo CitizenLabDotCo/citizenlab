@@ -117,6 +117,13 @@ class WebApi::V1::UsersController < ApplicationController
     head :ok
   end
 
+  def intercom_token
+    authorize :user, :intercom_token?
+
+    token = IntercomMessengerTokenService.new.token(current_user)
+    render json: raw_json({ token: })
+  end
+
   def me
     @user = current_user
     skip_authorization
