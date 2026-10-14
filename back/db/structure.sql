@@ -700,6 +700,7 @@ DROP TABLE IF EXISTS public.sms_deliveries;
 DROP TABLE IF EXISTS public.schema_migrations;
 DROP VIEW IF EXISTS public.reporting_user_question_answers;
 DROP VIEW IF EXISTS public.reporting_users;
+DROP VIEW IF EXISTS public.reporting_staff_activities;
 DROP VIEW IF EXISTS public.reporting_sessions;
 DROP VIEW IF EXISTS public.reporting_reports;
 DROP VIEW IF EXISTS public.reporting_reference_distributions;
@@ -4701,6 +4702,46 @@ CREATE VIEW public.reporting_sessions AS
     browser_name AS browser,
     os_name AS os
    FROM public.impact_tracking_sessions s;
+
+
+--
+-- Name: reporting_staff_activities; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_staff_activities AS
+ WITH tracked_actions(item_type, action, activity) AS (
+         VALUES ('Project'::text,'created'::text,'project_created'::text), ('Project'::text,'published'::text,'project_published'::text), ('Project'::text,'changed'::text,'project_changed'::text), ('Project'::text,'deleted'::text,'project_deleted'::text), ('Project'::text,'project_review_requested'::text,'project_review_requested'::text), ('Project'::text,'project_review_approved'::text,'project_review_approved'::text), ('ProjectFolders::Folder'::text,'created'::text,'folder_created'::text), ('ProjectFolders::Folder'::text,'changed'::text,'folder_changed'::text), ('ProjectFolders::Folder'::text,'deleted'::text,'folder_deleted'::text), ('Phase'::text,'created'::text,'phase_created'::text), ('Phase'::text,'changed'::text,'phase_changed'::text), ('Phase'::text,'deleted'::text,'phase_deleted'::text), ('Permission'::text,'changed'::text,'permissions_changed'::text), ('Idea'::text,'changed_status'::text,'input_status_changed'::text), ('Idea'::text,'changed_assignee'::text,'input_assigned'::text), ('OfficialFeedback'::text,'created'::text,'official_feedback_posted'::text), ('InternalComment'::text,'created'::text,'internal_comment_posted'::text), ('Comment'::text,'marked_as_deleted'::text,'comment_removed'::text), ('Moderation::ModerationStatus'::text,'read'::text,'moderation_item_marked_read'::text)
+        )
+ SELECT (((a.acted_at AT TIME ZONE 'UTC'::text) AT TIME ZONE COALESCE(( SELECT ((ac.settings -> 'core'::text) ->> 'timezone'::text)
+           FROM public.app_configurations ac
+         LIMIT 1), 'UTC'::text)))::date AS activity_date,
+    a.project_id,
+        CASE
+            WHEN (u.id IS NULL) THEN NULL::text
+            WHEN (u.roles @> '[{"type": "admin"}]'::jsonb) THEN 'admin'::text
+            WHEN (u.roles @> '[{"type": "space_moderator"}]'::jsonb) THEN 'space_moderator'::text
+            WHEN (u.roles @> '[{"type": "project_folder_moderator"}]'::jsonb) THEN 'project_folder_moderator'::text
+            WHEN (u.roles @> '[{"type": "project_moderator"}]'::jsonb) THEN 'project_moderator'::text
+            ELSE 'former_staff'::text
+        END AS role,
+    COALESCE((((u.email)::text ~* 'citizenlab\.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'::text) OR ((u.email)::text ~* 'govocal\.(com|eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'::text)), false) AS govocal_staff,
+    t.activity,
+    (count(*))::integer AS activity_count
+   FROM ((public.activities a
+     JOIN tracked_actions t ON (((t.item_type = (a.item_type)::text) AND (t.action = (a.action)::text))))
+     LEFT JOIN public.users u ON ((u.id = a.user_id)))
+  WHERE (((a.item_type)::text <> 'Comment'::text) OR ((a.payload ->> 'reason_code'::text) IS NOT NULL))
+  GROUP BY ((((a.acted_at AT TIME ZONE 'UTC'::text) AT TIME ZONE COALESCE(( SELECT ((ac.settings -> 'core'::text) ->> 'timezone'::text)
+           FROM public.app_configurations ac
+         LIMIT 1), 'UTC'::text)))::date), a.project_id,
+        CASE
+            WHEN (u.id IS NULL) THEN NULL::text
+            WHEN (u.roles @> '[{"type": "admin"}]'::jsonb) THEN 'admin'::text
+            WHEN (u.roles @> '[{"type": "space_moderator"}]'::jsonb) THEN 'space_moderator'::text
+            WHEN (u.roles @> '[{"type": "project_folder_moderator"}]'::jsonb) THEN 'project_folder_moderator'::text
+            WHEN (u.roles @> '[{"type": "project_moderator"}]'::jsonb) THEN 'project_moderator'::text
+            ELSE 'former_staff'::text
+        END, COALESCE((((u.email)::text ~* 'citizenlab\.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'::text) OR ((u.email)::text ~* 'govocal\.(com|eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'::text)), false), t.activity;
 
 
 --
@@ -10100,6 +10141,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261014200000'),
+('20261014100100'),
 ('20261012130100'),
 ('20261012120000'),
 ('20261012100100'),
