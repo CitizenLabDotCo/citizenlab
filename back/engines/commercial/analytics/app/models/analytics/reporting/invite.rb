@@ -7,7 +7,6 @@
 #  invited_date   :date
 #  inviter_role   :text
 #  govocal_staff  :boolean
-#  email_sent     :boolean
 #  invites_count  :integer
 #  accepted_count :integer
 #
@@ -22,10 +21,11 @@ module Analytics
           Invitations to join the platform, as totals per day invited and
           inviter role: how many people were invited and how many of them
           accepted. There are no rows per person, so it can't tell who was
-          invited or who invited them. Acceptances are counted against the day
-          of the invitation, so for recent days the acceptance rate can still
-          go up. Deleting an account deletes its invitation, so totals can
-          shrink over time.
+          invited or who invited them. Counts every invitation ever sent,
+          including those the platform has deleted since (it deletes
+          invitations 30 days after sending them). Acceptances are counted
+          against the day of the invitation; invitations expire after 30 days,
+          so the acceptance rate of the last 30 days can still go up.
         DOC
       end
 
@@ -45,13 +45,8 @@ module Analytics
             their email address. Filter on govocal_staff = FALSE to report the
             client's own outreach, and say that you did.
           DOC
-          'email_sent' => <<~DOC.squish,
-            TRUE when the platform emailed the invitation. FALSE when the
-            administrator chose not to, for example to share the invitation
-            link themselves.
-          DOC
           'invites_count' => 'People invited.',
-          'accepted_count' => 'Of those invited, how many accepted and joined the platform, at any time since.'
+          'accepted_count' => 'Of those invited, how many accepted and joined the platform.'
         }
       end
 

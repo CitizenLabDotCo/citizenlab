@@ -4475,7 +4475,12 @@ CREATE VIEW public.reporting_inputs AS
 --
 
 CREATE VIEW public.reporting_invites AS
- SELECT (((i.created_at AT TIME ZONE 'UTC'::text) AT TIME ZONE COALESCE(( SELECT ((ac.settings -> 'core'::text) ->> 'timezone'::text)
+ WITH accepted_invites AS (
+         SELECT DISTINCT activities.item_id AS invite_id
+           FROM public.activities
+          WHERE (((activities.item_type)::text = 'Invite'::text) AND ((activities.action)::text = 'accepted'::text))
+        )
+ SELECT (((a.acted_at AT TIME ZONE 'UTC'::text) AT TIME ZONE COALESCE(( SELECT ((ac.settings -> 'core'::text) ->> 'timezone'::text)
            FROM public.app_configurations ac
          LIMIT 1), 'UTC'::text)))::date AS invited_date,
         CASE
@@ -4487,12 +4492,13 @@ CREATE VIEW public.reporting_invites AS
             ELSE 'former_staff'::text
         END AS inviter_role,
     COALESCE((((u.email)::text ~* 'citizenlab\.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'::text) OR ((u.email)::text ~* 'govocal\.(com|eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'::text)), false) AS govocal_staff,
-    i.send_invite_email AS email_sent,
     (count(*))::integer AS invites_count,
-    (count(i.accepted_at))::integer AS accepted_count
-   FROM (public.invites i
-     LEFT JOIN public.users u ON ((u.id = i.inviter_id)))
-  GROUP BY ((((i.created_at AT TIME ZONE 'UTC'::text) AT TIME ZONE COALESCE(( SELECT ((ac.settings -> 'core'::text) ->> 'timezone'::text)
+    (count(ai.invite_id))::integer AS accepted_count
+   FROM ((public.activities a
+     LEFT JOIN accepted_invites ai ON ((ai.invite_id = a.item_id)))
+     LEFT JOIN public.users u ON ((u.id = a.user_id)))
+  WHERE (((a.item_type)::text = 'Invite'::text) AND ((a.action)::text = 'created'::text))
+  GROUP BY ((((a.acted_at AT TIME ZONE 'UTC'::text) AT TIME ZONE COALESCE(( SELECT ((ac.settings -> 'core'::text) ->> 'timezone'::text)
            FROM public.app_configurations ac
          LIMIT 1), 'UTC'::text)))::date),
         CASE
@@ -4502,7 +4508,7 @@ CREATE VIEW public.reporting_invites AS
             WHEN (u.roles @> '[{"type": "project_folder_moderator"}]'::jsonb) THEN 'project_folder_moderator'::text
             WHEN (u.roles @> '[{"type": "project_moderator"}]'::jsonb) THEN 'project_moderator'::text
             ELSE 'former_staff'::text
-        END, COALESCE((((u.email)::text ~* 'citizenlab\.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'::text) OR ((u.email)::text ~* 'govocal\.(com|eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'::text)), false), i.send_invite_email;
+        END, COALESCE((((u.email)::text ~* 'citizenlab\.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'::text) OR ((u.email)::text ~* 'govocal\.(com|eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'::text)), false);
 
 
 --
