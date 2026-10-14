@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class IntercomMessengerTokenService
-  TOKEN_LIFETIME = 1.hour
+  TOKEN_LIFETIME = 24.hour
 
   def configured?
     secret.present?
