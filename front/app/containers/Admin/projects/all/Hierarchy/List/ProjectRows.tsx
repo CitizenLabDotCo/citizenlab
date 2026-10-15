@@ -3,7 +3,9 @@ import React from 'react';
 import useParticipantCounts from 'api/participant_counts/useParticipantCounts';
 import { ProjectsMiniAdmin } from 'api/projects_mini_admin/types';
 
-import { placesIn } from '../Arrange/arrangeTargets';
+import useArrangeGroup, {
+  ArrangeGroupContext,
+} from '../Arrange/useArrangeGroup';
 import { PagedQuery } from '../levelGroups';
 import useProjectPath, { PathFrom } from '../useProjectPath';
 
@@ -26,13 +28,16 @@ const ProjectRows = ({ query, columns, pathFrom, arrangeable }: Props) => {
   const participants = useParticipantCounts(
     projects.map((project) => project.id)
   );
-  const placeAt = arrangeable
-    ? placesIn(projects, query.hasNextPage)
-    : undefined;
+  const { shown, placeOf, group } = useArrangeGroup({
+    kind: 'project',
+    items: projects,
+    hasMore: query.hasNextPage,
+    arrangeable,
+  });
 
   return (
-    <>
-      {projects.map((project, index) => {
+    <ArrangeGroupContext.Provider value={group}>
+      {shown.map((project) => {
         const path = pathFrom && pathOf(project, pathFrom);
 
         return (
@@ -43,11 +48,11 @@ const ProjectRows = ({ query, columns, pathFrom, arrangeable }: Props) => {
             managers={managersOf(project.relationships.moderators.data)}
             participants={participants[project.id]}
             path={path}
-            place={placeAt?.(index)}
+            place={placeOf(project)}
           />
         );
       })}
-    </>
+    </ArrangeGroupContext.Provider>
   );
 };
 

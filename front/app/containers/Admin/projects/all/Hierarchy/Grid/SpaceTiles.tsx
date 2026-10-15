@@ -2,7 +2,9 @@ import React from 'react';
 
 import { Spaces } from 'api/spaces/types';
 
-import { placesIn } from '../Arrange/arrangeTargets';
+import useArrangeGroup, {
+  ArrangeGroupContext,
+} from '../Arrange/useArrangeGroup';
 
 import SpaceTile from './SpaceTile';
 import TileGrid from './TileGrid';
@@ -14,14 +16,21 @@ interface Props {
 
 const SpaceTiles = ({ spaces, arrangeable }: Props) => {
   // Every space is loaded at once.
-  const placeAt = arrangeable ? placesIn(spaces.data, false) : undefined;
+  const { shown, placeOf, group } = useArrangeGroup({
+    kind: 'space',
+    items: spaces.data,
+    hasMore: false,
+    arrangeable,
+  });
 
   return (
-    <TileGrid>
-      {spaces.data.map((space, index) => (
-        <SpaceTile key={space.id} space={space} place={placeAt?.(index)} />
-      ))}
-    </TileGrid>
+    <ArrangeGroupContext.Provider value={group}>
+      <TileGrid>
+        {shown.map((space) => (
+          <SpaceTile key={space.id} space={space} place={placeOf(space)} />
+        ))}
+      </TileGrid>
+    </ArrangeGroupContext.Provider>
   );
 };
 

@@ -8,8 +8,10 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
-import SpaceActions from '../Actions/SpaceActions';
+import useSpaceActions from '../Actions/useSpaceActions';
 import { ArrangePlace } from '../Arrange/arrangeTargets';
+import useDragArrange from '../Arrange/useDragArrange';
+import MoreActions from '../Menu/MoreActions';
 import messages from '../messages';
 
 import ContainerTile from './ContainerTile';
@@ -25,6 +27,8 @@ const SpaceTile = ({ space, place }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { title_multiloc, folders_count, projects_count } = space.attributes;
+  const { entries, arrangeTo } = useSpaceActions(space.id, place);
+  const drag = useDragArrange({ id: space.id, place, arrangeTo });
 
   const meta = [
     folders_count > 0 &&
@@ -39,7 +43,8 @@ const SpaceTile = ({ space, place }: Props) => {
       level={{ kind: 'space', id: space.id }}
       title={localize(title_multiloc)}
       meta={meta}
-      actions={<SpaceActions spaceId={space.id} place={place} />}
+      actions={<MoreActions entries={entries} />}
+      drag={drag}
       media={
         <Icon
           name="spaces"

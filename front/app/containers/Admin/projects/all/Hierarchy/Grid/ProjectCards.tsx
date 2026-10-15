@@ -2,7 +2,9 @@ import React from 'react';
 
 import { ProjectsMiniAdmin } from 'api/projects_mini_admin/types';
 
-import { placesIn } from '../Arrange/arrangeTargets';
+import useArrangeGroup, {
+  ArrangeGroupContext,
+} from '../Arrange/useArrangeGroup';
 import { PagedQuery } from '../levelGroups';
 import useProjectPath, { PathFrom } from '../useProjectPath';
 
@@ -19,26 +21,31 @@ interface Props {
 const ProjectCards = ({ query, pathFrom, arrangeable }: Props) => {
   const pathOf = useProjectPath();
   const projects = query.data?.pages.flatMap((page) => page.data) ?? [];
-  const placeAt = arrangeable
-    ? placesIn(projects, query.hasNextPage)
-    : undefined;
+  const { shown, placeOf, group } = useArrangeGroup({
+    kind: 'project',
+    items: projects,
+    hasMore: query.hasNextPage,
+    arrangeable,
+  });
 
   return (
     <>
-      <CardGrid>
-        {projects.map((project, index) => {
-          const path = pathFrom && pathOf(project, pathFrom);
+      <ArrangeGroupContext.Provider value={group}>
+        <CardGrid>
+          {shown.map((project) => {
+            const path = pathFrom && pathOf(project, pathFrom);
 
-          return (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              path={path}
-              place={placeAt?.(index)}
-            />
-          );
-        })}
-      </CardGrid>
+            return (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                path={path}
+                place={placeOf(project)}
+              />
+            );
+          })}
+        </CardGrid>
+      </ArrangeGroupContext.Provider>
       <LoadMore
         hasNextPage={query.hasNextPage}
         isFetchingNextPage={query.isFetchingNextPage}

@@ -5,7 +5,14 @@ import styled from 'styled-components';
 
 import Link, { typedStyled } from 'utils/cl-router/Link';
 
-import { itemFocusRing, revealActions, stretchedLink } from '../itemStyles';
+import DragHandle from '../Arrange/DragHandle';
+import { DragArrange } from '../Arrange/useDragArrange';
+import {
+  dragStates,
+  itemFocusRing,
+  revealActions,
+  stretchedLink,
+} from '../itemStyles';
 import { Level } from '../level';
 import useLevelSearch from '../useLevelSearch';
 
@@ -28,6 +35,7 @@ const Tile = styled.div`
 
   ${itemFocusRing}
   ${revealActions}
+  ${dragStates}
 `;
 
 const TitleLink = typedStyled(Link)`
@@ -47,14 +55,17 @@ interface Props {
   media: ReactNode;
   // Its "⋯".
   actions: ReactNode;
+  drag: DragArrange;
 }
 
 // A space or folder in the grid: a compact tile that opens its level.
-const ContainerTile = ({ level, title, meta, media, actions }: Props) => {
+const ContainerTile = ({ level, title, meta, media, actions, drag }: Props) => {
   const levelSearch = useLevelSearch();
 
   return (
-    <Tile>
+    <Tile ref={drag.item} className={drag.dragging ? 'dragging' : undefined}>
+      {/* Over the icon or thumbnail. */}
+      <DragHandle handle={drag.handle} top="12px" left="12px" />
       <Box
         flex="none"
         width="32px"

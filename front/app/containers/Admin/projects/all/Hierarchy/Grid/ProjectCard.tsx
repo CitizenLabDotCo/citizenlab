@@ -17,9 +17,17 @@ import useLocalize from 'hooks/useLocalize';
 
 import Link, { typedStyled } from 'utils/cl-router/Link';
 
-import ProjectActions from '../Actions/ProjectActions';
+import useProjectActions from '../Actions/useProjectActions';
 import { ArrangePlace } from '../Arrange/arrangeTargets';
-import { itemFocusRing, revealActions, stretchedLink } from '../itemStyles';
+import DragHandle from '../Arrange/DragHandle';
+import useDragArrange from '../Arrange/useDragArrange';
+import {
+  dragStates,
+  itemFocusRing,
+  revealActions,
+  stretchedLink,
+} from '../itemStyles';
+import MoreActions from '../Menu/MoreActions';
 import SearchHighlight from '../SearchHighlight';
 import useProjectLabels from '../useProjectLabels';
 
@@ -39,6 +47,7 @@ const Card = styled.div`
 
   ${itemFocusRing}
   ${revealActions}
+  ${dragStates}
 `;
 
 const TitleLink = typedStyled(Link)`
@@ -63,6 +72,8 @@ interface Props {
 const ProjectCard = ({ project, path, place }: Props) => {
   const localize = useLocalize();
   const { status, method, when } = useProjectLabels(project);
+  const { entries, arrangeTo } = useProjectActions(project, place);
+  const drag = useDragArrange({ id: project.id, place, arrangeTo });
   // "Live · Voting · open until 19 Oct"
   const meta = [status, method, when].filter(Boolean).join(' · ');
 
@@ -74,7 +85,7 @@ const ProjectCard = ({ project, path, place }: Props) => {
   const imageUrl = versions?.large ?? versions?.medium;
 
   return (
-    <Card>
+    <Card ref={drag.item} className={drag.dragging ? 'dragging' : undefined}>
       <Box
         className="project-card-image"
         position="relative"
@@ -103,6 +114,7 @@ const ProjectCard = ({ project, path, place }: Props) => {
             fill={colors.coolGrey500}
           />
         )}
+        <DragHandle handle={drag.handle} top="8px" left="8px" />
         <Box
           data-actions
           position="absolute"
@@ -112,7 +124,7 @@ const ProjectCard = ({ project, path, place }: Props) => {
           bgColor={colors.white}
           borderRadius={bo.borderRadius}
         >
-          <ProjectActions project={project} place={place} />
+          <MoreActions entries={entries} />
         </Box>
       </Box>
       <Text

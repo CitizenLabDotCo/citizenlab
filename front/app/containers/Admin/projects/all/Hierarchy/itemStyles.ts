@@ -32,18 +32,34 @@ export const itemFocusRingInset = itemFocus(focusRingInset);
 // The "⋯" shows on hover, while the item has the focus somewhere in it, and
 // while its menu is open. Its element has to be positioned above the
 // stretched link. Screens without hover, like touch ones, always show it: a
-// hidden button would still take the taps.
+// hidden button would still take the taps. The drag grip, marked data-grip,
+// shows on hover only: it's for the pointer, and touch screens can't drag.
 export const revealActions = css`
   @media (hover: hover) {
-    [data-actions] {
+    [data-actions],
+    [data-grip] {
       opacity: 0;
       transition: opacity 0.12s;
     }
 
     &:hover [data-actions],
     &:focus-within [data-actions],
-    [data-actions]:has([aria-expanded='true']) {
+    [data-actions]:has([aria-expanded='true']),
+    &:hover [data-grip] {
       opacity: 1;
     }
+  }
+
+  @media (hover: none) {
+    [data-grip] {
+      display: none;
+    }
+  }
+`;
+
+// While an item is dragged, it shows faded in the place it would land.
+export const dragStates = css`
+  &.dragging {
+    opacity: 0.35;
   }
 `;

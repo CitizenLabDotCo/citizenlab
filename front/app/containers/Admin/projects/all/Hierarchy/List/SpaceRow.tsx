@@ -9,8 +9,11 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 
 import ManagerBubbles from '../../_shared/ManagerBubbles';
-import SpaceActions from '../Actions/SpaceActions';
+import useSpaceActions from '../Actions/useSpaceActions';
 import { ArrangePlace } from '../Arrange/arrangeTargets';
+import DragHandle from '../Arrange/DragHandle';
+import useDragArrange from '../Arrange/useDragArrange';
+import MoreActions from '../Menu/MoreActions';
 import messages from '../messages';
 
 import ActionsCell from './ActionsCell';
@@ -33,6 +36,8 @@ const SpaceRow = ({ space, columns, managers, place }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { title_multiloc, folders_count, projects_count } = space.attributes;
+  const { entries, arrangeTo } = useSpaceActions(space.id, place);
+  const drag = useDragArrange({ id: space.id, place, arrangeTo });
 
   const note = [
     folders_count > 0 &&
@@ -43,7 +48,7 @@ const SpaceRow = ({ space, columns, managers, place }: Props) => {
     .join(' · ');
 
   return (
-    <ItemRow>
+    <ItemRow drag={drag}>
       {columns.map((column) =>
         column === 'project' ? (
           <TitleCell
@@ -59,6 +64,7 @@ const SpaceRow = ({ space, columns, managers, place }: Props) => {
             title={localize(title_multiloc)}
             target={{ level: { kind: 'space', id: space.id } }}
             note={note}
+            grip={<DragHandle handle={drag.handle} top="6px" left="8px" />}
           />
         ) : column === 'managers' ? (
           <Td key={column}>
@@ -69,7 +75,7 @@ const SpaceRow = ({ space, columns, managers, place }: Props) => {
         )
       )}
       <ActionsCell>
-        <SpaceActions spaceId={space.id} place={place} />
+        <MoreActions entries={entries} />
       </ActionsCell>
     </ItemRow>
   );

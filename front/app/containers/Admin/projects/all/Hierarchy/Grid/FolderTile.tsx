@@ -10,8 +10,10 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 
 import sharedMessages from '../../_shared/messages';
-import FolderActions from '../Actions/FolderActions';
+import useFolderItemActions from '../Actions/useFolderItemActions';
 import { ArrangePlace } from '../Arrange/arrangeTargets';
+import useDragArrange from '../Arrange/useDragArrange';
+import MoreActions from '../Menu/MoreActions';
 import messages from '../messages';
 
 import ContainerTile from './ContainerTile';
@@ -36,6 +38,8 @@ const FolderTile = ({ folder, place }: Props) => {
   });
   const imageUrl = image?.data.attributes.versions.small;
   const title = localize(title_multiloc);
+  const { entries, arrangeTo } = useFolderItemActions(folder, place);
+  const drag = useDragArrange({ id: folder.id, place, arrangeTo });
 
   const meta = [
     publication_status === 'draft' && formatMessage(sharedMessages.draft),
@@ -49,7 +53,8 @@ const FolderTile = ({ folder, place }: Props) => {
       level={{ kind: 'folder', id: folder.id }}
       title={title}
       meta={meta}
-      actions={<FolderActions folder={folder} place={place} />}
+      actions={<MoreActions entries={entries} />}
+      drag={drag}
       media={
         imageUrl ? (
           <Image

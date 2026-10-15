@@ -4,7 +4,7 @@ import { useIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
 import { ArrangePlace } from '../Arrange/arrangeTargets';
-import useArrangeEntry from '../Arrange/useArrangeEntry';
+import useArrange from '../Arrange/useArrange';
 import { MenuEntry } from '../Menu/FlyoutMenu';
 import messages from '../messages';
 
@@ -21,7 +21,7 @@ const useSpaceActions = (spaceId: string, place?: ArrangePlace) => {
   const canReorder = usePermission({ item: 'space', action: 'reorder' });
   const { mutateAsync: reorderSpace } = useReorderSpace();
 
-  const arrange = useArrangeEntry(
+  const arrange = useArrange(
     canReorder && place
       ? {
           place,
@@ -32,7 +32,7 @@ const useSpaceActions = (spaceId: string, place?: ArrangePlace) => {
 
   const entries: MenuEntry[] = canManage
     ? [
-        ...arrange,
+        ...arrange.entries,
         {
           key: 'edit',
           icon: 'edit',
@@ -41,12 +41,12 @@ const useSpaceActions = (spaceId: string, place?: ArrangePlace) => {
             to: '/admin/projects/spaces/$spaceId/settings',
             params: { spaceId },
           },
-          dividerBefore: arrange.length > 0,
+          dividerBefore: arrange.entries.length > 0,
         },
       ]
     : [];
 
-  return { canManage, entries };
+  return { canManage, entries, arrangeTo: arrange.arrangeTo };
 };
 
 export default useSpaceActions;

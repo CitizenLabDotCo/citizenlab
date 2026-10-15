@@ -12,8 +12,11 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import ManagerBubbles from '../../_shared/ManagerBubbles';
 import sharedMessages from '../../_shared/messages';
-import FolderActions from '../Actions/FolderActions';
+import useFolderItemActions from '../Actions/useFolderItemActions';
 import { ArrangePlace } from '../Arrange/arrangeTargets';
+import DragHandle from '../Arrange/DragHandle';
+import useDragArrange from '../Arrange/useDragArrange';
+import MoreActions from '../Menu/MoreActions';
 import messages from '../messages';
 
 import ActionsCell from './ActionsCell';
@@ -50,9 +53,11 @@ const FolderRow = ({ folder, columns, managers, place }: Props) => {
     imageId: folder.relationships.images.data[0]?.id,
   });
   const imageUrl = image?.data.attributes.versions.small;
+  const { entries, arrangeTo } = useFolderItemActions(folder, place);
+  const drag = useDragArrange({ id: folder.id, place, arrangeTo });
 
   return (
-    <ItemRow>
+    <ItemRow drag={drag}>
       {columns.map((column) =>
         column === 'project' ? (
           <TitleCell
@@ -80,6 +85,7 @@ const FolderRow = ({ folder, columns, managers, place }: Props) => {
             note={formatMessage(messages.projectsCount, {
               count: visible_projects_count,
             })}
+            grip={<DragHandle handle={drag.handle} top="6px" left="8px" />}
           />
         ) : column === 'status' ? (
           <TextCell key={column}>
@@ -94,7 +100,7 @@ const FolderRow = ({ folder, columns, managers, place }: Props) => {
         )
       )}
       <ActionsCell>
-        <FolderActions folder={folder} place={place} />
+        <MoreActions entries={entries} />
       </ActionsCell>
     </ItemRow>
   );

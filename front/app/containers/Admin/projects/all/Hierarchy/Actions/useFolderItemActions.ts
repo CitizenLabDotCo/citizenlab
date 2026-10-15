@@ -1,20 +1,16 @@
-import React from 'react';
-
 import { MiniProjectFolder } from 'api/project_folders_mini/types';
 
 import { ArrangePlace } from '../Arrange/arrangeTargets';
-import MoreActions from '../Menu/MoreActions';
 
 import useFolderActions from './useFolderActions';
 
-interface Props {
-  folder: MiniProjectFolder;
-  place?: ArrangePlace;
-}
-
-// A folder's "⋯" on its tile or row.
-const FolderActions = ({ folder, place }: Props) => {
-  const { entries } = useFolderActions({
+// A folder's actions from its tile or row, the places it can be arranged and
+// moved from.
+const useFolderItemActions = (
+  folder: MiniProjectFolder,
+  place?: ArrangePlace
+) =>
+  useFolderActions({
     folderId: folder.id,
     folderSpaceId: folder.attributes.space_id,
     arrange: place && {
@@ -23,7 +19,5 @@ const FolderActions = ({ folder, place }: Props) => {
     },
     movable: true,
   });
-  return <MoreActions entries={entries} />;
-};
 
-export default FolderActions;
+export default useFolderItemActions;

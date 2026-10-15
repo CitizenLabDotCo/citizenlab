@@ -29,13 +29,16 @@ interface Props {
   // Grey text after the title: what a space or folder holds, or where a
   // project sits.
   note?: string;
+  // The drag grip, over the lead when it shows.
+  grip?: ReactNode;
 }
 
-const TitleCell = ({ lead, title, target, note }: Props) => {
+const TitleCell = ({ lead, title, target, note, grip }: Props) => {
   const levelSearch = useLevelSearch();
 
   return (
     <Td>
+      {grip}
       <Box display="flex" alignItems="center" gap="8px" minWidth="0">
         <Box
           flex="none"

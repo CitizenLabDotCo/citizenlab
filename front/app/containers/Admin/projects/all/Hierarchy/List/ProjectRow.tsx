@@ -17,9 +17,12 @@ import { useIntl } from 'utils/cl-intl';
 import { parseBackendDateString } from 'utils/dateUtils';
 
 import ManagerBubbles from '../../_shared/ManagerBubbles';
-import ProjectActions from '../Actions/ProjectActions';
+import useProjectActions from '../Actions/useProjectActions';
 import { ArrangePlace } from '../Arrange/arrangeTargets';
+import DragHandle from '../Arrange/DragHandle';
+import useDragArrange from '../Arrange/useDragArrange';
 import { ACCESS_MESSAGES } from '../labels';
+import MoreActions from '../Menu/MoreActions';
 import messages from '../messages';
 import useProjectLabels from '../useProjectLabels';
 
@@ -51,6 +54,8 @@ const ProjectRow = ({
   const { formatMessage, formatDate } = useIntl();
   const localize = useLocalize();
   const { status, method, when } = useProjectLabels(project);
+  const { entries, arrangeTo } = useProjectActions(project, place);
+  const drag = useDragArrange({ id: project.id, place, arrangeTo });
   const {
     title_multiloc,
     visible_to,
@@ -103,6 +108,7 @@ const ProjectRow = ({
             title={localize(title_multiloc)}
             target={{ projectId: project.id }}
             note={path}
+            grip={<DragHandle handle={drag.handle} top="6px" left="8px" />}
           />
         );
       case 'status':
@@ -165,10 +171,10 @@ const ProjectRow = ({
   };
 
   return (
-    <ItemRow>
+    <ItemRow drag={drag}>
       {columns.map(cell)}
       <ActionsCell>
-        <ProjectActions project={project} place={place} />
+        <MoreActions entries={entries} />
       </ActionsCell>
     </ItemRow>
   );

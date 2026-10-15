@@ -5,7 +5,7 @@ import { useIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
 import { ArrangePlace } from '../Arrange/arrangeTargets';
-import useArrangeEntry from '../Arrange/useArrangeEntry';
+import useArrange from '../Arrange/useArrange';
 import { MenuEntry } from '../Menu/FlyoutMenu';
 import messages from '../messages';
 import useMoveToEntry from '../Move/useMoveToEntry';
@@ -46,7 +46,7 @@ const useFolderActions = ({
   const { mutateAsync: reorderPublication } = useReorderAdminPublication();
   const { mutateAsync: updateFolder } = useUpdateProjectFolder();
 
-  const arrangeEntries = useArrangeEntry(
+  const arranging = useArrange(
     canReorder && arrange
       ? {
           place: arrange.place,
@@ -56,7 +56,7 @@ const useFolderActions = ({
       : undefined
   );
 
-  const moveTo = useMoveToEntry(
+  const moveToEntries = useMoveToEntry(
     canMove && movable
       ? {
           item: 'folder',
@@ -69,8 +69,8 @@ const useFolderActions = ({
 
   const entries: MenuEntry[] = canModerate
     ? [
-        ...arrangeEntries,
-        ...moveTo,
+        ...arranging.entries,
+        ...moveToEntries,
         {
           key: 'edit',
           icon: 'edit',
@@ -79,12 +79,12 @@ const useFolderActions = ({
             to: '/admin/projects/folders/$projectFolderId/settings',
             params: { projectFolderId: folderId },
           },
-          dividerBefore: arrangeEntries.length + moveTo.length > 0,
+          dividerBefore: arranging.entries.length + moveToEntries.length > 0,
         },
       ]
     : [];
 
-  return { canModerate, entries };
+  return { canModerate, entries, arrangeTo: arranging.arrangeTo };
 };
 
 export default useFolderActions;

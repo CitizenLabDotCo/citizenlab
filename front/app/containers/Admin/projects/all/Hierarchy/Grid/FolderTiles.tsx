@@ -2,7 +2,9 @@ import React from 'react';
 
 import { MiniProjectFolders } from 'api/project_folders_mini/types';
 
-import { placesIn } from '../Arrange/arrangeTargets';
+import useArrangeGroup, {
+  ArrangeGroupContext,
+} from '../Arrange/useArrangeGroup';
 import { PagedQuery } from '../levelGroups';
 
 import FolderTile from './FolderTile';
@@ -16,21 +18,26 @@ interface Props {
 
 const FolderTiles = ({ query, arrangeable }: Props) => {
   const folders = query.data?.pages.flatMap((page) => page.data) ?? [];
-  const placeAt = arrangeable
-    ? placesIn(folders, query.hasNextPage)
-    : undefined;
+  const { shown, placeOf, group } = useArrangeGroup({
+    kind: 'folder',
+    items: folders,
+    hasMore: query.hasNextPage,
+    arrangeable,
+  });
 
   return (
     <>
-      <TileGrid>
-        {folders.map((folder, index) => (
-          <FolderTile
-            key={folder.id}
-            folder={folder}
-            place={placeAt?.(index)}
-          />
-        ))}
-      </TileGrid>
+      <ArrangeGroupContext.Provider value={group}>
+        <TileGrid>
+          {shown.map((folder) => (
+            <FolderTile
+              key={folder.id}
+              folder={folder}
+              place={placeOf(folder)}
+            />
+          ))}
+        </TileGrid>
+      </ArrangeGroupContext.Provider>
       <LoadMore
         hasNextPage={query.hasNextPage}
         isFetchingNextPage={query.isFetchingNextPage}

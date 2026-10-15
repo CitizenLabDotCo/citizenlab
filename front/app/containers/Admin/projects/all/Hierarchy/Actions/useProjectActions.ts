@@ -6,7 +6,7 @@ import { useIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
 import { ArrangePlace } from '../Arrange/arrangeTargets';
-import useArrangeEntry from '../Arrange/useArrangeEntry';
+import useArrange from '../Arrange/useArrange';
 import { MenuEntry } from '../Menu/FlyoutMenu';
 import messages from '../messages';
 import useMoveToEntry from '../Move/useMoveToEntry';
@@ -34,7 +34,7 @@ const useProjectActions = (
   const { mutateAsync: reorderPublication } = useReorderAdminPublication();
   const { mutateAsync: updateProject } = useUpdateProject();
 
-  const arrange = useArrangeEntry(
+  const arrange = useArrange(
     canReorder && place
       ? {
           place,
@@ -44,7 +44,7 @@ const useProjectActions = (
       : undefined
   );
 
-  const moveTo = useMoveToEntry(
+  const moveToEntries = useMoveToEntry(
     canMove
       ? {
           item: 'project',
@@ -56,8 +56,8 @@ const useProjectActions = (
   );
 
   const entries: MenuEntry[] = [
-    ...arrange,
-    ...moveTo,
+    ...arrange.entries,
+    ...moveToEntries,
     {
       key: 'edit',
       icon: 'edit',
@@ -66,11 +66,11 @@ const useProjectActions = (
         to: '/admin/projects/$projectId/general',
         params: { projectId: project.id },
       },
-      dividerBefore: arrange.length + moveTo.length > 0,
+      dividerBefore: arrange.entries.length + moveToEntries.length > 0,
     },
   ];
 
-  return { entries };
+  return { entries, arrangeTo: arrange.arrangeTo };
 };
 
 export default useProjectActions;

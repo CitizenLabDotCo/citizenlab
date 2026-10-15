@@ -310,4 +310,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.Hierarchy.searchDestinationsLabel',
     defaultMessage: 'Search destinations',
   },
+  dragToArrange: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.dragToArrange',
+    defaultMessage: 'Drag to arrange',
+  },
 });

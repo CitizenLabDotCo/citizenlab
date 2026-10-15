@@ -2,7 +2,9 @@ import React from 'react';
 
 import { MiniProjectFolders } from 'api/project_folders_mini/types';
 
-import { placesIn } from '../Arrange/arrangeTargets';
+import useArrangeGroup, {
+  ArrangeGroupContext,
+} from '../Arrange/useArrangeGroup';
 import { PagedQuery } from '../levelGroups';
 
 import { ColumnKey } from './columns';
@@ -19,22 +21,25 @@ const FolderRows = ({ query, columns, arrangeable }: Props) => {
   const pages = query.data?.pages ?? [];
   const folders = pages.flatMap((page) => page.data);
   const managersOf = useManagers(pages.flatMap((page) => page.included ?? []));
-  const placeAt = arrangeable
-    ? placesIn(folders, query.hasNextPage)
-    : undefined;
+  const { shown, placeOf, group } = useArrangeGroup({
+    kind: 'folder',
+    items: folders,
+    hasMore: query.hasNextPage,
+    arrangeable,
+  });
 
   return (
-    <>
-      {folders.map((folder, index) => (
+    <ArrangeGroupContext.Provider value={group}>
+      {shown.map((folder) => (
         <FolderRow
           key={folder.id}
           folder={folder}
           columns={columns}
           managers={managersOf(folder.relationships.moderators.data)}
-          place={placeAt?.(index)}
+          place={placeOf(folder)}
         />
       ))}
-    </>
+    </ArrangeGroupContext.Provider>
   );
 };
 

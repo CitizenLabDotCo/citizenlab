@@ -25,11 +25,20 @@ type Arrangeable = {
   reorder: (ordering: number) => Promise<unknown>;
 };
 
-// "⋯ › Arrange", for an item that has somewhere to go. Each move saves at
-// once and can be undone from the toast, by sending the item back to the
-// ordering it had. Nothing shows without an arrangeable item: the user may
-// not move it, or what's shown isn't the order it's kept in.
-const useArrangeEntry = (arrangeable?: Arrangeable): MenuEntry[] => {
+type Arrange = {
+  // "⋯ › Arrange", when the item has somewhere to go.
+  entries: MenuEntry[];
+  // Sends the item to the place of the item at that ordering, as a drop in
+  // that item's place does. It says whether the move saved.
+  arrangeTo?: (ordering: number) => Promise<boolean>;
+};
+
+// Moving an item among the ones beside it, from its "⋯" or by dragging it.
+// Each move saves at once and can be undone from the toast, by sending the
+// item back to the ordering it had. Nothing can move without an arrangeable
+// item: the user may not move it, or what's shown isn't the order it's kept
+// in.
+const useArrange = (arrangeable?: Arrangeable): Arrange => {
   const { formatMessage } = useIntl();
   const toast = useToast();
   // Moves are worked out from the orderings on screen. While a change saves
@@ -42,48 +51,52 @@ const useArrangeEntry = (arrangeable?: Arrangeable): MenuEntry[] => {
       useIsFetching({ queryKey: spacesKeys.lists() }) >
     0;
 
-  if (!arrangeable || settling) return [];
+  if (!arrangeable || settling) return { entries: [] };
 
   const { place, reorder } = arrangeable;
   const targets = getArrangeTargets(place);
   const moves = arrangeMoves.filter((move) => targets[move] !== undefined);
-  if (moves.length === 0) return [];
+  if (moves.length === 0) return { entries: [] };
 
   const failed = () =>
     toast({ message: formatMessage(messages.orderNotSaved), error: true });
   const from = place.orderings[place.index];
 
-  const move = async (to: number) => {
+  const arrangeTo = async (to: number) => {
     try {
       await reorder(to);
     } catch {
       failed();
-      return;
+      return false;
     }
     toast({
       message: formatMessage(messages.orderSaved),
       undo: () => reorder(from).catch(failed),
     });
+    return true;
   };
 
-  return [
-    {
-      key: 'arrange',
-      icon: 'drag-handle',
-      label: formatMessage(messages.arrange),
-      flyout: (takeFocus, close) => (
-        <ArrangeFlyout
-          moves={moves}
-          takeFocus={takeFocus}
-          onPick={(picked) => {
-            close();
-            const to = targets[picked];
-            if (to !== undefined) move(to);
-          }}
-        />
-      ),
-    },
-  ];
+  return {
+    arrangeTo,
+    entries: [
+      {
+        key: 'arrange',
+        icon: 'drag-handle',
+        label: formatMessage(messages.arrange),
+        flyout: (takeFocus, close) => (
+          <ArrangeFlyout
+            moves={moves}
+            takeFocus={takeFocus}
+            onPick={(picked) => {
+              close();
+              const to = targets[picked];
+              if (to !== undefined) arrangeTo(to);
+            }}
+          />
+        ),
+      },
+    ],
+  };
 };
 
-export default useArrangeEntry;
+export default useArrange;
