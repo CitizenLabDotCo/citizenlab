@@ -8,7 +8,10 @@ import {
   IFlatCustomFieldWithIndex,
 } from 'api/custom_fields/types';
 
-import { ResolvedFormBuilderConfig } from 'components/FormBuilder/utils';
+import {
+  isUserPage,
+  ResolvedFormBuilderConfig,
+} from 'components/FormBuilder/utils';
 
 import {
   detectConflictsByPage,
@@ -20,6 +23,7 @@ import { Drag, Drop } from '../DragAndDrop';
 import { getFieldNumbers } from '../utils';
 
 import { fieldAreaDNDType } from './constants';
+import DemographicQuestionsPreview from './DemographicQuestionsPreview';
 import { FormField } from './FormField';
 import { FieldArrayOperations } from './types';
 
@@ -57,7 +61,11 @@ const FormFields = ({
 
   const conflictsByPage = detectConflictsByPage(nestedGroupData);
   const fieldNumbers = getFieldNumbers(formCustomFields);
-  const userFieldsInFormNotice = builderConfig.getUserFieldsNotice;
+  // A placed user page shows the questions itself, so the notice about them
+  // being added before the end page would be wrong.
+  const userFieldsInFormNotice = formCustomFields.some(isUserPage)
+    ? undefined
+    : builderConfig.getUserFieldsNotice;
 
   return (
     <>
@@ -94,12 +102,16 @@ const FormFields = ({
                   key={grouping.id}
                   id={grouping.id}
                   type={fieldAreaDNDType}
+                  isDropDisabled={isUserPage(grouping.groupElement)}
                   data-cy={
                     grouping.groupElement.key
                       ? `e2e-page-drop-${grouping.groupElement.key}`
                       : undefined
                   }
                 >
+                  {isUserPage(grouping.groupElement) && (
+                    <DemographicQuestionsPreview />
+                  )}
                   <Box height="100%">
                     {grouping.questions.length === 0 ? (
                       <Box height="0.5px" />

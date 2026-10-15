@@ -102,22 +102,24 @@ class UserFieldsInFormService
       UserService.assign_merging_custom_fields(user, 'custom_field_values' => user_values_from_idea).save!
     end
 
-    # Append user custom fields to form
+    # Add the user custom fields to the form: after the admin's user page if
+    # the form has one, otherwise on a new page right before the end page.
     def add_user_fields_to_form(fields, participation_method, custom_form)
-      return fields unless participation_method.user_fields_in_form_enabled?
+      fields = fields.to_a # sometimes array passed in, sometimes active record relations
+      placed_user_page = fields.find(&:user_page?)
 
-      phase = participation_method.phase
-      permission = posting_permission(phase)
-      user_fields = Permissions::UserRequirementsService.new.requirements_custom_fields(permission)
+      user_fields = if participation_method.user_fields_in_form_enabled?
+        permission = posting_permission(participation_method.phase)
+        Permissions::UserRequirementsService.new.requirements_custom_fields(permission)
+      else
+        []
+      end
 
-      return fields unless user_fields.any?
+      if user_fields.none?
+        return placed_user_page ? remove_user_page(fields, placed_user_page) : fields
+      end
 
       ActiveRecord::Associations::Preloader.new(records: user_fields, associations: [options: :image]).call
-
-      fields = fields.to_a # sometimes array passed in, sometimes active record relations
-
-      # Remove the last page so we can add it back later
-      last_page = fields.pop if fields.last.form_end_page?
 
       # TODO: Hide any user fields that are locked for the user through the verification method
 
@@ -128,6 +130,11 @@ class UserFieldsInFormService
         field.key = prefix_key(field.key) # Change the key so we cans clearly identify user data in the saved data
         field.resource = custom_form # User field pretend to be part of the form
       end
+
+      return insert_after_user_page(fields, placed_user_page, user_fields) if placed_user_page
+
+      # Remove the last page so we can add it back later
+      last_page = fields.pop if fields.last.form_end_page?
 
       user_page = CustomField.new(
         id: SecureRandom.uuid,
@@ -176,6 +183,34 @@ class UserFieldsInFormService
     end
 
     private
+
+    def insert_after_user_page(fields, user_page, user_fields)
+      if user_page.title_multiloc.values.all?(&:blank?)
+        user_page.title_multiloc = MultilocService.new.i18n_to_multiloc('form_builder.form_user_page.title_text')
+      end
+
+      index = fields.index(user_page)
+      fields[..index] + user_fields + fields[(index + 1)..]
+    end
+
+    # Without questions to ask, the user page would show up empty, so it is
+    # dropped and logic that led to it goes where the page itself led.
+    def remove_user_page(fields, user_page)
+      index = fields.index(user_page)
+      target_id = user_page.logic['next_page_id'] || fields[(index + 1)..].find(&:page?)&.id
+
+      remaining = fields.excluding(user_page)
+      remaining.each do |field|
+        if field.logic['rules']
+          field.logic['rules'].each do |rule|
+            rule['goto_page_id'] = target_id if rule['goto_page_id'] == user_page.id
+          end
+        elsif field.logic['next_page_id'] == user_page.id
+          field.logic['next_page_id'] = target_id
+        end
+      end
+      remaining
+    end
 
     # Falls back to the permission inherited from the global 'visiting'
     # permission when the phase has no posting_idea permission of its own.

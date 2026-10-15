@@ -8,6 +8,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 
+import DemographicsToolboxItem from './DemographicsToolboxItem';
 import ToolboxItem from './ToolboxItem';
 
 interface BuiltInFieldsProps {
@@ -38,6 +39,7 @@ const LayoutFields = ({ builderConfig }: BuiltInFieldsProps) => {
         dragId="toolbox_page"
         dragIndex={-1}
       />
+      {builderConfig.type === 'survey' && <DemographicsToolboxItem />}
     </Box>
   );
 };

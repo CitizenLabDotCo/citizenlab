@@ -10,6 +10,7 @@ import {
 
 import { IFlatCustomField } from 'api/custom_fields/types';
 
+import { isUserPage } from 'components/FormBuilder/utils';
 import T from 'components/T';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
@@ -85,7 +86,19 @@ const FieldTitle = ({ hasErrors, field, fieldNumber }: Props) => {
           overflow="hidden"
         >
           <Box display="flex" alignItems="center">
-            <T value={field.title_multiloc} />
+            {isUserPage(field) ? (
+              <>
+                <Icon
+                  name="user-data"
+                  width="16px"
+                  fill={colors.coolGrey500}
+                  mr="6px"
+                />
+                {formatMessage(messages.demographicQuestions)}
+              </>
+            ) : (
+              <T value={field.title_multiloc} />
+            )}
             {lockMessage && (
               <IconTooltip
                 placement="top-start"
