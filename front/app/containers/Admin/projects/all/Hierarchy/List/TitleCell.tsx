@@ -5,6 +5,7 @@ import { Box, Td, Text, bo, colors } from '@citizenlab/cl2-component-library';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import { Level } from '../level';
+import SearchHighlight from '../SearchHighlight';
 import useLevelSearch from '../useLevelSearch';
 
 const StretchedLink = typedStyled(Link)`
@@ -59,7 +60,7 @@ const TitleCell = ({ lead, title, target, note }: Props) => {
               to="/admin/projects/$projectId"
               params={{ projectId: target.projectId }}
             >
-              {title}
+              <SearchHighlight text={title} />
             </StretchedLink>
           ) : (
             <StretchedLink

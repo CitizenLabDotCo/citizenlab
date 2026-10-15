@@ -4,7 +4,7 @@ import useParticipantCounts from 'api/participant_counts/useParticipantCounts';
 import { ProjectsMiniAdmin } from 'api/projects_mini_admin/types';
 
 import { PagedQuery } from '../levelGroups';
-import useProjectPath from '../useProjectPath';
+import useProjectPath, { PathFrom } from '../useProjectPath';
 
 import { ColumnKey } from './columns';
 import ProjectRow from './ProjectRow';
@@ -13,10 +13,10 @@ import useManagers from './useManagers';
 interface Props {
   query: PagedQuery<ProjectsMiniAdmin>;
   columns: ColumnKey[];
-  showPath?: boolean;
+  pathFrom?: PathFrom;
 }
 
-const ProjectRows = ({ query, columns, showPath = false }: Props) => {
+const ProjectRows = ({ query, columns, pathFrom }: Props) => {
   const pathOf = useProjectPath();
   const pages = query.data?.pages ?? [];
   const projects = pages.flatMap((page) => page.data);
@@ -28,7 +28,7 @@ const ProjectRows = ({ query, columns, showPath = false }: Props) => {
   return (
     <>
       {projects.map((project) => {
-        const path = showPath ? pathOf(project) : undefined;
+        const path = pathFrom && pathOf(project, pathFrom);
 
         return (
           <ProjectRow

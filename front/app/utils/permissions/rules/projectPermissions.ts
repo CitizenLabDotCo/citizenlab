@@ -3,9 +3,10 @@ import { IUser } from 'api/users/types';
 
 import { definePermissionRule } from 'utils/permissions/permissions';
 
-import { isAdmin, isProjectModerator } from '../roles';
+import { isAdmin, isProjectModerator, isSpaceModerator } from '../roles';
 
 import {
+  isProjectFolderModerator,
   userModeratesFolder,
   userModeratesSpace,
 } from './projectFolderPermissions';
@@ -23,6 +24,13 @@ definePermissionRule('project', 'delete', (_project: IProjectData, user) => {
 definePermissionRule('project', 'list_all_for_admin', (_project, user) =>
   isAdmin(user)
 );
+
+// Whoever reviews projects (somewhere) can look for the ones waiting for it.
+definePermissionRule('project', 'list_pending_review', (_project, user) => {
+  return (
+    isAdmin(user) || isSpaceModerator(user) || isProjectFolderModerator(user)
+  );
+});
 
 definePermissionRule('project', 'reorder', (_project: IProjectData, user) => {
   return isAdmin(user);

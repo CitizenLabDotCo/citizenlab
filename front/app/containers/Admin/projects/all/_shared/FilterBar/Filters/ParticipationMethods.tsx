@@ -7,52 +7,13 @@ import { ParticipationMethod } from 'api/phases/types';
 import MultiSelect from 'components/UI/MultiSelect';
 
 import { trackEventByName } from 'utils/analytics';
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 import { setParam, useParam } from '../../params';
 
 import messages from './messages';
 import tracks from './tracks';
-
-const OPTIONS: { value: ParticipationMethod; message: MessageDescriptor }[] = [
-  {
-    value: 'ideation',
-    message: messages.participationMethodIdeation,
-  },
-  {
-    value: 'voting',
-    message: messages.participationMethodVoting,
-  },
-  {
-    value: 'information',
-    message: messages.participationMethodInformation,
-  },
-  {
-    value: 'proposals',
-    message: messages.participationMethodProposals,
-  },
-  // Handles both native and external surveys
-  {
-    value: 'survey',
-    message: messages.participationMethodSurvey,
-  },
-  {
-    value: 'poll',
-    message: messages.participationMethodPoll,
-  },
-  {
-    value: 'volunteering',
-    message: messages.participationMethodVolunteering,
-  },
-  {
-    value: 'document_annotation',
-    message: messages.pMDocumentAnnotation,
-  },
-  {
-    value: 'common_ground',
-    message: messages.participationMethodDocumentCommonGround,
-  },
-];
+import useParticipationMethodOptions from './useParticipationMethodOptions';
 
 interface Props {
   onClear: () => void;
@@ -61,11 +22,7 @@ interface Props {
 const ParticipationMethods = ({ onClear }: Props) => {
   const participationMethods = useParam('participation_methods') ?? [];
   const { formatMessage } = useIntl();
-
-  const options = OPTIONS.map((option) => ({
-    value: option.value,
-    label: formatMessage(option.message),
-  }));
+  const options = useParticipationMethodOptions();
 
   const handleOnChange = (selected: string[]) => {
     setParam('participation_methods', selected as ParticipationMethod[]);

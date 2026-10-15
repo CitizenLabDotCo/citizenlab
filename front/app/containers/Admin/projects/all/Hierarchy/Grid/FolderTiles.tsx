@@ -8,7 +8,6 @@ import FolderTile from './FolderTile';
 import LoadMore from './LoadMore';
 import TileGrid from './TileGrid';
 
-
 interface Props {
   query: PagedQuery<MiniProjectFolders>;
 }

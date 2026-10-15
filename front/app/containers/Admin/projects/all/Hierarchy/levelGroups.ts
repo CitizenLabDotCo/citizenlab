@@ -4,6 +4,8 @@ import { MiniProjectFolders } from 'api/project_folders_mini/types';
 import { ProjectsMiniAdmin } from 'api/projects_mini_admin/types';
 import { Spaces } from 'api/spaces/types';
 
+import { PathFrom } from './useProjectPath';
+
 export type PagedQuery<T> = {
   data?: InfiniteData<T>;
   hasNextPage: boolean;
@@ -19,7 +21,8 @@ export type LevelGroup = { label?: string; count: number } & (
   | {
       kind: 'projects';
       query: PagedQuery<ProjectsMiniAdmin>;
-      // At the top level, projects can sit anywhere, so each says where.
-      showPath?: boolean;
+      // Where each project's path starts. From the top, a project can sit
+      // anywhere; inside a space, the path is just its folder.
+      pathFrom?: PathFrom;
     }
 );

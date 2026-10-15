@@ -81,15 +81,20 @@ export type Parameters = {
   locale: SupportedLocale;
 } & Pagination;
 
-export type ParticipationState =
-  | 'not_started'
-  | 'starting_soon'
-  | 'no_phases'
-  | 'collecting_data'
-  | 'informing'
-  | 'past';
+export const participationStates = [
+  'not_started',
+  'starting_soon',
+  'no_phases',
+  'collecting_data',
+  'informing',
+  'past',
+] as const;
 
-export type Discoverability = 'listed' | 'unlisted';
+export type ParticipationState = (typeof participationStates)[number];
+
+export const discoverabilities = ['listed', 'unlisted'] as const;
+
+export type Discoverability = (typeof discoverabilities)[number];
 
 type Included = (IUserData | IProjectData | IGroupData | IPhaseData)[];
 

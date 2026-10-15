@@ -1,9 +1,5 @@
 import React from 'react';
 
-import useSpaces from 'api/spaces/useSpaces';
-
-import useLocalize from 'hooks/useLocalize';
-
 import MultiSelect from 'components/UI/MultiSelect';
 
 import { trackEventByName } from 'utils/analytics';
@@ -13,6 +9,7 @@ import { useParam, setParam } from '../../params';
 
 import messages from './messages';
 import tracks from './tracks';
+import useSpaceOptions from './useSpaceOptions';
 
 interface Props {
   openedDefaultValue?: boolean;
@@ -23,15 +20,7 @@ interface Props {
 const Spaces = ({ openedDefaultValue = false, mr, onClear }: Props) => {
   const spaceIds = useParam('space_ids') ?? [];
   const { formatMessage } = useIntl();
-  const localize = useLocalize();
-
-  const { data, isLoading } = useSpaces();
-
-  const spaceOptions =
-    data?.data.map((space) => ({
-      value: space.id,
-      label: localize(space.attributes.title_multiloc),
-    })) ?? [];
+  const { options: spaceOptions, isLoading } = useSpaceOptions();
 
   return (
     <MultiSelect

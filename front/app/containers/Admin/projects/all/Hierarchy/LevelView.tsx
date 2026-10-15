@@ -7,15 +7,17 @@ import useViewMode from './useViewMode';
 
 interface Props {
   groups: LevelGroup[];
+  // A count above the projects, in both views.
+  summary?: string;
 }
 
-const LevelView = ({ groups }: Props) => {
+const LevelView = ({ groups, summary }: Props) => {
   const { viewMode } = useViewMode();
 
   return viewMode === 'list' ? (
-    <ListView groups={groups} />
+    <ListView groups={groups} summary={summary} />
   ) : (
-    <GridView groups={groups} />
+    <GridView groups={groups} summary={summary} />
   );
 };
 

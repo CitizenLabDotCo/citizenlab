@@ -57,7 +57,7 @@ const RootLevel = ({ contents }: Props) => {
       label: formatMessage(labels.projects),
       count: projectsCount,
       query: contents.projects,
-      showPath: true,
+      pathFrom: 'root',
     });
   }
 

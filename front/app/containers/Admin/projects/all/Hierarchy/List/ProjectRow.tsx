@@ -9,15 +9,15 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import useProjectImage from 'api/project_images/useProjectImage';
-import { Visibility } from 'api/projects/types';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { parseBackendDateString } from 'utils/dateUtils';
 
 import ManagerBubbles from '../../_shared/ManagerBubbles';
+import { ACCESS_MESSAGES } from '../labels';
 import messages from '../messages';
 import useProjectLabels from '../useProjectLabels';
 
@@ -26,12 +26,6 @@ import ItemRow from './ItemRow';
 import TextCell from './TextCell';
 import TitleCell from './TitleCell';
 import { Managers } from './useManagers';
-
-const ACCESS_MESSAGES: Record<Visibility, MessageDescriptor> = {
-  public: messages.anyone,
-  groups: messages.selectedGroups,
-  admins: messages.adminsAndManagers,
-};
 
 interface Props {
   project: ProjectMiniAdminData;

@@ -16,6 +16,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import Link, { typedStyled } from 'utils/cl-router/Link';
 
+import SearchHighlight from '../SearchHighlight';
 import useProjectLabels from '../useProjectLabels';
 
 const CardLink = typedStyled(Link)`
@@ -94,7 +95,7 @@ const ProjectCard = ({ project, path }: Props) => {
         overflow="hidden"
         textOverflow="ellipsis"
       >
-        {localize(project.attributes.title_multiloc)}
+        <SearchHighlight text={localize(project.attributes.title_multiloc)} />
       </Text>
       <Text
         m="0"

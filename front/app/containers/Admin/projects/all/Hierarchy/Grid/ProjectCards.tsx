@@ -3,20 +3,18 @@ import React from 'react';
 import { ProjectsMiniAdmin } from 'api/projects_mini_admin/types';
 
 import { PagedQuery } from '../levelGroups';
-import useProjectPath from '../useProjectPath';
+import useProjectPath, { PathFrom } from '../useProjectPath';
 
 import CardGrid from './CardGrid';
 import LoadMore from './LoadMore';
 import ProjectCard from './ProjectCard';
 
-
 interface Props {
   query: PagedQuery<ProjectsMiniAdmin>;
-  // At the top level, projects can sit anywhere, so each card says where.
-  showPath?: boolean;
+  pathFrom?: PathFrom;
 }
 
-const ProjectCards = ({ query, showPath = false }: Props) => {
+const ProjectCards = ({ query, pathFrom }: Props) => {
   const pathOf = useProjectPath();
   const projects = query.data?.pages.flatMap((page) => page.data) ?? [];
 
@@ -24,7 +22,7 @@ const ProjectCards = ({ query, showPath = false }: Props) => {
     <>
       <CardGrid>
         {projects.map((project) => {
-          const path = showPath ? pathOf(project) : undefined;
+          const path = pathFrom && pathOf(project, pathFrom);
 
           return <ProjectCard key={project.id} project={project} path={path} />;
         })}

@@ -117,4 +117,89 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.Hierarchy.view',
     defaultMessage: 'View',
   },
+  you: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.you',
+    defaultMessage: 'You',
+  },
+  stateOpen: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.stateOpen',
+    defaultMessage: 'Open',
+  },
+  startingSoon: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.startingSoon',
+    defaultMessage: 'Starting soon',
+  },
+  shownInLists: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.shownInLists',
+    defaultMessage: 'Shown in lists',
+  },
+  byLinkOnly: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.byLinkOnly',
+    defaultMessage: 'Only by link',
+  },
+  filter: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.filter',
+    defaultMessage: 'Filter',
+  },
+  clearAllFilters: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.clearAllFilters',
+    defaultMessage: 'Clear all filters',
+  },
+  filterOptions: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.filterOptions',
+    defaultMessage: 'Filter…',
+  },
+  filterOptionsLabel: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.filterOptionsLabel',
+    defaultMessage: 'Filter options',
+  },
+  from: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.from',
+    defaultMessage: 'From',
+  },
+  to: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.to',
+    defaultMessage: 'To',
+  },
+  is: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.is',
+    defaultMessage: 'is',
+  },
+  isAnyOf: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.isAnyOf',
+    defaultMessage: 'is any of',
+  },
+  isBetween: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.isBetween',
+    defaultMessage: 'is between',
+  },
+  isAfter: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.isAfter',
+    defaultMessage: 'is after',
+  },
+  isBefore: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.isBefore',
+    defaultMessage: 'is before',
+  },
+  datesBetween: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.datesBetween',
+    defaultMessage: '{from} and {to}',
+  },
+  removeFilter: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.removeFilter',
+    defaultMessage: 'Remove the {filter} filter',
+  },
+  shownOfTotal: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.shownOfTotal',
+    defaultMessage:
+      '{count} of {total, plural, one {# project} other {# projects}}',
+  },
+  nothingToChoose: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.nothingToChoose',
+    defaultMessage: 'Nothing to choose from',
+  },
+  noProjectsMatch: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.noProjectsMatch',
+    defaultMessage: 'No projects match',
+  },
 });

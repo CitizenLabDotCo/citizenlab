@@ -4,7 +4,6 @@ import {
   Box,
   Table,
   Tbody,
-  Text,
   Th,
   Thead,
   Tr,
@@ -15,6 +14,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import LoadMore from '../Grid/LoadMore';
 import { LevelGroup } from '../levelGroups';
+import LevelSummary from '../LevelSummary';
 import messages from '../messages';
 
 import AddColumnsMenu from './AddColumnsMenu';
@@ -45,11 +45,12 @@ const ScrollArea = styled.div`
 
 interface Props {
   groups: LevelGroup[];
+  summary?: string;
 }
 
 // One table for the whole level: spaces and folders use the project columns,
 // under a group header when the level has more than one group.
-const ListView = ({ groups }: Props) => {
+const ListView = ({ groups, summary }: Props) => {
   const { formatMessage } = useIntl();
   const { added } = useAddedColumns();
   const columns = getVisibleColumns(added);
@@ -57,17 +58,19 @@ const ListView = ({ groups }: Props) => {
   // The column for the "+" button.
   const colSpan = columns.length + 1;
 
-  // A folder's projects have no group label, so the count goes above.
+  // A folder's projects have no group label, so their count goes above,
+  // unless the level gives its own.
   const [onlyGroup] = groups;
   const showCount = groups.length === 1 && !onlyGroup.label;
+  const shownSummary =
+    summary ??
+    (showCount
+      ? formatMessage(messages.projectsCount, { count: onlyGroup.count })
+      : undefined);
 
   return (
     <Box>
-      {showCount && (
-        <Text variant="boMicro" m="0" mb="8px">
-          {formatMessage(messages.projectsCount, { count: onlyGroup.count })}
-        </Text>
-      )}
+      {shownSummary && <LevelSummary text={shownSummary} />}
       <ScrollArea>
         <FixedTable
           w="100%"
@@ -104,7 +107,7 @@ const ListView = ({ groups }: Props) => {
                   <ProjectRows
                     query={group.query}
                     columns={columns}
-                    showPath={group.showPath}
+                    pathFrom={group.pathFrom}
                   />
                 )}
               </Fragment>

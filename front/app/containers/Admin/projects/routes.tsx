@@ -5,8 +5,11 @@ import * as yup from 'yup';
 import { reviewStates } from 'api/admin_publications/types';
 import { ideaSortValues } from 'api/ideas/types';
 import { participationMethods } from 'api/phases/types';
+import { visibilities } from 'api/projects/types';
 import {
+  discoverabilities,
   displayStatuses,
+  participationStates,
   projectSortableParams,
 } from 'api/projects_mini_admin/types';
 
@@ -189,11 +192,11 @@ const projectsIndexSearchSchema = yup.object({
   // parser turns them into arrays before validation.
   status: yup.array().of(yup.string().required()).optional(),
   managers: yup.array().of(yup.string().required()).optional(),
-  participation_states: yup.array().of(yup.string().required()).optional(),
+  participation_states: knownValues(participationStates),
   folder_ids: yup.array().of(yup.string().required()).optional(),
-  participation_methods: yup.array().of(yup.string().required()).optional(),
-  visibility: yup.array().of(yup.string().required()).optional(),
-  discoverability: yup.array().of(yup.string().required()).optional(),
+  participation_methods: knownValues(participationMethods),
+  visibility: knownValues(visibilities),
+  discoverability: knownValues(discoverabilities),
   space_ids: yup.array().of(yup.string().required()).optional(),
   // The hierarchy page (behind project_backoffice_redesign): the view mode,
   // the space or folder being viewed, its extra list columns and its status

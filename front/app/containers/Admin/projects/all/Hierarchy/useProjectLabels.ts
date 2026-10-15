@@ -1,23 +1,12 @@
-import {
-  DisplayStatus,
-  ProjectMiniAdminData,
-} from 'api/projects_mini_admin/types';
+import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
 import { PARTICIPATION_METHOD_LABELS } from 'containers/Admin/inspirationHub/constants';
 
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 import { parseBackendDateString } from 'utils/dateUtils';
 
-import sharedMessages from '../_shared/messages';
-
+import { STATUS_MESSAGES } from './labels';
 import messages from './messages';
-
-const STATUS_MESSAGES: Record<DisplayStatus, MessageDescriptor> = {
-  published: messages.live,
-  pending: messages.pendingApproval,
-  draft: sharedMessages.draft,
-  archived: sharedMessages.archived,
-};
 
 // How the project stands, in words: its status ("Live"), the method of the
 // phase it's about right now ("Voting"), and when that phase runs ("open
