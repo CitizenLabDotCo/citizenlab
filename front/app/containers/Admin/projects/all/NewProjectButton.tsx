@@ -8,6 +8,8 @@ import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
+import ProjectAssistantModal from '../project/backofficeRedesign/ProjectAssistantModal';
+
 import messages from './messages';
 import NewProjectModal, { NewProjectMode } from './NewProjectModal';
 import OptionCard from './OptionCard';
@@ -19,10 +21,18 @@ const NewProjectButton = () => {
   });
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const [mode, setMode] = useState<NewProjectMode | null>(null);
+  // The AI assistant create flow opens as its own full modal, not one of the
+  // NewProjectModal tabs.
+  const [assistantOpened, setAssistantOpened] = useState(false);
 
   const openModal = (mode: NewProjectMode) => {
     setDropdownOpened(false);
     setMode(mode);
+  };
+
+  const openAssistant = () => {
+    setDropdownOpened(false);
+    setAssistantOpened(true);
   };
 
   if (!redesignEnabled) {
@@ -59,6 +69,12 @@ const NewProjectButton = () => {
         content={
           <Box>
             <OptionCard
+              icon="stars"
+              title="Draft with AI"
+              description="Describe your project and the assistant drafts the whole thing — page, phases and survey — for you to review."
+              onClick={openAssistant}
+            />
+            <OptionCard
               icon="plus"
               title={formatMessage(messages.fromScratch)}
               description={formatMessage(messages.fromScratchDescription)}
@@ -75,6 +91,16 @@ const NewProjectButton = () => {
       />
 
       <NewProjectModal mode={mode} onClose={() => setMode(null)} />
+
+      {assistantOpened && (
+        <ProjectAssistantModal
+          onClose={() => setAssistantOpened(false)}
+          onStartFromScratch={() => {
+            setAssistantOpened(false);
+            setMode('scratch');
+          }}
+        />
+      )}
     </Box>
   );
 };
