@@ -116,7 +116,9 @@ const Breadcrumbs = ({
 
         return (
           <Box
-            key={label}
+            // Two crumbs can share a label, like a folder named after its
+            // space.
+            key={index}
             display="flex"
             alignItems="center"
             color="textSecondary"

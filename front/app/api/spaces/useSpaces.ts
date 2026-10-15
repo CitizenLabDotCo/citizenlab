@@ -22,10 +22,11 @@ const fetchSpaces = ({ search }: Params) => {
   });
 };
 
-const useSpaces = (params: Params = {}) => {
+const useSpaces = (params: Params = {}, { enabled = true } = {}) => {
   return useQuery<Spaces, CLErrors, Spaces, SpacesKeys>({
     queryKey: spacesKeys.list(params),
     queryFn: () => fetchSpaces(params),
+    enabled,
   });
 };
 

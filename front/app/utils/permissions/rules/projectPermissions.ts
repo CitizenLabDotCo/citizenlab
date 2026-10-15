@@ -18,6 +18,12 @@ definePermissionRule('project', 'delete', (_project: IProjectData, user) => {
   return isAdmin(user);
 });
 
+// Admins see every project in the admin list; everyone else only what they
+// manage.
+definePermissionRule('project', 'list_all_for_admin', (_project, user) =>
+  isAdmin(user)
+);
+
 definePermissionRule('project', 'reorder', (_project: IProjectData, user) => {
   return isAdmin(user);
 });

@@ -30,7 +30,8 @@ const fetchPage = async (
 
 const useInfiniteProjectFoldersAdmin = (
   params: Omit<Parameters, 'page[number]' | 'page[size]'>,
-  pageSize: number = DEFAULT_PAGE_SIZE
+  pageSize: number = DEFAULT_PAGE_SIZE,
+  { enabled = true } = {}
 ) =>
   useInfiniteQuery<
     MiniProjectFolders,
@@ -42,6 +43,7 @@ const useInfiniteProjectFoldersAdmin = (
     queryKey: projectFoldersMiniKeys.list(params),
     queryFn: ({ pageParam }) => fetchPage(params, pageParam, pageSize),
     initialPageParam: 1,
+    enabled,
     getNextPageParam: (lastPage) => {
       const nextLink = lastPage.links?.next;
       return nextLink ? getPageNumberFromUrl(nextLink) : undefined;
