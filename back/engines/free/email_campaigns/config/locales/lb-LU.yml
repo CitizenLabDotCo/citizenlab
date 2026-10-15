@@ -36,6 +36,7 @@ lb-LU:
         project_participants: Zu Projet Participanten
         registered_users: Fir registréiert Benotzer
       recipient_segment:
+        admin_who_generated_the_report: Den Admin, deen de Rapport ugefrot huet
         admins: Administrateuren
         admins_and_managers: Administrateuren a Manager
         admins_and_managers_assigned_to_the_input: Administrateuren & Manager ginn dem Input zougewisen
@@ -109,6 +110,7 @@ lb-LU:
         proposal_is_upvoted_above_threshold: "D'Propositioun gëtt iwwer d'Schwell gestëmmt"
         proposal_status_changes: Propositioun Status Ännerungen
         registration_to_event: Aschreiwung op en Event
+        report_generated: E Rapport gouf fäerdeg generéiert
         survey_1_day_after_draft_saved: "1 Dag nodeems de Benotzer fir d'lescht d'Ëmfro am Entworf gespäichert huet"
         user_accepts_invitation_to_cosponsor_a_proposal: De Benotzer acceptéiert d'Invitatioun fir eng Propositioun ze sponsoren
         user_changes_email: Benotzer ännert seng E-Mail-Adress
@@ -208,6 +210,7 @@ lb-LU:
       project_review_request: Projet review Ufro
       project_review_state_change: Projet guttgeheescht
       proposal_expired_for_admin: Propositioun ofgelaf, ouni d'Mindestzuel u Stëmmen ze erreechen
+      report_generated: Rapport generéiert
       screening_digest: Wëchentlech Screening-Erënnerung
       sms_manual: Offiziell SMS-Messagen
       space_moderation_rights_received: Space-Manager-Rechter kritt
@@ -665,6 +668,13 @@ lb-LU:
       preheader: E Bäitrag ass ofgelaf, ouni de Seuil ze erreechen
       subject: '"%{input_title}" ass ofgelaf, ouni de Seuil ze erreechen'
       title: E Bäitrag ass ofgelaf, ouni d'Mindestzuel u Stëmmen ze erreechen
+    report_generated:
+      cta_button: De Rapport opmaachen
+      event_description: De Rapport gouf geschriwwen an ass bereet fir vun Iech iwwerpréift a beaarbecht ze ginn.
+      preheader: Äre Rapport ass fäerdeg
+      stopped_early: D'Schreiwen huet opgehalen, ier de Rapport fäerdeg war. Alles, wat bis elo geschriwwe gouf, ass gespäichert — maacht et op a frot am Chat nom Rescht.
+      subject: "Äre Rapport fir '%{projectName}' ass fäerdeg"
+      title: Äre Rapport ass fäerdeg
     schedules:
       quarterly: Trimester, um éischten Dag vum Véierel
       weekly:

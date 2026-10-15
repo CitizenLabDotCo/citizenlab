@@ -2133,6 +2133,8 @@
   "app.containers.NotificationMenu.projectPublished": "ایک نیا پروجیکٹ شائع ہوا۔",
   "app.containers.NotificationMenu.projectReviewRequest": "{name} نے پروجیکٹ \"{projectTitle}\" کو شائع کرنے کی منظوری کی درخواست کی",
   "app.containers.NotificationMenu.projectReviewStateChange": "{name} نے اشاعت کے لیے \"{projectTitle}\" کو منظوری دے دی۔",
+  "app.containers.NotificationMenu.reportGenerated": "{projectTitle} کے لیے آپ کی رپورٹ تیار ہے",
+  "app.containers.NotificationMenu.reportGeneratedStoppedEarly": "{projectTitle} کے لیے آپ کی رپورٹ مکمل ہونے سے پہلے رک گئی۔ جو کچھ لکھا گیا تھا وہ محفوظ کر لیا گیا ہے۔",
   "app.containers.NotificationMenu.spaceModerationRightsReceived": "اب آپ {spaceLink} کے اسپیس مینیجر ہیں۔",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} اسٹیٹس {status}میں تبدیل ہو گیا ہے۔",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} ووٹنگ کی حد تک پہنچ گیا۔",

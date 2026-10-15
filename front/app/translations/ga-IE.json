@@ -2133,6 +2133,8 @@
   "app.containers.NotificationMenu.projectPublished": "Foilsíodh tionscadal nua",
   "app.containers.NotificationMenu.projectReviewRequest": "D'iarr {name} cead chun an tionscadal \"{projectTitle} \" a fhoilsiú",
   "app.containers.NotificationMenu.projectReviewStateChange": "{name} ceadaithe \"{projectTitle}\" le foilsiú",
+  "app.containers.NotificationMenu.reportGenerated": "Tá do thuairisc do {projectTitle} réidh",
+  "app.containers.NotificationMenu.reportGeneratedStoppedEarly": "Stopadh do thuairisc do {projectTitle} sula raibh sí críochnaithe. Tá an méid a scríobhadh sábháilte.",
   "app.containers.NotificationMenu.spaceModerationRightsReceived": "Is bainisteoir spáis thú anois ar {spaceLink}",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "Tá stádas {ideaTitle} athraithe go {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "Shroich {post} an tairseach vótála",

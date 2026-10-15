@@ -2133,6 +2133,8 @@
   "app.containers.NotificationMenu.projectPublished": "È stato pubblicato un nuovo progetto",
   "app.containers.NotificationMenu.projectReviewRequest": "{name} ha richiesto l'approvazione per la pubblicazione del progetto \"{projectTitle}\".",
   "app.containers.NotificationMenu.projectReviewStateChange": "{name} approvato \"{projectTitle}\" per la pubblicazione",
+  "app.containers.NotificationMenu.reportGenerated": "Il tuo report per {projectTitle} è pronto",
+  "app.containers.NotificationMenu.reportGeneratedStoppedEarly": "Il tuo report per {projectTitle} si è interrotto prima di essere completato. Quanto scritto finora è stato salvato.",
   "app.containers.NotificationMenu.spaceModerationRightsReceived": "Ora sei un manager dello spazio {spaceLink}",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "Lo status di {ideaTitle} è cambiato in {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} ha raggiunto la soglia di voto",

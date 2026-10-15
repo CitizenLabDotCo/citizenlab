@@ -2133,6 +2133,8 @@
   "app.containers.NotificationMenu.projectPublished": "Δημοσιεύθηκε ένα νέο έργο",
   "app.containers.NotificationMenu.projectReviewRequest": "{name} ζήτησε έγκριση για τη δημοσίευση του έργου \"{projectTitle}\"",
   "app.containers.NotificationMenu.projectReviewStateChange": "{name} εγκεκριμένο \"{projectTitle}\" για δημοσίευση",
+  "app.containers.NotificationMenu.reportGenerated": "Η αναφορά σας για το έργο {projectTitle} είναι έτοιμη",
+  "app.containers.NotificationMenu.reportGeneratedStoppedEarly": "Η σύνταξη της αναφοράς σας για το έργο {projectTitle} διακόπηκε πριν ολοκληρωθεί. Ό,τι έχει γραφτεί έχει αποθηκευτεί.",
   "app.containers.NotificationMenu.spaceModerationRightsReceived": "Είστε πλέον διαχειριστής χώρου του {spaceLink}",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} Η κατάσταση έχει αλλάξει σε {status}",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "Η δημοσίευση {post} έφθασε το όριο ψηφοφορίας",

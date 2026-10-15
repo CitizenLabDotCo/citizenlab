@@ -36,6 +36,7 @@ es-CL:
         project_participants: A los participantes en el proyecto
         registered_users: A los usuarios registrados
       recipient_segment:
+        admin_who_generated_the_report: El administrador que solicitó el informe
         admins: Administradores
         admins_and_managers: Administradores y gestores
         admins_and_managers_assigned_to_the_input: Administradores y gestores asignados al aporte
@@ -109,6 +110,7 @@ es-CL:
         proposal_is_upvoted_above_threshold: La propuesta ha recibido votos por encima del umbral
         proposal_status_changes: Cambios en el estado de la propuesta
         registration_to_event: Inscripción a un acto
+        report_generated: Se ha terminado de generar un informe
         survey_1_day_after_draft_saved: 1 día después de la última vez que el usuario guardó la encuesta en borrador
         user_accepts_invitation_to_cosponsor_a_proposal: El usuario acepta la invitación para co-patrocinar una propuesta
         user_changes_email: El usuario cambia su dirección de correo
@@ -206,6 +208,7 @@ es-CL:
       project_review_request: Solicitud de revisión del proyecto
       project_review_state_change: Proyecto aprobado
       proposal_expired_for_admin: La propuesta ha caducado sin alcanzar el umbral de votación
+      report_generated: Informe generado
       screening_digest: Recordatorio de evaluación semanal
       sms_manual: Mensajes SMS oficiales
       space_moderation_rights_received: Permisos de gestor de espacio recibidos
@@ -661,6 +664,13 @@ es-CL:
       preheader: Una aportación ha caducado sin alcanzar el umbral
       subject: '"%{input_title}" ha caducado sin alcanzar el umbral'
       title: Una aportación ha caducado sin alcanzar el umbral de votación
+    report_generated:
+      cta_button: Abrir el informe
+      event_description: El informe se ha redactado y ya está listo para que lo revises y edites.
+      preheader: Tu informe ya está listo
+      stopped_early: La redacción se detuvo antes de que el informe terminara. Todo lo escrito hasta ahora se ha guardado; ábrelo y solicita el resto en el chat.
+      subject: "Tu informe de '%{projectName}' ya está listo"
+      title: Tu informe ya está listo
     schedules:
       quarterly: Trimestralmente, el primer día del trimestre
       weekly:
