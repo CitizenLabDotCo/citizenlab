@@ -15,6 +15,16 @@ class WebApi::V1::FolderMiniSerializer < WebApi::V1::BaseSerializer
     object.admin_publication.effective_publication_status
   end
 
+  # What arranging the list needs: the publication to reorder, and its place
+  # among its siblings.
+  attribute :admin_publication_id do |object|
+    object.admin_publication.id
+  end
+
+  attribute :ordering do |object|
+    object.admin_publication.ordering
+  end
+
   has_many :moderators, serializer: ::WebApi::V1::UserSerializer do |object, params|
     params.dig(:moderators_per_folder, object.id) || []
   end

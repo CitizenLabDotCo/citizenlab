@@ -7,6 +7,16 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
     object.admin_publication.effective_publication_status
   end
 
+  # What arranging the list needs: the publication to reorder, and its place
+  # among its siblings.
+  attribute :admin_publication_id do |object|
+    object.admin_publication.id
+  end
+
+  attribute :ordering do |object|
+    object.admin_publication.ordering
+  end
+
   # The status as the admin project list shows it, matching the display_status
   # filter and the status sort: a draft waiting for review approval is
   # 'pending' rather than 'draft'.
