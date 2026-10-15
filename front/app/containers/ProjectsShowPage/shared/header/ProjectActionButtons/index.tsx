@@ -91,7 +91,7 @@ const ProjectActionButtons = ({
 
   const currentPhase = getCurrentPhase(phases?.data);
   // CTAs that don't need a running phase fall back to the last phase.
-  const latestPhase = currentPhase ?? getLastPhase(phases?.data);
+  const visiblePhase = currentPhase ?? getLastPhase(phases?.data);
   const projectSlug = project.data.attributes.slug;
 
   const {
@@ -116,7 +116,7 @@ const ProjectActionButtons = ({
     publicationStatus: project.data.attributes.publication_status,
     hiddenOptionIds,
   });
-  const secondaryCTA = getSecondaryCTA({ phase: latestPhase, showEventsCTA });
+  const secondaryCTA = getSecondaryCTA({ phase: visiblePhase, showEventsCTA });
   const spotlightSurveyCTAs = showBoxCTAs ? visibleOpenSpotlightSurveys : [];
 
   if (!methodCTA && spotlightSurveyCTAs.length === 0 && !secondaryCTA) {
@@ -171,7 +171,7 @@ const ProjectActionButtons = ({
         {secondaryCTA && (
           <SecondaryCTAButton
             secondaryCTA={secondaryCTA}
-            phase={latestPhase}
+            phase={visiblePhase}
             inputTerm={getInputTerm(phases?.data)}
             projectSlug={projectSlug}
             eventsAreOnProjectPage={!!pageSlug && !pageHasEventsWidget}
@@ -204,7 +204,7 @@ const ProjectActionButtons = ({
       {secondaryCTA && (
         <SecondaryCTAButton
           secondaryCTA={secondaryCTA}
-          phase={latestPhase}
+          phase={visiblePhase}
           inputTerm={getInputTerm(phases?.data)}
           projectSlug={projectSlug}
           eventsAreOnProjectPage={!!pageSlug && !pageHasEventsWidget}
