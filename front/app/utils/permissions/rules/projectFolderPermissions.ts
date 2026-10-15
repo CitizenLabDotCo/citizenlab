@@ -66,6 +66,11 @@ export function isProjectFolderModerator(
   }
 }
 
+// Whether the user gets folders from the admin folder list. It mirrors the
+// backend: admins, and moderators of a space or of a folder.
+export const canListAdminFolders = (user: IUser | undefined | null) =>
+  isAdmin(user) || isSpaceModerator(user) || isProjectFolderModerator(user);
+
 // rules
 const canUserAccessAdminFolderRoute = (
   item: IRouteItem,
@@ -84,6 +89,10 @@ const canUserAccessAdminFolderRoute = (
 };
 
 definePermissionRule('route', 'access', canUserAccessAdminFolderRoute);
+
+definePermissionRule('project_folder', 'list_for_admin', (_folder, user) =>
+  canListAdminFolders(user)
+);
 
 definePermissionRule(
   'project_folder',

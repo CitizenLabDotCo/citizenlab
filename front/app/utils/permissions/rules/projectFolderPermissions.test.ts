@@ -1,10 +1,37 @@
 import { makeUser, makeAdmin } from 'api/users/__mocks__/useUsers';
 
 import {
+  canListAdminFolders,
   userModeratesFolder,
   userModeratesSpace,
   isProjectFolderModerator,
 } from './projectFolderPermissions';
+
+describe('canListAdminFolders', () => {
+  it('returns true for admins, space moderators and folder moderators', () => {
+    expect(canListAdminFolders(makeAdmin())).toBe(true);
+    expect(
+      canListAdminFolders(
+        makeUser({ roles: [{ type: 'space_moderator', space_id: 'space' }] })
+      )
+    ).toBe(true);
+    expect(
+      canListAdminFolders(
+        makeUser({ roles: [{ type: 'project_folder_moderator' }] })
+      )
+    ).toBe(true);
+  });
+
+  it('returns false for project moderators and residents', () => {
+    expect(
+      canListAdminFolders(
+        makeUser({ roles: [{ type: 'project_moderator', project_id: 'p' }] })
+      )
+    ).toBe(false);
+    expect(canListAdminFolders(makeUser())).toBe(false);
+    expect(canListAdminFolders(null)).toBe(false);
+  });
+});
 
 describe('isProjectFolderModerator', () => {
   it('returns true when a user is project folder moderator', () => {

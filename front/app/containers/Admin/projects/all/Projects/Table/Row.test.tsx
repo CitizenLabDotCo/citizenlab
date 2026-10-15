@@ -47,6 +47,7 @@ const project: ProjectMiniAdminData = {
   attributes: {
     active_phases_start_date: null,
     active_phases_end_date: null,
+    display_status: 'published',
     first_phase_start_date: null,
     first_published_at: null,
     folder_title_multiloc: { en: 'Test folder' },

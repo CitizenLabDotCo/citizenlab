@@ -32,7 +32,8 @@ const PAGE_SIZE = 10;
 
 const Table = () => {
   const { formatMessage } = useIntl();
-  const params = useParams();
+  // The project sort doesn't apply to folders.
+  const { sort: _sort, ...params } = useParams();
 
   const {
     data,

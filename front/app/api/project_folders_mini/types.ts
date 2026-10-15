@@ -7,6 +7,9 @@ export type Parameters = {
   status?: PublicationStatus[];
   managers?: string[];
   search?: string;
+  space_ids?: string[];
+  top_level?: boolean;
+  sort?: 'arranged';
 };
 
 type Included = IUserData[];
@@ -15,6 +18,7 @@ export interface MiniProjectFolders {
   data: MiniProjectFolder[];
   links?: ILinks;
   included?: Included;
+  meta: { total: number };
 }
 
 export interface MiniProjectFolder {

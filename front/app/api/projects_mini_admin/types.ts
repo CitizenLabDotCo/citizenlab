@@ -25,12 +25,38 @@ export const projectSortableParams = [
   'alphabetically_desc',
   'participation_asc',
   'participation_desc',
+  'arranged',
+  'status_asc',
+  'status_desc',
+  'phase_asc',
+  'phase_desc',
+  'participation_method_asc',
+  'participation_method_desc',
+  'managers_asc',
+  'managers_desc',
+  'start_date_asc',
+  'start_date_desc',
+  'end_date_asc',
+  'end_date_desc',
 ] as const;
 
 export type ProjectSortableParam = (typeof projectSortableParams)[number];
 
+// The status as the admin project list shows it: a draft waiting for review
+// approval is 'pending' rather than 'draft'.
+export const displayStatuses = [
+  'published',
+  'pending',
+  'draft',
+  'archived',
+] as const;
+
+export type DisplayStatus = (typeof displayStatuses)[number];
+
 export type Parameters = {
   status?: PublicationStatus[];
+  display_status?: DisplayStatus[];
+  top_level?: boolean;
   review_state?: ReviewState;
   managers?: string[];
   search?: string;
@@ -48,6 +74,8 @@ export type Parameters = {
 
 export type ParticipationState =
   | 'not_started'
+  | 'starting_soon'
+  | 'no_phases'
   | 'collecting_data'
   | 'informing'
   | 'past';
@@ -60,6 +88,7 @@ export type ProjectsMiniAdmin = {
   data: ProjectMiniAdminData[];
   links: ILinks;
   included?: Included;
+  meta: { total: number };
 };
 
 export type ProjectMiniAdminData = {
@@ -68,6 +97,7 @@ export type ProjectMiniAdminData = {
   attributes: {
     active_phases_start_date: string | null;
     active_phases_end_date: string | null;
+    display_status: DisplayStatus;
     first_phase_start_date: string | null;
     first_published_at: string | null;
     folder_title_multiloc: Multiloc | null;
