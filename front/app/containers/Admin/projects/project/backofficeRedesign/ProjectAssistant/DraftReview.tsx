@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 
@@ -45,6 +45,9 @@ interface Props {
 
 const DraftReview = ({ projectId, demoReport }: Props) => {
   const localize = useLocalize();
+  // The "why" reasoning can run long, so it's tucked behind a toggle — the
+  // headline and the plan stay; the detailed rationale expands on demand.
+  const [showWhy, setShowWhy] = useState(false);
   const { data: phases } = usePhases(projectId);
   const { data: project } = useProjectById(projectId);
 
@@ -99,6 +102,34 @@ const DraftReview = ({ projectId, demoReport }: Props) => {
           </Text>
 
           {highlights.length > 0 && (
+            <button
+              type="button"
+              onClick={() => setShowWhy((show) => !show)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '6px',
+                margin: '12px 0 0',
+                padding: '0px',
+                border: 'none',
+                background: 'transparent',
+                color: colors.teal700,
+                fontWeight: 'bold',
+                fontSize: '14px',
+                cursor: 'pointer',
+              }}
+            >
+              {showWhy ? 'Hide the reasoning' : 'Why these choices'}
+              <Icon
+                name={showWhy ? 'chevron-up' : 'chevron-down'}
+                width="14px"
+                height="14px"
+                fill={colors.teal700}
+              />
+            </button>
+          )}
+
+          {highlights.length > 0 && showWhy && (
             <Box as="ul" m="12px 0 0" p="0px" style={{ listStyle: 'none' }}>
               {highlights.map((highlight, index) => (
                 <Box

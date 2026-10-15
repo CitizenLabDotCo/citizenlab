@@ -30,6 +30,9 @@ export type IntakeOption = {
   levers?: Partial<ProjectGenerationLevers>;
   // A sentence appended to the brief, phrased for the engine.
   brief: MessageDescriptor;
+  // "Other" — picking it reveals the question's free-text field so the manager
+  // can describe their own situation instead of choosing a preset.
+  isOther?: boolean;
 };
 
 export type IntakeQuestionConfig = {
@@ -81,7 +84,16 @@ export const INTAKE_QUESTIONS: IntakeQuestionConfig[] = [
         levers: { influence: 1, how_fixed: 2 },
         brief: messages.intakeStageImplementationBrief,
       },
+      {
+        id: 'other',
+        label: messages.intakeStageOther,
+        // No preset fits — the typed detail carries the signal instead.
+        isOther: true,
+        brief: messages.intakeStageOtherBrief,
+      },
     ],
+    detailPlaceholder: messages.intakeStageDetailPlaceholder,
+    detailBrief: messages.intakeStageDetailBrief,
   },
   {
     id: 'audience',

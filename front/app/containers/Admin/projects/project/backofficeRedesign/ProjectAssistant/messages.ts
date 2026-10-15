@@ -123,6 +123,23 @@ export default defineMessages({
     defaultMessage:
       'Decision-making stage: Implementation — the decision is made and we’re working out how to roll it out well (e.g. how to phase the works while keeping the square usable).',
   },
+  intakeStageOther: {
+    id: `${scope}.intakeStageOther`,
+    defaultMessage: 'Something else',
+  },
+  intakeStageOtherBrief: {
+    id: `${scope}.intakeStageOtherBrief`,
+    defaultMessage: '',
+  },
+  intakeStageDetailPlaceholder: {
+    id: `${scope}.intakeStageDetailPlaceholder`,
+    defaultMessage: 'Describe where you are in the decision…',
+  },
+  intakeStageDetailBrief: {
+    id: `${scope}.intakeStageDetailBrief`,
+    defaultMessage:
+      'Where they are in the decision-making process: {detail}',
+  },
   intakeAudienceAsk: {
     id: `${scope}.intakeAudienceAsk`,
     defaultMessage: 'Who do you most want to hear from?',

@@ -136,7 +136,15 @@ const Intake = ({
     setRevealedCount((count) => Math.min(count + 1, total));
 
   return (
-    <Box pt="20px" borderTop={`1px solid ${colors.grey200}`}>
+    // A distinct tinted card — the assistant stepping in to ask, clearly set
+    // apart from the composer above so the follow-up questions don't blend in.
+    <Reveal
+      mt="12px"
+      p="16px"
+      borderRadius="12px"
+      bgColor={colors.teal50}
+      border={`1px solid ${colors.teal100}`}
+    >
       <Box display="flex" gap="10px" mb="16px">
         <Icon
           name="stars"
@@ -145,7 +153,7 @@ const Intake = ({
           fill={colors.teal500}
           my="2px"
         />
-        <Text m="0px" fontSize="s" color="textSecondary" lineHeight="1.45">
+        <Text m="0px" fontSize="s" color="textPrimary" fontWeight="bold" lineHeight="1.45">
           {formatMessage(messages.intakeLead)}
         </Text>
       </Box>
@@ -157,6 +165,16 @@ const Intake = ({
           const isAnswered = !!answer?.optionId;
           const canSkip =
             isLastVisible && !isAnswered && revealedCount < total;
+          // The free-text shows once answered — but on a question that has an
+          // explicit "Other" chip, only when that chip is the one picked.
+          const selectedOption = question.options.find(
+            (option) => option.id === answer?.optionId
+          );
+          const questionHasOther = question.options.some((o) => o.isOther);
+          const showDetail =
+            !!question.detailPlaceholder &&
+            isAnswered &&
+            (!questionHasOther || !!selectedOption?.isOther);
 
           return (
             <Reveal key={question.id}>
@@ -200,7 +218,7 @@ const Intake = ({
 
               {/* The optional free-text appears only once a chip is picked, so
                   it never gets in the way of the one-tap path. */}
-              {question.detailPlaceholder && isAnswered && (
+              {showDetail && (
                 <Box mt="8px">
                   <DetailInput
                     type="text"
@@ -238,7 +256,7 @@ const Intake = ({
           </Reveal>
         )}
       </Box>
-    </Box>
+    </Reveal>
   );
 };
 
