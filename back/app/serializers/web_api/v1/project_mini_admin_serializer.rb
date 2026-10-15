@@ -7,6 +7,15 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
     object.admin_publication.effective_publication_status
   end
 
+  # The status as the admin project list shows it, matching the display_status
+  # filter and the status sort: a draft waiting for review approval is
+  # 'pending' rather than 'draft'.
+  attribute :display_status do |object|
+    status = object.admin_publication.effective_publication_status
+    awaiting_approval = object.review && !object.review.approved_at
+    status == 'draft' && awaiting_approval ? 'pending' : status
+  end
+
   attribute :first_published_at do |object|
     object.admin_publication.first_published_at
   end
