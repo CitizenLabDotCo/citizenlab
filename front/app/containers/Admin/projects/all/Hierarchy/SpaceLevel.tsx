@@ -12,7 +12,8 @@ import allMessages from '../messages';
 
 import { PAGE_SIZE } from './constants';
 import EmptyLevel from './EmptyLevel';
-import ItemLink from './ItemLink';
+import FolderTiles from './Grid/FolderTiles';
+import ProjectCards from './Grid/ProjectCards';
 import LevelError from './LevelError';
 import messages from './messages';
 import Section from './Section';
@@ -43,8 +44,6 @@ const SpaceLevel = ({ spaceId }: Props) => {
   if (folders.isLoading || projects.isLoading) return null;
   if (folders.isError || projects.isError) return <LevelError />;
 
-  const folderList = folders.data?.pages.flatMap((page) => page.data) ?? [];
-  const projectList = projects.data?.pages.flatMap((page) => page.data) ?? [];
   const foldersCount = folders.data?.pages[0].meta.total ?? 0;
   const projectsCount = projects.data?.pages[0].meta.total ?? 0;
 
@@ -57,13 +56,7 @@ const SpaceLevel = ({ spaceId }: Props) => {
           label={formatMessage(allMessages.folders)}
           count={foldersCount}
         >
-          {folderList.map((folder) => (
-            <ItemLink
-              key={folder.id}
-              titleMultiloc={folder.attributes.title_multiloc}
-              target={{ level: { kind: 'folder', id: folder.id } }}
-            />
-          ))}
+          <FolderTiles query={folders} />
         </Section>
       )}
       {projectsCount > 0 && (
@@ -75,13 +68,7 @@ const SpaceLevel = ({ spaceId }: Props) => {
           )}
           count={projectsCount}
         >
-          {projectList.map((project) => (
-            <ItemLink
-              key={project.id}
-              titleMultiloc={project.attributes.title_multiloc}
-              target={{ projectId: project.id }}
-            />
-          ))}
+          <ProjectCards query={projects} />
         </Section>
       )}
     </Box>

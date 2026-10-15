@@ -34,7 +34,7 @@ const RootSummary = ({ contents }: Props) => {
   if (parts.length === 0) return null;
 
   return (
-    <Text fontSize="xs" color="textSecondary" m="0">
+    <Text variant="boMicro" m="0">
       {parts.join(' · ')}
     </Text>
   );

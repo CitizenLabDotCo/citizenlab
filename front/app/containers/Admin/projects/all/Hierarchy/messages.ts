@@ -37,4 +37,32 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.Hierarchy.nothingHereYet',
     defaultMessage: 'Nothing here yet',
   },
+  live: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.live',
+    defaultMessage: 'Live',
+  },
+  pendingApproval: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.pendingApproval',
+    defaultMessage: 'Pending approval',
+  },
+  noPhasesYet: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.noPhasesYet',
+    defaultMessage: 'No phases yet',
+  },
+  openUntil: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.openUntil',
+    defaultMessage: 'open until {date}',
+  },
+  open: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.open',
+    defaultMessage: 'open',
+  },
+  starts: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.starts',
+    defaultMessage: 'starts {date}',
+  },
+  ended: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.ended',
+    defaultMessage: 'ended',
+  },
 });

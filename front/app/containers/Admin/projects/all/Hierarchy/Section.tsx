@@ -13,10 +13,10 @@ const Section = ({ label, count, children }: Props) => (
   <Box as="section" mb="32px">
     {label && (
       <Box as="h3" m="0" mb="8px">
-        <Text as="span" fontSize="s" color="textSecondary">
+        <Text as="span" variant="boControl" color="coolGrey600">
           {label}
         </Text>
-        <Text as="span" fontSize="s" color="coolGrey500" ml="8px">
+        <Text as="span" variant="boControl" color="coolGrey500" ml="8px">
           {count}
         </Text>
       </Box>

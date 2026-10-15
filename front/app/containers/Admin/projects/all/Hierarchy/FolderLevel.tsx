@@ -4,7 +4,7 @@ import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfinitePro
 
 import { PAGE_SIZE } from './constants';
 import EmptyLevel from './EmptyLevel';
-import ItemLink from './ItemLink';
+import ProjectCards from './Grid/ProjectCards';
 import LevelError from './LevelError';
 import Section from './Section';
 
@@ -21,20 +21,13 @@ const FolderLevel = ({ folderId }: Props) => {
   if (projects.isLoading) return null;
   if (projects.isError) return <LevelError />;
 
-  const projectList = projects.data?.pages.flatMap((page) => page.data) ?? [];
   const projectsCount = projects.data?.pages[0].meta.total ?? 0;
 
   if (projectsCount === 0) return <EmptyLevel />;
 
   return (
     <Section count={projectsCount}>
-      {projectList.map((project) => (
-        <ItemLink
-          key={project.id}
-          titleMultiloc={project.attributes.title_multiloc}
-          target={{ projectId: project.id }}
-        />
-      ))}
+      <ProjectCards query={projects} />
     </Section>
   );
 };

@@ -53,6 +53,15 @@ export const displayStatuses = [
 
 export type DisplayStatus = (typeof displayStatuses)[number];
 
+// The phase a project is about right now: the open one that ends soonest, else
+// the next to start, else the last that ran.
+export type HighlightedPhase = {
+  participation_method: ParticipationMethod;
+  status: 'active' | 'upcoming' | 'ended';
+  start_at: string;
+  end_at: string | null;
+};
+
 export type Parameters = {
   status?: PublicationStatus[];
   display_status?: DisplayStatus[];
@@ -98,6 +107,7 @@ export type ProjectMiniAdminData = {
     active_phases_start_date: string | null;
     active_phases_end_date: string | null;
     display_status: DisplayStatus;
+    highlighted_phase: HighlightedPhase | null;
     first_phase_start_date: string | null;
     first_published_at: string | null;
     folder_title_multiloc: Multiloc | null;
