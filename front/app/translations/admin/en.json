@@ -1641,7 +1641,6 @@
   "app.containers.Admin.projects.insights.voting.votesTooltip": "Solid: online votes. Striped: offline votes.",
   "app.containers.Admin.projects.insights.voting.xVotes": "{count} votes",
   "app.containers.Admin.projects.insights.voting.xVotesInclOffline": "{count} votes (incl. {offlineCount} offline)",
-  "app.containers.Admin.projects.project.actionCreateReport": "Create report",
   "app.containers.Admin.projects.project.actionMessageParticipants": "Message participants",
   "app.containers.Admin.projects.project.addFiles": "Add files",
   "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "Add ideas from previous phase",
