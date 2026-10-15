@@ -8,7 +8,8 @@ export type MethodCTA =
   | 'take_survey'
   | 'take_poll'
   | 'review_document'
-  | 'volunteer';
+  | 'volunteer'
+  | 'vote';
 
 export type SecondaryCTA = 'see_ideas' | 'see_events';
 
@@ -48,6 +49,8 @@ export const getMethodCTA = ({
       return 'review_document';
     case 'volunteering':
       return 'volunteer';
+    case 'voting':
+      return 'vote';
     default:
       return null;
   }

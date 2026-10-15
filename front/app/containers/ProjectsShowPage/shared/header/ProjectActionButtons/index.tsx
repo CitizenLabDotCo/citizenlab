@@ -24,11 +24,11 @@ import { isAdmin } from 'utils/permissions/roles';
 import { useLocation, useParams } from 'utils/router';
 
 import { excludeHidden, groupSpotlightSurveys } from '../participationOptions';
-import WaysToParticipateModal from '../WaysToParticipateModal';
 
 import MethodCTAButton from './MethodCTAButton';
 import SecondaryCTAButton from './SecondaryCTAButton';
 import { getMethodCTA, getSecondaryCTA } from './utils';
+import WaysToParticipateModal from './WaysToParticipateModal';
 
 interface Props {
   projectId: string;
@@ -66,7 +66,7 @@ const ProjectActionButtons = ({
   const [modalOpened, setModalOpened] = useState(false);
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const { data: standalonePhases } = usePhases(projectId, 'standalone');
+  const { data: spotlightSurveyPhases } = usePhases(projectId, 'standalone');
   const { hash: divId } = useLocation();
   // Set when the box is on one of the project's other pages rather than on the project page.
   const { pageSlug } = useParams({ strict: false });
@@ -97,7 +97,7 @@ const ProjectActionButtons = ({
   const {
     open: openSpotlightSurveyPhases,
     upcoming: upcomingSpotlightSurveyPhases,
-  } = groupSpotlightSurveys(standalonePhases?.data);
+  } = groupSpotlightSurveys(spotlightSurveyPhases?.data);
   const visibleOpenSpotlightSurveys = excludeHidden(
     openSpotlightSurveyPhases,
     hiddenOptionIds
@@ -107,7 +107,6 @@ const ProjectActionButtons = ({
     hiddenOptionIds
   );
 
-  const canSeeEmptyState = isAdmin(authUser);
   const showEventsCTA =
     !!events?.data.length && (hasEventsWidget || pageHasEventsWidget);
 
@@ -121,7 +120,7 @@ const ProjectActionButtons = ({
   const spotlightSurveyCTAs = showBoxCTAs ? visibleOpenSpotlightSurveys : [];
 
   if (!methodCTA && spotlightSurveyCTAs.length === 0 && !secondaryCTA) {
-    if (canSeeEmptyState && showBoxCTAs && !!standalonePhases) {
+    if (isAdmin(authUser) && showBoxCTAs && !!spotlightSurveyPhases) {
       return (
         <Wrapper className={className}>
           <EmptyParticipationPreview />
@@ -132,32 +131,12 @@ const ProjectActionButtons = ({
     return null;
   }
 
-  const methodCTAButton =
-    methodCTA && currentPhase ? (
-      <MethodCTAButton
-        methodCTA={methodCTA}
-        phase={currentPhase}
-        projectId={project.data.id}
-        projectSlug={projectSlug}
-        onClick={() => setModalOpened(false)}
-      />
-    ) : null;
-
-  const secondaryCTAButton = secondaryCTA && (
-    <SecondaryCTAButton
-      secondaryCTA={secondaryCTA}
-      phase={latestPhase}
-      inputTerm={getInputTerm(phases?.data)}
-      projectSlug={projectSlug}
-      eventsAreOnProjectPage={!!pageSlug && !pageHasEventsWidget}
-    />
-  );
-
   // The embedded survey CTA doesn't count towards collapsing the options.
-  const primaryMethodCTACount =
-    methodCTA && methodCTA !== 'take_survey' ? 1 : 0;
-  const collapseOptions =
-    primaryMethodCTACount + spotlightSurveyCTAs.length > 2;
+  const methodCTACountsTowardsCollapsing =
+    !!methodCTA && methodCTA !== 'take_survey';
+  const collapseOptions = methodCTACountsTowardsCollapsing
+    ? spotlightSurveyCTAs.length > 1
+    : spotlightSurveyCTAs.length > 2;
 
   if (collapseOptions) {
     return (
@@ -174,18 +153,45 @@ const ProjectActionButtons = ({
         <WaysToParticipateModal
           opened={modalOpened}
           onClose={() => setModalOpened(false)}
-          methodCTA={methodCTAButton}
+          methodCTA={
+            methodCTA &&
+            currentPhase && (
+              <MethodCTAButton
+                methodCTA={methodCTA}
+                phase={currentPhase}
+                projectId={project.data.id}
+                projectSlug={projectSlug}
+                onClick={() => setModalOpened(false)}
+              />
+            )
+          }
           openSpotlightSurveys={spotlightSurveyCTAs}
           upcomingSpotlightSurveys={visibleUpcomingSpotlightSurveys}
         />
-        {secondaryCTAButton}
+        {secondaryCTA && (
+          <SecondaryCTAButton
+            secondaryCTA={secondaryCTA}
+            phase={latestPhase}
+            inputTerm={getInputTerm(phases?.data)}
+            projectSlug={projectSlug}
+            eventsAreOnProjectPage={!!pageSlug && !pageHasEventsWidget}
+          />
+        )}
       </Wrapper>
     );
   }
 
   return (
     <Wrapper className={className}>
-      {methodCTAButton}
+      {methodCTA && currentPhase && (
+        <MethodCTAButton
+          methodCTA={methodCTA}
+          phase={currentPhase}
+          projectId={project.data.id}
+          projectSlug={projectSlug}
+          onClick={() => setModalOpened(false)}
+        />
+      )}
       {spotlightSurveyCTAs.map((spotlightSurveyPhase, index) => (
         <SpotlightSurveyActionButton
           key={spotlightSurveyPhase.id}
@@ -195,7 +201,15 @@ const ProjectActionButtons = ({
           }
         />
       ))}
-      {secondaryCTAButton}
+      {secondaryCTA && (
+        <SecondaryCTAButton
+          secondaryCTA={secondaryCTA}
+          phase={latestPhase}
+          inputTerm={getInputTerm(phases?.data)}
+          projectSlug={projectSlug}
+          eventsAreOnProjectPage={!!pageSlug && !pageHasEventsWidget}
+        />
+      )}
     </Wrapper>
   );
 };

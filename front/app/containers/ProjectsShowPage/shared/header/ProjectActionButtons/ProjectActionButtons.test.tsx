@@ -191,3 +191,29 @@ describe('ProjectActionButtons — no current phase', () => {
     expect(screen.queryByText('Take the poll')).not.toBeInTheDocument();
   });
 });
+
+describe('ProjectActionButtons — voting CTA', () => {
+  beforeEach(() => {
+    mockPublicationStatus = 'published';
+    mockStandalonePhases = [];
+    mockEvents = [];
+    mockHasEventsWidget = false;
+  });
+
+  it('shows the Cast your vote button for an active voting phase', () => {
+    mockTimelinePhases = [buildPhase('voting-phase', 'voting')];
+    render(<ProjectActionButtons projectId="projectId" />);
+    expect(screen.getByText('Cast your vote')).toBeInTheDocument();
+  });
+
+  it('hides the Cast your vote button once the voting phase has ended', () => {
+    mockTimelinePhases = [
+      buildPhase('voting-phase', 'voting', {
+        start_at: day(-14),
+        end_at: day(-7),
+      }),
+    ];
+    render(<ProjectActionButtons projectId="projectId" />);
+    expect(screen.queryByText('Cast your vote')).not.toBeInTheDocument();
+  });
+});

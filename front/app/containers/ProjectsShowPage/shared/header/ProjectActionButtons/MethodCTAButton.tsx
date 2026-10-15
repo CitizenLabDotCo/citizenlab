@@ -96,6 +96,16 @@ const MethodCTAButton = ({
           <FormattedMessage {...messages.seeVolunteering} />
         </ButtonWithLink>
       );
+    case 'vote':
+      return (
+        <ButtonWithLink
+          id="e2e-project-vote-button"
+          onClick={() => scrollToElementWithId('project-ideas')}
+          fontWeight="500"
+        >
+          <FormattedMessage {...messages.castYourVote} />
+        </ButtonWithLink>
+      );
   }
 };
 
