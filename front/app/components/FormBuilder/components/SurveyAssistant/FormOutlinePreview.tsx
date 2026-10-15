@@ -33,44 +33,61 @@ const INPUT_TYPES = [
   'polygon',
 ] as const satisfies readonly ICustomFieldInputType[];
 
-type OutlineField = {
-  key: string;
-  inputType: (typeof INPUT_TYPES)[number];
-  title: Multiloc;
-  required: boolean;
-  formEnd: boolean;
-};
+type InputType = (typeof INPUT_TYPES)[number];
+
+type OutlineItem =
+  | { kind: 'page'; key: string; title: Multiloc; number: number }
+  | { kind: 'endPage'; key: string }
+  | {
+      kind: 'question';
+      key: string;
+      title: Multiloc;
+      inputType: InputType;
+      required: boolean;
+    };
 
 const isRecord = (value: unknown): value is Record<string, unknown> =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
 
-const isInputType = (value: unknown): value is OutlineField['inputType'] =>
+const isInputType = (value: unknown): value is InputType =>
   INPUT_TYPES.some((inputType) => inputType === value);
 
 const isMultiloc = (value: unknown): value is Multiloc =>
   isRecord(value) &&
   Object.values(value).every((text) => typeof text === 'string');
 
-// The proposed arguments come from the model: keep only the fields that look valid.
-const toOutlineFields = (fields: unknown): OutlineField[] =>
-  Array.isArray(fields)
-    ? fields.flatMap((field, index) =>
-        isRecord(field) && isInputType(field.input_type)
-          ? [
-              {
-                // New fields have no id yet.
-                key: typeof field.id === 'string' ? field.id : `new-${index}`,
-                inputType: field.input_type,
-                title: isMultiloc(field.title_multiloc)
-                  ? field.title_multiloc
-                  : {},
-                required: field.required === true,
-                formEnd: field.key === 'form_end',
-              },
-            ]
-          : []
-      )
-    : [];
+// The proposed arguments come from the model: fields that don't look valid are skipped.
+const toOutline = (fields: unknown): OutlineItem[] => {
+  if (!Array.isArray(fields)) return [];
+
+  const outline: OutlineItem[] = [];
+  let pageNumber = 0;
+
+  fields.forEach((field: unknown, index: number) => {
+    if (!isRecord(field) || !isInputType(field.input_type)) return;
+
+    // New fields have no id yet.
+    const key = typeof field.id === 'string' ? field.id : `new-${index}`;
+    const title = isMultiloc(field.title_multiloc) ? field.title_multiloc : {};
+
+    if (field.input_type !== 'page') {
+      outline.push({
+        kind: 'question',
+        key,
+        title,
+        inputType: field.input_type,
+        required: field.required === true,
+      });
+    } else if (field.key === 'form_end') {
+      outline.push({ kind: 'endPage', key });
+    } else {
+      pageNumber += 1;
+      outline.push({ kind: 'page', key, title, number: pageNumber });
+    }
+  });
+
+  return outline;
+};
 
 type Props = {
   args: Record<string, unknown>;
@@ -80,12 +97,10 @@ type Props = {
 const FormOutlinePreview = ({ args }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
-  const fields = toOutlineFields(args.fields);
-  const isPage = (field: OutlineField) =>
-    field.inputType === 'page' && !field.formEnd;
-  const pageCount = fields.filter(isPage).length;
-  const questionCount = fields.filter(
-    (field) => field.inputType !== 'page'
+  const outline = toOutline(args.fields);
+  const pageCount = outline.filter((item) => item.kind === 'page').length;
+  const questionCount = outline.filter(
+    (item) => item.kind === 'question'
   ).length;
 
   return (
@@ -96,31 +111,36 @@ const FormOutlinePreview = ({ args }: Props) => {
           values={{ pages: pageCount, questions: questionCount }}
         />
       </Text>
-      {fields.map((field, index) => {
-        const title = localize(field.title);
-
-        if (field.inputType === 'page') {
-          const pageNumber = fields.slice(0, index + 1).filter(isPage).length;
+      {outline.map((item) => {
+        if (item.kind === 'endPage') {
           return (
-            <Text key={field.key} m="0px" mt="8px" fontWeight="bold">
-              {field.formEnd
-                ? formatMessage(messages.endPage)
-                : title ||
-                  formatMessage(messages.pageNumber, { number: pageNumber })}
+            <Text key={item.key} m="0px" mt="8px" fontWeight="bold">
+              {formatMessage(messages.endPage)}
+            </Text>
+          );
+        }
+
+        if (item.kind === 'page') {
+          return (
+            <Text key={item.key} m="0px" mt="8px" fontWeight="bold">
+              {localize(item.title) ||
+                formatMessage(messages.pageNumber, { number: item.number })}
             </Text>
           );
         }
 
         return (
           <Box
-            key={field.key}
+            key={item.key}
             pl="12px"
             borderLeft={`2px solid ${colors.borderLight}`}
           >
-            <Text m="0px">{title || formatMessage(messages.untitled)}</Text>
+            <Text m="0px">
+              {localize(item.title) || formatMessage(messages.untitled)}
+            </Text>
             <Text m="0px" fontSize="xs" color="textSecondary">
-              {formatMessage(getCustomFieldBadgeLabel(field.inputType))}
-              {field.required && ` · ${formatMessage(messages.required)}`}
+              {formatMessage(getCustomFieldBadgeLabel(item.inputType))}
+              {item.required && ` · ${formatMessage(messages.required)}`}
             </Text>
           </Box>
         );
