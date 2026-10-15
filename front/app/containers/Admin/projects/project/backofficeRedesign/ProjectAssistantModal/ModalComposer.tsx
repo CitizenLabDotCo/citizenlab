@@ -4,9 +4,12 @@ import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 // The slim chat composer used throughout the modal: a rounded field with a
-// paperclip (attach a brief) and a round send button, matching the augur
-// prototype. Deliberately lighter than the dock's Composer — here it reads as
-// one line in a conversation, not a form.
+// paperclip (attach a brief/concept note) and a round send button, matching the
+// augur prototype. Files are lifted to the parent so they can be uploaded and
+// handed to the real generation engine.
+
+const ACCEPTED = '.pdf,.md,.txt,.doc,.docx';
+const MAX_FILES = 3;
 
 const Field = styled.textarea`
   width: 100%;
@@ -53,12 +56,19 @@ const IconBtn = styled.button`
 type Props = {
   placeholder: string;
   disabled?: boolean;
+  files?: File[];
+  onFilesChange?: (files: File[]) => void;
   onSend: (text: string) => void;
 };
 
-const ModalComposer = ({ placeholder, disabled, onSend }: Props) => {
+const ModalComposer = ({
+  placeholder,
+  disabled,
+  files = [],
+  onFilesChange,
+  onSend,
+}: Props) => {
   const [text, setText] = useState('');
-  const [fileName, setFileName] = useState<string>();
   const fileInput = useRef<HTMLInputElement>(null);
 
   const canSend = text.trim() !== '' && !disabled;
@@ -67,16 +77,15 @@ const ModalComposer = ({ placeholder, disabled, onSend }: Props) => {
     if (!canSend) return;
     onSend(text.trim());
     setText('');
-    setFileName(undefined);
+  };
+
+  const addFiles = (picked: FileList | null) => {
+    if (!picked || !onFilesChange) return;
+    onFilesChange([...files, ...Array.from(picked)].slice(0, MAX_FILES));
   };
 
   return (
-    <Box
-      border={`1px solid ${colors.grey300}`}
-      borderRadius="16px"
-      p="14px 16px"
-      bgColor={colors.white}
-    >
+    <Box border={`1px solid ${colors.grey300}`} borderRadius="16px" p="14px 16px" bgColor={colors.white}>
       <Field
         value={text}
         placeholder={placeholder}
@@ -91,28 +100,42 @@ const ModalComposer = ({ placeholder, disabled, onSend }: Props) => {
         }}
       />
 
-      {fileName && (
-        <Box
-          display="inline-flex"
-          alignItems="center"
-          gap="6px"
-          mt="8px"
-          px="10px"
-          py="4px"
-          borderRadius="8px"
-          bgColor={colors.grey100}
-        >
-          <Icon name="paperclip" width="13px" height="13px" fill={colors.grey700} />
-          <Text m="0px" fontSize="s" color="textPrimary">
-            {fileName}
-          </Text>
+      {files.length > 0 && (
+        <Box display="flex" flexWrap="wrap" gap="6px" mt="8px">
+          {files.map((file, i) => (
+            <Box
+              key={`${file.name}-${i}`}
+              display="flex"
+              alignItems="center"
+              gap="6px"
+              px="10px"
+              py="4px"
+              borderRadius="8px"
+              bgColor={colors.grey100}
+            >
+              <Icon name="paperclip" width="13px" height="13px" fill={colors.grey700} />
+              <Text m="0px" fontSize="s" color="textPrimary">
+                {file.name}
+              </Text>
+              {onFilesChange && (
+                <button
+                  type="button"
+                  onClick={() => onFilesChange(files.filter((_, j) => j !== i))}
+                  style={{ border: 'none', background: 'transparent', cursor: 'pointer', padding: 0, display: 'inline-flex' }}
+                  aria-label={`Remove ${file.name}`}
+                >
+                  <Icon name="close" width="12px" height="12px" fill={colors.grey700} />
+                </button>
+              )}
+            </Box>
+          ))}
         </Box>
       )}
 
       <Box display="flex" alignItems="center" justifyContent="space-between" mt="10px">
         <IconBtn
           type="button"
-          disabled={disabled}
+          disabled={disabled || !onFilesChange || files.length >= MAX_FILES}
           onClick={() => fileInput.current?.click()}
           aria-label="Attach a brief or plan"
         >
@@ -121,17 +144,14 @@ const ModalComposer = ({ placeholder, disabled, onSend }: Props) => {
         <input
           ref={fileInput}
           type="file"
+          accept={ACCEPTED}
+          multiple
           style={{ display: 'none' }}
-          onChange={(e) => setFileName(e.target.files?.[0]?.name)}
+          onChange={(e) => addFiles(e.target.files)}
         />
 
         <SendButton type="button" $active={canSend} onClick={submit}>
-          <Icon
-            name="arrow-up"
-            width="18px"
-            height="18px"
-            fill={canSend ? colors.white : colors.grey600}
-          />
+          <Icon name="arrow-up" width="18px" height="18px" fill={canSend ? colors.white : colors.grey600} />
         </SendButton>
       </Box>
     </Box>

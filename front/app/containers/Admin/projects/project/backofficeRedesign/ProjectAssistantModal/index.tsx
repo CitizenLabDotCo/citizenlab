@@ -1,9 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 
 import { Box, Icon, Spinner, Text, colors } from '@citizenlab/cl2-component-library';
+import { useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
 
+import customFieldsKeys from 'api/custom_fields/keys';
+import customFormKeys from 'api/custom_form/keys';
+import useAddFile from 'api/files/useAddFile';
+import phasesKeys from 'api/phases/keys';
+import useAddProjectGeneration from 'api/project_generations/useAddProjectGeneration';
+import projectPageLayoutKeys from 'api/project_page_layout/keys';
 import useAddProject from 'api/projects/useAddProject';
+import projectsKeys from 'api/projects/keys';
+import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 
@@ -11,27 +20,31 @@ import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
+import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { getBase64FromFile } from 'utils/fileUtils';
 
-import DraftPreviewPane from './DraftPreviewPane';
-import ModalComposer from './ModalComposer';
+import Intake from '../ProjectAssistant/Intake';
 import {
-  DRAFT_DESCRIPTION,
-  DRAFT_TITLE,
-  DRAFTING_STEPS,
-  INTRO,
-  QUESTION,
-  REVIEW_PROMPT,
-  STEP_MS,
-  SUGGESTIONS,
-  WHAT_I_DID,
-} from './script';
+  INTAKE_QUESTIONS,
+  IntakeAnswers,
+  IntakeOption,
+  IntakeQuestionId,
+} from '../ProjectAssistant/intakeConfig';
+import { DEFAULT_LEVERS, LeverId } from '../ProjectAssistant/leverConfig';
 
-// The AI project assistant as a create-flow modal. The manager describes the
-// project, answers one question, watches it draft, then reviews a Draft/Preview
-// of the whole project before committing. "Create project" lands them in the
-// normal project setup workspace. Everything here is the scripted scenario in
-// ./script — the generation mechanics are unchanged; this is the experience.
+import DraftingProgress from './DraftingProgress';
+import DraftPreviewPane from './DraftPreviewPane';
+import GenerationWatcher from './GenerationWatcher';
+import ModalComposer from './ModalComposer';
+import { INTAKE_LEAD, INTRO, REVIEW_PROMPT } from './script';
+
+// The AI project assistant as a create-flow modal, wired to the real generation
+// pipeline: describe the project → answer a few questions → it creates a draft
+// project and calls the engine → watch it draft → review the real result →
+// Create project opens it in the normal setup workspace. The intake and its
+// answer→levers mapping are reused from the dock, so the questions are the real
+// ones and they genuinely shape the generated project.
 
 type Phase = 'brief' | 'question' | 'drafting' | 'review';
 
@@ -76,14 +89,7 @@ const Header = ({
   onStartFromScratch: () => void;
   onClose: () => void;
 }) => (
-  <Box
-    display="flex"
-    alignItems="center"
-    justifyContent="space-between"
-    px="24px"
-    py="18px"
-    flex="0 0 auto"
-  >
+  <Box display="flex" alignItems="center" justifyContent="space-between" px="24px" py="18px" flex="0 0 auto">
     <Box display="flex" alignItems="center" gap="10px">
       <Icon name="stars" width="20px" height="20px" fill={colors.teal500} />
       <Text m="0px" fontSize="l" fontWeight="bold" color="textPrimary">
@@ -127,88 +133,6 @@ const AssistantLine = ({ children }: { children: React.ReactNode }) => (
   </Text>
 );
 
-const QuestionCard = ({ onPick }: { onPick: () => void }) => (
-  <Box border={`1px solid ${colors.grey300}`} borderRadius="14px" p="20px">
-    <Text m="0px" fontWeight="bold" fontSize="l" color="textPrimary">
-      {QUESTION.title}
-    </Text>
-    <Text m="8px 0 16px" color="textSecondary" lineHeight="1.5">
-      {QUESTION.help}
-    </Text>
-    <Box display="flex" flexDirection="column" gap="10px">
-      {QUESTION.options.map((opt) => (
-        <Box
-          key={opt.id}
-          as="button"
-          // @ts-expect-error prototype: Box rendered as a native button
-          type="button"
-          onClick={onPick}
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          gap="12px"
-          width="100%"
-          p="14px 16px"
-          borderRadius="10px"
-          border={`1px solid ${opt.suggested ? colors.teal400 : colors.grey300}`}
-          background={colors.white}
-          style={{ cursor: 'pointer', textAlign: 'left' }}
-        >
-          <Box>
-            <Text m="0px" fontWeight="bold" color="textPrimary">
-              {opt.label}
-            </Text>
-            <Text m="2px 0 0" fontSize="s" color="textSecondary">
-              {opt.sub}
-            </Text>
-          </Box>
-          {opt.suggested && (
-            <Box flex="0 0 auto" px="10px" py="4px" borderRadius="999px" bgColor={colors.teal50}>
-              <Text m="0px" fontSize="s" color="teal700" fontWeight="bold">
-                Suggested
-              </Text>
-            </Box>
-          )}
-        </Box>
-      ))}
-    </Box>
-  </Box>
-);
-
-const StepRow = ({ label, state }: { label: string; state: 'done' | 'active' | 'todo' }) => (
-  <Box display="flex" alignItems="center" gap="12px">
-    <Box flex="0 0 auto" width="22px" height="22px" display="flex" alignItems="center" justifyContent="center">
-      {state === 'done' ? (
-        <Icon name="check-circle" width="22px" height="22px" fill={colors.teal500} />
-      ) : state === 'active' ? (
-        <Spinner size="20px" />
-      ) : (
-        <Box width="18px" height="18px" borderRadius="50%" border={`2px solid ${colors.grey300}`} />
-      )}
-    </Box>
-    <Text m="0px" color={state === 'todo' ? 'textSecondary' : 'textPrimary'} lineHeight="1.4">
-      {label}
-    </Text>
-  </Box>
-);
-
-const DraftingChecklist = ({ activeStep }: { activeStep: number }) => (
-  <Box border={`1px solid ${colors.grey300}`} borderRadius="14px" p="20px">
-    <Text m="0 0 16px" fontWeight="bold" fontSize="l" color="textPrimary">
-      Drafting your project
-    </Text>
-    <Box display="flex" flexDirection="column" gap="14px">
-      {DRAFTING_STEPS.map((label, i) => (
-        <StepRow
-          key={label}
-          label={label}
-          state={i < activeStep ? 'done' : i === activeStep ? 'active' : 'todo'}
-        />
-      ))}
-    </Box>
-  </Box>
-);
-
 type Props = {
   onClose: () => void;
   onStartFromScratch: () => void;
@@ -216,54 +140,158 @@ type Props = {
 
 const ProjectAssistantModal = ({ onClose, onStartFromScratch }: Props) => {
   const locale = useLocale();
+  const { formatMessage } = useIntl();
+  const queryClient = useQueryClient();
   const { mutateAsync: addProject } = useAddProject();
+  const { mutateAsync: addFile } = useAddFile();
+  const { mutateAsync: addProjectGeneration } = useAddProjectGeneration();
 
   const [phase, setPhase] = useState<Phase>('brief');
   const [brief, setBrief] = useState('');
-  const [activeStep, setActiveStep] = useState(0);
-  const [replies, setReplies] = useState<{ user: string; assistant: string }[]>([]);
-  const [creating, setCreating] = useState(false);
-  const timers = useRef<number[]>([]);
+  const [files, setFiles] = useState<File[]>([]);
+  const [answers, setAnswers] = useState<IntakeAnswers>({});
+  const [levers, setLevers] = useState(DEFAULT_LEVERS);
+  const [projectId, setProjectId] = useState<string>();
+  const [jobStartedAt, setJobStartedAt] = useState<string>();
+  const [starting, setStarting] = useState(false);
+  const [navigating, setNavigating] = useState(false);
+  const [error, setError] = useState<string>();
+  // Redraft exchanges shown in the review conversation.
+  const [replies, setReplies] = useState<{ user: string; assistant?: string }[]>([]);
 
-  // Run the drafting checklist, then reveal the review.
-  useEffect(() => {
-    if (phase !== 'drafting') return;
-    setActiveStep(0);
-    DRAFTING_STEPS.forEach((_, i) => {
-      timers.current.push(
-        window.setTimeout(() => setActiveStep(i + 1), STEP_MS * (i + 1))
-      );
+  const { data: project } = useProjectById(projectId ?? '');
+  const summary = project?.data.attributes.ai_generation_summary ?? null;
+
+  const refreshWorkspace = useCallback(
+    (id: string) => {
+      queryClient.invalidateQueries({ queryKey: projectsKeys.item({ id }) });
+      queryClient.invalidateQueries({ queryKey: phasesKeys.all() });
+      queryClient.invalidateQueries({ queryKey: projectPageLayoutKeys.all() });
+      queryClient.invalidateQueries({ queryKey: customFieldsKeys.all() });
+      queryClient.invalidateQueries({ queryKey: customFormKeys.all() });
+    },
+    [queryClient]
+  );
+
+  // The intake answers, turned into the same plain-language brief lines the dock
+  // sends, so the engine reads them in the manager's own words.
+  const briefSupplement = () =>
+    INTAKE_QUESTIONS.flatMap((question) => {
+      const answer = answers[question.id];
+      const option = question.options.find((o) => o.id === answer?.optionId);
+      if (!option) return [];
+      const lines: string[] = [];
+      const briefText = formatMessage(option.brief).trim();
+      if (briefText) lines.push(briefText);
+      const detail = answer?.detail?.trim();
+      if (detail && question.detailBrief) {
+        lines.push(formatMessage(question.detailBrief, { detail }));
+      }
+      return lines;
     });
-    timers.current.push(
-      window.setTimeout(() => setPhase('review'), STEP_MS * (DRAFTING_STEPS.length + 1))
-    );
-    return () => {
-      timers.current.forEach((t) => window.clearTimeout(t));
-      timers.current = [];
-    };
-  }, [phase]);
 
-  const applySuggestion = (label: string, reply: string) =>
-    setReplies((prev) => [...prev, { user: label, assistant: reply }]);
+  const handleAnswer = (questionId: IntakeQuestionId, option: IntakeOption) => {
+    setAnswers((prev) => ({ ...prev, [questionId]: { ...prev[questionId], optionId: option.id } }));
+    if (option.levers) setLevers((prev) => ({ ...prev, ...option.levers }));
+  };
 
-  const createProject = async () => {
-    setCreating(true);
+  const handleDetail = (questionId: IntakeQuestionId, detail: string) =>
+    setAnswers((prev) => ({ ...prev, [questionId]: { ...prev[questionId], detail } }));
+
+  const setLever = (id: LeverId, value: number) =>
+    setLevers((prev) => ({ ...prev, [id]: value }));
+
+  const uploadFile = async (id: string, file: File) =>
+    addFile({
+      content: await getBase64FromFile(file),
+      name: file.name,
+      project: id,
+      category: 'other',
+      ai_processing_allowed: true,
+    });
+
+  const buildPrompt = (direction?: string) => {
+    const sections = [brief.trim()];
+    const supplement = briefSupplement();
+    if (supplement.length) sections.push('', ...supplement);
+    if (direction) {
+      sections.push('', 'Please revise the previous draft with this direction:', direction);
+    }
+    return sections.join('\n');
+  };
+
+  // Create the draft project, upload any files, and kick off the real engine.
+  const startDraft = async () => {
+    setError(undefined);
+    setStarting(true);
     try {
-      const project = await addProject({
-        title_multiloc: { [locale]: DRAFT_TITLE },
-        description_preview_multiloc: { [locale]: DRAFT_DESCRIPTION },
+      const titleGuess = brief.split('\n')[0].trim().slice(0, 80) || 'New project';
+      const created = await addProject({
+        title_multiloc: { [locale]: titleGuess },
         admin_publication_attributes: { publication_status: 'draft' },
       } as any);
-      clHistory.push(adminProjectsProjectPath(project.data.id));
-      onClose();
+      const id = created.data.id;
+      setProjectId(id);
+
+      const uploads = await Promise.all(files.map((file) => uploadFile(id, file)));
+      const fileIds = uploads.map((upload) => upload.data.id);
+
+      await addProjectGeneration({ projectId: id, prompt: buildPrompt(), locale, fileIds, levers });
+      setJobStartedAt(new Date().toISOString());
+      setPhase('drafting');
     } catch {
-      setCreating(false);
+      setError('Something went wrong starting the draft. Please try again.');
+    } finally {
+      setStarting(false);
     }
   };
 
-  const wide = phase === 'review';
+  // Redraft the existing project with more direction (from the review composer).
+  const redraft = async (direction: string) => {
+    if (!projectId) return;
+    setError(undefined);
+    setReplies((prev) => [...prev, { user: direction }]);
+    try {
+      await addProjectGeneration({ projectId, prompt: buildPrompt(direction), locale, fileIds: [], levers });
+      setJobStartedAt(new Date().toISOString());
+      setPhase('drafting');
+    } catch {
+      setError('Something went wrong with that change. Please try again.');
+    }
+  };
 
-  // The left (conversation) column — shared across every phase.
+  const handleGenerationComplete = useCallback(
+    (succeeded: boolean) => {
+      if (projectId) refreshWorkspace(projectId);
+      setReplies((prev) => {
+        const last = prev[prev.length - 1];
+        if (last && !last.assistant) {
+          return [
+            ...prev.slice(0, -1),
+            {
+              ...last,
+              assistant: succeeded
+                ? 'Done — I’ve updated the draft on the right.'
+                : 'I’ve updated most of the draft; one or two parts need a look on the right.',
+            },
+          ];
+        }
+        return prev;
+      });
+      setPhase('review');
+    },
+    [projectId, refreshWorkspace]
+  );
+
+  const openProject = () => {
+    if (!projectId) return;
+    setNavigating(true);
+    clHistory.push(adminProjectsProjectPath(projectId));
+    onClose();
+  };
+
+  const wide = phase === 'drafting' || phase === 'review';
+
   const conversation = (
     <>
       <Header onStartFromScratch={onStartFromScratch} onClose={onClose} />
@@ -277,83 +305,73 @@ const ProjectAssistantModal = ({ onClose, onStartFromScratch }: Props) => {
 
             {phase === 'question' && (
               <>
-                <AssistantLine>{QUESTION.lead}</AssistantLine>
-                <QuestionCard onPick={() => setPhase('drafting')} />
+                <AssistantLine>{INTAKE_LEAD}</AssistantLine>
+                <Intake
+                  answers={answers}
+                  levers={levers}
+                  disabled={starting}
+                  onAnswer={handleAnswer}
+                  onDetail={handleDetail}
+                  onLeverChange={setLever}
+                />
+                <ButtonWithLink type="button" width="100%" icon="stars" onClick={startDraft} processing={starting} disabled={starting}>
+                  Draft my project
+                </ButtonWithLink>
               </>
             )}
 
-            {phase === 'drafting' && <DraftingChecklist activeStep={activeStep} />}
+            {(phase === 'drafting' || phase === 'review') && jobStartedAt && (
+              <DraftingProgress startedAt={jobStartedAt} done={phase === 'review'} />
+            )}
 
             {phase === 'review' && (
               <>
-                <DraftingChecklist activeStep={DRAFTING_STEPS.length} />
-
-                <Box p="16px 18px" borderRadius="14px" bgColor={colors.grey100}>
-                  <Text m="0 0 12px" fontWeight="bold" color="textPrimary">
-                    Here is what I did:
-                  </Text>
-                  <Box display="flex" flexDirection="column" gap="10px">
-                    {WHAT_I_DID.map((item) => (
-                      <Box key={item} display="flex" gap="10px" alignItems="flex-start">
-                        <Box flex="0 0 auto" mt="2px">
-                          <Icon name="check" width="15px" height="15px" fill={colors.teal500} />
-                        </Box>
-                        <Text m="0px" color="textPrimary" lineHeight="1.45">
-                          {item}
-                        </Text>
-                      </Box>
-                    ))}
+                {summary?.headline && (
+                  <Box p="16px 18px" borderRadius="14px" bgColor={colors.grey100}>
+                    <Text m="0 0 8px" fontWeight="bold" color="textPrimary">
+                      Here is what I did
+                    </Text>
+                    <Text m="0px" color="textPrimary" lineHeight="1.5">
+                      {summary.headline}
+                    </Text>
                   </Box>
-                </Box>
+                )}
 
                 <AssistantLine>{REVIEW_PROMPT}</AssistantLine>
 
                 {replies.map((r, i) => (
                   <React.Fragment key={i}>
                     <UserBubble text={r.user} />
-                    <AssistantLine>{r.assistant}</AssistantLine>
+                    {r.assistant && <AssistantLine>{r.assistant}</AssistantLine>}
                   </React.Fragment>
                 ))}
-
-                <Box display="flex" flexWrap="wrap" gap="8px">
-                  {SUGGESTIONS.map((s) => (
-                    <button
-                      key={s.id}
-                      type="button"
-                      onClick={() => applySuggestion(s.label, s.reply)}
-                      style={{
-                        appearance: 'none',
-                        border: `1px solid ${colors.grey300}`,
-                        background: colors.white,
-                        borderRadius: '999px',
-                        padding: '8px 14px',
-                        font: 'inherit',
-                        fontSize: '14px',
-                        color: colors.textPrimary,
-                        cursor: 'pointer',
-                      }}
-                    >
-                      {s.label}
-                    </button>
-                  ))}
-                </Box>
               </>
+            )}
+
+            {error && (
+              <Text m="0px" color="error">
+                {error}
+              </Text>
             )}
           </>
         )}
       </Box>
 
-      {phase !== 'drafting' && (
+      {phase === 'review' && (
+        <Box flex="0 0 auto" p="16px 24px 24px">
+          <ModalComposer placeholder="Tell me what to change…" onSend={redraft} />
+        </Box>
+      )}
+
+      {phase === 'brief' && (
         <Box flex="0 0 auto" p="16px 24px 24px">
           <ModalComposer
-            placeholder={phase === 'brief' ? 'Chat to create' : 'Chat to change anything'}
+            placeholder="Chat to create"
+            files={files}
+            onFilesChange={setFiles}
             onSend={(text) => {
-              if (phase === 'brief') {
-                setBrief(text);
-                setPhase('question');
-              } else if (phase === 'review') {
-                applySuggestion(text, 'Done — I’ve applied that to the draft on the right.');
-              }
+              setBrief(text);
+              setPhase('question');
             }}
           />
         </Box>
@@ -364,37 +382,48 @@ const ProjectAssistantModal = ({ onClose, onStartFromScratch }: Props) => {
   return (
     <Scrim onMouseDown={(e) => e.target === e.currentTarget && onClose()}>
       <Shell $wide={wide}>
+        {projectId && phase === 'drafting' && jobStartedAt && (
+          <GenerationWatcher projectId={projectId} since={jobStartedAt} onComplete={handleGenerationComplete} />
+        )}
+
         {wide ? (
           <>
             <Box flex="0 0 440px" display="flex" flexDirection="column" minHeight="0" borderRight={`1px solid ${colors.grey200}`}>
               {conversation}
             </Box>
             <Box flex="1" minWidth="0" display="flex" flexDirection="column" minHeight="0" bgColor={colors.grey50}>
-              <Box flex="1" minHeight="0">
-                <DraftPreviewPane />
-              </Box>
-              <Box
-                flex="0 0 auto"
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-                gap="16px"
-                px="32px"
-                py="18px"
-                borderTop={`1px solid ${colors.grey200}`}
-                bgColor={colors.white}
-              >
-                <Text m="0px" fontSize="s" color="textSecondary">
-                  Nothing is visible to residents until you publish.
-                </Text>
-                <ButtonWithLink
-                  buttonStyle="admin-dark"
-                  onClick={createProject}
-                  processing={creating}
-                >
-                  Create project
-                </ButtonWithLink>
-              </Box>
+              {phase === 'review' && projectId ? (
+                <>
+                  <Box flex="1" minHeight="0">
+                    <DraftPreviewPane projectId={projectId} />
+                  </Box>
+                  <Box
+                    flex="0 0 auto"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    gap="16px"
+                    px="32px"
+                    py="18px"
+                    borderTop={`1px solid ${colors.grey200}`}
+                    bgColor={colors.white}
+                  >
+                    <Text m="0px" fontSize="s" color="textSecondary">
+                      Nothing is visible to residents until you publish.
+                    </Text>
+                    <ButtonWithLink buttonStyle="admin-dark" onClick={openProject} processing={navigating}>
+                      Create project
+                    </ButtonWithLink>
+                  </Box>
+                </>
+              ) : (
+                <Box flex="1" display="flex" flexDirection="column" alignItems="center" justifyContent="center" gap="16px">
+                  <Spinner />
+                  <Text m="0px" color="textSecondary">
+                    Assembling your project…
+                  </Text>
+                </Box>
+              )}
             </Box>
           </>
         ) : (
