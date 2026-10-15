@@ -36,6 +36,7 @@ lv-LV:
         project_participants: Projekta dalībniekiem
         registered_users: Reģistrētiem lietotājiem
       recipient_segment:
+        admin_who_generated_the_report: Administrators, kurš pieprasīja pārskatu
         admins: Administratori
         admins_and_managers: Administratori un vadītāji
         admins_and_managers_assigned_to_the_input: Ievadei piešķirtie administratori un vadītāji
@@ -109,6 +110,7 @@ lv-LV:
         proposal_is_upvoted_above_threshold: Priekšlikums ir atbalstīts virs sliekšņa
         proposal_status_changes: Priekšlikuma statusa izmaiņas
         registration_to_event: Reģistrācija pasākumam
+        report_generated: Pārskata ģenerēšana ir pabeigta
         survey_1_day_after_draft_saved: 1 diena pēc tam, kad lietotājs pēdējo reizi saglabājis aptaujas melnrakstu.
         user_accepts_invitation_to_cosponsor_a_proposal: Lietotājs piekrīt uzaicinājumam līdzfinansēt priekšlikumu
         user_changes_email: Lietotājs maina savu e-pasta adresi
@@ -206,6 +208,7 @@ lv-LV:
       project_review_request: Projekta pārskatīšanas pieprasījums
       project_review_state_change: Projekts apstiprināts
       proposal_expired_for_admin: Priekšlikuma termiņš ir beidzies, nesasniedzot balsošanas slieksni
+      report_generated: Pārskats ir sagatavots
       screening_digest: Iknedēļas skrīninga atgādinājums
       sms_manual: Oficiālas SMS ziņas
       space_moderation_rights_received: Saņemtas telpas pārvaldnieka tiesības
@@ -661,6 +664,13 @@ lv-LV:
       preheader: Iesnieguma termiņš ir beidzies, nesasniedzot slieksni
       subject: '"%{input_title}" termiņš ir beidzies, nesasniedzot slieksni'
       title: Iesnieguma termiņš ir beidzies, nesasniedzot balsošanas slieksni
+    report_generated:
+      cta_button: Atvērt pārskatu
+      event_description: Pārskats ir uzrakstīts un gatavs pārskatīšanai un rediģēšanai.
+      preheader: Jūsu pārskats ir gatavs
+      stopped_early: Rakstīšana tika pārtraukta, pirms pārskats tika pabeigts. Viss līdz šim uzrakstītais ir saglabāts — atveriet to un pieprasiet pārējo tērzēšanā.
+      subject: "Jūsu pārskats par '%{projectName}' ir gatavs"
+      title: Jūsu pārskats ir gatavs
     schedules:
       quarterly: Ceturkšņa ceturksnis, ceturkšņa pirmajā dienā
       weekly:

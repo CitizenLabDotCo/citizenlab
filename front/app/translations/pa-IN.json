@@ -2133,6 +2133,8 @@
   "app.containers.NotificationMenu.projectPublished": "ਇੱਕ ਨਵਾਂ ਪ੍ਰੋਜੈਕਟ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ ਸੀ",
   "app.containers.NotificationMenu.projectReviewRequest": "{name} ਨੇ ਪ੍ਰੋਜੈਕਟ \"{projectTitle}\" ਨੂੰ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰਨ ਲਈ ਮਨਜ਼ੂਰੀ ਦੀ ਬੇਨਤੀ ਕੀਤੀ।",
   "app.containers.NotificationMenu.projectReviewStateChange": "{name} ਪ੍ਰਕਾਸ਼ਨ ਲਈ \"{projectTitle}\" ਨੂੰ ਮਨਜ਼ੂਰੀ ਦਿੱਤੀ ਗਈ",
+  "app.containers.NotificationMenu.reportGenerated": "{projectTitle} ਲਈ ਤੁਹਾਡੀ ਰਿਪੋਰਟ ਤਿਆਰ ਹੈ",
+  "app.containers.NotificationMenu.reportGeneratedStoppedEarly": "{projectTitle} ਲਈ ਤੁਹਾਡੀ ਰਿਪੋਰਟ ਪੂਰੀ ਹੋਣ ਤੋਂ ਪਹਿਲਾਂ ਰੁਕ ਗਈ। ਜੋ ਕੁਝ ਲਿਖਿਆ ਗਿਆ ਸੀ ਉਹ ਸੁਰੱਖਿਅਤ ਹੈ।",
   "app.containers.NotificationMenu.spaceModerationRightsReceived": "ਹੁਣ ਤੁਸੀਂ {spaceLink} ਦੇ ਸਪੇਸ ਮੈਨੇਜਰ ਹੋ",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} ਸਥਿਤੀ {status}ਵਿੱਚ ਬਦਲ ਗਈ ਹੈ",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} ਵੋਟਿੰਗ ਥ੍ਰੈਸ਼ਹੋਲਡ 'ਤੇ ਪਹੁੰਚ ਗਿਆ",

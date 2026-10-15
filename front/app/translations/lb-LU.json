@@ -2133,6 +2133,8 @@
   "app.containers.NotificationMenu.projectPublished": "En neie Projet gouf publizéiert",
   "app.containers.NotificationMenu.projectReviewRequest": "{name} huet Genehmegung gefrot fir de Projet ze publizéieren \"{projectTitle}\"",
   "app.containers.NotificationMenu.projectReviewStateChange": "{name} guttgeheescht \"{projectTitle}\" fir Publikatioun",
+  "app.containers.NotificationMenu.reportGenerated": "Äre Rapport fir {projectTitle} ass fäerdeg",
+  "app.containers.NotificationMenu.reportGeneratedStoppedEarly": "Äre Rapport fir {projectTitle} huet opgehalen, ier e fäerdeg war. Wat geschriwwe gouf, ass gespäichert.",
   "app.containers.NotificationMenu.spaceModerationRightsReceived": "Dir sidd elo Space-Manager vun {spaceLink}",
   "app.containers.NotificationMenu.statusChangedOnIdeaYouFollow": "{ideaTitle} Status ass op {status}geännert",
   "app.containers.NotificationMenu.thresholdReachedForAdmin": "{post} huet di néideg Unzuel u Stëmmen erreecht",
