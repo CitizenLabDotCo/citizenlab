@@ -29,6 +29,26 @@ describe('FormOutlinePreview', () => {
     expect(screen.getByText('End page')).toBeInTheDocument();
   });
 
+  it('numbers untitled pages without counting the end page', () => {
+    render(
+      <FormOutlinePreview
+        args={{
+          fields: [
+            { input_type: 'page' },
+            { input_type: 'text' },
+            { input_type: 'page' },
+            { input_type: 'page', key: 'form_end' },
+          ],
+        }}
+      />
+    );
+
+    expect(screen.getByText('2 pages, 1 question')).toBeInTheDocument();
+    expect(screen.getByText('Page 1')).toBeInTheDocument();
+    expect(screen.getByText('Page 2')).toBeInTheDocument();
+    expect(screen.getByText('End page')).toBeInTheDocument();
+  });
+
   it('ignores malformed arguments', () => {
     render(
       <FormOutlinePreview
