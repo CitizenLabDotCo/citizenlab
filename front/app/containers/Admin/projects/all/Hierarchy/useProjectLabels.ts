@@ -8,8 +8,9 @@ import { PARTICIPATION_METHOD_LABELS } from 'containers/Admin/inspirationHub/con
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { parseBackendDateString } from 'utils/dateUtils';
 
-import sharedMessages from '../../_shared/messages';
-import messages from '../messages';
+import sharedMessages from '../_shared/messages';
+
+import messages from './messages';
 
 const STATUS_MESSAGES: Record<DisplayStatus, MessageDescriptor> = {
   published: messages.live,
@@ -18,16 +19,17 @@ const STATUS_MESSAGES: Record<DisplayStatus, MessageDescriptor> = {
   archived: sharedMessages.archived,
 };
 
-// "Live · Voting · open until 19 Oct": the status, then the phase the project
-// is about right now.
-const useProjectMeta = (project: ProjectMiniAdminData) => {
+// How the project stands, in words: its status ("Live"), the method of the
+// phase it's about right now ("Voting"), and when that phase runs ("open
+// until 19 Oct"). Without phases there's no method and "No phases yet".
+const useProjectLabels = (project: ProjectMiniAdminData) => {
   const { formatMessage, formatDate } = useIntl();
   const { display_status, highlighted_phase } = project.attributes;
 
   const status = formatMessage(STATUS_MESSAGES[display_status]);
 
   if (!highlighted_phase) {
-    return [status, formatMessage(messages.noPhasesYet)].join(' · ');
+    return { status, when: formatMessage(messages.noPhasesYet) };
   }
 
   const { participation_method, start_at, end_at } = highlighted_phase;
@@ -46,11 +48,11 @@ const useProjectMeta = (project: ProjectMiniAdminData) => {
       ? formatMessage(messages.openUntil, { date: shortDate(end_at) })
       : formatMessage(messages.open);
 
-  return [
+  return {
     status,
-    formatMessage(PARTICIPATION_METHOD_LABELS[participation_method]),
+    method: formatMessage(PARTICIPATION_METHOD_LABELS[participation_method]),
     when,
-  ].join(' · ');
+  };
 };
 
-export default useProjectMeta;
+export default useProjectLabels;

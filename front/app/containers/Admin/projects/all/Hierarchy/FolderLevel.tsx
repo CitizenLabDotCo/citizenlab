@@ -4,17 +4,18 @@ import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfinitePro
 
 import { PAGE_SIZE } from './constants';
 import EmptyLevel from './EmptyLevel';
-import ProjectCards from './Grid/ProjectCards';
 import LevelError from './LevelError';
-import Section from './Section';
+import LevelView from './LevelView';
+import useProjectSort from './useProjectSort';
 
 interface Props {
   folderId: string;
 }
 
 const FolderLevel = ({ folderId }: Props) => {
+  const sort = useProjectSort();
   const projects = useInfiniteProjectsMiniAdmin(
-    { folder_ids: [folderId], sort: 'arranged' },
+    { folder_ids: [folderId], sort },
     PAGE_SIZE
   );
 
@@ -26,9 +27,9 @@ const FolderLevel = ({ folderId }: Props) => {
   if (projectsCount === 0) return <EmptyLevel />;
 
   return (
-    <Section count={projectsCount}>
-      <ProjectCards query={projects} />
-    </Section>
+    <LevelView
+      groups={[{ kind: 'projects', count: projectsCount, query: projects }]}
+    />
   );
 };
 

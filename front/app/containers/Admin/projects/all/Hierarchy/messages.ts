@@ -65,4 +65,56 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.Hierarchy.ended',
     defaultMessage: 'ended',
   },
+  participants: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.participants',
+    defaultMessage: 'Participants',
+  },
+  access: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.access',
+    defaultMessage: 'Access',
+  },
+  participationMethod: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.participationMethod',
+    defaultMessage: 'Participation method',
+  },
+  anyone: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.anyone',
+    defaultMessage: 'Anyone',
+  },
+  selectedGroups: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.selectedGroups',
+    defaultMessage: 'Selected groups',
+  },
+  adminsAndManagers: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.adminsAndManagers',
+    defaultMessage: 'Admins and managers',
+  },
+  onlyByLink: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.onlyByLink',
+    defaultMessage: 'only by link',
+  },
+  notSet: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.notSet',
+    defaultMessage: 'Not set',
+  },
+  addColumns: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.addColumns',
+    defaultMessage: 'Add columns',
+  },
+  orderBy: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.orderBy',
+    defaultMessage: 'Order by {column}',
+  },
+  grid: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.grid',
+    defaultMessage: 'Grid',
+  },
+  list: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.list',
+    defaultMessage: 'List',
+  },
+  view: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.view',
+    defaultMessage: 'View',
+  },
 });

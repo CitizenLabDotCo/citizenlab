@@ -16,7 +16,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import Link, { typedStyled } from 'utils/cl-router/Link';
 
-import useProjectMeta from './useProjectMeta';
+import useProjectLabels from '../useProjectLabels';
 
 const CardLink = typedStyled(Link)`
   display: block;
@@ -43,7 +43,9 @@ interface Props {
 // placeholder.
 const ProjectCard = ({ project, path }: Props) => {
   const localize = useLocalize();
-  const meta = useProjectMeta(project);
+  const { status, method, when } = useProjectLabels(project);
+  // "Live · Voting · open until 19 Oct"
+  const meta = [status, method, when].filter(Boolean).join(' · ');
 
   const { data: image } = useProjectImage({
     projectId: project.id,

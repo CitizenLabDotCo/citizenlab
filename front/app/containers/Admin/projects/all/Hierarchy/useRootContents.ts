@@ -10,11 +10,13 @@ import { usePermission } from 'utils/permissions';
 
 import { PAGE_SIZE } from './constants';
 import { getLandingLevel } from './level';
+import useProjectSort from './useProjectSort';
 
 // What sits at the top of the hierarchy for this user. The backend leaves out
 // whatever already shows inside a space or folder they can open.
 const useRootContents = () => {
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
+  const sort = useProjectSort();
   const canListSpaces = usePermission({ item: 'space', action: 'list' });
   const canListFolders = usePermission({
     item: 'project_folder',
@@ -28,7 +30,7 @@ const useRootContents = () => {
     { enabled: canListFolders }
   );
   const projects = useInfiniteProjectsMiniAdmin(
-    { top_level: true, sort: 'arranged' },
+    { top_level: true, sort },
     PAGE_SIZE
   );
 

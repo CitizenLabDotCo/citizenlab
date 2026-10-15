@@ -1,20 +1,16 @@
 import React from 'react';
 
-import { InfiniteData } from '@tanstack/react-query';
-
 import { MiniProjectFolders } from 'api/project_folders_mini/types';
+
+import { PagedQuery } from '../levelGroups';
 
 import FolderTile from './FolderTile';
 import LoadMore from './LoadMore';
 import TileGrid from './TileGrid';
 
+
 interface Props {
-  query: {
-    data?: InfiniteData<MiniProjectFolders>;
-    hasNextPage: boolean;
-    isFetchingNextPage: boolean;
-    fetchNextPage: () => void;
-  };
+  query: PagedQuery<MiniProjectFolders>;
 }
 
 const FolderTiles = ({ query }: Props) => {

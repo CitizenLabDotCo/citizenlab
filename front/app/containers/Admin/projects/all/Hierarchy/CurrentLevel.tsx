@@ -11,6 +11,7 @@ import RootLevel from './RootLevel';
 import RootSummary from './RootSummary';
 import SpaceLevel from './SpaceLevel';
 import { RootContents } from './useRootContents';
+import ViewModeSwitch from './ViewModeSwitch';
 
 interface Props {
   landing: Level;
@@ -37,6 +38,7 @@ const CurrentLevel = ({ landing, contents }: Props) => {
         ) : (
           <LevelBreadcrumbs level={level} showRoot={landing.kind === 'root'} />
         )}
+        <ViewModeSwitch />
       </Box>
       {level.kind === 'root' && <RootLevel contents={contents} />}
       {level.kind === 'space' && (

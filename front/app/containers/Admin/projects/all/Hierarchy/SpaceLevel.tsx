@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
-
 import useInfiniteProjectFoldersAdmin from 'api/project_folders_mini/useInfiniteProjectFoldersAdmin';
 import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
 
@@ -12,11 +10,11 @@ import allMessages from '../messages';
 
 import { PAGE_SIZE } from './constants';
 import EmptyLevel from './EmptyLevel';
-import FolderTiles from './Grid/FolderTiles';
-import ProjectCards from './Grid/ProjectCards';
 import LevelError from './LevelError';
+import { LevelGroup } from './levelGroups';
+import LevelView from './LevelView';
 import messages from './messages';
-import Section from './Section';
+import useProjectSort from './useProjectSort';
 
 interface Props {
   spaceId: string;
@@ -24,6 +22,7 @@ interface Props {
 
 const SpaceLevel = ({ spaceId }: Props) => {
   const { formatMessage } = useIntl();
+  const sort = useProjectSort();
   const canListFolders = usePermission({
     item: 'project_folder',
     action: 'list_for_admin',
@@ -37,7 +36,7 @@ const SpaceLevel = ({ spaceId }: Props) => {
     { enabled: canListFolders }
   );
   const projects = useInfiniteProjectsMiniAdmin(
-    { space_ids: [spaceId], top_level: true, sort: 'arranged' },
+    { space_ids: [spaceId], top_level: true, sort },
     PAGE_SIZE
   );
 
@@ -49,30 +48,27 @@ const SpaceLevel = ({ spaceId }: Props) => {
 
   if (foldersCount + projectsCount === 0) return <EmptyLevel />;
 
-  return (
-    <Box>
-      {foldersCount > 0 && (
-        <Section
-          label={formatMessage(allMessages.folders)}
-          count={foldersCount}
-        >
-          <FolderTiles query={folders} />
-        </Section>
-      )}
-      {projectsCount > 0 && (
-        <Section
-          label={formatMessage(
-            foldersCount > 0
-              ? messages.projectsNotInAFolder
-              : allMessages.projects
-          )}
-          count={projectsCount}
-        >
-          <ProjectCards query={projects} />
-        </Section>
-      )}
-    </Box>
-  );
+  const groups: LevelGroup[] = [];
+  if (foldersCount > 0) {
+    groups.push({
+      kind: 'folders',
+      label: formatMessage(allMessages.folders),
+      count: foldersCount,
+      query: folders,
+    });
+  }
+  if (projectsCount > 0) {
+    groups.push({
+      kind: 'projects',
+      label: formatMessage(
+        foldersCount > 0 ? messages.projectsNotInAFolder : allMessages.projects
+      ),
+      count: projectsCount,
+      query: projects,
+    });
+  }
+
+  return <LevelView groups={groups} />;
 };
 
 export default SpaceLevel;
