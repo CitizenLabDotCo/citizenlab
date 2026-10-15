@@ -4,6 +4,7 @@ import { Box, Text, Title, Spinner } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
 
 import usePhaseInsights from 'api/phase_insights/usePhaseInsights';
+import { IPhaseData } from 'api/phases/types';
 
 import Chart from 'components/admin/GraphCards/ParticipantsCard/Chart';
 import ReportExportMenu from 'components/admin/ReportExportMenu';
@@ -15,19 +16,19 @@ import { usePdfExportContext } from './pdf/PdfExportContext';
 import WordExportableInsight from './word/WordExportableInsight';
 
 interface Props {
-  phaseId: string;
+  phase: IPhaseData;
 }
 
 // Fixed dimensions for PDF export to fit A4 page (with 15mm margins)
 const PDF_CHART_WIDTH = 650;
 const PDF_CHART_HEIGHT = 280;
 
-const ParticipantsTimeline = ({ phaseId }: Props) => {
+const ParticipantsTimeline = ({ phase }: Props) => {
   const { isPdfRenderMode } = usePdfExportContext();
   const { formatMessage } = useIntl();
   const graphRef = useRef<SVGElement>(null);
 
-  const { data, isPending, error } = usePhaseInsights({ phaseId });
+  const { data, isPending, error } = usePhaseInsights({ phaseId: phase.id });
 
   if (isPending) {
     return (
@@ -49,10 +50,16 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
     );
   }
 
-  const chartDataFromApi =
-    data.data.attributes.participants_and_visitors_chart_data;
+  const { metrics, participants_and_visitors_chart_data: chartDataFromApi } =
+    data.data.attributes;
   const timeSeries = chartDataFromApi.timeseries;
   const resolution = chartDataFromApi.resolution;
+  // null when the back end could not measure participants, as opposed to
+  // measuring none, which leaves the visits as the only story to tell
+  const showParticipants = metrics.participants !== null;
+  const title = formatMessage(
+    showParticipants ? messages.participationOverTime : messages.visitorsOverTime
+  );
 
   const chartData = timeSeries.map((row) => ({
     date: row.date_group,
@@ -64,7 +71,7 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
     'Participation Timeline': chartData.map((row) => ({
       Date: row.date,
       Visitors: row.visitors,
-      Participants: row.participants,
+      ...(showParticipants ? { Participants: row.participants } : {}),
     })),
   };
 
@@ -84,7 +91,7 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
         mb="16px"
       >
         <Title variant="h3" m="0">
-          {formatMessage(messages.participationOverTime)}
+          {title}
         </Title>
         <ReportExportMenu
           name="participation-timeline"
@@ -95,7 +102,7 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
 
       <WordExportableInsight
         exportId="participation-timeline"
-        heading={formatMessage(messages.participationOverTime)}
+        heading={title}
         height={isPdfRenderMode ? `${PDF_CHART_HEIGHT}px` : '249px'}
         width={isPdfRenderMode ? `${PDF_CHART_WIDTH}px` : undefined}
       >
@@ -104,6 +111,7 @@ const ParticipantsTimeline = ({ phaseId }: Props) => {
           startAtMoment={startAtMoment}
           endAtMoment={endAtMoment}
           resolution={resolution}
+          showParticipants={showParticipants}
           showVisitors={true}
           innerRef={graphRef}
           isAnimationActive={!isPdfRenderMode}

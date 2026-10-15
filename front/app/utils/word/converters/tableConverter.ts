@@ -15,6 +15,7 @@ import {
   WORD_FONTS,
   WORD_FONT_SIZES,
   WORD_COLORS,
+  WORD_CONTENT_WIDTH,
 } from '../utils/styleConstants';
 
 import type { WordCellContent, WordTableRowData } from './types';
@@ -25,6 +26,23 @@ interface TableOptions {
   alternateRowColors?: boolean;
   borderColor?: string;
   headerBackground?: string;
+}
+
+/**
+ * Word lays a table out from its column grid, and docx defaults that grid to
+ * 100 twips per column, which squeezes the table down to its text. Cell
+ * percentages alone do not undo that, so the grid needs real widths.
+ */
+export function columnWidthsInTwips(
+  columnCount: number,
+  percentages?: number[]
+): number[] {
+  const shares =
+    percentages?.length === columnCount
+      ? percentages
+      : Array.from({ length: columnCount }, () => 100 / columnCount);
+
+  return shares.map((share) => Math.round((WORD_CONTENT_WIDTH * share) / 100));
 }
 
 function createTable(
@@ -38,6 +56,11 @@ function createTable(
     borderColor = WORD_TABLE_STYLES.borderColor,
     headerBackground = WORD_TABLE_STYLES.headerBackground,
   } = options;
+
+  const widths = columnWidthsInTwips(
+    Math.max(0, ...rows.map((row) => row.cells.length)),
+    columnWidths
+  );
 
   const tableRows = rows.map((row, rowIndex) => {
     const isHeader = row.isHeader ?? (headerRow && rowIndex === 0);
@@ -59,7 +82,7 @@ function createTable(
           backgroundColor,
           textColor,
           bold: isHeader,
-          width: columnWidths?.[cellIndex],
+          width: widths[cellIndex],
           borderColor,
         })
       ),
@@ -68,6 +91,7 @@ function createTable(
 
   return new Table({
     rows: tableRows,
+    columnWidths: widths,
     width: {
       size: 100,
       type: WidthType.PERCENTAGE,
@@ -91,7 +115,7 @@ interface CellOptions {
   backgroundColor?: string;
   textColor?: string;
   bold?: boolean;
-  width?: number; // Percentage
+  width?: number; // In twips
   borderColor?: string;
   alignment?: 'left' | 'center' | 'right';
 }
@@ -140,7 +164,7 @@ function createTableCell(
     width: width
       ? {
           size: width,
-          type: WidthType.PERCENTAGE,
+          type: WidthType.DXA,
         }
       : undefined,
     borders: {
