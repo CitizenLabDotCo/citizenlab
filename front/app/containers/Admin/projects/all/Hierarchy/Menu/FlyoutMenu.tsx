@@ -4,13 +4,18 @@ import {
   Box,
   Dropdown,
   IconNames,
-  bo,
   colors,
 } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
+import FlyoutPanel from './FlyoutPanel';
 import MenuRow, { MenuLink } from './MenuRow';
-import { getMenuSide } from './menuSide';
+import {
+  FLYOUT_GAP,
+  FLYOUT_WIDTH,
+  getFlyoutSide,
+  getMenuSide,
+} from './menuSide';
 
 type EntryBase = {
   key: string;
@@ -38,8 +43,8 @@ interface Props {
   entries: MenuEntry[];
   // Below the button that opens it.
   top: string;
-  // The menu's edge lined up with the button's. Flyouts open on the left, so
-  // a menu with flyouts belongs to a button at the right of the page.
+  // The menu's edge lined up with the button's. Flyouts open on the right
+  // where there's room, else on the left.
   align?: 'left' | 'right';
 }
 
@@ -55,6 +60,7 @@ const FlyoutMenu = ({
 }: Props) => {
   const [openKey, setOpenKey] = useState<string>();
   const [flyoutTop, setFlyoutTop] = useState(0);
+  const [flyoutSide, setFlyoutSide] = useState<'left' | 'right'>('right');
   // Each keyboard opening starts a new flyout, so it takes the focus again
   // even when it's the one already open.
   const [fromKeyboard, setFromKeyboard] = useState(false);
@@ -81,6 +87,17 @@ const FlyoutMenu = ({
       }
     };
 
+  // Measured once the menu is on screen, so its rows' arrows point where
+  // their flyouts will open.
+  const measureSide = (menu: HTMLElement | null) => {
+    if (!menu) return;
+    const measured = getFlyoutSide(
+      menu.getBoundingClientRect().right,
+      window.innerWidth
+    );
+    if (measured !== flyoutSide) setFlyoutSide(measured);
+  };
+
   const openEntry = entries.find((entry) => entry.key === openKey);
   const side = getMenuSide(align, isRtl);
 
@@ -94,7 +111,7 @@ const FlyoutMenu = ({
       width={`${MENU_WIDTH}px`}
       maxHeight="440px"
       content={
-        <Box role="menu" aria-label={label}>
+        <Box ref={measureSide} role="menu" aria-label={label}>
           {entries.map((entry) => (
             <Fragment key={entry.key}>
               {entry.dividerBefore && (
@@ -105,6 +122,7 @@ const FlyoutMenu = ({
                   icon={entry.icon}
                   label={entry.label}
                   flyoutOpened={openKey === entry.key}
+                  flyoutSide={flyoutSide}
                   onMouseEnter={(event) =>
                     openFlyout(entry.key, event.currentTarget)
                   }
@@ -140,22 +158,16 @@ const FlyoutMenu = ({
       footer={
         openEntry &&
         'flyout' in openEntry && (
-          <Box
-            position="absolute"
-            top={`${flyoutTop}px`}
-            right={`${MENU_WIDTH + 4}px`}
-            width="240px"
-            maxHeight="400px"
-            overflowY="auto"
-            p="6px"
-            bgColor={colors.white}
-            border={`1px solid ${colors.grey300}`}
-            borderRadius={bo.panelBorderRadius}
+          <FlyoutPanel
+            top={flyoutTop}
+            side={flyoutSide}
+            offset={MENU_WIDTH + FLYOUT_GAP}
+            width={FLYOUT_WIDTH}
           >
             <Fragment key={`${openEntry.key}-${keyboardOpenings}`}>
               {openEntry.flyout(fromKeyboard, close)}
             </Fragment>
-          </Box>
+          </FlyoutPanel>
         )
       }
     />

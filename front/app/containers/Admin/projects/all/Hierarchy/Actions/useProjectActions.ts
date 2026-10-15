@@ -1,4 +1,5 @@
 import useReorderAdminPublication from 'api/admin_publications/useReorderAdminPublication';
+import useUpdateProject from 'api/projects/useUpdateProject';
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
 import { useIntl } from 'utils/cl-intl';
@@ -8,6 +9,7 @@ import { ArrangePlace } from '../Arrange/arrangeTargets';
 import useArrangeEntry from '../Arrange/useArrangeEntry';
 import { MenuEntry } from '../Menu/FlyoutMenu';
 import messages from '../messages';
+import useMoveToEntry from '../Move/useMoveToEntry';
 
 // What can be done on a project from its card or row. Everyone sees only
 // projects they manage, so everyone can edit the ones listed.
@@ -17,15 +19,20 @@ const useProjectActions = (
 ) => {
   const { formatMessage } = useIntl();
   const { admin_publication_id } = project.attributes;
+  const folderId = project.relationships.folder?.data?.id ?? null;
+  const spaceId = project.relationships.space?.data?.id ?? null;
   const canReorder = usePermission({
     item: 'project',
     action: 'reorder',
-    context: {
-      folderId: project.relationships.folder?.data?.id,
-      spaceId: project.relationships.space?.data?.id,
-    },
+    context: { folderId, spaceId },
+  });
+  const canMove = usePermission({
+    item: 'project',
+    action: 'move',
+    context: { spaceId },
   });
   const { mutateAsync: reorderPublication } = useReorderAdminPublication();
+  const { mutateAsync: updateProject } = useUpdateProject();
 
   const arrange = useArrangeEntry(
     canReorder && place
@@ -37,8 +44,20 @@ const useProjectActions = (
       : undefined
   );
 
+  const moveTo = useMoveToEntry(
+    canMove
+      ? {
+          item: 'project',
+          here: { folder_id: folderId, space_id: spaceId },
+          move: (placement) =>
+            updateProject({ projectId: project.id, ...placement }),
+        }
+      : undefined
+  );
+
   const entries: MenuEntry[] = [
     ...arrange,
+    ...moveTo,
     {
       key: 'edit',
       icon: 'edit',
@@ -47,7 +66,7 @@ const useProjectActions = (
         to: '/admin/projects/$projectId/general',
         params: { projectId: project.id },
       },
-      dividerBefore: arrange.length > 0,
+      dividerBefore: arrange.length + moveTo.length > 0,
     },
   ];
 

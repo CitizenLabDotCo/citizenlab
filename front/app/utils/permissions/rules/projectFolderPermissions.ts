@@ -120,6 +120,16 @@ definePermissionRule(
     isAdmin(user) || userModeratesSpace(user, context?.folderSpaceId)
 );
 
+// Who moves folders between spaces from the projects page: admins, and space
+// managers within their spaces. Pass the folder's space via `context`
+// (`{ folderSpaceId }`).
+definePermissionRule(
+  'project_folder',
+  'move',
+  (_folder, user, _tenant, context) =>
+    isAdmin(user) || userModeratesSpace(user, context?.folderSpaceId)
+);
+
 // Pass the folder id via `context` (e.g. `{ folderId, folderSpaceId }`) so the
 // rule can check moderation of that specific folder.
 definePermissionRule(

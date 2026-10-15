@@ -274,4 +274,40 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.Hierarchy.undo',
     defaultMessage: 'Undo',
   },
+  moveTo: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.moveTo',
+    defaultMessage: 'Move to',
+  },
+  movedTo: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.movedTo',
+    defaultMessage: 'Moved to {name}',
+  },
+  movedOutOfSpace: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.movedOutOfSpace',
+    defaultMessage: 'Moved out of its space',
+  },
+  movedOutOfFolder: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.movedOutOfFolder',
+    defaultMessage: 'Moved out of its folder',
+  },
+  moveNotSaved: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.moveNotSaved',
+    defaultMessage: "The move couldn't be saved. Try again.",
+  },
+  noSpace: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.noSpace',
+    defaultMessage: 'No space',
+  },
+  notInAFolder: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.notInAFolder',
+    defaultMessage: 'Not in a folder',
+  },
+  searchDestinations: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.searchDestinations',
+    defaultMessage: 'Search…',
+  },
+  searchDestinationsLabel: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.searchDestinationsLabel',
+    defaultMessage: 'Search destinations',
+  },
 });

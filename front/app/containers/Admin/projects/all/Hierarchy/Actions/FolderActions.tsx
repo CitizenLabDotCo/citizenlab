@@ -21,6 +21,7 @@ const FolderActions = ({ folder, place }: Props) => {
       place,
       adminPublicationId: folder.attributes.admin_publication_id,
     },
+    movable: true,
   });
   return <MoreActions entries={entries} />;
 };

@@ -47,6 +47,16 @@ definePermissionRule('project', 'reorder', (_project, user, _tenant, context) =>
   canReorderProject(user, context ?? {})
 );
 
+// Who moves projects between spaces and folders from the projects page:
+// admins, and space managers within their spaces. Pass the project's space
+// via `context` (`{ spaceId }`).
+definePermissionRule(
+  'project',
+  'move',
+  (_project, user, _tenant, context) =>
+    isAdmin(user) || userModeratesSpace(user, context?.spaceId)
+);
+
 const canReview = (project: IProjectData, user: IUser | undefined | null) => {
   if (isAdmin(user)) return true;
 

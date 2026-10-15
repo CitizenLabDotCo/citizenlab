@@ -45,6 +45,15 @@ const rowStyle = css`
 
 const ButtonRow = styled.button`
   ${rowStyle}
+
+  &[aria-disabled='true'] {
+    cursor: default;
+    color: ${colors.coolGrey500};
+
+    &:hover {
+      background: transparent;
+    }
+  }
 `;
 
 const LinkRow = typedStyled(Link)`
@@ -55,11 +64,16 @@ interface Props {
   // Left out in flyouts whose rows are words alone.
   icon?: IconNames;
   label: string;
+  // Grey words after the label, like the space a folder is in.
+  detail?: string;
+  // Where the item already is: marked, and not a choice.
+  current?: boolean;
   danger?: boolean;
   // Set for a row that opens a page rather than acting.
   link?: MenuLink;
-  // Set for a row that opens choices beside the menu.
+  // Set for a row that opens choices beside the menu, on the given side.
   flyoutOpened?: boolean;
+  flyoutSide?: 'left' | 'right';
   onClick: (event: MouseEvent<HTMLElement>) => void;
   onMouseEnter?: (event: MouseEvent<HTMLElement>) => void;
   onKeyDown?: (event: KeyboardEvent<HTMLElement>) => void;
@@ -68,9 +82,12 @@ interface Props {
 const MenuRow = ({
   icon,
   label,
+  detail,
+  current = false,
   danger = false,
   link,
   flyoutOpened,
+  flyoutSide = 'right',
   onClick,
   onMouseEnter,
   onKeyDown,
@@ -96,10 +113,23 @@ const MenuRow = ({
         >
           {label}
         </Text>
+        {detail && (
+          <Text as="span" m="0" ml="4px" variant="boMicro" color="coolGrey500">
+            {detail}
+          </Text>
+        )}
       </Box>
+      {current && (
+        <Icon
+          name="check"
+          width="14px"
+          height="14px"
+          fill={colors.coolGrey600}
+        />
+      )}
       {hasFlyout && (
         <Icon
-          name="chevron-left"
+          name={flyoutSide === 'right' ? 'chevron-right' : 'chevron-left'}
           width="14px"
           height="14px"
           fill={colors.coolGrey500}
@@ -130,8 +160,10 @@ const MenuRow = ({
       role="menuitem"
       aria-haspopup={hasFlyout ? 'true' : undefined}
       aria-expanded={flyoutOpened}
+      aria-disabled={current || undefined}
+      aria-current={current || undefined}
       className={flyoutOpened ? 'selected' : undefined}
-      onClick={onClick}
+      onClick={current ? undefined : onClick}
       onMouseEnter={onMouseEnter}
       onKeyDown={onKeyDown}
     >

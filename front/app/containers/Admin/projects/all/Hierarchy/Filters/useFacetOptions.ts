@@ -12,6 +12,7 @@ import useManagerOptions from '../../_shared/FilterBar/Filters/useManagerOptions
 import useParticipationMethodOptions from '../../_shared/FilterBar/Filters/useParticipationMethodOptions';
 import useSpaceOptions from '../../_shared/FilterBar/Filters/useSpaceOptions';
 import projectsMessages from '../../Projects/Table/messages';
+import { WHOLE_LIST_SIZE } from '../constants';
 import { ACCESS_MESSAGES, STATUS_MESSAGES } from '../labels';
 import { Level } from '../level';
 import messages from '../messages';
@@ -21,9 +22,6 @@ import { ListFacetKey, STATE_CHOICES } from './facets';
 // One choice in a filter. It can stand for several values: "Open" is both
 // participation states where a phase is running.
 export type FacetOption = { label: string; values: string[] };
-
-// Large enough for every folder a manager can see, so the list is complete.
-const FOLDERS_PAGE_SIZE = 1000;
 
 const single = (value: string, label: string): FacetOption => ({
   label,
@@ -48,7 +46,7 @@ const useFacetOptions = (keys: ListFacetKey[], level: Level) => {
   // Inside a space, only the folders in it.
   const folders = useInfiniteProjectFoldersAdmin(
     level.kind === 'space' ? { space_ids: [level.id] } : {},
-    FOLDERS_PAGE_SIZE,
+    WHOLE_LIST_SIZE,
     { enabled: keys.includes('folder_ids') }
   );
 
