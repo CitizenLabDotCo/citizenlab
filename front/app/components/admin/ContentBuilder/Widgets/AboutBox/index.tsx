@@ -88,7 +88,8 @@ const AboutBoxSettings = () => {
   };
 
   const currentPhase = getCurrentPhase(phases?.data);
-  const { open, upcoming } = groupSpotlightSurveys(standalonePhases?.data);
+  const { open: openSpotlightSurveys, upcoming: upcomingSpotlightSurveys } =
+    groupSpotlightSurveys(standalonePhases?.data);
 
   const timelinePhases =
     currentPhase && phaseHasPrimaryCTA(currentPhase) ? [currentPhase] : [];
@@ -96,7 +97,7 @@ const AboutBoxSettings = () => {
   const visibleActiveCount = isArchived
     ? 0
     : excludeHidden(timelinePhases, hiddenOptionIds).length +
-      excludeHidden(open, hiddenOptionIds).length;
+      excludeHidden(openSpotlightSurveys, hiddenOptionIds).length;
 
   return (
     <Box
@@ -126,14 +127,14 @@ const AboutBoxSettings = () => {
       <OptionGroup
         title={messages.participationOptionsCurrentlyOpen}
         description={messages.participationOptionsCurrentlyOpenDescription}
-        phases={open}
+        phases={openSpotlightSurveys}
         hiddenOptionIds={hiddenOptionIds}
         onToggle={toggleOption}
       />
       <OptionGroup
         title={messages.participationOptionsUpcoming}
         description={messages.participationOptionsUpcomingDescription}
-        phases={upcoming}
+        phases={upcomingSpotlightSurveys}
         hiddenOptionIds={hiddenOptionIds}
         onToggle={toggleOption}
       />

@@ -41,12 +41,16 @@ let mockPublicationStatus: IProjectData['attributes']['publication_status'] =
   'published';
 let mockTimelinePhases: IPhaseData[] = [volunteeringPhase];
 let mockStandalonePhases: IPhaseData[] = [];
+let mockEvents: { id: string }[] = [];
+let mockHasEventsWidget = false;
 
 jest.mock('api/me/useAuthUser', () => () => ({ data: undefined }));
-jest.mock('api/events/useEvents', () => () => ({ data: { data: [] } }));
+jest.mock('api/events/useEvents', () => () => ({
+  data: { data: mockEvents },
+}));
 jest.mock(
   'components/ProjectPageBuilder/Widgets/Events/useHasEventsWidget',
-  () => () => false
+  () => () => mockHasEventsWidget
 );
 jest.mock('api/projects/useProjectById', () => () => ({
   data: {
@@ -106,6 +110,17 @@ describe('ProjectActionButtons — volunteering CTA', () => {
     expect(screen.queryByText('Volunteer')).not.toBeInTheDocument();
   });
 
+  it('hides the Volunteer button when the volunteering phase has not started yet', () => {
+    mockTimelinePhases = [
+      buildPhase('volunteering-phase', 'volunteering', {
+        start_at: day(7),
+        end_at: day(14),
+      }),
+    ];
+    render(<ProjectActionButtons projectId="projectId" />);
+    expect(screen.queryByText('Volunteer')).not.toBeInTheDocument();
+  });
+
   it('hides the Volunteer button when the timeline option is unchecked in the participation box', () => {
     render(
       <ProjectActionButtons
@@ -124,5 +139,55 @@ describe('ProjectActionButtons — volunteering CTA', () => {
     render(<ProjectActionButtons projectId="projectId" />);
     expect(screen.getByText('Participate')).toBeInTheDocument();
     expect(screen.queryByText('Volunteer')).not.toBeInTheDocument();
+  });
+});
+
+describe('ProjectActionButtons — no current phase', () => {
+  beforeEach(() => {
+    mockPublicationStatus = 'published';
+    mockStandalonePhases = [];
+    mockEvents = [];
+    mockHasEventsWidget = false;
+  });
+
+  const upcomingPollPhase = buildPhase('poll-phase', 'poll', {
+    start_at: day(7),
+    end_at: day(14),
+  });
+
+  it('shows See the ideas but not Post idea for an ended ideation phase with ideas', () => {
+    mockTimelinePhases = [
+      buildPhase('ideation-phase', 'ideation', {
+        start_at: day(-14),
+        end_at: day(-7),
+        ideas_count: 3,
+      }),
+    ];
+    render(<ProjectActionButtons projectId="projectId" />);
+    expect(screen.getByText('See the ideas')).toBeInTheDocument();
+    expect(document.getElementById('project-ideabutton')).toBeNull();
+  });
+
+  it('shows no primary CTA when the only phase is upcoming', () => {
+    mockTimelinePhases = [upcomingPollPhase];
+    render(<ProjectActionButtons projectId="projectId" />);
+    expect(screen.queryByText('Take the poll')).not.toBeInTheDocument();
+  });
+
+  it('still shows open spotlight surveys', () => {
+    mockTimelinePhases = [upcomingPollPhase];
+    mockStandalonePhases = [spotlightSurvey('survey-1')];
+    render(<ProjectActionButtons projectId="projectId" />);
+    expect(screen.getByText('Spotlight survey')).toBeInTheDocument();
+    expect(screen.queryByText('Take the poll')).not.toBeInTheDocument();
+  });
+
+  it('still shows the upcoming events button', () => {
+    mockTimelinePhases = [upcomingPollPhase];
+    mockEvents = [{ id: 'event-1' }];
+    mockHasEventsWidget = true;
+    render(<ProjectActionButtons projectId="projectId" />);
+    expect(screen.getByText('See upcoming events')).toBeInTheDocument();
+    expect(screen.queryByText('Take the poll')).not.toBeInTheDocument();
   });
 });
