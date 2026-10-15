@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
 
+import useProjectReview from 'api/project_reviews/useProjectReview';
 import { IProjectData } from 'api/projects/types';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import publicationButtonsMessages from 'containers/Admin/projects/project/projectHeader/PublicationButtons/messages';
 import ScheduleLaunchModal from 'containers/Admin/projects/project/projectHeader/PublicationButtons/ScheduleLaunchModal';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { usePermission } from 'utils/permissions';
 
 import messages from '../../messages';
 import HeaderDropdown from '../HeaderDropdown';
@@ -40,6 +45,13 @@ interface Props {
 
 const PublishDropdown = ({ project, opened, onOpenChange }: Props) => {
   const { formatMessage } = useIntl();
+  const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
+  const { data: projectReview } = useProjectReview(project.id);
+  const canPublish = usePermission({
+    item: project,
+    action: 'publish',
+    context: projectReview?.data.attributes.state === 'approved',
+  });
   const [scheduleOpened, setScheduleOpened] = useState(false);
   const [missingOpened, setMissingOpened] = useState(false);
   const [confirm, setConfirm] = useState<{
@@ -52,44 +64,72 @@ const PublishDropdown = ({ project, opened, onOpenChange }: Props) => {
   const publicationState = getPublicationState(project);
   const dotColor = TRIGGER_DOT_COLORS[publicationState];
 
+  // A published project keeps its trigger so it can be unpublished, even by
+  // someone who can't publish. The modals stay mounted either way, so one that
+  // is open survives the project leaving the published state.
+  const isPublished = publicationState === 'published';
+  const showTrigger = !isProjectReviewEnabled || isPublished || canPublish;
+
+  const disabled = !canPublish && !project.attributes.first_published_at;
+
   return (
     <>
-      <HeaderDropdown
-        opened={opened}
-        onOpenChange={onOpenChange}
-        buttonStyle={
-          publicationState === 'published' ? 'bo-status' : 'bo-primary'
-        }
-        icon="chevron-down"
-        id="e2e-publish-dropdown-toggle"
-        width="380px"
-        label={
-          <Box display="flex" alignItems="center" gap="7px">
-            {dotColor && (
-              <Box w="7px" h="7px" borderRadius="50%" background={dotColor} />
-            )}
-            {formatMessage(TRIGGER_MESSAGES[publicationState])}
+      {showTrigger && (
+        <Tooltip
+          content={formatMessage(
+            publicationButtonsMessages.onlyAdminsAndFolderManagersCanPublish,
+            { inFolder: !!project.attributes.folder_id }
+          )}
+          theme="dark"
+          placement="bottom"
+          disabled={!disabled}
+        >
+          <Box>
+            <HeaderDropdown
+              opened={opened}
+              onOpenChange={onOpenChange}
+              disabled={disabled}
+              buttonStyle={
+                publicationState === 'published' ? 'bo-status' : 'bo-primary'
+              }
+              icon="chevron-down"
+              id="e2e-publish-dropdown-toggle"
+              width="380px"
+              label={
+                <Box display="flex" alignItems="center" gap="7px">
+                  {dotColor && (
+                    <Box
+                      w="7px"
+                      h="7px"
+                      borderRadius="50%"
+                      background={dotColor}
+                    />
+                  )}
+                  {formatMessage(TRIGGER_MESSAGES[publicationState])}
+                </Box>
+              }
+              content={
+                <PublishPanel
+                  project={project}
+                  onSchedule={() => {
+                    close();
+                    setScheduleOpened(true);
+                  }}
+                  onConfirmStatusChange={(status) => {
+                    close();
+                    setConfirm({ status, opened: true });
+                  }}
+                  onMissingEssentials={() => {
+                    close();
+                    setMissingOpened(true);
+                  }}
+                  onDone={close}
+                />
+              }
+            />
           </Box>
-        }
-        content={
-          <PublishPanel
-            project={project}
-            onSchedule={() => {
-              close();
-              setScheduleOpened(true);
-            }}
-            onConfirmStatusChange={(status) => {
-              close();
-              setConfirm({ status, opened: true });
-            }}
-            onMissingEssentials={() => {
-              close();
-              setMissingOpened(true);
-            }}
-            onDone={close}
-          />
-        }
-      />
+        </Tooltip>
+      )}
 
       {missingOpened && (
         <MissingEssentialsModal

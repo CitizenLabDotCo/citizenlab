@@ -21,6 +21,7 @@ import ViewSwitch from '../Phase/ViewSwitch';
 
 import { HeaderDropdownName } from './HeaderDropdown';
 import PublishDropdown from './PublishDropdown';
+import ReviewFlow from './ReviewFlow';
 import SaveChangesButton from './SaveChangesButton';
 import ShareDropdown from './ShareDropdown';
 
@@ -190,6 +191,13 @@ const WorkspaceHeader = ({
                 opened={openDropdown === 'share'}
                 onOpenChange={(opened) =>
                   onOpenDropdown(opened ? 'share' : null)
+                }
+              />
+              <ReviewFlow
+                project={project}
+                opened={openDropdown === 'review'}
+                onOpenChange={(opened) =>
+                  onOpenDropdown(opened ? 'review' : null)
                 }
               />
               <PublishDropdown
