@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { Box, Icon, Spinner, Text, colors } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
@@ -8,6 +8,7 @@ import customFieldsKeys from 'api/custom_fields/keys';
 import customFormKeys from 'api/custom_form/keys';
 import useAddFile from 'api/files/useAddFile';
 import phasesKeys from 'api/phases/keys';
+import projectGenerationJobKeys from 'api/project_generations/keys';
 import useAddProjectGeneration from 'api/project_generations/useAddProjectGeneration';
 import projectPageLayoutKeys from 'api/project_page_layout/keys';
 import useAddProject from 'api/projects/useAddProject';
@@ -161,6 +162,21 @@ const ProjectAssistantModal = ({ onClose, onStartFromScratch }: Props) => {
 
   const { data: project } = useProjectById(projectId ?? '');
   const summary = project?.data.attributes.ai_generation_summary ?? null;
+
+  // Keep the job query refetching while a draft is in flight. The shared hook's
+  // refetchInterval stops polling the moment it sees no in-progress job — which
+  // can happen on the very first fetch if the tracker is not queryable yet,
+  // leaving the watcher stuck. Forcing an invalidation every couple of seconds
+  // guarantees we keep checking until the run actually completes.
+  useEffect(() => {
+    if (phase !== 'drafting' || !projectId) return;
+    const interval = setInterval(() => {
+      queryClient.invalidateQueries({
+        queryKey: projectGenerationJobKeys.list({ projectId }),
+      });
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [phase, projectId, queryClient]);
 
   const refreshWorkspace = useCallback(
     (id: string) => {

@@ -479,6 +479,11 @@ module ProjectGeneration
       args = { project_id: @project.id }
       args[:visible_to] = plan['visibility'] if %w[public admins].include?(plan['visibility'])
 
+      # Apply the generated title so the project carries the name the LLM chose
+      # rather than whatever placeholder it was created with.
+      title = plan['title'].to_s.strip
+      args[:title_multiloc] = { @locale => title } if title.present?
+
       preview = plan['description_preview'].to_s.strip
       current_preview = (@project.description_preview_multiloc || {})[@locale]
       args[:description_preview_multiloc] = { @locale => preview } if preview.present? && current_preview.to_s.strip.blank?
