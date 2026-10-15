@@ -107,12 +107,8 @@ class WebApi::V1::IdeasController < ApplicationController
       scope: policy_scope(Idea),
       current_user: current_user
     ).find_records
-    ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
-    ideas = ideas.includes(:idea_trending_info)
 
-    result = IdeasCountService.counts(ideas, filter_counts_attributes(ideas))
-    result['total'] = ideas.count
-    render json: raw_json(result)
+    render json: raw_json(Facets::CountsService.new(ideas, filter_count_facets(ideas)).counts)
   end
 
   def show
@@ -379,8 +375,8 @@ class WebApi::V1::IdeasController < ApplicationController
 
   private
 
-  def filter_counts_attributes(_ideas)
-    IdeasCountService::DEFAULT_ATTRIBUTES
+  def filter_count_facets(_ideas)
+    [Facets::Column.new(:idea_status_id), Facets::IdeaInputTopic.new]
   end
 
   def phase

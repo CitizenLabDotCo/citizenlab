@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe Facets::CountsService do
   describe '#counts' do
-    let(:facets) { [Facets::IdeaStatus.new, Facets::IdeaInputTopic.new] }
+    let(:facets) { [Facets::Column.new(:idea_status_id), Facets::IdeaInputTopic.new] }
     let(:project) { create(:project) }
     let(:status1) { create(:idea_status) }
     let(:status2) { create(:idea_status) }
@@ -38,8 +38,10 @@ describe Facets::CountsService do
       })
     end
 
-    it 'counts an ordered scope' do
-      expect(described_class.new(Idea.order(:created_at), facets).counts['total']).to eq 2
+    it 'counts a searched scope' do
+      create(:idea, project:, idea_status: status1, title_multiloc: { 'en' => 'Repaint the lighthouse' })
+
+      expect(described_class.new(Idea.search_by_all('lighthouse'), facets).counts['total']).to eq 1
     end
   end
 end

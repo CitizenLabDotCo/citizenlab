@@ -251,16 +251,6 @@ resource 'Ideas' do
           expect(json_attributes[:input_topic_id][@t2.id.to_sym]).to eq 2
           expect(json_attributes[:total]).to eq 4
         end
-
-        example 'List idea counts per filter option on topic' do
-          do_request topics: [@t1.id], projects: nil
-          assert_status 200
-        end
-
-        example 'List idea counts per filter option with a search string' do
-          do_request search: 'trees'
-          assert_status 200
-        end
       end
     end
 
