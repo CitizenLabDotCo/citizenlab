@@ -120,6 +120,10 @@ export type ProjectMiniAdminData = {
     last_phase_end_date: string | null;
     listed: boolean;
     publication_status: PublicationStatus;
+    // The project's place among the items beside it, and the publication that
+    // holds it, which is what moving it changes.
+    admin_publication_id: string;
+    ordering: number;
     scheduled_at: string | null;
     title_multiloc: Multiloc;
     visible_to: Visibility;

@@ -28,7 +28,14 @@ const FolderLevel = ({ folderId }: Props) => {
 
   return (
     <LevelView
-      groups={[{ kind: 'projects', count: projectsCount, query: projects }]}
+      groups={[
+        {
+          kind: 'projects',
+          count: projectsCount,
+          arrangeable: sort === 'arranged',
+          query: projects,
+        },
+      ]}
     />
   );
 };

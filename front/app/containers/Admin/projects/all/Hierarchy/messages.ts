@@ -242,4 +242,36 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.Hierarchy.editProject',
     defaultMessage: 'Edit project',
   },
+  arrange: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.arrange',
+    defaultMessage: 'Arrange',
+  },
+  moveToStart: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.moveToStart',
+    defaultMessage: 'Move to start',
+  },
+  moveEarlier: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.moveEarlier',
+    defaultMessage: 'Move earlier',
+  },
+  moveLater: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.moveLater',
+    defaultMessage: 'Move later',
+  },
+  moveToEnd: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.moveToEnd',
+    defaultMessage: 'Move to end',
+  },
+  orderSaved: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.orderSaved',
+    defaultMessage: 'Order saved',
+  },
+  orderNotSaved: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.orderNotSaved',
+    defaultMessage: "The order couldn't be saved. Try again.",
+  },
+  undo: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.undo',
+    defaultMessage: 'Undo',
+  },
 });

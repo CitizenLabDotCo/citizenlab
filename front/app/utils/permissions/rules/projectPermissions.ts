@@ -32,9 +32,20 @@ definePermissionRule('project', 'list_pending_review', (_project, user) => {
   );
 });
 
-definePermissionRule('project', 'reorder', (_project: IProjectData, user) => {
-  return isAdmin(user);
-});
+// Who can move a project among the items beside it, as on the backend: inside
+// a folder, whoever moderates the folder; at the top, the space's managers.
+// Pass where it sits via `context` (`{ folderId, spaceId }`).
+export const canReorderProject = (
+  user: IUser | undefined | null,
+  { folderId, spaceId }: { folderId?: string | null; spaceId?: string | null }
+) =>
+  folderId
+    ? userModeratesFolder(user, folderId, spaceId)
+    : isAdmin(user) || userModeratesSpace(user, spaceId);
+
+definePermissionRule('project', 'reorder', (_project, user, _tenant, context) =>
+  canReorderProject(user, context ?? {})
+);
 
 const canReview = (project: IProjectData, user: IUser | undefined | null) => {
   if (isAdmin(user)) return true;

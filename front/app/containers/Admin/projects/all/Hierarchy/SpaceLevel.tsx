@@ -54,6 +54,7 @@ const SpaceLevel = ({ spaceId }: Props) => {
       kind: 'folders',
       label: formatMessage(allMessages.folders),
       count: foldersCount,
+      arrangeable: true,
       query: folders,
     });
   }
@@ -64,6 +65,7 @@ const SpaceLevel = ({ spaceId }: Props) => {
         foldersCount > 0 ? messages.projectsNotInAFolder : allMessages.projects
       ),
       count: projectsCount,
+      arrangeable: sort === 'arranged',
       query: projects,
     });
   }

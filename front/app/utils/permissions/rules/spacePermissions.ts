@@ -23,6 +23,8 @@ definePermissionRule('space', 'remove_projects_and_folders', (_item, user) => {
 
 definePermissionRule('space', 'create', (_item, user) => isAdmin(user));
 
+definePermissionRule('space', 'reorder', (_item, user) => isAdmin(user));
+
 // Who gets the spaces list: admins and space moderators, as on the backend.
 definePermissionRule(
   'space',

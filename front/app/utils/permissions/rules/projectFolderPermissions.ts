@@ -111,12 +111,13 @@ definePermissionRule(
   }
 );
 
+// Folders sit at the top, where the managers of their space can move them
+// too. Pass the folder's space via `context` (`{ folderSpaceId }`).
 definePermissionRule(
   'project_folder',
   'reorder',
-  (_folder: IProjectFolderData, user) => {
-    return isAdmin(user);
-  }
+  (_folder, user, _tenant, context) =>
+    isAdmin(user) || userModeratesSpace(user, context?.folderSpaceId)
 );
 
 // Pass the folder id via `context` (e.g. `{ folderId, folderSpaceId }`) so the

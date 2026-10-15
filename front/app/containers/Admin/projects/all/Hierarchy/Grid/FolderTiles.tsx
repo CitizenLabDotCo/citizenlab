@@ -2,6 +2,7 @@ import React from 'react';
 
 import { MiniProjectFolders } from 'api/project_folders_mini/types';
 
+import { placesIn } from '../Arrange/arrangeTargets';
 import { PagedQuery } from '../levelGroups';
 
 import FolderTile from './FolderTile';
@@ -10,16 +11,24 @@ import TileGrid from './TileGrid';
 
 interface Props {
   query: PagedQuery<MiniProjectFolders>;
+  arrangeable: boolean;
 }
 
-const FolderTiles = ({ query }: Props) => {
+const FolderTiles = ({ query, arrangeable }: Props) => {
   const folders = query.data?.pages.flatMap((page) => page.data) ?? [];
+  const placeAt = arrangeable
+    ? placesIn(folders, query.hasNextPage)
+    : undefined;
 
   return (
     <>
       <TileGrid>
-        {folders.map((folder) => (
-          <FolderTile key={folder.id} folder={folder} />
+        {folders.map((folder, index) => (
+          <FolderTile
+            key={folder.id}
+            folder={folder}
+            place={placeAt?.(index)}
+          />
         ))}
       </TileGrid>
       <LoadMore

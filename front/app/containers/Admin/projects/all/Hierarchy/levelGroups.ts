@@ -14,8 +14,14 @@ export type PagedQuery<T> = {
 };
 
 // One group of a level, as both the grid and the list show it. A group
-// without a label is the only thing on its level.
-export type LevelGroup = { label?: string; count: number } & (
+// without a label is the only thing on its level. An arrangeable group shows
+// its items in the order they're kept in, and they all sit side by side, so
+// they can be moved among each other.
+export type LevelGroup = {
+  label?: string;
+  count: number;
+  arrangeable: boolean;
+} & (
   | { kind: 'spaces'; spaces: Spaces }
   | { kind: 'folders'; query: PagedQuery<MiniProjectFolders> }
   | {

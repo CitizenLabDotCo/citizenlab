@@ -52,7 +52,8 @@ const LinkRow = typedStyled(Link)`
 `;
 
 interface Props {
-  icon: IconNames;
+  // Left out in flyouts whose rows are words alone.
+  icon?: IconNames;
   label: string;
   danger?: boolean;
   // Set for a row that opens a page rather than acting.
@@ -78,12 +79,14 @@ const MenuRow = ({
 
   const content: ReactNode = (
     <>
-      <Icon
-        name={icon}
-        width="15px"
-        height="15px"
-        fill={danger ? colors.red600 : colors.coolGrey600}
-      />
+      {icon && (
+        <Icon
+          name={icon}
+          width="15px"
+          height="15px"
+          fill={danger ? colors.red600 : colors.coolGrey600}
+        />
+      )}
       <Box flex="1">
         <Text
           as="span"

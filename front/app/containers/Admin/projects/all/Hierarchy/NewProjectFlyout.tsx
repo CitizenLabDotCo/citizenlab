@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
@@ -8,6 +8,7 @@ import allMessages from '../messages';
 import { NewProjectMode } from '../NewProjectModal';
 
 import MenuRow from './Menu/MenuRow';
+import useFocusFirst from './Menu/useFocusFirst';
 
 interface Props {
   label: string;
@@ -23,14 +24,7 @@ interface Props {
 const NewProjectFlyout = ({ label, takeFocus, onPick }: Props) => {
   const { formatMessage } = useIntl();
 
-  const focused = useRef(false);
-  const focusFirst = (node: HTMLDivElement | null) => {
-    const first = node?.querySelector('button');
-    if (takeFocus && first && !focused.current) {
-      focused.current = true;
-      first.focus();
-    }
-  };
+  const focusFirst = useFocusFirst(takeFocus);
 
   return (
     <Box ref={focusFirst} role="menu" aria-label={label}>

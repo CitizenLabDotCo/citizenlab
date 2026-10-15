@@ -13,6 +13,7 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import ManagerBubbles from '../../_shared/ManagerBubbles';
 import sharedMessages from '../../_shared/messages';
 import FolderActions from '../Actions/FolderActions';
+import { ArrangePlace } from '../Arrange/arrangeTargets';
 import messages from '../messages';
 
 import ActionsCell from './ActionsCell';
@@ -32,11 +33,13 @@ interface Props {
   folder: MiniProjectFolder;
   columns: ColumnKey[];
   managers: Managers;
+  // Where it can be arranged, when it can.
+  place?: ArrangePlace;
 }
 
 // A folder uses the project columns for its name, project count, status and
 // managers; the others stay empty.
-const FolderRow = ({ folder, columns, managers }: Props) => {
+const FolderRow = ({ folder, columns, managers, place }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { title_multiloc, publication_status, visible_projects_count } =
@@ -91,7 +94,7 @@ const FolderRow = ({ folder, columns, managers }: Props) => {
         )
       )}
       <ActionsCell>
-        <FolderActions folder={folder} />
+        <FolderActions folder={folder} place={place} />
       </ActionsCell>
     </ItemRow>
   );

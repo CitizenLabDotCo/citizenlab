@@ -18,6 +18,7 @@ import useLocalize from 'hooks/useLocalize';
 import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import ProjectActions from '../Actions/ProjectActions';
+import { ArrangePlace } from '../Arrange/arrangeTargets';
 import { itemFocusRing, revealActions, stretchedLink } from '../itemStyles';
 import SearchHighlight from '../SearchHighlight';
 import useProjectLabels from '../useProjectLabels';
@@ -53,11 +54,13 @@ interface Props {
   project: ProjectMiniAdminData;
   // Where the project sits ("Space › Folder"), when that isn't the level shown.
   path?: string;
+  // Where it can be arranged, when it can.
+  place?: ArrangePlace;
 }
 
 // Projects are the only items with a large image: their own, or a quiet
 // placeholder.
-const ProjectCard = ({ project, path }: Props) => {
+const ProjectCard = ({ project, path, place }: Props) => {
   const localize = useLocalize();
   const { status, method, when } = useProjectLabels(project);
   // "Live · Voting · open until 19 Oct"
@@ -109,7 +112,7 @@ const ProjectCard = ({ project, path }: Props) => {
           bgColor={colors.white}
           borderRadius={bo.borderRadius}
         >
-          <ProjectActions projectId={project.id} />
+          <ProjectActions project={project} place={place} />
         </Box>
       </Box>
       <Text

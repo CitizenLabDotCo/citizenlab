@@ -7,6 +7,7 @@ import EmptyLevel from './EmptyLevel';
 import { LevelGroup } from './levelGroups';
 import LevelView from './LevelView';
 import { getRootLabels } from './rootLabels';
+import useProjectSort from './useProjectSort';
 import { RootContents } from './useRootContents';
 
 interface Props {
@@ -19,6 +20,7 @@ const RootLevel = ({ contents }: Props) => {
     item: 'project',
     action: 'list_all_for_admin',
   });
+  const sort = useProjectSort();
 
   const { spaces } = contents;
   const spacesCount = spaces?.data.length ?? 0;
@@ -40,6 +42,7 @@ const RootLevel = ({ contents }: Props) => {
       kind: 'spaces',
       label: formatMessage(labels.spaces, { count: spacesCount }),
       count: spacesCount,
+      arrangeable: true,
       spaces,
     });
   }
@@ -48,6 +51,7 @@ const RootLevel = ({ contents }: Props) => {
       kind: 'folders',
       label: formatMessage(labels.folders),
       count: foldersCount,
+      arrangeable: true,
       query: contents.folders,
     });
   }
@@ -56,6 +60,8 @@ const RootLevel = ({ contents }: Props) => {
       kind: 'projects',
       label: formatMessage(labels.projects),
       count: projectsCount,
+      // Everyone else's top projects can sit in any folder or space.
+      arrangeable: seesAll && sort === 'arranged',
       query: contents.projects,
       pathFrom: 'root',
     });

@@ -8,8 +8,7 @@ import Section from '../Section';
 
 import FolderTiles from './FolderTiles';
 import ProjectCards from './ProjectCards';
-import SpaceTile from './SpaceTile';
-import TileGrid from './TileGrid';
+import SpaceTiles from './SpaceTiles';
 
 interface Props {
   groups: LevelGroup[];
@@ -22,15 +21,17 @@ const GridView = ({ groups, summary }: Props) => (
     {groups.map((group) => (
       <Section key={group.kind} label={group.label} count={group.count}>
         {group.kind === 'spaces' && (
-          <TileGrid>
-            {group.spaces.data.map((space) => (
-              <SpaceTile key={space.id} space={space} />
-            ))}
-          </TileGrid>
+          <SpaceTiles spaces={group.spaces} arrangeable={group.arrangeable} />
         )}
-        {group.kind === 'folders' && <FolderTiles query={group.query} />}
+        {group.kind === 'folders' && (
+          <FolderTiles query={group.query} arrangeable={group.arrangeable} />
+        )}
         {group.kind === 'projects' && (
-          <ProjectCards query={group.query} pathFrom={group.pathFrom} />
+          <ProjectCards
+            query={group.query}
+            pathFrom={group.pathFrom}
+            arrangeable={group.arrangeable}
+          />
         )}
       </Section>
     ))}

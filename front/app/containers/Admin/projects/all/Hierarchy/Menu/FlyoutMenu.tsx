@@ -25,8 +25,8 @@ export type MenuEntry = EntryBase &
     | { onSelect: () => void; danger?: boolean }
     | { link: MenuLink }
     // Its choices, beside the menu. Opened from the keyboard, they take the
-    // focus.
-    | { flyout: (takeFocus: boolean) => ReactNode }
+    // focus; picking one closes the menu.
+    | { flyout: (takeFocus: boolean, close: () => void) => ReactNode }
   );
 
 const MENU_WIDTH = 240;
@@ -153,7 +153,7 @@ const FlyoutMenu = ({
             borderRadius={bo.panelBorderRadius}
           >
             <Fragment key={`${openEntry.key}-${keyboardOpenings}`}>
-              {openEntry.flyout(fromKeyboard)}
+              {openEntry.flyout(fromKeyboard, close)}
             </Fragment>
           </Box>
         )

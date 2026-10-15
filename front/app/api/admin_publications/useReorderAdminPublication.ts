@@ -1,6 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import projectFoldersMiniKeys from 'api/project_folders_mini/keys';
+import projectsMiniAdminKeys from 'api/projects_mini_admin/keys';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import adminPublicationsKeys from './keys';
@@ -25,6 +28,13 @@ const useReorderAdminPublication = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: adminPublicationsKeys.lists(),
+      });
+      // The admin project and folder lists show the publications in order.
+      queryClient.invalidateQueries({
+        queryKey: projectsMiniAdminKeys.lists(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: projectFoldersMiniKeys.lists(),
       });
     },
   });

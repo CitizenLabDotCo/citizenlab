@@ -18,6 +18,7 @@ import { parseBackendDateString } from 'utils/dateUtils';
 
 import ManagerBubbles from '../../_shared/ManagerBubbles';
 import ProjectActions from '../Actions/ProjectActions';
+import { ArrangePlace } from '../Arrange/arrangeTargets';
 import { ACCESS_MESSAGES } from '../labels';
 import messages from '../messages';
 import useProjectLabels from '../useProjectLabels';
@@ -35,6 +36,8 @@ interface Props {
   managers: Managers;
   participants?: number;
   path?: string;
+  // Where it can be arranged, when it can.
+  place?: ArrangePlace;
 }
 
 const ProjectRow = ({
@@ -43,6 +46,7 @@ const ProjectRow = ({
   managers,
   participants,
   path,
+  place,
 }: Props) => {
   const { formatMessage, formatDate } = useIntl();
   const localize = useLocalize();
@@ -164,7 +168,7 @@ const ProjectRow = ({
     <ItemRow>
       {columns.map(cell)}
       <ActionsCell>
-        <ProjectActions projectId={project.id} />
+        <ProjectActions project={project} place={place} />
       </ActionsCell>
     </ItemRow>
   );

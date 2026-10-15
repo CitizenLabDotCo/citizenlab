@@ -9,16 +9,19 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 
 import SpaceActions from '../Actions/SpaceActions';
+import { ArrangePlace } from '../Arrange/arrangeTargets';
 import messages from '../messages';
 
 import ContainerTile from './ContainerTile';
 
 interface Props {
   space: SpaceListData;
+  // Where it can be arranged, when it can.
+  place?: ArrangePlace;
 }
 
 // Spaces have no image, so their tile always shows the spaces icon.
-const SpaceTile = ({ space }: Props) => {
+const SpaceTile = ({ space, place }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { title_multiloc, folders_count, projects_count } = space.attributes;
@@ -36,7 +39,7 @@ const SpaceTile = ({ space }: Props) => {
       level={{ kind: 'space', id: space.id }}
       title={localize(title_multiloc)}
       meta={meta}
-      actions={<SpaceActions spaceId={space.id} />}
+      actions={<SpaceActions spaceId={space.id} place={place} />}
       media={
         <Icon
           name="spaces"

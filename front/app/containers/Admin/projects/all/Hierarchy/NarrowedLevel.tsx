@@ -81,6 +81,8 @@ const NarrowedLevel = ({ level }: Props) => {
             {
               kind: 'projects',
               count,
+              // Matches from all over the level, not side by side.
+              arrangeable: false,
               query: matches,
               pathFrom: PATH_FROM[level.kind],
             },

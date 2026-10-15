@@ -98,16 +98,25 @@ const ListView = ({ groups, summary }: Props) => {
                   />
                 )}
                 {group.kind === 'spaces' && (
-                  <SpaceRows spaces={group.spaces} columns={columns} />
+                  <SpaceRows
+                    spaces={group.spaces}
+                    columns={columns}
+                    arrangeable={group.arrangeable}
+                  />
                 )}
                 {group.kind === 'folders' && (
-                  <FolderRows query={group.query} columns={columns} />
+                  <FolderRows
+                    query={group.query}
+                    columns={columns}
+                    arrangeable={group.arrangeable}
+                  />
                 )}
                 {group.kind === 'projects' && (
                   <ProjectRows
                     query={group.query}
                     columns={columns}
                     pathFrom={group.pathFrom}
+                    arrangeable={group.arrangeable}
                   />
                 )}
               </Fragment>

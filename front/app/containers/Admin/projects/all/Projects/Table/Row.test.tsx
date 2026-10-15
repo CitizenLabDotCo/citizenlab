@@ -56,6 +56,8 @@ const project: ProjectMiniAdminData = {
     last_phase_end_date: null,
     listed: true,
     publication_status: 'published',
+    admin_publication_id: 'publication-1',
+    ordering: 0,
     scheduled_at: null,
     title_multiloc: { en: 'Test project' },
     visible_to: 'public',

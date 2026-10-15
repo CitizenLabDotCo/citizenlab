@@ -10,6 +10,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import ManagerBubbles from '../../_shared/ManagerBubbles';
 import SpaceActions from '../Actions/SpaceActions';
+import { ArrangePlace } from '../Arrange/arrangeTargets';
 import messages from '../messages';
 
 import ActionsCell from './ActionsCell';
@@ -22,11 +23,13 @@ interface Props {
   space: SpaceListData;
   columns: ColumnKey[];
   managers: Managers;
+  // Where it can be arranged, when it can.
+  place?: ArrangePlace;
 }
 
 // A space uses the project columns for its name, what it holds and its
 // managers; the others stay empty.
-const SpaceRow = ({ space, columns, managers }: Props) => {
+const SpaceRow = ({ space, columns, managers, place }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { title_multiloc, folders_count, projects_count } = space.attributes;
@@ -66,7 +69,7 @@ const SpaceRow = ({ space, columns, managers }: Props) => {
         )
       )}
       <ActionsCell>
-        <SpaceActions spaceId={space.id} />
+        <SpaceActions spaceId={space.id} place={place} />
       </ActionsCell>
     </ItemRow>
   );

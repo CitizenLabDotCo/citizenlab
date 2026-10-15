@@ -31,6 +31,8 @@ export interface SpaceData {
   attributes: {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
+    // Where admins put the space among the others.
+    ordering: number;
     created_at: string;
     updated_at: string;
   };

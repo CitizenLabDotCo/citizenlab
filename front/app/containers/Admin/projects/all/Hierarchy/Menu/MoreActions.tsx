@@ -24,6 +24,7 @@ const MoreActions = ({ entries, align }: Props) => {
   // Where the button is on screen while the menu is open.
   const [anchor, setAnchor] = useState<DOMRect | null>(null);
   const layer = useRef<HTMLDivElement>(null);
+  const button = useRef<HTMLButtonElement>(null);
   const label = formatMessage(messages.moreActions);
   const opened = anchor !== null;
 
@@ -54,6 +55,14 @@ const MoreActions = ({ entries, align }: Props) => {
 
   if (entries.length === 0) return null;
 
+  // Picking from the menu takes away what had the focus, so it goes back to
+  // the button. A click elsewhere keeps it where it went.
+  const close = () => {
+    const focusInMenu = layer.current?.contains(document.activeElement);
+    setAnchor(null);
+    if (focusInMenu) button.current?.focus();
+  };
+
   const toggle = (event: MouseEvent<HTMLElement>) => {
     setAnchor(opened ? null : event.currentTarget.getBoundingClientRect());
   };
@@ -67,6 +76,7 @@ const MoreActions = ({ entries, align }: Props) => {
         disabled={opened}
       >
         <Button
+          ref={button}
           type="button"
           buttonStyle="bo-text"
           icon="dots-horizontal"
@@ -92,7 +102,7 @@ const MoreActions = ({ entries, align }: Props) => {
           <FlyoutMenu
             label={label}
             opened
-            onClose={() => setAnchor(null)}
+            onClose={close}
             entries={entries}
             top="calc(100% + 4px)"
             align={align}

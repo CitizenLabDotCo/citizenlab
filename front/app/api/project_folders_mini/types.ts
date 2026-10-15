@@ -28,6 +28,10 @@ export interface MiniProjectFolder {
     title_multiloc: Multiloc;
     visible_projects_count: number;
     publication_status: PublicationStatus;
+    // The folder's place among the items beside it, and the publication that
+    // holds it, which is what moving it changes.
+    admin_publication_id: string;
+    ordering: number;
     space_id: string | null;
     space_title_multiloc: Multiloc | null;
   };

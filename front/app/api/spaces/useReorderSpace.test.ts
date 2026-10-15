@@ -13,6 +13,7 @@ const space: SpaceData = {
   attributes: {
     title_multiloc: { en: 'Mobility' },
     description_multiloc: {},
+    ordering: 0,
     created_at: '2026-10-01T00:00:00Z',
     updated_at: '2026-10-01T00:00:00Z',
   },

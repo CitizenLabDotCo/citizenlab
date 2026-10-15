@@ -11,17 +11,20 @@ import { useIntl } from 'utils/cl-intl';
 
 import sharedMessages from '../../_shared/messages';
 import FolderActions from '../Actions/FolderActions';
+import { ArrangePlace } from '../Arrange/arrangeTargets';
 import messages from '../messages';
 
 import ContainerTile from './ContainerTile';
 
 interface Props {
   folder: MiniProjectFolder;
+  // Where it can be arranged, when it can.
+  place?: ArrangePlace;
 }
 
 // A folder shows its image as a thumbnail where the icon goes, and the folder
 // icon when it has none.
-const FolderTile = ({ folder }: Props) => {
+const FolderTile = ({ folder, place }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
   const { title_multiloc, publication_status, visible_projects_count } =
@@ -46,7 +49,7 @@ const FolderTile = ({ folder }: Props) => {
       level={{ kind: 'folder', id: folder.id }}
       title={title}
       meta={meta}
-      actions={<FolderActions folder={folder} />}
+      actions={<FolderActions folder={folder} place={place} />}
       media={
         imageUrl ? (
           <Image

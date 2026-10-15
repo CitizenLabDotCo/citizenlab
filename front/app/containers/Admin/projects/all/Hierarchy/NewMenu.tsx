@@ -56,12 +56,12 @@ const NewMenu = () => {
     key: 'project',
     icon: 'projects',
     label: formatMessage(projectsMessages.project),
-    flyout: (takeFocus: boolean) => (
+    flyout: (takeFocus, close) => (
       <NewProjectFlyout
         label={formatMessage(projectsMessages.project)}
         takeFocus={takeFocus}
         onPick={(newMode) => {
-          setOpened(false);
+          close();
           setMode(newMode);
         }}
       />

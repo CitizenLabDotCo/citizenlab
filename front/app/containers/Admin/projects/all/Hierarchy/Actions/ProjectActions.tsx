@@ -1,34 +1,21 @@
 import React from 'react';
 
-import { useIntl } from 'utils/cl-intl';
+import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
 
+import { ArrangePlace } from '../Arrange/arrangeTargets';
 import MoreActions from '../Menu/MoreActions';
-import messages from '../messages';
+
+import useProjectActions from './useProjectActions';
 
 interface Props {
-  projectId: string;
+  project: ProjectMiniAdminData;
+  place?: ArrangePlace;
 }
 
-// A project's "⋯". Everyone sees only projects they manage, so everyone can
-// edit the ones listed.
-const ProjectActions = ({ projectId }: Props) => {
-  const { formatMessage } = useIntl();
-
-  return (
-    <MoreActions
-      entries={[
-        {
-          key: 'edit',
-          icon: 'edit',
-          label: formatMessage(messages.editProject),
-          link: {
-            to: '/admin/projects/$projectId/general',
-            params: { projectId },
-          },
-        },
-      ]}
-    />
-  );
+// A project's "⋯" on its card or row.
+const ProjectActions = ({ project, place }: Props) => {
+  const { entries } = useProjectActions(project, place);
+  return <MoreActions entries={entries} />;
 };
 
 export default ProjectActions;
