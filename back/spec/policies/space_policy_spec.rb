@@ -51,6 +51,7 @@ describe SpacePolicy do
     it { is_expected.to permit(:show) }
     it { is_expected.not_to permit(:create) }
     it { is_expected.to permit(:update) }
+    it { is_expected.not_to permit(:reorder) }
     it { is_expected.not_to permit(:destroy) }
   end
 
@@ -61,6 +62,7 @@ describe SpacePolicy do
     it { is_expected.to permit(:show) }
     it { is_expected.to permit(:create) }
     it { is_expected.to permit(:update) }
+    it { is_expected.to permit(:reorder) }
     it { is_expected.to permit(:destroy) }
   end
 end

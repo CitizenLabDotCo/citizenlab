@@ -17,7 +17,7 @@ class McpServer::Tools::ListSpaces < McpServer::BaseTool
     def run
       # Inert unless the (in-development) spaces feature is on, so the tool definition can stay
       # tenant-identical while the tool does nothing where spaces aren't used.
-      scope = AppConfiguration.instance.feature_activated?('spaces') ? policy_scope(Space).order(:created_at, :id) : Space.none
+      scope = AppConfiguration.instance.feature_activated?('spaces') ? policy_scope(Space).order(:ordering, :id) : Space.none
 
       paginated_response(
         'spaces',

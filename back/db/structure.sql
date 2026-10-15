@@ -4510,7 +4510,8 @@ CREATE TABLE public.spaces (
     title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     description_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    ordering integer
 );
 
 
@@ -9806,6 +9807,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261015120000'),
 ('20261012120000'),
 ('20261008120000'),
 ('20261006190100'),

@@ -910,6 +910,36 @@ resource 'AdminPublication' do
     end
   end
 
+  context 'when space moderator' do
+    let(:space) { create(:space) }
+
+    before { header_token_for(create(:space_moderator, spaces: [space])) }
+
+    patch 'web_api/v1/admin_publications/:id/reorder' do
+      with_options scope: :admin_publication do
+        parameter :ordering, 'The position, starting from 0, where the folder or project should be at.', required: true
+      end
+
+      # New publications go to the top (0), so this moves the project down one
+      let(:ordering) { 1 }
+
+      example 'Reorder a project at the top of their space', document: false do
+        project = create(:project, space:)
+
+        do_request(id: project.admin_publication.id)
+        expect(response_status).to eq 200
+        expect(project.admin_publication.reload.ordering).to eq 1
+      end
+
+      example '[Unauthorized] Reorder a project outside their spaces', document: false do
+        project = create(:project, space: create(:space))
+
+        do_request(id: project.admin_publication.id)
+        expect(response_status).to eq 401
+      end
+    end
+  end
+
   context "when include_publications parameter is 'true'" do
     shared_examples 'include_publications' do
       get 'web_api/v1/admin_publications' do

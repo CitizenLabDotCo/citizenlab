@@ -7,10 +7,13 @@
 #  description_multiloc :jsonb            not null
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
+#  ordering             :integer
 #
 class Space < ApplicationRecord
   include PlainTextMultiloc
   include PgSearch::Model
+
+  acts_as_list column: :ordering, top_of_list: 0
 
   has_many :projects, dependent: :nullify
   has_many :folders, dependent: :nullify, class_name: 'ProjectFolders::Folder'

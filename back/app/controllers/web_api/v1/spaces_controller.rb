@@ -1,14 +1,14 @@
 class WebApi::V1::SpacesController < ApplicationController
-  before_action :set_space, only: %i[show update destroy]
+  before_action :set_space, only: %i[show update reorder destroy]
 
   def index
     authorize :space, :index?
     @spaces = policy_scope(Space)
-    # A search orders by relevance; otherwise the oldest spaces come first.
+    # A search orders by relevance; otherwise in the order admins arranged.
     @spaces = if params[:search].present?
       @spaces.search_by_title(params[:search])
     else
-      @spaces.order(:created_at, :id)
+      @spaces.order(:ordering, :id)
     end
 
     @spaces = paginate @spaces
@@ -61,6 +61,30 @@ class WebApi::V1::SpacesController < ApplicationController
     end
   end
 
+  def reorder
+    raw_ordering = permitted_attributes(@space)[:ordering]
+    return render json: { errors: { ordering: [{ error: 'blank' }] } }, status: :unprocessable_entity if raw_ordering.blank?
+
+    ordering = parse_ordering(raw_ordering)
+    return render json: { errors: { ordering: [{ error: 'invalid' }] } }, status: :unprocessable_entity unless ordering
+
+    # A position past the end moves the space to the end, so positions stay
+    # 0..n-1 and never overflow the column.
+    ordering = [ordering, Space.maximum(:ordering).to_i].min
+
+    # insert_at returns false when the space is already at that position, which
+    # is a success; only validation errors fail the request.
+    @space.insert_at(ordering)
+    if @space.errors.empty?
+      render json: WebApi::V1::SpaceSerializer.new(
+        @space.reload,
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :ok
+    else
+      render json: { errors: @space.errors.details }, status: :unprocessable_entity
+    end
+  end
+
   def destroy
     if @space.destroy
       head :no_content
@@ -70,6 +94,14 @@ class WebApi::V1::SpacesController < ApplicationController
   end
 
   private
+
+  # A whole, non-negative position, sent as a number or as text (form and
+  # query params arrive as text). acts_as_list raises on anything else.
+  def parse_ordering(raw)
+    return raw if raw.is_a?(Integer) && !raw.negative?
+
+    raw.to_i if raw.is_a?(String) && raw.match?(/\A\d+\z/)
+  end
 
   def set_space
     @space = Space.includes(:folders, :projects).find(params[:id])

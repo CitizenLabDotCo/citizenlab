@@ -28,6 +28,15 @@ describe McpServer::Tools::ListSpaces do
       expect(entry).to include(title_multiloc: space.title_multiloc)
       expect(entry).not_to have_key(:moderators)
     end
+
+    it 'lists spaces in the order admins arranged' do
+      older, newer = create_list(:space, 2)
+      newer.insert_at(0)
+
+      response = list
+
+      expect(response.structured_content[:data].pluck(:id)).to eq([newer.id, older.id])
+    end
   end
 
   context 'when the spaces feature is disabled' do
