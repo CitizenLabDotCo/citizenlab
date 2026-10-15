@@ -35,5 +35,16 @@ describe IdeasCountService do
       expect(result['input_topic_id'][child_topic.id]).to eq(1)
       expect(result['input_topic_id'][parent_topic.id]).to eq(1)
     end
+
+    it 'counts an idea tagged with a parent topic and one of its children once for the parent' do
+      parent_topic = create(:input_topic, project:)
+      child_topic = create(:input_topic, project:, parent: parent_topic)
+      create(:idea, project:, input_topics: [parent_topic, child_topic])
+
+      result = described_class.counts(Idea.all, ['input_topic_id'])
+
+      expect(result['input_topic_id'][parent_topic.id]).to eq 1
+      expect(result['input_topic_id'][child_topic.id]).to eq 1
+    end
   end
 end
