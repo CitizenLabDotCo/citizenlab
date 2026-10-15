@@ -41,6 +41,19 @@ module ReportBuilder
     # never both.
     belongs_to :project, optional: true
     has_many :published_graph_data_units, dependent: :destroy
+    # delete_all, not destroy: a transcript holds a run's whole message history and
+    # has no callbacks, so loading every one of them to delete them one at a time
+    # buys nothing. The foreign key cascades anyway.
+    has_many :generation_transcripts, class_name: 'ReportBuilder::GenerationTranscript',
+      dependent: :delete_all, inverse_of: :report
+
+    # The "your report is ready" notification points at the report, so deleting one
+    # would otherwise be refused by the foreign key. Nullifying is tried first and
+    # fails — ReportGenerated validates the report's presence — which leaves the
+    # notification to be destroyed along with the report it was about.
+    # before_destroy must be declared above the association: rails/rails#5205.
+    before_destroy :remove_notifications
+    has_many :notifications, class_name: '::Notification', dependent: :nullify
 
     has_one(
       :layout,
@@ -74,11 +87,24 @@ module ReportBuilder
       project || phase&.project
     end
 
+    # The latest generation that ran to a stop without failing. A failed run is
+    # skipped: it wrote nothing, so what the report holds is still the work of the
+    # run before it, and that is what the "is this report whole" answer is about.
+    def last_generation
+      generation_transcripts.generations.finished.not_failed.newest_first.first
+    end
+
     def public?
       phase? && phase.started? && visible?
     end
 
     private
+
+    def remove_notifications
+      notifications.each do |notification|
+        notification.destroy! unless notification.update(report: nil)
+      end
+    end
 
     def supports_multiple_phase_reports?
       phase&.pmethod&.supports_multiple_phase_reports?
