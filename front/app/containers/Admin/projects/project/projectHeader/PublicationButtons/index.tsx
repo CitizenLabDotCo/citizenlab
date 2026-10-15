@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 
 import { Button, Box, Tooltip } from '@citizenlab/cl2-component-library';
 
-import useProjectReview from 'api/project_reviews/useProjectReview';
 import { IProjectData, PublicationStatus } from 'api/projects/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+
+import usePublishAccess from 'containers/Admin/projects/_shared/usePublishAccess';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -45,16 +46,8 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
   const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
   const { formatMessage } = useIntl();
 
-  const { data: projectReview } = useProjectReview(project.id);
-
   const canModerate = usePermission({ item: project, action: 'moderate' });
-  const canPublish = usePermission({
-    item: project,
-    action: 'publish',
-    context: projectReview?.data.attributes.state === 'approved',
-  });
-
-  const isPublished = project.attributes.publication_status === 'published';
+  const { showPublish, publishDisabled } = usePublishAccess(project);
 
   const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
   const [changeStatusModalOpen, setChangeStatusModalOpen] = useState(false);
@@ -79,22 +72,16 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
     }
   };
 
-  // if the project is published, we show the publish button to allow unpublishing, even if the user cannot publish
-  const showPublishButton =
-    !isProjectReviewEnabled || isPublished || canPublish;
-  const publishButtonDisabled =
-    !canPublish && !project.attributes.first_published_at;
-
   return (
     <Box display="flex" gap="8px">
-      {showPublishButton && (
+      {showPublish && (
         <Tooltip
           content={formatMessage(
             messages.onlyAdminsAndFolderManagersCanPublish,
             { inFolder: !!project.attributes.folder_id }
           )}
           placement="bottom"
-          disabled={!publishButtonDisabled}
+          disabled={!publishDisabled}
         >
           <Button
             buttonStyle="admin-dark"
@@ -104,7 +91,7 @@ const PublicationButtons = ({ project }: { project: IProjectData }) => {
             padding="4px 8px"
             iconSize="20px"
             id="e2e-publish"
-            disabled={publishButtonDisabled}
+            disabled={publishDisabled}
           >
             {formatMessage(publicationButton.text)}
           </Button>

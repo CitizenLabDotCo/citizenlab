@@ -69,7 +69,7 @@ export interface IProject {
   data: IProjectData;
 }
 
-export type ProjectSetupStep = 'settings' | 'share';
+export type ProjectSetupStep = 'settings' | 'share' | 'page';
 
 export interface IProjectAttributes {
   title_multiloc: Multiloc;

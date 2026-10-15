@@ -664,7 +664,7 @@ resource 'Projects' do
         end
 
         example 'Logs `published` activity when going from draft to published', document: false do
-          @project.admin_publication.update!(publication_status: 'draft')
+          @project.admin_publication.update!(publication_status: 'draft', first_published_at: nil)
           expect { do_request project: { admin_publication_attributes: { publication_status: 'published' } } }
             .to have_enqueued_job(LogActivityJob)
             .with(@project, 'published', anything, anything, anything)
@@ -759,6 +759,7 @@ resource 'Projects' do
         example 'Updates materializes due status transition first' do
           project.admin_publication.update_columns(
             publication_status: 'draft',
+            first_published_at: nil,
             scheduled_status: 'published',
             scheduled_at: 1.hour.ago,
             scheduled_by_id: @user.id
