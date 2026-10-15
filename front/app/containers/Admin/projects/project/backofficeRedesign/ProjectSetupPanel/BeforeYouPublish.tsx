@@ -7,6 +7,8 @@ import { IProjectData } from 'api/projects/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import projectPageMessages from 'containers/Admin/projects/project/projectPage/messages';
+
 import { useIntl } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
 
@@ -94,7 +96,9 @@ const BeforeYouPublish = ({ project, onOpenSettings }: Props) => {
           behaviour={{
             kind: 'action',
             icon: 'plus',
-            actionLabel: formatMessage(messages.newParticipationMethod),
+            actionLabel: formatMessage(
+              projectPageMessages.newParticipationMethod
+            ),
             onClick: () => setMethodModalOpened(true),
           }}
         />

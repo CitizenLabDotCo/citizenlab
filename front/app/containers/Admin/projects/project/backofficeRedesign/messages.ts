@@ -498,10 +498,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.editProjectPage',
     defaultMessage: 'Edit project page',
   },
-  newParticipationMethod: {
-    id: 'app.containers.Admin.projects.project.newParticipationMethod',
-    defaultMessage: 'New participation method',
-  },
   homepageCard: {
     id: 'app.containers.Admin.projects.project.homepageCard',
     defaultMessage: 'Homepage card',
