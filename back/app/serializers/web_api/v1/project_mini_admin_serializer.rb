@@ -41,6 +41,20 @@ class WebApi::V1::ProjectMiniAdminSerializer < WebApi::V1::BaseSerializer
     object.schedule.active_span&.last
   end
 
+  # The phase the project is about right now, the one the phase sort orders by,
+  # so the list can say what's happening without loading every phase.
+  attribute :highlighted_phase do |object|
+    phase = object.schedule.highlighted_phase
+    next unless phase
+
+    {
+      participation_method: phase.participation_method,
+      status: object.schedule.participation_status,
+      start_at: phase.start_at,
+      end_at: phase.end_at
+    }
+  end
+
   attribute :folder_title_multiloc do |object|
     object.folder&.title_multiloc
   end
