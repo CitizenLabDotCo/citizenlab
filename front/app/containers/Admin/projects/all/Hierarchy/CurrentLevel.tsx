@@ -8,7 +8,7 @@ import FilterChips from './Filters/FilterChips';
 import useFilters from './Filters/useFilters';
 import FolderLevel from './FolderLevel';
 import { getLevel, Level } from './level';
-import LevelBreadcrumbs from './LevelBreadcrumbs';
+import LevelHeader from './LevelHeader';
 import NarrowedLevel from './NarrowedLevel';
 import RootLevel from './RootLevel';
 import RootSummary from './RootSummary';
@@ -42,7 +42,7 @@ const CurrentLevel = ({ landing, contents }: Props) => {
           // What the top level holds doesn't describe a search's results.
           !isNarrowed && <RootSummary contents={contents} />
         ) : (
-          <LevelBreadcrumbs level={level} showRoot={landing.kind === 'root'} />
+          <LevelHeader level={level} showRoot={landing.kind === 'root'} />
         )}
         <Toolbar level={level} />
       </Box>

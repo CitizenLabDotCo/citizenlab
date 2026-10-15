@@ -9,8 +9,10 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 
 import ManagerBubbles from '../../_shared/ManagerBubbles';
+import SpaceActions from '../Actions/SpaceActions';
 import messages from '../messages';
 
+import ActionsCell from './ActionsCell';
 import { ColumnKey } from './columns';
 import ItemRow from './ItemRow';
 import TitleCell from './TitleCell';
@@ -63,7 +65,9 @@ const SpaceRow = ({ space, columns, managers }: Props) => {
           <Td key={column} />
         )
       )}
-      <Td />
+      <ActionsCell>
+        <SpaceActions spaceId={space.id} />
+      </ActionsCell>
     </ItemRow>
   );
 };

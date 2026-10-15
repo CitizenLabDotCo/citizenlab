@@ -5,7 +5,8 @@ import { Box, Title } from '@citizenlab/cl2-component-library';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
-import NewProjectButton from '../NewProjectButton';
+
+import NewMenu from './NewMenu';
 
 // The page title and its create button. The old page's header picks its button
 // from the tab, which this page doesn't have.
@@ -15,7 +16,7 @@ const PageHeader = () => (
       <FormattedMessage {...messages.overviewPageTitle} />
     </Title>
     <Box className="intercom-admin-projects-new-project-folder-buttons">
-      <NewProjectButton />
+      <NewMenu />
     </Box>
   </Box>
 );

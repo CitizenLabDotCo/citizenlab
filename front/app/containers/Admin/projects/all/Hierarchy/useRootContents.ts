@@ -23,7 +23,12 @@ const useRootContents = () => {
     action: 'list_for_admin',
   });
 
-  const spaces = useSpaces({}, { enabled: spacesEnabled && canListSpaces });
+  // The spaces list is shared with other parts of the page, like the project
+  // form's space picker. When this user's top level has no spaces, what those
+  // parts fetch, or fail to, says nothing about it.
+  const showSpaces = spacesEnabled && canListSpaces;
+  const spacesQuery = useSpaces({}, { enabled: showSpaces });
+  const spaces = showSpaces ? spacesQuery.data : undefined;
   const folders = useInfiniteProjectFoldersAdmin(
     { top_level: true, sort: 'arranged' },
     PAGE_SIZE,
@@ -34,9 +39,13 @@ const useRootContents = () => {
     PAGE_SIZE
   );
 
-  const isLoading = spaces.isLoading || folders.isLoading || projects.isLoading;
-  const isError = spaces.isError || folders.isError || projects.isError;
-  const spaceList = spaces.data?.data;
+  const isLoading =
+    (showSpaces && spacesQuery.isLoading) ||
+    folders.isLoading ||
+    projects.isLoading;
+  const isError =
+    (showSpaces && spacesQuery.isError) || folders.isError || projects.isError;
+  const spaceList = spaces?.data;
   const firstFolders = folders.data?.pages[0];
   const firstProjects = projects.data?.pages[0];
 

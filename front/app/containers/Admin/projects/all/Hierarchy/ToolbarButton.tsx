@@ -23,7 +23,12 @@ interface Props {
 const ToolbarButton = forwardRef<HTMLButtonElement, Props>(
   ({ icon, label, isActive = false, menuOpened, onClick }, ref) => (
     <Box position="relative">
-      <Tooltip content={label} placement="bottom" disabled={menuOpened}>
+      <Tooltip
+        content={label}
+        placement="bottom"
+        theme="dark"
+        disabled={menuOpened}
+      >
         <Button
           ref={ref}
           type="button"

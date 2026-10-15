@@ -1,13 +1,16 @@
 import React, { ReactNode } from 'react';
 
 import { Box, Text, bo, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import Link, { typedStyled } from 'utils/cl-router/Link';
 
+import { itemFocusRing, revealActions, stretchedLink } from '../itemStyles';
 import { Level } from '../level';
 import useLevelSearch from '../useLevelSearch';
 
-const TileLink = typedStyled(Link)`
+const Tile = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -22,6 +25,18 @@ const TileLink = typedStyled(Link)`
     background: ${colors.grey50};
     border-color: ${colors.coolGrey500};
   }
+
+  ${itemFocusRing}
+  ${revealActions}
+`;
+
+const TitleLink = typedStyled(Link)`
+  color: inherit;
+  ${stretchedLink}
+
+  &:hover {
+    color: inherit;
+  }
 `;
 
 interface Props {
@@ -30,14 +45,16 @@ interface Props {
   meta: string;
   // The space icon, or a folder's thumbnail or icon.
   media: ReactNode;
+  // Its "⋯".
+  actions: ReactNode;
 }
 
 // A space or folder in the grid: a compact tile that opens its level.
-const ContainerTile = ({ level, title, meta, media }: Props) => {
+const ContainerTile = ({ level, title, meta, media, actions }: Props) => {
   const levelSearch = useLevelSearch();
 
   return (
-    <TileLink to="/admin/projects" search={levelSearch(level)}>
+    <Tile>
       <Box
         flex="none"
         width="32px"
@@ -51,7 +68,13 @@ const ContainerTile = ({ level, title, meta, media }: Props) => {
       >
         {media}
       </Box>
-      <Box minWidth="0" display="flex" flexDirection="column" gap="2px">
+      <Box
+        minWidth="0"
+        flex="1"
+        display="flex"
+        flexDirection="column"
+        gap="2px"
+      >
         <Text
           as="span"
           m="0"
@@ -60,7 +83,13 @@ const ContainerTile = ({ level, title, meta, media }: Props) => {
           overflow="hidden"
           textOverflow="ellipsis"
         >
-          {title}
+          <TitleLink
+            data-item-link
+            to="/admin/projects"
+            search={levelSearch(level)}
+          >
+            {title}
+          </TitleLink>
         </Text>
         <Text
           as="span"
@@ -74,7 +103,10 @@ const ContainerTile = ({ level, title, meta, media }: Props) => {
           {meta}
         </Text>
       </Box>
-    </TileLink>
+      <Box data-actions position="relative" zIndex="1">
+        {actions}
+      </Box>
+    </Tile>
   );
 };
 

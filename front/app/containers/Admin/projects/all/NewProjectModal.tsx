@@ -10,6 +10,7 @@ import useAddProject from 'api/projects/useAddProject';
 import NewProjectForm, {
   NewProjectValues,
 } from 'containers/Admin/projects/_shared/components/NewProjectForm';
+import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
 import Outlet from 'components/Outlet';
@@ -25,10 +26,12 @@ export type NewProjectMode = 'scratch' | 'template';
 
 interface Props {
   mode: NewProjectMode | null;
+  // The space or folder a project from scratch starts in.
+  context?: SpaceAndFolderId;
   onClose: () => void;
 }
 
-const NewProjectModal = ({ mode, onClose }: Props) => {
+const NewProjectModal = ({ mode, context, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const formId = useId();
   const { mutateAsync: addProject } = useAddProject();
@@ -120,6 +123,7 @@ const NewProjectModal = ({ mode, onClose }: Props) => {
             id={formId}
             failed={failed}
             apiErrors={apiErrors}
+            initialContext={context}
             onSubmit={handleSubmit}
           />
         </Box>

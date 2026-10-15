@@ -94,11 +94,12 @@ definePermissionRule('project_folder', 'list_for_admin', (_folder, user) =>
   canListAdminFolders(user)
 );
 
+// Space managers can create folders too, in their spaces.
 definePermissionRule(
   'project_folder',
   'create',
   (_folder: IProjectFolderData, user) => {
-    return isAdmin(user);
+    return isAdmin(user) || isSpaceModerator(user);
   }
 );
 

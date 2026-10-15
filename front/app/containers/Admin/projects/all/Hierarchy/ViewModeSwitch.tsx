@@ -35,7 +35,12 @@ const ViewModeSwitch = () => {
       {MODES.map(({ mode, icon, label }) => {
         const isOn = viewMode === mode;
         return (
-          <Tooltip key={mode} content={formatMessage(label)} placement="bottom">
+          <Tooltip
+            key={mode}
+            content={formatMessage(label)}
+            placement="bottom"
+            theme="dark"
+          >
             <Button
               type="button"
               buttonStyle="bo-text"

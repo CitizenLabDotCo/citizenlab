@@ -202,4 +202,44 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.Hierarchy.noProjectsMatch',
     defaultMessage: 'No projects match',
   },
+  newItem: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.newItem',
+    defaultMessage: 'New',
+  },
+  space: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.space',
+    defaultMessage: 'Space',
+  },
+  folder: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.folder',
+    defaultMessage: 'Folder',
+  },
+  moreActions: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.moreActions',
+    defaultMessage: 'More actions',
+  },
+  editSpace: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.editSpace',
+    defaultMessage: 'Edit space',
+  },
+  addFolder: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.addFolder',
+    defaultMessage: 'Add folder',
+  },
+  addProject: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.addProject',
+    defaultMessage: 'Add project',
+  },
+  editFolder: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.editFolder',
+    defaultMessage: 'Edit folder',
+  },
+  viewFolderPage: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.viewFolderPage',
+    defaultMessage: 'View folder page',
+  },
+  editProject: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.editProject',
+    defaultMessage: 'Edit project',
+  },
 });

@@ -26,7 +26,12 @@ const AddColumnsMenu = () => {
 
   return (
     <Box position="relative" display="flex" justifyContent="flex-end">
-      <Tooltip content={label} placement="bottom" disabled={opened}>
+      <Tooltip
+        content={label}
+        placement="bottom"
+        theme="dark"
+        disabled={opened}
+      >
         <Button
           type="button"
           buttonStyle="bo-text"

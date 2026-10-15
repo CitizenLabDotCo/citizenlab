@@ -12,8 +12,10 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import ManagerBubbles from '../../_shared/ManagerBubbles';
 import sharedMessages from '../../_shared/messages';
+import FolderActions from '../Actions/FolderActions';
 import messages from '../messages';
 
+import ActionsCell from './ActionsCell';
 import { ColumnKey } from './columns';
 import ItemRow from './ItemRow';
 import TextCell from './TextCell';
@@ -88,7 +90,9 @@ const FolderRow = ({ folder, columns, managers }: Props) => {
           <Td key={column} />
         )
       )}
-      <Td />
+      <ActionsCell>
+        <FolderActions folder={folder} />
+      </ActionsCell>
     </ItemRow>
   );
 };

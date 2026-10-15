@@ -16,7 +16,7 @@ const RootSummary = ({ contents }: Props) => {
   const { formatMessage } = useIntl();
 
   const counts = [
-    { message: messages.spacesCount, count: contents.spaces.data?.data.length },
+    { message: messages.spacesCount, count: contents.spaces?.data.length },
     {
       message: messages.foldersCount,
       count: contents.folders.data?.pages[0].meta.total,

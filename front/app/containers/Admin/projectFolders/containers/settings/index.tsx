@@ -53,7 +53,12 @@ const goBack = () => {
   clHistory.goBack();
 };
 
-const FolderSettings = () => {
+interface Props {
+  // The space a new folder starts in.
+  initialSpaceId?: string;
+}
+
+const FolderSettings = ({ initialSpaceId }: Props) => {
   const { projectFolderId } = useParams({ strict: false }) as Record<
     string,
     string
@@ -95,7 +100,11 @@ const FolderSettings = () => {
             </SectionDescription>
           </Header>
         )}
-        <ProjectFolderForm mode={mode} projectFolderId={projectFolderId} />
+        <ProjectFolderForm
+          mode={mode}
+          projectFolderId={projectFolderId}
+          initialSpaceId={initialSpaceId}
+        />
       </Container>
     </Box>
   );

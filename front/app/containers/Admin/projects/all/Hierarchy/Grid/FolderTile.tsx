@@ -10,6 +10,7 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 
 import sharedMessages from '../../_shared/messages';
+import FolderActions from '../Actions/FolderActions';
 import messages from '../messages';
 
 import ContainerTile from './ContainerTile';
@@ -45,6 +46,7 @@ const FolderTile = ({ folder }: Props) => {
       level={{ kind: 'folder', id: folder.id }}
       title={title}
       meta={meta}
+      actions={<FolderActions folder={folder} />}
       media={
         imageUrl ? (
           <Image

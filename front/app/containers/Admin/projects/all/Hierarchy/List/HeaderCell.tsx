@@ -85,6 +85,7 @@ const HeaderCell = ({ column }: Props) => {
           <Tooltip
             content={formatMessage(messages.orderBy, { column: text })}
             placement="bottom"
+            theme="dark"
           >
             <SortButton type="button" onClick={onSort}>
               {heading}

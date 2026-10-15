@@ -1,82 +1,113 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 
-import useProjectFolderById from 'api/project_folders/useProjectFolderById';
-import useSpace from 'api/spaces/useSpace';
+import {
+  Box,
+  Text,
+  bo,
+  colors,
+  fontSizes,
+  media,
+} from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
-import Breadcrumbs, { TBreadcrumbs } from 'components/UI/Breadcrumbs';
-
 import { useIntl } from 'utils/cl-intl';
-import { usePermission } from 'utils/permissions';
+import Link, { typedStyled } from 'utils/cl-router/Link';
 
 import allMessages from '../messages';
 
 import { Level } from './level';
+import useLevelDetails, { SubLevel } from './useLevelDetails';
 import useLevelSearch from './useLevelSearch';
 
+// The level's name is the page's heading, at the size of a title, smaller on
+// narrow screens. The shared breadcrumbs only come at the size of the text
+// around them.
+const crumbSize = `
+  font-size: ${fontSizes.xl}px;
+  line-height: 28px;
+
+  ${media.tablet`
+    font-size: ${fontSizes.m}px;
+    line-height: 24px;
+  `}
+`;
+
+const CrumbLink = typedStyled(Link)`
+  ${crumbSize}
+  flex: none;
+  padding: 0 4px;
+  border-radius: ${bo.borderRadius};
+  color: ${colors.coolGrey600};
+  white-space: nowrap;
+
+  &:hover {
+    background: ${colors.grey100};
+    color: ${bo.colors.textHeadingStrong};
+  }
+`;
+
+const Title = styled.h2`
+  ${crumbSize}
+  min-width: 0;
+  margin: 0 0 0 4px;
+  font-weight: 500;
+  color: ${bo.colors.textHeadingStrong};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+
 interface Props {
-  level: Exclude<Level, { kind: 'root' }>;
+  level: SubLevel;
   // Whether the top level is where this user lands. When they land inside a
   // space or folder, there's nothing above it for them to go back to.
   showRoot: boolean;
 }
 
+// "Projects / Space / Folder", the last one being the level's name.
 const LevelBreadcrumbs = ({ level, showRoot }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const levelSearch = useLevelSearch();
-  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
+  const { folder, space } = useLevelDetails(level);
 
-  const { data: folder } = useProjectFolderById(
-    level.kind === 'folder' ? level.id : undefined
-  );
-  // A folder can keep its space after spaces are turned off. The top level
-  // then lists the folder itself, so its space isn't a level to go back to.
-  const folderSpaceId = spacesEnabled
-    ? folder?.data.attributes.space_id
-    : undefined;
-  const spaceId = level.kind === 'space' ? level.id : folderSpaceId;
-  const canOpenSpace = usePermission({
-    item: 'space',
-    action: 'manage_projects_and_folders',
-    context: { spaceId },
-  });
-  const { data: space } = useSpace(canOpenSpace ? spaceId : undefined);
-
-  const breadcrumbs: TBreadcrumbs = [];
-
+  const crumbs: { label: string; level: Level }[] = [];
   if (showRoot) {
-    breadcrumbs.push({
+    crumbs.push({
       label: formatMessage(allMessages.projects),
-      link: { to: '/admin/projects', search: levelSearch({ kind: 'root' }) },
+      level: { kind: 'root' },
     });
   }
-
   if (level.kind === 'folder' && space) {
-    breadcrumbs.push({
-      label: localize(space.data.attributes.title_multiloc),
-      link: {
-        to: '/admin/projects',
-        search: levelSearch({ kind: 'space', id: space.data.id }),
-      },
+    crumbs.push({
+      label: localize(space.attributes.title_multiloc),
+      level: { kind: 'space', id: space.id },
     });
   }
 
   const current = level.kind === 'folder' ? folder : space;
-  if (current) {
-    breadcrumbs.push({
-      label: localize(current.data.attributes.title_multiloc),
-    });
-  }
 
   return (
-    <Breadcrumbs
-      breadcrumbs={breadcrumbs}
-      variant="backofficeRedesign"
-      highlightCurrentPage
-    />
+    <Box display="flex" alignItems="center" minWidth="0">
+      {crumbs.map((crumb, index) => (
+        // Two crumbs can share a label, like a folder named after its space.
+        <Fragment key={index}>
+          <CrumbLink to="/admin/projects" search={levelSearch(crumb.level)}>
+            {crumb.label}
+          </CrumbLink>
+          <Text as="span" m="0" mx="2px" color="coolGrey500" aria-hidden>
+            /
+          </Text>
+        </Fragment>
+      ))}
+      {current && (
+        <Title title={localize(current.attributes.title_multiloc)}>
+          {localize(current.attributes.title_multiloc)}
+        </Title>
+      )}
+    </Box>
   );
 };
 

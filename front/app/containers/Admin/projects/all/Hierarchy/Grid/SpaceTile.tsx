@@ -8,6 +8,7 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
+import SpaceActions from '../Actions/SpaceActions';
 import messages from '../messages';
 
 import ContainerTile from './ContainerTile';
@@ -35,6 +36,7 @@ const SpaceTile = ({ space }: Props) => {
       level={{ kind: 'space', id: space.id }}
       title={localize(title_multiloc)}
       meta={meta}
+      actions={<SpaceActions spaceId={space.id} />}
       media={
         <Icon
           name="spaces"

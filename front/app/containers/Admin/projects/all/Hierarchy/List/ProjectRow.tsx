@@ -17,10 +17,12 @@ import { useIntl } from 'utils/cl-intl';
 import { parseBackendDateString } from 'utils/dateUtils';
 
 import ManagerBubbles from '../../_shared/ManagerBubbles';
+import ProjectActions from '../Actions/ProjectActions';
 import { ACCESS_MESSAGES } from '../labels';
 import messages from '../messages';
 import useProjectLabels from '../useProjectLabels';
 
+import ActionsCell from './ActionsCell';
 import { ColumnKey } from './columns';
 import ItemRow from './ItemRow';
 import TextCell from './TextCell';
@@ -161,7 +163,9 @@ const ProjectRow = ({
   return (
     <ItemRow>
       {columns.map(cell)}
-      <Td />
+      <ActionsCell>
+        <ProjectActions projectId={project.id} />
+      </ActionsCell>
     </ItemRow>
   );
 };

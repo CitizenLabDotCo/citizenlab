@@ -20,7 +20,7 @@ const RootLevel = ({ contents }: Props) => {
     action: 'list_all_for_admin',
   });
 
-  const spaces = contents.spaces.data;
+  const { spaces } = contents;
   const spacesCount = spaces?.data.length ?? 0;
   const foldersCount = contents.folders.data?.pages[0].meta.total ?? 0;
   const projectsCount = contents.projects.data?.pages[0].meta.total ?? 0;

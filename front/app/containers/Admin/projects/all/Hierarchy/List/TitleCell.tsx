@@ -4,6 +4,7 @@ import { Box, Td, Text, bo, colors } from '@citizenlab/cl2-component-library';
 
 import Link, { typedStyled } from 'utils/cl-router/Link';
 
+import { stretchedLink } from '../itemStyles';
 import { Level } from '../level';
 import SearchHighlight from '../SearchHighlight';
 import useLevelSearch from '../useLevelSearch';
@@ -14,12 +15,7 @@ const StretchedLink = typedStyled(Link)`
   text-overflow: ellipsis;
   white-space: nowrap;
   color: ${bo.colors.textHeadingStrong};
-
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-  }
+  ${stretchedLink}
 
   &:hover {
     color: ${bo.colors.textHeadingStrong};
@@ -57,6 +53,7 @@ const TitleCell = ({ lead, title, target, note }: Props) => {
         <Text as="span" m="0" variant="boControl" minWidth="0" display="flex">
           {'projectId' in target ? (
             <StretchedLink
+              data-item-link
               to="/admin/projects/$projectId"
               params={{ projectId: target.projectId }}
             >
@@ -64,6 +61,7 @@ const TitleCell = ({ lead, title, target, note }: Props) => {
             </StretchedLink>
           ) : (
             <StretchedLink
+              data-item-link
               to="/admin/projects"
               search={levelSearch(target.level)}
             >
