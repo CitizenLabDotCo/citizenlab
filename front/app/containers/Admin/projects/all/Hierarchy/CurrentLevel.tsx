@@ -4,6 +4,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import { useSearch } from 'utils/router';
 
+import CalendarLevel from './CalendarLevel';
 import FilterChips from './Filters/FilterChips';
 import useFilters from './Filters/useFilters';
 import FolderLevel from './FolderLevel';
@@ -15,6 +16,7 @@ import RootSummary from './RootSummary';
 import SpaceLevel from './SpaceLevel';
 import Toolbar from './Toolbar';
 import { RootContents } from './useRootContents';
+import useViewMode from './useViewMode';
 
 interface Props {
   landing: Level;
@@ -26,6 +28,7 @@ const CurrentLevel = ({ landing, contents }: Props) => {
   const search = useSearch({ from: '/$locale/admin/projects/' });
   const level = getLevel(search, landing);
   const { isNarrowed } = useFilters(level);
+  const { viewMode } = useViewMode();
 
   return (
     <>
@@ -47,15 +50,21 @@ const CurrentLevel = ({ landing, contents }: Props) => {
         <Toolbar level={level} />
       </Box>
       <FilterChips level={level} />
-      {isNarrowed && <NarrowedLevel level={level} />}
-      {!isNarrowed && level.kind === 'root' && (
-        <RootLevel contents={contents} />
-      )}
-      {!isNarrowed && level.kind === 'space' && (
-        <SpaceLevel key={level.id} spaceId={level.id} />
-      )}
-      {!isNarrowed && level.kind === 'folder' && (
-        <FolderLevel key={level.id} folderId={level.id} />
+      {viewMode === 'calendar' ? (
+        <CalendarLevel level={level} />
+      ) : (
+        <>
+          {isNarrowed && <NarrowedLevel level={level} />}
+          {!isNarrowed && level.kind === 'root' && (
+            <RootLevel contents={contents} />
+          )}
+          {!isNarrowed && level.kind === 'space' && (
+            <SpaceLevel key={level.id} spaceId={level.id} />
+          )}
+          {!isNarrowed && level.kind === 'folder' && (
+            <FolderLevel key={level.id} folderId={level.id} />
+          )}
+        </>
       )}
     </>
   );

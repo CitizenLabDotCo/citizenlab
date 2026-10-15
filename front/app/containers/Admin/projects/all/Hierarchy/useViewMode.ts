@@ -5,12 +5,12 @@ import { useSearch } from 'utils/router';
 
 import { readStored, writeStored } from './storage';
 
-export type ViewMode = 'grid' | 'list';
+export type ViewMode = 'grid' | 'list' | 'calendar';
 
 const STORAGE_KEY = 'admin_projects_view';
 
 const isViewMode = (value: unknown): value is ViewMode =>
-  value === 'grid' || value === 'list';
+  value === 'grid' || value === 'list' || value === 'calendar';
 
 // The view stays as the user last left it in this browser. The URL wins when
 // it has one, so a shared link opens in the view it was shared from. Every

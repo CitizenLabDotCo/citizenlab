@@ -11,12 +11,15 @@ import {
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
+import allMessages from '../messages';
+
 import messages from './messages';
 import useViewMode, { ViewMode } from './useViewMode';
 
 const MODES: { mode: ViewMode; icon: IconNames; label: MessageDescriptor }[] = [
   { mode: 'grid', icon: 'grid', label: messages.grid },
   { mode: 'list', icon: 'list', label: messages.list },
+  { mode: 'calendar', icon: 'calendar', label: allMessages.calendar },
 ];
 
 const ViewModeSwitch = () => {

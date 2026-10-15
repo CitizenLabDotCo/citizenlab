@@ -8,24 +8,13 @@ import { useIntl } from 'utils/cl-intl';
 import { PAGE_SIZE } from './constants';
 import EmptyLevel from './EmptyLevel';
 import useFilters from './Filters/useFilters';
-import { Level } from './level';
+import { Level, getProjectScope } from './level';
 import LevelError from './LevelError';
 import LevelSummary from './LevelSummary';
 import LevelView from './LevelView';
 import messages from './messages';
 import { PathFrom } from './useProjectPath';
 import useProjectSort from './useProjectSort';
-
-const getScope = (level: Level) => {
-  switch (level.kind) {
-    case 'root':
-      return {};
-    case 'space':
-      return { space_ids: [level.id] };
-    case 'folder':
-      return { folder_ids: [level.id] };
-  }
-};
 
 const PATH_FROM: Record<Level['kind'], PathFrom | undefined> = {
   root: 'root',
@@ -43,7 +32,7 @@ const NarrowedLevel = ({ level }: Props) => {
   const { formatMessage } = useIntl();
   const sort = useProjectSort();
   const { queryParams } = useFilters(level);
-  const scope = getScope(level);
+  const scope = getProjectScope(level);
 
   const matches = useInfiniteProjectsMiniAdmin(
     { ...queryParams, ...scope, sort },

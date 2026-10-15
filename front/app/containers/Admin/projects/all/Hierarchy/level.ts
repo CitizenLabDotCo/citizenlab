@@ -3,6 +3,18 @@ export type Level =
   | { kind: 'space'; id: string }
   | { kind: 'folder'; id: string };
 
+// The projects a level holds, all the way down, as finder params.
+export const getProjectScope = (level: Level) => {
+  switch (level.kind) {
+    case 'root':
+      return {};
+    case 'space':
+      return { space_ids: [level.id] };
+    case 'folder':
+      return { folder_ids: [level.id] };
+  }
+};
+
 type RootCounts = {
   spaceIds: string[];
   folderIds: string[];
