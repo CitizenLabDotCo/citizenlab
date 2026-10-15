@@ -139,6 +139,16 @@ module ReportBuilder
         block
       end
 
+      # How much of these messages reaches a prompt that replays them, in characters.
+      #
+      # Measured through the same shaping the replay does, because a screenshot is
+      # stored here in full as base64 and sent as a one-line placeholder. Counted as
+      # stored, a single picture can be larger than the whole history budget, and the
+      # run holding it would push every earlier turn out of the conversation.
+      def replayed_size(messages)
+        messages.sum { |message| strip_images(symbolize(message)).to_json.size }
+      end
+
       def strip_images(message)
         content = message[:content].map do |block|
           block[:image] ? { text: SCREENSHOT_OMITTED } : block
