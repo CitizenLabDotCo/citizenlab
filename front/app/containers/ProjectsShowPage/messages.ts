@@ -260,6 +260,10 @@ export default defineMessages({
     id: 'app.containers.Projects.readLess',
     defaultMessage: 'Read less',
   },
+  seeTheResults: {
+    id: 'app.containers.Projects.seeTheResults',
+    defaultMessage: 'See the results',
+  },
   seeTheIdeas: {
     id: 'app.containers.Projects.seeTheIdeas',
     defaultMessage: 'See the ideas',

@@ -216,4 +216,36 @@ describe('ProjectActionButtons — voting CTA', () => {
     render(<ProjectActionButtons projectId="projectId" />);
     expect(screen.queryByText('Cast your vote')).not.toBeInTheDocument();
   });
+
+  it('shows See the results once the voting phase has ended and results are shared', () => {
+    mockTimelinePhases = [
+      buildPhase('voting-phase', 'voting', {
+        start_at: day(-14),
+        end_at: day(-7),
+        autoshare_results_enabled: true,
+      }),
+    ];
+    render(<ProjectActionButtons projectId="projectId" />);
+    expect(screen.getByText('See the results')).toBeInTheDocument();
+  });
+
+  it('hides See the results when the results are not shared', () => {
+    mockTimelinePhases = [
+      buildPhase('voting-phase', 'voting', {
+        start_at: day(-14),
+        end_at: day(-7),
+        autoshare_results_enabled: false,
+      }),
+    ];
+    render(<ProjectActionButtons projectId="projectId" />);
+    expect(screen.queryByText('See the results')).not.toBeInTheDocument();
+  });
+
+  it('hides See the results while the voting phase is running', () => {
+    mockTimelinePhases = [
+      buildPhase('voting-phase', 'voting', { autoshare_results_enabled: true }),
+    ];
+    render(<ProjectActionButtons projectId="projectId" />);
+    expect(screen.queryByText('See the results')).not.toBeInTheDocument();
+  });
 });

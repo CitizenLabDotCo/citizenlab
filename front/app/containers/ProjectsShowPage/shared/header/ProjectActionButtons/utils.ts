@@ -2,6 +2,8 @@ import { IPhaseData } from 'api/phases/types';
 import { getPhaseActionDescriptor } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
 
+import { pastPresentOrFuture } from 'utils/dateUtils';
+
 export type MethodCTA =
   | 'post_idea'
   | 'take_native_survey'
@@ -11,7 +13,7 @@ export type MethodCTA =
   | 'volunteer'
   | 'vote';
 
-export type SecondaryCTA = 'see_ideas' | 'see_events';
+export type SecondaryCTA = 'see_ideas' | 'see_results' | 'see_events';
 
 interface GetMethodCTAParams {
   // Only the running phase: there is no primary CTA when no phase is running.
@@ -73,6 +75,16 @@ export const getSecondaryCTA = ({
     ideasCount > 0
   ) {
     return 'see_ideas';
+  }
+
+  // Results are only shown on the phase once it has ended and they're shared.
+  if (
+    phase?.attributes.participation_method === 'voting' &&
+    phase.attributes.autoshare_results_enabled &&
+    !!phase.attributes.end_at &&
+    pastPresentOrFuture(phase.attributes.end_at) === 'past'
+  ) {
+    return 'see_results';
   }
 
   if (showEventsCTA) return 'see_events';

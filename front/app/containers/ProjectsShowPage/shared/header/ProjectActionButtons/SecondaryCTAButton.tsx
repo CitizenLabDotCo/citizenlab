@@ -34,6 +34,29 @@ const SecondaryCTAButton = ({
 }: Props) => {
   const { pathname } = useLocation();
 
+  if (secondaryCTA === 'see_results') {
+    return (
+      <ButtonWithLink
+        id="e2e-project-see-results-button"
+        buttonStyle="secondary-outlined"
+        onClick={() => {
+          setTimeout(
+            scrollTo({
+              elementId: 'voting-results',
+              pathname,
+              projectSlug,
+              currentPhase: phase,
+            }),
+            0
+          );
+        }}
+        fontWeight="500"
+      >
+        <FormattedMessage {...messages.seeTheResults} />
+      </ButtonWithLink>
+    );
+  }
+
   if (secondaryCTA === 'see_ideas') {
     return (
       <ButtonWithLink
