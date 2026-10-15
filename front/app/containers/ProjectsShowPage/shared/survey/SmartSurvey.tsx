@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { colors } from '@citizenlab/cl2-component-library';
 import { parse, stringify } from 'qs';
 import styled from 'styled-components';
 
@@ -12,7 +13,7 @@ const StyledIframe = styled.iframe`
   display: block;
   height: 600px;
   flex-basis: 640px;
-  border: 1px solid #ccc;
+  border: 1px solid ${colors.grey400};
 `;
 
 type Props = {

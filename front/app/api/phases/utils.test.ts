@@ -1,6 +1,10 @@
 import { mockPhaseIdeationData } from './__mocks__/_mockServer';
 import { IPhaseData, PhasePlacementType } from './types';
-import { getPreviousTimelinePhase, getSelectedView } from './utils';
+import {
+  getPhaseSaveRedirectTab,
+  getPreviousTimelinePhase,
+  getSelectedView,
+} from './utils';
 
 const buildPhase = (
   id: string,
@@ -94,5 +98,21 @@ describe('getSelectedView', () => {
         defaultView: 'card',
       })
     ).toBe('feed');
+  });
+});
+
+describe('getPhaseSaveRedirectTab', () => {
+  const phase = (participation_method) =>
+    ({ attributes: { participation_method } } as IPhaseData);
+
+  it('returns the survey form tab for a native survey phase', () => {
+    expect(getPhaseSaveRedirectTab(phase('native_survey'))).toBe('survey-form');
+  });
+
+  it('keeps the regular landing tab for other participation methods', () => {
+    expect(getPhaseSaveRedirectTab(phase('ideation'))).toBe('ideas');
+    expect(getPhaseSaveRedirectTab(phase('proposals'))).toBe('proposals');
+    expect(getPhaseSaveRedirectTab(phase('poll'))).toBe('polls');
+    expect(getPhaseSaveRedirectTab(phase('information'))).toBe('setup');
   });
 });

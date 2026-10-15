@@ -36,6 +36,7 @@ it-IT:
         project_participants: Ai partecipanti al progetto
         registered_users: Agli utenti registrati
       recipient_segment:
+        admin_who_generated_the_report: L'amministratore che ha richiesto il report
         admins: Amministratori
         admins_and_managers: Amministratori e manager
         admins_and_managers_assigned_to_the_input: Amministratori e manager assegnati al contributo
@@ -109,6 +110,7 @@ it-IT:
         proposal_is_upvoted_above_threshold: La proposta è votata oltre la soglia
         proposal_status_changes: Modifiche allo status della proposta
         registration_to_event: Registrazione ad un evento
+        report_generated: La generazione di un report è terminata
         survey_1_day_after_draft_saved: "1 giorno dopo l'ultima volta che l'utente ha salvato il sondaggio in bozza"
         user_accepts_invitation_to_cosponsor_a_proposal: "L'utente accetta l'invito a co-sponsorizzare una proposta"
         user_changes_email: L'utente modifica il proprio indirizzo email
@@ -206,6 +208,7 @@ it-IT:
       project_review_request: Richiesta di revisione del progetto
       project_review_state_change: Progetto approvato
       proposal_expired_for_admin: Proposta scaduta senza raggiungere la soglia di voto
+      report_generated: Report generato
       screening_digest: Promemoria settimanale per lo screening
       sms_manual: Messaggi SMS ufficiali
       space_moderation_rights_received: Permessi di manager dello spazio ricevuti
@@ -661,6 +664,13 @@ it-IT:
       preheader: Un contributo è scaduto senza raggiungere la soglia
       subject: '"%{input_title}" è scaduto senza raggiungere la soglia'
       title: Un contributo è scaduto senza raggiungere la soglia di voto
+    report_generated:
+      cta_button: Apri il report
+      event_description: Il report è stato scritto ed è pronto per essere revisionato e modificato.
+      preheader: Il tuo report è pronto
+      stopped_early: 'La scrittura si è interrotta prima che il report fosse completato. Tutto ciò che è stato scritto finora è stato salvato: aprilo e richiedi la parte restante nella chat.'
+      subject: Il tuo report per "%{projectName}" è pronto
+      title: Il tuo report è pronto
     schedules:
       quarterly: Trimestralmente, il primo giorno del trimestre
       weekly:

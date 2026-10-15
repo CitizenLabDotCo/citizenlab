@@ -9,7 +9,7 @@ import useAddPhase from 'api/phases/useAddPhase';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
-import { getPhaseLandingTab, isTimelinePhase } from 'api/phases/utils';
+import { getPhaseSaveRedirectTab, isTimelinePhase } from 'api/phases/utils';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
@@ -217,7 +217,7 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
     setSubmitState('success');
 
     if (redirectAfterSave) {
-      const redirectTab = getPhaseLandingTab(phaseResponse);
+      const redirectTab = getPhaseSaveRedirectTab(phaseResponse);
       window.scrollTo(0, 0);
       clHistory.push(
         `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}${window.location.search}`

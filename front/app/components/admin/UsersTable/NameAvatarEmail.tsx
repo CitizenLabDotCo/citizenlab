@@ -32,19 +32,27 @@ const NoNameLabel = styled.span`
 `;
 
 const NameAvatarEmail = ({ user }: Props) => {
+  const name =
+    user.attributes.first_name && user.attributes.last_name ? (
+      <>{getFullName(user)}</>
+    ) : (
+      <NoNameLabel>
+        <FormattedMessage {...messages.unknown} />
+      </NoNameLabel>
+    );
+
   return (
     <Box display="flex" alignItems="center" gap="8px">
       <Avatar userId={user.id} size={30} />
       <Box>
-        <StyledLink to="/profile/$userId" params={{ userId: user.id }}>
-          {user.attributes.first_name && user.attributes.last_name ? (
-            <>{getFullName(user)}</>
-          ) : (
-            <NoNameLabel>
-              <FormattedMessage {...messages.unknown} />
-            </NoNameLabel>
-          )}
-        </StyledLink>
+        {/* Users who never finished registering have an empty profile */}
+        {user.attributes.registration_completed_at ? (
+          <StyledLink to="/profile/$userId" params={{ userId: user.id }}>
+            {name}
+          </StyledLink>
+        ) : (
+          name
+        )}
         <Text fontSize="s" m="0px" color="textSecondary">
           {user.attributes.email}
         </Text>

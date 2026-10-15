@@ -107,15 +107,15 @@ const DropzoneContent = styled.div<{ borderRadius?: string }>`
 
   &.disabled {
     cursor: no-drop;
-    border-color: #ccc;
+    border-color: ${colors.grey400};
 
     ${DropzoneLabel},
     ${DropzoneImagesRemaining} {
-      color: #ccc;
+      color: ${colors.grey400};
     }
 
     ${DropzoneLabelIcon} {
-      fill: #ccc;
+      fill: ${colors.grey400};
     }
   }
 `;
@@ -146,7 +146,7 @@ const Image = styled.div<{
   box-sizing: border-box;
   border-radius: ${(props) =>
     props.borderRadius ? props.borderRadius : props.theme.borderRadius};
-  border: solid 1px #ccc;
+  border: solid 1px ${colors.grey400};
   transition: all 100ms ease-out;
 `;
 

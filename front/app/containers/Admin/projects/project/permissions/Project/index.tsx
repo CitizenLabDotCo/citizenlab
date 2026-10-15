@@ -1,10 +1,7 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
-
 import { SectionDescription, SectionTitle } from 'components/admin/Section';
 import Highlighter from 'components/Highlighter';
-import Outlet from 'components/Outlet';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
@@ -12,7 +9,7 @@ import { useParams } from 'utils/router';
 import messages from '../messages';
 
 import ProjectDiscoverability from './ProjectDiscoverability';
-import ProjectManagement from './ProjectManagement';
+import ProjectManagementSection from './ProjectManagementSection';
 import ProjectVisibility from './ProjectVisibility';
 
 export const projectVisibilityFragmentId = 'project-visibility';
@@ -35,17 +32,7 @@ const ProjectPermissions = () => {
       <Highlighter fragmentId={projectVisibilityFragmentId}>
         <ProjectVisibility projectId={projectId} />
       </Highlighter>
-      <Outlet
-        id="app.containers.Admin.project.edit.permissions.moderatorRights"
-        projectId={projectId}
-      >
-        {(outletComponents) =>
-          outletComponents.length > 0 ? (
-            <Box mb="48px">{outletComponents}</Box>
-          ) : null
-        }
-      </Outlet>
-      <ProjectManagement projectId={projectId} />
+      <ProjectManagementSection projectId={projectId} />
     </>
   );
 };

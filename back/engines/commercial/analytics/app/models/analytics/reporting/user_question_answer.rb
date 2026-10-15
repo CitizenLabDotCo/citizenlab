@@ -10,6 +10,7 @@
 #  question_type  :string
 #  question_label :text
 #  answer_value   :text
+#  answer_label   :text
 #
 module Analytics
   module Reporting
@@ -34,11 +35,19 @@ module Analytics
           'question_key' => "Stable machine key of the question, for example 'gender', 'birthyear' or 'domicile'.",
           'question_type' => "Answer format: 'select', 'multiselect', 'checkbox' or 'number'.",
           'question_label' => 'Question text, resolved to the platform primary locale.',
-          'answer_value' => <<~DOC.squish
+          'answer_value' => <<~DOC.squish,
             The answer as raw text: the option key for (multi)select questions
-            (for 'domicile' this is a geographic area id), a year for
-            'birthyear', 'true'/'false' for checkboxes, a number as text for
-            number questions (cast with ::numeric to aggregate).
+            (for 'domicile' this is a geographic area id, or 'outside'), a year
+            for 'birthyear', 'true'/'false' for checkboxes, a number as text for
+            number questions (cast with ::numeric to aggregate). Option keys are
+            stable ids, not what users saw: report answer_label instead.
+          DOC
+          'answer_label' => <<~DOC.squish
+            The answer as users saw it, resolved to the platform primary locale:
+            the option title for (multi)select questions, the area name for
+            'domicile'. NULL for other question types. Always use it rather than
+            the option key in reports: keys are fixed when an option is created,
+            so they can contradict a label that was edited later.
           DOC
         }
       end

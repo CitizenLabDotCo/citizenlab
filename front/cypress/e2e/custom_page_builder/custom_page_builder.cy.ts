@@ -21,6 +21,7 @@ describe('Custom page builder', () => {
   let projectId = '';
   let otherProjectId = '';
   let areaId = '';
+  let builderWasEnabled = false;
   let filteringWasEnabled = false;
 
   const setBuilderFeature = (enabled: boolean) =>
@@ -69,12 +70,15 @@ describe('Custom page builder', () => {
     // Created with the builder flag off, so no layout is provisioned and the page is shaped
     // like the legacy pages the migration has to cope with: content in the columns, no graph.
     // Filtering has to be on when the layout is derived, or the lists are not derived at all.
-    setBuilderFeature(false);
     cy.apiGetAppConfiguration().then((config) => {
+      builderWasEnabled =
+        config.body.data.attributes.settings.custom_page_builder?.enabled ===
+        true;
       filteringWasEnabled =
         config.body.data.attributes.settings.advanced_custom_pages?.enabled ===
         true;
     });
+    setBuilderFeature(false);
     setFiltering(true);
 
     cy.apiCreateArea(areaTitle).then((area) => {
@@ -139,7 +143,7 @@ describe('Custom page builder', () => {
   });
 
   after(() => {
-    setBuilderFeature(false);
+    setBuilderFeature(builderWasEnabled);
     setFiltering(filteringWasEnabled);
     if (pageId) cy.apiRemoveCustomPage(pageId);
     if (projectId) cy.apiRemoveProject(projectId);
@@ -161,10 +165,17 @@ describe('Custom page builder', () => {
   // again, possibly with different features.
   it('derives the page content into the builder', () => {
     setBuilderFeature(true);
+    cy.intercept('GET', `**/static_pages/${pageId}`).as('getPage');
+    cy.intercept(
+      'GET',
+      `**/static_pages/${pageId}/content_builder_layouts/custom_page`
+    ).as('getLayout');
     cy.intercept('POST', '**/content_builder_layouts/custom_page/upsert').as(
       'deriveLayout'
     );
     openBuilder();
+    // Deriving only starts once the page and the layout lookup have both answered.
+    cy.wait(['@getPage', '@getLayout']);
     cy.wait('@deriveLayout');
 
     // The canvas scrolls inside a fixed frame, so anything below the banner needs scrolling
@@ -286,19 +297,27 @@ describe('Custom page builder', () => {
       .should('have.class', 'e2e-signed-out-header-title');
   });
 
-  // With filtering off, a stored events node keeps its filter, still shown so it can be reset, but
-  // no other filter is offered, and the projects list leaves the toolbox.
-  it('withdraws the filtering choices once the tenant loses advanced_custom_pages', () => {
+  // The widgets stay listed, greyed out with an upsell, and one already on the page keeps its
+  // settings.
+  it('greys out its widgets once the tenant loses advanced_custom_pages', () => {
     setFiltering(false);
     openBuilder();
 
     selectNodeContaining(() => cy.dataCy('e2e-events-widget'));
     cy.get('#events-source-areas').should('be.checked');
     cy.get('label[for="events-source-all"]').should('exist');
-    cy.get('label[for="events-source-global_topics"]').should('not.exist');
+    cy.get('label[for="events-source-global_topics"]').should('exist');
 
-    cy.get('#e2e-draggable-events').should('exist');
-    cy.get('#e2e-draggable-projects-by-filter').should('not.exist');
+    cy.get('#e2e-draggable-events').should(
+      'have.attr',
+      'aria-disabled',
+      'true'
+    );
+    cy.get('#e2e-draggable-projects-by-filter')
+      .should('have.attr', 'aria-disabled', 'true')
+      .trigger('mouseenter');
+    cy.contains('not included in your current plan').should('be.visible');
+    cy.get('#e2e-draggable-text').should('not.have.attr', 'aria-disabled');
   });
 
   // The Call to action is the homepage widget worth checking on a published page: its buttons
@@ -306,6 +325,7 @@ describe('Custom page builder', () => {
   // published custom page does.
   it('renders homepage widgets added in the builder on the published page', () => {
     const buttonText = `Go ${randomString()}`;
+    setFiltering(true);
     openBuilder();
 
     cy.get('#e2e-draggable-published').dragAndDrop(
