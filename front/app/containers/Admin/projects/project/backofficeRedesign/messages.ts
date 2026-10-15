@@ -518,10 +518,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.participantsEmpty',
     defaultMessage: 'Numbers appear here once participants take part',
   },
-  actionCreateReport: {
-    id: 'app.containers.Admin.projects.project.actionCreateReport',
-    defaultMessage: 'Create report',
-  },
   phaseUnitInputs: {
     id: 'app.containers.Admin.projects.project.phaseUnitInputs',
     defaultMessage: 'inputs',

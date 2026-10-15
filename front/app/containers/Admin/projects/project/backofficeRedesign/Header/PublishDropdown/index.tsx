@@ -2,16 +2,13 @@ import React, { useState } from 'react';
 
 import { Box, Tooltip, colors } from '@citizenlab/cl2-component-library';
 
-import useProjectReview from 'api/project_reviews/useProjectReview';
 import { IProjectData } from 'api/projects/types';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
+import usePublishAccess from 'containers/Admin/projects/_shared/usePublishAccess';
 import publicationButtonsMessages from 'containers/Admin/projects/project/projectHeader/PublicationButtons/messages';
 import ScheduleLaunchModal from 'containers/Admin/projects/project/projectHeader/PublicationButtons/ScheduleLaunchModal';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
-import { usePermission } from 'utils/permissions';
 
 import messages from '../../messages';
 import HeaderDropdown from '../HeaderDropdown';
@@ -45,13 +42,7 @@ interface Props {
 
 const PublishDropdown = ({ project, opened, onOpenChange }: Props) => {
   const { formatMessage } = useIntl();
-  const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
-  const { data: projectReview } = useProjectReview(project.id);
-  const canPublish = usePermission({
-    item: project,
-    action: 'publish',
-    context: projectReview?.data.attributes.state === 'approved',
-  });
+  const { showPublish, publishDisabled } = usePublishAccess(project);
   const [scheduleOpened, setScheduleOpened] = useState(false);
   const [missingOpened, setMissingOpened] = useState(false);
   const [confirm, setConfirm] = useState<{
@@ -64,17 +55,11 @@ const PublishDropdown = ({ project, opened, onOpenChange }: Props) => {
   const publicationState = getPublicationState(project);
   const dotColor = TRIGGER_DOT_COLORS[publicationState];
 
-  // A published project keeps its trigger so it can be unpublished, even by
-  // someone who can't publish. The modals stay mounted either way, so one that
-  // is open survives the project leaving the published state.
-  const isPublished = publicationState === 'published';
-  const showTrigger = !isProjectReviewEnabled || isPublished || canPublish;
-
-  const disabled = !canPublish && !project.attributes.first_published_at;
-
+  // The modals stay mounted when the trigger hides, so one that is open
+  // survives the project leaving the published state.
   return (
     <>
-      {showTrigger && (
+      {showPublish && (
         <Tooltip
           content={formatMessage(
             publicationButtonsMessages.onlyAdminsAndFolderManagersCanPublish,
@@ -82,13 +67,13 @@ const PublishDropdown = ({ project, opened, onOpenChange }: Props) => {
           )}
           theme="dark"
           placement="bottom"
-          disabled={!disabled}
+          disabled={!publishDisabled}
         >
           <Box>
             <HeaderDropdown
               opened={opened}
               onOpenChange={onOpenChange}
-              disabled={disabled}
+              disabled={publishDisabled}
               buttonStyle={
                 publicationState === 'published' ? 'bo-status' : 'bo-primary'
               }

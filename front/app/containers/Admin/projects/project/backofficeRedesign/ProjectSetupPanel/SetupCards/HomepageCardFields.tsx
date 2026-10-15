@@ -11,6 +11,10 @@ import useProjectImages, {
 import { IProjectData } from 'api/projects/types';
 
 import { StyledSectionField } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/styling';
+import ImageCropModal from 'containers/Admin/projects/project/backofficeRedesign/Event/ImageCropModal';
+import ImageFileRow from 'containers/Admin/projects/project/backofficeRedesign/Event/ImageFileRow';
+import eventMessages from 'containers/Admin/projects/project/backofficeRedesign/Event/messages';
+import PanelSettings from 'containers/Admin/projects/project/backofficeRedesign/Phase/PanelSettings';
 
 import ImagesDropzone from 'components/UI/ImagesDropzone';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
@@ -19,11 +23,7 @@ import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWi
 import { useIntl } from 'utils/cl-intl';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
 
-import ImageCropModal from '../../Event/ImageCropModal';
-import ImageFileRow from '../../Event/ImageFileRow';
-import eventMessages from '../../Event/messages';
 import messages from '../../messages';
-import PanelSettings from '../../Phase/PanelSettings';
 import { useSetupDraft } from '../SetupDraftContext';
 
 interface Props {

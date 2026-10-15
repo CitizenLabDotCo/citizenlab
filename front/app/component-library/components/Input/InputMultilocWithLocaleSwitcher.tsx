@@ -3,14 +3,13 @@ import React, { memo, useState, useCallback, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
 import { isNilOrError } from '../../utils/helperUtils';
-import { colors, fontSizes } from '../../utils/styleUtils';
 import { Locale, Multiloc } from '../../utils/typings';
 import Box from '../Box';
 import IconTooltip from '../IconTooltip';
 import Label from '../Label';
 import LocaleSwitcher from '../LocaleSwitcher';
 
-import Input, { InputProps } from '.';
+import Input, { InputProps, boLabelStyle } from '.';
 
 export const stackedLabelStyle = css`
   flex-direction: column;
@@ -31,18 +30,16 @@ const LabelContainer = styled.div<{ stacked: boolean }>`
   ${({ stacked }) => stacked && stackedLabelStyle}
 `;
 
-export const boLabelStyle = css`
-  margin-bottom: 0;
-  font-size: ${fontSizes.xs}px;
-  line-height: 1.4;
-  color: ${colors.coolGrey600};
-`;
-
 const StyledLabel = styled(Label)<{ variant: InputProps['variant'] }>`
   flex: 1;
   padding-bottom: 0px;
 
-  ${({ variant }) => variant === 'bo' && boLabelStyle}
+  ${({ variant }) =>
+    variant === 'bo' &&
+    css`
+      ${boLabelStyle}
+      margin-bottom: 0;
+    `}
 `;
 
 const Spacer = styled.div`

@@ -1,11 +1,8 @@
 import React from 'react';
 
-import useProjectReview from 'api/project_reviews/useProjectReview';
 import { IProjectData } from 'api/projects/types';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import { usePermission } from 'utils/permissions';
+import useReviewAction from 'containers/Admin/projects/_shared/useReviewAction';
 
 import ApproveButton from './ApproveButton';
 import RequestApprovalDropdown from './RequestApprovalDropdown';
@@ -17,28 +14,16 @@ interface Props {
 }
 
 const ReviewFlow = ({ project, opened, onOpenChange }: Props) => {
-  const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
-  const canReview = usePermission({ item: project, action: 'review' });
-  const { data: projectReview, isLoading } = useProjectReview(project.id);
+  const { action, pending, isLoading } = useReviewAction(project);
 
-  if (!isProjectReviewEnabled) return null;
-
-  const state = projectReview?.data.attributes.state;
-  const isPublished = project.attributes.publication_status === 'published';
-
-  if (canReview) {
-    return state === 'pending' ? (
-      <ApproveButton projectId={project.id} />
-    ) : null;
-  }
-
-  if (state === 'approved' || isPublished) return null;
+  if (action === 'approve') return <ApproveButton projectId={project.id} />;
+  if (action !== 'request') return null;
 
   return (
     <RequestApprovalDropdown
       projectId={project.id}
       inFolder={!!project.attributes.folder_id}
-      pending={state === 'pending'}
+      pending={pending}
       processing={isLoading}
       opened={opened}
       onOpenChange={onOpenChange}

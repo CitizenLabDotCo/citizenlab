@@ -9,7 +9,6 @@ import clHistory from 'utils/cl-router/history';
 
 import messages from '../messages';
 
-import CreateReportCard from './CreateReportCard';
 import PanelDivider from './PanelDivider';
 import PanelHeading from './PanelHeading';
 import ParticipantsGraph from './ParticipantsGraph';
@@ -47,7 +46,6 @@ const LivePanel = ({ project }: Props) => {
               clHistory.push(`/admin/projects/${projectId}/messaging`),
           }}
         />
-        <CreateReportCard />
       </Box>
     </Box>
   );

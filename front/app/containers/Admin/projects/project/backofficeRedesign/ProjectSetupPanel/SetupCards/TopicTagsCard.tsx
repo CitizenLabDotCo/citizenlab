@@ -2,6 +2,8 @@ import React, { KeyboardEvent, useRef, useState } from 'react';
 
 import { Box, ClickOutside } from '@citizenlab/cl2-component-library';
 
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { coreSettings } from 'api/app_configuration/utils';
 import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 import { IProjectData } from 'api/projects/types';
 
@@ -24,11 +26,17 @@ const TopicTagsCard = ({ project, ready }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: topics } = useGlobalTopics({});
+  const { data: appConfiguration } = useAppConfiguration();
   const { changes, changeProject } = useSetupDraft();
   const cardRef = useRef<HTMLDivElement>(null);
   const [opened, setOpened] = useState(false);
 
   const { topicIds } = getDraftValues(project, changes);
+
+  const topicsTerm =
+    appConfiguration &&
+    localize(coreSettings(appConfiguration.data).topics_term);
+  const title = formatMessage(messages.topicTags);
 
   const toggleTopic = (topicId: string) => {
     changeProject({
@@ -52,7 +60,7 @@ const TopicTagsCard = ({ project, ready }: Props) => {
       <Box ref={cardRef} position="relative" onKeyDown={handleKeyDown}>
         <SetupCard
           id="e2e-setup-card-topics"
-          title={formatMessage(messages.topicTags)}
+          title={topicsTerm ? `${title} (${topicsTerm})` : title}
           ready={ready}
           summary={
             topicIds.length > 0

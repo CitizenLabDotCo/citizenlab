@@ -10,9 +10,9 @@ import { useSetupDraft } from './SetupDraftContext';
 
 const SaveError = () => {
   const { formatMessage } = useIntl();
-  const { errors } = useSetupDraft();
+  const { saveFailed } = useSetupDraft();
 
-  if (!errors) return null;
+  if (!saveFailed) return null;
 
   return <Error text={formatMessage(generalMessages.saveErrorMessage)} />;
 };

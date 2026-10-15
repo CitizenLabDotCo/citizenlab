@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react';
 
-import { CLErrors, Multiloc, UploadFile } from 'typings';
+import { Multiloc, UploadFile } from 'typings';
 
 import useAddProjectImage from 'api/project_images/useAddProjectImage';
 import useDeleteProjectImage from 'api/project_images/useDeleteProjectImage';
@@ -15,8 +15,6 @@ import useProjectImages from 'api/project_images/useProjectImages';
 import useUpdateProjectImage from 'api/project_images/useUpdateProjectImage';
 import { IProjectData, IUpdatedProjectProperties } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
-
-import { isCLErrorsWrapper } from 'utils/errorUtils';
 
 import { useRegisterPageSaver } from '../_shared/PageSaveContext';
 
@@ -35,6 +33,16 @@ export interface ImageChanges {
   altText?: Multiloc;
 }
 
+// Drops what was sent, but keeps any edit made while the request ran.
+const withoutSent = (current: object, sent: object) => {
+  const sentValues = new Map(Object.entries(sent));
+  return Object.fromEntries(
+    Object.entries(current).filter(
+      ([key, value]) => sentValues.get(key) !== value
+    )
+  );
+};
+
 export const getDraftValues = (
   project: IProjectData,
   changes: ProjectChanges
@@ -51,7 +59,7 @@ export const getDraftValues = (
 interface SetupDraftContextValue {
   changes: ProjectChanges;
   imageChanges: ImageChanges;
-  errors: CLErrors | null;
+  saveFailed: boolean;
   changeProject: (changes: ProjectChanges) => void;
   changeImage: (changes: ImageChanges) => void;
   resetImage: () => void;
@@ -74,28 +82,30 @@ export const SetupDraftProvider = ({ project, children }: Props) => {
 
   const [changes, setChanges] = useState<ProjectChanges>({});
   const [imageChanges, setImageChanges] = useState<ImageChanges>({});
-  const [errors, setErrors] = useState<CLErrors | null>(null);
+  const [saveFailed, setSaveFailed] = useState(false);
 
   const changeProject = useCallback((newChanges: ProjectChanges) => {
     setChanges((changes) => ({ ...changes, ...newChanges }));
+    setSaveFailed(false);
   }, []);
 
   const changeImage = useCallback((newChanges: ImageChanges) => {
     setImageChanges((changes) => ({ ...changes, ...newChanges }));
+    setSaveFailed(false);
   }, []);
 
   const resetImage = useCallback(() => {
     setImageChanges(({ image: _image, ...rest }) => rest);
   }, []);
 
-  const saveImage = async () => {
+  // Doesn't reuse useSyncProjectImages: that one sends the image again with an
+  // alt text change, and runs add and delete in parallel.
+  const saveImage = async (sent: ImageChanges) => {
     const savedImageId = images?.data[0]?.id;
-    const { image, altText } = imageChanges;
+    const { image, altText } = sent;
 
     if (image !== undefined) {
-      if (savedImageId) {
-        await deleteProjectImage({ projectId, imageId: savedImageId });
-      }
+      // Add before delete, so a failed upload keeps the current image.
       if (image) {
         await addProjectImage({
           projectId,
@@ -104,6 +114,9 @@ export const SetupDraftProvider = ({ project, children }: Props) => {
             ...(altText ? { alt_text_multiloc: altText } : {}),
           },
         });
+      }
+      if (savedImageId) {
+        await deleteProjectImage({ projectId, imageId: savedImageId });
       }
     } else if (altText && savedImageId) {
       await updateProjectImage({
@@ -115,16 +128,21 @@ export const SetupDraftProvider = ({ project, children }: Props) => {
   };
 
   const save = async () => {
+    const sentChanges = changes;
+    const sentImageChanges = imageChanges;
+    setSaveFailed(false);
+
     try {
-      if (Object.keys(changes).length > 0) {
-        await updateProject({ projectId, ...changes });
+      if (Object.keys(sentChanges).length > 0) {
+        await updateProject({ projectId, ...sentChanges });
+        setChanges((current) => withoutSent(current, sentChanges));
       }
-      await saveImage();
-      setChanges({});
-      setImageChanges({});
-      setErrors(null);
+      if (Object.keys(sentImageChanges).length > 0) {
+        await saveImage(sentImageChanges);
+        setImageChanges((current) => withoutSent(current, sentImageChanges));
+      }
     } catch (error) {
-      if (isCLErrorsWrapper(error)) setErrors(error.errors);
+      setSaveFailed(true);
       throw error;
     }
   };
@@ -139,12 +157,12 @@ export const SetupDraftProvider = ({ project, children }: Props) => {
     () => ({
       changes,
       imageChanges,
-      errors,
+      saveFailed,
       changeProject,
       changeImage,
       resetImage,
     }),
-    [changes, imageChanges, errors, changeProject, changeImage, resetImage]
+    [changes, imageChanges, saveFailed, changeProject, changeImage, resetImage]
   );
 
   return (

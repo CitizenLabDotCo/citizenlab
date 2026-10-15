@@ -1,13 +1,6 @@
 import React, { useCallback, useRef, useState } from 'react';
 
-import {
-  Box,
-  Checkbox,
-  Icon,
-  Text,
-  colors,
-} from '@citizenlab/cl2-component-library';
-import { useTheme } from 'styled-components';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import useAreas from 'api/areas/useAreas';
 import { IProjectData } from 'api/projects/types';
@@ -22,10 +15,9 @@ import messages from '../../messages';
 import SetupCard from '../SetupCard';
 import { getDraftValues, useSetupDraft } from '../SetupDraftContext';
 
+import AreaFlyout from './AreaFlyout';
+import AreaTypeRow from './AreaTypeRow';
 import MenuPopover, { focusAnchor } from './MenuPopover';
-import MenuRow from './MenuRow';
-
-const FLYOUT_MAX_HEIGHT = '240px';
 
 type AreaType = 'none' | 'all' | 'selection';
 
@@ -64,7 +56,6 @@ interface Props {
 const AreaCard = ({ project, ready }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const theme = useTheme();
   const { data: areas } = useAreas({});
   const { changes, changeProject } = useSetupDraft();
   const cardRef = useRef<HTMLDivElement>(null);
@@ -108,7 +99,9 @@ const AreaCard = ({ project, ready }: Props) => {
       openFlyout(true);
       return;
     }
-    changeProject({ area_ids: [], include_all_areas: value === 'all' });
+    if (value !== areaType) {
+      changeProject({ area_ids: [], include_all_areas: value === 'all' });
+    }
     closeMenu();
     focusAnchor(cardRef.current);
   };
@@ -148,117 +141,41 @@ const AreaCard = ({ project, ready }: Props) => {
             const isCurrent = areaType === value;
 
             return (
-              <MenuRow
+              <AreaTypeRow
                 key={value}
                 ref={isSelection ? selectionRowRef : undefined}
-                type="button"
-                role="menuitemradio"
-                aria-checked={isCurrent}
-                aria-haspopup={isSelection ? 'menu' : undefined}
-                aria-expanded={isSelection ? flyoutOpened : undefined}
-                data-active={isSelection && flyoutOpened}
-                onMouseEnter={() =>
+                label={formatMessage(label)}
+                description={
+                  isSelection && isCurrent
+                    ? formatMessage(messages.areasSelectedCount, {
+                        count: areaIds.length,
+                      })
+                    : formatMessage(description)
+                }
+                current={isCurrent}
+                flyout={
+                  isSelection
+                    ? { opened: flyoutOpened, onOpen: () => openFlyout(true) }
+                    : undefined
+                }
+                onHover={() =>
                   isSelection ? openFlyout(false) : setFlyoutOpened(false)
                 }
-                onKeyDown={(event) => {
-                  if (isSelection && event.key === 'ArrowRight') {
-                    event.preventDefault();
-                    openFlyout(true);
-                  }
-                }}
                 onClick={() => pickAreaType(value)}
-              >
-                <Icon
-                  name="position"
-                  width="16px"
-                  height="16px"
-                  fill={colors.coolGrey600}
-                  mt="2px"
-                />
-                <Box flex="1 1 auto" minWidth="0">
-                  <Text as="span" display="block" m="0" fontSize="s">
-                    {formatMessage(label)}
-                  </Text>
-                  <Text
-                    as="span"
-                    display="block"
-                    m="0"
-                    fontSize="xs"
-                    color="coolGrey600"
-                  >
-                    {isSelection && isCurrent
-                      ? formatMessage(messages.areasSelectedCount, {
-                          count: areaIds.length,
-                        })
-                      : formatMessage(description)}
-                  </Text>
-                </Box>
-                {isCurrent && (
-                  <Icon
-                    name="check"
-                    width="16px"
-                    height="16px"
-                    fill={theme.colors.tenantPrimary}
-                    mt="2px"
-                  />
-                )}
-                {isSelection && (
-                  <Icon
-                    name="chevron-right"
-                    width="16px"
-                    height="16px"
-                    fill={colors.coolGrey500}
-                    mt="2px"
-                  />
-                )}
-              </MenuRow>
+              />
             );
           })}
         </MenuPopover>
       )}
 
       {menuOpened && flyoutOpened && (
-        <MenuPopover
+        <AreaFlyout
           anchorRef={selectionRowRef}
-          placement="right"
-          width="200px"
-          maxHeight={FLYOUT_MAX_HEIGHT}
-          onBack={closeFlyout}
+          areaIds={areaIds}
           autoFocus={flyoutFocused}
-        >
-          {(areas?.data ?? []).map((area) => {
-            const checked = areaIds.includes(area.id);
-
-            return (
-              <MenuRow
-                key={area.id}
-                type="button"
-                role="menuitemcheckbox"
-                aria-checked={checked}
-                data-compact
-                data-hide-unchecked
-                onClick={() => toggleArea(area.id)}
-              >
-                <Box
-                  display="flex"
-                  data-unchecked={!checked}
-                  onClick={(event) => event.stopPropagation()}
-                >
-                  <Checkbox
-                    size="16px"
-                    checked={checked}
-                    checkedColor="tenantPrimary"
-                    onChange={() => toggleArea(area.id)}
-                    tabIndex={-1}
-                  />
-                </Box>
-                <Text as="span" m="0" fontSize="s">
-                  {localize(area.attributes.title_multiloc)}
-                </Text>
-              </MenuRow>
-            );
-          })}
-        </MenuPopover>
+          onToggle={toggleArea}
+          onBack={closeFlyout}
+        />
       )}
     </Box>
   );

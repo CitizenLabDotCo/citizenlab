@@ -4,17 +4,18 @@ import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
 
 import { IProjectData } from 'api/projects/types';
 
+import ReadyMark from 'containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/ReadyMark';
+import {
+  getMissingItems,
+  SETUP_ITEMS,
+} from 'containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/setupItems';
+import useSetupReadiness from 'containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/useSetupReadiness';
+
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
-import ReadyMark from '../../ProjectSetupPanel/ReadyMark';
-import {
-  getMissingItems,
-  SETUP_ITEMS,
-} from '../../ProjectSetupPanel/setupItems';
-import useSetupReadiness from '../../ProjectSetupPanel/useSetupReadiness';
 
 import usePublishNow from './usePublishNow';
 

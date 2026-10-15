@@ -20,14 +20,14 @@ import {
   OPEN_OPTIONS,
 } from 'containers/Admin/projects/_shared/visibilityOptions';
 import visibilityMessages from 'containers/Admin/projects/_shared/visibilityOptions/messages';
+import { getMissingItems } from 'containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/setupItems';
+import useSetupReadiness from 'containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/useSetupReadiness';
 
 import OptionRow from 'components/UI/OptionRow';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
-import { getMissingItems } from '../../ProjectSetupPanel/setupItems';
-import useSetupReadiness from '../../ProjectSetupPanel/useSetupReadiness';
 
 import { ConfirmableStatus } from './ConfirmStatusChangeModal';
 import getPublicationState, { PublicationState } from './publicationState';

@@ -27,15 +27,17 @@ const LabelContainer = styled.div<{
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
 
   ${({ variant }) =>
-    variant === 'bo' &&
-    css`
-      flex-wrap: wrap;
-      gap: 4px;
-      margin-bottom: 4px;
-    `}
+    variant === 'bo'
+      ? css`
+          flex-wrap: wrap;
+          gap: 4px;
+          margin-bottom: 4px;
+        `
+      : css`
+          margin-bottom: 10px;
+        `}
 
   ${({ stacked }) => stacked && stackedLabelStyle}
 `;
@@ -55,9 +57,12 @@ const StyledLocaleSwitcher = styled(LocaleSwitcher)`
 `;
 
 const LabelText = styled.span<{ variant: TextAreaProps['variant'] }>`
-  color: ${colors.textSecondary};
-
-  ${({ variant }) => variant === 'bo' && boLabelStyle}
+  ${({ variant }) =>
+    variant === 'bo'
+      ? boLabelStyle
+      : css`
+          color: ${colors.textSecondary};
+        `}
 `;
 
 export interface Props extends Omit<TextAreaProps, 'value' | 'onChange'> {

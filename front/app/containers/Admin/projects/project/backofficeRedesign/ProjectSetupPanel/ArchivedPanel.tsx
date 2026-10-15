@@ -4,9 +4,10 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 
 import { IProjectData } from 'api/projects/types';
 
+import ConfirmStatusChangeModal from 'containers/Admin/projects/project/backofficeRedesign/Header/PublishDropdown/ConfirmStatusChangeModal';
+
 import { useIntl } from 'utils/cl-intl';
 
-import ConfirmStatusChangeModal from '../Header/PublishDropdown/ConfirmStatusChangeModal';
 import messages from '../messages';
 
 import FinalRecordCard from './FinalRecordCard';
