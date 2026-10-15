@@ -12,14 +12,26 @@ import LocaleSwitcher from '../LocaleSwitcher';
 
 import Input, { InputProps } from '.';
 
-const LabelContainer = styled.div`
+export const stackedLabelStyle = css`
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+
+  > label {
+    align-self: flex-start;
+  }
+`;
+
+const LabelContainer = styled.div<{ stacked: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
+
+  ${({ stacked }) => stacked && stackedLabelStyle}
 `;
 
-const boLabelStyle = css`
+export const boLabelStyle = css`
   margin-bottom: 0;
   font-size: ${fontSizes.xs}px;
   line-height: 1.4;
@@ -49,6 +61,7 @@ export interface Props extends Omit<InputProps, 'value' | 'onChange'> {
   errorMultiloc?: Multiloc | null;
   initiallySelectedLocale?: Locale;
   hideLocaleSwitcher?: boolean;
+  stackedLabel?: boolean;
 }
 
 const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
@@ -62,6 +75,7 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
     errorMultiloc,
     initiallySelectedLocale,
     hideLocaleSwitcher,
+    stackedLabel = false,
     ...inputProps
   } = props;
   const { id, className } = props;
@@ -121,7 +135,7 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
     return (
       <Box className={className}>
         <Box mb={props.variant === 'bo' ? '4px' : '10px'}>
-          <LabelContainer>
+          <LabelContainer stacked={stackedLabel}>
             {label ? (
               <StyledLabel htmlFor={id} variant={props.variant}>
                 <span>{label}</span>

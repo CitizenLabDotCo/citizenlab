@@ -14,6 +14,7 @@ import HeaderDropdown from '../HeaderDropdown';
 import ConfirmStatusChangeModal, {
   ConfirmableStatus,
 } from './ConfirmStatusChangeModal';
+import MissingEssentialsModal from './MissingEssentialsModal';
 import getPublicationState, { PublicationState } from './publicationState';
 import PublishPanel from './PublishPanel';
 
@@ -40,6 +41,7 @@ interface Props {
 const PublishDropdown = ({ project, opened, onOpenChange }: Props) => {
   const { formatMessage } = useIntl();
   const [scheduleOpened, setScheduleOpened] = useState(false);
+  const [missingOpened, setMissingOpened] = useState(false);
   const [confirm, setConfirm] = useState<{
     status: ConfirmableStatus;
     opened: boolean;
@@ -80,10 +82,22 @@ const PublishDropdown = ({ project, opened, onOpenChange }: Props) => {
               close();
               setConfirm({ status, opened: true });
             }}
+            onMissingEssentials={() => {
+              close();
+              setMissingOpened(true);
+            }}
             onDone={close}
           />
         }
       />
+
+      {missingOpened && (
+        <MissingEssentialsModal
+          opened
+          project={project}
+          onClose={() => setMissingOpened(false)}
+        />
+      )}
 
       <ScheduleLaunchModal
         opened={scheduleOpened}

@@ -38,7 +38,7 @@ const boLabelStyle = css`
   }
 `;
 
-const boInputStyle = css`
+export const boInputStyle = css`
   height: 36px;
   padding: 0 11px;
   border: 1px solid ${colors.grey300};
