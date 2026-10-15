@@ -123,6 +123,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.collectingNow',
     defaultMessage: 'Collecting now',
   },
+  participation: {
+    id: 'app.containers.Admin.projects.project.participation',
+    defaultMessage: 'Participation',
+  },
   participantsGraphLabel: {
     id: 'app.containers.Admin.projects.project.participantsGraphLabel',
     defaultMessage: 'Participants',
@@ -521,23 +525,6 @@ export default defineMessages({
   actionCreateReport: {
     id: 'app.containers.Admin.projects.project.actionCreateReport',
     defaultMessage: 'Create report',
-  },
-  actionShareResults: {
-    id: 'app.containers.Admin.projects.project.actionShareResults',
-    defaultMessage: 'Share results with participants',
-  },
-  actionArchiveProject: {
-    id: 'app.containers.Admin.projects.project.actionArchiveProject',
-    defaultMessage: 'Archive project',
-  },
-  phaseResultsTitle: {
-    id: 'app.containers.Admin.projects.project.phaseResultsTitle',
-    defaultMessage: 'What each phase produced',
-  },
-  phaseResultsTotal: {
-    id: 'app.containers.Admin.projects.project.phaseResultsTotal',
-    defaultMessage:
-      '{contributions, plural, one {# contribution} other {# contributions}} from {people, plural, one {# person} other {# people}}.',
   },
   phaseUnitInputs: {
     id: 'app.containers.Admin.projects.project.phaseUnitInputs',

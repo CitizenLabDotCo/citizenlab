@@ -27,13 +27,13 @@ const LivePanel = ({ project }: Props) => {
 
   return (
     <Box>
-      {collecting && (
-        <>
-          <PanelHeading title={formatMessage(messages.collectingNow)} />
-          <ParticipantsGraph project={project} />
-          <PanelDivider />
-        </>
-      )}
+      <PanelHeading
+        title={formatMessage(
+          collecting ? messages.collectingNow : messages.participation
+        )}
+      />
+      <ParticipantsGraph project={project} />
+      <PanelDivider />
       <PanelHeading title={formatMessage(messages.nextActions)} />
 
       <Box display="flex" flexDirection="column" gap="8px">

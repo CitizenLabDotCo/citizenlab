@@ -25,7 +25,6 @@ import ProjectDetails from './ProjectDetails';
 import ProjectSettingsModal from './ProjectSettingsModal';
 import SaveError from './SaveError';
 import { SetupDraftProvider } from './SetupDraftContext';
-import WrappedPanel from './WrappedPanel';
 
 interface Props {
   project: IProjectData;
@@ -84,7 +83,6 @@ const ProjectSetupPanel = ({ project }: Props) => {
         ) : (
           <Box>
             {stage === 'live' && <LivePanel project={project} />}
-            {stage === 'wrapped' && <WrappedPanel project={project} />}
             {stage === 'archived' && <ArchivedPanel project={project} />}
             <PanelDivider />
             <ProjectDetails

@@ -25,28 +25,19 @@ describe('getPanelStage', () => {
     ).toBe('draft');
   });
 
-  it('is live while published and a phase runs or is still to come', () => {
-    (['active', 'upcoming', null] as const).forEach((participation_status) => {
-      expect(
-        getPanelStage(
-          withAttributes({
-            publication_status: 'published',
-            participation_status,
-          })
-        )
-      ).toBe('live');
-    });
-  });
-
-  it('is wrapped once every phase of a published project has ended', () => {
-    expect(
-      getPanelStage(
-        withAttributes({
-          publication_status: 'published',
-          participation_status: 'ended',
-        })
-      )
-    ).toBe('wrapped');
+  it('is live while published, whatever its phases', () => {
+    (['active', 'upcoming', 'ended', null] as const).forEach(
+      (participation_status) => {
+        expect(
+          getPanelStage(
+            withAttributes({
+              publication_status: 'published',
+              participation_status,
+            })
+          )
+        ).toBe('live');
+      }
+    );
   });
 
   it('is archived for archived projects, whatever their phases', () => {
