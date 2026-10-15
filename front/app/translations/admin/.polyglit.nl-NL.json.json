@@ -3789,6 +3789,11 @@
     "verified_at": "2026-10-13T15:16:27.528754Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.FeedbackPrompt.saveError": {
+    "state": "verified",
+    "verified_at": "2026-10-15T19:48:41.004325Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.FeedbackPrompt.scaleHint": {
     "state": "verified",
     "verified_at": "2026-10-13T15:16:27.528754Z",
