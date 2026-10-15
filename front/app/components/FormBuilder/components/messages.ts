@@ -366,4 +366,32 @@ export default defineMessages({
     id: 'app.components.formBuilder.inputTagManager',
     defaultMessage: 'Input tags page',
   },
+  demographics: {
+    id: 'app.components.formBuilder.demographics',
+    defaultMessage: 'Demographics',
+  },
+  demographicsAlreadyInForm: {
+    id: 'app.components.formBuilder.demographicsAlreadyInForm',
+    defaultMessage:
+      'The demographic questions are already in this form. Drag that page to move them.',
+  },
+  demographicsNotPossibleInForm: {
+    id: 'app.components.formBuilder.demographicsNotPossibleInForm',
+    defaultMessage:
+      'With the access settings of this phase, demographic questions cannot be asked in the form.',
+  },
+  demographicQuestions: {
+    id: 'app.components.formBuilder.demographicQuestions',
+    defaultMessage: 'Demographic questions',
+  },
+  demographicsPageExplanation: {
+    id: 'app.components.formBuilder.demographicsPageExplanation',
+    defaultMessage:
+      "Participants answer these questions on this page. Answers are also saved to the participant's profile, and the questions are shared across the platform.",
+  },
+  noDemographicQuestionsYet: {
+    id: 'app.components.formBuilder.noDemographicQuestionsYet',
+    defaultMessage:
+      'No demographic questions chosen yet. Click the page to choose them. Without questions, this page is skipped.',
+  },
 });
