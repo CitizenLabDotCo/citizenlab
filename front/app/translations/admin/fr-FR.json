@@ -1497,7 +1497,6 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": "Chaque espace a ses propres dossiers. Changer d'espace efface le dossier sélectionné.",
   "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "Partir de zéro",
   "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": "Utiliser un modèle",
-  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": "Partir de zéro",
   "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": "Partir d'un modèle",
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": "Supprimer l'espace",
   "app.containers.Admin.projects.all.Spaces.Table.noSpacesFound": "Aucun espace trouvé",
