@@ -5074,6 +5074,11 @@
     "verified_at": "2026-10-01T15:04:20.115600Z",
     "verified_by": "Pauline"
   },
+  "app.components.formBuilder.dropMultiplePins1": {
+    "state": "verified",
+    "verified_at": "2026-10-15T19:40:37.751118Z",
+    "verified_by": "Luuc"
+  },
   "app.components.formBuilder.dropPin": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
