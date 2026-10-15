@@ -9,7 +9,7 @@ import { IProjectData } from 'api/projects/types';
 
 import { render, screen } from 'utils/testUtils/rtl';
 
-import ProjectActionButtons from './ProjectActionButtons';
+import ProjectActionButtons from '.';
 
 const day = (offset: number) =>
   format(

@@ -39,8 +39,8 @@ import { isAdmin } from 'utils/permissions/roles';
 import { useLocation, useParams } from 'utils/router';
 import { scrollToElement } from 'utils/scroll';
 
-import { excludeHidden, groupSpotlightSurveys } from './participationOptions';
-import WaysToParticipateModal from './WaysToParticipateModal';
+import { excludeHidden, groupSpotlightSurveys } from '../participationOptions';
+import WaysToParticipateModal from '../WaysToParticipateModal';
 
 interface Props {
   projectId: string;
