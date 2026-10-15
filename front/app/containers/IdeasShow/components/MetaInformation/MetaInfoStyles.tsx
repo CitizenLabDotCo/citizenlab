@@ -1,10 +1,10 @@
-import { fontSizes } from '@citizenlab/cl2-component-library';
+import { fontSizes, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 export const Item = styled.div<{ compact?: boolean }>`
   padding-top: 18px;
   padding-bottom: 20px;
-  border-top: solid 1px #ccc;
+  border-top: solid 1px ${colors.grey400};
 
   &:first-of-type {
     border-top: none;

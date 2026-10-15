@@ -1,6 +1,10 @@
 import React, { memo, useCallback, useState } from 'react';
 
-import { Button, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Button,
+  useBreakpoint,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useIdeaMarkers from 'api/idea_markers/useIdeaMarkers';
@@ -34,7 +38,7 @@ const Header = styled.div`
   flex-direction: column;
   align-items: stretch;
   padding: 20px;
-  border-bottom: solid 1px #ccc;
+  border-bottom: solid 1px ${colors.grey400};
 `;
 
 interface Props {
