@@ -32,6 +32,11 @@ module ProjectGeneration
     # sets the phase + config only — the voting options and the agree/disagree statements
     # are ideas/statements an admin adds after the upstream phase, so none are created here.
     PARTICIPATION_METHODS = %w[information ideation proposals native_survey voting common_ground].freeze
+    # Phase placement (mirror Phase::PLACEMENT_TYPES, inlined to avoid load-order coupling).
+    # 'standalone' runs a phase in parallel with the timeline — only native_survey supports it —
+    # and such a phase is only reachable once a spotlight-survey widget on the project page points
+    # at it (add_spotlight_widgets below). Used for concurrent stakeholder surveys / either-or asks.
+    PLACEMENT_TYPES = %w[on_timeline standalone].freeze
     # Mirror Phase::VOTING_METHODS / Phase::VOTE_TERMS (inlined to avoid load-order coupling).
     VOTING_METHODS = %w[single_voting multiple_voting budgeting].freeze
     VOTE_TERMS = %w[vote point token credit percent].freeze
@@ -58,6 +63,7 @@ module ProjectGeneration
 
     MAX_PHASES = 5
     MAX_EVENTS = 3
+    MAX_STANDALONE_SURVEYS = 3
     MAX_QUESTIONS = 20
     PHASE_DURATION_DAYS = (3..120)
     EVENT_DURATION_MINUTES = (15..480)
@@ -124,11 +130,12 @@ module ProjectGeneration
     PHASE_SCHEMA = {
       type: 'object',
       additionalProperties: false,
-      required: %w[title description participation_method duration_days presentation_mode proposals_reacting_threshold proposals_expire_days collect_demographics survey voting],
+      required: %w[title description participation_method placement duration_days presentation_mode proposals_reacting_threshold proposals_expire_days collect_demographics survey voting],
       properties: {
         title: { type: 'string' },
         description: { type: 'string', description: 'One or two sentences, plain text.' },
         participation_method: { type: 'string', enum: PARTICIPATION_METHODS },
+        placement: { type: 'string', enum: PLACEMENT_TYPES, description: "Where the phase sits. 'on_timeline' (the default — use it for almost everything) is a normal sequential phase. 'standalone' runs the phase in PARALLEL with the timeline and is ONLY allowed for native_survey: use it for a spotlight survey — one or more surveys that run alongside the main timeline at the same time (e.g. a separate survey per stakeholder group, or two surveys residents choose between). A standalone survey overlaps the whole timeline and is surfaced on the project page automatically. Only make a survey standalone when the brief genuinely needs concurrent or either/or surveys; otherwise keep it on_timeline." },
         duration_days: { type: 'integer', description: 'Length of the phase in days.' },
         presentation_mode: { type: 'string', enum: [*PRESENTATION_MODES, ''], description: 'ideation / proposals / voting only: how residents see the list of inputs. "map" for place-based input tied to locations; "feed" for a discussion feel (ideation only); "card" (the default) otherwise. Empty string for other methods.' },
         proposals_reacting_threshold: { type: 'integer', description: 'proposals only: likes a proposal needs to reach to be considered. 0 to use the platform default.' },
@@ -273,16 +280,26 @@ module ProjectGeneration
       # it is left in place for the update_project_layout tool to patch.
       reset_generated_content!
 
-      phases = create_phases(plan['phases'], errors)
+      # Timeline phases are the spine (sequential, back to back). Standalone "spotlight"
+      # surveys run in parallel and are an additive extra, so they are created separately
+      # and best-effort (below), never able to fail the core draft.
+      timeline_plans, standalone_plans = plan['phases'].partition { |phase| phase['placement'] != 'standalone' }
+
+      phases = create_phases(timeline_plans, errors)
       return GenerationResult.new(errors: errors, failed: true) if phases.empty?
 
       update_layout(plan['page_blocks'], errors)
       replace_survey_fields(phases, errors)
       core_failed = errors.any?
 
+      # Best-effort extras: a tool error here is reported but leaves the core draft intact.
+      standalone = create_standalone_surveys(standalone_plans, phases, errors)
+      replace_survey_fields(standalone, errors)
+      add_spotlight_widgets(standalone, errors)
+
       create_events(plan['events'], errors)
       update_project_settings(plan, errors)
-      update_access(phases, plan['audience_index'], plan['verification_required'], errors)
+      update_access(phases + standalone, plan['audience_index'], plan['verification_required'], errors)
       store_assistant_summary(plan)
 
       GenerationResult.new(errors: errors, failed: core_failed)
@@ -336,6 +353,28 @@ module ProjectGeneration
       created
     end
 
+    # Standalone "spotlight" surveys run in PARALLEL with the timeline, spanning the whole
+    # timeline window (today through the end of the last timeline phase) so they are open
+    # alongside every phase. They are only reachable once a spotlight-survey widget points at
+    # them (add_spotlight_widgets), and are best-effort — a failure here never fails the draft.
+    def create_standalone_surveys(standalone_plans, timeline_phases, errors)
+      return [] if standalone_plans.empty? || timeline_phases.empty?
+
+      start = Time.zone.today
+      timeline_days = timeline_phases.sum { |phase| phase[:plan]['duration_days'].to_i }
+      finish = start + ([timeline_days, 1].max - 1).days
+
+      standalone_plans.first(MAX_STANDALONE_SURVEYS).filter_map do |phase_plan|
+        response = call_tool(McpServer::Tools::CreatePhase, create_phase_args(phase_plan, start, finish))
+        if response.error?
+          errors << "create_phase (standalone survey): #{response.content.to_json}"
+          next
+        end
+
+        { plan: phase_plan, id: phase_id(response) }
+      end
+    end
+
     def create_phase_args(phase_plan, start, finish)
       method = phase_plan['participation_method']
       args = {
@@ -346,6 +385,9 @@ module ProjectGeneration
         end_at: finish.iso8601,
         participation_method: method
       }
+      # A standalone (spotlight) survey runs parallel to the timeline; only native_survey
+      # supports it (enforced in clean_phases), and placement_type is immutable after create.
+      args[:placement_type] = 'standalone' if phase_plan['placement'] == 'standalone'
 
       if method == 'native_survey'
         survey_title = phase_plan.dig('survey', 'title').presence || phase_plan['title']
@@ -533,9 +575,14 @@ module ProjectGeneration
         title = phase['title'].to_s.strip
         next if title.blank? || PARTICIPATION_METHODS.exclude?(phase['participation_method'])
 
+        # Only native_survey can run standalone; coerce anything else back onto the timeline.
+        placement = PLACEMENT_TYPES.include?(phase['placement']) ? phase['placement'] : 'on_timeline'
+        placement = 'on_timeline' if placement == 'standalone' && phase['participation_method'] != 'native_survey'
+
         phase.merge(
           'title' => title,
-          'duration_days' => phase['duration_days'].to_i.clamp(PHASE_DURATION_DAYS)
+          'duration_days' => phase['duration_days'].to_i.clamp(PHASE_DURATION_DAYS),
+          'placement' => placement
         )
       end
     end
@@ -676,6 +723,67 @@ module ProjectGeneration
         html << "<p>#{ERB::Util.html_escape(paragraph)}</p>" if paragraph.present?
       end
       html
+    end
+
+    # Surfaces each standalone (spotlight) survey with a spotlight-survey widget on the
+    # project page — a standalone phase is off the timeline, so without a widget pointing at
+    # it the survey has no entry point and shows nowhere. One widget per survey, placed just
+    # above the phase timeline. Runs after update_layout, so it re-reads the patched layout.
+    def add_spotlight_widgets(standalone_phases, errors)
+      return if standalone_phases.empty?
+
+      layout = ContentBuilder::Layout.find_by(
+        content_buildable: @project,
+        code: ContentBuilder::ProjectPageLayoutService::CODE
+      )
+      return errors << 'add_spotlight_widgets: the project has no page layout' if layout.nil?
+
+      stored = layout.craftjs_json || {}
+      body_id = stored.keys.find { |id| resolved_name(stored[id]) == 'ProjectPageBody' }
+      return errors << 'add_spotlight_widgets: the layout has no ProjectPageBody node' if body_id.nil?
+
+      body = stored[body_id]
+      nodes = Array(body['nodes'])
+
+      new_nodes = {}
+      new_ids = standalone_phases.map do |phase|
+        id = SecureRandom.alphanumeric(10)
+        new_nodes[id] = spotlight_node(phase[:id], body_id)
+        id
+      end
+
+      # Place the spotlight CTAs just above the phase timeline (or at the end if there is none).
+      insert_at = nodes.index { |id| resolved_name(stored[id]) == 'PhasesWidget' } || nodes.length
+      new_order = nodes.dup.insert(insert_at, *new_ids)
+
+      patch_nodes = new_nodes.merge(body_id => body.merge('nodes' => new_order))
+      args = { project_id: @project.id, nodes: patch_nodes }
+      response = call_tool(McpServer::Tools::UpdateProjectLayout, args)
+      errors << "add_spotlight_widgets: #{response.content.to_json}" if response.error?
+    end
+
+    # The "Spotlight surveys" widget (node name kept as ExtraSurveysWidget for stored
+    # layouts). Points at one standalone native_survey phase and renders a card CTA.
+    def spotlight_node(survey_phase_id, parent_id)
+      {
+        'type' => { 'resolvedName' => 'ExtraSurveysWidget' },
+        'nodes' => [],
+        'props' => {
+          'surveyPhaseId' => survey_phase_id,
+          'buttonFormat' => 'card',
+          'buttonStyle' => 'primary',
+          'buttonText' => { @locale => I18n.t('project_generation.take_the_survey', locale: @locale, default: 'Take the survey') }
+        },
+        'custom' => {
+          'title' => { 'id' => 'app.components.ProjectPageBuilder.Widgets.extraSurveysWidgetTitle2', 'defaultMessage' => 'Spotlight surveys' },
+          'noPointerEvents' => true
+        },
+        'hidden' => false,
+        'parent' => parent_id,
+        'isCanvas' => false,
+        'displayName' => 'ExtraSurveysWidget',
+        'linkedNodes' => {}
+      }
     end
 
     # ---- shared helpers ---------------------------------------------------------------
