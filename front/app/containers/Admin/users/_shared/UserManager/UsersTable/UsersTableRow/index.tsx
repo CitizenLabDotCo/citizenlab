@@ -30,8 +30,25 @@ interface Props {
 const UsersTableRow = ({ userInRow, selected, toggleSelect }: Props) => {
   const locale = useLocale();
 
-  const userInRowHasRegistered =
-    userInRow.attributes.invite_status !== 'pending';
+  const { invite_status, registration_completed_at } = userInRow.attributes;
+
+  const renderRegisteredAt = () => {
+    if (invite_status === 'pending') {
+      return (
+        <i>
+          <FormattedMessage {...messages.userInvitationPending} />
+        </i>
+      );
+    }
+    if (!registration_completed_at) {
+      return (
+        <i>
+          <FormattedMessage {...messages.registrationNotCompleted} />
+        </i>
+      );
+    }
+    return moment(registration_completed_at).format('LL');
+  };
 
   return (
     <>
@@ -62,14 +79,7 @@ const UsersTableRow = ({ userInRow, selected, toggleSelect }: Props) => {
 
           https://citizenlab.atlassian.net/browse/CL-2255
         */}
-
-          {userInRowHasRegistered ? (
-            moment(userInRow.attributes.registration_completed_at).format('LL')
-          ) : (
-            <i>
-              <FormattedMessage {...messages.userInvitationPending} />
-            </i>
-          )}
+          {renderRegisteredAt()}
         </RegisteredAt>
 
         <Td>
