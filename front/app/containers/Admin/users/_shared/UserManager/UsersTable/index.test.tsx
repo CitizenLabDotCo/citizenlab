@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IUserData } from 'api/users/types';
+import { makeUser } from 'api/users/__mocks__/useUsers';
 
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
 
@@ -8,9 +8,7 @@ import UsersTable from '.';
 
 jest.mock('./UsersTableRow', () => () => null);
 
-const usersList = [
-  { id: 'e1a4f0a8-0a07-4a6e-9f6e-2a3b6f9d0c11', type: 'user' },
-] as IUserData[];
+const usersList = [makeUser().data];
 
 const renderTable = (
   sort: 'registration_completed_at' | '-registration_completed_at',

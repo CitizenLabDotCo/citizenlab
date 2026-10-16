@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Tr, Td, colors, Checkbox } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
 import styled from 'styled-components';
 
 import { IUserData } from 'api/users/types';
@@ -12,10 +11,9 @@ import ActionsMenu from 'components/admin/UsersTable/ActionsMenu';
 import NameAvatarEmail from 'components/admin/UsersTable/NameAvatarEmail';
 import UserRole from 'components/admin/UsersTable/UserRole';
 
-import { FormattedMessage } from 'utils/cl-intl';
 import { timeAgo } from 'utils/dateUtils';
 
-import messages from '../../../../messages';
+import RegistrationStatus from './RegistrationStatus';
 
 const RegisteredAt = styled(Td)`
   white-space: nowrap;
@@ -29,26 +27,6 @@ interface Props {
 
 const UsersTableRow = ({ userInRow, selected, toggleSelect }: Props) => {
   const locale = useLocale();
-
-  const { invite_status, registration_completed_at } = userInRow.attributes;
-
-  const renderRegisteredAt = () => {
-    if (invite_status === 'pending') {
-      return (
-        <i>
-          <FormattedMessage {...messages.userInvitationPending} />
-        </i>
-      );
-    }
-    if (!registration_completed_at) {
-      return (
-        <i>
-          <FormattedMessage {...messages.registrationNotCompleted} />
-        </i>
-      );
-    }
-    return moment(registration_completed_at).format('LL');
-  };
 
   return (
     <>
@@ -71,15 +49,7 @@ const UsersTableRow = ({ userInRow, selected, toggleSelect }: Props) => {
             timeAgo(Date.parse(userInRow.attributes.last_active_at), locale)}
         </Td>
         <RegisteredAt>
-          {/*
-          For the 'all registered users' group, we do not show invited Users who have not yet accepted their invites,
-          but we do in groups they have been added to when invited.
-
-          The 'Invitation pending' messages should clarify this.
-
-          https://citizenlab.atlassian.net/browse/CL-2255
-        */}
-          {renderRegisteredAt()}
+          <RegistrationStatus user={userInRow} />
         </RegisteredAt>
 
         <Td>
