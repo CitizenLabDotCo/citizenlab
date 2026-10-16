@@ -744,6 +744,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.ManagersOnlyAnswerNote.managersOnly": {
+    "state": "verified",
+    "verified_at": "2026-10-16T10:20:37.806436Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.components.CustomFieldsForm.ModeratorsOnlyAnswerNote.moderatorsOnly": {
     "state": "verified",
     "verified_at": "2026-10-14T11:27:28.709178Z",
@@ -5473,6 +5478,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
+  },
+  "app.components.formBuilder.managersOnly": {
+    "state": "verified",
+    "verified_at": "2026-10-16T10:20:37.806436Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.components.formBuilder.mapConfiguration": {
     "state": "verified",
