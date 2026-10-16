@@ -16,6 +16,7 @@ import WorkspaceHeader from './Header';
 import { HeaderDropdownName } from './Header/HeaderDropdown';
 import MethodSettings from './Phase/MethodSettings';
 import { viewFromPathname } from './Phase/usePhaseViews';
+import ProjectEditChat from './ProjectEditChat';
 import ProjectSetupPanel from './ProjectSetupPanel';
 import SetupLeftPanel from './SetupLeftPanel';
 
@@ -154,17 +155,25 @@ const ProjectWorkspace = ({
       >
         {!inPhase && setupSlot}
 
-        <Box
-          flexGrow={1}
-          minWidth="0"
-          minHeight="0"
-          overflowY="auto"
-          display="flex"
-          flexDirection="column"
-          borderRadius={bo.panelBorderRadius}
-          background={colors.grey100}
-        >
-          {children}
+        <Box flexGrow={1} minWidth="0" minHeight="0" position="relative" display="flex">
+          <Box
+            flexGrow={1}
+            minWidth="0"
+            minHeight="0"
+            overflowY="auto"
+            display="flex"
+            flexDirection="column"
+            borderRadius={bo.panelBorderRadius}
+            background={colors.grey100}
+          >
+            {children}
+          </Box>
+
+          {/* The persistent "chat to change anything" entry, floating over the
+              preview — only in the project setup view, not inside a phase. */}
+          {!inPhase && aiProjectGeneratorEnabled && (
+            <ProjectEditChat project={project} />
+          )}
         </Box>
 
         {inPhase ? phaseSlot : timelineSlot}
