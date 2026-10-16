@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, bo } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -74,9 +74,14 @@ const NewMenu = () => {
     <Box position="relative">
       <Button
         className="intercom-admin-projects-new-project-button"
+        // As the redesigned project pages' header buttons.
+        buttonStyle="bo-primary"
+        height={bo.buttonMedium.height}
+        padding={bo.buttonMedium.padding}
+        fontSize={bo.buttonMedium.fontSize}
+        iconSize={bo.buttonMedium.iconSize}
         icon="chevron-down"
         iconPos="right"
-        buttonStyle="admin-dark"
         onClick={() => setOpened(!opened)}
         aria-haspopup="menu"
         aria-expanded={opened}

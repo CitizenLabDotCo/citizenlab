@@ -35,8 +35,8 @@ const moveId = (ids: string[], draggedId: string, overId: string) => {
 };
 
 // A group's items in the order to show them. While an item is dragged, it
-// shows where it would land and the others make room, as in the prototype; a
-// drop sends it to the ordering of the item that was in that place. The
+// shows where it would land and the others make room; a drop sends it to the
+// ordering of the item that was in that place. The
 // shown order stays until the saved one comes back, so the items don't jump
 // back while the change saves.
 const useArrangeGroup = <T extends Arrangeable>({

@@ -42,8 +42,13 @@ const NewProjectButton = () => {
       <Button
         data-cy="e2e-new-project-button"
         className="intercom-admin-projects-new-project-button"
-        icon="plus-circle"
-        buttonStyle="admin-dark"
+        // As the redesigned project pages' header buttons.
+        buttonStyle="bo-primary"
+        height={bo.buttonMedium.height}
+        padding={bo.buttonMedium.padding}
+        fontSize={bo.buttonMedium.fontSize}
+        iconSize={bo.buttonMedium.iconSize}
+        icon="plus"
         onClick={() => setDropdownOpened(!dropdownOpened)}
         aria-haspopup="menu"
         aria-expanded={dropdownOpened}

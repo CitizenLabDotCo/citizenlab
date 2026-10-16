@@ -5,3 +5,6 @@ export const PAGE_SIZE = 50;
 // list's query key leaves out the page size, so each list asked for whole
 // must use this one size to share its cache.
 export const WHOLE_LIST_SIZE = 1000;
+
+// Between the page's content and its edges.
+export const PAGE_SIDE_PADDING = '32px';

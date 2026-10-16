@@ -12,9 +12,8 @@ export const FLYOUT_GAP = 4;
 // Kept between a flyout and the edges of the window.
 export const WINDOW_MARGIN = 16;
 
-// The side of its menu a flyout opens on, as in the prototype: the right where
-// the window has room for it, else the left, as for a "⋯" at the right of the
-// page.
+// The side of its menu a flyout opens on: the right where the window has room
+// for it, else the left, as for a "⋯" at the right of the page.
 export const getFlyoutSide = (menuRight: number, windowWidth: number) =>
   menuRight + FLYOUT_GAP + FLYOUT_WIDTH <= windowWidth - WINDOW_MARGIN
     ? 'right'

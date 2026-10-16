@@ -31,9 +31,9 @@ interface Params {
 
 const byTitle = (a: Named, b: Named) => a.title.localeCompare(b.title);
 
-// The places an item can be moved to, as the prototype lists them: each space,
-// followed by its folders for a project; for admins, then the folders outside
-// any space and a way out of them all.
+// The places an item can be moved to: each space, followed by its folders for
+// a project; for admins, then the folders outside any space and a way out of
+// them all.
 export const getDestinations = ({
   item,
   spaces,
