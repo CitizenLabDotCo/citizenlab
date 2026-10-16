@@ -17,8 +17,6 @@ interface Options {
   markDirty: () => void;
 }
 
-// The files attached to the event in useEventForm. Changes are staged until
-// the form saves.
 const useEventFormAttachments = ({
   projectId,
   eventId,

@@ -30,7 +30,6 @@ interface Props {
   children: ReactNode;
 }
 
-// One bordered row of date or time pickers, each in a DateFieldSegment.
 const DateFieldRow = ({ icon, children }: Props) => (
   <Row>
     <Box display="flex" mr="4px">

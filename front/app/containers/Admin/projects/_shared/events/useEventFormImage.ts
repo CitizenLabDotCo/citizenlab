@@ -15,8 +15,6 @@ interface Options {
   markDirty: () => void;
 }
 
-// The image of the event in useEventForm. A new image or alt text is kept
-// until the form saves.
 const useEventFormImage = ({ event, markDirty }: Options) => {
   const { data: remoteImage } = useEventImage(event?.data);
   const { mutateAsync: addEventImage } = useAddEventImage();

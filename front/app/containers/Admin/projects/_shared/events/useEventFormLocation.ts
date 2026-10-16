@@ -3,14 +3,11 @@ import { useEffect, useRef, useState } from 'react';
 import { geocode } from 'utils/locationTools';
 
 interface Options {
-  /** Undefined while the address isn't changed. */
   changedAddress?: string | null;
   savedPoint: GeoJSON.Point | null;
   markDirty: () => void;
 }
 
-// The map point of the event in useEventForm. A changed address is looked up
-// to move the point, and the user can move it by hand.
 const useEventFormLocation = ({
   changedAddress,
   savedPoint,
@@ -62,7 +59,6 @@ const useEventFormLocation = ({
     return point;
   };
 
-  // A point moved during the save is kept for the next one.
   const markPointSaved = (point: GeoJSON.Point | null | undefined) =>
     setLocationPoint((current) => (current === point ? undefined : current));
 
