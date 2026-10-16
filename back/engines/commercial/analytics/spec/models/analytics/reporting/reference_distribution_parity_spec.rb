@@ -29,11 +29,12 @@ RSpec.describe 'reporting_reference_distributions parity with the representative
       create_list(:user, count) { |user| user.custom_field_answers.create!(key: 'gender', value: value) }
     end
 
-    rscore = recipe_rscore('gender', 'SELECT user_id, question_id, answer_value FROM reporting_user_question_answers') do
+    view_rscore = recipe_rscore('gender', 'SELECT user_id, question_id, answer_value FROM reporting_user_question_answers') do
       'u.question_id = d.question_id AND u.answer_value = d.answer_value'
     end
+    dashboard_rscore = distribution.compute_rscore(User.all).value
 
-    expect(rscore).to be_within(0.0001).of(distribution.compute_rscore(User.all).value)
+    expect(view_rscore).to be_within(0.0001).of(dashboard_rscore)
   end
 
   it 'gives no score, instead of failing, when no user matches any row' do
@@ -42,12 +43,13 @@ RSpec.describe 'reporting_reference_distributions parity with the representative
     distribution = create(:categorical_distribution, custom_field: gender, distribution: { male.id => 480, female.id => 520 })
     create(:user)
 
-    rscore = recipe_rscore('gender', 'SELECT user_id, question_id, answer_value FROM reporting_user_question_answers') do
+    view_rscore = recipe_rscore('gender', 'SELECT user_id, question_id, answer_value FROM reporting_user_question_answers') do
       'u.question_id = d.question_id AND u.answer_value = d.answer_value'
     end
+    dashboard_rscore = distribution.compute_rscore(User.all).value
 
-    expect(rscore).to be_nil
-    expect(distribution.compute_rscore(User.all).value).to be_nan
+    expect(view_rscore).to be_nil
+    expect(dashboard_rscore).to be_nan
   end
 
   it 'gives the dashboard R-score for an age distribution' do
@@ -64,11 +66,12 @@ RSpec.describe 'reporting_reference_distributions parity with the representative
       FROM reporting_user_question_answers
       WHERE question_key = 'birthyear'
     SQL
-    rscore = recipe_rscore('birthyear', ages_sql) do
+    view_rscore = recipe_rscore('birthyear', ages_sql) do
       'u.age >= d.min_age AND (d.max_age IS NULL OR u.age < d.max_age)'
     end
+    dashboard_rscore = distribution.compute_rscore(User.all).value
 
-    expect(rscore).to be_within(0.0001).of(distribution.compute_rscore(User.all).value)
+    expect(view_rscore).to be_within(0.0001).of(dashboard_rscore)
   end
 
   it 'treats an invalid numeric birth year as unknown instead of failing the age recipe' do
@@ -81,7 +84,6 @@ RSpec.describe 'reporting_reference_distributions parity with the representative
       SELECT #{age} FROM reporting_user_question_answers WHERE question_key = 'birthyear'
     SQL
 
-    expect(ages.compact.size).to eq 1
-    expect(ages.size).to eq 2
+    expect(ages).to contain_exactly(a_value_within(1).of(Time.zone.today.year - 1990), nil)
   end
 end

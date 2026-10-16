@@ -1,11 +1,12 @@
 import React from 'react';
 
+import { colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 const StyledIframe = styled.iframe`
   height: 600px;
   width: 100%;
-  border: 1px solid #ccc;
+  border: 1px solid ${colors.grey400};
 `;
 
 type Props = {

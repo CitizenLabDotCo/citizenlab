@@ -1214,6 +1214,11 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.components.ErrorBoundary.reloadPage": {
+    "state": "verified",
+    "verified_at": "2026-10-02T14:09:45.404706Z",
+    "verified_by": "Pauline"
+  },
   "app.components.ErrorToast.budgetExceededError": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -3858,6 +3863,26 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.components.UI.PillPicker.clearSearch": {
+    "state": "verified",
+    "verified_at": "2026-10-15T20:02:07.801608Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.UI.PillPicker.done": {
+    "state": "verified",
+    "verified_at": "2026-10-15T20:02:07.801608Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.UI.PillPicker.remove": {
+    "state": "verified",
+    "verified_at": "2026-10-15T20:02:07.801608Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.UI.PillPicker.selectedCount": {
+    "state": "verified",
+    "verified_at": "2026-10-15T20:02:07.801608Z",
+    "verified_by": "Luuc"
   },
   "app.components.UI.RemoveImageButton.a11y_removeImage": {
     "state": "verified",
@@ -10848,6 +10873,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.containers.NotificationMenu.reportGenerated": {
+    "state": "verified",
+    "verified_at": "2026-10-15T20:02:07.801608Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.NotificationMenu.reportGeneratedStoppedEarly": {
+    "state": "verified",
+    "verified_at": "2026-10-15T20:02:07.801608Z",
+    "verified_by": "Luuc"
   },
   "app.containers.NotificationMenu.spaceModerationRightsReceived": {
     "state": "verified",

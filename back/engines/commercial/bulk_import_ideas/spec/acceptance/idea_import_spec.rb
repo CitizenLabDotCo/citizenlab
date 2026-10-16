@@ -146,6 +146,70 @@ resource 'BulkImportIdeasImportIdeas' do
       end
     end
 
+    get 'web_api/v1/phases/:phase_id/importer/approved_records/idea' do
+      let(:project) { create(:project_with_active_native_survey_phase) }
+      let(:phase) { project.phases.first }
+      let(:phase_id) { phase.id }
+
+      let!(:approved_ideas) do
+        create_list(:idea, 3, project: project, creation_phase: phase, phases: [phase], publication_status: 'draft').map.with_index do |idea, index|
+          idea.update!(idea_import: create(:idea_import, idea: idea))
+          idea.update!(publication_status: 'published')
+          idea.idea_import.update!(approved_at: index.hours.ago)
+          idea
+        end
+      end
+
+      example 'Get the approved imported ideas for a phase, most recently approved first' do
+        # Still awaiting review: excluded.
+        draft = create(:idea, project: project, creation_phase: phase, phases: [phase], publication_status: 'draft')
+        draft.update!(idea_import: create(:idea_import, idea: draft))
+        # Approval undone: excluded, and the approval timestamp is cleared so a
+        # re-approval behaves like a first approval.
+        approved_ideas[2].update!(publication_status: 'draft')
+        expect(approved_ideas[2].idea_import.reload.approved_at).to be_nil
+
+        do_request
+        assert_status 200
+
+        expect(response_data.pluck(:id)).to eq [approved_ideas[0].id, approved_ideas[1].id]
+        expect(response_data.first.dig(:relationships, :idea_import, :data)).not_to be_nil
+        expect(json_response_body[:included].pluck(:type)).to include 'idea_import'
+      end
+
+      example 'Should only return approved ideas created via the importer' do
+        create(:idea, project: project, creation_phase: phase, phases: [phase], publication_status: 'published')
+
+        do_request
+        assert_status 200
+        expect(response_data.pluck(:id)).to match_array approved_ideas.map(&:id)
+      end
+
+      example 'Undoing and re-approving stamps a fresh approval and keeps earlier content changes' do
+        idea = approved_ideas[0]
+
+        idea.update!(publication_status: 'draft')
+        idea.update!(publication_status: 'published', title_multiloc: { 'en' => 'Fixed title' })
+        first_reapproval = idea.idea_import.reload
+        expect(first_reapproval.approved_at).to be_present
+        expect(first_reapproval.content_changes).to have_key('title_multiloc')
+
+        idea.update!(publication_status: 'draft')
+        idea.update!(publication_status: 'published', body_multiloc: { 'en' => '<p>Fixed body</p>' })
+        content_changes = idea.idea_import.reload.content_changes
+        expect(content_changes).to have_key('title_multiloc')
+        expect(content_changes).to have_key('body_multiloc')
+      end
+
+      example 'Paginates the approved ideas' do
+        do_request('page[size]' => 2, 'page[number]' => 1)
+        assert_status 200
+
+        expect(response_data.count).to eq 2
+        expect(json_response_body[:links][:next]).to be_present
+      end
+    end
+
     patch 'web_api/v1/phases/:phase_id/importer/approve_all/idea' do
       let(:phase) { create(:phase) }
       let!(:draft_ideas) do
@@ -221,6 +285,12 @@ resource 'BulkImportIdeasImportIdeas' do
         end
       end
 
+      get 'web_api/v1/phases/:phase_id/importer/approved_records/idea' do
+        example_request 'Getting approved ideas is authorized' do
+          assert_status 200
+        end
+      end
+
       get 'web_api/v1/idea_imports/:id' do
         let(:id) { create(:idea_import, idea: create(:idea, project: survey_project)).id }
 
@@ -247,6 +317,12 @@ resource 'BulkImportIdeasImportIdeas' do
 
       get 'web_api/v1/phases/:phase_id/importer/draft_records/idea' do
         example_request 'Getting draft ideas is NOT authorized' do
+          assert_status 401
+        end
+      end
+
+      get 'web_api/v1/phases/:phase_id/importer/approved_records/idea' do
+        example_request 'Getting approved ideas is NOT authorized' do
           assert_status 401
         end
       end

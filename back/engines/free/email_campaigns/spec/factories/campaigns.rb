@@ -165,6 +165,10 @@ FactoryBot.define do
     enabled { true }
   end
 
+  factory :report_generated_campaign, class: 'EmailCampaigns::Campaigns::ReportGenerated' do
+    enabled { true }
+  end
+
   factory :project_review_request_campaign, class: 'EmailCampaigns::Campaigns::ProjectReviewRequest' do
     enabled { true }
   end

@@ -1,4 +1,5 @@
-import { getSelectedView } from './utils';
+import { IPhaseData } from './types';
+import { getPhaseSaveRedirectTab, getSelectedView } from './utils';
 
 describe('getSelectedView', () => {
   it('returns the default view when no view is requested', () => {
@@ -47,5 +48,21 @@ describe('getSelectedView', () => {
         defaultView: 'card',
       })
     ).toBe('feed');
+  });
+});
+
+describe('getPhaseSaveRedirectTab', () => {
+  const phase = (participation_method) =>
+    ({ attributes: { participation_method } } as IPhaseData);
+
+  it('returns the survey form tab for a native survey phase', () => {
+    expect(getPhaseSaveRedirectTab(phase('native_survey'))).toBe('survey-form');
+  });
+
+  it('keeps the regular landing tab for other participation methods', () => {
+    expect(getPhaseSaveRedirectTab(phase('ideation'))).toBe('ideas');
+    expect(getPhaseSaveRedirectTab(phase('proposals'))).toBe('proposals');
+    expect(getPhaseSaveRedirectTab(phase('poll'))).toBe('polls');
+    expect(getPhaseSaveRedirectTab(phase('information'))).toBe('setup');
   });
 });

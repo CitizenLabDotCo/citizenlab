@@ -11,6 +11,9 @@ interface ReportContextBase {
   reportId?: string;
   phaseId?: string;
   contentBuilderLocale?: SupportedLocale;
+  // Set once the PDF path has screenshotted every live map, after which a map is
+  // rendered as that screenshot. See MapQuestions.
+  mapsCaptured?: boolean;
 }
 
 export interface ReportContextProps extends ReportContextBase {
@@ -32,6 +35,7 @@ export const ReportContextProvider = ({
   reportId,
   phaseId,
   contentBuilderLocale,
+  mapsCaptured,
   children,
 }: ReportContextProps) => {
   const { data: phase } = usePhase(phaseId);
@@ -48,6 +52,7 @@ export const ReportContextProvider = ({
         projectId,
         phaseId,
         contentBuilderLocale,
+        mapsCaptured,
       }}
     >
       {children}

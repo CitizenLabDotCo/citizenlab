@@ -291,6 +291,63 @@ describe UserPolicy do
     end
   end
 
+  describe 'intercom_token?' do
+    subject { described_class.new(current_user, :user).intercom_token? }
+
+    let(:current_user) { create(:admin) }
+    let(:secret) { 'intercom-messenger-secret' }
+
+    before do
+      SettingsService.new.activate_feature!('intercom')
+      allow(ENV).to receive(:fetch).and_call_original
+      allow(ENV).to receive(:fetch).with('INTERCOM_MESSENGER_SECRET', nil).and_return(secret)
+    end
+
+    it { is_expected.to be true }
+
+    context 'for a super admin' do
+      let(:current_user) { create(:super_admin) }
+
+      it { is_expected.to be true }
+    end
+
+    context 'for a project moderator' do
+      let(:current_user) { create(:project_moderator) }
+
+      it { is_expected.to be true }
+    end
+
+    context 'for a folder moderator' do
+      let(:current_user) { create(:project_folder_moderator) }
+
+      it { is_expected.to be true }
+    end
+
+    context 'for a resident' do
+      let(:current_user) { create(:user) }
+
+      it { is_expected.to be false }
+    end
+
+    context 'for a visitor' do
+      let(:current_user) { nil }
+
+      it { is_expected.to be_falsey }
+    end
+
+    context 'when the intercom feature is not active' do
+      before { SettingsService.new.deactivate_feature!('intercom') }
+
+      it { is_expected.to be false }
+    end
+
+    context 'when the secret is missing' do
+      let(:secret) { nil }
+
+      it { is_expected.to be false }
+    end
+  end
+
   describe 'permitted_attributes_for_update' do
     subject(:permitted) { described_class.new(current_user, subject_user).permitted_attributes_for_update }
 
