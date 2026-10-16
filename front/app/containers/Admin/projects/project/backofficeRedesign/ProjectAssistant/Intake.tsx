@@ -223,7 +223,11 @@ const Intake = ({
                   <DetailInput
                     type="text"
                     value={answer?.detail ?? ''}
-                    placeholder={formatMessage(question.detailPlaceholder)}
+                    placeholder={
+                      question.detailPlaceholder
+                        ? formatMessage(question.detailPlaceholder)
+                        : undefined
+                    }
                     disabled={disabled}
                     onChange={(event) =>
                       onDetail(question.id, event.target.value)

@@ -155,7 +155,7 @@ const WorkingIndicator = ({ startedAt }: Props) => {
     >
       <Box display="flex" alignItems="center" gap="12px">
         <Box
-          flexShrink="0"
+          flexShrink={0}
           width="36px"
           height="36px"
           display="flex"
