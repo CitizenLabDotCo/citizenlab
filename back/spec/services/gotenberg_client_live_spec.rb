@@ -22,6 +22,7 @@ RSpec.describe GotenbergClient, type: :service do
     # Address the Gotenberg container can reach us on: our IP on the shared
     # docker network (not loopback, which would resolve inside Gotenberg).
     host = Socket.ip_address_list.find { |a| a.ipv4? && !a.ipv4_loopback? }&.ip_address
+    expect(host).to be_present # otherwise the probe URL is "http://:port" and the test passes vacuously
 
     listener = Thread.new do
       loop do
