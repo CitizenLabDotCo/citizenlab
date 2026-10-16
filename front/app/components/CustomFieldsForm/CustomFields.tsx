@@ -317,6 +317,7 @@ const CustomFields = ({
               data-question-id={question.id}
             >
               <FormLabel {...labelProps} />
+              {answerNotPublic && <ManagersOnlyAnswerNote />}
               <Text mt="4px" mb="8px" fontSize="s">
                 {getInstructionMessage({
                   minItems: question.minimum_select_count,
@@ -345,7 +346,6 @@ const CustomFields = ({
                   />
                 )}
               </Box>
-              {answerNotPublic && <ManagersOnlyAnswerNote />}
               {question.code && inputIqFields.includes(question.code) && (
                 <InputIQ phase={phase} field={question} />
               )}
