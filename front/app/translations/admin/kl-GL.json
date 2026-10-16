@@ -957,6 +957,7 @@
   "app.containers.Admin.Users.SeatsOverview.role": "Inissisimaffik",
   "app.containers.Admin.Users.SeatsOverview.title": "Inissat takussutissartaat",
   "app.containers.Admin.Users.SeatsOverview.unknown": "Ilisimaneqanngitsoq",
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": "Nalunaarsunneq naammassineqanngilaq",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Invitation pending",
   "app.containers.Admin.Users.admin": "Aqutsisoq",
   "app.containers.Admin.Users.alreadyManager": "Aqutsisoreerpoq",

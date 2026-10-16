@@ -957,6 +957,7 @@
   "app.containers.Admin.Users.SeatsOverview.role": "Rolle",
   "app.containers.Admin.Users.SeatsOverview.title": "Übersicht der Zugänge",
   "app.containers.Admin.Users.SeatsOverview.unknown": "Unbekannt",
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": "Registrierung nicht abgeschlossen",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Einladung ausstehend",
   "app.containers.Admin.Users.admin": "Admin",
   "app.containers.Admin.Users.alreadyManager": "Bereits Manager*innen",
