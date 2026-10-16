@@ -449,6 +449,10 @@ export default defineMessages({
     defaultMessage:
       'You can specify who can take each action, and ask additional questions to participants to collect more information.',
   },
+  savedLabel: {
+    id: 'app.containers.Admin.projects.project.savedLabel',
+    defaultMessage: 'Saved',
+  },
   unsavedChangesTitle: {
     id: 'app.containers.Admin.projects.project.unsavedChangesTitle',
     defaultMessage: 'Unsaved changes',

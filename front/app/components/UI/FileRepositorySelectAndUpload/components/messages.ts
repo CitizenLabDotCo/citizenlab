@@ -17,4 +17,12 @@ export default defineMessages({
     id: 'app.components.FileRepositorySelectAndUpload.or',
     defaultMessage: 'or',
   },
+  removeFile: {
+    id: 'app.components.FileRepositorySelectAndUpload.removeFile',
+    defaultMessage: 'Remove',
+  },
+  removeFileAriaLabel: {
+    id: 'app.components.FileRepositorySelectAndUpload.removeFileAriaLabel',
+    defaultMessage: 'Remove {fileName}',
+  },
 });
