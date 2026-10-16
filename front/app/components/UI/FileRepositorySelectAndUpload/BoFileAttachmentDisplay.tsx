@@ -1,11 +1,12 @@
 import React, { useRef } from 'react';
 
 import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
-import { useDrag, useDrop } from 'react-dnd';
 import styled from 'styled-components';
 
 import { IFileAttachmentData } from 'api/file_attachments/types';
 import useFileById from 'api/files/useFileById';
+
+import useSortableItem from 'hooks/useSortableItem';
 
 import IconAction from 'components/UI/IconAction';
 
@@ -24,10 +25,6 @@ const FileLink = styled.a`
     text-decoration: underline;
   }
 `;
-
-interface DragItem {
-  index: number;
-}
 
 interface Props {
   fileAttachment: IFileAttachmentData;
@@ -50,29 +47,13 @@ const BoFileAttachmentDisplay = ({
   const ref = useRef<HTMLDivElement | null>(null);
   const { data: file } = useFileById(fileAttachment.relationships.file.data.id);
 
-  const [, drop] = useDrop<DragItem>({
-    accept: DRAG_TYPE,
-    hover(item, monitor) {
-      const clientOffset = monitor.getClientOffset();
-      if (!ref.current || !clientOffset || item.index === index) return;
-
-      const { top, bottom } = ref.current.getBoundingClientRect();
-      const middleY = (bottom - top) / 2;
-      const pointerY = clientOffset.y - top;
-      if (item.index < index && pointerY < middleY) return;
-      if (item.index > index && pointerY > middleY) return;
-
-      moveRow(item.index, index);
-      item.index = index;
-    },
-  });
-
-  const [{ isDragging }, drag] = useDrag({
+  const { drag, drop, isDragging } = useSortableItem({
     type: DRAG_TYPE,
     item: { index },
+    ref,
+    moveRow,
+    onDrop: dropRow,
     canDrag: !disabled,
-    collect: (monitor) => ({ isDragging: monitor.isDragging() }),
-    end: dropRow,
   });
 
   drag(drop(ref));
