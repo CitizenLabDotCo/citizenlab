@@ -2308,7 +2308,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.Cover.subtitleLabel": "Undertitel",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.Cover.titleLabel": "Titel",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.Cover.titlePlaceholder": "Rapporttitel",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.Divider.divider": "Delelinje",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.Divider.divider": "Skillelinje",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.Divider.variantDots": "Punkteret linje",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.Divider.variantHairline": "Tynd linje",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.Divider.variantLabel": "Stil",
