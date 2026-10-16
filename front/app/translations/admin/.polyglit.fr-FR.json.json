@@ -8064,6 +8064,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.all.new.Projects.Filters.clearFilters": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:30:42.690999Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.projects.all.new.Projects.Filters.noMoreFilters": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -8328,6 +8333,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.all.new.filterCount": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:30:42.690999Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.all.new.filteredProjectCount": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:30:42.690999Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.Admin.projects.all.new.folders": {
     "state": "verified",

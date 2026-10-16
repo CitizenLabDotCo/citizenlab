@@ -12,6 +12,7 @@ import messages from './messages';
 
 export interface Props {
   defaultValue?: string;
+  value?: string | null;
   placeholder?: string;
   ariaLabel?: string;
   debounce?: number;
@@ -32,6 +33,7 @@ export interface Props {
 
 const SearchInputWrapper = ({
   defaultValue,
+  value,
   placeholder,
   ariaLabel,
   debounce,
@@ -90,6 +92,7 @@ const SearchInputWrapper = ({
     <>
       <SearchInput
         defaultValue={defaultValue}
+        value={value}
         id="search-input"
         placeholder={placeholder || formatMessage(messages.searchPlaceholder)}
         ariaLabel={ariaLabel || formatMessage(messages.searchAriaLabel)}
