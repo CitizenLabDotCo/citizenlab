@@ -29,11 +29,9 @@ const CommunityMonitorSurveyFormBuilder = () => {
 
   return (
     <FormBuilder
-      builderConfig={{
-        ...communityMonitorConfig,
-        formCustomFields,
-        goBackUrl: `/admin/community-monitor/settings`,
-      }}
+      builderConfig={communityMonitorConfig}
+      formCustomFields={formCustomFields}
+      goBackUrl="/admin/community-monitor/settings"
       viewFormLink={{
         to: '/projects/$slug/surveys/new',
         params: { slug: project.data.attributes.slug },

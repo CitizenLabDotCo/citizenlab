@@ -72,6 +72,8 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
       'User' => %w[
         confirmation_required
         early_access_opt_ins
+        email_bounce_reason
+        email_bounced_at
         email_confirmed_at
         imported
         invite_status
@@ -105,12 +107,7 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
       # and rebuilt downstream — never seeded from a project copy.
       analytics: %w[
         Analytics::DimensionDate
-        Analytics::DimensionLocale
-        Analytics::DimensionLocalesFactVisits
-        Analytics::DimensionProjectsFactVisits
-        Analytics::DimensionReferrerType
         Analytics::DimensionType
-        Analytics::FactVisit
       ],
 
       # AI analysis, insights and embeddings — derived from user content.
@@ -257,6 +254,13 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         StaticPageFile
         StaticPagesGlobalTopic
         StaticPagesSpace
+      ],
+
+      # AI-authored page builder blocks are tenant-wide CMS content, not scoped to
+      # a project. A query snapshot is a cached answer, rebuilt on demand. A chat and
+      # a generation transcript record how a report was written, not the report.
+      llm_reporting: %w[
+        ReportBuilder::GenerationTranscript
       ],
 
       # Per-tenant admin moderation runtime (internal comments on ideas — not

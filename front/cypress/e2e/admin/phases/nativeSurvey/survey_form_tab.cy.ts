@@ -1,3 +1,5 @@
+import { randomString } from '../../../../support/commands';
+
 describe('Survey Form Tab Navigation', () => {
   let projectId: string;
   let projectSlug: string;
@@ -41,5 +43,55 @@ describe('Survey Form Tab Navigation', () => {
     cy.dataCy('e2e-survey-form-builder').should('be.visible');
     cy.dataCy('e2e-form-builder-toolbox').should('be.visible');
     cy.dataCy('e2e-form-builder-top-bar').should('be.visible');
+  });
+});
+describe('Native survey creation redirection', () => {
+  let projectId: string;
+
+  before(() => {
+    cy.apiCreateProject({
+      title: randomString(),
+      descriptionPreview: randomString(),
+      publicationStatus: 'published',
+    }).then((project) => {
+      projectId = project.body.data.id;
+    });
+  });
+
+  it('should redirect to survey form tab after creating a native survey phase', () => {
+    cy.setConsentAndAdminLoginCookies();
+    cy.intercept('POST', '**/phases').as('createPhase');
+
+    cy.visit(`/admin/projects/${projectId}/phases/new`);
+    cy.get('#title').type(randomString());
+    // set the start date
+    cy.get('.e2e-date-phase-picker-input').first().click();
+    cy.get('.rdp-today').first().click();
+    // close the picker
+    cy.get('.e2e-date-phase-picker-input').first().click();
+
+    cy.get('#e2e-participation-method-choice-native_survey').click();
+    cy.get('.e2e-submit-wrapper-button button').click();
+
+    cy.wait('@createPhase').then((interception) => {
+      const phaseId = interception.response?.body.data.id;
+
+      // Lands on the survey form tab, not the insights tab
+      cy.url().should(
+        'include',
+        `/admin/projects/${projectId}/phases/${phaseId}/survey-form`
+      );
+    });
+
+    // The survey form tab actually rendered
+    cy.dataCy('e2e-survey-form-title').should('be.visible');
+    cy.dataCy('e2e-edit-survey-form').should('be.visible');
+  });
+
+  after(() => {
+    if (projectId) {
+      cy.apiRemoveProject(projectId);
+      projectId = '';
+    }
   });
 });

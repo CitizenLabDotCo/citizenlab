@@ -135,6 +135,7 @@ Rails.application.routes.draw do
         collection do
           get :me
           get 'me/ping', action: 'ping'
+          get 'me/intercom_token', action: 'intercom_token'
           get :seats
           get :billed_admins
           get :billed_moderators
@@ -149,6 +150,7 @@ Rails.application.routes.draw do
 
           get 'by_invite/:token', to: 'users#by_invite'
           get 'blocked_count'
+          get 'email_bounced_count'
           get :check_if_exceeds_seats
         end
 

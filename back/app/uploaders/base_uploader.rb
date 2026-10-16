@@ -41,6 +41,15 @@ class BaseUploader < CarrierWave::Uploader::Base
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
   end
 
+  # CloudFront keeps a copy of each upload but checks with S3 on every request, so a
+  # file that is deleted, or blocked by the bucket policy once malware scanning flags
+  # it, stops being served straight away. For the first hour after upload (the malware
+  # scan window) this no-cache is kept; after that a CloudFront function on /uploads/*
+  # replaces it with `public, max-age=86400` (one day) for the browser (see cl2-deployment).
+  def fog_attributes
+    { 'Cache-Control' => 'no-cache' }
+  end
+
   if sign_urls?
     def url(...)
       original_url = super
