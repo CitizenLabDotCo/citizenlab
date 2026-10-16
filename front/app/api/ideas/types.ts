@@ -166,6 +166,9 @@ export interface IIdeaData {
     phases: {
       data: IRelationship[];
     };
+    creation_phase: {
+      data: IRelationship | null;
+    };
     project: {
       data: IRelationship;
     };
