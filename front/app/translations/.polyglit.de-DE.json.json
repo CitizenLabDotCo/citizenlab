@@ -11474,6 +11474,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.containers.Projects.castYourVote": {
+    "state": "verified",
+    "verified_at": "2026-10-16T07:26:16.908002Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Projects.commentsTerm": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -11833,6 +11838,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Projects.seeTheResults": {
+    "state": "verified",
+    "verified_at": "2026-10-16T07:26:16.908002Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Projects.seeTheStories": {
     "state": "verified",
