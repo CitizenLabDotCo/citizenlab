@@ -33,6 +33,9 @@ import {
   IntakeQuestionId,
 } from '../ProjectAssistant/intakeConfig';
 import { DEFAULT_LEVERS, LeverId } from '../ProjectAssistant/leverConfig';
+import ReferenceProjectsControl, {
+  ReferenceProject,
+} from '../ProjectAssistant/ReferenceProjectsControl';
 
 import DraftingProgress from './DraftingProgress';
 import DraftPreviewPane from './DraftPreviewPane';
@@ -64,8 +67,10 @@ const Shell = styled.div<{ $wide: boolean }>`
   background: ${colors.white};
   border-radius: 20px;
   width: 100%;
-  max-width: ${({ $wide }) => ($wide ? '1240px' : '720px')};
-  height: ${({ $wide }) => ($wide ? '88vh' : 'auto')};
+  max-width: ${({ $wide }) => ($wide ? '1240px' : '760px')};
+  /* Give the first step a substantial, centred presence (matching the augur
+     prototype) rather than a thin auto-height sliver before any text. */
+  height: ${({ $wide }) => ($wide ? '88vh' : '620px')};
   max-height: 88vh;
   display: flex;
   overflow: hidden;
@@ -85,9 +90,11 @@ const LinkButton = styled.button`
 
 const Header = ({
   onStartFromScratch,
+  onBrowseTemplates,
   onClose,
 }: {
   onStartFromScratch: () => void;
+  onBrowseTemplates: () => void;
   onClose: () => void;
 }) => (
   <Box display="flex" alignItems="center" justifyContent="space-between" px="24px" py="18px" flex="0 0 auto">
@@ -106,6 +113,22 @@ const Header = ({
       <LinkButton type="button" onClick={onStartFromScratch}>
         Start from scratch
       </LinkButton>
+      {/* Secondary, de-emphasised route to the old template gallery, flagged as
+          on its way out so it reads as legacy next to the AI flow. */}
+      <Box display="flex" alignItems="center" gap="6px">
+        <LinkButton
+          type="button"
+          onClick={onBrowseTemplates}
+          style={{ color: colors.textSecondary, fontWeight: 500 }}
+        >
+          Browse templates
+        </LinkButton>
+        <Box px="6px" py="1px" borderRadius="999px" bgColor={colors.grey100}>
+          <Text m="0px" fontSize="xs" color="textSecondary">
+            being retired
+          </Text>
+        </Box>
+      </Box>
       <button
         type="button"
         onClick={onClose}
@@ -137,9 +160,14 @@ const AssistantLine = ({ children }: { children: React.ReactNode }) => (
 type Props = {
   onClose: () => void;
   onStartFromScratch: () => void;
+  onBrowseTemplates: () => void;
 };
 
-const ProjectAssistantModal = ({ onClose, onStartFromScratch }: Props) => {
+const ProjectAssistantModal = ({
+  onClose,
+  onStartFromScratch,
+  onBrowseTemplates,
+}: Props) => {
   const locale = useLocale();
   const { formatMessage } = useIntl();
   const queryClient = useQueryClient();
@@ -152,6 +180,9 @@ const ProjectAssistantModal = ({ onClose, onStartFromScratch }: Props) => {
   const [files, setFiles] = useState<File[]>([]);
   const [answers, setAnswers] = useState<IntakeAnswers>({});
   const [levers, setLevers] = useState(DEFAULT_LEVERS);
+  // Existing projects pulled in as context for the draft (title + summary),
+  // read by the engine the same way an attached brief is.
+  const [referenceProjects, setReferenceProjects] = useState<ReferenceProject[]>([]);
   const [projectId, setProjectId] = useState<string>();
   const [jobStartedAt, setJobStartedAt] = useState<string>();
   const [starting, setStarting] = useState(false);
@@ -230,6 +261,15 @@ const ProjectAssistantModal = ({ onClose, onStartFromScratch }: Props) => {
     const sections = [brief.trim()];
     const supplement = briefSupplement();
     if (supplement.length) sections.push('', ...supplement);
+    if (referenceProjects.length) {
+      sections.push(
+        '',
+        'Use these existing projects as reference for style, structure and tone where they fit:'
+      );
+      referenceProjects.forEach((project) =>
+        sections.push(`- ${project.title}: ${project.description}`)
+      );
+    }
     if (direction) {
       sections.push('', 'Please revise the previous draft with this direction:', direction);
     }
@@ -310,7 +350,11 @@ const ProjectAssistantModal = ({ onClose, onStartFromScratch }: Props) => {
 
   const conversation = (
     <>
-      <Header onStartFromScratch={onStartFromScratch} onClose={onClose} />
+      <Header
+        onStartFromScratch={onStartFromScratch}
+        onBrowseTemplates={onBrowseTemplates}
+        onClose={onClose}
+      />
 
       <Box flex="1" minHeight="0" overflowY="auto" px="24px" display="flex" flexDirection="column" gap="18px">
         {phase === 'brief' && <AssistantLine>{INTRO}</AssistantLine>}
@@ -380,7 +424,12 @@ const ProjectAssistantModal = ({ onClose, onStartFromScratch }: Props) => {
       )}
 
       {phase === 'brief' && (
-        <Box flex="0 0 auto" p="16px 24px 24px">
+        <Box flex="0 0 auto" p="16px 24px 24px" display="flex" flexDirection="column" gap="12px">
+          <ReferenceProjectsControl
+            selected={referenceProjects}
+            onChange={setReferenceProjects}
+            excludeProjectId={projectId ?? ''}
+          />
           <ModalComposer
             placeholder="Chat to create"
             files={files}

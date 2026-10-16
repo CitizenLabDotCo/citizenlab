@@ -99,6 +99,10 @@ const NewProjectButton = () => {
             setAssistantOpened(false);
             setMode('scratch');
           }}
+          onBrowseTemplates={() => {
+            setAssistantOpened(false);
+            setMode('template');
+          }}
         />
       )}
     </Box>
