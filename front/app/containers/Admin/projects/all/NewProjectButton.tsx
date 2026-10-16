@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, Dropdown } from '@citizenlab/cl2-component-library';
 
+import useAiProjectGenerator from 'hooks/useAiProjectGenerator';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Button from 'components/UI/ButtonWithLink';
@@ -19,6 +20,12 @@ const NewProjectButton = () => {
   const redesignEnabled = useFeatureFlag({
     name: 'project_backoffice_redesign',
   });
+  // The new create experience (incl. Draft with AI) also shows wherever the AI
+  // project generator is on — that flag is enabled on staging/preview and has a
+  // ?ai_project_generator URL override, so the entry point appears there without
+  // needing the redesign flag.
+  const aiGeneratorEnabled = useAiProjectGenerator();
+  const showNewExperience = redesignEnabled || aiGeneratorEnabled;
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const [mode, setMode] = useState<NewProjectMode | null>(null);
   // The AI assistant create flow opens as its own full modal, not one of the
@@ -35,7 +42,7 @@ const NewProjectButton = () => {
     setAssistantOpened(true);
   };
 
-  if (!redesignEnabled) {
+  if (!showNewExperience) {
     return (
       <Button
         data-cy="e2e-new-project-button"
