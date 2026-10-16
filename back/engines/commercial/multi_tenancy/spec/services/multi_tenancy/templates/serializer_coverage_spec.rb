@@ -155,6 +155,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
 
       # Per-user runtime objects regenerated through normal use.
       user_runtime: %w[
+        FeedbackPrompt
         Notification
         Onboarding::CampaignDismissal
       ],

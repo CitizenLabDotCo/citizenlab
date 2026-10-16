@@ -201,6 +201,7 @@ class User < ApplicationRecord
 
   has_many :ideas, -> { order(:project_id) }, foreign_key: :author_id, dependent: :nullify
   has_many :idea_exposures, dependent: :destroy
+  has_many :feedback_prompts, dependent: :destroy
   has_many :email_bans, foreign_key: :banned_by_id, dependent: :nullify
   has_many :manual_votes_last_updated_ideas, class_name: 'Idea', foreign_key: :manual_votes_last_updated_by_id, dependent: :nullify
   has_many :manual_voters_last_updated_phases, class_name: 'Phase', foreign_key: :manual_voters_last_updated_by_id, dependent: :nullify
