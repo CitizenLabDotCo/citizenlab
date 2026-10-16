@@ -58,7 +58,9 @@ const ParticipantsTimeline = ({ phase }: Props) => {
   // measuring none, which leaves the visits as the only story to tell
   const showParticipants = metrics.participants !== null;
   const title = formatMessage(
-    showParticipants ? messages.participationOverTime : messages.visitorsOverTime
+    showParticipants
+      ? messages.participationOverTime
+      : messages.visitorsOverTime
   );
 
   const chartData = timeSeries.map((row) => ({
