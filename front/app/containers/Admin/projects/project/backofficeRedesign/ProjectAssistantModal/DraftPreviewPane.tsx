@@ -100,9 +100,20 @@ const SectionCard = ({ children }: { children: React.ReactNode }) => (
   </Box>
 );
 
-type Props = { projectId: string };
+type Props = { projectId: string; tags?: string[] };
 
-const DraftPreviewPane = ({ projectId }: Props) => {
+const DAY = 24 * 60 * 60 * 1000;
+
+// A soft palette cycled across the phases so each bar in the timeline reads as
+// its own step (and parallel/spotlight phases are visibly distinct).
+const BAR_COLORS = [
+  colors.teal400,
+  colors.teal500,
+  colors.teal700,
+  colors.grey500,
+];
+
+const DraftPreviewPane = ({ projectId, tags = [] }: Props) => {
   const localize = useLocalize();
   const { data: project } = useProjectById(projectId);
   const { data: phases } = usePhases(projectId);
@@ -121,6 +132,32 @@ const DraftPreviewPane = ({ projectId }: Props) => {
   const image =
     typeof attrs.header_bg === 'object' ? attrs.header_bg?.large : undefined;
   const phaseList = phases.data;
+
+  // Lay the phases out on one shared axis so durations are comparable at a
+  // glance and parallel (spotlight) surveys visibly overlap the timeline.
+  const starts = phaseList.map((p) => new Date(p.attributes.start_at).getTime());
+  const ends = phaseList.map((p) =>
+    p.attributes.end_at ? new Date(p.attributes.end_at).getTime() : null
+  );
+  const axisStart = starts.length ? Math.min(...starts) : 0;
+  const axisEnd = Math.max(
+    ...starts.map((s, i) => ends[i] ?? s + DAY),
+    axisStart + DAY
+  );
+  const axisSpan = Math.max(axisEnd - axisStart, DAY);
+
+  const timeline = phaseList.map((phase, i) => {
+    const start = starts[i];
+    const end = ends[i] ?? start + DAY;
+    return {
+      id: phase.id,
+      title: localize(phase.attributes.title_multiloc) || `Phase ${i + 1}`,
+      dates: formatDates(phase.attributes.start_at, phase.attributes.end_at),
+      leftPct: ((start - axisStart) / axisSpan) * 100,
+      widthPct: Math.max(((end - start) / axisSpan) * 100, 4),
+      color: BAR_COLORS[i % BAR_COLORS.length],
+    };
+  });
 
   return (
     <Box flex="1" minHeight="0" overflowY="auto" px="32px" py="24px">
@@ -155,6 +192,81 @@ const DraftPreviewPane = ({ projectId }: Props) => {
             </Box>
           </SectionCard>
         </Box>
+
+        {tags.length > 0 && (
+          <Box>
+            <Text m="0 0 14px" fontSize="l" fontWeight="bold" color="textPrimary">
+              Tags
+            </Text>
+            <Box display="flex" flexWrap="wrap" gap="8px">
+              {tags.map((tag) => (
+                <Box
+                  key={tag}
+                  px="12px"
+                  py="5px"
+                  borderRadius="999px"
+                  bgColor={colors.teal50}
+                  border={`1px solid ${colors.teal100}`}
+                >
+                  <Text m="0px" fontSize="s" color="textPrimary">
+                    {tag}
+                  </Text>
+                </Box>
+              ))}
+            </Box>
+          </Box>
+        )}
+
+        {timeline.length > 0 && (
+          <Box>
+            <Text m="0 0 14px" fontSize="l" fontWeight="bold" color="textPrimary">
+              Timeline
+            </Text>
+            <SectionCard>
+              <Box display="flex" flexDirection="column" gap="14px">
+                {timeline.map((phase) => (
+                  <Box key={phase.id} display="flex" alignItems="center" gap="12px">
+                    <Box flex="0 0 130px" minWidth="0">
+                      <Text
+                        m="0px"
+                        fontSize="s"
+                        color="textPrimary"
+                        overflow="hidden"
+                        whiteSpace="nowrap"
+                        textOverflow="ellipsis"
+                      >
+                        {phase.title}
+                      </Text>
+                    </Box>
+                    <Box
+                      flex="1"
+                      position="relative"
+                      height="20px"
+                      borderRadius="999px"
+                      bgColor={colors.grey100}
+                    >
+                      <Box
+                        position="absolute"
+                        height="20px"
+                        borderRadius="999px"
+                        bgColor={phase.color}
+                        style={{
+                          left: `${phase.leftPct}%`,
+                          width: `${phase.widthPct}%`,
+                        }}
+                      />
+                    </Box>
+                    <Box flex="0 0 auto">
+                      <Text m="0px" fontSize="s" color="textSecondary" whiteSpace="nowrap">
+                        {phase.dates}
+                      </Text>
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
+            </SectionCard>
+          </Box>
+        )}
 
         <Box>
           <Text m="0 0 14px" fontSize="l" fontWeight="bold" color="textPrimary">

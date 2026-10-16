@@ -397,7 +397,18 @@ const ProjectAssistantModal = ({
     onClose();
   };
 
-  const wide = phase === 'drafting' || phase === 'review';
+  // The modal stays a single narrow chat column through the questions AND the
+  // drafting steps; it only expands to the two-pane preview once the draft is
+  // ready to show (the review step).
+  const wide = phase === 'review';
+
+  // The intake choices, shown back as tags on the preview so the manager sees
+  // what the draft was shaped around.
+  const chosenTags = INTAKE_QUESTIONS.flatMap((question) => {
+    const answer = answers[question.id];
+    const option = question.options.find((o) => o.id === answer?.optionId);
+    return option ? [formatMessage(option.label)] : [];
+  });
 
   const conversation = (
     <>
@@ -538,7 +549,7 @@ const ProjectAssistantModal = ({
               {phase === 'review' && projectId ? (
                 <>
                   <Box flex="1" minHeight="0">
-                    <DraftPreviewPane projectId={projectId} />
+                    <DraftPreviewPane projectId={projectId} tags={chosenTags} />
                   </Box>
                   <Box
                     flex="0 0 auto"
