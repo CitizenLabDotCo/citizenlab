@@ -900,11 +900,17 @@ resource 'Users' do
           expect(json_response[:data].map { |u| u.dig(:attributes, :email) }.last).to eq inactive_user.email
         end
 
-        example 'List all users sorted by registration_completed_at' do
+        # Backdates every user, the admin from the outer context included, so they
+        # all have distinct dates and the expected order is unambiguous.
+        def create_users_registered_on_distinct_days
           %w[Bednar Cole Hagenes].each { |l| create(:user, last_name: l) }
           User.all.each_with_index do |user, i|
             user.update!(registration_completed_at: Time.now - i.days)
           end
+        end
+
+        example 'List all users sorted by registration_completed_at' do
+          create_users_registered_on_distinct_days
 
           do_request sort: 'registration_completed_at'
 
@@ -913,10 +919,7 @@ resource 'Users' do
         end
 
         example 'List all users sorted by -registration_completed_at' do
-          %w[Bednar Cole Hagenes].each { |l| create(:user, last_name: l) }
-          User.all.each_with_index do |user, i|
-            user.update!(registration_completed_at: Time.now - i.days)
-          end
+          create_users_registered_on_distinct_days
 
           do_request sort: '-registration_completed_at'
 
@@ -925,42 +928,30 @@ resource 'Users' do
         end
 
         # Users without a registration date are only returned when include_inactive is set,
-        # since the index applies the `registered` scope otherwise.
-        example 'List all users sorted by registration_completed_at lists nil values last', document: false do
-          %w[Bednar Cole Hagenes].each { |l| create(:user, last_name: l) }
-          User.all.each_with_index do |user, i|
-            user.update!(registration_completed_at: Time.now - i.days)
+        # since the index applies the `registered` scope otherwise. A pending invite has no
+        # date and sorts as the most recent: first when descending, last when ascending.
+        {
+          'registration_completed_at' => :last,
+          '-registration_completed_at' => :first
+        }.each do |sort_param, nil_position|
+          example "List all users sorted by #{sort_param} lists nil values #{nil_position}", document: false do
+            create_users_registered_on_distinct_days
+            invitee = create(:invited_user)
+
+            do_request sort: sort_param, include_inactive: true
+
+            assert_status 200
+            expect(response_data.pluck(:id).public_send(nil_position)).to eq invitee.id
           end
-          invitee = create(:invited_user)
-
-          do_request sort: 'registration_completed_at', include_inactive: true
-
-          assert_status 200
-          expect(response_data.pluck(:id).last).to eq invitee.id
         end
 
-        example 'List all users sorted by -registration_completed_at lists nil values last', document: false do
-          %w[Bednar Cole Hagenes].each { |l| create(:user, last_name: l) }
-          User.all.each_with_index do |user, i|
-            user.update!(registration_completed_at: Time.now - i.days)
-          end
-          invitee = create(:invited_user)
-
-          do_request sort: '-registration_completed_at', include_inactive: true
-
-          assert_status 200
-          expect(response_data.pluck(:id).last).to eq invitee.id
-        end
-
-        # Without a tie-breaker the order of equal values is undefined, which makes
-        # paginated results non-deterministic (rows repeated or skipped between pages).
         example 'List all users sorted by -registration_completed_at breaks ties on id', document: false do
           invitees = create_list(:invited_user, 2)
 
           do_request sort: '-registration_completed_at', include_inactive: true
 
           assert_status 200
-          expect(response_data.pluck(:id).last(2)).to eq User.where(id: invitees).order(:id).pluck(:id)
+          expect(response_data.pluck(:id).first(2)).to eq User.where(id: invitees).order(:id).pluck(:id)
         end
 
         example 'List all users in group' do
