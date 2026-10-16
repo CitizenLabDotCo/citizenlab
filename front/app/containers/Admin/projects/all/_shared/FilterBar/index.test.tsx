@@ -18,7 +18,9 @@ jest.mock('utils/cl-router/removeSearchParams', () => ({
   removeSearchParams: (params: string[]) => mockRemoveSearchParams(params),
 }));
 
-jest.mock('./ActiveFilter', () => () => null);
+jest.mock('./ActiveFilter', () => ({ filterKey }: { filterKey: string }) => (
+  <span data-cy={`active-filter-${filterKey}`} />
+));
 jest.mock('./AddFilterDropdown', () => () => null);
 jest.mock('./Filters/Sort', () => () => null);
 jest.mock('./Filters/PendingApproval', () => () => null);
@@ -72,7 +74,14 @@ describe('FilterBar — clear filters button', () => {
     fireEvent.click(screen.getByText('Clear filters'));
 
     expect(mockRemoveSearchParams).toHaveBeenCalledWith([
+      'managers',
       'status',
+      'folder_ids',
+      'participation_states',
+      'participation_methods',
+      'visibility',
+      'discoverability',
+      'space_ids',
       'review_state',
       'min_start_date',
       'max_start_date',
@@ -89,5 +98,44 @@ describe('FilterBar — clear filters button', () => {
       document.querySelector('[data-cy="filtered-project-count"]')
         ?.parentElement
     ).toContainElement(screen.getByText('Clear filters').closest('button'));
+  });
+});
+
+describe('FilterBar — active filters', () => {
+  beforeEach(() => {
+    mockSearch = {};
+  });
+
+  const activeFilter = (filterKey: string) =>
+    document.querySelector(`[data-cy="active-filter-${filterKey}"]`);
+
+  it('shows filters that have a value in the URL', () => {
+    mockSearch = { status: ['published'], managers: ['user-1'] };
+    render(<FilterBar />);
+
+    expect(activeFilter('status')).toBeInTheDocument();
+    expect(activeFilter('managers')).toBeInTheDocument();
+    expect(activeFilter('visibility')).not.toBeInTheDocument();
+  });
+
+  it('shows filters whose value arrives in the URL after mount', () => {
+    const { rerender } = render(<FilterBar />);
+    expect(activeFilter('status')).not.toBeInTheDocument();
+
+    mockSearch = { status: ['published'] };
+    rerender(<FilterBar />);
+
+    expect(activeFilter('status')).toBeInTheDocument();
+  });
+
+  it('hides filters whose value is removed from the URL', () => {
+    mockSearch = { status: ['published'] };
+    const { rerender } = render(<FilterBar />);
+    expect(activeFilter('status')).toBeInTheDocument();
+
+    mockSearch = {};
+    rerender(<FilterBar />);
+
+    expect(activeFilter('status')).not.toBeInTheDocument();
   });
 });

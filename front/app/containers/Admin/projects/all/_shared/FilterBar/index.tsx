@@ -10,12 +10,12 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
-import { countActiveFilters } from '../activeFilters';
+import { countActiveFilters, hasValue } from '../activeFilters';
 import FilteredProjectCount from '../FilteredProjectCount';
 import { Parameter, useParams } from '../params';
 
 import ClearFiltersButton from './ClearFiltersButton';
-import { FILTER_KEYS } from './constants';
+import { FILTER_KEYS, FilterKey } from './constants';
 import DynamicFilters from './DynamicFilters';
 import Dates from './Filters/Dates';
 import PendingApproval from './Filters/PendingApproval';
@@ -41,31 +41,23 @@ interface Props {
 const FilterBar = ({ user }: Props) => {
   const params = useParams();
 
-  const [activeFilters, setActiveFilters] = useState(() => {
-    return FILTER_KEYS.filter((key) => {
-      const paramValue = params[key];
+  // Filters the user added via the dropdown. Kept separately from the URL so
+  // that a just-added filter stays visible before (and after) it has a value.
+  const [addedFilters, setAddedFilters] = useState<FilterKey[]>([]);
 
-      if (!isAdmin(user) && key === 'managers') {
-        return false; // Skip manager filter for non-admin users
-      }
-
-      return paramValue !== undefined && paramValue.length > 0;
-    });
-  });
+  const activeFilters = [
+    ...FILTER_KEYS.filter(
+      (key) => hasValue(params[key]) && !addedFilters.includes(key)
+    ),
+    ...addedFilters,
+  ];
 
   const showClearButton =
-    activeFilters.length > 0 || countActiveFilters(params, undefined) > 0;
+    addedFilters.length > 0 || countActiveFilters(params, undefined) > 0;
 
   const handleClearAll = () => {
-    // Clear all parameters
-    removeSearchParams([
-      ...activeFilters,
-      ...DEFAULT_FILTERS,
-      'sort',
-      'search',
-    ]);
-    // Clear all active filters
-    setActiveFilters([]);
+    removeSearchParams([...FILTER_KEYS, ...DEFAULT_FILTERS, 'sort', 'search']);
+    setAddedFilters([]);
 
     trackEventByName(tracks.clearFilters);
   };
@@ -85,7 +77,7 @@ const FilterBar = ({ user }: Props) => {
         <Dates />
         <DynamicFilters
           activeFilters={activeFilters}
-          setActiveFilters={setActiveFilters}
+          setAddedFilters={setAddedFilters}
         />
       </Box>
       {showClearButton && (

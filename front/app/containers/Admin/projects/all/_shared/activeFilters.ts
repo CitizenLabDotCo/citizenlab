@@ -18,7 +18,7 @@ const PROJECT_FILTER_GROUPS: Parameter[][] = [
   ['search'],
 ];
 
-const hasValue = (value: unknown) =>
+export const hasValue = (value: unknown) =>
   (typeof value === 'string' || Array.isArray(value)) && value.length > 0;
 
 export const countActiveFilters = (

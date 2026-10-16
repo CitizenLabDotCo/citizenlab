@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -13,15 +13,15 @@ import tracks from './tracks';
 
 interface Props {
   activeFilters: FilterKey[];
-  setActiveFilters: (activeFilters: FilterKey[]) => void;
+  setAddedFilters: Dispatch<SetStateAction<FilterKey[]>>;
 }
 
-const DynamicFilters = ({ activeFilters, setActiveFilters }: Props) => {
+const DynamicFilters = ({ activeFilters, setAddedFilters }: Props) => {
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
   const handleAddFilter = (filterKey: FilterKey) => {
     if (!activeFilters.includes(filterKey)) {
-      setActiveFilters([...activeFilters, filterKey]);
+      setAddedFilters((addedFilters) => [...addedFilters, filterKey]);
 
       trackEventByName(tracks.addFilter, {
         filter: filterKey,
@@ -30,7 +30,9 @@ const DynamicFilters = ({ activeFilters, setActiveFilters }: Props) => {
   };
 
   const handleRemoveFilter = (filterKey: FilterKey) => {
-    setActiveFilters(activeFilters.filter((f) => f !== filterKey));
+    setAddedFilters((addedFilters) =>
+      addedFilters.filter((f) => f !== filterKey)
+    );
 
     // Clear the parameter when removing the filter
     setParam(filterKey, undefined);
