@@ -143,6 +143,8 @@ module EmailCampaigns
     end
 
     def email_preview
+      # Renders the preview in another platform locale. The user is never saved, so their own locale is unchanged.
+      current_user.locale = params[:locale] if AppConfiguration.instance.settings('core', 'locales').include?(params[:locale])
       preview = EmailCampaigns::DeliveryService.new.preview_email(@campaign, current_user)
       render json: {
         data: {

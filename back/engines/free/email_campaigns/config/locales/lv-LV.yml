@@ -77,6 +77,7 @@ lv-LV:
         users_who_follow_the_project: Lietotāji, kas seko projektam
         users_who_follow_the_proposal: Lietotāji, kas seko priekšlikumam
       trigger:
+        3_days_after_invite_is_sent: 3 dienas pēc ielūguma nosūtīšanas
         7_days_after_invite_is_sent: 7 dienas pēc uzaicinājuma nosūtīšanas
         7_days_before_phase_starts: 7 dienas pirms posma sākuma
         7_days_before_the_project_changes_phase: 7 dienas pirms projekta izmaiņu fāzes

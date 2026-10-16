@@ -77,6 +77,7 @@ nb-NO:
         users_who_follow_the_project: Brukere som følger prosjektet
         users_who_follow_the_proposal: Brukere som følger forslaget
       trigger:
+        3_days_after_invite_is_sent: 3 dager etter at invitasjonen er sendt
         7_days_after_invite_is_sent: 7 dager etter at invitasjonen er sendt
         7_days_before_phase_starts: 7 dager før en fase starter
         7_days_before_the_project_changes_phase: 7 dager før prosjektet endrer fase

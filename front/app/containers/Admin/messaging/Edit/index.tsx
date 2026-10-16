@@ -23,7 +23,7 @@ import AutomatedCampaignForm from 'containers/Admin/messaging/AutomatedEmails/Ca
 import CustomCampaignForm from 'containers/Admin/messaging/CustomEmails/CampaignForm';
 import messages from 'containers/Admin/messaging/messages';
 
-import PreviewFrame from 'components/admin/Email/PreviewFrame';
+import PreviewFrameWithLocaleSwitcher from 'components/admin/Email/PreviewFrameWithLocaleSwitcher';
 import T from 'components/T';
 import GoBackButton from 'components/UI/GoBackButton';
 
@@ -174,13 +174,10 @@ const Edit = ({ campaignType }: EditProps) => {
               </Button>
             </Box>
           </Box>
-          <Box>
-            <PreviewFrame
-              campaignId={campaign.data.id}
-              showHeaders={true}
-              height="740px"
-            />
-          </Box>
+          <PreviewFrameWithLocaleSwitcher
+            campaignId={campaign.data.id}
+            height="740px"
+          />
         </Box>
       </Box>
     </Box>

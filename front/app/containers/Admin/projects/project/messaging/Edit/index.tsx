@@ -12,7 +12,7 @@ import useEmailCampaign from 'api/campaigns/email/useEmailCampaign';
 import useSendEmailCampaignPreview from 'api/campaigns/email/useSendEmailCampaignPreview';
 import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
 
-import PreviewFrame from 'components/admin/Email/PreviewFrame';
+import PreviewFrameWithLocaleSwitcher from 'components/admin/Email/PreviewFrameWithLocaleSwitcher';
 import GoBackButton from 'components/UI/GoBackButton';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -120,13 +120,10 @@ const Edit = () => {
                 </Button>
               </Box>
             </Box>
-            <Box>
-              <PreviewFrame
-                campaignId={campaign.data.id}
-                showHeaders={true}
-                height="740px"
-              />
-            </Box>
+            <PreviewFrameWithLocaleSwitcher
+              campaignId={campaign.data.id}
+              height="740px"
+            />
           </Box>
         </Box>
       </Box>
