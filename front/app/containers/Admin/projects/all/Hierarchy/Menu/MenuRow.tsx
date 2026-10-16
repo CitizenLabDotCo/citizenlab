@@ -19,9 +19,9 @@ export type MenuLink = {
   search?: Record<string, unknown>;
 };
 
-// Rows as dense as the rest of the back office, whether they act or open a
-// page.
-const rowStyle = css`
+// Rows as dense as the rest of the back office, whether they act, open a page
+// or tick a choice.
+export const rowStyle = css`
   display: flex;
   align-items: center;
   gap: 10px;

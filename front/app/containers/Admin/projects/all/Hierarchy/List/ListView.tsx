@@ -20,6 +20,7 @@ import messages from '../messages';
 import AddColumnsMenu from './AddColumnsMenu';
 import {
   ADD_COLUMN_WIDTH,
+  GRIP_COLUMN_WIDTH,
   getTableMinWidth,
   getVisibleColumns,
 } from './columns';
@@ -55,8 +56,8 @@ const ListView = ({ groups, summary }: Props) => {
   const { added } = useAddedColumns();
   const columns = getVisibleColumns(added);
   const showGroupHeaders = groups.length > 1;
-  // The column for the "+" button.
-  const colSpan = columns.length + 1;
+  // With the grip's column and the one for the "+" button.
+  const colSpan = columns.length + 2;
 
   // A folder's projects have no group label, so their count goes above,
   // unless the level gives its own.
@@ -79,6 +80,7 @@ const ListView = ({ groups, summary }: Props) => {
         >
           <Thead>
             <Tr>
+              <Th w={`${GRIP_COLUMN_WIDTH}px`} p="0" />
               {columns.map((column) => (
                 <HeaderCell key={column} column={column} />
               ))}

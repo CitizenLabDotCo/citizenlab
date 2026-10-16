@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   Box,
   Button,
-  CheckboxWithLabel,
   Dropdown,
   Tooltip,
+  bo,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { useTheme } from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 
+import AnchoredLayer from '../Menu/AnchoredLayer';
+import CheckRow from '../Menu/CheckRow';
+import { getMenuSide } from '../Menu/menuSide';
+import useAnchoredMenu from '../Menu/useAnchoredMenu';
 import messages from '../messages';
 
 import { COLUMNS, addableColumns } from './columns';
@@ -20,12 +25,15 @@ import useAddedColumns from './useAddedColumns';
 // default.
 const AddColumnsMenu = () => {
   const { formatMessage } = useIntl();
-  const [opened, setOpened] = useState(false);
+  const { anchor, opened, toggle, close, layer, button } = useAnchoredMenu();
   const { added, toggleColumn } = useAddedColumns();
+  const { isRtl } = useTheme();
   const label = formatMessage(messages.addColumns);
+  // Lined up with the button's right edge, as the table ends there.
+  const side = getMenuSide('right', isRtl);
 
   return (
-    <Box position="relative" display="flex" justifyContent="flex-end">
+    <Box display="flex" justifyContent="flex-end">
       <Tooltip
         content={label}
         placement="bottom"
@@ -33,6 +41,7 @@ const AddColumnsMenu = () => {
         disabled={opened}
       >
         <Button
+          ref={button}
           type="button"
           buttonStyle="bo-text"
           icon="plus"
@@ -41,30 +50,33 @@ const AddColumnsMenu = () => {
           padding="4px"
           ariaLabel={label}
           ariaExpanded={opened}
-          ariaHasPopup="true"
-          onClick={() => setOpened(!opened)}
+          ariaHasPopup="menu"
+          onClick={toggle}
         />
       </Tooltip>
-      <Dropdown
-        opened={opened}
-        onClickOutside={() => setOpened(false)}
-        right="0px"
-        top="32px"
-        content={
-          <Box p="4px">
-            {addableColumns.map((column) => (
-              <Box key={column} px="8px" py="6px">
-                <CheckboxWithLabel
-                  checked={added.includes(column)}
-                  onChange={() => toggleColumn(column)}
+      <AnchoredLayer anchor={anchor} layer={layer}>
+        <Dropdown
+          opened
+          onClickOutside={close}
+          right={side === 'right' ? '0px' : undefined}
+          left={side === 'left' ? '0px' : undefined}
+          top="calc(100% + 4px)"
+          width="240px"
+          borderRadius={bo.panelBorderRadius}
+          content={
+            <Box role="menu" aria-label={label} py="1px">
+              {addableColumns.map((column) => (
+                <CheckRow
+                  key={column}
                   label={formatMessage(COLUMNS[column].label)}
-                  size="16px"
+                  checked={added.includes(column)}
+                  onToggle={() => toggleColumn(column)}
                 />
-              </Box>
-            ))}
-          </Box>
-        }
-      />
+              ))}
+            </Box>
+          }
+        />
+      </AnchoredLayer>
     </Box>
   );
 };

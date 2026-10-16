@@ -7,8 +7,9 @@ import React, {
   useState,
 } from 'react';
 
-import { Box, SearchInput } from '@citizenlab/cl2-component-library';
+import { SearchInput } from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
+import styled from 'styled-components';
 
 import searchMessages from 'components/UI/SearchInput/messages';
 
@@ -18,9 +19,29 @@ import { useSearch } from 'utils/router';
 
 import allMessages from '../messages';
 
+import { TOOLBAR_HEIGHT } from './constants';
 import ToolbarButton from './ToolbarButton';
 
 const TYPING_DELAY = 500;
+
+// The open field keeps the toolbar's height: the input's smallest size is
+// taller, from its padding, so the field drops that padding here.
+const Field = styled.div`
+  width: 180px;
+
+  input {
+    height: ${TOOLBAR_HEIGHT};
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  /* Its icons sit in boxes centred on the field, but on a text line, which
+  drops them below the middle. */
+  div:has(> svg) {
+    display: flex;
+    align-items: center;
+  }
+`;
 
 // A search icon that opens into a field. The field stays while there's a
 // search; Escape clears it and closes it.
@@ -108,7 +129,7 @@ const SearchToggle = () => {
   }
 
   return (
-    <Box width="200px" onKeyDown={handleKeyDown} onBlur={handleBlur}>
+    <Field onKeyDown={handleKeyDown} onBlur={handleBlur}>
       <SearchInput
         key={fieldKey}
         variant="bo"
@@ -121,7 +142,7 @@ const SearchToggle = () => {
         onChange={handleChange}
         setInputRef={focusWhenShown('field')}
       />
-    </Box>
+    </Field>
   );
 };
 

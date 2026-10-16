@@ -8,10 +8,8 @@ import useLocalize from 'hooks/useLocalize';
 
 import { useIntl } from 'utils/cl-intl';
 
-import ManagerBubbles from '../../_shared/ManagerBubbles';
 import useSpaceActions from '../Actions/useSpaceActions';
 import { ArrangePlace } from '../Arrange/arrangeTargets';
-import DragHandle from '../Arrange/DragHandle';
 import useDragArrange from '../Arrange/useDragArrange';
 import MoreActions from '../Menu/MoreActions';
 import messages from '../messages';
@@ -19,6 +17,7 @@ import messages from '../messages';
 import ActionsCell from './ActionsCell';
 import { ColumnKey } from './columns';
 import ItemRow from './ItemRow';
+import ManagerInitials from './ManagerInitials';
 import TitleCell from './TitleCell';
 import { Managers } from './useManagers';
 
@@ -64,11 +63,10 @@ const SpaceRow = ({ space, columns, managers, place }: Props) => {
             title={localize(title_multiloc)}
             target={{ level: { kind: 'space', id: space.id } }}
             note={note}
-            grip={<DragHandle handle={drag.handle} top="6px" left="8px" />}
           />
         ) : column === 'managers' ? (
           <Td key={column}>
-            <ManagerBubbles managers={managers} />
+            <ManagerInitials managers={managers} />
           </Td>
         ) : (
           <Td key={column} />

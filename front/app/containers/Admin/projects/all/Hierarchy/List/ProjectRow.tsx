@@ -16,10 +16,8 @@ import useLocalize from 'hooks/useLocalize';
 import { useIntl } from 'utils/cl-intl';
 import { parseBackendDateString } from 'utils/dateUtils';
 
-import ManagerBubbles from '../../_shared/ManagerBubbles';
 import useProjectActions from '../Actions/useProjectActions';
 import { ArrangePlace } from '../Arrange/arrangeTargets';
-import DragHandle from '../Arrange/DragHandle';
 import useDragArrange from '../Arrange/useDragArrange';
 import { ACCESS_MESSAGES } from '../labels';
 import MoreActions from '../Menu/MoreActions';
@@ -29,6 +27,7 @@ import useProjectLabels from '../useProjectLabels';
 import ActionsCell from './ActionsCell';
 import { ColumnKey } from './columns';
 import ItemRow from './ItemRow';
+import ManagerInitials from './ManagerInitials';
 import TextCell from './TextCell';
 import TitleCell from './TitleCell';
 import { Managers } from './useManagers';
@@ -108,7 +107,6 @@ const ProjectRow = ({
             title={localize(title_multiloc)}
             target={{ projectId: project.id }}
             note={path}
-            grip={<DragHandle handle={drag.handle} top="6px" left="8px" />}
           />
         );
       case 'status':
@@ -141,7 +139,7 @@ const ProjectRow = ({
       case 'managers':
         return (
           <Td key={column}>
-            <ManagerBubbles managers={managers} />
+            <ManagerInitials managers={managers} />
           </Td>
         );
       case 'participants':

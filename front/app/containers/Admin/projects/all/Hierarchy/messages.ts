@@ -314,4 +314,8 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.Hierarchy.dragToArrange',
     defaultMessage: 'Drag to arrange',
   },
+  unnamedManager: {
+    id: 'app.containers.Admin.projects.all.Hierarchy.unnamedManager',
+    defaultMessage: 'Manager without a name',
+  },
 });

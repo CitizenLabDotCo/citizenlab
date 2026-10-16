@@ -114,7 +114,7 @@ const ProjectCard = ({ project, path, place }: Props) => {
             fill={colors.coolGrey500}
           />
         )}
-        <DragHandle handle={drag.handle} top="8px" left="8px" />
+        <DragHandle handle={drag.handle} over={{ top: '8px', left: '8px' }} />
         <Box
           data-actions
           position="absolute"

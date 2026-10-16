@@ -12,7 +12,7 @@ interface Props {
 }
 
 const Toolbar = ({ level }: Props) => (
-  <Box display="flex" alignItems="center" gap="8px" flex="none" ml="auto">
+  <Box display="flex" alignItems="center" gap="6px" flex="none" ml="auto">
     {/* Opening a level clears the search, so each level gets a fresh field:
     a search still being typed on the last one is dropped with it. */}
     <SearchToggle key={level.kind === 'root' ? 'root' : level.id} />

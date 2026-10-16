@@ -8,10 +8,12 @@ interface Props {
   colSpan: number;
 }
 
-// "Spaces 3": shown when a level has more than one group.
+// "Spaces 3": shown when a level has more than one group. The grip's column
+// stays empty, so the label lines up with the Project column.
 const GroupHeaderRow = ({ label, count, colSpan }: Props) => (
   <Tr background={colors.grey50}>
-    <Td colSpan={colSpan} px="8px" py="8px">
+    <Td p="0" />
+    <Td colSpan={colSpan - 1} px="8px" py="8px">
       <Text as="span" m="0" variant="boControl" fontWeight="semi-bold">
         {label}
       </Text>

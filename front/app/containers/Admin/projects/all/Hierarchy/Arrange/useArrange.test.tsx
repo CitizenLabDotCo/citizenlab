@@ -41,7 +41,7 @@ const Item = ({ id, place, reorder }: ItemProps) => {
 
   return (
     <div ref={drag.item} data-testid={id}>
-      <DragHandle handle={drag.handle} top="0" left="0" />
+      <DragHandle handle={drag.handle} />
       <MoreActions entries={entries} />
     </div>
   );

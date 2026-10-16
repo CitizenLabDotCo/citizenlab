@@ -89,11 +89,7 @@ const MoveToFlyout = ({ item, here, takeFocus, onPick }: Props) => {
   const isLoading = spaces.isLoading || folders.isLoading;
 
   return (
-    <Box
-      ref={focusFirst}
-      role="menu"
-      aria-label={formatMessage(messages.moveTo)}
-    >
+    <Box ref={focusFirst}>
       <FlyoutSearch
         count={destinations.length}
         value={query}
@@ -102,16 +98,22 @@ const MoveToFlyout = ({ item, here, takeFocus, onPick }: Props) => {
         label={formatMessage(messages.searchDestinationsLabel)}
       />
       {shown.length === 0 && !isLoading && <NothingToChoose />}
-      {shown.map((destination) => (
-        <MenuRow
-          key={destination.key}
-          icon={ICONS[destination.kind]}
-          label={destination.label}
-          detail={destination.detail}
-          current={destination.key === hereKey}
-          onClick={() => onPick(destination)}
-        />
-      ))}
+      {/* The menu holds the destinations alone, not the search box above
+          them. */}
+      {shown.length > 0 && (
+        <Box role="menu" aria-label={formatMessage(messages.moveTo)}>
+          {shown.map((destination) => (
+            <MenuRow
+              key={destination.key}
+              icon={ICONS[destination.kind]}
+              label={destination.label}
+              detail={destination.detail}
+              current={destination.key === hereKey}
+              onClick={() => onPick(destination)}
+            />
+          ))}
+        </Box>
+      )}
     </Box>
   );
 };

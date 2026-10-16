@@ -5,8 +5,11 @@ import {
   Button,
   IconNames,
   Tooltip,
+  bo,
   colors,
 } from '@citizenlab/cl2-component-library';
+
+import { TOOLBAR_HEIGHT } from './constants';
 
 interface Props {
   icon: IconNames;
@@ -37,7 +40,11 @@ const ToolbarButton = forwardRef<HTMLButtonElement, Props>(
           iconSize="16px"
           iconColor={isActive ? colors.primary : colors.coolGrey600}
           borderColor={isActive ? colors.primary : undefined}
-          padding="5px"
+          // A square the toolbar's height, the icon in its middle.
+          width={TOOLBAR_HEIGHT}
+          height={TOOLBAR_HEIGHT}
+          padding="0"
+          borderRadius={bo.borderRadius}
           ariaLabel={label}
           ariaExpanded={menuOpened}
           ariaHasPopup={menuOpened === undefined ? undefined : 'menu'}

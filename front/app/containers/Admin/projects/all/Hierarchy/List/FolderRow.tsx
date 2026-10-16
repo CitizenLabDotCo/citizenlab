@@ -10,11 +10,9 @@ import useLocalize from 'hooks/useLocalize';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import ManagerBubbles from '../../_shared/ManagerBubbles';
 import sharedMessages from '../../_shared/messages';
 import useFolderItemActions from '../Actions/useFolderItemActions';
 import { ArrangePlace } from '../Arrange/arrangeTargets';
-import DragHandle from '../Arrange/DragHandle';
 import useDragArrange from '../Arrange/useDragArrange';
 import MoreActions from '../Menu/MoreActions';
 import messages from '../messages';
@@ -22,6 +20,7 @@ import messages from '../messages';
 import ActionsCell from './ActionsCell';
 import { ColumnKey } from './columns';
 import ItemRow from './ItemRow';
+import ManagerInitials from './ManagerInitials';
 import TextCell from './TextCell';
 import TitleCell from './TitleCell';
 import { Managers } from './useManagers';
@@ -85,7 +84,6 @@ const FolderRow = ({ folder, columns, managers, place }: Props) => {
             note={formatMessage(messages.projectsCount, {
               count: visible_projects_count,
             })}
-            grip={<DragHandle handle={drag.handle} top="6px" left="8px" />}
           />
         ) : column === 'status' ? (
           <TextCell key={column}>
@@ -93,7 +91,7 @@ const FolderRow = ({ folder, columns, managers, place }: Props) => {
           </TextCell>
         ) : column === 'managers' ? (
           <Td key={column}>
-            <ManagerBubbles managers={managers} />
+            <ManagerInitials managers={managers} />
           </Td>
         ) : (
           <Td key={column} />

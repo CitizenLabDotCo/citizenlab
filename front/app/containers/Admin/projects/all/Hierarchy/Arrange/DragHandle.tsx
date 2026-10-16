@@ -16,15 +16,15 @@ import messages from '../messages';
 interface Props {
   // Left out when the item can't be dragged.
   handle?: ConnectDragSource;
-  // Where it sits over its item, which has to be positioned.
-  top: string;
-  left: string;
+  // Where it sits over its item, which has to be positioned. Without it, it
+  // sits where it's put, as in the list's own column for it.
+  over?: { top: string; left: string };
 }
 
 // The grip an item is dragged by. It's for the pointer only: the keyboard
 // moves items from "⋯ › Arrange", so it's hidden from assistive technology
 // and takes no focus. It shows on hover, like the "⋯".
-const DragHandle = ({ handle, top, left }: Props) => {
+const DragHandle = ({ handle, over }: Props) => {
   const { formatMessage } = useIntl();
 
   if (!handle) return null;
@@ -33,9 +33,10 @@ const DragHandle = ({ handle, top, left }: Props) => {
     <Box
       data-grip
       aria-hidden
-      position="absolute"
-      top={top}
-      left={left}
+      display="flex"
+      position={over ? 'absolute' : 'relative'}
+      top={over?.top}
+      left={over?.left}
       zIndex="1"
     >
       <Tooltip
@@ -53,7 +54,8 @@ const DragHandle = ({ handle, top, left }: Props) => {
           width="24px"
           height="24px"
           borderRadius={bo.borderRadius}
-          bgColor={colors.grey50}
+          // Over an item's image or icon, it needs a ground of its own.
+          bgColor={over ? colors.grey50 : undefined}
           cursor="grab"
         >
           <Icon

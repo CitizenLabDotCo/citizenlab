@@ -65,7 +65,7 @@ const ContainerTile = ({ level, title, meta, media, actions, drag }: Props) => {
   return (
     <Tile ref={drag.item} className={drag.dragging ? 'dragging' : undefined}>
       {/* Over the icon or thumbnail. */}
-      <DragHandle handle={drag.handle} top="12px" left="12px" />
+      <DragHandle handle={drag.handle} over={{ top: '12px', left: '12px' }} />
       <Box
         flex="none"
         width="32px"

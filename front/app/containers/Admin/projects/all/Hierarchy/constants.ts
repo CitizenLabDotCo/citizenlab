@@ -8,3 +8,6 @@ export const WHOLE_LIST_SIZE = 1000;
 
 // Between the page's content and its edges.
 export const PAGE_SIDE_PADDING = '32px';
+
+// The level's toolbar: its buttons and the view switch.
+export const TOOLBAR_HEIGHT = '28px';

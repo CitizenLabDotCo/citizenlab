@@ -52,7 +52,7 @@ export const COLUMNS: Record<ColumnKey, Column> = {
   phase: { label: projectsMessages.phase, width: 184, sort: 'phase' },
   managers: {
     label: sharedMessages.managers,
-    width: 128,
+    width: 96,
     sort: 'managers',
   },
   participants: {
@@ -92,9 +92,11 @@ export const getVisibleColumns = (added: AddableColumn[]): ColumnKey[] => [
 const PROJECT_COLUMN_MIN_WIDTH = 240;
 // The "+" column at the end of the header.
 export const ADD_COLUMN_WIDTH = 36;
+// The column at the start of the rows that holds each one's drag grip.
+export const GRIP_COLUMN_WIDTH = 28;
 
 export const getTableMinWidth = (columns: ColumnKey[]) =>
   columns.reduce(
     (total, column) => total + (COLUMNS[column].width ?? 0),
-    PROJECT_COLUMN_MIN_WIDTH + ADD_COLUMN_WIDTH
+    PROJECT_COLUMN_MIN_WIDTH + ADD_COLUMN_WIDTH + GRIP_COLUMN_WIDTH
   );
