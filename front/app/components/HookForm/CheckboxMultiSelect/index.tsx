@@ -114,7 +114,6 @@ const CheckboxMultiSelect = ({
                     }
                     ariaLabel={option.label}
                     checked={checkedOptions.includes(option.value)}
-                    disabled={disabled}
                     usePrimaryBorder={false}
                     disabled={disabled}
                     setRef={index === 0 ? (el) => ref(el) : undefined}
