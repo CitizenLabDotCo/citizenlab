@@ -3879,6 +3879,26 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.UI.PillPicker.clearSearch": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:16:50.315957Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.UI.PillPicker.done": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:16:50.315957Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.UI.PillPicker.remove": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:16:50.315957Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.UI.PillPicker.selectedCount": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:16:50.315957Z",
+    "verified_by": "Jelena"
+  },
   "app.components.UI.RemoveImageButton.a11y_removeImage": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -10879,6 +10899,16 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.NotificationMenu.reportGenerated": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:16:50.315957Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.NotificationMenu.reportGeneratedStoppedEarly": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:16:50.315957Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.NotificationMenu.spaceModerationRightsReceived": {
     "state": "verified",
     "verified_at": "2026-04-15T14:46:55.484605Z",
@@ -11474,6 +11504,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.Projects.castYourVote": {
+    "state": "verified",
+    "verified_at": "2026-10-16T07:26:17.083968Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Projects.commentsTerm": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -11833,6 +11868,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.Projects.seeTheResults": {
+    "state": "verified",
+    "verified_at": "2026-10-16T07:26:17.083968Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Projects.seeTheStories": {
     "state": "verified",

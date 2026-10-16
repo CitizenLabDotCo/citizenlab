@@ -3864,6 +3864,26 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.components.UI.PillPicker.clearSearch": {
+    "state": "verified",
+    "verified_at": "2026-10-15T20:02:08.041093Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.UI.PillPicker.done": {
+    "state": "verified",
+    "verified_at": "2026-10-15T20:02:08.041093Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.UI.PillPicker.remove": {
+    "state": "verified",
+    "verified_at": "2026-10-15T20:02:08.041093Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.UI.PillPicker.selectedCount": {
+    "state": "verified",
+    "verified_at": "2026-10-15T20:02:08.041093Z",
+    "verified_by": "Luuc"
+  },
   "app.components.UI.RemoveImageButton.a11y_removeImage": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
@@ -10854,6 +10874,16 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.containers.NotificationMenu.reportGenerated": {
+    "state": "verified",
+    "verified_at": "2026-10-15T20:02:08.041093Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.NotificationMenu.reportGeneratedStoppedEarly": {
+    "state": "verified",
+    "verified_at": "2026-10-15T20:02:08.041093Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.NotificationMenu.spaceModerationRightsReceived": {
     "state": "verified",
     "verified_at": "2026-04-14T19:39:53.260462Z",
@@ -11449,6 +11479,11 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.containers.Projects.castYourVote": {
+    "state": "verified",
+    "verified_at": "2026-10-15T19:58:14.407547Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Projects.commentsTerm": {
     "state": "verified",
     "verified_at": "2026-03-18T16:34:36.118563Z",
@@ -11808,6 +11843,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Projects.seeTheResults": {
+    "state": "verified",
+    "verified_at": "2026-10-15T19:58:14.407547Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Projects.seeTheStories": {
     "state": "verified",

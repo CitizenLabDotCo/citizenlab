@@ -2319,7 +2319,7 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.KeyFigures.emptyInBuilder": "Voeg de cijfers toe die de moeite waard zijn om uit de tekst te lichten.",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.KeyFigures.keyFigures": "In cijfers",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.KeyFigures.removeFigure": "Verwijderen",
-  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.KeyFigures.valueLabel": "Getal",
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.KeyFigures.valueLabel": "Cijfer",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.PageBreak.pageBreak": "Pagina-einde",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.no": "Nee",
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ProjectsTimelineWidget.noProjectsFound": "Geen projecten gevonden voor de geselecteerde filters",
