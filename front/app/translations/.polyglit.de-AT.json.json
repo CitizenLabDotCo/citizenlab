@@ -3879,6 +3879,26 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.UI.PillPicker.clearSearch": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:16:50.315957Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.UI.PillPicker.done": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:16:50.315957Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.UI.PillPicker.remove": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:16:50.315957Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.UI.PillPicker.selectedCount": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:16:50.315957Z",
+    "verified_by": "Jelena"
+  },
   "app.components.UI.RemoveImageButton.a11y_removeImage": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -10878,6 +10898,16 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.NotificationMenu.reportGenerated": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:16:50.315957Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.NotificationMenu.reportGeneratedStoppedEarly": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:16:50.315957Z",
+    "verified_by": "Jelena"
   },
   "app.containers.NotificationMenu.spaceModerationRightsReceived": {
     "state": "verified",

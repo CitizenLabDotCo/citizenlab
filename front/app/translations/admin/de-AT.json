@@ -1709,7 +1709,7 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.showAwaitingReply": "Beiträge anzeigen, die auf eine Antwort warten",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.sourceImported": "Importiert",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.sourceOnline": "Online",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.statusChangeNotifies": "Die Autor:innen und andere Mitwirkende erhalten eine Benachrichtigung über den neuen Status.",
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.statusChangeNotifies": "Die Autor*innen und andere Mitwirkende erhalten eine Benachrichtigung über den neuen Status.",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.statusColumn": "Status",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.tagsColumn": "Tags",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.unassigned": "Nicht zugewiesen",
