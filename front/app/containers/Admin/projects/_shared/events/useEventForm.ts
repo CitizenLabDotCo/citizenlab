@@ -1,12 +1,14 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
+import { useQueryClient } from '@tanstack/react-query';
 import { CLErrors, Multiloc, UploadFile } from 'typings';
 
 import useAddEventImage from 'api/event_images/useAddEventImage';
 import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
 import useEventImage from 'api/event_images/useEventImage';
 import useUpdateEventImage from 'api/event_images/useUpdateEventImage';
-import { IEventProperties } from 'api/events/types';
+import eventsKeys from 'api/events/keys';
+import { IEvent, IEventProperties } from 'api/events/types';
 import useAddEvent from 'api/events/useAddEvent';
 import useEvent from 'api/events/useEvent';
 import useUpdateEvent from 'api/events/useUpdateEvent';
@@ -62,6 +64,7 @@ const useEventForm = ({ projectId, eventId, onCreate }: Options) => {
     attachable_type: 'Event',
   });
   const { data: remoteImage } = useEventImage(event?.data);
+  const queryClient = useQueryClient();
 
   const { mutateAsync: addEvent } = useAddEvent();
   const { mutateAsync: updateEvent } = useUpdateEvent();
@@ -349,21 +352,29 @@ const useEventForm = ({ projectId, eventId, onCreate }: Options) => {
         }),
       };
 
+      const showSaved = (saved: IEvent) =>
+        queryClient.setQueryData(eventsKeys.item({ id: saved.data.id }), saved);
+
       let savedEventId = currentEventId;
       if (!savedEventId) {
-        savedEventId = (await addEvent({ projectId, event: changes })).data.id;
+        const created = await addEvent({ projectId, event: changes });
+        showSaved(created);
+        savedEventId = created.data.id;
         setCreatedEventId(savedEventId);
         onCreate?.(savedEventId);
       } else if (Object.keys(changes).length > 0) {
         // Only the image or files may have changed, and the API refuses an
         // empty update.
-        await updateEvent({ eventId: savedEventId, event: changes });
+        showSaved(await updateEvent({ eventId: savedEventId, event: changes }));
       }
 
       await Promise.all([
         saveAttachments(savedEventId),
         saveImage(savedEventId),
       ]);
+
+      setAttributeDiff((diff) => (diff === attributeDiff ? {} : diff));
+      setLocationPoint((current) => (current === point ? undefined : current));
 
       savedEditCount.current = editsAtStart;
       // Edits made during the save weren't sent, so the form stays unsaved.

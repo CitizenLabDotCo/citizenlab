@@ -2,6 +2,7 @@ import { UploadFile } from 'typings';
 
 import { IFileData } from 'api/files/types';
 
+import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { act, renderHook } from 'utils/testUtils/rtl';
 
 import useEventForm from './useEventForm';
@@ -90,12 +91,14 @@ const startSaveThenEdit = async (
 };
 
 const renderForm = () =>
-  renderHook(() => useEventForm({ projectId: 'project-1' }));
+  renderHook(() => useEventForm({ projectId: 'project-1' }), {
+    wrapper: createQueryClientWrapper(),
+  });
 
 describe('useEventForm', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockUpdateEvent.mockResolvedValue({});
+    mockUpdateEvent.mockResolvedValue({ data: { id: 'event-1' } });
     mockAddEventImage.mockResolvedValue({ data: { id: 'image-1' } });
     mockUpdateEventImage.mockResolvedValue({});
     mockDeleteEventImage.mockResolvedValue(undefined);
@@ -132,6 +135,20 @@ describe('useEventForm', () => {
       event: expect.objectContaining({ title_multiloc: { en: 'Edited' } }),
     });
     expect(result.current.dirty).toBe(false);
+  });
+
+  it('does not send the edits of a previous save again', async () => {
+    mockAddEvent.mockResolvedValue({ data: { id: 'event-1' } });
+    const { result } = renderForm();
+
+    act(() => {
+      result.current.updateAttributes({ title_multiloc: { en: 'Edited' } });
+    });
+    await act(() => result.current.save());
+    act(() => result.current.files.attachFile(fileData('file-1')));
+    await act(() => result.current.save());
+
+    expect(mockUpdateEvent).not.toHaveBeenCalled();
   });
 
   it('stays unsaved when edited during a save', async () => {
