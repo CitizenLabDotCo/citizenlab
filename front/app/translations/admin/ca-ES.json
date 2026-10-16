@@ -957,6 +957,7 @@
   "app.containers.Admin.Users.SeatsOverview.role": "Rol",
   "app.containers.Admin.Users.SeatsOverview.title": "Vista general de seients",
   "app.containers.Admin.Users.SeatsOverview.unknown": "Desconegut",
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": "Registre no completat",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Invitation pending",
   "app.containers.Admin.Users.admin": "Admin",
   "app.containers.Admin.Users.alreadyManager": "Ja és gestor",

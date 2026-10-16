@@ -957,6 +957,7 @@
   "app.containers.Admin.Users.SeatsOverview.role": "Função",
   "app.containers.Admin.Users.SeatsOverview.title": "Visão geral de assentos",
   "app.containers.Admin.Users.SeatsOverview.unknown": "Desconhecido",
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": "Cadastro não concluído",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Convite pendente",
   "app.containers.Admin.Users.admin": "Admin ",
   "app.containers.Admin.Users.alreadyManager": "Já é gerente",
