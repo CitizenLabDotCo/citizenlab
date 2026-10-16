@@ -381,6 +381,10 @@ class WebApi::V1::UsersController < ApplicationController
       @users.order(created_at: :asc)
     when '-created_at'
       @users.order(created_at: :desc)
+    when 'registration_completed_at'
+      @users.order('registration_completed_at ASC NULLS LAST', id: :asc)
+    when '-registration_completed_at'
+      @users.order('registration_completed_at DESC NULLS LAST', id: :asc)
     when 'last_active_at'
       @users.order(Arel.sql('last_active_at IS NOT NULL, last_active_at ASC'))
     when '-last_active_at'
