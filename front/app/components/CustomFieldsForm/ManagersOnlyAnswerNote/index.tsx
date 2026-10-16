@@ -17,7 +17,7 @@ const ManagersOnlyAnswerNote = () => {
       display="flex"
       alignItems="center"
       gap="8px"
-      mt="8px"
+      my="8px"
       data-cy="e2e-private-answer-note"
     >
       <Icon
