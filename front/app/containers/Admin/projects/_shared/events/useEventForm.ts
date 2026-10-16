@@ -296,11 +296,11 @@ const useEventForm = ({ projectId, eventId, onCreate }: Options) => {
         });
         savedImageId.current = added.data.id;
       }
-    } else if (altText && imageId && image) {
+    } else if (altText && imageId) {
       await updateEventImage({
         eventId: savedEventId,
         imageId,
-        image: { image: image.base64, alt_text_multiloc: altText },
+        image: { alt_text_multiloc: altText },
       });
     }
 

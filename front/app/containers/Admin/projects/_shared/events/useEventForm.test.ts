@@ -10,6 +10,7 @@ const mockAddEvent = jest.fn();
 const mockUpdateEvent = jest.fn();
 const mockGeocode = jest.fn();
 const mockAddEventImage = jest.fn();
+const mockUpdateEventImage = jest.fn();
 const mockDeleteEventImage = jest.fn();
 const mockSyncFiles = jest.fn();
 
@@ -28,7 +29,7 @@ jest.mock('api/event_images/useAddEventImage', () => () => ({
   mutateAsync: mockAddEventImage,
 }));
 jest.mock('api/event_images/useUpdateEventImage', () => () => ({
-  mutateAsync: jest.fn(),
+  mutateAsync: mockUpdateEventImage,
 }));
 jest.mock('api/event_images/useDeleteEventImage', () => () => ({
   mutateAsync: mockDeleteEventImage,
@@ -96,6 +97,7 @@ describe('useEventForm', () => {
     jest.clearAllMocks();
     mockUpdateEvent.mockResolvedValue({});
     mockAddEventImage.mockResolvedValue({ data: { id: 'image-1' } });
+    mockUpdateEventImage.mockResolvedValue({});
     mockDeleteEventImage.mockResolvedValue(undefined);
     mockSyncFiles.mockResolvedValue(undefined);
   });
@@ -197,6 +199,22 @@ describe('useEventForm', () => {
     expect(mockDeleteEventImage).toHaveBeenCalledWith({
       eventId: 'event-1',
       imageId: 'image-1',
+    });
+  });
+
+  it('updates the alt text of the image the previous save added without resending a file', async () => {
+    mockAddEvent.mockResolvedValue({ data: { id: 'event-1' } });
+    const { result } = renderForm();
+
+    act(() => result.current.addImage([imageFile('new')]));
+    await act(() => result.current.save());
+    act(() => result.current.changeImageAltText({ en: 'A cute puppy' }));
+    await act(() => result.current.save());
+
+    expect(mockUpdateEventImage).toHaveBeenCalledWith({
+      eventId: 'event-1',
+      imageId: 'image-1',
+      image: { alt_text_multiloc: { en: 'A cute puppy' } },
     });
   });
 
