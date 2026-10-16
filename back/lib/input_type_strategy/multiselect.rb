@@ -14,6 +14,10 @@ module InputTypeStrategy
       true
     end
 
+    def supports_answer_facet?
+      true
+    end
+
     def supports_select_count?
       true
     end
