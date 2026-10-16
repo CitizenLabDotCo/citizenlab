@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
@@ -6,6 +6,7 @@ import { useIntl } from 'utils/cl-intl';
 
 import { Level } from '../level';
 import FlyoutMenu, { MenuEntry } from '../Menu/FlyoutMenu';
+import useMenuButton from '../Menu/useMenuButton';
 import messages from '../messages';
 import ToolbarButton from '../ToolbarButton';
 
@@ -22,7 +23,7 @@ interface Props {
 // clear them all.
 const FilterMenu = ({ level }: Props) => {
   const { formatMessage } = useIntl();
-  const [opened, setOpened] = useState(false);
+  const { opened, toggle, close, button, menu } = useMenuButton();
   const { facets, activeFacets, clearFilters } = useFilters(level);
   const label = formatMessage(messages.filter);
 
@@ -50,18 +51,20 @@ const FilterMenu = ({ level }: Props) => {
   }
 
   return (
-    <Box position="relative">
+    <Box ref={menu} position="relative">
       <ToolbarButton
+        ref={button}
+        dataCy="projects-hierarchy-filter-button"
         icon="filter"
         label={label}
         isActive={activeFacets.length > 0}
         menuOpened={opened}
-        onClick={() => setOpened(!opened)}
+        onClick={toggle}
       />
       <FlyoutMenu
         label={label}
         opened={opened}
-        onClose={() => setOpened(false)}
+        onClose={close}
         entries={entries}
         top="36px"
       />

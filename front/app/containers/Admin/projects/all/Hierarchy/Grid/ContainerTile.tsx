@@ -63,7 +63,11 @@ const ContainerTile = ({ level, title, meta, media, actions, drag }: Props) => {
   const levelSearch = useLevelSearch();
 
   return (
-    <Tile ref={drag.item} className={drag.dragging ? 'dragging' : undefined}>
+    <Tile
+      ref={drag.item}
+      className={drag.dragging ? 'dragging' : undefined}
+      data-cy="projects-hierarchy-tile"
+    >
       {/* Over the icon or thumbnail. */}
       <DragHandle handle={drag.handle} over={{ top: '12px', left: '12px' }} />
       <Box

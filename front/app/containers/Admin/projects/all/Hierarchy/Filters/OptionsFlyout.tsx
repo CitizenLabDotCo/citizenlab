@@ -7,6 +7,7 @@ import { useIntl } from 'utils/cl-intl';
 import { Level } from '../level';
 import CheckRow from '../Menu/CheckRow';
 import FlyoutSearch from '../Menu/FlyoutSearch';
+import moveMenuFocus from '../Menu/moveMenuFocus';
 import NothingToChoose from '../Menu/NothingToChoose';
 import useFocusFirst from '../Menu/useFocusFirst';
 import messages from '../messages';
@@ -38,7 +39,7 @@ const OptionsFlyout = ({ facetKey, level, takeFocus }: Props) => {
   );
 
   return (
-    <Box ref={focusFirstField}>
+    <Box ref={focusFirstField} onKeyDown={moveMenuFocus}>
       <FlyoutSearch
         count={options.length}
         value={query}

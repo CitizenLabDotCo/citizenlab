@@ -67,6 +67,20 @@ describe('NewMenu', () => {
     expect(await menuItems()).toEqual(['Folder', 'Project']);
   });
 
+  it('takes the focus when opened from the keyboard, and gives it back on Escape', async () => {
+    mockRoles = [{ type: 'admin' }];
+    mockHighestRole = 'admin';
+    render(<NewMenu />);
+
+    await userEvent.tab();
+    await userEvent.keyboard('{Enter}');
+    expect(screen.getByRole('menuitem', { name: 'Space' })).toHaveFocus();
+
+    await userEvent.keyboard('{Escape}');
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'New' })).toHaveFocus();
+  });
+
   it('shows the plain project button to those who can only create projects', () => {
     mockRoles = [
       { type: 'project_folder_moderator', project_folder_id: 'folder-1' },

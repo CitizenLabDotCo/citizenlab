@@ -8,6 +8,7 @@ import {
   Thead,
   Tr,
 } from '@citizenlab/cl2-component-library';
+import { buttonsFocusRingInset } from 'global-styles';
 import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
@@ -32,8 +33,10 @@ import SpaceRows from './SpaceRows';
 import useAddedColumns from './useAddedColumns';
 
 // The header sets each column's width; the project column takes the rest.
+// Its cells and scroll area clip, and its rows touch.
 const FixedTable = styled(Table)`
   table-layout: fixed;
+  ${buttonsFocusRingInset}
 `;
 
 // A wide table scrolls sideways here. Without the containment, its width would
@@ -70,7 +73,7 @@ const ListView = ({ groups, summary }: Props) => {
       : undefined);
 
   return (
-    <Box>
+    <Box data-cy="projects-hierarchy-list">
       {shownSummary && <LevelSummary text={shownSummary} />}
       <ScrollArea>
         <FixedTable

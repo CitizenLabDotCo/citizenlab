@@ -14,6 +14,7 @@ import { usePermission } from 'utils/permissions';
 import { WHOLE_LIST_SIZE } from '../constants';
 import FlyoutSearch from '../Menu/FlyoutSearch';
 import MenuRow from '../Menu/MenuRow';
+import moveMenuFocus from '../Menu/moveMenuFocus';
 import NothingToChoose from '../Menu/NothingToChoose';
 import useFocusFirst from '../Menu/useFocusFirst';
 import messages from '../messages';
@@ -89,7 +90,7 @@ const MoveToFlyout = ({ item, here, takeFocus, onPick }: Props) => {
   const isLoading = spaces.isLoading || folders.isLoading;
 
   return (
-    <Box ref={focusFirst}>
+    <Box ref={focusFirst} onKeyDown={moveMenuFocus}>
       <FlyoutSearch
         count={destinations.length}
         value={query}

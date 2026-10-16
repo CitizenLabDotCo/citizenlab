@@ -5,6 +5,7 @@ import { Box } from '@citizenlab/cl2-component-library';
 import { useIntl } from 'utils/cl-intl';
 
 import MenuRow from '../Menu/MenuRow';
+import moveMenuFocus from '../Menu/moveMenuFocus';
 import useFocusFirst from '../Menu/useFocusFirst';
 import messages from '../messages';
 
@@ -32,6 +33,7 @@ const ArrangeFlyout = ({ moves, takeFocus, onPick }: Props) => {
       ref={focusFirst}
       role="menu"
       aria-label={formatMessage(messages.arrange)}
+      onKeyDown={moveMenuFocus}
     >
       {moves.map((move) => (
         <MenuRow

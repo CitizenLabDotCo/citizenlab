@@ -85,7 +85,11 @@ const ProjectCard = ({ project, path, place }: Props) => {
   const imageUrl = versions?.large ?? versions?.medium;
 
   return (
-    <Card ref={drag.item} className={drag.dragging ? 'dragging' : undefined}>
+    <Card
+      ref={drag.item}
+      className={drag.dragging ? 'dragging' : undefined}
+      data-cy="projects-hierarchy-card"
+    >
       <Box
         className="project-card-image"
         position="relative"

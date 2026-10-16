@@ -90,7 +90,12 @@ const LevelBreadcrumbs = ({ level, showRoot }: Props) => {
   const current = level.kind === 'folder' ? folder : space;
 
   return (
-    <Box display="flex" alignItems="center" minWidth="0">
+    <Box
+      data-cy="projects-hierarchy-breadcrumbs"
+      display="flex"
+      alignItems="center"
+      minWidth="0"
+    >
       {crumbs.map((crumb, index) => (
         // Two crumbs can share a label, like a folder named after its space.
         <Fragment key={index}>

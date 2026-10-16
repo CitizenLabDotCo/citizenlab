@@ -23,6 +23,7 @@ const FilterChips = ({ level }: Props) => {
 
   return (
     <Box
+      data-cy="projects-hierarchy-filter-chips"
       display="flex"
       alignItems="center"
       flexWrap="wrap"

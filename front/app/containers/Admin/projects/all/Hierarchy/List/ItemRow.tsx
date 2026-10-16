@@ -52,7 +52,11 @@ const ItemRow = ({ drag, children }: Props) => {
   }, [item]);
 
   return (
-    <Row innerRef={row} className={drag.dragging ? 'dragging' : undefined}>
+    <Row
+      innerRef={row}
+      className={drag.dragging ? 'dragging' : undefined}
+      dataCy="projects-hierarchy-row"
+    >
       <GripCell handle={drag.handle} />
       {children}
     </Row>

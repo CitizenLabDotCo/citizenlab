@@ -16,7 +16,7 @@ interface Props {
 }
 
 const GridView = ({ groups, summary }: Props) => (
-  <Box>
+  <Box data-cy="projects-hierarchy-grid">
     {summary && <LevelSummary text={summary} />}
     {groups.map((group) => (
       <Section key={group.kind} label={group.label} count={group.count}>

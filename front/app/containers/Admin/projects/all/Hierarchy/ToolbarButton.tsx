@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { MouseEvent, forwardRef } from 'react';
 
 import {
   Box,
@@ -18,13 +18,14 @@ interface Props {
   isActive?: boolean;
   // Set for a button that opens a menu.
   menuOpened?: boolean;
-  onClick: () => void;
+  onClick: (event: MouseEvent) => void;
+  dataCy?: string;
 }
 
 // An icon button of the level's toolbar, marked with a dot while what it
 // controls is on.
 const ToolbarButton = forwardRef<HTMLButtonElement, Props>(
-  ({ icon, label, isActive = false, menuOpened, onClick }, ref) => (
+  ({ icon, label, isActive = false, menuOpened, onClick, dataCy }, ref) => (
     <Box position="relative">
       <Tooltip
         content={label}
@@ -34,6 +35,7 @@ const ToolbarButton = forwardRef<HTMLButtonElement, Props>(
       >
         <Button
           ref={ref}
+          dataCy={dataCy}
           type="button"
           buttonStyle="bo-secondary"
           icon={icon}

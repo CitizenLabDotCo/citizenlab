@@ -15,6 +15,7 @@ import { useIntl } from 'utils/cl-intl';
 import AnchoredLayer from '../Menu/AnchoredLayer';
 import CheckRow from '../Menu/CheckRow';
 import { getMenuSide } from '../Menu/menuSide';
+import moveMenuFocus from '../Menu/moveMenuFocus';
 import useAnchoredMenu from '../Menu/useAnchoredMenu';
 import messages from '../messages';
 
@@ -42,6 +43,7 @@ const AddColumnsMenu = () => {
       >
         <Button
           ref={button}
+          dataCy="projects-hierarchy-add-columns"
           type="button"
           buttonStyle="bo-text"
           icon="plus"
@@ -64,7 +66,12 @@ const AddColumnsMenu = () => {
           width="240px"
           borderRadius={bo.panelBorderRadius}
           content={
-            <Box role="menu" aria-label={label} py="1px">
+            <Box
+              role="menu"
+              aria-label={label}
+              py="1px"
+              onKeyDown={moveMenuFocus}
+            >
               {addableColumns.map((column) => (
                 <CheckRow
                   key={column}

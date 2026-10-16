@@ -8,6 +8,8 @@ import {
   bo,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { buttonsFocusRingInset } from 'global-styles';
+import styled from 'styled-components';
 
 import { useIntl } from 'utils/cl-intl';
 import { parseBackendDateString } from 'utils/dateUtils';
@@ -22,6 +24,11 @@ import useFacetOptions from './useFacetOptions';
 import useFilters from './useFilters';
 
 const SEGMENT_BORDER = `1px solid ${colors.grey200}`;
+
+// It clips its overflow, to keep the remove button's hover inside its corners.
+const Chip = styled(Box)`
+  ${buttonsFocusRingInset}
+`;
 
 interface Props {
   facetKey: FacetKey;
@@ -74,7 +81,7 @@ const FilterChip = ({ facetKey, level }: Props) => {
   const { operator, value } = describe();
 
   return (
-    <Box
+    <Chip
       display="inline-flex"
       alignItems="stretch"
       height="28px"
@@ -130,7 +137,7 @@ const FilterChip = ({ facetKey, level }: Props) => {
           onClick={() => removeFacet(facetKey)}
         />
       </Box>
-    </Box>
+    </Chip>
   );
 };
 

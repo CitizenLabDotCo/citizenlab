@@ -14,6 +14,7 @@ import NewProjectModal, { NewProjectMode } from '../NewProjectModal';
 import projectsMessages from '../Projects/Table/messages';
 
 import FlyoutMenu, { MenuEntry } from './Menu/FlyoutMenu';
+import useMenuButton from './Menu/useMenuButton';
 import messages from './messages';
 import NewProjectFlyout from './NewProjectFlyout';
 
@@ -21,7 +22,7 @@ import NewProjectFlyout from './NewProjectFlyout';
 // for admins and space managers, projects for everyone.
 const NewMenu = () => {
   const { formatMessage } = useIntl();
-  const [opened, setOpened] = useState(false);
+  const { opened, toggle, close, button, menu } = useMenuButton();
   const [mode, setMode] = useState<NewProjectMode | null>(null);
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
   const canCreateSpace = usePermission({ item: 'space', action: 'create' });
@@ -71,8 +72,9 @@ const NewMenu = () => {
   const label = formatMessage(messages.newItem);
 
   return (
-    <Box position="relative">
+    <Box ref={menu} position="relative">
       <Button
+        ref={button}
         className="intercom-admin-projects-new-project-button"
         // As the redesigned project pages' header buttons.
         buttonStyle="bo-primary"
@@ -82,7 +84,7 @@ const NewMenu = () => {
         iconSize={bo.buttonMedium.iconSize}
         icon="chevron-down"
         iconPos="right"
-        onClick={() => setOpened(!opened)}
+        onClick={toggle}
         aria-haspopup="menu"
         aria-expanded={opened}
       >
@@ -91,7 +93,7 @@ const NewMenu = () => {
       <FlyoutMenu
         label={label}
         opened={opened}
-        onClose={() => setOpened(false)}
+        onClose={close}
         entries={entries}
         top="calc(100% + 6px)"
       />

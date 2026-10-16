@@ -8,6 +8,7 @@ import allMessages from '../messages';
 import { NewProjectMode } from '../NewProjectModal';
 
 import MenuRow from './Menu/MenuRow';
+import moveMenuFocus from './Menu/moveMenuFocus';
 import useFocusFirst from './Menu/useFocusFirst';
 
 interface Props {
@@ -27,7 +28,12 @@ const NewProjectFlyout = ({ label, takeFocus, onPick }: Props) => {
   const focusFirst = useFocusFirst(takeFocus);
 
   return (
-    <Box ref={focusFirst} role="menu" aria-label={label}>
+    <Box
+      ref={focusFirst}
+      role="menu"
+      aria-label={label}
+      onKeyDown={moveMenuFocus}
+    >
       <MenuRow
         icon="page"
         label={formatMessage(allMessages.fromScratchMenuItem)}

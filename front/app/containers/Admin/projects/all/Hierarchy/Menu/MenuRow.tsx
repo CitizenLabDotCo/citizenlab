@@ -8,6 +8,7 @@ import {
   bo,
   colors,
 } from '@citizenlab/cl2-component-library';
+import { focusRingInset } from 'global-styles';
 import styled, { css } from 'styled-components';
 
 import Link, { typedStyled, type WrapperTo } from 'utils/cl-router/Link';
@@ -40,6 +41,13 @@ export const rowStyle = css`
   &.selected {
     background: ${colors.grey200};
     color: inherit;
+  }
+
+  /* Rows touch, and the menu around them scrolls: a ring outside a row would
+  be cut off at the menu's edges and covered by the row next to it. */
+  &:focus-visible {
+    ${focusRingInset}
+    box-shadow: none;
   }
 `;
 

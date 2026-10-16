@@ -1,4 +1,11 @@
-import React, { Fragment, KeyboardEvent, ReactNode, useState } from 'react';
+import React, {
+  Fragment,
+  KeyboardEvent,
+  MouseEvent,
+  ReactNode,
+  useRef,
+  useState,
+} from 'react';
 
 import {
   Box,
@@ -16,6 +23,7 @@ import {
   getFlyoutSide,
   getMenuSide,
 } from './menuSide';
+import moveMenuFocus from './moveMenuFocus';
 
 type EntryBase = {
   key: string;
@@ -36,6 +44,9 @@ export type MenuEntry = EntryBase &
 
 const MENU_WIDTH = 240;
 
+// Enter and Space click with no pointer behind the click.
+const isFromKeys = (event: MouseEvent<HTMLElement>) => event.detail === 0;
+
 interface Props {
   label: string;
   opened: boolean;
@@ -49,7 +60,7 @@ interface Props {
 }
 
 // A menu of actions and of rows that open their choices beside it, on hover,
-// click or an arrow key.
+// click or the arrow key towards them; the other arrow comes back.
 const FlyoutMenu = ({
   label,
   opened,
@@ -66,26 +77,60 @@ const FlyoutMenu = ({
   const [fromKeyboard, setFromKeyboard] = useState(false);
   const [keyboardOpenings, setKeyboardOpenings] = useState(0);
   const { isRtl } = useTheme();
+  const flyout = useRef<HTMLDivElement>(null);
+  // The row whose flyout is open, for the focus to come back to.
+  const flyoutRow = useRef<HTMLElement | null>(null);
+
+  const towardsFlyout = flyoutSide === 'right' ? 'ArrowRight' : 'ArrowLeft';
+  const backFromFlyout = flyoutSide === 'right' ? 'ArrowLeft' : 'ArrowRight';
 
   const close = () => {
     setOpenKey(undefined);
     onClose();
   };
 
-  const openFlyout = (key: string, row: HTMLElement, keyboard = false) => {
+  // Hovering another row closes the open flyout. The focus would go with it,
+  // so the hovered row takes it.
+  const leaveFlyout = (row: HTMLElement) => {
+    if (flyout.current?.contains(document.activeElement)) row.focus();
+  };
+
+  const openFlyout = (key: string, row: HTMLElement, keyboard: boolean) => {
+    if (!keyboard && key !== openKey) leaveFlyout(row);
+    flyoutRow.current = row;
     setOpenKey(key);
     setFlyoutTop(row.offsetTop);
     setFromKeyboard(keyboard);
     if (keyboard) setKeyboardOpenings((count) => count + 1);
   };
 
-  const handleFlyoutKeyDown =
+  const closeFlyout = (row: HTMLElement) => {
+    leaveFlyout(row);
+    setOpenKey(undefined);
+  };
+
+  const handleRowKeyDown =
     (key: string) => (event: KeyboardEvent<HTMLElement>) => {
-      if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+      if (event.key === towardsFlyout) {
         event.preventDefault();
         openFlyout(key, event.currentTarget, true);
       }
     };
+
+  // A search box keeps its arrows for the caret.
+  const handleFlyoutKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    const row = flyoutRow.current;
+    if (
+      event.key !== backFromFlyout ||
+      event.target instanceof HTMLInputElement ||
+      !row
+    ) {
+      return;
+    }
+    event.preventDefault();
+    setOpenKey(undefined);
+    row.focus();
+  };
 
   // Measured once the menu is on screen, so its rows' arrows point where
   // their flyouts will open.
@@ -111,7 +156,12 @@ const FlyoutMenu = ({
       width={`${MENU_WIDTH}px`}
       maxHeight="440px"
       content={
-        <Box ref={measureSide} role="menu" aria-label={label}>
+        <Box
+          ref={measureSide}
+          role="menu"
+          aria-label={label}
+          onKeyDown={moveMenuFocus}
+        >
           {entries.map((entry) => (
             <Fragment key={entry.key}>
               {entry.dividerBefore && (
@@ -124,19 +174,23 @@ const FlyoutMenu = ({
                   flyoutOpened={openKey === entry.key}
                   flyoutSide={flyoutSide}
                   onMouseEnter={(event) =>
-                    openFlyout(entry.key, event.currentTarget)
+                    openFlyout(entry.key, event.currentTarget, false)
                   }
                   onClick={(event) =>
-                    openFlyout(entry.key, event.currentTarget)
+                    openFlyout(
+                      entry.key,
+                      event.currentTarget,
+                      isFromKeys(event)
+                    )
                   }
-                  onKeyDown={handleFlyoutKeyDown(entry.key)}
+                  onKeyDown={handleRowKeyDown(entry.key)}
                 />
               ) : 'link' in entry ? (
                 <MenuRow
                   icon={entry.icon}
                   label={entry.label}
                   link={entry.link}
-                  onMouseEnter={() => setOpenKey(undefined)}
+                  onMouseEnter={(event) => closeFlyout(event.currentTarget)}
                   onClick={close}
                 />
               ) : (
@@ -144,7 +198,7 @@ const FlyoutMenu = ({
                   icon={entry.icon}
                   label={entry.label}
                   danger={entry.danger}
-                  onMouseEnter={() => setOpenKey(undefined)}
+                  onMouseEnter={(event) => closeFlyout(event.currentTarget)}
                   onClick={() => {
                     entry.onSelect();
                     close();
@@ -164,9 +218,13 @@ const FlyoutMenu = ({
             offset={MENU_WIDTH + FLYOUT_GAP}
             width={FLYOUT_WIDTH}
           >
-            <Fragment key={`${openEntry.key}-${keyboardOpenings}`}>
+            <Box
+              key={`${openEntry.key}-${keyboardOpenings}`}
+              ref={flyout}
+              onKeyDown={handleFlyoutKeyDown}
+            >
               {openEntry.flyout(fromKeyboard, close)}
-            </Fragment>
+            </Box>
           </FlyoutPanel>
         )
       }

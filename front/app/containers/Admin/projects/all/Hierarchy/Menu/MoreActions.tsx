@@ -38,6 +38,7 @@ const MoreActions = ({ entries, align }: Props) => {
       >
         <Button
           ref={button}
+          dataCy="projects-hierarchy-more-actions"
           type="button"
           buttonStyle="bo-text"
           icon="dots-horizontal"

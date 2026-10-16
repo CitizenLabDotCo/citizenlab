@@ -8,6 +8,7 @@ import {
   bo,
   colors,
 } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -23,12 +24,21 @@ const MODES: { mode: ViewMode; icon: IconNames; label: MessageDescriptor }[] = [
   { mode: 'calendar', icon: 'calendar', label: allMessages.calendar },
 ];
 
+// The buttons touch: the focused one comes forward, so the one beside it
+// doesn't cover its ring.
+const Switch = styled(Box)`
+  button:focus-visible {
+    position: relative;
+    z-index: 1;
+  }
+`;
+
 const ViewModeSwitch = () => {
   const { formatMessage } = useIntl();
   const { viewMode, setViewMode } = useViewMode();
 
   return (
-    <Box
+    <Switch
       role="group"
       aria-label={formatMessage(messages.view)}
       display="flex"
@@ -49,6 +59,7 @@ const ViewModeSwitch = () => {
           >
             <Button
               type="button"
+              dataCy={`projects-hierarchy-view-${mode}`}
               buttonStyle="bo-text"
               icon={icon}
               iconSize="16px"
@@ -70,7 +81,7 @@ const ViewModeSwitch = () => {
           </Tooltip>
         );
       })}
-    </Box>
+    </Switch>
   );
 };
 
