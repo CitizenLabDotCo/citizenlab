@@ -1070,7 +1070,7 @@
   "app.components.formBuilder.logicValidationError": "Logika možda neće povezivati na prethodne stranice",
   "app.components.formBuilder.longAnswer": "Dugi odgovor",
   "app.components.formBuilder.manageTagsExplanation": "Oznakama prikazanim u ovom pitanju možete upravljati na {inputTagsLink} projekta.",
-  "app.components.formBuilder.managersOnly": "Samo voditelji",
+  "app.components.formBuilder.managersOnly": "Samo za voditelje",
   "app.components.formBuilder.mapConfiguration": "Konfiguracija karte",
   "app.components.formBuilder.mapping": "Mapiranje",
   "app.components.formBuilder.mappingNotInCurrentLicense": "Značajke mapiranja ankete nisu uključene u vašu trenutnu licencu. Obratite se svom GovSuccess Manageru da biste saznali više.",
