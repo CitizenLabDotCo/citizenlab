@@ -5,7 +5,6 @@ import { Box } from '@citizenlab/cl2-component-library';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { trackEventByName } from 'utils/analytics';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import {
   countActiveFilters,
@@ -16,7 +15,7 @@ import Manager from '../../_shared/FilterBar/Filters/Manager';
 import Spaces from '../../_shared/FilterBar/Filters/Spaces';
 import Status from '../../_shared/FilterBar/Filters/Status';
 import tracks from '../../_shared/FilterBar/tracks';
-import { useParams } from '../../_shared/params';
+import { removeParams, useParams } from '../../_shared/params';
 
 const Filters = () => {
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
@@ -25,7 +24,7 @@ const Filters = () => {
   const showClearButton = countActiveFilters(params, 'folders') > 0;
 
   const handleClearAll = () => {
-    removeSearchParams(FOLDER_FILTERS);
+    removeParams(FOLDER_FILTERS);
     trackEventByName(tracks.clearFilters, { tab: 'folders' });
   };
 

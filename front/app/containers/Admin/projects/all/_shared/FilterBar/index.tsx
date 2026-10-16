@@ -6,13 +6,12 @@ import useAuthUser from 'api/me/useAuthUser';
 import { IUser } from 'api/users/types';
 
 import { trackEventByName } from 'utils/analytics';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 import { isProjectFolderModerator } from 'utils/permissions/rules/projectFolderPermissions';
 
 import { countActiveFilters, hasValue } from '../activeFilters';
 import FilteredProjectCount from '../FilteredProjectCount';
-import { Parameter, useParams } from '../params';
+import { Parameter, removeParams, useParams } from '../params';
 
 import ClearFiltersButton from './ClearFiltersButton';
 import { FILTER_KEYS, FilterKey } from './constants';
@@ -56,7 +55,7 @@ const FilterBar = ({ user }: Props) => {
     addedFilters.length > 0 || countActiveFilters(params, undefined) > 0;
 
   const handleClearAll = () => {
-    removeSearchParams([...FILTER_KEYS, ...DEFAULT_FILTERS, 'sort', 'search']);
+    removeParams([...FILTER_KEYS, ...DEFAULT_FILTERS, 'sort', 'search']);
     setAddedFilters([]);
 
     trackEventByName(tracks.clearFilters);

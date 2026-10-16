@@ -1,22 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import useAuthUser from 'api/me/useAuthUser';
 
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { useSearch } from 'utils/router';
 
-import { PARAMS } from './params';
 import { projectsIndexSearchSchema } from './searchSchema';
 
-const PERSISTED_PARAMS = ['tab', ...PARAMS] as const;
+const PERSISTED_PARAMS = Object.keys(projectsIndexSearchSchema.fields);
 
-type PersistedParams = Partial<
-  Record<(typeof PERSISTED_PARAMS)[number], unknown>
->;
+type PersistedParams = Record<string, unknown>;
 
-const STORAGE_KEY_PREFIX = 'admin_projects_overview_params';
-
-const getStorageKey = (userId: string) => `${STORAGE_KEY_PREFIX}:${userId}`;
+const STORAGE_KEY = 'admin_projects_overview_params';
 
 const pickPersistedParams = (
   searchParams: Record<string, unknown>
@@ -35,13 +30,18 @@ const isEmpty = (params: PersistedParams) => Object.keys(params).length === 0;
 
 const loadPersistedParams = (userId: string) => {
   try {
-    const stored = sessionStorage.getItem(getStorageKey(userId));
+    const stored = sessionStorage.getItem(STORAGE_KEY);
     if (!stored) return null;
 
-    const params = pickPersistedParams(JSON.parse(stored));
+    const parsed = JSON.parse(stored);
+    const params = pickPersistedParams(parsed.params ?? {});
 
-    if (isEmpty(params) || !projectsIndexSearchSchema.isValidSync(params)) {
-      sessionStorage.removeItem(getStorageKey(userId));
+    if (
+      parsed.userId !== userId ||
+      isEmpty(params) ||
+      !projectsIndexSearchSchema.isValidSync(params)
+    ) {
+      sessionStorage.removeItem(STORAGE_KEY);
       return null;
     }
 
@@ -53,17 +53,24 @@ const loadPersistedParams = (userId: string) => {
 
 const savePersistedParams = (userId: string, params: PersistedParams) => {
   try {
-    if (isEmpty(params)) {
-      sessionStorage.removeItem(getStorageKey(userId));
-    } else {
-      sessionStorage.setItem(getStorageKey(userId), JSON.stringify(params));
-    }
+    sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ userId, params }));
   } catch {
     // Ignore storage errors
   }
 };
 
-type Status = 'pending' | 'restoring' | 'done';
+export const clearPersistedParamsIfEmpty = () => {
+  const searchParams = new URLSearchParams(window.location.search);
+  if (PERSISTED_PARAMS.some((paramName) => searchParams.has(paramName))) {
+    return;
+  }
+
+  try {
+    sessionStorage.removeItem(STORAGE_KEY);
+  } catch {
+    return;
+  }
+};
 
 const usePersistedParams = () => {
   const searchParams = useSearch({
@@ -71,38 +78,30 @@ const usePersistedParams = () => {
   });
   const { data: authUser } = useAuthUser();
   const userId = authUser?.data.id;
-  const [status, setStatus] = useState<Status>('pending');
 
-  const currentParams = pickPersistedParams(searchParams);
-  const hasParams = !isEmpty(currentParams);
+  const hasParams = !isEmpty(pickPersistedParams(searchParams));
 
   useEffect(() => {
-    if (status !== 'pending' || authUser === undefined) return;
+    if (!userId) return;
 
-    const storedParams =
-      userId && !hasParams ? loadPersistedParams(userId) : null;
+    const currentParams = pickPersistedParams(searchParams);
 
+    if (!isEmpty(currentParams)) {
+      savePersistedParams(userId, currentParams);
+      return;
+    }
+
+    const storedParams = loadPersistedParams(userId);
     if (storedParams) {
       updateSearchParams(storedParams);
-      setStatus('restoring');
-    } else {
-      setStatus('done');
     }
-  }, [status, authUser, userId, hasParams]);
+  }, [userId, searchParams]);
 
-  useEffect(() => {
-    if (status === 'restoring' && hasParams) {
-      setStatus('done');
-    }
-  }, [status, hasParams]);
+  const isRestoring =
+    authUser === undefined ||
+    (!hasParams && !!userId && loadPersistedParams(userId) !== null);
 
-  useEffect(() => {
-    if (status !== 'done' || !userId) return;
-
-    savePersistedParams(userId, pickPersistedParams(searchParams));
-  }, [status, userId, searchParams]);
-
-  return { isRestoring: status !== 'done' };
+  return { isRestoring };
 };
 
 export default usePersistedParams;

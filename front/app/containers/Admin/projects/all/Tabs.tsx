@@ -18,7 +18,6 @@ import NewLabel from 'components/UI/NewLabel';
 
 import { trackEventByName } from 'utils/analytics';
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { isAdmin } from 'utils/permissions/roles';
 import { useSearch } from 'utils/router';
@@ -27,6 +26,7 @@ import { countActiveFilters } from './_shared/activeFilters';
 import {
   Parameter,
   PARAMS as PROJECT_PARAMS,
+  removeParams,
   useParams,
 } from './_shared/params';
 import messages from './messages';
@@ -150,10 +150,10 @@ const Tabs = () => {
         dataCy="projects-overview-projects-tab"
         onClick={() => {
           if (tab === 'folders') {
-            removeSearchParams(FOLDER_PARAMS);
+            removeParams(FOLDER_PARAMS);
           }
 
-          removeSearchParams(['tab']);
+          removeParams(['tab']);
           trackEventByName(tracks.setTab, { tab: 'projects' });
         }}
       />
@@ -166,7 +166,7 @@ const Tabs = () => {
           dataCy="projects-overview-folders-tab"
           onClick={() => {
             if (tab === undefined || tab === 'calendar') {
-              removeSearchParams(PROJECT_PARAMS);
+              removeParams(PROJECT_PARAMS);
             }
 
             updateSearchParams({ tab: 'folders' });
@@ -182,7 +182,7 @@ const Tabs = () => {
             active={tab === 'spaces'}
             dataCy="projects-overview-spaces-tab"
             onClick={() => {
-              removeSearchParams([...PROJECT_PARAMS, ...FOLDER_PARAMS]);
+              removeParams([...PROJECT_PARAMS, ...FOLDER_PARAMS]);
               updateSearchParams({ tab: 'spaces' });
               trackEventByName(tracks.setTab, { tab: 'spaces' });
             }}
@@ -203,7 +203,7 @@ const Tabs = () => {
         dataCy="projects-overview-calendar-tab"
         onClick={() => {
           if (tab === 'folders') {
-            removeSearchParams(FOLDER_PARAMS);
+            removeParams(FOLDER_PARAMS);
           }
 
           updateSearchParams({ tab: 'calendar' });
@@ -216,7 +216,7 @@ const Tabs = () => {
           icon="drag-handle"
           active={tab === 'ordering'}
           onClick={() => {
-            removeSearchParams([...PROJECT_PARAMS, ...FOLDER_PARAMS]);
+            removeParams([...PROJECT_PARAMS, ...FOLDER_PARAMS]);
             updateSearchParams({ tab: 'ordering' });
             trackEventByName(tracks.setTab, { tab: 'ordering' });
           }}

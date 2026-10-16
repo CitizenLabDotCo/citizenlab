@@ -1,8 +1,10 @@
 import { act, renderHook } from 'utils/testUtils/rtl';
 
-import usePersistedParams from './usePersistedParams';
+import usePersistedParams, {
+  clearPersistedParamsIfEmpty,
+} from './usePersistedParams';
 
-const STORAGE_KEY = 'admin_projects_overview_params:user-1';
+const STORAGE_KEY = 'admin_projects_overview_params';
 
 let mockSearch: Record<string, unknown> = {};
 jest.mock('utils/router', () => ({
@@ -23,12 +25,16 @@ jest.mock('api/me/useAuthUser', () => () => ({ data: mockAuthUser }));
 
 const getStored = () => {
   const stored = sessionStorage.getItem(STORAGE_KEY);
-  return stored ? JSON.parse(stored) : null;
+  return stored ? JSON.parse(stored).params : null;
 };
+
+const setStored = (params: Record<string, unknown>, userId = 'user-1') =>
+  sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ userId, params }));
 
 describe('usePersistedParams', () => {
   beforeEach(() => {
     sessionStorage.clear();
+    window.history.replaceState(null, '', '/');
     mockSearch = {};
     mockAuthUser = { data: { id: 'user-1' } };
     mockUpdateSearchParams.mockReset();
@@ -40,7 +46,7 @@ describe('usePersistedParams', () => {
       status: ['published'],
       sort: 'alphabetically_asc',
     };
-    sessionStorage.setItem(STORAGE_KEY, JSON.stringify(stored));
+    setStored(stored);
 
     const { result, rerender } = renderHook(() => usePersistedParams());
 
@@ -55,10 +61,7 @@ describe('usePersistedParams', () => {
   });
 
   it('does not restore when the URL already has params, and stores those instead', () => {
-    sessionStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({ status: ['published'] })
-    );
+    setStored({ status: ['published'] });
     mockSearch = { tab: 'folders', managers: ['user-2'] };
 
     const { result } = renderHook(() => usePersistedParams());
@@ -68,7 +71,7 @@ describe('usePersistedParams', () => {
     expect(getStored()).toEqual({ tab: 'folders', managers: ['user-2'] });
   });
 
-  it('mirrors param changes to storage and clears it when all params are removed', () => {
+  it('mirrors param changes to storage', () => {
     const { result, rerender } = renderHook(() => usePersistedParams());
 
     expect(result.current.isRestoring).toBe(false);
@@ -77,10 +80,44 @@ describe('usePersistedParams', () => {
     mockSearch = { status: ['draft'], search: 'park' };
     rerender();
     expect(getStored()).toEqual({ status: ['draft'], search: 'park' });
+  });
+
+  it('restores the params when navigating to the page without params', () => {
+    mockSearch = { status: ['draft'], search: 'park' };
+    const { result, rerender } = renderHook(() => usePersistedParams());
 
     mockSearch = {};
     rerender();
+
+    expect(result.current.isRestoring).toBe(true);
+    expect(mockUpdateSearchParams).toHaveBeenCalledWith({
+      status: ['draft'],
+      search: 'park',
+    });
+    expect(getStored()).toEqual({ status: ['draft'], search: 'park' });
+  });
+
+  it('does not restore the params after they were explicitly cleared', () => {
+    mockSearch = { status: ['draft'] };
+    const { result, rerender } = renderHook(() => usePersistedParams());
+
+    window.history.replaceState(null, '', '/');
+    clearPersistedParamsIfEmpty();
+    mockSearch = {};
+    rerender();
+
+    expect(result.current.isRestoring).toBe(false);
+    expect(mockUpdateSearchParams).not.toHaveBeenCalled();
     expect(getStored()).toBeNull();
+  });
+
+  it('keeps the stored params when other params remain after a removal', () => {
+    setStored({ status: ['draft'], search: 'park' });
+    window.history.replaceState(null, '', '/?search=park');
+
+    clearPersistedParamsIfEmpty();
+
+    expect(getStored()).toEqual({ status: ['draft'], search: 'park' });
   });
 
   it('only stores the overview params', () => {
@@ -92,10 +129,7 @@ describe('usePersistedParams', () => {
   });
 
   it('drops stored params that are no longer valid', () => {
-    sessionStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({ sort: 'no_longer_a_sort_option' })
-    );
+    setStored({ sort: 'no_longer_a_sort_option' });
 
     const { result } = renderHook(() => usePersistedParams());
 
@@ -105,11 +139,7 @@ describe('usePersistedParams', () => {
   });
 
   it('keeps the params of different users apart', () => {
-    sessionStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({ status: ['published'] })
-    );
-    mockAuthUser = { data: { id: 'user-2' } };
+    setStored({ status: ['published'] }, 'user-2');
 
     const { result } = renderHook(() => usePersistedParams());
 
@@ -118,10 +148,7 @@ describe('usePersistedParams', () => {
   });
 
   it('waits for the user to load before deciding', () => {
-    sessionStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify({ status: ['published'] })
-    );
+    setStored({ status: ['published'] });
     mockAuthUser = undefined;
 
     const { result, rerender } = renderHook(() => usePersistedParams());
