@@ -36,6 +36,7 @@ ur-PK:
         project_participants: پروجیکٹ کے شرکاء کے لیے
         registered_users: رجسٹرڈ صارفین کے لیے
       recipient_segment:
+        admin_who_generated_the_report: وہ ایڈمن جس نے رپورٹ طلب کی تھی
         admins: ایڈمنز
         admins_and_managers: ایڈمنز اور مینیجرز
         admins_and_managers_assigned_to_the_input: ان پٹ کو تفویض کردہ ایڈمنز اور مینیجرز
@@ -109,6 +110,7 @@ ur-PK:
         proposal_is_upvoted_above_threshold: تجویز کو حد سے اوپر ووٹ دیا گیا ہے۔
         proposal_status_changes: تجویز کی حیثیت میں تبدیلی
         registration_to_event: کسی تقریب کی رجسٹریشن
+        report_generated: رپورٹ کی تیاری مکمل ہو گئی
         survey_1_day_after_draft_saved: صارف کے آخری بار سروے کو ڈرافٹ میں محفوظ کرنے کے 1 دن بعد
         user_accepts_invitation_to_cosponsor_a_proposal: صارف کسی تجویز کو شریک کفیل کرنے کی دعوت قبول کرتا ہے۔
         user_changes_email: صارف اپنا ای میل ایڈریس تبدیل کرتا ہے
@@ -206,6 +208,7 @@ ur-PK:
       project_review_request: پروجیکٹ کا جائزہ لینے کی درخواست
       project_review_state_change: پروجیکٹ کی منظوری دی گئی۔
       proposal_expired_for_admin: ووٹنگ کی حد تک پہنچے بغیر تجویز کی میعاد ختم ہو گئی
+      report_generated: رپورٹ تیار کر لی گئی ہے
       screening_digest: ہفتہ وار اسکریننگ کی یاد دہانی
       sms_manual: سرکاری ایس ایم ایس پیغامات
       space_moderation_rights_received: اسپیس مینیجر کے اختیارات موصول ہو گئے
@@ -661,6 +664,13 @@ ur-PK:
       preheader: حد تک پہنچے بغیر ایک ان پٹ کی میعاد ختم ہو گئی
       subject: '"%{input_title}" حد تک پہنچے بغیر ایکسپائر ہو گیا'
       title: ووٹنگ کی حد تک پہنچے بغیر ایک ان پٹ کی میعاد ختم ہو گئی
+    report_generated:
+      cta_button: رپورٹ کھولیں
+      event_description: رپورٹ لکھی جا چکی ہے اور آپ کے لیے جائزہ لینے اور ترمیم کرنے کے لیے تیار ہے۔
+      preheader: آپ کی رپورٹ تیار ہے
+      stopped_early: رپورٹ مکمل ہونے سے پہلے تحریر کا عمل رک گیا۔ اب تک جو کچھ لکھا گیا ہے وہ محفوظ ہے — اسے کھولیں اور چیٹ میں باقی حصے کے لیے کہیں۔
+      subject: "'%{projectName}' کے لیے آپ کی رپورٹ تیار ہے"
+      title: آپ کی رپورٹ تیار ہے
     schedules:
       quarterly: سہ ماہی، سہ ماہی کے پہلے دن
       weekly:

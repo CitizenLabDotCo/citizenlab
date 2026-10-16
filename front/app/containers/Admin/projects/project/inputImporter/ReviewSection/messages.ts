@@ -87,9 +87,35 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.downloadPdf',
     defaultMessage: 'Download PDF',
   },
-  recentlyApprovedTitle: {
-    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.recentlyApprovedTitle',
-    defaultMessage: 'Recently approved ({count})',
+  toReviewTab: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab',
+    defaultMessage: 'To review',
+  },
+  approvedTab: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.approvedTab',
+    defaultMessage: 'Approved',
+  },
+  allInputsApprovedHint: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.allInputsApprovedHint',
+    defaultMessage:
+      'All imported inputs have been approved. You can find them in the Approved tab.',
+  },
+  undoApprovalDisabledEngagement: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApprovalDisabledEngagement',
+    defaultMessage:
+      'This input has comments, reactions or votes, so its approval can no longer be undone.',
+  },
+  noApprovedInputsYet: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.noApprovedInputsYet',
+    defaultMessage: 'No approved inputs yet.',
+  },
+  approvedReadOnlyNotice: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.approvedReadOnlyNotice',
+    defaultMessage: 'This input is approved. Undo the approval to edit it.',
+  },
+  showMoreApprovedInputs: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs',
+    defaultMessage: 'Show more',
   },
   undoApproval: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval',
@@ -103,6 +129,16 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanation',
     defaultMessage:
       'This will approve and publish all {numIdeas} imported inputs at once. You can still find them in the input manager afterwards.',
+  },
+  confirmApproveAllExplanationInsights: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationInsights',
+    defaultMessage:
+      'This will approve and publish all {numIdeas} imported responses at once. You can find them in the Insights tab of this phase afterwards.',
+  },
+  confirmApproveAllExplanationCommunityMonitor: {
+    id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmApproveAllExplanationCommunityMonitor',
+    defaultMessage:
+      'This will approve and publish all {numIdeas} imported responses at once. You can find them in the Live monitor tab of the Community Monitor afterwards.',
   },
   confirmRemoveAll: {
     id: 'app.containers.Admin.projects.project.offlineInputs.ReviewSection.confirmRemoveAll',

@@ -69,11 +69,6 @@ export default defineMessages({
     id: 'app.components.admin.ContentBuilder.Widgets.Events.selectSpaces',
     defaultMessage: 'Spaces',
   },
-  everyProjectOnly: {
-    id: 'app.components.admin.ContentBuilder.Widgets.Events.everyProjectOnly',
-    defaultMessage:
-      'This widget shows events from every project. Filtering by area, tag or space is part of a paid plan.',
-  },
   heading: {
     id: 'app.components.admin.ContentBuilder.Widgets.Events.heading',
     defaultMessage: 'Heading',

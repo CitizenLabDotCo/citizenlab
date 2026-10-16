@@ -36,6 +36,7 @@ tr-TR:
         project_participants: Proje katılımcılarına
         registered_users: Kayıtlı kullanıcılara
       recipient_segment:
+        admin_who_generated_the_report: Raporu talep eden yönetici
         admins: Yöneticiler
         admins_and_managers: Yöneticiler ve müdürler
         admins_and_managers_assigned_to_the_input: Girişe atanan yöneticiler ve müdürler
@@ -109,6 +110,7 @@ tr-TR:
         proposal_is_upvoted_above_threshold: Teklif eşik değerin üzerinde oylandı
         proposal_status_changes: Teklif durumu değişiklikleri
         registration_to_event: Bir etkinliğe kayıt
+        report_generated: Bir raporun oluşturulması tamamlandı
         survey_1_day_after_draft_saved: Kullanıcı anketi en son taslak olarak kaydettikten 1 gün sonra
         user_accepts_invitation_to_cosponsor_a_proposal: Kullanıcı bir teklife eş sponsorluk davetini kabul eder
         user_changes_email: Kullanıcı e-posta adresini değiştiriyor
@@ -206,6 +208,7 @@ tr-TR:
       project_review_request: Proje inceleme talebi
       project_review_state_change: Proje onaylandı
       proposal_expired_for_admin: Öneri oylama eşiğine ulaşamadan süresi doldu
+      report_generated: Rapor oluşturuldu
       screening_digest: Haftalık tarama hatırlatması
       sms_manual: Resmi SMS mesajları
       space_moderation_rights_received: Alan yöneticisi yetkileri alındı
@@ -661,6 +664,13 @@ tr-TR:
       preheader: Bir girdi eşiğe ulaşamadan süresi doldu
       subject: '"%{input_title}" eşiğe ulaşamadan süresi doldu'
       title: Bir girdi oylama eşiğine ulaşamadan süresi doldu
+    report_generated:
+      cta_button: Raporu aç
+      event_description: Rapor yazıldı; incelemeniz ve düzenlemeniz için hazır.
+      preheader: Raporunuz hazır
+      stopped_early: Yazım işlemi rapor tamamlanmadan durdu. Şu ana kadar yazılan her şey kaydedildi — raporu açın ve geri kalanını sohbet üzerinden talep edin.
+      subject: "'%{projectName}' raporunuz hazır"
+      title: Raporunuz hazır
     schedules:
       quarterly: Üç ayda bir, üç aylık dönemin ilk gününde
       weekly:

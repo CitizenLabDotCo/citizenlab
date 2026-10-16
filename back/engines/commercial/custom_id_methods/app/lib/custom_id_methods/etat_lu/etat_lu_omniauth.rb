@@ -62,10 +62,6 @@ module CustomIdMethods::EtatLu
       config[:issuer]
     end
 
-    def updateable_user_attrs
-      super + %i[first_name last_name]
-    end
-
     # James: Steve from Luxembourg said that the email
     # returned by this method is always verified, even
     # though it does not return email_verified: true

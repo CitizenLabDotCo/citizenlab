@@ -10,6 +10,10 @@ export default defineMessages({
     id: 'app.components.ErrorBoundary.openFormText',
     defaultMessage: 'help us figure it out',
   },
+  reloadPage: {
+    id: 'app.components.ErrorBoundary.reloadPage',
+    defaultMessage: 'Reload the page',
+  },
   errorFormTitle: {
     id: 'app.components.ErrorBoundary.errorFormTitle',
     defaultMessage: 'It looks like we’re having issues.',
