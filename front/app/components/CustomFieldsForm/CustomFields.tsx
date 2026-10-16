@@ -35,8 +35,8 @@ import SentimentScaleField from './Fields/SentimentScaleField';
 import SingleFileUploadField from './Fields/SingleFileUploadField';
 import SingleSelectField from './Fields/SingleSelectField';
 import InputIQ from './InputIQ';
+import ManagersOnlyAnswerNote from './ManagersOnlyAnswerNote';
 import messages from './messages';
-import ModeratorsOnlyAnswerNote from './ModeratorsOnlyAnswerNote';
 import { getInstructionMessage } from './util';
 
 const renderField = ({
@@ -345,7 +345,7 @@ const CustomFields = ({
                   />
                 )}
               </Box>
-              {answerNotPublic && <ModeratorsOnlyAnswerNote />}
+              {answerNotPublic && <ManagersOnlyAnswerNote />}
               {question.code && inputIqFields.includes(question.code) && (
                 <InputIQ phase={phase} field={question} />
               )}

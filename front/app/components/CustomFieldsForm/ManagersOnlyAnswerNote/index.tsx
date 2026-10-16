@@ -8,8 +8,8 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from './messages';
 
 // Tells the reader of a question, or of its answer, that the answer stays
-// between the participant and the project moderators.
-const ModeratorsOnlyAnswerNote = () => {
+// between the participant and the project managers.
+const ManagersOnlyAnswerNote = () => {
   const theme = useTheme();
 
   return (
@@ -27,10 +27,10 @@ const ModeratorsOnlyAnswerNote = () => {
         fill={theme.colors.tenantPrimary}
       />
       <Text m="0px" fontSize="s" color="tenantPrimary">
-        <FormattedMessage {...messages.moderatorsOnly} />
+        <FormattedMessage {...messages.managersOnly} />
       </Text>
     </Box>
   );
 };
 
-export default ModeratorsOnlyAnswerNote;
+export default ManagersOnlyAnswerNote;

@@ -10,7 +10,7 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import ModeratorsOnlyAnswerNote from 'components/CustomFieldsForm/ModeratorsOnlyAnswerNote';
+import ManagersOnlyAnswerNote from 'components/CustomFieldsForm/ManagersOnlyAnswerNote';
 import { isUserField } from 'components/CustomFieldsForm/util';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -92,7 +92,7 @@ const CustomFieldAnswers = ({ ideaId, project, compact }: Props) => {
               <AnswerValue field={field} answer={answer} />
             )}
             {field.answers_visible_to !== 'public' && (
-              <ModeratorsOnlyAnswerNote />
+              <ManagersOnlyAnswerNote />
             )}
           </Box>
         ))}
