@@ -180,6 +180,7 @@ el-GR:
       logic_no_further_questions: Με βάση τις απαντήσεις σας, <strong>δεν χρειάζεται</strong> να απαντήσετε σε άλλες ερωτήσεις.
       logic_section: Ενότητα %{letter}
       matrix_print_description: Για κάθε σειρά, σημειώστε έναν κύκλο με σταυρό για να υποδείξετε την προτίμησή σας.
+      multipoint_print_description: Παρακαλούμε σημειώστε ένα X στον παρακάτω χάρτη για κάθε τοποθεσία που θέλετε να προσθέσετε.
       optional: προαιρετικό
       page: Σελίδα
       permission: Άδεια

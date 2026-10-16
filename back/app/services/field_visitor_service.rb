@@ -77,6 +77,10 @@ class FieldVisitorService
     default(field)
   end
 
+  def visit_multipoint(field)
+    default(field)
+  end
+
   def visit_linear_scale(field)
     default(field)
   end

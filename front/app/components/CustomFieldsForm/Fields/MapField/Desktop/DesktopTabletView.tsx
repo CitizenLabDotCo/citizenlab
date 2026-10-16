@@ -31,7 +31,7 @@ import RemoveAnswerButton from '../components/RemoveAnswerButton';
 import UndoButton from '../components/UndoButton';
 import {
   handleMapClickMultipoint,
-  isLineOrPolygonInput,
+  isMultiPointInput,
   setupPointDrag,
 } from '../multiPointUtils';
 import { clearPointData, handleMapClickPoint } from '../pointUtils';
@@ -96,8 +96,8 @@ const DesktopView = ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     mapView?.ui?.add(instructionRef?.current || '', 'bottom-left');
 
-    if (isLineOrPolygonInput(inputType)) {
-      // Show these buttons in sequence for line/polygon inputs
+    if (isMultiPointInput(inputType)) {
+      // Show these buttons in sequence for inputs that collect several points
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       mapView?.ui?.add(undoButtonRef?.current || '', 'top-right');
@@ -149,7 +149,7 @@ const DesktopView = ({
       }
       if (inputType === 'point') {
         handleMapClickPoint(event, mapView, handleSinglePointChange);
-      } else if (isLineOrPolygonInput(inputType)) {
+      } else if (isMultiPointInput(inputType)) {
         handleMapClickMultipoint(event, mapView, handleMultiPointChange);
       }
     },
@@ -186,7 +186,7 @@ const DesktopView = ({
 
   // Attach behaviour for when a user edits a point by dragging it
   useEffect(() => {
-    isLineOrPolygonInput(inputType) &&
+    isMultiPointInput(inputType) &&
       handleMultiPointChange &&
       setupPointDrag({
         mapView,
@@ -239,14 +239,14 @@ const DesktopView = ({
               onModeChange={handleInteractionModeChange}
             />
           )}
-          {isLineOrPolygonInput(inputType) && data && (
+          {isMultiPointInput(inputType) && data && (
             <RemoveAnswerButton
               mapView={mapView}
               handleMultiPointChange={handleMultiPointChange}
             />
           )}
           <Box>
-            {isLineOrPolygonInput(inputType) && (
+            {isMultiPointInput(inputType) && (
               <UndoButton
                 handleMultiPointChange={handleMultiPointChange}
                 mapView={mapView}

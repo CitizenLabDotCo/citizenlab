@@ -30,7 +30,7 @@ interface Props {
   phaseId: string;
 }
 
-const MAPPING_INPUT_TYPES = new Set(['point', 'line', 'polygon']);
+const MAPPING_INPUT_TYPES = new Set(['point', 'line', 'polygon', 'multipoint']);
 
 async function collectMapImages(
   results: { customFieldId: string; inputType: string }[]

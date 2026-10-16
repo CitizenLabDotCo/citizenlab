@@ -256,6 +256,17 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
                   />
                   <ToolboxItem
                     dragIndex={3}
+                    icon="dropPin"
+                    label={formatMessage(messages.dropMultiplePins)}
+                    data-cy="e2e-multipoint-field"
+                    fieldsToInclude={builderConfig.toolboxFieldsToInclude}
+                    inputType="multipoint"
+                    disabled={!isFormMappingEnabled}
+                    disabledTooltipMessage={messages.mappingNotInCurrentLicense}
+                    dragId="toolbox_multipoint"
+                  />
+                  <ToolboxItem
+                    dragIndex={4}
                     icon="upload-file"
                     label={formatMessage(messages.shapefileUpload)}
                     data-cy="e2e-file-shapefile-field"
