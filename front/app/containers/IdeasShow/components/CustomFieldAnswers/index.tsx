@@ -10,7 +10,7 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import ModeratorsOnlyAnswerNote from 'components/CustomFieldsForm/ModeratorsOnlyAnswerNote';
+import ManagersOnlyAnswerNote from 'components/CustomFieldsForm/ManagersOnlyAnswerNote';
 import { isUserField } from 'components/CustomFieldsForm/util';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -84,15 +84,15 @@ const CustomFieldAnswers = ({ ideaId, project, compact }: Props) => {
             <Text m="0px" mb="4px" fontSize="s" color="textSecondary">
               {localize(field.title_multiloc)}
             </Text>
+            {field.answers_visible_to !== 'public' && (
+              <ManagersOnlyAnswerNote />
+            )}
             {answer === undefined ? (
               <Text m="0px" color="textSecondary">
                 <FormattedMessage {...messages.notAnswered} />
               </Text>
             ) : (
               <AnswerValue field={field} answer={answer} />
-            )}
-            {field.answers_visible_to !== 'public' && (
-              <ModeratorsOnlyAnswerNote />
             )}
           </Box>
         ))}

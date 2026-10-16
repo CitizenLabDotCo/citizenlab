@@ -6,7 +6,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../../messages';
 
-const ModeratorsOnlyBadge = () => (
+const ManagersOnlyBadge = () => (
   <Box
     display="flex"
     alignItems="center"
@@ -14,7 +14,7 @@ const ModeratorsOnlyBadge = () => (
     py="4px"
     border={`1px solid ${colors.grey300}`}
     borderRadius="3px"
-    data-cy="e2e-moderators-only-badge"
+    data-cy="e2e-managers-only-badge"
   >
     <Icon fill={colors.coolGrey600} width="14px" height="14px" name="eye-off" />
     <Text
@@ -27,9 +27,9 @@ const ModeratorsOnlyBadge = () => (
       whiteSpace="nowrap"
       style={{ textTransform: 'uppercase' }}
     >
-      <FormattedMessage {...messages.moderatorsOnly} />
+      <FormattedMessage {...messages.managersOnly} />
     </Text>
   </Box>
 );
 
-export default ModeratorsOnlyBadge;
+export default ManagersOnlyBadge;

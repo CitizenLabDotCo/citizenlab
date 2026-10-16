@@ -15,7 +15,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import messages from '../../../messages';
 import { getTranslatedFieldBadgeLabel } from '../../utils';
 
-import ModeratorsOnlyBadge from './ModeratorsOnlyBadge';
+import ManagersOnlyBadge from './ManagersOnlyBadge';
 import { communityMonitorDefaultPageKeys, getFieldIcon } from './utils';
 
 interface Props {
@@ -24,7 +24,7 @@ interface Props {
 }
 
 const IconsAndBadges = ({ field, displayBuiltInFields }: Props) => {
-  const showModeratorsOnlyBadge =
+  const showManagersOnlyBadge =
     displayBuiltInFields &&
     field.input_type !== 'page' &&
     field.answers_visible_to !== 'public';
@@ -94,9 +94,9 @@ const IconsAndBadges = ({ field, displayBuiltInFields }: Props) => {
           </Badge>
         </Box>
       )}
-      {showModeratorsOnlyBadge && (
+      {showManagersOnlyBadge && (
         <Box my="auto" ml="12px">
-          <ModeratorsOnlyBadge />
+          <ManagersOnlyBadge />
         </Box>
       )}
     </Box>

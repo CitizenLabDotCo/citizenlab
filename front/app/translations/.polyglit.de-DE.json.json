@@ -744,6 +744,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.ManagersOnlyAnswerNote.managersOnly": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:39:01.005172Z",
+    "verified_by": "Jelena"
+  },
   "app.components.CustomFieldsForm.ModeratorsOnlyAnswerNote.moderatorsOnly": {
     "state": "verified",
     "verified_at": "2026-10-14T11:50:15.715288Z",
@@ -5453,6 +5458,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.components.formBuilder.managersOnly": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:39:01.005172Z",
+    "verified_by": "Jelena"
   },
   "app.components.formBuilder.mapConfiguration": {
     "state": "verified",

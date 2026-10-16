@@ -279,9 +279,9 @@ export default defineMessages({
     id: 'app.components.formBuilder.questionCannotBeDeleted',
     defaultMessage: "This question can't be deleted.",
   },
-  moderatorsOnly: {
-    id: 'app.components.formBuilder.moderatorsOnly',
-    defaultMessage: 'Moderators only',
+  managersOnly: {
+    id: 'app.components.formBuilder.managersOnly',
+    defaultMessage: 'Managers only',
   },
   leaveBuilderConfirmationQuestion: {
     id: 'app.components.formBuilder.leaveBuilderConfirmationQuestion',
