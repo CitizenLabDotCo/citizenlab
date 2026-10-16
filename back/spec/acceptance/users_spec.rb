@@ -47,7 +47,8 @@ resource 'Users' do
       DESC
 
       parameter :sort, <<~DESC, required: false
-        Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'
+        Sort user by 'created_at', '-created_at', 'registration_completed_at', '-registration_completed_at',
+        'last_name', '-last_name', 'email', '-email', 'role', '-role'
       DESC
 
       example_request '[error] List all users' do
@@ -749,7 +750,10 @@ resource 'Users' do
           parameter :size, 'Number of users per page'
         end
         parameter :search, 'Filter by searching in first_name, last_name and email', required: false
-        parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'", required: false
+        parameter :sort, <<~DESC, required: false
+          Sort user by 'created_at', '-created_at', 'registration_completed_at', '-registration_completed_at',
+          'last_name', '-last_name', 'email', '-email', 'role', '-role'
+        DESC
         parameter :group, 'Filter by group_id', required: false
         parameter :project, 'Filter by users who participated in the project (by project id)', required: false
         parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
@@ -894,6 +898,69 @@ resource 'Users' do
           json_response = json_parse(response_body)
 
           expect(json_response[:data].map { |u| u.dig(:attributes, :email) }.last).to eq inactive_user.email
+        end
+
+        example 'List all users sorted by registration_completed_at' do
+          %w[Bednar Cole Hagenes].each { |l| create(:user, last_name: l) }
+          User.all.each_with_index do |user, i|
+            user.update!(registration_completed_at: Time.now - i.days)
+          end
+
+          do_request sort: 'registration_completed_at'
+
+          assert_status 200
+          expect(response_data.pluck(:id)).to eq User.order(:registration_completed_at).pluck(:id)
+        end
+
+        example 'List all users sorted by -registration_completed_at' do
+          %w[Bednar Cole Hagenes].each { |l| create(:user, last_name: l) }
+          User.all.each_with_index do |user, i|
+            user.update!(registration_completed_at: Time.now - i.days)
+          end
+
+          do_request sort: '-registration_completed_at'
+
+          assert_status 200
+          expect(response_data.pluck(:id)).to eq User.order(registration_completed_at: :desc).pluck(:id)
+        end
+
+        # Users without a registration date are only returned when include_inactive is set,
+        # since the index applies the `registered` scope otherwise.
+        example 'List all users sorted by registration_completed_at lists nil values last', document: false do
+          %w[Bednar Cole Hagenes].each { |l| create(:user, last_name: l) }
+          User.all.each_with_index do |user, i|
+            user.update!(registration_completed_at: Time.now - i.days)
+          end
+          invitee = create(:invited_user)
+
+          do_request sort: 'registration_completed_at', include_inactive: true
+
+          assert_status 200
+          expect(response_data.pluck(:id).last).to eq invitee.id
+        end
+
+        example 'List all users sorted by -registration_completed_at lists nil values last', document: false do
+          %w[Bednar Cole Hagenes].each { |l| create(:user, last_name: l) }
+          User.all.each_with_index do |user, i|
+            user.update!(registration_completed_at: Time.now - i.days)
+          end
+          invitee = create(:invited_user)
+
+          do_request sort: '-registration_completed_at', include_inactive: true
+
+          assert_status 200
+          expect(response_data.pluck(:id).last).to eq invitee.id
+        end
+
+        # Without a tie-breaker the order of equal values is undefined, which makes
+        # paginated results non-deterministic (rows repeated or skipped between pages).
+        example 'List all users sorted by -registration_completed_at breaks ties on id', document: false do
+          invitees = create_list(:invited_user, 2)
+
+          do_request sort: '-registration_completed_at', include_inactive: true
+
+          assert_status 200
+          expect(response_data.pluck(:id).last(2)).to eq User.where(id: invitees).order(:id).pluck(:id)
         end
 
         example 'List all users in group' do
