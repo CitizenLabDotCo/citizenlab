@@ -21,6 +21,7 @@ import { Expander } from '../../ui';
 import messages from './messages';
 import MethodRow from './MethodRows/MethodRow';
 import PasswordRow from './MethodRows/PasswordRow';
+import PhoneUpsellRow from './MethodRows/PhoneUpsellRow';
 
 interface Props {
   permission: IPermissionData;
@@ -42,6 +43,7 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
     phone: showPhone,
     verification: showVerification,
     password: showPassword,
+    phoneUpsell: showPhoneUpsell,
   } = visibleToggles;
 
   // Only what is both offered here and actually switched on belongs in the
@@ -61,6 +63,8 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
     activeLabels.push(formatMessage(actionFormMessages.verification));
   }
 
+  // The phone upsell cannot show on its own: it needs password login, which
+  // already shows the password row.
   if (!showEmail && !showPhone && !showVerification && !showPassword) {
     return null;
   }
@@ -130,6 +134,8 @@ const SecurityRequirementsSection = ({ permission, onChange }: Props) => {
             }
           />
         )}
+
+        {showPhoneUpsell && <PhoneUpsellRow />}
 
         {showVerification && (
           <MethodRow
