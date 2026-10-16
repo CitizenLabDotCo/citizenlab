@@ -1,6 +1,23 @@
 import React, { useEffect, useState } from 'react';
 
 import { Box, Icon, Spinner, Text, colors } from '@citizenlab/cl2-component-library';
+import styled from 'styled-components';
+
+// Each step slides in as the one before it is checked off, so the checklist
+// builds up one line at a time rather than showing the whole plan at once.
+const Reveal = styled(Box)`
+  @keyframes draftStepReveal {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  animation: draftStepReveal 220ms ease both;
+`;
 
 // The drafting checklist, driven by the REAL generation job's elapsed time. Each
 // step ticks over on a schedule; the last step holds (spinner) until the backend
@@ -70,6 +87,10 @@ const DraftingProgress = ({ startedAt, done }: Props) => {
   }, [startedAt]);
 
   const active = done ? STEPS.length : activeIndex(seconds);
+  // Only reveal the steps reached so far: everything before `active` is checked,
+  // `active` itself is the one currently working (spinner). The next step stays
+  // hidden until this one is done, so the list grows a line at a time.
+  const visibleCount = done ? STEPS.length : active + 1;
 
   return (
     <Box border={`1px solid ${colors.grey300}`} borderRadius="14px" p="20px">
@@ -77,12 +98,13 @@ const DraftingProgress = ({ startedAt, done }: Props) => {
         Drafting your project
       </Text>
       <Box display="flex" flexDirection="column" gap="14px">
-        {STEPS.map((step, i) => (
-          <Row
-            key={step.label}
-            label={step.label}
-            state={i < active ? 'done' : i === active ? 'active' : 'todo'}
-          />
+        {STEPS.slice(0, visibleCount).map((step, i) => (
+          <Reveal key={step.label}>
+            <Row
+              label={step.label}
+              state={done || i < active ? 'done' : 'active'}
+            />
+          </Reveal>
         ))}
       </Box>
     </Box>

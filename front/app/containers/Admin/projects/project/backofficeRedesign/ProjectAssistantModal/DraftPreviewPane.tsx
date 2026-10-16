@@ -9,6 +9,8 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { stripHtml } from 'utils/textUtils';
+
 // The right half of the assistant modal: the project the engine actually
 // generated, shown the way a manager will see it. Draft only — no resident
 // preview tab. All data is live from the created project (page, phases).
@@ -115,7 +117,7 @@ const DraftPreviewPane = ({ projectId }: Props) => {
 
   const attrs = project.data.attributes;
   const title = localize(attrs.title_multiloc);
-  const description = localize(attrs.description_preview_multiloc);
+  const description = stripHtml(localize(attrs.description_preview_multiloc));
   const image =
     typeof attrs.header_bg === 'object' ? attrs.header_bg?.large : undefined;
   const phaseList = phases.data;
@@ -169,7 +171,7 @@ const DraftPreviewPane = ({ projectId }: Props) => {
                   key={phase.id}
                   method={phase.attributes.participation_method}
                   title={localize(phase.attributes.title_multiloc) || `Phase ${i + 1}`}
-                  description={localize(phase.attributes.description_multiloc)}
+                  description={stripHtml(localize(phase.attributes.description_multiloc))}
                   dates={formatDates(phase.attributes.start_at, phase.attributes.end_at)}
                   withBorder={i !== 0}
                 />

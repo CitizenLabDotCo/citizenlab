@@ -182,7 +182,18 @@ module ProjectGeneration
       required: %w[headline highlights],
       properties: {
         headline: { type: 'string', description: 'One plain sentence: what this project is and what it will achieve for the manager.' },
-        highlights: { type: 'array', items: { type: 'string' }, description: '2-4 short points, each a concrete design choice and why it works, teaching the manager the thinking.' }
+        highlights: {
+          type: 'array',
+          items: { type: 'string' },
+          description: <<~DESC
+            5-8 points, each a full, self-contained sentence or two (not a terse fragment) that teaches the manager the thinking behind the draft. Together they must cover, at least:
+            - WHY this participation method / phase structure was chosen (name the method(s) and the archetype logic, in plain language — e.g. why ideation then voting, why a single survey).
+            - For any ideation or survey phase: an offline-participation nudge — residents can also take part on paper, and the manager can either print the phase's downloadable PDF form or collect responses on improvised paper (post-its, postcards, comment cards, workshop sheets) and feed them in via FormSync, so reach is not limited to people who come online. Only include this when the draft actually has an ideation or survey phase.
+            - WHY the access rights / permissions were set the way they were (who can take part and the barrier-vs-reach trade-off — e.g. "no account needed, lowering the barrier to maximise reach" or "registration/verification required so each person counts once for a binding vote").
+            - Any notable trade-offs or assumptions made because the brief was silent or ambiguous, so the manager knows what to double-check before publishing.
+            Write in plain manager-facing language, no internal jargon. Each point should stand on its own.
+          DESC
+        }
       }
     }.freeze
 

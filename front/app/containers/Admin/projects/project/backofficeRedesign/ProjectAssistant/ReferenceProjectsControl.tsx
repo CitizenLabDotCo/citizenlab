@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Box, Icon, IconButton, Text, colors } from '@citizenlab/cl2-component-library';
 
@@ -31,6 +31,21 @@ const ReferenceProjectsControl = ({
 }: Props) => {
   const localize = useLocalize();
   const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Close the picker when the user clicks anywhere outside it (e.g. into the
+  // chat box) — they shouldn't have to click the button again to dismiss it.
+  useEffect(() => {
+    if (!open) return;
+    const handlePointerDown = (event: MouseEvent) => {
+      if (!containerRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handlePointerDown);
+    return () => document.removeEventListener('mousedown', handlePointerDown);
+  }, [open]);
+
   const { data: projects } = useProjects({
     publicationStatuses: ['published', 'archived', 'draft'],
     canModerate: true,
@@ -58,7 +73,7 @@ const ReferenceProjectsControl = ({
   };
 
   return (
-    <Box>
+    <Box ref={containerRef}>
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}

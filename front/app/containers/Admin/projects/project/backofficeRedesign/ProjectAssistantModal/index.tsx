@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Box, Icon, Spinner, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, Dropdown, Icon, Spinner, Text, colors } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
 
@@ -88,6 +88,28 @@ const LinkButton = styled.button`
   cursor: pointer;
 `;
 
+const MenuItem = styled.button`
+  appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 10px 14px;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  color: ${colors.textPrimary};
+  &:hover {
+    background: ${colors.grey100};
+  }
+`;
+
+// The alternatives to the AI flow (start from scratch, the retiring template
+// gallery) are tucked behind one compact menu so the header doesn't crowd its
+// corner — the AI flow is the main path, these are the escape hatches.
 const Header = ({
   onStartFromScratch,
   onBrowseTemplates,
@@ -96,50 +118,79 @@ const Header = ({
   onStartFromScratch: () => void;
   onBrowseTemplates: () => void;
   onClose: () => void;
-}) => (
-  <Box display="flex" alignItems="center" justifyContent="space-between" px="24px" py="18px" flex="0 0 auto">
-    <Box display="flex" alignItems="center" gap="10px">
-      <Icon name="stars" width="20px" height="20px" fill={colors.teal500} />
-      <Text m="0px" fontSize="l" fontWeight="bold" color="textPrimary">
-        Project assistant
-      </Text>
-      <Box px="8px" py="2px" borderRadius="999px" bgColor={colors.grey100}>
-        <Text m="0px" fontSize="s" color="textSecondary" fontWeight="bold">
-          Beta
+}) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  return (
+    <Box display="flex" alignItems="center" justifyContent="space-between" px="24px" py="18px" flex="0 0 auto">
+      <Box display="flex" alignItems="center" gap="10px">
+        <Icon name="stars" width="20px" height="20px" fill={colors.teal500} />
+        <Text m="0px" fontSize="l" fontWeight="bold" color="textPrimary">
+          Project assistant
         </Text>
-      </Box>
-    </Box>
-    <Box display="flex" alignItems="center" gap="18px">
-      <LinkButton type="button" onClick={onStartFromScratch}>
-        Start from scratch
-      </LinkButton>
-      {/* Secondary, de-emphasised route to the old template gallery, flagged as
-          on its way out so it reads as legacy next to the AI flow. */}
-      <Box display="flex" alignItems="center" gap="6px">
-        <LinkButton
-          type="button"
-          onClick={onBrowseTemplates}
-          style={{ color: colors.textSecondary, fontWeight: 500 }}
-        >
-          Browse templates
-        </LinkButton>
-        <Box px="6px" py="1px" borderRadius="999px" bgColor={colors.grey100}>
-          <Text m="0px" fontSize="xs" color="textSecondary">
-            being retired
+        <Box px="8px" py="2px" borderRadius="999px" bgColor={colors.grey100}>
+          <Text m="0px" fontSize="s" color="textSecondary" fontWeight="bold">
+            Beta
           </Text>
         </Box>
       </Box>
-      <button
-        type="button"
-        onClick={onClose}
-        style={{ border: 'none', background: 'transparent', cursor: 'pointer', padding: 0 }}
-        aria-label="Close"
-      >
-        <Icon name="close" width="18px" height="18px" fill={colors.textSecondary} />
-      </button>
+      <Box display="flex" alignItems="center" gap="14px">
+        <Box position="relative">
+          <LinkButton
+            type="button"
+            onClick={() => setMenuOpen((open) => !open)}
+            style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+          >
+            Other ways to start
+            <Icon name="chevron-down" width="12px" height="12px" fill={colors.teal700} />
+          </LinkButton>
+          <Dropdown
+            opened={menuOpen}
+            onClickOutside={() => setMenuOpen(false)}
+            right="0px"
+            top="28px"
+            width="240px"
+            content={
+              <Box py="4px">
+                <MenuItem
+                  type="button"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    onStartFromScratch();
+                  }}
+                >
+                  Start from scratch
+                </MenuItem>
+                <MenuItem
+                  type="button"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    onBrowseTemplates();
+                  }}
+                >
+                  <span>Browse templates</span>
+                  <Box px="6px" py="1px" borderRadius="999px" bgColor={colors.grey100}>
+                    <Text m="0px" fontSize="xs" color="textSecondary">
+                      being retired
+                    </Text>
+                  </Box>
+                </MenuItem>
+              </Box>
+            }
+          />
+        </Box>
+        <button
+          type="button"
+          onClick={onClose}
+          style={{ border: 'none', background: 'transparent', cursor: 'pointer', padding: 0 }}
+          aria-label="Close"
+        >
+          <Icon name="close" width="18px" height="18px" fill={colors.textSecondary} />
+        </button>
+      </Box>
     </Box>
-  </Box>
-);
+  );
+};
 
 const UserBubble = ({ text }: { text: string }) => (
   <Box display="flex" justifyContent="flex-end">
@@ -356,7 +407,7 @@ const ProjectAssistantModal = ({
         onClose={onClose}
       />
 
-      <Box flex="1" minHeight="0" overflowY="auto" px="24px" display="flex" flexDirection="column" gap="18px">
+      <Box flex="1" minHeight="0" overflowY="auto" px="24px" pb="20px" display="flex" flexDirection="column" gap="18px">
         {phase === 'brief' && <AssistantLine>{INTRO}</AssistantLine>}
 
         {phase !== 'brief' && (
@@ -374,9 +425,6 @@ const ProjectAssistantModal = ({
                   onDetail={handleDetail}
                   onLeverChange={setLever}
                 />
-                <ButtonWithLink type="button" width="100%" icon="stars" onClick={startDraft} processing={starting} disabled={starting}>
-                  Draft my project
-                </ButtonWithLink>
               </>
             )}
 
@@ -394,6 +442,28 @@ const ProjectAssistantModal = ({
                     <Text m="0px" color="textPrimary" lineHeight="1.5">
                       {summary.headline}
                     </Text>
+                    {summary.highlights && summary.highlights.length > 0 && (
+                      <Box
+                        as="ul"
+                        m="12px 0 0"
+                        pl="18px"
+                        display="flex"
+                        flexDirection="column"
+                        gap="8px"
+                      >
+                        {summary.highlights.map((point, i) => (
+                          <Text
+                            key={i}
+                            as="li"
+                            m="0px"
+                            color="textPrimary"
+                            lineHeight="1.5"
+                          >
+                            {point}
+                          </Text>
+                        ))}
+                      </Box>
+                    )}
                   </Box>
                 )}
 
@@ -416,6 +486,14 @@ const ProjectAssistantModal = ({
           </>
         )}
       </Box>
+
+      {phase === 'question' && (
+        <Box flex="0 0 auto" p="16px 24px 24px" borderTop={`1px solid ${colors.grey200}`}>
+          <ButtonWithLink type="button" width="100%" icon="stars" onClick={startDraft} processing={starting} disabled={starting}>
+            Draft my project
+          </ButtonWithLink>
+        </Box>
+      )}
 
       {phase === 'review' && (
         <Box flex="0 0 auto" p="16px 24px 24px">
