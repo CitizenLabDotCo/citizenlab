@@ -382,13 +382,13 @@ class WebApi::V1::UsersController < ApplicationController
     when '-created_at'
       @users.order(created_at: :desc)
     # Without a tie-breaker the order of equal values is undefined, which makes
-    # paginated results non-deterministic (rows repeated or skipped between pages)
+    # paginated results near-deterministic (rows repeated or skipped between pages)
     when 'registration_completed_at'
-      @users.order('registration_completed_at ASC NULLS LAST', id: :asc)
+      @users.order('registration_completed_at ASC NULLS LAST', created_at: :asc)
     # NULLs only reach this branch when include_inactive is set (the admin and manager
     # tabs), where a pending invite should read as the most recent.
     when '-registration_completed_at'
-      @users.order('registration_completed_at DESC NULLS FIRST', id: :asc)
+      @users.order('registration_completed_at DESC NULLS FIRST', created_at: :desc)
     when 'last_active_at'
       @users.order(Arel.sql('last_active_at IS NOT NULL, last_active_at ASC'))
     when '-last_active_at'
