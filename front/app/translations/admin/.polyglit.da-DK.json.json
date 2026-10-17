@@ -5229,6 +5229,11 @@
     "verified_at": "2026-03-30T07:16:21.144398Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": {
+    "state": "verified",
+    "verified_at": "2026-10-17T08:29:12.346146Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",

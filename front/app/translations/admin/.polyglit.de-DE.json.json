@@ -5239,6 +5239,11 @@
     "verified_at": "2026-03-30T13:12:31.639803Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": {
+    "state": "verified",
+    "verified_at": "2026-10-16T13:31:11.163167Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",

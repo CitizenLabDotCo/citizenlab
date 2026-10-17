@@ -957,6 +957,7 @@
   "app.containers.Admin.Users.SeatsOverview.role": "Ról",
   "app.containers.Admin.Users.SeatsOverview.title": "Forbhreathnú na Suíochán",
   "app.containers.Admin.Users.SeatsOverview.unknown": "Anaithnid",
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": "Níor críochnaíodh an clárú",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Cuireadh ar feitheamh",
   "app.containers.Admin.Users.admin": "Riarthóir",
   "app.containers.Admin.Users.alreadyManager": "Bainisteoir cheana féin",
