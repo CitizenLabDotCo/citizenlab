@@ -945,13 +945,16 @@ resource 'Users' do
           end
         end
 
-        example 'List all users sorted by -registration_completed_at breaks ties on id', document: false do
-          invitees = create_list(:invited_user, 2)
+        # Both invitees lack a registration date, so only the tie-breaker decides their order.
+        example 'List all users sorted by -registration_completed_at breaks ties on created_at', document: false do
+          older, newer = create_list(:invited_user, 2)
+          older.update!(created_at: 2.days.ago)
+          newer.update!(created_at: 1.day.ago)
 
           do_request sort: '-registration_completed_at', include_inactive: true
 
           assert_status 200
-          expect(response_data.pluck(:id).first(2)).to eq User.where(id: invitees).order(:id).pluck(:id)
+          expect(response_data.pluck(:id).first(2)).to eq [newer.id, older.id]
         end
 
         example 'List all users in group' do
