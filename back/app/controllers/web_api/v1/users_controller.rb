@@ -382,7 +382,7 @@ class WebApi::V1::UsersController < ApplicationController
     when '-created_at'
       @users.order(created_at: :desc)
     # Without a tie-breaker the order of equal values is undefined, which makes
-    # paginated results near-deterministic (rows repeated or skipped between pages)
+    # paginated results non-deterministic
     when 'registration_completed_at'
       @users.order('registration_completed_at ASC NULLS LAST', created_at: :asc)
     # NULLs only reach this branch when include_inactive is set (the admin and manager
