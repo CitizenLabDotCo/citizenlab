@@ -182,6 +182,7 @@ lt-LT:
       logic_no_further_questions: Atsižvelgiant į jūsų atsakymus, jums <strong>nereikia</strong> atsakyti į jokius kitus klausimus.
       logic_section: Skiltis %{letter}
       matrix_print_description: Kiekvienoje eilutėje kryželiu pažymėkite po vieną apskritimą ir taip išreikškite savo pageidavimą.
+      multipoint_print_description: Žemiau esančiame žemėlapyje pažymėkite X kiekvienai vietai, kurią norite pridėti.
       optional: pasirinktinai
       page: Puslapis
       permission: Leidimas

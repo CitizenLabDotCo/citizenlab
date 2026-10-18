@@ -180,6 +180,7 @@ da-DK:
       logic_no_further_questions: Baseret på dine svar behøver du <strong>ikke</strong> besvare flere spørgsmål.
       logic_section: Afsnit %{letter}
       matrix_print_description: Marker en cirkel for hver række med et kryds for at angive din præference.
+      multipoint_print_description: Sæt venligst et kryds på kortet herunder for hver lokation, du ønsker at tilføje.
       optional: valgfrit
       page: Side
       permission: Tilladelse

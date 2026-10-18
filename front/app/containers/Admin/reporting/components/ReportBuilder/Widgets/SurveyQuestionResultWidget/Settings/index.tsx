@@ -32,7 +32,11 @@ import { Props } from '../typings';
 import GroupModeSelect from './GroupModeSelect';
 import messages from './messages';
 import UserFieldSelect from './UserFieldSelect';
-import { FieldsHideGroupBy, FieldsWithSortOption } from './utils';
+import {
+  FieldsHideGroupBy,
+  FieldsWithSortOption,
+  MAP_QUESTION_TYPES_WITH_HEATMAP,
+} from './utils';
 
 const findQuestion = (questions: ICustomFields, questionId: string) => {
   return questions.data.find((question) => question.id === questionId);
@@ -78,7 +82,9 @@ const Settings = () => {
   const showHeatmapSettings =
     questionId &&
     selectedQuestion &&
-    selectedQuestion.attributes.input_type === 'point';
+    MAP_QUESTION_TYPES_WITH_HEATMAP.includes(
+      selectedQuestion.attributes.input_type
+    );
   const questionTypesWithCharts = [
     'linear_scale',
     'multiselect',

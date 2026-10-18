@@ -180,6 +180,7 @@ lb-LU:
       logic_no_further_questions: Baséierend op Ären Äntwerten braucht Dir <strong>keng</strong> weider Froen ze beäntweren.
       logic_section: Sektioun %{letter}
       matrix_print_description: Fir all Zeil, markéiert ee Krees mat engem Kräiz fir Är Preferenz unzeweisen.
+      multipoint_print_description: Zeechent wgl. en X op d'Kaart hei drënner fir all Standuert deen Dir dobäisetze wëllt.
       optional: fakultativ
       page: Säit
       permission: Erlaabnis
