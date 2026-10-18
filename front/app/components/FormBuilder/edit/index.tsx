@@ -44,11 +44,14 @@ import { useParams, useSearch } from 'utils/router';
 import { DragAndDrop, Drop } from '../components/DragAndDrop';
 import { pageDNDType } from '../components/FormFields/constants';
 import FormStatus from '../components/FormStatus';
+import usePostingPermission from '../hooks/usePostingPermission';
 import messages from '../messages';
 import {
   FormBuilderConfig,
   ResolvedFormBuilderConfig,
   resolveFormBuilderConfig,
+  isUserPage,
+  USER_PAGE_KEY,
 } from '../utils';
 
 import {
@@ -100,6 +103,8 @@ const FormEdit = ({
   });
 
   const { data: customForm } = useCustomForm(phase);
+  const { permission: postingPermission, updatePermission } =
+    usePostingPermission(phaseId);
 
   // Set the form opened at date from the API date only when the form is first loaded
   const [formOpenedAt, setFormOpenedAt] = useState<string | undefined>();
@@ -113,6 +118,22 @@ const FormEdit = ({
   const createField = (type: ICustomFieldInputType) => {
     if (isNilOrError(locale)) return null;
     return createNewField(type, locale, formatMessage);
+  };
+
+  // Where the demographic questions are asked is stored on the permission. A
+  // user page in the form means "in the form, here"; removing the page sends
+  // them back to the registration flow.
+  const syncDemographicsPlacement = (
+    hadUserPage: boolean,
+    hasUserPage: boolean
+  ) => {
+    if (!postingPermission || hadUserPage === hasUserPage) return;
+
+    const { value, locked } =
+      postingPermission.attributes.user_fields_in_form_descriptor;
+    if (locked || value === hasUserPage) return;
+
+    return updatePermission({ user_fields_in_form: hasUserPage });
   };
 
   const schema = createValidationSchema(formatMessage);
@@ -252,6 +273,11 @@ const FormEdit = ({
           },
         }
       );
+
+      await syncDemographicsPlacement(
+        !!formCustomFields?.some(isUserPage),
+        customFields.some(isUserPage)
+      );
     } catch (error) {
       const errorType =
         Array.isArray(error?.errors?.form) &&
@@ -304,9 +330,15 @@ const FormEdit = ({
         return;
       } else {
         // Handle regular custom field creation
-        const inputType = fieldTypeOrKey as ICustomFieldInputType;
-        const newField = createField(inputType);
-        if (!newField) return;
+        const isDemographics = fieldTypeOrKey === 'demographics';
+        const inputType = isDemographics
+          ? 'page'
+          : (fieldTypeOrKey as ICustomFieldInputType);
+        const field = createField(inputType);
+        if (!field) return;
+        const newField = isDemographics
+          ? { ...field, key: USER_PAGE_KEY }
+          : field;
 
         const targetIndex = calculateDropTargetIndex(
           result,

@@ -26,6 +26,14 @@ import SentimentLinearScaleSettings from './components/FormBuilderSettings/Senti
 import TopicsSettings from './components/FormBuilderSettings/TopicsSettings';
 import messages from './components/messages';
 
+// The page an admin places to choose where the demographic questions are
+// asked. The backend adds the questions after it when the form is rendered.
+export const USER_PAGE_KEY = 'user_page';
+
+export const isUserPage = (
+  field: Pick<IFlatCustomField, 'input_type' | 'key'>
+) => field.input_type === 'page' && field.key === USER_PAGE_KEY;
+
 export const builtInFieldKeys = [
   'title_multiloc',
   'body_multiloc',

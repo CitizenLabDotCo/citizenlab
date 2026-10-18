@@ -385,5 +385,49 @@ describe UserFieldsInFormService do
         form_end
       ])
     end
+
+    context 'when the admin placed a user page in the form' do
+      let(:phase) { create(:single_phase_native_survey_project, phase_attrs: { with_permissions: true }).phases.first }
+      let(:permission) { phase.permissions.find_by(action: 'posting_idea') }
+      let(:custom_form) { create(:custom_form, participation_context: phase) }
+      let!(:page1) { create(:custom_field_page, resource: custom_form, key: 'page1') }
+      let!(:question1) { create(:custom_field_text, resource: custom_form, key: 'question1') }
+      let!(:user_page) { create(:custom_field_page, resource: custom_form, key: 'user_page', title_multiloc: {}) }
+      let!(:page2) { create(:custom_field_page, resource: custom_form, key: 'page2') }
+      let!(:question2) { create(:custom_field_text, resource: custom_form, key: 'question2') }
+      let!(:form_end) { create(:custom_field_form_end_page, resource: custom_form) }
+
+      before do
+        permission.update!(custom_fields_behavior: 'custom', user_fields_in_form: true)
+        create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field, key: 'age'))
+      end
+
+      def keys_for_form
+        described_class.add_user_fields_to_form(custom_form.custom_fields, phase.pmethod, custom_form).map(&:key)
+      end
+
+      it 'adds the user fields right after the user page' do
+        expect(keys_for_form).to eq %w[page1 question1 user_page u_age page2 question2 form_end]
+      end
+
+      it 'gives the user page the default title when the admin left it blank' do
+        fields = described_class.add_user_fields_to_form(custom_form.custom_fields, phase.pmethod, custom_form)
+        expect(fields.find(&:user_page?).title_multiloc['en']).to be_present
+      end
+
+      context 'when there are no user fields to ask' do
+        before { permission.update!(user_fields_in_form: false) }
+
+        it 'removes the user page' do
+          expect(keys_for_form).to eq %w[page1 question1 page2 question2 form_end]
+        end
+
+        it 'sends logic that led to the user page to the page after it' do
+          page1.update!(logic: { 'next_page_id' => user_page.id })
+          fields = described_class.add_user_fields_to_form(custom_form.custom_fields, phase.pmethod, custom_form)
+          expect(fields.find { |f| f.key == 'page1' }.logic['next_page_id']).to eq page2.id
+        end
+      end
+    end
   end
 end

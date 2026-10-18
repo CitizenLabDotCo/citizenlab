@@ -16,6 +16,7 @@ import {
 
 import {
   getTranslatedStringKey,
+  isUserPage,
   ResolvedFormBuilderConfig,
 } from 'components/FormBuilder/utils';
 import CloseIconButton from 'components/UI/CloseIconButton';
@@ -27,6 +28,7 @@ import messages from '../messages';
 import tracks from '../tracks';
 
 import ContentSettings from './ContentSettings';
+import DemographicsSettings from './DemographicsSettings';
 import LogicSettings from './LogicSettings';
 import PrintSupportTooltip from './PrintSupportTooltip';
 
@@ -46,10 +48,13 @@ const FormBuilderSettings = ({
   );
   const { watch } = useFormContext();
 
-  const translatedStringKey = getTranslatedStringKey(
-    watch(`customFields.${field.index}.input_type`),
-    field.key
-  );
+  const userPage = isUserPage(field);
+  const translatedStringKey = userPage
+    ? messages.demographicQuestions
+    : getTranslatedStringKey(
+        watch(`customFields.${field.index}.input_type`),
+        field.key
+      );
   const tabNotActiveBorder = `1px solid ${colors.grey400}`;
   const tabActiveBorder = `4px solid ${colors.primary}`;
   const fieldType = watch(`customFields.${field.index}.input_type`);
@@ -153,9 +158,12 @@ const FormBuilderSettings = ({
       {(!showTabbedSettings ||
         !builderConfig.isLogicEnabled || // TODO: Fix this the next time the file is edited.
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        (showTabbedSettings && currentTab === 'content')) && (
-        <ContentSettings field={field} />
-      )}
+        (showTabbedSettings && currentTab === 'content')) &&
+        (userPage ? (
+          <DemographicsSettings />
+        ) : (
+          <ContentSettings field={field} />
+        ))}
       {showTabbedSettings && currentTab === 'logic' && (
         <LogicSettings
           field={field}

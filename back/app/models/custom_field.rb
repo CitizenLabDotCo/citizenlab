@@ -242,6 +242,13 @@ class CustomField < ApplicationRecord
     page? && key == 'form_end'
   end
 
+  # Placeholder page an admin drops in the form builder to choose where the
+  # demographic (registration) questions are asked. It holds no questions of
+  # its own: they are added after it when the form is rendered.
+  def user_page?
+    page? && key == 'user_page'
+  end
+
   def select_count_enabled_and_supported?
     supports_select_count? && select_count_enabled
   end
