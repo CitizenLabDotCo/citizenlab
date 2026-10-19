@@ -1765,7 +1765,7 @@
   "app.containers.Admin.projects.project.event.previewEventImage": "Begivenhedsbillede",
   "app.containers.Admin.projects.project.event.previewEventName": "Begivenhedsnavn",
   "app.containers.Admin.projects.project.event.previewLocation": "Begivenhedslokation",
-  "app.containers.Admin.projects.project.event.registration": "Tilmelding",
+  "app.containers.Admin.projects.project.event.registration": "Registrering",
   "app.containers.Admin.projects.project.event.removeEndDate": "Fjern slutdato",
   "app.containers.Admin.projects.project.event.replace": "Erstat",
   "app.containers.Admin.projects.project.event.replaceImage": "Erstat billede",
