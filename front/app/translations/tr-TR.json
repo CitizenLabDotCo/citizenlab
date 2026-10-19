@@ -994,6 +994,7 @@
   "app.components.formBuilder.dragAndDrop": "Forma soru eklemek için sol taraftaki menüde bulunan öğeleri SÜRÜKLEYİN ve FORMA BIRAKIN.",
   "app.components.formBuilder.drawArea": "Çizim alanı",
   "app.components.formBuilder.drawRoute": "Rota çizin",
+  "app.components.formBuilder.dropMultiplePins1": "İğne bırak",
   "app.components.formBuilder.dropPin": "Damla pim",
   "app.components.formBuilder.editButtonLabel": "Düzenle",
   "app.components.formBuilder.emptyImageOptionError": "En az 1 cevap veriniz. Lütfen her cevabın bir başlığı olması gerektiğini unutmayın.",
