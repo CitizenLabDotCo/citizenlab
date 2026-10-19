@@ -111,6 +111,13 @@ resource 'ProjectImage' do
       expect(json_response.dig(:data, :attributes, :ordering)).to eq(2)
       expect(json_response.dig(:data, :attributes, :alt_text_multiloc).stringify_keys).to match alt_text_multiloc
     end
+
+    example 'Unauthorized (401) when not signed in', document: false do
+      header 'Authorization', nil
+
+      expect { do_request }.not_to change { ProjectImage.find(image_id).ordering }
+      expect(response_status).to eq 401
+    end
   end
 
   delete 'web_api/v1/projects/:project_id/images/:image_id' do
@@ -120,6 +127,13 @@ resource 'ProjectImage' do
     example_request 'Delete an image from a project' do
       expect(response_status).to eq 200
       expect { ProjectImage.find(image_id) }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    example 'Unauthorized (401) when not signed in', document: false do
+      header 'Authorization', nil
+
+      expect { do_request }.not_to change(ProjectImage, :count)
+      expect(response_status).to eq 401
     end
   end
 end
