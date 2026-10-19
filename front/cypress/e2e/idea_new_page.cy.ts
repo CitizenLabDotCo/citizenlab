@@ -87,16 +87,8 @@ describe('Idea submission form', () => {
     cy.dataCy('e2e-next-page').should('be.visible').click();
     cy.dataCy('e2e-next-page').should('be.visible').click();
 
-    // Submit stays disabled until the page's last question has scrolled
-    // into view (IntersectionObserver in PageControlButtons), and a click
-    // on the disabled button is a silent no-op — scroll and wait for the
-    // enabled state, then await the idea creation before moving on.
     cy.intercept('POST', '**/phases/*/inputs').as('submitIdea');
-    cy.get('[data-question-id]').last().scrollIntoView();
-    cy.dataCy('e2e-submit-form')
-      .should('be.visible')
-      .should('not.have.class', 'disabled');
-    cy.dataCy('e2e-submit-form').click();
+    cy.clickInputFormPageButton('e2e-submit-form');
     cy.wait('@submitIdea')
       .its('response.statusCode')
       .should('be.oneOf', [200, 201]);

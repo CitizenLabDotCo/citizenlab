@@ -200,6 +200,9 @@ export const addPrefix = (customFieldValues: Record<string, any>) => {
   return newValues;
 };
 
+export const isUserField = (field: IFlatCustomField) =>
+  field.key.startsWith(PREFIX);
+
 // Tracks each page view after the first page - the first page is tracked when the form is opened
 export const trackFormPageView = (
   currentPageIndex: number,

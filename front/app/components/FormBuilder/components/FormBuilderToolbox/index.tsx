@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  IconTooltip,
-  Text,
-  Title,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -76,21 +70,6 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
           >
             <FormattedMessage {...customToolBoxTitle} />
           </Title>
-          {builderConfig.isParticipationPublic && (
-            <IconTooltip
-              icon="info-solid"
-              iconColor={colors.coolGrey500}
-              placement="right-start"
-              ml="4px"
-              content={
-                <Box>
-                  <Text my="4px" color="white" fontSize="s">
-                    {formatMessage(messages.fieldIsNotVisibleTooltip)}
-                  </Text>
-                </Box>
-              }
-            />
-          )}
         </Box>
         <Drop id="toolbox" type={fieldAreaDNDType} isDropDisabled={true}>
           <ToolboxItem
