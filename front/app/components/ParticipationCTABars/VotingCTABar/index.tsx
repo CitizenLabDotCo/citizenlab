@@ -4,11 +4,13 @@ import { Text, Box, useBreakpoint } from '@citizenlab/cl2-component-library';
 
 import useBasket from 'api/baskets/useBasket';
 import useVoting from 'api/baskets_ideas/useVoting';
-import { getCurrentPhase } from 'api/phases/utils';
 
 import ErrorToast from 'components/ErrorToast';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
-import { CTABarProps } from 'components/ParticipationCTABars/utils';
+import {
+  CTABarProps,
+  getCTAPhase,
+} from 'components/ParticipationCTABars/utils';
 
 import { useIntl } from 'utils/cl-intl';
 import useFormatCurrency from 'utils/currency/useFormatCurrency';
@@ -23,7 +25,7 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
   const formatCurrency = useFormatCurrency();
 
   const currentPhase = useMemo(() => {
-    return getCurrentPhase(phases);
+    return getCTAPhase(phases);
   }, [phases]);
 
   const { data: basket } = useBasket(basketId);

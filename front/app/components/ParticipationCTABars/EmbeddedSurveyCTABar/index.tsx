@@ -4,14 +4,17 @@ import { Button } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
-import { getCurrentPhase, getPhaseActionDescriptor } from 'api/phases/utils';
+import { getPhaseActionDescriptor } from 'api/phases/utils';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 import { SuccessAction } from 'containers/Authentication/SuccessActions/actions';
 import { scrollTo } from 'containers/Authentication/SuccessActions/actions/scrollTo';
 
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
-import { CTABarProps } from 'components/ParticipationCTABars/utils';
+import {
+  CTABarProps,
+  getCTAPhase,
+} from 'components/ParticipationCTABars/utils';
 
 import { isFixableByAuthentication } from 'utils/actionDescriptors';
 import { FormattedMessage } from 'utils/cl-intl';
@@ -25,7 +28,7 @@ const EmbeddedSurveyCTABar = ({ phases, project }: CTABarProps) => {
   const { pathname, hash: divId } = useLocation();
 
   useEffect(() => {
-    setCurrentPhase(getCurrentPhase(phases));
+    setCurrentPhase(getCTAPhase(phases));
   }, [phases]);
 
   useEffect(() => {

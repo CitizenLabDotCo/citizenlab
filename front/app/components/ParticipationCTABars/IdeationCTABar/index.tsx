@@ -5,12 +5,13 @@ import { useTheme } from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
-import { getCurrentPhase, getInputTerm } from 'api/phases/utils';
+import { getInputTerm } from 'api/phases/utils';
 
 import IdeaButton from 'components/IdeaButton';
 import ParticipationCTAContent from 'components/ParticipationCTABars/ParticipationCTAContent';
 import {
   CTABarProps,
+  getCTAPhase,
   useScrollToCurrentPhaseElement,
 } from 'components/ParticipationCTABars/utils';
 
@@ -28,7 +29,7 @@ const IdeationCTABar = ({ phases, project }: CTABarProps) => {
   const scrollToPhaseElement = useScrollToCurrentPhaseElement(project, phases);
 
   useEffect(() => {
-    setCurrentPhase(getCurrentPhase(phases));
+    setCurrentPhase(getCTAPhase(phases));
   }, [phases]);
 
   const { enabled } = getIdeaPostingRules({
@@ -81,7 +82,7 @@ const IdeationCTABar = ({ phases, project }: CTABarProps) => {
             fontSize="14px"
           >
             <FormattedMessage
-              {...getInputTermMessage(getInputTerm(phases), {
+              {...getInputTermMessage(getInputTerm(phases, currentPhase), {
                 idea: messages.seeIdeas,
                 option: messages.seeOptions,
                 project: messages.seeProjects,
