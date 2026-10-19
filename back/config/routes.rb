@@ -324,6 +324,7 @@ Rails.application.routes.draw do
       end
 
       resources :spaces, only: %i[index show create update destroy] do
+        patch 'reorder', on: :member
         resources :moderators, controller: 'moderators/space_moderators', except: %i[update]
       end
 
