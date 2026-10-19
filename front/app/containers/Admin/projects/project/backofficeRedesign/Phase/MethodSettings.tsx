@@ -20,6 +20,7 @@ import configMessages from 'containers/Admin/projects/project/phaseSetup/compone
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import { validateParticipation } from 'containers/Admin/projects/project/phaseSetup/validate';
 
+import { usePhasePreviewPublisher } from 'components/admin/PhasePreview/DraftContext';
 import Centerer from 'components/UI/Centerer';
 
 import { useIntl } from 'utils/cl-intl';
@@ -75,6 +76,8 @@ const MethodSettings = ({ phase }: Props) => {
     {}
   );
 
+  const publishPreview = usePhasePreviewPublisher('settings', phase.id);
+
   const participationMethod = phase.attributes.participation_method;
   const accessOnlyActions = ACCESS_ONLY_ACTIONS[participationMethod];
 
@@ -82,6 +85,7 @@ const MethodSettings = ({ phase }: Props) => {
     config: IUpdatedPhaseProperties,
     changedFields: Partial<IUpdatedPhaseProperties>
   ) => {
+    publishPreview(changedFields);
     setChanges((changes) => ({ ...changes, ...changedFields }));
     setFormData(config);
   };

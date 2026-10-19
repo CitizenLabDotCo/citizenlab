@@ -17,6 +17,7 @@ import { Multiloc } from 'typings';
 import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
+import { usePhasePreviewPublisher } from 'components/admin/PhasePreview/DraftContext';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';
 
@@ -62,6 +63,17 @@ const DraftPhaseDescription = ({
     },
   });
 
+  const publishPreview = usePhasePreviewPublisher('description', phaseId);
+  React.useEffect(() => {
+    const subscription = methods.watch(() =>
+      publishPreview({
+        description_multiloc: methods.getValues('draft_description_multiloc'),
+        draft_description_multiloc: {},
+      })
+    );
+    return () => subscription.unsubscribe();
+  }, [methods, publishPreview]);
+
   const debouncedSaveDraft = useMemo(
     () =>
       debounce((value: Multiloc) => {
@@ -74,12 +86,17 @@ const DraftPhaseDescription = ({
     [updateDraftPhaseDescription, phaseId]
   );
 
-  methods.watch((data) => {
-    if (isEditing && data.draft_description_multiloc) {
+  React.useEffect(() => {
+    const subscription = methods.watch(() => {
+      if (!isEditing) return;
       setHasPendingChanges(true);
-      debouncedSaveDraft(data.draft_description_multiloc as Multiloc);
-    }
-  });
+      debouncedSaveDraft(methods.getValues('draft_description_multiloc'));
+    });
+    return () => {
+      subscription.unsubscribe();
+      debouncedSaveDraft.cancel();
+    };
+  }, [methods, isEditing, debouncedSaveDraft]);
 
   const handleClickToEdit = () => {
     if (!hasSavedDraft) {

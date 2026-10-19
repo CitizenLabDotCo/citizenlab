@@ -18,8 +18,15 @@ import useLocalize from 'hooks/useLocalize';
 
 import messages from 'containers/ProjectsShowPage/messages';
 
+import previewMessages from 'components/admin/PhasePreview/messages';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { getLocalisedDateString, pastPresentOrFuture } from 'utils/dateUtils';
+import {
+  getIsoDate,
+  getLocalisedDateString,
+  pastPresentOrFuture,
+} from 'utils/dateUtils';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 
 const Container = styled.div<{ descriptionHasContent: boolean }>`
   display: flex;
@@ -115,9 +122,19 @@ const PhaseTitle = ({
       phase.data.attributes.start_at,
       phase.data.attributes.end_at,
     ]);
-    const startDate = getLocalisedDateString(phase.data.attributes.start_at);
+    const startDate = phase.data.attributes.start_at
+      ? getLocalisedDateString(
+          getPhasePreview()
+            ? getIsoDate(phase.data.attributes.start_at)
+            : phase.data.attributes.start_at
+        )
+      : undefined;
     const endDate = phase.data.attributes.end_at
-      ? getLocalisedDateString(phase.data.attributes.end_at)
+      ? getLocalisedDateString(
+          getPhasePreview()
+            ? getIsoDate(phase.data.attributes.end_at)
+            : phase.data.attributes.end_at
+        )
       : formatMessage(messages.noEndDate);
 
     if (smallerThanSmallTablet && phaseTitle && phaseNumber) {
@@ -141,10 +158,18 @@ const PhaseTitle = ({
             m="0"
             color={phaseStatus === 'present' ? 'success' : 'textSecondary'}
           >
-            {phaseTitle || <FormattedMessage {...messages.noPhaseSelected} />}
+            {phaseTitle || (
+              <FormattedMessage
+                {...(getPhasePreview()?.unsaved
+                  ? previewMessages.noTitle
+                  : messages.noPhaseSelected)}
+              />
+            )}
           </Title>
           <PhaseDate className={phaseStatus}>
-            {isOneDayPhase ? (
+            {!startDate ? (
+              <FormattedMessage {...previewMessages.noDates} />
+            ) : isOneDayPhase ? (
               startDate
             ) : (
               <>

@@ -6,6 +6,8 @@ import PhonePreviewFrame from './PhonePreviewFrame';
 
 interface Props {
   src: string;
+  frameName?: string;
+  frameRef?: React.Ref<HTMLIFrameElement>;
   title: string;
   className?: string;
   dataCy?: string;
@@ -17,6 +19,8 @@ interface Props {
 
 const PhonePreview = ({
   src,
+  frameName,
+  frameRef,
   title,
   className,
   dataCy,
@@ -30,6 +34,11 @@ const PhonePreview = ({
     screen={
       <Box
         as="iframe"
+        ref={frameRef}
+        name={frameName}
+        sandbox={
+          frameName ? 'allow-scripts allow-same-origin allow-forms' : undefined
+        }
         src={src}
         title={title}
         display="block"

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import {
   Box,
@@ -22,6 +22,8 @@ import FileAttachments from 'components/UI/FileAttachments';
 
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
+import { scrollToElement } from 'utils/scroll';
 
 import PhaseTitle from './PhaseTitle';
 
@@ -70,6 +72,19 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
     ]) === 'present';
 
   const phaseNumber = phases ? getPhaseNumber(phases, selectedPhaseId) : null;
+
+  useEffect(() => {
+    if (!phaseNumber || !getPhasePreview()) return;
+
+    const timeout = window.setTimeout(() => {
+      scrollToElement({
+        id: `phase-description-panel-${phaseNumber}`,
+        behavior: 'auto',
+      });
+    }, 200);
+
+    return () => window.clearTimeout(timeout);
+  }, [phaseNumber, selectedPhaseId]);
 
   if (!phaseNumber || !phase) {
     return null;
