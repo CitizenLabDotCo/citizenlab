@@ -1,9 +1,16 @@
 import React, { lazy } from 'react';
 
+import * as yup from 'yup';
+
 import PageLoading from 'components/UI/PageLoading';
 
 import Navigate from 'utils/cl-router/Navigate';
-import { createRoute, Outlet as RouterOutlet, useParams } from 'utils/router';
+import {
+  createRoute,
+  Outlet as RouterOutlet,
+  useParams,
+  useSearch,
+} from 'utils/router';
 
 import { adminRoute } from '../routes';
 
@@ -22,12 +29,26 @@ const projectFoldersRoute = createRoute({
   ),
 });
 
+// A folder added from a space starts in that space.
+const newFolderSearchSchema = yup.object({
+  space_id: yup.string().optional(),
+});
+
+const NewFolderSettings = () => {
+  const { space_id } = useSearch({
+    from: '/$locale/admin/projects/folders/new',
+  });
+  return <FolderSettings initialSpaceId={space_id} />;
+};
+
 const projectFoldersNewRoute = createRoute({
   getParentRoute: () => projectFoldersRoute,
   path: 'new',
+  validateSearch: (search: Record<string, unknown>) =>
+    newFolderSearchSchema.validateSync(search, { stripUnknown: true }),
   component: () => (
     <PageLoading>
-      <FolderSettings />
+      <NewFolderSettings />
     </PageLoading>
   ),
 });

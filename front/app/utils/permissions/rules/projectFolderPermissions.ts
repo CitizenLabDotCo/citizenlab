@@ -66,6 +66,11 @@ export function isProjectFolderModerator(
   }
 }
 
+// Whether the user gets folders from the admin folder list. It mirrors the
+// backend: admins, and moderators of a space or of a folder.
+export const canListAdminFolders = (user: IUser | undefined | null) =>
+  isAdmin(user) || isSpaceModerator(user) || isProjectFolderModerator(user);
+
 // rules
 const canUserAccessAdminFolderRoute = (
   item: IRouteItem,
@@ -85,11 +90,16 @@ const canUserAccessAdminFolderRoute = (
 
 definePermissionRule('route', 'access', canUserAccessAdminFolderRoute);
 
+definePermissionRule('project_folder', 'list_for_admin', (_folder, user) =>
+  canListAdminFolders(user)
+);
+
+// Space managers can create folders too, in their spaces.
 definePermissionRule(
   'project_folder',
   'create',
   (_folder: IProjectFolderData, user) => {
-    return isAdmin(user);
+    return isAdmin(user) || isSpaceModerator(user);
   }
 );
 
@@ -101,12 +111,23 @@ definePermissionRule(
   }
 );
 
+// Folders sit at the top, where the managers of their space can move them
+// too. Pass the folder's space via `context` (`{ folderSpaceId }`).
 definePermissionRule(
   'project_folder',
   'reorder',
-  (_folder: IProjectFolderData, user) => {
-    return isAdmin(user);
-  }
+  (_folder, user, _tenant, context) =>
+    isAdmin(user) || userModeratesSpace(user, context?.folderSpaceId)
+);
+
+// Who moves folders between spaces from the projects page: admins, and space
+// managers within their spaces. Pass the folder's space via `context`
+// (`{ folderSpaceId }`).
+definePermissionRule(
+  'project_folder',
+  'move',
+  (_folder, user, _tenant, context) =>
+    isAdmin(user) || userModeratesSpace(user, context?.folderSpaceId)
 );
 
 // Pass the folder id via `context` (e.g. `{ folderId, folderSpaceId }`) so the

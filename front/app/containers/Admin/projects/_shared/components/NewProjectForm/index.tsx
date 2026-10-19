@@ -36,19 +36,26 @@ interface Props {
   id: string;
   failed: boolean;
   apiErrors: CLErrors;
+  // The space or folder the project starts in, when it's added from one.
+  initialContext?: SpaceAndFolderId;
   onSubmit: (values: NewProjectValues) => void;
 }
 
-const NewProjectForm = ({ id, failed, apiErrors, onSubmit }: Props) => {
+const NewProjectForm = ({
+  id,
+  failed,
+  apiErrors,
+  initialContext,
+  onSubmit,
+}: Props) => {
   const { formatMessage } = useIntl();
   const locales = useAppConfigurationLocales();
 
   const [titleMultiloc, setTitleMultiloc] = useState<Multiloc>({});
   const [titleError, setTitleError] = useState<Multiloc | null>(null);
-  const [context, setContext] = useState<SpaceAndFolderId>({
-    space_id: null,
-    folder_id: null,
-  });
+  const [context, setContext] = useState<SpaceAndFolderId>(
+    initialContext ?? { space_id: null, folder_id: null }
+  );
   const [listed, setListed] = useState<Listed>('listed');
   const [visibleTo, setVisibleTo] = useState<Visibility>('admins');
   const [groupIds, setGroupIds] = useState<string[]>([]);

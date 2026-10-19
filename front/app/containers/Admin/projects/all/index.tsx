@@ -3,6 +3,7 @@ import React, { Suspense } from 'react';
 import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import { useIntl } from 'utils/cl-intl';
 import { useSearch } from 'utils/router';
@@ -10,6 +11,7 @@ import { useSearch } from 'utils/router';
 import Search from './_shared/FilterBar/Filters/Search';
 import Folders from './Folders';
 import Header from './Header';
+import ProjectsHierarchy from './Hierarchy';
 import messages from './messages';
 import Ordering from './Ordering';
 import Projects from './Projects';
@@ -54,12 +56,15 @@ const AdminProjectsListNew = () => {
   const spacesEnabled = useFeatureFlag({
     name: 'spaces',
   });
+  const redesign = useProjectBackofficeRedesign();
 
   const searchMessage = getSearchMessage(
     tab,
     calendarViewEnabled,
     spacesEnabled
   );
+
+  if (redesign) return <ProjectsHierarchy />;
 
   return (
     <Box

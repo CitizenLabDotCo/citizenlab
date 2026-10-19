@@ -15,8 +15,13 @@ export interface Space {
   included?: (IProjectFolderData | IProjectData)[];
 }
 
+// The spaces list also counts what is in each space.
+export type SpaceListData = SpaceData & {
+  attributes: { folders_count: number; projects_count: number };
+};
+
 export interface Spaces {
-  data: SpaceData[];
+  data: SpaceListData[];
   included?: IUserData[];
 }
 
@@ -26,6 +31,8 @@ export interface SpaceData {
   attributes: {
     title_multiloc: Multiloc;
     description_multiloc: Multiloc;
+    // Where admins put the space among the others.
+    ordering: number;
     created_at: string;
     updated_at: string;
   };

@@ -63,9 +63,15 @@ type IProjectFolderSubmitState =
 interface Props {
   mode: 'edit' | 'new';
   projectFolderId?: string;
+  // The space a new folder starts in.
+  initialSpaceId?: string;
 }
 
-const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
+const ProjectFolderForm = ({
+  mode,
+  projectFolderId,
+  initialSpaceId,
+}: Props) => {
   /*
     ==============
     Resource hooks
@@ -110,7 +116,7 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
     useState<boolean>(false);
   const [shortDescriptionMultiloc, setShortDescriptionMultiloc] =
     useState<Multiloc | null>(null);
-  const [spaceId, setSpaceId] = useState<string | null>(null);
+  const [spaceId, setSpaceId] = useState<string | null>(initialSpaceId ?? null);
   const [headerBgBase64, setHeaderBgBase64] = useState<string | null>(null);
   const [headerImageAltText, setHeaderImageAltText] = useState<Multiloc>({});
   const [publicationStatus, setPublicationStatus] = useState<

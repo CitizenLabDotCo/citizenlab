@@ -10,17 +10,17 @@ import useInfiniteScroll from 'hooks/useInfiniteScroll';
 import useLocalize from 'hooks/useLocalize';
 
 import Centerer from 'components/UI/Centerer';
-import { GanttItem } from 'components/UI/GanttChart/types';
 
 import { useIntl } from 'utils/cl-intl';
 
 import FilterBar from '../_shared/FilterBar';
 import sharedMessages from '../_shared/messages';
 import { useParams } from '../_shared/params';
-import { getStatusColor, getParticipationMethods } from '../_shared/utils';
+import { getParticipationMethods } from '../_shared/utils';
 
 import messages from './messages';
 import ProjectGanttChart from './ProjectGanttChart';
+import toGanttItem from './toGanttItem';
 import UpsellNudge from './UpsellNudge';
 
 const PAGE_SIZE = 10;
@@ -72,23 +72,9 @@ const Calendar = () => {
     return <Text>{formatMessage(messages.failedToLoadTimelineError)}</Text>;
   }
 
-  const projectsGanttData: GanttItem[] = allProjects.map((project) => ({
-    id: project.id,
-    title: localize(project.attributes.title_multiloc),
-    start: project.attributes.first_phase_start_date,
-    end: project.attributes.last_phase_end_date,
-    folder: localize(project.attributes.folder_title_multiloc),
-    highlight: {
-      start: project.attributes.active_phases_start_date,
-      end: project.attributes.active_phases_end_date,
-    },
-    color: getStatusColor(
-      project.attributes.publication_status,
-      project.attributes.publication_status === 'draft' &&
-        !!project.attributes.scheduled_at
-    ),
-    icon: project.attributes.folder_title_multiloc ? 'folder-solid' : undefined,
-  }));
+  const projectsGanttData = allProjects.map((project) =>
+    toGanttItem(project, localize)
+  );
 
   const getSentinelMessage = () => {
     if (isFetching) {

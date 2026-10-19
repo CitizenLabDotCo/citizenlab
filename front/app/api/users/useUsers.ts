@@ -17,10 +17,14 @@ const fetchUsers = ({ pageNumber, pageSize, ...rest }: IQueryParameters) =>
     },
   });
 
-const useUsers = (queryParameters: IQueryParameters) => {
+const useUsers = (
+  queryParameters: IQueryParameters,
+  { enabled = true } = {}
+) => {
   return useQuery<IUsers, CLErrors, IUsers, UsersKeys>({
     queryKey: usersKeys.list(queryParameters),
     queryFn: () => fetchUsers(queryParameters),
+    enabled,
   });
 };
 

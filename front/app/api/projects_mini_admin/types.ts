@@ -25,12 +25,47 @@ export const projectSortableParams = [
   'alphabetically_desc',
   'participation_asc',
   'participation_desc',
+  'arranged',
+  'status_asc',
+  'status_desc',
+  'phase_asc',
+  'phase_desc',
+  'participation_method_asc',
+  'participation_method_desc',
+  'managers_asc',
+  'managers_desc',
+  'start_date_asc',
+  'start_date_desc',
+  'end_date_asc',
+  'end_date_desc',
 ] as const;
 
 export type ProjectSortableParam = (typeof projectSortableParams)[number];
 
+// The status as the admin project list shows it: a draft waiting for review
+// approval is 'pending' rather than 'draft'.
+export const displayStatuses = [
+  'published',
+  'pending',
+  'draft',
+  'archived',
+] as const;
+
+export type DisplayStatus = (typeof displayStatuses)[number];
+
+// The phase a project is about right now: the open one that ends soonest, else
+// the next to start, else the last that ran.
+export type HighlightedPhase = {
+  participation_method: ParticipationMethod;
+  status: 'active' | 'upcoming' | 'ended';
+  start_at: string;
+  end_at: string | null;
+};
+
 export type Parameters = {
   status?: PublicationStatus[];
+  display_status?: DisplayStatus[];
+  top_level?: boolean;
   review_state?: ReviewState;
   managers?: string[];
   search?: string;
@@ -46,13 +81,20 @@ export type Parameters = {
   locale: SupportedLocale;
 } & Pagination;
 
-export type ParticipationState =
-  | 'not_started'
-  | 'collecting_data'
-  | 'informing'
-  | 'past';
+export const participationStates = [
+  'not_started',
+  'starting_soon',
+  'no_phases',
+  'collecting_data',
+  'informing',
+  'past',
+] as const;
 
-export type Discoverability = 'listed' | 'unlisted';
+export type ParticipationState = (typeof participationStates)[number];
+
+export const discoverabilities = ['listed', 'unlisted'] as const;
+
+export type Discoverability = (typeof discoverabilities)[number];
 
 type Included = (IUserData | IProjectData | IGroupData | IPhaseData)[];
 
@@ -60,6 +102,7 @@ export type ProjectsMiniAdmin = {
   data: ProjectMiniAdminData[];
   links: ILinks;
   included?: Included;
+  meta: { total: number };
 };
 
 export type ProjectMiniAdminData = {
@@ -68,6 +111,8 @@ export type ProjectMiniAdminData = {
   attributes: {
     active_phases_start_date: string | null;
     active_phases_end_date: string | null;
+    display_status: DisplayStatus;
+    highlighted_phase: HighlightedPhase | null;
     first_phase_start_date: string | null;
     first_published_at: string | null;
     folder_title_multiloc: Multiloc | null;
@@ -75,6 +120,10 @@ export type ProjectMiniAdminData = {
     last_phase_end_date: string | null;
     listed: boolean;
     publication_status: PublicationStatus;
+    // The project's place among the items beside it, and the publication that
+    // holds it, which is what moving it changes.
+    admin_publication_id: string;
+    ordering: number;
     scheduled_at: string | null;
     title_multiloc: Multiloc;
     visible_to: Visibility;

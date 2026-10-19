@@ -17,12 +17,14 @@ const fetchProjectForlderModerators = ({
   });
 };
 
-const useProjectFolderModerators = ({
-  projectFolderId,
-}: ProjectForderParams) => {
+const useProjectFolderModerators = (
+  { projectFolderId }: ProjectForderParams,
+  { enabled = true } = {}
+) => {
   return useQuery<IUsers, CLErrors, IUsers, ProjectFolderModeratorsKeys>({
     queryKey: projectFolderModeratorsKeys.list({ projectFolderId }),
     queryFn: () => fetchProjectForlderModerators({ projectFolderId }),
+    enabled,
   });
 };
 

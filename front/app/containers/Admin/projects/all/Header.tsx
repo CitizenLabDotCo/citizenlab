@@ -3,14 +3,12 @@ import React from 'react';
 import { Box, Title, Tooltip } from '@citizenlab/cl2-component-library';
 import { useSearch } from '@tanstack/react-router';
 
-import useAuthUser from 'api/me/useAuthUser';
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import Button from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
-import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
+import { usePermission } from 'utils/permissions';
 
 import messages from './messages';
 import NewProjectButton from './NewProjectButton';
@@ -20,13 +18,12 @@ const Header = () => {
     from: '/$locale/admin/projects/',
   });
   const tab = searchParams.tab;
-  const { data: authUser } = useAuthUser();
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
-
-  const userIsAdmin = isAdmin(authUser);
-  const userIsSpaceModerator = isSpaceModerator(authUser);
-
-  const userCanAddFolders = userIsAdmin || userIsSpaceModerator;
+  const userCanAddFolders = usePermission({
+    item: 'project_folder',
+    action: 'create',
+  });
+  const userCanAddSpaces = usePermission({ item: 'space', action: 'create' });
 
   return (
     <Box display="flex" justifyContent="space-between">
@@ -76,7 +73,7 @@ const Header = () => {
             content={
               <FormattedMessage {...messages.onlyAdminsCanCreateSpaces} />
             }
-            disabled={userIsAdmin}
+            disabled={userCanAddSpaces}
           >
             <Box>
               <Button
@@ -86,7 +83,7 @@ const Header = () => {
                 buttonStyle="admin-dark"
                 icon="spaces"
                 iconSize="20px"
-                disabled={!userIsAdmin}
+                disabled={!userCanAddSpaces}
               >
                 <FormattedMessage {...messages.newSpace} />
               </Button>

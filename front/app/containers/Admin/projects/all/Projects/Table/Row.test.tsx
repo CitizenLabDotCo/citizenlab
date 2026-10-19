@@ -47,6 +47,8 @@ const project: ProjectMiniAdminData = {
   attributes: {
     active_phases_start_date: null,
     active_phases_end_date: null,
+    display_status: 'published',
+    highlighted_phase: null,
     first_phase_start_date: null,
     first_published_at: null,
     folder_title_multiloc: { en: 'Test folder' },
@@ -54,6 +56,8 @@ const project: ProjectMiniAdminData = {
     last_phase_end_date: null,
     listed: true,
     publication_status: 'published',
+    admin_publication_id: 'publication-1',
+    ordering: 0,
     scheduled_at: null,
     title_multiloc: { en: 'Test project' },
     visible_to: 'public',

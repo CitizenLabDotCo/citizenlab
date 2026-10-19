@@ -12,6 +12,16 @@ export const focusRingInset = css`
   outline-offset: -2px;
 `;
 
+// For the buttons in a box that clips its overflow, or that sets them edge to
+// edge: a ring outside them would be cut off or covered, so it goes inside
+// their edges. The doubled class outweighs the buttons' own ring offset.
+export const buttonsFocusRingInset = css`
+  && button:focus-visible {
+    ${focusRingInset}
+    box-shadow: none;
+  }
+`;
+
 export const focusRingBorder = css`
   border: 2px solid ${colors.black};
   box-shadow: 0 0 0 2px ${colors.white};

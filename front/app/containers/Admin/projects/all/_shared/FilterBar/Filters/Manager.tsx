@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 
-import useUsers from 'api/users/useUsers';
-
 import MultiSelect from 'components/UI/MultiSelect';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-import { getFullName } from 'utils/textUtils';
 
 import { useParam, setParam } from '../../params';
 
 import messages from './messages';
 import tracks from './tracks';
+import useManagerOptions from './useManagerOptions';
 
 interface Props {
   openedDefaultValue?: boolean;
@@ -29,35 +27,19 @@ const Manager = ({
   const managerIds = useParam('managers') ?? [];
   const { formatMessage } = useIntl();
 
-  const { data: managers } = useUsers({
-    pageSize: 500,
-    can_moderate: true,
-  });
+  const { options: managerOptions } = useManagerOptions();
 
-  const getOptions = () => {
-    if (!managers) return [];
-    const managersWithFullname = managers.data.map((manager) => ({
-      value: manager.id,
-      label: getFullName(manager),
-    }));
-
-    if (searchValue === '') return managersWithFullname;
-
-    return managersWithFullname.filter((option) =>
-      option.label.toLowerCase().includes(searchValue.toLowerCase())
-    );
-  };
-
-  const options = getOptions();
-
-  const sortedOptions = options.sort((a, b) =>
-    a.label.localeCompare(b.label, undefined, { sensitivity: 'base' })
-  );
+  const options =
+    searchValue === ''
+      ? managerOptions
+      : managerOptions.filter((option) =>
+          option.label.toLowerCase().includes(searchValue.toLowerCase())
+        );
 
   return (
     <MultiSelect
       selected={managerIds}
-      options={sortedOptions}
+      options={options}
       searchValue={searchValue}
       mr={mr}
       openedDefaultValue={openedDefaultValue && managerIds.length === 0}

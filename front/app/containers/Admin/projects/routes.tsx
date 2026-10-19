@@ -5,7 +5,13 @@ import * as yup from 'yup';
 import { reviewStates } from 'api/admin_publications/types';
 import { ideaSortValues } from 'api/ideas/types';
 import { participationMethods } from 'api/phases/types';
-import { projectSortableParams } from 'api/projects_mini_admin/types';
+import { visibilities } from 'api/projects/types';
+import {
+  discoverabilities,
+  displayStatuses,
+  participationStates,
+  projectSortableParams,
+} from 'api/projects_mini_admin/types';
 
 import PageLoading from 'components/UI/PageLoading';
 
@@ -14,6 +20,8 @@ import { parseModuleRoutes, RouteConfiguration } from 'utils/moduleUtils';
 import { createRoute, useParams } from 'utils/router';
 
 import { adminRoute } from '../routes';
+
+import { addableColumns } from './all/Hierarchy/List/columns';
 
 const AdminProjectIdeaPreviewIndex = lazy(
   () => import('./AdminProjectIdeaPreviewIndex')
@@ -151,6 +159,21 @@ const projectsRoute = createRoute({
   ),
 });
 
+// An array param that drops what it doesn't know, down to the whole param when
+// it isn't an array. A failed search validation shows an error instead of the
+// page, so a link with a stale value (a column that was removed, say) would
+// otherwise stop opening.
+const knownValues = <T extends string>(values: readonly T[]) =>
+  yup
+    .array()
+    .of(yup.string().oneOf(values).required())
+    .transform((value: unknown) =>
+      Array.isArray(value)
+        ? value.filter((item) => values.some((known) => known === item))
+        : undefined
+    )
+    .optional();
+
 // Projects index (list) - filter params for the project list page.
 // Multiselect params (status, managers, etc.) are stored as JSON-encoded
 // strings in the URL; the useParam/useParams hooks in _shared/params.ts
@@ -169,12 +192,20 @@ const projectsIndexSearchSchema = yup.object({
   // parser turns them into arrays before validation.
   status: yup.array().of(yup.string().required()).optional(),
   managers: yup.array().of(yup.string().required()).optional(),
-  participation_states: yup.array().of(yup.string().required()).optional(),
+  participation_states: knownValues(participationStates),
   folder_ids: yup.array().of(yup.string().required()).optional(),
-  participation_methods: yup.array().of(yup.string().required()).optional(),
-  visibility: yup.array().of(yup.string().required()).optional(),
-  discoverability: yup.array().of(yup.string().required()).optional(),
+  participation_methods: knownValues(participationMethods),
+  visibility: knownValues(visibilities),
+  discoverability: knownValues(discoverabilities),
   space_ids: yup.array().of(yup.string().required()).optional(),
+  // The hierarchy page (behind project_backoffice_redesign): the view mode,
+  // the space or folder being viewed, its extra list columns and its status
+  // filter.
+  view_mode: yup.string().oneOf(['grid', 'list', 'calendar']).optional(),
+  space_id: yup.string().optional(),
+  folder_id: yup.string().optional(),
+  cols: knownValues(addableColumns),
+  display_status: knownValues(displayStatuses),
 });
 
 const projectsIndexRoute = createRoute({

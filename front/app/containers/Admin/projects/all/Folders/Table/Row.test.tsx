@@ -53,6 +53,8 @@ const folder: MiniProjectFolder = {
     title_multiloc: { en: 'Test folder' },
     visible_projects_count: 3,
     publication_status: 'published',
+    admin_publication_id: 'publication-1',
+    ordering: 0,
     space_id: 'space-1',
     space_title_multiloc: { en: 'Test space' },
   },

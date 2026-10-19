@@ -3,9 +3,10 @@ import { IUser } from 'api/users/types';
 
 import { definePermissionRule } from 'utils/permissions/permissions';
 
-import { isAdmin, isProjectModerator } from '../roles';
+import { isAdmin, isProjectModerator, isSpaceModerator } from '../roles';
 
 import {
+  isProjectFolderModerator,
   userModeratesFolder,
   userModeratesSpace,
 } from './projectFolderPermissions';
@@ -18,9 +19,43 @@ definePermissionRule('project', 'delete', (_project: IProjectData, user) => {
   return isAdmin(user);
 });
 
-definePermissionRule('project', 'reorder', (_project: IProjectData, user) => {
-  return isAdmin(user);
+// Admins see every project in the admin list; everyone else only what they
+// manage.
+definePermissionRule('project', 'list_all_for_admin', (_project, user) =>
+  isAdmin(user)
+);
+
+// Whoever reviews projects (somewhere) can look for the ones waiting for it.
+definePermissionRule('project', 'list_pending_review', (_project, user) => {
+  return (
+    isAdmin(user) || isSpaceModerator(user) || isProjectFolderModerator(user)
+  );
 });
+
+// Who can move a project among the items beside it, as on the backend: inside
+// a folder, whoever moderates the folder; at the top, the space's managers.
+// Pass where it sits via `context` (`{ folderId, spaceId }`).
+export const canReorderProject = (
+  user: IUser | undefined | null,
+  { folderId, spaceId }: { folderId?: string | null; spaceId?: string | null }
+) =>
+  folderId
+    ? userModeratesFolder(user, folderId, spaceId)
+    : isAdmin(user) || userModeratesSpace(user, spaceId);
+
+definePermissionRule('project', 'reorder', (_project, user, _tenant, context) =>
+  canReorderProject(user, context ?? {})
+);
+
+// Who moves projects between spaces and folders from the projects page:
+// admins, and space managers within their spaces. Pass the project's space
+// via `context` (`{ spaceId }`).
+definePermissionRule(
+  'project',
+  'move',
+  (_project, user, _tenant, context) =>
+    isAdmin(user) || userModeratesSpace(user, context?.spaceId)
+);
 
 const canReview = (project: IProjectData, user: IUser | undefined | null) => {
   if (isAdmin(user)) return true;
