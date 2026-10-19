@@ -19,6 +19,18 @@ resource 'CustomFieldOptionImage' do
         expect(json_response_body.dig(:data, :attributes, :versions).keys).to match %i[small medium large fb]
       end
     end
+
+    post 'web_api/v1/custom_field_option_images' do
+      with_options scope: :image do
+        parameter :image, 'The base64 encoded image', required: true
+      end
+      let(:image) { png_image_as_base64 'image13.jpg' }
+
+      example 'Unauthorized (401) when not signed in', document: false do
+        expect { do_request }.not_to change(CustomFieldOptionImage, :count)
+        expect(response_status).to eq 401
+      end
+    end
   end
 
   context 'as an admin' do
