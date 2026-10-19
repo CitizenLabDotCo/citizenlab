@@ -5,11 +5,13 @@ module IdeaCustomFields
     CONSTANTIZER = {
       'Project' => {
         container_class: Project,
-        container_id: :project_id
+        container_id: :project_id,
+        custom_form: ->(project) { CustomForm.find_or_initialize_by(participation_context: project) }
       },
       'Phase' => {
         container_class: Phase,
-        container_id: :phase_id
+        container_id: :phase_id,
+        custom_form: ->(phase) { phase.pmethod.custom_form }
       }
     }
 
@@ -163,8 +165,7 @@ module IdeaCustomFields
     def set_custom_form
       container_id = params[secure_constantize(:container_id)]
       @container = secure_constantize(:container_class).find container_id
-
-      @custom_form = CustomForm.find_or_initialize_by participation_context: @container
+      @custom_form = secure_constantize(:custom_form).call(@container)
     end
 
     def set_custom_field

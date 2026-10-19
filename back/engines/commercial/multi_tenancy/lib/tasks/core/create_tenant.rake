@@ -225,6 +225,10 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
+        input_form_answer_visibility: {
+          enabled: true,
+          allowed: true
+        },
         posthog_integration: {
           enabled: false,
           allowed: false

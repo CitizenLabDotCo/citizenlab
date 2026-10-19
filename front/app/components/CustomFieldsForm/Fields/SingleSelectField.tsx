@@ -100,6 +100,7 @@ const SingleSelectField = ({
           name={`${question.key}_other`}
           type="text"
           placeholder={formatMessage(messages.typeYourAnswer)}
+          disabled={disabled}
         />
       )}
     </>
