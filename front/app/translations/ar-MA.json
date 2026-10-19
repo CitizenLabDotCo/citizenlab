@@ -269,6 +269,8 @@
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "الأحداث القادمة والمستمرة في هذه المرحلة",
   "app.components.FileRepositorySelectAndUpload.addFile2": "حدد ملف",
   "app.components.FileRepositorySelectAndUpload.or": "أو",
+  "app.components.FileRepositorySelectAndUpload.removeFile": "إزالة",
+  "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "إزالة {fileName}",
   "app.components.FileRepositorySelectAndUpload.selectExistingFile": "حدد الملف الموجود",
   "app.components.FileRepositorySelectAndUpload.selectFile": "حدد الملف",
   "app.components.FileUploader.a11y_file": "الملف:",

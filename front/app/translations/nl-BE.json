@@ -269,6 +269,8 @@
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "Komende en lopende evenementen in deze fase",
   "app.components.FileRepositorySelectAndUpload.addFile2": "Klik om een bestand te kiezen",
   "app.components.FileRepositorySelectAndUpload.or": "of",
+  "app.components.FileRepositorySelectAndUpload.removeFile": "Verwijderen",
+  "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "{fileName} verwijderen",
   "app.components.FileRepositorySelectAndUpload.selectExistingFile": "Bestaand bestand selecteren",
   "app.components.FileRepositorySelectAndUpload.selectFile": "Selecteer bestand",
   "app.components.FileUploader.a11y_file": "Bestand:",

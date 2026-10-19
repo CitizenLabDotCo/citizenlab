@@ -269,6 +269,8 @@
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "Tulevat ja meneillään olevat tapahtumat tässä vaiheessa",
   "app.components.FileRepositorySelectAndUpload.addFile2": "Valitse tiedosto",
   "app.components.FileRepositorySelectAndUpload.or": "tai",
+  "app.components.FileRepositorySelectAndUpload.removeFile": "Poista",
+  "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "Poista {fileName}",
   "app.components.FileRepositorySelectAndUpload.selectExistingFile": "Valitse olemassa oleva tiedosto",
   "app.components.FileRepositorySelectAndUpload.selectFile": "Valitse tiedosto",
   "app.components.FileUploader.a11y_file": "Tiedosto:",
