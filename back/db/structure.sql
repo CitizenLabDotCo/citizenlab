@@ -2487,7 +2487,8 @@ CREATE TABLE public.custom_fields (
     include_in_printed_form boolean DEFAULT true NOT NULL,
     min_characters integer,
     max_characters integer,
-    answers_visible_to character varying DEFAULT 'moderators'::character varying NOT NULL
+    answers_visible_to character varying DEFAULT 'moderators'::character varying NOT NULL,
+    show_as_filter boolean DEFAULT false NOT NULL
 );
 
 
@@ -9806,6 +9807,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261019100000'),
 ('20261012120000'),
 ('20261008120000'),
 ('20261006190100'),
