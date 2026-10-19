@@ -43,7 +43,7 @@ class WebApi::V1::ImagesController < ApplicationController
 
   before_action :set_container, only: %i[index create]
   before_action :set_image, only: %i[show update destroy]
-  skip_before_action :authenticate_user
+  skip_before_action :authenticate_user, only: %i[index show]
   skip_after_action :verify_policy_scoped
 
   def index
@@ -58,11 +58,13 @@ class WebApi::V1::ImagesController < ApplicationController
 
   def create
     @image = if @container
-      @container.send(secure_constantize(:image_relationship)).create(image_params)
+      @container.send(secure_constantize(:image_relationship)).new
     else
-      secure_constantize(:image_class).new(image_params)
+      secure_constantize(:image_class).new
     end
     authorize @image
+    @image.assign_attributes(image_params)
+
     if @image.save
       render json: WebApi::V1::ImageSerializer.new(
         @image,
