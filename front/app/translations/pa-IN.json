@@ -269,6 +269,8 @@
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "ਇਸ ਪੜਾਅ ਵਿੱਚ ਆਉਣ ਵਾਲੀਆਂ ਅਤੇ ਚੱਲ ਰਹੀਆਂ ਘਟਨਾਵਾਂ",
   "app.components.FileRepositorySelectAndUpload.addFile2": "ਇੱਕ ਫਾਈਲ ਚੁਣੋ",
   "app.components.FileRepositorySelectAndUpload.or": "ਜਾਂ",
+  "app.components.FileRepositorySelectAndUpload.removeFile": "ਹਟਾਓ",
+  "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "{fileName} ਹਟਾਓ",
   "app.components.FileRepositorySelectAndUpload.selectExistingFile": "ਮੌਜੂਦਾ ਫਾਈਲ ਚੁਣੋ",
   "app.components.FileRepositorySelectAndUpload.selectFile": "ਫਾਈਲ ਚੁਣੋ",
   "app.components.FileUploader.a11y_file": "ਫਾਈਲ:",

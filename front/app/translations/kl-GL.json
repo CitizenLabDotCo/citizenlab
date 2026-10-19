@@ -269,6 +269,8 @@
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "Upcoming and ongoing events in this phase",
   "app.components.FileRepositorySelectAndUpload.addFile2": "Select a file",
   "app.components.FileRepositorySelectAndUpload.or": "or",
+  "app.components.FileRepositorySelectAndUpload.removeFile": "Peeruk",
+  "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "{fileName} peeruk",
   "app.components.FileRepositorySelectAndUpload.selectExistingFile": "Select existing file",
   "app.components.FileRepositorySelectAndUpload.selectFile": "Select file",
   "app.components.FileUploader.a11y_file": "Fiili:",

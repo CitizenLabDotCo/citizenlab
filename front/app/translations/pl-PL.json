@@ -269,6 +269,8 @@
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "Nadchodzące i trwające wydarzenia w tej fazie",
   "app.components.FileRepositorySelectAndUpload.addFile2": "Wybierz plik",
   "app.components.FileRepositorySelectAndUpload.or": "lub",
+  "app.components.FileRepositorySelectAndUpload.removeFile": "Usuń",
+  "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "Usuń {fileName}",
   "app.components.FileRepositorySelectAndUpload.selectExistingFile": "Wybierz istniejący plik",
   "app.components.FileRepositorySelectAndUpload.selectFile": "Wybierz plik",
   "app.components.FileUploader.a11y_file": "Plik:",

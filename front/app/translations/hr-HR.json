@@ -269,6 +269,8 @@
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "Nadolazeći i tekući događaji u ovoj fazi",
   "app.components.FileRepositorySelectAndUpload.addFile2": "Odaberite datoteku",
   "app.components.FileRepositorySelectAndUpload.or": "ili",
+  "app.components.FileRepositorySelectAndUpload.removeFile": "Ukloni",
+  "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "Ukloni {fileName}",
   "app.components.FileRepositorySelectAndUpload.selectExistingFile": "Odaberite postojeću datoteku",
   "app.components.FileRepositorySelectAndUpload.selectFile": "Odaberite datoteku",
   "app.components.FileUploader.a11y_file": "Datoteka:",

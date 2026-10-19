@@ -269,6 +269,8 @@
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "Šajā posmā gaidāmie un notiekošie pasākumi",
   "app.components.FileRepositorySelectAndUpload.addFile2": "Atlasiet failu",
   "app.components.FileRepositorySelectAndUpload.or": "vai",
+  "app.components.FileRepositorySelectAndUpload.removeFile": "Noņemt",
+  "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "Noņemt {fileName}",
   "app.components.FileRepositorySelectAndUpload.selectExistingFile": "Atlasiet esošo failu",
   "app.components.FileRepositorySelectAndUpload.selectFile": "Izvēlieties failu",
   "app.components.FileUploader.a11y_file": "Fails:",

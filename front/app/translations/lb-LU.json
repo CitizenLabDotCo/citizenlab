@@ -269,6 +269,8 @@
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "Zukünfteg a lafend Eventer an dëser Phase",
   "app.components.FileRepositorySelectAndUpload.addFile2": "Eng Datei auswielen",
   "app.components.FileRepositorySelectAndUpload.or": "oder",
+  "app.components.FileRepositorySelectAndUpload.removeFile": "Ewechhuelen",
+  "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "{fileName} ewechhuelen",
   "app.components.FileRepositorySelectAndUpload.selectExistingFile": "Existéierend Datei auswielen",
   "app.components.FileRepositorySelectAndUpload.selectFile": "Datei auswielen",
   "app.components.FileUploader.a11y_file": "Datei:",

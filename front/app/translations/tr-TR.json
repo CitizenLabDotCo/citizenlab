@@ -269,6 +269,8 @@
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "Bu aşamada yaklaşan ve devam eden etkinlikler",
   "app.components.FileRepositorySelectAndUpload.addFile2": "Bir dosya seçin",
   "app.components.FileRepositorySelectAndUpload.or": "veya",
+  "app.components.FileRepositorySelectAndUpload.removeFile": "Kaldır",
+  "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "{fileName} dosyasını kaldır",
   "app.components.FileRepositorySelectAndUpload.selectExistingFile": "Mevcut dosyayı seçin",
   "app.components.FileRepositorySelectAndUpload.selectFile": "Dosya seçiniz",
   "app.components.FileUploader.a11y_file": "Dosya:",

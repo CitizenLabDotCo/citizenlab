@@ -269,6 +269,8 @@
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "Esdeveniments propers i en curs en aquesta fase",
   "app.components.FileRepositorySelectAndUpload.addFile2": "Selecciona un fitxer",
   "app.components.FileRepositorySelectAndUpload.or": "o",
+  "app.components.FileRepositorySelectAndUpload.removeFile": "Elimina",
+  "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "Elimina {fileName}",
   "app.components.FileRepositorySelectAndUpload.selectExistingFile": "Selecciona un fitxer existent",
   "app.components.FileRepositorySelectAndUpload.selectFile": "Selecciona un fitxer",
   "app.components.FileUploader.a11y_file": "Dossier:",

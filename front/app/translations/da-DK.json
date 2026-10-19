@@ -269,6 +269,8 @@
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "Kommende og igangværende begivenheder i denne fase",
   "app.components.FileRepositorySelectAndUpload.addFile2": "Klik for at vælge en fil",
   "app.components.FileRepositorySelectAndUpload.or": "eller",
+  "app.components.FileRepositorySelectAndUpload.removeFile": "Fjern",
+  "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "Fjern {fileName}",
   "app.components.FileRepositorySelectAndUpload.selectExistingFile": "Vælg eksisterende fil",
   "app.components.FileRepositorySelectAndUpload.selectFile": "Vælg fil",
   "app.components.FileUploader.a11y_file": "Fil:",

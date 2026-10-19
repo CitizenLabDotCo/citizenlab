@@ -269,6 +269,8 @@
   "app.components.EventPreviews.eventPreviewTimelineTitle3": "Kommande och pågående händelser i denna fas",
   "app.components.FileRepositorySelectAndUpload.addFile2": "Välj en fil",
   "app.components.FileRepositorySelectAndUpload.or": "eller",
+  "app.components.FileRepositorySelectAndUpload.removeFile": "Ta bort",
+  "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": "Ta bort {fileName}",
   "app.components.FileRepositorySelectAndUpload.selectExistingFile": "Välj befintlig fil",
   "app.components.FileRepositorySelectAndUpload.selectFile": "Välj fil",
   "app.components.FileUploader.a11y_file": "Fil:",
