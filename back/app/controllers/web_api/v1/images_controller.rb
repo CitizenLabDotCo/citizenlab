@@ -36,8 +36,10 @@ class WebApi::V1::ImagesController < ApplicationController
       container_class: CustomFieldOption,
       image_class: CustomFieldOptionImage,
       policy_scope_class: CustomFieldOptionImagePolicy::Scope,
-      image_relationship: :image,
-      container_id: :custom_field_option_id
+      image_relationship: :image
+      # No `container_id`: this route is not nested under an option, so the image is
+      # always built standalone. With the key, a query param could set the container,
+      # and `image` is a has_one, which the collection build in `create` cannot use.
     }
   }
 
@@ -62,6 +64,7 @@ class WebApi::V1::ImagesController < ApplicationController
     else
       secure_constantize(:image_class).new
     end
+    # authorize before any caller-supplied attribute lands
     authorize @image
     @image.assign_attributes(image_params)
 
