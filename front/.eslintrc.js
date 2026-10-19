@@ -1,3 +1,50 @@
+// Files that still import moment, exempt from the no-moment rule below until
+// they are migrated. Shrinks to nothing as the migration proceeds.
+const momentAllowlist = require('./internals/eslint/momentAllowlist');
+
+const restrictedImportPaths = [
+  {
+    name: '@tanstack/react-router',
+    importNames: ['Link', 'useNavigate', 'NavLink'],
+    message:
+      "Import the Link or useNavigate from utils/cl-router instead of directly from '@tanstack/react-router'",
+  },
+  {
+    name: 'react-intl',
+    importNames: ['FormattedMessage', 'injectIntl', 'useIntl'],
+    message:
+      "Import FormattedMessage, injectIntl and useIntl from 'utils/cl-intl' instead of directly from 'react-intl'",
+  },
+  {
+    name: 'history',
+    message:
+      "Import history from utils/cl-router/cl-history instead of directly from 'history'",
+  },
+  {
+    name: 'lodash',
+    message: "Import lodash functions from 'lodash-es' instead of 'lodash'",
+  },
+  {
+    name: '@testing-library/react',
+    message:
+      "Import React testing library exports from 'utils/testUtils/rtl' instead",
+  },
+  {
+    name: '@tippyjs/react',
+    message:
+      "Import Tooltip from component library instead of directly from '@tippyjs/react'",
+  },
+];
+
+const noMomentMessage =
+  'moment is being removed. Format dates with useFormatDate() in components, ' +
+  'or utils/dateFormat directly elsewhere. See app/utils/dateFormat.README.md.';
+
+const restrictedMomentPaths = [
+  { name: 'moment', message: noMomentMessage },
+  { name: 'moment-timezone', message: noMomentMessage },
+];
+
 module.exports = {
   env: {
     browser: true,
@@ -133,45 +180,7 @@ module.exports = {
     'no-multiple-empty-lines': 'off',
     'no-new-wrappers': 'error',
     'no-param-reassign': 'error',
-    'no-restricted-imports': [
-      'error',
-      {
-        paths: [
-          {
-            name: '@tanstack/react-router',
-            importNames: ['Link', 'useNavigate', 'NavLink'],
-            message:
-              "Import the Link or useNavigate from utils/cl-router instead of directly from '@tanstack/react-router'",
-          },
-          {
-            name: 'react-intl',
-            importNames: ['FormattedMessage', 'injectIntl', 'useIntl'],
-            message:
-              "Import FormattedMessage, injectIntl and useIntl from 'utils/cl-intl' instead of directly from 'react-intl'",
-          },
-          {
-            name: 'history',
-            message:
-              "Import history from utils/cl-router/cl-history instead of directly from 'history'",
-          },
-          {
-            name: 'lodash',
-            message:
-              "Import lodash functions from 'lodash-es' instead of 'lodash'",
-          },
-          {
-            name: '@testing-library/react',
-            message:
-              "Import React testing library exports from 'utils/testUtils/rtl' instead",
-          },
-          {
-            name: '@tippyjs/react',
-            message:
-              "Import Tooltip from component library instead of directly from '@tippyjs/react'",
-          },
-        ],
-      },
-    ],
+    'no-restricted-imports': ['error', { paths: restrictedImportPaths }],
     'no-trailing-spaces': 'off',
     'no-underscore-dangle': 'off',
     'no-var': 'error',
@@ -232,6 +241,32 @@ module.exports = {
     ],
     '@typescript-eslint/no-unnecessary-condition': 'error',
   },
+  overrides: [
+    {
+      // Block new moment imports everywhere except the files still waiting to
+      // be migrated. Set to 'error' rather than 'warn' on purpose: the
+      // allowlist means this cannot break existing code, and a warning would
+      // let new moment imports through CI and grow the pile we are shrinking.
+      files: ['app/**/*.ts', 'app/**/*.tsx'],
+      excludedFiles: momentAllowlist,
+      rules: {
+        'no-restricted-imports': [
+          'error',
+          { paths: [...restrictedImportPaths, ...restrictedMomentPaths] },
+        ],
+        // no-restricted-imports only sees static imports. moment's locale files
+        // are pulled in with `await import('moment/dist/locale/xx')`, so without
+        // this the whole lazy-loading path would slip past the rule.
+        'no-restricted-syntax': [
+          'error',
+          {
+            selector: 'ImportExpression[source.value=/^moment/]',
+            message: noMomentMessage,
+          },
+        ],
+      },
+    },
+  ],
   ignorePatterns: [
     '.rollup.config.cjs',
     '.eslintrc.js',

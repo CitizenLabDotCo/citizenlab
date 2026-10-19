@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
-import moment from 'moment-timezone';
+import { startOfDay } from 'date-fns';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
@@ -9,6 +9,8 @@ import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
 import TimeInput from 'components/admin/TimeSelection/TimeInput';
 
 import { useIntl } from 'utils/cl-intl';
+import { formatUtcOffset, getViewerZone } from 'utils/dateFormat';
+import { nowInZone } from 'utils/dateUtils';
 
 import messages from './messages';
 
@@ -29,22 +31,14 @@ const WhenSection = ({
   const { data: appConfiguration } = useAppConfiguration();
   const timezone =
     appConfiguration?.data.attributes.settings.core.timezone ?? '';
-  const tenantNow = timezone ? moment().tz(timezone) : moment();
-  const tenantTimeNow = new Date(
-    tenantNow.year(),
-    tenantNow.month(),
-    tenantNow.date(),
-    tenantNow.hour(),
-    tenantNow.minute()
-  );
-  const tenantTodayStart = new Date(
-    tenantNow.year(),
-    tenantNow.month(),
-    tenantNow.date()
-  );
-  const gmtOffset = timezone ? tenantNow.format('Z') : '';
-  const browserTimezone = moment.tz.guess();
-  const browserOffset = moment().tz(browserTimezone).format('Z');
+  const tenantTimeNow = nowInZone(timezone);
+  const tenantTodayStart = startOfDay(tenantTimeNow);
+  const gmtOffset = timezone
+    ? formatUtcOffset(Date.now(), { timeZone: timezone })
+    : '';
+  const browserOffset = formatUtcOffset(Date.now(), {
+    timeZone: getViewerZone(),
+  });
   const showGmtOffset = timezone && gmtOffset !== browserOffset;
   return (
     <Box mb="8px">

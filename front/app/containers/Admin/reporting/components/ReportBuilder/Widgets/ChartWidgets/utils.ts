@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { differenceInDays, parseISO } from 'date-fns';
 
 import { AgeSerie } from 'containers/Admin/dashboard/users/Charts/AgeChart/typings';
 import { GenderSerie } from 'containers/Admin/dashboard/users/Charts/GenderChart/typings';
@@ -30,7 +30,7 @@ export const getDaysInRange = (
   endAt?: string | null
 ) => {
   if (!(startAt && endAt)) return undefined;
-  return moment(endAt).diff(moment(startAt), 'days');
+  return differenceInDays(parseISO(endAt), parseISO(startAt));
 };
 
 export const toPercentage = (value: number | undefined) => {

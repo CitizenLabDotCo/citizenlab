@@ -5,6 +5,7 @@ import { Box, Title, Text } from '@citizenlab/cl2-component-library';
 import { IEventData } from 'api/events/types';
 import useAuthUser from 'api/me/useAuthUser';
 
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import EventSharingButtons from 'containers/EventsShowPage/components/EventSharingButtons';
@@ -25,11 +26,12 @@ interface Props {
 }
 
 const ConfirmationModal = ({ opened, event, onClose }: Props) => {
+  const locale = useLocale();
   const { data: user } = useAuthUser();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  const eventDateTime = getEventDateString(event);
+  const eventDateTime = getEventDateString(event, locale);
 
   return (
     <Modal

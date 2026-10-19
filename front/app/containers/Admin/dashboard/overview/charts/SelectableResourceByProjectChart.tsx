@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { format, parseISO } from 'date-fns';
 import { map, orderBy } from 'lodash-es';
-import moment from 'moment';
 import { IOption } from 'typings';
 
 import { ICommentsByProject } from 'api/comments_by_project/types';
@@ -43,10 +43,10 @@ const SelectableResourceByProjectChart = ({
   ...otherProps
 }: Props) => {
   const startAt = otherProps.startAt
-    ? moment(otherProps.startAt).local().format('YYYY-MM-DD')
+    ? format(parseISO(otherProps.startAt), 'yyyy-MM-dd')
     : null;
   const endAt = otherProps.endAt
-    ? moment(otherProps.endAt).local().format('YYYY-MM-DD')
+    ? format(parseISO(otherProps.endAt), 'yyyy-MM-dd')
     : null;
   const { data: ideasByProject } = useIdeasByProject({
     start_at: startAt,

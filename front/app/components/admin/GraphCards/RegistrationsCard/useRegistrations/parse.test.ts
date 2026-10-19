@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { parseISO } from 'date-fns';
 
 import { RegistrationsResponse } from 'api/graph_data_units/responseTypes/RegistrationsWidget';
 
@@ -20,8 +20,8 @@ describe('parseTimeSeries', () => {
 
     const output = parseTimeSeries(
       timeSeries,
-      moment('2022-09-01'),
-      moment('2022-11-01'),
+      parseISO('2022-09-01'),
+      parseISO('2022-11-01'),
       'month'
     );
 

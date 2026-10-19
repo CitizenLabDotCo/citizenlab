@@ -1,4 +1,4 @@
-import frBE from 'date-fns/locale/fr';
+import { fr as frBE } from 'date-fns/locale/fr';
 
 import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 

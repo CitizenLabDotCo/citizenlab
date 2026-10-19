@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
-import moment from 'moment-timezone';
+import { addHours, startOfHour } from 'date-fns';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IProjectData } from 'api/projects/types';
@@ -13,6 +13,11 @@ import Modal from 'components/UI/Modal';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
+import {
+  convertToTimeZoneISO,
+  getDateInTimezone,
+  nowInZone,
+} from 'utils/dateUtils';
 
 import tracks from '../tracks';
 
@@ -29,11 +34,8 @@ type Mode = 'schedule' | 'now';
 // is today, so the soonest available slot is (currentHour + 1):00. Computed
 // in tenant TZ so it lines up with what the dropdown renders. When it's
 // 23:xx, `add(1, 'hour')` naturally rolls over to tomorrow at 00:00.
-const computeDefaultDate = (tz?: string): Date => {
-  const now = tz ? moment.tz(tz) : moment();
-  const m = now.clone().minute(0).second(0).millisecond(0).add(1, 'hour');
-  return new Date(m.year(), m.month(), m.date(), m.hour(), m.minute());
-};
+const computeDefaultDate = (tz?: string): Date =>
+  addHours(startOfHour(nowInZone(tz)), 1);
 
 interface Props {
   opened: boolean;
@@ -76,14 +78,11 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
   useEffect(() => {
     if (!opened) return;
     if (project.attributes.scheduled_at && tenantTimezone) {
-      const m = moment.tz(project.attributes.scheduled_at, tenantTimezone);
-      const scheduled = new Date(
-        m.year(),
-        m.month(),
-        m.date(),
-        m.hour(),
-        m.minute()
-      );
+      // Both arguments are non-empty inside this branch, so the fallback is
+      // unreachable — it exists to keep the state typed as Date.
+      const scheduled =
+        getDateInTimezone(project.attributes.scheduled_at, tenantTimezone) ??
+        computeDefaultDate(tenantTimezone);
       setSelectedDate(scheduled);
       setSelectedTime(scheduled);
     } else {
@@ -94,18 +93,19 @@ const ScheduleLaunchModal = ({ opened, project, onClose }: Props) => {
   }, [opened, project.attributes.scheduled_at, tenantTimezone]);
 
   const buildScheduledAt = () => {
-    const dateTimeParts = {
-      year: selectedDate.getFullYear(),
-      month: selectedDate.getMonth(),
-      day: selectedDate.getDate(),
-      hour: selectedTime.getHours(),
-      minute: selectedTime.getMinutes(),
-      second: 0,
-    };
-    const scheduled = tenantTimezone
-      ? moment.tz(dateTimeParts, tenantTimezone)
-      : moment(dateTimeParts);
-    return scheduled.toISOString();
+    // The two pickers contribute the date and the time halves; together they
+    // are a wall-clock reading in the tenant's zone.
+    const picked = new Date(
+      selectedDate.getFullYear(),
+      selectedDate.getMonth(),
+      selectedDate.getDate(),
+      selectedTime.getHours(),
+      selectedTime.getMinutes(),
+      0
+    );
+    return tenantTimezone
+      ? convertToTimeZoneISO(picked, tenantTimezone)
+      : picked.toISOString();
   };
 
   const schedulePayload = () => ({

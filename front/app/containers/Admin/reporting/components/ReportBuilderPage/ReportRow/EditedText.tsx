@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, Text, Tooltip } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
+import { differenceInDays, format, parseISO } from 'date-fns';
 
 import useUserById from 'api/users/useUserById';
 
@@ -26,8 +26,8 @@ const T = ({ children }) => (
 const UpdatedOnMessage = ({ updatedAt }) => {
   const { formatMessage } = useIntl();
 
-  const updatedDatetime = moment(updatedAt).format('YYYY-MM-DD HH:mm:ss');
-  const lastUpdateDaysAgo = moment().diff(moment(updatedAt), 'days');
+  const updatedDatetime = format(parseISO(updatedAt), 'yyyy-MM-dd HH:mm:ss');
+  const lastUpdateDaysAgo = differenceInDays(new Date(), parseISO(updatedAt));
   const updatedOn = formatMessage(messages.lastUpdate, {
     days: lastUpdateDaysAgo,
   });
@@ -60,7 +60,7 @@ const UserAvatar = ({ userData }) => (
 
 const EditedText = ({ createdAt, updatedAt, userId }: Props) => {
   const { data: user } = useUserById(userId);
-  const createdOn = moment(createdAt).format('DD/MM/YYYY');
+  const createdOn = format(parseISO(createdAt), 'dd/MM/yyyy');
 
   return (
     <Box display="flex" alignItems="center">

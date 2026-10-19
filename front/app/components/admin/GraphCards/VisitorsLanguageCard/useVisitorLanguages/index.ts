@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 import { useVisitorsLanguagesLive } from 'api/graph_data_units';
 
 import { useIntl } from 'utils/cl-intl';
@@ -15,8 +17,8 @@ export default function useVisitorsData({
 
   const { data: analytics } = useVisitorsLanguagesLive({
     project_id: projectId,
-    start_at: startAtMoment?.local().format('YYYY-MM-DD'),
-    end_at: endAtMoment?.local().format('YYYY-MM-DD'),
+    start_at: startAtMoment ? format(startAtMoment, 'yyyy-MM-dd') : undefined,
+    end_at: endAtMoment ? format(endAtMoment, 'yyyy-MM-dd') : undefined,
   });
 
   const translations = getTranslations(formatMessage);

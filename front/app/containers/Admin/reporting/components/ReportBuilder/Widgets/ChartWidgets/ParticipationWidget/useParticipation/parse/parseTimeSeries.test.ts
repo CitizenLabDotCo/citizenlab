@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { parseISO } from 'date-fns';
 
 import { ParticipationResponse } from 'api/graph_data_units/responseTypes/ParticipationWidget';
 
@@ -79,7 +79,7 @@ describe('parseCombinedTimeSeries', () => {
   it('works with provided start at', () => {
     const combinedTimeSeries = parseCombinedTimeSeries(
       responseAttributes,
-      moment('2024-03-05'),
+      parseISO('2024-03-05'),
       null,
       'month'
     );

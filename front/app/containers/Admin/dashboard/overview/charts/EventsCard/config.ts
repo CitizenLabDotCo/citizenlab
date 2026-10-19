@@ -1,4 +1,4 @@
-import moment, { Moment } from 'moment';
+import { setYear } from 'date-fns';
 
 import { Query, QuerySchema } from 'api/analytics/types';
 
@@ -74,8 +74,8 @@ export const eventsConfig: StatCardConfig = {
     endAtMoment,
   }: StatCardProps): Query => {
     const queryBase = (
-      startMoment: Moment | null | undefined,
-      endMoment: Moment | null,
+      startMoment: Date | null | undefined,
+      endMoment: Date | null,
       dateType: 'start' | 'end' | 'created'
     ): QuerySchema => {
       const querySchema: QuerySchema = {
@@ -102,9 +102,9 @@ export const eventsConfig: StatCardConfig = {
       'created'
     );
 
-    const todayMoment = moment();
-    const wayPastMoment = moment().set('year', 2010);
-    const wayForwardMoment = moment().set('year', 2030);
+    const todayMoment = new Date();
+    const wayPastMoment = setYear(new Date(), 2010);
+    const wayForwardMoment = setYear(new Date(), 2030);
 
     const queryUpcoming: QuerySchema = queryBase(
       todayMoment,

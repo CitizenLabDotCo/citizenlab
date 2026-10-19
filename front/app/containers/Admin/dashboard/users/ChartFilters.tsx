@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import { Moment } from 'moment';
 import { IOption } from 'typings';
 
 import { useIntl } from 'utils/cl-intl';
@@ -11,12 +10,12 @@ import TimeControl from '../components/TimeControl';
 import messages from '../messages';
 
 interface Props {
-  startAtMoment: Moment | null | undefined;
-  endAtMoment: Moment | null;
+  startAtMoment: Date | null | undefined;
+  endAtMoment: Date | null;
   currentGroupFilter?: string;
   onChangeTimeRange: (
-    startAtMoment: Moment | null,
-    endAtMoment: Moment | null
+    startAtMoment: Date | null,
+    endAtMoment: Date | null
   ) => void;
   onGroupFilter: (filter: IOption) => void;
 }

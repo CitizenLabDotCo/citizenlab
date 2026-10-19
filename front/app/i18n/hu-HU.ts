@@ -1,4 +1,4 @@
-import hu from 'date-fns/locale/hu';
+import { hu } from 'date-fns/locale/hu';
 
 import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 

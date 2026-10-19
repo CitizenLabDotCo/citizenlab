@@ -1,0 +1,146 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`GraphCards query builders — baseline getComparedTimeRange builds the preceding window for 2024-02-01 → 2024-02-29 1`] = `
+{
+  "compare_end_at": "2024-01-31",
+  "compare_start_at": "2024-01-03",
+}
+`;
+
+exports[`GraphCards query builders — baseline getComparedTimeRange builds the preceding window for 2025-12-28 → 2026-01-05 1`] = `
+{
+  "compare_end_at": "2025-12-27",
+  "compare_start_at": "2025-12-19",
+}
+`;
+
+exports[`GraphCards query builders — baseline getComparedTimeRange builds the preceding window for 2026-02-01 → 2026-02-28 1`] = `
+{
+  "compare_end_at": "2026-01-31",
+  "compare_start_at": "2026-01-04",
+}
+`;
+
+exports[`GraphCards query builders — baseline getComparedTimeRange builds the preceding window for 2026-03-01 → 2026-03-31 1`] = `
+{
+  "compare_end_at": "2026-02-28",
+  "compare_start_at": "2026-01-29",
+}
+`;
+
+exports[`GraphCards query builders — baseline getComparedTimeRange builds the preceding window for 2026-03-22 → 2026-03-22 1`] = `
+{
+  "compare_end_at": "2026-03-21",
+  "compare_start_at": "2026-03-21",
+}
+`;
+
+exports[`GraphCards query builders — baseline getComparedTimeRange builds the preceding window for 2026-03-25 → 2026-04-01 1`] = `
+{
+  "compare_end_at": "2026-03-24",
+  "compare_start_at": "2026-03-17",
+}
+`;
+
+exports[`GraphCards query builders — baseline getComparedTimeRange builds the preceding window for 2026-03-25 → 2026-04-02 1`] = `
+{
+  "compare_end_at": "2026-03-24",
+  "compare_start_at": "2026-03-16",
+}
+`;
+
+exports[`GraphCards query builders — baseline getComparedTimeRange builds the preceding window for 2026-10-22 → 2026-10-28 1`] = `
+{
+  "compare_end_at": "2026-10-21",
+  "compare_start_at": "2026-10-15",
+}
+`;
+
+exports[`GraphCards query builders — baseline getDateFilter builds the filter for 2024-02-01 → 2024-02-29 1`] = `
+{
+  "dimension_date_created.date": {
+    "from": "2024-02-01",
+    "to": "2024-02-29",
+  },
+}
+`;
+
+exports[`GraphCards query builders — baseline getDateFilter builds the filter for 2025-12-28 → 2026-01-05 1`] = `
+{
+  "dimension_date_created.date": {
+    "from": "2025-12-28",
+    "to": "2026-01-05",
+  },
+}
+`;
+
+exports[`GraphCards query builders — baseline getDateFilter builds the filter for 2026-02-01 → 2026-02-28 1`] = `
+{
+  "dimension_date_created.date": {
+    "from": "2026-02-01",
+    "to": "2026-02-28",
+  },
+}
+`;
+
+exports[`GraphCards query builders — baseline getDateFilter builds the filter for 2026-03-01 → 2026-03-31 1`] = `
+{
+  "dimension_date_created.date": {
+    "from": "2026-03-01",
+    "to": "2026-03-31",
+  },
+}
+`;
+
+exports[`GraphCards query builders — baseline getDateFilter builds the filter for 2026-03-22 → 2026-03-22 1`] = `
+{
+  "dimension_date_created.date": {
+    "from": "2026-03-22",
+    "to": "2026-03-22",
+  },
+}
+`;
+
+exports[`GraphCards query builders — baseline getDateFilter builds the filter for 2026-03-25 → 2026-04-01 1`] = `
+{
+  "dimension_date_created.date": {
+    "from": "2026-03-25",
+    "to": "2026-04-01",
+  },
+}
+`;
+
+exports[`GraphCards query builders — baseline getDateFilter builds the filter for 2026-03-25 → 2026-04-02 1`] = `
+{
+  "dimension_date_created.date": {
+    "from": "2026-03-25",
+    "to": "2026-04-02",
+  },
+}
+`;
+
+exports[`GraphCards query builders — baseline getDateFilter builds the filter for 2026-10-22 → 2026-10-28 1`] = `
+{
+  "dimension_date_created.date": {
+    "from": "2026-10-22",
+    "to": "2026-10-28",
+  },
+}
+`;
+
+exports[`GraphCards query builders — baseline getDateFilter omits missing bounds 1`] = `
+{
+  "both": {},
+  "endOnly": {
+    "f.date": {
+      "to": "2026-03-22",
+    },
+  },
+  "nulls": {},
+  "startOnly": {
+    "f.date": {
+      "from": "2026-03-22",
+    },
+  },
+}
+`;

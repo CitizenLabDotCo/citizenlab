@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 
 import { colors, Box, Text } from '@citizenlab/cl2-component-library';
-import moment from 'moment-timezone';
 import 'react-day-picker/style.css';
 import { transparentize } from 'polished';
 import { DayPicker, PropsBase } from 'react-day-picker';
@@ -15,6 +14,7 @@ import TimeInput from 'components/admin/TimeSelection/TimeInput';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
+import { formatUtcOffset } from 'utils/dateFormat';
 import { userTimezone } from 'utils/dateUtils';
 
 import { getLocale } from '../../_shared/locales';
@@ -231,7 +231,7 @@ const Calendar = ({
 }: Props) => {
   const { data: tenant } = useAppConfiguration();
   const timeZone = tenant?.data.attributes.settings.core.timezone;
-  const gmtOffset = timeZone ? moment().tz(timeZone).format('Z') : '';
+  const gmtOffset = timeZone ? formatUtcOffset(Date.now(), { timeZone }) : '';
 
   const { formatMessage } = useIntl();
 

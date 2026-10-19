@@ -1,7 +1,7 @@
 import React from 'react';
 
+import { format, parseISO } from 'date-fns';
 import { orderBy } from 'lodash-es';
-import moment from 'moment';
 import { WrappedComponentProps } from 'react-intl';
 
 import { IUsersByCustomField } from 'api/users_by_custom_field/types';
@@ -39,8 +39,8 @@ const AreaChart = ({
   customFieldId,
 }: Props & WrappedComponentProps & InjectedLocalized) => {
   const { data: usersByDomicile } = useUsersByCustomField({
-    start_at: startAt ? moment(startAt).local().format('YYYY-MM-DD') : null,
-    end_at: endAt ? moment(endAt).local().format('YYYY-MM-DD') : null,
+    start_at: startAt ? format(parseISO(startAt), 'yyyy-MM-dd') : null,
+    end_at: endAt ? format(parseISO(endAt), 'yyyy-MM-dd') : null,
     group: currentGroupFilter,
     id: customFieldId,
   });

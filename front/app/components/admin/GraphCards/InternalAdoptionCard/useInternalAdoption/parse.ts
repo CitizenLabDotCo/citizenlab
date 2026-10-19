@@ -1,4 +1,4 @@
-import moment, { Moment } from 'moment';
+import { format, parseISO } from 'date-fns';
 
 import {
   InternalAdoptionResponse,
@@ -14,15 +14,15 @@ import { Stats, CombinedTimeSeriesRow } from '../typings';
 
 import { Translations } from './translations';
 
-const getEmptyRow = (date: Moment): CombinedTimeSeriesRow => ({
-  date: date.format('YYYY-MM-DD'),
+const getEmptyRow = (date: Date): CombinedTimeSeriesRow => ({
+  date: format(date, 'yyyy-MM-dd'),
   activeAdmins: 0,
   activeModerators: 0,
   totalActive: 0,
 });
 
 const parseRow = (
-  date: Moment,
+  date: Date,
   row?: TimeSeriesResponseRow
 ): CombinedTimeSeriesRow => {
   if (!row) return getEmptyRow(date);
@@ -31,7 +31,7 @@ const parseRow = (
   const activeModerators = row.active_moderators;
 
   return {
-    date: date.format('YYYY-MM-DD'),
+    date: format(date, 'yyyy-MM-dd'),
     activeAdmins,
     activeModerators,
     totalActive: activeAdmins + activeModerators,
@@ -39,15 +39,15 @@ const parseRow = (
 };
 
 const getDate = (row: TimeSeriesResponseRow) => {
-  return moment(row.date_group);
+  return parseISO(row.date_group);
 };
 
 const _parseTimeSeries = timeSeriesParser(getDate, parseRow);
 
 export const parseTimeSeries = (
   attributes: InternalAdoptionResponse['data']['attributes'],
-  startAtMoment: Moment | null,
-  endAtMoment: Moment | null,
+  startAtMoment: Date | null,
+  endAtMoment: Date | null,
   resolution: IResolution
 ): CombinedTimeSeriesRow[] => {
   const { timeseries } = attributes;

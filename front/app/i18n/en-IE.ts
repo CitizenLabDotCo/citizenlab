@@ -1,4 +1,4 @@
-import enIE from 'date-fns/locale/en-IE';
+import { enIE } from 'date-fns/locale/en-IE';
 
 import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 

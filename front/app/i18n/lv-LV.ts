@@ -1,4 +1,4 @@
-import lv from 'date-fns/locale/lv';
+import { lv } from 'date-fns/locale/lv';
 
 import { addLocale } from 'components/admin/DatePickers/_shared/locales';
 

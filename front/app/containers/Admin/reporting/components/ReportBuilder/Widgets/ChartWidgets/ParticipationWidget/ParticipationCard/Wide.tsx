@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import moment from 'moment';
+import { parseISO } from 'date-fns';
 
 import { ParticipationType } from 'api/graph_data_units/requestTypes';
 
@@ -113,8 +113,8 @@ const Wide = ({
       >
         <Chart
           timeSeries={timeSeries}
-          startAtMoment={startAt ? moment(startAt) : null}
-          endAtMoment={endAt ? moment(endAt) : null}
+          startAtMoment={startAt ? parseISO(startAt) : null}
+          endAtMoment={endAt ? parseISO(endAt) : null}
           resolution={currentResolution}
           yaxis={{
             orientation: 'right',

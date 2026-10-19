@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 
-import moment from 'moment';
+import { parseISO } from 'date-fns';
 
 import { useReactionsByTime as useReactionsByTimeData } from 'api/graph_data_units';
 
@@ -33,8 +33,8 @@ export default function useReactionsByTime({
       analytics?.data
         ? parseTimeSeries(
             analytics.data.attributes[0],
-            startAt ? moment(startAt) : null,
-            endAt ? moment(endAt) : null,
+            startAt ? parseISO(startAt) : null,
+            endAt ? parseISO(endAt) : null,
             currentResolution,
             analytics.data.attributes[1]
           )

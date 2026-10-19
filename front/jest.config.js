@@ -32,6 +32,7 @@ module.exports = {
       },
     ],
   },
+  globalSetup: '<rootDir>/internals/jest/globalSetup.js',
   setupFilesAfterEnv: [
     '<rootDir>/internals/jest/setup.js',
     '@testing-library/jest-dom',
