@@ -1,13 +1,15 @@
-import { act, renderHook, waitFor } from 'utils/testUtils/rtl';
+import { act, renderHook } from 'utils/testUtils/rtl';
 
-import useFileUploads from './useFileUploads';
+import useFilesDraft from './useFilesDraft';
 
 const mockAddFile = jest.fn();
 const mockDeleteFile = jest.fn();
 const mockTrackFileUpload = jest.fn();
 
 jest.mock('api/files/useAddFile', () => () => ({ mutateAsync: mockAddFile }));
-jest.mock('api/files/useDeleteFile', () => () => ({ mutate: mockDeleteFile }));
+jest.mock('api/files/useDeleteFile', () => () => ({
+  mutateAsync: mockDeleteFile,
+}));
 jest.mock('api/me/useAuthUser', () => () => ({ data: null }));
 jest.mock('utils/fileUtils', () => ({
   getBase64FromFile: () => Promise.resolve('base64'),
@@ -17,70 +19,49 @@ jest.mock('containers/Admin/projects/_shared/fileUploads/utils', () => ({
   trackFileUpload: (...args: unknown[]) => mockTrackFileUpload(...args),
 }));
 
-const makeFile = (name: string, size = 10) => {
-  const file = new File(['x'], name);
-  Object.defineProperty(file, 'size', { value: size });
-  return file;
-};
+const makeFile = (name: string) => new File(['x'], name);
 
-describe('useFileUploads', () => {
+describe('useFilesDraft', () => {
   beforeEach(() => {
     mockAddFile.mockReset();
     mockDeleteFile.mockReset();
     mockTrackFileUpload.mockReset();
     mockAddFile.mockResolvedValue({ data: { id: 'file-id' } });
+    mockDeleteFile.mockResolvedValue(undefined);
   });
 
-  it('queues dropped files and marks files over 50 MB as too large', () => {
-    const { result } = renderHook(() => useFileUploads('project'));
+  it('keeps added and removed files in the draft until saved', () => {
+    const { result } = renderHook(() => useFilesDraft('project'));
 
     act(() =>
-      result.current.addFiles([
-        makeFile('small.pdf'),
-        makeFile('big.mp4', 60 * 1024 * 1024),
-      ])
+      result.current.addFiles([{ file: makeFile('report.pdf') }], false)
     );
+    act(() => result.current.removeFile('old-file'));
 
-    expect(result.current.uploads.map(({ status }) => status)).toEqual([
-      'queued',
-      'too_large',
-    ]);
+    expect(result.current.dirty).toBe(true);
+    expect(result.current.uploads).toHaveLength(1);
+    expect(result.current.deletedIds).toEqual(['old-file']);
     expect(mockAddFile).not.toHaveBeenCalled();
+    expect(mockDeleteFile).not.toHaveBeenCalled();
   });
 
-  it('rejects a drop that would take the list past 35 files', () => {
-    const { result } = renderHook(() => useFileUploads('project'));
+  it('uploads and deletes on save, then clears the draft', async () => {
+    const { result } = renderHook(() => useFilesDraft('project'));
 
     act(() =>
       result.current.addFiles(
-        Array.from({ length: 30 }, (_, i) => makeFile(`${i}.pdf`))
+        [{ file: makeFile('report.pdf'), category: 'report' }],
+        true
       )
     );
-    act(() =>
-      result.current.addFiles(
-        Array.from({ length: 6 }, (_, i) => makeFile(`more-${i}.pdf`))
-      )
-    );
+    act(() => result.current.removeFile('old-file'));
 
-    expect(result.current.uploads).toHaveLength(30);
-    expect(result.current.tooManyFiles).toBe(true);
-  });
-
-  it('uploads queued files once with their category and the AI setting', async () => {
-    const { result } = renderHook(() => useFileUploads('project'));
-
-    act(() => result.current.addFiles([makeFile('report.pdf')]));
-    act(() => result.current.setCategory(0, 'report'));
-    act(() => result.current.setAllowAiProcessing(true));
-    act(() => {
-      result.current.uploadQueued();
-      result.current.uploadQueued();
+    let saved = false;
+    await act(async () => {
+      saved = await result.current.save();
     });
 
-    await waitFor(() =>
-      expect(result.current.uploads[0].status).toBe('uploaded')
-    );
-    expect(mockAddFile).toHaveBeenCalledTimes(1);
+    expect(saved).toBe(true);
     expect(mockAddFile).toHaveBeenCalledWith({
       content: 'base64',
       project: 'project',
@@ -88,38 +69,51 @@ describe('useFileUploads', () => {
       category: 'report',
       ai_processing_allowed: true,
     });
+    expect(mockDeleteFile).toHaveBeenCalledWith('old-file');
     expect(mockTrackFileUpload).toHaveBeenCalledTimes(1);
+    expect(result.current.dirty).toBe(false);
   });
 
-  it('retries a failed upload with the AI setting it started with', async () => {
-    mockAddFile.mockRejectedValueOnce(new Error('failed'));
-    const { result } = renderHook(() => useFileUploads('project'));
+  it('keeps only what failed, so saving again retries just that', async () => {
+    mockAddFile
+      .mockResolvedValueOnce({ data: { id: 'a' } })
+      .mockRejectedValueOnce(new Error('failed'));
+    const { result } = renderHook(() => useFilesDraft('project'));
 
-    act(() => result.current.addFiles([makeFile('report.pdf')]));
-    act(() => result.current.uploadQueued());
-    await waitFor(() => expect(result.current.uploads[0].status).toBe('error'));
+    act(() =>
+      result.current.addFiles(
+        [{ file: makeFile('a.pdf') }, { file: makeFile('b.pdf') }],
+        false
+      )
+    );
 
-    act(() => result.current.setAllowAiProcessing(true));
-    await act(() => result.current.retry(result.current.uploads[0]));
+    let saved = true;
+    await act(async () => {
+      saved = await result.current.save();
+    });
 
-    expect(result.current.uploads[0].status).toBe('uploaded');
+    expect(saved).toBe(false);
+    expect(
+      result.current.uploads.map(({ file, status }) => [file.name, status])
+    ).toEqual([['b.pdf', 'error']]);
+
+    await act(async () => {
+      saved = await result.current.save();
+    });
+
+    expect(saved).toBe(true);
+    expect(mockAddFile).toHaveBeenCalledTimes(3);
     expect(mockAddFile).toHaveBeenLastCalledWith(
-      expect.objectContaining({ ai_processing_allowed: false })
+      expect.objectContaining({ name: 'b.pdf' })
     );
   });
 
-  it('deletes an uploaded file when it is removed', async () => {
-    const { result } = renderHook(() => useFileUploads('project'));
+  it('drops an unsaved file when it is removed', () => {
+    const { result } = renderHook(() => useFilesDraft('project'));
 
-    act(() => result.current.addFiles([makeFile('report.pdf')]));
-    act(() => result.current.uploadQueued());
-    await waitFor(() =>
-      expect(result.current.uploads[0].status).toBe('uploaded')
-    );
+    act(() => result.current.addFiles([{ file: makeFile('a.pdf') }], false));
+    act(() => result.current.removeUpload(result.current.uploads[0].key));
 
-    act(() => result.current.remove(result.current.uploads[0]));
-
-    expect(mockDeleteFile).toHaveBeenCalledWith('file-id');
-    expect(result.current.uploads).toHaveLength(0);
+    expect(result.current.dirty).toBe(false);
   });
 });

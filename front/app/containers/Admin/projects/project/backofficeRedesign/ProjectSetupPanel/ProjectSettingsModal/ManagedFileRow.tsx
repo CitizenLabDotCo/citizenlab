@@ -9,7 +9,6 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { IFileData } from 'api/files/types';
-import useDeleteFile from 'api/files/useDeleteFile';
 
 import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
@@ -26,11 +25,11 @@ import { getFileIcon } from './fileUtils';
 
 interface Props {
   file: IFileData;
+  onDelete: () => void;
 }
 
-const ManagedFileRow = ({ file }: Props) => {
+const ManagedFileRow = ({ file, onDelete }: Props) => {
   const { formatMessage, formatDate } = useIntl();
-  const { mutate: deleteFile, isPending: isDeleting } = useDeleteFile();
   const [deleteModalOpened, setDeleteModalOpened] = useState(false);
 
   const { name, mime_type, created_at, category, content } = file.attributes;
@@ -120,12 +119,10 @@ const ManagedFileRow = ({ file }: Props) => {
             <Button
               buttonStyle="bo-delete"
               width="auto"
-              processing={isDeleting}
-              onClick={() =>
-                deleteFile(file.id, {
-                  onSuccess: () => setDeleteModalOpened(false),
-                })
-              }
+              onClick={() => {
+                setDeleteModalOpened(false);
+                onDelete();
+              }}
             >
               {formatMessage(filesMessages.deleteFile)}
             </Button>

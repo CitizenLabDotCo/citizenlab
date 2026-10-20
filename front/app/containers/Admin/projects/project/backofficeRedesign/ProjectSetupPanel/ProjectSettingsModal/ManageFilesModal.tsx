@@ -16,12 +16,15 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import { FILE_MODAL_HEIGHT } from './FileRow';
 import ManagedFileRow from './ManagedFileRow';
+import UploadingFileRow from './UploadingFileRow';
 import useFilesCount from './useFilesCount';
+import { FilesDraft } from './useFilesDraft';
 
 const PAGE_SIZE = 20;
 
 interface Props {
   projectId: string;
+  draft: FilesDraft;
   opened: boolean;
   onClose: () => void;
   onAddFiles: () => void;
@@ -29,6 +32,7 @@ interface Props {
 
 const ManageFilesModal = ({
   projectId,
+  draft,
   opened,
   onClose,
   onAddFiles,
@@ -43,7 +47,17 @@ const ManageFilesModal = ({
     pageNumber,
     pageSize: PAGE_SIZE,
   });
-  const count = useFilesCount(projectId, search) ?? 0;
+  const savedCount = useFilesCount(projectId, search) ?? 0;
+
+  // Files not saved yet only exist here, so the server search can't find them.
+  const newFiles = search ? [] : draft.uploads;
+  const savedFiles = (files?.data ?? []).filter(
+    ({ id }) => !draft.deletedIds.includes(id)
+  );
+  const removedCount = search
+    ? (files?.data.length ?? 0) - savedFiles.length
+    : draft.deletedIds.length;
+  const count = savedCount + newFiles.length - removedCount;
 
   const lastPage = getPageNumberFromUrl(files?.links.last ?? '') ?? 1;
   // Deleting the last file of the last page leaves us on a page that no
@@ -85,8 +99,22 @@ const ManageFilesModal = ({
             : formatMessage(filesMessages.noFilesFound)}
         </Text>
         <Box mx="-8px">
-          {files?.data.map((file) => (
-            <ManagedFileRow key={file.id} file={file} />
+          {newFiles.map(({ key, file, status, category }) => (
+            <UploadingFileRow
+              key={key}
+              file={file}
+              status={status}
+              category={category}
+              onCategoryChange={(category) => draft.setCategory(key, category)}
+              onRemove={() => draft.removeUpload(key)}
+            />
+          ))}
+          {savedFiles.map((file) => (
+            <ManagedFileRow
+              key={file.id}
+              file={file}
+              onDelete={() => draft.removeFile(file.id)}
+            />
           ))}
         </Box>
         {lastPage > 1 && (

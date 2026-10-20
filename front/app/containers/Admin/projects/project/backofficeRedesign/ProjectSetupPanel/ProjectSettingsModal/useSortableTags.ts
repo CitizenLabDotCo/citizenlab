@@ -1,16 +1,17 @@
 import { useState } from 'react';
 
 import { IInputTopicData } from 'api/input_topics/types';
-import useMoveInputTopic from 'api/input_topics/useMoveInputTopic';
 
-const useSortableTags = (projectId: string, topics: IInputTopicData[]) => {
-  const { mutate: moveInputTopic } = useMoveInputTopic();
+const useSortableTags = (
+  topics: IInputTopicData[],
+  onReorder: (ordered: IInputTopicData[]) => void
+) => {
   const [dragState, setDragState] = useState<{
     base: IInputTopicData[];
     order: IInputTopicData[];
   } | null>(null);
 
-  // A new `topics` array means the server answered, so the draft is stale.
+  // A new `topics` array means the list changed, so the drag preview is stale.
   const ordered = dragState?.base === topics ? dragState.order : topics;
 
   const moveRow = (fromIndex: number, toIndex: number) => {
@@ -24,20 +25,8 @@ const useSortableTags = (projectId: string, topics: IInputTopicData[]) => {
     const newIndex = ordered.findIndex(({ id }) => id === topicId);
     const oldIndex = topics.findIndex(({ id }) => id === topicId);
 
-    if (newIndex === oldIndex) {
-      setDragState(null);
-      return;
-    }
-
-    const previous = ordered.at(newIndex - 1);
-    const next = ordered.at(newIndex + 1);
-
-    moveInputTopic(
-      newIndex > 0 && previous
-        ? { projectId, id: topicId, position: 'right', target_id: previous.id }
-        : { projectId, id: topicId, position: 'left', target_id: next?.id },
-      { onError: () => setDragState(null) }
-    );
+    if (newIndex !== oldIndex) onReorder(ordered);
+    setDragState(null);
   };
 
   const cancelDrag = () => setDragState(null);

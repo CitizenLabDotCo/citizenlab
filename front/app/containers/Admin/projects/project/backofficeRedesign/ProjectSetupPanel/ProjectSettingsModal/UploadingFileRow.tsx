@@ -17,7 +17,6 @@ import messages from 'containers/Admin/projects/project/backofficeRedesign/messa
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
 
 import { useIntl } from 'utils/cl-intl';
-import { returnFileSize } from 'utils/fileUtils';
 
 import FileRow, { FILE_ROW_ACTION_CLASS } from './FileRow';
 import { getFileIcon } from './fileUtils';
@@ -27,7 +26,6 @@ interface Props {
   status: UploadStatus;
   category?: FileCategory;
   onCategoryChange: (category: FileCategory) => void;
-  onRetry: () => void;
   onRemove: () => void;
 }
 
@@ -36,7 +34,6 @@ const UploadingFileRow = ({
   status,
   category,
   onCategoryChange,
-  onRetry,
   onRemove,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -89,26 +86,10 @@ const UploadingFileRow = ({
             <Spinner size="14px" />
           </>
         )}
-        {status === 'uploaded' && (
-          <Text variant="boMicro" color="coolGrey500" m="0px">
-            {returnFileSize(file.size)}
-          </Text>
-        )}
         {status === 'error' && (
-          <>
-            <Text variant="boMicro" color="red600" m="0px">
-              {formatMessage(messages.fileUploadFailed)}
-            </Text>
-            <Button
-              buttonStyle="bo-text"
-              icon="refresh"
-              width="28px"
-              height="28px"
-              padding="0"
-              ariaLabel={formatMessage(filesMessages.retryUpload)}
-              onClick={onRetry}
-            />
-          </>
+          <Text variant="boMicro" color="red600" m="0px">
+            {formatMessage(messages.fileUploadFailed)}
+          </Text>
         )}
       </Box>
       <Box flexShrink={0} w="28px" className={FILE_ROW_ACTION_CLASS}>

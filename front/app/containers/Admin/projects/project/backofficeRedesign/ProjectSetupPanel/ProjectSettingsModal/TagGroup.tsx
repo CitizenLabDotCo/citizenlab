@@ -28,7 +28,6 @@ import TagActions from './TagActions';
 import useSortableTags from './useSortableTags';
 
 interface Props {
-  projectId: string;
   topic: IInputTopicData;
   allTopics: IInputTopicData[];
   drag: SortableTagRenderProps;
@@ -38,10 +37,10 @@ interface Props {
   onAddSubtopic: () => void;
   onEdit: (topic: IInputTopicData) => void;
   onDelete: (topic: IInputTopicData) => void;
+  onReorder: (subtopics: IInputTopicData[]) => void;
 }
 
 const TagGroup = ({
-  projectId,
   topic,
   allTopics,
   drag,
@@ -51,6 +50,7 @@ const TagGroup = ({
   onAddSubtopic,
   onEdit,
   onDelete,
+  onReorder,
 }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
@@ -67,8 +67,8 @@ const TagGroup = ({
     [allTopics, topic.id]
   );
   const { ordered, moveRow, dropRow, cancelDrag } = useSortableTags(
-    projectId,
-    subtopics
+    subtopics,
+    onReorder
   );
 
   const collapsible = canAddSubtopics || subtopics.length > 0;

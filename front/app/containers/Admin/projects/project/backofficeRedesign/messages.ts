@@ -141,10 +141,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.fileActions',
     defaultMessage: 'Actions for {fileName}',
   },
-  filesStillUploading: {
-    id: 'app.containers.Admin.projects.project.filesStillUploading',
-    defaultMessage: 'Files are still uploading',
-  },
   messagingSection: {
     id: 'app.containers.Admin.projects.project.messagingSection',
     defaultMessage: 'Messaging',
@@ -382,6 +378,10 @@ export default defineMessages({
   settingsSave: {
     id: 'app.containers.Admin.projects.project.settingsSave',
     defaultMessage: 'Save',
+  },
+  settingsSaveFailed: {
+    id: 'app.containers.Admin.projects.project.settingsSaveFailed',
+    defaultMessage: "Some changes couldn't be saved. Click Save to try again.",
   },
   settingsProjectGroup: {
     id: 'app.containers.Admin.projects.project.settingsProjectGroup',

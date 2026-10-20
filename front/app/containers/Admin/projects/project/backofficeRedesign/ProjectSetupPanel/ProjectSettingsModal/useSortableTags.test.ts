@@ -4,12 +4,6 @@ import { act, renderHook } from 'utils/testUtils/rtl';
 
 import useSortableTags from './useSortableTags';
 
-const mockMoveInputTopic = jest.fn();
-
-jest.mock('api/input_topics/useMoveInputTopic', () => () => ({
-  mutate: mockMoveInputTopic,
-}));
-
 const makeTopic = (id: string): IInputTopicData => ({
   id,
   type: 'input_topic',
@@ -34,86 +28,59 @@ const topics = ['_1', '_2', '_3'].map(makeTopic);
 const ids = (list: IInputTopicData[]) => list.map(({ id }) => id);
 
 describe('useSortableTags', () => {
-  beforeEach(() => {
-    mockMoveInputTopic.mockReset();
-  });
-
   it('reorders the tags locally while dragging', () => {
-    const { result } = renderHook(() => useSortableTags('project', topics));
+    const onReorder = jest.fn();
+    const { result } = renderHook(() => useSortableTags(topics, onReorder));
 
     act(() => result.current.moveRow(0, 2));
 
     expect(ids(result.current.ordered)).toEqual(['_2', '_3', '_1']);
-    expect(mockMoveInputTopic).not.toHaveBeenCalled();
+    expect(onReorder).not.toHaveBeenCalled();
   });
 
-  it('places a tag to the right of its new previous sibling', () => {
-    const { result } = renderHook(() => useSortableTags('project', topics));
+  it('hands the new order over on drop', () => {
+    const onReorder = jest.fn();
+    const { result } = renderHook(() => useSortableTags(topics, onReorder));
 
     act(() => result.current.moveRow(0, 1));
     act(() => result.current.dropRow('_1'));
 
-    expect(mockMoveInputTopic).toHaveBeenCalledWith(
-      { projectId: 'project', id: '_1', position: 'right', target_id: '_2' },
-      expect.anything()
-    );
+    expect(ids(onReorder.mock.calls[0][0])).toEqual(['_2', '_1', '_3']);
   });
 
-  it('places a tag moved to the top to the left of its new next sibling', () => {
-    const { result } = renderHook(() => useSortableTags('project', topics));
-
-    act(() => result.current.moveRow(2, 0));
-    act(() => result.current.dropRow('_3'));
-
-    expect(mockMoveInputTopic).toHaveBeenCalledWith(
-      { projectId: 'project', id: '_3', position: 'left', target_id: '_1' },
-      expect.anything()
-    );
-  });
-
-  it('does not save when the tag ends up where it started', () => {
-    const { result } = renderHook(() => useSortableTags('project', topics));
+  it('does not report a drop where the tag ends up where it started', () => {
+    const onReorder = jest.fn();
+    const { result } = renderHook(() => useSortableTags(topics, onReorder));
 
     act(() => result.current.moveRow(1, 0));
     act(() => result.current.moveRow(0, 1));
     act(() => result.current.dropRow('_2'));
 
-    expect(mockMoveInputTopic).not.toHaveBeenCalled();
-    expect(ids(result.current.ordered)).toEqual(['_1', '_2', '_3']);
-  });
-
-  it('restores the original order when saving fails', () => {
-    mockMoveInputTopic.mockImplementation((_params, { onError }) => onError());
-    const { result } = renderHook(() => useSortableTags('project', topics));
-
-    act(() => result.current.moveRow(0, 2));
-    act(() => result.current.dropRow('_1'));
-
+    expect(onReorder).not.toHaveBeenCalled();
     expect(ids(result.current.ordered)).toEqual(['_1', '_2', '_3']);
   });
 
   it('restores the original order when the drag is cancelled', () => {
-    const { result } = renderHook(() => useSortableTags('project', topics));
+    const onReorder = jest.fn();
+    const { result } = renderHook(() => useSortableTags(topics, onReorder));
 
     act(() => result.current.moveRow(0, 2));
     act(() => result.current.cancelDrag());
 
-    expect(mockMoveInputTopic).not.toHaveBeenCalled();
+    expect(onReorder).not.toHaveBeenCalled();
     expect(ids(result.current.ordered)).toEqual(['_1', '_2', '_3']);
   });
 
-  it('shows the refetched tags once they arrive', () => {
+  it('shows the new list once it changes', () => {
     const { result, rerender } = renderHook(
-      ({ list }) => useSortableTags('project', list),
+      ({ list }) => useSortableTags(list, jest.fn()),
       { initialProps: { list: topics } }
     );
 
     act(() => result.current.moveRow(0, 2));
-    act(() => result.current.dropRow('_1'));
-    expect(ids(result.current.ordered)).toEqual(['_2', '_3', '_1']);
 
-    const refetched = ['_3', '_2', '_1'].map(makeTopic);
-    rerender({ list: refetched });
+    const reordered = ['_3', '_2', '_1'].map(makeTopic);
+    rerender({ list: reordered });
 
     expect(ids(result.current.ordered)).toEqual(['_3', '_2', '_1']);
   });

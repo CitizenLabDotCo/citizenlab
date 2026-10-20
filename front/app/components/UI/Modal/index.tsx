@@ -297,7 +297,6 @@ interface BaseProps {
   fixedHeight?: boolean;
   fillContent?: boolean;
   width?: number | string;
-  /** A set height, so the modal keeps its size when its content changes. */
   height?: string;
   close: () => void;
   className?: string;

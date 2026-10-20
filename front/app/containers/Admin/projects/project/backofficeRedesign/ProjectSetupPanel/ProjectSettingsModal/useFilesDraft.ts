@@ -6,11 +6,7 @@ import useDeleteFile from 'api/files/useDeleteFile';
 import useAuthUser from 'api/me/useAuthUser';
 
 import { UploadStatus } from 'containers/Admin/projects/_shared/fileUploads/types';
-import {
-  MAX_FILES,
-  MAX_FILE_SIZE,
-  trackFileUpload,
-} from 'containers/Admin/projects/_shared/fileUploads/utils';
+import { trackFileUpload } from 'containers/Admin/projects/_shared/fileUploads/utils';
 
 import { getBase64FromFile } from 'utils/fileUtils';
 
@@ -20,121 +16,118 @@ export type Upload = {
   status: UploadStatus;
   category?: FileCategory;
   aiProcessingAllowed?: boolean;
-  fileId?: string;
 };
 
-const useFileUploads = (projectId: string) => {
+export type NewFile = Pick<Upload, 'file' | 'category'>;
+
+// File changes stay in this draft until the settings modal is saved: new files
+// are uploaded and removed files are deleted only then.
+const useFilesDraft = (projectId: string) => {
   const { data: user } = useAuthUser();
   const { mutateAsync: addFile } = useAddFile();
-  const { mutate: deleteFile } = useDeleteFile();
+  const { mutateAsync: deleteFile } = useDeleteFile();
 
   const [uploads, setUploads] = useState<Upload[]>([]);
-  const [tooManyFiles, setTooManyFiles] = useState(false);
-  const [allowAiProcessing, setAllowAiProcessing] = useState(false);
+  const [deletedIds, setDeletedIds] = useState<string[]>([]);
   const nextKey = useRef(0);
-  // State updates only land on the next render, so a quick double click on
-  // Upload or Retry would otherwise start the same file twice.
-  const inFlightKeys = useRef(new Set<number>());
 
-  const updateUpload = (key: number, update: Partial<Upload>) =>
+  const addFiles = (files: NewFile[], aiProcessingAllowed: boolean) =>
+    setUploads((current) => [
+      ...current,
+      ...files.map(
+        ({ file, category }): Upload => ({
+          key: nextKey.current++,
+          file,
+          category,
+          status: 'queued',
+          aiProcessingAllowed,
+        })
+      ),
+    ]);
+
+  const setCategory = (key: number, category: FileCategory) =>
     setUploads((current) =>
       current.map((upload) =>
-        upload.key === key ? { ...upload, ...update } : upload
+        upload.key === key ? { ...upload, category } : upload
       )
     );
 
-  const startUpload = async ({
-    key,
+  const removeUpload = (key: number) =>
+    setUploads((current) => current.filter((upload) => upload.key !== key));
+
+  const removeFile = (fileId: string) =>
+    setDeletedIds((current) => [...current, fileId]);
+
+  const upload = async ({
     file,
     category,
-    aiProcessingAllowed,
-  }: Upload) => {
-    if (inFlightKeys.current.has(key)) return;
-    inFlightKeys.current.add(key);
-
-    updateUpload(key, { status: 'uploading', aiProcessingAllowed });
+    aiProcessingAllowed = false,
+  }: Upload): Promise<boolean> => {
+    trackFileUpload({ file, projectId, user, aiProcessingAllowed });
     try {
       const content = await getBase64FromFile(file);
-      const { data } = await addFile({
+      await addFile({
         content,
         project: projectId,
         name: file.name,
         category: category ?? 'other',
         ai_processing_allowed: aiProcessingAllowed,
       });
-      updateUpload(key, { status: 'uploaded', fileId: data.id });
+      return true;
     } catch {
-      updateUpload(key, { status: 'error' });
-    } finally {
-      inFlightKeys.current.delete(key);
+      return false;
     }
   };
 
-  const queued = uploads.filter(({ status }) => status === 'queued');
-  const uploading = uploads.some(({ status }) => status === 'uploading');
+  const remove = async (fileId: string): Promise<boolean> => {
+    try {
+      await deleteFile(fileId);
+      return true;
+    } catch {
+      return false;
+    }
+  };
 
-  const addFiles = (files: File[]) => {
-    const tooMany = uploads.length + files.length > MAX_FILES;
-    setTooManyFiles(tooMany);
-    if (tooMany) return;
+  // Returns whether everything was saved. Failed uploads stay in the draft
+  // marked as failed, so saving again only retries those.
+  const save = async () => {
+    setUploads((current) =>
+      current.map((upload) => ({ ...upload, status: 'uploading' }))
+    );
 
-    setUploads((current) => [
-      ...current,
-      ...files.map(
-        (file): Upload => ({
-          key: nextKey.current++,
-          file,
-          status: file.size > MAX_FILE_SIZE ? 'too_large' : 'queued',
-        })
-      ),
+    const [uploaded, deleted] = await Promise.all([
+      Promise.all(uploads.map(upload)),
+      Promise.all(deletedIds.map(remove)),
     ]);
-  };
 
-  const uploadQueued = () => {
-    queued.forEach((upload) => {
-      if (inFlightKeys.current.has(upload.key)) return;
+    setUploads(
+      uploads
+        .filter((_, index) => !uploaded[index])
+        .map((upload) => ({ ...upload, status: 'error' }))
+    );
+    setDeletedIds(deletedIds.filter((_, index) => !deleted[index]));
 
-      trackFileUpload({
-        file: upload.file,
-        projectId,
-        user,
-        aiProcessingAllowed: allowAiProcessing,
-      });
-      startUpload({ ...upload, aiProcessingAllowed: allowAiProcessing });
-    });
-  };
-
-  const setCategory = (key: number, category: FileCategory) =>
-    updateUpload(key, { category });
-
-  const remove = ({ key, fileId }: Upload) => {
-    if (fileId) deleteFile(fileId);
-    setUploads((current) => current.filter((upload) => upload.key !== key));
+    return uploaded.every(Boolean) && deleted.every(Boolean);
   };
 
   const reset = () => {
     setUploads([]);
-    setTooManyFiles(false);
-    setAllowAiProcessing(false);
+    setDeletedIds([]);
   };
 
   return {
     uploads,
-    queued,
-    uploading,
-    finished: uploads.length > 0 && queued.length === 0 && !uploading,
-    tooManyFiles,
-    allowAiProcessing,
-    setAllowAiProcessing,
+    deletedIds,
+    dirty: uploads.length > 0 || deletedIds.length > 0,
     addFiles,
-    uploadQueued,
-    retry: startUpload,
     setCategory,
-    remove,
+    removeUpload,
+    removeFile,
+    save,
     reset,
   };
 };
 
-export type FileUploads = ReturnType<typeof useFileUploads>;
+export type FilesDraft = ReturnType<typeof useFilesDraft>;
 
-export default useFileUploads;
+export default useFilesDraft;

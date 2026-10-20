@@ -7,8 +7,6 @@ import { Multiloc } from 'typings';
 import { object } from 'yup';
 
 import { IInputTopicData } from 'api/input_topics/types';
-import useAddInputTopic from 'api/input_topics/useAddInputTopic';
-import useUpdateInputTopic from 'api/input_topics/useUpdateInputTopic';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -34,26 +32,30 @@ interface FormValues {
   icon?: string | null;
 }
 
+export interface InputTopicFormValues {
+  title_multiloc: Multiloc;
+  description_multiloc: Multiloc;
+  icon?: string | null;
+}
+
 interface Props {
-  projectId: string;
   topic: IInputTopicData | null;
   parentId?: string;
   opened: boolean;
   close: () => void;
+  onSubmit: (values: InputTopicFormValues) => Promise<void> | void;
   variant?: 'default' | 'bo';
 }
 
 const InputTopicModal = ({
-  projectId,
   topic,
   parentId,
   opened,
   close,
+  onSubmit,
   variant = 'default',
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutateAsync: addInputTopic } = useAddInputTopic();
-  const { mutateAsync: updateInputTopic } = useUpdateInputTopic();
   const nestedTopicsEnabled = useFeatureFlag({ name: 'nested_input_topics' });
 
   const isEditing = topic !== null;
@@ -92,24 +94,12 @@ const InputTopicModal = ({
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {
-      if (isEditing) {
-        await updateInputTopic({
-          projectId,
-          id: topic.id,
-          title_multiloc: formValues.title_multiloc,
-          description_multiloc: formValues.description_multiloc,
-          // Only send icon for root topics
-          ...(isSubtopic ? {} : { icon: formValues.icon }),
-        });
-      } else {
-        await addInputTopic({
-          projectId,
-          title_multiloc: formValues.title_multiloc,
-          description_multiloc: formValues.description_multiloc || {},
-          icon: isSubtopic ? undefined : formValues.icon,
-          parent_id: parentId,
-        });
-      }
+      await onSubmit({
+        title_multiloc: formValues.title_multiloc,
+        description_multiloc: formValues.description_multiloc || {},
+        // Only root topics have an icon
+        ...(isSubtopic ? {} : { icon: formValues.icon }),
+      });
       close();
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);

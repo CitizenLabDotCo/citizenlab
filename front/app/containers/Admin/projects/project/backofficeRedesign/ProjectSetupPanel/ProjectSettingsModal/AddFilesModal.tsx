@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 
 import {
   Box,
@@ -13,7 +13,7 @@ import { useDropzone } from 'react-dropzone';
 
 import {
   MAX_FILES,
-  countFilesWithStatus,
+  MAX_FILE_SIZE,
 } from 'containers/Admin/projects/_shared/fileUploads/utils';
 import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
@@ -25,31 +25,37 @@ import { returnFileSize } from 'utils/fileUtils';
 
 import { FILE_MODAL_HEIGHT } from './FileRow';
 import UploadingFileRow from './UploadingFileRow';
-import { FileUploads } from './useFileUploads';
+import { FilesDraft, Upload } from './useFilesDraft';
 
 interface Props {
-  fileUploads: FileUploads;
+  draft: FilesDraft;
   opened: boolean;
   onClose: () => void;
 }
 
-const AddFilesModal = ({ fileUploads, opened, onClose }: Props) => {
+const AddFilesModal = ({ draft, opened, onClose }: Props) => {
   const { formatMessage } = useIntl();
-  const {
-    uploads,
-    queued,
-    uploading,
-    finished,
-    tooManyFiles,
-    allowAiProcessing,
-    setAllowAiProcessing,
-    addFiles,
-    uploadQueued,
-    retry,
-    setCategory,
-    remove,
-    reset,
-  } = fileUploads;
+  const [selected, setSelected] = useState<Upload[]>([]);
+  const [tooManyFiles, setTooManyFiles] = useState(false);
+  const [allowAiProcessing, setAllowAiProcessing] = useState(false);
+  const nextKey = useRef(0);
+
+  const addFiles = (files: File[]) => {
+    const tooMany = selected.length + files.length > MAX_FILES;
+    setTooManyFiles(tooMany);
+    if (tooMany) return;
+
+    setSelected((current) => [
+      ...current,
+      ...files.map(
+        (file): Upload => ({
+          key: nextKey.current++,
+          file,
+          status: file.size > MAX_FILE_SIZE ? 'too_large' : 'queued',
+        })
+      ),
+    ]);
+  };
 
   const { getRootProps, getInputProps, open } = useDropzone({
     multiple: true,
@@ -59,13 +65,19 @@ const AddFilesModal = ({ fileUploads, opened, onClose }: Props) => {
     onDrop: addFiles,
   });
 
-  const totalSize = uploads.reduce((sum, { file }) => sum + file.size, 0);
+  const queued = selected.filter(({ status }) => status === 'queued');
+  const totalSize = selected.reduce((sum, { file }) => sum + file.size, 0);
 
   const handleClose = () => {
-    // Uploads keep running after the modal closes, so their results stay
-    // until they finish and the admin can reopen the modal to see them.
-    if (!uploading) reset();
+    setSelected([]);
+    setTooManyFiles(false);
+    setAllowAiProcessing(false);
     onClose();
+  };
+
+  const handleAdd = () => {
+    draft.addFiles(queued, allowAiProcessing);
+    handleClose();
   };
 
   return (
@@ -74,50 +86,21 @@ const AddFilesModal = ({ fileUploads, opened, onClose }: Props) => {
       opened={opened}
       close={handleClose}
       width={560}
-      height={uploads.length > 0 ? FILE_MODAL_HEIGHT : undefined}
+      height={selected.length > 0 ? FILE_MODAL_HEIGHT : undefined}
       header={formatMessage(messages.addFiles)}
       footer={
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="space-between"
-          gap="12px"
-          width="100%"
-        >
-          <Text variant="boMicro" color="coolGrey500" m="0px">
-            {finished &&
-              formatMessage(filesMessages.uploadSummary, {
-                numberOfFiles: countFilesWithStatus(uploads, 'uploaded'),
-                numberOfErrors:
-                  countFilesWithStatus(uploads, 'error') +
-                  countFilesWithStatus(uploads, 'too_large'),
-              })}
-          </Text>
-          {queued.length > 0 ? (
-            <Button
-              buttonStyle="bo-primary"
-              width="auto"
-              height={bo.buttonMedium.height}
-              padding={bo.buttonMedium.padding}
-              fontSize={bo.buttonMedium.fontSize}
-              disabled={uploading}
-              onClick={uploadQueued}
-            >
-              {formatMessage(filesMessages.upload)}
-            </Button>
-          ) : (
-            <Button
-              buttonStyle="bo-primary"
-              width="auto"
-              height={bo.buttonMedium.height}
-              padding={bo.buttonMedium.padding}
-              fontSize={bo.buttonMedium.fontSize}
-              disabled={!finished}
-              onClick={handleClose}
-            >
-              {formatMessage(filesMessages.done)}
-            </Button>
-          )}
+        <Box display="flex" justifyContent="flex-end" width="100%">
+          <Button
+            buttonStyle="bo-primary"
+            width="auto"
+            height={bo.buttonMedium.height}
+            padding={bo.buttonMedium.padding}
+            fontSize={bo.buttonMedium.fontSize}
+            disabled={queued.length === 0}
+            onClick={handleAdd}
+          >
+            {formatMessage(messages.addFiles)}
+          </Button>
         </Box>
       }
     >
@@ -158,26 +141,33 @@ const AddFilesModal = ({ fileUploads, opened, onClose }: Props) => {
             })}
           </Text>
         )}
-        {uploads.length > 0 && (
+        {selected.length > 0 && (
           <Box mt="16px">
             <Text variant="boMicro" color="coolGrey500" mb="4px" mt="0px">
               {formatMessage(messages.filesCountWithSize, {
-                count: uploads.length,
+                count: selected.length,
                 size: returnFileSize(totalSize),
               })}
             </Text>
             <Box mx="-8px">
-              {uploads.map((upload) => (
+              {selected.map(({ key, file, status, category }) => (
                 <UploadingFileRow
-                  key={upload.key}
-                  file={upload.file}
-                  status={upload.status}
-                  category={upload.category}
+                  key={key}
+                  file={file}
+                  status={status}
+                  category={category}
                   onCategoryChange={(category) =>
-                    setCategory(upload.key, category)
+                    setSelected((current) =>
+                      current.map((upload) =>
+                        upload.key === key ? { ...upload, category } : upload
+                      )
+                    )
                   }
-                  onRetry={() => retry(upload)}
-                  onRemove={() => remove(upload)}
+                  onRemove={() =>
+                    setSelected((current) =>
+                      current.filter((upload) => upload.key !== key)
+                    )
+                  }
                 />
               ))}
             </Box>
@@ -185,7 +175,7 @@ const AddFilesModal = ({ fileUploads, opened, onClose }: Props) => {
               <CheckboxWithLabel
                 size="20px"
                 checked={allowAiProcessing}
-                disabled={queued.length === 0 || uploading}
+                disabled={queued.length === 0}
                 onChange={(event) => setAllowAiProcessing(event.target.checked)}
                 label={
                   <Text variant="boControl" fontSize="xs" m="0px">

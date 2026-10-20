@@ -18,20 +18,22 @@ import { useIntl } from 'utils/cl-intl';
 import AddFilesModal from './AddFilesModal';
 import ManageFilesModal from './ManageFilesModal';
 import useFilesCount from './useFilesCount';
-import { FileUploads } from './useFileUploads';
+import { FilesDraft } from './useFilesDraft';
 
 interface Props {
   projectId: string;
-  fileUploads: FileUploads;
+  draft: FilesDraft;
 }
 
-const ResourcesSection = ({ projectId, fileUploads }: Props) => {
+const ResourcesSection = ({ projectId, draft }: Props) => {
   const { formatMessage } = useIntl();
-  const count = useFilesCount(projectId);
+  const savedCount = useFilesCount(projectId);
   const [manageModalOpened, setManageModalOpened] = useState(false);
   const [addModalOpened, setAddModalOpened] = useState(false);
 
-  if (count === undefined) return null;
+  if (savedCount === undefined) return null;
+
+  const count = savedCount + draft.uploads.length - draft.deletedIds.length;
 
   return (
     <SettingsSection
@@ -75,12 +77,13 @@ const ResourcesSection = ({ projectId, fileUploads }: Props) => {
       )}
       <ManageFilesModal
         projectId={projectId}
+        draft={draft}
         opened={manageModalOpened}
         onClose={() => setManageModalOpened(false)}
         onAddFiles={() => setAddModalOpened(true)}
       />
       <AddFilesModal
-        fileUploads={fileUploads}
+        draft={draft}
         opened={addModalOpened}
         onClose={() => setAddModalOpened(false)}
       />

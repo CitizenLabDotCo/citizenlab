@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 
-import { Box, Button, Tooltip, bo } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text, bo } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { CLErrors } from 'typings';
 
@@ -22,11 +22,13 @@ import { useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { validateSlug } from 'utils/textUtils';
 
+import DiscardChangesModal from './DiscardChangesModal';
 import GeneralSection from './GeneralSection';
 import PerspectivesSection from './PerspectivesSection';
 import ResourcesSection from './ResourcesSection';
 import TagsSection from './TagsSection';
-import useFileUploads from './useFileUploads';
+import useFilesDraft from './useFilesDraft';
+import useTagsDraft from './useTagsDraft';
 
 interface Props {
   project: IProjectData;
@@ -43,7 +45,8 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
   const perspectivesActive = useFeatureFlag({
     name: 'live_auto_input_topics',
   });
-  const fileUploads = useFileUploads(projectId);
+  const tagsDraft = useTagsDraft(projectId);
+  const filesDraft = useFilesDraft(projectId);
 
   const [processing, setProcessing] = useState(false);
   // `processing` only updates on the next render, so a quick double click
@@ -53,6 +56,8 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
   const [projectAttributesDiff, setProjectAttributesDiff] =
     useState<IUpdatedProjectProperties>({});
   const [projectContextError, setProjectContextError] = useState(false);
+  const [saveFailed, setSaveFailed] = useState(false);
+  const [confirmingDiscard, setConfirmingDiscard] = useState(false);
 
   const [slug, setSlug] = useState(project.attributes.slug);
   const [showSlugErrorMessage, setShowSlugErrorMessage] = useState(false);
@@ -95,9 +100,9 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
     if (showSlugErrorMessage) return;
 
     savingRef.current = true;
+    setProcessing(true);
+    setSaveFailed(false);
     try {
-      setProcessing(true);
-
       if (!isEmpty(projectAttributesDiff)) {
         await updateProject({ projectId, ...projectAttributesDiff });
       }
@@ -109,22 +114,50 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       setProjectAttributesDiff({});
       setApiErrors({});
       setProjectContextError(false);
-      onClose();
     } catch (errors) {
       setApiErrors((errors as { errors: CLErrors }).errors);
-    } finally {
       savingRef.current = false;
       setProcessing(false);
+      return;
+    }
+
+    const [tagsSaved, filesSaved] = await Promise.all([
+      tagsDraft.save(),
+      filesDraft.save(),
+    ]);
+
+    savingRef.current = false;
+    setProcessing(false);
+
+    if (tagsSaved && filesSaved) {
+      onClose();
+    } else {
+      setSaveFailed(true);
     }
   };
 
-  const handleCancel = () => {
+  const dirty =
+    !isEmpty(projectAttributesDiff) || tagsDraft.dirty || filesDraft.dirty;
+
+  const discard = () => {
     setProjectAttributesDiff({});
     setSlug(project.attributes.slug);
     setShowSlugErrorMessage(false);
     setProjectContextError(false);
     setApiErrors({});
+    setSaveFailed(false);
+    tagsDraft.reset();
+    filesDraft.reset();
+    setConfirmingDiscard(false);
     onClose();
+  };
+
+  const handleClose = () => {
+    if (dirty) {
+      setConfirmingDiscard(true);
+    } else {
+      discard();
+    }
   };
 
   const sections: SettingsModalSection[] = [
@@ -156,16 +189,14 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       group: messages.settingsProjectGroup,
       label: messages.settingsResources,
       icon: 'paperclip',
-      content: (
-        <ResourcesSection projectId={projectId} fileUploads={fileUploads} />
-      ),
+      content: <ResourcesSection projectId={projectId} draft={filesDraft} />,
     },
     {
       name: 'tags',
       group: messages.settingsInputsGroup,
       label: messages.settingsTags,
       icon: 'label',
-      content: <TagsSection projectId={projectId} />,
+      content: <TagsSection draft={tagsDraft} />,
     },
     ...(perspectivesActive
       ? [
@@ -188,19 +219,19 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
   ];
 
   return (
-    <SettingsModal
-      opened={opened}
-      close={handleCancel}
-      header={formatMessage(messages.settingsTitle)}
-      sections={sections}
-      footer={
-        <Tooltip
-          content={formatMessage(messages.filesStillUploading)}
-          disabled={!fileUploads.uploading}
-          theme="dark"
-          placement="top"
-        >
-          <Box>
+    <>
+      <SettingsModal
+        opened={opened}
+        close={handleClose}
+        header={formatMessage(messages.settingsTitle)}
+        sections={sections}
+        footer={
+          <Box display="flex" alignItems="center" gap="12px">
+            {saveFailed && (
+              <Text variant="boMicro" color="red600" m="0px">
+                {formatMessage(messages.settingsSaveFailed)}
+              </Text>
+            )}
             <Button
               buttonStyle="bo-primary"
               width="auto"
@@ -208,16 +239,20 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
               padding={bo.buttonMedium.padding}
               fontSize={bo.buttonMedium.fontSize}
               processing={processing}
-              disabled={fileUploads.uploading}
               onClick={handleSave}
               id="e2e-project-settings-save"
             >
               {formatMessage(messages.settingsSave)}
             </Button>
           </Box>
-        </Tooltip>
-      }
-    />
+        }
+      />
+      <DiscardChangesModal
+        opened={confirmingDiscard}
+        onKeepEditing={() => setConfirmingDiscard(false)}
+        onDiscard={discard}
+      />
+    </>
   );
 };
 
