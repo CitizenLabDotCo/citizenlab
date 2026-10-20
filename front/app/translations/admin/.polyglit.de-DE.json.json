@@ -9494,6 +9494,166 @@
     "verified_at": "2026-09-17T11:58:59.316498Z",
     "verified_by": "eva@govocal.com"
   },
+  "app.containers.Admin.projects.project.event.addDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.addEndDate": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.addEventName": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.address": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.addressDetails": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.altText": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.altTextPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.attachments": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.create": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.crop": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.cropImage": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.delete": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.deleteEvent": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.deleteImage": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.done": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.dropImage": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.eventSetup": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.fromProject": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.goToProject": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.image": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.linkToOnlineEvent": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.onlyAdminsSeeThis": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.platformTime": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.previewDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.previewEventImage": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.previewEventName": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.previewLocation": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.registration": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.removeEndDate": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.replace": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.replaceImage": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.event.untitledEvent": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.eventsSection": {
     "state": "verified",
     "verified_at": "2026-09-17T11:58:59.316498Z",
@@ -11692,6 +11852,11 @@
   "app.containers.Admin.projects.project.saveToEditSettings": {
     "state": "verified",
     "verified_at": "2026-09-22T06:06:23.538085Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.savedLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-20T15:53:01.405647Z",
     "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.project.selectAMethod": {
