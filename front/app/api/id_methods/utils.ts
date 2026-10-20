@@ -3,6 +3,7 @@ import {
   IDAzureAdMethod,
   IDAzureAdB2cMethod,
   IDFacebookMethod,
+  IDOktaMethod,
   IDPublikMethod,
   IdMethodName,
   IdMethodData,
@@ -31,6 +32,25 @@ export const getPublikConfig = (idMethods?: IdMethods) => {
 
   return publikConfig;
 };
+
+export const getOktaConfig = (idMethods?: IdMethods) => {
+  const oktaConfig = idMethods?.data.find(
+    (method): method is IDOktaMethod => method.attributes.name === 'okta'
+  );
+
+  return oktaConfig;
+};
+
+// The methods city staff sign in with. They can be hidden from residents and
+// can force staff email domains to use them.
+export const isEmployeeSsoMethod = (
+  method: IdMethodData
+): method is IDAzureAdMethod | IDOktaMethod =>
+  method.attributes.name === 'azureactivedirectory' ||
+  method.attributes.name === 'okta';
+
+export const getEmployeeSsoConfigs = (idMethods?: IdMethods) =>
+  idMethods?.data.filter(isEmployeeSsoMethod) ?? [];
 
 export const getFacebookConfig = (idMethods?: IdMethods) => {
   const facebookConfig = idMethods?.data.find(
