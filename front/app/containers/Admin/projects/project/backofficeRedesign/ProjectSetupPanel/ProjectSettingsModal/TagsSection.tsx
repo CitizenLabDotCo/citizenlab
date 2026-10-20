@@ -65,7 +65,7 @@ const TagsSection = ({ projectId }: Props) => {
   } = useInputTopicsEditor(projectId);
   const localize = useLocalize();
 
-  const { ordered, moveRow, moveRowBy, dropRow, cancelDrag } = useSortableTags(
+  const { ordered, moveRow, dropRow, cancelDrag } = useSortableTags(
     projectId,
     rootTopics
   );
@@ -137,7 +137,6 @@ const TagsSection = ({ projectId }: Props) => {
                 tagName: localize(topic.attributes.title_multiloc),
               })}
               moveRow={moveRow}
-              moveRowBy={moveRowBy}
               dropRow={dropRow}
               cancelDrag={cancelDrag}
             >

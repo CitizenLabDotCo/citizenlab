@@ -401,8 +401,7 @@ export default defineMessages({
   },
   reorderTag: {
     id: 'app.containers.Admin.projects.project.reorderTag',
-    defaultMessage:
-      'Reorder {tagName}. Drag it, or use the up and down arrow keys.',
+    defaultMessage: 'Drag to reorder {tagName}',
   },
   toggleSubtags: {
     id: 'app.containers.Admin.projects.project.toggleSubtags',

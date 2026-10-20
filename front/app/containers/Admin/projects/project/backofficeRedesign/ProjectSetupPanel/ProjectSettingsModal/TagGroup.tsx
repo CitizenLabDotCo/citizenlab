@@ -66,7 +66,7 @@ const TagGroup = ({
       ),
     [allTopics, topic.id]
   );
-  const { ordered, moveRow, moveRowBy, dropRow, cancelDrag } = useSortableTags(
+  const { ordered, moveRow, dropRow, cancelDrag } = useSortableTags(
     projectId,
     subtopics
   );
@@ -142,7 +142,6 @@ const TagGroup = ({
                 tagName: localize(subtopic.attributes.title_multiloc),
               })}
               moveRow={moveRow}
-              moveRowBy={moveRowBy}
               dropRow={dropRow}
               cancelDrag={cancelDrag}
             >

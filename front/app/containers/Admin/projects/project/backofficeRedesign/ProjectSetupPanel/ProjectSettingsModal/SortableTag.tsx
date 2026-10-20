@@ -1,14 +1,9 @@
-import React, { KeyboardEvent, ReactNode, RefObject, useRef } from 'react';
+import React, { ReactNode, RefObject, useRef } from 'react';
 
 import { Box, Icon, colors } from '@citizenlab/cl2-component-library';
 import { useDrag, useDrop } from 'react-dnd';
 
 export const ROOT_TAG_TYPE = 'tag-root';
-
-const KEY_OFFSETS: Partial<Record<string, number>> = {
-  ArrowUp: -1,
-  ArrowDown: 1,
-};
 
 interface DragItem {
   id: string;
@@ -28,7 +23,6 @@ interface Props {
   type: string;
   dragLabel: string;
   moveRow: (fromIndex: number, toIndex: number) => void;
-  moveRowBy: (index: number, offset: number) => void;
   dropRow: (id: string) => void;
   cancelDrag: () => void;
   children: (renderProps: SortableTagRenderProps) => ReactNode;
@@ -43,7 +37,6 @@ const SortableTag = ({
   type,
   dragLabel,
   moveRow,
-  moveRowBy,
   dropRow,
   cancelDrag,
   children,
@@ -86,27 +79,12 @@ const SortableTag = ({
   drag(rowRef);
   drop(preview(ref));
 
-  const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
-    const offset = KEY_OFFSETS[event.key];
-    if (!offset) return;
-
-    event.preventDefault();
-    moveRowBy(index, offset);
-  };
-
   const handle = (
     <Box
-      as="button"
-      type="button"
       display="flex"
       alignItems="center"
       flexShrink={0}
-      p="0px"
-      border="none"
-      background="transparent"
-      cursor="grab"
       aria-label={dragLabel}
-      onKeyDown={handleKeyDown}
     >
       <Icon name="sort" width="10px" height="16px" fill={colors.coolGrey500} />
     </Box>
