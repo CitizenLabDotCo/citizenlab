@@ -78,6 +78,7 @@ export const themeColors = {
   teal300: '#40B8C5', // formerly clBlueLight
   teal200: '#80CFD8', // formerly clBlueLighter
   teal100: '#BEE7EB', // formerly clBlueLightest
+  teal75: '#E5F5F7',
   teal50: '#EDF8FA',
   /**
    * Red

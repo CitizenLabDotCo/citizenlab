@@ -12,6 +12,7 @@ import SearchInput from 'components/UI/SearchInput';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { FILE_MODAL_HEIGHT } from './FileRow';
 import ManagedFileRow from './ManagedFileRow';
 
 interface Props {
@@ -42,11 +43,12 @@ const ManageFilesModal = ({
       variant="bo"
       opened={opened}
       close={onClose}
-      width={720}
+      width={560}
+      height={FILE_MODAL_HEIGHT}
       header={formatMessage(messages.manageFiles)}
     >
-      <Box p="24px" minHeight="360px">
-        <Box display="flex" alignItems="center" gap="12px">
+      <Box p="24px">
+        <Box display="flex" alignItems="center" gap="8px">
           <Box flex="1">
             <SearchInput
               placeholder={formatMessage(filesMessages.searchFiles)}
@@ -60,7 +62,7 @@ const ManageFilesModal = ({
             {formatMessage(messages.addFiles)}
           </Button>
         </Box>
-        <Text variant="boMicro" color="coolGrey500" mt="24px" mb="4px">
+        <Text variant="boMicro" color="coolGrey500" mt="16px" mb="4px">
           {count > 0
             ? formatMessage(messages.filesCount, { count })
             : formatMessage(filesMessages.noFilesFound)}

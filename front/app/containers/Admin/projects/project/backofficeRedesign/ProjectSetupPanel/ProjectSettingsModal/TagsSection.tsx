@@ -5,6 +5,7 @@ import {
   Button,
   Icon,
   Text,
+  bo,
   colors,
 } from '@citizenlab/cl2-component-library';
 import { DndProvider } from 'react-dnd';
@@ -81,6 +82,7 @@ const TagsSection = ({ projectId }: Props) => {
     <>
       <SettingsSection
         title={formatMessage(messages.settingsCreateAndManageTags)}
+        titleVariant="label"
         description={
           <>
             <FormattedMessage {...topicsMessages.projectTopicsDescription} />
@@ -107,7 +109,11 @@ const TagsSection = ({ projectId }: Props) => {
           <Button
             buttonStyle="bo-secondary"
             icon="plus"
+            iconSize={bo.buttonMedium.iconSize}
             width="auto"
+            height={bo.buttonMedium.height}
+            padding={bo.buttonMedium.padding}
+            fontSize={bo.buttonMedium.fontSize}
             onClick={openAdd}
             id="e2e-add-input-topic-button"
           >
@@ -115,19 +121,17 @@ const TagsSection = ({ projectId }: Props) => {
           </Button>
         }
       >
-        {isLastRootTopic && (
-          <Box display="flex" alignItems="center" gap="6px" mb="4px">
-            <Icon
-              name="info-outline"
-              width="14px"
-              height="14px"
-              fill={colors.coolGrey500}
-            />
-            <Text variant="boMicro" color="coolGrey500" m="0px">
-              {formatMessage(topicsMessages.lastTopicWarning)}
-            </Text>
-          </Box>
-        )}
+        <Box display="flex" alignItems="center" gap="8px" mb="8px">
+          <Icon
+            name="info-outline"
+            width="14px"
+            height="14px"
+            fill={colors.coolGrey500}
+          />
+          <Text variant="boMicro" color="coolGrey500" lineHeight="1.5" m="0px">
+            {formatMessage(messages.tagsRequiredInfo)}
+          </Text>
+        </Box>
         <DndProvider backend={HTML5Backend}>
           {ordered.map((topic, index) => (
             <SortableTag

@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 
-import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
+import { Box, Button, Tooltip, bo } from '@citizenlab/cl2-component-library';
 import { useIsMutating } from '@tanstack/react-query';
 import { isEmpty } from 'lodash-es';
 import { CLErrors } from 'typings';
@@ -133,7 +133,7 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       name: 'general',
       group: messages.settingsProjectGroup,
       label: messages.settingsGeneral,
-      icon: 'settings',
+      icon: 'cog',
       content: (
         <GeneralSection
           projectId={projectId}
@@ -196,6 +196,9 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
             <Button
               buttonStyle="bo-primary"
               width="auto"
+              height={bo.buttonMedium.height}
+              padding={bo.buttonMedium.padding}
+              fontSize={bo.buttonMedium.fontSize}
               processing={processing}
               disabled={filesUploading}
               onClick={handleSave}

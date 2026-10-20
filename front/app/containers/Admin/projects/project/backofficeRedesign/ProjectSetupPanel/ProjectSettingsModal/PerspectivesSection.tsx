@@ -30,7 +30,7 @@ const PerspectivesSection = ({ projectId }: Props) => {
   return (
     <SettingsSection
       title={title}
-      tooltip={formatMessage(topicsMessages.liveAutoInputTopicsLabel)}
+      titleVariant="label"
       description={formatMessage(topicsMessages.liveAutoInputTopicsDescription)}
       action={
         <Box>

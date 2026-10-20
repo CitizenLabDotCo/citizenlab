@@ -5,6 +5,7 @@ import {
   Button,
   Icon,
   Text,
+  bo,
   colors,
 } from '@citizenlab/cl2-component-library';
 
@@ -41,6 +42,9 @@ const ResourcesSection = ({ projectId }: Props) => {
         <Button
           buttonStyle="bo-secondary"
           width="auto"
+          height={bo.buttonMedium.height}
+          padding={bo.buttonMedium.padding}
+          fontSize={bo.buttonMedium.fontSize}
           onClick={() =>
             count > 0 ? setManageModalOpened(true) : setAddModalOpened(true)
           }
@@ -57,7 +61,7 @@ const ResourcesSection = ({ projectId }: Props) => {
           h="24px"
           px="8px"
           borderRadius="999px"
-          background={colors.teal50}
+          background={colors.teal75}
         >
           <Icon
             name="paperclip"
@@ -65,7 +69,7 @@ const ResourcesSection = ({ projectId }: Props) => {
             height="14px"
             fill={colors.teal700}
           />
-          <Text variant="boMicro" color="teal700" m="0px">
+          <Text variant="boMicro" color="teal700" lineHeight="16px" m="0px">
             {formatMessage(messages.filesCount, { count })}
           </Text>
         </Box>

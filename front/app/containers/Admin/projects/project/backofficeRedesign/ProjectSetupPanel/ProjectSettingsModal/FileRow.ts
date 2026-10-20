@@ -2,6 +2,7 @@ import { bo, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 export const FILE_ROW_ACTION_CLASS = 'file-row-action';
+export const FILE_MODAL_HEIGHT = 'min(640px, 88vh)';
 
 const FileRow = styled.div`
   position: relative;

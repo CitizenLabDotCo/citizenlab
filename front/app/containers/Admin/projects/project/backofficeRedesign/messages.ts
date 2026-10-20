@@ -94,6 +94,11 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.filesSection',
     defaultMessage: '360 Input',
   },
+  tagsRequiredInfo: {
+    id: 'app.containers.Admin.projects.project.tagsRequiredInfo',
+    defaultMessage:
+      "At least one tag is required. To skip tags, remove the 'Tags' item from any phase's form.",
+  },
   filesDescription: {
     id: 'app.containers.Admin.projects.project.filesDescription2',
     defaultMessage:

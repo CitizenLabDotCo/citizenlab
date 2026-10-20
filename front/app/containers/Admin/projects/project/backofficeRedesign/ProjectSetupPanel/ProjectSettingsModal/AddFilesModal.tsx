@@ -5,6 +5,7 @@ import {
   Button,
   CheckboxWithLabel,
   Text,
+  bo,
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
@@ -22,6 +23,7 @@ import Modal from 'components/UI/Modal';
 import { useIntl } from 'utils/cl-intl';
 import { returnFileSize } from 'utils/fileUtils';
 
+import { FILE_MODAL_HEIGHT } from './FileRow';
 import UploadingFileRow from './UploadingFileRow';
 import useFileUploads from './useFileUploads';
 
@@ -69,7 +71,8 @@ const AddFilesModal = ({ projectId, opened, onClose }: Props) => {
       variant="bo"
       opened={opened}
       close={handleClose}
-      width={720}
+      width={560}
+      height={uploads.length > 0 ? FILE_MODAL_HEIGHT : undefined}
       header={formatMessage(messages.addFiles)}
       footer={
         <Box
@@ -92,6 +95,9 @@ const AddFilesModal = ({ projectId, opened, onClose }: Props) => {
             <Button
               buttonStyle="bo-primary"
               width="auto"
+              height={bo.buttonMedium.height}
+              padding={bo.buttonMedium.padding}
+              fontSize={bo.buttonMedium.fontSize}
               disabled={uploading}
               onClick={uploadQueued}
             >
@@ -101,6 +107,9 @@ const AddFilesModal = ({ projectId, opened, onClose }: Props) => {
             <Button
               buttonStyle="bo-primary"
               width="auto"
+              height={bo.buttonMedium.height}
+              padding={bo.buttonMedium.padding}
+              fontSize={bo.buttonMedium.fontSize}
               disabled={!finished}
               onClick={handleClose}
             >
@@ -117,15 +126,22 @@ const AddFilesModal = ({ projectId, opened, onClose }: Props) => {
           alignItems="center"
           justifyContent="center"
           gap="12px"
-          py="40px"
-          px="20px"
+          minHeight="88px"
+          p="16px"
           border={`1px dashed ${colors.coolGrey300}`}
           borderRadius={stylingConsts.borderRadius}
         >
           <Text variant="boMicro" color="coolGrey500" m="0px">
             {formatMessage(messages.dropFilesHereOr)}
           </Text>
-          <Button buttonStyle="bo-secondary" width="auto" onClick={open}>
+          <Button
+            buttonStyle="bo-secondary"
+            width="auto"
+            height={bo.buttonMedium.height}
+            padding={bo.buttonMedium.padding}
+            fontSize={bo.buttonMedium.fontSize}
+            onClick={open}
+          >
             {formatMessage(filesMessages.chooseFiles)}
           </Button>
           <input {...getInputProps()} />
@@ -141,7 +157,7 @@ const AddFilesModal = ({ projectId, opened, onClose }: Props) => {
           </Text>
         )}
         {uploads.length > 0 && (
-          <Box mt="24px">
+          <Box mt="16px">
             <Text variant="boMicro" color="coolGrey500" mb="4px" mt="0px">
               {formatMessage(messages.filesCountWithSize, {
                 count: uploads.length,

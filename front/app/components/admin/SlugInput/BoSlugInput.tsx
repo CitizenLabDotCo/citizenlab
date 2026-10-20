@@ -5,6 +5,7 @@ import {
   IconTooltip,
   Text,
   Input,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
@@ -48,12 +49,14 @@ const BoSlugInput = ({
   return (
     <>
       <Box display="flex" alignItems="center" gap="4px" mb="4px">
-        <Text variant="boMicro" color="textPrimary" m="0px">
+        <Text variant="boControl" fontSize="xs" m="0px">
           {slugLabel}
         </Text>
         <IconTooltip
           content={formatMessage(slugInputMessages.slugTooltip)}
+          icon="info-outline"
           iconSize="14px"
+          iconColor={colors.coolGrey500}
         />
       </Box>
       <Box display="flex" alignItems="center" gap="8px">

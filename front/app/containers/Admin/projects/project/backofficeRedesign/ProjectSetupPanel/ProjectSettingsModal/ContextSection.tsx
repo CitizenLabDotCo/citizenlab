@@ -35,6 +35,7 @@ const ContextSection = ({
     folderId,
     projectInRoot,
     onChange,
+    size: 'small',
   });
 
   if (!canEditProjectContext || !pickers) return null;
@@ -60,7 +61,7 @@ const ContextSection = ({
                 gap="16px"
                 minHeight="28px"
               >
-                <Text variant="boMicro" color="textPrimary" m="0px">
+                <Text variant="boControl" fontSize="xs" m="0px">
                   {formatMessage(label)}
                 </Text>
                 {picker}
