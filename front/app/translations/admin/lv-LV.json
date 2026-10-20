@@ -2095,7 +2095,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "Saglabājiet posmu, lai pievienotu jautājumus un importētu bezsaistes ievadi.",
   "app.containers.Admin.projects.project.saveToEditSettings": "Piekļuves tiesības, paziņojumi un citi iestatījumi kļūs pieejami, kad saglabāsiet posmu.",
   "app.containers.Admin.projects.project.selectMethodContinue": "Turpināt",
-  "app.containers.Admin.projects.project.settingsManagement": "Pārvaldība",
   "app.containers.Admin.projects.project.settingsNav": "Iestatījumi",
   "app.containers.Admin.projects.project.settingsResources": "Resursi",
   "app.containers.Admin.projects.project.settingsSaveChanges": "Saglabāt izmaiņas",

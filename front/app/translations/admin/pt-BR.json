@@ -2095,7 +2095,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "Salve a fase para adicionar perguntas e importar contribuições offline.",
   "app.containers.Admin.projects.project.saveToEditSettings": "Direitos de acesso, notificações e outras configurações ficarão disponíveis assim que você salvar a fase.",
   "app.containers.Admin.projects.project.selectMethodContinue": "Continuar",
-  "app.containers.Admin.projects.project.settingsManagement": "Gestão",
   "app.containers.Admin.projects.project.settingsNav": "Configurações",
   "app.containers.Admin.projects.project.settingsResources": "Recursos",
   "app.containers.Admin.projects.project.settingsSaveChanges": "Salvar alterações",

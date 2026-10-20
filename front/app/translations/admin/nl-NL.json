@@ -2095,7 +2095,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "Sla de fase op om vragen toe te voegen en offline bijdragen te importeren.",
   "app.containers.Admin.projects.project.saveToEditSettings": "Toegangsrechten, meldingen en andere instellingen worden beschikbaar zodra je de fase opslaat.",
   "app.containers.Admin.projects.project.selectMethodContinue": "Doorgaan",
-  "app.containers.Admin.projects.project.settingsManagement": "Beheer",
   "app.containers.Admin.projects.project.settingsNav": "Instellingen",
   "app.containers.Admin.projects.project.settingsResources": "Hulpbronnen",
   "app.containers.Admin.projects.project.settingsSaveChanges": "Wijzigingen opslaan",

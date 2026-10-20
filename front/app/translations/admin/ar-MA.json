@@ -2095,7 +2095,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "حفظ المرحلة باش تزيد أسئلة وتستورد المعطيات لي تسجلات بلا إنترنت.",
   "app.containers.Admin.projects.project.saveToEditSettings": "ستصبح حقوق الوصول والإشعارات والإعدادات الأخرى متاحة بمجرد حفظ المرحلة.",
   "app.containers.Admin.projects.project.selectMethodContinue": "استمرار",
-  "app.containers.Admin.projects.project.settingsManagement": "التدبير",
   "app.containers.Admin.projects.project.settingsNav": "الإعدادات",
   "app.containers.Admin.projects.project.settingsResources": "موارد",
   "app.containers.Admin.projects.project.settingsSaveChanges": "حفظ التغييرات",

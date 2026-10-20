@@ -2095,7 +2095,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "Save the phase to add questions and import offline input.",
   "app.containers.Admin.projects.project.saveToEditSettings": "Access rights, notifications and other settings become available once you save the phase.",
   "app.containers.Admin.projects.project.selectMethodContinue": "Continue",
-  "app.containers.Admin.projects.project.settingsManagement": "Management",
   "app.containers.Admin.projects.project.settingsNav": "Settings",
   "app.containers.Admin.projects.project.settingsResources": "Resources",
   "app.containers.Admin.projects.project.settingsSaveChanges": "Save changes",

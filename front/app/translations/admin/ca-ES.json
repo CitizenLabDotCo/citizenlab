@@ -2095,7 +2095,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "Desa la fase per afegir preguntes i importar aportacions fora de línia.",
   "app.containers.Admin.projects.project.saveToEditSettings": "Els drets d'accés, les notificacions i altres paràmetres estaran disponibles un cop desis la fase.",
   "app.containers.Admin.projects.project.selectMethodContinue": "Continuar",
-  "app.containers.Admin.projects.project.settingsManagement": "Gestió",
   "app.containers.Admin.projects.project.settingsNav": "Configuració",
   "app.containers.Admin.projects.project.settingsResources": "Recursos",
   "app.containers.Admin.projects.project.settingsSaveChanges": "Desa els canvis",

@@ -2095,7 +2095,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "Tallenna vaihe lisätäksesi kysymyksiä ja tuodaksesi offline-syötteitä.",
   "app.containers.Admin.projects.project.saveToEditSettings": "Käyttöoikeudet, ilmoitukset ja muut asetukset tulevat saataville, kun tallennat vaiheen.",
   "app.containers.Admin.projects.project.selectMethodContinue": "Jatka",
-  "app.containers.Admin.projects.project.settingsManagement": "Hallinta",
   "app.containers.Admin.projects.project.settingsNav": "Asetukset",
   "app.containers.Admin.projects.project.settingsResources": "Resurssit",
   "app.containers.Admin.projects.project.settingsSaveChanges": "Tallenna muutokset",

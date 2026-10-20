@@ -2095,7 +2095,6 @@
   "app.containers.Admin.projects.project.saveToEditForm": "Spremite fazu kako biste dodali pitanja i uvezli izvanmrežne unose.",
   "app.containers.Admin.projects.project.saveToEditSettings": "Prava pristupa, obavijesti i ostale postavke postat će dostupni nakon što spremite fazu.",
   "app.containers.Admin.projects.project.selectMethodContinue": "Nastavi",
-  "app.containers.Admin.projects.project.settingsManagement": "Upravljanje",
   "app.containers.Admin.projects.project.settingsNav": "Postavke",
   "app.containers.Admin.projects.project.settingsResources": "Resursi",
   "app.containers.Admin.projects.project.settingsSaveChanges": "Spremi promjene",
