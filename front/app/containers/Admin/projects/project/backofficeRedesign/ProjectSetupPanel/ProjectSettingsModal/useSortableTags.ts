@@ -13,15 +13,15 @@ const useSortableTags = (projectId: string, topics: IInputTopicData[]) => {
   // A new `topics` array means the server answered, so the draft is stale.
   const ordered = dragState?.base === topics ? dragState.order : topics;
 
-  const moveRow = (fromIndex: number, toIndex: number) => {
+  const reorder = (fromIndex: number, toIndex: number) => {
     const order = [...ordered];
     const [moved] = order.splice(fromIndex, 1);
     order.splice(toIndex, 0, moved);
-    setDragState({ base: topics, order });
+    return order;
   };
 
-  const dropRow = (topicId: string) => {
-    const newIndex = ordered.findIndex(({ id }) => id === topicId);
+  const save = (order: IInputTopicData[], topicId: string) => {
+    const newIndex = order.findIndex(({ id }) => id === topicId);
     const oldIndex = topics.findIndex(({ id }) => id === topicId);
 
     if (newIndex === oldIndex) {
@@ -29,8 +29,10 @@ const useSortableTags = (projectId: string, topics: IInputTopicData[]) => {
       return;
     }
 
-    const previous = ordered.at(newIndex - 1);
-    const next = ordered.at(newIndex + 1);
+    setDragState({ base: topics, order });
+
+    const previous = order.at(newIndex - 1);
+    const next = order.at(newIndex + 1);
 
     moveInputTopic(
       newIndex > 0 && previous
@@ -40,9 +42,22 @@ const useSortableTags = (projectId: string, topics: IInputTopicData[]) => {
     );
   };
 
+  const moveRow = (fromIndex: number, toIndex: number) =>
+    setDragState({ base: topics, order: reorder(fromIndex, toIndex) });
+
+  const dropRow = (topicId: string) => save(ordered, topicId);
+
+  // Keyboard alternative to dragging: moves one step and saves right away.
+  const moveRowBy = (index: number, offset: number) => {
+    const toIndex = index + offset;
+    if (toIndex < 0 || toIndex >= ordered.length) return;
+
+    save(reorder(index, toIndex), ordered[index].id);
+  };
+
   const cancelDrag = () => setDragState(null);
 
-  return { ordered, moveRow, dropRow, cancelDrag };
+  return { ordered, moveRow, moveRowBy, dropRow, cancelDrag };
 };
 
 export default useSortableTags;

@@ -9,8 +9,6 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-import useFiles from 'api/files/useFiles';
-
 import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 
 import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
@@ -19,20 +17,21 @@ import { useIntl } from 'utils/cl-intl';
 
 import AddFilesModal from './AddFilesModal';
 import ManageFilesModal from './ManageFilesModal';
+import useFilesCount from './useFilesCount';
+import { FileUploads } from './useFileUploads';
 
 interface Props {
   projectId: string;
+  fileUploads: FileUploads;
 }
 
-const ResourcesSection = ({ projectId }: Props) => {
+const ResourcesSection = ({ projectId, fileUploads }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: files } = useFiles({ project: [projectId] });
+  const count = useFilesCount(projectId);
   const [manageModalOpened, setManageModalOpened] = useState(false);
   const [addModalOpened, setAddModalOpened] = useState(false);
 
-  if (!files) return null;
-
-  const count = files.data.length;
+  if (count === undefined) return null;
 
   return (
     <SettingsSection
@@ -81,7 +80,7 @@ const ResourcesSection = ({ projectId }: Props) => {
         onAddFiles={() => setAddModalOpened(true)}
       />
       <AddFilesModal
-        projectId={projectId}
+        fileUploads={fileUploads}
         opened={addModalOpened}
         onClose={() => setAddModalOpened(false)}
       />

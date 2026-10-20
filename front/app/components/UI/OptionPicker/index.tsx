@@ -27,7 +27,10 @@ const Search = styled(Box)`
   }
 `;
 
-const TRIGGER_SIZES = {
+const TRIGGER_SIZES: Record<
+  'medium' | 'small',
+  { height?: string; fontSize?: string }
+> = {
   medium: {},
   small: { height: '28px', fontSize: `${fontSizes.xs}px` },
 };
@@ -184,7 +187,8 @@ const OptionPicker = <T extends string>({
         buttonStyle="bo-picker"
         width="auto"
         maxWidth="100%"
-        {...TRIGGER_SIZES[size]}
+        height={TRIGGER_SIZES[size].height}
+        fontSize={TRIGGER_SIZES[size].fontSize}
         bgColor={opened ? colors.grey200 : undefined}
         icon="chevron-down"
         iconPos="right"

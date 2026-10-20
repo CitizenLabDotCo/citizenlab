@@ -22,7 +22,7 @@ import { saveFileToDisk } from 'utils/fileUtils';
 
 import FileActionsMenu, { FileAction } from './FileActionsMenu';
 import FileRow, { FILE_ROW_ACTION_CLASS } from './FileRow';
-import { getCategoryMessage, getFileIcon } from './fileUtils';
+import { getFileIcon } from './fileUtils';
 
 interface Props {
   file: IFileData;
@@ -83,7 +83,7 @@ const ManagedFileRow = ({ file }: Props) => {
                 year: 'numeric',
               })}
               {' · '}
-              {formatMessage(getCategoryMessage(category))}
+              {formatMessage(filesMessages[category])}
               {uploaderId && ' · '}
             </Text>
             {uploaderId && (

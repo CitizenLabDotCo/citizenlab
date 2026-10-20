@@ -33,20 +33,22 @@ interface Props {
 
 interface SectionGroup {
   group?: MessageDescriptor;
-  items: (SettingsModalSection & { index: number })[];
+  items: SettingsModalSection[];
 }
 
 // A tablist may only contain tabs, so each group gets its own tablist,
-// labelled by the group heading that sits next to it.
+// labelled by the group heading that sits next to it. Sections of the same
+// group are pulled together, so a group never shows up twice.
 const groupSections = (sections: SettingsModalSection[]) =>
-  sections.reduce<SectionGroup[]>((groups, section, index) => {
-    const last = groups.at(-1);
-    const item = { ...section, index };
+  sections.reduce<SectionGroup[]>((groups, section) => {
+    const existing = groups.find(
+      ({ group }) => group?.id === section.group?.id
+    );
 
-    if (last && last.group === section.group) {
-      last.items.push(item);
+    if (existing) {
+      existing.items.push(section);
     } else {
-      groups.push({ group: section.group, items: [item] });
+      groups.push({ group: section.group, items: [section] });
     }
 
     return groups;
@@ -68,13 +70,17 @@ const SettingsModal = ({
     initialSection ?? sections[0]?.name
   );
 
+  const groups = groupSections(sections);
+  // Tabs follow the on-screen order, which can differ from `sections`.
+  const orderedSections = groups.flatMap(({ items }) => items);
+
   const selectedIndex = Math.max(
-    sections.findIndex(({ name }) => name === selectedSection),
+    orderedSections.findIndex(({ name }) => name === selectedSection),
     0
   );
 
   const select = (index: number) => {
-    setSelectedSection(sections[index].name);
+    setSelectedSection(orderedSections[index].name);
 
     const tabs =
       navRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]');
@@ -82,7 +88,7 @@ const SettingsModal = ({
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
-    const lastIndex = sections.length - 1;
+    const lastIndex = orderedSections.length - 1;
 
     switch (event.key) {
       case 'ArrowDown':
@@ -106,7 +112,7 @@ const SettingsModal = ({
 
   if (sections.length === 0) return null;
 
-  const section = sections[selectedIndex];
+  const section = orderedSections[selectedIndex];
   const tabId = (name: string) => `${idPrefix}-tab-${name}`;
   const panelId = (name: string) => `${idPrefix}-panel-${name}`;
 
@@ -139,7 +145,7 @@ const SettingsModal = ({
           borderRight={`1px solid ${colors.grey200}`}
           overflowY="auto"
         >
-          {groupSections(sections).map(({ group, items }, groupIndex) => {
+          {groups.map(({ group, items }, groupIndex) => {
             const isFirst = groupIndex === 0;
             const groupLabelId = `${idPrefix}-group-${groupIndex}`;
 
@@ -179,17 +185,21 @@ const SettingsModal = ({
                   flexDirection="column"
                   gap="4px"
                 >
-                  {items.map(({ name, label, icon, index }) => (
-                    <NavItem
-                      key={name}
-                      tabId={tabId(name)}
-                      panelId={panelId(name)}
-                      label={label}
-                      icon={icon}
-                      selected={index === selectedIndex}
-                      onSelect={() => select(index)}
-                    />
-                  ))}
+                  {items.map((item) => {
+                    const index = orderedSections.indexOf(item);
+
+                    return (
+                      <NavItem
+                        key={item.name}
+                        tabId={tabId(item.name)}
+                        panelId={panelId(item.name)}
+                        label={item.label}
+                        icon={item.icon}
+                        selected={index === selectedIndex}
+                        onSelect={() => select(index)}
+                      />
+                    );
+                  })}
                 </Box>
               </Box>
             );

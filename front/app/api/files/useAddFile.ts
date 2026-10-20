@@ -19,7 +19,6 @@ const addFile = async (requestBody: IAddFileProperties) => {
 const useAddFile = () => {
   const queryClient = useQueryClient();
   return useMutation<IFile, CLErrors, IAddFileProperties>({
-    mutationKey: filesKeys.all(),
     mutationFn: addFile,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: filesKeys.lists() });

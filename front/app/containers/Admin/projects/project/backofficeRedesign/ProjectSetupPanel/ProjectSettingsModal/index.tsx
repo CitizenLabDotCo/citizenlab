@@ -1,11 +1,9 @@
 import React, { useRef, useState } from 'react';
 
 import { Box, Button, Tooltip, bo } from '@citizenlab/cl2-component-library';
-import { useIsMutating } from '@tanstack/react-query';
 import { isEmpty } from 'lodash-es';
 import { CLErrors } from 'typings';
 
-import filesKeys from 'api/files/keys';
 import projectsKeys from 'api/projects/keys';
 import { IProjectData, IUpdatedProjectProperties } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
@@ -28,6 +26,7 @@ import GeneralSection from './GeneralSection';
 import PerspectivesSection from './PerspectivesSection';
 import ResourcesSection from './ResourcesSection';
 import TagsSection from './TagsSection';
+import useFileUploads from './useFileUploads';
 
 interface Props {
   project: IProjectData;
@@ -44,7 +43,7 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
   const perspectivesActive = useFeatureFlag({
     name: 'live_auto_input_topics',
   });
-  const filesUploading = useIsMutating({ mutationKey: filesKeys.all() }) > 0;
+  const fileUploads = useFileUploads(projectId);
 
   const [processing, setProcessing] = useState(false);
   // `processing` only updates on the next render, so a quick double click
@@ -157,7 +156,9 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       group: messages.settingsProjectGroup,
       label: messages.settingsResources,
       icon: 'paperclip',
-      content: <ResourcesSection projectId={projectId} />,
+      content: (
+        <ResourcesSection projectId={projectId} fileUploads={fileUploads} />
+      ),
     },
     {
       name: 'tags',
@@ -173,7 +174,14 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
             group: messages.settingsInputsGroup,
             label: messages.settingsPerspectives,
             icon: 'stars',
-            content: <PerspectivesSection projectId={projectId} />,
+            content: (
+              <PerspectivesSection
+                enabled={projectAttrs.live_auto_input_topics_enabled}
+                onChange={(live_auto_input_topics_enabled) =>
+                  applyDiff({ live_auto_input_topics_enabled })
+                }
+              />
+            ),
           } satisfies SettingsModalSection,
         ]
       : []),
@@ -188,7 +196,7 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       footer={
         <Tooltip
           content={formatMessage(messages.filesStillUploading)}
-          disabled={!filesUploading}
+          disabled={!fileUploads.uploading}
           theme="dark"
           placement="top"
         >
@@ -200,7 +208,7 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
               padding={bo.buttonMedium.padding}
               fontSize={bo.buttonMedium.fontSize}
               processing={processing}
-              disabled={filesUploading}
+              disabled={fileUploads.uploading}
               onClick={handleSave}
               id="e2e-project-settings-save"
             >

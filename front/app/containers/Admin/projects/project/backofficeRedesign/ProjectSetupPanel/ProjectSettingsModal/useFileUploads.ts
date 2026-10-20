@@ -135,4 +135,6 @@ const useFileUploads = (projectId: string) => {
   };
 };
 
+export type FileUploads = ReturnType<typeof useFileUploads>;
+
 export default useFileUploads;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { IInputTopicData } from 'api/input_topics/types';
 import useDeleteInputTopic from 'api/input_topics/useDeleteInputTopic';
@@ -60,13 +60,19 @@ const useInputTopicsEditor = (projectId: string) => {
       ? messages.deleteInputTopicWithChildrenConfirmation
       : messages.deleteInputTopicConfirmation;
 
-  const rootTopicsCount = (inputTopics?.data ?? []).filter(
-    (topic) => !topic.relationships.parent?.data
-  ).length;
+  // Memoized so callers can tell a refetch apart from a re-render.
+  const rootTopics = useMemo(
+    () =>
+      (inputTopics?.data ?? []).filter(
+        (topic) => !topic.relationships.parent?.data
+      ),
+    [inputTopics]
+  );
 
   return {
     inputTopics,
-    isLastRootTopic: rootTopicsCount === 1,
+    rootTopics,
+    isLastRootTopic: rootTopics.length === 1,
     openAdd,
     openAddSubtopic,
     openEdit,

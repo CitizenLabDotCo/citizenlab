@@ -25,15 +25,15 @@ import { returnFileSize } from 'utils/fileUtils';
 
 import { FILE_MODAL_HEIGHT } from './FileRow';
 import UploadingFileRow from './UploadingFileRow';
-import useFileUploads from './useFileUploads';
+import { FileUploads } from './useFileUploads';
 
 interface Props {
-  projectId: string;
+  fileUploads: FileUploads;
   opened: boolean;
   onClose: () => void;
 }
 
-const AddFilesModal = ({ projectId, opened, onClose }: Props) => {
+const AddFilesModal = ({ fileUploads, opened, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const {
     uploads,
@@ -49,7 +49,7 @@ const AddFilesModal = ({ projectId, opened, onClose }: Props) => {
     setCategory,
     remove,
     reset,
-  } = useFileUploads(projectId);
+  } = fileUploads;
 
   const { getRootProps, getInputProps, open } = useDropzone({
     multiple: true,
@@ -62,7 +62,9 @@ const AddFilesModal = ({ projectId, opened, onClose }: Props) => {
   const totalSize = uploads.reduce((sum, { file }) => sum + file.size, 0);
 
   const handleClose = () => {
-    reset();
+    // Uploads keep running after the modal closes, so their results stay
+    // until they finish and the admin can reopen the modal to see them.
+    if (!uploading) reset();
     onClose();
   };
 

@@ -20,7 +20,7 @@ import { useIntl } from 'utils/cl-intl';
 import { returnFileSize } from 'utils/fileUtils';
 
 import FileRow, { FILE_ROW_ACTION_CLASS } from './FileRow';
-import { getCategoryMessage, getFileIcon } from './fileUtils';
+import { getFileIcon } from './fileUtils';
 
 interface Props {
   file: File;
@@ -75,7 +75,7 @@ const UploadingFileRow = ({
               placeholder={formatMessage(filesMessages.selectFileType)}
               options={FILE_CATEGORIES.map((option) => ({
                 value: option,
-                label: formatMessage(getCategoryMessage(option)),
+                label: formatMessage(filesMessages[option]),
               }))}
               onChange={(option) => onCategoryChange(option.value)}
             />

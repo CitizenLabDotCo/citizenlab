@@ -102,6 +102,28 @@ describe('useSortableTags', () => {
     expect(ids(result.current.ordered)).toEqual(['_1', '_2', '_3']);
   });
 
+  it('moves a tag one step with the keyboard and saves it', () => {
+    const { result } = renderHook(() => useSortableTags('project', topics));
+
+    act(() => result.current.moveRowBy(0, 1));
+
+    expect(ids(result.current.ordered)).toEqual(['_2', '_1', '_3']);
+    expect(mockMoveInputTopic).toHaveBeenCalledWith(
+      { projectId: 'project', id: '_1', position: 'right', target_id: '_2' },
+      expect.anything()
+    );
+  });
+
+  it('ignores keyboard moves past either end', () => {
+    const { result } = renderHook(() => useSortableTags('project', topics));
+
+    act(() => result.current.moveRowBy(0, -1));
+    act(() => result.current.moveRowBy(2, 1));
+
+    expect(mockMoveInputTopic).not.toHaveBeenCalled();
+    expect(ids(result.current.ordered)).toEqual(['_1', '_2', '_3']);
+  });
+
   it('shows the refetched tags once they arrive', () => {
     const { result, rerender } = renderHook(
       ({ list }) => useSortableTags('project', list),
