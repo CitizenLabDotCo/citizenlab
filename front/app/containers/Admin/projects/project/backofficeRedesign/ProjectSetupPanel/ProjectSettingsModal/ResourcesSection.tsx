@@ -10,11 +10,11 @@ import {
 
 import useFiles from 'api/files/useFiles';
 
+import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
+
 import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
 
 import { useIntl } from 'utils/cl-intl';
-
-import messages from '../../messages';
 
 import AddFilesModal from './AddFilesModal';
 import ManageFilesModal from './ManageFilesModal';

@@ -13,13 +13,12 @@ import { IInputTopicData } from 'api/input_topics/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 import topicsMessages from 'containers/Admin/projects/project/topics/messages';
 
 import T from 'components/T';
 
 import { useIntl } from 'utils/cl-intl';
-
-import messages from '../../messages';
 
 import SortableTag, {
   ROOT_TAG_TYPE,

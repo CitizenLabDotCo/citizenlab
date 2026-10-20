@@ -13,6 +13,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
+import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 import InputTopicModal from 'containers/Admin/projects/project/topics/InputTopicModal';
 import topicsMessages from 'containers/Admin/projects/project/topics/messages';
 import useInputTopicsEditor from 'containers/Admin/projects/project/topics/useInputTopicsEditor';
@@ -23,8 +24,6 @@ import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { usePermission } from 'utils/permissions';
-
-import messages from '../../messages';
 
 import SortableTag, { ROOT_TAG_TYPE } from './SortableTag';
 import TagGroup from './TagGroup';

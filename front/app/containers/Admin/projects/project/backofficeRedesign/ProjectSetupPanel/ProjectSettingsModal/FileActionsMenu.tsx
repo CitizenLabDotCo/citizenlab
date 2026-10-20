@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { KeyboardEvent, useLayoutEffect, useRef, useState } from 'react';
 
 import { Box, Button, Dropdown, bo } from '@citizenlab/cl2-component-library';
 
@@ -40,8 +40,16 @@ const FileActionsMenu = ({ ariaLabel, actions }: Props) => {
     setOpenUp(placement.openUp);
   }, [opened]);
 
+  // Escape should close only this menu, not the modal around it.
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key !== 'Escape' || !opened) return;
+
+    event.stopPropagation();
+    setOpened(false);
+  };
+
   return (
-    <Box position="relative" ref={triggerRef}>
+    <Box position="relative" ref={triggerRef} onKeyDown={handleKeyDown}>
       <Button
         buttonStyle="bo-text"
         icon="dots-horizontal"

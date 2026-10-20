@@ -13,12 +13,11 @@ import {
 import { FILE_CATEGORIES, FileCategory } from 'api/files/types';
 
 import { UploadStatus } from 'containers/Admin/projects/_shared/fileUploads/types';
+import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import { returnFileSize } from 'utils/fileUtils';
-
-import messages from '../../messages';
 
 import FileRow, { FILE_ROW_ACTION_CLASS } from './FileRow';
 import { getCategoryMessage, getFileIcon } from './fileUtils';

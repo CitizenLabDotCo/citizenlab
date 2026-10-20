@@ -6,13 +6,12 @@ import useContextPickers from 'containers/Admin/projects/_shared/components/Proj
 import contextMessages from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/messages';
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import { useCanEditProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
+import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 
 import Error from 'components/UI/Error';
 import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
 
 import { useIntl } from 'utils/cl-intl';
-
-import messages from '../../messages';
 
 interface Props {
   spaceId: string | null;

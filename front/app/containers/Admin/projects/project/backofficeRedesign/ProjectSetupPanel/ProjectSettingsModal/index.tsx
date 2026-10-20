@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
 import { useIsMutating } from '@tanstack/react-query';
@@ -14,6 +14,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import { useValidateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
+import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 
 import SettingsModal, {
   SettingsModalSection,
@@ -22,8 +23,6 @@ import SettingsModal, {
 import { useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { validateSlug } from 'utils/textUtils';
-
-import messages from '../../messages';
 
 import GeneralSection from './GeneralSection';
 import PerspectivesSection from './PerspectivesSection';
@@ -48,6 +47,9 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
   const filesUploading = useIsMutating({ mutationKey: filesKeys.all() }) > 0;
 
   const [processing, setProcessing] = useState(false);
+  // `processing` only updates on the next render, so a quick double click
+  // would otherwise save twice.
+  const savingRef = useRef(false);
   const [apiErrors, setApiErrors] = useState<CLErrors>({});
   const [projectAttributesDiff, setProjectAttributesDiff] =
     useState<IUpdatedProjectProperties>({});
@@ -59,8 +61,10 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
   const projectInRoot =
     !project.attributes.space_id && !project.attributes.folder_id;
 
-  const applyDiff = (diff: IUpdatedProjectProperties) =>
+  const applyDiff = (diff: IUpdatedProjectProperties) => {
     setProjectAttributesDiff((current) => ({ ...current, ...diff }));
+    setApiErrors({});
+  };
 
   const handleSlugChange = (nextSlug: string) => {
     applyDiff({ slug: nextSlug });
@@ -76,7 +80,7 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
   const projectAttrs = { ...project.attributes, ...projectAttributesDiff };
 
   const handleSave = async () => {
-    if (processing) return;
+    if (savingRef.current) return;
 
     if (
       !validateProjectContext({
@@ -91,6 +95,7 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
 
     if (showSlugErrorMessage) return;
 
+    savingRef.current = true;
     try {
       setProcessing(true);
 
@@ -103,10 +108,13 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       });
 
       setProjectAttributesDiff({});
-      setProcessing(false);
+      setApiErrors({});
+      setProjectContextError(false);
       onClose();
     } catch (errors) {
       setApiErrors((errors as { errors: CLErrors }).errors);
+    } finally {
+      savingRef.current = false;
       setProcessing(false);
     }
   };

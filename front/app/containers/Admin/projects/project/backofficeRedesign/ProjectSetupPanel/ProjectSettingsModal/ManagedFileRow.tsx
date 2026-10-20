@@ -11,6 +11,7 @@ import {
 import { IFileData } from 'api/files/types';
 import useDeleteFile from 'api/files/useDeleteFile';
 
+import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
 
 import Modal from 'components/UI/Modal';
@@ -18,8 +19,6 @@ import UserName from 'components/UI/UserName';
 
 import { useIntl } from 'utils/cl-intl';
 import { saveFileToDisk } from 'utils/fileUtils';
-
-import messages from '../../messages';
 
 import FileActionsMenu, { FileAction } from './FileActionsMenu';
 import FileRow, { FILE_ROW_ACTION_CLASS } from './FileRow';

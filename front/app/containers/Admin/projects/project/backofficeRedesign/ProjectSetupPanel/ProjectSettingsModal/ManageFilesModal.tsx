@@ -4,14 +4,13 @@ import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
 import useFiles from 'api/files/useFiles';
 
+import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
 
 import Modal from 'components/UI/Modal';
 import SearchInput from 'components/UI/SearchInput';
 
 import { useIntl } from 'utils/cl-intl';
-
-import messages from '../../messages';
 
 import ManagedFileRow from './ManagedFileRow';
 

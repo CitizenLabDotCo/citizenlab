@@ -3,6 +3,7 @@ import React from 'react';
 import { CLErrors, Multiloc } from 'typings';
 
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
+import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 
 import BoSlugInput from 'components/admin/SlugInput/BoSlugInput';
 import Error from 'components/UI/Error';
@@ -11,8 +12,6 @@ import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
 import SettingsSections from 'components/UI/SettingsModal/SettingsSections';
 
 import { useIntl } from 'utils/cl-intl';
-
-import messages from '../../messages';
 
 import ContextSection from './ContextSection';
 import ResetSection from './ResetSection';
