@@ -26,7 +26,6 @@ import { validateSlug } from 'utils/textUtils';
 import messages from '../../messages';
 
 import GeneralSection from './GeneralSection';
-import ManagementSection from './ManagementSection';
 import PerspectivesSection from './PerspectivesSection';
 import ResourcesSection from './ResourcesSection';
 import TagsSection from './TagsSection';
@@ -143,13 +142,6 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
           onSlugChange={handleSlugChange}
         />
       ),
-    },
-    {
-      name: 'management',
-      group: messages.settingsProjectGroup,
-      label: messages.settingsManagement,
-      icon: 'users',
-      content: <ManagementSection projectId={projectId} />,
     },
     {
       name: 'resources',

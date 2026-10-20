@@ -362,10 +362,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.settingsResources',
     defaultMessage: 'Resources',
   },
-  settingsManagement: {
-    id: 'app.containers.Admin.projects.project.settingsManagement',
-    defaultMessage: 'Management',
-  },
   listing: {
     id: 'app.containers.Admin.projects.project.listing',
     defaultMessage: 'Listing',

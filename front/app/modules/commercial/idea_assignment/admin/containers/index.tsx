@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
+import { IconTooltip } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { Section, SubSectionTitle } from 'components/admin/Section';
@@ -48,9 +48,7 @@ const InputAssignment = ({ projectId }: Props) => {
           }
         />
       </SubSectionTitle>
-      <Box width="300px">
-        <AssigneeSelector projectId={projectId} />
-      </Box>
+      <AssigneeSelector projectId={projectId} />
     </InputAssignmentSection>
   );
 };

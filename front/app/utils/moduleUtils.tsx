@@ -69,9 +69,6 @@ export interface OutletsPropertyMap {
     projectId: string;
     children: OutletRenderProps;
   };
-  'app.containers.Admin.projects.project.settings.management': {
-    projectId: string;
-  };
   'app.containers.Admin.ideas.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {
     onData: (data: InsertConfigurationOptions<NavItem>) => void;
