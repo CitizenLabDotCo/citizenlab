@@ -18,6 +18,11 @@ import {
   IPhasePermissionAction,
 } from '../../app/api/phase_permissions/types';
 import { TReactionMode } from '../../app/api/idea_reactions/types';
+import {
+  IdeaStatusParticipationMethod,
+  IIdeaStatusData,
+  InputStatusCode,
+} from '../../app/api/idea_statuses/types';
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
@@ -55,6 +60,7 @@ declare global {
       getArea: typeof getArea;
       apiCreateIdea: typeof apiCreateIdea;
       apiRemoveIdea: typeof apiRemoveIdea;
+      apiSetIdeaStatus: typeof apiSetIdeaStatus;
       apiReactToIdea: typeof apiReactToIdea;
       apiCreateOfficialFeedbackForIdea: typeof apiCreateOfficialFeedbackForIdea;
       apiAddComment: typeof apiAddComment;
@@ -779,6 +785,48 @@ function apiRemoveIdea(ideaId: string) {
       method: 'DELETE',
       url: `web_api/v1/ideas/${ideaId}`,
     });
+  });
+}
+
+// Only statuses that `can_manually_transition_to?` are accepted by the API;
+// `threshold_reached` and `expired` are reached by the automated transitions only.
+function apiSetIdeaStatus({
+  ideaId,
+  statusCode,
+  participationMethod,
+}: {
+  ideaId: string;
+  statusCode: InputStatusCode;
+  participationMethod: IdeaStatusParticipationMethod;
+}) {
+  return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
+    const adminJwt = response.body.jwt;
+
+    return cy
+      .request({
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${adminJwt}`,
+        },
+        method: 'GET',
+        url: `web_api/v1/idea_statuses?participation_method=${participationMethod}`,
+      })
+      .then((statuses) => {
+        const status = statuses.body.data.find(
+          (ideaStatus: IIdeaStatusData) =>
+            ideaStatus.attributes.code === statusCode
+        );
+
+        return cy.request({
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminJwt}`,
+          },
+          method: 'PATCH',
+          url: `web_api/v1/ideas/${ideaId}`,
+          body: { idea: { idea_status_id: status.id } },
+        });
+      });
   });
 }
 
@@ -2564,6 +2612,7 @@ Cypress.Commands.add('getAdminAuthUser', getAdminAuthUser);
 Cypress.Commands.add('getArea', getArea);
 Cypress.Commands.add('apiCreateIdea', apiCreateIdea);
 Cypress.Commands.add('apiRemoveIdea', apiRemoveIdea);
+Cypress.Commands.add('apiSetIdeaStatus', apiSetIdeaStatus);
 Cypress.Commands.add('apiReactToIdea', apiReactToIdea);
 Cypress.Commands.add(
   'apiCreateOfficialFeedbackForIdea',
