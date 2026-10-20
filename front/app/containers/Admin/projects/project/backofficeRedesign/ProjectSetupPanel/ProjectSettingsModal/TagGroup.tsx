@@ -25,8 +25,8 @@ import SortableTag, {
   SortableTagRenderProps,
 } from './SortableTag';
 import TagActions from './TagActions';
+import { getSiblings } from './tagUtils';
 import useSortableTags from './useSortableTags';
-import { getSiblings } from './useTagsDraft';
 
 interface Props {
   topic: IInputTopicData;
