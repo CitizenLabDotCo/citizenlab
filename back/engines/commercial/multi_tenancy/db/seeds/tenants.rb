@@ -241,6 +241,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            input_form_answer_filters: {
+              enabled: true,
+              allowed: true
+            },
             report_builder: {
               enabled: true,
               allowed: true
