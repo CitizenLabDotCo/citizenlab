@@ -124,6 +124,7 @@ export interface IAppConfigurationSettings {
   anonymous_participation?: AppConfigurationFeature;
   form_mapping?: AppConfigurationFeature;
   input_form_answer_visibility?: AppConfigurationFeature;
+  input_form_answer_filters?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
   intercom?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {

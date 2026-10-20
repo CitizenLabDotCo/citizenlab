@@ -16,6 +16,8 @@ const question: IFlatCustomField = {
   description_multiloc: {},
   input_type: 'linear_scale',
   required: false,
+  answers_visible_to: 'moderators',
+  show_as_filter: false,
   enabled: true,
   ordering: 0,
   created_at: '',

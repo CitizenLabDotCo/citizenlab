@@ -10,6 +10,8 @@ describe('clearOptionIds', () => {
       input_type: 'select',
       logic: {},
       required: false,
+      answers_visible_to: 'moderators',
+      show_as_filter: false,
       enabled: true,
       title_multiloc: {
         en: 'Your question',
