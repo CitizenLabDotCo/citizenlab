@@ -11,7 +11,6 @@ interface DragItem {
 }
 
 export interface SortableTagRenderProps {
-  // The row the user grabs; for a group this is its header, not its subtags.
   rowRef: RefObject<HTMLDivElement>;
   handle: ReactNode;
 }

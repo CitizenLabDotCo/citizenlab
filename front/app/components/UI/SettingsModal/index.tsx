@@ -18,7 +18,6 @@ export interface SettingsModalSection {
   label: MessageDescriptor;
   icon: IconNames;
   content: React.ReactNode;
-  /** Sections that share a group are listed under its label in the sidebar. */
   group?: MessageDescriptor;
 }
 

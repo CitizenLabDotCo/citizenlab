@@ -3,8 +3,6 @@ import { useState } from 'react';
 import { IInputTopicData } from 'api/input_topics/types';
 import useMoveInputTopic from 'api/input_topics/useMoveInputTopic';
 
-// Keeps a group's dragged order on screen until the refetched tags arrive,
-// then moves the dropped tag next to its new sibling.
 const useSortableTags = (projectId: string, topics: IInputTopicData[]) => {
   const { mutate: moveInputTopic } = useMoveInputTopic();
   const [dragState, setDragState] = useState<{

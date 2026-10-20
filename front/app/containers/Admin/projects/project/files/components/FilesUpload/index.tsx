@@ -80,7 +80,6 @@ const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
   });
 
   const handleUpload = () => {
-    // Track each file that will be sent, with relevant metadata.
     fileList
       .filter(({ status }) => status === 'queued')
       .forEach((file) => {

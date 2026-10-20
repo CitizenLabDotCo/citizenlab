@@ -6,8 +6,6 @@ import useInputTopics from 'api/input_topics/useInputTopics';
 
 import messages from './messages';
 
-// The add, edit and delete flows of a project's input tags. Callers render
-// the list and both modals.
 const useInputTopicsEditor = (projectId: string) => {
   const { data: inputTopics } = useInputTopics(projectId);
   const { mutate: deleteInputTopic, isPending: isDeleting } =

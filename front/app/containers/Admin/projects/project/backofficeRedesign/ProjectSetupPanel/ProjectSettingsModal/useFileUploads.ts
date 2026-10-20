@@ -43,8 +43,6 @@ const useFileUploads = (projectId: string) => {
       )
     );
 
-  // Uploads keep running after the modal closes; the settings modal blocks
-  // saving until they finish.
   const startUpload = async ({
     key,
     file,
