@@ -34,7 +34,10 @@ module ContentBuilder
   class QuerySnapshot < ApplicationRecord
     belongs_to :layout, class_name: 'ContentBuilder::Layout'
 
-    validates :query_hash, presence: true, uniqueness: { scope: :layout_id }
+    # Uniqueness is the index's job alone: a model validation would turn the race two
+    # blocks asking the same question can lose into RecordInvalid, which
+    # create_or_find_by! does not recover from.
+    validates :query_hash, presence: true
     validates :sql, presence: true
     validates :executed_at, presence: true
 

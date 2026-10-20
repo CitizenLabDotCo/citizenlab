@@ -12,7 +12,9 @@ module ContentBuilder
   class ScopedReportingToken
     SCOPE = 'reporting_queries'
     ALGORITHM = 'HS256'
-    DEFAULT_TTL = 10.minutes
+    # One render's worth: the sandbox client abandons the render after 90s, so a token
+    # that outlives that by much is only a window in which a stolen one still works.
+    DEFAULT_TTL = 2.minutes
 
     class << self
       def mint(layout_id:, user_id:, ttl: DEFAULT_TTL)
@@ -39,10 +41,17 @@ module ContentBuilder
 
         payload['scope'] == SCOPE &&
           payload['layout_id'] == layout_id &&
-          payload['tenant'] == Tenant.current.id
+          payload['tenant'] == Tenant.current.id &&
+          minter_still_active?(payload['user_id'])
       end
 
       private
+
+      # The token is minted for a person, so it stops working when they do: blocking
+      # someone should not leave a credential of theirs running for its full life.
+      def minter_still_active?(user_id)
+        user_id.present? && User.find_by(id: user_id)&.active? == true
+      end
 
       def decode(token)
         JWT.decode(token, secret, true, algorithm: ALGORITHM).first

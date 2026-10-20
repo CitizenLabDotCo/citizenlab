@@ -15,14 +15,26 @@ RSpec.describe ContentBuilder::QuerySnapshot do
   end
 
   describe 'uniqueness' do
+    # Enforced by the index rather than a validation, so that create_or_find_by! can
+    # recover from the race instead of raising RecordInvalid at it.
     it 'stores one answer per question per layout' do
       snapshot = create(:query_snapshot)
       duplicate = build(
         :query_snapshot, layout: snapshot.layout, sql: snapshot.sql, query_hash: snapshot.query_hash
       )
 
-      expect(duplicate).to be_invalid
-      expect(duplicate.errors.details[:query_hash]).to include(hash_including(error: :taken))
+      expect { duplicate.save! }.to raise_error ActiveRecord::RecordNotUnique
+    end
+
+    it 'hands the loser of a race what the winner stored' do
+      stored = create(:query_snapshot)
+
+      found = described_class.create_or_find_by!(
+        layout_id: stored.layout_id, query_hash: stored.query_hash
+      ) { |s| s.assign_attributes(sql: stored.sql, data: { 'rows' => [] }, executed_at: Time.current) }
+
+      expect(found.id).to eq stored.id
+      expect(found.data).to eq stored.data
     end
 
     it 'lets two layouts each keep their own answer to the same question' do
