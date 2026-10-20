@@ -32,7 +32,7 @@ import { usePermission } from 'utils/permissions';
 import SortableTag, { ROOT_TAG_TYPE } from './SortableTag';
 import TagGroup from './TagGroup';
 import useSortableTags from './useSortableTags';
-import { TagsDraft } from './useTagsDraft';
+import { TagsDraft, getSiblings } from './useTagsDraft';
 
 const TOPICS_SETTINGS_PATH = '/admin/settings/topics/input';
 
@@ -59,10 +59,7 @@ const TagsSection = ({ draft }: Props) => {
   );
 
   const { tags } = draft;
-  const rootTopics = useMemo(
-    () => (tags ?? []).filter((tag) => !tag.relationships.parent?.data),
-    [tags]
-  );
+  const rootTopics = useMemo(() => getSiblings(tags ?? []), [tags]);
   const { ordered, moveRow, dropRow, cancelDrag } = useSortableTags(
     rootTopics,
     draft.reorder
@@ -72,8 +69,7 @@ const TagsSection = ({ draft }: Props) => {
 
   const isLastRootTopic = rootTopics.length === 1;
   const deleteHasSubtags =
-    !!topicToDelete &&
-    tags.some((tag) => tag.relationships.parent?.data?.id === topicToDelete.id);
+    !!topicToDelete && getSiblings(tags, topicToDelete.id).length > 0;
 
   const saveTopic = (values: InputTopicFormValues) => {
     if (!editing) return;

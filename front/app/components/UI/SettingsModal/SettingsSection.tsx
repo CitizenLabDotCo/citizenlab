@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  IconTooltip,
-  Text,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 // No Text variant has the 13px / 500 section title this modal uses.
@@ -23,7 +18,6 @@ const Description = styled(Text)`
 interface Props {
   title: string;
   titleVariant?: 'heading' | 'label';
-  tooltip?: string | JSX.Element;
   description?: React.ReactNode;
   action?: React.ReactNode;
   children?: React.ReactNode;
@@ -32,7 +26,6 @@ interface Props {
 const SettingsSection = ({
   title,
   titleVariant = 'heading',
-  tooltip,
   description,
   action,
   children,
@@ -60,14 +53,6 @@ const SettingsSection = ({
             >
               {title}
             </Text>
-          )}
-          {tooltip && (
-            <IconTooltip
-              content={tooltip}
-              icon="info-outline"
-              iconSize="14px"
-              iconColor={colors.coolGrey500}
-            />
           )}
         </Box>
         {description && (

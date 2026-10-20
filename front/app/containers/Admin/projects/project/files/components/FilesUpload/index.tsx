@@ -14,7 +14,6 @@ import { UploadStatus } from 'containers/Admin/projects/_shared/fileUploads/type
 import {
   MAX_FILES,
   MAX_FILE_SIZE,
-  countFilesWithStatus,
   trackFileUpload,
 } from 'containers/Admin/projects/_shared/fileUploads/utils';
 
@@ -28,6 +27,7 @@ import FileUploadActions from './components/FileUploadActions';
 import InformationSection from './components/InformationSection/index';
 import SelectedFile from './components/SelectedFile';
 import { FileWithMeta } from './types';
+import { countFilesWithStatus } from './utils';
 
 type Props = {
   setModalOpen?: (open: boolean) => void;

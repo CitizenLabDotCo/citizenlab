@@ -62,30 +62,16 @@ const useFilesDraft = (projectId: string) => {
     file,
     category,
     aiProcessingAllowed = false,
-  }: Upload): Promise<boolean> => {
+  }: Upload) => {
     trackFileUpload({ file, projectId, user, aiProcessingAllowed });
-    try {
-      const content = await getBase64FromFile(file);
-      await addFile({
-        content,
-        project: projectId,
-        name: file.name,
-        category: category ?? 'other',
-        ai_processing_allowed: aiProcessingAllowed,
-      });
-      return true;
-    } catch {
-      return false;
-    }
-  };
-
-  const remove = async (fileId: string): Promise<boolean> => {
-    try {
-      await deleteFile(fileId);
-      return true;
-    } catch {
-      return false;
-    }
+    const content = await getBase64FromFile(file);
+    return addFile({
+      content,
+      project: projectId,
+      name: file.name,
+      category: category ?? 'other',
+      ai_processing_allowed: aiProcessingAllowed,
+    });
   };
 
   // Returns whether everything was saved. Failed uploads stay in the draft
@@ -96,18 +82,20 @@ const useFilesDraft = (projectId: string) => {
     );
 
     const [uploaded, deleted] = await Promise.all([
-      Promise.all(uploads.map(upload)),
-      Promise.all(deletedIds.map(remove)),
+      Promise.allSettled(uploads.map(upload)),
+      Promise.allSettled(deletedIds.map((id) => deleteFile(id))),
     ]);
+    const failed = ({ status }: PromiseSettledResult<unknown>) =>
+      status === 'rejected';
 
     setUploads(
       uploads
-        .filter((_, index) => !uploaded[index])
+        .filter((_, index) => failed(uploaded[index]))
         .map((upload) => ({ ...upload, status: 'error' }))
     );
-    setDeletedIds(deletedIds.filter((_, index) => !deleted[index]));
+    setDeletedIds(deletedIds.filter((_, index) => failed(deleted[index])));
 
-    return uploaded.every(Boolean) && deleted.every(Boolean);
+    return !uploaded.some(failed) && !deleted.some(failed);
   };
 
   const reset = () => {

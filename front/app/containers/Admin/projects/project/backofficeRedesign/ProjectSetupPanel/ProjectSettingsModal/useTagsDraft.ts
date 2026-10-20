@@ -1,5 +1,7 @@
 import { useRef, useState } from 'react';
 
+import { isEqual } from 'lodash-es';
+
 import { IInputTopicData } from 'api/input_topics/types';
 import useAddInputTopic from 'api/input_topics/useAddInputTopic';
 import useDeleteInputTopic from 'api/input_topics/useDeleteInputTopic';
@@ -16,14 +18,15 @@ const isDraftId = (id: string) => id.startsWith(DRAFT_ID_PREFIX);
 const getParentId = (tag: IInputTopicData) =>
   tag.relationships.parent?.data?.id;
 
-const getSiblings = (tags: IInputTopicData[], parentId?: string) =>
+export const getSiblings = (tags: IInputTopicData[], parentId?: string) =>
   tags.filter((tag) => getParentId(tag) === parentId);
 
 const hasChanged = (saved: IInputTopicData, draft: IInputTopicData) =>
-  JSON.stringify(saved.attributes.title_multiloc) !==
-    JSON.stringify(draft.attributes.title_multiloc) ||
-  JSON.stringify(saved.attributes.description_multiloc) !==
-    JSON.stringify(draft.attributes.description_multiloc) ||
+  !isEqual(saved.attributes.title_multiloc, draft.attributes.title_multiloc) ||
+  !isEqual(
+    saved.attributes.description_multiloc,
+    draft.attributes.description_multiloc
+  ) ||
   saved.attributes.icon !== draft.attributes.icon;
 
 // Tag changes stay in this draft until the settings modal is saved. The draft
@@ -103,8 +106,10 @@ const useTagsDraft = (projectId: string) => {
       );
     });
 
+  // Returns how many tags were moved.
   const moveToOrder = async (savedIds: string[], draftIds: string[]) => {
     const order = [...savedIds];
+    let moves = 0;
 
     for (const [index, id] of draftIds.entries()) {
       if (order[index] === id) continue;
@@ -114,9 +119,12 @@ const useTagsDraft = (projectId: string) => {
           ? { projectId, id, position: 'left', target_id: order[0] }
           : { projectId, id, position: 'right', target_id: draftIds[index - 1] }
       );
+      moves++;
       order.splice(order.indexOf(id), 1);
       order.splice(index, 0, id);
     }
+
+    return moves;
   };
 
   // Returns whether everything was saved. What failed stays in the draft, so
@@ -144,22 +152,28 @@ const useTagsDraft = (projectId: string) => {
       }
     }
 
-    for (const tag of draft) {
-      const savedTag = savedById.get(tag.id);
-      if (savedTag && hasChanged(savedTag, tag)) {
+    // Edits don't change the tree, so unlike the other steps they can run
+    // at the same time.
+    await Promise.all(
+      draft.flatMap((tag) => {
+        const savedTag = savedById.get(tag.id);
+        if (!savedTag || !hasChanged(savedTag, tag)) return [];
+
         const { title_multiloc, description_multiloc, icon, depth } =
           tag.attributes;
-        await attempt(() =>
-          updateInputTopic({
-            projectId,
-            id: tag.id,
-            title_multiloc,
-            description_multiloc,
-            ...(depth === 0 ? { icon } : {}),
-          })
-        );
-      }
-    }
+        return [
+          attempt(() =>
+            updateInputTopic({
+              projectId,
+              id: tag.id,
+              title_multiloc,
+              description_multiloc,
+              ...(depth === 0 ? { icon } : {}),
+            })
+          ),
+        ];
+      })
+    );
 
     const createdIds = new Map<string, string>();
     const realId = (id: string) => createdIds.get(id) ?? id;
@@ -205,6 +219,7 @@ const useTagsDraft = (projectId: string) => {
 
     // New tags are added at the end of their group, so the order is compared
     // with the list as the server now has it.
+    let moved = 0;
     const { data: current } = await refetch();
     if (current) {
       const rootIds = nextDraft
@@ -220,11 +235,14 @@ const useTagsDraft = (projectId: string) => {
           .map(({ id }) => id)
           .filter((id) => savedIds.includes(id));
 
-        await attempt(() => moveToOrder(savedIds, draftOrder));
+        await attempt(async () => {
+          moved += await moveToOrder(savedIds, draftOrder);
+        });
       }
     }
 
-    await refetch();
+    // Without moves, the list fetched above is already up to date.
+    if (moved > 0) await refetch();
     setDraft(saved ? null : nextDraft);
     return saved;
   };

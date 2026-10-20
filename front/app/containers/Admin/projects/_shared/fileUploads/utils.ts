@@ -3,15 +3,9 @@ import { IUser } from 'api/users/types';
 import { trackEventByName } from 'utils/analytics';
 
 import tracks from './tracks';
-import { UploadStatus } from './types';
 
 export const MAX_FILE_SIZE = 50 * 1024 * 1024;
 export const MAX_FILES = 35;
-
-export const countFilesWithStatus = (
-  files: { status: UploadStatus }[],
-  status: UploadStatus
-) => files.filter((file) => file.status === status).length;
 
 export const trackFileUpload = ({
   file,

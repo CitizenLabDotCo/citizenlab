@@ -26,6 +26,7 @@ import SortableTag, {
 } from './SortableTag';
 import TagActions from './TagActions';
 import useSortableTags from './useSortableTags';
+import { getSiblings } from './useTagsDraft';
 
 interface Props {
   topic: IInputTopicData;
@@ -60,10 +61,7 @@ const TagGroup = ({
   );
 
   const subtopics = useMemo(
-    () =>
-      allTopics.filter(
-        (subtopic) => subtopic.relationships.parent?.data?.id === topic.id
-      ),
+    () => getSiblings(allTopics, topic.id),
     [allTopics, topic.id]
   );
   const { ordered, moveRow, dropRow, cancelDrag } = useSortableTags(

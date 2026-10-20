@@ -4,7 +4,6 @@ import { Box, Button, Text, bo } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { CLErrors } from 'typings';
 
-import projectsKeys from 'api/projects/keys';
 import { IProjectData, IUpdatedProjectProperties } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
@@ -19,7 +18,6 @@ import SettingsModal, {
 } from 'components/UI/SettingsModal';
 
 import { useIntl } from 'utils/cl-intl';
-import { queryClient } from 'utils/cl-react-query/queryClient';
 import { validateSlug } from 'utils/textUtils';
 
 import DiscardChangesModal from './DiscardChangesModal';
@@ -106,10 +104,6 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       if (!isEmpty(projectAttributesDiff)) {
         await updateProject({ projectId, ...projectAttributesDiff });
       }
-
-      queryClient.invalidateQueries({
-        queryKey: projectsKeys.item({ slug: project.attributes.slug }),
-      });
 
       setProjectAttributesDiff({});
       setApiErrors({});

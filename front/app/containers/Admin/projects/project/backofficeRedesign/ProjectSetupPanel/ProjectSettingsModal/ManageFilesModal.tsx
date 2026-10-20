@@ -12,7 +12,6 @@ import Modal from 'components/UI/Modal';
 import SearchInput from 'components/UI/SearchInput';
 
 import { useIntl } from 'utils/cl-intl';
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import { FILE_MODAL_HEIGHT } from './FileRow';
 import ManagedFileRow from './ManagedFileRow';
@@ -40,14 +39,17 @@ const ManageFilesModal = ({
   const { formatMessage } = useIntl();
   const [search, setSearch] = useState<string | undefined>();
   const [pageNumber, setPageNumber] = useState(1);
+  const savedCount = useFilesCount(projectId, search) ?? 0;
+  const lastPage = Math.max(1, Math.ceil(savedCount / PAGE_SIZE));
+  // Deleting files can remove the page we were on.
+  const currentPage = Math.min(pageNumber, lastPage);
   const { data: files } = useFiles({
     project: [projectId],
     sort: '-created_at',
     search,
-    pageNumber,
+    pageNumber: currentPage,
     pageSize: PAGE_SIZE,
   });
-  const savedCount = useFilesCount(projectId, search) ?? 0;
 
   // Files not saved yet only exist here, so the server search can't find them.
   const newFiles = search ? [] : draft.uploads;
@@ -58,11 +60,6 @@ const ManageFilesModal = ({
     ? (files?.data.length ?? 0) - savedFiles.length
     : draft.deletedIds.length;
   const count = savedCount + newFiles.length - removedCount;
-
-  const lastPage = getPageNumberFromUrl(files?.links.last ?? '') ?? 1;
-  // Deleting the last file of the last page leaves us on a page that no
-  // longer exists.
-  if (files && pageNumber > lastPage) setPageNumber(lastPage);
 
   const handleSearchChange = (value: string) => {
     setSearch(value || undefined);
@@ -120,7 +117,7 @@ const ManageFilesModal = ({
         {lastPage > 1 && (
           <Box display="flex" justifyContent="center" mt="16px">
             <Pagination
-              currentPage={pageNumber}
+              currentPage={currentPage}
               totalPages={lastPage}
               loadPage={setPageNumber}
             />
