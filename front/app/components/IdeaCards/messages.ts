@@ -258,4 +258,8 @@ export default defineMessages({
     id: 'app.containers.IdeaCards.searchPosts',
     defaultMessage: 'Search posts',
   },
+  statusPriority: {
+    id: 'app.containers.IdeaCards.statusPriority',
+    defaultMessage: 'Status (proposed first)',
+  },
 });
