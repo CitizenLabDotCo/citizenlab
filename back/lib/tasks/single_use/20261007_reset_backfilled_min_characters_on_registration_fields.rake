@@ -9,7 +9,11 @@
 #
 # This lifts the backfilled minimum. Only the backfill's value (3) is reset: nothing in the UI can
 # set a minimum on a registration question, so any other value was set on purpose — those are left
-# alone and listed in the summary for review.
+# alone, listed in the summary and written to a `_left_alone` JSON report for review.
+#
+# Tenant templates are exported from the template tenants, so they carried the minimum too, and so
+# did platforms created from them. Run the task on every cluster, including the one hosting the
+# template tenants: the next template release is then clean.
 #
 # `TenantScript` owns the dry run, the tenant loop and the report.
 #
@@ -26,13 +30,16 @@ namespace :single_use do
       'reset_backfilled_min_characters_on_registration_fields',
       args: args,
       description: "lifting the backfilled #{backfilled_min_characters}-character minimum on registration text questions",
-      summary: lambda { |_script|
+      summary: lambda { |script|
+        left_alone_file = script.report_file.sub(/\.json\z/, '_left_alone.json')
+        File.write(left_alone_file, JSON.pretty_generate(left_alone))
         next if left_alone.empty?
 
         puts "\n   Registration questions with another minimum, left alone (#{left_alone.size}):"
         left_alone.each do |field|
           puts "     #{field[:tenant]}: #{field[:field_key]} (#{field[:field_id]}) min_characters=#{field[:min_characters]}"
         end
+        puts "   📝 Left alone: #{left_alone_file}"
       }
     ) do |tenant, script|
       fields = CustomField.registration
@@ -48,8 +55,8 @@ namespace :single_use do
         end
 
         script.reporter.add_change(field.min_characters, nil, context: context)
-        # `update_column` keeps `updated_at` pointing at the backfill run, which is how these
-        # fields were traced back to it.
+        # `update_column` leaves `updated_at` alone, so it still shows when the minimum was set:
+        # the backfill run, or the platform's creation from a template.
         field.update_column(:min_characters, nil) if script.execute?
       end
     end
