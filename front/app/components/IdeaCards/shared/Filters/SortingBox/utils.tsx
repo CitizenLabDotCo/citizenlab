@@ -21,6 +21,8 @@ export const getLabelForSortingOption = (
       return messages.newest;
     case '-new':
       return messages.oldest;
+    case 'status_priority':
+      return messages.statusPriority;
   }
 };
 
@@ -40,5 +42,7 @@ export const getIconNameForSortingOption = (
       return 'new';
     case '-new':
       return 'archive';
+    case 'status_priority':
+      return 'flag';
   }
 };
