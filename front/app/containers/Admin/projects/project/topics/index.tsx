@@ -1,9 +1,11 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IInputTopicData } from 'api/input_topics/types';
+import useDeleteInputTopic from 'api/input_topics/useDeleteInputTopic';
+import useInputTopics from 'api/input_topics/useInputTopics';
 import useMoveInputTopic from 'api/input_topics/useMoveInputTopic';
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -35,7 +37,6 @@ import { useParams } from 'utils/router';
 import InputTopicModal from './InputTopicModal';
 import LiveAutoInputTopicsControl from './LiveAutoInputTopicsControl';
 import messages from './messages';
-import useInputTopicsEditor from './useInputTopicsEditor';
 
 const IndentedSortableRow = styled(SortableRow)<{ depth: number }>`
   padding-left: ${(props) => props.depth * 32}px;
@@ -51,24 +52,21 @@ const ProjectInputTopics = () => {
   });
 
   const { data: authUser } = useAuthUser();
-  const {
-    inputTopics,
-    isLastRootTopic,
-    openAdd,
-    openAddSubtopic,
-    openEdit,
-    closeEditModal,
-    showEditModal,
-    topicToEdit,
-    parentIdForNewTopic,
-    openDelete,
-    closeDeleteModal,
-    confirmDelete,
-    topicToDelete,
-    deleteMessage,
-    isDeleting,
-  } = useInputTopicsEditor(projectId);
+  const { data: inputTopics } = useInputTopics(projectId);
+  const { mutate: deleteInputTopic, isPending: isDeleting } =
+    useDeleteInputTopic();
   const { mutate: moveInputTopic } = useMoveInputTopic();
+
+  const [showConfirmationModal, setShowConfirmationModal] =
+    useState<boolean>(false);
+  const [topicToDelete, setTopicToDelete] = useState<IInputTopicData | null>(
+    null
+  );
+  const [showEditModal, setShowEditModal] = useState<boolean>(false);
+  const [topicToEdit, setTopicToEdit] = useState<IInputTopicData | null>(null);
+  const [parentIdForNewTopic, setParentIdForNewTopic] = useState<
+    string | undefined
+  >(undefined);
 
   // Convert flattened list to sortable items with ordering attribute
   const sortableItems = useMemo(() => {
@@ -90,11 +88,13 @@ const ProjectInputTopics = () => {
     const newAbove = upOrDown === 'up' ? newIndex - 1 : newIndex;
     const newUnder = upOrDown === 'up' ? newIndex : newIndex + 1;
 
-    // `.at(-1)` would wrap to the last item, so moving to the top has no topic above.
-    const newAboveTopic =
-      newAbove >= 0 ? sortableItems.at(newAbove) : undefined;
+    const newAboveTopic = sortableItems[newAbove] as
+      | IInputTopicData
+      | undefined;
     const movedTopic = sortableItems[currentIndex];
-    const newUnderTopic = sortableItems.at(newUnder);
+    const newUnderTopic = sortableItems[newUnder] as
+      | IInputTopicData
+      | undefined;
 
     const aboveDepth = newAboveTopic ? newAboveTopic.attributes.depth : -1;
     const currentDepth = movedTopic.attributes.depth;
@@ -134,20 +134,64 @@ const ProjectInputTopics = () => {
   const handleDeleteClick =
     (topic: IInputTopicData) => (event: React.FormEvent<any>) => {
       event.preventDefault();
-      openDelete(topic);
+      setShowConfirmationModal(true);
+      setTopicToDelete(topic);
     };
+
+  const closeSendConfirmationModal = () => {
+    setShowConfirmationModal(false);
+    setTopicToDelete(null);
+  };
+
+  const handleTopicDeletionConfirm = () => {
+    if (topicToDelete) {
+      deleteInputTopic(
+        { projectId, id: topicToDelete.id },
+        {
+          onSuccess: () => {
+            setShowConfirmationModal(false);
+            setTopicToDelete(null);
+          },
+        }
+      );
+    }
+  };
 
   const handleEditClick =
     (topic: IInputTopicData) => (event: React.FormEvent<any>) => {
       event.preventDefault();
-      openEdit(topic);
+      setTopicToEdit(topic);
+      setParentIdForNewTopic(undefined);
+      setShowEditModal(true);
     };
+
+  const handleAddClick = () => {
+    setTopicToEdit(null);
+    setParentIdForNewTopic(undefined);
+    setShowEditModal(true);
+  };
 
   const handleAddSubtopicClick =
     (parentId: string) => (event: React.FormEvent<any>) => {
       event.preventDefault();
-      openAddSubtopic(parentId);
+      setTopicToEdit(null);
+      setParentIdForNewTopic(parentId);
+      setShowEditModal(true);
     };
+
+  const closeEditModal = () => {
+    setShowEditModal(false);
+    setTopicToEdit(null);
+    setParentIdForNewTopic(undefined);
+  };
+
+  // Count only root topics for the last topic check
+  const rootTopicsCount = inputTopics.data.length;
+  const isLastRootTopic = rootTopicsCount === 1;
+
+  const hasChildren = topicToDelete?.attributes.children_count
+    ? topicToDelete.attributes.children_count > 0
+    : false;
 
   return (
     <Box minHeight="80vh" mb="40px">
@@ -181,7 +225,7 @@ const ProjectInputTopics = () => {
         <ButtonWithLink
           buttonStyle="admin-dark"
           icon="plus-circle"
-          onClick={openAdd}
+          onClick={handleAddClick}
           id="e2e-add-input-topic-button"
         >
           <FormattedMessage {...messages.addInputTopic} />
@@ -255,24 +299,28 @@ const ProjectInputTopics = () => {
       </SortableList>
 
       <Modal
-        opened={!!topicToDelete}
-        close={closeDeleteModal}
+        opened={showConfirmationModal}
+        close={closeSendConfirmationModal}
         header={<FormattedMessage {...messages.confirmHeader} />}
       >
         <ModalContentContainer>
           <Content>
-            <FormattedMessage {...deleteMessage} />
+            <FormattedMessage
+              {...(hasChildren
+                ? messages.deleteInputTopicWithChildrenConfirmation
+                : messages.deleteInputTopicConfirmation)}
+            />
           </Content>
           <ButtonsWrapper>
             <ButtonWithLink
               buttonStyle="secondary-outlined"
-              onClick={closeDeleteModal}
+              onClick={closeSendConfirmationModal}
             >
               <FormattedMessage {...messages.cancel} />
             </ButtonWithLink>
             <ButtonWithLink
               buttonStyle="delete"
-              onClick={confirmDelete}
+              onClick={handleTopicDeletionConfirm}
               processing={isDeleting}
               id="e2e-input-topic-delete-confirmation-button"
             >
