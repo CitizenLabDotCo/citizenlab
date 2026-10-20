@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, Suspense } from 'react';
 
 import { Text, Box } from '@citizenlab/cl2-component-library';
+
+import checkIfUserExceedsSeats from 'api/users/checkIfUserExceedsSeats';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
@@ -11,8 +13,14 @@ import Or from 'components/UI/Or';
 
 import { useIntl } from 'utils/cl-intl';
 
+import SeatLimitReachedModal from '../SeatBasedBilling/SeatLimitReachedModal';
+
 import messages from './messages';
-import useAddModerator, { UserParams } from './useAddModerator';
+
+export type UserParams = {
+  user_id?: string;
+  user_email?: string;
+};
 
 interface Props {
   projectId?: string;
@@ -28,7 +36,8 @@ const AddModerator = ({
   onAddModerator,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const { addModerator, seatLimitModal } = useAddModerator(onAddModerator);
+  const [showSeatLimitModal, setShowSeatLimitModal] =
+    useState<UserParams | null>(null);
 
   // The invite feature can currently only be used if password login
   // is enabled. So if it's disabled, we need to hide the email invite option.
@@ -40,14 +49,38 @@ const AddModerator = ({
         projectId={projectId}
         folderId={folderId}
         spaceId={spaceId}
-        onAddModerator={(user_id: string) => addModerator({ user_id })}
+        onAddModerator={async (user_id: string) => {
+          const shouldOpenModal = await checkIfUserExceedsSeats({
+            user_id,
+            seat_type: 'moderator',
+          });
+
+          if (shouldOpenModal) {
+            setShowSeatLimitModal({ user_id });
+          } else {
+            await onAddModerator({ user_id });
+          }
+        }}
       />
       {passwordLoginEnabled && (
         <>
           <Box maxWidth="500px" mt="28px">
             <Or />
           </Box>
-          <AddByEmail onSubmit={(user_email) => addModerator({ user_email })} />
+          <AddByEmail
+            onSubmit={async (user_email) => {
+              const shouldOpenModal = await checkIfUserExceedsSeats({
+                user_email,
+                seat_type: 'moderator',
+              });
+
+              if (shouldOpenModal) {
+                setShowSeatLimitModal({ user_email });
+              } else {
+                await onAddModerator({ user_email });
+              }
+            }}
+          />
         </>
       )}
       <Box mt="40px">
@@ -63,7 +96,17 @@ const AddModerator = ({
       <Box width="516px">
         <SeatInfo seatType="moderator" />
       </Box>
-      {seatLimitModal}
+      <Suspense fallback={null}>
+        <SeatLimitReachedModal
+          seatType="moderator"
+          addModerators={() => {
+            if (showSeatLimitModal === null) return;
+            onAddModerator(showSeatLimitModal);
+          }}
+          showModal={!!showSeatLimitModal}
+          closeModal={() => setShowSeatLimitModal(null)}
+        />
+      </Suspense>
     </>
   );
 };

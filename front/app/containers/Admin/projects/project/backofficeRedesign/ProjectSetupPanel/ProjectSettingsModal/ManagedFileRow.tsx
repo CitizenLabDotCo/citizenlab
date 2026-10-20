@@ -119,7 +119,7 @@ const ManagedFileRow = ({ file }: Props) => {
               {formatMessage(filesMessages.cancel)}
             </Button>
             <Button
-              buttonStyle="bo-primary"
+              buttonStyle="bo-delete"
               width="auto"
               processing={isDeleting}
               onClick={() =>

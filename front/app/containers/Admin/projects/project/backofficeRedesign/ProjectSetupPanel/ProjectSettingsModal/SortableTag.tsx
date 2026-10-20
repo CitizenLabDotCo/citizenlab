@@ -25,9 +25,13 @@ interface Props {
   dragLabel: string;
   moveRow: (fromIndex: number, toIndex: number) => void;
   dropRow: (id: string) => void;
+  cancelDrag: () => void;
   children: (renderProps: SortableTagRenderProps) => ReactNode;
 }
 
+// Not ResourceList's SortableRow/SortableList: those render their own row,
+// handle and DndProvider, and the nested groups here need a custom row and
+// one shared provider.
 const SortableTag = ({
   id,
   index,
@@ -35,6 +39,7 @@ const SortableTag = ({
   dragLabel,
   moveRow,
   dropRow,
+  cancelDrag,
   children,
 }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
@@ -63,7 +68,13 @@ const SortableTag = ({
     type,
     item: { id, index },
     collect: (monitor) => ({ isDragging: monitor.isDragging() }),
-    end: (item) => dropRow(item.id),
+    end: (item, monitor) => {
+      if (monitor.didDrop()) {
+        dropRow(item.id);
+      } else {
+        cancelDrag();
+      }
+    },
   });
 
   drag(rowRef);

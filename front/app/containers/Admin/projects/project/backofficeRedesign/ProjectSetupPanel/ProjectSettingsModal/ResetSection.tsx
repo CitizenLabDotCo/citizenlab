@@ -7,7 +7,7 @@ import useResetProject from 'api/projects/useResetProject';
 import dataMessages from 'containers/Admin/projects/project/data/messages';
 
 import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
-import TypedDeleteConfirmationModal from 'components/UI/TypedDeleteConfirmationModal';
+import BoTypedDeleteConfirmationModal from 'components/UI/TypedDeleteConfirmationModal/BoTypedDeleteConfirmationModal';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -42,8 +42,7 @@ const ResetSection = ({ projectId }: Props) => {
         }
       />
 
-      <TypedDeleteConfirmationModal
-        variant="bo"
+      <BoTypedDeleteConfirmationModal
         opened={confirmOpened}
         onClose={() => setConfirmOpened(false)}
         onConfirm={() =>

@@ -4,9 +4,9 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import topicsMessages from 'containers/Admin/projects/project/topics/messages';
 
-import { useIntl } from 'utils/cl-intl';
+import IconAction from 'components/UI/IconAction';
 
-import TagActionButton from './TagActionButton';
+import { useIntl } from 'utils/cl-intl';
 
 interface Props {
   deleteDisabled?: boolean;
@@ -16,17 +16,23 @@ interface Props {
 
 const TagActions = ({ deleteDisabled, onEdit, onDelete }: Props) => {
   const { formatMessage } = useIntl();
+  const editLabel = formatMessage(topicsMessages.edit);
+  const deleteLabel = formatMessage(topicsMessages.delete);
 
   return (
     <Box display="flex" alignItems="center" gap="6px" flexShrink={0}>
-      <TagActionButton
-        iconName="edit"
-        label={formatMessage(topicsMessages.edit)}
+      <IconAction
+        buttonStyle="bo-secondary"
+        icon="edit"
+        tooltip={editLabel}
+        ariaLabel={editLabel}
         onClick={onEdit}
       />
-      <TagActionButton
-        iconName="delete"
-        label={formatMessage(topicsMessages.delete)}
+      <IconAction
+        buttonStyle="bo-secondary"
+        icon="delete"
+        tooltip={deleteLabel}
+        ariaLabel={deleteLabel}
         disabled={deleteDisabled}
         onClick={onDelete}
       />

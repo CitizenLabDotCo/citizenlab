@@ -1,36 +1,12 @@
 import React, { useLayoutEffect, useRef, useState } from 'react';
 
-import {
-  Box,
-  Button,
-  ClickOutside,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import { Box, Button, Dropdown, bo } from '@citizenlab/cl2-component-library';
 
+import DropdownMenuItem from 'components/UI/DropdownMenuItem';
 import getPopoverPlacement from 'components/UI/PillPicker/getPopoverPlacement';
 
-const MenuItem = styled.button`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 32px;
-  padding: 6px 8px;
-  border-radius: ${bo.borderRadius};
-  font-size: ${bo.controlFontSize}px;
-  line-height: 20px;
-  color: ${bo.colors.textHeadingStrong};
-  text-align: start;
-  cursor: pointer;
-
-  &:hover,
-  &:focus-visible {
-    background: ${colors.grey100};
-  }
-`;
-
 const GAP = 4;
+const OFFSET = `calc(100% + ${GAP}px)`;
 
 export interface FileAction {
   name: string;
@@ -49,6 +25,8 @@ const FileActionsMenu = ({ ariaLabel, actions }: Props) => {
   const triggerRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
+  // Rows near the bottom of the scrolling file list would push the menu out
+  // of view, so it opens upward when there is no room below.
   useLayoutEffect(() => {
     const trigger = triggerRef.current;
     const menu = menuRef.current;
@@ -63,55 +41,43 @@ const FileActionsMenu = ({ ariaLabel, actions }: Props) => {
   }, [opened]);
 
   return (
-    <ClickOutside
-      onClickOutside={() => setOpened(false)}
-      closeOnClickOutsideEnabled={opened}
-    >
-      <Box position="relative" ref={triggerRef}>
-        <Button
-          buttonStyle="bo-text"
-          icon="dots-horizontal"
-          width="28px"
-          height="28px"
-          padding="0"
-          ariaLabel={ariaLabel}
-          ariaExpanded={opened}
-          ariaHasPopup="menu"
-          onClick={() => setOpened(!opened)}
-        />
-        {opened && (
-          <Box
-            ref={menuRef}
-            role="menu"
-            position="absolute"
-            top={openUp ? undefined : `calc(100% + ${GAP}px)`}
-            bottom={openUp ? `calc(100% + ${GAP}px)` : undefined}
-            right="0"
-            zIndex="10"
-            w="180px"
-            p="6px"
-            background={colors.white}
-            border={`1px solid ${colors.grey300}`}
-            borderRadius={bo.panelBorderRadius}
-            boxShadow="0 1px 2px rgba(15, 15, 15, 0.04), 0 6px 16px -2px rgba(15, 15, 15, 0.08)"
-          >
+    <Box position="relative" ref={triggerRef}>
+      <Button
+        buttonStyle="bo-text"
+        icon="dots-horizontal"
+        width="28px"
+        height="28px"
+        padding="0"
+        ariaLabel={ariaLabel}
+        ariaExpanded={opened}
+        ariaHasPopup="menu"
+        onClick={() => setOpened(!opened)}
+      />
+      <Dropdown
+        opened={opened}
+        onClickOutside={() => setOpened(false)}
+        top={openUp ? undefined : OFFSET}
+        bottom={openUp ? OFFSET : undefined}
+        right="0px"
+        width="180px"
+        zIndex="10"
+        borderRadius={bo.borderRadius}
+        content={
+          <Box ref={menuRef} role="menu">
             {actions.map(({ name, label, onClick }) => (
-              <MenuItem
+              <DropdownMenuItem
                 key={name}
-                type="button"
-                role="menuitem"
+                label={label}
                 onClick={() => {
                   setOpened(false);
                   onClick();
                 }}
-              >
-                {label}
-              </MenuItem>
+              />
             ))}
           </Box>
-        )}
-      </Box>
-    </ClickOutside>
+        }
+      />
+    </Box>
   );
 };
 

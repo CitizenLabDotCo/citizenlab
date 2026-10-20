@@ -4,7 +4,7 @@ import { CLErrors, Multiloc } from 'typings';
 
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 
-import SlugInput from 'components/admin/SlugInput';
+import BoSlugInput from 'components/admin/SlugInput/BoSlugInput';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
@@ -25,6 +25,7 @@ interface Props {
   projectInRoot: boolean;
   contextError: boolean;
   slug: string;
+  currentSlug: string;
   showSlugErrorMessage: boolean;
   apiErrors: CLErrors;
   onTitleChange: (titleMultiloc: Multiloc) => void;
@@ -40,6 +41,7 @@ const GeneralSection = ({
   projectInRoot,
   contextError,
   slug,
+  currentSlug,
   showSlugErrorMessage,
   apiErrors,
   onTitleChange,
@@ -62,14 +64,13 @@ const GeneralSection = ({
         <Error apiErrors={apiErrors.title_multiloc} />
       </SettingsSection>
       <SettingsSection title={formatMessage(messages.settingsProjectUrl)}>
-        <SlugInput
-          variant="bo"
+        <BoSlugInput
           slug={slug}
           pathnameWithoutSlug="projects"
           apiErrors={apiErrors}
           showSlugErrorMessage={showSlugErrorMessage}
           onSlugChange={onSlugChange}
-          showSlugChangedWarning={false}
+          showSlugChangedWarning={slug !== currentSlug}
         />
       </SettingsSection>
       <ContextSection

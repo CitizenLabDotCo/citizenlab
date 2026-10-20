@@ -140,8 +140,8 @@ const ModalContainer = styled(ClickOutside)<{
   padding: 0px;
   position: relative;
 
-  /* A height cap, not a fixed height: use the height prop for that. */
   &.fixedHeight {
+    height: 100%;
     max-height: 600px;
   }
 

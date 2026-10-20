@@ -67,7 +67,10 @@ const TagGroup = ({
       ),
     [allTopics, topic.id]
   );
-  const { ordered, moveRow, dropRow } = useSortableTags(projectId, subtopics);
+  const { ordered, moveRow, dropRow, cancelDrag } = useSortableTags(
+    projectId,
+    subtopics
+  );
 
   const collapsible = canAddSubtopics || subtopics.length > 0;
   const subtopicsId = `tag-subtopics-${topic.id}`;
@@ -107,7 +110,7 @@ const TagGroup = ({
             <Box
               px="8px"
               py="1px"
-              borderRadius="99px"
+              borderRadius="999px"
               background={colors.grey100}
             >
               <Text variant="boMicro" m="0px">
@@ -141,6 +144,7 @@ const TagGroup = ({
               })}
               moveRow={moveRow}
               dropRow={dropRow}
+              cancelDrag={cancelDrag}
             >
               {({ rowRef, handle }) => (
                 <Box

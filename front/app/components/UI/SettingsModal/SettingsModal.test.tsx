@@ -161,9 +161,12 @@ describe('SettingsModal', () => {
       ],
     });
 
-    expect(screen.getByText('Phase')).toBeInTheDocument();
-    expect(screen.getByText('Emails')).toBeInTheDocument();
-    expect(screen.getAllByRole('tab')).toHaveLength(2);
+    expect(screen.getByRole('tablist', { name: 'Phase' })).toContainElement(
+      screen.getByRole('tab', { name: 'Moderation' })
+    );
+    expect(screen.getByRole('tablist', { name: 'Emails' })).toContainElement(
+      screen.getByRole('tab', { name: 'Notifications' })
+    );
 
     await userEvent.click(screen.getByRole('tab', { name: 'Moderation' }));
     await userEvent.keyboard('{ArrowDown}');

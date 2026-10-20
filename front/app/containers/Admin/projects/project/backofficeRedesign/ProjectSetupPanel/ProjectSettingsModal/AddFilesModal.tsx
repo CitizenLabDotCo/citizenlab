@@ -15,11 +15,13 @@ import useAddFile from 'api/files/useAddFile';
 import useDeleteFile from 'api/files/useDeleteFile';
 import useAuthUser from 'api/me/useAuthUser';
 
+import { UploadStatus } from 'containers/Admin/projects/_shared/fileUploads/types';
 import {
   MAX_FILES,
   MAX_FILE_SIZE,
+  countFilesWithStatus,
   trackFileUpload,
-} from 'containers/Admin/projects/project/files/components/FilesUpload/utils';
+} from 'containers/Admin/projects/_shared/fileUploads/utils';
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
 
 import Modal from 'components/UI/Modal';
@@ -29,7 +31,7 @@ import { getBase64FromFile, returnFileSize } from 'utils/fileUtils';
 
 import messages from '../../messages';
 
-import UploadingFileRow, { UploadStatus } from './UploadingFileRow';
+import UploadingFileRow from './UploadingFileRow';
 
 type Upload = {
   key: number;
@@ -57,8 +59,8 @@ const AddFilesModal = ({ projectId, opened, onClose }: Props) => {
   const [allowAiProcessing, setAllowAiProcessing] = useState(false);
   const nextKey = useRef(0);
   // State updates only land on the next render, so a quick double click on
-  // Upload would otherwise start the same files twice.
-  const startedKeys = useRef(new Set<number>());
+  // Upload or Retry would otherwise start the same file twice.
+  const inFlightKeys = useRef(new Set<number>());
 
   const updateUpload = (key: number, update: Partial<Upload>) =>
     setUploads((current) =>
@@ -75,6 +77,9 @@ const AddFilesModal = ({ projectId, opened, onClose }: Props) => {
     category,
     aiProcessingAllowed,
   }: Upload) => {
+    if (inFlightKeys.current.has(key)) return;
+    inFlightKeys.current.add(key);
+
     updateUpload(key, { status: 'uploading', aiProcessingAllowed });
     try {
       const content = await getBase64FromFile(file);
@@ -88,12 +93,15 @@ const AddFilesModal = ({ projectId, opened, onClose }: Props) => {
       updateUpload(key, { status: 'uploaded', fileId: data.id });
     } catch {
       updateUpload(key, { status: 'error' });
+    } finally {
+      inFlightKeys.current.delete(key);
     }
   };
 
   const { getRootProps, getInputProps, open } = useDropzone({
     multiple: true,
     noClick: true,
+    // Allow all file types to be uploaded.
     validator: () => null,
     onDrop: (acceptedFiles) => {
       const tooMany = uploads.length + acceptedFiles.length > MAX_FILES;
@@ -120,8 +128,7 @@ const AddFilesModal = ({ projectId, opened, onClose }: Props) => {
 
   const handleUpload = () => {
     queued.forEach((upload) => {
-      if (startedKeys.current.has(upload.key)) return;
-      startedKeys.current.add(upload.key);
+      if (inFlightKeys.current.has(upload.key)) return;
 
       trackFileUpload({
         file: upload.file,
@@ -145,9 +152,6 @@ const AddFilesModal = ({ projectId, opened, onClose }: Props) => {
     onClose();
   };
 
-  const countWithStatus = (status: UploadStatus) =>
-    uploads.filter((upload) => upload.status === status).length;
-
   return (
     <Modal
       variant="bo"
@@ -166,9 +170,10 @@ const AddFilesModal = ({ projectId, opened, onClose }: Props) => {
           <Text variant="boMicro" color="coolGrey500" m="0px">
             {finished &&
               formatMessage(filesMessages.uploadSummary, {
-                numberOfFiles: countWithStatus('uploaded'),
+                numberOfFiles: countFilesWithStatus(uploads, 'uploaded'),
                 numberOfErrors:
-                  countWithStatus('error') + countWithStatus('too_large'),
+                  countFilesWithStatus(uploads, 'error') +
+                  countFilesWithStatus(uploads, 'too_large'),
               })}
           </Text>
           {queued.length > 0 ? (

@@ -12,6 +12,7 @@ import {
 
 import { FILE_CATEGORIES, FileCategory } from 'api/files/types';
 
+import { UploadStatus } from 'containers/Admin/projects/_shared/fileUploads/types';
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
 
 import { useIntl } from 'utils/cl-intl';
@@ -21,13 +22,6 @@ import messages from '../../messages';
 
 import FileRow, { FILE_ROW_ACTION_CLASS } from './FileRow';
 import { getCategoryMessage, getFileIcon } from './fileUtils';
-
-export type UploadStatus =
-  | 'queued'
-  | 'uploading'
-  | 'uploaded'
-  | 'error'
-  | 'too_large';
 
 interface Props {
   file: File;

@@ -5,6 +5,7 @@ import { Box, Text } from '@citizenlab/cl2-component-library';
 import useContextPickers from 'containers/Admin/projects/_shared/components/ProjectContextPickers/useContextPickers';
 import contextMessages from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/messages';
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
+import { useCanEditProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
 
 import Error from 'components/UI/Error';
 import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
@@ -29,6 +30,7 @@ const ContextSection = ({
   onChange,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const canEditProjectContext = useCanEditProjectContext();
   const pickers = useContextPickers({
     spaceId,
     folderId,
@@ -36,7 +38,7 @@ const ContextSection = ({
     onChange,
   });
 
-  if (!pickers) return null;
+  if (!canEditProjectContext || !pickers) return null;
 
   const { spacePicker, folderPicker, approvalWarning } = pickers;
 

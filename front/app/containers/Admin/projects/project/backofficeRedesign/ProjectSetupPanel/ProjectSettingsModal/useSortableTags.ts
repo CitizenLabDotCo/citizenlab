@@ -42,7 +42,9 @@ const useSortableTags = (projectId: string, topics: IInputTopicData[]) => {
     );
   };
 
-  return { ordered, moveRow, dropRow };
+  const cancelDrag = () => setDragState(null);
+
+  return { ordered, moveRow, dropRow, cancelDrag };
 };
 
 export default useSortableTags;

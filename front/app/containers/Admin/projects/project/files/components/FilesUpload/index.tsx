@@ -10,6 +10,14 @@ import { useDropzone } from 'react-dropzone';
 
 import useAuthUser from 'api/me/useAuthUser';
 
+import { UploadStatus } from 'containers/Admin/projects/_shared/fileUploads/types';
+import {
+  MAX_FILES,
+  MAX_FILE_SIZE,
+  countFilesWithStatus,
+  trackFileUpload,
+} from 'containers/Admin/projects/_shared/fileUploads/utils';
+
 import { useIntl } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
 
@@ -19,13 +27,7 @@ import FileDropzone from './components/FileDropzone';
 import FileUploadActions from './components/FileUploadActions';
 import InformationSection from './components/InformationSection/index';
 import SelectedFile from './components/SelectedFile';
-import { FileWithMeta, UploadStatus } from './types';
-import {
-  MAX_FILES,
-  MAX_FILE_SIZE,
-  countFilesWithStatus,
-  trackFileUpload,
-} from './utils';
+import { FileWithMeta } from './types';
 
 type Props = {
   setModalOpen?: (open: boolean) => void;

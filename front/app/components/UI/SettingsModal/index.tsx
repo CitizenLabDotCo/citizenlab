@@ -32,6 +32,27 @@ interface Props {
   width?: number | string;
 }
 
+interface SectionGroup {
+  group?: MessageDescriptor;
+  items: (SettingsModalSection & { index: number })[];
+}
+
+// A tablist may only contain tabs, so each group gets its own tablist,
+// labelled by the group heading that sits next to it.
+const groupSections = (sections: SettingsModalSection[]) =>
+  sections.reduce<SectionGroup[]>((groups, section, index) => {
+    const last = groups.at(-1);
+    const item = { ...section, index };
+
+    if (last && last.group === section.group) {
+      last.items.push(item);
+    } else {
+      groups.push({ group: section.group, items: [item] });
+    }
+
+    return groups;
+  }, []);
+
 const SettingsModal = ({
   opened,
   close,
@@ -110,9 +131,6 @@ const SettingsModal = ({
       <Box display="flex" flex="1 1 auto" minHeight="0">
         <Box
           ref={navRef}
-          role="tablist"
-          aria-orientation="vertical"
-          onKeyDown={handleKeyDown}
           display="flex"
           flexDirection="column"
           gap="4px"
@@ -122,13 +140,18 @@ const SettingsModal = ({
           borderRight={`1px solid ${colors.grey200}`}
           overflowY="auto"
         >
-          {sections.map(({ name, label, icon, group }, index) => {
-            const isFirst = index === 0;
-            const startsGroup = group && group !== sections[index - 1]?.group;
+          {groupSections(sections).map(({ group, items }, groupIndex) => {
+            const isFirst = groupIndex === 0;
+            const groupLabelId = `${idPrefix}-group-${groupIndex}`;
 
             return (
-              <React.Fragment key={name}>
-                {startsGroup && (
+              <Box
+                key={items[0].name}
+                display="flex"
+                flexDirection="column"
+                gap="4px"
+              >
+                {group && (
                   <Box
                     px="12px"
                     pt={isFirst ? '8px' : '16px'}
@@ -138,20 +161,38 @@ const SettingsModal = ({
                       isFirst ? undefined : `1px solid ${colors.grey200}`
                     }
                   >
-                    <Text variant="boMicro" color="coolGrey500" m="0px">
+                    <Text
+                      id={groupLabelId}
+                      variant="boMicro"
+                      color="coolGrey500"
+                      m="0px"
+                    >
                       {formatMessage(group)}
                     </Text>
                   </Box>
                 )}
-                <NavItem
-                  tabId={tabId(name)}
-                  panelId={panelId(name)}
-                  label={label}
-                  icon={icon}
-                  selected={index === selectedIndex}
-                  onSelect={() => select(index)}
-                />
-              </React.Fragment>
+                <Box
+                  role="tablist"
+                  aria-orientation="vertical"
+                  aria-labelledby={group ? groupLabelId : undefined}
+                  onKeyDown={handleKeyDown}
+                  display="flex"
+                  flexDirection="column"
+                  gap="4px"
+                >
+                  {items.map(({ name, label, icon, index }) => (
+                    <NavItem
+                      key={name}
+                      tabId={tabId(name)}
+                      panelId={panelId(name)}
+                      label={label}
+                      icon={icon}
+                      selected={index === selectedIndex}
+                      onSelect={() => select(index)}
+                    />
+                  ))}
+                </Box>
+              </Box>
             );
           })}
         </Box>
