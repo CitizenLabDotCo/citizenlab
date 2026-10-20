@@ -1,5 +1,7 @@
 import React, { useMemo, useState } from 'react';
 
+import { Box, Button, Text } from '@citizenlab/cl2-component-library';
+
 import { IInputTopicData } from 'api/input_topics/types';
 import useDeleteInputTopic from 'api/input_topics/useDeleteInputTopic';
 import useInputTopics from 'api/input_topics/useInputTopics';
@@ -19,7 +21,10 @@ import messages from './messages';
 
 // The list logic of a project's input tags: ordering, and the add, edit and
 // delete flows. Callers lay out the list; `modals` must be rendered once.
-const useInputTopicsEditor = (projectId: string) => {
+const useInputTopicsEditor = (
+  projectId: string,
+  variant: 'default' | 'bo' = 'default'
+) => {
   const { data: inputTopics } = useInputTopics(projectId);
   const { mutate: deleteInputTopic, isPending: isDeleting } =
     useDeleteInputTopic();
@@ -129,8 +134,46 @@ const useInputTopicsEditor = (projectId: string) => {
 
   const hasChildren = (topicToDelete?.attributes.children_count ?? 0) > 0;
 
-  const modals = (
-    <>
+  const deleteMessage = hasChildren
+    ? messages.deleteInputTopicWithChildrenConfirmation
+    : messages.deleteInputTopicConfirmation;
+
+  const deleteModal =
+    variant === 'bo' ? (
+      <Modal
+        variant="bo"
+        opened={!!topicToDelete}
+        close={closeDeleteModal}
+        width={540}
+        header={<FormattedMessage {...messages.confirmHeader} />}
+        footer={
+          <Box display="flex" justifyContent="flex-end" gap="8px" w="100%">
+            <Button
+              buttonStyle="bo-secondary"
+              width="auto"
+              onClick={closeDeleteModal}
+            >
+              <FormattedMessage {...messages.cancel} />
+            </Button>
+            <Button
+              buttonStyle="bo-delete"
+              width="auto"
+              onClick={handleTopicDeletionConfirm}
+              processing={isDeleting}
+              id="e2e-input-topic-delete-confirmation-button"
+            >
+              <FormattedMessage {...messages.delete} />
+            </Button>
+          </Box>
+        }
+      >
+        <Box p="24px">
+          <Text variant="boControl" m="0px">
+            <FormattedMessage {...deleteMessage} />
+          </Text>
+        </Box>
+      </Modal>
+    ) : (
       <Modal
         opened={!!topicToDelete}
         close={closeDeleteModal}
@@ -138,11 +181,7 @@ const useInputTopicsEditor = (projectId: string) => {
       >
         <ModalContentContainer>
           <Content>
-            <FormattedMessage
-              {...(hasChildren
-                ? messages.deleteInputTopicWithChildrenConfirmation
-                : messages.deleteInputTopicConfirmation)}
-            />
+            <FormattedMessage {...deleteMessage} />
           </Content>
           <ButtonsWrapper>
             <ButtonWithLink
@@ -162,13 +201,18 @@ const useInputTopicsEditor = (projectId: string) => {
           </ButtonsWrapper>
         </ModalContentContainer>
       </Modal>
+    );
 
+  const modals = (
+    <>
+      {deleteModal}
       <InputTopicModal
         projectId={projectId}
         topic={topicToEdit}
         parentId={parentIdForNewTopic}
         opened={showEditModal}
         close={closeEditModal}
+        variant={variant}
       />
     </>
   );

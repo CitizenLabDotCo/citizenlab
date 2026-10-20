@@ -38,7 +38,7 @@ import IconTooltip, {
   ContentWrapper as TooltipContentWrapper,
 } from './components/IconTooltip';
 import Image, { ImageProps } from './components/Image';
-import Input, { InputProps } from './components/Input';
+import Input, { InputProps, boLabelStyle } from './components/Input';
 import InputMultiloc from './components/Input/InputMultiloc';
 import InputMultilocWithLocaleSwitcher, {
   Props as InputMultilocWithLocaleSwitcherProps,
@@ -145,6 +145,7 @@ export type {
 };
 
 export {
+  boLabelStyle,
   Spinner,
   Radio,
   Label,

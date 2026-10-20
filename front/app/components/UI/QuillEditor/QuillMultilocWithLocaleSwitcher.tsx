@@ -4,6 +4,7 @@ import {
   IconTooltip,
   LocaleSwitcher,
   Label,
+  boLabelStyle,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { SupportedLocale, Multiloc } from 'typings';
@@ -27,6 +28,10 @@ const LabelContainer = styled.div`
   margin-bottom: 10px;
   flex-wrap: wrap;
   gap: 16px;
+
+  &[data-variant='bo'] {
+    ${boLabelStyle}
+  }
 `;
 
 const StyledLabel = styled(Label)`
@@ -109,7 +114,7 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
 
   return (
     <Container id={props.id} ref={containerRef}>
-      <LabelContainer>
+      <LabelContainer data-variant={quillProps.variant}>
         {label && (
           <StyledLabel
             id={`${sanitizeForClassname(props.id)}-label`}

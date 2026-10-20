@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, lazy, Suspense } from 'react';
 
-import { Box, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, Text, bo, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
@@ -40,6 +40,14 @@ const EmojiButton = styled.button<{ hasValue: boolean }>`
     border-color: ${colors.primary};
     box-shadow: 0 0 0 2px ${colors.primary}20;
   }
+
+  &[data-variant='bo'] {
+    min-height: 36px;
+    width: 56px;
+    padding: 0 12px;
+    border-color: ${colors.grey300};
+    border-radius: ${bo.borderRadius};
+  }
 `;
 
 const ClearButton = styled.button`
@@ -68,6 +76,7 @@ export interface Props {
   onChange: (emoji: string | null) => void;
   placement?: 'top' | 'bottom';
   id?: string;
+  variant?: 'default' | 'bo';
 }
 
 const EmojiPickerInput = ({
@@ -75,6 +84,7 @@ const EmojiPickerInput = ({
   onChange,
   placement = 'bottom',
   id,
+  variant = 'default',
 }: Props) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
@@ -107,6 +117,7 @@ const EmojiPickerInput = ({
         <EmojiButton
           type="button"
           hasValue={!!value}
+          data-variant={variant}
           onClick={() => setIsOpen((open) => !open)}
           id={id}
         >

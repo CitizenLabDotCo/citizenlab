@@ -10,7 +10,6 @@ import { useDropzone } from 'react-dropzone';
 
 import useAuthUser from 'api/me/useAuthUser';
 
-import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
 
@@ -20,9 +19,13 @@ import FileDropzone from './components/FileDropzone';
 import FileUploadActions from './components/FileUploadActions';
 import InformationSection from './components/InformationSection/index';
 import SelectedFile from './components/SelectedFile';
-import tracks from './tracks';
 import { FileWithMeta, UploadStatus } from './types';
-import { countFilesWithStatus } from './utils';
+import {
+  MAX_FILES,
+  MAX_FILE_SIZE,
+  countFilesWithStatus,
+  trackFileUpload,
+} from './utils';
 
 type Props = {
   setModalOpen?: (open: boolean) => void;
@@ -30,8 +33,6 @@ type Props = {
 };
 
 const FINISHED_STATUSES: UploadStatus[] = ['uploaded', 'error', 'too_large'];
-const MAX_FILE_SIZE = 50 * 1024 * 1024;
-const MAX_FILES = 35;
 
 const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
   const { data: user } = useAuthUser();
@@ -77,18 +78,17 @@ const FilesUpload = ({ setModalOpen, setShowFirstUploadView }: Props) => {
   });
 
   const handleUpload = () => {
-    // For each file the user tries to upload, track it with relevant metadata.
-    fileList.forEach((file) => {
-      trackEventByName(tracks.filesTabFileUploaded, {
-        projectId,
-        userId: user?.data.id,
-        userRole: user?.data.attributes.highest_role,
-        fileName: file.file.name,
-        fileType: file.file.name.split('.').pop(),
-        fileSize: file.file.size,
-        aiProcessingAllowed: allowAiProcessing,
+    // Track each file that will be sent, with relevant metadata.
+    fileList
+      .filter(({ status }) => status === 'queued')
+      .forEach((file) => {
+        trackFileUpload({
+          file: file.file,
+          projectId,
+          user,
+          aiProcessingAllowed: allowAiProcessing,
+        });
       });
-    });
 
     setHasStartedUploading(true);
 

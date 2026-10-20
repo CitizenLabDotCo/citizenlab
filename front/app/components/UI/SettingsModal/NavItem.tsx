@@ -85,8 +85,17 @@ const NavItem = ({
       background={selected ? colors.grey100 : 'transparent'}
       cursor="pointer"
     >
-      <Icon name={icon} width="16px" height="16px" />
-      <Text className="label" as="span" m="0px" lineHeight="1.6">
+      <Box display="flex" flexShrink={0}>
+        <Icon name={icon} width="16px" height="16px" />
+      </Box>
+      <Text
+        className="label"
+        as="span"
+        m="0px"
+        lineHeight="1.6"
+        textAlign="left"
+        whiteSpace="nowrap"
+      >
         {formatMessage(label)}
       </Text>
     </NavButton>

@@ -95,9 +95,9 @@ export default defineMessages({
     defaultMessage: '360 Input',
   },
   filesDescription: {
-    id: 'app.containers.Admin.projects.project.filesDescription',
+    id: 'app.containers.Admin.projects.project.filesDescription2',
     defaultMessage:
-      'Documents and recordings added to this project as extra input.',
+      'Files about this project, such as reports, plans and images. Attach them to the project, its phases and events, or add them as context to AI analysis.',
   },
   filesCount: {
     id: 'app.containers.Admin.projects.project.filesCount',
@@ -106,6 +106,39 @@ export default defineMessages({
   addFiles: {
     id: 'app.containers.Admin.projects.project.addFiles',
     defaultMessage: 'Add files',
+  },
+  dropFilesHereOr: {
+    id: 'app.containers.Admin.projects.project.dropFilesHereOr',
+    defaultMessage: 'Drop files here or',
+  },
+  supportedFileTypes: {
+    id: 'app.containers.Admin.projects.project.supportedFileTypes',
+    defaultMessage:
+      'All file types are supported, such as audio (WAV, MP3), documents (PDF, DOCX, PPTX) and images (PNG, JPG).',
+  },
+  filesCountWithSize: {
+    id: 'app.containers.Admin.projects.project.filesCountWithSize',
+    defaultMessage: '{count, plural, one {# file} other {# files}} · {size}',
+  },
+  fileUploading: {
+    id: 'app.containers.Admin.projects.project.fileUploading',
+    defaultMessage: 'Uploading',
+  },
+  fileUploadFailed: {
+    id: 'app.containers.Admin.projects.project.fileUploadFailed',
+    defaultMessage: 'Upload failed',
+  },
+  removeFile: {
+    id: 'app.containers.Admin.projects.project.removeFile',
+    defaultMessage: 'Remove {fileName}',
+  },
+  fileActions: {
+    id: 'app.containers.Admin.projects.project.fileActions',
+    defaultMessage: 'Actions for {fileName}',
+  },
+  filesStillUploading: {
+    id: 'app.containers.Admin.projects.project.filesStillUploading',
+    defaultMessage: 'Files are still uploading',
   },
   messagingSection: {
     id: 'app.containers.Admin.projects.project.messagingSection',
@@ -322,8 +355,8 @@ export default defineMessages({
     defaultMessage: 'Share a preview link',
   },
   settingsGeneral: {
-    id: 'app.containers.Admin.projects.project.settingsGeneral',
-    defaultMessage: 'General',
+    id: 'app.containers.Admin.projects.project.settingsGeneral2',
+    defaultMessage: 'General information',
   },
   settingsResources: {
     id: 'app.containers.Admin.projects.project.settingsResources',
@@ -364,6 +397,18 @@ export default defineMessages({
   settingsPerspectives: {
     id: 'app.containers.Admin.projects.project.settingsPerspectives',
     defaultMessage: 'Perspectives',
+  },
+  reorderTag: {
+    id: 'app.containers.Admin.projects.project.reorderTag',
+    defaultMessage: 'Drag to reorder {tagName}',
+  },
+  toggleSubtags: {
+    id: 'app.containers.Admin.projects.project.toggleSubtags',
+    defaultMessage: 'Show subtags of {tagName}',
+  },
+  settingsProjectName: {
+    id: 'app.containers.Admin.projects.project.settingsProjectName',
+    defaultMessage: 'Project name',
   },
   settingsProjectUrl: {
     id: 'app.containers.Admin.projects.project.settingsProjectUrl',

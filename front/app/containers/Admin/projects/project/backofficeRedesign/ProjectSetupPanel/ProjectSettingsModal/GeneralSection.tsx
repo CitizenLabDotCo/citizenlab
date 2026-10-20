@@ -1,10 +1,12 @@
 import React from 'react';
 
-import { CLErrors } from 'typings';
+import { CLErrors, Multiloc } from 'typings';
 
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 
 import SlugInput from 'components/admin/SlugInput';
+import Error from 'components/UI/Error';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
 import SettingsSections from 'components/UI/SettingsModal/SettingsSections';
 
@@ -17,6 +19,7 @@ import ResetSection from './ResetSection';
 
 interface Props {
   projectId: string;
+  titleMultiloc: Multiloc;
   spaceId: string | null;
   folderId: string | null;
   projectInRoot: boolean;
@@ -24,12 +27,14 @@ interface Props {
   slug: string;
   showSlugErrorMessage: boolean;
   apiErrors: CLErrors;
+  onTitleChange: (titleMultiloc: Multiloc) => void;
   onContextChange: (spaceAndFolderId: SpaceAndFolderId) => void;
   onSlugChange: (slug: string) => void;
 }
 
 const GeneralSection = ({
   projectId,
+  titleMultiloc,
   spaceId,
   folderId,
   projectInRoot,
@@ -37,6 +42,7 @@ const GeneralSection = ({
   slug,
   showSlugErrorMessage,
   apiErrors,
+  onTitleChange,
   onContextChange,
   onSlugChange,
 }: Props) => {
@@ -44,6 +50,17 @@ const GeneralSection = ({
 
   return (
     <SettingsSections>
+      <SettingsSection title={formatMessage(messages.settingsProjectName)}>
+        <InputMultilocWithLocaleSwitcher
+          id="project-title"
+          type="text"
+          variant="bo"
+          ariaLabel={formatMessage(messages.settingsProjectName)}
+          valueMultiloc={titleMultiloc}
+          onChange={onTitleChange}
+        />
+        <Error apiErrors={apiErrors.title_multiloc} />
+      </SettingsSection>
       <SettingsSection title={formatMessage(messages.settingsProjectUrl)}>
         <SlugInput
           variant="bo"

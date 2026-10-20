@@ -1,6 +1,11 @@
 import React from 'react';
 
-import { Button, IconNames } from '@citizenlab/cl2-component-library';
+import {
+  Button,
+  IconNames,
+  bo,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 interface Props {
   iconName: IconNames;
@@ -13,6 +18,9 @@ const TagActionButton = ({ iconName, label, disabled, onClick }: Props) => (
   <Button
     buttonStyle="bo-secondary"
     icon={iconName}
+    iconSize="16px"
+    iconColor={colors.coolGrey600}
+    iconHoverColor={bo.colors.textHeadingStrong}
     width="28px"
     height="28px"
     padding="0"

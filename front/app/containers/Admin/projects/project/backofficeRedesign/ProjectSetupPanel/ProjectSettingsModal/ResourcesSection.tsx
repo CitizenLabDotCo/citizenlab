@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Icon,
+  Text,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import useFiles from 'api/files/useFiles';
 
-import ButtonWithLink from 'components/UI/ButtonWithLink';
 import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
+
+import AddFilesModal from './AddFilesModal';
+import ManageFilesModal from './ManageFilesModal';
 
 interface Props {
   projectId: string;
@@ -18,6 +26,8 @@ interface Props {
 const ResourcesSection = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
   const { data: files } = useFiles({ project: [projectId] });
+  const [manageModalOpened, setManageModalOpened] = useState(false);
+  const [addModalOpened, setAddModalOpened] = useState(false);
 
   if (!files) return null;
 
@@ -28,14 +38,15 @@ const ResourcesSection = ({ projectId }: Props) => {
       title={formatMessage(messages.filesSection)}
       description={formatMessage(messages.filesDescription)}
       action={
-        <ButtonWithLink
-          to="/admin/projects/$projectId/files"
-          params={{ projectId }}
+        <Button
           buttonStyle="bo-secondary"
           width="auto"
+          onClick={() =>
+            count > 0 ? setManageModalOpened(true) : setAddModalOpened(true)
+          }
         >
           {formatMessage(count > 0 ? messages.manageFiles : messages.addFiles)}
-        </ButtonWithLink>
+        </Button>
       }
     >
       {count > 0 && (
@@ -59,6 +70,17 @@ const ResourcesSection = ({ projectId }: Props) => {
           </Text>
         </Box>
       )}
+      <ManageFilesModal
+        projectId={projectId}
+        opened={manageModalOpened}
+        onClose={() => setManageModalOpened(false)}
+        onAddFiles={() => setAddModalOpened(true)}
+      />
+      <AddFilesModal
+        projectId={projectId}
+        opened={addModalOpened}
+        onClose={() => setAddModalOpened(false)}
+      />
     </SettingsSection>
   );
 };

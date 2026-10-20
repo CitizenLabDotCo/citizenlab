@@ -1,22 +1,23 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import {
   Box,
   Button,
+  Icon,
   Text,
-  fontSizes,
+  colors,
 } from '@citizenlab/cl2-component-library';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import useAuthUser from 'api/me/useAuthUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
 
-import IndentedSortableRow from 'containers/Admin/projects/project/topics/IndentedSortableRow';
 import topicsMessages from 'containers/Admin/projects/project/topics/messages';
 import useInputTopicsEditor from 'containers/Admin/projects/project/topics/useInputTopicsEditor';
 
-import SortableList from 'components/admin/ResourceList/SortableList';
-import T from 'components/T';
 import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -25,7 +26,9 @@ import { isAdmin } from 'utils/permissions/roles';
 
 import messages from '../../messages';
 
-import TagActionButton from './TagActionButton';
+import SortableTag, { ROOT_TAG_TYPE } from './SortableTag';
+import TagGroup from './TagGroup';
+import useSortableTags from './useSortableTags';
 
 interface Props {
   projectId: string;
@@ -39,15 +42,23 @@ const TagsSection = ({ projectId }: Props) => {
   });
   const {
     inputTopics,
-    sortableItems,
     isLastRootTopic,
-    handleReorder,
     openAdd,
     openAddSubtopic,
     openEdit,
     openDelete,
     modals,
-  } = useInputTopicsEditor(projectId);
+  } = useInputTopicsEditor(projectId, 'bo');
+  const localize = useLocalize();
+
+  const rootTopics = useMemo(
+    () =>
+      (inputTopics?.data ?? []).filter(
+        ({ attributes }) => attributes.depth === 0
+      ),
+    [inputTopics]
+  );
+  const { ordered, moveRow, dropRow } = useSortableTags(projectId, rootTopics);
 
   if (!authUser || !inputTopics) return null;
 
@@ -90,66 +101,48 @@ const TagsSection = ({ projectId }: Props) => {
         }
       >
         {isLastRootTopic && (
-          <Text variant="boMicro" color="coolGrey500" m="0px" mb="4px">
-            {formatMessage(topicsMessages.lastTopicWarning)}
-          </Text>
+          <Box display="flex" alignItems="center" gap="6px" mb="4px">
+            <Icon
+              name="info-outline"
+              width="14px"
+              height="14px"
+              fill={colors.coolGrey500}
+            />
+            <Text variant="boMicro" color="coolGrey500" m="0px">
+              {formatMessage(topicsMessages.lastTopicWarning)}
+            </Text>
+          </Box>
         )}
-        <SortableList items={sortableItems} onReorder={handleReorder}>
-          {({ itemsList, handleDragRow, handleDropRow }) => (
-            <>
-              {itemsList.map((item, index) => {
-                // Dragging reorders itemsList before the server confirms it.
-                const topic = sortableItems.find(({ id }) => id === item.id);
-                if (!topic) return null;
-
-                const isRootTopic = topic.attributes.depth === 0;
-
-                return (
-                  <IndentedSortableRow
-                    key={item.id}
-                    id={item.id}
-                    depth={topic.attributes.depth}
-                    index={index}
-                    isLastItem={index === itemsList.length - 1}
-                    moveRow={handleDragRow}
-                    dropRow={handleDropRow}
-                    disableNestedStyles
-                  >
-                    <Box flex="1" minWidth="0" ml="8px">
-                      <Text variant="boMicro" color="textPrimary" m="0px">
-                        <T value={topic.attributes.title_multiloc} />
-                      </Text>
-                    </Box>
-                    <Box display="flex" alignItems="center" gap="6px">
-                      {nestedInputTopicsActive && isRootTopic && (
-                        <Button
-                          buttonStyle="bo-text"
-                          icon="plus"
-                          width="auto"
-                          fontSize={`${fontSizes.xs}px`}
-                          onClick={() => openAddSubtopic(topic.id)}
-                        >
-                          {formatMessage(topicsMessages.addSubtopic)}
-                        </Button>
-                      )}
-                      <TagActionButton
-                        iconName="edit"
-                        label={formatMessage(topicsMessages.edit)}
-                        onClick={() => openEdit(topic)}
-                      />
-                      <TagActionButton
-                        iconName="delete"
-                        label={formatMessage(topicsMessages.delete)}
-                        disabled={isRootTopic && isLastRootTopic}
-                        onClick={() => openDelete(topic)}
-                      />
-                    </Box>
-                  </IndentedSortableRow>
-                );
+        <DndProvider backend={HTML5Backend}>
+          {ordered.map((topic, index) => (
+            <SortableTag
+              key={topic.id}
+              id={topic.id}
+              index={index}
+              type={ROOT_TAG_TYPE}
+              dragLabel={formatMessage(messages.reorderTag, {
+                tagName: localize(topic.attributes.title_multiloc),
               })}
-            </>
-          )}
-        </SortableList>
+              moveRow={moveRow}
+              dropRow={dropRow}
+            >
+              {(drag) => (
+                <TagGroup
+                  projectId={projectId}
+                  topic={topic}
+                  allTopics={inputTopics.data}
+                  drag={drag}
+                  canAddSubtopics={nestedInputTopicsActive}
+                  deleteDisabled={isLastRootTopic}
+                  isFirst={index === 0}
+                  onAddSubtopic={() => openAddSubtopic(topic.id)}
+                  onEdit={openEdit}
+                  onDelete={openDelete}
+                />
+              )}
+            </SortableTag>
+          ))}
+        </DndProvider>
       </SettingsSection>
       {modals}
     </>

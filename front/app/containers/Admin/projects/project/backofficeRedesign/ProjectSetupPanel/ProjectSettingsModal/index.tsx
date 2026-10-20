@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 
-import { Button } from '@citizenlab/cl2-component-library';
+import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
+import { useIsMutating } from '@tanstack/react-query';
 import { isEmpty } from 'lodash-es';
 import { CLErrors } from 'typings';
 
+import filesKeys from 'api/files/keys';
 import projectsKeys from 'api/projects/keys';
 import { IProjectData, IUpdatedProjectProperties } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
@@ -44,6 +46,7 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
   const perspectivesActive = useFeatureFlag({
     name: 'live_auto_input_topics',
   });
+  const filesUploading = useIsMutating({ mutationKey: filesKeys.all() }) > 0;
 
   const [processing, setProcessing] = useState(false);
   const [apiErrors, setApiErrors] = useState<CLErrors>({});
@@ -127,6 +130,7 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       content: (
         <GeneralSection
           projectId={projectId}
+          titleMultiloc={projectAttrs.title_multiloc}
           spaceId={projectAttrs.space_id ?? null}
           folderId={projectAttrs.folder_id ?? null}
           projectInRoot={projectInRoot}
@@ -134,6 +138,7 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
           slug={slug}
           showSlugErrorMessage={showSlugErrorMessage}
           apiErrors={apiErrors}
+          onTitleChange={(title_multiloc) => applyDiff({ title_multiloc })}
           onContextChange={handleContextChange}
           onSlugChange={handleSlugChange}
         />
@@ -180,15 +185,25 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
       header={formatMessage(messages.settingsTitle)}
       sections={sections}
       footer={
-        <Button
-          buttonStyle="bo-primary"
-          width="auto"
-          processing={processing}
-          onClick={handleSave}
-          id="e2e-project-settings-save"
+        <Tooltip
+          content={formatMessage(messages.filesStillUploading)}
+          disabled={!filesUploading}
+          theme="dark"
+          placement="top"
         >
-          {formatMessage(messages.settingsSave)}
-        </Button>
+          <Box>
+            <Button
+              buttonStyle="bo-primary"
+              width="auto"
+              processing={processing}
+              disabled={filesUploading}
+              onClick={handleSave}
+              id="e2e-project-settings-save"
+            >
+              {formatMessage(messages.settingsSave)}
+            </Button>
+          </Box>
+        </Tooltip>
       }
     />
   );

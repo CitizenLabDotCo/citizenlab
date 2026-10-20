@@ -40,6 +40,7 @@ interface Props {
   parentId?: string;
   opened: boolean;
   close: () => void;
+  variant?: 'default' | 'bo';
 }
 
 const InputTopicModal = ({
@@ -48,6 +49,7 @@ const InputTopicModal = ({
   parentId,
   opened,
   close,
+  variant = 'default',
 }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addInputTopic } = useAddInputTopic();
@@ -114,6 +116,32 @@ const InputTopicModal = ({
     }
   };
 
+  const isBo = variant === 'bo';
+  const submit = methods.handleSubmit(onFormSubmit);
+
+  const cancelButton = (
+    <Button
+      buttonStyle={isBo ? 'bo-secondary' : 'secondary-outlined'}
+      width={isBo ? 'auto' : undefined}
+      onClick={close}
+    >
+      <FormattedMessage {...messages.cancel} />
+    </Button>
+  );
+
+  const saveButton = (
+    <Button
+      type="submit"
+      buttonStyle={isBo ? 'bo-primary' : 'primary'}
+      width={isBo ? 'auto' : undefined}
+      processing={methods.formState.isSubmitting}
+      onClick={isBo ? submit : undefined}
+      id="e2e-submit-input-topic-button"
+    >
+      {formatMessage(messages.save)}
+    </Button>
+  );
+
   const getHeaderMessage = () => {
     if (isEditing) {
       return <FormattedMessage {...messages.editInputTopic} />;
@@ -125,24 +153,36 @@ const InputTopicModal = ({
   };
 
   return (
-    <Modal opened={opened} close={close} header={getHeaderMessage()}>
+    <Modal
+      variant={variant}
+      opened={opened}
+      close={close}
+      header={getHeaderMessage()}
+      footer={
+        isBo ? (
+          <Box display="flex" justifyContent="flex-end" gap="8px" w="100%">
+            {cancelButton}
+            {saveButton}
+          </Box>
+        ) : undefined
+      }
+    >
       <ModalContentContainer>
         <FormProvider {...methods}>
-          <form
-            onSubmit={methods.handleSubmit(onFormSubmit)}
-            data-testid="inputTopicForm"
-          >
+          <form onSubmit={submit} data-testid="inputTopicForm">
             <SectionField>
               <Feedback />
               <Box display="flex" gap="16px" alignItems="flex-end">
                 <InputMultilocWithLocaleSwitcher
                   name="title_multiloc"
                   label={formatMessage(messages.fieldTopicTitle)}
+                  variant={variant}
                 />
                 {!isSubtopic && nestedTopicsEnabled && (
                   <EmojiPicker
                     name="icon"
                     label={formatMessage(messages.fieldTopicEmoji)}
+                    variant={variant}
                   />
                 )}
               </Box>
@@ -151,6 +191,7 @@ const InputTopicModal = ({
               <QuillMultilocWithLocaleSwitcher
                 name="description_multiloc"
                 label={formatMessage(messages.fieldTopicDescription)}
+                variant={variant}
                 noImages
                 noLinks
                 noVideos
@@ -159,18 +200,12 @@ const InputTopicModal = ({
               />
             </SectionField>
 
-            <ButtonsWrapper>
-              <Button buttonStyle="secondary-outlined" onClick={close}>
-                <FormattedMessage {...messages.cancel} />
-              </Button>
-              <Button
-                type="submit"
-                processing={methods.formState.isSubmitting}
-                id="e2e-submit-input-topic-button"
-              >
-                {formatMessage(messages.save)}
-              </Button>
-            </ButtonsWrapper>
+            {!isBo && (
+              <ButtonsWrapper>
+                {cancelButton}
+                {saveButton}
+              </ButtonsWrapper>
+            )}
           </form>
         </FormProvider>
       </ModalContentContainer>
