@@ -8,8 +8,9 @@ class McpServer::Serializers::CustomField < McpServer::Serializers::Base
   # Serialized fields must remain valid input for the form-update tools, so drop what
   # their schema does not accept: `constraints` is a params-derived value rather than
   # a CustomField attribute (it is reported at the form level instead), and
-  # `answers_visible_to` is not exposed through MCP until the feature is released.
+  # `answers_visible_to` and `show_as_filter` are not exposed through MCP until the
+  # feature is released.
   def attributes(record)
-    super.except(:constraints, :answers_visible_to)
+    super.except(:constraints, :answers_visible_to, :show_as_filter)
   end
 end
