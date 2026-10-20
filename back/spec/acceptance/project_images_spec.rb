@@ -116,7 +116,7 @@ resource 'ProjectImage' do
       header 'Authorization', nil
 
       expect { do_request }.not_to change { ProjectImage.find(image_id).ordering }
-      expect(response_status).to eq 401
+      assert_status 401
     end
   end
 
@@ -133,7 +133,7 @@ resource 'ProjectImage' do
       header 'Authorization', nil
 
       expect { do_request }.not_to change(ProjectImage, :count)
-      expect(response_status).to eq 401
+      assert_status 401
     end
   end
 end

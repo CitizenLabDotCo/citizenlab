@@ -57,14 +57,14 @@ resource 'IdeaImage' do
       header 'Authorization', nil
 
       expect { do_request }.not_to change(IdeaImage, :count)
-      expect(response_status).to eq 401
+      assert_status 401
     end
 
     example 'Unauthorized (401) for a resident who is not the author', document: false do
       resident_header_token
 
       expect { do_request }.not_to change(IdeaImage, :count)
-      expect(response_status).to eq 401
+      assert_status 401
     end
   end
 

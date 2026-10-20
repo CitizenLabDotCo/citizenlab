@@ -28,7 +28,7 @@ resource 'CustomFieldOptionImage' do
 
       example 'Unauthorized (401) when not signed in', document: false do
         expect { do_request }.not_to change(CustomFieldOptionImage, :count)
-        expect(response_status).to eq 401
+        assert_status 401
       end
     end
   end

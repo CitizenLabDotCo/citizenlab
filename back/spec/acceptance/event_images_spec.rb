@@ -41,7 +41,7 @@ resource 'EventImage' do
 
       example 'Unauthorized (401) when not signed in', document: false do
         expect { do_request }.not_to change(EventImage, :count)
-        expect(response_status).to eq 401
+        assert_status 401
       end
     end
   end
@@ -59,7 +59,7 @@ resource 'EventImage' do
 
       example 'Unauthorized (401) when adding an image to an event', document: false do
         expect { do_request }.not_to change(EventImage, :count)
-        expect(response_status).to eq 401
+        assert_status 401
       end
     end
   end
