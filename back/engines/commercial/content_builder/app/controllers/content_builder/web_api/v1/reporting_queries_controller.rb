@@ -8,15 +8,16 @@ module ContentBuilder
       #
       # A report is a picture of a moment, so an answer is stored against the layout the
       # first time it is asked, and every later read returns that stored answer. Only an
-      # admin's request can fill a snapshot; a reader is served from one or not at all,
-      # which is what keeps arbitrary SQL off the citizen-facing path.
+      # admin, or the sandbox with its scoped token, can fill a snapshot; a reader is
+      # served from one or not at all, which is what keeps arbitrary SQL off the
+      # citizen-facing path.
       class ReportingQueriesController < ::ApplicationController
         skip_before_action :authenticate_user, only: %i[create]
 
         def create
           query = params.require(:query).to_s
           layout = find_layout
-          # Reading a layout's stored answer is reading the layout; the scope above is
+          # Reading a layout's stored answer is reading the layout; find_layout is
           # what decides whether this user may see it at all.
           authorize(layout, :show?) if layout
 
@@ -40,11 +41,11 @@ module ContentBuilder
             status: :unprocessable_entity
         end
 
-        # Replaces every stored answer this layout holds: the moment an admin decides
-        # which data the report shows from now on.
+        # Replaces every stored answer this layout holds: the moment the report's editor
+        # decides which data it shows from now on.
         def refresh
-          layout = policy_scope(Layout).find(params[:layout_id])
-          authorize layout, :update?
+          layout = Layout.find(params[:layout_id])
+          authorize_editing(layout)
 
           refreshed = layout.query_snapshots.map do |snapshot|
             result = McpServer::ReportingQueryRunner.run(snapshot.sql)
@@ -62,9 +63,24 @@ module ContentBuilder
         rescue McpServer::ReportingQueryRunner::Rejected => e
           render json: { errors: { base: [{ error: 'rejected', detail: e.message }] } },
             status: :unprocessable_entity
+        rescue ActiveRecord::StatementInvalid => e
+          render json: { errors: { base: [{ error: 'execution_failed', detail: e.message }] } },
+            status: :unprocessable_entity
         end
 
         private
+
+        # LayoutPolicy only knows the content types UserRoleService#can_moderate? knows,
+        # which does not include reports; a report says for itself who may read it and
+        # who may edit it.
+        def report_for(layout)
+          layout.content_buildable if layout&.content_buildable_type == 'ReportBuilder::Report'
+        end
+
+        def authorize_editing(layout)
+          report = report_for(layout)
+          report ? authorize(report, :write?) : authorize(layout, :update?)
+        end
 
         def scoped_token_permits?(layout)
           return false if layout.nil?
@@ -83,6 +99,13 @@ module ContentBuilder
             return Layout.find_by(id: params[:layout_id])
           end
 
+          layout = Layout.find_by(id: params[:layout_id])
+          # The scope drops a report for everyone ReportPolicy::Scope refuses, which is
+          # every reader of a published one. ReportPolicy#layout? is the rule the
+          # report's own layout endpoint uses.
+          report = report_for(layout)
+          return policy(report).layout? ? layout : nil if report
+
           policy_scope(Layout).find_by(id: params[:layout_id])
         end
 
@@ -98,12 +121,13 @@ module ContentBuilder
           if layout
             # Two blocks asking the same question can race; the unique index decides
             # and the loser keeps what the winner stored.
-            QuerySnapshot.create_or_find_by!(
+            snapshot = QuerySnapshot.create_or_find_by!(
               layout_id: layout.id, query_hash: QuerySnapshot.hash_for(sql)
             ) { |s| s.assign_attributes(sql: sql, data: data, executed_at: executed_at) }
+            return render_result(snapshot.data, snapshot.executed_at, snapshot: true)
           end
 
-          render_result(data, executed_at, snapshot: layout.present?)
+          render_result(data, executed_at, snapshot: false)
         end
 
         def result_data(result)
@@ -113,8 +137,7 @@ module ContentBuilder
         def render_result(data, executed_at, snapshot:)
           render json: {
             data: {
-              # The question is the identity: two blocks asking the same thing are the
-              # same result, and the front-end caches on it.
+              # A digest of the answer, so a resource id is stable for the same data.
               id: Digest::SHA256.hexdigest(data.to_json),
               type: 'reporting_query',
               attributes: {

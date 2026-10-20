@@ -9,7 +9,8 @@ resource 'ReportingQueries' do
 
     A report is a picture of a moment: the first time a question is asked of a layout
     the answer is stored, and every later read returns that stored answer. Only an
-    admin can fill a snapshot, so no reader ever causes SQL to run.
+    admin, or the sandbox rendering a block with its scoped token, can fill a
+    snapshot, so no reader ever causes SQL to run.
   DESC
 
   before do
@@ -119,6 +120,54 @@ resource 'ReportingQueries' do
       end
     end
 
+    # The layout of a report is outside LayoutPolicy::Scope for everyone
+    # ReportPolicy::Scope refuses, which is every reader of a published report. The
+    # report's own rule is what decides here.
+    context 'when the layout belongs to a published phase report' do
+      let(:report) { create(:report, :visible, phase: create(:phase)) }
+      let(:layout) { report.layout }
+
+      before do
+        create(
+          :query_snapshot,
+          layout: layout,
+          sql: McpServer::SqlSandboxer.validate(sql).normalized_sql,
+          data: { 'columns' => ['contributions'], 'rows' => [{ 'contributions' => 7 }], 'truncated' => false }
+        )
+      end
+
+      example 'Read a published report\'s stored answer as a visitor' do
+        do_request(query: sql, layout_id: layout.id)
+
+        assert_status 200
+        expect(response_data[:attributes][:rows]).to eq [{ contributions: 7 }]
+      end
+
+      example 'Read it as a resident', document: false do
+        header_token_for create(:user)
+
+        do_request(query: sql, layout_id: layout.id)
+
+        assert_status 200
+      end
+
+      example 'Read it as a moderator who does not own it', document: false do
+        header_token_for create(:project_moderator, projects: [report.phase.project])
+
+        do_request(query: sql, layout_id: layout.id)
+
+        assert_status 200
+      end
+
+      example '[error] Try to read one that is not published', document: false do
+        report.update!(visible: false)
+
+        do_request(query: sql, layout_id: layout.id)
+
+        assert_status 401
+      end
+    end
+
     context 'when the sandbox renders a block' do
       # The browser in the sandbox has no session: it holds a token good for
       # one layout's data and nothing else.
@@ -163,6 +212,33 @@ resource 'ReportingQueries' do
       example_request 'Replace every stored answer the layout holds' do
         assert_status 200
         expect(response_data[:attributes][:refreshed]).to eq 1
+        expect(snapshot.reload.executed_at).to be > 1.minute.ago
+      end
+
+      # A query that ran once can fail later: the 10s timeout, or a view column that
+      # has changed since. The admin is told, rather than shown a 500.
+      example '[error] Try to refresh a query that no longer runs', document: false do
+        allow(McpServer::ReportingQueryRunner).to receive(:run)
+          .and_raise(ActiveRecord::StatementInvalid, 'canceling statement due to statement timeout')
+
+        do_request
+
+        assert_status 422
+        expect(json_response_body[:errors][:base].first[:error]).to eq 'execution_failed'
+        expect(snapshot.reload.executed_at).to be < 1.minute.ago
+      end
+    end
+
+    # LayoutPolicy#update? goes through UserRoleService#can_moderate?, which has no
+    # case for reports, so the report's own edit rule is what decides.
+    context 'when the report is moderated by the user' do
+      let(:report) { create(:report, phase: create(:phase)) }
+      let(:layout) { report.layout }
+
+      before { header_token_for create(:project_moderator, projects: [report.phase.project]) }
+
+      example_request 'Replace every stored answer the report holds' do
+        assert_status 200
         expect(snapshot.reload.executed_at).to be > 1.minute.ago
       end
     end
