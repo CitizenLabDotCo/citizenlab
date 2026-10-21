@@ -42,7 +42,7 @@ parameters:
     type: boolean
     default: false
 
-  custom_block_sandbox: # corresponds to the name of the package
+  custom_block_renderer: # corresponds to the name of the package
     type: boolean
     default: false
 
@@ -90,7 +90,7 @@ parameters:
     type: boolean
     default: false
 
-  epic_custom_block_sandbox_artifact:
+  epic_custom_block_renderer_artifact:
     type: boolean
     default: false
 
@@ -531,13 +531,13 @@ jobs:
           command: ssh << parameters.ssh_user >>@<< parameters.ssh_host >> -o StrictHostKeyChecking=no "docker run --env-file cl2-deployment/<< parameters.env_file >> citizenlabdotco/back-ee:$CIRCLE_BRANCH bin/rake checks:invalid_data"
           no_output_timeout: 60m
 
-  # CUSTOM BLOCK SANDBOX
-  custom-block-sandbox-test:
+  # CUSTOM BLOCK RENDERER
+  custom-block-renderer-test:
     resource_class: small
     docker:
       # The Node the service runs under, which is the one its runtime image ships.
       - image: cimg/node:22.20
-    working_directory: ~/citizenlab/custom-block-sandbox
+    working_directory: ~/citizenlab/custom-block-renderer
     environment:
       # The unit tests never start Chromium, and the browser download is the slowest
       # part of installing playwright.
@@ -546,16 +546,16 @@ jobs:
       - shallow-clone
       - restore_cache:
           keys:
-            - v1-custom-block-sandbox-npm-cache-{{ checksum "package-lock.json" }}
+            - v1-custom-block-renderer-npm-cache-{{ checksum "package-lock.json" }}
       - run: npm ci
       - save_cache:
           paths:
             - ~/.npm
-          key: v1-custom-block-sandbox-npm-cache-{{ checksum "package-lock.json" }}
+          key: v1-custom-block-renderer-npm-cache-{{ checksum "package-lock.json" }}
       - run: npm run typecheck
       - run: npm test
 
-  custom-block-sandbox-build-docker-image-amd64:
+  custom-block-renderer-build-docker-image-amd64:
     working_directory: ~/
     docker:
       - image: cimg/base:2025.01
@@ -570,10 +570,10 @@ jobs:
       - run: |
           # The build context is the repository root: the image takes the SDK type
           # definitions from the front-end tree.
-          docker build -t citizenlabdotco/custom-block-sandbox:amd64-$CIRCLE_SHA1 -f citizenlab/custom-block-sandbox/Dockerfile citizenlab/.
+          docker build -t citizenlabdotco/custom-block-renderer:amd64-$CIRCLE_SHA1 -f citizenlab/custom-block-renderer/Dockerfile citizenlab/.
       - run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASS
-          docker push citizenlabdotco/custom-block-sandbox:amd64-$CIRCLE_SHA1
+          docker push citizenlabdotco/custom-block-renderer:amd64-$CIRCLE_SHA1
 
   front-detect-deadcode:
     docker:
@@ -1419,19 +1419,19 @@ workflows:
           ssh_host: $CITIZENLAB_CLUSTER_IP_ADDRESS_AUS
           env_file: ".env-web"
 
-  # CUSTOM BLOCK SANDBOX
+  # CUSTOM BLOCK RENDERER
   # Named after the package in monorepo.json, like the back and front workflows:
   # monorepo.sh finds a package's last successful build by workflow name.
-  custom_block_sandbox:
+  custom_block_renderer:
     when:
       and:
-        - << pipeline.parameters.custom_block_sandbox >>
+        - << pipeline.parameters.custom_block_renderer >>
         - not: <<pipeline.parameters.run_deploy>>
         - not:
             equal: ["production", << pipeline.git.branch >>]
     jobs:
-      - custom-block-sandbox-test
-      - custom-block-sandbox-build-docker-image-amd64:
+      - custom-block-renderer-test
+      - custom-block-renderer-build-docker-image-amd64:
           context:
             - docker-hub-access
 
@@ -1524,14 +1524,14 @@ workflows:
       - front-build:
           context: epic-front-bundles
 
-  epic-custom-block-sandbox-artifact:
+  epic-custom-block-renderer-artifact:
     when:
       and:
-        - << pipeline.parameters.epic_custom_block_sandbox_artifact >>
+        - << pipeline.parameters.epic_custom_block_renderer_artifact >>
         - not:
             equal: ["production", << pipeline.git.branch >>]
     jobs:
-      - custom-block-sandbox-build-docker-image-amd64:
+      - custom-block-renderer-build-docker-image-amd64:
           context:
             - docker-hub-access
 

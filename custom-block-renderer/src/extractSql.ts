@@ -22,7 +22,7 @@ export interface ExtractResult {
  *
  * The argument must resolve to a static string. A query assembled at runtime could
  * not be snapshotted (there would be nothing to key the snapshot on) and could not
- * be checked by the sandbox before it ran, so it is rejected rather than tolerated.
+ * be checked by the SQL sandbox before it ran, so it is rejected rather than tolerated.
  */
 export const extractSql = (source: string): ExtractResult => {
   const sourceFile = parseSource(source);

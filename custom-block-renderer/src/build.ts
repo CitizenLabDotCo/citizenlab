@@ -21,7 +21,7 @@ const SDK_VERSION = process.env.SDK_VERSION ?? "v1";
  * The extracted queries are put on the manifest but not validated here — Rails runs
  * them through the same SQL sandbox the MCP reporting tool uses, right after this
  * call, and merges the result into the same tool result. One implementation of the
- * sandbox, and still one round trip for the model.
+ * SQL sandbox, and still one round trip for the model.
  */
 export const build = async (request: BuildRequest): Promise<BuildResponse> => {
   const { source, manifest, messages, locales } = request;
