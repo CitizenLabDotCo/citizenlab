@@ -14,8 +14,8 @@ describe ReportBuilder::Composition::ReportComposer do
 
   before do
     allow(ENV).to receive(:fetch).and_call_original
-    allow(ENV).to receive(:fetch).with('CUSTOM_BLOCK_SANDBOX_SECRET', nil).and_return('test-secret')
-    stub_sandbox
+    allow(ENV).to receive(:fetch).with('CUSTOM_BLOCK_RENDERER_SECRET', nil).and_return('test-secret')
+    stub_renderer
   end
 
   let(:project) { create(:project) }
@@ -54,14 +54,14 @@ describe ReportBuilder::Composition::ReportComposer do
   let(:checking_composer) do
     described_class.new(project, locale: 'en', client: client, layout_record: create(:layout))
   end
-  let(:sandbox) { instance_double(ContentBuilder::CustomBlocks::SandboxClient) }
+  let(:renderer) { instance_double(ContentBuilder::CustomBlocks::RendererClient) }
 
   # Just enough of a PNG for the checker to read its size off the header.
   let(:png_bytes) { "\x89PNG\r\n\x1a\n".b + [13].pack('N') + 'IHDR'.b + [794, 600].pack('N2') }
 
   def stub_render(**result)
-    allow(ContentBuilder::CustomBlocks::SandboxClient).to receive(:new).and_return(sandbox)
-    allow(sandbox).to receive_messages(
+    allow(ContentBuilder::CustomBlocks::RendererClient).to receive(:new).and_return(renderer)
+    allow(renderer).to receive_messages(
       sdk_declarations: "declare module 'gv-sdk' {}",
       render: {
         'checks' => [], 'errors' => [], 'console' => [], 'failedRequests' => [], 'screenshot' => nil
@@ -91,14 +91,14 @@ describe ReportBuilder::Composition::ReportComposer do
     respond_with([content_block_class.new(text, nil)], 'end_turn')
   end
 
-  # Blocks are compiled and checked by the sandbox before anything is stored,
+  # Blocks are compiled and checked by the renderer before anything is stored,
   # so every authoring path goes through it. The default is a clean build; the specs
   # that care about failure re-stub it.
-  def stub_sandbox(ok: true, diagnostics: [])
-    stub_request(:get, 'http://custom_block_sandbox:3100/sdk/v1.d.ts').to_return(
+  def stub_renderer(ok: true, diagnostics: [])
+    stub_request(:get, 'http://custom_block_renderer:3100/sdk/v1.d.ts').to_return(
       status: 200, body: "declare module 'gv-sdk' { export const Box: unknown; }"
     )
-    stub_request(:post, 'http://custom_block_sandbox:3100/build').to_return(
+    stub_request(:post, 'http://custom_block_renderer:3100/build').to_return(
       status: 200,
       body: {
         ok: ok,
@@ -205,7 +205,7 @@ describe ReportBuilder::Composition::ReportComposer do
     end
 
     it 'says so in the prompt when the SDK declarations cannot be read' do
-      stub_request(:get, 'http://custom_block_sandbox:3100/sdk/v1.d.ts').to_return(status: 503)
+      stub_request(:get, 'http://custom_block_renderer:3100/sdk/v1.d.ts').to_return(status: 503)
       stub_converse(write_layout(text_layout), done)
 
       composer.compose
@@ -254,7 +254,7 @@ describe ReportBuilder::Composition::ReportComposer do
         expect(tool_results.first[:content].first[:text]).to include 'contributions'
       end
 
-      it 'hands back the sandbox rejection rather than running it' do
+      it 'hands back the SQL sandbox rejection rather than running it' do
         stub_converse(
           tool_call('run_reporting_sql_query', { 'query' => 'SELECT * FROM users' }),
           write_layout(text_layout),
@@ -301,7 +301,7 @@ describe ReportBuilder::Composition::ReportComposer do
       # The build is what decides; the composer's job is to pass its verdict back in a
       # form the model can act on rather than swallowing it.
       it 'hands a failed build back as a correctable tool error' do
-        stub_sandbox(
+        stub_renderer(
           ok: false,
           diagnostics: [
             { 'kind' => 'lint', 'line' => 2, 'rule' => 'no-network', 'message' => 'No fetch in a block.' }
@@ -316,7 +316,7 @@ describe ReportBuilder::Composition::ReportComposer do
       end
 
       it 'says so plainly when the block cannot be checked at all' do
-        stub_request(:post, 'http://custom_block_sandbox:3100/build').to_timeout
+        stub_request(:post, 'http://custom_block_renderer:3100/build').to_timeout
         stub_converse(tool_call('author_chart_block', authored), write_layout(text_layout), done)
 
         composer.compose
@@ -547,7 +547,7 @@ describe ReportBuilder::Composition::ReportComposer do
 
         checking_composer.compose
 
-        expect(sandbox).to have_received(:render).with(
+        expect(renderer).to have_received(:render).with(
           hash_including(target: hash_including(kind: 'layout', craftjs_json: hash_including('ROOT', 'textnode01')))
         ).at_least(:once)
       end
@@ -631,7 +631,7 @@ describe ReportBuilder::Composition::ReportComposer do
         stub_converse(write_layout(text_layout), done)
 
         expect(checking_composer.compose).to eq text_layout
-        expect(sandbox).to have_received(:render).once
+        expect(renderer).to have_received(:render).once
       end
 
       it 'gives the model one round to fix what the render found' do
