@@ -57,5 +57,3 @@ export const SDK_EXPORT_NAMES = [
   'Legend',
   'LabelList',
 ] as const;
-
-export type SdkExportName = (typeof SDK_EXPORT_NAMES)[number];
