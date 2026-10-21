@@ -5,13 +5,13 @@ require 'rails_helper'
 describe ContentBuilder::CustomBlocks::BlockBuilder do
   subject(:builder) { described_class.new }
 
-  let(:build_url) { 'http://custom_block_sandbox:3100/build' }
+  let(:build_url) { 'http://custom_block_renderer:3100/build' }
   let(:source) { 'export default () => null;' }
   let(:sql) { 'SELECT count(*) AS count FROM reporting_contributions' }
 
   before do
     allow(ENV).to receive(:fetch).and_call_original
-    allow(ENV).to receive(:fetch).with('CUSTOM_BLOCK_SANDBOX_SECRET', nil).and_return('test-secret')
+    allow(ENV).to receive(:fetch).with('CUSTOM_BLOCK_RENDERER_SECRET', nil).and_return('test-secret')
   end
 
   def stub_build(body)
@@ -45,7 +45,7 @@ describe ContentBuilder::CustomBlocks::BlockBuilder do
       expect(result.diagnostics).to be_empty
     end
 
-    # The sandbox's normalized form, not what the model typed: it is the key a
+    # The SQL sandbox's normalized form, not what the model typed: it is the key a
     # snapshot hangs off, and it is what an audit of "who reads this view?" compares.
     it 'stores the normalized SQL on the manifest' do
       expect(build.manifest['queries'].first).to eq McpServer::SqlSandboxer.validate(sql).normalized_sql
@@ -80,7 +80,7 @@ describe ContentBuilder::CustomBlocks::BlockBuilder do
     end
   end
 
-  describe 'a block whose query the sandbox refuses' do
+  describe 'a block whose query the SQL sandbox refuses' do
     before do
       stub_build(
         ok: true,
