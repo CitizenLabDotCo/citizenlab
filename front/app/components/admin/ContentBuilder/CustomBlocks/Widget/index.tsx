@@ -25,7 +25,7 @@ interface Props {
 }
 
 // Where a broken block must say so rather than leave a gap: the builder an admin is
-// working in, and the harness the custom block sandbox renders in. On a report
+// working in, and the harness the custom block renderer renders in. On a report
 // a resident reads, a block that failed renders nothing at all.
 const useShowsFailures = () => {
   const { pathname } = useLocation();
@@ -47,7 +47,7 @@ const useShowsFailures = () => {
 const CustomBlock = ({ blockId, version, config = {} }: Props) => {
   const showsFailures = useShowsFailures();
   // A draft is the block being checked before it has a version to fetch. Only the
-  // sandbox's harness ever places one.
+  // renderer's harness ever places one.
   const draft = isDraft(blockId) ? getDraftBlock() : null;
   const { data: blockVersion } = useCustomBlockVersion({
     blockId: draft ? undefined : blockId,

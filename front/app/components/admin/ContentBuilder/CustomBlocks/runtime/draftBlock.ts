@@ -10,7 +10,7 @@ export interface DraftBlock {
 /**
  * The one block id that means "the draft being checked, not a stored version".
  *
- * Nothing persists this: it exists so the custom block sandbox can mount a
+ * Nothing persists this: it exists so the custom block renderer can mount a
  * block that has no version row yet, in the same host widget and the same
  * runtime a reader gets. A report layout never contains it.
  */

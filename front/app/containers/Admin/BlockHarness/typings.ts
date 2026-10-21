@@ -30,11 +30,11 @@ export interface HarnessFacts {
 
 declare global {
   interface Window {
-    /** Installed by this route; the sandbox calls it from outside the page. */
+    /** Installed by this route; the renderer calls it from outside the page. */
     __blockHarness?: {
       run(request: HarnessRequest): Promise<HarnessFacts>;
     };
-    /** Injected by the sandbox before it runs the harness. */
+    /** Injected by the renderer before it runs the harness. */
     axe?: {
       run(selector: string): Promise<{
         violations: { id: string; impact?: string | null; help: string }[];
