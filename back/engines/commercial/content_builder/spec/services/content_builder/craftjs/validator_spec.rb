@@ -243,6 +243,41 @@ RSpec.describe ContentBuilder::Craftjs::Validator do
       )
     end
 
+    # For a widget whose content the FE renders from either wiring. Pinning slot
+    # names there would refuse a node the builder itself wrote.
+    context "a widget declaring 'children' rather than slots" do
+      let(:widget_specs) { { 'TwoColumn' => { 'children' => 2 }, 'Container' => {} } }
+
+      before do
+        json.delete('T')
+        json['ROOT']['nodes'] = ['TC']
+        json['L'] = craftjs_node('Container', parent: 'TC', isCanvas: true)
+        json['R'] = craftjs_node('Container', parent: 'TC', isCanvas: true)
+      end
+
+      it 'accepts the two columns as craft children' do
+        json['TC'] = craftjs_node('TwoColumn', parent: 'ROOT', nodes: %w[L R])
+
+        expect(errors).to eq([])
+      end
+
+      it 'accepts them as linked slots, whatever the slots are called' do
+        json['TC'] = craftjs_node('TwoColumn', parent: 'ROOT',
+          linkedNodes: { 'column-visitors-left' => 'L', 'column-visitors-right' => 'R' })
+
+        expect(errors).to eq([])
+      end
+
+      it 'rejects a node holding the wrong number of columns' do
+        json.delete('R')
+        json['TC'] = craftjs_node('TwoColumn', parent: 'ROOT', nodes: %w[L])
+
+        expect(errors).to contain_exactly(
+          match(/\Anode TC: must have exactly 2 children.*this has 1/)
+        )
+      end
+    end
+
     it 'rejects a linkedNodes slot container that is not a canvas' do
       json.delete('T')
       json['ROOT']['nodes'] = ['TC']

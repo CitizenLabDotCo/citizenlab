@@ -67,6 +67,49 @@ describe ReportBuilder::Craftjs::LayoutValidator do
     end
   end
 
+  # A two-column section is stored three ways depending on who made it, and the
+  # widget renders all three. Chat sends the node back as it found it — to retitle a
+  # section, say — so refusing any of them would cost a round for nothing.
+  describe 'a two-column section, however it was wired' do
+    def two_column_graph(**overrides)
+      {
+        'ROOT' => root(['col']),
+        'col' => node('TwoColumn', parent: 'ROOT', props: { 'columnLayout' => '1-1' }).merge(overrides),
+        'leftcol' => node('Container', parent: 'col').merge('isCanvas' => true),
+        'rightcol' => node('Container', parent: 'col').merge('isCanvas' => true)
+      }
+    end
+
+    it 'accepts the slots the builder and the composer write' do
+      graph = two_column_graph('linkedNodes' => { 'left' => 'leftcol', 'right' => 'rightcol' })
+
+      expect(described_class.validate(graph, convention_scope: ['col'])).to be_valid
+    end
+
+    it 'accepts the craft children most templates store' do
+      graph = two_column_graph('nodes' => %w[leftcol rightcol])
+
+      expect(described_class.validate(graph, convention_scope: ['col'])).to be_valid
+    end
+
+    it 'accepts the slot names PlatformTemplate gives its columns' do
+      graph = two_column_graph(
+        'linkedNodes' => { 'column-visitors-left' => 'leftcol', 'column-visitors-right' => 'rightcol' }
+      )
+
+      expect(described_class.validate(graph, convention_scope: ['col'])).to be_valid
+    end
+
+    it 'still refuses a section with only one column' do
+      graph = two_column_graph('nodes' => %w[leftcol]).except('rightcol')
+
+      result = described_class.validate(graph, convention_scope: ['col'])
+
+      expect(result).not_to be_valid
+      expect(result.message).to include 'must have exactly 2 children'
+    end
+  end
+
   it 'accepts a graph of report widgets under a report ROOT' do
     result = described_class.validate(valid_graph)
 
