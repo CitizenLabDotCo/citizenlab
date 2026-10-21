@@ -119,7 +119,7 @@ module ReportBuilder
         }
       TSX
 
-      def initialize(locale:, client: ContentBuilder::CustomBlocks::SandboxClient.new)
+      def initialize(locale:, client: ContentBuilder::CustomBlocks::RendererClient.new)
         @locale = locale
         @client = client
       end
@@ -382,7 +382,7 @@ module ReportBuilder
 
       def sdk_declarations
         @sdk_declarations ||= @client.sdk_declarations
-      rescue ContentBuilder::CustomBlocks::SandboxClient::Unavailable
+      rescue ContentBuilder::CustomBlocks::RendererClient::Unavailable
         nil
       end
     end
