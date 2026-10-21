@@ -7,7 +7,9 @@ module ReportBuilder
     # for exactly the widgets the errors point at.
     #
     # Wraps ContentBuilder::Craftjs::Validator with the report widget specs and root
-    # type, the way McpServer::Tools::UpdateProjectLayout does for project pages.
+    # type, as McpServer::LayoutPatchable#validate! does for project pages. Separate
+    # from it for the reason given on LayoutPatcher, and because the composer wants a
+    # value it can hand back to the model rather than an exception.
     class LayoutValidator
       # Generous ceiling to bound a runaway generation; a rich report lands well under this.
       MAX_NODES = 300
@@ -24,8 +26,8 @@ module ReportBuilder
       #   on. Pass the ids just written so pre-existing nodes cannot fail an update that
       #   did not touch them; nil checks the whole graph.
       # @param widget_specs [Hash] the rules to validate against. The composer passes
-      #   WidgetSpecs.with_allowed_ids so a made-up record id is caught here rather
-      #   than raising later, in the query behind the chart.
+      #   WidgetSpecs.with_allowed_ids so a CustomBlock pointing at a block it never
+      #   authored is caught here, rather than rendering nothing in the report.
       def initialize(craftjs_json, convention_scope: nil, widget_specs: WidgetSpecs::SPECS)
         @craftjs_json = craftjs_json
         @convention_scope = convention_scope
