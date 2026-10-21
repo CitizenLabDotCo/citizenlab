@@ -1,4 +1,4 @@
-# custom-block-sandbox
+# custom-block-renderer
 
 Answers two questions about a generated custom block with facts a model can act on:
 
@@ -6,7 +6,7 @@ Answers two questions about a generated custom block with facts a model can act 
 - **does it render** — `POST /render`: mount the block in headless Chromium against the
   SPA's block-harness route, and report what the page did.
 
-Rails is the only caller, and authenticates with the `X-Sandbox-Secret` header. The
+Rails is the only caller, and authenticates with the `X-Renderer-Secret` header. The
 service is stateless, holds no credentials of its own, and never reaches the database.
 It exists as its own container because it runs generated JavaScript, which must not run
 inside the Rails process.
@@ -14,11 +14,11 @@ inside the Rails process.
 ## Local development
 
 It comes up with the rest of the stack (`docker compose up
-custom_block_sandbox`). Outside Docker:
+custom_block_renderer`). Outside Docker:
 
 ```sh
 npm install
-CUSTOM_BLOCK_SANDBOX_SECRET=dev npm run dev
+CUSTOM_BLOCK_RENDERER_SECRET=dev npm run dev
 ```
 
 ## The SDK type definitions
@@ -31,7 +31,7 @@ typechecker holds it to.
 
 ## Deployment
 
-CI builds and pushes `citizenlabdotco/custom-block-sandbox:amd64-<sha>` on every
+CI builds and pushes `citizenlabdotco/custom-block-renderer:amd64-<sha>` on every
 pipeline, the same per-commit tag the back-end image uses. An environment can pin
 both to one commit.
 amd64 only: a preview pulls that tag directly, so the multi-arch manifest the back end
@@ -39,10 +39,10 @@ builds for staging and production has no counterpart here yet.
 
 A deployed instance needs:
 
-- `CUSTOM_BLOCK_SANDBOX_SECRET`, the same value as on the Rails side. Without it
+- `CUSTOM_BLOCK_RENDERER_SECRET`, the same value as on the Rails side. Without it
   the service refuses every request with a 503.
-- `CUSTOM_BLOCK_SANDBOX_URL` on the Rails side, pointing here. It defaults to
-  `http://custom_block_sandbox:3100`.
+- `CUSTOM_BLOCK_RENDERER_URL` on the Rails side, pointing here. It defaults to
+  `http://custom_block_renderer:3100`.
 - Outbound HTTPS to the tenant's own front end and API. A render opens
   `<base_frontend_uri>/<locale>/block-harness`, and the page then reads its data from the
   API. Those two origins are the only private hosts the page may reach; see

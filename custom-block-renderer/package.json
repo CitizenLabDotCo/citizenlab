@@ -1,5 +1,5 @@
 {
-  "name": "@govocal/custom-block-sandbox",
+  "name": "@govocal/custom-block-renderer",
   "version": "1.0.0",
   "private": true,
   "type": "module",
