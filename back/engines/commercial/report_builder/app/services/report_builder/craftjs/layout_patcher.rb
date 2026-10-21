@@ -44,10 +44,31 @@ module ReportBuilder
 
         patched = @graph.deep_dup
         apply_deletes!(patched)
-        patched.merge(@nodes)
+        patched.merge(@nodes).except(*stale_orphans)
       end
 
       private
+
+      # Nodes already unreachable before this patch. The report builder saves a
+      # report made from a template with a stray template node, and the model can
+      # neither see one nor fix it, so leaving them in fails every patch on a
+      # structural fault nobody in the conversation caused. Dropping them loses
+      # nothing: a node unreachable from ROOT renders nowhere and cannot be
+      # edited. A node this patch itself leaves unwired is kept, so the validator
+      # still reports it — that one is the model's to fix.
+      def stale_orphans
+        reachable = Set.new
+        queue = ['ROOT']
+        until queue.empty?
+          id = queue.shift
+          next if reachable.include?(id) || !@graph.key?(id)
+
+          reachable << id
+          queue.concat(ContentBuilder::Craftjs::Query.child_ids(@graph[id]))
+        end
+
+        @graph.keys - reachable.to_a - @nodes.keys
+      end
 
       # Every widget node's type is {"resolvedName": ...}; ROOT alone is the plain
       # string "div". A model that writes ROOT the way it writes every other node

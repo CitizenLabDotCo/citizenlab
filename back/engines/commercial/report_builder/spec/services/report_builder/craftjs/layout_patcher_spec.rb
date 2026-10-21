@@ -26,6 +26,38 @@ describe ReportBuilder::Craftjs::LayoutPatcher do
     }
   end
 
+  # The report builder saves a template report with a stray template node, which
+  # no patch can be validated around while it is still there.
+  describe 'a node that was already unreachable' do
+    let(:graph) do
+      {
+        'ROOT' => root('textnode01'),
+        'textnode01' => node('TextMultiloc', { 'text' => { 'en' => '<p>One</p>' } }),
+        'strayTpl' => node('ProjectTemplate')
+      }
+    end
+
+    it 'is dropped, so an old fault does not fail every patch' do
+      patched = described_class.patch(
+        graph, nodes: { 'textnode01' => node('TextMultiloc', { 'text' => { 'en' => '<p>Edited</p>' } }) }
+      )
+
+      expect(patched.keys).to contain_exactly('ROOT', 'textnode01')
+      expect(described_class.patch(graph, nodes: { 'textnode01' => graph['textnode01'] }))
+        .not_to have_key 'strayTpl'
+    end
+
+    # The model's own mistake still has to reach it.
+    it 'is kept when this patch is what left it unwired, so the validator reports it' do
+      patched = described_class.patch(graph, nodes: { 'orphan' => node('TextMultiloc') })
+
+      expect(patched).to have_key 'orphan'
+      result = ReportBuilder::Craftjs::LayoutValidator.validate(patched, convention_scope: ['orphan'])
+      expect(result).not_to be_valid
+      expect(result.message).to include 'not referenced by any'
+    end
+  end
+
   describe '.patch' do
     it 'merges the patch into what is already there' do
       result = described_class.patch(
