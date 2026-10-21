@@ -82,6 +82,14 @@ class LLMSelector
       default_model: ::Analysis::LLM::ClaudeHaiku45
     ),
     LLMUseCase.new(
+      key: 'report_generation',
+      description: 'Writing a report on a participation project, with its charts',
+      # Only Anthropic on Bedrock: the composer drives a tool-calling loop through the
+      # Converse API, which the other families are not wired for here.
+      supported_models: [::Analysis::LLM::ClaudeSonnet46, ::Analysis::LLM::ClaudeOpus46],
+      default_model: ::Analysis::LLM::ClaudeSonnet46
+    ),
+    LLMUseCase.new(
       key: 'form_sync',
       description: 'Extract handwritten survey responses from scanned PDF forms',
       supported_models: [::Analysis::LLM::ClaudeSonnet46, ::Analysis::LLM::Gemini3Flash],
