@@ -10,7 +10,7 @@ export type ReportingRow = Record<string, string | number | boolean | null>;
 export interface ReportingQueryResult {
   columns: string[];
   rows: ReportingRow[];
-  // True when the query returned more rows than the sandbox serves; aggregate
+  // True when the query returned more rows than the SQL sandbox serves; aggregate
   // in SQL rather than paging.
   truncated: boolean;
   // When the answer was produced. For a snapshot this is when the report was
