@@ -4,8 +4,7 @@ module ReportBuilder
   module Craftjs
     # How a report craftjs graph is shaped, as the composer needs to understand it.
     # Kept apart from LayoutWidgets, which catalogues the widgets rather than the
-    # format they are written in. LayoutWidgets::FORMAT_RULES re-exports this, so the
-    # name callers already use keeps working.
+    # format they are written in. LayoutWidgets::FORMAT_RULES points here.
     module LayoutFormatRules
       TEXT = <<~RULES
         # Report craftjs_json format

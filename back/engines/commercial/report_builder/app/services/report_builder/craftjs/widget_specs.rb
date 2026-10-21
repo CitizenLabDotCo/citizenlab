@@ -23,12 +23,18 @@ module ReportBuilder
       # deletable in place, but never newly created.
       DEPRECATED_WIDGETS = %w[ActiveUsersWidget ReactionsByTimeWidget ProjectsTimelineWidget].freeze
 
+      # The node a report made from a template is stored under, one per template.
+      TEMPLATE_WIDGETS = %w[ProjectTemplate PhaseTemplate PlatformTemplate CommunityMonitorTemplate].freeze
+
       SPECS = {
         # Layout and text — what the composer writes.
         'TextMultiloc' => { 'multilocs' => %w[text] },
+        # The widget renders craft children directly and falls back to its linked
+        # slots only when it has none, so templates store their columns in `nodes`
+        # while everything written through here uses the slots. Only the slot shape
+        # is expressible, so a template column sent back for editing is refused and
+        # the model rewires it — which renders identically.
         'TwoColumn' => {
-          # The report TwoColumn renders craft children directly and only falls back to
-          # its linked slots when it has none, so both shapes occur in stored graphs.
           'slots' => %w[left right],
           'enums' => { 'columnLayout' => %w[1-1 2-1 1-2] }
         },
@@ -45,8 +51,9 @@ module ReportBuilder
         # the composer actually authored (see with_allowed_ids).
         'CustomBlock' => {},
 
-        # Chart widgets the composer places. Their queries raise on an id that does
-        # not exist, so the id props are constrained per request (see with_allowed_ids).
+        # Chart widgets placed by hand in the builder, with known prop rules. The
+        # composer is not offered them (LayoutWidgets::UNDOCUMENTED_WIDGETS), and
+        # with_allowed_ids pins no id on them — only CustomBlock carries one.
         'ParticipantsWidget' => {
           'multilocs' => %w[title ariaLabel description],
           'enums' => { 'resolution' => %w[day week month] }
@@ -58,6 +65,17 @@ module ReportBuilder
         'DemographicsWidget' => { 'multilocs' => %w[title ariaLabel description] },
         'MostReactedIdeasWidget' => { 'multilocs' => %w[title] },
         'SurveyQuestionResultWidget' => { 'multilocs' => %w[ariaLabel description] },
+
+        # A report made from a template stores the template node with every section
+        # in a Box canvas linked under it. Phase reports start from a template by
+        # default, so chat has to be able to send these back.
+        'Box' => {},
+        'ProjectTemplate' => { 'slots' => %w[project-report-template] },
+        'PhaseTemplate' => { 'slots' => %w[phase-report-template] },
+        'PlatformTemplate' => { 'slots' => %w[platform-report-template] },
+        'CommunityMonitorTemplate' => { 'slots' => %w[community-monitor-report-template] },
+        # Still in the editor's resolver pending a data migration, so old graphs hold it.
+        'Insights' => {},
 
         # Placed by hand in the builder.
         'ImageMultiloc' => {},
@@ -76,8 +94,6 @@ module ReportBuilder
         'ReactionsByTimeWidget' => {},
         'ProjectsTimelineWidget' => {}
       }.freeze
-
-      WIDGET_NAMES = SPECS.keys.freeze
 
       # Which widgets carry which id prop. A node pointing at a block that was never
       # authored renders nothing, so the ids are validated rather than trusted.
