@@ -34,6 +34,39 @@ describe ReportBuilder::Craftjs::LayoutValidator do
   let(:text_node) { node('TextMultiloc', parent: 'ROOT', props: { 'text' => { 'en' => '<p>Hello</p>' } }) }
   let(:valid_graph) { { 'ROOT' => root(['textnode01']), 'textnode01' => text_node } }
 
+  # A phase report starts from a template unless the admin empties it, so this is
+  # the ordinary shape, not an edge case: ROOT -> PhaseTemplate -> a Box canvas
+  # linked under it, holding every section.
+  describe 'a report made from a template' do
+    let(:template_graph) do
+      {
+        'ROOT' => root(['tpl']),
+        'tpl' => node('PhaseTemplate', parent: 'ROOT').merge(
+          'linkedNodes' => { 'phase-report-template' => 'box' }
+        ),
+        'box' => node('Box', parent: 'tpl', nodes: ['sec']).merge('isCanvas' => true),
+        'sec' => node('TextMultiloc', parent: 'box', props: { 'text' => { 'en' => '<p>Turnout</p>' } })
+      }
+    end
+
+    it 'validates as a whole' do
+      expect(described_class.validate(template_graph)).to be_valid
+    end
+
+    # What chat has to do to add a section where the admin asked: send the Box with
+    # its new child list. Before Box was a known widget this was refused outright.
+    it 'accepts a section inserted into the template, which is what chat sends' do
+      graph = template_graph.merge(
+        'box' => template_graph['box'].merge('nodes' => %w[sec added]),
+        'added' => node('TextMultiloc', parent: 'box', props: { 'text' => { 'en' => '<p>New</p>' } })
+      )
+
+      result = described_class.validate(graph, convention_scope: %w[box added])
+
+      expect(result).to be_valid
+    end
+  end
+
   it 'accepts a graph of report widgets under a report ROOT' do
     result = described_class.validate(valid_graph)
 

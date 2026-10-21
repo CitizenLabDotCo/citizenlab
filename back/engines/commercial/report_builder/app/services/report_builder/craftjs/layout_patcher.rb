@@ -10,8 +10,10 @@ module ReportBuilder
     # runs into the output token limit as the report grows, and a reply cut off there
     # costs a whole round to recover from.
     #
-    # Same shape as McpServer::Tools::UpdateProjectLayout, which is proven against
-    # real models on project pages.
+    # Same shape as McpServer::LayoutPatchable, which the project-page tools use,
+    # and a copy on purpose: that mixin reads a tool Runner's params and saves the
+    # layout at the end, while the composer has no params and holds the graph in
+    # memory across rounds, saving once the run is over.
     class LayoutPatcher
       # An unusable patch. The message is written for the model that sent it.
       class PatchError < StandardError; end
