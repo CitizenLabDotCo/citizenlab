@@ -25,7 +25,7 @@ const identify = (element: Element): string => {
  * Measures the rendered result.
  *
  * Reports numbers, never verdicts: what counts as too wide or too short is the
- * sandbox's business, and keeping the judgement out of the page keeps it out
+ * renderer's business, and keeping the judgement out of the page keeps it out
  * of reach of the generated code being judged.
  */
 const measure = (rootSelector: string): Metrics => {

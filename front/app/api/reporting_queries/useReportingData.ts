@@ -29,7 +29,7 @@ const runReportingQuery = ({ query, layoutId, reportingToken }: Params) =>
 
 // Runs one read-only query over the platform's reporting views and returns its
 // rows. This is what a generated chart block draws: the query is written by the
-// model, validated by the backend sandbox, and executed under a read-only role.
+// model, validated by the backend SQL sandbox, and executed under a read-only role.
 //
 // The query and the layout together are the cache key, so two blocks asking the
 // same question of the same report share one request. Blocks receive the result

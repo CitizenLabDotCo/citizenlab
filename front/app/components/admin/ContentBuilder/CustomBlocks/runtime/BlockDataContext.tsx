@@ -12,7 +12,7 @@ interface BlockData {
   layoutId?: string;
   /**
    * A short-lived token permitting this layout's reporting data, set only by the
-   * sandbox's harness. A signed-in admin needs none; a browser with no
+   * renderer's harness. A signed-in admin needs none; a browser with no
    * session cannot read anything without one.
    */
   reportingToken?: string;
