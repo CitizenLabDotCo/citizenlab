@@ -45,9 +45,11 @@ module ReportBuilder
         DOC
         'TwoColumn' => <<~DOC,
           TwoColumn — two side-by-side columns. props: {"columnLayout":"1-1"|"2-1"|"1-2"}
-            Its two columns are Containers wired through linkedNodes, never its `nodes`:
+            Write its two columns as Containers wired through linkedNodes:
             TwoColumn(isCanvas false, "nodes":[], "linkedNodes":{"left":"<id>","right":"<id>"})
             -> Container(isCanvas true) for each column -> the widgets in its `nodes`.
+            An existing TwoColumn may instead hold its two columns in `nodes`; that is
+            equally valid, so leave it as you found it rather than rewiring it.
             Use it sparingly in a report: a printed page is narrow, and stacked full-width
             sections read better than columns for prose. Its one good use is a pair of
             charts the reader is meant to compare.
