@@ -6,8 +6,8 @@ module ContentBuilder
     # compiles, it typechecks against the SDK, it obeys the block rules, and every
     # query it runs survives the reporting SQL sandbox.
     #
-    # The sandbox answers the first three. The fourth stays here, because the
-    # sandbox already exists and has one implementation ({McpServer::SqlSandboxer}, via
+    # The renderer answers the first three. The fourth stays here, because the
+    # SQL sandbox already exists and has one implementation ({McpServer::SqlSandboxer}, via
     # {McpServer::ReportingQueryRunner}) shared with the MCP reporting tool. Running it
     # immediately after the build call keeps the property that matters: the model gets
     # the type error and the rejected query in the same answer, and fixes both in one
@@ -37,7 +37,7 @@ module ContentBuilder
         end
       end
 
-      def initialize(client: SandboxClient.new)
+      def initialize(client: RendererClient.new)
         @client = client
       end
 
@@ -45,7 +45,7 @@ module ContentBuilder
       # @param manifest [Hash] the manifest, without `queries` — the build fills those in.
       # @param messages [Hash] locale => { key => text }.
       # @param locales [Array<String>] the locales that need a catalogue.
-      # @raise [SandboxClient::Unavailable]
+      # @raise [RendererClient::Unavailable]
       def call(source:, manifest:, messages: {}, locales: nil)
         response = @client.build(
           source: source,
@@ -90,7 +90,7 @@ module ContentBuilder
         end
       end
 
-      # Stores the sandbox's normalized SQL rather than what the model wrote, so that
+      # Stores the SQL sandbox's normalized SQL rather than what the model wrote, so that
       # "which blocks read this view?" compares like with like, and so the snapshot key
       # does not change with whitespace.
       def validate_queries(queries)
