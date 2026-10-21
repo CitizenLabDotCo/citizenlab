@@ -9,7 +9,7 @@ resource 'ReportingQueries' do
 
     A report is a picture of a moment: the first time a question is asked of a layout
     the answer is stored, and every later read returns that stored answer. Only an
-    admin, or the sandbox rendering a block with its scoped token, can fill a
+    admin, or the renderer rendering a block with its scoped token, can fill a
     snapshot, so no reader ever causes SQL to run.
   DESC
 
@@ -35,7 +35,7 @@ resource 'ReportingQueries' do
   post 'web_api/v1/reporting_queries' do
     parameter :query, 'A single SELECT over the reporting views.', required: true
     parameter :layout_id, 'The layout the question belongs to. Without it the query runs live.'
-    parameter :reporting_token, 'A scoped token, for the sandbox rendering a block.'
+    parameter :reporting_token, 'A scoped token, for the renderer rendering a block.'
 
     let(:query) { sql }
     let(:layout_id) { layout.id }
@@ -81,7 +81,7 @@ resource 'ReportingQueries' do
         expect(ContentBuilder::QuerySnapshot.count).to eq 0
       end
 
-      example '[error] Try to run a query the sandbox refuses', document: false do
+      example '[error] Try to run a query the SQL sandbox refuses', document: false do
         do_request(query: 'SELECT email FROM users', layout_id: layout.id)
 
         assert_status 422
@@ -168,8 +168,8 @@ resource 'ReportingQueries' do
       end
     end
 
-    context 'when the sandbox renders a block' do
-      # The browser in the sandbox has no session: it holds a token good for
+    context 'when the renderer renders a block' do
+      # The browser in the renderer has no session: it holds a token good for
       # one layout's data and nothing else.
       let(:token) do
         ContentBuilder::ScopedReportingToken.mint(layout_id: layout.id, user_id: create(:admin).id)

@@ -4,7 +4,7 @@ module ContentBuilder
   # A short-lived token that permits reading one layout's reporting data, and nothing
   # else.
   #
-  # The custom block sandbox renders a block in a real browser to see whether it
+  # The custom block renderer renders a block in a real browser to see whether it
   # works, and that browser has no session. Handing it an admin's JWT would hand a container
   # running model-generated JavaScript the full rights of the admin who started the
   # run. This token cannot sign in, cannot read any other layout, and expires in
@@ -12,7 +12,7 @@ module ContentBuilder
   class ScopedReportingToken
     SCOPE = 'reporting_queries'
     ALGORITHM = 'HS256'
-    # One render's worth: the sandbox client abandons the render after 90s, so a token
+    # One render's worth: the renderer client abandons the render after 90s, so a token
     # that outlives that by much is only a window in which a stolen one still works.
     DEFAULT_TTL = 2.minutes
 

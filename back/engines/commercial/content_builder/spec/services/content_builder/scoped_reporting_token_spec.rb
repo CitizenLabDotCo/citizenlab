@@ -52,7 +52,7 @@ RSpec.describe ContentBuilder::ScopedReportingToken do
       end
     end
 
-    # The sandbox holds this token for the length of one render. Nothing else carries
+    # The renderer holds this token for the length of one render. Nothing else carries
     # the minter's identity, so this is where blocking them has to bite.
     it 'refuses once the person it was minted for is blocked' do
       token = described_class.mint(layout_id: layout.id, user_id: user.id)

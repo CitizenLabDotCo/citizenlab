@@ -3,12 +3,12 @@
 module ContentBuilder
   module WebApi
     module V1
-      # Answers the reporting query behind one custom block, through the same sandbox
+      # Answers the reporting query behind one custom block, through the same SQL sandbox
       # the MCP reporting tool uses.
       #
       # A report is a picture of a moment, so an answer is stored against the layout the
       # first time it is asked, and every later read returns that stored answer. Only an
-      # admin, or the sandbox with its scoped token, can fill a snapshot; a reader is
+      # admin, or the renderer with its scoped token, can fill a snapshot; a reader is
       # served from one or not at all, which is what keeps arbitrary SQL off the
       # citizen-facing path.
       class ReportingQueriesController < ::ApplicationController
@@ -26,7 +26,7 @@ module ContentBuilder
           )
           return render_result(snapshot.data, snapshot.executed_at, snapshot: true) if snapshot
 
-          # The custom block sandbox's browser has no session, only a token good
+          # The custom block renderer's browser has no session, only a token good
           # for this one layout's data. Everyone else has to be an admin.
           unless scoped_token_permits?(layout)
             authorize :reporting_query, policy_class: ReportingQueryPolicy

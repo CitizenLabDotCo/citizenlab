@@ -41,7 +41,7 @@ module ContentBuilder
     validates :sql, presence: true
     validates :executed_at, presence: true
 
-    # The identity of a question, independent of how it was spelled: the sandbox's
+    # The identity of a question, independent of how it was spelled: the SQL sandbox's
     # normalized SQL is what gets hashed, so whitespace cannot fork a snapshot.
     def self.hash_for(normalized_sql)
       Digest::SHA256.hexdigest(normalized_sql)
