@@ -66,7 +66,7 @@ test("private networks are refused unless they are the app itself", () => {
     "[::1]",
     "[fd00::1]",
     "[fe80::1]",
-    "custom_block_sandbox.internal",
+    "custom_block_renderer.internal",
     "db.local",
     "metadata.google.internal",
   ]) {
