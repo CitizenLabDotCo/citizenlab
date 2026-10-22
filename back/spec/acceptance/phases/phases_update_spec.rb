@@ -93,11 +93,46 @@ resource 'Phases' do
         )
       end
 
-      example 'Does not update the placement type, which can only be set on creation', document: false do
+      example 'Rejects moving a phase off the timeline when its method has no standalone support', document: false do
         do_request(phase: { placement_type: 'standalone' })
 
-        assert_status 200
+        assert_status 422
+        expect(json_response.dig(:errors, :participation_method))
+          .to include(hash_including(error: 'not_supported_in_standalone_phase'))
         expect(phase.reload.placement_type).to eq 'on_timeline'
+      end
+
+      describe 'moving a phase on or off the timeline' do
+        let(:phase) { create(:native_survey_phase, project: project) }
+
+        example 'Moves a survey phase off the timeline' do
+          do_request(phase: { placement_type: 'standalone' })
+
+          assert_status 200
+          expect(phase.reload.placement_type).to eq 'standalone'
+        end
+
+        example 'Moves a survey phase onto the timeline', document: false do
+          phase.update!(placement_type: 'standalone')
+
+          do_request(phase: { placement_type: 'on_timeline' })
+
+          assert_status 200
+          expect(phase.reload.placement_type).to eq 'on_timeline'
+        end
+
+        example 'Rejects moving a phase onto the timeline when it would overlap another phase', document: false do
+          phase.update!(placement_type: 'standalone')
+          timeline_phase = create(:phase, project: project, start_at: phase.start_at + 1.day, end_at: phase.end_at)
+          expect(timeline_phase).to be_persisted
+
+          do_request(phase: { placement_type: 'on_timeline' })
+
+          assert_status 422
+          expect(json_response.dig(:errors, :base))
+            .to include(hash_including(error: 'has_other_overlapping_phases'))
+          expect(phase.reload.placement_type).to eq 'standalone'
+        end
       end
 
       context 'when description_multiloc contains images' do

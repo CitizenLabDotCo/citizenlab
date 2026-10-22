@@ -13434,6 +13434,11 @@
     "verified_at": "2026-03-18T16:35:09.080991Z",
     "verified_by": "Admin"
   },
+  "app.errors.not_supported_in_standalone_phase": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:41:31.553108Z",
+    "verified_by": "Cindy EB"
+  },
   "app.errors.number_invalid": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",

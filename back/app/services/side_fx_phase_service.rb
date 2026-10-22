@@ -110,3 +110,5 @@ class SideFxPhaseService
     @permissions_update_service ||= Permissions::PermissionsUpdateService.new
   end
 end
+
+SideFxPhaseService.prepend(ContentBuilder::Patches::SideFxPhaseService)
