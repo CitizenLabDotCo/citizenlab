@@ -1,9 +1,13 @@
+import React from 'react';
+
 import { Meta, StoryObj } from '@storybook/react';
 
 import Select from './';
 
 const meta = {
-  title: 'Components/Select',
+  title: 'Components/Forms/Select',
+  tags: ['shared'],
+  parameters: { gv: {} },
   component: Select,
 } satisfies Meta<typeof Select>;
 
@@ -75,4 +79,55 @@ export const WithPlaceholder: Story = {
     ...Default.args,
     placeholder: 'Placeholder',
   },
+};
+
+export const Hover: Story = {
+  args: WithSelectedOption.args,
+  parameters: { pseudo: { hover: true } },
+};
+
+export const Focus: Story = {
+  args: WithSelectedOption.args,
+  parameters: { pseudo: { focus: true, focusVisible: true } },
+};
+
+export const Error: Story = {
+  args: { ...WithLabel.args, ariaInvalid: true },
+};
+
+export const LongContent: Story = {
+  args: {
+    options: [
+      {
+        value: 'long',
+        label:
+          'Replace the parking spaces along the main street with a wide cycle lane and benches',
+      },
+    ],
+    value: {
+      value: 'long',
+      label:
+        'Replace the parking spaces along the main street with a wide cycle lane and benches',
+    },
+    onChange: () => {},
+  },
+  render: (args) => (
+    <div style={{ width: '240px' }}>
+      <Select {...args} />
+    </div>
+  ),
+};
+
+export const RTL: Story = {
+  args: {
+    options: [{ value: 'a', label: 'الخيار الأول' }],
+    value: { value: 'a', label: 'الخيار الأول' },
+    label: 'اختر خيارا',
+    onChange: () => {},
+  },
+  render: (args) => (
+    <div dir="rtl" style={{ width: '280px' }}>
+      <Select {...args} />
+    </div>
+  ),
 };
