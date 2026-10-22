@@ -91,12 +91,13 @@ export const LongContent: Story = {
 };
 
 export const RTL: Story = {
+  globals: { lang: 'ar' },
   args: {
     variant: 'bodyM',
     children: 'يمكن للمشاركين إرسال الأفكار والتصويت عليها.',
   },
   render: (args) => (
-    <div dir="rtl">
+    <div>
       <Text {...args} />
     </div>
   ),
