@@ -188,7 +188,7 @@ const ProjectsShowPageWrapper = () => {
       <VotingContext
         projectId={project.data.id}
         phaseId={
-          phaseIndex
+          phaseIndex !== undefined && phaseIndex >= 0
             ? // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               phases?.data?.[phaseIndex]?.id
             : phases?.data && getLatestRelevantPhase(phases.data)?.id

@@ -6,7 +6,7 @@ import { Multiloc } from 'typings';
 import useEvents from 'api/events/useEvents';
 import useAuthUser from 'api/me/useAuthUser';
 import usePhases from 'api/phases/usePhases';
-import { getCurrentPhase, getInputTerm, getLastPhase } from 'api/phases/utils';
+import { getInputTerm, getLastPhase } from 'api/phases/utils';
 import useProjectById from 'api/projects/useProjectById';
 
 import useLocalize from 'hooks/useLocalize';
@@ -14,6 +14,7 @@ import useLocalize from 'hooks/useLocalize';
 import messages from 'containers/ProjectsShowPage/messages';
 
 import useCustomPageHasEventsWidget from 'components/CustomPageBuilder/useCustomPageHasEventsWidget';
+import { getCTAPhase } from 'components/ParticipationCTABars/utils';
 import EmptyParticipationPreview from 'components/ProjectPageBuilder/Widgets/EmptyState/EmptyParticipationPreview';
 import useHasEventsWidget from 'components/ProjectPageBuilder/Widgets/Events/useHasEventsWidget';
 import SpotlightSurveyActionButton from 'components/ProjectPageBuilder/Widgets/SpotlightSurveys/ActionButton';
@@ -21,6 +22,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import { isAdmin } from 'utils/permissions/roles';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 import { useLocation, useParams } from 'utils/router';
 
 import { excludeHidden, groupSpotlightSurveys } from '../participationOptions';
@@ -85,11 +87,11 @@ const ProjectActionButtons = ({
     }
   }, [divId]);
 
-  if (!project) {
+  if (!project || getPhasePreview()?.unsaved) {
     return null;
   }
 
-  const currentPhase = getCurrentPhase(phases?.data);
+  const currentPhase = getCTAPhase(phases?.data);
   // CTAs that don't need a running phase fall back to the last phase.
   const visiblePhase = currentPhase ?? getLastPhase(phases?.data);
   const projectSlug = project.data.attributes.slug;
@@ -172,7 +174,10 @@ const ProjectActionButtons = ({
           <SecondaryCTAButton
             secondaryCTA={secondaryCTA}
             phase={visiblePhase}
-            inputTerm={getInputTerm(phases?.data)}
+            inputTerm={getInputTerm(
+              phases?.data,
+              getPhasePreview() ? visiblePhase : undefined
+            )}
             projectSlug={projectSlug}
             eventsAreOnProjectPage={!!pageSlug && !pageHasEventsWidget}
           />
@@ -205,7 +210,10 @@ const ProjectActionButtons = ({
         <SecondaryCTAButton
           secondaryCTA={secondaryCTA}
           phase={visiblePhase}
-          inputTerm={getInputTerm(phases?.data)}
+          inputTerm={getInputTerm(
+            phases?.data,
+            getPhasePreview() ? visiblePhase : undefined
+          )}
           projectSlug={projectSlug}
           eventsAreOnProjectPage={!!pageSlug && !pageHasEventsWidget}
         />

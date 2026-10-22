@@ -7,6 +7,7 @@ import { HighestRole, IUser } from 'api/users/types';
 import { getJwt, decode } from 'utils/auth/jwt';
 import fetcher from 'utils/cl-react-query/fetcher';
 import { rolesExceedHighestRole } from 'utils/permissions/roles';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 
 import meKeys from './keys';
 import { MeKeys } from './types';
@@ -46,6 +47,20 @@ export const fetchMe = async () => {
   ) {
     signOut();
     return null;
+  }
+
+  if (getPhasePreview()) {
+    return {
+      ...data,
+      data: {
+        ...data.data,
+        attributes: {
+          ...data.data.attributes,
+          roles: [],
+          highest_role: 'user' as const,
+        },
+      },
+    };
   }
 
   return data;

@@ -7,6 +7,7 @@ import { Multiloc } from 'typings';
 import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
+import { usePhasePreviewPublisher } from 'components/admin/PhasePreview/DraftContext';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
 import Warning from 'components/UI/Warning';
 
@@ -37,6 +38,17 @@ const SimplePhaseDescription = ({ phaseId, descriptionMultiloc }: Props) => {
       description_multiloc: descriptionMultiloc,
     },
   });
+
+  const publishPreview = usePhasePreviewPublisher('description', phaseId);
+  React.useEffect(() => {
+    const subscription = methods.watch(() =>
+      publishPreview({
+        description_multiloc: methods.getValues('description_multiloc'),
+        draft_description_multiloc: {},
+      })
+    );
+    return () => subscription.unsubscribe();
+  }, [methods, publishPreview]);
 
   const onFormSubmit = async (formValues: FormValues) => {
     try {

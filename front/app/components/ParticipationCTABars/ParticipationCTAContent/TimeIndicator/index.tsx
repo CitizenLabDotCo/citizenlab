@@ -7,6 +7,7 @@ import { IPhaseData } from 'api/phases/types';
 import PhaseTimeLeft from 'components/PhaseTimeLeft';
 
 import { FormattedMessage } from 'utils/cl-intl';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 
 import messages from '../../messages';
 import ParticipationOpenIcon from '../ParticipationOpenIcon';
@@ -18,6 +19,10 @@ interface Props {
 }
 
 const TimeIndicator = ({ currentPhase, hasUserParticipated }: Props) => {
+  if (getPhasePreview()?.unsaved && !currentPhase?.attributes.start_at) {
+    return null;
+  }
+
   return hasUserParticipated ? (
     <Box display="flex" alignItems="center">
       <Box mr="4px" pb="2px">

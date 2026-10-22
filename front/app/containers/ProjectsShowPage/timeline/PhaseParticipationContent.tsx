@@ -1,14 +1,19 @@
 import React, { Suspense } from 'react';
 
+import { Box, Text } from '@citizenlab/cl2-component-library';
+
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
+import previewMessages from 'components/admin/PhasePreview/messages';
 import ContentContainer from 'components/ContentContainer';
 import StatusModule from 'components/StatusModule';
 
+import { FormattedMessage } from 'utils/cl-intl';
 import { pastPresentOrFuture } from 'utils/dateUtils';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 
 import CommonGroundTabs from './CommonGround/CommonGroundTabs';
 import PhaseIdeas from './Ideas';
@@ -33,6 +38,16 @@ const PhaseParticipationContent = ({
   children,
   wrapReportInSuspense = false,
 }: Props) => {
+  if (getPhasePreview()?.unsaved) {
+    return (
+      <Box p="20px">
+        <Text>
+          <FormattedMessage {...previewMessages.newPhase} />
+        </Text>
+      </Box>
+    );
+  }
+
   const projectId = project.id;
   const phaseId = phase.id;
   const {

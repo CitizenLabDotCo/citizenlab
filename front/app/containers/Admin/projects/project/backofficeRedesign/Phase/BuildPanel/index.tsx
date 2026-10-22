@@ -16,6 +16,8 @@ import { SurveyMethod } from 'containers/Admin/projects/project/phaseSetup/compo
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import { validateDates } from 'containers/Admin/projects/project/phaseSetup/validate';
 
+import { usePhasePreviewPublisher } from 'components/admin/PhasePreview/DraftContext';
+
 import { useIntl } from 'utils/cl-intl';
 
 import { useRegisterPageSaver } from '../../_shared/PageSaveContext';
@@ -58,7 +60,10 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
   // open-ended.
   const standalone = !isTimelinePhase(phase);
 
+  const publishPreview = usePhasePreviewPublisher('build', phase.id);
+
   const updateFormData = (newData: Partial<IUpdatedPhaseProperties>) => {
+    publishPreview(newData);
     setDirty(true);
     setFormData((formData) => ({ ...formData, ...newData }));
   };
