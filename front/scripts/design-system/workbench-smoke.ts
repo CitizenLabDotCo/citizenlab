@@ -18,7 +18,9 @@
 // at least MIN_GALLERY_THUMBS story thumbnails; the Button page has at least
 // MIN_STATE_TABS story tabs, and switching its `disabled` control changes
 // the frame's DOM. The canvas fits the Button frame to the story by
-// default (MAX_FIT_HEIGHT). Exits 1 on failure,
+// default (MAX_FIT_HEIGHT). The Usage panel lists at least one back office
+// (admin) route and the Tokens panel shows the radius token as linked.
+// Exits 1 on failure,
 // 2 when Playwright is missing. Playwright is loaded through ./playwright.
 import fs from 'fs';
 import http from 'http';
@@ -265,7 +267,7 @@ const canvasChecks = async (
   await page.waitForSelector('[data-testid="wb-component"] h1', {
     timeout: 10000,
   });
-  if (!(await page.isVisible('aside[aria-label="Panels"] h2'))) {
+  if (!(await page.isVisible('aside[aria-label="Panels"] [role="tablist"]'))) {
     failures.push('the panel column is not shown on a component page');
   }
   await canvasFrame(page, 'today');
@@ -420,6 +422,46 @@ const controlsChecks = async (
   }
 };
 
+// The Usage and Tokens tabs of the Button page's panel.
+const panelChecks = async (
+  page: any,
+  base: string,
+  storyId: string,
+  failures: string[]
+) => {
+  await page.goto(`${base}/workbench/#/components/${storyId}`);
+  await page.click('[data-testid="wb-panel-tab"][data-tab="usage"]');
+  const admin = '[data-testid="wb-usage-route"][data-office="admin"]';
+  let routes = 0;
+  try {
+    await page.waitForSelector(admin, { timeout: 20000 });
+    routes = await page.$$eval(admin, (els: Element[]) => els.length);
+  } catch {
+    failures.push('the Usage panel lists no back office route for Button');
+  }
+  await page.click('[data-testid="wb-panel-tab"][data-tab="tokens"]');
+  const chip = `[data-testid="wb-panel-tokens"] [data-token="${RADIUS_TOKEN}"] [data-testid="wb-token-match"]`;
+  let match: string | null = null;
+  try {
+    await page.waitForSelector(chip, { timeout: 20000 });
+    match = await page.$eval(chip, (el: Element) =>
+      el.getAttribute('data-match')
+    );
+  } catch {
+    // Reported below.
+  }
+  if (match !== 'linked') {
+    failures.push(
+      `the Tokens panel shows ${RADIUS_TOKEN} as ${
+        match ?? 'missing'
+      }, expected linked`
+    );
+  }
+  console.log(
+    `panels: ${routes} back office routes shown in Usage; ${RADIUS_TOKEN} ${match} in Tokens`
+  );
+};
+
 const main = async () => {
   const root = path.resolve(arg('dir') ?? 'storybook-static');
   const screenshot = arg('screenshot');
@@ -523,6 +565,7 @@ const main = async () => {
     } else {
       await canvasChecks(page, base, storyId, failures, canvasScreenshot);
       await controlsChecks(page, base, storyId, failures);
+      await panelChecks(page, base, storyId, failures);
     }
   } catch (e) {
     failures.push(`smoke run failed: ${(e as Error).message}`);

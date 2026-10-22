@@ -1,4 +1,11 @@
-import { CSSProperties, memo, useEffect, useRef, useState } from 'react';
+import {
+  CSSProperties,
+  memo,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import type { Mode, TokenName } from '@ds/tokens/tokens';
 
@@ -67,6 +74,10 @@ type Props = {
   scaleId?: string;
   onSet: (name: TokenName, value: string) => string | undefined;
   onReset: (name: TokenName) => void;
+  // Extras of the Tokens panel: a chip next to the name, and a last cell
+  // (what the story and the code do with the token, the heal).
+  badge?: ReactNode;
+  footer?: ReactNode;
 };
 
 // Widest a space bar is drawn; longer values are cut with a fade.
@@ -232,6 +243,8 @@ const TokenRow = ({
   scaleId,
   onSet,
   onReset,
+  badge,
+  footer,
 }: Props) => {
   const name = token.name as TokenName;
   const base = token.values[mode];
@@ -316,6 +329,7 @@ const TokenRow = ({
       <th scope="row" role="rowheader" className="wb-token-name">
         <code>{name}</code>
         <span className="wb-tags">
+          {badge}
           {token.tier === 1 && <span className="wb-tag">scale</span>}
           {token.deprecated && (
             <span className="wb-tag wb-tag-warn">deprecated</span>
@@ -432,6 +446,11 @@ const TokenRow = ({
           <span className="wb-muted">not used yet</span>
         )}
       </td>
+      {footer && (
+        <td role="cell" className="wb-token-footer">
+          {footer}
+        </td>
+      )}
     </tr>
   );
 };

@@ -8,6 +8,7 @@
 // redesign value; a token without its own redesign value takes `$value` in
 // both modes, so one change covers both.
 import type { TokenMeta } from './data';
+import { parseColour } from './overrides';
 
 export type SourceChange = {
   token: string;
@@ -55,6 +56,35 @@ const toSourceValue = (value: string, byName: Map<string, TokenMeta>) => {
   return target?.path ? `{${target.path}}` : v;
 };
 
+const sameColour = (a: string, b: string) => {
+  const x = parseColour(a);
+  const y = parseColour(b);
+  return !!x && !!y && x.every((c, i) => Math.abs(c - y[i]) < 0.5);
+};
+
+// A colour edit of a semantic token that equals a tier-1 primitive (what
+// the editor snaps to) is written as the alias of that primitive, so the
+// token stays linked to the palette. Several primitives with the value: the
+// scanner's tie-break, by name. A primitive keeps its own literal.
+const primitiveAlias = (
+  token: TokenMeta,
+  value: string,
+  mode: 'today' | 'redesign',
+  meta: TokenMeta[]
+): string | undefined => {
+  if (token.category !== 'color' || token.tier === 1) return undefined;
+  const hit = meta
+    .filter(
+      (t) =>
+        t.tier === 1 &&
+        t.category === 'color' &&
+        t.path &&
+        sameColour(t.values[mode], value)
+    )
+    .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0))[0];
+  return hit ? `{${hit.path}}` : undefined;
+};
+
 export const sourceChanges = (
   overrides: Record<string, string | undefined>,
   meta: TokenMeta[],
@@ -72,7 +102,8 @@ export const sourceChanges = (
       continue;
     }
     const keys = token.path.split('.');
-    const to = toSourceValue(value, byName);
+    const raw = toSourceValue(value, byName);
+    const to = primitiveAlias(token, raw, 'today', meta) ?? raw;
     const gv = isNode(node.$extensions) ? node.$extensions.gv : undefined;
     const hasRedesign = isNode(gv) && 'redesign' in gv;
     if (node.$value !== to) {
@@ -84,13 +115,14 @@ export const sourceChanges = (
         to,
       });
     }
-    if (hasRedesign && gv.redesign !== to) {
+    const toRedesign = primitiveAlias(token, raw, 'redesign', meta) ?? raw;
+    if (hasRedesign && gv.redesign !== toRedesign) {
       changes.push({
         token: name,
         modes: 'redesign',
         pointer: pointer([...keys, '$extensions', 'gv', 'redesign']),
         from: gv.redesign,
-        to,
+        to: toRedesign,
       });
     }
   }

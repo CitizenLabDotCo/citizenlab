@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import Icon from '../components/Icon';
-import Panel from '../components/Panel';
 import {
   channelOf,
   Control,
@@ -235,96 +234,94 @@ const Controls = ({ storyId, frames }: Props) => {
   };
 
   return (
-    <Panel title="Controls">
-      <div className="wb-controls" data-testid="wb-controls">
-        {!ready ? (
-          <div className="wb-controls-loading" aria-label="Loading the story">
-            {[0, 1, 2, 3].map((i) => (
-              <span key={i} className="wb-skeleton-line" />
-            ))}
-          </div>
-        ) : controls.length === 0 ? (
-          <div className="wb-controls-empty">
-            <Icon name="sliders" size={20} />
-            <p>This story has no props to set here.</p>
-          </div>
-        ) : (
-          <>
-            <div className="wb-controls-head">
-              {controls.length > 8 && (
-                <label className="wb-search wb-controls-search">
-                  <span className="wb-visually-hidden">Find a prop</span>
-                  <Icon name="search" size={14} />
-                  <input
-                    type="search"
-                    placeholder="Find a prop"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                  />
-                </label>
-              )}
-              <button
-                type="button"
-                className="wb-icon-button"
-                onClick={reset}
-                title="Back to the story's args"
-                data-testid="wb-controls-reset"
-              >
-                <Icon name="reset" size={16} />
-                Reset
-              </button>
-            </div>
-            {frames.length > 1 && (
-              <p className="wb-controls-note">Edits apply to both frames.</p>
-            )}
-            <div className="wb-control-list">
-              {shown.map((c) => (
-                <Field
-                  key={`${story.id}:${c.name}`}
-                  control={c}
-                  value={story.args[c.name]}
-                  onChange={(v) => set(c.name, v)}
+    <div className="wb-controls" data-testid="wb-controls">
+      {!ready ? (
+        <div className="wb-controls-loading" aria-label="Loading the story">
+          {[0, 1, 2, 3].map((i) => (
+            <span key={i} className="wb-skeleton-line" />
+          ))}
+        </div>
+      ) : controls.length === 0 ? (
+        <div className="wb-controls-empty">
+          <Icon name="sliders" size={20} />
+          <p>This story has no props to set here.</p>
+        </div>
+      ) : (
+        <>
+          <div className="wb-controls-head">
+            {controls.length > 8 && (
+              <label className="wb-search wb-controls-search">
+                <span className="wb-visually-hidden">Find a prop</span>
+                <Icon name="search" size={14} />
+                <input
+                  type="search"
+                  placeholder="Find a prop"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
                 />
-              ))}
-              {q && shown.length === 0 && (
-                <p className="wb-muted wb-controls-none">No prop matches.</p>
-              )}
-            </div>
-            {folded && setCount === 0 && (
-              <p className="wb-controls-unset" data-testid="wb-controls-unset">
-                This story sets no props: it shows the component as it comes.
-              </p>
+              </label>
             )}
-            {!q && hidden > FOLD_AFTER && (
-              <button
-                type="button"
-                className="wb-controls-more"
-                aria-expanded={!folded}
-                onClick={() => setMore(!more)}
-                data-testid="wb-controls-more"
-              >
-                {folded
-                  ? `Show ${hidden} ${setCount > 0 ? 'more ' : ''}${
-                      hidden === 1 ? 'prop' : 'props'
-                    }`
-                  : setCount > 0
-                  ? 'Show only the props this story sets'
-                  : 'Hide the props'}
-              </button>
+            <button
+              type="button"
+              className="wb-icon-button"
+              onClick={reset}
+              title="Back to the story's args"
+              data-testid="wb-controls-reset"
+            >
+              <Icon name="reset" size={16} />
+              Reset
+            </button>
+          </div>
+          {frames.length > 1 && (
+            <p className="wb-controls-note">Edits apply to both frames.</p>
+          )}
+          <div className="wb-control-list">
+            {shown.map((c) => (
+              <Field
+                key={`${story.id}:${c.name}`}
+                control={c}
+                value={story.args[c.name]}
+                onChange={(v) => set(c.name, v)}
+              />
+            ))}
+            {q && shown.length === 0 && (
+              <p className="wb-muted wb-controls-none">No prop matches.</p>
             )}
-            {skipped > 0 && (
-              <p className="wb-controls-note">
-                {`${skipped} ${
-                  skipped === 1 ? 'prop takes' : 'props take'
-                } code (React nodes, objects or functions) and ${
-                  skipped === 1 ? 'is' : 'are'
-                } left out.`}
-              </p>
-            )}
-          </>
-        )}
-      </div>
-    </Panel>
+          </div>
+          {folded && setCount === 0 && (
+            <p className="wb-controls-unset" data-testid="wb-controls-unset">
+              This story sets no props: it shows the component as it comes.
+            </p>
+          )}
+          {!q && hidden > FOLD_AFTER && (
+            <button
+              type="button"
+              className="wb-controls-more"
+              aria-expanded={!folded}
+              onClick={() => setMore(!more)}
+              data-testid="wb-controls-more"
+            >
+              {folded
+                ? `Show ${hidden} ${setCount > 0 ? 'more ' : ''}${
+                    hidden === 1 ? 'prop' : 'props'
+                  }`
+                : setCount > 0
+                ? 'Show only the props this story sets'
+                : 'Hide the props'}
+            </button>
+          )}
+          {skipped > 0 && (
+            <p className="wb-controls-note">
+              {`${skipped} ${
+                skipped === 1 ? 'prop takes' : 'props take'
+              } code (React nodes, objects or functions) and ${
+                skipped === 1 ? 'is' : 'are'
+              } left out.`}
+            </p>
+          )}
+        </>
+      )}
+    </div>
   );
 };
 

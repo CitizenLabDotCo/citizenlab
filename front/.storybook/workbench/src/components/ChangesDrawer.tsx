@@ -4,6 +4,7 @@ import tokensSource from '@ds/tokens/tokens.source.json';
 import type { Mode, TokenName } from '@ds/tokens/tokens';
 
 import type { TokenMeta } from '../lib/data';
+import { copyText } from '../lib/clipboard';
 import { Overrides, withOverrides } from '../lib/overrides';
 import { sourceChanges, sourcePatch } from '../lib/sourceDiff';
 
@@ -16,16 +17,6 @@ type Props = {
 };
 
 type Copied = { label: string; text: string; ok: boolean };
-
-const copyText = async (text: string): Promise<boolean> => {
-  try {
-    if (!navigator.clipboard) return false;
-    await navigator.clipboard.writeText(text);
-    return true;
-  } catch {
-    return false;
-  }
-};
 
 const MODES_TEXT = {
   both: 'both modes',
@@ -72,8 +63,8 @@ const ChangesDrawer = ({ meta, mode, overrides, onReset, onClose }: Props) => {
       </header>
       {entries.length === 0 ? (
         <p className="wb-muted">
-          No edits yet. Change a value on any Foundations page and it shows up
-          here.
+          No edits yet. Change a token value here or on a Foundations page and
+          it shows up in this list.
         </p>
       ) : (
         <>

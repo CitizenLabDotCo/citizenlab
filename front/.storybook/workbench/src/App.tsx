@@ -47,6 +47,8 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
           toolbar={canvas.toolbar}
           setToolbar={canvas.setToolbar}
           overrides={canvas.overrides}
+          setOverride={canvas.setOverride}
+          reset={canvas.reset}
         />
       ) : (
         <Gallery

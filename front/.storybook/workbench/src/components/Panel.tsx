@@ -13,15 +13,16 @@ export const PanelContext = createContext<PanelSlot>({
   register: () => () => undefined,
 });
 
-type Props = { title: string; children: ReactNode };
+// `header` takes the place of the title heading (the panel tabs).
+type Props = { title: string; header?: ReactNode; children: ReactNode };
 
-const Panel = ({ title, children }: Props) => {
+const Panel = ({ title, header, children }: Props) => {
   const { element, register } = useContext(PanelContext);
   useEffect(register, [register]);
   if (!element) return null;
   return createPortal(
     <section className="wb-panel" aria-label={title}>
-      <h2>{title}</h2>
+      {header ?? <h2>{title}</h2>}
       {children}
     </section>,
     element

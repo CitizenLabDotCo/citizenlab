@@ -1,14 +1,22 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+import type { TokenName } from '@ds/tokens/tokens';
+
 import Canvas from '../components/Canvas';
 import Icon from '../components/Icon';
+import PanelTabs from '../components/PanelTabs';
 import Segmented from '../components/Segmented';
 import { OfficeChip, ScoreRing, StatusChip } from '../components/StoryThumb';
 import Toolbar, { ToolbarState } from '../components/Toolbar';
+import { TOKEN_META } from '../lib/data';
+import type { HealMode } from '../lib/healTask';
 import type { Overrides } from '../lib/overrides';
-import { groupOfStory, Section, StoryRef } from '../lib/stories';
+import { groupOfStory, Office, Section, StoryRef } from '../lib/stories';
+import { useScanIndexes } from '../lib/useScanIndexes';
 import { useStoryGroups } from '../lib/useStoryGroups';
 import Controls from '../panels/Controls';
+import Tokens from '../panels/Tokens';
+import Usage from '../panels/Usage';
 
 type Props = {
   section: Section;
@@ -16,9 +24,41 @@ type Props = {
   toolbar: ToolbarState;
   setToolbar: (next: ToolbarState) => void;
   overrides: Overrides;
+  setOverride: (name: TokenName, value: string) => string | undefined;
+  reset: (name?: TokenName) => void;
 };
 
 type View = 'single' | 'split';
+
+type Tab = 'controls' | 'tokens' | 'usage';
+const TABS: Tab[] = ['controls', 'tokens', 'usage'];
+const TAB_KEY = 'wb-panel-tab';
+
+// The last panel tab, per browser (storage may be blocked).
+const storedTab = (): Tab => {
+  try {
+    const t = window.localStorage.getItem(TAB_KEY) as Tab | null;
+    return t && TABS.includes(t) ? t : 'controls';
+  } catch {
+    return 'controls';
+  }
+};
+const storeTab = (t: Tab) => {
+  try {
+    window.localStorage.setItem(TAB_KEY, t);
+  } catch {
+    // Not kept; the tab still switches.
+  }
+};
+
+// A heal must hold where the component is used: both modes when shared,
+// the redesign for the back office, today for the front office.
+const HEAL_MODE_OF: Record<Office, HealMode> = {
+  shared: 'both',
+  bo: 'redesign',
+  fo: 'today',
+  unknown: 'both',
+};
 
 const SECTION_LABEL: Record<Section, string> = {
   components: 'Components',
@@ -116,8 +156,14 @@ const Component = ({
   toolbar,
   setToolbar,
   overrides,
+  setOverride,
+  reset,
 }: Props) => {
   const groups = useStoryGroups();
+  const indexes = useScanIndexes(TOKEN_META);
+  const [tab, setTab] = useState<Tab>(storedTab);
+  const [tokenCount, setTokenCount] = useState<number | undefined>();
+  const [healMode, setHealMode] = useState<HealMode | undefined>();
   const [view, setView] = useState<View>('single');
   const [frames, setFrames] = useState<(Window | null)[]>([null, null]);
   const onFrame = useCallback(
@@ -160,6 +206,7 @@ const Component = ({
     );
   }
 
+  const heal = healMode ?? HEAL_MODE_OF[group.office];
   const states = group.stories.filter((s) => s.state);
   const variants = group.stories.filter((s) => !s.state);
   const current = group.stories.find((s) => s.id === storyId);
@@ -286,7 +333,57 @@ const Component = ({
         )}
       </div>
 
-      <Controls storyId={storyId} frames={shownFrames} />
+      <PanelTabs<Tab>
+        title="Inspect"
+        value={tab}
+        onChange={(t) => {
+          setTab(t);
+          storeTab(t);
+        }}
+        tabs={[
+          {
+            id: 'controls',
+            label: 'Controls',
+            icon: 'sliders',
+            content: <Controls storyId={storyId} frames={shownFrames} />,
+          },
+          {
+            id: 'tokens',
+            label: 'Tokens',
+            icon: 'tokens',
+            count: tokenCount,
+            content: (
+              <Tokens
+                storyId={storyId}
+                group={group}
+                frame={frames[0]}
+                indexes={indexes}
+                mode={toolbar.mode}
+                overrides={overrides}
+                setOverride={setOverride}
+                reset={reset}
+                healMode={heal}
+                onCount={setTokenCount}
+              />
+            ),
+          },
+          {
+            id: 'usage',
+            label: 'Usage',
+            icon: 'usage',
+            count: group.score?.usageCount,
+            content: (
+              <Usage
+                storyId={storyId}
+                group={group}
+                indexes={indexes}
+                healMode={heal}
+                onHealMode={setHealMode}
+              />
+            ),
+          },
+        ]}
+      />
     </article>
   );
 };

@@ -71,6 +71,25 @@ describe('sourceChanges', () => {
     );
   });
 
+  it('links a colour equal to a tier-1 primitive to that primitive', () => {
+    const changes = (name: string, value: string) =>
+      sourceChanges({ [name]: value }, meta, tokensSource).changes.map(
+        (c) => c.to
+      );
+    // Semantic token: both fields become the palette alias.
+    expect(changes('--gv-color-text-heading', '#cbcbcb')).toEqual([
+      '{primitive.color.grey-400}',
+      '{primitive.color.grey-400}',
+    ]);
+    // A tier-2 literal (#CCC) is not a primitive: kept as typed.
+    expect(changes('--gv-color-text-heading', '#CCC')).toEqual([
+      '#CCC',
+      '#CCC',
+    ]);
+    // A primitive keeps its own literal.
+    expect(changes('--gv-grey-800', '#CBCBCB')).toEqual(['#CBCBCB']);
+  });
+
   it('lists tokens it cannot find', () => {
     expect(
       sourceChanges({ '--gv-nope': '1px' }, meta, tokensSource).unknown
