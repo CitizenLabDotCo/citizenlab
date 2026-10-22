@@ -67,17 +67,12 @@ export const WithLabelTextColor: Story = {
 
 export const Hover: Story = {
   args: WithLabel.args,
-  parameters: { pseudo: { hover: true } },
+  parameters: { pseudo: { hover: ['input[type=checkbox]'] } },
 };
 
 export const Focus: Story = {
   args: WithLabel.args,
-  parameters: { pseudo: { focus: true, focusVisible: true } },
-};
-
-export const Active: Story = {
-  args: WithLabel.args,
-  parameters: { pseudo: { active: true } },
+  parameters: { pseudo: { focusVisible: ['input[type=checkbox]'] } },
 };
 
 export const LongContent: Story = {
@@ -97,6 +92,7 @@ export const LongContent: Story = {
 };
 
 export const RTL: Story = {
+  globals: { lang: 'ar' },
   args: {
     checked: true,
     label: 'السماح بإرسال الأفكار',
@@ -104,7 +100,7 @@ export const RTL: Story = {
     onChange: () => {},
   },
   render: (args) => (
-    <div dir="rtl">
+    <div>
       <Toggle {...args} />
     </div>
   ),
