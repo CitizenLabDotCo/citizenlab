@@ -106,12 +106,12 @@ export const WithTrBackgrounds: Story = {
 
 export const Hover: Story = {
   ...WithSortableAndTooltipIcons,
-  parameters: { pseudo: { hover: true } },
+  parameters: { pseudo: { hover: ['th'] } },
 };
 
 export const Focus: Story = {
   ...WithSortableAndTooltipIcons,
-  parameters: { pseudo: { focus: true, focusVisible: true } },
+  parameters: { pseudo: { focusVisible: ['th'] } },
 };
 
 export const Empty: Story = {
@@ -165,6 +165,7 @@ export const LongContent: Story = {
 };
 
 export const RTL: Story = {
+  globals: { lang: 'ar' },
   args: {
     width: '800px',
     children: (
@@ -185,7 +186,7 @@ export const RTL: Story = {
     ),
   },
   render: (args) => (
-    <div dir="rtl">
+    <div>
       <Table {...args} />
     </div>
   ),
