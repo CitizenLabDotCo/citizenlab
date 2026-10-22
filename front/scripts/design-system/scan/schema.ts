@@ -76,6 +76,10 @@ export type ScanOutput = {
   components: ComponentScore[];
   pages: PageStatus[];
   totals: Totals;
+  // Scanned files no route reaches (the App shell, unused code, route files).
+  unmapped?: string[];
+  // Route path to the files (import closure of its pages) rendered there.
+  routeFiles?: Record<string, string[]>;
 };
 
 // Mirrors the entries of app/design-system/tokens/tokens.meta.json (Task 4).

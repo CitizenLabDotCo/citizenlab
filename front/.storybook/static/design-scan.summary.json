@@ -1,0 +1,14 @@
+{
+  "generatedAt": "2026-10-22T18:42:13.573Z",
+  "commit": "cce5b111a5963a7a788223a9c816c0a63d1a7409",
+  "offSpec": 6507,
+  "legacy": 3274,
+  "tokenReads": 0,
+  "components": 37,
+  "onTokens": 6,
+  "partly": 0,
+  "offTokens": 31,
+  "pagesRebuilt": 0,
+  "pagesPartly": 197,
+  "pagesLegacy": 1
+}
