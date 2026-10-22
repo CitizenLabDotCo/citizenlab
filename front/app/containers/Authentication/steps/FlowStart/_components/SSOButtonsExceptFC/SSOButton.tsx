@@ -170,7 +170,7 @@ const SSOButton = ({ provider, onClickSSO }: Props) => {
     case 'okta':
       return (
         <WrappedAuthProviderButton
-          icon="shield-check"
+          icon="okta"
           imageUrl={getOktaConfig(idMethods)?.attributes.logo_url}
           authProvider="okta"
           onClick={onClickSSO}

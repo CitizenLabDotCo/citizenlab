@@ -103,4 +103,23 @@ context 'okta authentication' do
 
     expect(User.last.identities.first.auth_hash).not_to have_key('credentials')
   end
+
+  context 'when okta is not configured for the tenant' do
+    before do
+      OmniAuth.config.test_mode = false
+
+      configuration = AppConfiguration.instance
+      configuration.settings['id_config']['id_methods'] = []
+      configuration.save!
+    end
+
+    after { OmniAuth.config.test_mode = true }
+
+    it 'redirects to the auth failure page instead of erroring' do
+      get '/auth/okta'
+
+      expect(response).to have_http_status(:redirect)
+      expect(response.location).to include('/auth/failure')
+    end
+  end
 end

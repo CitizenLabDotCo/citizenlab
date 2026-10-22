@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -19,6 +19,8 @@ import { isValidEmail } from 'utils/validate';
 
 import sharedMessages from '../../messages';
 
+import SSOEnforcedLink from './SSOEnforcedLink';
+
 interface FormValues {
   email: string;
 }
@@ -36,6 +38,7 @@ interface Props {
 
 const EmailForm = ({ loading, topText, email, setError, onSubmit }: Props) => {
   const { formatMessage } = useIntl();
+  const [ssoEnforced, setSsoEnforced] = useState(false);
 
   const schema = useMemo(
     () =>
@@ -64,6 +67,12 @@ const EmailForm = ({ loading, topText, email, setError, onSubmit }: Props) => {
       await onSubmit(email);
     } catch (e) {
       if (isCLErrorsWrapper(e)) {
+        setSsoEnforced(
+          'email' in e.errors &&
+            e.errors.email.some(
+              (error) => error.error === 'sso_enforced_for_domain'
+            )
+        );
         handleHookFormSubmissionError(e, methods.setError);
         return;
       }
@@ -86,6 +95,7 @@ const EmailForm = ({ loading, topText, email, setError, onSubmit }: Props) => {
             label={formatMessage(sharedMessages.email)}
             required
           />
+          {ssoEnforced && <SSOEnforcedLink />}
         </Box>
         <Box w="100%" display="flex" mt="32px">
           <ButtonWithLink
