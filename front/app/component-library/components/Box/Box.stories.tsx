@@ -42,9 +42,10 @@ export const LongContent: Story = {
 };
 
 export const RTL: Story = {
+  globals: { lang: 'ar' },
   args: Default.args,
   render: (args) => (
-    <div dir="rtl">
+    <div>
       <Box {...args}>
         <div>مرحبا، أنا العنصر الأول داخل هذا الصندوق</div>
         <div>مرحبا، أنا العنصر الثاني داخل هذا الصندوق</div>
