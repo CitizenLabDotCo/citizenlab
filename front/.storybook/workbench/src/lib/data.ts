@@ -6,11 +6,12 @@
 import tokensMeta from '@ds/tokens/tokens.meta.json';
 
 import type {
+  Finding,
   ScanOutput,
   TokenMeta,
 } from '../../../../scripts/design-system/scan/schema';
 
-export type { ScanOutput, TokenMeta };
+export type { Finding, ScanOutput, TokenMeta };
 
 export type StoryEntry = {
   id: string;

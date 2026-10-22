@@ -1,6 +1,10 @@
 import path from 'path';
 
-import { pickButtonStory, resolveStaticPath } from './workbench-smoke';
+import {
+  overrideNamesOfHash,
+  pickButtonStory,
+  resolveStaticPath,
+} from './workbench-smoke';
 
 describe('resolveStaticPath', () => {
   const root = path.resolve('/srv/static/sb');
@@ -51,5 +55,22 @@ describe('pickButtonStory', () => {
     ).toBe('components-button--white');
     expect(pickButtonStory({ entries: {} })).toBeNull();
     expect(pickButtonStory(null)).toBeNull();
+  });
+});
+
+describe('overrideNamesOfHash', () => {
+  const o = (json: string) => Buffer.from(json, 'utf8').toString('base64url');
+
+  it('reads the token names of a share-link hash', () => {
+    expect(
+      overrideNamesOfHash(
+        `#/foundations/radius?o=${o('{"--gv-radius-control":"12px"}')}`
+      )
+    ).toEqual(['--gv-radius-control']);
+  });
+
+  it('is empty without a payload or with a damaged one', () => {
+    expect(overrideNamesOfHash('#/foundations/radius')).toEqual([]);
+    expect(overrideNamesOfHash('#/x?o=%%%')).toEqual([]);
   });
 });

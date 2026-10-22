@@ -7,6 +7,7 @@ import Toolbar, { DEFAULT_TOOLBAR, ToolbarState } from './components/Toolbar';
 import { TOKEN_META } from './lib/data';
 import { Overrides, useOverrides } from './lib/overrides';
 import { Route, useRoute } from './lib/router';
+import Foundations from './pages/Foundations';
 import Placeholder from './pages/Placeholder';
 import StartHere from './pages/StartHere';
 
@@ -14,6 +15,8 @@ type CanvasProps = {
   toolbar: ToolbarState;
   setToolbar: (next: ToolbarState) => void;
   overrides: Overrides;
+  setOverride: ReturnType<typeof useOverrides>['setOverride'];
+  reset: ReturnType<typeof useOverrides>['reset'];
 };
 
 const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
@@ -22,16 +25,15 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
       return <StartHere />;
     case 'foundations':
       return (
-        <Placeholder
-          title={
-            route.category ? `Foundations: ${route.category}` : 'Foundations'
-          }
-        >
-          <p>
-            One page per token category: colour, space, radius, font, text,
-            shadow, motion, z and focus.
-          </p>
-        </Placeholder>
+        <Foundations
+          category={route.category}
+          meta={TOKEN_META}
+          mode={canvas.toolbar.mode}
+          onMode={(mode) => canvas.setToolbar({ ...canvas.toolbar, mode })}
+          overrides={canvas.overrides}
+          setOverride={canvas.setOverride}
+          reset={canvas.reset}
+        />
       );
     case 'components':
       if (!route.storyId) return <Placeholder title="Components" />;
@@ -86,7 +88,8 @@ const App = () => {
   );
   const navName = route.name === 'not-found' ? 'start' : route.name;
   const [toolbar, setToolbar] = useState<ToolbarState>(DEFAULT_TOOLBAR);
-  const { overrides, notice, dismissNotice } = useOverrides(TOKEN_META);
+  const { overrides, setOverride, reset, notice, dismissNotice } =
+    useOverrides(TOKEN_META);
 
   return (
     <PanelContext.Provider value={slot}>
@@ -101,7 +104,10 @@ const App = () => {
               </button>
             </div>
           )}
-          <Page route={route} canvas={{ toolbar, setToolbar, overrides }} />
+          <Page
+            route={route}
+            canvas={{ toolbar, setToolbar, overrides, setOverride, reset }}
+          />
         </main>
         <aside
           className="wb-panels"

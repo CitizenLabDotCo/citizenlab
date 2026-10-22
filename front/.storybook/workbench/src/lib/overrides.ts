@@ -2,8 +2,10 @@
 // and the hook that keeps them in state, localStorage and the URL hash.
 //
 // Share links come from untrusted sources, so everything read from the hash
-// or localStorage goes through `validateOverrides`. Any bad entry rejects the
-// whole payload: the result is no overrides plus a reason the shell shows.
+// or localStorage goes through the same checks. A share link with any bad
+// entry is rejected whole (no overrides plus a reason the shell shows); the
+// stored session drops only its bad entries; an edit typed in the shell is
+// refused with a reason.
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { Mode, TokenName } from '@ds/tokens/tokens';
@@ -353,7 +355,37 @@ export const encodeOverrides = (o: Overrides): string =>
 
 export type ParseResult = { overrides: Overrides; error?: string };
 
-// Checks an already decoded value (from a share link or localStorage).
+// Why one entry may not be applied, or undefined when it may. The same
+// rules guard share links, the stored session and edits typed in the shell.
+const entryError = (
+  key: string,
+  value: unknown,
+  known: Map<string, TokenMeta>
+): string | undefined => {
+  const token = key.startsWith('--gv-') ? known.get(key) : undefined;
+  if (!token) return `unknown token ${key.slice(0, 40)}`;
+  if (typeof value !== 'string') return `${key} is not text`;
+  if (value.length > MAX_VALUE_LENGTH) return `${key} is too long`;
+  if (
+    !PRINTABLE.test(value) ||
+    FORBIDDEN.some((re) => re.test(value)) ||
+    !isAllowedValue(token, value)
+  ) {
+    return `${key} has a value that is not allowed`;
+  }
+  return undefined;
+};
+
+// An edit typed in the shell: the reason it is refused, or undefined.
+export const overrideError = (
+  name: string,
+  value: string,
+  meta: TokenMeta[]
+): string | undefined =>
+  entryError(name, value, new Map(meta.map((t) => [t.name, t])));
+
+// Checks an already decoded share link. Any bad entry rejects the whole
+// payload.
 export const validateOverrides = (
   input: unknown,
   meta: TokenMeta[]
@@ -365,20 +397,30 @@ export const validateOverrides = (
   const known = new Map(meta.map((t) => [t.name, t]));
   const overrides: Overrides = {};
   for (const [key, value] of Object.entries(input)) {
-    const token = key.startsWith('--gv-') ? known.get(key) : undefined;
-    if (!token) return fail(`unknown token ${key.slice(0, 40)}`);
-    if (typeof value !== 'string') return fail(`${key} is not text`);
-    if (value.length > MAX_VALUE_LENGTH) return fail(`${key} is too long`);
-    if (
-      !PRINTABLE.test(value) ||
-      FORBIDDEN.some((re) => re.test(value)) ||
-      !isAllowedValue(token, value)
-    ) {
-      return fail(`${key} has a value that is not allowed`);
-    }
-    overrides[key as TokenName] = value;
+    const error = entryError(key, value, known);
+    if (error) return fail(error);
+    overrides[key as TokenName] = value as string;
   }
   return { overrides };
+};
+
+// Checks the stored session entry by entry: invalid entries are dropped
+// (and named in `dropped`), the valid ones are kept.
+export const filterOverrides = (
+  input: unknown,
+  meta: TokenMeta[]
+): { overrides: Overrides; dropped: string[] } => {
+  if (typeof input !== 'object' || input === null || Array.isArray(input)) {
+    return { overrides: {}, dropped: [] };
+  }
+  const known = new Map(meta.map((t) => [t.name, t]));
+  const overrides: Overrides = {};
+  const dropped: string[] = [];
+  for (const [key, value] of Object.entries(input)) {
+    if (entryError(key, value, known)) dropped.push(key);
+    else overrides[key as TokenName] = value as string;
+  }
+  return { overrides, dropped };
 };
 
 // The overrides payload of a hash: the `o` parameter after `?`
@@ -442,7 +484,7 @@ const readStorage = (meta: TokenMeta[]): ParseResult => {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return { overrides: {} };
-    return validateOverrides(JSON.parse(raw), meta);
+    return { overrides: filterOverrides(JSON.parse(raw), meta).overrides };
   } catch {
     return { overrides: {} };
   }
@@ -462,8 +504,8 @@ const writeStorage = (o: Overrides) => {
 
 // A valid share link in the hash replaces the stored session. A link that
 // fails validation changes nothing (the stored session stays) and sets
-// `notice`. A tampered store is dropped quietly; it is this browser's own
-// data.
+// `notice`. Invalid entries of the store (tampered, or a token that no
+// longer exists) are dropped quietly one by one; the rest is kept.
 const initial = (meta: TokenMeta[]): ParseResult => {
   const stored = readStorage(meta).overrides;
   if (!payloadOfHash(window.location.hash)) return { overrides: stored };
@@ -519,9 +561,16 @@ export const useOverrides = (meta: TokenMeta[]) => {
     return () => window.removeEventListener('hashchange', onChange);
   }, [meta]);
 
-  const setOverride = useCallback((name: TokenName, value: string) => {
-    setOverrides((o) => ({ ...o, [name]: value }));
-  }, []);
+  // Applies an edit, or returns why it was refused (and changes nothing).
+  const setOverride = useCallback(
+    (name: TokenName, value: string): string | undefined => {
+      const error = overrideError(name, value, meta);
+      if (error) return error;
+      setOverrides((o) => ({ ...o, [name]: value }));
+      return undefined;
+    },
+    [meta]
+  );
 
   const reset = useCallback((name?: TokenName) => {
     setOverrides((o) => {

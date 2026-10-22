@@ -9,8 +9,10 @@ import {
   STORAGE_KEY,
   deltaE76,
   encodeOverrides,
+  filterOverrides,
   isAllowedValue,
   nearestColour,
+  overrideError,
   palette,
   parseColour,
   parseOverrides,
@@ -285,6 +287,40 @@ describe('share link codec', () => {
   });
 });
 
+describe('per-entry checks', () => {
+  it('overrideError uses the share-link allowlist', () => {
+    expect(overrideError('--gv-radius-2', '12px', meta)).toBeUndefined();
+    expect(overrideError('--gv-primary', '#123456', meta)).toBeUndefined();
+    expect(overrideError('--gv-primary', 'expression(1)', meta)).toMatch(
+      /not allowed/
+    );
+    expect(overrideError('--gv-radius-2', '12px; color: red', meta)).toMatch(
+      /not allowed/
+    );
+    expect(overrideError('--gv-nope', '1px', meta)).toMatch(/unknown token/);
+    expect(overrideError('--gv-radius-2', 'x'.repeat(65), meta)).toMatch(
+      /too long/
+    );
+  });
+
+  it('filterOverrides keeps valid entries and names the dropped ones', () => {
+    expect(
+      filterOverrides(
+        { '--gv-radius-2': '12px', '--gv-primary': 'url(x)', color: 'red' },
+        meta
+      )
+    ).toEqual({
+      overrides: { '--gv-radius-2': '12px' },
+      dropped: ['--gv-primary', 'color'],
+    });
+    expect(filterOverrides(['x'], meta)).toEqual({
+      overrides: {},
+      dropped: [],
+    });
+    expect(filterOverrides(null, meta)).toEqual({ overrides: {}, dropped: [] });
+  });
+});
+
 describe('useOverrides', () => {
   beforeEach(() => {
     window.localStorage.clear();
@@ -366,6 +402,38 @@ describe('useOverrides', () => {
     expect(parseOverrides(window.location.hash, meta)).toEqual({
       '--gv-radius-control': '20px',
     });
+  });
+
+  it('refuses an edit the share-link rules refuse, and keeps the rest', () => {
+    const { result } = renderHook(() => useOverrides(meta));
+    let error: string | undefined;
+    act(() => {
+      error = result.current.setOverride('--gv-space-3', '16px');
+    });
+    expect(error).toBeUndefined();
+    act(() => {
+      error = result.current.setOverride('--gv-primary', 'url(x)');
+    });
+    expect(error).toMatch(/not allowed/);
+    act(() => {
+      error = result.current.setOverride('--gv-radius-2', 'red');
+    });
+    expect(error).toMatch(/not allowed/);
+    expect(result.current.overrides).toEqual({ '--gv-space-3': '16px' });
+  });
+
+  it('drops only the bad entries of a stored session', () => {
+    window.localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify({
+        '--gv-space-3': '16px',
+        '--gv-primary': 'url(x)',
+        '--gv-gone': '1px',
+      })
+    );
+    const { result } = renderHook(() => useOverrides(meta));
+    expect(result.current.overrides).toEqual({ '--gv-space-3': '16px' });
+    expect(result.current.notice).toBeUndefined();
   });
 
   it('ignores a tampered store', () => {

@@ -2,6 +2,8 @@
 //
 //   npm run ds:smoke -- [--dir storybook-static] [--screenshot <file.png>]
 //                       [--canvas-screenshot <file.png>]
+//                       [--colour-screenshot <file.png>]
+//                       [--spacing-screenshot <file.png>]
 //
 // Serves the static dir on a free local port, opens /workbench/#/start in
 // Chromium and checks that the nav lists every section, the Start here page
@@ -10,7 +12,9 @@
 // Button story on the canvas: the mode toolbar puts data-gv-mode on the
 // frame's root, a share link override changes the button's computed
 // border-radius, and a bad share link shows a notice and keeps the
-// session. Exits 1 on failure,
+// session. The Foundations colour page lists at least MIN_COLOUR_TOKENS
+// tokens and a contrast pairs table with rows; an edit of a radius token
+// shows in the Changes drawer and in the hash. Exits 1 on failure,
 // 2 when Playwright is missing. Playwright is loaded through ./playwright.
 import fs from 'fs';
 import http from 'http';
@@ -31,7 +35,7 @@ export const EXPECTED_NAV = [
 
 const ROUTES: [string, string][] = [
   ['#/foundations', 'Foundations'],
-  ['#/foundations/color', 'Foundations: color'],
+  ['#/foundations/color', 'Colour'],
   ['#/components', 'Components'],
   ['#/patterns', 'Patterns'],
   ['#/pages', 'Pages'],
@@ -60,6 +64,98 @@ export const pickButtonStory = (index: unknown): string | null => {
 // The share-link payload the shell reads (base64url JSON).
 const sharePayload = (o: Record<string, string>) =>
   Buffer.from(JSON.stringify(o), 'utf8').toString('base64url');
+
+export const MIN_COLOUR_TOKENS = 50;
+
+// The token names in a share-link hash (`...?o=<base64url JSON>`).
+export const overrideNamesOfHash = (hash: string): string[] => {
+  const q = hash.indexOf('?');
+  const o = q === -1 ? null : new URLSearchParams(hash.slice(q + 1)).get('o');
+  if (!o) return [];
+  try {
+    return Object.keys(
+      JSON.parse(Buffer.from(o, 'base64url').toString('utf8'))
+    );
+  } catch {
+    return [];
+  }
+};
+
+const foundationsChecks = async (
+  page: any,
+  base: string,
+  failures: string[],
+  shots: { colour?: string; spacing?: string }
+) => {
+  await page.goto(`${base}/workbench/#/foundations/color`);
+  await page.waitForSelector('[data-testid="wb-token-row"]', {
+    timeout: 10000,
+  });
+  const colours: number = await page.$$eval(
+    '[data-testid="wb-token-row"]',
+    (els: Element[]) => els.length
+  );
+  if (colours < MIN_COLOUR_TOKENS) {
+    failures.push(
+      `the colour page lists ${colours} tokens, expected ${MIN_COLOUR_TOKENS} or more`
+    );
+  }
+  let pairs = 0;
+  try {
+    await page.waitForSelector('[data-testid="wb-pair-row"]', {
+      timeout: 15000,
+    });
+    pairs = await page.$$eval(
+      '[data-testid="wb-pair-row"]',
+      (els: Element[]) => els.length
+    );
+  } catch {
+    failures.push('the colour page has no contrast pairs');
+  }
+  console.log(`foundations: ${colours} colour tokens, ${pairs} pairs`);
+  if (shots.colour) {
+    await page.screenshot({ path: path.resolve(shots.colour) });
+    console.log(`colour screenshot: ${path.resolve(shots.colour)}`);
+  }
+
+  await page.goto(`${base}/workbench/#/foundations/space`);
+  await page.waitForSelector('[data-testid="wb-token-row"]', {
+    timeout: 10000,
+  });
+  if (shots.spacing) {
+    await page.screenshot({ path: path.resolve(shots.spacing) });
+    console.log(`spacing screenshot: ${path.resolve(shots.spacing)}`);
+  }
+
+  // Edit a radius token: it shows in the Changes drawer and the hash.
+  await page.goto(`${base}/workbench/#/foundations/radius`);
+  const input = `[data-testid="wb-token-row"][data-token="${RADIUS_TOKEN}"] [data-testid="wb-token-input"]`;
+  await page.waitForSelector(input, { timeout: 10000 });
+  await page.fill(input, '12px');
+  await page.press(input, 'Enter');
+  try {
+    await page.waitForFunction(
+      () => window.location.hash.includes('?o='),
+      undefined,
+      { timeout: 5000 }
+    );
+  } catch {
+    // Reported below.
+  }
+  const hash: string = await page.evaluate(() => window.location.hash);
+  if (!overrideNamesOfHash(hash).includes(RADIUS_TOKEN)) {
+    failures.push(`a Foundations edit of ${RADIUS_TOKEN} is not in the hash`);
+  }
+  await page.click('[data-testid="wb-changes-toggle"]');
+  const row = `[data-testid="wb-change-row"][data-token="${RADIUS_TOKEN}"]`;
+  if (!(await page.isVisible(row))) {
+    failures.push(`the Changes drawer does not list ${RADIUS_TOKEN}`);
+  } else {
+    console.log(`foundations: ${RADIUS_TOKEN} edit in the drawer and the hash`);
+  }
+  // Leave no session behind for the canvas checks.
+  await page.click('[data-testid="wb-changes"] button:has-text("Reset all")');
+};
 
 const OPTIONAL_DATA = [
   '/design-scan.json',
@@ -229,6 +325,8 @@ const main = async () => {
   const root = path.resolve(arg('dir') ?? 'storybook-static');
   const screenshot = arg('screenshot');
   const canvasScreenshot = arg('canvas-screenshot');
+  const colourScreenshot = arg('colour-screenshot');
+  const spacingScreenshot = arg('spacing-screenshot');
   if (!fs.existsSync(path.join(root, 'workbench', 'index.html'))) {
     console.error(
       `No workbench in ${root}. Run npm run build-storybook first.`
@@ -313,6 +411,11 @@ const main = async () => {
         { timeout: 5000 }
       );
     }
+
+    await foundationsChecks(page, base, failures, {
+      colour: colourScreenshot,
+      spacing: spacingScreenshot,
+    });
 
     if (!storyId) {
       failures.push('index.json has no components-button story');
