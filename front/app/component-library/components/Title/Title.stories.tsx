@@ -47,7 +47,7 @@ export const LongContent: Story = {
   args: {
     variant: 'h2',
     children:
-      'Participants can submit ideas, comment on each other\'s ideas and vote on the ones they want to see next',
+      "Participants can submit ideas, comment on each other's ideas and vote on the ones they want to see next",
   },
   render: (args) => (
     <div style={{ width: '320px' }}>

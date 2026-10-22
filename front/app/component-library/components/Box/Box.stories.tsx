@@ -33,7 +33,8 @@ export const LongContent: Story = {
     width: '320px',
     children: (
       <div>
-        A very long line of content that keeps going without any break so that it has to wrap inside the box:
+        A very long line of content that keeps going without any break so that
+        it has to wrap inside the box:
         participants_can_submit_ideas_comment_and_vote_on_the_ones_they_want_to_see_next
       </div>
     ),

@@ -80,7 +80,8 @@ export const Default: Story = {
 export const LongContent: Story = {
   args: {
     variant: 'bodyM',
-    children: 'Participants can submit ideas, comment on each other\'s ideas and vote on the ones they want to see in the next budget cycle, for as long as the phase stays open to the whole community',
+    children:
+      "Participants can submit ideas, comment on each other's ideas and vote on the ones they want to see in the next budget cycle, for as long as the phase stays open to the whole community",
   },
   render: (args) => (
     <div style={{ width: '320px' }}>
