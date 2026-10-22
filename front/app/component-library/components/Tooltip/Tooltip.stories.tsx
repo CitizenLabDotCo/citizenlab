@@ -47,6 +47,7 @@ export const LongContent: Story = {
 };
 
 export const RTL: Story = {
+  globals: { lang: 'ar' },
   args: {
     ...Open.args,
     content: 'هذا نص توضيحي',
@@ -54,7 +55,7 @@ export const RTL: Story = {
   },
   decorators: [
     (Story) => (
-      <div dir="rtl" style={{ minHeight: '120px', position: 'relative' }}>
+      <div style={{ minHeight: '120px', position: 'relative' }}>
         <Story />
       </div>
     ),
