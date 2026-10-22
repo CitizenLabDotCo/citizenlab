@@ -40,7 +40,7 @@ export const WithTransformTranslate: Story = {
 
 export const Hover: Story = {
   args: Default.args,
-  parameters: { pseudo: { hover: ['button'] } },
+  parameters: { pseudo: { hover: ['svg'] } },
 };
 
 export const Focus: Story = {
