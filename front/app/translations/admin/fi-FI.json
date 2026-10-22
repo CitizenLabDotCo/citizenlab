@@ -957,6 +957,7 @@
   "app.containers.Admin.Users.SeatsOverview.role": "Rooli",
   "app.containers.Admin.Users.SeatsOverview.title": "Paikkojen yleisnäkymä",
   "app.containers.Admin.Users.SeatsOverview.unknown": "Tuntematon",
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": "Rekisteröitymistä ei ole suoritettu",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Kutsu odottaa",
   "app.containers.Admin.Users.admin": "Admin",
   "app.containers.Admin.Users.alreadyManager": "On jo hallinnoija",

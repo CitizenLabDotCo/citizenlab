@@ -957,6 +957,7 @@
   "app.containers.Admin.Users.SeatsOverview.role": "Rôl",
   "app.containers.Admin.Users.SeatsOverview.title": "Trosolwg o Seddi",
   "app.containers.Admin.Users.SeatsOverview.unknown": "Anhysbys",
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": "Cofrestru heb ei gwblhau",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Gwahoddiad yn yr arfaeth",
   "app.containers.Admin.Users.admin": "Gweinyddol",
   "app.containers.Admin.Users.alreadyManager": "Eisoes yn rheolwr",
