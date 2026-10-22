@@ -5,10 +5,15 @@ namespace :cl2_back do
   task :create_tenant, %i[host template locales] => [:environment] do |_t, args|
     host = args[:host] || raise("Please provide the 'host' arg")
     tenant_template = args[:template] || 'e2etests_template'
+    # Without an explicit list, the tenant gets the default locales plus the
+    # locales the template requires. A template cannot be applied to a tenant
+    # that misses one of its locales.
+    locales = args[:locales]&.split(';')&.map(&:strip)
+    locales ||= %w[en nl-BE nl-NL fr-BE] | MultiTenancy::Templates::Utils.new.required_locales(tenant_template)
     Tenant.find_by(host: host)&.destroy!
 
     settings = SettingsService.new.minimal_required_settings(
-      locales: args[:locales]&.split(';')&.map(&:strip) || %w[en nl-BE nl-NL fr-BE],
+      locales: locales,
       lifecycle_stage: 'not_applicable'
     ).deep_merge(
       {
