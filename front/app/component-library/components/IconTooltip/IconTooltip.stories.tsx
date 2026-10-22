@@ -40,12 +40,12 @@ export const WithTransformTranslate: Story = {
 
 export const Hover: Story = {
   args: Default.args,
-  parameters: { pseudo: { hover: true } },
+  parameters: { pseudo: { hover: ['button'] } },
 };
 
 export const Focus: Story = {
   args: Default.args,
-  parameters: { pseudo: { focus: true, focusVisible: true } },
+  parameters: { pseudo: { focusVisible: ['button'] } },
 };
 
 export const Open: Story = {
@@ -58,7 +58,7 @@ export const Open: Story = {
     ),
   ],
   play: async ({ canvasElement }) => {
-    const button = within(canvasElement).getByRole('tooltip');
+    const button = within(canvasElement).getByRole('button');
     await userEvent.hover(button);
   },
 };
@@ -72,10 +72,11 @@ export const LongContent: Story = {
 };
 
 export const RTL: Story = {
+  globals: { lang: 'ar' },
   args: { content: 'هذا نص توضيحي' },
   decorators: [
     (Story) => (
-      <div dir="rtl">
+      <div>
         <Story />
       </div>
     ),
