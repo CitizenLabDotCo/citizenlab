@@ -1,10 +1,14 @@
+import React from 'react';
+
 import Button from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'Components/Button',
+  title: 'Components/Actions/Button',
   component: Button,
+  tags: ['shared'],
+  parameters: { gv: {} },
 } satisfies Meta<typeof Button>;
 
 export default meta;
@@ -144,4 +148,53 @@ export const BackOfficeIconOnly = {
     padding: '0',
     ariaLabel: 'Project settings',
   },
+};
+
+export const Default: Story = {
+  args: {
+    buttonStyle: 'primary',
+    children: 'Save changes',
+  },
+};
+
+export const Hover: Story = {
+  args: Default.args,
+  parameters: { pseudo: { hover: true } },
+};
+
+export const Focus: Story = {
+  args: Default.args,
+  parameters: { pseudo: { focusVisible: true, focus: true } },
+};
+
+export const Active: Story = {
+  args: Default.args,
+  parameters: { pseudo: { active: true } },
+};
+
+export const Disabled: Story = {
+  args: { ...Default.args, disabled: true },
+};
+
+export const Loading: Story = {
+  args: { ...Default.args, processing: true },
+};
+
+export const LongContent: Story = {
+  args: {
+    ...Default.args,
+    children:
+      'Save the changes to this phase and publish the project to every participant in the selected groups',
+    whiteSpace: 'normal',
+    width: '240px',
+  },
+};
+
+export const RTL: Story = {
+  args: { ...Default.args, icon: 'info-outline', children: 'حفظ التغييرات' },
+  render: (args) => (
+    <div dir="rtl">
+      <Button {...args} />
+    </div>
+  ),
 };
