@@ -82,6 +82,13 @@ class AdminPublication < ApplicationRecord
   before_save :cancel_scheduled_transition, if: :will_save_change_to_publication_status?
   before_save :set_first_published_at
 
+  # Runs before awesome_nested_set's own `before_destroy :destroy_descendants`
+  # cascade (hence `prepend: true`, which governs runtime order regardless of
+  # where this is declared). Guards against orphaning publications when the
+  # nested set's lft/rgt bounds have drifted out of sync with parent_id.
+  # See AdminPublications::NestedSetIntegrity (TAN-8089).
+  before_destroy :guard_against_nested_set_drift, prepend: true
+
   # Returns publications with the given status(es), taking scheduled transitions into account.
   scope :with_status, lambda { |*statuses|
     statuses = statuses.flatten
@@ -164,6 +171,10 @@ class AdminPublication < ApplicationRecord
   end
 
   private
+
+  def guard_against_nested_set_drift
+    AdminPublications::NestedSetIntegrity.guard_destroy!(self)
+  end
 
   def set_publication_status
     self.publication_status ||= 'published'
