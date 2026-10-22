@@ -170,12 +170,33 @@ const propertyAt = (text: string, index: number): string | undefined => {
 
 const blank = (c: string) => c.replace(/[^\n]/g, ' ');
 
+// The fallback of a design token variable, `var(--gv-radius, 3px)`, is not a
+// hard-coded value: the token wins whenever it is defined. Blank everything
+// after the comma up to the matching `)`, keeping positions and newlines.
+const blankGvFallbacks = (text: string) => {
+  let out = text;
+  for (const m of text.matchAll(/var\(\s*--gv-[\w-]+\s*,/g)) {
+    const start = m.index! + m[0].length;
+    let depth = 1;
+    let i = start;
+    for (; i < text.length && depth > 0; i++) {
+      if (text[i] === '(') depth++;
+      else if (text[i] === ')') depth--;
+    }
+    if (depth !== 0) continue;
+    out =
+      out.slice(0, start) + blank(out.slice(start, i - 1)) + out.slice(i - 1);
+  }
+  return out;
+};
+
 // Blank (with spaces, so positions survive) everything that is not a CSS
 // value: url(...) bodies, quoted strings, block comments and `//` line
 // comments. Order matters: urls and strings first so `//` inside
 // `url(https://x)` or "http://x" is never read as a comment.
+// Token variable fallbacks are blanked as well (see above).
 const blankNonValues = (text: string) =>
-  text
+  blankGvFallbacks(text)
     .replace(/url\(([^)]*)\)/gi, (_m, body) => 'url(' + blank(body) + ')')
     .replace(/(["'])(?:\\.|(?!\1)[^\\\n])*\1/g, blank)
     .replace(/\/\*[\s\S]*?\*\//g, blank)
@@ -489,7 +510,8 @@ export const scanFileResult = (
       collect(lit);
       const category: FindingCategory = spacing ? 'layout-spacing' : 'px';
       const tc = spacing ? undefined : tokenCategoryFor(kebab(prop));
-      pieces.forEach(({ text, origin }) => {
+      pieces.forEach(({ text: rawText, origin }) => {
+        const text = blankGvFallbacks(rawText);
         for (const m of text.matchAll(JSX_PX_RE)) {
           const suggestion = spacing
             ? nearestToken(m[0], 'layout-spacing', tokens)

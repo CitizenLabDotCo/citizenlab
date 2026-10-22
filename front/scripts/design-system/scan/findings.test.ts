@@ -183,6 +183,20 @@ describe('px on style props and CSS strings', () => {
       (x) => `${x.category}:${x.raw}:${x.line}:${x.col}`
     );
 
+  it('accepts px and colours only as the fallback of a --gv- token variable', () => {
+    expect(
+      run([
+        "const a = { borderRadius: 'var(--gv-radius-control, 3px)' };",
+        'const B = styled.div`',
+        '  border-radius: var(--gv-radius-control, 3px);',
+        '  color: var(--gv-colour-text, var(--gv-colour-ink, #333));',
+        '  padding: var(--other, 4px) var(--gv-space-2, 8px) 5px;',
+        '`;',
+        'export const C = () => <Box width="var(--gv-size-panel, 380px)" h="7px" />;',
+      ]).filter((x) => /^(px|hex|rgba|named-color):/.test(x))
+    ).toEqual(['px:4px:5:25', 'px:5px:5:53', 'px:7px:7:68']);
+  });
+
   it('counts px on non-spacing props of primitives as px, spacing stays layout-spacing', () => {
     expect(
       run([
