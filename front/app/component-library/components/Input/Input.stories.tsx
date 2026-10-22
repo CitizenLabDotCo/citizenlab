@@ -5,7 +5,9 @@ import Input from '.';
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'Components/Input',
+  title: 'Components/Forms/Input',
+  tags: ['shared'],
+  parameters: { gv: {} },
   render: (props) => {
     return (
       <div style={{ width: '300px' }}>
@@ -72,4 +74,45 @@ export const Password: Story = {
     type: 'password',
     value: 'password',
   },
+};
+
+export const Hover: Story = {
+  args: Default.args,
+  parameters: { pseudo: { hover: true } },
+};
+
+export const Focus: Story = {
+  args: Default.args,
+  parameters: { pseudo: { focus: true, focusVisible: true } },
+};
+
+export const Disabled: Story = {
+  args: { ...Default.args, disabled: true },
+};
+
+export const Error: Story = {
+  args: {
+    ...Default.args,
+    label: 'Email address',
+    value: 'email@',
+    error: 'Enter a valid email address.',
+    ariaInvalid: true,
+  },
+};
+
+export const LongContent: Story = {
+  args: {
+    ...Default.args,
+    value:
+      'Replace the parking spaces along the main street with a wide cycle lane, benches and trees for the whole neighbourhood',
+  },
+};
+
+export const RTL: Story = {
+  args: { ...Default.args, label: 'عنوان الفكرة', value: 'نص تجريبي' },
+  render: (props) => (
+    <div dir="rtl" style={{ width: '300px' }}>
+      <Input {...props} />
+    </div>
+  ),
 };
