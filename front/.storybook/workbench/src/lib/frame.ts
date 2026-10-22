@@ -103,6 +103,15 @@ const probeProperty = (t: TokenMeta): [string, string] | null => {
   return null;
 };
 
+// Fallbacks no token uses, to spot a token that is not defined.
+const SENTINEL: Record<string, string> = {
+  'border-top-left-radius': '12345px',
+  'padding-top': '12345px',
+  'font-size': '12345px',
+  color: 'rgb(123, 45, 1)',
+  'box-shadow': 'rgb(123, 45, 1) 12345px 0px 0px 0px',
+};
+
 // Values that say nothing about token use.
 const NEUTRAL = new Set(['', '0px', 'none', 'rgba(0, 0, 0, 0)', 'normal']);
 
@@ -144,15 +153,17 @@ const tokenRules = (doc: Document): TokenRule[] => {
   return out;
 };
 
-// Matches with the states stripped first (`.btn:hover` counts for `.btn`;
-// matches() would say false for it, or throw for a pseudo-element), then
-// as written when stripping broke the selector.
-const matches = (el: Element, selector: string) => {
+// Whether the rule's selector hits `root` or an element under it. States
+// are stripped first (`.btn:hover` counts for `.btn`; the query would miss
+// it, or throw for a pseudo-element), then the selector is tried as written
+// when stripping broke it.
+const inSubtree = (root: Element, selector: string) => {
+  const hit = (sel: string) => root.matches(sel) || !!root.querySelector(sel);
   try {
-    return el.matches(selector.replace(STATE, '') || '*');
+    return hit(selector.replace(STATE, '') || '*');
   } catch {
     try {
-      return el.matches(selector);
+      return hit(selector);
     } catch {
       return false;
     }
@@ -193,10 +204,13 @@ export const readComputedTokens = (
     for (const t of meta) {
       const p = probeProperty(t);
       if (!p) continue;
-      probe.style.setProperty(p[1], `var(${t.name})`);
+      // A token the active mode does not define resolves to the fallback,
+      // not to the inherited value, and is skipped.
+      const sentinel = SENTINEL[p[1]];
+      probe.style.setProperty(p[1], `var(${t.name}, ${sentinel})`);
       const value = win.getComputedStyle(probe).getPropertyValue(p[1]).trim();
       probe.style.removeProperty(p[1]);
-      if (NEUTRAL.has(value)) continue;
+      if (NEUTRAL.has(value) || value === sentinel) continue;
       const key = `${p[0]}|${value}`;
       if (!byValue.has(key)) byValue.set(key, new Set());
       byValue.get(key)?.add(t.name);
@@ -218,13 +232,15 @@ export const readComputedTokens = (
   }
 
   const linked = new Set<string>();
-  const rules = tokenRules(doc);
   for (const el of elements) {
     const inline = el.getAttribute('style') ?? '';
     for (const m of inline.matchAll(VAR)) linked.add(m[1]);
-    for (const rule of rules) {
-      if (rule.names.every((n) => linked.has(n))) continue;
-      if (matches(el, rule.selector)) rule.names.forEach((n) => linked.add(n));
+  }
+  // One subtree query per rule, not one matches() per element and rule.
+  for (const rule of tokenRules(doc)) {
+    if (rule.names.every((n) => linked.has(n))) continue;
+    if (inSubtree(root, rule.selector)) {
+      rule.names.forEach((n) => linked.add(n));
     }
   }
 

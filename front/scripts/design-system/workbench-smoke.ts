@@ -9,7 +9,8 @@
 // a build may lack (see OPTIONAL_DATA) are allowed to 404. Then opens a
 // Button story on the canvas: the mode toolbar puts data-gv-mode on the
 // frame's root, a share link override changes the button's computed
-// border-radius, and a bad share link shows a notice. Exits 1 on failure,
+// border-radius, and a bad share link shows a notice and keeps the
+// session. Exits 1 on failure,
 // 2 when Playwright is missing. Playwright is loaded through ./playwright.
 import fs from 'fs';
 import http from 'http';
@@ -206,8 +207,8 @@ const canvasChecks = async (
     console.log(`canvas screenshot: ${path.resolve(screenshot)}`);
   }
 
-  // A bad share link applies nothing and says so.
-  const bad = sharePayload({ [RADIUS_TOKEN]: 'url(https://example.test/x)' });
+  // A bad share link applies nothing, keeps the session and says so.
+  const bad = sharePayload({ [RADIUS_TOKEN]: 'image-set("x.png" 1x)' });
   await page.evaluate((h: string) => {
     window.location.hash = h;
   }, `#/components/${storyId}?o=${bad}`);
@@ -217,8 +218,10 @@ const canvasChecks = async (
     failures.push('a rejected share link shows no notice');
   }
   const after = await radiusOf(frame);
-  if (after === RADIUS_OVERRIDE) {
-    failures.push('a rejected share link left the previous override applied');
+  if (after !== RADIUS_OVERRIDE) {
+    failures.push(
+      `a rejected share link changed the session: border-radius ${after}`
+    );
   }
 };
 

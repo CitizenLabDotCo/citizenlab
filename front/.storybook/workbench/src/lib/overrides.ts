@@ -179,12 +179,157 @@ export const snap = (
 export const MAX_PAYLOAD_BYTES = 8 * 1024;
 export const MAX_VALUE_LENGTH = 64;
 
-// Value fragments that could load a resource or break out of a declaration.
-// A backslash is refused too, because CSS escapes (`u\72l(`) would hide the
-// other fragments.
-const FORBIDDEN = [/url\(/i, /expression/i, /;/, /\}/, /</, /\\/];
+// Second guard, after the allowlist below: fragments that could load a
+// resource or break out of a declaration. A backslash is refused because CSS
+// escapes (`u\72l(`) would hide the other fragments.
+const FORBIDDEN = [
+  /url\(/i,
+  /image-set/i,
+  /image\(/i,
+  /cross-fade/i,
+  /src\(/i,
+  /expression/i,
+  /;/,
+  /\}/,
+  /</,
+  /\\/,
+  /\/\*/,
+  /!/,
+];
 // Printable ASCII only.
 const PRINTABLE = /^[\x20-\x7e]*$/;
+
+// ---------------------------------------------------------------- allowlist
+
+// What a value may look like, by the token's `type` in tokens.meta.json.
+type ValueKind =
+  | 'colour'
+  | 'length'
+  | 'number'
+  | 'time'
+  | 'shadow'
+  | 'border'
+  | 'family';
+
+const LENGTH = /^(0|-?\d+(\.\d+)?(px|rem|em|%))$/;
+const NUMBER = /^\d+(\.\d+)?$/;
+const TIME = /^\d+(\.\d+)?(ms|s)$/;
+const HEX_COLOUR = /^#([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
+// rgb()/rgba()/hsl()/hsla() with numeric arguments only.
+const FN_COLOUR = /^(rgba?|hsla?)\(\s*(-?[\d.]+(%|deg)?[\s,/]*){3,4}\)$/i;
+const NAMED_COLOUR = /^(transparent|currentcolor)$/i;
+const COLOR_MIX = /^color-mix\(\s*in\s+(srgb|oklch|oklab|hsl)\s*,(.*)\)$/i;
+const FAMILY_NAME = /^([A-Za-z0-9 -]+|'[A-Za-z0-9 -]+'|"[A-Za-z0-9 -]+")$/;
+const BORDER_STYLE = /^(none|solid|dashed|dotted|double)$/i;
+const VAR = /^var\(\s*(--gv-[a-z0-9-]+)\s*(?:,(.*))?\)$/;
+
+// Splits at `sep` outside parentheses.
+const splitTop = (value: string, sep: RegExp): string[] => {
+  const parts: string[] = [];
+  let depth = 0;
+  let current = '';
+  for (const c of value) {
+    if (c === '(') depth++;
+    if (c === ')') depth--;
+    if (depth < 0) return [];
+    if (depth === 0 && sep.test(c)) {
+      parts.push(current);
+      current = '';
+    } else {
+      current += c;
+    }
+  }
+  if (depth !== 0) return [];
+  parts.push(current);
+  return parts.map((p) => p.trim()).filter(Boolean);
+};
+
+const isColour = (v: string): boolean => {
+  if (HEX_COLOUR.test(v) || FN_COLOUR.test(v) || NAMED_COLOUR.test(v)) {
+    return true;
+  }
+  const mix = COLOR_MIX.exec(v);
+  if (!mix) return false;
+  const args = splitTop(mix[2], /,/);
+  return (
+    args.length === 2 &&
+    args.every((a) => {
+      const [colour, pct, ...rest] = splitTop(a, /\s/);
+      return (
+        rest.length === 0 &&
+        isColour(colour) &&
+        (pct === undefined || /^\d+(\.\d+)?%$/.test(pct))
+      );
+    })
+  );
+};
+
+// A comma list of layers, each made of lengths, colours and keywords.
+const isLayers = (v: string, keyword: RegExp, layers: boolean): boolean => {
+  if (/^none$/i.test(v)) return true;
+  const list = layers ? splitTop(v, /,/) : [v];
+  return (
+    list.length > 0 &&
+    list.every((layer) => {
+      const parts = splitTop(layer, /\s/);
+      return (
+        parts.length > 0 &&
+        parts.every((p) => LENGTH.test(p) || isColour(p) || keyword.test(p))
+      );
+    })
+  );
+};
+
+const KIND_TESTS: Record<ValueKind, (v: string) => boolean> = {
+  colour: isColour,
+  length: (v) => LENGTH.test(v),
+  number: (v) => NUMBER.test(v),
+  time: (v) => TIME.test(v),
+  shadow: (v) => isLayers(v, /^inset$/i, true),
+  border: (v) => isLayers(v, BORDER_STYLE, false),
+  family: (v) => {
+    const names = v.split(',').map((n) => n.trim());
+    return names.length > 0 && names.every((n) => FAMILY_NAME.test(n));
+  },
+};
+
+const KIND_BY_TYPE: Record<string, ValueKind> = {
+  color: 'colour',
+  dimension: 'length',
+  number: 'number',
+  duration: 'time',
+  shadow: 'shadow',
+  border: 'border',
+  fontFamily: 'family',
+};
+
+const KIND_BY_CATEGORY: Record<string, ValueKind> = {
+  color: 'colour',
+  space: 'length',
+  radius: 'length',
+  shadow: 'shadow',
+  motion: 'time',
+};
+
+export const kindOf = (t: TokenMeta): ValueKind | undefined =>
+  (t.type && KIND_BY_TYPE[t.type]) || KIND_BY_CATEGORY[t.category];
+
+// True when `value` is a plain value of the token's kind, or a var() of a
+// --gv- token with an optional fallback that itself passes.
+export const isAllowedValue = (
+  t: TokenMeta,
+  value: string,
+  depth = 0
+): boolean => {
+  const v = value.trim();
+  if (!v || depth > 2) return false;
+  const ref = VAR.exec(v);
+  if (ref) {
+    return ref[2] === undefined || isAllowedValue(t, ref[2], depth + 1);
+  }
+  const kind = kindOf(t);
+  return !!kind && KIND_TESTS[kind](v);
+};
 
 const toBase64Url = (text: string) => {
   // UTF-8 bytes as a binary string, then base64url without padding.
@@ -217,15 +362,18 @@ export const validateOverrides = (
   if (typeof input !== 'object' || input === null || Array.isArray(input)) {
     return fail('the edits are not a list of tokens');
   }
-  const known = new Set(meta.map((t) => t.name));
+  const known = new Map(meta.map((t) => [t.name, t]));
   const overrides: Overrides = {};
   for (const [key, value] of Object.entries(input)) {
-    if (!key.startsWith('--gv-') || !known.has(key)) {
-      return fail(`unknown token ${key.slice(0, 40)}`);
-    }
+    const token = key.startsWith('--gv-') ? known.get(key) : undefined;
+    if (!token) return fail(`unknown token ${key.slice(0, 40)}`);
     if (typeof value !== 'string') return fail(`${key} is not text`);
     if (value.length > MAX_VALUE_LENGTH) return fail(`${key} is too long`);
-    if (!PRINTABLE.test(value) || FORBIDDEN.some((re) => re.test(value))) {
+    if (
+      !PRINTABLE.test(value) ||
+      FORBIDDEN.some((re) => re.test(value)) ||
+      !isAllowedValue(token, value)
+    ) {
       return fail(`${key} has a value that is not allowed`);
     }
     overrides[key as TokenName] = value;
@@ -234,13 +382,11 @@ export const validateOverrides = (
 };
 
 // The overrides payload of a hash: the `o` parameter after `?`
-// (`#/components/x?o=...`). A string that is not a route (no leading `/`)
-// is taken as the bare payload.
+// (`#/components/x?o=...`). Any other hash (a route, an anchor) has none.
 export const payloadOfHash = (hash: string): string | null => {
-  const h = hash.replace(/^#/, '');
-  const q = h.indexOf('?');
-  if (q > -1) return new URLSearchParams(h.slice(q + 1)).get('o') || null;
-  return h && !h.startsWith('/') ? h : null;
+  const q = hash.indexOf('?');
+  if (q === -1) return null;
+  return new URLSearchParams(hash.slice(q + 1)).get('o') || null;
 };
 
 export const parseOverridesResult = (
@@ -314,13 +460,16 @@ const writeStorage = (o: Overrides) => {
   }
 };
 
-// A share link in the hash wins over the stored session. A link that fails
-// validation applies nothing and sets `notice`. A tampered store is dropped
-// quietly; it is this browser's own data.
-const initial = (meta: TokenMeta[]): ParseResult =>
-  payloadOfHash(window.location.hash)
-    ? parseOverridesResult(window.location.hash, meta)
-    : { overrides: readStorage(meta).overrides };
+// A valid share link in the hash replaces the stored session. A link that
+// fails validation changes nothing (the stored session stays) and sets
+// `notice`. A tampered store is dropped quietly; it is this browser's own
+// data.
+const initial = (meta: TokenMeta[]): ParseResult => {
+  const stored = readStorage(meta).overrides;
+  if (!payloadOfHash(window.location.hash)) return { overrides: stored };
+  const link = parseOverridesResult(window.location.hash, meta);
+  return link.error ? { overrides: stored, error: link.error } : link;
+};
 
 const notApplied = (error: string) =>
   `This share link was not applied: ${error}.`;
@@ -352,7 +501,14 @@ export const useOverrides = (meta: TokenMeta[]) => {
         return;
       }
       const result = parseOverridesResult(hash, meta);
-      setNotice(result.error ? notApplied(result.error) : undefined);
+      if (result.error) {
+        // Keep the session; the storage effect puts it back in the hash.
+        setNotice(notApplied(result.error));
+        const next = withOverrides(hash, current.current);
+        if (next !== hash) window.history.replaceState(null, '', next);
+        return;
+      }
+      setNotice(undefined);
       if (
         encodeOverrides(result.overrides) !== encodeOverrides(current.current)
       ) {

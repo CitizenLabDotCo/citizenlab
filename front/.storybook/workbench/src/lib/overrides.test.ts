@@ -9,6 +9,7 @@ import {
   STORAGE_KEY,
   deltaE76,
   encodeOverrides,
+  isAllowedValue,
   nearestColour,
   palette,
   parseColour,
@@ -25,6 +26,7 @@ const meta = tokensMeta as TokenMeta[];
 // base64url of an arbitrary (ASCII) JSON text, bypassing encodeOverrides.
 const raw = (json: string) =>
   btoa(json).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+const link = (json: string) => `#/components/a--b?o=${raw(json)}`;
 
 describe('snap', () => {
   it('moves a space value to the nearest step of the scale', () => {
@@ -123,7 +125,6 @@ describe('colour distance', () => {
 describe('share link codec', () => {
   it('round-trips', () => {
     const o = { '--gv-radius-control': '20px', '--gv-primary': '#147985' };
-    expect(parseOverrides(encodeOverrides(o), meta)).toEqual(o);
     expect(
       parseOverrides(`#/components/a--b?o=${encodeOverrides(o)}`, meta)
     ).toEqual(o);
@@ -132,6 +133,11 @@ describe('share link codec', () => {
   it('reads nothing from a plain route', () => {
     expect(parseOverridesResult('#/start', meta)).toEqual({ overrides: {} });
     expect(parseOverridesResult('', meta)).toEqual({ overrides: {} });
+    // An anchor or a bare payload is not a share link.
+    expect(parseOverridesResult('#main', meta)).toEqual({ overrides: {} });
+    expect(
+      parseOverridesResult(encodeOverrides({ '--gv-space-3': '4px' }), meta)
+    ).toEqual({ overrides: {} });
   });
 
   it('writes the parameter into a route hash', () => {
@@ -156,15 +162,98 @@ describe('share link codec', () => {
     ['a closing brace', '{"--gv-primary":"red}body{color:blue"}'],
     ['a less-than sign', '{"--gv-primary":"</style>"}'],
     ['a CSS escape', '{"--gv-primary":"\\\\75rl(x)"}'],
+    ['an escaped url( with a space', '{"--gv-primary":"\\\\75 rl(x)"}'],
+    ['image-set', '{"--gv-primary":"image-set(\\"http://x.test/1.png\\" 1x)"}'],
+    [
+      '-webkit-image-set',
+      '{"--gv-primary":"-webkit-image-set(\\"http://x.test/1.png\\" 1x)"}',
+    ],
+    ['image(', '{"--gv-primary":"image(\\"http://x.test/1.png\\")"}'],
+    ['cross-fade(', '{"--gv-primary":"cross-fade(\\"a.png\\", \\"b.png\\")"}'],
+    ['src(', '{"--gv-primary":"src(\\"http://x.test/1.png\\")"}'],
+    ['!important', '{"--gv-primary":"#fff !important"}'],
+    ['a comment', '{"--gv-primary":"#fff /* x */"}'],
+    ['a named colour', '{"--gv-primary":"red"}'],
+    ['another function', '{"--gv-primary":"attr(data-x)"}'],
+    ['a colour function with words', '{"--gv-primary":"rgb(from red r g b)"}'],
+    ['a length with a unit not allowed', '{"--gv-space-3":"1vw"}'],
+    ['a length for a colour', '{"--gv-primary":"12px"}'],
+    ['a var() of a non --gv- property', '{"--gv-primary":"var(--x)"}'],
+    ['a var() with a bad fallback', '{"--gv-primary":"var(--gv-white, 1x)"}'],
+    ['a font family with brackets', '{"--gv-font-family":"Arial(x)"}'],
+    ['a font family with stray quotes', '{"--gv-font-family":"Ari\'al"}'],
+    ['a shadow with a function', '{"--gv-shadow":"0 0 2px env(x)"}'],
     ['an array', '["--gv-primary"]'],
     ['null', 'null'],
     ['broken JSON', '{"--gv-primary":'],
   ];
 
   it.each(rejects)('rejects %s', (_, json) => {
-    const result = parseOverridesResult(raw(json), meta);
+    const result = parseOverridesResult(link(json), meta);
     expect(result.overrides).toEqual({});
     expect(result.error).toEqual(expect.any(String));
+  });
+
+  const allowed: [string, string][] = [
+    ['--gv-space-3', '16px'],
+    ['--gv-space-3', '0'],
+    ['--gv-space-3', '1.5rem'],
+    ['--gv-space-3', '-4px'],
+    ['--gv-radius-control', '50%'],
+    ['--gv-type-h2-ls', '-0.01em'],
+    ['--gv-primary', '#147985'],
+    ['--gv-primary', '#fffa'],
+    ['--gv-primary', 'rgb(1, 2, 3)'],
+    ['--gv-primary', 'rgba(0,0,0,0.5)'],
+    ['--gv-primary', 'hsl(200deg 50% 40%)'],
+    ['--gv-primary', 'hsla(200, 50%, 40%, 0.5)'],
+    ['--gv-primary', 'transparent'],
+    ['--gv-primary', 'var(--gv-teal-500)'],
+    ['--gv-primary', 'var(--gv-teal-500, #147985)'],
+    ['--gv-type-h1-weight', '600'],
+    ['--gv-motion-fast', '200ms'],
+    ['--gv-shadow', '0 2px 4px rgba(0,0,0,0.1), inset 0 0 0 1px #ccc'],
+    ['--gv-shadow', 'none'],
+    ['--gv-focus-outline', '3px solid #1a1a1a'],
+    ['--gv-font-family', '"Public Sans", Helvetica, sans-serif'],
+    ['--gv-font-family', "'Public Sans'"],
+  ];
+
+  it.each(allowed)('allows %s: %s', (name, value) => {
+    expect(
+      parseOverridesResult(link(JSON.stringify({ [name]: value })), meta)
+    ).toEqual({ overrides: { [name]: value } });
+  });
+
+  it('refuses resource loaders with the allowlist alone', () => {
+    const primary = meta.find((t) => t.name === '--gv-primary') as TokenMeta;
+    const family = meta.find((t) => t.name === '--gv-font-family') as TokenMeta;
+    for (const v of [
+      'image-set("x.png" 1x)',
+      '-webkit-image-set("x.png" 1x)',
+      'image("x.png")',
+      'cross-fade("a.png", "b.png")',
+      'src("x.png")',
+      'url(x.png)',
+      '\\75 rl(x.png)',
+      'var(--gv-white, url(x.png))',
+    ]) {
+      expect([v, isAllowedValue(primary, v)]).toEqual([v, false]);
+      expect([v, isAllowedValue(family, v)]).toEqual([v, false]);
+    }
+  });
+
+  it("allows every token's own values from the token set", () => {
+    for (const t of meta) {
+      for (const value of Object.values(t.values)) {
+        const result = parseOverridesResult(
+          link(JSON.stringify({ [t.name]: value })),
+          meta
+        );
+        if (value.length <= 64)
+          expect([t.name, result.error]).toEqual([t.name, undefined]);
+      }
+    }
   });
 
   it('rejects a payload that is not base64url', () => {
@@ -173,7 +262,7 @@ describe('share link codec', () => {
   });
 
   it('rejects an oversized payload without decoding it', () => {
-    const big = raw(
+    const big = link(
       `{"--gv-primary":"#fff","pad":"${'a'.repeat(MAX_PAYLOAD_BYTES)}"}`
     );
     expect(parseOverridesResult(big, meta)).toEqual({
@@ -188,6 +277,7 @@ describe('share link codec', () => {
       '#?o=====',
       '#/x?o=\u0000',
       'é',
+      '#/x?o=é',
       '#/x?o=Zm9v',
     ]) {
       expect(() => parseOverridesResult(junk, meta)).not.toThrow();
@@ -234,19 +324,48 @@ describe('useOverrides', () => {
     expect(result.current.overrides).toEqual({ '--gv-space-3': '16px' });
   });
 
-  it('applies nothing from a bad link and says so', () => {
+  it('keeps the stored session when a link is bad, and says so', () => {
     window.localStorage.setItem(
       STORAGE_KEY,
       JSON.stringify({ '--gv-space-3': '16px' })
     );
-    window.history.replaceState(
-      null,
-      '',
-      `#/start?o=${raw('{"--gv-primary":"url(x)"}')}`
-    );
+    window.history.replaceState(null, '', link('{"--gv-primary":"url(x)"}'));
     const { result } = renderHook(() => useOverrides(meta));
-    expect(result.current.overrides).toEqual({});
+    expect(result.current.overrides).toEqual({ '--gv-space-3': '16px' });
     expect(result.current.notice).toMatch(/share link was not applied/);
+    expect(JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? '')).toEqual({
+      '--gv-space-3': '16px',
+    });
+    // The hash carries the session again, not the bad link.
+    expect(parseOverrides(window.location.hash, meta)).toEqual({
+      '--gv-space-3': '16px',
+    });
+  });
+
+  const navigate = (hash: string) =>
+    act(() => {
+      window.history.replaceState(null, '', hash);
+      window.dispatchEvent(new HashChangeEvent('hashchange'));
+    });
+
+  it('adopts a pasted link and ignores a bad one', () => {
+    const { result } = renderHook(() => useOverrides(meta));
+    act(() => result.current.setOverride('--gv-space-3', '16px'));
+
+    navigate(link('{"--gv-primary":"image-set(\\"x.png\\" 1x)"}'));
+    expect(result.current.overrides).toEqual({ '--gv-space-3': '16px' });
+    expect(result.current.notice).toMatch(/not applied/);
+
+    navigate(link('{"--gv-radius-control":"20px"}'));
+    expect(result.current.overrides).toEqual({ '--gv-radius-control': '20px' });
+    expect(result.current.notice).toBeUndefined();
+
+    // A plain route keeps the session and gets the parameter back.
+    navigate('#/start');
+    expect(result.current.overrides).toEqual({ '--gv-radius-control': '20px' });
+    expect(parseOverrides(window.location.hash, meta)).toEqual({
+      '--gv-radius-control': '20px',
+    });
   });
 
   it('ignores a tampered store', () => {
