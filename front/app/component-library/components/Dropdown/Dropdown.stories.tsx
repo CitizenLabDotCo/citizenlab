@@ -29,16 +29,8 @@ export const Default: Story = {
   ),
 };
 
-const Frame = ({
-  children,
-  dir,
-}: {
-  children: React.ReactNode;
-  dir?: 'rtl';
-}) => (
-  <div dir={dir} style={{ position: 'relative', minHeight: '220px' }}>
-    {children}
-  </div>
+const Frame = ({ children }: { children: React.ReactNode }) => (
+  <div style={{ position: 'relative', minHeight: '220px' }}>{children}</div>
 );
 
 export const Open: Story = {
@@ -96,8 +88,9 @@ export const LongContent: Story = {
 };
 
 export const RTL: Story = {
+  globals: { lang: 'ar' },
   render: () => (
-    <Frame dir="rtl">
+    <Frame>
       <Dropdown
         opened={true}
         onClickOutside={() => {}}
