@@ -68,7 +68,8 @@ const round = (n: number) => Math.round(n * 100) / 100;
 
 /**
  * Nearest token by value (uses each token's `values.today`). Exact match wins
- * (distance 0), otherwise the closest; ties break on token name so output is
+ * (distance 0), otherwise the closest; ties prefer tier-1 primitives over
+ * tier-2 semantics, then token name, so output is
  * deterministic. px distance is absolute px; colour distance is CIE76 in Lab.
  * `tokenCategory` optionally restricts the pool (`space`, `radius`, ...);
  * without it, px values are compared against `space` tokens and colours
@@ -81,14 +82,17 @@ export const nearestToken = (
   tokenCategory?: string
 ): Suggestion | undefined => {
   let best: Suggestion | undefined;
-  const consider = (token: string, distance: number) => {
+  let bestTier = 2;
+  const consider = (token: string, distance: number, tier: 1 | 2) => {
     const d = round(distance);
     if (
       !best ||
       d < best.distance ||
-      (d === best.distance && token < best.token)
+      (d === best.distance &&
+        (tier < bestTier || (tier === bestTier && token < best.token)))
     ) {
       best = { token, distance: d };
+      bestTier = tier;
     }
   };
 
@@ -99,7 +103,7 @@ export const nearestToken = (
       .filter((t) => t.category === (tokenCategory ?? 'space'))
       .forEach((t) => {
         const v = parsePx(t.values.today);
-        if (v !== undefined) consider(t.name, Math.abs(v - px));
+        if (v !== undefined) consider(t.name, Math.abs(v - px), t.tier);
       });
     return best;
   }
@@ -111,7 +115,7 @@ export const nearestToken = (
       .filter((t) => t.category === (tokenCategory ?? 'color'))
       .forEach((t) => {
         const v = parseColor(t.values.today);
-        if (v) consider(t.name, deltaE76(rgb, v));
+        if (v) consider(t.name, deltaE76(rgb, v), t.tier);
       });
     return best;
   }

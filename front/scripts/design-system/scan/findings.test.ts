@@ -280,6 +280,23 @@ describe('nearestToken', () => {
       '--gv-red-500'
     );
   });
+  it('prefers tier-1 primitives on equal distance, then name', () => {
+    const t = (name: string, tier: 1 | 2): TokenMeta => ({
+      ...tok(name, 'space', '8px'),
+      tier,
+    });
+    expect(
+      nearestToken('8px', 'px', [t('--gv-a-semantic', 2), t('--gv-z-prim', 1)])
+        ?.token
+    ).toBe('--gv-z-prim');
+    expect(
+      nearestToken('8px', 'px', [t('--gv-z-prim', 1), t('--gv-a-semantic', 2)])
+        ?.token
+    ).toBe('--gv-z-prim');
+    expect(
+      nearestToken('8px', 'px', [t('--gv-b', 1), t('--gv-a', 1)])?.token
+    ).toBe('--gv-a');
+  });
   it('returns undefined when there is nothing to compare', () => {
     expect(nearestToken('12px', 'px', [])).toBeUndefined();
     expect(nearestToken('${x}', 'hex', TOKENS)).toBeUndefined();
