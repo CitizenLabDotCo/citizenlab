@@ -10,6 +10,7 @@ import { allModes } from './modes';
 import { MINIMAL_VIEWPORTS } from 'storybook/viewport';
 import { IntlProvider } from 'react-intl';
 import { JSX } from 'react/jsx-runtime';
+import '../app/design-system/tokens/tokens.css';
 
 // Relative URL so the worker also loads when Storybook is served from a
 // sub-path (e.g. /storybook/ in epic previews).
