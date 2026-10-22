@@ -88,7 +88,7 @@ export const Hover: Story = {
 
 export const Focus: Story = {
   args: WithSelectedOption.args,
-  parameters: { pseudo: { focusVisible: ['select'] } },
+  parameters: { pseudo: { focus: ['select'], focusVisible: ['select'] } },
 };
 
 export const LongContent: Story = {
