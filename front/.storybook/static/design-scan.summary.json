@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-10-22T21:25:29.154Z",
-  "commit": "5c6c8843a2651577bdaa7f6213b9bbcf81ea171d",
+  "generatedAt": "2026-10-22T23:55:38.969Z",
+  "commit": "ecdfabf6c5095a74bd1c7d86267b8495872bb035",
   "offSpec": 8241,
   "legacy": 3274,
   "tokenReads": 1,
-  "components": 37,
-  "onTokens": 6,
+  "components": 132,
+  "onTokens": 20,
   "partly": 0,
-  "offTokens": 31,
+  "offTokens": 112,
   "pagesRebuilt": 0,
   "pagesPartly": 197,
   "pagesLegacy": 1

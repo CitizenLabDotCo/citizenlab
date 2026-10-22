@@ -5,28 +5,36 @@ import { SourceTree, walk } from './routes';
 import { ComponentUsage } from './schema';
 
 /*
- * Library usages: import sites of library components. A library component is
- * a directory under app/component-library/components/ (every export from that
- * directory counts as that component, so `Thead` is `Table`), plus the
- * capitalised value exports of app/component-library/index.tsx that live
- * elsewhere in the library (`InputContainer`, `ClickOutside`). Lowercase
- * exports (`colors`, `media`, hooks) are not components. An import counts when
- * the local name is used as a value (JSX or expression), not only as a type.
- * One usage per imported name per file, at the import line, with the sorted
- * JSX prop names used on that element in the file.
+ * Component usages: import sites of shared components. A component is
+ * - a directory under app/component-library/components/ (every export from
+ *   that directory counts as that component, so `Thead` is `Table`), plus the
+ *   capitalised value exports of app/component-library/index.tsx that live
+ *   elsewhere in the library (`InputContainer`, `ClickOutside`);
+ * - a directory directly under app/components/UI/ or app/components/admin/
+ *   that has an index file. It is named after the directory; when a library
+ *   component has the same name, the root is prefixed (`UI/Error`).
+ * Lowercase exports (`colors`, `media`, hooks) are not components. An import
+ * counts when the local name is used as a value (JSX or expression), not only
+ * as a type. One usage per imported name per file, at the import line, with
+ * the sorted JSX prop names used on that element in the file.
  */
 
 const LIB = 'app/component-library/';
 const LIB_INDEX_RE = /^app\/component-library\/index\.tsx?$/;
 const COMPONENT_DIR_RE = /^app\/component-library\/components\/([^/]+)\//;
+// App component roots: one component per directory with an index file.
+const APP_DIR_RE = /^app\/components\/(UI|admin)\/([^/]+)\//;
+const INDEX_RE = /^index\.[jt]sx?$/;
 
 export type LibraryIndex = {
   /** Export name of app/component-library/index -> component name. */
   byExport: Map<string, string>;
   /** Component name -> its own (scanned) files, sorted. */
   ownFiles: Map<string, string[]>;
-  /** Library file -> component it belongs to. */
+  /** Library or app component file -> component it belongs to. */
   componentOfFile: (rel: string) => string | undefined;
+  /** App component -> its main file (the directory's index). */
+  mainFile: Map<string, string>;
 };
 
 const isCapitalised = (s: string) => /^[A-Z]/.test(s);
@@ -70,8 +78,29 @@ export const libraryIndex = (
     });
   }
 
-  const componentOfFile = (rel: string): string | undefined =>
-    COMPONENT_DIR_RE.exec(rel)?.[1] ?? extraFiles.get(rel);
+  // App components: `UI/Modal` -> Modal, unless the library has a Modal.
+  const libNames = new Set<string>(byExport.values());
+  tree.files.forEach((f) => {
+    const dir = COMPONENT_DIR_RE.exec(f)?.[1];
+    if (dir) libNames.add(dir);
+  });
+  const appDirs = new Map<string, string>(); // 'app/components/UI/X/' -> name
+  const mainFile = new Map<string, string>();
+  tree.files.forEach((f) => {
+    const m = APP_DIR_RE.exec(f);
+    if (!m || f !== m[0] + path.posix.basename(f)) return;
+    if (!INDEX_RE.test(path.posix.basename(f))) return;
+    const name = libNames.has(m[2]) ? `${m[1]}/${m[2]}` : m[2];
+    appDirs.set(m[0], name);
+    mainFile.set(name, f);
+  });
+
+  const componentOfFile = (rel: string): string | undefined => {
+    const lib = COMPONENT_DIR_RE.exec(rel)?.[1] ?? extraFiles.get(rel);
+    if (lib) return lib;
+    const m = APP_DIR_RE.exec(rel);
+    return m ? appDirs.get(m[0]) : undefined;
+  };
 
   const ownFiles = new Map<string, string[]>();
   const add = (component: string, file: string) =>
@@ -80,6 +109,9 @@ export const libraryIndex = (
     if (!isOwnFile(f)) return;
     const dir = COMPONENT_DIR_RE.exec(f)?.[1];
     if (dir) add(dir, f);
+    const m = APP_DIR_RE.exec(f);
+    const app = m && appDirs.get(m[0]);
+    if (app) add(app, f);
   });
   extraFiles.forEach((component, file) => {
     // An index file owns its directory; a plain file owns itself.
@@ -94,8 +126,11 @@ export const libraryIndex = (
   [...byExport.values()].forEach((c) => {
     if (!ownFiles.has(c)) ownFiles.set(c, []);
   });
+  appDirs.forEach((c) => {
+    if (!ownFiles.has(c)) ownFiles.set(c, []);
+  });
   ownFiles.forEach((files, c) => ownFiles.set(c, [...new Set(files)].sort()));
-  return { byExport, ownFiles, componentOfFile };
+  return { byExport, ownFiles, componentOfFile, mainFile };
 };
 
 // TS nodes whose subtree is type-only (references inside are not value uses).
@@ -167,15 +202,14 @@ export const usagesInFile = (
 ): ComponentUsage[] => {
   const ast = tree.ast(rel);
   if (!ast) return [];
-  const ownComponent = rel.startsWith(LIB)
-    ? lib.componentOfFile(rel)
-    : undefined;
+  const ownComponent = lib.componentOfFile(rel);
   let refs: FileRefs | undefined;
   const out: ComponentUsage[] = [];
   tree.importsOf(rel).forEach((i) => {
     if (i.dynamic || i.typeOnly) return;
     const target = tree.resolver.resolve(rel, i.spec);
-    if (!target || !target.startsWith(LIB)) return;
+    if (!target) return;
+    if (!target.startsWith(LIB) && !APP_DIR_RE.test(target)) return;
     i.names.forEach((n) => {
       if (n.typeOnly || n.imported === '*') return;
       let component: string | undefined;

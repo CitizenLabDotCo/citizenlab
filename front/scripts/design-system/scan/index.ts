@@ -223,6 +223,7 @@ const runScan = (args: Args) => {
         ...(routesOfFile.get(u.file) ?? []),
       ]);
       const main =
+        lib.mainFile.get(component) ??
         own.find((f) => /\/components\/[^/]+\/index\.[jt]sx?$/.test(f)) ??
         own[0] ??
         '';
@@ -299,7 +300,7 @@ const runScan = (args: Args) => {
   const lines = [
     `ds:scan: ${scanned.length} files, ${findings.length} findings (${
       rawFindings.length - findings.length
-    } accepted), ${usages.length} library usages, ${
+    } accepted), ${usages.length} component usages, ${
       routeMap.routes.length
     } routes on ${pages.length} paths, ${
       routeMap.unmapped.length

@@ -1,7 +1,7 @@
 import path from 'path';
 
 import { isScannedSource, mapRoutes, SourceTree } from './routes';
-import { libraryUsages } from './usages';
+import { libraryIndex, libraryUsages, usagesInFile } from './usages';
 
 const ROOT = path.join(__dirname, '..', 'fixtures', 'routes');
 
@@ -113,6 +113,97 @@ describe('libraryUsages', () => {
       'export const f = (p: BoxProps): Box => p as any;',
     ].join('\n');
     expect(libraryUsages(ROOT, 'app/components/X.tsx', src)).toEqual([]);
+  });
+});
+
+describe('app component roots (components/UI, components/admin)', () => {
+  const sources: Record<string, string> = {
+    'app/component-library/index.tsx':
+      "import Error from './components/Error';\nexport { Error };",
+    'app/component-library/components/Error/index.tsx':
+      'const Error = () => null;\nexport default Error;',
+    'app/components/UI/Warning/index.tsx':
+      "import Icon from './Icon';\nconst Warning = () => <Icon />;\nexport default Warning;",
+    'app/components/UI/Warning/Icon.tsx':
+      'const Icon = () => null;\nexport default Icon;',
+    'app/components/UI/Error/index.tsx':
+      'const Error = () => null;\nexport default Error;',
+    'app/components/admin/Section/index.tsx':
+      'export const Section = () => null;\nexport const sectionProps = {};',
+    'app/components/UI/NoIndex/Thing.tsx':
+      'const Thing = () => null;\nexport default Thing;',
+    'app/components/UI/loose.tsx': 'export const Loose = () => null;',
+    'app/containers/Page.tsx': [
+      "import Warning from 'components/UI/Warning';",
+      "import UIError from 'components/UI/Error';",
+      "import { Error } from '@citizenlab/cl2-component-library';",
+      "import { Section, sectionProps } from 'components/admin/Section';",
+      "import Thing from 'components/UI/NoIndex/Thing';",
+      "import { Loose } from 'components/UI/loose';",
+      'export default () => (',
+      '  <Section {...sectionProps}>',
+      '    <Warning tone="info" />',
+      '    <UIError /><Error /><Thing /><Loose />',
+      '  </Section>',
+      ');',
+    ].join('\n'),
+  };
+  const tree = new SourceTree('/nonexistent', Object.keys(sources));
+  Object.entries(sources).forEach(([f, src]) => tree.setSource(f, src));
+  const lib = libraryIndex(tree);
+
+  it('counts one component per directory with an index file', () => {
+    expect([...lib.ownFiles.keys()].sort()).toEqual([
+      'Error',
+      'Section',
+      'UI/Error',
+      'Warning',
+    ]);
+    expect(lib.ownFiles.get('Warning')).toEqual([
+      'app/components/UI/Warning/Icon.tsx',
+      'app/components/UI/Warning/index.tsx',
+    ]);
+    expect(lib.mainFile.get('Warning')).toBe(
+      'app/components/UI/Warning/index.tsx'
+    );
+    expect(lib.componentOfFile('app/components/UI/NoIndex/Thing.tsx')).toBe(
+      undefined
+    );
+  });
+
+  it('records usages of app components, prefixing names the library has', () => {
+    expect(usagesInFile(tree, lib, 'app/containers/Page.tsx')).toEqual([
+      {
+        component: 'Warning',
+        file: 'app/containers/Page.tsx',
+        line: 1,
+        props: ['tone'],
+      },
+      {
+        component: 'UI/Error',
+        file: 'app/containers/Page.tsx',
+        line: 2,
+        props: [],
+      },
+      {
+        component: 'Error',
+        file: 'app/containers/Page.tsx',
+        line: 3,
+        props: [],
+      },
+      {
+        component: 'Section',
+        file: 'app/containers/Page.tsx',
+        line: 4,
+        props: [],
+      },
+    ]);
+  });
+
+  it('does not count a component using its own files', () => {
+    expect(
+      usagesInFile(tree, lib, 'app/components/UI/Warning/index.tsx')
+    ).toEqual([]);
   });
 });
 
