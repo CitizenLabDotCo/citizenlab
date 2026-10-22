@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Meta, StoryObj } from '@storybook/react';
 
 import { colors } from '../../utils/styleUtils';
@@ -22,13 +20,4 @@ export const Default: Story = {
     thickness: '3px',
     color: colors.grey700,
   },
-};
-
-export const Loading: Story = {
-  args: Default.args,
-  render: (args) => (
-    <div role="status" aria-label="Loading ideas">
-      <Spinner {...args} />
-    </div>
-  ),
 };
