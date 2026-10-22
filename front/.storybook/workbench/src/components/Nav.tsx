@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import type { Route } from '../lib/router';
 
@@ -75,6 +75,18 @@ const Nav = ({ current }: Props) => {
   const [query, setQuery] = useState('');
   // Narrow screens: the list folds into a menu under the top bar.
   const [open, setOpen] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  // Escape closes the menu and hands focus back to its button.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      setOpen(false);
+      menuButton.current?.focus();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [open]);
   const q = query.trim().toLowerCase();
   const entries = q
     ? NAV.filter((e) => `${e.label} ${e.hint}`.toLowerCase().includes(q))
@@ -96,6 +108,7 @@ const Nav = ({ current }: Props) => {
         <button
           type="button"
           className="wb-menu-button"
+          ref={menuButton}
           aria-expanded={open}
           aria-controls="wb-nav-body"
           onClick={() => setOpen((o) => !o)}

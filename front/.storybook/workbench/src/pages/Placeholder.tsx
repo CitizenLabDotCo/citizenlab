@@ -167,7 +167,7 @@ const Placeholder = ({ title, kind }: Props) => (
       <h1>{title}</h1>
       <p className="wb-lead">{COPY[kind].lead}</p>
     </header>
-    <section className="wb-empty" aria-label="Coming in this build">
+    <section className="wb-empty" aria-label="Not built yet">
       <svg
         className="wb-empty-art"
         viewBox="0 0 236 164"
@@ -179,7 +179,7 @@ const Placeholder = ({ title, kind }: Props) => (
         {PICTURES[kind]}
       </svg>
       <div className="wb-empty-text">
-        <span className="wb-badge wb-badge-soon">Coming in this build</span>
+        <span className="wb-badge wb-badge-soon">Not built yet</span>
         <h2>What this section will show</h2>
         <ul className="wb-checklist">
           {COPY[kind].items.map((i) => (

@@ -393,23 +393,36 @@ const PairsTable = ({
             </span>
           </div>
           <div className="wb-table-wrap">
-            <table className="wb-table wb-pairs-table" data-testid="wb-pairs">
-              <thead>
-                <tr>
-                  <th scope="col">Text on background</th>
-                  <th scope="col">Today</th>
-                  <th scope="col">Redesign</th>
-                  <th scope="col">Used in</th>
+            <table
+              role="table"
+              className="wb-table wb-pairs-table"
+              data-testid="wb-pairs"
+            >
+              <thead role="rowgroup">
+                <tr role="row">
+                  <th scope="col" role="columnheader">
+                    Text on background
+                  </th>
+                  <th scope="col" role="columnheader">
+                    Today
+                  </th>
+                  <th scope="col" role="columnheader">
+                    Redesign
+                  </th>
+                  <th scope="col" role="columnheader">
+                    Used in
+                  </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody role="rowgroup">
                 {shown.map((r) => (
                   <tr
+                    role="row"
                     key={`${r.text}|${r.background}`}
                     className={r.broken ? 'wb-pair-broken' : undefined}
                     data-testid="wb-pair-row"
                   >
-                    <th scope="row" className="wb-pair-names">
+                    <th scope="row" role="rowheader" className="wb-pair-names">
                       <TokenChip name={r.text} colour={live[mode][r.text]} />
                       <span className="wb-pair-on">on</span>
                       <TokenChip
@@ -418,7 +431,7 @@ const PairsTable = ({
                       />
                     </th>
                     {(['today', 'redesign'] as Mode[]).map((m) => (
-                      <td key={m} data-label={MODE_LABEL[m]}>
+                      <td role="cell" key={m} data-label={MODE_LABEL[m]}>
                         <Verdict
                           check={r.checks[m]}
                           text={live[m][r.text]}
@@ -427,6 +440,7 @@ const PairsTable = ({
                       </td>
                     ))}
                     <td
+                      role="cell"
                       className="wb-pair-used"
                       data-label="Used in"
                       title={r.components
@@ -584,20 +598,34 @@ const Foundations = ({
         </div>
       ) : (
         <div className="wb-table-wrap">
-          <table className="wb-table wb-tokens" data-testid="wb-tokens">
+          <table
+            role="table"
+            className="wb-table wb-tokens"
+            data-testid="wb-tokens"
+          >
             <caption className="wb-visually-hidden">
               {`${info.label} tokens`}
             </caption>
-            <thead>
-              <tr>
-                <th scope="col">Preview</th>
-                <th scope="col">Token</th>
-                <th scope="col">Value</th>
-                <th scope="col">Edit</th>
-                <th scope="col">Used</th>
+            <thead role="rowgroup">
+              <tr role="row">
+                <th scope="col" role="columnheader">
+                  Preview
+                </th>
+                <th scope="col" role="columnheader">
+                  Token
+                </th>
+                <th scope="col" role="columnheader">
+                  Value
+                </th>
+                <th scope="col" role="columnheader">
+                  Edit
+                </th>
+                <th scope="col" role="columnheader">
+                  Used
+                </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody role="rowgroup">
               {tokens.map((t) => (
                 <TokenRow
                   key={t.name}

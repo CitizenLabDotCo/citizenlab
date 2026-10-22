@@ -67,6 +67,9 @@ code {
 }
 
 .wb-main {
+  /* Contains absolutely placed children (visually hidden labels), so they
+     do not extend the document past the shell. */
+  position: relative;
   overflow-y: auto;
   padding: var(--gv-space-10) var(--gv-space-12) var(--gv-space-16);
 }
@@ -352,6 +355,9 @@ code {
   position: absolute;
   width: 1px;
   height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
@@ -964,6 +970,17 @@ a.wb-card:hover {
   box-shadow: var(--wb-shadow);
 }
 
+.wb-toolbar::before {
+  /* Paints the strip between the scroll edge and the stuck toolbar. */
+  content: '';
+  position: absolute;
+  right: -1px;
+  bottom: 100%;
+  left: -1px;
+  height: calc(var(--gv-space-3) + 1px);
+  background: var(--wb-bg);
+}
+
 .wb-toolbar-field {
   display: flex;
   gap: var(--gv-space-2);
@@ -1279,7 +1296,18 @@ a.wb-card:hover {
 }
 
 .wb-pv-space > .wb-pv-cut {
-  background: linear-gradient(90deg, var(--wb-accent) 70%, transparent);
+  display: flex;
+  align-items: center;
+  background: linear-gradient(90deg, var(--wb-accent) 75%, transparent);
+}
+
+.wb-pv-cut > span {
+  padding-left: var(--gv-space-2);
+  font-family: var(--wb-mono);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--gv-white);
 }
 
 .wb-compare .wb-pv-space {
@@ -1475,7 +1503,8 @@ tr:hover .wb-pv-motion > span {
   position: fixed;
   top: 0;
   right: 0;
-  z-index: 10;
+  /* Above the sticky nav bar of narrow screens (20). */
+  z-index: 30;
   width: min(480px, 100vw);
   height: 100%;
   overflow-y: auto;
@@ -1723,6 +1752,12 @@ tr:hover .wb-pv-motion > span {
   box-shadow: inset 3px 0 0 var(--gv-error);
 }
 
+.wb-pair-broken .wb-pass,
+.wb-pair-broken .wb-fail {
+  background: var(--wb-bg);
+  box-shadow: inset 0 0 0 1px currentColor;
+}
+
 .wb-broken-note {
   flex-basis: 100%;
   font-size: var(--gv-fs-xs);
@@ -1848,11 +1883,24 @@ tr:hover .wb-pv-motion > span {
     position: static;
   }
 
+  .wb-toolbar::before {
+    display: none;
+  }
+
   .wb-category-grid .wb-cp-space,
-  .wb-category-grid .wb-cp-radius,
-  .wb-category-grid .wb-cp-font {
+  .wb-category-grid .wb-cp-radius {
     flex: none;
     transform: scale(0.7);
+  }
+
+  .wb-category-grid .wb-cp-font {
+    flex: none;
+    transform: scale(0.55);
+  }
+
+  .wb-category-grid .wb-cp-text {
+    transform: scale(0.8);
+    transform-origin: left center;
   }
 
   .wb-stats {

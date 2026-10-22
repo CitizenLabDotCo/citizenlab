@@ -123,12 +123,17 @@ const Preview = ({
   }
   if (token.category === 'space') {
     const n = px(value);
+    // Past BAR_MAX the bar is cut; the label says how long it really is.
     return (
       <span className="wb-pv wb-pv-space">
-        <span
-          className={n > BAR_MAX ? 'wb-pv-cut' : undefined}
-          style={{ width: Math.min(n, BAR_MAX) }}
-        />
+        {n > 0 && (
+          <span
+            className={n > BAR_MAX ? 'wb-pv-cut' : undefined}
+            style={{ width: Math.min(n, BAR_MAX) }}
+          >
+            {n > BAR_MAX && <span>{value}</span>}
+          </span>
+        )}
       </span>
     );
   }
@@ -280,13 +285,14 @@ const TokenRow = ({
 
   return (
     <tr
+      role="row"
       className={override !== undefined ? 'wb-token-edited' : undefined}
       data-testid="wb-token-row"
       data-token={name}
     >
-      <td className="wb-token-preview" aria-hidden="true">
+      <td role="cell" className="wb-token-preview">
         {differs ? (
-          <span className="wb-compare">
+          <span className="wb-compare" aria-hidden="true">
             {(['today', 'redesign'] as Mode[]).map((m) => (
               <span
                 key={m}
@@ -302,10 +308,12 @@ const TokenRow = ({
             ))}
           </span>
         ) : (
-          <Preview token={token} value={value} all={live[mode]} />
+          <span aria-hidden="true">
+            <Preview token={token} value={value} all={live[mode]} />
+          </span>
         )}
       </td>
-      <th scope="row" className="wb-token-name">
+      <th scope="row" role="rowheader" className="wb-token-name">
         <code>{name}</code>
         <span className="wb-tags">
           {token.tier === 1 && <span className="wb-tag">scale</span>}
@@ -333,7 +341,7 @@ const TokenRow = ({
           </details>
         )}
       </th>
-      <td className="wb-token-values" data-label="Value">
+      <td role="cell" className="wb-token-values" data-label="Value">
         {differs ? (
           (['today', 'redesign'] as Mode[]).map((m) => (
             <div
@@ -362,7 +370,7 @@ const TokenRow = ({
           </div>
         )}
       </td>
-      <td data-label="Edit">
+      <td role="cell" data-label="Edit">
         <div className="wb-token-edit">
           <label className="wb-visually-hidden" htmlFor={inputId}>
             {`New value for ${name}`}
@@ -409,7 +417,7 @@ const TokenRow = ({
           </div>
         )}
       </td>
-      <td className="wb-token-usage" data-label="Used">
+      <td role="cell" className="wb-token-usage" data-label="Used">
         {!hasScan ? (
           <span className="wb-muted">no scan</span>
         ) : usage ? (
