@@ -97,11 +97,14 @@ describe('token resolution', () => {
         '--gv-a': 'var(--gv-missing, 4px)',
         '--gv-b': 'var(--gv-c)',
         '--gv-c': 'var(--gv-b)',
+        '--gv-d': 'var(--gv-b, #fff)',
       },
       redesign: {},
     });
     expect(r.today['--gv-a']).toBe('4px');
     expect(r.today['--gv-b']).toBe('');
+    // A defined but invalid target uses the fallback, as the browser does.
+    expect(r.today['--gv-d']).toBe('#fff');
   });
 
   it('turns color-mix with transparent into a translucent colour', () => {

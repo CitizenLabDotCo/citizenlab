@@ -61,6 +61,16 @@ describe('sourceChanges', () => {
     expect(changes[0].to).toBe('{primitive.color.grey-800}');
   });
 
+  it('aliases var() with a fallback, keeps anything longer raw', () => {
+    const to = (value: string) =>
+      sourceChanges({ '--gv-radius-2': value }, meta, tokensSource).changes[0]
+        ?.to;
+    expect(to('var(--gv-radius-3, 4px)')).toBe('{primitive.radius.3}');
+    expect(to('var(--gv-radius-3, 4px) var(--gv-radius-1)')).toBe(
+      'var(--gv-radius-3, 4px) var(--gv-radius-1)'
+    );
+  });
+
   it('lists tokens it cannot find', () => {
     expect(
       sourceChanges({ '--gv-nope': '1px' }, meta, tokensSource).unknown

@@ -36,11 +36,23 @@ const nodeAt = (source: unknown, path: string): Node | undefined => {
 const pointer = (keys: string[]) =>
   '/' + keys.map((k) => k.replace(/~/g, '~0').replace(/\//g, '~1')).join('/');
 
-// `var(--gv-x)` of a known token becomes the source alias `{path.of.x}`.
+// True when the `(` at index 3 of `s` closes at its last character.
+const wholeCall = (s: string) => {
+  let depth = 0;
+  for (let i = 3; i < s.length; i++) {
+    if (s[i] === '(') depth++;
+    if (s[i] === ')' && --depth === 0) return i === s.length - 1;
+  }
+  return false;
+};
+
+// `var(--gv-x)` of a known token becomes the source alias `{path.of.x}`. A
+// fallback, `var(--gv-x, 4px)`, is dropped: a known token is always defined.
 const toSourceValue = (value: string, byName: Map<string, TokenMeta>) => {
-  const ref = /^var\(\s*(--gv-[a-z0-9-]+)\s*\)$/.exec(value.trim());
-  const target = ref ? byName.get(ref[1]) : undefined;
-  return target?.path ? `{${target.path}}` : value.trim();
+  const v = value.trim();
+  const ref = /^var\(\s*(--gv-[a-z0-9-]+)\s*(,|\))/.exec(v);
+  const target = ref && wholeCall(v) ? byName.get(ref[1]) : undefined;
+  return target?.path ? `{${target.path}}` : v;
 };
 
 export const sourceChanges = (

@@ -93,6 +93,9 @@ describe('colour distance', () => {
   it('reads hex and rgb colours', () => {
     expect(parseColour('#fff')).toEqual([255, 255, 255, 1]);
     expect(parseColour('#00000080')?.[3]).toBeCloseTo(0.5, 2);
+    expect(parseColour('rgb(12.5 0 0)')).toEqual([12.5, 0, 0, 1]);
+    expect(parseColour('rgb(100% 0% 50% / 50%)')).toEqual([255, 0, 127.5, 0.5]);
+    expect(parseColour('rgb(300 0 0)')).toBeNull();
     expect(parseColour('rgb(1, 2, 3)')).toEqual([1, 2, 3, 1]);
     expect(parseColour('rgba(1,2,3,0.5)')).toEqual([1, 2, 3, 0.5]);
     expect(parseColour('color-mix(in srgb, red, blue)')).toBeNull();

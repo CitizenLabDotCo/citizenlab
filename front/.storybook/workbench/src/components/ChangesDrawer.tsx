@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import tokensSource from '@ds/tokens/tokens.source.json';
 import type { Mode, TokenName } from '@ds/tokens/tokens';
@@ -47,6 +47,8 @@ const ChangesDrawer = ({ meta, mode, overrides, onReset, onClose }: Props) => {
     [overrides, meta]
   );
   const patch = useMemo(() => sourcePatch(diff.changes), [diff]);
+  // A copied text goes stale as soon as the edits change.
+  useEffect(() => setCopied(undefined), [patch]);
 
   const copy = async (label: string, text: string) => {
     setCopied({ label, text, ok: await copyText(text) });
@@ -130,7 +132,7 @@ const ChangesDrawer = ({ meta, mode, overrides, onReset, onClose }: Props) => {
                   value={copied.text}
                   rows={8}
                   onFocus={(e) => e.currentTarget.select()}
-                  ref={(el) => el?.select()}
+                  autoFocus
                 />
               </div>
             ))}

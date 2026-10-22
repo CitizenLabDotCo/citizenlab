@@ -76,7 +76,35 @@ type Props = {
 };
 
 // The scan once per page load, and its indexes once per scan.
-const useScanIndexes = (meta: TokenMeta[]) => {
+type Indexes = {
+  loaded: boolean;
+  hasScan: boolean;
+  usage: Map<string, TokenUsage>;
+  pairs: PairUse[];
+};
+const NO_SCAN: Omit<Indexes, 'loaded'> = {
+  hasScan: false,
+  usage: new Map(),
+  pairs: [],
+};
+
+// Built once per scan and kept across page visits; pairs only when a page
+// shows them (the Colour page).
+const built = new WeakMap<
+  ScanOutput,
+  { meta: TokenMeta[]; usage: Map<string, TokenUsage>; pairs?: PairUse[] }
+>();
+const indexesOf = (scan: ScanOutput, meta: TokenMeta[], withPairs: boolean) => {
+  let entry = built.get(scan);
+  if (!entry || entry.meta !== meta) {
+    entry = { meta, usage: buildUsage(scan, meta) };
+    built.set(scan, entry);
+  }
+  if (withPairs && !entry.pairs) entry.pairs = buildPairs(scan, meta);
+  return { usage: entry.usage, pairs: entry.pairs ?? [] };
+};
+
+const useScanIndexes = (meta: TokenMeta[], withPairs: boolean): Indexes => {
   const [scan, setScan] = useState<ScanOutput | undefined>();
   useEffect(() => {
     let live = true;
@@ -87,20 +115,10 @@ const useScanIndexes = (meta: TokenMeta[]) => {
   }, []);
   return useMemo(() => {
     if (!scan || scan.findings.length === 0) {
-      return {
-        loaded: !!scan,
-        hasScan: false,
-        usage: new Map<string, TokenUsage>(),
-        pairs: [] as PairUse[],
-      };
+      return { ...NO_SCAN, loaded: !!scan };
     }
-    return {
-      loaded: true,
-      hasScan: true,
-      usage: buildUsage(scan, meta),
-      pairs: buildPairs(scan, meta),
-    };
-  }, [scan, meta]);
+    return { loaded: true, hasScan: true, ...indexesOf(scan, meta, withPairs) };
+  }, [scan, meta, withPairs]);
 };
 
 const Index = ({ meta }: { meta: TokenMeta[] }) => (
@@ -200,7 +218,8 @@ const PairsTable = ({
         which element sits on which, so some pairs never meet on screen. Ratios
         follow WCAG 2.2: AA needs 4.5 for normal text and 3 for large text
         (24px, or 18.7px bold). Checked against both modes
-        {edited ? ', with your edits applied' : ''}.
+        {edited ? ', with your edits applied' : ''}. Platform colours use the
+        default pink (#ef0071), not the city picked in the toolbar.
       </p>
       {!loaded ? (
         <p className="wb-muted">Loading the scan...</p>
@@ -297,7 +316,7 @@ const Foundations = ({
   setOverride,
   reset,
 }: Props) => {
-  const indexes = useScanIndexes(meta);
+  const indexes = useScanIndexes(meta, category === 'color');
   const [drawer, setDrawer] = useState(false);
   const live = useMemo(() => resolveTokens(DEFS, overrides), [overrides]);
   const tokens = useMemo(
@@ -399,7 +418,7 @@ const Foundations = ({
                   meta={meta}
                   mode={mode}
                   override={overrides[t.name as TokenName]}
-                  live={live[mode][t.name] ?? t.values[mode]}
+                  live={live[mode][t.name] || t.values[mode]}
                   usage={indexes.usage.get(t.name)}
                   hasScan={indexes.hasScan}
                   scaleId={scaleId}

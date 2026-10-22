@@ -1,10 +1,49 @@
-import { CSSProperties, memo, useEffect, useState } from 'react';
+import { CSSProperties, memo, useEffect, useRef, useState } from 'react';
 
 import type { Mode, TokenName } from '@ds/tokens/tokens';
 
 import type { TokenMeta } from '../lib/data';
 import { parseColour, snap } from '../lib/overrides';
 import type { TokenUsage } from '../lib/usage';
+
+// React fires onChange on every tick of a drag. Only the native `change`
+// event (picker closed) commits; ticks just preview in the text field.
+const ColourPicker = ({
+  label,
+  value,
+  onPreview,
+  onCommit,
+}: {
+  label: string;
+  value: string;
+  onPreview: (v: string) => void;
+  onCommit: (v: string) => void;
+}) => {
+  const ref = useRef<HTMLInputElement>(null);
+  const commitRef = useRef(onCommit);
+  commitRef.current = onCommit;
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const done = () => commitRef.current(el.value);
+    el.addEventListener('change', done);
+    return () => el.removeEventListener('change', done);
+  }, []);
+  const [picked, setPicked] = useState(value);
+  useEffect(() => setPicked(value), [value]);
+  return (
+    <input
+      ref={ref}
+      type="color"
+      aria-label={label}
+      value={picked}
+      onChange={(e) => {
+        setPicked(e.target.value);
+        onPreview(e.target.value);
+      }}
+    />
+  );
+};
 
 export const MODE_LABEL: Record<Mode, string> = {
   today: 'Today',
@@ -204,11 +243,11 @@ const TokenRow = ({
             }}
           />
           {hex && (
-            <input
-              type="color"
-              aria-label={`Pick a colour for ${name}`}
+            <ColourPicker
+              label={`Pick a colour for ${name}`}
               value={hex}
-              onChange={(e) => commit(e.target.value)}
+              onPreview={setDraft}
+              onCommit={commit}
             />
           )}
           {override !== undefined && (
@@ -239,7 +278,7 @@ const TokenRow = ({
           <>
             <strong>{usage.count}</strong> uses
             <div className="wb-muted">
-              {usage.components} components, {usage.routes} pages
+              {usage.components} places, {usage.routes} pages
             </div>
           </>
         ) : (

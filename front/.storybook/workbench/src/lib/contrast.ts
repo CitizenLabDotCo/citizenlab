@@ -93,7 +93,7 @@ const closing = (s: string, open: number) => {
 };
 
 // Replaces every var() with its value in `defs` (or its fallback when the
-// token is not defined). A cycle or a missing token without fallback gives
+// token is not defined or resolves to nothing). A cycle or a missing token without fallback gives
 // an empty string, as the browser's "invalid at computed time".
 const substitute = (
   value: string,
@@ -112,11 +112,13 @@ const substitute = (
     const comma = inner.indexOf(',');
     const name = (comma === -1 ? inner : inner.slice(0, comma)).trim();
     const fallback = comma === -1 ? undefined : inner.slice(comma + 1).trim();
-    if (name in defs && !seen.includes(name)) {
-      out += substitute(defs[name], defs, [...seen, name]);
-    } else if (fallback !== undefined) {
-      out += substitute(fallback, defs, seen);
-    }
+    const target =
+      name in defs && !seen.includes(name)
+        ? substitute(defs[name], defs, [...seen, name]).trim()
+        : '';
+    // An undefined or invalid (empty) target falls back, as in the browser.
+    if (target !== '') out += target;
+    else if (fallback !== undefined) out += substitute(fallback, defs, seen);
     i = end + 1;
   }
 };

@@ -36,8 +36,12 @@ type Lab = [number, number, number];
 export const SNAP_DELTA_E = 6;
 
 const HEX = /^#([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i;
-const RGB =
-  /^rgba?\(\s*(\d{1,3})[\s,]+(\d{1,3})[\s,]+(\d{1,3})(?:[\s,/]+([\d.]+)(%?))?\s*\)$/i;
+// Channels may be decimal or percent: rgb(12.5 0 0), rgb(50% 0% 0%).
+const CH = String.raw`(\d*\.?\d+)(%?)`;
+const RGB = new RegExp(
+  String.raw`^rgba?\(\s*${CH}[\s,]+${CH}[\s,]+${CH}(?:[\s,/]+([\d.]+)(%?))?\s*\)$`,
+  'i'
+);
 
 export const parseColour = (input: string): Rgba | null => {
   const value = input.trim();
@@ -50,10 +54,12 @@ export const parseColour = (input: string): Rgba | null => {
   }
   const rgb = RGB.exec(value);
   if (rgb) {
-    const [r, g, b] = [rgb[1], rgb[2], rgb[3]].map(Number);
+    const [r, g, b] = [1, 3, 5].map((i) =>
+      rgb[i + 1] === '%' ? (Number(rgb[i]) * 255) / 100 : Number(rgb[i])
+    );
     if (r > 255 || g > 255 || b > 255) return null;
-    let a = rgb[4] === undefined ? 1 : Number(rgb[4]);
-    if (rgb[5] === '%') a /= 100;
+    let a = rgb[7] === undefined ? 1 : Number(rgb[7]);
+    if (rgb[8] === '%') a /= 100;
     if (!(a >= 0 && a <= 1)) return null;
     return [r, g, b, a];
   }
