@@ -1,6 +1,7 @@
 import React, { ReactNode, useState } from 'react';
 
 import { Box, bo, colors } from '@citizenlab/cl2-component-library';
+import ModeScope from 'design-system/ModeScope';
 
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
@@ -134,48 +135,50 @@ const ProjectWorkspace = ({
   );
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      gap={PANEL_GAP}
-      p={PANEL_GAP}
-      height="100vh"
-      overflow="hidden"
-      background={colors.background}
-    >
-      <FeedbackNotice />
-      <WorkspaceHeader
-        project={project}
-        phase={phase}
-        draftLabel={draft?.label}
-        draftParentLabel={draft?.parentLabel}
-        saveLabel={draft?.saveLabel}
-        activeView={activeView}
-        section={section}
-        openDropdown={openDropdown}
-        onOpenDropdown={showDropdown}
-      />
-
+    <ModeScope>
       <Box
         display="flex"
+        flexDirection="column"
         gap={PANEL_GAP}
-        flexGrow={1}
-        minHeight="0"
+        p={PANEL_GAP}
+        height="100vh"
         overflow="hidden"
+        background={colors.background}
       >
-        {inPhase ? phaseSlot : setupSlot}
+        <FeedbackNotice />
+        <WorkspaceHeader
+          project={project}
+          phase={phase}
+          draftLabel={draft?.label}
+          draftParentLabel={draft?.parentLabel}
+          saveLabel={draft?.saveLabel}
+          activeView={activeView}
+          section={section}
+          openDropdown={openDropdown}
+          onOpenDropdown={showDropdown}
+        />
 
-        {phase && activeView !== 'build' ? (
-          <ViewContent project={project} phase={phase} view={activeView}>
-            {mainSlot}
-          </ViewContent>
-        ) : (
-          mainSlot
-        )}
+        <Box
+          display="flex"
+          gap={PANEL_GAP}
+          flexGrow={1}
+          minHeight="0"
+          overflow="hidden"
+        >
+          {inPhase ? phaseSlot : setupSlot}
 
-        {!inPhase && timelineSlot}
+          {phase && activeView !== 'build' ? (
+            <ViewContent project={project} phase={phase} view={activeView}>
+              {mainSlot}
+            </ViewContent>
+          ) : (
+            mainSlot
+          )}
+
+          {!inPhase && timelineSlot}
+        </Box>
       </Box>
-    </Box>
+    </ModeScope>
   );
 };
 
