@@ -159,12 +159,12 @@ export const Default: Story = {
 
 export const Hover: Story = {
   args: Default.args,
-  parameters: { pseudo: { hover: true } },
+  parameters: { pseudo: { hover: ['button'] } },
 };
 
 export const Focus: Story = {
   args: Default.args,
-  parameters: { pseudo: { focusVisible: true, focus: true } },
+  parameters: { pseudo: { focusVisible: ['button'] } },
 };
 
 export const Active: Story = {
@@ -191,9 +191,10 @@ export const LongContent: Story = {
 };
 
 export const RTL: Story = {
+  globals: { lang: 'ar' },
   args: { ...Default.args, icon: 'info-outline', children: 'حفظ التغييرات' },
   render: (args) => (
-    <div dir="rtl">
+    <div>
       <Button {...args} />
     </div>
   ),
