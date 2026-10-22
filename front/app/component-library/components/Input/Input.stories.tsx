@@ -83,7 +83,7 @@ export const Hover: Story = {
 
 export const Focus: Story = {
   args: Default.args,
-  parameters: { pseudo: { focusVisible: ['input'] } },
+  parameters: { pseudo: { focus: ['input'], focusVisible: ['input'] } },
 };
 
 export const Disabled: Story = {
