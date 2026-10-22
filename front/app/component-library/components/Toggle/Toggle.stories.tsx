@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Meta, StoryObj } from '@storybook/react';
+import { userEvent } from 'storybook/test';
 
 import { colors } from '../../utils/styleUtils';
 
@@ -67,12 +68,16 @@ export const WithLabelTextColor: Story = {
 
 export const Hover: Story = {
   args: WithLabel.args,
-  parameters: { pseudo: { hover: ['input[type=checkbox]'] } },
+  parameters: { pseudo: { hover: ['i'] } },
 };
 
 export const Focus: Story = {
   args: WithLabel.args,
-  parameters: { pseudo: { focusVisible: ['input[type=checkbox]'] } },
+  // The ring is keyed on a focus-visible class on the hidden checkbox, which
+  // the pseudo-states addon does not set, so focus it with the keyboard.
+  play: async () => {
+    await userEvent.tab();
+  },
 };
 
 export const LongContent: Story = {
