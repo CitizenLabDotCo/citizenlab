@@ -3,7 +3,9 @@ import { useEffect, useMemo, useState } from 'react';
 import tokensCss from '@ds/tokens/tokens.css?raw';
 import type { Mode, TokenName } from '@ds/tokens/tokens';
 
+import CategoryPreview from '../components/CategoryPreview';
 import ChangesDrawer from '../components/ChangesDrawer';
+import Icon from '../components/Icon';
 import TokenRow, { MODE_LABEL } from '../components/TokenRow';
 import {
   checkPair,
@@ -21,7 +23,7 @@ import {
   TokenUsage,
 } from '../lib/usage';
 
-type Category = { id: string; label: string; intro: string };
+type Category = { id: string; label: string; intro: string; blurb: string };
 
 export const CATEGORIES: Category[] = [
   {
@@ -29,35 +31,56 @@ export const CATEGORIES: Category[] = [
     label: 'Colour',
     intro:
       'Every colour token. Below the list, the text and background pairs that components use, with their contrast.',
+    blurb: 'Palette, text, surfaces and states',
   },
   {
     id: 'space',
     label: 'Space',
     intro: 'Padding, gaps and widths. The scale steps are multiples of 4px.',
+    blurb: 'Padding, gaps and widths on a 4px grid',
   },
   {
     id: 'radius',
     label: 'Radius',
     intro: 'Corner rounding of controls, panels and pills.',
+    blurb: 'Corner rounding of controls and panels',
   },
   {
     id: 'font',
     label: 'Font',
     intro: 'Font families and the font size ladder.',
+    blurb: 'Families and the font size ladder',
   },
   {
     id: 'text',
     label: 'Text styles',
     intro: 'Size, line height, weight and letter spacing of each text role.',
+    blurb: 'Size, leading and weight per role',
   },
-  { id: 'shadow', label: 'Shadow', intro: 'Elevation of cards and menus.' },
+  {
+    id: 'shadow',
+    label: 'Shadow',
+    intro: 'Elevation of cards and menus.',
+    blurb: 'Elevation of cards and menus',
+  },
   {
     id: 'focus',
     label: 'Focus',
     intro: 'The focus ring that keyboard users follow.',
+    blurb: 'The ring keyboard users follow',
   },
-  { id: 'motion', label: 'Motion', intro: 'Durations of transitions.' },
-  { id: 'z', label: 'Layers', intro: 'Stacking order (z-index).' },
+  {
+    id: 'motion',
+    label: 'Motion',
+    intro: 'Durations of transitions.',
+    blurb: 'Durations of transitions',
+  },
+  {
+    id: 'z',
+    label: 'Layers',
+    intro: 'Stacking order (z-index).',
+    blurb: 'Stacking order of layers',
+  },
 ];
 
 // The token CSS, parsed once: raw definitions per mode, and their values
@@ -121,25 +144,103 @@ const useScanIndexes = (meta: TokenMeta[], withPairs: boolean): Indexes => {
   }, [scan, meta, withPairs]);
 };
 
-const Index = ({ meta }: { meta: TokenMeta[] }) => (
-  <article className="wb-page">
-    <h1>Foundations</h1>
-    <p>
-      The design tokens, one page per kind. Each page lists the tokens with
-      their value today and in the redesign, the old names the code still uses,
-      and how often the code reads them. Edit a value to try it out: the change
-      shows on every Foundations page and in the canvas, and you can share it as
-      a link.
-    </p>
-    <ul className="wb-category-list" data-testid="wb-categories">
+const countOf = (meta: TokenMeta[], id: string) =>
+  meta.filter((t) => t.category === id).length;
+
+const plural = (n: number, one: string, many: string) =>
+  `${n} ${n === 1 ? one : many}`;
+
+// Today and Redesign as a two-button switch.
+const ModeSwitch = ({
+  mode,
+  onMode,
+}: {
+  mode: Mode;
+  onMode: (mode: Mode) => void;
+}) => (
+  <div
+    className="wb-segmented"
+    role="group"
+    aria-label="Mode"
+    data-testid="wb-foundations-mode"
+  >
+    {(['today', 'redesign'] as Mode[]).map((m) => (
+      <button
+        key={m}
+        type="button"
+        aria-pressed={m === mode}
+        onClick={() => onMode(m)}
+      >
+        {MODE_LABEL[m]}
+      </button>
+    ))}
+  </div>
+);
+
+const Index = ({
+  meta,
+  values,
+  mode,
+  onMode,
+  edits,
+}: {
+  meta: TokenMeta[];
+  values: Record<string, string>;
+  mode: Mode;
+  onMode: (mode: Mode) => void;
+  edits: number;
+}) => (
+  <article className="wb-page wb-page-wide">
+    <header className="wb-page-head wb-page-head-row">
+      <div>
+        <h1>Foundations</h1>
+        <p className="wb-lead">
+          The design tokens, one page per kind, with their value today and in
+          the redesign. Edit a value to try it: the change shows on every page
+          and in the canvas, and you can share it as a link.
+        </p>
+      </div>
+      <div className="wb-head-tools">
+        <ModeSwitch mode={mode} onMode={onMode} />
+        {edits > 0 && (
+          <span className="wb-badge wb-badge-accent">
+            {plural(edits, 'edit', 'edits')} applied
+          </span>
+        )}
+      </div>
+    </header>
+    <ul className="wb-card-grid wb-category-grid" data-testid="wb-categories">
       {CATEGORIES.map((c) => {
-        const n = meta.filter((t) => t.category === c.id).length;
+        const n = countOf(meta, c.id);
+        const body = (
+          <>
+            <CategoryPreview id={c.id} values={values} />
+            <span className="wb-category-body">
+              <span className="wb-card-title">
+                {c.label}
+                <span className="wb-count">{n}</span>
+              </span>
+              <span className="wb-card-text">
+                {n === 0 ? 'No tokens yet' : c.blurb}
+              </span>
+            </span>
+          </>
+        );
         return (
           <li key={c.id}>
-            <a href={`#/foundations/${c.id}`}>{c.label}</a>{' '}
-            <span className="wb-muted">
-              {n} {n === 1 ? 'token' : 'tokens'}. {c.intro}
-            </span>
+            {n === 0 ? (
+              <div className="wb-card wb-category-card wb-card-empty">
+                {body}
+              </div>
+            ) : (
+              <a
+                className="wb-card wb-category-card"
+                href={`#/foundations/${c.id}`}
+                aria-label={`${c.label}, ${plural(n, 'token', 'tokens')}`}
+              >
+                {body}
+              </a>
+            )}
           </li>
         );
       })}
@@ -147,27 +248,59 @@ const Index = ({ meta }: { meta: TokenMeta[] }) => (
   </article>
 );
 
-const Verdict = ({ check }: { check: PairCheck }) => {
-  if (Number.isNaN(check.ratio)) {
-    return <span className="wb-muted">cannot tell</span>;
-  }
-  return (
-    <span className="wb-verdict">
-      <strong>{check.ratio.toFixed(2)}</strong>
-      <span className={check.aa ? 'wb-pass' : 'wb-fail'}>
-        {check.aa ? 'AA' : 'fails AA'}
-      </span>
-      <span className={check.aaLarge ? 'wb-pass' : 'wb-fail'}>
-        {check.aaLarge ? 'AA large' : 'fails AA large'}
-      </span>
-      {check.broken && (
-        <span className="wb-broken-note">
-          Your edit breaks this pair (was {check.baseRatio.toFixed(2)})
-        </span>
-      )}
+const Badge = ({ ok, label }: { ok: boolean; label: string }) => (
+  <span className={ok ? 'wb-pass' : 'wb-fail'}>
+    <Icon name={ok ? 'check' : 'cross'} size={12} />
+    {label}
+    <span className="wb-visually-hidden">{ok ? ' passes' : ' fails'}</span>
+  </span>
+);
+
+const Verdict = ({
+  check,
+  text,
+  background,
+}: {
+  check: PairCheck;
+  text: string;
+  background: string;
+}) => (
+  <div className="wb-verdict">
+    <span
+      className="wb-pair-sample"
+      style={{ color: text, background }}
+      aria-hidden="true"
+    >
+      Aa
     </span>
-  );
-};
+    {Number.isNaN(check.ratio) ? (
+      <span className="wb-muted">cannot tell</span>
+    ) : (
+      <span className="wb-verdict-body">
+        <span className="wb-ratio">
+          {check.ratio.toFixed(2)}
+          <span className="wb-ratio-unit">:1</span>
+        </span>
+        <span className="wb-badges">
+          <Badge ok={check.aa} label="AA" />
+          <Badge ok={check.aaLarge} label="AA large" />
+        </span>
+      </span>
+    )}
+    {check.broken && (
+      <span className="wb-broken-note">
+        Your edit breaks this pair (was {check.baseRatio.toFixed(2)})
+      </span>
+    )}
+  </div>
+);
+
+const TokenChip = ({ name, colour }: { name: string; colour: string }) => (
+  <span className="wb-token-chip">
+    <span className="wb-dot" style={{ background: colour }} />
+    <code>{name}</code>
+  </span>
+);
 
 type PairRow = PairUse & {
   checks: Record<Mode, PairCheck>;
@@ -207,12 +340,13 @@ const PairsTable = ({
   }, [pairs, live]);
   const shown = onlyFailing ? rows.filter((r) => r.failing) : rows;
   const broken = rows.filter((r) => r.broken).length;
+  const failing = rows.filter((r) => r.failing).length;
   const edited = Object.keys(overrides).length > 0;
 
   return (
     <section className="wb-pairs" aria-labelledby="wb-pairs-title">
       <h2 id="wb-pairs-title">Text on background: contrast</h2>
-      <p className="wb-muted">
+      <p className="wb-section-note">
         Pairs inferred from usage: for each component, every text colour it
         reads against every background colour it reads. The scan does not see
         which element sits on which, so some pairs never meet on screen. Ratios
@@ -231,7 +365,7 @@ const PairsTable = ({
       ) : (
         <>
           <div className="wb-pairs-bar">
-            <label>
+            <label className="wb-check">
               <input
                 type="checkbox"
                 checked={onlyFailing}
@@ -239,18 +373,30 @@ const PairsTable = ({
               />{' '}
               Only pairs that fail AA in a mode
             </label>
-            <span className="wb-muted">
-              {shown.length} of {rows.length} pairs
-              {broken > 0 ? `, ${broken} broken by your edits` : ''}
+            <span className="wb-pairs-stats">
+              <span className="wb-stat-chip">
+                <strong>{rows.length}</strong> pairs
+              </span>
+              <span className="wb-stat-chip wb-stat-chip-fail">
+                <strong>{failing}</strong> fail AA in a mode
+              </span>
+              {broken > 0 && (
+                <span className="wb-stat-chip wb-stat-chip-fail">
+                  <strong>{broken}</strong> broken by your edits
+                </span>
+              )}
+              {onlyFailing && (
+                <span className="wb-muted">
+                  showing {shown.length} of {rows.length}
+                </span>
+              )}
             </span>
           </div>
           <div className="wb-table-wrap">
-            <table className="wb-table" data-testid="wb-pairs">
+            <table className="wb-table wb-pairs-table" data-testid="wb-pairs">
               <thead>
                 <tr>
-                  <th scope="col">Sample ({MODE_LABEL[mode]})</th>
-                  <th scope="col">Text</th>
-                  <th scope="col">Background</th>
+                  <th scope="col">Text on background</th>
                   <th scope="col">Today</th>
                   <th scope="col">Redesign</th>
                   <th scope="col">Used in</th>
@@ -263,37 +409,32 @@ const PairsTable = ({
                     className={r.broken ? 'wb-pair-broken' : undefined}
                     data-testid="wb-pair-row"
                   >
-                    <td>
-                      <span
-                        className="wb-pair-sample"
-                        style={{
-                          color: live[mode][r.text],
-                          background: live[mode][r.background],
-                        }}
-                      >
-                        Aa
-                      </span>
-                    </td>
-                    <td>
-                      <code>{r.text}</code>
-                    </td>
-                    <td>
-                      <code>{r.background}</code>
-                    </td>
-                    <td>
-                      <Verdict check={r.checks.today} />
-                    </td>
-                    <td>
-                      <Verdict check={r.checks.redesign} />
-                    </td>
+                    <th scope="row" className="wb-pair-names">
+                      <TokenChip name={r.text} colour={live[mode][r.text]} />
+                      <span className="wb-pair-on">on</span>
+                      <TokenChip
+                        name={r.background}
+                        colour={live[mode][r.background]}
+                      />
+                    </th>
+                    {(['today', 'redesign'] as Mode[]).map((m) => (
+                      <td key={m} data-label={MODE_LABEL[m]}>
+                        <Verdict
+                          check={r.checks[m]}
+                          text={live[m][r.text]}
+                          background={live[m][r.background]}
+                        />
+                      </td>
+                    ))}
                     <td
+                      className="wb-pair-used"
+                      data-label="Used in"
                       title={r.components
                         .slice(0, 20)
                         .map(componentLabel)
                         .join('\n')}
                     >
-                      {r.components.length}{' '}
-                      {r.components.length === 1 ? 'component' : 'components'}
+                      {plural(r.components.length, 'component', 'components')}
                     </td>
                   </tr>
                 ))}
@@ -330,38 +471,76 @@ const Foundations = ({
     [tokens, mode]
   );
 
-  if (!category) return <Index meta={meta} />;
+  const count = Object.keys(overrides).length;
+  if (!category) {
+    return (
+      <Index
+        meta={meta}
+        values={live[mode]}
+        mode={mode}
+        onMode={onMode}
+        edits={count}
+      />
+    );
+  }
   const info = CATEGORIES.find((c) => c.id === category);
   if (!info) {
     return (
       <article className="wb-page">
-        <h1>{`Foundations: ${category}`}</h1>
-        <p>
-          There is no token category of that name.{' '}
-          <a href="#/foundations">See all categories</a>.
-        </p>
+        <header className="wb-page-head">
+          <h1>{`Foundations: ${category}`}</h1>
+          <p className="wb-lead">There is no token category of that name.</p>
+        </header>
+        <a className="wb-button" href="#/foundations">
+          See all categories
+        </a>
       </article>
     );
   }
-  const count = Object.keys(overrides).length;
   const scaleId = scale.length ? `wb-scale-${category}` : undefined;
+  const differ = tokens.filter(
+    (t) => t.values.today !== t.values.redesign
+  ).length;
 
   return (
     <article className="wb-page wb-page-wide">
-      <h1>{info.label}</h1>
-      <p className="wb-muted">{info.intro}</p>
+      <nav className="wb-crumbs" aria-label="Breadcrumb">
+        <a href="#/foundations">Foundations</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{info.label}</span>
+      </nav>
+      <header className="wb-page-head wb-page-head-row">
+        <div>
+          <h1>{info.label}</h1>
+          <p className="wb-lead">{info.intro}</p>
+        </div>
+        <CategoryPreview id={info.id} values={live[mode]} />
+      </header>
+      <ul className="wb-chips" aria-label="Categories">
+        {CATEGORIES.filter((c) => countOf(meta, c.id) > 0).map((c) => (
+          <li key={c.id}>
+            <a
+              href={`#/foundations/${c.id}`}
+              aria-current={c.id === category ? 'page' : undefined}
+            >
+              {c.label}
+            </a>
+          </li>
+        ))}
+      </ul>
       <div className="wb-toolbar" role="toolbar" aria-label="Foundations">
-        <label className="wb-toolbar-field">
-          <span>Mode</span>
-          <select
-            data-testid="wb-foundations-mode"
-            value={mode}
-            onChange={(e) => onMode(e.target.value as Mode)}
-          >
-            <option value="today">Today</option>
-            <option value="redesign">Redesign</option>
-          </select>
-        </label>
+        <ModeSwitch mode={mode} onMode={onMode} />
+        <span className="wb-toolbar-meta">
+          {plural(tokens.length, 'token', 'tokens')}
+          {differ > 0 && (
+            <>
+              {' '}
+              <span aria-hidden="true">&middot;</span>{' '}
+              <span className="wb-diff-dot" aria-hidden="true" />
+              {differ} {differ === 1 ? 'differs' : 'differ'} in the redesign
+            </>
+          )}
+        </span>
         <button
           type="button"
           className="wb-changes-toggle"
@@ -369,7 +548,11 @@ const Foundations = ({
           aria-expanded={drawer}
           onClick={() => setDrawer((d) => !d)}
         >
-          Changes ({count})
+          <Icon name="edit" size={16} />
+          Changes
+          <span className={count > 0 ? 'wb-count wb-count-on' : 'wb-count'}>
+            {count}
+          </span>
         </button>
       </div>
       {drawer && (
@@ -389,23 +572,27 @@ const Foundations = ({
         </datalist>
       )}
       {tokens.length === 0 ? (
-        <p data-testid="wb-tokens-empty">No tokens in this category yet.</p>
+        <div className="wb-empty wb-empty-small" data-testid="wb-tokens-empty">
+          <CategoryPreview id={info.id} values={live[mode]} />
+          <div className="wb-empty-text">
+            <h2>No tokens in this category yet</h2>
+            <p className="wb-muted">
+              When the token source gains {info.label.toLowerCase()} tokens,
+              they show up here.
+            </p>
+          </div>
+        </div>
       ) : (
         <div className="wb-table-wrap">
-          <table className="wb-table" data-testid="wb-tokens">
+          <table className="wb-table wb-tokens" data-testid="wb-tokens">
             <caption className="wb-visually-hidden">
               {`${info.label} tokens`}
             </caption>
             <thead>
               <tr>
-                <th scope="col">
-                  <span className="wb-visually-hidden">Preview</span>
-                </th>
+                <th scope="col">Preview</th>
                 <th scope="col">Token</th>
-                <th scope="col">{MODE_LABEL[mode]}</th>
-                <th scope="col">
-                  {MODE_LABEL[mode === 'today' ? 'redesign' : 'today']}
-                </th>
+                <th scope="col">Value</th>
                 <th scope="col">Edit</th>
                 <th scope="col">Used</th>
               </tr>
@@ -418,7 +605,7 @@ const Foundations = ({
                   meta={meta}
                   mode={mode}
                   override={overrides[t.name as TokenName]}
-                  live={live[mode][t.name] || t.values[mode]}
+                  live={live}
                   usage={indexes.usage.get(t.name)}
                   hasScan={indexes.hasScan}
                   scaleId={scaleId}

@@ -50,15 +50,17 @@ export const MODE_LABEL: Record<Mode, string> = {
   redesign: 'Redesign',
 };
 
+type Live = Record<Mode, Record<string, string>>;
+
 type Props = {
   token: TokenMeta;
   meta: TokenMeta[];
   mode: Mode;
   // The session's override of this token, if any.
   override?: string;
-  // The token's value in `mode` with every override applied, var() chains
-  // followed: what the preview shows.
-  live: string;
+  // Every token's value per mode with the overrides applied, var() chains
+  // followed: what the previews show.
+  live: Live;
   usage?: TokenUsage;
   // False when the scan is not loaded, so usage reads "no scan".
   hasScan: boolean;
@@ -67,52 +69,132 @@ type Props = {
   onReset: (name: TokenName) => void;
 };
 
-const SAMPLE = 'Aa';
+// Widest a space bar is drawn; longer values are cut with a fade.
+const BAR_MAX = 200;
 
-// A small picture of the token, drawn with its live value.
-const Preview = ({ token, live }: { token: TokenMeta; live: string }) => {
+const px = (value: string) => {
+  const n = parseFloat(value);
+  return Number.isFinite(n) ? n : 0;
+};
+
+// The text role a type token belongs to (--gv-type-h1-lh: h1).
+const roleOf = (name: string) => /^--gv-type-([a-z0-9]+)-/.exec(name)?.[1];
+
+// A picture of the token, drawn with one mode's live value. `all` holds the
+// other tokens of that mode, for previews that need a neighbour (the size
+// of a text role, the colour of the focus ring).
+const Preview = ({
+  token,
+  value,
+  all,
+}: {
+  token: TokenMeta;
+  value: string;
+  all: Record<string, string>;
+}) => {
   const kind = token.type ?? '';
   const name = token.name;
-  let style: CSSProperties = {};
-  let text: string | undefined;
-  if (token.category === 'color' || kind === 'color') {
-    style = { background: live };
-  } else if (token.category === 'space') {
+  const role = roleOf(name);
+  const roleSize = role ? all[`--gv-type-${role}-size`] : undefined;
+  const roleWeight = role
+    ? (all[`--gv-type-${role}-weight`] as CSSProperties['fontWeight'])
+    : undefined;
+
+  if (token.category === 'focus') {
+    const ring: CSSProperties = {
+      outline: `${all['--gv-focus-width']} solid ${all['--gv-focus-color']}`,
+      outlineOffset: all['--gv-focus-offset'],
+    };
+    if (/-width$/.test(name)) ring.outlineWidth = value;
+    else if (/-offset$/.test(name)) ring.outlineOffset = value;
+    else if (/-color$/.test(name)) ring.outlineColor = value;
+    else if (kind === 'border') ring.outline = value;
+    else if (kind === 'shadow') ring.boxShadow = value;
     return (
-      <span className="wb-token-preview wb-token-preview-bar">
-        <span style={{ width: live }} />
+      <span className="wb-pv wb-pv-focus">
+        <span style={ring}>Button</span>
       </span>
     );
-  } else if (token.category === 'radius') {
-    style = { borderRadius: live };
-  } else if (kind === 'shadow') {
-    style = { boxShadow: live };
-  } else if (kind === 'border') {
-    style = { outline: live, outlineOffset: '2px' };
-  } else if (kind === 'fontFamily') {
-    style = { fontFamily: live };
-    text = SAMPLE;
+  }
+  if (token.category === 'color' || kind === 'color') {
+    return (
+      <span className="wb-pv wb-pv-swatch" style={{ background: value }} />
+    );
+  }
+  if (token.category === 'space') {
+    const n = px(value);
+    return (
+      <span className="wb-pv wb-pv-space">
+        <span
+          className={n > BAR_MAX ? 'wb-pv-cut' : undefined}
+          style={{ width: Math.min(n, BAR_MAX) }}
+        />
+      </span>
+    );
+  }
+  if (token.category === 'radius') {
+    return (
+      <span className="wb-pv wb-pv-radius">
+        <span style={{ borderRadius: value }} />
+      </span>
+    );
+  }
+  if (kind === 'shadow') {
+    return (
+      <span className="wb-pv wb-pv-shadow">
+        <span style={{ boxShadow: value }} />
+      </span>
+    );
+  }
+  if (token.category === 'motion') {
+    return (
+      <span
+        className="wb-pv wb-pv-motion"
+        style={{ '--wb-duration': value } as CSSProperties}
+      >
+        <span />
+      </span>
+    );
+  }
+  let style: CSSProperties = {};
+  let text = 'Aa';
+  if (kind === 'fontFamily') {
+    style = { fontFamily: value, fontSize: 28 };
+    text = 'Aa Gg';
   } else if (kind === 'number' && /weight/.test(name)) {
-    style = { fontWeight: live as CSSProperties['fontWeight'] };
-    text = SAMPLE;
+    style = { fontWeight: value as CSSProperties['fontWeight'], fontSize: 24 };
+    text = 'Aa';
   } else if (/-ls$/.test(name)) {
-    style = { letterSpacing: live };
-    text = 'Ag Ag';
+    style = {
+      letterSpacing: value,
+      fontSize: roleSize,
+      fontWeight: roleWeight,
+    };
+    text = 'Spacing';
   } else if (/-lh$/.test(name)) {
-    style = { lineHeight: live };
-    text = 'line';
+    return (
+      <span
+        className="wb-pv wb-pv-lh"
+        style={{
+          lineHeight: value,
+          fontSize: roleSize,
+          fontWeight: roleWeight,
+          backgroundSize: `100% ${value}`,
+        }}
+      >
+        Line one
+        <br />
+        Line two
+      </span>
+    );
   } else if (token.category === 'font' || token.category === 'text') {
-    style = { fontSize: live };
-    text = SAMPLE;
+    style = { fontSize: value, fontWeight: roleWeight };
+    text = role ? 'Ag' : 'Aa';
   } else {
-    return <span className="wb-token-preview wb-token-preview-none" />;
+    return <span className="wb-pv wb-pv-none" />;
   }
   return (
-    <span
-      className={`wb-token-preview${text ? ' wb-token-preview-text' : ''}`}
-      style={style}
-      aria-hidden="true"
-    >
+    <span className="wb-pv wb-pv-type" style={style}>
       {text}
     </span>
   );
@@ -148,7 +230,6 @@ const TokenRow = ({
 }: Props) => {
   const name = token.name as TokenName;
   const base = token.values[mode];
-  const other: Mode = mode === 'today' ? 'redesign' : 'today';
   const current = override ?? base;
   const [draft, setDraft] = useState(current);
   const [feedback, setFeedback] = useState<Feedback | undefined>();
@@ -190,7 +271,11 @@ const TokenRow = ({
     }
   };
 
-  const hex = token.category === 'color' ? toHex6(live) : undefined;
+  const value = live[mode][name] || token.values[mode];
+  const differs =
+    (live.today[name] || token.values.today) !==
+    (live.redesign[name] || token.values.redesign);
+  const hex = token.category === 'color' ? toHex6(value) : undefined;
   const inputId = `wb-edit-${name.slice(2)}`;
 
   return (
@@ -199,32 +284,85 @@ const TokenRow = ({
       data-testid="wb-token-row"
       data-token={name}
     >
-      <td>
-        <Preview token={token} live={live} />
+      <td className="wb-token-preview" aria-hidden="true">
+        {differs ? (
+          <span className="wb-compare">
+            {(['today', 'redesign'] as Mode[]).map((m) => (
+              <span
+                key={m}
+                className={m === mode ? 'wb-compare-on' : undefined}
+              >
+                <Preview
+                  token={token}
+                  value={live[m][name] || token.values[m]}
+                  all={live[m]}
+                />
+                <span className="wb-compare-label">{MODE_LABEL[m]}</span>
+              </span>
+            ))}
+          </span>
+        ) : (
+          <Preview token={token} value={value} all={live[mode]} />
+        )}
       </td>
-      <th scope="row">
+      <th scope="row" className="wb-token-name">
         <code>{name}</code>
-        {token.deprecated && <span className="wb-tag">deprecated</span>}
-        {token.tier === 1 && <span className="wb-tag">scale</span>}
+        <span className="wb-tags">
+          {token.tier === 1 && <span className="wb-tag">scale</span>}
+          {token.deprecated && (
+            <span className="wb-tag wb-tag-warn">deprecated</span>
+          )}
+        </span>
         {token.description && (
           <div className="wb-token-note">{token.description}</div>
         )}
         {token.legacy.length > 0 && (
-          <div className="wb-token-note">Legacy: {token.legacy.join(', ')}</div>
+          <details className="wb-legacy">
+            <summary>
+              {token.legacy.length === 1
+                ? '1 legacy name'
+                : `${token.legacy.length} legacy names`}
+            </summary>
+            <ul>
+              {token.legacy.map((l) => (
+                <li key={l}>
+                  <code>{l}</code>
+                </li>
+              ))}
+            </ul>
+          </details>
         )}
       </th>
-      <td>
-        <span className="wb-token-value">{base}</span>
+      <td className="wb-token-values" data-label="Value">
+        {differs ? (
+          (['today', 'redesign'] as Mode[]).map((m) => (
+            <div
+              key={m}
+              className={
+                m === mode ? 'wb-mode-value wb-mode-value-on' : 'wb-mode-value'
+              }
+            >
+              <span className="wb-mode-name">{MODE_LABEL[m]}</span>
+              <span className="wb-token-value">{token.values[m]}</span>
+              {m === 'redesign' && (
+                <span className="wb-diff-dot" title="Differs from Today" />
+              )}
+            </div>
+          ))
+        ) : (
+          <div className="wb-mode-value wb-mode-value-on">
+            <span className="wb-mode-name">Both</span>
+            <span className="wb-token-value">{token.values[mode]}</span>
+          </div>
+        )}
         {override !== undefined && (
-          <div className="wb-token-now">now {override}</div>
+          <div className="wb-token-now">
+            <span className="wb-mode-name">Edited</span>
+            <span className="wb-token-value">{override}</span>
+          </div>
         )}
       </td>
-      <td className="wb-muted">
-        <span className="wb-token-value" title={MODE_LABEL[other]}>
-          {token.values[other]}
-        </span>
-      </td>
-      <td>
+      <td data-label="Edit">
         <div className="wb-token-edit">
           <label className="wb-visually-hidden" htmlFor={inputId}>
             {`New value for ${name}`}
@@ -271,13 +409,14 @@ const TokenRow = ({
           </div>
         )}
       </td>
-      <td className="wb-token-usage">
+      <td className="wb-token-usage" data-label="Used">
         {!hasScan ? (
           <span className="wb-muted">no scan</span>
         ) : usage ? (
           <>
-            <strong>{usage.count}</strong> uses
-            <div className="wb-muted">
+            <span className="wb-usage-count">{usage.count}</span>
+            <span className="wb-usage-unit"> uses</span>
+            <div className="wb-token-note">
               {usage.components} places, {usage.routes} pages
             </div>
           </>

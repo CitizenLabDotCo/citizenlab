@@ -2,6 +2,8 @@ import { useState } from 'react';
 
 import type { Route } from '../lib/router';
 
+import Icon, { IconName } from './Icon';
+
 export type NavEntry = {
   name: Route['name'];
   label: string;
@@ -51,39 +53,88 @@ export const NAV: NavEntry[] = [
 
 type Props = { current: Route['name'] };
 
+// The mark of the workbench: four tiles, one of them the accent.
+const BrandMark = () => (
+  <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
+    <rect width="28" height="28" rx="8" fill="var(--wb-accent)" />
+    <rect x="7" y="7" width="6" height="6" rx="1.5" fill="var(--gv-white)" />
+    <rect x="15" y="7" width="6" height="6" rx="3" fill="var(--gv-teal-200)" />
+    <rect
+      x="7"
+      y="15"
+      width="6"
+      height="6"
+      rx="1.5"
+      fill="var(--gv-teal-200)"
+    />
+    <rect x="15" y="15" width="6" height="6" rx="1.5" fill="var(--gv-white)" />
+  </svg>
+);
+
 const Nav = ({ current }: Props) => {
   const [query, setQuery] = useState('');
+  // Narrow screens: the list folds into a menu under the top bar.
+  const [open, setOpen] = useState(false);
   const q = query.trim().toLowerCase();
   const entries = q
     ? NAV.filter((e) => `${e.label} ${e.hint}`.toLowerCase().includes(q))
     : NAV;
 
   return (
-    <nav className="wb-nav" aria-label="Workbench">
-      <div className="wb-brand">Design workbench</div>
-      <label className="wb-search">
-        <span className="wb-visually-hidden">Search</span>
-        <input
-          type="search"
-          placeholder="Search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-      </label>
-      <ul className="wb-nav-list" data-testid="wb-nav">
-        {entries.map((e) => (
-          <li key={e.name}>
-            <a
-              href={e.hash}
-              aria-current={e.name === current ? 'page' : undefined}
-              title={e.hint}
-            >
-              {e.label}
-            </a>
-          </li>
-        ))}
-        {entries.length === 0 && <li className="wb-nav-empty">No match</li>}
-      </ul>
+    <nav
+      className={open ? 'wb-nav wb-nav-open' : 'wb-nav'}
+      aria-label="Workbench"
+    >
+      <div className="wb-nav-top">
+        <a className="wb-brand" href="#/start">
+          <BrandMark />
+          <span>
+            <span className="wb-brand-name">Design workbench</span>
+            <span className="wb-brand-sub">Go Vocal design system</span>
+          </span>
+        </a>
+        <button
+          type="button"
+          className="wb-menu-button"
+          aria-expanded={open}
+          aria-controls="wb-nav-body"
+          onClick={() => setOpen((o) => !o)}
+        >
+          <Icon name={open ? 'close' : 'menu'} />
+          <span className="wb-visually-hidden">Menu</span>
+        </button>
+      </div>
+      <div className="wb-nav-body" id="wb-nav-body">
+        <label className="wb-search">
+          <span className="wb-visually-hidden">Search</span>
+          <Icon name="search" size={16} />
+          <input
+            type="search"
+            placeholder="Search sections"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </label>
+        <ul className="wb-nav-list" data-testid="wb-nav">
+          {entries.map((e) => (
+            <li key={e.name}>
+              <a
+                href={e.hash}
+                aria-current={e.name === current ? 'page' : undefined}
+                title={e.hint}
+                onClick={() => setOpen(false)}
+              >
+                <Icon name={e.name as IconName} />
+                {e.label}
+              </a>
+            </li>
+          ))}
+          {entries.length === 0 && <li className="wb-nav-empty">No match</li>}
+        </ul>
+        <p className="wb-nav-foot">
+          Edits stay in this browser until you share them as a link.
+        </p>
+      </div>
     </nav>
   );
 };

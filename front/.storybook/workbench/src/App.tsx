@@ -36,7 +36,8 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
         />
       );
     case 'components':
-      if (!route.storyId) return <Placeholder title="Components" />;
+      if (!route.storyId)
+        return <Placeholder title="Components" kind="components" />;
       return (
         <article className="wb-page wb-page-wide">
           <h1>{`Component: ${route.storyId}`}</h1>
@@ -54,21 +55,25 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
         </article>
       );
     case 'patterns':
-      return <Placeholder title="Patterns" />;
+      return <Placeholder title="Patterns" kind="patterns" />;
     case 'pages':
-      return <Placeholder title="Pages" />;
+      return <Placeholder title="Pages" kind="pages" />;
     case 'review':
-      return <Placeholder title="Review" />;
+      return <Placeholder title="Review" kind="review" />;
     case 'proposal':
-      return <Placeholder title="Proposal" />;
+      return <Placeholder title="Proposal" kind="proposal" />;
     case 'not-found':
       return (
         <article className="wb-page">
-          <h1>Not found</h1>
-          <p>
-            There is no page at <code>{route.path}</code>.{' '}
-            <a href="#/start">Go to Start here</a>.
-          </p>
+          <header className="wb-page-head">
+            <h1>Not found</h1>
+            <p className="wb-lead">
+              There is no page at <code>{route.path}</code>.
+            </p>
+          </header>
+          <a className="wb-button" href="#/start">
+            Go to Start here
+          </a>
         </article>
       );
   }
