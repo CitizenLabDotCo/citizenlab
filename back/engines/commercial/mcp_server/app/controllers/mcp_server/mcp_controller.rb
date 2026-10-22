@@ -100,6 +100,7 @@ module McpServer
       McpServer::Tools::CreateEvent,
       McpServer::Tools::CreateArea,
       McpServer::Tools::CreateFolder,
+      McpServer::Tools::SetPublicationStatus,
       McpServer::Tools::SetReferenceDistribution,
       McpServer::Tools::CreateCause,
       McpServer::Tools::CreatePollQuestion,
