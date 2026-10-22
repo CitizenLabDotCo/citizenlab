@@ -156,3 +156,78 @@ body {
   clip: rect(0 0 0 0);
   white-space: nowrap;
 }
+
+.wb-page-wide {
+  max-width: none;
+}
+
+.wb-notice {
+  display: flex;
+  gap: var(--gv-space-3);
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--gv-space-4);
+  padding: var(--gv-space-2) var(--gv-space-3);
+  color: var(--gv-text-primary);
+  background: var(--gv-error-light);
+  border: 1px solid var(--gv-error);
+  border-radius: var(--gv-radius-1);
+}
+
+.wb-notice button,
+.wb-toolbar select {
+  font: inherit;
+  color: inherit;
+  background: var(--gv-white);
+  border: 1px solid var(--gv-border-light);
+  border-radius: var(--gv-radius-1);
+  padding: var(--gv-space-1) var(--gv-space-2);
+}
+
+.wb-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gv-space-4);
+  margin-bottom: var(--gv-space-4);
+  padding: var(--gv-space-2) var(--gv-space-3);
+  background: var(--gv-grey-100);
+  border: 1px solid var(--gv-divider);
+  border-radius: var(--gv-radius-1);
+}
+
+.wb-toolbar-field {
+  display: flex;
+  gap: var(--gv-space-2);
+  align-items: center;
+  color: var(--gv-text-secondary);
+}
+
+.wb-toolbar select:focus-visible,
+.wb-notice button:focus-visible {
+  outline: var(--gv-focus-width) solid var(--gv-focus-color);
+  outline-offset: var(--gv-focus-offset);
+}
+
+.wb-canvas {
+  overflow: hidden;
+  max-width: 100%;
+  padding: 1px;
+}
+
+.wb-canvas-size {
+  margin: 0 0 var(--gv-space-2);
+  font-size: var(--gv-fs-xs);
+}
+
+.wb-canvas > div {
+  overflow: hidden;
+  outline: 1px solid var(--gv-divider);
+  border-radius: var(--gv-radius-1);
+}
+
+.wb-canvas iframe {
+  display: block;
+  max-width: none;
+  border: 0;
+  background: var(--gv-white);
+}

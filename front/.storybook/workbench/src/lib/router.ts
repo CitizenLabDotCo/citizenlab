@@ -11,8 +11,10 @@ export type Route =
   | { name: 'proposal' }
   | { name: 'not-found'; path: string };
 
+// A `?` part (the share link's token overrides) is not part of the route.
 export const parseHash = (hash: string): Route => {
-  const path = hash.replace(/^#/, '').replace(/\/+$/, '') || '/start';
+  const path =
+    hash.replace(/^#/, '').split('?')[0].replace(/\/+$/, '') || '/start';
   const [, first, second, ...rest] = path.split('/');
   if (rest.length > 0) return { name: 'not-found', path };
   const param = second ? decodeURIComponent(second) : undefined;

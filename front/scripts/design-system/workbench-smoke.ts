@@ -1,11 +1,15 @@
 // Smoke test of the workbench shell inside a built Storybook.
 //
 //   npm run ds:smoke -- [--dir storybook-static] [--screenshot <file.png>]
+//                       [--canvas-screenshot <file.png>]
 //
 // Serves the static dir on a free local port, opens /workbench/#/start in
 // Chromium and checks that the nav lists every section, the Start here page
 // renders and nothing is logged as a console error. Optional data files that
-// a build may lack (see OPTIONAL_DATA) are allowed to 404. Exits 1 on failure,
+// a build may lack (see OPTIONAL_DATA) are allowed to 404. Then opens a
+// Button story on the canvas: the mode toolbar puts data-gv-mode on the
+// frame's root, a share link override changes the button's computed
+// border-radius, and a bad share link shows a notice. Exits 1 on failure,
 // 2 when Playwright is missing. Playwright is loaded through ./playwright.
 import fs from 'fs';
 import http from 'http';
@@ -32,8 +36,29 @@ const ROUTES: [string, string][] = [
   ['#/pages', 'Pages'],
   ['#/review', 'Review'],
   ['#/proposal', 'Proposal'],
-  ['#/components/x--y', 'Component: x--y'],
 ];
+
+// The canvas checks need a story whose radius goes through the theme bridge
+// (theme.borderRadius is var(--gv-radius-control, 3px)).
+const RADIUS_TOKEN = '--gv-radius-control';
+const RADIUS_OVERRIDE = '20px';
+
+// A Button story from the build's index.json, primary first.
+export const pickButtonStory = (index: unknown): string | null => {
+  const entries = Object.values(
+    (index as { entries?: Record<string, { id: string; type?: string }> })
+      ?.entries ?? {}
+  ).filter((e) => e.type === 'story' && e.id.startsWith('components-button--'));
+  return (
+    entries.find((e) => e.id === 'components-button--primary')?.id ??
+    entries[0]?.id ??
+    null
+  );
+};
+
+// The share-link payload the shell reads (base64url JSON).
+const sharePayload = (o: Record<string, string>) =>
+  Buffer.from(JSON.stringify(o), 'utf8').toString('base64url');
 
 const OPTIONAL_DATA = [
   '/design-scan.json',
@@ -104,9 +129,103 @@ const serve = (root: string): Promise<http.Server> =>
     server.listen(0, '127.0.0.1', () => resolve(server));
   });
 
+// The canvas frame once it shows `id` with the given mode global.
+const canvasFrame = async (page: any, mode: string) => {
+  const handle = await page.waitForSelector(
+    `iframe[data-testid="wb-canvas"][src*="mode:${mode}"]`,
+    { timeout: 10000 }
+  );
+  const frame = await handle.contentFrame();
+  await frame.waitForSelector('#storybook-root button', { timeout: 20000 });
+  return frame;
+};
+
+const radiusOf = (frame: any): Promise<string> =>
+  frame.$eval(
+    '#storybook-root button',
+    (el: Element) => getComputedStyle(el).borderTopLeftRadius
+  );
+
+const canvasChecks = async (
+  page: any,
+  base: string,
+  storyId: string,
+  failures: string[],
+  screenshot?: string
+) => {
+  await page.goto(`${base}/workbench/#/components/${storyId}`);
+  await page.waitForFunction(
+    (h: string) => document.querySelector('main h1')?.textContent === h,
+    `Component: ${storyId}`,
+    { timeout: 5000 }
+  );
+  if (!(await page.isVisible('aside[aria-label="Panels"] h2'))) {
+    failures.push('the panel column is not shown on a component page');
+  }
+  await canvasFrame(page, 'today');
+
+  // Mode toolbar: the frame's html gets the attribute.
+  await page.selectOption('[data-testid="wb-toolbar-mode"]', 'redesign');
+  const frame = await canvasFrame(page, 'redesign');
+  const attr = await frame.$eval('html', (el: Element) =>
+    el.getAttribute('data-gv-mode')
+  );
+  if (attr !== 'redesign') {
+    failures.push(`mode redesign: frame html data-gv-mode is ${attr}`);
+  }
+
+  // Share link override: the computed radius follows it.
+  const before = await radiusOf(frame);
+  const payload = sharePayload({ [RADIUS_TOKEN]: RADIUS_OVERRIDE });
+  await page.evaluate((h: string) => {
+    window.location.hash = h;
+  }, `#/components/${storyId}?o=${payload}`);
+  try {
+    await frame.waitForFunction(
+      (v: string) => {
+        const el = document.querySelector('#storybook-root button');
+        return !!el && getComputedStyle(el).borderTopLeftRadius === v;
+      },
+      RADIUS_OVERRIDE,
+      { timeout: 5000 }
+    );
+  } catch {
+    failures.push(
+      `override ${RADIUS_TOKEN}=${RADIUS_OVERRIDE}: border-radius stayed ${await radiusOf(
+        frame
+      )}`
+    );
+  }
+  console.log(
+    `canvas: ${storyId}, mode redesign on the frame; ${RADIUS_TOKEN} ${before} -> ${await radiusOf(
+      frame
+    )}`
+  );
+  if (screenshot) {
+    await page.screenshot({ path: path.resolve(screenshot) });
+    console.log(`canvas screenshot: ${path.resolve(screenshot)}`);
+  }
+
+  // A bad share link applies nothing and says so.
+  const bad = sharePayload({ [RADIUS_TOKEN]: 'url(https://example.test/x)' });
+  await page.evaluate((h: string) => {
+    window.location.hash = h;
+  }, `#/components/${storyId}?o=${bad}`);
+  try {
+    await page.waitForSelector('[data-testid="wb-notice"]', { timeout: 5000 });
+  } catch {
+    failures.push('a rejected share link shows no notice');
+  }
+  const after = await radiusOf(frame);
+  if (after === RADIUS_OVERRIDE) {
+    failures.push('a rejected share link left the previous override applied');
+  }
+};
+
 const main = async () => {
   const root = path.resolve(arg('dir') ?? 'storybook-static');
   const screenshot = arg('screenshot');
+  const canvasScreenshot = arg('canvas-screenshot');
   if (!fs.existsSync(path.join(root, 'workbench', 'index.html'))) {
     console.error(
       `No workbench in ${root}. Run npm run build-storybook first.`
@@ -119,6 +238,14 @@ const main = async () => {
   const base = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
   const failures: string[] = [];
   const browser = await chromium.launch({ chromiumSandbox: false });
+  let storyId: string | null = null;
+  try {
+    storyId = pickButtonStory(
+      JSON.parse(fs.readFileSync(path.join(root, 'index.json'), 'utf8'))
+    );
+  } catch {
+    // Reported below.
+  }
 
   try {
     const page = await browser.newPage({
@@ -183,8 +310,11 @@ const main = async () => {
         { timeout: 5000 }
       );
     }
-    if (!(await page.isVisible('aside[aria-label="Panels"] h2'))) {
-      failures.push('the panel column is not shown on a component page');
+
+    if (!storyId) {
+      failures.push('index.json has no components-button story');
+    } else {
+      await canvasChecks(page, base, storyId, failures, canvasScreenshot);
     }
   } catch (e) {
     failures.push(`smoke run failed: ${(e as Error).message}`);

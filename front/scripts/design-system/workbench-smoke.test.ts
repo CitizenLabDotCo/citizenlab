@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { resolveStaticPath } from './workbench-smoke';
+import { pickButtonStory, resolveStaticPath } from './workbench-smoke';
 
 describe('resolveStaticPath', () => {
   const root = path.resolve('/srv/static/sb');
@@ -26,5 +26,30 @@ describe('resolveStaticPath', () => {
 
   it('rejects malformed escapes', () => {
     expect(resolveStaticPath(root, '/%E0%A4%A')).toBeNull();
+  });
+});
+
+describe('pickButtonStory', () => {
+  const entry = (id: string, type = 'story') => [id, { id, type }];
+
+  it('prefers the primary Button story', () => {
+    const index = {
+      entries: Object.fromEntries([
+        entry('components-button--docs', 'docs'),
+        entry('components-button--delete'),
+        entry('components-button--primary'),
+      ]),
+    };
+    expect(pickButtonStory(index)).toBe('components-button--primary');
+  });
+
+  it('falls back to any Button story, else null', () => {
+    expect(
+      pickButtonStory({
+        entries: Object.fromEntries([entry('components-button--white')]),
+      })
+    ).toBe('components-button--white');
+    expect(pickButtonStory({ entries: {} })).toBeNull();
+    expect(pickButtonStory(null)).toBeNull();
   });
 });

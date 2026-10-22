@@ -12,7 +12,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "types": ["vite/client", "node"],
+    "types": ["vite/client", "node", "jest"],
     "baseUrl": ".",
     "paths": {
       "@ds/*": ["../../app/design-system/*"]

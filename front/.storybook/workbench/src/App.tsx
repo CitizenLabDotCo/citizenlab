@@ -1,12 +1,22 @@
 import { useCallback, useMemo, useState } from 'react';
 
+import Canvas from './components/Canvas';
 import Nav from './components/Nav';
 import Panel, { PanelContext } from './components/Panel';
+import Toolbar, { DEFAULT_TOOLBAR, ToolbarState } from './components/Toolbar';
+import { TOKEN_META } from './lib/data';
+import { Overrides, useOverrides } from './lib/overrides';
 import { Route, useRoute } from './lib/router';
 import Placeholder from './pages/Placeholder';
 import StartHere from './pages/StartHere';
 
-const Page = ({ route }: { route: Route }) => {
+type CanvasProps = {
+  toolbar: ToolbarState;
+  setToolbar: (next: ToolbarState) => void;
+  overrides: Overrides;
+};
+
+const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
   switch (route.name) {
     case 'start':
       return <StartHere />;
@@ -24,18 +34,22 @@ const Page = ({ route }: { route: Route }) => {
         </Placeholder>
       );
     case 'components':
+      if (!route.storyId) return <Placeholder title="Components" />;
       return (
-        <Placeholder
-          title={route.storyId ? `Component: ${route.storyId}` : 'Components'}
-        >
-          {route.storyId && (
-            <Panel title="Panels">
-              <p className="wb-muted">
-                Controls, Tokens, Usage, Accessibility and Docs appear here.
-              </p>
-            </Panel>
-          )}
-        </Placeholder>
+        <article className="wb-page wb-page-wide">
+          <h1>{`Component: ${route.storyId}`}</h1>
+          <Toolbar value={canvas.toolbar} onChange={canvas.setToolbar} />
+          <Canvas
+            storyId={route.storyId}
+            toolbar={canvas.toolbar}
+            overrides={canvas.overrides}
+          />
+          <Panel title="Panels">
+            <p className="wb-muted">
+              Controls, Tokens, Usage, Accessibility and Docs appear here.
+            </p>
+          </Panel>
+        </article>
       );
     case 'patterns':
       return <Placeholder title="Patterns" />;
@@ -71,13 +85,23 @@ const App = () => {
     [panelEl, register]
   );
   const navName = route.name === 'not-found' ? 'start' : route.name;
+  const [toolbar, setToolbar] = useState<ToolbarState>(DEFAULT_TOOLBAR);
+  const { overrides, notice, dismissNotice } = useOverrides(TOKEN_META);
 
   return (
     <PanelContext.Provider value={slot}>
       <div className={panels > 0 ? 'wb-shell wb-shell-with-panel' : 'wb-shell'}>
         <Nav current={navName} />
         <main className="wb-main">
-          <Page route={route} />
+          {notice && (
+            <div className="wb-notice" role="alert" data-testid="wb-notice">
+              <span>{notice}</span>
+              <button type="button" onClick={dismissNotice}>
+                Dismiss
+              </button>
+            </div>
+          )}
+          <Page route={route} canvas={{ toolbar, setToolbar, overrides }} />
         </main>
         <aside
           className="wb-panels"

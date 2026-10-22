@@ -70,8 +70,11 @@ const EMPTY_SCAN: ScanOutput = {
 export const loadScan = () =>
   fetchJson<ScanOutput>('../design-scan.json', EMPTY_SCAN);
 
+// Bundled, so it is there synchronously.
+export const TOKEN_META = tokensMeta as TokenMeta[];
+
 export const loadTokens = (): Promise<TokenMeta[]> =>
-  Promise.resolve(tokensMeta as TokenMeta[]);
+  Promise.resolve(TOKEN_META);
 
 export const loadStoryIndex = () =>
   fetchJson<StoryIndex>('../index.json', { entries: {} });

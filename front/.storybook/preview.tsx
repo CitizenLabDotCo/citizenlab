@@ -5,6 +5,7 @@ import { initialize, mswDecorator } from 'msw-storybook-addon';
 import mockServer from './mockServer';
 import { reactIntl, locales, StorybookLocale } from './reactIntl';
 import { cities } from './cities';
+import { GV_VIEWPORTS } from './viewports';
 import { MemoryRouter } from 'utils/router';
 import { allModes } from './modes';
 import { MINIMAL_VIEWPORTS } from 'storybook/viewport';
@@ -31,8 +32,34 @@ const routerDecorator = (
   </MemoryRouter>
 );
 
+// Mode of the design tokens: `today` is :root (no attribute), `redesign`
+// sets data-gv-mode on the preview's root element, like ModeScope does on
+// the redesigned pages. The workbench shell sets the same global in the
+// frame URL.
+const modeDecorator = (Story: () => JSX.Element, context: StoryContext) => {
+  const root = document.documentElement;
+  if (context.globals.mode === 'redesign') {
+    root.setAttribute('data-gv-mode', 'redesign');
+  } else {
+    root.removeAttribute('data-gv-mode');
+  }
+  return <Story />;
+};
+
 const preview: Preview = {
   globalTypes: {
+    mode: {
+      description: 'Design token mode',
+      toolbar: {
+        title: 'Mode',
+        icon: 'mirror',
+        items: [
+          { value: 'today', title: 'Today' },
+          { value: 'redesign', title: 'Redesign' },
+        ],
+        dynamicTitle: true,
+      },
+    },
     city: {
       description: 'Preview components in a city brand',
       toolbar: {
@@ -56,6 +83,7 @@ const preview: Preview = {
     },
   },
   initialGlobals: {
+    mode: 'today',
     city: 'default',
     lang: 'en',
   },
@@ -75,12 +103,13 @@ const preview: Preview = {
       disableSnapshot: true,
     },
     viewport: {
-      viewports: {
+      options: {
+        ...GV_VIEWPORTS,
         ...MINIMAL_VIEWPORTS,
       },
     },
   },
-  decorators: [mswDecorator, routerDecorator, contexts],
+  decorators: [mswDecorator, routerDecorator, contexts, modeDecorator],
 };
 
 export default preview;
