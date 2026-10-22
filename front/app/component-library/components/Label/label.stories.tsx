@@ -33,9 +33,10 @@ export const LongContent: Story = {
 };
 
 export const RTL: Story = {
+  globals: { lang: 'ar' },
   args: { value: 'عنوان الفكرة' },
   render: (args) => (
-    <div dir="rtl">
+    <div>
       <Label {...args} />
     </div>
   ),
