@@ -61,7 +61,9 @@ const ProjectWorkspace = ({
   const activeView = viewFromPathname(pathname);
 
   const inPhase = !!(phase || draft);
-  const showPanels = !phase || activeView === 'build';
+  // An open phase email takes the whole width, like the other views.
+  const editingEmail = /\/emails\/[^/]+\/edit$/.test(pathname);
+  const showPanels = (!phase || activeView === 'build') && !editingEmail;
 
   const settingsPanel = draft ? (
     draft.methodSettings
@@ -112,9 +114,7 @@ const ProjectWorkspace = ({
       background={colors.white}
     >
       {sidePanel}
-      {settingsPanel && (
-        <Box borderTop={`1px solid ${colors.grey200}`}>{settingsPanel}</Box>
-      )}
+      {settingsPanel}
     </Box>
   );
 

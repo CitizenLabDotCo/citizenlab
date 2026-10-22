@@ -541,4 +541,28 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.documentAnnotationSetup',
     defaultMessage: 'Document annotation setup',
   },
+  editReport: {
+    id: 'app.containers.Admin.projects.project.editReport',
+    defaultMessage: 'Edit report',
+  },
+  reportVisibleToParticipants: {
+    id: 'app.containers.Admin.projects.project.reportVisibleToParticipants',
+    defaultMessage: 'Visible to participants',
+  },
+  reportVisibleToParticipantsHelp: {
+    id: 'app.containers.Admin.projects.project.reportVisibleToParticipantsHelp',
+    defaultMessage: 'Participants see the report on the phase page.',
+  },
+  reportVisible: {
+    id: 'app.containers.Admin.projects.project.reportVisible',
+    defaultMessage: 'Visible',
+  },
+  reportNotVisible: {
+    id: 'app.containers.Admin.projects.project.reportNotVisible',
+    defaultMessage: 'Not visible',
+  },
+  deleteReport: {
+    id: 'app.containers.Admin.projects.project.deleteReport',
+    defaultMessage: 'Delete report',
+  },
 });

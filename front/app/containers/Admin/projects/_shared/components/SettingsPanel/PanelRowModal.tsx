@@ -1,10 +1,10 @@
 import React, { ReactNode, useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
+
+import SetupCard from 'containers/Admin/projects/project/backofficeRedesign/Event/SetupCard';
 
 import Modal from 'components/UI/Modal';
-
-import PanelRow from './PanelRow';
 
 interface Props {
   label: string;
@@ -17,7 +17,23 @@ const PanelRowModal = ({ label, width, children }: Props) => {
 
   return (
     <>
-      <PanelRow label={label} onClick={() => setOpened(true)} />
+      <Box mb="12px">
+        <SetupCard
+          title={label}
+          action={
+            <Button
+              buttonStyle="bo-text"
+              icon="chevron-right"
+              iconSize="16px"
+              width="28px"
+              height="28px"
+              padding="0"
+              ariaLabel={label}
+              onClick={() => setOpened(true)}
+            />
+          }
+        />
+      </Box>
       <Modal
         opened={opened}
         close={() => setOpened(false)}

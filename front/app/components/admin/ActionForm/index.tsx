@@ -5,7 +5,9 @@ import {
   Button,
   Title,
   Icon,
+  IconTooltip,
   Divider,
+  bo,
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
@@ -147,17 +149,20 @@ const ActionForm = ({
   if (variant === 'plain') {
     return (
       <Box>
-        {usingPlatformDefaults && <PlatformDefaultsNote mb="16px" />}
-        {usingPlatformDefaults ? (
-          <ReadOnlyOverlay>{body}</ReadOnlyOverlay>
-        ) : (
-          body
-        )}
         {usingPlatformDefaults && (
-          <Box mt="24px">
+          <Box display="flex" alignItems="center" gap="12px" mb="16px">
+            <IconTooltip
+              content={formatMessage(messages.platformDefaultsTooltip)}
+            />
+            <Box flex="1 1 auto" />
+            <PlatformDefaultsNote />
             <Button
-              buttonStyle="secondary-outlined"
+              buttonStyle="bo-secondary"
               icon="edit"
+              height={bo.buttonMedium.height}
+              padding={bo.buttonMedium.padding}
+              fontSize={bo.buttonMedium.fontSize}
+              iconSize={bo.buttonMedium.iconSize}
               width="auto"
               processing={processing}
               onClick={handleOverride}
@@ -165,6 +170,11 @@ const ActionForm = ({
               {formatMessage(messages.override)}
             </Button>
           </Box>
+        )}
+        {usingPlatformDefaults ? (
+          <ReadOnlyOverlay>{body}</ReadOnlyOverlay>
+        ) : (
+          body
         )}
         {revertModal}
       </Box>

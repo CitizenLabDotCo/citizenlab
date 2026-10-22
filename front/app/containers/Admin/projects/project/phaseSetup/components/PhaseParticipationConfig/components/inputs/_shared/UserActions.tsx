@@ -11,7 +11,6 @@ import { CLErrors } from 'typings';
 import PhaseActionAccessRow, {
   AccessOnlyAction,
 } from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
-import ToggleActionAccess from 'containers/Admin/projects/_shared/components/ToggleActionAccess';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
@@ -20,11 +19,9 @@ import { useIntl } from 'utils/cl-intl';
 import FormattedMessage from 'utils/cl-intl/FormattedMessage';
 
 import messages from '../../../../../../messages';
-import {
-  ReactingLimitInput,
-  StyledSectionField,
-  ToggleRow,
-} from '../../shared/styling';
+import { ReactingLimitInput, StyledSectionField } from '../../shared/styling';
+
+import ActionToggleRow from './ActionToggleRow';
 
 const UserActions = ({
   submission_enabled,
@@ -74,48 +71,58 @@ const UserActions = ({
           />
         </SubSectionTitle>
 
-        <ToggleRow>
+        <ActionToggleRow
+          phaseId={phaseId}
+          action="posting_idea"
+          error={
+            <Error apiErrors={apiErrors && apiErrors.submission_enabled} />
+          }
+        >
           <Toggle
+            size={phaseId ? 'small' : undefined}
             checked={submission_enabled || false}
             onChange={togglePostingEnabled}
             label={formatMessage(messages.inputPostingEnabled)}
           />
-          <Error apiErrors={apiErrors && apiErrors.submission_enabled} />
-        </ToggleRow>
-        {phaseId && (
-          <ToggleActionAccess phaseId={phaseId} action="posting_idea" />
-        )}
+        </ActionToggleRow>
 
         {showCommentingToggle && (
-          <ToggleRow>
+          <ActionToggleRow
+            phaseId={phaseId}
+            action="commenting_idea"
+            error={
+              <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
+            }
+          >
             <Toggle
+              size={phaseId ? 'small' : undefined}
               checked={commenting_enabled || false}
               onChange={toggleCommentingEnabled}
               label={formatMessage(messages.inputCommentingEnabled)}
             />
-            <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
-          </ToggleRow>
-        )}
-        {showCommentingToggle && phaseId && (
-          <ToggleActionAccess phaseId={phaseId} action="commenting_idea" />
+          </ActionToggleRow>
         )}
 
         {showReactingToggle && (
-          <ToggleRow className="last">
+          <ActionToggleRow
+            phaseId={phaseId}
+            action="reacting_idea"
+            last
+            error={
+              <Error apiErrors={apiErrors && apiErrors.reacting_enabled} />
+            }
+          >
             <Toggle
+              size={phaseId ? 'small' : undefined}
               checked={reacting_enabled || false}
               onChange={toggleReactingEnabled}
               label={formatMessage(messages.inputReactingEnabled)}
             />
-            <Error apiErrors={apiErrors && apiErrors.reacting_enabled} />
-          </ToggleRow>
-        )}
-        {showReactingToggle && phaseId && (
-          <ToggleActionAccess phaseId={phaseId} action="reacting_idea" />
+          </ActionToggleRow>
         )}
 
         {phaseId && (
-          <Box mt="4px">
+          <Box>
             {accessOnlyActions.map(({ action, label }) => (
               <PhaseActionAccessRow
                 key={action}

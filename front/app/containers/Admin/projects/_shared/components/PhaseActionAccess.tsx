@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box, Button, bo, colors } from '@citizenlab/cl2-component-library';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
 import useInheritPhasePermission from 'api/phase_permissions/useInheritPhasePermission';
@@ -58,11 +58,14 @@ const PhaseActionAccess = ({ phaseId, action }: Props) => {
   return (
     <>
       <Button
-        buttonStyle="text"
-        size="s"
-        px="0"
-        py="0"
-        justify="left"
+        buttonStyle="bo-text"
+        padding="0"
+        height="auto"
+        width="auto"
+        fontSize={`${bo.controlFontSize}px`}
+        fontWeight="400"
+        textColor={colors.coolGrey500}
+        textHoverColor={bo.colors.textHeadingStrong}
         icon="chevron-right"
         iconPos="right"
         iconSize="16px"
