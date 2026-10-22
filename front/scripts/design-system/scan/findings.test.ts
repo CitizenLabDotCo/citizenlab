@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import { NAMED_COLOR_NAMES } from './namedColors';
-import { nearestToken, scanFile } from './findings';
+import { nearestToken, scanFile, scanFileResult } from './findings';
 import { Finding, FindingCategory, TokenMeta } from './schema';
 
 const FIXTURES = path.join(__dirname, '..', 'fixtures', 'findings');
@@ -103,12 +103,47 @@ describe('scanFile', () => {
   });
 
   it('scans style objects', () => {
-    expect(counts(run('style-object.tsx'))).toEqual({ px: 1, hex: 1 });
+    expect(counts(run('style-object.tsx'))).toEqual({
+      px: 2,
+      hex: 1,
+      'named-color': 2,
+    });
+  });
+
+  it('ignores urls, strings and comments; classifies theme chains once', () => {
+    const f = run('tightened.tsx');
+    expect(counts(f)).toEqual({ 'styled-block': 1, 'legacy-theme': 2 });
+    expect(
+      f.filter((x) => x.category === 'legacy-theme').map((x) => x.raw)
+    ).toEqual(['theme?.colors?.main', 'props.theme.colors.grey']);
+  });
+
+  it('counts colors/bo only when imported, ignoring array methods', () => {
+    const f = run('imported-reads.tsx');
+    expect(f.map((x) => [x.category, x.raw])).toEqual([
+      ['legacy-colors', 'c.divider'],
+    ]);
   });
 
   it('is deterministic and tolerates unparsable source', () => {
     expect(run('styled-literals.tsx')).toEqual(run('styled-literals.tsx'));
     expect(scanFile('bad.tsx', 'const = ;;<', TOKENS)).toEqual([]);
+  });
+
+  it('reports parse errors through scanFileResult', () => {
+    const r = scanFileResult('bad.tsx', 'const = ;;<', TOKENS);
+    expect(r.findings).toEqual([]);
+    expect(r.parseError?.line).toBe(1);
+    expect(r.parseError?.message).toMatch(/Unexpected|expected/i);
+  });
+
+  it('parses .ts files with type assertions', () => {
+    const r = scanFileResult(
+      'ts-assertion.ts',
+      fs.readFileSync(path.join(FIXTURES, 'ts-assertion.ts'), 'utf8'),
+      TOKENS
+    );
+    expect(r.parseError).toBeUndefined();
   });
 });
 

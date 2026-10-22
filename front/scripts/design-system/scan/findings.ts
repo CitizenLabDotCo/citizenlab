@@ -164,8 +164,18 @@ const propertyAt = (text: string, index: number): string | undefined => {
   return m ? m[1].toLowerCase() : undefined;
 };
 
-const blankComments = (text: string) =>
-  text.replace(/\/\*[\s\S]*?\*\//g, (c) => c.replace(/[^\n]/g, ' '));
+const blank = (c: string) => c.replace(/[^\n]/g, ' ');
+
+// Blank (with spaces, so positions survive) everything that is not a CSS
+// value: url(...) bodies, quoted strings, block comments and `//` line
+// comments. Order matters: urls and strings first so `//` inside
+// `url(https://x)` or "http://x" is never read as a comment.
+const blankNonValues = (text: string) =>
+  text
+    .replace(/url\(([^)]*)\)/gi, (m, body) => 'url(' + blank(body) + ')')
+    .replace(/(["'])(?:\\.|(?!\1)[^\\\n])*\1/g, blank)
+    .replace(/\/\*[\s\S]*?\*\//g, blank)
+    .replace(/\/\/[^\n]*/g, blank);
 
 type Origin = { line: number; col: number }; // 1-based position of text[0]
 
@@ -190,18 +200,15 @@ const scanCssText = (
   rawText: string,
   origin: Origin,
   tokens: TokenMeta[],
-  emit: Emit,
-  forcedProperty?: string
+  emit: Emit
 ) => {
-  const text = blankComments(rawText);
+  const text = blankNonValues(rawText);
   const push = (match: RegExpExecArray, category: FindingCategory) => {
     const pos = locate(text, match.index, origin);
     const value = match[0];
     let suggestion: Suggestion | undefined;
     if (category === 'px') {
-      const tc = tokenCategoryFor(
-        forcedProperty ?? propertyAt(text, match.index)
-      );
+      const tc = tokenCategoryFor(propertyAt(text, match.index));
       if (tc) suggestion = nearestToken(value, 'px', tokens, tc);
     } else {
       suggestion = nearestToken(value, category, tokens);
@@ -271,6 +278,10 @@ const isCssTag = (tag: any): boolean =>
   tag.type === 'Identifier' &&
   (tag.name === 'css' || tag.name === 'createGlobalStyle');
 
+const ARRAY_METHODS = new Set(
+  Object.getOwnPropertyNames(Array.prototype).concat(['length'])
+);
+
 const jsxName = (n: any): string | undefined => {
   if (!n) return undefined;
   if (n.type === 'JSXIdentifier') return n.name;
@@ -278,25 +289,42 @@ const jsxName = (n: any): string | undefined => {
   return undefined;
 };
 
+export type ParseError = { message: string; line?: number; col?: number };
+export type ScanResult = { findings: Finding[]; parseError?: ParseError };
+
 /**
- * Per-file findings. Pure: receives the source, never touches the file system.
- * Lines and columns are 1-based. Returns [] for source that does not parse.
- * Output is sorted by position then category so it is deterministic.
+ * Per-file findings plus the parse failure, if any. Pure: receives the source,
+ * never touches the file system. Lines and columns are 1-based. On a syntax
+ * error `findings` is [] and `parseError` says where, so callers can count and
+ * warn. Output is sorted by position then category (deterministic).
+ * `.ts` files are parsed without the jsx plugin (so `<File>value` assertions
+ * work); `.tsx`/`.jsx`/other files with it. Decorators (legacy) are enabled.
  */
-export const scanFile = (
+export const scanFileResult = (
   filePath: string,
   source: string,
   tokens: TokenMeta[]
-): Finding[] => {
+): ScanResult => {
+  const isPlainTs = /\.(ts|mts|cts)$/.test(filePath);
   let ast;
   try {
     ast = parse(source, {
       sourceType: 'module',
-      plugins: ['typescript', 'jsx'],
-      errorRecovery: false,
+      plugins: [
+        'typescript',
+        ...(isPlainTs ? [] : (['jsx'] as const)),
+        'decorators-legacy',
+      ],
     });
-  } catch {
-    return [];
+  } catch (e: any) {
+    return {
+      findings: [],
+      parseError: {
+        message: String(e?.message ?? e),
+        line: e?.loc?.line,
+        col: e?.loc ? e.loc.column + 1 : undefined,
+      },
+    };
   }
 
   const findings: Finding[] = [];
@@ -320,25 +348,39 @@ export const scanFile = (
     return decl?.node.id?.type === 'Identifier' ? decl.node.id.name : undefined;
   };
 
+  // A style-object value is scanned as a declaration (`prop: value`) so the
+  // same px/colour/named-colour rules apply as in a styled template.
   const scanStringValue = (
     value: string,
     node: any,
-    property: string | undefined,
+    property: string,
     emit: Emit
   ) => {
-    // +1 skips the opening quote (string literal) or backtick.
+    const prefix =
+      property.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`) + ': ';
+    // +2 skips the opening quote (columns are 1-based).
     const origin = {
       line: node.loc.start.line,
-      col: node.loc.start.column + 2,
+      col: node.loc.start.column + 2 - prefix.length,
     };
-    scanCssText(
-      value,
-      origin,
-      tokens,
-      emit,
-      property?.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`)
-    );
+    scanCssText(prefix + value, origin, tokens, emit);
   };
+
+  // `colors` and `bo` only count when imported from the component library's
+  // style utils (or the admin graph styling re-export), never as plain names.
+  const legacyImports = new Map<string, FindingCategory>();
+  ast.program.body.forEach((node: any) => {
+    if (node.type !== 'ImportDeclaration') return;
+    if (!/(component-library|styleUtils|\/styling)$/.test(node.source.value))
+      return;
+    node.specifiers.forEach((sp: any) => {
+      if (sp.type !== 'ImportSpecifier') return;
+      const imported = sp.imported.name ?? sp.imported.value;
+      if (imported === 'colors')
+        legacyImports.set(sp.local.name, 'legacy-colors');
+      if (imported === 'bo') legacyImports.set(sp.local.name, 'legacy-bo');
+    });
+  });
 
   traverse(ast, {
     TaggedTemplateExpression(path) {
@@ -400,42 +442,41 @@ export const scanFile = (
       }
     },
 
-    MemberExpression(path) {
-      const n: any = path.node;
-      const obj = n.object;
+    'MemberExpression|OptionalMemberExpression'(path: any) {
+      const n = path.node;
+      const parent = path.parent;
+      // Only the outermost link of a chain is reported, once.
+      if (
+        (parent.type === 'MemberExpression' ||
+          parent.type === 'OptionalMemberExpression') &&
+        parent.object === n
+      )
+        return;
+      const props: string[] = [];
+      let base = n;
+      while (
+        base.type === 'MemberExpression' ||
+        base.type === 'OptionalMemberExpression'
+      ) {
+        props.unshift(base.computed ? '[]' : base.property.name);
+        base = base.object;
+      }
+      if (base.type !== 'Identifier') return;
       let category: FindingCategory | undefined;
-      if (obj.type === 'Identifier') {
-        if (obj.name === 'bo') category = 'legacy-bo';
-        else if (obj.name === 'colors') category = 'legacy-colors';
-        else if (obj.name === 'theme') {
-          const parent: any = path.parent;
-          const nextIsColors =
-            parent.type === 'MemberExpression' &&
-            parent.object === n &&
-            !parent.computed &&
-            n.property.name === 'colors';
-          category = nextIsColors ? 'legacy-colors' : 'legacy-theme';
-          if (nextIsColors) {
-            // Report the whole `theme.colors.x` read once, at the inner node.
-            mk(enclosingName(path))({
-              ...pos(parent),
-              raw: slice(parent),
-              category,
-            });
-            return;
-          }
-        }
+      // Any chain rooted at `theme` or `props.theme` is legacy-theme, with the
+      // whole chain as raw (so `theme.colors.x` is legacy-theme, not colors).
+      if (base.name === 'theme' && props.length >= 1) {
+        category = 'legacy-theme';
       } else if (
-        obj.type === 'MemberExpression' &&
-        obj.object.type === 'Identifier' &&
-        obj.object.name === 'props' &&
-        obj.property.name === 'theme'
+        base.name === 'props' &&
+        props[0] === 'theme' &&
+        props.length >= 2
       ) {
         category = 'legacy-theme';
+      } else if (legacyImports.has(base.name) && !ARRAY_METHODS.has(props[0])) {
+        category = legacyImports.get(base.name);
       }
       if (!category) return;
-      // `theme.colors` alone (not read further) is handled above only when
-      // followed by a member; a bare `theme.colors` falls through as theme.
       mk(enclosingName(path))({ ...pos(n), raw: slice(n), category });
     },
 
@@ -468,11 +509,19 @@ export const scanFile = (
     },
   });
 
-  return findings.sort(
+  const sorted = findings.sort(
     (a, b) =>
       a.line - b.line ||
       a.col - b.col ||
       a.category.localeCompare(b.category) ||
       a.raw.localeCompare(b.raw)
   );
+  return { findings: sorted };
 };
+
+/** Findings only; a file that does not parse yields []. Use scanFileResult to see the error. */
+export const scanFile = (
+  filePath: string,
+  source: string,
+  tokens: TokenMeta[]
+): Finding[] => scanFileResult(filePath, source, tokens).findings;
