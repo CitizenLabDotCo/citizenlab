@@ -1,18 +1,7 @@
 {
-  "stories": 121,
-  "diffs": [
-    {
-      "id": "foundations-spacing-radius-and-shadow--spacing-radius-shadow",
-      "viewport": "desktop",
-      "px": 703
-    },
-    {
-      "id": "foundations-spacing-radius-and-shadow--spacing-radius-shadow",
-      "viewport": "mobile",
-      "px": 703
-    }
-  ],
+  "stories": 177,
+  "diffs": [],
   "errors": [],
-  "retried": 2,
-  "generatedAt": "2026-10-22T20:10:06.784Z"
+  "retried": 0,
+  "generatedAt": "2026-10-22T21:58:27.126Z"
 }
