@@ -41,6 +41,9 @@ const config: StorybookConfig = {
     // We first need to upgrade our main app to react-router-dom >=6.4.0
     // This upgrade has breaking changes so those need to be dealt with first.
     // 'storybook-addon-react-router-v6',
+    '@storybook/addon-a11y',
+    // Hover, focus and active states through `parameters.pseudo`.
+    'storybook-addon-pseudo-states',
   ],
   framework: '@storybook/react-vite',
   core: {
