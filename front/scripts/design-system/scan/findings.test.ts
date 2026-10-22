@@ -147,6 +147,35 @@ describe('scanFile', () => {
   });
 });
 
+describe('style objects with computed or numeric keys', () => {
+  it('skips keys that are not plain names instead of throwing', () => {
+    const src = [
+      'const a = { b: "c" };',
+      'export const X = () => (',
+      '  <div style={{ [a.b]: "1px", 1: "2px", color: "red" }} />',
+      ');',
+    ].join('\n');
+    const f = scanFile('computed.tsx', src, TOKENS);
+    expect(f.map((x) => `${x.category}:${x.raw}`)).toEqual(['named-color:red']);
+  });
+});
+
+describe('typedStyled', () => {
+  it('scans typedStyled(Component) templates like styled ones', () => {
+    const src = [
+      "import Link, { typedStyled } from 'utils/cl-router/Link';",
+      'const Row = typedStyled(Link)`',
+      '  padding: 12px 0;',
+      '`;',
+    ].join('\n');
+    const f = scanFile('typed.tsx', src, TOKENS);
+    expect(f.map((x) => `${x.category}:${x.raw}:${x.line}`)).toEqual([
+      'styled-block:typedStyled(Link):2',
+      'px:12px:3',
+    ]);
+  });
+});
+
 describe('nearestToken', () => {
   it('prefers exact px matches then the closest', () => {
     expect(nearestToken('8px', 'px', TOKENS)).toEqual({

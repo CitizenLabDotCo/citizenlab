@@ -172,7 +172,7 @@ const blank = (c: string) => c.replace(/[^\n]/g, ' ');
 // `url(https://x)` or "http://x" is never read as a comment.
 const blankNonValues = (text: string) =>
   text
-    .replace(/url\(([^)]*)\)/gi, (m, body) => 'url(' + blank(body) + ')')
+    .replace(/url\(([^)]*)\)/gi, (_m, body) => 'url(' + blank(body) + ')')
     .replace(/(["'])(?:\\.|(?!\1)[^\\\n])*\1/g, blank)
     .replace(/\/\*[\s\S]*?\*\//g, blank)
     .replace(/\/\/[^\n]*/g, blank);
@@ -264,7 +264,8 @@ const rootsAtStyled = (node: any): boolean => {
   if (!node) return false;
   switch (node.type) {
     case 'Identifier':
-      return node.name === 'styled';
+      // `typedStyled` (utils/cl-router/Link) wraps styled() for typed links.
+      return node.name === 'styled' || node.name === 'typedStyled';
     case 'MemberExpression':
       return rootsAtStyled(node.object);
     case 'CallExpression':
@@ -300,22 +301,33 @@ export type ScanResult = { findings: Finding[]; parseError?: ParseError };
  * `.ts` files are parsed without the jsx plugin (so `<File>value` assertions
  * work); `.tsx`/`.jsx`/other files with it. Decorators (legacy) are enabled.
  */
+/**
+ * Parse with the scanner's options. Throws on a syntax error. Exported so the
+ * CLI can parse each file once and share the AST (imports, usages, findings).
+ */
+export const parseSource = (filePath: string, source: string) => {
+  const isPlainTs = /\.(ts|mts|cts)$/.test(filePath);
+  return parse(source, {
+    sourceType: 'module',
+    plugins: [
+      'typescript',
+      ...(isPlainTs ? [] : (['jsx'] as const)),
+      'decorators-legacy',
+    ],
+  });
+};
+
+export type ParsedFile = ReturnType<typeof parseSource>;
+
 export const scanFileResult = (
   filePath: string,
   source: string,
-  tokens: TokenMeta[]
+  tokens: TokenMeta[],
+  parsed?: ParsedFile
 ): ScanResult => {
-  const isPlainTs = /\.(ts|mts|cts)$/.test(filePath);
   let ast;
   try {
-    ast = parse(source, {
-      sourceType: 'module',
-      plugins: [
-        'typescript',
-        ...(isPlainTs ? [] : (['jsx'] as const)),
-        'decorators-legacy',
-      ],
-    });
+    ast = parsed ?? parseSource(filePath, source);
   } catch (e: any) {
     return {
       findings: [],
@@ -414,8 +426,9 @@ export const scanFileResult = (
         if (v.expression.type !== 'ObjectExpression') return;
         const emit = mk(element);
         v.expression.properties.forEach((p: any) => {
-          if (p.type !== 'ObjectProperty') return;
+          if (p.type !== 'ObjectProperty' || p.computed) return;
           const key = p.key.name ?? p.key.value;
+          if (typeof key !== 'string') return;
           const val = p.value;
           if (val.type === 'StringLiteral') {
             scanStringValue(val.value, val, key, emit);
