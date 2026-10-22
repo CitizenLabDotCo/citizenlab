@@ -1,9 +1,13 @@
+import React from 'react';
+
 import { Meta, StoryObj } from '@storybook/react';
 
 import Text from './';
 
 const meta = {
-  title: 'Components/Text',
+  title: 'Components/Typography/Text',
+  tags: ['shared'],
+  parameters: { gv: {} },
   component: Text,
 } satisfies Meta<typeof Text>;
 
@@ -64,4 +68,35 @@ export const BackOfficeMicro: Story = {
     children: 'Micro / hint',
     variant: 'boMicro',
   },
+};
+
+export const Default: Story = {
+  args: {
+    children: 'Participants can submit ideas and vote on them.',
+    variant: 'bodyM',
+  },
+};
+
+export const LongContent: Story = {
+  args: {
+    variant: 'bodyM',
+    children: 'Participants can submit ideas, comment on each other\'s ideas and vote on the ones they want to see in the next budget cycle, for as long as the phase stays open to the whole community',
+  },
+  render: (args) => (
+    <div style={{ width: '320px' }}>
+      <Text {...args} />
+    </div>
+  ),
+};
+
+export const RTL: Story = {
+  args: {
+    variant: 'bodyM',
+    children: 'يمكن للمشاركين إرسال الأفكار والتصويت عليها.',
+  },
+  render: (args) => (
+    <div dir="rtl">
+      <Text {...args} />
+    </div>
+  ),
 };
