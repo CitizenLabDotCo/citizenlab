@@ -14,7 +14,10 @@ import { RouteRef } from './schema';
  * of `containers/` or `modules/` files. A route's files are the transitive
  * import closure (static, re-export and dynamic imports) of its pages. The
  * closure never enters a route file, since route files import every page
- * (pages import them for link helpers).
+ * (pages import them for link helpers). A named import from a barrel (a
+ * module of only imports and re-exports, such as the component library's
+ * index) follows each name to the file that defines it, so a page that
+ * imports `colors` from the library does not count every library component.
  *
  * Module routes (`routes: { 'admin.tools': [...] }` in app/modules) are added
  * under the route that the area's factory hands to `parseModuleRoutes`, only
@@ -191,6 +194,29 @@ export class Resolver {
   }
 }
 
+export type BarrelInfo = {
+  named: Map<string, { file: string; name: string }>;
+  // Names exported as types only (`export type { X }`): no runtime file.
+  types: Set<string>;
+  stars: string[];
+};
+
+const BARREL_NODES = new Set([
+  'ImportDeclaration',
+  'ExportAllDeclaration',
+  'TSTypeAliasDeclaration',
+  'TSInterfaceDeclaration',
+]);
+
+// A top-level statement a pass-through barrel may contain: imports,
+// re-exports without a declaration of their own, and types.
+const isBarrelNode = (n: any) =>
+  BARREL_NODES.has(n.type) ||
+  (n.type === 'ExportNamedDeclaration' &&
+    (!n.declaration ||
+      n.exportKind === 'type' ||
+      BARREL_NODES.has(n.declaration.type)));
+
 /** Parses and caches files of one tree; shared by routes, usages and the CLI. */
 export class SourceTree {
   readonly files: string[];
@@ -198,6 +224,7 @@ export class SourceTree {
   private sources = new Map<string, string>();
   private asts = new Map<string, ParsedFile | null>();
   private imports = new Map<string, ImportRef[]>();
+  private barrels = new Map<string, BarrelInfo | null>();
   readonly parseErrors = new Map<string, string>();
 
   constructor(readonly rootDir: string, files?: string[]) {
@@ -254,6 +281,73 @@ export class SourceTree {
       if (r) out.push(r);
     });
     return out;
+  }
+
+  /**
+   * The export map of a barrel: a module made only of imports, re-exports
+   * and type declarations (such as app/component-library/index.tsx). Maps
+   * each exported name to the file and name it comes from. Null for any
+   * other module.
+   */
+  barrel(rel: string): BarrelInfo | null {
+    if (this.barrels.has(rel))
+      return this.barrels.get(rel) as BarrelInfo | null;
+    const ast = this.ast(rel);
+    let info: BarrelInfo | null = null;
+    if (
+      ast &&
+      ast.program.body.length > 0 &&
+      ast.program.body.every(isBarrelNode)
+    ) {
+      const local = new Map<string, { file: string; name: string }>();
+      this.importsOf(rel).forEach((i) => {
+        const file = this.resolver.resolve(rel, i.spec);
+        if (!file || i.dynamic) return;
+        i.names.forEach((n) => local.set(n.local, { file, name: n.imported }));
+      });
+      const named = new Map<string, { file: string; name: string }>();
+      const stars: string[] = [];
+      const types = new Set<string>();
+      ast.program.body.forEach((n: any) => {
+        if (n.type === 'ExportAllDeclaration') {
+          const file = this.resolver.resolve(rel, n.source.value);
+          if (file) stars.push(file);
+          return;
+        }
+        if (n.type !== 'ExportNamedDeclaration') return;
+        if (n.exportKind === 'type' || n.declaration) {
+          (n.specifiers ?? []).forEach((sp: any) =>
+            types.add(sp.exported.name ?? sp.exported.value)
+          );
+          if (n.declaration?.id?.name) types.add(n.declaration.id.name);
+          return;
+        }
+        const from = n.source
+          ? this.resolver.resolve(rel, n.source.value)
+          : undefined;
+        (n.specifiers ?? []).forEach((sp: any) => {
+          const exported = sp.exported.name ?? sp.exported.value;
+          if (sp.exportKind === 'type') {
+            types.add(exported);
+            return;
+          }
+          if (n.source) {
+            if (!from) return;
+            const name =
+              sp.type === 'ExportNamespaceSpecifier'
+                ? '*'
+                : sp.local?.name ?? sp.local?.value ?? 'default';
+            named.set(exported, { file: from, name });
+          } else {
+            const target = local.get(sp.local.name);
+            if (target) named.set(exported, target);
+          }
+        });
+      });
+      info = { named, types, stars };
+    }
+    this.barrels.set(rel, info);
+    return info;
   }
 
   /** Drop cached ASTs (keeps imports) to bound memory on the whole tree. */
@@ -651,6 +745,55 @@ export const mapRoutes = (rootDir: string, tree?: SourceTree): RouteMap => {
     });
   });
 
+  // The files a named import of `barrel` really needs: each name followed
+  // through the barrel (and nested barrels) to the module that defines it.
+  // A name that cannot be followed includes the barrel whole.
+  const throughBarrel = (barrel: string, name: string, depth = 0): string[] => {
+    const info = t.barrel(barrel);
+    if (!info || depth > 8) return [barrel];
+    if (info.types.has(name) && !info.named.has(name)) return [];
+    const hit = info.named.get(name);
+    if (hit) {
+      if (hit.name !== '*' && t.barrel(hit.file)) {
+        return throughBarrel(hit.file, hit.name, depth + 1);
+      }
+      return [hit.file];
+    }
+    for (const star of info.stars) {
+      const sub = t.barrel(star);
+      if (sub && (sub.named.has(name) || sub.stars.length > 0)) {
+        const found = throughBarrel(star, name, depth + 1);
+        if (!found.includes(star)) return found;
+      }
+    }
+    return [barrel];
+  };
+
+  // Runtime dependencies of a file, with named imports from a barrel
+  // narrowed to the modules they name. Whole-module imports (namespace,
+  // side effect, dynamic, `export * from`) keep the whole barrel.
+  const depsThroughBarrels = (rel: string): string[] => {
+    const out: string[] = [];
+    t.importsOf(rel).forEach((i) => {
+      if (i.typeOnly) return;
+      const runtime = i.names.filter((n) => !n.typeOnly);
+      if (!i.dynamic && i.names.length > 0 && runtime.length === 0) return;
+      const r = t.resolver.resolve(rel, i.spec);
+      if (!r) return;
+      if (
+        !i.dynamic &&
+        runtime.length > 0 &&
+        runtime.every((n) => n.imported !== '*') &&
+        t.barrel(r)
+      ) {
+        runtime.forEach((n) => out.push(...throughBarrel(r, n.imported)));
+      } else {
+        out.push(r);
+      }
+    });
+    return out;
+  };
+
   const closure = (entries: Iterable<string>): string[] => {
     const seen = new Set<string>();
     const stack = [...entries];
@@ -658,7 +801,7 @@ export const mapRoutes = (rootDir: string, tree?: SourceTree): RouteMap => {
       const f = stack.pop() as string;
       if (seen.has(f) || isBoundary(f)) continue;
       seen.add(f);
-      t.depsOf(f).forEach((d) => {
+      depsThroughBarrels(f).forEach((d) => {
         if (!seen.has(d)) stack.push(d);
       });
     }

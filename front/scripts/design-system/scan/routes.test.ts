@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { isScannedSource, mapRoutes } from './routes';
+import { isScannedSource, mapRoutes, SourceTree } from './routes';
 import { libraryUsages } from './usages';
 
 const ROOT = path.join(__dirname, '..', 'fixtures', 'routes');
@@ -38,7 +38,6 @@ describe('mapRoutes', () => {
       result.routeFiles['admin/projects/$projectId/phases/$phaseId']
     ).toEqual([
       'app/component-library/components/Box/index.tsx',
-      'app/component-library/index.tsx',
       'app/component-library/utils/styleUtils.ts',
       'app/containers/Admin/projects/project/phase/Tabs.tsx',
       'app/containers/Admin/projects/project/phase/index.tsx',
@@ -48,6 +47,16 @@ describe('mapRoutes', () => {
       'app/components/Hero/index.tsx',
       'app/containers/HomePage/index.tsx',
     ]);
+  });
+
+  it('follows named imports through the library barrel, not the whole barrel', () => {
+    // The phase page imports { Box, colors } from the barrel, which also
+    // exports Accordion: only Box and styleUtils are rendered there.
+    const all = Object.values(result.routeFiles).flat();
+    expect(all).not.toContain(
+      'app/component-library/components/Accordion/index.tsx'
+    );
+    expect(all).not.toContain('app/component-library/index.tsx');
   });
 
   it('lists a file that no route imports (an orphan component) as unmapped', () => {
@@ -111,5 +120,46 @@ describe('isScannedSource', () => {
   it('skips the generated token module, which defines tokens', () => {
     expect(isScannedSource('app/design-system/tokens/tokens.ts')).toBe(false);
     expect(isScannedSource('app/design-system/Mode.tsx')).toBe(true);
+  });
+});
+
+describe('SourceTree.barrel', () => {
+  const tree = (sources: Record<string, string>) => {
+    const t = new SourceTree('/nonexistent', Object.keys(sources));
+    Object.entries(sources).forEach(([f, src]) => t.setSource(f, src));
+    return t;
+  };
+
+  it('maps exported names to the files that define them', () => {
+    const t = tree({
+      'app/lib/index.ts': [
+        "import A from './a';",
+        "import { b as B } from './b';",
+        "export { default as C } from './c';",
+        "export * from './d';",
+        'export type { T } from "./a";',
+        'export { A, B };',
+      ].join('\n'),
+      'app/lib/a.ts': 'export default 1; export type T = 1;',
+      'app/lib/b.ts': 'export const b = 1;',
+      'app/lib/c.ts': 'export default 1;',
+      'app/lib/d.ts': 'export const d = 1;',
+    });
+    const info = t.barrel('app/lib/index.ts');
+    expect(info && Object.fromEntries(info.named)).toEqual({
+      A: { file: 'app/lib/a.ts', name: 'default' },
+      B: { file: 'app/lib/b.ts', name: 'b' },
+      C: { file: 'app/lib/c.ts', name: 'default' },
+    });
+    expect(info?.stars).toEqual(['app/lib/d.ts']);
+    expect([...(info?.types ?? [])]).toEqual(['T']);
+  });
+
+  it('is null for a module with code of its own', () => {
+    const t = tree({
+      'app/lib/index.ts': "import A from './a';\nexport const x = A + 1;",
+      'app/lib/a.ts': 'export default 1;',
+    });
+    expect(t.barrel('app/lib/index.ts')).toBeNull();
   });
 });

@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-22T19:21:16.478Z",
-  "commit": "38fbd2e431fa27a51dc19c107c7fe57d3789aba9",
-  "offSpec": 8250,
+  "generatedAt": "2026-10-22T21:22:58.265Z",
+  "commit": "f3d3fcd5b6f5b3b9704d38f76e462569efec6b5b",
+  "offSpec": 8242,
   "legacy": 3274,
-  "tokenReads": 0,
+  "tokenReads": 1,
   "components": 37,
   "onTokens": 6,
   "partly": 0,
