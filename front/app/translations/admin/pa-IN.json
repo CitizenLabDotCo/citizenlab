@@ -4622,7 +4622,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "ਚੁਣੇ ਗਏ ਪ੍ਰੋਜੈਕਟ ਅਤੇ ਫੋਲਡਰ",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidget": "ਇਸ ਵਿਜੇਟ ਨਾਲ, ਤੁਸੀਂ ਉਸ ਕ੍ਰਮ ਨੂੰ ਚੁਣ ਸਕਦੇ ਹੋ ਅਤੇ ਨਿਰਧਾਰਤ ਕਰ ਸਕਦੇ ਹੋ ਜਿਸ ਵਿੱਚ ਤੁਸੀਂ ਪ੍ਰੋਜੈਕਟ ਜਾਂ ਫੋਲਡਰਾਂ ਨੂੰ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਦਿਖਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ।",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidgetFolder": "ਇਸ ਵਿਜੇਟ ਨਾਲ, ਤੁਸੀਂ ਉਸ ਕ੍ਰਮ ਨੂੰ ਚੁਣ ਸਕਦੇ ਹੋ ਅਤੇ ਨਿਰਧਾਰਤ ਕਰ ਸਕਦੇ ਹੋ ਜਿਸ ਵਿੱਚ ਤੁਸੀਂ ਇਸ ਫੋਲਡਰ ਤੋਂ ਪ੍ਰੋਜੈਕਟ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ ਦਿਖਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ।",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} ਪ੍ਰੋਜੈਕਟ",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects, plural, one {# ਪ੍ਰੋਜੈਕਟ} other {# ਪ੍ਰੋਜੈਕਟ}}",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "ਸਾਡੇ ਸਹਾਇਤਾ ਕੇਂਦਰ 'ਤੇ ਜਾਓ",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "ਸਿਫ਼ਾਰਿਸ਼ ਕੀਤੇ ਚਿੱਤਰ ਰੈਜ਼ੋਲਿਊਸ਼ਨ ਬਾਰੇ ਹੋਰ ਜਾਣਕਾਰੀ ਲਈ, {supportPageLink}."

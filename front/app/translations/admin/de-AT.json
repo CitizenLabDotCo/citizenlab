@@ -4622,7 +4622,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Ausgewählte Projekte und Ordner",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidget": "Mit diesem Widget können Sie die Reihenfolge auswählen und festlegen, in der die Projekte oder Ordner den Nutzer*innen angezeigt werden sollen.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidgetFolder": "Mit diesem Widget können Sie die Reihenfolge auswählen und festlegen, in der die Projekte aus diesem Ordner den Nutzer*innen angezeigt werden sollen.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} Projekte",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects, plural, one {# Projekt} other {# Projekte}}",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "unserer Wissensdatenbank",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/de/articles/527652-was-sind-die-empfohlenen-abmessungen-und-grossen-der-plattformbilder",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Weitere Informationen zu empfohlenen Bildauflösungen finden Sie in {supportPageLink}."

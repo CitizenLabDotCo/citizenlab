@@ -4622,7 +4622,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Tionscadail agus fillteáin roghnaithe",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidget": "Leis an ngiuirléid seo, is féidir leat an t-ord inar mian leat tionscadail nó fillteáin a thaispeáint d’úsáideoirí a roghnú agus a chinneadh.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidgetFolder": "Leis an ngiuirléid seo, is féidir leat an t-ord ina mbeidh tionscadail ón bhfillteán seo le feiceáil d’úsáideoirí a roghnú agus a chinneadh.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "tionscadail {numberOfProjects}",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects, plural, one {# tionscadal} two {# thionscadal} few {# thionscadal} many {# dtionscadal} other {# tionscadal}}",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "tabhair cuairt ar ár n-ionad tacaíochta",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Chun tuilleadh eolais a fháil faoi réitigh íomhá molta, {supportPageLink}."
