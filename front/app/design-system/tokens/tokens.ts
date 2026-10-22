@@ -2,6 +2,7 @@
 
 export const MODES = ['today', 'redesign'] as const;
 
+// ts-prune-ignore-next
 export type Mode = (typeof MODES)[number];
 
 export type TokenName =
@@ -207,6 +208,7 @@ export type TokenName =
   | '--gv-focus-outline'
   | '--gv-focus-halo';
 
+// ts-prune-ignore-next
 export const t = {
   color: {
     black: 'var(--gv-black)',
@@ -421,4 +423,5 @@ export const t = {
   },
 } as const;
 
+// ts-prune-ignore-next
 export const cssVar = (name: TokenName): string => `var(${name})`;

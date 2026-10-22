@@ -1,4 +1,4 @@
-import { execFileSync } from 'child_process';
+import { spawnSync } from 'child_process';
 import {
   PIXELMATCH_OPTIONS,
   buildSummary,
@@ -62,8 +62,6 @@ describe('visual summary', () => {
   // synthetic anti-aliased rounded squares.
   it('counts a small corner radius change', () => {
     const script = `
-      const pm = require('pixelmatch');
-      const pixelmatch = pm.default || pm;
       const N = 40;
       const render = (r) => {
         const d = new Uint8Array(N * N * 4);
@@ -84,17 +82,23 @@ describe('visual summary', () => {
         return d;
       };
       const opts = JSON.parse(process.argv[1]);
-      console.log(pixelmatch(render(3), render(5), null, N, N, opts));
-      console.log(pixelmatch(render(3), render(3), null, N, N, opts));
+      import('pixelmatch').then((pm) => {
+        const pixelmatch = pm.default || pm;
+        console.log(pixelmatch(render(3), render(5), null, N, N, opts));
+        console.log(pixelmatch(render(3), render(3), null, N, N, opts));
+      }).catch((e) => { console.error(e); process.exit(1); });
     `;
-    const out = execFileSync(
+    const child = spawnSync(
       process.execPath,
       ['-e', script, JSON.stringify(PIXELMATCH_OPTIONS)],
       { encoding: 'utf8' }
-    )
-      .trim()
-      .split('\n')
-      .map(Number);
+    );
+    const out = child.stdout.trim().split('\n').map(Number);
+    if (out.length !== 2 || out.some((n) => Number.isNaN(n))) {
+      throw new Error(
+        `pixelmatch child failed (status ${child.status}): ${child.stderr}`
+      );
+    }
     expect(out[0]).toBeGreaterThan(0);
     expect(out[1]).toBe(0);
   });
