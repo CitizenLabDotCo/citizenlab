@@ -10,7 +10,9 @@ import { MINIMAL_VIEWPORTS } from 'storybook/viewport';
 import { IntlProvider } from 'react-intl';
 import { JSX } from 'react/jsx-runtime';
 
-initialize();
+// Relative URL so the worker also loads when Storybook is served from a
+// sub-path (e.g. /storybook/ in epic previews).
+initialize({ serviceWorker: { url: './mockServiceWorker.js' } });
 
 const routerDecorator = (Story: () => JSX.Element) => (
   <MemoryRouter>
