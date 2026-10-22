@@ -3,13 +3,11 @@
 //   npm run ds:visual -- --baseline <dir> --url http://localhost:6006
 //   npm run ds:visual -- --compare  <dir> --url http://localhost:6006 [--allow-px N]
 //
-// Playwright is not a repo dependency. Point GV_PLAYWRIGHT_DIR at a directory
-// that contains node_modules/playwright, or install playwright so that a
-// normal require resolves it. Browsers come from PLAYWRIGHT_BROWSERS_PATH.
+// Playwright is loaded through ./playwright (see there for GV_PLAYWRIGHT_DIR).
 import fs from 'fs';
-import { createRequire } from 'module';
 import path from 'path';
 
+import { loadPlaywright } from './playwright';
 import {
   buildSummary,
   parseArgs,
@@ -24,25 +22,6 @@ const SUMMARY_PATH = path.resolve(
 );
 
 const NO_ANIMATION_CSS = `*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important;scroll-behavior:auto!important}`;
-
-const loadPlaywright = () => {
-  const dir = process.env.GV_PLAYWRIGHT_DIR;
-  const tries = [
-    () => createRequire(path.join(dir as string, 'noop.js'))('playwright'),
-    () => require('playwright'),
-  ];
-  for (const t of dir ? tries : tries.slice(1)) {
-    try {
-      return t();
-    } catch {
-      // try the next resolution
-    }
-  }
-  console.error(
-    'Playwright not found. Set GV_PLAYWRIGHT_DIR to a directory containing node_modules/playwright (and PLAYWRIGHT_BROWSERS_PATH to its browsers), or install playwright.'
-  );
-  process.exit(2);
-};
 
 type Result = { id: string; viewport: string; px?: number; error?: string };
 

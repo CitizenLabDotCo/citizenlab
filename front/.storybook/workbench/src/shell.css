@@ -1,0 +1,158 @@
+/* Chrome of the workbench shell. Uses the --gv-* tokens of today's mode. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: var(--gv-bo-font);
+  font-size: var(--gv-fs-s);
+  line-height: 1.5;
+  color: var(--gv-text-primary);
+  background: var(--gv-white);
+}
+
+.wb-shell {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  height: 100%;
+}
+
+.wb-shell-with-panel {
+  grid-template-columns: 240px minmax(0, 1fr) 320px;
+}
+
+.wb-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-3);
+  padding: var(--gv-space-4) var(--gv-space-3);
+  background: var(--gv-grey-100);
+  border-right: 1px solid var(--gv-divider);
+  overflow-y: auto;
+}
+
+.wb-brand {
+  padding: 0 var(--gv-space-2);
+  font-size: var(--gv-fs-m);
+  font-weight: 600;
+  color: var(--gv-text-heading);
+}
+
+.wb-search input {
+  width: 100%;
+  height: 36px;
+  padding: 0 var(--gv-space-3);
+  font: inherit;
+  color: inherit;
+  background: var(--gv-white);
+  border: 1px solid var(--gv-border-light);
+  border-radius: var(--gv-radius-1);
+}
+
+.wb-search input:focus-visible,
+.wb-nav-list a:focus-visible,
+.wb-main a:focus-visible {
+  outline: var(--gv-focus-width) solid var(--gv-focus-color);
+  outline-offset: var(--gv-focus-offset);
+}
+
+.wb-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wb-nav-list a {
+  display: block;
+  padding: var(--gv-space-2);
+  color: var(--gv-text-primary);
+  text-decoration: none;
+  border-radius: var(--gv-radius-1);
+}
+
+.wb-nav-list a:hover {
+  background: var(--gv-grey-200);
+}
+
+.wb-nav-list a[aria-current='page'] {
+  font-weight: 600;
+  color: var(--gv-primary);
+  background: var(--gv-blue-10);
+}
+
+.wb-nav-empty {
+  padding: var(--gv-space-2);
+  color: var(--gv-text-secondary);
+}
+
+.wb-main {
+  overflow-y: auto;
+  padding: var(--gv-space-8) var(--gv-space-10);
+}
+
+.wb-page {
+  max-width: var(--gv-text-width);
+}
+
+.wb-page h1 {
+  margin: 0 0 var(--gv-space-4);
+  font-size: var(--gv-fs-xxl);
+  line-height: 1.25;
+  color: var(--gv-text-heading);
+}
+
+.wb-page h2 {
+  margin: var(--gv-space-8) 0 var(--gv-space-2);
+  font-size: var(--gv-fs-l);
+  color: var(--gv-text-heading);
+}
+
+.wb-page a {
+  color: var(--gv-primary);
+}
+
+.wb-page code {
+  font-size: var(--gv-fs-xs);
+  padding: 0 var(--gv-space-1);
+  background: var(--gv-grey-100);
+  border-radius: var(--gv-radius-1);
+}
+
+.wb-muted {
+  color: var(--gv-text-secondary);
+}
+
+.wb-panels {
+  overflow-y: auto;
+  padding: var(--gv-space-4);
+  background: var(--gv-white);
+  border-left: 1px solid var(--gv-divider);
+}
+
+.wb-panel h2 {
+  margin: 0 0 var(--gv-space-2);
+  font-size: var(--gv-fs-s);
+  font-weight: 600;
+  color: var(--gv-text-heading);
+}
+
+.wb-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

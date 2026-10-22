@@ -10,5 +10,6 @@ Run from `front/` with Node 24 (the repo's engines requirement). Scripts run thr
 - `npm run ds:a11y`: run the accessibility checks on stories. Not implemented yet, exits 1.
 - `npm run ds:visual`: run visual comparison of stories. Not implemented yet, exits 1.
 - `npm run ds:audit`: run the full audit. Not implemented yet, exits 1.
-- `npm run ds:workbench`: build the workbench data for Storybook. Stub for now, exits 0.
+- `npm run ds:workbench`: build the workbench shell (`.storybook/workbench/`, React + Vite) into `.storybook/static/workbench/`, which Storybook copies into its output, so it is served at `<storybook>/workbench/`. It reads `design-scan.json`, `index.json` and the other data files at runtime from one level up and lists any that are missing on Start here. `npm run ds:workbench:typecheck` typechecks it (the app typecheck does not cover `.storybook/`).
+- `npm run ds:smoke -- --dir <storybook output> [--screenshot <file.png>]`: serve a built Storybook locally, open `/workbench/#/start` in Chromium and check the nav, the pages and the console. Needs Playwright (see `playwright.ts`: `GV_PLAYWRIGHT_DIR`, `PLAYWRIGHT_BROWSERS_PATH`).
 - `npm run prebuild-storybook`: runs `ds:tokens`, `ds:scan`, `ds:changes` and `ds:workbench` in order; npm runs it before `build-storybook`. Every step must exit 0 even with missing inputs, a shallow clone or no `master` ref.
