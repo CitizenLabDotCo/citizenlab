@@ -83,16 +83,12 @@ export const WithPlaceholder: Story = {
 
 export const Hover: Story = {
   args: WithSelectedOption.args,
-  parameters: { pseudo: { hover: true } },
+  parameters: { pseudo: { hover: ['select'] } },
 };
 
 export const Focus: Story = {
   args: WithSelectedOption.args,
-  parameters: { pseudo: { focus: true, focusVisible: true } },
-};
-
-export const Error: Story = {
-  args: { ...WithLabel.args, ariaInvalid: true },
+  parameters: { pseudo: { focusVisible: ['select'] } },
 };
 
 export const LongContent: Story = {
@@ -119,6 +115,7 @@ export const LongContent: Story = {
 };
 
 export const RTL: Story = {
+  globals: { lang: 'ar' },
   args: {
     options: [{ value: 'a', label: 'الخيار الأول' }],
     value: { value: 'a', label: 'الخيار الأول' },
@@ -126,7 +123,7 @@ export const RTL: Story = {
     onChange: () => {},
   },
   render: (args) => (
-    <div dir="rtl" style={{ width: '280px' }}>
+    <div style={{ width: '280px' }}>
       <Select {...args} />
     </div>
   ),
