@@ -39,20 +39,23 @@ describe('pickButtonStory', () => {
   it('prefers the primary Button story', () => {
     const index = {
       entries: Object.fromEntries([
-        entry('components-button--docs', 'docs'),
-        entry('components-button--delete'),
-        entry('components-button--primary'),
+        entry('components-actions-button--docs', 'docs'),
+        entry('components-actions-iconbutton--default'),
+        entry('components-actions-button--delete'),
+        entry('components-actions-button--primary'),
       ]),
     };
-    expect(pickButtonStory(index)).toBe('components-button--primary');
+    expect(pickButtonStory(index)).toBe('components-actions-button--primary');
   });
 
   it('falls back to any Button story, else null', () => {
     expect(
       pickButtonStory({
-        entries: Object.fromEntries([entry('components-button--white')]),
+        entries: Object.fromEntries([
+          entry('components-actions-button--white'),
+        ]),
       })
-    ).toBe('components-button--white');
+    ).toBe('components-actions-button--white');
     expect(pickButtonStory({ entries: {} })).toBeNull();
     expect(pickButtonStory(null)).toBeNull();
   });

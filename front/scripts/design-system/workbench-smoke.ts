@@ -48,14 +48,17 @@ const ROUTES: [string, string][] = [
 const RADIUS_TOKEN = '--gv-radius-control';
 const RADIUS_OVERRIDE = '20px';
 
+// Story ids are components-<category>-button--<story> (or without a category).
+const BUTTON_STORY = /^components-([a-z0-9]+-)*button--/;
+
 // A Button story from the build's index.json, primary first.
 export const pickButtonStory = (index: unknown): string | null => {
   const entries = Object.values(
     (index as { entries?: Record<string, { id: string; type?: string }> })
       ?.entries ?? {}
-  ).filter((e) => e.type === 'story' && e.id.startsWith('components-button--'));
+  ).filter((e) => e.type === 'story' && BUTTON_STORY.test(e.id));
   return (
-    entries.find((e) => e.id === 'components-button--primary')?.id ??
+    entries.find((e) => e.id.endsWith('-button--primary'))?.id ??
     entries[0]?.id ??
     null
   );
@@ -418,7 +421,7 @@ const main = async () => {
     });
 
     if (!storyId) {
-      failures.push('index.json has no components-button story');
+      failures.push('index.json has no Button story');
     } else {
       await canvasChecks(page, base, storyId, failures, canvasScreenshot);
     }
