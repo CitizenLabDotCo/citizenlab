@@ -24,6 +24,17 @@ export const EXPECTED_NAV = [
   'Proposal',
 ];
 
+const ROUTES: [string, string][] = [
+  ['#/foundations', 'Foundations'],
+  ['#/foundations/color', 'Foundations: color'],
+  ['#/components', 'Components'],
+  ['#/patterns', 'Patterns'],
+  ['#/pages', 'Pages'],
+  ['#/review', 'Review'],
+  ['#/proposal', 'Proposal'],
+  ['#/components/x--y', 'Component: x--y'],
+];
+
 const OPTIONAL_DATA = [
   '/design-scan.json',
   '/design-changes.json',
@@ -50,15 +61,30 @@ const arg = (name: string) => {
   return i > -1 ? process.argv[i + 1] : undefined;
 };
 
+// The file under `root` that a request path names, or null when the path is
+// malformed or points outside `root` (`..`, encoded slashes, sibling folders).
+export const resolveStaticPath = (
+  root: string,
+  reqUrl: string
+): string | null => {
+  let urlPath: string;
+  try {
+    urlPath = decodeURIComponent(new URL(reqUrl, 'http://x').pathname);
+  } catch {
+    return null;
+  }
+  const file = path.resolve(root, `.${urlPath}`);
+  const rel = path.relative(root, file);
+  if (rel.startsWith('..') || path.isAbsolute(rel)) return null;
+  return file;
+};
+
 const serve = (root: string): Promise<http.Server> =>
   new Promise((resolve) => {
     const server = http.createServer((req, res) => {
-      const urlPath = decodeURIComponent(
-        new URL(req.url ?? '/', 'http://x').pathname
-      );
-      let file = path.join(root, urlPath);
-      if (!file.startsWith(root)) {
-        res.writeHead(403).end();
+      let file = resolveStaticPath(root, req.url ?? '/');
+      if (!file) {
+        res.writeHead(400).end();
         return;
       }
       if (fs.existsSync(file) && fs.statSync(file).isDirectory()) {
@@ -71,7 +97,9 @@ const serve = (root: string): Promise<http.Server> =>
       res.writeHead(200, {
         'Content-Type': TYPES[path.extname(file)] ?? 'application/octet-stream',
       });
-      fs.createReadStream(file).pipe(res);
+      fs.createReadStream(file)
+        .on('error', () => res.destroy())
+        .pipe(res);
     });
     server.listen(0, '127.0.0.1', () => resolve(server));
   });
@@ -145,19 +173,18 @@ const main = async () => {
       console.log(`screenshot: ${path.resolve(screenshot)}`);
     }
 
-    // Every route renders without errors.
-    for (const hash of [
-      '#/foundations',
-      '#/foundations/color',
-      '#/components',
-      '#/components/x--y',
-      '#/patterns',
-      '#/pages',
-      '#/review',
-      '#/proposal',
-    ]) {
+    // Every route renders its own page (hash changes are same-document
+    // navigations, so wait for the expected heading, not just any h1).
+    for (const [hash, heading] of ROUTES) {
       await page.goto(`${base}/workbench/${hash}`);
-      await page.waitForSelector('main h1', { timeout: 5000 });
+      await page.waitForFunction(
+        (h: string) => document.querySelector('main h1')?.textContent === h,
+        heading,
+        { timeout: 5000 }
+      );
+    }
+    if (!(await page.isVisible('aside[aria-label="Panels"] h2'))) {
+      failures.push('the panel column is not shown on a component page');
     }
   } catch (e) {
     failures.push(`smoke run failed: ${(e as Error).message}`);

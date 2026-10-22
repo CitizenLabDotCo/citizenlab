@@ -11,13 +11,23 @@ const StartHere = () => {
 
   useEffect(() => {
     let live = true;
-    loadAll().then(([, tokens, index]) => {
-      if (!live) return;
-      const stories = Object.values(index.entries).filter(
-        (e) => e.type !== 'docs'
-      ).length;
-      setState({ stories, tokens: tokens.length, missing: [...missing] });
-    });
+    loadAll()
+      .then(([, tokens, index]) => {
+        if (!live) return;
+        // index.json may be valid JSON of another shape: count what is there.
+        const stories = Object.values(index?.entries ?? {}).filter(
+          (e) => e?.type !== 'docs'
+        ).length;
+        setState({ stories, tokens: tokens.length, missing: [...missing] });
+      })
+      .catch(() => {
+        if (!live) return;
+        setState({
+          stories: 0,
+          tokens: 0,
+          missing: [...missing, 'index.json (unreadable)'],
+        });
+      });
     return () => {
       live = false;
     };

@@ -59,7 +59,7 @@
     "ds:a11y": "echo \"todo: ds:a11y\" && exit 1",
     "ds:visual": "tsx scripts/design-system/visual-run.ts",
     "ds:audit": "echo \"todo: ds:audit\" && exit 1",
-    "ds:prepare": "npm run ds:tokens && npm run ds:scan && npm run ds:changes && npm run ds:workbench"
+    "ds:prepare": "(npm run ds:tokens && npm run ds:scan && npm run ds:changes); npm run ds:workbench"
   },
   "jest-junit": {
     "addFileAttribute": "true"
