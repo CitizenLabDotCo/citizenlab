@@ -1,0 +1,17 @@
+{
+  "stories": 121,
+  "diffs": [
+    {
+      "id": "foundations-spacing-radius-and-shadow--spacing-radius-shadow",
+      "viewport": "desktop",
+      "px": 471
+    },
+    {
+      "id": "foundations-spacing-radius-and-shadow--spacing-radius-shadow",
+      "viewport": "mobile",
+      "px": 471
+    }
+  ],
+  "errors": [],
+  "generatedAt": "2026-10-22T20:02:06.984Z"
+}
