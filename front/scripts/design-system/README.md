@@ -1,6 +1,6 @@
 # Design system workbench scripts
 
-Run from `front/` with Node 24 (`export PATH=/srv/bots/Storybook/role/tools/node24/bin:$PATH` on the build machine). Scripts run through `tsx`.
+Run from `front/` with Node 24 (the repo's engines requirement). Scripts run through `tsx`.
 
 - `npm run ds:tokens`: generate the token CSS (`-- --check` verifies it is up to date). Stub for now, exits 0.
 - `npm run ds:check`: `ds:tokens -- --check` followed by `ds:lint`.
