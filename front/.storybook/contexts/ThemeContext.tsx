@@ -10,12 +10,16 @@ import { CityKey, cityTenant } from '../cities';
 
 const ThemeContext = ({
   city = 'default',
+  lang = 'en',
   children,
 }: {
   city?: CityKey;
+  lang?: string;
   children: React.ReactNode;
 }) => (
-  <ThemeProvider theme={getTheme(cityTenant(city))}>
+  <ThemeProvider
+    theme={{ ...getTheme(cityTenant(city)), isRtl: lang.startsWith('ar') }}
+  >
     <GlobalStyle />
     {children}
   </ThemeProvider>

@@ -30,7 +30,7 @@ export default (Story, context) => {
     <QueryClientProvider client={queryClient}>
       <OutletsContext.Provider value={EMPTY_OBJ}>
         <ResetCacheContext>
-          <ThemeContext city={context.globals.city}>
+          <ThemeContext city={context.globals.city} lang={context.globals.lang}>
             <Portals />
             <div
               style={{
@@ -42,7 +42,8 @@ export default (Story, context) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-              }}>
+              }}
+            >
               <Story />
             </div>
           </ThemeContext>

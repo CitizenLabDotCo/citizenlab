@@ -14,6 +14,9 @@ const messages = {
   'de-AT': { ...deAT, ...deATAdmin },
   'nl-BE': { ...nlBE, ...nlBEAdmin },
   'fr-BE': { ...frBE, ...frBEAdmin },
+  // Right-to-left check: English messages, since the app has no Arabic file.
+  // Setting this language turns on theme.isRtl, like App/index.tsx does.
+  ar: { ...en, ...enAdmin },
 };
 
 export type StorybookLocale = keyof typeof messages;
