@@ -78,12 +78,12 @@ export const Password: Story = {
 
 export const Hover: Story = {
   args: Default.args,
-  parameters: { pseudo: { hover: true } },
+  parameters: { pseudo: { hover: ['input'] } },
 };
 
 export const Focus: Story = {
   args: Default.args,
-  parameters: { pseudo: { focus: true, focusVisible: true } },
+  parameters: { pseudo: { focusVisible: ['input'] } },
 };
 
 export const Disabled: Story = {
@@ -109,9 +109,10 @@ export const LongContent: Story = {
 };
 
 export const RTL: Story = {
+  globals: { lang: 'ar' },
   args: { ...Default.args, label: 'عنوان الفكرة', value: 'نص تجريبي' },
   render: (props) => (
-    <div dir="rtl" style={{ width: '300px' }}>
+    <div style={{ width: '300px' }}>
       <Input {...props} />
     </div>
   ),
