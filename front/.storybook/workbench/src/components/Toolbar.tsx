@@ -1,6 +1,9 @@
+import type { ReactNode } from 'react';
+
 import type { Mode } from '@ds/tokens/tokens';
 
 import { cities } from '../../../cities';
+import { LANGUAGES } from '../../../languages';
 import { GV_VIEWPORTS, GvViewport } from '../../../viewports';
 import type { FrameGlobals } from '../lib/frame';
 
@@ -18,17 +21,14 @@ const MODES: { value: Mode; label: string }[] = [
   { value: 'redesign', label: 'Redesign' },
 ];
 
-// The languages .storybook/reactIntl.ts loads messages for.
-const LANGUAGES = [
-  { value: 'en', label: 'English' },
-  { value: 'nl-BE', label: 'Nederlands (BE)' },
-  { value: 'fr-BE', label: 'Français (BE)' },
-  { value: 'de-AT', label: 'Deutsch (AT)' },
-];
-
 type Props = {
   value: ToolbarState;
   onChange: (next: ToolbarState) => void;
+  // Set when the page shows both modes at once: the mode field is off and
+  // says why.
+  modeLocked?: string;
+  // Page tools at the end of the bar.
+  children?: ReactNode;
 };
 
 type FieldProps = {
@@ -69,7 +69,7 @@ const Field = ({
 
 // Mode, city, viewport and language of the canvas. Mode, city and language
 // go into the preview frame's globals; the viewport sizes the frame.
-const Toolbar = ({ value, onChange }: Props) => {
+const Toolbar = ({ value, onChange, modeLocked, children }: Props) => {
   const set =
     <K extends keyof ToolbarState>(key: K) =>
     (v: string) =>
@@ -82,6 +82,8 @@ const Toolbar = ({ value, onChange }: Props) => {
         value={value.mode}
         options={MODES}
         onChange={set('mode')}
+        disabled={!!modeLocked}
+        title={modeLocked}
       />
       <Field
         id="city"
@@ -107,7 +109,7 @@ const Toolbar = ({ value, onChange }: Props) => {
         id="lang"
         label="Language"
         value={value.lang}
-        options={LANGUAGES}
+        options={LANGUAGES.map(({ value: v, label }) => ({ value: v, label }))}
         onChange={set('lang')}
       />
       <Field
@@ -118,6 +120,7 @@ const Toolbar = ({ value, onChange }: Props) => {
         disabled
         title="Locking hover, focus and active comes in a later version."
       />
+      {children && <div className="wb-toolbar-tools">{children}</div>}
     </div>
   );
 };

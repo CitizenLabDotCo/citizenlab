@@ -5,8 +5,8 @@ export type Route =
   | { name: 'start' }
   | { name: 'foundations'; category?: string }
   | { name: 'components'; storyId?: string }
-  | { name: 'patterns' }
-  | { name: 'pages' }
+  | { name: 'patterns'; storyId?: string }
+  | { name: 'pages'; storyId?: string }
   | { name: 'review' }
   | { name: 'proposal' }
   | { name: 'not-found'; path: string };
@@ -24,9 +24,9 @@ export const parseHash = (hash: string): Route => {
     case 'foundations':
       return { name: 'foundations', category: param };
     case 'components':
-      return { name: 'components', storyId: param };
     case 'patterns':
     case 'pages':
+      return { name: first, storyId: param };
     case 'review':
     case 'proposal':
       return param ? { name: 'not-found', path } : { name: first };

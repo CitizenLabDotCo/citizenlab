@@ -1,13 +1,14 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import Canvas from './components/Canvas';
 import Nav from './components/Nav';
-import Panel, { PanelContext } from './components/Panel';
-import Toolbar, { DEFAULT_TOOLBAR, ToolbarState } from './components/Toolbar';
+import { PanelContext } from './components/Panel';
+import { DEFAULT_TOOLBAR, ToolbarState } from './components/Toolbar';
 import { TOKEN_META } from './lib/data';
 import { Overrides, useOverrides } from './lib/overrides';
 import { Route, useRoute } from './lib/router';
+import Component from './pages/Component';
 import Foundations from './pages/Foundations';
+import Gallery from './pages/Gallery';
 import Placeholder from './pages/Placeholder';
 import StartHere from './pages/StartHere';
 
@@ -36,28 +37,29 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
         />
       );
     case 'components':
-      if (!route.storyId)
-        return <Placeholder title="Components" kind="components" />;
-      return (
-        <article className="wb-page wb-page-wide">
-          <h1>{`Component: ${route.storyId}`}</h1>
-          <Toolbar value={canvas.toolbar} onChange={canvas.setToolbar} />
-          <Canvas
-            storyId={route.storyId}
-            toolbar={canvas.toolbar}
-            overrides={canvas.overrides}
-          />
-          <Panel title="Panels">
-            <p className="wb-muted">
-              Controls, Tokens, Usage, Accessibility and Docs appear here.
-            </p>
-          </Panel>
-        </article>
-      );
     case 'patterns':
-      return <Placeholder title="Patterns" kind="patterns" />;
     case 'pages':
-      return <Placeholder title="Pages" kind="pages" />;
+      return route.storyId ? (
+        <Component
+          key={route.name}
+          section={route.name}
+          storyId={route.storyId}
+          toolbar={canvas.toolbar}
+          setToolbar={canvas.setToolbar}
+          overrides={canvas.overrides}
+        />
+      ) : (
+        <Gallery
+          key={route.name}
+          section={route.name}
+          globals={{
+            mode: canvas.toolbar.mode,
+            city: canvas.toolbar.city,
+            lang: canvas.toolbar.lang,
+          }}
+          onMode={(mode) => canvas.setToolbar({ ...canvas.toolbar, mode })}
+        />
+      );
     case 'review':
       return <Placeholder title="Review" kind="review" />;
     case 'proposal':

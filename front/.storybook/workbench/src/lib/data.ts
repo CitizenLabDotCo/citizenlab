@@ -6,12 +6,13 @@
 import tokensMeta from '@ds/tokens/tokens.meta.json';
 
 import type {
+  ComponentScore,
   Finding,
   ScanOutput,
   TokenMeta,
 } from '../../../../scripts/design-system/scan/schema';
 
-export type { Finding, ScanOutput, TokenMeta };
+export type { ComponentScore, Finding, ScanOutput, TokenMeta };
 
 export type StoryEntry = {
   id: string;
@@ -20,6 +21,8 @@ export type StoryEntry = {
   tags: string[];
   importPath: string;
   type?: string;
+  exportName?: string;
+  componentPath?: string;
 };
 
 export type StoryIndex = { entries: Record<string, StoryEntry> };

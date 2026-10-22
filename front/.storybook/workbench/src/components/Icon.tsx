@@ -63,6 +63,32 @@ const PATHS = {
   check: <path d="m5 12.5 4.5 4.5L19 7.5" />,
   cross: <path d="M7 7l10 10M17 7 7 17" />,
   edit: <path d="M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4" />,
+  reset: (
+    <>
+      <path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3" />
+      <path d="M4.5 4.5v4h4" />
+    </>
+  ),
+  single: <rect x="4" y="5" width="16" height="14" rx="2" />,
+  split: (
+    <>
+      <rect x="3" y="5" width="18" height="14" rx="2" />
+      <path d="M12 5v14" />
+    </>
+  ),
+  sliders: (
+    <>
+      <path d="M5 7h8m4 0h2M5 17h2m4 0h8" />
+      <circle cx="15" cy="7" r="2" />
+      <circle cx="9" cy="17" r="2" />
+    </>
+  ),
+  file: (
+    <>
+      <path d="M7 3.5h7l4 4V20a.5.5 0 0 1-.5.5h-10.5a.5.5 0 0 1-.5-.5V4a.5.5 0 0 1 .5-.5z" />
+      <path d="M13.5 3.5v4.5h4.5" />
+    </>
+  ),
 } satisfies Record<string, ReactNode>;
 
 export type IconName = keyof typeof PATHS;

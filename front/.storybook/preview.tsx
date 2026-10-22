@@ -3,7 +3,8 @@ import { Preview, StoryContext } from '@storybook/react';
 import contexts from './contexts';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import mockServer from './mockServer';
-import { reactIntl, locales, StorybookLocale } from './reactIntl';
+import { reactIntl, StorybookLocale } from './reactIntl';
+import { LANGUAGES } from './languages';
 import { cities } from './cities';
 import { GV_VIEWPORTS } from './viewports';
 import { MemoryRouter } from 'utils/router';
@@ -17,10 +18,7 @@ import '../app/design-system/tokens/tokens.css';
 // sub-path (e.g. /storybook/ in epic previews).
 initialize({ serviceWorker: { url: './mockServiceWorker.js' } });
 
-const routerDecorator = (
-  Story: () => JSX.Element,
-  context: StoryContext
-) => (
+const routerDecorator = (Story: () => JSX.Element, context: StoryContext) => (
   <MemoryRouter>
     <IntlProvider
       locale={context.globals.lang}
@@ -77,7 +75,7 @@ const preview: Preview = {
       toolbar: {
         title: 'Language',
         icon: 'globe',
-        items: locales,
+        items: LANGUAGES.map(({ value, label }) => ({ value, title: label })),
         dynamicTitle: true,
       },
     },

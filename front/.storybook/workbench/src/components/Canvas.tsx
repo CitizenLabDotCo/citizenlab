@@ -10,6 +10,11 @@ type Props = {
   storyId: string;
   toolbar: ToolbarState;
   overrides: Overrides;
+  // Called with the frame's window after each load (the Controls panel
+  // talks to the story through it), and with null when the frame goes.
+  onFrame?: (win: Window | null) => void;
+  // A caption over the frame, for the side by side view.
+  label?: string;
 };
 
 type Channel = {
@@ -22,12 +27,12 @@ type Channel = {
 // Mode, city and language are frame globals, so changing them reloads the
 // frame; overrides are set on the frame's root element without a reload and
 // set again whenever Storybook renders the story anew.
-const Canvas = ({ storyId, toolbar, overrides }: Props) => {
+const Canvas = ({ storyId, toolbar, overrides, onFrame, label }: Props) => {
   const frame = useRef<HTMLIFrameElement>(null);
   const box = useRef<HTMLDivElement>(null);
   const [room, setRoom] = useState(0);
-  const latest = useRef({ overrides, mode: toolbar.mode });
-  latest.current = { overrides, mode: toolbar.mode };
+  const latest = useRef({ overrides, mode: toolbar.mode, onFrame });
+  latest.current = { overrides, mode: toolbar.mode, onFrame };
 
   const apply = useCallback(() => {
     const doc = frame.current?.contentDocument;
@@ -43,6 +48,7 @@ const Canvas = ({ storyId, toolbar, overrides }: Props) => {
       | null
       | undefined;
     win?.__STORYBOOK_ADDONS_CHANNEL__?.on('storyRendered', apply);
+    latest.current.onFrame?.(win ?? null);
   }, [apply]);
 
   useEffect(apply, [apply, overrides, toolbar.mode]);
@@ -65,11 +71,17 @@ const Canvas = ({ storyId, toolbar, overrides }: Props) => {
     lang: toolbar.lang,
   });
 
+  // A new src is a new frame: the old window is gone until it loads.
+  useEffect(() => () => latest.current.onFrame?.(null), [src]);
+
   return (
     <div className="wb-canvas" ref={box}>
       <p className="wb-canvas-size wb-muted">
-        {`${w} x ${h}`}
-        {scale < 1 && `, shown at ${Math.round(scale * 100)}%`}
+        {label && <span className="wb-canvas-label">{label}</span>}
+        <span>
+          {`${w} x ${h}`}
+          {scale < 1 && `, shown at ${Math.round(scale * 100)}%`}
+        </span>
       </p>
       <div style={{ width: w * scale, height: h * scale }}>
         <iframe

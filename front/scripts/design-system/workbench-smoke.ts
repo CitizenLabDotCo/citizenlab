@@ -14,7 +14,10 @@
 // border-radius, and a bad share link shows a notice and keeps the
 // session. The Foundations colour page lists at least MIN_COLOUR_TOKENS
 // tokens and a contrast pairs table with rows; an edit of a radius token
-// shows in the Changes drawer and in the hash. Exits 1 on failure,
+// shows in the Changes drawer and in the hash. The Components gallery shows
+// at least MIN_GALLERY_THUMBS story thumbnails; the Button page has at least
+// MIN_STATE_TABS story tabs, and switching its `disabled` control changes
+// the frame's DOM. Exits 1 on failure,
 // 2 when Playwright is missing. Playwright is loaded through ./playwright.
 import fs from 'fs';
 import http from 'http';
@@ -69,6 +72,8 @@ const sharePayload = (o: Record<string, string>) =>
   Buffer.from(JSON.stringify(o), 'utf8').toString('base64url');
 
 export const MIN_COLOUR_TOKENS = 50;
+export const MIN_GALLERY_THUMBS = 30;
+export const MIN_STATE_TABS = 2;
 
 // The token names in a share-link hash (`...?o=<base64url JSON>`).
 export const overrideNamesOfHash = (hash: string): string[] => {
@@ -229,7 +234,7 @@ const serve = (root: string): Promise<http.Server> =>
     server.listen(0, '127.0.0.1', () => resolve(server));
   });
 
-// The canvas frame once it shows `id` with the given mode global.
+// The canvas frame once it shows the given mode global ('' for any).
 const canvasFrame = async (page: any, mode: string) => {
   const handle = await page.waitForSelector(
     `iframe[data-testid="wb-canvas"][src*="mode:${mode}"]`,
@@ -254,11 +259,9 @@ const canvasChecks = async (
   screenshot?: string
 ) => {
   await page.goto(`${base}/workbench/#/components/${storyId}`);
-  await page.waitForFunction(
-    (h: string) => document.querySelector('main h1')?.textContent === h,
-    `Component: ${storyId}`,
-    { timeout: 5000 }
-  );
+  await page.waitForSelector('[data-testid="wb-component"] h1', {
+    timeout: 10000,
+  });
   if (!(await page.isVisible('aside[aria-label="Panels"] h2'))) {
     failures.push('the panel column is not shown on a component page');
   }
@@ -321,6 +324,73 @@ const canvasChecks = async (
     failures.push(
       `a rejected share link changed the session: border-radius ${after}`
     );
+  }
+};
+
+const galleryChecks = async (page: any, base: string, failures: string[]) => {
+  await page.goto(`${base}/workbench/#/components`);
+  await page.waitForSelector('[data-testid="wb-thumb"]', { timeout: 10000 });
+  const thumbs: number = await page.$$eval(
+    '[data-testid="wb-thumb"]',
+    (els: Element[]) => els.length
+  );
+  if (thumbs < MIN_GALLERY_THUMBS) {
+    failures.push(
+      `the Components gallery shows ${thumbs} thumbnails, expected ${MIN_GALLERY_THUMBS} or more`
+    );
+  }
+  console.log(`gallery: ${thumbs} component thumbnails`);
+};
+
+// Story tabs, then a boolean control: the frame's story renders again with
+// the new arg.
+const controlsChecks = async (
+  page: any,
+  base: string,
+  storyId: string,
+  failures: string[]
+) => {
+  await page.goto(`${base}/workbench/#/components/${storyId}`);
+  await page.waitForSelector('[data-testid="wb-state-tab"]', {
+    timeout: 10000,
+  });
+  const tabs: number = await page.$$eval(
+    '[data-testid="wb-state-tab"]',
+    (els: Element[]) => els.length
+  );
+  if (tabs < MIN_STATE_TABS) {
+    failures.push(
+      `the Button page has ${tabs} story tabs, expected ${MIN_STATE_TABS} or more`
+    );
+  }
+  // Any mode: the toolbar keeps the one the canvas checks left.
+  const frame = await canvasFrame(page, '');
+  await page.waitForSelector('[data-testid="wb-controls-reset"]', {
+    timeout: 20000,
+  });
+  const more = '[data-testid="wb-controls-more"][aria-expanded="false"]';
+  if (await page.isVisible(more)) await page.click(more);
+  const toggle =
+    '[data-testid="wb-control"][data-arg="disabled"][data-kind="boolean"] input';
+  if (!(await page.isVisible(toggle))) {
+    failures.push('the Button page has no disabled control');
+    return;
+  }
+  const before: string = await frame.$eval(
+    '#storybook-root',
+    (el: Element) => el.innerHTML
+  );
+  await page.click(toggle);
+  try {
+    await frame.waitForFunction(
+      (html: string) =>
+        document.querySelector('#storybook-root')?.innerHTML !== html,
+      before,
+      { timeout: 5000 }
+    );
+    console.log(`controls: ${tabs} story tabs; disabled changes the frame`);
+  } catch {
+    failures.push('switching the disabled control left the frame unchanged');
   }
 };
 
@@ -420,10 +490,13 @@ const main = async () => {
       spacing: spacingScreenshot,
     });
 
+    await galleryChecks(page, base, failures);
+
     if (!storyId) {
       failures.push('index.json has no Button story');
     } else {
       await canvasChecks(page, base, storyId, failures, canvasScreenshot);
+      await controlsChecks(page, base, storyId, failures);
     }
   } catch (e) {
     failures.push(`smoke run failed: ${(e as Error).message}`);

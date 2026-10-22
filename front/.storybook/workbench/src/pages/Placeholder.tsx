@@ -159,6 +159,20 @@ const COPY: Record<Kind, { lead: string; items: string[] }> = {
   },
 };
 
+// The picture of a section, for other empty states.
+export const PlaceholderArt = ({ kind }: { kind: Kind }) => (
+  <svg
+    className="wb-empty-art"
+    viewBox="0 0 236 164"
+    width="236"
+    height="164"
+    aria-hidden="true"
+    focusable="false"
+  >
+    {PICTURES[kind]}
+  </svg>
+);
+
 type Props = { title: string; kind: Kind };
 
 const Placeholder = ({ title, kind }: Props) => (
@@ -168,16 +182,7 @@ const Placeholder = ({ title, kind }: Props) => (
       <p className="wb-lead">{COPY[kind].lead}</p>
     </header>
     <section className="wb-empty" aria-label="Not built yet">
-      <svg
-        className="wb-empty-art"
-        viewBox="0 0 236 164"
-        width="236"
-        height="164"
-        aria-hidden="true"
-        focusable="false"
-      >
-        {PICTURES[kind]}
-      </svg>
+      <PlaceholderArt kind={kind} />
       <div className="wb-empty-text">
         <span className="wb-badge wb-badge-soon">Not built yet</span>
         <h2>What this section will show</h2>
