@@ -24,12 +24,12 @@ export const Default: Story = {
 
 export const Hover: Story = {
   args: Default.args,
-  parameters: { pseudo: { hover: true } },
+  parameters: { pseudo: { hover: ['button'] } },
 };
 
 export const Focus: Story = {
   args: Default.args,
-  parameters: { pseudo: { focus: true, focusVisible: true } },
+  parameters: { pseudo: { focusVisible: ['button'] } },
 };
 
 export const Disabled: Story = {
@@ -37,13 +37,14 @@ export const Disabled: Story = {
 };
 
 export const RTL: Story = {
+  globals: { lang: 'ar' },
   args: {
     ...Default.args,
     iconName: 'arrow-left',
     a11y_buttonActionMessage: 'رجوع',
   },
   render: (args) => (
-    <div dir="rtl">
+    <div>
       <IconButton {...args} />
     </div>
   ),
