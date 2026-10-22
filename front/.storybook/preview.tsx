@@ -1,9 +1,10 @@
 import React from 'react';
-import { Preview } from '@storybook/react';
+import { Preview, StoryContext } from '@storybook/react';
 import contexts from './contexts';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import mockServer from './mockServer';
-import { reactIntl } from './reactIntl';
+import { reactIntl, locales, StorybookLocale } from './reactIntl';
+import { cities } from './cities';
 import { MemoryRouter } from 'utils/router';
 import { allModes } from './modes';
 import { MINIMAL_VIEWPORTS } from 'storybook/viewport';
@@ -14,15 +15,15 @@ import { JSX } from 'react/jsx-runtime';
 // sub-path (e.g. /storybook/ in epic previews).
 initialize({ serviceWorker: { url: './mockServiceWorker.js' } });
 
-const routerDecorator = (Story: () => JSX.Element) => (
+const routerDecorator = (
+  Story: () => JSX.Element,
+  context: StoryContext
+) => (
   <MemoryRouter>
     <IntlProvider
-      locale={reactIntl.defaultLocale}
-      messages={
-        reactIntl.messages[
-          reactIntl.defaultLocale as keyof typeof reactIntl.messages
-        ]
-      }
+      locale={context.globals.lang}
+      defaultLocale={reactIntl.defaultLocale}
+      messages={reactIntl.messages[context.globals.lang as StorybookLocale]}
     >
       <Story />
     </IntlProvider>
@@ -30,6 +31,33 @@ const routerDecorator = (Story: () => JSX.Element) => (
 );
 
 const preview: Preview = {
+  globalTypes: {
+    city: {
+      description: 'Preview components in a city brand',
+      toolbar: {
+        title: 'City',
+        icon: 'paintbrush',
+        items: Object.entries(cities).map(([value, city]) => ({
+          value,
+          title: city.title,
+        })),
+        dynamicTitle: true,
+      },
+    },
+    lang: {
+      description: 'Language',
+      toolbar: {
+        title: 'Language',
+        icon: 'globe',
+        items: locales,
+        dynamicTitle: true,
+      },
+    },
+  },
+  initialGlobals: {
+    city: 'default',
+    lang: 'en',
+  },
   parameters: {
     controls: {
       matchers: {

@@ -6,9 +6,16 @@ import '../../app/assets/css/reset.min.css';
 // import '../../app/assets/fonts/fonts.css';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
+import { CityKey, cityTenant } from '../cities';
 
-const ThemeContext = ({ children }) => (
-  <ThemeProvider theme={getTheme(null)}>
+const ThemeContext = ({
+  city = 'default',
+  children,
+}: {
+  city?: CityKey;
+  children: React.ReactNode;
+}) => (
+  <ThemeProvider theme={getTheme(cityTenant(city))}>
     <GlobalStyle />
     {children}
   </ThemeProvider>

@@ -25,12 +25,12 @@ const ResetCacheContext = ({ children }) => {
   return <>{children}</>;
 };
 
-export default (Story) => {
+export default (Story, context) => {
   return (
     <QueryClientProvider client={queryClient}>
       <OutletsContext.Provider value={EMPTY_OBJ}>
         <ResetCacheContext>
-          <ThemeContext>
+          <ThemeContext city={context.globals.city}>
             <Portals />
             <div
               style={{
