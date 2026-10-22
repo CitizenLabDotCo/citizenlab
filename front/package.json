@@ -48,7 +48,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -c .storybook",
     "chromatic": "chromatic --exit-once-uploaded",
-    "ds:tokens": "echo \"ds:tokens not implemented\" && exit 0",
+    "ds:tokens": "tsx scripts/design-system/build-tokens.ts",
     "ds:scan": "tsx scripts/design-system/scan/index.ts",
     "ds:changes": "echo \"ds:changes not implemented\" && exit 0",
     "ds:workbench": "echo \"ds:workbench not implemented\" && exit 0",

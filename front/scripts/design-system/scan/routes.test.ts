@@ -1,6 +1,6 @@
 import path from 'path';
 
-import { mapRoutes } from './routes';
+import { isScannedSource, mapRoutes } from './routes';
 import { libraryUsages } from './usages';
 
 const ROOT = path.join(__dirname, '..', 'fixtures', 'routes');
@@ -104,5 +104,12 @@ describe('libraryUsages', () => {
       'export const f = (p: BoxProps): Box => p as any;',
     ].join('\n');
     expect(libraryUsages(ROOT, 'app/components/X.tsx', src)).toEqual([]);
+  });
+});
+
+describe('isScannedSource', () => {
+  it('skips the generated token module, which defines tokens', () => {
+    expect(isScannedSource('app/design-system/tokens/tokens.ts')).toBe(false);
+    expect(isScannedSource('app/design-system/Mode.tsx')).toBe(true);
   });
 });

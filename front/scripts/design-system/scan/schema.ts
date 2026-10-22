@@ -89,4 +89,10 @@ export type TokenMeta = {
   tier: 1 | 2;
   values: { today: string; redesign: string };
   legacy: string[];
+  // Optional extras for the Tokens panel; the scanner reads only the above.
+  type?: string;
+  description?: string;
+  tenant?: 'primary' | 'secondary' | 'text';
+  deprecated?: boolean;
+  path?: string;
 };
