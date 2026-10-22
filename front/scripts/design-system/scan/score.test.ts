@@ -1,4 +1,4 @@
-import { pageStatus, scoreComponent } from './score';
+import { pageStatus, redesignScopeStandIn, scoreComponent } from './score';
 import { ComponentUsage, Finding, FindingCategory } from './schema';
 
 const f = (category: FindingCategory, n: number, file = 'a.tsx'): Finding[] =>
@@ -119,5 +119,24 @@ describe('pageStatus', () => {
     expect(local.status).toBe('partly');
     expect(local.localPieces).toBe(2);
     expect(pageStatus(route, [], [use('Select')], scope).status).toBe('partly');
+  });
+});
+
+describe('redesignScopeStandIn', () => {
+  it('takes on-tokens components with at least one token read, not ones with no reads', () => {
+    const read = scoreComponent(f('token-var', 3), [], [], {
+      component: 'Box',
+      file: 'b.tsx',
+    });
+    const empty = scoreComponent([], [], [], {
+      component: 'Divider',
+      file: 'd.tsx',
+    });
+    const off = scoreComponent(f('px', 3), [], [], {
+      component: 'Badge',
+      file: 'a.tsx',
+    });
+    expect(empty.status).toBe('on-tokens');
+    expect([...redesignScopeStandIn([read, empty, off])]).toEqual(['Box']);
   });
 });

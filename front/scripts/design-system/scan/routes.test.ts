@@ -50,12 +50,21 @@ describe('mapRoutes', () => {
     ]);
   });
 
-  it('puts files no route reaches in unmapped', () => {
+  it('lists a file that no route imports (an orphan component) as unmapped', () => {
     expect(result.unmapped).toContain('app/components/Orphan/index.tsx');
     expect(result.unmapped).not.toContain(
       'app/containers/Admin/projects/project/phase/Tabs.tsx'
     );
     expect(result.unmapped).toEqual([...result.unmapped].sort());
+  });
+
+  it('reports a lazy import whose target does not exist and maps no route for it', () => {
+    expect(result.unresolvedImports).toEqual([
+      'app/containers/Admin/projects/routes.tsx: ./project/missing',
+    ]);
+    expect(result.routes.map((r) => r.path)).not.toContain(
+      'admin/projects/missing'
+    );
   });
 
   it('ignores module routes under keys the route tree does not wire', () => {

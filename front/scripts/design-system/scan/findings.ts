@@ -259,6 +259,18 @@ const LAYOUT_COMPONENTS = new Set([
 ]);
 const SPACING_PROP_RE =
   /^(padding\w*|margin\w*|(row|column)?[gG]ap|[pm][tblrxy]?)$/;
+// Non-spacing style props of the primitives whose px literals count as `px`.
+const STYLE_PROP_COMPONENTS = new Set([...LAYOUT_COMPONENTS, 'Image']);
+const STYLE_PX_PROP_RE =
+  /^(w|h|width|height|(min|max)(Width|Height|W|H)|border\w*|fontSize|lineHeight|top|left|right|bottom)$/;
+// Keys of plain objects that are CSS properties (camelCase).
+const CSS_KEY_RE =
+  /^((padding|margin|border|outline)\w*|(min|max)?(Width|Height)|width|height|fontSize|lineHeight|letterSpacing|top|left|right|bottom|gap|rowGap|columnGap|boxShadow)$/;
+// A string that holds at least one CSS declaration (`prop: value;`).
+const CSS_DECL_RE = /(^|[\s;{])-?[a-z][a-z-]*\s*:\s*[^;:{}]+;/;
+const JSX_PX_RE = /(?<![\w.])\d*\.?\d+px\b/g;
+const kebab = (prop: string) =>
+  prop.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
 
 const rootsAtStyled = (node: any): boolean => {
   if (!node) return false;
@@ -437,22 +449,95 @@ export const scanFileResult = (
         return;
       }
 
-      if (!element || !LAYOUT_COMPONENTS.has(element)) return;
-      if (!SPACING_PROP_RE.test(attr.name.name)) return;
+      if (!element) return;
+      const prop = attr.name.name;
+      const spacing =
+        LAYOUT_COMPONENTS.has(element) && SPACING_PROP_RE.test(prop);
+      const stylePx =
+        STYLE_PROP_COMPONENTS.has(element) && STYLE_PX_PROP_RE.test(prop);
+      if (!spacing && !stylePx) return;
       let lit: any = attr.value;
       if (lit?.type === 'JSXExpressionContainer') lit = lit.expression;
-      if (lit?.type !== 'StringLiteral') return;
-      for (const m of lit.value.matchAll(/(?<![\w.])\d*\.?\d+px\b/g)) {
-        const suggestion = nearestToken(m[0], 'layout-spacing', tokens);
-        mk(element)({
-          line: lit.loc.start.line,
-          col: lit.loc.start.column + 2 + m.index!,
-          raw: m[0],
-          category: 'layout-spacing',
-          suggestion,
-          confidence: confidenceFor('layout-spacing', suggestion),
-        });
-      }
+      // String literal, or the static parts of a template (`1px solid ${c}`).
+      // Conditional and logical values contribute both branches.
+      const pieces: { text: string; origin: Origin }[] = [];
+      const collect = (v: any) => {
+        if (v?.type === 'StringLiteral') {
+          pieces.push({
+            text: v.value,
+            origin: { line: v.loc.start.line, col: v.loc.start.column + 2 },
+          });
+        } else if (v?.type === 'TemplateLiteral') {
+          v.quasis.forEach((q: any) =>
+            pieces.push({
+              text: q.value.raw,
+              origin: { line: q.loc.start.line, col: q.loc.start.column + 1 },
+            })
+          );
+        } else if (v?.type === 'ConditionalExpression') {
+          collect(v.consequent);
+          collect(v.alternate);
+        } else if (v?.type === 'LogicalExpression') {
+          collect(v.left);
+          collect(v.right);
+        }
+      };
+      collect(lit);
+      const category: FindingCategory = spacing ? 'layout-spacing' : 'px';
+      const tc = spacing ? undefined : tokenCategoryFor(kebab(prop));
+      pieces.forEach(({ text, origin }) => {
+        for (const m of text.matchAll(JSX_PX_RE)) {
+          const suggestion = spacing
+            ? nearestToken(m[0], 'layout-spacing', tokens)
+            : tc
+            ? nearestToken(m[0], 'px', tokens, tc)
+            : undefined;
+          mk(element)({
+            ...locate(text, m.index!, origin),
+            raw: m[0],
+            category,
+            suggestion,
+            confidence: confidenceFor(category, suggestion),
+          });
+        }
+      });
+    },
+
+    // Plain (untagged) strings and templates that hold CSS declarations,
+    // e.g. `const segment = \`padding: 5px 14px;\`` interpolated later.
+    // Tagged styled/css templates are scanned above.
+    TemplateLiteral(path: any) {
+      const n = path.node;
+      if (path.parent.type === 'TaggedTemplateExpression') return;
+      const joined = n.quasis.map((q: any) => q.value.raw).join(' ');
+      if (!CSS_DECL_RE.test(joined)) return;
+      const emit = mk(enclosingName(path));
+      n.quasis.forEach((q: any) =>
+        scanCssText(
+          q.value.raw,
+          { line: q.loc.start.line, col: q.loc.start.column + 1 },
+          tokens,
+          emit
+        )
+      );
+    },
+
+    // Plain objects with CSS-property keys (`{ paddingTop: '6px' }`); the
+    // JSX style={{...}} object is handled by the JSXAttribute branch.
+    ObjectProperty(path: any) {
+      const p = path.node;
+      if (p.computed || p.value.type !== 'StringLiteral') return;
+      const key = p.key.name ?? p.key.value;
+      if (typeof key !== 'string' || !CSS_KEY_RE.test(key)) return;
+      if (CSS_DECL_RE.test(p.value.value)) return;
+      const container = path.parentPath?.parentPath;
+      if (
+        container?.node.type === 'JSXExpressionContainer' &&
+        container.parent?.type === 'JSXAttribute' &&
+        container.parent.name?.name === 'style'
+      )
+        return;
+      scanStringValue(p.value.value, p.value, key, mk(enclosingName(path)));
     },
 
     'MemberExpression|OptionalMemberExpression'(path: any) {
@@ -511,6 +596,19 @@ export const scanFileResult = (
 
     StringLiteral(path) {
       const n = path.node;
+      if (
+        CSS_DECL_RE.test(n.value) &&
+        path.parent.type !== 'ImportDeclaration' &&
+        path.parent.type !== 'ExportNamedDeclaration' &&
+        path.parent.type !== 'ExportAllDeclaration'
+      ) {
+        scanCssText(
+          n.value,
+          { line: n.loc!.start.line, col: n.loc!.start.column + 2 },
+          tokens,
+          mk(enclosingName(path))
+        );
+      }
       for (const m of n.value.matchAll(GV_VAR_RE)) {
         mk(enclosingName(path))({
           line: n.loc!.start.line,

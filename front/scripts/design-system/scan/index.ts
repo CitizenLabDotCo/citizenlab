@@ -34,6 +34,7 @@ import {
   legacyCount,
   offSpecCount,
   pageStatus,
+  redesignScopeStandIn,
   scoreComponent,
 } from './score';
 import {
@@ -91,16 +92,31 @@ const git = (args: string[]): string | undefined => {
   }
 };
 
-const loadTokens = (): TokenMeta[] => {
-  const file = path.join(ROOT, TOKENS_META);
+const readJson = (file: string, what: string): unknown => {
   if (!fs.existsSync(file)) {
-    warn(`${TOKENS_META} not found; no token suggestions this run`);
-    return [];
+    warn(`${path.relative(ROOT, file)} not found; ${what}`);
+    return undefined;
   }
-  const data = JSON.parse(fs.readFileSync(file, 'utf8'));
-  const list = Array.isArray(data) ? data : data.tokens;
+  try {
+    return JSON.parse(fs.readFileSync(file, 'utf8'));
+  } catch (e: any) {
+    warn(
+      `${path.relative(ROOT, file)} is not valid JSON (${e?.message}); ${what}`
+    );
+    return undefined;
+  }
+};
+
+/** Token list (array or {tokens}); [] with a warning when missing or bad. */
+export const loadTokens = (
+  file = path.join(ROOT, TOKENS_META)
+): TokenMeta[] => {
+  const what = 'no token suggestions this run';
+  const data: any = readJson(file, what);
+  if (data === undefined) return [];
+  const list = Array.isArray(data) ? data : data?.tokens;
   if (!Array.isArray(list)) {
-    warn(`${TOKENS_META} has no token list; no token suggestions this run`);
+    warn(`${path.relative(ROOT, file)} has no token list; ${what}`);
     return [];
   }
   return list as TokenMeta[];
@@ -108,14 +124,10 @@ const loadTokens = (): TokenMeta[] => {
 
 type Accepted = { file: string; raw?: string; value?: string; line?: number };
 
-const loadAllow = (rel: string): Accepted[] => {
-  const file = path.resolve(ROOT, rel);
-  if (!fs.existsSync(file)) {
-    warn(`${rel} not found; no accepted findings`);
-    return [];
-  }
-  const data = JSON.parse(fs.readFileSync(file, 'utf8'));
-  return Array.isArray(data.accepted) ? data.accepted : [];
+/** Accepted findings; [] with a warning when missing or bad. */
+export const loadAllow = (file: string): Accepted[] => {
+  const data: any = readJson(file, 'no accepted findings');
+  return Array.isArray(data?.accepted) ? data.accepted : [];
 };
 
 /** Accepted = same file and raw value, and line within +-3 when given. */
@@ -157,7 +169,7 @@ const pad = (s: string | number, n: number) => String(s).padStart(n);
 const runScan = (args: Args) => {
   const started = Date.now();
   const tokens = loadTokens();
-  const accepted = loadAllow(args.allow);
+  const accepted = loadAllow(path.resolve(ROOT, args.allow));
   const tree = new SourceTree(ROOT);
   const scanned = tree.files.filter(isScannedSource);
   const lib = libraryIndex(tree, isScannedSource);
@@ -171,6 +183,9 @@ const runScan = (args: Args) => {
   const routeMap = mapRoutes(ROOT, tree);
   routeMap.orphans.forEach((o) =>
     warn(`route with no resolvable parent: ${o}`)
+  );
+  routeMap.unresolvedImports.forEach((o) =>
+    warn(`route page import does not resolve: ${o}`)
   );
   routeMap.unresolvedPaths.forEach((o) =>
     warn(`route path is not a static string, segment dropped: ${o}`)
@@ -217,11 +232,9 @@ const runScan = (args: Args) => {
       });
     });
 
-  // Until the redesign scope list exists, the components that follow the
-  // tokens (on-tokens) are the redesign scope.
-  const scope = new Set(
-    components.filter((c) => c.status === 'on-tokens').map((c) => c.component)
-  );
+  // Until the redesign scope list exists, on-tokens components with at
+  // least one token read stand in for it (see redesignScopeStandIn).
+  const scope = redesignScopeStandIn(components);
   const officeOf = new Map(routeMap.routes.map((r) => [r.path, r.office]));
   const pages: PageStatus[] = Object.keys(routeMap.routeFiles)
     .sort()

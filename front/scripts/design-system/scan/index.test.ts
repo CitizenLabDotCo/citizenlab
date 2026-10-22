@@ -1,4 +1,8 @@
-import { isAccepted } from './index';
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
+
+import { isAccepted, loadAllow, loadTokens } from './index';
 import { Finding } from './schema';
 
 const finding: Finding = {
@@ -33,5 +37,47 @@ describe('isAccepted', () => {
     expect(
       isAccepted(finding, [{ file: 'app/y.tsx', raw: '13px', line: 10 }])
     ).toBe(false);
+  });
+});
+
+describe('loadTokens and loadAllow', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'ds-scan-'));
+  const write = (name: string, body: string) => {
+    const file = path.join(dir, name);
+    fs.writeFileSync(file, body);
+    return file;
+  };
+  let warn: jest.SpyInstance;
+  beforeEach(() => {
+    warn = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+  });
+  afterEach(() => warn.mockRestore());
+
+  it('warns and falls back to [] on malformed JSON', () => {
+    expect(loadTokens(write('bad-tokens.json', '{ nope'))).toEqual([]);
+    expect(loadAllow(write('bad-allow.json', '{"accepted": [}'))).toEqual([]);
+    expect(warn).toHaveBeenCalledTimes(2);
+  });
+
+  it('falls back to [] when the files are missing', () => {
+    expect(loadTokens(path.join(dir, 'none.json'))).toEqual([]);
+    expect(loadAllow(path.join(dir, 'none.json'))).toEqual([]);
+  });
+
+  it('reads a token list or {tokens: [...]} and the accepted list', () => {
+    const tok = {
+      name: '--gv-space-1',
+      category: 'space',
+      tier: 1,
+      values: { today: '4px', redesign: '4px' },
+      legacy: [],
+    };
+    expect(loadTokens(write('t1.json', JSON.stringify([tok])))).toEqual([tok]);
+    expect(
+      loadTokens(write('t2.json', JSON.stringify({ tokens: [tok] })))
+    ).toEqual([tok]);
+    expect(
+      loadAllow(write('a.json', '{"accepted": [{"file": "x", "raw": "1px"}]}'))
+    ).toEqual([{ file: 'x', raw: '1px' }]);
   });
 });

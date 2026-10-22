@@ -46,7 +46,8 @@ describe('scanFile', () => {
     const f = run('styled-literals.tsx');
     expect(counts(f)).toEqual({
       'styled-block': 1,
-      px: 2,
+      // 12px, 1px, and '3px' under the CSS key borderRadius in `theme`.
+      px: 3,
       hex: 1,
       rgba: 1,
       'named-color': 1,
@@ -173,6 +174,86 @@ describe('typedStyled', () => {
       'styled-block:typedStyled(Link):2',
       'px:12px:3',
     ]);
+  });
+});
+
+describe('px on style props and CSS strings', () => {
+  const run = (lines: string[]) =>
+    scanFile('style-props.tsx', lines.join('\n'), TOKENS).map(
+      (x) => `${x.category}:${x.raw}:${x.line}:${x.col}`
+    );
+
+  it('counts px on non-spacing props of primitives as px, spacing stays layout-spacing', () => {
+    expect(
+      run([
+        'export const A = () => (',
+        '  <Box width="380px" h="7px" p="8px" borderRadius="12px">',
+        '    <Image maxWidth="200px" alt="" />',
+        '    <Text fontSize="14px" lineHeight="20px" top="1px" color="red" />',
+        '    <Card width="300px" />',
+        '  </Box>',
+        ');',
+      ])
+    ).toEqual([
+      'px:380px:2:15',
+      'px:7px:2:25',
+      'layout-spacing:8px:2:33',
+      'px:12px:2:52',
+      'px:200px:3:22',
+      'px:14px:4:21',
+      'px:20px:4:39',
+      'px:1px:4:50',
+    ]);
+  });
+
+  it('reads template literals on style props (border shorthands)', () => {
+    expect(
+      run([
+        'export const A = () => (',
+        '  <Box borderBottom={`1px solid ${c}`} mt={`${n}px`} />',
+        ');',
+      ])
+    ).toEqual(['px:1px:2:23']);
+  });
+
+  it('reads both branches of a conditional prop value', () => {
+    expect(
+      run([
+        'export const A = () => (',
+        "  <Box left={a ? '0px' : undefined} borderBottom={b ? 'none' : `1px solid ${c}`} mb={d && '4px'} />",
+        ');',
+      ])
+    ).toEqual(['px:0px:2:19', 'px:1px:2:65', 'layout-spacing:4px:2:92']);
+  });
+
+  it('scans plain strings that hold CSS declarations, once', () => {
+    expect(
+      run([
+        'const segment = `',
+        '  padding: 5px 14px;',
+        '  color: red;',
+        '`;',
+        "const label = 'Width: see docs';",
+        "const one = 'margin: 2px;';",
+        'const Tagged = styled.div`gap: 3px;`;',
+      ])
+    ).toEqual([
+      'px:5px:2:12',
+      'px:14px:2:16',
+      'named-color:red:3:10',
+      'px:2px:6:22',
+      'styled-block:styled.div:7:16',
+      'px:3px:7:32',
+    ]);
+  });
+
+  it('scans px strings under CSS-property keys of plain objects, not inside style={{}}', () => {
+    expect(
+      run([
+        "const cell = { py: '8px', paddingTop: '6px', iconSize: '120px' };",
+        "export const A = () => <div style={{ width: '9px' }} />;",
+      ])
+    ).toEqual(['px:6px:1:40', 'px:9px:2:46']);
   });
 });
 

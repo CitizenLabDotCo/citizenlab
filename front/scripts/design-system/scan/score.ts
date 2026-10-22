@@ -12,7 +12,9 @@ import {
  * rewarded without punishing today's theme reads as hard as raw values.
  * Styled blocks and duplicate candidates are reported but not scored. With
  * nothing to read (denominator 0) the score is 1: nothing is off the tokens.
- * Status: >= 0.9 on-tokens, >= 0.4 partly, else off-tokens.
+ * Status: >= 0.9 on-tokens, >= 0.4 partly, else off-tokens. A component
+ * with no reads at all is on-tokens by score only: that is no evidence, so
+ * it never enters the redesign-scope stand-in (redesignScopeStandIn).
  */
 
 export const OFF_SPEC: FindingCategory[] = [
@@ -135,3 +137,15 @@ export const pageStatus = (
     offSpec,
   };
 };
+
+/**
+ * Stand-in for the redesign scope until a scope list exists: components that
+ * are on-tokens AND read at least one token. Components with no style reads
+ * at all (score 1 by definition) are left out.
+ */
+export const redesignScopeStandIn = (components: ComponentScore[]) =>
+  new Set(
+    components
+      .filter((c) => c.status === 'on-tokens' && c.counts['token-var'] >= 1)
+      .map((c) => c.component)
+  );

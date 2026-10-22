@@ -302,6 +302,7 @@ type FileInfo = {
   lazy: Map<string, string>; // local name -> resolved page file
   locals: Map<string, any>; // top-level non-route declarations by name
   imports: Map<string, { file?: string; imported: string }>;
+  unresolvedLazy: string[]; // app-looking lazy specifiers with no file
 };
 
 const fileInfo = (tree: SourceTree, rel: string): FileInfo | undefined => {
@@ -313,6 +314,7 @@ const fileInfo = (tree: SourceTree, rel: string): FileInfo | undefined => {
     lazy: new Map(),
     locals: new Map(),
     imports: new Map(),
+    unresolvedLazy: [],
   };
   tree.importsOf(rel).forEach((i) => {
     if (i.dynamic) return;
@@ -334,6 +336,8 @@ const fileInfo = (tree: SourceTree, rel: string): FileInfo | undefined => {
         });
         const target = spec ? tree.resolver.resolve(rel, spec) : undefined;
         if (target) info.lazy.set(n.id.name, target);
+        else if (spec && /^[./]|^(containers|components|modules)\//.test(spec))
+          info.unresolvedLazy.push(spec);
         return false;
       }
       info.locals.set(n.id.name, init);
@@ -456,11 +460,15 @@ const collectRouteDefs = (
   const moduleSinks = new Map<string, string>(); // file -> parent id
   const keyedCalls: { key: string; factoryFile: string }[] = [];
   const unresolvedPaths: string[] = [];
+  const unresolvedImports: string[] = [];
 
   routeFiles.forEach((rel) => {
     const info = fileInfo(tree, rel);
     const ast = tree.ast(rel);
     if (!info || !ast) return;
+    info.unresolvedLazy.forEach((spec) =>
+      unresolvedImports.push(`${rel}: ${spec}`)
+    );
     const resolveRef = (name: string): string | undefined => {
       if (info.locals.has(name)) return `${rel}#${name}`;
       const imp = info.imports.get(name);
@@ -519,7 +527,7 @@ const collectRouteDefs = (
     if (!sink) return;
     moduleParents.set(key, [...(moduleParents.get(key) ?? []), sink]);
   });
-  return { defs, moduleParents, unresolvedPaths };
+  return { defs, moduleParents, unresolvedPaths, unresolvedImports };
 };
 
 const addModuleRoutes = (
@@ -590,6 +598,8 @@ export type RouteMap = {
   orphans: string[];
   /** Route definitions whose `path` is not a static string (segment dropped). */
   unresolvedPaths: string[];
+  /** `routeFile: specifier` of lazy page imports that resolve to no file. */
+  unresolvedImports: string[];
 };
 
 export const mapRoutes = (rootDir: string, tree?: SourceTree): RouteMap => {
@@ -597,11 +607,8 @@ export const mapRoutes = (rootDir: string, tree?: SourceTree): RouteMap => {
   const routeFiles = collectRouteFiles(t);
   const routeSet = new Set(routeFiles);
   const isBoundary = (rel: string) => routeSet.has(rel);
-  const { defs, moduleParents, unresolvedPaths } = collectRouteDefs(
-    t,
-    routeFiles,
-    isBoundary
-  );
+  const { defs, moduleParents, unresolvedPaths, unresolvedImports } =
+    collectRouteDefs(t, routeFiles, isBoundary);
   addModuleRoutes(t, defs, moduleParents, isBoundary);
 
   const fullPath = new Map<string, string | null>();
@@ -679,5 +686,6 @@ export const mapRoutes = (rootDir: string, tree?: SourceTree): RouteMap => {
     routeFiles: routeFilesByPath,
     orphans: orphans.sort(),
     unresolvedPaths: unresolvedPaths.sort(),
+    unresolvedImports: [...new Set(unresolvedImports)].sort(),
   };
 };

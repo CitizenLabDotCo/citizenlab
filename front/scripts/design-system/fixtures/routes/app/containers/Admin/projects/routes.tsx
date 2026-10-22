@@ -5,6 +5,8 @@ import { createRoute } from 'utils/router';
 import { adminRoute } from '../routes';
 
 const AdminPhase = lazy(() => import('./project/phase'));
+// Points at a file that does not exist: reported, not mapped.
+const Missing = lazy(() => import('./project/missing'));
 
 export const adminPhaseLink = (projectId: string, phaseId: string) =>
   `/admin/projects/${projectId}/phases/${phaseId}`;
@@ -30,8 +32,15 @@ const phaseRoute = createRoute({
   component: () => <AdminPhase />,
 });
 
+const missingRoute = createRoute({
+  getParentRoute: () => projectsRoute,
+  path: 'missing',
+  component: () => <Missing />,
+});
+
 const createAdminProjectsRoutes = () =>
   projectsRoute.addChildren([
+    missingRoute,
     projectRoute.addChildren([phasesRoute.addChildren([phaseRoute])]),
   ]);
 
