@@ -4,14 +4,15 @@
     {
       "id": "foundations-spacing-radius-and-shadow--spacing-radius-shadow",
       "viewport": "desktop",
-      "px": 471
+      "px": 703
     },
     {
       "id": "foundations-spacing-radius-and-shadow--spacing-radius-shadow",
       "viewport": "mobile",
-      "px": 471
+      "px": 703
     }
   ],
   "errors": [],
-  "generatedAt": "2026-10-22T20:02:06.984Z"
+  "retried": 2,
+  "generatedAt": "2026-10-22T20:10:06.784Z"
 }

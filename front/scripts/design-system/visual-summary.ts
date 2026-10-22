@@ -16,6 +16,8 @@ export type Summary = {
   // Stories that could not be captured or compared (render error, empty
   // root, missing baseline, size change). Not part of the original schema.
   errors: RunError[];
+  // Diffs that exceeded the budget once and were re-run.
+  retried: number;
   generatedAt: string;
 };
 
@@ -45,6 +47,7 @@ export const parseArgs = (argv: string[]) => {
     else if (a === '--url') out.url = next() as string;
     else if (a === '--allow-px') out.allowPx = Number(next());
     else if (a === '--summary') out.summary = next();
+    else throw new Error(`Unknown argument: ${a}`);
   }
   if (!Number.isFinite(out.allowPx) || out.allowPx < 0) {
     throw new Error('--allow-px must be a non-negative number');
@@ -55,12 +58,17 @@ export const parseArgs = (argv: string[]) => {
   return out;
 };
 
+// includeAA must stay true: rounded corners are almost entirely anti-aliased
+// pixels, and the default (false) ignores them, hiding radius changes.
+export const PIXELMATCH_OPTIONS = { threshold: 0.1, includeAA: true };
+
 export const isDiff = (px: number, allowPx: number) => px > allowPx;
 
 export const buildSummary = (
   stories: number,
   results: { id: string; viewport: string; px?: number; error?: string }[],
   allowPx: number,
+  retried = 0,
   now: Date = new Date()
 ): Summary => ({
   stories,
@@ -70,5 +78,6 @@ export const buildSummary = (
   errors: results
     .filter((r) => r.error !== undefined)
     .map((r) => ({ id: r.id, viewport: r.viewport, message: r.error as string })),
+  retried,
   generatedAt: now.toISOString(),
 });

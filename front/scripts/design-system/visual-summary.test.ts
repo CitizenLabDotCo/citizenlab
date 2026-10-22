@@ -1,4 +1,6 @@
+import { execFileSync } from 'child_process';
 import {
+  PIXELMATCH_OPTIONS,
   buildSummary,
   isDiff,
   parseArgs,
@@ -42,6 +44,7 @@ describe('visual summary', () => {
         { id: 'b', viewport: 'desktop', error: 'empty root' },
       ],
       0,
+      0,
       new Date('2026-01-01T00:00:00Z')
     );
     expect(s.diffs).toEqual([{ id: 'a', viewport: 'mobile', px: 7 }]);
@@ -49,5 +52,50 @@ describe('visual summary', () => {
       { id: 'b', viewport: 'desktop', message: 'empty root' },
     ]);
     expect(s.generatedAt).toBe('2026-01-01T00:00:00.000Z');
+  });
+
+  it('rejects unknown flags', () => {
+    expect(() => parseArgs(['--compare', 'b', '--allowpx', '5'])).toThrow();
+  });
+
+  // pixelmatch 8 is ESM only, so run it in a child node process on
+  // synthetic anti-aliased rounded squares.
+  it('counts a small corner radius change', () => {
+    const script = `
+      const pm = require('pixelmatch');
+      const pixelmatch = pm.default || pm;
+      const N = 40;
+      const render = (r) => {
+        const d = new Uint8Array(N * N * 4);
+        for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+          let cov = 0;
+          for (let sy = 0; sy < 4; sy++) for (let sx = 0; sx < 4; sx++) {
+            const px = x + (sx + 0.5) / 4, py = y + (sy + 0.5) / 4;
+            const cx = Math.min(Math.max(px, 4 + r), N - 4 - r);
+            const cy = Math.min(Math.max(py, 4 + r), N - 4 - r);
+            const inside = px >= 4 && px <= N - 4 && py >= 4 && py <= N - 4 &&
+              Math.hypot(px - cx, py - cy) <= r;
+            if (inside) cov++;
+          }
+          const v = 255 - Math.round((cov / 16) * 255);
+          const i = (y * N + x) * 4;
+          d[i] = d[i + 1] = d[i + 2] = v; d[i + 3] = 255;
+        }
+        return d;
+      };
+      const opts = JSON.parse(process.argv[1]);
+      console.log(pixelmatch(render(3), render(5), null, N, N, opts));
+      console.log(pixelmatch(render(3), render(3), null, N, N, opts));
+    `;
+    const out = execFileSync(
+      process.execPath,
+      ['-e', script, JSON.stringify(PIXELMATCH_OPTIONS)],
+      { encoding: 'utf8' }
+    )
+      .trim()
+      .split('\n')
+      .map(Number);
+    expect(out[0]).toBeGreaterThan(0);
+    expect(out[1]).toBe(0);
   });
 });

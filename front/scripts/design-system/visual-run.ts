@@ -13,6 +13,7 @@ import path from 'path';
 import {
   buildSummary,
   parseArgs,
+  PIXELMATCH_OPTIONS,
   storyIdsFromIndex,
   VIEWPORTS,
 } from './visual-summary';
@@ -70,9 +71,6 @@ const main = async () => {
   const flaky: { id: string; viewport: string; first: number; second: number }[] = [];
 
   const capture = async (page: any, id: string): Promise<Buffer> => {
-    const errors: string[] = [];
-    const onErr = (e: Error) => errors.push(e.message);
-    page.on('pageerror', onErr);
     try {
       await page.goto(
         `${args.url}/iframe.html?id=${encodeURIComponent(id)}&viewMode=story&globals=mode:today`,
@@ -114,7 +112,7 @@ const main = async () => {
       }
       return await root.screenshot({ animations: 'disabled', timeout: 20000 });
     } finally {
-      page.off('pageerror', onErr);
+      // nothing to clean up
     }
   };
 
@@ -125,7 +123,7 @@ const main = async () => {
       throw new Error(`size changed ${A.width}x${A.height} -> ${B.width}x${B.height}`);
     }
     const out = new PNG({ width: A.width, height: A.height });
-    const px = pixelmatch(A.data, B.data, out.data, A.width, A.height, { threshold: 0.1 });
+    const px = pixelmatch(A.data, B.data, out.data, A.width, A.height, PIXELMATCH_OPTIONS);
     if (px > 0 && outPath) fs.writeFileSync(outPath, PNG.sync.write(out));
     return px;
   };
@@ -170,10 +168,11 @@ const main = async () => {
     console.log(`baseline saved to ${dir}: ${results.length - errs.length} ok, ${errs.length} errors`);
     errs.forEach((r) => console.log(`  ERROR ${r.viewport} ${r.id}: ${r.error}`));
     fs.writeFileSync(path.join(dir, '_errors.json'), JSON.stringify(errs, null, 2));
+    process.exitCode = errs.length > 0 ? 1 : 0;
     return;
   }
 
-  const summary = buildSummary(ids.length, results, args.allowPx);
+  const summary = buildSummary(ids.length, results, args.allowPx, flaky.length);
   const out = args.summary ? path.resolve(args.summary) : SUMMARY_PATH;
   fs.mkdirSync(path.dirname(out), { recursive: true });
   fs.writeFileSync(out, `${JSON.stringify(summary, null, 2)}\n`);
@@ -184,7 +183,7 @@ const main = async () => {
   summary.diffs.forEach((d) => console.log(`  DIFF ${d.viewport} ${d.id}: ${d.px}px`));
   summary.errors.forEach((d) => console.log(`  ERROR ${d.viewport} ${d.id}: ${d.message}`));
   flaky.forEach((f) => console.log(`  retried ${f.viewport} ${f.id}: ${f.first}px then ${f.second}px`));
-  process.exitCode = summary.diffs.length > 0 ? 1 : 0;
+  process.exitCode = summary.diffs.length > 0 || summary.errors.length > 0 ? 1 : 0;
 };
 
 main().catch((e) => {
