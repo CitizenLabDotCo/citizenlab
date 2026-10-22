@@ -1420,6 +1420,7 @@
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Click here to login as admin or project manager",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE or CNS",
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "Or login with:",
+  "app.containers.Authentication.steps.FlowStart.signInWithSSO": "Sign in with single sign-on (SSO)",
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": "Use your email address instead",
   "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": "Use your phone number instead",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Please enter a token",
