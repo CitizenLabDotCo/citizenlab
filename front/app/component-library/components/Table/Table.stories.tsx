@@ -111,7 +111,7 @@ export const Hover: Story = {
 
 export const Focus: Story = {
   ...WithSortableAndTooltipIcons,
-  parameters: { pseudo: { focusVisible: ['th'] } },
+  parameters: { pseudo: { focusVisible: ['th .tooltip-icon'] } },
 };
 
 export const Empty: Story = {
