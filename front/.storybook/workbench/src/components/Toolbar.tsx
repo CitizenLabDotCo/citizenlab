@@ -7,14 +7,26 @@ import { LANGUAGES } from '../../../languages';
 import { GV_VIEWPORTS, GvViewport } from '../../../viewports';
 import type { FrameGlobals } from '../lib/frame';
 
-export type ToolbarState = FrameGlobals & { viewport: GvViewport };
+// `fit`: the frame is sized to the rendered story (see Canvas); the presets
+// are for page-level checks.
+export type CanvasViewport = GvViewport | 'fit';
+
+export type ToolbarState = FrameGlobals & { viewport: CanvasViewport };
 
 export const DEFAULT_TOOLBAR: ToolbarState = {
   mode: 'today',
   city: 'default',
   lang: 'en',
-  viewport: 'gvDesktop',
+  viewport: 'fit',
 };
+
+const VIEWPORTS: { value: CanvasViewport; label: string }[] = [
+  { value: 'fit', label: 'Fit to story' },
+  ...Object.entries(GV_VIEWPORTS).map(([v, vp]) => ({
+    value: v as GvViewport,
+    label: vp.name,
+  })),
+];
 
 const MODES: { value: Mode; label: string }[] = [
   { value: 'today', label: 'Today' },
@@ -24,8 +36,8 @@ const MODES: { value: Mode; label: string }[] = [
 type Props = {
   value: ToolbarState;
   onChange: (next: ToolbarState) => void;
-  // Set when the page shows both modes at once: the mode field is off and
-  // says why.
+  // Set when the page shows both modes at once: the mode field is off,
+  // reads "Both" and says why.
   modeLocked?: string;
   // Page tools at the end of the bar.
   children?: ReactNode;
@@ -79,8 +91,10 @@ const Toolbar = ({ value, onChange, modeLocked, children }: Props) => {
       <Field
         id="mode"
         label="Mode"
-        value={value.mode}
-        options={MODES}
+        value={modeLocked ? 'both' : value.mode}
+        options={
+          modeLocked ? [{ value: 'both', label: 'Both' }, ...MODES] : MODES
+        }
         onChange={set('mode')}
         disabled={!!modeLocked}
         title={modeLocked}
@@ -99,10 +113,7 @@ const Toolbar = ({ value, onChange, modeLocked, children }: Props) => {
         id="viewport"
         label="Viewport"
         value={value.viewport}
-        options={Object.entries(GV_VIEWPORTS).map(([v, vp]) => ({
-          value: v,
-          label: vp.name,
-        }))}
+        options={VIEWPORTS}
         onChange={set('viewport')}
       />
       <Field

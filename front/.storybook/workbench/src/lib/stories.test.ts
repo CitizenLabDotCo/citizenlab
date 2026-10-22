@@ -159,7 +159,10 @@ describe('controlOf', () => {
     ).toEqual({
       name: 'a',
       kind: 'select',
-      options: ['s', 'm'],
+      options: [
+        { label: 's', value: 's' },
+        { label: 'm', value: 'm' },
+      ],
       description: undefined,
     });
   });
@@ -168,7 +171,22 @@ describe('controlOf', () => {
     expect(controlOf('a', { type: { name: 'boolean' } })?.kind).toBe('boolean');
     expect(
       controlOf('a', { type: { name: 'enum', value: ['x', 'y'] } })
-    ).toMatchObject({ kind: 'select', options: ['x', 'y'] });
+    ).toMatchObject({
+      kind: 'select',
+      options: [{ value: 'x' }, { value: 'y' }],
+    });
+  });
+
+  it('keeps number and boolean options typed', () => {
+    expect(
+      controlOf('a', { control: { type: 'select' }, options: [1, 2, true] })
+    ).toMatchObject({
+      options: [
+        { label: '1', value: 1 },
+        { label: '2', value: 2 },
+        { label: 'true', value: true },
+      ],
+    });
   });
 
   it('skips what needs code', () => {

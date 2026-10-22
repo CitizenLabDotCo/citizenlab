@@ -2182,8 +2182,8 @@ tr:hover .wb-pv-motion > span {
 
 .wb-story-tabs {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--gv-space-2) var(--gv-space-6);
+  flex-direction: column;
+  gap: var(--gv-space-2);
   margin-bottom: var(--gv-space-4);
   padding-bottom: var(--gv-space-3);
   border-bottom: 1px solid var(--wb-border);
@@ -2192,12 +2192,13 @@ tr:hover .wb-pv-motion > span {
 .wb-tab-group {
   display: flex;
   gap: var(--gv-space-3);
-  align-items: baseline;
+  align-items: center;
   min-width: 0;
 }
 
 .wb-tab-group-label {
   flex: none;
+  width: 72px;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -2207,11 +2208,35 @@ tr:hover .wb-pv-motion > span {
 
 .wb-tabs {
   display: flex;
-  flex-wrap: wrap;
+  flex: 1;
+  flex-wrap: nowrap;
   gap: var(--gv-space-1);
+  min-width: 0;
   margin: 0;
   padding: 0;
+  overflow-x: auto;
   list-style: none;
+  scrollbar-width: thin;
+  scroll-padding-inline: var(--gv-space-8);
+}
+
+/* One row per group: when it scrolls, the edges fade to say so. */
+.wb-tabs[data-overflow='end'] {
+  mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent);
+}
+
+.wb-tabs[data-overflow='start'] {
+  mask-image: linear-gradient(to left, #000 calc(100% - 48px), transparent);
+}
+
+.wb-tabs[data-overflow='both'] {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 48px,
+    #000 calc(100% - 48px),
+    transparent
+  );
 }
 
 .wb-tabs a {
@@ -2461,6 +2486,15 @@ tr:hover .wb-pv-motion > span {
 
 .wb-shell .wb-controls-more:hover {
   background: var(--wb-sunken);
+}
+
+.wb-controls-unset {
+  margin: var(--gv-space-2) 0 0;
+  padding: var(--gv-space-3);
+  font-size: var(--gv-fs-13);
+  color: var(--wb-muted);
+  background: var(--wb-subtle);
+  border-radius: var(--wb-radius);
 }
 
 .wb-controls-none {
@@ -2753,16 +2787,18 @@ tr:hover .wb-pv-motion > span {
   .wb-tab-group {
     flex-direction: column;
     gap: var(--gv-space-1);
+    align-items: stretch;
     max-width: 100%;
-  }
-
-  .wb-tabs {
-    flex-wrap: nowrap;
-    max-width: 100%;
-    overflow-x: auto;
   }
 
   .wb-toolbar-tools {
     margin-left: 0;
+  }
+}
+
+/* Phones: one card per row, so a story shows near its real size. */
+@media (max-width: 520px) {
+  .wb-thumb-grid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

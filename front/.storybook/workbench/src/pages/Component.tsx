@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import Canvas from '../components/Canvas';
 import Icon from '../components/Icon';
@@ -36,6 +36,16 @@ const tabLabel = (s: StoryRef) =>
           .replace(/(?<= )[A-Z]/g, (c) => c.toLowerCase())
     : s.name;
 
+type Overflow = 'none' | 'start' | 'end' | 'both';
+
+const overflowOf = (el: HTMLElement): Overflow => {
+  const start = el.scrollLeft > 1;
+  const end = el.scrollLeft + el.clientWidth < el.scrollWidth - 1;
+  return start && end ? 'both' : start ? 'start' : end ? 'end' : 'none';
+};
+
+// One row of tabs that scrolls sideways when it is longer than the page,
+// with the current tab scrolled into view.
 const Tabs = ({
   label,
   stories,
@@ -46,25 +56,57 @@ const Tabs = ({
   stories: StoryRef[];
   current: string;
   section: Section;
-}) => (
-  <div className="wb-tab-group">
-    <span className="wb-tab-group-label">{label}</span>
-    <ul className="wb-tabs">
-      {stories.map((s) => (
-        <li key={s.id}>
-          <a
-            href={`#/${section}/${encodeURIComponent(s.id)}`}
-            className="wb-tab"
-            aria-current={s.id === current ? 'page' : undefined}
-            data-testid="wb-state-tab"
-          >
-            {tabLabel(s)}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </div>
-);
+}) => {
+  const list = useRef<HTMLUListElement>(null);
+  const [overflow, setOverflow] = useState<Overflow>('none');
+  useEffect(() => {
+    const el = list.current;
+    if (!el) return undefined;
+    const update = () => setOverflow(overflowOf(el));
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    el.addEventListener('scroll', update, { passive: true });
+    return () => {
+      observer.disconnect();
+      el.removeEventListener('scroll', update);
+    };
+  }, []);
+  useEffect(() => {
+    const el = list.current;
+    const tab = el?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (!el || !tab) return;
+    const left = tab.offsetLeft - el.offsetLeft;
+    if (
+      left < el.scrollLeft ||
+      left + tab.offsetWidth > el.scrollLeft + el.clientWidth
+    ) {
+      el.scrollLeft = left - el.clientWidth / 2 + tab.offsetWidth / 2;
+    }
+  }, [current]);
+  return (
+    <div className="wb-tab-group">
+      <span className="wb-tab-group-label">{label}</span>
+      <ul
+        className="wb-tabs"
+        ref={list}
+        data-overflow={overflow === 'none' ? undefined : overflow}
+      >
+        {stories.map((s) => (
+          <li key={s.id}>
+            <a
+              href={`#/${section}/${encodeURIComponent(s.id)}`}
+              className="wb-tab"
+              aria-current={s.id === current ? 'page' : undefined}
+              data-testid="wb-state-tab"
+            >
+              {tabLabel(s)}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
 // One story title: its stories as tabs (states first, then variants), the
 // canvas alone or today and redesign side by side, and the Controls panel.

@@ -76,8 +76,10 @@ type Props = {
   group: StoryGroup;
   href: string;
   globals: FrameGlobals;
-  // Size of the story in the card: the frame is 1/scale times the box.
-  scale?: number;
+  // Width the story is laid out at. The frame is scaled to the card's
+  // width (never above 100%), so a card of any width shows the same story
+  // uncropped.
+  frameWidth?: number;
 };
 
 // The story sits on the card's own surface, without page scrollbars, and
@@ -99,10 +101,19 @@ const NEAR = '200px';
 // A gallery card: the group's Default story rendered live and scaled down,
 // loaded only when it nears the viewport, faded in once Storybook has
 // rendered it. The frame is decoration; the card is the link.
-const StoryThumb = ({ group, href, globals, scale = 0.5 }: Props) => {
+const StoryThumb = ({ group, href, globals, frameWidth = 320 }: Props) => {
   const [loaded, setLoaded] = useState(false);
   const [near, setNear] = useState(false);
+  const [width, setWidth] = useState(0);
   const box = useRef<HTMLSpanElement>(null);
+  useEffect(() => {
+    const el = box.current;
+    if (!el) return undefined;
+    const observer = new ResizeObserver(() => setWidth(el.clientWidth));
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  const scale = width > 0 ? Math.min(1, width / frameWidth) : 0.75;
   const timer = useRef<number>();
   const src = storyUrl(group.defaultId, globals);
   useEffect(() => {

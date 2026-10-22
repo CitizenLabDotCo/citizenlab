@@ -17,7 +17,8 @@
 // shows in the Changes drawer and in the hash. The Components gallery shows
 // at least MIN_GALLERY_THUMBS story thumbnails; the Button page has at least
 // MIN_STATE_TABS story tabs, and switching its `disabled` control changes
-// the frame's DOM. Exits 1 on failure,
+// the frame's DOM. The canvas fits the Button frame to the story by
+// default (MAX_FIT_HEIGHT). Exits 1 on failure,
 // 2 when Playwright is missing. Playwright is loaded through ./playwright.
 import fs from 'fs';
 import http from 'http';
@@ -74,6 +75,8 @@ const sharePayload = (o: Record<string, string>) =>
 export const MIN_COLOUR_TOKENS = 50;
 export const MIN_GALLERY_THUMBS = 30;
 export const MIN_STATE_TABS = 2;
+// A Button story fitted to its frame: far shorter than any preset viewport.
+export const MAX_FIT_HEIGHT = 400;
 
 // The token names in a share-link hash (`...?o=<base64url JSON>`).
 export const overrideNamesOfHash = (hash: string): string[] => {
@@ -266,6 +269,29 @@ const canvasChecks = async (
     failures.push('the panel column is not shown on a component page');
   }
   await canvasFrame(page, 'today');
+
+  // Fit, the default viewport: the frame hugs the button, at full size.
+  try {
+    await page.waitForSelector(
+      'iframe[data-testid="wb-canvas"][data-fit="done"]',
+      {
+        timeout: 10000,
+      }
+    );
+    const box = await page.$eval(
+      'iframe[data-testid="wb-canvas"]',
+      (el: Element) => el.getBoundingClientRect().height
+    );
+    if (box > MAX_FIT_HEIGHT) {
+      failures.push(
+        `fit: the Button frame is ${box}px tall, expected ${MAX_FIT_HEIGHT} or less`
+      );
+    } else {
+      console.log(`canvas: fit to story, ${Math.round(box)}px tall`);
+    }
+  } catch {
+    failures.push('fit: the canvas frame was never fitted to the story');
+  }
 
   // Mode toolbar: the frame's html gets the attribute.
   await page.selectOption('[data-testid="wb-toolbar-mode"]', 'redesign');

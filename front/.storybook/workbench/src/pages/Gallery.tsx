@@ -37,12 +37,13 @@ const COPY: Record<Section, { title: string; lead: string; noun: string }> = {
   },
 };
 
-// Library components are small: shown at 3/4 so their labels stay
-// readable. Patterns and pages are shown at half size.
-const THUMB_SCALE: Record<Section, number> = {
-  components: 0.75,
-  patterns: 0.5,
-  pages: 0.5,
+// Width each story is laid out at before it is scaled to the card: a
+// phone-sized column for library components (about 80% in a desktop card,
+// so labels stay readable), wider for patterns and pages.
+const THUMB_FRAME_WIDTH: Record<Section, number> = {
+  components: 320,
+  patterns: 520,
+  pages: 520,
 };
 
 const OFFICES: { value: Office | 'all'; label: string; title?: string }[] = [
@@ -108,7 +109,7 @@ const Grid = ({
           group={g}
           href={`#/${section}/${encodeURIComponent(g.defaultId)}`}
           globals={globals}
-          scale={THUMB_SCALE[section]}
+          frameWidth={THUMB_FRAME_WIDTH[section]}
         />
       </li>
     ))}

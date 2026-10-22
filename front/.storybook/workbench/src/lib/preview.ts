@@ -101,6 +101,26 @@ const remountAfterUpdate = (channel: Channel, storyId: string) => {
   channel.on('storyArgsUpdated', done);
 };
 
+// Runs `fn` once the frame's story has rendered (now, if it has). Returns
+// a function that cancels the wait.
+export const whenRendered = (
+  win: Window | null | undefined,
+  fn: () => void
+): (() => void) => {
+  if (isRendered(win)) {
+    fn();
+    return () => {};
+  }
+  const channel = channelOf(win);
+  if (!channel) return () => {};
+  const once = () => {
+    channel.off('storyRendered', once);
+    fn();
+  };
+  channel.on('storyRendered', once);
+  return () => channel.off('storyRendered', once);
+};
+
 export const updateArgs = (
   win: Window | null | undefined,
   storyId: string,
@@ -128,9 +148,12 @@ export type Control =
   | {
       name: string;
       kind: 'select';
-      options: string[];
+      // The values go back to the story as they are (numbers, booleans).
+      options: Option[];
       description?: string;
     };
+
+export type Option = { label: string; value: string | number | boolean };
 
 const SELECTS = new Set([
   'select',
@@ -159,7 +182,7 @@ export const controlOf = (name: string, t: ArgType): Control | null => {
     .filter((o): o is string | number | boolean =>
       ['string', 'number', 'boolean'].includes(typeof o)
     )
-    .map(String);
+    .map((value) => ({ label: String(value), value }));
 
   if (control === 'boolean' || (!control && typeName === 'boolean')) {
     return { name, kind: 'boolean', description };

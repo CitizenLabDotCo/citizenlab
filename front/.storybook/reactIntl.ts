@@ -10,12 +10,14 @@ import nlBE from '../app/translations/nl-BE.json';
 import nlBEAdmin from '../app/translations/admin/nl-BE.json';
 import frBE from '../app/translations/fr-BE.json';
 import frBEAdmin from '../app/translations/admin/fr-BE.json';
+import ar from '../app/translations/ar-SA.json';
+import arAdmin from '../app/translations/admin/ar-SA.json';
 
 import { LANGUAGES, Language } from './languages';
 
 // Platform and admin messages per language of ./languages, like
 // app/i18n/<locale>.ts does. Picked from the "Language" toolbar menu.
-// de, es and da use the de-DE, es-ES and da-DK messages.
+// de, es, da and ar use the de-DE, es-ES, da-DK and ar-SA messages.
 const messages: Record<Language, Record<string, string>> = {
   en: { ...en, ...enAdmin },
   'nl-BE': { ...nlBE, ...nlBEAdmin },
@@ -23,9 +25,9 @@ const messages: Record<Language, Record<string, string>> = {
   de: { ...de, ...deAdmin },
   es: { ...es, ...esAdmin },
   da: { ...da, ...daAdmin },
-  // Right-to-left check: English messages, since the app has no Arabic file.
-  // Setting this language turns on theme.isRtl, like App/index.tsx does.
-  ar: { ...en, ...enAdmin },
+  // Right-to-left check: setting this language also turns on theme.isRtl,
+  // like App/index.tsx does.
+  ar: { ...ar, ...arAdmin },
 };
 
 export type StorybookLocale = Language;

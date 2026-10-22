@@ -10,6 +10,7 @@ import {
   readStory,
   resetArgs,
   updateArgs,
+  whenRendered,
 } from '../lib/preview';
 
 type Props = {
@@ -21,6 +22,9 @@ type Props = {
 
 // Text and number edits reach the story after a short pause in typing.
 const TYPING_MS = 300;
+
+// More unset props than this wait behind "Show N more props".
+const FOLD_AFTER = 6;
 
 const asText = (v: unknown) =>
   v === undefined || v === null ? '' : typeof v === 'string' ? v : String(v);
@@ -58,24 +62,31 @@ const Field = ({
         />
       );
       break;
-    case 'select':
+    case 'select': {
+      // Options by position, so a number or boolean goes back as one.
+      const at = control.options.findIndex((o) => o.value === value);
       input = (
         <select
           id={id}
-          value={asText(value)}
+          value={at === -1 ? '' : String(at)}
           onChange={(e) =>
-            onChange(e.target.value === '' ? undefined : e.target.value)
+            onChange(
+              e.target.value === ''
+                ? undefined
+                : control.options[Number(e.target.value)].value
+            )
           }
         >
           <option value="">Not set</option>
-          {control.options.map((o) => (
-            <option key={o} value={o}>
-              {o}
+          {control.options.map((o, i) => (
+            <option key={o.label} value={String(i)}>
+              {o.label}
             </option>
           ))}
         </select>
       );
       break;
+    }
     case 'number':
       input = (
         <input
@@ -144,6 +155,31 @@ const Controls = ({ storyId, frames }: Props) => {
   // Props the story leaves unset wait behind "More props" (Button has ~100).
   const [more, setMore] = useState(false);
   const first = frames[0] ?? null;
+  // Every edit since the story loaded. A frame that is still loading (the
+  // second frame of the split view, or one reloaded for a new language)
+  // gets them all once its story has rendered, so both frames agree.
+  const edits = useRef<Record<string, unknown>>({});
+  const live = useRef(new WeakSet<Window>());
+  const seen = useRef(new WeakSet<Window>());
+  useEffect(() => {
+    edits.current = {};
+  }, [storyId]);
+  const waits = useRef<(() => void)[]>([]);
+  useEffect(() => () => waits.current.forEach((c) => c()), []);
+  useEffect(() => {
+    frames.forEach((w) => {
+      if (!w || seen.current.has(w)) return;
+      seen.current.add(w);
+      waits.current.push(
+        whenRendered(w, () => {
+          live.current.add(w);
+          if (Object.keys(edits.current).length > 0) {
+            updateArgs(w, storyId, { ...edits.current });
+          }
+        })
+      );
+    });
+  }, [frames, storyId]);
 
   useEffect(() => {
     setStory(null);
@@ -174,7 +210,8 @@ const Controls = ({ storyId, frames }: Props) => {
     [story?.id, story?.argTypes]
   );
   const q = query.trim().toLowerCase();
-  const folded = !q && !more && setCount > 0 && setCount < controls.length;
+  // Fold only a long tail: a few unset props show as they are.
+  const folded = !q && !more && controls.length - setCount > FOLD_AFTER;
   const shown = q
     ? controls.filter((c) => c.name.toLowerCase().includes(q))
     : folded
@@ -185,9 +222,17 @@ const Controls = ({ storyId, frames }: Props) => {
 
   const set = (name: string, value: unknown) => {
     setStory((s) => (s ? { ...s, args: { ...s.args, [name]: value } } : s));
-    frames.forEach((w) => updateArgs(w, storyId, { [name]: value }));
+    edits.current = { ...edits.current, [name]: value };
+    frames.forEach((w) => {
+      if (w && live.current.has(w)) updateArgs(w, storyId, { [name]: value });
+    });
   };
-  const reset = () => frames.forEach((w) => resetArgs(w, storyId));
+  const reset = () => {
+    edits.current = {};
+    frames.forEach((w) => {
+      if (w && live.current.has(w)) resetArgs(w, storyId);
+    });
+  };
 
   return (
     <Panel title="Controls">
@@ -241,11 +286,16 @@ const Controls = ({ storyId, frames }: Props) => {
                   onChange={(v) => set(c.name, v)}
                 />
               ))}
-              {shown.length === 0 && (
+              {q && shown.length === 0 && (
                 <p className="wb-muted wb-controls-none">No prop matches.</p>
               )}
             </div>
-            {!q && setCount > 0 && hidden > 0 && (
+            {folded && setCount === 0 && (
+              <p className="wb-controls-unset" data-testid="wb-controls-unset">
+                This story sets no props: it shows the component as it comes.
+              </p>
+            )}
+            {!q && hidden > FOLD_AFTER && (
               <button
                 type="button"
                 className="wb-controls-more"
@@ -254,8 +304,12 @@ const Controls = ({ storyId, frames }: Props) => {
                 data-testid="wb-controls-more"
               >
                 {folded
-                  ? `Show ${hidden} more ${hidden === 1 ? 'prop' : 'props'}`
-                  : 'Show only the props this story sets'}
+                  ? `Show ${hidden} ${setCount > 0 ? 'more ' : ''}${
+                      hidden === 1 ? 'prop' : 'props'
+                    }`
+                  : setCount > 0
+                  ? 'Show only the props this story sets'
+                  : 'Hide the props'}
               </button>
             )}
             {skipped > 0 && (
