@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Divider, Button, Text } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text, bo } from '@citizenlab/cl2-component-library';
 
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 import { ParticipationMethod } from 'api/phases/types';
@@ -40,6 +40,9 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
   if (formEditor === null) return null;
 
   const survey = formEditor === 'surveyEditor';
+  const voting = participationMethod === 'voting';
+  // PanelField draws its body for any truthy children, empty fragments included.
+  const hasBody = !phaseId || voting;
 
   const asksParticipants = !!permissions?.data.some(
     ({ attributes }) => attributes.action === 'posting_idea'
@@ -47,52 +50,86 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
 
   return (
     <>
-      <Divider />
-
       <PanelField
         label={formatMessage(
           survey ? messages.surveyForm : inputFormMessages.inputForm
         )}
+        action={
+          phaseId && permissions && !asksParticipants ? (
+            <ButtonWithLink
+              buttonStyle="bo-secondary"
+              height={bo.buttonMedium.height}
+              padding={bo.buttonMedium.padding}
+              fontSize={bo.buttonMedium.fontSize}
+              width="auto"
+              to={
+                survey
+                  ? '/admin/projects/$projectId/phases/$phaseId/survey-form/edit'
+                  : '/admin/projects/$projectId/phases/$phaseId/form/edit'
+              }
+              params={{ projectId, phaseId }}
+            >
+              {formatMessage(messages.addQuestions)}
+            </ButtonWithLink>
+          ) : (
+            <Button
+              buttonStyle="bo-secondary"
+              height={bo.buttonMedium.height}
+              padding={bo.buttonMedium.padding}
+              fontSize={bo.buttonMedium.fontSize}
+              width="auto"
+              disabled={!phaseId || !permissions}
+              onClick={() => setQuestionsModalOpened(true)}
+            >
+              {formatMessage(messages.addQuestions)}
+            </Button>
+          )
+        }
       >
-        {!phaseId && (
-          <Text variant="boHelper" mb="12px">
-            {formatMessage(messages.saveToEditForm)}
-          </Text>
-        )}
-        {phaseId && permissions && !asksParticipants ? (
-          <ButtonWithLink
-            buttonStyle="bo-secondary"
-            to={
-              survey
-                ? '/admin/projects/$projectId/phases/$phaseId/survey-form/edit'
-                : '/admin/projects/$projectId/phases/$phaseId/form/edit'
-            }
-            params={{ projectId, phaseId }}
-          >
-            {formatMessage(messages.addQuestions)}
-          </ButtonWithLink>
-        ) : (
-          <Button
-            buttonStyle="bo-secondary"
-            disabled={!phaseId || !permissions}
-            onClick={() => setQuestionsModalOpened(true)}
-          >
-            {formatMessage(messages.addQuestions)}
-          </Button>
-        )}
-        {participationMethod === 'voting' && (
-          <Button
-            buttonStyle="bo-secondary"
-            mt="8px"
-            disabled={!phaseId}
-            onClick={() => setIdeasModalOpened(true)}
-          >
-            {formatMessage(messages.addIdeasFromPreviousPhase)}
-          </Button>
+        {hasBody && (
+          <>
+            {!phaseId && (
+              <Text variant="boHelper" m="0">
+                {formatMessage(messages.saveToEditForm)}
+              </Text>
+            )}
+            {voting && (
+              <Box display="flex">
+                <Button
+                  buttonStyle="bo-secondary"
+                  height={bo.buttonMedium.height}
+                  padding={bo.buttonMedium.padding}
+                  fontSize={bo.buttonMedium.fontSize}
+                  width="auto"
+                  disabled={!phaseId}
+                  onClick={() => setIdeasModalOpened(true)}
+                >
+                  {formatMessage(messages.addIdeasFromPreviousPhase)}
+                </Button>
+              </Box>
+            )}
+          </>
         )}
       </PanelField>
 
-      {phaseId && participationMethod === 'voting' && (
+      <PanelField
+        label={formatMessage(messages.offlineCollection)}
+        action={
+          <Button
+            buttonStyle="bo-text"
+            icon="chevron-right"
+            iconSize="16px"
+            width="32px"
+            height="32px"
+            padding="0"
+            ariaLabel={formatMessage(messages.offlineCollection)}
+            disabled={!phaseId}
+            onClick={() => setImportModalOpened(true)}
+          />
+        }
+      />
+
+      {phaseId && voting && (
         <AddPreviousPhaseIdeasModal
           projectId={projectId}
           phaseId={phaseId}
@@ -110,18 +147,6 @@ const FormSection = ({ projectId, participationMethod, phaseId }: Props) => {
           onClose={() => setQuestionsModalOpened(false)}
         />
       )}
-
-      <Button
-        buttonStyle="bo-text"
-        justify="space-between"
-        icon="chevron-right"
-        iconPos="right"
-        padding="0"
-        disabled={!phaseId}
-        onClick={() => setImportModalOpened(true)}
-      >
-        {formatMessage(messages.offlineCollection)}
-      </Button>
 
       <Modal
         opened={importModalOpened}

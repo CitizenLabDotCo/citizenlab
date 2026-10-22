@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
@@ -124,31 +123,29 @@ const NewPhaseWorkspace = ({
         ),
       }}
       sidePanel={
-        <Box p="20px">
-          <BuildFields
-            projectId={projectId}
-            participationMethod={participationMethod}
-            formData={formData}
-            errors={errors}
-            validationErrors={validationErrors}
-            standalone={standalone}
-            files={files}
-            surveyMethodSwitch={{
-              onSelect: (method) => {
-                setParticipationMethod(method);
-                updateFormData(defaultsForMethod(method));
-              },
-            }}
-            onChange={updateFormData}
-            onDatesChange={(dates) => {
-              setValidationErrors((errors) => ({
-                ...errors,
-                phaseDateError: undefined,
-              }));
-              updateFormData(dates);
-            }}
-          />
-        </Box>
+        <BuildFields
+          projectId={projectId}
+          participationMethod={participationMethod}
+          formData={formData}
+          errors={errors}
+          validationErrors={validationErrors}
+          standalone={standalone}
+          files={files}
+          surveyMethodSwitch={{
+            onSelect: (method) => {
+              setParticipationMethod(method);
+              updateFormData(defaultsForMethod(method));
+            },
+          }}
+          onChange={updateFormData}
+          onDatesChange={(dates) => {
+            setValidationErrors((errors) => ({
+              ...errors,
+              phaseDateError: undefined,
+            }));
+            updateFormData(dates);
+          }}
+        />
       }
     >
       <PhasePreview projectId={projectId} />

@@ -9,6 +9,8 @@ import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 import { isTimelinePhase } from 'api/phases/utils';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import usePhaseFileAttachments, {
   fileAttachmentErrors,
 } from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
@@ -46,6 +48,9 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
   const [pendingSurveyMethod, setPendingSurveyMethod] =
     useState<SurveyMethod | null>(null);
   const surveyMethodLocks = useSurveyMethodLocks(phase);
+  const draftDescriptionEnabled = useFeatureFlag({
+    name: 'draft_phase_description',
+  });
 
   const files = usePhaseFileAttachments({
     projectId,
@@ -81,6 +86,11 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
         title_multiloc: formData.title_multiloc,
         start_at: formData.start_at,
         end_at: formData.end_at,
+        // A draft description publishes on its own; sending the loaded value
+        // would undo a publish made since.
+        ...(draftDescriptionEnabled
+          ? {}
+          : { description_multiloc: formData.description_multiloc }),
       });
       setFormData(response.data.attributes);
       await files.save(phase.id);
@@ -96,7 +106,7 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
 
   return (
     <Box display="flex" flexDirection="column" flexGrow={1} minHeight="0">
-      <Box flexGrow={1} p="20px">
+      <Box flexGrow={1}>
         <BuildFields
           projectId={projectId}
           phaseId={phase.id}

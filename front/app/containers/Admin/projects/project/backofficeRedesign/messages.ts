@@ -509,4 +509,36 @@ export default defineMessages({
     defaultMessage:
       'Recommended actions appear here once participants take part.',
   },
+  ideationSetup: {
+    id: 'app.containers.Admin.projects.project.ideationSetup',
+    defaultMessage: 'Ideation setup',
+  },
+  proposalsSetup: {
+    id: 'app.containers.Admin.projects.project.proposalsSetup',
+    defaultMessage: 'Proposals setup',
+  },
+  votingSetup: {
+    id: 'app.containers.Admin.projects.project.votingSetup',
+    defaultMessage: 'Voting setup',
+  },
+  surveySetup: {
+    id: 'app.containers.Admin.projects.project.surveySetup',
+    defaultMessage: 'Survey setup',
+  },
+  informationSetup: {
+    id: 'app.containers.Admin.projects.project.informationSetup',
+    defaultMessage: 'Information setup',
+  },
+  commonGroundSetup: {
+    id: 'app.containers.Admin.projects.project.commonGroundSetup',
+    defaultMessage: 'Common ground setup',
+  },
+  volunteeringSetup: {
+    id: 'app.containers.Admin.projects.project.volunteeringSetup',
+    defaultMessage: 'Volunteering setup',
+  },
+  documentAnnotationSetup: {
+    id: 'app.containers.Admin.projects.project.documentAnnotationSetup',
+    defaultMessage: 'Document annotation setup',
+  },
 });

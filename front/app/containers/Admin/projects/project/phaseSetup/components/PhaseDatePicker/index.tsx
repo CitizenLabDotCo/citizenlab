@@ -25,6 +25,7 @@ interface Props {
   errors: CLErrors | null;
   validationErrors: ValidationErrors;
   onChange: (dates: PhaseDates) => void;
+  variant?: 'default' | 'bo';
 }
 
 const PhaseDatePicker = ({
@@ -32,6 +33,7 @@ const PhaseDatePicker = ({
   errors,
   validationErrors,
   onChange,
+  variant,
 }: Props) => {
   const { selectedRange, disabledRanges, defaultMonth, timeZone } = ranges;
 
@@ -49,14 +51,15 @@ const PhaseDatePicker = ({
           })
         }
         className="intercom-admin-phase-date-setup"
+        variant={variant}
       />
       <Error apiErrors={errors?.start_at} />
       <Error apiErrors={errors?.end_at} />
       <Error text={validationErrors.phaseDateError} />
 
       {isSelectedRangeOpenEnded(selectedRange, disabledRanges) && (
-        <Box mt="24px">
-          <Warning>
+        <Box mt={variant === 'bo' ? '12px' : '24px'}>
+          <Warning variant={variant}>
             <>
               <FormattedMessage {...messages.noEndDateWarningTitle} />
               <ul>

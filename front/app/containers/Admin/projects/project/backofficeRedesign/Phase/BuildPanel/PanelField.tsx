@@ -1,19 +1,17 @@
 import React, { ReactNode } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import SetupCard from '../../Event/SetupCard';
 
 interface Props {
-  label: ReactNode;
-  children: ReactNode;
+  label: string;
+  action?: ReactNode;
+  children?: ReactNode;
 }
 
-const PanelField = ({ label, children }: Props) => (
-  <Box mb="16px">
-    <Text variant="boSection" mb="8px">
-      {label}
-    </Text>
+const PanelField = ({ label, action, children }: Props) => (
+  <SetupCard title={label} action={action}>
     {children}
-  </Box>
+  </SetupCard>
 );
 
 export default PanelField;
