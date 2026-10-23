@@ -37,14 +37,15 @@ export const WithLink: Story = {
   },
 };
 
-export const LinkHover: Story = {
+// Warning's only hover and focus styles are on links in its text.
+export const Hover: Story = {
   args: WithLink.args,
   parameters: { pseudo: { hover: ['a'] } },
 };
 
 // The link's focus style hangs on the focus-visible polyfill class, which
 // only a keyboard focus sets.
-export const LinkFocus: Story = {
+export const Focus: Story = {
   args: WithLink.args,
   play: async () => {
     await userEvent.tab();
