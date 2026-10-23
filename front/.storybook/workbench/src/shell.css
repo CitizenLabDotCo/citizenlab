@@ -6912,3 +6912,91 @@ tr[data-result='needs-human'] .wb-a11y-note {
 .wb-change-look {
   color: var(--wb-fail);
 }
+
+/* The canvas bar's settings and the Usage disclosure. */
+.wb-canvas-settings {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--gv-space-1);
+  align-items: center;
+}
+
+.wb-canvas-setting {
+  display: inline-flex;
+  gap: 2px;
+  align-items: center;
+  color: var(--wb-muted);
+}
+
+.wb-canvas-setting .wb-toolbar-field select {
+  max-width: 120px;
+}
+
+.wb-shell button.wb-usage-chip {
+  gap: var(--gv-space-1);
+  min-height: 0;
+  padding: 2px var(--gv-space-2);
+  font-size: inherit;
+}
+
+.wb-usage-chip[aria-expanded='true'] .wb-icon:last-child {
+  transform: rotate(180deg);
+}
+
+.wb-usage-drawer {
+  margin: 0 0 var(--gv-space-3);
+}
+
+/* A drawer in the page flow: Changes under the canvas bar, Usage under
+   the header. */
+.wb-drawer.wb-drawer-inline,
+.wb-drawer-inline {
+  position: static;
+  z-index: auto;
+  width: auto;
+  height: auto;
+  max-height: 60vh;
+  margin: 0 0 var(--gv-space-3);
+  padding: var(--gv-space-4);
+  overflow-y: auto;
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius-lg);
+  box-shadow: none;
+}
+
+/* Foundations' previews, shrunk to the picker's 28px column. */
+.wb-picker-preview .wb-pv {
+  max-width: 28px;
+  max-height: 22px;
+  overflow: hidden;
+}
+
+.wb-picker-preview .wb-pv-radius > span {
+  width: 18px;
+  height: 18px;
+  border-width: 1.5px;
+}
+
+.wb-picker-preview .wb-pv-space {
+  width: 28px;
+  height: 6px;
+}
+
+.wb-picker-preview .wb-pv-space > span {
+  height: 6px;
+  max-width: 28px;
+}
+
+.wb-picker-preview .wb-pv-cut > span {
+  display: none;
+}
+
+.wb-picker-preview .wb-pv-shadow {
+  padding: 3px;
+}
+
+.wb-picker-preview .wb-pv-shadow > span {
+  width: 16px;
+  height: 12px;
+}

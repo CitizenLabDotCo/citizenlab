@@ -1,6 +1,7 @@
 import type { Mode } from '@ds/tokens/tokens';
 
-import { DEFAULT_CITY } from '../../../cities';
+import { cities, DEFAULT_CITY } from '../../../cities';
+import { LANGUAGES } from '../../../languages';
 import { GV_VIEWPORTS, GvViewport } from '../../../viewports';
 import type { FrameGlobals } from '../lib/frame';
 
@@ -146,5 +147,68 @@ export const ZoomControl = ({
         <span className="wb-visually-hidden">Zoom in</span>
       </button>
     </div>
+  );
+};
+
+// City, Viewport and Language on the canvas bar: glyph and value; the
+// words are the fields' labels.
+export const CanvasSettings = ({
+  toolbar,
+  setToolbar,
+  storyLang,
+}: {
+  toolbar: ToolbarState;
+  setToolbar: (next: ToolbarState) => void;
+  // Set when the story sets its own language: the field is off.
+  storyLang?: string;
+}) => {
+  const set =
+    <K extends keyof ToolbarState>(key: K) =>
+    (v: string) =>
+      setToolbar({ ...toolbar, [key]: v as ToolbarState[K] });
+  const lang = storyLang ?? toolbar.lang;
+  const languages: { value: string; label: string }[] = LANGUAGES.map(
+    ({ value, label }) => ({ value, label })
+  );
+  if (!languages.some((l) => l.value === lang)) {
+    languages.push({ value: lang, label: lang });
+  }
+  return (
+    <span className="wb-canvas-settings" role="group" aria-label="Canvas">
+      <span className="wb-canvas-setting">
+        <Icon name="city" size={14} />
+        <Field
+          id="city"
+          label="City"
+          value={toolbar.city}
+          options={Object.entries(cities).map(([v, c]) => ({
+            value: v,
+            label: c.title,
+          }))}
+          onChange={set('city')}
+        />
+      </span>
+      <span className="wb-canvas-setting">
+        <Icon name="monitor" size={14} />
+        <Field
+          id="viewport"
+          label="Viewport"
+          value={toolbar.viewport}
+          options={VIEWPORTS}
+          onChange={set('viewport')}
+        />
+      </span>
+      <span className="wb-canvas-setting">
+        <Icon name="language" size={14} />
+        <Field
+          id="lang"
+          label="Language"
+          value={lang}
+          options={languages}
+          onChange={set('lang')}
+          disabled={!!storyLang}
+        />
+      </span>
+    </span>
   );
 };

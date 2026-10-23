@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { GV_VIEWPORTS } from '../../../viewports';
 import { storyUrl } from '../lib/frame';
+import { applyElementEdits, ElementEdit } from '../lib/elementEdits';
 import type { Overrides } from '../lib/overrides';
 import { applyEdits } from '../lib/review';
 
@@ -11,6 +12,8 @@ type Props = {
   storyId: string;
   toolbar: ToolbarState;
   overrides: Overrides;
+  // The session's element edits, painted as inline styles on this story.
+  elementEdits?: ElementEdit[];
   // Called with the frame's window after each load (the Controls panel
   // talks to the story through it), and with null when the frame goes.
   onFrame?: (win: Window | null) => void;
@@ -201,6 +204,8 @@ const fitTo = (iframe: HTMLIFrameElement, room: number): Fitted | null => {
   return { w, h: clampH(again.h), scale };
 };
 
+const NO_EDITS: ElementEdit[] = [];
+
 // Storybook's preview frame for one story. With the `fit` viewport the
 // frame is as tall as the story; the zoom control's Fit scales a small
 // story up and a wide one down to the canvas, a fixed zoom shows it at that
@@ -214,6 +219,7 @@ const Canvas = ({
   storyId,
   toolbar,
   overrides,
+  elementEdits = NO_EDITS,
   onFrame,
   onScale,
   label,
@@ -224,13 +230,33 @@ const Canvas = ({
   const [fitted, setFitted] = useState<Fitted | null>(null);
   const fit = toolbar.viewport === 'fit';
   const { zoom } = toolbar;
-  const latest = useRef({ overrides, mode: toolbar.mode, onFrame, fit, room });
-  latest.current = { overrides, mode: toolbar.mode, onFrame, fit, room };
+  const latest = useRef({
+    overrides,
+    elementEdits,
+    storyId,
+    mode: toolbar.mode,
+    onFrame,
+    fit,
+    room,
+  });
+  latest.current = {
+    overrides,
+    elementEdits,
+    storyId,
+    mode: toolbar.mode,
+    onFrame,
+    fit,
+    room,
+  };
   const zoomRef = useRef(zoom);
   zoomRef.current = zoom;
   // Per frame document, the tokens the session set there: the story's own
   // inline tokens (the city's --gv-tenant-*, written by ModeProvider) stay.
   const applied = useRef(new WeakMap<Document, Map<string, string | null>>());
+  // Per frame document, each element edit's inline values before it.
+  const appliedElements = useRef(
+    new WeakMap<Document, Map<string, Map<string, string>>>()
+  );
 
   const apply = useCallback(() => {
     const doc = frame.current?.contentDocument;
@@ -241,6 +267,17 @@ const Canvas = ({
       applied.current.set(doc, mine);
     }
     applyEdits(doc, latest.current.overrides, latest.current.mode, mine);
+    let els = appliedElements.current.get(doc);
+    if (!els) {
+      els = new Map();
+      appliedElements.current.set(doc, els);
+    }
+    applyElementEdits(
+      doc,
+      latest.current.elementEdits,
+      latest.current.storyId,
+      els
+    );
     if (doc.head) styleFrame(doc, latest.current.fit);
   }, []);
 
@@ -313,7 +350,7 @@ const Canvas = ({
   }, [apply, refit]);
   useEffect(() => () => watch.current?.(), []);
 
-  useEffect(apply, [apply, overrides, toolbar.mode, fit]);
+  useEffect(apply, [apply, overrides, elementEdits, toolbar.mode, fit]);
   useEffect(refit, [refit, room, fit, zoom]);
 
   useEffect(() => {

@@ -224,15 +224,22 @@ const Design = ({
       shown: row.value.shown,
       token: row.value.link === 'linked' ? row.value.token : undefined,
     };
+  // The property a row belongs to: Layout holds padding and gap rows.
+  const groupOf = (row: InspectRow, sectionLabel: string) =>
+    row.id.startsWith('padding')
+      ? 'Padding'
+      : row.id.startsWith('gap')
+      ? 'Gap'
+      : sectionLabel;
   const base = (row: InspectRow, sectionLabel: string) => ({
     id: editId(storyId, path, row.id),
     storyId,
     path,
     rowId: row.id,
     label:
-      row.label && row.label !== sectionLabel
-        ? `${sectionLabel} · ${row.label}`
-        : sectionLabel,
+      row.label && row.label !== groupOf(row, sectionLabel)
+        ? `${groupOf(row, sectionLabel)} · ${row.label}`
+        : groupOf(row, sectionLabel),
     glyph: row.glyph,
     props: row.props,
     from: originOf(row),

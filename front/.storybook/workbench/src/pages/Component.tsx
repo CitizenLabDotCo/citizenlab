@@ -1,18 +1,26 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Canvas from '../components/Canvas';
+import ChangesDrawer from '../components/ChangesDrawer';
 import Icon from '../components/Icon';
 import PanelTabs from '../components/PanelTabs';
 import Segmented from '../components/Segmented';
 import { OfficeChip, ScoreRing, StatusChip } from '../components/StoryThumb';
-import { ToolbarState, ZoomControl } from '../components/Toolbar';
+import {
+  CanvasSettings,
+  ToolbarState,
+  ZoomControl,
+} from '../components/Toolbar';
 import { checklistOf } from '../lib/a11y';
 import { CHECKLISTS } from '../lib/checklists';
 import { fileFindings } from '../lib/componentPanels';
+import { resolveTokens } from '../lib/contrast';
 import { TOKEN_META } from '../lib/data';
+import type { TaskContext } from '../lib/elementEdits';
 import { HealChoice, HealMode, healModeOf } from '../lib/healTask';
 import { channelOf, storyLangOf } from '../lib/preview';
 import { groupOfStory, Section, StoryRef } from '../lib/stories';
+import { DEFS } from '../lib/tokenValues';
 import { useA11yResults } from '../lib/useA11y';
 import { Tool, useCanvasSelection } from '../lib/useCanvasSelection';
 import { useElementEdits } from '../lib/useElementEdits';
@@ -37,12 +45,11 @@ type Props = {
 
 type View = 'single' | 'split';
 
-type Tab = 'design' | 'inspect';
-const TABS: Tab[] = ['design', 'inspect'];
+type Tab = 'design' | 'a11y';
+const TABS: Tab[] = ['design', 'a11y'];
 const TAB_KEY = 'wb-inspector-tab';
 
-// The Inspect tab's own views.
-type Detail = 'usage' | 'a11y';
+type ModeChoice = 'today' | 'redesign' | 'both';
 
 // The last panel tab, per browser (storage may be blocked).
 const storedTab = (): Tab => {
@@ -77,26 +84,24 @@ const tabLabel = (s: StoryRef) =>
           .replace(/(?<= )[A-Z]/g, (c) => c.toLowerCase())
     : s.name;
 
-// One story title, laid out like a design tool: the canvas in the middle
-// (alone, or today and redesign side by side) and the inspector on the
-// right. Design holds the story, the canvas settings, the selected
-// element's tokens and the props; Inspect holds the token list with its
-// heal, the usage and the a11y checks.
+// One story title, laid out like a design tool: the canvas bar (tool,
+// mode, city, viewport, language, zoom, Changes), the canvas in the middle
+// (one mode, or both side by side) and the inspector on the right with two
+// tabs, Design and A11y. Usage opens under the page header.
 const Component = ({
   section,
   storyId,
   toolbar,
   setToolbar,
   overrides,
-  // Task 10 puts the Changes drawer (reset) and the language field
-  // (storyLang) on the canvas bar.
-  reset: _reset,
+  reset,
 }: Props) => {
   const groups = useStoryGroups();
   const indexes = useScanIndexes(TOKEN_META);
   const a11y = useA11yResults();
   const [tab, setTab] = useState<Tab>(storedTab);
-  const [detail, setDetail] = useState<Detail>('usage');
+  const [drawer, setDrawer] = useState(false);
+  const [usageOpen, setUsageOpen] = useState(false);
   const [tool, setTool] = useState<Tool>('select');
   const [healChoice, setHealChoice] = useState<HealChoice | undefined>();
   const [view, setView] = useState<View>('single');
@@ -120,14 +125,16 @@ const Component = ({
   const [second] = useState(() => onFrame(1));
   const [fitScale, setFitScale] = useState<number | undefined>();
   // The language the story sets itself, read after each render.
-  const [_storyLang, setStoryLang] = useState<string | undefined>();
+  const [storyLang, setStoryLang] = useState<string | undefined>();
   const frame = frames[0];
   const selection = useCanvasSelection(frame, loads, tool, storyId);
   const {
     edits,
     add: addEdit,
     remove: removeEdit,
+    clear: clearEdits,
   } = useElementEdits(TOKEN_META);
+  const live = useMemo(() => resolveTokens(DEFS, overrides), [overrides]);
   const fileOf = groups ? groupOfStory(groups, storyId)?.file : undefined;
   const findings = useMemo(
     () => (indexes.scan ? fileFindings(indexes.scan, fileOf) : []),
@@ -178,6 +185,16 @@ const Component = ({
   const current = group.stories.find((s) => s.id === storyId);
   const split = view === 'split';
   const shownFrames = split ? frames : [frames[0]];
+  const count = Object.keys(overrides).length + edits.length;
+  const task: TaskContext = {
+    component: group.score?.component ?? group.name,
+    file: group.file,
+    storyId,
+    routes: group.score?.routes ?? [],
+    mode: heal,
+    layer: selection.label ?? '',
+    findings,
+  };
 
   return (
     <article
@@ -203,9 +220,18 @@ const Component = ({
             <StatusChip status={group.status} />
             <OfficeChip office={group.office} />
             {group.score && (
-              <span className="wb-chip wb-chip-office">
-                {`Used ${group.score.usageCount} times`}
-              </span>
+              <button
+                type="button"
+                className="wb-chip wb-chip-office wb-usage-chip"
+                data-testid="wb-usage-toggle"
+                aria-expanded={usageOpen}
+                aria-controls="wb-usage-drawer"
+                onClick={() => setUsageOpen((o) => !o)}
+              >
+                <Icon name="usage" size={12} />
+                {`Usage · ${group.score.usageCount}`}
+                <Icon name="chevron" size={12} />
+              </button>
             )}
             {group.file && (
               <span className="wb-component-file" title={group.file}>
@@ -216,6 +242,21 @@ const Component = ({
           </div>
         </div>
       </header>
+      {usageOpen && (
+        <section
+          id="wb-usage-drawer"
+          className="wb-drawer-inline wb-usage-drawer"
+          aria-label="Usage"
+        >
+          <Usage
+            storyId={storyId}
+            group={group}
+            indexes={indexes}
+            healMode={heal}
+            onHealMode={onHealMode}
+          />
+        </section>
+      )}
 
       <div className="wb-canvas-bar" data-testid="wb-canvas-bar">
         <Segmented<Tool>
@@ -246,41 +287,72 @@ const Component = ({
           ]}
           onChange={setTool}
         />
+        <Segmented<ModeChoice>
+          label="Mode"
+          testId="wb-toolbar-mode"
+          value={split ? 'both' : toolbar.mode}
+          options={[
+            { value: 'today', label: 'Today' },
+            { value: 'redesign', label: 'Redesign' },
+            {
+              value: 'both',
+              label: (
+                <>
+                  <Icon name="split" size={16} />
+                  Both
+                </>
+              ),
+            },
+          ]}
+          onChange={(m) => {
+            if (m === 'both') setView('split');
+            else {
+              setView('single');
+              if (m !== toolbar.mode) setToolbar({ ...toolbar, mode: m });
+            }
+          }}
+        />
         <span className="wb-canvas-bar-end">
+          <CanvasSettings
+            toolbar={toolbar}
+            setToolbar={setToolbar}
+            storyLang={storyLang}
+          />
           <ZoomControl
             zoom={toolbar.zoom}
             fitScale={fitScale}
             onChange={(zoom) => setToolbar({ ...toolbar, zoom })}
           />
-          <Segmented<View>
-            label="View"
-            value={view}
-            options={[
-              {
-                value: 'single',
-                label: (
-                  <>
-                    <Icon name="single" size={16} />
-                    Single
-                  </>
-                ),
-              },
-              {
-                value: 'split',
-                label: (
-                  <>
-                    <Icon name="split" size={16} />
-                    Side by side
-                  </>
-                ),
-                title: 'Today and redesign side by side',
-              },
-            ]}
-            onChange={setView}
-            testId="wb-view"
-          />
+          <button
+            type="button"
+            className="wb-changes-toggle wb-icon-button"
+            data-testid="wb-changes-toggle"
+            aria-expanded={drawer}
+            onClick={() => setDrawer((d) => !d)}
+          >
+            <Icon name="edit" size={14} />
+            Changes
+            <span className={count > 0 ? 'wb-count wb-count-on' : 'wb-count'}>
+              {count}
+            </span>
+          </button>
         </span>
       </div>
+      {drawer && (
+        <ChangesDrawer
+          meta={TOKEN_META}
+          mode={toolbar.mode}
+          overrides={overrides}
+          onReset={reset}
+          onClose={() => setDrawer(false)}
+          elements={edits}
+          onResetElement={removeEdit}
+          onResetElements={clearEdits}
+          resolve={(t) => live[toolbar.mode][t] ?? ''}
+          task={task}
+          inline
+        />
+      )}
 
       <div
         className={split ? 'wb-stage wb-stage-split' : 'wb-stage'}
@@ -292,6 +364,7 @@ const Component = ({
               storyId={storyId}
               toolbar={{ ...toolbar, mode: 'today' }}
               overrides={overrides}
+              elementEdits={edits}
               onFrame={first}
               onScale={setFitScale}
               label="Today"
@@ -300,6 +373,7 @@ const Component = ({
               storyId={storyId}
               toolbar={{ ...toolbar, mode: 'redesign' }}
               overrides={overrides}
+              elementEdits={edits}
               onFrame={second}
               label="Redesign"
             />
@@ -309,6 +383,7 @@ const Component = ({
             storyId={storyId}
             toolbar={toolbar}
             overrides={overrides}
+            elementEdits={edits}
             onFrame={first}
             onScale={setFitScale}
             label={current ? tabLabel(current) : undefined}
@@ -349,52 +424,24 @@ const Component = ({
             ),
           },
           {
-            id: 'inspect',
-            label: 'Inspect',
-            icon: 'tokens',
+            id: 'a11y',
+            label: 'A11y',
+            icon: 'checklist',
+            // The story's axe violations, once loaded.
+            count: a11y.loaded
+              ? a11y.results?.stories[storyId]?.violations.length
+              : undefined,
             content: (
               <div className="wb-inspect" data-testid="wb-panel-inspect">
-                <Segmented<Detail>
-                  label="Inspect"
-                  value={detail}
-                  onChange={setDetail}
-                  testId="wb-inspect-view"
-                  options={[
-                    {
-                      value: 'usage',
-                      label: 'Usage',
-                      count: group.score?.usageCount,
-                    },
-                    {
-                      value: 'a11y',
-                      label: 'A11y',
-                      // The story's axe violations, once loaded.
-                      count: a11y.loaded
-                        ? a11y.results?.stories[storyId]?.violations.length
-                        : undefined,
-                    },
-                  ]}
+                <A11y
+                  storyId={storyId}
+                  storyLabel={current ? tabLabel(current) : undefined}
+                  group={group}
+                  section={section}
+                  results={a11y.results}
+                  loaded={a11y.loaded}
+                  checklist={checklistOf(CHECKLISTS, group)}
                 />
-                <div hidden={detail !== 'usage'}>
-                  <Usage
-                    storyId={storyId}
-                    group={group}
-                    indexes={indexes}
-                    healMode={heal}
-                    onHealMode={onHealMode}
-                  />
-                </div>
-                <div hidden={detail !== 'a11y'}>
-                  <A11y
-                    storyId={storyId}
-                    storyLabel={current ? tabLabel(current) : undefined}
-                    group={group}
-                    section={section}
-                    results={a11y.results}
-                    loaded={a11y.loaded}
-                    checklist={checklistOf(CHECKLISTS, group)}
-                  />
-                </div>
               </div>
             ),
           },

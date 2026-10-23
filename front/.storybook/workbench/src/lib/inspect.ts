@@ -536,13 +536,14 @@ const sides = (
   id: string,
   values: InspectValue[],
   labels: [string, string, string, string],
-  pairs: [string, string]
+  pairs: [string, string],
+  whole: string
 ): InspectRow[] => {
   const same = (a: InspectValue, b: InspectValue) =>
     a.raw === b.raw && a.token === b.token;
   const [t, r, b, l] = values;
   if (same(t, r) && same(t, b) && same(t, l)) {
-    return [row(id, '', t)];
+    return [row(id, whole, t)];
   }
   if (same(t, b) && same(l, r)) {
     return [row(`${id}-v`, pairs[0], t), row(`${id}-h`, pairs[1], l)];
@@ -587,7 +588,8 @@ export const inspectElement = (
         v('padding-left'),
       ],
       ['Top', 'Right', 'Bottom', 'Left'],
-      ['Vertical', 'Horizontal']
+      ['Vertical', 'Horizontal'],
+      'Padding'
     );
     if (padding.some((r) => r.value.raw !== '0px')) layout.push(...padding);
     const display = cs.getPropertyValue('display');
@@ -640,7 +642,8 @@ export const inspectElement = (
         v('border-bottom-left-radius'),
       ],
       ['Top left', 'Top right', 'Bottom right', 'Bottom left'],
-      ['Top left, bottom right', 'Top right, bottom left']
+      ['Top left, bottom right', 'Top right, bottom left'],
+      'Radius'
     );
     if (radius.some((r) => r.value.raw !== '0px')) {
       sections.push({ id: 'radius', label: 'Radius', rows: radius });

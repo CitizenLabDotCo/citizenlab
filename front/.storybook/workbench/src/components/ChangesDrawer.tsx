@@ -31,6 +31,8 @@ type Props = {
   task?: TaskContext;
   // A token's live value, for the look mark and the swatch.
   resolve?: (token: TokenName) => string;
+  // In the page flow (under the canvas bar) instead of a side sheet.
+  inline?: boolean;
 };
 
 const NO_ELEMENTS: ElementEdit[] = [];
@@ -114,6 +116,7 @@ const ChangesDrawer = ({
   onResetElements,
   task,
   resolve,
+  inline,
 }: Props) => {
   const [copied, setCopied] = useState<Copied | undefined>();
   const byName = useMemo(() => new Map(meta.map((t) => [t.name, t])), [meta]);
@@ -139,7 +142,7 @@ const ChangesDrawer = ({
 
   return (
     <section
-      className="wb-drawer"
+      className={inline ? 'wb-drawer wb-drawer-inline' : 'wb-drawer'}
       aria-label="Changes"
       data-testid="wb-changes"
     >
