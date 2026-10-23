@@ -638,7 +638,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "Tema",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Trafikk",
   "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction": "Frivillighet",
-  "app.components.app.containers.AdminPage.ProjectEdit.votesGroup": "Stemmer",
   "app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction": "Stemmegivning på innlegg",
   "app.components.formBuilder.copySurveyModal.cancel": "Avbryt",
   "app.components.formBuilder.copySurveyModal.description": "Dette kopierer alle spørsmålene og logikken uten svarene.",

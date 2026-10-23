@@ -638,7 +638,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "موضوع",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "حركة المرور",
   "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction": "التطوع",
-  "app.components.app.containers.AdminPage.ProjectEdit.votesGroup": "الأصوات",
   "app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction": "التصويت على المساهمات",
   "app.components.formBuilder.copySurveyModal.cancel": "إلغاء",
   "app.components.formBuilder.copySurveyModal.description": "هادشي غادي ينسخ كاع الأسئلة والمنطق بلا الأجوبة.",

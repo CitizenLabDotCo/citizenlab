@@ -638,7 +638,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "Θέμα",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Κίνηση",
   "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction": "Εθελοντισμός",
-  "app.components.app.containers.AdminPage.ProjectEdit.votesGroup": "Ψήφοι",
   "app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction": "Ψηφοφορία επί των συνεισφορών",
   "app.components.formBuilder.copySurveyModal.cancel": "Ακύρωση",
   "app.components.formBuilder.copySurveyModal.description": "Αυτό θα αντιγράψει όλες τις ερωτήσεις και τη λογική χωρίς τις απαντήσεις.",

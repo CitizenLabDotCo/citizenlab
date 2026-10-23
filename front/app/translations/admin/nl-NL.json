@@ -638,7 +638,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "Thema",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Verkeer",
   "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction": "Vrijwilligers zoeken",
-  "app.components.app.containers.AdminPage.ProjectEdit.votesGroup": "Stemmen",
   "app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction": "Stemmen op bijdragen",
   "app.components.formBuilder.copySurveyModal.cancel": "Annuleer",
   "app.components.formBuilder.copySurveyModal.description": "Dit kopieert alle vragen en logica zonder de antwoorden.",

@@ -638,7 +638,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "عنوان",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "مرور",
   "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction": "التطوع",
-  "app.components.app.containers.AdminPage.ProjectEdit.votesGroup": "أصوات",
   "app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction": "التصويت على المدخلات",
   "app.components.formBuilder.copySurveyModal.cancel": "يلغي",
   "app.components.formBuilder.copySurveyModal.description": "سيؤدي هذا إلى نسخ جميع الأسئلة والمنطق بدون الإجابات.",

@@ -638,7 +638,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "Ämne",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Trafik",
   "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction": "Volontärarbete",
-  "app.components.app.containers.AdminPage.ProjectEdit.votesGroup": "Röster",
   "app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction": "Röstning på bidrag",
   "app.components.formBuilder.copySurveyModal.cancel": "Avbryt",
   "app.components.formBuilder.copySurveyModal.description": "Detta kommer att kopiera alla frågor och logik utan svar.",

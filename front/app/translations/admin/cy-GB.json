@@ -638,7 +638,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "Pwnc",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Traffig",
   "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction": "Gwirfoddoli",
-  "app.components.app.containers.AdminPage.ProjectEdit.votesGroup": "Pleidleisiau",
   "app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction": "Pleidleisio ar fewnbynnau",
   "app.components.formBuilder.copySurveyModal.cancel": "Canslo",
   "app.components.formBuilder.copySurveyModal.description": "Bydd hyn yn copïo'r holl gwestiynau a rhesymeg heb yr atebion.",

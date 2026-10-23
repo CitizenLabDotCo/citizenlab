@@ -638,7 +638,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "Tēma",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Satiksme",
   "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction": "Brīvprātīgais darbs",
-  "app.components.app.containers.AdminPage.ProjectEdit.votesGroup": "Balsis",
   "app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction": "Balsošana par iesniegumiem",
   "app.components.formBuilder.copySurveyModal.cancel": "Atcelt",
   "app.components.formBuilder.copySurveyModal.description": "Tas kopēs visus jautājumus un loģiku bez atbildēm.",

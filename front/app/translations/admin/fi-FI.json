@@ -638,7 +638,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "Aihe",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Liikenne",
   "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction": "Vapaaehtoistyö",
-  "app.components.app.containers.AdminPage.ProjectEdit.votesGroup": "Äänet",
   "app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction": "Syötteistä äänestäminen",
   "app.components.formBuilder.copySurveyModal.cancel": "Peruuta",
   "app.components.formBuilder.copySurveyModal.description": "Tämä kopioi kaikki kysymykset ja logiikan ilman vastauksia.",

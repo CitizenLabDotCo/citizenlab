@@ -638,7 +638,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "موضوع",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "ٹریفک",
   "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction": "رضاکارانہ کام",
-  "app.components.app.containers.AdminPage.ProjectEdit.votesGroup": "ووٹ",
   "app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction": "ان پٹس پر ووٹنگ",
   "app.components.formBuilder.copySurveyModal.cancel": "منسوخ کریں۔",
   "app.components.formBuilder.copySurveyModal.description": "یہ جوابات کے بغیر تمام سوالات اور منطق کاپی کر دے گا۔",

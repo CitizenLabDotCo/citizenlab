@@ -638,7 +638,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "Tema",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Promet",
   "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction": "Volontiranje",
-  "app.components.app.containers.AdminPage.ProjectEdit.votesGroup": "Glasovi",
   "app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction": "Glasovanje o unosima",
   "app.components.formBuilder.copySurveyModal.cancel": "Otkazati",
   "app.components.formBuilder.copySurveyModal.description": "Ovo će kopirati sva pitanja i logiku bez odgovora.",

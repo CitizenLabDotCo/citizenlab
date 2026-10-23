@@ -638,7 +638,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "Konu",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Trafik",
   "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction": "Gönüllülük",
-  "app.components.app.containers.AdminPage.ProjectEdit.votesGroup": "Oylar",
   "app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction": "Girdileri oylama",
   "app.components.formBuilder.copySurveyModal.cancel": "İptal",
   "app.components.formBuilder.copySurveyModal.description": "Bu, cevaplar olmadan tüm soruları ve mantığı kopyalayacaktır.",

@@ -638,7 +638,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "Tema",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Trànsit",
   "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction": "Voluntariat",
-  "app.components.app.containers.AdminPage.ProjectEdit.votesGroup": "Vots",
   "app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction": "Votació d'aportacions",
   "app.components.formBuilder.copySurveyModal.cancel": "Cancel·la",
   "app.components.formBuilder.copySurveyModal.description": "Això copiarà totes les preguntes i la lògica sense les respostes.",

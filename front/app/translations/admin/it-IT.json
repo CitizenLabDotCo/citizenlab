@@ -638,7 +638,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "Tema",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Traffico",
   "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction": "Volontariato",
-  "app.components.app.containers.AdminPage.ProjectEdit.votesGroup": "Voti",
   "app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction": "Votazione sugli input",
   "app.components.formBuilder.copySurveyModal.cancel": "Annulla",
   "app.components.formBuilder.copySurveyModal.description": "Con questa azione verranno copiate tutte le domande e la logica senza le risposte.",

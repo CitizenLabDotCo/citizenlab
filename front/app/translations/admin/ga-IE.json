@@ -638,7 +638,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "Topaic",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Trácht",
   "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction": "Obair dheonach",
-  "app.components.app.containers.AdminPage.ProjectEdit.votesGroup": "Vótaí",
   "app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction": "Vótáil ar ionchuir",
   "app.components.formBuilder.copySurveyModal.cancel": "Cealaigh",
   "app.components.formBuilder.copySurveyModal.description": "Cóipeálfaidh sé seo na ceisteanna agus an loighic go léir gan na freagraí.",

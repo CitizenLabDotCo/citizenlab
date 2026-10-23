@@ -638,7 +638,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "Téma",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Forgalom",
   "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction": "Önkéntesség",
-  "app.components.app.containers.AdminPage.ProjectEdit.votesGroup": "Szavazatok",
   "app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction": "Szavazás az inputokra",
   "app.components.formBuilder.copySurveyModal.cancel": "Mégse",
   "app.components.formBuilder.copySurveyModal.description": "Ez átmásolja az összes kérdést és logikát a válaszok nélkül.",

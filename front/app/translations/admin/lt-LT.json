@@ -638,7 +638,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "Tema",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Eismo",
   "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction": "Savanorystė",
-  "app.components.app.containers.AdminPage.ProjectEdit.votesGroup": "Balsai",
   "app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction": "Balsavimas už įnašus",
   "app.components.formBuilder.copySurveyModal.cancel": "Atšaukti",
   "app.components.formBuilder.copySurveyModal.description": "Tai nukopijuos visus klausimus ir logiką be atsakymų.",

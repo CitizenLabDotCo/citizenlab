@@ -638,7 +638,6 @@
   "app.components.app.containers.AdminPage.ProjectEdit.topicTerm": "Thema",
   "app.components.app.containers.AdminPage.ProjectEdit.trafficTab": "Verkéier",
   "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction": "Benevolat",
-  "app.components.app.containers.AdminPage.ProjectEdit.votesGroup": "Stëmmen",
   "app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction": "Ofstëmmen iwwer Bäiträg",
   "app.components.formBuilder.copySurveyModal.cancel": "Ofbriechen",
   "app.components.formBuilder.copySurveyModal.description": "Dëst kopéiert all d'Froen an d'Logik ouni d'Äntwerten.",
