@@ -55,6 +55,20 @@ const parseColor = (raw: string): RGBA | undefined => {
   return undefined;
 };
 
+/**
+ * Whether two CSS colours are the same: RGB within half a step, alpha within
+ * ALPHA_TOLERANCE. Undefined when either is not a colour this parser reads.
+ */
+export const sameColor = (a: string, b: string): boolean | undefined => {
+  const x = parseColor(a);
+  const y = parseColor(b);
+  if (!x || !y) return undefined;
+  return (
+    [0, 1, 2].every((i) => Math.abs(x[i] - y[i]) < 0.5) &&
+    Math.abs(x[3] - y[3]) <= ALPHA_TOLERANCE
+  );
+};
+
 const toLab = ([r, g, b]: RGB | RGBA): RGB => {
   const lin = (v: number) => {
     const c = v / 255;

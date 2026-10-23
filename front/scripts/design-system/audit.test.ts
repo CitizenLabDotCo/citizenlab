@@ -16,6 +16,7 @@ import {
   isSafeTrigger,
   parseArgs,
   planVisits,
+  sameStyle,
   shorthand,
   sizeClass,
   StoryCapture,
@@ -325,6 +326,17 @@ describe('healTasks', () => {
         'check: story (none), routes /admin/b',
       ].join('\n'),
     ]);
+  });
+});
+
+describe('sameStyle', () => {
+  it('compares colours as RGBA, other values as text', () => {
+    expect(sameStyle('#00000080', 'rgba(0, 0, 0, 0.5)')).toBe(true);
+    expect(sameStyle('rgba(0,0,0,0.5)', 'rgba(0, 0, 0, 0.5)')).toBe(true);
+    expect(sameStyle('#333', 'rgb(51, 51, 51)')).toBe(true);
+    expect(sameStyle('#000000', 'rgba(0, 0, 0, 0.5)')).toBe(false);
+    expect(sameStyle(' 8px', '8px')).toBe(true);
+    expect(sameStyle('8px', '8.5px')).toBe(false);
   });
 });
 

@@ -49,6 +49,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
+import { routeLabel } from '../../.storybook/workbench/src/lib/healTask';
 import {
   normaliseFixture,
   resolveRoute,
@@ -56,8 +57,8 @@ import {
   routesFor,
   unfilledParams,
 } from '../../.storybook/workbench/src/lib/review';
-import { routeLabel } from '../../.storybook/workbench/src/lib/healTask';
 
+import { sameColor } from './scan/findings';
 import type { ScanOutput, TokenMeta } from './scan/schema';
 
 // ------------------------------------------------------------------ types
@@ -606,24 +607,11 @@ const FIELD_CATEGORY: Record<keyof Styles, (t: TokenMeta) => boolean> = {
     /(^--gv-fs-|-size$)/.test(t.name),
 };
 
-// Token values as getComputedStyle writes them: hex colours as rgb().
-export const computedForm = (value: string): string => {
-  const hex = /^#([0-9a-f]{3,8})$/i.exec(value.trim());
-  if (!hex) return value.trim();
-  let h = hex[1];
-  if (h.length === 3 || h.length === 4) {
-    h = h
-      .split('')
-      .map((c) => c + c)
-      .join('');
-  }
-  const n = (k: number) => parseInt(h.slice(k, k + 2), 16);
-  if (h.length === 8 && n(6) !== 255) {
-    const a = Math.round((n(6) / 255) * 1000) / 1000;
-    return `rgba(${n(0)}, ${n(2)}, ${n(4)}, ${a})`;
-  }
-  return `rgb(${n(0)}, ${n(2)}, ${n(4)})`;
-};
+// A token value against what getComputedStyle wrote: colours compared as
+// RGBA (Chrome writes `rgba(0, 0, 0, 0.5)` for `#00000080`), anything else
+// as text.
+export const sameStyle = (tokenValue: string, computed: string): boolean =>
+  sameColor(tokenValue, computed) ?? tokenValue.trim() === computed.trim();
 
 // Tokens whose value in `mode` is `value`: the ones the story reads first;
 // else Tier 2 before Tier 1.
@@ -635,7 +623,7 @@ const tokensFor = (
   storyLinked: string[]
 ): string[] => {
   const hits = meta.filter(
-    (t) => FIELD_CATEGORY[field](t) && computedForm(t.values[mode]) === value
+    (t) => FIELD_CATEGORY[field](t) && sameStyle(t.values[mode], value)
   );
   const linked = hits.filter((t) => storyLinked.includes(t.name));
   const pick = linked.length ? linked : hits.sort((x, y) => y.tier - x.tier);
