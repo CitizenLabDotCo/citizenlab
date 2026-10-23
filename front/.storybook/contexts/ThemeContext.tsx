@@ -7,7 +7,7 @@ import '../../app/assets/css/reset.min.css';
 import '../../app/assets/fonts/fonts.css';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
-import { CityKey, cityOf, cityTenant } from '../cities';
+import { CityKey, DEFAULT_CITY, cityOf, cityTenant } from '../cities';
 
 // Adds the city's web font stylesheet once; it stays for later stories.
 const useFontCss = (href?: string) => {
@@ -21,7 +21,7 @@ const useFontCss = (href?: string) => {
 };
 
 const ThemeContext = ({
-  city = 'default',
+  city = DEFAULT_CITY,
   lang = 'en',
   children,
 }: {

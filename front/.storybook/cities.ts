@@ -1,7 +1,6 @@
 // City brands for the "City" toolbar menu: real tenants, values copied from
 // each platform's own app configuration (settings.core colours and
-// style.customFontName, 23 Oct 2026). "Go Vocal default" is what getTheme()
-// falls back to without a tenant.
+// style.customFontName, 23 Oct 2026). Linz is the default city.
 //
 // The cities' own faces (Lentia Nova, Wiener Melange, KBH) are licensed to
 // them and their hosts serve the files without CORS, so the stack names the
@@ -11,12 +10,6 @@
 // tenant font does (Linz: a sturdy grotesk; Wien: a round geometric; KBH: a
 // wide, quirky face). Dublin uses Public Sans, the platform default.
 export const cities = {
-  default: {
-    title: 'Go Vocal default',
-    color_main: '#ef0071',
-    color_secondary: '#000000',
-    color_text: '#333333',
-  },
   linz: {
     title: 'Linz',
     color_main: '#604596',
@@ -54,6 +47,8 @@ export const cities = {
 
 export type CityKey = keyof typeof cities;
 
+export const DEFAULT_CITY: CityKey = 'linz';
+
 type City = {
   title: string;
   color_main: string;
@@ -64,7 +59,7 @@ type City = {
 };
 
 export const cityOf = (key: CityKey): City =>
-  (cities as Record<string, City>)[key] ?? cities.default;
+  (cities as Record<string, City>)[key] ?? cities.linz;
 
 // The minimal tenant shape getTheme() reads.
 export const cityTenant = (key: CityKey) => {

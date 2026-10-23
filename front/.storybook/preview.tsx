@@ -5,7 +5,7 @@ import { initialize, mswDecorator } from 'msw-storybook-addon';
 import mockServer from './mockServer';
 import { reactIntl, StorybookLocale } from './reactIntl';
 import { LANGUAGES } from './languages';
-import { cities } from './cities';
+import { cities, DEFAULT_CITY } from './cities';
 import { GV_VIEWPORTS } from './viewports';
 import { MemoryRouter } from 'utils/router';
 import { queryClient } from 'utils/cl-react-query/queryClient';
@@ -107,7 +107,7 @@ const preview: Preview = {
   },
   initialGlobals: {
     mode: 'today',
-    city: 'default',
+    city: DEFAULT_CITY,
     lang: 'en',
   },
   parameters: {

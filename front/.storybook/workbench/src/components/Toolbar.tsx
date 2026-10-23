@@ -2,7 +2,7 @@ import { ReactNode, useEffect, useRef, useState } from 'react';
 
 import type { Mode } from '@ds/tokens/tokens';
 
-import { cities } from '../../../cities';
+import { cities, DEFAULT_CITY } from '../../../cities';
 import { LANGUAGES } from '../../../languages';
 import { GV_VIEWPORTS, GvViewport } from '../../../viewports';
 import { focusables, trapTab } from '../lib/focus';
@@ -27,7 +27,7 @@ export type ToolbarState = FrameGlobals & {
 
 export const DEFAULT_TOOLBAR: ToolbarState = {
   mode: 'today',
-  city: 'default',
+  city: DEFAULT_CITY,
   lang: 'en',
   viewport: 'fit',
   zoom: 'fit',
