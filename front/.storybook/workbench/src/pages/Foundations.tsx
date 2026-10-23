@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import type { Mode, TokenName } from '@ds/tokens/tokens';
 
@@ -6,6 +6,7 @@ import CategoryPreview from '../components/CategoryPreview';
 import ChangesDrawer from '../components/ChangesDrawer';
 import Icon from '../components/Icon';
 import TokenRow, { MODE_LABEL } from '../components/TokenRow';
+import { colourGroups, ColourGroup, stepOf } from '../lib/colourGroups';
 import { checkPair, PairCheck, resolveTokens } from '../lib/contrast';
 import type { TokenMeta } from '../lib/data';
 import type { Overrides } from '../lib/overrides';
@@ -398,6 +399,63 @@ const PairsTable = ({
   );
 };
 
+// One ramp of the colour page: a heading with the ramp as a strip of
+// swatches, then its rows, folded until the ramp is opened. A swatch opens
+// the ramp and puts the cursor in that token's field.
+const Ramp = ({
+  group,
+  open,
+  onToggle,
+  onPick,
+  values,
+  edited,
+}: {
+  group: ColourGroup;
+  open: boolean;
+  onToggle: () => void;
+  onPick: (name: string) => void;
+  values: Record<string, string>;
+  edited: number;
+}) => (
+  <tr className="wb-ramp-head" data-testid="wb-ramp">
+    <th scope="rowgroup" colSpan={5}>
+      <div className="wb-ramp-bar">
+        <button
+          type="button"
+          className="wb-ramp-toggle"
+          aria-expanded={open}
+          onClick={onToggle}
+        >
+          <Icon name="chevron" size={16} />
+          <span className="wb-ramp-name">{group.label}</span>
+          <span className="wb-ramp-count">
+            {group.tokens.length}
+            {edited > 0 && `, ${edited} edited`}
+          </span>
+        </button>
+        <span className="wb-ramp-strip">
+          {group.tokens.map((t) => (
+            <button
+              key={t.name}
+              type="button"
+              className="wb-ramp-swatch"
+              title={`${t.name}: ${values[t.name] ?? ''}`}
+              onClick={() => onPick(t.name)}
+            >
+              <span
+                className="wb-ramp-chip"
+                style={{ background: values[t.name] }}
+                aria-hidden="true"
+              />
+              <span className="wb-ramp-step">{stepOf(t.name)}</span>
+            </button>
+          ))}
+        </span>
+      </div>
+    </th>
+  </tr>
+);
+
 // The page of one token category, or the list of categories.
 const Foundations = ({
   category,
@@ -421,6 +479,44 @@ const Foundations = ({
     ],
     [tokens, mode]
   );
+
+  const groups = useMemo(
+    () => (category === 'color' ? colourGroups(tokens) : []),
+    [category, tokens]
+  );
+  // Open ramps: the first one, and any with an edit.
+  const [openRamps, setOpenRamps] = useState<Set<string>>(new Set());
+  const started = useRef(false);
+  useEffect(() => {
+    if (!groups.length) return;
+    const first = !started.current;
+    started.current = true;
+    setOpenRamps((prev) => {
+      const next = new Set(prev);
+      if (first) next.add(groups[0].id);
+      groups.forEach((g) => {
+        if (g.tokens.some((t) => overrides[t.name as TokenName] !== undefined))
+          next.add(g.id);
+      });
+      return next.size === prev.size ? prev : next;
+    });
+  }, [groups, overrides]);
+  const toggleRamp = (id: string) =>
+    setOpenRamps((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  const pick = (id: string, name: string) => {
+    setOpenRamps((prev) => new Set(prev).add(id));
+    window.requestAnimationFrame(() => {
+      const input = document.getElementById(`wb-edit-${name.slice(2)}`);
+      input?.scrollIntoView({ block: 'center' });
+      input?.focus({ preventScroll: true });
+    });
+  };
+  const allOpen = groups.length > 0 && openRamps.size === groups.length;
 
   const count = Object.keys(overrides).length;
   if (!category) {
@@ -492,6 +588,19 @@ const Foundations = ({
             </>
           )}
         </span>
+        {groups.length > 0 && (
+          <button
+            type="button"
+            className="wb-ramps-all"
+            onClick={() =>
+              setOpenRamps(
+                allOpen ? new Set() : new Set(groups.map((g) => g.id))
+              )
+            }
+          >
+            {allOpen ? 'Fold all' : 'Open all'}
+          </button>
+        )}
         <button
           type="button"
           className="wb-changes-toggle"
@@ -534,7 +643,7 @@ const Foundations = ({
           </div>
         </div>
       ) : (
-        <div className="wb-table-wrap">
+        <div className="wb-table-wrap wb-tokens-wrap">
           <table
             role="table"
             className="wb-table wb-tokens"
@@ -562,23 +671,65 @@ const Foundations = ({
                 </th>
               </tr>
             </thead>
-            <tbody role="rowgroup">
-              {tokens.map((t) => (
-                <TokenRow
-                  key={t.name}
-                  token={t}
-                  meta={meta}
-                  mode={mode}
-                  override={overrides[t.name as TokenName]}
-                  live={live}
-                  usage={indexes.usage.get(t.name)}
-                  hasScan={indexes.hasScan}
-                  scaleId={scaleId}
-                  onSet={setOverride}
-                  onReset={reset}
-                />
-              ))}
-            </tbody>
+            {groups.map((g) => {
+              const open = openRamps.has(g.id);
+              return (
+                <tbody
+                  role="rowgroup"
+                  key={g.id}
+                  className="wb-ramp"
+                  data-open={open || undefined}
+                >
+                  <Ramp
+                    group={g}
+                    open={open}
+                    onToggle={() => toggleRamp(g.id)}
+                    onPick={(name) => pick(g.id, name)}
+                    values={live[mode]}
+                    edited={
+                      g.tokens.filter(
+                        (t) => overrides[t.name as TokenName] !== undefined
+                      ).length
+                    }
+                  />
+                  {g.tokens.map((t) => (
+                    <TokenRow
+                      key={t.name}
+                      token={t}
+                      meta={meta}
+                      mode={mode}
+                      override={overrides[t.name as TokenName]}
+                      live={live}
+                      usage={indexes.usage.get(t.name)}
+                      hasScan={indexes.hasScan}
+                      scaleId={scaleId}
+                      onSet={setOverride}
+                      onReset={reset}
+                      folded={!open}
+                    />
+                  ))}
+                </tbody>
+              );
+            })}
+            {groups.length === 0 && (
+              <tbody role="rowgroup">
+                {tokens.map((t) => (
+                  <TokenRow
+                    key={t.name}
+                    token={t}
+                    meta={meta}
+                    mode={mode}
+                    override={overrides[t.name as TokenName]}
+                    live={live}
+                    usage={indexes.usage.get(t.name)}
+                    hasScan={indexes.hasScan}
+                    scaleId={scaleId}
+                    onSet={setOverride}
+                    onReset={reset}
+                  />
+                ))}
+              </tbody>
+            )}
           </table>
         </div>
       )}

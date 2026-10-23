@@ -79,7 +79,13 @@ type Props = {
   // (what the story and the code do with the token, the heal).
   badge?: ReactNode;
   footer?: ReactNode;
+  // Folded under its ramp's heading on the colour page.
+  folded?: boolean;
 };
+
+// Hex values read in one case (the sources mix #E0E0E0 and #ffffff).
+const shown = (value: string) =>
+  /^#[0-9a-f]{3,8}$/i.test(value) ? value.toLowerCase() : value;
 
 // Widest a space bar is drawn; longer values are cut with a fade.
 const BAR_MAX = 200;
@@ -91,6 +97,39 @@ const px = (value: string) => {
 
 // The text role a type token belongs to (--gv-type-h1-lh: h1).
 const roleOf = (name: string) => /^--gv-type-([a-z0-9]+)-/.exec(name)?.[1];
+
+// A dot that travels at the token's duration: once when the row scrolls
+// into view (there and back), and again on hover.
+const MotionPreview = ({ value }: { value: string }) => {
+  const ref = useRef<HTMLSpanElement>(null);
+  const [at, setAt] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return undefined;
+    let back = 0;
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries.some((e) => e.isIntersecting)) return;
+      observer.disconnect();
+      setAt(true);
+      back = window.setTimeout(() => setAt(false), 900);
+    });
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(back);
+    };
+  }, []);
+  return (
+    <span
+      ref={ref}
+      className="wb-pv wb-pv-motion"
+      data-at={at || undefined}
+      style={{ '--wb-duration': value } as CSSProperties}
+    >
+      <span />
+    </span>
+  );
+};
 
 // A picture of the token, drawn with one mode's live value. `all` holds the
 // other tokens of that mode, for previews that need a neighbour (the size
@@ -163,16 +202,7 @@ const Preview = ({
       </span>
     );
   }
-  if (token.category === 'motion') {
-    return (
-      <span
-        className="wb-pv wb-pv-motion"
-        style={{ '--wb-duration': value } as CSSProperties}
-      >
-        <span />
-      </span>
-    );
-  }
+  if (token.category === 'motion') return <MotionPreview value={value} />;
   let style: CSSProperties = {};
   let text = 'Aa';
   if (kind === 'fontFamily') {
@@ -246,6 +276,7 @@ const TokenRow = ({
   onReset,
   badge,
   footer,
+  folded,
 }: Props) => {
   const name = token.name as TokenName;
   const base = token.values[mode];
@@ -303,6 +334,7 @@ const TokenRow = ({
       className={override !== undefined ? 'wb-token-edited' : undefined}
       data-testid="wb-token-row"
       data-token={name}
+      hidden={folded}
     >
       <td role="cell" className="wb-token-preview">
         {differs ? (
@@ -366,22 +398,24 @@ const TokenRow = ({
               }
             >
               <span className="wb-mode-name">{MODE_LABEL[m]}</span>
-              <span className="wb-token-value">{token.values[m]}</span>
+              <span className="wb-token-value">{shown(token.values[m])}</span>
               {m === 'redesign' && (
                 <span className="wb-diff-dot" title="Differs from Today" />
               )}
             </div>
           ))
         ) : (
-          <div className="wb-mode-value wb-mode-value-on">
-            <span className="wb-mode-name">Both</span>
-            <span className="wb-token-value">{token.values[mode]}</span>
+          <div
+            className="wb-mode-value wb-mode-value-on"
+            title="Same in Today and Redesign"
+          >
+            <span className="wb-token-value">{shown(token.values[mode])}</span>
           </div>
         )}
         {override !== undefined && (
           <div className="wb-token-now">
             <span className="wb-mode-name">Edited</span>
-            <span className="wb-token-value">{override}</span>
+            <span className="wb-token-value">{shown(override)}</span>
           </div>
         )}
       </td>

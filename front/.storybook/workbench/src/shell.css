@@ -1505,6 +1505,117 @@ a.wb-card:hover {
   color: var(--wb-accent);
 }
 
+/* Colour ramps: a heading row per ramp, its swatches in a strip; the rows
+   fold under it. */
+.wb-tokens tr[hidden] {
+  display: none !important;
+}
+
+.wb-table .wb-ramp-head > th {
+  padding: var(--gv-space-3) var(--gv-space-4);
+  background: var(--wb-bg);
+}
+
+.wb-ramp-bar {
+  display: grid;
+  grid-template-columns: minmax(160px, 220px) minmax(0, 1fr);
+  gap: var(--gv-space-4);
+  align-items: center;
+}
+
+.wb-ramp + .wb-ramp .wb-ramp-head > th {
+  border-top: 1px solid var(--wb-border-strong);
+}
+
+.wb-shell .wb-ramp-toggle {
+  justify-content: flex-start;
+  gap: var(--gv-space-2);
+  min-height: 32px;
+  padding: 0 var(--gv-space-2);
+  margin-left: calc(-1 * var(--gv-space-2));
+  font-weight: 600;
+  color: var(--wb-heading);
+  text-transform: none;
+  letter-spacing: 0;
+  background: none;
+  border: 0;
+}
+
+.wb-shell .wb-ramp-toggle:hover {
+  background: var(--wb-subtle);
+}
+
+.wb-ramp-toggle > .wb-icon {
+  color: var(--wb-muted);
+  transform: rotate(-90deg);
+  transition: transform var(--gv-motion-base) ease-out;
+}
+
+.wb-ramp-toggle[aria-expanded='true'] > .wb-icon {
+  transform: none;
+}
+
+.wb-ramp-count {
+  font-size: var(--gv-fs-xs);
+  font-weight: 500;
+  color: var(--wb-muted);
+}
+
+.wb-ramp-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+  gap: var(--gv-space-1);
+}
+
+.wb-shell .wb-ramp-swatch {
+  flex-direction: column;
+  gap: 4px;
+  align-items: stretch;
+  min-height: 0;
+  padding: 2px;
+  font-weight: 400;
+  background: none;
+  border: 0;
+  border-radius: var(--wb-radius);
+}
+
+.wb-shell .wb-ramp-swatch:hover {
+  background: var(--wb-subtle);
+}
+
+.wb-ramp-chip {
+  display: block;
+  height: 28px;
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 10%);
+}
+
+.wb-ramp-step {
+  overflow: hidden;
+  font-family: var(--wb-mono);
+  font-size: 10px;
+  color: var(--wb-muted);
+  text-align: center;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* The column heads stay under the stuck toolbar while the rows scroll. */
+@media (min-width: 1100px) {
+  .wb-tokens-wrap {
+    overflow-x: clip;
+  }
+
+  .wb-tokens thead th {
+    position: sticky;
+    top: calc(var(--gv-space-3) - var(--gv-space-10) + 52px);
+    z-index: 2;
+    box-shadow: inset 0 -1px 0 var(--wb-border);
+  }
+}
+
 .wb-token-edited {
   background: var(--wb-accent-soft);
   box-shadow: inset 3px 0 0 var(--wb-accent);
@@ -1575,17 +1686,19 @@ a.wb-card:hover {
   border: 2px solid var(--wb-accent);
 }
 
+/* Shadows are product values: drawn on the product's white, a chip with
+   room around it. */
 .wb-pv-shadow {
-  width: 96px;
-  height: 64px;
-  background: var(--wb-subtle);
+  padding: var(--gv-space-4);
+  background: var(--wb-frame-bg);
+  border: 1px solid var(--wb-border);
   border-radius: var(--wb-radius);
 }
 
 .wb-pv-shadow > span {
-  width: 60px;
-  height: 36px;
-  background: var(--wb-bg);
+  width: 72px;
+  height: 48px;
+  background: var(--wb-frame-bg);
   border-radius: 6px;
 }
 
@@ -1650,7 +1763,8 @@ a.wb-card:hover {
   transition: left var(--wb-duration) ease-out;
 }
 
-tr:hover .wb-pv-motion > span {
+tr:hover .wb-pv-motion > span,
+.wb-pv-motion[data-at] > span {
   left: calc(100% - 12px);
 }
 
@@ -1692,7 +1806,9 @@ tr:hover .wb-pv-motion > span {
 }
 
 .wb-token-edit input:not([type='color']) {
-  width: 13em;
+  flex: 1;
+  width: 100%;
+  min-width: 13em;
   height: 32px;
   padding: 0 var(--gv-space-2);
   font-family: var(--wb-mono);
@@ -3926,6 +4042,15 @@ a.wb-line:hover {
 
   .wb-tokens .wb-token-preview {
     width: 100%;
+  }
+
+  .wb-tokens tr.wb-ramp-head > th {
+    flex: 1 1 100%;
+  }
+
+  .wb-ramp-bar {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--gv-space-2);
   }
 
   .wb-token-name {
