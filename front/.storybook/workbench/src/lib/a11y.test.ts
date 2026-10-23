@@ -12,6 +12,7 @@ import {
   KEYBOARD_LABEL,
   KEYBOARD_TONE,
   keyboardStatus,
+  needsHumanRows,
   reviewedLine,
   sortCriteria,
   StoryResult,
@@ -152,6 +153,56 @@ describe('checklists', () => {
       })?.component
     ).toBe('Button');
     expect(checklistOf(map, { file: undefined })).toBeNull();
+  });
+});
+
+describe('needsHumanRows', () => {
+  const criterion = (
+    id: string,
+    result: Checklist['criteria'][0]['result']
+  ) => ({
+    id,
+    name: `Criterion ${id}`,
+    result,
+    confidence: 'low' as const,
+    evidence: '',
+    note: `Note ${id}`,
+  });
+  const list = (component: string, criteria: Checklist['criteria']) => ({
+    component,
+    reviewedAt: '2026-10-23',
+    reviewer: 'agent',
+    criteria,
+  });
+
+  it('lists needs-human criteria by component, then criterion number', () => {
+    const rows = needsHumanRows({
+      'app/component-library/components/Title': list('Title', [
+        criterion('2.4.6', 'needs-human'),
+        criterion('1.4.3', 'pass'),
+        criterion('1.3.1', 'needs-human'),
+      ]),
+      'app/component-library/components/Box': list('Box', [
+        criterion('1.3.1', 'needs-human'),
+        criterion('2.4.7', 'fail'),
+      ]),
+    });
+    expect(rows.map((r) => `${r.component} ${r.id}`)).toEqual([
+      'Box 1.3.1',
+      'Title 1.3.1',
+      'Title 2.4.6',
+    ]);
+    expect(rows[0]).toMatchObject({
+      note: 'Note 1.3.1',
+      name: 'Criterion 1.3.1',
+    });
+  });
+
+  it('is empty when nothing needs a person', () => {
+    expect(needsHumanRows({})).toEqual([]);
+    expect(
+      needsHumanRows({ x: list('Button', [criterion('2.1.1', 'pass')]) })
+    ).toEqual([]);
   });
 });
 

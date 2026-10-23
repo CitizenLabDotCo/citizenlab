@@ -8,7 +8,8 @@
 //
 // Serves the static dir on a free local port, opens /workbench/#/start in
 // Chromium and checks that the nav lists every section, the Start here page
-// renders and nothing is logged as a console error. Optional data files that
+// renders (its tour links to every section, the needs-a-person list shows)
+// and nothing is logged as a console error. Optional data files that
 // a build may lack (see OPTIONAL_DATA) are allowed to 404. Then opens a
 // Button story on the canvas: the mode toolbar puts data-gv-mode on the
 // frame's root, a share link override changes the button's computed
@@ -49,6 +50,26 @@ export const EXPECTED_NAV = [
   'Proposal',
 ];
 
+// Start here's tour links to every section but itself, in nav order.
+export const EXPECTED_TOUR = [
+  '#/foundations',
+  '#/components',
+  '#/patterns',
+  '#/pages',
+  '#/review',
+  '#/proposal',
+];
+
+// What is wrong with the tour's links, or null.
+export const tourProblem = (hrefs: string[]): string | null => {
+  const hashes = hrefs.map((h) => h.replace(/^.*(#\/)/, '$1'));
+  return JSON.stringify(hashes) === JSON.stringify(EXPECTED_TOUR)
+    ? null
+    : `Start here tour links ${JSON.stringify(
+        hashes
+      )}, expected ${JSON.stringify(EXPECTED_TOUR)}`;
+};
+
 const ROUTES: [string, string][] = [
   ['#/foundations', 'Foundations'],
   ['#/foundations/color', 'Colour'],
@@ -63,6 +84,35 @@ const ROUTES: [string, string][] = [
 // (theme.borderRadius is var(--gv-radius-control, 3px)).
 const RADIUS_TOKEN = '--gv-radius-control';
 const RADIUS_OVERRIDE = '20px';
+
+// Start here: the tour links to each section, the needs-a-person list (or
+// its empty state) renders, and the mode rule names the token commit.
+const startHereChecks = async (page: any, failures: string[]) => {
+  const hrefs: string[] = await page.$$eval(
+    '[data-testid="wb-tour"] a',
+    (els: Element[]) => els.map((e) => e.getAttribute('href') ?? '')
+  );
+  const tour = tourProblem(hrefs);
+  if (tour) failures.push(tour);
+
+  const needs: number = await page.$$eval(
+    '[data-testid="wb-needs-human"] li',
+    (els: Element[]) => els.length
+  );
+  const none = await page.$('[data-testid="wb-needs-human-none"]');
+  if (needs === 0 && !none) {
+    failures.push('Start here shows no needs-a-person list');
+  }
+
+  const rule: string =
+    (await page.textContent('[data-testid="wb-rule-today"]')) ?? '';
+  if (!/even with mode both/.test(rule) || !/token commit/.test(rule)) {
+    failures.push(`Start here mode rule reads "${rule.trim()}"`);
+  }
+  console.log(
+    `start here: tour ${hrefs.length} links; needs a person ${needs}`
+  );
+};
 
 // Story ids are components-<category>-button--<story> (or without a category).
 const BUTTON_STORY = /^components-([a-z0-9]+-)*button--/;
@@ -929,6 +979,8 @@ const main = async () => {
         missing.join(', ') || 'none'
       }`
     );
+
+    await startHereChecks(page, failures);
 
     if (screenshot) {
       await page.screenshot({ path: path.resolve(screenshot), fullPage: true });

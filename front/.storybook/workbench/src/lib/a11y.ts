@@ -130,6 +130,34 @@ export const reviewedLine = (c: Checklist): string | null => {
   } pass, ${n.fail} fail, ${needsPerson(n['needs-human'])}`;
 };
 
+export type NeedsHumanRow = {
+  component: string;
+  id: string;
+  name: string;
+  note: string;
+  reviewedAt: string | null;
+};
+
+// Every `needs-human` criterion across the checklists, for Start here: by
+// component, then criterion number.
+export const needsHumanRows = (
+  checklists: Record<string, Checklist>
+): NeedsHumanRow[] =>
+  Object.values(checklists)
+    .sort((a, b) => a.component.localeCompare(b.component))
+    .flatMap((c) =>
+      [...c.criteria]
+        .filter((r) => r.result === 'needs-human')
+        .sort(byId)
+        .map((r) => ({
+          component: c.component,
+          id: r.id,
+          name: r.name,
+          note: r.note,
+          reviewedAt: c.reviewedAt,
+        }))
+    );
+
 // The checklist next to the group's component file.
 export const checklistOf = (
   checklists: Record<string, Checklist>,

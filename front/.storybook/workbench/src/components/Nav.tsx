@@ -47,7 +47,7 @@ export const NAV: NavEntry[] = [
     name: 'proposal',
     label: 'Proposal',
     hash: '#/proposal',
-    hint: 'Turn edits into a change',
+    hint: 'The case for developers',
   },
 ];
 

@@ -5,6 +5,7 @@ import {
   overrideNamesOfHash,
   pickButtonStory,
   resolveStaticPath,
+  tourProblem,
 } from './workbench-smoke';
 
 describe('resolveStaticPath', () => {
@@ -90,5 +91,28 @@ describe('A11Y_REVIEWED', () => {
     expect(A11Y_REVIEWED.test('Not reviewed yet No a11y.json checklist')).toBe(
       false
     );
+  });
+});
+
+describe('tourProblem', () => {
+  const tour = [
+    '#/foundations',
+    '#/components',
+    '#/patterns',
+    '#/pages',
+    '#/review',
+    '#/proposal',
+  ];
+
+  it('accepts a link to every section in nav order', () => {
+    expect(tourProblem(tour)).toBeNull();
+    expect(
+      tourProblem(tour.map((h) => `http://localhost:1/workbench/${h}`))
+    ).toBeNull();
+  });
+
+  it('reports a missing or reordered section', () => {
+    expect(tourProblem(tour.slice(1))).toMatch(/expected/);
+    expect(tourProblem([...tour].reverse())).toMatch(/expected/);
   });
 });
