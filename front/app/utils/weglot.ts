@@ -1,4 +1,7 @@
+import { captureMessage, withScope } from '@sentry/react';
 import { SupportedLocale } from 'typings';
+
+import { baseReportTags, secondsSincePageLoad } from 'utils/loggingUtils';
 
 export interface WeglotData {
   locale: string;
@@ -7,6 +10,47 @@ export interface WeglotData {
 
 // Represents a submission with no Weglot translation data (the default case).
 export type WeglotDataOrEmpty = WeglotData | Record<string, never>;
+
+/**
+ * Weglot's script is fetched from their CDN, so `window.Weglot` appears some
+ * time after the first render. Components that read it cannot wait for an
+ * incidental re-render, so App announces readiness once initialize() returns.
+ */
+export const WEGLOT_READY_EVENT = 'weglot:ready';
+
+/**
+ * The languages offered by the tenant's Weglot project: the source language
+ * followed by each enabled target. Empty until Weglot has loaded and
+ * initialized, which it does asynchronously.
+ */
+export function getWeglotLanguages(): string[] {
+  try {
+    return window.Weglot?.getAvailableLanguages() ?? [];
+  } catch {
+    // Weglot has no documented contract for calling this before it finishes
+    // initializing, so treat any failure as "nothing to offer yet".
+    return [];
+  }
+}
+
+/**
+ * A language's name in that same language: 'pl' -> 'polski', 'de' -> 'Deutsch'.
+ * Capitalisation comes from CLDR and follows each language's own orthography,
+ * so names are deliberately left as that language writes them rather than
+ * title-cased for UI consistency. Falls back to the upper-cased code for a
+ * language the runtime cannot name.
+ */
+export function getLanguageEndonym(languageCode: string): string {
+  try {
+    return (
+      new Intl.DisplayNames([languageCode], { type: 'language' }).of(
+        languageCode
+      ) ?? languageCode.toUpperCase()
+    );
+  } catch {
+    return languageCode.toUpperCase();
+  }
+}
 
 /**
  * Returns the Weglot source language if the page is currently being viewed
@@ -185,4 +229,43 @@ export async function weglotTranslateIdeaSubmission(
   }
 
   return { translatedTitle: title, translatedBody: bodyHtml, weglotData: {} };
+}
+
+/**
+ * Our switcher reads the languages to offer from Weglot's script. If Weglot
+ * ever changes that contract, the component renders nothing and the switcher
+ * silently disappears — the very bug it exists to fix, and invisible to us
+ * until a customer reports it. This reports the case where Weglot says it is
+ * initialized but offers us fewer than two languages to switch between.
+ *
+ * It deliberately does not report Weglot failing to load or initialize at all:
+ * an ad blocker or a blocked CDN does that routinely, which would bury the
+ * signal in noise. Weglot logs its own console error in those cases.
+ */
+let reportedMissingLanguages = false;
+
+export function reportMissingWeglotLanguages() {
+  // The switcher unmounts and remounts whenever the navbar appears or
+  // disappears, so without this every route change would report again.
+  if (reportedMissingLanguages) return;
+  reportedMissingLanguages = true;
+
+  const message =
+    'Weglot initialized but offered no languages to the navbar switcher';
+
+  // eslint-disable-next-line no-console
+  console.warn(
+    `${message}. The switcher will not render. This usually means Weglot changed getAvailableLanguages().`
+  );
+
+  withScope((scope) => {
+    scope.setLevel('error');
+    scope.setTags(baseReportTags());
+    scope.setContext('weglot_switcher', {
+      path: window.location.pathname,
+      seconds_since_page_load: secondsSincePageLoad(),
+      current_language: window.Weglot?.getCurrentLang() ?? null,
+    });
+    captureMessage(message);
+  });
 }

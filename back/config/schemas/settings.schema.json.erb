@@ -98,6 +98,12 @@
             "description": "Set the API key of Weglot to enable automatic page translations.",
             "type": "string"
           },
+          "weglot_switcher_in_navbar": {
+            "title": "Weglot language switcher in the navigation bar",
+            "description": "Show the Weglot language switcher in the navigation bar, and in a floating corner on pages without one, instead of Weglot's own floating widget. Weglot's 'Hide switcher' setting must be turned on for this platform's Weglot project, otherwise both switchers appear. Not recommended on a platform with more than one platform language: it already shows a language selector in the navigation bar, so residents would get two selectors side by side, and any language offered by both is reachable twice with different translation quality.",
+            "type": "boolean",
+            "default": false
+          },
           "color_main": {
             "title": "Main Colour",
             "description": "Main colour of platform. Input as a 6-digit HEX color, including the # sign (e.g. #073F80).",
