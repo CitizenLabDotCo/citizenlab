@@ -1,6 +1,6 @@
 # Design system workbench: notes for agents
 
-This branch builds a design-in-code workbench for the platform: CSS-variable design tokens with a scoped redesign mode, a scanner that finds off-spec values, a shell on Storybook's engine (galleries, Foundations, Tokens, Usage and A11y panels, the Review page), and skills that heal code to the tokens. Everything the workbench knows is a plain file on the branch; this page says what each one is. Launch Claude Code from `front/`; run every command there. The skills are in `front/.claude/skills/`.
+This branch builds a design-in-code workbench for the platform: CSS-variable design tokens with a scoped redesign mode, a scanner that finds off-spec values, a shell on Storybook's engine (Start here, galleries, Foundations, Tokens, Usage and A11y panels, the Review and Proposal pages), and skills that heal code to the tokens. Everything the workbench knows is a plain file on the branch; this page says what each one is. Launch Claude Code from `front/`; run every command there. The skills are in `front/.claude/skills/`.
 
 ## Vocabulary
 
@@ -35,7 +35,7 @@ This branch builds a design-in-code workbench for the platform: CSS-variable des
 
 | Command | What it does |
 |---|---|
-| `npm run storybook` | `ds:prepare`, then Storybook dev on port 6006. The workbench is at `http://localhost:6006/workbench/` once built. |
+| `npm run storybook` | `ds:prepare`, then Storybook dev on port 6006. The workbench is at `http://localhost:6006/workbench/`, the MCP server at `http://localhost:6006/mcp`. |
 | `npm run build-storybook` | `ds:prepare`, then `storybook build` (CI adds `-o build/storybook`). Slow: once per task. |
 | `npm run ds:prepare` | `ds:tokens`, `ds:scan`, `ds:changes`, then `ds:workbench` even if one failed. npm pre-scripts are off in this repo (`ignore-scripts`), so the Storybook scripts call it. |
 | `npm run ds:tokens` | Generate `tokens.css`, `tokens.ts`, `tokens.meta.json` from `tokens.source.json`. `-- --check` exits 1 when an output is stale or a name is invalid. |
@@ -93,7 +93,7 @@ Scripts, `scripts/design-system/`:
 - Planned, not built: `audit.ts` (`ds:audit`).
 
 Storybook, `.storybook/`:
-- `main.ts`: stories glob `app/**/*.stories.*`, addons (accessibility, pseudo states), `staticDirs` `public` and `static`.
+- `main.ts`: stories glob `app/**/*.stories.*`, addons (accessibility, pseudo states, MCP), `staticDirs` `public` and `static`.
 - `preview.tsx`: globals `mode`, `city`, `lang`, viewport; decorators for the router, intl, the mode attribute, MSW.
 - `cities.ts`, `languages.ts`, `viewports.ts`, `modes.ts`: toolbar presets shared with the shell (7 languages, `ar` is RTL).
 - `contexts/`: theme (city, `isRtl` from `lang: 'ar'`) and query providers.
@@ -125,10 +125,11 @@ The shell, `.storybook/workbench/` (React and Vite, its own `tsconfig.json`):
 - `src/lib/stories.ts`, `src/lib/useStoryGroups.ts`: the story index grouped by component, office from tags.
 - `src/lib/review.ts`: affected routes, frame URLs, the "Copy for PR" text.
 - `src/lib/sourceDiff.ts`: session edits as a `tokens.source.json` patch.
+- `src/lib/proposal.ts`: the Proposal page's numbers, trend series, migration order and cost.
 - `src/lib/router.ts`, `src/lib/clipboard.ts`: hash routes, copy with a text fallback.
-- `src/pages/`: `StartHere`, `Foundations`, `Gallery`, `Component`, `Review`, `Placeholder` (sections not built yet, Proposal among them).
+- `src/pages/`: `StartHere` (with `starthere.css`), `Foundations`, `Gallery`, `Component`, `Review`, `Proposal` (with `proposal.css`); `Placeholder` holds the empty-state pictures.
 - `src/panels/`: `Tokens`, `Usage`, `Controls`, `A11y`.
-- `src/components/`: `Nav`, `Toolbar`, `Canvas`, `FrameView`, `ChangeList`, `ChangesDrawer`, `RouteList`, `TokenRow`, `HealCopy` and smaller parts.
+- `src/components/`: `Nav`, `Toolbar`, `Canvas`, `FrameView`, `ChangeList`, `ChangesDrawer`, `RouteList`, `TokenRow`, `HealCopy`, `LineChart` and smaller parts.
 
 Components, `app/component-library/`:
 - `components/<Name>/index.tsx`: the component; `gvTag` on its root.
@@ -173,6 +174,7 @@ check: story <story id>, routes <list>
 - `ds:visual` loads each story with `globals=mode:today` (or the `--mode`), waits for the preview's render phase to settle (`finished`, `errored` or `aborted`, 20 s), so `play` steps finish first, then fonts and a short pause.
 - A story whose `play` function throws is an error, not a screenshot; so are a story error, an empty root, a size change and a missing baseline. Compare counts every changed pixel (pixelmatch threshold 0, anti-aliased pixels included), exits 1 on any diff or error, and re-runs a diff once to tell flakiness apart.
 - Run it against `npm run storybook` (port 6006), `npx storybook dev -p 6006` when the committed outputs must stay untouched, or a served build (`--url`). Pass `--summary <scratch file>` during heals so the committed `visual-summary.json` changes only when you mean to refresh it.
+- A run over every story can exhaust Node's default heap: prefix it with `NODE_OPTIONS=--max-old-space-size=4096`.
 
 ## Review page
 
@@ -197,6 +199,12 @@ What the shell relies on (`.storybook/workbench/src/lib/preview.ts`):
 - Channel `__STORYBOOK_ADDONS_CHANNEL__`: send `updateStoryArgs {storyId, updatedArgs}`, `resetStoryArgs {storyId}`; receive `storyArgsUpdated {storyId, args}`, `storyRendered`, `playFunctionThrewException`.
 - An args update reaches the store but the story does not re-render: the `MemoryRouter` decorator (`app/utils/router.tsx`) reads its children through a ref inside a memoised router. Storybook's own Controls addon has the same problem here. The shell works around it with `forceRemount {storyId}` after `storyArgsUpdated`, so state inside a story (an open dropdown) resets on each edit. Fixing the decorator would remove the workaround.
 
+## Storybook MCP
+
+- `@storybook/addon-mcp` serves an MCP server at `/mcp` while `npm run storybook` runs. Add it to Claude Code once: `claude mcp add --transport http storybook http://localhost:6006/mcp`.
+- Tools: `list-all-documentation`, `get-documentation`, `get-documentation-for-story`, `get-storybook-story-instructions`, `preview-stories`, `get-changed-stories`. They list components and stories and return preview links; tokens, scan results and a11y status come from the files above, not from the server.
+- Pinned at 0.7.0: later releases follow Storybook's own version and need Storybook 10.6. Upgrade both together or neither.
+
 ## Preview-grade
 
 Treat these as previews, not final:
@@ -206,6 +214,6 @@ Treat these as previews, not final:
 - `duplicate-candidate` findings are a low-confidence name heuristic.
 - The Controls panel remounts the story on every edit (see above).
 - Instance tags exist only in the flagged app build; UI and admin components are untagged.
-- The Storybook MCP addon is not installed; agents read the files above directly.
+- The Storybook MCP addon (`@storybook/addon-mcp` 0.7.0, see below) runs on the dev server only, not in a static build or on the preview. Everything it knows is also in the files above.
 - axe checks what a machine can; a checklist row marked `needs-human` is a question for a person, and "reviewed by agent" is not a conformance claim. 15 components have an `a11y.json`.
-- Not built yet: `ds:audit`, the Proposal page.
+- Not built yet: `ds:audit` (the `audit` skill's runner).
