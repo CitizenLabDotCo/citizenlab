@@ -161,6 +161,32 @@ describe('style objects with computed or numeric keys', () => {
   });
 });
 
+describe('token API reads', () => {
+  it('counts t.<group>.<key> from the generated tokens module as token-var', () => {
+    const src = [
+      "import { t as tk } from 'design-system/tokens/tokens';",
+      "import { t } from '../../design-system/tokens/tokens';",
+      'export const X = () => (',
+      '  <Box borderRadius={tk.radius.panel} p={t.space[4]} m={`${t.space[2]} 0`} />',
+      ');',
+      // A local `t` (a translation function, say) is not the token API.
+      'const u = (t: any) => t.radius.panel;',
+    ].join('\n');
+    const f = scanFile('token-api.tsx', src, TOKENS);
+    expect(
+      f.filter((x) => x.category === 'token-var').map((x) => x.raw)
+    ).toEqual(['tk.radius.panel', 't.space[4]', 't.space[2]']);
+  });
+
+  it('ignores a t imported from anywhere else', () => {
+    const src = [
+      "import { t } from 'i18n';",
+      'export const X = () => <Box p={t.space[4]} />;',
+    ].join('\n');
+    expect(scanFile('other-t.tsx', src, TOKENS)).toEqual([]);
+  });
+});
+
 describe('typedStyled', () => {
   it('scans typedStyled(Component) templates like styled ones', () => {
     const src = [

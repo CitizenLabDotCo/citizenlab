@@ -431,6 +431,19 @@ export const scanFileResult = (
     });
   });
 
+  // `t` from the generated token module (`t.radius.panel`, `t.space[4]`)
+  // reads a --gv- variable, like a var() string does.
+  const tokenApi = new Set<string>();
+  ast.program.body.forEach((node: any) => {
+    if (node.type !== 'ImportDeclaration') return;
+    if (!/(^|\/)design-system\/tokens\/tokens$/.test(node.source.value)) return;
+    node.specifiers.forEach((sp: any) => {
+      if (sp.type !== 'ImportSpecifier') return;
+      if ((sp.imported.name ?? sp.imported.value) === 't')
+        tokenApi.add(sp.local.name);
+    });
+  });
+
   traverse(ast, {
     TaggedTemplateExpression(path) {
       const { tag, quasi } = path.node;
@@ -599,6 +612,12 @@ export const scanFileResult = (
         category = 'legacy-theme';
       } else if (legacyImports.has(base.name) && !ARRAY_METHODS.has(props[0])) {
         category = legacyImports.get(base.name);
+      } else if (
+        tokenApi.has(base.name) &&
+        props.length >= 2 &&
+        path.scope.getBinding(base.name)?.kind === 'module'
+      ) {
+        category = 'token-var';
       }
       if (!category) return;
       mk(enclosingName(path))({ ...pos(n), raw: slice(n), category });
