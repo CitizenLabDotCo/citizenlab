@@ -40,7 +40,7 @@ const EmptyState = ({ title, description, size }: Props) => {
         width={iconSize}
         height={iconSize}
         fill={colors.grey400}
-        mb="12px"
+        mb={t.space[3]}
       />
       {title && (
         <Text
