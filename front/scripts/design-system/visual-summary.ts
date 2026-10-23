@@ -70,6 +70,10 @@ export const isDiff = (px: number, allowPx: number) => px > allowPx;
 // miss what the play step or a late data fetch puts on screen.
 export const SETTLED_PHASES = ['finished', 'errored', 'aborted'];
 
+// Channel event the preview emits when a story's play function throws. The
+// render still goes on to `finished`, so the phase alone does not show it.
+export const PLAY_ERROR_EVENT = 'playFunctionThrewException';
+
 export const buildSummary = (
   stories: number,
   results: { id: string; viewport: string; px?: number; error?: string }[],

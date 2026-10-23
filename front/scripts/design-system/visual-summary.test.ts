@@ -4,6 +4,7 @@ import {
   PIXELMATCH_OPTIONS,
   buildSummary,
   isDiff,
+  PLAY_ERROR_EVENT,
   SETTLED_PHASES,
   parseArgs,
   storyIdsFromIndex,
@@ -26,6 +27,11 @@ describe('visual summary', () => {
     expect(SETTLED_PHASES).toEqual(['finished', 'errored', 'aborted']);
     expect(SETTLED_PHASES).not.toContain('playing');
     expect(SETTLED_PHASES).not.toContain('played');
+  });
+
+  // Storybook's core-events name for it (PLAY_FUNCTION_THREW_EXCEPTION).
+  it("listens for the preview's play exception event", () => {
+    expect(PLAY_ERROR_EVENT).toBe('playFunctionThrewException');
   });
 
   it('requires exactly one mode', () => {

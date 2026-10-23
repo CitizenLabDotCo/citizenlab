@@ -12,6 +12,7 @@ import {
   buildSummary,
   parseArgs,
   PIXELMATCH_OPTIONS,
+  PLAY_ERROR_EVENT,
   SETTLED_PHASES,
   storyIdsFromIndex,
   VIEWPORTS,
@@ -87,6 +88,12 @@ const main = async () => {
         );
         throw new Error(`render not settled after 20s (phase ${phase})`);
       }
+      const playError: string = await page.evaluate(
+        () => (window as any).__gvPlayError
+      );
+      if (playError) {
+        throw new Error(`play failed: ${playError.split('\n')[0]}`);
+      }
       await page.waitForLoadState('networkidle', { timeout: 2000 }).catch(() => {});
       await page.evaluate(() => (document as any).fonts.ready);
       await page.waitForTimeout(150);
@@ -134,6 +141,21 @@ const main = async () => {
       deviceScaleFactor: 1,
       reducedMotion: 'reduce',
     });
+    // Record a play function that throws (a play step that waited in vain
+    // for data, say). The listener goes on the preview channel as soon as it
+    // exists, before the story renders.
+    await context.addInitScript((event: string) => {
+      const w = window as any;
+      w.__gvPlayError = '';
+      const timer = setInterval(() => {
+        const channel = w.__STORYBOOK_ADDONS_CHANNEL__;
+        if (!channel) return;
+        clearInterval(timer);
+        channel.on(event, (error: { message?: string }) => {
+          w.__gvPlayError = String(error.message ?? 'unknown error');
+        });
+      }, 1);
+    }, PLAY_ERROR_EVENT);
     const page = await context.newPage();
     for (const id of ids) {
       const file = path.join(dir, `${vp.name}__${id}.png`);
