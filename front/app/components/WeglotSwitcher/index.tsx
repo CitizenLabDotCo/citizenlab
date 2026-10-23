@@ -113,18 +113,27 @@ const readWeglot = () => ({
 
 interface Props {
   className?: string;
-  // Renders the switcher in a fixed corner instead of inline, for the pages
-  // that hide the navbar. The corner's chrome belongs to the component so it
-  // disappears along with the switcher when there is nothing to show.
+  // Opens the dropdown upwards, for a switcher near the bottom of the
+  // viewport where a downward panel would go off-screen.
+  openUpwards?: boolean;
+  // Pins the switcher to a fixed corner, for pages with neither a navbar nor
+  // a footer to sit in. The corner's chrome belongs to the component so that
+  // it disappears along with the switcher when there is nothing to show.
   floating?: boolean;
 }
 
-const WeglotSwitcher = ({ className, floating = false }: Props) => {
+const WeglotSwitcher = ({
+  className,
+  openUpwards = false,
+  floating = false,
+}: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const { data: appConfiguration } = useAppConfiguration();
   const [dropdownOpened, setDropdownOpened] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const isRtlTheme = !!theme.isRtl;
+  const opensUpwards = openUpwards || floating;
   const [{ languages, currentLang }, setWeglot] = useState(readWeglot);
 
   useEffect(() => {
@@ -217,14 +226,15 @@ const WeglotSwitcher = ({ className, floating = false }: Props) => {
       <Dropdown
         width="180px"
         mobileWidth="160px"
-        top={floating ? undefined : '68px'}
-        // Floating, the switcher sits in the bottom-left corner, so the panel
-        // has to open upwards and leftwards to stay on screen.
-        bottom={floating ? 'calc(100% + 8px)' : undefined}
-        left={floating ? '0px' : undefined}
-        right={floating ? undefined : '0px'}
-        mobileLeft={floating ? '0px' : undefined}
-        mobileRight={floating ? undefined : '5px'}
+        top={opensUpwards ? undefined : '68px'}
+        bottom={opensUpwards ? 'calc(100% + 8px)' : undefined}
+        // Dropdown mirrors left/right under RTL, which is what the navbar
+        // wants. The phone block below it does not, so those two are mirrored
+        // here instead.
+        left={opensUpwards ? '0px' : undefined}
+        right={opensUpwards ? undefined : '0px'}
+        mobileLeft={opensUpwards && !isRtlTheme ? '0px' : undefined}
+        mobileRight={opensUpwards ? (isRtlTheme ? '0px' : undefined) : '5px'}
         opened={dropdownOpened}
         onClickOutside={closeOnClickOutside}
         content={
@@ -254,7 +264,8 @@ const WeglotSwitcher = ({ className, floating = false }: Props) => {
     <Box
       position="fixed"
       bottom="20px"
-      left="20px"
+      left={isRtlTheme ? undefined : '20px'}
+      right={isRtlTheme ? '20px' : undefined}
       zIndex="1000"
       bgColor={colors.white}
       px="12px"

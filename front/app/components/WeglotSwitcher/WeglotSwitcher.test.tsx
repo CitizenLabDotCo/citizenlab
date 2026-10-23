@@ -1,5 +1,8 @@
 import React from 'react';
 
+import { getTheme } from '@citizenlab/cl2-component-library';
+import { ThemeProvider } from 'styled-components';
+
 import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
 import { WEGLOT_READY_EVENT, reportMissingWeglotLanguages } from 'utils/weglot';
 
@@ -167,6 +170,33 @@ describe('<WeglotSwitcher />', () => {
       });
 
       expect(reportMissingWeglotLanguages).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('floating variant', () => {
+    const renderFloating = (isRtl: boolean) => {
+      render(
+        <ThemeProvider theme={{ ...getTheme(null), isRtl }}>
+          <WeglotSwitcher floating />
+        </ThemeProvider>
+      );
+      // The fixed corner wrapper is the switcher's parent.
+      return screen.getByRole('button').closest('[data-wg-notranslate]')
+        ?.parentElement as HTMLElement;
+    };
+
+    it('pins to the left on a left-to-right platform', () => {
+      window.Weglot = buildWeglot();
+      const wrapper = renderFloating(false);
+
+      expect(wrapper).toHaveStyle({ left: '20px' });
+    });
+
+    it('mirrors to the right on an RTL platform, so the panel stays on screen', () => {
+      window.Weglot = buildWeglot();
+      const wrapper = renderFloating(true);
+
+      expect(wrapper).toHaveStyle({ right: '20px' });
     });
   });
 

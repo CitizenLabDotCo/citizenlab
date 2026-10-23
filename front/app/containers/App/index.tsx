@@ -431,10 +431,10 @@ const App = ({ children }: Props) => {
                 <MainHeader />
               </ErrorBoundary>
             )}
-            {/* The navbar holds the switcher, so the front-office pages that
-                hide it (surveys, idea forms, ideas feed) need a floating one
-                instead. Admin pages get neither. */}
-            {!showFrontOfficeNavbar() && !isAdminPage && (
+            {/* The navbar carries the switcher, and the survey and idea forms
+                carry it in their own footer. The ideas feed hides the navbar
+                and has no footer, so there it floats. */}
+            {isIdeasFeedPage && (
               <ErrorBoundary>
                 <WeglotSwitcher floating />
               </ErrorBoundary>

@@ -22,8 +22,10 @@ import useLocalize from 'hooks/useLocalize';
 import LanguageSelector from 'containers/MainHeader/Components/LanguageSelector';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+import WeglotSwitcher from 'components/WeglotSwitcher';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { isPage } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from '../messages';
@@ -188,6 +190,10 @@ const PageControlButtons = ({
   const isButtonDisabled =
     !hasReachedBottom && pageVariant !== 'after-submission';
 
+  // The same footer renders inside the admin survey builder's preview, where
+  // a resident-facing translation control does not belong.
+  const isAdminFormPage = isPage('admin', location.pathname);
+
   return (
     <Box
       width="100%"
@@ -198,7 +204,7 @@ const PageControlButtons = ({
       px={isSmallerThanPhone ? '16px' : '24px'}
       py={'16px'}
     >
-      <Box>
+      <Box display="flex" alignItems="center" gap="12px">
         {/* We wrap it in a Box here to maintain the spacing and keep the next buttons right-aligned when the language selector is empty, preventing the need to move the locale check logic here. */}
         <LanguageSelector
           dropdownClassName={'open-upwards'}
@@ -210,6 +216,10 @@ const PageControlButtons = ({
             window.location.reload();
           }}
         />
+        {/* These pages hide the navbar, so the Weglot switcher joins the
+            platform language selector here rather than floating over the
+            footer the two would otherwise share. */}
+        {!isAdminFormPage && <WeglotSwitcher openUpwards />}
       </Box>
       <Box display="flex" justifyContent="center" alignItems="center">
         {hasPreviousPage && pageVariant !== 'after-submission' && (
