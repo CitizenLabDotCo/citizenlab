@@ -84,9 +84,10 @@ const tabLabel = (s: StoryRef) =>
     : s.name;
 
 // One story title, laid out like a design tool: the breadcrumbs with the
-// mode, city and Changes on their right, the canvas below (one mode, or both
-// side by side) with a floating bar for tool, viewport and zoom, and the
-// inspector on the right: Design, A11y, Usage.
+// mode and Changes on their right, in line with the panel's tabs; the dotted
+// canvas fills the rest (one mode, or both side by side); a bar floats at the
+// foot of the screen for tool, viewport, zoom and city; the inspector on the
+// right: Design, A11y, Usage.
 const Component = ({
   section,
   storyId,
@@ -231,7 +232,6 @@ const Component = ({
               }
             }}
           />
-          <CitySetting toolbar={toolbar} setToolbar={setToolbar} />
           <button
             type="button"
             className="wb-changes-toggle wb-icon-button"
@@ -297,62 +297,63 @@ const Component = ({
             onScale={setFitScale}
           />
         )}
-        <div
-          className="wb-float-bar"
-          role="toolbar"
-          aria-label="Canvas"
-          data-testid="wb-float-bar"
-        >
-          <Segmented<Tool>
-            label="Tool"
-            value={tool}
-            testId="wb-tool"
-            options={[
-              {
-                value: 'select',
-                label: (
-                  <>
-                    <Icon name="pointer" size={16} />
-                    <span className="wb-visually-hidden">Select</span>
-                  </>
-                ),
-                title: 'Select',
-              },
-              {
-                value: 'interact',
-                label: (
-                  <>
-                    <Icon name="hand" size={16} />
-                    <span className="wb-visually-hidden">Interact</span>
-                  </>
-                ),
-                title: 'Interact',
-              },
-            ]}
-            onChange={setTool}
-          />
-          <Segmented
-            label="Viewport"
-            value={toolbar.viewport}
-            testId="wb-toolbar-viewport"
-            options={VIEWPORT_ICONS.map((v) => ({
-              value: v.value,
+      </div>
+      <div
+        className="wb-float-bar"
+        role="toolbar"
+        aria-label="Canvas"
+        data-testid="wb-float-bar"
+      >
+        <Segmented<Tool>
+          label="Tool"
+          value={tool}
+          testId="wb-tool"
+          options={[
+            {
+              value: 'select',
               label: (
                 <>
-                  <Icon name={v.icon} size={16} />
-                  <span className="wb-visually-hidden">{v.label}</span>
+                  <Icon name="pointer" size={16} />
+                  <span className="wb-visually-hidden">Select</span>
                 </>
               ),
-              title: v.label,
-            }))}
-            onChange={(viewport) => setToolbar({ ...toolbar, viewport })}
-          />
-          <ZoomControl
-            zoom={toolbar.zoom}
-            fitScale={fitScale}
-            onChange={(zoom) => setToolbar({ ...toolbar, zoom })}
-          />
-        </div>
+              title: 'Select',
+            },
+            {
+              value: 'interact',
+              label: (
+                <>
+                  <Icon name="hand" size={16} />
+                  <span className="wb-visually-hidden">Interact</span>
+                </>
+              ),
+              title: 'Interact',
+            },
+          ]}
+          onChange={setTool}
+        />
+        <Segmented
+          label="Viewport"
+          value={toolbar.viewport}
+          testId="wb-toolbar-viewport"
+          options={VIEWPORT_ICONS.map((v) => ({
+            value: v.value,
+            label: (
+              <>
+                <Icon name={v.icon} size={16} />
+                <span className="wb-visually-hidden">{v.label}</span>
+              </>
+            ),
+            title: v.label,
+          }))}
+          onChange={(viewport) => setToolbar({ ...toolbar, viewport })}
+        />
+        <ZoomControl
+          zoom={toolbar.zoom}
+          fitScale={fitScale}
+          onChange={(zoom) => setToolbar({ ...toolbar, zoom })}
+        />
+        <CitySetting toolbar={toolbar} setToolbar={setToolbar} />
       </div>
 
       <PanelTabs<Tab>

@@ -195,7 +195,8 @@ code {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--gv-space-5) var(--gv-space-4) var(--gv-space-4);
+  /* The logo's centre sits at 32px, the panel tabs' and top row's line. */
+  padding: 18px var(--gv-space-4) 18px;
 }
 
 .wb-brand {
@@ -5877,18 +5878,20 @@ tr[data-result='needs-human'] .wb-a11y-note {
   display: none;
 }
 
-/* Component page as a design tool: the canvas takes the column, the
-   inspector (Design, Inspect) takes the panel. */
+/* Component page as a design tool: the top row in line with the panel's
+   tabs, the dotted canvas filling the rest of the column, the inspector in
+   the panel. */
+.wb-main:has(> .wb-component-page) {
+  overflow: hidden;
+  padding: 0;
+}
+
 .wb-component-page {
+  position: relative;
   display: flex;
   flex-direction: column;
   max-width: none;
-  /* The main column's padding is 40px top and 64px bottom. */
-  min-height: calc(100% - var(--gv-space-16));
-}
-
-.wb-component-page .wb-stage {
-  flex: 1;
+  height: 100%;
 }
 
 .wb-canvas-bar-end {
@@ -6712,50 +6715,77 @@ tr[data-result='needs-human'] .wb-a11y-note {
   color: inherit;
 }
 
-/* The component page's top row: breadcrumbs, then mode, city, Changes. */
+/* The component page's top row: breadcrumbs, then mode and Changes. Built
+   like the panel's tab bar (12px above a 40px row, a line under it), so the
+   two rows and the logo share a centre line and the line runs across. */
 .wb-component-top {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--gv-space-2) var(--gv-space-3);
+  flex: none;
+  gap: var(--gv-space-3);
   align-items: center;
-  margin-bottom: var(--gv-space-3);
+  min-height: 40px;
+  padding: var(--gv-space-3) var(--gv-space-6) 0;
+  box-sizing: content-box;
+  border-bottom: 1px solid var(--wb-border);
 }
 
 .wb-component-top .wb-crumbs {
+  min-width: 0;
   margin-bottom: 0;
+  white-space: nowrap;
 }
 
-/* Tool, viewport and zoom float at the stage's foot, Figma style; sticky,
-   so a canvas taller than the window keeps them in view. */
+/* Changes opens over the canvas, under the top row: the canvas keeps its
+   place. */
+.wb-component-page > .wb-drawer-inline {
+  position: absolute;
+  top: calc(40px + 1px + 2 * var(--gv-space-3));
+  right: var(--gv-space-6);
+  left: var(--gv-space-6);
+  z-index: 3;
+  margin: 0;
+  box-shadow: var(--wb-shadow);
+}
+
+/* The dotted canvas fills the column under the top row; a story larger than
+   it scrolls inside, with room under it for the floating bar. */
 .wb-component-page .wb-stage {
-  grid-template-rows: minmax(0, 1fr) auto;
-  align-content: stretch;
+  flex: 1;
+  min-height: 0;
+  align-content: safe center;
+  overflow: auto;
+  padding: var(--gv-space-6) var(--gv-space-6) calc(var(--gv-space-6) + 72px);
+  border: 0;
+  border-radius: 0;
 }
 
-.wb-component-page .wb-stage > .wb-canvas {
-  align-self: center;
-}
-
+/* Tool, viewport, zoom and city float 24px above the foot of the screen,
+   Figma style, centred on the canvas. */
 .wb-float-bar {
-  position: sticky;
-  bottom: var(--gv-space-4);
+  position: absolute;
+  bottom: var(--gv-space-6);
+  left: 50%;
   z-index: 2;
   display: flex;
-  grid-column: 1 / -1;
   gap: var(--gv-space-2);
   align-items: center;
-  justify-self: center;
-  max-width: 100%;
+  max-width: calc(100% - 2 * var(--gv-space-6));
   overflow-x: auto;
   padding: var(--gv-space-1);
   background: var(--wb-bg);
   border: 1px solid var(--wb-border);
   border-radius: var(--wb-radius-lg);
   box-shadow: var(--wb-shadow);
+  transform: translateX(-50%);
 }
 
-.wb-float-bar .wb-segmented {
+.wb-float-bar > * {
   flex: none;
+}
+
+/* The zoom shows its whole percent. */
+.wb-float-bar .wb-zoom select {
+  min-width: 5.5em;
 }
 
 .wb-shell .wb-float-bar .wb-segmented button {

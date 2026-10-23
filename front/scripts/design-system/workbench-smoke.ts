@@ -441,8 +441,11 @@ const serve = (root: string): Promise<http.Server> =>
 
 // A setting on the canvas bar: the mode is a row of buttons, the others
 // are selects.
+// Mode sits on the top row, the city on the floating bar.
 const SETTING = (key: string) =>
-  `[data-testid="wb-canvas-bar"] [data-testid="wb-toolbar-${key}"]`;
+  `[data-testid="${
+    key === 'mode' ? 'wb-canvas-bar' : 'wb-float-bar'
+  }"] [data-testid="wb-toolbar-${key}"]`;
 const settingOf = async (
   page: any,
   key: string
