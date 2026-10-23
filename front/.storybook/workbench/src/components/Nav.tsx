@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import type { Route } from '../lib/router';
+import { ThemeChoice, useTheme } from '../lib/theme';
 
 import Icon, { IconName } from './Icon';
 
@@ -56,8 +57,15 @@ type Props = { current: Route['name'] };
 // The mark of the workbench: four tiles, one of them the accent.
 const BrandMark = () => (
   <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
-    <rect width="28" height="28" rx="8" fill="var(--wb-accent)" />
-    <rect x="7" y="7" width="6" height="6" rx="1.5" fill="var(--gv-white)" />
+    <rect width="28" height="28" rx="8" fill="var(--wb-accent-fill)" />
+    <rect
+      x="7"
+      y="7"
+      width="6"
+      height="6"
+      rx="1.5"
+      fill="var(--wb-on-accent)"
+    />
     <rect x="15" y="7" width="6" height="6" rx="3" fill="var(--gv-teal-200)" />
     <rect
       x="7"
@@ -67,9 +75,70 @@ const BrandMark = () => (
       rx="1.5"
       fill="var(--gv-teal-200)"
     />
-    <rect x="15" y="15" width="6" height="6" rx="1.5" fill="var(--gv-white)" />
+    <rect
+      x="15"
+      y="15"
+      width="6"
+      height="6"
+      rx="1.5"
+      fill="var(--wb-on-accent)"
+    />
   </svg>
 );
+
+const THEMES: { value: ThemeChoice; label: string; icon: IconName }[] = [
+  { value: 'system', label: 'Follow the system', icon: 'monitor' },
+  { value: 'light', label: 'Light', icon: 'sun' },
+  { value: 'dark', label: 'Dark', icon: 'moon' },
+];
+
+// Light, dark, or as the system is; remembered in this browser.
+const ThemeSwitch = () => {
+  const [theme, setTheme] = useTheme();
+  return (
+    <div
+      className="wb-theme"
+      role="group"
+      aria-label="Theme"
+      data-testid="wb-theme"
+    >
+      <span className="wb-theme-label">Theme</span>
+      {THEMES.map((t) => (
+        <button
+          key={t.value}
+          type="button"
+          aria-pressed={theme === t.value}
+          title={t.label}
+          onClick={() => setTheme(t.value)}
+        >
+          <Icon name={t.icon} size={16} />
+          <span className="wb-visually-hidden">{t.label}</span>
+        </button>
+      ))}
+    </div>
+  );
+};
+
+const FOCUSABLE = 'a[href], button:not([disabled]), input, select, textarea';
+
+// Keeps Tab and Shift+Tab inside the element.
+const trapTab = (e: KeyboardEvent, root: HTMLElement | null) => {
+  if (!root) return;
+  const items = [...root.querySelectorAll<HTMLElement>(FOCUSABLE)].filter(
+    (el) => el.offsetParent !== null && el.tabIndex >= 0
+  );
+  const first = items[0];
+  const last = items[items.length - 1];
+  if (!first || !last) return;
+  const active = document.activeElement;
+  if (e.shiftKey && (active === first || !root.contains(active))) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && (active === last || !root.contains(active))) {
+    e.preventDefault();
+    first.focus();
+  }
+};
 
 const Nav = ({ current }: Props) => {
   const [query, setQuery] = useState('');
@@ -77,9 +146,15 @@ const Nav = ({ current }: Props) => {
   const [open, setOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
   // Escape closes the menu and hands focus back to its button.
+  // Tab stays inside the open menu (its button and the list).
+  const navRef = useRef<HTMLElement>(null);
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Tab') {
+        trapTab(e, navRef.current);
+        return;
+      }
       if (e.key !== 'Escape') return;
       setOpen(false);
       menuButton.current?.focus();
@@ -94,6 +169,7 @@ const Nav = ({ current }: Props) => {
 
   return (
     <nav
+      ref={navRef}
       className={open ? 'wb-nav wb-nav-open' : 'wb-nav'}
       aria-label="Workbench"
     >
@@ -144,10 +220,22 @@ const Nav = ({ current }: Props) => {
           ))}
           {entries.length === 0 && <li className="wb-nav-empty">No match</li>}
         </ul>
-        <p className="wb-nav-foot">
-          Edits stay in this browser until you share them as a link.
-        </p>
+        <div className="wb-nav-foot">
+          <ThemeSwitch />
+          <p className="wb-nav-note">
+            Edits stay in this browser until you share them as a link.
+          </p>
+        </div>
       </div>
+      {open && (
+        <button
+          type="button"
+          className="wb-nav-scrim"
+          aria-label="Close menu"
+          tabIndex={-1}
+          onClick={() => setOpen(false)}
+        />
+      )}
     </nav>
   );
 };

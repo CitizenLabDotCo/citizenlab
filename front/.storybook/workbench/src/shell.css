@@ -27,8 +27,85 @@
      tint. FrameView.tsx writes the same value into the frame. */
   --wb-highlight: #c8006e;
   --wb-highlight-soft: #fde7f2;
+  /* Status and info colours: a mark (dot, bar, ring), a soft fill behind
+     text, and a text colour on that fill. */
+  --wb-ok: var(--gv-green-500);
+  --wb-ok-soft: var(--gv-green-100);
+  --wb-ok-text: var(--gv-green-700);
+  --wb-caution: var(--gv-amber-500);
+  --wb-caution-soft: var(--gv-amber-100);
+  --wb-warn: var(--gv-orange-500);
+  --wb-bad: var(--gv-red-500);
+  --wb-bad-soft: var(--gv-red-100);
+  --wb-bad-text: var(--gv-red-800);
+  --wb-error: var(--gv-error);
+  --wb-info: var(--gv-teal-400);
+  --wb-info-soft: var(--gv-teal-100);
+  --wb-info-subtle: var(--gv-teal-50);
+  --wb-info-text: var(--gv-teal-700);
+  --wb-info-line: var(--gv-teal-200);
+  /* A filled accent (buttons, selected chips) and its hover; text on any
+     strong fill. */
+  --wb-accent-fill: var(--gv-primary);
+  --wb-accent-strong: var(--gv-blue-700);
+  --wb-on-accent: var(--gv-white);
+  --wb-hover: var(--gv-grey-50);
+  --wb-faint: var(--gv-grey-500);
+  --wb-neutral-mark: var(--gv-grey-400);
+  /* Story frames show the product as it is, in either theme. */
+  --wb-frame-bg: var(--gv-white);
   --wb-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
   --wb-nav-width: 256px;
+  color-scheme: light;
+}
+
+/* Dark chrome. lib/theme.ts sets the attribute from the viewer's choice,
+   or from the system setting when there is none. Only the --wb-* roles
+   change: story frames and token previews keep the product's colours. */
+:root[data-wb-theme='dark'] {
+  --wb-bg: #121417;
+  --wb-subtle: #181b1f;
+  --wb-sunken: #22262b;
+  --wb-border: #2b3036;
+  --wb-border-strong: #3d434a;
+  --wb-text: #d6dbe0;
+  --wb-heading: #f3f5f7;
+  --wb-muted: #9ca5ae;
+  --wb-accent: #6cc4e8;
+  --wb-accent-soft: #15303d;
+  --wb-accent-fill: #1a7aa3;
+  --wb-accent-strong: #2189b6;
+  --wb-on-accent: #ffffff;
+  --wb-pass: #5ccf95;
+  --wb-pass-soft: #12301f;
+  --wb-fail: #e5534b;
+  --wb-fail-soft: #3a1b1b;
+  --wb-warn-soft: #3b2614;
+  /* The frames keep the light outline (FrameView.tsx); the chip that names
+     it in the chrome gets a lighter tone. */
+  --wb-highlight: #ff6db8;
+  --wb-highlight-soft: #3d1430;
+  --wb-ok: #3fb97a;
+  --wb-ok-soft: #133222;
+  --wb-ok-text: #78dca6;
+  --wb-caution: #e0a526;
+  --wb-caution-soft: #3a2f12;
+  --wb-warn: #f08a3c;
+  --wb-bad: #ef5b52;
+  --wb-bad-soft: #3d1b1b;
+  --wb-bad-text: #ffa199;
+  --wb-error: #f06a5f;
+  --wb-info: #3bb5c4;
+  --wb-info-soft: #12333a;
+  --wb-info-subtle: #0f2328;
+  --wb-info-text: #84d8e2;
+  --wb-info-line: #1f5560;
+  --wb-hover: #1c2024;
+  --wb-faint: #6d767f;
+  --wb-neutral-mark: #5b646d;
+  --wb-shadow: 0 1px 2px rgb(0 0 0 / 50%);
+  --wb-shadow-raised: 0 8px 24px rgb(0 0 0 / 50%);
+  color-scheme: dark;
 }
 
 *,
@@ -225,11 +302,60 @@ code {
 }
 
 .wb-nav-foot {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-3);
   margin: auto 0 0;
   padding: var(--gv-space-3);
   font-size: var(--gv-fs-xs);
   color: var(--wb-muted);
   border-top: 1px solid var(--wb-border);
+}
+
+.wb-nav-note {
+  margin: 0;
+}
+
+.wb-nav-scrim {
+  display: none;
+}
+
+/* Theme: three icon buttons in one pill. */
+.wb-theme {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.wb-theme-label {
+  margin-right: auto;
+  font-weight: 500;
+}
+
+.wb-shell .wb-theme button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  min-height: 0;
+  padding: 0;
+  color: var(--wb-muted);
+  background: none;
+  border: 0;
+  border-radius: var(--wb-radius);
+  cursor: pointer;
+}
+
+.wb-shell .wb-theme button:hover {
+  color: var(--wb-text);
+  background: var(--wb-sunken);
+}
+
+.wb-shell .wb-theme button[aria-pressed='true'] {
+  color: var(--wb-accent);
+  background: var(--wb-bg);
+  box-shadow: 0 0 0 1px var(--wb-border);
 }
 
 /* Focus, for every control of the shell */
@@ -402,13 +528,13 @@ code {
 }
 
 .wb-button-primary {
-  color: var(--gv-white);
-  background: var(--wb-accent);
-  border-color: var(--wb-accent);
+  color: var(--wb-on-accent);
+  background: var(--wb-accent-fill);
+  border-color: var(--wb-accent-fill);
 }
 
 .wb-button-primary:hover {
-  background: var(--gv-blue-700);
+  background: var(--wb-accent-strong);
 }
 
 .wb-badge {
@@ -452,8 +578,8 @@ code {
 }
 
 .wb-count-on {
-  color: var(--gv-white);
-  background: var(--wb-accent);
+  color: var(--wb-on-accent);
+  background: var(--wb-accent-fill);
 }
 
 /* Cards */
@@ -564,7 +690,7 @@ a.wb-card:hover {
 .wb-cp-space span {
   width: 12px;
   min-height: 2px;
-  background: linear-gradient(var(--wb-accent), var(--gv-teal-400));
+  background: linear-gradient(var(--wb-accent), var(--wb-info));
   border-radius: 3px 3px 0 0;
 }
 
@@ -642,8 +768,8 @@ a.wb-card:hover {
   display: inline-block;
   padding: var(--gv-space-2) var(--gv-space-5);
   font-weight: 600;
-  color: var(--gv-white);
-  background: var(--wb-accent);
+  color: var(--wb-on-accent);
+  background: var(--wb-accent-fill);
   border-radius: var(--wb-radius);
 }
 
@@ -667,7 +793,7 @@ a.wb-card:hover {
   left: 0;
   width: 16px;
   height: 16px;
-  background: var(--wb-accent);
+  background: var(--wb-accent-fill);
   border-radius: 50%;
   box-shadow: 0 0 0 4px var(--wb-accent-soft);
   animation: wb-slide 2.4s ease-in-out infinite alternate;
@@ -713,7 +839,7 @@ a.wb-card:hover {
 
 .wb-cp-layers span:nth-child(2) {
   top: 22px;
-  background: var(--gv-teal-100);
+  background: var(--wb-info-soft);
 }
 
 .wb-cp-layers span:nth-child(3) {
@@ -732,7 +858,7 @@ a.wb-card:hover {
   background: linear-gradient(
     135deg,
     var(--wb-accent-soft),
-    var(--gv-teal-50) 60%,
+    var(--wb-info-subtle) 60%,
     var(--wb-bg)
   );
   border: 1px solid var(--wb-border);
@@ -920,7 +1046,7 @@ a.wb-card:hover {
   left: 4px;
   width: 8px;
   height: 8px;
-  background: var(--gv-teal-400);
+  background: var(--wb-info);
   border-radius: 50%;
 }
 
@@ -962,9 +1088,9 @@ a.wb-card:hover {
 }
 
 .wb-chips a[aria-current='page'] {
-  color: var(--gv-white);
-  background: var(--wb-accent);
-  border-color: var(--wb-accent);
+  color: var(--wb-on-accent);
+  background: var(--wb-accent-fill);
+  border-color: var(--wb-accent-fill);
 }
 
 .wb-toolbar {
@@ -1136,7 +1262,7 @@ a.wb-card:hover {
   flex: none;
   width: 8px;
   height: 8px;
-  background: var(--gv-orange-500);
+  background: var(--wb-warn);
   border-radius: 50%;
 }
 
@@ -1149,7 +1275,7 @@ a.wb-card:hover {
   padding: var(--gv-space-2) var(--gv-space-3);
   color: var(--wb-text);
   background: var(--wb-fail-soft);
-  border: 1px solid var(--gv-error);
+  border: 1px solid var(--wb-error);
   border-radius: var(--wb-radius);
 }
 
@@ -1187,7 +1313,7 @@ a.wb-card:hover {
   display: block;
   max-width: none;
   border: 0;
-  background: var(--gv-white);
+  background: var(--wb-frame-bg);
 }
 
 .wb-panels {
@@ -1244,7 +1370,7 @@ a.wb-card:hover {
 }
 
 .wb-table tbody tr:hover {
-  background: var(--gv-grey-50);
+  background: var(--wb-hover);
 }
 
 /* Token rows */
@@ -1282,7 +1408,7 @@ a.wb-card:hover {
 }
 
 .wb-tag-warn {
-  color: var(--gv-red-800);
+  color: var(--wb-bad-text);
   background: var(--wb-fail-soft);
 }
 
@@ -1395,7 +1521,7 @@ a.wb-card:hover {
   display: block;
   height: 16px;
   min-width: 2px;
-  background: var(--wb-accent);
+  background: var(--wb-accent-fill);
   border-radius: 2px;
 }
 
@@ -1411,7 +1537,7 @@ a.wb-card:hover {
   font-size: 11px;
   font-weight: 600;
   line-height: 1;
-  color: var(--gv-white);
+  color: var(--wb-on-accent);
 }
 
 .wb-compare .wb-pv-space {
@@ -1447,8 +1573,8 @@ a.wb-card:hover {
   padding: var(--gv-space-1) var(--gv-space-3);
   font-size: var(--gv-fs-13);
   font-weight: 600;
-  color: var(--gv-white);
-  background: var(--wb-accent);
+  color: var(--wb-on-accent);
+  background: var(--wb-accent-fill);
   border-radius: var(--gv-radius-1);
 }
 
@@ -1495,7 +1621,7 @@ a.wb-card:hover {
   left: 0;
   width: 12px;
   height: 12px;
-  background: var(--wb-accent);
+  background: var(--wb-accent-fill);
   border-radius: 50%;
   transition: left var(--wb-duration) ease-out;
 }
@@ -1554,7 +1680,7 @@ tr:hover .wb-pv-motion > span {
 }
 
 .wb-token-edit input:not([type='color']):hover {
-  border-color: var(--gv-grey-500);
+  border-color: var(--wb-faint);
 }
 
 .wb-token-edit input[type='color'] {
@@ -1581,7 +1707,7 @@ tr:hover .wb-pv-motion > span {
 
 .wb-token-feedback-flag {
   font-weight: 600;
-  color: var(--gv-red-800);
+  color: var(--wb-bad-text);
 }
 
 .wb-token-feedback-error {
@@ -1859,7 +1985,7 @@ tr:hover .wb-pv-motion > span {
 .wb-pair-broken,
 .wb-table tbody tr.wb-pair-broken:hover {
   background: var(--wb-fail-soft);
-  box-shadow: inset 3px 0 0 var(--gv-error);
+  box-shadow: inset 3px 0 0 var(--wb-error);
 }
 
 .wb-pair-broken .wb-pass,
@@ -2122,37 +2248,37 @@ tr:hover .wb-pv-motion > span {
 .wb-chip-dot {
   width: 6px;
   height: 6px;
-  background: var(--gv-grey-400);
+  background: var(--wb-neutral-mark);
   border-radius: 50%;
 }
 
 .wb-chip-on-tokens {
-  color: var(--gv-green-700);
-  background: var(--gv-green-100);
+  color: var(--wb-ok-text);
+  background: var(--wb-ok-soft);
   box-shadow: none;
 }
 
 .wb-chip-on-tokens .wb-chip-dot {
-  background: var(--gv-green-500);
+  background: var(--wb-ok);
 }
 
 .wb-chip-partly {
-  background: var(--gv-amber-100);
+  background: var(--wb-caution-soft);
   box-shadow: none;
 }
 
 .wb-chip-partly .wb-chip-dot {
-  background: var(--gv-amber-500);
+  background: var(--wb-caution);
 }
 
 .wb-chip-off-tokens {
-  color: var(--gv-red-800);
-  background: var(--gv-red-100);
+  color: var(--wb-bad-text);
+  background: var(--wb-bad-soft);
   box-shadow: none;
 }
 
 .wb-chip-off-tokens .wb-chip-dot {
-  background: var(--gv-red-500);
+  background: var(--wb-bad);
 }
 
 .wb-chip-office {
@@ -2190,24 +2316,24 @@ tr:hover .wb-pv-motion > span {
 }
 
 .wb-score-arc {
-  stroke: var(--gv-grey-500);
+  stroke: var(--wb-faint);
   stroke-linecap: round;
 }
 
 .wb-score-on-tokens .wb-score-arc {
-  stroke: var(--gv-green-500);
+  stroke: var(--wb-ok);
 }
 
 .wb-score-partly .wb-score-arc {
-  stroke: var(--gv-amber-500);
+  stroke: var(--wb-caution);
 }
 
 .wb-score-off-tokens .wb-score-arc {
-  stroke: var(--gv-red-500);
+  stroke: var(--wb-bad);
 }
 
 .wb-score-off-tokens .wb-score-track {
-  stroke: var(--gv-red-100);
+  stroke: var(--wb-bad-soft);
 }
 
 .wb-score-unscanned {
@@ -2367,7 +2493,7 @@ tr:hover .wb-pv-motion > span {
 }
 
 .wb-tabs a[aria-current='page'] {
-  color: var(--gv-white);
+  color: var(--wb-bg);
   background: var(--wb-heading);
 }
 
@@ -2522,7 +2648,7 @@ tr:hover .wb-pv-motion > span {
   width: 34px;
   height: 20px;
   margin: 0;
-  background: var(--gv-grey-300);
+  background: var(--wb-border-strong);
   border-radius: var(--gv-radius-full);
   cursor: pointer;
   transition: background var(--gv-motion-base);
@@ -2536,14 +2662,14 @@ tr:hover .wb-pv-motion > span {
   left: 2px;
   width: 16px;
   height: 16px;
-  background: var(--gv-white);
+  background: var(--wb-on-accent);
   border-radius: 50%;
   box-shadow: var(--gv-shadow-hover-sm);
   transition: transform var(--gv-motion-base);
 }
 
 .wb-switch:checked {
-  background: var(--wb-accent);
+  background: var(--wb-accent-fill);
 }
 
 .wb-switch:checked::after {
@@ -2663,7 +2789,7 @@ tr:hover .wb-pv-motion > span {
   bottom: -1px;
   left: var(--gv-space-2);
   height: 2px;
-  background: var(--wb-accent);
+  background: var(--wb-accent-fill);
   border-radius: 2px 2px 0 0;
 }
 
@@ -2766,8 +2892,8 @@ tr:hover .wb-pv-motion > span {
 }
 
 .wb-shell .wb-heal-button:hover {
-  color: var(--gv-white);
-  background: var(--wb-accent);
+  color: var(--wb-on-accent);
+  background: var(--wb-accent-fill);
 }
 
 .wb-shell .wb-heal-icon {
@@ -2875,21 +3001,21 @@ tr:hover .wb-pv-motion > span {
 }
 
 .wb-match-linked {
-  color: var(--gv-green-700);
-  background: var(--gv-green-100);
+  color: var(--wb-ok-text);
+  background: var(--wb-ok-soft);
 }
 
 .wb-match-linked .wb-chip-dot {
-  background: var(--gv-green-500);
+  background: var(--wb-ok);
 }
 
 .wb-match-equal {
-  color: var(--gv-grey-800);
-  background: var(--gv-amber-100);
+  color: var(--wb-text);
+  background: var(--wb-caution-soft);
 }
 
 .wb-match-equal .wb-chip-dot {
-  background: var(--gv-amber-500);
+  background: var(--wb-caution);
 }
 
 .wb-match-none {
@@ -3390,13 +3516,13 @@ a.wb-line:hover {
 }
 
 .wb-finding-raw {
-  color: var(--gv-red-800);
+  color: var(--wb-bad-text);
 }
 
 .wb-finding-token {
   padding: 0 4px;
-  color: var(--gv-green-700);
-  background: var(--gv-green-100);
+  color: var(--wb-ok-text);
+  background: var(--wb-ok-soft);
   border-radius: 3px;
 }
 
@@ -3429,15 +3555,15 @@ a.wb-line:hover {
 }
 
 .wb-conf-high {
-  background: var(--gv-green-500);
+  background: var(--wb-ok);
 }
 
 .wb-conf-medium {
-  background: var(--gv-amber-500);
+  background: var(--wb-caution);
 }
 
 .wb-conf-low {
-  background: var(--gv-grey-400);
+  background: var(--wb-neutral-mark);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3497,17 +3623,47 @@ a.wb-line:hover {
     padding: 0 var(--gv-space-2);
   }
 
+  /* The open menu lies over the page, under the top bar, with a scrim. */
   .wb-nav-body {
     display: none;
     padding: 0 var(--gv-space-4) var(--gv-space-4);
   }
 
   .wb-nav-open .wb-nav-body {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    z-index: 2;
     display: flex;
     max-height: calc(100vh - 64px);
+    background: var(--wb-subtle);
+    border-bottom: 1px solid var(--wb-border);
+    box-shadow: var(--wb-shadow-raised);
+  }
+
+  .wb-nav-open .wb-nav-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    display: block;
+    padding: 0;
+    background: rgb(0 0 0 / 40%);
+    border: 0;
+  }
+
+  .wb-nav-top {
+    position: relative;
+    z-index: 3;
+    background: var(--wb-subtle);
   }
 
   .wb-nav-foot {
+    margin-top: 0;
+    padding: var(--gv-space-3) 0 0;
+  }
+
+  .wb-nav-note {
     display: none;
   }
 
@@ -4004,7 +4160,7 @@ a.wb-line:hover {
   bottom: -1px;
   left: var(--gv-space-4);
   height: 2px;
-  background: var(--wb-accent);
+  background: var(--wb-accent-fill);
   border-radius: 2px;
 }
 
@@ -4229,13 +4385,13 @@ a.wb-line:hover {
 }
 
 .wb-ochip-admin {
-  color: var(--gv-blue-700);
+  color: var(--wb-accent-strong);
   background: var(--wb-accent-soft);
 }
 
 .wb-ochip-public {
-  color: var(--gv-teal-700);
-  background: var(--gv-teal-100);
+  color: var(--wb-info-text);
+  background: var(--wb-info-soft);
 }
 
 .wb-rrow-record {
@@ -4675,7 +4831,7 @@ a.wb-line:hover {
 }
 
 .wb-login-user::before {
-  background: var(--gv-orange-500);
+  background: var(--wb-warn);
 }
 
 .wb-login-out::before {
@@ -4766,8 +4922,8 @@ a.wb-line:hover {
 }
 
 .wb-fview-label-after {
-  color: var(--gv-white);
-  background: var(--wb-accent);
+  color: var(--wb-on-accent);
+  background: var(--wb-accent-fill);
 }
 
 .wb-fview-caption {
@@ -4801,8 +4957,8 @@ a.wb-line:hover {
 
 .wb-shell .wb-fview-actual[aria-pressed='true'] {
   color: var(--wb-bg);
-  background: var(--wb-accent);
-  border-color: var(--wb-accent);
+  background: var(--wb-accent-fill);
+  border-color: var(--wb-accent-fill);
 }
 
 .wb-fview-room-actual {
@@ -4842,7 +4998,7 @@ a.wb-line:hover {
 
 .wb-fview-paper iframe {
   display: block;
-  background: var(--gv-white);
+  background: var(--wb-frame-bg);
   border: 0;
 }
 
@@ -5077,27 +5233,27 @@ a.wb-line:hover {
    warn (amber: serious or a question for a person), fail (red: critical or
    a failed criterion), none (grey: not run or nothing to check). */
 .wb-a11y-tone-pass {
-  --wb-a11y-fg: var(--gv-green-700);
-  --wb-a11y-bg: var(--gv-green-100);
-  --wb-a11y-mark: var(--gv-green-500);
+  --wb-a11y-fg: var(--wb-ok-text);
+  --wb-a11y-bg: var(--wb-ok-soft);
+  --wb-a11y-mark: var(--wb-ok);
 }
 
 .wb-a11y-tone-warn {
   --wb-a11y-fg: var(--wb-text);
-  --wb-a11y-bg: var(--gv-amber-100);
-  --wb-a11y-mark: var(--gv-amber-500);
+  --wb-a11y-bg: var(--wb-caution-soft);
+  --wb-a11y-mark: var(--wb-caution);
 }
 
 .wb-a11y-tone-fail {
-  --wb-a11y-fg: var(--gv-red-800);
-  --wb-a11y-bg: var(--gv-red-100);
-  --wb-a11y-mark: var(--gv-red-500);
+  --wb-a11y-fg: var(--wb-bad-text);
+  --wb-a11y-bg: var(--wb-bad-soft);
+  --wb-a11y-mark: var(--wb-bad);
 }
 
 .wb-a11y-tone-none {
   --wb-a11y-fg: var(--wb-muted);
   --wb-a11y-bg: var(--wb-subtle);
-  --wb-a11y-mark: var(--gv-grey-400);
+  --wb-a11y-mark: var(--wb-neutral-mark);
 }
 
 .wb-a11y-badges {
@@ -5182,21 +5338,21 @@ a.wb-line:hover {
 
 .wb-a11y-count-pass::before,
 .wb-a11y-dot-pass {
-  background: var(--gv-green-500);
+  background: var(--wb-ok);
 }
 
 .wb-a11y-count-fail::before,
 .wb-a11y-dot-fail {
-  background: var(--gv-red-500);
+  background: var(--wb-bad);
 }
 
 .wb-a11y-count-needs-human::before,
 .wb-a11y-dot-needs-human {
-  background: var(--gv-amber-500);
+  background: var(--wb-caution);
 }
 
 .wb-a11y-dot-n\/a {
-  background: var(--gv-grey-300);
+  background: var(--wb-border-strong);
 }
 
 /* The current story's axe result */
@@ -5206,26 +5362,26 @@ a.wb-line:hover {
   align-items: flex-start;
   padding: var(--gv-space-3);
   border-radius: var(--wb-radius);
-  --wb-a11y-fg: var(--gv-green-700);
-  --wb-a11y-bg: var(--gv-green-100);
+  --wb-a11y-fg: var(--wb-ok-text);
+  --wb-a11y-bg: var(--wb-ok-soft);
   color: var(--wb-a11y-fg);
   background: var(--wb-a11y-bg);
 }
 
 .wb-a11y-story-critical {
-  --wb-a11y-fg: var(--gv-red-800);
-  --wb-a11y-bg: var(--gv-red-100);
+  --wb-a11y-fg: var(--wb-bad-text);
+  --wb-a11y-bg: var(--wb-bad-soft);
 }
 
 .wb-a11y-story-serious {
   --wb-a11y-fg: var(--wb-text);
-  --wb-a11y-bg: var(--gv-orange-100);
+  --wb-a11y-bg: var(--wb-warn-soft);
 }
 
 .wb-a11y-story-moderate,
 .wb-a11y-story-minor {
   --wb-a11y-fg: var(--wb-text);
-  --wb-a11y-bg: var(--gv-amber-100);
+  --wb-a11y-bg: var(--wb-caution-soft);
 }
 
 .wb-a11y-story-icon {
@@ -5313,19 +5469,19 @@ a.wb-line:hover {
 }
 
 .wb-impact-critical {
-  color: var(--gv-white);
-  background: var(--gv-red-600);
+  color: var(--wb-on-accent);
+  background: var(--wb-fail);
 }
 
 .wb-impact-serious {
   color: var(--wb-text);
-  background: var(--gv-orange-100);
-  box-shadow: inset 0 0 0 1px var(--gv-orange-500);
+  background: var(--wb-warn-soft);
+  box-shadow: inset 0 0 0 1px var(--wb-warn);
 }
 
 .wb-impact-moderate {
   color: var(--wb-text);
-  background: var(--gv-amber-100);
+  background: var(--wb-caution-soft);
 }
 
 .wb-impact-minor,
@@ -5370,7 +5526,7 @@ a.wb-line:hover {
   flex: none;
   width: 8px;
   height: 8px;
-  background: var(--gv-grey-300);
+  background: var(--wb-border-strong);
   border-radius: 50%;
 }
 
@@ -5388,38 +5544,38 @@ a.wb-line:hover {
 }
 
 .wb-a11y-cell-clean {
-  background: var(--gv-green-100);
+  background: var(--wb-ok-soft);
 }
 
 .wb-a11y-cell-clean .wb-a11y-cell-dot {
-  background: var(--gv-green-500);
+  background: var(--wb-ok);
 }
 
 .wb-a11y-cell-critical {
-  color: var(--gv-red-800);
-  background: var(--gv-red-100);
+  color: var(--wb-bad-text);
+  background: var(--wb-bad-soft);
 }
 
 .wb-a11y-cell-critical .wb-a11y-cell-dot {
-  background: var(--gv-red-500);
+  background: var(--wb-bad);
 }
 
 .wb-a11y-cell-serious {
-  background: var(--gv-orange-100);
+  background: var(--wb-warn-soft);
 }
 
 .wb-a11y-cell-serious .wb-a11y-cell-dot {
-  background: var(--gv-orange-500);
+  background: var(--wb-warn);
 }
 
 .wb-a11y-cell-moderate,
 .wb-a11y-cell-minor {
-  background: var(--gv-amber-100);
+  background: var(--wb-caution-soft);
 }
 
 .wb-a11y-cell-moderate .wb-a11y-cell-dot,
 .wb-a11y-cell-minor .wb-a11y-cell-dot {
-  background: var(--gv-amber-500);
+  background: var(--wb-caution);
 }
 
 .wb-a11y-rules {
@@ -5455,19 +5611,19 @@ a.wb-line:hover {
 }
 
 .wb-a11y-bar-pass {
-  background: var(--gv-green-500);
+  background: var(--wb-ok);
 }
 
 .wb-a11y-bar-fail {
-  background: var(--gv-red-500);
+  background: var(--wb-bad);
 }
 
 .wb-a11y-bar-needs-human {
-  background: var(--gv-amber-500);
+  background: var(--wb-caution);
 }
 
 .wb-a11y-bar-n\/a {
-  background: var(--gv-grey-200);
+  background: var(--wb-border);
 }
 
 .wb-a11y-table {
@@ -5523,19 +5679,19 @@ a.wb-line:hover {
 }
 
 .wb-a11y-result-pass {
-  color: var(--gv-green-700);
-  background: var(--gv-green-100);
+  color: var(--wb-ok-text);
+  background: var(--wb-ok-soft);
 }
 
 .wb-a11y-result-fail {
-  color: var(--gv-white);
-  background: var(--gv-red-600);
+  color: var(--wb-on-accent);
+  background: var(--wb-fail);
 }
 
 .wb-a11y-result-needs-human {
   color: var(--wb-text);
-  background: var(--gv-amber-100);
-  box-shadow: inset 0 0 0 1px var(--gv-amber-500);
+  background: var(--wb-caution-soft);
+  box-shadow: inset 0 0 0 1px var(--wb-caution);
 }
 
 .wb-a11y-result-n\/a {
@@ -5574,11 +5730,11 @@ a.wb-line:hover {
 }
 
 tr[data-result='fail'] .wb-a11y-note {
-  background: var(--gv-red-100);
+  background: var(--wb-bad-soft);
 }
 
 tr[data-result='needs-human'] .wb-a11y-note {
-  background: var(--gv-amber-100);
+  background: var(--wb-caution-soft);
 }
 
 /* Gallery card badges */
@@ -5613,15 +5769,15 @@ tr[data-result='needs-human'] .wb-a11y-note {
   margin-inline-end: -4px;
   font-size: 10px;
   line-height: 16px;
-  color: var(--gv-white);
-  background: var(--gv-red-600);
+  color: var(--wb-on-accent);
+  background: var(--wb-fail);
   border-radius: var(--gv-radius-full);
 }
 
 .wb-a11y-tone-warn .wb-a11y-chip-count {
   color: var(--wb-text);
   background: var(--wb-bg);
-  box-shadow: inset 0 0 0 1px var(--gv-amber-500);
+  box-shadow: inset 0 0 0 1px var(--wb-caution);
 }
 
 .wb-a11y-chip-review {

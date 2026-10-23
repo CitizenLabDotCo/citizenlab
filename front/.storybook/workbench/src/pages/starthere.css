@@ -47,7 +47,7 @@
   align-items: center;
   justify-content: center;
   padding: var(--gv-space-3);
-  background: linear-gradient(135deg, var(--wb-subtle), var(--gv-teal-50));
+  background: linear-gradient(135deg, var(--wb-subtle), var(--wb-info-subtle));
   border-bottom: 1px solid var(--wb-border);
 }
 
@@ -99,7 +99,7 @@
   height: 28px;
   font-size: var(--gv-fs-s);
   font-weight: 700;
-  color: var(--gv-white);
+  color: var(--wb-on-accent);
   background: var(--wb-accent);
   border-radius: var(--gv-radius-full);
 }
@@ -345,7 +345,7 @@
   font-size: var(--gv-fs-s);
   line-height: 1.6;
   white-space: pre;
-  color: var(--gv-white);
+  color: var(--wb-on-accent);
   background: var(--gv-grey-800);
   border-radius: var(--wb-radius);
 }

@@ -133,10 +133,16 @@ const RingArt = () => (
     aria-hidden="true"
     focusable="false"
   >
-    <circle cx="110" cy="110" r="104" fill="var(--gv-teal-50)" />
-    <circle cx="110" cy="110" r="104" fill="none" stroke="var(--gv-teal-200)" />
-    <circle cx="110" cy="110" r="70" fill="var(--gv-teal-100)" />
-    <circle cx="110" cy="110" r="36" fill="var(--wb-accent)" />
+    <circle cx="110" cy="110" r="104" fill="var(--wb-info-subtle)" />
+    <circle
+      cx="110"
+      cy="110"
+      r="104"
+      fill="none"
+      stroke="var(--wb-info-line)"
+    />
+    <circle cx="110" cy="110" r="70" fill="var(--wb-info-soft)" />
+    <circle cx="110" cy="110" r="36" fill="var(--wb-accent-fill)" />
     <text x="110" y="117" className="wb-prop-ring-num wb-prop-ring-num-in">
       1
     </text>

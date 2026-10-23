@@ -102,12 +102,12 @@
   font-size: var(--gv-fs-l);
   font-weight: 700;
   text-anchor: middle;
-  fill: var(--gv-teal-700);
+  fill: var(--wb-info-text);
 }
 
 .wb-prop-ring-num-in {
   font-size: var(--gv-fs-xxl);
-  fill: var(--gv-white);
+  fill: var(--wb-on-accent);
 }
 
 .wb-prop-ring-list {
@@ -153,19 +153,19 @@
 }
 
 .wb-prop-ring-badge-1 {
-  color: var(--gv-white);
+  color: var(--wb-on-accent);
   background: var(--wb-accent);
 }
 
 .wb-prop-ring-badge-2 {
-  color: var(--gv-teal-700);
-  background: var(--gv-teal-100);
+  color: var(--wb-info-text);
+  background: var(--wb-info-soft);
 }
 
 .wb-prop-ring-badge-3 {
-  color: var(--gv-teal-700);
-  background: var(--gv-teal-50);
-  box-shadow: inset 0 0 0 1px var(--gv-teal-200);
+  color: var(--wb-info-text);
+  background: var(--wb-info-subtle);
+  box-shadow: inset 0 0 0 1px var(--wb-info-line);
 }
 
 .wb-prop-cost-chip {
@@ -508,7 +508,7 @@
 .wb-prop-bar-fill {
   display: block;
   height: 100%;
-  background: var(--gv-teal-400);
+  background: var(--wb-info);
   border-radius: 4px;
 }
 
@@ -617,17 +617,17 @@
 }
 
 .wb-prop-dot-heal {
-  fill: var(--gv-teal-400);
+  fill: var(--wb-info);
 }
 
 .wb-prop-dot-lift {
-  fill: var(--gv-orange-500);
+  fill: var(--wb-warn);
 }
 
 .wb-prop-dot-scan,
 .wb-prop-dot-other {
   fill: var(--wb-bg);
-  stroke: var(--gv-grey-500);
+  stroke: var(--wb-faint);
   stroke-width: 1.5;
 }
 
