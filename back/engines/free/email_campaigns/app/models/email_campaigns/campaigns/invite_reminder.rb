@@ -35,6 +35,7 @@
 #
 module EmailCampaigns
   class Campaigns::InviteReminder < Campaign
+    include Consentable
     include ActivityTriggerable
     include Disableable
     include LifecycleStageRestrictable
@@ -47,6 +48,11 @@ module EmailCampaigns
 
     def mailer_class
       InviteReminderMailer
+    end
+
+    # Only invitees get this email, so only they see it in their email settings.
+    def self.consentable_roles
+      %w[invite_pending]
     end
 
     def activity_triggers
