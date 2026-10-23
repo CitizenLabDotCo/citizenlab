@@ -30,6 +30,9 @@ const EmailSettingPage = () => {
   >();
   const [unsubscribedCampaignMultiloc, setUnsubscribedCampaignMultiloc] =
     useState<Multiloc | null>(null);
+  const [unsubscribedConsentId, setUnsubscribedConsentId] = useState<
+    string | undefined
+  >();
 
   const searchParams = useSearch({ strict: false });
   const unsubscriptionToken = searchParams.unsubscription_token;
@@ -61,6 +64,7 @@ const EmailSettingPage = () => {
             setUnsubscribedCampaignMultiloc(
               data[0].data.attributes.campaign_type_description_multiloc
             );
+            setUnsubscribedConsentId(data[0].data.id);
           },
           onError: () => {
             setInitialUnsubscribeStatus('error');
@@ -93,6 +97,7 @@ const EmailSettingPage = () => {
                 trackEventName={tracks.unsubscribedFromLink}
                 runOnSave={closeInitialUnsubscribe}
                 unsubscriptionToken={unsubscriptionToken}
+                unsubscribedConsentId={unsubscribedConsentId}
               />
             )}
         </div>

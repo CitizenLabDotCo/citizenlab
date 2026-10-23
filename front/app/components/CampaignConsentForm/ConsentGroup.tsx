@@ -32,6 +32,7 @@ const ConsentGroup = ({ group, onToggleGroup, onToggleConsent }: Props) => {
   return (
     <Accordion
       title={<Text m="12px">{group.contentType}</Text>}
+      isOpenByDefault={group.isOpenByDefault}
       prefix={
         // The accordion title sits in a sibling element, so it can't name this
         // checkbox — it gets an explicit label instead.

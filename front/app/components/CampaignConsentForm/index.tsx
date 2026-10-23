@@ -34,12 +34,15 @@ type Props = {
   trackEventName: string;
   runOnSave?: () => void;
   unsubscriptionToken?: string | null;
+  // Opens the group holding this consent, so the user sees what they just unsubscribed from.
+  unsubscribedConsentId?: string;
 };
 
 const CampaignConsentForm = ({
   trackEventName,
   runOnSave,
   unsubscriptionToken,
+  unsubscribedConsentId,
 }: Props) => {
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -178,6 +181,9 @@ const CampaignConsentForm = ({
         ...group,
         id: `${channel}-${contentType}`,
         contentType,
+        isOpenByDefault: group.children.some(
+          (consent) => consent.id === unsubscribedConsentId
+        ),
       }));
   };
 
