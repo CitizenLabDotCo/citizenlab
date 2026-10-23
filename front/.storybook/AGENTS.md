@@ -165,9 +165,9 @@ check: story <story id>, routes <list>
 
 ## Visual runs
 
-- `ds:visual` loads each story with `globals=mode:today`, waits for the preview's render phase to settle (`finished`, `errored` or `aborted`, 20 s), so `play` steps finish first, then fonts and a short pause.
-- A story whose `play` function throws is an error, not a screenshot; so are a story error, an empty root, a size change and a missing baseline. Compare exits 1 on any diff or error, and re-runs a diff once to tell flakiness apart.
-- Run it against `npm run storybook` (port 6006) or a served build (`--url`). Pass `--summary <scratch file>` during heals so the committed `visual-summary.json` changes only when you mean to refresh it.
+- `ds:visual` loads each story with `globals=mode:today` (or the `--mode`), waits for the preview's render phase to settle (`finished`, `errored` or `aborted`, 20 s), so `play` steps finish first, then fonts and a short pause.
+- A story whose `play` function throws is an error, not a screenshot; so are a story error, an empty root, a size change and a missing baseline. Compare counts every changed pixel (pixelmatch threshold 0, anti-aliased pixels included), exits 1 on any diff or error, and re-runs a diff once to tell flakiness apart.
+- Run it against `npm run storybook` (port 6006), `npx storybook dev -p 6006` when the committed outputs must stay untouched, or a served build (`--url`). Pass `--summary <scratch file>` during heals so the committed `visual-summary.json` changes only when you mean to refresh it.
 
 ## Review page
 

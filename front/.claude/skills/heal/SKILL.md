@@ -5,7 +5,7 @@ description: Use when given a heal task (the three lines `heal:`, `why:`, `check
 
 # heal
 
-Replace one off-spec value with a token read (or local markup with the library component), prove nothing else changed, commit it alone. Read `front/.storybook/AGENTS.md` first if you have not this session. Run every command from `front/`.
+Replace one off-spec value with a token read (or local markup with the library component), prove nothing else changed, commit it alone. One value is one raw → token pair in one file: every occurrence of that pair in the file goes into the same commit, a second pair is a second heal. Read `front/.storybook/AGENTS.md` first if you have not this session. Run every command from `front/`.
 
 ## Input: the heal task
 
@@ -26,7 +26,7 @@ Stop, change nothing (or revert what you changed), and report why with the evide
 1. **Mode safety (SPEC 7.5).** `ds:mode-check` exits 3. Outside the redesign scope the token's `today` value must equal the value the code renders now. This holds for a shared component whatever the task's mode says, `both` included: a change to today's look is a token commit, not a heal. Inside the redesign scope (files that render only under `ModeScope`, not the whole `backofficeRedesign/` folder) a different `redesign` value is allowed only when the task says `mode redesign`.
 2. **Style only.** The heal would change data, handlers, routing, copy, props an API exposes, or component structure beyond swapping local markup for the library component.
 3. **One component per commit.** The heal needs edits inside a second component (call sites that only gain a layout spacing prop do not count, see the spacing rule).
-4. **No token fits.** No token has the value, or a colour in a component would need a Tier 1 primitive and no Tier 2 colour has the same `today` value. A new token is a change to `tokens.source.json` in its own `design-system(token)` commit, not part of a heal.
+4. **No token fits.** No token has the value, or a colour in a component would need a Tier 1 primitive and no Tier 2 colour has the same `today` value, or the only token with the value means something else (`--gv-chart-grid` for a card background). `ds:mode-check` compares values only; tier and meaning are yours to check. A new token is a change to `tokens.source.json` in its own `design-system(token)` commit, not part of a heal.
 5. **Tenant slots.** A `--gv-tenant-*` or `--gv-color-tenant-*` token replaces only a read of the tenant theme key it lists in `legacy` (`theme.colors.tenantPrimary`), never a hard-coded colour.
 6. **Spacing that is not a scale step**, or a two-sided spacing heal with more than 10 call sites (report the count; the person decides).
 7. **Checks fail** after the edit (`ds:check`, typecheck, tests, or a visual diff outside the healed component's stories) and the cause is the heal.
@@ -39,6 +39,10 @@ Stop, change nothing (or revert what you changed), and report why with the evide
   ```
   node -e 'const s=require("./.storybook/static/design-scan.json");const c=s.components.find(c=>c.component===process.argv[1]);console.log(c?`${c.component} score ${c.score} ${c.status} offSpec ${["px","hex","rgba","named-color","layout-spacing"].reduce((n,k)=>n+c.counts[k],0)}`:"not in scan")' <Component>
   ```
+  A container (a page or a part of one, not a library, `UI/` or `admin/` component) is not in `components` and prints `not in scan`. Report its file counts instead, with the same weights (token reads / (token reads + 0.5 legacy + off-spec)):
+  ```
+  node -e 'const s=require("./.storybook/static/design-scan.json");const f=s.findings.filter(x=>x.file===process.argv[1]);const n=k=>f.filter(x=>k(x.category)).length;const off=n(c=>["px","hex","rgba","named-color","layout-spacing"].includes(c)),leg=n(c=>c.startsWith("legacy")),tr=n(c=>c==="token-var");console.log(`score ${(tr/(tr+0.5*leg+off||1)).toFixed(3)} offSpec ${off} legacy ${leg} tokenReads ${tr}`)' <file>
+  ```
   Open `<file>:<line>` and confirm the raw value is there (stop 8).
 - [ ] 3. Resolve the value the code renders now. A literal is itself. A legacy read (`theme.borderRadius`, `colors.x`, `bo.x`, `stylingConsts.x`) is the value in its source (`app/component-library/utils/styleUtils.ts`, where `colors`, `bo`, `stylingConsts` and `getTheme` live); a number used as px is `<n>px`; a bridged theme key returns `var(--gv-…, <fallback>)` and renders the fallback today. A legacy key in a token's `legacy` list is not proof the values match: `bo.borderRadius` is `8px`, `--gv-radius-control` is `3px` today.
 - [ ] 4. Mode check:
@@ -46,28 +50,34 @@ Stop, change nothing (or revert what you changed), and report why with the evide
   npm run -s ds:mode-check -- --file <file> --token <token> --now <value> --mode <mode>
   ```
   Give `--now` as hex or rgb() for colours and with its unit for lengths. Exit 3 is stop 1; exit 2 is a typo in the command. The check reads the routes from the scan, so run `ds:scan` first, and decides the redesign scope from the import graph: `Event`, `NewPhase`, `UnsavedChangesGuard` and anything that portals (modals, dropdowns, tooltips) are outside even inside `backofficeRedesign/`. Run it once per file the heal edits.
-- [ ] 5. Start Storybook in another terminal (`npm run storybook`, port 6006) and save a baseline of every story: `npm run ds:visual -- --baseline <scratch>/before`. Screenshot the healed story in both modes (step 9 has the command) as `before-today.png` and `before-redesign.png`.
-- [ ] 6. Edit. Use `t` from `design-system/tokens/tokens` (`t.radius.control`, `t.space[4]`) in TS and styled templates, or `var(--gv-…)` in CSS strings. `rgba(colors.x, 0.5)` becomes `color-mix(in srgb, var(--gv-…) 50%, transparent)`. For spacing, follow the two-sided rule below. Add or update the story for the state the heal touches (see the `story` skill).
+- [ ] 5. The healed state needs a story. If it has none, add it (see the `story` skill) in its own `design-system(stories)` commit first, so the baseline holds it. Start Storybook in another terminal with `npx storybook dev -p 6006 --ci --no-open` (`npm run storybook` first runs `ds:prepare`, which rewrites committed outputs). Save the baselines, mode today for every story and mode redesign for the healed stories:
+  ```
+  npm run ds:visual -- --baseline <scratch>/before
+  npm run ds:visual -- --baseline <scratch>/before --stories '<story prefix>--*' --mode redesign
+  ```
+  A file that only one stories file renders (`grep -rl` its import name across `*.stories.tsx` and the files that import it) may use `--stories '<story prefix>--*'` for the today baseline too; say so in the commit. Copy `<scratch>/before/desktop__<story id>.png` and `desktop__<story id>__redesign.png` to `.storybook/static/heals/<sha>/before-today.png` and `before-redesign.png`. A component that renders `ModeScope` itself shows its redesign values in both modes.
+- [ ] 6. Edit. Use `t` from `design-system/tokens/tokens` (`t.radius.control`, `t.space[4]`) in TS and styled templates, or `var(--gv-…)` in CSS strings. Files in `app/component-library/` may not import from `design-system/` (dependency-cruiser `no-import-to-component-library`): write `var(--gv-…)` there. `rgba(colors.x, 0.5)` becomes `color-mix(in srgb, var(--gv-…) 50%, transparent)`. For spacing, follow the two-sided rule below. Add or update the story for the state the heal touches (see the `story` skill).
 - [ ] 7. Scope, then checks. Scope first:
   ```
-  git diff --name-only | sed -n 's#^front/##; s#^app/component-library/components/\([^/]*\)/.*#\1#p; s#^app/components/\(UI\|admin\)/\([^/]*\)/.*#\1/\2#p' | sort -u
+  git diff --name-only --relative | sed -nE 's#^app/component-library/components/([^/]*)/.*#\1#p; s#^app/components/(UI|admin)/([^/]*)/.*#\1/\2#p' | sort -u
   git diff -U0
   ```
-  The first prints the components you touched (library, `UI/<Name>`, `admin/<Name>`): more than one is stop 3, unless the others only gained a spacing prop at a call site. In the second, every changed line is a style value, a token import, a story, or a call-site spacing prop; anything else (a handler, a condition, copy, a prop of the component's API) is stop 2. Then, in this order:
+  The first prints the components with uncommitted edits (library, `UI/<Name>`, `admin/<Name>`); leave out the files other people had in step 1. More than one of yours is stop 3, unless the others only gained a spacing prop at a call site. In the second, every changed line is a style value, a token import, a story, or a call-site spacing prop; anything else (a handler, a condition, copy, a prop of the component's API) is stop 2. Then, in this order:
   ```
   npm run ds:check
   npx jest <component folder>
   npm run typecheck
   npm run ds:visual -- --compare <scratch>/before --summary <scratch>/visual.json
+  npm run ds:visual -- --compare <scratch>/before --stories '<story prefix>--*' --mode redesign
   ```
-  `ds:visual` renders mode `today`. A mode safe heal shows no diff at all; a story added or changed in step 6 shows as `no baseline screenshot` or a diff in that story only. Anything else is stop 7. Do not let `ds:visual` overwrite the committed `.storybook/static/visual-summary.json` during a heal (that is what `--summary` is for).
+  On a small machine stop Storybook while `typecheck` runs; the two together run out of memory. The compare counts every changed pixel, so a corner radius off by a few px shows. A mode safe heal shows no diff at all; a story added or changed in step 6 shows as `no baseline screenshot` or a diff in that story only. Anything else is stop 7. Do not let `ds:visual` overwrite the committed `.storybook/static/visual-summary.json` during a heal (that is what `--summary` is for).
 - [ ] 8. `npm run ds:scan` again and print the score after (command of step 2). `design-scan.summary.json` changed: it goes into the heal commit.
-- [ ] 9. Screenshot the healed story after, in both modes, into `.storybook/static/heals/<sha>/`:
+- [ ] 9. Screenshot the healed story after, in both modes, with `ds:visual` (it waits for `play` steps; a fixed timeout catches spinners):
   ```
-  node "$GV_PLAYWRIGHT_DIR/node_modules/playwright/cli.js" screenshot --viewport-size "1280,900" --wait-for-timeout 1500 \
-    "http://localhost:6006/iframe.html?id=<story id>&viewMode=story&globals=mode:redesign" .storybook/static/heals/<sha>/after-redesign.png
+  npm run ds:visual -- --baseline <scratch>/after --stories <story id>
+  npm run ds:visual -- --baseline <scratch>/after --stories <story id> --mode redesign
   ```
-  Same with `mode:today` for `after-today.png`, and the before shots of step 5 copied next to them. `GV_PLAYWRIGHT_DIR` is a folder holding `node_modules/playwright` (see `scripts/design-system/playwright.ts`).
+  Copy `desktop__<story id>.png` and `desktop__<story id>__redesign.png` to `.storybook/static/heals/<sha>/after-today.png` and `after-redesign.png`, next to the before shots of step 5.
 - [ ] 10. Commit only your files:
   ```
   git add <component files> <call-site files> <stories> .storybook/static/design-scan.summary.json .storybook/static/heals/<sha>/
@@ -97,7 +107,8 @@ design-system(heal): <Component> <raw value> → <token> [AI-assisted]
 
 <file>:<line>, <finding category>. Mode <mode>: today <today value> (unchanged),
 redesign <redesign value>.
-Score <before> → <after>. Visual compare: <N> stories, <diffs> diffs.
+Score <before> → <after>. Visual compare: <stories>, today <diffs> diffs,
+redesign <diffs> diffs.
 Screenshots: .storybook/static/heals/<sha>/
 
 Co-Authored-By: <the line your session gives>
