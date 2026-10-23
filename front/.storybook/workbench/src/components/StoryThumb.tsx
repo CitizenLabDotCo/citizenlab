@@ -307,6 +307,8 @@ const StoryThumb = ({
       data-testid="wb-thumb"
       data-story={id}
       data-state={state}
+      // A gallery card the shared frame cannot show, in a frame of its own.
+      data-isolated={gallery && shared === 'isolated' ? '' : undefined}
     >
       <span
         ref={box}

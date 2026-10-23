@@ -18,15 +18,16 @@
 // tokens and a contrast pairs table with rows; an edit of a radius token
 // shows in the Changes drawer and in the hash. The Components gallery shows
 // at least MIN_GALLERY_THUMBS story thumbnails, rendered in one shared
-// preview frame (at least MIN_REVEALED_THUMBS reveal their story, and only
-// isolated cards get a frame of their own); the Button page's State and
-// Variant menus offer at least MIN_STATE_TABS stories, and switching its
-// `disabled` control changes the frame's DOM. The canvas fits the Button
-// frame to the story by default (MAX_FIT_HEIGHT). The Design tab selects the
-// button and shows its corner radius as the radius token, linked; a click on
-// the canvas selects the element under it. Inspect's Usage lists at least
-// one back office (admin) route and its Tokens list shows the radius token
-// as linked.
+// preview frame: at least MIN_REVEALED_THUMBS reveal their story, the
+// first sits over its card within 1px, and a card the frame cannot show
+// renders in a frame of its own (no other card has one); the Button page's
+// State and Variant menus offer at least MIN_STATE_TABS stories, and
+// switching its `disabled` control changes the frame's DOM. The canvas fits
+// the Button frame to the story by default (MAX_FIT_HEIGHT). The Design tab
+// selects the button and shows its corner radius as the radius token,
+// linked; a click on the canvas selects the element under it. Inspect's
+// Usage lists at least one back office (admin) route and its Tokens list
+// shows the radius token as linked.
 // The Review page lists at least MIN_ADMIN_ROUTES back office routes and
 // shows "needs a record" for a route whose param the fixture lacks. With
 // --review-host <platform origin> (an epic serving this Storybook under
@@ -469,28 +470,92 @@ const galleryChecks = async (page: any, base: string, failures: string[]) => {
       '[data-testid="wb-gallery-frame"]'
     );
     const doc = frame?.contentDocument;
-    const stories = Array.from(doc?.querySelectorAll('.gvg-story') ?? []);
-    return {
-      rendered: stories.filter((el) => el.childElementCount > 0).length,
-      own: document.querySelectorAll('[data-testid="wb-thumb"] iframe').length,
-      isolated: document.querySelectorAll(
-        '[data-testid="wb-thumb"][data-state="isolated"]'
-      ).length,
-    };
+    // Stories that painted something in a revealed card.
+    const painted = Array.from(
+      doc?.querySelectorAll('.gvg-item[data-shown]') ?? []
+    ).filter((item) => item.querySelector('[data-gv-story-box] > *'));
+    // The first one sits over its card's preview box: frame pixels, scaled
+    // by the frame's scale, from the frame's corner.
+    let offBy: number | null = null;
+    const item = painted[0] as HTMLElement | undefined;
+    const id = item?.dataset.gvThumb;
+    const box = id
+      ? document.querySelector<HTMLElement>(
+          `[data-testid="wb-thumb"][data-story="${id}"] .wb-thumb`
+        )
+      : null;
+    if (frame && item && box) {
+      const f = frame.getBoundingClientRect();
+      const k = f.width / frame.offsetWidth;
+      const at = item.getBoundingClientRect();
+      const own = box.getBoundingClientRect();
+      offBy = Math.max(
+        Math.abs(f.left + at.left * k - (own.left + box.clientLeft)),
+        Math.abs(f.top + at.top * k - (own.top + box.clientTop)),
+        Math.abs(at.width * k - box.clientWidth),
+        Math.abs(at.height * k - box.clientHeight)
+      );
+    }
+    return { painted: painted.length, id, offBy };
   });
-  if (shared.rendered < MIN_REVEALED_THUMBS) {
+  if (shared.painted < MIN_REVEALED_THUMBS) {
     failures.push(
-      `the gallery frame rendered ${shared.rendered} stories, expected ${MIN_REVEALED_THUMBS} or more`
+      `the gallery frame painted ${shared.painted} stories, expected ${MIN_REVEALED_THUMBS} or more`
     );
   }
-  // Only a story that cannot share the frame gets one of its own.
-  if (shared.own > shared.isolated) {
+  if (shared.offBy === null || shared.offBy > 1) {
     failures.push(
-      `${shared.own} gallery cards have a frame of their own, only ${shared.isolated} need one`
+      `the gallery frame's ${shared.id} story is ${shared.offBy}px off its card`
+    );
+  }
+  // A story that cannot share the frame (its own mock handlers, a modal)
+  // gets a frame of its own once its card nears the viewport; no other
+  // card does.
+  try {
+    await page.waitForSelector('[data-testid="wb-thumb"][data-isolated]', {
+      state: 'attached',
+      timeout: 30000,
+    });
+  } catch {
+    failures.push('no gallery card fell back to a frame of its own');
+  }
+  await page.$eval('[data-testid="wb-thumb"][data-isolated]', (el: Element) =>
+    el.scrollIntoView({ block: 'center' })
+  );
+  try {
+    await page.waitForSelector(
+      '[data-testid="wb-thumb"][data-isolated][data-state="rendered"] iframe',
+      { state: 'attached', timeout: 30000 }
+    );
+  } catch {
+    failures.push('an isolated gallery card did not render in its own frame');
+  }
+  const own = await page.evaluate(() => {
+    const cards = Array.from(
+      document.querySelectorAll('[data-testid="wb-thumb"]')
+    );
+    const framed = cards.filter((c) => c.querySelector('iframe'));
+    return {
+      isolated: cards.filter((c) => c.hasAttribute('data-isolated')).length,
+      framed: framed.length,
+      stray: framed
+        .filter((c) => !c.hasAttribute('data-isolated'))
+        .map((c) => c.getAttribute('data-story')),
+    };
+  });
+  if (own.stray.length) {
+    failures.push(
+      `gallery cards with a frame of their own that share the gallery's: ${own.stray.join(
+        ', '
+      )}`
     );
   }
   console.log(
-    `gallery: ${thumbs} component thumbnails, ${shared.rendered} stories in the gallery frame, ${shared.isolated} in their own`
+    `gallery: ${thumbs} component thumbnails, ${
+      shared.painted
+    } painted in the gallery frame (${shared.id} off by ${shared.offBy?.toFixed(
+      2
+    )}px), ${own.isolated} isolated, ${own.framed} in their own frame`
   );
 };
 
