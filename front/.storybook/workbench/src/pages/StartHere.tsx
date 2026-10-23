@@ -77,7 +77,7 @@ const useBuildData = (): BuildData | null => {
 
 const FIVE_LINES = [
   'The design values of the platform as named tokens, in code.',
-  'Every library component, in every state, built on those tokens.',
+  'Library components in their states, built on those tokens.',
   'A scanner that counts where the code skips the tokens.',
   'A Review page that shows the real platform before and after.',
   'Skills that let Claude Code heal the code, one small commit at a time.',
@@ -103,7 +103,7 @@ const TOUR: TourPage[] = [
     name: 'components',
     label: 'Components',
     hash: '#/components',
-    text: 'Every library component with its score and accessibility badges. Open one for its states and panels.',
+    text: 'Library components with their score and accessibility badges. Open one for its states and panels.',
     art: <ComponentsArt />,
   },
   {
@@ -269,22 +269,22 @@ const MAC_STEPS: Command[] = [
     ),
   },
   {
-    title: 'Start Claude Code',
-    code: 'claude',
+    title: 'Claude Code with the MCP servers',
+    wide: true,
+    code: '# once, with Storybook running\nclaude mcp add --transport http storybook http://localhost:6006/mcp\nclaude mcp add --transport http figma https://mcp.figma.com/mcp\n# every time, from front/ so it finds the skills\nclaude',
     note: (
       <>
-        From <code>front/</code>, so it finds the skills. With Storybook
-        running, add its MCP server once:{' '}
-        <code>
-          claude mcp add --transport http storybook http://localhost:6006/mcp
-        </code>
-        .
+        Figma&apos;s is the remote server, so no desktop app is needed: in
+        Claude Code type <code>/mcp</code>, pick figma, then Authenticate. It
+        needs a Full or Dev seat on a paid Figma plan; View and Collab seats
+        get 20 calls a month.
       </>
     ),
   },
   {
     title: 'Screenshots and axe',
-    code: 'mkdir ~/pw && cd ~/pw\nnpm i playwright && npx playwright install chromium\nexport GV_PLAYWRIGHT_DIR=~/pw',
+    wide: true,
+    code: '(mkdir -p ~/pw && cd ~/pw && npm i playwright && npx playwright install chromium)\nexport GV_PLAYWRIGHT_DIR=~/pw',
     note: 'Playwright lives outside the repo. Put the export in your shell profile.',
   },
   {
@@ -332,7 +332,7 @@ const FILES: { icon: IconName; path: string; text: string }[] = [
   {
     icon: 'components',
     path: 'app/component-library/components/<Name>/',
-    text: 'Each component with its stories and its a11y.json checklist.',
+    text: 'Each component with its stories and, once reviewed, its a11y.json checklist.',
   },
   {
     icon: 'heal',
@@ -571,7 +571,7 @@ const StartHere = () => {
 
       <Section
         title="Run it on your Mac"
-        note="Once, then step 4 and 5 every day. Run every command in front/."
+        note="Once, then steps 4 and 5 every day. Run every command in front/."
       >
         <Commands items={MAC_STEPS} testId="wb-run-steps" />
       </Section>

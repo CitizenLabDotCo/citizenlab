@@ -344,8 +344,7 @@
   font-family: var(--wb-mono);
   font-size: var(--gv-fs-s);
   line-height: 1.6;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
+  white-space: pre;
   color: var(--gv-white);
   background: var(--gv-grey-800);
   border-radius: var(--wb-radius);
