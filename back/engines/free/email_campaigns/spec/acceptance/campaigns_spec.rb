@@ -677,6 +677,22 @@ resource 'Campaigns' do
       end
     end
 
+    post 'web_api/v1/campaigns/:id/send_email_preview' do
+      include ActiveJob::TestHelper
+
+      parameter :locale, 'Send the preview in this platform locale instead of the current user\'s locale', required: false
+
+      let(:campaign) { create(:manual_campaign, subject_multiloc: { 'en' => 'English subject', 'nl-NL' => 'Dutch subject' }) }
+      let(:id) { campaign.id }
+
+      example 'Send a preview email in another locale' do
+        perform_enqueued_jobs(only: ActionMailer::MailDeliveryJob) { do_request(locale: 'nl-NL') }
+        assert_status 200
+        expect(ActionMailer::Base.deliveries.last.subject).to eq 'Dutch subject'
+        expect(@user.reload.locale).to eq 'en'
+      end
+    end
+
     post 'web_api/v1/campaigns/:id/send_sms_preview' do
       context 'SMS campaign' do
         include_context 'with sms manual campaigns feature enabled'

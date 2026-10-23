@@ -19,6 +19,8 @@ import useSendEmailCampaignPreview from 'api/campaigns/email/useSendEmailCampaig
 import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
 import { isEmailCampaignDraft } from 'api/campaigns/email/util';
 
+import useLocale from 'hooks/useLocale';
+
 import AutomatedCampaignForm from 'containers/Admin/messaging/AutomatedEmails/CampaignForm';
 import CustomCampaignForm from 'containers/Admin/messaging/CustomEmails/CampaignForm';
 import messages from 'containers/Admin/messaging/messages';
@@ -43,18 +45,22 @@ const Edit = ({ campaignType }: EditProps) => {
   const { mutateAsync: updateCampaign, isPending } = useUpdateEmailCampaign();
 
   const [previewSent, setPreviewSent] = useState(false);
-  const [campaignUpdated, setCampaignUpdated] = useState(false);
+  const locale = useLocale();
+  const [previewLocale, setPreviewLocale] = useState(locale);
 
   const { mutate: sendCampaignPreview, isPending: isSendingCampaignPreview } =
     useSendEmailCampaignPreview();
   const { formatMessage } = useIntl();
 
   const handleSendPreviewEmail = () => {
-    sendCampaignPreview(campaignId, {
-      onSuccess: () => {
-        setPreviewSent(true);
-      },
-    });
+    sendCampaignPreview(
+      { id: campaignId, locale: previewLocale },
+      {
+        onSuccess: () => {
+          setPreviewSent(true);
+        },
+      }
+    );
   };
 
   if (!campaign) {
@@ -63,13 +69,11 @@ const Edit = ({ campaignType }: EditProps) => {
 
   const handleSubmit = async (values: EmailCampaignFormValues) => {
     await updateCampaign({ id: campaign.data.id, campaign: values });
+    // Automated emails stay on the page, so the admin sees the saved changes in the preview.
     if (campaignType === 'custom') {
       clHistory.push(
         `/admin/messaging/emails/custom/${campaign.data.id}?updated=true`
       );
-    } else {
-      // Stay on the page so the admin sees the saved changes in the preview.
-      setCampaignUpdated(true);
     }
   };
 
@@ -112,15 +116,6 @@ const Edit = ({ campaignType }: EditProps) => {
         </Title>
       )}
       <Box>
-        {campaignUpdated && (
-          <Box mb="8px">
-            <Success
-              text={formatMessage(messages.emailUpdated)}
-              showIcon
-              showBackground
-            />
-          </Box>
-        )}
         {previewSent && (
           <Box mb="8px">
             <Success
@@ -187,6 +182,9 @@ const Edit = ({ campaignType }: EditProps) => {
           </Box>
           <PreviewFrameWithLocaleSwitcher
             campaignId={campaign.data.id}
+            locale={previewLocale}
+            onLocaleChange={setPreviewLocale}
+            showHeaders={true}
             height="740px"
           />
         </Box>

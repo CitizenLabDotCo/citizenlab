@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { Box, LocaleSwitcher } from '@citizenlab/cl2-component-library';
+import { LocaleSwitcher } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { SupportedLocale } from 'typings';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
-import useLocale from 'hooks/useLocale';
 
 import PreviewFrame from './PreviewFrame';
 
@@ -16,36 +15,37 @@ const StyledLocaleSwitcher = styled(LocaleSwitcher)`
 
 type Props = {
   campaignId: string;
-  height: string;
+  locale: SupportedLocale;
+  onLocaleChange: (locale: SupportedLocale) => void;
+  showHeaders?: boolean;
+  height?: string;
+  className?: string;
 };
 
-const PreviewFrameWithLocaleSwitcher = ({ campaignId, height }: Props) => {
-  const currentLocale = useLocale();
+const PreviewFrameWithLocaleSwitcher = ({
+  campaignId,
+  locale,
+  onLocaleChange,
+  showHeaders,
+  height,
+  className,
+}: Props) => {
   const locales = useAppConfigurationLocales();
-  const [previewLocale, setPreviewLocale] =
-    useState<SupportedLocale>(currentLocale);
-
-  const handlePreviewLocaleChange = (locale: SupportedLocale) => {
-    setPreviewLocale(locale);
-  };
 
   return (
     <>
-      {locales && (
-        <StyledLocaleSwitcher
-          locales={locales}
-          selectedLocale={previewLocale}
-          onSelectedLocaleChange={handlePreviewLocaleChange}
-        />
-      )}
-      <Box>
-        <PreviewFrame
-          campaignId={campaignId}
-          showHeaders={true}
-          height={height}
-          locale={previewLocale}
-        />
-      </Box>
+      <StyledLocaleSwitcher
+        locales={locales ?? []}
+        selectedLocale={locale}
+        onSelectedLocaleChange={onLocaleChange}
+      />
+      <PreviewFrame
+        campaignId={campaignId}
+        showHeaders={showHeaders}
+        height={height}
+        locale={locale}
+        className={className}
+      />
     </>
   );
 };

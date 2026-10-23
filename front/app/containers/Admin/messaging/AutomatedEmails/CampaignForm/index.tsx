@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box, Button, Success } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
@@ -161,6 +161,15 @@ const EditCampaignForm = ({
             </SectionField>
           ))}
         </StyledSection>
+        {methods.formState.isSubmitSuccessful && !methods.formState.isDirty && (
+          <Box mb="2.5rem">
+            <Success
+              text={formatMessage(messages.emailUpdated)}
+              showIcon
+              showBackground
+            />
+          </Box>
+        )}
         <Box display="flex" mb="24px">
           <Button
             id="e2e-automated-campaign-edit-save-button"

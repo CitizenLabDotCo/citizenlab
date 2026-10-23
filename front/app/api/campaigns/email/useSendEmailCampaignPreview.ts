@@ -1,19 +1,27 @@
 import { useMutation } from '@tanstack/react-query';
-import { CLErrors } from 'typings';
+import { CLErrors, SupportedLocale } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import { IEmailCampaign } from './types';
 
-const sendEmailCampaignPreview = async (id: string) =>
+type SendEmailCampaignPreview = {
+  id: string;
+  locale: SupportedLocale;
+};
+
+const sendEmailCampaignPreview = async ({
+  id,
+  locale,
+}: SendEmailCampaignPreview) =>
   fetcher<IEmailCampaign>({
     path: `/campaigns/${id}/send_email_preview`,
     action: 'post',
-    body: {},
+    body: { locale },
   });
 
 const useSendEmailCampaignPreview = () => {
-  return useMutation<IEmailCampaign, CLErrors, string>({
+  return useMutation<IEmailCampaign, CLErrors, SendEmailCampaignPreview>({
     mutationFn: sendEmailCampaignPreview,
   });
 };

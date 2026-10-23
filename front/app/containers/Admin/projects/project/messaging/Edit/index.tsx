@@ -12,6 +12,8 @@ import useEmailCampaign from 'api/campaigns/email/useEmailCampaign';
 import useSendEmailCampaignPreview from 'api/campaigns/email/useSendEmailCampaignPreview';
 import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
 
+import useLocale from 'hooks/useLocale';
+
 import PreviewFrameWithLocaleSwitcher from 'components/admin/Email/PreviewFrameWithLocaleSwitcher';
 import GoBackButton from 'components/UI/GoBackButton';
 
@@ -36,6 +38,8 @@ const Edit = () => {
   const { mutate: sendCampaignPreview, isPending: isSendingCampaignPreview } =
     useSendEmailCampaignPreview();
   const [previewSent, setPreviewSent] = useState(false);
+  const locale = useLocale();
+  const [previewLocale, setPreviewLocale] = useState(locale);
   const goBack = () => {
     clHistory.push(
       `/admin/projects/${projectId}/messaging/${campaign?.data.id}`
@@ -46,11 +50,14 @@ const Edit = () => {
     return null;
   }
   const handleSendTestEmail = () => {
-    sendCampaignPreview(campaignId, {
-      onSuccess: () => {
-        setPreviewSent(true);
-      },
-    });
+    sendCampaignPreview(
+      { id: campaignId, locale: previewLocale },
+      {
+        onSuccess: () => {
+          setPreviewSent(true);
+        },
+      }
+    );
   };
   const handleSubmit = async (values: FormValues) => {
     await updateCampaign({ id: campaign.data.id, campaign: values });
@@ -122,6 +129,9 @@ const Edit = () => {
             </Box>
             <PreviewFrameWithLocaleSwitcher
               campaignId={campaign.data.id}
+              locale={previewLocale}
+              onLocaleChange={setPreviewLocale}
+              showHeaders={true}
               height="740px"
             />
           </Box>

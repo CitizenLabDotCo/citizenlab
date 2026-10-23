@@ -128,6 +128,7 @@ module EmailCampaigns
     end
 
     def send_email_preview
+      apply_preview_locale
       EmailCampaigns::DeliveryService.new.send_email_preview(@campaign, current_user)
       head :ok
     end
@@ -143,8 +144,7 @@ module EmailCampaigns
     end
 
     def email_preview
-      # Renders the preview in another platform locale. The user is never saved, so their own locale is unchanged.
-      current_user.locale = params[:locale] if AppConfiguration.instance.settings('core', 'locales').include?(params[:locale])
+      apply_preview_locale
       preview = EmailCampaigns::DeliveryService.new.preview_email(@campaign, current_user)
       render json: {
         data: {
@@ -192,6 +192,11 @@ module EmailCampaigns
     def set_campaign
       @campaign = Campaign.find(params[:id])
       authorize @campaign
+    end
+
+    # Renders the preview in another platform locale. The user is never saved, so their own locale is unchanged.
+    def apply_preview_locale
+      current_user.locale = params[:locale] if AppConfiguration.instance.settings('core', 'locales').include?(params[:locale])
     end
 
     def campaign_context

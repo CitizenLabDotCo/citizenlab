@@ -621,5 +621,5 @@ en:
         voting_1_day_after_last_votes: '1 day after user last voted'
         voting_phase_ended: 'Voting phase ended'
         voting_basket_submitted: 'Votes are submitted'
-        7_days_after_invite_is_sent: '7 days after invite is sent'
+        3_days_after_invite_is_sent: '3 days after invite is sent'
         7_days_before_phase_starts: '7 days before a phase starts'

@@ -24,6 +24,7 @@ import { isEmailCampaignDraft } from 'api/campaigns/email/util';
 import useProjectById from 'api/projects/useProjectById';
 import useUserById from 'api/users/useUserById';
 
+import useLocale from 'hooks/useLocale';
 import useLocalize from 'hooks/useLocalize';
 
 import DraftCampaignDetails from 'components/admin/Email/DraftCampaignDetails';
@@ -112,6 +113,8 @@ const Show = () => {
   };
   const localize = useLocalize();
   const { formatMessage } = useIntl();
+  const locale = useLocale();
+  const [previewLocale, setPreviewLocale] = useState(locale);
 
   const handleSend = () => {
     // if the campaign is scheduled, we need to cancel the schedule ( send null ) before sending the campaign
@@ -125,11 +128,14 @@ const Show = () => {
   };
 
   const handleSendTestEmail = () => {
-    sendCampaignPreview(campaignId, {
-      onSuccess: () => {
-        setFeedbackType('sent');
-      },
-    });
+    sendCampaignPreview(
+      { id: campaignId, locale: previewLocale },
+      {
+        onSuccess: () => {
+          setFeedbackType('sent');
+        },
+      }
+    );
   };
 
   const getSenderName = (senderType: string) => {
@@ -300,7 +306,11 @@ const Show = () => {
 
           {isEmailCampaignDraft(campaign.data) ||
           campaign.data.attributes.scheduled_at ? (
-            <DraftCampaignDetails campaign={campaign.data} />
+            <DraftCampaignDetails
+              campaign={campaign.data}
+              previewLocale={previewLocale}
+              onPreviewLocaleChange={setPreviewLocale}
+            />
           ) : (
             <SentCampaignDetails campaignId={campaign.data.id} />
           )}
