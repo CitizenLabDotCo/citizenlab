@@ -51,7 +51,5 @@ export const RTL: Story = {
   args: {
     ...Default.args,
     text: 'عرض كل المشاريع',
-    icon: 'arrow-right',
-    iconPos: 'right',
   },
 };
