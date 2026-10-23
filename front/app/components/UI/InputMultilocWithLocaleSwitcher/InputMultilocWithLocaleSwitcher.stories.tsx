@@ -10,6 +10,18 @@ import InputMultilocWithLocaleSwitcher from '.';
 
 // The locales come from the app configuration. The default mock has only
 // `en`, so most stories serve three locales to show the locale switcher.
+// The component renders nothing until the configuration (MSW) has loaded, so
+// the play steps wait for the rendered input and switcher.
+const waitForInput = (canvasElement: HTMLElement, switcher: boolean) =>
+  waitFor(() => {
+    const text = canvasElement.textContent.toLowerCase();
+    if (
+      !canvasElement.querySelector('input') ||
+      text.includes('nl-be') !== switcher
+    ) {
+      throw new globalThis.Error('configuration not loaded yet');
+    }
+  });
 const threeLocales = mockEndpoints({
   'GET app_configuration': http.get('/web_api/v1/app_configuration', () =>
     HttpResponse.json({
@@ -32,6 +44,9 @@ const meta = {
   parameters: { gv: {}, msw: threeLocales },
   component: InputMultilocWithLocaleSwitcher,
   args: { onChange: fn(), type: 'text' },
+  play: async ({ canvasElement }) => {
+    await waitForInput(canvasElement, true);
+  },
 } satisfies Meta<typeof InputMultilocWithLocaleSwitcher>;
 
 export default meta;
@@ -65,17 +80,11 @@ export const Disabled: Story = {
 };
 
 // With one platform locale there is nothing to switch, so it is hidden.
-// The play step waits for the refetched configuration, because the query
-// cache can still hold the three locales of the story before.
 export const SingleLocale: Story = {
   args: Default.args,
   parameters: { msw: mockEndpoints({}) },
   play: async ({ canvasElement }) => {
-    await waitFor(() => {
-      if (canvasElement.textContent.toLowerCase().includes('nl-be')) {
-        throw new globalThis.Error('still showing three locales');
-      }
-    });
+    await waitForInput(canvasElement, false);
   },
 };
 
@@ -83,6 +92,10 @@ export const RTL: Story = {
   globals: { lang: 'ar' },
   args: {
     label: 'عنوان المشروع',
-    valueMultiloc: { en: 'شوارع خضراء' },
+    valueMultiloc: {
+      en: 'شوارع خضراء',
+      'nl-BE': 'شوارع خضراء',
+      'fr-BE': 'شوارع خضراء',
+    },
   },
 };
