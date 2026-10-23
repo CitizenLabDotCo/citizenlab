@@ -45,7 +45,7 @@ This branch builds a design-in-code workbench for the platform: CSS-variable des
 | `npm run ds:changes` | Write `design-changes.json` for the Review page. |
 | `npm run ds:routes-fixture [-- --host <url>]` | Refresh `routes.fixture.json` from the test tenant's public API. |
 | `npm run ds:workbench` | Build the shell into `.storybook/static/workbench/`. `npm run ds:workbench:typecheck` typechecks it. |
-| `npm run ds:visual -- --baseline <dir>` / `-- --compare <dir> [--summary <file>] [--allow-px N] [--url <storybook>]` | Screenshot every story at 1280x900 and 390x844 (mode today), save or compare. Compare writes `visual-summary.json` unless `--summary` points elsewhere. Default URL `http://localhost:6006`. |
+| `npm run ds:visual -- --baseline <dir>` / `-- --compare <dir> [--stories <glob,glob>] [--mode today\|redesign] [--summary <file>] [--allow-px N] [--url <storybook>]` | Screenshot every story (or the story ids `--stories` matches, `*` a wildcard) at 1280x900 and 390x844 in mode today (or `--mode redesign`), save or compare. A full today compare writes `visual-summary.json`; a filtered or redesign run writes `<dir>/_summary.json`; `--summary` overrides both. Default URL `http://localhost:6006`. |
 | `npm run ds:smoke -- --dir <storybook output> [--screenshot <png>] [--review-host <origin>]` | Serve a built Storybook and check the shell pages and the console. |
 | `npm run ds:mode-check -- --file <path> --token <name> --now <value> [--mode today\|redesign\|both]` | Mode safety of one heal. Exit 0 safe, 3 stop, 2 bad input. Reads `design-scan.json`, so run `ds:scan` first. |
 | `npm run ds:a11y`, `npm run ds:audit` | Not built yet: they print `todo` and exit 1. |

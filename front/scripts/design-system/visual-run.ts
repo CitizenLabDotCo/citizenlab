@@ -2,6 +2,12 @@
 //
 //   npm run ds:visual -- --baseline <dir> --url http://localhost:6006
 //   npm run ds:visual -- --compare  <dir> --url http://localhost:6006 [--allow-px N]
+//   [--stories <glob,glob>] only the story ids that match (`*` is a wildcard)
+//   [--mode today|redesign] token mode to render in (default today)
+//
+// A run with --stories or --mode redesign covers part of the workbench, so
+// its compare summary goes to <dir>/_summary.json unless --summary says
+// otherwise; only a full today run updates the committed visual-summary.json.
 //
 // Playwright is loaded through ./playwright (see there for GV_PLAYWRIGHT_DIR).
 import fs from 'fs';
@@ -10,10 +16,12 @@ import path from 'path';
 import { loadPlaywright } from './playwright';
 import {
   buildSummary,
+  matchStories,
   parseArgs,
   PIXELMATCH_OPTIONS,
   PLAY_ERROR_EVENT,
   SETTLED_PHASES,
+  shotName,
   storyIdsFromIndex,
   VIEWPORTS,
 } from './visual-summary';
@@ -44,8 +52,18 @@ const main = async () => {
   const pixelmatch = (await import('pixelmatch')).default;
 
   const index = await (await fetch(`${args.url}/index.json`)).json();
-  const ids = storyIdsFromIndex(index);
-  console.log(`${ids.length} stories, ${VIEWPORTS.length} viewports`);
+  const all = storyIdsFromIndex(index);
+  const ids = matchStories(all, args.stories);
+  if (ids.length === 0) {
+    console.error(`No story id matches --stories ${args.stories}`);
+    process.exit(2);
+  }
+  const partial = ids.length < all.length || args.mode !== 'today';
+  console.log(
+    `${ids.length} stories${
+      ids.length < all.length ? ` of ${all.length}` : ''
+    }, ${VIEWPORTS.length} viewports, mode ${args.mode}`
+  );
 
   const browser = await chromium.launch({ chromiumSandbox: false });
   const results: Result[] = [];
@@ -54,7 +72,7 @@ const main = async () => {
   const capture = async (page: any, id: string): Promise<Buffer> => {
     try {
       await page.goto(
-        `${args.url}/iframe.html?id=${encodeURIComponent(id)}&viewMode=story&globals=mode:today`,
+        `${args.url}/iframe.html?id=${encodeURIComponent(id)}&viewMode=story&globals=mode:${args.mode}`,
         { waitUntil: 'load' }
       );
       await page.addStyleTag({ content: NO_ANIMATION_CSS });
@@ -158,7 +176,7 @@ const main = async () => {
     }, PLAY_ERROR_EVENT);
     const page = await context.newPage();
     for (const id of ids) {
-      const file = path.join(dir, `${vp.name}__${id}.png`);
+      const file = path.join(dir, shotName(vp.name, id, args.mode));
       try {
         const shot = await capture(page, id);
         if (saving) {
@@ -168,11 +186,12 @@ const main = async () => {
         }
         if (!fs.existsSync(file)) throw new Error('no baseline screenshot');
         const base = fs.readFileSync(file);
-        let px = diffPx(base, shot, path.join(diffDir, `${vp.name}__${id}.png`));
+        const name = shotName(vp.name, id, args.mode);
+        let px = diffPx(base, shot, path.join(diffDir, name));
         if (px > args.allowPx) {
           // Re-run once to tell flakiness from a real difference.
           const again = await capture(page, id);
-          const second = diffPx(base, again, path.join(retryDir, `${vp.name}__${id}.png`));
+          const second = diffPx(base, again, path.join(retryDir, name));
           flaky.push({ id, viewport: vp.name, first: px, second });
           if (second <= args.allowPx) px = second;
         }
@@ -195,10 +214,15 @@ const main = async () => {
   }
 
   const summary = buildSummary(ids.length, results, args.allowPx, flaky.length);
-  const out = args.summary ? path.resolve(args.summary) : SUMMARY_PATH;
+  const out = args.summary
+    ? path.resolve(args.summary)
+    : partial
+    ? path.join(dir, '_summary.json')
+    : SUMMARY_PATH;
   fs.mkdirSync(path.dirname(out), { recursive: true });
   fs.writeFileSync(out, `${JSON.stringify(summary, null, 2)}\n`);
   fs.writeFileSync(path.join(dir, '_flaky.json'), JSON.stringify(flaky, null, 2));
+  console.log(`summary written to ${out}`);
   console.log(
     `compared ${ids.length} stories x ${VIEWPORTS.length} viewports: ${summary.diffs.length} diffs, ${summary.errors.length} errors, ${flaky.length} retried`
   );

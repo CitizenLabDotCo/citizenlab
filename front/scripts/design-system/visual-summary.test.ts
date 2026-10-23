@@ -7,7 +7,9 @@ import {
   PLAY_ERROR_EVENT,
   SETTLED_PHASES,
   parseArgs,
+  shotName,
   storyIdsFromIndex,
+  matchStories,
 } from './visual-summary';
 
 describe('visual summary', () => {
@@ -66,6 +68,49 @@ describe('visual summary', () => {
       { id: 'b', viewport: 'desktop', message: 'empty root' },
     ]);
     expect(s.generatedAt).toBe('2026-01-01T00:00:00.000Z');
+  });
+
+  it('filters story ids by comma separated globs', () => {
+    const ids = [
+      'components-actions-button--default',
+      'components-actions-button--hover',
+      'components-forms-input--default',
+      'pages-workspace--empty',
+    ];
+    expect(matchStories(ids, undefined)).toEqual(ids);
+    expect(matchStories(ids, 'components-actions-button--*')).toEqual([
+      'components-actions-button--default',
+      'components-actions-button--hover',
+    ]);
+    expect(matchStories(ids, '*--default, pages-*')).toEqual([
+      'components-actions-button--default',
+      'components-forms-input--default',
+      'pages-workspace--empty',
+    ]);
+    // Exact ids match only themselves; regex characters are literal.
+    expect(matchStories(ids, 'components-forms-input--default')).toEqual([
+      'components-forms-input--default',
+    ]);
+    expect(matchStories(['a.b--x', 'aXb--x'], 'a.b--*')).toEqual(['a.b--x']);
+  });
+
+  it('reads --stories and --mode', () => {
+    expect(parseArgs(['--compare', 'b'])).toMatchObject({
+      mode: 'today',
+      stories: undefined,
+    });
+    expect(
+      parseArgs(['--baseline', 'b', '--stories', 'x--*', '--mode', 'redesign'])
+    ).toMatchObject({ stories: 'x--*', mode: 'redesign' });
+    expect(() => parseArgs(['--compare', 'b', '--mode', 'dark'])).toThrow();
+    expect(() => parseArgs(['--compare', 'b', '--stories'])).toThrow();
+  });
+
+  it('keeps redesign shots apart from today shots', () => {
+    expect(shotName('desktop', 'a--x', 'today')).toBe('desktop__a--x.png');
+    expect(shotName('mobile', 'a--x', 'redesign')).toBe(
+      'mobile__a--x__redesign.png'
+    );
   });
 
   it('rejects unknown flags', () => {

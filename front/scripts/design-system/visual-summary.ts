@@ -31,6 +31,35 @@ export const storyIdsFromIndex = (index: {
     .map((e) => e.id)
     .sort();
 
+export const MODES = ['today', 'redesign'] as const;
+export type Mode = (typeof MODES)[number];
+
+/**
+ * Story ids matching `--stories`: comma separated globs where `*` is any
+ * run of characters, matched against the whole id. No filter keeps all.
+ */
+export const matchStories = (ids: string[], globs?: string): string[] => {
+  if (globs === undefined) return ids;
+  const res = globs
+    .split(',')
+    .map((g) => g.trim())
+    .filter(Boolean)
+    .map(
+      (g) =>
+        new RegExp(
+          `^${g
+            .split('*')
+            .map((part) => part.replace(/[.+?^${}()|[\]\\]/g, '\\$&'))
+            .join('.*')}$`
+        )
+    );
+  return ids.filter((id) => res.some((re) => re.test(id)));
+};
+
+/** Screenshot file of one story; redesign shots never overwrite today's. */
+export const shotName = (viewport: string, id: string, mode: Mode) =>
+  `${viewport}__${id}${mode === 'today' ? '' : `__${mode}`}.png`;
+
 export const parseArgs = (argv: string[]) => {
   const out = {
     baseline: undefined as string | undefined,
@@ -38,16 +67,29 @@ export const parseArgs = (argv: string[]) => {
     url: 'http://localhost:6006',
     allowPx: 0,
     summary: undefined as string | undefined,
+    stories: undefined as string | undefined,
+    mode: 'today' as Mode,
   };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    const next = () => argv[++i];
+    const next = () => {
+      const v = argv[++i];
+      if (v === undefined) throw new Error(`Missing value for ${a}`);
+      return v;
+    };
     if (a === '--baseline') out.baseline = next();
     else if (a === '--compare') out.compare = next();
     else if (a === '--url') out.url = next() as string;
     else if (a === '--allow-px') out.allowPx = Number(next());
     else if (a === '--summary') out.summary = next();
-    else throw new Error(`Unknown argument: ${a}`);
+    else if (a === '--stories') out.stories = next();
+    else if (a === '--mode') {
+      const m = next();
+      if (!(MODES as readonly string[]).includes(m)) {
+        throw new Error(`--mode must be one of ${MODES.join(', ')}`);
+      }
+      out.mode = m as Mode;
+    } else throw new Error(`Unknown argument: ${a}`);
   }
   if (!Number.isFinite(out.allowPx) || out.allowPx < 0) {
     throw new Error('--allow-px must be a non-negative number');
@@ -87,7 +129,11 @@ export const buildSummary = (
     .map((r) => ({ id: r.id, viewport: r.viewport, px: r.px as number })),
   errors: results
     .filter((r) => r.error !== undefined)
-    .map((r) => ({ id: r.id, viewport: r.viewport, message: r.error as string })),
+    .map((r) => ({
+      id: r.id,
+      viewport: r.viewport,
+      message: r.error as string,
+    })),
   retried,
   generatedAt: now.toISOString(),
 });
