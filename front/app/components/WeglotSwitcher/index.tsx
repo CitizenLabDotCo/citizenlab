@@ -212,7 +212,11 @@ const WeglotSwitcher = ({
         type="button"
         onClick={toggleDropdown}
         aria-expanded={dropdownOpened}
-        aria-label={formatMessage(messages.ariaLabel)}
+        // An aria-label replaces the button's visible text, so the current
+        // language has to be named here or screen readers never announce it.
+        aria-label={formatMessage(messages.ariaLabel, {
+          language: getLanguageEndonym(currentLang),
+        })}
       >
         <DropdownButtonText>
           {getLanguageEndonym(currentLang)}

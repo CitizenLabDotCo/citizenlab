@@ -200,6 +200,14 @@ describe('<WeglotSwitcher />', () => {
     });
   });
 
+  it('names the current language in the accessible label', () => {
+    window.Weglot = buildWeglot({ currentLang: 'pl' });
+    render(<WeglotSwitcher />);
+
+    // aria-label replaces the visible text, so it has to carry the language.
+    expect(screen.getByRole('button', { name: /polski/ })).toBeInTheDocument();
+  });
+
   it('closes the dropdown when the toggle is clicked again', () => {
     window.Weglot = buildWeglot();
     render(<WeglotSwitcher />);
