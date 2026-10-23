@@ -221,6 +221,10 @@ const GalleryFrame = ({ globals, frameWidth, children }: Props) => {
   // Only once a card can show in it: with every card in a frame of its
   // own, the shared one would only compete with them.
   const shared = ids.some((id) => stateOf(id) !== 'isolated');
+  // The frame stays hidden until a story has painted in it: before that it
+  // shows the preview's own page (white in some browsers, or the preview's
+  // error card when a request fails during start up) over the whole grid.
+  const painted = Object.values(states).includes('rendered');
   useEffect(() => {
     if (shared) return;
     renderer.current?.dispose();
@@ -262,6 +266,7 @@ const GalleryFrame = ({ globals, frameWidth, children }: Props) => {
               width: `${frameWidth}px`,
               height: `${size.height / size.k}px`,
               transform: `scale(${size.k})`,
+              visibility: painted ? 'visible' : 'hidden',
             }}
           />
         )}
