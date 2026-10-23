@@ -11,8 +11,10 @@ import {
   formatDate,
   IMPACT_LABEL,
   Impact,
+  KEYBOARD_CRITERION,
   KEYBOARD_LABEL,
   KEYBOARD_STORY,
+  KEYBOARD_TONE,
   keyboardStatus,
   KeyboardStatus,
   RESULT_LABEL,
@@ -43,6 +45,7 @@ const RESULT_ICON: Record<CriterionResult, IconName> = {
 
 const KEYBOARD_ICON: Record<KeyboardStatus, IconName> = {
   tested: 'check',
+  'tested-fails': 'alert',
   failing: 'cross',
   untested: 'question',
   none: 'minus',
@@ -121,7 +124,7 @@ const Badges = ({
   checklist: Checklist | null;
 }) => {
   const axe = axeSummary(results, group);
-  const kb = keyboardStatus(results, group);
+  const kb = keyboardStatus(results, group, checklist);
   const reviewed = checklist && reviewedLine(checklist);
   const counts = checklist && checklistCounts(checklist);
   const axeTone =
@@ -132,14 +135,7 @@ const Badges = ({
       : axe.worst
       ? 'warn'
       : 'pass';
-  const kbTone =
-    kb === 'tested'
-      ? 'pass'
-      : kb === 'failing'
-      ? 'fail'
-      : kb === 'untested'
-      ? 'warn'
-      : 'none';
+  const kbTone = KEYBOARD_TONE[kb];
   return (
     <div className="wb-a11y-badges" data-testid="wb-a11y-badges">
       <div
@@ -183,6 +179,8 @@ const Badges = ({
             <span>
               {kb === 'tested'
                 ? `${KEYBOARD_STORY} story: Tab, focus and keys`
+                : kb === 'tested-fails'
+                ? `The ${KEYBOARD_STORY} story passes; the checklist fails ${KEYBOARD_CRITERION}`
                 : kb === 'failing'
                 ? `The ${KEYBOARD_STORY} story's play function throws`
                 : kb === 'untested'

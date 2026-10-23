@@ -9,10 +9,13 @@ import {
   checklistOf,
   checklistsByDir,
   formatDate,
+  KEYBOARD_LABEL,
+  KEYBOARD_TONE,
   keyboardStatus,
   reviewedLine,
   sortCriteria,
   StoryResult,
+  worstCount,
 } from './a11y';
 
 const story = (over: Partial<StoryResult> = {}): StoryResult => ({
@@ -174,6 +177,7 @@ describe('axeSummary', () => {
       errors: 1,
       worst: 'critical',
       byImpact: { critical: 2, serious: 1, moderate: 0, minor: 0 },
+      violations: { critical: 2, serious: 1, moderate: 0, minor: 0 },
       checkedAt: '2026-10-24T00:00:00.000Z',
     });
     expect(s.rules.map((x) => [x.id, x.stories])).toEqual([
@@ -181,8 +185,31 @@ describe('axeSummary', () => {
       ['color-contrast', 1],
     ]);
     expect(axeTitle(s)).toBe(
-      'Checked by axe: 2 of 4 stories, 2 with critical, 1 with serious violations'
+      'Checked by axe: 2 of 4 stories; 2 critical violations in 2 stories, 1 serious violation in 1 story'
     );
+    expect(worstCount(s)).toBe('2 critical');
+  });
+
+  it('counts violations per impact, without adding impacts up', () => {
+    const v = (id: string, impact: 'moderate' | 'minor') => ({
+      id,
+      impact,
+      nodes: 1,
+      help: id,
+    });
+    const s = axeSummary(
+      results({
+        a: story({ violations: [v('region', 'moderate'), v('x', 'minor')] }),
+        b: story({ violations: [v('region', 'moderate'), v('y', 'moderate')] }),
+      }),
+      { stories: [ref('a'), ref('b')] }
+    );
+    expect(s.byImpact).toMatchObject({ moderate: 2, minor: 1 });
+    expect(s.violations).toMatchObject({ moderate: 3, minor: 1 });
+    expect(worstCount(s)).toBe('3 moderate');
+    expect(
+      worstCount(axeSummary(results({ a: story() }), { stories: [ref('a')] }))
+    ).toBeNull();
   });
 
   it('says when nothing ran', () => {
@@ -206,6 +233,31 @@ describe('keyboardStatus', () => {
         stories,
       })
     ).toBe('failing');
+  });
+
+  it('warns when it passed but the checklist fails 2.1.1', () => {
+    const checklist = (result: 'pass' | 'fail'): Checklist => ({
+      component: 'Table',
+      reviewedAt: '2026-10-23',
+      reviewer: 'agent',
+      criteria: [
+        {
+          id: '2.1.1',
+          name: 'Keyboard',
+          result,
+          confidence: 'high',
+          evidence: '',
+          note: '',
+        },
+      ],
+    });
+    const r = results({ d: story(), k: story({ play: 'passed' }) });
+    expect(keyboardStatus(r, { stories }, checklist('fail'))).toBe(
+      'tested-fails'
+    );
+    expect(keyboardStatus(r, { stories }, checklist('pass'))).toBe('tested');
+    expect(KEYBOARD_LABEL['tested-fails']).toBe('Keyboard tested, 2.1.1 fails');
+    expect(KEYBOARD_TONE['tested-fails']).toBe('warn');
   });
 
   it('is untested for a focusable component with no Keyboard story', () => {

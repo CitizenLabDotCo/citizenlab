@@ -387,7 +387,11 @@ const Component = ({
             id: 'a11y',
             label: 'A11y',
             icon: 'a11y',
-            count: a11y.results?.stories[storyId]?.violations.length,
+            // The story's axe violations, once the results have loaded;
+            // none for a story axe has not checked.
+            count: a11y.loaded
+              ? a11y.results?.stories[storyId]?.violations.length
+              : undefined,
             content: (
               <A11y
                 storyId={storyId}

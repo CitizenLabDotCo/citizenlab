@@ -5418,37 +5418,30 @@ tr[data-result='needs-human'] .wb-a11y-note {
 }
 
 .wb-a11y-chip-review {
+  flex-wrap: wrap;
+  gap: 4px var(--gv-space-2);
+  height: auto;
+  min-height: 22px;
+  padding-block: 3px;
+  white-space: normal;
   color: var(--wb-text);
   background: var(--wb-bg);
   box-shadow: inset 0 0 0 1px var(--wb-border);
 }
 
-.wb-a11y-mini {
+.wb-a11y-chip-review-line {
   display: inline-flex;
-  gap: 2px;
-  margin-inline-end: -4px;
+  gap: 5px;
+  align-items: center;
 }
 
-.wb-a11y-mini > span {
-  min-width: 16px;
-  padding: 0 3px;
+.wb-a11y-chip-review-line > .wb-icon {
+  color: var(--wb-muted);
+}
+
+.wb-a11y-chip-review .wb-a11y-count {
   font-size: 10px;
   line-height: 16px;
-  text-align: center;
-  border-radius: var(--gv-radius-full);
-}
-
-.wb-a11y-mini-pass {
-  color: var(--gv-green-700);
-  background: var(--gv-green-100);
-}
-
-.wb-a11y-mini-fail {
-  color: var(--gv-red-800);
-  background: var(--gv-red-100);
-}
-
-.wb-a11y-mini-needs-human {
-  color: var(--wb-text);
-  background: var(--gv-amber-100);
+  white-space: nowrap;
+  background: var(--wb-subtle);
 }

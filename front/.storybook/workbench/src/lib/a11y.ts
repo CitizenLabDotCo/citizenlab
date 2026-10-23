@@ -168,6 +168,9 @@ export type AxeSummary = {
   stories: number;
   // Stories with at least one violation of each impact.
   byImpact: Record<Impact, number>;
+  // Violations of each impact: one per rule per story, so a rule failing
+  // in three stories counts three.
+  violations: Record<Impact, number>;
   // Rules that fail somewhere in the group, worst first, with the stories
   // they fail in.
   rules: { id: string; impact: Impact | null; help: string; stories: number }[];
@@ -187,6 +190,7 @@ export const axeSummary = (
     moderate: 0,
     minor: 0,
   };
+  const violations: Record<Impact, number> = { ...byImpact };
   const rules = new Map<string, AxeSummary['rules'][number]>();
   let checked = 0;
   let errors = 0;
@@ -204,6 +208,7 @@ export const axeSummary = (
       if (r.violations.some((v) => v.impact === i)) byImpact[i]++;
     });
     r.violations.forEach((v) => {
+      if (v.impact) violations[v.impact]++;
       const rule = rules.get(v.id) ?? {
         id: v.id,
         impact: v.impact,
@@ -220,6 +225,7 @@ export const axeSummary = (
     checked,
     stories: group.stories.length,
     byImpact,
+    violations,
     rules: [...rules.values()].sort(
       (a, b) =>
         rank(a.impact) - rank(b.impact) ||
@@ -233,11 +239,14 @@ export const axeSummary = (
 };
 
 // tested: a story named Keyboard ran its play function and it passed.
+// tested-fails: it passed, but the checklist marks 2.1.1 (Keyboard) fail,
+// so the test does not cover what fails.
 // failing: it ran and threw. untested: the component has something to
 // tab to and no passing Keyboard story. none: nothing to tab to, so no
 // badge. unknown: no axe results for the group.
 export type KeyboardStatus =
   | 'tested'
+  | 'tested-fails'
   | 'failing'
   | 'untested'
   | 'none'
@@ -245,36 +254,65 @@ export type KeyboardStatus =
 
 export const KEYBOARD_STORY = 'Keyboard';
 
+// WCAG 2.1.1 Keyboard: everything works from a keyboard.
+export const KEYBOARD_CRITERION = '2.1.1';
+
 export const keyboardStatus = (
   results: A11yResults | null,
-  group: Pick<StoryGroup, 'stories'>
+  group: Pick<StoryGroup, 'stories'>,
+  checklist: Checklist | null = null
 ): KeyboardStatus => {
   const runs = group.stories
     .map((s) => ({ s, r: results?.stories[s.id] }))
     .filter((x): x is { s: (typeof x)['s']; r: StoryResult } => !!x.r);
   if (runs.length === 0) return 'unknown';
   const kb = runs.find((x) => x.s.exportName === KEYBOARD_STORY);
-  if (kb?.r.play === 'passed') return 'tested';
+  if (kb?.r.play === 'passed') {
+    const fails = checklist?.criteria.some(
+      (c) => c.id === KEYBOARD_CRITERION && c.result === 'fail'
+    );
+    return fails ? 'tested-fails' : 'tested';
+  }
   if (kb?.r.play === 'failed') return 'failing';
   return runs.some((x) => x.r.focusable > 0) ? 'untested' : 'none';
 };
 
 export const KEYBOARD_LABEL: Record<KeyboardStatus, string> = {
   tested: 'Keyboard tested',
+  'tested-fails': `Keyboard tested, ${KEYBOARD_CRITERION} fails`,
   failing: 'Keyboard test fails',
   untested: 'Keyboard: untested',
   none: 'Nothing to tab to',
   unknown: 'Keyboard: not run',
 };
 
+export type A11yTone = 'pass' | 'warn' | 'fail' | 'none';
+
+export const KEYBOARD_TONE: Record<KeyboardStatus, A11yTone> = {
+  tested: 'pass',
+  'tested-fails': 'warn',
+  failing: 'fail',
+  untested: 'warn',
+  none: 'none',
+  unknown: 'none',
+};
+
+// The worst impact found and its violation count, for the gallery chip:
+// "3 critical" is three critical violations (rule and story pairs).
+export const worstCount = (a: AxeSummary) =>
+  a.worst ? `${a.violations[a.worst]} ${a.worst}` : null;
+
 // Short line for the axe badge's title.
 export const axeTitle = (a: AxeSummary) => {
   if (a.checked === 0) return 'Not checked by axe yet';
   const parts = IMPACT_ORDER.filter((i) => a.byImpact[i] > 0).map(
-    (i) => `${a.byImpact[i]} with ${i}`
+    (i) =>
+      `${a.violations[i]} ${i} ${
+        a.violations[i] === 1 ? 'violation' : 'violations'
+      } in ${a.byImpact[i]} ${a.byImpact[i] === 1 ? 'story' : 'stories'}`
   );
   const of = `${a.checked} of ${a.stories} stories`;
   return parts.length
-    ? `Checked by axe: ${of}, ${parts.join(', ')} violations`
+    ? `Checked by axe: ${of}; ${parts.join(', ')}`
     : `Checked by axe: ${of}, no violations`;
 };

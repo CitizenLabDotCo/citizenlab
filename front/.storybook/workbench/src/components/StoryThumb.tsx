@@ -14,8 +14,10 @@ import {
   checklistCounts,
   formatDate,
   KEYBOARD_LABEL,
+  KEYBOARD_TONE,
   keyboardStatus,
   reviewedLine,
+  worstCount,
 } from '../lib/a11y';
 import { storyUrl } from '../lib/frame';
 import { channelOf, isRendered } from '../lib/preview';
@@ -98,13 +100,13 @@ export const A11yBadges = ({
   checklist: Checklist | null;
 }) => {
   const axe = axeSummary(results, group);
-  const kb = keyboardStatus(results, group);
+  const kb = keyboardStatus(results, group, checklist);
   const reviewed = checklist && reviewedLine(checklist);
   const counts = checklist && checklistCounts(checklist);
   if (axe.checked === 0 && !reviewed) return null;
   const axeTone =
     axe.worst === 'critical' ? 'fail' : axe.worst ? 'warn' : 'pass';
-  const issues = axe.byImpact.critical + axe.byImpact.serious;
+  const worst = worstCount(axe);
   return (
     <span className="wb-thumb-a11y" data-testid="wb-thumb-a11y">
       {axe.checked > 0 && (
@@ -115,22 +117,21 @@ export const A11yBadges = ({
         >
           <Icon name="a11y" size={14} />
           Checked by axe
-          {axe.worst && (
-            <span className="wb-a11y-chip-count">
-              {axe.byImpact.critical > 0
-                ? `${axe.byImpact.critical} critical`
-                : issues > 0
-                ? `${issues} serious`
-                : `${axe.byImpact.moderate + axe.byImpact.minor} minor`}
+          {worst && (
+            <span className="wb-a11y-chip-count" aria-hidden="true">
+              {worst}
             </span>
           )}
           <span className="wb-visually-hidden">{`: ${axeTitle(axe)}`}</span>
         </span>
       )}
-      {(kb === 'tested' || kb === 'untested' || kb === 'failing') && (
+      {(kb === 'tested' ||
+        kb === 'tested-fails' ||
+        kb === 'untested' ||
+        kb === 'failing') && (
         <span
           className={`wb-a11y-chip wb-a11y-tone-${
-            kb === 'tested' ? 'pass' : kb === 'failing' ? 'fail' : 'none'
+            kb === 'untested' ? 'none' : KEYBOARD_TONE[kb]
           }`}
           data-testid="wb-thumb-keyboard"
           data-status={kb}
@@ -142,21 +143,26 @@ export const A11yBadges = ({
       {reviewed && counts && (
         <span
           className="wb-a11y-chip wb-a11y-chip-review"
-          title={reviewed}
           data-testid="wb-thumb-reviewed"
         >
-          <Icon name="checklist" size={14} />
-          <span aria-hidden="true">
-            {`Reviewed ${formatDate(checklist.reviewedAt ?? '')}`}
+          <span className="wb-a11y-chip-review-line">
+            <Icon name="checklist" size={14} />
+            {`Reviewed by ${checklist.reviewer} on ${formatDate(
+              checklist.reviewedAt ?? ''
+            )}`}
           </span>
-          <span className="wb-a11y-mini" aria-hidden="true">
-            <span className="wb-a11y-mini-pass">{counts.pass}</span>
-            <span className="wb-a11y-mini-fail">{counts.fail}</span>
-            <span className="wb-a11y-mini-needs-human">
-              {counts['needs-human']}
+          <span className="wb-a11y-counts">
+            <span className="wb-a11y-count wb-a11y-count-pass">
+              {counts.pass} pass
+            </span>
+            <span className="wb-a11y-count wb-a11y-count-fail">
+              {counts.fail} fail
+            </span>
+            <span className="wb-a11y-count wb-a11y-count-needs-human">
+              {counts['needs-human']}{' '}
+              {counts['needs-human'] === 1 ? 'needs' : 'need'} a person
             </span>
           </span>
-          <span className="wb-visually-hidden">{reviewed}</span>
         </span>
       )}
     </span>
