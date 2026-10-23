@@ -300,7 +300,9 @@ const ChangeList = ({
                 <details
                   key={g.component ?? '-'}
                   className="wb-cgroup"
-                  open={design || sec.groups.length <= 3}
+                  open={
+                    design || (sec.id === 'story' && sec.groups.length <= 3)
+                  }
                   data-testid="wb-change-group"
                 >
                   <summary>

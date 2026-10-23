@@ -66,6 +66,9 @@ code {
   display: grid;
   grid-template-columns: var(--wb-nav-width) minmax(0, 1fr);
   height: 100%;
+  /* Every column scrolls on its own; nothing may grow the document past
+     the viewport, or a wheel over a still column scrolls the shell away. */
+  overflow: hidden;
 }
 
 .wb-shell-with-panel {
@@ -370,6 +373,7 @@ code {
   border: 0;
   overflow: hidden;
   clip: rect(0 0 0 0);
+  clip-path: inset(50%);
   white-space: nowrap;
 }
 
@@ -1099,6 +1103,8 @@ a.wb-card:hover {
 }
 
 .wb-panels {
+  /* Contains its visually hidden labels, like .wb-main. */
+  position: relative;
   overflow-y: auto;
   padding: var(--gv-space-4);
   background: var(--wb-bg);
@@ -3370,6 +3376,7 @@ a.wb-line:hover {
     display: block;
     height: auto;
     min-height: 100%;
+    overflow: visible;
   }
 
   html,
@@ -3831,6 +3838,7 @@ a.wb-line:hover {
 }
 
 .wb-clist {
+  position: relative;
   overflow-y: auto;
 }
 
@@ -3946,6 +3954,7 @@ a.wb-line:hover {
 }
 
 .wb-rlist-scroll {
+  position: relative;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
@@ -4695,6 +4704,7 @@ a.wb-line:hover {
 }
 
 .wb-rempty > div:last-child {
+  min-width: 0;
   max-width: 440px;
 }
 
@@ -4719,6 +4729,10 @@ a.wb-line:hover {
 
 .wb-rempty-picks .wb-button {
   min-height: 32px;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .wb-rempty-record .wb-rrow-record {
