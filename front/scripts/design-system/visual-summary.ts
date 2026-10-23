@@ -102,7 +102,9 @@ export const parseArgs = (argv: string[]) => {
 
 // includeAA must stay true: rounded corners are almost entirely anti-aliased
 // pixels, and the default (false) ignores them, hiding radius changes.
-export const PIXELMATCH_OPTIONS = { threshold: 0.1, includeAA: true };
+// threshold 0: any colour change counts. The default 0.1 hid low contrast
+// changes, such as a white panel's corner on the light grey canvas.
+export const PIXELMATCH_OPTIONS = { threshold: 0, includeAA: true };
 
 export const isDiff = (px: number, allowPx: number) => px > allowPx;
 

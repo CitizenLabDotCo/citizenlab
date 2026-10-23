@@ -12,6 +12,35 @@ import {
   matchStories,
 } from './visual-summary';
 
+// Synthetic anti-aliased rounded squares, a shade fg on a shade bg.
+const N = 40;
+const render = (r: number, fg = 0, bg = 255) => {
+  const d = new Uint8Array(N * N * 4);
+  for (let y = 0; y < N; y++)
+    for (let x = 0; x < N; x++) {
+      let cov = 0;
+      for (let sy = 0; sy < 4; sy++)
+        for (let sx = 0; sx < 4; sx++) {
+          const px = x + (sx + 0.5) / 4;
+          const py = y + (sy + 0.5) / 4;
+          const cx = Math.min(Math.max(px, 4 + r), N - 4 - r);
+          const cy = Math.min(Math.max(py, 4 + r), N - 4 - r);
+          const inside =
+            px >= 4 &&
+            px <= N - 4 &&
+            py >= 4 &&
+            py <= N - 4 &&
+            Math.hypot(px - cx, py - cy) <= r;
+          if (inside) cov++;
+        }
+      const v = Math.round(bg + (cov / 16) * (fg - bg));
+      const i = (y * N + x) * 4;
+      d[i] = d[i + 1] = d[i + 2] = v;
+      d[i + 3] = 255;
+    }
+  return d;
+};
+
 describe('visual summary', () => {
   it('lists only story ids, sorted', () => {
     expect(
@@ -117,40 +146,29 @@ describe('visual summary', () => {
     expect(() => parseArgs(['--compare', 'b', '--allowpx', '5'])).toThrow();
   });
 
-  // Synthetic anti-aliased rounded squares.
   it('counts a small corner radius change', () => {
-    const N = 40;
-    const render = (r: number) => {
-      const d = new Uint8Array(N * N * 4);
-      for (let y = 0; y < N; y++)
-        for (let x = 0; x < N; x++) {
-          let cov = 0;
-          for (let sy = 0; sy < 4; sy++)
-            for (let sx = 0; sx < 4; sx++) {
-              const px = x + (sx + 0.5) / 4;
-              const py = y + (sy + 0.5) / 4;
-              const cx = Math.min(Math.max(px, 4 + r), N - 4 - r);
-              const cy = Math.min(Math.max(py, 4 + r), N - 4 - r);
-              const inside =
-                px >= 4 &&
-                px <= N - 4 &&
-                py >= 4 &&
-                py <= N - 4 &&
-                Math.hypot(px - cx, py - cy) <= r;
-              if (inside) cov++;
-            }
-          const v = 255 - Math.round((cov / 16) * 255);
-          const i = (y * N + x) * 4;
-          d[i] = d[i + 1] = d[i + 2] = v;
-          d[i + 3] = 255;
-        }
-      return d;
-    };
     expect(
       pixelmatch(render(3), render(5), undefined, N, N, PIXELMATCH_OPTIONS)
     ).toBeGreaterThan(0);
     expect(
       pixelmatch(render(3), render(3), undefined, N, N, PIXELMATCH_OPTIONS)
     ).toBe(0);
+  });
+
+  // A white panel on the back office canvas (#EDEFF0): a 12px to 8px corner
+  // is a real change with very little contrast. threshold 0.1 missed it.
+  it('counts a corner change between light colours', () => {
+    const white = 255;
+    const canvas = 0xef;
+    expect(
+      pixelmatch(
+        render(12, white, canvas),
+        render(8, white, canvas),
+        undefined,
+        N,
+        N,
+        PIXELMATCH_OPTIONS
+      )
+    ).toBeGreaterThan(0);
   });
 });
