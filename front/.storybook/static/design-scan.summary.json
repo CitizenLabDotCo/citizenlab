@@ -1,6 +1,7 @@
 {
-  "generatedAt": "2026-10-23T00:18:46.841Z",
-  "commit": "b8c5539368b466dc43bd2a26b5fd745ba5fe9b0e",
+  "generatedAt": "2026-10-23T00:29:56.208Z",
+  "commit": "ad53a05e656867a644071c1a380cdf601248e6a9",
+  "mergeBase": "1a0d06e3afa8b33db8a01f33168c445daa9767c0",
   "offSpec": 8241,
   "legacy": 3274,
   "tokenReads": 1,

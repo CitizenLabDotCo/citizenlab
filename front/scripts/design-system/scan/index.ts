@@ -139,6 +139,23 @@ export const isAccepted = (f: Finding, accepted: Accepted[]) =>
       (a.line === undefined || Math.abs(a.line - f.line) <= 3)
   );
 
+/**
+ * The merge-base with master (or origin/master) for the committed summary,
+ * where ds:changes finds it in a clone without those refs; the previous
+ * summary's value when neither ref exists.
+ */
+export const summaryMergeBase = (
+  runGit: (args: string[]) => string | undefined,
+  previous?: unknown
+): string | undefined => {
+  for (const ref of ['master', 'origin/master']) {
+    const sha = runGit(['merge-base', 'HEAD', ref])?.trim();
+    if (sha) return sha;
+  }
+  const old = (previous as { mergeBase?: unknown } | undefined)?.mergeBase;
+  return typeof old === 'string' ? old : undefined;
+};
+
 const scanFiles = (
   tree: SourceTree,
   files: string[],
@@ -279,14 +296,26 @@ const runScan = (args: Args) => {
   };
 
   const outDir = path.resolve(ROOT, args.out);
+  const summaryFile = path.join(outDir, 'design-scan.summary.json');
+  let previousSummary: unknown;
+  try {
+    previousSummary = JSON.parse(fs.readFileSync(summaryFile, 'utf8'));
+  } catch {
+    previousSummary = undefined;
+  }
+  const mergeBase = summaryMergeBase(git, previousSummary);
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(
     path.join(outDir, 'design-scan.json'),
     JSON.stringify(output) + '\n'
   );
   fs.writeFileSync(
-    path.join(outDir, 'design-scan.summary.json'),
-    JSON.stringify({ generatedAt, commit, ...totals }, null, 2) + '\n'
+    summaryFile,
+    `${JSON.stringify(
+      { generatedAt, commit, mergeBase, ...totals },
+      null,
+      2
+    )}\n`
   );
 
   const top = [...components]

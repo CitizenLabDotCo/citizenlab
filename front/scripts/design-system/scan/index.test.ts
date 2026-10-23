@@ -2,7 +2,7 @@ import fs from 'fs';
 import os from 'os';
 import path from 'path';
 
-import { isAccepted, loadAllow, loadTokens } from './index';
+import { isAccepted, loadAllow, loadTokens, summaryMergeBase } from './index';
 import { Finding } from './schema';
 
 const finding: Finding = {
@@ -79,5 +79,27 @@ describe('loadTokens and loadAllow', () => {
     expect(
       loadAllow(write('a.json', '{"accepted": [{"file": "x", "raw": "1px"}]}'))
     ).toEqual([{ file: 'x', raw: '1px' }]);
+  });
+});
+
+describe('summaryMergeBase', () => {
+  // The summary caches the merge-base so ds:changes can use it in a clone
+  // without a master ref.
+  const git =
+    (refs: Record<string, string>) =>
+    (args: string[]): string | undefined =>
+      args[0] === 'merge-base' ? refs[args[2]] : undefined;
+
+  it('uses master, then origin/master', () => {
+    expect(summaryMergeBase(git({ master: 'a\n', 'origin/master': 'b' }))).toBe(
+      'a'
+    );
+    expect(summaryMergeBase(git({ 'origin/master': 'b\n' }))).toBe('b');
+  });
+
+  it('keeps the previous summary value when neither ref exists', () => {
+    expect(summaryMergeBase(git({}), { mergeBase: 'old' })).toBe('old');
+    expect(summaryMergeBase(git({}), { mergeBase: 3 })).toBeUndefined();
+    expect(summaryMergeBase(git({}))).toBeUndefined();
   });
 });
