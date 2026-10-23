@@ -90,6 +90,25 @@ describe('sourceChanges', () => {
     expect(changes('--gv-grey-800', '#CBCBCB')).toEqual(['#CBCBCB']);
   });
 
+  it('keeps a translucent colour raw, never the opaque primitive', () => {
+    const changes = (value: string) =>
+      sourceChanges(
+        { '--gv-color-text-heading': value },
+        meta,
+        tokensSource
+      ).changes.map((c) => c.to);
+    expect(changes('rgba(0,0,0,0.6)')).toEqual([
+      'rgba(0,0,0,0.6)',
+      'rgba(0,0,0,0.6)',
+    ]);
+    expect(changes('#00000099')).toEqual(['#00000099', '#00000099']);
+    // An alpha of 1 is opaque and still links.
+    expect(changes('rgba(203, 203, 203, 1)')).toEqual([
+      '{primitive.color.grey-400}',
+      '{primitive.color.grey-400}',
+    ]);
+  });
+
   it('lists tokens it cannot find', () => {
     expect(
       sourceChanges({ '--gv-nope': '1px' }, meta, tokensSource).unknown

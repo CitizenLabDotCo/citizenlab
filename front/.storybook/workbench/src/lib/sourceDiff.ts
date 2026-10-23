@@ -56,10 +56,14 @@ const toSourceValue = (value: string, byName: Map<string, TokenMeta>) => {
   return target?.path ? `{${target.path}}` : v;
 };
 
+// Channels 0-255 within half a step; alpha 0-1 within half an 8-bit step,
+// so a translucent edit never aliases an opaque primitive.
 const sameColour = (a: string, b: string) => {
   const x = parseColour(a);
   const y = parseColour(b);
-  return !!x && !!y && x.every((c, i) => Math.abs(c - y[i]) < 0.5);
+  if (!x || !y) return false;
+  const rgbSame = [0, 1, 2].every((i) => Math.abs(x[i] - y[i]) < 0.5);
+  return rgbSame && Math.abs(x[3] - y[3]) <= 0.002;
 };
 
 // A colour edit of a semantic token that equals a tier-1 primitive (what
