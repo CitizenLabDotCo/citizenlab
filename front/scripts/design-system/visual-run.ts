@@ -65,7 +65,14 @@ const main = async () => {
     }, ${VIEWPORTS.length} viewports, mode ${args.mode}`
   );
 
-  const browser = await chromium.launch({ chromiumSandbox: false });
+  // Partial raster repaints only the changed part of a tile, so a border
+  // that changes color after the first paint (an error state set in an
+  // effect, say) can keep corner pixels one shade off, in about one run in
+  // five. Full raster gives the same pixels every run.
+  const browser = await chromium.launch({
+    chromiumSandbox: false,
+    args: ['--disable-partial-raster'],
+  });
   const results: Result[] = [];
   const flaky: { id: string; viewport: string; first: number; second: number }[] = [];
 
