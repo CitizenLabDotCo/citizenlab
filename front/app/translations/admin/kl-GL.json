@@ -4622,7 +4622,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Suliniutit mappillu toqqakkat",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidget": "Atortussiaq una atorlugu, suliassat imaluunniit mappit atuisunut qanoq tulleriiaarlugit takutinneqassanersut toqqarsinnaavat aalajangersarlugulu.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidgetFolder": "Atortussiaq una atorlugu toqqarsinnaavat tulleriiaarnerilu aalajangersinnaallugit, mappimi uani suliniutit atuisunut qanoq saqqummiunneqassanersut.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} suliniutit",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects, plural, one {# suliniut} other {# suliniutit}}",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."

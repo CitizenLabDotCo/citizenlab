@@ -4622,7 +4622,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Valda projekt och mappar",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidget": "Med den här widgeten kan du välja och bestämma i vilken ordning du vill att projekt eller mappar ska visas för användarna.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidgetFolder": "Med den här widgeten kan du välja och bestämma i vilken ordning du vill att projekt från den här mappen ska visas för användarna.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} projekt",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects, plural, one {# projekt} other {# projekt}}",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "besök vårt supportcenter",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Mer information om rekommenderade bildupplösningar finns i {supportPageLink}."

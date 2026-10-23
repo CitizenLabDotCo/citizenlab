@@ -4622,7 +4622,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Επιλεγμένα έργα και φάκελοι",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidget": "Με αυτό το widget, μπορείτε να επιλέξετε και να καθορίσετε τη σειρά με την οποία θέλετε να εμφανίζονται τα έργα ή οι φάκελοι στους χρήστες.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidgetFolder": "Με αυτό το γραφικό στοιχείο, μπορείτε να επιλέξετε και να καθορίσετε τη σειρά με την οποία θέλετε να εμφανίζονται στους χρήστες τα έργα από αυτόν τον φάκελο.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} έργα",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects, plural, one {# έργο} other {# έργα}}",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visit our support center",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "For more information on recommended image resolutions, {supportPageLink}."

@@ -4622,7 +4622,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Prosiectau a ffolderi dethol",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidget": "Gyda'r teclyn hwn, gallwch ddewis a phennu'r drefn yr ydych am i brosiectau neu ffolderi eu dangos i ddefnyddwyr.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidgetFolder": "Gyda'r teclyn hwn, gallwch ddewis a phennu'r drefn yr ydych am i brosiectau o'r ffolder hon ymddangos i ddefnyddwyr.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} prosiectau",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects, plural, zero {# prosiect} one {# prosiect} two {# brosiect} few {# phrosiect} many {# phrosiect} other {# prosiect}}",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "ymweld â'n canolfan gymorth",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "I gael rhagor o wybodaeth am y penderfyniadau delwedd a argymhellir, {supportPageLink}."

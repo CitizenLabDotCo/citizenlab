@@ -4622,7 +4622,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Udvalgte projekter og mapper",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidget": "Med denne widget kan du vælge og bestemme, i hvilken rækkefølge du vil have projekter eller mapper vist til brugerne.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidgetFolder": "Med denne widget kan du vælge og bestemme, i hvilken rækkefølge projekter fra denne mappe skal vises for brugerne.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} projekter",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects, plural, one {# projekt} other {# projekter}}",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "besøg vores supportcenter",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "{tenantName, select,  {https://matomo.org/} other {https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images}}",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Du kan få flere oplysninger om anbefalede billedopløsninger ved at {supportPageLink}."

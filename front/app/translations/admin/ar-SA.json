@@ -4622,7 +4622,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "المشاريع والمجلدات المختارة",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidget": "باستخدام هذه الأداة، يمكنك تحديد وترتيب عرض المشاريع أو المجلدات للمستخدمين.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidgetFolder": "باستخدام هذه الأداة، يمكنك تحديد وترتيب ظهور المشاريع من هذا المجلد للمستخدمين.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} مشاريع",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects, plural, zero {# مشروع} one {مشروع واحد} two {مشروعان} few {# مشاريع} many {# مشروعاً} other {# مشروع}}",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "زيارة مركز الدعم التابع لنا",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/en/articles/527652-what-are-the-recommended-dimensions-and-sizes-of-the-platform-images",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "لمزيد من المعلومات حول مستويات الدقة الموصى بها للصور، {supportPageLink}."

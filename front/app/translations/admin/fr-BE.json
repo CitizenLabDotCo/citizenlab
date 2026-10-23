@@ -4622,7 +4622,7 @@
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.selectionTitle3": "Projets et dossiers sélectionnés",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidget": "Ce widget vous permet de sélectionner manuellement les projets et dossiers que vous souhaitez afficher et de déterminer leur ordre d'affichage.",
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidgetFolder": "Ce widget vous permet de sélectionner et de déterminer l'ordre dans lequel vous souhaitez que les projets de ce dossier apparaissent aux utilisateurs.",
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects} projets",
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": "{numberOfProjects, plural, one {# projet} other {# projets}}",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": "visitez notre centre d'assistance",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageURL2": "https://support.govocal.com/fr/articles/527652-quelles-sont-les-dimensions-et-tailles-recommandees-pour-les-images-de-la-plate-forme",
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageTooltip": "Pour plus d'informations sur les résolutions d'image recommandées, {supportPageLink}."
