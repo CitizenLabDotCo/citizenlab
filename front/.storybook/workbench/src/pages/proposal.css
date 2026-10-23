@@ -306,10 +306,11 @@
   color: var(--wb-heading);
 }
 
-/* The Button in both modes */
+/* Quote in both modes, one above the other: each frame is wider than the
+   Quote (500px at most), so its corners sit on white and show. */
 .wb-prop-split {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--gv-space-4);
 }
 
@@ -399,40 +400,23 @@
   color: var(--wb-pass);
 }
 
-.wb-prop-shots {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--gv-space-3);
-  align-content: start;
+.wb-prop-heal-side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--gv-space-5);
+  padding-left: var(--gv-space-6);
+  border-left: 1px solid var(--wb-border);
 }
 
-.wb-prop-shots figure {
+.wb-prop-heal-side .wb-prop-heal-facts {
   margin: 0;
 }
 
-/* Page screenshots at 1280 wide with the page centred: the empty sides are
-   cut so the page itself reads larger. */
-.wb-prop-shot {
-  display: block;
-  overflow: hidden;
-  aspect-ratio: 816 / 900;
-  border: 1px solid var(--wb-border);
-  border-radius: var(--wb-radius);
-}
-
-.wb-prop-shot img {
-  display: block;
-  width: 157%;
-  max-width: none;
-  height: auto;
-  margin-left: -28.5%;
-}
-
-.wb-prop-shots figcaption {
-  margin-top: var(--gv-space-1);
-  font-size: var(--gv-fs-xs);
-  font-weight: 600;
-  color: var(--wb-muted);
+.wb-prop-heal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gv-space-2);
 }
 
 /* The review flow */
@@ -799,9 +783,14 @@
   .wb-prop-heal,
   .wb-prop-charts,
   .wb-prop-decisions,
-  .wb-prop-cost,
-  .wb-prop-split {
+  .wb-prop-cost {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .wb-prop-heal-side {
+    padding: var(--gv-space-5) 0 0;
+    border-top: 1px solid var(--wb-border);
+    border-left: 0;
   }
 
   .wb-prop-steps {

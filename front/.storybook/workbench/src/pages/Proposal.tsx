@@ -2,6 +2,11 @@ import { useEffect, useMemo, useState } from 'react';
 
 import Canvas from '../components/Canvas';
 import Icon, { IconName } from '../components/Icon';
+import LineChart, {
+  areaLabel,
+  LEGEND,
+  markerClass,
+} from '../components/LineChart';
 import { DEFAULT_TOOLBAR } from '../components/Toolbar';
 import {
   loadChanges,
@@ -15,13 +20,11 @@ import {
   TokenMeta,
 } from '../lib/data';
 import {
-  chartOf,
   costOf,
   formatNumber,
   healExample,
   migrationOrder,
   seriesOf,
-  SeriesPoint,
   Trend,
   TrendTotals,
 } from '../lib/proposal';
@@ -47,6 +50,9 @@ type Data = {
 };
 
 const NO_OVERRIDES: Overrides = {};
+// Quote reads --gv-radius-control, so it changes between the modes; Button
+// does not yet, so it is only the fallback.
+const SPLIT_STORY = 'components-data-display-quote--default';
 const BUTTON_STORY = 'components-actions-button--back-office-primary';
 const REVIEW_EXAMPLE = `#/review?route=${encodeURIComponent('admin/projects')}`;
 
@@ -253,7 +259,7 @@ const STEPS: { icon: IconName; title: string; text: string }[] = [
   {
     icon: 'checklist',
     title: 'Lint',
-    text: 'ds:lint warns on new raw values now. It turns into an error once the library is clean.',
+    text: 'ds:lint fails on new raw values in the component library and design-system folders. It runs in ds:check, not in CI yet.',
   },
 ];
 
@@ -340,7 +346,7 @@ const ModeTokens = () => {
   );
 };
 
-const ButtonSplit = ({ storyId }: { storyId: string | null }) => (
+const ModeSplit = ({ storyId }: { storyId: string | null }) => (
   <section className="wb-prop-section" aria-labelledby="wb-prop-modes">
     <h2 id="wb-prop-modes" className="wb-section-title">
       Two modes
@@ -350,11 +356,11 @@ const ButtonSplit = ({ storyId }: { storyId: string | null }) => (
       it these values change; everything else stays as today.
     </p>
     <ModeTokens />
-    <h3 className="wb-prop-subtitle">The Button, live in both modes</h3>
+    <h3 className="wb-prop-subtitle">Quote, live in both modes</h3>
     <p className="wb-prop-note">
-      The same for now: Button still reads the old theme. Once its corners read{' '}
-      <code>--gv-radius-control</code>, the right side gets 8px corners and the
-      left keeps 3px.
+      Quote reads <code>--gv-radius-control</code>: 3px corners today, 8px in
+      redesign. Button still reads <code>bo.borderRadius</code>, so it looks the
+      same in both until it is healed.
     </p>
     {storyId ? (
       <div className="wb-prop-split" data-testid="wb-prop-split">
@@ -370,7 +376,7 @@ const ButtonSplit = ({ storyId }: { storyId: string | null }) => (
         ))}
       </div>
     ) : (
-      <p className="wb-prop-missing">No Button story in this build.</p>
+      <p className="wb-prop-missing">No Quote or Button story in this build.</p>
     )}
   </section>
 );
@@ -418,13 +424,15 @@ const HealSection = ({
               </span>
             ))}
           </pre>
+        </div>
+        <div className="wb-prop-heal-side">
           <ul className="wb-prop-heal-facts">
             {heal.score && (
               <li>
                 <span className="wb-prop-fact-value">
                   {heal.score.from.toFixed(2)} to {heal.score.to.toFixed(2)}
                 </span>
-                <span>tokens score of the file</span>
+                <span>tokens score of the component</span>
               </li>
             )}
             {heal.diffs && (
@@ -443,38 +451,33 @@ const HealSection = ({
               </li>
             )}
           </ul>
-          {repoUrl && (
-            <a
-              className="wb-button"
-              href={`${repoUrl}/commit/${point.sha}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              The commit on GitHub
-              <Icon name="external" size={16} />
-            </a>
-          )}
-        </div>
-        {heal.shots && (
-          <div className="wb-prop-shots">
-            {(['before', 'after'] as const).map((when) => (
-              <figure key={when}>
-                <span className="wb-prop-shot">
-                  <img
-                    src={`../${heal.shots}/${when}-redesign.png`}
-                    alt={`${title}, ${when}, redesign mode`}
-                    loading="lazy"
-                    width={1280}
-                    height={900}
-                  />
-                </span>
-                <figcaption>
-                  {when === 'before' ? 'Before' : 'After'}
-                </figcaption>
-              </figure>
-            ))}
+          <div className="wb-prop-heal-links">
+            {repoUrl && (
+              <a
+                className="wb-button"
+                href={`${repoUrl}/commit/${point.sha}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                The commit on GitHub
+                <Icon name="external" size={16} />
+              </a>
+            )}
+            {heal.shots &&
+              (['before', 'after'] as const).map((when) => (
+                <a
+                  key={when}
+                  className="wb-button"
+                  href={`../${heal.shots}/${when}-redesign.png`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <Icon name="split" size={16} />
+                  {when === 'before' ? 'Before' : 'After'}, redesign
+                </a>
+              ))}
           </div>
-        )}
+        </div>
       </div>
     </section>
   );
@@ -589,198 +592,6 @@ const Migration = ({
 
 // ------------------------------------------------------------ trend
 
-const BOX_HEIGHT = 200;
-const boxOf = (width: number) => ({
-  width,
-  height: BOX_HEIGHT,
-  left: 52,
-  right: 12,
-  top: 14,
-  bottom: 28,
-});
-
-// The plot's width in CSS pixels, so the SVG draws at 1:1 and its text
-// keeps its size on a phone.
-const useWidth = () => {
-  const [el, setEl] = useState<HTMLDivElement | null>(null);
-  const [width, setWidth] = useState(480);
-  useEffect(() => {
-    if (!el) return undefined;
-    const observer = new ResizeObserver(() => {
-      if (el.clientWidth > 0) setWidth(el.clientWidth);
-    });
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, [el]);
-  return [setEl, width] as const;
-};
-
-const AREA_LABEL: Record<string, string> = {
-  heal: 'Heal',
-  lift: 'Lift',
-  scan: 'Scanner change',
-  now: 'This build',
-};
-const LEGEND = ['heal', 'lift', 'scan'];
-
-const markerClass = (area: string) =>
-  `wb-prop-dot wb-prop-dot-${AREA_LABEL[area] ? area : 'other'}`;
-
-const shortDate = (iso: string) =>
-  iso
-    ? new Date(iso).toLocaleDateString('en-GB', {
-        day: 'numeric',
-        month: 'short',
-      })
-    : 'now';
-
-const LineChart = ({
-  title,
-  points,
-  testId,
-}: {
-  title: string;
-  points: SeriesPoint[];
-  testId: string;
-}) => {
-  const [hover, setHover] = useState<number | null>(null);
-  const [plotRef, width] = useWidth();
-  const BOX = useMemo(() => boxOf(width), [width]);
-  const chart = useMemo(
-    () =>
-      chartOf(
-        points.map((p) => p.value),
-        BOX
-      ),
-    [points, BOX]
-  );
-  if (points.length === 0) return null;
-  const last = points.length - 1;
-  const first = points[0];
-  const end = points[last];
-  const delta = end.value - first.value;
-  const h = hover === null ? null : points[hover];
-  const yOf = (v: number) =>
-    BOX.top +
-    (BOX.height - BOX.top - BOX.bottom) *
-      (1 - (v - chart.min) / (chart.max - chart.min));
-  const step =
-    points.length > 1
-      ? chart.x[1] - chart.x[0]
-      : BOX.width - BOX.left - BOX.right;
-  return (
-    <figure className="wb-prop-chart" data-testid={testId}>
-      <figcaption>
-        <span className="wb-prop-chart-title">{title}</span>
-        <span className="wb-prop-chart-now">{formatNumber(end.value)}</span>
-        <span className="wb-muted">
-          {delta === 0
-            ? 'unchanged'
-            : `${delta > 0 ? '+' : ''}${formatNumber(delta)}`}{' '}
-          since the first scan
-        </span>
-      </figcaption>
-      <div className="wb-prop-chart-plot" ref={plotRef}>
-        <svg
-          viewBox={`0 0 ${BOX.width} ${BOX.height}`}
-          role="img"
-          aria-label={`${title}: from ${formatNumber(
-            first.value
-          )} to ${formatNumber(end.value)} over ${points.length} commits`}
-          onMouseLeave={() => setHover(null)}
-        >
-          {chart.ticks.map((t) => (
-            <g key={t}>
-              <line
-                className="wb-prop-grid"
-                x1={BOX.left}
-                x2={BOX.width - BOX.right}
-                y1={yOf(t)}
-                y2={yOf(t)}
-              />
-              <text
-                className="wb-prop-axis"
-                x={BOX.left - 8}
-                y={yOf(t) + 4}
-                textAnchor="end"
-              >
-                {formatNumber(t)}
-              </text>
-            </g>
-          ))}
-          <text
-            className="wb-prop-axis"
-            x={BOX.left}
-            y={BOX.height - 8}
-            textAnchor="start"
-          >
-            {shortDate(first.date)}
-          </text>
-          <text
-            className="wb-prop-axis"
-            x={BOX.width - BOX.right}
-            y={BOX.height - 8}
-            textAnchor="end"
-          >
-            {shortDate(end.date)}
-          </text>
-          {h && hover !== null && (
-            <line
-              className="wb-prop-crosshair"
-              x1={chart.x[hover]}
-              x2={chart.x[hover]}
-              y1={BOX.top}
-              y2={BOX.height - BOX.bottom}
-            />
-          )}
-          <path className="wb-prop-line" d={chart.path} />
-          {points.map((p, i) => (
-            <circle
-              key={`${p.sha}-${i}`}
-              className={markerClass(p.area)}
-              cx={chart.x[i]}
-              cy={chart.y[i]}
-              r={hover === i ? 6 : 4.5}
-            />
-          ))}
-          {points.map((p, i) => (
-            <rect
-              key={`hit-${p.sha}-${i}`}
-              className="wb-prop-hit"
-              x={chart.x[i] - step / 2}
-              y={BOX.top}
-              width={step}
-              height={BOX.height - BOX.top - BOX.bottom}
-              onMouseEnter={() => setHover(i)}
-            />
-          ))}
-        </svg>
-        {h && hover !== null && (
-          <div
-            className="wb-prop-tip"
-            role="status"
-            style={{
-              left: `${(chart.x[hover] / BOX.width) * 100}%`,
-              top: `${(chart.y[hover] / BOX.height) * 100}%`,
-            }}
-          >
-            <strong>{formatNumber(h.value)}</strong>
-            <span>
-              {AREA_LABEL[h.area] ?? h.area}
-              {h.sha ? `, ${h.sha.slice(0, 7)}` : ''}
-            </span>
-            <span className="wb-prop-tip-subject">
-              {h.subject
-                .replace(/^design-system\([^)]*\):\s*/, '')
-                .replace(/\s*\[AI-assisted\]$/, '')}
-            </span>
-          </div>
-        )}
-      </div>
-    </figure>
-  );
-};
-
 const Drift = ({
   trend,
   summary,
@@ -803,19 +614,20 @@ const Drift = ({
       </h2>
       <p className="wb-prop-note">
         Each dot is a commit that refreshed the scan. The early jump is the
-        scanner learning to count more, not new debt.
+        scanner learning to count more, not new debt, so the change on top
+        counts from the last scanner change.
       </p>
       {off.length === 0 ? (
         <p className="wb-prop-missing">This build has no trend.json.</p>
       ) : (
         <>
           <ul className="wb-prop-legend" aria-label="Legend">
-            {LEGEND.map((a) => (
-              <li key={a}>
+            {LEGEND.map(({ area, label }) => (
+              <li key={area}>
                 <svg width="12" height="12" aria-hidden="true">
-                  <circle className={markerClass(a)} cx="6" cy="6" r="4.5" />
+                  <circle className={markerClass(area)} cx="6" cy="6" r="4.5" />
                 </svg>
-                {AREA_LABEL[a]}
+                {label}
               </li>
             ))}
           </ul>
@@ -849,7 +661,7 @@ const Drift = ({
                       <td>
                         <code>{p.sha ? p.sha.slice(0, 7) : 'build'}</code>
                       </td>
-                      <td>{AREA_LABEL[p.area] ?? p.area}</td>
+                      <td>{areaLabel(p.area)}</td>
                       <td>{formatNumber(p.value)}</td>
                       <td>{formatNumber(reads[i]?.value ?? 0)}</td>
                     </tr>
@@ -876,8 +688,8 @@ const DECISIONS: { q: string; a: string }[] = [
     a: 'data-gv-mode="redesign" on the redesigned project pages first, more when you say so.',
   },
   {
-    q: 'When does the lint become an error?',
-    a: 'Per folder, once the scan shows it clean. component-library first.',
+    q: 'When does the lint run in CI, and over which folders next?',
+    a: 'Add it to CI next to the tests, then widen it one folder at a time, the redesigned project pages first.',
   },
   {
     q: "Who reviews Tali's heals?",
@@ -954,8 +766,9 @@ const Cost = ({ changes }: { changes: Partial<DesignChanges> | null }) => {
 
 // ------------------------------------------------------------ page
 
-const buttonStory = (index: StoryIndex): string | null => {
+const splitStory = (index: StoryIndex): string | null => {
   const ids = Object.keys(index.entries);
+  if (ids.includes(SPLIT_STORY)) return SPLIT_STORY;
   if (ids.includes(BUTTON_STORY)) return BUTTON_STORY;
   return ids.find((id) => /^components-([a-z0-9]+-)*button--/.test(id)) ?? null;
 };
@@ -995,7 +808,7 @@ const Proposal = () => {
           <Problem summary={data.summary} />
           <Rings />
           <Mechanism />
-          <ButtonSplit storyId={buttonStory(data.stories)} />
+          <ModeSplit storyId={splitStory(data.stories)} />
           <HealSection trend={data.trend} repoUrl={data.changes?.repoUrl} />
           <ReviewFlow />
           <Migration scan={data.scan} stories={data.stories} />

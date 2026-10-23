@@ -1,6 +1,7 @@
 import {
   chartOf,
   costOf,
+  deltaOf,
   formatNumber,
   healExample,
   migrationOrder,
@@ -124,6 +125,37 @@ describe('seriesOf', () => {
       expect.objectContaining({ value: 5, area: 'now' }),
     ]);
     expect(seriesOf(null, null, 'offSpec')).toEqual([]);
+  });
+});
+
+describe('deltaOf', () => {
+  const pt = (area: string, value: number) => ({
+    sha: area,
+    date: '',
+    subject: '',
+    area,
+    value,
+  });
+
+  it('measures from the last scanner change, not the first scan', () => {
+    expect(
+      deltaOf([
+        pt('scan', 6507),
+        pt('scan', 8250),
+        pt('scan', 8241),
+        pt('review', 8241),
+        pt('heal', 8239),
+        pt('lift', 8232),
+      ])
+    ).toEqual({ value: -9, since: 'settled' });
+  });
+
+  it('measures from the first point without a scanner change', () => {
+    expect(deltaOf([pt('heal', 10), pt('lift', 4)])).toEqual({
+      value: -6,
+      since: 'first',
+    });
+    expect(deltaOf([])).toBeUndefined();
   });
 });
 

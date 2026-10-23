@@ -15,7 +15,6 @@ import type {
   TrendTotals,
 } from '../../../../scripts/design-system/trend';
 
-
 export type { HealExample, Trend, TrendPoint, TrendTotals };
 
 // ------------------------------------------------------------ migration
@@ -94,6 +93,25 @@ export const seriesOf = (
     });
   }
   return points;
+};
+
+export type Delta = { value: number; since: 'settled' | 'first' };
+
+/**
+ * The change since the last scanner change (`scan` area), so a scanner
+ * that learns to count more does not read as new debt; since the first
+ * point when no scanner change is in the series.
+ */
+export const deltaOf = (points: SeriesPoint[]): Delta | undefined => {
+  if (points.length === 0) return undefined;
+  const end = points[points.length - 1].value;
+  let from = -1;
+  points.forEach((p, i) => {
+    if (p.area === 'scan') from = i;
+  });
+  return from === -1
+    ? { value: end - points[0].value, since: 'first' }
+    : { value: end - points[from].value, since: 'settled' };
 };
 
 export type ChartBox = {

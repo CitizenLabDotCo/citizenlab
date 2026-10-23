@@ -537,9 +537,13 @@ export const A11Y_REVIEWED =
   /reviewed (by \S+ )?on \d{1,2} \w{3} \d{4}.*\d+ pass/i;
 
 export const MIN_ADMIN_ROUTES = 20;
-// A route with a param the fixture has no record for (fixture.missing).
+
+// The Proposal page's live mode demo (Proposal.tsx SPLIT_STORY).
+const PROPOSAL_SPLIT_STORY = 'components-data-display-quote--default';
+
 // The Proposal page: the big numbers are the build's summary, the trend
-// charts draw a line through every commit, and Button shows in both modes.
+// charts draw a line through every commit, and Quote shows its corners
+// change between the two modes.
 const proposalChecks = async (
   page: any,
   base: string,
@@ -601,24 +605,54 @@ const proposalChecks = async (
     '[data-testid="wb-prop-split"] iframe[data-testid="wb-canvas"]',
     (els: Element[]) => els.map((e) => e.getAttribute('src') ?? '')
   );
+  let radii: string[] = [];
   if (
     frames.length !== 2 ||
+    !frames.every((f: string) => f.includes(PROPOSAL_SPLIT_STORY)) ||
     !frames[0].includes('mode:today') ||
     !frames[1].includes('mode:redesign')
   ) {
     failures.push(
-      `proposal: expected Button frames in today and redesign, got ${JSON.stringify(
+      `proposal: expected Quote frames in today and redesign, got ${JSON.stringify(
         frames
       )}`
     );
+  } else {
+    const handles = await page.$$(
+      '[data-testid="wb-prop-split"] iframe[data-testid="wb-canvas"]'
+    );
+    radii = await Promise.all(
+      handles.map(async (h: any) => {
+        const frame = await h.contentFrame();
+        const quote = await frame
+          .waitForSelector('#storybook-root blockquote', { timeout: 20000 })
+          .catch(() => null);
+        return quote
+          ? frame.$eval(
+              '#storybook-root blockquote',
+              (el: Element) => getComputedStyle(el).borderTopLeftRadius
+            )
+          : 'missing';
+      })
+    );
+    if (radii.includes('missing') || radii[0] === radii[1]) {
+      failures.push(
+        `proposal: Quote corners should differ between the modes, got ${radii.join(
+          ' and '
+        )}`
+      );
+    }
   }
   console.log(
     `proposal: offSpec ${summary.offSpec}, ${charts.length} charts (${charts
       .map((c: any) => c.dots)
-      .join(', ')} points), ${order} components in the order`
+      .join(', ')} points), ${order} components in the order; Quote ${
+      radii[0] ?? '?'
+    } -> ${radii[1] ?? '?'}`
   );
 };
 
+// A route with a param the fixture has no record for (fixture.missing).
 const NEEDS_RECORD_ROUTE = 'admin/projects/$projectId/analysis/$analysisId';
 const REVIEW_ROUTE = 'admin/projects';
 const FRAME_TIMEOUT = 45000;
