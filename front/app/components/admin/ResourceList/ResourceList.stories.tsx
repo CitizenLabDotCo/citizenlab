@@ -49,9 +49,10 @@ const meta = {
   title: 'Components/Data display/ResourceList',
   tags: ['shared'],
   parameters: { gv: {} },
-  component: List,
-  render: (args) => <ListExample {...(args as unknown as ExampleProps)} />,
-} satisfies Meta<typeof List>;
+  // The story renders a composition of the building blocks, so its props
+  // (and the Controls) are the example's.
+  component: ListExample,
+} satisfies Meta<typeof ListExample>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -63,7 +64,7 @@ const items: Item[] = [
 ];
 
 export const Default: Story = {
-  args: { head: ['Project', 'Actions'], items, action: 'Edit' } as never,
+  args: { head: ['Project', 'Actions'], items, action: 'Edit' },
 };
 
 // Rows without the list's nested heading, text and spacing styles.
@@ -73,7 +74,7 @@ export const PlainRows: Story = {
     items,
     action: 'Edit',
     disableNestedStyles: true,
-  } as never,
+  },
 };
 
 export const RTL: Story = {
@@ -86,5 +87,5 @@ export const RTL: Story = {
       { title: 'مكتبة جديدة', meta: '7 مدخلات' },
     ],
     action: 'تعديل',
-  } as never,
+  },
 };

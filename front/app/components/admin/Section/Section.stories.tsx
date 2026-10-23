@@ -44,9 +44,10 @@ const meta = {
   title: 'Components/Layout/Section',
   tags: ['shared'],
   parameters: { gv: {} },
-  component: Section,
-  render: (args) => <SectionExample {...(args as unknown as Copy)} />,
-} satisfies Meta<typeof Section>;
+  // The story renders a composition of the building blocks, so its props
+  // (and the Controls) are the example's.
+  component: SectionExample,
+} satisfies Meta<typeof SectionExample>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -61,11 +62,11 @@ const copy: Copy = {
 };
 
 export const Default: Story = {
-  args: copy as never,
+  args: copy,
 };
 
 export const FullWidthField: Story = {
-  args: { ...copy, fullWidth: true } as never,
+  args: { ...copy, fullWidth: true },
 };
 
 export const RTL: Story = {
@@ -76,5 +77,5 @@ export const RTL: Story = {
     subTitle: 'عام',
     label: 'عنوان المشروع',
     value: 'شوارع خضراء',
-  } as never,
+  },
 };
