@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Input } from '@citizenlab/cl2-component-library';
 import { Meta, StoryObj } from '@storybook/react';
+import { waitFor } from 'storybook/test';
 
 import { FormLabel, FormSection, FormSectionTitle } from '.';
 
@@ -52,9 +53,18 @@ const meta = {
   title: 'Components/Forms/FormComponents',
   tags: ['shared'],
   parameters: { gv: {} },
-  component: FormSection,
-  render: (args) => <FormExample {...(args as unknown as ExampleProps)} />,
-} satisfies Meta<typeof FormSection>;
+  // The story renders a composition of the building blocks, so its props
+  // (and the Controls) are the example's.
+  component: FormExample,
+  // The section title renders once the app configuration (MSW) has loaded.
+  play: async ({ canvasElement }) => {
+    await waitFor(() => {
+      if (!canvasElement.querySelector('h2')?.textContent) {
+        throw new Error('title not rendered yet');
+      }
+    });
+  },
+} satisfies Meta<typeof FormExample>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -67,26 +77,26 @@ const copy: ExampleProps = {
 };
 
 export const Default: Story = {
-  args: copy as never,
+  args: copy,
 };
 
 export const Optional: Story = {
-  args: { ...copy, optional: true } as never,
+  args: { ...copy, optional: true },
 };
 
 export const WithSubtext: Story = {
   args: {
     ...copy,
     subtext: 'Use your first name, or a name people know you by.',
-  } as never,
+  },
 };
 
 export const WithIcon: Story = {
-  args: { ...copy, icon: true } as never,
+  args: { ...copy, icon: true },
 };
 
 export const QuestionNumber: Story = {
-  args: { ...copy, questionNumber: 3 } as never,
+  args: { ...copy, questionNumber: 3 },
 };
 
 export const RTL: Story = {
@@ -97,5 +107,5 @@ export const RTL: Story = {
     label: 'الاسم المعروض',
     value: 'سامي',
     optional: true,
-  } as never,
+  },
 };
