@@ -26,7 +26,7 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 const StyledSection = styled(Section)`
-  margin-bottom: 2.5rem;
+  margin-bottom: 32px;
 `;
 
 type CampaignFormProps = {
@@ -162,7 +162,7 @@ const EditCampaignForm = ({
           ))}
         </StyledSection>
         {methods.formState.isSubmitSuccessful && !methods.formState.isDirty && (
-          <Box mb="2.5rem">
+          <Box mb="32px">
             <Success
               text={formatMessage(messages.emailUpdated)}
               showIcon
