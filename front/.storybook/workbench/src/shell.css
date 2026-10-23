@@ -1066,31 +1066,55 @@ a.wb-card:hover {
 .wb-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--gv-space-2);
+  gap: 0 var(--gv-space-1);
   margin: 0 0 var(--gv-space-6);
   padding: 0;
   list-style: none;
+  border-bottom: 1px solid var(--wb-border);
 }
 
-.wb-chips a {
-  display: inline-block;
-  padding: var(--gv-space-1) var(--gv-space-3);
+/* Navigation inside a page reads as underlined tabs everywhere: these
+   category links, the story rows, the panel and Review tabs. Mode and view
+   switches are segmented controls. */
+.wb-shell .wb-chips a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  height: 40px;
+  padding: 0 var(--gv-space-3);
   font-size: var(--gv-fs-13);
   font-weight: 500;
-  color: var(--wb-text);
+  color: var(--wb-muted);
   text-decoration: none;
-  border: 1px solid var(--wb-border-strong);
-  border-radius: var(--gv-radius-full);
+  border-radius: var(--wb-radius) var(--wb-radius) 0 0;
 }
 
-.wb-chips a:hover {
+.wb-shell .wb-chips a:hover {
+  color: var(--wb-heading);
   background: var(--wb-subtle);
 }
 
-.wb-chips a[aria-current='page'] {
-  color: var(--wb-on-accent);
+.wb-shell .wb-chips a[aria-current='page'],
+.wb-tabs a[aria-current='page'] {
+  font-weight: 600;
+  color: var(--wb-heading);
+}
+
+.wb-chips a[aria-current='page']::after,
+.wb-tabs a[aria-current='page']::after {
+  content: '';
+  position: absolute;
+  right: var(--gv-space-3);
+  bottom: -1px;
+  left: var(--gv-space-3);
+  height: 2px;
   background: var(--wb-accent-fill);
-  border-color: var(--wb-accent-fill);
+  border-radius: 2px 2px 0 0;
+}
+
+/* The story rows scroll, which clips anything below their box. */
+.wb-tabs a[aria-current='page']::after {
+  bottom: 0;
 }
 
 .wb-toolbar {
@@ -2120,7 +2144,6 @@ tr:hover .wb-pv-motion > span {
   opacity: 0;
 }
 
-.wb-thumb-loading::after,
 .wb-skeleton-line,
 .wb-skeleton-block {
   background: linear-gradient(
@@ -2134,16 +2157,41 @@ tr:hover .wb-pv-motion > span {
   animation: wb-shimmer 1.4s ease-in-out infinite;
 }
 
+/* While the story loads: the outline of a small card, a block and two
+   lines, pulsing. */
+.wb-thumb-loading::before,
 .wb-thumb-loading::after {
   content: '';
   position: absolute;
-  top: 50%;
-  left: 50%;
+  left: 24%;
+  background: var(--wb-sunken);
+  animation: wb-thumb-pulse 1.4s ease-in-out infinite;
+}
+
+.wb-thumb-loading::before {
+  top: 18%;
+  right: 24%;
+  height: 36%;
+  border-radius: var(--wb-radius);
+}
+
+.wb-thumb-loading::after {
+  top: 62%;
   width: 40%;
-  height: 22px;
-  border-radius: var(--gv-radius-full);
-  transform: translate(-50%, -50%);
-  opacity: 0.8;
+  height: 24px;
+  background: linear-gradient(
+    var(--wb-sunken) 0 8px,
+    transparent 8px 16px,
+    var(--wb-sunken) 16px 24px
+  );
+  background-size: 100% 100%;
+  clip-path: polygon(0 0, 100% 0, 100% 34%, 70% 34%, 70% 100%, 0 100%);
+}
+
+@keyframes wb-thumb-pulse {
+  50% {
+    opacity: 0.45;
+  }
 }
 
 @keyframes wb-shimmer {
@@ -2332,10 +2380,6 @@ tr:hover .wb-pv-motion > span {
   stroke: var(--wb-bad);
 }
 
-.wb-score-off-tokens .wb-score-track {
-  stroke: var(--wb-bad-soft);
-}
-
 .wb-score-unscanned {
   color: var(--wb-muted);
 }
@@ -2421,8 +2465,6 @@ tr:hover .wb-pv-motion > span {
   flex-direction: column;
   gap: var(--gv-space-2);
   margin-bottom: var(--gv-space-4);
-  padding-bottom: var(--gv-space-3);
-  border-bottom: 1px solid var(--wb-border);
 }
 
 .wb-tab-group {
@@ -2452,8 +2494,9 @@ tr:hover .wb-pv-motion > span {
   padding: 0;
   overflow-x: auto;
   list-style: none;
-  scrollbar-width: thin;
+  scrollbar-width: none;
   scroll-padding-inline: var(--gv-space-8);
+  box-shadow: inset 0 -1px 0 var(--wb-border);
 }
 
 /* One row per group: when it scrolls, the edges fade to say so. */
@@ -2476,25 +2519,22 @@ tr:hover .wb-pv-motion > span {
 }
 
 .wb-tabs a {
+  position: relative;
   display: inline-flex;
   align-items: center;
-  height: 28px;
+  height: 32px;
   padding: 0 var(--gv-space-3);
   font-size: var(--gv-fs-13);
   font-weight: 500;
-  color: var(--wb-text);
+  color: var(--wb-muted);
   white-space: nowrap;
   text-decoration: none;
-  border-radius: var(--gv-radius-full);
+  border-radius: var(--wb-radius) var(--wb-radius) 0 0;
 }
 
 .wb-tabs a:hover {
+  color: var(--wb-heading);
   background: var(--wb-subtle);
-}
-
-.wb-tabs a[aria-current='page'] {
-  color: var(--wb-bg);
-  background: var(--wb-heading);
 }
 
 .wb-toolbar-tools {
@@ -3580,6 +3620,7 @@ a.wb-line:hover {
     transition: none;
   }
 
+  .wb-thumb-loading::before,
   .wb-thumb-loading::after,
   .wb-skeleton-line,
   .wb-skeleton-block {
@@ -3982,10 +4023,30 @@ a.wb-line:hover {
   }
 }
 
-/* Phones: one card per row, so a story shows near its real size. */
+/* Phones: two compact cards per row, a short preview over the name and
+   one status line. */
 @media (max-width: 520px) {
   .wb-thumb-grid {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gv-space-2);
+  }
+
+  .wb-thumb {
+    aspect-ratio: auto;
+    height: 120px;
+  }
+
+  .wb-thumb-body {
+    gap: var(--gv-space-2);
+    padding: var(--gv-space-2) var(--gv-space-3) var(--gv-space-3);
+  }
+
+  .wb-thumb-card .wb-card-title {
+    font-size: var(--gv-fs-s);
+  }
+
+  .wb-thumb-a11y {
+    margin-left: 0;
   }
 }
 
@@ -4141,7 +4202,7 @@ a.wb-line:hover {
   flex: 1;
   min-height: 44px;
   font-size: var(--gv-fs-13);
-  font-weight: 600;
+  font-weight: 500;
   color: var(--wb-muted);
   background: transparent;
   border: 0;
@@ -4149,6 +4210,7 @@ a.wb-line:hover {
 }
 
 .wb-shell .wb-review-tabs button[aria-selected='true'] {
+  font-weight: 600;
   color: var(--wb-heading);
   background: var(--wb-bg);
 }
@@ -5737,74 +5799,35 @@ tr[data-result='needs-human'] .wb-a11y-note {
   background: var(--wb-caution-soft);
 }
 
-/* Gallery card badges */
+/* Gallery card accessibility: one quiet line after the status chip, a
+   coloured icon and the worst count, then icons for the keyboard test and
+   the review. Tooltips carry the detail. */
 .wb-thumb-a11y {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--gv-space-1);
-  padding-top: var(--gv-space-2);
-  border-top: 1px dashed var(--wb-border);
+  display: inline-flex;
+  gap: var(--gv-space-3);
+  align-items: center;
+  margin-left: auto;
 }
 
-.wb-a11y-chip {
+.wb-a11y-mini {
   display: inline-flex;
-  gap: 5px;
+  gap: 4px;
   align-items: center;
-  height: 22px;
-  padding: 0 var(--gv-space-2) 0 6px;
-  font-size: 11px;
-  font-weight: 600;
+  font-size: var(--gv-fs-xs);
+  font-weight: 500;
   white-space: nowrap;
-  color: var(--wb-a11y-fg, var(--wb-text));
-  background: var(--wb-a11y-bg, var(--wb-subtle));
-  border-radius: var(--gv-radius-1);
-}
-
-.wb-a11y-chip > .wb-icon {
-  color: var(--wb-a11y-mark, var(--wb-muted));
-}
-
-.wb-a11y-chip-count {
-  padding: 0 5px;
-  margin-inline-end: -4px;
-  font-size: 10px;
-  line-height: 16px;
-  color: var(--wb-on-accent);
-  background: var(--wb-fail);
-  border-radius: var(--gv-radius-full);
-}
-
-.wb-a11y-tone-warn .wb-a11y-chip-count {
-  color: var(--wb-text);
-  background: var(--wb-bg);
-  box-shadow: inset 0 0 0 1px var(--wb-caution);
-}
-
-.wb-a11y-chip-review {
-  flex-wrap: wrap;
-  gap: 4px var(--gv-space-2);
-  height: auto;
-  min-height: 22px;
-  padding-block: 3px;
-  white-space: normal;
-  color: var(--wb-text);
-  background: var(--wb-bg);
-  box-shadow: inset 0 0 0 1px var(--wb-border);
-}
-
-.wb-a11y-chip-review-line {
-  display: inline-flex;
-  gap: 5px;
-  align-items: center;
-}
-
-.wb-a11y-chip-review-line > .wb-icon {
   color: var(--wb-muted);
 }
 
-.wb-a11y-chip-review .wb-a11y-count {
-  font-size: 10px;
-  line-height: 16px;
-  white-space: nowrap;
-  background: var(--wb-subtle);
+.wb-a11y-mini > .wb-icon {
+  color: var(--wb-a11y-mark, var(--wb-muted));
+}
+
+.wb-a11y-mini.wb-a11y-tone-fail,
+.wb-a11y-mini.wb-a11y-tone-warn {
+  color: var(--wb-a11y-fg);
+}
+
+.wb-a11y-mini.wb-a11y-tone-warn {
+  color: var(--wb-text);
 }

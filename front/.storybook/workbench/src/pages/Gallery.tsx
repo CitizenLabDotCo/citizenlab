@@ -25,7 +25,7 @@ import type { Mode } from '@ds/tokens/tokens';
 const COPY: Record<Section, { title: string; lead: string; noun: string }> = {
   components: {
     title: 'Components',
-    lead: 'Every library component, rendered live from its Default story. The ring is how much of the component file follows the tokens, from the latest scan; the badges below say what axe, a keyboard story and an agent review checked.',
+    lead: 'Every library component, rendered live from its Default story. A ring shows how much of a partly converted component follows the tokens, from the latest scan; the line under each name says what axe, a keyboard story and an agent review found.',
     noun: 'component',
   },
   patterns: {

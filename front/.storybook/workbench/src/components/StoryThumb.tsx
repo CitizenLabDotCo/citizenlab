@@ -34,7 +34,9 @@ import Icon from './Icon';
 import type { FrameGlobals } from '../lib/frame';
 import { plural } from '../lib/plural';
 
-// How much of the component file follows the tokens, as a ring.
+// How much of the component file follows the tokens, as a ring. Only a
+// partial score gets one: at 0 or 100 (or unscanned) the status chip says
+// it all.
 export const ScoreRing = ({
   score,
   status,
@@ -47,7 +49,8 @@ export const ScoreRing = ({
   const r = 13;
   const c = 2 * Math.PI * r;
   const pct = score === undefined ? null : Math.round(score * 100);
-  const label = pct === null ? 'Not scanned' : `Follows tokens: ${pct}%`;
+  if (pct === null || pct <= 0 || pct >= 100) return null;
+  const label = `Follows tokens: ${pct}%`;
   return (
     <span
       className={`wb-score wb-score-${status}`}
@@ -56,18 +59,16 @@ export const ScoreRing = ({
     >
       <svg width={size} height={size} viewBox="0 0 32 32" aria-hidden="true">
         <circle className="wb-score-track" cx="16" cy="16" r={r} />
-        {pct !== null && pct > 0 && (
-          <circle
-            className="wb-score-arc"
-            cx="16"
-            cy="16"
-            r={r}
-            strokeDasharray={`${(c * pct) / 100} ${c}`}
-            transform="rotate(-90 16 16)"
-          />
-        )}
+        <circle
+          className="wb-score-arc"
+          cx="16"
+          cy="16"
+          r={r}
+          strokeDasharray={`${(c * pct) / 100} ${c}`}
+          transform="rotate(-90 16 16)"
+        />
       </svg>
-      <span aria-hidden="true">{pct === null ? '?' : pct}</span>
+      <span aria-hidden="true">{`${pct}%`}</span>
       <span className="wb-visually-hidden">{label}</span>
     </span>
   );
@@ -86,8 +87,9 @@ export const OfficeChip = ({ office }: { office: Office }) => (
   </span>
 );
 
-// The accessibility badges of a card (SPEC 7.6 wording): checked by axe,
-// keyboard tested or untested, and the agent review with its counts.
+// The accessibility line of a card (SPEC 7.6): the worst axe result and its
+// count, then the keyboard test and the review as small icons whose
+// tooltips carry the detail. The A11y panel has the full picture.
 export const A11yBadges = ({
   group,
   results,
@@ -105,62 +107,57 @@ export const A11yBadges = ({
   const axeTone =
     axe.worst === 'critical' ? 'fail' : axe.worst ? 'warn' : 'pass';
   const worst = worstCount(axe);
+  const showKb =
+    kb === 'tested' ||
+    kb === 'tested-fails' ||
+    kb === 'untested' ||
+    kb === 'failing';
+  const total = counts ? counts.pass + counts.fail + counts['needs-human'] : 0;
+  const reviewTitle =
+    reviewed && counts
+      ? `Reviewed by ${checklist.reviewer} on ${formatDate(
+          checklist.reviewedAt ?? ''
+        )}: ${counts.pass} pass, ${counts.fail} fail, ${
+          counts['needs-human']
+        } ${counts['needs-human'] === 1 ? 'needs' : 'need'} a person`
+      : '';
   return (
     <span className="wb-thumb-a11y" data-testid="wb-thumb-a11y">
       {axe.checked > 0 && (
         <span
-          className={`wb-a11y-chip wb-a11y-tone-${axeTone}`}
+          className={`wb-a11y-mini wb-a11y-tone-${axeTone}`}
           title={axeTitle(axe)}
           data-testid="wb-thumb-axe"
         >
           <Icon name="a11y" size={14} />
-          Checked by axe
-          {worst && (
-            <span className="wb-a11y-chip-count" aria-hidden="true">
-              {worst}
-            </span>
-          )}
-          <span className="wb-visually-hidden">{`: ${axeTitle(axe)}`}</span>
+          <span aria-hidden="true">{worst ?? 'Axe pass'}</span>
+          <span className="wb-visually-hidden">{axeTitle(axe)}</span>
         </span>
       )}
-      {(kb === 'tested' ||
-        kb === 'tested-fails' ||
-        kb === 'untested' ||
-        kb === 'failing') && (
+      {showKb && (
         <span
-          className={`wb-a11y-chip wb-a11y-tone-${
+          className={`wb-a11y-mini wb-a11y-tone-${
             kb === 'untested' ? 'none' : KEYBOARD_TONE[kb]
           }`}
+          title={KEYBOARD_LABEL[kb]}
           data-testid="wb-thumb-keyboard"
           data-status={kb}
         >
           <Icon name="keyboard" size={14} />
-          {KEYBOARD_LABEL[kb]}
+          <span className="wb-visually-hidden">{KEYBOARD_LABEL[kb]}</span>
         </span>
       )}
       {reviewed && counts && (
         <span
-          className="wb-a11y-chip wb-a11y-chip-review"
+          className={`wb-a11y-mini wb-a11y-tone-${
+            counts.fail > 0 ? 'fail' : 'none'
+          }`}
+          title={reviewTitle}
           data-testid="wb-thumb-reviewed"
         >
-          <span className="wb-a11y-chip-review-line">
-            <Icon name="checklist" size={14} />
-            {`Reviewed by ${checklist.reviewer} on ${formatDate(
-              checklist.reviewedAt ?? ''
-            )}`}
-          </span>
-          <span className="wb-a11y-counts">
-            <span className="wb-a11y-count wb-a11y-count-pass">
-              {counts.pass} pass
-            </span>
-            <span className="wb-a11y-count wb-a11y-count-fail">
-              {counts.fail} fail
-            </span>
-            <span className="wb-a11y-count wb-a11y-count-needs-human">
-              {counts['needs-human']}{' '}
-              {counts['needs-human'] === 1 ? 'needs' : 'need'} a person
-            </span>
-          </span>
+          <Icon name="checklist" size={14} />
+          <span aria-hidden="true">{`${counts.pass}/${total}`}</span>
+          <span className="wb-visually-hidden">{reviewTitle}</span>
         </span>
       )}
     </span>
@@ -192,7 +189,7 @@ const REVEAL_MS = 5000;
 // Frames start loading this far before they scroll into view. Chromium's
 // own lazy loading starts much earlier, which loads a whole gallery of
 // preview frames at once.
-const NEAR = '200px';
+const NEAR = '600px';
 
 // A gallery card: the group's Default story rendered live and scaled down,
 // loaded only when it nears the viewport, faded in once Storybook has
@@ -291,15 +288,14 @@ const StoryThumb = ({
         </span>
         <span className="wb-chip-row">
           <StatusChip status={group.status} />
-          <OfficeChip office={group.office} />
+          {a11y && (
+            <A11yBadges
+              group={group}
+              results={a11y.results}
+              checklist={a11y.checklist}
+            />
+          )}
         </span>
-        {a11y && (
-          <A11yBadges
-            group={group}
-            results={a11y.results}
-            checklist={a11y.checklist}
-          />
-        )}
       </span>
     </a>
   );
