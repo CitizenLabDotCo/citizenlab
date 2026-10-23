@@ -1,6 +1,6 @@
 # Design system workbench: notes for agents
 
-This branch builds a design-in-code workbench for the platform: CSS-variable design tokens with a scoped redesign mode, a scanner that finds off-spec values, a shell on Storybook's engine (galleries, Foundations, Tokens and Usage panels, the Review page), and skills that heal code to the tokens. Everything the workbench knows is a plain file on the branch; this page says what each one is. Launch Claude Code from `front/`; run every command there. The skills are in `front/.claude/skills/`.
+This branch builds a design-in-code workbench for the platform: CSS-variable design tokens with a scoped redesign mode, a scanner that finds off-spec values, a shell on Storybook's engine (galleries, Foundations, Tokens, Usage and A11y panels, the Review page), and skills that heal code to the tokens. Everything the workbench knows is a plain file on the branch; this page says what each one is. Launch Claude Code from `front/`; run every command there. The skills are in `front/.claude/skills/`.
 
 ## Vocabulary
 
@@ -48,7 +48,8 @@ This branch builds a design-in-code workbench for the platform: CSS-variable des
 | `npm run ds:visual -- --baseline <dir>` / `-- --compare <dir> [--stories <glob,glob>] [--mode today\|redesign] [--summary <file>] [--allow-px N] [--url <storybook>]` | Screenshot every story (or the story ids `--stories` matches, `*` a wildcard) at 1280x900 and 390x844 in mode today (or `--mode redesign`), save or compare. A full today compare writes `visual-summary.json`; a filtered or redesign run writes `<dir>/_summary.json`; `--summary` overrides both. Default URL `http://localhost:6006`. |
 | `npm run ds:smoke -- --dir <storybook output> [--screenshot <png>] [--review-host <origin>]` | Serve a built Storybook and check the shell pages and the console. |
 | `npm run ds:mode-check -- --file <path> --token <name> --now <value> [--mode today\|redesign\|both]` | Mode safety of one heal. Exit 0 safe, 3 stop, 2 bad input. Reads `design-scan.json`, so run `ds:scan` first. |
-| `npm run ds:a11y`, `npm run ds:audit` | Not built yet: they print `todo` and exit 1. |
+| `npm run ds:a11y -- [--url <storybook>] [--stories <glob,glob>] [--workers N]` | Run axe (WCAG 2.0, 2.1, 2.2 A and AA) on every story, or the matched ones, at 1280x900 in mode today; write `a11y-results.json` (a filtered run keeps the other stories). `-- --check` exits 1 on a critical violation in a `Components/` story; `ds:check` runs it. Default URL `http://localhost:6006`. |
+| `npm run ds:audit` | Not built yet: it prints `todo` and exits 1. |
 | `npm run typecheck` | App typecheck (does not cover `.storybook/` or `scripts/`). Slow: once per task. |
 | `npx jest <path>` | Tests for a path (`npm run test -- <path>` is the same). |
 
@@ -87,7 +88,8 @@ Scripts, `scripts/design-system/`:
 - `mode-check.ts`: one heal's mode safety (`ds:mode-check`); `mode-scope.test.ts` covers both.
 - `fixtures/`: scanner test inputs (`findings/`, `routes/app/`).
 - `README.md`: the scripts in more detail.
-- Planned, not built: `a11y-run.ts` (`ds:a11y`), `audit.ts` (`ds:audit`), `trend.ts`.
+- `a11y-run.ts`: the axe run (`ds:a11y`); `a11y-results.ts` (tested in `a11y-results.test.ts`): its options, merge and check.
+- Planned, not built: `audit.ts` (`ds:audit`), `trend.ts`.
 
 Storybook, `.storybook/`:
 - `main.ts`: stories glob `app/**/*.stories.*`, addons (accessibility, pseudo states), `staticDirs` `public` and `static`.
@@ -103,7 +105,7 @@ Data, `.storybook/static/` (served next to the stories):
 - `design-changes.json` (gen, c): the Review page's change list. See "Refreshing".
 - `routes.fixture.json` (c): real ids and slugs for `$param` segments; `paths` (per route) is read before `params` (per name).
 - `visual-summary.json` (gen, c): last visual compare: stories, diffs, errors, retried.
-- `a11y-results.json` (gen, git-ignored, planned): axe per story.
+- `a11y-results.json` (gen, c): axe per story: violations by rule and impact, passes, focusable elements, and whether a play function passed.
 - `audits/<Component>.json`, `audits/index.json` (gen, git-ignored, planned): instance audits.
 - `heals/<sha>/` (c): before and after screenshots of a heal, `<sha>` the commit the heal started from.
 - `workbench/` (gen, git-ignored): the built shell.
@@ -116,19 +118,20 @@ The shell, `.storybook/workbench/` (React and Vite, its own `tsconfig.json`):
 - `src/lib/frame.ts`, `src/lib/preview.ts`: the canvas and review frames (same origin), Storybook preview access.
 - `src/lib/contrast.ts`, `src/lib/tokenValues.ts`: WCAG ratios and token values per mode.
 - `src/lib/healTask.ts`: the heal task text (`formatHealTask`).
+- `src/lib/a11y.ts`, `src/lib/checklists.ts`, `src/lib/useA11y.ts`: what the A11y panel and the gallery badges say (axe per component, keyboard tested or untested, the checklist line); `checklists.ts` bundles every `components/*/a11y.json` at build time.
 - `src/lib/usage.ts`, `src/lib/componentPanels.ts`, `src/lib/useScanIndexes.ts`: what the Tokens and Usage panels show.
 - `src/lib/stories.ts`, `src/lib/useStoryGroups.ts`: the story index grouped by component, office from tags.
 - `src/lib/review.ts`: affected routes, frame URLs, the "Copy for PR" text.
 - `src/lib/sourceDiff.ts`: session edits as a `tokens.source.json` patch.
 - `src/lib/router.ts`, `src/lib/clipboard.ts`: hash routes, copy with a text fallback.
 - `src/pages/`: `StartHere`, `Foundations`, `Gallery`, `Component`, `Review`, `Placeholder` (sections not built yet, Proposal among them).
-- `src/panels/`: `Tokens`, `Usage`, `Controls` (planned: `A11y`).
+- `src/panels/`: `Tokens`, `Usage`, `Controls`, `A11y`.
 - `src/components/`: `Nav`, `Toolbar`, `Canvas`, `FrameView`, `ChangeList`, `ChangesDrawer`, `RouteList`, `TokenRow`, `HealCopy` and smaller parts.
 
 Components, `app/component-library/`:
 - `components/<Name>/index.tsx`: the component; `gvTag` on its root.
 - `components/<Name>/<Name>.stories.tsx`: its states, office tag.
-- `<Name>/a11y.json` (planned): the agent-filled checklist, at the spec's path `app/component-library/<Component>/a11y.json`, not inside `components/<Name>/`.
+- `components/<Name>/a11y.json`: the checklist the `a11y-review` skill fills (WCAG criteria, result, confidence, evidence); the A11y panel and the gallery badges read it.
 - `utils/styleUtils.ts`: the old theme (`colors`, `bo`, `stylingConsts`, `getTheme`); bridged keys return `var(--gv-…, <today value>)`.
 
 Skills, `.claude/skills/`: `heal`, `lift`, `story`, `new-component`, `audit`, `a11y-review`, `propose`, one `SKILL.md` each. The mode safety check they run is `ds:mode-check`.
@@ -202,4 +205,5 @@ Treat these as previews, not final:
 - The Controls panel remounts the story on every edit (see above).
 - Instance tags exist only in the flagged app build; UI and admin components are untagged.
 - The Storybook MCP addon is not installed; agents read the files above directly.
-- Not built yet: `ds:a11y`, `ds:audit`, the Accessibility panel, `a11y.json` files, the Proposal page.
+- axe checks what a machine can; a checklist row marked `needs-human` is a question for a person, and "reviewed by agent" is not a conformance claim. 15 components have an `a11y.json`.
+- Not built yet: `ds:audit`, the Proposal page.

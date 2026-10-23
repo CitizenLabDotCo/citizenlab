@@ -5,7 +5,7 @@ description: Use when asked to review the accessibility of one library component
 
 # a11y-review
 
-Review one component and write `app/component-library/<Component>/a11y.json` (SPEC 7.5; `<Component>` is the component name, for example `app/component-library/Button/a11y.json`) plus a short report. Read `front/.storybook/AGENTS.md` first if you have not this session. Run every command from `front/`.
+Review one component and write `app/component-library/components/<Name>/a11y.json`, next to its stories (for example `app/component-library/components/Button/a11y.json`), plus a short report. Read `front/.storybook/AGENTS.md` first if you have not this session. Run every command from `front/`.
 
 ## Input
 
@@ -18,7 +18,7 @@ a11y-review: <Name>
 - **Never edit component code.** Only `a11y.json` and, when a state is missing, stories through the `story` skill in a separate commit. A failure becomes a heal task with `why: a11y, <criterion>`.
 - **One component per run and per commit.**
 - **Wording.** Write "checked", "reviewed on <date>", "keyboard tested", "checked by axe". Never "compliant", "conformant" or "certified".
-- **Script not built.** If `npm run ds:a11y` prints `todo: ds:a11y`, use the Storybook accessibility addon (the Accessibility tab on each story) for the axe results and say so in the evidence.
+- **No Storybook.** `ds:a11y` needs a running Storybook (dev or a served build). If none will start, stop and say so; do not fill criteria from source alone.
 
 ## Criteria
 
@@ -28,9 +28,9 @@ The ones that matter for the component's type, from WCAG 2.2 and the 2.1 basics:
 ## Steps
 
 - [ ] 1. `npm run storybook` (port 6006). List the component's stories in `http://localhost:6006/index.json`.
-- [ ] 2. axe: `npm run ds:a11y -- --url http://localhost:6006`, then read the component's stories in `.storybook/static/a11y-results.json`.
+- [ ] 2. axe: `npm run ds:a11y -- --url http://localhost:6006 --stories '<story id prefix>--*'` (the other stories keep their results), then read the component's stories in `.storybook/static/a11y-results.json`: violations by rule and impact, `focusable`, and `play` for stories with a play function.
 - [ ] 3. Contrast: the text and background tokens the component uses (Tokens panel, or its findings in `design-scan.json`), in both modes, from `tokens.meta.json` values. 4.5:1 for text, 3:1 for large text and non-text parts.
-- [ ] 4. Keyboard: drive each interactive story with Tab, Shift+Tab, Enter, Space, Escape and the arrows its pattern needs; record focus order and what happened. A keyboard story is a `play` function with `userEvent.tab()` and `expect(...).toHaveFocus()`; adding one is a story change (separate commit).
+- [ ] 4. Keyboard: drive each interactive story with Tab, Shift+Tab, Enter, Space, Escape and the arrows its pattern needs; record focus order and what happened. A keyboard story is a `Keyboard` story whose `play` function uses `userEvent.tab()` and `expect(...).toHaveFocus()`; adding one is a story change (separate commit, then `ds:visual --stories` on the file to show the other stories did not move, and `ds:a11y --stories '*--keyboard'`). The A11y panel shows "keyboard tested" only when a `Keyboard` story's play passed.
 - [ ] 5. Screenshot each state at 1280 and 390 and in the `ar` language (RTL); judge reflow, focus visibility and target size.
 - [ ] 6. Write `a11y.json`:
   ```json
@@ -45,7 +45,7 @@ The ones that matter for the component's type, from WCAG 2.2 and the 2.1 basics:
   }
   ```
   `result`: `pass`, `fail`, `n/a`, `needs-human`. `confidence`: `high` when a computed check or a keyboard run backs it, `medium` when judged from a screenshot, `low` when inferred. What a model cannot settle (meaningful alternative text, whether an error message helps, cognitive load) is `needs-human`.
-- [ ] 7. `npm run ds:check`, then commit only `a11y.json`.
+- [ ] 7. `npm run ds:check` (it fails while any `Components/` story has a critical axe violation; say so rather than hide it), then commit only `a11y.json`.
 
 ## Commit message
 
