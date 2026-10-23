@@ -15,7 +15,7 @@ module BulkImportIdeas::Parsers
     end
 
     def parse_rows(file)
-      llm_parser = BulkImportIdeas::Parsers::Pdf::LLMFormParser.new(@phase, @locale, personal_data_enabled: @personal_data_enabled)
+      llm_parser = BulkImportIdeas::Parsers::Pdf::LLMFormParser.new(@phase, @locale, personal_data_enabled: @personal_data_enabled, printable_fields: printable_fields)
       form_parsed_idea = llm_parser.parse_idea(file.file, file.num_pages)
 
       file.update!(parsed_value: { parser: llm_parser.parser_name, value: form_parsed_idea })
@@ -65,10 +65,14 @@ module BulkImportIdeas::Parsers
       merged_fields
     end
 
+    def printable_fields
+      @printable_fields ||= IdeaCustomFieldsService.new(@phase.pmethod.custom_form).printable_fields
+    end
+
     def template_data
       @template_data ||= begin
         custom_field_service = CustomFieldService.new
-        importable_fields = IdeaCustomFieldsService.new(@phase.pmethod.custom_form).printable_fields.select(&:supports_pdf_import?)
+        importable_fields = printable_fields.select(&:supports_pdf_import?)
 
         fields = importable_fields.map do |field|
           {
