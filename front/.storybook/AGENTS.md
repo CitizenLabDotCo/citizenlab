@@ -1,6 +1,6 @@
 # Design system workbench: notes for agents
 
-This branch builds a design-in-code workbench for the platform: CSS-variable design tokens with a scoped redesign mode, a scanner that finds off-spec values, a shell on Storybook's engine (Start here, galleries, Foundations, Tokens, Usage and A11y panels, the Review and Proposal pages), and skills that heal code to the tokens. Everything the workbench knows is a plain file on the branch; this page says what each one is. Launch Claude Code from `front/`; run every command there. The skills are in `front/.claude/skills/`.
+This branch builds a design-in-code workbench for the platform: CSS-variable design tokens with a scoped redesign mode, a scanner that finds off-spec values, a shell on Storybook's engine (Start here, galleries, Foundations, the component page's Design and A11y tabs and Usage disclosure, the Review and Proposal pages), and skills that heal code to the tokens. Everything the workbench knows is a plain file on the branch; this page says what each one is. Launch Claude Code from `front/`; run every command there. The skills are in `front/.claude/skills/`.
 
 ## Vocabulary
 
@@ -114,22 +114,26 @@ Data, `.storybook/static/` (served next to the stories):
 - `images/`: story images.
 
 The shell, `.storybook/workbench/` (React and Vite, its own `tsconfig.json`):
-- `vite.config.ts`, `index.html`, `src/main.tsx`, `src/App.tsx`, `src/shell.css`: the app, hash routes `#/start`, `#/foundations`, `#/components`, `#/patterns`, `#/pages`, `#/review`, `#/proposal`.
+- `vite.config.ts`, `index.html`, `src/main.tsx`, `src/App.tsx`, `src/shell.css`: the app, hash routes `#/start`, `#/foundations` (`#/foundations/<category>/<token>` scrolls to and focuses that token's row), `#/components`, `#/patterns`, `#/pages`, `#/review`, `#/proposal`.
 - `src/lib/data.ts`: loads the JSON files one level up and Storybook's `index.json`; lists missing files on Start here.
 - `src/lib/overrides.ts`: the session's token edits, snapping, the share-link codec.
 - `src/lib/frame.ts`, `src/lib/preview.ts`: the canvas and review frames (same origin), Storybook preview access.
 - `src/lib/contrast.ts`, `src/lib/tokenValues.ts`: WCAG ratios and token values per mode.
 - `src/lib/healTask.ts`: the heal task text (`formatHealTask`).
+- `src/lib/elementEdits.ts` (tested), `src/lib/useElementEdits.ts`: element edits of the Design tab (attach, swap, detach, custom, file): the model, the inline styles they paint in the frame, their task text (`taskOfEdit`), localStorage `gv-element-edits` (checked on read).
+- `src/lib/tokenPicker.ts` (tested): the token picker's rows (Matches, Semantic, Scale).
+- `src/lib/inspect.ts`: what the Design tab reads from the selected element (sections, rows with their longhands, glyph and snap kind).
 - `src/lib/a11y.ts`, `src/lib/checklists.ts`, `src/lib/useA11y.ts`: what the A11y panel and the gallery badges say (axe per component, keyboard tested or untested, the checklist line); `checklists.ts` bundles every `components/*/a11y.json` at build time.
-- `src/lib/usage.ts`, `src/lib/componentPanels.ts`, `src/lib/useScanIndexes.ts`: what the Tokens and Usage panels show.
+- `src/lib/usage.ts`, `src/lib/componentPanels.ts`, `src/lib/useScanIndexes.ts`: what the Usage disclosure and the Design tab's "Also in this file" show.
 - `src/lib/stories.ts`, `src/lib/useStoryGroups.ts`: the story index grouped by component, office from tags.
 - `src/lib/review.ts`: affected routes, frame URLs, the "Copy for PR" text.
 - `src/lib/sourceDiff.ts`: session edits as a `tokens.source.json` patch.
 - `src/lib/proposal.ts`: the Proposal page's numbers, trend series, migration order and cost.
 - `src/lib/router.ts`, `src/lib/clipboard.ts`: hash routes, copy with a text fallback.
 - `src/pages/`: `StartHere` (with `starthere.css`), `Foundations`, `Gallery`, `Component`, `Review`, `Proposal` (with `proposal.css`); `Placeholder` holds the empty-state pictures.
-- `src/panels/`: `Tokens`, `Usage`, `Controls`, `A11y`.
-- `src/components/`: `Nav`, `Toolbar`, `Canvas`, `FrameView`, `ChangeList`, `ChangesDrawer`, `RouteList`, `TokenRow`, `HealCopy`, `LineChart` and smaller parts.
+- The component page: canvas bar (Select / Interact, Mode Today | Redesign | Both, City, Viewport, Language, zoom, Changes), the stage, and the inspector with two tabs. **Design** is Figma's Design tab over the selected element: sections Layout, Fill, Stroke, Radius, Text, Effects; a value is a pill when bound to a token (click = token picker, hover = detach) or a field (type to snap to the scale or palette; a link glyph attaches the token the value equals); "Also in this file" lists the file's healable findings; Props last. Element edits paint the frame as inline styles (`lib/elementEdits.ts`, localStorage `gv-element-edits`) and sit with token edits in the one Changes drawer under the canvas bar, whose "Copy for agent" gives the heal / change tasks. **A11y** is unchanged. Usage opens under the page header. Low text: glyphs carry the meaning, `aria-label`s the words, no title tooltips on values.
+- `src/panels/`: `Design`, `Usage`, `Controls`, `A11y`.
+- `src/components/`: `Nav`, `Toolbar`, `Canvas`, `FrameView`, `ChangeList`, `ChangesDrawer`, `InspSection`, `ValueField`, `TokenPicker`, `RouteList`, `TokenRow`, `HealCopy`, `LineChart` and smaller parts.
 
 Components, `app/component-library/`:
 - `components/<Name>/index.tsx`: the component; `gvTag` on its root.
@@ -145,7 +149,7 @@ App build, `front/`:
 
 ## The heal task
 
-The Tokens and Usage panels copy this (SPEC 7.5):
+The Usage disclosure and the Changes drawer's "Copy for agent" give this (SPEC 7.5):
 
 ```
 heal: <Component> · <file>:<line> · <raw value> → <token> · mode <today|redesign|both>
@@ -154,7 +158,15 @@ check: story <story id>, routes <list>
 ```
 
 - Mode defaults: `shared` gives `both`, `bo` gives `redesign`, `fo` gives `today`; a mode picked on a component page holds for that component.
-- Deviations from the spec's format: the token slot reads `A or B` when a legacy key maps to two tokens and the task came from the Usage panel (which has no token row to pick from; the Tokens panel names one), or `(choose a token)` when nothing fits. The route list stops after 8 with `and N more`. The `heal` skill picks the token whose `today` value matches, or stops.
+- Deviations from the spec's format: the token slot reads `A or B` when a legacy key maps to two tokens and the task came from the Usage disclosure (which has no token row to pick from; an element edit names one), or `(choose a token)` when nothing fits. The route list stops after 8 with `and N more`. The `heal` skill picks the token whose `today` value matches, or stops.
+- An attach (or a Heal from "Also in this file") gives this shape when a scan finding of the file has the edit's raw value; with none, `heal: <Component> · <file> · <raw> → <token> · mode <mode>`, `why: hard-coded <row> seen in the workbench (<layer>), scan confidence low`.
+- A swap, detach or custom value changes today's look, so it gives a change task instead:
+
+```
+change: <Component> · <file> · <props, comma separated> <from> → <to> · mode redesign
+why: design change from the workbench (<kind>); changes today's look, so redesign scope or a token change
+check: story <story id>, routes <list>
+```
 
 ## Tags
 

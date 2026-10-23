@@ -25,9 +25,11 @@
 // switching its `disabled` control changes the frame's DOM. The canvas fits
 // the Button frame to the story by default (MAX_FIT_HEIGHT). The Design tab
 // selects the button and shows its corner radius as the radius token,
-// linked; a click on the canvas selects the element under it. Inspect's
-// Usage lists at least one back office (admin) route and its Tokens list
-// shows the radius token as linked.
+// linked; a click on the canvas selects the element under it; Size's
+// attach suggestion turns it into a --gv-fs-s pill and the Changes badge
+// counts it; 12 typed into the vertical padding becomes a --gv-space-3
+// pill; Copy for agent names --gv-fs-s; Reset all clears the list. The
+// Usage disclosure lists at least one back office (admin) route.
 // The Review page lists at least MIN_ADMIN_ROUTES back office routes and
 // shows "needs a record" for a route whose param the fixture lacks. With
 // --review-host <platform origin> (an epic serving this Storybook under
@@ -90,6 +92,11 @@ const ROUTES: [string, string][] = [
 // (theme.borderRadius is var(--gv-radius-control, 3px)).
 const RADIUS_TOKEN = '--gv-radius-control';
 const RADIUS_OVERRIDE = '20px';
+
+// The Design tab's checks: Size is hard-coded at --gv-fs-s, and 12 typed
+// into the vertical padding snaps to --gv-space-3.
+const SIZE_TOKEN = '--gv-fs-s';
+const SNAP_TOKEN = '--gv-space-3';
 
 // Start here: the tour links to each section, the needs-a-person list (or
 // its empty state) renders, and the mode rule names the token commit.
@@ -368,8 +375,10 @@ const canvasChecks = async (
     failures.push('fit: the canvas frame was never fitted to the story');
   }
 
-  // Mode toolbar: the frame's html gets the attribute.
-  await page.selectOption('[data-testid="wb-toolbar-mode"]', 'redesign');
+  // Mode on the canvas bar: the frame's html gets the attribute.
+  await page.click(
+    '[data-testid="wb-canvas-bar"] [data-testid="wb-toolbar-mode"] [data-value="redesign"]'
+  );
   const frame = await canvasFrame(page, 'redesign');
   const attr = await frame.$eval('html', (el: Element) =>
     el.getAttribute('data-gv-mode')
@@ -580,6 +589,14 @@ const controlsChecks = async (
   }
   // Any mode: the toolbar keeps the one the canvas checks left.
   const frame = await canvasFrame(page, '');
+  // The Props section of the Design tab starts folded.
+  const props = '[data-testid="wb-insp-props"]';
+  await page.waitForSelector(props, { timeout: 10000 });
+  if (
+    !(await page.$eval(props, (el: Element) => (el as HTMLDetailsElement).open))
+  ) {
+    await page.click(`${props} > summary`);
+  }
   await page.waitForSelector('[data-testid="wb-controls-reset"]', {
     timeout: 20000,
   });
@@ -609,13 +626,18 @@ const controlsChecks = async (
   }
 };
 
-// The Design tab, then Inspect's Usage, Tokens and A11y of the Button page.
+// The Button page's Design tab (pill, attach, snap, Changes, Copy for
+// agent, Reset all), the Usage disclosure and the A11y tab.
 const panelChecks = async (
   page: any,
   base: string,
   storyId: string,
   failures: string[]
 ) => {
+  await page
+    .context()
+    .grantPermissions(['clipboard-read', 'clipboard-write'])
+    .catch(() => undefined);
   await page.goto(`${base}/workbench/#/components/${storyId}`);
   await page.click('[data-testid="wb-panel-tab"][data-tab="design"]');
   const radius = `[data-testid="wb-panel-design"] [data-testid="wb-insp-value"][data-token="${RADIUS_TOKEN}"]`;
@@ -663,81 +685,151 @@ const panelChecks = async (
       failures.push(`a click on the button label selected "${picked}"`);
     }
   }
+
+  // Back to the button (Esc selects the parent): Size is hard-coded and
+  // equals SIZE_TOKEN, so its field offers to attach it.
+  await page.keyboard.press('Escape');
+  const value = (row: string) =>
+    `[data-testid="wb-panel-design"] [data-row="${row}"][data-testid="wb-insp-value"]`;
+  const suggest = `[data-testid="wb-panel-design"] [data-row="size"] [data-testid="wb-insp-suggest"][data-token="${SIZE_TOKEN}"]`;
+  const linkedTo = async (row: string) => {
+    try {
+      await page.waitForFunction(
+        (sel: string) =>
+          document.querySelector(sel)?.getAttribute('data-link') === 'linked',
+        value(row),
+        { timeout: 10000 }
+      );
+    } catch {
+      // Reported by the caller.
+    }
+    return page
+      .$eval(value(row), (el: Element) => el.getAttribute('data-token'))
+      .catch(() => null);
+  };
+  let attached: string | null = null;
+  try {
+    await page.waitForSelector(suggest, { timeout: 20000 });
+    await page.click(suggest);
+    attached = await linkedTo('size');
+  } catch {
+    // Reported below.
+  }
+  if (attached !== SIZE_TOKEN) {
+    failures.push(
+      `attaching ${SIZE_TOKEN} to Size left the field ${attached ?? 'unbound'}`
+    );
+  }
+  const badge = async () =>
+    page
+      .$eval(
+        '[data-testid="wb-changes-toggle"] .wb-count',
+        (el: Element) => el.textContent ?? ''
+      )
+      .catch(() => '');
+  // The token edit the canvas checks left counts too.
+  const tokenEdits = await page.evaluate(() => {
+    try {
+      return Object.keys(
+        JSON.parse(window.localStorage.getItem('gv-overrides') ?? '{}')
+      ).length;
+    } catch {
+      return 0;
+    }
+  });
+  const afterAttach = await badge();
+  if (Number(afterAttach) !== tokenEdits + 1) {
+    failures.push(
+      `after the attach the Changes badge reads ${afterAttach}, expected ${
+        tokenEdits + 1
+      }`
+    );
+  }
+  // Typing 12 into the vertical padding snaps to the space scale.
+  const pad = `[data-testid="wb-panel-design"] [data-row="padding-v"] [data-testid="wb-insp-input"]`;
+  let snapped: string | null = null;
+  if (await page.$(pad)) {
+    await page.fill(pad, '12');
+    await page.press(pad, 'Enter');
+    snapped = await linkedTo('padding-v');
+    if (snapped !== SNAP_TOKEN) {
+      failures.push(
+        `typing 12 into the vertical padding gave ${
+          snapped ?? 'no token'
+        }, expected ${SNAP_TOKEN}`
+      );
+    }
+  } else {
+    failures.push('the Design tab shows no vertical padding field');
+  }
+  // One Changes list with both edits and a task for the agent.
+  await page.click('[data-testid="wb-changes-toggle"]');
+  const rows: number = await page.$$eval(
+    '[data-testid="wb-changes"] [data-testid="wb-change-row"][data-kind]',
+    (els: Element[]) => els.length
+  );
+  if (rows < 2) {
+    failures.push(`the Changes drawer lists ${rows} element edits, expected 2`);
+  }
+  await page.click('[data-testid="wb-copy-agent"]');
+  const task: string = await page
+    .waitForSelector('[data-testid="wb-copy-fallback"]', { timeout: 1500 })
+    .then(() =>
+      page.$eval(
+        '[data-testid="wb-copy-fallback"]',
+        (el: Element) => (el as HTMLTextAreaElement).value
+      )
+    )
+    .catch(() =>
+      page.evaluate(() => navigator.clipboard.readText()).catch(() => '')
+    );
+  if (!task.includes(`→ ${SIZE_TOKEN}`)) {
+    failures.push(
+      `the agent task does not name ${SIZE_TOKEN}: ${
+        task.slice(0, 160) || 'nothing copied'
+      }`
+    );
+  }
+  await page.click('[data-testid="wb-changes"] button:has-text("Reset all")');
+  const left: number = await page.$$eval(
+    '[data-testid="wb-change-row"]',
+    (els: Element[]) => els.length
+  );
+  const cleared = await badge();
+  if (left !== 0 || cleared !== '0') {
+    failures.push(`Reset all left ${left} changes, the badge reads ${cleared}`);
+  }
+  const back = await page
+    .waitForFunction(
+      (sel: string) =>
+        document.querySelector(sel)?.getAttribute('data-link') !== 'linked',
+      value('size'),
+      { timeout: 10000 }
+    )
+    .then(() => true)
+    .catch(() => false);
+  if (!back) failures.push('after Reset all Size is still a pill');
+  await page.click('[data-testid="wb-changes"] button:has-text("Close")');
   console.log(
-    `design: ${RADIUS_TOKEN} ${link} on the button; a click selects ${picked}`
+    `design: ${RADIUS_TOKEN} ${link} on the button; a click selects ${picked}; ` +
+      `attach ${attached}, badge ${afterAttach}; 12 snaps to ${snapped}; ` +
+      `task ${task.split('\n')[0]}; reset all ${cleared}`
   );
 
-  const inspect = (view: string) =>
-    page
-      .click('[data-testid="wb-panel-tab"][data-tab="inspect"]')
-      .then(() =>
-        page.click(`[data-testid="wb-inspect-view"] [data-value="${view}"]`)
-      );
-  await inspect('usage');
+  // Usage under the page header: back office routes.
+  await page.click('[data-testid="wb-usage-toggle"]');
   const admin = '[data-testid="wb-usage-route"][data-office="admin"]';
   let routes = 0;
   try {
     await page.waitForSelector(admin, { timeout: 20000 });
     routes = await page.$$eval(admin, (els: Element[]) => els.length);
   } catch {
-    failures.push('the Usage panel lists no back office route for Button');
+    failures.push('the Usage disclosure lists no back office route for Button');
   }
-  await inspect('tokens');
-  const chip = `[data-testid="wb-panel-tokens"] [data-token="${RADIUS_TOKEN}"] [data-testid="wb-token-match"]`;
-  let match: string | null = null;
-  try {
-    await page.waitForSelector(chip, { timeout: 20000 });
-    // The panel reads the frame again on each storyRendered; a read of a
-    // half-rendered story is replaced, so wait for the value, not the chip.
-    await page.waitForFunction(
-      (sel: string) =>
-        document.querySelector(sel)?.getAttribute('data-match') === 'linked',
-      chip,
-      { timeout: 20000 }
-    );
-  } catch {
-    // Reported below with the last value.
-  }
-  match = await page
-    .$eval(chip, (el: Element) => el.getAttribute('data-match'))
-    .catch(() => null);
-  if (match !== 'linked') {
-    failures.push(
-      `the Tokens panel shows ${RADIUS_TOKEN} as ${
-        match ?? 'missing'
-      }, expected linked`
-    );
-  }
-  // A row's heal names that row's token, even when the legacy name it
-  // heals maps to more tokens.
-  const row = `[data-testid="wb-panel-tokens"] [data-token="${RADIUS_TOKEN}"]`;
-  let heal = '';
-  if (!(await page.$(`${row} [data-testid="wb-heal"]`))) {
-    failures.push(
-      `the ${RADIUS_TOKEN} row in the Tokens panel has no Heal button`
-    );
-  } else {
-    await page.click(`${row} [data-testid="wb-heal"]`);
-    await page.waitForSelector(`${row} [data-testid="wb-heal-text"] pre`);
-    heal = await page.$eval(
-      `${row} [data-testid="wb-heal-text"] pre`,
-      (el: Element) => el.textContent ?? ''
-    );
-    const targets = [...heal.matchAll(/→ (.+?) · mode/g)].map((m) => m[1]);
-    if (!targets.length || targets.some((t) => t !== RADIUS_TOKEN)) {
-      failures.push(
-        `the ${RADIUS_TOKEN} heal targets ${targets.join(', ') || 'nothing'}`
-      );
-    }
-  }
-  console.log(
-    `panels: ${routes} back office routes shown in Usage; ${RADIUS_TOKEN} ${match} in Tokens${
-      heal ? `, its heal names only ${RADIUS_TOKEN}` : ''
-    }`
-  );
+  console.log(`usage: ${routes} back office routes`);
 
   // The A11y tab: Button's checklist badge with its date and counts.
-  await inspect('a11y');
+  await page.click('[data-testid="wb-panel-tab"][data-tab="a11y"]');
   let reviewed = '';
   try {
     await page.waitForSelector('[data-testid="wb-a11y-reviewed"]', {
