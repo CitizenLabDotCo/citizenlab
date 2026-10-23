@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Input, IOption } from '@citizenlab/cl2-component-library';
+import { Box, Input, IOption, Text } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import {
@@ -26,6 +26,7 @@ import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import ViewSelector from '../../shared/ViewSelector';
 import ModerationAssignee from '../_shared/ModerationAssignee';
+import NumberSettingRow from '../_shared/NumberSettingRow';
 import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';
 import ReactionLimitSettings from '../_shared/ReactionLimitSettings';
 import SortingPicker from '../_shared/SortingPicker';
@@ -174,6 +175,43 @@ const ProposalsInputs = ({
     </SectionField>
   );
 
+  const requirements = (
+    <PanelGroup
+      label={formatMessage(configMessages.proposalRequirementsGroup)}
+      defaultOpen
+    >
+      <NumberSettingRow
+        id="reacting_threshold"
+        label={formatMessage(messages.reactingThreshold)}
+        value={reacting_threshold}
+        min="2"
+        onChange={handleReactingThresholdChange}
+        error={
+          <Error
+            text={reactingThresholdError}
+            apiErrors={apiErrors && apiErrors.reacting_threshold}
+          />
+        }
+      />
+      <NumberSettingRow
+        id="expire_days_limit"
+        label={formatMessage(messages.expireDaysLimit)}
+        value={expire_days_limit}
+        min="1"
+        onChange={handleDaysLimitChange}
+        error={
+          <Error
+            text={expireDateLimitError}
+            apiErrors={apiErrors && apiErrors.expire_days_limit}
+          />
+        }
+      />
+      <Text variant="boHelper" fontSize="xs" m="0">
+        {formatMessage(configMessages.proposalRequirementsNote)}
+      </Text>
+    </PanelGroup>
+  );
+
   const anonymity = (
     <AnonymousPostingToggle
       variant={layout === 'panel' ? 'panel' : undefined}
@@ -277,6 +315,8 @@ const ProposalsInputs = ({
   if (layout === 'panel') {
     return (
       <>
+        {/* Sets the rules apart from the participant data cards above. */}
+        <Box pt="22px" />
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
           defaultOpen
@@ -284,13 +324,7 @@ const ProposalsInputs = ({
           {userActions}
           {likes}
         </PanelGroup>
-        <PanelGroup
-          label={formatMessage(configMessages.votesGroup)}
-          defaultOpen
-        >
-          {expiry}
-          {threshold}
-        </PanelGroup>
+        {requirements}
         <PanelGroup
           label={formatMessage(configMessages.moderationGroup)}
           defaultOpen
