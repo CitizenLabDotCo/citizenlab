@@ -1,7 +1,28 @@
 {
-  "stories": 237,
-  "diffs": [],
+  "stories": 309,
+  "diffs": [
+    {
+      "id": "components-forms-inputmultilocwithlocaleswitcher--rtl",
+      "viewport": "desktop",
+      "px": 3736
+    },
+    {
+      "id": "components-overlays-modal--default",
+      "viewport": "desktop",
+      "px": 60
+    },
+    {
+      "id": "cards-ideacard--past-budgeting-no-result-sharing",
+      "viewport": "mobile",
+      "px": 108972
+    },
+    {
+      "id": "components-overlays-modal--rtl",
+      "viewport": "mobile",
+      "px": 60
+    }
+  ],
   "errors": [],
-  "retried": 0,
-  "generatedAt": "2026-10-22T23:51:45.066Z"
+  "retried": 4,
+  "generatedAt": "2026-10-23T00:53:22.398Z"
 }
