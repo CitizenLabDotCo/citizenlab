@@ -1,0 +1,119 @@
+{
+  "component": "Select",
+  "reviewedAt": "2026-10-23",
+  "reviewer": "agent",
+  "criteria": [
+    {
+      "id": "1.3.1",
+      "name": "Info and relationships",
+      "result": "fail",
+      "confidence": "high",
+      "evidence": "axe select-name (critical) on all 11 stories, WithLabel included: the label is tied through htmlFor={id}, so without an id prop the select has no name",
+      "note": "Heal (a11y): generate an id (useId) when none is passed."
+    },
+    {
+      "id": "1.4.3",
+      "name": "Contrast (minimum)",
+      "result": "fail",
+      "confidence": "high",
+      "evidence": "axe color-contrast on WithPlaceholder: placeholder #999999 on white 2.84:1, 4.5:1 needed",
+      "note": "Heal (a11y): placeholder colour to the text secondary token."
+    },
+    {
+      "id": "1.4.10",
+      "name": "Reflow",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "screenshots and scroll width at 1280, 390 and 320: no horizontal scroll",
+      "note": ""
+    },
+    {
+      "id": "1.4.11",
+      "name": "Non-text contrast",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "computed: border 1px #767676 on white 4.54:1; focus border 2px #EF0071 4.27:1",
+      "note": ""
+    },
+    {
+      "id": "1.4.12",
+      "name": "Text spacing",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "text spacing override (line height 1.5, letter 0.12em, word 0.16em, paragraph 2em) on Default and LongContent: no clipped text",
+      "note": ""
+    },
+    {
+      "id": "2.1.1",
+      "name": "Keyboard",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "Keyboard story (play): Tab focuses the select. Opening and changing the value are the browser's own select keys, which a play step cannot press",
+      "note": ""
+    },
+    {
+      "id": "2.4.7",
+      "name": "Focus visible",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "keyboard run: border goes from 1px #767676 to 2px #EF0071 on Tab",
+      "note": ""
+    },
+    {
+      "id": "2.4.11",
+      "name": "Focus not obscured (minimum)",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "screenshots: nothing in the component covers the focused select",
+      "note": ""
+    },
+    {
+      "id": "2.5.7",
+      "name": "Dragging movements",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "source: no drag interaction",
+      "note": ""
+    },
+    {
+      "id": "2.5.8",
+      "name": "Target size (minimum)",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "measured: smallest 87x48",
+      "note": ""
+    },
+    {
+      "id": "3.2.6",
+      "name": "Consistent help",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "page level: the component offers no help mechanism",
+      "note": ""
+    },
+    {
+      "id": "3.3.7",
+      "name": "Redundant entry",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: the component asks for no data",
+      "note": ""
+    },
+    {
+      "id": "3.3.8",
+      "name": "Accessible authentication (minimum)",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: the component is not part of a login step",
+      "note": ""
+    },
+    {
+      "id": "4.1.2",
+      "name": "Name, role, value",
+      "result": "fail",
+      "confidence": "high",
+      "evidence": "same root as 1.3.1: the label is tied through htmlFor={id}, so without an id prop the select has no name",
+      "note": "Fixed by the same heal as 1.3.1."
+    }
+  ]
+}
