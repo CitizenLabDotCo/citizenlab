@@ -176,7 +176,8 @@ const main = async () => {
     }, PLAY_ERROR_EVENT);
     const page = await context.newPage();
     for (const id of ids) {
-      const file = path.join(dir, shotName(vp.name, id, args.mode));
+      const name = shotName(vp.name, id, args.mode);
+      const file = path.join(dir, name);
       try {
         const shot = await capture(page, id);
         if (saving) {
@@ -186,7 +187,6 @@ const main = async () => {
         }
         if (!fs.existsSync(file)) throw new Error('no baseline screenshot');
         const base = fs.readFileSync(file);
-        const name = shotName(vp.name, id, args.mode);
         let px = diffPx(base, shot, path.join(diffDir, name));
         if (px > args.allowPx) {
           // Re-run once to tell flakiness from a real difference.
