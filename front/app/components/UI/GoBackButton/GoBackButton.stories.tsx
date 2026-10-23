@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { fn } from 'storybook/test';
+import { fn, waitFor } from 'storybook/test';
 
 import GoBackButton from '.';
 
@@ -9,6 +9,14 @@ const meta = {
   parameters: { gv: {} },
   component: GoBackButton,
   args: { onClick: fn() },
+  // The "Go back" text renders once the app configuration (MSW) has loaded.
+  play: async ({ canvasElement }) => {
+    await waitFor(() => {
+      if (!canvasElement.querySelector('button')?.textContent) {
+        throw new Error('text not rendered yet');
+      }
+    });
+  },
 } satisfies Meta<typeof GoBackButton>;
 
 export default meta;
@@ -27,6 +35,7 @@ export const Focus: Story = {
 
 export const IconOnly: Story = {
   args: { showGoBackText: false },
+  play: async () => {},
 };
 
 export const RTL: Story = {
