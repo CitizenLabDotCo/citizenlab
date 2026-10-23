@@ -39,11 +39,14 @@ const UserActions = ({
   showCommentingToggle = true,
   showReactingToggle = true,
   phaseId,
+  layout = 'page',
   accessOnlyActions = [],
 }: {
   showCommentingToggle?: boolean;
   showReactingToggle?: boolean;
   phaseId?: string;
+  /** In the workspace panel the likes limit is shown by the caller, last. */
+  layout?: 'page' | 'panel';
   accessOnlyActions?: AccessOnlyAction[];
   submission_enabled: boolean;
   commenting_enabled: boolean;
@@ -61,7 +64,8 @@ const UserActions = ({
   handleLikingLimitOnChange: (reacting_like_limited_max: string) => void;
 }) => {
   const { formatMessage } = useIntl();
-  const ActionsField = phaseId ? Box : StyledSectionField;
+  const panel = layout === 'panel';
+  const ActionsField = panel ? Box : StyledSectionField;
 
   return (
     <>
@@ -81,7 +85,7 @@ const UserActions = ({
           }
         >
           <Toggle
-            variant={phaseId ? 'bo' : undefined}
+            variant={panel ? 'bo' : undefined}
             checked={submission_enabled || false}
             onChange={togglePostingEnabled}
             label={formatMessage(messages.inputPostingEnabled)}
@@ -97,7 +101,7 @@ const UserActions = ({
             }
           >
             <Toggle
-              variant={phaseId ? 'bo' : undefined}
+              variant={panel ? 'bo' : undefined}
               checked={commenting_enabled || false}
               onChange={toggleCommentingEnabled}
               label={formatMessage(messages.inputCommentingEnabled)}
@@ -115,7 +119,7 @@ const UserActions = ({
             }
           >
             <Toggle
-              variant={phaseId ? 'bo' : undefined}
+              variant={panel ? 'bo' : undefined}
               checked={reacting_enabled || false}
               onChange={toggleReactingEnabled}
               label={formatMessage(messages.inputReactingEnabled)}
@@ -141,8 +145,7 @@ const UserActions = ({
           </Box>
         )}
       </ActionsField>
-      {/* The workspace panel shows the likes limit last, after disliking. */}
-      {reacting_enabled && !phaseId && (
+      {reacting_enabled && !panel && (
         <>
           <SectionField>
             <SubSectionTitle>

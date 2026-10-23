@@ -208,6 +208,7 @@ const ProposalsInputs = ({
       handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
       handleLikingLimitOnChange={handleLikingLimitOnChange}
       phaseId={phaseId}
+      layout={layout}
     />
   );
 
@@ -221,10 +222,13 @@ const ProposalsInputs = ({
       onMethodChange={handleReactingLikeMethodOnChange}
       onMaxChange={handleLikingLimitOnChange}
       error={
-        <Error
-          text={noLikingLimitError}
-          apiErrors={apiErrors && apiErrors.reacting_limit}
-        />
+        <>
+          <Error apiErrors={apiErrors && apiErrors.reacting_method} />
+          <Error
+            text={noLikingLimitError}
+            apiErrors={apiErrors && apiErrors.reacting_limit}
+          />
+        </>
       }
     />
   );

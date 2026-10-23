@@ -112,44 +112,57 @@ const PrescreeningModeSelector = ({
     flagInappropriateContentEnabled && prescreeningFlaggedOnlyEnabled;
 
   if (variant === 'panel') {
+    // Without flagging, 'flagged_only' screens nothing, as on the full page.
+    const screening =
+      prescreening_mode === 'all' ||
+      (showFlaggedOnlyOption && prescreening_mode === 'flagged_only');
+
     return (
       <Box display="flex" flexDirection="column" gap="10px">
         <SettingToggleRow
           title={formatMessage(messages.contentScreeningTitle)}
           description={formatMessage(messages.contentScreeningDescription)}
-          checked={!!prescreening_mode}
-          onChange={() =>
-            onPrescreeningModeChange(prescreening_mode ? null : 'all')
-          }
+          checked={screening}
+          onChange={() => onPrescreeningModeChange(screening ? null : 'all')}
         />
-        {prescreening_mode && showFlaggedOnlyOption && (
-          <Box display="flex" gap="20px" pl={TOGGLE_LABEL_INDENT}>
-            <Radio
-              variant="bo"
-              name="prescreening_mode"
-              id="prescreening_mode-flagged_only"
-              value="flagged_only"
-              currentValue={prescreening_mode}
-              onChange={onPrescreeningModeChange}
-              label={
-                <Text as="span" variant="boControl" m="0">
-                  {formatMessage(messages.prescreeningModeFlaggedOnly)}
-                </Text>
-              }
-            />
-            <Radio
-              variant="bo"
-              name="prescreening_mode"
-              id="prescreening_mode-all"
-              value="all"
-              currentValue={prescreening_mode}
-              onChange={onPrescreeningModeChange}
-              label={
-                <Text as="span" variant="boControl" m="0">
-                  {formatMessage(messages.prescreeningModeAll)}
-                </Text>
-              }
-            />
+        {screening && showFlaggedOnlyOption && (
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap="8px"
+            pl={TOGGLE_LABEL_INDENT}
+          >
+            <Box display="flex" gap="20px">
+              <Radio
+                variant="bo"
+                name="prescreening_mode"
+                id="prescreening_mode-flagged_only"
+                value="flagged_only"
+                currentValue={prescreening_mode}
+                onChange={onPrescreeningModeChange}
+                label={
+                  <Text as="span" variant="boControl" m="0">
+                    {formatMessage(messages.prescreeningModeFlaggedOnly)}
+                  </Text>
+                }
+              />
+              <Radio
+                variant="bo"
+                name="prescreening_mode"
+                id="prescreening_mode-all"
+                value="all"
+                currentValue={prescreening_mode}
+                onChange={onPrescreeningModeChange}
+                label={
+                  <Text as="span" variant="boControl" m="0">
+                    {formatMessage(messages.prescreeningModeAll)}
+                  </Text>
+                }
+              />
+            </Box>
+            <Text variant="boHelper" fontSize="xs" m="0">
+              {formatMessage(descriptionMessages[prescreening_mode])}
+            </Text>
           </Box>
         )}
       </Box>

@@ -533,9 +533,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.reportVisibleToParticipants',
     defaultMessage: 'Visible to participants',
   },
-  reportVisibleToParticipantsHelp: {
-    id: 'app.containers.Admin.projects.project.reportVisibleToParticipantsHelp',
-    defaultMessage: 'Participants see the report on the phase page.',
+  reportVisibility: {
+    id: 'app.containers.Admin.projects.project.reportVisibility',
+    defaultMessage: 'Report visibility',
   },
   reportVisible: {
     id: 'app.containers.Admin.projects.project.reportVisible',

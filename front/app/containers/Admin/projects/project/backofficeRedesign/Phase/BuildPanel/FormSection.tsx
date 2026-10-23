@@ -9,6 +9,8 @@ import inputFormMessages from 'containers/Admin/projects/project/inputForm/messa
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
+import inputManagerMessages from '../../InputManager/messages';
+import OfflineFormsButton from '../../InputManager/RightColumn/OfflineFormsButton';
 import messages from '../../messages';
 
 import AddPreviousPhaseIdeasModal from './AddPreviousPhaseIdeasModal';
@@ -81,6 +83,16 @@ const FormSection = ({
       )}
 
       {phaseId && <DemographicsCard phaseId={phaseId} />}
+
+      {/* Survey responses aren't managed in Manage, so their offline forms
+          stay here. */}
+      {phaseId && survey && (
+        <PanelField
+          label={formatMessage(inputManagerMessages.offlineCollection)}
+        >
+          <OfflineFormsButton participationMethod={participationMethod} />
+        </PanelField>
+      )}
 
       {phaseId && voting && (
         <AddPreviousPhaseIdeasModal

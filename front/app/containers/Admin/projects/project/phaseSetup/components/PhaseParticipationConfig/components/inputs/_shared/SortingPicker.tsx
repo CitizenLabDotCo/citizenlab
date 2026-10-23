@@ -54,8 +54,8 @@ export default ({
             />
           }
         >
-          {apiErrors?.presentation_mode && (
-            <Error apiErrors={apiErrors.presentation_mode} />
+          {apiErrors?.ideas_order && (
+            <Error apiErrors={apiErrors.ideas_order} />
           )}
         </SetupCard>
       </Box>
@@ -81,7 +81,7 @@ export default ({
           label={<FormattedMessage {...messages[`${key}SortingMethod`]} />}
         />
       ))}
-      <Error apiErrors={apiErrors && apiErrors.presentation_mode} />
+      <Error apiErrors={apiErrors && apiErrors.ideas_order} />
     </SectionField>
   );
 };

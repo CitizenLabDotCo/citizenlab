@@ -13,7 +13,7 @@ import useReport from 'api/reports/useReport';
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 import useUpdateReport from 'api/reports/useUpdateReport';
 
-import reportTabMessages from 'containers/Admin/projects/project/information/ReportTab/messages';
+import visibilityWarning from 'containers/Admin/projects/project/information/ReportTab/visibilityWarning';
 import useConfirmDeleteReport from 'containers/Admin/reporting/components/ReportBuilderPage/ReportRow/useConfirmDeleteReport';
 
 import { useIntl } from 'utils/cl-intl';
@@ -38,7 +38,7 @@ const ReportSettings = ({ phase }: Props) => {
 
   if (!reportBuilderEnabled || !report) return null;
 
-  const label = formatMessage(reportTabMessages.report);
+  const label = formatMessage(messages.reportVisibility);
   const visible = report.data.attributes.visible;
   const canEdit =
     report.data.attributes.action_descriptors.editing_report.enabled;
@@ -83,7 +83,7 @@ const ReportSettings = ({ phase }: Props) => {
                   {formatMessage(messages.reportVisibleToParticipants)}
                 </Text>
                 <Text as="span" display="block" variant="boHelper" m="0">
-                  {formatMessage(messages.reportVisibleToParticipantsHelp)}
+                  {formatMessage(visibilityWarning(report, phase))}
                 </Text>
               </Box>
             }
