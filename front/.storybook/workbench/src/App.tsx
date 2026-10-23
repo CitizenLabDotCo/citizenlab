@@ -9,7 +9,7 @@ import { Route, useRoute } from './lib/router';
 import Component from './pages/Component';
 import Foundations from './pages/Foundations';
 import Gallery from './pages/Gallery';
-import Placeholder from './pages/Placeholder';
+import Proposal from './pages/Proposal';
 import Review from './pages/Review';
 import StartHere from './pages/StartHere';
 
@@ -73,7 +73,7 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
         />
       );
     case 'proposal':
-      return <Placeholder title="Proposal" kind="proposal" />;
+      return <Proposal />;
     case 'not-found':
       return (
         <article className="wb-page">

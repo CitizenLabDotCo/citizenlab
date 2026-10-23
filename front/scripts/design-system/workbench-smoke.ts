@@ -538,6 +538,87 @@ export const A11Y_REVIEWED =
 
 export const MIN_ADMIN_ROUTES = 20;
 // A route with a param the fixture has no record for (fixture.missing).
+// The Proposal page: the big numbers are the build's summary, the trend
+// charts draw a line through every commit, and Button shows in both modes.
+const proposalChecks = async (
+  page: any,
+  base: string,
+  root: string,
+  failures: string[]
+) => {
+  await page.goto(`${base}/workbench/#/proposal`);
+  await page.waitForSelector('[data-testid="wb-proposal"]', {
+    timeout: 10000,
+  });
+  let summary: Record<string, unknown> = {};
+  try {
+    summary = JSON.parse(
+      fs.readFileSync(path.join(root, 'design-scan.summary.json'), 'utf8')
+    );
+  } catch {
+    failures.push('proposal: design-scan.summary.json missing in the build');
+  }
+  for (const key of ['offSpec', 'legacy']) {
+    const want = summary[key];
+    const shown: string | null = await page
+      .$eval(
+        `[data-testid="wb-prop-number"] [data-key="${key}"]`,
+        (el: Element) => el.textContent
+      )
+      .catch(() => null);
+    if (typeof want !== 'number' || shown?.replace(/,/g, '') !== `${want}`) {
+      failures.push(
+        `proposal: ${key} shows ${JSON.stringify(shown)}, summary has ${want}`
+      );
+    }
+  }
+  const charts = await page
+    .waitForSelector('[data-testid="wb-prop-chart"] path.wb-prop-line', {
+      timeout: 5000,
+    })
+    .then(() =>
+      page.$$eval('[data-testid="wb-prop-chart"]', (els: Element[]) =>
+        els.map((el) => ({
+          segments: (
+            el.querySelector('path.wb-prop-line')?.getAttribute('d') ?? ''
+          ).split('L').length,
+          dots: el.querySelectorAll('circle.wb-prop-dot').length,
+        }))
+      )
+    )
+    .catch(() => []);
+  if (charts.length < 2 || charts.some((c: any) => c.segments < 2)) {
+    failures.push(
+      `proposal: expected two trend lines, got ${JSON.stringify(charts)}`
+    );
+  }
+  const order = await page.$$eval(
+    '[data-testid="wb-prop-order"] li',
+    (els: Element[]) => els.length
+  );
+  if (order === 0) failures.push('proposal: migration order is empty');
+  const frames = await page.$$eval(
+    '[data-testid="wb-prop-split"] iframe[data-testid="wb-canvas"]',
+    (els: Element[]) => els.map((e) => e.getAttribute('src') ?? '')
+  );
+  if (
+    frames.length !== 2 ||
+    !frames[0].includes('mode:today') ||
+    !frames[1].includes('mode:redesign')
+  ) {
+    failures.push(
+      `proposal: expected Button frames in today and redesign, got ${JSON.stringify(
+        frames
+      )}`
+    );
+  }
+  console.log(
+    `proposal: offSpec ${summary.offSpec}, ${charts.length} charts (${charts
+      .map((c: any) => c.dots)
+      .join(', ')} points), ${order} components in the order`
+  );
+};
+
 const NEEDS_RECORD_ROUTE = 'admin/projects/$projectId/analysis/$analysisId';
 const REVIEW_ROUTE = 'admin/projects';
 const FRAME_TIMEOUT = 45000;
@@ -806,8 +887,9 @@ const main = async () => {
       '[data-testid="wb-missing"] li',
       (els: Element[]) => els.map((e) => (e.textContent ?? '').trim())
     );
-    if (missing.includes('index.json'))
+    if (missing.includes('index.json')) {
       failures.push('Storybook index.json was not found');
+    }
     console.log(
       `nav: ${nav.length} entries; data files missing: ${
         missing.join(', ') || 'none'
@@ -836,6 +918,8 @@ const main = async () => {
     });
 
     await galleryChecks(page, base, failures);
+
+    await proposalChecks(page, base, root, failures);
 
     await reviewChecks(page, base, failures);
     if (reviewHost) {

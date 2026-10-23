@@ -1,8 +1,7 @@
 import type { ReactNode } from 'react';
 
-// Empty states of the sections that are not built yet: a picture made of
-// shapes, what the section will hold, and a way back to what works now.
-type Kind = 'components' | 'patterns' | 'pages' | 'review' | 'proposal';
+// Pictures for the empty states of the sections, made of shapes.
+type Kind = 'components' | 'patterns' | 'pages' | 'review';
 
 const A = 'var(--wb-accent)';
 const T = 'var(--gv-teal-200)';
@@ -84,76 +83,6 @@ const PICTURES: Record<Kind, ReactNode> = {
       <path d="m114 82 3 3 5-6" stroke={A} strokeWidth="2" fill="none" />
     </>
   ),
-  proposal: (
-    <>
-      <rect
-        x="56"
-        y="16"
-        width="124"
-        height="132"
-        rx="12"
-        fill={W}
-        stroke={S}
-      />
-      <rect x="72" y="36" width="64" height="8" rx="4" fill={L} />
-      <rect
-        x="72"
-        y="58"
-        width="92"
-        height="12"
-        rx="3"
-        fill="var(--gv-red-100)"
-      />
-      <rect
-        x="72"
-        y="74"
-        width="92"
-        height="12"
-        rx="3"
-        fill="var(--gv-green-100)"
-      />
-      <rect x="72" y="96" width="76" height="8" rx="4" fill={L} />
-      <rect x="72" y="112" width="56" height="8" rx="4" fill={L} />
-      <circle cx="176" cy="132" r="16" fill={A} />
-      <path d="m169 132 5 5 9-10" stroke={W} strokeWidth="2.5" fill="none" />
-    </>
-  ),
-};
-
-// The Review page is built; its picture stays for its empty state.
-const COPY: Record<
-  Exclude<Kind, 'review'>,
-  { lead: string; items: string[] }
-> = {
-  components: {
-    lead: 'Every library component on a live canvas, in both modes.',
-    items: [
-      'Each story with its controls and states',
-      'The tokens a component reads, and where it still uses fixed values',
-      'Usage across the platform and accessibility results',
-    ],
-  },
-  patterns: {
-    lead: 'Compositions of components that pages repeat.',
-    items: [
-      'Forms, cards, lists and headers built from the library',
-      'The same token edits applied across a whole pattern',
-    ],
-  },
-  pages: {
-    lead: 'The redesigned pages of the platform.',
-    items: [
-      'Each page in Today and Redesign',
-      'How much of a page already runs on tokens',
-    ],
-  },
-  proposal: {
-    lead: 'Turn the edits of a session into a change to the token source.',
-    items: [
-      'A summary of every edit and what it touches',
-      'The token source diff, ready to hand to a developer',
-    ],
-  },
 };
 
 // The picture of a section, for other empty states.
@@ -169,31 +98,3 @@ export const PlaceholderArt = ({ kind }: { kind: Kind }) => (
     {PICTURES[kind]}
   </svg>
 );
-
-type Props = { title: string; kind: Exclude<Kind, 'review'> };
-
-const Placeholder = ({ title, kind }: Props) => (
-  <article className="wb-page">
-    <header className="wb-page-head">
-      <h1>{title}</h1>
-      <p className="wb-lead">{COPY[kind].lead}</p>
-    </header>
-    <section className="wb-empty" aria-label="Not built yet">
-      <PlaceholderArt kind={kind} />
-      <div className="wb-empty-text">
-        <span className="wb-badge wb-badge-soon">Not built yet</span>
-        <h2>What this section will show</h2>
-        <ul className="wb-checklist">
-          {COPY[kind].items.map((i) => (
-            <li key={i}>{i}</li>
-          ))}
-        </ul>
-        <a className="wb-button" href="#/foundations">
-          Explore Foundations
-        </a>
-      </div>
-    </section>
-  </article>
-);
-
-export default Placeholder;
