@@ -1,7 +1,8 @@
 import React, { ReactNode, useState } from 'react';
 
-import { Box, bo, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 import ModeScope from 'design-system/ModeScope';
+import { t } from 'design-system/tokens/tokens';
 
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
@@ -83,7 +84,7 @@ const ProjectWorkspace = ({
       width={PROJECT_PANEL_WIDTH}
       minHeight="0"
       overflowY="auto"
-      borderRadius={bo.panelBorderRadius}
+      borderRadius={t.radius.panel}
       background={colors.white}
     >
       {settingsPanel}
@@ -95,7 +96,7 @@ const ProjectWorkspace = ({
       width={PROJECT_PANEL_WIDTH}
       minHeight="0"
       overflowY="auto"
-      borderRadius={bo.panelBorderRadius}
+      borderRadius={t.radius.panel}
       background={colors.white}
     >
       {sidePanel}
@@ -109,7 +110,7 @@ const ProjectWorkspace = ({
       width={PHASE_PANEL_WIDTH}
       minHeight="0"
       overflowY="auto"
-      borderRadius={bo.panelBorderRadius}
+      borderRadius={t.radius.panel}
       background={colors.white}
     >
       {sidePanel}
@@ -127,7 +128,7 @@ const ProjectWorkspace = ({
       overflowY="auto"
       display="flex"
       flexDirection="column"
-      borderRadius={bo.panelBorderRadius}
+      borderRadius={t.radius.panel}
       background={colors.grey100}
     >
       {children}
