@@ -5,9 +5,11 @@
 //
 // The cities' own faces (Lentia Nova, Wiener Melange, KBH) are licensed to
 // them and their hosts serve the files without CORS, so the stack names the
-// real face first (it renders where it is installed) and then a free Google
-// Fonts look-alike, loaded from `fontCss`. Dublin uses Public Sans, the
-// platform default.
+// real face first (it renders where it is installed) and then an open
+// Google Fonts face in the same spirit, loaded from `fontCss`: picked to look
+// clearly unlike Public Sans and each other, so a city switch shows what a
+// tenant font does (Linz: a sturdy grotesk; Wien: a round geometric; KBH: a
+// wide, quirky face). Dublin uses Public Sans, the platform default.
 export const cities = {
   default: {
     title: 'Go Vocal default',
@@ -20,9 +22,9 @@ export const cities = {
     color_main: '#604596',
     color_secondary: '#ea4f53',
     color_text: '#313131',
-    font: '"LentiaNova-Neutral", "Figtree"',
+    font: '"LentiaNova-Neutral", "Space Grotesk"',
     fontCss:
-      'https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap',
+      'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap',
   },
   dublin: {
     title: 'Dublin',
@@ -35,18 +37,18 @@ export const cities = {
     color_main: '#ff5a64',
     color_secondary: '#462346',
     color_text: '#000000',
-    font: '"WienerMelange_W_Rg", "Mulish"',
+    font: '"WienerMelange_W_Rg", "Jost"',
     fontCss:
-      'https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap',
+      'https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap',
   },
   kobenhavn: {
     title: 'København',
     color_main: '#000c2e',
     color_secondary: '#851852',
     color_text: '#000c2e',
-    font: '"KBH-Regular", "Archivo"',
+    font: '"KBH-Regular", "Syne"',
     fontCss:
-      'https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap',
+      'https://fonts.googleapis.com/css2?family=Syne:wght@400..800&display=swap',
   },
 };
 
