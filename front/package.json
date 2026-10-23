@@ -56,6 +56,7 @@
     "ds:workbench:typecheck": "tsc -p .storybook/workbench/tsconfig.json",
     "ds:smoke": "tsx scripts/design-system/workbench-smoke.ts",
     "ds:lint": "tsx scripts/design-system/scan/index.ts --lint",
+    "ds:mode-check": "tsx scripts/design-system/mode-check.ts",
     "ds:check": "npm run ds:tokens -- --check && npm run ds:lint",
     "ds:a11y": "echo \"todo: ds:a11y\" && exit 1",
     "ds:visual": "tsx scripts/design-system/visual-run.ts",

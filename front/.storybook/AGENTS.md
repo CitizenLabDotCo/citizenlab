@@ -5,7 +5,7 @@ This branch builds a design-in-code workbench for the platform: CSS-variable des
 ## Vocabulary
 
 - **Token**: a named design value, a CSS variable `--gv-…`. Tier 1 primitive (`--gv-blue-500`, `--gv-space-4`), Tier 2 semantic (`--gv-color-text-heading`, `--gv-radius-control`). Components use Tier 2; spacing uses the `--gv-space-N` scale (4px steps).
-- **Mode**: a complete set of Tier 2 values. `today` is `:root`, every value as the code renders now. `redesign` is `[data-gv-mode="redesign"]`, the new design's values. Only `ModeScope` (on the redesigned back office pages, `app/containers/Admin/projects/project/backofficeRedesign/`) and the workbench toolbar set the attribute. The spec's `front-office` and `back-office` are `today` and `redesign` here.
+- **Mode**: a complete set of Tier 2 values. `today` is `:root`, every value as the code renders now. `redesign` is `[data-gv-mode="redesign"]`, the new design's values. Only `ModeScope` and the workbench toolbar set the attribute. `ModeScope` sits inside `ProjectWorkspace` (`app/containers/Admin/projects/project/backofficeRedesign/index.tsx`); the redesign scope is what renders under it, not that folder. `Event`, `NewPhase` and `UnsavedChangesGuard` are its siblings in `project/index.tsx` and render outside, and so does anything that portals (modals, dropdowns, tooltips mount in `#modal-portal` or `<body>`). `scripts/design-system/mode-scope.ts` computes the scope from the import graph, on the strict side: a file any outside file imports counts as outside. The spec's `front-office` and `back-office` are `today` and `redesign` here.
 - **City (tenant)**: the colours, font and language a platform is configured with (`getTheme(tenant)` in code). `ModeProvider` writes them into `--gv-tenant-*`. In the workbench it is a switch.
 - **Office**: back office (`bo`, admin routes), front office (`fo`, residents' routes), `shared` (both). From story tags first, else from the routes the scan finds.
 - **Off-spec**: a style value that is neither a token read nor a library component: hand-typed `8px`, `#1E1E1E`, `rgba(...)`, a `styled.div` with its own values, a local copy of a library component.
@@ -22,7 +22,7 @@ This branch builds a design-in-code workbench for the platform: CSS-variable des
 - Never change CI config, `.circleci/`, `.github/`, repo or org settings, secrets. CI runs `npm run build-storybook` on these branches and swallows its failure; so every step `build-storybook` runs (`ds:prepare`) must warn and exit 0 on missing inputs, a shallow clone or no `master` ref. Every gate here is local (`npm run ds:check`) plus a committed result file, never a CI gate.
 - No pull request, issue, PR comment or label unless the person asks for that one by name. The `propose` skill drafts PR text only.
 - New code only under `app/component-library/`, `.storybook/`, `scripts/design-system/`, `app/design-system/`, `.claude/skills/`. Outside those: heals and lifts (style only, one per commit), `app/containers/App/index.tsx` (tokens.css import, `ModeProvider`), `vite.config.ts` (the tag flag), the `ModeScope` wrapper, `package.json` scripts and devDependencies. Stories may sit beside components in `app/components/UI/` and `app/components/admin/`; they are not product code.
-- Participant-facing code changes only through mode safe heals: outside the redesign scope, a heal's token must have a `today` value equal to the value the code renders now. The `heal` skill checks it with `.claude/skills/heal/mode-check.cjs` and refuses otherwise, whatever the task's mode says.
+- Participant-facing code changes only through mode safe heals: outside the redesign scope, a heal's token must have a `today` value equal to the value the code renders now. The `heal` skill checks it with `npm run ds:mode-check` and refuses otherwise, whatever the task's mode says. Inside the redesign scope the `redesign` value must match unless the task says `mode redesign`.
 - Never introduce a raw value where a token exists. New values go into `app/design-system/tokens/tokens.source.json`, in a `design-system(token)` commit.
 - Commits: small, `design-system(<area>): <what> [AI-assisted]`, one heal or lift per commit, the repo's configured git identity. Areas the Review page reads: `heal`, `lift`, `token` (design changes), `stories` (stories), anything else is tooling.
 - Stage files by name (`git add <paths>`, never `git add -A`): other work may be uncommitted in the tree.
@@ -47,6 +47,7 @@ This branch builds a design-in-code workbench for the platform: CSS-variable des
 | `npm run ds:workbench` | Build the shell into `.storybook/static/workbench/`. `npm run ds:workbench:typecheck` typechecks it. |
 | `npm run ds:visual -- --baseline <dir>` / `-- --compare <dir> [--summary <file>] [--allow-px N] [--url <storybook>]` | Screenshot every story at 1280x900 and 390x844 (mode today), save or compare. Compare writes `visual-summary.json` unless `--summary` points elsewhere. Default URL `http://localhost:6006`. |
 | `npm run ds:smoke -- --dir <storybook output> [--screenshot <png>] [--review-host <origin>]` | Serve a built Storybook and check the shell pages and the console. |
+| `npm run ds:mode-check -- --file <path> --token <name> --now <value> [--mode today\|redesign\|both]` | Mode safety of one heal. Exit 0 safe, 3 stop, 2 bad input. Reads `design-scan.json`, so run `ds:scan` first. |
 | `npm run ds:a11y`, `npm run ds:audit` | Not built yet: they print `todo` and exit 1. |
 | `npm run typecheck` | App typecheck (does not cover `.storybook/` or `scripts/`). Slow: once per task. |
 | `npx jest <path>` | Tests for a path (`npm run test -- <path>` is the same). |
@@ -82,6 +83,8 @@ Scripts, `scripts/design-system/`:
 - `visual-run.ts`, `visual-summary.ts`: story screenshots and pixel compare (`ds:visual`).
 - `workbench-smoke.ts`: smoke test of the built shell (`ds:smoke`).
 - `playwright.ts`: loads Playwright from `GV_PLAYWRIGHT_DIR`.
+- `mode-scope.ts`: the redesign scope, the files that render only under `ModeScope` (import graph, portals and outside importers excluded).
+- `mode-check.ts`: one heal's mode safety (`ds:mode-check`); `mode-scope.test.ts` covers both.
 - `fixtures/`: scanner test inputs (`findings/`, `routes/app/`).
 - `README.md`: the scripts in more detail.
 - Planned, not built: `a11y-run.ts` (`ds:a11y`), `audit.ts` (`ds:audit`), `trend.ts`.
@@ -125,10 +128,14 @@ The shell, `.storybook/workbench/` (React and Vite, its own `tsconfig.json`):
 Components, `app/component-library/`:
 - `components/<Name>/index.tsx`: the component; `gvTag` on its root.
 - `components/<Name>/<Name>.stories.tsx`: its states, office tag.
-- `components/<Name>/a11y.json` (planned): the agent-filled checklist.
+- `<Name>/a11y.json` (planned): the agent-filled checklist, at the spec's path `app/component-library/<Component>/a11y.json`, not inside `components/<Name>/`.
 - `utils/styleUtils.ts`: the old theme (`colors`, `bo`, `stylingConsts`, `getTheme`); bridged keys return `var(--gv-…, <today value>)`.
 
-Skills, `.claude/skills/`: `heal`, `lift`, `story`, `new-component`, `audit`, `a11y-review`, `propose`, one `SKILL.md` each; `heal/mode-check.cjs` is the mode safety check.
+Skills, `.claude/skills/`: `heal`, `lift`, `story`, `new-component`, `audit`, `a11y-review`, `propose`, one `SKILL.md` each. The mode safety check they run is `ds:mode-check`.
+
+App build, `front/`:
+- `package.json`: the `ds:*` scripts, `storybook`, `build-storybook` and the design system devDependencies.
+- `vite.config.ts`: defines `VITE_GV_DESIGN_TAGS` for the app build (the `gvTag` flag; Storybook does not read it).
 
 ## The heal task
 

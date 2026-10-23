@@ -17,7 +17,7 @@ or a name with its folder. To choose what to lift, rank the local pieces of `bac
 
 ## Stop conditions
 
-- **Mode safety.** The lifted component renders the same on the redesigned page as before: every value it reads becomes a token whose `redesign` value equals the value it has now (`node .claude/skills/heal/mode-check.cjs --file <original file> --token <token> --now <value> --mode redesign` for each). If the original also renders outside the redesign scope, the `today` value must match too (the check says which).
+- **Mode safety.** The lifted component renders the same on the redesigned page as before: every value it reads becomes a token whose `redesign` value equals the value it has now (`npm run -s ds:mode-check -- --file <original file> --token <token> --now <value> --mode redesign` for each). If the original also renders outside the redesign scope (rendered by `Event` or `NewPhase`, or portalled), the `today` value must match too; the check says which.
 - **Style only.** The lift moves code and swaps values for tokens. It does not change behaviour, data, copy or props beyond what the move needs. Logic tied to the page (queries, routing, page state) stays where it is: lift the presentational part only, or stop.
 - **One component per commit.** A piece that needs a second piece lifted first: lift that one first, in its own commit.
 - **Name clash.** A library component of that name or role exists already: stop and report; the right move may be a heal to the existing one.

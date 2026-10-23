@@ -23,7 +23,7 @@ check: story <story id>, routes <list>
 
 Stop, change nothing (or revert what you changed), and report why with the evidence. Do not look for a way around a stop.
 
-1. **Mode safety (SPEC 7.5).** `mode-check.cjs` exits 3. Outside the redesign scope the token's `today` value must equal the value the code renders now. This holds for a shared component whatever the task's mode says, `both` included: a change to today's look is a token commit, not a heal. Inside the redesign scope a different `redesign` value is allowed only when the task says `mode redesign`.
+1. **Mode safety (SPEC 7.5).** `ds:mode-check` exits 3. Outside the redesign scope the token's `today` value must equal the value the code renders now. This holds for a shared component whatever the task's mode says, `both` included: a change to today's look is a token commit, not a heal. Inside the redesign scope (files that render only under `ModeScope`, not the whole `backofficeRedesign/` folder) a different `redesign` value is allowed only when the task says `mode redesign`.
 2. **Style only.** The heal would change data, handlers, routing, copy, props an API exposes, or component structure beyond swapping local markup for the library component.
 3. **One component per commit.** The heal needs edits inside a second component (call sites that only gain a layout spacing prop do not count, see the spacing rule).
 4. **No token fits.** No token has the value, or a colour in a component would need a Tier 1 primitive and no Tier 2 colour has the same `today` value. A new token is a change to `tokens.source.json` in its own `design-system(token)` commit, not part of a heal.
@@ -43,17 +43,17 @@ Stop, change nothing (or revert what you changed), and report why with the evide
 - [ ] 3. Resolve the value the code renders now. A literal is itself. A legacy read (`theme.borderRadius`, `colors.x`, `bo.x`, `stylingConsts.x`) is the value in its source (`app/component-library/utils/styleUtils.ts`, where `colors`, `bo`, `stylingConsts` and `getTheme` live); a number used as px is `<n>px`; a bridged theme key returns `var(--gv-…, <fallback>)` and renders the fallback today. A legacy key in a token's `legacy` list is not proof the values match: `bo.borderRadius` is `8px`, `--gv-radius-control` is `3px` today.
 - [ ] 4. Mode check:
   ```
-  node .claude/skills/heal/mode-check.cjs --file <file> --token <token> --now <value> --mode <mode>
+  npm run -s ds:mode-check -- --file <file> --token <token> --now <value> --mode <mode>
   ```
-  Exit 3 is stop 1. The check reads where the file renders from the scan (routes, and whether it sits under a `ModeScope`), so run `ds:scan` first. Run it once per file the heal edits.
+  Give `--now` as hex or rgb() for colours and with its unit for lengths. Exit 3 is stop 1; exit 2 is a typo in the command. The check reads the routes from the scan, so run `ds:scan` first, and decides the redesign scope from the import graph: `Event`, `NewPhase`, `UnsavedChangesGuard` and anything that portals (modals, dropdowns, tooltips) are outside even inside `backofficeRedesign/`. Run it once per file the heal edits.
 - [ ] 5. Start Storybook in another terminal (`npm run storybook`, port 6006) and save a baseline of every story: `npm run ds:visual -- --baseline <scratch>/before`. Screenshot the healed story in both modes (step 9 has the command) as `before-today.png` and `before-redesign.png`.
 - [ ] 6. Edit. Use `t` from `design-system/tokens/tokens` (`t.radius.control`, `t.space[4]`) in TS and styled templates, or `var(--gv-…)` in CSS strings. `rgba(colors.x, 0.5)` becomes `color-mix(in srgb, var(--gv-…) 50%, transparent)`. For spacing, follow the two-sided rule below. Add or update the story for the state the heal touches (see the `story` skill).
 - [ ] 7. Scope, then checks. Scope first:
   ```
-  git diff --name-only | sed -n 's#^front/##; s#^app/component-library/components/\([^/]*\)/.*#\1#p' | sort -u
+  git diff --name-only | sed -n 's#^front/##; s#^app/component-library/components/\([^/]*\)/.*#\1#p; s#^app/components/\(UI\|admin\)/\([^/]*\)/.*#\1/\2#p' | sort -u
   git diff -U0
   ```
-  The first prints the library components you touched: more than one is stop 3, unless the others only gained a spacing prop at a call site. In the second, every changed line is a style value, a token import, a story, or a call-site spacing prop; anything else (a handler, a condition, copy, a prop of the component's API) is stop 2. Then, in this order:
+  The first prints the components you touched (library, `UI/<Name>`, `admin/<Name>`): more than one is stop 3, unless the others only gained a spacing prop at a call site. In the second, every changed line is a style value, a token import, a story, or a call-site spacing prop; anything else (a handler, a condition, copy, a prop of the component's API) is stop 2. Then, in this order:
   ```
   npm run ds:check
   npx jest <component folder>
@@ -81,13 +81,13 @@ A component owns only its inside spacing. The space between components belongs t
 - **Inside spacing** (padding inside the component, gaps between its own parts): heal in place to a space token.
 - **Outside spacing** (a margin on the component's root, or padding that only spaces it from its neighbours): it leaves the component. In the same commit:
   1. Find the call sites: `node -e 'require("./.storybook/static/design-scan.json").usages.filter(u=>u.component===process.argv[1]).forEach(u=>console.log(u.file+":"+u.line))' <Component>`. More than 10: stop 6.
-  2. The value must be a scale step: a `--gv-space-N` whose `today` equals it (`4px` steps, `0` to `96px`). Else stop 6.
+  2. The value must be a scale step: a `--gv-space-N` whose `today` equals it (`0`, `4`, `8`, `12`, `16`, `20`, `24`, `28`, `32`, `40`, `48`, `64`, `80`, `96` px; `36`, `44` or `56` are not steps). Else stop 6.
      ```
      node -e 'const v=process.argv[1];const s=require("./app/design-system/tokens/tokens.meta.json").filter(t=>/^--gv-space-\d+$/.test(t.name)&&t.values.today===v);console.log(s.length?s[0].name:"not a scale step")' <value>
      ```
   3. Remove the margin from the component.
   4. At each call site give the same space to the layout primitive: the component's own Box margin props if it takes them (`mb={t.space[4]}`), else the gap or padding of the `Box` that already holds it, else a `<Box mb={t.space[4]}>` wrapper. If a wrapper changes layout (a flex or grid child), stop 2.
-  5. Run `mode-check.cjs` for each call-site file with the space token.
+  5. Run `ds:mode-check` for each call-site file with the space token.
 - **Call-site findings** (`layout-spacing`, a literal on a `Box` prop): one-sided, replace the literal with the scale step.
 
 ## Commit message
@@ -114,4 +114,4 @@ Screenshots: .storybook/static/heals/<sha>/{before,after}-{today,redesign}.png
 Call sites changed: <list or none>
 ```
 
-A stop report names the stop condition, the evidence (the `mode-check.cjs` output, the failing check) and what would make the heal possible.
+A stop report names the stop condition, the evidence (the `ds:mode-check` output, the failing check) and what would make the heal possible.

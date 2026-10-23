@@ -5,7 +5,7 @@ description: Use when asked to review the accessibility of one library component
 
 # a11y-review
 
-Review one component and write `app/component-library/components/<Name>/a11y.json` plus a short report. Read `front/.storybook/AGENTS.md` first if you have not this session. Run every command from `front/`.
+Review one component and write `app/component-library/<Component>/a11y.json` (SPEC 7.5; `<Component>` is the component name, for example `app/component-library/Button/a11y.json`) plus a short report. Read `front/.storybook/AGENTS.md` first if you have not this session. Run every command from `front/`.
 
 ## Input
 
