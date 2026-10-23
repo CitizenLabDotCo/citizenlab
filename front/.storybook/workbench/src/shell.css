@@ -6873,3 +6873,42 @@ tr[data-result='needs-human'] .wb-a11y-note {
 .wb-also-row > :last-child {
   margin-left: auto;
 }
+
+.wb-drawer-group {
+  margin: var(--gv-space-3) 0 var(--gv-space-1);
+}
+
+.wb-change-list li.wb-change-el {
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+}
+
+.wb-change-list li.wb-change-el > div {
+  grid-column: auto;
+}
+
+.wb-change-list li.wb-change-el > button {
+  grid-row: auto;
+  grid-column: auto;
+}
+
+.wb-change-glyph {
+  display: inline-flex;
+  justify-content: center;
+  width: 20px;
+  color: var(--wb-muted);
+}
+
+.wb-change-where {
+  font-size: 11px;
+  color: var(--wb-muted);
+}
+
+.wb-change-mark {
+  display: inline-flex;
+  color: var(--wb-muted);
+}
+
+.wb-change-look {
+  color: var(--wb-fail);
+}
