@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { waitFor } from 'storybook/test';
 
 import { VotingContext } from 'api/baskets_ideas/useVoting';
 import {
@@ -45,6 +46,20 @@ const meta = {
   component: IdeaCard,
   parameters: {
     chromatic: { disableSnapshot: false },
+  },
+  // The cards render once the idea (MSW) has loaded, so the play step waits
+  // for both titles and their images.
+  play: async ({ canvasElement }) => {
+    await waitFor(
+      () => {
+        const titles = canvasElement.querySelectorAll('.e2e-idea-card-title');
+        const images = [...canvasElement.querySelectorAll('img')];
+        if (titles.length < 2 || images.some((image) => !image.complete)) {
+          throw new Error('cards not loaded yet');
+        }
+      },
+      { timeout: 10000 }
+    );
   },
 } satisfies Meta<typeof IdeaCard>;
 
