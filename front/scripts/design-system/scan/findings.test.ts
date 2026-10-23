@@ -320,6 +320,31 @@ describe('nearestToken', () => {
       '--gv-red-500'
     );
   });
+  it('suggests only tokens of the same alpha for a colour', () => {
+    const pool = [
+      ...TOKENS,
+      tok('--gv-scrim', 'color', 'rgba(0,0,0,0.7)'),
+      tok('--gv-half', 'color', '#00000080'),
+    ];
+    // Opaque black is no suggestion for a translucent black.
+    expect(nearestToken('rgba(0,0,0,0.18)', 'rgba', pool)).toBeUndefined();
+    expect(nearestToken('rgba(0, 0, 0, 0.7)', 'rgba', pool)).toEqual({
+      token: '--gv-scrim',
+      distance: 0,
+    });
+    // Within half an 8-bit step: #00000080 is 0.502.
+    expect(nearestToken('rgba(0, 0, 0, 0.5)', 'rgba', pool)?.token).toBe(
+      '--gv-half'
+    );
+    expect(nearestToken('rgb(0 0 0 / 50%)', 'rgba', pool)?.token).toBe(
+      '--gv-half'
+    );
+    expect(nearestToken('#0000004d', 'hex', pool)).toBeUndefined();
+    // An alpha of 1 is opaque.
+    expect(nearestToken('rgba(0, 0, 0, 1)', 'rgba', pool)?.token).toBe(
+      '--gv-black'
+    );
+  });
   it('prefers tier-1 primitives on equal distance, then name', () => {
     const t = (name: string, tier: 1 | 2): TokenMeta => ({
       ...tok(name, 'space', '8px'),

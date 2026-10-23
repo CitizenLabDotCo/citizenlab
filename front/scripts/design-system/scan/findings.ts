@@ -20,8 +20,14 @@ const parsePx = (raw: string): number | undefined => {
 };
 
 type RGB = [number, number, number];
+// Red, green and blue 0-255, alpha 0-1.
+type RGBA = [number, number, number, number];
 
-const parseColor = (raw: string): RGB | undefined => {
+// Two alphas are the same within half of one 8-bit step, so `#00000080`
+// (0.502) matches `rgba(0, 0, 0, 0.5)`.
+const ALPHA_TOLERANCE = 0.002;
+
+const parseColor = (raw: string): RGBA | undefined => {
   const s = raw.trim().toLowerCase();
   const hex = /^#([0-9a-f]{3,8})$/.exec(s);
   if (hex) {
@@ -33,15 +39,23 @@ const parseColor = (raw: string): RGB | undefined => {
         .join('');
     }
     if (h.length !== 6 && h.length !== 8) return undefined;
-    return [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16)) as RGB;
+    const n = (i: number) => parseInt(h.slice(i, i + 2), 16);
+    return [n(0), n(2), n(4), h.length === 8 ? n(6) / 255 : 1];
   }
-  const fn = /^rgba?\(\s*([\d.]+)\s*[, ]\s*([\d.]+)\s*[, ]\s*([\d.]+)/.exec(s);
-  if (fn) return [Number(fn[1]), Number(fn[2]), Number(fn[3])];
+  const fn =
+    /^rgba?\(\s*([\d.]+)\s*[, ]\s*([\d.]+)\s*[, ]\s*([\d.]+)(?:\s*[,/ ]\s*([\d.]+)(%?))?/.exec(
+      s
+    );
+  if (fn) {
+    let a = fn[4] === undefined ? 1 : Number(fn[4]);
+    if (fn[5] === '%') a /= 100;
+    return [Number(fn[1]), Number(fn[2]), Number(fn[3]), a];
+  }
   if (NAMED_COLORS[s]) return parseColor(NAMED_COLORS[s]);
   return undefined;
 };
 
-const toLab = ([r, g, b]: RGB): RGB => {
+const toLab = ([r, g, b]: RGB | RGBA): RGB => {
   const lin = (v: number) => {
     const c = v / 255;
     return c <= 0.04045 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
@@ -58,7 +72,7 @@ const toLab = ([r, g, b]: RGB): RGB => {
 };
 
 // CIE76: Euclidean distance in Lab.
-const deltaE76 = (a: RGB, b: RGB): number => {
+const deltaE76 = (a: RGBA, b: RGBA): number => {
   const [l1, a1, b1] = toLab(a);
   const [l2, a2, b2] = toLab(b);
   return Math.sqrt((l1 - l2) ** 2 + (a1 - a2) ** 2 + (b1 - b2) ** 2);
@@ -70,7 +84,8 @@ const round = (n: number) => Math.round(n * 100) / 100;
  * Nearest token by value (uses each token's `values.today`). Exact match wins
  * (distance 0), otherwise the closest; ties prefer tier-1 primitives over
  * tier-2 semantics, then token name, so output is
- * deterministic. px distance is absolute px; colour distance is CIE76 in Lab.
+ * deterministic. px distance is absolute px; colour distance is CIE76 in Lab,
+ * among tokens of the same alpha only.
  * `tokenCategory` optionally restricts the pool (`space`, `radius`, ...);
  * without it, px values are compared against `space` tokens and colours
  * against `color` tokens.
@@ -109,13 +124,17 @@ export const nearestToken = (
   }
 
   if (category === 'hex' || category === 'rgba' || category === 'named-color') {
-    const rgb = parseColor(raw);
-    if (!rgb) return undefined;
+    const rgba = parseColor(raw);
+    if (!rgba) return undefined;
+    // Only a token of the same alpha can stand in: an opaque token is not a
+    // suggestion for a translucent colour, however close its RGB.
     tokens
       .filter((t) => t.category === (tokenCategory ?? 'color'))
       .forEach((t) => {
         const v = parseColor(t.values.today);
-        if (v) consider(t.name, deltaE76(rgb, v), t.tier);
+        if (v && Math.abs(v[3] - rgba[3]) <= ALPHA_TOLERANCE) {
+          consider(t.name, deltaE76(rgba, v), t.tier);
+        }
       });
     return best;
   }
