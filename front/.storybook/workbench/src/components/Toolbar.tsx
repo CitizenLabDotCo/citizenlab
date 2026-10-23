@@ -1,13 +1,8 @@
-import { ReactNode, useEffect, useRef, useState } from 'react';
-
 import type { Mode } from '@ds/tokens/tokens';
 
-import { cities, DEFAULT_CITY } from '../../../cities';
-import { LANGUAGES } from '../../../languages';
+import { DEFAULT_CITY } from '../../../cities';
 import { GV_VIEWPORTS, GvViewport } from '../../../viewports';
-import { focusables, trapTab } from '../lib/focus';
 import type { FrameGlobals } from '../lib/frame';
-import { useToolbarHeight } from '../lib/useToolbarHeight';
 
 import Icon from './Icon';
 
@@ -33,7 +28,7 @@ export const DEFAULT_TOOLBAR: ToolbarState = {
   zoom: 'fit',
 };
 
-const VIEWPORTS: { value: CanvasViewport; label: string }[] = [
+export const VIEWPORTS: { value: CanvasViewport; label: string }[] = [
   { value: 'fit', label: 'Fit to story' },
   ...Object.entries(GV_VIEWPORTS).map(([v, vp]) => ({
     value: v as GvViewport,
@@ -41,24 +36,10 @@ const VIEWPORTS: { value: CanvasViewport; label: string }[] = [
   })),
 ];
 
-const MODES: { value: Mode; label: string }[] = [
+export const MODES: { value: Mode; label: string }[] = [
   { value: 'today', label: 'Today' },
   { value: 'redesign', label: 'Redesign' },
 ];
-
-type Props = {
-  value: ToolbarState;
-  onChange: (next: ToolbarState) => void;
-  // Set when the page shows both modes at once: the mode field is off,
-  // reads "Both" and says why.
-  modeLocked?: string;
-  // Set when the story sets its own language: the field shows it, off.
-  storyLang?: string;
-  // The scale Fit came to, shown next to the zoom control.
-  fitScale?: number;
-  // Page tools at the end of the bar.
-  children?: ReactNode;
-};
 
 type FieldProps = {
   id: keyof ToolbarState;
@@ -73,7 +54,7 @@ type FieldProps = {
 // A select drawn as a compact dropdown button: the label is for screen
 // readers and the tooltip, the value is what shows. The tooltip names the
 // value too, as a narrow bar can cut it short.
-const Field = ({
+export const Field = ({
   id,
   label,
   value,
@@ -110,7 +91,7 @@ const percent = (z: number) => `${Math.round(z * 100)}%`;
 
 // Fit, a fixed zoom, and a step down and up. The field says what Fit came
 // to, so the true size (100%) is one pick away.
-const ZoomControl = ({
+export const ZoomControl = ({
   zoom,
   fitScale,
   onChange,
@@ -167,152 +148,3 @@ const ZoomControl = ({
     </div>
   );
 };
-
-// Mode, city, viewport, language and zoom of the canvas. Mode, city and
-// language go into the preview frame's globals; the viewport sizes the
-// frame. On a phone the fields fold into one button that opens a sheet.
-const Toolbar = ({
-  value,
-  onChange,
-  modeLocked,
-  storyLang,
-  fitScale,
-  children,
-}: Props) => {
-  const [sheet, setSheet] = useState(false);
-  const sheetButton = useRef<HTMLButtonElement>(null);
-  const fieldsRef = useRef<HTMLDivElement>(null);
-  const barRef = useToolbarHeight();
-  const closeSheet = () => {
-    setSheet(false);
-    sheetButton.current?.focus();
-  };
-  // The open sheet takes focus, keeps Tab inside, and hands focus back to
-  // its button when it closes.
-  useEffect(() => {
-    if (!sheet) return undefined;
-    focusables(fieldsRef.current)[0]?.focus();
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Tab') {
-        trapTab(e, fieldsRef.current);
-        return;
-      }
-      if (e.key !== 'Escape') return;
-      setSheet(false);
-      sheetButton.current?.focus();
-    };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [sheet]);
-  const set =
-    <K extends keyof ToolbarState>(key: K) =>
-    (v: string) =>
-      onChange({ ...value, [key]: v as ToolbarState[K] });
-  const cityTitle =
-    (cities as Record<string, { title: string } | undefined>)[value.city]
-      ?.title ?? value.city;
-  const viewportLabel =
-    VIEWPORTS.find((v) => v.value === value.viewport)?.label ?? '';
-  const lang = storyLang ?? value.lang;
-  const langLabel =
-    LANGUAGES.find((l) => l.value === lang)?.label ?? lang.toUpperCase();
-  const languages: { value: string; label: string }[] = LANGUAGES.map(
-    ({ value: v, label }) => ({
-      value: v,
-      label,
-    })
-  );
-  if (!languages.some((l) => l.value === lang)) {
-    languages.push({ value: lang, label: lang });
-  }
-  const summary = [
-    modeLocked ? 'Both' : MODES.find((m) => m.value === value.mode)?.label,
-    cityTitle,
-    viewportLabel,
-    value.zoom === 'fit' ? 'Fit' : percent(value.zoom),
-  ].join(' · ');
-  return (
-    <div
-      ref={barRef}
-      className="wb-toolbar"
-      role="toolbar"
-      aria-label="Canvas"
-      data-sheet={sheet ? 'open' : undefined}
-    >
-      <button
-        type="button"
-        className="wb-toolbar-summary"
-        ref={sheetButton}
-        aria-expanded={sheet}
-        aria-controls="wb-toolbar-fields"
-        onClick={() => setSheet((s) => !s)}
-      >
-        <span className="wb-toolbar-summary-label">Canvas</span>
-        <span className="wb-toolbar-summary-value">{summary}</span>
-        <Icon name="chevron" size={14} />
-      </button>
-      {sheet && (
-        <button
-          type="button"
-          className="wb-toolbar-scrim"
-          aria-label="Close canvas settings"
-          tabIndex={-1}
-          onClick={closeSheet}
-        />
-      )}
-      <div className="wb-toolbar-fields" id="wb-toolbar-fields" ref={fieldsRef}>
-        <p className="wb-toolbar-sheet-title">Canvas settings</p>
-        <Field
-          id="mode"
-          label="Mode"
-          value={modeLocked ? 'both' : value.mode}
-          options={
-            modeLocked ? [{ value: 'both', label: 'Both' }, ...MODES] : MODES
-          }
-          onChange={set('mode')}
-          disabled={!!modeLocked}
-          title={modeLocked ? `Mode: ${modeLocked}` : undefined}
-        />
-        <Field
-          id="city"
-          label="City"
-          value={value.city}
-          options={Object.entries(cities).map(([v, c]) => ({
-            value: v,
-            label: c.title,
-          }))}
-          onChange={set('city')}
-        />
-        <Field
-          id="viewport"
-          label="Viewport"
-          value={value.viewport}
-          options={VIEWPORTS}
-          onChange={set('viewport')}
-        />
-        <Field
-          id="lang"
-          label="Language"
-          value={lang}
-          options={languages}
-          onChange={set('lang')}
-          disabled={!!storyLang}
-          title={
-            storyLang
-              ? `Language: this story sets ${langLabel} itself.`
-              : undefined
-          }
-        />
-        <span className="wb-toolbar-sep" aria-hidden="true" />
-        <ZoomControl
-          zoom={value.zoom}
-          fitScale={fitScale}
-          onChange={(zoom) => onChange({ ...value, zoom })}
-        />
-      </div>
-      {children && <div className="wb-toolbar-tools">{children}</div>}
-    </div>
-  );
-};
-
-export default Toolbar;

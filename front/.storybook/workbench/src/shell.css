@@ -6126,3 +6126,366 @@ tr[data-result='needs-human'] .wb-a11y-note {
 .wb-rstats-strip .wb-rstat-note {
   display: none;
 }
+
+/* Component page as a design tool: the canvas takes the column, the
+   inspector (Design, Inspect) takes the panel. */
+.wb-component-page {
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+  /* The main column's padding is 40px top and 64px bottom. */
+  min-height: calc(100% - var(--gv-space-16));
+}
+
+.wb-component-page .wb-component-head {
+  margin-bottom: var(--gv-space-4);
+}
+
+.wb-component-page .wb-stage {
+  flex: 1;
+}
+
+.wb-canvas-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gv-space-2) var(--gv-space-3);
+  align-items: center;
+  margin-bottom: var(--gv-space-3);
+}
+
+.wb-canvas-bar-end {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: var(--gv-space-2);
+  align-items: center;
+  margin-left: auto;
+}
+
+.wb-canvas-bar .wb-segmented button {
+  display: inline-flex;
+  gap: var(--gv-space-1);
+  align-items: center;
+}
+
+/* Inspector: Figma-like blocks, edge to edge in the panel. */
+.wb-insp {
+  margin: 0 calc(-1 * var(--gv-space-4));
+}
+
+.wb-insp-top {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 var(--gv-space-4) var(--gv-space-3);
+}
+
+.wb-insp > .wb-changes {
+  margin: 0 var(--gv-space-4) var(--gv-space-3);
+}
+
+.wb-insp-block {
+  padding: var(--gv-space-3) var(--gv-space-4) var(--gv-space-4);
+  border-top: 1px solid var(--wb-border);
+}
+
+.wb-insp-head {
+  display: flex;
+  gap: var(--gv-space-2);
+  align-items: center;
+  justify-content: space-between;
+  min-height: 28px;
+  margin-bottom: var(--gv-space-2);
+}
+
+.wb-insp-head h3 {
+  margin: 0;
+  font-size: var(--gv-fs-13);
+  font-weight: 600;
+  color: var(--wb-heading);
+}
+
+.wb-shell .wb-insp-action {
+  width: 28px;
+  height: 28px;
+  min-height: 0;
+  padding: 0;
+}
+
+.wb-insp-row {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: var(--gv-space-2);
+  align-items: center;
+  min-height: 32px;
+}
+
+.wb-insp-row + .wb-insp-row,
+.wb-insp-prop + .wb-insp-prop {
+  margin-top: var(--gv-space-1);
+}
+
+/* A row with no label (Fill, a uniform radius) spans the block. */
+.wb-insp-row:not(:has(.wb-insp-label)) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.wb-insp-label {
+  font-size: var(--gv-fs-xs);
+  color: var(--wb-muted);
+}
+
+.wb-insp-control {
+  min-width: 0;
+}
+
+/* The canvas fields fill their row, drawn like Figma's dropdowns. */
+.wb-insp .wb-toolbar-field {
+  display: flex;
+  width: 100%;
+}
+
+.wb-insp .wb-toolbar-field select {
+  width: 100%;
+  max-width: none;
+  background: var(--wb-subtle);
+  field-sizing: fixed;
+}
+
+.wb-insp .wb-toolbar-field select:hover {
+  background: var(--wb-sunken);
+}
+
+/* A value: the bare one is plain text in a box; from a token, a chip. */
+.wb-insp-value {
+  display: flex;
+  gap: var(--gv-space-2);
+  align-items: center;
+  width: 100%;
+  min-height: 32px;
+  padding: 0 var(--gv-space-2);
+  font: inherit;
+  font-size: var(--gv-fs-xs);
+  color: var(--wb-text);
+  text-align: left;
+  background: var(--wb-subtle);
+  border: 1px solid transparent;
+  border-radius: var(--wb-radius);
+}
+
+.wb-shell button.wb-insp-token {
+  min-height: 32px;
+  padding: 0 var(--gv-space-2);
+  font-weight: 400;
+  color: var(--wb-heading);
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border-strong);
+  cursor: pointer;
+}
+
+.wb-shell button.wb-insp-token:hover {
+  border-color: var(--wb-accent);
+}
+
+.wb-shell button.wb-insp-token[aria-expanded='true'] {
+  border-color: var(--wb-accent);
+  box-shadow: 0 0 0 1px var(--wb-accent);
+}
+
+.wb-shell button.wb-insp-token[data-link='equal'] {
+  border-style: dashed;
+}
+
+.wb-insp-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.wb-insp-token .wb-insp-text {
+  font-weight: 500;
+}
+
+.wb-insp-raw {
+  flex: none;
+  font-family: var(--wb-mono);
+  font-size: 11px;
+  color: var(--wb-muted);
+}
+
+.wb-insp-equal {
+  flex: none;
+}
+
+.wb-insp-swatch {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
+}
+
+.wb-insp-token > .wb-icon {
+  color: var(--wb-muted);
+}
+
+.wb-insp-layer {
+  display: flex;
+  gap: var(--gv-space-2);
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: var(--gv-fs-xs);
+}
+
+.wb-insp-layer-name {
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 600;
+  color: var(--wb-heading);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.wb-insp-layer-size {
+  flex: none;
+  font-variant-numeric: tabular-nums;
+  color: var(--wb-muted);
+  white-space: pre;
+}
+
+.wb-insp-hint {
+  margin: 0;
+  font-size: var(--gv-fs-xs);
+  color: var(--wb-muted);
+}
+
+.wb-insp-editor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-2);
+  margin: var(--gv-space-2) 0 var(--gv-space-1);
+  padding: var(--gv-space-3);
+  background: var(--wb-subtle);
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius);
+}
+
+.wb-insp-editor-name {
+  font-size: var(--gv-fs-xs);
+  font-weight: 600;
+  color: var(--wb-heading);
+  overflow-wrap: anywhere;
+}
+
+.wb-insp-editor-note {
+  margin: 0;
+  font-size: var(--gv-fs-xs);
+  color: var(--wb-muted);
+}
+
+.wb-insp-heal {
+  margin-top: var(--gv-space-2);
+}
+
+.wb-insp-modes {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  font-size: var(--gv-fs-xs);
+}
+
+.wb-insp-modes > div {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  color: var(--wb-muted);
+}
+
+.wb-insp-modes dt {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 11px;
+}
+
+.wb-insp-modes dd {
+  display: flex;
+  gap: var(--gv-space-1);
+  align-items: center;
+  margin: 0;
+  font-family: var(--wb-mono);
+  overflow-wrap: anywhere;
+}
+
+.wb-insp-modes .wb-insp-mode-on {
+  color: var(--wb-heading);
+}
+
+.wb-insp-editor .wb-token-edit input {
+  min-width: 0;
+  flex: 1;
+}
+
+.wb-insp-props > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.wb-insp-props > summary::-webkit-details-marker {
+  display: none;
+}
+
+.wb-insp-props:not([open]) > summary .wb-icon {
+  transform: rotate(-90deg);
+}
+
+.wb-insp-props:not([open]) > summary {
+  margin-bottom: 0;
+}
+
+.wb-inspect > .wb-segmented {
+  display: flex;
+  margin-bottom: var(--gv-space-4);
+}
+
+.wb-shell .wb-inspect > .wb-segmented button {
+  flex: 1;
+}
+
+.wb-shell button.wb-insp-token,
+.wb-insp-value {
+  font-size: var(--gv-fs-xs);
+}
+
+.wb-insp-key {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gv-space-1) var(--gv-space-2);
+  align-items: center;
+  margin: var(--gv-space-2) 0 0;
+  font-size: 11px;
+  color: var(--wb-muted);
+}
+
+.wb-insp-key-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 22px;
+  height: 12px;
+  padding-right: 2px;
+  border: 1px solid var(--wb-border-strong);
+  border-radius: 3px;
+}
+
+.wb-insp-key-equal {
+  border-style: dashed;
+}
+
+.wb-insp-key-equal .wb-diff-dot {
+  width: 5px;
+  height: 5px;
+}
+
+.wb-insp-key-equal ~ * {
+  margin-left: 0;
+}

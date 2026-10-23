@@ -161,6 +161,13 @@ const PATHS = {
   minus: <path d="M7 12h10" />,
   plus: <path d="M12 7v10M7 12h10" />,
   chevron: <path d="m7 10 5 5 5-5" />,
+  // The canvas tools: pick an element, or use the story.
+  pointer: <path d="M6 4l12.5 7.2-5.6 1.4-2.9 5.4z" />,
+  hand: (
+    <path d="M8 13V6.5a1.5 1.5 0 0 1 3 0V12m0-6.5V5a1.5 1.5 0 0 1 3 0v7m0-5.5a1.5 1.5 0 0 1 3 0V13m0-3.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1.2a6 6 0 0 1-4.6-2.2L4.6 15a1.6 1.6 0 0 1 2.5-2L8 14" />
+  ),
+  // Select the parent layer.
+  up: <path d="M12 19V6m-5 5 5-5 5 5" />,
   sun: (
     <>
       <circle cx="12" cy="12" r="4" />

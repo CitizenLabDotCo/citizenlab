@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { GV_VIEWPORTS } from '../../../viewports';
-import { applyToDocument, storyUrl } from '../lib/frame';
+import { storyUrl } from '../lib/frame';
 import type { Overrides } from '../lib/overrides';
+import { applyEdits } from '../lib/review';
 
 import type { ToolbarState } from './Toolbar';
 
@@ -207,7 +208,8 @@ const fitTo = (iframe: HTMLIFrameElement, room: number): Fitted | null => {
 // the frame to the preset; Fit scales it down to the canvas. Mode, city and
 // language are frame globals, so changing them reloads the frame; overrides
 // are set on the frame's root element without a reload and set again
-// whenever Storybook renders the story anew.
+// whenever Storybook renders the story anew, next to the story's own inline
+// tokens.
 const Canvas = ({
   storyId,
   toolbar,
@@ -226,11 +228,19 @@ const Canvas = ({
   latest.current = { overrides, mode: toolbar.mode, onFrame, fit, room };
   const zoomRef = useRef(zoom);
   zoomRef.current = zoom;
+  // Per frame document, the tokens the session set there: the story's own
+  // inline tokens (the city's --gv-tenant-*, written by ModeProvider) stay.
+  const applied = useRef(new WeakMap<Document, Map<string, string | null>>());
 
   const apply = useCallback(() => {
     const doc = frame.current?.contentDocument;
     if (!doc?.documentElement) return;
-    applyToDocument(doc, latest.current.overrides, latest.current.mode);
+    let mine = applied.current.get(doc);
+    if (!mine) {
+      mine = new Map();
+      applied.current.set(doc, mine);
+    }
+    applyEdits(doc, latest.current.overrides, latest.current.mode, mine);
     if (doc.head) styleFrame(doc, latest.current.fit);
   }, []);
 

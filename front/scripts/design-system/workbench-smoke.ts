@@ -17,11 +17,14 @@
 // session. The Foundations colour page lists at least MIN_COLOUR_TOKENS
 // tokens and a contrast pairs table with rows; an edit of a radius token
 // shows in the Changes drawer and in the hash. The Components gallery shows
-// at least MIN_GALLERY_THUMBS story thumbnails; the Button page has at least
-// MIN_STATE_TABS story tabs, and switching its `disabled` control changes
-// the frame's DOM. The canvas fits the Button frame to the story by
-// default (MAX_FIT_HEIGHT). The Usage panel lists at least one back office
-// (admin) route and the Tokens panel shows the radius token as linked.
+// at least MIN_GALLERY_THUMBS story thumbnails; the Button page's State and
+// Variant menus offer at least MIN_STATE_TABS stories, and switching its
+// `disabled` control changes the frame's DOM. The canvas fits the Button
+// frame to the story by default (MAX_FIT_HEIGHT). The Design tab selects the
+// button and shows its corner radius as the radius token, linked; a click on
+// the canvas selects the element under it. Inspect's Usage lists at least
+// one back office (admin) route and its Tokens list shows the radius token
+// as linked.
 // The Review page lists at least MIN_ADMIN_ROUTES back office routes and
 // shows "needs a record" for a route whose param the fixture lacks. With
 // --review-host <platform origin> (an epic serving this Storybook under
@@ -435,8 +438,8 @@ const galleryChecks = async (page: any, base: string, failures: string[]) => {
   console.log(`gallery: ${thumbs} component thumbnails`);
 };
 
-// Story tabs, then a boolean control: the frame's story renders again with
-// the new arg.
+// The State and Variant menus, then a boolean control: the frame's story
+// renders again with the new arg.
 const controlsChecks = async (
   page: any,
   base: string,
@@ -444,16 +447,16 @@ const controlsChecks = async (
   failures: string[]
 ) => {
   await page.goto(`${base}/workbench/#/components/${storyId}`);
-  await page.waitForSelector('[data-testid="wb-state-tab"]', {
+  await page.waitForSelector('[data-testid="wb-insp-state"]', {
     timeout: 10000,
   });
   const tabs: number = await page.$$eval(
-    '[data-testid="wb-state-tab"]',
+    '[data-testid="wb-insp-state"] option[value]:not([value=""]), [data-testid="wb-insp-variant"] option[value]:not([value=""])',
     (els: Element[]) => els.length
   );
   if (tabs < MIN_STATE_TABS) {
     failures.push(
-      `the Button page has ${tabs} story tabs, expected ${MIN_STATE_TABS} or more`
+      `the Button page offers ${tabs} stories, expected ${MIN_STATE_TABS} or more`
     );
   }
   // Any mode: the toolbar keeps the one the canvas checks left.
@@ -481,13 +484,13 @@ const controlsChecks = async (
       before,
       { timeout: 5000 }
     );
-    console.log(`controls: ${tabs} story tabs; disabled changes the frame`);
+    console.log(`controls: ${tabs} stories; disabled changes the frame`);
   } catch {
     failures.push('switching the disabled control left the frame unchanged');
   }
 };
 
-// The Usage and Tokens tabs of the Button page's panel.
+// The Design tab, then Inspect's Usage, Tokens and A11y of the Button page.
 const panelChecks = async (
   page: any,
   base: string,
@@ -495,7 +498,63 @@ const panelChecks = async (
   failures: string[]
 ) => {
   await page.goto(`${base}/workbench/#/components/${storyId}`);
-  await page.click('[data-testid="wb-panel-tab"][data-tab="usage"]');
+  await page.click('[data-testid="wb-panel-tab"][data-tab="design"]');
+  const radius = `[data-testid="wb-panel-design"] [data-testid="wb-insp-value"][data-token="${RADIUS_TOKEN}"]`;
+  let link: string | null = null;
+  try {
+    await page.waitForFunction(
+      (sel: string) =>
+        document.querySelector(sel)?.getAttribute('data-link') === 'linked',
+      radius,
+      { timeout: 20000 }
+    );
+  } catch {
+    // Reported below with the last value.
+  }
+  link = await page
+    .$eval(radius, (el: Element) => el.getAttribute('data-link'))
+    .catch(() => null);
+  if (link !== 'linked') {
+    failures.push(
+      `the Design tab shows the button's radius as ${
+        link ?? 'missing'
+      }, expected ${RADIUS_TOKEN} linked`
+    );
+  }
+  // A click on the canvas picks the element under it: the button's label.
+  const layer = '[data-testid="wb-insp-selection"] .wb-insp-layer-name';
+  const frame = await canvasFrame(page, '');
+  const label = await frame.$('#storybook-root button span');
+  let picked = '';
+  if (label) {
+    const box = await label.boundingBox();
+    if (box) {
+      await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+      await page
+        .waitForFunction(
+          (sel: string) =>
+            document.querySelector(sel)?.textContent?.startsWith('span'),
+          layer,
+          { timeout: 5000 }
+        )
+        .catch(() => undefined);
+    }
+    picked = await page.textContent(layer).catch(() => '');
+    if (!picked?.startsWith('span')) {
+      failures.push(`a click on the button label selected "${picked}"`);
+    }
+  }
+  console.log(
+    `design: ${RADIUS_TOKEN} ${link} on the button; a click selects ${picked}`
+  );
+
+  const inspect = (view: string) =>
+    page
+      .click('[data-testid="wb-panel-tab"][data-tab="inspect"]')
+      .then(() =>
+        page.click(`[data-testid="wb-inspect-view"] [data-value="${view}"]`)
+      );
+  await inspect('usage');
   const admin = '[data-testid="wb-usage-route"][data-office="admin"]';
   let routes = 0;
   try {
@@ -504,7 +563,7 @@ const panelChecks = async (
   } catch {
     failures.push('the Usage panel lists no back office route for Button');
   }
-  await page.click('[data-testid="wb-panel-tab"][data-tab="tokens"]');
+  await inspect('tokens');
   const chip = `[data-testid="wb-panel-tokens"] [data-token="${RADIUS_TOKEN}"] [data-testid="wb-token-match"]`;
   let match: string | null = null;
   try {
@@ -559,7 +618,7 @@ const panelChecks = async (
   );
 
   // The A11y tab: Button's checklist badge with its date and counts.
-  await page.click('[data-testid="wb-panel-tab"][data-tab="a11y"]');
+  await inspect('a11y');
   let reviewed = '';
   try {
     await page.waitForSelector('[data-testid="wb-a11y-reviewed"]', {
