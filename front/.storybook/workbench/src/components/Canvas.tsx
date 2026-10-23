@@ -1,10 +1,22 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 
 import { GV_VIEWPORTS } from '../../../viewports';
+import {
+  FrameTarget,
+  holdStory,
+  sameTarget,
+  searchFor,
+  strayNodes,
+  switchPlan,
+  targetOfSearch,
+} from '../lib/canvasSwitch';
 import { storyUrl } from '../lib/frame';
 import { applyElementEdits, ElementEdit } from '../lib/elementEdits';
+import { reactContainerOf } from '../lib/galleryFrame';
 import type { Overrides } from '../lib/overrides';
-import { applyEdits } from '../lib/review';
+import { holdFrame, isHeld, isSettled, setUserGlobals } from '../lib/preview';
+import { adoptPageTokens, applyEdits } from '../lib/review';
 
 import type { ToolbarState } from './Toolbar';
 
@@ -15,7 +27,9 @@ type Props = {
   // The session's element edits, painted as inline styles on this story.
   elementEdits?: ElementEdit[];
   // Called with the frame's window after each load (the Controls panel
-  // talks to the story through it), and with null when the frame goes.
+  // talks to the story through it), and with null when the frame goes or
+  // the preview reloads itself (the window stays, its document does not). A
+  // story or globals switch in place keeps the window and the document.
   onFrame?: (win: Window | null) => void;
   // Called with the scale the frame is shown at, so the zoom control can
   // say what Fit came to.
@@ -25,9 +39,17 @@ type Props = {
 };
 
 type Channel = {
-  on: (event: string, fn: () => void) => void;
-  off: (event: string, fn: () => void) => void;
+  on: (event: string, fn: (payload: unknown) => void) => void;
+  off: (event: string, fn: (payload: unknown) => void) => void;
+  emit: (event: string, payload: unknown) => void;
 };
+
+// A switch in place that has not rendered by then loads the frame again,
+// and so does a story still busy (loaders, its first render) by then.
+const SWITCH_TIMEOUT_MS = 4000;
+const WAIT_POLL_MS = 50;
+// What the preview says when the story it switched to cannot be shown.
+const FAILED = ['storyMissing', 'storyErrored', 'storyThrewException'];
 
 // The frame's layout size, and the scale it is shown at.
 type Fitted = { w: number; h: number; scale: number };
@@ -53,6 +75,12 @@ const STYLE_ID = 'wb-canvas-style';
 const SHIFT = '--wb-fit-shift';
 const MAX_SHIFT = 600;
 const BASE_CSS = `${BOX}{justify-content:safe center!important;align-items:safe center!important}`;
+// While a switch is under way: after 100 ms of a slow switch the preview
+// hides the root and shows its own skeleton (WebView.showPreparingStory,
+// base-preview-head.html); the root, with the old story held in it, stays.
+const SWITCH_STYLE_ID = 'wb-canvas-switch';
+const SWITCH_CSS =
+  '.sb-show-preparing-story>#storybook-root{display:block!important}.sb-show-preparing-story>.sb-preparing-story{display:none!important}';
 const FIT_CSS = `${BOX}{height:auto!important;align-items:flex-start!important;box-sizing:border-box!important;padding:${FIT_PAD}px!important;padding-top:calc(${FIT_PAD}px + var(${SHIFT},0px))!important}`;
 
 const styleFrame = (doc: Document, fit: boolean) => {
@@ -210,8 +238,10 @@ const NO_EDITS: ElementEdit[] = [];
 // frame is as tall as the story; the zoom control's Fit scales a small
 // story up and a wide one down to the canvas, a fixed zoom shows it at that
 // scale (the canvas scrolls when it does not fit). A preset viewport sizes
-// the frame to the preset; Fit scales it down to the canvas. Mode, city and
-// language are frame globals, so changing them reloads the frame; overrides
+// the frame to the preset; Fit scales it down to the canvas. Another story,
+// mode, city or language switches the frame in place (lib/canvasSwitch.ts):
+// the old story shows until the new one has rendered, then the frame is
+// fitted again; when that cannot be done the frame loads anew. Overrides
 // are set on the frame's root element without a reload and set again
 // whenever Storybook renders the story anew, next to the story's own inline
 // tokens.
@@ -257,8 +287,13 @@ const Canvas = ({
   const appliedElements = useRef(
     new WeakMap<Document, Map<string, Map<string, string>>>()
   );
+  // The story the frame shows: element edits are painted on that one. A
+  // switch in place changes it once the new story has rendered.
+  const shownStory = useRef(storyId);
 
-  const apply = useCallback(() => {
+  // `adopt`: the story has just rendered, so its ModeProvider may have
+  // written the tenant tokens again (another city) over an edit.
+  const apply = useCallback((adopt = false) => {
     const doc = frame.current?.contentDocument;
     if (!doc?.documentElement) return;
     let mine = applied.current.get(doc);
@@ -266,6 +301,7 @@ const Canvas = ({
       mine = new Map();
       applied.current.set(doc, mine);
     }
+    if (adopt) adoptPageTokens(doc, latest.current.overrides, mine);
     applyEdits(doc, latest.current.overrides, latest.current.mode, mine);
     let els = appliedElements.current.get(doc);
     if (!els) {
@@ -275,7 +311,7 @@ const Canvas = ({
     applyElementEdits(
       doc,
       latest.current.elementEdits,
-      latest.current.storyId,
+      shownStory.current,
       els
     );
     if (doc.head) styleFrame(doc, latest.current.fit);
@@ -307,12 +343,206 @@ const Canvas = ({
     );
   }, []);
 
+  const globals = {
+    mode: toolbar.mode,
+    city: toolbar.city,
+    lang: toolbar.lang,
+  };
+  // What the canvas asks for; `inFrame`: what the frame shows, or is
+  // switching to.
+  const wanted = useRef<FrameTarget>({ storyId, globals });
+  wanted.current = { storyId, globals };
+  const inFrame = useRef<FrameTarget>(wanted.current);
+  // The frame's URL is the one it was created with: a switch in place
+  // leaves it as it was. `key` makes a new frame.
+  const [load, setLoad] = useState(() => ({
+    key: 0,
+    src: storyUrl(storyId, globals),
+  }));
+  // What the frame has shown since it loaded or last switched, for the
+  // frame's data attributes (its URL is stale after a switch).
+  const [current, setCurrent] = useState<FrameTarget>(wanted.current);
+  // Set while a switch is under way: the old story stays and is not fitted
+  // again until the new one has rendered.
+  const [switching, setSwitching] = useState(false);
+  const loaded = useRef(false);
+  // The frame element that loaded last: loading again, it is the preview
+  // that reloaded itself.
+  const loadedFrame = useRef<HTMLIFrameElement | null>(null);
+  const errored = useRef(false);
+  const cancelSwitch = useRef<(() => void) | null>(null);
+  const waitSince = useRef(0);
+  const waitTimer = useRef(0);
+  const paused = useRef(false);
+
+  // A new frame at the wanted story and globals.
+  const reload = useCallback(() => {
+    cancelSwitch.current?.();
+    window.clearTimeout(waitTimer.current);
+    waitSince.current = 0;
+    loaded.current = false;
+    paused.current = false;
+    const t = wanted.current;
+    inFrame.current = t;
+    setSwitching(false);
+    setCurrent(t);
+    setLoad((l) => ({ key: l.key + 1, src: storyUrl(t.storyId, t.globals) }));
+  }, []);
+
+  // Brings the frame to the wanted story and globals: in place when it
+  // can, waiting for a story that is still busy, or with a new frame.
+  const sync = useCallback(() => {
+    window.clearTimeout(waitTimer.current);
+    const win = frame.current?.contentWindow as
+      | (Window & { __STORYBOOK_ADDONS_CHANNEL__?: Channel })
+      | null
+      | undefined;
+    let channel: Channel | undefined;
+    let doc: Document | undefined;
+    try {
+      channel = win?.__STORYBOOK_ADDONS_CHANNEL__;
+      doc = win?.document;
+    } catch {
+      channel = undefined;
+    }
+    const t = wanted.current;
+    const plan = switchPlan(inFrame.current, t, {
+      ready: loaded.current && !!channel && !!doc?.body,
+      loading: !loaded.current,
+      // An args update (Controls) holds the frame until it has rendered.
+      idle:
+        isSettled(win, inFrame.current.storyId === t.storyId) && !isHeld(win),
+      errored: errored.current,
+      switching: !!cancelSwitch.current,
+    });
+    if (plan.kind !== 'wait') waitSince.current = 0;
+    if (plan.kind === 'none') return;
+    if (plan.kind === 'reload') {
+      reload();
+      return;
+    }
+    if (plan.kind === 'wait') {
+      // The switch under way plans again when it is done, and so does a
+      // frame that is loading.
+      if (cancelSwitch.current || !loaded.current) return;
+      waitSince.current ||= Date.now();
+      if (Date.now() - waitSince.current > SWITCH_TIMEOUT_MS) reload();
+      else waitTimer.current = window.setTimeout(sync, WAIT_POLL_MS);
+      return;
+    }
+    if (!win || !channel || !doc?.body) return;
+    if (plan.globals && !setUserGlobals(win, plan.globals)) {
+      reload();
+      return;
+    }
+    const ch = channel;
+    const body = doc.body;
+    const from = inFrame.current;
+    const atStart = Array.from(body.children);
+    const storyRoot = doc.getElementById('storybook-root');
+    const release = storyRoot ? holdStory(storyRoot) : () => {};
+    const keep = doc.createElement('style');
+    keep.id = SWITCH_STYLE_ID;
+    keep.textContent = SWITCH_CSS;
+    doc.head?.appendChild(keep);
+    inFrame.current = t;
+    paused.current = true;
+    setSwitching(true);
+    // The preview starts on the switch at once, before React renders the
+    // state above: the frame says it is not fitted from now on.
+    if (frame.current?.hasAttribute('data-fit')) {
+      frame.current.setAttribute('data-fit', 'pending');
+    }
+    const unhold = holdFrame(win);
+    let timer = 0;
+    // The new render has started: a pass the switch aborted (the same
+    // story, remounted) can still say it rendered, but never starts.
+    let started = false;
+    const stop = () => {
+      release();
+      unhold();
+      keep.remove();
+      window.clearTimeout(timer);
+      ch.off('storyRendered', rendered);
+      ch.off('storyRenderPhaseChanged', phase);
+      FAILED.forEach((e) => ch.off(e, failed));
+      cancelSwitch.current = null;
+    };
+    const done = () => {
+      stop();
+      const root = body.ownerDocument.getElementById('storybook-root');
+      const strays = strayNodes(
+        body,
+        atStart,
+        (el) => !!root && el !== root && reactContainerOf(el) === root
+      );
+      if (strays.length > 0) {
+        reload();
+        return;
+      }
+      // A story starts from its own args, as it did in a new frame.
+      if (plan.storyId) ch.emit('resetStoryArgs', { storyId: from.storyId });
+      body.ownerDocument.documentElement.style.removeProperty(SHIFT);
+      // The elements the edits were painted on went with the old render.
+      appliedElements.current.get(body.ownerDocument)?.clear();
+      shownStory.current = t.storyId;
+      // The preview reloads itself at its own URL: from now on that is
+      // this story with these globals.
+      try {
+        const loc = win.location;
+        win.history.replaceState(
+          win.history.state,
+          '',
+          `${loc.pathname}${searchFor(loc.search, t)}${loc.hash}`
+        );
+      } catch {
+        // Not reachable: a reload then switches again from the old URL.
+      }
+      apply(true);
+      setCurrent(t);
+      window.requestAnimationFrame(() => {
+        paused.current = false;
+        refit();
+        setSwitching(false);
+        sync();
+      });
+    };
+    // The story is on screen once it is mounted: the preview then waits
+    // for its CSS animations to end before it says `storyRendered`.
+    function rendered(id: unknown) {
+      if (started && id === t.storyId) done();
+    }
+    function phase(e: unknown) {
+      const { newPhase, storyId: id } = (e ?? {}) as Record<string, unknown>;
+      if (newPhase === 'rendering' && id === t.storyId) started = true;
+      if (newPhase === 'completing') rendered(id);
+    }
+    function failed() {
+      stop();
+      reload();
+    }
+    ch.on('storyRendered', rendered);
+    ch.on('storyRenderPhaseChanged', phase);
+    FAILED.forEach((e) => ch.on(e, failed));
+    timer = window.setTimeout(failed, SWITCH_TIMEOUT_MS);
+    cancelSwitch.current = stop;
+    if (plan.storyId) {
+      ch.emit('setCurrentStory', { storyId: t.storyId, viewMode: 'story' });
+    } else {
+      // A remount runs the loaders and decorators with the new globals.
+      ch.emit('forceRemount', { storyId: t.storyId });
+    }
+  }, [apply, reload, refit]);
+
   // Each load: apply, re-apply and re-fit after every story render, and
   // re-fit when the story changes size (an opened menu, a loaded font).
   const watch = useRef<() => void>();
   const onLoad = useCallback(() => {
     watch.current?.();
-    apply();
+    // A load ends any switch under way: the preview reloaded itself.
+    cancelSwitch.current?.();
+    paused.current = false;
+    setSwitching(false);
     const win = frame.current?.contentWindow as
       | (Window & {
           __STORYBOOK_ADDONS_CHANNEL__?: Channel;
@@ -322,16 +552,37 @@ const Canvas = ({
       | null
       | undefined;
     const channel = win?.__STORYBOOK_ADDONS_CHANNEL__;
+    // The preview reloads itself at its own URL when a story torn down
+    // was still busy: that URL says what it shows.
+    try {
+      inFrame.current = targetOfSearch(
+        win?.location.search ?? '',
+        inFrame.current
+      );
+    } catch {
+      // Not reachable: as asked for.
+    }
+    shownStory.current = inFrame.current.storyId;
+    apply();
+    loaded.current = true;
+    errored.current = false;
+    setCurrent((c) => (sameTarget(c, inFrame.current) ? c : inFrame.current));
     let raf = 0;
     const later = () => {
+      if (paused.current) return;
       window.cancelAnimationFrame(raf);
       raf = window.requestAnimationFrame(refit);
     };
     const rendered = () => {
-      apply();
+      errored.current = false;
+      apply(true);
       later();
     };
+    const failed = () => {
+      errored.current = true;
+    };
     channel?.on('storyRendered', rendered);
+    FAILED.forEach((e) => channel?.on(e, failed));
     const root = win?.document.getElementById('storybook-root');
     const observer = win && root ? new win.ResizeObserver(later) : undefined;
     if (root) observer?.observe(root);
@@ -343,14 +594,29 @@ const Canvas = ({
     watch.current = () => {
       window.cancelAnimationFrame(raf);
       channel?.off('storyRendered', rendered);
+      FAILED.forEach((e) => channel?.off(e, failed));
       observer?.disconnect();
       mutations?.disconnect();
     };
+    // The same frame loaded again has the same window but a new document
+    // and channel: readers that key on the window set up again.
+    if (loadedFrame.current === frame.current && frame.current) {
+      flushSync(() => latest.current.onFrame?.(null));
+    }
+    loadedFrame.current = frame.current;
     latest.current.onFrame?.(win ?? null);
-  }, [apply, refit]);
-  useEffect(() => () => watch.current?.(), []);
+    sync();
+  }, [apply, refit, sync]);
+  useEffect(
+    () => () => {
+      watch.current?.();
+      cancelSwitch.current?.();
+      window.clearTimeout(waitTimer.current);
+    },
+    []
+  );
 
-  useEffect(apply, [apply, overrides, elementEdits, toolbar.mode, fit]);
+  useEffect(() => apply(), [apply, overrides, elementEdits, toolbar.mode, fit]);
   useEffect(refit, [refit, room, fit, zoom]);
 
   useEffect(() => {
@@ -361,17 +627,14 @@ const Canvas = ({
     return () => observer.disconnect();
   }, []);
 
-  const src = storyUrl(storyId, {
-    mode: toolbar.mode,
-    city: toolbar.city,
-    lang: toolbar.lang,
-  });
+  // Another story or other globals: switched in place where it can be.
+  useEffect(sync, [sync, storyId, toolbar.mode, toolbar.city, toolbar.lang]);
 
-  // A new src is a new frame: the old window is gone until it loads.
+  // A new frame: the old window is gone until it loads.
   useEffect(() => {
     setFitted(null);
     return () => latest.current.onFrame?.(null);
-  }, [src]);
+  }, [load.key]);
 
   let w: number;
   let h: number;
@@ -424,11 +687,17 @@ const Canvas = ({
           {room > 0 && (
             <iframe
               ref={frame}
-              key={src}
-              src={src}
+              key={load.key}
+              src={load.src}
               title={`Story ${storyId}`}
               data-testid="wb-canvas"
-              data-fit={fit ? (fitted ? 'done' : 'pending') : undefined}
+              data-story={current.storyId}
+              data-mode={current.globals.mode}
+              data-city={current.globals.city}
+              data-lang={current.globals.lang}
+              data-fit={
+                fit ? (fitted && !switching ? 'done' : 'pending') : undefined
+              }
               onLoad={onLoad}
               style={{
                 width: w,

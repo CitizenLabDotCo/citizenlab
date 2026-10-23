@@ -470,6 +470,29 @@ export const applyEdits = (
   applyToDocument(doc, { ...own, ...overrides } as Overrides, mode);
 };
 
+// After the page wrote its own inline tokens again (a story mounted anew,
+// in another city), a token that no longer holds the edit applyEdits put
+// there holds the page's new value: that is the value a reset gets back.
+// The edit is compared as the browser reads it back once written (' 8px '
+// reads '8px'). Call it before applyEdits, only when the page may have
+// written them.
+export const adoptPageTokens = (
+  doc: Document,
+  overrides: Overrides,
+  applied: Map<string, string | null>
+) => {
+  const inline = inlineGv(doc);
+  const probe = doc.createElement('div').style;
+  applied.forEach((_, name) => {
+    const edit = (overrides as Record<string, string | undefined>)[name];
+    if (edit === undefined) return;
+    probe.setProperty(name, edit);
+    const written = probe.getPropertyValue(name);
+    const value = inline.get(name);
+    if (value !== written) applied.set(name, value || null);
+  });
+};
+
 export { MODE_ATTRIBUTE };
 
 // ---------------------------------------------------------------- changes

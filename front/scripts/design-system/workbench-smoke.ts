@@ -21,9 +21,19 @@
 // preview frame: at least MIN_REVEALED_THUMBS reveal their story, the
 // first sits over its card within 1px, and a card the frame cannot show
 // renders in a frame of its own (no other card has one); the Button page's
-// State and Variant menus offer at least MIN_STATE_TABS stories, and
-// switching its `disabled` control changes the frame's DOM. The canvas fits
-// the Button frame to the story by default (MAX_FIT_HEIGHT). The Design tab
+// State and Variant menus offer at least MIN_STATE_TABS stories, another
+// State switches the story in the same canvas frame (the element is not
+// remounted, the preview's current story is the chosen one, the session's
+// radius edit stays on it), as do another mode, city and language: the
+// iframe element and its document stay (a marker set in the frame
+// survives, so the preview did not reload itself), no held copy of the old
+// story is left, and the story's DOM shows the new global (the mode
+// attribute, the city's tenant tokens, Arabic's right-to-left body).
+// Switching the `disabled` control then changes the frame's DOM, and a
+// burst of edits of it made during a mode switch waits for the switch: no
+// reload, and the frame ends with the last edit and the new mode; the same
+// burst on a settled frame ends on the last click too. The canvas
+// fits the Button frame to the story by default (MAX_FIT_HEIGHT). The Design tab
 // selects the button and shows its corner radius as the radius token,
 // linked; a click on the canvas selects the element under it; Size's
 // attach suggestion turns it into a --gv-fs-s pill and the Changes badge
@@ -319,10 +329,43 @@ const serve = (root: string): Promise<http.Server> =>
     server.listen(0, '127.0.0.1', () => resolve(server));
   });
 
-// The canvas frame once it shows the given mode global ('' for any).
+// A setting on the canvas bar: the mode is a row of buttons, the others
+// are selects.
+const SETTING = (key: string) =>
+  `[data-testid="wb-canvas-bar"] [data-testid="wb-toolbar-${key}"]`;
+const settingOf = async (
+  page: any,
+  key: string
+): Promise<{ disabled: boolean; value: string; values: string[] }> =>
+  page.$eval(SETTING(key), (el: Element) => {
+    if (el instanceof HTMLSelectElement) {
+      return {
+        disabled: el.disabled,
+        value: el.value,
+        values: Array.from(el.options).map((o) => o.value),
+      };
+    }
+    const buttons = Array.from(el.querySelectorAll('button[data-value]'));
+    return {
+      disabled: buttons.every((b) => (b as HTMLButtonElement).disabled),
+      value:
+        buttons
+          .find((b) => b.getAttribute('aria-pressed') === 'true')
+          ?.getAttribute('data-value') ?? '',
+      values: buttons.map((b) => b.getAttribute('data-value') ?? ''),
+    };
+  });
+const pickSetting = async (page: any, key: string, value: string) =>
+  key === 'mode'
+    ? page.click(`${SETTING(key)} [data-value="${value}"]`)
+    : page.selectOption(SETTING(key), value);
+
+// The canvas frame once it shows the given mode global ('' for any). The
+// frame switches in place, so its src is the URL it loaded with; data-mode
+// says what it shows.
 const canvasFrame = async (page: any, mode: string) => {
   const handle = await page.waitForSelector(
-    `iframe[data-testid="wb-canvas"][src*="mode:${mode}"]`,
+    `iframe[data-testid="wb-canvas"]${mode ? `[data-mode="${mode}"]` : ''}`,
     { timeout: 10000 }
   );
   const frame = await handle.contentFrame();
@@ -566,6 +609,97 @@ const galleryChecks = async (page: any, base: string, failures: string[]) => {
   );
 };
 
+// What the story's DOM shows of a global: the mode attribute on the
+// frame's root, the city's --gv-tenant-* tokens (ModeProvider), and for
+// Arabic the right-to-left global style on the body.
+type Shows = { key: string; value: string; before?: string };
+
+const tenantTokens = (frame: any): Promise<string> =>
+  frame.evaluate(() => {
+    const style = document.documentElement.style;
+    return Array.from(style)
+      .filter((n) => n.startsWith('--gv-tenant-'))
+      .map((n) => `${n}:${style.getPropertyValue(n)}`)
+      .join(';');
+  });
+
+// Does `act` and checks that the canvas frame switched in place to what
+// `attrs` (on the iframe) and `want` (the preview's current render, and the
+// story's DOM) say: the same iframe element, the same document (a marker
+// set in the frame stays; the preview reloading itself would drop it), no
+// held copy of the old story left.
+const switchInPlace = async (
+  page: any,
+  frame: any,
+  label: string,
+  act: () => Promise<unknown>,
+  attrs: string,
+  want: { storyId: string; shows?: Shows },
+  failures: string[]
+): Promise<boolean> => {
+  try {
+    await page.evaluate(() => {
+      (window as any).__wbCanvas = document.querySelector(
+        'iframe[data-testid="wb-canvas"]'
+      );
+    });
+    await frame.evaluate(() => {
+      (window as any).__wbSameDocument = true;
+    });
+    await act();
+    await page.waitForSelector(`iframe[data-testid="wb-canvas"]${attrs}`, {
+      timeout: 10000,
+    });
+    await frame.waitForFunction(
+      (w: { storyId: string; shows?: Shows }) => {
+        const render = (window as any).__STORYBOOK_PREVIEW__?.currentRender;
+        if (render?.id !== w.storyId || render.phase !== 'finished') {
+          return false;
+        }
+        const html = document.documentElement;
+        const shows = w.shows;
+        if (!shows) return true;
+        if (shows.key === 'mode') {
+          return (
+            (html.getAttribute('data-gv-mode') === 'redesign') ===
+            (shows.value === 'redesign')
+          );
+        }
+        if (shows.key === 'city') {
+          const style = html.style;
+          const now = Array.from(style)
+            .filter((n) => n.startsWith('--gv-tenant-'))
+            .map((n) => `${n}:${style.getPropertyValue(n)}`)
+            .join(';');
+          return !!now && now !== shows.before;
+        }
+        return getComputedStyle(document.body).textAlign === 'right';
+      },
+      want,
+      { timeout: 10000 }
+    );
+  } catch {
+    failures.push(`${label}: the frame never showed it`);
+    return false;
+  }
+  const state = await frame.evaluate(() => ({
+    same: (window as any).__wbSameDocument === true,
+    held: document.querySelectorAll('[data-wb-held]').length,
+  }));
+  const element = await page.evaluate(
+    () =>
+      (window as any).__wbCanvas ===
+      document.querySelector('iframe[data-testid="wb-canvas"]')
+  );
+  if (!element) failures.push(`${label}: the canvas frame was remounted`);
+  if (!state.same) failures.push(`${label}: the frame loaded again`);
+  if (state.held) failures.push(`${label}: the old story is still held`);
+  return element && state.same && !state.held;
+};
+
+// Clicks on one control made during a globals switch.
+const EDIT_BURST = 31;
+
 // The State and Variant menus, then a boolean control: the frame's story
 // renders again with the new arg.
 const controlsChecks = async (
@@ -600,6 +734,67 @@ const controlsChecks = async (
   await page.waitForSelector('[data-testid="wb-controls-reset"]', {
     timeout: 20000,
   });
+
+  // Another State switches the story in the same frame: the element stays,
+  // the preview renders the chosen story, the session's edits stay on.
+  const other: string | undefined = await page.$$eval(
+    '[data-testid="wb-insp-state"] option[value]:not([value=""])',
+    (els: HTMLOptionElement[], id: string) =>
+      els.map((e) => e.value).find((v) => v !== id),
+    storyId
+  );
+  if (other) {
+    const radius = await radiusOf(frame);
+    const ok = await switchInPlace(
+      page,
+      frame,
+      `state switch to ${other}`,
+      () => page.selectOption('[data-testid="wb-insp-state"]', other),
+      `[data-story="${other}"]`,
+      { storyId: other },
+      failures
+    );
+    const after = await radiusOf(frame);
+    if (after !== radius) {
+      failures.push(
+        `state switch to ${other}: border-radius ${radius} became ${after}`
+      );
+    }
+    if (ok && after === radius) {
+      console.log(`canvas: switched to ${other} in the same frame`);
+    }
+    // The mode, a city and a language (Arabic, right to left) switch the
+    // same frame too.
+    const globals: string[] = [];
+    for (const key of ['mode', 'city', 'lang']) {
+      const field = await settingOf(page, key);
+      const next =
+        key === 'lang'
+          ? field.values.find((v) => v === 'ar')
+          : field.values.find((v) => v !== field.value);
+      if (field.disabled || !next) {
+        failures.push(`${key}: the toolbar field is disabled or has no option`);
+        continue;
+      }
+      const before = key === 'city' ? await tenantTokens(frame) : undefined;
+      const done = await switchInPlace(
+        page,
+        frame,
+        `${key} switch to ${next}`,
+        () => pickSetting(page, key, next),
+        `[data-${key}="${next}"]`,
+        { storyId: other, shows: { key, value: next, before } },
+        failures
+      );
+      if (done) globals.push(`${key} ${next}`);
+    }
+    if (globals.length) {
+      console.log(`canvas: ${globals.join(', ')} in the same frame`);
+    }
+    await page.waitForSelector('[data-testid="wb-controls-reset"]', {
+      timeout: 20000,
+    });
+  }
   const more = '[data-testid="wb-controls-more"][aria-expanded="false"]';
   if (await page.isVisible(more)) await page.click(more);
   const toggle =
@@ -623,6 +818,96 @@ const controlsChecks = async (
     console.log(`controls: ${tabs} stories; disabled changes the frame`);
   } catch {
     failures.push('switching the disabled control left the frame unchanged');
+  }
+
+  // Edits made while the mode switches wait for the switch: a burst of
+  // EDIT_BURST clicks on the control (odd, so the value ends changed), and
+  // the frame does not load again and ends with the last edit and the new
+  // mode.
+  const mode =
+    (await settingOf(page, 'mode')).value === 'redesign' ? 'today' : 'redesign';
+  await frame.evaluate(() => {
+    (window as any).__wbSameDocument = true;
+  });
+  const was: boolean = await page.isChecked(toggle);
+  await pickSetting(page, 'mode', mode);
+  for (let i = 0; i < EDIT_BURST; i++) await page.click(toggle);
+  const disabled: boolean = await page.isChecked(toggle);
+  if (disabled === was) {
+    failures.push(`${EDIT_BURST} clicks left the disabled control as it was`);
+  }
+  try {
+    await page.waitForSelector(
+      `iframe[data-testid="wb-canvas"][data-mode="${mode}"]`,
+      { timeout: 10000 }
+    );
+    await frame.waitForFunction(
+      (w: { mode: string; disabled: boolean }) => {
+        const preview = (window as any).__STORYBOOK_PREVIEW__;
+        const render = preview?.currentRender;
+        const args = preview?.storyStoreValue?.args.get(render?.id);
+        return (
+          render?.phase === 'finished' &&
+          !!args &&
+          !!args.disabled === w.disabled &&
+          (document.documentElement.getAttribute('data-gv-mode') ===
+            'redesign') ===
+            (w.mode === 'redesign')
+        );
+      },
+      { mode, disabled },
+      { timeout: 10000 }
+    );
+    // A reload loop would show after the first settle.
+    await page.waitForTimeout(1500);
+    const same = await frame.evaluate(
+      () => (window as any).__wbSameDocument === true
+    );
+    if (same) {
+      console.log(
+        `controls: ${EDIT_BURST} edits during a switch to ${mode} wait for it, the last one stays`
+      );
+    } else {
+      failures.push(
+        `an edit during a switch to ${mode}: the frame loaded again`
+      );
+    }
+  } catch {
+    failures.push(
+      `an edit during a switch to ${mode}: the frame never showed both`
+    );
+  }
+
+  // The same burst on a settled frame: the control does not fall back to
+  // what the store had while later edits wait their turn.
+  const start: boolean = await page.isChecked(toggle);
+  let fellBack = 0;
+  for (let i = 0; i < EDIT_BURST; i++) {
+    if ((await page.isChecked(toggle)) !== (i % 2 === 0 ? start : !start)) {
+      fellBack++;
+    }
+    await page.click(toggle);
+  }
+  try {
+    await frame.waitForFunction(
+      (w: boolean) => {
+        const preview = (window as any).__STORYBOOK_PREVIEW__;
+        const render = preview?.currentRender;
+        const args = preview?.storyStoreValue?.args.get(render?.id);
+        return render?.phase === 'finished' && !!args && !!args.disabled === w;
+      },
+      !start,
+      { timeout: 10000 }
+    );
+    if (fellBack || (await page.isChecked(toggle)) === start) {
+      failures.push(
+        `${EDIT_BURST} quick clicks: the control fell back ${fellBack} times`
+      );
+    } else {
+      console.log(`controls: ${EDIT_BURST} quick clicks end on the last one`);
+    }
+  } catch {
+    failures.push(`${EDIT_BURST} quick clicks: the frame missed the last one`);
   }
 };
 

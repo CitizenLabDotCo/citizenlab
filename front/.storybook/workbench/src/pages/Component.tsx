@@ -107,7 +107,8 @@ const Component = ({
   const [view, setView] = useState<View>('single');
   const [frames, setFrames] = useState<(Window | null)[]>([null, null]);
   // A reload in place keeps the frame's window but brings a new document:
-  // counted, so what lives in the document is set up again.
+  // counted, so what lives in the document is set up again. A story or
+  // globals switch keeps both (Canvas); readers key on the story id.
   const [loads, setLoads] = useState(0);
   const onFrame = useCallback(
     (slot: number) => (win: Window | null) => {

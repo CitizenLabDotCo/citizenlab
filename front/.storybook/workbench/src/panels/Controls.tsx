@@ -2,12 +2,14 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import Icon from '../components/Icon';
 import {
+  cancelArgs,
   channelOf,
   Control,
   controlsOf,
   PreparedStory,
   readStory,
   resetArgs,
+  resyncArgs,
   updateArgs,
   whenRendered,
 } from '../lib/preview';
@@ -156,17 +158,35 @@ const Controls = ({ storyId, frames }: Props) => {
   const [more, setMore] = useState(false);
   const first = frames[0] ?? null;
   // Every edit since the story loaded. A frame that is still loading (the
-  // second frame of the split view, or one reloaded for a new language)
-  // gets them all once its story has rendered, so both frames agree.
+  // second frame of the split view, or one loaded again) gets them all once
+  // its story has rendered, so both frames agree. A frame that goes (null
+  // in `frames`, also while the preview reloads itself) is set up again
+  // when it comes back.
   const edits = useRef<Record<string, unknown>>({});
   const live = useRef(new WeakSet<Window>());
   const seen = useRef(new WeakSet<Window>());
+  // Edits still queued for a frame (lib/preview.ts) belong to the story
+  // and the frames they were made for.
+  const framesRef = useRef(frames);
+  framesRef.current = frames;
+  const storyRef = useRef(storyId);
+  storyRef.current = storyId;
   useEffect(() => {
     edits.current = {};
+    return () => framesRef.current.forEach((w) => cancelArgs(w));
   }, [storyId]);
   const waits = useRef<(() => void)[]>([]);
   useEffect(() => () => waits.current.forEach((c) => c()), []);
+  const prev = useRef<(Window | null)[]>([]);
   useEffect(() => {
+    prev.current.forEach((w) => {
+      if (w && !frames.includes(w)) {
+        seen.current.delete(w);
+        live.current.delete(w);
+        cancelArgs(w);
+      }
+    });
+    prev.current = frames;
     frames.forEach((w) => {
       if (!w || seen.current.has(w)) return;
       seen.current.add(w);
@@ -181,12 +201,36 @@ const Controls = ({ storyId, frames }: Props) => {
     });
   }, [frames, storyId]);
 
+  // After each render, a frame that dropped edits while it was busy (the
+  // queue in lib/preview.ts gives up after a while) gets them again.
+  useEffect(() => {
+    const offs = frames.map((w) => {
+      const channel = channelOf(w);
+      if (!w || !channel) return () => {};
+      const rendered = (id: unknown) => {
+        if (id === storyId && live.current.has(w)) {
+          resyncArgs(w, storyId, edits.current);
+        }
+      };
+      channel.on('storyRendered', rendered);
+      return () => channel.off('storyRendered', rendered);
+    });
+    return () => offs.forEach((off) => off());
+  }, [frames, storyId]);
+
   useEffect(() => {
     setStory(null);
     if (!first) return undefined;
+    // The store lacks the edits still queued for the frame: they show as
+    // made, not as the store had them.
     const read = () => {
       const s = readStory(first);
-      if (s) setStory(s);
+      if (!s) return;
+      setStory(
+        s.id === storyRef.current
+          ? { ...s, args: { ...s.args, ...edits.current } }
+          : s
+      );
     };
     read();
     const channel = channelOf(first);

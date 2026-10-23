@@ -1,5 +1,6 @@
 import type { ScanOutput, TokenMeta } from './data';
 import {
+  adoptPageTokens,
   affectedRoutes,
   applyEdits,
   changeReach,
@@ -304,6 +305,68 @@ describe('applyEdits', () => {
     expect(
       d.documentElement.style.getPropertyValue('--gv-tenant-primary')
     ).toBe('red');
+  });
+});
+
+describe('adoptPageTokens', () => {
+  it('takes the value the page wrote over an edit as the one to restore', () => {
+    const d = doc('https://h/en/');
+    const style = d.documentElement.style;
+    style.setProperty('--gv-tenant-primary', 'red');
+    const applied = new Map<string, string | null>();
+    const edits = { '--gv-tenant-primary': 'blue', '--gv-radius-2': '8px' };
+    applyEdits(d, edits as never, 'today', applied);
+    // The story mounts again in another city: its ModeProvider writes the
+    // tenant colour over the edit; the radius edit stays.
+    style.setProperty('--gv-tenant-primary', 'green');
+    adoptPageTokens(d, edits as never, applied);
+    applyEdits(d, edits as never, 'today', applied);
+    expect(style.getPropertyValue('--gv-tenant-primary')).toBe('blue');
+
+    applyEdits(d, {}, 'today', applied);
+    expect(style.getPropertyValue('--gv-tenant-primary')).toBe('green');
+    expect(style.getPropertyValue('--gv-radius-2')).toBe('');
+  });
+
+  it('knows its own edit as the browser reads it back', () => {
+    const d = doc('https://h/en/');
+    const style = d.documentElement.style;
+    const applied = new Map<string, string | null>();
+    // A browser trims the value it stores; jsdom may not, so here it does.
+    const proto = CSSStyleDeclaration.prototype;
+    const set = proto.setProperty;
+    const spy = jest
+      .spyOn(proto, 'setProperty')
+      .mockImplementation(function (
+        this: CSSStyleDeclaration,
+        n: string,
+        v: string | null,
+        p?: string
+      ) {
+        set.call(this, n, typeof v === 'string' ? v.trim() : v, p);
+      });
+    try {
+      const edits = { '--gv-radius-2': ' 8px ' };
+      applyEdits(d, edits as never, 'today', applied);
+      expect(style.getPropertyValue('--gv-radius-2')).toBe('8px');
+      adoptPageTokens(d, edits as never, applied);
+      applyEdits(d, {}, 'today', applied);
+      expect(style.getPropertyValue('--gv-radius-2')).toBe('');
+    } finally {
+      spy.mockRestore();
+    }
+  });
+
+  it('keeps the original while the edits hold', () => {
+    const d = doc('https://h/en/');
+    const style = d.documentElement.style;
+    style.setProperty('--gv-tenant-primary', 'red');
+    const applied = new Map<string, string | null>();
+    const edits = { '--gv-tenant-primary': 'blue' };
+    applyEdits(d, edits as never, 'today', applied);
+    adoptPageTokens(d, edits as never, applied);
+    applyEdits(d, {}, 'today', applied);
+    expect(style.getPropertyValue('--gv-tenant-primary')).toBe('red');
   });
 });
 

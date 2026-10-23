@@ -74,10 +74,10 @@ const inStory = (el: Element | null): el is Element =>
   !!el.closest('[data-gv-story-box]') &&
   !el.matches('[data-gv-story-box]');
 
-// The element picked on the first canvas frame. A new story starts from
-// its default target; a re-render or a new frame (another city, mode or
-// language, or a reload: `loads`) finds the same element again by its
-// place in the story.
+// The element picked on the first canvas frame. A new story (switched in
+// the same frame or loaded in a new one) starts from its default target; a
+// re-render, a remount for another city, mode or language, or a reload
+// (`loads`) finds the same element again by its place in the story.
 // `version` changes on every pick and render, so readers know to read again.
 export const useCanvasSelection = (
   frame: Window | null,
@@ -115,12 +115,17 @@ export const useCanvasSelection = (
         // The frame navigated away; its successor reads again.
       }
     };
-    const cancel = whenRendered(frame, find);
+    // The frame stays across a story switch: only the story asked for
+    // counts, not the one still shown until it renders.
+    const cancel = whenRendered(frame, find, storyId);
     const channel = channelOf(frame);
-    channel?.on('storyRendered', find);
+    const rendered = (id: unknown) => {
+      if (id === storyId) find();
+    };
+    channel?.on('storyRendered', rendered);
     return () => {
       cancel();
-      channel?.off('storyRendered', find);
+      channel?.off('storyRendered', rendered);
     };
   }, [frame, loads, storyId]);
 
