@@ -1,5 +1,10 @@
 import React from 'react';
 
+import { expect, fn, userEvent, within } from 'storybook/test';
+// eslint-plugin-storybook 0.8 knows expect from @storybook/test, not from
+// storybook/test (Storybook 10), so it flags every expect here.
+/* eslint-disable storybook/use-storybook-expect */
+
 import Input from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -116,4 +121,16 @@ export const RTL: Story = {
       <Input {...props} />
     </div>
   ),
+};
+
+// Tab reaches the field; typing reaches onChange.
+export const Keyboard: Story = {
+  args: { ...WithLabel.args, value: '', onChange: fn() },
+  play: async ({ canvasElement, args }) => {
+    const input = within(canvasElement).getByRole('textbox');
+    await userEvent.tab();
+    await expect(input).toHaveFocus();
+    await userEvent.keyboard('Ab');
+    await expect(args.onChange).toHaveBeenCalled();
+  },
 };
