@@ -2,6 +2,7 @@ import {
   A11yResults,
   countByImpact,
   criticalFailures,
+  erroredStories,
   knownFrom,
   mergeResults,
   parseA11yArgs,
@@ -128,6 +129,28 @@ describe('splitKnown', () => {
       'c--x label',
     ]);
     expect(split.fixed).toEqual([{ id: 'b--x', rule: 'label' }]);
+    expect(split.unchecked).toEqual([]);
+  });
+
+  it('keeps a known critical whose story errored out of fixed', () => {
+    const r = results({
+      'a--x': story('Components/A', { error: 'Timeout 15000ms exceeded' }),
+      'b--x': story('Components/B'),
+    });
+    const errored = erroredStories(r);
+    expect(errored).toEqual({ 'a--x': 'Timeout 15000ms exceeded' });
+    const split = splitKnown(
+      criticalFailures(r),
+      [
+        { id: 'a--x', rule: 'button-name' },
+        { id: 'b--x', rule: 'label' },
+      ],
+      errored
+    );
+    expect(split.fixed).toEqual([{ id: 'b--x', rule: 'label' }]);
+    expect(split.unchecked).toEqual([
+      { id: 'a--x', rule: 'button-name', error: 'Timeout 15000ms exceeded' },
+    ]);
   });
 });
 

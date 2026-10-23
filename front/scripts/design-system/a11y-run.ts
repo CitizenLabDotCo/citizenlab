@@ -8,8 +8,8 @@
 //   npm run ds:a11y -- --check
 //                           exit 1 on a critical violation in a story under
 //                           Components/ that is not in a11y-known.json, on a
-//                           known one that no longer fails, or on no results
-//                           (ds:check runs this)
+//                           known one that no longer fails or whose story
+//                           errored, or on no results (ds:check runs this)
 //
 // Each story renders at 1280x900 in mode today. axe-core comes from
 // node_modules and runs the WCAG 2.0, 2.1 and 2.2 A and AA rules on the
@@ -23,6 +23,7 @@ import {
   AXE_TAGS,
   countByImpact,
   criticalFailures,
+  erroredStories,
   FOCUSABLE_SELECTOR,
   KnownCritical,
   mergeResults,
@@ -76,9 +77,10 @@ const check = (file: string) => {
     console.error(`a11y: no results at ${rel(file)}; run npm run ds:a11y.`);
     return 1;
   }
-  const { fresh, known, fixed } = splitKnown(
+  const { fresh, known, fixed, unchecked } = splitKnown(
     criticalFailures(results),
-    readKnown()
+    readKnown(),
+    erroredStories(results)
   );
   const date = results.generatedAt.slice(0, 10);
   if (fresh.length > 0) {
@@ -97,7 +99,19 @@ const check = (file: string) => {
     );
     fixed.forEach((k) => console.error(`  ${k.id}: ${k.rule}`));
   }
-  if (fresh.length > 0 || fixed.length > 0) return 1;
+  if (unchecked.length > 0) {
+    console.error(
+      `a11y: ${
+        unchecked.length
+      } known criticals could not be checked because their story errored; keep their entries in ${rel(
+        KNOWN_PATH
+      )}, fix the story, then run npm run ds:a11y -- --stories '<id>':`
+    );
+    unchecked.forEach((k) =>
+      console.error(`  ${k.id}: ${k.rule} (error: ${k.error})`)
+    );
+  }
+  if (fresh.length > 0 || fixed.length > 0 || unchecked.length > 0) return 1;
   console.log(
     `a11y: no new critical axe violation in Components/ stories (results of ${date}); ${
       known.length

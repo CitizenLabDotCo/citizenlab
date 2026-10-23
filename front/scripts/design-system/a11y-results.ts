@@ -153,17 +153,32 @@ export const knownFrom = (failures: CheckFailure[]): KnownCritical[] =>
     .map(({ id, rule }) => ({ id, rule }))
     .sort((a, b) => knownKey(a).localeCompare(knownKey(b)));
 
+// Stories whose last axe run errored, with the error: axe has no
+// violations for them, which says nothing about whether they are fixed.
+export const erroredStories = (results: A11yResults): Record<string, string> =>
+  Object.fromEntries(
+    Object.entries(results.stories)
+      .filter(([, s]) => s.error)
+      .map(([id, s]) => [id, s.error as string])
+  );
+
 export const splitKnown = (
   failures: CheckFailure[],
-  known: KnownCritical[]
+  known: KnownCritical[],
+  errored: Record<string, string> = {}
 ) => {
   const keys = new Set(known.map(knownKey));
   const found = new Set(failures.map(knownKey));
+  const missing = known.filter((k) => !found.has(knownKey(k)));
   return {
     fresh: failures.filter((f) => !keys.has(knownKey(f))),
     known: failures.filter((f) => keys.has(knownKey(f))),
     // On the list but no longer failing: remove these from the list.
-    fixed: known.filter((k) => !found.has(knownKey(k))),
+    fixed: missing.filter((k) => !(k.id in errored)),
+    // On the list, but the story's run errored: not checked, keep the entry.
+    unchecked: missing
+      .filter((k) => k.id in errored)
+      .map((k) => ({ ...k, error: errored[k.id] })),
   };
 };
 
