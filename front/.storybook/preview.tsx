@@ -3,7 +3,7 @@ import { Preview, StoryContext } from '@storybook/react';
 import contexts from './contexts';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
 import mockServer from './mockServer';
-import { reactIntl, StorybookLocale } from './reactIntl';
+import { loadMessages, reactIntl } from './reactIntl';
 import { LANGUAGES } from './languages';
 import { cities, DEFAULT_CITY } from './cities';
 import { GV_VIEWPORTS } from './viewports';
@@ -43,12 +43,17 @@ const mocksReadyLoader = async () => {
   return {};
 };
 
+// The messages of the story's language, from its own chunk.
+const intlLoader = async (context: StoryContext) => ({
+  intlMessages: await loadMessages(context.globals.lang),
+});
+
 const routerDecorator = (Story: () => JSX.Element, context: StoryContext) => (
   <MemoryRouter>
     <IntlProvider
       locale={context.globals.lang}
       defaultLocale={reactIntl.defaultLocale}
-      messages={reactIntl.messages[context.globals.lang as StorybookLocale]}
+      messages={context.loaded.intlMessages}
     >
       <Story />
     </IntlProvider>
@@ -68,6 +73,24 @@ const modeDecorator = (Story: () => JSX.Element, context: StoryContext) => {
   }
   return <Story />;
 };
+
+// The a11y addon runs axe (a 546 KB chunk and a few hundred ms of CPU)
+// after every render. Only Storybook's own a11y panel shows that result,
+// so a frame embedded elsewhere (the workbench gallery, component page and
+// Review) skips it. Standalone frames and the Storybook UI keep the
+// automatic run; ds:a11y brings its own axe either way.
+const embeddedOutsideStorybook = (() => {
+  try {
+    const id = window.frameElement?.id;
+    return (
+      id !== undefined &&
+      id !== 'storybook-preview-iframe' &&
+      !id.startsWith('storybook-ref-')
+    );
+  } catch {
+    return false;
+  }
+})();
 
 const preview: Preview = {
   globalTypes: {
@@ -109,6 +132,7 @@ const preview: Preview = {
     mode: 'today',
     city: DEFAULT_CITY,
     lang: 'en',
+    ...(embeddedOutsideStorybook && { a11y: { manual: true } }),
   },
   parameters: {
     controls: {
@@ -132,7 +156,7 @@ const preview: Preview = {
       },
     },
   },
-  loaders: [mocksReadyLoader],
+  loaders: [mocksReadyLoader, intlLoader],
   decorators: [mswDecorator, routerDecorator, contexts, modeDecorator],
 };
 
