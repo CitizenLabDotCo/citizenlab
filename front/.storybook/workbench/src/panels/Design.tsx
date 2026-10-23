@@ -112,13 +112,15 @@ const GLYPH_OF_FINDING: Record<string, IconName> = {
 
 const flatRaw = (raw: string) => raw.replace(/\s+/g, '');
 
-const StorySelect = ({
+// Every state or variant of the component as a chip: one click switches.
+const StoryChips = ({
   id,
   label,
   stories,
   value,
   tabLabel,
   onChange,
+  titled,
 }: {
   id: string;
   label: string;
@@ -126,23 +128,31 @@ const StorySelect = ({
   value: string;
   tabLabel: (s: StoryRef) => string;
   onChange: (id: string) => void;
+  // Both groups shown: each says which it is.
+  titled: boolean;
 }) => (
-  <label className="wb-toolbar-field wb-toolbar-field-story">
-    <span className="wb-visually-hidden">{label}</span>
-    <select
+  <div className="wb-insp-stories">
+    {titled && <p className="wb-insp-sub">{label}</p>}
+    <div
+      className="wb-story-chips"
+      role="group"
+      aria-label={label}
       data-testid={`wb-insp-${id}`}
-      value={value}
-      onChange={(e) => e.target.value && onChange(e.target.value)}
     >
-      {!value && <option value="">{label}</option>}
       {stories.map((s) => (
-        <option key={s.id} value={s.id}>
+        <button
+          key={s.id}
+          type="button"
+          className="wb-story-chip"
+          aria-pressed={s.id === value}
+          data-value={s.id}
+          onClick={() => s.id !== value && onChange(s.id)}
+        >
           {tabLabel(s)}
-        </option>
+        </button>
       ))}
-    </select>
-    <Icon name="chevron" size={14} />
-  </label>
+    </div>
+  </div>
 );
 
 // The Design tab: the component's variant row, the selected element, its
@@ -211,8 +221,6 @@ const Design = ({
   const go = (id: string) => {
     window.location.hash = `#/${section}/${encodeURIComponent(id)}`;
   };
-  const inStates = states.some((s) => s.id === storyId);
-  const inVariants = variants.some((s) => s.id === storyId);
 
   const path = selected ? pathOf(selected) : null;
   const editOf = (row: InspectRow) =>
@@ -372,32 +380,28 @@ const Design = ({
         <header className="wb-insp-head">
           <h3>{componentName}</h3>
         </header>
-        <div className="wb-insp-grid">
-          {states.length > 0 && (
-            <div className={variants.length > 0 ? '' : 'wb-insp-full'}>
-              <StorySelect
-                id="state"
-                label="State"
-                stories={states}
-                value={inStates ? storyId : ''}
-                tabLabel={tabLabel}
-                onChange={go}
-              />
-            </div>
-          )}
-          {variants.length > 0 && (
-            <div className={states.length > 0 ? '' : 'wb-insp-full'}>
-              <StorySelect
-                id="variant"
-                label={states.length > 0 ? 'Variant' : 'Story'}
-                stories={variants}
-                value={inVariants ? storyId : ''}
-                tabLabel={tabLabel}
-                onChange={go}
-              />
-            </div>
-          )}
-        </div>
+        {states.length > 0 && (
+          <StoryChips
+            id="state"
+            label="State"
+            stories={states}
+            value={storyId}
+            tabLabel={tabLabel}
+            onChange={go}
+            titled={variants.length > 0}
+          />
+        )}
+        {variants.length > 0 && (
+          <StoryChips
+            id="variant"
+            label={states.length > 0 ? 'Variant' : 'Story'}
+            stories={variants}
+            value={storyId}
+            tabLabel={tabLabel}
+            onChange={go}
+            titled={states.length > 0}
+          />
+        )}
       </section>
 
       <section

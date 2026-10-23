@@ -811,7 +811,7 @@ const switchInPlace = async (
 // Clicks on one control made during a globals switch.
 const EDIT_BURST = 31;
 
-// The State and Variant menus, then a boolean control: the frame's story
+// The State and Variant chips, then a boolean control: the frame's story
 // renders again with the new arg.
 const controlsChecks = async (
   page: any,
@@ -824,7 +824,7 @@ const controlsChecks = async (
     timeout: 10000,
   });
   const tabs: number = await page.$$eval(
-    '[data-testid="wb-insp-state"] option[value]:not([value=""]), [data-testid="wb-insp-variant"] option[value]:not([value=""])',
+    '[data-testid="wb-insp-state"] button[data-value], [data-testid="wb-insp-variant"] button[data-value]',
     (els: Element[]) => els.length
   );
   if (tabs < MIN_STATE_TABS) {
@@ -849,9 +849,9 @@ const controlsChecks = async (
   // Another State switches the story in the same frame: the element stays,
   // the preview renders the chosen story, the session's edits stay on.
   const other: string | undefined = await page.$$eval(
-    '[data-testid="wb-insp-state"] option[value]:not([value=""])',
-    (els: HTMLOptionElement[], id: string) =>
-      els.map((e) => e.value).find((v) => v !== id),
+    '[data-testid="wb-insp-state"] button[data-value]',
+    (els: Element[], id: string) =>
+      els.map((e) => e.getAttribute('data-value')).find((v) => v !== id),
     storyId
   );
   if (other) {
@@ -860,7 +860,7 @@ const controlsChecks = async (
       page,
       frame,
       `state switch to ${other}`,
-      () => page.selectOption('[data-testid="wb-insp-state"]', other),
+      () => page.click(`[data-testid="wb-insp-state"] [data-value="${other}"]`),
       `[data-story="${other}"]`,
       { storyId: other },
       failures
