@@ -16,7 +16,13 @@ import '../app/design-system/tokens/tokens.css';
 
 // Relative URL so the worker also loads when Storybook is served from a
 // sub-path (e.g. /storybook/ in epic previews).
-initialize({ serviceWorker: { url: './mockServiceWorker.js' } });
+// The default handlers are registered from the start, not only once the first
+// story renders: some modules (the app configuration stream) fetch as soon as
+// they are imported, and without a handler that request fails for good.
+initialize(
+  { serviceWorker: { url: './mockServiceWorker.js' } },
+  Object.values(mockServer)
+);
 
 const routerDecorator = (Story: () => JSX.Element, context: StoryContext) => (
   <MemoryRouter>
