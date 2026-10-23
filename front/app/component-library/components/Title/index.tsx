@@ -3,7 +3,7 @@ import React from 'react';
 import { FontWeight } from 'component-library/utils/typings';
 import styled, { css } from 'styled-components';
 
-import { gvTag } from '../../utils/gvTag';
+import { useGvInstance } from '../../utils/gvInstance';
 import {
   Color,
   colors,
@@ -108,19 +108,29 @@ const StyledTitle = styled(Box)<TitleProps>`
   `}
 `;
 
-const Title: React.FC<TitleProps> = ({
-  children,
-  variant = 'h1',
-  color,
-  as,
-  fontSize,
-  ...props
-}) => {
+// The props a designer may switch on one Title in the workbench, with the
+// defaults the Title applies (utils/gvInstance.ts).
+const INSTANCE_DEFAULTS = { variant: 'h1' as Variant };
+
+const Title: React.FC<TitleProps> = (rawProps) => {
+  const { props: instanceProps, tag } = useGvInstance(
+    'Title',
+    rawProps,
+    INSTANCE_DEFAULTS
+  );
+  const {
+    children,
+    variant = INSTANCE_DEFAULTS.variant,
+    color,
+    as,
+    fontSize,
+    ...props
+  } = instanceProps;
   const mb = props.mb || props.my || props.m || '16px';
 
   return (
     <StyledTitle
-      {...gvTag('Title')}
+      {...tag}
       variant={variant}
       color={color}
       as={as || variant}

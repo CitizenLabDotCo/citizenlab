@@ -10,6 +10,7 @@ import { GV_VIEWPORTS } from './viewports';
 import { MemoryRouter } from 'utils/router';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { allModes } from './modes';
+import { instancePropsDecorator } from './instanceProps';
 import { MINIMAL_VIEWPORTS } from 'storybook/viewport';
 import { IntlProvider } from 'react-intl';
 import { JSX } from 'react/jsx-runtime';
@@ -158,7 +159,15 @@ const preview: Preview = {
     },
   },
   loaders: [mocksReadyLoader, intlLoader],
-  decorators: [mswDecorator, routerDecorator, contexts, modeDecorator],
+  // The last is the outermost: the instance props scope is set before the
+  // story renders (instanceProps.tsx).
+  decorators: [
+    mswDecorator,
+    routerDecorator,
+    contexts,
+    modeDecorator,
+    instancePropsDecorator,
+  ],
 };
 
 export default preview;
