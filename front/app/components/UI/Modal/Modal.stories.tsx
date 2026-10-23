@@ -2,13 +2,13 @@ import React from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import { Meta, StoryObj } from '@storybook/react';
-import { fn } from 'storybook/test';
+import { fn, waitFor } from 'storybook/test';
 
 import Modal from '.';
 
 // The modal renders into #modal-portal, which the Storybook contexts add.
-// The play step waits well past the enter transition (500ms on desktop,
-// 700ms on phones) so the screenshots are stable.
+// The close button only renders once the app configuration (MSW) has loaded,
+// so the play step waits for it.
 const meta = {
   title: 'Components/Overlays/Modal',
   tags: ['shared'],
@@ -21,8 +21,7 @@ const meta = {
     children: (
       <Box p="24px">
         <Text m="0px">
-          The project and all its inputs will be removed. This cannot be
-          undone.
+          The project and all its inputs will be removed. This cannot be undone.
         </Text>
       </Box>
     ),
@@ -39,7 +38,11 @@ const meta = {
     </Box>
   ),
   play: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    await waitFor(() => {
+      if (!document.querySelector('.e2e-modal-close-button')) {
+        throw new Error('close button not rendered yet');
+      }
+    });
   },
 } satisfies Meta<typeof Modal>;
 
@@ -58,6 +61,13 @@ export const WithoutHeader: Story = {
 
 export const WithoutCloseButton: Story = {
   args: { hideCloseButton: true },
+  play: async () => {
+    await waitFor(() => {
+      if (!document.querySelector('#modal-header')) {
+        throw new Error('modal not rendered yet');
+      }
+    });
+  },
 };
 
 export const RTL: Story = {
@@ -66,7 +76,9 @@ export const RTL: Story = {
     header: 'حذف هذا المشروع؟',
     children: (
       <Box p="24px">
-        <Text m="0px">سيتم حذف المشروع وكل مدخلاته. لا يمكن التراجع عن ذلك.</Text>
+        <Text m="0px">
+          سيتم حذف المشروع وكل مدخلاته. لا يمكن التراجع عن ذلك.
+        </Text>
       </Box>
     ),
     footer: (
