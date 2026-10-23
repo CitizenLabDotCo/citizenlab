@@ -1,0 +1,290 @@
+{
+  "file": "front/.storybook/static/design-scan.summary.json",
+  "points": [
+    {
+      "sha": "8f622a92c2258f1d9cea372d9050a7803452bdb8",
+      "date": "2026-10-22T18:42:43+00:00",
+      "subject": "design-system(scan): routes, scores, page status and the CLI [AI-assisted]",
+      "area": "scan",
+      "totals": {
+        "offSpec": 6507,
+        "legacy": 3274,
+        "tokenReads": 0,
+        "components": 37,
+        "onTokens": 6
+      }
+    },
+    {
+      "sha": "5cdbd06afa6e3b7b608719d76ad8b5916eeb9dd9",
+      "date": "2026-10-22T18:52:28+00:00",
+      "subject": "design-system(scan): count px on style props, tolerate bad JSON, honest token scope [AI-assisted]",
+      "area": "scan",
+      "totals": {
+        "offSpec": 8250,
+        "legacy": 3274,
+        "tokenReads": 0,
+        "components": 37,
+        "onTokens": 6
+      }
+    },
+    {
+      "sha": "d78102d9733008997a4f0a4164fc77925e259e38",
+      "date": "2026-10-22T19:21:21+00:00",
+      "subject": "design-system(scan): prefer primitives on nearest-token ties [AI-assisted]",
+      "area": "scan",
+      "totals": {
+        "offSpec": 8250,
+        "legacy": 3274,
+        "tokenReads": 0,
+        "components": 37,
+        "onTokens": 6
+      }
+    },
+    {
+      "sha": "5c6c8843a2651577bdaa7f6213b9bbcf81ea171d",
+      "date": "2026-10-22T21:24:18+00:00",
+      "subject": "design-system(scan): follow barrel re-exports by name so page reach is per component [AI-assisted]",
+      "area": "scan",
+      "totals": {
+        "offSpec": 8242,
+        "legacy": 3274,
+        "tokenReads": 1,
+        "components": 37,
+        "onTokens": 6
+      }
+    },
+    {
+      "sha": "cd3188a66b0a598e2d98eb00a55ddaa5686d0ecc",
+      "date": "2026-10-22T21:25:36+00:00",
+      "subject": "design-system(scan): allow px as a token variable fallback [AI-assisted]",
+      "area": "scan",
+      "totals": {
+        "offSpec": 8241,
+        "legacy": 3274,
+        "tokenReads": 1,
+        "components": 37,
+        "onTokens": 6
+      }
+    },
+    {
+      "sha": "5186f325b4ec27707de8e8271e6a3468a34b010d",
+      "date": "2026-10-22T23:56:21+00:00",
+      "subject": "design-system(scan): count UI and admin components [AI-assisted]",
+      "area": "scan",
+      "totals": {
+        "offSpec": 8241,
+        "legacy": 3274,
+        "tokenReads": 1,
+        "components": 132,
+        "onTokens": 20
+      }
+    },
+    {
+      "sha": "ad53a05e656867a644071c1a380cdf601248e6a9",
+      "date": "2026-10-23T00:21:04+00:00",
+      "subject": "design-system(scan): leave imports used only as types out of route closures [AI-assisted]",
+      "area": "scan",
+      "totals": {
+        "offSpec": 8241,
+        "legacy": 3274,
+        "tokenReads": 1,
+        "components": 132,
+        "onTokens": 20
+      }
+    },
+    {
+      "sha": "205e30e63a10a70e1e84fd24f16c0946c9d99f27",
+      "date": "2026-10-23T00:30:07+00:00",
+      "subject": "design-system(review): change list and route fixtures [AI-assisted]",
+      "area": "review",
+      "totals": {
+        "offSpec": 8241,
+        "legacy": 3274,
+        "tokenReads": 1,
+        "components": 132,
+        "onTokens": 20
+      }
+    },
+    {
+      "sha": "5be0131cb50611ceb82348f15737306405493389",
+      "date": "2026-10-23T03:10:23+00:00",
+      "subject": "design-system(heal): ProjectWorkspace bo.panelBorderRadius → --gv-radius-panel [AI-assisted]",
+      "area": "heal",
+      "totals": {
+        "offSpec": 8241,
+        "legacy": 3270,
+        "tokenReads": 5,
+        "components": 132,
+        "onTokens": 20
+      },
+      "heal": {
+        "file": "front/app/containers/Admin/projects/project/backofficeRedesign/index.tsx",
+        "removed": [
+          "      borderRadius={bo.panelBorderRadius}"
+        ],
+        "added": [
+          "      borderRadius={t.radius.panel}"
+        ],
+        "shots": "heals/7fe9ca304f8",
+        "score": {
+          "from": 0,
+          "to": 0.5
+        },
+        "diffs": {
+          "today": 0,
+          "redesign": 0
+        }
+      }
+    },
+    {
+      "sha": "d7da7b947c03348e84c57990990c388be161184e",
+      "date": "2026-10-23T03:21:39+00:00",
+      "subject": "design-system(heal): ViewContent bo.panelBorderRadius → --gv-radius-panel [AI-assisted]",
+      "area": "heal",
+      "totals": {
+        "offSpec": 8241,
+        "legacy": 3268,
+        "tokenReads": 7,
+        "components": 132,
+        "onTokens": 20
+      },
+      "heal": {
+        "file": "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/ViewContent.tsx",
+        "removed": [
+          "        borderRadius={bo.panelBorderRadius}"
+        ],
+        "added": [
+          "        borderRadius={t.radius.panel}"
+        ],
+        "shots": "heals/5be0131cb50",
+        "score": {
+          "from": 0,
+          "to": 0.5
+        },
+        "diffs": {
+          "today": 0,
+          "redesign": 0
+        }
+      }
+    },
+    {
+      "sha": "3bd751dee8558388ce479921551499ee63ccde04",
+      "date": "2026-10-23T03:29:33+00:00",
+      "subject": "design-system(heal): ProjectWorkspace colors.background → --gv-background [AI-assisted]",
+      "area": "heal",
+      "totals": {
+        "offSpec": 8241,
+        "legacy": 3267,
+        "tokenReads": 8,
+        "components": 132,
+        "onTokens": 20
+      },
+      "heal": {
+        "file": "front/app/containers/Admin/projects/project/backofficeRedesign/index.tsx",
+        "removed": [
+          "        background={colors.background}"
+        ],
+        "added": [
+          "        background={t.color.background}"
+        ],
+        "shots": "heals/d7da7b947c0",
+        "score": {
+          "from": 0.5,
+          "to": 0.588
+        },
+        "diffs": {
+          "today": 0,
+          "redesign": 0
+        }
+      }
+    },
+    {
+      "sha": "6ac230f9438a08693da4a12b77a6355c23d5194d",
+      "date": "2026-10-23T03:34:00+00:00",
+      "subject": "design-system(heal): EmptyState 8px → --gv-space-2 [AI-assisted]",
+      "area": "heal",
+      "totals": {
+        "offSpec": 8240,
+        "legacy": 3267,
+        "tokenReads": 9,
+        "components": 132,
+        "onTokens": 20
+      },
+      "heal": {
+        "file": "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/EmptyState.tsx",
+        "removed": [
+          "      gap=\"8px\""
+        ],
+        "added": [
+          "      gap={t.space[2]}"
+        ],
+        "shots": "heals/3bd751dee85",
+        "score": {
+          "from": 0,
+          "to": 0.118
+        },
+        "diffs": {
+          "today": 0,
+          "redesign": 0
+        }
+      }
+    },
+    {
+      "sha": "a551ab3c0ba576e973d6d0d6dfaeb97453bef7f1",
+      "date": "2026-10-23T03:37:00+00:00",
+      "subject": "design-system(heal): EmptyState 12px → --gv-space-3 [AI-assisted]",
+      "area": "heal",
+      "totals": {
+        "offSpec": 8239,
+        "legacy": 3267,
+        "tokenReads": 10,
+        "components": 132,
+        "onTokens": 20
+      },
+      "heal": {
+        "file": "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/EmptyState.tsx",
+        "removed": [
+          "        mb=\"12px\""
+        ],
+        "added": [
+          "        mb={t.space[3]}"
+        ],
+        "shots": "heals/6ac230f9438",
+        "score": {
+          "from": 0.118,
+          "to": 0.235
+        },
+        "diffs": {
+          "today": 0,
+          "redesign": 0
+        }
+      }
+    },
+    {
+      "sha": "f9572c7b4cf3eb7697ff59d75a89f38c5f559f15",
+      "date": "2026-10-23T04:17:51+00:00",
+      "subject": "design-system(lift): OptionList from backofficeRedesign/InputManager [AI-assisted]",
+      "area": "lift",
+      "totals": {
+        "offSpec": 8234,
+        "legacy": 3267,
+        "tokenReads": 16,
+        "components": 133,
+        "onTokens": 21
+      }
+    },
+    {
+      "sha": "952be8a91b28c47c5278b783e0e94289011493b3",
+      "date": "2026-10-23T04:24:50+00:00",
+      "subject": "design-system(lift): PanelField from backofficeRedesign/Phase/BuildPanel [AI-assisted]",
+      "area": "lift",
+      "totals": {
+        "offSpec": 8232,
+        "legacy": 3267,
+        "tokenReads": 18,
+        "components": 134,
+        "onTokens": 22
+      }
+    }
+  ]
+}
