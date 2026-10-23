@@ -771,12 +771,21 @@ a.wb-card:hover {
   left: 44px;
 }
 
+/* The focus ring is a product token: it is shown on a product button on a
+   white tile, the same in either theme. */
+.wb-cp-focus {
+  padding: var(--gv-space-4) var(--gv-space-5);
+  background: var(--wb-frame-bg);
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius);
+}
+
 .wb-cp-focus span {
   display: inline-block;
   padding: var(--gv-space-2) var(--gv-space-5);
   font-weight: 600;
-  color: var(--wb-on-accent);
-  background: var(--wb-accent-fill);
+  color: var(--gv-white);
+  background: var(--gv-primary);
   border-radius: var(--wb-radius);
 }
 
@@ -1739,14 +1748,17 @@ a.wb-card:hover {
 
 .wb-pv-focus {
   padding: 8px;
+  background: var(--wb-frame-bg);
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius);
 }
 
 .wb-pv-focus > span {
   padding: var(--gv-space-1) var(--gv-space-3);
   font-size: var(--gv-fs-13);
   font-weight: 600;
-  color: var(--wb-on-accent);
-  background: var(--wb-accent-fill);
+  color: var(--gv-white);
+  background: var(--gv-primary);
   border-radius: var(--gv-radius-1);
 }
 
@@ -2572,10 +2584,6 @@ tr:hover .wb-pv-motion > span,
 
 .wb-gallery-group {
   margin-top: var(--gv-space-10);
-}
-
-.wb-gallery-hint {
-  margin-top: 0;
 }
 
 /* Component page */
@@ -3791,6 +3799,7 @@ a.wb-line:hover {
   }
 
   .wb-pv-motion > span,
+  .wb-ramp-toggle > .wb-icon,
   .wb-card,
   .wb-switch,
   .wb-switch::after,
@@ -4242,10 +4251,6 @@ a.wb-line:hover {
 
   .wb-thumb-card .wb-card-title {
     font-size: var(--gv-fs-s);
-  }
-
-  .wb-thumb-a11y {
-    margin-left: 0;
   }
 }
 
@@ -6016,10 +6021,24 @@ tr[data-result='needs-human'] .wb-a11y-note {
    coloured icon and the worst count, then icons for the keyboard test and
    the review. Tooltips carry the detail. */
 .wb-thumb-a11y {
-  display: inline-flex;
-  gap: var(--gv-space-3);
-  align-items: center;
+  min-width: 0;
   margin-left: auto;
+}
+
+/* One line on every card, so the cards keep one height. */
+.wb-thumb-body .wb-chip-row {
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+
+.wb-thumb-body .wb-chip {
+  flex: none;
+}
+
+.wb-thumb-a11y-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .wb-a11y-mini {

@@ -8,6 +8,7 @@ import {
 
 import {
   A11yResults,
+  A11yTone,
   axeSummary,
   axeTitle,
   Checklist,
@@ -87,9 +88,11 @@ export const OfficeChip = ({ office }: { office: Office }) => (
   </span>
 );
 
-// The accessibility line of a card (SPEC 7.6): the worst axe result and its
-// count, then the keyboard test and the review as small icons whose
-// tooltips carry the detail. The A11y panel has the full picture.
+// The accessibility line of a card (SPEC 7.6): one chip in the worst tone
+// of the axe run, the keyboard test and the review, naming the worst of
+// them. Its tooltip carries all three; the A11y panel has the full picture.
+const TONE_RANK: A11yTone[] = ['none', 'pass', 'warn', 'fail'];
+
 export const A11yBadges = ({
   group,
   results,
@@ -104,15 +107,28 @@ export const A11yBadges = ({
   const reviewed = checklist && reviewedLine(checklist);
   const counts = checklist && checklistCounts(checklist);
   if (axe.checked === 0 && !reviewed) return null;
-  const axeTone =
+  const axeTone: A11yTone =
     axe.worst === 'critical' ? 'fail' : axe.worst ? 'warn' : 'pass';
+  const kbTone: A11yTone = kb === 'unknown' ? 'none' : KEYBOARD_TONE[kb];
+  const reviewTone: A11yTone = counts && counts.fail > 0 ? 'fail' : 'none';
+  const tones: A11yTone[] = [
+    axe.checked > 0 ? axeTone : 'none',
+    kbTone,
+    reviewTone,
+  ];
+  const tone = tones.reduce((a, b) =>
+    TONE_RANK.indexOf(b) > TONE_RANK.indexOf(a) ? b : a
+  );
   const worst = worstCount(axe);
-  const showKb =
-    kb === 'tested' ||
-    kb === 'tested-fails' ||
-    kb === 'untested' ||
-    kb === 'failing';
-  const total = counts ? counts.pass + counts.fail + counts['needs-human'] : 0;
+  const label =
+    worst ??
+    (counts && counts.fail > 0
+      ? plural(counts.fail, 'check fails', 'checks fail')
+      : kbTone === 'fail' || kbTone === 'warn'
+      ? KEYBOARD_LABEL[kb]
+      : axe.checked > 0
+      ? 'Axe pass'
+      : 'Reviewed');
   const reviewTitle =
     reviewed && counts
       ? `Reviewed by ${checklist.reviewer} on ${formatDate(
@@ -121,45 +137,25 @@ export const A11yBadges = ({
           counts['needs-human']
         } ${counts['needs-human'] === 1 ? 'needs' : 'need'} a person`
       : '';
+  const title = [
+    axe.checked > 0 && axeTitle(axe),
+    kb !== 'unknown' && KEYBOARD_LABEL[kb],
+    reviewTitle,
+  ]
+    .filter(Boolean)
+    .join('\n');
   return (
-    <span className="wb-thumb-a11y" data-testid="wb-thumb-a11y">
-      {axe.checked > 0 && (
-        <span
-          className={`wb-a11y-mini wb-a11y-tone-${axeTone}`}
-          title={axeTitle(axe)}
-          data-testid="wb-thumb-axe"
-        >
-          <Icon name="a11y" size={14} />
-          <span aria-hidden="true">{worst ?? 'Axe pass'}</span>
-          <span className="wb-visually-hidden">{axeTitle(axe)}</span>
-        </span>
-      )}
-      {showKb && (
-        <span
-          className={`wb-a11y-mini wb-a11y-tone-${
-            kb === 'untested' ? 'none' : KEYBOARD_TONE[kb]
-          }`}
-          title={KEYBOARD_LABEL[kb]}
-          data-testid="wb-thumb-keyboard"
-          data-status={kb}
-        >
-          <Icon name="keyboard" size={14} />
-          <span className="wb-visually-hidden">{KEYBOARD_LABEL[kb]}</span>
-        </span>
-      )}
-      {reviewed && counts && (
-        <span
-          className={`wb-a11y-mini wb-a11y-tone-${
-            counts.fail > 0 ? 'fail' : 'none'
-          }`}
-          title={reviewTitle}
-          data-testid="wb-thumb-reviewed"
-        >
-          <Icon name="checklist" size={14} />
-          <span aria-hidden="true">{`${counts.pass}/${total}`}</span>
-          <span className="wb-visually-hidden">{reviewTitle}</span>
-        </span>
-      )}
+    <span
+      className={`wb-thumb-a11y wb-a11y-mini wb-a11y-tone-${tone}`}
+      title={title}
+      data-testid="wb-thumb-a11y"
+      data-tone={tone}
+    >
+      <Icon name="a11y" size={14} />
+      <span className="wb-thumb-a11y-text" aria-hidden="true">
+        {label}
+      </span>
+      <span className="wb-visually-hidden">{title}</span>
     </span>
   );
 };

@@ -242,7 +242,10 @@ const Canvas = ({
     if (z === 'fit') {
       next = fitTo(frame.current, r);
     } else {
-      const m = measure(frame.current, Math.floor(r / z));
+      // Zooming in magnifies the story as laid out at the canvas width (the
+      // canvas then scrolls), so a responsive story keeps its breakpoint;
+      // zooming out lays it out wider, to show more of it.
+      const m = measure(frame.current, Math.floor(r / Math.min(z, 1)));
       next = m && { w: m.w, h: clampH(m.h), scale: z };
     }
     if (!next) return;
