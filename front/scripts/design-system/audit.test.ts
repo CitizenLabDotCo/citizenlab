@@ -14,6 +14,7 @@ import {
   isInside,
   isReadRequest,
   isSafeTrigger,
+  paramNotes,
   parseArgs,
   withParams,
   withQuery,
@@ -427,19 +428,62 @@ describe('findStory', () => {
   });
 });
 
+const paramFixture = {
+  hosts: { after: '', before: '' },
+  params: { projectId: 'old', ideaId: 'i', slug: 'project-slug' },
+  paths: {
+    'a/$projectId/$id': { id: 'x' },
+    'ideas/$slug': { slug: 'idea-slug' },
+  },
+  locale: 'en',
+};
+
 describe('withParams', () => {
-  it('overrides params and path-level values of the same name only', () => {
-    const f = withParams(
+  it('a plain --param overrides params only, never a path-level value', () => {
+    const f = withParams(paramFixture, { projectId: 'new', slug: 'p2' });
+    expect(f.params).toEqual({ projectId: 'new', ideaId: 'i', slug: 'p2' });
+    expect(f.paths).toEqual(paramFixture.paths);
+  });
+
+  it('a route-scoped --param overrides that route only', () => {
+    const f = withParams(paramFixture, {}, { 'ideas/$slug': { slug: 'i2' } });
+    expect(f.paths['ideas/$slug']).toEqual({ slug: 'i2' });
+    expect(f.paths['a/$projectId/$id']).toEqual({ id: 'x' });
+    expect(f.params).toEqual(paramFixture.params);
+  });
+});
+
+describe('paramNotes', () => {
+  const routes = ['ideas/$slug', 'projects/$slug', 'a/$projectId/$id'];
+
+  it('holds back a route whose path-level value a plain --param would leave behind', () => {
+    const n = paramNotes(paramFixture, { slug: 'p2' }, {}, routes);
+    expect(n.shadowed).toEqual([
       {
-        hosts: { after: '', before: '' },
-        params: { projectId: 'old', ideaId: 'i' },
-        paths: { 'a/$projectId/$id': { projectId: 'oldp', id: 'x' } },
-        locale: 'en',
+        route: 'ideas/$slug',
+        reason:
+          "the fixture's slug here is another record from the source tenant; pass --param 'ideas/$slug:slug=<id>'",
       },
-      { projectId: 'new' }
-    );
-    expect(f.params).toEqual({ projectId: 'new', ideaId: 'i' });
-    expect(f.paths['a/$projectId/$id']).toEqual({ projectId: 'new', id: 'x' });
+    ]);
+    expect(
+      paramNotes(
+        paramFixture,
+        { slug: 'p2' },
+        { 'ideas/$slug': { slug: 'i2' } },
+        routes
+      ).shadowed
+    ).toEqual([]);
+  });
+
+  it('lists --param names no planned route has', () => {
+    expect(
+      paramNotes(
+        paramFixture,
+        { projectid: 'p', projectId: 'q' },
+        { 'x/$slug': { slug: 's' } },
+        routes
+      ).unused
+    ).toEqual(['projectid', 'x/$slug:slug']);
   });
 });
 
@@ -450,6 +494,7 @@ describe('splitChain', () => {
       'text=Status',
     ]);
     expect(splitChain('button.x')).toEqual(['button.x']);
+    expect(splitChain('#a->#b')).toEqual(['#a', '#b']);
   });
 });
 
@@ -489,6 +534,7 @@ describe('parseArgs', () => {
       routes: ['ideas'],
       maxTriggers: 12,
       params: {},
+      pathParams: {},
       query: [],
     });
     expect(
@@ -511,7 +557,39 @@ describe('parseArgs', () => {
     ).toEqual({ projectId: 'p1', phaseId: 'f1' });
     expect(() =>
       parseArgs([...base, '--param', 'projectId'], { defaultState: 's' })
-    ).toThrow('--param needs <name>=<value>');
+    ).toThrow('--param needs <name>=<value> or <route>:<name>=<value>');
+  });
+
+  it('reads a route-scoped --param and refuses a name the route lacks', () => {
+    const base = ['--component', 'X', '--host', 'h'];
+    expect(
+      parseArgs([...base, '--param', '/ideas/$slug:slug=an-idea'], {
+        defaultState: 's',
+      }).pathParams
+    ).toEqual({ 'ideas/$slug': { slug: 'an-idea' } });
+    expect(() =>
+      parseArgs([...base, '--param', 'ideas/$slug:id=1'], {
+        defaultState: 's',
+      })
+    ).toThrow('--param ideas/$slug:id: the route has no $id');
+  });
+
+  it('reads repeated --query switches in order', () => {
+    expect(
+      parseArgs(
+        [
+          '--component',
+          'X',
+          '--host',
+          'h',
+          '--query',
+          'project_backoffice_redesign',
+          '--query',
+          'a=1',
+        ],
+        { defaultState: 's' }
+      ).query
+    ).toEqual(['project_backoffice_redesign', 'a=1']);
   });
 
   it('throws on a missing component, a missing host or an unknown flag', () => {

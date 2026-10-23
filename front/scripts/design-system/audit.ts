@@ -14,8 +14,11 @@
  *     [--max-triggers <n>]    menus to try opening when a page shows no
  *                             instance (default 12)
  *     [--param <name>=<id>]   a route param for this host, over the
- *                             fixture's (repeatable; the fixture's ids
- *                             belong to its own source host)
+ *                             fixture's `params` (repeatable; the fixture's
+ *                             ids belong to its own source host)
+ *     [--param <route>:<name>=<id>]  the same for one route, over the
+ *                             fixture's `paths` entry, where the name means
+ *                             another record (`ideas/$slug:slug=<id>`)
  *     [--query <name[=value]>] added to every route URL, for a state that
  *                             a URL switch turns on, e.g.
  *                             project_backoffice_redesign (repeatable)
@@ -33,7 +36,8 @@
  *
  * The run is read-only at the network layer: every request that is not
  * GET, HEAD or OPTIONS is aborted and logged (method and path only),
- * WebSockets and service workers are blocked. Each blocked request is
+ * WebSockets and service workers are blocked, unload-time handlers never
+ * run (UNLOAD_GUARD). Each blocked request is
  * recorded with its route and phase: `load` (the platform's own tracking
  * POSTs on every page load, expected) or `after-click:<trigger>`. Only
  * writes after a click count as blockedWrites and raise the alarm.
@@ -61,6 +65,7 @@ import {
   normaliseFixture,
   resolveRoute,
   RouteFixture,
+  routeParams,
   routesFor,
   unfilledParams,
 } from '../../.storybook/workbench/src/lib/review';
@@ -153,6 +158,8 @@ export type AuditArgs = {
   routes: string[];
   maxTriggers: number;
   params: Record<string, string>;
+  // Route-scoped --param values: route -> name -> value.
+  pathParams: Record<string, Record<string, string>>;
   query: string[];
 };
 
@@ -170,6 +177,7 @@ export const parseArgs = (
   const routes: string[] = [];
   let maxTriggers = 12;
   const params: Record<string, string> = {};
+  const pathParams: Record<string, Record<string, string>> = {};
   const query: string[] = [];
   for (let i = 0; i < argv.length; i++) {
     const flag = argv[i];
@@ -182,13 +190,32 @@ export const parseArgs = (
     else if (flag === '--host') host = value();
     else if (flag === '--storybook') storybook = value();
     else if (flag === '--state') state = value();
-    else if (flag === '--open') open.push(value());
-    else if (flag === '--route') routes.push(value());
+    else if (flag === '--open') {
+      const v = value();
+      // `A->B` without spaces is a chain too; a selector never contains
+      // `->` otherwise.
+      if (!splitChain(v).length) throw new Error('--open needs a selector');
+      open.push(v);
+    } else if (flag === '--route') routes.push(value());
     else if (flag === '--max-triggers') maxTriggers = Number(value()) || 0;
     else if (flag === '--param') {
-      const m = /^([A-Za-z]\w*)=(.+)$/.exec(value());
-      if (!m) throw new Error('--param needs <name>=<value>');
-      params[m[1]] = m[2];
+      const m = /^(?:([^:=]+):)?([A-Za-z]\w*)=(.+)$/.exec(value());
+      if (!m) {
+        throw new Error(
+          '--param needs <name>=<value> or <route>:<name>=<value>'
+        );
+      }
+      const [, rawRoute, name, v] = m;
+      if (rawRoute === undefined) params[name] = v;
+      else {
+        const route = rawRoute.replace(/^\/+|\/+$/g, '');
+        if (!routeParams(route).includes(name)) {
+          throw new Error(
+            `--param ${route}:${name}: the route has no $${name}`
+          );
+        }
+        pathParams[route] = { ...pathParams[route], [name]: v };
+      }
     } else if (flag === '--query') query.push(value());
     else throw new Error(`unknown argument ${flag}`);
   }
@@ -205,6 +232,7 @@ export const parseArgs = (
     routes,
     maxTriggers,
     params,
+    pathParams,
     query,
   };
 };
@@ -215,22 +243,62 @@ export const withQuery = (url: string, query: string[]) =>
     ? `${url}${url.includes('?') ? '&' : '?'}${query.join('&')}`
     : url;
 
-// --param values win over the fixture's, on every route that names them.
+// A plain --param wins over the fixture's `params`; a route-scoped one
+// over that route's `paths` entry. A plain one never touches `paths`: a
+// path-level value exists because the name means another record there
+// (`$slug` on `ideas/$slug` is an idea, not a project).
 export const withParams = (
   fixture: RouteFixture,
-  params: Record<string, string>
-): RouteFixture => ({
-  ...fixture,
-  params: { ...fixture.params, ...params },
-  paths: Object.fromEntries(
-    Object.entries(fixture.paths).map(([route, values]) => [
-      route,
-      Object.fromEntries(
-        Object.entries(values).map(([k, v]) => [k, params[k] ?? v])
+  params: Record<string, string>,
+  pathParams: Record<string, Record<string, string>> = {}
+): RouteFixture => {
+  const paths = { ...fixture.paths };
+  Object.entries(pathParams).forEach(([route, values]) => {
+    paths[route] = { ...paths[route], ...values };
+  });
+  return { ...fixture, params: { ...fixture.params, ...params }, paths };
+};
+
+// What the --param values leave out on the planned routes: routes where a
+// plain --param name has a path-level fixture value (that route keeps the
+// source tenant's record, so it is not visited), and --param names no
+// planned route has.
+export const paramNotes = (
+  fixture: RouteFixture,
+  params: Record<string, string>,
+  pathParams: Record<string, Record<string, string>>,
+  routes: string[]
+): { shadowed: NotReached[]; unused: string[] } => {
+  const shadowed: NotReached[] = [];
+  routes.forEach((route) => {
+    const names = routeParams(route).filter(
+      (n) =>
+        n in params &&
+        fixture.paths[route]?.[n] !== undefined &&
+        pathParams[route]?.[n] === undefined
+    );
+    if (names.length) {
+      shadowed.push({
+        route,
+        reason: `the fixture's ${names.join(
+          ', '
+        )} here is another record from the source tenant; pass ${names
+          .map((n) => `--param '${route}:${n}=<id>'`)
+          .join(' ')}`,
+      });
+    }
+  });
+  const named = new Set(routes.flatMap(routeParams));
+  const unused = [
+    ...Object.keys(params).filter((n) => !named.has(n)),
+    ...Object.entries(pathParams)
+      .filter(([route]) => !routes.includes(route))
+      .flatMap(([route, values]) =>
+        Object.keys(values).map((n) => `${route}:${n}`)
       ),
-    ])
-  ),
-});
+  ];
+  return { shadowed, unused };
+};
 
 export const codegenCommand = (statePath: string, host: string) =>
   `npx playwright codegen --save-storage=${statePath} ${trimSlash(
@@ -262,7 +330,7 @@ export const LOAD_PHASE = 'load';
 // An --open value as its click steps: `A -> B` opens A, then B inside it.
 export const splitChain = (open: string) =>
   open
-    .split(/\s+->\s+/)
+    .split(/\s*->\s*/)
     .map((s) => s.trim())
     .filter(Boolean);
 export const clickPhase = (label: string) => `after-click:${label}`;
@@ -395,15 +463,33 @@ export const isSafeTrigger = (t: TriggerInfo): boolean => {
   return t.tag === 'button' && t.ariaExpanded !== null;
 };
 
+// Runs before any page script: stops the page's own pagehide, unload,
+// freeze and hidden-visibilitychange handlers. A write sent from those (a
+// beacon, a keepalive fetch) races the document's teardown and can pass
+// the request routing below unseen; beforeunload still runs, its writes
+// are routed and blocked like any other.
+export const UNLOAD_GUARD = `(() => {
+  const stop = (e) => {
+    if (e.type === 'visibilitychange' && document.visibilityState !== 'hidden') return;
+    e.stopImmediatePropagation();
+  };
+  ['pagehide', 'unload', 'freeze', 'visibilitychange'].forEach((t) => {
+    window.addEventListener(t, stop, true);
+    document.addEventListener(t, stop, true);
+  });
+})();`;
+
 // Puts the read-only guard on a Playwright browser context: requests
 // other than GET, HEAD and OPTIONS are aborted, WebSockets are closed
-// before they connect. Each one is pushed to `blocked` with the method,
-// path, and the route and phase `where` holds at that moment.
+// before they connect, and unload-time handlers never run (UNLOAD_GUARD).
+// Each blocked request is pushed to `blocked` with the method, path, and
+// the route and phase `where` holds at that moment.
 export const guardContext = async (
   context: any,
   blocked: BlockedRequest[],
   where: GuardWhere
 ) => {
+  await context.addInitScript({ content: UNLOAD_GUARD });
   await context.route('**/*', (route: any) => {
     const req = route.request();
     if (isReadRequest(req.method())) return route.continue();
@@ -829,6 +915,200 @@ export const auditIndex = (
   };
 };
 
+// ------------------------------------------------------------ clicking
+
+const firstLine = (e: any) => String(e?.message ?? e).split('\n')[0];
+
+// Loads `url` for `route`. The guard's route and phase switch to `route`
+// and `load` when the new document commits, not before the goto: a write
+// the previous page sends while it unloads (a beacon on pagehide, a
+// debounced save) still counts under the click that left it open.
+export const loadPage = async (
+  page: any,
+  url: string,
+  where: GuardWhere,
+  route: string
+) => {
+  const mainFrame = page.mainFrame();
+  const onCommit = (frame: any) => {
+    if (frame !== mainFrame) return;
+    where.route = route;
+    where.phase = LOAD_PHASE;
+    page.off('framenavigated', onCommit);
+  };
+  page.on('framenavigated', onCommit);
+  try {
+    await page.goto(url, { waitUntil: 'load', timeout: 45000 });
+  } finally {
+    page.off('framenavigated', onCommit);
+  }
+  await page
+    .waitForLoadState('networkidle', { timeout: 10000 })
+    .catch(() => undefined);
+};
+
+// What isSafeTrigger needs to know about an element, read in the page.
+const triggerInfo = (handle: any): Promise<TriggerInfo> =>
+  handle.evaluate((el: HTMLElement) => {
+    const main = document.querySelector('main, [role="main"]');
+    return {
+      tag: el.tagName.toLowerCase(),
+      typeAttr: el.getAttribute('type') ?? '',
+      inForm: Boolean((el as HTMLButtonElement).form ?? el.closest('form')),
+      inChrome: Boolean(
+        el.closest('header, nav, [role="banner"], [role="navigation"]')
+      ),
+      hasMain: Boolean(main),
+      inMain: Boolean(main?.contains(el)),
+      ariaHasPopup: el.getAttribute('aria-haspopup'),
+      ariaExpanded: el.getAttribute('aria-expanded'),
+      name: (
+        el.getAttribute('aria-label') ||
+        el.getAttribute('title') ||
+        el.innerText ||
+        el.textContent ||
+        ''
+      )
+        .trim()
+        .replace(/\s+/g, ' ')
+        .slice(0, 80),
+    };
+  });
+
+// The first match of an --open step that is visible, outside the header
+// and not on the deny list. An --open value is an explicit trigger, so the
+// rest of isSafeTrigger does not apply.
+export const firstSafe = async (
+  page: any,
+  sel: string,
+  log: (line: string) => void
+): Promise<any | undefined> => {
+  let matches: any[] = [];
+  try {
+    matches = await page.$$(sel);
+  } catch (e) {
+    log(`--open step "${sel}" is not a valid selector (${firstLine(e)})`);
+    return undefined;
+  }
+  for (const h of matches) {
+    if (!(await h.isVisible().catch(() => false))) continue;
+    const info = await triggerInfo(h).catch(() => undefined);
+    if (!info) continue;
+    if (DENIED_NAMES.test(info.name) || info.inChrome) {
+      log(
+        `skipped a match of --open ${sel}: "${info.name}" is in the header or on the deny list`
+      );
+      continue;
+    }
+    return h;
+  }
+  return undefined;
+};
+
+// Clicks one trigger under its click phase and collects what it opened.
+// '' when it worked, else why it stopped (an error or a navigation): the
+// caller then stops clicking on this route.
+export const clickToOpen = async (
+  page: any,
+  h: any,
+  label: string,
+  where: GuardWhere,
+  collect: (label: string) => Promise<void>
+): Promise<string> => {
+  const before = page.url();
+  try {
+    where.phase = clickPhase(label);
+    await h.click({ timeout: 3000 });
+    if (page.url() !== before) throw new Error('navigated');
+    await page.waitForTimeout(500);
+    if (page.url() !== before) throw new Error('navigated');
+    await collect(label);
+    await page.keyboard.press('Escape');
+    await page.waitForTimeout(200);
+    if (page.url() !== before) throw new Error('navigated');
+    return '';
+  } catch (e) {
+    return firstLine(e);
+  }
+};
+
+export type OpenDeps = {
+  where: GuardWhere;
+  // Loads the route again between --open values: '' when it worked, else
+  // why not (an error, the sign-in page).
+  reload: () => Promise<string>;
+  // Opens the last step and collects (clickToOpen): '' or why it stopped.
+  open: (h: any, label: string) => Promise<string>;
+  log: (line: string) => void;
+};
+
+// The --open values in turn. A value may be a chain, `A -> B`, for a
+// component inside a submenu: each step is clicked under the chain's click
+// phase and the last one opens and collects. Between values the page is
+// loaded again, since not every menu closes on Escape. `stopped`: a click
+// failed or navigated, or the reload failed; nothing more is clicked on
+// this route. `missed`: the last step with no visible allowed match (that
+// value is skipped, the next one still runs).
+export const runOpens = async (
+  page: any,
+  opens: string[],
+  deps: OpenDeps
+): Promise<{ stopped: string; missed: string }> => {
+  const { where, log } = deps;
+  let stopped = '';
+  let missed = '';
+  const miss = (chain: string, step: string) => {
+    missed = `--open ${chain}: step "${step}" has no visible allowed match`;
+    log(missed);
+  };
+  for (const [k, chain] of opens.entries()) {
+    if (k > 0) {
+      const why = await deps.reload().catch((e) => firstLine(e));
+      if (why) {
+        stopped = `reload before --open ${chain}: ${why}`;
+        break;
+      }
+    }
+    const steps = splitChain(chain);
+    let reached = true;
+    for (const step of steps.slice(0, -1)) {
+      const h = await firstSafe(page, step, log);
+      if (!h) {
+        miss(chain, step);
+        reached = false;
+        break;
+      }
+      const before = page.url();
+      where.phase = clickPhase(chain);
+      let why = await h.click({ timeout: 3000 }).then(
+        () => '',
+        (e: any) => firstLine(e)
+      );
+      await page.waitForTimeout(400);
+      if (!why && page.url() !== before) why = 'navigated';
+      if (why) {
+        stopped = `${chain}: step "${step}": ${why}`;
+        break;
+      }
+    }
+    if (stopped) break;
+    if (!reached) continue;
+    const last = steps[steps.length - 1];
+    const target = await firstSafe(page, last, log);
+    if (!target) {
+      miss(chain, last);
+      continue;
+    }
+    const why = await deps.open(target, chain);
+    if (why) {
+      stopped = `${chain}: ${why}`;
+      break;
+    }
+  }
+  if (stopped) log(`stopped clicking (${stopped})`);
+  return { stopped, missed };
+};
+
 // ------------------------------------------------------------- the run
 
 const ROOT = path.resolve(__dirname, '..', '..');
@@ -918,34 +1198,6 @@ const readElement = (handle: any, meta: TokenMeta[]): Promise<Raw> =>
     };
   }, meta);
 
-// What isSafeTrigger needs to know about an element, read in the page.
-const triggerInfo = (handle: any): Promise<TriggerInfo> =>
-  handle.evaluate((el: HTMLElement) => {
-    const main = document.querySelector('main, [role="main"]');
-    return {
-      tag: el.tagName.toLowerCase(),
-      typeAttr: el.getAttribute('type') ?? '',
-      inForm: Boolean((el as HTMLButtonElement).form ?? el.closest('form')),
-      inChrome: Boolean(
-        el.closest('header, nav, [role="banner"], [role="navigation"]')
-      ),
-      hasMain: Boolean(main),
-      inMain: Boolean(main?.contains(el)),
-      ariaHasPopup: el.getAttribute('aria-haspopup'),
-      ariaExpanded: el.getAttribute('aria-expanded'),
-      name: (
-        el.getAttribute('aria-label') ||
-        el.getAttribute('title') ||
-        el.innerText ||
-        el.textContent ||
-        ''
-      )
-        .trim()
-        .replace(/\s+/g, ' ')
-        .slice(0, 80),
-    };
-  });
-
 const toStyles = (raw: Raw): Styles => ({
   radius: shorthand(raw.radius),
   padding: shorthand(raw.padding),
@@ -983,7 +1235,7 @@ const main = async () => {
     process.exit(2);
   }
   const { component } = args;
-  const routeFixture = withParams(fixture, args.params);
+  const routeFixture = withParams(fixture, args.params, args.pathParams);
 
   const stateFile = path.resolve(args.state);
   if (!fs.existsSync(stateFile)) {
@@ -1043,11 +1295,28 @@ const main = async () => {
     args.host,
     args.routes
   );
-  const { notReached } = planned;
-  const visits = planned.visits.map((v) => ({
-    ...v,
-    url: withQuery(v.url, args.query),
-  }));
+  const notes = paramNotes(
+    routeFixture,
+    args.params,
+    args.pathParams,
+    [...planned.visits, ...planned.notReached].map((r) => r.route)
+  );
+  notes.unused.forEach((n) =>
+    console.warn(
+      `ds:audit: warning: --param ${n} matches no route of this run; check the name (params are case-sensitive)`
+    )
+  );
+  notes.shadowed.forEach((r) =>
+    console.warn(`ds:audit: warning: not visiting ${r.route}: ${r.reason}`)
+  );
+  const shadowed = new Set(notes.shadowed.map((r) => r.route));
+  const notReached = [...planned.notReached, ...notes.shadowed];
+  const visits = planned.visits
+    .filter((v) => !shadowed.has(v.route))
+    .map((v) => ({
+      ...v,
+      url: withQuery(v.url, args.query),
+    }));
   console.log(
     `ds:audit: ${component} on ${visits.length} routes at ${args.host}${
       notReached.length ? ` (${notReached.length} without fixture values)` : ''
@@ -1181,25 +1450,17 @@ const main = async () => {
             diffsFromStory: [],
             error,
           });
-        try {
-          where.route = routeLabel(v.route);
-          where.phase = LOAD_PHASE;
-          await page.goto(v.url, { waitUntil: 'load', timeout: 45000 });
-          await page
-            .waitForLoadState('networkidle', { timeout: 10000 })
-            .catch(() => undefined);
+        const log = (line: string) =>
+          console.log(`  ${routeLabel(v.route)}: ${line}`);
+        // The visit's load and setup, the same on the first load and on
+        // every reload between --open values.
+        const loadVisit = async (): Promise<'login' | 'ok'> => {
+          await loadPage(page, v.url, where, routeLabel(v.route));
           const state = await page.evaluate(
             (p: string) => (window as any).__gvAudit.frameState(document, p),
             v.route
           );
-          if (state === 'login') {
-            unreached.set(
-              v.route,
-              'sign-in page or redirect: the session expired or is not an admin'
-            );
-            fail('login');
-            continue;
-          }
+          if (state === 'login') return 'login';
           if (
             await page.evaluate(() =>
               (window as any).__gvAudit.dismissConsent(document)
@@ -1211,6 +1472,16 @@ const main = async () => {
           await page
             .waitForSelector(selector, { state: 'attached', timeout: 8000 })
             .catch(() => undefined);
+          return 'ok';
+        };
+        const LOGIN_REASON =
+          'sign-in page or redirect: the session expired or is not an admin';
+        try {
+          if ((await loadVisit()) === 'login') {
+            unreached.set(v.route, LOGIN_REASON);
+            fail('login');
+            continue;
+          }
           if (!(await page.$('[data-gv-component]'))) {
             unreached.set(
               v.route,
@@ -1220,13 +1491,21 @@ const main = async () => {
             continue;
           }
 
-          const collect = async (openedBy?: string) => {
+          const visible = async () => {
+            const out: any[] = [];
             for (const handle of await page.$$(`${selector}:not([${SEEN}])`)) {
-              if (!(await handle.isVisible())) continue;
-              await handle.evaluate(
-                (el: Element, a: string) => el.setAttribute(a, ''),
-                SEEN
-              );
+              if (await handle.isVisible().catch(() => false)) out.push(handle);
+            }
+            return out;
+          };
+          const markSeen = (handle: any) =>
+            handle.evaluate(
+              (el: Element, a: string) => el.setAttribute(a, ''),
+              SEEN
+            );
+          const collect = async (openedBy?: string) => {
+            for (const handle of await visible()) {
+              await markSeen(handle);
               await handle.scrollIntoViewIfNeeded().catch(() => undefined);
               const raw = await readElement(handle, meta);
               const n = found.length;
@@ -1260,86 +1539,25 @@ const main = async () => {
               });
             }
           };
-          // Clicks one trigger and collects what it opened. False when the
-          // click navigated or anything failed: the caller stops clicking.
-          let stopped = '';
-          const tryOpen = async (h: any, label: string): Promise<boolean> => {
-            const before = page.url();
-            try {
-              where.phase = clickPhase(label);
-              await h.click({ timeout: 3000 });
-              if (page.url() !== before) throw new Error('navigated');
-              await page.waitForTimeout(500);
-              if (page.url() !== before) throw new Error('navigated');
-              await collect(label);
-              await page.keyboard.press('Escape');
-              await page.waitForTimeout(200);
-              if (page.url() !== before) throw new Error('navigated');
-              return true;
-            } catch (e: any) {
-              stopped = `${label}: ${String(e?.message ?? e).split('\n')[0]}`;
-              console.log(
-                `  stopped clicking on ${routeLabel(v.route)} (${stopped})`
-              );
-              return false;
-            }
-          };
 
           await collect();
-          // Each --open selector clicks its first match that is visible,
-          // outside the header and not on the deny list. A selector may be a
-          // chain, `A -> B`, for a component inside a submenu: each step is
-          // clicked in turn and the last one collects. Between selectors the
-          // page is loaded again, since not every menu closes on Escape.
-          const firstSafe = async (sel: string) => {
-            for (const h of await page.$$(sel).catch(() => [])) {
-              if (!(await h.isVisible().catch(() => false))) continue;
-              const info = await triggerInfo(h).catch(() => undefined);
-              if (!info) continue;
-              if (DENIED_NAMES.test(info.name) || info.inChrome) {
-                console.log(
-                  `  skipped a match of --open ${sel}: "${info.name}" is in the header or on the deny list`
-                );
-                continue;
+          let reloadLogin = false;
+          const opened = await runOpens(page, args.open, {
+            where,
+            log,
+            open: (h, label) => clickToOpen(page, h, label, where, collect),
+            // A reload wipes the seen marks: what is visible at load was
+            // collected above, so it is marked again, not collected again.
+            reload: async () => {
+              if ((await loadVisit()) === 'login') {
+                reloadLogin = true;
+                return LOGIN_REASON;
               }
-              return h;
-            }
-            return undefined;
-          };
-          for (const [k, chain] of args.open.entries()) {
-            if (k > 0) {
-              where.phase = LOAD_PHASE;
-              await page.goto(v.url, { waitUntil: 'load', timeout: 45000 });
-              await page
-                .waitForLoadState('networkidle', { timeout: 10000 })
-                .catch(() => undefined);
-            }
-            const steps = splitChain(chain);
-            let ok = true;
-            for (const step of steps.slice(0, -1)) {
-              const h = await firstSafe(step);
-              if (!h) {
-                ok = false;
-                break;
-              }
-              const before = page.url();
-              where.phase = clickPhase(chain);
-              await h.click({ timeout: 3000 }).catch(() => (ok = false));
-              await page.waitForTimeout(400);
-              if (!ok || page.url() !== before) {
-                stopped = `${chain}: step "${step}" failed or navigated`;
-                console.log(
-                  `  stopped clicking on ${routeLabel(v.route)} (${stopped})`
-                );
-                ok = false;
-                break;
-              }
-            }
-            if (stopped) break;
-            if (!ok) continue;
-            const target = await firstSafe(steps[steps.length - 1]);
-            if (target && !(await tryOpen(target, chain))) break;
-          }
+              for (const handle of await visible()) await markSeen(handle);
+              return '';
+            },
+          });
+          let { stopped } = opened;
           if (!found.length && !stopped && args.maxTriggers > 0) {
             const triggers = (await page.$$(TRIGGERS)).slice(0, 200);
             let tried = 0;
@@ -1349,15 +1567,33 @@ const main = async () => {
               const info = await triggerInfo(h).catch(() => undefined);
               if (!info || !isSafeTrigger(info)) continue;
               tried++;
-              if (!(await tryOpen(h, info.name || 'menu'))) break;
+              const label = info.name || 'menu';
+              const why = await clickToOpen(page, h, label, where, collect);
+              if (why) {
+                stopped = `${label}: ${why}`;
+                log(`stopped clicking (${stopped})`);
+                break;
+              }
             }
           }
+          if (!found.length && reloadLogin) {
+            unreached.set(v.route, LOGIN_REASON);
+            fail('login');
+            continue;
+          }
           if (!found.length) {
+            const why = [opened.missed, stopped && `stopped: ${stopped}`]
+              .filter(Boolean)
+              .join('; ');
             unreached.set(
               v.route,
-              `no visible ${component} (tried ${args.open.length} --open selectors and up to ${args.maxTriggers} menus)`
+              `no visible ${component} (tried ${
+                args.open.length
+              } --open selectors and up to ${args.maxTriggers} menus)${
+                why ? `; ${why}` : ''
+              }`
             );
-            fail('not found');
+            fail(why ? `not found; ${why}` : 'not found');
             continue;
           }
           found.forEach((i) => {
@@ -1366,7 +1602,14 @@ const main = async () => {
           instances.push(...found);
           console.log(`  ${vp.width} ${routeLabel(v.route)}: ${found.length}`);
         } catch (e: any) {
-          fail(String(e?.message ?? e).split('\n')[0]);
+          // Keep what earlier --open values found.
+          if (found.length) {
+            log(`stopped (${firstLine(e)})`);
+            found.forEach((i) => {
+              i.count = found.length;
+            });
+            instances.push(...found);
+          } else fail(firstLine(e));
         }
       }
       await context.close();

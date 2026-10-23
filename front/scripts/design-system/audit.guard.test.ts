@@ -7,9 +7,12 @@ import { clearImmediate, setImmediate } from 'timers';
 import {
   BlockedRequest,
   clickPhase,
+  clickToOpen,
   guardContext,
   GuardWhere,
+  loadPage,
   LOAD_PHASE,
+  runOpens,
   summariseBlocked,
 } from './audit';
 import { tryLoadPlaywright } from './playwright';
@@ -28,6 +31,15 @@ const PAGE = `<!doctype html><main>
 </main>
 <script>fetch('/api/sessions', {method: 'POST'}).catch(() => {})</script>`;
 
+// A submenu: step A posts, leaves a beforeunload write and a pagehide
+// beacon behind, then shows B. "Delete all" is on the deny list.
+const CHAIN = `<!doctype html><main>
+<button id="a" type="button" onclick="fetch('/api/a', {method: 'POST'}).catch(() => {}); window.addEventListener('beforeunload', () => fetch('/api/unload', {method: 'POST', keepalive: true})); window.addEventListener('pagehide', () => navigator.sendBeacon('/api/pagehide', 'x')); document.getElementById('sub').hidden = false">Step A</button>
+<button id="del" type="button" onclick="fetch('/api/deleted', {method: 'POST'}).catch(() => {}); document.getElementById('sub').hidden = false">Delete all</button>
+<div id="sub" hidden><button id="b" type="button">Step B</button></div>
+</main>
+<script>fetch('/api/sessions', {method: 'POST'}).catch(() => {})</script>`;
+
 describe('guardContext', () => {
   let server: http.Server;
   let base = '';
@@ -37,7 +49,8 @@ describe('guardContext', () => {
     server = http.createServer((req, res) => {
       seen.push(`${req.method} ${req.url}`);
       res.writeHead(200, { 'content-type': 'text/html' });
-      res.end(req.method === 'GET' ? PAGE : 'written');
+      const page = req.url?.startsWith('/chain') ? CHAIN : PAGE;
+      res.end(req.method === 'GET' ? page : 'written');
     });
     server.on('upgrade', (req, socket) => {
       seen.push(`UPGRADE ${req.url}`);
@@ -79,6 +92,106 @@ describe('guardContext', () => {
         expect(JSON.stringify(blocked)).not.toContain('s3cret');
         const s = summariseBlocked(blocked);
         expect([s.onLoad, s.afterClick, s.sockets]).toEqual([1, 3, 1]);
+      } finally {
+        await browser.close();
+      }
+    },
+    30000
+  );
+
+  maybe(
+    'runs --open chains: click phases per chain, reloads as load, deny list and missing steps',
+    async () => {
+      const browser = await pw.chromium.launch({ chromiumSandbox: false });
+      try {
+        const context = await browser.newContext({ serviceWorkers: 'block' });
+        const blocked: BlockedRequest[] = [];
+        const where: GuardWhere = { route: '/chain', phase: LOAD_PHASE };
+        await guardContext(context, blocked, where);
+        const page = await context.newPage();
+        const url = `${base}/chain`;
+        const load = () => loadPage(page, url, where, '/chain');
+        await load();
+        await page.waitForTimeout(200);
+        const opened: string[] = [];
+        const logged: string[] = [];
+        let reloads = 0;
+        const result = await runOpens(
+          page,
+          ['#a -> #b', '#del -> #b', '#missing -> #b', '#a->#b'],
+          {
+            where,
+            log: (l) => logged.push(l),
+            reload: async () => {
+              reloads++;
+              await load();
+              await page.waitForTimeout(200);
+              return '';
+            },
+            open: (h, label) =>
+              clickToOpen(page, h, label, where, async (l) => {
+                opened.push(l);
+              }),
+          }
+        );
+        expect(result.stopped).toBe('');
+        expect(result.missed).toBe(
+          '--open #missing -> #b: step "#missing" has no visible allowed match'
+        );
+        expect(reloads).toBe(3);
+        expect(opened).toEqual(['#a -> #b', '#a->#b']);
+        expect(logged).toContain(
+          'skipped a match of --open #del: "Delete all" is in the header or on the deny list'
+        );
+        const line = (b: BlockedRequest) => `${b.method} ${b.path} ${b.phase}`;
+        const lines = blocked.map(line);
+        // Nothing reached the server, the deny-listed step was never
+        // clicked, and the pagehide handler never ran (UNLOAD_GUARD).
+        expect(seen.filter((x) => !x.startsWith('GET '))).toEqual([]);
+        expect(lines.some((l) => l.includes('/api/deleted'))).toBe(false);
+        expect(lines.some((l) => l.includes('/api/pagehide'))).toBe(false);
+        expect([...new Set(lines)].sort()).toEqual([
+          'POST /api/a after-click:#a -> #b',
+          'POST /api/a after-click:#a->#b',
+          'POST /api/sessions load',
+          // Sent as the page unloads for the reload: still the click's.
+          'POST /api/unload after-click:#a -> #b',
+        ]);
+        expect(
+          lines.filter((l) => l === 'POST /api/sessions load')
+        ).toHaveLength(4);
+        expect(summariseBlocked(blocked).afterClick).toBe(3);
+      } finally {
+        await browser.close();
+      }
+    },
+    30000
+  );
+
+  maybe(
+    'stops at an intermediate step that navigates',
+    async () => {
+      const browser = await pw.chromium.launch({ chromiumSandbox: false });
+      try {
+        const context = await browser.newContext({ serviceWorkers: 'block' });
+        const where: GuardWhere = { route: '/chain', phase: LOAD_PHASE };
+        await guardContext(context, [], where);
+        const page = await context.newPage();
+        await page.setContent(
+          `<main><a id="go" role="button" href="${base}/chain">Go</a><button id="b">B</button></main>`
+        );
+        const opened: string[] = [];
+        const result = await runOpens(page, ['#go -> #b', '#b'], {
+          where,
+          log: () => undefined,
+          reload: async () => '',
+          open: async (_h, label) => {
+            opened.push(label);
+            return '';
+          },
+        });
+        expect(result.stopped).toBe('#go -> #b: step "#go": navigated');
+        expect(opened).toEqual([]);
       } finally {
         await browser.close();
       }
