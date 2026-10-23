@@ -53,6 +53,7 @@ import OptionList, {
   Option as OptionListOption,
   Props as OptionListProps,
 } from './components/OptionList';
+import PanelField from './components/PanelField';
 import Quote from './components/Quote';
 import Radio, { Props as RadioProps } from './components/Radio';
 import SearchInput, {
@@ -176,6 +177,7 @@ export {
   Dropdown,
   DropdownListItem,
   OptionList,
+  PanelField,
   Success,
   Button,
   StatusLabel,
