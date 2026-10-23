@@ -181,7 +181,7 @@ describe('the return', () => {
     expect(parseZoom('0')).toBeNull();
   });
 
-  it('writes the hashes of an open, keeping the share link', () => {
+  it('writes the hashes of an open, with no share link in either', () => {
     const { here, there } = openHashes(
       '#/patterns/homepagebuilder-spotlight--standard?o=abc&p=xyz',
       back,
@@ -195,8 +195,9 @@ describe('the return', () => {
     expect(
       there.startsWith('#/components/components-actions-button--primary?')
     ).toBe(true);
-    expect(paramOf(there, 'o')).toBe('abc');
-    expect(paramOf(there, 'p')).toBe('xyz');
+    // A pushed entry with them would bring them back, older, on Back.
+    expect(paramOf(there, 'o')).toBeNull();
+    expect(paramOf(there, 'p')).toBeNull();
     expect(decodeReturn(paramOf(there, 'from'))).toEqual(back);
     expect(returnHash(back)).toBe(
       '#/patterns/homepagebuilder-spotlight--standard?sel=0.0.1.0&zoom=1.5'
@@ -206,8 +207,9 @@ describe('the return', () => {
   it('sets and removes parameters', () => {
     expect(withParams('#/a/b?x=1', { x: null, y: '2' })).toBe('#/a/b?y=2');
     expect(withParams('#/a/b', { x: null })).toBe('#/a/b');
-    expect(storyHash('#/a/b?from=z', 'components', 'c--d')).toBe(
-      '#/components/c--d'
+    expect(storyHash('components', 'c--d')).toBe('#/components/c--d');
+    expect(storyHash('patterns', 'c--d', { from: 'x', state: null })).toBe(
+      '#/patterns/c--d?from=x'
     );
   });
 });

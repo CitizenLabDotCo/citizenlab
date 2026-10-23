@@ -43,6 +43,9 @@ export type InstanceReport = {
   overridden: string[];
 };
 
+// One frame report: the story on screen and its instances.
+export type StoryReport = { storyId: string; instances: InstanceReport[] };
+
 export type PropSpec =
   | { name: string; kind: 'enum'; options: PropValue[] }
   | { name: string; kind: 'boolean' };
@@ -117,6 +120,40 @@ export const verdictOf = (
     ? 'bad'
     : 'ok';
 };
+
+// How Changes and the agent task treat an edit. `unchecked`: not verified
+// against the component's argTypes (still loading, no story, or refused).
+// `stale`: the story on screen no longer has the instance, or it renders
+// something else than the edit was made against (the code moved on).
+export type EditStatus = 'ok' | 'stale' | 'unchecked';
+
+export const editStatus = (
+  e: InstanceEdit,
+  specs: Partial<Record<string, PropSpec[]>>,
+  report: StoryReport | null | undefined
+): EditStatus => {
+  if (verdictOf(e, specs) !== 'ok') return 'unchecked';
+  if (!report || report.storyId !== e.storyId) return 'ok';
+  const r = report.instances.find(
+    (i) => i.name === e.component && i.index === e.index
+  );
+  if (!r) return 'stale';
+  if (e.from !== undefined && !Object.is(r.base[e.prop] ?? null, e.from)) {
+    return 'stale';
+  }
+  return 'ok';
+};
+
+// How many instances of `component` the report's story renders, when it
+// is that story.
+export const instanceCount = (
+  report: StoryReport | null | undefined,
+  storyId: string,
+  component: string
+): number | undefined =>
+  report && report.storyId === storyId
+    ? report.instances.filter((i) => i.name === component).length
+    : undefined;
 
 // ---------------------------------------------------------------- codec
 
@@ -276,10 +313,12 @@ export const parseStoredEdits = (raw: string | null): InstanceEdit[] => {
 export const framePayload = (
   edits: InstanceEdit[]
 ): Record<string, Record<string, Record<string, PropValue>>> => {
-  const out: Record<string, Record<string, Record<string, PropValue>>> = {};
+  // No prototype: a story id such as `constructor` is a plain key.
+  const bare = <T>(): Record<string, T> => Object.create(null);
+  const out = bare<Record<string, Record<string, PropValue>>>();
   edits.forEach((e) => {
-    const story = (out[e.storyId] ??= {});
-    (story[`${e.component}#${e.index}`] ??= {})[e.prop] = e.value;
+    const story = (out[e.storyId] ??= bare());
+    (story[`${e.component}#${e.index}`] ??= bare())[e.prop] = e.value;
   });
   return out;
 };
@@ -360,6 +399,8 @@ export type InstanceTaskContext = {
   storyName: string;
   parentFile?: string;
   sites: CallSite[];
+  // How many instances of the component the story renders, when known.
+  instances?: number;
 };
 
 const ordinal = (n: number) => {
@@ -375,8 +416,14 @@ export const instanceTask = (
   ctx: InstanceTaskContext
 ): string => {
   const prop = jsxProp(e.prop, e.value);
+  // More instances than call sites: some come from a loop or from a
+  // component the file renders, so the place in the story matters.
+  const more =
+    ctx.instances !== undefined &&
+    ctx.sites.length > 0 &&
+    ctx.instances > ctx.sites.length;
   const nth =
-    e.index > 0
+    e.index > 0 || more
       ? ` (the ${ordinal(e.index + 1)} ${e.component} in the story)`
       : '';
   const file = ctx.parentFile ?? `the file of ${ctx.storyName}`;
@@ -384,7 +431,7 @@ export const instanceTask = (
   if (ctx.sites.length === 1) {
     const s = ctx.sites[0];
     lines.push(
-      `change: ${ctx.storyName} · ${file}:${s.line} · on the ${s.element} at line ${s.line}, set ${prop}`
+      `change: ${ctx.storyName} · ${file}:${s.line} · on the ${s.element} at line ${s.line}${nth}, set ${prop}`
     );
     if (s.wrapperFile) {
       lines.push(
@@ -411,7 +458,17 @@ export const instanceTask = (
           `note: ${s.element} is a wrapper (${s.wrapperFile}) that renders ${e.component}; check that it passes ${e.prop} through`
         )
       );
-  } else {
+  }
+  if (more) {
+    lines.push(
+      `note: the story renders ${ctx.instances} ${
+        e.component
+      } and the scan found ${ctx.sites.length} call site${
+        ctx.sites.length === 1 ? '' : 's'
+      } in this file; this one may come from a loop or from a child component, so check which one it is before changing a call site`
+    );
+  }
+  if (!ctx.sites.length) {
     lines.push(
       `change: ${ctx.storyName} · ${file} · set ${prop} on the ${e.component}${nth}; the scan found no call site of ${e.component} in this file, so it may sit in a component this file renders`
     );

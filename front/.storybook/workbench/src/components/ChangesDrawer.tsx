@@ -12,7 +12,12 @@ import {
   taskOfEdit,
 } from '../lib/elementEdits';
 import { shortName } from '../lib/inspect';
-import { editKey, InstanceEdit, withInstanceEdits } from '../lib/instanceProps';
+import {
+  EditStatus,
+  editKey,
+  InstanceEdit,
+  withInstanceEdits,
+} from '../lib/instanceProps';
 import { Overrides, withOverrides } from '../lib/overrides';
 import { sourceChanges, sourcePatch } from '../lib/sourceDiff';
 
@@ -40,7 +45,20 @@ type Props = {
   inline?: boolean;
 };
 
-export type InstanceChange = { edit: InstanceEdit; line: string; task: string };
+export type InstanceChange = {
+  edit: InstanceEdit;
+  line: string;
+  task: string;
+  status: EditStatus;
+};
+
+// What a row says under its line, by status.
+const statusText = (c: InstanceChange) =>
+  c.status === 'stale'
+    ? `Out of date: this ${c.edit.component} is gone or renders something else now. Left out of Copy for agent.`
+    : c.status === 'unchecked'
+    ? `Not checked against the props of ${c.edit.component} yet. Left out of Copy for agent.`
+    : `This instance only, not every ${c.edit.component}`;
 
 const NO_ELEMENTS: ElementEdit[] = [];
 const NO_INSTANCES: InstanceChange[] = [];
@@ -142,10 +160,22 @@ const ChangesDrawer = ({
   // A copied text goes stale as soon as the edits change.
   useEffect(() => setCopied(undefined), [patch, elements, instances]);
   const total = entries.length + elements.length + instances.length;
-  const agentTasks = [
+  // Only edits known to match the code and the component's props; the
+  // rest are named in a note (their rows say why).
+  const left = instances.filter((i) => i.status !== 'ok').length;
+  const ready = [
     ...(task ? elements.map((e) => taskOfEdit(e, task)) : []),
-    ...instances.map((i) => i.task),
+    ...instances.filter((i) => i.status === 'ok').map((i) => i.task),
   ];
+  const agentTasks =
+    ready.length && left
+      ? [
+          ...ready,
+          `note: ${left} instance prop edit${
+            left === 1 ? ' is' : 's are'
+          } left out: out of date or not checked yet against the component's props`,
+        ]
+      : ready;
 
   const copy = async (label: string, text: string) => {
     setCopied({ label, text, ok: await copyText(text) });
@@ -196,27 +226,32 @@ const ChangesDrawer = ({
             <>
               <h3 className="wb-drawer-group">Instances</h3>
               <ul className="wb-change-list">
-                {instances.map(({ edit, line }) => (
+                {instances.map((c) => (
                   <li
-                    key={editKey(edit)}
+                    key={editKey(c.edit)}
                     className="wb-change-el wb-change-instance"
                     data-testid="wb-change-row"
                     data-kind="instance"
-                    data-edit={editKey(edit)}
+                    data-edit={editKey(c.edit)}
+                    data-status={c.status}
                   >
                     <span className="wb-change-glyph" aria-hidden="true">
                       ◇
                     </span>
                     <div>
-                      <div className="wb-change-where">{line}</div>
-                      <span className="wb-muted">
-                        This instance only, not every {edit.component}
+                      <div className="wb-change-where">{c.line}</div>
+                      <span
+                        className={
+                          c.status === 'ok' ? 'wb-muted' : 'wb-change-stale'
+                        }
+                      >
+                        {statusText(c)}
                       </span>
                     </div>
                     <span />
                     <button
                       type="button"
-                      onClick={() => onResetInstance?.(edit)}
+                      onClick={() => onResetInstance?.(c.edit)}
                     >
                       Reset
                     </button>

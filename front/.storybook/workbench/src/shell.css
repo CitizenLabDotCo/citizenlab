@@ -7128,3 +7128,12 @@ tr[data-result='needs-human'] .wb-a11y-note {
 .wb-change-instance .wb-change-glyph {
   color: var(--wb-component);
 }
+
+.wb-change-stale {
+  display: inline-block;
+  padding: 0 var(--gv-space-2);
+  font-size: 12px;
+  color: var(--wb-text);
+  background: var(--wb-warn-soft);
+  border-radius: var(--gv-radius-full);
+}

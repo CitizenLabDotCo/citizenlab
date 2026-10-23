@@ -237,30 +237,24 @@ export const withParams = (
 export const paramOf = (hash: string, name: string): string | null =>
   splitHash(hash).params.get(name);
 
-// The hash of a story page with the share link kept from `hash`, and the
-// given parameters on top.
+// The hash of a story page with the given parameters. No share link
+// (`o`, `p`): a pushed entry that carried one would bring that older value
+// back on Back; the hooks write the session's current one in
+// (lib/shareEntry.ts).
 export const storyHash = (
-  hash: string,
   section: Section,
   storyId: string,
   set: Record<string, string | null> = {}
 ): string => {
-  const kept = splitHash(hash).params;
   const params = new URLSearchParams();
-  // The share links: token edits (`o`) and instance prop edits (`p`).
-  for (const k of ['o', 'p']) {
-    const v = kept.get(k);
-    if (v) params.set(k, v);
-  }
   for (const [k, v] of Object.entries(set)) if (v !== null) params.set(k, v);
   return joinHash(`/${section}/${encodeURIComponent(storyId)}`, params);
 };
 
 // Opening a component from a pattern: the pattern's entry gets the
 // selection and zoom (`sel`, `zoom`), so Back finds them, and the
-// component's hash names the way back (`from`). The pattern's entry drops
-// the share links (`o`, `p`): edits made meanwhile would read as an older
-// link pasted on Back; the hooks write the session's own back in.
+// component's hash names the way back (`from`). Neither carries the share
+// links (`o`, `p`): the hooks write the session's own in.
 export const openHashes = (hash: string, r: ReturnTo, storyId: string) => ({
   here: withParams(hash, {
     o: null,
@@ -268,13 +262,13 @@ export const openHashes = (hash: string, r: ReturnTo, storyId: string) => ({
     sel: r.path ? pathText(r.path) : null,
     zoom: zoomText(r.zoom),
   }),
-  there: storyHash(hash, 'components', storyId, { from: encodeReturn(r) }),
+  there: storyHash('components', storyId, { from: encodeReturn(r) }),
 });
 
 // The back chip's link when there is no history entry to go back to; no
 // share link, for the same reason.
 export const returnHash = (r: ReturnTo) =>
-  storyHash('', r.section, r.storyId, {
+  storyHash(r.section, r.storyId, {
     sel: r.path ? pathText(r.path) : null,
     zoom: zoomText(r.zoom),
   });

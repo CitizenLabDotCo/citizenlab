@@ -25,6 +25,7 @@ import {
   callSitesOf,
   changeLine,
   INSTANCE_ATTR,
+  instanceCount,
   instanceTask,
 } from '../lib/instanceProps';
 import {
@@ -317,7 +318,7 @@ const Component = ({
     baseState?.id ?? null,
     loads,
     (id) => {
-      window.location.hash = storyHash(window.location.hash, section, id, {
+      window.location.hash = storyHash(section, id, {
         from: paramOf(window.location.hash, 'from'),
       });
     }
@@ -365,7 +366,7 @@ const Component = ({
   // A switch keeps the way back from an open (`from`); a variant keeps the
   // state on top of it, a state story's own state goes on top of the next.
   const go = (id: string, state: string | null = null) => {
-    window.location.hash = storyHash(window.location.hash, section, id, {
+    window.location.hash = storyHash(section, id, {
       from: from ? paramOf(hash, 'from') : null,
       state,
     });
@@ -439,15 +440,17 @@ const Component = ({
       />
     );
   };
-  const instanceChanges: InstanceChange[] = instances.edits.map((e) => {
+  const instanceChanges: InstanceChange[] = instances.edits.map((e, i) => {
     const parent = groupOfStory(groups, e.storyId);
     const parentName = parent?.name ?? e.storyId;
     return {
       edit: e,
       line: changeLine(e, parentName),
+      status: instances.statuses[i],
       task: instanceTask(e, {
         storyName: parentName,
         parentFile: parent?.file,
+        instances: instanceCount(instances.report, e.storyId, e.component),
         sites:
           indexes.scan && parent?.file
             ? callSitesOf(indexes.scan, parent.file, e.component)

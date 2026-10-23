@@ -1867,6 +1867,21 @@ const instancePropsChecks = async (
   if (line !== 'Spotlight › Button: buttonStyle primary → text') {
     failures.push(`instance props: the Changes row reads "${line}"`);
   }
+  // A new history entry without `p` (as a story switch pushes): the edit
+  // is written back into it. Back, after the reset, must not bring the
+  // older `p` of the entry before.
+  await page.evaluate((h: string) => {
+    window.location.hash = h;
+  }, `#/patterns/${SPOTLIGHT_STORY}`);
+  const kept = await page
+    .waitForFunction(() => /[?&]p=/.test(window.location.hash), null, {
+      timeout: 5000,
+    })
+    .then(() => true)
+    .catch(() => false);
+  if (!kept) {
+    failures.push('instance props: a pushed entry lost the edit');
+  }
   await page.click(`${row} button:has-text("Reset")`).catch(() => undefined);
   const back = await frame
     .waitForFunction(
@@ -1893,12 +1908,21 @@ const instancePropsChecks = async (
   if ((await page.$(row)) !== null) {
     failures.push('instance props: the Changes row stays after the reset');
   }
+  await page.evaluate(() => window.history.back());
+  await page.waitForTimeout(600);
+  const after = hashOf(page.url());
+  if (/[?&]p=/.test(after)) {
+    failures.push(`instance props: Back brought an old p back: ${after}`);
+  }
+  if (transparent(await background())) {
+    failures.push('instance props: Back turned the button transparent again');
+  }
   await page.click('[data-testid="wb-changes-toggle"]');
   if (transparent(start)) {
     failures.push('instance props: the button started transparent');
   }
   console.log(
-    `instance props: buttonStyle primary -> text -> reset (${start})`
+    `instance props: buttonStyle primary -> text -> reset -> back (${start})`
   );
 };
 

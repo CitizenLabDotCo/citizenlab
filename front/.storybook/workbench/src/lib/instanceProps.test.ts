@@ -7,11 +7,14 @@ import {
   changeLine,
   decodeInstanceEdits,
   editKey,
+  editStatus,
   framePayload,
   INSTANCE_ATTR,
   InstanceEdit,
+  instanceCount,
   instanceKey,
   instanceTask,
+  InstanceReport,
   jsxProp,
   MAX_EDITS,
   parseStoredEdits,
@@ -255,11 +258,68 @@ describe('framePayload and putEdit', () => {
     });
   });
 
+  it('takes a story id such as `constructor` as a plain key', () => {
+    const out = framePayload([edit({ storyId: 'constructor' })]);
+    expect(Object.getPrototypeOf(out)).toBeNull();
+    expect(out.constructor).toEqual({ 'Button#0': { buttonStyle: 'text' } });
+  });
+
   it('replaces an edit, keeps its first `from`, drops it back at the start', () => {
     let list = putEdit([], edit());
     list = putEdit(list, edit({ value: 'secondary', from: 'text' }));
     expect(list).toEqual([edit({ value: 'secondary', from: 'primary' })]);
     expect(putEdit(list, edit({ value: 'primary' }))).toEqual([]);
+  });
+});
+
+describe('editStatus', () => {
+  const specs = { Button: propSpecs(BUTTON_ARGTYPES, ['buttonStyle']) };
+  const instance = (over: Partial<InstanceReport> = {}): InstanceReport => ({
+    uid: 'u1',
+    name: 'Button',
+    index: 0,
+    props: { buttonStyle: 'primary' },
+    base: { buttonStyle: 'primary' },
+    set: ['buttonStyle'],
+    overridden: ['buttonStyle'],
+    ...over,
+  });
+  const report = (instances: InstanceReport[]) => ({
+    storyId: SPOT,
+    instances,
+  });
+
+  it('is ok when the instance still renders what the edit started from', () => {
+    expect(editStatus(edit(), specs, report([instance()]))).toBe('ok');
+    // Another story on screen: nothing to compare with.
+    expect(editStatus(edit(), specs, { storyId: 'x--y', instances: [] })).toBe(
+      'ok'
+    );
+  });
+
+  it('is stale when the base moved on or the instance is gone', () => {
+    expect(
+      editStatus(
+        edit(),
+        specs,
+        report([instance({ base: { buttonStyle: 'secondary' } })])
+      )
+    ).toBe('stale');
+    expect(editStatus(edit(), specs, report([]))).toBe('stale');
+    expect(editStatus(edit({ index: 1 }), specs, report([instance()]))).toBe(
+      'stale'
+    );
+  });
+
+  it('is unchecked without the argTypes or with a refused value', () => {
+    expect(editStatus(edit(), {}, null)).toBe('unchecked');
+    expect(editStatus(edit({ value: 'neon' }), specs, null)).toBe('unchecked');
+  });
+
+  it('counts the instances of the story on screen', () => {
+    const r = report([instance(), instance({ uid: 'u2', index: 1 })]);
+    expect(instanceCount(r, SPOT, 'Button')).toBe(2);
+    expect(instanceCount(r, 'x--y', 'Button')).toBeUndefined();
   });
 });
 
@@ -387,5 +447,27 @@ describe('instanceTask', () => {
       sites: [],
     });
     expect(none.split('\n')[0]).toContain('the scan found no call site');
+  });
+
+  it('keeps the place in the story when instances outnumber call sites', () => {
+    const text = instanceTask(edit(), {
+      storyName: 'Spotlight',
+      parentFile: SPOTLIGHT,
+      sites: [{ line: 10, element: 'Button' }],
+      instances: 3,
+    });
+    expect(text.split('\n')[0]).toBe(
+      `change: Spotlight · ${SPOTLIGHT}:10 · on the Button at line 10 (the 1st Button in the story), set buttonStyle="text"`
+    );
+    expect(text).toContain(
+      'note: the story renders 3 Button and the scan found 1 call site in this file; this one may come from a loop or from a child component'
+    );
+    const second = instanceTask(edit({ index: 1 }), {
+      storyName: 'Spotlight',
+      parentFile: SPOTLIGHT,
+      sites: [{ line: 10, element: 'Button' }],
+    });
+    expect(second.split('\n')[0]).toContain('(the 2nd Button in the story)');
+    expect(second).not.toContain('child component');
   });
 });

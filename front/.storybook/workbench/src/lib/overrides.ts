@@ -11,6 +11,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Mode, TokenName } from '@ds/tokens/tokens';
 
 import type { TokenMeta } from './data';
+import { isOwnShare, writeShare } from './shareEntry';
 
 export type Overrides = Partial<Record<TokenName, string>>;
 
@@ -569,7 +570,11 @@ const writeStorage = (o: Overrides) => {
 // longer exists) are dropped quietly one by one; the rest is kept.
 const initial = (meta: TokenMeta[]): ParseResult => {
   const stored = readStorage(meta).overrides;
-  if (!payloadOfHash(window.location.hash)) return { overrides: stored };
+  const payload = payloadOfHash(window.location.hash);
+  // A reload of an entry the session wrote: the store is newer.
+  if (!payload || isOwnShare(window.history.state, 'o', payload)) {
+    return { overrides: stored };
+  }
   const link = parseOverridesResult(window.location.hash, meta);
   return link.error ? { overrides: stored, error: link.error } : link;
 };
@@ -589,29 +594,24 @@ export const useOverrides = (meta: TokenMeta[]) => {
   // State to storage and hash. replaceState does not fire hashchange.
   useEffect(() => {
     writeStorage(overrides);
-    const hash = window.location.hash;
-    const next = withOverrides(hash, overrides);
-    if (next !== hash)
-      window.history.replaceState(window.history.state, '', next || '#');
+    writeShare('o', withOverrides(window.location.hash, overrides));
   }, [overrides]);
 
-  // A pasted share link, or a navigation that dropped the parameter.
+  // A pasted share link, or a navigation that dropped the parameter or
+  // went back to an entry the session wrote (its value is older).
   useEffect(() => {
     const onChange = () => {
       const hash = window.location.hash;
-      if (!payloadOfHash(hash)) {
-        const next = withOverrides(hash, current.current);
-        if (next !== hash)
-          window.history.replaceState(window.history.state, '', next);
+      const payload = payloadOfHash(hash);
+      if (!payload || isOwnShare(window.history.state, 'o', payload)) {
+        writeShare('o', withOverrides(hash, current.current));
         return;
       }
       const result = parseOverridesResult(hash, meta);
       if (result.error) {
-        // Keep the session; the storage effect puts it back in the hash.
+        // Keep the session and put it back in the hash.
         setNotice(notApplied(result.error));
-        const next = withOverrides(hash, current.current);
-        if (next !== hash)
-          window.history.replaceState(window.history.state, '', next);
+        writeShare('o', withOverrides(hash, current.current));
         return;
       }
       setNotice(undefined);

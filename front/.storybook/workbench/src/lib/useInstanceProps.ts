@@ -7,9 +7,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   decodeInstanceEdits,
   editKey,
+  editStatus,
   framePayload,
   InstanceEdit,
-  InstanceReport,
+  PARAM,
   payloadOfHash,
   parseStoredEdits,
   propSpecs,
@@ -18,11 +19,13 @@ import {
   REPORT_EVENT,
   SET_EVENT,
   specError,
+  StoryReport,
   STORAGE_KEY,
   verdictOf,
   withInstanceEdits,
 } from './instanceProps';
 import { storyOfComponent } from './nesting';
+import { isOwnShare, writeShare } from './shareEntry';
 import type { ArgType } from './preview';
 import { channelOf, loadArgTypes } from './preview';
 import type { StoryGroup } from './stories';
@@ -57,7 +60,10 @@ const sameEdits = (a: InstanceEdit[], b: InstanceEdit[]) =>
 const initial = (): Start => {
   const stored = readStorage();
   const payload = payloadOfHash(window.location.hash);
-  if (!payload) return { edits: stored };
+  // A reload of an entry the session wrote: the store is newer.
+  if (!payload || isOwnShare(window.history.state, PARAM, payload)) {
+    return { edits: stored };
+  }
   const link = decodeInstanceEdits(payload);
   return link.error ? { edits: stored, error: link.error } : link;
 };
@@ -65,13 +71,18 @@ const initial = (): Start => {
 const notApplied = (error: string) =>
   `The prop edits of this link were not applied: ${error}.`;
 
-const replaceHash = (next: string) => {
-  if (next !== window.location.hash) {
-    window.history.replaceState(window.history.state, '', next);
-  }
-};
+const writeHash = (hash: string, edits: InstanceEdit[]) =>
+  writeShare(PARAM, withInstanceEdits(hash, edits));
 
-type Report = { storyId: string; instances: InstanceReport[] };
+type Report = StoryReport;
+
+// A copy of `record` with `key` set, without a prototype.
+const withKey = <T>(
+  record: Partial<Record<string, T>>,
+  key: string,
+  value: T
+): Partial<Record<string, T>> =>
+  Object.assign(Object.create(null), record, { [key]: value });
 
 const isReport = (v: unknown): v is Report =>
   !!v &&
@@ -94,29 +105,30 @@ export const useInstanceProps = (
   const [revision, setRevision] = useState(0);
   const [argTypes, setArgTypes] = useState<
     Partial<Record<string, Record<string, ArgType> | null>>
-  >({});
+  >(() => Object.create(null));
   const current = useRef(edits);
   current.current = edits;
 
   // State to storage and hash. replaceState fires no hashchange.
   useEffect(() => {
     writeStorage(edits);
-    replaceHash(withInstanceEdits(window.location.hash, edits));
+    writeHash(window.location.hash, edits);
   }, [edits]);
 
-  // A pasted link, or a navigation that dropped `p`.
+  // A pasted link, or a navigation that dropped `p` or went back to an
+  // entry the session wrote (its value is older).
   useEffect(() => {
     const onChange = () => {
       const hash = window.location.hash;
       const payload = payloadOfHash(hash);
-      if (!payload) {
-        replaceHash(withInstanceEdits(hash, current.current));
+      if (!payload || isOwnShare(window.history.state, PARAM, payload)) {
+        writeHash(hash, current.current);
         return;
       }
       const link = decodeInstanceEdits(payload);
       if (link.error) {
         setNotice(notApplied(link.error));
-        replaceHash(withInstanceEdits(hash, current.current));
+        writeHash(hash, current.current);
         return;
       }
       if (!sameEdits(link.edits, current.current)) setEdits(link.edits);
@@ -131,12 +143,22 @@ export const useInstanceProps = (
     setReport(null);
     const channel = channelOf(frame);
     if (!channel) return undefined;
+    let seen = '';
     const take = (payload: unknown) => {
       if (!isReport(payload)) return;
-      setReport({
+      const next = {
         storyId: payload.storyId,
-        instances: payload.instances.filter((i) => i.index >= 0),
-      });
+        instances: payload.instances
+          .filter((i) => i.index >= 0)
+          .sort((a, b) =>
+            a.name === b.name ? a.index - b.index : a.name < b.name ? -1 : 1
+          ),
+      };
+      // The same report again (a render that changed nothing): no news.
+      const text = JSON.stringify(next);
+      if (text === seen) return;
+      seen = text;
+      setReport(next);
       setRevision((n) => n + 1);
     };
     const last = channel.last?.(REPORT_EVENT);
@@ -160,34 +182,40 @@ export const useInstanceProps = (
       .forEach((name) => {
         const story = storyOfComponent(groups, name);
         if (!story) {
-          setArgTypes((all) => ({ ...all, [name]: null }));
+          setArgTypes((all) => withKey(all, name, null));
           return;
         }
         pending.current.add(name);
         void loadArgTypes(frame, story.storyId).then((types) => {
           pending.current.delete(name);
           // Not reachable yet: tried again with the next frame or load.
-          if (types) setArgTypes((all) => ({ ...all, [name]: types }));
+          if (types) setArgTypes((all) => withKey(all, name, types));
         });
       });
   }, [names, frame, loads, groups, argTypes]);
 
-  // The instance properties each component offers: what its instances
-  // declare, as its argTypes describe them. A component without a story
-  // offers none.
+  // The instance properties each component offers, as its argTypes
+  // describe them: the ones its instances declare once one has reported
+  // (kept across stories: a component declares the same ones everywhere),
+  // else every enum and boolean of its argTypes, so an edit of a story not
+  // on screen is still checked. A component without a story offers none.
+  const declaredRef = useRef<Map<string, string[]>>(new Map());
   const declared = useMemo(() => {
-    const out: Partial<Record<string, string[]>> = {};
     report?.instances.forEach((i) => {
-      out[i.name] ??= Object.keys(i.props);
+      if (!declaredRef.current.has(i.name)) {
+        declaredRef.current.set(i.name, Object.keys(i.props));
+      }
     });
-    return out;
+    return new Map(declaredRef.current);
   }, [report]);
   const specs = useMemo(() => {
-    const out: Partial<Record<string, PropSpec[]>> = {};
+    const out: Partial<Record<string, PropSpec[]>> = Object.create(null);
     Object.entries(argTypes).forEach(([name, types]) => {
       if (types === undefined) return;
-      if (types === null) out[name] = [];
-      else if (declared[name]) out[name] = propSpecs(types, declared[name]);
+      out[name] =
+        types === null
+          ? []
+          : propSpecs(types, declared.get(name) ?? Object.keys(types));
     });
     return out;
   }, [argTypes, declared]);
@@ -250,6 +278,12 @@ export const useInstanceProps = (
     return () => offs.forEach((off) => off());
   }, [payload, frames, loads]);
 
+  // Each edit as Changes and the agent task treat it.
+  const statuses = useMemo(
+    () => edits.map((e) => editStatus(e, specs, report)),
+    [edits, specs, report]
+  );
+
   const set = useCallback((e: InstanceEdit) => {
     setEdits((all) => putEdit(all, e));
   }, []);
@@ -261,6 +295,7 @@ export const useInstanceProps = (
 
   return {
     edits,
+    statuses,
     set,
     remove,
     clear,
