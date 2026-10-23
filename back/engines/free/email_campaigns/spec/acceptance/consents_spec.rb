@@ -104,6 +104,16 @@ resource 'Campaign consents' do
       end
     end
 
+    context 'when using an unsubscription token and the user is not active' do
+      let(:unsubscription_token) { create(:email_campaigns_unsubscription_token, user: @user).token }
+
+      example 'List all campaign consents using an unsubscription token is not allowed', document: false do
+        @user.update!(registration_completed_at: nil)
+        do_request
+        expect(status).to eq 401
+      end
+    end
+
     context 'with an invalid unsubscription_token' do
       let(:unsubscription_token) { 'garbage' }
 
@@ -158,6 +168,17 @@ resource 'Campaign consents' do
         expect(response_status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :attributes, :consented)).to eq consented
+      end
+    end
+
+    context 'when using an unsubscription token and the user is not active' do
+      let(:unsubscription_token) { create(:email_campaigns_unsubscription_token, user: @user).token }
+
+      example 'Update a campaign consent using an unsubscription token is not allowed', document: false do
+        @user.update!(registration_completed_at: nil)
+        do_request
+        expect(response_status).to eq 401
+        expect(consent.reload.consented).to be true
       end
     end
   end

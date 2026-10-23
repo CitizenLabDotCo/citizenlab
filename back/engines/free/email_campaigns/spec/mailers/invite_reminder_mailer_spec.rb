@@ -83,6 +83,18 @@ RSpec.describe EmailCampaigns::InviteReminderMailer do
       end
     end
 
+    context 'when the recipient is a pending invitee' do
+      let(:invitee) { create(:invited_user) }
+      let(:invitee_mail) do
+        described_class.with(command: command.merge(recipient: invitee), campaign: campaign).campaign_mail.deliver_now
+      end
+
+      it 'includes the unsubscribe link' do
+        EmailCampaigns::UnsubscriptionToken.create!(user_id: invitee.id)
+        expect(mail_body(invitee_mail)).to include("unsubscription_token=#{invitee.reload.email_campaigns_unsubscription_token.token}")
+      end
+    end
+
     context 'when the recipient email bounced' do
       let(:bounced_recipient) { create(:invited_user, email_bounced_at: 1.day.ago) }
       let(:bounced_mail) do

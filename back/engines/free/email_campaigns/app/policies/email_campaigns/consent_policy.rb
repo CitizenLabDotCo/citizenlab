@@ -9,6 +9,8 @@ module EmailCampaigns
       end
     end
 
+    # Only active users manage all their email preferences. Inactive users (e.g. pending invitees)
+    # can still unsubscribe from the email they got, through update_by_campaign_id?.
     def index?
       user&.active?
     end
@@ -18,8 +20,8 @@ module EmailCampaigns
     end
 
     def update_by_campaign_id?
-      # NOTE: User does not need to be active for this endpoint so they can always click unsubscribe from emails
-      user.id == record.user_id &&
+      user.present? &&
+        user.id == record.user_id &&
         DeliveryService.new.consentable_campaign_types_for(user).include?(record.campaign_type)
     end
   end

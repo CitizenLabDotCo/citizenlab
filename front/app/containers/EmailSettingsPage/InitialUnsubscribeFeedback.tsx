@@ -4,12 +4,12 @@ import { colors, fontSizes } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
-import T from 'components/T';
 import { FormSection } from 'components/UI/FormComponents';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from './messages';
+import UnsubscribeSuccessMessage from './UnsubscribeSuccessMessage';
 
 const Message = styled.div`
   color: ${colors.teal700};
@@ -19,23 +19,25 @@ const Message = styled.div`
 interface Props {
   status: 'success' | 'error' | 'loading';
   unsubscribedCampaignMultiloc: Multiloc | null;
+  unsubscriptionToken: string | undefined;
   className?: string;
 }
 
 const InitialUnsubscribeFeedback = ({
   status,
   unsubscribedCampaignMultiloc,
+  unsubscriptionToken,
   className,
 }: Props) => {
   return (
     <FormSection className={className || ''}>
       <Message aria-live="polite">
-        {status === 'success' && unsubscribedCampaignMultiloc ? (
-          <FormattedMessage
-            {...messages.initialUnsubscribeSuccess}
-            values={{
-              campaignTitle: <T value={unsubscribedCampaignMultiloc} />,
-            }}
+        {status === 'success' &&
+        unsubscribedCampaignMultiloc &&
+        unsubscriptionToken ? (
+          <UnsubscribeSuccessMessage
+            campaignMultiloc={unsubscribedCampaignMultiloc}
+            unsubscriptionToken={unsubscriptionToken}
           />
         ) : status === 'error' ? (
           <FormattedMessage {...messages.initialUnsubscribeError} />

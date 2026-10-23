@@ -84,6 +84,7 @@ const EmailSettingPage = () => {
                 className="e2e-unsubscribe-status"
                 status={initialUnsubscribeStatus}
                 unsubscribedCampaignMultiloc={unsubscribedCampaignMultiloc}
+                unsubscriptionToken={unsubscriptionToken}
               />
             )}
           {initialUnsubscribeStatus &&
