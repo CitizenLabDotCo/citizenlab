@@ -7,9 +7,29 @@
 import tokensMeta from '../../../../app/design-system/tokens/tokens.meta.json';
 
 import type { Finding, TokenMeta } from './data';
+import type { Office } from './stories';
 import { legacyIndex, tokensOfFinding } from './usage';
 
 export type HealMode = 'today' | 'redesign' | 'both';
+
+// A heal must hold where the component is used: both modes when shared,
+// the redesign for the back office, today for the front office.
+export const HEAL_MODE_OF: Record<Office, HealMode> = {
+  shared: 'both',
+  bo: 'redesign',
+  fo: 'today',
+  unknown: 'both',
+};
+
+// A mode picked on a component's page holds for that component only.
+export type HealChoice = { component: string; mode: HealMode };
+
+export const healModeOf = (
+  choice: HealChoice | undefined,
+  component: string,
+  office: Office
+): HealMode =>
+  choice && choice.component === component ? choice.mode : HEAL_MODE_OF[office];
 
 // Routes named in the `check:` line; the rest are counted.
 export const MAX_TASK_ROUTES = 8;
@@ -47,12 +67,15 @@ export const HEALABLE = new Set<Finding['category']>([
 
 export const isHealable = (f: Finding) => HEALABLE.has(f.category);
 
+const COLOUR = new Set<Finding['category']>(['hex', 'rgba', 'named-color']);
+
 // The token(s) a finding should become: the token a legacy name maps to,
-// else the scanner's nearest token.
+// else the scanner's nearest token (a colour only within the snapping
+// distance, so a far colour does not heal to an unrelated token).
 export const healToken = (f: Finding, meta: TokenMeta[] = META): string[] => {
   const { legacy, known } = indexOf(meta);
-  if (f.category.startsWith('legacy-')) {
-    return tokensOfFinding(f, legacy, known);
+  if (f.category.startsWith('legacy-') || COLOUR.has(f.category)) {
+    return tokensOfFinding(f, legacy, known, true);
   }
   return f.suggestion && known.has(f.suggestion.token)
     ? [f.suggestion.token]
@@ -75,9 +98,11 @@ export const formatHealTask = (
   storyId: string,
   routes: string[],
   mode: HealMode,
-  meta: TokenMeta[] = META
+  // `token`: the row the heal starts from, which names the one token when
+  // a legacy name maps to several. Without it the task offers them all.
+  { token, meta = META }: { token?: string; meta?: TokenMeta[] } = {}
 ): string => {
-  const tokens = healToken(f, meta);
+  const tokens = token ? [token] : healToken(f, meta);
   const to = tokens.length ? tokens.join(' or ') : '(choose a token)';
   const named = routes.slice(0, MAX_TASK_ROUTES).map(routeLabel).join(', ');
   const rest = routes.length - MAX_TASK_ROUTES;

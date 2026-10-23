@@ -207,18 +207,21 @@ const Usage = ({ storyId, group, indexes, healMode, onHealMode }: Props) => {
     const routes = group.score?.routes ?? [];
     return {
       files: usageFiles(scan, component, group.file),
-      props: propCounts(scan, component),
+      props: propCounts(scan, component, group.file),
       offices: routesByOffice(scan, routes),
       routes,
       findings: fileFindings(scan, group.file),
     };
   }, [scan, component, group.file, group.score]);
 
-  // The office with routes, admin first.
+  // Each component opens on the office with routes, admin first.
   useEffect(() => {
-    if (data && data.offices.admin.length === 0 && data.offices.public.length)
-      setOffice('public');
-  }, [data]);
+    setOffice(
+      data && data.offices.admin.length === 0 && data.offices.public.length
+        ? 'public'
+        : 'admin'
+    );
+  }, [component, data]);
 
   if (!indexes.loaded) {
     return (
@@ -329,6 +332,13 @@ const Usage = ({ storyId, group, indexes, healMode, onHealMode }: Props) => {
                 </li>
               ))}
             </ul>
+            <More
+              total={props.length}
+              first={FIRST.props}
+              open={!!open.props}
+              onToggle={() => toggle('props')}
+              noun="props"
+            />
           </div>
         )}
       </Section>
@@ -455,7 +465,7 @@ const Usage = ({ storyId, group, indexes, healMode, onHealMode }: Props) => {
                     isHealable(f)
                       ? formatHealTask(
                           f,
-                          group.name,
+                          component,
                           storyId,
                           data.routes,
                           healMode

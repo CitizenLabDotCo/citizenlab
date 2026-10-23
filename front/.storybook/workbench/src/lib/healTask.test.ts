@@ -1,5 +1,10 @@
 import type { Finding } from './data';
-import { formatHealTask, healToken, MAX_TASK_ROUTES } from './healTask';
+import {
+  formatHealTask,
+  healModeOf,
+  healToken,
+  MAX_TASK_ROUTES,
+} from './healTask';
 
 const finding = (partial: Partial<Finding>): Finding => ({
   file: 'app/component-library/components/Button/index.tsx',
@@ -99,7 +104,52 @@ describe('formatHealTask', () => {
   });
 });
 
+describe('formatHealTask from a token row', () => {
+  const radius = finding({
+    line: 344,
+    raw: 'props.theme.borderRadius',
+    category: 'legacy-theme',
+    suggestion: undefined,
+  });
+
+  it('offers every token a legacy name maps to without a row', () => {
+    expect(
+      formatHealTask(radius, 'Button', 's', [], 'both').split('\n')[0]
+    ).toContain('→ --gv-radius-control or --gv-radius-panel ·');
+  });
+
+  it('names only the row token', () => {
+    expect(
+      formatHealTask(radius, 'Button', 's', [], 'both', {
+        token: '--gv-radius-panel',
+      }).split('\n')[0]
+    ).toContain('→ --gv-radius-panel · mode both');
+  });
+});
+
+describe('healModeOf', () => {
+  it('follows the office until a mode is chosen for this component', () => {
+    expect(healModeOf(undefined, 'Button', 'shared')).toBe('both');
+    expect(healModeOf(undefined, 'Button', 'fo')).toBe('today');
+    const chosen = { component: 'Button', mode: 'today' as const };
+    expect(healModeOf(chosen, 'Button', 'shared')).toBe('today');
+    // A choice made on another component does not carry over.
+    expect(healModeOf(chosen, 'UI/Error', 'shared')).toBe('both');
+  });
+});
+
 describe('healToken', () => {
+  it('does not snap a colour farther than the snapping distance', () => {
+    const hex = (distance: number) =>
+      finding({
+        raw: '#123456',
+        category: 'hex',
+        suggestion: { token: '--gv-text-secondary', distance },
+      });
+    expect(healToken(hex(2))).toEqual(['--gv-text-secondary']);
+    expect(healToken(hex(30))).toEqual([]);
+  });
+
   it('reads the token from the suggestion, the legacy name or nothing', () => {
     expect(healToken(finding({}))).toEqual(['--gv-space-4']);
     expect(

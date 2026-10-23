@@ -74,15 +74,31 @@ export const panelTokens = (
       if (isHealable(f)) r.heal.push(f);
     }
   }
+  const deprecated = new Set(
+    meta.filter((t) => t.deprecated).map((t) => t.name)
+  );
+  const last = (r: PanelToken) => (deprecated.has(r.name) ? 1 : 0);
   return [...rows.values()].sort(
     (a, b) =>
       MATCH_ORDER[a.match] - MATCH_ORDER[b.match] ||
+      last(a) - last(b) ||
       b.findings.length - a.findings.length ||
       a.name.localeCompare(b.name)
   );
 };
 
+// Findings to heal across the rows, each once (a legacy name that maps to
+// two tokens puts its finding under both rows).
+export const healCount = (rows: PanelToken[]) =>
+  new Set(rows.flatMap((r) => r.heal)).size;
+
 // ---------------------------------------------------------------- usage
+
+const BARREL = /^app\/component-library\/index\.tsx?$/;
+
+// A use of the component elsewhere: not its own file, not the barrel.
+const isUse = (u: { file: string }, ownFile?: string) =>
+  u.file !== ownFile && !BARREL.test(u.file);
 
 export type FileUse = {
   file: string;
@@ -101,8 +117,7 @@ export const usageFiles = (
 ): FileUse[] => {
   const byFile = new Map<string, FileUse>();
   for (const u of scan.usages) {
-    if (u.component !== component || u.file === ownFile) continue;
-    if (/^app\/component-library\/index\.tsx?$/.test(u.file)) continue;
+    if (u.component !== component || !isUse(u, ownFile)) continue;
     const entry = byFile.get(u.file) ?? {
       file: u.file,
       count: 0,
@@ -121,14 +136,15 @@ export const usageFiles = (
   );
 };
 
-// Props across the uses, most set first.
+// Props across the uses (the same uses as `usageFiles`), most set first.
 export const propCounts = (
   scan: ScanOutput,
-  component: string
+  component: string,
+  ownFile?: string
 ): [string, number][] => {
   const counts = new Map<string, number>();
   for (const u of scan.usages) {
-    if (u.component !== component) continue;
+    if (u.component !== component || !isUse(u, ownFile)) continue;
     for (const p of new Set(u.props)) counts.set(p, (counts.get(p) ?? 0) + 1);
   }
   return [...counts].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));

@@ -457,8 +457,28 @@ const panelChecks = async (
       }, expected linked`
     );
   }
+  // A row's heal names that row's token, even when the legacy name it
+  // heals maps to more tokens.
+  const row = `[data-testid="wb-panel-tokens"] [data-token="${RADIUS_TOKEN}"]`;
+  let heal = '';
+  if (await page.$(`${row} [data-testid="wb-heal"]`)) {
+    await page.click(`${row} [data-testid="wb-heal"]`);
+    await page.waitForSelector(`${row} [data-testid="wb-heal-text"] pre`);
+    heal = await page.$eval(
+      `${row} [data-testid="wb-heal-text"] pre`,
+      (el: Element) => el.textContent ?? ''
+    );
+    const targets = [...heal.matchAll(/→ (.+?) · mode/g)].map((m) => m[1]);
+    if (!targets.length || targets.some((t) => t !== RADIUS_TOKEN)) {
+      failures.push(
+        `the ${RADIUS_TOKEN} heal targets ${targets.join(', ') || 'nothing'}`
+      );
+    }
+  }
   console.log(
-    `panels: ${routes} back office routes shown in Usage; ${RADIUS_TOKEN} ${match} in Tokens`
+    `panels: ${routes} back office routes shown in Usage; ${RADIUS_TOKEN} ${match} in Tokens${
+      heal ? `, its heal names only ${RADIUS_TOKEN}` : ''
+    }`
   );
 };
 

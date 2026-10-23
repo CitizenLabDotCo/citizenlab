@@ -9,6 +9,7 @@ import Segmented from '../components/Segmented';
 import TokenRow from '../components/TokenRow';
 import {
   fileFindings,
+  healCount,
   Match,
   PanelToken,
   panelTokens,
@@ -102,7 +103,7 @@ const Footer = ({
             </>
           ) : (
             <span className="wb-muted">
-              {hasFile ? 'Set by another file' : 'Seen in the story'}
+              {hasFile ? "Not in this file's code" : 'Seen in the story'}
             </span>
           )}
         </span>
@@ -205,12 +206,14 @@ const Tokens = ({
   const live = useMemo(() => resolveTokens(DEFS, overrides), [overrides]);
   const byName = useMemo(() => new Map(TOKEN_META.map((t) => [t.name, t])), []);
   const routes = group.score?.routes ?? [];
+  // The scan's name (`UI/Error`), which the heal skill looks up.
+  const component = group.score?.component ?? group.name;
   const count = (m: Match) => rows.filter((r) => r.match === m).length;
   const filtered =
     filter === 'all' ? rows : rows.filter((r) => r.match === filter);
   const shown = all ? filtered : filtered.slice(0, FIRST_ROWS);
   const edits = Object.keys(overrides).length;
-  const toHeal = rows.reduce((n, r) => n + r.heal.length, 0);
+  const toHeal = healCount(rows);
 
   return (
     <div className="wb-ptokens-panel" data-testid="wb-panel-tokens">
@@ -324,10 +327,11 @@ const Tokens = ({
                           tasks={r.heal.map((f) =>
                             formatHealTask(
                               f,
-                              group.name,
+                              component,
                               storyId,
                               routes,
-                              healMode
+                              healMode,
+                              { token: r.name }
                             )
                           )}
                         />

@@ -9,9 +9,9 @@ import Segmented from '../components/Segmented';
 import { OfficeChip, ScoreRing, StatusChip } from '../components/StoryThumb';
 import Toolbar, { ToolbarState } from '../components/Toolbar';
 import { TOKEN_META } from '../lib/data';
-import type { HealMode } from '../lib/healTask';
+import { HealChoice, HealMode, healModeOf } from '../lib/healTask';
 import type { Overrides } from '../lib/overrides';
-import { groupOfStory, Office, Section, StoryRef } from '../lib/stories';
+import { groupOfStory, Section, StoryRef } from '../lib/stories';
 import { useScanIndexes } from '../lib/useScanIndexes';
 import { useStoryGroups } from '../lib/useStoryGroups';
 import Controls from '../panels/Controls';
@@ -49,15 +49,6 @@ const storeTab = (t: Tab) => {
   } catch {
     // Not kept; the tab still switches.
   }
-};
-
-// A heal must hold where the component is used: both modes when shared,
-// the redesign for the back office, today for the front office.
-const HEAL_MODE_OF: Record<Office, HealMode> = {
-  shared: 'both',
-  bo: 'redesign',
-  fo: 'today',
-  unknown: 'both',
 };
 
 const SECTION_LABEL: Record<Section, string> = {
@@ -163,7 +154,7 @@ const Component = ({
   const indexes = useScanIndexes(TOKEN_META);
   const [tab, setTab] = useState<Tab>(storedTab);
   const [tokenCount, setTokenCount] = useState<number | undefined>();
-  const [healMode, setHealMode] = useState<HealMode | undefined>();
+  const [healChoice, setHealChoice] = useState<HealChoice | undefined>();
   const [view, setView] = useState<View>('single');
   const [frames, setFrames] = useState<(Window | null)[]>([null, null]);
   const onFrame = useCallback(
@@ -206,7 +197,11 @@ const Component = ({
     );
   }
 
-  const heal = healMode ?? HEAL_MODE_OF[group.office];
+  // The mode picked in Usage holds for this component; another component
+  // starts from its own office.
+  const heal = healModeOf(healChoice, group.title, group.office);
+  const onHealMode = (mode: HealMode) =>
+    setHealChoice({ component: group.title, mode });
   const states = group.stories.filter((s) => s.state);
   const variants = group.stories.filter((s) => !s.state);
   const current = group.stories.find((s) => s.id === storyId);
@@ -378,7 +373,7 @@ const Component = ({
                 group={group}
                 indexes={indexes}
                 healMode={heal}
-                onHealMode={setHealMode}
+                onHealMode={onHealMode}
               />
             ),
           },

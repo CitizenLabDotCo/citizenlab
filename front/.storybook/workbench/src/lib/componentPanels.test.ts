@@ -3,6 +3,7 @@ import tokensMeta from '../../../../app/design-system/tokens/tokens.meta.json';
 import {
   fileFindings,
   githubLink,
+  healCount,
   panelTokens,
   propCounts,
   reviewLink,
@@ -64,6 +65,35 @@ describe('panelTokens', () => {
   });
 });
 
+describe('panelTokens edge cases', () => {
+  const radius = f({
+    line: 344,
+    raw: 'props.theme.borderRadius',
+    category: 'legacy-theme',
+  });
+
+  it('counts a finding under two rows once', () => {
+    const rows = panelTokens(null, [radius, f({ line: 3, raw: '13px' })], meta);
+    expect(rows.map((r) => r.name)).toEqual([
+      '--gv-radius-control',
+      '--gv-radius-panel',
+    ]);
+    expect(healCount(rows)).toBe(1);
+  });
+
+  it('puts deprecated tokens after the others of the same match', () => {
+    const rows = panelTokens(
+      [
+        { name: '--gv-radius', matches: 'equal' },
+        { name: '--gv-space-4', matches: 'equal' },
+      ] as never,
+      [],
+      meta
+    );
+    expect(rows.map((r) => r.name)).toEqual(['--gv-space-4', '--gv-radius']);
+  });
+});
+
 describe('usage', () => {
   const s = scan({
     usages: [
@@ -79,8 +109,9 @@ describe('usage', () => {
         component: 'Button',
         file: 'app/component-library/index.tsx',
         line: 1,
-        props: [],
+        props: ['onClick'],
       },
+      { component: 'Button', file: FILE, line: 5, props: ['icon'] },
       { component: 'Box', file: 'app/a.tsx', line: 1, props: ['p'] },
     ],
     routes: [
@@ -100,7 +131,8 @@ describe('usage', () => {
       { file: 'app/a.tsx', count: 2, line: 4, props: ['onClick', 'icon'] },
       { file: 'app/b.tsx', count: 1, line: 2, props: [] },
     ]);
-    expect(propCounts(s, 'Button')).toEqual([
+    // Same uses as the file list: no barrel, no own file.
+    expect(propCounts(s, 'Button', FILE)).toEqual([
       ['onClick', 2],
       ['icon', 1],
     ]);
