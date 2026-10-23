@@ -595,7 +595,7 @@ nl:
         voting: 'Stemming'
         surveys: 'Vragenlijsten'
       trigger:
-        3_days_after_invite_is_sent: '3 dagen nadat de uitnodiging is verzonden'
+        7_days_after_invite_is_sent: '7 dagen na verzending van de uitnodiging'
         7_days_before_the_project_changes_phase: '7 dagen voor het project van fase verandert'
         comment_is_deleted: 'Reactie is verwijderd'
         comment_is_flagged_as_spam: 'Reactie is gemarkeerd als spam'

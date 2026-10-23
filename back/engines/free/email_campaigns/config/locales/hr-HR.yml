@@ -76,7 +76,6 @@ hr-HR:
         users_who_follow_the_project: Korisnici koji prate projekt
         users_who_follow_the_proposal: Korisnici koji prate prijedlog
       trigger:
-        3_days_after_invite_is_sent: 3 dana nakon slanja pozivnice
         7_days_after_invite_is_sent: 7 dana nakon slanja poziva
         7_days_before_phase_starts: 7 dana prije početka faze
         7_days_before_the_project_changes_phase: 7 dana prije promjene faze projekta

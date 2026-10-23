@@ -76,7 +76,6 @@ sv-SE:
         users_who_follow_the_project: Användare som följer projektet
         users_who_follow_the_proposal: Användare som följer förslaget
       trigger:
-        3_days_after_invite_is_sent: 3 dagar efter att inbjudan skickats
         7_days_after_invite_is_sent: 7 dagar efter att inbjudan skickats
         7_days_before_phase_starts: 7 dagar innan en fas startar
         7_days_before_the_project_changes_phase: 7 dagar innan projektet byter fas

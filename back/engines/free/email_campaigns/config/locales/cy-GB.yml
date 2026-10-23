@@ -76,7 +76,6 @@ cy-GB:
         users_who_follow_the_project: Defnyddwyr sy'n dilyn y prosiect
         users_who_follow_the_proposal: Defnyddwyr sy'n dilyn y cynnig
       trigger:
-        3_days_after_invite_is_sent: 3 diwrnod ar ôl anfon y gwahoddiad
         7_days_after_invite_is_sent: 7 diwrnod ar ôl anfon gwahoddiad
         7_days_before_phase_starts: 7 diwrnod cyn i gyfnod ddechrau
         7_days_before_the_project_changes_phase: 7 diwrnod cyn i'r prosiect newid cyfnod

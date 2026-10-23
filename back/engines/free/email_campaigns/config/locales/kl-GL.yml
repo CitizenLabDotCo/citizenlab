@@ -131,7 +131,6 @@ kl-GL:
         users_who_follow_the_project: Atuisut suliniummut malinnaasut
         users_who_follow_the_proposal: Atuisut siunnersuummik malinnittut
       trigger:
-        3_days_after_invite_is_sent: Qaaqqusissut nassiunneqarnerata kingorna ullut 3
         7_days_after_invite_is_sent: Qaaqqusissutip nassiunnerata kingorna ullut arfineq-marluk qaangiuttut
         7_days_before_phase_starts: Immikkoortup aallartinnissaa ullunik 7-inik sioqqullugu
         7_days_before_the_project_changes_phase: Ullut 7-it suliniutip immikkoortumut allamut ikaannginnerani
