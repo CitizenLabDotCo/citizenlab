@@ -17,7 +17,9 @@
 // session. The Foundations colour page lists at least MIN_COLOUR_TOKENS
 // tokens and a contrast pairs table with rows; an edit of a radius token
 // shows in the Changes drawer and in the hash. The Components gallery shows
-// at least MIN_GALLERY_THUMBS story thumbnails; the Button page's State and
+// at least MIN_GALLERY_THUMBS story thumbnails, rendered in one shared
+// preview frame (at least MIN_REVEALED_THUMBS reveal their story, and only
+// isolated cards get a frame of their own); the Button page's State and
 // Variant menus offer at least MIN_STATE_TABS stories, and switching its
 // `disabled` control changes the frame's DOM. The canvas fits the Button
 // frame to the story by default (MAX_FIT_HEIGHT). The Design tab selects the
@@ -139,6 +141,8 @@ const sharePayload = (o: Record<string, string>) =>
 
 export const MIN_COLOUR_TOKENS = 50;
 export const MIN_GALLERY_THUMBS = 30;
+// Thumbnails that must reveal their story (the first rows of the gallery).
+export const MIN_REVEALED_THUMBS = 12;
 export const MIN_STATE_TABS = 2;
 // A Button story fitted to its frame: far shorter than any preset viewport.
 export const MAX_FIT_HEIGHT = 400;
@@ -435,7 +439,59 @@ const galleryChecks = async (page: any, base: string, failures: string[]) => {
       `the Components gallery shows ${thumbs} thumbnails, expected ${MIN_GALLERY_THUMBS} or more`
     );
   }
-  console.log(`gallery: ${thumbs} component thumbnails`);
+  // The cards render their stories in one preview frame over the grid, not
+  // a frame each; the first ones reveal.
+  const frames: number = await page.$$eval(
+    '[data-testid="wb-gallery-frame"]',
+    (els: Element[]) => els.length
+  );
+  if (frames !== 1) {
+    failures.push(
+      `the Components gallery has ${frames} gallery frames, expected 1`
+    );
+  }
+  try {
+    await page.waitForFunction(
+      (min: number) =>
+        document.querySelectorAll(
+          '[data-testid="wb-thumb"][data-state="rendered"]'
+        ).length >= min,
+      MIN_REVEALED_THUMBS,
+      { timeout: 30000 }
+    );
+  } catch {
+    failures.push(
+      `fewer than ${MIN_REVEALED_THUMBS} gallery thumbnails revealed their story`
+    );
+  }
+  const shared = await page.evaluate(() => {
+    const frame = document.querySelector<HTMLIFrameElement>(
+      '[data-testid="wb-gallery-frame"]'
+    );
+    const doc = frame?.contentDocument;
+    const stories = Array.from(doc?.querySelectorAll('.gvg-story') ?? []);
+    return {
+      rendered: stories.filter((el) => el.childElementCount > 0).length,
+      own: document.querySelectorAll('[data-testid="wb-thumb"] iframe').length,
+      isolated: document.querySelectorAll(
+        '[data-testid="wb-thumb"][data-state="isolated"]'
+      ).length,
+    };
+  });
+  if (shared.rendered < MIN_REVEALED_THUMBS) {
+    failures.push(
+      `the gallery frame rendered ${shared.rendered} stories, expected ${MIN_REVEALED_THUMBS} or more`
+    );
+  }
+  // Only a story that cannot share the frame gets one of its own.
+  if (shared.own > shared.isolated) {
+    failures.push(
+      `${shared.own} gallery cards have a frame of their own, only ${shared.isolated} need one`
+    );
+  }
+  console.log(
+    `gallery: ${thumbs} component thumbnails, ${shared.rendered} stories in the gallery frame, ${shared.isolated} in their own`
+  );
 };
 
 // The State and Variant menus, then a boolean control: the frame's story
