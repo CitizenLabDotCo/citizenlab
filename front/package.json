@@ -57,8 +57,8 @@
     "ds:smoke": "tsx scripts/design-system/workbench-smoke.ts",
     "ds:lint": "tsx scripts/design-system/scan/index.ts --lint",
     "ds:mode-check": "tsx scripts/design-system/mode-check.ts",
-    "ds:check": "npm run ds:tokens -- --check && npm run ds:lint",
-    "ds:a11y": "echo \"todo: ds:a11y\" && exit 1",
+    "ds:check": "npm run ds:tokens -- --check && npm run ds:lint && npm run ds:a11y -- --check",
+    "ds:a11y": "tsx scripts/design-system/a11y-run.ts",
     "ds:visual": "tsx scripts/design-system/visual-run.ts",
     "ds:audit": "echo \"todo: ds:audit\" && exit 1",
     "ds:prepare": "(npm run ds:tokens && npm run ds:scan && npm run ds:changes); npm run ds:workbench"
