@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { getTheme } from '@citizenlab/cl2-component-library';
 import GlobalStyle from '../../app/global-styles';
+import ModeProvider from '../../app/design-system/ModeProvider';
 import '../../app/assets/css/reset.min.css';
-// import '../../app/assets/fonts/fonts.css';
+import '../../app/assets/fonts/fonts.css';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
-import { CityKey, cityTenant } from '../cities';
+import { CityKey, cityOf, cityTenant } from '../cities';
+
+// Adds the city's web font stylesheet once; it stays for later stories.
+const useFontCss = (href?: string) => {
+  useEffect(() => {
+    if (!href || document.querySelector(`link[href="${href}"]`)) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = href;
+    document.head.appendChild(link);
+  }, [href]);
+};
 
 const ThemeContext = ({
   city = 'default',
@@ -16,13 +28,20 @@ const ThemeContext = ({
   city?: CityKey;
   lang?: string;
   children: React.ReactNode;
-}) => (
-  <ThemeProvider
-    theme={{ ...getTheme(cityTenant(city)), isRtl: lang.startsWith('ar') }}
-  >
-    <GlobalStyle />
-    {children}
-  </ThemeProvider>
-);
+}) => {
+  const tenant = cityTenant(city);
+  useFontCss(cityOf(city).fontCss);
+  return (
+    <ThemeProvider
+      theme={{ ...getTheme(tenant), isRtl: lang.startsWith('ar') }}
+    >
+      {/* Same as the platform: the city also drives the --gv-tenant-* and
+          --gv-font-family tokens the redesigned components read. */}
+      <ModeProvider appConfiguration={tenant as never} />
+      <GlobalStyle />
+      {children}
+    </ThemeProvider>
+  );
+};
 
 export default ThemeContext;

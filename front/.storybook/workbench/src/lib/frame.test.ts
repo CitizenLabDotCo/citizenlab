@@ -14,11 +14,11 @@ describe('storyUrl', () => {
     expect(
       storyUrl('components-button--primary', {
         mode: 'redesign',
-        city: 'blue',
+        city: 'linz',
         lang: 'nl-BE',
       })
     ).toBe(
-      '../iframe.html?id=components-button--primary&viewMode=story&globals=mode:redesign;city:blue;lang:nl-BE'
+      '../iframe.html?id=components-button--primary&viewMode=story&globals=mode:redesign;city:linz;lang:nl-BE'
     );
   });
 
