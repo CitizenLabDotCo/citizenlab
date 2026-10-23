@@ -11,10 +11,17 @@ import type { Finding, TokenMeta } from '../lib/data';
 import { editId, ElementEdit, valueFits } from '../lib/elementEdits';
 import { healToken, isHealable } from '../lib/healTask';
 import {
+  chainOf,
+  componentOf,
+  headerInstanceOf,
+  storyHash,
+} from '../lib/nesting';
+import {
   fitsProp,
   Inspection,
   InspectRow,
   inspectElement,
+  defaultTarget,
   labelOf,
   parentTarget,
   pathOf,
@@ -44,6 +51,17 @@ type Props = {
   componentName: string;
   frames: (Window | null)[];
   selection: Selection;
+  // What the instance header says of a library component by name.
+  instanceInfo: (name: string) => {
+    uses?: number;
+    hasStory: boolean;
+    // The component of this page.
+    self: boolean;
+  };
+  // Open the page of the library component `instance` is the root of.
+  onOpen: (instance: Element) => void;
+  // Hash parameters a story switch keeps (the way back from an open).
+  keep?: Record<string, string | null>;
   meta: TokenMeta[];
   mode: Mode;
   // Token overrides, for live values.
@@ -166,6 +184,9 @@ const Design = ({
   componentName,
   frames,
   selection,
+  instanceInfo,
+  onOpen,
+  keep,
   meta,
   mode,
   overrides,
@@ -219,7 +240,7 @@ const Design = ({
   }, [selected]);
 
   const go = (id: string) => {
-    window.location.hash = `#/${section}/${encodeURIComponent(id)}`;
+    window.location.hash = storyHash(window.location.hash, section, id, keep);
   };
 
   const path = selected ? pathOf(selected) : null;
@@ -373,6 +394,21 @@ const Design = ({
   };
 
   const up = selected ? ancestorsOf(selected) : [];
+  const chain = selected ? chainOf(selected, componentName) : [];
+  const instance = headerInstanceOf(selected);
+  const instanceName = instance ? componentOf(instance) : null;
+  const info = instanceName ? instanceInfo(instanceName) : null;
+  // The story segment selects the story's root when it has no tagged one.
+  const pickStory = (el: Element | null) => {
+    if (el) pick(el);
+    else if (frame) {
+      try {
+        pick(defaultTarget(frame.document));
+      } catch {
+        // The frame is gone; the next one selects its default.
+      }
+    }
+  };
 
   return (
     <div className="wb-insp" data-testid="wb-panel-design">
@@ -410,6 +446,60 @@ const Design = ({
       >
         {selected ? (
           <>
+            <nav
+              className="wb-chain"
+              aria-label="Layer path"
+              data-testid="wb-insp-chain"
+            >
+              <ol>
+                {chain.map((seg, i) => {
+                  const glyph =
+                    seg.kind === 'instance' ? (
+                      <span className="wb-chain-glyph" aria-hidden="true">
+                        ◇
+                      </span>
+                    ) : null;
+                  return (
+                    <li
+                      key={i}
+                      className={`wb-chain-seg wb-chain-${seg.kind}`}
+                      data-kind={seg.kind}
+                    >
+                      {i > 0 && (
+                        <span className="wb-chain-sep" aria-hidden="true">
+                          ›
+                        </span>
+                      )}
+                      {seg.current ? (
+                        <span
+                          className="wb-chain-name"
+                          aria-current="location"
+                          title={seg.name}
+                        >
+                          {glyph}
+                          {seg.name}
+                        </span>
+                      ) : (
+                        <button
+                          type="button"
+                          className="wb-chain-name"
+                          title={seg.name}
+                          aria-label={`Select ${seg.name}`}
+                          onClick={() =>
+                            seg.kind === 'story'
+                              ? pickStory(seg.el)
+                              : pick(seg.el)
+                          }
+                        >
+                          {glyph}
+                          {seg.name}
+                        </button>
+                      )}
+                    </li>
+                  );
+                })}
+              </ol>
+            </nav>
             <button
               type="button"
               className="wb-insp-layer"
@@ -458,6 +548,40 @@ const Design = ({
           </p>
         )}
       </section>
+
+      {instance && instanceName && info && (
+        <section
+          className="wb-insp-block wb-instance"
+          data-testid="wb-insp-instance"
+          data-component={instanceName}
+        >
+          <span className="wb-instance-glyph" aria-hidden="true">
+            ◇
+          </span>
+          <span className="wb-instance-name">{instanceName}</span>
+          <span className="wb-instance-uses">
+            {info.uses === undefined
+              ? 'Usage not scanned'
+              : `${info.uses} ${info.uses === 1 ? 'use' : 'uses'}`}
+          </span>
+          {info.self ? null : info.hasStory ? (
+            <button
+              type="button"
+              className="wb-instance-open"
+              data-testid="wb-insp-open"
+              aria-label={`Open ${instanceName}`}
+              onClick={() => onOpen(instance)}
+            >
+              Open
+              <Icon name="arrow" size={12} />
+            </button>
+          ) : (
+            <span className="wb-instance-none" data-testid="wb-insp-no-story">
+              No story yet
+            </span>
+          )}
+        </section>
+      )}
 
       {inspection?.sections
         .filter((s) => s.rows.length > 0)

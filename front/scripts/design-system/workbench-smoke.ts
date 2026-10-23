@@ -414,7 +414,7 @@ export const resolveStaticPath = (
   return file;
 };
 
-const serve = (root: string): Promise<http.Server> =>
+const serve = (root: string, port = 0): Promise<http.Server> =>
   new Promise((resolve) => {
     const server = http.createServer((req, res) => {
       let file = resolveStaticPath(root, req.url ?? '/');
@@ -436,7 +436,7 @@ const serve = (root: string): Promise<http.Server> =>
         .on('error', () => res.destroy())
         .pipe(res);
     });
-    server.listen(0, '127.0.0.1', () => resolve(server));
+    server.listen(port, '127.0.0.1', () => resolve(server));
   });
 
 // A setting on the canvas bar: the mode is a row of buttons, the others
@@ -1575,6 +1575,142 @@ const reviewFrameChecks = async (
   }
 };
 
+const SPOTLIGHT_STORY = 'homepagebuilder-spotlight--standard';
+
+// Figma-style nesting on a pattern: a click on Spotlight's button shows a
+// layer path with Button, Open lands on a Button story with a back chip in
+// the same frame, and Back returns to Spotlight with the button's label
+// selected again.
+const nestingChecks = async (
+  page: any,
+  base: string,
+  failures: string[],
+  shots: { chain?: string; back?: string }
+) => {
+  await page.goto(`${base}/workbench/#/patterns/${SPOTLIGHT_STORY}`);
+  await page.click('[data-testid="wb-panel-tab"][data-tab="design"]');
+  const frame = await canvasFrame(page, '');
+  const label = await frame.waitForSelector(
+    '#storybook-root [data-gv-component="Button"] span',
+    { timeout: 20000 }
+  );
+  const box = await label.boundingBox();
+  if (!box) {
+    failures.push('nesting: the Spotlight button has no box');
+    return;
+  }
+  await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+  const chain = '[data-testid="wb-insp-chain"]';
+  const chainText = async () =>
+    (await page.textContent(chain).catch(() => '')) ?? '';
+  await page
+    .waitForFunction(
+      (sel: string) =>
+        /Button/.test(document.querySelector(sel)?.textContent ?? ''),
+      chain,
+      { timeout: 5000 }
+    )
+    .catch(() => undefined);
+  const before = await chainText();
+  if (!/^Spotlight.*Button.*span/.test(before)) {
+    failures.push(`nesting: the layer path reads "${before}"`);
+  }
+  if (shots.chain) {
+    await page.screenshot({ path: path.resolve(shots.chain) });
+  }
+  await page.evaluate(() => {
+    (window as any).__wbCanvas = document.querySelector(
+      'iframe[data-testid="wb-canvas"]'
+    );
+  });
+  await frame.evaluate(() => {
+    (window as any).__wbSameDocument = true;
+  });
+  try {
+    await page.click('[data-testid="wb-insp-open"]', { timeout: 5000 });
+    await page.waitForSelector('[data-testid="wb-back-chip"]', {
+      timeout: 10000,
+    });
+    await frame.waitForFunction(
+      () => {
+        const render = (window as any).__STORYBOOK_PREVIEW__?.currentRender;
+        return (
+          /^components-([a-z0-9]+-)*button--/.test(render?.id ?? '') &&
+          render.phase === 'finished'
+        );
+      },
+      undefined,
+      { timeout: 10000 }
+    );
+  } catch {
+    failures.push('nesting: Open did not land on a Button story');
+    return;
+  }
+  const hash = hashOf(page.url());
+  if (!/^#\/components\/components-([a-z0-9]+-)*button--/.test(hash)) {
+    failures.push(`nesting: Open went to ${hash}`);
+  }
+  const chip = (
+    (await page.textContent('[data-testid="wb-back-chip"]')) ?? ''
+  ).trim();
+  if (!/Spotlight$/.test(chip)) {
+    failures.push(`nesting: the back chip reads "${chip}"`);
+  }
+  const kept = async (label: string) => {
+    const same = await frame
+      .evaluate(() => (window as any).__wbSameDocument === true)
+      .catch(() => false);
+    const element = await page.evaluate(
+      () =>
+        (window as any).__wbCanvas ===
+        document.querySelector('iframe[data-testid="wb-canvas"]')
+    );
+    if (!same || !element) {
+      failures.push(`nesting: ${label} loaded the canvas frame again`);
+    }
+  };
+  await kept('Open');
+  if (shots.back) {
+    await page.waitForTimeout(400);
+    await page.screenshot({ path: path.resolve(shots.back) });
+  }
+  await page.click('[data-testid="wb-back-chip"]');
+  try {
+    await page.waitForFunction(
+      (id: string) => window.location.hash.startsWith(`#/patterns/${id}`),
+      SPOTLIGHT_STORY,
+      { timeout: 10000 }
+    );
+    await page.waitForFunction(
+      (sel: string) =>
+        /Button.*span/.test(document.querySelector(sel)?.textContent ?? ''),
+      chain,
+      { timeout: 10000 }
+    );
+  } catch {
+    const now = await frame
+      .evaluate(() => {
+        const box = document.querySelector('[data-gv-story-box]');
+        let at = box?.querySelector('[data-gv-component="Button"] span');
+        const out: number[] = [];
+        while (at && at !== box && at.parentElement) {
+          out.unshift(Array.from(at.parentElement.children).indexOf(at));
+          at = at.parentElement;
+        }
+        return out.join('.');
+      })
+      .catch(() => '?');
+    failures.push(
+      `nesting: (label now at ${now}) Back left ${hashOf(
+        page.url()
+      )} with the path "${await chainText()}"`
+    );
+    return;
+  }
+  await kept('Back');
+  console.log(`nesting: ${before} -> ${chip} -> back`);
+};
+
 const main = async () => {
   const root = path.resolve(arg('dir') ?? 'storybook-static');
   const screenshot = arg('screenshot');
@@ -1590,7 +1726,7 @@ const main = async () => {
   }
 
   const { chromium } = loadPlaywright();
-  const server = await serve(root);
+  const server = await serve(root, Number(arg('port') ?? 0) || 0);
   const base = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
   const failures: string[] = [];
   const browser = await chromium.launch({ chromiumSandbox: false });
@@ -1684,6 +1820,10 @@ const main = async () => {
       await controlsChecks(page, base, storyId, failures);
       await panelChecks(page, base, storyId, failures);
     }
+    await nestingChecks(page, base, failures, {
+      chain: arg('nesting-screenshot'),
+      back: arg('back-screenshot'),
+    });
   } catch (e) {
     failures.push(`smoke run failed: ${(e as Error).message}`);
   } finally {

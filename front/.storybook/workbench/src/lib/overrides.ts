@@ -591,7 +591,8 @@ export const useOverrides = (meta: TokenMeta[]) => {
     writeStorage(overrides);
     const hash = window.location.hash;
     const next = withOverrides(hash, overrides);
-    if (next !== hash) window.history.replaceState(null, '', next || '#');
+    if (next !== hash)
+      window.history.replaceState(window.history.state, '', next || '#');
   }, [overrides]);
 
   // A pasted share link, or a navigation that dropped the parameter.
@@ -600,7 +601,8 @@ export const useOverrides = (meta: TokenMeta[]) => {
       const hash = window.location.hash;
       if (!payloadOfHash(hash)) {
         const next = withOverrides(hash, current.current);
-        if (next !== hash) window.history.replaceState(null, '', next);
+        if (next !== hash)
+          window.history.replaceState(window.history.state, '', next);
         return;
       }
       const result = parseOverridesResult(hash, meta);
@@ -608,7 +610,8 @@ export const useOverrides = (meta: TokenMeta[]) => {
         // Keep the session; the storage effect puts it back in the hash.
         setNotice(notApplied(result.error));
         const next = withOverrides(hash, current.current);
-        if (next !== hash) window.history.replaceState(null, '', next);
+        if (next !== hash)
+          window.history.replaceState(window.history.state, '', next);
         return;
       }
       setNotice(undefined);

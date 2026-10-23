@@ -40,8 +40,9 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
     case 'patterns':
     case 'pages':
       return route.storyId ? (
+        // No key: opening a component of a pattern (another section) keeps
+        // the page, so the canvas switches its frame in place.
         <Component
-          key={route.name}
           section={route.name}
           storyId={route.storyId}
           toolbar={canvas.toolbar}

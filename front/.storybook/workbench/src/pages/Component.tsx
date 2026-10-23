@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import Canvas from '../components/Canvas';
 import ChangesDrawer from '../components/ChangesDrawer';
@@ -18,6 +18,18 @@ import { resolveTokens } from '../lib/contrast';
 import { TOKEN_META } from '../lib/data';
 import type { TaskContext } from '../lib/elementEdits';
 import { HealChoice, HealMode, healModeOf } from '../lib/healTask';
+import { pathOf } from '../lib/inspect';
+import {
+  componentOf,
+  decodeReturn,
+  openHashes,
+  paramOf,
+  parsePath,
+  parseZoom,
+  returnHash,
+  storyOfComponent,
+} from '../lib/nesting';
+import { useHash } from '../lib/router';
 import { groupOfStory, Section, StoryRef } from '../lib/stories';
 import { DEFS } from '../lib/tokenValues';
 import { useA11yResults } from '../lib/useA11y';
@@ -66,6 +78,13 @@ const storeTab = (t: Tab) => {
     // Not kept; the tab still switches.
   }
 };
+
+// The history entry an open pushed: Back from the opened component can go
+// back to it rather than push the pattern again.
+const OPENED = 'wbOpened';
+
+// The selection a return asks for, read when the story comes in.
+const restoreSel = () => parsePath(paramOf(window.location.hash, 'sel'));
 
 const SECTION_LABEL: Record<Section, string> = {
   components: 'Components',
@@ -125,7 +144,65 @@ const Component = ({
   const [second] = useState(() => onFrame(1));
   const [fitScale, setFitScale] = useState<number | undefined>();
   const frame = frames[0];
-  const selection = useCanvasSelection(frame, loads, tool, storyId);
+  const hash = useHash();
+  const from = decodeReturn(paramOf(hash, 'from'));
+  const latest = useRef({ groups, storyId, section, toolbar, setToolbar });
+  latest.current = { groups, storyId, section, toolbar, setToolbar };
+
+  // Open the page of the library component `instance` is the root of, the
+  // way Figma goes to the main component: this entry keeps the selection
+  // (`at`) and zoom, the new one names the way back.
+  const open = useCallback((instance: Element, at: Element | null) => {
+    const l = latest.current;
+    const name = componentOf(instance);
+    if (!name || !l.groups) return;
+    const target = storyOfComponent(l.groups, name);
+    const here = groupOfStory(l.groups, l.storyId);
+    if (!target || target.group === here) return;
+    const hashes = openHashes(
+      window.location.hash,
+      {
+        section: l.section,
+        storyId: l.storyId,
+        path: at ? pathOf(at) : null,
+        zoom: l.toolbar.zoom,
+      },
+      target.storyId
+    );
+    window.history.replaceState(window.history.state, '', hashes.here);
+    window.location.hash = hashes.there;
+    window.history.replaceState(
+      { ...(window.history.state ?? {}), [OPENED]: true },
+      '',
+      window.location.hash
+    );
+  }, []);
+  const pickRef = useRef<(el: Element | null) => void>(() => undefined);
+  const onDouble = useCallback(
+    (instance: Element) => {
+      pickRef.current(instance);
+      open(instance, instance);
+    },
+    [open]
+  );
+  const selection = useCanvasSelection(
+    frame,
+    loads,
+    tool,
+    storyId,
+    restoreSel,
+    onDouble
+  );
+  pickRef.current = selection.pick;
+
+  // Back on a pattern: the zoom it was left at.
+  useEffect(() => {
+    const zoom = parseZoom(paramOf(window.location.hash, 'zoom'));
+    const l = latest.current;
+    if (zoom !== null && zoom !== l.toolbar.zoom) {
+      l.setToolbar({ ...l.toolbar, zoom });
+    }
+  }, [storyId]);
   const {
     edits,
     add: addEdit,
@@ -175,6 +252,22 @@ const Component = ({
   const variants = group.stories.filter((s) => !s.state);
   const current = group.stories.find((s) => s.id === storyId);
   const split = view === 'split';
+  const back = from
+    ? {
+        href: returnHash(hash, from),
+        name: groupOfStory(groups, from.storyId)?.name ?? from.storyId,
+      }
+    : null;
+  // What the instance header says of a library component.
+  const instanceInfo = (name: string) => {
+    const target = storyOfComponent(groups, name);
+    const scanned = indexes.scan?.components.find((c) => c.component === name);
+    return {
+      uses: scanned?.usageCount ?? target?.group.score?.usageCount,
+      hasStory: !!target,
+      self: target?.group === group,
+    };
+  };
   const shownFrames = split ? frames : [frames[0]];
   const count = Object.keys(overrides).length + edits.length;
   const task: TaskContext = {
@@ -195,6 +288,22 @@ const Component = ({
       {/* The story is the page: the name is for screen readers. */}
       <h1 className="wb-visually-hidden">{group.name}</h1>
       <div className="wb-component-top" data-testid="wb-canvas-bar">
+        {back && (
+          <a
+            className="wb-back-chip"
+            data-testid="wb-back-chip"
+            href={back.href}
+            onClick={(e) => {
+              if (!window.history.state?.[OPENED]) return;
+              e.preventDefault();
+              window.history.back();
+            }}
+          >
+            <span aria-hidden="true">←</span>
+            <span className="wb-visually-hidden">Back to </span>
+            {back.name}
+          </a>
+        )}
         <nav className="wb-crumbs" aria-label="Breadcrumb">
           <a href={`#/${section}`}>{SECTION_LABEL[section]}</a>
           {group.category && (
@@ -378,6 +487,9 @@ const Component = ({
                 componentName={group.name}
                 frames={shownFrames}
                 selection={selection}
+                instanceInfo={instanceInfo}
+                onOpen={(instance) => open(instance, selection.selected)}
+                keep={from ? { from: paramOf(hash, 'from') } : undefined}
                 meta={TOKEN_META}
                 mode={toolbar.mode}
                 overrides={overrides}

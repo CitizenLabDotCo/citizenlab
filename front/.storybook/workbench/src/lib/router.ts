@@ -79,3 +79,16 @@ export const useRoute = (): Route => {
   }, []);
   return route;
 };
+
+// The whole hash, `?` part included, as it changes. A replaceState (the
+// share link, a return's selection) does not fire hashchange and is not
+// seen until the next one.
+export const useHash = (): string => {
+  const [hash, setHash] = useState(() => window.location.hash);
+  useEffect(() => {
+    const onChange = () => setHash(window.location.hash);
+    window.addEventListener('hashchange', onChange);
+    return () => window.removeEventListener('hashchange', onChange);
+  }, []);
+  return hash;
+};

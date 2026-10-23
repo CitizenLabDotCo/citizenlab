@@ -29,6 +29,13 @@
      tint. FrameView.tsx writes the same value into the frame. */
   --wb-highlight: #c8006e;
   --wb-highlight-soft: #fde7f2;
+  /* Library component instances, Figma's purple: the layer path, the
+     instance header, the back chip. The canvas draws the light value
+     (useCanvasSelection.ts). 5.7:1 on white. */
+  --wb-component: #8638e5;
+  --wb-component-soft: #f3ecfd;
+  --wb-component-fill: #8638e5;
+  --wb-component-strong: #6c25c4;
   /* Status and info colours: a mark (dot, bar, ring), a soft fill behind
      text, and a text colour on that fill. */
   --wb-ok: var(--gv-green-500);
@@ -92,6 +99,10 @@
      it in the chrome gets a lighter tone. */
   --wb-highlight: #ff6db8;
   --wb-highlight-soft: #3d1430;
+  --wb-component: #c4a3ff;
+  --wb-component-soft: #2a2140;
+  --wb-component-fill: #7a3fd6;
+  --wb-component-strong: #6530b8;
   --wb-ok: #3fb97a;
   --wb-ok-soft: #133222;
   --wb-ok-text: #78dca6;
@@ -6834,4 +6845,146 @@ tr[data-result='needs-human'] .wb-a11y-note {
   color: var(--wb-accent);
   background: var(--wb-accent-soft);
   border-color: var(--wb-accent);
+}
+
+/* The way back from an opened component to the pattern it was opened from,
+   before the breadcrumbs. */
+.wb-back-chip {
+  display: inline-flex;
+  gap: var(--gv-space-1);
+  align-items: center;
+  min-height: 28px;
+  padding: 0 var(--gv-space-3);
+  font-size: var(--gv-fs-13);
+  font-weight: 600;
+  color: var(--wb-component);
+  text-decoration: none;
+  background: var(--wb-component-soft);
+  border-radius: 999px;
+}
+
+.wb-back-chip:hover {
+  color: var(--wb-component);
+  text-decoration: underline;
+}
+
+.wb-back-chip:focus-visible {
+  outline: var(--gv-focus-width) solid var(--wb-component);
+  outline-offset: 2px;
+}
+
+/* The selection's layer path: story, instances, the selection. */
+.wb-chain ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 0;
+  align-items: center;
+  padding: 0;
+  margin: 0 0 var(--gv-space-1);
+  list-style: none;
+  font-size: var(--gv-fs-xs);
+  color: var(--wb-muted);
+}
+
+.wb-chain-seg {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.wb-chain-sep {
+  padding: 0 2px;
+  color: var(--wb-faint);
+}
+
+.wb-chain-name {
+  display: inline-flex;
+  gap: 3px;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wb-shell button.wb-chain-name {
+  min-height: 22px;
+  padding: 0 var(--gv-space-1);
+  font-size: var(--gv-fs-xs);
+  font-weight: 400;
+  color: var(--wb-muted);
+  background: none;
+  border: 0;
+  border-radius: 4px;
+}
+
+.wb-shell button.wb-chain-name:hover {
+  color: var(--wb-text);
+  background: var(--wb-subtle);
+}
+
+.wb-chain-name[aria-current] {
+  padding: 0 var(--gv-space-1);
+  font-weight: 600;
+  color: var(--wb-heading);
+}
+
+.wb-chain-instance .wb-chain-name,
+.wb-shell .wb-chain-instance button.wb-chain-name,
+.wb-shell .wb-chain-instance button.wb-chain-name:hover {
+  color: var(--wb-component);
+}
+
+.wb-chain-glyph,
+.wb-instance-glyph {
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* The library component the selection is, or sits in: its name, how
+   often the app uses it, and the way to its own page. */
+.wb-instance {
+  display: flex;
+  gap: var(--gv-space-2);
+  align-items: center;
+  padding-top: var(--gv-space-2);
+  padding-bottom: var(--gv-space-2);
+  font-size: var(--gv-fs-xs);
+  background: var(--wb-component-soft);
+}
+
+.wb-instance-glyph,
+.wb-instance-name {
+  color: var(--wb-component);
+}
+
+.wb-instance-name {
+  font-weight: 600;
+}
+
+.wb-instance-uses {
+  flex: 1;
+  color: var(--wb-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.wb-instance-none {
+  color: var(--wb-text);
+}
+
+.wb-shell button.wb-instance-open {
+  gap: var(--gv-space-1);
+  min-height: 24px;
+  padding: 0 var(--gv-space-2);
+  font-size: var(--gv-fs-xs);
+  font-weight: 600;
+  color: var(--wb-on-accent);
+  background: var(--wb-component-fill);
+  border: 0;
+  border-radius: 4px;
+}
+
+.wb-shell button.wb-instance-open:hover {
+  background: var(--wb-component-strong);
 }
