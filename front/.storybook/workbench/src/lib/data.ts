@@ -5,6 +5,7 @@
 // and its name is added to `missing`, which the Start here page lists.
 import tokensMeta from '@ds/tokens/tokens.meta.json';
 
+import type { A11yResults } from '../../../../scripts/design-system/a11y-results';
 import type {
   ComponentScore,
   Finding,
@@ -90,8 +91,11 @@ export const loadChanges = () =>
 export const loadRouteFixture = () =>
   fetchJson<unknown>('../routes.fixture.json', {});
 
+// null when the build has no results (ds:a11y has not run).
 export const loadA11y = () =>
-  fetchJson<Record<string, unknown>>('../a11y-results.json', {});
+  fetchJson<A11yResults | null>('../a11y-results.json', null).then((r) =>
+    r && typeof r === 'object' && 'stories' in r ? r : null
+  );
 
 export const loadAudits = () =>
   fetchJson<Record<string, unknown>>('../audits/index.json', {});

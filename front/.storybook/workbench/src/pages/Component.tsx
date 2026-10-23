@@ -1,22 +1,26 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import type { TokenName } from '@ds/tokens/tokens';
-
 import Canvas from '../components/Canvas';
 import Icon from '../components/Icon';
 import PanelTabs from '../components/PanelTabs';
 import Segmented from '../components/Segmented';
 import { OfficeChip, ScoreRing, StatusChip } from '../components/StoryThumb';
 import Toolbar, { ToolbarState } from '../components/Toolbar';
+import { checklistOf } from '../lib/a11y';
+import { CHECKLISTS } from '../lib/checklists';
 import { TOKEN_META } from '../lib/data';
 import { HealChoice, HealMode, healModeOf } from '../lib/healTask';
-import type { Overrides } from '../lib/overrides';
 import { groupOfStory, Section, StoryRef } from '../lib/stories';
+import { useA11yResults } from '../lib/useA11y';
 import { useScanIndexes } from '../lib/useScanIndexes';
 import { useStoryGroups } from '../lib/useStoryGroups';
+import A11y from '../panels/A11y';
 import Controls from '../panels/Controls';
 import Tokens from '../panels/Tokens';
 import Usage from '../panels/Usage';
+
+import type { Overrides } from '../lib/overrides';
+import type { TokenName } from '@ds/tokens/tokens';
 
 type Props = {
   section: Section;
@@ -30,8 +34,8 @@ type Props = {
 
 type View = 'single' | 'split';
 
-type Tab = 'controls' | 'tokens' | 'usage';
-const TABS: Tab[] = ['controls', 'tokens', 'usage'];
+type Tab = 'controls' | 'tokens' | 'usage' | 'a11y';
+const TABS: Tab[] = ['controls', 'tokens', 'usage', 'a11y'];
 const TAB_KEY = 'wb-panel-tab';
 
 // The last panel tab, per browser (storage may be blocked).
@@ -140,7 +144,8 @@ const Tabs = ({
 };
 
 // One story title: its stories as tabs (states first, then variants), the
-// canvas alone or today and redesign side by side, and the Controls panel.
+// canvas alone or today and redesign side by side, and the panel (Controls,
+// Tokens, Usage, A11y).
 const Component = ({
   section,
   storyId,
@@ -152,6 +157,7 @@ const Component = ({
 }: Props) => {
   const groups = useStoryGroups();
   const indexes = useScanIndexes(TOKEN_META);
+  const a11y = useA11yResults();
   const [tab, setTab] = useState<Tab>(storedTab);
   const [tokenCount, setTokenCount] = useState<number | undefined>();
   const [healChoice, setHealChoice] = useState<HealChoice | undefined>();
@@ -374,6 +380,23 @@ const Component = ({
                 indexes={indexes}
                 healMode={heal}
                 onHealMode={onHealMode}
+              />
+            ),
+          },
+          {
+            id: 'a11y',
+            label: 'A11y',
+            icon: 'a11y',
+            count: a11y.results?.stories[storyId]?.violations.length,
+            content: (
+              <A11y
+                storyId={storyId}
+                storyLabel={current ? tabLabel(current) : undefined}
+                group={group}
+                section={section}
+                results={a11y.results}
+                loaded={a11y.loaded}
+                checklist={checklistOf(CHECKLISTS, group)}
               />
             ),
           },

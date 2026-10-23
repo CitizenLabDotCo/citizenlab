@@ -6,9 +6,19 @@ import {
   useState,
 } from 'react';
 
+import {
+  A11yResults,
+  axeSummary,
+  axeTitle,
+  Checklist,
+  checklistCounts,
+  formatDate,
+  KEYBOARD_LABEL,
+  keyboardStatus,
+  reviewedLine,
+} from '../lib/a11y';
 import { storyUrl } from '../lib/frame';
 import { channelOf, isRendered } from '../lib/preview';
-import type { FrameGlobals } from '../lib/frame';
 import {
   OFFICE_LABEL,
   STATUS_LABEL,
@@ -16,6 +26,10 @@ import {
   Status,
   Office,
 } from '../lib/stories';
+
+import Icon from './Icon';
+
+import type { FrameGlobals } from '../lib/frame';
 
 // How much of the component file follows the tokens, as a ring.
 export const ScoreRing = ({
@@ -72,6 +86,83 @@ export const OfficeChip = ({ office }: { office: Office }) => (
 const plural = (n: number, one: string, many: string) =>
   `${n} ${n === 1 ? one : many}`;
 
+// The accessibility badges of a card (SPEC 7.6 wording): checked by axe,
+// keyboard tested or untested, and the agent review with its counts.
+export const A11yBadges = ({
+  group,
+  results,
+  checklist,
+}: {
+  group: StoryGroup;
+  results: A11yResults | null;
+  checklist: Checklist | null;
+}) => {
+  const axe = axeSummary(results, group);
+  const kb = keyboardStatus(results, group);
+  const reviewed = checklist && reviewedLine(checklist);
+  const counts = checklist && checklistCounts(checklist);
+  if (axe.checked === 0 && !reviewed) return null;
+  const axeTone =
+    axe.worst === 'critical' ? 'fail' : axe.worst ? 'warn' : 'pass';
+  const issues = axe.byImpact.critical + axe.byImpact.serious;
+  return (
+    <span className="wb-thumb-a11y" data-testid="wb-thumb-a11y">
+      {axe.checked > 0 && (
+        <span
+          className={`wb-a11y-chip wb-a11y-tone-${axeTone}`}
+          title={axeTitle(axe)}
+          data-testid="wb-thumb-axe"
+        >
+          <Icon name="a11y" size={14} />
+          Checked by axe
+          {axe.worst && (
+            <span className="wb-a11y-chip-count">
+              {axe.byImpact.critical > 0
+                ? `${axe.byImpact.critical} critical`
+                : issues > 0
+                ? `${issues} serious`
+                : `${axe.byImpact.moderate + axe.byImpact.minor} minor`}
+            </span>
+          )}
+          <span className="wb-visually-hidden">{`: ${axeTitle(axe)}`}</span>
+        </span>
+      )}
+      {(kb === 'tested' || kb === 'untested' || kb === 'failing') && (
+        <span
+          className={`wb-a11y-chip wb-a11y-tone-${
+            kb === 'tested' ? 'pass' : kb === 'failing' ? 'fail' : 'none'
+          }`}
+          data-testid="wb-thumb-keyboard"
+          data-status={kb}
+        >
+          <Icon name="keyboard" size={14} />
+          {KEYBOARD_LABEL[kb]}
+        </span>
+      )}
+      {reviewed && counts && (
+        <span
+          className="wb-a11y-chip wb-a11y-chip-review"
+          title={reviewed}
+          data-testid="wb-thumb-reviewed"
+        >
+          <Icon name="checklist" size={14} />
+          <span aria-hidden="true">
+            {`Reviewed ${formatDate(checklist.reviewedAt ?? '')}`}
+          </span>
+          <span className="wb-a11y-mini" aria-hidden="true">
+            <span className="wb-a11y-mini-pass">{counts.pass}</span>
+            <span className="wb-a11y-mini-fail">{counts.fail}</span>
+            <span className="wb-a11y-mini-needs-human">
+              {counts['needs-human']}
+            </span>
+          </span>
+          <span className="wb-visually-hidden">{reviewed}</span>
+        </span>
+      )}
+    </span>
+  );
+};
+
 type Props = {
   group: StoryGroup;
   href: string;
@@ -80,6 +171,7 @@ type Props = {
   // width (never above 100%), so a card of any width shows the same story
   // uncropped.
   frameWidth?: number;
+  a11y?: { results: A11yResults | null; checklist: Checklist | null };
 };
 
 // The story sits on the card's own surface, without page scrollbars, and
@@ -101,7 +193,13 @@ const NEAR = '200px';
 // A gallery card: the group's Default story rendered live and scaled down,
 // loaded only when it nears the viewport, faded in once Storybook has
 // rendered it. The frame is decoration; the card is the link.
-const StoryThumb = ({ group, href, globals, frameWidth = 320 }: Props) => {
+const StoryThumb = ({
+  group,
+  href,
+  globals,
+  frameWidth = 320,
+  a11y,
+}: Props) => {
   const [loaded, setLoaded] = useState(false);
   const [near, setNear] = useState(false);
   const [width, setWidth] = useState(0);
@@ -191,6 +289,13 @@ const StoryThumb = ({ group, href, globals, frameWidth = 320 }: Props) => {
           <StatusChip status={group.status} />
           <OfficeChip office={group.office} />
         </span>
+        {a11y && (
+          <A11yBadges
+            group={group}
+            results={a11y.results}
+            checklist={a11y.checklist}
+          />
+        )}
       </span>
     </a>
   );

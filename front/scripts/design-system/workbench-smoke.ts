@@ -501,7 +501,40 @@ const panelChecks = async (
       heal ? `, its heal names only ${RADIUS_TOKEN}` : ''
     }`
   );
+
+  // The A11y tab: Button's checklist badge with its date and counts.
+  await page.click('[data-testid="wb-panel-tab"][data-tab="a11y"]');
+  let reviewed = '';
+  try {
+    await page.waitForSelector('[data-testid="wb-a11y-reviewed"]', {
+      timeout: 10000,
+    });
+    reviewed = await page.$eval(
+      '[data-testid="wb-a11y-reviewed"]',
+      (el: Element) => (el as HTMLElement).innerText.replace(/\s+/g, ' ')
+    );
+  } catch {
+    // Reported below.
+  }
+  if (!A11Y_REVIEWED.test(reviewed)) {
+    failures.push(
+      `the A11y panel shows "${
+        reviewed || 'nothing'
+      }" for Button, expected "reviewed ... on <date>" and a count`
+    );
+  }
+  const panelText: string = await page
+    .$eval('[data-testid="wb-panel-a11y"]', (el: Element) => el.textContent)
+    .catch(() => '');
+  if (/complian|certified/i.test(panelText)) {
+    failures.push('the A11y panel claims compliance or certification');
+  }
+  console.log(`a11y: ${reviewed}`);
 };
+
+// "Reviewed by agent on 23 Oct 2026 8 pass 1 fail 0 need a person".
+export const A11Y_REVIEWED =
+  /reviewed (by \S+ )?on \d{1,2} \w{3} \d{4}.*\d+ pass/i;
 
 export const MIN_ADMIN_ROUTES = 20;
 // A route with a param the fixture has no record for (fixture.missing).

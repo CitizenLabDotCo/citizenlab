@@ -1,11 +1,10 @@
 import { useMemo, useState } from 'react';
 
-import type { Mode } from '@ds/tokens/tokens';
-
 import Icon from '../components/Icon';
 import Segmented from '../components/Segmented';
 import StoryThumb from '../components/StoryThumb';
-import type { FrameGlobals } from '../lib/frame';
+import { A11yResults, checklistOf } from '../lib/a11y';
+import { CHECKLISTS } from '../lib/checklists';
 import {
   ALL,
   filterGroups,
@@ -15,14 +14,18 @@ import {
   Status,
   StoryGroup,
 } from '../lib/stories';
+import { useA11yResults } from '../lib/useA11y';
 import { useStoryGroups } from '../lib/useStoryGroups';
 
 import { PlaceholderArt } from './Placeholder';
 
+import type { FrameGlobals } from '../lib/frame';
+import type { Mode } from '@ds/tokens/tokens';
+
 const COPY: Record<Section, { title: string; lead: string; noun: string }> = {
   components: {
     title: 'Components',
-    lead: 'Every library component, rendered live from its Default story. The ring is how much of the component file follows the tokens, from the latest scan.',
+    lead: 'Every library component, rendered live from its Default story. The ring is how much of the component file follows the tokens, from the latest scan; the badges below say what axe, a keyboard story and an agent review checked.',
     noun: 'component',
   },
   patterns: {
@@ -95,11 +98,13 @@ const Grid = ({
   groups,
   section,
   globals,
+  results,
   testId,
 }: {
   groups: StoryGroup[];
   section: Section;
   globals: FrameGlobals;
+  results: A11yResults | null;
   testId?: string;
 }) => (
   <ul className="wb-card-grid wb-thumb-grid" data-testid={testId}>
@@ -110,6 +115,7 @@ const Grid = ({
           href={`#/${section}/${encodeURIComponent(g.defaultId)}`}
           globals={globals}
           frameWidth={THUMB_FRAME_WIDTH[section]}
+          a11y={{ results, checklist: checklistOf(CHECKLISTS, g) }}
         />
       </li>
     ))}
@@ -122,6 +128,7 @@ const Grid = ({
 // starts with no section, so none of them is out of reach.
 const Gallery = ({ section, globals, onMode }: Props) => {
   const all = useStoryGroups();
+  const { results } = useA11yResults();
   const [filter, setFilter] = useState<GalleryFilter>(ALL);
   const copy = COPY[section];
   const mine = useMemo(
@@ -258,6 +265,7 @@ const Gallery = ({ section, globals, onMode }: Props) => {
               groups={shown}
               section={section}
               globals={globals}
+              results={results}
               testId="wb-gallery-grid"
             />
           )}
@@ -275,7 +283,12 @@ const Gallery = ({ section, globals, onMode }: Props) => {
                 as <code>Cards/</code> and <code>HomepageBuilder/</code>. They
                 show here until they move under Patterns/ or Pages/.
               </p>
-              <Grid groups={shownUnfiled} section={section} globals={globals} />
+              <Grid
+                groups={shownUnfiled}
+                section={section}
+                globals={globals}
+                results={results}
+              />
             </section>
           )}
         </>

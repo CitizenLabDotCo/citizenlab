@@ -1,6 +1,7 @@
 import path from 'path';
 
 import {
+  A11Y_REVIEWED,
   overrideNamesOfHash,
   pickButtonStory,
   resolveStaticPath,
@@ -75,5 +76,19 @@ describe('overrideNamesOfHash', () => {
   it('is empty without a payload or with a damaged one', () => {
     expect(overrideNamesOfHash('#/foundations/radius')).toEqual([]);
     expect(overrideNamesOfHash('#/x?o=%%%')).toEqual([]);
+  });
+});
+
+describe('A11Y_REVIEWED', () => {
+  it('needs the date and a count', () => {
+    expect(
+      A11Y_REVIEWED.test(
+        'Reviewed by agent on 23 Oct 2026 8 pass 1 fail 0 need a person'
+      )
+    ).toBe(true);
+    expect(A11Y_REVIEWED.test('Reviewed by agent on 23 Oct 2026')).toBe(false);
+    expect(A11Y_REVIEWED.test('Not reviewed yet No a11y.json checklist')).toBe(
+      false
+    );
   });
 });
