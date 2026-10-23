@@ -11,7 +11,7 @@ describe Facets::IdeaCustomFieldAnswer do
       create(
         :idea,
         project:,
-        custom_field_answers: [build(:custom_field_answer, key: field.key, value:)],
+        custom_field_answers: [build(:custom_field_answer, custom_field: field, key: field.key, value:)],
         **attributes
       )
     end
@@ -42,6 +42,15 @@ describe Facets::IdeaCustomFieldAnswer do
         create(:user, custom_field_answers: [build(:custom_field_answer, key: field.key, value: 'option1')])
 
         expect(described_class.new(field).counts(Idea.all)).to eq({ field.id => {} })
+      end
+
+      it 'ignores the answers of a copied form that reuses the key' do
+        copied_form = create(:custom_form, participation_context: create(:single_phase_ideation_project))
+        copied_field = create(:custom_field_select, :with_options, resource: copied_form, key: field.key)
+        create_idea_with_answer(field, 'option1')
+        create_idea_with_answer(copied_field, 'option1', project: copied_form.participation_context)
+
+        expect(described_class.new(field).counts(Idea.all)).to eq({ field.id => { 'option1' => 1 } })
       end
     end
 

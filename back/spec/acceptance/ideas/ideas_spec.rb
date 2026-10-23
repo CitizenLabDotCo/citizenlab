@@ -257,12 +257,14 @@ resource 'Ideas' do
           form = create(:custom_form, participation_context: @project)
           public_field = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public')
           private_field = create(:custom_field_select, :with_options, resource: form)
+          disabled_field = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public', enabled: false)
           create(:custom_field_answer, answerable: @i1, key: public_field.key, value: 'option1')
           create(:custom_field_answer, answerable: @i2, key: public_field.key, value: 'option1')
           create(:custom_field_answer, answerable: @i3, key: public_field.key, value: 'option2')
           create(:custom_field_answer, answerable: @i4, key: private_field.key, value: 'option1')
+          create(:custom_field_answer, answerable: @i4, key: disabled_field.key, value: 'option1')
 
-          do_request custom_field_ids: [public_field.id, private_field.id]
+          do_request custom_field_ids: [public_field.id, private_field.id, disabled_field.id]
 
           assert_status 200
           answer_counts = json_parse(response_body).dig(:data, :attributes, :custom_field_answers)
