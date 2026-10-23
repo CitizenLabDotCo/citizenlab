@@ -175,8 +175,11 @@ code {
   max-width: 880px;
 }
 
+/* Galleries, Foundations, Proposal: the whole main column, so a collapsed
+   nav or a wide window gives the grids more columns. Prose keeps its own
+   measure. */
 .wb-page-wide {
-  max-width: 1200px;
+  max-width: none;
 }
 
 /* Nav */
