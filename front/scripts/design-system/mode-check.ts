@@ -38,9 +38,15 @@ const hex2 = (n: number) => Math.round(n).toString(16).padStart(2, '0');
 export const normValue = (v: string): string => {
   let s = String(v).trim().toLowerCase().replace(/\s+/g, ' ');
   s = s.replace(/\s*([,()/])\s*/g, '$1');
-  const rgb = s.match(
-    /^rgba?\((\d+(?:\.\d+)?),(\d+(?:\.\d+)?),(\d+(?:\.\d+)?)(?:[,/](\d*\.?\d+)(%?))?\)$/
-  );
+  // Legacy comma syntax `rgb(51,51,51[,a])` or the space syntax
+  // `rgb(51 51 51[/a])`, after the separators above were trimmed.
+  const rgb =
+    s.match(
+      /^rgba?\((\d+(?:\.\d+)?),(\d+(?:\.\d+)?),(\d+(?:\.\d+)?)(?:[,/](\d*\.?\d+)(%?))?\)$/
+    ) ??
+    s.match(
+      /^rgba?\((\d+(?:\.\d+)?) (\d+(?:\.\d+)?) (\d+(?:\.\d+)?)(?:\/(\d*\.?\d+)(%?))?\)$/
+    );
   if (rgb) {
     const alpha =
       rgb[4] === undefined ? 1 : Number(rgb[4]) / (rgb[5] ? 100 : 1);

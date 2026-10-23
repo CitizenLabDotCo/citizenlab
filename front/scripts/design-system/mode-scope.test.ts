@@ -104,6 +104,17 @@ describe('normValue', () => {
     expect(normValue('0px')).toBe('0');
     expect(normValue('8')).toBe('8px');
   });
+
+  // CSS Color 4 space syntax, what browsers and design tools print today.
+  it('reads rgb() with spaces and a slash alpha', () => {
+    expect(normValue('rgb(51 51 51)')).toBe('#333333');
+    expect(normValue('RGB( 51  51 51 )')).toBe('#333333');
+    expect(normValue('rgb(0 0 0 / 0.5)')).toBe('#00000080');
+    expect(normValue('rgb(0 0 0 / 50%)')).toBe('#00000080');
+    expect(normValue('rgba(0 0 0 / 1)')).toBe('#000000');
+    // Mixed separators are not valid CSS: left as they are.
+    expect(normValue('rgb(51, 51 51)')).not.toBe('#333333');
+  });
 });
 
 describe('parseArgs', () => {
