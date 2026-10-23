@@ -7,7 +7,8 @@ import { fn } from 'storybook/test';
 import Modal from '.';
 
 // The modal renders into #modal-portal, which the Storybook contexts add.
-// The play step waits for the enter transition (500ms) to end.
+// The play step waits well past the enter transition (500ms on desktop,
+// 700ms on phones) so the screenshots are stable.
 const meta = {
   title: 'Components/Overlays/Modal',
   tags: ['shared'],
@@ -38,7 +39,7 @@ const meta = {
     </Box>
   ),
   play: async () => {
-    await new Promise((resolve) => setTimeout(resolve, 800));
+    await new Promise((resolve) => setTimeout(resolve, 1500));
   },
 } satisfies Meta<typeof Modal>;
 
