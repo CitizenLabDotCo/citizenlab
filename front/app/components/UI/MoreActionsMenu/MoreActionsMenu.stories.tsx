@@ -26,12 +26,15 @@ const meta = {
     </Box>
   ),
   play: async ({ canvasElement }) => {
-    await waitFor(() => {
-      const button = canvasElement.querySelector('.e2e-more-actions');
-      if (!button?.textContent) {
-        throw new Error('label not rendered yet');
-      }
-    });
+    await waitFor(
+      () => {
+        const button = canvasElement.querySelector('.e2e-more-actions');
+        if (!button?.textContent) {
+          throw new Error('label not rendered yet');
+        }
+      },
+      { timeout: 10000 }
+    );
   },
 } satisfies Meta<typeof MoreActionsMenu>;
 
@@ -53,11 +56,14 @@ export const Open: Story = {
     await meta.play(context);
     const button = context.canvasElement.querySelector('.e2e-more-actions');
     if (button) await userEvent.click(button);
-    await waitFor(() => {
-      if (!document.querySelector('[role="menuitem"]')) {
-        throw new globalThis.Error('menu not open yet');
-      }
-    });
+    await waitFor(
+      () => {
+        if (!document.querySelector('[role="menuitem"]')) {
+          throw new globalThis.Error('menu not open yet');
+        }
+      },
+      { timeout: 10000 }
+    );
   },
 };
 

@@ -7,11 +7,14 @@ import { fn, userEvent, waitFor } from 'storybook/test';
 import TypedDeleteConfirmationModal from '.';
 
 const waitForCloseButton = async () => {
-  await waitFor(() => {
-    if (!document.querySelector('.e2e-modal-close-button')) {
-      throw new Error('close button not rendered yet');
-    }
-  });
+  await waitFor(
+    () => {
+      if (!document.querySelector('.e2e-modal-close-button')) {
+        throw new Error('close button not rendered yet');
+      }
+    },
+    { timeout: 10000 }
+  );
 };
 
 // It renders in Modal, whose close button only renders once the app

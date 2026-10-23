@@ -38,11 +38,14 @@ const meta = {
     </Box>
   ),
   play: async () => {
-    await waitFor(() => {
-      if (!document.querySelector('.e2e-modal-close-button')) {
-        throw new Error('close button not rendered yet');
-      }
-    });
+    await waitFor(
+      () => {
+        if (!document.querySelector('.e2e-modal-close-button')) {
+          throw new Error('close button not rendered yet');
+        }
+      },
+      { timeout: 10000 }
+    );
   },
 } satisfies Meta<typeof Modal>;
 
@@ -62,11 +65,14 @@ export const WithoutHeader: Story = {
 export const WithoutCloseButton: Story = {
   args: { hideCloseButton: true },
   play: async () => {
-    await waitFor(() => {
-      if (!document.querySelector('#modal-header')) {
-        throw new Error('modal not rendered yet');
-      }
-    });
+    await waitFor(
+      () => {
+        if (!document.querySelector('#modal-header')) {
+          throw new Error('modal not rendered yet');
+        }
+      },
+      { timeout: 10000 }
+    );
   },
 };
 

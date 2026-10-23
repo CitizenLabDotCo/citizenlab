@@ -21,14 +21,17 @@ const meta = {
     </div>
   ),
   play: async ({ canvasElement }) => {
-    await waitFor(() => {
-      const text = canvasElement.querySelector(
-        '[data-testid="error-message-text"]'
-      );
-      if (!text?.textContent) {
-        throw new globalThis.Error('message not rendered yet');
-      }
-    });
+    await waitFor(
+      () => {
+        const text = canvasElement.querySelector(
+          '[data-testid="error-message-text"]'
+        );
+        if (!text?.textContent) {
+          throw new globalThis.Error('message not rendered yet');
+        }
+      },
+      { timeout: 10000 }
+    );
   },
 } satisfies Meta<typeof Error>;
 

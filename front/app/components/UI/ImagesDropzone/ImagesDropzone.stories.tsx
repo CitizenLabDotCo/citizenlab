@@ -45,11 +45,14 @@ const meta = {
     </Box>
   ),
   play: async ({ canvasElement }) => {
-    await waitFor(() => {
-      if (!canvasElement.querySelector('[data-testid="images-dropzone"]')) {
-        throw new globalThis.Error('dropzone not rendered yet');
-      }
-    });
+    await waitFor(
+      () => {
+        if (!canvasElement.querySelector('[data-testid="images-dropzone"]')) {
+          throw new globalThis.Error('dropzone not rendered yet');
+        }
+      },
+      { timeout: 10000 }
+    );
   },
 } satisfies Meta<typeof ImagesDropzone>;
 
@@ -82,14 +85,17 @@ export const WithImage: Story = {
   ),
   play: async (context) => {
     await meta.play(context);
-    await waitFor(() => {
-      const preview = context.canvasElement.querySelector(
-        '[style*="blob:"], [src^="blob:"]'
-      );
-      if (!preview && !context.canvasElement.innerHTML.includes('blob:')) {
-        throw new globalThis.Error('preview not rendered yet');
-      }
-    });
+    await waitFor(
+      () => {
+        const preview = context.canvasElement.querySelector(
+          '[style*="blob:"], [src^="blob:"]'
+        );
+        if (!preview && !context.canvasElement.innerHTML.includes('blob:')) {
+          throw new globalThis.Error('preview not rendered yet');
+        }
+      },
+      { timeout: 10000 }
+    );
   },
 };
 

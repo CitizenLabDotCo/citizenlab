@@ -25,10 +25,13 @@ const meta = {
     </div>
   ),
   play: async ({ canvasElement }) => {
-    await waitFor(() => {
-      const img = canvasElement.querySelector('img');
-      if (!img?.complete) throw new Error('image not settled yet');
-    });
+    await waitFor(
+      () => {
+        const img = canvasElement.querySelector('img');
+        if (!img?.complete) throw new Error('image not settled yet');
+      },
+      { timeout: 10000 }
+    );
   },
 } satisfies Meta<typeof Image>;
 

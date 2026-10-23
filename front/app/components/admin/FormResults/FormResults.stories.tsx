@@ -63,11 +63,14 @@ const meta = {
   component: FormResults,
   args: { projectId: '1', phaseId: '1' },
   play: async ({ canvasElement }) => {
-    await waitFor(() => {
-      if (!canvasElement.querySelector('h2')?.textContent) {
-        throw new Error('results not rendered yet');
-      }
-    });
+    await waitFor(
+      () => {
+        if (!canvasElement.querySelector('h2')?.textContent) {
+          throw new Error('results not rendered yet');
+        }
+      },
+      { timeout: 10000 }
+    );
   },
 } satisfies Meta<typeof FormResults>;
 

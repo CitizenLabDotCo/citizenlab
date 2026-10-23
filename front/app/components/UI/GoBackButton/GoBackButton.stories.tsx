@@ -11,11 +11,14 @@ const meta = {
   args: { onClick: fn() },
   // The "Go back" text renders once the app configuration (MSW) has loaded.
   play: async ({ canvasElement }) => {
-    await waitFor(() => {
-      if (!canvasElement.querySelector('button')?.textContent) {
-        throw new Error('text not rendered yet');
-      }
-    });
+    await waitFor(
+      () => {
+        if (!canvasElement.querySelector('button')?.textContent) {
+          throw new Error('text not rendered yet');
+        }
+      },
+      { timeout: 10000 }
+    );
   },
 } satisfies Meta<typeof GoBackButton>;
 

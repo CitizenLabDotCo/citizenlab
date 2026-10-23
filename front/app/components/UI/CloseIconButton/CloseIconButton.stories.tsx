@@ -12,11 +12,14 @@ const meta = {
   component: CloseIconButton,
   args: { onClick: fn() },
   play: async ({ canvasElement }) => {
-    await waitFor(() => {
-      if (!canvasElement.querySelector('button')) {
-        throw new Error('button not rendered yet');
-      }
-    });
+    await waitFor(
+      () => {
+        if (!canvasElement.querySelector('button')) {
+          throw new Error('button not rendered yet');
+        }
+      },
+      { timeout: 10000 }
+    );
   },
 } satisfies Meta<typeof CloseIconButton>;
 

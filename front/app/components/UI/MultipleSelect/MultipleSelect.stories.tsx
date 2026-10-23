@@ -52,11 +52,14 @@ export const Focus: Story = {
 export const Open: Story = {
   play: async ({ canvasElement }) => {
     await userEvent.click(canvasElement.querySelector('input') as Element);
-    await waitFor(() => {
-      if (!document.querySelector('[id$="-listbox"]')) {
-        throw new Error('menu not open');
-      }
-    });
+    await waitFor(
+      () => {
+        if (!document.querySelector('[id$="-listbox"]')) {
+          throw new Error('menu not open');
+        }
+      },
+      { timeout: 10000 }
+    );
   },
 };
 

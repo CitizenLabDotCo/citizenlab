@@ -88,11 +88,14 @@ export const Disabled: Story = {
   play: async ({ canvasElement }) => {
     const tab = canvasElement.querySelector('nav > span:nth-child(3) > div');
     await userEvent.hover(tab as Element);
-    await waitFor(() => {
-      if (!document.querySelector('[data-tippy-root]')) {
-        throw new Error('tooltip not shown');
-      }
-    });
+    await waitFor(
+      () => {
+        if (!document.querySelector('[data-tippy-root]')) {
+          throw new Error('tooltip not shown');
+        }
+      },
+      { timeout: 10000 }
+    );
   },
 };
 

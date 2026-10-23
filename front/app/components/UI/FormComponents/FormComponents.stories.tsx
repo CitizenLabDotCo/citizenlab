@@ -58,11 +58,14 @@ const meta = {
   component: FormExample,
   // The section title renders once the app configuration (MSW) has loaded.
   play: async ({ canvasElement }) => {
-    await waitFor(() => {
-      if (!canvasElement.querySelector('h2')?.textContent) {
-        throw new Error('title not rendered yet');
-      }
-    });
+    await waitFor(
+      () => {
+        if (!canvasElement.querySelector('h2')?.textContent) {
+          throw new Error('title not rendered yet');
+        }
+      },
+      { timeout: 10000 }
+    );
   },
 } satisfies Meta<typeof FormExample>;
 

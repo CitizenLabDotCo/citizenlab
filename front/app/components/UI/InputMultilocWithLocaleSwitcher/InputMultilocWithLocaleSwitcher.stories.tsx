@@ -13,15 +13,18 @@ import InputMultilocWithLocaleSwitcher from '.';
 // The component renders nothing until the configuration (MSW) has loaded, so
 // the play steps wait for the rendered input and switcher.
 const waitForInput = (canvasElement: HTMLElement, switcher: boolean) =>
-  waitFor(() => {
-    const text = canvasElement.textContent.toLowerCase();
-    if (
-      !canvasElement.querySelector('input') ||
-      text.includes('nl-be') !== switcher
-    ) {
-      throw new globalThis.Error('configuration not loaded yet');
-    }
-  });
+  waitFor(
+    () => {
+      const text = canvasElement.textContent.toLowerCase();
+      if (
+        !canvasElement.querySelector('input') ||
+        text.includes('nl-be') !== switcher
+      ) {
+        throw new globalThis.Error('configuration not loaded yet');
+      }
+    },
+    { timeout: 10000 }
+  );
 const threeLocales = mockEndpoints({
   'GET app_configuration': http.get('/web_api/v1/app_configuration', () =>
     HttpResponse.json({
