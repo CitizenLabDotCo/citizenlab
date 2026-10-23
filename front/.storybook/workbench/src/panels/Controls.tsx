@@ -78,7 +78,7 @@ const Field = ({
         >
           <option value="">Not set</option>
           {control.options.map((o, i) => (
-            <option key={o.label} value={String(i)}>
+            <option key={i} value={String(i)}>
               {o.label}
             </option>
           ))}
