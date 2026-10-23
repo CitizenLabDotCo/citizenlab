@@ -8,21 +8,40 @@ import { LANGUAGES } from './languages';
 import { cities } from './cities';
 import { GV_VIEWPORTS } from './viewports';
 import { MemoryRouter } from 'utils/router';
+import { queryClient } from 'utils/cl-react-query/queryClient';
 import { allModes } from './modes';
 import { MINIMAL_VIEWPORTS } from 'storybook/viewport';
 import { IntlProvider } from 'react-intl';
 import { JSX } from 'react/jsx-runtime';
 import '../app/design-system/tokens/tokens.css';
 
+// The mock worker posts MOCKING_ENABLED once it serves this page. Requests
+// sent before that reach the static server instead (the app configuration
+// stream fetches as soon as it is imported), fail, and are not retried.
+const mocksReady = new Promise<void>((resolve) => {
+  navigator.serviceWorker?.addEventListener('message', (event) => {
+    if (event.data?.type === 'MOCKING_ENABLED') resolve();
+  });
+  setTimeout(resolve, 5000);
+});
+
 // Relative URL so the worker also loads when Storybook is served from a
-// sub-path (e.g. /storybook/ in epic previews).
-// The default handlers are registered from the start, not only once the first
-// story renders: some modules (the app configuration stream) fetch as soon as
-// they are imported, and without a handler that request fails for good.
+// sub-path (e.g. /storybook/ in epic previews). The default handlers are
+// registered from the start, not only once the first story renders.
 initialize(
   { serviceWorker: { url: './mockServiceWorker.js' } },
   Object.values(mockServer)
 );
+
+// Waits until the mocks serve this page, then fetches every query that has
+// no data again, so a request that went out too early does not stay failed.
+const mocksReadyLoader = async () => {
+  await mocksReady;
+  await queryClient.refetchQueries({
+    predicate: (query) => query.state.status !== 'success',
+  });
+  return {};
+};
 
 const routerDecorator = (Story: () => JSX.Element, context: StoryContext) => (
   <MemoryRouter>
@@ -113,6 +132,7 @@ const preview: Preview = {
       },
     },
   },
+  loaders: [mocksReadyLoader],
   decorators: [mswDecorator, routerDecorator, contexts, modeDecorator],
 };
 
