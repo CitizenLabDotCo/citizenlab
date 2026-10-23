@@ -245,9 +245,13 @@ export const storyHash = (
   storyId: string,
   set: Record<string, string | null> = {}
 ): string => {
-  const o = splitHash(hash).params.get('o');
+  const kept = splitHash(hash).params;
   const params = new URLSearchParams();
-  if (o) params.set('o', o);
+  // The share links: token edits (`o`) and instance prop edits (`p`).
+  for (const k of ['o', 'p']) {
+    const v = kept.get(k);
+    if (v) params.set(k, v);
+  }
   for (const [k, v] of Object.entries(set)) if (v !== null) params.set(k, v);
   return joinHash(`/${section}/${encodeURIComponent(storyId)}`, params);
 };
@@ -255,11 +259,12 @@ export const storyHash = (
 // Opening a component from a pattern: the pattern's entry gets the
 // selection and zoom (`sel`, `zoom`), so Back finds them, and the
 // component's hash names the way back (`from`). The pattern's entry drops
-// the share link (`o`): edits made meanwhile would read as an older link
-// pasted on Back; the overrides hook writes the session's own back in.
+// the share links (`o`, `p`): edits made meanwhile would read as an older
+// link pasted on Back; the hooks write the session's own back in.
 export const openHashes = (hash: string, r: ReturnTo, storyId: string) => ({
   here: withParams(hash, {
     o: null,
+    p: null,
     sel: r.path ? pathText(r.path) : null,
     zoom: zoomText(r.zoom),
   }),

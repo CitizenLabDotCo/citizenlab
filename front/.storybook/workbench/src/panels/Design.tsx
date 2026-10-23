@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useState } from 'react';
 
 import type { Mode, TokenName } from '@ds/tokens/tokens';
 
@@ -60,6 +60,10 @@ type Props = {
   removeEdit: (id: string) => void;
   // The component file's findings (fileFindings).
   findings: Finding[];
+  // Shown under the instance header: its instance properties.
+  instanceExtra?: (instance: Element, name: string, self: boolean) => ReactNode;
+  // Changes when the canvas renders anew in place (an instance prop).
+  revision?: number;
 };
 
 // Pauses after a render or an edit before the selection is read again.
@@ -135,6 +139,8 @@ const Design = ({
   addEdit,
   removeEdit,
   findings,
+  instanceExtra,
+  revision,
 }: Props) => {
   const frame = frames[0];
   const [inspection, setInspection] = useState<Inspection | null>(null);
@@ -174,7 +180,7 @@ const Design = ({
       timers.forEach((t) => window.clearTimeout(t));
       fonts?.removeEventListener('loadingdone', read);
     };
-  }, [selected, version, frame, meta, overrides, edits, mode]);
+  }, [selected, version, frame, meta, overrides, edits, mode, revision]);
   useEffect(() => {
     setPicker(undefined);
     setAncestors(false);
@@ -490,6 +496,14 @@ const Design = ({
               No story yet
             </span>
           )}
+        </section>
+      )}
+      {instance && instanceName && info && instanceExtra && (
+        <section
+          className="wb-insp-block wb-instance-body"
+          data-testid="wb-insp-instance-props"
+        >
+          {instanceExtra(instance, instanceName, info.self)}
         </section>
       )}
 

@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import Canvas from '../components/Canvas';
-import ChangesDrawer from '../components/ChangesDrawer';
+import ChangesDrawer, { InstanceChange } from '../components/ChangesDrawer';
 import Icon from '../components/Icon';
+import InstanceProps from '../components/InstanceProps';
 import PanelTabs from '../components/PanelTabs';
 import Segmented from '../components/Segmented';
 import StoryChips from '../components/StoryChips';
@@ -20,6 +21,12 @@ import { TOKEN_META } from '../lib/data';
 import type { TaskContext } from '../lib/elementEdits';
 import { HealChoice, HealMode, healModeOf } from '../lib/healTask';
 import { pathOf } from '../lib/inspect';
+import {
+  callSitesOf,
+  changeLine,
+  INSTANCE_ATTR,
+  instanceTask,
+} from '../lib/instanceProps';
 import {
   componentOf,
   decodeReturn,
@@ -39,6 +46,7 @@ import { DEFS } from '../lib/tokenValues';
 import { useA11yResults } from '../lib/useA11y';
 import { Tool, useCanvasSelection } from '../lib/useCanvasSelection';
 import { useElementEdits } from '../lib/useElementEdits';
+import { useInstanceProps } from '../lib/useInstanceProps';
 import { useScanIndexes } from '../lib/useScanIndexes';
 import { useStoryState } from '../lib/useStoryState';
 import { useStoryGroups } from '../lib/useStoryGroups';
@@ -278,6 +286,12 @@ const Component = ({
     remove: removeEdit,
     clear: clearEdits,
   } = useElementEdits(TOKEN_META);
+  // The frames on screen: one, or both modes side by side.
+  const shown = useMemo(
+    () => (view === 'split' ? frames : [frames[0]]),
+    [view, frames]
+  );
+  const instances = useInstanceProps(shown, loads, groups);
   const live = useMemo(() => resolveTokens(DEFS, overrides), [overrides]);
   const fileOf = groups ? groupOfStory(groups, storyId)?.file : undefined;
   // A state on top of a variant (`state` in the hash): Primary and Disabled.
@@ -383,8 +397,64 @@ const Component = ({
       self: target?.group === group,
     };
   };
-  const shownFrames = split ? frames : [frames[0]];
-  const count = Object.keys(overrides).length + edits.length;
+  const shownFrames = shown;
+  const count =
+    Object.keys(overrides).length + edits.length + instances.edits.length;
+  // The instance properties of the header's instance, by its report.
+  const storyName = group.name;
+  const instanceExtra = (instance: Element, name: string, self: boolean) => {
+    const uid = instance.getAttribute(INSTANCE_ATTR);
+    const report =
+      instances.report?.storyId === storyId
+        ? instances.report.instances.find((i) => i.uid === uid)
+        : undefined;
+    // The frame has not tagged it: a component without the hook.
+    if (!uid) return null;
+    return (
+      <InstanceProps
+        name={name}
+        storyName={storyName}
+        self={self}
+        report={report}
+        specs={instances.specs[name]}
+        edits={instances.edits.filter(
+          (e) =>
+            report &&
+            e.storyId === storyId &&
+            e.component === name &&
+            e.index === report.index
+        )}
+        onSet={(prop, value) => {
+          if (!report) return;
+          instances.set({
+            storyId,
+            component: name,
+            index: report.index,
+            prop,
+            value,
+            from: report.base[prop],
+          });
+        }}
+        onReset={instances.remove}
+      />
+    );
+  };
+  const instanceChanges: InstanceChange[] = instances.edits.map((e) => {
+    const parent = groupOfStory(groups, e.storyId);
+    const parentName = parent?.name ?? e.storyId;
+    return {
+      edit: e,
+      line: changeLine(e, parentName),
+      task: instanceTask(e, {
+        storyName: parentName,
+        parentFile: parent?.file,
+        sites:
+          indexes.scan && parent?.file
+            ? callSitesOf(indexes.scan, parent.file, e.component)
+            : [],
+      }),
+    };
+  });
   const task: TaskContext = {
     component: group.score?.component ?? group.name,
     file: group.file,
@@ -400,6 +470,18 @@ const Component = ({
       className="wb-page wb-page-wide wb-component-page"
       data-testid="wb-component"
     >
+      {instances.notice && (
+        <div
+          className="wb-notice"
+          role="alert"
+          data-testid="wb-instance-notice"
+        >
+          <span>{instances.notice}</span>
+          <button type="button" onClick={instances.dismiss}>
+            Dismiss
+          </button>
+        </div>
+      )}
       {/* The story is the page: the name is for screen readers. */}
       <h1 className="wb-visually-hidden">{group.name}</h1>
       <div className="wb-component-top" data-testid="wb-canvas-bar">
@@ -489,6 +571,9 @@ const Component = ({
           onResetElements={clearEdits}
           resolve={(t) => live[toolbar.mode][t] ?? ''}
           task={task}
+          instances={instanceChanges}
+          onResetInstance={instances.remove}
+          onResetInstances={instances.clear}
           inline
         />
       )}
@@ -638,6 +723,8 @@ const Component = ({
                 addEdit={addEdit}
                 removeEdit={removeEdit}
                 findings={findings}
+                instanceExtra={instanceExtra}
+                revision={instances.revision}
               />
             ),
           },

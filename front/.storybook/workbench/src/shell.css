@@ -6999,3 +6999,132 @@ tr[data-result='needs-human'] .wb-a11y-note {
 .wb-shell button.wb-instance-open:hover {
   background: var(--wb-component-strong);
 }
+
+/* Instance properties under the instance header: Figma's instance panel.
+   A change holds for this instance inside this story, so the block wears
+   the component accent; a row's mark says where its value comes from. */
+.wb-insp-block.wb-instance-body {
+  padding-top: var(--gv-space-2);
+  border-top: 0;
+  box-shadow: inset 2px 0 0 var(--wb-component);
+}
+
+.wb-instance-scope {
+  margin: 0 0 var(--gv-space-2);
+  font-size: var(--gv-fs-xs);
+  color: var(--wb-component);
+}
+
+.wb-instance-props-note {
+  margin: 0;
+  font-size: var(--gv-fs-xs);
+  color: var(--wb-muted);
+}
+
+.wb-instance-props {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wb-instance-prop {
+  display: grid;
+  grid-template-columns: minmax(0, 6.5rem) minmax(0, 1fr) 4rem 24px;
+  gap: var(--gv-space-2);
+  align-items: center;
+  min-height: 32px;
+}
+
+.wb-instance-prop label {
+  overflow: hidden;
+  font-size: var(--gv-fs-13);
+  color: var(--wb-text);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.wb-instance-prop-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.wb-instance-prop-field select {
+  width: 100%;
+  height: 28px;
+  padding: 0 var(--gv-space-6) 0 var(--gv-space-2);
+  font: inherit;
+  font-size: var(--gv-fs-13);
+  color: var(--wb-text);
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border-strong);
+  border-radius: var(--wb-radius);
+  appearance: none;
+  cursor: pointer;
+}
+
+.wb-instance-prop-field select:focus-visible {
+  outline: var(--gv-focus-width) solid var(--wb-component);
+  outline-offset: var(--gv-focus-offset);
+}
+
+.wb-instance-prop-field .wb-icon {
+  position: absolute;
+  right: var(--gv-space-2);
+  color: var(--wb-muted);
+  pointer-events: none;
+}
+
+.wb-instance-prop .wb-switch:checked {
+  background: var(--wb-component-fill);
+}
+
+.wb-instance-mark {
+  justify-self: start;
+  padding: 1px var(--gv-space-1);
+  font-size: 11px;
+  color: var(--wb-muted);
+  border: 1px solid var(--wb-border);
+  border-radius: 4px;
+}
+
+.wb-instance-prop-code .wb-instance-mark {
+  color: var(--wb-text);
+  border-color: var(--wb-border-strong);
+}
+
+.wb-instance-prop-changed .wb-instance-mark {
+  color: var(--wb-on-accent);
+  background: var(--wb-component-fill);
+  border-color: var(--wb-component-fill);
+}
+
+.wb-instance-prop-changed select {
+  border-color: var(--wb-component);
+}
+
+.wb-shell button.wb-instance-reset {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  min-height: 24px;
+  padding: 0;
+  color: var(--wb-muted);
+  background: none;
+  border: 0;
+  border-radius: 4px;
+}
+
+.wb-shell button.wb-instance-reset:hover {
+  color: var(--wb-component);
+  background: var(--wb-component-soft);
+}
+
+.wb-change-instance .wb-change-glyph {
+  color: var(--wb-component);
+}

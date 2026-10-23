@@ -38,6 +38,8 @@ export type Channel = {
   off: (event: string, fn: (payload: any) => void) => void;
   once?: (event: string, fn: (payload: any) => void) => void;
   emit: (event: string, payload: unknown) => void;
+  // The arguments of the last event of that name on this channel.
+  last?: (event: string) => unknown[] | undefined;
 };
 
 type PreviewWindow = Window & {
@@ -54,6 +56,9 @@ type PreviewWindow = Window & {
     };
     storyStoreValue?: {
       args?: { get: (id: string) => Record<string, unknown> | undefined };
+      loadStory?: (q: {
+        storyId: string;
+      }) => Promise<{ argTypes?: Record<string, ArgType> }>;
       userGlobals?: {
         get: () => Record<string, unknown>;
         update: (globals: Record<string, unknown>) => void;
@@ -126,6 +131,24 @@ export const readStory = (
     };
   } catch {
     // The frame navigated away (or to another origin) mid-read.
+    return null;
+  }
+};
+
+// The argTypes of another story in the frame's index (a library
+// component's own story), without rendering it: the store loads its CSF
+// file. Null when the frame or the story is not there.
+export const loadArgTypes = async (
+  win: Window | null | undefined,
+  storyId: string
+): Promise<Record<string, ArgType> | null> => {
+  try {
+    const store = (win as PreviewWindow | null | undefined)
+      ?.__STORYBOOK_PREVIEW__?.storyStoreValue;
+    if (!store?.loadStory) return null;
+    const story = await store.loadStory({ storyId });
+    return story.argTypes ?? {};
+  } catch {
     return null;
   }
 };

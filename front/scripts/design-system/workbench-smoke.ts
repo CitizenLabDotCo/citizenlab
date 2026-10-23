@@ -1769,6 +1769,139 @@ const nestingChecks = async (
   console.log(`nesting: ${before} -> ${chip} -> back`);
 };
 
+// Instance props, live: the Spotlight's button switched to the text style
+// from the Design panel. The canvas renders it in place (the same frame
+// document), the edit is in Changes and in the hash (`p`), and its reset
+// brings the button back.
+const instancePropsChecks = async (
+  page: any,
+  base: string,
+  failures: string[],
+  shots: { props?: string; changed?: string } = {}
+) => {
+  await page.goto(`${base}/workbench/#/patterns/${SPOTLIGHT_STORY}`);
+  await page.click('[data-testid="wb-panel-tab"][data-tab="design"]');
+  const frame = await canvasFrame(page, '');
+  const button = '#storybook-root [data-gv-component="Button"]';
+  const label = await frame.waitForSelector(`${button} span`, {
+    timeout: 20000,
+  });
+  // The button's own element: the tagged root or the button inside it.
+  const background = () =>
+    frame.$eval(button, (el: Element) => {
+      const b = el.matches('button, a') ? el : el.querySelector('button, a');
+      return getComputedStyle(b ?? el).backgroundColor;
+    });
+  const start = await background();
+  await frame.evaluate(() => {
+    (window as any).__wbSameDocument = true;
+  });
+  const box = await label.boundingBox();
+  if (!box) {
+    failures.push('instance props: the Spotlight button has no box');
+    return;
+  }
+  await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+  const select =
+    '[data-testid="wb-instance-prop"][data-prop="buttonStyle"] select';
+  try {
+    await page.waitForSelector(select, { timeout: 10000 });
+  } catch {
+    failures.push('instance props: no buttonStyle select under the header');
+    return;
+  }
+  const scope = (
+    (await page.textContent('[data-testid="wb-instance-scope"]')) ?? ''
+  ).trim();
+  if (scope !== 'Changes this Button inside Spotlight') {
+    failures.push(`instance props: the scope line reads "${scope}"`);
+  }
+  const shown = await page.$eval(select, (el: HTMLSelectElement) => el.value);
+  if (shown !== 'primary') {
+    failures.push(`instance props: buttonStyle shows "${shown}", not primary`);
+  }
+  if (shots.props) {
+    await page.waitForTimeout(300);
+    await page.screenshot({ path: path.resolve(shots.props) });
+  }
+  await page.selectOption(select, 'text');
+  const transparent = (bg: string) =>
+    bg === 'transparent' || /^rgba\(0, 0, 0, 0\)$/.test(bg);
+  const turned = await frame
+    .waitForFunction(
+      (sel: string) => {
+        const el = document.querySelector(sel);
+        const b = el?.matches('button, a')
+          ? el
+          : el?.querySelector('button, a');
+        const bg = b ? getComputedStyle(b).backgroundColor : '';
+        return bg === 'transparent' || bg === 'rgba(0, 0, 0, 0)';
+      },
+      button,
+      { timeout: 5000 }
+    )
+    .then(() => true)
+    .catch(() => false);
+  if (!turned) {
+    failures.push(
+      `instance props: the button background is ${await background()} after text`
+    );
+  }
+  const same = await frame
+    .evaluate(() => (window as any).__wbSameDocument === true)
+    .catch(() => false);
+  if (!same) failures.push('instance props: the canvas frame loaded again');
+  const hash = hashOf(page.url());
+  if (!/[?&]p=[A-Za-z0-9_-]+/.test(hash)) {
+    failures.push(`instance props: the hash has no p: ${hash}`);
+  }
+  if (shots.changed) {
+    await page.waitForTimeout(300);
+    await page.screenshot({ path: path.resolve(shots.changed) });
+  }
+  await page.click('[data-testid="wb-changes-toggle"]');
+  const row = '[data-testid="wb-change-row"][data-kind="instance"]';
+  const line = (
+    (await page.textContent(`${row} .wb-change-where`).catch(() => '')) ?? ''
+  ).trim();
+  if (line !== 'Spotlight › Button: buttonStyle primary → text') {
+    failures.push(`instance props: the Changes row reads "${line}"`);
+  }
+  await page.click(`${row} button:has-text("Reset")`).catch(() => undefined);
+  const back = await frame
+    .waitForFunction(
+      ([sel, bg]: [string, string]) => {
+        const el = document.querySelector(sel);
+        const b = el?.matches('button, a')
+          ? el
+          : el?.querySelector('button, a');
+        return !!b && getComputedStyle(b).backgroundColor === bg;
+      },
+      [button, start],
+      { timeout: 5000 }
+    )
+    .then(() => true)
+    .catch(() => false);
+  if (!back) {
+    failures.push(
+      `instance props: reset left the background at ${await background()}, not ${start}`
+    );
+  }
+  if (/[?&]p=/.test(hashOf(page.url()))) {
+    failures.push('instance props: the hash keeps p after the reset');
+  }
+  if ((await page.$(row)) !== null) {
+    failures.push('instance props: the Changes row stays after the reset');
+  }
+  await page.click('[data-testid="wb-changes-toggle"]');
+  if (transparent(start)) {
+    failures.push('instance props: the button started transparent');
+  }
+  console.log(
+    `instance props: buttonStyle primary -> text -> reset (${start})`
+  );
+};
+
 const main = async () => {
   const root = path.resolve(arg('dir') ?? 'storybook-static');
   const screenshot = arg('screenshot');
@@ -1882,6 +2015,10 @@ const main = async () => {
       chain: arg('nesting-screenshot'),
       back: arg('back-screenshot'),
     });
+    await instancePropsChecks(page, base, failures, {
+      props: arg('instance-screenshot'),
+      changed: arg('instance-changed-screenshot'),
+    });
   } catch (e) {
     failures.push(`smoke run failed: ${(e as Error).message}`);
   } finally {
@@ -1895,6 +2032,8 @@ const main = async () => {
   }
   console.log('workbench smoke: ok');
 };
+
+export { instancePropsChecks };
 
 if (require.main === module) {
   main();

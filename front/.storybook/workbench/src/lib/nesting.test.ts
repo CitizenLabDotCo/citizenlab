@@ -183,7 +183,7 @@ describe('the return', () => {
 
   it('writes the hashes of an open, keeping the share link', () => {
     const { here, there } = openHashes(
-      '#/patterns/homepagebuilder-spotlight--standard?o=abc',
+      '#/patterns/homepagebuilder-spotlight--standard?o=abc&p=xyz',
       back,
       'components-actions-button--primary'
     );
@@ -191,10 +191,12 @@ describe('the return', () => {
     expect(paramOf(here, 'zoom')).toBe('1.5');
     // Edits made on the component page would read as an old link on Back.
     expect(paramOf(here, 'o')).toBeNull();
+    expect(paramOf(here, 'p')).toBeNull();
     expect(
       there.startsWith('#/components/components-actions-button--primary?')
     ).toBe(true);
     expect(paramOf(there, 'o')).toBe('abc');
+    expect(paramOf(there, 'p')).toBe('xyz');
     expect(decodeReturn(paramOf(there, 'from'))).toEqual(back);
     expect(returnHash(back)).toBe(
       '#/patterns/homepagebuilder-spotlight--standard?sel=0.0.1.0&zoom=1.5'

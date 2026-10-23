@@ -12,6 +12,7 @@ import {
   taskOfEdit,
 } from '../lib/elementEdits';
 import { shortName } from '../lib/inspect';
+import { editKey, InstanceEdit, withInstanceEdits } from '../lib/instanceProps';
 import { Overrides, withOverrides } from '../lib/overrides';
 import { sourceChanges, sourcePatch } from '../lib/sourceDiff';
 
@@ -29,13 +30,20 @@ type Props = {
   onResetElements?: () => void;
   // When set, "Copy for agent" is offered.
   task?: TaskContext;
+  // Instance prop edits: the Changes line and the code task of each.
+  instances?: InstanceChange[];
+  onResetInstance?: (e: InstanceEdit) => void;
+  onResetInstances?: () => void;
   // A token's live value, for the look mark and the swatch.
   resolve?: (token: TokenName) => string;
   // In the page flow (under the canvas bar) instead of a side sheet.
   inline?: boolean;
 };
 
+export type InstanceChange = { edit: InstanceEdit; line: string; task: string };
+
 const NO_ELEMENTS: ElementEdit[] = [];
+const NO_INSTANCES: InstanceChange[] = [];
 
 const markOf = (e: ElementEdit, look: boolean): [IconName, string] => {
   if (look) return ['caution', "Changes today's look"];
@@ -115,6 +123,9 @@ const ChangesDrawer = ({
   onResetElement,
   onResetElements,
   task,
+  instances = NO_INSTANCES,
+  onResetInstance,
+  onResetInstances,
   resolve,
   inline,
 }: Props) => {
@@ -129,15 +140,22 @@ const ChangesDrawer = ({
   );
   const patch = useMemo(() => sourcePatch(diff.changes), [diff]);
   // A copied text goes stale as soon as the edits change.
-  useEffect(() => setCopied(undefined), [patch, elements]);
-  const total = entries.length + elements.length;
+  useEffect(() => setCopied(undefined), [patch, elements, instances]);
+  const total = entries.length + elements.length + instances.length;
+  const agentTasks = [
+    ...(task ? elements.map((e) => taskOfEdit(e, task)) : []),
+    ...instances.map((i) => i.task),
+  ];
 
   const copy = async (label: string, text: string) => {
     setCopied({ label, text, ok: await copyText(text) });
   };
   const shareLink = () => {
     const { origin, pathname, search, hash } = window.location;
-    return `${origin}${pathname}${search}${withOverrides(hash, overrides)}`;
+    return `${origin}${pathname}${search}${withInstanceEdits(
+      withOverrides(hash, overrides),
+      instances.map((i) => i.edit)
+    )}`;
   };
 
   return (
@@ -174,7 +192,40 @@ const ChangesDrawer = ({
               </ul>
             </>
           )}
-          {entries.length > 0 && elements.length > 0 && (
+          {instances.length > 0 && (
+            <>
+              <h3 className="wb-drawer-group">Instances</h3>
+              <ul className="wb-change-list">
+                {instances.map(({ edit, line }) => (
+                  <li
+                    key={editKey(edit)}
+                    className="wb-change-el wb-change-instance"
+                    data-testid="wb-change-row"
+                    data-kind="instance"
+                    data-edit={editKey(edit)}
+                  >
+                    <span className="wb-change-glyph" aria-hidden="true">
+                      ◇
+                    </span>
+                    <div>
+                      <div className="wb-change-where">{line}</div>
+                      <span className="wb-muted">
+                        This instance only, not every {edit.component}
+                      </span>
+                    </div>
+                    <span />
+                    <button
+                      type="button"
+                      onClick={() => onResetInstance?.(edit)}
+                    >
+                      Reset
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+          {entries.length > 0 && elements.length + instances.length > 0 && (
             <h3 className="wb-drawer-group">Tokens</h3>
           )}
           <ul className="wb-change-list">
@@ -197,15 +248,12 @@ const ChangesDrawer = ({
             ))}
           </ul>
           <div className="wb-drawer-actions">
-            {task && elements.length > 0 && (
+            {agentTasks.length > 0 && (
               <button
                 type="button"
                 data-testid="wb-copy-agent"
                 onClick={() =>
-                  copy(
-                    'tasks for the agent',
-                    elements.map((e) => taskOfEdit(e, task)).join('\n\n')
-                  )
+                  copy('tasks for the agent', agentTasks.join('\n\n'))
                 }
               >
                 <Icon name="copy" size={14} />
@@ -213,28 +261,29 @@ const ChangesDrawer = ({
               </button>
             )}
             {entries.length > 0 && (
-              <>
-                <button
-                  type="button"
-                  data-testid="wb-copy-diff"
-                  onClick={() => copy('token source diff', patch)}
-                >
-                  Copy as token source diff
-                </button>
-                <button
-                  type="button"
-                  data-testid="wb-copy-link"
-                  onClick={() => copy('share link', shareLink())}
-                >
-                  Copy share link
-                </button>
-              </>
+              <button
+                type="button"
+                data-testid="wb-copy-diff"
+                onClick={() => copy('token source diff', patch)}
+              >
+                Copy as token source diff
+              </button>
+            )}
+            {entries.length + instances.length > 0 && (
+              <button
+                type="button"
+                data-testid="wb-copy-link"
+                onClick={() => copy('share link', shareLink())}
+              >
+                Copy share link
+              </button>
             )}
             <button
               type="button"
               onClick={() => {
                 onReset();
                 onResetElements?.();
+                onResetInstances?.();
               }}
             >
               Reset all
