@@ -1,6 +1,6 @@
 {
   "component": "OptionList",
-  "generatedAt": "2026-10-23T10:13:19.069Z",
+  "generatedAt": "2026-10-23T10:36:26.074Z",
   "host": "https://pr-15027.epic.hq.govocal.com",
   "storybook": "https://pr-15027.epic.hq.govocal.com/storybook",
   "story": "components-forms-optionlist--default",
@@ -117,6 +117,7 @@
           "--gv-white",
           "--gv-grey-800",
           "--gv-grey-400",
+          "--gv-grey-200",
           "--gv-cool-grey-500",
           "--gv-blue-500",
           "--gv-teal-400",
@@ -144,6 +145,7 @@
           "--gv-chart-teal",
           "--gv-chart-pos",
           "--gv-chart-neg",
+          "--gv-chart-grid",
           "--gv-type-bodys-size",
           "--gv-type-label-size",
           "--gv-type-caption-size"
@@ -152,7 +154,7 @@
       "diffsFromStory": [
         "colour: rgb(4, 77, 108), story components-forms-optionlist--default rgba(0, 0, 0, 0.87)",
         "tokens: --gv-text-body, --gv-header-text in the story, not here",
-        "tokens: --gv-grey-400, --gv-cool-grey-500, --gv-blue-500, --gv-teal-400, --gv-red-500, --gv-green-500 and 12 more here, not in the story"
+        "tokens: --gv-grey-400, --gv-grey-200, --gv-cool-grey-500, --gv-blue-500, --gv-teal-400, --gv-red-500 and 14 more here, not in the story"
       ],
       "openedBy": "role=button[name=\"Filter\" s] -> role=button[name=\"Status\" s]"
     },
@@ -186,7 +188,6 @@
         "equal": [
           "--gv-white",
           "--gv-grey-800",
-          "--gv-grey-200",
           "--gv-cool-grey-500",
           "--gv-blue-500",
           "--gv-radius-2",
@@ -204,7 +205,6 @@
           "--gv-on-secondary",
           "--gv-bo-sidebar-text",
           "--gv-bo-primary",
-          "--gv-chart-grid",
           "--gv-type-bodys-size",
           "--gv-type-label-size",
           "--gv-type-caption-size"
@@ -213,7 +213,7 @@
       "diffsFromStory": [
         "colour: rgb(4, 77, 108), story components-forms-optionlist--default rgba(0, 0, 0, 0.87)",
         "tokens: --gv-text-body, --gv-header-text in the story, not here",
-        "tokens: --gv-grey-200, --gv-cool-grey-500, --gv-blue-500, --gv-fs-xs, --gv-color-text-heading, --gv-text-heading and 4 more here, not in the story"
+        "tokens: --gv-cool-grey-500, --gv-blue-500, --gv-fs-xs, --gv-color-text-heading, --gv-text-heading, --gv-primary and 2 more here, not in the story"
       ],
       "openedBy": "role=button[name=\"Filter\" s] -> role=button[name=\"Tags\" s]"
     },
@@ -363,24 +363,24 @@
         "equal": []
       },
       "diffsFromStory": [],
-      "error": "not found"
+      "error": "not found; stopped: role=button[name=\"Filter\" s] -> role=button[name=\"Status\" s]: step \"role=button[name=\"Filter\" s]\": elementHandle.click: Timeout 3000ms exceeded."
     }
   ],
   "notReached": [],
   "inconsistencies": [
     "size: w:l h:l on /admin/projects/:projectId/phases/:phaseId/ideas #1 (1280) vs w:l h:xl on /admin/projects/:projectId/phases/:phaseId/ideas #2 (1280)",
-    "tokens: --gv-grey-400, --gv-teal-400, --gv-red-500, --gv-green-500, --gv-border-light, --gv-error and 4 more only on /admin/projects/:projectId/phases/:phaseId/ideas #1 (1280)",
-    "tokens: --gv-grey-200, --gv-chart-grid only on /admin/projects/:projectId/phases/:phaseId/ideas #2 (1280)",
+    "tokens: --gv-grey-400, --gv-grey-200, --gv-teal-400, --gv-red-500, --gv-green-500, --gv-border-light and 6 more only on /admin/projects/:projectId/phases/:phaseId/ideas #1 (1280)",
     "tokens: --gv-space-1 read through var() on /admin/projects/:projectId/phases/:phaseId/ideas #2 (1280), value only matches on /admin/projects/:projectId/phases/:phaseId/ideas #1 (1280)",
     "size: w:l h:l on /admin/projects/:projectId/phases/:phaseId/ideas #1 (1280) vs w:l h:m on /admin/projects/:projectId/phases/:phaseId/ideas #3 (1280)",
-    "tokens: --gv-grey-200, --gv-chart-grid only on /admin/projects/:projectId/phases/:phaseId/ideas #3 (1280)",
+    "tokens: --gv-grey-400, --gv-teal-400, --gv-red-500, --gv-green-500, --gv-border-light, --gv-error and 4 more only on /admin/projects/:projectId/phases/:phaseId/ideas #1 (1280)",
     "size: w:l h:l on /admin/projects/:projectId/phases/:phaseId/ideas #1 (1280) vs w:m h:l on /admin/projects/:projectId/phases/:phaseId/ideas #4 (1280)",
-    "tokens: --gv-grey-400, --gv-cool-grey-500, --gv-teal-400, --gv-red-500, --gv-fs-xs, --gv-border-light and 4 more only on /admin/projects/:projectId/phases/:phaseId/ideas #1 (1280)",
+    "tokens: --gv-grey-400, --gv-grey-200, --gv-cool-grey-500, --gv-teal-400, --gv-red-500, --gv-fs-xs and 6 more only on /admin/projects/:projectId/phases/:phaseId/ideas #1 (1280)",
     "tokens: --gv-space-1 read through var() on /admin/projects/:projectId/phases/:phaseId/ideas #4 (1280), value only matches on /admin/projects/:projectId/phases/:phaseId/ideas #1 (1280)",
     "size: w:l h:xl on /admin/projects/:projectId/phases/:phaseId/ideas #2 (1280) vs w:l h:m on /admin/projects/:projectId/phases/:phaseId/ideas #3 (1280)",
+    "tokens: --gv-grey-200, --gv-chart-grid only on /admin/projects/:projectId/phases/:phaseId/ideas #3 (1280)",
     "tokens: --gv-space-1 read through var() on /admin/projects/:projectId/phases/:phaseId/ideas #2 (1280), value only matches on /admin/projects/:projectId/phases/:phaseId/ideas #3 (1280)",
     "size: w:l h:xl on /admin/projects/:projectId/phases/:phaseId/ideas #2 (1280) vs w:m h:l on /admin/projects/:projectId/phases/:phaseId/ideas #4 (1280)",
-    "tokens: --gv-grey-200, --gv-cool-grey-500, --gv-fs-xs, --gv-chart-grid, --gv-type-caption-size only on /admin/projects/:projectId/phases/:phaseId/ideas #2 (1280)",
+    "tokens: --gv-cool-grey-500, --gv-fs-xs, --gv-type-caption-size only on /admin/projects/:projectId/phases/:phaseId/ideas #2 (1280)",
     "tokens: --gv-green-500, --gv-success, --gv-chart-pos only on /admin/projects/:projectId/phases/:phaseId/ideas #4 (1280)",
     "size: w:l h:m on /admin/projects/:projectId/phases/:phaseId/ideas #3 (1280) vs w:m h:l on /admin/projects/:projectId/phases/:phaseId/ideas #4 (1280)",
     "tokens: --gv-grey-200, --gv-cool-grey-500, --gv-fs-xs, --gv-chart-grid, --gv-type-caption-size only on /admin/projects/:projectId/phases/:phaseId/ideas #3 (1280)",
