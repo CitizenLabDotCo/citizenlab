@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
+import { t } from 'design-system/tokens/tokens';
 
 const SIZES = {
   large: {
@@ -31,7 +32,7 @@ const EmptyState = ({ title, description, size }: Props) => {
       flexDirection="column"
       alignItems="center"
       justifyContent="center"
-      gap="8px"
+      gap={t.space[2]}
       p={padding}
     >
       <Icon
