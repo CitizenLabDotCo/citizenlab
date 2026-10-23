@@ -1,0 +1,127 @@
+{
+  "component": "IconTooltip",
+  "reviewedAt": "2026-10-23",
+  "reviewer": "agent",
+  "criteria": [
+    {
+      "id": "1.1.1",
+      "name": "Non-text content",
+      "result": "fail",
+      "confidence": "high",
+      "evidence": "axe button-name (critical) on all 10 stories: the icon svg is aria-hidden, so iconAriaTitle (set as its title) never names the button; the Keyboard story sets it and still fails",
+      "note": "Heal (a11y): put iconAriaTitle (or a default \"More information\") on the button as aria-label."
+    },
+    {
+      "id": "1.4.3",
+      "name": "Contrast (minimum)",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "axe color-contrast passes on Open, where the tooltip text shows",
+      "note": ""
+    },
+    {
+      "id": "1.4.10",
+      "name": "Reflow",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "screenshots and scroll width at 1280, 390 and 320: no horizontal scroll",
+      "note": ""
+    },
+    {
+      "id": "1.4.11",
+      "name": "Non-text contrast",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "computed: icon #596B7A on white 5.5:1",
+      "note": ""
+    },
+    {
+      "id": "1.4.12",
+      "name": "Text spacing",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "text spacing override (line height 1.5, letter 0.12em, word 0.16em, paragraph 2em) on Default and LongContent: no clipped text",
+      "note": ""
+    },
+    {
+      "id": "1.4.13",
+      "name": "Content on hover or focus",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "Keyboard story (play): Tab shows the tooltip, Escape hides it; aria-describedby ties the content to the button",
+      "note": ""
+    },
+    {
+      "id": "2.1.1",
+      "name": "Keyboard",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "Keyboard story (play) and Playwright Tab run at 1280, 390 and 320: Tab focuses the button and opens the tooltip",
+      "note": ""
+    },
+    {
+      "id": "2.4.7",
+      "name": "Focus visible",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "keyboard run and screenshot: 2px #000 outline with a white ring",
+      "note": ""
+    },
+    {
+      "id": "2.4.11",
+      "name": "Focus not obscured (minimum)",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "screenshots: the tooltip opens to the side and leaves the button visible",
+      "note": ""
+    },
+    {
+      "id": "2.5.7",
+      "name": "Dragging movements",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "source: no drag interaction",
+      "note": ""
+    },
+    {
+      "id": "2.5.8",
+      "name": "Target size (minimum)",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "measured: 20x20 (16x17 inside Table headers), under 24x24 but nothing else within 24px in the stories (spacing exception)",
+      "note": "Placed next to another target it would fail; check dense rows."
+    },
+    {
+      "id": "3.2.6",
+      "name": "Consistent help",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "page level: the component offers no help mechanism",
+      "note": ""
+    },
+    {
+      "id": "3.3.7",
+      "name": "Redundant entry",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: the component asks for no data",
+      "note": ""
+    },
+    {
+      "id": "3.3.8",
+      "name": "Accessible authentication (minimum)",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: the component is not part of a login step",
+      "note": ""
+    },
+    {
+      "id": "4.1.2",
+      "name": "Name, role, value",
+      "result": "fail",
+      "confidence": "high",
+      "evidence": "same root as 1.1.1: a button with no name",
+      "note": "Fixed by the same heal as 1.1.1."
+    }
+  ]
+}
