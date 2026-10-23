@@ -1,6 +1,6 @@
 # Design system workbench: notes for agents
 
-This branch builds a design-in-code workbench for the platform: CSS-variable design tokens with a scoped redesign mode, a scanner that finds off-spec values, a shell on Storybook's engine (galleries, Foundations, the component page's Design and A11y tabs and Usage disclosure, the Review and Proposal pages), and skills that heal code to the tokens. Everything the workbench knows is a plain file on the branch; this page says what each one is. Launch Claude Code from `front/`; run every command there. The skills are in `front/.claude/skills/`.
+This branch builds a design-in-code workbench for the platform: CSS-variable design tokens with a scoped redesign mode, a scanner that finds off-spec values, a shell on Storybook's engine (galleries, Foundations, the component page's Design, A11y and Usage tabs, the Review and Proposal pages), and skills that heal code to the tokens. Everything the workbench knows is a plain file on the branch; this page says what each one is. Launch Claude Code from `front/`; run every command there. The skills are in `front/.claude/skills/`.
 
 ## Vocabulary
 
@@ -124,14 +124,14 @@ The shell, `.storybook/workbench/` (React and Vite, its own `tsconfig.json`):
 - `src/lib/tokenPicker.ts` (tested): the token picker's rows (Matches, Semantic, Scale).
 - `src/lib/inspect.ts`: what the Design tab reads from the selected element (sections, rows with their longhands, glyph and snap kind).
 - `src/lib/a11y.ts`, `src/lib/checklists.ts`, `src/lib/useA11y.ts`: what the A11y panel and the gallery badges say (axe per component, keyboard tested or untested, the checklist line); `checklists.ts` bundles every `components/*/a11y.json` at build time.
-- `src/lib/usage.ts`, `src/lib/componentPanels.ts`, `src/lib/useScanIndexes.ts`: what the Usage disclosure and the Design tab's "Also in this file" show.
+- `src/lib/usage.ts`, `src/lib/componentPanels.ts`, `src/lib/useScanIndexes.ts`: what the Usage tab and the Design tab's "Also in this file" show.
 - `src/lib/stories.ts`, `src/lib/useStoryGroups.ts`: the story index grouped by component, office from tags.
 - `src/lib/review.ts`: affected routes, frame URLs, the "Copy for PR" text.
 - `src/lib/sourceDiff.ts`: session edits as a `tokens.source.json` patch.
 - `src/lib/proposal.ts`: the Proposal page's numbers, trend series, migration order and cost.
 - `src/lib/router.ts`, `src/lib/clipboard.ts`: hash routes, copy with a text fallback.
 - `src/pages/`: `Foundations` (one page per token category, with category tabs), `Gallery`, `Component`, `Review`, `Proposal` (with `proposal.css`); `Placeholder` holds the empty-state pictures.
-- The component page: canvas bar (Select / Interact, Mode Today | Redesign | Both, City, Viewport, Language, zoom, Changes), the stage, and the inspector with two tabs. **Design** is Figma's Design tab over the selected element: sections Layout, Fill, Stroke, Radius, Text, Effects; a value is a pill when bound to a token (click = token picker, hover = detach) or a field (type to snap to the scale or palette; a link glyph attaches the token the value equals); "Also in this file" lists the file's healable findings; Props last. Element edits paint the frame as inline styles (`lib/elementEdits.ts`, localStorage `gv-element-edits`) and sit with token edits in the one Changes drawer under the canvas bar, whose "Copy for agent" gives the heal / change tasks. **A11y** is unchanged. Usage opens under the page header. Low text: glyphs carry the meaning, `aria-label`s the words, no title tooltips on values.
+- The component page: one top row (breadcrumbs; on their right Mode Today | Redesign | Both, City, the Changes pencil with its count; `data-testid="wb-canvas-bar"`), the stage with a floating bar at its bottom (Select / Interact, viewport Fit | Desktop | Tablet | Mobile, zoom; icons only), and the inspector with three tabs. No title, chips, file path or language picker: the story is the page. **Design** is Figma's Design tab over the selected element: sections Layout, Fill, Stroke, Radius, Text, Effects; a value is a pill when bound to a token (click = token picker, hover = detach) or a field (type to snap to the scale or palette; a link glyph attaches the token the value equals); "Also in this file" lists the file's healable findings; Props last. Element edits paint the frame as inline styles (`lib/elementEdits.ts`, localStorage `gv-element-edits`) and sit with token edits in the one Changes drawer under the top row, whose "Copy for agent" gives the heal / change tasks. **A11y** is unchanged. **Usage** (files, props, routes, audit) is the third tab. Low text: glyphs carry the meaning, `aria-label`s the words, no title tooltips on values.
 - `src/panels/`: `Design`, `Usage`, `Controls`, `A11y`.
 - `src/components/`: `Nav`, `Toolbar`, `Canvas`, `FrameView`, `ChangeList`, `ChangesDrawer`, `InspSection`, `ValueField`, `TokenPicker`, `RouteList`, `TokenRow`, `HealCopy`, `LineChart` and smaller parts.
 
@@ -149,7 +149,7 @@ App build, `front/`:
 
 ## The heal task
 
-The Usage disclosure and the Changes drawer's "Copy for agent" give this (SPEC 7.5):
+The Usage tab and the Changes drawer's "Copy for agent" give this (SPEC 7.5):
 
 ```
 heal: <Component> · <file>:<line> · <raw value> → <token> · mode <today|redesign|both>
@@ -158,7 +158,7 @@ check: story <story id>, routes <list>
 ```
 
 - Mode defaults: `shared` gives `both`, `bo` gives `redesign`, `fo` gives `today`; a mode picked on a component page holds for that component.
-- Deviations from the spec's format: the token slot reads `A or B` when a legacy key maps to two tokens and the task came from the Usage disclosure (which has no token row to pick from; an element edit names one), or `(choose a token)` when nothing fits. The route list stops after 8 with `and N more`. The `heal` skill picks the token whose `today` value matches, or stops.
+- Deviations from the spec's format: the token slot reads `A or B` when a legacy key maps to two tokens and the task came from the Usage tab (which has no token row to pick from; an element edit names one), or `(choose a token)` when nothing fits. The route list stops after 8 with `and N more`. The `heal` skill picks the token whose `today` value matches, or stops.
 - An attach (or a Heal from "Also in this file") gives this shape when a scan finding of the file has the edit's raw value; with none, `heal: <Component> · <file> · <raw> → <token> · mode <mode>`, `why: hard-coded <row> seen in the workbench (<layer>), scan confidence low`.
 - A swap, detach or custom value changes today's look, so it gives a change task instead:
 

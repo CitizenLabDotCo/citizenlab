@@ -314,6 +314,24 @@ const PATHS = {
     </>
   ),
   caution: <path d="M12 4 2.5 20h19zM12 10v4.5M12 17.2v.3" />,
+  tablet: (
+    <>
+      <rect x="5" y="3.5" width="14" height="17" rx="2" />
+      <path d="M11 17.5h2" />
+    </>
+  ),
+  phone: (
+    <>
+      <rect x="7.5" y="3.5" width="9" height="17" rx="2" />
+      <path d="M11 17.5h2" />
+    </>
+  ),
+  fit: (
+    <>
+      <path d="M4 9V5.5A1.5 1.5 0 0 1 5.5 4H9M15 4h3.5A1.5 1.5 0 0 1 20 5.5V9M20 15v3.5a1.5 1.5 0 0 1-1.5 1.5H15M9 20H5.5A1.5 1.5 0 0 1 4 18.5V15" />
+      <rect x="9" y="9" width="6" height="6" rx="1" />
+    </>
+  ),
 } satisfies Record<string, ReactNode>;
 
 export type IconName = keyof typeof PATHS;

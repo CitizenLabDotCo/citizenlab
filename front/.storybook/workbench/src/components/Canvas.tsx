@@ -649,7 +649,6 @@ const Canvas = ({
     h = parseInt(height, 10);
     scale = zoom === 'fit' ? (room > 0 && w > room ? room / w : 1) : zoom;
   }
-  const shown = Math.round(scale * 100);
 
   // A fixed zoom larger than the canvas scrolls: start at the centre,
   // where the story is.
@@ -670,13 +669,12 @@ const Canvas = ({
       ref={box}
       data-zoom={zoom === 'fit' ? 'fit' : 'fixed'}
     >
-      <p className="wb-canvas-size wb-muted">
-        {label && <span className="wb-canvas-label">{label}</span>}
-        <span>
-          {fit ? 'Fit to story' : `${w} x ${h}`}
-          {`, ${shown}%`}
-        </span>
-      </p>
+      {/* Side by side, each canvas names its mode. */}
+      {label && (
+        <p className="wb-canvas-size wb-muted">
+          <span className="wb-canvas-label">{label}</span>
+        </p>
+      )}
       <div className="wb-canvas-view" ref={view}>
         <div
           className="wb-canvas-frame"

@@ -2217,10 +2217,6 @@ tr:hover .wb-pv-motion > span,
   color: var(--wb-muted);
 }
 
-.wb-component-head .wb-score {
-  font-size: var(--gv-fs-13);
-}
-
 .wb-empty-filter {
   display: flex;
   flex-direction: column;
@@ -2257,38 +2253,6 @@ tr:hover .wb-pv-motion > span,
 }
 
 /* Component page */
-.wb-component-head {
-  display: flex;
-  gap: var(--gv-space-4);
-  align-items: center;
-  margin-bottom: var(--gv-space-5);
-}
-
-.wb-component-title {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gv-space-2);
-  min-width: 0;
-}
-
-.wb-component-file {
-  display: inline-flex;
-  gap: var(--gv-space-1);
-  align-items: center;
-  min-width: 0;
-  max-width: 100%;
-  margin-left: var(--gv-space-1);
-  font-size: var(--gv-fs-xs);
-  color: var(--wb-muted);
-}
-
-.wb-page .wb-component-file code {
-  overflow: hidden;
-  font-size: var(--gv-fs-xs);
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
 .wb-story-tabs {
   display: flex;
   flex-direction: column;
@@ -5730,20 +5694,8 @@ tr[data-result='needs-human'] .wb-a11y-note {
   min-height: calc(100% - var(--gv-space-16));
 }
 
-.wb-component-page .wb-component-head {
-  margin-bottom: var(--gv-space-4);
-}
-
 .wb-component-page .wb-stage {
   flex: 1;
-}
-
-.wb-canvas-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--gv-space-2) var(--gv-space-3);
-  align-items: center;
-  margin-bottom: var(--gv-space-3);
 }
 
 .wb-canvas-bar-end {
@@ -5754,7 +5706,8 @@ tr[data-result='needs-human'] .wb-a11y-note {
   margin-left: auto;
 }
 
-.wb-canvas-bar .wb-segmented button {
+.wb-component-top .wb-segmented button,
+.wb-float-bar .wb-segmented button {
   display: inline-flex;
   gap: var(--gv-space-1);
   align-items: center;
@@ -6476,14 +6429,7 @@ tr[data-result='needs-human'] .wb-a11y-note {
   color: var(--wb-fail);
 }
 
-/* The canvas bar's settings and the Usage disclosure. */
-.wb-canvas-settings {
-  display: inline-flex;
-  flex-wrap: wrap;
-  gap: var(--gv-space-1);
-  align-items: center;
-}
-
+/* The top bar's city. */
 .wb-canvas-setting {
   display: inline-flex;
   gap: 2px;
@@ -6493,21 +6439,6 @@ tr[data-result='needs-human'] .wb-a11y-note {
 
 .wb-canvas-setting .wb-toolbar-field select {
   max-width: 120px;
-}
-
-.wb-shell button.wb-usage-chip {
-  gap: var(--gv-space-1);
-  min-height: 0;
-  padding: 2px var(--gv-space-2);
-  font-size: inherit;
-}
-
-.wb-usage-chip[aria-expanded='true'] .wb-icon:last-child {
-  transform: rotate(180deg);
-}
-
-.wb-usage-drawer {
-  margin: 0 0 var(--gv-space-3);
 }
 
 /* A drawer in the page flow: Changes under the canvas bar, Usage under
@@ -6586,4 +6517,54 @@ tr[data-result='needs-human'] .wb-a11y-note {
 
 .wb-vf-lead > .wb-icon {
   color: inherit;
+}
+
+/* The component page's top row: breadcrumbs, then mode, city, Changes. */
+.wb-component-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gv-space-2) var(--gv-space-3);
+  align-items: center;
+  margin-bottom: var(--gv-space-3);
+}
+
+.wb-component-top .wb-crumbs {
+  margin-bottom: 0;
+}
+
+/* Tool, viewport and zoom float at the stage's foot, Figma style; sticky,
+   so a canvas taller than the window keeps them in view. */
+.wb-component-page .wb-stage {
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-content: stretch;
+}
+
+.wb-component-page .wb-stage > .wb-canvas {
+  align-self: center;
+}
+
+.wb-float-bar {
+  position: sticky;
+  bottom: var(--gv-space-4);
+  z-index: 2;
+  display: flex;
+  grid-column: 1 / -1;
+  gap: var(--gv-space-2);
+  align-items: center;
+  justify-self: center;
+  max-width: 100%;
+  overflow-x: auto;
+  padding: var(--gv-space-1);
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius-lg);
+  box-shadow: var(--wb-shadow);
+}
+
+.wb-float-bar .wb-segmented {
+  flex: none;
+}
+
+.wb-shell .wb-float-bar .wb-segmented button {
+  padding: 0 var(--gv-space-2);
 }

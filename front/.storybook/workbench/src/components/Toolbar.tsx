@@ -1,11 +1,10 @@
 import type { Mode } from '@ds/tokens/tokens';
 
 import { cities, DEFAULT_CITY } from '../../../cities';
-import { LANGUAGES } from '../../../languages';
 import { GV_VIEWPORTS, GvViewport } from '../../../viewports';
 import type { FrameGlobals } from '../lib/frame';
 
-import Icon from './Icon';
+import Icon, { IconName } from './Icon';
 
 // `fit`: the frame is sized to the rendered story (see Canvas); the presets
 // are for page-level checks.
@@ -125,9 +124,7 @@ export const ZoomControl = ({
             onChange(e.target.value === 'fit' ? 'fit' : Number(e.target.value))
           }
         >
-          <option value="fit">
-            {fitScale ? `Fit, ${percent(fitScale)}` : 'Fit'}
-          </option>
+          <option value="fit">{fitScale ? percent(fitScale) : 'Fit'}</option>
           {ZOOM_STEPS.map((s) => (
             <option key={s} value={String(s)}>
               {percent(s)}
@@ -150,65 +147,37 @@ export const ZoomControl = ({
   );
 };
 
-// City, Viewport and Language on the canvas bar: glyph and value; the
-// words are the fields' labels.
-export const CanvasSettings = ({
+// The city on the top bar: glyph and value; the word is the field's label.
+export const CitySetting = ({
   toolbar,
   setToolbar,
-  storyLang,
 }: {
   toolbar: ToolbarState;
   setToolbar: (next: ToolbarState) => void;
-  // Set when the story sets its own language: the field is off.
-  storyLang?: string;
-}) => {
-  const set =
-    <K extends keyof ToolbarState>(key: K) =>
-    (v: string) =>
-      setToolbar({ ...toolbar, [key]: v as ToolbarState[K] });
-  const lang = storyLang ?? toolbar.lang;
-  const languages: { value: string; label: string }[] = LANGUAGES.map(
-    ({ value, label }) => ({ value, label })
-  );
-  if (!languages.some((l) => l.value === lang)) {
-    languages.push({ value: lang, label: lang });
-  }
-  return (
-    <span className="wb-canvas-settings" role="group" aria-label="Canvas">
-      <span className="wb-canvas-setting">
-        <Icon name="city" size={14} />
-        <Field
-          id="city"
-          label="City"
-          value={toolbar.city}
-          options={Object.entries(cities).map(([v, c]) => ({
-            value: v,
-            label: c.title,
-          }))}
-          onChange={set('city')}
-        />
-      </span>
-      <span className="wb-canvas-setting">
-        <Icon name="monitor" size={14} />
-        <Field
-          id="viewport"
-          label="Viewport"
-          value={toolbar.viewport}
-          options={VIEWPORTS}
-          onChange={set('viewport')}
-        />
-      </span>
-      <span className="wb-canvas-setting">
-        <Icon name="language" size={14} />
-        <Field
-          id="lang"
-          label="Language"
-          value={lang}
-          options={languages}
-          onChange={set('lang')}
-          disabled={!!storyLang}
-        />
-      </span>
-    </span>
-  );
-};
+}) => (
+  <span className="wb-canvas-setting">
+    <Icon name="city" size={14} />
+    <Field
+      id="city"
+      label="City"
+      value={toolbar.city}
+      options={Object.entries(cities).map(([v, c]) => ({
+        value: v,
+        label: c.title,
+      }))}
+      onChange={(v) => setToolbar({ ...toolbar, city: v })}
+    />
+  </span>
+);
+
+// The viewports the floating bar offers as icons: fit, then the devices.
+export const VIEWPORT_ICONS: {
+  value: CanvasViewport;
+  icon: IconName;
+  label: string;
+}[] = [
+  { value: 'fit', icon: 'fit', label: 'Fit to story' },
+  { value: 'gvDesktop', icon: 'monitor', label: GV_VIEWPORTS.gvDesktop.name },
+  { value: 'gvTablet', icon: 'tablet', label: GV_VIEWPORTS.gvTablet.name },
+  { value: 'gvMobile', icon: 'phone', label: GV_VIEWPORTS.gvMobile.name },
+];

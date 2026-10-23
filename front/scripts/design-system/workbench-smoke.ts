@@ -40,7 +40,7 @@
 // attach suggestion turns it into a --gv-fs-s pill and the Changes badge
 // counts it; 12 typed into the vertical padding becomes a --gv-space-3
 // pill; Copy for agent names --gv-fs-s; Reset all clears the list. The
-// Usage disclosure lists at least one back office (admin) route.
+// Usage tab lists at least one back office (admin) route.
 // The Review page lists at least MIN_ADMIN_ROUTES back office routes and
 // shows "needs a record" for a route whose param the fixture lacks. With
 // --review-host <platform origin> (an epic serving this Storybook under
@@ -384,9 +384,10 @@ const canvasChecks = async (
   screenshot?: string
 ) => {
   await page.goto(`${base}/workbench/#/components/${storyId}`);
-  await page.waitForSelector('[data-testid="wb-component"] h1', {
-    timeout: 10000,
-  });
+  await page.waitForSelector(
+    '[data-testid="wb-component"] [data-testid="wb-canvas-bar"]',
+    { timeout: 10000 }
+  );
   if (!(await page.isVisible('aside[aria-label="Panels"] [role="tablist"]'))) {
     failures.push('the panel column is not shown on a component page');
   }
@@ -415,7 +416,7 @@ const canvasChecks = async (
     failures.push('fit: the canvas frame was never fitted to the story');
   }
 
-  // Mode on the canvas bar: the frame's html gets the attribute.
+  // Mode on the top bar: the frame's html gets the attribute.
   await page.click(
     '[data-testid="wb-canvas-bar"] [data-testid="wb-toolbar-mode"] [data-value="redesign"]'
   );
@@ -760,15 +761,12 @@ const controlsChecks = async (
     if (ok && after === radius) {
       console.log(`canvas: switched to ${other} in the same frame`);
     }
-    // The mode, a city and a language (Arabic, right to left) switch the
-    // same frame too.
+    // The mode and a city switch the same frame too (the page has no
+    // language picker: a story sets its own).
     const globals: string[] = [];
-    for (const key of ['mode', 'city', 'lang']) {
+    for (const key of ['mode', 'city']) {
       const field = await settingOf(page, key);
-      const next =
-        key === 'lang'
-          ? field.values.find((v) => v === 'ar')
-          : field.values.find((v) => v !== field.value);
+      const next = field.values.find((v) => v !== field.value);
       if (field.disabled || !next) {
         failures.push(`${key}: the toolbar field is disabled or has no option`);
         continue;
@@ -909,7 +907,7 @@ const controlsChecks = async (
 };
 
 // The Button page's Design tab (pill, attach, snap, Changes, Copy for
-// agent, Reset all), the Usage disclosure and the A11y tab.
+// agent, Reset all), the Usage tab and the A11y tab.
 const panelChecks = async (
   page: any,
   base: string,
@@ -1098,15 +1096,15 @@ const panelChecks = async (
       `task ${task.split('\n')[0]}; reset all ${cleared}`
   );
 
-  // Usage under the page header: back office routes.
-  await page.click('[data-testid="wb-usage-toggle"]');
+  // The Usage tab: back office routes.
+  await page.click('[data-testid="wb-panel-tab"][data-tab="usage"]');
   const admin = '[data-testid="wb-usage-route"][data-office="admin"]';
   let routes = 0;
   try {
     await page.waitForSelector(admin, { timeout: 20000 });
     routes = await page.$$eval(admin, (els: Element[]) => els.length);
   } catch {
-    failures.push('the Usage disclosure lists no back office route for Button');
+    failures.push('the Usage tab lists no back office route for Button');
   }
   console.log(`usage: ${routes} back office routes`);
 
