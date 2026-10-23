@@ -269,17 +269,31 @@ const MAC_STEPS: Command[] = [
     ),
   },
   {
-    title: 'Claude Code with the MCP servers',
+    title: 'Add the MCP servers, once',
     wide: true,
-    code: '# once, with Storybook running\nclaude mcp add --transport http storybook http://localhost:6006/mcp\nclaude mcp add --transport http figma https://mcp.figma.com/mcp\n# every time, from front/ so it finds the skills\nclaude',
+    code: 'claude mcp add --transport http --scope user storybook http://localhost:6006/mcp\nclaude mcp add --transport http --scope user figma https://mcp.figma.com/mcp',
     note: (
       <>
-        Figma&apos;s is the remote server, so no desktop app is needed: in
-        Claude Code type <code>/mcp</code>, pick figma, then Authenticate. It
-        needs a Full or Dev seat on a paid Figma plan; View and Collab seats
-        get 20 calls a month.
+        With Storybook running. <code>--scope user</code> makes both servers
+        work from any folder. Figma&apos;s is the remote server, so no desktop
+        app is needed: in Claude Code type <code>/mcp</code>, pick figma, then
+        Authenticate. Which Figma seats and plans can use it, and how many calls
+        they get:{' '}
+        <a
+          href="https://www.figma.com/pricing/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Figma&apos;s pricing page
+        </a>
+        .
       </>
     ),
+  },
+  {
+    title: 'Claude Code',
+    code: 'claude',
+    note: 'From front/, so it finds the skills.',
   },
   {
     title: 'Screenshots and axe',
@@ -378,7 +392,7 @@ const PREVIEW_CANNOT = [
   'The Storybook MCP server: it runs with npm run storybook only.',
   'Highlights for components outside the library: UI and admin components carry no tag.',
   'Exact baselines for code heals: the Before host needs its own login, and its data differs.',
-  'Fresh instance audits: ds:audit runs on your machine with a stored admin session; each component page shows the audit committed under audits/, without screenshots.',
+  'Fresh instance audits: ds:audit runs on your machine with a stored admin session; once an audit is committed under audits/, its component page shows it, without screenshots.',
 ];
 
 const PREVIEW_NOTES = [
@@ -571,7 +585,7 @@ const StartHere = () => {
 
       <Section
         title="Run it on your Mac"
-        note="Once, then steps 4 and 5 every day. Run every command in front/."
+        note="Once, then steps 4 and 6 every day. Run every command in front/."
       >
         <Commands items={MAC_STEPS} testId="wb-run-steps" />
       </Section>

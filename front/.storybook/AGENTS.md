@@ -201,10 +201,10 @@ What the shell relies on (`.storybook/workbench/src/lib/preview.ts`):
 
 ## Storybook MCP
 
-- `@storybook/addon-mcp` serves an MCP server at `/mcp` while `npm run storybook` runs. Add it to Claude Code once: `claude mcp add --transport http storybook http://localhost:6006/mcp`.
+- `@storybook/addon-mcp` serves an MCP server at `/mcp` while `npm run storybook` runs. Add it to Claude Code once: `claude mcp add --transport http --scope user storybook http://localhost:6006/mcp` (`--scope user` makes it work from any folder).
 - Tools: `list-all-documentation`, `get-documentation`, `get-documentation-for-story`, `get-storybook-story-instructions`, `preview-stories`, `get-changed-stories`. They list components and stories and return preview links; tokens, scan results and a11y status come from the files above, not from the server.
 - Pinned at 0.7.0: later releases follow Storybook's own version and need Storybook 10.6. Upgrade both together or neither.
-- Figma MCP, for reading design files: Figma's remote server, no desktop app needed. Add it once with `claude mcp add --transport http figma https://mcp.figma.com/mcp`, then in Claude Code `/mcp`, pick figma, Authenticate. It needs a Full or Dev seat on a paid Figma plan; View and Collab seats get 20 calls a month.
+- Figma MCP, for reading design files: Figma's remote server, no desktop app needed. Add it once with `claude mcp add --transport http --scope user figma https://mcp.figma.com/mcp`, then in Claude Code `/mcp`, pick figma, Authenticate. Which seats and plans can use it, and their call limits: https://www.figma.com/pricing/.
 
 ## Preview-grade
 
