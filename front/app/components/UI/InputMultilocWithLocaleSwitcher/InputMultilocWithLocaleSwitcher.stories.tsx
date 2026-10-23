@@ -1,6 +1,6 @@
 import { Meta, StoryObj } from '@storybook/react';
 import { http, HttpResponse } from 'msw';
-import { fn } from 'storybook/test';
+import { fn, waitFor } from 'storybook/test';
 
 import { getAppConfigurationData } from 'api/app_configuration/__mocks__/_mockServer';
 
@@ -65,9 +65,18 @@ export const Disabled: Story = {
 };
 
 // With one platform locale there is nothing to switch, so it is hidden.
+// The play step waits for the refetched configuration, because the query
+// cache can still hold the three locales of the story before.
 export const SingleLocale: Story = {
   args: Default.args,
   parameters: { msw: mockEndpoints({}) },
+  play: async ({ canvasElement }) => {
+    await waitFor(() => {
+      if (canvasElement.textContent.toLowerCase().includes('nl-be')) {
+        throw new globalThis.Error('still showing three locales');
+      }
+    });
+  },
 };
 
 export const RTL: Story = {
