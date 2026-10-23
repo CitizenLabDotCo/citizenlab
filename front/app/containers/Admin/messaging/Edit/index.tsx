@@ -43,6 +43,7 @@ const Edit = ({ campaignType }: EditProps) => {
   const { mutateAsync: updateCampaign, isPending } = useUpdateEmailCampaign();
 
   const [previewSent, setPreviewSent] = useState(false);
+  const [campaignUpdated, setCampaignUpdated] = useState(false);
 
   const { mutate: sendCampaignPreview, isPending: isSendingCampaignPreview } =
     useSendEmailCampaignPreview();
@@ -67,7 +68,8 @@ const Edit = ({ campaignType }: EditProps) => {
         `/admin/messaging/emails/custom/${campaign.data.id}?updated=true`
       );
     } else {
-      clHistory.push('/admin/messaging/emails/automated');
+      // Stay on the page so the admin sees the saved changes in the preview.
+      setCampaignUpdated(true);
     }
   };
 
@@ -110,6 +112,15 @@ const Edit = ({ campaignType }: EditProps) => {
         </Title>
       )}
       <Box>
+        {campaignUpdated && (
+          <Box mb="8px">
+            <Success
+              text={formatMessage(messages.emailUpdated)}
+              showIcon
+              showBackground
+            />
+          </Box>
+        )}
         {previewSent && (
           <Box mb="8px">
             <Success

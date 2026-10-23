@@ -88,6 +88,8 @@ const EditCampaignForm = ({
   const onFormSubmit = async (formValues) => {
     try {
       await onSubmit(formValues);
+      // The page stays open after saving, so the saved values become the new baseline for isDirty.
+      methods.reset(formValues);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
@@ -164,6 +166,7 @@ const EditCampaignForm = ({
             id="e2e-automated-campaign-edit-save-button"
             type="submit"
             processing={isLoading}
+            disabled={!methods.formState.isDirty}
           >
             <FormattedMessage {...messages.formSave} />
           </Button>
