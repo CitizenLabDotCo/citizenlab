@@ -18,6 +18,7 @@ import {
   parseOverrides,
   parseOverridesResult,
   snap,
+  snapValue,
   toLab,
   useOverrides,
   withOverrides,
@@ -86,6 +87,38 @@ describe('snap', () => {
       snapped: false,
       custom: false,
     });
+  });
+});
+
+describe('snapValue', () => {
+  it('snaps a length to the space scale without a token name', () => {
+    expect(snapValue('space', '13px', meta)).toMatchObject({
+      value: '12px',
+      snapped: true,
+      custom: false,
+      to: '--gv-space-3',
+    });
+  });
+
+  it('leaves an unknown kind as typed', () => {
+    expect(snapValue(undefined, '17px', meta)).toEqual({
+      value: '17px',
+      snapped: false,
+      custom: false,
+    });
+  });
+
+  it('prefers a semantic colour over the primitive it equals', () => {
+    const r = snapValue('color', '#343434', meta);
+    const named = meta.find((t) => t.name === r.to);
+    expect(r.value).toBe('#333333');
+    expect(named?.tier).toBe(2);
+    // Foundations' token snap keeps the primitive.
+    expect(snap('--gv-text-primary', '#343434', meta).to).toBe('--gv-grey-800');
+  });
+
+  it('matches a short hex semantic twin', () => {
+    expect(snapValue('color', '#fefefe', meta).to).toBe('--gv-on-primary');
   });
 });
 

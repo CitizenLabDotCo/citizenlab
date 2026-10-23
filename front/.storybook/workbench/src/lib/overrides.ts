@@ -134,23 +134,44 @@ const toPx = (value: string): number | null => {
 
 const SCALED = ['space', 'radius'];
 
-// Moves an edited value onto the token system: space and radius to the
-// nearest tier-1 step of their category, colours to the nearest palette
-// colour within SNAP_DELTA_E. Other categories pass through untouched.
-export const snap = (
+export type SnapKind = 'space' | 'radius' | 'color';
+
+const sameColour = (a: string, b: string) => {
+  const x = parseColour(a);
+  const y = parseColour(b);
+  return !!x && !!y && x.every((c, i) => Math.abs(c - y[i]) < 1e-6);
+};
+
+// Among colour tokens with the same literal value, a tier 2 name is the one
+// components should read.
+const preferSemantic = (
   name: TokenName,
   value: string,
   meta: TokenMeta[],
-  mode: Mode = 'today'
-): SnapResult => {
-  const token = meta.find((t) => t.name === name);
-  const typed = value.trim();
-  if (!token) return { value: typed, snapped: false, custom: true };
+  mode: Mode
+): TokenName => {
+  const semantic = meta.find(
+    (t) =>
+      t.tier === 2 &&
+      t.category === 'color' &&
+      !t.deprecated &&
+      sameColour(t.values[mode], value)
+  );
+  return (semantic?.name as TokenName) ?? name;
+};
 
-  if (SCALED.includes(token.category)) {
+const snapBy = (
+  kind: SnapKind | undefined,
+  value: string,
+  meta: TokenMeta[],
+  mode: Mode,
+  semantic: boolean
+): SnapResult => {
+  const typed = value.trim();
+  if (kind === 'space' || kind === 'radius') {
     const px = toPx(typed);
     const steps = meta
-      .filter((t) => t.category === token.category && t.tier === 1)
+      .filter((t) => t.category === kind && t.tier === 1)
       .map((t) => ({
         name: t.name as TokenName,
         value: t.values[mode],
@@ -167,18 +188,49 @@ export const snap = (
     return { value: best.value, snapped: true, custom: false, to: best.name };
   }
 
-  if (token.category === 'color') {
+  if (kind === 'color') {
     const hit = nearestColour(typed, palette(meta, mode));
     if (!hit) return { value: typed, snapped: false, custom: true };
     return {
       value: hit.swatch.value,
       snapped: true,
       custom: false,
-      to: hit.swatch.name,
+      to: semantic
+        ? preferSemantic(hit.swatch.name, hit.swatch.value, meta, mode)
+        : hit.swatch.name,
     };
   }
 
   return { value: typed, snapped: false, custom: false };
+};
+
+// Moves a value typed into an inspector field onto the token system: space
+// and radius to the nearest tier-1 step of their kind, colours to the
+// nearest palette colour within SNAP_DELTA_E, named by a tier 2 token with
+// the same value when one exists. No kind: the value passes through.
+export const snapValue = (
+  kind: SnapKind | undefined,
+  value: string,
+  meta: TokenMeta[],
+  mode: Mode = 'today'
+): SnapResult => snapBy(kind, value, meta, mode, true);
+
+// Moves an edited token value onto the token system, by the token's own
+// category. A colour names the tier-1 primitive: a token edit points at the
+// palette, not at another role.
+export const snap = (
+  name: TokenName,
+  value: string,
+  meta: TokenMeta[],
+  mode: Mode = 'today'
+): SnapResult => {
+  const token = meta.find((t) => t.name === name);
+  if (!token) return { value: value.trim(), snapped: false, custom: true };
+  const kind =
+    SCALED.includes(token.category) || token.category === 'color'
+      ? (token.category as SnapKind)
+      : undefined;
+  return snapBy(kind, value, meta, mode, false);
 };
 
 // ---------------------------------------------------------------- codec
