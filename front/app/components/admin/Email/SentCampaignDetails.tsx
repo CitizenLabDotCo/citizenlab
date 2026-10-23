@@ -5,8 +5,10 @@ import styled from 'styled-components';
 
 import useEmailCampaignDeliveries from 'api/campaigns/email/deliveries/useEmailCampaignDeliveries';
 
+import useLocale from 'hooks/useLocale';
+
 import CampaignStats from 'components/admin/Email/CampaignStats';
-import PreviewFrame from 'components/admin/Email/PreviewFrame';
+import PreviewFrameWithLocaleSwitcher from 'components/admin/Email/PreviewFrameWithLocaleSwitcher';
 import RecipientsTable from 'components/admin/Email/RecipientsTable';
 import PageWrapper from 'components/admin/PageWrapper';
 
@@ -19,7 +21,7 @@ const PaddedCampaignStats = styled(CampaignStats)`
   padding-bottom: 20px;
 `;
 
-const PaddedPreviewFrame = styled(PreviewFrame)`
+const PaddedPreviewFrame = styled(PreviewFrameWithLocaleSwitcher)`
   padding-bottom: 20px;
 `;
 
@@ -33,6 +35,8 @@ interface Props {
 
 const SentCampaignDetails = ({ campaignId }: Props) => {
   const [pageNumber, setPageNumber] = useState(1);
+  const locale = useLocale();
+  const [previewLocale, setPreviewLocale] = useState(locale);
   const { data: deliveries } = useEmailCampaignDeliveries({
     campaignId,
     pageNumber,
@@ -41,7 +45,11 @@ const SentCampaignDetails = ({ campaignId }: Props) => {
   return (
     <PageWrapper>
       <PaddedCampaignStats campaignId={campaignId} />
-      <PaddedPreviewFrame campaignId={campaignId} />
+      <PaddedPreviewFrame
+        campaignId={campaignId}
+        locale={previewLocale}
+        onLocaleChange={setPreviewLocale}
+      />
       <h2>
         <FormattedMessage {...messages.recipientsTitle} />
       </h2>
