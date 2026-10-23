@@ -1,5 +1,5 @@
 {
-  "$description": "Go Vocal design tokens (W3C DTCG). $value is today (what the code renders now); $extensions.gv.redesign is the redesign value (Tali's, from the Augur govocal-tokens.css and the .gv-bo scope, fetched 22 Oct 2026). Generate with npm run ds:tokens.",
+  "$description": "Go Vocal design tokens (W3C DTCG). $value is today (what the code renders now); $extensions.gv.redesign is the redesign value (from the Augur govocal-tokens.css and the .gv-bo scope, fetched 22 Oct 2026). Generate with npm run ds:tokens.",
   "primitive": {
     "color": {
       "$extensions": {
@@ -776,7 +776,7 @@
       "fs-xxs": {
         "$type": "dimension",
         "$value": "10px",
-        "$description": "Today: fontSizes.xxs. Code-only, not on Tali's ladder.",
+        "$description": "Today: fontSizes.xxs. Code-only, not on the redesign type ladder.",
         "$extensions": {
           "gv": {
             "legacy": [
@@ -994,7 +994,7 @@
       "fast": {
         "$type": "duration",
         "$value": "100ms",
-        "$description": "Today: defaultInputStyle transition. Code-only, not in Tali's file.",
+        "$description": "Today: defaultInputStyle transition. Code-only, not in the redesign file.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -1004,7 +1004,7 @@
       "base": {
         "$type": "duration",
         "$value": "150ms",
-        "$description": "Today: defaultCardHoverStyle transition. Code-only, not in Tali's file.",
+        "$description": "Today: defaultCardHoverStyle transition. Code-only, not in the redesign file.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -1023,7 +1023,7 @@
       "color-text-heading": {
         "$type": "color",
         "$value": "#333333",
-        "$description": "Heading text. Today: colors.textPrimary. Redesign: bo.colors.textHeading. Replaces Tali's --gv-text-heading.",
+        "$description": "Heading text. Today: colors.textPrimary. Redesign: bo.colors.textHeading. Replaces the redesign's --gv-text-heading.",
         "$extensions": {
           "gv": {
             "redesign": "#474747",
@@ -1064,7 +1064,7 @@
       "text-heading": {
         "$type": "color",
         "$value": "{semantic.color.color-text-heading}",
-        "$description": "Tali's heading name, kept as an alias of color-text-heading (the semantic name wins).",
+        "$description": "The redesign file's heading name, kept as an alias of color-text-heading (the semantic name wins).",
         "$deprecated": "Use color-text-heading.",
         "$extensions": {
           "gv": {
@@ -1260,7 +1260,7 @@
       "color-teal": {
         "$type": "color",
         "$value": "{primitive.color.teal-500}",
-        "$description": "Today: semanticColors.teal. Code-only role, not in Tali's file.",
+        "$description": "Today: semanticColors.teal. Code-only role, not in the redesign file.",
         "$extensions": {
           "gv": {
             "legacy": [
@@ -1273,7 +1273,7 @@
       "color-teal-light": {
         "$type": "color",
         "$value": "{primitive.color.teal-100}",
-        "$description": "Today: semanticColors.tealLight. Code-only role, not in Tali's file.",
+        "$description": "Today: semanticColors.tealLight. Code-only role, not in the redesign file.",
         "$extensions": {
           "gv": {
             "legacy": [
@@ -1306,7 +1306,7 @@
       "tenant-primary": {
         "$type": "color",
         "$value": "#ef0071",
-        "$description": "City slot, written by ModeProvider from core.color_main. Today fallback as in getTheme. Redesign: back-office primary, as Tali's .gv-bo scope.",
+        "$description": "City slot, written by ModeProvider from core.color_main. Today fallback as in getTheme. Redesign: back-office primary, as the redesign's .gv-bo scope.",
         "$extensions": {
           "gv": {
             "redesign": "{semantic.color.bo-primary}",
@@ -1318,7 +1318,7 @@
       "tenant-secondary": {
         "$type": "color",
         "$value": "#000000",
-        "$description": "City slot, written by ModeProvider from core.color_secondary. Today fallback as in getTheme. Redesign: back-office primary, as Tali's .gv-bo scope.",
+        "$description": "City slot, written by ModeProvider from core.color_secondary. Today fallback as in getTheme. Redesign: back-office primary, as the redesign's .gv-bo scope.",
         "$extensions": {
           "gv": {
             "redesign": "{semantic.color.bo-primary}",
@@ -1330,7 +1330,7 @@
       "tenant-text": {
         "$type": "color",
         "$value": "#333333",
-        "$description": "City slot, written by ModeProvider from core.color_text. Today fallback as in getTheme. Redesign: text-primary, as Tali's .gv-bo scope.",
+        "$description": "City slot, written by ModeProvider from core.color_text. Today fallback as in getTheme. Redesign: text-primary, as the redesign's .gv-bo scope.",
         "$extensions": {
           "gv": {
             "redesign": "{semantic.color.text-primary}",
@@ -1381,7 +1381,7 @@
       "tenant-primary-lighten75": {
         "$type": "color",
         "$value": "color-mix(in srgb, {semantic.color.color-tenant-primary} 25%, transparent)",
-        "$description": "Today: transparentize(0.75, tenantPrimary) as sRGB color-mix. Redesign: Tali's OKLCH mix.",
+        "$description": "Today: transparentize(0.75, tenantPrimary) as sRGB color-mix. Redesign: the redesign's OKLCH mix.",
         "$extensions": {
           "gv": {
             "redesign": "color-mix(in oklch, {semantic.color.tenant-primary} 25%, transparent)",
@@ -1394,7 +1394,7 @@
       "tenant-primary-lighten90": {
         "$type": "color",
         "$value": "color-mix(in srgb, {semantic.color.color-tenant-primary} 10%, transparent)",
-        "$description": "Today: transparentize(0.9, tenantPrimary) as sRGB color-mix. Redesign: Tali's OKLCH mix.",
+        "$description": "Today: transparentize(0.9, tenantPrimary) as sRGB color-mix. Redesign: the redesign's OKLCH mix.",
         "$extensions": {
           "gv": {
             "redesign": "color-mix(in oklch, {semantic.color.tenant-primary} 10%, transparent)",
@@ -1407,7 +1407,7 @@
       "tenant-primary-lighten95": {
         "$type": "color",
         "$value": "color-mix(in srgb, {semantic.color.color-tenant-primary} 5%, transparent)",
-        "$description": "Today: transparentize(0.95, tenantPrimary) as sRGB color-mix. Redesign: Tali's OKLCH mix.",
+        "$description": "Today: transparentize(0.95, tenantPrimary) as sRGB color-mix. Redesign: the redesign's OKLCH mix.",
         "$extensions": {
           "gv": {
             "redesign": "color-mix(in oklch, {semantic.color.tenant-primary} 5%, transparent)",
@@ -1420,7 +1420,7 @@
       "on-primary": {
         "$type": "color",
         "$value": "#fff",
-        "$description": "New, no code token today (buttons use a #fff literal). Tali's contrast-color() upgrade is not generated yet.",
+        "$description": "New, no code token today (buttons use a #fff literal). The redesign's contrast-color() upgrade is not generated yet.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -1430,7 +1430,7 @@
       "on-secondary": {
         "$type": "color",
         "$value": "#fff",
-        "$description": "New, no code token today (buttons use a #fff literal). Tali's contrast-color() upgrade is not generated yet.",
+        "$description": "New, no code token today (buttons use a #fff literal). The redesign's contrast-color() upgrade is not generated yet.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -1552,7 +1552,7 @@
       "color-bo-status-fill": {
         "$type": "color",
         "$value": "#E2EEE1",
-        "$description": "Today: bo.colors.statusFill. Code-only, not in Tali's file.",
+        "$description": "Today: bo.colors.statusFill. Code-only, not in the redesign file.",
         "$extensions": {
           "gv": {
             "legacy": [
@@ -1564,7 +1564,7 @@
       "color-bo-step-halo": {
         "$type": "color",
         "$value": "#D7E3E7",
-        "$description": "Today: bo.colors.stepHalo. Code-only, not in Tali's file.",
+        "$description": "Today: bo.colors.stepHalo. Code-only, not in the redesign file.",
         "$extensions": {
           "gv": {
             "legacy": [
@@ -1576,7 +1576,7 @@
       "color-bo-live-halo": {
         "$type": "color",
         "$value": "#DAF2E7",
-        "$description": "Today: bo.colors.liveHalo. Code-only, not in Tali's file.",
+        "$description": "Today: bo.colors.liveHalo. Code-only, not in the redesign file.",
         "$extensions": {
           "gv": {
             "legacy": [
@@ -1926,7 +1926,7 @@
       "radius": {
         "$type": "dimension",
         "$value": "3px",
-        "$description": "Tali's legacy alias. Today: stylingConsts.borderRadius (3px). Redesign: radius-1.",
+        "$description": "Legacy alias from the redesign file. Today: stylingConsts.borderRadius (3px). Redesign: radius-1.",
         "$deprecated": "Use radius-control or radius-panel.",
         "$extensions": {
           "gv": {
@@ -1975,7 +1975,7 @@
       "font-family": {
         "$type": "fontFamily",
         "$value": "'Public Sans'",
-        "$description": "Today: getTheme fontFamily default; ModeProvider writes the tenant customFontName here. Redesign: bo-font, as Tali's .gv-bo scope.",
+        "$description": "Today: getTheme fontFamily default; ModeProvider writes the tenant customFontName here. Redesign: bo-font, as the redesign's .gv-bo scope.",
         "$extensions": {
           "gv": {
             "redesign": "{semantic.font.bo-font}",
@@ -2005,7 +2005,7 @@
       "type-display-size": {
         "$type": "dimension",
         "$value": "44px",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2015,7 +2015,7 @@
       "type-display-lh": {
         "$type": "dimension",
         "$value": "52px",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2025,7 +2025,7 @@
       "type-display-weight": {
         "$type": "number",
         "$value": "700",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2035,7 +2035,7 @@
       "type-h1-size": {
         "$type": "dimension",
         "$value": "{primitive.font.fs-xxxl}",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2045,7 +2045,7 @@
       "type-h1-lh": {
         "$type": "dimension",
         "$value": "36px",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2055,7 +2055,7 @@
       "type-h1-weight": {
         "$type": "number",
         "$value": "700",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2065,7 +2065,7 @@
       "type-h2-size": {
         "$type": "dimension",
         "$value": "28px",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2075,7 +2075,7 @@
       "type-h2-lh": {
         "$type": "dimension",
         "$value": "36px",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2085,7 +2085,7 @@
       "type-h2-weight": {
         "$type": "number",
         "$value": "700",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2095,7 +2095,7 @@
       "type-h3-size": {
         "$type": "dimension",
         "$value": "20px",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2105,7 +2105,7 @@
       "type-h3-lh": {
         "$type": "dimension",
         "$value": "30px",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2115,7 +2115,7 @@
       "type-h3-weight": {
         "$type": "number",
         "$value": "600",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2125,7 +2125,7 @@
       "type-title-size": {
         "$type": "dimension",
         "$value": "{primitive.font.fs-l}",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2135,7 +2135,7 @@
       "type-title-lh": {
         "$type": "dimension",
         "$value": "24px",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2145,7 +2145,7 @@
       "type-title-weight": {
         "$type": "number",
         "$value": "600",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2155,7 +2155,7 @@
       "type-body-size": {
         "$type": "dimension",
         "$value": "18px",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2165,7 +2165,7 @@
       "type-body-lh": {
         "$type": "dimension",
         "$value": "27px",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2175,7 +2175,7 @@
       "type-body-weight": {
         "$type": "number",
         "$value": "400",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2185,7 +2185,7 @@
       "type-bodys-size": {
         "$type": "dimension",
         "$value": "{primitive.font.fs-s}",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2195,7 +2195,7 @@
       "type-bodys-lh": {
         "$type": "dimension",
         "$value": "20px",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2205,7 +2205,7 @@
       "type-bodys-weight": {
         "$type": "number",
         "$value": "400",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2215,7 +2215,7 @@
       "type-label-size": {
         "$type": "dimension",
         "$value": "14px",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2225,7 +2225,7 @@
       "type-label-lh": {
         "$type": "dimension",
         "$value": "21px",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2235,7 +2235,7 @@
       "type-label-weight": {
         "$type": "number",
         "$value": "600",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2245,7 +2245,7 @@
       "type-caption-size": {
         "$type": "dimension",
         "$value": "12px",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2255,7 +2255,7 @@
       "type-caption-lh": {
         "$type": "dimension",
         "$value": "18px",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2265,7 +2265,7 @@
       "type-caption-weight": {
         "$type": "number",
         "$value": "400",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2275,7 +2275,7 @@
       "type-display-ls": {
         "$type": "dimension",
         "$value": "-0.02em",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2285,7 +2285,7 @@
       "type-h2-ls": {
         "$type": "dimension",
         "$value": "-0.01em",
-        "$description": "New, no code value today; Tali's type role, same in both modes.",
+        "$description": "New, no code value today; redesign type role, same in both modes.",
         "$extensions": {
           "gv": {
             "legacy": []
@@ -2375,7 +2375,7 @@
       "focus-color": {
         "$type": "color",
         "$value": "#000000",
-        "$description": "Today: focusRing outline colour (colors.black). Redesign: Tali's near-black.",
+        "$description": "Today: focusRing outline colour (colors.black). Redesign: the redesign's near-black.",
         "$extensions": {
           "gv": {
             "redesign": "#1a1a1a",

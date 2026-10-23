@@ -12,6 +12,7 @@ import type { Overrides } from '../lib/overrides';
 import { BASE, DEFS } from '../lib/tokenValues';
 import { componentLabel, PairUse } from '../lib/usage';
 import { useScanIndexes } from '../lib/useScanIndexes';
+import { plural } from '../lib/plural';
 
 type Category = { id: string; label: string; intro: string; blurb: string };
 
@@ -86,9 +87,6 @@ type Props = {
 const countOf = (meta: TokenMeta[], id: string) =>
   meta.filter((t) => t.category === id).length;
 
-const plural = (n: number, one: string, many: string) =>
-  `${n} ${n === 1 ? one : many}`;
-
 // Today and Redesign as a two-button switch.
 const ModeSwitch = ({
   mode,
@@ -149,7 +147,7 @@ const Index = ({
       </div>
     </header>
     <ul className="wb-card-grid wb-category-grid" data-testid="wb-categories">
-      {CATEGORIES.map((c) => {
+      {CATEGORIES.filter((c) => countOf(meta, c.id) > 0).map((c) => {
         const n = countOf(meta, c.id);
         const body = (
           <>

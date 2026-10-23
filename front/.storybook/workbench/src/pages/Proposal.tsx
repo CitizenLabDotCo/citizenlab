@@ -118,7 +118,7 @@ const RINGS: {
   },
   {
     title: 'A redesign mode',
-    what: "Scoped to the redesigned project pages, where Tali's design already lives. Tali owns that token set; widening it is yours to decide.",
+    what: 'Scoped to the redesigned project pages, where the redesign already lives. The design lead owns that token set; widening it is yours to decide.',
     cost: 'Your call on scope',
     icon: 'pages',
   },
@@ -692,7 +692,7 @@ const DECISIONS: { q: string; a: string }[] = [
     a: 'Add it to CI next to the tests, then widen it one folder at a time, the redesigned project pages first.',
   },
   {
-    q: "Who reviews Tali's heals?",
+    q: 'Who reviews the design heals?',
     a: 'One frontend owner per area, a few minutes per heal.',
   },
 ];
@@ -722,7 +722,7 @@ const Decisions = () => (
 
 const MANUAL = [
   'Reviewing each heal PR',
-  'Choosing the redesign values (Tali)',
+  'Choosing the redesign values (the design lead)',
   'Accessibility checks a person has to do',
 ];
 

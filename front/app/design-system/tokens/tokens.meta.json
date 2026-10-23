@@ -957,7 +957,7 @@
     ],
     "type": "dimension",
     "path": "primitive.font.fs-xxs",
-    "description": "Today: fontSizes.xxs. Code-only, not on Tali's ladder."
+    "description": "Today: fontSizes.xxs. Code-only, not on the redesign type ladder."
   },
   {
     "name": "--gv-fs-xs",
@@ -1205,7 +1205,7 @@
     "legacy": [],
     "type": "duration",
     "path": "primitive.motion.fast",
-    "description": "Today: defaultInputStyle transition. Code-only, not in Tali's file."
+    "description": "Today: defaultInputStyle transition. Code-only, not in the redesign file."
   },
   {
     "name": "--gv-motion-base",
@@ -1218,7 +1218,7 @@
     "legacy": [],
     "type": "duration",
     "path": "primitive.motion.base",
-    "description": "Today: defaultCardHoverStyle transition. Code-only, not in Tali's file."
+    "description": "Today: defaultCardHoverStyle transition. Code-only, not in the redesign file."
   },
   {
     "name": "--gv-color-text-heading",
@@ -1235,7 +1235,7 @@
     ],
     "type": "color",
     "path": "semantic.color.color-text-heading",
-    "description": "Heading text. Today: colors.textPrimary. Redesign: bo.colors.textHeading. Replaces Tali's --gv-text-heading."
+    "description": "Heading text. Today: colors.textPrimary. Redesign: bo.colors.textHeading. Replaces the redesign's --gv-text-heading."
   },
   {
     "name": "--gv-text-primary",
@@ -1280,7 +1280,7 @@
     "legacy": [],
     "type": "color",
     "path": "semantic.color.text-heading",
-    "description": "Tali's heading name, kept as an alias of color-text-heading (the semantic name wins).",
+    "description": "The redesign file's heading name, kept as an alias of color-text-heading (the semantic name wins).",
     "deprecated": true
   },
   {
@@ -1527,7 +1527,7 @@
     ],
     "type": "color",
     "path": "semantic.color.color-teal",
-    "description": "Today: semanticColors.teal. Code-only role, not in Tali's file."
+    "description": "Today: semanticColors.teal. Code-only role, not in the redesign file."
   },
   {
     "name": "--gv-color-teal-light",
@@ -1543,7 +1543,7 @@
     ],
     "type": "color",
     "path": "semantic.color.color-teal-light",
-    "description": "Today: semanticColors.tealLight. Code-only role, not in Tali's file."
+    "description": "Today: semanticColors.tealLight. Code-only role, not in the redesign file."
   },
   {
     "name": "--gv-survey-canvas",
@@ -1582,7 +1582,7 @@
     "legacy": [],
     "type": "color",
     "path": "semantic.color.tenant-primary",
-    "description": "City slot, written by ModeProvider from core.color_main. Today fallback as in getTheme. Redesign: back-office primary, as Tali's .gv-bo scope."
+    "description": "City slot, written by ModeProvider from core.color_main. Today fallback as in getTheme. Redesign: back-office primary, as the redesign's .gv-bo scope."
   },
   {
     "name": "--gv-tenant-secondary",
@@ -1595,7 +1595,7 @@
     "legacy": [],
     "type": "color",
     "path": "semantic.color.tenant-secondary",
-    "description": "City slot, written by ModeProvider from core.color_secondary. Today fallback as in getTheme. Redesign: back-office primary, as Tali's .gv-bo scope."
+    "description": "City slot, written by ModeProvider from core.color_secondary. Today fallback as in getTheme. Redesign: back-office primary, as the redesign's .gv-bo scope."
   },
   {
     "name": "--gv-tenant-text",
@@ -1608,7 +1608,7 @@
     "legacy": [],
     "type": "color",
     "path": "semantic.color.tenant-text",
-    "description": "City slot, written by ModeProvider from core.color_text. Today fallback as in getTheme. Redesign: text-primary, as Tali's .gv-bo scope."
+    "description": "City slot, written by ModeProvider from core.color_text. Today fallback as in getTheme. Redesign: text-primary, as the redesign's .gv-bo scope."
   },
   {
     "name": "--gv-color-tenant-primary",
@@ -1671,7 +1671,7 @@
     ],
     "type": "color",
     "path": "semantic.color.tenant-primary-lighten75",
-    "description": "Today: transparentize(0.75, tenantPrimary) as sRGB color-mix. Redesign: Tali's OKLCH mix."
+    "description": "Today: transparentize(0.75, tenantPrimary) as sRGB color-mix. Redesign: the redesign's OKLCH mix."
   },
   {
     "name": "--gv-tenant-primary-lighten90",
@@ -1686,7 +1686,7 @@
     ],
     "type": "color",
     "path": "semantic.color.tenant-primary-lighten90",
-    "description": "Today: transparentize(0.9, tenantPrimary) as sRGB color-mix. Redesign: Tali's OKLCH mix."
+    "description": "Today: transparentize(0.9, tenantPrimary) as sRGB color-mix. Redesign: the redesign's OKLCH mix."
   },
   {
     "name": "--gv-tenant-primary-lighten95",
@@ -1701,7 +1701,7 @@
     ],
     "type": "color",
     "path": "semantic.color.tenant-primary-lighten95",
-    "description": "Today: transparentize(0.95, tenantPrimary) as sRGB color-mix. Redesign: Tali's OKLCH mix."
+    "description": "Today: transparentize(0.95, tenantPrimary) as sRGB color-mix. Redesign: the redesign's OKLCH mix."
   },
   {
     "name": "--gv-on-primary",
@@ -1714,7 +1714,7 @@
     "legacy": [],
     "type": "color",
     "path": "semantic.color.on-primary",
-    "description": "New, no code token today (buttons use a #fff literal). Tali's contrast-color() upgrade is not generated yet."
+    "description": "New, no code token today (buttons use a #fff literal). The redesign's contrast-color() upgrade is not generated yet."
   },
   {
     "name": "--gv-on-secondary",
@@ -1727,7 +1727,7 @@
     "legacy": [],
     "type": "color",
     "path": "semantic.color.on-secondary",
-    "description": "New, no code token today (buttons use a #fff literal). Tali's contrast-color() upgrade is not generated yet."
+    "description": "New, no code token today (buttons use a #fff literal). The redesign's contrast-color() upgrade is not generated yet."
   },
   {
     "name": "--gv-bo-sidebar-bg",
@@ -1887,7 +1887,7 @@
     ],
     "type": "color",
     "path": "semantic.color.color-bo-status-fill",
-    "description": "Today: bo.colors.statusFill. Code-only, not in Tali's file."
+    "description": "Today: bo.colors.statusFill. Code-only, not in the redesign file."
   },
   {
     "name": "--gv-color-bo-step-halo",
@@ -1902,7 +1902,7 @@
     ],
     "type": "color",
     "path": "semantic.color.color-bo-step-halo",
-    "description": "Today: bo.colors.stepHalo. Code-only, not in Tali's file."
+    "description": "Today: bo.colors.stepHalo. Code-only, not in the redesign file."
   },
   {
     "name": "--gv-color-bo-live-halo",
@@ -1917,7 +1917,7 @@
     ],
     "type": "color",
     "path": "semantic.color.color-bo-live-halo",
-    "description": "Today: bo.colors.liveHalo. Code-only, not in Tali's file."
+    "description": "Today: bo.colors.liveHalo. Code-only, not in the redesign file."
   },
   {
     "name": "--gv-chart-navy",
@@ -2340,7 +2340,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.radius.radius",
-    "description": "Tali's legacy alias. Today: stylingConsts.borderRadius (3px). Redesign: radius-1.",
+    "description": "Legacy alias from the redesign file. Today: stylingConsts.borderRadius (3px). Redesign: radius-1.",
     "deprecated": true
   },
   {
@@ -2390,7 +2390,7 @@
     ],
     "type": "fontFamily",
     "path": "semantic.font.font-family",
-    "description": "Today: getTheme fontFamily default; ModeProvider writes the tenant customFontName here. Redesign: bo-font, as Tali's .gv-bo scope."
+    "description": "Today: getTheme fontFamily default; ModeProvider writes the tenant customFontName here. Redesign: bo-font, as the redesign's .gv-bo scope."
   },
   {
     "name": "--gv-bo-font",
@@ -2416,7 +2416,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-display-size",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-display-lh",
@@ -2429,7 +2429,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-display-lh",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-display-weight",
@@ -2442,7 +2442,7 @@
     "legacy": [],
     "type": "number",
     "path": "semantic.text.type-display-weight",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-h1-size",
@@ -2455,7 +2455,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-h1-size",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-h1-lh",
@@ -2468,7 +2468,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-h1-lh",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-h1-weight",
@@ -2481,7 +2481,7 @@
     "legacy": [],
     "type": "number",
     "path": "semantic.text.type-h1-weight",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-h2-size",
@@ -2494,7 +2494,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-h2-size",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-h2-lh",
@@ -2507,7 +2507,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-h2-lh",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-h2-weight",
@@ -2520,7 +2520,7 @@
     "legacy": [],
     "type": "number",
     "path": "semantic.text.type-h2-weight",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-h3-size",
@@ -2533,7 +2533,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-h3-size",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-h3-lh",
@@ -2546,7 +2546,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-h3-lh",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-h3-weight",
@@ -2559,7 +2559,7 @@
     "legacy": [],
     "type": "number",
     "path": "semantic.text.type-h3-weight",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-title-size",
@@ -2572,7 +2572,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-title-size",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-title-lh",
@@ -2585,7 +2585,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-title-lh",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-title-weight",
@@ -2598,7 +2598,7 @@
     "legacy": [],
     "type": "number",
     "path": "semantic.text.type-title-weight",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-body-size",
@@ -2611,7 +2611,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-body-size",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-body-lh",
@@ -2624,7 +2624,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-body-lh",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-body-weight",
@@ -2637,7 +2637,7 @@
     "legacy": [],
     "type": "number",
     "path": "semantic.text.type-body-weight",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-bodys-size",
@@ -2650,7 +2650,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-bodys-size",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-bodys-lh",
@@ -2663,7 +2663,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-bodys-lh",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-bodys-weight",
@@ -2676,7 +2676,7 @@
     "legacy": [],
     "type": "number",
     "path": "semantic.text.type-bodys-weight",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-label-size",
@@ -2689,7 +2689,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-label-size",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-label-lh",
@@ -2702,7 +2702,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-label-lh",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-label-weight",
@@ -2715,7 +2715,7 @@
     "legacy": [],
     "type": "number",
     "path": "semantic.text.type-label-weight",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-caption-size",
@@ -2728,7 +2728,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-caption-size",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-caption-lh",
@@ -2741,7 +2741,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-caption-lh",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-caption-weight",
@@ -2754,7 +2754,7 @@
     "legacy": [],
     "type": "number",
     "path": "semantic.text.type-caption-weight",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-display-ls",
@@ -2767,7 +2767,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-display-ls",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-type-h2-ls",
@@ -2780,7 +2780,7 @@
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-h2-ls",
-    "description": "New, no code value today; Tali's type role, same in both modes."
+    "description": "New, no code value today; redesign type role, same in both modes."
   },
   {
     "name": "--gv-shadow-menu",
@@ -2879,7 +2879,7 @@
     ],
     "type": "color",
     "path": "semantic.focus.focus-color",
-    "description": "Today: focusRing outline colour (colors.black). Redesign: Tali's near-black."
+    "description": "Today: focusRing outline colour (colors.black). Redesign: the redesign's near-black."
   },
   {
     "name": "--gv-focus-outline",

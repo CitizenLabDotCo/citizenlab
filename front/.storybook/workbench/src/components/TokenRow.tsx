@@ -12,6 +12,7 @@ import type { Mode, TokenName } from '@ds/tokens/tokens';
 import type { TokenMeta } from '../lib/data';
 import { parseColour, snap } from '../lib/overrides';
 import type { TokenUsage } from '../lib/usage';
+import { plural } from '../lib/plural';
 
 // React fires onChange on every tick of a drag. Only the native `change`
 // event (picker closed) commits; ticks just preview in the text field.
@@ -437,9 +438,15 @@ const TokenRow = ({
         ) : usage ? (
           <>
             <span className="wb-usage-count">{usage.count}</span>
-            <span className="wb-usage-unit"> uses</span>
+            <span className="wb-usage-unit">
+              {usage.count === 1 ? ' use' : ' uses'}
+            </span>
             <div className="wb-token-note">
-              {usage.components} places, {usage.routes} pages
+              {`${plural(usage.components, 'place', 'places')}, ${plural(
+                usage.routes,
+                'page',
+                'pages'
+              )}`}
             </div>
           </>
         ) : (

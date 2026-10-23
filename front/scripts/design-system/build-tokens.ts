@@ -10,7 +10,7 @@
  * `semantic.<category>.<key>` (tier 2). A token's CSS name is
  * `--gv-<prefix><key path joined by ->`, where the prefix defaults to
  * `<category>-` and a category group may set `$extensions.gv.prefix` (often
- * "", to keep Tali's names such as `--gv-grey-800`). `$value` is the today
+ * "", to keep the redesign file's names such as `--gv-grey-800`). `$value` is the today
  * value, `$extensions.gv.redesign` the redesign value; either may hold
  * `{tier.category.key}` references, which render as `var(--gv-...)`.
  */

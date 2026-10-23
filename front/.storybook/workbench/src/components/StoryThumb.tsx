@@ -32,6 +32,7 @@ import {
 import Icon from './Icon';
 
 import type { FrameGlobals } from '../lib/frame';
+import { plural } from '../lib/plural';
 
 // How much of the component file follows the tokens, as a ring.
 export const ScoreRing = ({
@@ -84,9 +85,6 @@ export const OfficeChip = ({ office }: { office: Office }) => (
     {OFFICE_LABEL[office]}
   </span>
 );
-
-const plural = (n: number, one: string, many: string) =>
-  `${n} ${n === 1 ? one : many}`;
 
 // The accessibility badges of a card (SPEC 7.6 wording): checked by axe,
 // keyboard tested or untested, and the agent review with its counts.

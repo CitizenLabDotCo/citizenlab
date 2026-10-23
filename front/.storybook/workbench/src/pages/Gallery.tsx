@@ -151,6 +151,13 @@ const Gallery = ({ section, globals, onMode }: Props) => {
     filter.query.trim() !== '';
   const countOf = (status: Status | 'all') =>
     filterGroups(pool, { ...filter, status }).length;
+  // A status filter with one value filters nothing: it hides then.
+  const statuses = STATUSES.filter(
+    (s) =>
+      s.value === 'all' ||
+      s.value === filter.status ||
+      pool.some((g) => g.status === s.value)
+  ).map((s) => ({ ...s, count: countOf(s.value) }));
   const set = (patch: Partial<GalleryFilter>) =>
     setFilter((f) => ({ ...f, ...patch }));
 
@@ -215,21 +222,18 @@ const Gallery = ({ section, globals, onMode }: Props) => {
                 testId="wb-filter-office"
               />
             </div>
-            <div className="wb-filter">
-              <span className="wb-filter-label">Status</span>
-              <Segmented
-                label="Status"
-                value={filter.status}
-                options={STATUSES.filter(
-                  (s) =>
-                    s.value === 'all' ||
-                    s.value === filter.status ||
-                    pool.some((g) => g.status === s.value)
-                ).map((s) => ({ ...s, count: countOf(s.value) }))}
-                onChange={(status) => set({ status })}
-                testId="wb-filter-status"
-              />
-            </div>
+            {statuses.length > 2 && (
+              <div className="wb-filter">
+                <span className="wb-filter-label">Status</span>
+                <Segmented
+                  label="Status"
+                  value={filter.status}
+                  options={statuses}
+                  onChange={(status) => set({ status })}
+                  testId="wb-filter-status"
+                />
+              </div>
+            )}
           </div>
 
           <p className="wb-result-count" aria-live="polite">
@@ -269,17 +273,14 @@ const Gallery = ({ section, globals, onMode }: Props) => {
               testId="wb-gallery-grid"
             />
           )}
-          {mine.length === 0 && unfiled.length > 0 && (
-            <p className="wb-section-note wb-gallery-hint">
-              {`No story is titled ${copy.title}/ yet.`}
-            </p>
-          )}
-
           {shownUnfiled.length > 0 && (
             <section className="wb-gallery-group">
               <h2 className="wb-section-title">Outside the sections</h2>
               <p className="wb-section-note">
-                Stories from app code whose title starts with no section, such
+                {mine.length === 0
+                  ? `Nothing is filed under ${copy.title}/ yet, so this lists `
+                  : 'Also here: '}
+                stories from app code whose title starts with no section, such
                 as <code>Cards/</code> and <code>HomepageBuilder/</code>. They
                 show here until they move under Patterns/ or Pages/.
               </p>

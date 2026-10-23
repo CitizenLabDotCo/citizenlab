@@ -22,6 +22,7 @@ import {
 } from '../lib/healTask';
 import type { StoryGroup } from '../lib/stories';
 import type { Indexes } from '../lib/useScanIndexes';
+import { plural } from '../lib/plural';
 
 type Props = {
   storyId: string;
@@ -54,9 +55,6 @@ const FIRST = {
   tasks: 6,
   unreached: 4,
 };
-
-const plural = (n: number, one: string, many: string) =>
-  `${n} ${n === 1 ? one : many}`;
 
 const Section = ({
   icon,
