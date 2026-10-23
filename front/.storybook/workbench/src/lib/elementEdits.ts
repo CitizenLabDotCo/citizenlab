@@ -181,7 +181,9 @@ export const taskOfEdit = (e: ElementEdit, ctx: TaskContext): string => {
 const KINDS = new Set<EditKind>(['attach', 'swap', 'detach', 'custom', 'file']);
 const PX = /^-?\d+(\.\d+)?px$/;
 
-const literalFits = (rowId: string, value: string) => {
+// A literal the row can take: the right kind for the row, short, nothing
+// that loads a resource or breaks out of a declaration.
+export const valueFits = (rowId: string, value: string) => {
   if (value.length > MAX_VALUE || /url\(|expression\(|[<>;{}\\]/i.test(value)) {
     return false;
   }
@@ -218,7 +220,7 @@ const isEdit = (v: unknown, known: Set<string>): v is ElementEdit => {
     // A token edit paints var(token); its value is only shown.
     (to.token !== undefined
       ? (to.value as string).length <= 256 && !/[<>]/.test(to.value as string)
-      : literalFits(e.rowId as string, to.value as string)) &&
+      : valueFits(e.rowId as string, to.value as string)) &&
     typeof e.at === 'number'
   );
 };

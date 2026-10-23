@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Canvas from '../components/Canvas';
 import Icon from '../components/Icon';
@@ -8,17 +8,18 @@ import { OfficeChip, ScoreRing, StatusChip } from '../components/StoryThumb';
 import { ToolbarState, ZoomControl } from '../components/Toolbar';
 import { checklistOf } from '../lib/a11y';
 import { CHECKLISTS } from '../lib/checklists';
+import { fileFindings } from '../lib/componentPanels';
 import { TOKEN_META } from '../lib/data';
 import { HealChoice, HealMode, healModeOf } from '../lib/healTask';
 import { channelOf, storyLangOf } from '../lib/preview';
 import { groupOfStory, Section, StoryRef } from '../lib/stories';
 import { useA11yResults } from '../lib/useA11y';
 import { Tool, useCanvasSelection } from '../lib/useCanvasSelection';
+import { useElementEdits } from '../lib/useElementEdits';
 import { useScanIndexes } from '../lib/useScanIndexes';
 import { useStoryGroups } from '../lib/useStoryGroups';
 import A11y from '../panels/A11y';
 import Design from '../panels/Design';
-import Tokens from '../panels/Tokens';
 import Usage from '../panels/Usage';
 
 import type { Overrides } from '../lib/overrides';
@@ -41,7 +42,7 @@ const TABS: Tab[] = ['design', 'inspect'];
 const TAB_KEY = 'wb-inspector-tab';
 
 // The Inspect tab's own views.
-type Detail = 'tokens' | 'usage' | 'a11y';
+type Detail = 'usage' | 'a11y';
 
 // The last panel tab, per browser (storage may be blocked).
 const storedTab = (): Tab => {
@@ -87,16 +88,16 @@ const Component = ({
   toolbar,
   setToolbar,
   overrides,
-  setOverride,
-  reset,
+  // Task 10 puts the Changes drawer (reset) and the language field
+  // (storyLang) on the canvas bar.
+  reset: _reset,
 }: Props) => {
   const groups = useStoryGroups();
   const indexes = useScanIndexes(TOKEN_META);
   const a11y = useA11yResults();
   const [tab, setTab] = useState<Tab>(storedTab);
-  const [detail, setDetail] = useState<Detail>('tokens');
+  const [detail, setDetail] = useState<Detail>('usage');
   const [tool, setTool] = useState<Tool>('select');
-  const [tokenCount, setTokenCount] = useState<number | undefined>();
   const [healChoice, setHealChoice] = useState<HealChoice | undefined>();
   const [view, setView] = useState<View>('single');
   const [frames, setFrames] = useState<(Window | null)[]>([null, null]);
@@ -119,9 +120,19 @@ const Component = ({
   const [second] = useState(() => onFrame(1));
   const [fitScale, setFitScale] = useState<number | undefined>();
   // The language the story sets itself, read after each render.
-  const [storyLang, setStoryLang] = useState<string | undefined>();
+  const [_storyLang, setStoryLang] = useState<string | undefined>();
   const frame = frames[0];
   const selection = useCanvasSelection(frame, loads, tool, storyId);
+  const {
+    edits,
+    add: addEdit,
+    remove: removeEdit,
+  } = useElementEdits(TOKEN_META);
+  const fileOf = groups ? groupOfStory(groups, storyId)?.file : undefined;
+  const findings = useMemo(
+    () => (indexes.scan ? fileFindings(indexes.scan, fileOf) : []),
+    [indexes.scan, fileOf]
+  );
   useEffect(() => {
     const read = () => setStoryLang(storyLangOf(frame));
     read();
@@ -324,24 +335,16 @@ const Component = ({
                 states={states}
                 variants={variants}
                 tabLabel={tabLabel}
-                toolbar={toolbar}
-                setToolbar={setToolbar}
-                modeLocked={
-                  split ? 'Both modes are shown side by side.' : undefined
-                }
-                storyLang={storyLang}
+                componentName={group.name}
                 frames={shownFrames}
                 selection={selection}
                 meta={TOKEN_META}
+                mode={toolbar.mode}
                 overrides={overrides}
-                setOverride={setOverride}
-                reset={reset}
-                usage={indexes.usage}
-                hasScan={indexes.hasScan}
-                onInspect={() => {
-                  setTab('inspect');
-                  setDetail('tokens');
-                }}
+                edits={edits}
+                addEdit={addEdit}
+                removeEdit={removeEdit}
+                findings={findings}
               />
             ),
           },
@@ -357,7 +360,6 @@ const Component = ({
                   onChange={setDetail}
                   testId="wb-inspect-view"
                   options={[
-                    { value: 'tokens', label: 'Tokens', count: tokenCount },
                     {
                       value: 'usage',
                       label: 'Usage',
@@ -373,20 +375,6 @@ const Component = ({
                     },
                   ]}
                 />
-                <div hidden={detail !== 'tokens'}>
-                  <Tokens
-                    storyId={storyId}
-                    group={group}
-                    frame={frames[0]}
-                    indexes={indexes}
-                    mode={toolbar.mode}
-                    overrides={overrides}
-                    setOverride={setOverride}
-                    reset={reset}
-                    healMode={heal}
-                    onCount={setTokenCount}
-                  />
-                </div>
                 <div hidden={detail !== 'usage'}>
                   <Usage
                     storyId={storyId}

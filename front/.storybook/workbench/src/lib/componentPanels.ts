@@ -1,11 +1,7 @@
-// What the Tokens and Usage panels show for one component: the tokens its
-// story renders merged with the tokens its file reaches in the scan, the
-// files that use it, the routes it renders on and its findings. Pure
-// functions over the scan, the token metadata and the frame read.
-import type { Finding, ScanOutput, TokenMeta } from './data';
-import type { TokenMatch } from './frame';
-import { healToken, isHealable } from './healTask';
-import { legacyIndex, tokensOfFinding } from './usage';
+// What the Usage panel and the Design tab show for one component: the files
+// that use it, the routes it renders on and its findings. Pure functions
+// over the scan.
+import type { Finding, ScanOutput } from './data';
 
 export const REPO = 'https://github.com/CitizenLabDotCo/citizenlab';
 export const BRANCH = 'design-system/workbench';
@@ -19,78 +15,6 @@ export const reviewLink = (path: string, component: string) =>
   `#/review?route=${encodeURIComponent(path)}&component=${encodeURIComponent(
     component
   )}`;
-
-// ---------------------------------------------------------------- tokens
-
-export type Match = TokenMatch['matches'];
-
-export type PanelToken = {
-  name: string;
-  // linked: a rule of the rendered story reads the token. equal: a rendered
-  // value equals it, but no rule names it. none: only the code reaches it
-  // (another state, or a branch this story does not render).
-  match: Match;
-  // Findings of the file that stand for the token.
-  findings: Finding[];
-  // The findings among them a heal fixes (legacy reads, hard values).
-  heal: Finding[];
-};
-
-const MATCH_ORDER: Record<Match, number> = { linked: 0, equal: 1, none: 2 };
-
-// The tokens the story renders (linked or equal in `computed`) and the ones
-// the file's findings reach: token-var reads, legacy names, and the
-// suggested token of a hard value. Ordered linked, equal, code only; then
-// by the number of findings, then by name.
-export const panelTokens = (
-  computed: TokenMatch[] | null,
-  findings: Finding[],
-  meta: TokenMeta[]
-): PanelToken[] => {
-  const legacy = legacyIndex(meta);
-  const known = new Set(meta.map((t) => t.name));
-  const rows = new Map<string, PanelToken>();
-  const row = (name: string, match: Match) => {
-    let r = rows.get(name);
-    if (!r) {
-      r = { name, match, findings: [], heal: [] };
-      rows.set(name, r);
-    }
-    return r;
-  };
-  for (const c of computed ?? []) {
-    if (c.matches !== 'none') row(c.name, c.matches);
-  }
-  for (const f of findings) {
-    const tokens =
-      f.category === 'token-var'
-        ? tokensOfFinding(f, legacy, known)
-        : isHealable(f)
-        ? healToken(f, meta)
-        : [];
-    for (const t of tokens) {
-      const r = row(t, 'none');
-      r.findings.push(f);
-      if (isHealable(f)) r.heal.push(f);
-    }
-  }
-  const deprecated = new Set(
-    meta.filter((t) => t.deprecated).map((t) => t.name)
-  );
-  const last = (r: PanelToken) => (deprecated.has(r.name) ? 1 : 0);
-  return [...rows.values()].sort(
-    (a, b) =>
-      MATCH_ORDER[a.match] - MATCH_ORDER[b.match] ||
-      last(a) - last(b) ||
-      b.findings.length - a.findings.length ||
-      a.name.localeCompare(b.name)
-  );
-};
-
-// Findings to heal across the rows, each once (a legacy name that maps to
-// two tokens puts its finding under both rows).
-export const healCount = (rows: PanelToken[]) =>
-  new Set(rows.flatMap((r) => r.heal)).size;
 
 // ---------------------------------------------------------------- usage
 
