@@ -3,8 +3,8 @@ import React, { ReactNode, useRef, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
-import { gvTag } from '../../utils/gvTag';
 import useInstanceId from '../../hooks/useInstanceId';
+import { gvTag } from '../../utils/gvTag';
 import { focusRing, isRtl } from '../../utils/styleUtils';
 import Box, { BoxProps } from '../Box';
 import Icon from '../Icon';

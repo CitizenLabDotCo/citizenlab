@@ -4,8 +4,8 @@ import { isNil, isEmpty, size as lodashSize, isBoolean } from 'lodash-es';
 import styled, { css } from 'styled-components';
 import { Placement } from 'tippy.js';
 
-import { gvTag } from '../../utils/gvTag';
 import { ScreenReaderOnly } from '../../utils/a11y';
+import { gvTag } from '../../utils/gvTag';
 import {
   bo,
   colors,

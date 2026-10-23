@@ -4,8 +4,8 @@ import { darken } from 'polished';
 import styled from 'styled-components';
 import { Placement } from 'tippy.js';
 
-import { gvTag } from '../../utils/gvTag';
 import useInstanceId from '../../hooks/useInstanceId';
+import { gvTag } from '../../utils/gvTag';
 import { colors } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import Box, {

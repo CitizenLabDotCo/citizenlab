@@ -2,8 +2,8 @@ import React, { useId, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { gvTag } from '../../utils/gvTag';
 import InputContainer from '../../utils/containers/InputContainer';
+import { gvTag } from '../../utils/gvTag';
 import { colors } from '../../utils/styleUtils';
 import Box, { BoxMarginProps } from '../Box';
 import Dropdown from '../Dropdown';

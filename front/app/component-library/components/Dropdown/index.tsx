@@ -3,8 +3,8 @@ import React, { useEffect, useRef, FormEvent } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
-import { gvTag } from '../../utils/gvTag';
 import ClickOutside from '../../utils/containers/clickOutside';
+import { gvTag } from '../../utils/gvTag';
 import { colors, fontSizes, media, isRtl } from '../../utils/styleUtils';
 
 const timeout = 200;
