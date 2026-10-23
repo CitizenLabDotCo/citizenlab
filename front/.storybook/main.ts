@@ -9,6 +9,9 @@ const APP_FOLDER_ALIASES = [
   'components',
   'containers',
   'context',
+  // The app resolves it through tsconfig baseUrl; without the alias any story
+  // that reaches ModeScope or the token API by `design-system/...` fails.
+  'design-system',
   'global-styles',
   'hooks',
   'i18n',
