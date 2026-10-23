@@ -1,0 +1,404 @@
+{
+  "component": "OptionList",
+  "generatedAt": "2026-10-23T10:13:19.069Z",
+  "host": "https://pr-15027.epic.hq.govocal.com",
+  "storybook": "https://pr-15027.epic.hq.govocal.com/storybook",
+  "story": "components-forms-optionlist--default",
+  "stories": [
+    {
+      "id": "components-forms-optionlist--default",
+      "mode": "redesign",
+      "viewport": "desktop",
+      "width": 1280,
+      "root": "tag",
+      "shot": "audits/OptionList/story-redesign-1280.png",
+      "styles": {
+        "radius": "0px",
+        "padding": "0px",
+        "color": "rgba(0, 0, 0, 0.87)",
+        "background": "rgba(0, 0, 0, 0)",
+        "fontSize": "14px"
+      },
+      "tokens": {
+        "linked": [
+          "--gv-space-2",
+          "--gv-radius-control"
+        ],
+        "equal": [
+          "--gv-white",
+          "--gv-grey-800",
+          "--gv-space-1",
+          "--gv-radius-2",
+          "--gv-fs-s",
+          "--gv-fs-base",
+          "--gv-fs-m",
+          "--gv-text-primary",
+          "--gv-text-body",
+          "--gv-header-text",
+          "--gv-tenant-text",
+          "--gv-color-tenant-text",
+          "--gv-on-primary",
+          "--gv-on-secondary",
+          "--gv-bo-sidebar-text",
+          "--gv-type-bodys-size",
+          "--gv-type-label-size"
+        ]
+      }
+    },
+    {
+      "id": "components-forms-optionlist--default",
+      "mode": "redesign",
+      "viewport": "mobile",
+      "width": 390,
+      "root": "tag",
+      "shot": "audits/OptionList/story-redesign-390.png",
+      "styles": {
+        "radius": "0px",
+        "padding": "0px",
+        "color": "rgba(0, 0, 0, 0.87)",
+        "background": "rgba(0, 0, 0, 0)",
+        "fontSize": "14px"
+      },
+      "tokens": {
+        "linked": [
+          "--gv-space-2",
+          "--gv-radius-control"
+        ],
+        "equal": [
+          "--gv-white",
+          "--gv-grey-800",
+          "--gv-space-1",
+          "--gv-radius-2",
+          "--gv-fs-s",
+          "--gv-fs-base",
+          "--gv-fs-m",
+          "--gv-text-primary",
+          "--gv-text-body",
+          "--gv-header-text",
+          "--gv-tenant-text",
+          "--gv-color-tenant-text",
+          "--gv-on-primary",
+          "--gv-on-secondary",
+          "--gv-bo-sidebar-text",
+          "--gv-type-bodys-size",
+          "--gv-type-label-size"
+        ]
+      }
+    }
+  ],
+  "instances": [
+    {
+      "route": "admin/projects/$projectId/phases/$phaseId/ideas",
+      "office": "admin",
+      "url": "https://pr-15027.epic.hq.govocal.com/en/admin/projects/6400273d-323e-481d-8b2c-73e719f5fe8c/phases/c0a05a07-9475-47cb-9ff4-94a571e6c32c/ideas?project_backoffice_redesign",
+      "viewport": "desktop",
+      "width": 1280,
+      "index": 0,
+      "count": 4,
+      "shot": "audits/OptionList/admin-projects-projectId-phases-phaseId-ideas-1280-1.png",
+      "box": {
+        "width": 260,
+        "height": 305
+      },
+      "size": "w:l h:l",
+      "styles": {
+        "radius": "0px",
+        "padding": "0px",
+        "color": "rgb(4, 77, 108)",
+        "background": "rgba(0, 0, 0, 0)",
+        "fontSize": "14px"
+      },
+      "tokens": {
+        "linked": [
+          "--gv-space-2",
+          "--gv-radius-control"
+        ],
+        "equal": [
+          "--gv-white",
+          "--gv-grey-800",
+          "--gv-grey-400",
+          "--gv-cool-grey-500",
+          "--gv-blue-500",
+          "--gv-teal-400",
+          "--gv-red-500",
+          "--gv-green-500",
+          "--gv-space-1",
+          "--gv-radius-2",
+          "--gv-fs-xs",
+          "--gv-fs-s",
+          "--gv-fs-base",
+          "--gv-fs-m",
+          "--gv-color-text-heading",
+          "--gv-text-primary",
+          "--gv-text-heading",
+          "--gv-border-light",
+          "--gv-primary",
+          "--gv-error",
+          "--gv-success",
+          "--gv-tenant-text",
+          "--gv-color-tenant-text",
+          "--gv-on-primary",
+          "--gv-on-secondary",
+          "--gv-bo-sidebar-text",
+          "--gv-bo-primary",
+          "--gv-chart-teal",
+          "--gv-chart-pos",
+          "--gv-chart-neg",
+          "--gv-type-bodys-size",
+          "--gv-type-label-size",
+          "--gv-type-caption-size"
+        ]
+      },
+      "diffsFromStory": [
+        "colour: rgb(4, 77, 108), story components-forms-optionlist--default rgba(0, 0, 0, 0.87)",
+        "tokens: --gv-text-body, --gv-header-text in the story, not here",
+        "tokens: --gv-grey-400, --gv-cool-grey-500, --gv-blue-500, --gv-teal-400, --gv-red-500, --gv-green-500 and 12 more here, not in the story"
+      ],
+      "openedBy": "role=button[name=\"Filter\" s] -> role=button[name=\"Status\" s]"
+    },
+    {
+      "route": "admin/projects/$projectId/phases/$phaseId/ideas",
+      "office": "admin",
+      "url": "https://pr-15027.epic.hq.govocal.com/en/admin/projects/6400273d-323e-481d-8b2c-73e719f5fe8c/phases/c0a05a07-9475-47cb-9ff4-94a571e6c32c/ideas?project_backoffice_redesign",
+      "viewport": "desktop",
+      "width": 1280,
+      "index": 1,
+      "count": 4,
+      "shot": "audits/OptionList/admin-projects-projectId-phases-phaseId-ideas-1280-2.png",
+      "box": {
+        "width": 260,
+        "height": 750
+      },
+      "size": "w:l h:xl",
+      "styles": {
+        "radius": "0px",
+        "padding": "0px",
+        "color": "rgb(4, 77, 108)",
+        "background": "rgba(0, 0, 0, 0)",
+        "fontSize": "14px"
+      },
+      "tokens": {
+        "linked": [
+          "--gv-space-1",
+          "--gv-space-2",
+          "--gv-radius-control"
+        ],
+        "equal": [
+          "--gv-white",
+          "--gv-grey-800",
+          "--gv-grey-200",
+          "--gv-cool-grey-500",
+          "--gv-blue-500",
+          "--gv-radius-2",
+          "--gv-fs-xs",
+          "--gv-fs-s",
+          "--gv-fs-base",
+          "--gv-fs-m",
+          "--gv-color-text-heading",
+          "--gv-text-primary",
+          "--gv-text-heading",
+          "--gv-primary",
+          "--gv-tenant-text",
+          "--gv-color-tenant-text",
+          "--gv-on-primary",
+          "--gv-on-secondary",
+          "--gv-bo-sidebar-text",
+          "--gv-bo-primary",
+          "--gv-chart-grid",
+          "--gv-type-bodys-size",
+          "--gv-type-label-size",
+          "--gv-type-caption-size"
+        ]
+      },
+      "diffsFromStory": [
+        "colour: rgb(4, 77, 108), story components-forms-optionlist--default rgba(0, 0, 0, 0.87)",
+        "tokens: --gv-text-body, --gv-header-text in the story, not here",
+        "tokens: --gv-grey-200, --gv-cool-grey-500, --gv-blue-500, --gv-fs-xs, --gv-color-text-heading, --gv-text-heading and 4 more here, not in the story"
+      ],
+      "openedBy": "role=button[name=\"Filter\" s] -> role=button[name=\"Tags\" s]"
+    },
+    {
+      "route": "admin/projects/$projectId/phases/$phaseId/ideas",
+      "office": "admin",
+      "url": "https://pr-15027.epic.hq.govocal.com/en/admin/projects/6400273d-323e-481d-8b2c-73e719f5fe8c/phases/c0a05a07-9475-47cb-9ff4-94a571e6c32c/ideas?project_backoffice_redesign",
+      "viewport": "desktop",
+      "width": 1280,
+      "index": 2,
+      "count": 4,
+      "shot": "audits/OptionList/admin-projects-projectId-phases-phaseId-ideas-1280-3.png",
+      "box": {
+        "width": 260,
+        "height": 131
+      },
+      "size": "w:l h:m",
+      "styles": {
+        "radius": "0px",
+        "padding": "0px",
+        "color": "rgb(4, 77, 108)",
+        "background": "rgba(0, 0, 0, 0)",
+        "fontSize": "14px"
+      },
+      "tokens": {
+        "linked": [
+          "--gv-space-2",
+          "--gv-radius-control"
+        ],
+        "equal": [
+          "--gv-white",
+          "--gv-grey-800",
+          "--gv-grey-200",
+          "--gv-cool-grey-500",
+          "--gv-blue-500",
+          "--gv-space-1",
+          "--gv-radius-2",
+          "--gv-fs-xs",
+          "--gv-fs-s",
+          "--gv-fs-base",
+          "--gv-fs-m",
+          "--gv-color-text-heading",
+          "--gv-text-primary",
+          "--gv-text-heading",
+          "--gv-primary",
+          "--gv-tenant-text",
+          "--gv-color-tenant-text",
+          "--gv-on-primary",
+          "--gv-on-secondary",
+          "--gv-bo-sidebar-text",
+          "--gv-bo-primary",
+          "--gv-chart-grid",
+          "--gv-type-bodys-size",
+          "--gv-type-label-size",
+          "--gv-type-caption-size"
+        ]
+      },
+      "diffsFromStory": [
+        "colour: rgb(4, 77, 108), story components-forms-optionlist--default rgba(0, 0, 0, 0.87)",
+        "tokens: --gv-text-body, --gv-header-text in the story, not here",
+        "tokens: --gv-grey-200, --gv-cool-grey-500, --gv-blue-500, --gv-fs-xs, --gv-color-text-heading, --gv-text-heading and 4 more here, not in the story"
+      ],
+      "openedBy": "role=button[name=\"Filter\" s] -> role=button[name=\"Assignee\" s]"
+    },
+    {
+      "route": "admin/projects/$projectId/phases/$phaseId/ideas",
+      "office": "admin",
+      "url": "https://pr-15027.epic.hq.govocal.com/en/admin/projects/6400273d-323e-481d-8b2c-73e719f5fe8c/phases/c0a05a07-9475-47cb-9ff4-94a571e6c32c/ideas?project_backoffice_redesign",
+      "viewport": "desktop",
+      "width": 1280,
+      "index": 3,
+      "count": 4,
+      "shot": "audits/OptionList/admin-projects-projectId-phases-phaseId-ideas-1280-4.png",
+      "box": {
+        "width": 200,
+        "height": 444
+      },
+      "size": "w:m h:l",
+      "styles": {
+        "radius": "0px",
+        "padding": "0px",
+        "color": "rgb(4, 77, 108)",
+        "background": "rgba(0, 0, 0, 0)",
+        "fontSize": "14px"
+      },
+      "tokens": {
+        "linked": [
+          "--gv-space-1",
+          "--gv-space-2",
+          "--gv-radius-control"
+        ],
+        "equal": [
+          "--gv-white",
+          "--gv-grey-800",
+          "--gv-blue-500",
+          "--gv-green-500",
+          "--gv-radius-2",
+          "--gv-fs-s",
+          "--gv-fs-base",
+          "--gv-fs-m",
+          "--gv-color-text-heading",
+          "--gv-text-primary",
+          "--gv-text-heading",
+          "--gv-primary",
+          "--gv-success",
+          "--gv-tenant-text",
+          "--gv-color-tenant-text",
+          "--gv-on-primary",
+          "--gv-on-secondary",
+          "--gv-bo-sidebar-text",
+          "--gv-bo-primary",
+          "--gv-chart-pos",
+          "--gv-type-bodys-size",
+          "--gv-type-label-size"
+        ]
+      },
+      "diffsFromStory": [
+        "colour: rgb(4, 77, 108), story components-forms-optionlist--default rgba(0, 0, 0, 0.87)",
+        "tokens: --gv-text-body, --gv-header-text in the story, not here",
+        "tokens: --gv-blue-500, --gv-green-500, --gv-color-text-heading, --gv-text-heading, --gv-primary, --gv-success and 2 more here, not in the story"
+      ],
+      "openedBy": "role=button[name=\"Add columns\" s]"
+    },
+    {
+      "route": "admin/projects/$projectId/phases/$phaseId/ideas",
+      "office": "admin",
+      "url": "https://pr-15027.epic.hq.govocal.com/en/admin/projects/6400273d-323e-481d-8b2c-73e719f5fe8c/phases/c0a05a07-9475-47cb-9ff4-94a571e6c32c/ideas?project_backoffice_redesign",
+      "viewport": "mobile",
+      "width": 390,
+      "index": 0,
+      "count": 0,
+      "shot": "",
+      "box": {
+        "width": 0,
+        "height": 0
+      },
+      "size": "",
+      "styles": {
+        "radius": "",
+        "padding": "",
+        "color": "",
+        "background": "",
+        "fontSize": ""
+      },
+      "tokens": {
+        "linked": [],
+        "equal": []
+      },
+      "diffsFromStory": [],
+      "error": "not found"
+    }
+  ],
+  "notReached": [],
+  "inconsistencies": [
+    "size: w:l h:l on /admin/projects/:projectId/phases/:phaseId/ideas #1 (1280) vs w:l h:xl on /admin/projects/:projectId/phases/:phaseId/ideas #2 (1280)",
+    "tokens: --gv-grey-400, --gv-teal-400, --gv-red-500, --gv-green-500, --gv-border-light, --gv-error and 4 more only on /admin/projects/:projectId/phases/:phaseId/ideas #1 (1280)",
+    "tokens: --gv-grey-200, --gv-chart-grid only on /admin/projects/:projectId/phases/:phaseId/ideas #2 (1280)",
+    "tokens: --gv-space-1 read through var() on /admin/projects/:projectId/phases/:phaseId/ideas #2 (1280), value only matches on /admin/projects/:projectId/phases/:phaseId/ideas #1 (1280)",
+    "size: w:l h:l on /admin/projects/:projectId/phases/:phaseId/ideas #1 (1280) vs w:l h:m on /admin/projects/:projectId/phases/:phaseId/ideas #3 (1280)",
+    "tokens: --gv-grey-200, --gv-chart-grid only on /admin/projects/:projectId/phases/:phaseId/ideas #3 (1280)",
+    "size: w:l h:l on /admin/projects/:projectId/phases/:phaseId/ideas #1 (1280) vs w:m h:l on /admin/projects/:projectId/phases/:phaseId/ideas #4 (1280)",
+    "tokens: --gv-grey-400, --gv-cool-grey-500, --gv-teal-400, --gv-red-500, --gv-fs-xs, --gv-border-light and 4 more only on /admin/projects/:projectId/phases/:phaseId/ideas #1 (1280)",
+    "tokens: --gv-space-1 read through var() on /admin/projects/:projectId/phases/:phaseId/ideas #4 (1280), value only matches on /admin/projects/:projectId/phases/:phaseId/ideas #1 (1280)",
+    "size: w:l h:xl on /admin/projects/:projectId/phases/:phaseId/ideas #2 (1280) vs w:l h:m on /admin/projects/:projectId/phases/:phaseId/ideas #3 (1280)",
+    "tokens: --gv-space-1 read through var() on /admin/projects/:projectId/phases/:phaseId/ideas #2 (1280), value only matches on /admin/projects/:projectId/phases/:phaseId/ideas #3 (1280)",
+    "size: w:l h:xl on /admin/projects/:projectId/phases/:phaseId/ideas #2 (1280) vs w:m h:l on /admin/projects/:projectId/phases/:phaseId/ideas #4 (1280)",
+    "tokens: --gv-grey-200, --gv-cool-grey-500, --gv-fs-xs, --gv-chart-grid, --gv-type-caption-size only on /admin/projects/:projectId/phases/:phaseId/ideas #2 (1280)",
+    "tokens: --gv-green-500, --gv-success, --gv-chart-pos only on /admin/projects/:projectId/phases/:phaseId/ideas #4 (1280)",
+    "size: w:l h:m on /admin/projects/:projectId/phases/:phaseId/ideas #3 (1280) vs w:m h:l on /admin/projects/:projectId/phases/:phaseId/ideas #4 (1280)",
+    "tokens: --gv-grey-200, --gv-cool-grey-500, --gv-fs-xs, --gv-chart-grid, --gv-type-caption-size only on /admin/projects/:projectId/phases/:phaseId/ideas #3 (1280)",
+    "tokens: --gv-space-1 read through var() on /admin/projects/:projectId/phases/:phaseId/ideas #4 (1280), value only matches on /admin/projects/:projectId/phases/:phaseId/ideas #3 (1280)"
+  ],
+  "healTasks": [
+    "heal: OptionList · app/containers/Admin/projects/project/backofficeRedesign/InputManager/OptionList.tsx:3 · rgb(4, 77, 108) → --gv-text-body or --gv-header-text · mode redesign\nwhy: audit, colour rgb(4, 77, 108) on /admin/projects/:projectId/phases/:phaseId/ideas (1280), story components-forms-optionlist--default rgba(0, 0, 0, 0.87)\ncheck: story components-forms-optionlist--default, routes /admin/projects/:projectId/phases/:phaseId/ideas"
+  ],
+  "blockedWrites": 0,
+  "blockedOnLoad": 5,
+  "blockedSockets": 0,
+  "blocked": [
+    {
+      "method": "POST",
+      "path": "/web_api/v1/sessions",
+      "route": "/admin/projects/:projectId/phases/:phaseId/ideas",
+      "phase": "load",
+      "count": 5
+    }
+  ]
+}
