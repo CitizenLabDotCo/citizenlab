@@ -1,0 +1,119 @@
+{
+  "component": "Table",
+  "reviewedAt": "2026-10-23",
+  "reviewer": "agent",
+  "criteria": [
+    {
+      "id": "1.3.1",
+      "name": "Info and relationships",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "source and axe: native table, thead, tbody and th; axe table rules pass on all 10 stories",
+      "note": "scope is optional on Th; set it on row headers."
+    },
+    {
+      "id": "1.4.3",
+      "name": "Contrast (minimum)",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "axe color-contrast passes on all 10 stories",
+      "note": ""
+    },
+    {
+      "id": "1.4.10",
+      "name": "Reflow",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "scroll width: LongContent (480px) and RTL scroll sideways at 390 and 320",
+      "note": "Data tables need two dimensions, so the reflow exception applies."
+    },
+    {
+      "id": "1.4.11",
+      "name": "Non-text contrast",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "computed: sort icon #044D6C and info icon #0A5159 on white, both above 3:1",
+      "note": ""
+    },
+    {
+      "id": "1.4.12",
+      "name": "Text spacing",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "text spacing override (line height 1.5, letter 0.12em, word 0.16em, paragraph 2em) on Default and LongContent: no clipped text",
+      "note": ""
+    },
+    {
+      "id": "2.1.1",
+      "name": "Keyboard",
+      "result": "fail",
+      "confidence": "high",
+      "evidence": "Keyboard story (play) and Playwright Tab run: Tab skips the sortable header (a clickable th with no focus and no key handler) and stops first on the info tooltip button",
+      "note": "Heal (a11y): put a button inside a sortable Th."
+    },
+    {
+      "id": "2.4.7",
+      "name": "Focus visible",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "keyboard run: the info tooltip button gets a 2px #000 outline",
+      "note": ""
+    },
+    {
+      "id": "2.4.11",
+      "name": "Focus not obscured (minimum)",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "screenshots: the tooltip opens beside the button and leaves it visible",
+      "note": ""
+    },
+    {
+      "id": "2.5.7",
+      "name": "Dragging movements",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "source: no drag interaction",
+      "note": ""
+    },
+    {
+      "id": "2.5.8",
+      "name": "Target size (minimum)",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "measured: info button 16x17, under 24x24 but nothing else within 24px (spacing exception); header cells 372x45",
+      "note": ""
+    },
+    {
+      "id": "3.2.6",
+      "name": "Consistent help",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "page level: the component offers no help mechanism",
+      "note": ""
+    },
+    {
+      "id": "3.3.7",
+      "name": "Redundant entry",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: the component asks for no data",
+      "note": ""
+    },
+    {
+      "id": "3.3.8",
+      "name": "Accessible authentication (minimum)",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: the component is not part of a login step",
+      "note": ""
+    },
+    {
+      "id": "4.1.2",
+      "name": "Name, role, value",
+      "result": "fail",
+      "confidence": "high",
+      "evidence": "axe button-name (critical) on WithSortableAndTooltipIcons, Hover, Focus and Keyboard: the header's info tooltip button has no name; source: a sorted header sets no aria-sort",
+      "note": "Heal (a11y): aria-sort on sorted headers; the name comes with the IconTooltip heal."
+    }
+  ]
+}
