@@ -1,0 +1,103 @@
+{
+  "component": "Spinner",
+  "reviewedAt": "2026-10-23",
+  "reviewer": "agent",
+  "criteria": [
+    {
+      "id": "1.1.1",
+      "name": "Non-text content",
+      "result": "fail",
+      "confidence": "medium",
+      "evidence": "source and DOM: two spans with a border, no role, no label, no hidden text",
+      "note": "Heal (a11y): role=\"status\" with a visually hidden \"Loading\" text, or aria-hidden when the caller announces loading itself."
+    },
+    {
+      "id": "1.4.11",
+      "name": "Non-text contrast",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "computed: ring #767676 on white 4.54:1",
+      "note": ""
+    },
+    {
+      "id": "2.1.1",
+      "name": "Keyboard",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "axe and keyboard run: an animation with no interactive element, Tab finds nothing to focus",
+      "note": ""
+    },
+    {
+      "id": "2.2.2",
+      "name": "Pause, stop, hide",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "source: a loading indicator, shown only while loading (essential motion)",
+      "note": ""
+    },
+    {
+      "id": "2.4.7",
+      "name": "Focus visible",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "axe and keyboard run: an animation with no interactive element, Tab finds nothing to focus",
+      "note": ""
+    },
+    {
+      "id": "2.4.11",
+      "name": "Focus not obscured (minimum)",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "axe and keyboard run: an animation with no interactive element, Tab finds nothing to focus",
+      "note": ""
+    },
+    {
+      "id": "2.5.7",
+      "name": "Dragging movements",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "source: no drag interaction",
+      "note": ""
+    },
+    {
+      "id": "2.5.8",
+      "name": "Target size (minimum)",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "axe and keyboard run: an animation with no interactive element, Tab finds nothing to focus",
+      "note": ""
+    },
+    {
+      "id": "3.2.6",
+      "name": "Consistent help",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "page level: the component offers no help mechanism",
+      "note": ""
+    },
+    {
+      "id": "3.3.7",
+      "name": "Redundant entry",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: the component asks for no data",
+      "note": ""
+    },
+    {
+      "id": "3.3.8",
+      "name": "Accessible authentication (minimum)",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: the component is not part of a login step",
+      "note": ""
+    },
+    {
+      "id": "4.1.3",
+      "name": "Status messages",
+      "result": "fail",
+      "confidence": "medium",
+      "evidence": "source and DOM: nothing tells assistive technology that loading started or ended",
+      "note": "Same heal as 1.1.1. Button in processing state sets aria-disabled but announces nothing either."
+    }
+  ]
+}
