@@ -143,13 +143,13 @@ const RingArt = () => (
     />
     <circle cx="110" cy="110" r="70" fill="var(--wb-info-soft)" />
     <circle cx="110" cy="110" r="36" fill="var(--wb-accent-fill)" />
-    <text x="110" y="117" className="wb-prop-ring-num wb-prop-ring-num-in">
+    <text x="110" y="110" className="wb-prop-ring-num wb-prop-ring-num-in">
       1
     </text>
-    <text x="110" y="64" className="wb-prop-ring-num">
+    <text x="110" y="57" className="wb-prop-ring-num">
       2
     </text>
-    <text x="110" y="30" className="wb-prop-ring-num">
+    <text x="110" y="23" className="wb-prop-ring-num">
       3
     </text>
   </svg>

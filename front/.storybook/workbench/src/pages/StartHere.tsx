@@ -236,7 +236,6 @@ type Command = {
   title: string;
   code: string;
   note?: ReactNode;
-  wide?: true;
 };
 
 const MAC_STEPS: Command[] = [
@@ -270,7 +269,6 @@ const MAC_STEPS: Command[] = [
   },
   {
     title: 'Add the MCP servers, once',
-    wide: true,
     code: 'claude mcp add --transport http --scope user storybook http://localhost:6006/mcp\nclaude mcp add --transport http --scope user figma https://mcp.figma.com/mcp',
     note: (
       <>
@@ -297,13 +295,11 @@ const MAC_STEPS: Command[] = [
   },
   {
     title: 'Screenshots and axe',
-    wide: true,
     code: '(mkdir -p ~/pw && cd ~/pw && npm i playwright && npx playwright install chromium)\nexport GV_PLAYWRIGHT_DIR=~/pw',
     note: 'Playwright lives outside the repo. Put the export in your shell profile.',
   },
   {
     title: 'Long visual runs',
-    wide: true,
     code: 'NODE_OPTIONS=--max-old-space-size=4096 npm run ds:visual -- --compare <dir>',
     note: 'More memory for a run over every story.',
   },
@@ -406,6 +402,10 @@ const PREVIEW_NOTES = [
 const StartHere = () => {
   const data = useBuildData();
   const needs = needsHumanRows(CHECKLISTS);
+  // One review date for every row goes in the note, not on each row.
+  const dates = new Set(needs.map((r) => r.reviewedAt));
+  const oneDate =
+    dates.size === 1 ? needs[0]?.reviewedAt ?? undefined : undefined;
   const knownCriticals = a11yKnown.known.length;
 
   return (
@@ -547,6 +547,7 @@ const StartHere = () => {
         <p className="wb-section-note">
           The checklist criteria an agent could not settle. Try each one on a
           real page and update the component&apos;s <code>a11y.json</code>.
+          {oneDate && ` Reviewed by agent on ${formatDate(oneDate)}.`}
         </p>
         {needs.length === 0 ? (
           <p className="wb-muted" data-testid="wb-needs-human-none">
@@ -571,7 +572,7 @@ const StartHere = () => {
                     </span>
                   </span>
                   <span className="wb-start-needs-note">{r.note}</span>
-                  {r.reviewedAt && (
+                  {r.reviewedAt && !oneDate && (
                     <span className="wb-start-needs-date">
                       Reviewed by agent on {formatDate(r.reviewedAt)}
                     </span>
@@ -728,7 +729,7 @@ const Commands = ({
     data-testid={testId}
   >
     {items.map((c, i) => (
-      <li key={c.title} className={c.wide ? 'wb-start-cmd-wide' : undefined}>
+      <li key={c.title}>
         <span className="wb-start-cmd-head">
           {!compact && (
             <span className="wb-start-step-num" aria-hidden="true">

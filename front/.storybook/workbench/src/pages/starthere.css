@@ -35,7 +35,7 @@
 /* The pages */
 .wb-start-tour {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--gv-space-4);
   margin: 0;
   padding: 0;
@@ -68,26 +68,46 @@
   color: var(--wb-accent);
 }
 
-/* Steps: the first heal */
+/* Steps: the first heal, one numbered list in a card */
 .wb-start-steps {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: var(--gv-space-3);
   margin: 0;
   padding: 0;
   list-style: none;
-}
-
-.wb-start-steps li {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: var(--gv-space-2);
-  align-items: flex-start;
-  padding: var(--gv-space-4) var(--gv-space-5) var(--gv-space-5);
   background: var(--wb-bg);
   border: 1px solid var(--wb-border);
   border-radius: var(--wb-radius-lg);
+}
+
+.wb-start-steps li {
+  display: grid;
+  grid-template-columns: 24px 36px minmax(0, 1fr) auto;
+  gap: 2px var(--gv-space-4);
+  align-items: center;
+  padding: var(--gv-space-3) var(--gv-space-5);
+}
+
+.wb-start-steps li + li {
+  border-top: 1px solid var(--wb-border);
+}
+
+.wb-start-steps .wb-start-step-num {
+  grid-row: 1 / span 2;
+  grid-column: 1;
+}
+
+.wb-start-steps .wb-start-step-icon {
+  grid-row: 1 / span 2;
+  grid-column: 2;
+}
+
+.wb-start-steps strong,
+.wb-start-steps .wb-start-step-text {
+  grid-column: 3;
+}
+
+.wb-start-steps .wb-start-step-link {
+  grid-row: 1 / span 2;
+  grid-column: 4;
 }
 
 .wb-start-step-num {
@@ -95,21 +115,13 @@
   flex: none;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  font-size: var(--gv-fs-s);
+  width: 24px;
+  height: 24px;
+  font-size: var(--gv-fs-xs);
   font-weight: 700;
   color: var(--wb-on-accent);
   background: var(--wb-accent);
   border-radius: var(--gv-radius-full);
-}
-
-.wb-start-steps .wb-start-step-num {
-  position: absolute;
-  top: var(--gv-space-4);
-  right: var(--gv-space-4);
-  color: var(--wb-accent);
-  background: var(--wb-accent-soft);
 }
 
 .wb-start-step-icon {
@@ -137,8 +149,8 @@
   display: inline-flex;
   gap: var(--gv-space-1);
   align-items: center;
-  margin-top: auto;
   font-weight: 600;
+  white-space: nowrap;
   color: var(--wb-accent);
   text-decoration: none;
 }
@@ -162,7 +174,8 @@
   gap: var(--gv-space-4);
   align-items: flex-start;
   padding: var(--gv-space-5);
-  background: var(--wb-subtle);
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border);
   border-radius: var(--wb-radius-lg);
 }
 
@@ -185,13 +198,19 @@
   width: 40px;
   height: 40px;
   color: var(--wb-accent);
-  background: var(--wb-bg);
+  background: var(--wb-accent-soft);
   border-radius: var(--wb-radius);
 }
 
+/* The one tinted note style: a policy to keep in mind, not a failure. */
 .wb-start-rule-key {
   grid-column: 1 / -1;
-  background: var(--wb-warn-soft);
+  background: var(--wb-info-subtle);
+  border-color: var(--wb-info-line);
+}
+
+.wb-start-rule-key .wb-start-rule-icon {
+  background: var(--wb-bg);
 }
 
 .wb-start-rule-key strong {
@@ -230,13 +249,8 @@
   color: var(--wb-muted);
 }
 
-.wb-start-threshold-block {
-  border-color: var(--wb-fail);
-  box-shadow: inset 4px 0 0 var(--wb-fail);
-}
-
 .wb-start-threshold-block .wb-start-threshold-label {
-  color: var(--wb-fail);
+  color: var(--wb-accent);
 }
 
 .wb-start-threshold-foot {
@@ -323,11 +337,45 @@
 }
 
 .wb-start-cmds-compact {
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.wb-start-cmd-wide {
-  grid-column: 1 / -1;
+/* The setup steps read top to bottom, joined by a line. */
+.wb-start-cmds:not(.wb-start-cmds-compact) {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.wb-start-cmds:not(.wb-start-cmds-compact) li {
+  position: relative;
+  padding: 0 0 var(--gv-space-6) calc(24px + var(--gv-space-4));
+  border: 0;
+  border-radius: 0;
+}
+
+.wb-start-cmds:not(.wb-start-cmds-compact) li::before {
+  position: absolute;
+  top: 30px;
+  bottom: 6px;
+  left: 11px;
+  width: 2px;
+  content: '';
+  background: var(--wb-border);
+  border-radius: 1px;
+}
+
+.wb-start-cmds:not(.wb-start-cmds-compact) li:last-child::before {
+  display: none;
+}
+
+.wb-start-cmds:not(.wb-start-cmds-compact) .wb-start-step-num {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.wb-start-cmds:not(.wb-start-cmds-compact) .wb-start-cmd-head {
+  min-height: 24px;
 }
 
 .wb-start-cmd-head {
@@ -489,7 +537,41 @@
   }
 
   .wb-start-cmds,
-  .wb-start-cmds-compact {
+  .wb-start-cmds-compact,
+  .wb-start-tour {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* No sideways scroll on a phone: long lines wrap. */
+  .wb-start-code {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .wb-start-steps li {
+    grid-template-columns: 24px minmax(0, 1fr);
+    padding: var(--gv-space-3) var(--gv-space-4);
+  }
+
+  .wb-start-steps .wb-start-step-icon {
+    display: none;
+  }
+
+  .wb-start-steps .wb-start-step-num {
+    grid-row: 1;
+    align-self: start;
+  }
+
+  .wb-start-steps strong,
+  .wb-start-steps .wb-start-step-text,
+  .wb-start-steps .wb-start-step-link {
+    grid-row: auto;
+    grid-column: 2;
+  }
+}
+
+@media (min-width: 881px) and (max-width: 1180px) {
+  .wb-start-tour {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

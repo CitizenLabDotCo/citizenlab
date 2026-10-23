@@ -81,7 +81,8 @@
   margin: 0;
   padding: var(--gv-space-5) var(--gv-space-6);
   list-style: none;
-  background: var(--wb-subtle);
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border);
   border-radius: var(--wb-radius-lg);
 }
 
@@ -98,10 +99,12 @@
   height: auto;
 }
 
+/* Each label sits in the middle of its band, clear of the strokes. */
 .wb-prop-ring-num {
-  font-size: var(--gv-fs-l);
+  font-size: var(--gv-fs-m);
   font-weight: 700;
   text-anchor: middle;
+  dominant-baseline: central;
   fill: var(--wb-info-text);
 }
 
@@ -195,7 +198,8 @@
   flex-direction: column;
   gap: var(--gv-space-2);
   padding: var(--gv-space-4);
-  background: var(--wb-subtle);
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border);
   border-radius: var(--wb-radius-lg);
 }
 
@@ -451,8 +455,15 @@
   position: absolute;
   top: var(--gv-space-4);
   right: var(--gv-space-4);
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  font-size: var(--gv-fs-xs);
   font-weight: 700;
-  color: var(--wb-border-strong);
+  color: var(--wb-on-accent);
+  background: var(--wb-accent-fill);
+  border-radius: var(--gv-radius-full);
 }
 
 /* Where to start */
@@ -695,7 +706,8 @@
   grid-template-columns: 36px minmax(0, 1fr);
   gap: var(--gv-space-1) var(--gv-space-4);
   padding: var(--gv-space-5);
-  background: var(--wb-subtle);
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border);
   border-radius: var(--wb-radius-lg);
 }
 
