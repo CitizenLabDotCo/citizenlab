@@ -32,7 +32,9 @@ export default (Story, context) => {
         <ResetCacheContext>
           <ThemeContext city={context.globals.city} lang={context.globals.lang}>
             <Portals />
+            {/* The workbench canvas restyles this box by its attribute. */}
             <div
+              data-gv-story-box=""
               style={{
                 position: 'absolute',
                 top: 0,

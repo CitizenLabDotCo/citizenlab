@@ -44,6 +44,7 @@ type PreviewWindow = Window & {
         id: string;
         argTypes?: Record<string, ArgType>;
         initialArgs?: Record<string, unknown>;
+        storyGlobals?: Record<string, unknown>;
       };
     };
     storyStoreValue?: {
@@ -89,6 +90,18 @@ export const readStory = (
   } catch {
     // The frame navigated away (or to another origin) mid-read.
     return null;
+  }
+};
+
+// The language the frame's story sets for itself (`globals: { lang }` in
+// the story), or undefined.
+export const storyLangOf = (win: Window | null | undefined) => {
+  try {
+    const lang = (win as PreviewWindow | null | undefined)
+      ?.__STORYBOOK_PREVIEW__?.currentRender?.story?.storyGlobals?.lang;
+    return typeof lang === 'string' ? lang : undefined;
+  } catch {
+    return undefined;
   }
 };
 

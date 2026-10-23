@@ -974,10 +974,10 @@ a.wb-card:hover {
   z-index: 3;
   display: flex;
   flex-wrap: wrap;
-  gap: var(--gv-space-3) var(--gv-space-5);
+  gap: var(--gv-space-2) var(--gv-space-4);
   align-items: center;
   margin-bottom: var(--gv-space-4);
-  padding: var(--gv-space-2) var(--gv-space-3);
+  padding: var(--gv-space-1) var(--gv-space-2);
   background: var(--wb-bg);
   border: 1px solid var(--wb-border);
   border-radius: var(--wb-radius-lg);
@@ -995,14 +995,90 @@ a.wb-card:hover {
   background: var(--wb-bg);
 }
 
-.wb-toolbar-field {
+.wb-toolbar-fields {
   display: flex;
-  gap: var(--gv-space-2);
+  flex-wrap: wrap;
+  gap: 2px;
   align-items: center;
-  color: var(--wb-muted);
+  min-width: 0;
 }
 
-.wb-toolbar select,
+/* A select drawn as a compact dropdown button, with the shared chevron. */
+.wb-toolbar-field {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.wb-toolbar-field select {
+  max-width: 15em;
+  min-height: 32px;
+  padding: 0 calc(var(--gv-space-2) + 18px) 0 var(--gv-space-2);
+  overflow: hidden;
+  font: inherit;
+  font-size: var(--gv-fs-13);
+  font-weight: 500;
+  color: var(--wb-text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: transparent;
+  border: 0;
+  border-radius: var(--wb-radius);
+  cursor: pointer;
+  appearance: none;
+  /* As wide as the chosen value, not the longest option. */
+  field-sizing: content;
+}
+
+.wb-toolbar-field select:hover {
+  background: var(--wb-subtle);
+}
+
+.wb-toolbar-field .wb-icon {
+  position: absolute;
+  right: var(--gv-space-2);
+  color: var(--wb-muted);
+  pointer-events: none;
+}
+
+.wb-toolbar-sep {
+  width: 1px;
+  height: 20px;
+  margin: 0 var(--gv-space-1);
+  background: var(--wb-border);
+}
+
+.wb-zoom {
+  display: inline-flex;
+  align-items: center;
+}
+
+.wb-shell .wb-zoom-step {
+  min-width: 28px;
+  min-height: 28px;
+  padding: 0;
+  color: var(--wb-muted);
+  background: transparent;
+  border: 0;
+}
+
+.wb-shell .wb-zoom-step:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.wb-zoom .wb-toolbar-field select {
+  font-variant-numeric: tabular-nums;
+}
+
+/* The phone sheet's button, scrim and title: phones only. */
+.wb-shell .wb-toolbar-summary,
+.wb-shell .wb-toolbar-scrim,
+.wb-toolbar-sheet-title {
+  display: none;
+}
+
 .wb-notice button {
   min-height: 32px;
   padding: var(--gv-space-1) var(--gv-space-2);
@@ -1079,6 +1155,7 @@ a.wb-card:hover {
 
 /* Canvas and panels (component page) */
 .wb-canvas {
+  min-width: 0;
   overflow: hidden;
   max-width: 100%;
   padding: 1px;
@@ -1089,7 +1166,18 @@ a.wb-card:hover {
   font-size: var(--gv-fs-xs);
 }
 
-.wb-canvas > div {
+.wb-canvas-view {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* A fixed zoom may be larger than the canvas: it scrolls. */
+.wb-canvas[data-zoom='fixed'] .wb-canvas-view {
+  overflow: auto;
+}
+
+.wb-canvas-frame {
+  margin-inline: auto;
   overflow: hidden;
   outline: 1px solid var(--wb-border);
   border-radius: var(--wb-radius);
@@ -2290,15 +2378,20 @@ tr:hover .wb-pv-motion > span {
   margin-left: auto;
 }
 
-.wb-toolbar select:disabled {
+.wb-toolbar-field select:disabled {
   color: var(--wb-muted);
-  background: var(--wb-subtle);
+  background: transparent;
   cursor: not-allowed;
 }
 
 .wb-stage {
   display: grid;
+  /* The canvas never widens its column: a zoomed frame scrolls inside. */
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--gv-space-4);
+  align-content: center;
+  /* Small stories sit in a generous stage, not a strip. */
+  min-height: clamp(280px, 45vh, 520px);
   padding: var(--gv-space-4);
   background-color: var(--wb-subtle);
   background-image: radial-gradient(var(--wb-border) 1px, transparent 1px);
@@ -2311,7 +2404,7 @@ tr:hover .wb-pv-motion > span {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.wb-stage .wb-canvas > div {
+.wb-stage .wb-canvas-frame {
   box-shadow: var(--wb-shadow);
 }
 
@@ -3481,6 +3574,92 @@ a.wb-line:hover {
 
   .wb-toolbar::before {
     display: none;
+  }
+
+  /* The canvas fields fold into one button that opens a bottom sheet. */
+  .wb-shell .wb-toolbar-summary {
+    display: flex;
+    flex: 1;
+    gap: var(--gv-space-2);
+    justify-content: flex-start;
+    min-width: 0;
+    min-height: 36px;
+    padding: 0 var(--gv-space-2);
+    font-size: var(--gv-fs-13);
+    background: transparent;
+    border: 0;
+  }
+
+  .wb-toolbar-summary-label {
+    font-weight: 600;
+    color: var(--wb-heading);
+  }
+
+  .wb-toolbar-summary-value {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    font-weight: 400;
+    color: var(--wb-muted);
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .wb-toolbar .wb-toolbar-fields {
+    display: none;
+  }
+
+  .wb-toolbar[data-sheet='open'] .wb-toolbar-fields {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 41;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gv-space-2);
+    align-items: stretch;
+    padding: var(--gv-space-5) var(--gv-space-4)
+      calc(var(--gv-space-6) + env(safe-area-inset-bottom));
+    background: var(--wb-bg);
+    border-radius: var(--wb-radius-lg) var(--wb-radius-lg) 0 0;
+    box-shadow: var(--wb-shadow-raised);
+  }
+
+  .wb-toolbar[data-sheet='open'] .wb-toolbar-sheet-title {
+    display: block;
+    margin: 0 0 var(--gv-space-1);
+    font-weight: 600;
+    color: var(--wb-heading);
+  }
+
+  .wb-toolbar[data-sheet='open'] .wb-toolbar-field select {
+    width: 100%;
+    max-width: none;
+    min-height: 44px;
+    font-size: var(--gv-fs-s);
+    border: 1px solid var(--wb-border-strong);
+  }
+
+  .wb-toolbar[data-sheet='open'] .wb-toolbar-sep {
+    display: none;
+  }
+
+  .wb-toolbar[data-sheet='open'] .wb-zoom .wb-toolbar-field {
+    flex: 1;
+  }
+
+  .wb-shell .wb-toolbar[data-sheet='open'] .wb-toolbar-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    display: block;
+    min-height: 0;
+    padding: 0;
+    background: rgb(0 0 0 / 40%);
+    border: 0;
+    border-radius: 0;
   }
 
   .wb-category-grid .wb-cp-space,

@@ -10,6 +10,7 @@ import { checklistOf } from '../lib/a11y';
 import { CHECKLISTS } from '../lib/checklists';
 import { TOKEN_META } from '../lib/data';
 import { HealChoice, HealMode, healModeOf } from '../lib/healTask';
+import { channelOf, storyLangOf } from '../lib/preview';
 import { groupOfStory, Section, StoryRef } from '../lib/stories';
 import { useA11yResults } from '../lib/useA11y';
 import { useScanIndexes } from '../lib/useScanIndexes';
@@ -175,6 +176,17 @@ const Component = ({
   );
   const [first] = useState(() => onFrame(0));
   const [second] = useState(() => onFrame(1));
+  const [fitScale, setFitScale] = useState<number | undefined>();
+  // The language the story sets itself, read after each render.
+  const [storyLang, setStoryLang] = useState<string | undefined>();
+  const frame = frames[0];
+  useEffect(() => {
+    const read = () => setStoryLang(storyLangOf(frame));
+    read();
+    const channel = channelOf(frame);
+    channel?.on('storyRendered', read);
+    return () => channel?.off('storyRendered', read);
+  }, [frame]);
 
   if (groups === null) {
     return (
@@ -272,6 +284,8 @@ const Component = ({
         value={toolbar}
         onChange={setToolbar}
         modeLocked={split ? 'Both modes are shown side by side.' : undefined}
+        storyLang={storyLang}
+        fitScale={fitScale}
       >
         <Segmented<View>
           label="View"
@@ -291,7 +305,7 @@ const Component = ({
               label: (
                 <>
                   <Icon name="split" size={16} />
-                  Today | Redesign
+                  Side by side
                 </>
               ),
               title: 'Today and redesign side by side',
@@ -313,6 +327,7 @@ const Component = ({
               toolbar={{ ...toolbar, mode: 'today' }}
               overrides={overrides}
               onFrame={first}
+              onScale={setFitScale}
               label="Today"
             />
             <Canvas
@@ -329,6 +344,7 @@ const Component = ({
             toolbar={toolbar}
             overrides={overrides}
             onFrame={first}
+            onScale={setFitScale}
             label={current ? tabLabel(current) : undefined}
           />
         )}
