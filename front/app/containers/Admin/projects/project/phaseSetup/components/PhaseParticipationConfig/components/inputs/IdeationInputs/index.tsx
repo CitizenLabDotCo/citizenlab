@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IOption } from '@citizenlab/cl2-component-library';
+import { Box, IOption } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import {
@@ -13,8 +13,11 @@ import {
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
+import projectMessages from 'containers/Admin/projects/project/messages';
 
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle';
+import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -22,11 +25,14 @@ import configMessages from '../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import ViewSelector from '../../shared/ViewSelector';
+import ModerationAssignee from '../_shared/ModerationAssignee';
 import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';
+import ReactionLimitSettings from '../_shared/ReactionLimitSettings';
 import SortingPicker from '../_shared/SortingPicker';
 import UserActions from '../_shared/UserActions';
 
 import DislikingSettings from './DislikingSettings';
+import DislikingToggle from './DislikingToggle';
 
 interface Props {
   input_term: InputTerm | undefined;
@@ -132,6 +138,7 @@ const IdeationInputs = ({
 
   const anonymity = (
     <AnonymousPostingToggle
+      variant={layout === 'panel' ? 'panel' : undefined}
       allow_anonymous_participation={allow_anonymous_participation}
       handleAllowAnonymousParticipationOnChange={
         handleAllowAnonymousParticipationOnChange
@@ -149,6 +156,7 @@ const IdeationInputs = ({
 
   const screening = prescreeningIdeationEnabled ? (
     <PrescreeningModeSelector
+      variant={layout === 'panel' ? 'panel' : undefined}
       prescreening_mode={prescreening_mode}
       onPrescreeningModeChange={onPrescreeningModeChange}
     />
@@ -172,6 +180,40 @@ const IdeationInputs = ({
     />
   );
 
+  const likes = reacting_enabled && (
+    <ReactionLimitSettings
+      name="likingmethod"
+      title={formatMessage(projectMessages.likingMethodTitle)}
+      method={reacting_like_method}
+      max={reacting_like_limited_max}
+      maxLabel={formatMessage(projectMessages.maxLikes)}
+      onMethodChange={handleReactingLikeMethodOnChange}
+      onMaxChange={handleLikingLimitOnChange}
+      error={
+        <Error
+          text={noLikingLimitError}
+          apiErrors={apiErrors && apiErrors.reacting_limit}
+        />
+      }
+    />
+  );
+
+  const dislikingToggle = (
+    <DislikingToggle
+      reacting_enabled={reacting_enabled}
+      reacting_dislike_enabled={reacting_dislike_enabled}
+      reacting_dislike_method={reacting_dislike_method}
+      reacting_dislike_limited_max={reacting_dislike_limited_max}
+      noDislikingLimitError={noDislikingLimitError}
+      apiErrors={apiErrors}
+      handleReactingDislikeEnabledOnChange={
+        handleReactingDislikeEnabledOnChange
+      }
+      handleReactingDislikeMethodOnChange={handleReactingDislikeMethodOnChange}
+      handleDislikingLimitOnChange={handleDislikingLimitOnChange}
+    />
+  );
+
   const disliking = (
     <DislikingSettings
       reacting_enabled={reacting_enabled}
@@ -190,6 +232,7 @@ const IdeationInputs = ({
 
   const similarity = (
     <SimilarityDetectionConfig
+      variant={layout === 'panel' ? 'panel' : undefined}
       apiErrors={apiErrors}
       similarity_enabled={similarity_enabled}
       similarity_threshold_title={similarity_threshold_title}
@@ -201,6 +244,7 @@ const IdeationInputs = ({
 
   const views = (
     <ViewSelector
+      variant={layout === 'panel' ? 'panel' : undefined}
       presentation_mode={presentation_mode}
       available_views={available_views}
       apiErrors={apiErrors}
@@ -211,6 +255,7 @@ const IdeationInputs = ({
 
   const sorting = (
     <SortingPicker
+      variant={layout === 'panel' ? 'panel' : undefined}
       options={[
         { key: 'trending', value: 'trending' },
         { key: 'comments_count', value: 'comments_count' },
@@ -228,33 +273,34 @@ const IdeationInputs = ({
   if (layout === 'panel') {
     return (
       <>
+        <Box mb="10px">
+          <PanelHeading
+            label={formatMessage(configMessages.howIdeasAreShown)}
+          />
+        </Box>
+        {views}
+        {sorting}
+        <Box mb="10px">
+          <PanelHeading label={formatMessage(configMessages.rulesGroup)} />
+        </Box>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
           defaultOpen
         >
           {userActions}
-          {disliking}
+          {dislikingToggle}
+          {likes}
         </PanelGroup>
         <PanelGroup
           label={formatMessage(configMessages.moderationGroup)}
           defaultOpen
         >
-          {anonymity}
-          {screening}
-          {similarity}
-        </PanelGroup>
-        <PanelGroup
-          label={formatMessage(configMessages.displayGroup)}
-          defaultOpen
-        >
-          {views}
-          {sorting}
-        </PanelGroup>
-        <PanelGroup
-          label={formatMessage(configMessages.submissionNameGroup)}
-          defaultOpen
-        >
-          {inputTerm}
+          <Box display="flex" flexDirection="column" gap="16px">
+            <ModerationAssignee phaseId={phaseId} />
+            {screening}
+            {anonymity}
+            {similarity}
+          </Box>
         </PanelGroup>
       </>
     );

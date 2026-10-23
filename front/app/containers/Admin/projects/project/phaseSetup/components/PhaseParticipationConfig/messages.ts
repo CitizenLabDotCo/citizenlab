@@ -27,14 +27,6 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.moderationGroup',
     defaultMessage: 'Moderation',
   },
-  displayGroup: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.displayGroup',
-    defaultMessage: 'Display',
-  },
-  submissionNameGroup: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.submissionNameGroup',
-    defaultMessage: 'Submission name',
-  },
   votingOnInputsAction: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction',
     defaultMessage: 'Voting on inputs',
@@ -46,5 +38,13 @@ export default defineMessages({
   votesGroup: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.votesGroup',
     defaultMessage: 'Votes',
+  },
+  howIdeasAreShown: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.howIdeasAreShown',
+    defaultMessage: 'How ideas are shown',
+  },
+  rulesGroup: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.rulesGroup',
+    defaultMessage: 'Rules',
   },
 });

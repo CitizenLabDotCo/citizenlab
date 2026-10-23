@@ -72,7 +72,7 @@ const ReportSettings = ({ phase }: Props) => {
       {open && (
         <>
           <Toggle
-            size="small"
+            variant="bo"
             checked={visible}
             onChange={() =>
               updateReport({ id: report.data.id, visible: !visible })

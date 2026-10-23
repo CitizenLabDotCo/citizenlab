@@ -1,6 +1,5 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { useState } from 'react';
 
-import { Spinner } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import {
@@ -13,17 +12,13 @@ import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import { AccessOnlyAction } from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
-import PanelRowModal from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelRowModal';
 import projectMessages from 'containers/Admin/projects/project/messages';
 import PhaseParticipationConfig from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig';
 import configMessages from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/messages';
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import { validateParticipation } from 'containers/Admin/projects/project/phaseSetup/validate';
 
-import Centerer from 'components/UI/Centerer';
-
 import { useIntl } from 'utils/cl-intl';
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isCLErrorsWrapper } from 'utils/errorUtils';
 
 import { useRegisterPageSaver } from '../_shared/PageSaveContext';
@@ -33,12 +28,6 @@ import EditAccessButton from './EditAccessButton';
 import PanelSettings from './PanelSettings';
 import ParticipantActionsGroup from './ParticipantActionsGroup';
 import PhaseNotifications from './PhaseNotifications';
-
-// Lazy so ArcGIS stays out of the chunk every workspace page loads, and only
-// arrives once the map modal is opened.
-const CustomMapConfigPage = lazy(
-  () => import('containers/Admin/CustomMapConfigPage')
-);
 
 const METHODS_WITH_ACTION_TOGGLES: ParticipationMethod[] = [
   'ideation',
@@ -135,23 +124,6 @@ const MethodSettings = ({ phase }: Props) => {
         !METHODS_WITH_ACTION_TOGGLES.includes(participationMethod) && (
           <EditAccessButton phaseId={phase.id} />
         )}
-
-      {getMethodConfig(participationMethod).supportsMapView && (
-        <PanelRowModal
-          label={formatMessage(messages.mapConfiguration)}
-          width="1100px"
-        >
-          <Suspense
-            fallback={
-              <Centerer height="500px">
-                <Spinner />
-              </Centerer>
-            }
-          >
-            <CustomMapConfigPage />
-          </Suspense>
-        </PanelRowModal>
-      )}
 
       <PanelGroup label={formatMessage(messages.notifications)}>
         <PhaseNotifications phase={phase} />

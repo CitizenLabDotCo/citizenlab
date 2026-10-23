@@ -78,12 +78,16 @@ const ProjectWorkspace = ({
     <ProjectSetupPanel project={project} onOpenDropdown={showDropdown} />
   );
 
+  // Each column is positioned so the visually hidden inputs of toggles and
+  // radios inside it are placed, and scrolled, within the column. Otherwise
+  // they hang below the page, and focusing one scrolls the whole workspace.
   const setupSlot = !section && (
     <Box
       flex={`0 0 ${PROJECT_PANEL_WIDTH}`}
       width={PROJECT_PANEL_WIDTH}
       minHeight="0"
       overflowY="auto"
+      position="relative"
       borderRadius={bo.panelBorderRadius}
       background={colors.white}
     >
@@ -96,6 +100,7 @@ const ProjectWorkspace = ({
       width={PROJECT_PANEL_WIDTH}
       minHeight="0"
       overflowY="auto"
+      position="relative"
       borderRadius={bo.panelBorderRadius}
       background={colors.white}
     >
@@ -110,6 +115,7 @@ const ProjectWorkspace = ({
       width={PHASE_PANEL_WIDTH}
       minHeight="0"
       overflowY="auto"
+      position="relative"
       borderRadius={bo.panelBorderRadius}
       background={colors.white}
     >
@@ -124,6 +130,7 @@ const ProjectWorkspace = ({
       minWidth="0"
       minHeight="0"
       overflowY="auto"
+      position="relative"
       display="flex"
       flexDirection="column"
       borderRadius={bo.panelBorderRadius}

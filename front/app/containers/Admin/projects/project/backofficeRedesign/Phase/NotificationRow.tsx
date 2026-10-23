@@ -59,7 +59,7 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
     <Box display="flex" alignItems="center" gap="12px">
       <Box alignSelf="flex-start" pt="2px">
         <Toggle
-          size="small"
+          variant="bo"
           checked={!!campaign.attributes.enabled}
           onChange={toggleEnabled}
           disabled={!canBeDisabled}

@@ -102,4 +102,9 @@ export default defineMessages({
     id: 'app.components.admin.ActionForm.revertToPlatformDefaultsCancelButton',
     defaultMessage: 'Cancel',
   },
+  adminsOnlyNoData: {
+    id: 'app.components.admin.ActionForm.adminsOnlyNoData',
+    defaultMessage:
+      'Only admins and managers can do this, so no participant data is collected.',
+  },
 });

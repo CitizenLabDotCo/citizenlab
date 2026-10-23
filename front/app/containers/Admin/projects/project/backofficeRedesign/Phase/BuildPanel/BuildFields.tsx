@@ -5,6 +5,7 @@ import { CLErrors, Multiloc } from 'typings';
 
 import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
 
+import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 import usePhaseFileAttachments from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
 import { PhaseDates as Dates } from 'containers/Admin/projects/project/phaseSetup/components/PhaseDatePicker';
 import { isSurveyMethod } from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/SurveyMethodChoices';
@@ -19,13 +20,18 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import { useIntl } from 'utils/cl-intl';
 
 import eventMessages from '../../Event/messages';
+import messages from '../../messages';
 
 import DescriptionField from './DescriptionField';
+import InputTermCard from './InputTermCard';
 import MethodSection from './MethodSection';
 import PanelField from './PanelField';
 import PhaseDates from './PhaseDates';
 import setupTitle from './setupTitle';
 import SurveyMethodSection, { SurveyMethodSwitch } from './SurveyMethodSection';
+
+// The methods whose submissions participants name with an input term.
+const USES_INPUT_TERM: ParticipationMethod[] = ['ideation', 'proposals'];
 
 interface Props {
   projectId: string;
@@ -60,10 +66,12 @@ const BuildFields = ({
     files.attachments.length > 0 || files.isUploadingFile || !!errors?.file;
 
   return (
-    <Box display="flex" flexDirection="column" gap="16px" p="24px 18px">
-      <Text variant="boSection" m="0" mb="4px">
-        {formatMessage(setupTitle(participationMethod))}
-      </Text>
+    <Box display="flex" flexDirection="column" gap="10px" p="16px 18px 10px">
+      <Box display="flex" alignItems="center" minHeight="32px" mb="6px">
+        <Text variant="boSection" fontSize="m" m="0">
+          {formatMessage(setupTitle(participationMethod))}
+        </Text>
+      </Box>
 
       <PhaseDates
         formData={formData}
@@ -73,7 +81,7 @@ const BuildFields = ({
         onChange={onDatesChange}
       />
 
-      <Box display="flex" flexDirection="column" gap="8px">
+      <Box display="flex" flexDirection="column" gap="10px">
         <Box>
           <InputMultilocWithLocaleSwitcher
             id="phase-build-panel-title"
@@ -101,7 +109,7 @@ const BuildFields = ({
         )}
       </Box>
 
-      <Box display="flex" flexDirection="column" gap="12px">
+      <Box display="flex" flexDirection="column" gap="10px">
         <PanelField
           label={formatMessage(eventMessages.attachments)}
           action={
@@ -132,6 +140,22 @@ const BuildFields = ({
           )}
         </PanelField>
 
+        {USES_INPUT_TERM.includes(participationMethod) && (
+          <>
+            <PanelHeading
+              label={formatMessage(
+                participationMethod === 'proposals'
+                  ? messages.proposalsAndParticipantData
+                  : messages.ideasAndParticipantData
+              )}
+            />
+            <InputTermCard
+              value={formData.input_term}
+              onChange={(input_term) => onChange({ input_term })}
+            />
+          </>
+        )}
+
         {!standalone && isSurveyMethod(participationMethod) && (
           <SurveyMethodSection
             selected={participationMethod}
@@ -144,6 +168,7 @@ const BuildFields = ({
           projectId={projectId}
           participationMethod={participationMethod}
           phaseId={phaseId}
+          inputTerm={formData.input_term}
         />
       </Box>
 

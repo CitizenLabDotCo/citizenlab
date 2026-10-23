@@ -280,7 +280,7 @@ const VotingInputs = ({
             action="commenting_idea"
           >
             <Toggle
-              size={panel ? 'small' : undefined}
+              variant={panel ? 'bo' : undefined}
               checked={!!commenting_enabled}
               onChange={toggleCommentingEnabled}
               label={formatMessage(messages.inputCommentingEnabled)}
@@ -328,6 +328,7 @@ const VotingInputs = ({
           handleAvailableViewsChange={handleAvailableViewsChange}
           title={messages.defaultViewOptions}
           hideFeed
+          variant={panel ? 'panel' : undefined}
         />
       </Box>
     </>

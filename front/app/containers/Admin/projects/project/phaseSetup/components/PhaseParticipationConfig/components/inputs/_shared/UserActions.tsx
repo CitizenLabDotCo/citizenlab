@@ -61,9 +61,11 @@ const UserActions = ({
   handleLikingLimitOnChange: (reacting_like_limited_max: string) => void;
 }) => {
   const { formatMessage } = useIntl();
+  const ActionsField = phaseId ? Box : StyledSectionField;
+
   return (
     <>
-      <StyledSectionField>
+      <ActionsField>
         <SubSectionTitle>
           <FormattedMessage {...messages.enabledActionsForUsers} />
           <IconTooltip
@@ -79,7 +81,7 @@ const UserActions = ({
           }
         >
           <Toggle
-            size={phaseId ? 'small' : undefined}
+            variant={phaseId ? 'bo' : undefined}
             checked={submission_enabled || false}
             onChange={togglePostingEnabled}
             label={formatMessage(messages.inputPostingEnabled)}
@@ -95,7 +97,7 @@ const UserActions = ({
             }
           >
             <Toggle
-              size={phaseId ? 'small' : undefined}
+              variant={phaseId ? 'bo' : undefined}
               checked={commenting_enabled || false}
               onChange={toggleCommentingEnabled}
               label={formatMessage(messages.inputCommentingEnabled)}
@@ -113,7 +115,7 @@ const UserActions = ({
             }
           >
             <Toggle
-              size={phaseId ? 'small' : undefined}
+              variant={phaseId ? 'bo' : undefined}
               checked={reacting_enabled || false}
               onChange={toggleReactingEnabled}
               label={formatMessage(messages.inputReactingEnabled)}
@@ -138,8 +140,9 @@ const UserActions = ({
             />
           </Box>
         )}
-      </StyledSectionField>
-      {reacting_enabled && (
+      </ActionsField>
+      {/* The workspace panel shows the likes limit last, after disliking. */}
+      {reacting_enabled && !phaseId && (
         <>
           <SectionField>
             <SubSectionTitle>

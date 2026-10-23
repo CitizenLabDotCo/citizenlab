@@ -86,6 +86,7 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
         title_multiloc: formData.title_multiloc,
         start_at: formData.start_at,
         end_at: formData.end_at,
+        input_term: formData.input_term,
         // A draft description publishes on its own; sending the loaded value
         // would undo a publish made since.
         ...(draftDescriptionEnabled

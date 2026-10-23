@@ -25,7 +25,7 @@ const PhaseActionAccessRow = ({ phaseId, action, label }: Props) => {
   return (
     <ToggleActionAccess phaseId={phaseId} action={action}>
       <Toggle
-        size="small"
+        variant="bo"
         checked
         disabled
         onChange={() => {}}

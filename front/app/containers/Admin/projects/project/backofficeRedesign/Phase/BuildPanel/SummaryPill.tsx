@@ -29,9 +29,9 @@ const SummaryPill = ({ label, icon }: Props) => (
     )}
     <Text
       as="span"
+      variant="boSection"
       m="0"
       fontSize="xs"
-      fontWeight="semi-bold"
       color="coolGrey700"
       whiteSpace="nowrap"
     >

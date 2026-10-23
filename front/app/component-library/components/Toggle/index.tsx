@@ -8,6 +8,11 @@ import { colors, fontSizes, focusRing, isRtl } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 
 type Size = 'small' | 'medium';
+type Variant = 'default' | 'bo';
+
+// The back-office switch: a 26 by 16 track with a 12px knob.
+const BO_KNOB = 12;
+const BO_PADDING = 2;
 
 const mediumSize = 21;
 const smallSize = 15;
@@ -39,6 +44,7 @@ const StyledToggle = styled.i<{
   checked: boolean;
   disabled: boolean;
   sizeInPixels: number;
+  variant: Variant;
 }>`
   display: inline-block;
   padding: ${padding}px;
@@ -71,14 +77,44 @@ const StyledToggle = styled.i<{
       padding-left: ${(props: any) => props.sizeInPixels}px;
       background-color: ${colors.success};
     `};
+
+  ${(props) =>
+    props.variant === 'bo' &&
+    css`
+      padding: ${BO_PADDING}px ${BO_KNOB}px ${BO_PADDING}px ${BO_PADDING}px;
+      border: none;
+      border-radius: 999px;
+      background-color: ${colors.grey300};
+      transition: padding 150ms ease-out, background-color 150ms ease-out;
+
+      &:before {
+        width: ${BO_KNOB}px;
+        height: ${BO_KNOB}px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      }
+
+      &.enabled:hover {
+        background: ${props.checked ? colors.textPrimary : colors.grey400};
+      }
+
+      ${props.checked &&
+      css`
+        padding: ${BO_PADDING}px ${BO_PADDING}px ${BO_PADDING}px ${BO_KNOB}px;
+        background-color: ${colors.coolGrey700};
+      `}
+    `};
 `;
 
 const StyledToggleWrapper = styled.div<{
   checked: boolean;
   disabled: boolean;
   sizeInPixels: number;
+  variant: Variant;
 }>`
-  height: ${(props) => props.sizeInPixels + padding * 2}px;
+  height: ${(props) =>
+    props.variant === 'bo'
+      ? BO_KNOB + BO_PADDING * 2
+      : props.sizeInPixels + padding * 2}px;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -127,6 +163,8 @@ interface Props {
   description?: ReactNode;
   labelTextColor?: string;
   size?: Size;
+  /** 'bo' is the back-office switch; it ignores `size`. */
+  variant?: Variant;
   onChange: (event: FormEvent) => void;
   className?: string;
   id?: string;
@@ -153,6 +191,7 @@ class Toggle extends PureComponent<Props> {
       className,
       id,
       size = 'medium',
+      variant = 'default',
       onChange,
     } = this.props;
 
@@ -176,12 +215,14 @@ class Toggle extends PureComponent<Props> {
           onClick={this.handleOnClick}
           data-testid={testEnv('toggle')}
           sizeInPixels={sizeInPixels}
+          variant={variant}
         >
           <StyledToggle
             checked={checked}
             disabled={!!disabled}
             className={disabled ? 'disabled' : 'enabled'}
             sizeInPixels={sizeInPixels}
+            variant={variant}
           />
         </StyledToggleWrapper>
 

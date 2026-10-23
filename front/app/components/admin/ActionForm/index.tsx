@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import {
   Box,
   Button,
+  Text,
   Title,
   Icon,
   IconTooltip,
@@ -137,6 +138,19 @@ const ActionForm = ({
     </>
   );
 
+  const dataBody = isAdmins ? (
+    <Text variant="boHelper" m="0">
+      {formatMessage(messages.adminsOnlyNoData)}
+    </Text>
+  ) : (
+    <DataSection
+      permission={permissionData}
+      phaseId={phaseId}
+      onChange={handleChange}
+    />
+  );
+  const content = variant === 'data' ? dataBody : body;
+
   const revertModal = onRevertToDefaults && (
     <RevertToDefaultsModal
       opened={revertModalOpened}
@@ -146,7 +160,7 @@ const ActionForm = ({
     />
   );
 
-  if (variant === 'plain') {
+  if (variant !== 'card') {
     return (
       <Box>
         {usingPlatformDefaults && (
@@ -172,9 +186,9 @@ const ActionForm = ({
           </Box>
         )}
         {usingPlatformDefaults ? (
-          <ReadOnlyOverlay>{body}</ReadOnlyOverlay>
+          <ReadOnlyOverlay>{content}</ReadOnlyOverlay>
         ) : (
-          body
+          content
         )}
         {revertModal}
       </Box>
