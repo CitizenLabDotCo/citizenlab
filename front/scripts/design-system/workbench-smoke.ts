@@ -532,7 +532,11 @@ const panelChecks = async (
   // heals maps to more tokens.
   const row = `[data-testid="wb-panel-tokens"] [data-token="${RADIUS_TOKEN}"]`;
   let heal = '';
-  if (await page.$(`${row} [data-testid="wb-heal"]`)) {
+  if (!(await page.$(`${row} [data-testid="wb-heal"]`))) {
+    failures.push(
+      `the ${RADIUS_TOKEN} row in the Tokens panel has no Heal button`
+    );
+  } else {
     await page.click(`${row} [data-testid="wb-heal"]`);
     await page.waitForSelector(`${row} [data-testid="wb-heal-text"] pre`);
     heal = await page.$eval(
