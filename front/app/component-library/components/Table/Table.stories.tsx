@@ -1,6 +1,10 @@
 import React from 'react';
 
 import { Meta, StoryObj } from '@storybook/react';
+import { expect, userEvent, within } from 'storybook/test';
+// eslint-plugin-storybook 0.8 knows expect from @storybook/test, not from
+// storybook/test (Storybook 10), so it flags every expect here.
+/* eslint-disable storybook/use-storybook-expect */
 
 import { Table, Thead, Tbody, Tr, Th, Td } from './';
 
@@ -190,4 +194,15 @@ export const RTL: Story = {
       <Table {...args} />
     </div>
   ),
+};
+
+// Tab stops on the info tooltip of a header. The sortable header itself
+// takes no focus (a clickable th), so the first stop is the tooltip.
+export const Keyboard: Story = {
+  ...WithSortableAndTooltipIcons,
+  play: async ({ canvasElement }) => {
+    const info = within(canvasElement).getByRole('button');
+    await userEvent.tab();
+    await expect(info).toHaveFocus();
+  },
 };
