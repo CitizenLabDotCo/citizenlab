@@ -48,9 +48,10 @@ const meta = {
   title: 'Components/Navigation/NavigationTabs',
   tags: ['shared'],
   parameters: { gv: {} },
-  component: NavigationTabs,
-  render: (args) => <TabsExample {...(args as unknown as ExampleProps)} />,
-} satisfies Meta<typeof NavigationTabs>;
+  // The story renders a composition of the building blocks, so its props
+  // (and the Controls) are the example's.
+  component: TabsExample,
+} satisfies Meta<typeof TabsExample>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -58,17 +59,17 @@ type Story = StoryObj<typeof meta>;
 const labels = ['General', 'Phases', 'Permissions', 'Events'];
 
 export const Default: Story = {
-  args: { labels } as never,
+  args: { labels },
 };
 
 // Each tab sits in a tooltip span. Hover on the second (inactive) tab.
 export const Hover: Story = {
-  args: { labels } as never,
+  args: { labels },
   parameters: { pseudo: { hover: ['nav > span:nth-child(2) > div'] } },
 };
 
 export const Focus: Story = {
-  args: { labels } as never,
+  args: { labels },
   parameters: {
     pseudo: {
       focus: ['nav > span:nth-child(2) a'],
@@ -79,11 +80,11 @@ export const Focus: Story = {
 
 // A tab with a tooltip text is disabled. It looks like the others, so the
 // story hovers it to show the tooltip that explains why.
-export const DisabledTab: Story = {
+export const Disabled: Story = {
   args: {
     labels,
     disabledTooltipText: 'Add a phase first',
-  } as never,
+  },
   play: async ({ canvasElement }) => {
     const tab = canvasElement.querySelector('nav > span:nth-child(3) > div');
     await userEvent.hover(tab as Element);
@@ -96,10 +97,10 @@ export const DisabledTab: Story = {
 };
 
 export const WithBadge: Story = {
-  args: { labels, badge: true } as never,
+  args: { labels, badge: true },
 };
 
 export const RTL: Story = {
   globals: { lang: 'ar' },
-  args: { labels: ['عام', 'المراحل', 'الأذونات', 'الفعاليات'] } as never,
+  args: { labels: ['عام', 'المراحل', 'الأذونات', 'الفعاليات'] },
 };
