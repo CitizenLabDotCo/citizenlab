@@ -65,9 +65,6 @@ module BulkImportIdeas::Parsers
       merged_fields
     end
 
-    # Built once per parser and shared with the LLM schema: building the form
-    # again prefixes the keys of demographic fields a second time (u_u_...),
-    # so the LLM answers would no longer match the template.
     def printable_fields
       @printable_fields ||= IdeaCustomFieldsService.new(@phase.pmethod.custom_form).printable_fields
     end
