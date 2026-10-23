@@ -36,6 +36,7 @@ pl-PL:
         project_participants: Do uczestników projektu
         registered_users: Dla zarejestrowanych użytkowników
       recipient_segment:
+        admin_who_generated_the_report: Administrator, który zlecił przygotowanie raportu
         admins: Administratorzy
         admins_and_managers: Administratorzy i menedżerowie
         admins_and_managers_assigned_to_the_input: Administratorzy i menedżerowie przypisani do wejścia
@@ -109,6 +110,7 @@ pl-PL:
         proposal_is_upvoted_above_threshold: Propozycja została przegłosowana powyżej progu
         proposal_status_changes: Zmiany statusu propozycji
         registration_to_event: Rejestracja na wydarzenie
+        report_generated: Zakończono generowanie raportu
         survey_1_day_after_draft_saved: 1 dzień po ostatnim zapisaniu ankiety w wersji roboczej przez użytkownika
         user_accepts_invitation_to_cosponsor_a_proposal: Użytkownik akceptuje zaproszenie do współsponsorowania propozycji
         user_changes_email: Użytkownik zmienia swój adres e-mail
@@ -206,6 +208,7 @@ pl-PL:
       project_review_request: Żądanie przeglądu projektu
       project_review_state_change: Projekt zatwierdzony
       proposal_expired_for_admin: Propozycja wygasła bez osiągnięcia progu głosowania
+      report_generated: Raport został wygenerowany
       screening_digest: Cotygodniowe przypomnienie o badaniu przesiewowym
       sms_manual: Oficjalne wiadomości SMS
       space_moderation_rights_received: Otrzymano uprawnienia menedżera obszaru
@@ -661,6 +664,13 @@ pl-PL:
       preheader: Zgłoszenie wygasło bez osiągnięcia progu
       subject: '%{input_title} wygasło bez osiągnięcia progu'
       title: Zgłoszenie wygasło bez osiągnięcia progu głosowania
+    report_generated:
+      cta_button: Otwórz raport
+      event_description: Raport został przygotowany i jest gotowy do sprawdzenia oraz edycji.
+      preheader: Twój raport jest gotowy
+      stopped_early: Pisanie zostało przerwane przed ukończeniem raportu. Wszystko, co zostało do tej pory napisane, zostało zapisane — otwórz raport i poproś o resztę na czacie.
+      subject: "Twój raport dla projektu '%{projectName}' jest gotowy"
+      title: Twój raport jest gotowy
     schedules:
       quarterly: Kwartalnie, pierwszego dnia kwartału
       weekly:

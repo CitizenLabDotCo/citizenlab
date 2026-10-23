@@ -7,6 +7,7 @@ import { Parameters } from 'api/projects_mini_admin/types';
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
 
+import { DEFAULT_SORT } from '../../constants';
 import { setParam, useParam } from '../../params';
 
 import messages from './messages';
@@ -31,7 +32,7 @@ const OPTIONS = [
 
 const Sort = () => {
   const { formatMessage } = useIntl();
-  const value = useParam('sort') ?? 'recently_viewed';
+  const value = useParam('sort') ?? DEFAULT_SORT;
 
   const options: Option[] = OPTIONS.map((option) => ({
     value: option.value,

@@ -69,21 +69,25 @@ describe('groupSpotlightSurveys', () => {
   });
 
   it('groups standalone surveys by temporal state and drops past ones', () => {
-    const openSurvey = phase({}, 'open');
-    const upcomingSurvey = phase(
+    const openSpotlightSurvey = phase({}, 'open');
+    const upcomingSpotlightSurvey = phase(
       { start_at: date(3), end_at: date(10) },
       'upcoming'
     );
-    const pastSurvey = phase({ start_at: date(-10), end_at: date(-3) }, 'past');
+    const pastSpotlightSurvey = phase(
+      { start_at: date(-10), end_at: date(-3) },
+      'past'
+    );
 
-    const { open, upcoming } = groupSpotlightSurveys([
-      openSurvey,
-      upcomingSurvey,
-      pastSurvey,
-    ]);
+    const { open: openSpotlightSurveys, upcoming: upcomingSpotlightSurveys } =
+      groupSpotlightSurveys([
+        openSpotlightSurvey,
+        upcomingSpotlightSurvey,
+        pastSpotlightSurvey,
+      ]);
 
-    expect(open.map((p) => p.id)).toEqual(['open']);
-    expect(upcoming.map((p) => p.id)).toEqual(['upcoming']);
+    expect(openSpotlightSurveys.map((p) => p.id)).toEqual(['open']);
+    expect(upcomingSpotlightSurveys.map((p) => p.id)).toEqual(['upcoming']);
   });
 
   it('treats surveys without an end date as open', () => {

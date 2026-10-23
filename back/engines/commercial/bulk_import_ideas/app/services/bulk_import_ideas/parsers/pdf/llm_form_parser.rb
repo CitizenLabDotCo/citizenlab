@@ -2,10 +2,11 @@
 
 module BulkImportIdeas::Parsers::Pdf
   class LLMFormParser
-    def initialize(phase, locale, personal_data_enabled: false)
+    def initialize(phase, locale, personal_data_enabled: false, printable_fields: nil)
       @phase = phase
       @locale = locale
       @personal_data_enabled = personal_data_enabled
+      @printable_fields = printable_fields
     end
 
     # Return in format compatible with idea_to_idea_row
@@ -116,7 +117,7 @@ module BulkImportIdeas::Parsers::Pdf
     end
 
     def schema_builder
-      @schema_builder ||= FormSyncSchemaBuilder.new(@phase, @locale, personal_data_enabled: @personal_data_enabled)
+      @schema_builder ||= FormSyncSchemaBuilder.new(@phase, @locale, personal_data_enabled: @personal_data_enabled, printable_fields: @printable_fields)
     end
 
     def llm
