@@ -1,10 +1,236 @@
 {
-  "generatedAt": "2026-10-23T05:41:58.920Z",
+  "generatedAt": "2026-10-23T07:29:43.600Z",
   "base": "1a0d06e3afa8b33db8a01f33168c445daa9767c0",
   "baseRef": "master",
-  "head": "1fa0fb5b0d85bf64ca0ae920c1200fe0c25f31d6",
+  "head": "230ac49a1276d3ce098d1ceed81b400ed74f1129",
   "repoUrl": "https://github.com/CitizenLabDotCo/citizenlab",
   "commits": [
+    {
+      "sha": "230ac49a1276d3ce098d1ceed81b400ed74f1129",
+      "subject": "design-system(audit): blocked requests by phase, exact --open matches [AI-assisted]",
+      "body": "The guard records each blocked request with its route and phase (load,\nor after-click:<trigger>). Page-load writes, the platform's own session\ntracking, are listed as expected and counted as blockedOnLoad; only\nwrites after a click count as blockedWrites and raise the alarm in the\nCLI, the Usage notice and the audit skill. The guard test proves a\nload-time POST is classed as load and click POSTs as after-click.\n\n--open tries each match until one is visible and allowed, and the docs\nuse exact-name role selectors. loadAudit normalises every field the\nAudit section reads, so an older or hand-edited file cannot crash it.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/audit/SKILL.md",
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/workbench/src/lib/data.test.ts",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/panels/Usage.tsx",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/audit.guard.test.ts",
+        "front/scripts/design-system/audit.test.ts",
+        "front/scripts/design-system/audit.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "ddf74003084af52954355cf19f5001bb80faa4c5",
+      "subject": "design-system(audit): read-only network guard, safe triggers, audit in Usage [AI-assisted]",
+      "body": "ds:audit aborts every request that is not GET, HEAD or OPTIONS, closes\nWebSockets and blocks service workers; blocked writes are logged as\nmethod and path, counted in the report and printed loudly. A local\nPlaywright test proves a POST, a beacon, a form submit and a socket from\nclicks never reach the server.\n\nMenu triggers pass isSafeTrigger (main content, menu or listbox popups\nor aria-expanded buttons, no submits, no deny-listed names in five\nlanguages); clicking stops on the first error or navigation. --host is\nrequired, story comparisons use the same viewport only, and the script\nwarns when the session file sits inside the repository.\n\nThe component Usage tab shows the committed audit (differences, heal\ntasks, routes not reached). Audit JSON files are committed; screenshots\nstay ignored.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/audit/SKILL.md",
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/static/.gitignore",
+        "front/.storybook/workbench/src/lib/data.test.ts",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/pages/StartHere.tsx",
+        "front/.storybook/workbench/src/panels/Usage.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/audit.guard.test.ts",
+        "front/scripts/design-system/audit.test.ts",
+        "front/scripts/design-system/audit.ts",
+        "front/scripts/design-system/playwright.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "a4c000b00703283bb4b71895aaeb4c48b60ab7ed",
+      "subject": "design-system(audit): instance audit script and tests [AI-assisted]",
+      "body": "ds:audit opens a library component's routes (scan + route fixture) in a\nstored admin session at 1280 and 390, screenshots every visible\n[data-gv-component], reads radius, padding, colours, font size and the\ntokens each instance reads (the workbench's readComputedTokens, bundled\nwith esbuild and injected), opens menus when a page shows none, compares\ninstances pairwise and with the Default story, and writes\naudits/<Name>.json, its screenshots and audits/index.json for the\nworkbench. A missing session prints the playwright codegen command and\nexits 2. readComputedTokens takes an optional scope element; Storybook\nsets VITE_GV_DESIGN_TAGS so stories carry the tag too. Skill, AGENTS.md,\nREADME and Start here updated. No audit results yet.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/audit/SKILL.md",
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/main.ts",
+        "front/.storybook/workbench/src/lib/frame.ts",
+        "front/.storybook/workbench/src/pages/StartHere.tsx",
+        "front/package.json",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/audit.test.ts",
+        "front/scripts/design-system/audit.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "3b14b355c6a5a7491ed983f0aaf7fd4c7acd0ebf",
+      "subject": "design-system(workbench): Start here review fixes: Figma MCP in the setup, plainer claims, code cards scroll [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/workbench/src/pages/StartHere.tsx",
+        "front/.storybook/workbench/src/pages/starthere.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "c6647469a192bc46345f74ae96a955ffea86f385",
+      "subject": "design-system(docs): AGENTS.md and scripts README describe the current workbench, MCP and every ds script [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/scripts/design-system/README.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "9908c7b4ac8be3bec3fae6208f3bc58318f75f73",
+      "subject": "design-system(workbench): Start here page: tour, first heal, rules, accessibility thresholds and needs-a-person list, Mac setup [AI-assisted]",
+      "body": "Five lines on what this is, a card per workbench page with a small\npreview, the first heal in seven steps, the rules (a heal never changes\ntoday's rendering of a shared component, even with mode both), the axe\nthresholds and every needs-human checklist row, running it on a Mac,\nrefreshing the data, where files live, what the preview can show, and\nthe data files the build lacks. The smoke test checks the tour links,\nthe needs-a-person list and the mode rule.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/Nav.tsx",
+        "front/.storybook/workbench/src/lib/a11y.test.ts",
+        "front/.storybook/workbench/src/lib/a11y.ts",
+        "front/.storybook/workbench/src/pages/StartHere.tsx",
+        "front/.storybook/workbench/src/pages/starthere.css",
+        "front/scripts/design-system/workbench-smoke.test.ts",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "fcb4260b186fa71734175dc997b98801a75be47d",
+      "subject": "design-system(storybook): add @storybook/addon-mcp 0.7.0, MCP server at /mcp on the dev server [AI-assisted]",
+      "body": "0.7.0 (10 Jul 2026) is the last release whose peer range covers\nStorybook 10.4; it installs with additions only (14 packages, no\nupgrades). npm also re-sorted @types/qs into alphabetical order.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/main.ts",
+        "front/package-lock.json",
+        "front/package.json"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "78d18897559e8c871de6d6230cbfb4748d23916b",
+      "subject": "design-system(docs): refresh trend.json with design-changes.json after a summary commit [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "e188c58e394ca9547fb93f00010a1a66c6e50341",
+      "subject": "design-system(workbench): Proposal review fixes: lint copy, delta since the scanner settled, Quote mode demo [AI-assisted]",
+      "body": "ds:lint already fails on new raw values; the copy and the decision say\nso. The trend headline counts from the last scanner change. Quote\n(3px to 8px corners) is the live mode demo, Button keeps one line; the\nsmoke reads both corners. Heal card links the screenshots instead of\nunreadable thumbnails; LineChart has its own file; other areas read as\nOther change.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/LineChart.tsx",
+        "front/.storybook/workbench/src/lib/proposal.test.ts",
+        "front/.storybook/workbench/src/lib/proposal.ts",
+        "front/.storybook/workbench/src/pages/Proposal.tsx",
+        "front/.storybook/workbench/src/pages/proposal.css",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "b168cdb9a65c87724cae6d10fa973ae5d3693940",
+      "subject": "design-system(workbench): canvas fit measures stories taller than the centred preview box [AI-assisted]",
+      "body": "The preview centres every story in an absolute box the size of the\nframe, so in the 1px measuring frame a tall story overflowed above the\ntop and fit cut it in half. The measure now also takes the extent of\nthe story's element boxes.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/Canvas.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "4e79f9df2ab117d504df03ad3ace1023eaed9515",
+      "subject": "design-system(workbench): gallery chip in the SPEC wording, violation counts, keyboard warns when 2.1.1 fails [AI-assisted]",
+      "body": "The review chip reads \"Reviewed by agent on <date>\" with labelled counts\n(8 pass, 1 fail, 0 need a person), not numbers told apart by colour. The\naxe chip counts violations of the worst impact, one per rule per story.\nA passing Keyboard story shows \"Keyboard tested, 2.1.1 fails\" in the\nwarn tone when the checklist fails 2.1.1, for any component. The A11y\ntab count shows once the results have loaded.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/StoryThumb.tsx",
+        "front/.storybook/workbench/src/lib/a11y.test.ts",
+        "front/.storybook/workbench/src/lib/a11y.ts",
+        "front/.storybook/workbench/src/pages/Component.tsx",
+        "front/.storybook/workbench/src/panels/A11y.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "4150f921dc466acc37bdfcef814c76f09786eb3c",
+      "subject": "design-system(workbench): Proposal page for developers [AI-assisted]",
+      "body": "The three rings with live numbers from the scan summary, a drift trend\nfrom trend.json (plain SVG, hover and a table view), the migration order\n(usage x off-spec, top 20), the two modes with the Button in both frames,\na real heal with its screenshots, the review flow, the decisions and the\ncost so far. The workbench smoke checks the numbers, the charts, the\norder and the two Button frames.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/App.tsx",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/lib/proposal.test.ts",
+        "front/.storybook/workbench/src/lib/proposal.ts",
+        "front/.storybook/workbench/src/pages/Placeholder.tsx",
+        "front/.storybook/workbench/src/pages/Proposal.tsx",
+        "front/.storybook/workbench/src/pages/proposal.css",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "c0fb282bb66efe187cfaa69535df91a88ae89d3b",
+      "subject": "design-system(trend): RunGit defined in trend.ts so the workbench typecheck reads it without the token build [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/trend.test.ts",
+        "front/scripts/design-system/trend.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "00c0fba50d4a368e6a7430bd88ad169fbc28375d",
+      "subject": "design-system(stories): Table Keyboard asserts the info button is reachable by Tab, not that it comes first [AI-assisted]",
+      "body": "The sortable headers take no focus today (2.1.1 fails); once a heal makes\nthem focusable they come first and the story still holds. Fresh axe\nresults for the story: the play passes.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/a11y-results.json",
+        "front/app/component-library/components/Table/Table.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Table"
+    },
+    {
+      "sha": "2ee4a1b4bd9c10847853896170dc5b8249838cd7",
+      "subject": "design-system(skills): ds:check passes unless a change adds a critical; fixing one removes it from a11y-known.json [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/a11y-review/SKILL.md",
+        "front/.claude/skills/heal/SKILL.md",
+        "front/.claude/skills/lift/SKILL.md",
+        "front/.claude/skills/new-component/SKILL.md",
+        "front/.claude/skills/story/SKILL.md",
+        "front/.storybook/AGENTS.md",
+        "front/scripts/design-system/README.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "4e77b079d7df65c93f4c3d2f9d33e94c55c58820",
+      "subject": "design-system(trend): trend.json from the scan summary history, run by ds:changes [AI-assisted]",
+      "body": "scripts/design-system/trend.ts reads git log of the committed\ndesign-scan.summary.json and writes .storybook/static/trend.json: the\ntotals at each commit, its area, and for heals the changed lines, the\nscore and the screenshot folder. The file is committed; a shallow clone\n(CI, --depth 1), a failing log or an empty history keeps it, and it is\nonly rewritten when its content changes. Refreshes design-changes.json.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/.gitignore",
+        "front/.storybook/static/design-changes.json",
+        "front/.storybook/static/trend.json",
+        "front/scripts/design-system/changes.ts",
+        "front/scripts/design-system/trend.test.ts",
+        "front/scripts/design-system/trend.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "67f0abec42402d3f99cac955cf0d23b953483201",
+      "subject": "design-system(a11y): ds:check accepts the known criticals in a11y-known.json and fails on new ones [AI-assisted]",
+      "body": "The list holds the 97 criticals of today's results, by story id and rule.\n--check fails on a critical not on it, on a listed one that no longer\nfails, and when a11y-results.json is missing. The focusable count uses\nthe shared STORYBOOK_CHROME list.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/a11y-known.json",
+        "front/scripts/design-system/a11y-results.test.ts",
+        "front/scripts/design-system/a11y-results.ts",
+        "front/scripts/design-system/a11y-run.ts"
+      ],
+      "kind": "other"
+    },
     {
       "sha": "1fa0fb5b0d85bf64ca0ae920c1200fe0c25f31d6",
       "subject": "design-system(skills): a11y.json next to the stories, ds:a11y and the A11y panel documented [AI-assisted]",
