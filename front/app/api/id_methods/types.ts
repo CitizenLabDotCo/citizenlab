@@ -44,6 +44,7 @@ export type IdMethodName =
   | 'id_card_lookup'
   | 'keycloak'
   | 'nemlog_in'
+  | 'okta'
   | 'oostende_rrn'
   | 'publik'
   | 'twoday'
@@ -91,14 +92,17 @@ export type IDAuth0Method = TGenericMethod<
   { method_name_multiloc: Multiloc }
 >;
 
+// Attributes of the methods that city staff sign in with.
+type TEmployeeSsoAttributes = {
+  logo_url?: string;
+  login_mechanism_name?: string;
+  visibility?: 'show' | 'link' | 'hide';
+  enforced_email_domain_error_multiloc?: Multiloc;
+};
+
 export type IDAzureAdMethod = TGenericMethod<
   'azureactivedirectory',
-  {
-    logo_url?: string;
-    login_mechanism_name?: string;
-    visibility?: 'show' | 'link' | 'hide';
-    enforced_email_domain_error_multiloc?: Multiloc;
-  }
+  TEmployeeSsoAttributes
 >;
 
 export type IDAzureAdB2cMethod = TGenericMethod<
@@ -134,6 +138,8 @@ export type IDKeycloakMethod = TGenericMethod<
   { ui_method_name: string; provider: IconNames }
 >;
 
+export type IDOktaMethod = TGenericMethod<'okta', TEmployeeSsoAttributes>;
+
 export type IDPublikMethod = TGenericMethod<'publik', { logo_url?: string }>;
 
 export type IDTwodayMethod = TGenericMethod<
@@ -153,6 +159,7 @@ type TOtherMethodName = Exclude<
   | 'id_austria'
   | 'id_card_lookup'
   | 'keycloak'
+  | 'okta'
   | 'publik'
   | 'twoday'
 >;
@@ -169,6 +176,7 @@ export type IdMethodData =
   | IDIdAustriaMethod
   | IDKeycloakMethod
   | IDLookupMethod
+  | IDOktaMethod
   | IDPublikMethod
   | IDTwodayMethod
   | IDOtherMethod;

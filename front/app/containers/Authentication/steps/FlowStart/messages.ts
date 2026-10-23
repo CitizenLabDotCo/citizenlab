@@ -26,4 +26,8 @@ export default defineMessages({
     id: 'app.containers.Authentication.steps.FlowStart.useEmailInstead',
     defaultMessage: 'Use your email address instead',
   },
+  signInWithSSO: {
+    id: 'app.containers.Authentication.steps.FlowStart.signInWithSSO',
+    defaultMessage: 'Sign in with single sign-on (SSO)',
+  },
 });
