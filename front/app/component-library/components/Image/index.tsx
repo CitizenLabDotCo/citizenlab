@@ -2,7 +2,7 @@ import React from 'react';
 
 import styled, { css } from 'styled-components';
 
-import { gvTag } from '../../../design-system/tags';
+import { gvTag } from '../../utils/gvTag';
 import Box, {
   BoxColorProps,
   BoxPaddingProps,

@@ -2,7 +2,7 @@ import React, { useId, useState } from 'react';
 
 import styled from 'styled-components';
 
-import { gvTag } from '../../../design-system/tags';
+import { gvTag } from '../../utils/gvTag';
 import InputContainer from '../../utils/containers/InputContainer';
 import { colors } from '../../utils/styleUtils';
 import Box, { BoxMarginProps } from '../Box';

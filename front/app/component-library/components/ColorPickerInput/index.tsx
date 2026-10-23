@@ -2,7 +2,7 @@ import React, { PureComponent, FormEvent, lazy, Suspense } from 'react';
 
 import styled from 'styled-components';
 
-import { gvTag } from '../../../design-system/tags';
+import { gvTag } from '../../utils/gvTag';
 import { colors } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import IconTooltip from '../IconTooltip';

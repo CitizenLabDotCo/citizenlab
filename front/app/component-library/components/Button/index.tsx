@@ -4,7 +4,7 @@ import { isNil, get } from 'lodash-es';
 import { darken, transparentize, opacify, rgba } from 'polished';
 import styled from 'styled-components';
 
-import { gvTag } from '../../../design-system/tags';
+import { gvTag } from '../../utils/gvTag';
 import {
   bo,
   colors,

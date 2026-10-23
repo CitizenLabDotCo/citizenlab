@@ -27,7 +27,7 @@ or a name with its folder. To choose what to lift, rank the local pieces of `bac
 
 - [ ] 1. `git status --short`. `npm run ds:scan`. Note the page's findings count for the original file.
 - [ ] 2. `npm run storybook` (port 6006); `npm run ds:visual -- --baseline <scratch>/before`. Screenshot the route where it shows, if you have the platform running.
-- [ ] 3. Create `app/component-library/components/<Name>/index.tsx`: the component, values read from `t` (`design-system/tokens/tokens`), `{...gvTag('<Name>')}` on its root element (`design-system/tags`). Export it from `app/component-library/index.tsx`.
+- [ ] 3. Create `app/component-library/components/<Name>/index.tsx`: the component, values read from `t` (`design-system/tokens/tokens`), `{...gvTag('<Name>')}` on its root element (`component-library/utils/gvTag`). Export it from `app/component-library/index.tsx`.
 - [ ] 4. Stories: `<Name>.stories.tsx`, `title: 'Components/<Category>/<Name>'`, `tags: ['bo']`, every state (follow the `story` skill).
 - [ ] 5. Replace the original: the old file imports the library component (or the old file goes and its importers switch). Nothing else on the page changes.
 - [ ] 6. Checks:

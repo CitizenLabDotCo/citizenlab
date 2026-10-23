@@ -1,4 +1,4 @@
-import { gvTag } from './tags';
+import { gvTag } from './gvTag';
 
 describe('gvTag', () => {
   const original = process.env.VITE_GV_DESIGN_TAGS;

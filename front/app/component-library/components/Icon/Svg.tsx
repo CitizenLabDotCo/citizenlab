@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import styled from 'styled-components';
 
-import { gvTag } from '../../../design-system/tags';
+import { gvTag } from '../../utils/gvTag';
 import Box, {
   BoxPositionProps,
   BoxMarginProps,

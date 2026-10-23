@@ -4,7 +4,7 @@ import { isString, get, isNumber } from 'lodash-es';
 import styled from 'styled-components';
 import { Placement } from 'tippy.js';
 
-import { gvTag } from '../../../design-system/tags';
+import { gvTag } from '../../utils/gvTag';
 import {
   defaultInputStyle,
   colors,

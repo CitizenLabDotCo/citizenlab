@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { gvTag } from '../../../design-system/tags';
+import { gvTag } from '../../utils/gvTag';
 import { colors, stylingConsts } from '../../utils/styleUtils';
 import Box, { BoxProps } from '../Box';
 import Icon from '../Icon';

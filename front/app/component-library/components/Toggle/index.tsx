@@ -4,7 +4,7 @@ import { hideVisually, darken } from 'polished';
 import styled, { css } from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
-import { gvTag } from '../../../design-system/tags';
+import { gvTag } from '../../utils/gvTag';
 import { colors, fontSizes, focusRing, isRtl } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 

@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 import styled, { css, keyframes } from 'styled-components';
 
-import { gvTag } from '../../../design-system/tags';
+import { gvTag } from '../../utils/gvTag';
 import { colors } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 

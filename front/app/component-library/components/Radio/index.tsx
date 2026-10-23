@@ -5,7 +5,7 @@ import { get } from 'lodash-es';
 import { hideVisually } from 'polished';
 import styled, { css, useTheme } from 'styled-components';
 
-import { gvTag } from '../../../design-system/tags';
+import { gvTag } from '../../utils/gvTag';
 import { fontSizes, colors, focusRing, isRtl } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import Box, { BoxPaddingProps, BoxMarginProps } from '../Box';

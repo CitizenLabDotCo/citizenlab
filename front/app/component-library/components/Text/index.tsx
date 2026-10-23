@@ -3,7 +3,7 @@ import React from 'react';
 import { FontWeight } from 'component-library/utils/typings';
 import styled, { css } from 'styled-components';
 
-import { gvTag } from '../../../design-system/tags';
+import { gvTag } from '../../utils/gvTag';
 import {
   MainThemeProps,
   bo,

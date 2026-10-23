@@ -4,7 +4,7 @@ import { darken } from 'polished';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
-import { gvTag } from '../../../design-system/tags';
+import { gvTag } from '../../utils/gvTag';
 import { colors, fontSizes } from '../../utils/styleUtils';
 import Icon from '../Icon';
 

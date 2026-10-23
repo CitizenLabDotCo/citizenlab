@@ -2,7 +2,7 @@ import React, { FC, memo } from 'react';
 
 import styled, { css } from 'styled-components';
 
-import { gvTag } from '../../../design-system/tags';
+import { gvTag } from '../../utils/gvTag';
 import { fontSizes, colors } from '../../utils/styleUtils';
 import Box, { BoxHeightProps, BoxMarginProps, BoxWidthProps } from '../Box';
 import Icon, { IconProps } from '../Icon';

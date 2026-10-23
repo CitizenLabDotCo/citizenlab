@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Tippy from '@tippyjs/react';
 import { followCursor } from 'tippy.js';
 
-import { gvTag } from '../../../design-system/tags';
+import { gvTag } from '../../utils/gvTag';
 import Box from '../Box';
 
 export type TooltipProps = Omit<

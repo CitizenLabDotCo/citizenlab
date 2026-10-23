@@ -3,7 +3,7 @@ import React, { PureComponent, createRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
-import { gvTag } from '../../../design-system/tags';
+import { gvTag } from '../../utils/gvTag';
 import { fontSizes, colors } from '../../utils/styleUtils';
 import Icon from '../Icon';
 

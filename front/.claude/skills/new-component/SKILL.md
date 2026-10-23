@@ -25,7 +25,7 @@ With a Figma frame, read it through the Figma MCP in your terminal. The workbenc
 ## Steps
 
 - [ ] 1. `git status --short`. Check the library and `design-scan.json` for an existing component of the same role.
-- [ ] 2. `index.tsx`: props typed, values from `t` (`design-system/tokens/tokens`), Tier 2 tokens for colours, `--gv-space-N` steps for spacing inside it, no margin on its root (space between components belongs to `Box`), `{...gvTag('<Name>')}` on the root element (`design-system/tags`). Export it from `app/component-library/index.tsx`.
+- [ ] 2. `index.tsx`: props typed, values from `t` (`design-system/tokens/tokens`), Tier 2 tokens for colours, `--gv-space-N` steps for spacing inside it, no margin on its root (space between components belongs to `Box`), `{...gvTag('<Name>')}` on the root element (`component-library/utils/gvTag`). Export it from `app/component-library/index.tsx`.
 - [ ] 3. `<Name>.stories.tsx`: `title: 'Components/<Category>/<Name>'`, `tags: ['autodocs', '<office>']`, `parameters: { gv: { figma: '<frame URL>' } }` when it came from Figma (else `gv: {}`), `Default` first and every state (follow the `story` skill).
 - [ ] 4. `a11y.json` stub at `app/component-library/<Name>/a11y.json` (the spec's path):
   ```json

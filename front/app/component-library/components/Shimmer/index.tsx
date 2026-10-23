@@ -3,7 +3,7 @@ import React from 'react';
 import { lighten } from 'polished';
 import styled, { keyframes } from 'styled-components';
 
-import { gvTag } from '../../../design-system/tags';
+import { gvTag } from '../../utils/gvTag';
 import { colors } from '../../utils/styleUtils';
 import Box, { BoxProps } from '../Box';
 
