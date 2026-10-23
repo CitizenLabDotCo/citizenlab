@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-22T23:55:38.969Z",
-  "commit": "ecdfabf6c5095a74bd1c7d86267b8495872bb035",
+  "generatedAt": "2026-10-23T00:18:46.841Z",
+  "commit": "b8c5539368b466dc43bd2a26b5fd745ba5fe9b0e",
   "offSpec": 8241,
   "legacy": 3274,
   "tokenReads": 1,
@@ -9,6 +9,6 @@
   "partly": 0,
   "offTokens": 112,
   "pagesRebuilt": 0,
-  "pagesPartly": 197,
-  "pagesLegacy": 1
+  "pagesPartly": 196,
+  "pagesLegacy": 2
 }

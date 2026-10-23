@@ -102,8 +102,57 @@ const isDynamicImport = (n: any) =>
   n.callee.type === 'Import' &&
   n.arguments[0]?.type === 'StringLiteral';
 
+// TS nodes whose subtree is type-only (references inside are not value uses).
+export const TYPE_NODES = new Set([
+  'TSTypeAnnotation',
+  'TSTypeReference',
+  'TSInterfaceDeclaration',
+  'TSTypeAliasDeclaration',
+  'TSTypeParameterInstantiation',
+  'TSTypeParameterDeclaration',
+  'TSTypeQuery',
+  'TSExpressionWithTypeArguments',
+  'TSInterfaceHeritage',
+  'TSDeclareFunction',
+  'TSModuleDeclaration',
+]);
+
+/**
+ * Names a file reads as values: identifiers outside type positions and
+ * import declarations, JSX element names, and `React` when the file has JSX.
+ * Over-inclusive on purpose (object keys, shadowed names): a name wrongly
+ * kept only keeps a module in a route closure, as before.
+ */
+export const valueNames = (ast: ParsedFile): Set<string> => {
+  const values = new Set<string>();
+  walk(ast.program, (n, parent) => {
+    if (TYPE_NODES.has(n.type) || n.type === 'ImportDeclaration') return false;
+    if (n.type === 'JSXOpeningElement' || n.type === 'JSXFragment') {
+      values.add('React');
+    }
+    if (n.type !== 'Identifier' && n.type !== 'JSXIdentifier') return undefined;
+    const isMemberProp =
+      (parent?.type === 'MemberExpression' ||
+        parent?.type === 'OptionalMemberExpression' ||
+        parent?.type === 'JSXMemberExpression') &&
+      parent.property === n &&
+      !parent.computed;
+    if (!isMemberProp && parent?.type !== 'JSXAttribute') values.add(n.name);
+    return undefined;
+  });
+  return values;
+};
+
+/**
+ * Imports of a file. A name is `typeOnly` when it is imported with `type`
+ * or when the file never reads it as a value (TypeScript erases such
+ * imports, so the module is not loaded at runtime).
+ */
 export const extractImports = (ast: ParsedFile): ImportRef[] => {
   const out: ImportRef[] = [];
+  let values: Set<string> | undefined;
+  const usedAsValue = (local: string) =>
+    (values = values ?? valueNames(ast)).has(local);
   ast.program.body.forEach((n: any) => {
     if (n.type === 'ImportDeclaration') {
       const typeOnly = n.importKind === 'type';
@@ -120,7 +169,8 @@ export const extractImports = (ast: ParsedFile): ImportRef[] => {
               : s.type === 'ImportNamespaceSpecifier'
               ? '*'
               : s.imported.name ?? s.imported.value,
-          typeOnly: typeOnly || s.importKind === 'type',
+          typeOnly:
+            typeOnly || s.importKind === 'type' || !usedAsValue(s.local.name),
         })),
       });
     } else if (

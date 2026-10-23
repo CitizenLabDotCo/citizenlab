@@ -254,3 +254,92 @@ describe('SourceTree.barrel', () => {
     expect(t.barrel('app/lib/index.ts')).toBeNull();
   });
 });
+
+describe('route closure and imports used only as types', () => {
+  // A plain `import { X }` whose names appear only in type positions is
+  // erased by TypeScript, so the imported module is not rendered there.
+  const sources: Record<string, string> = {
+    'app/routes.tsx': [
+      "import { lazy } from 'react';",
+      "import { createRoute, createRootRoute, Outlet } from '@tanstack/react-router';",
+      "const Page = lazy(() => import('containers/Page'));",
+      'const rootRoute = createRootRoute({ component: Outlet });',
+      'const pageRoute = createRoute({',
+      '  getParentRoute: () => rootRoute,',
+      "  path: 'page',",
+      '  component: Page,',
+      '});',
+      'export const routeTree = rootRoute.addChildren([pageRoute]);',
+    ].join('\n'),
+    'app/containers/Page.tsx': [
+      "import React, { useState } from 'react';",
+      "import { ButtonProps } from 'components/UI/Button';",
+      "import Error, { ErrorProps } from 'components/UI/Error';",
+      "import { Tip } from 'components/UI/Tip';",
+      "import { Shape } from 'components/UI/Shape';",
+      "import { Model } from 'components/UI/Model';",
+      "import { Widget } from 'components/UI/Widget';",
+      "import Thing from 'components/UI/Thing';",
+      "import type { Typed } from 'components/UI/Typed';",
+      "import 'components/UI/Side';",
+      'type Props = ButtonProps & { shape: typeof Shape; e?: ErrorProps; t?: Typed };',
+      'interface More extends ButtonProps { x: number }',
+      'const Page = (props: Props): More | null => {',
+      '  const [m] = useState<Model>();',
+      '  const tip = props as unknown as Tip;',
+      '  return <Error name={Widget.displayName} m={m} tip={tip} />;',
+      '};',
+      'export { Thing };',
+      'export default Page;',
+    ].join('\n'),
+    ...Object.fromEntries(
+      [
+        'Button',
+        'Error',
+        'Tip',
+        'Shape',
+        'Model',
+        'Widget',
+        'Thing',
+        'Typed',
+        'Side',
+      ].map((n) => [
+        `app/components/UI/${n}/index.tsx`,
+        `export const ${n} = 1;\nexport type ${n}Props = {};\nexport default ${n};`,
+      ])
+    ),
+  };
+  const tree = new SourceTree('/nonexistent', Object.keys(sources));
+  Object.entries(sources).forEach(([f, src]) => tree.setSource(f, src));
+
+  it('leaves out modules whose imports are used only as types', () => {
+    const result = mapRoutes('/nonexistent', tree);
+    expect(result.routeFiles['page']).toEqual([
+      'app/components/UI/Error/index.tsx',
+      'app/components/UI/Side/index.tsx',
+      'app/components/UI/Thing/index.tsx',
+      'app/components/UI/Widget/index.tsx',
+      'app/containers/Page.tsx',
+    ]);
+  });
+
+  it('marks each import name by whether the file uses it as a value', () => {
+    const page = tree.importsOf('app/containers/Page.tsx');
+    const names = Object.fromEntries(
+      page.flatMap((i) => i.names).map((n) => [n.local, n.typeOnly])
+    );
+    expect(names).toEqual({
+      React: false, // the file has JSX
+      useState: false,
+      ButtonProps: true,
+      Error: false,
+      ErrorProps: true,
+      Tip: true,
+      Shape: true,
+      Model: true,
+      Widget: false,
+      Thing: false,
+      Typed: true,
+    });
+  });
+});

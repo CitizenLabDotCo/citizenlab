@@ -1,7 +1,7 @@
 import path from 'path';
 
 import { ParsedFile } from './findings';
-import { SourceTree, walk } from './routes';
+import { SourceTree, TYPE_NODES, walk } from './routes';
 import { ComponentUsage } from './schema';
 
 /*
@@ -132,21 +132,6 @@ export const libraryIndex = (
   ownFiles.forEach((files, c) => ownFiles.set(c, [...new Set(files)].sort()));
   return { byExport, ownFiles, componentOfFile, mainFile };
 };
-
-// TS nodes whose subtree is type-only (references inside are not value uses).
-const TYPE_NODES = new Set([
-  'TSTypeAnnotation',
-  'TSTypeReference',
-  'TSInterfaceDeclaration',
-  'TSTypeAliasDeclaration',
-  'TSTypeParameterInstantiation',
-  'TSTypeParameterDeclaration',
-  'TSTypeQuery',
-  'TSExpressionWithTypeArguments',
-  'TSInterfaceHeritage',
-  'TSDeclareFunction',
-  'TSModuleDeclaration',
-]);
 
 type FileRefs = { values: Set<string>; props: Map<string, Set<string>> };
 
