@@ -9,9 +9,16 @@
  *     [--open <selector>]     a trigger that opens a state, never an action
  *                             button: clicked before looking for instances,
  *                             for components that render inside a menu or
- *                             another closed state (repeatable)
+ *                             another closed state (repeatable); `A -> B`
+ *                             opens A, then B inside it (a submenu)
  *     [--max-triggers <n>]    menus to try opening when a page shows no
  *                             instance (default 12)
+ *     [--param <name>=<id>]   a route param for this host, over the
+ *                             fixture's (repeatable; the fixture's ids
+ *                             belong to its own source host)
+ *     [--query <name[=value]>] added to every route URL, for a state that
+ *                             a URL switch turns on, e.g.
+ *                             project_backoffice_redesign (repeatable)
  *
  * Reads the component's routes from .storybook/static/design-scan.json,
  * fills their params from routes.fixture.json, opens each route with
@@ -145,6 +152,8 @@ export type AuditArgs = {
   open: string[];
   routes: string[];
   maxTriggers: number;
+  params: Record<string, string>;
+  query: string[];
 };
 
 const trimSlash = (s: string) => s.replace(/\/+$/, '');
@@ -160,6 +169,8 @@ export const parseArgs = (
   const open: string[] = [];
   const routes: string[] = [];
   let maxTriggers = 12;
+  const params: Record<string, string> = {};
+  const query: string[] = [];
   for (let i = 0; i < argv.length; i++) {
     const flag = argv[i];
     const value = () => {
@@ -174,6 +185,11 @@ export const parseArgs = (
     else if (flag === '--open') open.push(value());
     else if (flag === '--route') routes.push(value());
     else if (flag === '--max-triggers') maxTriggers = Number(value()) || 0;
+    else if (flag === '--param') {
+      const m = /^([A-Za-z]\w*)=(.+)$/.exec(value());
+      if (!m) throw new Error('--param needs <name>=<value>');
+      params[m[1]] = m[2];
+    } else if (flag === '--query') query.push(value());
     else throw new Error(`unknown argument ${flag}`);
   }
   if (!component) throw new Error('--component <Name> is required');
@@ -188,8 +204,33 @@ export const parseArgs = (
     open,
     routes,
     maxTriggers,
+    params,
+    query,
   };
 };
+
+// The --query switches appended to a route URL.
+export const withQuery = (url: string, query: string[]) =>
+  query.length
+    ? `${url}${url.includes('?') ? '&' : '?'}${query.join('&')}`
+    : url;
+
+// --param values win over the fixture's, on every route that names them.
+export const withParams = (
+  fixture: RouteFixture,
+  params: Record<string, string>
+): RouteFixture => ({
+  ...fixture,
+  params: { ...fixture.params, ...params },
+  paths: Object.fromEntries(
+    Object.entries(fixture.paths).map(([route, values]) => [
+      route,
+      Object.fromEntries(
+        Object.entries(values).map(([k, v]) => [k, params[k] ?? v])
+      ),
+    ])
+  ),
+});
 
 export const codegenCommand = (statePath: string, host: string) =>
   `npx playwright codegen --save-storage=${statePath} ${trimSlash(
@@ -217,6 +258,13 @@ export const blockedLine = (method: string, url: string) => {
 // the phase, `load` until a click, then `after-click:<trigger>`.
 export type GuardWhere = { route: string; phase: string };
 export const LOAD_PHASE = 'load';
+
+// An --open value as its click steps: `A -> B` opens A, then B inside it.
+export const splitChain = (open: string) =>
+  open
+    .split(/\s+->\s+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
 export const clickPhase = (label: string) => `after-click:${label}`;
 
 export type BlockedRequest = {
@@ -935,6 +983,7 @@ const main = async () => {
     process.exit(2);
   }
   const { component } = args;
+  const routeFixture = withParams(fixture, args.params);
 
   const stateFile = path.resolve(args.state);
   if (!fs.existsSync(stateFile)) {
@@ -987,13 +1036,18 @@ const main = async () => {
     readJson(
       path.join(ROOT, 'app', 'design-system', 'tokens', 'tokens.meta.json')
     ) ?? [];
-  const { visits, notReached } = planVisits(
+  const planned = planVisits(
     scan,
     component,
-    fixture,
+    routeFixture,
     args.host,
     args.routes
   );
+  const { notReached } = planned;
+  const visits = planned.visits.map((v) => ({
+    ...v,
+    url: withQuery(v.url, args.query),
+  }));
   console.log(
     `ds:audit: ${component} on ${visits.length} routes at ${args.host}${
       notReached.length ? ` (${notReached.length} without fixture values)` : ''
@@ -1233,9 +1287,11 @@ const main = async () => {
 
           await collect();
           // Each --open selector clicks its first match that is visible,
-          // outside the header and not on the deny list.
-          for (const sel of args.open) {
-            let target: any;
+          // outside the header and not on the deny list. A selector may be a
+          // chain, `A -> B`, for a component inside a submenu: each step is
+          // clicked in turn and the last one collects. Between selectors the
+          // page is loaded again, since not every menu closes on Escape.
+          const firstSafe = async (sel: string) => {
             for (const h of await page.$$(sel).catch(() => [])) {
               if (!(await h.isVisible().catch(() => false))) continue;
               const info = await triggerInfo(h).catch(() => undefined);
@@ -1246,10 +1302,43 @@ const main = async () => {
                 );
                 continue;
               }
-              target = h;
-              break;
+              return h;
             }
-            if (target && !(await tryOpen(target, sel))) break;
+            return undefined;
+          };
+          for (const [k, chain] of args.open.entries()) {
+            if (k > 0) {
+              where.phase = LOAD_PHASE;
+              await page.goto(v.url, { waitUntil: 'load', timeout: 45000 });
+              await page
+                .waitForLoadState('networkidle', { timeout: 10000 })
+                .catch(() => undefined);
+            }
+            const steps = splitChain(chain);
+            let ok = true;
+            for (const step of steps.slice(0, -1)) {
+              const h = await firstSafe(step);
+              if (!h) {
+                ok = false;
+                break;
+              }
+              const before = page.url();
+              where.phase = clickPhase(chain);
+              await h.click({ timeout: 3000 }).catch(() => (ok = false));
+              await page.waitForTimeout(400);
+              if (!ok || page.url() !== before) {
+                stopped = `${chain}: step "${step}" failed or navigated`;
+                console.log(
+                  `  stopped clicking on ${routeLabel(v.route)} (${stopped})`
+                );
+                ok = false;
+                break;
+              }
+            }
+            if (stopped) break;
+            if (!ok) continue;
+            const target = await firstSafe(steps[steps.length - 1]);
+            if (target && !(await tryOpen(target, chain))) break;
           }
           if (!found.length && !stopped && args.maxTriggers > 0) {
             const triggers = (await page.$$(TRIGGERS)).slice(0, 200);

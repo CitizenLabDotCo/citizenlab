@@ -15,6 +15,9 @@ import {
   isReadRequest,
   isSafeTrigger,
   parseArgs,
+  withParams,
+  withQuery,
+  splitChain,
   planVisits,
   sameStyle,
   shorthand,
@@ -424,6 +427,42 @@ describe('findStory', () => {
   });
 });
 
+describe('withParams', () => {
+  it('overrides params and path-level values of the same name only', () => {
+    const f = withParams(
+      {
+        hosts: { after: '', before: '' },
+        params: { projectId: 'old', ideaId: 'i' },
+        paths: { 'a/$projectId/$id': { projectId: 'oldp', id: 'x' } },
+        locale: 'en',
+      },
+      { projectId: 'new' }
+    );
+    expect(f.params).toEqual({ projectId: 'new', ideaId: 'i' });
+    expect(f.paths['a/$projectId/$id']).toEqual({ projectId: 'new', id: 'x' });
+  });
+});
+
+describe('splitChain', () => {
+  it('splits on -> and keeps a plain selector whole', () => {
+    expect(splitChain('role=button[name="Filter" s] -> text=Status')).toEqual([
+      'role=button[name="Filter" s]',
+      'text=Status',
+    ]);
+    expect(splitChain('button.x')).toEqual(['button.x']);
+  });
+});
+
+describe('withQuery', () => {
+  it('appends switches with ? or &, and leaves the URL alone without any', () => {
+    expect(withQuery('https://h/a', ['x'])).toBe('https://h/a?x');
+    expect(withQuery('https://h/a?l=en', ['x', 'y=1'])).toBe(
+      'https://h/a?l=en&x&y=1'
+    );
+    expect(withQuery('https://h/a', [])).toBe('https://h/a');
+  });
+});
+
 describe('parseArgs', () => {
   it('reads the flags and keeps defaults', () => {
     const a = parseArgs(
@@ -449,6 +488,8 @@ describe('parseArgs', () => {
       open: ['button.x'],
       routes: ['ideas'],
       maxTriggers: 12,
+      params: {},
+      query: [],
     });
     expect(
       parseArgs(['--component', 'X', '--host', 'http://localhost:3000'], {
@@ -459,6 +500,18 @@ describe('parseArgs', () => {
       storybook: 'http://localhost:3000/storybook',
       state: 'st',
     });
+  });
+
+  it('reads --param pairs and refuses a malformed one', () => {
+    const base = ['--component', 'X', '--host', 'h'];
+    expect(
+      parseArgs([...base, '--param', 'projectId=p1', '--param', 'phaseId=f1'], {
+        defaultState: 's',
+      }).params
+    ).toEqual({ projectId: 'p1', phaseId: 'f1' });
+    expect(() =>
+      parseArgs([...base, '--param', 'projectId'], { defaultState: 's' })
+    ).toThrow('--param needs <name>=<value>');
   });
 
   it('throws on a missing component, a missing host or an unknown flag', () => {
