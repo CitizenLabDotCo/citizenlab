@@ -46,6 +46,19 @@ describe EmailCampaigns::ConsentPolicy do
     let(:consent) { create(:consent, user: owner, campaign_type: create(:invite_reminder_campaign).type) }
 
     it { is_expected.not_to permit(:update_by_campaign_id) }
+
+    context 'when opting out (e.g. the invite was accepted since the reminder was sent)' do
+      before { consent.consented = false }
+
+      it { is_expected.to permit(:update_by_campaign_id) }
+    end
+  end
+
+  context 'for a transactional email' do
+    let(:user) { owner }
+    let(:consent) { create(:consent, user: owner, campaign_type: 'EmailCampaigns::Campaigns::PhoneConfirmation', consented: false) }
+
+    it { is_expected.not_to permit(:update_by_campaign_id) }
   end
 
   context 'for another user' do

@@ -20,9 +20,19 @@ module EmailCampaigns
     end
 
     def update_by_campaign_id?
-      user.present? &&
-        user.id == record.user_id &&
-        DeliveryService.new.consentable_campaign_types_for(user).include?(record.campaign_type)
+      return false unless user.present? && user.id == record.user_id
+
+      delivery_service = DeliveryService.new
+      delivery_service.consentable_campaign_types_for(user).include?(record.campaign_type) ||
+        opting_out?(delivery_service)
+    end
+
+    private
+
+    # Users can always opt out of an email they got, even once it's no longer theirs to manage
+    # (e.g. an invite reminder after the invite was accepted). Transactional emails stay excluded.
+    def opting_out?(delivery_service)
+      !record.consented && delivery_service.hidden_from_admin_campaign_types.exclude?(record.campaign_type)
     end
   end
 end

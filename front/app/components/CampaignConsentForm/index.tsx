@@ -19,7 +19,6 @@ import { FormSection } from 'components/UI/FormComponents';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import ChannelConsentSection from './ChannelConsentSection';
 import Feedback from './feedback';
@@ -76,7 +75,7 @@ const CampaignConsentForm = ({
   const smsManualCampaignsEnabled = smsFFEnabled && smsManualCampaignsFFEnabled;
 
   useEffect(() => {
-    if (!isNilOrError(originalCampaignConsents)) {
+    if (originalCampaignConsents) {
       const campaignConsentsEntries = originalCampaignConsents.data
         .sort((a, b): number => a.id.localeCompare(b.id))
         .map((consent): [string, CampaignConsent] => [
@@ -101,7 +100,7 @@ const CampaignConsentForm = ({
     }
   }, [showFeedback, loading]);
 
-  if (isNilOrError(originalCampaignConsents)) return null;
+  if (!originalCampaignConsents) return null;
 
   const onChange = (id: string) => () => {
     setCampaignConsents({

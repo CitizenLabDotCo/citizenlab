@@ -233,6 +233,19 @@ resource 'Campaign consents' do
       end
     end
 
+    context 'when an invitee who already accepted unsubscribes from an old invite reminder' do
+      let(:invitee) { create(:user, invite_status: 'accepted') }
+      let(:campaign) { create(:invite_reminder_campaign) }
+      let!(:consent) { create(:consent, user: invitee, campaign_type: campaign.type) }
+      let(:unsubscription_token) { create(:email_campaigns_unsubscription_token, user: invitee).token }
+
+      example 'Unsubscribe from the invite reminder after accepting the invite', document: false do
+        do_request
+        expect(response_status).to eq 200
+        expect(consent.reload.consented).to be false
+      end
+    end
+
     context 'when a pending invitee unsubscribes from the invite reminder' do
       let(:invitee) { create(:invited_user) }
       let(:campaign) { create(:invite_reminder_campaign) }
