@@ -96,7 +96,7 @@ const MotionPreview = ({ value }: { value: string }) => {
 // A picture of the token, drawn with one mode's live value. `all` holds the
 // other tokens of that mode, for previews that need a neighbour (the size
 // of a text role, the colour of the focus ring).
-const Preview = ({
+export const Preview = ({
   token,
   value,
   all,

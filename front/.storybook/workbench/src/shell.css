@@ -6519,3 +6519,357 @@ tr[data-result='needs-human'] .wb-a11y-note {
 .wb-insp-key-equal ~ * {
   margin-left: 0;
 }
+
+/* Inspector 2: glyph fields, pills, sections, the picker. */
+.wb-insp-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--gv-space-2);
+}
+
+.wb-insp-grid[hidden] {
+  display: none;
+}
+
+.wb-insp-grid > .wb-insp-full {
+  grid-column: 1 / -1;
+}
+
+.wb-insp-grid > .wb-insp-prop + .wb-insp-prop {
+  margin-top: 0;
+}
+
+.wb-insp-block[data-open='false'] > .wb-insp-head {
+  margin-bottom: 0;
+}
+
+.wb-shell button.wb-insp-fold {
+  gap: var(--gv-space-1);
+  min-height: 28px;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+}
+
+.wb-insp-fold .wb-icon {
+  color: var(--wb-muted);
+  transition: transform 120ms;
+}
+
+.wb-insp-fold[aria-expanded='false'] .wb-icon {
+  transform: rotate(-90deg);
+}
+
+.wb-insp-fold h3 {
+  margin: 0;
+}
+
+.wb-vf {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 32px;
+  font-size: var(--gv-fs-xs);
+  color: var(--wb-text);
+  background: var(--wb-subtle);
+  border: 1px solid transparent;
+  border-radius: var(--wb-radius);
+}
+
+.wb-vf:focus-within {
+  background: var(--wb-bg);
+  border-color: var(--wb-accent);
+}
+
+.wb-vf-body,
+.wb-shell button.wb-vf-body {
+  display: flex;
+  flex: 1;
+  gap: var(--gv-space-2);
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 0;
+  min-height: 30px;
+  padding: 0 var(--gv-space-2);
+  font: inherit;
+  font-weight: inherit;
+  color: inherit;
+  text-align: left;
+  background: none;
+  border: 0;
+}
+
+.wb-vf-body > .wb-icon {
+  flex: none;
+  color: var(--wb-muted);
+}
+
+.wb-vf input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+  background: none;
+  border: 0;
+  outline: none;
+}
+
+.wb-vf-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  font-variant-numeric: tabular-nums;
+  color: var(--wb-muted);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.wb-vf-swatch {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--wb-border-strong);
+  border-radius: 3px;
+}
+
+.wb-vf-pill {
+  background: var(--wb-accent-soft);
+}
+
+.wb-vf-pill:hover {
+  border-color: var(--wb-border-strong);
+}
+
+.wb-vf-name {
+  min-width: 0;
+  overflow: hidden;
+  font-weight: 500;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.wb-vf-muted {
+  flex: none;
+  margin-left: auto;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  color: var(--wb-muted);
+  white-space: nowrap;
+}
+
+.wb-vf-side,
+.wb-shell button.wb-vf-side {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 30px;
+  min-height: 0;
+  padding: 0;
+  color: var(--wb-muted);
+  background: none;
+  border: 0;
+  border-radius: var(--wb-radius);
+}
+
+.wb-shell button.wb-vf-side:hover,
+.wb-shell button.wb-vf-side:focus-visible {
+  color: var(--wb-accent);
+  background: var(--wb-bg);
+}
+
+.wb-vf-pill .wb-vf-detach {
+  opacity: 0;
+}
+
+.wb-vf-pill:hover .wb-vf-detach,
+.wb-vf-pill:focus-within .wb-vf-detach {
+  opacity: 1;
+}
+
+.wb-vf-custom {
+  border-color: var(--wb-warn);
+}
+
+.wb-vf-caution {
+  color: var(--wb-fail);
+}
+
+.wb-insp-prop {
+  position: relative;
+  min-width: 0;
+}
+
+.wb-picker {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  left: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  min-width: 240px;
+  max-height: 360px;
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius-lg);
+  box-shadow: var(--wb-shadow-raised);
+}
+
+.wb-picker-search {
+  margin: var(--gv-space-2);
+}
+
+.wb-picker-list {
+  flex: 1;
+  padding: 0 var(--gv-space-2) var(--gv-space-2);
+  overflow: auto;
+}
+
+.wb-picker-group h4,
+.wb-drawer-group {
+  margin: var(--gv-space-2) var(--gv-space-2) var(--gv-space-1);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--wb-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.wb-shell button.wb-picker-row {
+  gap: var(--gv-space-2);
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 32px;
+  padding: 0 var(--gv-space-2);
+  font-size: var(--gv-fs-xs);
+  font-weight: 400;
+  text-align: left;
+  background: none;
+  border: 0;
+}
+
+.wb-shell button.wb-picker-row:hover,
+.wb-shell button.wb-picker-row:focus-visible {
+  background: var(--wb-subtle);
+}
+
+.wb-shell button.wb-picker-row[aria-pressed='true'] {
+  background: var(--wb-accent-soft);
+}
+
+.wb-picker-preview {
+  display: inline-flex;
+  flex: none;
+  justify-content: center;
+  width: 28px;
+  overflow: hidden;
+}
+
+.wb-picker-preview .wb-pv-swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+}
+
+.wb-picker-preview .wb-pv-type {
+  font-size: 14px;
+}
+
+.wb-picker-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.wb-picker-edit {
+  display: flex;
+  gap: var(--gv-space-1);
+  align-items: center;
+  padding: var(--gv-space-2) var(--gv-space-3);
+  font-size: var(--gv-fs-xs);
+  border-top: 1px solid var(--wb-border);
+}
+
+.wb-shell button.wb-insp-layer {
+  gap: var(--gv-space-1);
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 32px;
+  padding: var(--gv-space-1) var(--gv-space-2);
+  font-size: var(--gv-fs-xs);
+  font-weight: 600;
+  color: var(--wb-heading);
+  text-align: left;
+  background: none;
+  border: 1px solid transparent;
+}
+
+.wb-shell button.wb-insp-layer:hover {
+  background: var(--wb-subtle);
+}
+
+.wb-insp-layer .wb-insp-layer-name {
+  flex: 1;
+}
+
+.wb-insp-ancestors {
+  position: absolute;
+  right: var(--gv-space-4);
+  left: var(--gv-space-4);
+  z-index: 30;
+  padding: var(--gv-space-1);
+  margin: 0;
+  list-style: none;
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius-lg);
+  box-shadow: var(--wb-shadow-raised);
+}
+
+.wb-shell .wb-insp-ancestors button {
+  gap: var(--gv-space-2);
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 28px;
+  padding: var(--gv-space-1) var(--gv-space-2);
+  font-size: var(--gv-fs-xs);
+  font-weight: 400;
+  text-align: left;
+  background: none;
+  border: 0;
+}
+
+.wb-shell .wb-insp-ancestors button:hover {
+  background: var(--wb-subtle);
+}
+
+.wb-also-row {
+  display: flex;
+  grid-column: 1 / -1;
+  gap: var(--gv-space-2);
+  align-items: center;
+  min-height: 28px;
+  font-size: var(--gv-fs-xs);
+}
+
+.wb-also-row > .wb-icon {
+  flex: none;
+  color: var(--wb-muted);
+}
+
+.wb-also-row code {
+  font-size: 11px;
+}
+
+.wb-also-row > :last-child {
+  margin-left: auto;
+}
