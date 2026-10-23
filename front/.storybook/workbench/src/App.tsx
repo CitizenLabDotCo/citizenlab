@@ -12,7 +12,6 @@ import Foundations from './pages/Foundations';
 import Gallery from './pages/Gallery';
 import Proposal from './pages/Proposal';
 import Review from './pages/Review';
-import StartHere from './pages/StartHere';
 
 type CanvasProps = {
   toolbar: ToolbarState;
@@ -24,8 +23,6 @@ type CanvasProps = {
 
 const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
   switch (route.name) {
-    case 'start':
-      return <StartHere />;
     case 'foundations':
       return (
         <Foundations
@@ -85,8 +82,8 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
               There is no page at <code>{route.path}</code>.
             </p>
           </header>
-          <a className="wb-button" href="#/start">
-            Go to Start here
+          <a className="wb-button" href="#/components">
+            Go to Components
           </a>
         </article>
       );
@@ -105,7 +102,7 @@ const App = () => {
     () => ({ element: panelEl, register }),
     [panelEl, register]
   );
-  const navName = route.name === 'not-found' ? 'start' : route.name;
+  const navName = route.name === 'not-found' ? 'components' : route.name;
   const [navCollapsed, toggleNav] = useNavCollapsed();
   const [toolbar, setToolbar] = useState<ToolbarState>(DEFAULT_TOOLBAR);
   const { overrides, setOverride, reset, notice, dismissNotice } =

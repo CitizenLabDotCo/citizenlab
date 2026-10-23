@@ -6,11 +6,12 @@
 //                       [--spacing-screenshot <file.png>]
 //                       [--review-host <https://platform origin>]
 //
-// Serves the static dir on a free local port, opens /workbench/#/start in
-// Chromium and checks that the nav lists every section, the Start here page
-// renders (its tour links to every section, the needs-a-person list shows)
-// and nothing is logged as a console error. Optional data files that
-// a build may lack (see OPTIONAL_DATA) are allowed to 404. Then opens a
+// Serves the static dir on a free local port, opens /workbench/ in Chromium
+// and checks that the default route is Components (`#/components`, also for
+// the old `#/start`), the nav lists every section with Components current,
+// and nothing is logged as a console error. Optional data files that a build
+// may lack (see OPTIONAL_DATA) are allowed to 404. `#/foundations` lands on
+// the Colour page with no overview cards or breadcrumb. Then opens a
 // Button story on the canvas: the mode toolbar puts data-gv-mode on the
 // frame's root, a share link override changes the button's computed
 // border-radius, and a bad share link shows a notice and keeps the
@@ -59,7 +60,6 @@ import path from 'path';
 import { loadPlaywright } from './playwright';
 
 export const EXPECTED_NAV = [
-  'Start here',
   'Foundations',
   'Components',
   'Patterns',
@@ -68,28 +68,7 @@ export const EXPECTED_NAV = [
   'Proposal',
 ];
 
-// Start here's tour links to every section but itself, in nav order.
-export const EXPECTED_TOUR = [
-  '#/foundations',
-  '#/components',
-  '#/patterns',
-  '#/pages',
-  '#/review',
-  '#/proposal',
-];
-
-// What is wrong with the tour's links, or null.
-export const tourProblem = (hrefs: string[]): string | null => {
-  const hashes = hrefs.map((h) => h.replace(/^.*(#\/)/, '$1'));
-  return JSON.stringify(hashes) === JSON.stringify(EXPECTED_TOUR)
-    ? null
-    : `Start here tour links ${JSON.stringify(
-        hashes
-      )}, expected ${JSON.stringify(EXPECTED_TOUR)}`;
-};
-
 const ROUTES: [string, string][] = [
-  ['#/foundations', 'Foundations'],
   ['#/foundations/color', 'Colour'],
   ['#/components', 'Components'],
   ['#/patterns', 'Patterns'],
@@ -108,33 +87,43 @@ const RADIUS_OVERRIDE = '20px';
 const SIZE_TOKEN = '--gv-fs-s';
 const SNAP_TOKEN = '--gv-space-3';
 
-// Start here: the tour links to each section, the needs-a-person list (or
-// its empty state) renders, and the mode rule names the token commit.
-const startHereChecks = async (page: any, failures: string[]) => {
-  const hrefs: string[] = await page.$$eval(
-    '[data-testid="wb-tour"] a',
-    (els: Element[]) => els.map((e) => e.getAttribute('href') ?? '')
-  );
-  const tour = tourProblem(hrefs);
-  if (tour) failures.push(tour);
+// Hashes that open another page, and the hash each is replaced with.
+export const REDIRECTS: [string, string][] = [
+  ['', '#/components'],
+  ['#/start', '#/components'],
+  ['#/foundations', '#/foundations/color'],
+];
 
-  const needs: number = await page.$$eval(
-    '[data-testid="wb-needs-human"] li',
-    (els: Element[]) => els.length
-  );
-  const none = await page.$('[data-testid="wb-needs-human-none"]');
-  if (needs === 0 && !none) {
-    failures.push('Start here shows no needs-a-person list');
-  }
+// The hash of a page URL (`http://x/workbench/#/a` is `#/a`), '' for none.
+export const hashOf = (url: string): string => {
+  const i = url.indexOf('#');
+  return i === -1 ? '' : url.slice(i);
+};
 
-  const rule: string =
-    (await page.textContent('[data-testid="wb-rule-today"]')) ?? '';
-  if (!/even with mode both/.test(rule) || !/token commit/.test(rule)) {
-    failures.push(`Start here mode rule reads "${rule.trim()}"`);
+// Each redirect replaces the hash and shows its page's heading; Foundations
+// shows no overview cards or breadcrumb.
+const redirectChecks = async (page: any, base: string, failures: string[]) => {
+  for (const [from, to] of REDIRECTS) {
+    await page.goto(`${base}/workbench/${from}`);
+    const heading = ROUTES.find(([h]) => h === to)?.[1];
+    try {
+      await page.waitForFunction(
+        (h: string) => document.querySelector('main h1')?.textContent === h,
+        heading,
+        { timeout: 5000 }
+      );
+    } catch {
+      failures.push(`/workbench/${from} does not open ${heading}`);
+    }
+    const now = hashOf(page.url());
+    if (now !== to) {
+      failures.push(`/workbench/${from} ends on "${now}", expected ${to}`);
+    }
   }
-  console.log(
-    `start here: tour ${hrefs.length} links; needs a person ${needs}`
-  );
+  if (await page.$('[data-testid="wb-categories"], main .wb-crumbs')) {
+    failures.push('Foundations still shows overview cards or a breadcrumb');
+  }
+  console.log(`redirects: ${REDIRECTS.length} checked`);
 };
 
 // Story ids are components-<category>-button--<story> (or without a category).
@@ -1507,14 +1496,10 @@ const main = async () => {
       failures.push(`page error: ${err.message}`)
     );
 
-    await page.goto(`${base}/workbench/#/start`, { waitUntil: 'networkidle' });
-    await page.waitForSelector('h1:has-text("Start here")', { timeout: 10000 });
-    await page.waitForSelector(
-      '[data-testid="wb-missing"], [data-testid="wb-missing-none"]',
-      {
-        timeout: 10000,
-      }
-    );
+    await page.goto(`${base}/workbench/`, { waitUntil: 'networkidle' });
+    await page.waitForSelector('main h1:has-text("Components")', {
+      timeout: 10000,
+    });
 
     const nav: string[] = await page.$$eval(
       '[data-testid="wb-nav"] a',
@@ -1527,21 +1512,14 @@ const main = async () => {
         )}`
       );
     }
-
-    const missing: string[] = await page.$$eval(
-      '[data-testid="wb-missing"] li',
-      (els: Element[]) => els.map((e) => (e.textContent ?? '').trim())
-    );
-    if (missing.includes('index.json')) {
-      failures.push('Storybook index.json was not found');
+    const current: string =
+      (await page.textContent(
+        '[data-testid="wb-nav"] a[aria-current="page"]'
+      )) ?? '';
+    if (current.trim() !== 'Components') {
+      failures.push(`the default route marks "${current.trim()}" in the nav`);
     }
-    console.log(
-      `nav: ${nav.length} entries; data files missing: ${
-        missing.join(', ') || 'none'
-      }`
-    );
-
-    await startHereChecks(page, failures);
+    console.log(`nav: ${nav.length} entries; default ${hashOf(page.url())}`);
 
     if (screenshot) {
       await page.screenshot({ path: path.resolve(screenshot), fullPage: true });
@@ -1558,6 +1536,8 @@ const main = async () => {
         { timeout: 5000 }
       );
     }
+
+    await redirectChecks(page, base, failures);
 
     await foundationsChecks(page, base, failures, {
       colour: colourScreenshot,

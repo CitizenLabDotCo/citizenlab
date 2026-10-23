@@ -2,10 +2,10 @@ import path from 'path';
 
 import {
   A11Y_REVIEWED,
+  hashOf,
   overrideNamesOfHash,
   pickButtonStory,
   resolveStaticPath,
-  tourProblem,
 } from './workbench-smoke';
 
 describe('resolveStaticPath', () => {
@@ -94,25 +94,12 @@ describe('A11Y_REVIEWED', () => {
   });
 });
 
-describe('tourProblem', () => {
-  const tour = [
-    '#/foundations',
-    '#/components',
-    '#/patterns',
-    '#/pages',
-    '#/review',
-    '#/proposal',
-  ];
-
-  it('accepts a link to every section in nav order', () => {
-    expect(tourProblem(tour)).toBeNull();
-    expect(
-      tourProblem(tour.map((h) => `http://localhost:1/workbench/${h}`))
-    ).toBeNull();
-  });
-
-  it('reports a missing or reordered section', () => {
-    expect(tourProblem(tour.slice(1))).toMatch(/expected/);
-    expect(tourProblem([...tour].reverse())).toMatch(/expected/);
+describe('hashOf', () => {
+  it('reads the hash of a page URL, empty without one', () => {
+    expect(hashOf('http://localhost:1/workbench/#/components')).toBe(
+      '#/components'
+    );
+    expect(hashOf('http://localhost:1/workbench/#/x?o=a')).toBe('#/x?o=a');
+    expect(hashOf('http://localhost:1/workbench/')).toBe('');
   });
 });

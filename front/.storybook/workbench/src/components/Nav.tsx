@@ -15,15 +15,9 @@ export type NavEntry = {
 
 export const NAV: NavEntry[] = [
   {
-    name: 'start',
-    label: 'Start here',
-    hash: '#/start',
-    hint: 'What this is and how to use it',
-  },
-  {
     name: 'foundations',
     label: 'Foundations',
-    hash: '#/foundations',
+    hash: '#/foundations/color',
     hint: 'Tokens by category',
   },
   {
@@ -177,7 +171,7 @@ const Nav = ({ current, collapsed, onToggleCollapsed }: Props) => {
       aria-label="Workbench"
     >
       <div className="wb-nav-top">
-        <a className="wb-brand" href="#/start" title="Design workbench">
+        <a className="wb-brand" href="#/components" title="Design workbench">
           <BrandMark />
           <span className="wb-brand-name">Design workbench</span>
         </a>

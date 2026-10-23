@@ -19,7 +19,7 @@ const tokenCss = fs.readFileSync(
 );
 
 const shell = read('shell.css');
-const sheets = [shell, read('pages/starthere.css'), read('pages/proposal.css')]
+const sheets = [shell, read('pages/proposal.css')]
   .join('\n')
   .replace(/\/\*[\s\S]*?\*\//g, '');
 

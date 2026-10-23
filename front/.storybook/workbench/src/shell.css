@@ -436,13 +436,6 @@ code {
   max-width: 720px;
 }
 
-.wb-page-head-row > .wb-cp {
-  flex: 0 0 220px;
-  height: 120px;
-  border: 1px solid var(--wb-border);
-  border-radius: var(--wb-radius-lg);
-}
-
 .wb-lead {
   margin: var(--gv-space-3) 0 0;
   font-size: var(--gv-fs-base);
@@ -487,8 +480,7 @@ code {
   color: var(--wb-muted);
 }
 
-.wb-page p code,
-.wb-file-list code {
+.wb-page p code {
   padding: 1px var(--gv-space-1);
   background: var(--wb-subtle);
   border: 1px solid var(--wb-border);
@@ -648,243 +640,7 @@ a.wb-card:hover {
   color: var(--wb-heading);
 }
 
-.wb-card-text {
-  color: var(--wb-muted);
-}
-
-.wb-category-grid {
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-}
-
-.wb-category-body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gv-space-1);
-  padding: var(--gv-space-4);
-}
-
-.wb-category-body .wb-card-title {
-  justify-content: space-between;
-}
-
-.wb-card-empty {
-  background: var(--wb-subtle);
-  border-style: dashed;
-}
-
-.wb-card-empty .wb-cp {
-  opacity: 0.45;
-  filter: grayscale(1);
-}
-
-/* Category previews */
-.wb-cp {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 136px;
-  padding: var(--gv-space-5);
-  overflow: hidden;
-  background: var(--wb-subtle);
-  border-bottom: 1px solid var(--wb-border);
-}
-
-.wb-cp-colour {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  width: 100%;
-}
-
-.wb-cp-colour > div {
-  display: flex;
-  height: 20px;
-  overflow: hidden;
-  border-radius: var(--gv-radius-1);
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
-}
-
-.wb-cp-colour span {
-  flex: 1;
-}
-
-.wb-cp-space {
-  display: flex;
-  gap: 6px;
-  align-items: flex-end;
-  height: 72px;
-}
-
-.wb-cp-space span {
-  width: 12px;
-  min-height: 2px;
-  background: linear-gradient(var(--wb-accent), var(--wb-info));
-  border-radius: 3px 3px 0 0;
-}
-
-.wb-cp-radius {
-  display: flex;
-  gap: var(--gv-space-3);
-  align-items: center;
-}
-
-.wb-cp-radius span {
-  width: 40px;
-  height: 40px;
-  background: var(--wb-accent-soft);
-  border: 2px solid var(--wb-accent);
-}
-
-.wb-cp-font {
-  display: flex;
-  gap: var(--gv-space-3);
-  align-items: baseline;
-  font-weight: 600;
-  line-height: 1;
-  color: var(--wb-heading);
-  white-space: nowrap;
-}
-
-.wb-cp-font span:last-child {
-  color: var(--wb-accent);
-}
-
-.wb-cp-text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  width: 100%;
-  line-height: 1.2;
-  color: var(--wb-heading);
-  white-space: nowrap;
-}
-
-.wb-cp-text span:nth-child(n + 4) {
-  color: var(--wb-muted);
-}
-
-.wb-cp-shadow {
-  position: relative;
-  width: 140px;
-  height: 84px;
-}
-
-.wb-cp-shadow span {
-  position: absolute;
-  width: 96px;
-  height: 56px;
-  background: var(--wb-bg);
-  border-radius: var(--wb-radius);
-}
-
-.wb-cp-shadow span:nth-child(1) {
-  top: 0;
-  left: 0;
-}
-
-.wb-cp-shadow span:nth-child(2) {
-  top: 14px;
-  left: 22px;
-}
-
-.wb-cp-shadow span:nth-child(3) {
-  top: 28px;
-  left: 44px;
-}
-
-/* The focus ring is a product token: it is shown on a product button on a
-   white tile, the same in either theme. */
-.wb-cp-focus {
-  padding: var(--gv-space-4) var(--gv-space-5);
-  background: var(--wb-frame-bg);
-  border: 1px solid var(--wb-border);
-  border-radius: var(--wb-radius);
-}
-
-.wb-cp-focus span {
-  display: inline-block;
-  padding: var(--gv-space-2) var(--gv-space-5);
-  font-weight: 600;
-  color: var(--gv-white);
-  background: var(--gv-primary);
-  border-radius: var(--wb-radius);
-}
-
-.wb-cp-motion {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gv-space-2);
-  width: 70%;
-}
-
-.wb-cp-motion-track {
-  position: relative;
-  height: 4px;
-  background: var(--wb-border-strong);
-  border-radius: 2px;
-}
-
-.wb-cp-motion-dot {
-  position: absolute;
-  top: -6px;
-  left: 0;
-  width: 16px;
-  height: 16px;
-  background: var(--wb-accent-fill);
-  border-radius: 50%;
-  box-shadow: 0 0 0 4px var(--wb-accent-soft);
-  animation: wb-slide 2.4s ease-in-out infinite alternate;
-}
-
-.wb-cp-motion-ticks {
-  display: flex;
-  justify-content: space-between;
-  font-family: var(--wb-mono);
-  font-size: var(--gv-fs-xs);
-  color: var(--wb-muted);
-}
-
-@keyframes wb-slide {
-  from {
-    left: 0;
-  }
-  to {
-    left: calc(100% - 16px);
-  }
-}
-
-.wb-cp-layers {
-  position: relative;
-  width: 120px;
-  height: 90px;
-}
-
-.wb-cp-layers span {
-  position: absolute;
-  left: 10px;
-  width: 100px;
-  height: 46px;
-  border: 1px solid var(--wb-accent);
-  border-radius: var(--gv-radius-1);
-  transform: skewX(-24deg) scaleY(0.8);
-}
-
-.wb-cp-layers span:nth-child(1) {
-  top: 44px;
-  background: var(--wb-accent-soft);
-}
-
-.wb-cp-layers span:nth-child(2) {
-  top: 22px;
-  background: var(--wb-info-soft);
-}
-
-.wb-cp-layers span:nth-child(3) {
-  top: 0;
-  background: var(--wb-bg);
-}
-
-/* Start here */
+/* Hero (Proposal) */
 .wb-hero {
   display: flex;
   flex-wrap: wrap;
@@ -916,125 +672,6 @@ a.wb-card:hover {
   flex-wrap: wrap;
   gap: var(--gv-space-3);
   margin-top: var(--gv-space-6);
-}
-
-.wb-hero-art {
-  flex: 0 1 320px;
-  max-width: 100%;
-  height: auto;
-}
-
-.wb-section-grid {
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-}
-
-.wb-section-card {
-  gap: var(--gv-space-2);
-  padding: var(--gv-space-5);
-}
-
-.wb-section-card .wb-card-title {
-  justify-content: space-between;
-}
-
-.wb-section-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  margin-bottom: var(--gv-space-2);
-  color: var(--wb-accent);
-  background: var(--wb-accent-soft);
-  border-radius: var(--wb-radius);
-}
-
-.wb-steps {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--gv-space-4);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  counter-reset: wb-step;
-}
-
-.wb-steps li {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gv-space-1);
-  padding: var(--gv-space-4) var(--gv-space-5);
-  border-left: 3px solid var(--wb-accent-soft);
-  counter-increment: wb-step;
-}
-
-.wb-steps li::before {
-  content: counter(wb-step);
-  font-size: var(--gv-fs-xs);
-  font-weight: 700;
-  color: var(--wb-accent);
-}
-
-.wb-steps strong {
-  color: var(--wb-heading);
-}
-
-.wb-steps span {
-  color: var(--wb-muted);
-}
-
-.wb-data {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--gv-space-4);
-  align-items: stretch;
-}
-
-.wb-stats {
-  display: flex;
-  gap: var(--gv-space-4);
-}
-
-.wb-stat {
-  display: flex;
-  flex-direction: column;
-  min-width: 140px;
-  padding: var(--gv-space-4) var(--gv-space-5);
-  background: var(--wb-subtle);
-  border-radius: var(--wb-radius-lg);
-}
-
-.wb-stat-value {
-  font-size: var(--gv-fs-xxxl);
-  font-weight: 700;
-  line-height: 1.1;
-  color: var(--wb-heading);
-}
-
-.wb-stat-label {
-  color: var(--wb-muted);
-}
-
-.wb-data-note {
-  flex: 1 1 300px;
-  margin: 0;
-  padding: var(--gv-space-4) var(--gv-space-5);
-  border: 1px solid var(--wb-border);
-  border-radius: var(--wb-radius-lg);
-}
-
-.wb-data-note p {
-  margin: 0 0 var(--gv-space-2);
-  color: var(--wb-muted);
-}
-
-.wb-file-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--gv-space-2);
-  margin: 0;
-  padding: 0;
-  list-style: none;
 }
 
 /* Empty states */
@@ -1089,14 +726,6 @@ a.wb-card:hover {
 
 .wb-empty-small {
   padding: var(--gv-space-6);
-}
-
-.wb-empty-small > .wb-cp {
-  width: 200px;
-  height: 120px;
-  border: 1px solid var(--wb-border);
-  border-radius: var(--wb-radius-lg);
-  background: var(--wb-bg);
 }
 
 /* Toolbars */
@@ -3844,11 +3473,6 @@ a.wb-line:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .wb-cp-motion-dot {
-    left: 50%;
-    animation: none;
-  }
-
   .wb-pv-motion > span,
   .wb-ramp-toggle > .wb-icon,
   .wb-card,
@@ -3968,35 +3592,9 @@ a.wb-line:hover {
     font-size: var(--gv-fs-xxxl);
   }
 
-  .wb-hero-art {
-    display: none;
-  }
-
-  .wb-page-head-row > .wb-cp {
-    display: none;
-  }
-
   .wb-empty {
     gap: var(--gv-space-6);
     padding: var(--gv-space-6);
-  }
-
-  .wb-category-grid {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: var(--gv-space-3);
-  }
-
-  .wb-category-grid .wb-cp {
-    height: 104px;
-    padding: var(--gv-space-3);
-  }
-
-  .wb-category-body {
-    padding: var(--gv-space-3);
-  }
-
-  .wb-category-grid .wb-card-text {
-    font-size: var(--gv-fs-xs);
   }
 
   .wb-toolbar {
@@ -4098,31 +3696,6 @@ a.wb-line:hover {
     background: rgb(0 0 0 / 40%);
     border: 0;
     border-radius: 0;
-  }
-
-  .wb-category-grid .wb-cp-space,
-  .wb-category-grid .wb-cp-radius {
-    flex: none;
-    transform: scale(0.7);
-  }
-
-  .wb-category-grid .wb-cp-font {
-    flex: none;
-    transform: scale(0.55);
-  }
-
-  .wb-category-grid .wb-cp-text {
-    transform: scale(0.8);
-    transform-origin: left center;
-  }
-
-  .wb-stats {
-    flex: 1 1 100%;
-  }
-
-  .wb-stat {
-    flex: 1;
-    min-width: 0;
   }
 
   /* Token and pair tables as cards */

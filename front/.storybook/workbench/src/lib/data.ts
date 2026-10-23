@@ -1,8 +1,7 @@
 // Data the shell reads. Everything except the token metadata is fetched at
 // runtime from the Storybook static dir, one level up from the shell, so the
 // same relative URLs work under /storybook/workbench/ and under /workbench/.
-// A file that is missing, unreachable or not valid JSON yields an empty value
-// and its name is added to `missing`, which the Start here page lists.
+// A file that is missing, unreachable or not valid JSON yields an empty value.
 import tokensMeta from '@ds/tokens/tokens.meta.json';
 
 import type { A11yResults } from '../../../../scripts/design-system/a11y-results';
@@ -28,8 +27,6 @@ export type StoryEntry = {
 
 export type StoryIndex = { entries: Record<string, StoryEntry> };
 
-export const missing: string[] = [];
-
 const cache = new Map<string, Promise<unknown>>();
 
 const fetchJson = <T>(url: string, empty: T): Promise<T> => {
@@ -41,10 +38,7 @@ const fetchJson = <T>(url: string, empty: T): Promise<T> => {
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           return res.json();
         })
-        .catch(() => {
-          if (!missing.includes(url)) missing.push(url);
-          return empty;
-        })
+        .catch(() => empty)
     );
   }
   return cache.get(url) as Promise<T>;
@@ -78,9 +72,6 @@ export const loadScan = () =>
 // Bundled, so it is there synchronously.
 export const TOKEN_META = tokensMeta as TokenMeta[];
 
-export const loadTokens = (): Promise<TokenMeta[]> =>
-  Promise.resolve(TOKEN_META);
-
 export const loadStoryIndex = () =>
   fetchJson<StoryIndex>('../index.json', { entries: {} });
 
@@ -109,7 +100,7 @@ export const loadA11y = () =>
   );
 
 // Instance audits (npm run ds:audit) are optional: a build without them is
-// complete, so they never count as missing.
+// complete.
 export type AuditSummary = {
   component: string;
   generatedAt: string;
@@ -128,20 +119,10 @@ type AuditIndexFile = {
   components?: Record<string, { file?: string } | undefined>;
 };
 
-const fetchOptional = <T>(url: string): Promise<T | null> => {
-  if (!cache.has(url)) {
-    cache.set(
-      url,
-      fetch(url)
-        .then((res) => (res.ok ? res.json() : null))
-        .catch(() => null)
-    );
-  }
-  return cache.get(url) as Promise<T | null>;
-};
-
 export const loadAudits = () =>
-  fetchOptional<AuditIndexFile>('../audits/index.json').then((r) => r ?? {});
+  fetchJson<AuditIndexFile | null>('../audits/index.json', null).then(
+    (r) => r ?? {}
+  );
 
 const str = (v: unknown) => (typeof v === 'string' ? v : '');
 const num = (v: unknown) => (typeof v === 'number' && v >= 0 ? v : 0);
@@ -187,20 +168,8 @@ export const loadAudit = async (
 ): Promise<AuditSummary | null> => {
   const file = (await loadAudits()).components?.[component]?.file;
   if (!file || !/^audits\/[\w-]+\.json$/.test(file)) return null;
-  return normaliseAudit(await fetchOptional<unknown>(`../${file}`), component);
+  return normaliseAudit(
+    await fetchJson<unknown>(`../${file}`, null),
+    component
+  );
 };
-
-export const loadAll = () =>
-  Promise.all([
-    loadScan(),
-    loadTokens(),
-    loadStoryIndex(),
-    loadChanges(),
-    loadA11y(),
-    loadAudits(),
-    // Read here too, so Start here's missing list does not depend on which
-    // page was visited first.
-    loadSummary(),
-    loadTrend(),
-    loadRouteFixture(),
-  ]);

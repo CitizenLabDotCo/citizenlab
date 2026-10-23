@@ -1,4 +1,4 @@
-import { loadAudit, missing, normaliseAudit } from './data';
+import { loadAudit, normaliseAudit } from './data';
 
 // The workbench resolves @ds through its Vite alias; jest does not.
 jest.mock('@ds/tokens/tokens.meta.json', () => [], { virtual: true });
@@ -40,10 +40,6 @@ describe('loadAudit', () => {
     expect(await loadAudit('Button')).toBeNull();
     expect(await loadAudit('Evil')).toBeNull();
     expect(global.fetch).not.toHaveBeenCalledWith('../../../secrets.json');
-  });
-
-  it('never lists audits as missing', () => {
-    expect(missing).toEqual([]);
   });
 });
 

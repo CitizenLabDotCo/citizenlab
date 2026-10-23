@@ -1,6 +1,6 @@
 # Design system workbench: notes for agents
 
-This branch builds a design-in-code workbench for the platform: CSS-variable design tokens with a scoped redesign mode, a scanner that finds off-spec values, a shell on Storybook's engine (Start here, galleries, Foundations, the component page's Design and A11y tabs and Usage disclosure, the Review and Proposal pages), and skills that heal code to the tokens. Everything the workbench knows is a plain file on the branch; this page says what each one is. Launch Claude Code from `front/`; run every command there. The skills are in `front/.claude/skills/`.
+This branch builds a design-in-code workbench for the platform: CSS-variable design tokens with a scoped redesign mode, a scanner that finds off-spec values, a shell on Storybook's engine (galleries, Foundations, the component page's Design and A11y tabs and Usage disclosure, the Review and Proposal pages), and skills that heal code to the tokens. Everything the workbench knows is a plain file on the branch; this page says what each one is. Launch Claude Code from `front/`; run every command there. The skills are in `front/.claude/skills/`.
 
 ## Vocabulary
 
@@ -114,8 +114,8 @@ Data, `.storybook/static/` (served next to the stories):
 - `images/`: story images.
 
 The shell, `.storybook/workbench/` (React and Vite, its own `tsconfig.json`):
-- `vite.config.ts`, `index.html`, `src/main.tsx`, `src/App.tsx`, `src/shell.css`: the app, hash routes `#/start`, `#/foundations` (`#/foundations/<category>/<token>` scrolls to and focuses that token's row), `#/components`, `#/patterns`, `#/pages`, `#/review`, `#/proposal`.
-- `src/lib/data.ts`: loads the JSON files one level up and Storybook's `index.json`; lists missing files on Start here.
+- `vite.config.ts`, `index.html`, `src/main.tsx`, `src/App.tsx`, `src/shell.css`: the app, hash routes `#/components` (the default: an empty hash and the old `#/start` are replaced with it), `#/foundations/<category>` (`#/foundations` is replaced with `#/foundations/color`; `#/foundations/<category>/<token>` scrolls to and focuses that token's row), `#/patterns`, `#/pages`, `#/review`, `#/proposal`.
+- `src/lib/data.ts`: loads the JSON files one level up and Storybook's `index.json`; a missing or broken file reads as empty.
 - `src/lib/overrides.ts`: the session's token edits, snapping, the share-link codec.
 - `src/lib/frame.ts`, `src/lib/preview.ts`: the canvas and review frames (same origin), Storybook preview access.
 - `src/lib/contrast.ts`, `src/lib/tokenValues.ts`: WCAG ratios and token values per mode.
@@ -130,7 +130,7 @@ The shell, `.storybook/workbench/` (React and Vite, its own `tsconfig.json`):
 - `src/lib/sourceDiff.ts`: session edits as a `tokens.source.json` patch.
 - `src/lib/proposal.ts`: the Proposal page's numbers, trend series, migration order and cost.
 - `src/lib/router.ts`, `src/lib/clipboard.ts`: hash routes, copy with a text fallback.
-- `src/pages/`: `StartHere` (with `starthere.css`), `Foundations`, `Gallery`, `Component`, `Review`, `Proposal` (with `proposal.css`); `Placeholder` holds the empty-state pictures.
+- `src/pages/`: `Foundations` (one page per token category, with category tabs), `Gallery`, `Component`, `Review`, `Proposal` (with `proposal.css`); `Placeholder` holds the empty-state pictures.
 - The component page: canvas bar (Select / Interact, Mode Today | Redesign | Both, City, Viewport, Language, zoom, Changes), the stage, and the inspector with two tabs. **Design** is Figma's Design tab over the selected element: sections Layout, Fill, Stroke, Radius, Text, Effects; a value is a pill when bound to a token (click = token picker, hover = detach) or a field (type to snap to the scale or palette; a link glyph attaches the token the value equals); "Also in this file" lists the file's healable findings; Props last. Element edits paint the frame as inline styles (`lib/elementEdits.ts`, localStorage `gv-element-edits`) and sit with token edits in the one Changes drawer under the canvas bar, whose "Copy for agent" gives the heal / change tasks. **A11y** is unchanged. Usage opens under the page header. Low text: glyphs carry the meaning, `aria-label`s the words, no title tooltips on values.
 - `src/panels/`: `Design`, `Usage`, `Controls`, `A11y`.
 - `src/components/`: `Nav`, `Toolbar`, `Canvas`, `FrameView`, `ChangeList`, `ChangesDrawer`, `InspSection`, `ValueField`, `TokenPicker`, `RouteList`, `TokenRow`, `HealCopy`, `LineChart` and smaller parts.

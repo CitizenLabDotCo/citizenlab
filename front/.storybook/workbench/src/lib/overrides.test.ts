@@ -169,7 +169,7 @@ describe('share link codec', () => {
   });
 
   it('reads nothing from a plain route', () => {
-    expect(parseOverridesResult('#/start', meta)).toEqual({ overrides: {} });
+    expect(parseOverridesResult('#/review', meta)).toEqual({ overrides: {} });
     expect(parseOverridesResult('', meta)).toEqual({ overrides: {} });
     // An anchor or a bare payload is not a share link.
     expect(parseOverridesResult('#main', meta)).toEqual({ overrides: {} });
@@ -183,8 +183,8 @@ describe('share link codec', () => {
     expect(withOverrides('#/components/a--b', o)).toBe(
       `#/components/a--b?o=${encodeOverrides(o)}`
     );
-    expect(withOverrides(`#/start?o=${encodeOverrides(o)}`, {})).toBe(
-      '#/start'
+    expect(withOverrides(`#/review?o=${encodeOverrides(o)}`, {})).toBe(
+      '#/review'
     );
   });
 
@@ -360,7 +360,7 @@ describe('per-entry checks', () => {
 describe('useOverrides', () => {
   beforeEach(() => {
     window.localStorage.clear();
-    window.history.replaceState(null, '', '#/start');
+    window.history.replaceState(null, '', '#/review');
   });
 
   it('starts from a share link and keeps it in storage and the hash', () => {
@@ -433,7 +433,7 @@ describe('useOverrides', () => {
     expect(result.current.notice).toBeUndefined();
 
     // A plain route keeps the session and gets the parameter back.
-    navigate('#/start');
+    navigate('#/review');
     expect(result.current.overrides).toEqual({ '--gv-radius-control': '20px' });
     expect(parseOverrides(window.location.hash, meta)).toEqual({
       '--gv-radius-control': '20px',

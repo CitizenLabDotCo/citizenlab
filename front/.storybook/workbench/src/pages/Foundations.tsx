@@ -2,7 +2,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import type { Mode, TokenName } from '@ds/tokens/tokens';
 
-import CategoryPreview from '../components/CategoryPreview';
 import ChangesDrawer from '../components/ChangesDrawer';
 import Icon from '../components/Icon';
 import TokenRow, { MODE_LABEL } from '../components/TokenRow';
@@ -16,7 +15,7 @@ import { useScanIndexes } from '../lib/useScanIndexes';
 import { useToolbarHeight } from '../lib/useToolbarHeight';
 import { plural } from '../lib/plural';
 
-type Category = { id: string; label: string; intro: string; blurb: string };
+type Category = { id: string; label: string; intro: string };
 
 export const CATEGORIES: Category[] = [
   {
@@ -24,55 +23,46 @@ export const CATEGORIES: Category[] = [
     label: 'Colour',
     intro:
       'Every colour token. Below the list, the text and background pairs that components use, with their contrast.',
-    blurb: 'Palette, text, surfaces and states',
   },
   {
     id: 'space',
     label: 'Space',
     intro: 'Padding, gaps and widths. The scale steps are multiples of 4px.',
-    blurb: 'Padding, gaps and widths on a 4px grid',
   },
   {
     id: 'radius',
     label: 'Radius',
     intro: 'Corner rounding of controls, panels and pills.',
-    blurb: 'Corner rounding of controls and panels',
   },
   {
     id: 'font',
     label: 'Font',
     intro: 'Font families and the font size ladder.',
-    blurb: 'Families and the font size ladder',
   },
   {
     id: 'text',
     label: 'Text styles',
     intro: 'Size, line height, weight and letter spacing of each text role.',
-    blurb: 'Size, leading and weight per role',
   },
   {
     id: 'shadow',
     label: 'Shadow',
     intro: 'Elevation of cards and menus.',
-    blurb: 'Elevation of cards and menus',
   },
   {
     id: 'focus',
     label: 'Focus',
     intro: 'The focus ring that keyboard users follow.',
-    blurb: 'The ring keyboard users follow',
   },
   {
     id: 'motion',
     label: 'Motion',
     intro: 'Durations of transitions.',
-    blurb: 'Durations of transitions',
   },
   {
     id: 'z',
     label: 'Layers',
     intro: 'Stacking order (z-index).',
-    blurb: 'Stacking order of layers',
   },
 ];
 
@@ -116,77 +106,6 @@ const ModeSwitch = ({
       </button>
     ))}
   </div>
-);
-
-const Index = ({
-  meta,
-  values,
-  mode,
-  onMode,
-  edits,
-}: {
-  meta: TokenMeta[];
-  values: Record<string, string>;
-  mode: Mode;
-  onMode: (mode: Mode) => void;
-  edits: number;
-}) => (
-  <article className="wb-page wb-page-wide">
-    <header className="wb-page-head wb-page-head-row">
-      <div>
-        <h1>Foundations</h1>
-        <p className="wb-lead">
-          The design tokens, one page per kind, with their value today and in
-          the redesign. Edit a value to try it: the change shows on every page
-          and in the canvas, and you can share it as a link.
-        </p>
-      </div>
-      <div className="wb-head-tools">
-        <ModeSwitch mode={mode} onMode={onMode} />
-        {edits > 0 && (
-          <span className="wb-badge wb-badge-accent">
-            {plural(edits, 'edit', 'edits')} applied
-          </span>
-        )}
-      </div>
-    </header>
-    <ul className="wb-card-grid wb-category-grid" data-testid="wb-categories">
-      {CATEGORIES.filter((c) => countOf(meta, c.id) > 0).map((c) => {
-        const n = countOf(meta, c.id);
-        const body = (
-          <>
-            <CategoryPreview id={c.id} values={values} />
-            <span className="wb-category-body">
-              <span className="wb-card-title">
-                {c.label}
-                <span className="wb-count">{n}</span>
-              </span>
-              <span className="wb-card-text">
-                {n === 0 ? 'No tokens yet' : c.blurb}
-              </span>
-            </span>
-          </>
-        );
-        return (
-          <li key={c.id}>
-            {n === 0 ? (
-              <div className="wb-card wb-category-card wb-card-empty">
-                {body}
-              </div>
-            ) : (
-              <a
-                className="wb-card wb-category-card"
-                href={`#/foundations/${c.id}`}
-                aria-label={`${c.label}, ${plural(n, 'token', 'tokens')}`}
-              >
-                {body}
-              </a>
-            )}
-          </li>
-        );
-      })}
-    </ul>
-  </article>
 );
 
 const Badge = ({ ok, label }: { ok: boolean; label: string }) => (
@@ -459,9 +378,9 @@ const Ramp = ({
   </tr>
 );
 
-// The page of one token category, or the list of categories.
+// The page of one token category; the category tabs move between them.
 const Foundations = ({
-  category,
+  category = 'color',
   token,
   meta,
   mode,
@@ -539,17 +458,6 @@ const Foundations = ({
   }, [token, groups, tokens]);
 
   const count = Object.keys(overrides).length;
-  if (!category) {
-    return (
-      <Index
-        meta={meta}
-        values={live[mode]}
-        mode={mode}
-        onMode={onMode}
-        edits={count}
-      />
-    );
-  }
   const info = CATEGORIES.find((c) => c.id === category);
   if (!info) {
     return (
@@ -558,8 +466,8 @@ const Foundations = ({
           <h1>{`Foundations: ${category}`}</h1>
           <p className="wb-lead">There is no token category of that name.</p>
         </header>
-        <a className="wb-button" href="#/foundations">
-          See all categories
+        <a className="wb-button" href="#/foundations/color">
+          Go to Colour
         </a>
       </article>
     );
@@ -571,17 +479,9 @@ const Foundations = ({
 
   return (
     <article className="wb-page wb-page-wide">
-      <nav className="wb-crumbs" aria-label="Breadcrumb">
-        <a href="#/foundations">Foundations</a>
-        <span aria-hidden="true">/</span>
-        <span aria-current="page">{info.label}</span>
-      </nav>
-      <header className="wb-page-head wb-page-head-row">
-        <div>
-          <h1>{info.label}</h1>
-          <p className="wb-lead">{info.intro}</p>
-        </div>
-        <CategoryPreview id={info.id} values={live[mode]} />
+      <header className="wb-page-head">
+        <h1>{info.label}</h1>
+        <p className="wb-lead">{info.intro}</p>
       </header>
       <ul className="wb-chips" aria-label="Categories">
         {CATEGORIES.filter((c) => countOf(meta, c.id) > 0).map((c) => (
@@ -658,7 +558,6 @@ const Foundations = ({
       )}
       {tokens.length === 0 ? (
         <div className="wb-empty wb-empty-small" data-testid="wb-tokens-empty">
-          <CategoryPreview id={info.id} values={live[mode]} />
           <div className="wb-empty-text">
             <h2>No tokens in this category yet</h2>
             <p className="wb-muted">

@@ -3,11 +3,6 @@ import type { ReactNode } from 'react';
 // Small line icons drawn for the shell (24 grid, stroke follows the text
 // colour). Decorative: always aria-hidden next to a visible label.
 const PATHS = {
-  start: (
-    <>
-      <path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z" />
-    </>
-  ),
   foundations: (
     <>
       <circle cx="8" cy="8" r="3.5" />
