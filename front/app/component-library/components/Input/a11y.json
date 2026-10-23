@@ -1,0 +1,127 @@
+{
+  "component": "Input",
+  "reviewedAt": "2026-10-23",
+  "reviewer": "agent",
+  "criteria": [
+    {
+      "id": "1.3.1",
+      "name": "Info and relationships",
+      "result": "fail",
+      "confidence": "high",
+      "evidence": "axe label (critical) on 13 of 14 stories, WithLabel included: Label gets htmlFor={id} and the input id={id}, so without an id prop the label is not tied to the field and the field has no name",
+      "note": "Heal (a11y): generate an id (useId) when none is passed, so label and field always connect."
+    },
+    {
+      "id": "1.4.3",
+      "name": "Contrast (minimum)",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "axe color-contrast passes on all 14 stories: #333333 on white",
+      "note": ""
+    },
+    {
+      "id": "1.4.10",
+      "name": "Reflow",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "screenshots and scroll width at 1280, 390 and 320: no horizontal scroll",
+      "note": ""
+    },
+    {
+      "id": "1.4.11",
+      "name": "Non-text contrast",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "computed: border 1px #767676 on white 4.54:1; focus border 2px #EF0071 4.27:1",
+      "note": ""
+    },
+    {
+      "id": "1.4.12",
+      "name": "Text spacing",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "text spacing override (line height 1.5, letter 0.12em, word 0.16em, paragraph 2em) on Default and LongContent: no clipped text",
+      "note": ""
+    },
+    {
+      "id": "2.1.1",
+      "name": "Keyboard",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "Keyboard story (play): Tab focuses the field, typing reaches onChange",
+      "note": ""
+    },
+    {
+      "id": "2.4.7",
+      "name": "Focus visible",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "keyboard run: border goes from 1px #767676 to 2px #EF0071 on Tab",
+      "note": ""
+    },
+    {
+      "id": "2.4.11",
+      "name": "Focus not obscured (minimum)",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "screenshots: nothing in the component covers the focused field",
+      "note": ""
+    },
+    {
+      "id": "2.5.7",
+      "name": "Dragging movements",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "source: no drag interaction",
+      "note": ""
+    },
+    {
+      "id": "2.5.8",
+      "name": "Target size (minimum)",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "measured: 300x48",
+      "note": ""
+    },
+    {
+      "id": "3.2.6",
+      "name": "Consistent help",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "page level: the component offers no help mechanism",
+      "note": ""
+    },
+    {
+      "id": "3.3.1",
+      "name": "Error identification",
+      "result": "needs-human",
+      "confidence": "low",
+      "evidence": "Error story: the message renders under the field",
+      "note": "Whether an error message tells people how to fix the entry is for a person to judge."
+    },
+    {
+      "id": "3.3.7",
+      "name": "Redundant entry",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: whether a form asks for the same data twice is decided by the page",
+      "note": ""
+    },
+    {
+      "id": "3.3.8",
+      "name": "Accessible authentication (minimum)",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "source: paste is never blocked (onMultilinePaste reads the clipboard and passes it on) and autocomplete reaches the input",
+      "note": "Password and email fields can be filled by a password manager."
+    },
+    {
+      "id": "4.1.2",
+      "name": "Name, role, value",
+      "result": "fail",
+      "confidence": "high",
+      "evidence": "same root as 1.3.1: Label gets htmlFor={id} and the input id={id}, so without an id prop the label is not tied to the field and the field has no name",
+      "note": "Fixed by the same heal as 1.3.1."
+    }
+  ]
+}
