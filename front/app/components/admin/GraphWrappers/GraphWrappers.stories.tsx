@@ -49,29 +49,31 @@ const meta = {
   title: 'Components/Data display/GraphWrappers',
   tags: ['shared'],
   parameters: { gv: {} },
-  component: GraphsContainer,
-  render: (args) => <GraphExample {...(args as unknown as ExampleProps)} />,
-} satisfies Meta<typeof GraphsContainer>;
+  // The story renders a composition of the building blocks, so its props
+  // (and the Controls) are the example's.
+  component: GraphExample,
+} satisfies Meta<typeof GraphExample>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: { titles: ['Registrations', 'Inputs'] } as never,
+  args: { titles: ['Registrations', 'Inputs'] },
 };
 
-export const NoData: Story = {
+// No data for the period.
+export const Empty: Story = {
   args: {
     titles: ['Registrations', 'Inputs'],
     noData: 'No data for this period',
-  } as never,
+  },
 };
 
 export const FullWidth: Story = {
-  args: { titles: ['Registrations'], fullWidth: true } as never,
+  args: { titles: ['Registrations'], fullWidth: true },
 };
 
 export const RTL: Story = {
   globals: { lang: 'ar' },
-  args: { titles: ['التسجيلات', 'المدخلات'] } as never,
+  args: { titles: ['التسجيلات', 'المدخلات'] },
 };
