@@ -34,11 +34,13 @@ import {
 } from '../lib/nesting';
 import { useHash } from '../lib/router';
 import { groupOfStory, Section, StoryRef } from '../lib/stories';
+import { stateKey } from '../lib/storyState';
 import { DEFS } from '../lib/tokenValues';
 import { useA11yResults } from '../lib/useA11y';
 import { Tool, useCanvasSelection } from '../lib/useCanvasSelection';
 import { useElementEdits } from '../lib/useElementEdits';
 import { useScanIndexes } from '../lib/useScanIndexes';
+import { useStoryState } from '../lib/useStoryState';
 import { useStoryGroups } from '../lib/useStoryGroups';
 import A11y from '../panels/A11y';
 import Design from '../panels/Design';
@@ -128,6 +130,7 @@ const Component = ({
   const [tool, setTool] = useState<Tool>('select');
   const [healChoice, setHealChoice] = useState<HealChoice | undefined>();
   const [view, setView] = useState<View>('single');
+  const split = view === 'split';
   const [frames, setFrames] = useState<(Window | null)[]>([null, null]);
   // A reload in place keeps the frame's window but brings a new document:
   // counted, so what lives in the document is set up again. A story or
@@ -277,6 +280,34 @@ const Component = ({
   } = useElementEdits(TOKEN_META);
   const live = useMemo(() => resolveTokens(DEFS, overrides), [overrides]);
   const fileOf = groups ? groupOfStory(groups, storyId)?.file : undefined;
+  // A state on top of a variant (`state` in the hash): Primary and Disabled.
+  const own = groups ? groupOfStory(groups, storyId) : undefined;
+  const ownStates = own?.stories.filter((s) => s.state) ?? [];
+  const layered =
+    !!own?.stories.find((s) => s.id === storyId && !s.state) &&
+    ownStates.length > 0;
+  const stateParam = paramOf(hash, 'state');
+  const layerState = layered
+    ? ownStates.find((s) => stateKey(s.id) === stateParam)
+    : undefined;
+  const baseState =
+    ownStates.find((s) => s.exportName === 'Default') ?? ownStates[0];
+  const layerFrames = useMemo(
+    () => (split ? frames : [frames[0]]),
+    [split, frames]
+  );
+  useStoryState(
+    layerFrames,
+    storyId,
+    layerState && layerState !== baseState ? layerState.id : null,
+    baseState?.id ?? null,
+    loads,
+    (id) => {
+      window.location.hash = storyHash(window.location.hash, section, id, {
+        from: paramOf(window.location.hash, 'from'),
+      });
+    }
+  );
   const findings = useMemo(
     () => (indexes.scan ? fileFindings(indexes.scan, fileOf) : []),
     [indexes.scan, fileOf]
@@ -317,16 +348,25 @@ const Component = ({
   const states = group.stories.filter((s) => s.state);
   const variants = group.stories.filter((s) => !s.state);
   const current = group.stories.find((s) => s.id === storyId);
-  // A switch keeps the way back from an open (`from`).
-  const go = (id: string) => {
-    window.location.hash = storyHash(
-      window.location.hash,
-      section,
-      id,
-      from ? { from: paramOf(hash, 'from') } : undefined
-    );
+  // A switch keeps the way back from an open (`from`); a variant keeps the
+  // state on top of it, a state story's own state goes on top of the next.
+  const go = (id: string, state: string | null = null) => {
+    window.location.hash = storyHash(window.location.hash, section, id, {
+      from: from ? paramOf(hash, 'from') : null,
+      state,
+    });
   };
-  const split = view === 'split';
+  const stateNow = layered
+    ? layerState ?? baseState
+    : current?.state
+    ? current
+    : undefined;
+  const onState = (id: string) => {
+    if (!layered) go(id);
+    else go(storyId, id === baseState?.id ? null : stateKey(id));
+  };
+  const onVariant = (id: string) =>
+    go(id, stateNow && stateNow !== baseState ? stateKey(stateNow.id) : null);
   const back = from
     ? {
         href: returnHash(from),
@@ -415,16 +455,6 @@ const Component = ({
       </div>
       {(states.length > 0 || variants.length > 0) && (
         <div className="wb-story-strip" data-testid="wb-insp-story">
-          {states.length > 0 && (
-            <StoryChips
-              id="state"
-              label="State"
-              stories={states}
-              value={storyId}
-              tabLabel={tabLabel}
-              onChange={go}
-            />
-          )}
           {variants.length > 0 && (
             <StoryChips
               id="variant"
@@ -432,7 +462,17 @@ const Component = ({
               stories={variants}
               value={storyId}
               tabLabel={tabLabel}
-              onChange={go}
+              onChange={states.length > 0 ? onVariant : go}
+            />
+          )}
+          {states.length > 0 && (
+            <StoryChips
+              id="state"
+              label="State"
+              stories={states}
+              value={stateNow?.id ?? ''}
+              tabLabel={tabLabel}
+              onChange={onState}
             />
           )}
         </div>

@@ -810,6 +810,43 @@ const switchInPlace = async (
   return element && state.same && !state.held;
 };
 
+// A State goes on top of the variant (Primary and Disabled): the story
+// stays, the frame's button turns disabled, Default takes it off.
+const stateOnVariant = async (
+  page: any,
+  frame: any,
+  variant: string,
+  failures: string[]
+) => {
+  const chip = '[data-testid="wb-insp-state"] [data-value$="--disabled"]';
+  if (!(await page.isVisible(chip))) return;
+  const disabled = (on: boolean) =>
+    frame.waitForFunction(
+      (want: string) =>
+        document
+          .querySelector('#storybook-root button')
+          ?.getAttribute('aria-disabled') === want,
+      String(on),
+      { timeout: 10000 }
+    );
+  await page.click(chip);
+  try {
+    await disabled(true);
+    const story = await frame.evaluate(
+      () => (window as any).__STORYBOOK_PREVIEW__?.currentRender?.id
+    );
+    if (story !== variant) {
+      failures.push(`state on ${variant}: the frame switched to ${story}`);
+      return;
+    }
+    await page.click('[data-testid="wb-insp-state"] [data-value$="--default"]');
+    await disabled(false);
+    console.log(`state: Disabled on ${variant}, then Default`);
+  } catch {
+    failures.push(`state on ${variant}: Disabled did not reach the frame`);
+  }
+};
+
 // Clicks on one control made during a globals switch.
 const EDIT_BURST = 31;
 
@@ -848,10 +885,10 @@ const controlsChecks = async (
     timeout: 20000,
   });
 
-  // Another State switches the story in the same frame: the element stays,
+  // Another Variant switches the story in the same frame: the element stays,
   // the preview renders the chosen story, the session's edits stay on.
   const other: string | undefined = await page.$$eval(
-    '[data-testid="wb-insp-state"] button[data-value]',
+    '[data-testid="wb-insp-variant"] button[data-value]',
     (els: Element[], id: string) =>
       els.map((e) => e.getAttribute('data-value')).find((v) => v !== id),
     storyId
@@ -861,8 +898,9 @@ const controlsChecks = async (
     const ok = await switchInPlace(
       page,
       frame,
-      `state switch to ${other}`,
-      () => page.click(`[data-testid="wb-insp-state"] [data-value="${other}"]`),
+      `variant switch to ${other}`,
+      () =>
+        page.click(`[data-testid="wb-insp-variant"] [data-value="${other}"]`),
       `[data-story="${other}"]`,
       { storyId: other },
       failures
@@ -870,12 +908,13 @@ const controlsChecks = async (
     const after = await radiusOf(frame);
     if (after !== radius) {
       failures.push(
-        `state switch to ${other}: border-radius ${radius} became ${after}`
+        `variant switch to ${other}: border-radius ${radius} became ${after}`
       );
     }
     if (ok && after === radius) {
       console.log(`canvas: switched to ${other} in the same frame`);
     }
+    await stateOnVariant(page, frame, other, failures);
     // The mode and a city switch the same frame too (the page has no
     // language picker: a story sets its own).
     const globals: string[] = [];

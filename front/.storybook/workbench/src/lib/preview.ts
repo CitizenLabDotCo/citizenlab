@@ -241,6 +241,15 @@ type ArgsQueue = {
 };
 const queues = new WeakMap<Document, ArgsQueue>();
 
+// A state shown on top of the story (lib/storyState.ts: Primary and
+// Disabled): args a reset and a resync keep, per frame document and story.
+const layers = new WeakMap<Document, Map<string, Record<string, unknown>>>();
+// A patch value that puts the story's own initial value back.
+const INITIAL = Symbol('initial');
+
+const layerArgsOf = (doc: Document, storyId: string) =>
+  layers.get(doc)?.get(storyId) ?? {};
+
 const currentRenderOf = (win: Window | null | undefined) => {
   try {
     return (win as PreviewWindow | null | undefined)?.__STORYBOOK_PREVIEW__
@@ -280,8 +289,11 @@ const flush = (doc: Document, q: ArgsQueue) => {
     new Set([...Object.keys(initial), ...Object.keys(now)]).forEach((k) => {
       updatedArgs[k] = initial[k];
     });
+    Object.assign(updatedArgs, layerArgsOf(doc, q.storyId));
   }
-  Object.assign(updatedArgs, q.patch);
+  Object.entries(q.patch).forEach(([k, v]) => {
+    updatedArgs[k] = v === INITIAL ? render.story?.initialArgs?.[k] : v;
+  });
   q.reset = false;
   q.patch = {};
   const storyId = q.storyId;
@@ -384,6 +396,38 @@ export const updateArgs = (
 export const resetArgs = (win: Window | null | undefined, storyId: string) =>
   enqueue(win, storyId, { reset: true });
 
+// Lays a state's args over the frame's story, taking off what the last
+// one set; sends only what the story's stored args lack.
+export const setLayerArgs = (
+  win: Window | null | undefined,
+  storyId: string,
+  args: Record<string, unknown>
+) => {
+  const doc = docOf(win);
+  if (!doc) return;
+  const map = layers.get(doc) ?? new Map<string, Record<string, unknown>>();
+  layers.set(doc, map);
+  const prev = map.get(storyId) ?? {};
+  map.set(storyId, args);
+  let now: Record<string, unknown> | undefined;
+  try {
+    now = previewOf(win)?.storyStoreValue?.args?.get(storyId);
+  } catch {
+    now = undefined;
+  }
+  const initial = currentRenderOf(win)?.story?.initialArgs ?? {};
+  const patch: Record<string, unknown> = {};
+  Object.keys(prev).forEach((k) => {
+    if (!(k in args) && (!now || !Object.is(now[k], initial[k]))) {
+      patch[k] = INITIAL;
+    }
+  });
+  Object.entries(args).forEach(([k, v]) => {
+    if (!now || JSON.stringify(now[k]) !== JSON.stringify(v)) patch[k] = v;
+  });
+  if (Object.keys(patch).length > 0) enqueue(win, storyId, { patch });
+};
+
 // Drops the edits still queued for the frame (an edit already in the
 // frame finishes).
 export const cancelArgs = (win: Window | null | undefined) => {
@@ -399,11 +443,12 @@ export const cancelArgs = (win: Window | null | undefined) => {
 export const resyncArgs = (
   win: Window | null | undefined,
   storyId: string,
-  edits: Record<string, unknown>
+  ownEdits: Record<string, unknown>
 ) => {
   const doc = docOf(win);
   const q = doc && queues.get(doc);
   if (q && isQueued(q)) return;
+  const edits = doc ? { ...layerArgsOf(doc, storyId), ...ownEdits } : ownEdits;
   const render = currentRenderOf(win);
   if (!render || render.id !== storyId) return;
   let now: Record<string, unknown> | undefined;
