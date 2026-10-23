@@ -378,7 +378,7 @@ const PREVIEW_CANNOT = [
   'The Storybook MCP server: it runs with npm run storybook only.',
   'Highlights for components outside the library: UI and admin components carry no tag.',
   'Exact baselines for code heals: the Before host needs its own login, and its data differs.',
-  'Fresh instance audits: ds:audit runs on your machine with a stored admin session; the preview shows the audits committed under audits/.',
+  'Fresh instance audits: ds:audit runs on your machine with a stored admin session; each component page shows the audit committed under audits/, without screenshots.',
 ];
 
 const PREVIEW_NOTES = [

@@ -108,8 +108,48 @@ export const loadA11y = () =>
     r && typeof r === 'object' && 'stories' in r ? r : null
   );
 
+// Instance audits (npm run ds:audit) are optional: a build without them is
+// complete, so they never count as missing.
+export type AuditSummary = {
+  component: string;
+  generatedAt: string;
+  host: string;
+  story?: string;
+  blockedWrites?: number;
+  instances: { route: string; viewport: string; error?: string }[];
+  notReached: { route: string; reason: string }[];
+  inconsistencies: string[];
+  healTasks: string[];
+};
+
+type AuditIndexFile = {
+  components?: Record<string, { file?: string } | undefined>;
+};
+
+const fetchOptional = <T>(url: string): Promise<T | null> => {
+  if (!cache.has(url)) {
+    cache.set(
+      url,
+      fetch(url)
+        .then((res) => (res.ok ? res.json() : null))
+        .catch(() => null)
+    );
+  }
+  return cache.get(url) as Promise<T | null>;
+};
+
 export const loadAudits = () =>
-  fetchJson<Record<string, unknown>>('../audits/index.json', {});
+  fetchOptional<AuditIndexFile>('../audits/index.json').then((r) => r ?? {});
+
+// The committed audit of one component, or null when it has none.
+export const loadAudit = async (
+  component: string
+): Promise<AuditSummary | null> => {
+  const file = (await loadAudits()).components?.[component]?.file;
+  if (!file || !/^audits\/[\w-]+\.json$/.test(file)) return null;
+  const audit = await fetchOptional<AuditSummary>(`../${file}`);
+  return audit && Array.isArray(audit.instances) ? audit : null;
+};
 
 export const loadAll = () =>
   Promise.all([

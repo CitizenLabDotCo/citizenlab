@@ -1,6 +1,8 @@
 import {
   auditIndex,
   AuditInstance,
+  blockedLine,
+  blockedWrites,
   codegenCommand,
   compareInstances,
   compareWithStory,
@@ -8,11 +10,16 @@ import {
   healTasks,
   inconsistencies,
   instanceLabel,
+  isInside,
+  isReadRequest,
+  isSafeTrigger,
   parseArgs,
   planVisits,
   shorthand,
   sizeClass,
   StoryCapture,
+  storyFor,
+  TriggerInfo,
 } from './audit';
 
 import type { ScanOutput, TokenMeta } from './scan/schema';
@@ -273,7 +280,7 @@ describe('healTasks', () => {
     const tasks = healTasks(
       'PanelField',
       [instance({ route: 'admin/a' }), b, b2],
-      [story()],
+      [story(), story({ viewport: 'mobile', width: 390 })],
       scan,
       meta
     );
@@ -418,7 +425,7 @@ describe('parseArgs', () => {
         '--route',
         'ideas',
       ],
-      { defaultHost: 'https://d', defaultState: '/home/u/state.json' }
+      { defaultState: '/home/u/state.json' }
     );
     expect(a).toEqual({
       component: 'OptionList',
@@ -430,24 +437,23 @@ describe('parseArgs', () => {
       maxTriggers: 12,
     });
     expect(
-      parseArgs(['--component', 'X'], {
-        defaultHost: 'https://d',
+      parseArgs(['--component', 'X', '--host', 'http://localhost:3000'], {
         defaultState: 'st',
       })
     ).toMatchObject({
-      host: 'https://d',
-      storybook: 'https://d/storybook',
+      host: 'http://localhost:3000',
+      storybook: 'http://localhost:3000/storybook',
       state: 'st',
     });
   });
 
-  it('throws on a missing component or an unknown flag', () => {
+  it('throws on a missing component, a missing host or an unknown flag', () => {
+    expect(() => parseArgs([], { defaultState: 's' })).toThrow('--component');
     expect(() =>
-      parseArgs([], { defaultHost: 'h', defaultState: 's' })
-    ).toThrow('--component');
+      parseArgs(['--component', 'X'], { defaultState: 's' })
+    ).toThrow('--host <platform url> is required');
     expect(() =>
-      parseArgs(['--component', 'X', '--nope'], {
-        defaultHost: 'h',
+      parseArgs(['--component', 'X', '--host', 'h', '--nope'], {
         defaultState: 's',
       })
     ).toThrow('unknown argument --nope');
@@ -492,6 +498,7 @@ describe('auditIndex', () => {
           notReached: 1,
           inconsistencies: 1,
           healTasks: 2,
+          blockedWrites: 0,
         },
       },
     });
@@ -500,5 +507,132 @@ describe('auditIndex', () => {
         auditIndex(undefined, { ...report, component: 'X' }).components
       )
     ).toEqual(['X']);
+  });
+});
+
+describe('the read-only guard', () => {
+  it('lets only GET, HEAD and OPTIONS through', () => {
+    expect(['GET', 'head', 'OPTIONS'].map(isReadRequest)).toEqual([
+      true,
+      true,
+      true,
+    ]);
+    expect(['POST', 'PUT', 'PATCH', 'DELETE'].map(isReadRequest)).toEqual([
+      false,
+      false,
+      false,
+      false,
+    ]);
+  });
+
+  it('logs the method and path, never the query', () => {
+    expect(
+      blockedLine(
+        'post',
+        'https://h/web_api/v1/notifications/mark_all_read?token=x'
+      )
+    ).toBe('POST /web_api/v1/notifications/mark_all_read');
+    expect(blockedLine('WEBSOCKET', 'wss://h/cable?k=1')).toBe(
+      'WEBSOCKET /cable'
+    );
+  });
+
+  it('counts writes apart from WebSockets', () => {
+    expect(blockedWrites(['POST /a', 'WEBSOCKET /cable', 'PATCH /b'])).toBe(2);
+  });
+});
+
+describe('isSafeTrigger', () => {
+  const t = (over: Partial<TriggerInfo> = {}): TriggerInfo => ({
+    tag: 'button',
+    typeAttr: 'button',
+    inForm: false,
+    inChrome: false,
+    hasMain: true,
+    inMain: true,
+    ariaHasPopup: 'menu',
+    ariaExpanded: 'false',
+    name: 'More options',
+    ...over,
+  });
+
+  it('accepts menu and listbox popups and aria-expanded buttons in main', () => {
+    expect(isSafeTrigger(t())).toBe(true);
+    expect(isSafeTrigger(t({ ariaHasPopup: 'listbox' }))).toBe(true);
+    expect(isSafeTrigger(t({ ariaHasPopup: 'true' }))).toBe(true);
+    expect(isSafeTrigger(t({ ariaHasPopup: null }))).toBe(true);
+    expect(
+      isSafeTrigger(t({ tag: 'div', ariaHasPopup: 'menu', typeAttr: '' }))
+    ).toBe(true);
+    expect(isSafeTrigger(t({ hasMain: false, inMain: false }))).toBe(true);
+  });
+
+  it('refuses other popups and plain buttons', () => {
+    expect(
+      isSafeTrigger(t({ ariaHasPopup: 'dialog', ariaExpanded: null }))
+    ).toBe(false);
+    expect(isSafeTrigger(t({ ariaHasPopup: null, ariaExpanded: null }))).toBe(
+      false
+    );
+    expect(
+      isSafeTrigger(
+        t({ tag: 'div', ariaHasPopup: null, ariaExpanded: 'false' })
+      )
+    ).toBe(false);
+  });
+
+  it('refuses the header, navigation and anything outside main', () => {
+    expect(isSafeTrigger(t({ inChrome: true }))).toBe(false);
+    expect(isSafeTrigger(t({ inMain: false }))).toBe(false);
+  });
+
+  it('refuses submits and form buttons without type="button"', () => {
+    expect(isSafeTrigger(t({ typeAttr: 'submit' }))).toBe(false);
+    expect(isSafeTrigger(t({ typeAttr: 'SUBMIT', inForm: false }))).toBe(false);
+    expect(isSafeTrigger(t({ typeAttr: '', inForm: true }))).toBe(false);
+    expect(isSafeTrigger(t({ typeAttr: 'button', inForm: true }))).toBe(true);
+  });
+
+  it('refuses deny-listed names in five languages', () => {
+    [
+      'Delete project',
+      'Remove',
+      'Archive',
+      'Publish',
+      'Sign out',
+      'Log out',
+      'Notifications',
+      'Verwijderen',
+      'Publiceren',
+      'Supprimer',
+      'Se déconnecter',
+      'Löschen',
+      'Abmelden',
+      'Eliminar',
+      'Cerrar sesión',
+      'Notificaciones',
+    ].forEach((name) =>
+      expect([name, isSafeTrigger(t({ name }))]).toEqual([name, false])
+    );
+  });
+});
+
+describe('storyFor', () => {
+  it('uses a story at the same mode and viewport, or none', () => {
+    const desktop = story();
+    expect(storyFor(instance(), [desktop])).toBe(desktop);
+    expect(
+      storyFor(instance({ viewport: 'mobile', width: 390 }), [desktop])
+    ).toBeUndefined();
+    expect(storyFor(instance({ office: 'public' }), [desktop])).toBeUndefined();
+  });
+});
+
+describe('isInside', () => {
+  it('tells whether a file is under a directory', () => {
+    expect(isInside('/repo', '/repo/front/state.json')).toBe(true);
+    expect(isInside('/repo', '/repo')).toBe(true);
+    expect(isInside('/repo', '/repo-state.json')).toBe(false);
+    expect(isInside('/repo', '/home/u/state.json')).toBe(false);
   });
 });

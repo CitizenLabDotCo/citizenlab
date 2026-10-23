@@ -4,7 +4,8 @@
 import { createRequire } from 'module';
 import path from 'path';
 
-export const loadPlaywright = () => {
+// Playwright, or undefined when it cannot be resolved.
+export const tryLoadPlaywright = () => {
   const dir = process.env.GV_PLAYWRIGHT_DIR;
   const tries = [
     () => createRequire(path.join(dir as string, 'noop.js'))('playwright'),
@@ -17,6 +18,12 @@ export const loadPlaywright = () => {
       // try the next resolution
     }
   }
+  return undefined;
+};
+
+export const loadPlaywright = () => {
+  const pw = tryLoadPlaywright();
+  if (pw) return pw;
   console.error(
     'Playwright not found. Set GV_PLAYWRIGHT_DIR to a directory containing node_modules/playwright (and PLAYWRIGHT_BROWSERS_PATH to its browsers), or install playwright.'
   );

@@ -1,14 +1,15 @@
 /**
  * Instance audit: one component across the platform.
  *
- *   npm run ds:audit -- --component <Name> [--host <url>] [--state <file>]
+ *   npm run ds:audit -- --component <Name> --host <url> [--state <file>]
  *     [--storybook <url>]     Storybook to read the Default story from
  *                             (default <host>/storybook)
  *     [--route <text>]        only routes whose path contains <text>
  *                             (repeatable)
- *     [--open <selector>]     click this element before looking for
- *                             instances, for components that render inside a
- *                             menu or another closed state (repeatable)
+ *     [--open <selector>]     a trigger that opens a state, never an action
+ *                             button: clicked before looking for instances,
+ *                             for components that render inside a menu or
+ *                             another closed state (repeatable)
  *     [--max-triggers <n>]    menus to try opening when a page shows no
  *                             instance (default 12)
  *
@@ -18,9 +19,17 @@
  * visible `[data-gv-component="<Name>"]` records a screenshot, its box size,
  * radius, padding, colours and font size, and the tokens it reads
  * (readComputedTokens from the workbench, injected into the page). When a
- * page shows no instance, it opens up to --max-triggers menus
- * (`aria-haspopup` or `aria-expanded="false"` buttons) one at a time and
- * looks again: it clicks, never types, never submits. It compares the
+ * page shows no instance, it opens up to --max-triggers menus one at a time
+ * and looks again (isSafeTrigger: main content only, a menu or listbox
+ * popup or an aria-expanded button, never a submit, never a deny-listed
+ * name), and stops clicking on the first error or navigation.
+ *
+ * The run is read-only at the network layer: every request that is not
+ * GET, HEAD or OPTIONS is aborted and logged (method and path only),
+ * WebSockets and service workers are blocked, and the report records
+ * blockedWrites. --host has no default, so a bare run reaches nothing.
+ *
+ * It compares the
  * instances with each other and with the component's Default story, and
  * writes .storybook/static/audits/<Name>.json, the screenshots under
  * audits/<Name>/ and the index the workbench reads, audits/index.json.
@@ -32,6 +41,7 @@
  *
  * Playwright is loaded through ./playwright (see there for GV_PLAYWRIGHT_DIR).
  */
+/* eslint-disable no-console -- a CLI: progress and results go to the terminal */
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
@@ -100,6 +110,9 @@ export type AuditReport = {
   component: string;
   generatedAt: string;
   host: string;
+  // Non-read requests and WebSockets the network guard stopped.
+  blockedWrites?: number;
+  blocked?: string[];
   storybook?: string;
   story?: string;
   stories?: StoryCapture[];
@@ -130,10 +143,10 @@ const trimSlash = (s: string) => s.replace(/\/+$/, '');
 
 export const parseArgs = (
   argv: string[],
-  defaults: { defaultHost: string; defaultState: string }
+  defaults: { defaultState: string }
 ): AuditArgs => {
   let component = '';
-  let host = defaults.defaultHost;
+  let host = '';
   let storybook = '';
   let state = defaults.defaultState;
   const open: string[] = [];
@@ -156,6 +169,8 @@ export const parseArgs = (
     else throw new Error(`unknown argument ${flag}`);
   }
   if (!component) throw new Error('--component <Name> is required');
+  // No default host: a bare run must never reach a remote platform.
+  if (!host) throw new Error('--host <platform url> is required');
   host = trimSlash(host);
   return {
     component,
@@ -172,6 +187,125 @@ export const codegenCommand = (statePath: string, host: string) =>
   `npx playwright codegen --save-storage=${statePath} ${trimSlash(
     host
   )}/en/sign-in`;
+
+// ---------------------------------------------------------------- safety
+
+// Requests the run lets through. Every other method is aborted at the
+// network layer, so no click, menu close or page script can write.
+export const READ_METHODS = ['GET', 'HEAD', 'OPTIONS'];
+export const isReadRequest = (method: string) =>
+  READ_METHODS.includes(method.toUpperCase());
+
+// A blocked request as logged: method and path, never the query or body.
+export const blockedLine = (method: string, url: string) => {
+  try {
+    return `${method.toUpperCase()} ${new URL(url).pathname}`;
+  } catch {
+    return `${method.toUpperCase()} (unparsable url)`;
+  }
+};
+
+// What the page says about a candidate menu trigger.
+export type TriggerInfo = {
+  tag: string;
+  // The type attribute as written ('' when absent).
+  typeAttr: string;
+  // Whether a form owns the element.
+  inForm: boolean;
+  // Inside header, nav, [role=banner] or [role=navigation].
+  inChrome: boolean;
+  // Whether the page has a main landmark, and the element is inside it.
+  hasMain: boolean;
+  inMain: boolean;
+  ariaHasPopup: string | null;
+  ariaExpanded: string | null;
+  // Accessible name (aria-label, else text).
+  name: string;
+};
+
+// Names of buttons the run never clicks, in English, Dutch, French,
+// German and Spanish.
+export const DENIED_NAMES = new RegExp(
+  [
+    'delete',
+    'remove',
+    'archive',
+    'publish',
+    'sign ?out',
+    'log ?out',
+    'notification',
+    'verwijder',
+    'publice',
+    'afmelden',
+    'uitloggen',
+    'melding',
+    'supprimer',
+    'retirer',
+    'archiver',
+    'publier',
+    'd[ée]connex',
+    'd[ée]connect',
+    'l[öo]schen',
+    'entfernen',
+    'archivieren',
+    'ver[öo]ffentlichen',
+    'abmelden',
+    'benachrichtigung',
+    'eliminar',
+    'borrar',
+    'quitar',
+    'archivar',
+    'publicar',
+    'cerrar sesi[óo]n',
+    'notificaci[óo]n',
+  ].join('|'),
+  'i'
+);
+
+const POPUP_VALUES = ['menu', 'listbox', 'true'];
+
+// Whether the audit may click this element to show a hidden instance:
+// in the page's main content, a menu or listbox popup trigger (or an
+// aria-expanded button), never a submit or a form-owned button without
+// type="button", never a name on the deny list.
+export const isSafeTrigger = (t: TriggerInfo): boolean => {
+  if (t.inChrome) return false;
+  if (t.hasMain && !t.inMain) return false;
+  if (DENIED_NAMES.test(t.name)) return false;
+  const type = t.typeAttr.toLowerCase();
+  if (type === 'submit') return false;
+  if (t.inForm && type !== 'button') return false;
+  const popup = (t.ariaHasPopup ?? '').toLowerCase();
+  if (POPUP_VALUES.includes(popup)) return true;
+  return t.tag === 'button' && t.ariaExpanded !== null;
+};
+
+// Puts the read-only guard on a Playwright browser context: requests
+// other than GET, HEAD and OPTIONS are aborted, WebSockets are closed
+// before they connect. Each one is pushed to `blocked` as method and path.
+export const guardContext = async (context: any, blocked: string[]) => {
+  await context.route('**/*', (route: any) => {
+    const req = route.request();
+    if (isReadRequest(req.method())) return route.continue();
+    blocked.push(blockedLine(req.method(), req.url()));
+    return route.abort('blockedbyclient');
+  });
+  await context.routeWebSocket(/.*/, (ws: any) => {
+    blocked.push(blockedLine('WEBSOCKET', ws.url()));
+    // Never connectToServer: the socket only ever talks to this handler.
+    return ws.close();
+  });
+};
+
+// Blocked requests that were writes (not WebSockets).
+export const blockedWrites = (blocked: string[]) =>
+  blocked.filter((b) => !b.startsWith('WEBSOCKET ')).length;
+
+// Whether `file` is `dir` or inside it.
+export const isInside = (dir: string, file: string) => {
+  const rel = path.relative(path.resolve(dir), path.resolve(file));
+  return rel === '' || (!rel.startsWith('..') && !path.isAbsolute(rel));
+};
 
 // ---------------------------------------------------------------- routes
 
@@ -383,16 +517,15 @@ export const inconsistencies = (instances: AuditInstance[]): string[] => {
 export const modeOf = (office: string): 'today' | 'redesign' =>
   office === 'admin' ? 'redesign' : 'today';
 
-// The story capture an instance is compared with: same mode and viewport,
-// else same mode.
+// The story capture an instance is compared with: same mode and
+// viewport, or none (sizes and spacing differ between viewports).
 export const storyFor = (
   i: AuditInstance,
   stories: StoryCapture[]
-): StoryCapture | undefined => {
-  const mode = modeOf(i.office);
-  const ok = stories.filter((s) => !s.error && s.mode === mode);
-  return ok.find((s) => s.viewport === i.viewport) ?? ok[0];
-};
+): StoryCapture | undefined =>
+  stories.find(
+    (s) => !s.error && s.mode === modeOf(i.office) && s.viewport === i.viewport
+  );
 
 // ------------------------------------------------------------ heal tasks
 
@@ -567,6 +700,7 @@ export const auditIndex = (
     | 'notReached'
     | 'inconsistencies'
     | 'healTasks'
+    | 'blockedWrites'
   >
 ): AuditIndex => {
   const ok = report.instances.filter((i) => !i.error);
@@ -584,6 +718,7 @@ export const auditIndex = (
         notReached: report.notReached.length,
         inconsistencies: report.inconsistencies.length,
         healTasks: report.healTasks.length,
+        blockedWrites: report.blockedWrites ?? 0,
       },
     },
   };
@@ -594,7 +729,6 @@ export const auditIndex = (
 const ROOT = path.resolve(__dirname, '..', '..');
 const STATIC = path.join(ROOT, '.storybook', 'static');
 const WORKBENCH_LIB = path.join(ROOT, '.storybook', 'workbench', 'src', 'lib');
-const DEFAULT_HOST = 'https://pr-15027.epic.hq.govocal.com';
 const VIEWPORTS = [
   { name: 'desktop', width: 1280, height: 900 },
   { name: 'mobile', width: 390, height: 844 },
@@ -602,8 +736,9 @@ const VIEWPORTS = [
 const SETTLED_PHASES = ['finished', 'errored', 'aborted'];
 const NO_ANIMATION_CSS =
   '*,*::before,*::after{animation:none!important;transition:none!important;caret-color:transparent!important}';
+// Candidates only; isSafeTrigger decides which are clicked.
 const TRIGGERS =
-  'button[aria-haspopup]:not([aria-haspopup="false"]), button[aria-expanded="false"], [role="button"][aria-haspopup]:not([aria-haspopup="false"])';
+  'button[aria-haspopup], button[aria-expanded="false"], [role="button"][aria-haspopup]';
 const SEEN = 'data-gv-audit-seen';
 
 const readJson = (file: string): any => {
@@ -678,6 +813,34 @@ const readElement = (handle: any, meta: TokenMeta[]): Promise<Raw> =>
     };
   }, meta);
 
+// What isSafeTrigger needs to know about an element, read in the page.
+const triggerInfo = (handle: any): Promise<TriggerInfo> =>
+  handle.evaluate((el: HTMLElement) => {
+    const main = document.querySelector('main, [role="main"]');
+    return {
+      tag: el.tagName.toLowerCase(),
+      typeAttr: el.getAttribute('type') ?? '',
+      inForm: Boolean((el as HTMLButtonElement).form ?? el.closest('form')),
+      inChrome: Boolean(
+        el.closest('header, nav, [role="banner"], [role="navigation"]')
+      ),
+      hasMain: Boolean(main),
+      inMain: Boolean(main?.contains(el)),
+      ariaHasPopup: el.getAttribute('aria-haspopup'),
+      ariaExpanded: el.getAttribute('aria-expanded'),
+      name: (
+        el.getAttribute('aria-label') ||
+        el.getAttribute('title') ||
+        el.innerText ||
+        el.textContent ||
+        ''
+      )
+        .trim()
+        .replace(/\s+/g, ' ')
+        .slice(0, 80),
+    };
+  });
+
 const toStyles = (raw: Raw): Styles => ({
   radius: shorthand(raw.radius),
   padding: shorthand(raw.padding),
@@ -706,7 +869,6 @@ const main = async () => {
   let args: AuditArgs;
   try {
     args = parseArgs(process.argv.slice(2), {
-      defaultHost: fixture.hosts.after || fixture.source?.host || DEFAULT_HOST,
       defaultState:
         process.env.GV_AUDIT_STATE ||
         path.join(os.homedir(), '.govocal', 'epic-admin.json'),
@@ -730,6 +892,11 @@ const main = async () => {
       ].join('\n')
     );
     process.exit(2);
+  }
+  if (isInside(path.resolve(ROOT, '..'), stateFile)) {
+    console.warn(
+      `ds:audit: warning: the session file ${stateFile} is inside the repository. Move it outside so it can never be committed.`
+    );
   }
 
   const scan: ScanOutput | undefined = readJson(
@@ -791,6 +958,7 @@ const main = async () => {
   const stories: StoryCapture[] = [];
   const unreached = new Map<string, string>();
   let storyId: string | undefined;
+  const blocked: string[] = [];
 
   try {
     for (const vp of VIEWPORTS) {
@@ -800,7 +968,10 @@ const main = async () => {
         viewport: { width: vp.width, height: vp.height },
         deviceScaleFactor: 1,
         reducedMotion: 'reduce',
+        // Service worker requests would bypass the guard.
+        serviceWorkers: 'block',
       });
+      await guardContext(context, blocked);
       await context.addInitScript({ content: script });
       const page = await context.newPage();
 
@@ -973,40 +1144,53 @@ const main = async () => {
               });
             }
           };
-          const labelOf = (h: any): Promise<string> =>
-            h.evaluate((el: HTMLElement) =>
-              (el.getAttribute('aria-label') || el.innerText || el.tagName)
-                .trim()
-                .replace(/\s+/g, ' ')
-                .slice(0, 60)
-            );
-          const tryOpen = async (h: any, label: string) => {
+          // Clicks one trigger and collects what it opened. False when the
+          // click navigated or anything failed: the caller stops clicking.
+          let stopped = '';
+          const tryOpen = async (h: any, label: string): Promise<boolean> => {
             const before = page.url();
-            await h.click({ timeout: 3000 });
-            await page.waitForTimeout(500);
-            await collect(label);
-            await page.keyboard.press('Escape');
-            await page.waitForTimeout(200);
-            return page.url() === before;
+            try {
+              await h.click({ timeout: 3000 });
+              if (page.url() !== before) throw new Error('navigated');
+              await page.waitForTimeout(500);
+              if (page.url() !== before) throw new Error('navigated');
+              await collect(label);
+              await page.keyboard.press('Escape');
+              await page.waitForTimeout(200);
+              if (page.url() !== before) throw new Error('navigated');
+              return true;
+            } catch (e: any) {
+              stopped = `${label}: ${String(e?.message ?? e).split('\n')[0]}`;
+              console.log(
+                `  stopped clicking on ${routeLabel(v.route)} (${stopped})`
+              );
+              return false;
+            }
           };
 
           await collect();
           for (const sel of args.open) {
-            const h = await page.$(sel);
-            if (h && (await h.isVisible())) {
-              await tryOpen(h, sel).catch(() => true);
+            const h = await page.$(sel).catch(() => null);
+            if (!h || !(await h.isVisible().catch(() => false))) continue;
+            const info = await triggerInfo(h);
+            if (DENIED_NAMES.test(info.name) || info.inChrome) {
+              console.log(
+                `  skipped --open ${sel}: "${info.name}" is in the header or on the deny list`
+              );
+              continue;
             }
+            if (!(await tryOpen(h, sel))) break;
           }
-          if (!found.length && args.maxTriggers > 0) {
+          if (!found.length && !stopped && args.maxTriggers > 0) {
             const triggers = (await page.$$(TRIGGERS)).slice(0, 200);
             let tried = 0;
             for (const h of triggers) {
               if (tried >= args.maxTriggers) break;
               if (!(await h.isVisible().catch(() => false))) continue;
+              const info = await triggerInfo(h).catch(() => undefined);
+              if (!info || !isSafeTrigger(info)) continue;
               tried++;
-              const label = await labelOf(h).catch(() => 'menu');
-              const stayed = await tryOpen(h, label).catch(() => true);
-              if (!stayed) break; // a click navigated away; stop clicking
+              if (!(await tryOpen(h, info.name || 'menu'))) break;
             }
           }
           if (!found.length) {
@@ -1054,6 +1238,8 @@ const main = async () => {
     notReached,
     inconsistencies: inconsistencies(instances),
     healTasks: healTasks(component, instances, stories, scan, meta),
+    blockedWrites: blockedWrites(blocked),
+    blocked: [...new Set(blocked)],
   };
   fs.writeFileSync(
     path.join(outDir, `${component}.json`),
@@ -1080,6 +1266,25 @@ const main = async () => {
         stateFile,
         args.host
       )}`
+    );
+  }
+  const writes = blockedWrites(blocked);
+  const sockets = blocked.length - writes;
+  if (sockets) {
+    console.log(
+      `ds:audit: closed ${sockets} WebSocket(s) before they connected.`
+    );
+  }
+  if (writes) {
+    console.error(
+      [
+        '',
+        `ds:audit: BLOCKED ${writes} WRITE REQUEST(S). The page tried to change data and the guard stopped it:`,
+        ...(report.blocked ?? [])
+          .filter((b) => !b.startsWith('WEBSOCKET '))
+          .map((b) => `  ${b} (x${blocked.filter((x) => x === b).length})`),
+        'Nothing was sent. Check which click caused it before the next run.',
+      ].join('\n')
     );
   }
   if (!ok.length) process.exitCode = 1;

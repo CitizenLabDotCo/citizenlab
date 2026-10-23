@@ -12,7 +12,7 @@ This branch builds a design-in-code workbench for the platform: CSS-variable des
 - **Legacy read**: a read of the old theme (`theme.*`, `colors.*`, `bo.*`, `stylingConsts.*`). Counted apart from off-spec, half weight in the score.
 - **Heal**: replacing one off-spec value or local markup with the token or library component, in its own commit, with a story and a before and after.
 - **Lift**: moving a local piece of the redesigned back office into the library.
-- **Usage map**: for each library component, where it is imported, on which routes it shows, how many off-spec values sit there.
+- **Usage map**: for each library component, where it is imported, on which routes it shows, how many off-spec values sit there, and its committed instance audit (differences between instances, heal tasks, routes not reached).
 - **Review page**: the workbench page that frames the real platform before and after the branch.
 - **Workbench**: the Storybook on this branch with its own shell at `<storybook>/workbench/`.
 
@@ -49,7 +49,7 @@ This branch builds a design-in-code workbench for the platform: CSS-variable des
 | `npm run ds:smoke -- --dir <storybook output> [--screenshot <png>] [--review-host <origin>]` | Serve a built Storybook and check the shell pages and the console. |
 | `npm run ds:mode-check -- --file <path> --token <name> --now <value> [--mode today\|redesign\|both]` | Mode safety of one heal. Exit 0 safe, 3 stop, 2 bad input. Reads `design-scan.json`, so run `ds:scan` first. |
 | `npm run ds:a11y -- [--url <storybook>] [--stories <glob,glob>] [--workers N]` | Run axe (WCAG 2.0, 2.1, 2.2 A and AA) on every story, or the matched ones, at 1280x900 in mode today; write `a11y-results.json` (a filtered run keeps the other stories). `-- --check` exits 1 on a critical violation in a `Components/` story that is not in `a11y-known.json`, on a listed one that no longer fails, or when the results file is missing, and prints how many known ones remain; `ds:check` runs it. Default URL `http://localhost:6006`. |
-| `npm run ds:audit -- --component <Name> [--host <url>] [--state <file>] [--storybook <url>] [--route <text>] [--open <selector>] [--max-triggers N]` | Instance audit of one library component: opens its routes (scan + `routes.fixture.json`) in a stored admin session at 1280 and 390, screenshots every visible `[data-gv-component]`, compares instances with each other and with the Default story, writes `audits/<Name>.json`, `audits/<Name>/*.png` and `audits/index.json`. The session is a Playwright storage state file outside the repo (default `$GV_AUDIT_STATE`, else `~/.govocal/epic-admin.json`); when missing it prints the `npx playwright codegen --save-storage=...` command and exits 2. Needs Playwright. |
+| `npm run ds:audit -- --component <Name> --host <url> [--state <file>] [--storybook <url>] [--route <text>] [--open <selector>] [--max-triggers N]` | Instance audit of one library component: opens its routes (scan + `routes.fixture.json`) in a stored admin session at 1280 and 390, screenshots every visible `[data-gv-component]`, compares instances with each other and with the Default story, writes `audits/<Name>.json`, `audits/<Name>/*.png` and `audits/index.json`. Read-only at the network layer: non-GET requests and WebSockets are blocked and counted (`blockedWrites`). `--host` is required. The session is a Playwright storage state file outside the repo (default `$GV_AUDIT_STATE`, else `~/.govocal/epic-admin.json`); when missing it prints the `npx playwright codegen --save-storage=...` command and exits 2. Needs Playwright. |
 | `npm run typecheck` | App typecheck (does not cover `.storybook/` or `scripts/`). Slow: once per task. |
 | `npx jest <path>` | Tests for a path (`npm run test -- <path>` is the same). |
 
@@ -90,7 +90,7 @@ Scripts, `scripts/design-system/`:
 - `README.md`: the scripts in more detail.
 - `a11y-run.ts`: the axe run (`ds:a11y`); `a11y-results.ts` (tested in `a11y-results.test.ts`): its options, merge and check; `a11y-known.json`: the criticals the check accepts for now, by story id and rule.
 - `trend.ts` (tested in `trend.test.ts`): `trend.json` from the git history of the summary; `changes.ts` runs it.
-- `audit.ts` (tested in `audit.test.ts`): the instance audit (`ds:audit`); it injects the workbench's `readComputedTokens`, `frameState` and `dismissConsent` into the page.
+- `audit.ts` (tested in `audit.test.ts`, its network guard in `audit.guard.test.ts` when Playwright resolves): the instance audit (`ds:audit`); it injects the workbench's `readComputedTokens`, `frameState` and `dismissConsent` into the page.
 
 Storybook, `.storybook/`:
 - `main.ts`: stories glob `app/**/*.stories.*`, addons (accessibility, pseudo states, MCP), `staticDirs` `public` and `static`.
@@ -108,7 +108,7 @@ Data, `.storybook/static/` (served next to the stories):
 - `routes.fixture.json` (c): real ids and slugs for `$param` segments; `paths` (per route) is read before `params` (per name).
 - `visual-summary.json` (gen, c): last visual compare: stories, diffs, errors, retried.
 - `a11y-results.json` (gen, c): axe per story: violations by rule and impact, passes, focusable elements, and whether a play function passed.
-- `audits/<Component>.json`, `audits/<Component>/*.png`, `audits/index.json` (gen, git-ignored; `git add -f` the two JSON files to publish an audit): instance audits; the workbench reads `audits/index.json`.
+- `audits/<Component>.json`, `audits/index.json` (gen, committed) and `audits/<Component>/*.png` (gen, git-ignored): instance audits; the component's Usage tab reads them through `audits/index.json` (`loadAudit`), and a build without them is complete.
 - `heals/<sha>/` (c): before and after screenshots of a heal, `<sha>` the commit the heal started from.
 - `workbench/` (gen, git-ignored): the built shell.
 - `images/`: story images.
@@ -217,4 +217,4 @@ Treat these as previews, not final:
 - Instance tags exist only in the flagged app build and in Storybook; UI and admin components are untagged.
 - The Storybook MCP addon (`@storybook/addon-mcp` 0.7.0, see below) runs on the dev server only, not in a static build or on the preview. Everything it knows is also in the files above.
 - axe checks what a machine can; a checklist row marked `needs-human` is a question for a person, and "reviewed by agent" is not a conformance claim. 15 components have an `a11y.json`.
-- `ds:audit` clicks menu buttons (`aria-haspopup`, `aria-expanded="false"`) only when a page shows no instance, at most `--max-triggers`; an instance behind another state (a selection, a modal) needs `--open <selector>`. Instances are matched to call sites per route, not per element, so a heal task can name several sites.
+- `ds:audit` clicks menu triggers only when a page shows no instance, at most `--max-triggers`, and only those `isSafeTrigger` accepts (main content, `aria-haspopup` menu, listbox or true or an `aria-expanded` button, no submit, no deny-listed name); it stops on the first error or navigation. The library `Button` defaults to `type="submit"`, so its menu triggers need `--open <selector>`: a trigger that opens a state, never an action button. Instances are matched to call sites per route, not per element, so a heal task can name several sites.

@@ -3308,6 +3308,20 @@ a.wb-line:hover {
   color: var(--wb-muted);
 }
 
+/* Audit rows have no line number to indent past. */
+.wb-uaudit .wb-finding-where {
+  margin-left: 0;
+}
+
+.wb-uaudit .wb-finding-change {
+  flex-wrap: wrap;
+}
+
+.wb-uaudit .wb-uprops-label {
+  display: block;
+  margin: 14px 0 4px;
+}
+
 .wb-conf {
   flex: none;
   width: 8px;
