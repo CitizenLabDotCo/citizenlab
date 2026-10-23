@@ -98,11 +98,10 @@ export const RTL: Story = {
   args: {
     ...Default.args,
     title: 'الفاكهة',
-    selected: [],
     options: [
       { value: 'apple', label: 'تفاح' },
       { value: 'banana', label: 'موز' },
+      { value: 'longan', label: 'لونجان' },
     ],
-    openedDefaultValue: true,
   },
 };
