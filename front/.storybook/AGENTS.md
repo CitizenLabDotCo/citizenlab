@@ -41,14 +41,14 @@ This branch builds a design-in-code workbench for the platform: CSS-variable des
 | `npm run ds:tokens` | Generate `tokens.css`, `tokens.ts`, `tokens.meta.json` from `tokens.source.json`. `-- --check` exits 1 when an output is stale or a name is invalid. |
 | `npm run ds:scan` | Scan `app/`: usages, off-spec findings, legacy and token reads, routes, scores. Writes `design-scan.json` and `design-scan.summary.json`. |
 | `npm run ds:lint` | Off-spec values on lines added under `app/component-library/` and `app/design-system/` since the merge-base with `master`. Exits 1 if any. |
-| `npm run ds:check` | `ds:tokens -- --check` then `ds:lint`. Run before every commit. |
-| `npm run ds:changes` | Write `design-changes.json` for the Review page. |
+| `npm run ds:check` | `ds:tokens -- --check`, `ds:lint`, then `ds:a11y -- --check`. Run before every commit. It passes unless the committed `a11y-results.json` has a critical axe violation in a `Components/` story that is not in `scripts/design-system/a11y-known.json`; fixing a known one means removing its entry (a listed one that no longer fails also fails the check). |
+| `npm run ds:changes` | Write `design-changes.json` for the Review page and `trend.json` for the Proposal page. |
 | `npm run ds:routes-fixture [-- --host <url>]` | Refresh `routes.fixture.json` from the test tenant's public API. |
 | `npm run ds:workbench` | Build the shell into `.storybook/static/workbench/`. `npm run ds:workbench:typecheck` typechecks it. |
 | `npm run ds:visual -- --baseline <dir>` / `-- --compare <dir> [--stories <glob,glob>] [--mode today\|redesign] [--summary <file>] [--allow-px N] [--url <storybook>]` | Screenshot every story (or the story ids `--stories` matches, `*` a wildcard) at 1280x900 and 390x844 in mode today (or `--mode redesign`), save or compare. A full today compare writes `visual-summary.json`; a filtered or redesign run writes `<dir>/_summary.json`; `--summary` overrides both. Default URL `http://localhost:6006`. |
 | `npm run ds:smoke -- --dir <storybook output> [--screenshot <png>] [--review-host <origin>]` | Serve a built Storybook and check the shell pages and the console. |
 | `npm run ds:mode-check -- --file <path> --token <name> --now <value> [--mode today\|redesign\|both]` | Mode safety of one heal. Exit 0 safe, 3 stop, 2 bad input. Reads `design-scan.json`, so run `ds:scan` first. |
-| `npm run ds:a11y -- [--url <storybook>] [--stories <glob,glob>] [--workers N]` | Run axe (WCAG 2.0, 2.1, 2.2 A and AA) on every story, or the matched ones, at 1280x900 in mode today; write `a11y-results.json` (a filtered run keeps the other stories). `-- --check` exits 1 on a critical violation in a `Components/` story; `ds:check` runs it. Default URL `http://localhost:6006`. |
+| `npm run ds:a11y -- [--url <storybook>] [--stories <glob,glob>] [--workers N]` | Run axe (WCAG 2.0, 2.1, 2.2 A and AA) on every story, or the matched ones, at 1280x900 in mode today; write `a11y-results.json` (a filtered run keeps the other stories). `-- --check` exits 1 on a critical violation in a `Components/` story that is not in `a11y-known.json`, on a listed one that no longer fails, or when the results file is missing, and prints how many known ones remain; `ds:check` runs it. Default URL `http://localhost:6006`. |
 | `npm run ds:audit` | Not built yet: it prints `todo` and exits 1. |
 | `npm run typecheck` | App typecheck (does not cover `.storybook/` or `scripts/`). Slow: once per task. |
 | `npx jest <path>` | Tests for a path (`npm run test -- <path>` is the same). |
@@ -88,8 +88,9 @@ Scripts, `scripts/design-system/`:
 - `mode-check.ts`: one heal's mode safety (`ds:mode-check`); `mode-scope.test.ts` covers both.
 - `fixtures/`: scanner test inputs (`findings/`, `routes/app/`).
 - `README.md`: the scripts in more detail.
-- `a11y-run.ts`: the axe run (`ds:a11y`); `a11y-results.ts` (tested in `a11y-results.test.ts`): its options, merge and check.
-- Planned, not built: `audit.ts` (`ds:audit`), `trend.ts`.
+- `a11y-run.ts`: the axe run (`ds:a11y`); `a11y-results.ts` (tested in `a11y-results.test.ts`): its options, merge and check; `a11y-known.json`: the criticals the check accepts for now, by story id and rule.
+- `trend.ts` (tested in `trend.test.ts`): `trend.json` from the git history of the summary; `changes.ts` runs it.
+- Planned, not built: `audit.ts` (`ds:audit`).
 
 Storybook, `.storybook/`:
 - `main.ts`: stories glob `app/**/*.stories.*`, addons (accessibility, pseudo states), `staticDirs` `public` and `static`.
@@ -103,6 +104,7 @@ Data, `.storybook/static/` (served next to the stories):
 - `design-scan.json` (gen, git-ignored): the whole scan: `findings`, `usages`, `routes`, `components`, `pages`, `totals`, `unmapped`, `routeFiles`.
 - `design-scan.summary.json` (gen, c): totals; one commit per change gives the trend in git history. Heals and lifts commit it.
 - `design-changes.json` (gen, c): the Review page's change list. See "Refreshing".
+- `trend.json` (gen, c): scan totals at each commit of the summary, for the Proposal page's trend; `ds:changes` writes it, a shallow clone keeps the committed file.
 - `routes.fixture.json` (c): real ids and slugs for `$param` segments; `paths` (per route) is read before `params` (per name).
 - `visual-summary.json` (gen, c): last visual compare: stories, diffs, errors, retried.
 - `a11y-results.json` (gen, c): axe per story: violations by rule and impact, passes, focusable elements, and whether a play function passed.

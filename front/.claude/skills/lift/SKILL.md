@@ -38,7 +38,7 @@ or a name with its folder. To choose what to lift, rank the local pieces of `bac
   npm run ds:visual -- --compare <scratch>/before --summary <scratch>/visual.json
   npm run ds:scan
   ```
-  The compare shows only the new stories. The scan lists `<Name>` as a component with its usages.
+  The compare shows only the new stories. The scan lists `<Name>` as a component with its usages. `ds:check` passes unless the committed `a11y-results.json` has a new critical axe violation (one not in `scripts/design-system/a11y-known.json`); if your change fixes a known one, remove its entry there.
 - [ ] 7. Commit only your files, with `.storybook/static/design-scan.summary.json`.
 
 ## Commit message

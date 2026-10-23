@@ -41,6 +41,7 @@ With a Figma frame, read it through the Figma MCP in your terminal. The workbenc
   npm run ds:scan
   ```
   The scan lists `<Name>` with score 1 and no off-spec findings.
+  `ds:check` passes unless the committed `a11y-results.json` has a new critical axe violation (one not in `scripts/design-system/a11y-known.json`); if your change fixes a known one, remove its entry there.
 - [ ] 7. Commit only the new folder, `app/component-library/index.tsx` and `.storybook/static/design-scan.summary.json`.
 
 ## Commit message

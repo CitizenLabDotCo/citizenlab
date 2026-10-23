@@ -44,6 +44,7 @@ A component name (`Button`), its folder, or a heal task whose `check:` line name
   npm run ds:visual -- --compare <scratch>/before --summary <scratch>/visual.json
   ```
   The compare must show only the new stories (`no baseline screenshot`) and no error. Existing stories must not change.
+  `ds:check` passes unless the committed `a11y-results.json` has a new critical axe violation (one not in `scripts/design-system/a11y-known.json`); if your change fixes a known one, remove its entry there.
 - [ ] 6. Commit:
   ```
   git add <the stories file>

@@ -45,7 +45,7 @@ The ones that matter for the component's type, from WCAG 2.2 and the 2.1 basics:
   }
   ```
   `result`: `pass`, `fail`, `n/a`, `needs-human`. `confidence`: `high` when a computed check or a keyboard run backs it, `medium` when judged from a screenshot, `low` when inferred. What a model cannot settle (meaningful alternative text, whether an error message helps, cognitive load) is `needs-human`.
-- [ ] 7. `npm run ds:check` (it fails while any `Components/` story has a critical axe violation; say so rather than hide it), then commit only `a11y.json`.
+- [ ] 7. `npm run ds:check`. It passes while every critical axe violation in a `Components/` story is in `scripts/design-system/a11y-known.json`. This skill changes no component code, so a critical your run of step 2 finds that is not on the list was there before: add its story id and rule to the list and mark its criterion `fail` in the checklist (the list is no excuse). A listed one that no longer fails fails the check: remove its entry. Then commit only `a11y.json`, plus `a11y-results.json` and `a11y-known.json` when they changed.
 
 ## Commit message
 

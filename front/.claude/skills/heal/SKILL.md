@@ -70,7 +70,7 @@ Stop, change nothing (or revert what you changed), and report why with the evide
   npm run ds:visual -- --compare <scratch>/before --summary <scratch>/visual.json
   npm run ds:visual -- --compare <scratch>/before --stories '<story prefix>--*' --mode redesign
   ```
-  On a small machine stop Storybook while `typecheck` runs; the two together run out of memory. The compare counts every changed pixel, so a corner radius off by a few px shows. A mode safe heal shows no diff at all; a story added or changed in step 6 shows as `no baseline screenshot` or a diff in that story only. Anything else is stop 7. Do not let `ds:visual` overwrite the committed `.storybook/static/visual-summary.json` during a heal (that is what `--summary` is for).
+  On a small machine stop Storybook while `typecheck` runs; the two together run out of memory. The compare counts every changed pixel, so a corner radius off by a few px shows. A mode safe heal shows no diff at all; a story added or changed in step 6 shows as `no baseline screenshot` or a diff in that story only. Anything else is stop 7. `ds:check` passes unless the committed `a11y-results.json` has a new critical axe violation (one not in `scripts/design-system/a11y-known.json`); if your change fixes a known one, remove its entry there. Do not let `ds:visual` overwrite the committed `.storybook/static/visual-summary.json` during a heal (that is what `--summary` is for).
 - [ ] 8. `npm run ds:scan` again and print the score after (command of step 2). `design-scan.summary.json` changed: it goes into the heal commit.
 - [ ] 9. Screenshot the healed story after, in both modes, with `ds:visual` (it waits for `play` steps; a fixed timeout catches spinners):
   ```
