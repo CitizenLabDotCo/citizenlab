@@ -349,6 +349,11 @@
     "verified_at": "2026-03-30T12:57:38.560424Z",
     "verified_by": "Edwin Kato"
   },
+  "email_campaigns.admin_labels.trigger.3_days_after_invite_is_sent": {
+    "state": "verified",
+    "verified_at": "2026-10-13T10:51:32.830817Z",
+    "verified_by": "Jelena"
+  },
   "email_campaigns.admin_labels.trigger.7_days_after_invite_is_sent": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.560424Z",

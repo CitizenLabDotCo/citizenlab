@@ -76,6 +76,7 @@ da-DK:
         users_who_follow_the_project: Brugere der følger projektet
         users_who_follow_the_proposal: Bruger der følger forslaget
       trigger:
+        3_days_after_invite_is_sent: 3 dage efter invitationen er sendt
         7_days_after_invite_is_sent: 7 dage efter at invitationen er sendt
         7_days_before_phase_starts: 7 dage før en fase starter
         7_days_before_the_project_changes_phase: 7 dage før projektet ændre fase

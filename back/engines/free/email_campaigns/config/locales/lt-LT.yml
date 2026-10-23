@@ -76,6 +76,7 @@ lt-LT:
         users_who_follow_the_project: Vartotojai, kurie seka projektą
         users_who_follow_the_proposal: Naudotojai, kurie seka pasiūlymą
       trigger:
+        3_days_after_invite_is_sent: 3 dienos po kvietimo išsiuntimo
         7_days_after_invite_is_sent: 7 dienos po kvietimo išsiuntimo
         7_days_before_phase_starts: Likus 7 dienoms iki etapo pradžios
         7_days_before_the_project_changes_phase: likus 7 dienoms iki projekto pokyčių etapo
