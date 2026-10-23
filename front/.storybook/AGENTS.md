@@ -49,7 +49,7 @@ This branch builds a design-in-code workbench for the platform: CSS-variable des
 | `npm run ds:smoke -- --dir <storybook output> [--screenshot <png>] [--review-host <origin>]` | Serve a built Storybook and check the shell pages and the console. |
 | `npm run ds:mode-check -- --file <path> --token <name> --now <value> [--mode today\|redesign\|both]` | Mode safety of one heal. Exit 0 safe, 3 stop, 2 bad input. Reads `design-scan.json`, so run `ds:scan` first. |
 | `npm run ds:a11y -- [--url <storybook>] [--stories <glob,glob>] [--workers N]` | Run axe (WCAG 2.0, 2.1, 2.2 A and AA) on every story, or the matched ones, at 1280x900 in mode today; write `a11y-results.json` (a filtered run keeps the other stories). `-- --check` exits 1 on a critical violation in a `Components/` story that is not in `a11y-known.json`, on a listed one that no longer fails, or when the results file is missing, and prints how many known ones remain; `ds:check` runs it. Default URL `http://localhost:6006`. |
-| `npm run ds:audit` | Not built yet: it prints `todo` and exits 1. |
+| `npm run ds:audit -- --component <Name> [--host <url>] [--state <file>] [--storybook <url>] [--route <text>] [--open <selector>] [--max-triggers N]` | Instance audit of one library component: opens its routes (scan + `routes.fixture.json`) in a stored admin session at 1280 and 390, screenshots every visible `[data-gv-component]`, compares instances with each other and with the Default story, writes `audits/<Name>.json`, `audits/<Name>/*.png` and `audits/index.json`. The session is a Playwright storage state file outside the repo (default `$GV_AUDIT_STATE`, else `~/.govocal/epic-admin.json`); when missing it prints the `npx playwright codegen --save-storage=...` command and exits 2. Needs Playwright. |
 | `npm run typecheck` | App typecheck (does not cover `.storybook/` or `scripts/`). Slow: once per task. |
 | `npx jest <path>` | Tests for a path (`npm run test -- <path>` is the same). |
 
@@ -90,7 +90,7 @@ Scripts, `scripts/design-system/`:
 - `README.md`: the scripts in more detail.
 - `a11y-run.ts`: the axe run (`ds:a11y`); `a11y-results.ts` (tested in `a11y-results.test.ts`): its options, merge and check; `a11y-known.json`: the criticals the check accepts for now, by story id and rule.
 - `trend.ts` (tested in `trend.test.ts`): `trend.json` from the git history of the summary; `changes.ts` runs it.
-- Planned, not built: `audit.ts` (`ds:audit`).
+- `audit.ts` (tested in `audit.test.ts`): the instance audit (`ds:audit`); it injects the workbench's `readComputedTokens`, `frameState` and `dismissConsent` into the page.
 
 Storybook, `.storybook/`:
 - `main.ts`: stories glob `app/**/*.stories.*`, addons (accessibility, pseudo states, MCP), `staticDirs` `public` and `static`.
@@ -108,7 +108,7 @@ Data, `.storybook/static/` (served next to the stories):
 - `routes.fixture.json` (c): real ids and slugs for `$param` segments; `paths` (per route) is read before `params` (per name).
 - `visual-summary.json` (gen, c): last visual compare: stories, diffs, errors, retried.
 - `a11y-results.json` (gen, c): axe per story: violations by rule and impact, passes, focusable elements, and whether a play function passed.
-- `audits/<Component>.json`, `audits/index.json` (gen, git-ignored, planned): instance audits.
+- `audits/<Component>.json`, `audits/<Component>/*.png`, `audits/index.json` (gen, git-ignored; `git add -f` the two JSON files to publish an audit): instance audits; the workbench reads `audits/index.json`.
 - `heals/<sha>/` (c): before and after screenshots of a heal, `<sha>` the commit the heal started from.
 - `workbench/` (gen, git-ignored): the built shell.
 - `images/`: story images.
@@ -159,7 +159,7 @@ check: story <story id>, routes <list>
 ## Tags
 
 - `gvTag` sits on the root element of library components (`app/component-library/components/`) only. Components under `app/components/UI/` and `app/components/admin/` are untagged; the Review highlight says so per component.
-- The tag is on only in an app build with `VITE_GV_DESIGN_TAGS=1` (`vite.config.ts` sets it on `design-system/*` branches from `CIRCLE_BRANCH`). Storybook does not set the flag, so stories carry no tags.
+- The tag is on only in an app build with `VITE_GV_DESIGN_TAGS=1` (`vite.config.ts` sets it on `design-system/*` branches from `CIRCLE_BRANCH`). Storybook sets it unless `VITE_GV_DESIGN_TAGS` is set to an empty string (`.storybook/main.ts`), so stories carry tags too; `ds:audit` uses them to find a story's component root.
 - `Box`: an outer library component's tag replaces `Box` (Badge renders `Badge`, not `Box`). `Box` keeps its own tag only when nothing set one. Audits skip `Box`.
 
 ## Stories
@@ -214,7 +214,7 @@ Treat these as previews, not final:
 - Contrast pairs are inferred from usage (tokens a component reaches), not from rendered pairs.
 - `duplicate-candidate` findings are a low-confidence name heuristic.
 - The Controls panel remounts the story on every edit (see above).
-- Instance tags exist only in the flagged app build; UI and admin components are untagged.
+- Instance tags exist only in the flagged app build and in Storybook; UI and admin components are untagged.
 - The Storybook MCP addon (`@storybook/addon-mcp` 0.7.0, see below) runs on the dev server only, not in a static build or on the preview. Everything it knows is also in the files above.
 - axe checks what a machine can; a checklist row marked `needs-human` is a question for a person, and "reviewed by agent" is not a conformance claim. 15 components have an `a11y.json`.
-- Not built yet: `ds:audit` (the `audit` skill's runner).
+- `ds:audit` clicks menu buttons (`aria-haspopup`, `aria-expanded="false"`) only when a page shows no instance, at most `--max-triggers`; an instance behind another state (a selection, a modal) needs `--open <selector>`. Instances are matched to call sites per route, not per element, so a heal task can name several sites.

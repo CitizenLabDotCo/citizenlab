@@ -91,6 +91,10 @@ const config: StorybookConfig = {
           SENTRY_ENV: process.env.SENTRY_ENV,
           MATOMO_HOST: process.env.MATOMO_HOST,
           POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
+          // Library components carry data-gv-component in the workbench, so
+          // ds:audit finds a story's component root (attributes only, no
+          // visual change). Set it to an empty string to build without.
+          VITE_GV_DESIGN_TAGS: process.env.VITE_GV_DESIGN_TAGS ?? '1',
         }
       }
     });

@@ -179,13 +179,16 @@ const storyRoot = (doc: Document): Element =>
 // applies to an element of the story (or its inline style) names the token
 // in var(). `equal`: no such rule, but a computed value of a matching
 // property equals the token's active value (a hard-coded value that happens
-// to match). Every token of `meta` is listed, in order.
+// to match). Every token of `meta` is listed, in order. `scope` limits the
+// read to one element and its subtree (one component instance on a
+// platform page, for ds:audit); by default it is the story root.
 export const readComputedTokens = (
   doc: Document,
-  meta: TokenMeta[]
+  meta: TokenMeta[],
+  scope?: Element
 ): TokenMatch[] => {
   const win = doc.defaultView;
-  const root = storyRoot(doc);
+  const root = scope ?? storyRoot(doc);
   if (!win || !root) {
     return meta.map((t) => ({ name: t.name as TokenName, matches: 'none' }));
   }
