@@ -205,6 +205,29 @@ describe('app component roots (components/UI, components/admin)', () => {
       usagesInFile(tree, lib, 'app/components/UI/Warning/index.tsx')
     ).toEqual([]);
   });
+  it('prefixes both names when UI and admin have a folder of the same name', () => {
+    const files: Record<string, string> = {
+      'app/components/UI/Tabs/index.tsx': 'export default () => null;',
+      'app/components/admin/Tabs/index.tsx': 'export default () => null;',
+      'app/containers/Tabs.tsx': [
+        "import UITabs from 'components/UI/Tabs';",
+        "import AdminTabs from 'components/admin/Tabs';",
+        'export default () => <><UITabs /><AdminTabs /></>;',
+      ].join('\n'),
+    };
+    const clashTree = new SourceTree('/nonexistent', Object.keys(files));
+    Object.entries(files).forEach(([f, src]) => clashTree.setSource(f, src));
+    const clashLib = libraryIndex(clashTree);
+    expect([...clashLib.ownFiles.keys()].sort()).toEqual([
+      'UI/Tabs',
+      'admin/Tabs',
+    ]);
+    expect(
+      usagesInFile(clashTree, clashLib, 'app/containers/Tabs.tsx').map(
+        (u) => u.component
+      )
+    ).toEqual(['UI/Tabs', 'admin/Tabs']);
+  });
 });
 
 describe('isScannedSource', () => {

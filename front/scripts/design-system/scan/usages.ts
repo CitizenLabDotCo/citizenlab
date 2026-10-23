@@ -78,21 +78,31 @@ export const libraryIndex = (
     });
   }
 
-  // App components: `UI/Modal` -> Modal, unless the library has a Modal.
+  // App components: `UI/Modal` -> Modal, unless the library has a Modal or
+  // the other root has a folder of the same name (then both get the prefix).
   const libNames = new Set<string>(byExport.values());
   tree.files.forEach((f) => {
     const dir = COMPONENT_DIR_RE.exec(f)?.[1];
     if (dir) libNames.add(dir);
   });
-  const appDirs = new Map<string, string>(); // 'app/components/UI/X/' -> name
-  const mainFile = new Map<string, string>();
+  const appIndexDirs: RegExpExecArray[] = [];
   tree.files.forEach((f) => {
     const m = APP_DIR_RE.exec(f);
     if (!m || f !== m[0] + path.posix.basename(f)) return;
     if (!INDEX_RE.test(path.posix.basename(f))) return;
-    const name = libNames.has(m[2]) ? `${m[1]}/${m[2]}` : m[2];
+    appIndexDirs.push(m);
+  });
+  const rootsOf = new Map<string, Set<string>>(); // bare name -> roots
+  appIndexDirs.forEach((m) =>
+    rootsOf.set(m[2], (rootsOf.get(m[2]) ?? new Set()).add(m[1]))
+  );
+  const appDirs = new Map<string, string>(); // 'app/components/UI/X/' -> name
+  const mainFile = new Map<string, string>();
+  appIndexDirs.forEach((m) => {
+    const clash = libNames.has(m[2]) || (rootsOf.get(m[2])?.size ?? 0) > 1;
+    const name = clash ? `${m[1]}/${m[2]}` : m[2];
     appDirs.set(m[0], name);
-    mainFile.set(name, f);
+    mainFile.set(name, m.input); // the index file itself
   });
 
   const componentOfFile = (rel: string): string | undefined => {
