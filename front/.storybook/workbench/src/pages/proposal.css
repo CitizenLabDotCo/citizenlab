@@ -157,7 +157,7 @@
 
 .wb-prop-ring-badge-1 {
   color: var(--wb-on-accent);
-  background: var(--wb-accent);
+  background: var(--wb-accent-fill);
 }
 
 .wb-prop-ring-badge-2 {

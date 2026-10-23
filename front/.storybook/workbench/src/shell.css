@@ -17,6 +17,8 @@
   --wb-pass-soft: var(--gv-success-light);
   --wb-fail: var(--gv-red-600);
   --wb-fail-soft: var(--gv-error-light);
+  /* A filled fail (the critical and failed chips) under --wb-on-accent. */
+  --wb-fail-fill: var(--gv-red-600);
   --wb-radius: var(--gv-radius-2);
   --wb-radius-lg: var(--gv-radius-3);
   --wb-shadow: var(--gv-shadow);
@@ -49,6 +51,8 @@
   --wb-accent-fill: var(--gv-primary);
   --wb-accent-strong: var(--gv-blue-700);
   --wb-on-accent: var(--gv-white);
+  /* Accent text on the soft accent tint. */
+  --wb-accent-text: var(--gv-blue-700);
   --wb-hover: var(--gv-grey-50);
   --wb-faint: var(--gv-grey-500);
   --wb-neutral-mark: var(--gv-grey-400);
@@ -73,13 +77,16 @@
   --wb-muted: #9ca5ae;
   --wb-accent: #6cc4e8;
   --wb-accent-soft: #15303d;
+  /* Contrast is checked in lib/chromePalette.test.ts. */
   --wb-accent-fill: #1a7aa3;
-  --wb-accent-strong: #2189b6;
+  --wb-accent-strong: #156587;
   --wb-on-accent: #ffffff;
+  --wb-accent-text: #6cc4e8;
   --wb-pass: #5ccf95;
   --wb-pass-soft: #12301f;
-  --wb-fail: #e5534b;
+  --wb-fail: #ff7b72;
   --wb-fail-soft: #3a1b1b;
+  --wb-fail-fill: #b62324;
   --wb-warn-soft: #3b2614;
   /* The frames keep the light outline (FrameView.tsx); the chip that names
      it in the chrome gets a lighter tone. */
@@ -4466,7 +4473,6 @@ a.wb-line:hover {
 .wb-rlist-filters .wb-segmented-count {
   font-size: 11px;
   font-weight: 600;
-  opacity: 0.75;
 }
 
 .wb-rlist-only {
@@ -4606,7 +4612,7 @@ a.wb-line:hover {
 }
 
 .wb-ochip-admin {
-  color: var(--wb-accent-strong);
+  color: var(--wb-accent-text);
   background: var(--wb-accent-soft);
 }
 
@@ -5190,7 +5196,7 @@ a.wb-line:hover {
 }
 
 .wb-shell .wb-fview-actual[aria-pressed='true'] {
-  color: var(--wb-bg);
+  color: var(--wb-on-accent);
   background: var(--wb-accent-fill);
   border-color: var(--wb-accent-fill);
 }
@@ -5709,7 +5715,7 @@ a.wb-line:hover {
 
 .wb-impact-critical {
   color: var(--wb-on-accent);
-  background: var(--wb-fail);
+  background: var(--wb-fail-fill);
 }
 
 .wb-impact-serious {
@@ -5913,7 +5919,7 @@ a.wb-line:hover {
 
 .wb-a11y-result-fail {
   color: var(--wb-on-accent);
-  background: var(--wb-fail);
+  background: var(--wb-fail-fill);
 }
 
 .wb-a11y-result-needs-human {

@@ -120,7 +120,7 @@
   font-size: var(--gv-fs-xs);
   font-weight: 700;
   color: var(--wb-on-accent);
-  background: var(--wb-accent);
+  background: var(--wb-accent-fill);
   border-radius: var(--gv-radius-full);
 }
 
