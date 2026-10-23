@@ -15,6 +15,8 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
+import WeglotSwitcher from 'components/WeglotSwitcher';
+
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { isNilOrError, isPage } from 'utils/helperUtils';
@@ -52,6 +54,22 @@ const Right = styled.div`
 `;
 
 const StyledLanguageSelector = styled(LanguageSelector)`
+  padding-left: 20px;
+
+  ${media.phone`
+    padding-left: 15px;
+  `}
+
+  ${isRtl`
+    padding-left: 0px;
+    padding-right: 20px;
+  ${media.phone`
+    padding-right: 15px;
+  `}
+  `}
+`;
+
+const StyledWeglotSwitcher = styled(WeglotSwitcher)`
   padding-left: 20px;
 
   ${media.phone`
@@ -156,6 +174,10 @@ const DesktopNavbarContent = () => {
 
       <RightItem className="noLeftMargin">
         <StyledLanguageSelector />
+      </RightItem>
+
+      <RightItem className="noLeftMargin">
+        <StyledWeglotSwitcher />
       </RightItem>
     </Right>
   );

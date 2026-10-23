@@ -36,6 +36,7 @@ import MainHeader from 'containers/MainHeader';
 import { HOMEPAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/constants';
 import ConsentManager from 'components/ConsentManager';
 import ErrorBoundary from 'components/ErrorBoundary';
+import WeglotSwitcher from 'components/WeglotSwitcher';
 
 import { trackPage } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -48,6 +49,7 @@ import patchMomentDeAtJanuary from 'utils/patchMomentDeAtJanuary';
 import { usePermission } from 'utils/permissions';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
 import { useLocation } from 'utils/router';
+import { WEGLOT_READY_EVENT } from 'utils/weglot';
 
 import messages from './messages';
 import Meta from './Meta';
@@ -202,6 +204,7 @@ const App = ({ children }: Props) => {
             appConfiguration.data.attributes.settings.core.weglot_api_key;
           if (window.Weglot && apiKey) {
             window.Weglot.initialize({ api_key: apiKey });
+            window.dispatchEvent(new Event(WEGLOT_READY_EVENT));
           }
         };
 
@@ -426,6 +429,26 @@ const App = ({ children }: Props) => {
             {showFrontOfficeNavbar() && (
               <ErrorBoundary>
                 <MainHeader />
+              </ErrorBoundary>
+            )}
+            {/* The navbar holds the switcher, so the front-office pages that
+                hide it (surveys, idea forms, ideas feed) need a floating one
+                instead. Admin pages get neither. */}
+            {!showFrontOfficeNavbar() && !isAdminPage && (
+              <ErrorBoundary>
+                <Box
+                  position="fixed"
+                  bottom="20px"
+                  left="20px"
+                  zIndex="1000"
+                  bgColor={colors.white}
+                  px="12px"
+                  py="8px"
+                  borderRadius={stylingConsts.borderRadius}
+                  boxShadow="0 2px 8px rgba(0, 0, 0, 0.2)"
+                >
+                  <WeglotSwitcher openUpwards />
+                </Box>
               </ErrorBoundary>
             )}
             {!isAuthenticationPending && (

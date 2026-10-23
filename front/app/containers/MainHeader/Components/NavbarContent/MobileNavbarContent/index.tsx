@@ -7,6 +7,8 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
+import WeglotSwitcher from 'components/WeglotSwitcher';
+
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 
@@ -91,6 +93,9 @@ const MobileNavbarContent = () => {
           <>
             <NavItem className="noLeftMargin">
               <LanguageSelector />
+            </NavItem>
+            <NavItem className="noLeftMargin">
+              <WeglotSwitcher />
             </NavItem>
             {isNilOrError(authUser) ? (
               <NavItem className="login">
