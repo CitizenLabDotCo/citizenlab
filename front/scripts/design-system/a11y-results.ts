@@ -142,6 +142,31 @@ export const criticalFailures = (results: A11yResults): CheckFailure[] =>
         .map((v) => ({ id, rule: v.id, nodes: v.nodes, help: v.help }))
     );
 
+// Criticals that were there when the check started. ds:check fails only on
+// criticals not on this list; fixing one means removing it from the list.
+export type KnownCritical = { id: string; rule: string };
+
+export const knownKey = (k: KnownCritical) => `${k.id} ${k.rule}`;
+
+export const knownFrom = (failures: CheckFailure[]): KnownCritical[] =>
+  failures
+    .map(({ id, rule }) => ({ id, rule }))
+    .sort((a, b) => knownKey(a).localeCompare(knownKey(b)));
+
+export const splitKnown = (
+  failures: CheckFailure[],
+  known: KnownCritical[]
+) => {
+  const keys = new Set(known.map(knownKey));
+  const found = new Set(failures.map(knownKey));
+  return {
+    fresh: failures.filter((f) => !keys.has(knownKey(f))),
+    known: failures.filter((f) => keys.has(knownKey(f))),
+    // On the list but no longer failing: remove these from the list.
+    fixed: known.filter((k) => !found.has(knownKey(k))),
+  };
+};
+
 export type Counts = Record<Impact, number> & {
   stories: number;
   clean: number;

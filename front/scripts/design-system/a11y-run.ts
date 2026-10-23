@@ -7,7 +7,9 @@
 //   [--out <file>]          write somewhere else than the committed file
 //   npm run ds:a11y -- --check
 //                           exit 1 on a critical violation in a story under
-//                           Components/ (ds:check runs this)
+//                           Components/ that is not in a11y-known.json, on a
+//                           known one that no longer fails, or on no results
+//                           (ds:check runs this)
 //
 // Each story renders at 1280x900 in mode today. axe-core comes from
 // node_modules and runs the WCAG 2.0, 2.1 and 2.2 A and AA rules on the
@@ -22,10 +24,12 @@ import {
   countByImpact,
   criticalFailures,
   FOCUSABLE_SELECTOR,
+  KnownCritical,
   mergeResults,
   PAGE_RULES,
   parseA11yArgs,
   STORYBOOK_CHROME,
+  splitKnown,
   StoryResult,
   summariseViolations,
 } from './a11y-results';
@@ -51,34 +55,55 @@ const readResults = (file: string): A11yResults | null => {
   }
 };
 
+const KNOWN_PATH = path.resolve(__dirname, 'a11y-known.json');
+
+const readKnown = (): KnownCritical[] => {
+  try {
+    return (
+      JSON.parse(fs.readFileSync(KNOWN_PATH, 'utf8')) as {
+        known: KnownCritical[];
+      }
+    ).known;
+  } catch {
+    return [];
+  }
+};
+
 const check = (file: string) => {
+  const rel = (f: string) => path.relative(process.cwd(), f);
   const results = readResults(file);
   if (!results) {
-    console.warn(
-      `a11y: no results at ${path.relative(
-        process.cwd(),
-        file
-      )}; run npm run ds:a11y. Not checked.`
-    );
-    return 0;
+    console.error(`a11y: no results at ${rel(file)}; run npm run ds:a11y.`);
+    return 1;
   }
-  const failures = criticalFailures(results);
-  if (failures.length === 0) {
-    console.log(
-      `a11y: no critical axe violation in Components/ stories (results of ${results.generatedAt.slice(
-        0,
-        10
-      )})`
+  const { fresh, known, fixed } = splitKnown(
+    criticalFailures(results),
+    readKnown()
+  );
+  const date = results.generatedAt.slice(0, 10);
+  if (fresh.length > 0) {
+    console.error(
+      `a11y: ${fresh.length} new critical axe violations in Components/ stories (results of ${date}):`
     );
-    return 0;
+    fresh.forEach((f) =>
+      console.error(`  ${f.id}: ${f.rule} (${f.nodes} elements) ${f.help}`)
+    );
   }
-  console.error(
-    `a11y: ${failures.length} critical axe violations in Components/ stories:`
+  if (fixed.length > 0) {
+    console.error(
+      `a11y: ${
+        fixed.length
+      } known criticals no longer fail; remove them from ${rel(KNOWN_PATH)}:`
+    );
+    fixed.forEach((k) => console.error(`  ${k.id}: ${k.rule}`));
+  }
+  if (fresh.length > 0 || fixed.length > 0) return 1;
+  console.log(
+    `a11y: no new critical axe violation in Components/ stories (results of ${date}); ${
+      known.length
+    } known ones remain in ${rel(KNOWN_PATH)}`
   );
-  failures.forEach((f) =>
-    console.error(`  ${f.id}: ${f.rule} (${f.nodes} elements) ${f.help}`)
-  );
-  return 1;
+  return 0;
 };
 
 const main = async () => {
@@ -210,15 +235,20 @@ const main = async () => {
         },
         { tags: AXE_TAGS, pageRules: PAGE_RULES, chrome: STORYBOOK_CHROME }
       );
-      const focusable: number = await page.evaluate((sel: string) => {
-        const chrome = '.sb-errordisplay, .sb-preparing-story, #storybook-docs';
-        return [...document.body.querySelectorAll<HTMLElement>(sel)].filter(
-          (el) =>
-            !el.closest(chrome) &&
-            el.getClientRects().length > 0 &&
-            getComputedStyle(el).visibility !== 'hidden'
-        ).length;
-      }, FOCUSABLE_SELECTOR);
+      const focusable: number = await page.evaluate(
+        (opts: { sel: string; chrome: string[] }) => {
+          const chrome = opts.chrome.join(', ');
+          return [
+            ...document.body.querySelectorAll<HTMLElement>(opts.sel),
+          ].filter(
+            (el) =>
+              !el.closest(chrome) &&
+              el.getClientRects().length > 0 &&
+              getComputedStyle(el).visibility !== 'hidden'
+          ).length;
+        },
+        { sel: FOCUSABLE_SELECTOR, chrome: STORYBOOK_CHROME }
+      );
       return {
         ...base,
         violations: summariseViolations(axe.violations),

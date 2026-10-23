@@ -2,8 +2,10 @@ import {
   A11yResults,
   countByImpact,
   criticalFailures,
+  knownFrom,
   mergeResults,
   parseA11yArgs,
+  splitKnown,
   StoryResult,
   summariseViolations,
 } from './a11y-results';
@@ -104,6 +106,28 @@ describe('criticalFailures', () => {
       critical: 1,
       errors: 1,
     });
+  });
+});
+
+describe('splitKnown', () => {
+  const f = (id: string, rule: string) => ({ id, rule, nodes: 1, help: '' });
+
+  it('splits new criticals from known ones and lists fixed ones', () => {
+    const known = knownFrom([f('b--x', 'label'), f('a--x', 'button-name')]);
+    expect(known).toEqual([
+      { id: 'a--x', rule: 'button-name' },
+      { id: 'b--x', rule: 'label' },
+    ]);
+    const split = splitKnown(
+      [f('a--x', 'button-name'), f('a--x', 'label'), f('c--x', 'label')],
+      known
+    );
+    expect(split.known.map((k) => k.rule)).toEqual(['button-name']);
+    expect(split.fresh.map((k) => `${k.id} ${k.rule}`)).toEqual([
+      'a--x label',
+      'c--x label',
+    ]);
+    expect(split.fixed).toEqual([{ id: 'b--x', rule: 'label' }]);
   });
 });
 
