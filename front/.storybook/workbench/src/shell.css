@@ -1131,7 +1131,7 @@ a.wb-card:hover {
   z-index: 3;
   display: flex;
   flex-wrap: wrap;
-  gap: var(--gv-space-2) var(--gv-space-4);
+  gap: var(--gv-space-2) var(--gv-space-3);
   align-items: center;
   margin-bottom: var(--gv-space-4);
   padding: var(--gv-space-1) var(--gv-space-2);
@@ -1152,9 +1152,12 @@ a.wb-card:hover {
   background: var(--wb-bg);
 }
 
+/* The fields keep one row and give way first: they grow into the free
+   space and shrink, with ellipses, before the page tools wrap. */
 .wb-toolbar-fields {
   display: flex;
-  flex-wrap: wrap;
+  flex: 1 1 26em;
+  flex-wrap: nowrap;
   gap: 2px;
   align-items: center;
   min-width: 0;
@@ -1164,14 +1167,23 @@ a.wb-card:hover {
 .wb-toolbar-field {
   position: relative;
   display: inline-flex;
+  flex: none;
   align-items: center;
   min-width: 0;
 }
 
+/* The long values (city, viewport) are the ones that give way. */
+.wb-toolbar-field-city,
+.wb-toolbar-field-viewport {
+  flex: 0 1 auto;
+  min-width: 4.5em;
+}
+
 .wb-toolbar-field select {
-  max-width: 15em;
+  min-width: 0;
+  max-width: min(100%, 15em);
   min-height: 32px;
-  padding: 0 calc(var(--gv-space-2) + 18px) 0 var(--gv-space-2);
+  padding: 0 calc(var(--gv-space-1) + 18px) 0 var(--gv-space-2);
   overflow: hidden;
   font: inherit;
   font-size: var(--gv-fs-13);
@@ -1188,18 +1200,30 @@ a.wb-card:hover {
   field-sizing: content;
 }
 
+/* Without field-sizing a select is as wide as its longest option. */
+@supports not (field-sizing: content) {
+  .wb-toolbar-field select {
+    width: 9em;
+  }
+
+  .wb-zoom .wb-toolbar-field select {
+    width: 7em;
+  }
+}
+
 .wb-toolbar-field select:hover {
   background: var(--wb-subtle);
 }
 
 .wb-toolbar-field .wb-icon {
   position: absolute;
-  right: var(--gv-space-2);
+  right: var(--gv-space-1);
   color: var(--wb-muted);
   pointer-events: none;
 }
 
 .wb-toolbar-sep {
+  flex: none;
   width: 1px;
   height: 20px;
   margin: 0 var(--gv-space-1);
@@ -1208,6 +1232,7 @@ a.wb-card:hover {
 
 .wb-zoom {
   display: inline-flex;
+  flex: none;
   align-items: center;
 }
 
@@ -1617,7 +1642,10 @@ a.wb-card:hover {
 
   .wb-tokens thead th {
     position: sticky;
-    top: calc(var(--gv-space-3) - var(--gv-space-10) + 52px);
+    /* Tucked 1px under the toolbar's edge, so no row shows between. */
+    top: calc(
+      var(--gv-space-3) - var(--gv-space-10) + var(--wb-toolbar-h, 46px) - 1px
+    );
     z-index: 2;
     box-shadow: inset 0 -1px 0 var(--wb-border);
   }
@@ -2683,6 +2711,7 @@ tr:hover .wb-pv-motion > span,
 
 .wb-toolbar-tools {
   display: flex;
+  flex: none;
   gap: var(--gv-space-2);
   align-items: center;
   margin-left: auto;
@@ -3923,9 +3952,11 @@ a.wb-line:hover {
   }
 
   /* The canvas fields fold into one button that opens a bottom sheet. */
+  /* The summary takes its own row when the page tools leave it too little
+     room to show its values. */
   .wb-shell .wb-toolbar-summary {
     display: flex;
-    flex: 1;
+    flex: 1 1 20em;
     gap: var(--gv-space-2);
     justify-content: flex-start;
     min-width: 0;
@@ -3984,8 +4015,13 @@ a.wb-line:hover {
     width: 100%;
     max-width: none;
     min-height: 44px;
+    padding-right: calc(var(--gv-space-3) + 18px);
     font-size: var(--gv-fs-s);
     border: 1px solid var(--wb-border-strong);
+  }
+
+  .wb-toolbar[data-sheet='open'] .wb-toolbar-field .wb-icon {
+    right: var(--gv-space-3);
   }
 
   .wb-toolbar[data-sheet='open'] .wb-toolbar-sep {
@@ -4174,6 +4210,11 @@ a.wb-line:hover {
     gap: var(--gv-space-1);
     align-items: stretch;
     max-width: 100%;
+  }
+
+  /* Touch scrolls the tab rows; the arrows would only add a row. */
+  .wb-tabs-scroll {
+    display: none;
   }
 
   .wb-toolbar-tools {

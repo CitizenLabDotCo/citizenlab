@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { trapTab } from '../lib/focus';
 import type { Route } from '../lib/router';
 import { ThemeChoice, useTheme } from '../lib/theme';
 
@@ -117,27 +118,6 @@ const ThemeSwitch = () => {
       ))}
     </div>
   );
-};
-
-const FOCUSABLE = 'a[href], button:not([disabled]), input, select, textarea';
-
-// Keeps Tab and Shift+Tab inside the element.
-const trapTab = (e: KeyboardEvent, root: HTMLElement | null) => {
-  if (!root) return;
-  const items = [...root.querySelectorAll<HTMLElement>(FOCUSABLE)].filter(
-    (el) => el.offsetParent !== null && el.tabIndex >= 0
-  );
-  const first = items[0];
-  const last = items[items.length - 1];
-  if (!first || !last) return;
-  const active = document.activeElement;
-  if (e.shiftKey && (active === first || !root.contains(active))) {
-    e.preventDefault();
-    last.focus();
-  } else if (!e.shiftKey && (active === last || !root.contains(active))) {
-    e.preventDefault();
-    first.focus();
-  }
 };
 
 const Nav = ({ current }: Props) => {

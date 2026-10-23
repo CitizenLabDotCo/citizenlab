@@ -5,6 +5,7 @@ import type { Mode } from '@ds/tokens/tokens';
 import { cities } from '../../../cities';
 import { LANGUAGES } from '../../../languages';
 import { GV_VIEWPORTS, GvViewport } from '../../../viewports';
+import { focusables, trapTab } from '../lib/focus';
 import type { FrameGlobals } from '../lib/frame';
 
 import Icon from './Icon';
@@ -69,7 +70,8 @@ type FieldProps = {
 };
 
 // A select drawn as a compact dropdown button: the label is for screen
-// readers and the tooltip, the value is what shows.
+// readers and the tooltip, the value is what shows. The tooltip names the
+// value too, as a narrow bar can cut it short.
 const Field = ({
   id,
   label,
@@ -79,7 +81,13 @@ const Field = ({
   disabled,
   title,
 }: FieldProps) => (
-  <label className="wb-toolbar-field" title={title ?? label}>
+  <label
+    className={`wb-toolbar-field wb-toolbar-field-${id}`}
+    title={
+      title ??
+      `${label}: ${options.find((o) => o.value === value)?.label ?? value}`
+    }
+  >
     <span className="wb-visually-hidden">{label}</span>
     <select
       data-testid={`wb-toolbar-${id}`}
@@ -172,9 +180,36 @@ const Toolbar = ({
 }: Props) => {
   const [sheet, setSheet] = useState(false);
   const sheetButton = useRef<HTMLButtonElement>(null);
+  const fieldsRef = useRef<HTMLDivElement>(null);
+  // Sticky column heads under the stuck toolbar read its height.
+  const barRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const bar = barRef.current;
+    if (!bar || typeof ResizeObserver === 'undefined') return undefined;
+    const root = document.documentElement;
+    const ro = new ResizeObserver(() => {
+      root.style.setProperty('--wb-toolbar-h', `${bar.offsetHeight}px`);
+    });
+    ro.observe(bar);
+    return () => {
+      ro.disconnect();
+      root.style.removeProperty('--wb-toolbar-h');
+    };
+  }, []);
+  const closeSheet = () => {
+    setSheet(false);
+    sheetButton.current?.focus();
+  };
+  // The open sheet takes focus, keeps Tab inside, and hands focus back to
+  // its button when it closes.
   useEffect(() => {
     if (!sheet) return undefined;
+    focusables(fieldsRef.current)[0]?.focus();
     const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Tab') {
+        trapTab(e, fieldsRef.current);
+        return;
+      }
       if (e.key !== 'Escape') return;
       setSheet(false);
       sheetButton.current?.focus();
@@ -211,6 +246,7 @@ const Toolbar = ({
   ].join(' · ');
   return (
     <div
+      ref={barRef}
       className="wb-toolbar"
       role="toolbar"
       aria-label="Canvas"
@@ -233,10 +269,11 @@ const Toolbar = ({
           type="button"
           className="wb-toolbar-scrim"
           aria-label="Close canvas settings"
-          onClick={() => setSheet(false)}
+          tabIndex={-1}
+          onClick={closeSheet}
         />
       )}
-      <div className="wb-toolbar-fields" id="wb-toolbar-fields">
+      <div className="wb-toolbar-fields" id="wb-toolbar-fields" ref={fieldsRef}>
         <p className="wb-toolbar-sheet-title">Canvas settings</p>
         <Field
           id="mode"
@@ -247,7 +284,7 @@ const Toolbar = ({
           }
           onChange={set('mode')}
           disabled={!!modeLocked}
-          title={modeLocked ? `Mode: ${modeLocked}` : 'Mode'}
+          title={modeLocked ? `Mode: ${modeLocked}` : undefined}
         />
         <Field
           id="city"
@@ -276,7 +313,7 @@ const Toolbar = ({
           title={
             storyLang
               ? `Language: this story sets ${langLabel} itself.`
-              : 'Language'
+              : undefined
           }
         />
         <span className="wb-toolbar-sep" aria-hidden="true" />
