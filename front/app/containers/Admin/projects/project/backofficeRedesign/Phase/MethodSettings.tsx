@@ -1,6 +1,5 @@
-import React, { lazy, Suspense, useState } from 'react';
+import React, { useState } from 'react';
 
-import { Spinner } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import {
@@ -12,18 +11,14 @@ import usePhase from 'api/phases/usePhase';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import { AccessOnlyAction } from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
-import PanelRowModal from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelRowModal';
-import AdminPhaseEmailWrapper from 'containers/Admin/projects/project/admin_phase_email_wrapper';
+import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
 import projectMessages from 'containers/Admin/projects/project/messages';
 import PhaseParticipationConfig from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig';
 import configMessages from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/messages';
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import { validateParticipation } from 'containers/Admin/projects/project/phaseSetup/validate';
 
-import Centerer from 'components/UI/Centerer';
-
 import { useIntl } from 'utils/cl-intl';
-import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 import { isCLErrorsWrapper } from 'utils/errorUtils';
 
 import { useRegisterPageSaver } from '../_shared/PageSaveContext';
@@ -32,12 +27,7 @@ import messages from '../messages';
 import EditAccessButton from './EditAccessButton';
 import PanelSettings from './PanelSettings';
 import ParticipantActionsGroup from './ParticipantActionsGroup';
-
-// Lazy so ArcGIS stays out of the chunk every workspace page loads, and only
-// arrives once the map modal is opened.
-const CustomMapConfigPage = lazy(
-  () => import('containers/Admin/CustomMapConfigPage')
-);
+import PhaseNotifications from './PhaseNotifications';
 
 const METHODS_WITH_ACTION_TOGGLES: ParticipationMethod[] = [
   'ideation',
@@ -111,7 +101,7 @@ const MethodSettings = ({ phase }: Props) => {
   });
 
   return (
-    <PanelSettings p="20px">
+    <PanelSettings p="0 18px 24px">
       {accessOnlyActions ? (
         <ParticipantActionsGroup
           phaseId={phase.id}
@@ -135,26 +125,9 @@ const MethodSettings = ({ phase }: Props) => {
           <EditAccessButton phaseId={phase.id} />
         )}
 
-      {getMethodConfig(participationMethod).supportsMapView && (
-        <PanelRowModal
-          label={formatMessage(messages.mapConfiguration)}
-          width="1100px"
-        >
-          <Suspense
-            fallback={
-              <Centerer height="500px">
-                <Spinner />
-              </Centerer>
-            }
-          >
-            <CustomMapConfigPage />
-          </Suspense>
-        </PanelRowModal>
-      )}
-
-      <PanelRowModal label={formatMessage(messages.notifications)}>
-        <AdminPhaseEmailWrapper />
-      </PanelRowModal>
+      <PanelGroup label={formatMessage(messages.notifications)}>
+        <PhaseNotifications phase={phase} />
+      </PanelGroup>
     </PanelSettings>
   );
 };

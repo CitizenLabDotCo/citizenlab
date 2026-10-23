@@ -117,7 +117,7 @@ const ListingCard = ({ projectId }: Props) => {
   const cardImageShouldBeSaved = cardImage ? !cardImage.remote : false;
 
   return (
-    <PanelGroup label={formatMessage(messages.listing)}>
+    <PanelGroup label={formatMessage(messages.listing)} variant="row">
       <StyledSectionField>
         <SubSectionTitle>
           <FormattedMessage {...generalMessages.projectCardImageLabelText} />

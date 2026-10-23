@@ -47,7 +47,7 @@ const TopicTagsCard = ({ project }: Props) => {
   };
 
   return (
-    <PanelGroup label={formatMessage(messages.topicTags)}>
+    <PanelGroup label={formatMessage(messages.topicTags)} variant="row">
       <TopicInputs selectedTopicIds={topicIds} onChange={handleChange} />
     </PanelGroup>
   );

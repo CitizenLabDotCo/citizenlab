@@ -33,10 +33,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.backToProjectSetup',
     defaultMessage: 'Project setup',
   },
-  offlineCollection: {
-    id: 'app.containers.Admin.projects.project.offlineCollection',
-    defaultMessage: 'Offline collection',
-  },
   phasePreviewTitle: {
     id: 'app.containers.Admin.projects.project.phasePreviewTitle',
     defaultMessage: 'Preview of this phase',
@@ -73,10 +69,6 @@ export default defineMessages({
   surveyForm: {
     id: 'app.containers.Admin.projects.project.surveyForm',
     defaultMessage: 'Survey form',
-  },
-  mapConfiguration: {
-    id: 'app.containers.Admin.projects.project.mapConfiguration',
-    defaultMessage: 'Map configuration',
   },
   eventsSection: {
     id: 'app.containers.Admin.projects.project.eventsSection',
@@ -178,14 +170,6 @@ export default defineMessages({
   addQuestions: {
     id: 'app.containers.Admin.projects.project.addQuestions',
     defaultMessage: 'Add questions',
-  },
-  informationCollected: {
-    id: 'app.containers.Admin.projects.project.informationCollected',
-    defaultMessage: 'Information collected from participants',
-  },
-  continueToTheForm: {
-    id: 'app.containers.Admin.projects.project.continueToTheForm',
-    defaultMessage: 'Continue to the form',
   },
   saveToEditForm: {
     id: 'app.containers.Admin.projects.project.saveToEditForm',
@@ -508,5 +492,167 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.recommendedActionsHint',
     defaultMessage:
       'Recommended actions appear here once participants take part.',
+  },
+  ideationSetup: {
+    id: 'app.containers.Admin.projects.project.ideationSetup',
+    defaultMessage: 'Ideation setup',
+  },
+  proposalsSetup: {
+    id: 'app.containers.Admin.projects.project.proposalsSetup',
+    defaultMessage: 'Proposals setup',
+  },
+  votingSetup: {
+    id: 'app.containers.Admin.projects.project.votingSetup',
+    defaultMessage: 'Voting setup',
+  },
+  surveySetup: {
+    id: 'app.containers.Admin.projects.project.surveySetup',
+    defaultMessage: 'Survey setup',
+  },
+  informationSetup: {
+    id: 'app.containers.Admin.projects.project.informationSetup',
+    defaultMessage: 'Information setup',
+  },
+  commonGroundSetup: {
+    id: 'app.containers.Admin.projects.project.commonGroundSetup',
+    defaultMessage: 'Common ground setup',
+  },
+  volunteeringSetup: {
+    id: 'app.containers.Admin.projects.project.volunteeringSetup',
+    defaultMessage: 'Volunteering setup',
+  },
+  documentAnnotationSetup: {
+    id: 'app.containers.Admin.projects.project.documentAnnotationSetup',
+    defaultMessage: 'Document annotation setup',
+  },
+  editReport: {
+    id: 'app.containers.Admin.projects.project.editReport',
+    defaultMessage: 'Edit report',
+  },
+  reportVisibleToParticipants: {
+    id: 'app.containers.Admin.projects.project.reportVisibleToParticipants',
+    defaultMessage: 'Visible to participants',
+  },
+  reportVisibility: {
+    id: 'app.containers.Admin.projects.project.reportVisibility',
+    defaultMessage: 'Report visibility',
+  },
+  reportVisible: {
+    id: 'app.containers.Admin.projects.project.reportVisible',
+    defaultMessage: 'Visible',
+  },
+  reportNotVisible: {
+    id: 'app.containers.Admin.projects.project.reportNotVisible',
+    defaultMessage: 'Not visible',
+  },
+  deleteReport: {
+    id: 'app.containers.Admin.projects.project.deleteReport',
+    defaultMessage: 'Delete report',
+  },
+  collectDemographicData: {
+    id: 'app.containers.Admin.projects.project.collectDemographicData',
+    defaultMessage: 'Collect demographic data',
+  },
+  collectDemographicDataDescription: {
+    id: 'app.containers.Admin.projects.project.collectDemographicDataDescription',
+    defaultMessage:
+      'Decide which information you want to collect when participants take these actions.',
+  },
+  demographicsNotSet: {
+    id: 'app.containers.Admin.projects.project.demographicsNotSet',
+    defaultMessage: 'Not set',
+  },
+  editForm: {
+    id: 'app.containers.Admin.projects.project.editForm',
+    defaultMessage: 'Edit form',
+  },
+  takingSurveyAction: {
+    id: 'app.containers.Admin.projects.project.takingSurveyAction',
+    defaultMessage: 'Taking the survey',
+  },
+  takingPollAction: {
+    id: 'app.containers.Admin.projects.project.takingPollAction',
+    defaultMessage: 'Taking the poll',
+  },
+  annotatingDocumentAction: {
+    id: 'app.containers.Admin.projects.project.annotatingDocumentAction',
+    defaultMessage: 'Annotating the document',
+  },
+  inputTermDescription: {
+    id: 'app.containers.Admin.projects.project.inputTermDescription',
+    defaultMessage:
+      'The word used for what participants send: in the form, the button and Manage.',
+  },
+  ideaFormTitle: {
+    id: 'app.containers.Admin.projects.project.ideaFormTitle',
+    defaultMessage: 'Idea form',
+  },
+  optionFormTitle: {
+    id: 'app.containers.Admin.projects.project.optionFormTitle',
+    defaultMessage: 'Option form',
+  },
+  projectFormTitle: {
+    id: 'app.containers.Admin.projects.project.projectFormTitle',
+    defaultMessage: 'Project form',
+  },
+  questionFormTitle: {
+    id: 'app.containers.Admin.projects.project.questionFormTitle',
+    defaultMessage: 'Question form',
+  },
+  issueFormTitle: {
+    id: 'app.containers.Admin.projects.project.issueFormTitle',
+    defaultMessage: 'Issue form',
+  },
+  contributionFormTitle: {
+    id: 'app.containers.Admin.projects.project.contributionFormTitle',
+    defaultMessage: 'Contribution form',
+  },
+  proposalFormTitle: {
+    id: 'app.containers.Admin.projects.project.proposalFormTitle',
+    defaultMessage: 'Proposal form',
+  },
+  initiativeFormTitle: {
+    id: 'app.containers.Admin.projects.project.initiativeFormTitle',
+    defaultMessage: 'Initiative form',
+  },
+  petitionFormTitle: {
+    id: 'app.containers.Admin.projects.project.petitionFormTitle',
+    defaultMessage: 'Petition form',
+  },
+  commentFormTitle: {
+    id: 'app.containers.Admin.projects.project.commentFormTitle',
+    defaultMessage: 'Comment form',
+  },
+  responseFormTitle: {
+    id: 'app.containers.Admin.projects.project.responseFormTitle',
+    defaultMessage: 'Response form',
+  },
+  suggestionFormTitle: {
+    id: 'app.containers.Admin.projects.project.suggestionFormTitle',
+    defaultMessage: 'Suggestion form',
+  },
+  topicFormTitle: {
+    id: 'app.containers.Admin.projects.project.topicFormTitle',
+    defaultMessage: 'Topic form',
+  },
+  postFormTitle: {
+    id: 'app.containers.Admin.projects.project.postFormTitle',
+    defaultMessage: 'Post form',
+  },
+  storyFormTitle: {
+    id: 'app.containers.Admin.projects.project.storyFormTitle',
+    defaultMessage: 'Story form',
+  },
+  observationFormTitle: {
+    id: 'app.containers.Admin.projects.project.observationFormTitle',
+    defaultMessage: 'Observation form',
+  },
+  ideasAndParticipantData: {
+    id: 'app.containers.Admin.projects.project.ideasAndParticipantData',
+    defaultMessage: 'Ideas and participant data',
+  },
+  proposalsAndParticipantData: {
+    id: 'app.containers.Admin.projects.project.proposalsAndParticipantData',
+    defaultMessage: 'Proposals and participant data',
   },
 });
