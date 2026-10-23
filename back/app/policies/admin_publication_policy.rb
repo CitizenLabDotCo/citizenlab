@@ -38,6 +38,7 @@ class AdminPublicationPolicy < ApplicationPolicy
   def reorder?
     return false unless user&.active?
     return true if user.admin?
+    return true if top_level_in_moderated_space?
 
     record.publication_type == 'Project' &&
       record.publication.in_folder? &&
@@ -54,5 +55,15 @@ class AdminPublicationPolicy < ApplicationPolicy
 
   def tree_view
     active_admin? || user&.space_moderator?
+  end
+
+  private
+
+  # Space managers arrange the projects and folders at the top of their
+  # spaces. Positions are shared with the items outside the space, at the same
+  # level.
+  def top_level_in_moderated_space?
+    space_id = record.publication.space_id
+    record.parent_id.nil? && space_id.present? && user.moderated_space_ids.include?(space_id)
   end
 end

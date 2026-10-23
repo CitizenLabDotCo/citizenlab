@@ -31,6 +31,15 @@ class SpacePolicy < ApplicationPolicy
     can_moderate?
   end
 
+  # The order of the spaces is shared by every admin, so only admins change it.
+  def reorder?
+    active_admin?
+  end
+
+  def permitted_attributes_for_reorder
+    [:ordering]
+  end
+
   def destroy?
     active_admin?
   end

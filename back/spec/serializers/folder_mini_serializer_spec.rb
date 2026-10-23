@@ -22,6 +22,17 @@ describe WebApi::V1::FolderMiniSerializer do
     expect(serialized_folder.dig(:data, :attributes, :space_title_multiloc)).to eq(space.title_multiloc)
   end
 
+  it 'serializes its publication and its place in the front-office order' do
+    # New publications go to the top, so this folder moves down to 1.
+    create(:project_folder)
+    serialized = described_class.new(folder.reload, params: { current_user: user }).serializable_hash
+
+    expect(serialized.dig(:data, :attributes)).to include(
+      admin_publication_id: folder.admin_publication.id,
+      ordering: 1
+    )
+  end
+
   it 'serializes a nil space_title_multiloc when the folder has no space' do
     expect(serialized_folder.dig(:data, :attributes, :space_id)).to be_nil
     expect(serialized_folder.dig(:data, :attributes, :space_title_multiloc)).to be_nil

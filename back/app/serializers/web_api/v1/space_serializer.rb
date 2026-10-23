@@ -1,5 +1,5 @@
 class WebApi::V1::SpaceSerializer < WebApi::V1::BaseSerializer
-  attributes :title_multiloc, :description_multiloc, :created_at, :updated_at
+  attributes :title_multiloc, :description_multiloc, :ordering, :created_at, :updated_at
 
   attribute :folders_count, if: proc { |_, params| params.key?(:folders_count_per_space) } do |object, params|
     params[:folders_count_per_space].fetch(object.id, 0)

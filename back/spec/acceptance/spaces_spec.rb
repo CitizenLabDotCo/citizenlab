@@ -113,6 +113,14 @@ resource 'Spaces' do
         expect(response_data.find { |s| s[:id] == space2.id }[:attributes]).to include(folders_count: 0, projects_count: 0)
       end
 
+      example 'Spaces are listed in the order admins arranged', document: false do
+        space2 = create(:space)
+        space2.insert_at(0)
+
+        do_request
+        expect(response_data.pluck(:id)).to eq([space2.id, space1.id])
+      end
+
       example 'Retrieving list of spaces with search' do
         space2 = create(:space, title_multiloc: { en: 'Blast off!' })
         do_request(search: 'Blast')
@@ -193,6 +201,68 @@ resource 'Spaces' do
         expect(User.space_moderator(space1.id).count).to eq 0
       end
     end
+
+    patch 'web_api/v1/spaces/:space_id/reorder' do
+      with_options scope: :space do
+        parameter :ordering, 'The position, starting from 0, where the space should be at. Spaces after will move down.', required: true
+      end
+
+      let(:ordering) { 0 }
+
+      example 'Reordering a space' do
+        # New spaces go to the bottom, so space2 starts after space1
+        space2 = create(:space)
+
+        do_request(space_id: space2.id)
+
+        expect(status).to eq(200)
+        expect(response_data[:id]).to eq(space2.id)
+        expect(Space.order(:ordering).pluck(:id)).to eq([space2.id, space1.id])
+      end
+
+      example 'Reordering a space to the position it already has', document: false do
+        do_request(space_id: space1.id)
+
+        expect(status).to eq(200)
+        expect(space1.reload.ordering).to eq(0)
+      end
+
+      example 'Reordering a space without a position', document: false do
+        do_request(space_id: space1.id, space: { ordering: nil })
+
+        expect(status).to eq(422)
+        expect(json_response_body).to eq(errors: { ordering: [{ error: 'blank' }] })
+      end
+
+      example 'Reordering a space with the position as text', document: false do
+        space2 = create(:space)
+
+        do_request(space_id: space2.id, space: { ordering: '0' })
+
+        expect(status).to eq(200)
+        expect(Space.order(:ordering).pluck(:id)).to eq([space2.id, space1.id])
+      end
+
+      [-1, 1.7, '1.7', 'first'].each do |position|
+        example "Reordering a space to the invalid position #{position.inspect}", document: false do
+          do_request(space_id: space1.id, space: { ordering: position })
+
+          expect(status).to eq(422)
+          expect(json_response_body).to eq(errors: { ordering: [{ error: 'invalid' }] })
+        end
+      end
+
+      [1000, 99_999_999_999].each do |position|
+        example "Reordering a space past the end (#{position}) moves it to the end", document: false do
+          space2 = create(:space)
+
+          do_request(space_id: space1.id, space: { ordering: position })
+
+          expect(status).to eq(200)
+          expect(Space.order(:ordering).pluck(:id, :ordering)).to eq([[space2.id, 0], [space1.id, 1]])
+        end
+      end
+    end
   end
 
   context 'when visitor' do
@@ -257,6 +327,18 @@ resource 'Spaces' do
 
     delete 'web_api/v1/spaces/:space_id' do
       example_request '[Unauthorized] Deleting a space' do
+        expect(status).to eq(401)
+      end
+    end
+
+    patch 'web_api/v1/spaces/:space_id/reorder' do
+      with_options scope: :space do
+        parameter :ordering, 'The position, starting from 0, where the space should be at.', required: true
+      end
+
+      let(:ordering) { 0 }
+
+      example_request '[Unauthorized] Reordering a space' do
         expect(status).to eq(401)
       end
     end

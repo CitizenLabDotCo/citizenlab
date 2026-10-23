@@ -15,6 +15,18 @@ describe WebApi::V1::ProjectMiniAdminSerializer do
     expect(serialized_project.dig(:data, :attributes, :publication_status)).to eq(project.admin_publication.publication_status)
   end
 
+  it 'serializes its publication and its place in the front-office order' do
+    # New publications go to the top of their folder, so this project moves
+    # down to 1.
+    create(:project, folder: folder)
+    serialized = described_class.new(project.reload, params: { current_user: user }).serializable_hash
+
+    expect(serialized.dig(:data, :attributes)).to include(
+      admin_publication_id: project.admin_publication.id,
+      ordering: 1
+    )
+  end
+
   it 'serializes first_phase_start_date' do
     first_phase = project.phases.order(:start_at).first
     expect(serialized_project.dig(:data, :attributes, :first_phase_start_date)).to eq(first_phase.start_date)
