@@ -1,4 +1,7 @@
+import fs from 'fs';
+
 import type { StorybookConfig } from '@storybook/react-vite';
+import type { Plugin } from 'vite';
 
 import mockModules from './mockModules.ts';
 
@@ -37,6 +40,37 @@ const CONSTANTS_ALIAS = {
   replacement: `${process.cwd()}/app/containers/App/constants.ts`
 }
 
+// Opt-in bundle analysis: `SB_BUNDLE_STATS=<file> npm run build-storybook`
+// writes each chunk's size, imports and modules (rendered bytes) to <file>,
+// to see what the preview frame loads before a story renders.
+const bundleStats = (file: string): Plugin => ({
+  name: 'gv-bundle-stats',
+  generateBundle(_options, bundle) {
+    const chunks = Object.values(bundle).flatMap((chunk) =>
+      chunk.type === 'chunk'
+        ? [
+            [
+              chunk.fileName,
+              {
+                isEntry: chunk.isEntry,
+                size: chunk.code.length,
+                imports: chunk.imports,
+                dynamicImports: chunk.dynamicImports,
+                modules: Object.fromEntries(
+                  Object.entries(chunk.modules).map(([id, m]) => [
+                    id,
+                    m.renderedLength,
+                  ])
+                ),
+              },
+            ],
+          ]
+        : []
+    );
+    fs.writeFileSync(file, JSON.stringify(Object.fromEntries(chunks)));
+  },
+});
+
 const config: StorybookConfig = {
   stories: ['../app/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: [
@@ -67,7 +101,10 @@ const config: StorybookConfig = {
       ([find, replacement]) => ({ find, replacement })
     );
 
+    const statsFile = process.env.SB_BUNDLE_STATS;
+
     return mergeConfig(config, {
+      plugins: statsFile ? [bundleStats(statsFile)] : [],
       resolve: {
         alias: [
           ...mockModuleAliases,
