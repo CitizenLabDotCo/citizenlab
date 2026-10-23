@@ -488,7 +488,13 @@ const Design = ({
             <div className="wb-insp-layer">
               <span className="wb-insp-layer-name">{inspection.label}</span>
               <span className="wb-insp-layer-size">
-                {`W ${inspection.size.w}  H ${inspection.size.h}`}
+                {`W ${
+                  inspection.sections[0]?.rows.find((r) => r.id === 'w')?.value
+                    .shown ?? ''
+                }  H ${
+                  inspection.sections[0]?.rows.find((r) => r.id === 'h')?.value
+                    .shown ?? ''
+                }`}
               </span>
             </div>
             <p className="wb-insp-key">

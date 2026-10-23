@@ -1,13 +1,16 @@
+import type { TokenMeta } from './data';
 import {
   atPath,
   candidatesFor,
   colourText,
   declarations,
   defaultTarget,
+  fitsProp,
   labelOf,
   parentTarget,
   pathOf,
   pxText,
+  rowSpec,
   shortName,
   shownFamily,
   varsOf,
@@ -140,5 +143,80 @@ describe('layers', () => {
     );
     const empty = d.createElement('div');
     expect(labelOf(empty)).toBe('div');
+  });
+});
+
+describe('rowSpec', () => {
+  it('maps a padding pair to its two longhands', () => {
+    expect(rowSpec('padding-v')).toEqual({
+      props: ['padding-top', 'padding-bottom'],
+      glyph: 'padding-y',
+      half: true,
+      editable: true,
+      snap: 'space',
+    });
+    expect(rowSpec('padding-2').props).toEqual(['padding-bottom']);
+    expect(rowSpec('padding').props).toHaveLength(4);
+  });
+
+  it('maps radius pairs diagonally', () => {
+    expect(rowSpec('radius-v').props).toEqual([
+      'border-top-left-radius',
+      'border-bottom-right-radius',
+    ]);
+    expect(rowSpec('radius-h').props).toEqual([
+      'border-top-right-radius',
+      'border-bottom-left-radius',
+    ]);
+  });
+
+  it('keeps size and shadow read-only', () => {
+    expect(rowSpec('w')).toMatchObject({
+      editable: false,
+      glyph: 'width',
+      half: true,
+    });
+    expect(rowSpec('shadow')).toMatchObject({
+      editable: false,
+      glyph: 'shadow',
+    });
+  });
+
+  it('gives text rows their glyph and no snap', () => {
+    expect(rowSpec('size')).toMatchObject({
+      props: ['font-size'],
+      glyph: 'font-size',
+      half: true,
+    });
+    expect(rowSpec('size').snap).toBeUndefined();
+    expect(rowSpec('color')).toMatchObject({
+      props: ['color'],
+      glyph: 'text',
+      snap: 'color',
+      half: false,
+    });
+    expect(rowSpec('fill')).toMatchObject({
+      props: ['background-color'],
+      glyph: 'fill',
+      snap: 'color',
+    });
+  });
+});
+
+describe('fitsProp', () => {
+  const t = (name: string, category: string, tier: 1 | 2 = 2) =>
+    ({
+      name,
+      category,
+      tier,
+      values: { today: '', redesign: '' },
+      legacy: [],
+    } as unknown as TokenMeta);
+  it('matches colours to colour longhands and space to padding', () => {
+    expect(fitsProp('background-color')?.(t('--gv-white', 'color'))).toBe(true);
+    expect(fitsProp('border-color')?.(t('--gv-white', 'color'))).toBe(true);
+    expect(fitsProp('padding-left')?.(t('--gv-space-2', 'space'))).toBe(true);
+    expect(fitsProp('padding-left')?.(t('--gv-white', 'color'))).toBe(false);
+    expect(fitsProp('width')).toBeUndefined();
   });
 });

@@ -1,12 +1,14 @@
 // What the Design panel shows for the element selected on the canvas: its
-// rendered properties grouped like Figma's inspector (Fill, Text, Stroke,
-// Corner radius, Padding, Gap, Effects), and for each value the token it
+// rendered properties grouped like Figma's inspector (Layout, Fill, Stroke,
+// Radius, Text, Effects), and for each value the token it
 // comes from. A value is `linked` when a style rule (or inline style) that
 // applies to the element names the token for that property and the token
 // resolves to the rendered value; `equal` when no rule names it but the
 // rendered value equals a token (a hard-coded value that happens to match);
 // otherwise it is a plain value.
 import type { TokenName } from '@ds/tokens/tokens';
+
+import type { IconName } from '../components/Icon';
 
 import type { TokenMeta } from './data';
 
@@ -23,10 +25,22 @@ export type InspectValue = {
   swatch?: string;
 };
 
+export type SnapKind = 'space' | 'radius' | 'color';
+
 export type InspectRow = {
   id: string;
+  // Words for aria-label and the Changes list ("Vertical", "Size").
   label: string;
   value: InspectValue;
+  // The CSS longhands this row sets.
+  props: string[];
+  glyph: IconName;
+  // Two per line.
+  half: boolean;
+  // W, H and the shadow are read-only.
+  editable: boolean;
+  // What a typed value snaps to.
+  snap?: SnapKind;
 };
 
 export type InspectSection = {
@@ -36,17 +50,15 @@ export type InspectSection = {
 };
 
 export type SectionId =
+  | 'layout'
   | 'fill'
-  | 'text'
   | 'stroke'
   | 'radius'
-  | 'padding'
-  | 'gap'
+  | 'text'
   | 'effects';
 
 export type Inspection = {
   label: string;
-  size: { w: number; h: number };
   sections: InspectSection[];
 };
 
@@ -262,6 +274,9 @@ const CATEGORY: Record<string, (t: TokenMeta) => boolean> = {
   'background-color': (t) => t.category === 'color',
   color: (t) => t.category === 'color',
   'border-top-color': (t) => t.category === 'color',
+  'border-color': (t) => t.category === 'color',
+  'font-family': (t) => t.type === 'fontFamily',
+  'letter-spacing': (t) => t.category === 'text' && /-ls$/.test(t.name),
   'font-size': (t) =>
     (t.category === 'font' || t.category === 'text') &&
     /(^--gv-fs-|-size$)/.test(t.name),
@@ -279,6 +294,9 @@ CATEGORY['padding-right'] = CATEGORY['padding-top'];
 CATEGORY['padding-bottom'] = CATEGORY['padding-top'];
 CATEGORY['padding-left'] = CATEGORY['padding-top'];
 CATEGORY['column-gap'] = CATEGORY['row-gap'];
+
+// The token categories that fit a longhand (the picker's filter).
+export const fitsProp = (prop: string) => CATEGORY[prop];
 
 // Resolves tokens through a hidden probe the way the browser computes the
 // property, cached per call of inspectElement.
@@ -336,6 +354,182 @@ const valueOf = (
   return out;
 };
 
+// ------------------------------------------------------------ rows
+
+type Spec = Pick<InspectRow, 'props' | 'glyph' | 'half' | 'editable' | 'snap'>;
+
+const P = ['padding-top', 'padding-right', 'padding-bottom', 'padding-left'];
+const R = [
+  'border-top-left-radius',
+  'border-top-right-radius',
+  'border-bottom-right-radius',
+  'border-bottom-left-radius',
+];
+const SIDE_GLYPH: IconName[] = [
+  'padding-top',
+  'padding-right',
+  'padding-bottom',
+  'padding-left',
+];
+
+const SPECS: Record<string, Spec> = {
+  w: { props: ['width'], glyph: 'width', half: true, editable: false },
+  h: { props: ['height'], glyph: 'height', half: true, editable: false },
+  padding: {
+    props: P,
+    glyph: 'padding',
+    half: false,
+    editable: true,
+    snap: 'space',
+  },
+  'padding-v': {
+    props: [P[0], P[2]],
+    glyph: 'padding-y',
+    half: true,
+    editable: true,
+    snap: 'space',
+  },
+  'padding-h': {
+    props: [P[3], P[1]],
+    glyph: 'padding-x',
+    half: true,
+    editable: true,
+    snap: 'space',
+  },
+  gap: {
+    props: ['row-gap', 'column-gap'],
+    glyph: 'gap',
+    half: false,
+    editable: true,
+    snap: 'space',
+  },
+  'gap-row': {
+    props: ['row-gap'],
+    glyph: 'gap-row',
+    half: true,
+    editable: true,
+    snap: 'space',
+  },
+  'gap-col': {
+    props: ['column-gap'],
+    glyph: 'gap-col',
+    half: true,
+    editable: true,
+    snap: 'space',
+  },
+  fill: {
+    props: ['background-color'],
+    glyph: 'fill',
+    half: false,
+    editable: true,
+    snap: 'color',
+  },
+  'stroke-color': {
+    props: ['border-color'],
+    glyph: 'stroke',
+    half: true,
+    editable: true,
+    snap: 'color',
+  },
+  'stroke-width': {
+    props: ['border-width'],
+    glyph: 'stroke-width',
+    half: true,
+    editable: true,
+  },
+  radius: {
+    props: R,
+    glyph: 'radius',
+    half: false,
+    editable: true,
+    snap: 'radius',
+  },
+  'radius-v': {
+    props: [R[0], R[2]],
+    glyph: 'radius',
+    half: true,
+    editable: true,
+    snap: 'radius',
+  },
+  'radius-h': {
+    props: [R[1], R[3]],
+    glyph: 'radius',
+    half: true,
+    editable: true,
+    snap: 'radius',
+  },
+  family: {
+    props: ['font-family'],
+    glyph: 'text',
+    half: false,
+    editable: true,
+  },
+  size: {
+    props: ['font-size'],
+    glyph: 'font-size',
+    half: true,
+    editable: true,
+  },
+  weight: {
+    props: ['font-weight'],
+    glyph: 'font-weight',
+    half: true,
+    editable: true,
+  },
+  lh: {
+    props: ['line-height'],
+    glyph: 'line-height',
+    half: true,
+    editable: true,
+  },
+  ls: {
+    props: ['letter-spacing'],
+    glyph: 'letter-spacing',
+    half: true,
+    editable: true,
+  },
+  color: {
+    props: ['color'],
+    glyph: 'text',
+    half: false,
+    editable: true,
+    snap: 'color',
+  },
+  shadow: {
+    props: ['box-shadow'],
+    glyph: 'shadow',
+    half: false,
+    editable: false,
+  },
+};
+for (let i = 0; i < 4; i++) {
+  SPECS[`padding-${i}`] = {
+    props: [P[i]],
+    glyph: SIDE_GLYPH[i],
+    half: true,
+    editable: true,
+    snap: 'space',
+  };
+  SPECS[`radius-${i}`] = {
+    props: [R[i]],
+    glyph: 'radius',
+    half: true,
+    editable: true,
+    snap: 'radius',
+  };
+}
+
+// What a row stands for: its longhands, glyph, width and edit kind.
+export const rowSpec = (id: string): Spec =>
+  SPECS[id] ?? { props: [], glyph: 'tokens', half: false, editable: false };
+
+const row = (id: string, label: string, value: InspectValue): InspectRow => ({
+  id,
+  label,
+  value,
+  ...rowSpec(id),
+});
+
 // The four sides or corners as rows: one row when all four read the same,
 // two when opposite sides pair up, four otherwise.
 const sides = (
@@ -348,19 +542,12 @@ const sides = (
     a.raw === b.raw && a.token === b.token;
   const [t, r, b, l] = values;
   if (same(t, r) && same(t, b) && same(t, l)) {
-    return [{ id, label: '', value: t }];
+    return [row(id, '', t)];
   }
   if (same(t, b) && same(l, r)) {
-    return [
-      { id: `${id}-v`, label: pairs[0], value: t },
-      { id: `${id}-h`, label: pairs[1], value: l },
-    ];
+    return [row(`${id}-v`, pairs[0], t), row(`${id}-h`, pairs[1], l)];
   }
-  return values.map((v, i) => ({
-    id: `${id}-${i}`,
-    label: labels[i],
-    value: v,
-  }));
+  return values.map((v, i) => row(`${id}-${i}`, labels[i], v));
 };
 
 // The panel's reading of one element. `available` says whether the
@@ -381,13 +568,82 @@ export const inspectElement = (
       valueOf(prop, cs, decls, meta, resolve, format);
     const sections: InspectSection[] = [];
 
+    const rect = el.getBoundingClientRect();
+    const sizeRow = (id: 'w' | 'h', n: number): InspectRow =>
+      row(id, id === 'w' ? 'Width' : 'Height', {
+        raw: `${n}px`,
+        shown: String(Math.round(n)),
+      });
+    const layout: InspectRow[] = [
+      sizeRow('w', rect.width),
+      sizeRow('h', rect.height),
+    ];
+    const padding = sides(
+      'padding',
+      [
+        v('padding-top'),
+        v('padding-right'),
+        v('padding-bottom'),
+        v('padding-left'),
+      ],
+      ['Top', 'Right', 'Bottom', 'Left'],
+      ['Vertical', 'Horizontal']
+    );
+    if (padding.some((r) => r.value.raw !== '0px')) layout.push(...padding);
+    const display = cs.getPropertyValue('display');
+    if (/flex|grid/.test(display)) {
+      const rowGap = v('row-gap');
+      const colGap = v('column-gap');
+      const gaps =
+        rowGap.raw === colGap.raw
+          ? [row('gap', 'Gap', rowGap)]
+          : [row('gap-row', 'Rows', rowGap), row('gap-col', 'Columns', colGap)];
+      if (
+        gaps.some((g) => !NEUTRAL.has(g.value.raw) && g.value.raw !== '0px')
+      ) {
+        layout.push(...gaps);
+      }
+    }
+    sections.push({ id: 'layout', label: 'Layout', rows: layout });
+
     const fill = v('background-color', colourText);
     if (!isTransparent(fill.raw)) {
       sections.push({
         id: 'fill',
         label: 'Fill',
-        rows: [{ id: 'fill', label: '', value: fill }],
+        rows: [row('fill', 'Fill', fill)],
       });
+    }
+
+    const width = parseFloat(cs.getPropertyValue('border-top-width')) || 0;
+    if (
+      width > 0 &&
+      cs.getPropertyValue('border-top-style') !== 'none' &&
+      !isTransparent(cs.getPropertyValue('border-top-color'))
+    ) {
+      sections.push({
+        id: 'stroke',
+        label: 'Stroke',
+        rows: [
+          row('stroke-color', 'Colour', v('border-top-color', colourText)),
+          row('stroke-width', 'Width', v('border-top-width')),
+        ],
+      });
+    }
+
+    const radius = sides(
+      'radius',
+      [
+        v('border-top-left-radius'),
+        v('border-top-right-radius'),
+        v('border-bottom-right-radius'),
+        v('border-bottom-left-radius'),
+      ],
+      ['Top left', 'Top right', 'Bottom right', 'Bottom left'],
+      ['Top left, bottom right', 'Top right, bottom left']
+    );
+    if (radius.some((r) => r.value.raw !== '0px')) {
+      sections.push({ id: 'radius', label: 'Radius', rows: radius });
     }
 
     const family = v('font-family', (s) => shownFamily(s, available));
@@ -406,101 +662,27 @@ export const inspectElement = (
       else if (equal)
         Object.assign(family, { token: equal.name, link: 'equal' });
     }
-    sections.push({
-      id: 'text',
-      label: 'Text',
-      rows: [
-        { id: 'family', label: 'Font', value: family },
-        { id: 'size', label: 'Size', value: v('font-size') },
-        { id: 'weight', label: 'Weight', value: v('font-weight') },
-        { id: 'lh', label: 'Line height', value: v('line-height') },
-        { id: 'color', label: 'Colour', value: v('color', colourText) },
-      ],
-    });
-
-    const width = parseFloat(cs.getPropertyValue('border-top-width')) || 0;
-    if (
-      width > 0 &&
-      cs.getPropertyValue('border-top-style') !== 'none' &&
-      !isTransparent(cs.getPropertyValue('border-top-color'))
-    ) {
-      sections.push({
-        id: 'stroke',
-        label: 'Stroke',
-        rows: [
-          {
-            id: 'stroke-color',
-            label: 'Colour',
-            value: v('border-top-color', colourText),
-          },
-          { id: 'stroke-width', label: 'Width', value: v('border-top-width') },
-        ],
-      });
-    }
-
-    const radius = sides(
-      'radius',
-      [
-        v('border-top-left-radius'),
-        v('border-top-right-radius'),
-        v('border-bottom-right-radius'),
-        v('border-bottom-left-radius'),
-      ],
-      ['Top left', 'Top right', 'Bottom right', 'Bottom left'],
-      ['Top left, bottom right', 'Top right, bottom left']
-    );
-    if (radius.some((r) => r.value.raw !== '0px')) {
-      sections.push({ id: 'radius', label: 'Corner radius', rows: radius });
-    }
-
-    const padding = sides(
-      'padding',
-      [
-        v('padding-top'),
-        v('padding-right'),
-        v('padding-bottom'),
-        v('padding-left'),
-      ],
-      ['Top', 'Right', 'Bottom', 'Left'],
-      ['Vertical', 'Horizontal']
-    );
-    if (padding.some((r) => r.value.raw !== '0px')) {
-      sections.push({ id: 'padding', label: 'Padding', rows: padding });
-    }
-
-    const display = cs.getPropertyValue('display');
-    if (/flex|grid/.test(display)) {
-      const row = v('row-gap');
-      const col = v('column-gap');
-      const gaps =
-        row.raw === col.raw
-          ? [{ id: 'gap', label: '', value: row }]
-          : [
-              { id: 'gap-row', label: 'Rows', value: row },
-              { id: 'gap-col', label: 'Columns', value: col },
-            ];
-      if (
-        gaps.some((g) => !NEUTRAL.has(g.value.raw) && g.value.raw !== '0px')
-      ) {
-        sections.push({ id: 'gap', label: 'Gap', rows: gaps });
-      }
-    }
+    const textRows = [
+      row('family', 'Font', family),
+      row('weight', 'Weight', v('font-weight')),
+      row('size', 'Size', v('font-size')),
+      row('lh', 'Line height', v('line-height')),
+    ];
+    const ls = v('letter-spacing');
+    if (!NEUTRAL.has(ls.raw)) textRows.push(row('ls', 'Letter spacing', ls));
+    textRows.push(row('color', 'Colour', v('color', colourText)));
+    sections.push({ id: 'text', label: 'Text', rows: textRows });
 
     const shadow = v('box-shadow', (s) => (s === 'none' ? 'None' : 'Shadow'));
     if (shadow.raw !== 'none') {
       sections.push({
         id: 'effects',
         label: 'Effects',
-        rows: [{ id: 'shadow', label: 'Drop shadow', value: shadow }],
+        rows: [row('shadow', 'Drop shadow', shadow)],
       });
     }
 
-    const rect = el.getBoundingClientRect();
-    return {
-      label: labelOf(el),
-      size: { w: Math.round(rect.width), h: Math.round(rect.height) },
-      sections,
-    };
+    return { label: labelOf(el), sections };
   } finally {
     done();
   }
