@@ -87,6 +87,9 @@ export const loadStoryIndex = () =>
 export const loadChanges = () =>
   fetchJson<Record<string, unknown>>('../design-changes.json', {});
 
+export const loadRouteFixture = () =>
+  fetchJson<unknown>('../routes.fixture.json', {});
+
 export const loadA11y = () =>
   fetchJson<Record<string, unknown>>('../a11y-results.json', {});
 

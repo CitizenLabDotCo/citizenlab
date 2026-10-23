@@ -4,6 +4,7 @@
 //                       [--canvas-screenshot <file.png>]
 //                       [--colour-screenshot <file.png>]
 //                       [--spacing-screenshot <file.png>]
+//                       [--review-host <https://platform origin>]
 //
 // Serves the static dir on a free local port, opens /workbench/#/start in
 // Chromium and checks that the nav lists every section, the Start here page
@@ -20,6 +21,14 @@
 // the frame's DOM. The canvas fits the Button frame to the story by
 // default (MAX_FIT_HEIGHT). The Usage panel lists at least one back office
 // (admin) route and the Tokens panel shows the radius token as linked.
+// The Review page lists at least MIN_ADMIN_ROUTES back office routes and
+// shows "needs a record" for a route whose param the fixture lacks. With
+// --review-host <platform origin> (an epic serving this Storybook under
+// /storybook/), the build is served at that origin by request interception
+// so the platform frames are same origin: the admin/projects frames load
+// (ok, or login with the login hint), the After frame carries a token edit
+// and Before does not, and the highlight counts tagged instances (shows
+// its note on an untagged build, then counts injected ones).
 // Exits 1 on failure,
 // 2 when Playwright is missing. Playwright is loaded through ./playwright.
 import fs from 'fs';
@@ -173,6 +182,9 @@ const foundationsChecks = async (
 const OPTIONAL_DATA = [
   '/design-scan.json',
   '/design-changes.json',
+  '/routes.fixture.json',
+  // The Review page's login probe; a static server has no platform API.
+  '/web_api/v1/users/me',
   '/a11y-results.json',
   '/audits/index.json',
 ];
@@ -482,12 +494,205 @@ const panelChecks = async (
   );
 };
 
+export const MIN_ADMIN_ROUTES = 20;
+// A route with a param the fixture has no record for (fixture.missing).
+const NEEDS_RECORD_ROUTE = 'admin/projects/$projectId/analysis/$analysisId';
+const REVIEW_ROUTE = 'admin/projects';
+const FRAME_TIMEOUT = 45000;
+const REDIRECT_WAIT = 8000;
+
+const reviewHashFor = (route: string, extra = '') =>
+  `#/review?route=${encodeURIComponent(route)}${extra}`;
+
+// Checks that need no platform: the route list and the needs-record state.
+const reviewChecks = async (page: any, base: string, failures: string[]) => {
+  await page.goto(`${base}/workbench/#/review`);
+  await page.waitForSelector('[data-testid="wb-review-route"]', {
+    timeout: 15000,
+  });
+  const admin: number = await page.$$eval(
+    '[data-testid="wb-review-route"][data-office="admin"]',
+    (els: Element[]) => els.length
+  );
+  if (admin < MIN_ADMIN_ROUTES) {
+    failures.push(
+      `review lists ${admin} back office routes, expected ${MIN_ADMIN_ROUTES}+`
+    );
+  }
+  await page.goto(`${base}/workbench/${reviewHashFor(NEEDS_RECORD_ROUTE)}`);
+  try {
+    await page.waitForSelector('[data-testid="wb-review-needs-record"]', {
+      timeout: 5000,
+    });
+    console.log(`review: ${admin} back office routes, needs-record state`);
+  } catch {
+    failures.push(`review: ${NEEDS_RECORD_ROUTE} does not ask for a record`);
+  }
+};
+
+const frameOf = async (page: any, side: 'before' | 'after') =>
+  (
+    await page.waitForSelector(`[data-testid="wb-frame-${side}-iframe"]`)
+  ).contentFrame();
+
+// The platform frames, with the build served at `host`/storybook/.
+const reviewFrameChecks = async (
+  browser: any,
+  root: string,
+  host: string,
+  failures: string[]
+) => {
+  const origin = new URL(host).origin;
+  const context = await browser.newContext({
+    viewport: { width: 1440, height: 900 },
+  });
+  try {
+    await context.route(`${origin}/storybook/**`, async (route: any) => {
+      const rel = new URL(route.request().url()).pathname.replace(
+        /^\/storybook/,
+        ''
+      );
+      let file = resolveStaticPath(root, rel || '/');
+      if (file && fs.existsSync(file) && fs.statSync(file).isDirectory()) {
+        file = path.join(file, 'index.html');
+      }
+      if (!file || !fs.existsSync(file)) {
+        await route.fulfill({ status: 404, body: 'not found' });
+        return;
+      }
+      let body: Buffer | string = fs.readFileSync(file);
+      if (path.basename(file) === 'routes.fixture.json') {
+        const fixture = JSON.parse(body.toString('utf8'));
+        fixture.hosts = { ...fixture.hosts, after: origin };
+        body = JSON.stringify(fixture);
+      }
+      await route.fulfill({
+        status: 200,
+        body,
+        contentType: TYPES[path.extname(file)] ?? 'application/octet-stream',
+      });
+    });
+    const page = await context.newPage();
+    page.on('pageerror', (err: Error) =>
+      failures.push(`review page error: ${err.message}`)
+    );
+    const edit = `&o=${sharePayload({ [RADIUS_TOKEN]: RADIUS_OVERRIDE })}`;
+    await page.goto(
+      `${origin}/storybook/workbench/${reviewHashFor(
+        REVIEW_ROUTE,
+        `&component=Button${edit}`
+      )}`
+    );
+    await page.waitForSelector('[data-testid="wb-frame-after"]', {
+      timeout: 15000,
+    });
+    const settled = async (side: string): Promise<string> => {
+      const handle = await page.waitForFunction(
+        (s: string) => {
+          const st = document.querySelector<HTMLElement>(
+            `[data-testid="wb-frame-${s}"]`
+          )?.dataset.state;
+          return st && st !== 'loading' && st !== 'blank' ? st : false;
+        },
+        side,
+        { timeout: FRAME_TIMEOUT }
+      );
+      return handle.jsonValue();
+    };
+    await settled('before');
+    await settled('after');
+    // The platform redirects a visitor without admin rights after it boots.
+    await page.waitForTimeout(REDIRECT_WAIT);
+    const states = [await settled('before'), await settled('after')];
+    states.forEach((st, i) => {
+      if (st !== 'ok' && st !== 'login') {
+        failures.push(
+          `review: the ${
+            i ? 'After' : 'Before'
+          } frame of /${REVIEW_ROUTE} is ${st}`
+        );
+      }
+    });
+    if (states.includes('login')) {
+      if (!(await page.$('[data-testid="wb-login-hint"]'))) {
+        failures.push('review: a frame shows the login page without the hint');
+      }
+    }
+
+    const radius = (side: 'before' | 'after') =>
+      frameOf(page, side).then((f: any) =>
+        f.evaluate(
+          (n: string) =>
+            document.documentElement.style.getPropertyValue(n).trim(),
+          RADIUS_TOKEN
+        )
+      );
+    // Edits go on at load and on every poll.
+    await page.waitForTimeout(1500);
+    const [before, after] = [await radius('before'), await radius('after')];
+    if (after !== RADIUS_OVERRIDE) {
+      failures.push(
+        `review: After has ${RADIUS_TOKEN} "${after}", expected ${RADIUS_OVERRIDE}`
+      );
+    }
+    if (before === RADIUS_OVERRIDE) {
+      failures.push(`review: Before carries the ${RADIUS_TOKEN} edit`);
+    }
+
+    const note = async () =>
+      page.$eval('[data-testid="wb-review-highlight-note"]', (el: Element) => ({
+        text: el.textContent ?? '',
+        count: Number((el as HTMLElement).dataset.count ?? 0),
+      }));
+    const untagged = (await note()).text;
+    const afterFrame = await frameOf(page, 'after');
+    const tagged = await afterFrame.evaluate(
+      () => !!document.querySelector('[data-gv-component]')
+    );
+    if (!tagged && !/does not tag/.test(untagged)) {
+      failures.push(`review: untagged build without the note ("${untagged}")`);
+    }
+    await afterFrame.evaluate(() => {
+      const el = document.createElement('button');
+      el.setAttribute('data-gv-component', 'Button');
+      el.textContent = 'Tagged';
+      document.body.appendChild(el);
+    });
+    const toggle = '[data-testid="wb-review-highlight"]';
+    await page.waitForSelector(`${toggle}:not([disabled])`, { timeout: 5000 });
+    if (!(await page.$eval(toggle, (el: HTMLInputElement) => el.checked))) {
+      await page.click(toggle);
+    }
+    try {
+      await page.waitForFunction(
+        () =>
+          Number(
+            document.querySelector<HTMLElement>(
+              '[data-testid="wb-review-highlight-note"]'
+            )?.dataset.count ?? 0
+          ) >= 1,
+        undefined,
+        { timeout: 5000 }
+      );
+    } catch {
+      failures.push('review: the highlight does not count tagged Buttons');
+    }
+    console.log(
+      `review: /${REVIEW_ROUTE} frames ${states.join('/')} on ${origin}, ` +
+        `edit on After only, highlight ${tagged ? 'tagged' : 'untagged build'}`
+    );
+  } finally {
+    await context.close();
+  }
+};
+
 const main = async () => {
   const root = path.resolve(arg('dir') ?? 'storybook-static');
   const screenshot = arg('screenshot');
   const canvasScreenshot = arg('canvas-screenshot');
   const colourScreenshot = arg('colour-screenshot');
   const spacingScreenshot = arg('spacing-screenshot');
+  const reviewHost = arg('review-host');
   if (!fs.existsSync(path.join(root, 'workbench', 'index.html'))) {
     console.error(
       `No workbench in ${root}. Run npm run build-storybook first.`
@@ -579,6 +784,13 @@ const main = async () => {
     });
 
     await galleryChecks(page, base, failures);
+
+    await reviewChecks(page, base, failures);
+    if (reviewHost) {
+      await reviewFrameChecks(browser, root, reviewHost, failures);
+    } else {
+      console.log('review: no --review-host, platform frame checks skipped');
+    }
 
     if (!storyId) {
       failures.push('index.json has no Button story');

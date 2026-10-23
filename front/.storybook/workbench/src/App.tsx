@@ -10,6 +10,7 @@ import Component from './pages/Component';
 import Foundations from './pages/Foundations';
 import Gallery from './pages/Gallery';
 import Placeholder from './pages/Placeholder';
+import Review from './pages/Review';
 import StartHere from './pages/StartHere';
 
 type CanvasProps = {
@@ -63,7 +64,14 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
         />
       );
     case 'review':
-      return <Placeholder title="Review" kind="review" />;
+      return (
+        <Review
+          meta={TOKEN_META}
+          overrides={canvas.overrides}
+          mode={canvas.toolbar.mode}
+          onMode={(mode) => canvas.setToolbar({ ...canvas.toolbar, mode })}
+        />
+      );
     case 'proposal':
       return <Placeholder title="Proposal" kind="proposal" />;
     case 'not-found':
