@@ -118,3 +118,33 @@ describe('ValueField', () => {
     expect(screen.getByText('145')).toBeTruthy();
   });
 });
+
+describe('ValueField glyph', () => {
+  it('opens the picker from a text value glyph', () => {
+    const onOpenPicker = jest.fn();
+    render(
+      <ValueField
+        row={row({})}
+        onCommit={noop}
+        onAttach={noop}
+        onDetach={noop}
+        onOpenPicker={onOpenPicker}
+      />
+    );
+    fireEvent.click(screen.getByLabelText('Choose a token for Vertical'));
+    expect(onOpenPicker).toHaveBeenCalled();
+  });
+
+  it('has no picker glyph on a read-only value', () => {
+    render(
+      <ValueField
+        row={row({ raw: '145px', shown: '145' }, 'w')}
+        onCommit={noop}
+        onAttach={noop}
+        onDetach={noop}
+        onOpenPicker={noop}
+      />
+    );
+    expect(screen.queryByTestId('wb-insp-pick')).toBeNull();
+  });
+});

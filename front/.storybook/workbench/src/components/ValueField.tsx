@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import type { TokenName } from '@ds/tokens/tokens';
 
 import type { ElementEdit } from '../lib/elementEdits';
-import { InspectRow, shortName } from '../lib/inspect';
+import { fitsProp, InspectRow, shortName } from '../lib/inspect';
 
 import Icon from './Icon';
 
@@ -42,9 +42,12 @@ export const ValueField = ({
   ) : (
     <Icon name={row.glyph} size={14} />
   );
+  const name = row.label || row.id;
+  // A text value's glyph opens the picker, as a pill's body does, when
+  // some token can stand for the property.
+  const pickable = row.editable && !!fitsProp(row.props[0] ?? '');
   const [draft, setDraft] = useState(v.shown);
   useEffect(() => setDraft(v.shown), [v.shown]);
-  const name = row.label || row.id;
 
   if (bound) {
     const token = v.token as TokenName;
@@ -100,7 +103,20 @@ export const ValueField = ({
       data-row={row.id}
     >
       <span className="wb-vf-body">
-        {lead}
+        {pickable ? (
+          <button
+            type="button"
+            className="wb-vf-lead"
+            data-testid="wb-insp-pick"
+            aria-label={`Choose a token for ${name}`}
+            aria-haspopup="dialog"
+            onClick={onOpenPicker}
+          >
+            {lead}
+          </button>
+        ) : (
+          lead
+        )}
         {row.editable ? (
           <input
             data-testid="wb-insp-input"

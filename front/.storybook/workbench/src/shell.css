@@ -7000,3 +7000,27 @@ tr[data-result='needs-human'] .wb-a11y-note {
   width: 16px;
   height: 12px;
 }
+
+/* A text value's glyph: opens the token picker. */
+.wb-shell button.wb-vf-lead {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  min-height: 0;
+  margin-left: -4px;
+  padding: 0;
+  color: var(--wb-muted);
+  background: none;
+  border: 0;
+  border-radius: var(--wb-radius);
+}
+
+.wb-shell button.wb-vf-lead:hover,
+.wb-shell button.wb-vf-lead:focus-visible {
+  color: var(--wb-accent);
+  background: var(--wb-bg);
+}
+
+.wb-vf-lead > .wb-icon {
+  color: inherit;
+}
