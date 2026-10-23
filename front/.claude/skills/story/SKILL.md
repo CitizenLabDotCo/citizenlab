@@ -27,27 +27,28 @@ A component name (`Button`), its folder, or a heal task whose `check:` line name
 - `Default` comes first. Export names in PascalCase, one state each: `Hover`, `Focus`, `Active`, `Disabled`, `Error`, `Loading`, `Empty`, `LongContent`, `Open`, `RTL`.
 - **Hover and Focus** use `storybook-addon-pseudo-states` on the element that carries the style: `parameters: { pseudo: { hover: ['button'] } }`, `{ focusVisible: ['button'] }`; for an input that styles `:focus`, set both `focus` and `focusVisible` on the control. When the ring hangs on a class the addon cannot set (a focus-visible class), use a `play` step with `userEvent.tab()` instead.
 - **RTL** uses the `ar` language global, which sets the theme's `isRtl` as the app does: `globals: { lang: 'ar' }`. Never wrap a story in `dir="rtl"`: with both, flex direction flips twice.
-- Data: the stories run with MSW (`.storybook/mockServer.ts`); a story that needs other data sets `parameters.mockEndpoints` the way `IdeaCard` does.
-- Values in story-only wrappers come from tokens too (`t.space[4]`), so `ds:lint` stays quiet.
+- Data: the stories run with MSW (`.storybook/mockServer.ts`); a story that needs other data sets `parameters.msw` (built with `utils/storybook/mockEndpoints`) the way `IdeaCard` does.
+- Values in story-only wrappers come from tokens too, so `ds:lint` stays quiet: `var(--gv-…)` in stories under `app/component-library/` (that folder may not import `t` from `design-system/`, see step 6 of the `heal` skill), `t.space[4]` only in stories under `app/components/UI/` and `app/components/admin/`.
 
 ## Steps
 
 - [ ] 1. `git status --short` (stage only your files later). Read the component and its existing stories; list the states its props and styles support.
-- [ ] 2. `npm run storybook` in another terminal (port 6006), then `npm run ds:visual -- --baseline <scratch>/before`.
+- [ ] 2. Start Storybook in another terminal with `npx storybook dev -p 6006 --ci --no-open` (`npm run storybook` first runs `ds:prepare`, which rewrites committed outputs), then `npm run ds:visual -- --baseline <scratch>/before`.
 - [ ] 3. Write the stories.
 - [ ] 4. Check each new state against `Default` by eye in Storybook, at 1280 and 390 wide.
 - [ ] 5. Checks:
   ```
+  npm run ds:a11y -- --stories '<story id prefix>--*'
   npm run ds:check
   npx jest <component folder>
   npm run typecheck
   npm run ds:visual -- --compare <scratch>/before --summary <scratch>/visual.json
   ```
   The compare must show only the new stories (`no baseline screenshot`) and no error. Existing stories must not change.
-  `ds:check` passes unless the committed `a11y-results.json` has a new critical axe violation (one not in `scripts/design-system/a11y-known.json`); if your change fixes a known one, remove its entry there.
+  `ds:check` only reads the committed `a11y-results.json`, so `ds:a11y` runs first (Storybook running on port 6006) to record axe on the stories your change touches; commit `a11y-results.json` with the change. `ds:check` then passes unless it has a new critical axe violation (one not in `scripts/design-system/a11y-known.json`); if your change fixes a known one, remove its entry there.
 - [ ] 6. Commit:
   ```
-  git add <the stories file>
+  git add <the stories file> .storybook/static/a11y-results.json
   git commit
   ```
 

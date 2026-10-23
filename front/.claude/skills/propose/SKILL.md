@@ -16,7 +16,7 @@ propose [· base <ref>] [· review link <URL>]
 ## Stop conditions
 
 - **Draft only.** Never run `gh pr`, never call the GitHub API to create or edit a pull request, issue, comment or label. Hand the text to the person.
-- **Numbers from files, not memory.** Every number comes from `design-scan.summary.json`, `design-changes.json` or the Review page block. If a file is stale (its `commit` is not `HEAD`), refresh it first or say so.
+- **Numbers from files, not memory.** Every number comes from `design-scan.summary.json`, `design-changes.json` or the Review page block. If a file is stale (`commit` in the summary or `head` in the changes file is not `HEAD`), refresh it first or say so.
 - **Wording.** No em dashes. Accessibility: "checked", "reviewed on <date>", never "compliant". Say the work is AI-assisted.
 
 ## Steps

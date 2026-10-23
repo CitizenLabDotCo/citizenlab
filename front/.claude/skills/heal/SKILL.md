@@ -64,13 +64,14 @@ Stop, change nothing (or revert what you changed), and report why with the evide
   ```
   The first prints the components with uncommitted edits (library, `UI/<Name>`, `admin/<Name>`); leave out the files other people had in step 1. More than one of yours is stop 3, unless the others only gained a spacing prop at a call site. In the second, every changed line is a style value, a token import, a story, or a call-site spacing prop; anything else (a handler, a condition, copy, a prop of the component's API) is stop 2. Then, in this order:
   ```
+  npm run ds:a11y -- --stories '<story prefix>--*'
   npm run ds:check
   npx jest <component folder>
   npm run typecheck
   npm run ds:visual -- --compare <scratch>/before --summary <scratch>/visual.json
   npm run ds:visual -- --compare <scratch>/before --stories '<story prefix>--*' --mode redesign
   ```
-  On a small machine stop Storybook while `typecheck` runs; the two together run out of memory. The compare counts every changed pixel, so a corner radius off by a few px shows. A mode safe heal shows no diff at all; a story added or changed in step 6 shows as `no baseline screenshot` or a diff in that story only. Anything else is stop 7. `ds:check` passes unless the committed `a11y-results.json` has a new critical axe violation (one not in `scripts/design-system/a11y-known.json`); if your change fixes a known one, remove its entry there. Do not let `ds:visual` overwrite the committed `.storybook/static/visual-summary.json` during a heal (that is what `--summary` is for).
+  On a small machine stop Storybook while `typecheck` runs; the two together run out of memory. The compare counts every changed pixel, so a corner radius off by a few px shows. A mode safe heal shows no diff at all; a story added or changed in step 6 shows as `no baseline screenshot` or a diff in that story only. Anything else is stop 7. `ds:check` only reads the committed `a11y-results.json`, so `ds:a11y` runs first (Storybook running on port 6006) to record axe on the stories your change touches; commit `a11y-results.json` with the change. `ds:check` then passes unless it has a new critical axe violation (one not in `scripts/design-system/a11y-known.json`); if your change fixes a known one, remove its entry there. Do not let `ds:visual` overwrite the committed `.storybook/static/visual-summary.json` during a heal (that is what `--summary` is for).
 - [ ] 8. `npm run ds:scan` again and print the score after (command of step 2). `design-scan.summary.json` changed: it goes into the heal commit.
 - [ ] 9. Screenshot the healed story after, in both modes, with `ds:visual` (it waits for `play` steps; a fixed timeout catches spinners):
   ```
@@ -80,7 +81,7 @@ Stop, change nothing (or revert what you changed), and report why with the evide
   Copy `desktop__<story id>.png` and `desktop__<story id>__redesign.png` to `.storybook/static/heals/<sha>/after-today.png` and `after-redesign.png`, next to the before shots of step 5.
 - [ ] 10. Commit only your files:
   ```
-  git add <component files> <call-site files> <stories> .storybook/static/design-scan.summary.json .storybook/static/heals/<sha>/
+  git add <component files> <call-site files> <stories> .storybook/static/design-scan.summary.json .storybook/static/a11y-results.json .storybook/static/heals/<sha>/
   git commit
   ```
 

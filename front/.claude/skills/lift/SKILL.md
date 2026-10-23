@@ -26,20 +26,21 @@ or a name with its folder. To choose what to lift, rank the local pieces of `bac
 ## Steps
 
 - [ ] 1. `git status --short`. `npm run ds:scan`. Note the page's findings count for the original file.
-- [ ] 2. `npm run storybook` (port 6006); `npm run ds:visual -- --baseline <scratch>/before`. Screenshot the route where it shows, if you have the platform running.
-- [ ] 3. Create `app/component-library/components/<Name>/index.tsx`: the component, values read from `t` (`design-system/tokens/tokens`), `{...gvTag('<Name>')}` on its root element (`component-library/utils/gvTag`). Export it from `app/component-library/index.tsx`.
+- [ ] 2. Start Storybook in another terminal with `npx storybook dev -p 6006 --ci --no-open` (`npm run storybook` first runs `ds:prepare`, which rewrites committed outputs); `npm run ds:visual -- --baseline <scratch>/before`. Screenshot the route where it shows, if you have the platform running.
+- [ ] 3. Create `app/component-library/components/<Name>/index.tsx`: the component, values in styled templates `var(--gv-…)` (files in `app/component-library/` may not import `t` from `design-system/`: dependency-cruiser `no-import-to-component-library`, see step 6 of the `heal` skill), `{...gvTag('<Name>')}` on its root element (`component-library/utils/gvTag`). Export it from `app/component-library/index.tsx`.
 - [ ] 4. Stories: `<Name>.stories.tsx`, `title: 'Components/<Category>/<Name>'`, `tags: ['bo']`, every state (follow the `story` skill).
 - [ ] 5. Replace the original: the old file imports the library component (or the old file goes and its importers switch). Nothing else on the page changes.
 - [ ] 6. Checks:
   ```
+  npm run ds:a11y -- --stories '<story id prefix>--*'
   npm run ds:check
   npx jest app/component-library/components/<Name> <original folder>
   npm run typecheck
   npm run ds:visual -- --compare <scratch>/before --summary <scratch>/visual.json
   npm run ds:scan
   ```
-  The compare shows only the new stories. The scan lists `<Name>` as a component with its usages. `ds:check` passes unless the committed `a11y-results.json` has a new critical axe violation (one not in `scripts/design-system/a11y-known.json`); if your change fixes a known one, remove its entry there.
-- [ ] 7. Commit only your files, with `.storybook/static/design-scan.summary.json`.
+  The compare shows only the new stories. The scan lists `<Name>` as a component with its usages. `ds:check` only reads the committed `a11y-results.json`, so `ds:a11y` runs first (Storybook running on port 6006) to record axe on the stories your change touches; commit `a11y-results.json` with the change. `ds:check` then passes unless it has a new critical axe violation (one not in `scripts/design-system/a11y-known.json`); if your change fixes a known one, remove its entry there.
+- [ ] 7. Commit only your files, with `.storybook/static/design-scan.summary.json` and `.storybook/static/a11y-results.json`.
 
 ## Commit message
 

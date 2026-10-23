@@ -27,10 +27,10 @@ The ones that matter for the component's type, from WCAG 2.2 and the 2.1 basics:
 
 ## Steps
 
-- [ ] 1. `npm run storybook` (port 6006). List the component's stories in `http://localhost:6006/index.json`.
+- [ ] 1. Start Storybook with `npx storybook dev -p 6006 --ci --no-open` (`npm run storybook` first runs `ds:prepare`, which rewrites committed outputs). List the component's stories in `http://localhost:6006/index.json`.
 - [ ] 2. axe: `npm run ds:a11y -- --url http://localhost:6006 --stories '<story id prefix>--*'` (the other stories keep their results), then read the component's stories in `.storybook/static/a11y-results.json`: violations by rule and impact, `focusable`, and `play` for stories with a play function.
 - [ ] 3. Contrast: the text and background tokens the component uses (Tokens panel, or its findings in `design-scan.json`), in both modes, from `tokens.meta.json` values. 4.5:1 for text, 3:1 for large text and non-text parts.
-- [ ] 4. Keyboard: drive each interactive story with Tab, Shift+Tab, Enter, Space, Escape and the arrows its pattern needs; record focus order and what happened. A keyboard story is a `Keyboard` story whose `play` function uses `userEvent.tab()` and `expect(...).toHaveFocus()`; adding one is a story change (separate commit, then `ds:visual --stories` on the file to show the other stories did not move, and `ds:a11y --stories '*--keyboard'`). The A11y panel shows "keyboard tested" only when a `Keyboard` story's play passed.
+- [ ] 4. Keyboard: drive each interactive story with Tab, Shift+Tab, Enter, Space, Escape and the arrows its pattern needs; record focus order and what happened. A keyboard story is a `Keyboard` story whose `play` function uses `userEvent.tab()` and `expect(...).toHaveFocus()`; adding one is a story change (separate commit, then `npm run ds:visual -- --stories '<story id prefix>--*'` to show the other stories did not move, and `npm run ds:a11y -- --stories '*--keyboard'`). The A11y panel shows "keyboard tested" only when a `Keyboard` story's play passed.
 - [ ] 5. Screenshot each state at 1280 and 390 and in the `ar` language (RTL); judge reflow, focus visibility and target size.
 - [ ] 6. Write `a11y.json`:
   ```json
@@ -45,7 +45,7 @@ The ones that matter for the component's type, from WCAG 2.2 and the 2.1 basics:
   }
   ```
   `result`: `pass`, `fail`, `n/a`, `needs-human`. `confidence`: `high` when a computed check or a keyboard run backs it, `medium` when judged from a screenshot, `low` when inferred. What a model cannot settle (meaningful alternative text, whether an error message helps, cognitive load) is `needs-human`.
-- [ ] 7. `npm run ds:check`. It passes while every critical axe violation in a `Components/` story is in `scripts/design-system/a11y-known.json`. This skill changes no component code, so a critical your run of step 2 finds that is not on the list was there before: add its story id and rule to the list and mark its criterion `fail` in the checklist (the list is no excuse). A listed one that no longer fails fails the check: remove its entry. Then commit only `a11y.json`, plus `a11y-results.json` and `a11y-known.json` when they changed.
+- [ ] 7. `npm run ds:check`. It passes while every critical axe violation in a `Components/` story is in `scripts/design-system/a11y-known.json`. This skill changes no component code, so a critical your run of step 2 finds that is not on the list was there before: mark its criterion `fail` in the checklist and report it. Add its story id and rule to the list only when a person agrees, and name them in the commit body (`Known critical added with <name>'s agreement: <story id> <rule>`); without that, leave `ds:check` red and stop. The list is no excuse. A listed one that no longer fails fails the check: remove its entry. Then commit only `a11y.json`, plus `a11y-results.json` and `a11y-known.json` when they changed.
 
 ## Commit message
 
