@@ -1,5 +1,10 @@
 import React from 'react';
 
+import { expect, userEvent, within } from 'storybook/test';
+// eslint-plugin-storybook 0.8 knows expect from @storybook/test, not from
+// storybook/test (Storybook 10), so it flags every expect here.
+/* eslint-disable storybook/use-storybook-expect */
+
 import Dropdown, { DropdownListItem } from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -103,4 +108,21 @@ export const RTL: Story = {
       />
     </Frame>
   ),
+};
+
+// Tab moves through the items in order, Shift+Tab back.
+export const Keyboard: Story = {
+  render: Open.render,
+  play: async ({ canvasElement }) => {
+    const [rename, duplicate, archive] =
+      within(canvasElement).getAllByRole('button');
+    await userEvent.tab();
+    await expect(rename).toHaveFocus();
+    await userEvent.tab();
+    await expect(duplicate).toHaveFocus();
+    await userEvent.tab();
+    await expect(archive).toHaveFocus();
+    await userEvent.tab({ shift: true });
+    await expect(duplicate).toHaveFocus();
+  },
 };
