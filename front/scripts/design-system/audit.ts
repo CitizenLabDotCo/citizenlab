@@ -1310,7 +1310,11 @@ const main = async () => {
     console.warn(`ds:audit: warning: not visiting ${r.route}: ${r.reason}`)
   );
   const shadowed = new Set(notes.shadowed.map((r) => r.route));
-  const notReached = [...planned.notReached, ...notes.shadowed];
+  const planless = new Set(planned.notReached.map((r) => r.route));
+  const notReached = [
+    ...planned.notReached,
+    ...notes.shadowed.filter((r) => !planless.has(r.route)),
+  ];
   const visits = planned.visits
     .filter((v) => !shadowed.has(v.route))
     .map((v) => ({
