@@ -516,19 +516,17 @@ const galleryChecks = async (page: any, base: string, failures: string[]) => {
       state: 'attached',
       timeout: 30000,
     });
-  } catch {
-    failures.push('no gallery card fell back to a frame of its own');
-  }
-  await page.$eval('[data-testid="wb-thumb"][data-isolated]', (el: Element) =>
-    el.scrollIntoView({ block: 'center' })
-  );
-  try {
+    await page.$eval('[data-testid="wb-thumb"][data-isolated]', (el: Element) =>
+      el.scrollIntoView({ block: 'center' })
+    );
     await page.waitForSelector(
       '[data-testid="wb-thumb"][data-isolated][data-state="rendered"] iframe',
       { state: 'attached', timeout: 30000 }
     );
   } catch {
-    failures.push('an isolated gallery card did not render in its own frame');
+    failures.push(
+      'no gallery card fell back to a frame of its own and rendered in it'
+    );
   }
   const own = await page.evaluate(() => {
     const cards = Array.from(

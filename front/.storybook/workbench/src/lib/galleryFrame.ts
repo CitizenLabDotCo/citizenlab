@@ -299,7 +299,10 @@ export const createGalleryRenderer = (
       item.key = renderKey;
       delete el.dataset.pending;
       if (old) retire(old);
-      setState(item, errored && !hasContent(el) ? 'error' : 'rendered');
+      // The filters hid it and the globals changed while it rendered: like
+      // any hidden stale card, it waits on the skeleton to render again.
+      if (!item.present && renderKey !== key) setState(item, 'loading');
+      else setState(item, errored && !hasContent(el) ? 'error' : 'rendered');
     } catch {
       if (!disposed) {
         item.key = renderKey;

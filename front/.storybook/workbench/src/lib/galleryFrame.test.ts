@@ -239,6 +239,25 @@ describe('createGalleryRenderer', () => {
   });
 });
 
+describe('createGalleryRenderer, a card hidden mid-render', () => {
+  it('never shows it with the globals it started with', async () => {
+    const { states, started, renderer } = setup(['a', 'b']);
+    await until(() => started.length === 2);
+    renderer.layout(entries(['a']), 1);
+    renderer.setGlobals({ ...GLOBALS, city: 'gent' });
+    await until(() => states.a === 'rendered' && started.length === 3);
+    await new Promise((r) => setTimeout(r, 50));
+    const b = document.querySelector<HTMLElement>('[data-gv-thumb="b"]');
+    // Still on the skeleton it started on.
+    expect(states.b).toBeUndefined();
+    expect(b?.hasAttribute('data-shown')).toBe(false);
+    renderer.layout(entries(['a', 'b']), 1);
+    expect(b?.hasAttribute('data-shown')).toBe(false);
+    await until(() => started.length === 4 && states.b === 'rendered');
+    renderer.dispose();
+  });
+});
+
 describe('reactContainerOf', () => {
   it('follows the fiber of a node up to its root container', () => {
     const container = document.createElement('div');

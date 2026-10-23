@@ -34,6 +34,11 @@ const FRAME_SRC = '../iframe.html?viewMode=story';
 // Cards this close to the viewport render first.
 const NEAR = '600px';
 
+// Stories the shared frame cannot show, for the session: their cards go
+// straight to a frame of their own, and a gallery of only such cards
+// (Pages) boots no shared frame at all.
+const ISOLATED = new Set<string>();
+
 type Props = {
   globals: FrameGlobals;
   // Width each story is laid out at (see StoryThumb).
@@ -50,6 +55,7 @@ const GalleryFrame = ({ globals, frameWidth, children }: Props) => {
   const boxes = useRef(new Map<string, HTMLElement>());
   const near = useRef(new Set<string>());
   const [states, setStates] = useState<Record<string, ThumbState>>({});
+  const [ids, setIds] = useState<string[]>([]);
   const [size, setSize] = useState({ k: 1, height: 0 });
   const globalsRef = useRef(globals);
   globalsRef.current = globals;
@@ -63,6 +69,7 @@ const GalleryFrame = ({ globals, frameWidth, children }: Props) => {
     const k = frameScale(origin.width, frameWidth);
     const entries: (GalleryEntry & { el: HTMLElement })[] = [];
     boxes.current.forEach((el, id) => {
+      if (ISOLATED.has(id)) return;
       const card = el.parentElement;
       const item = card?.parentElement;
       if (!card || !item || !el.isConnected) return;
@@ -153,6 +160,10 @@ const GalleryFrame = ({ globals, frameWidth, children }: Props) => {
         intersect.current?.observe(el);
       }
       schedule();
+      setIds((now) => {
+        const next = Array.from(boxes.current.keys());
+        return next.join() === now.join() ? now : next;
+      });
     },
     [schedule]
   );
@@ -166,7 +177,10 @@ const GalleryFrame = ({ globals, frameWidth, children }: Props) => {
     renderer.current = createGalleryRenderer(
       win,
       globalsRef.current,
-      (id, state) => setStates((s) => ({ ...s, [id]: state }))
+      (id, state) => {
+        if (state === 'isolated') ISOLATED.add(id);
+        setStates((s) => ({ ...s, [id]: state }));
+      }
     );
     renderer.current.setNear(new Set(near.current));
     backdrop();
@@ -194,16 +208,30 @@ const GalleryFrame = ({ globals, frameWidth, children }: Props) => {
     return () => observer.disconnect();
   }, [backdrop]);
 
+  const stateOf = useCallback(
+    (id: string): ThumbState =>
+      states[id] ?? (ISOLATED.has(id) ? 'isolated' : 'loading'),
+    [states]
+  );
+  const slot = useMemo<GallerySlot>(
+    () => ({ stateOf, register }),
+    [stateOf, register]
+  );
+
+  // Only once a card can show in it: with every card in a frame of its
+  // own, the shared one would only compete with them.
+  const shared = ids.some((id) => stateOf(id) !== 'isolated');
+  useEffect(() => {
+    if (shared) return;
+    renderer.current?.dispose();
+    renderer.current = null;
+  }, [shared]);
+
   // The frame cannot be focused (a story that focuses itself would take
   // focus from the page). React 18 does not know the attribute.
   useEffect(() => {
     frame.current?.setAttribute('inert', '');
-  }, []);
-
-  const slot = useMemo<GallerySlot>(
-    () => ({ stateOf: (id) => states[id] ?? 'loading', register }),
-    [states, register]
-  );
+  }, [shared]);
 
   // The card under the pointer lifts; its story lifts with it.
   const hoverAt = (target: EventTarget | null) => {
@@ -220,21 +248,23 @@ const GalleryFrame = ({ globals, frameWidth, children }: Props) => {
         onPointerLeave={() => hoverAt(null)}
       >
         {children}
-        <iframe
-          ref={frame}
-          className="wb-gallery-frame"
-          src={FRAME_SRC}
-          title="Story previews"
-          tabIndex={-1}
-          aria-hidden="true"
-          data-testid="wb-gallery-frame"
-          onLoad={onLoad}
-          style={{
-            width: `${frameWidth}px`,
-            height: `${size.height / size.k}px`,
-            transform: `scale(${size.k})`,
-          }}
-        />
+        {shared && (
+          <iframe
+            ref={frame}
+            className="wb-gallery-frame"
+            src={FRAME_SRC}
+            title="Story previews"
+            tabIndex={-1}
+            aria-hidden="true"
+            data-testid="wb-gallery-frame"
+            onLoad={onLoad}
+            style={{
+              width: `${frameWidth}px`,
+              height: `${size.height / size.k}px`,
+              transform: `scale(${size.k})`,
+            }}
+          />
+        )}
       </div>
     </GalleryContext.Provider>
   );
