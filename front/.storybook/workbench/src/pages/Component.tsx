@@ -28,6 +28,7 @@ import {
   parseZoom,
   returnHash,
   storyOfComponent,
+  withParams,
 } from '../lib/nesting';
 import { useHash } from '../lib/router';
 import { groupOfStory, Section, StoryRef } from '../lib/stories';
@@ -82,6 +83,8 @@ const storeTab = (t: Tab) => {
 // The history entry an open pushed: Back from the opened component can go
 // back to it rather than push the pattern again.
 const OPENED = 'wbOpened';
+// About three seconds of frames for focus to find its target.
+const FOCUS_TRIES = 180;
 
 // The selection a return asks for, read when the story comes in.
 const restoreSel = () => parsePath(paramOf(window.location.hash, 'sel'));
@@ -149,41 +152,57 @@ const Component = ({
   const latest = useRef({ groups, storyId, section, toolbar, setToolbar });
   latest.current = { groups, storyId, section, toolbar, setToolbar };
 
+  // Where focus goes once the next story is in: the back chip after an
+  // open, the layer path after a return.
+  const focusNext = useRef<'chip' | 'chain' | null>(null);
+
+  // The page an instance opens, or null: no story, or this page's own.
+  const targetOf = useCallback((instance: Element) => {
+    const l = latest.current;
+    const name = componentOf(instance);
+    if (!name || !l.groups) return null;
+    const target = storyOfComponent(l.groups, name);
+    const here = groupOfStory(l.groups, l.storyId);
+    return target && target.group !== here ? target : null;
+  }, []);
+
   // Open the page of the library component `instance` is the root of, the
   // way Figma goes to the main component: this entry keeps the selection
   // (`at`) and zoom, the new one names the way back.
-  const open = useCallback((instance: Element, at: Element | null) => {
-    const l = latest.current;
-    const name = componentOf(instance);
-    if (!name || !l.groups) return;
-    const target = storyOfComponent(l.groups, name);
-    const here = groupOfStory(l.groups, l.storyId);
-    if (!target || target.group === here) return;
-    const hashes = openHashes(
-      window.location.hash,
-      {
-        section: l.section,
-        storyId: l.storyId,
-        path: at ? pathOf(at) : null,
-        zoom: l.toolbar.zoom,
-      },
-      target.storyId
-    );
-    window.history.replaceState(window.history.state, '', hashes.here);
-    window.location.hash = hashes.there;
-    window.history.replaceState(
-      { ...(window.history.state ?? {}), [OPENED]: true },
-      '',
-      window.location.hash
-    );
-  }, []);
+  const open = useCallback(
+    (instance: Element, at: Element | null) => {
+      const l = latest.current;
+      const target = targetOf(instance);
+      if (!target) return;
+      focusNext.current = 'chip';
+      const hashes = openHashes(
+        window.location.hash,
+        {
+          section: l.section,
+          storyId: l.storyId,
+          path: at ? pathOf(at) : null,
+          zoom: l.toolbar.zoom,
+        },
+        target.storyId
+      );
+      window.history.replaceState(window.history.state, '', hashes.here);
+      window.location.hash = hashes.there;
+      window.history.replaceState(
+        { ...(window.history.state ?? {}), [OPENED]: true },
+        '',
+        window.location.hash
+      );
+    },
+    [targetOf]
+  );
   const pickRef = useRef<(el: Element | null) => void>(() => undefined);
   const onDouble = useCallback(
     (instance: Element) => {
+      if (!targetOf(instance)) return;
       pickRef.current(instance);
       open(instance, instance);
     },
-    [open]
+    [open, targetOf]
   );
   const selection = useCanvasSelection(
     frame,
@@ -195,14 +214,59 @@ const Component = ({
   );
   pickRef.current = selection.pick;
 
-  // Back on a pattern: the zoom it was left at.
+  // Back on a pattern: the zoom it was left at. The selection is taken by
+  // now (useCanvasSelection reads `sel` first), so both leave the hash: a
+  // reload or a copied link starts fresh.
   useEffect(() => {
-    const zoom = parseZoom(paramOf(window.location.hash, 'zoom'));
+    const hash = window.location.hash;
+    const zoom = parseZoom(paramOf(hash, 'zoom'));
     const l = latest.current;
     if (zoom !== null && zoom !== l.toolbar.zoom) {
       l.setToolbar({ ...l.toolbar, zoom });
     }
+    if (paramOf(hash, 'sel') !== null || paramOf(hash, 'zoom') !== null) {
+      window.history.replaceState(
+        window.history.state,
+        '',
+        withParams(hash, { sel: null, zoom: null })
+      );
+    }
   }, [storyId]);
+
+  // Focus follows an open to the back chip instead of falling to the page
+  // (the chip shows once the hash with `from` is read).
+  useEffect(() => {
+    if (focusNext.current !== 'chip') return undefined;
+    let tries = 0;
+    let raf = 0;
+    const attempt = () => {
+      const el = document.querySelector<HTMLElement>(
+        '[data-testid="wb-back-chip"]'
+      );
+      if (el) {
+        focusNext.current = null;
+        el.focus();
+      } else if (++tries < FOCUS_TRIES) {
+        raf = window.requestAnimationFrame(attempt);
+      }
+    };
+    attempt();
+    return () => window.cancelAnimationFrame(raf);
+  }, [storyId]);
+
+  // A return focuses the layer path once the pattern's selection is in,
+  // not the path the opened component still showed.
+  const leftFrom = useRef<Element | null>(null);
+  useEffect(() => {
+    const el = selection.selected;
+    if (focusNext.current !== 'chain' || !el || el === leftFrom.current) {
+      return;
+    }
+    focusNext.current = null;
+    document
+      .querySelector<HTMLElement>('[data-testid="wb-insp-chain"]')
+      ?.focus();
+  }, [selection.selected]);
   const {
     edits,
     add: addEdit,
@@ -254,7 +318,7 @@ const Component = ({
   const split = view === 'split';
   const back = from
     ? {
-        href: returnHash(hash, from),
+        href: returnHash(from),
         name: groupOfStory(groups, from.storyId)?.name ?? from.storyId,
       }
     : null;
@@ -294,9 +358,16 @@ const Component = ({
             data-testid="wb-back-chip"
             href={back.href}
             onClick={(e) => {
-              if (!window.history.state?.[OPENED]) return;
               e.preventDefault();
-              window.history.back();
+              focusNext.current = 'chain';
+              leftFrom.current = selection.selected;
+              if (window.history.state?.[OPENED]) {
+                window.history.back();
+                return;
+              }
+              // Read now: the hash may have changed since the render.
+              const to = decodeReturn(paramOf(window.location.hash, 'from'));
+              window.location.hash = to ? returnHash(to) : back.href;
             }}
           >
             <span aria-hidden="true">←</span>

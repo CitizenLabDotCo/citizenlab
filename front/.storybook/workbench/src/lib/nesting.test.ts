@@ -189,14 +189,15 @@ describe('the return', () => {
     );
     expect(paramOf(here, 'sel')).toBe('0.0.1.0');
     expect(paramOf(here, 'zoom')).toBe('1.5');
-    expect(paramOf(here, 'o')).toBe('abc');
+    // Edits made on the component page would read as an old link on Back.
+    expect(paramOf(here, 'o')).toBeNull();
     expect(
       there.startsWith('#/components/components-actions-button--primary?')
     ).toBe(true);
     expect(paramOf(there, 'o')).toBe('abc');
     expect(decodeReturn(paramOf(there, 'from'))).toEqual(back);
-    expect(returnHash(there, back)).toBe(
-      '#/patterns/homepagebuilder-spotlight--standard?o=abc&sel=0.0.1.0&zoom=1.5'
+    expect(returnHash(back)).toBe(
+      '#/patterns/homepagebuilder-spotlight--standard?sel=0.0.1.0&zoom=1.5'
     );
   });
 

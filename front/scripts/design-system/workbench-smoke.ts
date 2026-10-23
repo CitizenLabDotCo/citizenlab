@@ -415,7 +415,7 @@ export const resolveStaticPath = (
 };
 
 const serve = (root: string, port = 0): Promise<http.Server> =>
-  new Promise((resolve) => {
+  new Promise((resolve, reject) => {
     const server = http.createServer((req, res) => {
       let file = resolveStaticPath(root, req.url ?? '/');
       if (!file) {
@@ -436,6 +436,7 @@ const serve = (root: string, port = 0): Promise<http.Server> =>
         .on('error', () => res.destroy())
         .pipe(res);
     });
+    server.on('error', reject);
     server.listen(port, '127.0.0.1', () => resolve(server));
   });
 
@@ -1670,6 +1671,19 @@ const nestingChecks = async (
     }
   };
   await kept('Open');
+  const focused = (testId: string) =>
+    page
+      .waitForFunction(
+        (id: string) =>
+          document.activeElement?.getAttribute('data-testid') === id,
+        testId,
+        { timeout: 5000 }
+      )
+      .then(() => true)
+      .catch(() => false);
+  if (!(await focused('wb-back-chip'))) {
+    failures.push('nesting: focus is not on the back chip after Open');
+  }
   if (shots.back) {
     await page.waitForTimeout(400);
     await page.screenshot({ path: path.resolve(shots.back) });
@@ -1708,6 +1722,13 @@ const nestingChecks = async (
     return;
   }
   await kept('Back');
+  if (!(await focused('wb-insp-chain'))) {
+    failures.push('nesting: focus is not on the layer path after Back');
+  }
+  const left = hashOf(page.url());
+  if (/[?&](sel|zoom)=/.test(left)) {
+    failures.push(`nesting: the pattern hash keeps the return: ${left}`);
+  }
   console.log(`nesting: ${before} -> ${chip} -> back`);
 };
 

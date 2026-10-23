@@ -449,6 +449,7 @@ const Design = ({
             <nav
               className="wb-chain"
               aria-label="Layer path"
+              tabIndex={-1}
               data-testid="wb-insp-chain"
             >
               <ol>

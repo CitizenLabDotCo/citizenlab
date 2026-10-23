@@ -254,18 +254,22 @@ export const storyHash = (
 
 // Opening a component from a pattern: the pattern's entry gets the
 // selection and zoom (`sel`, `zoom`), so Back finds them, and the
-// component's hash names the way back (`from`).
+// component's hash names the way back (`from`). The pattern's entry drops
+// the share link (`o`): edits made meanwhile would read as an older link
+// pasted on Back; the overrides hook writes the session's own back in.
 export const openHashes = (hash: string, r: ReturnTo, storyId: string) => ({
   here: withParams(hash, {
+    o: null,
     sel: r.path ? pathText(r.path) : null,
     zoom: zoomText(r.zoom),
   }),
   there: storyHash(hash, 'components', storyId, { from: encodeReturn(r) }),
 });
 
-// The back chip's link when there is no history entry to go back to.
-export const returnHash = (hash: string, r: ReturnTo) =>
-  storyHash(hash, r.section, r.storyId, {
+// The back chip's link when there is no history entry to go back to; no
+// share link, for the same reason.
+export const returnHash = (r: ReturnTo) =>
+  storyHash('', r.section, r.storyId, {
     sel: r.path ? pathText(r.path) : null,
     zoom: zoomText(r.zoom),
   });
