@@ -987,7 +987,7 @@ export const firstSafe = async (
   try {
     matches = await page.$$(sel);
   } catch (e) {
-    log(`--open step "${sel}" is not a valid selector (${firstLine(e)})`);
+    log(`--open step "${sel}" could not be queried (${firstLine(e)})`);
     return undefined;
   }
   for (const h of matches) {
