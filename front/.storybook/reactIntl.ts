@@ -68,10 +68,16 @@ export const loadMessages = async (
     return undefined;
   }
   const lang = locale as StorybookLocale;
-  loading[lang] ??= messageFiles[lang]().then(([platform, admin]) => ({
-    ...platform.default,
-    ...admin.default,
-  }));
+  // A failed download is forgotten, so the next render tries again.
+  loading[lang] ??= messageFiles[lang]()
+    .then(([platform, admin]) => ({
+      ...platform.default,
+      ...admin.default,
+    }))
+    .catch((error) => {
+      delete loading[lang];
+      throw error;
+    });
   return loading[lang];
 };
 

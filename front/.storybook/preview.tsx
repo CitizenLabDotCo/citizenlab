@@ -76,8 +76,9 @@ const modeDecorator = (Story: () => JSX.Element, context: StoryContext) => {
 
 // The a11y addon runs axe (a 546 KB chunk and a few hundred ms of CPU)
 // after every render. Only Storybook's own a11y panel shows that result,
-// so a frame embedded elsewhere (the workbench gallery, component page and
-// Review) skips it. Standalone frames and the Storybook UI keep the
+// so a frame embedded elsewhere in story view (the workbench component
+// page, Review and isolated gallery cards) skips it; the shared gallery
+// frame renders in docs view, where the addon never runs axe. Standalone frames and the Storybook UI keep the
 // automatic run; ds:a11y brings its own axe either way.
 const embeddedOutsideStorybook = (() => {
   try {
