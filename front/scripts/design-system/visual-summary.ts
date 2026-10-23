@@ -64,6 +64,12 @@ export const PIXELMATCH_OPTIONS = { threshold: 0.1, includeAA: true };
 
 export const isDiff = (px: number, allowPx: number) => px > allowPx;
 
+// Render phases of the Storybook preview (`__STORYBOOK_PREVIEW__.currentRender
+// .phase`) after which nothing more happens to the story: rendered and its
+// play function done, or stopped. A screenshot taken before one of these can
+// miss what the play step or a late data fetch puts on screen.
+export const SETTLED_PHASES = ['finished', 'errored', 'aborted'];
+
 export const buildSummary = (
   stories: number,
   results: { id: string; viewport: string; px?: number; error?: string }[],

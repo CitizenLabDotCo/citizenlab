@@ -4,6 +4,7 @@ import {
   PIXELMATCH_OPTIONS,
   buildSummary,
   isDiff,
+  SETTLED_PHASES,
   parseArgs,
   storyIdsFromIndex,
 } from './visual-summary';
@@ -19,6 +20,12 @@ describe('visual summary', () => {
         },
       })
     ).toEqual(['a--x', 'b--x']);
+  });
+
+  it('waits past play: only finished, errored and aborted are settled', () => {
+    expect(SETTLED_PHASES).toEqual(['finished', 'errored', 'aborted']);
+    expect(SETTLED_PHASES).not.toContain('playing');
+    expect(SETTLED_PHASES).not.toContain('played');
   });
 
   it('requires exactly one mode', () => {

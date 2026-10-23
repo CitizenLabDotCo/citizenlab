@@ -12,6 +12,7 @@ import {
   buildSummary,
   parseArgs,
   PIXELMATCH_OPTIONS,
+  SETTLED_PHASES,
   storyIdsFromIndex,
   VIEWPORTS,
 } from './visual-summary';
@@ -66,6 +67,26 @@ const main = async () => {
           { timeout: 15000 }
         )
         .catch(() => {});
+      // Wait until the preview reports the story rendered and its play
+      // function done. Stories that wait for data in a play step (an app
+      // configuration fetch, say) are only complete from then on.
+      const settled = await page
+        .waitForFunction(
+          (phases: string[]) =>
+            phases.includes(
+              (window as any).__STORYBOOK_PREVIEW__?.currentRender?.phase
+            ),
+          SETTLED_PHASES,
+          { timeout: 20000 }
+        )
+        .then(() => true)
+        .catch(() => false);
+      if (!settled) {
+        const phase = await page.evaluate(
+          () => (window as any).__STORYBOOK_PREVIEW__?.currentRender?.phase
+        );
+        throw new Error(`render not settled after 20s (phase ${phase})`);
+      }
       await page.waitForLoadState('networkidle', { timeout: 2000 }).catch(() => {});
       await page.evaluate(() => (document as any).fonts.ready);
       await page.waitForTimeout(150);
