@@ -19,7 +19,15 @@
 //   others. One that portals out of its element (a modal into
 //   #modal-portal, which every story's decorator renders, so the first one
 //   in the document wins) lands in another card. Those cards fall back to a
-//   frame of their own (`isolated`).
+//   frame of their own (`isolated`). So does a story laid out
+//   `fullscreen`: it fills the viewport, and this one is the grid's height.
+// - Stories share one store and one query client, so two things are per
+//   document, not per card. Cleanup callbacks are kept by story id
+//   (`cleanupStory`): tearing down a card's old render also runs its new
+//   render's cleanups (no story registers any today). And the story
+//   decorator invalidates every query when a story mounts, so each new card
+//   refetches the active queries of the cards before it (all mocked; the
+//   frame cannot reach the query client to skip it).
 import { applyToDocument } from './frame';
 import { Placement, renderOrder } from './gallery';
 
@@ -178,8 +186,9 @@ export const createGalleryRenderer = (
   let hovered: Item | undefined;
   let observer: MutationObserver | undefined;
 
+  // A disposed renderer reports nothing: its frame has gone.
   const setState = (item: Item, state: ThumbState) => {
-    if (item.state === state) return;
+    if (disposed || item.state === state) return;
     item.state = state;
     item.el.toggleAttribute('data-shown', state === 'rendered');
     onState(item.id, state);
@@ -189,7 +198,7 @@ export const createGalleryRenderer = (
   const retire = async (mounted: Mounted) => {
     mounted.el.hidden = true;
     mounted.el.removeAttribute('id');
-    for (let i = 0; mounted.render?.isPending() && i < 1200; i++) {
+    for (let i = 0; !disposed && mounted.render?.isPending() && i < 1200; i++) {
       await wait(POLL_MS);
     }
     if (disposed) return;
@@ -204,7 +213,7 @@ export const createGalleryRenderer = (
   const isolated = (item: Item) => item.state === 'isolated';
 
   const isolate = (item: Item) => {
-    if (item.state === 'isolated') return;
+    if (disposed || item.state === 'isolated') return;
     setState(item, 'isolated');
     item.el.hidden = true;
     if (item.current) retire(item.current);
@@ -249,8 +258,14 @@ export const createGalleryRenderer = (
       const story = await p.loadStory({ storyId: item.id });
       const projectMocks =
         p.storyStoreValue?.projectAnnotations?.parameters?.msw;
-      if (story.parameters?.msw !== projectMocks) return isolate(item);
-      if (disposed || item.state === 'isolated') return;
+      if (disposed) return;
+      if (
+        story.parameters?.msw !== projectMocks ||
+        story.parameters?.layout === 'fullscreen'
+      ) {
+        return isolate(item);
+      }
+      if (item.state === 'isolated') return;
       const el = doc.createElement('div');
       el.className = 'gvg-story';
       el.id = `story--${item.id}`;
@@ -350,7 +365,19 @@ export const createGalleryRenderer = (
     apply();
   };
 
+  // A card the filters hide that rendered with other globals goes back to
+  // the skeleton until it renders again, so it never shows them when it
+  // reappears.
+  const unshowStale = () => {
+    items.forEach((item) => {
+      if (!item.present && item.state === 'rendered' && item.key !== key) {
+        setState(item, 'loading');
+      }
+    });
+  };
+
   const apply = () => {
+    unshowStale();
     if (!preview) return;
     preview.storyStoreValue?.userGlobals.update(wanted);
     // The mode is a root attribute: shown stories switch now, before they
@@ -373,7 +400,7 @@ export const createGalleryRenderer = (
       if (!disposed) start(p);
     } catch {
       failed = true;
-      items.forEach((item) => item.present && isolate(item));
+      if (!disposed) items.forEach((item) => item.present && isolate(item));
     }
   };
   boot();
@@ -386,6 +413,7 @@ export const createGalleryRenderer = (
         item.present = shown.has(item.id);
         if (!item.present) item.el.hidden = true;
       });
+      unshowStale();
       for (const { id, placement, radius } of entries) {
         const item = itemOf(id);
         item.present = true;
