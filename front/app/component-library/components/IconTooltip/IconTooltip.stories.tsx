@@ -1,7 +1,10 @@
 import React from 'react';
 
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within } from 'storybook/test';
+import { expect, userEvent, waitFor, within } from 'storybook/test';
+// eslint-plugin-storybook 0.8 knows expect from @storybook/test, not from
+// storybook/test (Storybook 10), so it flags every expect here.
+/* eslint-disable storybook/use-storybook-expect */
 
 import IconTooltip from '.';
 
@@ -81,4 +84,26 @@ export const RTL: Story = {
       </div>
     ),
   ],
+};
+
+// The tooltip box while it is shown (Tippy keeps it in the DOM while it
+// fades out, with data-state hidden).
+const shownTooltip = (el: HTMLElement) =>
+  el.ownerDocument.querySelector('.tippy-box[data-state="visible"]');
+
+// Tab reaches the icon button and shows the tooltip; Escape hides it.
+export const Keyboard: Story = {
+  args: { content: 'Only admins see this', iconAriaTitle: 'More information' },
+  decorators: Open.decorators,
+  play: async ({ canvasElement }) => {
+    const button = within(canvasElement).getByRole('button');
+    const body = within(canvasElement.ownerDocument.body);
+    await userEvent.tab();
+    await expect(button).toHaveFocus();
+    await waitFor(() =>
+      expect(body.getByText('Only admins see this')).toBeVisible()
+    );
+    await userEvent.keyboard('{Escape}');
+    await waitFor(() => expect(shownTooltip(canvasElement)).toBeNull());
+  },
 };
