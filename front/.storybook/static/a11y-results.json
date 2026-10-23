@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T05:19:23.980Z",
+  "generatedAt": "2026-10-23T05:50:50.671Z",
   "axe": "4.10.2",
   "tags": [
     "wcag2a",
@@ -1012,7 +1012,7 @@
     },
     "components-data-display-table--keyboard": {
       "title": "Components/Data display/Table",
-      "checkedAt": "2026-10-23T05:19:15.518Z",
+      "checkedAt": "2026-10-23T05:50:47.667Z",
       "violations": [
         {
           "id": "button-name",

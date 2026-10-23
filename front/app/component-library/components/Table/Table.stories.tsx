@@ -196,13 +196,16 @@ export const RTL: Story = {
   ),
 };
 
-// Tab stops on the info tooltip of a header. The sortable header itself
-// takes no focus (a clickable th), so the first stop is the tooltip.
+// The info tooltip of a header is reachable by Tab, whatever comes before
+// it. Today the sortable headers take no focus (2.1.1 fails in a11y.json);
+// once they do, they come first and this still holds.
 export const Keyboard: Story = {
   ...WithSortableAndTooltipIcons,
   play: async ({ canvasElement }) => {
     const info = within(canvasElement).getByRole('button');
-    await userEvent.tab();
+    for (let i = 0; i < 10 && document.activeElement !== info; i++) {
+      await userEvent.tab();
+    }
     await expect(info).toHaveFocus();
   },
 };
