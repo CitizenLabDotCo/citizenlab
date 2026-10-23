@@ -1,32 +1,40 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
-import { CLErrors } from 'typings';
+import { CLErrors, Multiloc } from 'typings';
 
-import ProjectContextSection from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection';
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
-import { StyledSectionField } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/styling';
-import generalMessages from 'containers/Admin/projects/project/general/messages';
+import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 
-import { SubSectionTitle } from 'components/admin/Section';
-import SlugInput from 'components/admin/SlugInput';
+import BoSlugInput from 'components/admin/SlugInput/BoSlugInput';
+import Error from 'components/UI/Error';
+import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
+import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
+import SettingsSections from 'components/UI/SettingsModal/SettingsSections';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
+
+import ContextSection from './ContextSection';
+import ResetSection from './ResetSection';
 
 interface Props {
-  spaceId?: string | null;
-  folderId?: string | null;
+  projectId: string;
+  titleMultiloc: Multiloc;
+  spaceId: string | null;
+  folderId: string | null;
   projectInRoot: boolean;
   contextError: boolean;
   slug: string;
   currentSlug: string;
   showSlugErrorMessage: boolean;
   apiErrors: CLErrors;
+  onTitleChange: (titleMultiloc: Multiloc) => void;
   onContextChange: (spaceAndFolderId: SpaceAndFolderId) => void;
   onSlugChange: (slug: string) => void;
 }
 
 const GeneralSection = ({
+  projectId,
+  titleMultiloc,
   spaceId,
   folderId,
   projectInRoot,
@@ -35,32 +43,45 @@ const GeneralSection = ({
   currentSlug,
   showSlugErrorMessage,
   apiErrors,
+  onTitleChange,
   onContextChange,
   onSlugChange,
-}: Props) => (
-  <Box>
-    <ProjectContextSection
-      spaceId={spaceId}
-      folderId={folderId}
-      projectInRoot={projectInRoot}
-      error={contextError}
-      onChange={onContextChange}
-    />
+}: Props) => {
+  const { formatMessage } = useIntl();
 
-    <StyledSectionField>
-      <SubSectionTitle>
-        <FormattedMessage {...generalMessages.url} />
-      </SubSectionTitle>
-      <SlugInput
-        slug={slug}
-        pathnameWithoutSlug="projects"
-        apiErrors={apiErrors}
-        showSlugErrorMessage={showSlugErrorMessage}
-        onSlugChange={onSlugChange}
-        showSlugChangedWarning={slug !== currentSlug}
+  return (
+    <SettingsSections>
+      <SettingsSection title={formatMessage(messages.settingsProjectName)}>
+        <InputMultilocWithLocaleSwitcher
+          id="project-title"
+          type="text"
+          variant="bo"
+          ariaLabel={formatMessage(messages.settingsProjectName)}
+          valueMultiloc={titleMultiloc}
+          onChange={onTitleChange}
+        />
+        <Error apiErrors={apiErrors.title_multiloc} />
+      </SettingsSection>
+      <SettingsSection title={formatMessage(messages.settingsProjectUrl)}>
+        <BoSlugInput
+          slug={slug}
+          pathnameWithoutSlug="projects"
+          apiErrors={apiErrors}
+          showSlugErrorMessage={showSlugErrorMessage}
+          onSlugChange={onSlugChange}
+          showSlugChangedWarning={slug !== currentSlug}
+        />
+      </SettingsSection>
+      <ContextSection
+        spaceId={spaceId}
+        folderId={folderId}
+        projectInRoot={projectInRoot}
+        error={contextError}
+        onChange={onContextChange}
       />
-    </StyledSectionField>
-  </Box>
-);
+      <ResetSection projectId={projectId} />
+    </SettingsSections>
+  );
+};
 
 export default GeneralSection;

@@ -1,10 +1,15 @@
 import React, { KeyboardEvent, useId, useRef, useState } from 'react';
 
-import { Box, IconNames, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconNames,
+  Text,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 import Modal from 'components/UI/Modal';
 
-import { MessageDescriptor } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import NavItem from './NavItem';
 
@@ -13,6 +18,7 @@ export interface SettingsModalSection {
   label: MessageDescriptor;
   icon: IconNames;
   content: React.ReactNode;
+  group?: MessageDescriptor;
 }
 
 interface Props {
@@ -25,6 +31,29 @@ interface Props {
   width?: number | string;
 }
 
+interface SectionGroup {
+  group?: MessageDescriptor;
+  items: SettingsModalSection[];
+}
+
+// A tablist may only contain tabs, so each group gets its own tablist,
+// labelled by the group heading that sits next to it. Sections of the same
+// group are pulled together, so a group never shows up twice.
+const groupSections = (sections: SettingsModalSection[]) =>
+  sections.reduce<SectionGroup[]>((groups, section) => {
+    const existing = groups.find(
+      ({ group }) => group?.id === section.group?.id
+    );
+
+    if (existing) {
+      existing.items.push(section);
+    } else {
+      groups.push({ group: section.group, items: [section] });
+    }
+
+    return groups;
+  }, []);
+
 const SettingsModal = ({
   opened,
   close,
@@ -32,21 +61,26 @@ const SettingsModal = ({
   sections,
   initialSection,
   footer,
-  width = 'min(866px, 94vw)',
+  width = 'min(760px, 94vw)',
 }: Props) => {
+  const { formatMessage } = useIntl();
   const idPrefix = useId();
   const navRef = useRef<HTMLDivElement>(null);
   const [selectedSection, setSelectedSection] = useState(
     initialSection ?? sections[0]?.name
   );
 
+  const groups = groupSections(sections);
+  // Tabs follow the on-screen order, which can differ from `sections`.
+  const orderedSections = groups.flatMap(({ items }) => items);
+
   const selectedIndex = Math.max(
-    sections.findIndex(({ name }) => name === selectedSection),
+    orderedSections.findIndex(({ name }) => name === selectedSection),
     0
   );
 
   const select = (index: number) => {
-    setSelectedSection(sections[index].name);
+    setSelectedSection(orderedSections[index].name);
 
     const tabs =
       navRef.current?.querySelectorAll<HTMLButtonElement>('[role="tab"]');
@@ -54,7 +88,7 @@ const SettingsModal = ({
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
-    const lastIndex = sections.length - 1;
+    const lastIndex = orderedSections.length - 1;
 
     switch (event.key) {
       case 'ArrowDown':
@@ -78,7 +112,7 @@ const SettingsModal = ({
 
   if (sections.length === 0) return null;
 
-  const section = sections[selectedIndex];
+  const section = orderedSections[selectedIndex];
   const tabId = (name: string) => `${idPrefix}-tab-${name}`;
   const panelId = (name: string) => `${idPrefix}-panel-${name}`;
 
@@ -94,38 +128,82 @@ const SettingsModal = ({
           </Box>
         )
       }
+      variant="bo"
       width={width}
-      fixedHeight
+      height="590px"
       fillContent
     >
-      <Box display="flex" flex="1 1 auto">
+      <Box display="flex" flex="1 1 auto" minHeight="0">
         <Box
           ref={navRef}
-          role="tablist"
-          aria-orientation="vertical"
-          onKeyDown={handleKeyDown}
           display="flex"
           flexDirection="column"
-          gap="3px"
-          flex="0 0 auto"
-          w="210px"
-          py="16px"
-          px="12px"
+          gap="4px"
+          flex="0 0 168px"
+          p="8px"
           background={colors.grey50}
           borderRight={`1px solid ${colors.grey200}`}
           overflowY="auto"
         >
-          {sections.map(({ name, label, icon }, index) => (
-            <NavItem
-              key={name}
-              tabId={tabId(name)}
-              panelId={panelId(name)}
-              label={label}
-              icon={icon}
-              selected={index === selectedIndex}
-              onSelect={() => select(index)}
-            />
-          ))}
+          {groups.map(({ group, items }, groupIndex) => {
+            const isFirst = groupIndex === 0;
+            const groupLabelId = `${idPrefix}-group-${groupIndex}`;
+
+            return (
+              <Box
+                key={items[0].name}
+                display="flex"
+                flexDirection="column"
+                gap="4px"
+              >
+                {group && (
+                  <Box
+                    px="12px"
+                    pt={isFirst ? '8px' : '16px'}
+                    pb="4px"
+                    mt={isFirst ? '0px' : '12px'}
+                    borderTop={
+                      isFirst ? undefined : `1px solid ${colors.grey200}`
+                    }
+                  >
+                    <Text
+                      id={groupLabelId}
+                      variant="boMicro"
+                      color="coolGrey500"
+                      m="0px"
+                    >
+                      {formatMessage(group)}
+                    </Text>
+                  </Box>
+                )}
+                <Box
+                  role="tablist"
+                  aria-orientation="vertical"
+                  aria-labelledby={group ? groupLabelId : undefined}
+                  onKeyDown={handleKeyDown}
+                  display="flex"
+                  flexDirection="column"
+                  gap="4px"
+                >
+                  {items.map((item) => {
+                    const index = orderedSections.indexOf(item);
+
+                    return (
+                      <NavItem
+                        key={item.name}
+                        tabId={tabId(item.name)}
+                        panelId={panelId(item.name)}
+                        label={item.label}
+                        icon={item.icon}
+                        selected={index === selectedIndex}
+                        onSelect={() => select(index)}
+                      />
+                    );
+                  })}
+                </Box>
+              </Box>
+            );
+          })}
         </Box>
         <Box
           key={section.name}
@@ -134,9 +212,8 @@ const SettingsModal = ({
           aria-labelledby={tabId(section.name)}
           tabIndex={0}
           flex="1 1 auto"
-          pt="32px"
-          px="32px"
-          pb="24px"
+          minWidth="0"
+          p="24px"
           overflowY="auto"
         >
           {section.content}

@@ -2,6 +2,7 @@ import React, { MouseEvent } from 'react';
 
 import {
   Button,
+  ButtonStyles,
   IconNames,
   Tooltip,
   bo,
@@ -15,6 +16,7 @@ interface Props {
   onClick: (event: MouseEvent) => void;
   id?: string;
   disabled?: boolean;
+  buttonStyle?: Extract<ButtonStyles, 'bo-text' | 'bo-secondary'>;
 }
 
 const IconAction = ({
@@ -24,11 +26,12 @@ const IconAction = ({
   onClick,
   id,
   disabled,
+  buttonStyle = 'bo-text',
 }: Props) => (
   <Tooltip content={tooltip} theme="dark">
     <Button
       id={id}
-      buttonStyle="bo-text"
+      buttonStyle={buttonStyle}
       icon={icon}
       iconSize="16px"
       iconColor={colors.coolGrey500}

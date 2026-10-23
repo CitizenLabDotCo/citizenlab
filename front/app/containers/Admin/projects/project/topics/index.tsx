@@ -4,9 +4,11 @@ import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IInputTopicData } from 'api/input_topics/types';
+import useAddInputTopic from 'api/input_topics/useAddInputTopic';
 import useDeleteInputTopic from 'api/input_topics/useDeleteInputTopic';
 import useInputTopics from 'api/input_topics/useInputTopics';
 import useMoveInputTopic from 'api/input_topics/useMoveInputTopic';
+import useUpdateInputTopic from 'api/input_topics/useUpdateInputTopic';
 import useAuthUser from 'api/me/useAuthUser';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -34,7 +36,7 @@ import { isNilOrError } from 'utils/helperUtils';
 import { isAdmin } from 'utils/permissions/roles';
 import { useParams } from 'utils/router';
 
-import InputTopicModal from './InputTopicModal';
+import InputTopicModal, { InputTopicFormValues } from './InputTopicModal';
 import LiveAutoInputTopicsControl from './LiveAutoInputTopicsControl';
 import messages from './messages';
 
@@ -56,6 +58,8 @@ const ProjectInputTopics = () => {
   const { mutate: deleteInputTopic, isPending: isDeleting } =
     useDeleteInputTopic();
   const { mutate: moveInputTopic } = useMoveInputTopic();
+  const { mutateAsync: addInputTopic } = useAddInputTopic();
+  const { mutateAsync: updateInputTopic } = useUpdateInputTopic();
 
   const [showConfirmationModal, setShowConfirmationModal] =
     useState<boolean>(false);
@@ -183,6 +187,18 @@ const ProjectInputTopics = () => {
     setShowEditModal(false);
     setTopicToEdit(null);
     setParentIdForNewTopic(undefined);
+  };
+
+  const saveTopic = async (values: InputTopicFormValues) => {
+    if (topicToEdit) {
+      await updateInputTopic({ projectId, id: topicToEdit.id, ...values });
+    } else {
+      await addInputTopic({
+        projectId,
+        ...values,
+        parent_id: parentIdForNewTopic,
+      });
+    }
   };
 
   // Count only root topics for the last topic check
@@ -331,11 +347,11 @@ const ProjectInputTopics = () => {
       </Modal>
 
       <InputTopicModal
-        projectId={projectId}
         topic={topicToEdit}
         parentId={parentIdForNewTopic}
         opened={showEditModal}
         close={closeEditModal}
+        onSubmit={saveTopic}
       />
     </Box>
   );

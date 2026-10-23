@@ -10,6 +10,7 @@ import {
   Text,
   bo,
   colors,
+  fontSizes,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -25,6 +26,14 @@ const Search = styled(Box)`
     border-radius: ${bo.borderRadius};
   }
 `;
+
+const TRIGGER_SIZES: Record<
+  'medium' | 'small',
+  { height?: string; fontSize?: string }
+> = {
+  medium: {},
+  small: { height: '28px', fontSize: `${fontSizes.xs}px` },
+};
 
 const GAP = 4;
 const MAX_HEIGHT = 320;
@@ -91,6 +100,7 @@ interface Props<T extends string> {
   triggerIcon?: IconNames;
   keepOpenFor?: T;
   onClose?: () => void;
+  size?: keyof typeof TRIGGER_SIZES;
   children?: React.ReactNode;
 }
 
@@ -105,6 +115,7 @@ const OptionPicker = <T extends string>({
   triggerIcon,
   keepOpenFor,
   onClose,
+  size = 'medium',
   children,
 }: Props<T>) => {
   const { formatMessage } = useIntl();
@@ -176,6 +187,8 @@ const OptionPicker = <T extends string>({
         buttonStyle="bo-picker"
         width="auto"
         maxWidth="100%"
+        height={TRIGGER_SIZES[size].height}
+        fontSize={TRIGGER_SIZES[size].fontSize}
         bgColor={opened ? colors.grey200 : undefined}
         icon="chevron-down"
         iconPos="right"

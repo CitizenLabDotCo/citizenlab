@@ -13,6 +13,18 @@ const messages = {
     id: 'app.components.UI.SettingsModal.test.notifications',
     defaultMessage: 'Notifications',
   },
+  phase: {
+    id: 'app.components.UI.SettingsModal.test.phase',
+    defaultMessage: 'Phase',
+  },
+  emails: {
+    id: 'app.components.UI.SettingsModal.test.emails',
+    defaultMessage: 'Emails',
+  },
+  voting: {
+    id: 'app.components.UI.SettingsModal.test.voting',
+    defaultMessage: 'Voting',
+  },
 };
 
 const sections: SettingsModalSection[] = [
@@ -143,6 +155,60 @@ describe('SettingsModal', () => {
     expect(
       screen.queryByRole('button', { name: 'Save changes' })
     ).not.toBeInTheDocument();
+  });
+
+  it('labels each group once, and arrow keys move across groups', async () => {
+    renderModal({
+      sections: [
+        { ...sections[0], group: messages.phase },
+        { ...sections[1], group: messages.emails },
+      ],
+    });
+
+    expect(screen.getByRole('tablist', { name: 'Phase' })).toContainElement(
+      screen.getByRole('tab', { name: 'Moderation' })
+    );
+    expect(screen.getByRole('tablist', { name: 'Emails' })).toContainElement(
+      screen.getByRole('tab', { name: 'Notifications' })
+    );
+
+    await userEvent.click(screen.getByRole('tab', { name: 'Moderation' }));
+    await userEvent.keyboard('{ArrowDown}');
+
+    expect(screen.getByRole('tab', { name: 'Notifications' })).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
+  });
+
+  it('pulls sections of the same group together', async () => {
+    renderModal({
+      sections: [
+        { ...sections[0], group: messages.phase },
+        { ...sections[1], group: messages.emails },
+        {
+          name: 'voting',
+          label: messages.voting,
+          icon: 'vote-ballot',
+          content: <div>Voting settings.</div>,
+          group: messages.phase,
+        },
+      ],
+    });
+
+    expect(screen.getAllByRole('tablist')).toHaveLength(2);
+    expect(screen.getAllByText('Phase')).toHaveLength(1);
+    expect(screen.getByRole('tablist', { name: 'Phase' })).toContainElement(
+      screen.getByRole('tab', { name: 'Voting' })
+    );
+
+    await userEvent.click(screen.getByRole('tab', { name: 'Moderation' }));
+    await userEvent.keyboard('{ArrowDown}');
+
+    expect(screen.getByRole('tab', { name: 'Voting' })).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
   });
 
   it('renders nothing when there are no sections', () => {

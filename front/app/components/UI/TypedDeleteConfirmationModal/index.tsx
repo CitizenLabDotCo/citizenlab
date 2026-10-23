@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import {
   Box,
@@ -15,6 +15,7 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
+import useTypedConfirmation from './useTypedConfirmation';
 
 export interface Props {
   opened: boolean;
@@ -40,34 +41,14 @@ const TypedDeleteConfirmationModal = ({
   isDeleting = false,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [inputValue, setInputValue] = useState('');
-
-  const confirmationText = formatMessage(confirmationWord);
-  const isConfirmationValid =
-    inputValue.toLowerCase().trim() === confirmationText.toLowerCase().trim();
-
-  // Reset input when modal opens/closes
-  useEffect(() => {
-    if (!opened) {
-      setInputValue('');
-    }
-  }, [opened]);
-
-  const handleInputChange = (value: string) => {
-    setInputValue(value);
-  };
-
-  const handleConfirm = () => {
-    if (isConfirmationValid && !isDeleting) {
-      onConfirm();
-    }
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.key === 'Enter' && isConfirmationValid && !isDeleting) {
-      onConfirm();
-    }
-  };
+  const {
+    inputValue,
+    setInputValue,
+    confirmationText,
+    isConfirmationValid,
+    handleConfirm,
+    handleKeyDown,
+  } = useTypedConfirmation({ opened, confirmationWord, isDeleting, onConfirm });
 
   return (
     <Modal
@@ -120,7 +101,7 @@ const TypedDeleteConfirmationModal = ({
       <Input
         type="text"
         value={inputValue}
-        onChange={handleInputChange}
+        onChange={setInputValue}
         onKeyDown={handleKeyDown}
         placeholder={confirmationText}
         disabled={isDeleting}
