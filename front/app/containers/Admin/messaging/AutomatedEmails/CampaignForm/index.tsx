@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
+import { Box, Button, Success } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import styled from 'styled-components';
@@ -26,7 +26,7 @@ import { handleHookFormSubmissionError } from 'utils/errorUtils';
 import validateMultilocForEveryLocale from 'utils/yup/validateMultilocForEveryLocale';
 
 const StyledSection = styled(Section)`
-  margin-bottom: 2.5rem;
+  margin-bottom: 32px;
 `;
 
 type CampaignFormProps = {
@@ -88,6 +88,8 @@ const EditCampaignForm = ({
   const onFormSubmit = async (formValues) => {
     try {
       await onSubmit(formValues);
+      // The page stays open after saving, so the saved values become the new baseline for isDirty.
+      methods.reset(formValues);
     } catch (error) {
       handleHookFormSubmissionError(error, methods.setError);
     }
@@ -159,11 +161,21 @@ const EditCampaignForm = ({
             </SectionField>
           ))}
         </StyledSection>
+        {methods.formState.isSubmitSuccessful && !methods.formState.isDirty && (
+          <Box mb="32px">
+            <Success
+              text={formatMessage(messages.emailUpdated)}
+              showIcon
+              showBackground
+            />
+          </Box>
+        )}
         <Box display="flex" mb="24px">
           <Button
             id="e2e-automated-campaign-edit-save-button"
             type="submit"
             processing={isLoading}
+            disabled={!methods.formState.isDirty}
           >
             <FormattedMessage {...messages.formSave} />
           </Button>
