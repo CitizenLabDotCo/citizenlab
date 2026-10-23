@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
-import { Box, Divider, Button } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Divider,
+  Button,
+  PanelField,
+} from '@citizenlab/cl2-component-library';
 
 import usePollQuestions from 'api/poll_questions/usePollQuestions';
 
@@ -11,8 +16,6 @@ import Modal from 'components/UI/Modal';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
-
-import PanelField from './PanelField';
 
 interface Props {
   phaseId: string;

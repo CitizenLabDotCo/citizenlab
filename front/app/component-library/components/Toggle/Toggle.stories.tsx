@@ -1,11 +1,19 @@
+import React from 'react';
+
 import { Meta, StoryObj } from '@storybook/react';
+import { expect, fn, userEvent, within } from 'storybook/test';
+// eslint-plugin-storybook 0.8 knows expect from @storybook/test, not from
+// storybook/test (Storybook 10), so it flags every expect here.
+/* eslint-disable storybook/use-storybook-expect */
 
 import { colors } from '../../utils/styleUtils';
 
 import Toggle from './';
 
 const meta = {
-  title: 'Components/Toggle',
+  title: 'Components/Forms/Toggle',
+  tags: ['shared'],
+  parameters: { gv: {} },
   component: Toggle,
 } satisfies Meta<typeof Toggle>;
 
@@ -58,5 +66,62 @@ export const WithLabelTextColor: Story = {
     label: 'A toggle with colored label',
     labelTextColor: colors.textSecondary,
     onChange: () => {},
+  },
+};
+
+export const Hover: Story = {
+  args: WithLabel.args,
+  parameters: { pseudo: { hover: ['i'] } },
+};
+
+export const Focus: Story = {
+  args: WithLabel.args,
+  // The ring is keyed on a focus-visible class on the hidden checkbox, which
+  // the pseudo-states addon does not set, so focus it with the keyboard.
+  play: async () => {
+    await userEvent.tab();
+  },
+};
+
+export const LongContent: Story = {
+  args: {
+    checked: true,
+    label:
+      "Allow participants to submit ideas, comment on each other's ideas and vote while the phase is open",
+    description:
+      'When this is switched off, the phase stays visible on the timeline but nobody can add or change anything until you switch it back on.',
+    onChange: () => {},
+  },
+  render: (args) => (
+    <div style={{ width: '320px' }}>
+      <Toggle {...args} />
+    </div>
+  ),
+};
+
+export const RTL: Story = {
+  globals: { lang: 'ar' },
+  args: {
+    checked: true,
+    label: 'السماح بإرسال الأفكار',
+    description: 'يمكن للمشاركين إضافة أفكار جديدة.',
+    onChange: () => {},
+  },
+  render: (args) => (
+    <div>
+      <Toggle {...args} />
+    </div>
+  ),
+};
+
+// Tab reaches the switch; Space toggles it.
+export const Keyboard: Story = {
+  args: { checked: false, label: 'Email me updates', onChange: fn() },
+  play: async ({ canvasElement, args }) => {
+    const toggle = within(canvasElement).getByRole('checkbox');
+    await userEvent.tab();
+    await expect(toggle).toHaveFocus();
+    await userEvent.keyboard(' ');
+    await expect(args.onChange).toHaveBeenCalledTimes(1);
   },
 };

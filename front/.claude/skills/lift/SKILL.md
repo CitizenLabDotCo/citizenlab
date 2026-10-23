@@ -1,0 +1,64 @@
+---
+name: lift
+description: Use when asked to lift (move) a local piece of the redesigned back office (`app/containers/Admin/projects/project/backofficeRedesign/`) into the component library, so other pages can use it. One component per commit, tokens only, stories for every state.
+---
+
+# lift
+
+Move one local component of `backofficeRedesign` into `app/component-library/components/<Name>/`, on tokens, with stories, and point the original import at it. Read `front/.storybook/AGENTS.md` first if you have not this session. Run every command from `front/`.
+
+## Input
+
+```
+lift: <Name> · <original file> [· <dir>]
+```
+
+or a name with its folder. To choose what to lift, rank the local pieces of `backofficeRedesign` by how many files use them (the `usages` and `findings` of `.storybook/static/design-scan.json`, `styled-block` and local components).
+
+## Stop conditions
+
+- **Mode safety.** The lifted component renders the same on the redesigned page as before: every value it reads becomes a token whose `redesign` value equals the value it has now (`npm run -s ds:mode-check -- --file <original file> --token <token> --now <value> --mode redesign` for each). If the original also renders outside the redesign scope (rendered by `Event` or `NewPhase`, or portalled), the `today` value must match too; the check says which.
+- **Style only.** The lift moves code and swaps values for tokens. It does not change behaviour, data, copy or props beyond what the move needs. Logic tied to the page (queries, routing, page state) stays where it is: lift the presentational part only, or stop.
+- **One component per commit.** A piece that needs a second piece lifted first: lift that one first, in its own commit.
+- **Name clash.** A library component of that name or role exists already: stop and report; the right move may be a heal to the existing one.
+- **No token fits** a value: stop (a new token is its own `design-system(token)` commit).
+
+## Steps
+
+- [ ] 1. `git status --short`. `npm run ds:scan`. Note the page's findings count for the original file.
+- [ ] 2. Start Storybook in another terminal with `npx storybook dev -p 6006 --ci --no-open` (`npm run storybook` first runs `ds:prepare`, which rewrites committed outputs); `npm run ds:visual -- --baseline <scratch>/before`. Screenshot the route where it shows, if you have the platform running.
+- [ ] 3. Create `app/component-library/components/<Name>/index.tsx`: the component, values in styled templates `var(--gv-…)` (files in `app/component-library/` may not import `t` from `design-system/`: dependency-cruiser `no-import-to-component-library`, see step 6 of the `heal` skill), `{...gvTag('<Name>')}` on its root element (`component-library/utils/gvTag`). Export it from `app/component-library/index.tsx`.
+- [ ] 4. Stories: `<Name>.stories.tsx`, `title: 'Components/<Category>/<Name>'`, `tags: ['bo']`, every state (follow the `story` skill).
+- [ ] 5. Replace the original: the old file imports the library component (or the old file goes and its importers switch). Nothing else on the page changes.
+- [ ] 6. Checks:
+  ```
+  npm run ds:a11y -- --stories '<story id prefix>--*'
+  npm run ds:check
+  npx jest app/component-library/components/<Name> <original folder>
+  npm run typecheck
+  npm run ds:visual -- --compare <scratch>/before --summary <scratch>/visual.json
+  npm run ds:scan
+  ```
+  The compare shows only the new stories. The scan lists `<Name>` as a component with its usages. `ds:check` only reads the committed `a11y-results.json`, so `ds:a11y` runs first (Storybook running on port 6006) to record axe on the stories your change touches; commit `a11y-results.json` with the change. `ds:check` then passes unless it has a new critical axe violation (one not in `scripts/design-system/a11y-known.json`); if your change fixes a known one, remove its entry there.
+- [ ] 7. Commit only your files, with `.storybook/static/design-scan.summary.json` and `.storybook/static/a11y-results.json`.
+
+## Commit message
+
+```
+design-system(lift): <Name> from backofficeRedesign/<dir> [AI-assisted]
+
+Original: <original file path>.
+Tokens: <list>. Stories: <states>. Score <before> → <after>.
+
+Co-Authored-By: <the line your session gives>
+```
+
+## Report
+
+```
+Lifted: <Name> from <original path> to app/component-library/components/<Name>/ (<commit sha>)
+Tokens: <list>; mode check ok for each
+Stories: <states>
+Score: <before> → <after>; checks ok
+Left behind (page logic): <list or none>
+```

@@ -4,6 +4,7 @@ import { darken } from 'polished';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
+import { gvTag } from '../../utils/gvTag';
 import { colors, fontSizes } from '../../utils/styleUtils';
 import Icon from '../Icon';
 
@@ -150,6 +151,7 @@ class Error extends PureComponent<Props, State> {
         exit={animate}
       >
         <Container
+          {...gvTag('Error')}
           className={`e2e-error-message ${className}`}
           marginTop={marginTop}
           marginBottom={marginBottom}

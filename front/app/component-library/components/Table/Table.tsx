@@ -2,6 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import { gvTag } from '../../utils/gvTag';
 import { colors, fontSizes } from '../../utils/styleUtils';
 import Box, { BoxProps } from '../Box';
 
@@ -73,6 +74,7 @@ type Props = Omit<BoxProps, 'border'> & {
 
 const Table = ({ children, innerBorders, ...otherProps }: Props) => (
   <StyledBox
+    {...gvTag('Table')}
     as="table"
     width="100%"
     innerBorders={innerBorders}

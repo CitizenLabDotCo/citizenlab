@@ -4,6 +4,7 @@ import { isNil, get } from 'lodash-es';
 import { darken, transparentize, opacify, rgba } from 'polished';
 import styled from 'styled-components';
 
+import { useGvInstance } from '../../utils/gvInstance';
 import {
   bo,
   colors,
@@ -657,7 +658,25 @@ export interface Props extends ButtonContainerProps {
 }
 export type Ref = HTMLButtonElement;
 
-const Button = forwardRef<Ref, Props>((props, ref) => {
+// The props a designer may switch on one Button in the workbench, with the
+// defaults the Button applies (utils/gvInstance.ts).
+const INSTANCE_DEFAULTS = {
+  buttonStyle: 'primary',
+  size: 's',
+  iconPos: 'left',
+  fullWidth: false,
+  processing: false,
+  disabled: false,
+} as const;
+
+const Button = forwardRef<Ref, Props>((rawProps, ref) => {
+  const { props, tag } = useGvInstance<Props>(
+    'Button',
+    rawProps,
+    INSTANCE_DEFAULTS,
+    // Read below as `props.size || 's'`: any falsy value is the default.
+    ['size', 'buttonStyle', 'iconPos']
+  );
   const handleOnClick = (event: MouseEvent<HTMLElement>) => {
     const { onClick, processing, disabled } = props;
 
@@ -725,8 +744,8 @@ const Button = forwardRef<Ref, Props>((props, ref) => {
     opacityDisabled,
     className,
     onClick: _onClick,
-    processing = false,
-    disabled = false,
+    processing = INSTANCE_DEFAULTS.processing,
+    disabled = INSTANCE_DEFAULTS.disabled,
     tabIndex,
     as,
     dataCy,
@@ -735,9 +754,9 @@ const Button = forwardRef<Ref, Props>((props, ref) => {
   } = props;
 
   const id = props.id || '';
-  const size = props.size || 's';
-  const buttonStyle = props.buttonStyle || 'primary';
-  const iconPos = props.iconPos || 'left';
+  const size = props.size || INSTANCE_DEFAULTS.size;
+  const buttonStyle = props.buttonStyle || INSTANCE_DEFAULTS.buttonStyle;
+  const iconPos = props.iconPos || INSTANCE_DEFAULTS.iconPos;
   const spinnerSize = getSpinnerSize(size);
   const hasText = !isNil(text) || !isNil(children);
   // TODO: Fix this the next time the file is edited.
@@ -790,6 +809,7 @@ const Button = forwardRef<Ref, Props>((props, ref) => {
 
   return (
     <Container
+      {...tag}
       onClick={handleOnClick}
       className={containerClassNames}
       buttonStyle={buttonStyle}

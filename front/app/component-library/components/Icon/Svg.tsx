@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 
 import styled from 'styled-components';
 
+import { gvTag } from '../../utils/gvTag';
 import Box, {
   BoxPositionProps,
   BoxMarginProps,
@@ -62,6 +63,7 @@ const Svg = ({
 
   return (
     <StyledBox
+      {...gvTag('Icon')}
       as="svg"
       className={className || ''}
       role={role}

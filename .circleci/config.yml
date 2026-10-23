@@ -612,6 +612,19 @@ jobs:
               TEST_BUILD="true" npm run build
           no_output_timeout: "30m"
       - run:
+          # Design system experiment: ship Storybook inside the epic bundle so
+          # the preview serves it at /storybook/. Only on design-system/*
+          # branches, and never fails the app build.
+          name: Build Storybook into the epic bundle (design-system branches)
+          command: |
+            if [[ "${CIRCLE_BRANCH:-}" != design-system/* ]]; then
+              echo "Not a design-system branch, skipping Storybook."
+              exit 0
+            fi
+            npm run build-storybook -- -o build/storybook \
+              || echo "Storybook build failed; the app preview is unaffected."
+          no_output_timeout: "15m"
+      - run:
           name: Publish the bundle for epic previews
           command: |
             if [ -z "${EPIC_BUNDLE_ACCESS_KEY_ID:-}" ]; then

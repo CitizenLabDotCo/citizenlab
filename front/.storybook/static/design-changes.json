@@ -1,0 +1,3076 @@
+{
+  "generatedAt": "2026-10-23T10:56:14.074Z",
+  "base": "1a0d06e3afa8b33db8a01f33168c445daa9767c0",
+  "baseRef": "master",
+  "head": "475767094d0c54cd0dc6837718e6d78446c3e5b4",
+  "repoUrl": "https://github.com/CitizenLabDotCo/citizenlab",
+  "commits": [
+    {
+      "sha": "475767094d0c54cd0dc6837718e6d78446c3e5b4",
+      "subject": "design-system(workbench): Foundations toolbar height, chip label from its tone source [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/StoryThumb.tsx",
+        "front/.storybook/workbench/src/components/Toolbar.tsx",
+        "front/.storybook/workbench/src/lib/useToolbarHeight.ts",
+        "front/.storybook/workbench/src/pages/Foundations.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "2c09afef967253540f153ee8eb78344761de394b",
+      "subject": "design-system(workbench): one a11y chip per card, product focus previews, zoom without reflow [AI-assisted]",
+      "body": "Gallery cards show one a11y chip in the worst tone of axe, the keyboard\ntest and the review, with all three in its tooltip, on one line. The\nfocus token previews use the product button and sit on a white tile, so\nthey look the same in either theme. A fixed zoom above 100% magnifies\nthe story as laid out at the canvas width, so responsive stories keep\ntheir breakpoint. The ramp chevron joins the reduced motion guard, and\nan unused gallery rule is gone.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/Canvas.tsx",
+        "front/.storybook/workbench/src/components/StoryThumb.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "d1c1c7aeae8b86aebd2362d3b57b39c8253f6bac",
+      "subject": "design-system(workbench): one-row canvas toolbar, full phone summary, no tab arrows on touch [AI-assisted]",
+      "body": "The toolbar fields keep one row and shrink first, city and viewport with\nan ellipsis and their value in the tooltip, so the view switch stays in\nthe row at 1440 with the panel open; narrower, it wraps as a whole. A\nfallback width covers browsers without field-sizing. On a phone the\ncanvas summary takes its own row and shows every value, the settings\nsheet takes focus, keeps Tab inside and hands focus back, and its scrim\nis out of the tab order; the tab rows drop their scroll arrows under\n880px. The Colour page column heads stick at the toolbar's measured\nheight, so no rows show between them.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/Nav.tsx",
+        "front/.storybook/workbench/src/components/Toolbar.tsx",
+        "front/.storybook/workbench/src/lib/focus.ts",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "1add4a8367223f8ea5d3c57d9e60fdb939aa89e3",
+      "subject": "design-system(workbench): dark chrome text reaches AA, checked by a palette test [AI-assisted]",
+      "body": "On-accent text sits on the accent fill, failed and critical chips on a\nnew fail fill, the dark fail text is lighter, the primary hover darker,\nand the Back office chip and pressed actual-size button use roles that\nread on their fills. The Review filter counts are no longer dimmed.\nlib/chromePalette.test.ts checks every text and background pair of the\n--wb-* roles in the light and the dark chrome.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/chromePalette.test.ts",
+        "front/.storybook/workbench/src/pages/proposal.css",
+        "front/.storybook/workbench/src/pages/starthere.css",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "e9f7fba0671f45bf90069eec34d6095e36590b9c",
+      "subject": "design-system(audit): one notReached entry per route, note unload writes are not counted [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/audit.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "af803eacda6c88f857c68444ed78354956d7da52",
+      "subject": "design-system(audit): OptionList across 1 page [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/audits/OptionList.json",
+        "front/.storybook/static/audits/index.json"
+      ],
+      "kind": "other",
+      "component": "OptionList"
+    },
+    {
+      "sha": "e6544b3f06dca55508473eb293fd8e14cf9319bd",
+      "subject": "design-system(audit): say a failed --open query failed, not that its selector is invalid [AI-assisted]",
+      "body": "A crashed page also makes page.$$ throw.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/audit.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "a42fdfc2b14f8863f9f1cb90d138df79fa06b363",
+      "subject": "design-system(audit): one visit load per --open, route-scoped params, unload guard [AI-assisted]",
+      "body": "Reloads between --open values now run the visit's full load (sign-in\ncheck, consent, no-animation CSS, selector wait), mark what is visible\nat load as seen so it is not collected twice, and keep what earlier\nvalues found when a reload fails. The phase flips to load when the new\ndocument commits, so unload-time writes stay with the click. The --open\nloop is exported as runOpens and tested against a local server.\n\nA plain --param overrides fixture params only; --param <route>:<name>=\noverrides a path-level value. Routes a plain name would leave on the\nsource tenant's record go to notReached, unknown names warn. A chain\nstep with no visible allowed match is logged and named in the error;\nA->B splits without spaces.\n\nThe page's pagehide, unload, freeze and hidden visibilitychange\nhandlers no longer run: writes sent from them could pass the request\nrouting unseen and reach the server.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/audit/SKILL.md",
+        "front/.storybook/AGENTS.md",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/audit.guard.test.ts",
+        "front/scripts/design-system/audit.test.ts",
+        "front/scripts/design-system/audit.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "1a929b64452e59cb621f9da08818ad49323be752",
+      "subject": "design-system(audit): instance audit for one component across the platform [AI-assisted]",
+      "body": "OptionList on the redesigned input manager of the branch preview: 4\ninstances at 1280 (Status, Tags, Assignee filters and the columns menu),\n1 heal task (list text in the primary colour vs the story's body text),\n0 writes after a click, 5 page-load tracking writes blocked.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/audits/OptionList.json",
+        "front/.storybook/static/audits/index.json"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "e3c6783d6a5e426f915c1903bceb3ebd5828bb97",
+      "subject": "design-system(audit): per-host params, URL switches and submenu chains [AI-assisted]",
+      "body": "The route fixture's ids belong to its source tenant, the back-office\nredesign turns on with a URL switch, and OptionList renders inside the\nfilter submenus. --param, --query and 'A -> B' chains cover these; the\npage reloads between --open values since not every menu closes on Escape.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/audit/SKILL.md",
+        "front/.storybook/AGENTS.md",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/audit.test.ts",
+        "front/scripts/design-system/audit.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "eaeebb8c99610c5be4fdcc0aeae691f841d27f20",
+      "subject": "design-system(workbench): roomier Review, quiet A11y panel, tab arrows, RTL controls [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/TokenRow.tsx",
+        "front/.storybook/workbench/src/pages/Component.tsx",
+        "front/.storybook/workbench/src/pages/Review.tsx",
+        "front/.storybook/workbench/src/panels/Controls.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/app/components/UI/Centerer/Centerer.stories.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "8e2c4b3777b0474bbfb9498203f20ff7e2d4453f",
+      "subject": "design-system(workbench): calmer Start page and Proposal: even grids, one card and step style, no alarm colours for policies [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/pages/Proposal.tsx",
+        "front/.storybook/workbench/src/pages/StartHere.tsx",
+        "front/.storybook/workbench/src/pages/proposal.css",
+        "front/.storybook/workbench/src/pages/starthere.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "70bba1b1aa9dd65c74c168bd597ea8c8fa27b2aa",
+      "subject": "design-system(workbench): colour ramps, sticky column heads, visible shadows, quieter values [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/TokenRow.tsx",
+        "front/.storybook/workbench/src/lib/colourGroups.test.ts",
+        "front/.storybook/workbench/src/lib/colourGroups.ts",
+        "front/.storybook/workbench/src/pages/Foundations.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "d3d2200782871b327dea0fb92829148771ee199a",
+      "subject": "design-system(workbench): one tab style, quiet gallery cards, card skeleton, two-column phone gallery [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/StoryThumb.tsx",
+        "front/.storybook/workbench/src/pages/Gallery.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "2ac2fdf180e34cdc39d08db3f484f2fc1993c585",
+      "subject": "design-system(workbench): dark theme for the chrome, theme switch, phone menu over the page [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/Nav.tsx",
+        "front/.storybook/workbench/src/lib/theme.ts",
+        "front/.storybook/workbench/src/main.tsx",
+        "front/.storybook/workbench/src/pages/Proposal.tsx",
+        "front/.storybook/workbench/src/pages/proposal.css",
+        "front/.storybook/workbench/src/pages/starthere.css",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "eefced33b906c46217655f31a2d84271bba35b48",
+      "subject": "design-system(workbench): copy fixes, plurals, neutral token wording, pattern image path [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/StoryThumb.tsx",
+        "front/.storybook/workbench/src/components/TokenRow.tsx",
+        "front/.storybook/workbench/src/lib/plural.ts",
+        "front/.storybook/workbench/src/pages/Foundations.tsx",
+        "front/.storybook/workbench/src/pages/Gallery.tsx",
+        "front/.storybook/workbench/src/pages/Proposal.tsx",
+        "front/.storybook/workbench/src/panels/Usage.tsx",
+        "front/app/design-system/tokens/tokens.meta.json",
+        "front/app/design-system/tokens/tokens.source.json",
+        "front/app/utils/storybook/getOrigin.ts",
+        "front/scripts/design-system/build-tokens.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "2f59ef26d109f4e5a633be3d45b8274bf9cd4a71",
+      "subject": "design-system(workbench): canvas measure, zoom control and compact toolbar [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/contexts/index.tsx",
+        "front/.storybook/workbench/src/components/Canvas.tsx",
+        "front/.storybook/workbench/src/components/Icon.tsx",
+        "front/.storybook/workbench/src/components/Toolbar.tsx",
+        "front/.storybook/workbench/src/lib/preview.ts",
+        "front/.storybook/workbench/src/pages/Component.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "7480bdad838dca82d1096a936a91cc819ec9d138",
+      "subject": "design-system(workbench): contain hidden labels so the shell never scrolls away, Review empty state fits a phone, Tooling closed [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/ChangeList.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "5f32ac29b4581b8cdcf87d944c1d9edd79956dc4",
+      "subject": "design-system(audit): match token colours as RGBA [AI-assisted]",
+      "body": "The audit compared token values with getComputedStyle output as\nstrings, so #00000080 (written rgba(0, 0, 0, 0.502) by the old helper)\nnever matched Chrome's rgba(0, 0, 0, 0.5). It now uses the scanner's\ncolour parser with the same alpha tolerance.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/audit.test.ts",
+        "front/scripts/design-system/audit.ts",
+        "front/scripts/design-system/scan/findings.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "659fcb629062dd7d0cdbfbae17cb270b44dbe9ad",
+      "subject": "design-system(docs): AGENTS drift, Node and npm versions, undocumented flags [AI-assisted]",
+      "body": "gvTag's real path, stylingConsts not counted as a legacy read,\nPLAYWRIGHT_BROWSERS_PATH optional, the MCP section is above, the\nengines with engine-strict, and the --out, --scan, --meta and\nscreenshot flags of ds:a11y, ds:changes, ds:mode-check and ds:smoke.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "d40ab3351239a9c49e2b713e76fe2963ff7e2caf",
+      "subject": "design-system(workbench): one routeLabel for routes [AI-assisted]",
+      "body": "Heal tasks, the Usage panel, Review and ds:audit all write a route as\n/admin/projects/:projectId.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/healTask.test.ts",
+        "front/.storybook/workbench/src/lib/healTask.ts",
+        "front/.storybook/workbench/src/lib/review.ts",
+        "front/.storybook/workbench/src/panels/Usage.tsx",
+        "front/scripts/design-system/audit.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "fc18660d60272f0b08add823890ed8d0cad700a8",
+      "subject": "design-system(workbench): load every data file in loadAll, smoke allows the optional ones [AI-assisted]",
+      "body": "loadAll also reads the scan summary, trend.json and the routes fixture,\nso Start here's missing list no longer depends on the page visited\nfirst. ds:smoke lets design-scan.summary.json and trend.json 404, as\nthe shell handles them being absent.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "ee1a3bdae30ab105130275f2b6eaff0733156c79",
+      "subject": "design-system(start): zsh-safe MCP setup, Figma pricing link [AI-assisted]",
+      "body": "The paste block has no # lines, which zsh runs as commands. Adding the\nMCP servers is its own one-time step, with --scope user, and starting\nClaude Code is the daily step. Figma's seat and call figures give way\nto a link to Figma's pricing page. Start here no longer says audits are\ncommitted.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/workbench/src/pages/StartHere.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "2332503d0923c055fe17391c304d21e403669bbd",
+      "subject": "design-system(a11y): report errored known stories apart from fixed ones [AI-assisted]",
+      "body": "A known critical whose story errored in axe was listed as no longer\nfailing, with the advice to remove its entry. It is now listed as not\nchecked, with the error, and the advice to keep the entry and fix the\nstory. The check still exits 1 in both cases.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/scripts/design-system/a11y-results.test.ts",
+        "front/scripts/design-system/a11y-results.ts",
+        "front/scripts/design-system/a11y-run.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "2f08b8db4ffb2c7d714063f704fa41f814d0fd3a",
+      "subject": "design-system(smoke): fail when the token row has no Heal button [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "53c393b826628504144748e76b4b8bcfd98dbf54",
+      "subject": "design-system(workbench): key select options by index [AI-assisted]",
+      "body": "Two options with the same label no longer collide and drop one.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/panels/Controls.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "b8e9503ebe82c7205f8b86f9b46b2cf8a7446a55",
+      "subject": "design-system(workbench): keep translucent edits off opaque primitive aliases [AI-assisted]",
+      "body": "sameColour compares alpha within 0.002 instead of the 0.5 channel\ntolerance, so rgba(0,0,0,0.6) stays as typed in the tokens.source.json\npatch.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/sourceDiff.test.ts",
+        "front/.storybook/workbench/src/lib/sourceDiff.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "edffd902248ac256ec3a00f89aeaf564d543ced8",
+      "subject": "design-system(scan): match colour suggestions on alpha [AI-assisted]",
+      "body": "parseColor keeps alpha (hex8, rgba, rgb with a slash or percent alpha)\nand nearestToken only suggests tokens of the same alpha, within half an\n8-bit step. rgba(0, 0, 0, 0.18) no longer suggests --gv-black at\ndistance 0.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/scan/findings.test.ts",
+        "front/scripts/design-system/scan/findings.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "04ca4bf4369005f49d0050cb0265446017b54a6d",
+      "subject": "design-system(skills): var(--gv-*) in the library, ds:a11y before ds:check [AI-assisted]",
+      "body": "Library code and stories write var(--gv-...) instead of importing t,\nwhich dependency-cruiser forbids there. lift, new-component, story and\nheal run ds:a11y on the touched stories before ds:check and commit\na11y-results.json. Storybook starts without ds:prepare. a11y-review\nadds a known critical only with a named person's agreement; npm flags\ngo after --; story names parameters.msw; propose names head.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/a11y-review/SKILL.md",
+        "front/.claude/skills/heal/SKILL.md",
+        "front/.claude/skills/lift/SKILL.md",
+        "front/.claude/skills/new-component/SKILL.md",
+        "front/.claude/skills/propose/SKILL.md",
+        "front/.claude/skills/story/SKILL.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "c6092f68e88d6a2f03a09f0fe685f1ee4ebc9e57",
+      "subject": "design-system(tags): import order [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Accordion/index.tsx",
+        "front/app/component-library/components/CheckboxWithLabel/index.tsx",
+        "front/app/component-library/components/CollapsibleContainer/index.tsx",
+        "front/app/component-library/components/Dropdown/index.tsx",
+        "front/app/component-library/components/IconTooltip/index.tsx",
+        "front/app/component-library/components/Input/index.tsx",
+        "front/app/component-library/components/MultiSelect/index.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "269c563fc4e2220c4ddbeedbf7b8cb4767147bd8",
+      "subject": "design-system(changes): refresh change list [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-changes.json"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "230ac49a1276d3ce098d1ceed81b400ed74f1129",
+      "subject": "design-system(audit): blocked requests by phase, exact --open matches [AI-assisted]",
+      "body": "The guard records each blocked request with its route and phase (load,\nor after-click:<trigger>). Page-load writes, the platform's own session\ntracking, are listed as expected and counted as blockedOnLoad; only\nwrites after a click count as blockedWrites and raise the alarm in the\nCLI, the Usage notice and the audit skill. The guard test proves a\nload-time POST is classed as load and click POSTs as after-click.\n\n--open tries each match until one is visible and allowed, and the docs\nuse exact-name role selectors. loadAudit normalises every field the\nAudit section reads, so an older or hand-edited file cannot crash it.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/audit/SKILL.md",
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/workbench/src/lib/data.test.ts",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/panels/Usage.tsx",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/audit.guard.test.ts",
+        "front/scripts/design-system/audit.test.ts",
+        "front/scripts/design-system/audit.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "ddf74003084af52954355cf19f5001bb80faa4c5",
+      "subject": "design-system(audit): read-only network guard, safe triggers, audit in Usage [AI-assisted]",
+      "body": "ds:audit aborts every request that is not GET, HEAD or OPTIONS, closes\nWebSockets and blocks service workers; blocked writes are logged as\nmethod and path, counted in the report and printed loudly. A local\nPlaywright test proves a POST, a beacon, a form submit and a socket from\nclicks never reach the server.\n\nMenu triggers pass isSafeTrigger (main content, menu or listbox popups\nor aria-expanded buttons, no submits, no deny-listed names in five\nlanguages); clicking stops on the first error or navigation. --host is\nrequired, story comparisons use the same viewport only, and the script\nwarns when the session file sits inside the repository.\n\nThe component Usage tab shows the committed audit (differences, heal\ntasks, routes not reached). Audit JSON files are committed; screenshots\nstay ignored.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/audit/SKILL.md",
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/static/.gitignore",
+        "front/.storybook/workbench/src/lib/data.test.ts",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/pages/StartHere.tsx",
+        "front/.storybook/workbench/src/panels/Usage.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/audit.guard.test.ts",
+        "front/scripts/design-system/audit.test.ts",
+        "front/scripts/design-system/audit.ts",
+        "front/scripts/design-system/playwright.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "a4c000b00703283bb4b71895aaeb4c48b60ab7ed",
+      "subject": "design-system(audit): instance audit script and tests [AI-assisted]",
+      "body": "ds:audit opens a library component's routes (scan + route fixture) in a\nstored admin session at 1280 and 390, screenshots every visible\n[data-gv-component], reads radius, padding, colours, font size and the\ntokens each instance reads (the workbench's readComputedTokens, bundled\nwith esbuild and injected), opens menus when a page shows none, compares\ninstances pairwise and with the Default story, and writes\naudits/<Name>.json, its screenshots and audits/index.json for the\nworkbench. A missing session prints the playwright codegen command and\nexits 2. readComputedTokens takes an optional scope element; Storybook\nsets VITE_GV_DESIGN_TAGS so stories carry the tag too. Skill, AGENTS.md,\nREADME and Start here updated. No audit results yet.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/audit/SKILL.md",
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/main.ts",
+        "front/.storybook/workbench/src/lib/frame.ts",
+        "front/.storybook/workbench/src/pages/StartHere.tsx",
+        "front/package.json",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/audit.test.ts",
+        "front/scripts/design-system/audit.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "3b14b355c6a5a7491ed983f0aaf7fd4c7acd0ebf",
+      "subject": "design-system(workbench): Start here review fixes: Figma MCP in the setup, plainer claims, code cards scroll [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/workbench/src/pages/StartHere.tsx",
+        "front/.storybook/workbench/src/pages/starthere.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "c6647469a192bc46345f74ae96a955ffea86f385",
+      "subject": "design-system(docs): AGENTS.md and scripts README describe the current workbench, MCP and every ds script [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/scripts/design-system/README.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "9908c7b4ac8be3bec3fae6208f3bc58318f75f73",
+      "subject": "design-system(workbench): Start here page: tour, first heal, rules, accessibility thresholds and needs-a-person list, Mac setup [AI-assisted]",
+      "body": "Five lines on what this is, a card per workbench page with a small\npreview, the first heal in seven steps, the rules (a heal never changes\ntoday's rendering of a shared component, even with mode both), the axe\nthresholds and every needs-human checklist row, running it on a Mac,\nrefreshing the data, where files live, what the preview can show, and\nthe data files the build lacks. The smoke test checks the tour links,\nthe needs-a-person list and the mode rule.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/Nav.tsx",
+        "front/.storybook/workbench/src/lib/a11y.test.ts",
+        "front/.storybook/workbench/src/lib/a11y.ts",
+        "front/.storybook/workbench/src/pages/StartHere.tsx",
+        "front/.storybook/workbench/src/pages/starthere.css",
+        "front/scripts/design-system/workbench-smoke.test.ts",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "fcb4260b186fa71734175dc997b98801a75be47d",
+      "subject": "design-system(storybook): add @storybook/addon-mcp 0.7.0, MCP server at /mcp on the dev server [AI-assisted]",
+      "body": "0.7.0 (10 Jul 2026) is the last release whose peer range covers\nStorybook 10.4; it installs with additions only (14 packages, no\nupgrades). npm also re-sorted @types/qs into alphabetical order.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/main.ts",
+        "front/package-lock.json",
+        "front/package.json"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "78d18897559e8c871de6d6230cbfb4748d23916b",
+      "subject": "design-system(docs): refresh trend.json with design-changes.json after a summary commit [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "e188c58e394ca9547fb93f00010a1a66c6e50341",
+      "subject": "design-system(workbench): Proposal review fixes: lint copy, delta since the scanner settled, Quote mode demo [AI-assisted]",
+      "body": "ds:lint already fails on new raw values; the copy and the decision say\nso. The trend headline counts from the last scanner change. Quote\n(3px to 8px corners) is the live mode demo, Button keeps one line; the\nsmoke reads both corners. Heal card links the screenshots instead of\nunreadable thumbnails; LineChart has its own file; other areas read as\nOther change.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/LineChart.tsx",
+        "front/.storybook/workbench/src/lib/proposal.test.ts",
+        "front/.storybook/workbench/src/lib/proposal.ts",
+        "front/.storybook/workbench/src/pages/Proposal.tsx",
+        "front/.storybook/workbench/src/pages/proposal.css",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "b168cdb9a65c87724cae6d10fa973ae5d3693940",
+      "subject": "design-system(workbench): canvas fit measures stories taller than the centred preview box [AI-assisted]",
+      "body": "The preview centres every story in an absolute box the size of the\nframe, so in the 1px measuring frame a tall story overflowed above the\ntop and fit cut it in half. The measure now also takes the extent of\nthe story's element boxes.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/Canvas.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "4e79f9df2ab117d504df03ad3ace1023eaed9515",
+      "subject": "design-system(workbench): gallery chip in the SPEC wording, violation counts, keyboard warns when 2.1.1 fails [AI-assisted]",
+      "body": "The review chip reads \"Reviewed by agent on <date>\" with labelled counts\n(8 pass, 1 fail, 0 need a person), not numbers told apart by colour. The\naxe chip counts violations of the worst impact, one per rule per story.\nA passing Keyboard story shows \"Keyboard tested, 2.1.1 fails\" in the\nwarn tone when the checklist fails 2.1.1, for any component. The A11y\ntab count shows once the results have loaded.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/StoryThumb.tsx",
+        "front/.storybook/workbench/src/lib/a11y.test.ts",
+        "front/.storybook/workbench/src/lib/a11y.ts",
+        "front/.storybook/workbench/src/pages/Component.tsx",
+        "front/.storybook/workbench/src/panels/A11y.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "4150f921dc466acc37bdfcef814c76f09786eb3c",
+      "subject": "design-system(workbench): Proposal page for developers [AI-assisted]",
+      "body": "The three rings with live numbers from the scan summary, a drift trend\nfrom trend.json (plain SVG, hover and a table view), the migration order\n(usage x off-spec, top 20), the two modes with the Button in both frames,\na real heal with its screenshots, the review flow, the decisions and the\ncost so far. The workbench smoke checks the numbers, the charts, the\norder and the two Button frames.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/App.tsx",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/lib/proposal.test.ts",
+        "front/.storybook/workbench/src/lib/proposal.ts",
+        "front/.storybook/workbench/src/pages/Placeholder.tsx",
+        "front/.storybook/workbench/src/pages/Proposal.tsx",
+        "front/.storybook/workbench/src/pages/proposal.css",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "c0fb282bb66efe187cfaa69535df91a88ae89d3b",
+      "subject": "design-system(trend): RunGit defined in trend.ts so the workbench typecheck reads it without the token build [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/trend.test.ts",
+        "front/scripts/design-system/trend.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "00c0fba50d4a368e6a7430bd88ad169fbc28375d",
+      "subject": "design-system(stories): Table Keyboard asserts the info button is reachable by Tab, not that it comes first [AI-assisted]",
+      "body": "The sortable headers take no focus today (2.1.1 fails); once a heal makes\nthem focusable they come first and the story still holds. Fresh axe\nresults for the story: the play passes.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/a11y-results.json",
+        "front/app/component-library/components/Table/Table.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Table"
+    },
+    {
+      "sha": "2ee4a1b4bd9c10847853896170dc5b8249838cd7",
+      "subject": "design-system(skills): ds:check passes unless a change adds a critical; fixing one removes it from a11y-known.json [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/a11y-review/SKILL.md",
+        "front/.claude/skills/heal/SKILL.md",
+        "front/.claude/skills/lift/SKILL.md",
+        "front/.claude/skills/new-component/SKILL.md",
+        "front/.claude/skills/story/SKILL.md",
+        "front/.storybook/AGENTS.md",
+        "front/scripts/design-system/README.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "4e77b079d7df65c93f4c3d2f9d33e94c55c58820",
+      "subject": "design-system(trend): trend.json from the scan summary history, run by ds:changes [AI-assisted]",
+      "body": "scripts/design-system/trend.ts reads git log of the committed\ndesign-scan.summary.json and writes .storybook/static/trend.json: the\ntotals at each commit, its area, and for heals the changed lines, the\nscore and the screenshot folder. The file is committed; a shallow clone\n(CI, --depth 1), a failing log or an empty history keeps it, and it is\nonly rewritten when its content changes. Refreshes design-changes.json.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/.gitignore",
+        "front/.storybook/static/design-changes.json",
+        "front/.storybook/static/trend.json",
+        "front/scripts/design-system/changes.ts",
+        "front/scripts/design-system/trend.test.ts",
+        "front/scripts/design-system/trend.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "67f0abec42402d3f99cac955cf0d23b953483201",
+      "subject": "design-system(a11y): ds:check accepts the known criticals in a11y-known.json and fails on new ones [AI-assisted]",
+      "body": "The list holds the 97 criticals of today's results, by story id and rule.\n--check fails on a critical not on it, on a listed one that no longer\nfails, and when a11y-results.json is missing. The focusable count uses\nthe shared STORYBOOK_CHROME list.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/a11y-known.json",
+        "front/scripts/design-system/a11y-results.test.ts",
+        "front/scripts/design-system/a11y-results.ts",
+        "front/scripts/design-system/a11y-run.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "1fa0fb5b0d85bf64ca0ae920c1200fe0c25f31d6",
+      "subject": "design-system(skills): a11y.json next to the stories, ds:a11y and the A11y panel documented [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/a11y-review/SKILL.md",
+        "front/.claude/skills/new-component/SKILL.md",
+        "front/.storybook/AGENTS.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "dc912d2c6b2bce30025a406a9cb2a24730aa0df5",
+      "subject": "design-system(workbench): A11y panel and gallery badges [AI-assisted]",
+      "body": "The panel shows axe on the current story, every story coloured by its\nworst impact, and the a11y.json checklist with the SPEC 7.6 badges\n(checked by axe, keyboard tested or untested, reviewed by agent on a\ndate with counts). The gallery cards carry the same badges. The smoke\ntest checks that Button shows its review date and counts.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/Icon.tsx",
+        "front/.storybook/workbench/src/components/StoryThumb.tsx",
+        "front/.storybook/workbench/src/lib/a11y.test.ts",
+        "front/.storybook/workbench/src/lib/a11y.ts",
+        "front/.storybook/workbench/src/lib/checklists.ts",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/lib/useA11y.ts",
+        "front/.storybook/workbench/src/pages/Component.tsx",
+        "front/.storybook/workbench/src/pages/Gallery.tsx",
+        "front/.storybook/workbench/src/panels/A11y.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/scripts/design-system/workbench-smoke.test.ts",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "db53b9b887dc3ec3d6adeb9e0d78a031c25e8bd2",
+      "subject": "design-system(a11y): axe results for the Keyboard stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/a11y-results.json"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "720368f34e9024354a9d5c7bad18182e85803fff",
+      "subject": "design-system(a11y): Dropdown checklist, 7 pass, 1 fail, 1 needs a person [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Dropdown/a11y.json"
+      ],
+      "kind": "other",
+      "component": "Dropdown"
+    },
+    {
+      "sha": "d6eaa802905a5060bf4019fefa5b5d61aa794270",
+      "subject": "design-system(stories): Dropdown Keyboard story [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Dropdown/Dropdown.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Dropdown"
+    },
+    {
+      "sha": "279ef5b5deb69c2588c8ff3df4b2ca27dabb59a0",
+      "subject": "design-system(a11y): IconTooltip checklist, 9 pass, 2 fail, 0 need a person [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/IconTooltip/a11y.json"
+      ],
+      "kind": "other",
+      "component": "IconTooltip"
+    },
+    {
+      "sha": "c7d12bfbe0a94d7f06bcd2dfa82dea0bf80ca859",
+      "subject": "design-system(stories): IconTooltip Keyboard story [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/IconTooltip/IconTooltip.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "IconTooltip"
+    },
+    {
+      "sha": "96d215b72c653cdc7731b3fc896734693b799383",
+      "subject": "design-system(a11y): Tooltip checklist, 6 pass, 2 fail, 0 need a person [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Tooltip/a11y.json"
+      ],
+      "kind": "other",
+      "component": "Tooltip"
+    },
+    {
+      "sha": "6a141f6430a491c099240e2a840f864c322c02fd",
+      "subject": "design-system(stories): Tooltip Keyboard story [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Tooltip/Tooltip.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Tooltip"
+    },
+    {
+      "sha": "83cc836d00d16c613a22647fad6e02f3db7bfef9",
+      "subject": "design-system(a11y): Spinner checklist, 2 pass, 2 fail, 0 need a person [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Spinner/a11y.json"
+      ],
+      "kind": "other",
+      "component": "Spinner"
+    },
+    {
+      "sha": "58aa56dd0d3023815a7797548efade562a27ab93",
+      "subject": "design-system(a11y): Box checklist, 2 pass, 0 fail, 1 needs a person [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Box/a11y.json"
+      ],
+      "kind": "other",
+      "component": "Box"
+    },
+    {
+      "sha": "14fd5147f89439f6326272ce6f756a2412910898",
+      "subject": "design-system(a11y): Icon checklist, 2 pass, 0 fail, 1 needs a person [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Icon/a11y.json"
+      ],
+      "kind": "other",
+      "component": "Icon"
+    },
+    {
+      "sha": "89fe4eff453a6d9692a85891f48956a8d95398bd",
+      "subject": "design-system(a11y): Table checklist, 8 pass, 2 fail, 0 need a person [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Table/a11y.json"
+      ],
+      "kind": "other",
+      "component": "Table"
+    },
+    {
+      "sha": "f4f34f2193870c84a16d30a4c8d95fb834a35481",
+      "subject": "design-system(stories): Table Keyboard story [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Table/Table.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Table"
+    },
+    {
+      "sha": "7c286e30e0077312121508744df47b6cc08fc6e1",
+      "subject": "design-system(a11y): Title checklist, 3 pass, 0 fail, 2 need a person [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Title/a11y.json"
+      ],
+      "kind": "other",
+      "component": "Title"
+    },
+    {
+      "sha": "2b698ecaacf811e2b6888ec489285f15a7ff52b2",
+      "subject": "design-system(a11y): Text checklist, 4 pass, 0 fail, 0 need a person [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Text/a11y.json"
+      ],
+      "kind": "other",
+      "component": "Text"
+    },
+    {
+      "sha": "9f3832b1fcbe09da78c67e8a42410acf916d417b",
+      "subject": "design-system(a11y): Label checklist, 4 pass, 0 fail, 1 needs a person [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Label/a11y.json"
+      ],
+      "kind": "other",
+      "component": "Label"
+    },
+    {
+      "sha": "dc67978ed4678c50f39784484f350f855fb2ec43",
+      "subject": "design-system(a11y): Toggle checklist, 7 pass, 3 fail, 0 need a person [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Toggle/a11y.json"
+      ],
+      "kind": "other",
+      "component": "Toggle"
+    },
+    {
+      "sha": "209aabcc7e5ffe8e443c042ff4cdec0ecc696ae6",
+      "subject": "design-system(stories): Toggle Keyboard story [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Toggle/Toggle.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Toggle"
+    },
+    {
+      "sha": "95ad2c4a30c6de629cade134388968259be450f5",
+      "subject": "design-system(a11y): Select checklist, 7 pass, 3 fail, 0 need a person [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Select/a11y.json"
+      ],
+      "kind": "other",
+      "component": "Select"
+    },
+    {
+      "sha": "5adac0878816d359234d1caefdbdeac3606d3907",
+      "subject": "design-system(stories): Select Keyboard story [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Select/Select.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Select"
+    },
+    {
+      "sha": "a7658c4e5f1fc8bf19bc4c4cc00c7cd16ae28f97",
+      "subject": "design-system(a11y): Input checklist, 9 pass, 2 fail, 1 needs a person [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Input/a11y.json"
+      ],
+      "kind": "other",
+      "component": "Input"
+    },
+    {
+      "sha": "d3a8bca07476d1e6a88dd421b8e4bfd6420c1ece",
+      "subject": "design-system(stories): Input Keyboard story [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Input/Input.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Input"
+    },
+    {
+      "sha": "410ac3d3ede5050615cefc2fcf1c48c1c369d9d4",
+      "subject": "design-system(a11y): IconButton checklist, 7 pass, 1 fail, 0 need a person [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/IconButton/a11y.json"
+      ],
+      "kind": "other",
+      "component": "IconButton"
+    },
+    {
+      "sha": "e9192cf4a6a823e1993797c2dfa8d0bbfcc00fc5",
+      "subject": "design-system(stories): IconButton Keyboard story [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/IconButton/IconButton.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "IconButton"
+    },
+    {
+      "sha": "8f63976e1e761b82b32ed01ea1272b74aa8e3826",
+      "subject": "design-system(a11y): Button checklist, 8 pass, 1 fail, 0 need a person [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Button/a11y.json"
+      ],
+      "kind": "other",
+      "component": "Button"
+    },
+    {
+      "sha": "ff02a0c964057c9c80c2a9defdf399352e7737d5",
+      "subject": "design-system(stories): Button Keyboard story [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Button/Button.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Button"
+    },
+    {
+      "sha": "5ef30dd451d22f4f6c205c19da6ea81350d27084",
+      "subject": "design-system(a11y): first axe results, 377 stories, nothing fixed [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/a11y-results.json"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "dac7f7c8ac746afd65c1b006533861dbdc24f4b1",
+      "subject": "design-system(a11y): ds:a11y runs axe on every story, ds:check fails on critical [AI-assisted]",
+      "body": "Playwright over every story id with axe-core from node_modules (WCAG 2.0,\n2.1 and 2.2 A and AA rules, page-level rules of the Storybook iframe off).\nWrites a11y-results.json, now committed. --stories merges a partial run\ninto the last one. ds:check fails on a critical violation in a story under\nComponents/.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/.gitignore",
+        "front/package.json",
+        "front/scripts/design-system/a11y-results.test.ts",
+        "front/scripts/design-system/a11y-results.ts",
+        "front/scripts/design-system/a11y-run.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "26f2e58d50a902a6c0938bba56026c372938e270",
+      "subject": "design-system(visual): baseline summary, 362 stories x 2 viewports, 0 diffs and 0 errors in two compares [AI-assisted]",
+      "body": "Baseline vis-r7 from a build of 4ef79483851 (724 shots, 0 errors), then\ntwo full compares against it: 0 diffs, 0 errors, 0 retried both times.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/visual-summary.json"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "952be8a91b28c47c5278b783e0e94289011493b3",
+      "subject": "design-system(lift): PanelField from backofficeRedesign/Phase/BuildPanel [AI-assisted]",
+      "body": "Original: front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/PanelField.tsx.\nThe labelled settings field now lives in app/component-library/components/PanelField/.\nThe original file is gone; its six importers in Phase/BuildPanel import\nPanelField from the library instead. No other change on the page.\n\nTokens: --gv-space-4 (16px), --gv-space-2 (8px); mode check ok in today and redesign.\nStories: Default, Stacked, LongContent, RTL (tag bo).\nScore 0.000 (offSpec 2) → 1.000 (2 token reads). Visual: the original\ncomponent's states, today and redesign, 0 diffs; the library stories match\nthem pixel for pixel.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-scan.summary.json",
+        "front/app/component-library/components/PanelField/PanelField.stories.tsx",
+        "front/app/component-library/components/PanelField/PanelField.test.tsx",
+        "front/app/component-library/components/PanelField/index.tsx",
+        "front/app/component-library/index.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/BuildFields.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/CausesSection.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/CommonGroundSection.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/FormSection.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/PanelField.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/PhaseDates.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/PollSection.tsx"
+      ],
+      "kind": "lift",
+      "component": "PanelField",
+      "scanDelta": {
+        "offSpec": -2
+      }
+    },
+    {
+      "sha": "f9572c7b4cf3eb7697ff59d75a89f38c5f559f15",
+      "subject": "design-system(lift): OptionList from backofficeRedesign/InputManager [AI-assisted]",
+      "body": "Original: front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/OptionList.tsx.\nThe checkable option list now lives in app/component-library/components/OptionList/.\nThe original file stays as a thin wrapper that passes the two translated\nstrings (search placeholder, no matches text) as props, so its nine\nimporters are unchanged; intl stays with the page.\n\nTokens: --gv-space-1 (4px), --gv-space-2 (8px); mode check ok in today and redesign.\nStories: Default, Selected, Partial, WithColors, WithCounts, Disabled,\nHover, Searchable, Empty, LongContent, RTL (tag bo).\nScore 0.000 (offSpec 5) → 1.000 (6 token reads). Visual: the original\ncomponent's states, today and redesign, 0 diffs; the library stories match\nthem pixel for pixel.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-scan.summary.json",
+        "front/app/component-library/components/OptionList/OptionList.stories.tsx",
+        "front/app/component-library/components/OptionList/OptionList.test.tsx",
+        "front/app/component-library/components/OptionList/index.tsx",
+        "front/app/component-library/index.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/OptionList.tsx"
+      ],
+      "kind": "lift",
+      "component": "OptionList",
+      "scanDelta": {
+        "offSpec": -5
+      }
+    },
+    {
+      "sha": "4ef79483851a63e1d998f4228da3f6d5378e5e7a",
+      "subject": "design-system(visual): launch the screenshot browser with --disable-partial-raster [AI-assisted]",
+      "body": "Partial raster left the InputMultilocWithLocaleSwitcher Error corners one\nshade off in about one run in five (5 of 25 captures); with full raster\n25 of 25 captures match.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/visual-run.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "ca0bd32c44e39d8492c19bb90c92b9762533a447",
+      "subject": "design-system(stories): ProjectWorkspace comment says ModeScope forces redesign [AI-assisted]",
+      "body": "The component renders ModeScope itself, so a mode today run shows\nredesign token values too; the comment said it showed today values.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectWorkspace.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "ProjectWorkspace"
+    },
+    {
+      "sha": "01113564dc95c35aa342080bcc051e42ab5f7b1e",
+      "subject": "design-system(visual): name each screenshot once per story [AI-assisted]",
+      "body": "shotName was computed twice in the compare loop; compute it once at\nthe top and reuse it for the baseline, diff and retry files.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/visual-run.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "fe003d1af7a69309061d5bd2895c8add7e3f5b24",
+      "subject": "design-system(skills): heal fixes from the first five heals [AI-assisted]",
+      "body": "- Step 7 scope command: portable sed -E (no GNU-only \\|), paths\n  relative to front/, and other people's files left out.\n- Container files are not in the scan's components: a file score\n  command with the same weights.\n- Stop 4: mode-check compares values only; tier and meaning are\n  checked by hand.\n- One value is one raw → token pair in one file.\n- A story for the healed state comes first, in its own commit.\n- Start Storybook with npx storybook dev (npm run storybook runs\n  ds:prepare and rewrites committed outputs); stop it during\n  typecheck on small machines.\n- Baselines and before/after shots come from ds:visual, with\n  --stories and --mode redesign, instead of a fixed timeout\n  screenshot that caught a spinner.\n- Library files write var(--gv-…), since they may not import\n  design-system/.\n- AGENTS.md: --mode, the threshold 0 compare, npx storybook dev.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/heal/SKILL.md",
+        "front/.storybook/AGENTS.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "a551ab3c0ba576e973d6d0d6dfaeb97453bef7f1",
+      "subject": "design-system(heal): EmptyState 12px → --gv-space-3 [AI-assisted]",
+      "body": "backofficeRedesign/Phase/EmptyState.tsx:43, the icon's bottom margin,\npx. Mode redesign, inside the redesign scope: redesign 12px\n(unchanged), and today is 12px too.\nScore 0.118 → 0.235 (file: off-spec 7 → 6, token reads 1 → 2).\nVisual compare: pages-project-workspace--* (4 stories x 2 viewports),\ntoday 0 diffs, redesign 0 diffs, at threshold 0; no other story\nimports the file.\nScreenshots: .storybook/static/heals/6ac230f9438/\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-scan.summary.json",
+        "front/.storybook/static/heals/6ac230f9438/after-redesign.png",
+        "front/.storybook/static/heals/6ac230f9438/after-today.png",
+        "front/.storybook/static/heals/6ac230f9438/before-redesign.png",
+        "front/.storybook/static/heals/6ac230f9438/before-today.png",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/EmptyState.tsx"
+      ],
+      "kind": "heal",
+      "component": "EmptyState",
+      "scanDelta": {
+        "offSpec": -1
+      }
+    },
+    {
+      "sha": "6ac230f9438a08693da4a12b77a6355c23d5194d",
+      "subject": "design-system(heal): EmptyState 8px → --gv-space-2 [AI-assisted]",
+      "body": "backofficeRedesign/Phase/EmptyState.tsx:35, the column gap, px.\nMode redesign, inside the redesign scope: redesign 8px (unchanged),\nand today is 8px too.\nScore 0.000 → 0.118 (file: off-spec 8 → 7, token reads 0 → 1).\nVisual compare: pages-project-workspace--* (4 stories x 2 viewports),\ntoday 0 diffs, redesign 0 diffs, at threshold 0; no other story\nimports the file.\nScreenshots: .storybook/static/heals/3bd751dee85/\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-scan.summary.json",
+        "front/.storybook/static/heals/3bd751dee85/after-redesign.png",
+        "front/.storybook/static/heals/3bd751dee85/after-today.png",
+        "front/.storybook/static/heals/3bd751dee85/before-redesign.png",
+        "front/.storybook/static/heals/3bd751dee85/before-today.png",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/EmptyState.tsx"
+      ],
+      "kind": "heal",
+      "component": "EmptyState",
+      "scanDelta": {
+        "offSpec": -1
+      }
+    },
+    {
+      "sha": "3bd751dee8558388ce479921551499ee63ccde04",
+      "subject": "design-system(heal): ProjectWorkspace colors.background → --gv-background [AI-assisted]",
+      "body": "backofficeRedesign/index.tsx:147, legacy-colors. Mode redesign, inside\nthe redesign scope: redesign #EDEFF0 (unchanged, colors.background is\n#EDEFF0), and today is #EDEFF0 too.\nScore 0.500 → 0.588 (file: legacy 6 → 5, token reads 4 → 5).\nVisual compare: pages-project-workspace--* (4 stories x 2 viewports),\ntoday 0 diffs, redesign 0 diffs, at threshold 0; no other story\nimports the file.\nScreenshots: .storybook/static/heals/d7da7b947c0/\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-scan.summary.json",
+        "front/.storybook/static/heals/d7da7b947c0/after-redesign.png",
+        "front/.storybook/static/heals/d7da7b947c0/after-today.png",
+        "front/.storybook/static/heals/d7da7b947c0/before-redesign.png",
+        "front/.storybook/static/heals/d7da7b947c0/before-today.png",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/index.tsx"
+      ],
+      "kind": "heal",
+      "component": "ProjectWorkspace",
+      "scanDelta": {
+        "offSpec": 0
+      }
+    },
+    {
+      "sha": "d7da7b947c03348e84c57990990c388be161184e",
+      "subject": "design-system(heal): ViewContent bo.panelBorderRadius → --gv-radius-panel [AI-assisted]",
+      "body": "backofficeRedesign/Phase/ViewContent.tsx:121,135, legacy-bo. Mode\nredesign, inside the redesign scope: redesign 12px (unchanged,\nbo.panelBorderRadius is 12px), today 3px never shows here.\nScore 0.000 → 0.500 (file: legacy 4 → 2, token reads 0 → 2).\nVisual compare: pages-project-workspace--* (4 stories x 2 viewports),\ntoday 0 diffs, redesign 0 diffs, at threshold 0; no other story\nimports the file.\nScreenshots: .storybook/static/heals/5be0131cb50/\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-scan.summary.json",
+        "front/.storybook/static/heals/5be0131cb50/after-redesign.png",
+        "front/.storybook/static/heals/5be0131cb50/after-today.png",
+        "front/.storybook/static/heals/5be0131cb50/before-redesign.png",
+        "front/.storybook/static/heals/5be0131cb50/before-today.png",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/ViewContent.tsx"
+      ],
+      "kind": "heal",
+      "component": "ViewContent",
+      "scanDelta": {
+        "offSpec": 0
+      }
+    },
+    {
+      "sha": "c447f605328a6525dbf2a6de65b4e15782d76de9",
+      "subject": "design-system(visual): count every changed pixel, not only high contrast ones [AI-assisted]",
+      "body": "pixelmatch ran with threshold 0.1, which ignores colour changes below\nabout a tenth of the perceptual range. A white panel's corner going from\n12px to 8px on the #EDEFF0 canvas changed 121 pixels and reported 0, so\na heal that did change a redesigned page would have passed the gate.\nthreshold 0 counts them; unchanged stories still compare at 0 pixels.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/visual-summary.test.ts",
+        "front/scripts/design-system/visual-summary.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "5be0131cb50611ceb82348f15737306405493389",
+      "subject": "design-system(heal): ProjectWorkspace bo.panelBorderRadius → --gv-radius-panel [AI-assisted]",
+      "body": "backofficeRedesign/index.tsx:86,98,112,130, legacy-bo. Mode redesign,\ninside the redesign scope (ProjectWorkspace renders ModeScope itself):\nredesign 12px (unchanged, bo.panelBorderRadius is 12px), today 3px\nnever shows here.\nScore 0.000 → 0.500 (file: legacy 10 → 6, token reads 0 → 4).\nVisual compare: pages-project-workspace--* (4 stories x 2 viewports),\ntoday 0 diffs, redesign 0 diffs; no other story imports the file.\nScreenshots: .storybook/static/heals/7fe9ca304f8/\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-scan.summary.json",
+        "front/.storybook/static/heals/7fe9ca304f8/after-redesign.png",
+        "front/.storybook/static/heals/7fe9ca304f8/after-today.png",
+        "front/.storybook/static/heals/7fe9ca304f8/before-redesign.png",
+        "front/.storybook/static/heals/7fe9ca304f8/before-today.png",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/index.tsx"
+      ],
+      "kind": "heal",
+      "component": "ProjectWorkspace",
+      "scanDelta": {
+        "offSpec": 0
+      }
+    },
+    {
+      "sha": "e94eac790fd249f8bd42fc9ab91323665b0ac1b0",
+      "subject": "design-system(tags): gvTag lives in the component library so dependency rules pass [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/lift/SKILL.md",
+        "front/.claude/skills/new-component/SKILL.md",
+        "front/app/component-library/components/Accordion/index.tsx",
+        "front/app/component-library/components/Badge/index.tsx",
+        "front/app/component-library/components/Box/index.tsx",
+        "front/app/component-library/components/Button/index.tsx",
+        "front/app/component-library/components/CardButton/index.tsx",
+        "front/app/component-library/components/Checkbox/index.tsx",
+        "front/app/component-library/components/CheckboxWithLabel/index.tsx",
+        "front/app/component-library/components/CollapsibleContainer/index.tsx",
+        "front/app/component-library/components/ColorIndicator/index.tsx",
+        "front/app/component-library/components/ColorPickerInput/index.tsx",
+        "front/app/component-library/components/Divider/index.tsx",
+        "front/app/component-library/components/Dropdown/index.tsx",
+        "front/app/component-library/components/Error/index.tsx",
+        "front/app/component-library/components/Icon/Svg.tsx",
+        "front/app/component-library/components/IconButton/index.tsx",
+        "front/app/component-library/components/IconTooltip/index.tsx",
+        "front/app/component-library/components/Image/index.tsx",
+        "front/app/component-library/components/Input/index.tsx",
+        "front/app/component-library/components/Label/index.tsx",
+        "front/app/component-library/components/ListItem/index.tsx",
+        "front/app/component-library/components/LocaleSwitcher/index.tsx",
+        "front/app/component-library/components/MultiSelect/index.tsx",
+        "front/app/component-library/components/Quote/index.tsx",
+        "front/app/component-library/components/Radio/index.tsx",
+        "front/app/component-library/components/SearchInput/index.tsx",
+        "front/app/component-library/components/Select/index.tsx",
+        "front/app/component-library/components/Shimmer/index.tsx",
+        "front/app/component-library/components/Spinner/index.tsx",
+        "front/app/component-library/components/StatusLabel/index.tsx",
+        "front/app/component-library/components/Success/index.tsx",
+        "front/app/component-library/components/Table/Table.tsx",
+        "front/app/component-library/components/Text/index.tsx",
+        "front/app/component-library/components/Title/index.tsx",
+        "front/app/component-library/components/Toggle/index.tsx",
+        "front/app/component-library/components/Tooltip/index.tsx",
+        "front/app/component-library/utils/containers/InputContainer.tsx",
+        "front/app/component-library/utils/gvTag.test.ts",
+        "front/app/component-library/utils/gvTag.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "7fe9ca304f88f85c04a10063bd825c3d81125ff7",
+      "subject": "design-system(scan): count t.<group>.<key> token API reads as token reads [AI-assisted]",
+      "body": "The heal skill writes token reads as `t.radius.panel` from the generated\ntokens module, but the scanner only counted literal var(--gv-...) strings,\nso a heal removed a legacy read without adding a token read and the\nfollows-tokens score could not rise. Only a `t` imported from\ndesign-system/tokens/tokens counts; a local `t` does not.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/scan/findings.test.ts",
+        "front/scripts/design-system/scan/findings.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "ccd7d12e6700c362cd38afbfcdb0349627298a3c",
+      "subject": "design-system(stories): ProjectWorkspace Default, InsightsEmpty, ManageEmpty and RTL stories [AI-assisted]",
+      "body": "The redesigned project workspace (the ModeScope root) had no story, so a\nheal inside the redesign scope had nothing to compare or screenshot.\nProject setup with its three panels, and an empty phase on Insights and\non Manage (ViewContent and EmptyState), with mocked project and phase.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectWorkspace.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "ProjectWorkspace"
+    },
+    {
+      "sha": "900ec3b8130c7d9651f2c0439d071af0bf8726da",
+      "subject": "design-system(storybook): resolve design-system/ imports in stories [AI-assisted]",
+      "body": "The app resolves `design-system/...` through tsconfig baseUrl, Storybook\nonly through its folder aliases, which lacked it. Any story that reaches\nModeScope (the redesigned project workspace) or imports the token API as\n`design-system/tokens/tokens` failed to load with a 404.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/main.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "3393d949d9fe5e550336fb1b36f9e2f6102acc29",
+      "subject": "design-system(stories): a preview loader waits for the mock worker to serve the page, then refetches queries that failed before it did [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/preview.tsx"
+      ],
+      "kind": "story"
+    },
+    {
+      "sha": "95f50fc8183d8e4dce975ec0de5c5db5dd765202",
+      "subject": "design-system(mode-check): read rgb() in the space syntax [AI-assisted]",
+      "body": "`rgb(51 51 51)` and `rgb(0 0 0 / 50%)`, the CSS Color 4 form that\nbrowser devtools and design tools print, did not normalise, so\nds:mode-check called equal colours different and stopped a safe heal.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/mode-check.ts",
+        "front/scripts/design-system/mode-scope.test.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "c5a6a7cd2145ee37cc04b142063e08d27923eab6",
+      "subject": "design-system(visual): --stories filter and --mode redesign for ds:visual [AI-assisted]",
+      "body": "A heal touches one or two stories, but every compare re-shot all 358\nstories at two viewports (about 18 minutes). --stories takes comma\nseparated globs on story ids. --mode redesign renders the redesign token\nmode, which is the mode that matters for a heal inside the redesign\nscope; its shots get a __redesign suffix so they never mix with today's.\nA filtered or redesign compare writes <dir>/_summary.json, so it cannot\noverwrite the committed visual-summary.json with a partial run.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/scripts/design-system/visual-run.ts",
+        "front/scripts/design-system/visual-summary.test.ts",
+        "front/scripts/design-system/visual-summary.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "c4c65d6082f8b8dad3afcdbb2133f9df567e3daf",
+      "subject": "design-system(skills): heal, lift, story, new-component, audit, a11y-review, propose [AI-assisted]",
+      "body": "Fix round 1: the mode check decides the redesign scope from the import\ngraph (mode-scope.ts) instead of the backofficeRedesign/ folder; Event,\nNewPhase, UnsavedChangesGuard and portalled UI count as outside. The\ncheck moves to ds:mode-check with strict flags and rgb/hex/px\nnormalisation. Docs: AGENTS.md mode wording and Files lines, scope\ncommand covers UI/admin, spacing scale wording, spec a11y.json path.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/a11y-review/SKILL.md",
+        "front/.claude/skills/heal/SKILL.md",
+        "front/.claude/skills/heal/mode-check.cjs",
+        "front/.claude/skills/lift/SKILL.md",
+        "front/.claude/skills/new-component/SKILL.md",
+        "front/.storybook/AGENTS.md",
+        "front/package.json",
+        "front/scripts/design-system/mode-check.ts",
+        "front/scripts/design-system/mode-scope.test.ts",
+        "front/scripts/design-system/mode-scope.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "263324ae31470cce7d021df8ebdc1d72d6c1c1c9",
+      "subject": "design-system(stories): data waits in 13 story play steps time out after 10s instead of the 1s default [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/CloseIconButton/CloseIconButton.stories.tsx",
+        "front/app/components/UI/Error/Error.stories.tsx",
+        "front/app/components/UI/FormComponents/FormComponents.stories.tsx",
+        "front/app/components/UI/GoBackButton/GoBackButton.stories.tsx",
+        "front/app/components/UI/Image/Image.stories.tsx",
+        "front/app/components/UI/ImagesDropzone/ImagesDropzone.stories.tsx",
+        "front/app/components/UI/InputMultilocWithLocaleSwitcher/InputMultilocWithLocaleSwitcher.stories.tsx",
+        "front/app/components/UI/Modal/Modal.stories.tsx",
+        "front/app/components/UI/MoreActionsMenu/MoreActionsMenu.stories.tsx",
+        "front/app/components/UI/MultipleSelect/MultipleSelect.stories.tsx",
+        "front/app/components/UI/TypedDeleteConfirmationModal/TypedDeleteConfirmationModal.stories.tsx",
+        "front/app/components/admin/FormResults/FormResults.stories.tsx",
+        "front/app/components/admin/NavigationTabs/NavigationTabs.stories.tsx"
+      ],
+      "kind": "story"
+    },
+    {
+      "sha": "8eeb95659063a3ed9fef8aabe6f071930fd1bcd5",
+      "subject": "design-system(stories): IdeaCard play waits for both card titles and their images [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/IdeaCard/IdeaCard.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "IdeaCard"
+    },
+    {
+      "sha": "9f5e49a64e90432fd1148c163dd9bd8ab45e27c8",
+      "subject": "design-system(skills): heal, lift, story, new-component, audit, a11y-review, propose [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/a11y-review/SKILL.md",
+        "front/.claude/skills/audit/SKILL.md",
+        "front/.claude/skills/heal/SKILL.md",
+        "front/.claude/skills/heal/mode-check.cjs",
+        "front/.claude/skills/lift/SKILL.md",
+        "front/.claude/skills/new-component/SKILL.md",
+        "front/.claude/skills/propose/SKILL.md",
+        "front/.claude/skills/story/SKILL.md",
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/PR_TEMPLATE.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "60c983ff4488ba6969e787f3c4863ae96f43d6a4",
+      "subject": "design-system(tags): tag library components for review highlight [AI-assisted]",
+      "body": "Fix round 1: Badge now replaces Box's tag with its own, Box and Badge\nonly wire attrs when the build flag is on, prettier on four files, and\nflag-on tests for Badge, Box, CardButton and Quote.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Badge/index.tsx",
+        "front/app/component-library/components/Box/Box.tags.test.tsx",
+        "front/app/component-library/components/Box/index.tsx",
+        "front/app/component-library/components/Button/Button.tags.test.tsx",
+        "front/app/component-library/components/LocaleSwitcher/index.tsx",
+        "front/app/component-library/components/Shimmer/index.tsx",
+        "front/app/component-library/components/Tooltip/index.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "23e3d9e3b1e989881527338cafcf9eb73bcf37d7",
+      "subject": "design-system(visual): report a story whose play function throws as an error instead of capturing it [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/visual-run.ts",
+        "front/scripts/design-system/visual-summary.test.ts",
+        "front/scripts/design-system/visual-summary.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "d770410880a9bbd14b81ff7c4c8dd539ab691fc9",
+      "subject": "design-system(stories): register the default MSW handlers when the worker starts, so the app configuration fetched on import is mocked [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/preview.tsx"
+      ],
+      "kind": "story"
+    },
+    {
+      "sha": "c46c4bfee8a264146dccdcd31440133a03cbc26c",
+      "subject": "design-system(review): only design commits mark routes, per-component highlight, fresh change list [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-changes.json",
+        "front/.storybook/workbench/src/components/ChangeList.tsx",
+        "front/.storybook/workbench/src/components/RouteList.tsx",
+        "front/.storybook/workbench/src/lib/review.test.ts",
+        "front/.storybook/workbench/src/lib/review.ts",
+        "front/.storybook/workbench/src/pages/Review.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "ff36e80776505c23defa3752f47268ef462db344",
+      "subject": "design-system(review): readable frames, honest PR summary, shell-aware affected routes [AI-assisted]",
+      "body": "Frames pick the widest viewport that stays readable and the route list\nfolds once a route is picked; a frame under 45% offers actual size. Both\nframes decline the platform's cookie modal with its own button. Files in\nnine in ten route closures count as the shell: they mark no route and are\nlisted as affecting every page. Design changes are token, heal and lift\ncommits; stories and tooling are counted apart, and scanner rule commits\nstay out of the off-spec delta. The smoke waits for the Tokens panel match\ninstead of reading it once, and checks the cookie modal is gone.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/ChangeList.tsx",
+        "front/.storybook/workbench/src/components/FrameView.tsx",
+        "front/.storybook/workbench/src/components/RouteList.tsx",
+        "front/.storybook/workbench/src/lib/review.test.ts",
+        "front/.storybook/workbench/src/lib/review.ts",
+        "front/.storybook/workbench/src/pages/Placeholder.tsx",
+        "front/.storybook/workbench/src/pages/Review.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "f4db77f147c95316c7b53b2f30d5d508aca96c34",
+      "subject": "design-system(stories): TypedDeleteConfirmationModal Default, ConfirmationTyped, Loading and RTL stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/TypedDeleteConfirmationModal/TypedDeleteConfirmationModal.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "TypedDeleteConfirmationModal"
+    },
+    {
+      "sha": "a36a8bcbddfa444fcdb55144eeee1badfb680b52",
+      "subject": "design-system(stories): MoreActionsMenu Default, Hover, Focus, Open, IconOnly and RTL stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/MoreActionsMenu/MoreActionsMenu.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "MoreActionsMenu"
+    },
+    {
+      "sha": "0c179a02e6cb959589082ea726a6c7256517a65f",
+      "subject": "design-system(stories): ImagesDropzone Default, Hover, Focus, WithImage, Error and RTL stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/ImagesDropzone/ImagesDropzone.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "ImagesDropzone"
+    },
+    {
+      "sha": "59e4bdef59ffbdf4b409b598775967e7058b50fe",
+      "subject": "design-system(stories): FormResults Default, Empty and RTL stories with mocked survey results [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/admin/FormResults/FormResults.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "FormResults"
+    },
+    {
+      "sha": "c465f1d19fe0ac8f6297d142d7e9d83afb8ca2aa",
+      "subject": "design-system(stories): GraphCard Default, WithInfoTooltip, WithViewToggle, WithTopRightStat and RTL stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/admin/GraphCard/GraphCard.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "GraphCard"
+    },
+    {
+      "sha": "e267036c9042318bece0a71264054e72d68dede2",
+      "subject": "design-system(stories): MultiSelect (UI) Default, Hover, Focus, Open and RTL stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/MultiSelect/MultiSelect.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "MultiSelect"
+    },
+    {
+      "sha": "8c597acc5114182d59d1f6815921334986da1a47",
+      "subject": "design-system(stories): SearchInput (UI) Default, Hover, Focus, WithValue and RTL stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/SearchInput/SearchInput.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "SearchInput"
+    },
+    {
+      "sha": "3c11fd02840e727910a010139d8f495ccd1bae0b",
+      "subject": "design-system(stories): Image (UI) Default, Cover, Fallback and Empty stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/Image/Image.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Image"
+    },
+    {
+      "sha": "5e8e15e4a8158aa76d435b51fbb55efe3f661e1f",
+      "subject": "design-system(stories): CloseIconButton Default, Hover, Focus, FullScreen and RTL stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/CloseIconButton/CloseIconButton.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "CloseIconButton"
+    },
+    {
+      "sha": "c83d0f713f6223143cbf36a944e32327ea9652dd",
+      "subject": "design-system(stories): PageWrapper Default, FlatTopBorder and RTL stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/admin/PageWrapper/PageWrapper.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "PageWrapper"
+    },
+    {
+      "sha": "ce12cc9eeb4c6a192b557fe0469b49c7c2c5fbfb",
+      "subject": "design-system(stories): NewLabel Default and RTL stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/NewLabel/NewLabel.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "NewLabel"
+    },
+    {
+      "sha": "f1c62d688a34a3504183c80e87964fba0342582d",
+      "subject": "design-system(stories): Centerer Default story [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/Centerer/Centerer.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Centerer"
+    },
+    {
+      "sha": "3884a73d66e9011847fe73c6126ddf37b9f3efc0",
+      "subject": "design-system(tags): tag library components for review highlight [AI-assisted]",
+      "body": "Spread gvTag('<Name>') onto the root DOM node of each component-library\ncomponent (Box and Badge via .attrs so an outer library component's tag\nwins when it renders a Box root). Without VITE_GV_DESIGN_TAGS=1 gvTag\nreturns {}, so production markup is unchanged. Adds a Button test with\nthe flag on and off.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Accordion/index.tsx",
+        "front/app/component-library/components/Badge/index.tsx",
+        "front/app/component-library/components/Box/index.tsx",
+        "front/app/component-library/components/Button/Button.tags.test.tsx",
+        "front/app/component-library/components/Button/index.tsx",
+        "front/app/component-library/components/CardButton/index.tsx",
+        "front/app/component-library/components/Checkbox/index.tsx",
+        "front/app/component-library/components/CheckboxWithLabel/index.tsx",
+        "front/app/component-library/components/CollapsibleContainer/index.tsx",
+        "front/app/component-library/components/ColorIndicator/index.tsx",
+        "front/app/component-library/components/ColorPickerInput/index.tsx",
+        "front/app/component-library/components/Divider/index.tsx",
+        "front/app/component-library/components/Dropdown/index.tsx",
+        "front/app/component-library/components/Error/index.tsx",
+        "front/app/component-library/components/Icon/Svg.tsx",
+        "front/app/component-library/components/IconButton/index.tsx",
+        "front/app/component-library/components/IconTooltip/index.tsx",
+        "front/app/component-library/components/Image/index.tsx",
+        "front/app/component-library/components/Input/index.tsx",
+        "front/app/component-library/components/Label/index.tsx",
+        "front/app/component-library/components/ListItem/index.tsx",
+        "front/app/component-library/components/LocaleSwitcher/index.tsx",
+        "front/app/component-library/components/MultiSelect/index.tsx",
+        "front/app/component-library/components/Quote/index.tsx",
+        "front/app/component-library/components/Radio/index.tsx",
+        "front/app/component-library/components/SearchInput/index.tsx",
+        "front/app/component-library/components/Select/index.tsx",
+        "front/app/component-library/components/Shimmer/index.tsx",
+        "front/app/component-library/components/Spinner/index.tsx",
+        "front/app/component-library/components/StatusLabel/index.tsx",
+        "front/app/component-library/components/Success/index.tsx",
+        "front/app/component-library/components/Table/Table.tsx",
+        "front/app/component-library/components/Text/index.tsx",
+        "front/app/component-library/components/Title/index.tsx",
+        "front/app/component-library/components/Toggle/index.tsx",
+        "front/app/component-library/components/Tooltip/index.tsx",
+        "front/app/component-library/utils/containers/InputContainer.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "fb6a67233b370bdf4d32bdaff4ca6d03a59a877b",
+      "subject": "design-system(stories): MultiSelect RTL closed like Default, with Default's selected option [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/MultiSelect/MultiSelect.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "MultiSelect"
+    },
+    {
+      "sha": "957f88e687189e2368c436e877d6a18068a6c27f",
+      "subject": "design-system(stories): Section and ResourceList typed on their examples [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/admin/ResourceList/ResourceList.stories.tsx",
+        "front/app/components/admin/Section/Section.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Section"
+    },
+    {
+      "sha": "dcf03a1388d7dbb4ead908b220e867bb2275b38f",
+      "subject": "design-system(stories): NavigationTabs typed on its example and DisabledTab renamed Disabled [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/admin/NavigationTabs/NavigationTabs.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "NavigationTabs"
+    },
+    {
+      "sha": "b14a8b8c2a8d80c879a5246956391fc90cc68b8d",
+      "subject": "design-system(stories): GraphWrappers typed on its example and NoData renamed Empty [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/admin/GraphWrappers/GraphWrappers.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "GraphWrappers"
+    },
+    {
+      "sha": "3f828d86c5c617df42182450795c205d49583725",
+      "subject": "design-system(stories): ButtonWithLink RTL without the icon Default lacks [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/ButtonWithLink/ButtonWithLink.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "ButtonWithLink"
+    },
+    {
+      "sha": "32970c012a1a9e125a24bc86513ddf2001c23740",
+      "subject": "design-system(stories): Warning LinkHover and LinkFocus renamed Hover and Focus [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/Warning/Warning.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Warning"
+    },
+    {
+      "sha": "22cd8f85d0596e1e06a17b4e3cafea0739c0279d",
+      "subject": "design-system(stories): FormComponents typed on its example with a play that waits for the section title [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/FormComponents/FormComponents.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "FormComponents"
+    },
+    {
+      "sha": "fcc01042a6e7ebd5566bff82da2265b01613f17b",
+      "subject": "design-system(stories): GoBackButton play waits for the Go back text [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/GoBackButton/GoBackButton.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "GoBackButton"
+    },
+    {
+      "sha": "be68105a3de691b634d7052e8a27129be637ff09",
+      "subject": "design-system(stories): Error (UI) play waits for the message text [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/Error/Error.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Error"
+    },
+    {
+      "sha": "25d5565cb43fb206b5872b7d141ace72a2e8c31d",
+      "subject": "design-system(stories): InputMultilocWithLocaleSwitcher plays wait for the loaded input and switcher, the stale-cache comment is dropped, RTL fills all three locales [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/InputMultilocWithLocaleSwitcher/InputMultilocWithLocaleSwitcher.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "InputMultilocWithLocaleSwitcher"
+    },
+    {
+      "sha": "03fc6e848b0d0ff7cc1acfcb752e4fb7db88d08f",
+      "subject": "design-system(stories): Modal play waits for the close button instead of a 1500ms timer; WithoutCloseButton waits for the header [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/Modal/Modal.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Modal"
+    },
+    {
+      "sha": "da7f8baa574f35df2fec00dbebc9f8595f384a53",
+      "subject": "design-system(scan): prefix both UI and admin component names when the two roots share a folder name [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/scan/routes.test.ts",
+        "front/scripts/design-system/scan/usages.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "ac724e40c61101d6518a67ef808dbef5ce4668a4",
+      "subject": "design-system(visual): screenshot only after the story's render phase is finished, so play steps have run [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/visual-run.ts",
+        "front/scripts/design-system/visual-summary.test.ts",
+        "front/scripts/design-system/visual-summary.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "426fd3dd9f64496f18cc3078d594f28722805773",
+      "subject": "design-system(review): before/after frames of the real platform with filters and PR summary [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/App.tsx",
+        "front/.storybook/workbench/src/components/ChangeList.tsx",
+        "front/.storybook/workbench/src/components/FrameView.tsx",
+        "front/.storybook/workbench/src/components/RouteList.tsx",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/lib/review.test.ts",
+        "front/.storybook/workbench/src/lib/review.ts",
+        "front/.storybook/workbench/src/pages/Review.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "54d07a4e6ed047d8d305e4312662191ae201e7c4",
+      "subject": "design-system(visual): visual summary for 309 stories after the round 2 stories, with 2 mobile diffs (IdeaCard past budgeting, Modal RTL) [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/visual-summary.json"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "d335bb9658461ea11d0c85575b7e601aee255c73",
+      "subject": "design-system(stories): InputMultilocWithLocaleSwitcher SingleLocale waits until the three-locale switcher is gone [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/InputMultilocWithLocaleSwitcher/InputMultilocWithLocaleSwitcher.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "InputMultilocWithLocaleSwitcher"
+    },
+    {
+      "sha": "b8d2465fcbc52fe74da001c39c0a79696b76339e",
+      "subject": "design-system(stories): Modal play step waits 1500ms instead of 800ms for the enter transition [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/Modal/Modal.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Modal"
+    },
+    {
+      "sha": "496304a09d6b4f2f5dd2085953e925294b91b369",
+      "subject": "design-system(review): commit the change list and keep it when CI reaches no base [AI-assisted]",
+      "body": "The front-build job clones with --depth 1 (no master, no history), so\nds:changes can never resolve a base there. design-changes.json is now\ncommitted and refreshed locally; when no base is reachable and the file\nexists, ds:changes keeps it unchanged and warns. Warnings are a list,\nthe no-base warning says when the cached merge-base is missing from a\nshallow clone, and commits of other kinds take a component only from\nthe first word after the colon.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/.gitignore",
+        "front/.storybook/static/design-changes.json",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/changes.test.ts",
+        "front/scripts/design-system/changes.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "205e30e63a10a70e1e84fd24f16c0946c9d99f27",
+      "subject": "design-system(review): change list and route fixtures [AI-assisted]",
+      "body": "ds:changes writes design-changes.json: commits since the merge-base with\nmaster (then origin/master, then the merge-base ds:scan now caches in the\nsummary), each with files, kind and component from the subject, and the\noffSpec delta when the commit refreshed the scan summary; plus token\nchanges per mode between tokens.source.json at the base and HEAD. It\nalways exits 0.\n\nds:routes-fixture fills routes.fixture.json from the test tenant's\npublic API (unauthenticated reads), with per-route overrides where one\nparam name means another record, and lists the params it could not fill.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-scan.summary.json",
+        "front/.storybook/static/routes.fixture.json",
+        "front/package.json",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/changes.test.ts",
+        "front/scripts/design-system/changes.ts",
+        "front/scripts/design-system/routes-fixture.test.ts",
+        "front/scripts/design-system/routes-fixture.ts",
+        "front/scripts/design-system/scan/index.test.ts",
+        "front/scripts/design-system/scan/index.ts"
+      ],
+      "kind": "other",
+      "scanDelta": {
+        "offSpec": 0
+      }
+    },
+    {
+      "sha": "ad53a05e656867a644071c1a380cdf601248e6a9",
+      "subject": "design-system(scan): leave imports used only as types out of route closures [AI-assisted]",
+      "body": "A plain named import whose names appear only in type positions is erased\nby TypeScript, so its module is not loaded on that route. extractImports\nnow marks such names typeOnly (shared value-name walk with usages.ts).\nClosure file-route pairs drop from 63484 to 54276; Box 197 -> 194 routes,\nIcon 197 -> 193. Button stays at 187: its reach comes from runtime\nimports (ButtonWithLink is in 176 closures through constant and widget\nimports), not from type imports.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-scan.summary.json",
+        "front/scripts/design-system/scan/routes.test.ts",
+        "front/scripts/design-system/scan/routes.ts",
+        "front/scripts/design-system/scan/usages.ts"
+      ],
+      "kind": "other",
+      "scanDelta": {
+        "offSpec": 0
+      }
+    },
+    {
+      "sha": "b8c5539368b466dc43bd2a26b5fd745ba5fe9b0e",
+      "subject": "design-system(stories): add PageLoading stories, tagged shared, with Default and Loading [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/PageLoading/PageLoading.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "PageLoading"
+    },
+    {
+      "sha": "c25679ea44dd7c44bc789c2d442fe73ee0546a06",
+      "subject": "design-system(stories): add GraphWrappers stories, tagged shared, with Default, NoData, FullWidth and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/admin/GraphWrappers/GraphWrappers.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "GraphWrappers"
+    },
+    {
+      "sha": "3a22dcc87a056588348a8d73e4f00708d8f61d15",
+      "subject": "design-system(stories): add FormComponents stories, tagged shared, with Default, Optional, WithSubtext, WithIcon, QuestionNumber and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/FormComponents/FormComponents.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "FormComponents"
+    },
+    {
+      "sha": "221aee4dd0dd963246a3e979ddba7c33f7f6e369",
+      "subject": "design-system(stories): add NavigationTabs stories, tagged shared, with Default, Hover, Focus, DisabledTab tooltip, WithBadge and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/admin/NavigationTabs/NavigationTabs.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "NavigationTabs"
+    },
+    {
+      "sha": "9cef767cad77266e62e4c8fa95305b7aaae8a838",
+      "subject": "design-system(stories): add QuillEditedContent stories, tagged shared, with Default, Small, Large and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/QuillEditedContent/QuillEditedContent.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "QuillEditedContent"
+    },
+    {
+      "sha": "fd686ae98d85aed9c3a055be48faa3af2368c876",
+      "subject": "design-system(stories): add MultipleSelect stories, tagged shared, with Default, Empty, Focus, Open, Disabled, LongContent and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/MultipleSelect/MultipleSelect.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "MultipleSelect"
+    },
+    {
+      "sha": "c19ae5cbf0cb50654d1803abb2f68a3857cb6728",
+      "subject": "design-system(stories): add InputMultilocWithLocaleSwitcher stories with a three-locale MSW config, tagged shared, with Default, Focus, Error, Disabled, SingleLocale and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/InputMultilocWithLocaleSwitcher/InputMultilocWithLocaleSwitcher.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "InputMultilocWithLocaleSwitcher"
+    },
+    {
+      "sha": "6f072d833076a4a385dfb6a5adde10a54c0d389e",
+      "subject": "design-system(stories): add GoBackButton stories, tagged shared, with Default, Hover, Focus, IconOnly and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/GoBackButton/GoBackButton.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "GoBackButton"
+    },
+    {
+      "sha": "03fea37f7652812bf2e68da8d4afcf292b839dc6",
+      "subject": "design-system(stories): add Warning stories, tagged shared, with Default, WithLink, LinkHover, LinkFocus, CustomIcon, WithoutIcon, LongContent and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/Warning/Warning.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Warning"
+    },
+    {
+      "sha": "142790d0418966c398b5ed3cc7b01731a337b812",
+      "subject": "design-system(stories): add ResourceList stories, tagged shared, with Default, PlainRows and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/admin/ResourceList/ResourceList.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "ResourceList"
+    },
+    {
+      "sha": "1c43b0a05490109c014e3bb9ac8b855f7da742f9",
+      "subject": "design-system(stories): add Modal stories, tagged shared, with Default, BackOffice, WithoutHeader, WithoutCloseButton and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/Modal/Modal.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Modal"
+    },
+    {
+      "sha": "bcb154ef59b0224a6f83c0cb4fa5ce3c6eb44364",
+      "subject": "design-system(stories): add UI Error stories as Error (UI), tagged shared, with Default, ApiErrors, WithoutIcon, WithoutBackground, LongContent and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/Error/Error.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Error"
+    },
+    {
+      "sha": "2dbd4dc4631bec0818f2e437ed8b69bcbbceb821",
+      "subject": "design-system(stories): add ButtonWithLink stories, tagged shared, with Default, Hover, Focus, Disabled, Secondary, WithIcon and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/ButtonWithLink/ButtonWithLink.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "ButtonWithLink"
+    },
+    {
+      "sha": "433ce71bd1686a367506995c70e68dd5dc8e13be",
+      "subject": "design-system(stories): add admin Section stories, tagged shared, with Default, FullWidthField and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/admin/Section/Section.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Section"
+    },
+    {
+      "sha": "fdca75b5147870b99be2c60271fff37ae1c51548",
+      "subject": "design-system(workbench): heal mode per component, row heals name their token [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/componentPanels.test.ts",
+        "front/.storybook/workbench/src/lib/componentPanels.ts",
+        "front/.storybook/workbench/src/lib/healTask.test.ts",
+        "front/.storybook/workbench/src/lib/healTask.ts",
+        "front/.storybook/workbench/src/pages/Component.tsx",
+        "front/.storybook/workbench/src/panels/Tokens.tsx",
+        "front/.storybook/workbench/src/panels/Usage.tsx",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "9509680939a9af64170df61311e509274bd86ce5",
+      "subject": "design-system(workbench): Tokens and Usage panels with heal tasks [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/App.tsx",
+        "front/.storybook/workbench/src/components/ChangesDrawer.tsx",
+        "front/.storybook/workbench/src/components/HealCopy.tsx",
+        "front/.storybook/workbench/src/components/Icon.tsx",
+        "front/.storybook/workbench/src/components/Panel.tsx",
+        "front/.storybook/workbench/src/components/PanelTabs.tsx",
+        "front/.storybook/workbench/src/components/TokenRow.tsx",
+        "front/.storybook/workbench/src/lib/clipboard.ts",
+        "front/.storybook/workbench/src/lib/componentPanels.test.ts",
+        "front/.storybook/workbench/src/lib/componentPanels.ts",
+        "front/.storybook/workbench/src/lib/healTask.test.ts",
+        "front/.storybook/workbench/src/lib/healTask.ts",
+        "front/.storybook/workbench/src/lib/sourceDiff.test.ts",
+        "front/.storybook/workbench/src/lib/sourceDiff.ts",
+        "front/.storybook/workbench/src/lib/tokenValues.ts",
+        "front/.storybook/workbench/src/lib/useScanIndexes.ts",
+        "front/.storybook/workbench/src/pages/Component.tsx",
+        "front/.storybook/workbench/src/pages/Foundations.tsx",
+        "front/.storybook/workbench/src/panels/Controls.tsx",
+        "front/.storybook/workbench/src/panels/Tokens.tsx",
+        "front/.storybook/workbench/src/panels/Usage.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "5186f325b4ec27707de8e8271e6a3468a34b010d",
+      "subject": "design-system(scan): count UI and admin components [AI-assisted]",
+      "body": "The scanner now counts one component per directory with an index file under app/components/UI and app/components/admin, next to the library components (95 more, 132 in all). App component names that a library component already has get their root as prefix (UI/Error, UI/Checkbox, UI/Image, UI/MultiSelect, UI/SearchInput). Output shape unchanged; library counts, findings and page totals unchanged. Tests for the new roots; summary refreshed.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-scan.summary.json",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/scan/index.ts",
+        "front/scripts/design-system/scan/routes.test.ts",
+        "front/scripts/design-system/scan/usages.ts"
+      ],
+      "kind": "other",
+      "scanDelta": {
+        "offSpec": 0
+      }
+    },
+    {
+      "sha": "ecdfabf6c5095a74bd1c7d86267b8495872bb035",
+      "subject": "design-system(visual): visual summary for 237 stories after the top-component state stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/visual-summary.json"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "84326aa401dcf7b245bbe347b9c1690b8468c0c6",
+      "subject": "design-system(stories): MultiSelect retitled under Forms, tagged, Loading opened, with Hover, Focus, Open, LongContent and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/MultiSelect/MultiSelect.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "MultiSelect"
+    },
+    {
+      "sha": "ca297ee58c6d9aca70d797c9f37868b4ef0d7187",
+      "subject": "design-system(stories): CardButton retitled under Actions, tagged bo, Default unselected, LongTitle renamed LongContent, with Selected, Hover, Focus, Disabled and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/CardButton/CardButton.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "CardButton"
+    },
+    {
+      "sha": "4bc04b808594022c0312bc34917e460075e724a4",
+      "subject": "design-system(stories): Quote retitled under Data display, tagged bo, with RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Quote/Quote.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Quote"
+    },
+    {
+      "sha": "ac108b736828a4f828991f0de1d98ecb1451697c",
+      "subject": "design-system(stories): SearchInput retitled under Forms, tagged, with Hover, Focus, LongContent and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/SearchInput/SearchInput.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "SearchInput"
+    },
+    {
+      "sha": "994248bdf8cb022c77f350e3d140c536c86ace6d",
+      "subject": "design-system(stories): ColorIndicator retitled under Data display and tagged [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/ColorIndicator/ColorIndicator.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "ColorIndicator"
+    },
+    {
+      "sha": "23547efb807242578c4c17d544846479d6103853",
+      "subject": "design-system(stories): CollapsibleContainer retitled under Layout, tagged, with Focus, Open, LongContent and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/CollapsibleContainer/CollapsibleContainer.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "CollapsibleContainer"
+    },
+    {
+      "sha": "ad7af7c5ea27d90a36fd6d766e5175368f6a6f0c",
+      "subject": "design-system(stories): ListItem Default story [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/ListItem/ListItem.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "ListItem"
+    },
+    {
+      "sha": "138dd2c41467f543a59e9eb745d7153decbc4e0f",
+      "subject": "design-system(stories): ColorPickerInput retitled under Forms, tagged, with Hover, Open and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/ColorPickerInput/ColorPickerInput.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "ColorPickerInput"
+    },
+    {
+      "sha": "39032aff4d66984ba03478c35d9cd39cb556d3b8",
+      "subject": "design-system(stories): InputContainer stories with Default, Hover, Focus, Disabled and LongContent [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/utils/containers/InputContainer.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "InputContainer"
+    },
+    {
+      "sha": "e8c4067e3a7084a84c6f30e7d0058b5a42b8fd64",
+      "subject": "design-system(stories): Shimmer Default story [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Shimmer/Shimmer.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Shimmer"
+    },
+    {
+      "sha": "c4bf3d1e3d4d4f736e4f94093ddd3683f0360374",
+      "subject": "design-system(stories): LocaleSwitcher retitled under Forms, tagged, with Hover, Focus, LongContent and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/LocaleSwitcher/LocaleSwitcher.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "LocaleSwitcher"
+    },
+    {
+      "sha": "771bf3894957317a050105fc14834aaf184a3a70",
+      "subject": "design-system(stories): Checkbox retitled under Forms, tagged, with Hover, Focus and Disabled [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Checkbox/Checkbox.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Checkbox"
+    },
+    {
+      "sha": "fffad6d44074ffa8bd16c7ff21fde39b93c7b6d4",
+      "subject": "design-system(stories): Accordion retitled under Layout, tagged, with Hover, Focus, Open, LongContent and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Accordion/Accordion.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Accordion"
+    },
+    {
+      "sha": "e5ef62823c3689932f6960f457c98d098880d3d4",
+      "subject": "design-system(stories): Error stories with Default, LongContent and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Error/Error.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Error"
+    },
+    {
+      "sha": "5fd4cac7d4fe1fafd315ffc3e35610d822628d81",
+      "subject": "design-system(stories): Success retitled under Feedback, tagged, with Default, LongContent and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Success/Success.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Success"
+    },
+    {
+      "sha": "8d285662d013f167e5330d6692a56f933255a217",
+      "subject": "design-system(stories): CheckboxWithLabel stories with Default, Hover, Focus, Disabled, LongContent and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/CheckboxWithLabel/CheckboxWithLabel.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "CheckboxWithLabel"
+    },
+    {
+      "sha": "dea5e47c2ac7e315057c5e5788be1c73d602df43",
+      "subject": "design-system(stories): StatusLabel retitled under Data display, tagged bo, with LongContent and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/StatusLabel/StatusLabel.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "StatusLabel"
+    },
+    {
+      "sha": "40cf7b8231a0cb468ac95b2e9deaa7b78ef33f14",
+      "subject": "design-system(stories): Badge retitled under Data display, tagged, with LongContent [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Badge/Badge.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Badge"
+    },
+    {
+      "sha": "3e83e0cfd02ddee53b3907caab6d6c238de705bb",
+      "subject": "design-system(stories): Image retitled under Data display and tagged [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Image/Image.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Image"
+    },
+    {
+      "sha": "58eaf3d6c775ea2861c95a1358572820ffeb4469",
+      "subject": "design-system(stories): Divider retitled under Layout and tagged [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Divider/Divider.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Divider"
+    },
+    {
+      "sha": "1282c079c26868a9d58a58e3fa631f498e0b82a2",
+      "subject": "design-system(stories): Radio retitled under Forms, tagged, with Hover, Focus, Disabled, LongContent and RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Radio/Radio.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Radio"
+    },
+    {
+      "sha": "cd0e4fef926e60542dec9fa99a722f70fc2a4136",
+      "subject": "design-system(workbench): fit canvas, readable thumbs, controls fixes [AI-assisted]",
+      "body": "The canvas fits the frame to the rendered story by default, so a\ncomponent shows at its real size in single and today | redesign views;\nthe viewport presets stay for page checks. Gallery thumbnails scale to\nthe card width. Controls queue edits for frames still loading, keep\noption values typed and fold long lists of unset props. The locked mode\nselect reads Both, story tabs scroll in one row, and ar loads the\nar-SA messages.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/reactIntl.ts",
+        "front/.storybook/workbench/src/components/Canvas.tsx",
+        "front/.storybook/workbench/src/components/StoryThumb.tsx",
+        "front/.storybook/workbench/src/components/Toolbar.tsx",
+        "front/.storybook/workbench/src/lib/preview.ts",
+        "front/.storybook/workbench/src/lib/stories.test.ts",
+        "front/.storybook/workbench/src/pages/Component.tsx",
+        "front/.storybook/workbench/src/pages/Gallery.tsx",
+        "front/.storybook/workbench/src/panels/Controls.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "c4082a60cb000a9662d335db0c0674788e724a57",
+      "subject": "design-system(workbench): galleries, component page, controls [AI-assisted]",
+      "body": "Galleries per section with live story thumbnails, score rings, status\nand office chips, and office, status and text filters. The component\npage shows a story's states and variants as tabs, a today and redesign\nsplit view, and a Controls panel that edits args through the preview\nchannel. The language toolbar lists the seven languages of the spec.\nThe smoke test checks the gallery, the tabs and a boolean control.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/languages.ts",
+        "front/.storybook/preview.tsx",
+        "front/.storybook/reactIntl.ts",
+        "front/.storybook/workbench/src/App.tsx",
+        "front/.storybook/workbench/src/components/Canvas.tsx",
+        "front/.storybook/workbench/src/components/Icon.tsx",
+        "front/.storybook/workbench/src/components/Segmented.tsx",
+        "front/.storybook/workbench/src/components/StoryThumb.tsx",
+        "front/.storybook/workbench/src/components/Toolbar.tsx",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/lib/preview.ts",
+        "front/.storybook/workbench/src/lib/router.ts",
+        "front/.storybook/workbench/src/lib/stories.test.ts",
+        "front/.storybook/workbench/src/lib/stories.ts",
+        "front/.storybook/workbench/src/lib/useStoryGroups.ts",
+        "front/.storybook/workbench/src/pages/Component.tsx",
+        "front/.storybook/workbench/src/pages/Gallery.tsx",
+        "front/.storybook/workbench/src/pages/Placeholder.tsx",
+        "front/.storybook/workbench/src/panels/Controls.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "09659e57cec642cf8a39204e780d7136b8337120",
+      "subject": "design-system(visual): baseline with the corrected state stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/visual-summary.json"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "b07ff4f209a366feb9d07d283b279502d23e12ff",
+      "subject": "design-system(stories): IconTooltip focus and hover that render every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/IconTooltip/IconTooltip.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "IconTooltip"
+    },
+    {
+      "sha": "aae5fbd8e611071a17b612463e30bb6e12a13ea0",
+      "subject": "design-system(stories): Table focus and hover that render every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Table/Table.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Table"
+    },
+    {
+      "sha": "7b9381fb92378de883e74ba8f401863929d3c77d",
+      "subject": "design-system(stories): Toggle focus and hover that render every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Toggle/Toggle.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Toggle"
+    },
+    {
+      "sha": "6cb51c85dc882368c9b8bfa1a29ceecd2a31b005",
+      "subject": "design-system(stories): Select focus and hover that render every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Select/Select.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Select"
+    },
+    {
+      "sha": "65d64986f4e7ccd532b379d12a306693256ffff5",
+      "subject": "design-system(stories): Input focus and hover that render every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Input/Input.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Input"
+    },
+    {
+      "sha": "f9791db1b753896f545e31c97efa1e34e38a948d",
+      "subject": "design-system(workbench): fix drawer stacking and page height [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/Nav.tsx",
+        "front/.storybook/workbench/src/components/TokenRow.tsx",
+        "front/.storybook/workbench/src/pages/Foundations.tsx",
+        "front/.storybook/workbench/src/pages/Placeholder.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "8c7099b2e5e0bf3f01536f7646f2a7e521e7a2ab",
+      "subject": "design-system(stories): Label real RTL [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Label/label.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Label"
+    },
+    {
+      "sha": "6657c25f0b9337527ec428b74141b7adbd6baef6",
+      "subject": "design-system(stories): Spinner real RTL and focus every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Spinner/Spinner.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Spinner"
+    },
+    {
+      "sha": "ea9d38950a338ae47370d5d75ebeb86fac7c3ea9",
+      "subject": "design-system(stories): Tooltip real RTL and focus every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Tooltip/Tooltip.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Tooltip"
+    },
+    {
+      "sha": "27c40fdab31990979c5a65749b5cd1c064d75f8e",
+      "subject": "design-system(stories): Toggle real RTL and focus every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Toggle/Toggle.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Toggle"
+    },
+    {
+      "sha": "927bb3a9115478637b67f97b9096696e672a1d75",
+      "subject": "design-system(stories): Title real RTL and focus every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Title/Title.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Title"
+    },
+    {
+      "sha": "ddfc2239e49fdb55bb6b003ad1e25623821aebc3",
+      "subject": "design-system(stories): Text real RTL and focus every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Text/Text.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Text"
+    },
+    {
+      "sha": "1f37b4c34ada529e209d5db03872dda438a0dafd",
+      "subject": "design-system(stories): Table real RTL and focus every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Table/Table.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Table"
+    },
+    {
+      "sha": "c957e0fd249531a4dc7f8662a456002afda1c1c5",
+      "subject": "design-system(stories): Select real RTL and focus every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Select/Select.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Select"
+    },
+    {
+      "sha": "78d116ee97416b6db62eb405f7dab232bf65fbea",
+      "subject": "design-system(stories): Input real RTL and focus every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Input/Input.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Input"
+    },
+    {
+      "sha": "e005401c00f3719e9d5aeb1287bdf7853a08fff3",
+      "subject": "design-system(stories): IconTooltip real RTL and focus every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/IconTooltip/IconTooltip.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "IconTooltip"
+    },
+    {
+      "sha": "20906597b50b5912a966235c7010fc589dd343ac",
+      "subject": "design-system(stories): IconButton real RTL and focus every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/IconButton/IconButton.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "IconButton"
+    },
+    {
+      "sha": "7765aeadc784eaa48f9b910c588bdf37b4fd9eed",
+      "subject": "design-system(stories): Dropdown real RTL and focus every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Dropdown/Dropdown.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Dropdown"
+    },
+    {
+      "sha": "90f9c09d4c5c1a90a3f262df3961cb2339b06f61",
+      "subject": "design-system(stories): Box real RTL and focus every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Box/Box.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Box"
+    },
+    {
+      "sha": "affb828489e664a05b102d1b4577c7552ea2aabb",
+      "subject": "design-system(stories): Button real RTL and focus every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Button/Button.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Button"
+    },
+    {
+      "sha": "e9151ce0de57a65cddac41c5ed626113a41f6763",
+      "subject": "design-system(stories): Arabic language turns on the theme's isRtl for RTL stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/contexts/ThemeContext.tsx",
+        "front/.storybook/contexts/index.tsx",
+        "front/.storybook/reactIntl.ts"
+      ],
+      "kind": "story",
+      "component": "Arabic"
+    },
+    {
+      "sha": "3a328b6ca5e2269500daf0bc06f2d73559bc5124",
+      "subject": "design-system(workbench): visual design pass for the shell and Foundations [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/App.tsx",
+        "front/.storybook/workbench/src/components/CategoryPreview.tsx",
+        "front/.storybook/workbench/src/components/Icon.tsx",
+        "front/.storybook/workbench/src/components/Nav.tsx",
+        "front/.storybook/workbench/src/components/TokenRow.tsx",
+        "front/.storybook/workbench/src/pages/Foundations.tsx",
+        "front/.storybook/workbench/src/pages/Placeholder.tsx",
+        "front/.storybook/workbench/src/pages/StartHere.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "6c6d1165b870f47c459100f547be35ee3cb99792",
+      "subject": "design-system(visual): baseline with the new state stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/visual-summary.json"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "dda1dc3ccde4d7e5c08ba878daf9bfff5a419a3c",
+      "subject": "design-system(smoke): find the Button story under its category id [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/workbench-smoke.test.ts",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "140128ef695b2ebc3d6567a9365a268873ea765f",
+      "subject": "design-system(stories): Label every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Label/label.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Label"
+    },
+    {
+      "sha": "b189b4e99d0f8b797c38f6fc16134757984f8a26",
+      "subject": "design-system(stories): Dropdown every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Dropdown/Dropdown.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Dropdown"
+    },
+    {
+      "sha": "517faad647301bfe48a6ee1b2e8397848dc94b4a",
+      "subject": "design-system(stories): Toggle every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Toggle/Toggle.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Toggle"
+    },
+    {
+      "sha": "122232190d997c147d7fc378a253ffbe45498081",
+      "subject": "design-system(stories): Select every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Select/Select.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Select"
+    },
+    {
+      "sha": "fdc69378cafd8867ea364534bc526fbc0516a7d7",
+      "subject": "design-system(stories): Input every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Input/Input.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Input"
+    },
+    {
+      "sha": "a6a44565ef4c5b544e7be67bc39cba555c836cec",
+      "subject": "design-system(stories): IconTooltip every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/IconTooltip/IconTooltip.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "IconTooltip"
+    },
+    {
+      "sha": "400d099d3ddf62cc973aae72298fc4d85b14e391",
+      "subject": "design-system(stories): Tooltip every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Tooltip/Tooltip.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Tooltip"
+    },
+    {
+      "sha": "f1c244a8dc2a2964b3c148443ebc74e2762d99a1",
+      "subject": "design-system(stories): Spinner every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Spinner/Spinner.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Spinner"
+    },
+    {
+      "sha": "40ba2187eff8fb66798bda3bab926de9ad191f9b",
+      "subject": "design-system(stories): Table every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Table/Table.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Table"
+    },
+    {
+      "sha": "815d1892e8f74d5847d91ca9ca79a634f5028ebc",
+      "subject": "design-system(stories): IconButton every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/IconButton/IconButton.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "IconButton"
+    },
+    {
+      "sha": "eb025133487bb878475e90f299974e566bc9d4a9",
+      "subject": "design-system(stories): format the Box, Text and Title stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Box/Box.stories.tsx",
+        "front/app/component-library/components/Text/Text.stories.tsx",
+        "front/app/component-library/components/Title/Title.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Box"
+    },
+    {
+      "sha": "b37e1459006b169a04d0308081084ae8717a6ab2",
+      "subject": "design-system(stories): Icon every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Icon/Icon.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Icon"
+    },
+    {
+      "sha": "4ebcd89e162ee4fa5d8db6d798e744293398a49e",
+      "subject": "design-system(stories): Title every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Title/Title.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Title"
+    },
+    {
+      "sha": "9bb18aa6d83091812ccd5350e943f88e8efa9029",
+      "subject": "design-system(stories): Text every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Text/Text.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Text"
+    },
+    {
+      "sha": "c3e9addd5da7160578f6860cd141124538a3a582",
+      "subject": "design-system(stories): Box every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Box/Box.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Box"
+    },
+    {
+      "sha": "1c1033ebc9337fbaa64402b3aab2d0912901bf98",
+      "subject": "design-system(stories): Button every state [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Button/Button.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Button"
+    },
+    {
+      "sha": "e1c234d17d54022aff754c15837125f873bd6342",
+      "subject": "design-system(stories): register the a11y and pseudo-states addons [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/main.ts"
+      ],
+      "kind": "story"
+    },
+    {
+      "sha": "b4216f61fb024709366d4bb963c7880a0636c2c2",
+      "subject": "design-system(workbench): steadier colour picker, copy fallback and token indexes [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/ChangesDrawer.tsx",
+        "front/.storybook/workbench/src/components/TokenRow.tsx",
+        "front/.storybook/workbench/src/lib/contrast.test.ts",
+        "front/.storybook/workbench/src/lib/contrast.ts",
+        "front/.storybook/workbench/src/lib/overrides.test.ts",
+        "front/.storybook/workbench/src/lib/overrides.ts",
+        "front/.storybook/workbench/src/lib/sourceDiff.test.ts",
+        "front/.storybook/workbench/src/lib/sourceDiff.ts",
+        "front/.storybook/workbench/src/pages/Foundations.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "cd3188a66b0a598e2d98eb00a55ddaa5686d0ecc",
+      "subject": "design-system(scan): allow px as a token variable fallback [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-scan.summary.json",
+        "front/scripts/design-system/scan/findings.test.ts",
+        "front/scripts/design-system/scan/findings.ts"
+      ],
+      "kind": "other",
+      "scanDelta": {
+        "offSpec": -1
+      }
+    },
+    {
+      "sha": "5c6c8843a2651577bdaa7f6213b9bbcf81ea171d",
+      "subject": "design-system(scan): follow barrel re-exports by name so page reach is per component [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-scan.summary.json",
+        "front/scripts/design-system/fixtures/routes/app/component-library/components/Accordion/index.tsx",
+        "front/scripts/design-system/fixtures/routes/app/component-library/components/Box/index.tsx",
+        "front/scripts/design-system/fixtures/routes/app/component-library/index.tsx",
+        "front/scripts/design-system/fixtures/routes/app/containers/Admin/projects/project/phase/index.tsx",
+        "front/scripts/design-system/scan/routes.test.ts",
+        "front/scripts/design-system/scan/routes.ts"
+      ],
+      "kind": "other",
+      "scanDelta": {
+        "offSpec": -8
+      }
+    },
+    {
+      "sha": "f3d3fcd5b6f5b3b9704d38f76e462569efec6b5b",
+      "subject": "design-system(workbench): Foundations with live edit, share links and contrast tables [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/App.tsx",
+        "front/.storybook/workbench/src/components/ChangesDrawer.tsx",
+        "front/.storybook/workbench/src/components/TokenRow.tsx",
+        "front/.storybook/workbench/src/lib/contrast.test.ts",
+        "front/.storybook/workbench/src/lib/contrast.ts",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/lib/overrides.test.ts",
+        "front/.storybook/workbench/src/lib/overrides.ts",
+        "front/.storybook/workbench/src/lib/sourceDiff.test.ts",
+        "front/.storybook/workbench/src/lib/sourceDiff.ts",
+        "front/.storybook/workbench/src/lib/usage.test.ts",
+        "front/.storybook/workbench/src/lib/usage.ts",
+        "front/.storybook/workbench/src/pages/Foundations.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/scripts/design-system/workbench-smoke.test.ts",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "bab838b25dda2e6543332cda9301ceff6ac11297",
+      "subject": "design-system(storybook): drop the Foundations stories, now pages of the workbench [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/foundations/Colours.stories.tsx",
+        "front/app/component-library/foundations/Spacing.stories.tsx",
+        "front/app/component-library/foundations/Typography.stories.tsx",
+        "front/app/component-library/foundations/_shared.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "8d9ba194d25886b9f2c0274ec7e8f0bf5e2d9bc4",
+      "subject": "design-system(workbench): allowlist share-link values and keep the session on a bad link [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/frame.ts",
+        "front/.storybook/workbench/src/lib/overrides.test.ts",
+        "front/.storybook/workbench/src/lib/overrides.ts",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "b4574c9464048801cf9e37d162b68e383aaf50e1",
+      "subject": "design-system(visual): run the radius test in process [AI-assisted]",
+      "body": "Co-Authored-By: Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/jest.config.js",
+        "front/scripts/design-system/visual-summary.test.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "f6c0da6be0d4933541e83547d7096199b8466fc2",
+      "subject": "design-system(workbench): canvas frame, token overrides with snapping and share links [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/preview.tsx",
+        "front/.storybook/viewports.ts",
+        "front/.storybook/workbench/src/App.tsx",
+        "front/.storybook/workbench/src/components/Canvas.tsx",
+        "front/.storybook/workbench/src/components/Toolbar.tsx",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/lib/frame.test.ts",
+        "front/.storybook/workbench/src/lib/frame.ts",
+        "front/.storybook/workbench/src/lib/overrides.test.ts",
+        "front/.storybook/workbench/src/lib/overrides.ts",
+        "front/.storybook/workbench/src/lib/router.ts",
+        "front/.storybook/workbench/src/shell.css",
+        "front/.storybook/workbench/tsconfig.json",
+        "front/scripts/design-system/workbench-smoke.test.ts",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "2349731a3263dd065b62be545d818f5e32573323",
+      "subject": "design-system(workbench): keep the smoke server inside its folder [AI-assisted]",
+      "body": "The smoke server resolves request paths with path.relative and rejects\nanything outside the served folder (encoded slashes, sibling folders with\nthe same prefix) or malformed escapes; read errors no longer crash it.\nThe route loop now waits for each page's own heading and checks the panel\ncolumn. Start here tolerates an index.json of another shape. ds:prepare\nbuilds the workbench even when an earlier step failed.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/pages/StartHere.tsx",
+        "front/package.json",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/workbench-smoke.test.ts",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "67e07df8f94f832eaa54ba889851228982e7a1ab",
+      "subject": "design-system(tooling): pass the CI test and dead-code checks [AI-assisted]",
+      "body": "Co-Authored-By: Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/design-system/tokens/tokens.ts",
+        "front/scripts/design-system/build-tokens.ts",
+        "front/scripts/design-system/visual-summary.test.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "6af853d90e7546ab66f93166f6fb9cc0597f9660",
+      "subject": "design-system(workbench): shell app served inside the Storybook build [AI-assisted]",
+      "body": "A small React app in .storybook/workbench, built by ds:workbench (vite)\ninto .storybook/static/workbench, so Storybook copies it to\n<storybook>/workbench/. Hash routes for the seven sections, a left nav\nwith search, a centre outlet and a right panel slot that pages opt into.\ndata.ts fetches the static JSON one level up and lists missing files on\nStart here. ds:smoke serves a built Storybook and checks the shell in\nChromium; the Playwright loader moves to scripts/design-system/playwright.ts.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/.gitignore",
+        "front/.storybook/workbench/index.html",
+        "front/.storybook/workbench/src/App.tsx",
+        "front/.storybook/workbench/src/components/Nav.tsx",
+        "front/.storybook/workbench/src/components/Panel.tsx",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/lib/router.ts",
+        "front/.storybook/workbench/src/main.tsx",
+        "front/.storybook/workbench/src/pages/Placeholder.tsx",
+        "front/.storybook/workbench/src/pages/StartHere.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/.storybook/workbench/tsconfig.json",
+        "front/.storybook/workbench/vite.config.ts",
+        "front/package.json",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/playwright.ts",
+        "front/scripts/design-system/visual-run.ts",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "070ce4e26468bde0f912401f3689b788e8116467",
+      "subject": "design-system(visual): count anti-aliased pixels and fail on errors [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/.gitignore",
+        "front/.storybook/static/visual-summary.json",
+        "front/scripts/design-system/visual-run.ts",
+        "front/scripts/design-system/visual-summary.test.ts",
+        "front/scripts/design-system/visual-summary.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "c9deeaab6b454b5cfb94102ed31b0c979eb4401e",
+      "subject": "design-system(visual): story screenshots prove the theme bridge changes nothing [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/visual-summary.json",
+        "front/package.json",
+        "front/scripts/design-system/visual-run.ts",
+        "front/scripts/design-system/visual-summary.test.ts",
+        "front/scripts/design-system/visual-summary.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "5d43fa907b3e264f353fe39e358730a4c18f7895",
+      "subject": "design-system(tokens): harden the bridge check and give the radius a fallback [AI-assisted]",
+      "body": "The bridge check now parses app/ and .storybook/ with @babel/parser and flags\ntheme/stylingConsts/props.theme/theme?.<key> inside colour or parse calls,\nstring methods, arithmetic or comparisons, unary signs and template maths\n(multi-line calls included; calc(${x} * 2) is allowed). Self-tests prove each\nform is caught and plain CSS uses are not.\n\nstylingConsts.borderRadius is now var(--gv-radius-control, 3px) and\n.storybook/preview.tsx imports tokens.css (relative path, no alias exists), so\nStorybook renders today's radius.\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/preview.tsx",
+        "front/app/component-library/utils/styleUtils.ts",
+        "front/scripts/design-system/bridge-safety.test.ts",
+        "front/scripts/design-system/bridge-safety.ts"
+      ],
+      "kind": "token"
+    },
+    {
+      "sha": "a55598484895bb9793da5e159484a49ba96a53d1",
+      "subject": "design-system(tokens): bridge theme.borderRadius to the control radius variable [AI-assisted]",
+      "body": "stylingConsts.borderRadius is now 'var(--gv-radius-control)' (3px in today\nmode, var(--gv-radius-2) in redesign), so getTheme().borderRadius and every\nstyled-components reader follow the active mode.\n\nfontFamily is NOT bridged. Its consumers only concatenate it with a fallback\nstack (global-styles), which var() would tolerate, but ModeProvider reads\ngetTheme().fontFamily to write --gv-font-family; bridging would make the\nvariable refer to itself. fontFamily stays the raw tenant font.\n\nbridge-safety.test.ts scans app/**/*.{ts,tsx} for colour functions, parse\ncalls, Number(), replace, string compares and arithmetic applied to bridged\nkeys. No offenders found; non-CSS consumers (recharts, leaflet, mapbox) do\nnot read borderRadius.\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/utils/styleUtils.ts",
+        "front/scripts/design-system/bridge-safety.test.ts"
+      ],
+      "kind": "token"
+    },
+    {
+      "sha": "11c053c4a2e7bdad684ea849dfa074bc5965712f",
+      "subject": "design-system(mode): tokens.css in the app, tenant slots, redesign scope on the redesigned pages [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/containers/Admin/projects/project/backofficeRedesign/index.tsx",
+        "front/app/containers/App/index.tsx",
+        "front/app/design-system/ModeProvider.test.tsx",
+        "front/app/design-system/ModeProvider.tsx",
+        "front/app/design-system/ModeScope.test.tsx",
+        "front/app/design-system/ModeScope.tsx",
+        "front/app/design-system/tags.test.ts",
+        "front/app/design-system/tags.ts",
+        "front/vite.config.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "d78102d9733008997a4f0a4164fc77925e259e38",
+      "subject": "design-system(scan): prefer primitives on nearest-token ties [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-scan.summary.json",
+        "front/scripts/design-system/scan/findings.test.ts",
+        "front/scripts/design-system/scan/findings.ts"
+      ],
+      "kind": "other",
+      "scanDelta": {
+        "offSpec": 0
+      }
+    },
+    {
+      "sha": "e5b85dbf3274764ba8889861de081038d4336b85",
+      "subject": "design-system(tooling): run the generation inside build-storybook [AI-assisted]",
+      "body": ".npmrc sets ignore-scripts=true, so npm never ran prebuild-storybook.\nMove the chain to ds:prepare and call it from build-storybook and storybook.\n\nCo-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/package.json"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "38fbd2e431fa27a51dc19c107c7fe57d3789aba9",
+      "subject": "design-system(tokens): one source, generated CSS variables, typed names [AI-assisted]",
+      "body": "tokens.source.json (W3C DTCG) holds every one of Tali's 187 --gv-* variables\nplus 14 code-only or required semantic tokens: $value is today (styleUtils),\n$extensions.gv.redesign is Tali's value (and her .gv-bo remaps for the tenant\nslots and font). build-tokens.ts writes tokens.css (:root today, a\n[data-gv-mode=\"redesign\"] block re-declaring what changes and every reader),\ntokens.ts (t, cssVar, TokenName, MODES) and tokens.meta.json for the scanner\nand panels. --check exits 1 on drift, bad names or a broken source; normal\nmode keeps the committed outputs when the source is unreadable.\n\nThe scanner skips the generated tokens.ts, which defines tokens.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/design-system/tokens/tokens.css",
+        "front/app/design-system/tokens/tokens.meta.json",
+        "front/app/design-system/tokens/tokens.source.json",
+        "front/app/design-system/tokens/tokens.ts",
+        "front/package.json",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/build-tokens.test.ts",
+        "front/scripts/design-system/build-tokens.ts",
+        "front/scripts/design-system/check-tokens.ts",
+        "front/scripts/design-system/scan/routes.test.ts",
+        "front/scripts/design-system/scan/routes.ts",
+        "front/scripts/design-system/scan/schema.ts"
+      ],
+      "kind": "token"
+    },
+    {
+      "sha": "5cdbd06afa6e3b7b608719d76ad8b5916eeb9dd9",
+      "subject": "design-system(scan): count px on style props, tolerate bad JSON, honest token scope [AI-assisted]",
+      "body": "- px literals on non-spacing style props of the primitives (Box, Flex,\n  Grid, Stack, Text, Title, Button, Icon, Image: width/height/w/h,\n  min/max sizes, border*, borderRadius, fontSize, lineHeight,\n  top/left/right/bottom) count as px; string, template and conditional\n  values. Plain strings holding CSS declarations and plain-object values\n  under CSS-property keys are scanned too (not style={{}} twice).\n- Malformed tokens.meta.json or scan.allow.json: warn, use [], exit 0.\n- Redesign-scope stand-in = on-tokens components with at least one token\n  read; components with no reads keep score 1 but are not in it.\n- Lazy page imports that resolve to no file are reported (warning and\n  RouteMap.unresolvedImports).\n\nnpm run ds:scan (5.7s):\nds:scan: 4861 files, 13284 findings (0 accepted), 4376 library usages,\n209 routes on 198 paths, 217 unmapped files\ntotals: offSpec 8250, legacy 3274, tokenReads 0; components 37\n(on-tokens 6, partly 0, off-tokens 31); pages rebuilt 0, partly 197,\nlegacy 1\ntop 10 by usageCount x offSpec: Button 304x11, Table 192x9, Radio 42x20,\nDropdown 48x17, Input 70x11, IconTooltip 143x2, Label 89x3, Select 68x3,\nToggle 59x3, Error 13x12\nbackofficeRedesign: px 130 + layout-spacing 234 = 364 of 430 grep hits.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-scan.summary.json",
+        "front/scripts/design-system/fixtures/routes/app/containers/Admin/projects/routes.tsx",
+        "front/scripts/design-system/scan/findings.test.ts",
+        "front/scripts/design-system/scan/findings.ts",
+        "front/scripts/design-system/scan/index.test.ts",
+        "front/scripts/design-system/scan/index.ts",
+        "front/scripts/design-system/scan/routes.test.ts",
+        "front/scripts/design-system/scan/routes.ts",
+        "front/scripts/design-system/scan/score.test.ts",
+        "front/scripts/design-system/scan/score.ts"
+      ],
+      "kind": "other",
+      "scanDelta": {
+        "offSpec": 1743
+      }
+    },
+    {
+      "sha": "8f622a92c2258f1d9cea372d9050a7803452bdb8",
+      "subject": "design-system(scan): routes, scores, page status and the CLI [AI-assisted]",
+      "body": "Route map from the getParentRoute links in app/routes.tsx,\ncontainers/Admin/routes.tsx and the 17 area routes.tsx files, plus module\nroutes under the keys the tree wires (admin.tools: widgets). A route's\nfiles are the import closure of its lazy pages, stopping at route files.\nLibrary usages are import sites of library components (alias, deep and\nrelative imports; type-only imports skipped). Score = tokenReads /\n(tokenReads + 0.5 legacy + offSpec). ds:scan replaces the stub; ds:lint\nreports off-spec values on added lines under the library and\ndesign-system.\n\nnpm run ds:scan on the real tree (no tokens.meta.json yet, 5.2s):\nds:scan: 4861 files, 11541 findings (0 accepted), 4376 library usages,\n209 routes on 198 paths, 217 unmapped files\ntotals: offSpec 6507, legacy 3274, tokenReads 0; components 37\n(on-tokens 6, partly 0, off-tokens 31); pages rebuilt 0, partly 197,\nlegacy 1\ntop 10 by usageCount x offSpec:\n  Button          usages 304  offSpec  3\n  Radio           usages  42  offSpec 20\n  Dropdown        usages  48  offSpec 17\n  Table           usages 192  offSpec  4\n  Input           usages  70  offSpec  9\n  IconTooltip     usages 143  offSpec  2\n  Label           usages  89  offSpec  3\n  Select          usages  68  offSpec  3\n  Toggle          usages  59  offSpec  3\n  LocaleSwitcher  usages  11  offSpec 14\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/.gitignore",
+        "front/.storybook/static/design-scan.summary.json",
+        "front/package.json",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/fixtures/routes/app/component-library/components/Box/index.tsx",
+        "front/scripts/design-system/fixtures/routes/app/component-library/index.tsx",
+        "front/scripts/design-system/fixtures/routes/app/component-library/utils/styleUtils.ts",
+        "front/scripts/design-system/fixtures/routes/app/components/Hero/index.tsx",
+        "front/scripts/design-system/fixtures/routes/app/components/Orphan/index.tsx",
+        "front/scripts/design-system/fixtures/routes/app/containers/Admin/index.tsx",
+        "front/scripts/design-system/fixtures/routes/app/containers/Admin/projects/project/phase/Tabs.tsx",
+        "front/scripts/design-system/fixtures/routes/app/containers/Admin/projects/project/phase/index.tsx",
+        "front/scripts/design-system/fixtures/routes/app/containers/Admin/projects/routes.tsx",
+        "front/scripts/design-system/fixtures/routes/app/containers/Admin/routes.tsx",
+        "front/scripts/design-system/fixtures/routes/app/containers/Admin/tools/routes.tsx",
+        "front/scripts/design-system/fixtures/routes/app/containers/HomePage/index.tsx",
+        "front/scripts/design-system/fixtures/routes/app/modules/commercial/widgets/admin/Widgets.tsx",
+        "front/scripts/design-system/fixtures/routes/app/modules/commercial/widgets/index.tsx",
+        "front/scripts/design-system/fixtures/routes/app/routes.tsx",
+        "front/scripts/design-system/fixtures/routes/app/utils/moduleUtils.tsx",
+        "front/scripts/design-system/fixtures/routes/app/utils/router.tsx",
+        "front/scripts/design-system/scan.allow.json",
+        "front/scripts/design-system/scan/index.test.ts",
+        "front/scripts/design-system/scan/index.ts",
+        "front/scripts/design-system/scan/lint.test.ts",
+        "front/scripts/design-system/scan/lint.ts",
+        "front/scripts/design-system/scan/routes.test.ts",
+        "front/scripts/design-system/scan/routes.ts",
+        "front/scripts/design-system/scan/schema.ts",
+        "front/scripts/design-system/scan/score.test.ts",
+        "front/scripts/design-system/scan/score.ts",
+        "front/scripts/design-system/scan/usages.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "2b974b8423a81cf90a163fe60a61afbd9ffdc9e6",
+      "subject": "design-system(scan): typedStyled templates, computed style keys, shared parse [AI-assisted]",
+      "body": "- typedStyled(Component) templates (utils/cl-router/Link, 39 files) are\n  scanned like styled ones; they were missed before.\n- A computed or numeric key in a JSX style object is skipped instead of\n  throwing.\n- parseSource is exported and scanFileResult takes an optional parsed AST,\n  so the CLI parses each file once.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/scan/findings.test.ts",
+        "front/scripts/design-system/scan/findings.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "cce5b111a5963a7a788223a9c816c0a63d1a7409",
+      "subject": "design-system(scan): tighten findings: url, comments, style objects, scoped reads [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/fixtures/findings/bo-reads.tsx",
+        "front/scripts/design-system/fixtures/findings/imported-reads.tsx",
+        "front/scripts/design-system/fixtures/findings/style-object.tsx",
+        "front/scripts/design-system/fixtures/findings/tightened.tsx",
+        "front/scripts/design-system/fixtures/findings/ts-assertion.ts",
+        "front/scripts/design-system/scan/findings.test.ts",
+        "front/scripts/design-system/scan/findings.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "675d7f2c3853f7810f4d43ebbbb3fd0f122d13bd",
+      "subject": "design-system(scan): findings per file with nearest-token suggestions [AI-assisted]",
+      "body": "Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/fixtures/findings/bo-reads.tsx",
+        "front/scripts/design-system/fixtures/findings/box-props.tsx",
+        "front/scripts/design-system/fixtures/findings/named-colors.tsx",
+        "front/scripts/design-system/fixtures/findings/style-object.tsx",
+        "front/scripts/design-system/fixtures/findings/styled-literals.tsx",
+        "front/scripts/design-system/fixtures/findings/third-party.tsx",
+        "front/scripts/design-system/fixtures/findings/var-reads.tsx",
+        "front/scripts/design-system/scan/findings.test.ts",
+        "front/scripts/design-system/scan/findings.ts",
+        "front/scripts/design-system/scan/namedColors.ts",
+        "front/scripts/design-system/scan/schema.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "8c09e97d228bdbc560e99c1ef4daccb2e0505dcc",
+      "subject": "design-system(tooling): scripts and dependencies for the workbench [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/package-lock.json",
+        "front/package.json",
+        "front/scripts/design-system/README.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "c995ad7062badb13cc4f4353a22eae2a89123e6d",
+      "subject": "design-system(storybook): city and language toolbar, local foundations stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/cities.ts",
+        "front/.storybook/contexts/ThemeContext.tsx",
+        "front/.storybook/contexts/index.tsx",
+        "front/.storybook/main.ts",
+        "front/.storybook/preview.tsx",
+        "front/.storybook/reactIntl.ts",
+        "front/app/component-library/foundations/Colours.stories.tsx",
+        "front/app/component-library/foundations/Spacing.stories.tsx",
+        "front/app/component-library/foundations/Typography.stories.tsx",
+        "front/app/component-library/foundations/_shared.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "443cb3ab762bc44ba59cbc3ae04069f7422a0ad9",
+      "subject": "[Design system experiment] Load the MSW worker relative to Storybook",
+      "body": "Served from /storybook/ in the epic preview, the absolute worker URL hit\nthe app instead, so stories using mocked API calls failed there.\n\nAI-assisted (Claude Code).\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/preview.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "7a338c1311e772f7427d93ecfb8d9e8fe3591e66",
+      "subject": "[Design system experiment] Fix the Storybook build and ship it in epic previews",
+      "body": "The static Storybook build has been failing: .storybook-build (webpack)\ncan't load as ESM and references the removed addon-viewport. Build with\nthe same Vite config as `npm run storybook` instead and drop the unused\nwebpack config. Locally: build passes in ~45s, all 118 stories render.\n\nOn design-system/* branches only, the front-build job now also builds\nStorybook into build/storybook, so the epic preview serves it at\n/storybook/. A Storybook failure never fails the app build.\n\nAI-assisted (Claude Code).\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        ".circleci/config.yml",
+        "front/.storybook-build/main.ts",
+        "front/.storybook-build/preview.tsx",
+        "front/package.json"
+      ],
+      "kind": "other"
+    }
+  ],
+  "tokenChanges": [],
+  "warnings": [],
+  "tokensNew": 201
+}

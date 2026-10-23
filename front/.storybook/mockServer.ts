@@ -3,6 +3,7 @@ import appConfigurationEndpoints from '../app/api/app_configuration/__mocks__/_m
 import usersMeEndpoints from '../app/api/me/__mocks__/_mockServer';
 import usersEndpoints from '../app/api/users/__mocks__/_mockServer';
 import authenticationRequirementsEndpoints from '../app/api/authentication/authentication_requirements/__mocks__/_mockServer';
+import idMethodsEndpoints from '../app/api/id_methods/__mocks__/_mockServer';
 
 // ideas mock data
 import ideasEndpoints from '../app/api/ideas/__mocks__/_mockServer';
@@ -43,6 +44,7 @@ const endpoints = {
   ...usersMeEndpoints,
   ...usersEndpoints,
   ...authenticationRequirementsEndpoints,
+  ...idMethodsEndpoints,
 
   ...ideasEndpoints,
   ...ideaStatusesEndpoints,

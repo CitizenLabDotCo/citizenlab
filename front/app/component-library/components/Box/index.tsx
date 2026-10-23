@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components';
 
+import { gvTag } from '../../utils/gvTag';
+
 type Overflow =
   | 'visible'
   | 'hidden'
@@ -309,28 +311,37 @@ const styleOnlyProps = new Set<string>([
   'pointerEvents',
 ]);
 
-const Box = styled.div.withConfig({
-  // styled-components passes a third arg — the element being rendered (the `as`
-  // target, or `div` by default). Its TS types omit it, so it's declared
-  // optional here; at runtime v5 always supplies it.
-  shouldForwardProp: (
-    prop,
-    defaultValidatorFn,
-    elementToBeCreated?: unknown
-  ) => {
-    // Box's own style props are consumed by the css interpolations below and
-    // must never reach the rendered element (some collide with valid HTML
-    // attributes like `color`/`width`).
-    if (styleOnlyProps.has(prop)) return false;
-    // Mirror styled-components' default forwarding rule: when Box is rendered
-    // as a custom component via `as` (e.g. `as={StyledButton}`), forward all
-    // remaining props so the component receives the ones it needs (e.g.
-    // Button's `buttonStyle`). Only filter against valid HTML attributes when
-    // rendering an actual DOM element, where unknown props would leak.
-    const isDOMElement = typeof elementToBeCreated === 'string';
-    return !isDOMElement || defaultValidatorFn(prop);
-  },
-})<BoxProps>`
+const Box = styled.div
+  .withConfig({
+    // styled-components passes a third arg — the element being rendered (the `as`
+    // target, or `div` by default). Its TS types omit it, so it's declared
+    // optional here; at runtime v5 always supplies it.
+    shouldForwardProp: (
+      prop,
+      defaultValidatorFn,
+      elementToBeCreated?: unknown
+    ) => {
+      // Box's own style props are consumed by the css interpolations below and
+      // must never reach the rendered element (some collide with valid HTML
+      // attributes like `color`/`width`).
+      if (styleOnlyProps.has(prop)) return false;
+      // Mirror styled-components' default forwarding rule: when Box is rendered
+      // as a custom component via `as` (e.g. `as={StyledButton}`), forward all
+      // remaining props so the component receives the ones it needs (e.g.
+      // Button's `buttonStyle`). Only filter against valid HTML attributes when
+      // rendering an actual DOM element, where unknown props would leak.
+      const isDOMElement = typeof elementToBeCreated === 'string';
+      return !isDOMElement || defaultValidatorFn(prop);
+    },
+  })
+  // Tag every Box unless a library component with this Box as its root already
+  // passed its own tag. Only wired when the build flag is on: otherwise no attrs
+  // function runs on the most-rendered component.
+  .attrs<BoxProps>(
+    process.env.VITE_GV_DESIGN_TAGS === '1'
+      ? (props) => ('data-gv-component' in props ? {} : gvTag('Box'))
+      : {}
+  )<BoxProps>`
   // colors and background
   ${(props) => css`
     ${props.color ? `color: ${props.color}` : ''};

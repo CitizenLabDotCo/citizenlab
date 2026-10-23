@@ -1,0 +1,57 @@
+{
+  "hosts": {
+    "after": "",
+    "before": "https://demo.stg.govocal.com"
+  },
+  "params": {
+    "areaId": "135bb464-abcb-4bf0-82d8-59c41be5a7e2",
+    "customPageId": "fb272154-27f4-4966-8be1-cb41721fc5ef",
+    "defaultInputTopicId": "2bff97ad-5d99-4b00-952e-3586e7df9c64",
+    "eventId": "b9b63b47-3d94-42af-a50f-6251c9c38239",
+    "folderId": "80cf49c0-70a5-41cc-b77e-ad78ef3320b7",
+    "ideaId": "2e87edeb-d7a1-4591-9c64-9ab447828332",
+    "navbarItemId": "73470ef6-dd9f-47ac-a6c8-d4e8251254ba",
+    "phaseId": "d8debb01-486e-4c68-af0f-69104eedfee6",
+    "phaseNumber": "1",
+    "projectFolderId": "80cf49c0-70a5-41cc-b77e-ad78ef3320b7",
+    "projectId": "5ed9ba0b-c565-4bf3-91e5-f823ae9dca0e",
+    "slug": "an-idea-bring-it-to-your-council",
+    "statusId": "9dab31d1-9032-4263-8d56-73860de82852",
+    "topicId": "327e92bf-6b37-45f5-84e2-2ebfb62d7017",
+    "userId": "9bd97e3e-c30b-467a-88a4-e28d7ac1a6d3"
+  },
+  "paths": {
+    "admin/projects/$projectId/events/$id": {
+      "id": "b9b63b47-3d94-42af-a50f-6251c9c38239"
+    },
+    "admin/settings/statuses/proposals/$statusId": {
+      "statusId": "6ffa83e9-4579-4bfa-8748-99b93b0d1b4f"
+    },
+    "folders/$slug": {
+      "slug": "some-folder"
+    },
+    "ideas/$slug": {
+      "slug": "praesentium-consequatur-autem-omnis-minus-excepturi"
+    },
+    "pages/$slug": {
+      "slug": "information"
+    }
+  },
+  "locale": "en",
+  "source": {
+    "host": "https://pr-15027.epic.hq.govocal.com",
+    "fetchedAt": "2026-10-23T00:28:20.725Z"
+  },
+  "missing": [
+    "analysisId",
+    "campaignId",
+    "causeId",
+    "groupId",
+    "pageSlug",
+    "reportId",
+    "spaceId",
+    "token",
+    "userCustomFieldId",
+    "userCustomFieldOptionId"
+  ]
+}

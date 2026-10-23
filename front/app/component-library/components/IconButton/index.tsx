@@ -3,6 +3,7 @@ import React, { MouseEvent, KeyboardEvent } from 'react';
 import { colors } from 'component-library/utils/styleUtils';
 import styled, { css } from 'styled-components';
 
+import { gvTag } from '../../utils/gvTag';
 import Box, {
   BoxPositionProps,
   BoxMarginProps,
@@ -100,6 +101,7 @@ const IconButton = ({
 }: IconButtonProps) => {
   return (
     <StyledBox
+      {...gvTag('IconButton')}
       as="button"
       className={className ?? ''}
       id={id}

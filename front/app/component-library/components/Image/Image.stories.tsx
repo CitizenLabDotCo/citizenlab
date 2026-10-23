@@ -5,7 +5,9 @@ import imageFile from './image.png';
 import Image from '.';
 
 const meta = {
-  title: 'Components/Image',
+  title: 'Components/Data display/Image',
+  tags: ['shared'],
+  parameters: { gv: {} },
   component: Image,
 } satisfies Meta<typeof Image>;
 

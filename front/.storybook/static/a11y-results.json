@@ -1,0 +1,4338 @@
+{
+  "generatedAt": "2026-10-23T05:50:50.671Z",
+  "axe": "4.10.2",
+  "tags": [
+    "wcag2a",
+    "wcag2aa",
+    "wcag21a",
+    "wcag21aa",
+    "wcag22aa"
+  ],
+  "stories": {
+    "cards-ideacard--past-budgeting-no-result-sharing": {
+      "title": "Cards/IdeaCard",
+      "checkedAt": "2026-10-23T04:32:16.477Z",
+      "violations": [],
+      "passes": 14,
+      "incomplete": 1,
+      "focusable": 6,
+      "play": "passed"
+    },
+    "cards-ideacard--past-voting-no-result-sharing": {
+      "title": "Cards/IdeaCard",
+      "checkedAt": "2026-10-23T04:32:16.482Z",
+      "violations": [],
+      "passes": 14,
+      "incomplete": 0,
+      "focusable": 6,
+      "play": "passed"
+    },
+    "cards-ideacard--standard": {
+      "title": "Cards/IdeaCard",
+      "checkedAt": "2026-10-23T04:32:16.487Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 2,
+      "play": "passed"
+    },
+    "cards-ideacard--voting": {
+      "title": "Cards/IdeaCard",
+      "checkedAt": "2026-10-23T04:32:16.507Z",
+      "violations": [],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 6,
+      "play": "passed"
+    },
+    "cards-votingresultcard--autoshare-enabled": {
+      "title": "Cards/VotingResultCard",
+      "checkedAt": "2026-10-23T04:32:18.616Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 14,
+      "incomplete": 0,
+      "focusable": 4
+    },
+    "components-actions-button--active": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:18.667Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--admin-dark": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:18.797Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--admin-dark-text": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:18.825Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--back-office-delete": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:19.952Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--back-office-icon-only": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:20.071Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--back-office-primary": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:20.147Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--back-office-secondary": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:20.179Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--back-office-secondary-with-icon": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:21.016Z",
+      "violations": [],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--back-office-status": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:21.131Z",
+      "violations": [],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--back-office-text": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:21.217Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--button-link": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:21.271Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-actions-button--default": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:22.052Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--delete": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:22.124Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--disabled": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:22.267Z",
+      "violations": [],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--focus": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:22.312Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--hover": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:23.015Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--keyboard": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T05:19:15.497Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-actions-button--loading": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:23.098Z",
+      "violations": [],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--long-content": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:23.254Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--primary": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:23.301Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--primary-inverse": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:23.993Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--primary-outlined": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:24.019Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--primary-with-icon": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:24.202Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--rtl": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:24.236Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--secondary-outlined": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:24.912Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--text-style": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:24.936Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-button--white": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T04:32:25.134Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-buttonwithlink--default": {
+      "title": "Components/Actions/ButtonWithLink",
+      "checkedAt": "2026-10-23T04:32:25.187Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 9,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-buttonwithlink--disabled": {
+      "title": "Components/Actions/ButtonWithLink",
+      "checkedAt": "2026-10-23T04:32:25.812Z",
+      "violations": [],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-buttonwithlink--focus": {
+      "title": "Components/Actions/ButtonWithLink",
+      "checkedAt": "2026-10-23T04:32:25.846Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 9,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-buttonwithlink--hover": {
+      "title": "Components/Actions/ButtonWithLink",
+      "checkedAt": "2026-10-23T04:32:26.033Z",
+      "violations": [],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-buttonwithlink--rtl": {
+      "title": "Components/Actions/ButtonWithLink",
+      "checkedAt": "2026-10-23T04:32:26.118Z",
+      "violations": [],
+      "passes": 9,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-buttonwithlink--secondary": {
+      "title": "Components/Actions/ButtonWithLink",
+      "checkedAt": "2026-10-23T04:32:26.667Z",
+      "violations": [],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-buttonwithlink--with-icon": {
+      "title": "Components/Actions/ButtonWithLink",
+      "checkedAt": "2026-10-23T04:32:26.732Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-cardbutton--default": {
+      "title": "Components/Actions/CardButton",
+      "checkedAt": "2026-10-23T04:32:26.992Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-cardbutton--disabled": {
+      "title": "Components/Actions/CardButton",
+      "checkedAt": "2026-10-23T04:32:27.055Z",
+      "violations": [],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-actions-cardbutton--focus": {
+      "title": "Components/Actions/CardButton",
+      "checkedAt": "2026-10-23T04:32:27.812Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-cardbutton--hover": {
+      "title": "Components/Actions/CardButton",
+      "checkedAt": "2026-10-23T04:32:27.925Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-actions-cardbutton--long-content": {
+      "title": "Components/Actions/CardButton",
+      "checkedAt": "2026-10-23T04:32:28.065Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-cardbutton--rtl": {
+      "title": "Components/Actions/CardButton",
+      "checkedAt": "2026-10-23T04:32:28.126Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-cardbutton--selected": {
+      "title": "Components/Actions/CardButton",
+      "checkedAt": "2026-10-23T04:32:28.773Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-closeiconbutton--default": {
+      "title": "Components/Actions/CloseIconButton",
+      "checkedAt": "2026-10-23T04:32:28.978Z",
+      "violations": [],
+      "passes": 15,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-actions-closeiconbutton--focus": {
+      "title": "Components/Actions/CloseIconButton",
+      "checkedAt": "2026-10-23T04:32:29.067Z",
+      "violations": [],
+      "passes": 15,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-actions-closeiconbutton--full-screen": {
+      "title": "Components/Actions/CloseIconButton",
+      "checkedAt": "2026-10-23T04:32:29.179Z",
+      "violations": [],
+      "passes": 15,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-actions-closeiconbutton--hover": {
+      "title": "Components/Actions/CloseIconButton",
+      "checkedAt": "2026-10-23T04:32:29.619Z",
+      "violations": [],
+      "passes": 15,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-actions-closeiconbutton--rtl": {
+      "title": "Components/Actions/CloseIconButton",
+      "checkedAt": "2026-10-23T04:32:29.921Z",
+      "violations": [],
+      "passes": 15,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-actions-iconbutton--default": {
+      "title": "Components/Actions/IconButton",
+      "checkedAt": "2026-10-23T04:32:30.102Z",
+      "violations": [],
+      "passes": 15,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-iconbutton--disabled": {
+      "title": "Components/Actions/IconButton",
+      "checkedAt": "2026-10-23T04:32:30.115Z",
+      "violations": [],
+      "passes": 14,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-actions-iconbutton--focus": {
+      "title": "Components/Actions/IconButton",
+      "checkedAt": "2026-10-23T04:32:30.540Z",
+      "violations": [],
+      "passes": 15,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-iconbutton--hover": {
+      "title": "Components/Actions/IconButton",
+      "checkedAt": "2026-10-23T04:32:30.811Z",
+      "violations": [],
+      "passes": 15,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-iconbutton--keyboard": {
+      "title": "Components/Actions/IconButton",
+      "checkedAt": "2026-10-23T05:19:15.511Z",
+      "violations": [],
+      "passes": 15,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-actions-iconbutton--rtl": {
+      "title": "Components/Actions/IconButton",
+      "checkedAt": "2026-10-23T04:32:31.026Z",
+      "violations": [],
+      "passes": 15,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-actions-moreactionsmenu--default": {
+      "title": "Components/Actions/MoreActionsMenu",
+      "checkedAt": "2026-10-23T04:32:31.066Z",
+      "violations": [],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-actions-moreactionsmenu--focus": {
+      "title": "Components/Actions/MoreActionsMenu",
+      "checkedAt": "2026-10-23T04:32:31.484Z",
+      "violations": [],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-actions-moreactionsmenu--hover": {
+      "title": "Components/Actions/MoreActionsMenu",
+      "checkedAt": "2026-10-23T04:32:31.706Z",
+      "violations": [],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-actions-moreactionsmenu--icon-only": {
+      "title": "Components/Actions/MoreActionsMenu",
+      "checkedAt": "2026-10-23T04:32:31.939Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-actions-moreactionsmenu--open": {
+      "title": "Components/Actions/MoreActionsMenu",
+      "checkedAt": "2026-10-23T04:32:32.039Z",
+      "violations": [],
+      "passes": 18,
+      "incomplete": 0,
+      "focusable": 4,
+      "play": "passed"
+    },
+    "components-actions-moreactionsmenu--rtl": {
+      "title": "Components/Actions/MoreActionsMenu",
+      "checkedAt": "2026-10-23T04:32:32.426Z",
+      "violations": [],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-data-display-badge--default": {
+      "title": "Components/Data display/Badge",
+      "checkedAt": "2026-10-23T04:32:32.734Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 2,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-badge--inverted": {
+      "title": "Components/Data display/Badge",
+      "checkedAt": "2026-10-23T04:32:32.845Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 2,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-badge--long-content": {
+      "title": "Components/Data display/Badge",
+      "checkedAt": "2026-10-23T04:32:32.988Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 2,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-colorindicator--default": {
+      "title": "Components/Data display/ColorIndicator",
+      "checkedAt": "2026-10-23T04:32:33.371Z",
+      "violations": [],
+      "passes": 2,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-formresults--default": {
+      "title": "Components/Data display/FormResults",
+      "checkedAt": "2026-10-23T04:32:33.661Z",
+      "violations": [],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 3,
+      "play": "passed"
+    },
+    "components-data-display-formresults--empty": {
+      "title": "Components/Data display/FormResults",
+      "checkedAt": "2026-10-23T04:32:33.764Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0,
+      "play": "passed"
+    },
+    "components-data-display-formresults--rtl": {
+      "title": "Components/Data display/FormResults",
+      "checkedAt": "2026-10-23T04:32:33.984Z",
+      "violations": [],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 3,
+      "play": "passed"
+    },
+    "components-data-display-graphcard--default": {
+      "title": "Components/Data display/GraphCard",
+      "checkedAt": "2026-10-23T04:32:34.297Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-graphcard--rtl": {
+      "title": "Components/Data display/GraphCard",
+      "checkedAt": "2026-10-23T04:32:36.206Z",
+      "violations": [],
+      "passes": 2,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-graphcard--with-info-tooltip": {
+      "title": "Components/Data display/GraphCard",
+      "checkedAt": "2026-10-23T04:32:36.672Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 10,
+      "incomplete": 1,
+      "focusable": 1
+    },
+    "components-data-display-graphcard--with-top-right-stat": {
+      "title": "Components/Data display/GraphCard",
+      "checkedAt": "2026-10-23T04:32:36.703Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-graphcard--with-view-toggle": {
+      "title": "Components/Data display/GraphCard",
+      "checkedAt": "2026-10-23T04:32:36.974Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 2,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 17,
+      "incomplete": 0,
+      "focusable": 2
+    },
+    "components-data-display-graphwrappers--default": {
+      "title": "Components/Data display/GraphWrappers",
+      "checkedAt": "2026-10-23T04:32:37.139Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-graphwrappers--empty": {
+      "title": "Components/Data display/GraphWrappers",
+      "checkedAt": "2026-10-23T04:32:37.658Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-graphwrappers--full-width": {
+      "title": "Components/Data display/GraphWrappers",
+      "checkedAt": "2026-10-23T04:32:37.713Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-graphwrappers--rtl": {
+      "title": "Components/Data display/GraphWrappers",
+      "checkedAt": "2026-10-23T04:32:38.053Z",
+      "violations": [],
+      "passes": 2,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-icon--all-icons": {
+      "title": "Components/Data display/Icon",
+      "checkedAt": "2026-10-23T04:32:38.076Z",
+      "violations": [],
+      "passes": 4,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-icon--default": {
+      "title": "Components/Data display/Icon",
+      "checkedAt": "2026-10-23T04:32:38.879Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-icon--gallery": {
+      "title": "Components/Data display/Icon",
+      "checkedAt": "2026-10-23T04:32:38.886Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-icon--idea-icon": {
+      "title": "Components/Data display/Icon",
+      "checkedAt": "2026-10-23T04:32:39.166Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-image--default": {
+      "title": "Components/Data display/Image",
+      "checkedAt": "2026-10-23T04:32:39.499Z",
+      "violations": [],
+      "passes": 4,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-image-ui--cover": {
+      "title": "Components/Data display/Image (UI)",
+      "checkedAt": "2026-10-23T04:32:39.779Z",
+      "violations": [],
+      "passes": 4,
+      "incomplete": 0,
+      "focusable": 0,
+      "play": "passed"
+    },
+    "components-data-display-image-ui--default": {
+      "title": "Components/Data display/Image (UI)",
+      "checkedAt": "2026-10-23T04:32:39.851Z",
+      "violations": [],
+      "passes": 4,
+      "incomplete": 0,
+      "focusable": 0,
+      "play": "passed"
+    },
+    "components-data-display-image-ui--empty": {
+      "title": "Components/Data display/Image (UI)",
+      "checkedAt": "2026-10-23T04:32:40.168Z",
+      "violations": [],
+      "passes": 4,
+      "incomplete": 0,
+      "focusable": 0,
+      "play": "passed"
+    },
+    "components-data-display-image-ui--fallback": {
+      "title": "Components/Data display/Image (UI)",
+      "checkedAt": "2026-10-23T04:32:40.477Z",
+      "violations": [],
+      "passes": 4,
+      "incomplete": 0,
+      "focusable": 0,
+      "play": "passed"
+    },
+    "components-data-display-newlabel--default": {
+      "title": "Components/Data display/NewLabel",
+      "checkedAt": "2026-10-23T04:32:40.741Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-newlabel--rtl": {
+      "title": "Components/Data display/NewLabel",
+      "checkedAt": "2026-10-23T04:32:40.901Z",
+      "violations": [],
+      "passes": 2,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-quote--default": {
+      "title": "Components/Data display/Quote",
+      "checkedAt": "2026-10-23T04:32:41.206Z",
+      "violations": [],
+      "passes": 4,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-quote--rtl": {
+      "title": "Components/Data display/Quote",
+      "checkedAt": "2026-10-23T04:32:41.514Z",
+      "violations": [],
+      "passes": 4,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-resourcelist--default": {
+      "title": "Components/Data display/ResourceList",
+      "checkedAt": "2026-10-23T04:32:41.703Z",
+      "violations": [],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 3
+    },
+    "components-data-display-resourcelist--plain-rows": {
+      "title": "Components/Data display/ResourceList",
+      "checkedAt": "2026-10-23T04:32:41.900Z",
+      "violations": [],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 3
+    },
+    "components-data-display-resourcelist--rtl": {
+      "title": "Components/Data display/ResourceList",
+      "checkedAt": "2026-10-23T04:32:42.125Z",
+      "violations": [],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 3
+    },
+    "components-data-display-statuslabel--default": {
+      "title": "Components/Data display/StatusLabel",
+      "checkedAt": "2026-10-23T04:32:42.455Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-statuslabel--long-content": {
+      "title": "Components/Data display/StatusLabel",
+      "checkedAt": "2026-10-23T04:32:42.741Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-statuslabel--rtl": {
+      "title": "Components/Data display/StatusLabel",
+      "checkedAt": "2026-10-23T04:32:42.869Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-statuslabel--with-icon-prop": {
+      "title": "Components/Data display/StatusLabel",
+      "checkedAt": "2026-10-23T04:32:43.119Z",
+      "violations": [],
+      "passes": 4,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-table--default": {
+      "title": "Components/Data display/Table",
+      "checkedAt": "2026-10-23T04:32:43.368Z",
+      "violations": [],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-table--empty": {
+      "title": "Components/Data display/Table",
+      "checkedAt": "2026-10-23T04:32:43.715Z",
+      "violations": [],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-table--focus": {
+      "title": "Components/Data display/Table",
+      "checkedAt": "2026-10-23T04:32:43.762Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 12,
+      "incomplete": 1,
+      "focusable": 1
+    },
+    "components-data-display-table--hover": {
+      "title": "Components/Data display/Table",
+      "checkedAt": "2026-10-23T04:32:44.018Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 12,
+      "incomplete": 1,
+      "focusable": 1
+    },
+    "components-data-display-table--keyboard": {
+      "title": "Components/Data display/Table",
+      "checkedAt": "2026-10-23T05:50:47.667Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 18,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-data-display-table--long-content": {
+      "title": "Components/Data display/Table",
+      "checkedAt": "2026-10-23T04:32:44.237Z",
+      "violations": [],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-table--rtl": {
+      "title": "Components/Data display/Table",
+      "checkedAt": "2026-10-23T04:32:44.633Z",
+      "violations": [],
+      "passes": 4,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-table--with-inner-borders": {
+      "title": "Components/Data display/Table",
+      "checkedAt": "2026-10-23T04:32:44.672Z",
+      "violations": [],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-data-display-table--with-sortable-and-tooltip-icons": {
+      "title": "Components/Data display/Table",
+      "checkedAt": "2026-10-23T04:32:44.921Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 12,
+      "incomplete": 1,
+      "focusable": 1
+    },
+    "components-data-display-table--with-tr-backgrounds": {
+      "title": "Components/Data display/Table",
+      "checkedAt": "2026-10-23T04:32:45.188Z",
+      "violations": [],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-feedback-error--default": {
+      "title": "Components/Feedback/Error",
+      "checkedAt": "2026-10-23T04:32:45.545Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-feedback-error--long-content": {
+      "title": "Components/Feedback/Error",
+      "checkedAt": "2026-10-23T04:32:45.651Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-feedback-error--rtl": {
+      "title": "Components/Feedback/Error",
+      "checkedAt": "2026-10-23T04:32:45.823Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-feedback-error-ui--api-errors": {
+      "title": "Components/Feedback/Error (UI)",
+      "checkedAt": "2026-10-23T04:32:46.104Z",
+      "violations": [],
+      "passes": 9,
+      "incomplete": 0,
+      "focusable": 0,
+      "play": "passed"
+    },
+    "components-feedback-error-ui--default": {
+      "title": "Components/Feedback/Error (UI)",
+      "checkedAt": "2026-10-23T04:32:46.423Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 0,
+      "play": "passed"
+    },
+    "components-feedback-error-ui--long-content": {
+      "title": "Components/Feedback/Error (UI)",
+      "checkedAt": "2026-10-23T04:32:46.621Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 0,
+      "play": "passed"
+    },
+    "components-feedback-error-ui--rtl": {
+      "title": "Components/Feedback/Error (UI)",
+      "checkedAt": "2026-10-23T04:32:46.811Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 0,
+      "play": "passed"
+    },
+    "components-feedback-error-ui--without-background": {
+      "title": "Components/Feedback/Error (UI)",
+      "checkedAt": "2026-10-23T04:32:47.048Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 0,
+      "play": "passed"
+    },
+    "components-feedback-error-ui--without-icon": {
+      "title": "Components/Feedback/Error (UI)",
+      "checkedAt": "2026-10-23T04:32:47.470Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 0,
+      "play": "passed"
+    },
+    "components-feedback-pageloading--default": {
+      "title": "Components/Feedback/PageLoading",
+      "checkedAt": "2026-10-23T04:32:47.526Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-feedback-pageloading--loading": {
+      "title": "Components/Feedback/PageLoading",
+      "checkedAt": "2026-10-23T04:32:47.790Z",
+      "violations": [],
+      "passes": 2,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-feedback-shimmer--default": {
+      "title": "Components/Feedback/Shimmer",
+      "checkedAt": "2026-10-23T04:32:47.965Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-feedback-spinner--default": {
+      "title": "Components/Feedback/Spinner",
+      "checkedAt": "2026-10-23T04:32:48.402Z",
+      "violations": [],
+      "passes": 2,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-feedback-success--default": {
+      "title": "Components/Feedback/Success",
+      "checkedAt": "2026-10-23T04:32:48.428Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-feedback-success--long-content": {
+      "title": "Components/Feedback/Success",
+      "checkedAt": "2026-10-23T04:32:48.788Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-feedback-success--rtl": {
+      "title": "Components/Feedback/Success",
+      "checkedAt": "2026-10-23T04:32:48.856Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-feedback-success--with-short-strings": {
+      "title": "Components/Feedback/Success",
+      "checkedAt": "2026-10-23T04:32:49.266Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-feedback-warning--custom-icon": {
+      "title": "Components/Feedback/Warning",
+      "checkedAt": "2026-10-23T04:32:49.308Z",
+      "violations": [],
+      "passes": 4,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-feedback-warning--default": {
+      "title": "Components/Feedback/Warning",
+      "checkedAt": "2026-10-23T04:32:49.741Z",
+      "violations": [],
+      "passes": 4,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-feedback-warning--focus": {
+      "title": "Components/Feedback/Warning",
+      "checkedAt": "2026-10-23T04:32:49.748Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-feedback-warning--hover": {
+      "title": "Components/Feedback/Warning",
+      "checkedAt": "2026-10-23T04:32:50.188Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-feedback-warning--long-content": {
+      "title": "Components/Feedback/Warning",
+      "checkedAt": "2026-10-23T04:32:50.424Z",
+      "violations": [],
+      "passes": 4,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-feedback-warning--rtl": {
+      "title": "Components/Feedback/Warning",
+      "checkedAt": "2026-10-23T04:32:50.852Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-feedback-warning--with-link": {
+      "title": "Components/Feedback/Warning",
+      "checkedAt": "2026-10-23T04:32:50.863Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-feedback-warning--without-icon": {
+      "title": "Components/Feedback/Warning",
+      "checkedAt": "2026-10-23T04:32:51.109Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-forms-checkbox--checked": {
+      "title": "Components/Forms/Checkbox",
+      "checkedAt": "2026-10-23T04:32:51.384Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-checkbox--default": {
+      "title": "Components/Forms/Checkbox",
+      "checkedAt": "2026-10-23T04:32:51.742Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-checkbox--disabled": {
+      "title": "Components/Forms/Checkbox",
+      "checkedAt": "2026-10-23T04:32:51.857Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 4,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-checkbox--focus": {
+      "title": "Components/Forms/Checkbox",
+      "checkedAt": "2026-10-23T04:32:52.111Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-checkbox--hover": {
+      "title": "Components/Forms/Checkbox",
+      "checkedAt": "2026-10-23T04:32:52.306Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-checkbox--indeterminate": {
+      "title": "Components/Forms/Checkbox",
+      "checkedAt": "2026-10-23T04:32:52.747Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-checkboxwithlabel--checked": {
+      "title": "Components/Forms/CheckboxWithLabel",
+      "checkedAt": "2026-10-23T04:32:52.846Z",
+      "violations": [],
+      "passes": 9,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-checkboxwithlabel--default": {
+      "title": "Components/Forms/CheckboxWithLabel",
+      "checkedAt": "2026-10-23T04:32:53.174Z",
+      "violations": [],
+      "passes": 8,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-checkboxwithlabel--disabled": {
+      "title": "Components/Forms/CheckboxWithLabel",
+      "checkedAt": "2026-10-23T04:32:53.239Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-checkboxwithlabel--focus": {
+      "title": "Components/Forms/CheckboxWithLabel",
+      "checkedAt": "2026-10-23T04:32:53.686Z",
+      "violations": [],
+      "passes": 8,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-checkboxwithlabel--hover": {
+      "title": "Components/Forms/CheckboxWithLabel",
+      "checkedAt": "2026-10-23T04:32:53.788Z",
+      "violations": [],
+      "passes": 8,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-checkboxwithlabel--long-content": {
+      "title": "Components/Forms/CheckboxWithLabel",
+      "checkedAt": "2026-10-23T04:32:54.120Z",
+      "violations": [],
+      "passes": 8,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-checkboxwithlabel--rtl": {
+      "title": "Components/Forms/CheckboxWithLabel",
+      "checkedAt": "2026-10-23T04:32:54.145Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-checkboxwithlabel--with-tooltip": {
+      "title": "Components/Forms/CheckboxWithLabel",
+      "checkedAt": "2026-10-23T04:32:54.652Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 13,
+      "incomplete": 1,
+      "focusable": 2
+    },
+    "components-forms-colorpickerinput--default": {
+      "title": "Components/Forms/ColorPickerInput",
+      "checkedAt": "2026-10-23T04:32:54.701Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-colorpickerinput--hover": {
+      "title": "Components/Forms/ColorPickerInput",
+      "checkedAt": "2026-10-23T04:32:55.016Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-colorpickerinput--open": {
+      "title": "Components/Forms/ColorPickerInput",
+      "checkedAt": "2026-10-23T04:32:55.043Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 2,
+      "play": "passed"
+    },
+    "components-forms-colorpickerinput--rtl": {
+      "title": "Components/Forms/ColorPickerInput",
+      "checkedAt": "2026-10-23T04:32:55.531Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-colorpickerinput--with-label-anbd-label-tooptip": {
+      "title": "Components/Forms/ColorPickerInput",
+      "checkedAt": "2026-10-23T04:32:55.649Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 12,
+      "incomplete": 1,
+      "focusable": 2
+    },
+    "components-forms-formcomponents--default": {
+      "title": "Components/Forms/FormComponents",
+      "checkedAt": "2026-10-23T04:32:55.931Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-formcomponents--optional": {
+      "title": "Components/Forms/FormComponents",
+      "checkedAt": "2026-10-23T04:32:56.134Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-formcomponents--question-number": {
+      "title": "Components/Forms/FormComponents",
+      "checkedAt": "2026-10-23T04:32:56.443Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-formcomponents--rtl": {
+      "title": "Components/Forms/FormComponents",
+      "checkedAt": "2026-10-23T04:32:56.650Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-formcomponents--with-icon": {
+      "title": "Components/Forms/FormComponents",
+      "checkedAt": "2026-10-23T04:32:56.886Z",
+      "violations": [],
+      "passes": 8,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-formcomponents--with-subtext": {
+      "title": "Components/Forms/FormComponents",
+      "checkedAt": "2026-10-23T04:32:57.147Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-imagesdropzone--default": {
+      "title": "Components/Forms/ImagesDropzone",
+      "checkedAt": "2026-10-23T04:32:57.382Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-imagesdropzone--error": {
+      "title": "Components/Forms/ImagesDropzone",
+      "checkedAt": "2026-10-23T04:32:57.631Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-imagesdropzone--focus": {
+      "title": "Components/Forms/ImagesDropzone",
+      "checkedAt": "2026-10-23T04:32:57.813Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-imagesdropzone--hover": {
+      "title": "Components/Forms/ImagesDropzone",
+      "checkedAt": "2026-10-23T04:32:58.107Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-imagesdropzone--rtl": {
+      "title": "Components/Forms/ImagesDropzone",
+      "checkedAt": "2026-10-23T04:32:58.380Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-imagesdropzone--with-image": {
+      "title": "Components/Forms/ImagesDropzone",
+      "checkedAt": "2026-10-23T04:32:58.758Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-input--date": {
+      "title": "Components/Forms/Input",
+      "checkedAt": "2026-10-23T04:32:58.822Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-input--default": {
+      "title": "Components/Forms/Input",
+      "checkedAt": "2026-10-23T04:32:59.165Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-input--disabled": {
+      "title": "Components/Forms/Input",
+      "checkedAt": "2026-10-23T04:32:59.393Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-forms-input--email": {
+      "title": "Components/Forms/Input",
+      "checkedAt": "2026-10-23T04:32:59.686Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-input--error": {
+      "title": "Components/Forms/Input",
+      "checkedAt": "2026-10-23T04:32:59.738Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 14,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-input--focus": {
+      "title": "Components/Forms/Input",
+      "checkedAt": "2026-10-23T04:33:00.102Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-input--hover": {
+      "title": "Components/Forms/Input",
+      "checkedAt": "2026-10-23T04:33:00.344Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-input--keyboard": {
+      "title": "Components/Forms/Input",
+      "checkedAt": "2026-10-23T05:19:15.524Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-input--long-content": {
+      "title": "Components/Forms/Input",
+      "checkedAt": "2026-10-23T04:33:00.574Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-input--password": {
+      "title": "Components/Forms/Input",
+      "checkedAt": "2026-10-23T04:33:00.990Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-input--rtl": {
+      "title": "Components/Forms/Input",
+      "checkedAt": "2026-10-23T04:33:01.056Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-input--with-label": {
+      "title": "Components/Forms/Input",
+      "checkedAt": "2026-10-23T04:33:01.332Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-input--with-max-char": {
+      "title": "Components/Forms/Input",
+      "checkedAt": "2026-10-23T04:33:01.519Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-input--with-placeholder": {
+      "title": "Components/Forms/Input",
+      "checkedAt": "2026-10-23T04:33:01.968Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-inputcontainer--default": {
+      "title": "Components/Forms/InputContainer",
+      "checkedAt": "2026-10-23T04:33:02.033Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-inputcontainer--disabled": {
+      "title": "Components/Forms/InputContainer",
+      "checkedAt": "2026-10-23T04:33:02.429Z",
+      "violations": [],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-forms-inputcontainer--focus": {
+      "title": "Components/Forms/InputContainer",
+      "checkedAt": "2026-10-23T04:33:02.497Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-inputcontainer--hover": {
+      "title": "Components/Forms/InputContainer",
+      "checkedAt": "2026-10-23T04:33:02.905Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-inputcontainer--long-content": {
+      "title": "Components/Forms/InputContainer",
+      "checkedAt": "2026-10-23T04:33:03.071Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-inputmultilocwithlocaleswitcher--default": {
+      "title": "Components/Forms/InputMultilocWithLocaleSwitcher",
+      "checkedAt": "2026-10-23T04:33:03.427Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 4,
+      "play": "passed"
+    },
+    "components-forms-inputmultilocwithlocaleswitcher--disabled": {
+      "title": "Components/Forms/InputMultilocWithLocaleSwitcher",
+      "checkedAt": "2026-10-23T04:33:03.518Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 3,
+      "play": "passed"
+    },
+    "components-forms-inputmultilocwithlocaleswitcher--error": {
+      "title": "Components/Forms/InputMultilocWithLocaleSwitcher",
+      "checkedAt": "2026-10-23T04:33:04.033Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 4,
+      "play": "passed"
+    },
+    "components-forms-inputmultilocwithlocaleswitcher--focus": {
+      "title": "Components/Forms/InputMultilocWithLocaleSwitcher",
+      "checkedAt": "2026-10-23T04:33:04.093Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 4,
+      "play": "passed"
+    },
+    "components-forms-inputmultilocwithlocaleswitcher--rtl": {
+      "title": "Components/Forms/InputMultilocWithLocaleSwitcher",
+      "checkedAt": "2026-10-23T04:33:04.406Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 4,
+      "play": "passed"
+    },
+    "components-forms-inputmultilocwithlocaleswitcher--single-locale": {
+      "title": "Components/Forms/InputMultilocWithLocaleSwitcher",
+      "checkedAt": "2026-10-23T04:33:04.518Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-label--default": {
+      "title": "Components/Forms/Label",
+      "checkedAt": "2026-10-23T04:33:04.978Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-forms-label--long-content": {
+      "title": "Components/Forms/Label",
+      "checkedAt": "2026-10-23T04:33:05.289Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-forms-label--rtl": {
+      "title": "Components/Forms/Label",
+      "checkedAt": "2026-10-23T04:33:05.347Z",
+      "violations": [],
+      "passes": 2,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-forms-localeswitcher--default": {
+      "title": "Components/Forms/LocaleSwitcher",
+      "checkedAt": "2026-10-23T04:33:05.447Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 2
+    },
+    "components-forms-localeswitcher--focus": {
+      "title": "Components/Forms/LocaleSwitcher",
+      "checkedAt": "2026-10-23T04:33:05.836Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 2
+    },
+    "components-forms-localeswitcher--hover": {
+      "title": "Components/Forms/LocaleSwitcher",
+      "checkedAt": "2026-10-23T04:33:06.241Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 2
+    },
+    "components-forms-localeswitcher--long-content": {
+      "title": "Components/Forms/LocaleSwitcher",
+      "checkedAt": "2026-10-23T04:33:06.312Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 7
+    },
+    "components-forms-localeswitcher--rtl": {
+      "title": "Components/Forms/LocaleSwitcher",
+      "checkedAt": "2026-10-23T04:33:06.403Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 2
+    },
+    "components-forms-localeswitcher--with-a-none-empty-value": {
+      "title": "Components/Forms/LocaleSwitcher",
+      "checkedAt": "2026-10-23T04:33:06.720Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 2
+    },
+    "components-forms-multipleselect--default": {
+      "title": "Components/Forms/MultipleSelect",
+      "checkedAt": "2026-10-23T04:33:07.178Z",
+      "violations": [],
+      "passes": 19,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-multipleselect--disabled": {
+      "title": "Components/Forms/MultipleSelect",
+      "checkedAt": "2026-10-23T04:33:07.317Z",
+      "violations": [],
+      "passes": 14,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-forms-multipleselect--empty": {
+      "title": "Components/Forms/MultipleSelect",
+      "checkedAt": "2026-10-23T04:33:07.380Z",
+      "violations": [],
+      "passes": 17,
+      "incomplete": 1,
+      "focusable": 1
+    },
+    "components-forms-multipleselect--focus": {
+      "title": "Components/Forms/MultipleSelect",
+      "checkedAt": "2026-10-23T04:33:07.715Z",
+      "violations": [],
+      "passes": 19,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-multipleselect--long-content": {
+      "title": "Components/Forms/MultipleSelect",
+      "checkedAt": "2026-10-23T04:33:08.236Z",
+      "violations": [],
+      "passes": 19,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-multipleselect--open": {
+      "title": "Components/Forms/MultipleSelect",
+      "checkedAt": "2026-10-23T04:33:08.421Z",
+      "violations": [],
+      "passes": 22,
+      "incomplete": 1,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-multipleselect--rtl": {
+      "title": "Components/Forms/MultipleSelect",
+      "checkedAt": "2026-10-23T04:33:08.439Z",
+      "violations": [],
+      "passes": 19,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-multiselect--default": {
+      "title": "Components/Forms/MultiSelect",
+      "checkedAt": "2026-10-23T04:33:08.799Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-multiselect--focus": {
+      "title": "Components/Forms/MultiSelect",
+      "checkedAt": "2026-10-23T04:33:09.248Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-multiselect--hover": {
+      "title": "Components/Forms/MultiSelect",
+      "checkedAt": "2026-10-23T04:33:09.494Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-multiselect--loading": {
+      "title": "Components/Forms/MultiSelect",
+      "checkedAt": "2026-10-23T04:33:09.514Z",
+      "violations": [],
+      "passes": 15,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-multiselect--long-content": {
+      "title": "Components/Forms/MultiSelect",
+      "checkedAt": "2026-10-23T04:33:09.758Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-multiselect--open": {
+      "title": "Components/Forms/MultiSelect",
+      "checkedAt": "2026-10-23T04:33:10.167Z",
+      "violations": [
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "nodes": 12,
+          "help": "Interactive controls must not be nested",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/nested-interactive"
+        }
+      ],
+      "passes": 20,
+      "incomplete": 1,
+      "focusable": 25
+    },
+    "components-forms-multiselect--rtl": {
+      "title": "Components/Forms/MultiSelect",
+      "checkedAt": "2026-10-23T04:33:10.438Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-multiselect--search": {
+      "title": "Components/Forms/MultiSelect",
+      "checkedAt": "2026-10-23T04:33:10.563Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-multiselect-ui--default": {
+      "title": "Components/Forms/MultiSelect (UI)",
+      "checkedAt": "2026-10-23T04:33:10.691Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-multiselect-ui--focus": {
+      "title": "Components/Forms/MultiSelect (UI)",
+      "checkedAt": "2026-10-23T04:33:11.086Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-multiselect-ui--hover": {
+      "title": "Components/Forms/MultiSelect (UI)",
+      "checkedAt": "2026-10-23T04:33:11.377Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-multiselect-ui--open": {
+      "title": "Components/Forms/MultiSelect (UI)",
+      "checkedAt": "2026-10-23T04:33:11.585Z",
+      "violations": [
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "nodes": 3,
+          "help": "Interactive controls must not be nested",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/nested-interactive"
+        }
+      ],
+      "passes": 19,
+      "incomplete": 0,
+      "focusable": 7
+    },
+    "components-forms-multiselect-ui--rtl": {
+      "title": "Components/Forms/MultiSelect (UI)",
+      "checkedAt": "2026-10-23T04:33:11.621Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-optionlist--default": {
+      "title": "Components/Forms/OptionList",
+      "checkedAt": "2026-10-23T04:33:12.044Z",
+      "violations": [
+        {
+          "id": "aria-required-parent",
+          "impact": "critical",
+          "nodes": 4,
+          "help": "Certain ARIA roles must be contained by particular parents",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-required-parent"
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 4,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "nodes": 4,
+          "help": "Interactive controls must not be nested",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/nested-interactive"
+        }
+      ],
+      "passes": 15,
+      "incomplete": 0,
+      "focusable": 8
+    },
+    "components-forms-optionlist--disabled": {
+      "title": "Components/Forms/OptionList",
+      "checkedAt": "2026-10-23T04:33:12.265Z",
+      "violations": [
+        {
+          "id": "aria-required-parent",
+          "impact": "critical",
+          "nodes": 4,
+          "help": "Certain ARIA roles must be contained by particular parents",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-required-parent"
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 4,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "nodes": 2,
+          "help": "Interactive controls must not be nested",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/nested-interactive"
+        }
+      ],
+      "passes": 15,
+      "incomplete": 0,
+      "focusable": 4
+    },
+    "components-forms-optionlist--empty": {
+      "title": "Components/Forms/OptionList",
+      "checkedAt": "2026-10-23T04:33:12.515Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-optionlist--hover": {
+      "title": "Components/Forms/OptionList",
+      "checkedAt": "2026-10-23T04:33:12.607Z",
+      "violations": [
+        {
+          "id": "aria-required-parent",
+          "impact": "critical",
+          "nodes": 4,
+          "help": "Certain ARIA roles must be contained by particular parents",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-required-parent"
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 4,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "nodes": 4,
+          "help": "Interactive controls must not be nested",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/nested-interactive"
+        }
+      ],
+      "passes": 15,
+      "incomplete": 0,
+      "focusable": 8
+    },
+    "components-forms-optionlist--long-content": {
+      "title": "Components/Forms/OptionList",
+      "checkedAt": "2026-10-23T04:33:13.052Z",
+      "violations": [
+        {
+          "id": "aria-required-parent",
+          "impact": "critical",
+          "nodes": 2,
+          "help": "Certain ARIA roles must be contained by particular parents",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-required-parent"
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 2,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "nodes": 2,
+          "help": "Interactive controls must not be nested",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/nested-interactive"
+        }
+      ],
+      "passes": 16,
+      "incomplete": 1,
+      "focusable": 4
+    },
+    "components-forms-optionlist--partial": {
+      "title": "Components/Forms/OptionList",
+      "checkedAt": "2026-10-23T04:33:13.201Z",
+      "violations": [
+        {
+          "id": "aria-required-parent",
+          "impact": "critical",
+          "nodes": 4,
+          "help": "Certain ARIA roles must be contained by particular parents",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-required-parent"
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 4,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "nodes": 4,
+          "help": "Interactive controls must not be nested",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/nested-interactive"
+        }
+      ],
+      "passes": 16,
+      "incomplete": 0,
+      "focusable": 8
+    },
+    "components-forms-optionlist--rtl": {
+      "title": "Components/Forms/OptionList",
+      "checkedAt": "2026-10-23T04:33:13.434Z",
+      "violations": [
+        {
+          "id": "aria-required-parent",
+          "impact": "critical",
+          "nodes": 3,
+          "help": "Certain ARIA roles must be contained by particular parents",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-required-parent"
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 3,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "nodes": 3,
+          "help": "Interactive controls must not be nested",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/nested-interactive"
+        }
+      ],
+      "passes": 15,
+      "incomplete": 1,
+      "focusable": 6
+    },
+    "components-forms-optionlist--searchable": {
+      "title": "Components/Forms/OptionList",
+      "checkedAt": "2026-10-23T04:33:13.590Z",
+      "violations": [
+        {
+          "id": "aria-required-parent",
+          "impact": "critical",
+          "nodes": 10,
+          "help": "Certain ARIA roles must be contained by particular parents",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-required-parent"
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 10,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "nodes": 10,
+          "help": "Interactive controls must not be nested",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/nested-interactive"
+        }
+      ],
+      "passes": 16,
+      "incomplete": 0,
+      "focusable": 21
+    },
+    "components-forms-optionlist--selected": {
+      "title": "Components/Forms/OptionList",
+      "checkedAt": "2026-10-23T04:33:14.002Z",
+      "violations": [
+        {
+          "id": "aria-required-parent",
+          "impact": "critical",
+          "nodes": 4,
+          "help": "Certain ARIA roles must be contained by particular parents",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-required-parent"
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 4,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "nodes": 4,
+          "help": "Interactive controls must not be nested",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/nested-interactive"
+        }
+      ],
+      "passes": 16,
+      "incomplete": 0,
+      "focusable": 8
+    },
+    "components-forms-optionlist--with-colors": {
+      "title": "Components/Forms/OptionList",
+      "checkedAt": "2026-10-23T04:33:14.115Z",
+      "violations": [
+        {
+          "id": "aria-required-parent",
+          "impact": "critical",
+          "nodes": 4,
+          "help": "Certain ARIA roles must be contained by particular parents",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-required-parent"
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 4,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "nodes": 4,
+          "help": "Interactive controls must not be nested",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/nested-interactive"
+        }
+      ],
+      "passes": 15,
+      "incomplete": 0,
+      "focusable": 8
+    },
+    "components-forms-optionlist--with-counts": {
+      "title": "Components/Forms/OptionList",
+      "checkedAt": "2026-10-23T04:33:14.340Z",
+      "violations": [
+        {
+          "id": "aria-required-parent",
+          "impact": "critical",
+          "nodes": 4,
+          "help": "Certain ARIA roles must be contained by particular parents",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-required-parent"
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 4,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "nodes": 4,
+          "help": "Interactive controls must not be nested",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/nested-interactive"
+        }
+      ],
+      "passes": 15,
+      "incomplete": 1,
+      "focusable": 8
+    },
+    "components-forms-panelfield--default": {
+      "title": "Components/Forms/PanelField",
+      "checkedAt": "2026-10-23T04:33:14.553Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-panelfield--long-content": {
+      "title": "Components/Forms/PanelField",
+      "checkedAt": "2026-10-23T04:33:14.898Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-panelfield--rtl": {
+      "title": "Components/Forms/PanelField",
+      "checkedAt": "2026-10-23T04:33:15.038Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-panelfield--stacked": {
+      "title": "Components/Forms/PanelField",
+      "checkedAt": "2026-10-23T04:33:15.339Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 2,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 2
+    },
+    "components-forms-radio--default": {
+      "title": "Components/Forms/Radio",
+      "checkedAt": "2026-10-23T04:33:15.517Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-radio--disabled": {
+      "title": "Components/Forms/Radio",
+      "checkedAt": "2026-10-23T04:33:15.888Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-radio--focus": {
+      "title": "Components/Forms/Radio",
+      "checkedAt": "2026-10-23T04:33:15.928Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-radio--hover": {
+      "title": "Components/Forms/Radio",
+      "checkedAt": "2026-10-23T04:33:16.312Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-radio--long-content": {
+      "title": "Components/Forms/Radio",
+      "checkedAt": "2026-10-23T04:33:16.465Z",
+      "violations": [],
+      "passes": 14,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-radio--rtl": {
+      "title": "Components/Forms/Radio",
+      "checkedAt": "2026-10-23T04:33:16.825Z",
+      "violations": [],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-radio--with-label": {
+      "title": "Components/Forms/Radio",
+      "checkedAt": "2026-10-23T04:33:16.869Z",
+      "violations": [],
+      "passes": 14,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-searchinput--default": {
+      "title": "Components/Forms/SearchInput",
+      "checkedAt": "2026-10-23T04:33:17.286Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-searchinput--focus": {
+      "title": "Components/Forms/SearchInput",
+      "checkedAt": "2026-10-23T04:33:17.344Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-searchinput--hover": {
+      "title": "Components/Forms/SearchInput",
+      "checkedAt": "2026-10-23T04:33:17.706Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-searchinput--long-content": {
+      "title": "Components/Forms/SearchInput",
+      "checkedAt": "2026-10-23T04:33:17.792Z",
+      "violations": [],
+      "passes": 18,
+      "incomplete": 0,
+      "focusable": 2
+    },
+    "components-forms-searchinput--rtl": {
+      "title": "Components/Forms/SearchInput",
+      "checkedAt": "2026-10-23T04:33:18.309Z",
+      "violations": [],
+      "passes": 18,
+      "incomplete": 0,
+      "focusable": 2
+    },
+    "components-forms-searchinput--with-default-value": {
+      "title": "Components/Forms/SearchInput",
+      "checkedAt": "2026-10-23T04:33:18.397Z",
+      "violations": [],
+      "passes": 18,
+      "incomplete": 0,
+      "focusable": 2
+    },
+    "components-forms-searchinput-ui--default": {
+      "title": "Components/Forms/SearchInput (UI)",
+      "checkedAt": "2026-10-23T04:33:18.661Z",
+      "violations": [],
+      "passes": 16,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-searchinput-ui--focus": {
+      "title": "Components/Forms/SearchInput (UI)",
+      "checkedAt": "2026-10-23T04:33:18.801Z",
+      "violations": [],
+      "passes": 16,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-searchinput-ui--hover": {
+      "title": "Components/Forms/SearchInput (UI)",
+      "checkedAt": "2026-10-23T04:33:19.342Z",
+      "violations": [],
+      "passes": 16,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-searchinput-ui--rtl": {
+      "title": "Components/Forms/SearchInput (UI)",
+      "checkedAt": "2026-10-23T04:33:19.345Z",
+      "violations": [],
+      "passes": 16,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-searchinput-ui--with-value": {
+      "title": "Components/Forms/SearchInput (UI)",
+      "checkedAt": "2026-10-23T04:33:19.636Z",
+      "violations": [],
+      "passes": 18,
+      "incomplete": 0,
+      "focusable": 2
+    },
+    "components-forms-select--default": {
+      "title": "Components/Forms/Select",
+      "checkedAt": "2026-10-23T04:33:19.895Z",
+      "violations": [
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Select element must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/select-name"
+        }
+      ],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-select--disabled": {
+      "title": "Components/Forms/Select",
+      "checkedAt": "2026-10-23T04:33:20.239Z",
+      "violations": [
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Select element must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/select-name"
+        }
+      ],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-forms-select--focus": {
+      "title": "Components/Forms/Select",
+      "checkedAt": "2026-10-23T04:33:20.245Z",
+      "violations": [
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Select element must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/select-name"
+        }
+      ],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-select--hover": {
+      "title": "Components/Forms/Select",
+      "checkedAt": "2026-10-23T04:33:20.597Z",
+      "violations": [
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Select element must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/select-name"
+        }
+      ],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-select--keyboard": {
+      "title": "Components/Forms/Select",
+      "checkedAt": "2026-10-23T05:19:19.210Z",
+      "violations": [
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Select element must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/select-name"
+        }
+      ],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-select--long-content": {
+      "title": "Components/Forms/Select",
+      "checkedAt": "2026-10-23T04:33:20.841Z",
+      "violations": [
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Select element must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/select-name"
+        }
+      ],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-select--rtl": {
+      "title": "Components/Forms/Select",
+      "checkedAt": "2026-10-23T04:33:21.145Z",
+      "violations": [
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Select element must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/select-name"
+        }
+      ],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-select--with-label": {
+      "title": "Components/Forms/Select",
+      "checkedAt": "2026-10-23T04:33:21.224Z",
+      "violations": [
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Select element must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/select-name"
+        }
+      ],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-select--with-number-values": {
+      "title": "Components/Forms/Select",
+      "checkedAt": "2026-10-23T04:33:21.551Z",
+      "violations": [
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Select element must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/select-name"
+        }
+      ],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-select--with-placeholder": {
+      "title": "Components/Forms/Select",
+      "checkedAt": "2026-10-23T04:33:21.798Z",
+      "violations": [
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Select element must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/select-name"
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-select--with-selected-option": {
+      "title": "Components/Forms/Select",
+      "checkedAt": "2026-10-23T04:33:22.115Z",
+      "violations": [
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Select element must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/select-name"
+        }
+      ],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-toggle--checked": {
+      "title": "Components/Forms/Toggle",
+      "checkedAt": "2026-10-23T04:33:22.240Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-toggle--default": {
+      "title": "Components/Forms/Toggle",
+      "checkedAt": "2026-10-23T04:33:22.564Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-toggle--disabled": {
+      "title": "Components/Forms/Toggle",
+      "checkedAt": "2026-10-23T04:33:22.826Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 4,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-toggle--focus": {
+      "title": "Components/Forms/Toggle",
+      "checkedAt": "2026-10-23T04:33:23.112Z",
+      "violations": [],
+      "passes": 8,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-toggle--hover": {
+      "title": "Components/Forms/Toggle",
+      "checkedAt": "2026-10-23T04:33:23.195Z",
+      "violations": [],
+      "passes": 8,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-toggle--keyboard": {
+      "title": "Components/Forms/Toggle",
+      "checkedAt": "2026-10-23T05:19:19.244Z",
+      "violations": [],
+      "passes": 8,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-forms-toggle--long-content": {
+      "title": "Components/Forms/Toggle",
+      "checkedAt": "2026-10-23T04:33:23.489Z",
+      "violations": [],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-toggle--rtl": {
+      "title": "Components/Forms/Toggle",
+      "checkedAt": "2026-10-23T04:33:23.753Z",
+      "violations": [],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-toggle--with-description": {
+      "title": "Components/Forms/Toggle",
+      "checkedAt": "2026-10-23T04:33:24.108Z",
+      "violations": [],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-toggle--with-label": {
+      "title": "Components/Forms/Toggle",
+      "checkedAt": "2026-10-23T04:33:24.124Z",
+      "violations": [],
+      "passes": 8,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-forms-toggle--with-label-text-color": {
+      "title": "Components/Forms/Toggle",
+      "checkedAt": "2026-10-23T04:33:24.380Z",
+      "violations": [],
+      "passes": 8,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-layout-accordion--default": {
+      "title": "Components/Layout/Accordion",
+      "checkedAt": "2026-10-23T04:33:24.609Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Interactive controls must not be nested",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/nested-interactive"
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/target-size"
+        }
+      ],
+      "passes": 16,
+      "incomplete": 1,
+      "focusable": 2
+    },
+    "components-layout-accordion--focus": {
+      "title": "Components/Layout/Accordion",
+      "checkedAt": "2026-10-23T04:33:24.979Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Interactive controls must not be nested",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/nested-interactive"
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/target-size"
+        }
+      ],
+      "passes": 16,
+      "incomplete": 1,
+      "focusable": 2
+    },
+    "components-layout-accordion--hover": {
+      "title": "Components/Layout/Accordion",
+      "checkedAt": "2026-10-23T04:33:25.029Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Interactive controls must not be nested",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/nested-interactive"
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/target-size"
+        }
+      ],
+      "passes": 16,
+      "incomplete": 1,
+      "focusable": 2
+    },
+    "components-layout-accordion--long-content": {
+      "title": "Components/Layout/Accordion",
+      "checkedAt": "2026-10-23T04:33:25.267Z",
+      "violations": [],
+      "passes": 16,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-layout-accordion--open": {
+      "title": "Components/Layout/Accordion",
+      "checkedAt": "2026-10-23T04:33:25.504Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        },
+        {
+          "id": "nested-interactive",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Interactive controls must not be nested",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/nested-interactive"
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/target-size"
+        }
+      ],
+      "passes": 16,
+      "incomplete": 1,
+      "focusable": 2
+    },
+    "components-layout-accordion--rtl": {
+      "title": "Components/Layout/Accordion",
+      "checkedAt": "2026-10-23T04:33:25.855Z",
+      "violations": [],
+      "passes": 16,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-layout-box--default": {
+      "title": "Components/Layout/Box",
+      "checkedAt": "2026-10-23T04:33:25.905Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-layout-box--long-content": {
+      "title": "Components/Layout/Box",
+      "checkedAt": "2026-10-23T04:33:26.151Z",
+      "violations": [],
+      "passes": 2,
+      "incomplete": 1,
+      "focusable": 0
+    },
+    "components-layout-box--rtl": {
+      "title": "Components/Layout/Box",
+      "checkedAt": "2026-10-23T04:33:26.389Z",
+      "violations": [],
+      "passes": 2,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-layout-centerer--default": {
+      "title": "Components/Layout/Centerer",
+      "checkedAt": "2026-10-23T04:33:26.727Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-layout-collapsiblecontainer--default": {
+      "title": "Components/Layout/CollapsibleContainer",
+      "checkedAt": "2026-10-23T04:33:26.802Z",
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-prohibited-attr"
+        }
+      ],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-layout-collapsiblecontainer--focus": {
+      "title": "Components/Layout/CollapsibleContainer",
+      "checkedAt": "2026-10-23T04:33:27.055Z",
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-prohibited-attr"
+        }
+      ],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-layout-collapsiblecontainer--long-content": {
+      "title": "Components/Layout/CollapsibleContainer",
+      "checkedAt": "2026-10-23T04:33:27.334Z",
+      "violations": [],
+      "passes": 13,
+      "incomplete": 1,
+      "focusable": 1
+    },
+    "components-layout-collapsiblecontainer--open": {
+      "title": "Components/Layout/CollapsibleContainer",
+      "checkedAt": "2026-10-23T04:33:27.623Z",
+      "violations": [],
+      "passes": 13,
+      "incomplete": 1,
+      "focusable": 1
+    },
+    "components-layout-collapsiblecontainer--rtl": {
+      "title": "Components/Layout/CollapsibleContainer",
+      "checkedAt": "2026-10-23T04:33:27.714Z",
+      "violations": [],
+      "passes": 13,
+      "incomplete": 1,
+      "focusable": 1
+    },
+    "components-layout-divider--default": {
+      "title": "Components/Layout/Divider",
+      "checkedAt": "2026-10-23T04:33:28.021Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-layout-listitem--default": {
+      "title": "Components/Layout/ListItem",
+      "checkedAt": "2026-10-23T04:33:28.275Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-layout-pagewrapper--default": {
+      "title": "Components/Layout/PageWrapper",
+      "checkedAt": "2026-10-23T04:33:28.569Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-layout-pagewrapper--flat-top-border": {
+      "title": "Components/Layout/PageWrapper",
+      "checkedAt": "2026-10-23T04:33:28.714Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-layout-pagewrapper--rtl": {
+      "title": "Components/Layout/PageWrapper",
+      "checkedAt": "2026-10-23T04:33:28.978Z",
+      "violations": [],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-layout-section--default": {
+      "title": "Components/Layout/Section",
+      "checkedAt": "2026-10-23T04:33:29.234Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-layout-section--full-width-field": {
+      "title": "Components/Layout/Section",
+      "checkedAt": "2026-10-23T04:33:29.537Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-layout-section--rtl": {
+      "title": "Components/Layout/Section",
+      "checkedAt": "2026-10-23T04:33:29.721Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-navigation-gobackbutton--default": {
+      "title": "Components/Navigation/GoBackButton",
+      "checkedAt": "2026-10-23T04:33:29.970Z",
+      "violations": [],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-navigation-gobackbutton--focus": {
+      "title": "Components/Navigation/GoBackButton",
+      "checkedAt": "2026-10-23T04:33:30.177Z",
+      "violations": [],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-navigation-gobackbutton--hover": {
+      "title": "Components/Navigation/GoBackButton",
+      "checkedAt": "2026-10-23T04:33:30.521Z",
+      "violations": [],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-navigation-gobackbutton--icon-only": {
+      "title": "Components/Navigation/GoBackButton",
+      "checkedAt": "2026-10-23T04:33:30.679Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-navigation-gobackbutton--rtl": {
+      "title": "Components/Navigation/GoBackButton",
+      "checkedAt": "2026-10-23T04:33:30.938Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-navigation-navigationtabs--default": {
+      "title": "Components/Navigation/NavigationTabs",
+      "checkedAt": "2026-10-23T04:33:31.113Z",
+      "violations": [],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 4
+    },
+    "components-navigation-navigationtabs--disabled": {
+      "title": "Components/Navigation/NavigationTabs",
+      "checkedAt": "2026-10-23T04:33:31.510Z",
+      "violations": [],
+      "passes": 9,
+      "incomplete": 0,
+      "focusable": 4,
+      "play": "passed"
+    },
+    "components-navigation-navigationtabs--focus": {
+      "title": "Components/Navigation/NavigationTabs",
+      "checkedAt": "2026-10-23T04:33:31.583Z",
+      "violations": [],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 4
+    },
+    "components-navigation-navigationtabs--hover": {
+      "title": "Components/Navigation/NavigationTabs",
+      "checkedAt": "2026-10-23T04:33:31.830Z",
+      "violations": [],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 4
+    },
+    "components-navigation-navigationtabs--rtl": {
+      "title": "Components/Navigation/NavigationTabs",
+      "checkedAt": "2026-10-23T04:33:32.018Z",
+      "violations": [],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 4
+    },
+    "components-navigation-navigationtabs--with-badge": {
+      "title": "Components/Navigation/NavigationTabs",
+      "checkedAt": "2026-10-23T04:33:32.485Z",
+      "violations": [],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 4
+    },
+    "components-overlays-dropdown--default": {
+      "title": "Components/Overlays/Dropdown",
+      "checkedAt": "2026-10-23T04:33:32.719Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 3
+    },
+    "components-overlays-dropdown--empty": {
+      "title": "Components/Overlays/Dropdown",
+      "checkedAt": "2026-10-23T04:33:32.726Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-overlays-dropdown--keyboard": {
+      "title": "Components/Overlays/Dropdown",
+      "checkedAt": "2026-10-23T05:19:19.275Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 3,
+      "play": "passed"
+    },
+    "components-overlays-dropdown--long-content": {
+      "title": "Components/Overlays/Dropdown",
+      "checkedAt": "2026-10-23T04:33:32.994Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 1,
+      "focusable": 12
+    },
+    "components-overlays-dropdown--open": {
+      "title": "Components/Overlays/Dropdown",
+      "checkedAt": "2026-10-23T04:33:33.382Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 3
+    },
+    "components-overlays-dropdown--rtl": {
+      "title": "Components/Overlays/Dropdown",
+      "checkedAt": "2026-10-23T04:33:33.664Z",
+      "violations": [],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 2
+    },
+    "components-overlays-icontooltip--default": {
+      "title": "Components/Overlays/IconTooltip",
+      "checkedAt": "2026-10-23T04:33:33.690Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 9,
+      "incomplete": 1,
+      "focusable": 1
+    },
+    "components-overlays-icontooltip--fixed-bottom-placement": {
+      "title": "Components/Overlays/IconTooltip",
+      "checkedAt": "2026-10-23T04:33:33.973Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 9,
+      "incomplete": 1,
+      "focusable": 1
+    },
+    "components-overlays-icontooltip--focus": {
+      "title": "Components/Overlays/IconTooltip",
+      "checkedAt": "2026-10-23T04:33:34.277Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 9,
+      "incomplete": 1,
+      "focusable": 1
+    },
+    "components-overlays-icontooltip--hover": {
+      "title": "Components/Overlays/IconTooltip",
+      "checkedAt": "2026-10-23T04:33:34.596Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 9,
+      "incomplete": 1,
+      "focusable": 1
+    },
+    "components-overlays-icontooltip--keyboard": {
+      "title": "Components/Overlays/IconTooltip",
+      "checkedAt": "2026-10-23T05:19:19.316Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 10,
+      "incomplete": 1,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-overlays-icontooltip--long-content": {
+      "title": "Components/Overlays/IconTooltip",
+      "checkedAt": "2026-10-23T04:33:34.686Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 9,
+      "incomplete": 1,
+      "focusable": 1
+    },
+    "components-overlays-icontooltip--open": {
+      "title": "Components/Overlays/IconTooltip",
+      "checkedAt": "2026-10-23T04:33:34.953Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 16,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-overlays-icontooltip--rtl": {
+      "title": "Components/Overlays/IconTooltip",
+      "checkedAt": "2026-10-23T04:33:35.242Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 9,
+      "incomplete": 1,
+      "focusable": 1
+    },
+    "components-overlays-icontooltip--with-jsx-element": {
+      "title": "Components/Overlays/IconTooltip",
+      "checkedAt": "2026-10-23T04:33:35.593Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 9,
+      "incomplete": 1,
+      "focusable": 1
+    },
+    "components-overlays-icontooltip--with-transform-translate": {
+      "title": "Components/Overlays/IconTooltip",
+      "checkedAt": "2026-10-23T04:33:35.630Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 9,
+      "incomplete": 1,
+      "focusable": 1
+    },
+    "components-overlays-modal--back-office": {
+      "title": "Components/Overlays/Modal",
+      "checkedAt": "2026-10-23T04:33:36.249Z",
+      "violations": [],
+      "passes": 17,
+      "incomplete": 1,
+      "focusable": 5,
+      "play": "passed"
+    },
+    "components-overlays-modal--default": {
+      "title": "Components/Overlays/Modal",
+      "checkedAt": "2026-10-23T04:33:36.313Z",
+      "violations": [],
+      "passes": 17,
+      "incomplete": 1,
+      "focusable": 5,
+      "play": "passed"
+    },
+    "components-overlays-modal--rtl": {
+      "title": "Components/Overlays/Modal",
+      "checkedAt": "2026-10-23T04:33:36.712Z",
+      "violations": [],
+      "passes": 17,
+      "incomplete": 1,
+      "focusable": 5,
+      "play": "passed"
+    },
+    "components-overlays-modal--without-close-button": {
+      "title": "Components/Overlays/Modal",
+      "checkedAt": "2026-10-23T04:33:36.804Z",
+      "violations": [],
+      "passes": 16,
+      "incomplete": 1,
+      "focusable": 4,
+      "play": "passed"
+    },
+    "components-overlays-modal--without-header": {
+      "title": "Components/Overlays/Modal",
+      "checkedAt": "2026-10-23T04:33:37.454Z",
+      "violations": [],
+      "passes": 17,
+      "incomplete": 1,
+      "focusable": 3,
+      "play": "passed"
+    },
+    "components-overlays-tooltip--default": {
+      "title": "Components/Overlays/Tooltip",
+      "checkedAt": "2026-10-23T04:33:37.548Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-overlays-tooltip--keyboard": {
+      "title": "Components/Overlays/Tooltip",
+      "checkedAt": "2026-10-23T05:19:22.098Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-overlays-tooltip--long-content": {
+      "title": "Components/Overlays/Tooltip",
+      "checkedAt": "2026-10-23T04:33:37.904Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 1,
+      "focusable": 0
+    },
+    "components-overlays-tooltip--open": {
+      "title": "Components/Overlays/Tooltip",
+      "checkedAt": "2026-10-23T04:33:37.944Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-overlays-tooltip--rtl": {
+      "title": "Components/Overlays/Tooltip",
+      "checkedAt": "2026-10-23T04:33:38.434Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-overlays-typeddeleteconfirmationmodal--confirmation-typed": {
+      "title": "Components/Overlays/TypedDeleteConfirmationModal",
+      "checkedAt": "2026-10-23T04:33:38.621Z",
+      "violations": [],
+      "passes": 19,
+      "incomplete": 1,
+      "focusable": 6,
+      "play": "passed"
+    },
+    "components-overlays-typeddeleteconfirmationmodal--default": {
+      "title": "Components/Overlays/TypedDeleteConfirmationModal",
+      "checkedAt": "2026-10-23T04:33:39.237Z",
+      "violations": [],
+      "passes": 19,
+      "incomplete": 1,
+      "focusable": 6,
+      "play": "passed"
+    },
+    "components-overlays-typeddeleteconfirmationmodal--loading": {
+      "title": "Components/Overlays/TypedDeleteConfirmationModal",
+      "checkedAt": "2026-10-23T04:33:39.257Z",
+      "violations": [],
+      "passes": 19,
+      "incomplete": 1,
+      "focusable": 5,
+      "play": "passed"
+    },
+    "components-overlays-typeddeleteconfirmationmodal--rtl": {
+      "title": "Components/Overlays/TypedDeleteConfirmationModal",
+      "checkedAt": "2026-10-23T04:33:39.596Z",
+      "violations": [],
+      "passes": 19,
+      "incomplete": 1,
+      "focusable": 6,
+      "play": "passed"
+    },
+    "components-typography-quilleditedcontent--default": {
+      "title": "Components/Typography/QuillEditedContent",
+      "checkedAt": "2026-10-23T04:33:39.775Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-typography-quilleditedcontent--large": {
+      "title": "Components/Typography/QuillEditedContent",
+      "checkedAt": "2026-10-23T04:33:40.267Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-typography-quilleditedcontent--rtl": {
+      "title": "Components/Typography/QuillEditedContent",
+      "checkedAt": "2026-10-23T04:33:40.308Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-typography-quilleditedcontent--small": {
+      "title": "Components/Typography/QuillEditedContent",
+      "checkedAt": "2026-10-23T04:33:40.593Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "components-typography-text--back-office-helper": {
+      "title": "Components/Typography/Text",
+      "checkedAt": "2026-10-23T04:33:40.789Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-typography-text--back-office-label": {
+      "title": "Components/Typography/Text",
+      "checkedAt": "2026-10-23T04:33:41.230Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-typography-text--back-office-micro": {
+      "title": "Components/Typography/Text",
+      "checkedAt": "2026-10-23T04:33:41.247Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-typography-text--back-office-section": {
+      "title": "Components/Typography/Text",
+      "checkedAt": "2026-10-23T04:33:41.597Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-typography-text--body-l": {
+      "title": "Components/Typography/Text",
+      "checkedAt": "2026-10-23T04:33:41.782Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-typography-text--body-m": {
+      "title": "Components/Typography/Text",
+      "checkedAt": "2026-10-23T04:33:42.163Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-typography-text--body-s": {
+      "title": "Components/Typography/Text",
+      "checkedAt": "2026-10-23T04:33:42.180Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-typography-text--body-xs": {
+      "title": "Components/Typography/Text",
+      "checkedAt": "2026-10-23T04:33:42.555Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-typography-text--default": {
+      "title": "Components/Typography/Text",
+      "checkedAt": "2026-10-23T04:33:42.712Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-typography-text--long-content": {
+      "title": "Components/Typography/Text",
+      "checkedAt": "2026-10-23T04:33:43.033Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-typography-text--rtl": {
+      "title": "Components/Typography/Text",
+      "checkedAt": "2026-10-23T04:33:43.070Z",
+      "violations": [],
+      "passes": 2,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-typography-title--default": {
+      "title": "Components/Typography/Title",
+      "checkedAt": "2026-10-23T04:33:43.487Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-typography-title--h-1": {
+      "title": "Components/Typography/Title",
+      "checkedAt": "2026-10-23T04:33:43.688Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-typography-title--h-2": {
+      "title": "Components/Typography/Title",
+      "checkedAt": "2026-10-23T04:33:43.957Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-typography-title--h-3": {
+      "title": "Components/Typography/Title",
+      "checkedAt": "2026-10-23T04:33:44.005Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-typography-title--h-4": {
+      "title": "Components/Typography/Title",
+      "checkedAt": "2026-10-23T04:33:44.434Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-typography-title--h-5": {
+      "title": "Components/Typography/Title",
+      "checkedAt": "2026-10-23T04:33:44.669Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-typography-title--h-6": {
+      "title": "Components/Typography/Title",
+      "checkedAt": "2026-10-23T04:33:44.925Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-typography-title--long-content": {
+      "title": "Components/Typography/Title",
+      "checkedAt": "2026-10-23T04:33:44.965Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-typography-title--rtl": {
+      "title": "Components/Typography/Title",
+      "checkedAt": "2026-10-23T04:33:45.355Z",
+      "violations": [],
+      "passes": 2,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "datephasepicker--disabled-ranges": {
+      "title": "DatePhasePicker",
+      "checkedAt": "2026-10-23T04:33:45.655Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "datephasepicker--open-ended-disabled-ranges": {
+      "title": "DatePhasePicker",
+      "checkedAt": "2026-10-23T04:33:45.901Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "datephasepicker--standard": {
+      "title": "DatePhasePicker",
+      "checkedAt": "2026-10-23T04:33:45.978Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "daterangepicker--disabled": {
+      "title": "DateRangePicker",
+      "checkedAt": "2026-10-23T04:33:46.341Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 2
+    },
+    "daterangepicker--standard": {
+      "title": "DateRangePicker",
+      "checkedAt": "2026-10-23T04:33:46.689Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 2
+    },
+    "datesinglepicker--disabled": {
+      "title": "DateSinglePicker",
+      "checkedAt": "2026-10-23T04:33:46.959Z",
+      "violations": [],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "datesinglepicker--standard": {
+      "title": "DateSinglePicker",
+      "checkedAt": "2026-10-23T04:33:47.097Z",
+      "violations": [],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "graphs-surveybars--default": {
+      "title": "Graphs/SurveyBars",
+      "checkedAt": "2026-10-23T04:33:47.367Z",
+      "violations": [],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 2
+    },
+    "graphs-surveybars--grouped": {
+      "title": "Graphs/SurveyBars",
+      "checkedAt": "2026-10-23T04:33:47.652Z",
+      "violations": [],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 3
+    },
+    "graphs-surveybars--skewed": {
+      "title": "Graphs/SurveyBars",
+      "checkedAt": "2026-10-23T04:33:47.963Z",
+      "violations": [],
+      "passes": 13,
+      "incomplete": 1,
+      "focusable": 3
+    },
+    "homepagebuilder-adminpublicationcard--primary": {
+      "title": "HomepageBuilder/AdminPublicationCard",
+      "checkedAt": "2026-10-23T04:33:48.153Z",
+      "violations": [],
+      "passes": 7,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "homepagebuilder-adminpublicationcarrouselskeleton--primary": {
+      "title": "HomepageBuilder/AdminPublicationCarrouselSkeleton",
+      "checkedAt": "2026-10-23T04:33:48.392Z",
+      "violations": [],
+      "passes": 4,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "homepagebuilder-adminpublicationscarrousel--primary": {
+      "title": "HomepageBuilder/AdminPublicationsCarrousel",
+      "checkedAt": "2026-10-23T04:33:48.664Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 2
+    },
+    "homepagebuilder-lightprojectcard--finished-project": {
+      "title": "HomepageBuilder/LightProjectCard",
+      "checkedAt": "2026-10-23T04:33:48.985Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "homepagebuilder-lightprojectcard--primary": {
+      "title": "HomepageBuilder/LightProjectCard",
+      "checkedAt": "2026-10-23T04:33:49.187Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "homepagebuilder-lightprojectcard--upcoming-project": {
+      "title": "HomepageBuilder/LightProjectCard",
+      "checkedAt": "2026-10-23T04:33:49.382Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "homepagebuilder-projectcarrousel--many-projects": {
+      "title": "HomepageBuilder/ProjectCarrousel",
+      "checkedAt": "2026-10-23T04:33:49.674Z",
+      "violations": [],
+      "passes": 14,
+      "incomplete": 1,
+      "focusable": 10
+    },
+    "homepagebuilder-projectcarrousel--one-project": {
+      "title": "HomepageBuilder/ProjectCarrousel",
+      "checkedAt": "2026-10-23T04:33:49.965Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "homepagebuilder-projectcarrouselskeleton--primary": {
+      "title": "HomepageBuilder/ProjectCarrouselSkeleton",
+      "checkedAt": "2026-10-23T04:33:50.087Z",
+      "violations": [],
+      "passes": 4,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "homepagebuilder-spotlight--standard": {
+      "title": "HomepageBuilder/Spotlight",
+      "checkedAt": "2026-10-23T04:33:50.295Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 1
+    },
+    "pages-project-workspace--default": {
+      "title": "Pages/Project workspace",
+      "checkedAt": "2026-10-23T04:33:50.659Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 8,
+      "play": "passed"
+    },
+    "pages-project-workspace--insights-empty": {
+      "title": "Pages/Project workspace",
+      "checkedAt": "2026-10-23T04:33:50.920Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 4,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 5,
+      "play": "passed"
+    },
+    "pages-project-workspace--manage-empty": {
+      "title": "Pages/Project workspace",
+      "checkedAt": "2026-10-23T04:33:51.062Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 4,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 7,
+      "play": "passed"
+    },
+    "pages-project-workspace--rtl": {
+      "title": "Pages/Project workspace",
+      "checkedAt": "2026-10-23T04:33:51.336Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 3,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        },
+        {
+          "id": "target-size",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "All touch targets must be 24px large, or leave sufficient space",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/target-size"
+        }
+      ],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 5,
+      "play": "passed"
+    }
+  }
+}

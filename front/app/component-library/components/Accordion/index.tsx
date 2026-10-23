@@ -4,6 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
 import useInstanceId from '../../hooks/useInstanceId';
+import { gvTag } from '../../utils/gvTag';
 import { colors, isRtl } from '../../utils/styleUtils';
 import Box, {
   BoxBorderProps,
@@ -135,7 +136,7 @@ const Accordion = ({
 
   return (
     // In the future, ideally use the CollapsibleContainer component here insetad.
-    <ListItem className={className} {...rest}>
+    <ListItem {...gvTag('Accordion')} className={className} {...rest}>
       <Box display="flex" alignItems="center">
         {prefix}
         <TitleButton

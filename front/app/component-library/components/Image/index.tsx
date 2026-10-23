@@ -2,6 +2,7 @@ import React from 'react';
 
 import styled, { css } from 'styled-components';
 
+import { useGvInstance } from '../../utils/gvInstance';
 import Box, {
   BoxColorProps,
   BoxPaddingProps,
@@ -44,10 +45,15 @@ const StyledImage = styled(Box)<ImageProps>`
   `}
 `;
 
-export const Image: React.FC<ImageProps> = (props) => {
+// The props a designer may switch on one Image in the workbench; it has no
+// default fit (utils/gvInstance.ts).
+const INSTANCE_DEFAULTS: Partial<ImageProps> = { objectFit: undefined };
+
+export const Image: React.FC<ImageProps> = (rawProps) => {
+  const { props, tag } = useGvInstance('Image', rawProps, INSTANCE_DEFAULTS);
   const { alt, children, ...rest } = props;
   return (
-    <StyledImage as="img" alt={alt} {...rest}>
+    <StyledImage {...tag} as="img" alt={alt} {...rest}>
       {children}
     </StyledImage>
   );

@@ -3,6 +3,7 @@ import React from 'react';
 import { lighten } from 'polished';
 import styled, { keyframes } from 'styled-components';
 
+import { gvTag } from '../../utils/gvTag';
 import { colors } from '../../utils/styleUtils';
 import Box, { BoxProps } from '../Box';
 
@@ -27,7 +28,14 @@ const ShimmerBox = styled(Box)<{ $bgColor: string }>`
 `;
 
 const Shimmer = ({ bgColor = colors.grey300, ...props }: BoxProps) => {
-  return <ShimmerBox $bgColor={bgColor} {...props} aria-hidden={true} />;
+  return (
+    <ShimmerBox
+      {...gvTag('Shimmer')}
+      $bgColor={bgColor}
+      {...props}
+      aria-hidden={true}
+    />
+  );
 };
 
 export default Shimmer;

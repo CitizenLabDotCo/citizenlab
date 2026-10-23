@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Placement } from 'tippy.js';
 
 import useInstanceId from '../../hooks/useInstanceId';
+import { gvTag } from '../../utils/gvTag';
 import { colors } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import Box, {
@@ -113,6 +114,7 @@ const IconTooltip: FC<Props> = memo<Props>(
         }
       >
         <Box
+          {...gvTag('IconTooltip')}
           as="button"
           className={`${className || ''} tooltip-icon`}
           aria-describedby={`tooltip-content-${uuid}`}

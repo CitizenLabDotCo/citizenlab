@@ -25,14 +25,16 @@ const ResetCacheContext = ({ children }) => {
   return <>{children}</>;
 };
 
-export default (Story) => {
+export default (Story, context) => {
   return (
     <QueryClientProvider client={queryClient}>
       <OutletsContext.Provider value={EMPTY_OBJ}>
         <ResetCacheContext>
-          <ThemeContext>
+          <ThemeContext city={context.globals.city} lang={context.globals.lang}>
             <Portals />
+            {/* The workbench canvas restyles this box by its attribute. */}
             <div
+              data-gv-story-box=""
               style={{
                 position: 'absolute',
                 top: 0,
@@ -42,7 +44,8 @@ export default (Story) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-              }}>
+              }}
+            >
               <Story />
             </div>
           </ThemeContext>

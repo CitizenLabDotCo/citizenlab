@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-10-23T04:18:49.250Z",
+  "commit": "f9572c7b4cf3eb7697ff59d75a89f38c5f559f15",
+  "mergeBase": "1a0d06e3afa8b33db8a01f33168c445daa9767c0",
+  "offSpec": 8232,
+  "legacy": 3267,
+  "tokenReads": 18,
+  "components": 134,
+  "onTokens": 22,
+  "partly": 0,
+  "offTokens": 112,
+  "pagesRebuilt": 0,
+  "pagesPartly": 196,
+  "pagesLegacy": 2
+}

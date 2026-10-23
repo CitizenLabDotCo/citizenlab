@@ -3,6 +3,7 @@ import React, { PureComponent, createRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
+import { gvTag } from '../../utils/gvTag';
 import { fontSizes, colors } from '../../utils/styleUtils';
 import Icon from '../Icon';
 
@@ -112,6 +113,7 @@ export default class Success extends PureComponent<Props, State> {
         classNames="success"
       >
         <Container
+          {...gvTag('Success')}
           ref={this.nodeRef}
           className={`e2e-success-message ${className}`}
         >
