@@ -137,6 +137,14 @@ const hostName = (host: string) => {
   }
 };
 
+// The platform keeps its session in the cl2_jwt cookie and sends it as a
+// Bearer header; the API ignores the cookie itself.
+const platformJwt = () =>
+  document.cookie
+    .split('; ')
+    .find((c) => c.startsWith('cl2_jwt='))
+    ?.slice('cl2_jwt='.length);
+
 // Whether the browser is logged in to the platform on this origin (the
 // frames share its cookies). Unknown off origin.
 const useLogin = (host: string, reloadKey: number): Login => {
@@ -146,8 +154,15 @@ const useLogin = (host: string, reloadKey: number): Login => {
       setLogin('unknown');
       return undefined;
     }
+    const jwt = platformJwt();
+    if (!jwt || jwt === 'undefined') {
+      setLogin('out');
+      return undefined;
+    }
     let live = true;
-    fetch(`${host}/web_api/v1/users/me`, { credentials: 'include' })
+    fetch(`${host}/web_api/v1/users/me`, {
+      headers: { Authorization: `Bearer ${jwt}` },
+    })
       .then(async (res) => {
         if (!live) return;
         if (res.status === 401) return setLogin('out');
