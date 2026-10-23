@@ -236,6 +236,7 @@ resource 'Ideas' do
         parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(', ')}", required: false
         parameter :feedback_needed, 'Filter out ideas that need feedback', required: false
         parameter :filter_trending, 'Filter out truly trending ideas', required: false
+        parameter :custom_field_ids, 'Count the answers per option of these public choice questions', required: false
 
         let(:projects) { [@project.id] }
 
@@ -252,14 +253,22 @@ resource 'Ideas' do
           expect(json_attributes[:total]).to eq 4
         end
 
-        example 'List idea counts per filter option on topic' do
-          do_request topics: [@t1.id], projects: nil
-          assert_status 200
-        end
+        example 'List idea counts per answer option of public choice questions' do
+          form = create(:custom_form, participation_context: @project)
+          public_field = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public')
+          private_field = create(:custom_field_select, :with_options, resource: form)
+          disabled_field = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public', enabled: false)
+          create(:custom_field_answer, answerable: @i1, key: public_field.key, value: 'option1')
+          create(:custom_field_answer, answerable: @i2, key: public_field.key, value: 'option1')
+          create(:custom_field_answer, answerable: @i3, key: public_field.key, value: 'option2')
+          create(:custom_field_answer, answerable: @i4, key: private_field.key, value: 'option1')
+          create(:custom_field_answer, answerable: @i4, key: disabled_field.key, value: 'option1')
 
-        example 'List idea counts per filter option with a search string' do
-          do_request search: 'trees'
+          do_request custom_field_ids: [public_field.id, private_field.id, disabled_field.id]
+
           assert_status 200
+          answer_counts = json_parse(response_body).dig(:data, :attributes, :custom_field_answers)
+          expect(answer_counts).to eq({ public_field.id.to_sym => { option1: 2, option2: 1 } })
         end
       end
     end
