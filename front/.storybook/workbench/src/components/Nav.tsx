@@ -53,7 +53,11 @@ export const NAV: NavEntry[] = [
   },
 ];
 
-type Props = { current: Route['name'] };
+type Props = {
+  current: Route['name'];
+  collapsed: boolean;
+  onToggleCollapsed: () => void;
+};
 
 // The mark of the workbench: four tiles, one of them the accent.
 const BrandMark = () => (
@@ -93,9 +97,29 @@ const THEMES: { value: ThemeChoice; label: string; icon: IconName }[] = [
   { value: 'dark', label: 'Dark', icon: 'moon' },
 ];
 
-// Light, dark, or as the system is; remembered in this browser.
-const ThemeSwitch = () => {
+// Light, dark, or as the system is; remembered in this browser. A folded
+// sidebar has room for one button, which steps through the three.
+const ThemeSwitch = ({ compact }: { compact: boolean }) => {
   const [theme, setTheme] = useTheme();
+  if (compact) {
+    const i = THEMES.findIndex((t) => t.value === theme);
+    const next = THEMES[(i + 1) % THEMES.length];
+    const now = THEMES[i];
+    return (
+      <div className="wb-theme" data-testid="wb-theme">
+        <button
+          type="button"
+          title={`Theme: ${now.label}. Switch to ${next.label.toLowerCase()}`}
+          onClick={() => setTheme(next.value)}
+        >
+          <Icon name={now.icon} size={16} />
+          <span className="wb-visually-hidden">
+            Theme: {now.label}. Switch to {next.label.toLowerCase()}
+          </span>
+        </button>
+      </div>
+    );
+  }
   return (
     <div
       className="wb-theme"
@@ -103,7 +127,6 @@ const ThemeSwitch = () => {
       aria-label="Theme"
       data-testid="wb-theme"
     >
-      <span className="wb-theme-label">Theme</span>
       {THEMES.map((t) => (
         <button
           key={t.value}
@@ -120,8 +143,7 @@ const ThemeSwitch = () => {
   );
 };
 
-const Nav = ({ current }: Props) => {
-  const [query, setQuery] = useState('');
+const Nav = ({ current, collapsed, onToggleCollapsed }: Props) => {
   // Narrow screens: the list folds into a menu under the top bar.
   const [open, setOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
@@ -142,24 +164,22 @@ const Nav = ({ current }: Props) => {
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
   }, [open]);
-  const q = query.trim().toLowerCase();
-  const entries = q
-    ? NAV.filter((e) => `${e.label} ${e.hint}`.toLowerCase().includes(q))
-    : NAV;
-
   return (
     <nav
       ref={navRef}
-      className={open ? 'wb-nav wb-nav-open' : 'wb-nav'}
+      className={[
+        'wb-nav',
+        open && 'wb-nav-open',
+        collapsed && 'wb-nav-collapsed',
+      ]
+        .filter(Boolean)
+        .join(' ')}
       aria-label="Workbench"
     >
       <div className="wb-nav-top">
-        <a className="wb-brand" href="#/start">
+        <a className="wb-brand" href="#/start" title="Design workbench">
           <BrandMark />
-          <span>
-            <span className="wb-brand-name">Design workbench</span>
-            <span className="wb-brand-sub">Go Vocal design system</span>
-          </span>
+          <span className="wb-brand-name">Design workbench</span>
         </a>
         <button
           type="button"
@@ -174,37 +194,36 @@ const Nav = ({ current }: Props) => {
         </button>
       </div>
       <div className="wb-nav-body" id="wb-nav-body">
-        <label className="wb-search">
-          <span className="wb-visually-hidden">Search</span>
-          <Icon name="search" size={16} />
-          <input
-            type="search"
-            placeholder="Search sections"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </label>
         <ul className="wb-nav-list" data-testid="wb-nav">
-          {entries.map((e) => (
+          {NAV.map((e) => (
             <li key={e.name}>
               <a
                 href={e.hash}
                 aria-current={e.name === current ? 'page' : undefined}
-                title={e.hint}
+                title={collapsed ? `${e.label}: ${e.hint}` : e.hint}
                 onClick={() => setOpen(false)}
               >
                 <Icon name={e.name as IconName} />
-                {e.label}
+                <span className="wb-nav-label">{e.label}</span>
               </a>
             </li>
           ))}
-          {entries.length === 0 && <li className="wb-nav-empty">No match</li>}
         </ul>
         <div className="wb-nav-foot">
-          <ThemeSwitch />
-          <p className="wb-nav-note">
-            Edits stay in this browser until you share them as a link.
-          </p>
+          <ThemeSwitch compact={collapsed} />
+          <button
+            type="button"
+            className="wb-nav-collapse"
+            aria-expanded={!collapsed}
+            title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            onClick={onToggleCollapsed}
+            data-testid="wb-nav-collapse"
+          >
+            <Icon name="sidebar" size={16} />
+            <span className="wb-visually-hidden">
+              {collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+            </span>
+          </button>
         </div>
       </div>
       {open && (

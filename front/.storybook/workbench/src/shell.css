@@ -204,21 +204,10 @@ code {
   border-radius: var(--wb-radius);
 }
 
-.wb-brand > span {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.25;
-}
-
 .wb-brand-name {
   font-size: var(--gv-fs-base);
   font-weight: 700;
   color: var(--wb-heading);
-}
-
-.wb-brand-sub {
-  font-size: var(--gv-fs-xs);
-  color: var(--wb-muted);
 }
 
 .wb-shell .wb-menu-button {
@@ -303,24 +292,16 @@ code {
   color: var(--wb-accent);
 }
 
-.wb-nav-empty {
-  padding: var(--gv-space-2) var(--gv-space-3);
-  color: var(--wb-muted);
-}
-
 .wb-nav-foot {
   display: flex;
-  flex-direction: column;
-  gap: var(--gv-space-3);
+  gap: var(--gv-space-2);
+  align-items: center;
+  justify-content: space-between;
   margin: auto 0 0;
   padding: var(--gv-space-3);
   font-size: var(--gv-fs-xs);
   color: var(--wb-muted);
   border-top: 1px solid var(--wb-border);
-}
-
-.wb-nav-note {
-  margin: 0;
 }
 
 .wb-nav-scrim {
@@ -334,12 +315,8 @@ code {
   align-items: center;
 }
 
-.wb-theme-label {
-  margin-right: auto;
-  font-weight: 500;
-}
-
-.wb-shell .wb-theme button {
+.wb-shell .wb-theme button,
+.wb-shell .wb-nav-collapse {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -354,7 +331,8 @@ code {
   cursor: pointer;
 }
 
-.wb-shell .wb-theme button:hover {
+.wb-shell .wb-theme button:hover,
+.wb-shell .wb-nav-collapse:hover {
   color: var(--wb-text);
   background: var(--wb-sunken);
 }
@@ -363,6 +341,49 @@ code {
   color: var(--wb-accent);
   background: var(--wb-bg);
   box-shadow: 0 0 0 1px var(--wb-border);
+}
+
+/* Folded sidebar: the icons only, names in their tooltips. Wide screens
+   only; on a phone the sidebar is a menu already. */
+@media (min-width: 881px) {
+  .wb-shell-nav-collapsed {
+    --wb-nav-width: 64px;
+  }
+
+  .wb-nav-collapsed .wb-nav-top {
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  .wb-nav-collapsed .wb-brand-name,
+  .wb-nav-collapsed .wb-nav-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .wb-nav-collapsed .wb-nav-body {
+    padding-inline: var(--gv-space-2);
+  }
+
+  .wb-nav-collapsed .wb-nav-list a {
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  .wb-nav-collapsed .wb-nav-foot {
+    flex-direction: column;
+    padding-inline: 0;
+  }
+}
+
+@media (max-width: 880px) {
+  .wb-shell .wb-nav-collapse {
+    display: none;
+  }
 }
 
 /* Focus, for every control of the shell */
@@ -3889,10 +3910,6 @@ a.wb-line:hover {
   .wb-nav-foot {
     margin-top: 0;
     padding: var(--gv-space-3) 0 0;
-  }
-
-  .wb-nav-note {
-    display: none;
   }
 
   .wb-main {

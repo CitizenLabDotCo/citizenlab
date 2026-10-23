@@ -4,6 +4,7 @@ import Nav from './components/Nav';
 import { PanelContext } from './components/Panel';
 import { DEFAULT_TOOLBAR, ToolbarState } from './components/Toolbar';
 import { TOKEN_META } from './lib/data';
+import { useNavCollapsed } from './lib/navCollapsed';
 import { Overrides, useOverrides } from './lib/overrides';
 import { Route, useRoute } from './lib/router';
 import Component from './pages/Component';
@@ -104,14 +105,27 @@ const App = () => {
     [panelEl, register]
   );
   const navName = route.name === 'not-found' ? 'start' : route.name;
+  const [navCollapsed, toggleNav] = useNavCollapsed();
   const [toolbar, setToolbar] = useState<ToolbarState>(DEFAULT_TOOLBAR);
   const { overrides, setOverride, reset, notice, dismissNotice } =
     useOverrides(TOKEN_META);
 
   return (
     <PanelContext.Provider value={slot}>
-      <div className={panels > 0 ? 'wb-shell wb-shell-with-panel' : 'wb-shell'}>
-        <Nav current={navName} />
+      <div
+        className={[
+          'wb-shell',
+          panels > 0 && 'wb-shell-with-panel',
+          navCollapsed && 'wb-shell-nav-collapsed',
+        ]
+          .filter(Boolean)
+          .join(' ')}
+      >
+        <Nav
+          current={navName}
+          collapsed={navCollapsed}
+          onToggleCollapsed={toggleNav}
+        />
         <main className="wb-main">
           {notice && (
             <div className="wb-notice" role="alert" data-testid="wb-notice">
