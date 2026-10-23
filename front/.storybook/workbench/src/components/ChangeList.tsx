@@ -3,6 +3,8 @@ import { useMemo } from 'react';
 import { BRANCH } from '../lib/componentPanels';
 import {
   ChangeCommit,
+  CommitGroup,
+  DESIGN_KINDS,
   DesignChanges,
   fileLink,
   groupCommits,
@@ -17,8 +19,9 @@ type Props = {
   onSeen: (sha: string, on: boolean) => void;
   // Opens the routes this commit touches in the route list.
   onRoutes: (c: ChangeCommit) => void;
-  // How many routes each commit touches.
-  routeCount: (c: ChangeCommit) => number;
+  // How many routes each commit touches, the shell left out, and whether
+  // it changes the shell (every page).
+  routeCount: (c: ChangeCommit) => { routes: number; shell: boolean };
   // Components and routes a token reaches.
   tokenReach: (name: string) => { components: number; routes: number };
 };
@@ -61,7 +64,7 @@ const Commit = ({
   seen: boolean;
   onSeen: (on: boolean) => void;
   onRoutes: () => void;
-  routes: number;
+  routes: { routes: number; shell: boolean };
 }) => (
   <li
     className={seen ? 'wb-commit wb-commit-seen' : 'wb-commit'}
@@ -88,19 +91,33 @@ const Commit = ({
           {c.sha.slice(0, 8)}
         </a>
         {c.scanDelta && <Delta n={c.scanDelta.offSpec} />}
-        <button
-          type="button"
-          className="wb-commit-routes"
-          onClick={onRoutes}
-          disabled={routes === 0}
-          title={
-            routes === 0 ? 'No scanned route renders these files' : undefined
-          }
-          data-testid="wb-commit-routes"
-        >
-          <Icon name="route" size={14} />
-          {routes === 0 ? 'No routes' : `${routes} routes`}
-        </button>
+        {routes.shell && (
+          <span
+            className="wb-commit-shell"
+            title="Changes a file nine in ten routes render"
+          >
+            Every page
+          </span>
+        )}
+        {(routes.routes > 0 || !routes.shell) && (
+          <button
+            type="button"
+            className="wb-commit-routes"
+            onClick={onRoutes}
+            disabled={routes.routes === 0}
+            title={
+              routes.routes === 0
+                ? 'No scanned route renders these files'
+                : undefined
+            }
+            data-testid="wb-commit-routes"
+          >
+            <Icon name="route" size={14} />
+            {routes.routes === 0
+              ? 'No routes'
+              : `${routes.routes} ${routes.routes === 1 ? 'route' : 'routes'}`}
+          </button>
+        )}
       </div>
       <details className="wb-commit-files">
         <summary>
@@ -137,7 +154,20 @@ const ChangeList = ({
   routeCount,
   tokenReach,
 }: Props) => {
-  const groups = useMemo(() => groupCommits(changes?.commits ?? []), [changes]);
+  // Groups with design commits (token, heal, lift) first and open,
+  // story-only components next, the rest of the unnamed commits last.
+  const groups = useMemo(() => {
+    const rank = (g: CommitGroup) =>
+      g.kinds.some((k) => DESIGN_KINDS.has(k.kind))
+        ? 0
+        : g.component === null
+        ? 2
+        : 1;
+    return groupCommits(changes?.commits ?? [])
+      .map((g, i) => ({ g, i }))
+      .sort((a, b) => rank(a.g) - rank(b.g) || a.i - b.i)
+      .map(({ g }) => ({ ...g, design: rank(g) === 0 }));
+  }, [changes]);
   if (!loaded) {
     return (
       <div className="wb-clist-loading" aria-busy="true">
@@ -245,7 +275,7 @@ const ChangeList = ({
             <details
               key={g.component ?? '-'}
               className="wb-cgroup"
-              open={groups.length <= 6}
+              open={g.design || groups.length <= 6}
               data-testid="wb-change-group"
             >
               <summary>

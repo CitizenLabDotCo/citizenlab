@@ -38,6 +38,9 @@ type Props = {
   commit?: { sha: string; label: string };
   onClearCommit: () => void;
   unmapped: string[];
+  // Changed shell files: they affect every page, so they mark no route.
+  shell: string[];
+  onShellCommits?: () => void;
 };
 
 // `admin/projects/$projectId` as `/admin/projects/:projectId`, params set
@@ -85,6 +88,8 @@ const RouteList = ({
   commit,
   onClearCommit,
   unmapped,
+  shell,
+  onShellCommits,
 }: Props) => {
   const [allUnmapped, setAllUnmapped] = useState(false);
   const scroller = useRef<HTMLDivElement>(null);
@@ -194,6 +199,39 @@ const RouteList = ({
       </div>
 
       <div className="wb-rlist-scroll" ref={scroller}>
+        {shell.length > 0 && (
+          <details className="wb-rlist-shell" data-testid="wb-review-shell">
+            <summary>
+              <span className="wb-diff-dot" aria-hidden="true" />
+              <span>
+                {shell.length === 1
+                  ? '1 shell file changed, it affects every page'
+                  : `${shell.length} shell files changed, they affect every page`}
+              </span>
+            </summary>
+            <p className="wb-muted">
+              Files nine in ten routes render (the app shell, the theme bridge).
+              They mark no route here, so the filter stays useful. Check them on
+              any page.
+            </p>
+            <ul>
+              {shell.map((f) => (
+                <li key={f}>
+                  <code>{f}</code>
+                </li>
+              ))}
+            </ul>
+            {onShellCommits && (
+              <button
+                type="button"
+                className="wb-ulist-more"
+                onClick={onShellCommits}
+              >
+                See the commits
+              </button>
+            )}
+          </details>
+        )}
         {routes.length === 0 ? (
           <div className="wb-rlist-none" data-testid="wb-review-routes-none">
             <Icon name="route" size={24} />
@@ -226,9 +264,6 @@ const RouteList = ({
                     >
                       <RoutePath path={r.path} />
                       <span className="wb-rrow-meta">
-                        <span className={`wb-ochip wb-ochip-${r.office}`}>
-                          {OFFICE_LABEL[r.office]}
-                        </span>
                         {r.offSpec > 0 && (
                           <span
                             title={`${r.offSpec} off-spec values in ${r.files} files`}

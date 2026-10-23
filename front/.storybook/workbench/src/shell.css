@@ -1619,6 +1619,12 @@ tr:hover .wb-pv-motion > span {
   accent-color: var(--wb-accent);
 }
 
+/* A switch in a check label keeps its own size. */
+.wb-check input.wb-switch {
+  width: 34px;
+  height: 20px;
+}
+
 .wb-pairs-stats {
   display: flex;
   flex-wrap: wrap;
@@ -4075,6 +4081,52 @@ a.wb-line:hover {
   color: var(--wb-muted);
 }
 
+/* Shell files changed: they affect every page. */
+.wb-rlist-shell {
+  margin: var(--gv-space-3) var(--gv-space-2) var(--gv-space-1);
+  padding: var(--gv-space-2) var(--gv-space-3);
+  font-size: var(--gv-fs-13);
+  color: var(--wb-text);
+  background: var(--wb-warn-soft);
+  border-radius: var(--gv-radius-2);
+}
+
+.wb-rlist-shell summary {
+  display: flex;
+  gap: var(--gv-space-2);
+  align-items: center;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.wb-rlist-shell p {
+  margin: var(--gv-space-2) 0;
+  font-size: var(--gv-fs-xs);
+}
+
+.wb-rlist-shell ul {
+  margin: 0 0 var(--gv-space-2);
+  padding: 0;
+  list-style: none;
+}
+
+.wb-rlist-shell li {
+  overflow: hidden;
+  padding: 2px 0;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wb-commit-shell {
+  padding: 0 6px;
+  font-weight: 600;
+  line-height: 18px;
+  color: var(--wb-text);
+  background: var(--wb-warn-soft);
+  border-radius: var(--gv-radius-full);
+}
+
 /* Change list */
 .wb-clist-loading {
   display: flex;
@@ -4512,6 +4564,30 @@ a.wb-line:hover {
   white-space: nowrap;
 }
 
+.wb-shell .wb-fview-actual {
+  flex: none;
+  padding: 2px 10px;
+  font: inherit;
+  font-size: var(--gv-fs-xs);
+  font-weight: 600;
+  color: var(--wb-accent);
+  white-space: nowrap;
+  cursor: pointer;
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border);
+  border-radius: var(--gv-radius-full);
+}
+
+.wb-shell .wb-fview-actual[aria-pressed='true'] {
+  color: var(--wb-bg);
+  background: var(--wb-accent);
+  border-color: var(--wb-accent);
+}
+
+.wb-fview-room-actual {
+  overflow: auto;
+}
+
 .wb-fview-head .wb-icon-button {
   display: inline-flex;
   align-items: center;
@@ -4665,7 +4741,7 @@ a.wb-line:hover {
   }
 
   .wb-review-side {
-    max-height: 460px;
+    max-height: 70vh;
     border-right: 0;
     border-bottom: 1px solid var(--wb-border);
   }

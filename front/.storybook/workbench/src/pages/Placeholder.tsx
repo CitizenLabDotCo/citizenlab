@@ -120,7 +120,11 @@ const PICTURES: Record<Kind, ReactNode> = {
   ),
 };
 
-const COPY: Record<Kind, { lead: string; items: string[] }> = {
+// The Review page is built; its picture stays for its empty state.
+const COPY: Record<
+  Exclude<Kind, 'review'>,
+  { lead: string; items: string[] }
+> = {
   components: {
     lead: 'Every library component on a live canvas, in both modes.',
     items: [
@@ -141,13 +145,6 @@ const COPY: Record<Kind, { lead: string; items: string[] }> = {
     items: [
       'Each page in Today and Redesign',
       'How much of a page already runs on tokens',
-    ],
-  },
-  review: {
-    lead: 'Real pages before and after a change, side by side.',
-    items: [
-      'Screenshots of each page in both modes',
-      'What a token edit moves, page by page',
     ],
   },
   proposal: {
@@ -173,7 +170,7 @@ export const PlaceholderArt = ({ kind }: { kind: Kind }) => (
   </svg>
 );
 
-type Props = { title: string; kind: Kind };
+type Props = { title: string; kind: Exclude<Kind, 'review'> };
 
 const Placeholder = ({ title, kind }: Props) => (
   <article className="wb-page">

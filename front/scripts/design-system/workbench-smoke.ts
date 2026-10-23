@@ -26,7 +26,8 @@
 // --review-host <platform origin> (an epic serving this Storybook under
 // /storybook/), the build is served at that origin by request interception
 // so the platform frames are same origin: the admin/projects frames load
-// (ok, or login with the login hint), the After frame carries a token edit
+// (ok, or login with the login hint) without the cookie modal, the After
+// frame carries a token edit
 // and Before does not, and the highlight counts tagged instances (shows
 // its note on an untagged build, then counts injected ones).
 // Exits 1 on failure,
@@ -456,12 +457,20 @@ const panelChecks = async (
   let match: string | null = null;
   try {
     await page.waitForSelector(chip, { timeout: 20000 });
-    match = await page.$eval(chip, (el: Element) =>
-      el.getAttribute('data-match')
+    // The panel reads the frame again on each storyRendered; a read of a
+    // half-rendered story is replaced, so wait for the value, not the chip.
+    await page.waitForFunction(
+      (sel: string) =>
+        document.querySelector(sel)?.getAttribute('data-match') === 'linked',
+      chip,
+      { timeout: 20000 }
     );
   } catch {
-    // Reported below.
+    // Reported below with the last value.
   }
+  match = await page
+    .$eval(chip, (el: Element) => el.getAttribute('data-match'))
+    .catch(() => null);
   if (match !== 'linked') {
     failures.push(
       `the Tokens panel shows ${RADIUS_TOKEN} as ${
@@ -616,6 +625,16 @@ const reviewFrameChecks = async (
     if (states.includes('login')) {
       if (!(await page.$('[data-testid="wb-login-hint"]'))) {
         failures.push('review: a frame shows the login page without the hint');
+      }
+    }
+
+    // The cookie modal is declined in both frames.
+    for (const side of ['before', 'after'] as const) {
+      const modal = await (
+        await frameOf(page, side)
+      ).$('[data-testid="consent-manager"]');
+      if (modal && (await modal.isVisible())) {
+        failures.push(`review: the cookie modal covers the ${side} frame`);
       }
     }
 

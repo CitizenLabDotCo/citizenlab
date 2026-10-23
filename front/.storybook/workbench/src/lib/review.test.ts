@@ -2,6 +2,8 @@ import type { ScanOutput, TokenMeta } from './data';
 import {
   affectedRoutes,
   applyEdits,
+  changeReach,
+  dismissConsent,
   DesignChanges,
   frameState,
   groupCommits,
@@ -13,6 +15,7 @@ import {
   reviewSummary,
   RouteFixture,
   routesFor,
+  shellFiles,
   unfilledParams,
 } from './review';
 
@@ -343,22 +346,119 @@ describe('review hash', () => {
   });
 });
 
+// Twelve routes, each with its own page file; App.tsx is in all of them and
+// almost.tsx in 11 of 12 (over the 90% shell share), rare.tsx in 2.
+const bigScan = (): ScanOutput => {
+  const paths = Array.from({ length: 12 }, (_, i) => `admin/p${i}`);
+  return scan({
+    routes: paths.map((p, i) => ({
+      path: p,
+      office: 'admin' as const,
+      file: `app/p${i}.tsx`,
+    })),
+    routeFiles: Object.fromEntries(
+      paths.map((p, i) => [
+        p,
+        [
+          `app/p${i}.tsx`,
+          'app/App.tsx',
+          ...(i < 11 ? ['app/almost.tsx'] : []),
+          ...(i < 2 ? ['app/rare.tsx'] : []),
+        ],
+      ])
+    ),
+  });
+};
+
+describe('shell files', () => {
+  it('are files in at least 90% of route closures, on a large enough scan', () => {
+    expect([...shellFiles(bigScan())].sort()).toEqual([
+      'app/App.tsx',
+      'app/almost.tsx',
+    ]);
+    // Four routes are too few to tell the shell apart.
+    expect(shellFiles(scan()).size).toBe(0);
+  });
+
+  it('do not mark routes as affected, and are reported', () => {
+    const c = changes([
+      ['front/app/App.tsx'],
+      ['front/app/rare.tsx', 'front/app/almost.tsx'],
+    ]);
+    expect([...affectedRoutes(bigScan(), c, {}, [])].sort()).toEqual([
+      'admin/p0',
+      'admin/p1',
+    ]);
+    const reach = changeReach(bigScan(), c, {}, []);
+    expect(reach.shellFiles).toEqual(['app/App.tsx', 'app/almost.tsx']);
+    expect(reach.shellCommits).toEqual(['sha0', 'sha1']);
+  });
+
+  it('are left out of the routes of one commit', () => {
+    expect(
+      routesFor(bigScan(), {
+        commit: 'sha0',
+        changes: changes([['front/app/App.tsx']]),
+      })
+    ).toEqual([]);
+  });
+});
+
+describe('dismissConsent', () => {
+  it('declines the cookie modal once it shows', () => {
+    const d = document.implementation.createHTMLDocument('x');
+    expect(dismissConsent(d)).toBe(false);
+    d.body.innerHTML =
+      '<button data-testid="accept-cookies-btn"></button><button data-testid="reject-cookies-btn"></button>';
+    const clicked: string[] = [];
+    d.querySelectorAll('button').forEach((b) =>
+      b.addEventListener('click', () =>
+        clicked.push(b.getAttribute('data-testid') ?? '')
+      )
+    );
+    expect(dismissConsent(d)).toBe(true);
+    expect(clicked).toEqual(['reject-cookies-btn']);
+  });
+});
+
 describe('summary and PR text', () => {
-  it('counts changes, components, routes and the off-spec delta', () => {
-    const c = changes([['front/app/shared.tsx'], ['front/app/admin/a.tsx']]);
+  const mixed = () => {
+    const c = changes([
+      ['front/app/shared.tsx'],
+      ['front/app/admin/a.tsx'],
+      ['front/app/admin/a.stories.tsx'],
+      ['front/scripts/design-system/scan/findings.ts'],
+      ['front/.storybook/workbench/src/App.tsx'],
+    ]);
     c.commits[0].scanDelta = { offSpec: -5 };
     c.commits[1].component = 'Input';
+    c.commits[1].kind = 'lift';
+    c.commits[2].component = 'Arabic';
+    c.commits[2].kind = 'story';
+    c.commits[3].kind = 'other';
+    c.commits[3].component = undefined;
+    c.commits[3].scanDelta = { offSpec: 1743 };
+    c.commits[4].kind = 'other';
+    c.commits[4].component = undefined;
+    return c;
+  };
+
+  it('counts design changes apart from stories, tooling and scanner rules', () => {
     const summary = reviewSummary(scan({ totals: { offSpec: 100 } as never }), {
-      changes: c,
+      changes: mixed(),
       overrides: { '--gv-radius-2': '8px' },
       meta,
     });
     expect(summary).toMatchObject({
-      commits: 2,
+      commits: 5,
+      designCommits: 2,
+      stories: 1,
+      tooling: 2,
       tokenEdits: 1,
       components: ['Button', 'Input'],
       offSpecBefore: 105,
       offSpecAfter: 100,
+      scannerDelta: 1743,
     });
     expect(summary.routes).toEqual(['', 'admin/projects', 'ideas/$slug']);
 
@@ -369,11 +469,39 @@ describe('summary and PR text', () => {
     expect(md).toContain(
       '3 design changes across 2 components and 3 routes, reviewed in the workbench'
     );
-    expect(md).toContain('Off-spec values: 105 before, 100 after (-5)');
+    expect(md).toContain('- Design commits: 2 (1 heal, 1 lift)');
+    expect(md).toContain(
+      '- Not counted as design changes: 1 story commit, 2 tooling commits'
+    );
+    expect(md).toContain(
+      'Off-spec values: 105 before the design commits, 100 now (-5)'
+    );
+    expect(md).toContain(
+      'Scanner rule changes moved the count by +1743 and are not in this delta'
+    );
+    expect(md).toContain('`/ideas/:slug`');
+    expect(md).not.toContain('$slug');
     expect(md).toContain('`--gv-radius-2`: 8px');
     expect(md).toContain(
       '[Open the review](https://h/storybook/workbench/#/review?o=x)'
     );
     expect(md).not.toContain('\u2014');
+  });
+
+  it('names shell files as affecting every page', () => {
+    const summary = reviewSummary(bigScan(), {
+      changes: changes([['front/app/App.tsx'], ['front/app/p3.tsx']]),
+      overrides: {},
+      meta,
+    });
+    expect(summary.routes).toEqual(['admin/p3']);
+    expect(summary.shellFiles).toEqual(['app/App.tsx']);
+    const md = prMarkdown(summary, 'l');
+    expect(md).toContain(
+      '2 design changes across 1 component and 1 route (plus shell files on every page)'
+    );
+    expect(md).toContain(
+      '- Shell files changed, they affect every page: `app/App.tsx`'
+    );
   });
 });

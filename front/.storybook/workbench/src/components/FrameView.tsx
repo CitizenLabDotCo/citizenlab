@@ -3,7 +3,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Mode } from '@ds/tokens/tokens';
 
 import type { Overrides } from '../lib/overrides';
-import { applyEdits, FrameState, frameState } from '../lib/review';
+import {
+  applyEdits,
+  dismissConsent,
+  FrameState,
+  frameState,
+  MODE_ATTRIBUTE,
+} from '../lib/review';
 
 import Icon from './Icon';
 
@@ -36,6 +42,26 @@ type Props = {
 
 const HIGHLIGHT_ID = 'gv-review-highlight';
 const POLL_MS = 800;
+// Under this scale page text is too small to read: offer actual size.
+const MIN_SCALE = 0.45;
+
+// The edits are on the page already (the poll then writes nothing).
+const inPlace = (
+  doc: Document,
+  e: { overrides: Overrides; mode: Mode },
+  map: Map<string, string | null>
+) => {
+  const root = doc.documentElement;
+  if (root.getAttribute(MODE_ATTRIBUTE) !== e.mode) return false;
+  const names = Object.keys(e.overrides);
+  if (names.length !== map.size) return false;
+  return names.every(
+    (n) =>
+      map.has(n) &&
+      root.style.getPropertyValue(n) ===
+        (e.overrides as Record<string, string>)[n]
+  );
+};
 
 const readDoc = (iframe: HTMLIFrameElement | null) => () =>
   iframe?.contentWindow?.document ?? null;
@@ -71,6 +97,7 @@ const FrameView = ({
   const frame = useRef<HTMLIFrameElement>(null);
   const box = useRef<HTMLDivElement>(null);
   const [room, setRoom] = useState({ w: 0, h: 0 });
+  const [actual, setActual] = useState(false);
   const [report, setReport] = useState<FrameReport>({
     state: 'loading',
     tagged: false,
@@ -97,7 +124,7 @@ const FrameView = ({
         map = new Map();
         applied.current.set(doc, map);
       }
-      applyEdits(doc, e.overrides, e.mode, map);
+      if (!inPlace(doc, e, map)) applyEdits(doc, e.overrides, e.mode, map);
     }
     const name = latest.current.highlight;
     let style = doc.getElementById(HIGHLIGHT_ID);
@@ -123,6 +150,8 @@ const FrameView = ({
     if (state === 'ok' || state === 'login') {
       try {
         const doc = iframe?.contentWindow?.document;
+        // The cookie modal covers the page; decline it like a visitor.
+        if (doc) dismissConsent(doc);
         path = doc?.location?.pathname;
         tagged = !!doc?.querySelector('[data-gv-component]');
         const name = latest.current.highlight;
@@ -190,7 +219,9 @@ const FrameView = ({
     return () => observer.disconnect();
   }, []);
 
-  const scale = room.w > 0 ? Math.min(1, room.w / width) : 1;
+  const fit = room.w > 0 ? Math.min(1, room.w / width) : 1;
+  const small = fit < MIN_SCALE;
+  const scale = small && actual ? 1 : fit;
   // The frame fills the room's height at that scale (pages are long).
   const frameHeight = room.h > 0 ? Math.max(height, room.h / scale) : height;
   const loading = report.state === 'loading';
@@ -212,6 +243,22 @@ const FrameView = ({
           {width}px
           {scale < 1 && `, ${Math.round(scale * 100)}%`}
         </span>
+        {small && (
+          <button
+            type="button"
+            className="wb-fview-actual"
+            aria-pressed={actual}
+            onClick={() => setActual((a) => !a)}
+            title={
+              actual
+                ? 'Fit the page to the frame'
+                : 'Show the page at actual size and scroll it'
+            }
+            data-testid={`wb-frame-${side}-actual`}
+          >
+            {actual ? 'Fit' : 'Actual size'}
+          </button>
+        )}
         <a
           className="wb-icon-button"
           href={url}
@@ -234,7 +281,14 @@ const FrameView = ({
         </p>
       )}
 
-      <div className="wb-fview-room" ref={box}>
+      <div
+        className={
+          small && actual
+            ? 'wb-fview-room wb-fview-room-actual'
+            : 'wb-fview-room'
+        }
+        ref={box}
+      >
         <div
           className="wb-fview-paper"
           style={{ width: width * scale, height: frameHeight * scale }}

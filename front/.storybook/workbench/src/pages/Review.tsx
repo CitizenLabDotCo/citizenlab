@@ -16,9 +16,9 @@ import { copyText } from '../lib/clipboard';
 import { loadChanges, loadRouteFixture, TokenMeta } from '../lib/data';
 import { Overrides, withOverrides } from '../lib/overrides';
 import {
-  affectedRoutes,
   ChangeCommit,
-  changedFiles,
+  changeReach,
+  commitReach,
   DesignChanges,
   normaliseFixture,
   Office,
@@ -32,6 +32,7 @@ import {
   RouteFixture,
   routesFor,
   routeStats,
+  shellFiles,
   unfilledParams,
   writeSeen,
 } from '../lib/review';
@@ -50,13 +51,42 @@ type Login = 'unknown' | 'admin' | 'user' | 'out';
 
 const HOSTS_KEY = 'gv-review-hosts';
 
-const VIEWPORTS: { value: GvViewport; label: string; title: string }[] = (
-  Object.keys(GV_VIEWPORTS) as GvViewport[]
-).map((v) => ({
-  value: v,
-  label: GV_VIEWPORTS[v].name.split(' ')[0],
-  title: GV_VIEWPORTS[v].name,
-}));
+type ViewportChoice = GvViewport | 'auto';
+
+const PRESETS = Object.keys(GV_VIEWPORTS) as GvViewport[];
+const presetWidth = (v: GvViewport) =>
+  parseInt(GV_VIEWPORTS[v].styles.width, 10);
+
+const VIEWPORTS: { value: ViewportChoice; label: string; title: string }[] = [
+  {
+    value: 'auto',
+    label: 'Auto',
+    title: 'The widest preset that stays readable in the room the frames have',
+  },
+  ...PRESETS.map((v) => ({
+    value: v,
+    label: GV_VIEWPORTS[v].name.split(' ')[0],
+    title: GV_VIEWPORTS[v].name,
+  })),
+];
+
+// Auto picks the widest preset drawn at READABLE scale or more, else the
+// narrowest one.
+const READABLE = 0.55;
+export const autoViewport = (frameWidth: number): GvViewport => {
+  const bySize = [...PRESETS].sort((a, b) => presetWidth(b) - presetWidth(a));
+  return (
+    bySize.find((v) => frameWidth / presetWidth(v) >= READABLE) ??
+    bySize[bySize.length - 1]
+  );
+};
+
+// Under this window width the route list folds away once a route is
+// picked, so the frames get the room (above the stacked layout only).
+const FOLD_BELOW = 1600;
+const STACKED = '(max-width: 880px)';
+const shouldFold = () =>
+  window.innerWidth < FOLD_BELOW && !window.matchMedia(STACKED).matches;
 
 const SUGGESTED = [
   'admin/projects',
@@ -131,13 +161,15 @@ const Stat = ({
   value,
   note,
   testId,
+  title,
 }: {
   label: string;
   value: string;
   note?: string;
   testId?: string;
+  title?: string;
 }) => (
-  <div className="wb-rstat" data-testid={testId}>
+  <div className="wb-rstat" data-testid={testId} title={title}>
     <span className="wb-rstat-value">{value}</span>
     <span className="wb-rstat-label">{label}</span>
     {note && <span className="wb-rstat-note">{note}</span>}
@@ -145,6 +177,7 @@ const Stat = ({
 );
 
 const fmt = (n: number) => n.toLocaleString('en');
+const signed = (n: number) => (n === 0 ? '0' : `${n > 0 ? '+' : ''}${fmt(n)}`);
 
 // The Review page: the real platform before and after, route by route.
 // Left, the routes (filtered by component, office, search and what the
@@ -163,7 +196,7 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
   );
   const [search, setSearch] = useState('');
   const [commit, setCommit] = useState<ChangeCommit | undefined>();
-  const [viewport, setViewport] = useState<GvViewport>('gvDesktop');
+  const [viewport, setViewport] = useState<ViewportChoice>('auto');
   const [before, setBefore] = useState<BeforeSource>('preview');
   const [sync, setSync] = useState(true);
   const [highlight, setHighlight] = useState(true);
@@ -171,7 +204,19 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
   const [reloadKey, setReloadKey] = useState(0);
   const [hosts, setHosts] = useState(readHosts);
   const [settings, setSettings] = useState(false);
-  const [wide, setWide] = useState(false);
+  const [wide, setWide] = useState(
+    () =>
+      parseReviewHash(window.location.hash).route !== undefined && shouldFold()
+  );
+  const stage = useRef<HTMLElement>(null);
+  const [stageWidth, setStageWidth] = useState(0);
+  useEffect(() => {
+    const el = stage.current;
+    if (!el) return undefined;
+    const observer = new ResizeObserver(() => setStageWidth(el.clientWidth));
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
   const [seen, setSeen] = useState(readSeen);
   const [reports, setReports] = useState<
     Partial<Record<'before' | 'after', FrameReport>>
@@ -220,11 +265,20 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
 
   // ------------------------------------------------------------ routes
 
-  const affected = useMemo(
-    () =>
-      scan ? affectedRoutes(scan, changes, overrides, meta) : new Set<string>(),
-    [scan, changes, overrides, meta]
+  // Files nine in ten routes render: a change there reaches every page and
+  // is reported apart (see changeReach).
+  const shell = useMemo(
+    () => (scan ? shellFiles(scan) : new Set<string>()),
+    [scan]
   );
+  const reach = useMemo(
+    () =>
+      scan
+        ? changeReach(scan, changes, overrides, meta, shell)
+        : { routes: new Set<string>(), shellFiles: [], shellCommits: [] },
+    [scan, changes, overrides, meta, shell]
+  );
+  const affected = reach.routes;
   const stats = useMemo(() => (scan ? routeStats(scan) : new Map()), [scan]);
   const filtered = useMemo(
     () =>
@@ -233,12 +287,22 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
             component: state.component,
             onlyAffected: state.only,
             affected,
+            shell,
             changes,
             commit: commit?.sha,
             search,
           })
         : [],
-    [scan, state.component, state.only, affected, changes, commit, search]
+    [
+      scan,
+      state.component,
+      state.only,
+      affected,
+      shell,
+      changes,
+      commit,
+      search,
+    ]
   );
   const officeCounts = useMemo(
     () => ({
@@ -279,26 +343,13 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
     return all.filter((f) => files.has(f));
   }, [scan, state.component]);
 
-  // Routes per changed file, once per scan, for the change list counts.
-  const routesByFile = useMemo(() => {
-    const out = new Map<string, Set<string>>();
-    for (const [route, files] of Object.entries(scan?.routeFiles ?? {})) {
-      for (const f of files) {
-        if (!out.has(f)) out.set(f, new Set());
-        out.get(f)?.add(route);
-      }
-    }
-    return out;
-  }, [scan]);
   const routeCount = useCallback(
     (c: ChangeCommit) => {
-      const hit = new Set<string>();
-      changedFiles([c]).forEach((f) =>
-        routesByFile.get(f)?.forEach((r) => hit.add(r))
-      );
-      return hit.size;
+      if (!scan) return { routes: 0, shell: false };
+      const r = commitReach(scan, c, shell);
+      return { routes: r.routes.size, shell: r.shell };
     },
-    [routesByFile]
+    [scan, shell]
   );
   const tokenReach = useCallback(
     (name: string) => {
@@ -330,13 +381,19 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
   const select = (path: string) => {
     patch({ route: path });
     setReports({});
+    if (shouldFold()) setWide(true);
   };
 
+  // A code change compares with the baseline host when there is one; a
+  // token change, or no commit, with this preview's edits off.
   const openCommit = (c: ChangeCommit) => {
     setCommit(c);
     patch({ tab: 'routes', only: false });
-    // A code change: compare with the baseline host when there is one.
-    if (c.kind !== 'token' && beforeHost) setBefore('baseline');
+    setBefore(c.kind !== 'token' && beforeHost ? 'baseline' : 'preview');
+  };
+  const clearCommit = () => {
+    setCommit(undefined);
+    setBefore('preview');
   };
 
   const onSeen = (sha: string, on: boolean) =>
@@ -410,7 +467,16 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
     };
   }, [sync, canSync, winsKey]);
 
-  const vp = GV_VIEWPORTS[viewport].styles;
+  // The room of one frame: the stage less its padding, halved side by side.
+  const stacked = stageWidth > 0 && window.matchMedia(STACKED).matches;
+  const frameRoom = stacked ? stageWidth - 32 : (stageWidth - 44) / 2;
+  const preset: GvViewport =
+    viewport === 'auto'
+      ? stageWidth > 0
+        ? autoViewport(frameRoom)
+        : 'gvTablet'
+      : viewport;
+  const vp = GV_VIEWPORTS[preset].styles;
   const vpW = parseInt(vp.width, 10);
   const vpH = parseInt(vp.height, 10);
   const editCount = Object.keys(overrides).length;
@@ -430,7 +496,7 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
   else
     highlightNote = `${fmt(after.count)} ${state.component} ${
       after.count === 1 ? 'instance' : 'instances'
-    }`;
+    } in After`;
 
   // ------------------------------------------------------------ summary
 
@@ -464,6 +530,10 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
     (reports.after?.state === 'login' ||
       reports.before?.state === 'login' ||
       (login === 'out' && /^admin(\/|$)/.test(route)));
+
+  // The edits for the After frame, one object per change (the frame
+  // rewrites the page when this changes).
+  const edits = useMemo(() => ({ overrides, mode }), [overrides, mode]);
 
   const loading = !indexes.loaded;
   const noScan = indexes.loaded && !indexes.hasScan;
@@ -600,9 +670,16 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
         data-testid="wb-review-summary"
       >
         <Stat
-          label="Commits"
-          value={summary ? fmt(summary.commits) : '...'}
-          note={changes?.baseRef ? `against ${changes.baseRef}` : undefined}
+          label="Design commits"
+          value={summary ? fmt(summary.designCommits) : '...'}
+          note={
+            summary
+              ? `${fmt(summary.stories)} stories, ${fmt(
+                  summary.tooling
+                )} tooling`
+              : undefined
+          }
+          testId="wb-review-design-commits"
         />
         <Stat
           label="Token edits"
@@ -617,23 +694,34 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
         <Stat
           label="Components"
           value={summary ? fmt(summary.components.length) : '...'}
-          note="touched"
+          note="healed or lifted"
         />
         <Stat
           label="Routes"
           value={summary ? fmt(summary.routes.length) : '...'}
-          note="affected"
+          note={
+            summary?.shellFiles.length
+              ? `affected, +${summary.shellFiles.length} shell`
+              : 'affected'
+          }
+          testId="wb-review-routes-stat"
         />
         <Stat
           label="Off-spec"
           value={summary ? fmt(summary.offSpecAfter) : '...'}
           note={
             summary
-              ? summary.offSpecAfter === summary.offSpecBefore
-                ? 'unchanged'
-                : `${fmt(summary.offSpecBefore)} before`
+              ? `${signed(
+                  summary.offSpecAfter - summary.offSpecBefore
+                )} design${
+                  summary.scannerDelta
+                    ? `, ${signed(summary.scannerDelta)} scanner rules`
+                    : ''
+                }`
               : undefined
           }
+          title="Off-spec values now. The first number is what design commits moved; scanner rule changes change what is counted, not the pages."
+          testId="wb-review-offspec"
         />
       </section>
 
@@ -700,8 +788,10 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
                   ? { sha: commit.sha, label: shortSubject(commit.subject) }
                   : undefined
               }
-              onClearCommit={() => setCommit(undefined)}
+              onClearCommit={clearCommit}
               unmapped={unmapped}
+              shell={reach.shellFiles}
+              onShellCommits={() => patch({ tab: 'changes' })}
             />
           ) : (
             <ChangeList
@@ -716,13 +806,21 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
           )}
         </aside>
 
-        <section className="wb-review-stage" aria-label="Before and after">
+        <section
+          className="wb-review-stage"
+          aria-label="Before and after"
+          ref={stage}
+        >
           <div className="wb-rtoolbar" role="toolbar" aria-label="Frames">
             <button
               type="button"
-              className="wb-icon-button wb-rtoolbar-side"
+              className={
+                wide
+                  ? 'wb-button wb-rtoolbar-side'
+                  : 'wb-icon-button wb-rtoolbar-side'
+              }
               onClick={() => setWide((w) => !w)}
-              aria-pressed={wide}
+              aria-pressed={!wide}
               title={
                 wide
                   ? 'Show the route list'
@@ -732,8 +830,9 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
               data-testid="wb-review-wide"
             >
               <Icon name={wide ? 'menu' : 'split'} size={16} />
+              {wide && 'Routes'}
             </button>
-            <Segmented<GvViewport>
+            <Segmented<ViewportChoice>
               label="Viewport"
               value={viewport}
               onChange={setViewport}
@@ -845,13 +944,19 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
             <p className="wb-rbanner" role="status" data-testid="wb-login-hint">
               <Icon name="link" size={16} />
               <span>
-                {login === 'out'
-                  ? 'You are signed out, so this page shows the home or sign-in page. '
-                  : 'This page needs a platform login with admin rights. '}
-                <a href={loginUrl} target="_blank" rel="noreferrer">
-                  Log in to the platform in a new tab
-                </a>
-                , then reload the frames.
+                {login === 'admin' ? (
+                  'The platform sent this page somewhere else. The record in the route may not exist on this platform: check routes.fixture.json.'
+                ) : (
+                  <>
+                    {login === 'out'
+                      ? 'You are signed out, so this page shows the home or sign-in page. '
+                      : 'This page needs a platform login with admin rights. '}
+                    <a href={loginUrl} target="_blank" rel="noreferrer">
+                      Log in to the platform in a new tab
+                    </a>
+                    , then reload the frames.
+                  </>
+                )}
               </span>
               <button type="button" className="wb-button" onClick={reload}>
                 Reload frames
@@ -874,23 +979,27 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
                     : `No scanned route is called /${route}. Pick one from the list.`}
                 </p>
                 <div className="wb-rempty-picks">
-                  {(affected.size
-                    ? [...affected].slice(0, 4)
-                    : SUGGESTED.filter((p) =>
+                  {[
+                    ...new Set([
+                      ...affected,
+                      ...SUGGESTED.filter((p) =>
                         scan?.routes.some((r) => r.path === p)
-                      )
-                  ).map((p) => (
-                    <button
-                      key={p}
-                      type="button"
-                      className="wb-button"
-                      onClick={() => select(p)}
-                      data-testid="wb-review-pick"
-                    >
-                      <RoutePath path={p} />
-                      <Icon name="arrow" size={14} />
-                    </button>
-                  ))}
+                      ),
+                    ]),
+                  ]
+                    .slice(0, 4)
+                    .map((p) => (
+                      <button
+                        key={p}
+                        type="button"
+                        className="wb-button"
+                        onClick={() => select(p)}
+                        data-testid="wb-review-pick"
+                      >
+                        <RoutePath path={p} />
+                        <Icon name="arrow" size={14} />
+                      </button>
+                    ))}
                 </div>
               </div>
             </div>
@@ -956,7 +1065,7 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
                 route={route}
                 width={vpW}
                 height={vpH}
-                edits={{ overrides, mode }}
+                edits={edits}
                 highlight={highlightOn ? state.component : undefined}
                 onReport={onReportAfter}
                 onWindow={onWindowAfter}
