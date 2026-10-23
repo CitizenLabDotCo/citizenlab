@@ -174,11 +174,11 @@ const Tooltip = ({
     return (
       // This Box is used for more accessible tooltips when useContentWrapper is false
       <Box
-          {...gvTag('Tooltip')}
-          as="span"
-          id={tooltipId.current}
-          w={width || 'fit-content'}
-        >
+        {...gvTag('Tooltip')}
+        as="span"
+        id={tooltipId.current}
+        w={width || 'fit-content'}
+      >
         <Tippy
           key={key}
           plugins={PLUGINS}

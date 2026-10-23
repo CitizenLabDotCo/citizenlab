@@ -4,8 +4,16 @@ import { gvTag } from '../../../design-system/tags';
 import { colors, fontSizes } from '../../utils/styleUtils';
 import Box, { BoxProps } from '../Box';
 
-export default styled(Box).attrs<BoxProps>((props) =>
-  'data-gv-component' in props ? {} : gvTag('Badge')
+// Box's own attrs run first and may have set "Box"; Badge replaces that.
+export default styled(Box).attrs<BoxProps>(
+  process.env.VITE_GV_DESIGN_TAGS === '1'
+    ? (props) => {
+        const tag = (props as unknown as Record<string, unknown>)[
+          'data-gv-component'
+        ];
+        return tag && tag !== 'Box' ? {} : gvTag('Badge');
+      }
+    : {}
 )`
   color: ${(props) => props.color || colors.disabled};
   font-size: ${fontSizes.xs}px;

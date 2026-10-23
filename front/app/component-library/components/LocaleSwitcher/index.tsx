@@ -154,7 +154,11 @@ class LocaleSwitcher extends PureComponent<Props> {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (locales && locales.length > 1) {
       return (
-        <Container {...gvTag('LocaleSwitcher')} className={className} variant={variant}>
+        <Container
+          {...gvTag('LocaleSwitcher')}
+          className={className}
+          variant={variant}
+        >
           {locales.map((locale, index) => (
             <StyledButton
               key={locale}

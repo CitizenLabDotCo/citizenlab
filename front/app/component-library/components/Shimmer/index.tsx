@@ -28,12 +28,14 @@ const ShimmerBox = styled(Box)<{ $bgColor: string }>`
 `;
 
 const Shimmer = ({ bgColor = colors.grey300, ...props }: BoxProps) => {
-  return <ShimmerBox
+  return (
+    <ShimmerBox
       {...gvTag('Shimmer')}
       $bgColor={bgColor}
       {...props}
       aria-hidden={true}
-    />;
+    />
+  );
 };
 
 export default Shimmer;
