@@ -27,6 +27,9 @@ export type ComponentUsage = {
   file: string;
   line: number;
   props: string[];
+  // Lines of the component's JSX elements in the file, in source order
+  // (absent in scans from before they were recorded).
+  sites?: number[];
 };
 
 export type RouteRef = {

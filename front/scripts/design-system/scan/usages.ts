@@ -16,7 +16,8 @@ import { ComponentUsage } from './schema';
  * Lowercase exports (`colors`, `media`, hooks) are not components. An import
  * counts when the local name is used as a value (JSX or expression), not only
  * as a type. One usage per imported name per file, at the import line, with
- * the sorted JSX prop names used on that element in the file.
+ * the sorted JSX prop names used on that element in the file and the lines
+ * of its JSX elements there (`sites`, the call sites a code task names).
  */
 
 const LIB = 'app/component-library/';
@@ -143,11 +144,16 @@ export const libraryIndex = (
   return { byExport, ownFiles, componentOfFile, mainFile };
 };
 
-type FileRefs = { values: Set<string>; props: Map<string, Set<string>> };
+type FileRefs = {
+  values: Set<string>;
+  props: Map<string, Set<string>>;
+  sites: Map<string, number[]>;
+};
 
 const fileRefs = (ast: ParsedFile): FileRefs => {
   const values = new Set<string>();
   const props = new Map<string, Set<string>>();
+  const sites = new Map<string, number[]>();
   walk(ast.program, (n, parent) => {
     if (TYPE_NODES.has(n.type) || n.type === 'ImportDeclaration') return false;
     if (n.type === 'JSXOpeningElement') {
@@ -160,6 +166,10 @@ const fileRefs = (ast: ParsedFile): FileRefs => {
             set.add(a.name.name);
         });
         props.set(name, set);
+        const line = n.loc?.start.line;
+        if (typeof line === 'number') {
+          sites.set(name, [...(sites.get(name) ?? []), line]);
+        }
       }
       if (n.name.type === 'JSXMemberExpression') {
         let o = n.name;
@@ -184,7 +194,7 @@ const fileRefs = (ast: ParsedFile): FileRefs => {
     }
     return undefined;
   });
-  return { values, props };
+  return { values, props, sites };
 };
 
 const treeCache = new Map<string, { tree: SourceTree; lib: LibraryIndex }>();
@@ -227,6 +237,7 @@ export const usagesInFile = (
         file: rel,
         line: i.line,
         props: [...(refs.props.get(n.local) ?? [])].sort(),
+        sites: refs.sites.get(n.local) ?? [],
       });
     });
   });

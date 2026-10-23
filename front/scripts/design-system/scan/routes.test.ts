@@ -94,6 +94,7 @@ describe('libraryUsages', () => {
         file: 'app/containers/Admin/projects/project/phase/index.tsx',
         line: 3,
         props: ['mb', 'p'],
+        sites: [12],
       },
     ]);
     expect(libraryUsages(ROOT, 'app/components/Hero/index.tsx')).toEqual([
@@ -102,6 +103,7 @@ describe('libraryUsages', () => {
         file: 'app/components/Hero/index.tsx',
         line: 3,
         props: ['p'],
+        sites: [6],
       },
     ]);
   });
@@ -178,24 +180,28 @@ describe('app component roots (components/UI, components/admin)', () => {
         file: 'app/containers/Page.tsx',
         line: 1,
         props: ['tone'],
+        sites: [9],
       },
       {
         component: 'UI/Error',
         file: 'app/containers/Page.tsx',
         line: 2,
         props: [],
+        sites: [10],
       },
       {
         component: 'Error',
         file: 'app/containers/Page.tsx',
         line: 3,
         props: [],
+        sites: [10],
       },
       {
         component: 'Section',
         file: 'app/containers/Page.tsx',
         line: 4,
         props: [],
+        sites: [8],
       },
     ]);
   });
