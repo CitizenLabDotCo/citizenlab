@@ -60,6 +60,25 @@ describe('ValueField', () => {
     expect(onCommit).not.toHaveBeenCalled();
   });
 
+  it('steps a number with the arrow keys and commits it exactly', () => {
+    const onCommit = jest.fn();
+    render(
+      <ValueField
+        row={row({})}
+        onCommit={onCommit}
+        onAttach={noop}
+        onDetach={noop}
+        onOpenPicker={noop}
+      />
+    );
+    const input = screen.getByTestId('wb-insp-input') as HTMLInputElement;
+    fireEvent.keyDown(input, { key: 'ArrowUp' });
+    expect(onCommit).toHaveBeenLastCalledWith('10', true);
+    expect(input.value).toBe('10');
+    fireEvent.keyDown(input, { key: 'ArrowDown', shiftKey: true });
+    expect(onCommit).toHaveBeenLastCalledWith('0', true);
+  });
+
   it('offers to attach when the value equals a token', () => {
     const onAttach = jest.fn();
     render(

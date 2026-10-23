@@ -122,6 +122,8 @@ The shell, `.storybook/workbench/` (React and Vite, its own `tsconfig.json`):
 - `src/lib/healTask.ts`: the heal task text (`formatHealTask`).
 - `src/lib/elementEdits.ts` (tested), `src/lib/useElementEdits.ts`: element edits of the Design tab (attach, swap, detach, custom, file): the model, the inline styles they paint in the frame, their task text (`taskOfEdit`), localStorage `gv-element-edits` (checked on read).
 - `src/lib/tokenPicker.ts` (tested): the token picker's rows (Matches, Semantic, Scale).
+- `src/lib/nudge.ts` (tested): arrow keys on a value field (1, Shift 10, the unit kept, clamped where a negative makes no sense), for Foundations and the Design tab alike.
+- `src/lib/shadow.ts` (tested): a box-shadow as editor layers and back; a value the fields cannot show (var(), rem) parses to null and stays text.
 - `src/lib/inspect.ts`: what the Design tab reads from the selected element (sections, rows with their longhands, glyph and snap kind).
 - `src/lib/a11y.ts`, `src/lib/checklists.ts`, `src/lib/useA11y.ts`: what the A11y panel and the gallery badges say (axe per component, keyboard tested or untested, the checklist line); `checklists.ts` bundles every `components/*/a11y.json` at build time.
 - `src/lib/usage.ts`, `src/lib/componentPanels.ts`, `src/lib/useScanIndexes.ts`: what the Usage tab and the Design tab's "Also in this file" show.
@@ -130,10 +132,10 @@ The shell, `.storybook/workbench/` (React and Vite, its own `tsconfig.json`):
 - `src/lib/sourceDiff.ts`: session edits as a `tokens.source.json` patch.
 - `src/lib/proposal.ts`: the Proposal page's numbers, trend series, migration order and cost.
 - `src/lib/router.ts`, `src/lib/clipboard.ts`: hash routes, copy with a text fallback.
-- `src/pages/`: `Foundations` (one page per token category, with category tabs), `Gallery`, `Component`, `Review`, `Proposal` (with `proposal.css`); `Placeholder` holds the empty-state pictures.
+- `src/pages/`: `Foundations` (one page per token category, with category tabs; a token's Value cell is its field in the selected mode, the edit; a token that reads another is a pill linking to it, with Detach; a shadow opens its layers in `ShadowEditor`), `Gallery`, `Component`, `Review`, `Proposal` (with `proposal.css`); `Placeholder` holds the empty-state pictures.
 - The component page: one top row (breadcrumbs; on their right Mode Today | Redesign | Both, City, the Changes pencil with its count; `data-testid="wb-canvas-bar"`), the stage with a floating bar at its bottom (Select / Interact, viewport Fit | Desktop | Tablet | Mobile, zoom; icons only), and the inspector with three tabs. No title, chips, file path or language picker: the story is the page. **Design** is Figma's Design tab over the selected element: sections Layout, Fill, Stroke, Radius, Text, Effects; a value is a pill when bound to a token (click = token picker, hover = detach) or a field (type to snap to the scale or palette; a link glyph attaches the token the value equals); "Also in this file" lists the file's healable findings; Props last. Element edits paint the frame as inline styles (`lib/elementEdits.ts`, localStorage `gv-element-edits`) and sit with token edits in the one Changes drawer under the top row, whose "Copy for agent" gives the heal / change tasks. **A11y** is unchanged. **Usage** (files, props, routes, audit) is the third tab. Low text: glyphs carry the meaning, `aria-label`s the words, no title tooltips on values.
 - `src/panels/`: `Design`, `Usage`, `Controls`, `A11y`.
-- `src/components/`: `Nav`, `Toolbar`, `Canvas`, `FrameView`, `ChangeList`, `ChangesDrawer`, `InspSection`, `ValueField`, `TokenPicker`, `RouteList`, `TokenRow`, `HealCopy`, `LineChart` and smaller parts.
+- `src/components/`: `Nav`, `Toolbar`, `Canvas`, `FrameView`, `ChangeList`, `ChangesDrawer`, `InspSection`, `ValueField`, `TokenPicker`, `RouteList`, `TokenRow`, `ShadowEditor`, `HealCopy`, `LineChart` and smaller parts.
 
 Components, `app/component-library/`:
 - `components/<Name>/index.tsx`: the component; `gvTag` on its root.

@@ -16,8 +16,13 @@
 // frame's root, a share link override changes the button's computed
 // border-radius, and a bad share link shows a notice and keeps the
 // session. The Foundations colour page lists at least MIN_COLOUR_TOKENS
-// tokens and a contrast pairs table with rows; an edit of a radius token
-// shows in the Changes drawer and in the hash. The Components gallery shows
+// tokens and a contrast pairs table with rows. On the Radius page the
+// radius token's Value field (Detach first, when the mode reads it from
+// another token) steps by 1px on ArrowUp and the row's preview follows;
+// a typed value shows in the Changes drawer and in the hash. The Shadow
+// page opens a shadow token's layer editor, a Drop shadow with X, Y, Blur,
+// Spread, Color and opacity fields, and ArrowUp on Blur reaches the row's
+// preview. The Components gallery shows
 // at least MIN_GALLERY_THUMBS story thumbnails, rendered in one shared
 // preview frame: at least MIN_REVEALED_THUMBS reveal their story, the
 // first sits over its card within 1px, and a card the frame cannot show
@@ -81,6 +86,9 @@ const ROUTES: [string, string][] = [
 // (theme.borderRadius is var(--gv-radius-control, 3px)).
 const RADIUS_TOKEN = '--gv-radius-control';
 const RADIUS_OVERRIDE = '20px';
+// The shadow token whose layers the Foundations check opens.
+const SHADOW_TOKEN = '--gv-shadow-menu';
+const SHADOW_FIELDS = ['x', 'y', 'blur', 'spread', 'color', 'alpha'];
 
 // The Design tab's checks: Size is hard-coded at --gv-fs-s, and 12 typed
 // into the vertical padding snaps to --gv-space-3.
@@ -222,10 +230,53 @@ const foundationsChecks = async (
     console.log(`spacing screenshot: ${path.resolve(shots.spacing)}`);
   }
 
-  // Edit a radius token: it shows in the Changes drawer and the hash.
+  // Edit a radius token in its Value field. ArrowUp steps it by 1px and
+  // the row's preview follows; a typed value shows in the Changes drawer
+  // and the hash.
   await page.goto(`${base}/workbench/#/foundations/radius`);
-  const input = `[data-testid="wb-token-row"][data-token="${RADIUS_TOKEN}"] [data-testid="wb-token-input"]`;
+  const radiusRow = `[data-testid="wb-token-row"][data-token="${RADIUS_TOKEN}"]`;
+  const input = `${radiusRow} [data-testid="wb-token-input"]`;
+  await page.waitForSelector(
+    `${radiusRow} [data-testid="wb-token-input"], ${radiusRow} [data-testid="wb-token-alias"]`,
+    { timeout: 10000 }
+  );
+  if (!(await page.$(input))) {
+    // The mode reads it from another token: Detach gives it a field.
+    await page.click(`${radiusRow} [data-testid="wb-token-detach"]`);
+  }
   await page.waitForSelector(input, { timeout: 10000 });
+  const fromPx = parseFloat(await page.inputValue(input));
+  await page.focus(input);
+  await page.press(input, 'ArrowUp');
+  const stepped = `${fromPx + 1}px`;
+  const previewRadius = (): Promise<string> =>
+    page.$eval(
+      `${radiusRow} .wb-pv-radius > span`,
+      (el: Element) => getComputedStyle(el).borderTopLeftRadius
+    );
+  try {
+    await page.waitForFunction(
+      ([sel, v]: string[]) => {
+        const el = document.querySelector(sel);
+        return !!el && getComputedStyle(el).borderTopLeftRadius === v;
+      },
+      [`${radiusRow} .wb-pv-radius > span`, stepped],
+      { timeout: 5000 }
+    );
+  } catch {
+    // Reported below.
+  }
+  const steppedValue = await page.inputValue(input);
+  const steppedPreview = await previewRadius();
+  if (steppedValue !== stepped || steppedPreview !== stepped) {
+    failures.push(
+      `ArrowUp on ${RADIUS_TOKEN} (${fromPx}px): field "${steppedValue}", preview ${steppedPreview}, expected ${stepped}`
+    );
+  } else {
+    console.log(
+      `foundations: ArrowUp steps ${RADIUS_TOKEN} ${fromPx}px -> ${stepped}, the preview follows`
+    );
+  }
   await page.fill(input, '12px');
   await page.press(input, 'Enter');
   try {
@@ -249,6 +300,68 @@ const foundationsChecks = async (
     console.log(`foundations: ${RADIUS_TOKEN} edit in the drawer and the hash`);
   }
   // Leave no session behind for the canvas checks.
+  await page.click('[data-testid="wb-changes"] button:has-text("Reset all")');
+
+  // The shadow page: a shadow token's layers open in the editor, with X,
+  // Y, Blur, Spread and Color, and a step of Blur reaches the preview.
+  if (await page.isVisible('[data-testid="wb-changes"]')) {
+    await page.click('[data-testid="wb-changes"] button:has-text("Close")');
+  }
+  await page.goto(`${base}/workbench/#/foundations/shadow`);
+  const shadowRow = `[data-testid="wb-token-row"][data-token="${SHADOW_TOKEN}"]`;
+  const toggle = `${shadowRow} [data-testid="wb-shadow-toggle"]`;
+  try {
+    await page.waitForSelector(toggle, { timeout: 10000 });
+    await page.click(toggle);
+    await page.waitForSelector(`${shadowRow} [data-testid="wb-shadow-layer"]`, {
+      timeout: 5000,
+    });
+  } catch {
+    failures.push(`the shadow page has no layer editor for ${SHADOW_TOKEN}`);
+    return;
+  }
+  const fields: string[] = await page.$$eval(
+    `${shadowRow} [data-testid="wb-shadow-layer"] [data-field]`,
+    (els: Element[]) => els.map((el) => el.getAttribute('data-field') ?? '')
+  );
+  const kind: string = await page.$eval(
+    `${shadowRow} [data-testid="wb-shadow-layer"] select`,
+    (el: Element) =>
+      (el as HTMLSelectElement).selectedOptions[0]?.textContent ?? ''
+  );
+  const missing = SHADOW_FIELDS.filter((f) => !fields.includes(f));
+  if (missing.length || kind !== 'Drop shadow') {
+    failures.push(
+      `the shadow editor of ${SHADOW_TOKEN} shows "${kind}" with fields ${fields.join(
+        ', '
+      )}, missing ${missing.join(', ') || 'none'}`
+    );
+  }
+  const blur = `${shadowRow} [data-field="blur"] input`;
+  const blurFrom = Number(await page.inputValue(blur));
+  await page.press(blur, 'ArrowUp');
+  try {
+    await page.waitForFunction(
+      ([sel, px]: string[]) => {
+        const el = document.querySelector(sel);
+        return !!el && getComputedStyle(el).boxShadow.includes(px);
+      },
+      [`${shadowRow} .wb-pv-shadow > span`, `${blurFrom + 1}px`],
+      { timeout: 5000 }
+    );
+    console.log(
+      `foundations: ${SHADOW_TOKEN} layer editor (${fields.join(
+        ', '
+      )}); Blur ${blurFrom} -> ${blurFrom + 1}px in the preview`
+    );
+  } catch {
+    failures.push(
+      `ArrowUp on the Blur of ${SHADOW_TOKEN} did not reach its preview`
+    );
+  }
+  if (!(await page.isVisible('[data-testid="wb-changes"]'))) {
+    await page.click('[data-testid="wb-changes-toggle"]');
+  }
   await page.click('[data-testid="wb-changes"] button:has-text("Reset all")');
 };
 

@@ -4,6 +4,7 @@ import type { TokenName } from '@ds/tokens/tokens';
 
 import type { ElementEdit } from '../lib/elementEdits';
 import { fitsProp, InspectRow, shortName } from '../lib/inspect';
+import { nudgeValue, stepOfKey } from '../lib/nudge';
 
 import Icon from './Icon';
 
@@ -13,7 +14,8 @@ export type FieldProps = {
   liveToken?: string;
   // The session's edit of this row, when any (the custom caution mark).
   edit?: ElementEdit;
-  onCommit: (typed: string) => void;
+  // `exact`: an arrow step, applied as it is rather than snapped.
+  onCommit: (typed: string, exact?: boolean) => void;
   onAttach: (token: TokenName) => void;
   onDetach: () => void;
   onOpenPicker: () => void;
@@ -146,6 +148,20 @@ export const ValueField = ({
                 // The panel's own Esc (select the parent) waits.
                 e.stopPropagation();
                 setDraft(v.shown);
+              }
+              // Arrows step the number by 1, Shift by 10, as Foundations'
+              // fields do; only letter spacing goes below 0.
+              const step = stepOfKey(e);
+              const next =
+                step &&
+                nudgeValue(e.currentTarget.value, step, {
+                  caret: e.currentTarget.selectionStart ?? undefined,
+                  min: row.id === 'ls' ? undefined : 0,
+                });
+              if (next) {
+                e.preventDefault();
+                setDraft(next.value);
+                onCommit(next.value, true);
               }
             }}
           />

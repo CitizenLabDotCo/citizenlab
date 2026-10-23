@@ -339,6 +339,16 @@ describe('per-entry checks', () => {
     );
   });
 
+  it('gives a shadow of a few layers more room', () => {
+    const layer = '0 4px 12px -1px rgba(0,0,0,0.12)';
+    const three = [layer, layer, layer].join(', ');
+    expect(three.length).toBeGreaterThan(64);
+    expect(overrideError('--gv-shadow', three, meta)).toBeUndefined();
+    expect(overrideError('--gv-shadow', `${three}, ${three}`, meta)).toMatch(
+      /too long/
+    );
+  });
+
   it('filterOverrides keeps valid entries and names the dropped ones', () => {
     expect(
       filterOverrides(

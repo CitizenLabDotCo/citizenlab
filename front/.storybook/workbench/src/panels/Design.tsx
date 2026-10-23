@@ -290,7 +290,12 @@ const Design = ({
       kind: 'detach',
     });
   };
-  const commit = (row: InspectRow, sectionLabel: string, typed: string) => {
+  const commit = (
+    row: InspectRow,
+    sectionLabel: string,
+    typed: string,
+    exact = false
+  ) => {
     const bare = /^-?\d+(\.\d+)?$/.test(typed);
     const length =
       (row.snap === 'space' || row.snap === 'radius' || PX_ROWS.has(row.id)) &&
@@ -300,6 +305,11 @@ const Design = ({
       value = `#${value}`;
     }
     if (!valueFits(row.id, value)) return;
+    // An arrow step lands where it points, off the scale or not.
+    if (exact) {
+      addEdit({ ...base(row, sectionLabel), to: { value }, kind: 'custom' });
+      return;
+    }
     const r = snapValue(row.snap, value, meta, mode);
     // Rows with no scale take a token whose value the typed one equals.
     const equal = r.to
@@ -458,7 +468,9 @@ const Design = ({
                       r.value.token ? resolved[r.value.token] : undefined
                     }
                     edit={editOf(r)}
-                    onCommit={(typed) => commit(r, s.label, typed)}
+                    onCommit={(typed, exact) =>
+                      commit(r, s.label, typed, exact)
+                    }
                     onAttach={(token) => bind(r, s.label, token)}
                     onDetach={() => detach(r, s.label)}
                     onOpenPicker={() =>

@@ -340,7 +340,7 @@ const Ramp = ({
   edited: number;
 }) => (
   <tr className="wb-ramp-head" data-testid="wb-ramp">
-    <th scope="rowgroup" colSpan={5}>
+    <th scope="rowgroup" colSpan={4}>
       <div className="wb-ramp-bar">
         <button
           type="button"
@@ -586,9 +586,6 @@ const Foundations = ({
                 </th>
                 <th scope="col" role="columnheader">
                   Value
-                </th>
-                <th scope="col" role="columnheader">
-                  Edit
                 </th>
                 <th scope="col" role="columnheader">
                   Used

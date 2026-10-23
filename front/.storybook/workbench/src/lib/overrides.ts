@@ -238,6 +238,8 @@ export const snap = (
 // Caps on what a share link may carry.
 export const MAX_PAYLOAD_BYTES = 8 * 1024;
 export const MAX_VALUE_LENGTH = 64;
+// A shadow of a few layers, as the shadow editor writes them.
+export const MAX_SHADOW_LENGTH = 192;
 
 // Second guard, after the allowlist below: fragments that could load a
 // resource or break out of a declaration. A backslash is refused because CSS
@@ -423,7 +425,8 @@ const entryError = (
   const token = key.startsWith('--gv-') ? known.get(key) : undefined;
   if (!token) return `unknown token ${key.slice(0, 40)}`;
   if (typeof value !== 'string') return `${key} is not text`;
-  if (value.length > MAX_VALUE_LENGTH) return `${key} is too long`;
+  const max = kindOf(token) === 'shadow' ? MAX_SHADOW_LENGTH : MAX_VALUE_LENGTH;
+  if (value.length > max) return `${key} is too long`;
   if (
     !PRINTABLE.test(value) ||
     FORBIDDEN.some((re) => re.test(value)) ||

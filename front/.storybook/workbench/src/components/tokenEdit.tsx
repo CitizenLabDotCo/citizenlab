@@ -118,5 +118,24 @@ export const useTokenEdit = ({
       setFeedback(undefined);
     }
   };
-  return { current, draft, setDraft, commit, feedback, setFeedback };
+  // An exact value (an arrow step, a shadow field): set as it is, with no
+  // snap, so every step shows. A semantic token off the scale or palette is
+  // flagged, as a typed custom value is.
+  const apply = (value: string) => {
+    if (value === current) return;
+    const error = onSet(name, value);
+    if (error) {
+      setFeedback({ kind: 'error', text: `Not applied: ${error}.` });
+      return;
+    }
+    setDraft(value);
+    const tier = meta.find((t) => t.name === name)?.tier;
+    const result = snap(name, value, meta, mode);
+    setFeedback(
+      tier === 2 && (result.custom || result.value !== value)
+        ? { kind: 'flag', text: 'Custom value: not on the scale or palette.' }
+        : undefined
+    );
+  };
+  return { current, draft, setDraft, commit, apply, feedback, setFeedback };
 };

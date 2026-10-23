@@ -3,6 +3,7 @@ import {
   memo,
   ReactNode,
   useEffect,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -10,9 +11,15 @@ import {
 import type { Mode, TokenName } from '@ds/tokens/tokens';
 
 import type { TokenMeta } from '../lib/data';
+import { nudgeValue, NudgeOptions, stepOfKey } from '../lib/nudge';
+import { kindOf } from '../lib/overrides';
+import { parseShadow } from '../lib/shadow';
+import { DEFS } from '../lib/tokenValues';
 import type { TokenUsage } from '../lib/usage';
 import { plural } from '../lib/plural';
 
+import Icon, { IconName } from './Icon';
+import ShadowEditor from './ShadowEditor';
 import { ColourPicker, toHex6, useTokenEdit } from './tokenEdit';
 
 export const MODE_LABEL: Record<Mode, string> = {
@@ -209,6 +216,140 @@ export const Preview = ({
   );
 };
 
+// The glyph the Design tab draws for the same kind of value.
+const glyphOf = (t: TokenMeta): IconName | undefined => {
+  if (t.category === 'radius') return 'radius';
+  if (t.category === 'space') return 'width';
+  if (t.type === 'shadow') return 'shadow';
+  if (/-ls$/.test(t.name)) return 'letter-spacing';
+  if (/-lh$/.test(t.name)) return 'line-height';
+  if (/weight/.test(t.name)) return 'font-weight';
+  if (t.category === 'font' || t.category === 'text') {
+    return t.type === 'fontFamily' ? 'text' : 'font-size';
+  }
+  if (t.type === 'border') return 'stroke';
+  if (t.type === 'dimension') return 'stroke-width';
+  return undefined;
+};
+
+// How the arrow keys step the token: a bare 0 of a length takes px, and
+// nothing below 0 where a negative makes no sense (letter spacing, an
+// outline offset and a stacking order may go below; of a shadow only the
+// blur, its third number, may not).
+const nudgeOf = (t: TokenMeta): NudgeOptions => {
+  const kind = kindOf(t);
+  const unit =
+    kind === 'length' || kind === 'shadow' || kind === 'border' ? 'px' : '';
+  if (kind === 'shadow') {
+    return { unit, min: (i: number) => (i === 2 ? 0 : undefined) };
+  }
+  if (t.category === 'z' || /-ls$|offset/.test(t.name)) return { unit };
+  return { unit, min: 0 };
+};
+
+// The tokens a definition reads (var(--gv-…)), those Foundations lists.
+const refsOf = (raw: string, meta: TokenMeta[]): TokenMeta[] => {
+  const names = [...raw.matchAll(/var\(\s*(--gv-[a-z0-9-]+)/g)].map(
+    (m) => m[1]
+  );
+  return [...new Set(names)]
+    .map((n) => meta.find((t) => t.name === n))
+    .filter((t): t is TokenMeta => !!t);
+};
+
+const linkOf = (t: TokenMeta) => `#/foundations/${t.category}/${t.name}`;
+
+// The value of a token that reads another: a pill that links to the
+// source when it is one var(), the value with links to its parts when it
+// is built from several. Detach gives it a field of its own.
+const AliasValue = ({
+  id,
+  token,
+  raw,
+  refs,
+  value,
+  onDetach,
+}: {
+  id: string;
+  token: TokenMeta;
+  raw: string;
+  refs: TokenMeta[];
+  value: string;
+  onDetach: () => void;
+}) => {
+  const hex =
+    token.category === 'color' || token.type === 'color'
+      ? toHex6(value)
+      : undefined;
+  const lead = hex ? (
+    <span
+      className="wb-vf-swatch"
+      style={{ background: value }}
+      aria-hidden="true"
+    />
+  ) : (
+    <Icon name="link" size={14} />
+  );
+  const single = refs.length === 1 && /^var\([^()]*\)$/.test(raw.trim());
+  const detach = (
+    <button
+      type="button"
+      className="wb-vf-side wb-vf-detach"
+      data-testid="wb-token-detach"
+      aria-label={`Detach ${token.name} to give it its own value`}
+      onClick={onDetach}
+    >
+      <Icon name="detach" size={14} />
+    </button>
+  );
+  if (single) {
+    const source = refs[0];
+    return (
+      <div
+        className="wb-vf wb-vf-pill wb-tf"
+        data-testid="wb-token-alias"
+        data-source={source.name}
+      >
+        <a
+          id={id}
+          className="wb-vf-body"
+          href={linkOf(source)}
+          aria-label={`${token.name} reads ${source.name}, ${shown(
+            value
+          )}. Edit ${source.name}`}
+        >
+          {lead}
+          <span className="wb-vf-name">{source.name.slice(5)}</span>
+          <span className="wb-vf-muted">{shown(value)}</span>
+        </a>
+        {detach}
+      </div>
+    );
+  }
+  return (
+    <>
+      <div className="wb-vf wb-tf wb-tf-built" data-testid="wb-token-alias">
+        <span className="wb-vf-body" id={id} tabIndex={-1}>
+          {lead}
+          <span className="wb-vf-text">{shown(value)}</span>
+        </span>
+        {detach}
+      </div>
+      <div className="wb-tf-notes">
+        <span>
+          from{' '}
+          {refs.map((r, i) => (
+            <span key={r.name}>
+              {i > 0 && ', '}
+              <a href={linkOf(r)}>{r.name.slice(5)}</a>
+            </span>
+          ))}
+        </span>
+      </div>
+    </>
+  );
+};
+
 // One token: picture, name, both modes, the editor and what the scan says
 // about its use.
 const TokenRow = ({
@@ -227,7 +368,7 @@ const TokenRow = ({
   folded,
 }: Props) => {
   const name = token.name as TokenName;
-  const { current, draft, setDraft, commit, feedback, setFeedback } =
+  const { current, draft, setDraft, commit, apply, feedback, setFeedback } =
     useTokenEdit({
       name,
       base: token.values[mode],
@@ -241,13 +382,30 @@ const TokenRow = ({
   const differs =
     (live.today[name] || token.values.today) !==
     (live.redesign[name] || token.values.redesign);
-  const hex = token.category === 'color' ? toHex6(value) : undefined;
+  const base = token.values[mode];
+  const edited = override !== undefined;
+  const other: Mode = mode === 'today' ? 'redesign' : 'today';
+  const hex =
+    token.category === 'color' || token.type === 'color'
+      ? toHex6(value)
+      : undefined;
   const inputId = `wb-edit-${name.slice(2)}`;
+  const glyph = glyphOf(token);
+
+  // A token that reads others in this mode is edited at its source; Detach
+  // gives it a value of its own.
+  const raw = DEFS[mode][name] ?? '';
+  const refs = useMemo(() => refsOf(raw, meta), [raw, meta]);
+  const [detached, setDetached] = useState(false);
+  const aliased = !edited && !detached && refs.length > 0;
+
+  const [layersOpen, setLayersOpen] = useState(false);
+  const layers = token.type === 'shadow' ? parseShadow(current) : null;
 
   return (
     <tr
       role="row"
-      className={override !== undefined ? 'wb-token-edited' : undefined}
+      className={edited ? 'wb-token-edited' : undefined}
       data-testid="wb-token-row"
       data-token={name}
       hidden={folded}
@@ -307,74 +465,111 @@ const TokenRow = ({
         )}
       </th>
       <td role="cell" className="wb-token-values" data-label="Value">
-        {differs ? (
-          (['today', 'redesign'] as Mode[]).map((m) => (
-            <div
-              key={m}
-              className={
-                m === mode ? 'wb-mode-value wb-mode-value-on' : 'wb-mode-value'
-              }
-            >
-              <span className="wb-mode-name">{MODE_LABEL[m]}</span>
-              <span className="wb-token-value">{shown(token.values[m])}</span>
-              {m === 'redesign' && (
-                <span className="wb-diff-dot" title="Differs from Today" />
-              )}
-            </div>
-          ))
-        ) : (
-          <div
-            className="wb-mode-value wb-mode-value-on"
-            title="Same in Today and Redesign"
-          >
-            <span className="wb-token-value">{shown(token.values[mode])}</span>
-          </div>
-        )}
-        {override !== undefined && (
-          <div className="wb-token-now">
-            <span className="wb-mode-name">Edited</span>
-            <span className="wb-token-value">{shown(override)}</span>
-          </div>
-        )}
-      </td>
-      <td role="cell" data-label="Edit">
-        <div className="wb-token-edit">
-          <label className="wb-visually-hidden" htmlFor={inputId}>
-            {`New value for ${name}`}
-          </label>
-          <input
+        {aliased ? (
+          <AliasValue
             id={inputId}
-            data-testid="wb-token-input"
-            value={draft}
-            list={scaleId}
-            spellCheck={false}
-            onChange={(e) => setDraft(e.target.value)}
-            onBlur={(e) => commit(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') commit(e.currentTarget.value);
-              if (e.key === 'Escape') setDraft(current);
+            token={token}
+            raw={raw}
+            refs={refs}
+            value={value}
+            onDetach={() => {
+              setDetached(true);
+              window.requestAnimationFrame(() =>
+                document.getElementById(inputId)?.focus()
+              );
             }}
           />
-          {hex && (
-            <ColourPicker
-              label={`Pick a colour for ${name}`}
-              value={hex}
-              onPreview={setDraft}
-              onCommit={commit}
-            />
-          )}
-          {override !== undefined && (
-            <button
-              type="button"
-              onClick={() => {
-                onReset(name);
-                setFeedback(undefined);
-              }}
-            >
-              Reset
-            </button>
-          )}
-        </div>
+        ) : (
+          <div
+            className={edited ? 'wb-vf wb-tf wb-tf-edited' : 'wb-vf wb-tf'}
+            title={edited ? `Original: ${shown(base)}` : undefined}
+          >
+            <span className="wb-vf-body">
+              {hex ? (
+                <span className="wb-tf-swatch">
+                  <ColourPicker
+                    label={`Pick a colour for ${name}`}
+                    value={hex}
+                    onPreview={setDraft}
+                    onCommit={commit}
+                  />
+                </span>
+              ) : (
+                glyph && <Icon name={glyph} size={14} />
+              )}
+              <input
+                id={inputId}
+                data-testid="wb-token-input"
+                aria-label={`Value of ${name}`}
+                value={draft}
+                list={scaleId}
+                spellCheck={false}
+                onChange={(e) => setDraft(e.target.value)}
+                onBlur={(e) => commit(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') commit(e.currentTarget.value);
+                  if (e.key === 'Escape') setDraft(current);
+                  const step = stepOfKey(e);
+                  if (!step) return;
+                  const el = e.currentTarget;
+                  const next = nudgeValue(el.value, step, {
+                    caret: el.selectionStart ?? undefined,
+                    ...nudgeOf(token),
+                  });
+                  if (!next) return;
+                  e.preventDefault();
+                  apply(next.value);
+                  // The stepped number stays selected, for the next step.
+                  window.requestAnimationFrame(() =>
+                    el.setSelectionRange(next.start, next.end)
+                  );
+                }}
+              />
+            </span>
+            {layers && (
+              <button
+                type="button"
+                className="wb-vf-side"
+                data-testid="wb-shadow-toggle"
+                aria-label={`Shadow layers of ${name}`}
+                aria-expanded={layersOpen}
+                onClick={() => setLayersOpen((o) => !o)}
+              >
+                <Icon name="sliders" size={14} />
+              </button>
+            )}
+            {edited && (
+              <button
+                type="button"
+                className="wb-vf-side"
+                data-testid="wb-token-reset"
+                aria-label={`Reset ${name} to ${shown(base)}`}
+                onClick={() => {
+                  onReset(name);
+                  setFeedback(undefined);
+                  setDetached(false);
+                }}
+              >
+                <Icon name="reset" size={14} />
+              </button>
+            )}
+          </div>
+        )}
+        {(edited || differs) && (
+          <div className="wb-tf-notes">
+            {edited && (
+              <span data-testid="wb-token-was">
+                was <code>{shown(base)}</code>
+              </span>
+            )}
+            {differs && (
+              <span>
+                <span className="wb-diff-dot" aria-hidden="true" />
+                {MODE_LABEL[other]} <code>{shown(token.values[other])}</code>
+              </span>
+            )}
+          </div>
+        )}
         {feedback && (
           <div
             className={`wb-token-feedback wb-token-feedback-${feedback.kind}`}
@@ -382,6 +577,9 @@ const TokenRow = ({
           >
             {feedback.text}
           </div>
+        )}
+        {layers && layersOpen && !aliased && (
+          <ShadowEditor name={name} value={current} onApply={apply} />
         )}
       </td>
       <td role="cell" className="wb-token-usage" data-label="Used">
