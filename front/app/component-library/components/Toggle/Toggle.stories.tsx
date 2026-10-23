@@ -1,7 +1,10 @@
 import React from 'react';
 
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent } from 'storybook/test';
+import { expect, fn, userEvent, within } from 'storybook/test';
+// eslint-plugin-storybook 0.8 knows expect from @storybook/test, not from
+// storybook/test (Storybook 10), so it flags every expect here.
+/* eslint-disable storybook/use-storybook-expect */
 
 import { colors } from '../../utils/styleUtils';
 
@@ -109,4 +112,16 @@ export const RTL: Story = {
       <Toggle {...args} />
     </div>
   ),
+};
+
+// Tab reaches the switch; Space toggles it.
+export const Keyboard: Story = {
+  args: { checked: false, label: 'Email me updates', onChange: fn() },
+  play: async ({ canvasElement, args }) => {
+    const toggle = within(canvasElement).getByRole('checkbox');
+    await userEvent.tab();
+    await expect(toggle).toHaveFocus();
+    await userEvent.keyboard(' ');
+    await expect(args.onChange).toHaveBeenCalledTimes(1);
+  },
 };
