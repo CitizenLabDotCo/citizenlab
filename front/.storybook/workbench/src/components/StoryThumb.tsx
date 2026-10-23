@@ -120,15 +120,21 @@ export const A11yBadges = ({
     TONE_RANK.indexOf(b) > TONE_RANK.indexOf(a) ? b : a
   );
   const worst = worstCount(axe);
-  const label =
-    worst ??
-    (counts && counts.fail > 0
+  const reviewLabel =
+    counts && counts.fail > 0
       ? plural(counts.fail, 'check fails', 'checks fail')
-      : kbTone === 'fail' || kbTone === 'warn'
+      : undefined;
+  // The label names the source that set the chip's tone, so a red chip
+  // never reads like a warning.
+  const label =
+    (tones[0] === tone && tone !== 'pass' && worst) ||
+    (reviewTone === tone && reviewLabel) ||
+    (kbTone === tone && (tone === 'fail' || tone === 'warn')
       ? KEYBOARD_LABEL[kb]
-      : axe.checked > 0
-      ? 'Axe pass'
-      : 'Reviewed');
+      : undefined) ||
+    worst ||
+    reviewLabel ||
+    (axe.checked > 0 ? 'Axe pass' : 'Reviewed');
   const reviewTitle =
     reviewed && counts
       ? `Reviewed by ${checklist.reviewer} on ${formatDate(

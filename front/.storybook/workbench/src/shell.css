@@ -6017,9 +6017,9 @@ tr[data-result='needs-human'] .wb-a11y-note {
   background: var(--wb-caution-soft);
 }
 
-/* Gallery card accessibility: one quiet line after the status chip, a
-   coloured icon and the worst count, then icons for the keyboard test and
-   the review. Tooltips carry the detail. */
+/* Gallery card accessibility: one quiet chip after the status chip, its
+   colour and label from the worst of axe, the keyboard test and the review.
+   The tooltip carries the detail. */
 .wb-thumb-a11y {
   min-width: 0;
   margin-left: auto;

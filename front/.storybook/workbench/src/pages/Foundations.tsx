@@ -13,6 +13,7 @@ import type { Overrides } from '../lib/overrides';
 import { BASE, DEFS } from '../lib/tokenValues';
 import { componentLabel, PairUse } from '../lib/usage';
 import { useScanIndexes } from '../lib/useScanIndexes';
+import { useToolbarHeight } from '../lib/useToolbarHeight';
 import { plural } from '../lib/plural';
 
 type Category = { id: string; label: string; intro: string; blurb: string };
@@ -487,6 +488,7 @@ const Foundations = ({
   // Open ramps: the first one, and any with an edit.
   const [openRamps, setOpenRamps] = useState<Set<string>>(new Set());
   const started = useRef(false);
+  const toolbarRef = useToolbarHeight();
   useEffect(() => {
     if (!groups.length) return;
     const first = !started.current;
@@ -575,7 +577,12 @@ const Foundations = ({
           </li>
         ))}
       </ul>
-      <div className="wb-toolbar" role="toolbar" aria-label="Foundations">
+      <div
+        ref={toolbarRef}
+        className="wb-toolbar"
+        role="toolbar"
+        aria-label="Foundations"
+      >
         <ModeSwitch mode={mode} onMode={onMode} />
         <span className="wb-toolbar-meta">
           {plural(tokens.length, 'token', 'tokens')}

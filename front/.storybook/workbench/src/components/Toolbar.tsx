@@ -7,6 +7,7 @@ import { LANGUAGES } from '../../../languages';
 import { GV_VIEWPORTS, GvViewport } from '../../../viewports';
 import { focusables, trapTab } from '../lib/focus';
 import type { FrameGlobals } from '../lib/frame';
+import { useToolbarHeight } from '../lib/useToolbarHeight';
 
 import Icon from './Icon';
 
@@ -181,21 +182,7 @@ const Toolbar = ({
   const [sheet, setSheet] = useState(false);
   const sheetButton = useRef<HTMLButtonElement>(null);
   const fieldsRef = useRef<HTMLDivElement>(null);
-  // Sticky column heads under the stuck toolbar read its height.
-  const barRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const bar = barRef.current;
-    if (!bar || typeof ResizeObserver === 'undefined') return undefined;
-    const root = document.documentElement;
-    const ro = new ResizeObserver(() => {
-      root.style.setProperty('--wb-toolbar-h', `${bar.offsetHeight}px`);
-    });
-    ro.observe(bar);
-    return () => {
-      ro.disconnect();
-      root.style.removeProperty('--wb-toolbar-h');
-    };
-  }, []);
+  const barRef = useToolbarHeight();
   const closeSheet = () => {
     setSheet(false);
     sheetButton.current?.focus();
