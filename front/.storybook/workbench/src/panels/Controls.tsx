@@ -113,6 +113,7 @@ const Field = ({
           <input
             id={id}
             type="text"
+            dir="auto"
             value={draft}
             placeholder="Not set"
             spellCheck={false}
@@ -249,12 +250,13 @@ const Controls = ({ storyId, frames }: Props) => {
       ) : (
         <>
           <div className="wb-controls-head">
-            {controls.length > 8 && (
+            {controls.length > 1 && (
               <label className="wb-search wb-controls-search">
                 <span className="wb-visually-hidden">Find a prop</span>
                 <Icon name="search" size={14} />
                 <input
                   type="search"
+                  dir="auto"
                   placeholder="Find a prop"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}

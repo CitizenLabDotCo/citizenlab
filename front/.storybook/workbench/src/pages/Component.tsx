@@ -119,6 +119,14 @@ const Tabs = ({
       el.scrollLeft = left - el.clientWidth / 2 + tab.offsetWidth / 2;
     }
   }, [current]);
+  const scroll = (dir: 1 | -1) => {
+    const el = list.current;
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    el?.scrollBy({
+      left: dir * el.clientWidth * 0.7,
+      behavior: still ? 'auto' : 'smooth',
+    });
+  };
   return (
     <div className="wb-tab-group">
       <span className="wb-tab-group-label">{label}</span>
@@ -140,6 +148,30 @@ const Tabs = ({
           </li>
         ))}
       </ul>
+      {overflow !== 'none' && (
+        <span className="wb-tabs-scroll">
+          <button
+            type="button"
+            className="wb-icon-button"
+            onClick={() => scroll(-1)}
+            disabled={overflow === 'end'}
+            aria-label={`Earlier ${label.toLowerCase()}`}
+            title="Scroll back"
+          >
+            <Icon name="chevron" size={14} />
+          </button>
+          <button
+            type="button"
+            className="wb-icon-button"
+            onClick={() => scroll(1)}
+            disabled={overflow === 'start'}
+            aria-label={`More ${label.toLowerCase()}`}
+            title="Scroll on"
+          >
+            <Icon name="chevron" size={14} />
+          </button>
+        </span>
+      )}
     </div>
   );
 };

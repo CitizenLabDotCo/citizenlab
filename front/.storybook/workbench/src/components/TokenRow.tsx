@@ -369,7 +369,9 @@ const TokenRow = ({
           )}
         </span>
         {token.description && (
-          <div className="wb-token-note">{token.description}</div>
+          <div className="wb-token-note" title={token.description}>
+            {token.description}
+          </div>
         )}
         {token.legacy.length > 0 && (
           <details className="wb-legacy">

@@ -1,4 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import type { Mode } from '@ds/tokens/tokens';
 
@@ -170,7 +177,7 @@ const Stat = ({
   testId?: string;
   title?: string;
 }) => (
-  <div className="wb-rstat" data-testid={testId} title={title}>
+  <div className="wb-rstat" data-testid={testId} title={title ?? note}>
     <span className="wb-rstat-value">{value}</span>
     <span className="wb-rstat-label">{label}</span>
     {note && <span className="wb-rstat-note">{note}</span>}
@@ -210,6 +217,8 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
       parseReviewHash(window.location.hash).route !== undefined && shouldFold()
   );
   const stage = useRef<HTMLElement>(null);
+  const page = useRef<HTMLElement>(null);
+  const body = useRef<HTMLDivElement>(null);
   const [stageWidth, setStageWidth] = useState(0);
   useEffect(() => {
     const el = stage.current;
@@ -557,8 +566,37 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
       : 'no edits'
   }, ${mode === 'redesign' ? 'Redesign' : 'Today'}`;
 
+  // The frames take the window below wherever the body starts, so a
+  // shorter header gives them the room.
+  useLayoutEffect(() => {
+    const el = body.current;
+    const article = page.current;
+    if (!el || !article) return undefined;
+    const place = () => {
+      const scroller = el.closest('.wb-main');
+      const top =
+        el.getBoundingClientRect().top +
+        (scroller ? scroller.scrollTop : window.scrollY);
+      el.style.setProperty('--wb-review-top', `${Math.round(top)}px`);
+    };
+    place();
+    const observer = new ResizeObserver(place);
+    observer.observe(article);
+    window.addEventListener('resize', place);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', place);
+    };
+  }, []);
+
+  const picked = route !== undefined;
+
   return (
-    <article className="wb-review" data-testid="wb-review">
+    <article
+      className={picked ? 'wb-review wb-review-picked' : 'wb-review'}
+      data-testid="wb-review"
+      ref={page}
+    >
       <header className="wb-review-head">
         <div>
           <p className="wb-eyebrow">Real platform</p>
@@ -674,7 +712,7 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
       )}
 
       <section
-        className="wb-rstats"
+        className={picked ? 'wb-rstats wb-rstats-strip' : 'wb-rstats'}
         aria-label="Summary"
         data-testid="wb-review-summary"
       >
@@ -724,7 +762,7 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
                   summary.offSpecAfter - summary.offSpecBefore
                 )} design${
                   summary.scannerDelta
-                    ? `, ${signed(summary.scannerDelta)} scanner rules`
+                    ? ` · ${signed(summary.scannerDelta)} rules`
                     : ''
                 }`
               : undefined
@@ -738,6 +776,7 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
         className={
           wide ? 'wb-review-body wb-review-body-wide' : 'wb-review-body'
         }
+        ref={body}
       >
         <aside className="wb-review-side" aria-label="Routes and changes">
           <div className="wb-review-tabs" role="tablist">
@@ -823,11 +862,7 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
           <div className="wb-rtoolbar" role="toolbar" aria-label="Frames">
             <button
               type="button"
-              className={
-                wide
-                  ? 'wb-button wb-rtoolbar-side'
-                  : 'wb-icon-button wb-rtoolbar-side'
-              }
+              className="wb-icon-button wb-rtoolbar-side"
               onClick={() => setWide((w) => !w)}
               aria-pressed={!wide}
               title={
@@ -839,7 +874,6 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
               data-testid="wb-review-wide"
             >
               <Icon name={wide ? 'menu' : 'split'} size={16} />
-              {wide && 'Routes'}
             </button>
             <Segmented<ViewportChoice>
               label="Viewport"
@@ -901,8 +935,14 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
               />
               <span>Highlight</span>
             </label>
+            {/* The count shows next to the switch; why it is off is the
+                switch's tooltip. */}
             <span
-              className={tagged && highlightOn ? 'wb-rhl wb-rhl-on' : 'wb-rhl'}
+              className={
+                tagged && highlightOn
+                  ? 'wb-rhl wb-rhl-on'
+                  : 'wb-rhl wb-visually-hidden'
+              }
               data-testid="wb-review-highlight-note"
               data-count={after?.count ?? 0}
             >
@@ -953,22 +993,27 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
             <p className="wb-rbanner" role="status" data-testid="wb-login-hint">
               <Icon name="link" size={16} />
               <span>
-                {login === 'admin' ? (
-                  'The platform sent this page somewhere else. The record in the route may not exist on this platform: check routes.fixture.json.'
-                ) : (
-                  <>
-                    {login === 'out'
-                      ? 'You are signed out, so this page shows the home or sign-in page. '
-                      : 'This page needs a platform login with admin rights. '}
-                    <a href={loginUrl} target="_blank" rel="noreferrer">
-                      Log in to the platform in a new tab
-                    </a>
-                    , then reload the frames.
-                  </>
-                )}
+                {login === 'admin'
+                  ? 'The platform sent this page somewhere else. The record in the route may not exist on this platform: check routes.fixture.json.'
+                  : `${
+                      login === 'out'
+                        ? 'Signed out, so this shows the home or sign-in page.'
+                        : 'This page needs a platform login with admin rights.'
+                    } Log in in a new tab, then reload.`}
               </span>
+              {login !== 'admin' && (
+                <a
+                  className="wb-button"
+                  href={loginUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Log in
+                  <Icon name="external" size={14} />
+                </a>
+              )}
               <button type="button" className="wb-button" onClick={reload}>
-                Reload frames
+                Reload
               </button>
             </p>
           )}

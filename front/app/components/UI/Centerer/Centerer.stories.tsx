@@ -26,6 +26,10 @@ export const Default: Story = {
   args: {
     height: '200px',
     bg: '#f4f4f6',
-    children: <Text m="0px">No projects match these filters.</Text>,
+    children: (
+      <Box bg="white" px="16px" py="8px" borderRadius="3px">
+        <Text m="0px">Centred content</Text>
+      </Box>
+    ),
   },
 };

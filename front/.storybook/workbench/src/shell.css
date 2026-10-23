@@ -2616,6 +2616,27 @@ tr:hover .wb-pv-motion > span,
 }
 
 /* One row per group: when it scrolls, the edges fade to say so. */
+/* With arrows to step through it. */
+.wb-tabs-scroll {
+  display: inline-flex;
+  flex: none;
+  gap: 2px;
+}
+
+.wb-shell .wb-tabs-scroll .wb-icon-button {
+  width: 28px;
+  height: 28px;
+  min-height: 0;
+}
+
+.wb-tabs-scroll .wb-icon-button:first-child .wb-icon {
+  transform: rotate(90deg);
+}
+
+.wb-tabs-scroll .wb-icon-button:last-child .wb-icon {
+  transform: rotate(-90deg);
+}
+
 .wb-tabs[data-overflow='end'] {
   mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent);
 }
@@ -2716,6 +2737,11 @@ tr:hover .wb-pv-motion > span,
 
 .wb-controls-search {
   flex: 1;
+}
+
+/* With no search (one prop), Reset leads the row instead of floating. */
+.wb-controls-head > .wb-icon-button:first-child {
+  margin-left: 0;
 }
 
 .wb-controls-search input {
@@ -3277,7 +3303,7 @@ tr:hover .wb-pv-motion > span,
 .wb-panel .wb-ptokens .wb-token-note {
   display: -webkit-box;
   overflow: hidden;
-  -webkit-line-clamp: 1;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
@@ -4290,8 +4316,12 @@ a.wb-line:hover {
 }
 
 .wb-rstat-note {
+  min-width: 0;
+  overflow: hidden;
   font-size: var(--gv-fs-xs);
   line-height: 1.3;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   color: var(--wb-muted);
 }
 
@@ -4300,7 +4330,11 @@ a.wb-line:hover {
   flex: none;
   grid-template-columns: 320px minmax(0, 1fr);
   grid-template-rows: minmax(0, 1fr);
-  height: max(600px, calc(100vh - 290px));
+  /* From where the body starts (measured) to the bottom of the window. */
+  height: max(
+    560px,
+    calc(100vh - var(--wb-review-top, 290px) - var(--gv-space-10))
+  );
   overflow: hidden;
   background: var(--wb-bg);
   border: 1px solid var(--wb-border);
@@ -4944,7 +4978,7 @@ a.wb-line:hover {
   display: flex;
   flex: none;
   flex-wrap: wrap;
-  gap: var(--gv-space-2) var(--gv-space-4);
+  gap: var(--gv-space-2) var(--gv-space-3);
   align-items: center;
   padding: var(--gv-space-3) var(--gv-space-4);
   font-size: var(--gv-fs-13);
@@ -5044,10 +5078,23 @@ a.wb-line:hover {
   background: var(--wb-subtle);
 }
 
+.wb-rbanner {
+  background: var(--wb-subtle);
+}
+
+.wb-rbanner > span {
+  flex: 1;
+}
+
 .wb-rbanner .wb-button {
   flex: none;
-  margin-left: auto;
   white-space: nowrap;
+}
+
+.wb-shell .wb-rbanner a.wb-button {
+  font-weight: 600;
+  color: var(--wb-heading);
+  text-decoration: none;
 }
 
 .wb-rbanner a,
@@ -5443,10 +5490,13 @@ a.wb-line:hover {
   --wb-a11y-mark: var(--wb-neutral-mark);
 }
 
+/* The panel's summary: one list, the tone in each icon's ring. */
 .wb-a11y-badges {
   display: grid;
-  gap: var(--gv-space-2);
   margin: 0 0 var(--gv-space-4);
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius-lg);
 }
 
 .wb-a11y-badge {
@@ -5455,8 +5505,10 @@ a.wb-line:hover {
   align-items: center;
   padding: var(--gv-space-2) var(--gv-space-3);
   color: var(--wb-a11y-fg);
-  background: var(--wb-a11y-bg);
-  border-radius: var(--wb-radius);
+}
+
+.wb-a11y-badge + .wb-a11y-badge {
+  border-top: 1px solid var(--wb-border);
 }
 
 .wb-a11y-badge > .wb-icon {
@@ -5697,16 +5749,19 @@ a.wb-line:hover {
   font-weight: 500;
   color: var(--wb-text);
   text-decoration: none;
-  background: var(--wb-subtle);
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border);
   border-radius: var(--gv-radius-1);
 }
 
 .wb-a11y-cell:hover {
-  box-shadow: inset 0 0 0 1px var(--wb-border-strong);
+  border-color: var(--wb-border-strong);
 }
 
+/* Only the story in the canvas is tinted; the rest say it with the dot. */
 .wb-a11y-cell[aria-current='true'] {
-  box-shadow: inset 0 0 0 2px var(--wb-accent);
+  background: var(--wb-accent-soft);
+  border-color: var(--wb-accent);
 }
 
 .wb-a11y-cell-dot {
@@ -5730,34 +5785,20 @@ a.wb-line:hover {
   font-weight: 700;
 }
 
-.wb-a11y-cell-clean {
-  background: var(--wb-ok-soft);
-}
-
 .wb-a11y-cell-clean .wb-a11y-cell-dot {
   background: var(--wb-ok);
 }
 
-.wb-a11y-cell-critical {
+.wb-a11y-cell-critical .wb-a11y-cell-count {
   color: var(--wb-bad-text);
-  background: var(--wb-bad-soft);
 }
 
 .wb-a11y-cell-critical .wb-a11y-cell-dot {
   background: var(--wb-bad);
 }
 
-.wb-a11y-cell-serious {
-  background: var(--wb-warn-soft);
-}
-
 .wb-a11y-cell-serious .wb-a11y-cell-dot {
   background: var(--wb-warn);
-}
-
-.wb-a11y-cell-moderate,
-.wb-a11y-cell-minor {
-  background: var(--wb-caution-soft);
 }
 
 .wb-a11y-cell-moderate .wb-a11y-cell-dot,
@@ -5955,4 +5996,50 @@ tr[data-result='needs-human'] .wb-a11y-note {
 
 .wb-a11y-mini.wb-a11y-tone-warn {
   color: var(--wb-text);
+}
+
+/* Review with a route picked: a short header and the summary as one
+   line, so the frames get the height. After the breakpoints above, so the
+   strip wins over their grid borders. */
+.wb-review-picked {
+  gap: var(--gv-space-3);
+}
+
+.wb-review-picked .wb-review-head {
+  align-items: center;
+}
+
+.wb-review-picked .wb-review-head .wb-eyebrow,
+.wb-review-picked .wb-review-head .wb-lead {
+  display: none;
+}
+
+.wb-review-picked .wb-review-head h1 {
+  font-size: var(--gv-fs-xxl);
+}
+
+.wb-rstats-strip {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.wb-rstats-strip .wb-rstat {
+  display: flex;
+  flex: 1 1 auto;
+  gap: var(--gv-space-2);
+  align-items: baseline;
+  padding: var(--gv-space-2) var(--gv-space-4);
+  border-top: 0;
+}
+
+.wb-rstats-strip .wb-rstat + .wb-rstat {
+  border-left: 1px solid var(--wb-border);
+}
+
+.wb-rstats-strip .wb-rstat-value {
+  font-size: var(--gv-fs-m);
+}
+
+.wb-rstats-strip .wb-rstat-note {
+  display: none;
 }
