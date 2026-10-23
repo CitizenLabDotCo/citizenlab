@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { gvTag } from '../../../design-system/tags';
 import { colors } from '../../utils/styleUtils';
 import Box, { BoxProps } from '../Box';
 import Icon, { IconNames } from '../Icon';
@@ -32,6 +33,7 @@ const CardButton = ({
 
   return (
     <Box
+      {...gvTag('CardButton')}
       width="240px"
       minHeight="210px"
       background={selected || isHover ? colors.teal50 : colors.white}

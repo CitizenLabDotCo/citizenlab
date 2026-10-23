@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 
 import styled, { css, keyframes } from 'styled-components';
 
+import { gvTag } from '../../../design-system/tags';
 import { colors } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 
@@ -56,7 +57,7 @@ class Spinner extends PureComponent<Props> {
     const { size, thickness, color, className } = this.props;
 
     return (
-      <Container className={className}>
+      <Container {...gvTag('Spinner')} className={className}>
         <StyledSpinner
           className="spinner"
           size={size}

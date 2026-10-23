@@ -2,11 +2,14 @@ import React from 'react';
 
 import { Box, BoxMarginProps, colors } from '@citizenlab/cl2-component-library';
 
+import { gvTag } from '../../../design-system/tags';
+
 const Divider = ({
   className,
   ...rest
 }: { className?: string } & BoxMarginProps) => (
   <Box
+    {...gvTag('Divider')}
     className={className}
     as="hr"
     display="block"

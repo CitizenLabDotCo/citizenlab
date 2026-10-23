@@ -2,6 +2,7 @@ import React from 'react';
 
 import styled from 'styled-components';
 
+import { gvTag } from '../../../design-system/tags';
 import {
   defaultInputStyle,
   colors,
@@ -73,6 +74,7 @@ const InputContainer = ({
 }: Props) => {
   return (
     <Container
+      {...gvTag('InputContainer')}
       type="button"
       id={id}
       className={className}

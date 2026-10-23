@@ -4,6 +4,7 @@ import { isNil, get } from 'lodash-es';
 import { darken, transparentize, opacify, rgba } from 'polished';
 import styled from 'styled-components';
 
+import { gvTag } from '../../../design-system/tags';
 import {
   bo,
   colors,
@@ -790,6 +791,7 @@ const Button = forwardRef<Ref, Props>((props, ref) => {
 
   return (
     <Container
+      {...gvTag('Button')}
       onClick={handleOnClick}
       className={containerClassNames}
       buttonStyle={buttonStyle}

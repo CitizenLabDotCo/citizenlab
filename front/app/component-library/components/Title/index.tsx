@@ -3,6 +3,7 @@ import React from 'react';
 import { FontWeight } from 'component-library/utils/typings';
 import styled, { css } from 'styled-components';
 
+import { gvTag } from '../../../design-system/tags';
 import {
   Color,
   colors,
@@ -119,6 +120,7 @@ const Title: React.FC<TitleProps> = ({
 
   return (
     <StyledTitle
+      {...gvTag('Title')}
       variant={variant}
       color={color}
       as={as || variant}

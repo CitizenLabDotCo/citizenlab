@@ -3,6 +3,7 @@ import React from 'react';
 import { FontWeight } from 'component-library/utils/typings';
 import styled, { css } from 'styled-components';
 
+import { gvTag } from '../../../design-system/tags';
 import {
   MainThemeProps,
   bo,
@@ -209,6 +210,7 @@ const Text: React.FC<TextProps> = ({
 
   return (
     <StyledText
+      {...gvTag('Text')}
       variant={variant}
       color={color}
       as={as || 'p'}

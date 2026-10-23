@@ -3,6 +3,7 @@ import React, { ReactNode, useRef, useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
+import { gvTag } from '../../../design-system/tags';
 import useInstanceId from '../../hooks/useInstanceId';
 import { focusRing, isRtl } from '../../utils/styleUtils';
 import Box, { BoxProps } from '../Box';
@@ -121,7 +122,7 @@ const CollapsibleContainer = ({
   };
 
   return (
-    <Box {...boxProps}>
+    <Box {...gvTag('CollapsibleContainer')} {...boxProps}>
       <Title
         as={titleAs}
         variant={titleVariant}

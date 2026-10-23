@@ -2,6 +2,7 @@ import React from 'react';
 
 import styled, { css } from 'styled-components';
 
+import { gvTag } from '../../../design-system/tags';
 import Box, {
   BoxColorProps,
   BoxPaddingProps,
@@ -47,7 +48,7 @@ const StyledImage = styled(Box)<ImageProps>`
 export const Image: React.FC<ImageProps> = (props) => {
   const { alt, children, ...rest } = props;
   return (
-    <StyledImage as="img" alt={alt} {...rest}>
+    <StyledImage {...gvTag('Image')} as="img" alt={alt} {...rest}>
       {children}
     </StyledImage>
   );

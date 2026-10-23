@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components';
 
+import { gvTag } from '../../../design-system/tags';
+
 type Overflow =
   | 'visible'
   | 'hidden'
@@ -330,7 +332,12 @@ const Box = styled.div.withConfig({
     const isDOMElement = typeof elementToBeCreated === 'string';
     return !isDOMElement || defaultValidatorFn(prop);
   },
-})<BoxProps>`
+})
+  // Tag every Box unless the caller (a library component whose root is a Box)
+  // already passed its own tag, so the outer component name wins.
+  .attrs<BoxProps>((props) =>
+    'data-gv-component' in props ? {} : gvTag('Box')
+  )<BoxProps>`
   // colors and background
   ${(props) => css`
     ${props.color ? `color: ${props.color}` : ''};

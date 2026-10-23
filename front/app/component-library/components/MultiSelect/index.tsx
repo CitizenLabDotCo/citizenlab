@@ -2,6 +2,7 @@ import React, { useId, useState } from 'react';
 
 import styled from 'styled-components';
 
+import { gvTag } from '../../../design-system/tags';
 import InputContainer from '../../utils/containers/InputContainer';
 import { colors } from '../../utils/styleUtils';
 import Box, { BoxMarginProps } from '../Box';
@@ -65,6 +66,7 @@ const MultiSelect = ({
 
   return (
     <Box
+      {...gvTag('MultiSelect')}
       {...boxProps}
       data-cy={dataCy}
       onMouseLeave={() => setHover(undefined)}

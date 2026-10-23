@@ -1,9 +1,12 @@
 import styled from 'styled-components';
 
+import { gvTag } from '../../../design-system/tags';
 import { colors, fontSizes } from '../../utils/styleUtils';
-import Box from '../Box';
+import Box, { BoxProps } from '../Box';
 
-export default styled(Box)`
+export default styled(Box).attrs<BoxProps>((props) =>
+  'data-gv-component' in props ? {} : gvTag('Badge')
+)`
   color: ${(props) => props.color || colors.disabled};
   font-size: ${fontSizes.xs}px;
   line-height: 16px;

@@ -3,6 +3,7 @@ import React from 'react';
 import { hideVisually } from 'polished';
 import styled from 'styled-components';
 
+import { gvTag } from '../../../design-system/tags';
 import { Color, focusRing } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import Box, { BoxMarginProps, BoxPaddingProps } from '../Box';
@@ -147,7 +148,7 @@ const Checkbox = ({
   const checkedOrIndeterminate = checked || indeterminate;
 
   return (
-    <Box {...boxProps}>
+    <Box {...gvTag('Checkbox')} {...boxProps}>
       <HiddenCheckbox
         id={id}
         onChange={onChange}

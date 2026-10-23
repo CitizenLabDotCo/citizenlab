@@ -3,6 +3,7 @@ import React, { useEffect, useRef, FormEvent } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
+import { gvTag } from '../../../design-system/tags';
 import ClickOutside from '../../utils/containers/clickOutside';
 import { colors, fontSizes, media, isRtl } from '../../utils/styleUtils';
 
@@ -239,7 +240,11 @@ const Dropdown: React.FC<Props> = ({
         zIndex={zIndex}
         className={className}
       >
-        <ContainerInner width={width} mobileWidth={mobileWidth}>
+        <ContainerInner
+          {...gvTag('Dropdown')}
+          width={width}
+          mobileWidth={mobileWidth}
+        >
           <Content
             maxHeight={maxHeight}
             mobileMaxHeight={mobileMaxHeight}
