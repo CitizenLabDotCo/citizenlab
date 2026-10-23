@@ -1,3 +1,7 @@
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
+
 import {
   buildChanges,
   parseLog,
@@ -6,6 +10,7 @@ import {
   SCAN_SUMMARY,
   TOKENS_SOURCE,
   tokenChanges,
+  writeChanges,
 } from './changes';
 
 const source = (
@@ -121,10 +126,21 @@ describe('parseSubject', () => {
 
   it('prefers a known component name when the list is given', () => {
     expect(
-      parseSubject('design-system(workbench): Review page for Box', [
-        'Box',
-        'Button',
-      ]).component
+      parseSubject('design-system(heal): the Box 8px gap', ['Box', 'Button'])
+        .component
+    ).toBe('Box');
+  });
+
+  it('takes only the first word after the colon for other kinds', () => {
+    const known = ['Button', 'Box'];
+    expect(
+      parseSubject(
+        'design-system(smoke): find the Button story under its id',
+        known
+      ).component
+    ).toBeUndefined();
+    expect(
+      parseSubject('design-system(scan): Box reach fix', known).component
     ).toBe('Box');
   });
 });
@@ -196,7 +212,7 @@ describe('buildChanges', () => {
     });
     expect(out.base).toBe('base1');
     expect(out.head).toBe('headsha');
-    expect(out.warning).toBeUndefined();
+    expect(out.warnings).toEqual([]);
     expect(
       out.commits.map((c) => [c.sha, c.kind, c.component, c.scanDelta])
     ).toEqual([
@@ -226,7 +242,9 @@ describe('buildChanges', () => {
       cachedMergeBase: 'base3',
     });
     expect(cached.base).toBe('base3');
-    expect(cached.warning).toMatch(/cached/);
+    expect(cached.warnings).toEqual([
+      expect.stringMatching(/cached merge-base base3/),
+    ]);
   });
 
   it('writes no commits and a warning when no base is found', () => {
@@ -234,7 +252,30 @@ describe('buildChanges', () => {
     expect(out.base).toBeNull();
     expect(out.commits).toEqual([]);
     expect(out.tokenChanges).toEqual([]);
-    expect(out.warning).toMatch(/no merge-base/);
+    expect(out.warnings).toEqual([
+      expect.stringMatching(/no merge-base.*no merge-base is cached/),
+    ]);
+  });
+
+  it('says when the cached merge-base is not in this clone', () => {
+    const out = buildChanges({
+      runGit: fakeGit({ log: '' }),
+      cachedMergeBase: 'gone',
+    });
+    expect(out.base).toBeNull();
+    expect(out.warnings).toEqual([
+      expect.stringMatching(/cached merge-base gone is not in this clone/),
+    ]);
+  });
+
+  it('keeps every warning, not only the last', () => {
+    const out = buildChanges({
+      runGit: fakeGit({ refs: { other: 'base3' } }),
+      cachedMergeBase: 'base3',
+    });
+    expect(out.warnings).toHaveLength(2);
+    expect(out.warnings[0]).toMatch(/cached merge-base/);
+    expect(out.warnings[1]).toMatch(/git log .* failed/);
   });
 
   it('reports no per-token changes when the base has no token source', () => {
@@ -249,5 +290,36 @@ describe('buildChanges', () => {
     });
     expect(out.tokenChanges).toEqual([]);
     expect(out.tokensNew).toBe(1);
+  });
+});
+
+describe('writeChanges', () => {
+  // CI clones with --depth 1: no base is reachable there, so the committed
+  // file (refreshed locally) must survive the build.
+  const dir = () => fs.mkdtempSync(path.join(os.tmpdir(), 'ds-changes-'));
+  const noBase = () => buildChanges({ runGit: fakeGit({ log: '' }) });
+
+  it('keeps the committed file untouched when no base is reachable', () => {
+    const file = path.join(dir(), 'design-changes.json');
+    const committed = '{"base":"b","commits":[{"sha":"c1"}]}\n';
+    fs.writeFileSync(file, committed);
+    expect(writeChanges(file, noBase())).toBe('kept');
+    expect(fs.readFileSync(file, 'utf8')).toBe(committed);
+  });
+
+  it('writes the empty list when there is no file to keep', () => {
+    const file = path.join(dir(), 'design-changes.json');
+    expect(writeChanges(file, noBase())).toBe('written');
+    expect(JSON.parse(fs.readFileSync(file, 'utf8')).commits).toEqual([]);
+  });
+
+  it('overwrites the file when a base was found', () => {
+    const file = path.join(dir(), 'design-changes.json');
+    fs.writeFileSync(file, '{"old":true}\n');
+    const fresh = buildChanges({
+      runGit: fakeGit({ refs: { master: 'base1' }, log: LOG }),
+    });
+    expect(writeChanges(file, fresh)).toBe('written');
+    expect(JSON.parse(fs.readFileSync(file, 'utf8')).base).toBe('base1');
   });
 });

@@ -4,7 +4,7 @@
  *
  *   npm run ds:changes [-- --base <ref>] [-- --out .storybook/static]
  *
- * Writes design-changes.json (git-ignored, rebuilt on every Storybook
+ * Writes design-changes.json (committed; rebuilt on every Storybook
  * build). Each commit carries its subject, body and changed files (paths
  * from the repository root, for GitHub links; diffs are not embedded), a
  * kind and component read from the subject (`design-system(heal): Button
@@ -15,8 +15,10 @@
  * The base is the merge-base with --base, else master, else origin/master,
  * else the merge-base the last local scan cached in design-scan.summary.json
  * (CI clones may have no master ref). Without any of those it writes no
- * commits and a warning. It always exits 0, so a Storybook build never
- * fails on it.
+ * commits and a warning, and keeps an existing design-changes.json as it
+ * is: the file is committed, because the CI build clones with --depth 1 and
+ * reaches no base, so the Review page shows the list last refreshed
+ * locally. It always exits 0, so a Storybook build never fails on it.
  */
 import { execFileSync } from 'child_process';
 import fs from 'fs';
@@ -55,7 +57,7 @@ export type DesignChanges = {
   tokenChanges: TokenChange[];
   // Tokens at HEAD when the base has no token source (all new).
   tokensNew?: number;
-  warning?: string;
+  warnings: string[];
 };
 
 // Paths from the repository root, as git log --name-only prints them.
@@ -80,7 +82,9 @@ const NAMED_KINDS = new Set<Kind>(['heal', 'lift', 'story']);
 /**
  * Kind from the `design-system(<area>)` prefix; component from the first
  * words after the colon: a name from `known` when given, else (for heal,
- * lift and story commits only) the first PascalCase word.
+ * lift and story commits only) the first PascalCase word. For `other`
+ * commits only the first word counts, so "smoke: find the Button story"
+ * names no component.
  */
 export const parseSubject = (
   subject: string,
@@ -91,7 +95,7 @@ export const parseSubject = (
   const kind = KINDS[m[1].trim().toLowerCase()] ?? 'other';
   const words = m[2]
     .split(/\s+/)
-    .slice(0, 6)
+    .slice(0, kind === 'other' ? 1 : 6)
     .map((w) => w.replace(/[,.:;]+$/, ''));
   const knownSet = known ? new Set(known) : undefined;
   let component: string | undefined;
@@ -199,19 +203,26 @@ export const buildChanges = (opts: {
     repoUrl: REPO_URL,
     commits: [],
     tokenChanges: [],
+    warnings: [],
   };
   const base = resolveBase(runGit, opts.base, opts.cachedMergeBase);
   if (!base) {
-    const tried = opts.base ? opts.base : 'master or origin/master';
-    out.warning = `no merge-base with ${tried} and no cached merge-base in the scan summary; no commits listed`;
+    const tried = opts.base ?? 'master or origin/master';
+    out.warnings.push(
+      opts.cachedMergeBase
+        ? `no merge-base with ${tried}, and the cached merge-base ${opts.cachedMergeBase} is not in this clone (shallow?); no commits listed`
+        : `no merge-base with ${tried}, and no merge-base is cached in the scan summary; no commits listed`
+    );
     return out;
   }
   out.base = base.sha;
   out.baseRef = base.ref;
   if (base.cached) {
-    out.warning = `no merge-base with ${
-      opts.base ?? 'master or origin/master'
-    }; using the merge-base cached in the scan summary (${base.sha})`;
+    out.warnings.push(
+      `no merge-base with ${
+        opts.base ?? 'master or origin/master'
+      }; using the cached merge-base ${base.sha} from the scan summary`
+    );
   }
 
   const log = runGit([
@@ -222,7 +233,7 @@ export const buildChanges = (opts: {
     `${base.sha}..HEAD`,
   ]);
   if (log === undefined) {
-    out.warning = `git log ${base.sha}..HEAD failed; no commits listed`;
+    out.warnings.push(`git log ${base.sha}..HEAD failed; no commits listed`);
   }
   const known = opts.knownComponents ? [...opts.knownComponents] : undefined;
   const offSpecAt = (rev: string): number | undefined => {
@@ -254,9 +265,26 @@ export const buildChanges = (opts: {
       out.tokensNew = tokenValues(headSource).size;
     }
   } catch (e: any) {
-    out.warning = `token sources could not be compared (${e?.message ?? e})`;
+    out.warnings.push(
+      `token sources could not be compared (${e?.message ?? e})`
+    );
   }
   return out;
+};
+
+/**
+ * Writes the change list, except when no base was reachable and a file
+ * already exists: CI clones with --depth 1 (no master, no history), so there
+ * the committed file, refreshed locally, is kept as it is.
+ */
+export const writeChanges = (
+  file: string,
+  changes: DesignChanges
+): 'written' | 'kept' => {
+  if (changes.base === null && fs.existsSync(file)) return 'kept';
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, `${JSON.stringify(changes, null, 2)}\n`);
+  return 'written';
 };
 
 // ---------------------------------------------------------------------------
@@ -308,12 +336,17 @@ const main = () => {
     knownComponents: known,
   });
   const dir = path.resolve(ROOT, outDir);
-  fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(
-    path.join(dir, 'design-changes.json'),
-    `${JSON.stringify(changes, null, 2)}\n`
-  );
-  if (changes.warning) console.warn(`ds:changes warning: ${changes.warning}`);
+  const file = path.join(dir, 'design-changes.json');
+  changes.warnings.forEach((w) => console.warn(`ds:changes warning: ${w}`));
+  if (writeChanges(file, changes) === 'kept') {
+    console.warn(
+      `ds:changes warning: no base reachable; kept the committed ${path.relative(
+        ROOT,
+        file
+      )} unchanged (refresh it locally with npm run ds:changes)`
+    );
+    return;
+  }
   const byKind = changes.commits.reduce<Record<string, number>>((m, c) => {
     m[c.kind] = (m[c.kind] ?? 0) + 1;
     return m;
@@ -333,7 +366,7 @@ const main = () => {
       changes.tokensNew
         ? `, ${changes.tokensNew} tokens new on this branch`
         : ''
-    }; wrote ${path.relative(ROOT, path.join(dir, 'design-changes.json'))}`
+    }; wrote ${path.relative(ROOT, file)}`
   );
 };
 
