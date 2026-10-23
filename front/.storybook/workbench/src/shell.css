@@ -2328,6 +2328,36 @@ tr:hover .wb-pv-motion > span,
   opacity: 0;
 }
 
+/* A story that would not render: a quiet note instead of a broken card. */
+.wb-thumb-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--gv-fs-xs);
+  color: var(--wb-muted);
+}
+
+/* The gallery's one preview frame lies over its cards and renders each
+   card's story over the card's preview box (GalleryFrame). */
+.wb-gallery-cards {
+  position: relative;
+}
+
+.wb-gallery-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 0;
+  transform-origin: 0 0;
+  pointer-events: none;
+  background: transparent;
+  /* The scheme of the preview's own page; with another one the browser
+     paints an opaque backdrop behind the frame. */
+  color-scheme: normal;
+}
+
 .wb-skeleton-line,
 .wb-skeleton-block {
   background: linear-gradient(

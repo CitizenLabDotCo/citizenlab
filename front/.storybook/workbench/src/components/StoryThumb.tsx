@@ -1,6 +1,8 @@
 import {
   CSSProperties,
+  RefObject,
   SyntheticEvent,
+  useContext,
   useEffect,
   useRef,
   useState,
@@ -21,6 +23,7 @@ import {
   worstCount,
 } from '../lib/a11y';
 import { storyUrl } from '../lib/frame';
+import { thumbScale } from '../lib/gallery';
 import { channelOf, isRendered } from '../lib/preview';
 import {
   OFFICE_LABEL,
@@ -30,6 +33,7 @@ import {
   Office,
 } from '../lib/stories';
 
+import { GalleryContext } from './GalleryFrame';
 import Icon from './Icon';
 
 import type { FrameGlobals } from '../lib/frame';
@@ -170,7 +174,7 @@ type Props = {
   group: StoryGroup;
   href: string;
   globals: FrameGlobals;
-  // Width the story is laid out at. The frame is scaled to the card's
+  // Width the story is laid out at. The story is scaled to the card's
   // width (never above 100%), so a card of any width shows the same story
   // uncropped.
   frameWidth?: number;
@@ -193,30 +197,26 @@ const REVEAL_MS = 5000;
 // preview frames at once.
 const NEAR = '600px';
 
-// A gallery card: the group's Default story rendered live and scaled down,
+// The card's own preview frame, for a story the gallery's shared frame
+// cannot show (see lib/galleryFrame.ts) or a card outside a gallery:
 // loaded only when it nears the viewport, faded in once Storybook has
-// rendered it. The frame is decoration; the card is the link.
-const StoryThumb = ({
-  group,
-  href,
+// rendered it.
+const OwnFrame = ({
+  box,
+  storyId,
+  name,
   globals,
-  frameWidth = 320,
-  a11y,
-}: Props) => {
-  const [loaded, setLoaded] = useState(false);
+  onLoaded,
+}: {
+  box: RefObject<HTMLSpanElement>;
+  storyId: string;
+  name: string;
+  globals: FrameGlobals;
+  onLoaded: (loaded: boolean) => void;
+}) => {
   const [near, setNear] = useState(false);
-  const [width, setWidth] = useState(0);
-  const box = useRef<HTMLSpanElement>(null);
-  useEffect(() => {
-    const el = box.current;
-    if (!el) return undefined;
-    const observer = new ResizeObserver(() => setWidth(el.clientWidth));
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-  const scale = width > 0 ? Math.min(1, width / frameWidth) : 0.75;
   const timer = useRef<number>();
-  const src = storyUrl(group.defaultId, globals);
+  const src = storyUrl(storyId, globals);
   useEffect(() => {
     const el = box.current;
     if (!el || near) return undefined;
@@ -228,48 +228,110 @@ const StoryThumb = ({
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [near]);
+  }, [box, near]);
   useEffect(() => {
-    setLoaded(false);
+    onLoaded(false);
     return () => window.clearTimeout(timer.current);
-  }, [src]);
+  }, [src, onLoaded]);
   const onLoad = (e: SyntheticEvent<HTMLIFrameElement>) => {
     const win = e.currentTarget.contentWindow;
     const doc = e.currentTarget.contentDocument;
-    if (!win || !doc) return setLoaded(true);
+    if (!win || !doc) return onLoaded(true);
     const style = doc.createElement('style');
     style.textContent = THUMB_CSS;
     doc.head.appendChild(style);
-    const show = () => setLoaded(true);
+    const show = () => onLoaded(true);
     if (isRendered(win)) return show();
     channelOf(win)?.on('storyRendered', show);
     channelOf(win)?.on('storyErrored', show);
     channelOf(win)?.on('storyThrewException', show);
     timer.current = window.setTimeout(show, REVEAL_MS);
   };
+  if (!near) return null;
+  return (
+    <iframe
+      key={src}
+      src={src}
+      title={`${name} preview`}
+      loading="lazy"
+      tabIndex={-1}
+      aria-hidden="true"
+      onLoad={onLoad}
+    />
+  );
+};
+
+// A gallery card: the group's Default story rendered live and scaled down,
+// shown once it has rendered. In a gallery the story renders in the
+// gallery's shared frame, over this card's preview box; the card reports
+// where that box is. The preview is decoration; the card is the link.
+const StoryThumb = ({
+  group,
+  href,
+  globals,
+  frameWidth = 320,
+  a11y,
+}: Props) => {
+  const gallery = useContext(GalleryContext);
+  const [loaded, setLoaded] = useState(false);
+  const [width, setWidth] = useState(0);
+  const box = useRef<HTMLSpanElement>(null);
+  const id = group.defaultId;
+  const shared = gallery?.stateOf(id);
+  const own = !gallery || shared === 'isolated';
+  useEffect(() => {
+    const el = box.current;
+    if (!el || !own) return undefined;
+    const observer = new ResizeObserver(() => setWidth(el.clientWidth));
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [own]);
+  const register = gallery?.register;
+  useEffect(() => {
+    register?.(id, box.current);
+    return () => register?.(id, null);
+  }, [register, id]);
+  const state = own ? (loaded ? 'rendered' : 'loading') : shared;
+  const className = [
+    'wb-thumb',
+    state === 'loading' && 'wb-thumb-loading',
+    state === 'error' && 'wb-thumb-error',
+  ]
+    .filter(Boolean)
+    .join(' ');
   const states = group.stories.filter((s) => s.state).length;
   return (
     <a
       className="wb-card wb-thumb-card"
       href={href}
       data-testid="wb-thumb"
-      data-story={group.defaultId}
+      data-story={id}
+      data-state={state}
     >
       <span
         ref={box}
-        className={loaded ? 'wb-thumb' : 'wb-thumb wb-thumb-loading'}
-        style={{ '--wb-thumb-scale': scale } as CSSProperties}
+        className={className}
+        style={
+          own
+            ? ({
+                '--wb-thumb-scale': thumbScale(width, frameWidth),
+              } as CSSProperties)
+            : undefined
+        }
       >
-        {near && (
-          <iframe
-            key={src}
-            src={src}
-            title={`${group.name} preview`}
-            loading="lazy"
-            tabIndex={-1}
-            aria-hidden="true"
-            onLoad={onLoad}
+        {/* Once measured: a frame that starts at another size can keep
+            the layout of that size (a modal placed once). */}
+        {own && width > 0 && (
+          <OwnFrame
+            box={box}
+            storyId={id}
+            name={group.name}
+            globals={globals}
+            onLoaded={setLoaded}
           />
+        )}
+        {state === 'error' && (
+          <span className="wb-thumb-fallback">No preview</span>
         )}
       </span>
       <span className="wb-thumb-body">

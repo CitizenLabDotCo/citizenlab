@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 
+import GalleryFrame from '../components/GalleryFrame';
 import Icon from '../components/Icon';
 import Segmented from '../components/Segmented';
 import StoryThumb from '../components/StoryThumb';
@@ -263,34 +264,39 @@ const Gallery = ({ section, globals, onMode }: Props) => {
             </div>
           )}
 
-          {shown.length > 0 && (
-            <Grid
-              groups={shown}
-              section={section}
-              globals={globals}
-              results={results}
-              testId="wb-gallery-grid"
-            />
-          )}
-          {shownUnfiled.length > 0 && (
-            <section className="wb-gallery-group">
-              <h2 className="wb-section-title">Outside the sections</h2>
-              <p className="wb-section-note">
-                {mine.length === 0
-                  ? `Nothing is filed under ${copy.title}/ yet, so this lists `
-                  : 'Also here: '}
-                stories from app code whose title starts with no section, such
-                as <code>Cards/</code> and <code>HomepageBuilder/</code>. They
-                show here until they move under Patterns/ or Pages/.
-              </p>
+          <GalleryFrame
+            globals={globals}
+            frameWidth={THUMB_FRAME_WIDTH[section]}
+          >
+            {shown.length > 0 && (
               <Grid
-                groups={shownUnfiled}
+                groups={shown}
                 section={section}
                 globals={globals}
                 results={results}
+                testId="wb-gallery-grid"
               />
-            </section>
-          )}
+            )}
+            {shownUnfiled.length > 0 && (
+              <section className="wb-gallery-group">
+                <h2 className="wb-section-title">Outside the sections</h2>
+                <p className="wb-section-note">
+                  {mine.length === 0
+                    ? `Nothing is filed under ${copy.title}/ yet, so this lists `
+                    : 'Also here: '}
+                  stories from app code whose title starts with no section, such
+                  as <code>Cards/</code> and <code>HomepageBuilder/</code>. They
+                  show here until they move under Patterns/ or Pages/.
+                </p>
+                <Grid
+                  groups={shownUnfiled}
+                  section={section}
+                  globals={globals}
+                  results={results}
+                />
+              </section>
+            )}
+          </GalleryFrame>
         </>
       )}
     </article>
