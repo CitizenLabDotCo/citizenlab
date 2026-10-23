@@ -1,6 +1,10 @@
 import React from 'react';
 
 import { Meta, StoryObj } from '@storybook/react';
+import { expect, userEvent, within } from 'storybook/test';
+// eslint-plugin-storybook 0.8 knows expect from @storybook/test, not from
+// storybook/test (Storybook 10), so it flags every expect here.
+/* eslint-disable storybook/use-storybook-expect */
 
 import Select from './';
 
@@ -127,4 +131,15 @@ export const RTL: Story = {
       <Select {...args} />
     </div>
   ),
+};
+
+// Tab reaches the select. Its options open and change with the browser's
+// own keys (a native select), which a play step cannot press.
+export const Keyboard: Story = {
+  args: WithLabel.args,
+  play: async ({ canvasElement }) => {
+    const select = within(canvasElement).getByRole('combobox');
+    await userEvent.tab();
+    await expect(select).toHaveFocus();
+  },
 };
