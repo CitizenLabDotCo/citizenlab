@@ -436,19 +436,7 @@ const App = ({ children }: Props) => {
                 instead. Admin pages get neither. */}
             {!showFrontOfficeNavbar() && !isAdminPage && (
               <ErrorBoundary>
-                <Box
-                  position="fixed"
-                  bottom="20px"
-                  left="20px"
-                  zIndex="1000"
-                  bgColor={colors.white}
-                  px="12px"
-                  py="8px"
-                  borderRadius={stylingConsts.borderRadius}
-                  boxShadow="0 2px 8px rgba(0, 0, 0, 0.2)"
-                >
-                  <WeglotSwitcher openUpwards />
-                </Box>
+                <WeglotSwitcher floating />
               </ErrorBoundary>
             )}
             {!isAuthenticationPending && (

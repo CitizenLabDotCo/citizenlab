@@ -1,21 +1,15 @@
 import React from 'react';
 
-import { captureMessage } from '@sentry/react';
-
 import { render, screen, fireEvent, act } from 'utils/testUtils/rtl';
-import { WEGLOT_READY_EVENT } from 'utils/weglot';
+import { WEGLOT_READY_EVENT, reportMissingWeglotLanguages } from 'utils/weglot';
 
 import WeglotSwitcher from '.';
 
-jest.mock('@sentry/react', () => ({
-  captureMessage: jest.fn(),
-  withScope: jest.fn((callback) =>
-    callback({
-      setLevel: jest.fn(),
-      setTags: jest.fn(),
-      setContext: jest.fn(),
-    })
-  ),
+// Only the reporter is faked; it dedupes with module state of its own, which
+// is covered in utils/weglot.test.ts.
+jest.mock('utils/weglot', () => ({
+  ...jest.requireActual('utils/weglot'),
+  reportMissingWeglotLanguages: jest.fn(),
 }));
 
 let switcherEnabled = false;
@@ -133,12 +127,15 @@ describe('<WeglotSwitcher />', () => {
       render(<WeglotSwitcher />);
 
       expect(screen.queryByRole('button')).not.toBeInTheDocument();
-      expect(captureMessage).toHaveBeenCalledTimes(1);
-      expect(captureMessage).toHaveBeenCalledWith(
-        'Weglot initialized but offered no languages to the navbar switcher'
-      );
-      // eslint-disable-next-line no-console
-      expect(console.warn).toHaveBeenCalled();
+      expect(reportMissingWeglotLanguages).toHaveBeenCalledTimes(1);
+    });
+
+    it('stays quiet for a project with a source language but no targets', () => {
+      window.Weglot = buildWeglot({ availableLanguages: ['en'] });
+      render(<WeglotSwitcher />);
+
+      expect(screen.queryByRole('button')).not.toBeInTheDocument();
+      expect(reportMissingWeglotLanguages).not.toHaveBeenCalled();
     });
 
     it('stays quiet while Weglot is still initializing', () => {
@@ -148,7 +145,7 @@ describe('<WeglotSwitcher />', () => {
       });
       render(<WeglotSwitcher />);
 
-      expect(captureMessage).not.toHaveBeenCalled();
+      expect(reportMissingWeglotLanguages).not.toHaveBeenCalled();
     });
 
     it('stays quiet when the platform has not enabled the switcher', () => {
@@ -156,19 +153,32 @@ describe('<WeglotSwitcher />', () => {
       window.Weglot = buildWeglot({ availableLanguages: [] });
       render(<WeglotSwitcher />);
 
-      expect(captureMessage).not.toHaveBeenCalled();
+      expect(reportMissingWeglotLanguages).not.toHaveBeenCalled();
     });
 
-    it('reports only once per mount', () => {
-      const weglot = buildWeglot({ availableLanguages: [] });
-      window.Weglot = weglot;
+    it('reports once when Weglot loads late and offers nothing', () => {
+      // No window.Weglot yet, so the component waits on the ready event.
       render(<WeglotSwitcher />);
+      expect(reportMissingWeglotLanguages).not.toHaveBeenCalled();
 
+      window.Weglot = buildWeglot({ availableLanguages: [] });
       act(() => {
         window.dispatchEvent(new Event(WEGLOT_READY_EVENT));
       });
 
-      expect(captureMessage).toHaveBeenCalledTimes(1);
+      expect(reportMissingWeglotLanguages).toHaveBeenCalledTimes(1);
     });
+  });
+
+  it('closes the dropdown when the toggle is clicked again', () => {
+    window.Weglot = buildWeglot();
+    render(<WeglotSwitcher />);
+
+    const toggle = screen.getAllByRole('button')[0];
+    fireEvent.click(toggle);
+    expect(screen.getByText('polski')).toBeVisible();
+
+    fireEvent.click(toggle);
+    expect(screen.queryByText('polski')).not.toBeInTheDocument();
   });
 });

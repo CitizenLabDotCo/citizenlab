@@ -6,7 +6,9 @@ import {
   Icon,
   colors,
   fontSizes,
+  defaultStyles,
   isRtl,
+  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
@@ -61,7 +63,6 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   position: relative;
-  cursor: pointer;
 
   &:hover,
   &:focus {
@@ -87,7 +88,7 @@ const ListItem = styled.button`
   margin: 0px;
   margin-bottom: 4px;
   padding: 10px;
-  background: #fff;
+  background: ${colors.white};
   border-radius: ${(props) => props.theme.borderRadius};
   cursor: pointer;
 
@@ -100,7 +101,7 @@ const ListItem = styled.button`
   &.active {
     background: ${colors.grey300};
     ${ListItemText} {
-      color: #000;
+      color: ${colors.black};
     }
   }
 `;
@@ -112,17 +113,18 @@ const readWeglot = () => ({
 
 interface Props {
   className?: string;
-  // Set when the switcher sits near the bottom of the viewport, where a
-  // downward dropdown would open off-screen.
-  openUpwards?: boolean;
+  // Renders the switcher in a fixed corner instead of inline, for the pages
+  // that hide the navbar. The corner's chrome belongs to the component so it
+  // disappears along with the switcher when there is nothing to show.
+  floating?: boolean;
 }
 
-const WeglotSwitcher = ({ className, openUpwards = false }: Props) => {
+const WeglotSwitcher = ({ className, floating = false }: Props) => {
   const { formatMessage } = useIntl();
   const theme = useTheme();
   const { data: appConfiguration } = useAppConfiguration();
   const [dropdownOpened, setDropdownOpened] = useState(false);
-  const reportedRef = useRef(false);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [{ languages, currentLang }, setWeglot] = useState(readWeglot);
 
   useEffect(() => {
@@ -157,12 +159,13 @@ const WeglotSwitcher = ({ className, openUpwards = false }: Props) => {
       .weglot_switcher_in_navbar === true;
 
   useEffect(() => {
-    if (!optedIn || reportedRef.current) return;
-    // Before Weglot initializes it has no languages yet, which is normal.
-    if (!window.Weglot?.initialized || languages.length >= 2) return;
+    if (!optedIn) return;
+    // Before Weglot initializes it has no languages yet, which is normal, and
+    // a project with a source language but no enabled targets legitimately
+    // offers one. Only getting nothing at all means the contract broke.
+    if (!window.Weglot?.initialized || languages.length > 0) return;
 
-    reportedRef.current = true;
-    reportMissingWeglotLanguages(languages);
+    reportMissingWeglotLanguages();
   }, [optedIn, languages]);
 
   if (!optedIn || !currentLang || languages.length < 2) {
@@ -174,26 +177,31 @@ const WeglotSwitcher = ({ className, openUpwards = false }: Props) => {
     setDropdownOpened((opened) => !opened);
   };
 
-  const selectLanguage =
-    (language: string) => (event: React.MouseEvent<HTMLButtonElement>) => {
-      // Without this the click reaches Container's toggle and reopens the
-      // dropdown. Weglot switches in place, so there is no reload to hide it.
-      event.stopPropagation();
-      window.Weglot?.switchTo(language);
-      setDropdownOpened(false);
-    };
+  const selectLanguage = (language: string) => () => {
+    window.Weglot?.switchTo(language);
+    setDropdownOpened(false);
+  };
 
-  return (
+  const closeOnClickOutside = (event: React.FormEvent) => {
+    // This fires on document click in the capture phase, so a click on our own
+    // toggle would close the dropdown here and the toggle's own handler would
+    // immediately reopen it. Clicks inside the switcher close it themselves.
+    if (containerRef.current?.contains(event.target as Node)) return;
+    setDropdownOpened(false);
+  };
+
+  const switcher = (
     // Weglot translates the page it is embedded in, so its own language names
     // must be left alone.
     <Container
+      ref={containerRef}
       className={className}
       data-wg-notranslate
       onMouseDown={removeFocusAfterMouseClick}
-      onClick={toggleDropdown}
     >
       <DropdownButton
         type="button"
+        onClick={toggleDropdown}
         aria-expanded={dropdownOpened}
         aria-label={formatMessage(messages.ariaLabel)}
       >
@@ -209,16 +217,16 @@ const WeglotSwitcher = ({ className, openUpwards = false }: Props) => {
       <Dropdown
         width="180px"
         mobileWidth="160px"
-        top={openUpwards ? undefined : '68px'}
-        bottom={openUpwards ? 'calc(100% + 8px)' : undefined}
-        // Floating, the switcher sits against the left edge, so a
-        // right-anchored panel would open off-screen.
-        left={openUpwards ? '0px' : undefined}
-        right={openUpwards ? undefined : '0px'}
-        mobileLeft={openUpwards ? '0px' : undefined}
-        mobileRight={openUpwards ? undefined : '5px'}
+        top={floating ? undefined : '68px'}
+        // Floating, the switcher sits in the bottom-left corner, so the panel
+        // has to open upwards and leftwards to stay on screen.
+        bottom={floating ? 'calc(100% + 8px)' : undefined}
+        left={floating ? '0px' : undefined}
+        right={floating ? undefined : '0px'}
+        mobileLeft={floating ? '0px' : undefined}
+        mobileRight={floating ? undefined : '5px'}
         opened={dropdownOpened}
-        onClickOutside={toggleDropdown}
+        onClickOutside={closeOnClickOutside}
         content={
           <Box>
             {languages.map((language, index) => (
@@ -238,6 +246,24 @@ const WeglotSwitcher = ({ className, openUpwards = false }: Props) => {
         }
       />
     </Container>
+  );
+
+  if (!floating) return switcher;
+
+  return (
+    <Box
+      position="fixed"
+      bottom="20px"
+      left="20px"
+      zIndex="1000"
+      bgColor={colors.white}
+      px="12px"
+      py="8px"
+      borderRadius={stylingConsts.borderRadius}
+      boxShadow={defaultStyles.boxShadowHoverBig}
+    >
+      {switcher}
+    </Box>
   );
 };
 

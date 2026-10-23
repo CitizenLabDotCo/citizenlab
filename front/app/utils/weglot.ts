@@ -242,7 +242,14 @@ export async function weglotTranslateIdeaSubmission(
  * an ad blocker or a blocked CDN does that routinely, which would bury the
  * signal in noise. Weglot logs its own console error in those cases.
  */
-export function reportMissingWeglotLanguages(languages: string[]) {
+let reportedMissingLanguages = false;
+
+export function reportMissingWeglotLanguages() {
+  // The switcher unmounts and remounts whenever the navbar appears or
+  // disappears, so without this every route change would report again.
+  if (reportedMissingLanguages) return;
+  reportedMissingLanguages = true;
+
   const message =
     'Weglot initialized but offered no languages to the navbar switcher';
 
@@ -257,7 +264,6 @@ export function reportMissingWeglotLanguages(languages: string[]) {
     scope.setContext('weglot_switcher', {
       path: window.location.pathname,
       seconds_since_page_load: secondsSincePageLoad(),
-      languages_offered: languages,
       current_language: window.Weglot?.getCurrentLang() ?? null,
     });
     captureMessage(message);
