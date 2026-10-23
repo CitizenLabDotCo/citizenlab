@@ -31,6 +31,24 @@ const FIT_START_H = 160;
 const FIT_MIN_H = 96;
 const FIT_MAX_H = 1600;
 
+// How tall the story's elements reach, top to bottom. The preview centres
+// every story in an absolute box the size of the frame, so in a 1px frame a
+// tall story overflows above the top, where scrollHeight does not count it.
+const MEASURE_NODES = 2000;
+const extentOf = (root: HTMLElement) => {
+  let top = Infinity;
+  let bottom = -Infinity;
+  const nodes = root.querySelectorAll('*');
+  for (let i = 0; i < Math.min(nodes.length, MEASURE_NODES); i++) {
+    const r = nodes[i].getBoundingClientRect();
+    if (r.width > 0 && r.height > 0) {
+      top = Math.min(top, r.top);
+      bottom = Math.max(bottom, r.bottom);
+    }
+  }
+  return bottom > top ? bottom - top : 0;
+};
+
 // The story's own size at a frame width: the frame is set 1px tall for the
 // read, so content sized to the viewport (100vh) does not count, then put
 // back. Both happen in one task, so nothing paints in between.
@@ -41,9 +59,16 @@ const measure = (iframe: HTMLIFrameElement, width: number): Size | null => {
   const { width: w, height: h } = iframe.style;
   iframe.style.width = `${width}px`;
   iframe.style.height = '1px';
+  const body = doc.defaultView?.getComputedStyle(doc.body);
+  const pad = body
+    ? parseFloat(body.paddingTop) + parseFloat(body.paddingBottom)
+    : 0;
   const size = {
     w: doc.documentElement.scrollWidth,
-    h: doc.documentElement.scrollHeight,
+    h: Math.max(
+      doc.documentElement.scrollHeight,
+      Math.ceil(extentOf(root) + pad)
+    ),
   };
   iframe.style.width = w;
   iframe.style.height = h;
