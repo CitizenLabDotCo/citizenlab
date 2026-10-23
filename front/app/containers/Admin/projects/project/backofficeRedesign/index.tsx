@@ -144,7 +144,7 @@ const ProjectWorkspace = ({
         p={PANEL_GAP}
         height="100vh"
         overflow="hidden"
-        background={colors.background}
+        background={t.color.background}
       >
         <FeedbackNotice />
         <WorkspaceHeader
