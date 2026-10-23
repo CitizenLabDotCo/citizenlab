@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { stepNumber, stepOfKey } from '../lib/nudge';
 import {
@@ -12,13 +12,15 @@ import Icon from './Icon';
 import { ColourPicker } from './tokenEdit';
 
 // A number with its unit, as the Design tab's fields: arrows step it, a
-// typed number applies as it is typed.
+// typed number applies as it is typed. The value only rewrites the draft
+// while the field is not being typed in; a refused value reverts it.
 const NumberField = ({
   field,
   label,
   short,
   unit,
   value,
+  digits = 2,
   min,
   max,
   onValue,
@@ -28,18 +30,23 @@ const NumberField = ({
   short?: string;
   unit: string;
   value: number;
+  // Decimals shown; the value keeps its own precision.
+  digits?: number;
   min?: number;
   max?: number;
-  onValue: (n: number) => void;
+  onValue: (n: number) => boolean;
 }) => {
-  const [draft, setDraft] = useState(String(value));
-  // A half typed number ("1.", "-") stays while it means the same value.
-  useEffect(
-    () => setDraft((d) => (d.trim() && Number(d) === value ? d : `${value}`)),
-    [value]
-  );
+  const shown = `${Number(value.toFixed(digits))}`;
+  const ref = useRef<HTMLInputElement>(null);
+  const [draft, setDraft] = useState(shown);
+  useEffect(() => {
+    if (document.activeElement !== ref.current) setDraft(shown);
+  }, [shown]);
   const fit = (n: number) =>
     Math.min(max ?? Infinity, Math.max(min ?? -Infinity, n));
+  const send = (n: number, text: string) => {
+    setDraft(onValue(n) ? text : shown);
+  };
   return (
     <label className="wb-vf wb-sh-field" data-field={field}>
       {short && (
@@ -48,23 +55,28 @@ const NumberField = ({
         </span>
       )}
       <input
+        ref={ref}
+        role="spinbutton"
+        aria-valuenow={value}
         aria-label={label}
         inputMode="decimal"
         value={draft}
         spellCheck={false}
         onChange={(e) => {
-          setDraft(e.target.value);
-          const n = Number(e.target.value);
-          if (e.target.value.trim() && Number.isFinite(n)) onValue(fit(n));
+          const text = e.target.value;
+          setDraft(text);
+          const n = Number(text);
+          if (text.trim() && Number.isFinite(n)) send(fit(n), text);
         }}
-        onBlur={() => setDraft(`${value}`)}
+        onBlur={() => setDraft(shown)}
         onKeyDown={(e) => {
           const step = stepOfKey(e);
           if (step) {
             e.preventDefault();
-            onValue(fit(stepNumber(value, step, min)));
+            const n = fit(stepNumber(value, step, min));
+            send(n, `${Number(n.toFixed(digits))}`);
           }
-          if (e.key === 'Escape') setDraft(`${value}`);
+          if (e.key === 'Escape') setDraft(shown);
         }}
       />
       <span className="wb-sh-unit" aria-hidden="true">
@@ -74,7 +86,8 @@ const NumberField = ({
   );
 };
 
-// The colour's hex without its #, applied once it is a whole colour.
+// The colour's hex without its #, applied once it is a whole colour; a
+// refused one reverts.
 const HexField = ({
   label,
   value,
@@ -82,13 +95,17 @@ const HexField = ({
 }: {
   label: string;
   value: string;
-  onValue: (hex: string) => void;
+  onValue: (hex: string) => boolean;
 }) => {
   const bare = value.replace(/^#/, '');
+  const ref = useRef<HTMLInputElement>(null);
   const [draft, setDraft] = useState(bare);
-  useEffect(() => setDraft(bare), [bare]);
+  useEffect(() => {
+    if (document.activeElement !== ref.current) setDraft(bare);
+  }, [bare]);
   return (
     <input
+      ref={ref}
       className="wb-sh-hex"
       aria-label={label}
       value={draft}
@@ -97,13 +114,16 @@ const HexField = ({
       onChange={(e) => {
         const typed = e.target.value.replace(/^#/, '');
         setDraft(typed);
-        if (/^[0-9a-f]{6}$/i.test(typed)) onValue(`#${typed.toLowerCase()}`);
+        if (/^[0-9a-f]{6}$/i.test(typed)) {
+          if (!onValue(`#${typed.toLowerCase()}`)) setDraft(bare);
+        }
       }}
       onBlur={(e) => {
         const typed = e.target.value.replace(/^#/, '');
         if (/^[0-9a-f]{3}$/i.test(typed)) {
           onValue(`#${[...typed.toLowerCase()].map((c) => c + c).join('')}`);
-        } else setDraft(bare);
+        }
+        setDraft(bare);
       }}
     />
   );
@@ -121,7 +141,8 @@ const ShadowEditor = ({
 }: {
   name: string;
   value: string;
-  onApply: (value: string) => void;
+  // False when the value is refused.
+  onApply: (value: string) => boolean;
 }) => {
   const layers = parseShadow(value);
   if (!layers) return null;
@@ -223,6 +244,7 @@ const ShadowEditor = ({
                 label={`Opacity${of}`}
                 unit="%"
                 value={l.alpha}
+                digits={1}
                 min={0}
                 max={100}
                 onValue={(alpha) => set(i, { alpha })}

@@ -235,11 +235,16 @@ const glyphOf = (t: TokenMeta): IconName | undefined => {
 // How the arrow keys step the token: a bare 0 of a length takes px, and
 // nothing below 0 where a negative makes no sense (letter spacing, an
 // outline offset and a stacking order may go below; of a shadow only the
-// blur, its third number, may not).
+// blur, its third number, may not). A weight steps by 100 within 100 to
+// 900, a unitless line height by 0.01.
 const nudgeOf = (t: TokenMeta): NudgeOptions => {
   const kind = kindOf(t);
   const unit =
     kind === 'length' || kind === 'shadow' || kind === 'border' ? 'px' : '';
+  if (kind === 'number' && /weight/.test(t.name)) {
+    return { by: 100, min: 100, max: 900 };
+  }
+  if (/-lh$/.test(t.name)) return { unit, min: 0, fine: true };
   if (kind === 'shadow') {
     return { unit, min: (i: number) => (i === 2 ? 0 : undefined) };
   }
@@ -376,6 +381,7 @@ const TokenRow = ({
       meta,
       mode,
       onSet,
+      onReset,
     });
 
   const value = live[mode][name] || token.values[mode];

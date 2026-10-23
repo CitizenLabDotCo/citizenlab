@@ -42,8 +42,9 @@ const splitTop = (value: string, sep: RegExp): string[] | null => {
 
 const hex2 = (n: number) => Math.round(n).toString(16).padStart(2, '0');
 
-// Opacity to one decimal of a percent: 0.06 is 6, 0.125 is 12.5.
-const percent = (a: number) => Math.round(a * 1000) / 10;
+// Opacity as a percent, as precise as the source wrote it (0.0625 is
+// 6.25), without float noise; the field rounds it for display only.
+const percent = (a: number) => Number((a * 100).toFixed(4));
 
 const parseLayer = (text: string): ShadowLayer | null => {
   const parts = splitTop(text, /\s/);
@@ -120,7 +121,7 @@ export const formatColour = (color: string, alpha: number): string => {
   const a = Math.min(100, Math.max(0, alpha));
   if (a >= 100) return `#${rgba.slice(0, 3).map(hex2).join('')}`;
   const [r, g, b] = rgba.slice(0, 3).map(Math.round);
-  return `rgba(${r},${g},${b},${Number((a / 100).toFixed(3))})`;
+  return `rgba(${r},${g},${b},${Number((a / 100).toFixed(6))})`;
 };
 
 export const formatLayer = (l: ShadowLayer): string =>
@@ -147,4 +148,12 @@ export const NEW_LAYER: ShadowLayer = {
   spread: 0,
   color: '#000000',
   alpha: 25,
+};
+
+// True when two box-shadows draw the same layers (`0px` and `0`, rgba()
+// and hex), so a value stepped back to its start counts as no edit.
+export const sameShadow = (a: string, b: string): boolean => {
+  const x = parseShadow(a);
+  const y = parseShadow(b);
+  return !!x && !!y && formatShadow(x) === formatShadow(y);
 };

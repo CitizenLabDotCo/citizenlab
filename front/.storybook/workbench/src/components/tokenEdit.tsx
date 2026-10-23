@@ -4,6 +4,7 @@ import type { Mode, TokenName } from '@ds/tokens/tokens';
 
 import type { TokenMeta } from '../lib/data';
 import { parseColour, snap } from '../lib/overrides';
+import { sameShadow } from '../lib/shadow';
 
 // React fires onChange on every tick of a drag. Only the native `change`
 // event (picker closed) commits; ticks just preview in the text field.
@@ -66,6 +67,8 @@ type EditArgs = {
   meta: TokenMeta[];
   mode: Mode;
   onSet: (name: TokenName, value: string) => string | undefined;
+  // Drops the session's edit: a value stepped back to its start.
+  onReset?: (name: TokenName) => void;
 };
 
 // A token's edit field: the draft, and the commit that snaps it to the
@@ -77,6 +80,7 @@ export const useTokenEdit = ({
   meta,
   mode,
   onSet,
+  onReset,
 }: EditArgs) => {
   const current = override ?? base;
   const [draft, setDraft] = useState(current);
@@ -120,13 +124,20 @@ export const useTokenEdit = ({
   };
   // An exact value (an arrow step, a shadow field): set as it is, with no
   // snap, so every step shows. A semantic token off the scale or palette is
-  // flagged, as a typed custom value is.
-  const apply = (value: string) => {
-    if (value === current) return;
+  // flagged, as a typed custom value is. Back at the token's own value (for
+  // a shadow, the same layers) it is no edit. False when refused.
+  const apply = (value: string): boolean => {
+    if (value === current) return true;
+    if (value === base || sameShadow(value, base)) {
+      if (override !== undefined) onReset?.(name);
+      setDraft(base);
+      setFeedback(undefined);
+      return true;
+    }
     const error = onSet(name, value);
     if (error) {
       setFeedback({ kind: 'error', text: `Not applied: ${error}.` });
-      return;
+      return false;
     }
     setDraft(value);
     const tier = meta.find((t) => t.name === name)?.tier;
@@ -136,6 +147,7 @@ export const useTokenEdit = ({
         ? { kind: 'flag', text: 'Custom value: not on the scale or palette.' }
         : undefined
     );
+    return true;
   };
   return { current, draft, setDraft, commit, apply, feedback, setFeedback };
 };

@@ -97,6 +97,28 @@ describe('TokenRow value field', () => {
     expect(onReset).toHaveBeenCalledWith('--gv-radius-2');
   });
 
+  it('drops the edit when a step lands back on the original', () => {
+    const onSet = jest.fn(() => undefined);
+    const onReset = jest.fn();
+    table(
+      <TokenRow
+        token={META[0]}
+        meta={META}
+        mode="today"
+        override="9px"
+        live={live('--gv-radius-2', '9px')}
+        hasScan={false}
+        onSet={onSet}
+        onReset={onReset}
+      />
+    );
+    fireEvent.keyDown(screen.getByTestId('wb-token-input'), {
+      key: 'ArrowDown',
+    });
+    expect(onReset).toHaveBeenCalledWith('--gv-radius-2');
+    expect(onSet).not.toHaveBeenCalled();
+  });
+
   it('draws an alias as a link to its source, and Detach gives a field', () => {
     table(
       <TokenRow
@@ -145,5 +167,29 @@ describe('TokenRow value field', () => {
       '--gv-shadow-menu',
       '0 0 12px 0 rgba(0,0,0,0.5)'
     );
+  });
+
+  it('reverts a refused shadow field and drops an edit back at the start', () => {
+    const onSet = jest.fn(() => 'too long');
+    table(
+      <TokenRow
+        token={META[2]}
+        meta={META}
+        mode="today"
+        live={live('--gv-shadow-menu', META[2].values.today)}
+        hasScan={false}
+        onSet={onSet}
+        onReset={jest.fn()}
+      />
+    );
+    fireEvent.click(screen.getByTestId('wb-shadow-toggle'));
+    const x = screen.getByLabelText('Position X') as HTMLInputElement;
+    fireEvent.change(x, { target: { value: '5' } });
+    expect(onSet).toHaveBeenCalled();
+    expect(x.value).toBe('0');
+    onSet.mockClear();
+    // 0px and 0 are the same layers: no edit.
+    fireEvent.change(x, { target: { value: '0' } });
+    expect(onSet).not.toHaveBeenCalled();
   });
 });

@@ -1,4 +1,4 @@
-import { formatShadow, parseShadow, ShadowLayer } from './shadow';
+import { formatShadow, parseShadow, sameShadow, ShadowLayer } from './shadow';
 
 const layer = (over: Partial<ShadowLayer>): ShadowLayer => ({
   inset: false,
@@ -22,7 +22,7 @@ describe('parseShadow', () => {
     expect(
       parseShadow('inset 0 1px 2px #ff000080, 0 0 0 3px rgba(214, 22, 7, 0.35)')
     ).toEqual([
-      layer({ inset: true, y: 1, blur: 2, color: '#ff0000', alpha: 50.2 }),
+      layer({ inset: true, y: 1, blur: 2, color: '#ff0000', alpha: 50.1961 }),
       layer({ spread: 3, color: '#d61607', alpha: 35 }),
     ]);
     expect(parseShadow('#fff 0 2px inset')).toEqual([
@@ -82,5 +82,27 @@ describe('formatShadow', () => {
       expect(parseShadow(written)).toEqual(layers);
       expect(formatShadow(parseShadow(written) as ShadowLayer[])).toBe(written);
     });
+  });
+});
+
+describe('opacity precision', () => {
+  it('keeps the opacity it parsed when another field changes', () => {
+    const [l] = parseShadow('0 2px 4px rgba(0,0,0,0.0625)') as ShadowLayer[];
+    expect(l.alpha).toBe(6.25);
+    expect(formatShadow([{ ...l, x: 1 }])).toBe(
+      '1px 2px 4px 0 rgba(0,0,0,0.0625)'
+    );
+  });
+});
+
+describe('sameShadow', () => {
+  it('reads 0px as 0 and rgba as its hex', () => {
+    expect(
+      sameShadow('0px 2px 4px -1px rgba(0,0,0,1)', '0 2px 4px -1px #000')
+    ).toBe(true);
+    expect(sameShadow('0 2px 4px #000', '0 2px 5px #000')).toBe(false);
+    expect(sameShadow('0 0 0 var(--gv-x) #fff', '0 0 0 var(--gv-x) #fff')).toBe(
+      false
+    );
   });
 });

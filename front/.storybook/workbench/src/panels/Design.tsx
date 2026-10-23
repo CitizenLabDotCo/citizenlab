@@ -295,7 +295,7 @@ const Design = ({
     sectionLabel: string,
     typed: string,
     exact = false
-  ) => {
+  ): boolean => {
     const bare = /^-?\d+(\.\d+)?$/.test(typed);
     const length =
       (row.snap === 'space' || row.snap === 'radius' || PX_ROWS.has(row.id)) &&
@@ -304,11 +304,16 @@ const Design = ({
     if (row.snap === 'color' && /^[0-9a-f]{3,8}$/i.test(value)) {
       value = `#${value}`;
     }
-    if (!valueFits(row.id, value)) return;
-    // An arrow step lands where it points, off the scale or not.
+    if (!valueFits(row.id, value)) return false;
+    // An arrow step lands where it points, off the scale or not; back where
+    // the row started it is no edit.
     if (exact) {
-      addEdit({ ...base(row, sectionLabel), to: { value }, kind: 'custom' });
-      return;
+      if (value === originOf(row).raw) {
+        if (editOf(row)) removeEdit(editId(storyId, path, row.id));
+      } else {
+        addEdit({ ...base(row, sectionLabel), to: { value }, kind: 'custom' });
+      }
+      return true;
     }
     const r = snapValue(row.snap, value, meta, mode);
     // Rows with no scale take a token whose value the typed one equals.
@@ -326,6 +331,7 @@ const Design = ({
     else {
       addEdit({ ...base(row, sectionLabel), to: { value }, kind: 'custom' });
     }
+    return true;
   };
 
   // Hard values of the file the selection does not cover: every healable

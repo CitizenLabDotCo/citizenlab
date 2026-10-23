@@ -79,6 +79,55 @@ describe('ValueField', () => {
     expect(onCommit).toHaveBeenLastCalledWith('0', true);
   });
 
+  it('never steps a colour, whose hex shows without its #', () => {
+    const onCommit = jest.fn();
+    render(
+      <ValueField
+        row={row({ raw: '#333333', shown: '333333' }, 'fill')}
+        onCommit={onCommit}
+        onAttach={noop}
+        onDetach={noop}
+        onOpenPicker={noop}
+      />
+    );
+    const input = screen.getByTestId('wb-insp-input') as HTMLInputElement;
+    fireEvent.keyDown(input, { key: 'ArrowUp' });
+    expect(onCommit).not.toHaveBeenCalled();
+    expect(input.value).toBe('333333');
+  });
+
+  it('keeps the field on its value when a step is refused', () => {
+    const onCommit = jest.fn(() => false);
+    render(
+      <ValueField
+        row={row({})}
+        onCommit={onCommit}
+        onAttach={noop}
+        onDetach={noop}
+        onOpenPicker={noop}
+      />
+    );
+    const input = screen.getByTestId('wb-insp-input') as HTMLInputElement;
+    fireEvent.keyDown(input, { key: 'ArrowUp' });
+    expect(onCommit).toHaveBeenCalledWith('10', true);
+    expect(input.value).toBe('9');
+  });
+
+  it('steps a font weight by 100', () => {
+    const onCommit = jest.fn();
+    render(
+      <ValueField
+        row={row({ raw: '400', shown: '400' }, 'weight')}
+        onCommit={onCommit}
+        onAttach={noop}
+        onDetach={noop}
+        onOpenPicker={noop}
+      />
+    );
+    fireEvent.keyDown(screen.getByTestId('wb-insp-input'), { key: 'ArrowUp' });
+    expect(onCommit).toHaveBeenLastCalledWith('500', true);
+  });
+
   it('offers to attach when the value equals a token', () => {
     const onAttach = jest.fn();
     render(

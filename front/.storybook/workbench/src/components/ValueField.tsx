@@ -14,8 +14,9 @@ export type FieldProps = {
   liveToken?: string;
   // The session's edit of this row, when any (the custom caution mark).
   edit?: ElementEdit;
-  // `exact`: an arrow step, applied as it is rather than snapped.
-  onCommit: (typed: string, exact?: boolean) => void;
+  // `exact`: an arrow step, applied as it is rather than snapped. False
+  // when the value is refused.
+  onCommit: (typed: string, exact?: boolean) => boolean | void;
   onAttach: (token: TokenName) => void;
   onDetach: () => void;
   onOpenPicker: () => void;
@@ -150,18 +151,25 @@ export const ValueField = ({
                 setDraft(v.shown);
               }
               // Arrows step the number by 1, Shift by 10, as Foundations'
-              // fields do; only letter spacing goes below 0.
-              const step = stepOfKey(e);
+              // fields do: a weight by 100 within 100 to 900, a line height
+              // by 0.01; only letter spacing goes below 0. A colour (hex
+              // shown without its #) never steps. The field shows the step
+              // only once the edit took it.
+              const step = row.snap === 'color' ? 0 : stepOfKey(e);
               const next =
                 step &&
                 nudgeValue(e.currentTarget.value, step, {
                   caret: e.currentTarget.selectionStart ?? undefined,
-                  min: row.id === 'ls' ? undefined : 0,
+                  ...(row.id === 'weight'
+                    ? { by: 100, min: 100, max: 900 }
+                    : {
+                        min: row.id === 'ls' ? undefined : 0,
+                        fine: row.id === 'lh',
+                      }),
                 });
               if (next) {
                 e.preventDefault();
-                setDraft(next.value);
-                onCommit(next.value, true);
+                if (onCommit(next.value, true) !== false) setDraft(next.value);
               }
             }}
           />

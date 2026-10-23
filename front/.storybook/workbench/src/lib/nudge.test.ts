@@ -22,10 +22,25 @@ describe('stepNumber', () => {
 describe('nudgeValue', () => {
   it('keeps the unit of a single value', () => {
     expect(nudgeValue('3px', 1)?.value).toBe('4px');
-    expect(nudgeValue('0.25rem', 1)?.value).toBe('1.25rem');
     expect(nudgeValue('150ms', -10)?.value).toBe('140ms');
     expect(nudgeValue('1.5', 1)?.value).toBe('2.5');
     expect(nudgeValue('400', 10)?.value).toBe('410');
+  });
+
+  it('steps em, rem and a fine unitless number by 0.01, Shift by 0.1', () => {
+    expect(nudgeValue('0.25rem', 1)?.value).toBe('0.26rem');
+    expect(nudgeValue('1em', -10)?.value).toBe('0.9em');
+    expect(nudgeValue('1.5', 1, { fine: true })?.value).toBe('1.51');
+    expect(nudgeValue('1.5', 10, { fine: true })?.value).toBe('1.6');
+    expect(nudgeValue('1.5px', 1, { fine: true })?.value).toBe('2.5px');
+  });
+
+  it('steps a font weight by 100 within 100 to 900', () => {
+    const weight = { by: 100, min: 100, max: 900 };
+    expect(nudgeValue('400', 1, weight)?.value).toBe('500');
+    expect(nudgeValue('800', 10, weight)?.value).toBe('900');
+    expect(nudgeValue('200', -1, weight)?.value).toBe('100');
+    expect(nudgeValue('100', -1, weight)?.value).toBe('100');
   });
 
   it('clamps where negatives make no sense', () => {
@@ -63,7 +78,24 @@ describe('nudgeValue', () => {
   it('leaves numbers inside functions and colours alone', () => {
     expect(nudgeValue('rgba(0,0,0,0.5)', 1)).toBeNull();
     expect(nudgeValue('#ff0000', 1)).toBeNull();
+    // Hex without its #, as the Design tab shows a colour.
+    expect(nudgeValue('000000', 1)).toBeNull();
+    expect(nudgeValue('333333', 1)).toBeNull();
+    expect(nudgeValue('3ff', 1)).toBeNull();
+    expect(nudgeValue('1e2e3e4f', 1)).toBeNull();
+    expect(nudgeValue('400', 1)?.value).toBe('401');
     expect(nudgeValue('var(--gv-space-2)', 1)).toBeNull();
     expect(nudgeValue('auto', 1)).toBeNull();
+  });
+
+  it('steps nothing when the caret is inside parentheses', () => {
+    const shadow = '0px 2px 4px -1px rgba(0,0,0,0.06)';
+    expect(
+      nudgeValue(shadow, 1, { caret: shadow.indexOf('(') + 1 })
+    ).toBeNull();
+    expect(nudgeValue(shadow, 1, { caret: shadow.length - 2 })).toBeNull();
+    expect(nudgeValue(shadow, 1, { caret: shadow.length })?.value).toBe(
+      '0px 2px 4px 0px rgba(0,0,0,0.06)'
+    );
   });
 });
