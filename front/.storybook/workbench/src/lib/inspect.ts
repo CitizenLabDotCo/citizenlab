@@ -3,16 +3,25 @@
 // Radius, Text, Effects), and for each value the token it
 // comes from. A value is `linked` when a style rule (or inline style) that
 // applies to the element names the token for that property and the token
-// resolves to the rendered value; `equal` when no rule names it but the
-// rendered value equals a token (a hard-coded value that happens to match);
-// otherwise it is a plain value.
+// resolves to the rendered value; `theme` when the value equals a city token
+// (tenant colours, the font) the component reads through the styled theme,
+// which hands it the same city value as a literal; `equal` when no rule names
+// it but the rendered value equals a token (a hard-coded value that happens to
+// match); otherwise it is a plain value.
 import type { TokenName } from '@ds/tokens/tokens';
 
 import type { IconName } from '../components/Icon';
 
 import type { TokenMeta } from './data';
 
-export type Link = 'linked' | 'equal';
+export type Link = 'linked' | 'theme' | 'equal';
+
+// Tokens the styled theme also carries per city (theme.colors.tenant*,
+// theme.fontFamily). A rendered value equal to one comes from the city.
+export const isCityToken = (t: Pick<TokenMeta, 'legacy'>) =>
+  (t.legacy ?? []).some((k) =>
+    /^theme\.(colors\.tenant\w*|fontFamily)$/.test(k)
+  );
 
 export type InspectValue = {
   // The computed value as the browser writes it.
@@ -342,6 +351,12 @@ const valueOf = (
   }
   const fits = CATEGORY[prop];
   if (!fits) return out;
+  for (const t of meta) {
+    if (t.deprecated || !fits(t) || !isCityToken(t)) continue;
+    if (resolve(prop, t.name) === raw) {
+      return { ...out, token: t.name as TokenName, link: 'theme' };
+    }
+  }
   // Scale tokens first: a value that equals both a role and a scale step
   // reads as the step.
   const ordered = [...meta].sort((a, b) => a.tier - b.tier);
@@ -661,7 +676,11 @@ export const inspectElement = (
       };
       const linked = named.find(starts);
       const equal = linked ? undefined : stacks.find((t) => starts(t.name));
+      const city = linked
+        ? undefined
+        : stacks.find((t) => isCityToken(t) && starts(t.name));
       if (linked) Object.assign(family, { token: linked, link: 'linked' });
+      else if (city) Object.assign(family, { token: city.name, link: 'theme' });
       else if (equal)
         Object.assign(family, { token: equal.name, link: 'equal' });
     }

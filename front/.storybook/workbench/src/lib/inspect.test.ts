@@ -6,6 +6,7 @@ import {
   declarations,
   defaultTarget,
   fitsProp,
+  isCityToken,
   labelOf,
   parentTarget,
   pathOf,
@@ -218,5 +219,17 @@ describe('fitsProp', () => {
     expect(fitsProp('padding-left')?.(t('--gv-space-2', 'space'))).toBe(true);
     expect(fitsProp('padding-left')?.(t('--gv-white', 'color'))).toBe(false);
     expect(fitsProp('width')).toBeUndefined();
+  });
+});
+
+describe('isCityToken', () => {
+  it('knows the tokens the theme carries per city', () => {
+    expect(isCityToken({ legacy: ['theme.colors.tenantPrimary'] })).toBe(true);
+    expect(
+      isCityToken({ legacy: ['theme.colors.tenantPrimaryLighten75'] })
+    ).toBe(true);
+    expect(isCityToken({ legacy: ['theme.fontFamily'] })).toBe(true);
+    expect(isCityToken({ legacy: ['theme.colors.grey800'] })).toBe(false);
+    expect(isCityToken({ legacy: [] })).toBe(false);
   });
 });

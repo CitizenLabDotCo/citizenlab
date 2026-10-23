@@ -222,7 +222,10 @@ const Design = ({
     editOf(row)?.from ?? {
       raw: row.value.raw,
       shown: row.value.shown,
-      token: row.value.link === 'linked' ? row.value.token : undefined,
+      token:
+        row.value.link === 'linked' || row.value.link === 'theme'
+          ? row.value.token
+          : undefined,
     };
   // The property a row belongs to: Layout holds padding and gap rows.
   const groupOf = (row: InspectRow, sectionLabel: string) =>
@@ -249,6 +252,21 @@ const Design = ({
   // a swap when it started bound. Back to where it started = no edit.
   const bind = (row: InspectRow, sectionLabel: string, token: TokenName) => {
     const from = originOf(row);
+    // A city value read through the theme: attaching its own token is the
+    // heal (read the variable), drawn the same.
+    if (
+      !editOf(row) &&
+      row.value.link === 'theme' &&
+      row.value.token === token
+    ) {
+      addEdit({
+        ...base(row, sectionLabel),
+        from: { raw: from.raw, shown: from.shown },
+        to: { value: resolved[token] ?? row.value.raw, token },
+        kind: 'attach',
+      });
+      return;
+    }
     if (from.token === token) {
       removeEdit(editId(storyId, path, row.id));
       return;

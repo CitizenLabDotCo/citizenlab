@@ -104,6 +104,36 @@ describe('ValueField', () => {
     expect(onDetach).toHaveBeenCalled();
   });
 
+  it('draws a city value from the theme as a pill whose city glyph attaches', () => {
+    const onAttach = jest.fn();
+    render(
+      <ValueField
+        row={row(
+          {
+            token: '--gv-color-tenant-primary',
+            link: 'theme',
+            raw: 'rgb(98, 70, 159)',
+            shown: '62469F',
+            swatch: 'rgb(98, 70, 159)',
+          },
+          'fill'
+        )}
+        liveToken="#62469F"
+        onCommit={noop}
+        onAttach={onAttach}
+        onDetach={noop}
+        onOpenPicker={noop}
+      />
+    );
+    expect(screen.getByTestId('wb-insp-value').getAttribute('data-link')).toBe(
+      'theme'
+    );
+    expect(screen.getByText('color-tenant-primary')).toBeTruthy();
+    expect(screen.queryByTestId('wb-insp-detach')).toBeNull();
+    fireEvent.click(screen.getByTestId('wb-insp-suggest'));
+    expect(onAttach).toHaveBeenCalledWith('--gv-color-tenant-primary');
+  });
+
   it('keeps W read-only', () => {
     render(
       <ValueField

@@ -32,7 +32,8 @@ export const ValueField = ({
   onOpenPicker,
 }: FieldProps) => {
   const v = row.value;
-  const bound = v.link === 'linked' && !!v.token;
+  // A city value the theme hands over reads as bound: it follows the city.
+  const bound = (v.link === 'linked' || v.link === 'theme') && !!v.token;
   const lead = v.swatch ? (
     <span
       className="wb-vf-swatch"
@@ -55,7 +56,7 @@ export const ValueField = ({
       <div
         className="wb-vf wb-vf-pill"
         data-testid="wb-insp-value"
-        data-link="linked"
+        data-link={v.link}
         data-token={token}
         data-row={row.id}
       >
@@ -70,7 +71,21 @@ export const ValueField = ({
           <span className="wb-vf-name">{shortName(token)}</span>
           {liveToken && <span className="wb-vf-muted">{v.shown}</span>}
         </button>
-        {row.editable && (
+        {v.link === 'theme' && row.editable && (
+          // Through the theme today: attaching reads the variable instead,
+          // so redesign and token edits reach it.
+          <button
+            type="button"
+            className="wb-vf-side wb-vf-city"
+            data-testid="wb-insp-suggest"
+            data-token={token}
+            aria-label={`From the city theme. Attach ${shortName(token)}`}
+            onClick={() => onAttach(token)}
+          >
+            <Icon name="city" size={14} />
+          </button>
+        )}
+        {row.editable && v.link !== 'theme' && (
           <button
             type="button"
             className="wb-vf-side wb-vf-detach"
