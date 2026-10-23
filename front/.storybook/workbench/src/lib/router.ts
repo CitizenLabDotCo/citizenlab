@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 // Hash routes of the shell. `#/start` is the default.
 export type Route =
   | { name: 'start' }
-  | { name: 'foundations'; category?: string }
+  | { name: 'foundations'; category?: string; token?: string }
   | { name: 'components'; storyId?: string }
   | { name: 'patterns'; storyId?: string }
   | { name: 'pages'; storyId?: string }
@@ -16,13 +16,22 @@ export const parseHash = (hash: string): Route => {
   const path =
     hash.replace(/^#/, '').split('?')[0].replace(/\/+$/, '') || '/start';
   const [, first, second, ...rest] = path.split('/');
-  if (rest.length > 0) return { name: 'not-found', path };
+  // Foundations takes a third segment: the token row to show.
+  if (rest.length > 1 || (rest.length === 1 && first !== 'foundations')) {
+    return { name: 'not-found', path };
+  }
   const param = second ? decodeURIComponent(second) : undefined;
   switch (first) {
     case 'start':
       return param ? { name: 'not-found', path } : { name: 'start' };
     case 'foundations':
-      return { name: 'foundations', category: param };
+      return rest.length
+        ? {
+            name: 'foundations',
+            category: param,
+            token: decodeURIComponent(rest[0]),
+          }
+        : { name: 'foundations', category: param };
     case 'components':
     case 'patterns':
     case 'pages':

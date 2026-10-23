@@ -30,6 +30,7 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
       return (
         <Foundations
           category={route.category}
+          token={route.token}
           meta={TOKEN_META}
           mode={canvas.toolbar.mode}
           onMode={(mode) => canvas.setToolbar({ ...canvas.toolbar, mode })}

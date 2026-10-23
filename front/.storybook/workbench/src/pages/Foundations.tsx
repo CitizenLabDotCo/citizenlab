@@ -78,6 +78,8 @@ export const CATEGORIES: Category[] = [
 
 type Props = {
   category?: string;
+  // A token to scroll to and focus (`#/foundations/<category>/<token>`).
+  token?: string;
   meta: TokenMeta[];
   mode: Mode;
   onMode: (mode: Mode) => void;
@@ -460,6 +462,7 @@ const Ramp = ({
 // The page of one token category, or the list of categories.
 const Foundations = ({
   category,
+  token,
   meta,
   mode,
   onMode,
@@ -519,6 +522,21 @@ const Foundations = ({
     });
   };
   const allOpen = groups.length > 0 && openRamps.size === groups.length;
+
+  // A deep link from the token picker: open the token's ramp, then scroll
+  // to its row and focus its input, once per token.
+  const shown = useRef<string>();
+  useEffect(() => {
+    if (!token || shown.current === token || !tokens.length) return;
+    shown.current = token;
+    const ramp = groups.find((g) => g.tokens.some((t) => t.name === token));
+    if (ramp) setOpenRamps((prev) => new Set(prev).add(ramp.id));
+    window.requestAnimationFrame(() => {
+      const input = document.getElementById(`wb-edit-${token.slice(2)}`);
+      input?.scrollIntoView({ block: 'center' });
+      input?.focus({ preventScroll: true });
+    });
+  }, [token, groups, tokens]);
 
   const count = Object.keys(overrides).length;
   if (!category) {
