@@ -106,6 +106,14 @@ const redirectChecks = async (page: any, base: string, failures: string[]) => {
   for (const [from, to] of REDIRECTS) {
     await page.goto(`${base}/workbench/${from}`);
     const heading = ROUTES.find(([h]) => h === to)?.[1];
+    // The URL first: the previous page may already show the same heading.
+    try {
+      await page.waitForURL((u: URL) => hashOf(u.toString()) === to, {
+        timeout: 5000,
+      });
+    } catch {
+      // Reported below with the hash it ended on.
+    }
     try {
       await page.waitForFunction(
         (h: string) => document.querySelector('main h1')?.textContent === h,

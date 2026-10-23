@@ -568,20 +568,10 @@ code {
   border-radius: var(--gv-radius-full);
 }
 
-.wb-badge-live {
-  color: var(--wb-pass);
-  background: var(--wb-pass-soft);
-}
-
 .wb-badge-soon {
   color: var(--wb-muted);
   background: var(--wb-subtle);
   box-shadow: inset 0 0 0 1px var(--wb-border);
-}
-
-.wb-badge-accent {
-  color: var(--wb-accent);
-  background: var(--wb-accent-soft);
 }
 
 .wb-count {
