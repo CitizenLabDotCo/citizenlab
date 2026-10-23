@@ -22,10 +22,9 @@ import { PlaceholderArt } from './Placeholder';
 import type { FrameGlobals } from '../lib/frame';
 import type { Mode } from '@ds/tokens/tokens';
 
-const COPY: Record<Section, { title: string; lead: string; noun: string }> = {
+const COPY: Record<Section, { title: string; lead?: string; noun: string }> = {
   components: {
     title: 'Components',
-    lead: 'Every library component, rendered live from its Default story. A ring shows how much of a partly converted component follows the tokens, from the latest scan; the line under each name says what axe, a keyboard story and an agent review found.',
     noun: 'component',
   },
   patterns: {
@@ -166,7 +165,7 @@ const Gallery = ({ section, globals, onMode }: Props) => {
       <header className="wb-page-head wb-page-head-row">
         <div>
           <h1>{copy.title}</h1>
-          <p className="wb-lead">{copy.lead}</p>
+          {copy.lead && <p className="wb-lead">{copy.lead}</p>}
         </div>
         <div className="wb-head-tools">
           <Segmented
