@@ -33,6 +33,21 @@ describe EmailCampaigns::ConsentPolicy do
     it { is_expected.to permit(:update_by_campaign_id) }
   end
 
+  context 'for a pending invitee and the invite reminder' do
+    let(:owner) { create(:invited_user) }
+    let(:user) { owner }
+    let(:consent) { create(:consent, user: owner, campaign_type: create(:invite_reminder_campaign).type) }
+
+    it { is_expected.to permit(:update_by_campaign_id) }
+  end
+
+  context 'for a registered user and the invite reminder' do
+    let(:user) { owner }
+    let(:consent) { create(:consent, user: owner, campaign_type: create(:invite_reminder_campaign).type) }
+
+    it { is_expected.not_to permit(:update_by_campaign_id) }
+  end
+
   context 'for another user' do
     let(:user) { create(:user) }
 

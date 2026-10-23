@@ -33,6 +33,8 @@ const EmailSettingPage = () => {
   const [unsubscribedConsentId, setUnsubscribedConsentId] = useState<
     string | undefined
   >();
+  // Assume they can until the unsubscribe response says otherwise, so the error paths still show the form.
+  const [canManagePreferences, setCanManagePreferences] = useState(true);
 
   const searchParams = useSearch({ strict: false });
   const unsubscriptionToken = searchParams.unsubscription_token;
@@ -65,6 +67,9 @@ const EmailSettingPage = () => {
               data[0].data.attributes.campaign_type_description_multiloc
             );
             setUnsubscribedConsentId(data[0].data.id);
+            setCanManagePreferences(
+              data[0].data.attributes.can_manage_preferences
+            );
           },
           onError: () => {
             setInitialUnsubscribeStatus('error');
@@ -88,11 +93,12 @@ const EmailSettingPage = () => {
                 className="e2e-unsubscribe-status"
                 status={initialUnsubscribeStatus}
                 unsubscribedCampaignMultiloc={unsubscribedCampaignMultiloc}
-                unsubscriptionToken={unsubscriptionToken}
+                canManagePreferences={canManagePreferences}
               />
             )}
           {initialUnsubscribeStatus &&
-            initialUnsubscribeStatus !== 'loading' && (
+            initialUnsubscribeStatus !== 'loading' &&
+            canManagePreferences && (
               <CampaignConsentForm
                 trackEventName={tracks.unsubscribedFromLink}
                 runOnSave={closeInitialUnsubscribe}

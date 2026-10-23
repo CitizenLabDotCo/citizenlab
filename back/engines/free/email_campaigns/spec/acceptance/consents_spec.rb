@@ -36,6 +36,7 @@ resource 'Campaign consents' do
         expect(status).to eq 200
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq @consents.size
+        expect(json_response[:data].pluck(:attributes).pluck(:can_manage_preferences)).to all(be true)
       end
 
       example 'Listing all campaigns creates unexisting consents', document: false do
@@ -203,6 +204,7 @@ resource 'Campaign consents' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq consent.id
         expect(json_response.dig(:data, :attributes, :consented)).to eq consented
+        expect(json_response.dig(:data, :attributes, :can_manage_preferences)).to be true
       end
     end
 
@@ -227,6 +229,23 @@ resource 'Campaign consents' do
         json_response = json_parse(response_body)
         expect(json_response.dig(:data, :id)).to eq consent.id
         expect(json_response.dig(:data, :attributes, :consented)).to eq consented
+        expect(json_response.dig(:data, :attributes, :can_manage_preferences)).to be false
+      end
+    end
+
+    context 'when a pending invitee unsubscribes from the invite reminder' do
+      let(:invitee) { create(:invited_user) }
+      let(:campaign) { create(:invite_reminder_campaign) }
+      let!(:consent) { create(:consent, user: invitee, campaign_type: campaign.type) }
+      let(:unsubscription_token) { create(:email_campaigns_unsubscription_token, user: invitee).token }
+
+      example 'Unsubscribe from the invite reminder using an unsubscription token', document: false do
+        do_request
+        expect(response_status).to eq 200
+        json_response = json_parse(response_body)
+        expect(json_response.dig(:data, :id)).to eq consent.id
+        expect(consent.reload.consented).to be false
+        expect(json_response.dig(:data, :attributes, :can_manage_preferences)).to be false
       end
     end
   end

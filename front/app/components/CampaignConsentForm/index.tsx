@@ -6,7 +6,9 @@ import {
   ICampaignConsentData,
   IConsentChanges,
 } from 'api/campaign_consents/types';
+import useCampaignConsents from 'api/campaign_consents/useCampaignConsents';
 import useUpdateCampaignConsents from 'api/campaign_consents/useUpdateCampaignConsents';
+import { internalCommentNotificationTypes } from 'api/campaigns/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
@@ -27,7 +29,6 @@ import {
   CampaignConsentChild,
   ConsentGroupView,
 } from './typings';
-import useManagedCampaignConsents from './useManagedCampaignConsents';
 import { groupCampaignsConsent, sortGroupedCampaignConsents } from './utils';
 
 type Props = {
@@ -45,10 +46,17 @@ const CampaignConsentForm = ({
   unsubscribedConsentId,
 }: Props) => {
   const localize = useLocalize();
+  const isInternalCommentingEnabled = useFeatureFlag({
+    name: 'internal_commenting',
+  });
   const { formatMessage } = useIntl();
 
-  const { data: originalCampaignConsents } =
-    useManagedCampaignConsents(unsubscriptionToken);
+  const { data: originalCampaignConsents } = useCampaignConsents({
+    unsubscriptionToken,
+    withoutCampaignNames: [
+      ...(isInternalCommentingEnabled ? [] : internalCommentNotificationTypes),
+    ],
+  });
 
   const { mutate: updateCampaignConsents } = useUpdateCampaignConsents();
 
@@ -85,7 +93,7 @@ const CampaignConsentForm = ({
         ]);
       setCampaignConsents(Object.fromEntries(campaignConsentsEntries));
     }
-  }, [originalCampaignConsents, localize]);
+  }, [originalCampaignConsents, localize, isInternalCommentingEnabled]);
 
   useEffect(() => {
     if (loading && !!showFeedback) {
