@@ -47,6 +47,8 @@ const config: StorybookConfig = {
     '@storybook/addon-a11y',
     // Hover, focus and active states through `parameters.pseudo`.
     'storybook-addon-pseudo-states',
+    // MCP server at /mcp on the dev server, for agents (preview software).
+    '@storybook/addon-mcp',
   ],
   framework: '@storybook/react-vite',
   core: {
