@@ -24,21 +24,21 @@ const APP_FOLDER_ALIASES = [
   'routes',
   'translations',
   'typings',
-  'utils'
+  'utils',
 ].map((folder) => ({
   find: folder,
-  replacement: `${process.cwd()}/app/${folder}`
+  replacement: `${process.cwd()}/app/${folder}`,
 }));
 
 const COMPONENT_LIBRARY_ALIAS = {
   find: '@citizenlab/cl2-component-library',
-  replacement: `${process.cwd()}/app/component-library`
+  replacement: `${process.cwd()}/app/component-library`,
 };
 
 const CONSTANTS_ALIAS = {
   find: 'app/containers/App/constants',
-  replacement: `${process.cwd()}/app/containers/App/constants.ts`
-}
+  replacement: `${process.cwd()}/app/containers/App/constants.ts`,
+};
 
 // Opt-in bundle analysis: `SB_BUNDLE_STATS=<file> npm run build-storybook`
 // writes each chunk's size, imports and modules (rendered bytes) to <file>,
@@ -110,8 +110,8 @@ const config: StorybookConfig = {
           ...mockModuleAliases,
           ...APP_FOLDER_ALIASES,
           COMPONENT_LIBRARY_ALIAS,
-          CONSTANTS_ALIAS
-        ]
+          CONSTANTS_ALIAS,
+        ],
       },
       define: {
         // Only expose the env vars actually read by app/ code (Storybook bundles
@@ -129,11 +129,19 @@ const config: StorybookConfig = {
           MATOMO_HOST: process.env.MATOMO_HOST,
           POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
           // Library components carry data-gv-component in the workbench, so
-          // ds:audit finds a story's component root (attributes only, no
-          // visual change). Set it to an empty string to build without.
+          // ds:audit finds a story's component root. Set it to an empty
+          // string to build without.
           VITE_GV_DESIGN_TAGS: process.env.VITE_GV_DESIGN_TAGS ?? '1',
-        }
-      }
+          // Storybook only, never the app build (vite.config.ts): with the
+          // tags on, Button, Title, Text and Image also take the workbench's
+          // instance props live and report what they render
+          // (app/component-library/utils/gvInstance.ts). It adds state and
+          // DOM reads to each instance, so an app build of a design-system
+          // branch keeps the attributes only.
+          VITE_GV_INSTANCE_PROPS:
+            process.env.VITE_GV_DESIGN_TAGS === '' ? '' : '1',
+        },
+      },
     });
   },
   staticDirs: ['./public', './static'],

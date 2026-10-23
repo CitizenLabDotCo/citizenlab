@@ -7,14 +7,16 @@
  *
  *   const { props, tag } = useGvInstance('Button', rawProps, { size: 's' });
  *
- * With VITE_GV_DESIGN_TAGS unset (production, participants) it returns the
- * props object it was given and an empty tag: no state, no effects, no
- * attribute, no global. The flag is fixed for a build, so the hook's path
- * never changes during a render's life.
- *
- * With the flag on (Storybook on design-system branches) each instance
- * gets `data-gv-instance` (a per-mount id) next to `data-gv-component`, and
- * a registry on the window holds what the workbench sets:
+ * Two flags, both fixed for a build, so the hook's path never changes
+ * during a render's life:
+ * - VITE_GV_DESIGN_TAGS unset (production, participants): the props object
+ *   it was given and an empty tag. No state, effect, attribute or global.
+ * - VITE_GV_DESIGN_TAGS=1 alone (an app build of a design-system branch):
+ *   the props object and `data-gv-component`, as gvTag gives. Nothing else.
+ * - VITE_GV_DESIGN_TAGS=1 and VITE_GV_INSTANCE_PROPS=1 (Storybook only,
+ *   .storybook/main.ts): the live path. Each instance gets
+ *   `data-gv-instance` (a per-mount id) next to `data-gv-component`, and a
+ *   registry on the window holds what the workbench sets:
  * - overrides, per story id, keyed `<Name>#<index>`: the index is the
  *   instance's place among the document's elements tagged with the same
  *   name, in DOM order, a held copy of a previous story skipped. Only the
@@ -57,7 +59,13 @@ export type InstanceOverrides = Partial<
   Record<string, Partial<Record<string, Record<string, InstanceValue>>>>
 >;
 
-type Live = { name: string; refresh: () => void; report: () => InstanceReport };
+type Live = {
+  name: string;
+  refresh: () => void;
+  // Reads the instance's place again; renders only when it moved.
+  reindex: () => void;
+  report: () => InstanceReport;
+};
 
 export type InstanceRegistry = {
   overrides: InstanceOverrides;
@@ -67,9 +75,14 @@ export type InstanceRegistry = {
   next: number;
   onReport?: (reports: InstanceReport[]) => void;
   timer: ReturnType<typeof setTimeout> | null;
+  reindexing: boolean;
 };
 
 export const designTagsOn = () => process.env.VITE_GV_DESIGN_TAGS === '1';
+
+// The live path: Storybook's workbench only, never an app build.
+export const instancePropsOn = () =>
+  designTagsOn() && process.env.VITE_GV_INSTANCE_PROPS === '1';
 
 type WithRegistry = { [REGISTRY_KEY]?: InstanceRegistry };
 
@@ -84,6 +97,7 @@ export const registryOf = (win: Window = window): InstanceRegistry => {
       live: new Map(),
       next: 0,
       timer: null,
+      reindexing: false,
     };
     host[REGISTRY_KEY] = reg;
   }
@@ -106,11 +120,27 @@ export const scheduleReport = (reg: InstanceRegistry) => {
   }, 0);
 };
 
+// After an instance mounts or unmounts, every other one reads its place
+// again: a conditional mount earlier in the page shifts the indexes, and an
+// override must follow its instance, not its old number. Once per batch.
+const scheduleReindex = (reg: InstanceRegistry) => {
+  if (reg.reindexing) return;
+  reg.reindexing = true;
+  queueMicrotask(() => {
+    reg.reindexing = false;
+    reg.live.forEach((l) => l.reindex());
+  });
+};
+
+// Story ids and keys come from outside: objects without a prototype, so
+// `constructor` is a key like any other.
+const bare = <T>(): Record<string, T> => Object.create(null);
+
 // Replaces every override and renders the instances again. Anything that
 // is not a plain value is dropped here; the instance drops props it does
 // not declare.
 export const setOverrides = (reg: InstanceRegistry, input: unknown) => {
-  const clean: InstanceOverrides = {};
+  const clean: InstanceOverrides = bare();
   if (input && typeof input === 'object' && !Array.isArray(input)) {
     Object.entries(input as Record<string, unknown>).forEach(
       ([storyId, byKey]) => {
@@ -121,8 +151,8 @@ export const setOverrides = (reg: InstanceRegistry, input: unknown) => {
             Object.entries(props as Record<string, unknown>).forEach(
               ([prop, value]) => {
                 if (!isValue(value)) return;
-                const story = (clean[storyId] ??= {});
-                (story[key] ??= {})[prop] = value;
+                const story = (clean[storyId] ??= bare());
+                (story[key] ??= bare())[prop] = value;
               }
             );
           }
@@ -165,7 +195,8 @@ const valueOf = (v: unknown): InstanceValue | null => (isValue(v) ? v : null);
 const useLiveInstance = <P extends object>(
   name: string,
   props: P,
-  defaults: Partial<P>
+  defaults: Partial<P>,
+  orKeys: readonly string[]
 ): Result<P> => {
   const reg = registryOf();
   const uid = useRef('');
@@ -173,6 +204,8 @@ const useLiveInstance = <P extends object>(
   const [index, setIndex] = useState(-1);
   const [, refresh] = useReducer((n: number) => n + 1, 0);
   const names = Object.keys(defaults);
+  const indexRef = useRef(index);
+  indexRef.current = index;
   const found =
     index >= 0 ? reg.overrides[reg.scope]?.[`${name}#${index}`] : undefined;
   const override: Record<string, InstanceValue> = {};
@@ -203,14 +236,24 @@ const useLiveInstance = <P extends object>(
     reg.live.set(id, {
       name,
       refresh,
+      reindex: () => {
+        const el = elementOf(document, id);
+        const at = el ? instanceIndex(el, name) : -1;
+        if (at !== indexRef.current) setIndex(at);
+      },
       report: () => {
         const { props: own, override: over } = latest.current;
         const raw = own as Record<string, unknown>;
         const el = elementOf(document, id);
         const base: Record<string, InstanceValue | null> = {};
         const shown: Record<string, InstanceValue | null> = {};
+        const fallback = defaults as Record<string, unknown>;
         names.forEach((k) => {
-          base[k] = valueOf(raw[k] ?? (defaults as Record<string, unknown>)[k]);
+          // As the component's render applies its default: `??`, or `||`
+          // for the props it reads as `props.size || 's'`.
+          base[k] = valueOf(
+            orKeys.includes(k) ? raw[k] || fallback[k] : raw[k] ?? fallback[k]
+          );
           shown[k] = k in over ? over[k] : base[k];
         });
         return {
@@ -224,8 +267,10 @@ const useLiveInstance = <P extends object>(
         };
       },
     });
+    scheduleReindex(reg);
     return () => {
       reg.live.delete(id);
+      scheduleReindex(reg);
       scheduleReport(reg);
     };
     // Once per mount: the report reads the latest props through the ref.
@@ -238,18 +283,24 @@ const useLiveInstance = <P extends object>(
   };
 };
 
+const NO_KEYS: readonly string[] = [];
+
 /**
- * The props to render with and the root's tag. Flag off: `props` itself
- * and `{}`. `defaults` names the instance properties (keys) and their
- * defaults as the component applies them (undefined when it has none).
+ * The props to render with and the root's tag. Without the live path:
+ * `props` itself, and `{}` or gvTag's attribute. `defaults` names the
+ * instance properties (keys) and their defaults as the component applies
+ * them (undefined when it has none); `orKeys` the ones it applies to any
+ * falsy value (`props.size || 's'`) rather than to undefined.
  */
 export const useGvInstance = <P extends object>(
   name: string,
   props: P,
-  defaults: Partial<P>
+  defaults: Partial<P>,
+  orKeys: readonly (keyof P & string)[] = NO_KEYS as readonly (keyof P &
+    string)[]
 ): Result<P> =>
-  designTagsOn()
-    ? // The flag is fixed for a build: the same branch on every render.
+  instancePropsOn()
+    ? // The flags are fixed for a build: the same branch on every render.
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      useLiveInstance(name, props, defaults)
-    : { props, tag: NO_TAG };
+      useLiveInstance(name, props, defaults, orKeys)
+    : { props, tag: designTagsOn() ? { [COMPONENT_ATTR]: name } : NO_TAG };

@@ -673,7 +673,9 @@ const Button = forwardRef<Ref, Props>((rawProps, ref) => {
   const { props, tag } = useGvInstance<Props>(
     'Button',
     rawProps,
-    INSTANCE_DEFAULTS
+    INSTANCE_DEFAULTS,
+    // Read below as `props.size || 's'`: any falsy value is the default.
+    ['size', 'buttonStyle', 'iconPos']
   );
   const handleOnClick = (event: MouseEvent<HTMLElement>) => {
     const { onClick, processing, disabled } = props;

@@ -8,14 +8,15 @@
 //   with their place, values as rendered, and what code sets.
 // The decorator tells the registry which story renders, before it does, so
 // the story's overrides are there on its first render and the frame keeps
-// them across a switch in place. Nothing runs without VITE_GV_DESIGN_TAGS.
+// them across a switch in place. Nothing runs without
+// VITE_GV_INSTANCE_PROPS, which only .storybook/main.ts sets.
 import React from 'react';
 
 import { StoryContext } from '@storybook/react';
 import { addons } from 'storybook/preview-api';
 
 import {
-  designTagsOn,
+  instancePropsOn,
   registryOf,
   scheduleReport,
   setOverrides,
@@ -50,7 +51,7 @@ export const instancePropsDecorator = (
   Story: () => JSX.Element,
   context: StoryContext
 ) => {
-  if (designTagsOn()) {
+  if (instancePropsOn()) {
     connect();
     setScope(registryOf(), context.id);
   }
