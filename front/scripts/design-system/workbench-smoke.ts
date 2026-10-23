@@ -234,6 +234,8 @@ const OPTIONAL_DATA = [
   '/design-scan.json',
   '/design-changes.json',
   '/routes.fixture.json',
+  '/design-scan.summary.json',
+  '/trend.json',
   // The Review page's login probe; a static server has no platform API.
   '/web_api/v1/users/me',
   '/a11y-results.json',

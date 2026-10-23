@@ -198,4 +198,9 @@ export const loadAll = () =>
     loadChanges(),
     loadA11y(),
     loadAudits(),
+    // Read here too, so Start here's missing list does not depend on which
+    // page was visited first.
+    loadSummary(),
+    loadTrend(),
+    loadRouteFixture(),
   ]);
