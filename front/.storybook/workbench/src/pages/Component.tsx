@@ -5,6 +5,7 @@ import ChangesDrawer from '../components/ChangesDrawer';
 import Icon from '../components/Icon';
 import PanelTabs from '../components/PanelTabs';
 import Segmented from '../components/Segmented';
+import StoryChips from '../components/StoryChips';
 import {
   CitySetting,
   ToolbarState,
@@ -27,6 +28,7 @@ import {
   parsePath,
   parseZoom,
   returnHash,
+  storyHash,
   storyOfComponent,
   withParams,
 } from '../lib/nesting';
@@ -105,11 +107,11 @@ const tabLabel = (s: StoryRef) =>
           .replace(/(?<= )[A-Z]/g, (c) => c.toLowerCase())
     : s.name;
 
-// One story title, laid out like a design tool: the breadcrumbs with the
-// mode and Changes on their right, in line with the panel's tabs; the dotted
-// canvas fills the rest (one mode, or both side by side); a bar floats at the
-// foot of the screen for tool, viewport, zoom and city; the inspector on the
-// right: Design, A11y, Usage.
+// One story title, laid out like a design tool: the breadcrumbs with Changes
+// on their right, in line with the panel's tabs; every state and variant as
+// a chip under them; the dotted canvas fills the rest (one mode, or both side
+// by side); a bar floats at the foot of the screen for tool, viewport, zoom,
+// mode and city; the inspector on the right: Design, A11y, Usage.
 const Component = ({
   section,
   storyId,
@@ -315,6 +317,15 @@ const Component = ({
   const states = group.stories.filter((s) => s.state);
   const variants = group.stories.filter((s) => !s.state);
   const current = group.stories.find((s) => s.id === storyId);
+  // A switch keeps the way back from an open (`from`).
+  const go = (id: string) => {
+    window.location.hash = storyHash(
+      window.location.hash,
+      section,
+      id,
+      from ? { from: paramOf(hash, 'from') } : undefined
+    );
+  };
   const split = view === 'split';
   const back = from
     ? {
@@ -387,31 +398,6 @@ const Component = ({
           <span aria-current="page">{group.name}</span>
         </nav>
         <span className="wb-canvas-bar-end">
-          <Segmented<ModeChoice>
-            label="Mode"
-            testId="wb-toolbar-mode"
-            value={split ? 'both' : toolbar.mode}
-            options={[
-              { value: 'today', label: 'Today' },
-              { value: 'redesign', label: 'Redesign' },
-              {
-                value: 'both',
-                label: (
-                  <>
-                    <Icon name="split" size={16} />
-                    Both
-                  </>
-                ),
-              },
-            ]}
-            onChange={(m) => {
-              if (m === 'both') setView('split');
-              else {
-                setView('single');
-                if (m !== toolbar.mode) setToolbar({ ...toolbar, mode: m });
-              }
-            }}
-          />
           <button
             type="button"
             className="wb-changes-toggle wb-icon-button"
@@ -427,6 +413,30 @@ const Component = ({
           </button>
         </span>
       </div>
+      {(states.length > 0 || variants.length > 0) && (
+        <div className="wb-story-strip" data-testid="wb-insp-story">
+          {states.length > 0 && (
+            <StoryChips
+              id="state"
+              label="State"
+              stories={states}
+              value={storyId}
+              tabLabel={tabLabel}
+              onChange={go}
+            />
+          )}
+          {variants.length > 0 && (
+            <StoryChips
+              id="variant"
+              label={states.length > 0 ? 'Variant' : 'Story'}
+              stories={variants}
+              value={storyId}
+              tabLabel={tabLabel}
+              onChange={go}
+            />
+          )}
+        </div>
+      )}
       {drawer && (
         <ChangesDrawer
           meta={TOKEN_META}
@@ -533,6 +543,31 @@ const Component = ({
           fitScale={fitScale}
           onChange={(zoom) => setToolbar({ ...toolbar, zoom })}
         />
+        <Segmented<ModeChoice>
+          label="Mode"
+          testId="wb-toolbar-mode"
+          value={split ? 'both' : toolbar.mode}
+          options={[
+            { value: 'today', label: 'Today' },
+            { value: 'redesign', label: 'Redesign' },
+            {
+              value: 'both',
+              label: (
+                <>
+                  <Icon name="split" size={16} />
+                  Both
+                </>
+              ),
+            },
+          ]}
+          onChange={(m) => {
+            if (m === 'both') setView('split');
+            else {
+              setView('single');
+              if (m !== toolbar.mode) setToolbar({ ...toolbar, mode: m });
+            }
+          }}
+        />
         <CitySetting toolbar={toolbar} setToolbar={setToolbar} />
       </div>
 
@@ -550,17 +585,12 @@ const Component = ({
             icon: 'sliders',
             content: (
               <Design
-                section={section}
                 storyId={storyId}
-                states={states}
-                variants={variants}
-                tabLabel={tabLabel}
                 componentName={group.name}
                 frames={shownFrames}
                 selection={selection}
                 instanceInfo={instanceInfo}
                 onOpen={(instance) => open(instance, selection.selected)}
-                keep={from ? { from: paramOf(hash, 'from') } : undefined}
                 meta={TOKEN_META}
                 mode={toolbar.mode}
                 overrides={overrides}

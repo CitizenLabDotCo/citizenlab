@@ -442,11 +442,9 @@ const serve = (root: string, port = 0): Promise<http.Server> =>
 
 // A setting on the canvas bar: the mode is a row of buttons, the others
 // are selects.
-// Mode sits on the top row, the city on the floating bar.
+// Mode and city sit on the floating bar.
 const SETTING = (key: string) =>
-  `[data-testid="${
-    key === 'mode' ? 'wb-canvas-bar' : 'wb-float-bar'
-  }"] [data-testid="wb-toolbar-${key}"]`;
+  `[data-testid="wb-float-bar"] [data-testid="wb-toolbar-${key}"]`;
 const settingOf = async (
   page: any,
   key: string
@@ -533,9 +531,9 @@ const canvasChecks = async (
     failures.push('fit: the canvas frame was never fitted to the story');
   }
 
-  // Mode on the top bar: the frame's html gets the attribute.
+  // Mode on the floating bar: the frame's html gets the attribute.
   await page.click(
-    '[data-testid="wb-canvas-bar"] [data-testid="wb-toolbar-mode"] [data-value="redesign"]'
+    '[data-testid="wb-float-bar"] [data-testid="wb-toolbar-mode"] [data-value="redesign"]'
   );
   const frame = await canvasFrame(page, 'redesign');
   const attr = await frame.$eval('html', (el: Element) =>

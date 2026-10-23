@@ -10,12 +10,7 @@ import { resolveTokens } from '../lib/contrast';
 import type { Finding, TokenMeta } from '../lib/data';
 import { editId, ElementEdit, valueFits } from '../lib/elementEdits';
 import { healToken, isHealable } from '../lib/healTask';
-import {
-  chainOf,
-  componentOf,
-  headerInstanceOf,
-  storyHash,
-} from '../lib/nesting';
+import { chainOf, componentOf, headerInstanceOf } from '../lib/nesting';
 import {
   fitsProp,
   Inspection,
@@ -29,7 +24,6 @@ import {
 } from '../lib/inspect';
 import type { Overrides } from '../lib/overrides';
 import { snapValue } from '../lib/overrides';
-import type { Section, StoryRef } from '../lib/stories';
 import { pickerGroups } from '../lib/tokenPicker';
 import { DEFS } from '../lib/tokenValues';
 
@@ -43,11 +37,8 @@ type Selection = {
 };
 
 type Props = {
-  section: Section;
   storyId: string;
-  states: StoryRef[];
-  variants: StoryRef[];
-  tabLabel: (s: StoryRef) => string;
+  // The story's component, the layer path's first segment.
   componentName: string;
   frames: (Window | null)[];
   selection: Selection;
@@ -60,8 +51,6 @@ type Props = {
   };
   // Open the page of the library component `instance` is the root of.
   onOpen: (instance: Element) => void;
-  // Hash parameters a story switch keeps (the way back from an open).
-  keep?: Record<string, string | null>;
   meta: TokenMeta[];
   mode: Mode;
   // Token overrides, for live values.
@@ -130,63 +119,15 @@ const GLYPH_OF_FINDING: Record<string, IconName> = {
 
 const flatRaw = (raw: string) => raw.replace(/\s+/g, '');
 
-// Every state or variant of the component as a chip: one click switches.
-const StoryChips = ({
-  id,
-  label,
-  stories,
-  value,
-  tabLabel,
-  onChange,
-  titled,
-}: {
-  id: string;
-  label: string;
-  stories: StoryRef[];
-  value: string;
-  tabLabel: (s: StoryRef) => string;
-  onChange: (id: string) => void;
-  // Both groups shown: each says which it is.
-  titled: boolean;
-}) => (
-  <div className="wb-insp-stories">
-    {titled && <p className="wb-insp-sub">{label}</p>}
-    <div
-      className="wb-story-chips"
-      role="group"
-      aria-label={label}
-      data-testid={`wb-insp-${id}`}
-    >
-      {stories.map((s) => (
-        <button
-          key={s.id}
-          type="button"
-          className="wb-story-chip"
-          aria-pressed={s.id === value}
-          data-value={s.id}
-          onClick={() => s.id !== value && onChange(s.id)}
-        >
-          {tabLabel(s)}
-        </button>
-      ))}
-    </div>
-  </div>
-);
-
-// The Design tab: the component's variant row, the selected element, its
-// values as fields and pills, the rest of the file's hard values, the props.
+// The Design tab: the selected element, its values as fields and pills,
+// the rest of the file's hard values, the props.
 const Design = ({
-  section,
   storyId,
-  states,
-  variants,
-  tabLabel,
   componentName,
   frames,
   selection,
   instanceInfo,
   onOpen,
-  keep,
   meta,
   mode,
   overrides,
@@ -238,10 +179,6 @@ const Design = ({
     setPicker(undefined);
     setAncestors(false);
   }, [selected]);
-
-  const go = (id: string) => {
-    window.location.hash = storyHash(window.location.hash, section, id, keep);
-  };
 
   const path = selected ? pathOf(selected) : null;
   const editOf = (row: InspectRow) =>
@@ -412,34 +349,6 @@ const Design = ({
 
   return (
     <div className="wb-insp" data-testid="wb-panel-design">
-      <section className="wb-insp-block" data-testid="wb-insp-story">
-        <header className="wb-insp-head">
-          <h3>{componentName}</h3>
-        </header>
-        {states.length > 0 && (
-          <StoryChips
-            id="state"
-            label="State"
-            stories={states}
-            value={storyId}
-            tabLabel={tabLabel}
-            onChange={go}
-            titled={variants.length > 0}
-          />
-        )}
-        {variants.length > 0 && (
-          <StoryChips
-            id="variant"
-            label={states.length > 0 ? 'Variant' : 'Story'}
-            stories={variants}
-            value={storyId}
-            tabLabel={tabLabel}
-            onChange={go}
-            titled={states.length > 0}
-          />
-        )}
-      </section>
-
       <section
         className="wb-insp-block wb-insp-prop"
         data-testid="wb-insp-selection"

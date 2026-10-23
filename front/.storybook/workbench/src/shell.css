@@ -6726,7 +6726,7 @@ tr[data-result='needs-human'] .wb-a11y-note {
   color: inherit;
 }
 
-/* The component page's top row: breadcrumbs, then mode and Changes. Built
+/* The component page's top row: breadcrumbs, then Changes. Built
    like the panel's tab bar (12px above a 40px row, a line under it), so the
    two rows and the logo share a centre line and the line runs across. */
 .wb-component-top {
@@ -6746,8 +6746,8 @@ tr[data-result='needs-human'] .wb-a11y-note {
   white-space: nowrap;
 }
 
-/* Changes opens over the canvas, under the top row: the canvas keeps its
-   place. */
+/* Changes opens over the chips and the canvas, under the top row: the
+   canvas keeps its place. */
 .wb-component-page > .wb-drawer-inline {
   position: absolute;
   top: calc(40px + 1px + 2 * var(--gv-space-3));
@@ -6770,7 +6770,7 @@ tr[data-result='needs-human'] .wb-a11y-note {
   border-radius: 0;
 }
 
-/* Tool, viewport, zoom and city float 24px above the foot of the screen,
+/* Tool, viewport, zoom, mode and city float 24px above the screen's foot,
    Figma style, centred on the canvas. */
 .wb-float-bar {
   position: absolute;
@@ -6808,18 +6808,29 @@ tr[data-result='needs-human'] .wb-a11y-note {
   border-top: 0;
 }
 
-/* States and variants as chips under the component name. */
-.wb-insp-stories + .wb-insp-stories {
-  margin-top: var(--gv-space-3);
+/* States and variants as chips under the breadcrumbs, one row per group. */
+.wb-story-strip {
+  display: grid;
+  flex: none;
+  gap: var(--gv-space-2);
+  padding: var(--gv-space-2) var(--gv-space-6);
+  border-bottom: 1px solid var(--wb-border);
 }
 
-.wb-insp-sub {
-  margin: 0 0 var(--gv-space-1);
+.wb-story-chips-label {
   font-size: var(--gv-fs-xs);
   color: var(--wb-muted);
 }
 
+/* The label in its own column, so wrapped chips line up under the first. */
 .wb-story-chips {
+  display: grid;
+  grid-template-columns: 4.5em minmax(0, 1fr);
+  gap: var(--gv-space-2);
+  align-items: baseline;
+}
+
+.wb-story-chips-list {
   display: flex;
   flex-wrap: wrap;
   gap: var(--gv-space-1);
