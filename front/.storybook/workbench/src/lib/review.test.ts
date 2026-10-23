@@ -4,6 +4,7 @@ import {
   applyEdits,
   changeReach,
   dismissConsent,
+  highlightSupport,
   DesignChanges,
   frameState,
   groupCommits,
@@ -421,6 +422,79 @@ describe('dismissConsent', () => {
   });
 });
 
+describe('design commits only', () => {
+  it('a tags-like tooling commit touching many library files marks no route', () => {
+    const c = changes([
+      Array.from({ length: 12 }, (_, i) => `front/app/p${i}.tsx`),
+      ['front/app/admin/a.stories.tsx', 'front/app/p4.tsx'],
+      ['front/app/p3.tsx'],
+    ]);
+    c.commits[0].kind = 'other';
+    c.commits[0].component = undefined;
+    c.commits[1].kind = 'story';
+    c.commits[2].kind = 'lift';
+    const reach = changeReach(bigScan(), c, {}, []);
+    expect([...reach.routes]).toEqual(['admin/p3']);
+    expect(reach.shellFiles).toEqual([]);
+    expect(
+      routesFor(bigScan(), { commit: 'sha0', changes: c }).map((r) => r.path)
+    ).toEqual([]);
+  });
+
+  it('a token override still marks the routes that read it', () => {
+    const s = scan({
+      findings: [
+        {
+          file: 'app/radius.tsx',
+          line: 1,
+          col: 1,
+          raw: 'theme.borderRadius',
+          category: 'legacy-theme',
+          confidence: 'high',
+        },
+      ],
+    });
+    const c = changes([['front/app/shared.tsx']]);
+    c.commits[0].kind = 'other';
+    expect([...affectedRoutes(s, c, { '--gv-radius-2': '8px' }, meta)]).toEqual(
+      ['admin/projects/$projectId']
+    );
+  });
+});
+
+describe('prMarkdown headline', () => {
+  it('names shell files when no route is reached', () => {
+    const md = prMarkdown(
+      {
+        ...reviewSummary(bigScan(), { overrides: {}, meta: [] }),
+        designCommits: 3,
+        components: [],
+        routes: [],
+        shellFiles: ['app/component-library/utils/styleUtils.ts'],
+      },
+      'L'
+    );
+    expect(md).toContain(
+      '**3 design changes to shell files on every page, reviewed in the workbench.**'
+    );
+  });
+});
+
+describe('highlightSupport', () => {
+  it('is per component: library components are tagged, UI and admin are not', () => {
+    const lib = 'app/component-library/components/Button/index.tsx';
+    expect(highlightSupport(lib, true)).toBe('ok');
+    expect(highlightSupport(lib, false)).toBe('untagged-build');
+    expect(
+      highlightSupport('app/components/UI/ButtonWithLink/index.tsx', true)
+    ).toBe('untagged-component');
+    expect(
+      highlightSupport('app/components/admin/Toggle/index.tsx', true)
+    ).toBe('untagged-component');
+    expect(highlightSupport(undefined, true)).toBe('untagged-component');
+  });
+});
+
 describe('summary and PR text', () => {
   const mixed = () => {
     const c = changes([
@@ -440,6 +514,7 @@ describe('summary and PR text', () => {
     c.commits[3].scanDelta = { offSpec: 1743 };
     c.commits[4].kind = 'other';
     c.commits[4].component = undefined;
+    c.commits[4].scanDelta = { offSpec: 2 };
     return c;
   };
 
@@ -459,7 +534,9 @@ describe('summary and PR text', () => {
       offSpecBefore: 105,
       offSpecAfter: 100,
       scannerDelta: 1743,
+      otherDelta: 2,
     });
+    // Design commits (shared.tsx, admin/a.tsx) and the token edit only.
     expect(summary.routes).toEqual(['', 'admin/projects', 'ideas/$slug']);
 
     const md = prMarkdown(
@@ -479,6 +556,7 @@ describe('summary and PR text', () => {
     expect(md).toContain(
       'Scanner rule changes moved the count by +1743 and are not in this delta'
     );
+    expect(md).toContain('Other commits moved it by +2');
     expect(md).toContain('`/ideas/:slug`');
     expect(md).not.toContain('$slug');
     expect(md).toContain('`--gv-radius-2`: 8px');

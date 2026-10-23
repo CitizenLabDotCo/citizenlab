@@ -210,9 +210,9 @@ const RouteList = ({
               </span>
             </summary>
             <p className="wb-muted">
-              Files nine in ten routes render (the app shell, the theme bridge).
-              They mark no route here, so the filter stays useful. Check them on
-              any page.
+              Files nine in ten routes render, such as shared library components
+              and the theme bridge. A design commit changed them, so check them
+              on any page. They mark no route here, so the filter stays useful.
             </p>
             <ul>
               {shell.map((f) => (

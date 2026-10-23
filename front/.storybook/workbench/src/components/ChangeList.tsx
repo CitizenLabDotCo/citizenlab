@@ -3,11 +3,10 @@ import { useMemo } from 'react';
 import { BRANCH } from '../lib/componentPanels';
 import {
   ChangeCommit,
-  CommitGroup,
-  DESIGN_KINDS,
   DesignChanges,
   fileLink,
   groupCommits,
+  isDesignCommit,
 } from '../lib/review';
 
 import Icon from './Icon';
@@ -64,7 +63,8 @@ const Commit = ({
   seen: boolean;
   onSeen: (on: boolean) => void;
   onRoutes: () => void;
-  routes: { routes: number; shell: boolean };
+  // undefined: not a design commit, so it reaches no route.
+  routes?: { routes: number; shell: boolean };
 }) => (
   <li
     className={seen ? 'wb-commit wb-commit-seen' : 'wb-commit'}
@@ -91,7 +91,7 @@ const Commit = ({
           {c.sha.slice(0, 8)}
         </a>
         {c.scanDelta && <Delta n={c.scanDelta.offSpec} />}
-        {routes.shell && (
+        {routes?.shell && (
           <span
             className="wb-commit-shell"
             title="Changes a file nine in ten routes render"
@@ -99,7 +99,7 @@ const Commit = ({
             Every page
           </span>
         )}
-        {(routes.routes > 0 || !routes.shell) && (
+        {routes && (routes.routes > 0 || !routes.shell) && (
           <button
             type="button"
             className="wb-commit-routes"
@@ -154,19 +154,31 @@ const ChangeList = ({
   routeCount,
   tokenReach,
 }: Props) => {
-  // Groups with design commits (token, heal, lift) first and open,
-  // story-only components next, the rest of the unnamed commits last.
-  const groups = useMemo(() => {
-    const rank = (g: CommitGroup) =>
-      g.kinds.some((k) => DESIGN_KINDS.has(k.kind))
-        ? 0
-        : g.component === null
-        ? 2
-        : 1;
-    return groupCommits(changes?.commits ?? [])
-      .map((g, i) => ({ g, i }))
-      .sort((a, b) => rank(a.g) - rank(b.g) || a.i - b.i)
-      .map(({ g }) => ({ ...g, design: rank(g) === 0 }));
+  // Three sections: design commits (token, heal, lift) by component and
+  // open, story commits, then tooling (tags, scans, scripts). Only design
+  // commits reach routes, so only they get a routes button.
+  const sections = useMemo(() => {
+    const all = changes?.commits ?? [];
+    const design = all.filter(isDesignCommit);
+    const stories = all.filter((c) => c.kind === 'story');
+    const tooling = all.filter((c) => !isDesignCommit(c) && c.kind !== 'story');
+    return [
+      { id: 'design', title: 'Design changes', groups: groupCommits(design) },
+      { id: 'story', title: 'Stories', groups: groupCommits(stories) },
+      {
+        id: 'tooling',
+        title: 'Tooling',
+        groups: tooling.length
+          ? [
+              {
+                component: null,
+                count: tooling.length,
+                kinds: [{ kind: 'other' as const, commits: tooling }],
+              },
+            ]
+          : [],
+      },
+    ].filter((x) => x.groups.length > 0);
   }, [changes]);
   if (!loaded) {
     return (
@@ -267,51 +279,71 @@ const ChangeList = ({
           </p>
         </div>
       ) : (
-        groups.map((g) => {
-          const done = g.kinds
-            .flatMap((k) => k.commits)
-            .filter((c) => seen.has(c.sha)).length;
-          return (
-            <details
-              key={g.component ?? '-'}
-              className="wb-cgroup"
-              open={g.design || groups.length <= 6}
-              data-testid="wb-change-group"
-            >
-              <summary>
-                <span className="wb-cgroup-name">
-                  {g.component ?? 'No component'}
-                </span>
-                <span
-                  className={
-                    done === g.count ? 'wb-count wb-count-on' : 'wb-count'
-                  }
-                  title={`${done} of ${g.count} seen`}
+        sections.map((sec) => (
+          <section
+            key={sec.id}
+            className="wb-csection"
+            data-testid={`wb-change-section-${sec.id}`}
+          >
+            <h3 className="wb-csection-title">
+              {sec.title}{' '}
+              <span className="wb-count">
+                {sec.groups.reduce((n, g) => n + g.count, 0)}
+              </span>
+            </h3>
+            {sec.groups.map((g) => {
+              const done = g.kinds
+                .flatMap((k) => k.commits)
+                .filter((c) => seen.has(c.sha)).length;
+              const design = sec.id === 'design';
+              return (
+                <details
+                  key={g.component ?? '-'}
+                  className="wb-cgroup"
+                  open={design || sec.groups.length <= 3}
+                  data-testid="wb-change-group"
                 >
-                  {done}/{g.count}
-                </span>
-              </summary>
-              {g.kinds.map((k) => (
-                <div key={k.kind} className="wb-ckind">
-                  <h4>{KIND_LABEL[k.kind] ?? k.kind}</h4>
-                  <ul>
-                    {k.commits.map((c) => (
-                      <Commit
-                        key={c.sha}
-                        c={c}
-                        repoUrl={repoUrl}
-                        seen={seen.has(c.sha)}
-                        onSeen={(on) => onSeen(c.sha, on)}
-                        onRoutes={() => onRoutes(c)}
-                        routes={routeCount(c)}
-                      />
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </details>
-          );
-        })
+                  <summary>
+                    <span className="wb-cgroup-name">
+                      {g.component ??
+                        (sec.id === 'tooling'
+                          ? 'Tags, scans and scripts'
+                          : 'No component')}
+                    </span>
+                    <span
+                      className={
+                        done === g.count ? 'wb-count wb-count-on' : 'wb-count'
+                      }
+                      title={`${done} of ${g.count} seen`}
+                    >
+                      {done}/{g.count}
+                    </span>
+                  </summary>
+                  {g.kinds.map((k) => (
+                    <div key={k.kind} className="wb-ckind">
+                      {sec.id !== 'tooling' && (
+                        <h4>{KIND_LABEL[k.kind] ?? k.kind}</h4>
+                      )}
+                      <ul>
+                        {k.commits.map((c) => (
+                          <Commit
+                            key={c.sha}
+                            c={c}
+                            repoUrl={repoUrl}
+                            seen={seen.has(c.sha)}
+                            onSeen={(on) => onSeen(c.sha, on)}
+                            onRoutes={() => onRoutes(c)}
+                            routes={design ? routeCount(c) : undefined}
+                          />
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </details>
+              );
+            })}
+          </section>
+        ))
       )}
     </div>
   );

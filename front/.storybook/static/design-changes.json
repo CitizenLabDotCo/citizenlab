@@ -1,10 +1,385 @@
 {
-  "generatedAt": "2026-10-23T00:38:23.998Z",
+  "generatedAt": "2026-10-23T01:49:04.374Z",
   "base": "1a0d06e3afa8b33db8a01f33168c445daa9767c0",
   "baseRef": "master",
-  "head": "205e30e63a10a70e1e84fd24f16c0946c9d99f27",
+  "head": "ff36e80776505c23defa3752f47268ef462db344",
   "repoUrl": "https://github.com/CitizenLabDotCo/citizenlab",
   "commits": [
+    {
+      "sha": "ff36e80776505c23defa3752f47268ef462db344",
+      "subject": "design-system(review): readable frames, honest PR summary, shell-aware affected routes [AI-assisted]",
+      "body": "Frames pick the widest viewport that stays readable and the route list\nfolds once a route is picked; a frame under 45% offers actual size. Both\nframes decline the platform's cookie modal with its own button. Files in\nnine in ten route closures count as the shell: they mark no route and are\nlisted as affecting every page. Design changes are token, heal and lift\ncommits; stories and tooling are counted apart, and scanner rule commits\nstay out of the off-spec delta. The smoke waits for the Tokens panel match\ninstead of reading it once, and checks the cookie modal is gone.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/ChangeList.tsx",
+        "front/.storybook/workbench/src/components/FrameView.tsx",
+        "front/.storybook/workbench/src/components/RouteList.tsx",
+        "front/.storybook/workbench/src/lib/review.test.ts",
+        "front/.storybook/workbench/src/lib/review.ts",
+        "front/.storybook/workbench/src/pages/Placeholder.tsx",
+        "front/.storybook/workbench/src/pages/Review.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "f4db77f147c95316c7b53b2f30d5d508aca96c34",
+      "subject": "design-system(stories): TypedDeleteConfirmationModal Default, ConfirmationTyped, Loading and RTL stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/TypedDeleteConfirmationModal/TypedDeleteConfirmationModal.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "TypedDeleteConfirmationModal"
+    },
+    {
+      "sha": "a36a8bcbddfa444fcdb55144eeee1badfb680b52",
+      "subject": "design-system(stories): MoreActionsMenu Default, Hover, Focus, Open, IconOnly and RTL stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/MoreActionsMenu/MoreActionsMenu.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "MoreActionsMenu"
+    },
+    {
+      "sha": "0c179a02e6cb959589082ea726a6c7256517a65f",
+      "subject": "design-system(stories): ImagesDropzone Default, Hover, Focus, WithImage, Error and RTL stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/ImagesDropzone/ImagesDropzone.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "ImagesDropzone"
+    },
+    {
+      "sha": "59e4bdef59ffbdf4b409b598775967e7058b50fe",
+      "subject": "design-system(stories): FormResults Default, Empty and RTL stories with mocked survey results [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/admin/FormResults/FormResults.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "FormResults"
+    },
+    {
+      "sha": "c465f1d19fe0ac8f6297d142d7e9d83afb8ca2aa",
+      "subject": "design-system(stories): GraphCard Default, WithInfoTooltip, WithViewToggle, WithTopRightStat and RTL stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/admin/GraphCard/GraphCard.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "GraphCard"
+    },
+    {
+      "sha": "e267036c9042318bece0a71264054e72d68dede2",
+      "subject": "design-system(stories): MultiSelect (UI) Default, Hover, Focus, Open and RTL stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/MultiSelect/MultiSelect.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "MultiSelect"
+    },
+    {
+      "sha": "8c597acc5114182d59d1f6815921334986da1a47",
+      "subject": "design-system(stories): SearchInput (UI) Default, Hover, Focus, WithValue and RTL stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/SearchInput/SearchInput.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "SearchInput"
+    },
+    {
+      "sha": "3c11fd02840e727910a010139d8f495ccd1bae0b",
+      "subject": "design-system(stories): Image (UI) Default, Cover, Fallback and Empty stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/Image/Image.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Image"
+    },
+    {
+      "sha": "5e8e15e4a8158aa76d435b51fbb55efe3f661e1f",
+      "subject": "design-system(stories): CloseIconButton Default, Hover, Focus, FullScreen and RTL stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/CloseIconButton/CloseIconButton.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "CloseIconButton"
+    },
+    {
+      "sha": "c83d0f713f6223143cbf36a944e32327ea9652dd",
+      "subject": "design-system(stories): PageWrapper Default, FlatTopBorder and RTL stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/admin/PageWrapper/PageWrapper.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "PageWrapper"
+    },
+    {
+      "sha": "ce12cc9eeb4c6a192b557fe0469b49c7c2c5fbfb",
+      "subject": "design-system(stories): NewLabel Default and RTL stories [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/NewLabel/NewLabel.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "NewLabel"
+    },
+    {
+      "sha": "f1c62d688a34a3504183c80e87964fba0342582d",
+      "subject": "design-system(stories): Centerer Default story [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/Centerer/Centerer.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Centerer"
+    },
+    {
+      "sha": "3884a73d66e9011847fe73c6126ddf37b9f3efc0",
+      "subject": "design-system(tags): tag library components for review highlight [AI-assisted]",
+      "body": "Spread gvTag('<Name>') onto the root DOM node of each component-library\ncomponent (Box and Badge via .attrs so an outer library component's tag\nwins when it renders a Box root). Without VITE_GV_DESIGN_TAGS=1 gvTag\nreturns {}, so production markup is unchanged. Adds a Button test with\nthe flag on and off.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Accordion/index.tsx",
+        "front/app/component-library/components/Badge/index.tsx",
+        "front/app/component-library/components/Box/index.tsx",
+        "front/app/component-library/components/Button/Button.tags.test.tsx",
+        "front/app/component-library/components/Button/index.tsx",
+        "front/app/component-library/components/CardButton/index.tsx",
+        "front/app/component-library/components/Checkbox/index.tsx",
+        "front/app/component-library/components/CheckboxWithLabel/index.tsx",
+        "front/app/component-library/components/CollapsibleContainer/index.tsx",
+        "front/app/component-library/components/ColorIndicator/index.tsx",
+        "front/app/component-library/components/ColorPickerInput/index.tsx",
+        "front/app/component-library/components/Divider/index.tsx",
+        "front/app/component-library/components/Dropdown/index.tsx",
+        "front/app/component-library/components/Error/index.tsx",
+        "front/app/component-library/components/Icon/Svg.tsx",
+        "front/app/component-library/components/IconButton/index.tsx",
+        "front/app/component-library/components/IconTooltip/index.tsx",
+        "front/app/component-library/components/Image/index.tsx",
+        "front/app/component-library/components/Input/index.tsx",
+        "front/app/component-library/components/Label/index.tsx",
+        "front/app/component-library/components/ListItem/index.tsx",
+        "front/app/component-library/components/LocaleSwitcher/index.tsx",
+        "front/app/component-library/components/MultiSelect/index.tsx",
+        "front/app/component-library/components/Quote/index.tsx",
+        "front/app/component-library/components/Radio/index.tsx",
+        "front/app/component-library/components/SearchInput/index.tsx",
+        "front/app/component-library/components/Select/index.tsx",
+        "front/app/component-library/components/Shimmer/index.tsx",
+        "front/app/component-library/components/Spinner/index.tsx",
+        "front/app/component-library/components/StatusLabel/index.tsx",
+        "front/app/component-library/components/Success/index.tsx",
+        "front/app/component-library/components/Table/Table.tsx",
+        "front/app/component-library/components/Text/index.tsx",
+        "front/app/component-library/components/Title/index.tsx",
+        "front/app/component-library/components/Toggle/index.tsx",
+        "front/app/component-library/components/Tooltip/index.tsx",
+        "front/app/component-library/utils/containers/InputContainer.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "fb6a67233b370bdf4d32bdaff4ca6d03a59a877b",
+      "subject": "design-system(stories): MultiSelect RTL closed like Default, with Default's selected option [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/MultiSelect/MultiSelect.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "MultiSelect"
+    },
+    {
+      "sha": "957f88e687189e2368c436e877d6a18068a6c27f",
+      "subject": "design-system(stories): Section and ResourceList typed on their examples [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/admin/ResourceList/ResourceList.stories.tsx",
+        "front/app/components/admin/Section/Section.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Section"
+    },
+    {
+      "sha": "dcf03a1388d7dbb4ead908b220e867bb2275b38f",
+      "subject": "design-system(stories): NavigationTabs typed on its example and DisabledTab renamed Disabled [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/admin/NavigationTabs/NavigationTabs.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "NavigationTabs"
+    },
+    {
+      "sha": "b14a8b8c2a8d80c879a5246956391fc90cc68b8d",
+      "subject": "design-system(stories): GraphWrappers typed on its example and NoData renamed Empty [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/admin/GraphWrappers/GraphWrappers.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "GraphWrappers"
+    },
+    {
+      "sha": "3f828d86c5c617df42182450795c205d49583725",
+      "subject": "design-system(stories): ButtonWithLink RTL without the icon Default lacks [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/ButtonWithLink/ButtonWithLink.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "ButtonWithLink"
+    },
+    {
+      "sha": "32970c012a1a9e125a24bc86513ddf2001c23740",
+      "subject": "design-system(stories): Warning LinkHover and LinkFocus renamed Hover and Focus [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/Warning/Warning.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Warning"
+    },
+    {
+      "sha": "22cd8f85d0596e1e06a17b4e3cafea0739c0279d",
+      "subject": "design-system(stories): FormComponents typed on its example with a play that waits for the section title [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/FormComponents/FormComponents.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "FormComponents"
+    },
+    {
+      "sha": "fcc01042a6e7ebd5566bff82da2265b01613f17b",
+      "subject": "design-system(stories): GoBackButton play waits for the Go back text [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/GoBackButton/GoBackButton.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "GoBackButton"
+    },
+    {
+      "sha": "be68105a3de691b634d7052e8a27129be637ff09",
+      "subject": "design-system(stories): Error (UI) play waits for the message text [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/Error/Error.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Error"
+    },
+    {
+      "sha": "25d5565cb43fb206b5872b7d141ace72a2e8c31d",
+      "subject": "design-system(stories): InputMultilocWithLocaleSwitcher plays wait for the loaded input and switcher, the stale-cache comment is dropped, RTL fills all three locales [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/InputMultilocWithLocaleSwitcher/InputMultilocWithLocaleSwitcher.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "InputMultilocWithLocaleSwitcher"
+    },
+    {
+      "sha": "03fc6e848b0d0ff7cc1acfcb752e4fb7db88d08f",
+      "subject": "design-system(stories): Modal play waits for the close button instead of a 1500ms timer; WithoutCloseButton waits for the header [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/Modal/Modal.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Modal"
+    },
+    {
+      "sha": "da7f8baa574f35df2fec00dbebc9f8595f384a53",
+      "subject": "design-system(scan): prefix both UI and admin component names when the two roots share a folder name [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/scan/routes.test.ts",
+        "front/scripts/design-system/scan/usages.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "ac724e40c61101d6518a67ef808dbef5ce4668a4",
+      "subject": "design-system(visual): screenshot only after the story's render phase is finished, so play steps have run [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/visual-run.ts",
+        "front/scripts/design-system/visual-summary.test.ts",
+        "front/scripts/design-system/visual-summary.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "426fd3dd9f64496f18cc3078d594f28722805773",
+      "subject": "design-system(review): before/after frames of the real platform with filters and PR summary [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/App.tsx",
+        "front/.storybook/workbench/src/components/ChangeList.tsx",
+        "front/.storybook/workbench/src/components/FrameView.tsx",
+        "front/.storybook/workbench/src/components/RouteList.tsx",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/lib/review.test.ts",
+        "front/.storybook/workbench/src/lib/review.ts",
+        "front/.storybook/workbench/src/pages/Review.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "54d07a4e6ed047d8d305e4312662191ae201e7c4",
+      "subject": "design-system(visual): visual summary for 309 stories after the round 2 stories, with 2 mobile diffs (IdeaCard past budgeting, Modal RTL) [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/visual-summary.json"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "d335bb9658461ea11d0c85575b7e601aee255c73",
+      "subject": "design-system(stories): InputMultilocWithLocaleSwitcher SingleLocale waits until the three-locale switcher is gone [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/InputMultilocWithLocaleSwitcher/InputMultilocWithLocaleSwitcher.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "InputMultilocWithLocaleSwitcher"
+    },
+    {
+      "sha": "b8d2465fcbc52fe74da001c39c0a79696b76339e",
+      "subject": "design-system(stories): Modal play step waits 1500ms instead of 800ms for the enter transition [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/components/UI/Modal/Modal.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Modal"
+    },
+    {
+      "sha": "496304a09d6b4f2f5dd2085953e925294b91b369",
+      "subject": "design-system(review): commit the change list and keep it when CI reaches no base [AI-assisted]",
+      "body": "The front-build job clones with --depth 1 (no master, no history), so\nds:changes can never resolve a base there. design-changes.json is now\ncommitted and refreshed locally; when no base is reachable and the file\nexists, ds:changes keeps it unchanged and warns. Warnings are a list,\nthe no-base warning says when the cached merge-base is missing from a\nshallow clone, and commits of other kinds take a component only from\nthe first word after the colon.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/.gitignore",
+        "front/.storybook/static/design-changes.json",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/changes.test.ts",
+        "front/scripts/design-system/changes.ts"
+      ],
+      "kind": "other"
+    },
     {
       "sha": "205e30e63a10a70e1e84fd24f16c0946c9d99f27",
       "subject": "design-system(review): change list and route fixtures [AI-assisted]",

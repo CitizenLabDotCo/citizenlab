@@ -32,6 +32,7 @@ import {
   RouteFixture,
   routesFor,
   routeStats,
+  highlightSupport,
   shellFiles,
   unfilledParams,
   writeSeen,
@@ -482,10 +483,18 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
   const editCount = Object.keys(overrides).length;
   const after = reports.after;
   const highlightOn = highlight && !!state.component;
-  const tagged = after?.tagged ?? false;
+  // Tagged per component: library components carry data-gv-component on
+  // a tagged build, UI and admin components never do.
+  const componentFile = scan?.components.find(
+    (c) => c.component === state.component
+  )?.file;
+  const support = highlightSupport(componentFile, after?.tagged ?? false);
+  const tagged = support === 'ok';
 
   let highlightNote: string;
   if (!state.component) highlightNote = 'Pick a component to outline it.';
+  else if (support === 'untagged-component')
+    highlightNote = `Off: ${state.component} is not a library component, so it carries no tag.`;
   else if (!after || after.state === 'loading')
     highlightNote = 'Waiting for the page.';
   else if (after.state === 'cross-origin')
@@ -1066,7 +1075,7 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
                 width={vpW}
                 height={vpH}
                 edits={edits}
-                highlight={highlightOn ? state.component : undefined}
+                highlight={highlightOn && tagged ? state.component : undefined}
                 onReport={onReportAfter}
                 onWindow={onWindowAfter}
                 reloadKey={reloadKey}

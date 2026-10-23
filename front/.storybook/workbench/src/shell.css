@@ -4834,3 +4834,15 @@ a.wb-line:hover {
     display: none;
   }
 }
+
+.wb-csection-title {
+  display: flex;
+  gap: var(--gv-space-2);
+  align-items: center;
+  margin: var(--gv-space-4) var(--gv-space-3) 0;
+  font-size: var(--gv-fs-12);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--wb-muted);
+}

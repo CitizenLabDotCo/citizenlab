@@ -234,6 +234,12 @@ const filesOfTokens = (
   return files;
 };
 
+// The commits that change how pages look. Stories, tags, tooling and
+// scanner commits never mark a route; they are listed in Changes only.
+export const DESIGN_KINDS = new Set(['token', 'heal', 'lift']);
+
+export const isDesignCommit = (c: ChangeCommit) => DESIGN_KINDS.has(c.kind);
+
 export type ChangeReach = {
   // Routes the changes touch, the shell left out.
   routes: Set<string>;
@@ -243,10 +249,10 @@ export type ChangeReach = {
   shellCommits: string[];
 };
 
-// What the branch's commits and the session's token edits reach: routes
-// whose files a commit changed, and routes rendering a file that reads an
-// overridden token. Shell files (see shellFiles) mark no route; they are
-// listed apart.
+// What the branch's design commits and the session's token edits reach:
+// routes whose files a design commit changed, and routes rendering a file
+// that reads an overridden token. Other commits reach nothing here. Shell
+// files (see shellFiles) mark no route; they are listed apart.
 export const changeReach = (
   scan: ScanOutput,
   changes: DesignChanges | undefined,
@@ -254,7 +260,7 @@ export const changeReach = (
   meta: TokenMeta[],
   shell: Set<string> = shellFiles(scan)
 ): ChangeReach => {
-  const commits = changes?.commits ?? [];
+  const commits = (changes?.commits ?? []).filter(isDesignCommit);
   const changed = changedFiles(commits);
   const tokens = reachedTokens(Object.keys(overrides), meta);
   const reading = filesOfTokens(scan, tokens, meta);
@@ -279,13 +285,15 @@ export const affectedRoutes = (
   shell?: Set<string>
 ): Set<string> => changeReach(scan, changes, overrides, meta, shell).routes;
 
-// Routes one commit touches, the shell left out, and whether it changes
-// the shell (it then affects every page).
+// Routes one design commit touches, the shell left out, and whether it
+// changes the shell (it then affects every page). Other commits reach
+// nothing.
 export const commitReach = (
   scan: ScanOutput,
   commit: ChangeCommit,
   shell: Set<string> = shellFiles(scan)
 ): { routes: Set<string>; shell: boolean } => {
+  if (!isDesignCommit(commit)) return { routes: new Set(), shell: false };
   const files = changedFiles([commit]);
   return {
     routes: routesOfFiles(scan, files, shell),
@@ -408,6 +416,19 @@ export const dismissConsent = (doc: Document): boolean => {
   if (!reject) return false;
   reject.click();
   return true;
+};
+
+export const LIBRARY_ROOT = 'app/component-library/';
+
+// Whether the highlight can find a component in a frame: library
+// components carry data-gv-component on a tagged build; UI and admin
+// components are never tagged.
+export const highlightSupport = (
+  componentFile: string | undefined,
+  pageTagged: boolean
+): 'ok' | 'untagged-component' | 'untagged-build' => {
+  if (!componentFile?.startsWith(LIBRARY_ROOT)) return 'untagged-component';
+  return pageTagged ? 'ok' : 'untagged-build';
 };
 
 const inlineGv = (doc: Document): Map<string, string> => {
@@ -571,9 +592,9 @@ export type ReviewSummary = {
   offSpecAfter: number;
   // What scanner rule commits moved the count by (not a design change).
   scannerDelta: number;
+  // What story and tooling commits moved it by.
+  otherDelta: number;
 };
-
-export const DESIGN_KINDS = new Set(['token', 'heal', 'lift']);
 
 // A commit that changes the scanner changes what is counted, not the pages.
 export const isScannerCommit = (c: ChangeCommit) =>
@@ -590,7 +611,7 @@ export const reviewSummary = (
   const commits = changes?.commits ?? [];
   const kinds: Record<string, number> = {};
   commits.forEach((c) => (kinds[c.kind] = (kinds[c.kind] ?? 0) + 1));
-  const design = commits.filter((c) => DESIGN_KINDS.has(c.kind));
+  const design = commits.filter(isDesignCommit);
   const stories = commits.filter((c) => c.kind === 'story').length;
   const delta = (list: ChangeCommit[]) =>
     list.reduce((n, c) => n + (c.scanDelta?.offSpec ?? 0), 0);
@@ -618,9 +639,12 @@ export const reviewSummary = (
     ].sort((a, b) => a.localeCompare(b)),
     routes: [...reach.routes].sort(),
     shellFiles: reach.shellFiles,
-    offSpecBefore: after - delta(commits.filter((c) => !isScannerCommit(c))),
+    offSpecBefore: after - delta(design),
     offSpecAfter: after,
     scannerDelta: delta(scanner),
+    otherDelta: delta(
+      commits.filter((c) => !isDesignCommit(c) && !isScannerCommit(c))
+    ),
   };
 };
 
@@ -653,10 +677,18 @@ export const prMarkdown = (s: ReviewSummary, link: string): string => {
   ]
     .filter(Boolean)
     .join(' and ');
+  // No scanned route but shell files: the change reaches every page.
+  const where =
+    !s.components.length && !s.routes.length && s.shellFiles.length
+      ? ' to shell files on every page'
+      : ` across ${reach}${
+          s.shellFiles.length ? ' (plus shell files on every page)' : ''
+        }`;
   const lines = [
-    `**${plural(changes, 'design change')} across ${reach}${
-      s.shellFiles.length ? ' (plus shell files on every page)' : ''
-    }, reviewed in the workbench.**`,
+    `**${plural(
+      changes,
+      'design change'
+    )}${where}, reviewed in the workbench.**`,
     '',
   ];
   if (s.designCommits) {
@@ -691,6 +723,8 @@ export const prMarkdown = (s: ReviewSummary, link: string): string => {
             s.scannerDelta
           )} and are not in this delta`
         : ''
+    }${
+      s.otherDelta ? `. Other commits moved it by ${signed(s.otherDelta)}` : ''
     }`
   );
   if (s.shellFiles.length) {
