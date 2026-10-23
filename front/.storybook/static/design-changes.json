@@ -1,10 +1,375 @@
 {
-  "generatedAt": "2026-10-23T07:29:43.600Z",
+  "generatedAt": "2026-10-23T10:56:14.074Z",
   "base": "1a0d06e3afa8b33db8a01f33168c445daa9767c0",
   "baseRef": "master",
-  "head": "230ac49a1276d3ce098d1ceed81b400ed74f1129",
+  "head": "475767094d0c54cd0dc6837718e6d78446c3e5b4",
   "repoUrl": "https://github.com/CitizenLabDotCo/citizenlab",
   "commits": [
+    {
+      "sha": "475767094d0c54cd0dc6837718e6d78446c3e5b4",
+      "subject": "design-system(workbench): Foundations toolbar height, chip label from its tone source [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/StoryThumb.tsx",
+        "front/.storybook/workbench/src/components/Toolbar.tsx",
+        "front/.storybook/workbench/src/lib/useToolbarHeight.ts",
+        "front/.storybook/workbench/src/pages/Foundations.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "2c09afef967253540f153ee8eb78344761de394b",
+      "subject": "design-system(workbench): one a11y chip per card, product focus previews, zoom without reflow [AI-assisted]",
+      "body": "Gallery cards show one a11y chip in the worst tone of axe, the keyboard\ntest and the review, with all three in its tooltip, on one line. The\nfocus token previews use the product button and sit on a white tile, so\nthey look the same in either theme. A fixed zoom above 100% magnifies\nthe story as laid out at the canvas width, so responsive stories keep\ntheir breakpoint. The ramp chevron joins the reduced motion guard, and\nan unused gallery rule is gone.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/Canvas.tsx",
+        "front/.storybook/workbench/src/components/StoryThumb.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "d1c1c7aeae8b86aebd2362d3b57b39c8253f6bac",
+      "subject": "design-system(workbench): one-row canvas toolbar, full phone summary, no tab arrows on touch [AI-assisted]",
+      "body": "The toolbar fields keep one row and shrink first, city and viewport with\nan ellipsis and their value in the tooltip, so the view switch stays in\nthe row at 1440 with the panel open; narrower, it wraps as a whole. A\nfallback width covers browsers without field-sizing. On a phone the\ncanvas summary takes its own row and shows every value, the settings\nsheet takes focus, keeps Tab inside and hands focus back, and its scrim\nis out of the tab order; the tab rows drop their scroll arrows under\n880px. The Colour page column heads stick at the toolbar's measured\nheight, so no rows show between them.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/Nav.tsx",
+        "front/.storybook/workbench/src/components/Toolbar.tsx",
+        "front/.storybook/workbench/src/lib/focus.ts",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "1add4a8367223f8ea5d3c57d9e60fdb939aa89e3",
+      "subject": "design-system(workbench): dark chrome text reaches AA, checked by a palette test [AI-assisted]",
+      "body": "On-accent text sits on the accent fill, failed and critical chips on a\nnew fail fill, the dark fail text is lighter, the primary hover darker,\nand the Back office chip and pressed actual-size button use roles that\nread on their fills. The Review filter counts are no longer dimmed.\nlib/chromePalette.test.ts checks every text and background pair of the\n--wb-* roles in the light and the dark chrome.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/chromePalette.test.ts",
+        "front/.storybook/workbench/src/pages/proposal.css",
+        "front/.storybook/workbench/src/pages/starthere.css",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "e9f7fba0671f45bf90069eec34d6095e36590b9c",
+      "subject": "design-system(audit): one notReached entry per route, note unload writes are not counted [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/audit.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "af803eacda6c88f857c68444ed78354956d7da52",
+      "subject": "design-system(audit): OptionList across 1 page [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/audits/OptionList.json",
+        "front/.storybook/static/audits/index.json"
+      ],
+      "kind": "other",
+      "component": "OptionList"
+    },
+    {
+      "sha": "e6544b3f06dca55508473eb293fd8e14cf9319bd",
+      "subject": "design-system(audit): say a failed --open query failed, not that its selector is invalid [AI-assisted]",
+      "body": "A crashed page also makes page.$$ throw.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/audit.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "a42fdfc2b14f8863f9f1cb90d138df79fa06b363",
+      "subject": "design-system(audit): one visit load per --open, route-scoped params, unload guard [AI-assisted]",
+      "body": "Reloads between --open values now run the visit's full load (sign-in\ncheck, consent, no-animation CSS, selector wait), mark what is visible\nat load as seen so it is not collected twice, and keep what earlier\nvalues found when a reload fails. The phase flips to load when the new\ndocument commits, so unload-time writes stay with the click. The --open\nloop is exported as runOpens and tested against a local server.\n\nA plain --param overrides fixture params only; --param <route>:<name>=\noverrides a path-level value. Routes a plain name would leave on the\nsource tenant's record go to notReached, unknown names warn. A chain\nstep with no visible allowed match is logged and named in the error;\nA->B splits without spaces.\n\nThe page's pagehide, unload, freeze and hidden visibilitychange\nhandlers no longer run: writes sent from them could pass the request\nrouting unseen and reach the server.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/audit/SKILL.md",
+        "front/.storybook/AGENTS.md",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/audit.guard.test.ts",
+        "front/scripts/design-system/audit.test.ts",
+        "front/scripts/design-system/audit.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "1a929b64452e59cb621f9da08818ad49323be752",
+      "subject": "design-system(audit): instance audit for one component across the platform [AI-assisted]",
+      "body": "OptionList on the redesigned input manager of the branch preview: 4\ninstances at 1280 (Status, Tags, Assignee filters and the columns menu),\n1 heal task (list text in the primary colour vs the story's body text),\n0 writes after a click, 5 page-load tracking writes blocked.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/audits/OptionList.json",
+        "front/.storybook/static/audits/index.json"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "e3c6783d6a5e426f915c1903bceb3ebd5828bb97",
+      "subject": "design-system(audit): per-host params, URL switches and submenu chains [AI-assisted]",
+      "body": "The route fixture's ids belong to its source tenant, the back-office\nredesign turns on with a URL switch, and OptionList renders inside the\nfilter submenus. --param, --query and 'A -> B' chains cover these; the\npage reloads between --open values since not every menu closes on Escape.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/audit/SKILL.md",
+        "front/.storybook/AGENTS.md",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/audit.test.ts",
+        "front/scripts/design-system/audit.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "eaeebb8c99610c5be4fdcc0aeae691f841d27f20",
+      "subject": "design-system(workbench): roomier Review, quiet A11y panel, tab arrows, RTL controls [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/TokenRow.tsx",
+        "front/.storybook/workbench/src/pages/Component.tsx",
+        "front/.storybook/workbench/src/pages/Review.tsx",
+        "front/.storybook/workbench/src/panels/Controls.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/app/components/UI/Centerer/Centerer.stories.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "8e2c4b3777b0474bbfb9498203f20ff7e2d4453f",
+      "subject": "design-system(workbench): calmer Start page and Proposal: even grids, one card and step style, no alarm colours for policies [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/pages/Proposal.tsx",
+        "front/.storybook/workbench/src/pages/StartHere.tsx",
+        "front/.storybook/workbench/src/pages/proposal.css",
+        "front/.storybook/workbench/src/pages/starthere.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "70bba1b1aa9dd65c74c168bd597ea8c8fa27b2aa",
+      "subject": "design-system(workbench): colour ramps, sticky column heads, visible shadows, quieter values [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/TokenRow.tsx",
+        "front/.storybook/workbench/src/lib/colourGroups.test.ts",
+        "front/.storybook/workbench/src/lib/colourGroups.ts",
+        "front/.storybook/workbench/src/pages/Foundations.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "d3d2200782871b327dea0fb92829148771ee199a",
+      "subject": "design-system(workbench): one tab style, quiet gallery cards, card skeleton, two-column phone gallery [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/StoryThumb.tsx",
+        "front/.storybook/workbench/src/pages/Gallery.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "2ac2fdf180e34cdc39d08db3f484f2fc1993c585",
+      "subject": "design-system(workbench): dark theme for the chrome, theme switch, phone menu over the page [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/Nav.tsx",
+        "front/.storybook/workbench/src/lib/theme.ts",
+        "front/.storybook/workbench/src/main.tsx",
+        "front/.storybook/workbench/src/pages/Proposal.tsx",
+        "front/.storybook/workbench/src/pages/proposal.css",
+        "front/.storybook/workbench/src/pages/starthere.css",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "eefced33b906c46217655f31a2d84271bba35b48",
+      "subject": "design-system(workbench): copy fixes, plurals, neutral token wording, pattern image path [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/StoryThumb.tsx",
+        "front/.storybook/workbench/src/components/TokenRow.tsx",
+        "front/.storybook/workbench/src/lib/plural.ts",
+        "front/.storybook/workbench/src/pages/Foundations.tsx",
+        "front/.storybook/workbench/src/pages/Gallery.tsx",
+        "front/.storybook/workbench/src/pages/Proposal.tsx",
+        "front/.storybook/workbench/src/panels/Usage.tsx",
+        "front/app/design-system/tokens/tokens.meta.json",
+        "front/app/design-system/tokens/tokens.source.json",
+        "front/app/utils/storybook/getOrigin.ts",
+        "front/scripts/design-system/build-tokens.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "2f59ef26d109f4e5a633be3d45b8274bf9cd4a71",
+      "subject": "design-system(workbench): canvas measure, zoom control and compact toolbar [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/contexts/index.tsx",
+        "front/.storybook/workbench/src/components/Canvas.tsx",
+        "front/.storybook/workbench/src/components/Icon.tsx",
+        "front/.storybook/workbench/src/components/Toolbar.tsx",
+        "front/.storybook/workbench/src/lib/preview.ts",
+        "front/.storybook/workbench/src/pages/Component.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "7480bdad838dca82d1096a936a91cc819ec9d138",
+      "subject": "design-system(workbench): contain hidden labels so the shell never scrolls away, Review empty state fits a phone, Tooling closed [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/ChangeList.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "5f32ac29b4581b8cdcf87d944c1d9edd79956dc4",
+      "subject": "design-system(audit): match token colours as RGBA [AI-assisted]",
+      "body": "The audit compared token values with getComputedStyle output as\nstrings, so #00000080 (written rgba(0, 0, 0, 0.502) by the old helper)\nnever matched Chrome's rgba(0, 0, 0, 0.5). It now uses the scanner's\ncolour parser with the same alpha tolerance.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/audit.test.ts",
+        "front/scripts/design-system/audit.ts",
+        "front/scripts/design-system/scan/findings.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "659fcb629062dd7d0cdbfbae17cb270b44dbe9ad",
+      "subject": "design-system(docs): AGENTS drift, Node and npm versions, undocumented flags [AI-assisted]",
+      "body": "gvTag's real path, stylingConsts not counted as a legacy read,\nPLAYWRIGHT_BROWSERS_PATH optional, the MCP section is above, the\nengines with engine-strict, and the --out, --scan, --meta and\nscreenshot flags of ds:a11y, ds:changes, ds:mode-check and ds:smoke.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "d40ab3351239a9c49e2b713e76fe2963ff7e2caf",
+      "subject": "design-system(workbench): one routeLabel for routes [AI-assisted]",
+      "body": "Heal tasks, the Usage panel, Review and ds:audit all write a route as\n/admin/projects/:projectId.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/healTask.test.ts",
+        "front/.storybook/workbench/src/lib/healTask.ts",
+        "front/.storybook/workbench/src/lib/review.ts",
+        "front/.storybook/workbench/src/panels/Usage.tsx",
+        "front/scripts/design-system/audit.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "fc18660d60272f0b08add823890ed8d0cad700a8",
+      "subject": "design-system(workbench): load every data file in loadAll, smoke allows the optional ones [AI-assisted]",
+      "body": "loadAll also reads the scan summary, trend.json and the routes fixture,\nso Start here's missing list no longer depends on the page visited\nfirst. ds:smoke lets design-scan.summary.json and trend.json 404, as\nthe shell handles them being absent.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "ee1a3bdae30ab105130275f2b6eaff0733156c79",
+      "subject": "design-system(start): zsh-safe MCP setup, Figma pricing link [AI-assisted]",
+      "body": "The paste block has no # lines, which zsh runs as commands. Adding the\nMCP servers is its own one-time step, with --scope user, and starting\nClaude Code is the daily step. Figma's seat and call figures give way\nto a link to Figma's pricing page. Start here no longer says audits are\ncommitted.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/workbench/src/pages/StartHere.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "2332503d0923c055fe17391c304d21e403669bbd",
+      "subject": "design-system(a11y): report errored known stories apart from fixed ones [AI-assisted]",
+      "body": "A known critical whose story errored in axe was listed as no longer\nfailing, with the advice to remove its entry. It is now listed as not\nchecked, with the error, and the advice to keep the entry and fix the\nstory. The check still exits 1 in both cases.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/scripts/design-system/a11y-results.test.ts",
+        "front/scripts/design-system/a11y-results.ts",
+        "front/scripts/design-system/a11y-run.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "2f08b8db4ffb2c7d714063f704fa41f814d0fd3a",
+      "subject": "design-system(smoke): fail when the token row has no Heal button [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "53c393b826628504144748e76b4b8bcfd98dbf54",
+      "subject": "design-system(workbench): key select options by index [AI-assisted]",
+      "body": "Two options with the same label no longer collide and drop one.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/panels/Controls.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "b8e9503ebe82c7205f8b86f9b46b2cf8a7446a55",
+      "subject": "design-system(workbench): keep translucent edits off opaque primitive aliases [AI-assisted]",
+      "body": "sameColour compares alpha within 0.002 instead of the 0.5 channel\ntolerance, so rgba(0,0,0,0.6) stays as typed in the tokens.source.json\npatch.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/sourceDiff.test.ts",
+        "front/.storybook/workbench/src/lib/sourceDiff.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "edffd902248ac256ec3a00f89aeaf564d543ced8",
+      "subject": "design-system(scan): match colour suggestions on alpha [AI-assisted]",
+      "body": "parseColor keeps alpha (hex8, rgba, rgb with a slash or percent alpha)\nand nearestToken only suggests tokens of the same alpha, within half an\n8-bit step. rgba(0, 0, 0, 0.18) no longer suggests --gv-black at\ndistance 0.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/scan/findings.test.ts",
+        "front/scripts/design-system/scan/findings.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "04ca4bf4369005f49d0050cb0265446017b54a6d",
+      "subject": "design-system(skills): var(--gv-*) in the library, ds:a11y before ds:check [AI-assisted]",
+      "body": "Library code and stories write var(--gv-...) instead of importing t,\nwhich dependency-cruiser forbids there. lift, new-component, story and\nheal run ds:a11y on the touched stories before ds:check and commit\na11y-results.json. Storybook starts without ds:prepare. a11y-review\nadds a known critical only with a named person's agreement; npm flags\ngo after --; story names parameters.msw; propose names head.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/a11y-review/SKILL.md",
+        "front/.claude/skills/heal/SKILL.md",
+        "front/.claude/skills/lift/SKILL.md",
+        "front/.claude/skills/new-component/SKILL.md",
+        "front/.claude/skills/propose/SKILL.md",
+        "front/.claude/skills/story/SKILL.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "c6092f68e88d6a2f03a09f0fe685f1ee4ebc9e57",
+      "subject": "design-system(tags): import order [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Accordion/index.tsx",
+        "front/app/component-library/components/CheckboxWithLabel/index.tsx",
+        "front/app/component-library/components/CollapsibleContainer/index.tsx",
+        "front/app/component-library/components/Dropdown/index.tsx",
+        "front/app/component-library/components/IconTooltip/index.tsx",
+        "front/app/component-library/components/Input/index.tsx",
+        "front/app/component-library/components/MultiSelect/index.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "269c563fc4e2220c4ddbeedbf7b8cb4767147bd8",
+      "subject": "design-system(changes): refresh change list [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-changes.json"
+      ],
+      "kind": "other"
+    },
     {
       "sha": "230ac49a1276d3ce098d1ceed81b400ed74f1129",
       "subject": "design-system(audit): blocked requests by phase, exact --open matches [AI-assisted]",
