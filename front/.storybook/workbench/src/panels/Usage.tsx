@@ -310,15 +310,23 @@ const AuditSection = ({
             routes,
             'route',
             'routes'
-          )}, ${audit.host.replace(/^https?:\/\//, '')}, ${date}.`}
-        </p>
-        {(audit.blockedWrites ?? 0) > 0 && (
-          <p className="wb-panel-none" role="note">
-            {`The run blocked ${plural(
-              audit.blockedWrites ?? 0,
+          )}, ${audit.host.replace(/^https?:\/\//, '') || 'unknown host'}${
+            date ? `, ${date}` : ''
+          }.`}
+          {audit.blockedOnLoad > 0 &&
+            ` ${plural(
+              audit.blockedOnLoad,
               'write request',
               'write requests'
-            )}: a click tried to change data. Nothing was sent.`}
+            )} blocked on page load (expected tracking).`}
+        </p>
+        {audit.blockedWrites > 0 && (
+          <p className="wb-panel-none" role="note" data-testid="wb-audit-alarm">
+            {`The run blocked ${plural(
+              audit.blockedWrites,
+              'write request',
+              'write requests'
+            )} after a click: a trigger tried to change data. Nothing was sent.`}
           </p>
         )}
         <h4 className="wb-uprops-label">

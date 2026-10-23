@@ -1,4 +1,4 @@
-import { loadAudit, missing } from './data';
+import { loadAudit, missing, normaliseAudit } from './data';
 
 // The workbench resolves @ds through its Vite alias; jest does not.
 jest.mock('@ds/tokens/tokens.meta.json', () => [], { virtual: true });
@@ -44,5 +44,54 @@ describe('loadAudit', () => {
 
   it('never lists audits as missing', () => {
     expect(missing).toEqual([]);
+  });
+});
+
+describe('normaliseAudit', () => {
+  it('defaults every field the Audit section reads', () => {
+    expect(
+      normaliseAudit({ instances: [{ route: 'admin/a' }, 3] }, 'X')
+    ).toEqual({
+      component: 'X',
+      generatedAt: '',
+      host: '',
+      story: undefined,
+      blockedWrites: 0,
+      blockedOnLoad: 0,
+      instances: [{ route: 'admin/a', viewport: '' }],
+      notReached: [],
+      inconsistencies: [],
+      healTasks: [],
+    });
+  });
+
+  it('drops malformed entries and keeps the rest', () => {
+    const a = normaliseAudit(
+      {
+        generatedAt: 5,
+        blockedWrites: 2,
+        blockedOnLoad: 'x',
+        notReached: [{ route: 'r', reason: 'login' }, null],
+        inconsistencies: ['a', 1],
+        healTasks: 'nope',
+        instances: [{ route: 'r', viewport: 'desktop', error: 'login' }],
+      },
+      'X'
+    );
+    expect(a).toMatchObject({
+      generatedAt: '',
+      blockedWrites: 2,
+      blockedOnLoad: 0,
+      notReached: [{ route: 'r', reason: 'login' }],
+      inconsistencies: ['a'],
+      healTasks: [],
+      instances: [{ route: 'r', viewport: 'desktop', error: 'login' }],
+    });
+  });
+
+  it('is null for anything but an object', () => {
+    expect(normaliseAudit(null, 'X')).toBeNull();
+    expect(normaliseAudit([], 'X')).toBeNull();
+    expect(normaliseAudit('x', 'X')).toBeNull();
   });
 });

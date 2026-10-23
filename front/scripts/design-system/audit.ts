@@ -26,8 +26,11 @@
  *
  * The run is read-only at the network layer: every request that is not
  * GET, HEAD or OPTIONS is aborted and logged (method and path only),
- * WebSockets and service workers are blocked, and the report records
- * blockedWrites. --host has no default, so a bare run reaches nothing.
+ * WebSockets and service workers are blocked. Each blocked request is
+ * recorded with its route and phase: `load` (the platform's own tracking
+ * POSTs on every page load, expected) or `after-click:<trigger>`. Only
+ * writes after a click count as blockedWrites and raise the alarm.
+ * --host has no default, so a bare run reaches nothing.
  *
  * It compares the
  * instances with each other and with the component's Default story, and
@@ -111,8 +114,12 @@ export type AuditReport = {
   generatedAt: string;
   host: string;
   // Non-read requests and WebSockets the network guard stopped.
+  // Writes blocked after a click (the alarm), on page load (expected
+  // tracking), and WebSockets closed.
   blockedWrites?: number;
-  blocked?: string[];
+  blockedOnLoad?: number;
+  blockedSockets?: number;
+  blocked?: BlockedEntry[];
   storybook?: string;
   story?: string;
   stories?: StoryCapture[];
@@ -205,6 +212,65 @@ export const blockedLine = (method: string, url: string) => {
   }
 };
 
+// Where the run is when a request is blocked: the route it opened and
+// the phase, `load` until a click, then `after-click:<trigger>`.
+export type GuardWhere = { route: string; phase: string };
+export const LOAD_PHASE = 'load';
+export const clickPhase = (label: string) => `after-click:${label}`;
+
+export type BlockedRequest = {
+  method: string;
+  path: string;
+  route: string;
+  phase: string;
+};
+export type BlockedEntry = BlockedRequest & { count: number };
+
+export const blockedRequest = (
+  method: string,
+  url: string,
+  where: GuardWhere
+): BlockedRequest => {
+  const [m, ...rest] = blockedLine(method, url).split(' ');
+  return {
+    method: m,
+    path: rest.join(' '),
+    route: where.route,
+    phase: where.phase,
+  };
+};
+
+const isSocket = (b: BlockedRequest) => b.method === 'WEBSOCKET';
+const isClickPhase = (b: BlockedRequest) => b.phase.startsWith('after-click:');
+
+// The blocked list, deduplicated with counts, and the three totals: writes
+// after a click (the alarm), writes on page load (expected tracking) and
+// WebSockets.
+export const summariseBlocked = (blocked: BlockedRequest[]) => {
+  const entries = new Map<string, BlockedEntry>();
+  blocked.forEach((b) => {
+    const key = [b.method, b.path, b.route, b.phase].join('\u0000');
+    const e = entries.get(key);
+    if (e) e.count++;
+    else entries.set(key, { ...b, count: 1 });
+  });
+  const writes = blocked.filter((b) => !isSocket(b));
+  return {
+    entries: [...entries.values()],
+    afterClick: writes.filter(isClickPhase).length,
+    onLoad: writes.filter((b) => !isClickPhase(b)).length,
+    sockets: blocked.length - writes.length,
+  };
+};
+
+// One line of the CLI listing.
+export const blockedEntryLine = (e: BlockedEntry) =>
+  `${e.method} ${e.path} on ${e.route}, ${
+    isClickPhase(e)
+      ? `after clicking "${e.phase.slice('after-click:'.length)}"`
+      : 'on load'
+  } (x${e.count})`;
+
 // What the page says about a candidate menu trigger.
 export type TriggerInfo = {
   tag: string;
@@ -282,24 +348,25 @@ export const isSafeTrigger = (t: TriggerInfo): boolean => {
 
 // Puts the read-only guard on a Playwright browser context: requests
 // other than GET, HEAD and OPTIONS are aborted, WebSockets are closed
-// before they connect. Each one is pushed to `blocked` as method and path.
-export const guardContext = async (context: any, blocked: string[]) => {
+// before they connect. Each one is pushed to `blocked` with the method,
+// path, and the route and phase `where` holds at that moment.
+export const guardContext = async (
+  context: any,
+  blocked: BlockedRequest[],
+  where: GuardWhere
+) => {
   await context.route('**/*', (route: any) => {
     const req = route.request();
     if (isReadRequest(req.method())) return route.continue();
-    blocked.push(blockedLine(req.method(), req.url()));
+    blocked.push(blockedRequest(req.method(), req.url(), where));
     return route.abort('blockedbyclient');
   });
   await context.routeWebSocket(/.*/, (ws: any) => {
-    blocked.push(blockedLine('WEBSOCKET', ws.url()));
+    blocked.push(blockedRequest('WEBSOCKET', ws.url(), where));
     // Never connectToServer: the socket only ever talks to this handler.
     return ws.close();
   });
 };
-
-// Blocked requests that were writes (not WebSockets).
-export const blockedWrites = (blocked: string[]) =>
-  blocked.filter((b) => !b.startsWith('WEBSOCKET ')).length;
 
 // Whether `file` is `dir` or inside it.
 export const isInside = (dir: string, file: string) => {
@@ -701,6 +768,7 @@ export const auditIndex = (
     | 'inconsistencies'
     | 'healTasks'
     | 'blockedWrites'
+    | 'blockedOnLoad'
   >
 ): AuditIndex => {
   const ok = report.instances.filter((i) => !i.error);
@@ -719,6 +787,7 @@ export const auditIndex = (
         inconsistencies: report.inconsistencies.length,
         healTasks: report.healTasks.length,
         blockedWrites: report.blockedWrites ?? 0,
+        blockedOnLoad: report.blockedOnLoad ?? 0,
       },
     },
   };
@@ -958,7 +1027,8 @@ const main = async () => {
   const stories: StoryCapture[] = [];
   const unreached = new Map<string, string>();
   let storyId: string | undefined;
-  const blocked: string[] = [];
+  const blocked: BlockedRequest[] = [];
+  const where: GuardWhere = { route: 'storybook', phase: LOAD_PHASE };
 
   try {
     for (const vp of VIEWPORTS) {
@@ -971,7 +1041,7 @@ const main = async () => {
         // Service worker requests would bypass the guard.
         serviceWorkers: 'block',
       });
-      await guardContext(context, blocked);
+      await guardContext(context, blocked, where);
       await context.addInitScript({ content: script });
       const page = await context.newPage();
 
@@ -1001,6 +1071,8 @@ const main = async () => {
         const id = storyId as string;
         const file = path.join(shotDir, `story-${mode}-${vp.width}.png`);
         try {
+          where.route = 'storybook';
+          where.phase = LOAD_PHASE;
           await page.goto(
             `${args.storybook}/iframe.html?id=${encodeURIComponent(
               id
@@ -1068,6 +1140,8 @@ const main = async () => {
             error,
           });
         try {
+          where.route = routeLabel(v.route);
+          where.phase = LOAD_PHASE;
           await page.goto(v.url, { waitUntil: 'load', timeout: 45000 });
           await page
             .waitForLoadState('networkidle', { timeout: 10000 })
@@ -1150,6 +1224,7 @@ const main = async () => {
           const tryOpen = async (h: any, label: string): Promise<boolean> => {
             const before = page.url();
             try {
+              where.phase = clickPhase(label);
               await h.click({ timeout: 3000 });
               if (page.url() !== before) throw new Error('navigated');
               await page.waitForTimeout(500);
@@ -1169,17 +1244,24 @@ const main = async () => {
           };
 
           await collect();
+          // Each --open selector clicks its first match that is visible,
+          // outside the header and not on the deny list.
           for (const sel of args.open) {
-            const h = await page.$(sel).catch(() => null);
-            if (!h || !(await h.isVisible().catch(() => false))) continue;
-            const info = await triggerInfo(h);
-            if (DENIED_NAMES.test(info.name) || info.inChrome) {
-              console.log(
-                `  skipped --open ${sel}: "${info.name}" is in the header or on the deny list`
-              );
-              continue;
+            let target: any;
+            for (const h of await page.$$(sel).catch(() => [])) {
+              if (!(await h.isVisible().catch(() => false))) continue;
+              const info = await triggerInfo(h).catch(() => undefined);
+              if (!info) continue;
+              if (DENIED_NAMES.test(info.name) || info.inChrome) {
+                console.log(
+                  `  skipped a match of --open ${sel}: "${info.name}" is in the header or on the deny list`
+                );
+                continue;
+              }
+              target = h;
+              break;
             }
-            if (!(await tryOpen(h, sel))) break;
+            if (target && !(await tryOpen(target, sel))) break;
           }
           if (!found.length && !stopped && args.maxTriggers > 0) {
             const triggers = (await page.$$(TRIGGERS)).slice(0, 200);
@@ -1227,6 +1309,7 @@ const main = async () => {
   unreached.forEach((reason, route) => {
     if (!reached.has(route)) notReached.push({ route, reason });
   });
+  const guard = summariseBlocked(blocked);
   const report: AuditReport = {
     component,
     generatedAt: new Date().toISOString(),
@@ -1238,8 +1321,10 @@ const main = async () => {
     notReached,
     inconsistencies: inconsistencies(instances),
     healTasks: healTasks(component, instances, stories, scan, meta),
-    blockedWrites: blockedWrites(blocked),
-    blocked: [...new Set(blocked)],
+    blockedWrites: guard.afterClick,
+    blockedOnLoad: guard.onLoad,
+    blockedSockets: guard.sockets,
+    blocked: guard.entries,
   };
   fs.writeFileSync(
     path.join(outDir, `${component}.json`),
@@ -1268,22 +1353,28 @@ const main = async () => {
       )}`
     );
   }
-  const writes = blockedWrites(blocked);
-  const sockets = blocked.length - writes;
-  if (sockets) {
+  const listed = (pick: (e: BlockedEntry) => boolean) =>
+    guard.entries.filter(pick).map((e) => `  ${blockedEntryLine(e)}`);
+  if (guard.sockets) {
     console.log(
-      `ds:audit: closed ${sockets} WebSocket(s) before they connected.`
+      `ds:audit: closed ${guard.sockets} WebSocket(s) before they connected.`
     );
   }
-  if (writes) {
+  if (guard.onLoad) {
+    console.log(
+      [
+        `ds:audit: blocked on page load (expected tracking): ${guard.onLoad} write request(s), none sent:`,
+        ...listed((e) => !isSocket(e) && !isClickPhase(e)),
+      ].join('\n')
+    );
+  }
+  if (guard.afterClick) {
     console.error(
       [
         '',
-        `ds:audit: BLOCKED ${writes} WRITE REQUEST(S). The page tried to change data and the guard stopped it:`,
-        ...(report.blocked ?? [])
-          .filter((b) => !b.startsWith('WEBSOCKET '))
-          .map((b) => `  ${b} (x${blocked.filter((x) => x === b).length})`),
-        'Nothing was sent. Check which click caused it before the next run.',
+        `ds:audit: BLOCKED ${guard.afterClick} WRITE REQUEST(S) AFTER A CLICK. A trigger tried to change data and the guard stopped it:`,
+        ...listed((e) => !isSocket(e) && isClickPhase(e)),
+        'Nothing was sent. Check that trigger before the next run.',
       ].join('\n')
     );
   }

@@ -1,8 +1,9 @@
 import {
   auditIndex,
   AuditInstance,
+  blockedEntryLine,
   blockedLine,
-  blockedWrites,
+  blockedRequest,
   codegenCommand,
   compareInstances,
   compareWithStory,
@@ -19,6 +20,7 @@ import {
   sizeClass,
   StoryCapture,
   storyFor,
+  summariseBlocked,
   TriggerInfo,
 } from './audit';
 
@@ -499,6 +501,7 @@ describe('auditIndex', () => {
           inconsistencies: 1,
           healTasks: 2,
           blockedWrites: 0,
+          blockedOnLoad: 0,
         },
       },
     });
@@ -537,8 +540,37 @@ describe('the read-only guard', () => {
     );
   });
 
-  it('counts writes apart from WebSockets', () => {
-    expect(blockedWrites(['POST /a', 'WEBSOCKET /cable', 'PATCH /b'])).toBe(2);
+  it('records the route and phase of each blocked request', () => {
+    expect(
+      blockedRequest('post', 'https://h/web_api/v1/sessions?x=1', {
+        route: '/admin/a',
+        phase: 'load',
+      })
+    ).toEqual({
+      method: 'POST',
+      path: '/web_api/v1/sessions',
+      route: '/admin/a',
+      phase: 'load',
+    });
+  });
+
+  it('counts writes after a click apart from page-load writes and sockets', () => {
+    const at = (method: string, path: string, phase: string) =>
+      blockedRequest(method, `https://h${path}`, { route: '/admin/a', phase });
+    const s = summariseBlocked([
+      at('POST', '/web_api/v1/sessions', 'load'),
+      at('POST', '/web_api/v1/sessions', 'load'),
+      at('PATCH', '/web_api/v1/sessions/current/upgrade', 'load'),
+      at('WEBSOCKET', '/cable', 'load'),
+      at('POST', '/web_api/v1/notifications/mark_all_read', 'after-click:Bell'),
+    ]);
+    expect([s.afterClick, s.onLoad, s.sockets]).toEqual([1, 3, 1]);
+    expect(s.entries.map(blockedEntryLine)).toEqual([
+      'POST /web_api/v1/sessions on /admin/a, on load (x2)',
+      'PATCH /web_api/v1/sessions/current/upgrade on /admin/a, on load (x1)',
+      'WEBSOCKET /cable on /admin/a, on load (x1)',
+      'POST /web_api/v1/notifications/mark_all_read on /admin/a, after clicking "Bell" (x1)',
+    ]);
   });
 });
 
