@@ -82,8 +82,11 @@ export const healToken = (f: Finding, meta: TokenMeta[] = META): string[] => {
     : [];
 };
 
-// A route as a path (`admin` -> `/admin`, the home page `` -> `/`).
-export const routeLabel = (path: string) => `/${path}`;
+// A route as a path, the way the route list shows it: `admin` -> `/admin`,
+// the home page `` -> `/`, `admin/projects/$projectId` ->
+// `/admin/projects/:projectId`. The workbench and ds:audit use this one.
+export const routeLabel = (path: string) =>
+  `/${path.replace(/(^|\/)\$([A-Za-z0-9_]+)/g, '$1:$2')}`;
 
 // A value the code wraps over lines reads as one (`props.theme\n.colors`).
 const flat = (s: string) =>

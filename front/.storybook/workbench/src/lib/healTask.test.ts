@@ -32,7 +32,7 @@ describe('formatHealTask', () => {
       [
         'heal: Button · app/component-library/components/Button/index.tsx:74 · 16px → --gv-space-4 · mode both',
         'why: px, scan confidence high',
-        'check: story components-actions-button--default, routes /admin, /admin/projects/$projectId, /',
+        'check: story components-actions-button--default, routes /admin, /admin/projects/:projectId, /',
       ].join('\n')
     );
   });

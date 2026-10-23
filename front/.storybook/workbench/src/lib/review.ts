@@ -7,6 +7,7 @@ import type { Mode } from '@ds/tokens/tokens';
 
 import type { ScanOutput, TokenMeta } from './data';
 import { applyToDocument, MODE_ATTRIBUTE } from './frame';
+import { routeLabel } from './healTask';
 import type { Overrides } from './overrides';
 import { legacyIndex, tokensOfFinding } from './usage';
 
@@ -647,11 +648,6 @@ export const reviewSummary = (
     ),
   };
 };
-
-// `admin/projects/$projectId` as `/admin/projects/:projectId`, the way the
-// route list shows it.
-export const routeLabel = (path: string) =>
-  `/${path.replace(/(^|\/)\$([A-Za-z0-9_]+)/g, '$1:$2')}`;
 
 const LIST_MAX = 12;
 

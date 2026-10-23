@@ -20,7 +20,6 @@ import {
   isHealable,
   routeLabel,
 } from '../lib/healTask';
-import { routeLabel as auditRoute } from '../lib/review';
 import type { StoryGroup } from '../lib/stories';
 import type { Indexes } from '../lib/useScanIndexes';
 
@@ -379,7 +378,7 @@ const AuditSection = ({
             <ul className="wb-findings" data-testid="wb-audit-unreached">
               {cap(audit.notReached, 'unreached').map((n) => (
                 <li key={n.route} className="wb-finding">
-                  <code className="wb-finding-raw">{auditRoute(n.route)}</code>
+                  <code className="wb-finding-raw">{routeLabel(n.route)}</code>
                   <span className="wb-finding-where">{n.reason}</span>
                 </li>
               ))}

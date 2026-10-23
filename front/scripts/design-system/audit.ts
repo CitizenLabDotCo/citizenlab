@@ -53,10 +53,10 @@ import {
   normaliseFixture,
   resolveRoute,
   RouteFixture,
-  routeLabel,
   routesFor,
   unfilledParams,
 } from '../../.storybook/workbench/src/lib/review';
+import { routeLabel } from '../../.storybook/workbench/src/lib/healTask';
 
 import type { ScanOutput, TokenMeta } from './scan/schema';
 
