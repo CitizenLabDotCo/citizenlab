@@ -20,7 +20,9 @@ import { execFileSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
 
-import type { RunGit } from './changes';
+// As in changes.ts; not imported, so the workbench typecheck that reads
+// these types does not pull in the token build.
+export type RunGit = (args: string[]) => string | undefined;
 
 export type TrendTotals = {
   offSpec: number;
@@ -118,8 +120,9 @@ export const healNotesOf = (
   const score = /Score (\d+(?:\.\d+)?) → (\d+(?:\.\d+)?)/.exec(body);
   if (score) out.score = { from: Number(score[1]), to: Number(score[2]) };
   const diffs = /today (\d+) diffs?,\s+redesign (\d+) diffs?/.exec(body);
-  if (diffs)
-    {out.diffs = { today: Number(diffs[1]), redesign: Number(diffs[2]) };}
+  if (diffs) {
+    out.diffs = { today: Number(diffs[1]), redesign: Number(diffs[2]) };
+  }
   return out;
 };
 
@@ -150,8 +153,9 @@ export const healExampleOf = (
       : line.startsWith('+')
       ? added
       : null;
-    if (into && into.length < MAX_LINES && !into.includes(text))
-      {into.push(text);}
+    if (into && into.length < MAX_LINES && !into.includes(text)) {
+      into.push(text);
+    }
   }
   if (!file || (removed.length === 0 && added.length === 0)) return undefined;
   return { file, removed, added };

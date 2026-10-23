@@ -8,6 +8,7 @@ import {
   healExampleOf,
   healNotesOf,
   parseTrendLog,
+  RunGit,
   SCAN_SUMMARY,
   serializeTrend,
   shotsOf,
@@ -16,8 +17,6 @@ import {
   TREND_LOG_FORMAT,
   writeTrend,
 } from './trend';
-
-import type { RunGit } from './changes';
 
 const RS = '\x1e';
 const US = '\x1f';
@@ -55,10 +54,12 @@ const fakeGit =
   (args) => {
     if (args[0] === 'rev-parse') return opts.shallow ? 'true\n' : 'false\n';
     if (args[0] === 'log') return opts.log;
-    if (args[0] === 'show' && args[1] === `c1:${SCAN_SUMMARY}`)
-      {return summary(100, 0);}
-    if (args[0] === 'show' && args[1] === `c2:${SCAN_SUMMARY}`)
-      {return summary(99, 1);}
+    if (args[0] === 'show' && args[1] === `c1:${SCAN_SUMMARY}`) {
+      return summary(100, 0);
+    }
+    if (args[0] === 'show' && args[1] === `c2:${SCAN_SUMMARY}`) {
+      return summary(99, 1);
+    }
     if (args[0] === 'show' && args[1] === `c3:${SCAN_SUMMARY}`) return '{bad';
     if (args[0] === 'show' && args[1] === '--format=') return DIFF;
     return undefined;
