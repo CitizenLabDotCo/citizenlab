@@ -104,7 +104,7 @@ Data, `.storybook/static/` (served next to the stories):
 - `design-scan.json` (gen, git-ignored): the whole scan: `findings`, `usages`, `routes`, `components`, `pages`, `totals`, `unmapped`, `routeFiles`.
 - `design-scan.summary.json` (gen, c): totals; one commit per change gives the trend in git history. Heals and lifts commit it.
 - `design-changes.json` (gen, c): the Review page's change list. See "Refreshing".
-- `trend.json` (gen, c): scan totals at each commit of the summary, for the Proposal page's trend; `ds:changes` writes it, a shallow clone keeps the committed file.
+- `trend.json` (gen, c): scan totals at each commit of the summary, for the Proposal page's trend; `ds:changes` writes it, a shallow clone keeps the committed file. See "Refreshing".
 - `routes.fixture.json` (c): real ids and slugs for `$param` segments; `paths` (per route) is read before `params` (per name).
 - `visual-summary.json` (gen, c): last visual compare: stories, diffs, errors, retried.
 - `a11y-results.json` (gen, c): axe per story: violations by rule and impact, passes, focusable elements, and whether a play function passed.
@@ -182,7 +182,7 @@ check: story <story id>, routes <list>
 
 ## Refreshing
 
-- `design-changes.json` is committed. Before each push: `npm run ds:changes`, then commit it (`design-system(review): refresh the change list [AI-assisted]`). CI clones with depth 1, reaches no base, and keeps the committed file.
+- `design-changes.json` and `trend.json` are committed. Both name the latest commits, so they cannot ship in the heal or lift commit itself: after a heal, lift or other summary commit, and before each push, run `npm run ds:changes` and commit the two together (`design-system(review): refresh the change list and trend [AI-assisted]`). CI clones with depth 1, reaches no history, and keeps the committed files.
 - `routes.fixture.json`: `npm run ds:routes-fixture` after the test tenant is reseeded (or `-- --host <url>` for another test tenant). It prints the params it could not fill (admin-only records); fill those by hand, later runs keep them. `paths` stays before `params`.
 - `design-scan.summary.json`: `npm run ds:scan`; heals and lifts commit it with their change.
 - `visual-summary.json`: `ds:visual -- --baseline <dir>` on the commit before, `-- --compare <dir>` on the commit after; the compare writes it.
