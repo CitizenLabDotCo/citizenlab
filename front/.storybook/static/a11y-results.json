@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T04:33:52.822Z",
+  "generatedAt": "2026-10-23T05:19:23.980Z",
   "axe": "4.10.2",
   "tags": [
     "wcag2a",
@@ -212,6 +212,23 @@
       "passes": 11,
       "incomplete": 0,
       "focusable": 1
+    },
+    "components-actions-button--keyboard": {
+      "title": "Components/Actions/Button",
+      "checkedAt": "2026-10-23T05:19:15.497Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
     },
     "components-actions-button--loading": {
       "title": "Components/Actions/Button",
@@ -538,6 +555,15 @@
       "passes": 15,
       "incomplete": 0,
       "focusable": 1
+    },
+    "components-actions-iconbutton--keyboard": {
+      "title": "Components/Actions/IconButton",
+      "checkedAt": "2026-10-23T05:19:15.511Z",
+      "violations": [],
+      "passes": 15,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
     },
     "components-actions-iconbutton--rtl": {
       "title": "Components/Actions/IconButton",
@@ -983,6 +1009,23 @@
       "passes": 12,
       "incomplete": 1,
       "focusable": 1
+    },
+    "components-data-display-table--keyboard": {
+      "title": "Components/Data display/Table",
+      "checkedAt": "2026-10-23T05:19:15.518Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 18,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
     },
     "components-data-display-table--long-content": {
       "title": "Components/Data display/Table",
@@ -1740,6 +1783,23 @@
       "passes": 5,
       "incomplete": 0,
       "focusable": 1
+    },
+    "components-forms-input--keyboard": {
+      "title": "Components/Forms/Input",
+      "checkedAt": "2026-10-23T05:19:15.524Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 5,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
     },
     "components-forms-input--long-content": {
       "title": "Components/Forms/Input",
@@ -2858,6 +2918,23 @@
       "incomplete": 0,
       "focusable": 1
     },
+    "components-forms-select--keyboard": {
+      "title": "Components/Forms/Select",
+      "checkedAt": "2026-10-23T05:19:19.210Z",
+      "violations": [
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Select element must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/select-name"
+        }
+      ],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
     "components-forms-select--long-content": {
       "title": "Components/Forms/Select",
       "checkedAt": "2026-10-23T04:33:20.841Z",
@@ -3025,6 +3102,15 @@
       "passes": 8,
       "incomplete": 0,
       "focusable": 1
+    },
+    "components-forms-toggle--keyboard": {
+      "title": "Components/Forms/Toggle",
+      "checkedAt": "2026-10-23T05:19:19.244Z",
+      "violations": [],
+      "passes": 8,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
     },
     "components-forms-toggle--long-content": {
       "title": "Components/Forms/Toggle",
@@ -3496,6 +3582,15 @@
       "incomplete": 0,
       "focusable": 1
     },
+    "components-overlays-dropdown--keyboard": {
+      "title": "Components/Overlays/Dropdown",
+      "checkedAt": "2026-10-23T05:19:19.275Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 3,
+      "play": "passed"
+    },
     "components-overlays-dropdown--long-content": {
       "title": "Components/Overlays/Dropdown",
       "checkedAt": "2026-10-23T04:33:32.994Z",
@@ -3583,6 +3678,23 @@
       "passes": 9,
       "incomplete": 1,
       "focusable": 1
+    },
+    "components-overlays-icontooltip--keyboard": {
+      "title": "Components/Overlays/IconTooltip",
+      "checkedAt": "2026-10-23T05:19:19.316Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 10,
+      "incomplete": 1,
+      "focusable": 1,
+      "play": "passed"
     },
     "components-overlays-icontooltip--long-content": {
       "title": "Components/Overlays/IconTooltip",
@@ -3717,6 +3829,15 @@
       "passes": 3,
       "incomplete": 0,
       "focusable": 0
+    },
+    "components-overlays-tooltip--keyboard": {
+      "title": "Components/Overlays/Tooltip",
+      "checkedAt": "2026-10-23T05:19:22.098Z",
+      "violations": [],
+      "passes": 6,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
     },
     "components-overlays-tooltip--long-content": {
       "title": "Components/Overlays/Tooltip",
