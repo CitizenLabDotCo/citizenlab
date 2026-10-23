@@ -1,11 +1,14 @@
 import React from 'react';
 
 import { Meta, StoryObj } from '@storybook/react';
+import { waitFor } from 'storybook/test';
 
 import Error from '.';
 
 // The app's form error. It reads the app configuration (mocked by MSW) to
-// fill API error messages. "(UI)" keeps it apart from the library Error.
+// fill API error messages, and renders nothing until that has loaded, so the
+// play step waits for the message. "(UI)" keeps it apart from the library
+// Error.
 const meta = {
   title: 'Components/Feedback/Error (UI)',
   tags: ['shared'],
@@ -17,6 +20,16 @@ const meta = {
       <Error {...args} />
     </div>
   ),
+  play: async ({ canvasElement }) => {
+    await waitFor(() => {
+      const text = canvasElement.querySelector(
+        '[data-testid="error-message-text"]'
+      );
+      if (!text?.textContent) {
+        throw new globalThis.Error('message not rendered yet');
+      }
+    });
+  },
 } satisfies Meta<typeof Error>;
 
 export default meta;
