@@ -1,10 +1,29 @@
 {
-  "generatedAt": "2026-10-24T20:11:30.193Z",
+  "generatedAt": "2026-10-24T20:16:28.942Z",
   "base": "1a0d06e3afa8b33db8a01f33168c445daa9767c0",
   "baseRef": "master",
-  "head": "77942c27e9ac6124c57e926b708c594bb2fb1b14",
+  "head": "8008a2bea9f51cf5cf047cbce6711a14b98094b5",
   "repoUrl": "https://github.com/CitizenLabDotCo/citizenlab",
   "commits": [
+    {
+      "sha": "8008a2bea9f51cf5cf047cbce6711a14b98094b5",
+      "subject": "design-system(scripts): smoke checks for a platform that reads no tokens [AI-assisted]",
+      "body": "The share link override is checked on the frame's radius token, the\nDesign tab expects the button's radius to equal the token in a fresh\nsession, and the Proposal numbers are read once the summary loads.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "b6893a1df79ba079cec67f710eeef34226462493",
+      "subject": "design-system(review): refresh the change list and trend [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-changes.json",
+        "front/.storybook/static/trend.json"
+      ],
+      "kind": "other"
+    },
     {
       "sha": "77942c27e9ac6124c57e926b708c594bb2fb1b14",
       "subject": "design-system(scan): scan summary of the platform at master [AI-assisted]",
