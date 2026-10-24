@@ -310,7 +310,7 @@ const InsightsContent = () => {
                   </Box>
                   {supportsAiAnalysis && (
                     <Button
-                      buttonStyle="primary"
+                      buttonStyle="admin-dark"
                       icon="stars"
                       onClick={handleGoToAnalysis}
                       processing={isCreatingAnalysis}

@@ -342,7 +342,7 @@ const SurveyActions = ({ phase }: Props) => {
             />
           </Box>
           <Button
-            buttonStyle="primary"
+            buttonStyle="admin-dark"
             icon="stars"
             onClick={goToAnalysis}
             processing={isAddLoading || isUpdateLoading}
