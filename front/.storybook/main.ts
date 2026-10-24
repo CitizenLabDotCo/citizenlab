@@ -104,7 +104,14 @@ const config: StorybookConfig = {
     const statsFile = process.env.SB_BUNDLE_STATS;
 
     return mergeConfig(config, {
-      plugins: statsFile ? [bundleStats(statsFile)] : [],
+      // `npm run ds:local`: served under /storybook/ next to the platform.
+      ...(process.env.DS_LOCAL_BASE ? { base: process.env.DS_LOCAL_BASE } : {}),
+      plugins: [
+        ...(statsFile ? [bundleStats(statsFile)] : []),
+        ...(process.env.DS_LOCAL_BASE
+          ? [underBase(process.env.DS_LOCAL_BASE)]
+          : []),
+      ],
       resolve: {
         alias: [
           ...mockModuleAliases,
@@ -135,3 +142,16 @@ const config: StorybookConfig = {
   staticDirs: ['./public', './static'],
 };
 export default config;
+
+// Under a base, Storybook's iframe still asks for two entry scripts at the
+// root; point them under the base too.
+function underBase(base: string): Plugin {
+  return {
+    name: 'ds-local-under-base',
+    transformIndexHtml: {
+      order: 'post',
+      handler: (html) =>
+        html.replace(/(src|href)="\/(?!\/)(?!storybook\/)/g, `$1="${base}`),
+    },
+  };
+}

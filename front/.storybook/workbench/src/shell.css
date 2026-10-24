@@ -6743,3 +6743,77 @@ tr[data-result='needs-human'] .wb-a11y-note {
   border-color: var(--wb-accent);
 }
 
+/* Local run: save to code, saved edits, push */
+.wb-local {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-2);
+  margin-bottom: var(--gv-space-3);
+  padding-bottom: var(--gv-space-3);
+  border-bottom: 1px solid var(--wb-border);
+}
+
+.wb-local-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gv-space-2);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wb-local-row p {
+  flex: 1 1 14rem;
+  margin: 0;
+}
+
+.wb-local-branch {
+  display: flex;
+  flex: 1 1 14rem;
+  flex-direction: column;
+  gap: var(--gv-space-1);
+  font-size: var(--gv-fs-xs);
+  color: var(--wb-muted);
+}
+
+.wb-local-branch input {
+  min-height: 32px;
+  padding: 0 var(--gv-space-2);
+  font-family: var(--gv-font-mono, monospace);
+  border: 1px solid var(--wb-border-strong);
+  border-radius: var(--gv-radius-sm, 4px);
+}
+
+.wb-local-branch input[aria-invalid='true'] {
+  border-color: var(--wb-error);
+}
+
+.wb-local-error {
+  margin: 0;
+  padding-left: 8px;
+  border-left: 3px solid var(--wb-error);
+  color: var(--wb-text);
+}
+
+.wb-local-saved {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.wb-change-list li.wb-local-item {
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+}
+
+.wb-change-list li.wb-local-item > div {
+  grid-column: 2;
+}
+
+.wb-change-list li.wb-local-item > button {
+  grid-row: 1;
+  grid-column: 3;
+}
+
+.wb-local-item .wb-change-glyph {
+  color: var(--wb-muted);
+}

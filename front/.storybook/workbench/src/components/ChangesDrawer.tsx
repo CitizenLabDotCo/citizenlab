@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import tokensSource from '@ds/tokens/tokens.source.json';
 import type { TokenName } from '@ds/tokens/tokens';
 
 import { copyText } from '../lib/clipboard';
 import type { TokenMeta } from '../lib/data';
+import { tokenSource } from '../lib/liveSource';
 import {
   changesLook,
   ElementEdit,
@@ -16,6 +16,8 @@ import { Overrides, withOverrides } from '../lib/overrides';
 import { sourceChanges, sourcePatch } from '../lib/sourceDiff';
 
 import Icon, { IconName } from './Icon';
+import LocalSave from './LocalSave';
+import { useLocal } from '../lib/local';
 
 type Props = {
   meta: TokenMeta[];
@@ -116,13 +118,14 @@ const ChangesDrawer = ({
     (e): e is [string, string] => typeof e[1] === 'string'
   );
   const diff = useMemo(
-    () => sourceChanges(overrides, meta, tokensSource),
+    () => sourceChanges(overrides, meta, tokenSource()),
     [overrides, meta]
   );
   const patch = useMemo(() => sourcePatch(diff.changes), [diff]);
   // A copied text goes stale as soon as the edits change.
   useEffect(() => setCopied(undefined), [patch, elements]);
   const total = entries.length + elements.length;
+  const local = useLocal();
   const agentTasks = task ? elements.map((e) => taskOfEdit(e, task)) : [];
 
   const copy = async (label: string, text: string) => {
@@ -145,11 +148,20 @@ const ChangesDrawer = ({
           Close
         </button>
       </header>
+      <LocalSave
+        changes={diff.changes}
+        patch={patch}
+        elements={elements}
+        onSavedTokens={() => onReset()}
+        onSavedElement={onResetElement}
+      />
       {total === 0 ? (
-        <p className="wb-muted">
-          No edits yet. Change a token value here or on a Foundations page and
-          it shows up in this list.
-        </p>
+        local ? null : (
+          <p className="wb-muted">
+            No edits yet. Change a token value here or on a Foundations page and
+            it shows up in this list.
+          </p>
+        )
       ) : (
         <>
           {elements.length > 0 && (
@@ -257,8 +269,8 @@ const ChangesDrawer = ({
               <ul>
                 {diff.changes.map((c) => (
                   <li key={c.pointer}>
-                    <code>{c.pointer}</code>:{' '}
-                    {JSON.stringify(c.from)} to {JSON.stringify(c.to)}
+                    <code>{c.pointer}</code>: {JSON.stringify(c.from)} to{' '}
+                    {JSON.stringify(c.to)}
                   </li>
                 ))}
                 {diff.unknown.map((n) => (

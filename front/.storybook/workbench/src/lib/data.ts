@@ -4,6 +4,8 @@
 // A file that is missing, unreachable or not valid JSON yields an empty value.
 import tokensMeta from '@ds/tokens/tokens.meta.json';
 
+import { setTokenSource } from './liveSource';
+
 import type { A11yResults } from '../../../../scripts/design-system/a11y-results';
 import type {
   ComponentScore,
@@ -69,8 +71,14 @@ const EMPTY_SCAN: ScanOutput = {
 export const loadScan = () =>
   fetchJson<ScanOutput>('../design-scan.json', EMPTY_SCAN);
 
-// Bundled, so it is there synchronously.
+// Bundled, so it is there synchronously. A local run (npm run ds:local)
+// swaps in the files as they are now before the first render, since saved
+// edits change them after this bundle was built.
 export const TOKEN_META = tokensMeta as TokenMeta[];
+export const setLiveTokens = (live: { meta: TokenMeta[]; source: unknown }) => {
+  TOKEN_META.splice(0, TOKEN_META.length, ...live.meta);
+  setTokenSource(live.source);
+};
 
 export const loadStoryIndex = () =>
   fetchJson<StoryIndex>('../index.json', { entries: {} });

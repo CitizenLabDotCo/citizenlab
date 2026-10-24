@@ -558,6 +558,13 @@ const writeStorage = (o: Overrides) => {
   }
 };
 
+// The session's edits gone now, not after the next render: for a page
+// about to reload (its edits were saved to the source).
+export const dropSessionOverrides = () => {
+  writeStorage({});
+  writeShare('o', withOverrides(window.location.hash, {}));
+};
+
 // A valid share link in the hash replaces the stored session. A link that
 // fails validation changes nothing (the stored session stays) and sets
 // `notice`. Invalid entries of the store (tampered, or a token that no

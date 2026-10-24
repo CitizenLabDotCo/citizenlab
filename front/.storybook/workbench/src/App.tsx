@@ -4,6 +4,7 @@ import Nav from './components/Nav';
 import { PanelContext } from './components/Panel';
 import { DEFAULT_TOOLBAR, ToolbarState } from './components/Toolbar';
 import { TOKEN_META } from './lib/data';
+import { LocalContext, LocalStatus, useLocalApi } from './lib/local';
 import { useNavCollapsed } from './lib/navCollapsed';
 import { Overrides, useOverrides } from './lib/overrides';
 import { Route, useRoute } from './lib/router';
@@ -60,12 +61,7 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
         />
       );
     case 'review':
-      return (
-        <Review
-          meta={TOKEN_META}
-          overrides={canvas.overrides}
-        />
-      );
+      return <Review meta={TOKEN_META} overrides={canvas.overrides} />;
     case 'proposal':
       return <Proposal />;
     case 'not-found':
@@ -85,7 +81,8 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
   }
 };
 
-const App = () => {
+const App = ({ local: localStatus }: { local?: LocalStatus }) => {
+  const local = useLocalApi(localStatus);
   const route = useRoute();
   const [panelEl, setPanelEl] = useState<HTMLElement | null>(null);
   const [panels, setPanels] = useState(0);
@@ -104,43 +101,45 @@ const App = () => {
     useOverrides(TOKEN_META);
 
   return (
-    <PanelContext.Provider value={slot}>
-      <div
-        className={[
-          'wb-shell',
-          panels > 0 && 'wb-shell-with-panel',
-          navCollapsed && 'wb-shell-nav-collapsed',
-        ]
-          .filter(Boolean)
-          .join(' ')}
-      >
-        <Nav
-          current={navName}
-          collapsed={navCollapsed}
-          onToggleCollapsed={toggleNav}
-        />
-        <main className="wb-main">
-          {notice && (
-            <div className="wb-notice" role="alert" data-testid="wb-notice">
-              <span>{notice}</span>
-              <button type="button" onClick={dismissNotice}>
-                Dismiss
-              </button>
-            </div>
-          )}
-          <Page
-            route={route}
-            canvas={{ toolbar, setToolbar, overrides, setOverride, reset }}
+    <LocalContext.Provider value={local}>
+      <PanelContext.Provider value={slot}>
+        <div
+          className={[
+            'wb-shell',
+            panels > 0 && 'wb-shell-with-panel',
+            navCollapsed && 'wb-shell-nav-collapsed',
+          ]
+            .filter(Boolean)
+            .join(' ')}
+        >
+          <Nav
+            current={navName}
+            collapsed={navCollapsed}
+            onToggleCollapsed={toggleNav}
           />
-        </main>
-        <aside
-          className="wb-panels"
-          ref={setPanelEl}
-          hidden={panels === 0}
-          aria-label="Panels"
-        />
-      </div>
-    </PanelContext.Provider>
+          <main className="wb-main">
+            {notice && (
+              <div className="wb-notice" role="alert" data-testid="wb-notice">
+                <span>{notice}</span>
+                <button type="button" onClick={dismissNotice}>
+                  Dismiss
+                </button>
+              </div>
+            )}
+            <Page
+              route={route}
+              canvas={{ toolbar, setToolbar, overrides, setOverride, reset }}
+            />
+          </main>
+          <aside
+            className="wb-panels"
+            ref={setPanelEl}
+            hidden={panels === 0}
+            aria-label="Panels"
+          />
+        </div>
+      </PanelContext.Provider>
+    </LocalContext.Provider>
   );
 };
 

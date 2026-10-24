@@ -48,6 +48,7 @@
     "storybook": "(npm run ds:prepare || echo \"Design-system generation failed; starting with the committed outputs.\") && storybook dev -p 6006",
     "build-storybook": "(npm run ds:prepare || echo \"Design-system generation failed; building with the committed outputs.\") && storybook build -c .storybook",
     "chromatic": "chromatic --exit-once-uploaded",
+    "ds:local": "tsx scripts/design-system/local/launch.ts",
     "ds:tokens": "tsx scripts/design-system/build-tokens.ts",
     "ds:scan": "tsx scripts/design-system/scan/index.ts",
     "ds:changes": "tsx scripts/design-system/changes.ts",
