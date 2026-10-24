@@ -3,17 +3,13 @@
 // `test` of the current value before each `replace`, so applying it to a
 // file that has moved on fails instead of overwriting.
 //
-// An override sits on the page root, so it holds in both modes. In the
-// source, `$value` is today and `$extensions.gv.redesign` (when present) the
-// redesign value; a token without its own redesign value takes `$value` in
-// both modes, so one change covers both.
+// An edit changes `$value`, the value the code renders. A proposed
+// back-office value (`$extensions.gv.backOffice`) is not touched.
 import type { TokenMeta } from './data';
 import { parseColour } from './overrides';
 
 export type SourceChange = {
   token: string;
-  // Which modes this source field drives.
-  modes: 'both' | 'today' | 'redesign';
   pointer: string;
   from: unknown;
   to: string;
@@ -73,7 +69,6 @@ const sameColour = (a: string, b: string) => {
 const primitiveAlias = (
   token: TokenMeta,
   value: string,
-  mode: 'today' | 'redesign',
   meta: TokenMeta[]
 ): string | undefined => {
   if (token.category !== 'color' || token.tier === 1) return undefined;
@@ -83,7 +78,7 @@ const primitiveAlias = (
         t.tier === 1 &&
         t.category === 'color' &&
         t.path &&
-        sameColour(t.values[mode], value)
+        sameColour(t.value, value)
     )
     .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0))[0];
   return hit ? `{${hit.path}}` : undefined;
@@ -107,26 +102,13 @@ export const sourceChanges = (
     }
     const keys = token.path.split('.');
     const raw = toSourceValue(value, byName);
-    const to = primitiveAlias(token, raw, 'today', meta) ?? raw;
-    const gv = isNode(node.$extensions) ? node.$extensions.gv : undefined;
-    const hasRedesign = isNode(gv) && 'redesign' in gv;
+    const to = primitiveAlias(token, raw, meta) ?? raw;
     if (node.$value !== to) {
       changes.push({
         token: name,
-        modes: hasRedesign ? 'today' : 'both',
         pointer: pointer([...keys, '$value']),
         from: node.$value,
         to,
-      });
-    }
-    const toRedesign = primitiveAlias(token, raw, 'redesign', meta) ?? raw;
-    if (hasRedesign && gv.redesign !== toRedesign) {
-      changes.push({
-        token: name,
-        modes: 'redesign',
-        pointer: pointer([...keys, '$extensions', 'gv', 'redesign']),
-        from: gv.redesign,
-        to: toRedesign,
       });
     }
   }

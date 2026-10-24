@@ -1,5 +1,3 @@
-import type { Mode } from '@ds/tokens/tokens';
-
 import { cities, DEFAULT_CITY } from '../../../cities';
 import { GV_VIEWPORTS, GvViewport } from '../../../viewports';
 import type { FrameGlobals } from '../lib/frame';
@@ -21,7 +19,6 @@ export type ToolbarState = FrameGlobals & {
 };
 
 export const DEFAULT_TOOLBAR: ToolbarState = {
-  mode: 'today',
   city: DEFAULT_CITY,
   lang: 'en',
   viewport: 'fit',
@@ -34,11 +31,6 @@ export const VIEWPORTS: { value: CanvasViewport; label: string }[] = [
     value: v as GvViewport,
     label: vp.name,
   })),
-];
-
-export const MODES: { value: Mode; label: string }[] = [
-  { value: 'today', label: 'Today' },
-  { value: 'redesign', label: 'Redesign' },
 ];
 
 type FieldProps = {

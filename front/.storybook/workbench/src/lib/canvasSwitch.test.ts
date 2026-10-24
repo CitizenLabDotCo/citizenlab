@@ -14,7 +14,7 @@ const at = (
   over: Partial<FrameTarget['globals']> = {}
 ): FrameTarget => ({
   storyId,
-  globals: { mode: 'today', city: 'linz', lang: 'en', ...over },
+  globals: { city: 'linz', lang: 'en', ...over },
 });
 
 const ready = {
@@ -43,11 +43,11 @@ describe('switchPlan', () => {
 
   it('passes only the globals that change', () => {
     expect(
-      switchPlan(at('a'), at('a', { lang: 'nl-BE', mode: 'redesign' }), ready)
+      switchPlan(at('a'), at('a', { lang: 'nl-BE', city: 'x' }), ready)
     ).toEqual({
       kind: 'switch',
       storyId: undefined,
-      globals: { lang: 'nl-BE', mode: 'redesign' },
+      globals: { lang: 'nl-BE', city: 'x' },
     });
     expect(switchPlan(at('a'), at('b', { city: 'x' }), ready)).toEqual({
       kind: 'switch',
@@ -84,7 +84,6 @@ describe('switchPlan', () => {
 describe('targetOfSearch', () => {
   it('reads back what storyUrl wrote', () => {
     const want = at('components-button--primary', {
-      mode: 'redesign',
       city: 'x;y',
       lang: 'nl-BE',
     });
@@ -95,10 +94,10 @@ describe('targetOfSearch', () => {
   it('reads the URL the preview writes after a switch', () => {
     expect(
       targetOfSearch(
-        '?id=b&viewMode=story&globals=mode%3Aredesign%3Bcity%3Alinz%3Blang%3Ade',
+        '?id=b&viewMode=story&globals=city%3Alinz%3Blang%3Ade',
         at('a')
       )
-    ).toEqual(at('b', { mode: 'redesign', lang: 'de' }));
+    ).toEqual(at('b', { lang: 'de' }));
   });
 
   it('keeps the fallback for what the URL lacks', () => {
@@ -115,11 +114,11 @@ describe('searchFor', () => {
   it('writes the story and globals, keeping the other params', () => {
     const t = at('b', { lang: 'nl-BE' });
     const search = searchFor(
-      '?id=a&viewMode=story&globals=mode:today&args=x:1&other=2',
+      '?id=a&viewMode=story&globals=city:wien&args=x:1&other=2',
       t
     );
     expect(search).toBe(
-      '?id=b&viewMode=story&globals=mode:today;city:linz;lang:nl-BE&args=x:1&other=2'
+      '?id=b&viewMode=story&globals=city:linz;lang:nl-BE&args=x:1&other=2'
     );
     expect(targetOfSearch(search, at('z'))).toEqual(t);
   });

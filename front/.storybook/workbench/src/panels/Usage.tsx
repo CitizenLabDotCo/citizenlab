@@ -12,10 +12,9 @@ import {
   routesByOffice,
   usageFiles,
 } from '../lib/componentPanels';
-import { AuditSummary, Finding, loadAudit } from '../lib/data';
+import type { Finding } from '../lib/data';
 import {
   formatHealTask,
-  HealMode,
   healToken,
   isHealable,
   routeLabel,
@@ -28,8 +27,6 @@ type Props = {
   storyId: string;
   group: StoryGroup;
   indexes: Indexes;
-  healMode: HealMode;
-  onHealMode: (mode: HealMode) => void;
 };
 
 type Office = 'admin' | 'public';
@@ -39,21 +36,12 @@ const OFFICE_LABEL: Record<Office, string> = {
   public: 'Front office',
 };
 
-export const HEAL_MODE_LABEL: Record<HealMode, string> = {
-  both: 'Both modes',
-  today: 'Today',
-  redesign: 'Redesign',
-};
-
 // Rows of a list shown before "Show all".
 const FIRST = {
   files: 6,
   routes: 8,
   findings: 10,
   props: 10,
-  diffs: 6,
-  tasks: 6,
-  unreached: 4,
 };
 
 const Section = ({
@@ -194,210 +182,9 @@ const FindingRow = ({ f, task }: { f: Finding; task?: string }) => {
   );
 };
 
-// "radius: 4px on /a #1 (1280) vs 8px on /b (1280)" as value and where.
-const AUDIT_DIFF = /^([\w ]+): (.+?) on (.+?) vs (.+?) on (.+)$/;
-
-const AuditDiff = ({ text }: { text: string }) => {
-  const m = AUDIT_DIFF.exec(text);
-  return (
-    <li className="wb-finding" data-testid="wb-audit-diff">
-      {m ? (
-        <>
-          <span className="wb-finding-change">
-            <span className="wb-muted">{m[1]}</span>
-            <code className="wb-finding-raw">{m[2]}</code>
-            <span className="wb-muted">vs</span>
-            <code className="wb-finding-raw">{m[4]}</code>
-          </span>
-          <span className="wb-finding-where">{`${m[3]} vs ${m[5]}`}</span>
-        </>
-      ) : (
-        <span className="wb-finding-where">{text}</span>
-      )}
-    </li>
-  );
-};
-
-const AuditTask = ({ task }: { task: string }) => {
-  const { copied, copy, clear } = useCopy(task);
-  const [head, ...rest] = task.split('\n');
-  // heal: <Comp> · <files> · <raw> → <token> · mode <m>
-  const change = head.split(' · ')[2] ?? head;
-  const [raw, token] = change.split(' → ');
-  return (
-    <li className="wb-finding" data-testid="wb-audit-task">
-      <div className="wb-finding-row">
-        <span className="wb-finding-change">
-          <code className="wb-finding-raw">{raw}</code>
-          {token && (
-            <>
-              <Icon name="arrow" size={12} />
-              <code className="wb-finding-token">{token}</code>
-            </>
-          )}
-        </span>
-        <HealButton
-          iconOnly
-          label="Copy heal task"
-          onClick={() => copy(task)}
-          testId="wb-audit-heal"
-        />
-      </div>
-      {rest[0] && (
-        <span className="wb-finding-where">
-          {rest[0].replace(/^why: /, '')}
-        </span>
-      )}
-      <CopiedText copied={copied} onClose={clear} />
-    </li>
-  );
-};
-
-// The committed instance audit (npm run ds:audit), read-only.
-const useAudit = (component: string) => {
-  const [audit, setAudit] = useState<AuditSummary | null | undefined>();
-  useEffect(() => {
-    let live = true;
-    setAudit(undefined);
-    loadAudit(component).then((a) => live && setAudit(a));
-    return () => {
-      live = false;
-    };
-  }, [component]);
-  return audit;
-};
-
-const AuditSection = ({
-  component,
-  open,
-  toggle,
-}: {
-  component: string;
-  open: Record<string, boolean>;
-  toggle: (k: string) => void;
-}) => {
-  const audit = useAudit(component);
-  if (audit === undefined) return null;
-  if (!audit) {
-    return (
-      <Section icon="checklist" title="Audit" testId="wb-usage-audit">
-        <Empty
-          icon="checklist"
-          title="Not audited yet"
-          text={`No audit of ${component} is committed. On your machine, with a stored admin session: npm run ds:audit -- --component ${component} --host <platform url>, then commit audits/${component}.json.`}
-        />
-      </Section>
-    );
-  }
-  const ok = audit.instances.filter((i) => !i.error);
-  const routes = new Set(ok.map((i) => i.route)).size;
-  const cap = <T,>(list: T[], key: keyof typeof FIRST) =>
-    open[`audit-${key}`] ? list : list.slice(0, FIRST[key]);
-  const date = audit.generatedAt.slice(0, 10);
-  return (
-    <Section
-      icon="checklist"
-      title="Audit"
-      count={ok.length}
-      testId="wb-usage-audit"
-    >
-      <div className="wb-uaudit">
-        <p className="wb-panel-note" data-testid="wb-audit-meta">
-          {`${plural(ok.length, 'instance', 'instances')} on ${plural(
-            routes,
-            'route',
-            'routes'
-          )}, ${audit.host.replace(/^https?:\/\//, '') || 'unknown host'}${
-            date ? `, ${date}` : ''
-          }.`}
-          {audit.blockedOnLoad > 0 &&
-            ` ${plural(
-              audit.blockedOnLoad,
-              'write request',
-              'write requests'
-            )} blocked on page load (expected tracking).`}
-        </p>
-        {audit.blockedWrites > 0 && (
-          <p className="wb-panel-none" role="note" data-testid="wb-audit-alarm">
-            {`The run blocked ${plural(
-              audit.blockedWrites,
-              'write request',
-              'write requests'
-            )} after a click: a trigger tried to change data. Nothing was sent.`}
-          </p>
-        )}
-        <h4 className="wb-uprops-label">
-          {`Differences (${audit.inconsistencies.length})`}
-        </h4>
-        {audit.inconsistencies.length === 0 ? (
-          <p className="wb-panel-none">The instances match each other.</p>
-        ) : (
-          <>
-            <ul className="wb-findings" data-testid="wb-audit-diffs">
-              {cap(audit.inconsistencies, 'diffs').map((d) => (
-                <AuditDiff key={d} text={d} />
-              ))}
-            </ul>
-            <More
-              total={audit.inconsistencies.length}
-              first={FIRST.diffs}
-              open={!!open['audit-diffs']}
-              onToggle={() => toggle('audit-diffs')}
-              noun="differences"
-            />
-          </>
-        )}
-        <h4 className="wb-uprops-label">
-          {`Heal tasks (${audit.healTasks.length})`}
-        </h4>
-        {audit.healTasks.length === 0 ? (
-          <p className="wb-panel-none">Every instance matches the story.</p>
-        ) : (
-          <>
-            <ul className="wb-findings">
-              {cap(audit.healTasks, 'tasks').map((t) => (
-                <AuditTask key={t} task={t} />
-              ))}
-            </ul>
-            <More
-              total={audit.healTasks.length}
-              first={FIRST.tasks}
-              open={!!open['audit-tasks']}
-              onToggle={() => toggle('audit-tasks')}
-              noun="heal tasks"
-            />
-          </>
-        )}
-        {audit.notReached.length > 0 && (
-          <>
-            <h4 className="wb-uprops-label">
-              {`Not reached (${audit.notReached.length})`}
-            </h4>
-            <ul className="wb-findings" data-testid="wb-audit-unreached">
-              {cap(audit.notReached, 'unreached').map((n) => (
-                <li key={n.route} className="wb-finding">
-                  <code className="wb-finding-raw">{routeLabel(n.route)}</code>
-                  <span className="wb-finding-where">{n.reason}</span>
-                </li>
-              ))}
-            </ul>
-            <More
-              total={audit.notReached.length}
-              first={FIRST.unreached}
-              open={!!open['audit-unreached']}
-              onToggle={() => toggle('audit-unreached')}
-              noun="routes"
-            />
-          </>
-        )}
-      </div>
-    </Section>
-  );
-};
-
 // Where the component is used (files, routes by office, props) and what
 // the scan found in its file, each finding with its heal task.
-const Usage = ({ storyId, group, indexes, healMode, onHealMode }: Props) => {
+const Usage = ({ storyId, group, indexes }: Props) => {
   const { scan } = indexes;
   const component = group.score?.component ?? group.name;
   const [open, setOpen] = useState<Record<string, boolean>>({});
@@ -607,31 +394,11 @@ const Usage = ({ storyId, group, indexes, healMode, onHealMode }: Props) => {
         )}
       </Section>
 
-      <AuditSection component={component} open={open} toggle={toggle} />
-
       <Section
         icon="heal"
         title="Findings"
         count={findings.length}
         testId="wb-usage-findings"
-        tools={
-          findings.length > 0 && (
-            <label className="wb-heal-mode">
-              <span>Heal for</span>
-              <select
-                value={healMode}
-                onChange={(e) => onHealMode(e.target.value as HealMode)}
-                data-testid="wb-heal-mode"
-              >
-                {(['both', 'today', 'redesign'] as HealMode[]).map((m) => (
-                  <option key={m} value={m}>
-                    {HEAL_MODE_LABEL[m]}
-                  </option>
-                ))}
-              </select>
-            </label>
-          )
-        }
       >
         {!group.file ? (
           <p className="wb-panel-none">
@@ -672,13 +439,7 @@ const Usage = ({ storyId, group, indexes, healMode, onHealMode }: Props) => {
                   f={f}
                   task={
                     isHealable(f)
-                      ? formatHealTask(
-                          f,
-                          component,
-                          storyId,
-                          data.routes,
-                          healMode
-                        )
+                      ? formatHealTask(f, component, storyId, data.routes)
                       : undefined
                   }
                 />
@@ -696,7 +457,7 @@ const Usage = ({ storyId, group, indexes, healMode, onHealMode }: Props) => {
                 findings.filter(isHealable).length,
                 'finding has',
                 'findings have'
-              )} a heal task. Paste one into Claude Code on the branch.`}
+              )} a heal task. Paste one into Claude Code on a new branch off master.`}
             </p>
           </>
         )}

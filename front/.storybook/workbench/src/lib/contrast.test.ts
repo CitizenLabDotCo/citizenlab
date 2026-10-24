@@ -68,43 +68,34 @@ describe('ratio and passes', () => {
 describe('token resolution', () => {
   const defs = parseTokenCss(css);
 
-  it('reads both mode blocks of tokens.css', () => {
-    expect(Object.keys(defs.today).length).toBeGreaterThan(150);
-    expect(defs.today['--gv-text-primary']).toBe('var(--gv-grey-800)');
-    expect(defs.redesign['--gv-tenant-primary']).toBe('var(--gv-bo-primary)');
+  it('reads the :root block of tokens.css', () => {
+    expect(Object.keys(defs).length).toBeGreaterThan(150);
+    expect(defs['--gv-text-primary']).toBe('var(--gv-grey-800)');
   });
 
-  it('follows var() chains and tenant fallbacks per mode', () => {
+  it('follows var() chains and tenant fallbacks', () => {
     const r = resolveTokens(defs);
-    expect(r.today['--gv-text-primary']).toBe('#333333');
-    expect(r.today['--gv-color-tenant-primary']).toBe('#ef0071');
-    expect(r.redesign['--gv-color-tenant-primary'].toLowerCase()).toBe(
-      '#044d6c'
-    );
-    expect(r.today['--gv-color-text-heading']).toBe('#333333');
-    expect(r.redesign['--gv-color-text-heading']).toBe('#474747');
+    expect(r['--gv-text-primary']).toBe('#333333');
+    expect(r['--gv-color-tenant-primary']).toBe('#ef0071');
+    expect(r['--gv-color-text-heading']).toBe('#333333');
   });
 
-  it('applies overrides in both modes and to every reader', () => {
+  it('applies overrides to every reader', () => {
     const r = resolveTokens(defs, { '--gv-grey-800': '#111111' });
-    expect(r.today['--gv-text-primary']).toBe('#111111');
-    expect(r.redesign['--gv-text-primary']).toBe('#111111');
+    expect(r['--gv-text-primary']).toBe('#111111');
   });
 
   it('falls back when a var() target is missing, empty on a cycle', () => {
     const r = resolveTokens({
-      today: {
-        '--gv-a': 'var(--gv-missing, 4px)',
-        '--gv-b': 'var(--gv-c)',
-        '--gv-c': 'var(--gv-b)',
-        '--gv-d': 'var(--gv-b, #fff)',
-      },
-      redesign: {},
+      '--gv-a': 'var(--gv-missing, 4px)',
+      '--gv-b': 'var(--gv-c)',
+      '--gv-c': 'var(--gv-b)',
+      '--gv-d': 'var(--gv-b, #fff)',
     });
-    expect(r.today['--gv-a']).toBe('4px');
-    expect(r.today['--gv-b']).toBe('');
+    expect(r['--gv-a']).toBe('4px');
+    expect(r['--gv-b']).toBe('');
     // A defined but invalid target uses the fallback, as the browser does.
-    expect(r.today['--gv-d']).toBe('#fff');
+    expect(r['--gv-d']).toBe('#fff');
   });
 
   it('turns color-mix with transparent into a translucent colour', () => {
@@ -123,17 +114,10 @@ describe('checkPair', () => {
   const defs = parseTokenCss(css);
   const base = resolveTokens(defs);
 
-  it('passes text-primary on white in both modes', () => {
-    for (const mode of ['today', 'redesign'] as const) {
-      const c = checkPair(
-        '--gv-text-primary',
-        '--gv-white',
-        base[mode],
-        base[mode]
-      );
-      expect(c.aa).toBe(true);
-      expect(c.broken).toBe(false);
-    }
+  it('passes text-primary on white', () => {
+    const c = checkPair('--gv-text-primary', '--gv-white', base, base);
+    expect(c.aa).toBe(true);
+    expect(c.broken).toBe(false);
   });
 
   it('flags a pair an override breaks', () => {
@@ -141,8 +125,8 @@ describe('checkPair', () => {
     const c = checkPair(
       '--gv-text-primary',
       '--gv-white',
-      base.today,
-      current.today
+      base,
+      current
     );
     expect(c.aa).toBe(false);
     expect(c.baseRatio).toBeGreaterThan(4.5);
@@ -154,8 +138,8 @@ describe('checkPair', () => {
     const c = checkPair(
       '--gv-placeholder',
       '--gv-white',
-      base.today,
-      current.today
+      base,
+      current
     );
     // #999999 on white fails normal and large text before the edit.
     expect(passes(c.baseRatio, { large: true }).aa).toBe(false);

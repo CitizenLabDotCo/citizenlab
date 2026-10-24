@@ -8,7 +8,7 @@ import {
   useState,
 } from 'react';
 
-import type { Mode, TokenName } from '@ds/tokens/tokens';
+import type { TokenName } from '@ds/tokens/tokens';
 
 import type { TokenMeta } from '../lib/data';
 import { nudgeValue, NudgeOptions, stepOfKey } from '../lib/nudge';
@@ -22,20 +22,14 @@ import Icon, { IconName } from './Icon';
 import ShadowEditor from './ShadowEditor';
 import { ColourPicker, toHex6, useTokenEdit } from './tokenEdit';
 
-export const MODE_LABEL: Record<Mode, string> = {
-  today: 'Today',
-  redesign: 'Redesign',
-};
-
-type Live = Record<Mode, Record<string, string>>;
+type Live = Record<string, string>;
 
 type Props = {
   token: TokenMeta;
   meta: TokenMeta[];
-  mode: Mode;
   // The session's override of this token, if any.
   override?: string;
-  // Every token's value per mode with the overrides applied, var() chains
+  // Every token's value with the overrides applied, var() chains
   // followed: what the previews show.
   live: Live;
   usage?: TokenUsage;
@@ -100,8 +94,8 @@ const MotionPreview = ({ value }: { value: string }) => {
   );
 };
 
-// A picture of the token, drawn with one mode's live value. `all` holds the
-// other tokens of that mode, for previews that need a neighbour (the size
+// A picture of the token, drawn with its live value. `all` holds the
+// other tokens, for previews that need a neighbour (the size
 // of a text role, the colour of the focus ring).
 export const Preview = ({
   token,
@@ -355,12 +349,11 @@ const AliasValue = ({
   );
 };
 
-// One token: picture, name, both modes, the editor and what the scan says
+// One token: picture, name, value, the editor and what the scan says
 // about its use.
 const TokenRow = ({
   token,
   meta,
-  mode,
   override,
   live,
   usage,
@@ -376,21 +369,16 @@ const TokenRow = ({
   const { current, draft, setDraft, commit, apply, feedback, setFeedback } =
     useTokenEdit({
       name,
-      base: token.values[mode],
+      base: token.value,
       override,
       meta,
-      mode,
       onSet,
       onReset,
     });
 
-  const value = live[mode][name] || token.values[mode];
-  const differs =
-    (live.today[name] || token.values.today) !==
-    (live.redesign[name] || token.values.redesign);
-  const base = token.values[mode];
+  const value = live[name] || token.value;
+  const base = token.value;
   const edited = override !== undefined;
-  const other: Mode = mode === 'today' ? 'redesign' : 'today';
   const hex =
     token.category === 'color' || token.type === 'color'
       ? toHex6(value)
@@ -398,9 +386,9 @@ const TokenRow = ({
   const inputId = `wb-edit-${name.slice(2)}`;
   const glyph = glyphOf(token);
 
-  // A token that reads others in this mode is edited at its source; Detach
-  // gives it a value of its own.
-  const raw = DEFS[mode][name] ?? '';
+  // A token that reads others is edited at its source; Detach gives it a
+  // value of its own.
+  const raw = DEFS[name] ?? '';
   const refs = useMemo(() => refsOf(raw, meta), [raw, meta]);
   const [detached, setDetached] = useState(false);
   const aliased = !edited && !detached && refs.length > 0;
@@ -417,27 +405,9 @@ const TokenRow = ({
       hidden={folded}
     >
       <td role="cell" className="wb-token-preview">
-        {differs ? (
-          <span className="wb-compare" aria-hidden="true">
-            {(['today', 'redesign'] as Mode[]).map((m) => (
-              <span
-                key={m}
-                className={m === mode ? 'wb-compare-on' : undefined}
-              >
-                <Preview
-                  token={token}
-                  value={live[m][name] || token.values[m]}
-                  all={live[m]}
-                />
-                <span className="wb-compare-label">{MODE_LABEL[m]}</span>
-              </span>
-            ))}
-          </span>
-        ) : (
-          <span aria-hidden="true">
-            <Preview token={token} value={value} all={live[mode]} />
-          </span>
-        )}
+        <span aria-hidden="true">
+          <Preview token={token} value={value} all={live} />
+        </span>
       </td>
       <th scope="row" role="rowheader" className="wb-token-name">
         <code>{name}</code>
@@ -561,19 +531,11 @@ const TokenRow = ({
             )}
           </div>
         )}
-        {(edited || differs) && (
+        {edited && (
           <div className="wb-tf-notes">
-            {edited && (
-              <span data-testid="wb-token-was">
-                was <code>{shown(base)}</code>
-              </span>
-            )}
-            {differs && (
-              <span>
-                <span className="wb-diff-dot" aria-hidden="true" />
-                {MODE_LABEL[other]} <code>{shown(token.values[other])}</code>
-              </span>
-            )}
+            <span data-testid="wb-token-was">
+              was <code>{shown(base)}</code>
+            </span>
           </div>
         )}
         {feedback && (

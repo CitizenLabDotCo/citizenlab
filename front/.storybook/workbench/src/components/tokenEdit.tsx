@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import type { Mode, TokenName } from '@ds/tokens/tokens';
+import type { TokenName } from '@ds/tokens/tokens';
 
 import type { TokenMeta } from '../lib/data';
 import { parseColour, snap } from '../lib/overrides';
@@ -61,11 +61,10 @@ export type Feedback = { kind: 'info' | 'flag' | 'error'; text: string };
 
 type EditArgs = {
   name: TokenName;
-  // The token's value in the mode, before the session's edits.
+  // The token's value before the session's edits.
   base: string;
   override?: string;
   meta: TokenMeta[];
-  mode: Mode;
   onSet: (name: TokenName, value: string) => string | undefined;
   // Drops the session's edit: a value stepped back to its start.
   onReset?: (name: TokenName) => void;
@@ -78,7 +77,6 @@ export const useTokenEdit = ({
   base,
   override,
   meta,
-  mode,
   onSet,
   onReset,
 }: EditArgs) => {
@@ -93,7 +91,7 @@ export const useTokenEdit = ({
       setDraft(current);
       return;
     }
-    const result = snap(name, value, meta, mode);
+    const result = snap(name, value, meta);
     if (result.value === current) {
       setDraft(current);
       setFeedback({
@@ -141,7 +139,7 @@ export const useTokenEdit = ({
     }
     setDraft(value);
     const tier = meta.find((t) => t.name === name)?.tier;
-    const result = snap(name, value, meta, mode);
+    const result = snap(name, value, meta);
     setFeedback(
       tier === 2 && (result.custom || result.value !== value)
         ? { kind: 'flag', text: 'Custom value: not on the scale or palette.' }

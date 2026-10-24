@@ -4,14 +4,14 @@ import { pickerGroups } from './tokenPicker';
 const t = (
   name: string,
   tier: 1 | 2,
-  today: string,
+  value: string,
   extra: Partial<TokenMeta> = {}
 ): TokenMeta =>
   ({
     name,
     category: 'space',
     tier,
-    values: { today, redesign: today },
+    value,
     legacy: [],
     ...extra,
   } as TokenMeta);
@@ -23,7 +23,7 @@ const META = [
   t('--gv-old', 2, '12px', { deprecated: true }),
   t('--gv-white', 1, '#fff', { category: 'color' }),
 ];
-const live = Object.fromEntries(META.map((m) => [m.name, m.values.today]));
+const live = Object.fromEntries(META.map((m) => [m.name, m.value]));
 const space = (x: TokenMeta) => x.category === 'space';
 
 describe('pickerGroups', () => {

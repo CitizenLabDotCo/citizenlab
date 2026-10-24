@@ -249,16 +249,11 @@ const ChangeList = ({
               return (
                 <li key={t.name}>
                   <code>{t.name}</code>
-                  {(['today', 'redesign'] as const).map((m) => (
-                    <span key={m} className="wb-tchange-mode">
-                      <span className="wb-mode-name">
-                        {m === 'today' ? 'Today' : 'Redesign'}
-                      </span>
-                      <span>{t.from?.[m] ?? 'new'}</span>
-                      <Icon name="arrow" size={12} />
-                      <span>{t.to?.[m] ?? 'removed'}</span>
-                    </span>
-                  ))}
+                  <span className="wb-tchange-value">
+                    <span>{t.from ?? 'new'}</span>
+                    <Icon name="arrow" size={12} />
+                    <span>{t.to ?? 'removed'}</span>
+                  </span>
                   <span className="wb-muted">
                     {reach.components} components, {reach.routes} routes
                   </span>

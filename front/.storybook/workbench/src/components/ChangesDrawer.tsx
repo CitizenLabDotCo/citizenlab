@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import tokensSource from '@ds/tokens/tokens.source.json';
-import type { Mode, TokenName } from '@ds/tokens/tokens';
+import type { TokenName } from '@ds/tokens/tokens';
 
 import { copyText } from '../lib/clipboard';
 import type { TokenMeta } from '../lib/data';
@@ -12,12 +12,6 @@ import {
   taskOfEdit,
 } from '../lib/elementEdits';
 import { shortName } from '../lib/inspect';
-import {
-  EditStatus,
-  editKey,
-  InstanceEdit,
-  withInstanceEdits,
-} from '../lib/instanceProps';
 import { Overrides, withOverrides } from '../lib/overrides';
 import { sourceChanges, sourcePatch } from '../lib/sourceDiff';
 
@@ -25,7 +19,6 @@ import Icon, { IconName } from './Icon';
 
 type Props = {
   meta: TokenMeta[];
-  mode: Mode;
   overrides: Overrides;
   onReset: (name?: TokenName) => void;
   onClose: () => void;
@@ -35,36 +28,16 @@ type Props = {
   onResetElements?: () => void;
   // When set, "Copy for agent" is offered.
   task?: TaskContext;
-  // Instance prop edits: the Changes line and the code task of each.
-  instances?: InstanceChange[];
-  onResetInstance?: (e: InstanceEdit) => void;
-  onResetInstances?: () => void;
   // A token's live value, for the look mark and the swatch.
   resolve?: (token: TokenName) => string;
   // In the page flow (under the canvas bar) instead of a side sheet.
   inline?: boolean;
 };
 
-export type InstanceChange = {
-  edit: InstanceEdit;
-  line: string;
-  task: string;
-  status: EditStatus;
-};
-
-// What a row says under its line, by status.
-const statusText = (c: InstanceChange) =>
-  c.status === 'stale'
-    ? `Out of date: this ${c.edit.component} is gone or renders something else now. Left out of Copy for agent.`
-    : c.status === 'unchecked'
-    ? `Not checked against the props of ${c.edit.component} yet. Left out of Copy for agent.`
-    : `This instance only, not every ${c.edit.component}`;
-
 const NO_ELEMENTS: ElementEdit[] = [];
-const NO_INSTANCES: InstanceChange[] = [];
 
 const markOf = (e: ElementEdit, look: boolean): [IconName, string] => {
-  if (look) return ['caution', "Changes today's look"];
+  if (look) return ['caution', 'Changes the look'];
   if (e.kind === 'swap') return ['swap', 'Swaps the token'];
   return ['attach', 'Attaches the token'];
 };
@@ -122,18 +95,11 @@ const ElementRow = ({
 
 type Copied = { label: string; text: string; ok: boolean };
 
-const MODES_TEXT = {
-  both: 'both modes',
-  today: 'Today',
-  redesign: 'Redesign',
-};
-
 // Every edit of the session, with ways to hand it on: the exact change to
 // tokens.source.json for a developer, or a link that opens the workbench
 // with the same edits.
 const ChangesDrawer = ({
   meta,
-  mode,
   overrides,
   onReset,
   onClose,
@@ -141,9 +107,6 @@ const ChangesDrawer = ({
   onResetElement,
   onResetElements,
   task,
-  instances = NO_INSTANCES,
-  onResetInstance,
-  onResetInstances,
   resolve,
   inline,
 }: Props) => {
@@ -158,34 +121,16 @@ const ChangesDrawer = ({
   );
   const patch = useMemo(() => sourcePatch(diff.changes), [diff]);
   // A copied text goes stale as soon as the edits change.
-  useEffect(() => setCopied(undefined), [patch, elements, instances]);
-  const total = entries.length + elements.length + instances.length;
-  // Only edits known to match the code and the component's props; the
-  // rest are named in a note (their rows say why).
-  const left = instances.filter((i) => i.status !== 'ok').length;
-  const ready = [
-    ...(task ? elements.map((e) => taskOfEdit(e, task)) : []),
-    ...instances.filter((i) => i.status === 'ok').map((i) => i.task),
-  ];
-  const agentTasks =
-    ready.length && left
-      ? [
-          ...ready,
-          `note: ${left} instance prop edit${
-            left === 1 ? ' is' : 's are'
-          } left out: out of date or not checked yet against the component's props`,
-        ]
-      : ready;
+  useEffect(() => setCopied(undefined), [patch, elements]);
+  const total = entries.length + elements.length;
+  const agentTasks = task ? elements.map((e) => taskOfEdit(e, task)) : [];
 
   const copy = async (label: string, text: string) => {
     setCopied({ label, text, ok: await copyText(text) });
   };
   const shareLink = () => {
     const { origin, pathname, search, hash } = window.location;
-    return `${origin}${pathname}${search}${withInstanceEdits(
-      withOverrides(hash, overrides),
-      instances.map((i) => i.edit)
-    )}`;
+    return `${origin}${pathname}${search}${withOverrides(hash, overrides)}`;
   };
 
   return (
@@ -222,45 +167,7 @@ const ChangesDrawer = ({
               </ul>
             </>
           )}
-          {instances.length > 0 && (
-            <>
-              <h3 className="wb-drawer-group">Instances</h3>
-              <ul className="wb-change-list">
-                {instances.map((c) => (
-                  <li
-                    key={editKey(c.edit)}
-                    className="wb-change-el wb-change-instance"
-                    data-testid="wb-change-row"
-                    data-kind="instance"
-                    data-edit={editKey(c.edit)}
-                    data-status={c.status}
-                  >
-                    <span className="wb-change-glyph" aria-hidden="true">
-                      ◇
-                    </span>
-                    <div>
-                      <div className="wb-change-where">{c.line}</div>
-                      <span
-                        className={
-                          c.status === 'ok' ? 'wb-muted' : 'wb-change-stale'
-                        }
-                      >
-                        {statusText(c)}
-                      </span>
-                    </div>
-                    <span />
-                    <button
-                      type="button"
-                      onClick={() => onResetInstance?.(c.edit)}
-                    >
-                      Reset
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
-          {entries.length > 0 && elements.length + instances.length > 0 && (
+          {entries.length > 0 && elements.length > 0 && (
             <h3 className="wb-drawer-group">Tokens</h3>
           )}
           <ul className="wb-change-list">
@@ -269,7 +176,7 @@ const ChangesDrawer = ({
                 <code>{name}</code>
                 <div>
                   <span className="wb-muted">
-                    {byName.get(name)?.values[mode] ?? 'unknown'}
+                    {byName.get(name)?.value ?? 'unknown'}
                   </span>{' '}
                   to <strong>{to}</strong>
                 </div>
@@ -304,7 +211,7 @@ const ChangesDrawer = ({
                 Copy as token source diff
               </button>
             )}
-            {entries.length + instances.length > 0 && (
+            {entries.length > 0 && (
               <button
                 type="button"
                 data-testid="wb-copy-link"
@@ -318,7 +225,6 @@ const ChangesDrawer = ({
               onClick={() => {
                 onReset();
                 onResetElements?.();
-                onResetInstances?.();
               }}
             >
               Reset all
@@ -351,7 +257,7 @@ const ChangesDrawer = ({
               <ul>
                 {diff.changes.map((c) => (
                   <li key={c.pointer}>
-                    <code>{c.pointer}</code> ({MODES_TEXT[c.modes]}):{' '}
+                    <code>{c.pointer}</code>:{' '}
                     {JSON.stringify(c.from)} to {JSON.stringify(c.to)}
                   </li>
                 ))}
@@ -363,9 +269,7 @@ const ChangesDrawer = ({
               </ul>
               <p className="wb-muted">
                 For app/design-system/tokens/tokens.source.json, as a JSON
-                Patch. An edit holds in both modes, so a token with its own
-                Redesign value changes in both places. Then run npm run
-                ds:tokens.
+                Patch. Then run npm run ds:tokens.
               </p>
               <pre>{patch}</pre>
             </details>

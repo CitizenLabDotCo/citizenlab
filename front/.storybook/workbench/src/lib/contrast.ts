@@ -1,9 +1,7 @@
 // Colour contrast (WCAG 2.x) and the resolver that turns the token CSS into
-// concrete values per mode, with the session's overrides applied the way the
-// browser applies them (an override on the root replaces the definition in
-// both modes, and every var() that reads it follows).
-import type { Mode } from '@ds/tokens/tokens';
-
+// concrete values, with the session's overrides applied the way the browser
+// applies them (an override on the root replaces the definition, and every
+// var() that reads it follows).
 import { parseColour } from './overrides';
 
 type Rgba = [number, number, number, number];
@@ -54,7 +52,7 @@ export const passes = (r: number, { large }: { large: boolean }) => ({
 
 // ---------------------------------------------------------------- token CSS
 
-export type ModeDefs = Record<Mode, Record<string, string>>;
+export type Defs = Record<string, string>;
 
 const declarations = (block: string): Record<string, string> => {
   const out: Record<string, string> = {};
@@ -71,16 +69,9 @@ const blockOf = (css: string, selector: string): string => {
   return css.slice(start, end === -1 ? undefined : end);
 };
 
-// The raw definitions of tokens.css: `:root` is today, and redesign is today
-// with the `[data-gv-mode="redesign"]` block on top.
-export const parseTokenCss = (css: string): ModeDefs => {
-  const today = declarations(blockOf(css, ':root'));
-  const redesign = {
-    ...today,
-    ...declarations(blockOf(css, '[data-gv-mode="redesign"]')),
-  };
-  return { today, redesign };
-};
+// The raw definitions of tokens.css (its `:root` block).
+export const parseTokenCss = (css: string): Defs =>
+  declarations(blockOf(css, ':root'));
 
 // Index of the `)` that closes the `(` at `open`, or -1.
 const closing = (s: string, open: number) => {
@@ -184,26 +175,23 @@ export const toConcreteColour = (value: string): string | null => {
   return rgba ? toRgbaString(rgba) : null;
 };
 
-export type Resolved = Record<Mode, Record<string, string>>;
+export type Resolved = Record<string, string>;
 
-// Every token's value per mode with var() chains followed, tenant slots
-// taking their default fallbacks, and `overrides` replacing definitions.
+// Every token's value with var() chains followed, tenant slots taking their
+// default fallbacks, and `overrides` replacing definitions.
 export const resolveTokens = (
-  defs: ModeDefs,
+  defs: Defs,
   overrides: Record<string, string | undefined> = {}
 ): Resolved => {
-  const one = (mode: Mode) => {
-    const merged: Record<string, string> = { ...defs[mode] };
-    for (const [k, v] of Object.entries(overrides)) {
-      if (typeof v === 'string') merged[k] = v;
-    }
-    const out: Record<string, string> = {};
-    for (const name of Object.keys(merged)) {
-      out[name] = substitute(merged[name], merged, [name]);
-    }
-    return out;
-  };
-  return { today: one('today'), redesign: one('redesign') };
+  const merged: Record<string, string> = { ...defs };
+  for (const [k, v] of Object.entries(overrides)) {
+    if (typeof v === 'string') merged[k] = v;
+  }
+  const out: Record<string, string> = {};
+  for (const name of Object.keys(merged)) {
+    out[name] = substitute(merged[name], merged, [name]);
+  }
+  return out;
 };
 
 // ---------------------------------------------------------------- pairs

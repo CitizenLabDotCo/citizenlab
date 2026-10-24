@@ -3,10 +3,8 @@
 // change list grouped for reading, and the "Copy for PR" text. Pure
 // functions over the scan, the change list and the route fixture, plus the
 // one writer of token edits into a platform frame.
-import type { Mode } from '@ds/tokens/tokens';
-
 import type { ScanOutput, TokenMeta } from './data';
-import { applyToDocument, MODE_ATTRIBUTE } from './frame';
+import { applyToDocument } from './frame';
 import { routeLabel } from './healTask';
 import type { Overrides } from './overrides';
 import { legacyIndex, tokensOfFinding } from './usage';
@@ -24,12 +22,10 @@ export type ChangeCommit = {
   scanDelta?: { offSpec: number };
 };
 
-type ModeValues = { today: string; redesign: string };
-
 export type TokenChange = {
   name: string;
-  from: ModeValues | null;
-  to: ModeValues | null;
+  from: string | null;
+  to: string | null;
 };
 
 export type DesignChanges = {
@@ -205,8 +201,7 @@ export const reachedTokens = (
     grew = false;
     for (const t of meta) {
       if (out.has(t.name)) continue;
-      const values = `${t.values.today} ${t.values.redesign}`;
-      if ([...out].some((n) => values.includes(`var(${n}`))) {
+      if ([...out].some((n) => t.value.includes(`var(${n}`))) {
         out.add(t.name);
         grew = true;
       }
@@ -419,19 +414,6 @@ export const dismissConsent = (doc: Document): boolean => {
   return true;
 };
 
-export const LIBRARY_ROOT = 'app/component-library/';
-
-// Whether the highlight can find a component in a frame: library
-// components carry data-gv-component on a tagged build; UI and admin
-// components are never tagged.
-export const highlightSupport = (
-  componentFile: string | undefined,
-  pageTagged: boolean
-): 'ok' | 'untagged-component' | 'untagged-build' => {
-  if (!componentFile?.startsWith(LIBRARY_ROOT)) return 'untagged-component';
-  return pageTagged ? 'ok' : 'untagged-build';
-};
-
 const inlineGv = (doc: Document): Map<string, string> => {
   const style = doc.documentElement.style;
   const out = new Map<string, string>();
@@ -443,15 +425,14 @@ const inlineGv = (doc: Document): Map<string, string> => {
   return out;
 };
 
-// Puts the session's edits and the mode on a platform document through
-// applyToDocument, without losing the page's own inline tokens (the
-// platform's ModeProvider writes --gv-tenant-* there). `applied` remembers,
+// Puts the session's edits on a platform document through applyToDocument,
+// without losing the page's own inline tokens (Storybook's theme context
+// writes --gv-tenant-* there). `applied` remembers,
 // per token this function set, the page's value before (null: none), so a
 // reset edit gets the page's value back. Keep one map per document.
 export const applyEdits = (
   doc: Document,
   overrides: Overrides,
-  mode: Mode | undefined,
   applied: Map<string, string | null>
 ) => {
   const own: Record<string, string> = {};
@@ -467,7 +448,7 @@ export const applyEdits = (
   for (const name of [...applied.keys()]) {
     if (!(name in overrides)) applied.delete(name);
   }
-  applyToDocument(doc, { ...own, ...overrides } as Overrides, mode);
+  applyToDocument(doc, { ...own, ...overrides } as Overrides);
 };
 
 // After the page wrote its own inline tokens again (a story mounted anew,
@@ -492,8 +473,6 @@ export const adoptPageTokens = (
     if (value !== written) applied.set(name, value || null);
   });
 };
-
-export { MODE_ATTRIBUTE };
 
 // ---------------------------------------------------------------- changes
 

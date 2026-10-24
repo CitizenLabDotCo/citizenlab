@@ -5,7 +5,6 @@ import {
   applyEdits,
   changeReach,
   dismissConsent,
-  highlightSupport,
   DesignChanges,
   frameState,
   groupCommits,
@@ -73,14 +72,14 @@ const meta: TokenMeta[] = [
     name: '--gv-radius-2',
     category: 'radius',
     tier: 1,
-    values: { today: '4px', redesign: '4px' },
+    value: '4px',
     legacy: [],
   },
   {
     name: '--gv-radius-control',
     category: 'radius',
     tier: 2,
-    values: { today: 'var(--gv-radius-2)', redesign: 'var(--gv-radius-2)' },
+    value: 'var(--gv-radius-2)',
     legacy: ['theme.borderRadius'],
   },
 ];
@@ -285,23 +284,21 @@ describe('applyEdits', () => {
     const d = doc('https://h/en/');
     d.documentElement.style.setProperty('--gv-tenant-primary', 'red');
     const applied = new Map<string, string | null>();
-    applyEdits(d, { '--gv-radius-2': '8px' }, 'redesign', applied);
+    applyEdits(d, { '--gv-radius-2': '8px' }, applied);
     expect(d.documentElement.style.getPropertyValue('--gv-radius-2')).toBe(
       '8px'
     );
     expect(
       d.documentElement.style.getPropertyValue('--gv-tenant-primary')
     ).toBe('red');
-    expect(d.documentElement.getAttribute('data-gv-mode')).toBe('redesign');
 
-    applyEdits(d, { '--gv-tenant-primary': 'blue' } as never, 'today', applied);
+    applyEdits(d, { '--gv-tenant-primary': 'blue' } as never, applied);
     expect(d.documentElement.style.getPropertyValue('--gv-radius-2')).toBe('');
     expect(
       d.documentElement.style.getPropertyValue('--gv-tenant-primary')
     ).toBe('blue');
-    expect(d.documentElement.hasAttribute('data-gv-mode')).toBe(false);
 
-    applyEdits(d, {}, 'today', applied);
+    applyEdits(d, {}, applied);
     expect(
       d.documentElement.style.getPropertyValue('--gv-tenant-primary')
     ).toBe('red');
@@ -315,15 +312,15 @@ describe('adoptPageTokens', () => {
     style.setProperty('--gv-tenant-primary', 'red');
     const applied = new Map<string, string | null>();
     const edits = { '--gv-tenant-primary': 'blue', '--gv-radius-2': '8px' };
-    applyEdits(d, edits as never, 'today', applied);
-    // The story mounts again in another city: its ModeProvider writes the
+    applyEdits(d, edits as never, applied);
+    // The story mounts again in another city: its theme context writes the
     // tenant colour over the edit; the radius edit stays.
     style.setProperty('--gv-tenant-primary', 'green');
     adoptPageTokens(d, edits as never, applied);
-    applyEdits(d, edits as never, 'today', applied);
+    applyEdits(d, edits as never, applied);
     expect(style.getPropertyValue('--gv-tenant-primary')).toBe('blue');
 
-    applyEdits(d, {}, 'today', applied);
+    applyEdits(d, {}, applied);
     expect(style.getPropertyValue('--gv-tenant-primary')).toBe('green');
     expect(style.getPropertyValue('--gv-radius-2')).toBe('');
   });
@@ -347,10 +344,10 @@ describe('adoptPageTokens', () => {
       });
     try {
       const edits = { '--gv-radius-2': ' 8px ' };
-      applyEdits(d, edits as never, 'today', applied);
+      applyEdits(d, edits as never, applied);
       expect(style.getPropertyValue('--gv-radius-2')).toBe('8px');
       adoptPageTokens(d, edits as never, applied);
-      applyEdits(d, {}, 'today', applied);
+      applyEdits(d, {}, applied);
       expect(style.getPropertyValue('--gv-radius-2')).toBe('');
     } finally {
       spy.mockRestore();
@@ -363,9 +360,9 @@ describe('adoptPageTokens', () => {
     style.setProperty('--gv-tenant-primary', 'red');
     const applied = new Map<string, string | null>();
     const edits = { '--gv-tenant-primary': 'blue' };
-    applyEdits(d, edits as never, 'today', applied);
+    applyEdits(d, edits as never, applied);
     adoptPageTokens(d, edits as never, applied);
-    applyEdits(d, {}, 'today', applied);
+    applyEdits(d, {}, applied);
     expect(style.getPropertyValue('--gv-tenant-primary')).toBe('red');
   });
 });
@@ -540,21 +537,6 @@ describe('prMarkdown headline', () => {
     expect(md).toContain(
       '**3 design changes to shell files on every page, reviewed in the workbench.**'
     );
-  });
-});
-
-describe('highlightSupport', () => {
-  it('is per component: library components are tagged, UI and admin are not', () => {
-    const lib = 'app/component-library/components/Button/index.tsx';
-    expect(highlightSupport(lib, true)).toBe('ok');
-    expect(highlightSupport(lib, false)).toBe('untagged-build');
-    expect(
-      highlightSupport('app/components/UI/ButtonWithLink/index.tsx', true)
-    ).toBe('untagged-component');
-    expect(
-      highlightSupport('app/components/admin/Toggle/index.tsx', true)
-    ).toBe('untagged-component');
-    expect(highlightSupport(undefined, true)).toBe('untagged-component');
   });
 });
 

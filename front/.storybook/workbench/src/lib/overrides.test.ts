@@ -3,7 +3,6 @@ import { act, renderHook } from '@testing-library/react';
 import tokensMeta from '../../../../app/design-system/tokens/tokens.meta.json';
 
 import type { TokenMeta } from './data';
-import { openHashes, returnHash, ReturnTo } from './nesting';
 import {
   MAX_PAYLOAD_BYTES,
   SNAP_DELTA_E,
@@ -282,16 +281,14 @@ describe('share link codec', () => {
     }
   });
 
-  it("allows every token's own values from the token set", () => {
+  it("allows every token's own value from the token set", () => {
     for (const t of meta) {
-      for (const value of Object.values(t.values)) {
-        const result = parseOverridesResult(
-          link(JSON.stringify({ [t.name]: value })),
-          meta
-        );
-        if (value.length <= 64)
-          expect([t.name, result.error]).toEqual([t.name, undefined]);
-      }
+      const result = parseOverridesResult(
+        link(JSON.stringify({ [t.name]: t.value })),
+        meta
+      );
+      if (t.value.length <= 64)
+        expect([t.name, result.error]).toEqual([t.name, undefined]);
     }
   });
 
@@ -449,36 +446,6 @@ describe('useOverrides', () => {
     expect(parseOverrides(window.location.hash, meta)).toEqual({
       '--gv-radius-control': '20px',
     });
-  });
-
-  it('keeps edits made in an opened component on Back to the pattern', () => {
-    const x = { '--gv-radius-control': '20px' };
-    window.history.replaceState(
-      null,
-      '',
-      `#/patterns/p--s?o=${encodeOverrides(x)}`
-    );
-    const { result } = renderHook(() => useOverrides(meta));
-    expect(result.current.overrides).toEqual(x);
-    const back: ReturnTo = {
-      section: 'patterns',
-      storyId: 'p--s',
-      path: [0, 1],
-      zoom: 'fit',
-    };
-    const { here, there } = openHashes(window.location.hash, back, 'b--d');
-    navigate(there);
-    const y = { '--gv-radius-control': '8px' };
-    act(() => result.current.setOverride('--gv-radius-control', '8px'));
-    expect(parseOverrides(window.location.hash, meta)).toEqual(y);
-    // Back by the history entry, and by the chip's link.
-    for (const to of [here, returnHash(back)]) {
-      navigate(to);
-      expect(result.current.overrides).toEqual(y);
-      expect(result.current.notice).toBeUndefined();
-      expect(parseOverrides(window.location.hash, meta)).toEqual(y);
-      expect(window.location.hash).toContain('sel=0.1');
-    }
   });
 
   it('refuses an edit the share-link rules refuse, and keeps the rest', () => {

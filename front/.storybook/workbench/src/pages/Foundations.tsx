@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import type { Mode, TokenName } from '@ds/tokens/tokens';
+import type { TokenName } from '@ds/tokens/tokens';
 
 import ChangesDrawer from '../components/ChangesDrawer';
 import Icon from '../components/Icon';
-import TokenRow, { MODE_LABEL } from '../components/TokenRow';
+import TokenRow from '../components/TokenRow';
 import { colourGroups, ColourGroup, stepOf } from '../lib/colourGroups';
 import { checkPair, PairCheck, resolveTokens } from '../lib/contrast';
 import type { TokenMeta } from '../lib/data';
@@ -71,8 +71,6 @@ type Props = {
   // A token to scroll to and focus (`#/foundations/<category>/<token>`).
   token?: string;
   meta: TokenMeta[];
-  mode: Mode;
-  onMode: (mode: Mode) => void;
   overrides: Overrides;
   setOverride: (name: TokenName, value: string) => string | undefined;
   reset: (name?: TokenName) => void;
@@ -80,33 +78,6 @@ type Props = {
 
 const countOf = (meta: TokenMeta[], id: string) =>
   meta.filter((t) => t.category === id).length;
-
-// Today and Redesign as a two-button switch.
-const ModeSwitch = ({
-  mode,
-  onMode,
-}: {
-  mode: Mode;
-  onMode: (mode: Mode) => void;
-}) => (
-  <div
-    className="wb-segmented"
-    role="group"
-    aria-label="Mode"
-    data-testid="wb-foundations-mode"
-  >
-    {(['today', 'redesign'] as Mode[]).map((m) => (
-      <button
-        key={m}
-        type="button"
-        aria-pressed={m === mode}
-        onClick={() => onMode(m)}
-      >
-        {MODE_LABEL[m]}
-      </button>
-    ))}
-  </div>
-);
 
 const Badge = ({ ok, label }: { ok: boolean; label: string }) => (
   <span className={ok ? 'wb-pass' : 'wb-fail'}>
@@ -163,37 +134,27 @@ const TokenChip = ({ name, colour }: { name: string; colour: string }) => (
 );
 
 type PairRow = PairUse & {
-  checks: Record<Mode, PairCheck>;
+  check: PairCheck;
   broken: boolean;
   failing: boolean;
 };
 
 const PairsTable = ({
   pairs,
-  mode,
   live,
   overrides,
   loaded,
 }: {
   pairs: PairUse[];
-  mode: Mode;
-  live: Record<Mode, Record<string, string>>;
+  live: Record<string, string>;
   overrides: Overrides;
   loaded: boolean;
 }) => {
   const [onlyFailing, setOnlyFailing] = useState(false);
   const rows: PairRow[] = useMemo(() => {
     const out = pairs.map((p) => {
-      const checks = {
-        today: checkPair(p.text, p.background, BASE.today, live.today),
-        redesign: checkPair(p.text, p.background, BASE.redesign, live.redesign),
-      };
-      return {
-        ...p,
-        checks,
-        broken: checks.today.broken || checks.redesign.broken,
-        failing: !checks.today.aa || !checks.redesign.aa,
-      };
+      const check = checkPair(p.text, p.background, BASE, live);
+      return { ...p, check, broken: check.broken, failing: !check.aa };
     });
     // Broken by an edit first, then the order of buildPairs (most used).
     return out.sort((a, b) => Number(b.broken) - Number(a.broken));
@@ -211,8 +172,8 @@ const PairsTable = ({
         reads against every background colour it reads. The scan does not see
         which element sits on which, so some pairs never meet on screen. Ratios
         follow WCAG 2.2: AA needs 4.5 for normal text and 3 for large text
-        (24px, or 18.7px bold). Checked against both modes
-        {edited ? ', with your edits applied' : ''}. Platform colours use the
+        (24px, or 18.7px bold)
+        {edited ? '. Checked with your edits applied' : ''}. Platform colours use the
         default pink (#ef0071), not the city picked in the toolbar.
       </p>
       {!loaded ? (
@@ -231,14 +192,14 @@ const PairsTable = ({
                 checked={onlyFailing}
                 onChange={(e) => setOnlyFailing(e.target.checked)}
               />{' '}
-              Only pairs that fail AA in a mode
+              Only pairs that fail AA
             </label>
             <span className="wb-pairs-stats">
               <span className="wb-stat-chip">
                 <strong>{rows.length}</strong> pairs
               </span>
               <span className="wb-stat-chip wb-stat-chip-fail">
-                <strong>{failing}</strong> fail AA in a mode
+                <strong>{failing}</strong> fail AA
               </span>
               {broken > 0 && (
                 <span className="wb-stat-chip wb-stat-chip-fail">
@@ -264,10 +225,7 @@ const PairsTable = ({
                     Text on background
                   </th>
                   <th scope="col" role="columnheader">
-                    Today
-                  </th>
-                  <th scope="col" role="columnheader">
-                    Redesign
+                    Contrast
                   </th>
                   <th scope="col" role="columnheader">
                     Used in
@@ -283,22 +241,20 @@ const PairsTable = ({
                     data-testid="wb-pair-row"
                   >
                     <th scope="row" role="rowheader" className="wb-pair-names">
-                      <TokenChip name={r.text} colour={live[mode][r.text]} />
+                      <TokenChip name={r.text} colour={live[r.text]} />
                       <span className="wb-pair-on">on</span>
                       <TokenChip
                         name={r.background}
-                        colour={live[mode][r.background]}
+                        colour={live[r.background]}
                       />
                     </th>
-                    {(['today', 'redesign'] as Mode[]).map((m) => (
-                      <td role="cell" key={m} data-label={MODE_LABEL[m]}>
-                        <Verdict
-                          check={r.checks[m]}
-                          text={live[m][r.text]}
-                          background={live[m][r.background]}
-                        />
-                      </td>
-                    ))}
+                    <td role="cell" data-label="Contrast">
+                      <Verdict
+                        check={r.check}
+                        text={live[r.text]}
+                        background={live[r.background]}
+                      />
+                    </td>
                     <td
                       role="cell"
                       className="wb-pair-used"
@@ -383,8 +339,6 @@ const Foundations = ({
   category = 'color',
   token,
   meta,
-  mode,
-  onMode,
   overrides,
   setOverride,
   reset,
@@ -398,9 +352,9 @@ const Foundations = ({
   );
   const scale = useMemo(
     () => [
-      ...new Set(tokens.filter((t) => t.tier === 1).map((t) => t.values[mode])),
+      ...new Set(tokens.filter((t) => t.tier === 1).map((t) => t.value)),
     ],
-    [tokens, mode]
+    [tokens]
   );
 
   const groups = useMemo(
@@ -473,9 +427,6 @@ const Foundations = ({
     );
   }
   const scaleId = scale.length ? `wb-scale-${category}` : undefined;
-  const differ = tokens.filter(
-    (t) => t.values.today !== t.values.redesign
-  ).length;
 
   return (
     <article className="wb-page wb-page-wide">
@@ -501,17 +452,8 @@ const Foundations = ({
         role="toolbar"
         aria-label="Foundations"
       >
-        <ModeSwitch mode={mode} onMode={onMode} />
         <span className="wb-toolbar-meta">
           {plural(tokens.length, 'token', 'tokens')}
-          {differ > 0 && (
-            <>
-              {' '}
-              <span aria-hidden="true">&middot;</span>{' '}
-              <span className="wb-diff-dot" aria-hidden="true" />
-              {differ} {differ === 1 ? 'differs' : 'differ'} in the redesign
-            </>
-          )}
         </span>
         {groups.length > 0 && (
           <button
@@ -543,7 +485,6 @@ const Foundations = ({
       {drawer && (
         <ChangesDrawer
           meta={meta}
-          mode={mode}
           overrides={overrides}
           onReset={reset}
           onClose={() => setDrawer(false)}
@@ -606,7 +547,7 @@ const Foundations = ({
                     open={open}
                     onToggle={() => toggleRamp(g.id)}
                     onPick={(name) => pick(g.id, name)}
-                    values={live[mode]}
+                    values={live}
                     edited={
                       g.tokens.filter(
                         (t) => overrides[t.name as TokenName] !== undefined
@@ -618,7 +559,6 @@ const Foundations = ({
                       key={t.name}
                       token={t}
                       meta={meta}
-                      mode={mode}
                       override={overrides[t.name as TokenName]}
                       live={live}
                       usage={indexes.usage.get(t.name)}
@@ -639,7 +579,6 @@ const Foundations = ({
                     key={t.name}
                     token={t}
                     meta={meta}
-                    mode={mode}
                     override={overrides[t.name as TokenName]}
                     live={live}
                     usage={indexes.usage.get(t.name)}
@@ -657,7 +596,6 @@ const Foundations = ({
       {category === 'color' && (
         <PairsTable
           pairs={indexes.pairs}
-          mode={mode}
           live={live}
           overrides={overrides}
           loaded={indexes.loaded}

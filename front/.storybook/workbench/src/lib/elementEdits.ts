@@ -9,7 +9,6 @@ import type { IconName } from '../components/Icon';
 import type { Finding, TokenMeta } from './data';
 import {
   formatHealTask,
-  HealMode,
   MAX_TASK_ROUTES,
   routeLabel,
 } from './healTask';
@@ -113,7 +112,6 @@ export type TaskContext = {
   file?: string;
   storyId: string;
   routes: string[];
-  mode: HealMode;
   layer: string;
   findings: Finding[];
 };
@@ -151,14 +149,13 @@ export const taskOfEdit = (e: ElementEdit, ctx: TaskContext): string => {
         ctx.component,
         ctx.storyId,
         ctx.routes,
-        ctx.mode,
         { token: e.to.token }
       );
     }
     return [
       `heal: ${ctx.component} · ${file} · ${e.from.raw} → ${
         e.to.token ?? '(choose a token)'
-      } · mode ${ctx.mode}`,
+      }`,
       `why: hard-coded ${e.label.toLowerCase()} seen in the workbench (${
         ctx.layer
       }), scan confidence low`,
@@ -170,8 +167,8 @@ export const taskOfEdit = (e: ElementEdit, ctx: TaskContext): string => {
   return [
     `change: ${ctx.component} · ${file} · ${e.props.join(
       ', '
-    )} ${from} → ${to} · mode redesign`,
-    `why: design change from the workbench (${e.kind}); changes today's look, so redesign scope or a token change`,
+    )} ${from} → ${to}`,
+    `why: design change from the workbench (${e.kind}); it changes the look wherever the component renders, so a token change or its own PR off master`,
     check,
   ].join('\n');
 };

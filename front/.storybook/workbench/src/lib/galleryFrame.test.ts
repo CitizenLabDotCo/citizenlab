@@ -9,7 +9,7 @@ import {
 } from './galleryFrame';
 
 const MOCKS = [{ handler: 'default' }];
-const GLOBALS = { mode: 'today' as const, city: 'linz', lang: 'en' };
+const GLOBALS = { city: 'linz', lang: 'en' };
 
 // A preview that renders a story in 10ms: `own-*` stories bring their own
 // mock handlers, `full-*` ones are laid out fullscreen, `broken-*` ones
@@ -92,7 +92,6 @@ const setup = (ids: string[]) => {
 afterEach(() => {
   delete (window as any).__STORYBOOK_PREVIEW__;
   document.body.innerHTML = '';
-  document.documentElement.removeAttribute('data-gv-mode');
 });
 
 describe('createGalleryRenderer', () => {
@@ -202,11 +201,8 @@ describe('createGalleryRenderer', () => {
   it('renders every story again when the globals change', async () => {
     const { states, started, torn, update, renderer } = setup(['a']);
     await until(() => states.a === 'rendered');
-    renderer.setGlobals({ ...GLOBALS, mode: 'redesign' });
-    expect(update).toHaveBeenLastCalledWith({ ...GLOBALS, mode: 'redesign' });
-    expect(document.documentElement.getAttribute('data-gv-mode')).toBe(
-      'redesign'
-    );
+    renderer.setGlobals({ ...GLOBALS, lang: 'de' });
+    expect(update).toHaveBeenLastCalledWith({ ...GLOBALS, lang: 'de' });
     await until(() => started.length === 2 && torn.length === 1);
     expect(document.querySelectorAll('.gvg-story')).toHaveLength(1);
     renderer.dispose();

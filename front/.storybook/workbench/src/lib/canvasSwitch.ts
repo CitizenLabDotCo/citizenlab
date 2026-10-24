@@ -13,7 +13,7 @@
 //   new language would not show. Instead the user globals are set in the
 //   store and the story is remounted (`forceRemount`), which runs its
 //   loaders again (the messages of the new language) and the decorators
-//   (the city's theme, the mode attribute).
+//   (the city's theme).
 // - A story torn down while it is still busy (its loaders, render or play
 //   function) reloads the whole frame (StoryRender.teardown), so a switch
 //   waits until it is past those.

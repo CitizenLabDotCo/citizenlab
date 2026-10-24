@@ -233,14 +233,8 @@
   border-radius: var(--wb-radius);
 }
 
-/* Two modes */
-.wb-prop-subtitle {
-  margin: var(--gv-space-8) 0 var(--gv-space-1);
-  font-size: var(--gv-fs-m);
-  color: var(--wb-heading);
-}
-
-.wb-prop-modes {
+/* The back-office proposal */
+.wb-prop-proposed {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: var(--gv-space-3);
@@ -249,7 +243,7 @@
   list-style: none;
 }
 
-.wb-prop-modes li {
+.wb-prop-proposed li {
   display: flex;
   flex-direction: column;
   gap: var(--gv-space-3);
@@ -258,19 +252,19 @@
   border-radius: var(--wb-radius-lg);
 }
 
-.wb-prop-modes code {
+.wb-prop-proposed code {
   font-size: var(--gv-fs-xs);
   color: var(--wb-muted);
 }
 
-.wb-prop-mode-pair {
+.wb-prop-proposed-pair {
   display: flex;
   gap: var(--gv-space-3);
   align-items: center;
   color: var(--wb-muted);
 }
 
-.wb-prop-mode-side {
+.wb-prop-proposed-side {
   display: flex;
   flex-direction: column;
   gap: var(--gv-space-1);
@@ -281,7 +275,7 @@
   overflow-wrap: anywhere;
 }
 
-.wb-prop-mode-new {
+.wb-prop-proposed-new {
   color: var(--wb-heading);
   font-weight: 600;
 }
@@ -308,18 +302,6 @@
   font-weight: 700;
   line-height: 48px;
   color: var(--wb-heading);
-}
-
-/* Quote in both modes, one above the other: each frame is wider than the
-   Quote (500px at most), so its corners sit on white and show. */
-.wb-prop-split {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: var(--gv-space-4);
-}
-
-.wb-prop-split-side {
-  min-width: 0;
 }
 
 /* The heal */

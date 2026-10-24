@@ -1,4 +1,4 @@
-// The share links in the hash (`o` token edits, `p` instance prop edits)
+// The share link in the hash (`o`, the token edits)
 // and the browser history. A hook writes the session's value into the
 // entry it is on with replaceState and marks the entry's state with that
 // value. Back to an older entry then brings a value equal to its mark: the

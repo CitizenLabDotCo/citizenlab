@@ -1,35 +1,13 @@
 // The heal task the Tokens and Usage panels hand to Claude Code on the
 // branch (SPEC 7.5): three lines, `heal:`, `why:` and `check:`.
 //
-//   heal: <Component> · <file>:<line> · <raw value> → <token> · mode <mode>
+//   heal: <Component> · <file>:<line> · <raw value> → <token>
 //   why: <category>, scan confidence <confidence>
 //   check: story <story id>, routes <list>
 import tokensMeta from '../../../../app/design-system/tokens/tokens.meta.json';
 
 import type { Finding, TokenMeta } from './data';
-import type { Office } from './stories';
 import { legacyIndex, tokensOfFinding } from './usage';
-
-export type HealMode = 'today' | 'redesign' | 'both';
-
-// A heal must hold where the component is used: both modes when shared,
-// the redesign for the back office, today for the front office.
-export const HEAL_MODE_OF: Record<Office, HealMode> = {
-  shared: 'both',
-  bo: 'redesign',
-  fo: 'today',
-  unknown: 'both',
-};
-
-// A mode picked on a component's page holds for that component only.
-export type HealChoice = { component: string; mode: HealMode };
-
-export const healModeOf = (
-  choice: HealChoice | undefined,
-  component: string,
-  office: Office
-): HealMode =>
-  choice && choice.component === component ? choice.mode : HEAL_MODE_OF[office];
 
 // Routes named in the `check:` line; the rest are counted.
 export const MAX_TASK_ROUTES = 8;
@@ -84,7 +62,7 @@ export const healToken = (f: Finding, meta: TokenMeta[] = META): string[] => {
 
 // A route as a path, the way the route list shows it: `admin` -> `/admin`,
 // the home page `` -> `/`, `admin/projects/$projectId` ->
-// `/admin/projects/:projectId`. The workbench and ds:audit use this one.
+// `/admin/projects/:projectId`.
 export const routeLabel = (path: string) =>
   `/${path.replace(/(^|\/)\$([A-Za-z0-9_]+)/g, '$1:$2')}`;
 
@@ -100,7 +78,6 @@ export const formatHealTask = (
   component: string,
   storyId: string,
   routes: string[],
-  mode: HealMode,
   // `token`: the row the heal starts from, which names the one token when
   // a legacy name maps to several. Without it the task offers them all.
   { token, meta = META }: { token?: string; meta?: TokenMeta[] } = {}
@@ -118,7 +95,7 @@ export const formatHealTask = (
   return [
     `heal: ${component} · ${f.file}:${f.line} · ${flat(
       f.raw
-    )} → ${to} · mode ${mode}`,
+    )} → ${to}`,
     `why: ${f.category}, scan confidence ${f.confidence}`,
     `check: story ${storyId}, routes ${list}`,
   ].join('\n');

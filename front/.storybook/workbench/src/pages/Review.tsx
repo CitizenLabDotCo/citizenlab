@@ -7,7 +7,6 @@ import {
   useState,
 } from 'react';
 
-import type { Mode } from '@ds/tokens/tokens';
 
 import { GV_VIEWPORTS, GvViewport } from '../../../viewports';
 import ChangeList, { shortSubject } from '../components/ChangeList';
@@ -39,7 +38,6 @@ import {
   RouteFixture,
   routesFor,
   routeStats,
-  highlightSupport,
   shellFiles,
   unfilledParams,
   writeSeen,
@@ -50,8 +48,6 @@ import { PlaceholderArt } from './Placeholder';
 type Props = {
   meta: TokenMeta[];
   overrides: Overrides;
-  mode: Mode;
-  onMode: (mode: Mode) => void;
 };
 
 type BeforeSource = 'preview' | 'baseline';
@@ -205,8 +201,8 @@ const signed = (n: number) => (n === 0 ? '0' : `${n > 0 ? '+' : ''}${fmt(n)}`);
 // The Review page: the real platform before and after, route by route.
 // Left, the routes (filtered by component, office, search and what the
 // changes touch) and the change list; centre, two frames of the platform
-// with the session's token edits and mode on the After frame.
-const Review = ({ meta, overrides, mode, onMode }: Props) => {
+// with the session's token edits on the After frame.
+const Review = ({ meta, overrides }: Props) => {
   const indexes = useScanIndexes(meta);
   const scan = indexes.scan;
   const [changes, setChanges] = useState<DesignChanges | undefined>();
@@ -222,7 +218,6 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
   const [viewport, setViewport] = useState<ViewportChoice>('auto');
   const [before, setBefore] = useState<BeforeSource>('preview');
   const [sync, setSync] = useState(true);
-  const [highlight, setHighlight] = useState(true);
   const [shown, setShown] = useState<'before' | 'after'>('after');
   const [reloadKey, setReloadKey] = useState(0);
   const [hosts, setHosts] = useState(readHosts);
@@ -505,32 +500,6 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
   const vpW = parseInt(vp.width, 10);
   const vpH = parseInt(vp.height, 10);
   const editCount = Object.keys(overrides).length;
-  const after = reports.after;
-  const highlightOn = highlight && !!state.component;
-  // Tagged per component: library components carry data-gv-component on
-  // a tagged build, UI and admin components never do.
-  const componentFile = scan?.components.find(
-    (c) => c.component === state.component
-  )?.file;
-  const support = highlightSupport(componentFile, after?.tagged ?? false);
-  const tagged = support === 'ok';
-
-  let highlightNote: string;
-  if (!state.component) highlightNote = 'Pick a component to outline it.';
-  else if (support === 'untagged-component')
-    highlightNote = `Off: ${state.component} is not a library component, so it carries no tag.`;
-  else if (!after || after.state === 'loading')
-    highlightNote = 'Waiting for the page.';
-  else if (after.state === 'cross-origin')
-    highlightNote = 'Not on another host.';
-  else if (!tagged)
-    highlightNote = 'Off: this platform build does not tag components.';
-  else if (!highlight) highlightNote = `${state.component} not outlined.`;
-  else
-    highlightNote = `${fmt(after.count)} ${state.component} ${
-      after.count === 1 ? 'instance' : 'instances'
-    } in After`;
-
   // ------------------------------------------------------------ summary
 
   const summary = useMemo(
@@ -566,7 +535,7 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
 
   // The edits for the After frame, one object per change (the frame
   // rewrites the page when this changes).
-  const edits = useMemo(() => ({ overrides, mode }), [overrides, mode]);
+  const edits = useMemo(() => ({ overrides }), [overrides]);
 
   const loading = !indexes.loaded;
   const noScan = indexes.loaded && !indexes.hasScan;
@@ -579,7 +548,7 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
     editCount
       ? `${editCount} ${editCount === 1 ? 'edit' : 'edits'}`
       : 'no edits'
-  }, ${mode === 'redesign' ? 'Redesign' : 'Today'}`;
+  }`;
 
   // The frames take the window below wherever the body starts, so a
   // shorter header gives them the room.
@@ -897,16 +866,6 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
               testId="wb-review-viewport"
               options={VIEWPORTS}
             />
-            <Segmented<Mode>
-              label="After mode"
-              value={mode}
-              onChange={onMode}
-              testId="wb-review-mode"
-              options={[
-                { value: 'today', label: 'Today' },
-                { value: 'redesign', label: 'Redesign' },
-              ]}
-            />
             <label
               className="wb-rtoolbar-field"
               title="What the Before frame shows"
@@ -939,30 +898,6 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
               />
               <span>Sync scroll</span>
             </label>
-            <label className="wb-check" title={highlightNote}>
-              <input
-                type="checkbox"
-                className="wb-switch"
-                checked={highlightOn && tagged}
-                disabled={!state.component || !tagged}
-                onChange={(e) => setHighlight(e.target.checked)}
-                data-testid="wb-review-highlight"
-              />
-              <span>Highlight</span>
-            </label>
-            {/* The count shows next to the switch; why it is off is the
-                switch's tooltip. */}
-            <span
-              className={
-                tagged && highlightOn
-                  ? 'wb-rhl wb-rhl-on'
-                  : 'wb-rhl wb-visually-hidden'
-              }
-              data-testid="wb-review-highlight-note"
-              data-count={after?.count ?? 0}
-            >
-              {highlightNote}
-            </span>
             <button
               type="button"
               className="wb-icon-button wb-rtoolbar-reload"
@@ -1135,7 +1070,6 @@ const Review = ({ meta, overrides, mode, onMode }: Props) => {
                 width={vpW}
                 height={vpH}
                 edits={edits}
-                highlight={highlightOn && tagged ? state.component : undefined}
                 onReport={onReportAfter}
                 onWindow={onWindowAfter}
                 reloadKey={reloadKey}

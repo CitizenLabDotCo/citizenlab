@@ -1,4 +1,4 @@
-/* Chrome of the workbench shell. Built on the --gv-* tokens of today's mode:
+/* Chrome of the workbench shell. Built on the --gv-* tokens:
    neutral greys, one accent (the platform primary), the radius and shadow
    scales. The --wb-* names are the shell's own roles over those tokens. */
 :root {
@@ -467,12 +467,6 @@ code {
   color: var(--wb-accent);
 }
 
-.wb-head-tools {
-  display: flex;
-  gap: var(--gv-space-3);
-  align-items: center;
-}
-
 .wb-section-title {
   font-size: var(--gv-fs-l);
 }
@@ -745,7 +739,7 @@ a.wb-card:hover {
 }
 
 /* Navigation inside a page reads as underlined tabs everywhere: these
-   category links, the story rows, the panel and Review tabs. Mode and view
+   category links, the story rows, the panel and Review tabs. Tool and view
    switches are segmented controls. */
 .wb-shell .wb-chips a {
   position: relative;
@@ -1007,11 +1001,6 @@ a.wb-card:hover {
   padding: 1px;
 }
 
-.wb-canvas-size {
-  margin: 0 0 var(--gv-space-2);
-  font-size: var(--gv-fs-xs);
-}
-
 .wb-canvas-view {
   max-width: 100%;
   overflow: hidden;
@@ -1164,16 +1153,6 @@ a.wb-card:hover {
   min-width: 260px;
 }
 
-.wb-mode-name {
-  flex: none;
-  width: 64px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--wb-muted);
-}
-
 /* Colour ramps: a heading row per ramp, its swatches in a strip; the rows
    fold under it. */
 .wb-tokens tr[hidden] {
@@ -1312,10 +1291,6 @@ a.wb-card:hover {
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
 }
 
-.wb-compare .wb-pv-swatch {
-  width: 48px;
-}
-
 .wb-pv-space {
   justify-content: flex-start;
   width: 200px;
@@ -1345,10 +1320,6 @@ a.wb-card:hover {
   font-weight: 600;
   line-height: 1;
   color: var(--wb-on-accent);
-}
-
-.wb-compare .wb-pv-space {
-  width: 100px;
 }
 
 .wb-pv-radius > span {
@@ -1450,30 +1421,7 @@ tr:hover .wb-pv-motion > span,
   border-radius: var(--gv-radius-1);
 }
 
-.wb-compare {
-  display: inline-flex;
-  gap: var(--gv-space-3);
-  align-items: flex-end;
-}
-
-.wb-compare > span {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gv-space-1);
-  align-items: flex-start;
-}
-
-.wb-compare-label {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--wb-muted);
-}
-
-.wb-compare-on .wb-compare-label {
-  color: var(--wb-accent);
-}
-
-/* The Value cell: the token's value in the mode, edited in place, in the
+/* The Value cell: the token's live value, edited in place, in the
    Design tab's field (.wb-vf). */
 .wb-vf.wb-tf {
   max-width: 360px;
@@ -2591,28 +2539,8 @@ tr:hover .wb-pv-motion > span,
   border-radius: var(--wb-radius-lg);
 }
 
-.wb-stage-split {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
 .wb-stage .wb-canvas-frame {
   box-shadow: var(--wb-shadow);
-}
-
-.wb-canvas-size {
-  display: flex;
-  gap: var(--gv-space-2);
-  align-items: center;
-}
-
-.wb-canvas-label {
-  padding: 0 var(--gv-space-2);
-  font-weight: 600;
-  line-height: 20px;
-  color: var(--wb-heading);
-  background: var(--wb-bg);
-  border-radius: var(--gv-radius-1);
-  box-shadow: inset 0 0 0 1px var(--wb-border);
 }
 
 /* Controls panel */
@@ -3142,11 +3070,6 @@ tr:hover .wb-pv-motion > span,
   border-radius: var(--wb-radius);
 }
 
-.wb-panel .wb-ptokens .wb-compare > span:not(.wb-compare-on),
-.wb-panel .wb-ptokens .wb-compare-label {
-  display: none;
-}
-
 .wb-panel .wb-ptokens .wb-pv-swatch {
   width: 48px;
   height: 48px;
@@ -3200,10 +3123,6 @@ tr:hover .wb-pv-motion > span,
 .wb-panel .wb-ptokens .wb-token-usage,
 .wb-panel .wb-ptokens .wb-token-footer {
   grid-column: 1 / -1;
-}
-
-.wb-panel .wb-ptokens .wb-mode-name {
-  width: 72px;
 }
 
 .wb-panel .wb-ptokens .wb-token-edit input:not([type='color']) {
@@ -3494,25 +3413,6 @@ a.wb-line:hover {
   font-size: 11px;
 }
 
-.wb-heal-mode {
-  display: inline-flex;
-  gap: var(--gv-space-1);
-  align-items: center;
-  font-size: var(--gv-fs-xs);
-  color: var(--wb-muted);
-}
-
-.wb-heal-mode select {
-  height: 28px;
-  padding: 0 var(--gv-space-1);
-  font: inherit;
-  font-weight: 600;
-  color: var(--wb-heading);
-  background: var(--wb-bg);
-  border: 1px solid var(--wb-border-strong);
-  border-radius: var(--wb-radius);
-}
-
 .wb-ufilter {
   display: flex;
   flex-wrap: wrap;
@@ -3601,20 +3501,6 @@ a.wb-line:hover {
   margin: 2px 0 0 34px;
   font-size: 11px;
   color: var(--wb-muted);
-}
-
-/* Audit rows have no line number to indent past. */
-.wb-uaudit .wb-finding-where {
-  margin-left: 0;
-}
-
-.wb-uaudit .wb-finding-change {
-  flex-wrap: wrap;
-}
-
-.wb-uaudit .wb-uprops-label {
-  display: block;
-  margin: 14px 0 4px;
 }
 
 .wb-conf {
@@ -3983,10 +3869,6 @@ a.wb-line:hover {
 
   .wb-thumb-body {
     padding: var(--gv-space-3);
-  }
-
-  .wb-stage-split {
-    grid-template-columns: minmax(0, 1fr);
   }
 
   .wb-stage {
@@ -4672,7 +4554,7 @@ a.wb-line:hover {
   border-top: 1px solid var(--wb-border);
 }
 
-.wb-tchange-mode {
+.wb-tchange-value {
   display: inline-flex;
   gap: var(--gv-space-1);
   align-items: center;
@@ -4828,20 +4710,6 @@ a.wb-line:hover {
   width: auto;
   min-height: 32px;
   font-weight: 400;
-}
-
-.wb-rhl {
-  font-size: var(--gv-fs-xs);
-  color: var(--wb-muted);
-}
-
-.wb-rhl-on {
-  padding: 0 var(--gv-space-2);
-  font-weight: 600;
-  line-height: 20px;
-  color: var(--wb-highlight);
-  background: var(--wb-highlight-soft);
-  border-radius: var(--gv-radius-full);
 }
 
 .wb-shell .wb-rtoolbar-reload {
@@ -6140,39 +6008,6 @@ tr[data-result='needs-human'] .wb-a11y-note {
   margin-top: var(--gv-space-2);
 }
 
-.wb-insp-modes {
-  display: grid;
-  gap: 2px;
-  margin: 0;
-  font-size: var(--gv-fs-xs);
-}
-
-.wb-insp-modes > div {
-  display: grid;
-  grid-template-columns: 76px minmax(0, 1fr);
-  color: var(--wb-muted);
-}
-
-.wb-insp-modes dt {
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  font-size: 11px;
-}
-
-.wb-insp-modes dd {
-  display: flex;
-  gap: var(--gv-space-1);
-  align-items: center;
-  margin: 0;
-  font-family: var(--wb-mono);
-  overflow-wrap: anywhere;
-}
-
-.wb-insp-modes .wb-insp-mode-on {
-  color: var(--wb-heading);
-}
-
 .wb-insp-editor .wb-token-edit input {
   min-width: 0;
   flex: 1;
@@ -6770,7 +6605,7 @@ tr[data-result='needs-human'] .wb-a11y-note {
   border-radius: 0;
 }
 
-/* Tool, viewport, zoom, mode and city float 24px above the screen's foot,
+/* Tool, viewport, zoom and city float 24px above the screen's foot,
    Figma style, centred on the canvas. */
 .wb-float-bar {
   position: absolute;
@@ -6858,282 +6693,3 @@ tr[data-result='needs-human'] .wb-a11y-note {
   border-color: var(--wb-accent);
 }
 
-/* The way back from an opened component to the pattern it was opened from,
-   before the breadcrumbs. */
-.wb-back-chip {
-  display: inline-flex;
-  gap: var(--gv-space-1);
-  align-items: center;
-  min-height: 28px;
-  padding: 0 var(--gv-space-3);
-  font-size: var(--gv-fs-13);
-  font-weight: 600;
-  color: var(--wb-component);
-  text-decoration: none;
-  background: var(--wb-component-soft);
-  border-radius: 999px;
-}
-
-.wb-back-chip:hover {
-  color: var(--wb-component);
-  text-decoration: underline;
-}
-
-.wb-back-chip:focus-visible {
-  outline: var(--gv-focus-width) solid var(--wb-component);
-  outline-offset: 2px;
-}
-
-/* The selection's layer path: story, instances, the selection. */
-.wb-chain ol {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px 0;
-  align-items: center;
-  padding: 0;
-  margin: 0 0 var(--gv-space-1);
-  list-style: none;
-  font-size: var(--gv-fs-xs);
-  color: var(--wb-muted);
-}
-
-.wb-chain-seg {
-  display: inline-flex;
-  align-items: center;
-  min-width: 0;
-  max-width: 100%;
-}
-
-.wb-chain-sep {
-  padding: 0 2px;
-  color: var(--wb-faint);
-}
-
-.wb-chain-name {
-  display: inline-flex;
-  gap: 3px;
-  align-items: center;
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.wb-shell button.wb-chain-name {
-  min-height: 22px;
-  padding: 0 var(--gv-space-1);
-  font-size: var(--gv-fs-xs);
-  font-weight: 400;
-  color: var(--wb-muted);
-  background: none;
-  border: 0;
-  border-radius: 4px;
-}
-
-.wb-shell button.wb-chain-name:hover {
-  color: var(--wb-text);
-  background: var(--wb-subtle);
-}
-
-.wb-chain-name[aria-current] {
-  padding: 0 var(--gv-space-1);
-  font-weight: 600;
-  color: var(--wb-heading);
-}
-
-.wb-chain-instance .wb-chain-name,
-.wb-shell .wb-chain-instance button.wb-chain-name,
-.wb-shell .wb-chain-instance button.wb-chain-name:hover {
-  color: var(--wb-component);
-}
-
-.wb-chain-glyph,
-.wb-instance-glyph {
-  font-size: 11px;
-  line-height: 1;
-}
-
-/* The library component the selection is, or sits in: its name, how
-   often the app uses it, and the way to its own page. */
-.wb-instance {
-  display: flex;
-  gap: var(--gv-space-2);
-  align-items: center;
-  padding-top: var(--gv-space-2);
-  padding-bottom: var(--gv-space-2);
-  font-size: var(--gv-fs-xs);
-  background: var(--wb-component-soft);
-}
-
-.wb-instance-glyph,
-.wb-instance-name {
-  color: var(--wb-component);
-}
-
-.wb-instance-name {
-  font-weight: 600;
-}
-
-.wb-instance-uses {
-  flex: 1;
-  color: var(--wb-text);
-  font-variant-numeric: tabular-nums;
-}
-
-.wb-instance-none {
-  color: var(--wb-text);
-}
-
-.wb-shell button.wb-instance-open {
-  gap: var(--gv-space-1);
-  min-height: 24px;
-  padding: 0 var(--gv-space-2);
-  font-size: var(--gv-fs-xs);
-  font-weight: 600;
-  color: var(--wb-on-accent);
-  background: var(--wb-component-fill);
-  border: 0;
-  border-radius: 4px;
-}
-
-.wb-shell button.wb-instance-open:hover {
-  background: var(--wb-component-strong);
-}
-
-/* Instance properties under the instance header: Figma's instance panel.
-   A change holds for this instance inside this story, so the block wears
-   the component accent; a row's mark says where its value comes from. */
-.wb-insp-block.wb-instance-body {
-  padding-top: var(--gv-space-2);
-  border-top: 0;
-  box-shadow: inset 2px 0 0 var(--wb-component);
-}
-
-.wb-instance-scope {
-  margin: 0 0 var(--gv-space-2);
-  font-size: var(--gv-fs-xs);
-  color: var(--wb-component);
-}
-
-.wb-instance-props-note {
-  margin: 0;
-  font-size: var(--gv-fs-xs);
-  color: var(--wb-muted);
-}
-
-.wb-instance-props {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gv-space-1);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.wb-instance-prop {
-  display: grid;
-  grid-template-columns: minmax(0, 6.5rem) minmax(0, 1fr) 4rem 24px;
-  gap: var(--gv-space-2);
-  align-items: center;
-  min-height: 32px;
-}
-
-.wb-instance-prop label {
-  overflow: hidden;
-  font-size: var(--gv-fs-13);
-  color: var(--wb-text);
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.wb-instance-prop-field {
-  position: relative;
-  display: flex;
-  align-items: center;
-  min-width: 0;
-}
-
-.wb-instance-prop-field select {
-  width: 100%;
-  height: 28px;
-  padding: 0 var(--gv-space-6) 0 var(--gv-space-2);
-  font: inherit;
-  font-size: var(--gv-fs-13);
-  color: var(--wb-text);
-  background: var(--wb-bg);
-  border: 1px solid var(--wb-border-strong);
-  border-radius: var(--wb-radius);
-  appearance: none;
-  cursor: pointer;
-}
-
-.wb-instance-prop-field select:focus-visible {
-  outline: var(--gv-focus-width) solid var(--wb-component);
-  outline-offset: var(--gv-focus-offset);
-}
-
-.wb-instance-prop-field .wb-icon {
-  position: absolute;
-  right: var(--gv-space-2);
-  color: var(--wb-muted);
-  pointer-events: none;
-}
-
-.wb-instance-prop .wb-switch:checked {
-  background: var(--wb-component-fill);
-}
-
-.wb-instance-mark {
-  justify-self: start;
-  padding: 1px var(--gv-space-1);
-  font-size: 11px;
-  color: var(--wb-muted);
-  border: 1px solid var(--wb-border);
-  border-radius: 4px;
-}
-
-.wb-instance-prop-code .wb-instance-mark {
-  color: var(--wb-text);
-  border-color: var(--wb-border-strong);
-}
-
-.wb-instance-prop-changed .wb-instance-mark {
-  color: var(--wb-on-accent);
-  background: var(--wb-component-fill);
-  border-color: var(--wb-component-fill);
-}
-
-.wb-instance-prop-changed select {
-  border-color: var(--wb-component);
-}
-
-.wb-shell button.wb-instance-reset {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  min-height: 24px;
-  padding: 0;
-  color: var(--wb-muted);
-  background: none;
-  border: 0;
-  border-radius: 4px;
-}
-
-.wb-shell button.wb-instance-reset:hover {
-  color: var(--wb-component);
-  background: var(--wb-component-soft);
-}
-
-.wb-change-instance .wb-change-glyph {
-  color: var(--wb-component);
-}
-
-.wb-change-stale {
-  display: inline-block;
-  padding: 0 var(--gv-space-2);
-  font-size: 12px;
-  color: var(--wb-text);
-  background: var(--wb-warn-soft);
-  border-radius: var(--gv-radius-full);
-}

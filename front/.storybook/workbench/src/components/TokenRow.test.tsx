@@ -13,8 +13,8 @@ jest.mock('../lib/tokenValues', () => {
     '--gv-shadow-menu': '0px 0px 12px 0px rgba(0,0,0,0.18)',
   };
   return {
-    DEFS: { today: defs, redesign: defs },
-    BASE: { today: {}, redesign: {} },
+    DEFS: defs,
+    BASE: {},
   };
 });
 
@@ -28,7 +28,7 @@ const token = (
     category: 'radius',
     tier: 2,
     type: 'dimension',
-    values: { today: value, redesign: value },
+    value,
     legacy: [],
     ...over,
   } as TokenMeta);
@@ -42,10 +42,7 @@ const META = [
   }),
 ];
 
-const live = (name: string, value: string) => ({
-  today: { [name]: value },
-  redesign: { [name]: value },
-});
+const live = (name: string, value: string) => ({ [name]: value });
 
 const table = (row: JSX.Element) =>
   render(
@@ -61,7 +58,6 @@ describe('TokenRow value field', () => {
       <TokenRow
         token={META[0]}
         meta={META}
-        mode="today"
         live={live('--gv-radius-2', '8px')}
         hasScan={false}
         onSet={onSet}
@@ -81,7 +77,6 @@ describe('TokenRow value field', () => {
       <TokenRow
         token={META[0]}
         meta={META}
-        mode="today"
         override="10px"
         live={live('--gv-radius-2', '10px')}
         hasScan={false}
@@ -104,7 +99,6 @@ describe('TokenRow value field', () => {
       <TokenRow
         token={META[0]}
         meta={META}
-        mode="today"
         override="9px"
         live={live('--gv-radius-2', '9px')}
         hasScan={false}
@@ -124,7 +118,6 @@ describe('TokenRow value field', () => {
       <TokenRow
         token={META[1]}
         meta={META}
-        mode="today"
         live={live('--gv-radius-control', '8px')}
         hasScan={false}
         onSet={jest.fn()}
@@ -146,8 +139,7 @@ describe('TokenRow value field', () => {
       <TokenRow
         token={META[2]}
         meta={META}
-        mode="today"
-        live={live('--gv-shadow-menu', META[2].values.today)}
+        live={live('--gv-shadow-menu', META[2].value)}
         hasScan={false}
         onSet={onSet}
         onReset={jest.fn()}
@@ -175,8 +167,7 @@ describe('TokenRow value field', () => {
       <TokenRow
         token={META[2]}
         meta={META}
-        mode="today"
-        live={live('--gv-shadow-menu', META[2].values.today)}
+        live={live('--gv-shadow-menu', META[2].value)}
         hasScan={false}
         onSet={onSet}
         onReset={jest.fn()}

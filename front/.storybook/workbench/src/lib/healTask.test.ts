@@ -1,10 +1,5 @@
 import type { Finding } from './data';
-import {
-  formatHealTask,
-  healModeOf,
-  healToken,
-  MAX_TASK_ROUTES,
-} from './healTask';
+import { formatHealTask, healToken, MAX_TASK_ROUTES } from './healTask';
 
 const finding = (partial: Partial<Finding>): Finding => ({
   file: 'app/component-library/components/Button/index.tsx',
@@ -25,12 +20,11 @@ describe('formatHealTask', () => {
         finding({}),
         'Button',
         'components-actions-button--default',
-        ['admin', 'admin/projects/$projectId', ''],
-        'both'
+        ['admin', 'admin/projects/$projectId', '']
       )
     ).toBe(
       [
-        'heal: Button · app/component-library/components/Button/index.tsx:74 · 16px → --gv-space-4 · mode both',
+        'heal: Button · app/component-library/components/Button/index.tsx:74 · 16px → --gv-space-4',
         'why: px, scan confidence high',
         'check: story components-actions-button--default, routes /admin, /admin/projects/:projectId, /',
       ].join('\n')
@@ -47,11 +41,10 @@ describe('formatHealTask', () => {
       }),
       'Button',
       'components-actions-button--default',
-      ['admin'],
-      'redesign'
+      ['admin']
     );
     expect(task.split('\n')[0]).toBe(
-      'heal: Button · app/component-library/components/Button/index.tsx:169 · colors.textSecondary → --gv-text-secondary · mode redesign'
+      'heal: Button · app/component-library/components/Button/index.tsx:169 · colors.textSecondary → --gv-text-secondary'
     );
     expect(task.split('\n')[1]).toBe(
       'why: legacy-colors, scan confidence high'
@@ -63,8 +56,7 @@ describe('formatHealTask', () => {
       finding({ raw: 'props.theme\n    .colors.textSecondary' }),
       'Button',
       'b--default',
-      [],
-      'today'
+      []
     );
     expect(task.split('\n')[0]).toContain(
       '· props.theme.colors.textSecondary →'
@@ -76,12 +68,11 @@ describe('formatHealTask', () => {
       finding({ raw: '13px', suggestion: undefined, confidence: 'low' }),
       'Button',
       'b--default',
-      [],
-      'today'
+      []
     );
     expect(task).toBe(
       [
-        'heal: Button · app/component-library/components/Button/index.tsx:74 · 13px → (choose a token) · mode today',
+        'heal: Button · app/component-library/components/Button/index.tsx:74 · 13px → (choose a token)',
         'why: px, scan confidence low',
         'check: story b--default, routes none',
       ].join('\n')
@@ -92,7 +83,7 @@ describe('formatHealTask', () => {
     const routes = Array.from({ length: MAX_TASK_ROUTES + 3 }, (_, i) =>
       String.fromCharCode(97 + i)
     );
-    const line = formatHealTask(finding({}), 'Button', 's', routes, 'both')
+    const line = formatHealTask(finding({}), 'Button', 's', routes)
       .split('\n')
       .pop();
     expect(line).toBe(
@@ -114,27 +105,16 @@ describe('formatHealTask from a token row', () => {
 
   it('offers every token a legacy name maps to without a row', () => {
     expect(
-      formatHealTask(radius, 'Button', 's', [], 'both').split('\n')[0]
-    ).toContain('→ --gv-radius-control or --gv-radius-panel ·');
+      formatHealTask(radius, 'Button', 's', []).split('\n')[0]
+    ).toContain('→ --gv-radius-control or --gv-radius-panel');
   });
 
   it('names only the row token', () => {
     expect(
-      formatHealTask(radius, 'Button', 's', [], 'both', {
+      formatHealTask(radius, 'Button', 's', [], {
         token: '--gv-radius-panel',
       }).split('\n')[0]
-    ).toContain('→ --gv-radius-panel · mode both');
-  });
-});
-
-describe('healModeOf', () => {
-  it('follows the office until a mode is chosen for this component', () => {
-    expect(healModeOf(undefined, 'Button', 'shared')).toBe('both');
-    expect(healModeOf(undefined, 'Button', 'fo')).toBe('today');
-    const chosen = { component: 'Button', mode: 'today' as const };
-    expect(healModeOf(chosen, 'Button', 'shared')).toBe('today');
-    // A choice made on another component does not carry over.
-    expect(healModeOf(chosen, 'UI/Error', 'shared')).toBe('both');
+    ).toMatch(/→ --gv-radius-panel$/);
   });
 });
 

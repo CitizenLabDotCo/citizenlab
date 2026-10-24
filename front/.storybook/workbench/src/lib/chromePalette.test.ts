@@ -35,7 +35,7 @@ const roles = (selector: string) => {
   return out;
 };
 
-const gv = resolveTokens(parseTokenCss(tokenCss)).today;
+const gv = resolveTokens(parseTokenCss(tokenCss));
 const light = Object.fromEntries(
   Object.entries(roles(':root')).map(([k, v]) => [
     k,

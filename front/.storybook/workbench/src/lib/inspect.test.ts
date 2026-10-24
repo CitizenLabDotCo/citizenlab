@@ -210,7 +210,7 @@ describe('fitsProp', () => {
       name,
       category,
       tier,
-      values: { today: '', redesign: '' },
+      value: '',
       legacy: [],
     } as unknown as TokenMeta);
   it('matches colours to colour longhands and space to padding', () => {

@@ -29,8 +29,6 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
           category={route.category}
           token={route.token}
           meta={TOKEN_META}
-          mode={canvas.toolbar.mode}
-          onMode={(mode) => canvas.setToolbar({ ...canvas.toolbar, mode })}
           overrides={canvas.overrides}
           setOverride={canvas.setOverride}
           reset={canvas.reset}
@@ -56,11 +54,9 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
           key={route.name}
           section={route.name}
           globals={{
-            mode: canvas.toolbar.mode,
             city: canvas.toolbar.city,
             lang: canvas.toolbar.lang,
           }}
-          onMode={(mode) => canvas.setToolbar({ ...canvas.toolbar, mode })}
         />
       );
     case 'review':
@@ -68,8 +64,6 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
         <Review
           meta={TOKEN_META}
           overrides={canvas.overrides}
-          mode={canvas.toolbar.mode}
-          onMode={(mode) => canvas.setToolbar({ ...canvas.toolbar, mode })}
         />
       );
     case 'proposal':

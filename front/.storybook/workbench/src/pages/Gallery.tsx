@@ -21,7 +21,6 @@ import { useStoryGroups } from '../lib/useStoryGroups';
 import { PlaceholderArt } from './Placeholder';
 
 import type { FrameGlobals } from '../lib/frame';
-import type { Mode } from '@ds/tokens/tokens';
 
 const COPY: Record<Section, { title: string; lead?: string; noun: string }> = {
   components: {
@@ -75,7 +74,6 @@ const STATUSES: { value: Status | 'all'; label: string }[] = [
 type Props = {
   section: Section;
   globals: FrameGlobals;
-  onMode: (mode: Mode) => void;
 };
 
 const SkeletonGrid = () => (
@@ -126,7 +124,7 @@ const Grid = ({
 // `<Section>/`, with the scan's score, status and office, filtered by
 // office, status and name. Patterns also lists the stories whose title
 // starts with no section, so none of them is out of reach.
-const Gallery = ({ section, globals, onMode }: Props) => {
+const Gallery = ({ section, globals }: Props) => {
   const all = useStoryGroups();
   const { results } = useA11yResults();
   const [filter, setFilter] = useState<GalleryFilter>(ALL);
@@ -167,18 +165,6 @@ const Gallery = ({ section, globals, onMode }: Props) => {
         <div>
           <h1>{copy.title}</h1>
           {copy.lead && <p className="wb-lead">{copy.lead}</p>}
-        </div>
-        <div className="wb-head-tools">
-          <Segmented
-            label="Mode of the previews"
-            value={globals.mode}
-            options={[
-              { value: 'today', label: 'Today' },
-              { value: 'redesign', label: 'Redesign' },
-            ]}
-            onChange={onMode}
-            testId="wb-gallery-mode"
-          />
         </div>
       </header>
 

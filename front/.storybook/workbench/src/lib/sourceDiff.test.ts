@@ -7,7 +7,7 @@ import { sourceChanges, sourcePatch } from './sourceDiff';
 const meta = tokensMeta as TokenMeta[];
 
 describe('sourceChanges', () => {
-  it('changes $value of a token that is the same in both modes', () => {
+  it('changes $value of a token', () => {
     const { changes, unknown } = sourceChanges(
       { '--gv-radius-2': '12px' },
       meta,
@@ -17,7 +17,6 @@ describe('sourceChanges', () => {
     expect(changes).toEqual([
       {
         token: '--gv-radius-2',
-        modes: 'both',
         pointer: '/primitive/radius/2/$value',
         from: '8px',
         to: '12px',
@@ -25,25 +24,14 @@ describe('sourceChanges', () => {
     ]);
   });
 
-  it('changes both fields of a token with its own redesign value', () => {
+  it('leaves a proposed back-office value alone', () => {
     const { changes } = sourceChanges(
       { '--gv-color-text-heading': '#222222' },
       meta,
       tokensSource
     );
-    expect(changes.map((c) => [c.modes, c.pointer, c.from, c.to])).toEqual([
-      [
-        'today',
-        '/semantic/color/color-text-heading/$value',
-        '#333333',
-        '#222222',
-      ],
-      [
-        'redesign',
-        '/semantic/color/color-text-heading/$extensions/gv/redesign',
-        '#474747',
-        '#222222',
-      ],
+    expect(changes.map((c) => [c.pointer, c.from, c.to])).toEqual([
+      ['/semantic/color/color-text-heading/$value', '#333333', '#222222'],
     ]);
   });
 
@@ -76,16 +64,12 @@ describe('sourceChanges', () => {
       sourceChanges({ [name]: value }, meta, tokensSource).changes.map(
         (c) => c.to
       );
-    // Semantic token: both fields become the palette alias.
+    // Semantic token: the value becomes the palette alias.
     expect(changes('--gv-color-text-heading', '#cbcbcb')).toEqual([
-      '{primitive.color.grey-400}',
       '{primitive.color.grey-400}',
     ]);
     // A tier-2 literal (#CCC) is not a primitive: kept as typed.
-    expect(changes('--gv-color-text-heading', '#CCC')).toEqual([
-      '#CCC',
-      '#CCC',
-    ]);
+    expect(changes('--gv-color-text-heading', '#CCC')).toEqual(['#CCC']);
     // A primitive keeps its own literal.
     expect(changes('--gv-grey-800', '#CBCBCB')).toEqual(['#CBCBCB']);
   });
@@ -97,14 +81,10 @@ describe('sourceChanges', () => {
         meta,
         tokensSource
       ).changes.map((c) => c.to);
-    expect(changes('rgba(0,0,0,0.6)')).toEqual([
-      'rgba(0,0,0,0.6)',
-      'rgba(0,0,0,0.6)',
-    ]);
-    expect(changes('#00000099')).toEqual(['#00000099', '#00000099']);
+    expect(changes('rgba(0,0,0,0.6)')).toEqual(['rgba(0,0,0,0.6)']);
+    expect(changes('#00000099')).toEqual(['#00000099']);
     // An alpha of 1 is opaque and still links.
     expect(changes('rgba(203, 203, 203, 1)')).toEqual([
-      '{primitive.color.grey-400}',
       '{primitive.color.grey-400}',
     ]);
   });

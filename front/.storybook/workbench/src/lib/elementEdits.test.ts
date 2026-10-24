@@ -91,12 +91,11 @@ describe('element edits', () => {
       file: f.file,
       storyId: 'button--default',
       routes: ['admin'],
-      mode: 'both',
       layer: 'button "Save changes"',
       findings: [f],
     });
     expect(text).toBe(
-      'heal: Button · app/component-library/components/Button/index.tsx:76 · 9px → --gv-space-3 · mode both\n' +
+      'heal: Button · app/component-library/components/Button/index.tsx:76 · 9px → --gv-space-3\n' +
         'why: px, scan confidence high\n' +
         'check: story button--default, routes /admin'
     );
@@ -108,20 +107,19 @@ describe('element edits', () => {
       file: 'f.tsx',
       storyId: 's',
       routes: [],
-      mode: 'both' as const,
       layer: 'button "Save"',
       findings: [],
     };
     expect(taskOfEdit(base, ctx)).toBe(
-      'heal: Button · f.tsx · 9px → --gv-space-3 · mode both\n' +
+      'heal: Button · f.tsx · 9px → --gv-space-3\n' +
         'why: hard-coded padding · vertical seen in the workbench (button "Save"), scan confidence low\n' +
         'check: story s, routes none'
     );
     expect(
       taskOfEdit({ ...base, kind: 'custom', to: { value: '11px' } }, ctx)
     ).toBe(
-      'change: Button · f.tsx · padding-top, padding-bottom 9px → 11px · mode redesign\n' +
-        "why: design change from the workbench (custom); changes today's look, so redesign scope or a token change\n" +
+      'change: Button · f.tsx · padding-top, padding-bottom 9px → 11px\n' +
+        'why: design change from the workbench (custom); it changes the look wherever the component renders, so a token change or its own PR off master\n' +
         'check: story s, routes none'
     );
     expect(
@@ -134,7 +132,7 @@ describe('element edits', () => {
         },
         ctx
       )
-    ).toContain('--gv-space-3 → var(--gv-space-4) · mode redesign');
+    ).toContain('--gv-space-3 → var(--gv-space-4)\n');
   });
 
   it('drops bad stored entries', () => {

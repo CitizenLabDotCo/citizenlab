@@ -28,7 +28,6 @@
 //   decorator invalidates every query when a story mounts, so each new card
 //   refetches the active queries of the cards before it (all mocked; the
 //   frame cannot reach the query client to skip it).
-import { applyToDocument } from './frame';
 import { Placement, renderOrder } from './gallery';
 
 import type { FrameGlobals } from './frame';
@@ -383,9 +382,6 @@ export const createGalleryRenderer = (
     unshowStale();
     if (!preview) return;
     preview.storyStoreValue?.userGlobals.update(wanted);
-    // The mode is a root attribute: shown stories switch now, before they
-    // render again.
-    applyToDocument(doc, {}, wanted.mode);
     pump();
   };
 

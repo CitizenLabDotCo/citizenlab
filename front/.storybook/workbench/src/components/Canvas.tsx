@@ -34,8 +34,6 @@ type Props = {
   // Called with the scale the frame is shown at, so the zoom control can
   // say what Fit came to.
   onScale?: (scale: number) => void;
-  // A caption over the frame, for the side by side view.
-  label?: string;
 };
 
 type Channel = {
@@ -239,7 +237,7 @@ const NO_EDITS: ElementEdit[] = [];
 // story up and a wide one down to the canvas, a fixed zoom shows it at that
 // scale (the canvas scrolls when it does not fit). A preset viewport sizes
 // the frame to the preset; Fit scales it down to the canvas. Another story,
-// mode, city or language switches the frame in place (lib/canvasSwitch.ts):
+// city or language switches the frame in place (lib/canvasSwitch.ts):
 // the old story shows until the new one has rendered, then the frame is
 // fitted again; when that cannot be done the frame loads anew. Overrides
 // are set on the frame's root element without a reload and set again
@@ -252,7 +250,6 @@ const Canvas = ({
   elementEdits = NO_EDITS,
   onFrame,
   onScale,
-  label,
 }: Props) => {
   const frame = useRef<HTMLIFrameElement>(null);
   const box = useRef<HTMLDivElement>(null);
@@ -264,7 +261,6 @@ const Canvas = ({
     overrides,
     elementEdits,
     storyId,
-    mode: toolbar.mode,
     onFrame,
     fit,
     room,
@@ -273,7 +269,6 @@ const Canvas = ({
     overrides,
     elementEdits,
     storyId,
-    mode: toolbar.mode,
     onFrame,
     fit,
     room,
@@ -281,7 +276,7 @@ const Canvas = ({
   const zoomRef = useRef(zoom);
   zoomRef.current = zoom;
   // Per frame document, the tokens the session set there: the story's own
-  // inline tokens (the city's --gv-tenant-*, written by ModeProvider) stay.
+  // inline tokens (the city's --gv-tenant-*, written by the theme context) stay.
   const applied = useRef(new WeakMap<Document, Map<string, string | null>>());
   // Per frame document, each element edit's inline values before it.
   const appliedElements = useRef(
@@ -291,7 +286,7 @@ const Canvas = ({
   // switch in place changes it once the new story has rendered.
   const shownStory = useRef(storyId);
 
-  // `adopt`: the story has just rendered, so its ModeProvider may have
+  // `adopt`: the story has just rendered, so its theme context may have
   // written the tenant tokens again (another city) over an edit.
   const apply = useCallback((adopt = false) => {
     const doc = frame.current?.contentDocument;
@@ -302,7 +297,7 @@ const Canvas = ({
       applied.current.set(doc, mine);
     }
     if (adopt) adoptPageTokens(doc, latest.current.overrides, mine);
-    applyEdits(doc, latest.current.overrides, latest.current.mode, mine);
+    applyEdits(doc, latest.current.overrides, mine);
     let els = appliedElements.current.get(doc);
     if (!els) {
       els = new Map();
@@ -344,7 +339,6 @@ const Canvas = ({
   }, []);
 
   const globals = {
-    mode: toolbar.mode,
     city: toolbar.city,
     lang: toolbar.lang,
   };
@@ -616,7 +610,7 @@ const Canvas = ({
     []
   );
 
-  useEffect(() => apply(), [apply, overrides, elementEdits, toolbar.mode, fit]);
+  useEffect(() => apply(), [apply, overrides, elementEdits, fit]);
   useEffect(refit, [refit, room, fit, zoom]);
 
   useEffect(() => {
@@ -628,7 +622,7 @@ const Canvas = ({
   }, []);
 
   // Another story or other globals: switched in place where it can be.
-  useEffect(sync, [sync, storyId, toolbar.mode, toolbar.city, toolbar.lang]);
+  useEffect(sync, [sync, storyId, toolbar.city, toolbar.lang]);
 
   // A new frame: the old window is gone until it loads.
   useEffect(() => {
@@ -669,12 +663,6 @@ const Canvas = ({
       ref={box}
       data-zoom={zoom === 'fit' ? 'fit' : 'fixed'}
     >
-      {/* Side by side, each canvas names its mode. */}
-      {label && (
-        <p className="wb-canvas-size wb-muted">
-          <span className="wb-canvas-label">{label}</span>
-        </p>
-      )}
       <div className="wb-canvas-view" ref={view}>
         <div
           className="wb-canvas-frame"
@@ -690,7 +678,6 @@ const Canvas = ({
               title={`Story ${storyId}`}
               data-testid="wb-canvas"
               data-story={current.storyId}
-              data-mode={current.globals.mode}
               data-city={current.globals.city}
               data-lang={current.globals.lang}
               data-fit={

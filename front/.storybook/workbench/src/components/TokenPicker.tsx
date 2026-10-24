@@ -12,7 +12,7 @@ import { Preview } from './TokenRow';
 type Props = {
   row: InspectRow;
   meta: TokenMeta[];
-  // Every token's live value in the mode (var() chains followed).
+  // Every token's live value (var() chains followed).
   resolved: Record<string, string>;
   onPick: (token: TokenName) => void;
   onClose: () => void;
@@ -87,13 +87,13 @@ const TokenPicker = ({ row, meta, resolved, onPick, onClose }: Props) => {
                 <span className="wb-picker-preview" aria-hidden="true">
                   <Preview
                     token={t}
-                    value={resolved[t.name] ?? t.values.today}
+                    value={resolved[t.name] ?? t.value}
                     all={resolved}
                   />
                 </span>
                 <span className="wb-picker-name">{shortName(t.name)}</span>
                 <span className="wb-vf-muted">
-                  {resolved[t.name] ?? t.values.today}
+                  {resolved[t.name] ?? t.value}
                 </span>
               </button>
             ))}

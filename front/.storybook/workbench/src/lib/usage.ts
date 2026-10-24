@@ -156,7 +156,7 @@ export const colourRole = (t: TokenMeta): ColourRole | null => {
   if (background && !text) return 'background';
   if (TEXT.test(name)) return 'text';
   if (BACKGROUND.test(name)) return 'background';
-  const rgba = parseColour(t.values.today);
+  const rgba = parseColour(t.value);
   if (!rgba) return null;
   const [r, g, b] = rgba;
   // Perceived lightness: light primitives are surfaces, dark ones ink.

@@ -1,24 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import type { Mode } from '@ds/tokens/tokens';
-
 import type { Overrides } from '../lib/overrides';
 import {
   applyEdits,
   dismissConsent,
   FrameState,
   frameState,
-  MODE_ATTRIBUTE,
 } from '../lib/review';
 
 import Icon from './Icon';
 
 export type FrameReport = {
   state: FrameState | 'loading';
-  // Some element of the page carries data-gv-component.
-  tagged: boolean;
-  // Instances of the highlighted component.
-  count: number;
   // The path the frame shows now (the platform is a single page app).
   path?: string;
 };
@@ -31,16 +24,14 @@ type Props = {
   route: string;
   width: number;
   height: number;
-  // Token edits and mode put on the page; none on a Before frame.
-  edits?: { overrides: Overrides; mode: Mode };
-  highlight?: string;
+  // Token edits put on the page; none on a Before frame.
+  edits?: { overrides: Overrides };
   onReport?: (r: FrameReport) => void;
   onWindow?: (win: Window | null) => void;
   // Bumped to reload the frame.
   reloadKey: number;
 };
 
-const HIGHLIGHT_ID = 'gv-review-highlight';
 const POLL_MS = 800;
 // Under this scale page text is too small to read: offer actual size.
 const MIN_SCALE = 0.45;
@@ -48,11 +39,10 @@ const MIN_SCALE = 0.45;
 // The edits are on the page already (the poll then writes nothing).
 const inPlace = (
   doc: Document,
-  e: { overrides: Overrides; mode: Mode },
+  e: { overrides: Overrides },
   map: Map<string, string | null>
 ) => {
   const root = doc.documentElement;
-  if (root.getAttribute(MODE_ATTRIBUTE) !== e.mode) return false;
   const names = Object.keys(e.overrides);
   if (names.length !== map.size) return false;
   return names.every(
@@ -66,21 +56,10 @@ const inPlace = (
 const readDoc = (iframe: HTMLIFrameElement | null) => () =>
   iframe?.contentWindow?.document ?? null;
 
-// The shell's --wb-highlight (shell.css); the frame does not have the
-// shell's variables.
-const HIGHLIGHT = '#c8006e';
-
-const css = (name: string) =>
-  `[data-gv-component="${name.replace(
-    /["\\]/g,
-    ''
-  )}"]{outline:2px solid ${HIGHLIGHT}!important;outline-offset:2px!important;box-shadow:0 0 0 6px rgba(200,0,110,.16)!important}`;
-
 // One platform page in a frame, laid out at the viewport preset's width and
 // scaled down to the room it has. Same origin: the session's edits go on
-// the page's root element on every load, instances of the highlighted
-// component are outlined and counted, and the state (login, cross-origin)
-// is read every POLL_MS, because the platform redirects after it boots.
+// the page's root element on every load, and the state (login,
+// cross-origin) is read every POLL_MS, because the platform redirects after it boots.
 const FrameView = ({
   side,
   caption,
@@ -89,7 +68,6 @@ const FrameView = ({
   width,
   height,
   edits,
-  highlight,
   onReport,
   onWindow,
   reloadKey,
@@ -98,13 +76,9 @@ const FrameView = ({
   const box = useRef<HTMLDivElement>(null);
   const [room, setRoom] = useState({ w: 0, h: 0 });
   const [actual, setActual] = useState(false);
-  const [report, setReport] = useState<FrameReport>({
-    state: 'loading',
-    tagged: false,
-    count: 0,
-  });
-  const latest = useRef({ edits, highlight, route, onReport, onWindow });
-  latest.current = { edits, highlight, route, onReport, onWindow };
+  const [report, setReport] = useState<FrameReport>({ state: 'loading' });
+  const latest = useRef({ edits, route, onReport, onWindow });
+  latest.current = { edits, route, onReport, onWindow };
   const applied = useRef(new WeakMap<Document, Map<string, string | null>>());
   const loaded = useRef(false);
 
@@ -124,19 +98,7 @@ const FrameView = ({
         map = new Map();
         applied.current.set(doc, map);
       }
-      if (!inPlace(doc, e, map)) applyEdits(doc, e.overrides, e.mode, map);
-    }
-    const name = latest.current.highlight;
-    let style = doc.getElementById(HIGHLIGHT_ID);
-    if (name && doc.head) {
-      if (!style) {
-        style = doc.createElement('style');
-        style.id = HIGHLIGHT_ID;
-        doc.head.appendChild(style);
-      }
-      if (style.textContent !== css(name)) style.textContent = css(name);
-    } else {
-      style?.remove();
+      if (!inPlace(doc, e, map)) applyEdits(doc, e.overrides, map);
     }
   }, []);
 
@@ -144,8 +106,6 @@ const FrameView = ({
     if (!loaded.current) return;
     const iframe = frame.current;
     const state = frameState(readDoc(iframe), latest.current.route);
-    let tagged = false;
-    let count = 0;
     let path: string | undefined;
     if (state === 'ok' || state === 'login') {
       try {
@@ -153,26 +113,14 @@ const FrameView = ({
         // The cookie modal covers the page; decline it like a visitor.
         if (doc) dismissConsent(doc);
         path = doc?.location?.pathname;
-        tagged = !!doc?.querySelector('[data-gv-component]');
-        const name = latest.current.highlight;
-        if (name && tagged && doc) {
-          count = doc.querySelectorAll(
-            `[data-gv-component="${name.replace(/["\\]/g, '')}"]`
-          ).length;
-        }
       } catch {
         // Reported as cross-origin on the next read.
       }
     }
     setReport((r) =>
-      r.state === state &&
-      r.tagged === tagged &&
-      r.count === count &&
-      r.path === path
-        ? r
-        : { state, tagged, count, path }
+      r.state === state && r.path === path ? r : { state, path }
     );
-    // A page that rebuilt its head (or a late redirect) loses the style.
+    // A late redirect loads a new document without the edits.
     apply();
   }, [apply]);
 
@@ -183,7 +131,7 @@ const FrameView = ({
   // A new URL or a reload: loading until the frame fires load.
   useEffect(() => {
     loaded.current = false;
-    setReport({ state: 'loading', tagged: false, count: 0 });
+    setReport({ state: 'loading' });
     const timer = window.setInterval(poll, POLL_MS);
     return () => {
       window.clearInterval(timer);
@@ -191,8 +139,7 @@ const FrameView = ({
     };
   }, [url, reloadKey, poll]);
 
-  useEffect(apply, [apply, edits, highlight]);
-  useEffect(poll, [poll, highlight]);
+  useEffect(apply, [apply, edits]);
 
   const onLoad = () => {
     loaded.current = true;
@@ -275,7 +222,7 @@ const FrameView = ({
         <p className="wb-fview-hint wb-fview-hint-quiet" role="status">
           <Icon name="external" size={16} />
           <span>
-            Another host: shown as is, without edits, sync scroll or highlight.
+            Another host: shown as is, without edits or sync scroll.
             It needs its own login once.
           </span>
         </p>

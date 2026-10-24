@@ -10,7 +10,7 @@ import Icon from './Icon';
 
 export type FieldProps = {
   row: InspectRow;
-  // The token's live value in the mode, for the pill's muted value.
+  // The token's live value, for the pill's muted value.
   liveToken?: string;
   // The session's edit of this row, when any (the custom caution mark).
   edit?: ElementEdit;
@@ -76,7 +76,7 @@ export const ValueField = ({
         </button>
         {v.link === 'theme' && row.editable && (
           // Through the theme today: attaching reads the variable instead,
-          // so redesign and token edits reach it.
+          // so token edits reach it.
           <button
             type="button"
             className="wb-vf-side wb-vf-city"

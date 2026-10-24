@@ -1,13 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 
-import Canvas from '../components/Canvas';
 import Icon, { IconName } from '../components/Icon';
 import LineChart, {
   areaLabel,
   LEGEND,
   markerClass,
 } from '../components/LineChart';
-import { DEFAULT_TOOLBAR } from '../components/Toolbar';
 import {
   loadChanges,
   loadScan,
@@ -29,14 +27,14 @@ import {
   TrendTotals,
 } from '../lib/proposal';
 
-import type { Overrides } from '../lib/overrides';
 import type { DesignChanges } from '../lib/review';
 
 import './proposal.css';
 
 // The page for a frontend developer with ten minutes: the problem in
-// numbers, the ask in three rings, how it works, a real heal, the review
-// flow, where to start, the drift, what developers decide and the cost.
+// numbers, the ask in three rings, how it works, the back-office token
+// proposal, a real heal, the review flow, where to start, the drift, what
+// developers decide and the cost.
 // Every number is read from the build's data files.
 
 type Summary = Partial<Record<keyof TrendTotals | string, number>>;
@@ -49,11 +47,6 @@ type Data = {
   stories: StoryIndex;
 };
 
-const NO_OVERRIDES: Overrides = {};
-// Quote reads --gv-radius-control, so it changes between the modes; Button
-// does not yet, so it is only the fallback.
-const SPLIT_STORY = 'components-data-display-quote--default';
-const BUTTON_STORY = 'components-actions-button--back-office-primary';
 const REVIEW_EXAMPLE = `#/review?route=${encodeURIComponent('admin/projects')}`;
 
 const asTrend = (t: unknown): Trend | null =>
@@ -112,14 +105,14 @@ const RINGS: {
   },
   {
     title: 'Design values as CSS variables',
-    what: "Today's values, bridged into the theme so nothing moves. A measured map of off-spec values and small heals with the library you have.",
+    what: "Today's values as tokens, read by Storybook and the workbench. A measured map of off-spec values and small heals with the library you have.",
     cost: 'Costs you a review habit',
     icon: 'tokens',
   },
   {
-    title: 'A redesign mode',
-    what: 'Scoped to the redesigned project pages, where the redesign already lives. The design lead owns that token set; widening it is yours to decide.',
-    cost: 'Your call on scope',
+    title: 'A back-office token set',
+    what: 'Proposed back-office values, kept beside today\'s in the token source. Nothing renders them; whether and where they land is the FE lead\'s call.',
+    cost: 'Your call',
     icon: 'pages',
   },
 ];
@@ -253,14 +246,9 @@ const STEPS: { icon: IconName; title: string; text: string }[] = [
     text: 'Primitives (--gv-blue-500) under roles (--gv-primary). Code reads roles.',
   },
   {
-    icon: 'split',
-    title: 'Two modes',
-    text: ':root is today. [data-gv-mode="redesign"] swaps the values below it.',
-  },
-  {
     icon: 'link',
-    title: 'Theme bridge',
-    text: "The variables start at today's theme values, so nothing changes on screen.",
+    title: 'Read only',
+    text: 'The workbench reads the repo and never changes the platform. Each heal or lift is its own small PR off master.',
   },
   {
     icon: 'checklist',
@@ -288,18 +276,10 @@ const Mechanism = () => (
   </section>
 );
 
-// Tokens whose value differs between the modes, each with a small picture:
-// a corner, a swatch or a type size.
-const MODE_TOKENS = [
-  '--gv-radius-control',
-  '--gv-radius-panel',
-  '--gv-tenant-primary',
-  '--gv-text-heading',
-  '--gv-fs-xxxxl',
-];
-
-const TokenPicture = ({ name, value }: { name: string; value: string }) => {
-  if (name.startsWith('--gv-radius')) {
+// A token's proposed value as a small picture: a corner, a type size or a
+// swatch; nothing for the rest (a family, a height, an outline).
+const TokenPicture = ({ token, value }: { token: TokenMeta; value: string }) => {
+  if (token.name.startsWith('--gv-radius')) {
     return (
       <span
         className="wb-prop-pic wb-prop-pic-radius"
@@ -307,7 +287,7 @@ const TokenPicture = ({ name, value }: { name: string; value: string }) => {
       />
     );
   }
-  if (name.startsWith('--gv-fs')) {
+  if (token.name.startsWith('--gv-fs')) {
     return (
       <span
         className="wb-prop-pic wb-prop-pic-type"
@@ -317,75 +297,60 @@ const TokenPicture = ({ name, value }: { name: string; value: string }) => {
       </span>
     );
   }
-  return (
-    <span
-      className="wb-prop-pic wb-prop-pic-swatch"
-      style={{ background: value }}
-    />
-  );
+  if (token.type === 'color') {
+    return (
+      <span
+        className="wb-prop-pic wb-prop-pic-swatch"
+        style={{ background: value }}
+      />
+    );
+  }
+  return null;
 };
 
-const ModeTokens = () => {
-  const rows = MODE_TOKENS.map((name) =>
-    TOKEN_META.find((t) => t.name === name)
-  ).filter((t): t is TokenMeta => !!t && t.values.today !== t.values.redesign);
-  if (rows.length === 0) return null;
+const BackOffice = () => {
+  const rows = TOKEN_META.filter(
+    (t): t is TokenMeta & { backOffice: string } => t.backOffice !== undefined
+  );
   return (
-    <ul className="wb-prop-modes" data-testid="wb-prop-modes">
-      {rows.map((t) => (
-        <li key={t.name}>
-          <code>{t.name}</code>
-          <span className="wb-prop-mode-pair">
-            <span className="wb-prop-mode-side">
-              <TokenPicture name={t.name} value={t.values.today} />
-              <span>{t.values.today}</span>
-            </span>
-            <Icon name="arrow" size={16} />
-            <span className="wb-prop-mode-side wb-prop-mode-new">
-              <TokenPicture name={t.name} value={t.values.redesign} />
-              <span>{t.values.redesign}</span>
-            </span>
-          </span>
-        </li>
-      ))}
-    </ul>
+    <section className="wb-prop-section" aria-labelledby="wb-prop-bo">
+      <h2 id="wb-prop-bo" className="wb-section-title">
+        A back-office token set, for Iva to decide
+      </h2>
+      <p className="wb-prop-note">
+        A proposal for the FE lead. The token source keeps these back-office
+        values next to today&apos;s, as <code>$extensions.gv.backOffice</code>.
+        Nothing reads them: <code>tokens.css</code> carries only today&apos;s
+        values, so no screen changes. If they are taken, putting them in the
+        back office is its own PR off master, scoped the way Iva chooses.
+      </p>
+      {rows.length === 0 ? (
+        <p className="wb-prop-missing">
+          The token source proposes no back-office values.
+        </p>
+      ) : (
+        <ul className="wb-prop-proposed" data-testid="wb-prop-backoffice">
+          {rows.map((t) => (
+            <li key={t.name}>
+              <code>{t.name}</code>
+              <span className="wb-prop-proposed-pair">
+                <span className="wb-prop-proposed-side">
+                  <TokenPicture token={t} value={t.value} />
+                  <span>{t.value}</span>
+                </span>
+                <Icon name="arrow" size={16} />
+                <span className="wb-prop-proposed-side wb-prop-proposed-new">
+                  <TokenPicture token={t} value={t.backOffice} />
+                  <span>{t.backOffice}</span>
+                </span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   );
 };
-
-const ModeSplit = ({ storyId }: { storyId: string | null }) => (
-  <section className="wb-prop-section" aria-labelledby="wb-prop-modes">
-    <h2 id="wb-prop-modes" className="wb-section-title">
-      Two modes
-    </h2>
-    <p className="wb-prop-note">
-      A page opts in with <code>data-gv-mode=&quot;redesign&quot;</code>. Below
-      it these values change; everything else stays as today.
-    </p>
-    <ModeTokens />
-    <h3 className="wb-prop-subtitle">Quote, live in both modes</h3>
-    <p className="wb-prop-note">
-      Quote reads <code>--gv-radius-control</code>: 3px corners today, 8px in
-      redesign. Button still reads <code>bo.borderRadius</code>, so it looks the
-      same in both until it is healed.
-    </p>
-    {storyId ? (
-      <div className="wb-prop-split" data-testid="wb-prop-split">
-        {(['today', 'redesign'] as const).map((mode) => (
-          <div key={mode} className="wb-prop-split-side">
-            <Canvas
-              storyId={storyId}
-              toolbar={{ ...DEFAULT_TOOLBAR, mode }}
-              overrides={NO_OVERRIDES}
-              label={mode === 'today' ? 'Today' : 'Redesign'}
-            />
-          </div>
-        ))}
-      </div>
-    ) : (
-      <p className="wb-prop-missing">No Quote or Button story in this build.</p>
-    )}
-  </section>
-);
 
 // ------------------------------------------------------------ the heal
 
@@ -403,7 +368,7 @@ const HealSection = ({
     .replace(/^design-system\([^)]*\):\s*/, '')
     .replace(/\s*\[AI-assisted\]$/, '');
   const file = heal.file.split('/').slice(-2).join('/');
-  const zero = heal.diffs && heal.diffs.today + heal.diffs.redesign === 0;
+  const zero = heal.diffs === 0;
   return (
     <section className="wb-prop-section" aria-labelledby="wb-prop-heal">
       <h2 id="wb-prop-heal" className="wb-section-title">
@@ -441,7 +406,7 @@ const HealSection = ({
                 <span>tokens score of the component</span>
               </li>
             )}
-            {heal.diffs && (
+            {heal.diffs !== undefined && (
               <li>
                 <span
                   className={
@@ -451,9 +416,9 @@ const HealSection = ({
                   }
                 >
                   {zero && <Icon name="check" size={16} />}
-                  {heal.diffs.today + heal.diffs.redesign} pixels
+                  {formatNumber(heal.diffs)} pixels
                 </span>
-                <span>changed, in both modes</span>
+                <span>changed on screen</span>
               </li>
             )}
           </ul>
@@ -474,12 +439,12 @@ const HealSection = ({
                 <a
                   key={when}
                   className="wb-button"
-                  href={`../${heal.shots}/${when}-redesign.png`}
+                  href={`../${heal.shots}/${when}.png`}
                   target="_blank"
                   rel="noreferrer"
                 >
                   <Icon name="split" size={16} />
-                  {when === 'before' ? 'Before' : 'After'}, redesign
+                  {when === 'before' ? 'Before' : 'After'}
                 </a>
               ))}
           </div>
@@ -690,8 +655,8 @@ const DECISIONS: { q: string; a: string }[] = [
     a: 'New code reads t.* or var(--gv-*) instead of theme, colors and px.',
   },
   {
-    q: 'Put the mode attribute on admin routes?',
-    a: 'data-gv-mode="redesign" on the redesigned project pages first, more when you say so.',
+    q: 'Take the back-office token set?',
+    a: 'Iva decides whether and where. If yes, one small PR off master per area, the redesigned project pages first.',
   },
   {
     q: 'When does the lint run in CI, and over which folders next?',
@@ -728,7 +693,7 @@ const Decisions = () => (
 
 const MANUAL = [
   'Reviewing each heal PR',
-  'Choosing the redesign values (the design lead)',
+  'Deciding on the back-office values (the FE lead)',
   'Accessibility checks a person has to do',
 ];
 
@@ -772,13 +737,6 @@ const Cost = ({ changes }: { changes: Partial<DesignChanges> | null }) => {
 
 // ------------------------------------------------------------ page
 
-const splitStory = (index: StoryIndex): string | null => {
-  const ids = Object.keys(index.entries);
-  if (ids.includes(SPLIT_STORY)) return SPLIT_STORY;
-  if (ids.includes(BUTTON_STORY)) return BUTTON_STORY;
-  return ids.find((id) => /^components-([a-z0-9]+-)*button--/.test(id)) ?? null;
-};
-
 const Proposal = () => {
   const data = useProposalData();
   return (
@@ -789,7 +747,8 @@ const Proposal = () => {
           <h1>Proposal</h1>
           <p className="wb-lead">
             Design values in code, measured, and healed in small reviewed steps.
-            Nothing changes on screen until a page asks for the redesign.
+            The workbench only reads the repo; every platform change is its
+            own small PR.
           </p>
           <div className="wb-hero-actions">
             <a className="wb-button wb-button-primary" href={REVIEW_EXAMPLE}>
@@ -814,7 +773,7 @@ const Proposal = () => {
           <Problem summary={data.summary} />
           <Rings />
           <Mechanism />
-          <ModeSplit storyId={splitStory(data.stories)} />
+          <BackOffice />
           <HealSection trend={data.trend} repoUrl={data.changes?.repoUrl} />
           <ReviewFlow />
           <Migration scan={data.scan} stories={data.stories} />

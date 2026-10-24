@@ -35,7 +35,7 @@ export const sameValue = (a: string, b: string) => {
 export const pickerGroups = (
   meta: TokenMeta[],
   fits: (t: TokenMeta) => boolean,
-  // Live values of the mode, var() chains followed.
+  // Live values, var() chains followed.
   resolved: Record<string, string>,
   // The rendered value of the field.
   raw: string,
@@ -46,7 +46,7 @@ export const pickerGroups = (
     .filter((t) => !t.deprecated && fits(t))
     .filter((t) => !q || shortName(t.name).toLowerCase().includes(q))
     .sort(bySemanticThenName);
-  const value = (t: TokenMeta) => resolved[t.name] ?? t.values.today;
+  const value = (t: TokenMeta) => resolved[t.name] ?? t.value;
   const match = raw.trim() ? all.filter((t) => sameValue(value(t), raw)) : [];
   const rest = all.filter((t) => !match.includes(t));
   const groups: PickerGroup[] = [

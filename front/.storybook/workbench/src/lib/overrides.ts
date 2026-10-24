@@ -8,7 +8,7 @@
 // refused with a reason.
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import type { Mode, TokenName } from '@ds/tokens/tokens';
+import type { TokenName } from '@ds/tokens/tokens';
 
 import type { TokenMeta } from './data';
 import { isOwnShare, writeShare } from './shareEntry';
@@ -88,19 +88,17 @@ export const deltaE76 = (a: Lab, b: Lab) =>
 
 type Swatch = { name: TokenName; value: string; lab: Lab };
 
-// Every literal opaque colour of the token set in a mode: the tier-1
+// Every literal opaque colour of the token set: the tier-1
 // primitives first, then tier-2 colours that carry their own literal value
 // (for example --gv-text-heading-strong, #1E1E1E, which has no primitive).
-export const palette = (meta: TokenMeta[], mode: Mode = 'today'): Swatch[] =>
+export const palette = (meta: TokenMeta[]): Swatch[] =>
   meta
     .filter((t) => t.category === 'color')
     .sort((a, b) => a.tier - b.tier)
     .flatMap((t) => {
-      const rgba = parseColour(t.values[mode]);
+      const rgba = parseColour(t.value);
       if (!rgba || rgba[3] !== 1) return [];
-      return [
-        { name: t.name as TokenName, value: t.values[mode], lab: toLab(rgba) },
-      ];
+      return [{ name: t.name as TokenName, value: t.value, lab: toLab(rgba) }];
     });
 
 // The nearest swatch, or null when the closest one is further than
@@ -148,15 +146,14 @@ const sameColour = (a: string, b: string) => {
 const preferSemantic = (
   name: TokenName,
   value: string,
-  meta: TokenMeta[],
-  mode: Mode
+  meta: TokenMeta[]
 ): TokenName => {
   const semantic = meta.find(
     (t) =>
       t.tier === 2 &&
       t.category === 'color' &&
       !t.deprecated &&
-      sameColour(t.values[mode], value)
+      sameColour(t.value, value)
   );
   return (semantic?.name as TokenName) ?? name;
 };
@@ -165,7 +162,6 @@ const snapBy = (
   kind: SnapKind | undefined,
   value: string,
   meta: TokenMeta[],
-  mode: Mode,
   semantic: boolean
 ): SnapResult => {
   const typed = value.trim();
@@ -175,8 +171,8 @@ const snapBy = (
       .filter((t) => t.category === kind && t.tier === 1)
       .map((t) => ({
         name: t.name as TokenName,
-        value: t.values[mode],
-        px: toPx(t.values[mode]),
+        value: t.value,
+        px: toPx(t.value),
       }))
       .filter((s): s is typeof s & { px: number } => s.px !== null);
     if (px === null || steps.length === 0) {
@@ -190,14 +186,14 @@ const snapBy = (
   }
 
   if (kind === 'color') {
-    const hit = nearestColour(typed, palette(meta, mode));
+    const hit = nearestColour(typed, palette(meta));
     if (!hit) return { value: typed, snapped: false, custom: true };
     return {
       value: hit.swatch.value,
       snapped: true,
       custom: false,
       to: semantic
-        ? preferSemantic(hit.swatch.name, hit.swatch.value, meta, mode)
+        ? preferSemantic(hit.swatch.name, hit.swatch.value, meta)
         : hit.swatch.name,
     };
   }
@@ -212,9 +208,8 @@ const snapBy = (
 export const snapValue = (
   kind: SnapKind | undefined,
   value: string,
-  meta: TokenMeta[],
-  mode: Mode = 'today'
-): SnapResult => snapBy(kind, value, meta, mode, true);
+  meta: TokenMeta[]
+): SnapResult => snapBy(kind, value, meta, true);
 
 // Moves an edited token value onto the token system, by the token's own
 // category. A colour names the tier-1 primitive: a token edit points at the
@@ -222,8 +217,7 @@ export const snapValue = (
 export const snap = (
   name: TokenName,
   value: string,
-  meta: TokenMeta[],
-  mode: Mode = 'today'
+  meta: TokenMeta[]
 ): SnapResult => {
   const token = meta.find((t) => t.name === name);
   if (!token) return { value: value.trim(), snapped: false, custom: true };
@@ -231,7 +225,7 @@ export const snap = (
     SCALED.includes(token.category) || token.category === 'color'
       ? (token.category as SnapKind)
       : undefined;
-  return snapBy(kind, value, meta, mode, false);
+  return snapBy(kind, value, meta, false);
 };
 
 // ---------------------------------------------------------------- codec
