@@ -95,7 +95,7 @@ const deltaE76 = (a: RGBA, b: RGBA): number => {
 const round = (n: number) => Math.round(n * 100) / 100;
 
 /**
- * Nearest token by value (uses each token's `values.today`). Exact match wins
+ * Nearest token by value (uses each token's `value`). Exact match wins
  * (distance 0), otherwise the closest; ties prefer tier-1 primitives over
  * tier-2 semantics, then token name, so output is
  * deterministic. px distance is absolute px; colour distance is CIE76 in Lab,
@@ -131,7 +131,7 @@ export const nearestToken = (
     tokens
       .filter((t) => t.category === (tokenCategory ?? 'space'))
       .forEach((t) => {
-        const v = parsePx(t.values.today);
+        const v = parsePx(t.value);
         if (v !== undefined) consider(t.name, Math.abs(v - px), t.tier);
       });
     return best;
@@ -145,7 +145,7 @@ export const nearestToken = (
     tokens
       .filter((t) => t.category === (tokenCategory ?? 'color'))
       .forEach((t) => {
-        const v = parseColor(t.values.today);
+        const v = parseColor(t.value);
         if (v && Math.abs(v[3] - rgba[3]) <= ALPHA_TOLERANCE) {
           consider(t.name, deltaE76(rgba, v), t.tier);
         }

@@ -11,7 +11,7 @@
 //                           known one that no longer fails or whose story
 //                           errored, or on no results (ds:check runs this)
 //
-// Each story renders at 1280x900 in mode today. axe-core comes from
+// Each story renders at 1280x900. axe-core comes from
 // node_modules and runs the WCAG 2.0, 2.1 and 2.2 A and AA rules on the
 // story and its portals, without the rules about Storybook's iframe page.
 // Playwright is loaded through ./playwright (see there for GV_PLAYWRIGHT_DIR).
@@ -186,7 +186,7 @@ const main = async () => {
       await page.goto(
         `${args.url}/iframe.html?id=${encodeURIComponent(
           id
-        )}&viewMode=story&globals=mode:today`,
+        )}&viewMode=story`,
         { waitUntil: 'load' }
       );
       const settled = await page

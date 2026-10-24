@@ -9,8 +9,10 @@
  * from the repository root, for GitHub links; diffs are not embedded), a
  * kind and component read from the subject (`design-system(heal): Button
  * ...`), and the offSpec delta when the commit refreshed the committed scan
- * summary. Token changes compare tokens.source.json at the base and at HEAD
- * per mode. It then writes trend.json (see trend.ts).
+ * summary. A commit lists only files that still differ from the base, so a
+ * change a later commit reverted marks nothing. Token changes compare the
+ * values in tokens.source.json at the base and at HEAD. It then writes
+ * trend.json (see trend.ts).
  *
  * The base is the merge-base with --base, else master, else origin/master,
  * else the merge-base the last local scan cached in design-scan.summary.json
@@ -30,7 +32,6 @@ import { runTrend } from './trend';
 export type RunGit = (args: string[]) => string | undefined;
 
 export type Kind = 'heal' | 'lift' | 'token' | 'story' | 'other';
-type Values = { today: string; redesign: string };
 
 export type ChangeCommit = {
   sha: string;
@@ -44,8 +45,8 @@ export type ChangeCommit = {
 
 export type TokenChange = {
   name: string;
-  from: Values | null;
-  to: Values | null;
+  from: string | null;
+  to: string | null;
 };
 
 export type DesignChanges = {
@@ -133,15 +134,10 @@ export const parseLog = (
       };
     });
 
-const tokenValues = (source: TokenSource): Map<string, Values> =>
-  new Map(
-    buildTokens(source).meta.map((t) => [
-      t.name,
-      { today: String(t.values.today), redesign: String(t.values.redesign) },
-    ])
-  );
+const tokenValues = (source: TokenSource): Map<string, string> =>
+  new Map(buildTokens(source).meta.map((t) => [t.name, String(t.value)]));
 
-/** Tokens whose value changed in a mode, plus added and removed ones. */
+/** Tokens whose value changed, plus added and removed ones. */
 export const tokenChanges = (
   base: TokenSource,
   head: TokenSource
@@ -153,7 +149,7 @@ export const tokenChanges = (
   names.forEach((name) => {
     const a = from.get(name) ?? null;
     const b = to.get(name) ?? null;
-    if (a && b && a.today === b.today && a.redesign === b.redesign) return;
+    if (a !== null && a === b) return;
     out.push({ name, from: a, to: b });
   });
   return out;
@@ -241,11 +237,15 @@ export const buildChanges = (opts: {
     const v = parseJson(runGit(['show', `${rev}:${SCAN_SUMMARY}`]))?.offSpec;
     return typeof v === 'number' ? v : undefined;
   };
+  // Files the branch still changes; a commit's other files were reverted.
+  const net = runGit(['diff', '--name-only', base.sha, 'HEAD']);
+  const kept = net === undefined ? undefined : new Set(net.split('\n'));
   out.commits = parseLog(log ?? '').map((c) => {
     const { kind, component } = parseSubject(c.subject, known);
-    const commit: ChangeCommit = { ...c, kind };
+    const files = kept ? c.files.filter((f) => kept.has(f)) : c.files;
+    const commit: ChangeCommit = { ...c, files, kind };
     if (component) commit.component = component;
-    if (c.files.includes(SCAN_SUMMARY)) {
+    if (files.includes(SCAN_SUMMARY)) {
       const after = offSpecAt(c.sha);
       const before = offSpecAt(`${c.sha}^`);
       if (after !== undefined && before !== undefined) {

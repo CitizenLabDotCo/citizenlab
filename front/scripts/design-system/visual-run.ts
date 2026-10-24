@@ -3,11 +3,10 @@
 //   npm run ds:visual -- --baseline <dir> --url http://localhost:6006
 //   npm run ds:visual -- --compare  <dir> --url http://localhost:6006 [--allow-px N]
 //   [--stories <glob,glob>] only the story ids that match (`*` is a wildcard)
-//   [--mode today|redesign] token mode to render in (default today)
 //
-// A run with --stories or --mode redesign covers part of the workbench, so
-// its compare summary goes to <dir>/_summary.json unless --summary says
-// otherwise; only a full today run updates the committed visual-summary.json.
+// A run with --stories covers part of the workbench, so its compare summary
+// goes to <dir>/_summary.json unless --summary says otherwise; only a full
+// run updates the committed visual-summary.json.
 //
 // Playwright is loaded through ./playwright (see there for GV_PLAYWRIGHT_DIR).
 import fs from 'fs';
@@ -58,11 +57,11 @@ const main = async () => {
     console.error(`No story id matches --stories ${args.stories}`);
     process.exit(2);
   }
-  const partial = ids.length < all.length || args.mode !== 'today';
+  const partial = ids.length < all.length;
   console.log(
     `${ids.length} stories${
       ids.length < all.length ? ` of ${all.length}` : ''
-    }, ${VIEWPORTS.length} viewports, mode ${args.mode}`
+    }, ${VIEWPORTS.length} viewports`
   );
 
   // Partial raster repaints only the changed part of a tile, so a border
@@ -79,7 +78,7 @@ const main = async () => {
   const capture = async (page: any, id: string): Promise<Buffer> => {
     try {
       await page.goto(
-        `${args.url}/iframe.html?id=${encodeURIComponent(id)}&viewMode=story&globals=mode:${args.mode}`,
+        `${args.url}/iframe.html?id=${encodeURIComponent(id)}&viewMode=story`,
         { waitUntil: 'load' }
       );
       await page.addStyleTag({ content: NO_ANIMATION_CSS });
@@ -183,7 +182,7 @@ const main = async () => {
     }, PLAY_ERROR_EVENT);
     const page = await context.newPage();
     for (const id of ids) {
-      const name = shotName(vp.name, id, args.mode);
+      const name = shotName(vp.name, id);
       const file = path.join(dir, name);
       try {
         const shot = await capture(page, id);

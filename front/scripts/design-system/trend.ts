@@ -36,11 +36,11 @@ export type HealExample = {
   file: string;
   removed: string[];
   added: string[];
-  // Static-dir folder with {before,after}-{today,redesign}.png.
+  // Static-dir folder with before.png and after.png.
   shots?: string;
   // From the commit body: the follows-tokens score and the changed pixels.
   score?: { from: number; to: number };
-  diffs?: { today: number; redesign: number };
+  diffs?: number;
 };
 
 export type TrendPoint = {
@@ -119,10 +119,12 @@ export const healNotesOf = (
   const out: Pick<HealExample, 'score' | 'diffs'> = {};
   const score = /Score (\d+(?:\.\d+)?) → (\d+(?:\.\d+)?)/.exec(body);
   if (score) out.score = { from: Number(score[1]), to: Number(score[2]) };
-  const diffs = /today (\d+) diffs?,\s+redesign (\d+) diffs?/.exec(body);
-  if (diffs) {
-    out.diffs = { today: Number(diffs[1]), redesign: Number(diffs[2]) };
-  }
+  // Older bodies give two counts ("today N diffs, redesign M diffs"); the
+  // first is the page as it ships.
+  const diffs =
+    /\btoday (\d+) diffs?/.exec(body) ??
+    /Visual compare:[^\n]*?(\d+) diffs?/.exec(body);
+  if (diffs) out.diffs = Number(diffs[1]);
   return out;
 };
 

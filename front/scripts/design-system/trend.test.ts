@@ -71,7 +71,7 @@ const LOG =
     'c2',
     '2026-10-22T11:00:00Z',
     'design-system(heal): A 8px → --gv-space-2 [AI-assisted]',
-    'Score 0.000 → 0.118 (file).\nVisual compare: x, today 0 diffs, redesign 2 diffs.\nScreenshots: .storybook/static/heals/abc1234/\n'
+    'Score 0.000 → 0.118 (file).\nVisual compare: x, 2 diffs.\nScreenshots: .storybook/static/heals/abc1234/\n'
   ) +
   entry('c3', '2026-10-22T12:00:00Z', 'design-system(scan): broken');
 
@@ -123,7 +123,10 @@ describe('trend', () => {
     });
     expect(
       healNotesOf('today 0 diffs,\nredesign 1 diff, at threshold 0')
-    ).toEqual({ diffs: { today: 0, redesign: 1 } });
+    ).toEqual({ diffs: 0 });
+    expect(healNotesOf('Visual compare: Button, 1 diff.')).toEqual({
+      diffs: 1,
+    });
     expect(healNotesOf('nothing')).toEqual({});
   });
 
@@ -139,7 +142,7 @@ describe('trend', () => {
       added: ['      gap={t.space[2]}'],
       shots: 'heals/abc1234',
       score: { from: 0, to: 0.118 },
-      diffs: { today: 0, redesign: 2 },
+      diffs: 2,
     });
   });
 

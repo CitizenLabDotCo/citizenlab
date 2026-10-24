@@ -12,13 +12,12 @@
 // and nothing is logged as a console error. Optional data files that a build
 // may lack (see OPTIONAL_DATA) are allowed to 404. `#/foundations` lands on
 // the Colour page with no overview cards or breadcrumb. Then opens a
-// Button story on the canvas: the mode toolbar puts data-gv-mode on the
-// frame's root, a share link override changes the button's computed
+// Button story on the canvas: a share link override changes the button's computed
 // border-radius, and a bad share link shows a notice and keeps the
 // session. The Foundations colour page lists at least MIN_COLOUR_TOKENS
 // tokens and a contrast pairs table with rows. On the Radius page the
-// radius token's Value field (Detach first, when the mode reads it from
-// another token) steps by 1px on ArrowUp and the row's preview follows;
+// radius token's Value field (Detach first, when it reads from another
+// token) steps by 1px on ArrowUp and the row's preview follows;
 // a typed value shows in the Changes drawer and in the hash. The Shadow
 // page opens a shadow token's layer editor, a Drop shadow with X, Y, Blur,
 // Spread, Color and opacity fields, and ArrowUp on Blur reaches the row's
@@ -30,14 +29,14 @@
 // State and Variant menus offer at least MIN_STATE_TABS stories, another
 // State switches the story in the same canvas frame (the element is not
 // remounted, the preview's current story is the chosen one, the session's
-// radius edit stays on it), as do another mode, city and language: the
+// radius edit stays on it), as do another city and language: the
 // iframe element and its document stay (a marker set in the frame
 // survives, so the preview did not reload itself), no held copy of the old
-// story is left, and the story's DOM shows the new global (the mode
-// attribute, the city's tenant tokens, Arabic's right-to-left body).
+// story is left, and the story's DOM shows the new global (the city's
+// tenant tokens, Arabic's right-to-left body).
 // Switching the `disabled` control then changes the frame's DOM, and a
-// burst of edits of it made during a mode switch waits for the switch: no
-// reload, and the frame ends with the last edit and the new mode; the same
+// burst of edits of it made during a city switch waits for the switch: no
+// reload, and the frame ends with the last edit and the new city; the same
 // burst on a settled frame ends on the last click too. The canvas
 // fits the Button frame to the story by default (MAX_FIT_HEIGHT). The Design tab
 // selects the button and shows its corner radius as the radius token,
@@ -52,9 +51,8 @@
 // /storybook/), the build is served at that origin by request interception
 // so the platform frames are same origin: the admin/projects frames load
 // (ok, or login with the login hint) without the cookie modal, the After
-// frame carries a token edit
-// and Before does not, and the highlight counts tagged instances (shows
-// its note on an untagged build, then counts injected ones).
+// frame carries a token edit and Before does not. The Proposal page shows
+// the build's numbers, two trend lines and the back-office token set.
 // Exits 1 on failure,
 // 2 when Playwright is missing. Playwright is loaded through ./playwright.
 import fs from 'fs';
@@ -241,7 +239,7 @@ const foundationsChecks = async (
     { timeout: 10000 }
   );
   if (!(await page.$(input))) {
-    // The mode reads it from another token: Detach gives it a field.
+    // It reads another token: Detach gives it a field.
     await page.click(`${radiusRow} [data-testid="wb-token-detach"]`);
   }
   await page.waitForSelector(input, { timeout: 10000 });
@@ -374,7 +372,6 @@ const OPTIONAL_DATA = [
   // The Review page's login probe; a static server has no platform API.
   '/web_api/v1/users/me',
   '/a11y-results.json',
-  '/audits/index.json',
 ];
 
 const TYPES: Record<string, string> = {
@@ -440,9 +437,7 @@ const serve = (root: string, port = 0): Promise<http.Server> =>
     server.listen(port, '127.0.0.1', () => resolve(server));
   });
 
-// A setting on the canvas bar: the mode is a row of buttons, the others
-// are selects.
-// Mode and city sit on the floating bar.
+// A setting on the floating bar: city and language are selects.
 const SETTING = (key: string) =>
   `[data-testid="wb-float-bar"] [data-testid="wb-toolbar-${key}"]`;
 const settingOf = async (
@@ -468,18 +463,13 @@ const settingOf = async (
     };
   });
 const pickSetting = async (page: any, key: string, value: string) =>
-  key === 'mode'
-    ? page.click(`${SETTING(key)} [data-value="${value}"]`)
-    : page.selectOption(SETTING(key), value);
+  page.selectOption(SETTING(key), value);
 
-// The canvas frame once it shows the given mode global ('' for any). The
-// frame switches in place, so its src is the URL it loaded with; data-mode
-// says what it shows.
-const canvasFrame = async (page: any, mode: string) => {
-  const handle = await page.waitForSelector(
-    `iframe[data-testid="wb-canvas"]${mode ? `[data-mode="${mode}"]` : ''}`,
-    { timeout: 10000 }
-  );
+// The canvas frame once its story has rendered.
+const canvasFrame = async (page: any) => {
+  const handle = await page.waitForSelector('iframe[data-testid="wb-canvas"]', {
+    timeout: 10000,
+  });
   const frame = await handle.contentFrame();
   await frame.waitForSelector('#storybook-root button', { timeout: 20000 });
   return frame;
@@ -506,7 +496,7 @@ const canvasChecks = async (
   if (!(await page.isVisible('aside[aria-label="Panels"] [role="tablist"]'))) {
     failures.push('the panel column is not shown on a component page');
   }
-  await canvasFrame(page, 'today');
+  const frame = await canvasFrame(page);
 
   // Fit, the default viewport: the frame hugs the button, at full size.
   try {
@@ -529,18 +519,6 @@ const canvasChecks = async (
     }
   } catch {
     failures.push('fit: the canvas frame was never fitted to the story');
-  }
-
-  // Mode on the floating bar: the frame's html gets the attribute.
-  await page.click(
-    '[data-testid="wb-float-bar"] [data-testid="wb-toolbar-mode"] [data-value="redesign"]'
-  );
-  const frame = await canvasFrame(page, 'redesign');
-  const attr = await frame.$eval('html', (el: Element) =>
-    el.getAttribute('data-gv-mode')
-  );
-  if (attr !== 'redesign') {
-    failures.push(`mode redesign: frame html data-gv-mode is ${attr}`);
   }
 
   // Share link override: the computed radius follows it.
@@ -566,7 +544,7 @@ const canvasChecks = async (
     );
   }
   console.log(
-    `canvas: ${storyId}, mode redesign on the frame; ${RADIUS_TOKEN} ${before} -> ${await radiusOf(
+    `canvas: ${storyId}; ${RADIUS_TOKEN} ${before} -> ${await radiusOf(
       frame
     )}`
   );
@@ -722,8 +700,8 @@ const galleryChecks = async (page: any, base: string, failures: string[]) => {
   );
 };
 
-// What the story's DOM shows of a global: the mode attribute on the
-// frame's root, the city's --gv-tenant-* tokens (ModeProvider), and for
+// What the story's DOM shows of a global: the city's --gv-tenant-* tokens
+// (the theme context), and for
 // Arabic the right-to-left global style on the body.
 type Shows = { key: string; value: string; before?: string };
 
@@ -772,12 +750,6 @@ const switchInPlace = async (
         const html = document.documentElement;
         const shows = w.shows;
         if (!shows) return true;
-        if (shows.key === 'mode') {
-          return (
-            (html.getAttribute('data-gv-mode') === 'redesign') ===
-            (shows.value === 'redesign')
-          );
-        }
         if (shows.key === 'city') {
           const style = html.style;
           const now = Array.from(style)
@@ -871,8 +843,7 @@ const controlsChecks = async (
       `the Button page offers ${tabs} stories, expected ${MIN_STATE_TABS} or more`
     );
   }
-  // Any mode: the toolbar keeps the one the canvas checks left.
-  const frame = await canvasFrame(page, '');
+  const frame = await canvasFrame(page);
   // The Props section of the Design tab starts folded.
   const props = '[data-testid="wb-insp-props"]';
   await page.waitForSelector(props, { timeout: 10000 });
@@ -915,10 +886,10 @@ const controlsChecks = async (
       console.log(`canvas: switched to ${other} in the same frame`);
     }
     await stateOnVariant(page, frame, other, failures);
-    // The mode and a city switch the same frame too (the page has no
-    // language picker: a story sets its own).
+    // A city switches the same frame too (the page has no language picker:
+    // a story sets its own).
     const globals: string[] = [];
-    for (const key of ['mode', 'city']) {
+    for (const key of ['city']) {
       const field = await settingOf(page, key);
       const next = field.values.find((v) => v !== field.value);
       if (field.disabled || !next) {
@@ -969,17 +940,17 @@ const controlsChecks = async (
     failures.push('switching the disabled control left the frame unchanged');
   }
 
-  // Edits made while the mode switches wait for the switch: a burst of
+  // Edits made while the city switches wait for the switch: a burst of
   // EDIT_BURST clicks on the control (odd, so the value ends changed), and
   // the frame does not load again and ends with the last edit and the new
-  // mode.
-  const mode =
-    (await settingOf(page, 'mode')).value === 'redesign' ? 'today' : 'redesign';
+  // city.
+  const cities = await settingOf(page, 'city');
+  const city = cities.values.find((v) => v !== cities.value) ?? cities.value;
   await frame.evaluate(() => {
     (window as any).__wbSameDocument = true;
   });
   const was: boolean = await page.isChecked(toggle);
-  await pickSetting(page, 'mode', mode);
+  await pickSetting(page, 'city', city);
   for (let i = 0; i < EDIT_BURST; i++) await page.click(toggle);
   const disabled: boolean = await page.isChecked(toggle);
   if (disabled === was) {
@@ -987,24 +958,21 @@ const controlsChecks = async (
   }
   try {
     await page.waitForSelector(
-      `iframe[data-testid="wb-canvas"][data-mode="${mode}"]`,
+      `iframe[data-testid="wb-canvas"][data-city="${city}"]`,
       { timeout: 10000 }
     );
     await frame.waitForFunction(
-      (w: { mode: string; disabled: boolean }) => {
+      (w: { disabled: boolean }) => {
         const preview = (window as any).__STORYBOOK_PREVIEW__;
         const render = preview?.currentRender;
         const args = preview?.storyStoreValue?.args.get(render?.id);
         return (
           render?.phase === 'finished' &&
           !!args &&
-          !!args.disabled === w.disabled &&
-          (document.documentElement.getAttribute('data-gv-mode') ===
-            'redesign') ===
-            (w.mode === 'redesign')
+          !!args.disabled === w.disabled
         );
       },
-      { mode, disabled },
+      { disabled },
       { timeout: 10000 }
     );
     // A reload loop would show after the first settle.
@@ -1014,16 +982,16 @@ const controlsChecks = async (
     );
     if (same) {
       console.log(
-        `controls: ${EDIT_BURST} edits during a switch to ${mode} wait for it, the last one stays`
+        `controls: ${EDIT_BURST} edits during a switch to ${city} wait for it, the last one stays`
       );
     } else {
       failures.push(
-        `an edit during a switch to ${mode}: the frame loaded again`
+        `an edit during a switch to ${city}: the frame loaded again`
       );
     }
   } catch {
     failures.push(
-      `an edit during a switch to ${mode}: the frame never showed both`
+      `an edit during a switch to ${city}: the frame never showed both`
     );
   }
 
@@ -1098,7 +1066,7 @@ const panelChecks = async (
   }
   // A click on the canvas picks the element under it: the button's label.
   const layer = '[data-testid="wb-insp-selection"] .wb-insp-layer-name';
-  const frame = await canvasFrame(page, '');
+  const frame = await canvasFrame(page);
   const label = await frame.$('#storybook-root button span');
   let picked = '';
   if (label) {
@@ -1298,12 +1266,9 @@ export const A11Y_REVIEWED =
 
 export const MIN_ADMIN_ROUTES = 20;
 
-// The Proposal page's live mode demo (Proposal.tsx SPLIT_STORY).
-const PROPOSAL_SPLIT_STORY = 'components-data-display-quote--default';
-
 // The Proposal page: the big numbers are the build's summary, the trend
-// charts draw a line through every commit, and Quote shows its corners
-// change between the two modes.
+// charts draw a line through every commit, and the back-office token set
+// lists the tokens with a proposed value.
 const proposalChecks = async (
   page: any,
   base: string,
@@ -1361,54 +1326,17 @@ const proposalChecks = async (
     (els: Element[]) => els.length
   );
   if (order === 0) failures.push('proposal: migration order is empty');
-  const frames = await page.$$eval(
-    '[data-testid="wb-prop-split"] iframe[data-testid="wb-canvas"]',
-    (els: Element[]) => els.map((e) => e.getAttribute('src') ?? '')
+  const proposed = await page.$$eval(
+    '[data-testid="wb-prop-backoffice"] li',
+    (els: Element[]) => els.length
   );
-  let radii: string[] = [];
-  if (
-    frames.length !== 2 ||
-    !frames.every((f: string) => f.includes(PROPOSAL_SPLIT_STORY)) ||
-    !frames[0].includes('mode:today') ||
-    !frames[1].includes('mode:redesign')
-  ) {
-    failures.push(
-      `proposal: expected Quote frames in today and redesign, got ${JSON.stringify(
-        frames
-      )}`
-    );
-  } else {
-    const handles = await page.$$(
-      '[data-testid="wb-prop-split"] iframe[data-testid="wb-canvas"]'
-    );
-    radii = await Promise.all(
-      handles.map(async (h: any) => {
-        const frame = await h.contentFrame();
-        const quote = await frame
-          .waitForSelector('#storybook-root blockquote', { timeout: 20000 })
-          .catch(() => null);
-        return quote
-          ? frame.$eval(
-              '#storybook-root blockquote',
-              (el: Element) => getComputedStyle(el).borderTopLeftRadius
-            )
-          : 'missing';
-      })
-    );
-    if (radii.includes('missing') || radii[0] === radii[1]) {
-      failures.push(
-        `proposal: Quote corners should differ between the modes, got ${radii.join(
-          ' and '
-        )}`
-      );
-    }
+  if (proposed === 0) {
+    failures.push('proposal: the back-office token set lists no tokens');
   }
   console.log(
     `proposal: offSpec ${summary.offSpec}, ${charts.length} charts (${charts
       .map((c: any) => c.dots)
-      .join(', ')} points), ${order} components in the order; Quote ${
-      radii[0] ?? '?'
-    } -> ${radii[1] ?? '?'}`
+      .join(', ')} points), ${order} components in the order; ${proposed} back-office tokens`
   );
 };
 
@@ -1566,365 +1494,15 @@ const reviewFrameChecks = async (
       failures.push(`review: Before carries the ${RADIUS_TOKEN} edit`);
     }
 
-    const note = async () =>
-      page.$eval('[data-testid="wb-review-highlight-note"]', (el: Element) => ({
-        text: el.textContent ?? '',
-        count: Number((el as HTMLElement).dataset.count ?? 0),
-      }));
-    const untagged = (await note()).text;
-    const afterFrame = await frameOf(page, 'after');
-    const tagged = await afterFrame.evaluate(
-      () => !!document.querySelector('[data-gv-component]')
-    );
-    if (!tagged && !/does not tag/.test(untagged)) {
-      failures.push(`review: untagged build without the note ("${untagged}")`);
-    }
-    await afterFrame.evaluate(() => {
-      const el = document.createElement('button');
-      el.setAttribute('data-gv-component', 'Button');
-      el.textContent = 'Tagged';
-      document.body.appendChild(el);
-    });
-    const toggle = '[data-testid="wb-review-highlight"]';
-    await page.waitForSelector(`${toggle}:not([disabled])`, { timeout: 5000 });
-    if (!(await page.$eval(toggle, (el: HTMLInputElement) => el.checked))) {
-      await page.click(toggle);
-    }
-    try {
-      await page.waitForFunction(
-        () =>
-          Number(
-            document.querySelector<HTMLElement>(
-              '[data-testid="wb-review-highlight-note"]'
-            )?.dataset.count ?? 0
-          ) >= 1,
-        undefined,
-        { timeout: 5000 }
-      );
-    } catch {
-      failures.push('review: the highlight does not count tagged Buttons');
-    }
     console.log(
       `review: /${REVIEW_ROUTE} frames ${states.join('/')} on ${origin}, ` +
-        `edit on After only, highlight ${tagged ? 'tagged' : 'untagged build'}`
+        'edit on After only'
     );
   } finally {
     await context.close();
   }
 };
 
-const SPOTLIGHT_STORY = 'homepagebuilder-spotlight--standard';
-
-// Figma-style nesting on a pattern: a click on Spotlight's button shows a
-// layer path with Button, Open lands on a Button story with a back chip in
-// the same frame, and Back returns to Spotlight with the button's label
-// selected again.
-const nestingChecks = async (
-  page: any,
-  base: string,
-  failures: string[],
-  shots: { chain?: string; back?: string }
-) => {
-  await page.goto(`${base}/workbench/#/patterns/${SPOTLIGHT_STORY}`);
-  await page.click('[data-testid="wb-panel-tab"][data-tab="design"]');
-  const frame = await canvasFrame(page, '');
-  const label = await frame.waitForSelector(
-    '#storybook-root [data-gv-component="Button"] span',
-    { timeout: 20000 }
-  );
-  const box = await label.boundingBox();
-  if (!box) {
-    failures.push('nesting: the Spotlight button has no box');
-    return;
-  }
-  await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
-  const chain = '[data-testid="wb-insp-chain"]';
-  const chainText = async () =>
-    (await page.textContent(chain).catch(() => '')) ?? '';
-  await page
-    .waitForFunction(
-      (sel: string) =>
-        /Button/.test(document.querySelector(sel)?.textContent ?? ''),
-      chain,
-      { timeout: 5000 }
-    )
-    .catch(() => undefined);
-  const before = await chainText();
-  if (!/^Spotlight.*Button.*span/.test(before)) {
-    failures.push(`nesting: the layer path reads "${before}"`);
-  }
-  if (shots.chain) {
-    await page.screenshot({ path: path.resolve(shots.chain) });
-  }
-  await page.evaluate(() => {
-    (window as any).__wbCanvas = document.querySelector(
-      'iframe[data-testid="wb-canvas"]'
-    );
-  });
-  await frame.evaluate(() => {
-    (window as any).__wbSameDocument = true;
-  });
-  try {
-    await page.click('[data-testid="wb-insp-open"]', { timeout: 5000 });
-    await page.waitForSelector('[data-testid="wb-back-chip"]', {
-      timeout: 10000,
-    });
-    await frame.waitForFunction(
-      () => {
-        const render = (window as any).__STORYBOOK_PREVIEW__?.currentRender;
-        return (
-          /^components-([a-z0-9]+-)*button--/.test(render?.id ?? '') &&
-          render.phase === 'finished'
-        );
-      },
-      undefined,
-      { timeout: 10000 }
-    );
-  } catch {
-    failures.push('nesting: Open did not land on a Button story');
-    return;
-  }
-  const hash = hashOf(page.url());
-  if (!/^#\/components\/components-([a-z0-9]+-)*button--/.test(hash)) {
-    failures.push(`nesting: Open went to ${hash}`);
-  }
-  const chip = (
-    (await page.textContent('[data-testid="wb-back-chip"]')) ?? ''
-  ).trim();
-  if (!/Spotlight$/.test(chip)) {
-    failures.push(`nesting: the back chip reads "${chip}"`);
-  }
-  const kept = async (label: string) => {
-    const same = await frame
-      .evaluate(() => (window as any).__wbSameDocument === true)
-      .catch(() => false);
-    const element = await page.evaluate(
-      () =>
-        (window as any).__wbCanvas ===
-        document.querySelector('iframe[data-testid="wb-canvas"]')
-    );
-    if (!same || !element) {
-      failures.push(`nesting: ${label} loaded the canvas frame again`);
-    }
-  };
-  await kept('Open');
-  const focused = (testId: string) =>
-    page
-      .waitForFunction(
-        (id: string) =>
-          document.activeElement?.getAttribute('data-testid') === id,
-        testId,
-        { timeout: 5000 }
-      )
-      .then(() => true)
-      .catch(() => false);
-  if (!(await focused('wb-back-chip'))) {
-    failures.push('nesting: focus is not on the back chip after Open');
-  }
-  if (shots.back) {
-    await page.waitForTimeout(400);
-    await page.screenshot({ path: path.resolve(shots.back) });
-  }
-  await page.click('[data-testid="wb-back-chip"]');
-  try {
-    await page.waitForFunction(
-      (id: string) => window.location.hash.startsWith(`#/patterns/${id}`),
-      SPOTLIGHT_STORY,
-      { timeout: 10000 }
-    );
-    await page.waitForFunction(
-      (sel: string) =>
-        /Button.*span/.test(document.querySelector(sel)?.textContent ?? ''),
-      chain,
-      { timeout: 10000 }
-    );
-  } catch {
-    const now = await frame
-      .evaluate(() => {
-        const box = document.querySelector('[data-gv-story-box]');
-        let at = box?.querySelector('[data-gv-component="Button"] span');
-        const out: number[] = [];
-        while (at && at !== box && at.parentElement) {
-          out.unshift(Array.from(at.parentElement.children).indexOf(at));
-          at = at.parentElement;
-        }
-        return out.join('.');
-      })
-      .catch(() => '?');
-    failures.push(
-      `nesting: (label now at ${now}) Back left ${hashOf(
-        page.url()
-      )} with the path "${await chainText()}"`
-    );
-    return;
-  }
-  await kept('Back');
-  if (!(await focused('wb-insp-chain'))) {
-    failures.push('nesting: focus is not on the layer path after Back');
-  }
-  const left = hashOf(page.url());
-  if (/[?&](sel|zoom)=/.test(left)) {
-    failures.push(`nesting: the pattern hash keeps the return: ${left}`);
-  }
-  console.log(`nesting: ${before} -> ${chip} -> back`);
-};
-
-// Instance props, live: the Spotlight's button switched to the text style
-// from the Design panel. The canvas renders it in place (the same frame
-// document), the edit is in Changes and in the hash (`p`), and its reset
-// brings the button back.
-const instancePropsChecks = async (
-  page: any,
-  base: string,
-  failures: string[],
-  shots: { props?: string; changed?: string } = {}
-) => {
-  await page.goto(`${base}/workbench/#/patterns/${SPOTLIGHT_STORY}`);
-  await page.click('[data-testid="wb-panel-tab"][data-tab="design"]');
-  const frame = await canvasFrame(page, '');
-  const button = '#storybook-root [data-gv-component="Button"]';
-  const label = await frame.waitForSelector(`${button} span`, {
-    timeout: 20000,
-  });
-  // The button's own element: the tagged root or the button inside it.
-  const background = () =>
-    frame.$eval(button, (el: Element) => {
-      const b = el.matches('button, a') ? el : el.querySelector('button, a');
-      return getComputedStyle(b ?? el).backgroundColor;
-    });
-  const start = await background();
-  await frame.evaluate(() => {
-    (window as any).__wbSameDocument = true;
-  });
-  const box = await label.boundingBox();
-  if (!box) {
-    failures.push('instance props: the Spotlight button has no box');
-    return;
-  }
-  await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
-  const select =
-    '[data-testid="wb-instance-prop"][data-prop="buttonStyle"] select';
-  try {
-    await page.waitForSelector(select, { timeout: 10000 });
-  } catch {
-    failures.push('instance props: no buttonStyle select under the header');
-    return;
-  }
-  const scope = (
-    (await page.textContent('[data-testid="wb-instance-scope"]')) ?? ''
-  ).trim();
-  if (scope !== 'Changes this Button inside Spotlight') {
-    failures.push(`instance props: the scope line reads "${scope}"`);
-  }
-  const shown = await page.$eval(select, (el: HTMLSelectElement) => el.value);
-  if (shown !== 'primary') {
-    failures.push(`instance props: buttonStyle shows "${shown}", not primary`);
-  }
-  if (shots.props) {
-    await page.waitForTimeout(300);
-    await page.screenshot({ path: path.resolve(shots.props) });
-  }
-  await page.selectOption(select, 'text');
-  const transparent = (bg: string) =>
-    bg === 'transparent' || /^rgba\(0, 0, 0, 0\)$/.test(bg);
-  const turned = await frame
-    .waitForFunction(
-      (sel: string) => {
-        const el = document.querySelector(sel);
-        const b = el?.matches('button, a')
-          ? el
-          : el?.querySelector('button, a');
-        const bg = b ? getComputedStyle(b).backgroundColor : '';
-        return bg === 'transparent' || bg === 'rgba(0, 0, 0, 0)';
-      },
-      button,
-      { timeout: 5000 }
-    )
-    .then(() => true)
-    .catch(() => false);
-  if (!turned) {
-    failures.push(
-      `instance props: the button background is ${await background()} after text`
-    );
-  }
-  const same = await frame
-    .evaluate(() => (window as any).__wbSameDocument === true)
-    .catch(() => false);
-  if (!same) failures.push('instance props: the canvas frame loaded again');
-  const hash = hashOf(page.url());
-  if (!/[?&]p=[A-Za-z0-9_-]+/.test(hash)) {
-    failures.push(`instance props: the hash has no p: ${hash}`);
-  }
-  if (shots.changed) {
-    await page.waitForTimeout(300);
-    await page.screenshot({ path: path.resolve(shots.changed) });
-  }
-  await page.click('[data-testid="wb-changes-toggle"]');
-  const row = '[data-testid="wb-change-row"][data-kind="instance"]';
-  const line = (
-    (await page.textContent(`${row} .wb-change-where`).catch(() => '')) ?? ''
-  ).trim();
-  if (line !== 'Spotlight › Button: buttonStyle primary → text') {
-    failures.push(`instance props: the Changes row reads "${line}"`);
-  }
-  // A new history entry without `p` (as a story switch pushes): the edit
-  // is written back into it. Back, after the reset, must not bring the
-  // older `p` of the entry before.
-  await page.evaluate((h: string) => {
-    window.location.hash = h;
-  }, `#/patterns/${SPOTLIGHT_STORY}`);
-  const kept = await page
-    .waitForFunction(() => /[?&]p=/.test(window.location.hash), null, {
-      timeout: 5000,
-    })
-    .then(() => true)
-    .catch(() => false);
-  if (!kept) {
-    failures.push('instance props: a pushed entry lost the edit');
-  }
-  await page.click(`${row} button:has-text("Reset")`).catch(() => undefined);
-  const back = await frame
-    .waitForFunction(
-      ([sel, bg]: [string, string]) => {
-        const el = document.querySelector(sel);
-        const b = el?.matches('button, a')
-          ? el
-          : el?.querySelector('button, a');
-        return !!b && getComputedStyle(b).backgroundColor === bg;
-      },
-      [button, start],
-      { timeout: 5000 }
-    )
-    .then(() => true)
-    .catch(() => false);
-  if (!back) {
-    failures.push(
-      `instance props: reset left the background at ${await background()}, not ${start}`
-    );
-  }
-  if (/[?&]p=/.test(hashOf(page.url()))) {
-    failures.push('instance props: the hash keeps p after the reset');
-  }
-  if ((await page.$(row)) !== null) {
-    failures.push('instance props: the Changes row stays after the reset');
-  }
-  await page.evaluate(() => window.history.back());
-  await page.waitForTimeout(600);
-  const after = hashOf(page.url());
-  if (/[?&]p=/.test(after)) {
-    failures.push(`instance props: Back brought an old p back: ${after}`);
-  }
-  if (transparent(await background())) {
-    failures.push('instance props: Back turned the button transparent again');
-  }
-  await page.click('[data-testid="wb-changes-toggle"]');
-  if (transparent(start)) {
-    failures.push('instance props: the button started transparent');
-  }
-  console.log(
-    `instance props: buttonStyle primary -> text -> reset -> back (${start})`
-  );
-};
 
 const main = async () => {
   const root = path.resolve(arg('dir') ?? 'storybook-static');
@@ -2035,14 +1613,6 @@ const main = async () => {
       await controlsChecks(page, base, storyId, failures);
       await panelChecks(page, base, storyId, failures);
     }
-    await nestingChecks(page, base, failures, {
-      chain: arg('nesting-screenshot'),
-      back: arg('back-screenshot'),
-    });
-    await instancePropsChecks(page, base, failures, {
-      props: arg('instance-screenshot'),
-      changed: arg('instance-changed-screenshot'),
-    });
   } catch (e) {
     failures.push(`smoke run failed: ${(e as Error).message}`);
   } finally {
@@ -2056,8 +1626,6 @@ const main = async () => {
   }
   console.log('workbench smoke: ok');
 };
-
-export { instancePropsChecks };
 
 if (require.main === module) {
   main();

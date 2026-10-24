@@ -7,11 +7,11 @@ import { Finding, FindingCategory, TokenMeta } from './schema';
 
 const FIXTURES = path.join(__dirname, '..', 'fixtures', 'findings');
 
-const tok = (name: string, category: string, today: string): TokenMeta => ({
+const tok = (name: string, category: string, value: string): TokenMeta => ({
   name,
   category,
   tier: 1,
-  values: { today, redesign: today },
+  value,
   legacy: [],
 });
 

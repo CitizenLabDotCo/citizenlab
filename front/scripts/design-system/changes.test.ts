@@ -13,20 +13,12 @@ import {
   writeChanges,
 } from './changes';
 
-const source = (
-  tokens: Record<string, { today: string; redesign?: string }>
-) => ({
+const source = (tokens: Record<string, string>) => ({
   primitive: {
     radius: Object.fromEntries(
-      Object.entries(tokens).map(([key, v]) => [
+      Object.entries(tokens).map(([key, value]) => [
         key,
-        {
-          $type: 'dimension',
-          $value: v.today,
-          ...(v.redesign
-            ? { $extensions: { gv: { redesign: v.redesign } } }
-            : {}),
-        },
+        { $type: 'dimension', $value: value },
       ])
     ),
   },
@@ -74,6 +66,7 @@ const fakeGit =
     refs?: Record<string, string>;
     objects?: Record<string, string>;
     log?: string;
+    diff?: string;
   }): RunGit =>
   (args) => {
     const [cmd, ...rest] = args;
@@ -86,6 +79,7 @@ const fakeGit =
         : undefined;
     }
     if (cmd === 'log') return opts.log;
+    if (cmd === 'diff') return opts.diff;
     if (cmd === 'show') return opts.objects?.[rest[0]];
     return undefined;
   };
@@ -163,33 +157,13 @@ describe('parseLog', () => {
 });
 
 describe('tokenChanges', () => {
-  it('lists changed, added and removed tokens with values per mode', () => {
-    const base = source({
-      control: { today: '3px', redesign: '8px' },
-      card: { today: '4px' },
-      old: { today: '2px' },
-    });
-    const head = source({
-      control: { today: '3px', redesign: '6px' },
-      card: { today: '4px' },
-      pill: { today: '999px' },
-    });
+  it('lists changed, added and removed tokens with their values', () => {
+    const base = source({ control: '3px', card: '4px', old: '2px' });
+    const head = source({ control: '6px', card: '4px', pill: '999px' });
     expect(tokenChanges(base, head)).toEqual([
-      {
-        name: '--gv-radius-control',
-        from: { today: '3px', redesign: '8px' },
-        to: { today: '3px', redesign: '6px' },
-      },
-      {
-        name: '--gv-radius-old',
-        from: { today: '2px', redesign: '2px' },
-        to: null,
-      },
-      {
-        name: '--gv-radius-pill',
-        from: null,
-        to: { today: '999px', redesign: '999px' },
-      },
+      { name: '--gv-radius-control', from: '3px', to: '6px' },
+      { name: '--gv-radius-old', from: '2px', to: null },
+      { name: '--gv-radius-pill', from: null, to: '999px' },
     ]);
   });
 });
@@ -197,11 +171,9 @@ describe('tokenChanges', () => {
 describe('buildChanges', () => {
   const objects = {
     [`base1:${TOKENS_SOURCE}`]: JSON.stringify(
-      source({ control: { today: '3px', redesign: '8px' } })
+      source({ control: '3px' })
     ),
-    [`HEAD:${TOKENS_SOURCE}`]: JSON.stringify(
-      source({ control: { today: '3px', redesign: '6px' } })
-    ),
+    [`HEAD:${TOKENS_SOURCE}`]: JSON.stringify(source({ control: '6px' })),
     [`c3:${SCAN_SUMMARY}`]: JSON.stringify({ offSpec: 95 }),
     [`c3^:${SCAN_SUMMARY}`]: JSON.stringify({ offSpec: 100 }),
   };
@@ -223,11 +195,25 @@ describe('buildChanges', () => {
       ['cx', 'other', undefined, undefined],
     ]);
     expect(out.tokenChanges).toEqual([
-      {
-        name: '--gv-radius-control',
-        from: { today: '3px', redesign: '8px' },
-        to: { today: '3px', redesign: '6px' },
-      },
+      { name: '--gv-radius-control', from: '3px', to: '6px' },
+    ]);
+  });
+
+  it('keeps only the files that still differ from the base', () => {
+    const out = buildChanges({
+      runGit: fakeGit({
+        refs: { master: 'base1' },
+        objects,
+        log: LOG,
+        diff: `${TOKENS_SOURCE}\nREADME.md\n`,
+      }),
+    });
+    expect(out.commits.map((c) => [c.sha, c.files, c.scanDelta])).toEqual([
+      ['c3', [], undefined],
+      ['c2', [], undefined],
+      ['c1', [], undefined],
+      ['c0', [TOKENS_SOURCE], undefined],
+      ['cx', ['README.md'], undefined],
     ]);
   });
 

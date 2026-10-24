@@ -239,7 +239,7 @@ describe('app component roots (components/UI, components/admin)', () => {
 describe('isScannedSource', () => {
   it('skips the generated token module, which defines tokens', () => {
     expect(isScannedSource('app/design-system/tokens/tokens.ts')).toBe(false);
-    expect(isScannedSource('app/design-system/Mode.tsx')).toBe(true);
+    expect(isScannedSource('app/design-system/Example.tsx')).toBe(true);
   });
 });
 

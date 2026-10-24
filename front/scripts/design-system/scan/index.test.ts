@@ -69,7 +69,7 @@ describe('loadTokens and loadAllow', () => {
       name: '--gv-space-1',
       category: 'space',
       tier: 1,
-      values: { today: '4px', redesign: '4px' },
+      value: '4px',
       legacy: [],
     };
     expect(loadTokens(write('t1.json', JSON.stringify([tok])))).toEqual([tok]);

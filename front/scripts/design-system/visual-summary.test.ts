@@ -123,23 +123,19 @@ describe('visual summary', () => {
     expect(matchStories(['a.b--x', 'aXb--x'], 'a.b--*')).toEqual(['a.b--x']);
   });
 
-  it('reads --stories and --mode', () => {
+  it('reads --stories', () => {
     expect(parseArgs(['--compare', 'b'])).toMatchObject({
-      mode: 'today',
       stories: undefined,
     });
-    expect(
-      parseArgs(['--baseline', 'b', '--stories', 'x--*', '--mode', 'redesign'])
-    ).toMatchObject({ stories: 'x--*', mode: 'redesign' });
-    expect(() => parseArgs(['--compare', 'b', '--mode', 'dark'])).toThrow();
+    expect(parseArgs(['--baseline', 'b', '--stories', 'x--*'])).toMatchObject({
+      stories: 'x--*',
+    });
+    expect(() => parseArgs(['--compare', 'b', '--mode', 'today'])).toThrow();
     expect(() => parseArgs(['--compare', 'b', '--stories'])).toThrow();
   });
 
-  it('keeps redesign shots apart from today shots', () => {
-    expect(shotName('desktop', 'a--x', 'today')).toBe('desktop__a--x.png');
-    expect(shotName('mobile', 'a--x', 'redesign')).toBe(
-      'mobile__a--x__redesign.png'
-    );
+  it('names a shot by viewport and story', () => {
+    expect(shotName('desktop', 'a--x')).toBe('desktop__a--x.png');
   });
 
   it('rejects unknown flags', () => {
