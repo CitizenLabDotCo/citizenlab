@@ -1,7 +1,6 @@
 import React from 'react';
 
 import useInstanceId from '../../hooks/useInstanceId';
-import { gvTag } from '../../utils/gvTag';
 import testEnv from '../../utils/testUtils/testEnv';
 import Box, { BoxMarginProps, BoxPaddingProps } from '../Box';
 import Checkbox, { CheckboxProps } from '../Checkbox';
@@ -52,7 +51,6 @@ const CheckboxWithLabel = ({
 
   return (
     <Box
-      {...gvTag('CheckboxWithLabel')}
       position="relative"
       display="flex"
       flex="1"

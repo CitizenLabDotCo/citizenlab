@@ -4,7 +4,6 @@ import { isString, get, isNumber } from 'lodash-es';
 import styled from 'styled-components';
 import { Placement } from 'tippy.js';
 
-import { gvTag } from '../../utils/gvTag';
 import {
   defaultInputStyle,
   colors,
@@ -190,7 +189,6 @@ class Select extends PureComponent<Props> {
 
     return (
       <Container
-        {...gvTag('Select')}
         className={`${className} ${disabled ? 'disabled' : 'enabled'}`}
       >
         {label && (

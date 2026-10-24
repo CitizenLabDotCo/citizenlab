@@ -49,11 +49,6 @@ import LocaleSwitcher from './components/LocaleSwitcher';
 import MultiSelect, {
   Props as MultiSelectProps,
 } from './components/MultiSelect';
-import OptionList, {
-  Option as OptionListOption,
-  Props as OptionListProps,
-} from './components/OptionList';
-import PanelField from './components/PanelField';
 import Quote from './components/Quote';
 import Radio, { Props as RadioProps } from './components/Radio';
 import SearchInput, {
@@ -140,8 +135,6 @@ export type {
   InputMultilocWithLocaleSwitcherProps,
   InputProps,
   MultiSelectProps,
-  OptionListOption,
-  OptionListProps,
   SelectProps,
   SearchInputProps,
   ColorPickerInputProps,
@@ -176,8 +169,6 @@ export {
   CardButton,
   Dropdown,
   DropdownListItem,
-  OptionList,
-  PanelField,
   Success,
   Button,
   StatusLabel,

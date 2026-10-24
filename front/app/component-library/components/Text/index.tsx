@@ -3,7 +3,6 @@ import React from 'react';
 import { FontWeight } from 'component-library/utils/typings';
 import styled, { css } from 'styled-components';
 
-import { useGvInstance } from '../../utils/gvInstance';
 import {
   MainThemeProps,
   bo,
@@ -195,32 +194,21 @@ const StyledText = styled(Box)<BoxProps & TextProps>`
   `}
 `;
 
-// The props a designer may switch on one Text in the workbench, with the
-// defaults the Text applies (utils/gvInstance.ts).
-const INSTANCE_DEFAULTS = { variant: 'bodyM' as Variant };
-
-const Text: React.FC<TextProps> = (rawProps) => {
-  const { props: instanceProps, tag } = useGvInstance(
-    'Text',
-    rawProps,
-    INSTANCE_DEFAULTS
-  );
-  const {
-    children,
-    variant = INSTANCE_DEFAULTS.variant,
-    color,
-    as,
-    fontSize,
-    fontWeight,
-    ...props
-  } = instanceProps;
+const Text: React.FC<TextProps> = ({
+  children,
+  variant = 'bodyM',
+  color,
+  as,
+  fontSize,
+  fontWeight,
+  ...props
+}) => {
   // A back office role brings its own spacing; the body variants keep theirs.
   const role = BO_ROLES[variant];
   const mb = props.mb || props.my || props.m || (role ? '0' : '16px');
 
   return (
     <StyledText
-      {...tag}
       variant={variant}
       color={color}
       as={as || 'p'}

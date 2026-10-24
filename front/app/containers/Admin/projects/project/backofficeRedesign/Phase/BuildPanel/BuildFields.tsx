@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, PanelField } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
 
 import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
@@ -19,6 +19,7 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 import { FormattedMessage } from 'utils/cl-intl';
 
 import MethodSection from './MethodSection';
+import PanelField from './PanelField';
 import PhaseDates from './PhaseDates';
 import SurveyMethodSection, { SurveyMethodSwitch } from './SurveyMethodSection';
 

@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import { Box, Spinner, colors } from '@citizenlab/cl2-component-library';
-import { t } from 'design-system/tokens/tokens';
+import { Box, Spinner, bo, colors } from '@citizenlab/cl2-component-library';
 
 import { ICauses } from 'api/causes/types';
 import useCauses from 'api/causes/useCauses';
@@ -119,7 +118,7 @@ const ViewContent = ({ project, phase, view, children }: Props) => {
         minWidth="0"
         minHeight="0"
         overflowY="auto"
-        borderRadius={t.radius.panel}
+        borderRadius={bo.panelBorderRadius}
         background={colors.white}
       >
         <EmptyState
@@ -133,7 +132,7 @@ const ViewContent = ({ project, phase, view, children }: Props) => {
         width={SIDE_PANEL_WIDTH}
         minHeight="0"
         overflowY="auto"
-        borderRadius={t.radius.panel}
+        borderRadius={bo.panelBorderRadius}
         background={colors.white}
       >
         {view === 'manage' ? (

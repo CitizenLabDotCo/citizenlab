@@ -5,7 +5,6 @@ import styled, { css } from 'styled-components';
 import { Placement } from 'tippy.js';
 
 import { ScreenReaderOnly } from '../../utils/a11y';
-import { gvTag } from '../../utils/gvTag';
 import {
   bo,
   colors,
@@ -248,7 +247,6 @@ class Input extends PureComponent<InputProps> {
 
     return (
       <Container
-        {...gvTag('Input')}
         className={className || ''}
         size={size}
         variant={variant}

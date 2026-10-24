@@ -2,7 +2,6 @@ import React, { PureComponent, MouseEvent } from 'react';
 
 import styled from 'styled-components';
 
-import { gvTag } from '../../utils/gvTag';
 import { fontSizes, colors, invisibleA11yText } from '../../utils/styleUtils';
 
 const Container = styled.label`
@@ -49,7 +48,6 @@ export default class Label extends PureComponent<Props> {
 
     return (
       <Container
-        {...gvTag('Label')}
         id={id}
         className={`${className || ''} ${hidden ? 'invisible' : ''}`}
         htmlFor={htmlFor}

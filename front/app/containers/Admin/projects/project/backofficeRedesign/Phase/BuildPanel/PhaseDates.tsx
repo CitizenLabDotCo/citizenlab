@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { PanelField } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import { IUpdatedPhaseProperties } from 'api/phases/types';
@@ -13,6 +12,8 @@ import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/mes
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 
 import { FormattedMessage } from 'utils/cl-intl';
+
+import PanelField from './PanelField';
 
 interface Props {
   formData: IUpdatedPhaseProperties;

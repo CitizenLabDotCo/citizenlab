@@ -4,7 +4,6 @@ import { CSSTransition } from 'react-transition-group';
 import styled from 'styled-components';
 
 import ClickOutside from '../../utils/containers/clickOutside';
-import { gvTag } from '../../utils/gvTag';
 import { colors, fontSizes, media, isRtl } from '../../utils/styleUtils';
 
 const timeout = 200;
@@ -240,11 +239,7 @@ const Dropdown: React.FC<Props> = ({
         zIndex={zIndex}
         className={className}
       >
-        <ContainerInner
-          {...gvTag('Dropdown')}
-          width={width}
-          mobileWidth={mobileWidth}
-        >
+        <ContainerInner width={width} mobileWidth={mobileWidth}>
           <Content
             maxHeight={maxHeight}
             mobileMaxHeight={mobileMaxHeight}

@@ -1,20 +1,9 @@
 import styled from 'styled-components';
 
-import { gvTag } from '../../utils/gvTag';
 import { colors, fontSizes } from '../../utils/styleUtils';
-import Box, { BoxProps } from '../Box';
+import Box from '../Box';
 
-// Box's own attrs run first and may have set "Box"; Badge replaces that.
-export default styled(Box).attrs<BoxProps>(
-  process.env.VITE_GV_DESIGN_TAGS === '1'
-    ? (props) => {
-        const tag = (props as unknown as Record<string, unknown>)[
-          'data-gv-component'
-        ];
-        return tag && tag !== 'Box' ? {} : gvTag('Badge');
-      }
-    : {}
-)`
+export default styled(Box)`
   color: ${(props) => props.color || colors.disabled};
   font-size: ${fontSizes.xs}px;
   line-height: 16px;

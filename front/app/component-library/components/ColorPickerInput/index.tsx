@@ -1,15 +1,13 @@
 import React, { PureComponent, FormEvent, lazy, Suspense } from 'react';
 
+import type { ColorResult } from 'react-color';
 import styled from 'styled-components';
 
-import { gvTag } from '../../utils/gvTag';
 import { colors } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import IconTooltip from '../IconTooltip';
 import Input from '../Input';
 import Label from '../Label';
-
-import type { ColorResult } from 'react-color';
 
 const ChromePicker = lazy(() => import('./ChromePicker'));
 
@@ -122,7 +120,7 @@ class ColorPickerInput extends PureComponent<Props, State> {
     const { opened, value } = this.state;
 
     return (
-      <Container {...gvTag('ColorPickerInput')} className={className || ''}>
+      <Container className={className || ''}>
         {label && (
           <Label htmlFor={id}>
             <span>{label}</span>

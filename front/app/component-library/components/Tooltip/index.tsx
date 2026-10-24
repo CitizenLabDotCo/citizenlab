@@ -4,7 +4,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Tippy from '@tippyjs/react';
 import { followCursor } from 'tippy.js';
 
-import { gvTag } from '../../utils/gvTag';
 import Box from '../Box';
 
 export type TooltipProps = Omit<
@@ -160,12 +159,7 @@ const Tooltip = ({
         {...rest}
         hideOnClick={hideOnClick}
       >
-        <Box
-          {...gvTag('Tooltip')}
-          as="span"
-          id={tooltipId.current}
-          w={width || 'fit-content'}
-        >
+        <Box as="span" id={tooltipId.current} w={width || 'fit-content'}>
           {children}
         </Box>
       </Tippy>
@@ -173,12 +167,7 @@ const Tooltip = ({
   } else {
     return (
       // This Box is used for more accessible tooltips when useContentWrapper is false
-      <Box
-        {...gvTag('Tooltip')}
-        as="span"
-        id={tooltipId.current}
-        w={width || 'fit-content'}
-      >
+      <Box as="span" id={tooltipId.current} w={width || 'fit-content'}>
         <Tippy
           key={key}
           plugins={PLUGINS}

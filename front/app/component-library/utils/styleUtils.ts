@@ -239,7 +239,7 @@ export const stylingConsts = {
   bannerWidth: 1340,
   pageWidth: 1150,
   textWidth: 720,
-  borderRadius: 'var(--gv-radius-control, 3px)',
+  borderRadius: '3px',
   border: `1px solid ${colors.divider}`,
 };
 

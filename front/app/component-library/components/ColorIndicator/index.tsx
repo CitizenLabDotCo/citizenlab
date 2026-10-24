@@ -3,8 +3,6 @@ import React from 'react';
 import { Box, BoxProps } from '@citizenlab/cl2-component-library';
 import { useTheme } from 'styled-components';
 
-import { gvTag } from '../../utils/gvTag';
-
 type Props = {
   bgColor: BoxProps['bgColor'];
 };
@@ -14,7 +12,6 @@ const ColorIndicator = ({ bgColor }: Props) => {
 
   return (
     <Box
-      {...gvTag('ColorIndicator')}
       width="1rem"
       height="1rem"
       bgColor={bgColor}

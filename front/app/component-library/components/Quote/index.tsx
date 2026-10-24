@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { gvTag } from '../../utils/gvTag';
 import { colors, stylingConsts } from '../../utils/styleUtils';
 import Box, { BoxProps } from '../Box';
 import Icon from '../Icon';
@@ -8,7 +7,6 @@ import Icon from '../Icon';
 const Quote = ({ children, ...props }: BoxProps) => {
   return (
     <Box
-      {...gvTag('Quote')}
       as="blockquote"
       bgColor={colors.teal50}
       p="12px"

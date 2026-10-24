@@ -194,11 +194,6 @@ export default defineConfig(({ mode }) => {
         CIRCLE_BUILD_NUM: process.env.CIRCLE_BUILD_NUM,
         CIRCLE_SHA1: process.env.CIRCLE_SHA1,
         CIRCLE_BRANCH: process.env.CIRCLE_BRANCH,
-        VITE_GV_DESIGN_TAGS:
-          process.env.VITE_GV_DESIGN_TAGS ??
-          ((process.env.CIRCLE_BRANCH ?? '').startsWith('design-system/')
-            ? '1'
-            : ''),
         MATOMO_HOST: process.env.MATOMO_HOST,
         POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
         TWEMOJI_BASE_URL: process.env.TWEMOJI_BASE_URL,

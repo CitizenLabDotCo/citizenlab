@@ -4,7 +4,6 @@ import { hideVisually, darken } from 'polished';
 import styled, { css } from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
-import { gvTag } from '../../utils/gvTag';
 import { colors, fontSizes, focusRing, isRtl } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 
@@ -161,10 +160,7 @@ class Toggle extends PureComponent<Props> {
     const inputId = id ?? `toggle-${this.instanceId}`;
 
     return (
-      <Container
-        {...gvTag('Toggle')}
-        className={`${className || ''} ${label ? 'hasLabel' : ''}`}
-      >
+      <Container className={`${className || ''} ${label ? 'hasLabel' : ''}`}>
         <HiddenCheckbox
           onChange={onChange}
           checked={checked}

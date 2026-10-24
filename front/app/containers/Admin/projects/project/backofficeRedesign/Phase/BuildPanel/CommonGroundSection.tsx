@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  Divider,
-  Button,
-  PanelField,
-} from '@citizenlab/cl2-component-library';
+import { Box, Divider, Button } from '@citizenlab/cl2-component-library';
 
 import useProjectById from 'api/projects/useProjectById';
 
@@ -16,6 +11,8 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
+
+import PanelField from './PanelField';
 
 interface Props {
   projectId: string;

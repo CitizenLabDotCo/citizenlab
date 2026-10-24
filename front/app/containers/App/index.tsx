@@ -10,9 +10,7 @@ import {
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import * as Sentry from '@sentry/react';
-import ModeProvider from 'design-system/ModeProvider';
 import GlobalStyle from 'global-styles';
-import 'design-system/tokens/tokens.css';
 import 'intersection-observer';
 // moment-timezone extends regular moment library,
 // so there's no need to import both moment and moment-timezone
@@ -392,7 +390,6 @@ const App = ({ children }: Props) => {
         </Box>
       )}
       <ThemeProvider theme={{ ...theme, isRtl: locale.startsWith('ar') }}>
-        <ModeProvider appConfiguration={appConfiguration} />
         <ModalQueueProvider>
           <GlobalStyle />
           <Box

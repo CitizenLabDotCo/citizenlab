@@ -4,7 +4,6 @@ import { isEmpty, get } from 'lodash-es';
 import { rgba } from 'polished';
 import styled, { css } from 'styled-components';
 
-import { gvTag } from '../../utils/gvTag';
 import { bo, colors, fontSizes, isRtl } from '../../utils/styleUtils';
 import { MultilocFormValues, Locale } from '../../utils/typings';
 import Box from '../Box';
@@ -154,11 +153,7 @@ class LocaleSwitcher extends PureComponent<Props> {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (locales && locales.length > 1) {
       return (
-        <Container
-          {...gvTag('LocaleSwitcher')}
-          className={className}
-          variant={variant}
-        >
+        <Container className={className} variant={variant}>
           {locales.map((locale, index) => (
             <StyledButton
               key={locale}

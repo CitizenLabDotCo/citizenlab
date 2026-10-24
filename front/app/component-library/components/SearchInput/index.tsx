@@ -9,7 +9,6 @@ import React, {
 import { isEmpty, debounce as debounceFn } from 'lodash-es';
 import styled, { css } from 'styled-components';
 
-import { gvTag } from '../../utils/gvTag';
 import { colors, isRtl, defaultStyles } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 import { InputSize } from '../../utils/typings';
@@ -192,7 +191,6 @@ const SearchInput = ({
 
   return (
     <Box
-      {...gvTag('SearchInput')}
       className={className || ''}
       position="relative"
       data-cy={dataCy}
