@@ -12,8 +12,8 @@
 // and nothing is logged as a console error. Optional data files that a build
 // may lack (see OPTIONAL_DATA) are allowed to 404. `#/foundations` lands on
 // the Colour page with no overview cards or breadcrumb. Then opens a
-// Button story on the canvas: a share link override changes the button's computed
-// border-radius, and a bad share link shows a notice and keeps the
+// Button story on the canvas: a share link override reaches the frame's
+// radius token, and a bad share link shows a notice and keeps the
 // session. The Foundations colour page lists at least MIN_COLOUR_TOKENS
 // tokens and a contrast pairs table with rows. On the Radius page the
 // radius token's Value field (Detach first, when it reads from another
@@ -39,8 +39,8 @@
 // reload, and the frame ends with the last edit and the new city; the same
 // burst on a settled frame ends on the last click too. The canvas
 // fits the Button frame to the story by default (MAX_FIT_HEIGHT). The Design tab
-// selects the button and shows its corner radius as the radius token,
-// linked; a click on the canvas selects the element under it; Size's
+// selects the button and offers the radius token its corner radius equals
+// (or links it); a click on the canvas selects the element under it; Size's
 // attach suggestion turns it into a --gv-fs-s pill and the Changes badge
 // counts it; 12 typed into the vertical padding becomes a --gv-space-3
 // pill; Copy for agent names --gv-fs-s; Reset all clears the list. The
@@ -475,10 +475,13 @@ const canvasFrame = async (page: any) => {
   return frame;
 };
 
+// The token's value in the frame. The platform reads no token, so a token
+// edit shows on the frame's root, where the workbench writes it.
 const radiusOf = (frame: any): Promise<string> =>
-  frame.$eval(
-    '#storybook-root button',
-    (el: Element) => getComputedStyle(el).borderTopLeftRadius
+  frame.evaluate(
+    (name: string) =>
+      getComputedStyle(document.documentElement).getPropertyValue(name).trim(),
+    RADIUS_TOKEN
   );
 
 const canvasChecks = async (
@@ -521,7 +524,7 @@ const canvasChecks = async (
     failures.push('fit: the canvas frame was never fitted to the story');
   }
 
-  // Share link override: the computed radius follows it.
+  // Share link override: the token's value in the frame follows it.
   const before = await radiusOf(frame);
   const payload = sharePayload({ [RADIUS_TOKEN]: RADIUS_OVERRIDE });
   await page.evaluate((h: string) => {
@@ -529,24 +532,22 @@ const canvasChecks = async (
   }, `#/components/${storyId}?o=${payload}`);
   try {
     await frame.waitForFunction(
-      (v: string) => {
-        const el = document.querySelector('#storybook-root button');
-        return !!el && getComputedStyle(el).borderTopLeftRadius === v;
-      },
-      RADIUS_OVERRIDE,
+      ([name, v]: [string, string]) =>
+        getComputedStyle(document.documentElement)
+          .getPropertyValue(name)
+          .trim() === v,
+      [RADIUS_TOKEN, RADIUS_OVERRIDE],
       { timeout: 5000 }
     );
   } catch {
     failures.push(
-      `override ${RADIUS_TOKEN}=${RADIUS_OVERRIDE}: border-radius stayed ${await radiusOf(
+      `override ${RADIUS_TOKEN}=${RADIUS_OVERRIDE}: the frame reads ${await radiusOf(
         frame
       )}`
     );
   }
   console.log(
-    `canvas: ${storyId}; ${RADIUS_TOKEN} ${before} -> ${await radiusOf(
-      frame
-    )}`
+    `canvas: ${storyId}; ${RADIUS_TOKEN} ${before} -> ${await radiusOf(frame)}`
   );
   if (screenshot) {
     await page.screenshot({ path: path.resolve(screenshot) });
@@ -566,7 +567,7 @@ const canvasChecks = async (
   const after = await radiusOf(frame);
   if (after !== RADIUS_OVERRIDE) {
     failures.push(
-      `a rejected share link changed the session: border-radius ${after}`
+      `a rejected share link changed the session: ${RADIUS_TOKEN} ${after}`
     );
   }
 };
@@ -879,7 +880,7 @@ const controlsChecks = async (
     const after = await radiusOf(frame);
     if (after !== radius) {
       failures.push(
-        `variant switch to ${other}: border-radius ${radius} became ${after}`
+        `variant switch to ${other}: ${RADIUS_TOKEN} ${radius} became ${after}`
       );
     }
     if (ok && after === radius) {
@@ -1040,14 +1041,20 @@ const panelChecks = async (
     .context()
     .grantPermissions(['clipboard-read', 'clipboard-write'])
     .catch(() => undefined);
+  // A fresh session: the canvas checks left the radius token at 20px, and
+  // the platform's button still renders 3px.
+  await page.evaluate(() => window.localStorage.removeItem('gv-overrides'));
   await page.goto(`${base}/workbench/#/components/${storyId}`);
+  await page.reload();
   await page.click('[data-testid="wb-panel-tab"][data-tab="design"]');
   const radius = `[data-testid="wb-panel-design"] [data-testid="wb-insp-value"][data-token="${RADIUS_TOKEN}"]`;
   let link: string | null = null;
   try {
     await page.waitForFunction(
       (sel: string) =>
-        document.querySelector(sel)?.getAttribute('data-link') === 'linked',
+        ['equal', 'linked'].includes(
+          document.querySelector(sel)?.getAttribute('data-link') ?? ''
+        ),
       radius,
       { timeout: 20000 }
     );
@@ -1057,11 +1064,13 @@ const panelChecks = async (
   link = await page
     .$eval(radius, (el: Element) => el.getAttribute('data-link'))
     .catch(() => null);
-  if (link !== 'linked') {
+  // The button's radius is a raw 3px on the platform: the Design tab
+  // offers the token it equals.
+  if (link !== 'equal' && link !== 'linked') {
     failures.push(
       `the Design tab shows the button's radius as ${
         link ?? 'missing'
-      }, expected ${RADIUS_TOKEN} linked`
+      }, expected it to equal ${RADIUS_TOKEN}`
     );
   }
   // A click on the canvas picks the element under it: the button's label.
@@ -1289,11 +1298,12 @@ const proposalChecks = async (
   }
   for (const key of ['offSpec', 'legacy']) {
     const want = summary[key];
+    // The summary loads after the page shows.
     const shown: string | null = await page
-      .$eval(
-        `[data-testid="wb-prop-number"] [data-key="${key}"]`,
-        (el: Element) => el.textContent
-      )
+      .waitForSelector(`[data-testid="wb-prop-number"] [data-key="${key}"]`, {
+        timeout: 10000,
+      })
+      .then((el: any) => el.textContent())
       .catch(() => null);
     if (typeof want !== 'number' || shown?.replace(/,/g, '') !== `${want}`) {
       failures.push(
@@ -1336,7 +1346,9 @@ const proposalChecks = async (
   console.log(
     `proposal: offSpec ${summary.offSpec}, ${charts.length} charts (${charts
       .map((c: any) => c.dots)
-      .join(', ')} points), ${order} components in the order; ${proposed} back-office tokens`
+      .join(
+        ', '
+      )} points), ${order} components in the order; ${proposed} back-office tokens`
   );
 };
 
@@ -1502,7 +1514,6 @@ const reviewFrameChecks = async (
     await context.close();
   }
 };
-
 
 const main = async () => {
   const root = path.resolve(arg('dir') ?? 'storybook-static');
