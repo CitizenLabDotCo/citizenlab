@@ -130,10 +130,7 @@
           "from": 0,
           "to": 0.5
         },
-        "diffs": {
-          "today": 0,
-          "redesign": 0
-        }
+        "diffs": 0
       }
     },
     {
@@ -161,10 +158,7 @@
           "from": 0,
           "to": 0.5
         },
-        "diffs": {
-          "today": 0,
-          "redesign": 0
-        }
+        "diffs": 0
       }
     },
     {
@@ -192,10 +186,7 @@
           "from": 0.5,
           "to": 0.588
         },
-        "diffs": {
-          "today": 0,
-          "redesign": 0
-        }
+        "diffs": 0
       }
     },
     {
@@ -223,10 +214,7 @@
           "from": 0,
           "to": 0.118
         },
-        "diffs": {
-          "today": 0,
-          "redesign": 0
-        }
+        "diffs": 0
       }
     },
     {
@@ -254,10 +242,7 @@
           "from": 0.118,
           "to": 0.235
         },
-        "diffs": {
-          "today": 0,
-          "redesign": 0
-        }
+        "diffs": 0
       }
     },
     {
@@ -284,6 +269,19 @@
         "tokenReads": 18,
         "components": 134,
         "onTokens": 22
+      }
+    },
+    {
+      "sha": "77942c27e9ac6124c57e926b708c594bb2fb1b14",
+      "date": "2026-10-24T20:11:29+00:00",
+      "subject": "design-system(scan): scan summary of the platform at master [AI-assisted]",
+      "area": "scan",
+      "totals": {
+        "offSpec": 8242,
+        "legacy": 3274,
+        "tokenReads": 0,
+        "components": 132,
+        "onTokens": 20
       }
     }
   ]
