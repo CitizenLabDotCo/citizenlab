@@ -10,7 +10,6 @@ import { GV_VIEWPORTS } from './viewports';
 import { MemoryRouter } from 'utils/router';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { allModes } from './modes';
-import { instancePropsDecorator } from './instanceProps';
 import { MINIMAL_VIEWPORTS } from 'storybook/viewport';
 import { IntlProvider } from 'react-intl';
 import { JSX } from 'react/jsx-runtime';
@@ -61,20 +60,6 @@ const routerDecorator = (Story: () => JSX.Element, context: StoryContext) => (
   </MemoryRouter>
 );
 
-// Mode of the design tokens: `today` is :root (no attribute), `redesign`
-// sets data-gv-mode on the preview's root element, like ModeScope does on
-// the redesigned pages. The workbench shell sets the same global in the
-// frame URL.
-const modeDecorator = (Story: () => JSX.Element, context: StoryContext) => {
-  const root = document.documentElement;
-  if (context.globals.mode === 'redesign') {
-    root.setAttribute('data-gv-mode', 'redesign');
-  } else {
-    root.removeAttribute('data-gv-mode');
-  }
-  return <Story />;
-};
-
 // The a11y addon runs axe (a 546 KB chunk and a few hundred ms of CPU)
 // after every render. Only Storybook's own a11y panel shows that result,
 // so a frame embedded elsewhere in story view (the workbench component
@@ -96,18 +81,6 @@ const embeddedOutsideStorybook = (() => {
 
 const preview: Preview = {
   globalTypes: {
-    mode: {
-      description: 'Design token mode',
-      toolbar: {
-        title: 'Mode',
-        icon: 'mirror',
-        items: [
-          { value: 'today', title: 'Today' },
-          { value: 'redesign', title: 'Redesign' },
-        ],
-        dynamicTitle: true,
-      },
-    },
     city: {
       description: 'Preview components in a city brand',
       toolbar: {
@@ -131,7 +104,6 @@ const preview: Preview = {
     },
   },
   initialGlobals: {
-    mode: 'today',
     city: DEFAULT_CITY,
     lang: 'en',
     ...(embeddedOutsideStorybook && { a11y: { manual: true } }),
@@ -159,15 +131,7 @@ const preview: Preview = {
     },
   },
   loaders: [mocksReadyLoader, intlLoader],
-  // The last is the outermost: the instance props scope is set before the
-  // story renders (instanceProps.tsx).
-  decorators: [
-    mswDecorator,
-    routerDecorator,
-    contexts,
-    modeDecorator,
-    instancePropsDecorator,
-  ],
+  decorators: [mswDecorator, routerDecorator, contexts],
 };
 
 export default preview;

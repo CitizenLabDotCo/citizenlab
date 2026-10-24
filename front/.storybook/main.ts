@@ -12,8 +12,8 @@ const APP_FOLDER_ALIASES = [
   'components',
   'containers',
   'context',
-  // The app resolves it through tsconfig baseUrl; without the alias any story
-  // that reaches ModeScope or the token API by `design-system/...` fails.
+  // The app resolves it through tsconfig baseUrl; stories that read the
+  // tokens by `design-system/...` need the alias.
   'design-system',
   'global-styles',
   'hooks',
@@ -128,18 +128,6 @@ const config: StorybookConfig = {
           SENTRY_ENV: process.env.SENTRY_ENV,
           MATOMO_HOST: process.env.MATOMO_HOST,
           POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
-          // Library components carry data-gv-component in the workbench, so
-          // ds:audit finds a story's component root. Set it to an empty
-          // string to build without.
-          VITE_GV_DESIGN_TAGS: process.env.VITE_GV_DESIGN_TAGS ?? '1',
-          // Storybook only, never the app build (vite.config.ts): with the
-          // tags on, Button, Title, Text and Image also take the workbench's
-          // instance props live and report what they render
-          // (app/component-library/utils/gvInstance.ts). It adds state and
-          // DOM reads to each instance, so an app build of a design-system
-          // branch keeps the attributes only.
-          VITE_GV_INSTANCE_PROPS:
-            process.env.VITE_GV_DESIGN_TAGS === '' ? '' : '1',
         },
       },
     });

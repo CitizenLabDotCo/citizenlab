@@ -2,12 +2,12 @@ import React, { useEffect } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { getTheme } from '@citizenlab/cl2-component-library';
 import GlobalStyle from '../../app/global-styles';
-import ModeProvider from '../../app/design-system/ModeProvider';
 import '../../app/assets/css/reset.min.css';
 import '../../app/assets/fonts/fonts.css';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
 import { CityKey, DEFAULT_CITY, cityOf, cityTenant } from '../cities';
+import TenantTokens from './TenantTokens';
 
 // Adds the city's web font stylesheet once; it stays for later stories.
 const useFontCss = (href?: string) => {
@@ -35,9 +35,8 @@ const ThemeContext = ({
     <ThemeProvider
       theme={{ ...getTheme(tenant), isRtl: lang.startsWith('ar') }}
     >
-      {/* Same as the platform: the city also drives the --gv-tenant-* and
-          --gv-font-family tokens the redesigned components read. */}
-      <ModeProvider appConfiguration={tenant as never} />
+      {/* The city also fills the --gv-tenant-* and --gv-font-family slots. */}
+      <TenantTokens tenant={tenant} />
       <GlobalStyle />
       {children}
     </ThemeProvider>

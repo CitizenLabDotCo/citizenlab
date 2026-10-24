@@ -12,9 +12,7 @@ import { MemoryRouter } from 'utils/router';
 
 import ProjectWorkspace from '.';
 
-// The redesigned project workspace. The component renders ModeScope
-// itself, which sets mode redesign, so every story shows redesign token
-// values whatever the toolbar mode: a mode today run renders redesign too.
+// The redesigned project workspace, with stand-ins in its slots.
 
 const emptyPhase: IPhaseData = {
   ...mockPhaseIdeationData,
