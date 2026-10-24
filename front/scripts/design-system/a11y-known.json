@@ -292,6 +292,118 @@
     {
       "id": "components-overlays-icontooltip--with-transform-translate",
       "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-event-workspace--default",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-event-workspace--default",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-event-workspace--existing",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-event-workspace--existing",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-event-workspace--rtl",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-event-workspace--rtl",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-idea-side-panel--default",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-idea-side-panel--rtl",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-method-settings--default",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-method-settings--default",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-method-settings--default",
+      "rule": "select-name"
+    },
+    {
+      "id": "components-redesigned-method-settings--rtl",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-method-settings--rtl",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-method-settings--rtl",
+      "rule": "select-name"
+    },
+    {
+      "id": "components-redesigned-method-settings--voting",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-method-settings--voting",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-new-phase--default",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-new-phase--default",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-new-phase--default",
+      "rule": "select-name"
+    },
+    {
+      "id": "components-redesigned-new-phase--pick-method",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-new-phase--rtl",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-new-phase--rtl",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-new-phase--rtl",
+      "rule": "select-name"
+    },
+    {
+      "id": "components-redesigned-phase-setup--default",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-phase-setup--information",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-phase-setup--rtl",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-phase-setup--voting",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-workspace-header--publish-open",
+      "rule": "label"
     }
   ]
 }
