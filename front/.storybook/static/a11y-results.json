@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T05:50:50.671Z",
+  "generatedAt": "2026-10-24T21:02:56.251Z",
   "axe": "4.10.2",
   "tags": [
     "wcag2a",
@@ -3503,6 +3503,816 @@
       "passes": 19,
       "incomplete": 1,
       "focusable": 6,
+      "play": "passed"
+    },
+    "components-redesigned-event-workspace--default": {
+      "title": "Components/Redesigned/Event workspace",
+      "checkedAt": "2026-10-24T21:02:24.502Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        },
+        {
+          "id": "aria-command-name",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "ARIA commands must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-command-name"
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 5,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 22,
+      "incomplete": 2,
+      "focusable": 33,
+      "play": "passed"
+    },
+    "components-redesigned-event-workspace--existing": {
+      "title": "Components/Redesigned/Event workspace",
+      "checkedAt": "2026-10-24T21:02:24.504Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 2,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        },
+        {
+          "id": "aria-command-name",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "ARIA commands must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-command-name"
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 22,
+      "incomplete": 2,
+      "focusable": 36,
+      "play": "passed"
+    },
+    "components-redesigned-event-workspace--rtl": {
+      "title": "Components/Redesigned/Event workspace",
+      "checkedAt": "2026-10-24T21:02:26.801Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 2,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        },
+        {
+          "id": "aria-command-name",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "ARIA commands must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-command-name"
+        }
+      ],
+      "passes": 22,
+      "incomplete": 2,
+      "focusable": 36,
+      "play": "passed"
+    },
+    "components-redesigned-idea-side-panel--default": {
+      "title": "Components/Redesigned/Idea side panel",
+      "checkedAt": "2026-10-24T21:02:27.194Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 3,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 20,
+      "incomplete": 2,
+      "focusable": 17,
+      "play": "passed"
+    },
+    "components-redesigned-idea-side-panel--rtl": {
+      "title": "Components/Redesigned/Idea side panel",
+      "checkedAt": "2026-10-24T21:02:28.808Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 3,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        }
+      ],
+      "passes": 20,
+      "incomplete": 2,
+      "focusable": 17,
+      "play": "passed"
+    },
+    "components-redesigned-idea-table--default": {
+      "title": "Components/Redesigned/Idea table",
+      "checkedAt": "2026-10-24T21:02:29.162Z",
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "nodes": 2,
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-prohibited-attr"
+        }
+      ],
+      "passes": 21,
+      "incomplete": 0,
+      "focusable": 4,
+      "play": "passed"
+    },
+    "components-redesigned-idea-table--paged": {
+      "title": "Components/Redesigned/Idea table",
+      "checkedAt": "2026-10-24T21:02:30.285Z",
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "nodes": 2,
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-prohibited-attr"
+        }
+      ],
+      "passes": 21,
+      "incomplete": 0,
+      "focusable": 10,
+      "play": "passed"
+    },
+    "components-redesigned-idea-table--rtl": {
+      "title": "Components/Redesigned/Idea table",
+      "checkedAt": "2026-10-24T21:02:30.285Z",
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "nodes": 2,
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-prohibited-attr"
+        }
+      ],
+      "passes": 20,
+      "incomplete": 0,
+      "focusable": 4,
+      "play": "passed"
+    },
+    "components-redesigned-idea-table--selected": {
+      "title": "Components/Redesigned/Idea table",
+      "checkedAt": "2026-10-24T21:02:31.565Z",
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "nodes": 2,
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-prohibited-attr"
+        }
+      ],
+      "passes": 21,
+      "incomplete": 0,
+      "focusable": 4,
+      "play": "passed"
+    },
+    "components-redesigned-input-manager--default": {
+      "title": "Components/Redesigned/Input manager",
+      "checkedAt": "2026-10-24T21:02:31.608Z",
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "nodes": 2,
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-prohibited-attr"
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 22,
+      "incomplete": 0,
+      "focusable": 12,
+      "play": "passed"
+    },
+    "components-redesigned-input-manager--rtl": {
+      "title": "Components/Redesigned/Input manager",
+      "checkedAt": "2026-10-24T21:02:32.853Z",
+      "violations": [
+        {
+          "id": "aria-prohibited-attr",
+          "impact": "serious",
+          "nodes": 2,
+          "help": "Elements must only use permitted ARIA attributes",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/aria-prohibited-attr"
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 22,
+      "incomplete": 0,
+      "focusable": 12,
+      "play": "passed"
+    },
+    "components-redesigned-input-manager-empty-state--default": {
+      "title": "Components/Redesigned/Input manager empty state",
+      "checkedAt": "2026-10-24T21:02:32.950Z",
+      "violations": [],
+      "passes": 4,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-redesigned-input-manager-empty-state--rtl": {
+      "title": "Components/Redesigned/Input manager empty state",
+      "checkedAt": "2026-10-24T21:02:34.029Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-redesigned-input-manager-right-column--default": {
+      "title": "Components/Redesigned/Input manager right column",
+      "checkedAt": "2026-10-24T21:02:34.236Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 5,
+      "play": "passed"
+    },
+    "components-redesigned-input-manager-right-column--rtl": {
+      "title": "Components/Redesigned/Input manager right column",
+      "checkedAt": "2026-10-24T21:02:35.047Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 5,
+      "play": "passed"
+    },
+    "components-redesigned-input-manager-right-column--voting": {
+      "title": "Components/Redesigned/Input manager right column",
+      "checkedAt": "2026-10-24T21:02:35.369Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 2,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 5,
+      "play": "passed"
+    },
+    "components-redesigned-method-settings--default": {
+      "title": "Components/Redesigned/Method settings",
+      "checkedAt": "2026-10-24T21:02:36.028Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 4,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 3,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        },
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Select element must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/select-name"
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 16,
+      "incomplete": 2,
+      "focusable": 27,
+      "play": "passed"
+    },
+    "components-redesigned-method-settings--rtl": {
+      "title": "Components/Redesigned/Method settings",
+      "checkedAt": "2026-10-24T21:02:36.391Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 4,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 3,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        },
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Select element must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/select-name"
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 16,
+      "incomplete": 2,
+      "focusable": 27
+    },
+    "components-redesigned-method-settings--voting": {
+      "title": "Components/Redesigned/Method settings",
+      "checkedAt": "2026-10-24T21:02:37.379Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 3,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 4,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 17,
+      "incomplete": 3,
+      "focusable": 21,
+      "play": "passed"
+    },
+    "components-redesigned-new-phase--default": {
+      "title": "Components/Redesigned/New phase",
+      "checkedAt": "2026-10-24T21:02:37.787Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 4,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 3,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        },
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Select element must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/select-name"
+        }
+      ],
+      "passes": 19,
+      "incomplete": 1,
+      "focusable": 31,
+      "play": "passed"
+    },
+    "components-redesigned-new-phase--pick-method": {
+      "title": "Components/Redesigned/New phase",
+      "checkedAt": "2026-10-24T21:02:38.474Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        },
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 11,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 22,
+      "incomplete": 2,
+      "focusable": 38,
+      "play": "passed"
+    },
+    "components-redesigned-new-phase--rtl": {
+      "title": "Components/Redesigned/New phase",
+      "checkedAt": "2026-10-24T21:02:39.512Z",
+      "violations": [
+        {
+          "id": "button-name",
+          "impact": "critical",
+          "nodes": 4,
+          "help": "Buttons must have discernible text",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/button-name"
+        },
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 3,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        },
+        {
+          "id": "select-name",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Select element must have an accessible name",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/select-name"
+        }
+      ],
+      "passes": 19,
+      "incomplete": 1,
+      "focusable": 31
+    },
+    "components-redesigned-phase-empty-state--default": {
+      "title": "Components/Redesigned/Phase empty state",
+      "checkedAt": "2026-10-24T21:02:40.063Z",
+      "violations": [],
+      "passes": 4,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-redesigned-phase-empty-state--rtl": {
+      "title": "Components/Redesigned/Phase empty state",
+      "checkedAt": "2026-10-24T21:02:41.057Z",
+      "violations": [],
+      "passes": 3,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-redesigned-phase-empty-state--small": {
+      "title": "Components/Redesigned/Phase empty state",
+      "checkedAt": "2026-10-24T21:02:41.240Z",
+      "violations": [],
+      "passes": 4,
+      "incomplete": 0,
+      "focusable": 0
+    },
+    "components-redesigned-phase-setup--default": {
+      "title": "Components/Redesigned/Phase setup",
+      "checkedAt": "2026-10-24T21:02:42.036Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 14,
+      "incomplete": 0,
+      "focusable": 4,
+      "play": "passed"
+    },
+    "components-redesigned-phase-setup--information": {
+      "title": "Components/Redesigned/Phase setup",
+      "checkedAt": "2026-10-24T21:02:42.242Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 2,
+      "play": "passed"
+    },
+    "components-redesigned-phase-setup--rtl": {
+      "title": "Components/Redesigned/Phase setup",
+      "checkedAt": "2026-10-24T21:02:43.417Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 14,
+      "incomplete": 0,
+      "focusable": 4,
+      "play": "passed"
+    },
+    "components-redesigned-phase-setup--voting": {
+      "title": "Components/Redesigned/Phase setup",
+      "checkedAt": "2026-10-24T21:02:43.441Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 14,
+      "incomplete": 0,
+      "focusable": 5,
+      "play": "passed"
+    },
+    "components-redesigned-project-setup-panel--default": {
+      "title": "Components/Redesigned/Project setup panel",
+      "checkedAt": "2026-10-24T21:02:44.540Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 6,
+      "play": "passed"
+    },
+    "components-redesigned-project-setup-panel--draft": {
+      "title": "Components/Redesigned/Project setup panel",
+      "checkedAt": "2026-10-24T21:02:44.541Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 3,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 12,
+      "incomplete": 0,
+      "focusable": 9,
+      "play": "passed"
+    },
+    "components-redesigned-project-setup-panel--rtl": {
+      "title": "Components/Redesigned/Project setup panel",
+      "checkedAt": "2026-10-24T21:02:45.882Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 6,
+      "play": "passed"
+    },
+    "components-redesigned-project-timeline--default": {
+      "title": "Components/Redesigned/Project timeline",
+      "checkedAt": "2026-10-24T21:02:45.925Z",
+      "violations": [],
+      "passes": 18,
+      "incomplete": 0,
+      "focusable": 13,
+      "play": "passed"
+    },
+    "components-redesigned-project-timeline--no-events": {
+      "title": "Components/Redesigned/Project timeline",
+      "checkedAt": "2026-10-24T21:02:47.037Z",
+      "violations": [],
+      "passes": 18,
+      "incomplete": 0,
+      "focusable": 11,
+      "play": "passed"
+    },
+    "components-redesigned-project-timeline--rtl": {
+      "title": "Components/Redesigned/Project timeline",
+      "checkedAt": "2026-10-24T21:02:47.106Z",
+      "violations": [],
+      "passes": 18,
+      "incomplete": 0,
+      "focusable": 13,
+      "play": "passed"
+    },
+    "components-redesigned-timeline-events--default": {
+      "title": "Components/Redesigned/Timeline events",
+      "checkedAt": "2026-10-24T21:02:48.407Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 3,
+      "play": "passed"
+    },
+    "components-redesigned-timeline-events--empty": {
+      "title": "Components/Redesigned/Timeline events",
+      "checkedAt": "2026-10-24T21:02:48.408Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-redesigned-timeline-events--rtl": {
+      "title": "Components/Redesigned/Timeline events",
+      "checkedAt": "2026-10-24T21:02:49.401Z",
+      "violations": [],
+      "passes": 11,
+      "incomplete": 0,
+      "focusable": 3,
+      "play": "passed"
+    },
+    "components-redesigned-view-switch--default": {
+      "title": "Components/Redesigned/View switch",
+      "checkedAt": "2026-10-24T21:02:49.421Z",
+      "violations": [],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 3,
+      "play": "passed"
+    },
+    "components-redesigned-view-switch--locked": {
+      "title": "Components/Redesigned/View switch",
+      "checkedAt": "2026-10-24T21:02:50.462Z",
+      "violations": [],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 1,
+      "play": "passed"
+    },
+    "components-redesigned-view-switch--manage": {
+      "title": "Components/Redesigned/View switch",
+      "checkedAt": "2026-10-24T21:02:50.526Z",
+      "violations": [],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 3,
+      "play": "passed"
+    },
+    "components-redesigned-view-switch--rtl": {
+      "title": "Components/Redesigned/View switch",
+      "checkedAt": "2026-10-24T21:02:51.640Z",
+      "violations": [],
+      "passes": 10,
+      "incomplete": 0,
+      "focusable": 3,
+      "play": "passed"
+    },
+    "components-redesigned-workspace-header--default": {
+      "title": "Components/Redesigned/Workspace header",
+      "checkedAt": "2026-10-24T21:02:51.651Z",
+      "violations": [],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 4,
+      "play": "passed"
+    },
+    "components-redesigned-workspace-header--new-phase-draft": {
+      "title": "Components/Redesigned/Workspace header",
+      "checkedAt": "2026-10-24T21:02:52.722Z",
+      "violations": [],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 3,
+      "play": "passed"
+    },
+    "components-redesigned-workspace-header--phase": {
+      "title": "Components/Redesigned/Workspace header",
+      "checkedAt": "2026-10-24T21:02:52.759Z",
+      "violations": [],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 6,
+      "play": "passed"
+    },
+    "components-redesigned-workspace-header--publish-open": {
+      "title": "Components/Redesigned/Workspace header",
+      "checkedAt": "2026-10-24T21:02:53.786Z",
+      "violations": [
+        {
+          "id": "label",
+          "impact": "critical",
+          "nodes": 1,
+          "help": "Form elements must have labels",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/label"
+        }
+      ],
+      "passes": 17,
+      "incomplete": 1,
+      "focusable": 12,
+      "play": "passed"
+    },
+    "components-redesigned-workspace-header--rtl": {
+      "title": "Components/Redesigned/Workspace header",
+      "checkedAt": "2026-10-24T21:02:53.789Z",
+      "violations": [],
+      "passes": 13,
+      "incomplete": 0,
+      "focusable": 4,
+      "play": "passed"
+    },
+    "components-redesigned-workspace-header--share-open": {
+      "title": "Components/Redesigned/Workspace header",
+      "checkedAt": "2026-10-24T21:02:55.049Z",
+      "violations": [],
+      "passes": 15,
+      "incomplete": 0,
+      "focusable": 7,
       "play": "passed"
     },
     "components-typography-quilleditedcontent--default": {
