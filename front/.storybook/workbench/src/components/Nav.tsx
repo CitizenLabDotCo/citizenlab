@@ -40,6 +40,12 @@ export const NAV: NavEntry[] = [
     hint: 'Before and after, page by page',
   },
   {
+    name: 'inspect',
+    label: 'Inspect',
+    hash: '#/inspect',
+    hint: 'Click anything in your local platform',
+  },
+  {
     name: 'proposal',
     label: 'Proposal',
     hash: '#/proposal',

@@ -38,6 +38,12 @@ const PATHS = {
       <path d="M15.5 12.5l1.5 1.5 2.5-3" />
     </>
   ),
+  inspect: (
+    <>
+      <rect x="3.5" y="4.5" width="17" height="13" rx="1.5" />
+      <path d="M11 10l7 4-3 .8-1.6 3z" />
+    </>
+  ),
   proposal: (
     <>
       <circle cx="7" cy="6" r="2" />

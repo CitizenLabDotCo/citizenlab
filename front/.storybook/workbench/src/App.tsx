@@ -11,6 +11,7 @@ import { Route, useRoute } from './lib/router';
 import Component from './pages/Component';
 import Foundations from './pages/Foundations';
 import Gallery from './pages/Gallery';
+import Inspect from './pages/Inspect';
 import Proposal from './pages/Proposal';
 import Review from './pages/Review';
 
@@ -64,6 +65,8 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
       return <Review meta={TOKEN_META} overrides={canvas.overrides} />;
     case 'proposal':
       return <Proposal />;
+    case 'inspect':
+      return <Inspect meta={TOKEN_META} />;
     case 'not-found':
       return (
         <article className="wb-page">

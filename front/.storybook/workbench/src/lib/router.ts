@@ -8,6 +8,7 @@ export type Route =
   | { name: 'pages'; storyId?: string }
   | { name: 'review' }
   | { name: 'proposal' }
+  | { name: 'inspect' }
   | { name: 'not-found'; path: string };
 
 export const DEFAULT_HASH = '#/components';
@@ -56,6 +57,7 @@ export const parseHash = (hash: string): Route => {
       return { name: first, storyId: param };
     case 'review':
     case 'proposal':
+    case 'inspect':
       return param ? { name: 'not-found', path } : { name: first };
     default:
       return { name: 'not-found', path };

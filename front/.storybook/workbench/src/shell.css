@@ -556,13 +556,15 @@ code {
   background: var(--wb-subtle);
 }
 
-.wb-button-primary {
+.wb-button-primary,
+.wb-shell .wb-button-primary {
   color: var(--wb-on-accent);
   background: var(--wb-accent-fill);
   border-color: var(--wb-accent-fill);
 }
 
-.wb-button-primary:hover {
+.wb-button-primary:hover,
+.wb-shell .wb-button-primary:hover {
   background: var(--wb-accent-strong);
 }
 
@@ -6816,4 +6818,162 @@ tr[data-result='needs-human'] .wb-a11y-note {
 
 .wb-local-item .wb-change-glyph {
   color: var(--wb-muted);
+}
+
+/* Inspect: the local platform in a frame, the reading in the panel. */
+.wb-inspect-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gv-space-4);
+  min-width: 0;
+}
+
+.wb-ins-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gv-space-3);
+  align-items: center;
+}
+
+.wb-ins-address {
+  display: flex;
+  flex: 1 1 280px;
+  gap: var(--gv-space-2);
+}
+
+.wb-ins-address input {
+  flex: 1;
+  min-width: 0;
+  min-height: 36px;
+  padding: 0 var(--gv-space-3);
+  font: inherit;
+  font-family: var(--gv-font-mono, ui-monospace, monospace);
+  font-size: var(--gv-fs-13);
+  color: var(--wb-text);
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border-strong);
+  border-radius: var(--wb-radius);
+}
+
+.wb-ins-stage {
+  overflow: hidden;
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius);
+}
+
+.wb-ins-stage iframe {
+  display: block;
+  width: 100%;
+  height: calc(100vh - 240px);
+  min-height: 420px;
+  border: 0;
+  background: var(--gv-white);
+}
+
+.wb-ins-what h3 {
+  margin: 0;
+  font-size: var(--gv-fs-l);
+  color: var(--wb-heading);
+}
+
+.wb-ins-what p {
+  margin: var(--gv-space-1) 0 0;
+}
+
+.wb-ins-sites,
+.wb-ins-values {
+  display: grid;
+  gap: var(--gv-space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--gv-fs-13);
+}
+
+.wb-ins-sites li {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.wb-ins-sites code {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wb-ins-values li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: var(--gv-space-2);
+  align-items: baseline;
+}
+
+.wb-ins-values li > :first-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wb-ins-token {
+  color: var(--wb-accent);
+}
+
+.wb-ins-raw {
+  font-size: var(--gv-fs-xs);
+  color: var(--wb-warning, var(--wb-muted));
+}
+
+.wb-ins-hand {
+  display: grid;
+  gap: var(--gv-space-2);
+}
+
+.wb-ins-hand label {
+  font-weight: 600;
+  color: var(--wb-heading);
+}
+
+.wb-ins-hand textarea {
+  padding: var(--gv-space-2) var(--gv-space-3);
+  font: inherit;
+  color: var(--wb-text);
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border-strong);
+  border-radius: var(--wb-radius);
+  resize: vertical;
+}
+
+.wb-ins-prompt pre {
+  margin: var(--gv-space-2) 0;
+  padding: var(--gv-space-3);
+  font-size: var(--gv-fs-xs);
+  white-space: pre-wrap;
+  background: var(--wb-bg-subtle, var(--wb-bg));
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius);
+}
+
+.wb-inspect > section + section {
+  margin-top: var(--gv-space-5);
+}
+
+.wb-ins-parent {
+  margin-top: var(--gv-space-2);
+}
+
+.wb-ins-props li {
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.wb-ins-props code {
+  overflow: hidden;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wb-shell .wb-button-primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }

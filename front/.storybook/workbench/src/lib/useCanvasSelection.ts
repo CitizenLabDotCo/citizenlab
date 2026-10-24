@@ -14,13 +14,13 @@ import { firstChildTarget, nestKey } from './selectKeys';
 // story does not see it). Interact: the story gets every click, as before.
 export type Tool = 'select' | 'interact';
 
-const OVERLAY = 'data-wb-overlay';
+export const OVERLAY = 'data-wb-overlay';
 // Figma's selection blue; the frame shows the product, so the outline must
 // not borrow a product colour.
 const BLUE = '#0d99ff';
 type Kind = 'hover' | 'selected';
 
-const overlay = (doc: Document, kind: Kind) => {
+export const overlay = (doc: Document, kind: Kind) => {
   let el = doc.querySelector<HTMLElement>(`[${OVERLAY}="${kind}"]`);
   if (!el) {
     el = doc.createElement('div');
@@ -55,7 +55,7 @@ const overlay = (doc: Document, kind: Kind) => {
   return el;
 };
 
-const place = (box: HTMLElement, target: Element | null) => {
+export const place = (box: HTMLElement, target: Element | null) => {
   if (!target || !target.isConnected) {
     box.style.display = 'none';
     return;

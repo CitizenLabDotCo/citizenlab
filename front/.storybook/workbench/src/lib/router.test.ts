@@ -89,3 +89,13 @@ describe('useRoute', () => {
     expect(window.location.hash).toBe('#/components');
   });
 });
+
+describe('inspect', () => {
+  it('opens the Inspect tab, which takes no parameter', () => {
+    expect(parseHash('#/inspect')).toEqual({ name: 'inspect' });
+    expect(parseHash('#/inspect/x')).toEqual({
+      name: 'not-found',
+      path: '/inspect/x',
+    });
+  });
+});

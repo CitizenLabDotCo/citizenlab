@@ -152,7 +152,13 @@ const LocalSave = ({
               >
                 <span className="wb-change-glyph" aria-hidden="true">
                   <Icon
-                    name={e.kind === 'token' ? 'tokens' : 'file'}
+                    name={
+                      e.kind === 'token'
+                        ? 'tokens'
+                        : e.kind === 'agent'
+                        ? 'pointer'
+                        : 'file'
+                    }
                     size={14}
                   />
                 </span>
@@ -200,7 +206,9 @@ const LocalSave = ({
               (status.protected
                 ? `Token edits go to a new branch: you are on ${status.branch}. `
                 : `Token edits go to ${status.branch}. `)}
-            {status.edits.some((e) => e.kind === 'style') &&
+            {status.edits.some(
+              (e) => e.kind === 'style' || e.kind === 'agent'
+            ) &&
               'Component edits go to their own heal branch off master, one small pull request.'}
           </p>
         </>

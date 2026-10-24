@@ -362,3 +362,65 @@ it('writes the variable in the component library', async () => {
   expect(get(LIBRARY)).not.toContain("design-system/tokens/tokens'");
   expect(r.json.edits.map((e: any) => e.kind)).toEqual(['setup', 'style']);
 });
+
+const agentEdit = () => put(COMPONENT, componentText.replace('12px', '20px'));
+
+it('hands a pick to the agent and lists what it changes in the file', async () => {
+  const r = await call('/__ds/pick', {
+    file: COMPONENT,
+    line: 9,
+    label: 'Wrap in Thing',
+    context: { component: 'Thing' },
+  });
+  expect(r.status).toBe(200);
+  // Nothing changed yet: nothing listed.
+  expect(r.json.edits).toHaveLength(0);
+  const selection = JSON.parse(
+    fs.readFileSync(path.join(dir, '.git/ds-local/selection.json'), 'utf8')
+  );
+  expect(selection).toMatchObject({
+    file: COMPONENT,
+    line: 9,
+    context: { component: 'Thing' },
+  });
+
+  agentEdit();
+  const status = await call('/__ds/status');
+  expect(status.json.edits).toEqual([
+    expect.objectContaining({
+      kind: 'agent',
+      label: 'Agent: Wrap in Thing',
+      files: [COMPONENT],
+    }),
+  ]);
+
+  const undo = await call('/__ds/undo', { id: status.json.edits[0].id });
+  expect(undo.json.edits).toHaveLength(0);
+  expect(get(COMPONENT)).toBe(componentText);
+});
+
+it('pushes an agent edit as a heal off master', async () => {
+  await call('/__ds/pick', {
+    file: LIBRARY,
+    line: 9,
+    also: [COMPONENT, '../x.ts'],
+    label: 'Wrap',
+  });
+  agentEdit();
+  const r = await call('/__ds/push', {});
+  expect(r.status).toBe(200);
+  expect(r.json.pushed[0]).toMatchObject({
+    kind: 'heal',
+    branch: 'design-system/heal-agent-wrap',
+  });
+  expect(
+    sh(remote, 'show', `${r.json.pushed[0].branch}:${COMPONENT}`)
+  ).toContain('margin-left: 20px;');
+  expect(get(COMPONENT)).toBe(componentText);
+  expect(r.json.edits).toHaveLength(0);
+});
+
+it('refuses a pick outside app', async () => {
+  const r = await call('/__ds/pick', { file: '.storybook/main.ts', line: 1 });
+  expect(r.status).toBe(400);
+});

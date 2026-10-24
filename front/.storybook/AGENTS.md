@@ -171,6 +171,7 @@ check: story <story id>, routes <list>
 - A component edit writes the file at a scan finding only: a token as `t.<path>` (with the `t` import), or `var(--gv-…)` under `app/component-library/`, or a plain value. A token read also adds the tokens stylesheet import to the app root once (a setup edit, never pushed). A push commits component edits as a heal on `design-system/heal-<label>` off `origin/master` without a checkout (a scratch index), then puts this checkout's files back. It refuses when the file differs on master from what was edited.
 - A heal onto a token is held while `master` has no `app/design-system/tokens/` (Iva's call): it stays saved locally.
 - The push is the person's git and credentials; no token reaches the browser. A failed token push leaves the commit for `git push` in the terminal.
+- The Inspect tab shows the local platform in a frame. A click reads the element's JSX sites, props and values from React's dev build (`lib/fiber.ts`); Hand to my agent writes `$(git rev-parse --git-dir)/ds-local/selection.json` (`file`, `line`, `label`, `context` with the ask, sites, props, values and tokens). When the person says "the one I picked", read that file and edit `file` (or a file in `context.sites`), with tokens over raw values. The edit lists under Saved as `Agent: <label>`, with Undo, and a push takes it as a heal.
 
 ## Stories
 
