@@ -1,11 +1,20 @@
 ---
 name: lift
-description: Use when asked to lift (move) a local piece of the redesigned back office (`app/containers/Admin/projects/project/backofficeRedesign/`) into the component library, so other pages can use it. One component per commit, tokens only, stories for every state.
+description: Use when asked to lift (move) a local piece of the redesigned back office (`app/containers/Admin/projects/project/backofficeRedesign/`) into the component library, so other pages can use it. One component, stories for every state, in its own small branch and PR off master.
 ---
 
 # lift
 
-Move one local component of `backofficeRedesign` into `app/component-library/components/<Name>/`, on tokens, with stories, and point the original import at it. Read `front/.storybook/AGENTS.md` first if you have not this session. Run every command from `front/`.
+Move one local component of `backofficeRedesign` into `app/component-library/components/<Name>/`, with stories, and point the original import at it. Read `front/.storybook/AGENTS.md` first if you have not this session. Run every command from `front/`.
+
+A lift is platform code. It never goes on `design-system/workbench`: that branch reads the repo and never changes the platform. Each lift is its own branch off master and its own PR, opened by a person. Set up the two checkouts as in the `heal` skill: the tools checkout of `design-system/workbench` for the commands, and a new worktree for the lift:
+
+```
+git fetch origin master
+git worktree add ../lift-<name> -b design-system/lift-<name> origin/master
+```
+
+Its Storybook runs on port 6007 (`npx storybook dev -p 6007 --ci --no-open`); point the tools at it with `--url http://localhost:6007`.
 
 ## Input
 
@@ -17,30 +26,31 @@ or a name with its folder. To choose what to lift, rank the local pieces of `bac
 
 ## Stop conditions
 
-- **Mode safety.** The lifted component renders the same on the redesigned page as before: every value it reads becomes a token whose `redesign` value equals the value it has now (`npm run -s ds:mode-check -- --file <original file> --token <token> --now <value> --mode redesign` for each). If the original also renders outside the redesign scope (rendered by `Event` or `NewPhase`, or portalled), the `today` value must match too; the check says which.
-- **Style only.** The lift moves code and swaps values for tokens. It does not change behaviour, data, copy or props beyond what the move needs. Logic tied to the page (queries, routing, page state) stays where it is: lift the presentational part only, or stop.
-- **One component per commit.** A piece that needs a second piece lifted first: lift that one first, in its own commit.
+- **The look changes.** The lifted component renders the same on the page as before: every value keeps the value it has now. A value moved onto a token needs master to have the tokens (see stop 1 of the `heal` skill); until then the lift keeps its values as they are, and the heal to tokens follows later.
+- **Style only.** The lift moves code. It does not change behaviour, data, copy or props beyond what the move needs. Logic tied to the page (queries, routing, page state) stays where it is: lift the presentational part only, or stop.
+- **One component per PR.** A piece that needs a second piece lifted first: lift that one first, in its own branch and PR.
 - **Name clash.** A library component of that name or role exists already: stop and report; the right move may be a heal to the existing one.
-- **No token fits** a value: stop (a new token is its own `design-system(token)` commit).
 
 ## Steps
 
-- [ ] 1. `git status --short`. `npm run ds:scan`. Note the page's findings count for the original file.
-- [ ] 2. Start Storybook in another terminal with `npx storybook dev -p 6006 --ci --no-open` (`npm run storybook` first runs `ds:prepare`, which rewrites committed outputs); `npm run ds:visual -- --baseline <scratch>/before`. Screenshot the route where it shows, if you have the platform running.
-- [ ] 3. Create `app/component-library/components/<Name>/index.tsx`: the component, values in styled templates `var(--gv-…)` (files in `app/component-library/` may not import `t` from `design-system/`: dependency-cruiser `no-import-to-component-library`, see step 6 of the `heal` skill), `{...gvTag('<Name>')}` on its root element (`component-library/utils/gvTag`). Export it from `app/component-library/index.tsx`.
-- [ ] 4. Stories: `<Name>.stories.tsx`, `title: 'Components/<Category>/<Name>'`, `tags: ['bo']`, every state (follow the `story` skill).
+- [ ] 1. Set up the two checkouts. In the tools checkout, `npm run ds:scan`. Note the page's findings count for the original file.
+- [ ] 2. Start the lift worktree's Storybook on port 6007; from the tools checkout, `npm run ds:visual -- --url http://localhost:6007 --baseline <scratch>/before`. Screenshot the route where it shows, if you have the platform running.
+- [ ] 3. In the lift worktree, create `app/component-library/components/<Name>/index.tsx`: the component, with its values as they are now. Export it from `app/component-library/index.tsx`.
+- [ ] 4. Stories: `<Name>.stories.tsx`, `title: 'Components/<Category>/<Name>'`, `tags: ['bo']`, every state (follow the `story` skill). An `a11y.json` checklist beside it (follow the `a11y-review` skill).
 - [ ] 5. Replace the original: the old file imports the library component (or the old file goes and its importers switch). Nothing else on the page changes.
-- [ ] 6. Checks:
+- [ ] 6. Checks, in the lift worktree:
   ```
-  npm run ds:a11y -- --stories '<story id prefix>--*'
-  npm run ds:check
+  npx eslint <changed files>
   npx jest app/component-library/components/<Name> <original folder>
   npm run typecheck
-  npm run ds:visual -- --compare <scratch>/before --summary <scratch>/visual.json
-  npm run ds:scan
   ```
-  The compare shows only the new stories. The scan lists `<Name>` as a component with its usages. `ds:check` only reads the committed `a11y-results.json`, so `ds:a11y` runs first (Storybook running on port 6006) to record axe on the stories your change touches; commit `a11y-results.json` with the change. `ds:check` then passes unless it has a new critical axe violation (one not in `scripts/design-system/a11y-known.json`); if your change fixes a known one, remove its entry there.
-- [ ] 7. Commit only your files, with `.storybook/static/design-scan.summary.json` and `.storybook/static/a11y-results.json`.
+  and from the tools checkout, with the lift Storybook still on 6007:
+  ```
+  npm run ds:visual -- --url http://localhost:6007 --compare <scratch>/before --summary <scratch>/visual.json
+  npm run ds:a11y -- --url http://localhost:6007 --stories '<story id prefix>--*' --out <scratch>/a11y.json
+  ```
+  The compare shows only the new stories. A new critical axe violation is a stop: fix it in the lift.
+- [ ] 7. Commit only your files in the lift worktree (`git add <paths>`). Do not push and do not open the PR: report, and a person opens it.
 
 ## Commit message
 
@@ -48,7 +58,7 @@ or a name with its folder. To choose what to lift, rank the local pieces of `bac
 design-system(lift): <Name> from backofficeRedesign/<dir> [AI-assisted]
 
 Original: <original file path>.
-Tokens: <list>. Stories: <states>. Score <before> → <after>.
+Stories: <states>. Visual compare: <stories> stories, <diffs> diffs.
 
 Co-Authored-By: <the line your session gives>
 ```
@@ -56,9 +66,8 @@ Co-Authored-By: <the line your session gives>
 ## Report
 
 ```
-Lifted: <Name> from <original path> to app/component-library/components/<Name>/ (<commit sha>)
-Tokens: <list>; mode check ok for each
+Lifted: <Name> from <original path> to app/component-library/components/<Name>/ (<commit sha> on design-system/lift-<name>, off master <sha>)
 Stories: <states>
-Score: <before> → <after>; checks ok
+Checks: eslint ok, jest <n> passed, typecheck ok, visual <stories> stories <diffs> diffs, axe <criticals> new criticals
 Left behind (page logic): <list or none>
 ```

@@ -22,12 +22,12 @@ Not counted as design changes: <n> story commits, <n> tooling commits.
 
 - Off-spec values: <before the design commits> before, <now> now (<delta>). Scanner rule changes: <delta, or none>.
 - Components on tokens: <onTokens> of <components>.
-- Visual run (`npm run ds:visual -- --compare`, mode today): <stories> stories, <diffs> diffs, <errors> errors. Expected diffs: <list or none>.
+- Visual run (`npm run ds:visual -- --compare`): <stories> stories, <diffs> diffs, <errors> errors. Expected diffs: <list or none>.
 
-## Mode safety
+## Platform code
 
-- Outside the redesign scope (`ModeScope`, `data-gv-mode="redesign"`) every healed value renders as before: each heal's token has a `today` value equal to the value it replaced.
-- Inside the scope: <what changes on the redesigned pages>.
+- This branch changes no platform code: the workbench reads the repo. `git diff --stat $(git merge-base HEAD origin/master) -- app ':!*.stories.tsx' ':!*/a11y.json' ':!app/design-system/tokens' ':!app/utils/storybook' ':!app/api/id_methods/__mocks__'` prints nothing.
+- Heals and lifts go in their own small PRs off master, each one linked here: <list or none>.
 
 ## Accessibility
 
@@ -39,7 +39,7 @@ Not counted as design changes: <n> story commits, <n> tooling commits.
 
 ## Decisions for developers
 
-<!-- Choices this branch leaves open (Box spacing typed to the scale, ds:lint in ESLint, widening the redesign scope). -->
+<!-- Choices this branch leaves open (the app loading `tokens.css`, the back-office token set, Box spacing typed to the scale, ds:lint in ESLint). -->
 
 ## Checks run locally
 
