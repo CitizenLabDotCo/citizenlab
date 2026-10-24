@@ -10,6 +10,7 @@ import {
   backofficeRedesignHandlers,
   waitForText,
   withAllLocales,
+  withDesktopWidth,
   withPreviewPlaceholder,
 } from '../../../../../../../.storybook/mocks/backofficeRedesign';
 import { PageSaveProvider } from '../_shared/PageSaveContext';
@@ -38,7 +39,7 @@ const meta = {
   component: NewPhase,
   parameters: { layout: 'fullscreen', msw: backofficeRedesignHandlers },
   args: { project: project1 },
-  decorators: [withAllLocales, withPreviewPlaceholder],
+  decorators: [withAllLocales, withPreviewPlaceholder, withDesktopWidth],
 } satisfies Meta<typeof NewPhase>;
 
 export default meta;

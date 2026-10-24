@@ -8,6 +8,7 @@ import {
   backofficeRedesignHandlers,
   ideationPhase,
   waitForText,
+  withDesktopWidth,
 } from '../../../../../../../.storybook/mocks/backofficeRedesign';
 
 import InputManager from '.';
@@ -27,6 +28,7 @@ const meta = {
         <Story />
       </div>
     ),
+    withDesktopWidth,
   ],
   play: async ({ canvasElement }) => {
     await waitForText(canvasElement, 'Plant oaks along the canal');

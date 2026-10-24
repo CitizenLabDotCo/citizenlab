@@ -441,3 +441,36 @@ const PreviewPlaceholder = ({ children }: { children: React.ReactNode }) => {
 
 export const withPreviewPlaceholder: Decorator = (Story) =>
   React.createElement(PreviewPlaceholder, null, React.createElement(Story));
+
+// A page-sized layout in a box narrower than a desktop screen (a gallery
+// card, a phone viewport) would squeeze until nothing reads. It is laid out
+// at desktop width instead and zoomed down to the box, so a card shows the
+// page as it is; at a desktop width it renders as is.
+const DESKTOP = 1200;
+
+const DesktopWidth = ({ children }: { children: React.ReactNode }) => {
+  const box = React.useRef<HTMLDivElement>(null);
+  const [width, setWidth] = React.useState(DESKTOP);
+  React.useLayoutEffect(() => {
+    const el = box.current;
+    if (!el) return undefined;
+    const observer = new ResizeObserver(() => setWidth(el.clientWidth));
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  const fit = width > 0 && width < DESKTOP;
+  return React.createElement(
+    'div',
+    // The full box even inside a centring flex parent, which would
+    // otherwise shrink it to the content.
+    { ref: box, style: { width: '100%', minWidth: 0 } },
+    React.createElement(
+      'div',
+      { style: fit ? { width: DESKTOP, zoom: width / DESKTOP } : undefined },
+      children
+    )
+  );
+};
+
+export const withDesktopWidth: Decorator = (Story) =>
+  React.createElement(DesktopWidth, null, React.createElement(Story));

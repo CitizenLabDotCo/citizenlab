@@ -8,6 +8,7 @@ import { project1 } from 'api/projects/__mocks__/_mockServer';
 import {
   backofficeRedesignHandlers,
   waitForText,
+  withDesktopWidth,
 } from '../../../../../../../.storybook/mocks/backofficeRedesign';
 import { PageSaveProvider } from '../_shared/PageSaveContext';
 
@@ -30,6 +31,7 @@ const meta = {
         </div>
       </PageSaveProvider>
     ),
+    withDesktopWidth,
   ],
 } satisfies Meta<typeof EventWorkspace>;
 
