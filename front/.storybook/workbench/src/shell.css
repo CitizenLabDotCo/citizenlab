@@ -3956,6 +3956,56 @@ a.wb-line:hover {
   cursor: default;
 }
 
+/* Review a pull request: the number field in the header and the PR bar. */
+.wb-review-pr {
+  display: flex;
+  gap: var(--gv-space-2);
+  align-items: center;
+}
+
+.wb-review-pr input {
+  width: 88px;
+  min-height: 36px;
+  padding: 0 var(--gv-space-3);
+  font: inherit;
+  color: var(--wb-text);
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border-strong);
+  border-radius: var(--wb-radius);
+}
+
+.wb-review-prbar {
+  display: grid;
+  gap: var(--gv-space-1);
+  padding: var(--gv-space-3) var(--gv-space-5);
+  background: var(--wb-accent-soft);
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius-lg);
+}
+
+.wb-review-prbar p {
+  margin: 0;
+}
+
+.wb-review-prbar a {
+  font-weight: 600;
+  color: var(--wb-heading);
+}
+
+.wb-review-prerror {
+  padding-left: var(--gv-space-2);
+  font-weight: 600;
+  color: var(--wb-heading);
+  border-left: 3px solid var(--wb-error);
+}
+
+.wb-chip-open,
+.wb-chip-merged {
+  color: var(--wb-ok-text);
+  background: var(--wb-ok-soft);
+  box-shadow: none;
+}
+
 .wb-rsettings {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));

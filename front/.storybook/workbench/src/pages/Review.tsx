@@ -7,7 +7,6 @@ import {
   useState,
 } from 'react';
 
-
 import { GV_VIEWPORTS, GvViewport } from '../../../viewports';
 import ChangeList, { shortSubject } from '../components/ChangeList';
 import FrameView, { FrameReport } from '../components/FrameView';
@@ -21,6 +20,12 @@ import Segmented from '../components/Segmented';
 import { copyText } from '../lib/clipboard';
 import { loadChanges, loadRouteFixture, TokenMeta } from '../lib/data';
 import { Overrides, withOverrides } from '../lib/overrides';
+import {
+  loadPullRequest,
+  parsePrNumber,
+  prPreviewHost,
+  PullRequest,
+} from '../lib/pr';
 import {
   ChangeCommit,
   changeReach,
@@ -242,20 +247,52 @@ const Review = ({ meta, overrides }: Props) => {
     Partial<Record<'before' | 'after', FrameReport>>
   >({});
   const [copied, setCopied] = useState<{ text: string; ok: boolean }>();
+  const [pull, setPull] = useState<
+    { data?: PullRequest; error?: string } | undefined
+  >();
 
   useEffect(() => {
     let live = true;
-    loadChanges().then((c) => {
-      if (!live) return;
-      const ok = Array.isArray((c as Partial<DesignChanges>).commits);
-      setChanges(ok ? (c as unknown as DesignChanges) : undefined);
-      setChangesLoaded(true);
-    });
     loadRouteFixture().then((f) => live && setFixture(normaliseFixture(f)));
     return () => {
       live = false;
     };
   }, []);
+
+  // The change list: this branch's, or the pull request's from GitHub.
+  useEffect(() => {
+    let live = true;
+    setChangesLoaded(false);
+    setCommit(undefined);
+    if (state.pr) {
+      setPull(undefined);
+      loadPullRequest(state.pr).then(
+        (data) => {
+          if (!live) return;
+          setPull({ data });
+          setChanges(data.changes);
+          setChangesLoaded(true);
+        },
+        (e: Error) => {
+          if (!live) return;
+          setPull({ error: e.message });
+          setChanges(undefined);
+          setChangesLoaded(true);
+        }
+      );
+    } else {
+      setPull(undefined);
+      loadChanges().then((c) => {
+        if (!live) return;
+        const ok = Array.isArray((c as Partial<DesignChanges>).commits);
+        setChanges(ok ? (c as unknown as DesignChanges) : undefined);
+        setChangesLoaded(true);
+      });
+    }
+    return () => {
+      live = false;
+    };
+  }, [state.pr]);
 
   // The state into the hash (the overrides parameter stays), and back
   // from a pasted link.
@@ -275,12 +312,16 @@ const Review = ({ meta, overrides }: Props) => {
   }, []);
   const patch = (p: Partial<ReviewState>) => setState((s) => ({ ...s, ...p }));
 
-  const afterHost =
-    validHost(hosts.after ?? '') ||
-    validHost(fixture.hosts.after) ||
-    window.location.origin;
-  const beforeHost =
-    validHost(hosts.before ?? '') || validHost(fixture.hosts.before);
+  // A pull request: after is its preview, before this one (master).
+  const afterHost = state.pr
+    ? prPreviewHost(state.pr)
+    : validHost(hosts.after ?? '') ||
+      validHost(fixture.hosts.after) ||
+      window.location.origin;
+  const beforeHost = state.pr
+    ? window.location.origin
+    : validHost(hosts.before ?? '') || validHost(fixture.hosts.before);
+  const beforeSource: BeforeSource = state.pr ? 'baseline' : before;
   const login = useLogin(afterHost, reloadKey);
 
   // ------------------------------------------------------------ routes
@@ -393,7 +434,7 @@ const Review = ({ meta, overrides }: Props) => {
   const beforeUrl =
     route === undefined
       ? ''
-      : before === 'baseline' && beforeHost
+      : beforeSource === 'baseline' && beforeHost
       ? resolveRoute(route, fixture, beforeHost)
       : afterUrl;
   const loginUrl = `${afterHost}/${fixture.locale}/sign-in/admin`;
@@ -540,15 +581,18 @@ const Review = ({ meta, overrides }: Props) => {
   const loading = !indexes.loaded;
   const noScan = indexes.loaded && !indexes.hasScan;
 
-  const beforeCaption =
-    before === 'baseline' && beforeHost
-      ? `Baseline, ${hostName(beforeHost)}`
-      : 'This preview, edits off';
-  const afterCaption = `This preview, ${
-    editCount
-      ? `${editCount} ${editCount === 1 ? 'edit' : 'edits'}`
-      : 'no edits'
-  }`;
+  const beforeCaption = state.pr
+    ? 'Master, this preview'
+    : beforeSource === 'baseline' && beforeHost
+    ? `Baseline, ${hostName(beforeHost)}`
+    : 'This preview, edits off';
+  const afterCaption = state.pr
+    ? `PR #${state.pr}, ${hostName(afterHost)}`
+    : `This preview, ${
+        editCount
+          ? `${editCount} ${editCount === 1 ? 'edit' : 'edits'}`
+          : 'no edits'
+      }`;
 
   // The frames take the window below wherever the body starts, so a
   // shorter header gives them the room.
@@ -586,10 +630,55 @@ const Review = ({ meta, overrides }: Props) => {
           <p className="wb-eyebrow">Real platform</p>
           <h1>Review</h1>
           <p className="wb-lead">
-            Every page before and after your changes, side by side.
+            {state.pr
+              ? `Pull request #${state.pr}: master and the PR's preview, side by side, on the pages it reaches.`
+              : 'Every page before and after your changes, side by side.'}
           </p>
         </div>
         <div className="wb-review-actions">
+          <form
+            className="wb-review-pr"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const input = e.currentTarget.elements.namedItem('pr');
+              const n = parsePrNumber(
+                input instanceof HTMLInputElement ? input.value : ''
+              );
+              patch({
+                pr: n,
+                route: undefined,
+                only: !!n,
+                tab: 'routes',
+              });
+              setReports({});
+            }}
+          >
+            <input
+              aria-label="Pull request number"
+              name="pr"
+              inputMode="numeric"
+              placeholder="PR #"
+              defaultValue={state.pr ?? ''}
+              key={state.pr ?? 'none'}
+              data-testid="wb-review-pr-input"
+            />
+            <button type="submit" className="wb-button">
+              <Icon name="proposal" size={16} />
+              {state.pr ? 'Change PR' : 'Review a PR'}
+            </button>
+            {state.pr && (
+              <button
+                type="button"
+                className="wb-button"
+                onClick={() =>
+                  patch({ pr: undefined, route: undefined, only: false })
+                }
+                data-testid="wb-review-pr-clear"
+              >
+                This branch
+              </button>
+            )}
+          </form>
           <button
             type="button"
             className="wb-button"
@@ -613,7 +702,53 @@ const Review = ({ meta, overrides }: Props) => {
         </div>
       </header>
 
-      {settings && (
+      {state.pr && (
+        <section
+          className="wb-review-prbar"
+          aria-label="Pull request"
+          data-testid="wb-review-pr"
+        >
+          {!pull && (
+            <p className="wb-muted">Reading PR #{state.pr} from GitHub...</p>
+          )}
+          {pull?.error && (
+            <p className="wb-review-prerror">
+              PR #{state.pr}: {pull.error}
+            </p>
+          )}
+          {pull?.data && (
+            <>
+              <p>
+                <a href={pull.data.url} target="_blank" rel="noreferrer">
+                  #{pull.data.number} {pull.data.title}
+                </a>{' '}
+                <span className={`wb-chip wb-chip-${pull.data.state}`}>
+                  {pull.data.state}
+                </span>
+              </p>
+              <p className="wb-muted">
+                {pull.data.changes.commits.length}{' '}
+                {pull.data.changes.commits.length === 1 ? 'change' : 'changes'},{' '}
+                {summary ? summary.routes.length : '...'}{' '}
+                {summary?.routes.length === 1 ? 'page' : 'pages'} reached.
+                Before is master on this preview; after is{' '}
+                <a href={afterHost} target="_blank" rel="noreferrer">
+                  {hostName(afterHost)}
+                </a>
+                , shown but not inspected (another site). A PR needs the epic
+                label for its preview to exist.
+              </p>
+              {pull.data.changes.warnings.map((w) => (
+                <p key={w} className="wb-muted">
+                  {w}
+                </p>
+              ))}
+            </>
+          )}
+        </section>
+      )}
+
+      {settings && !state.pr && (
         <section
           className="wb-rsettings"
           aria-label="Hosts"
@@ -872,7 +1007,8 @@ const Review = ({ meta, overrides }: Props) => {
             >
               <span>Before</span>
               <select
-                value={before}
+                value={beforeSource}
+                disabled={!!state.pr}
                 onChange={(e) => setBefore(e.target.value as BeforeSource)}
                 data-testid="wb-review-before"
               >
@@ -978,7 +1114,9 @@ const Review = ({ meta, overrides }: Props) => {
                     : 'This route is not in the scan'}
                 </h2>
                 <p className="wb-muted">
-                  {route === undefined
+                  {route === undefined && state.pr
+                    ? `The page opens twice: Before on master, After on PR #${state.pr}'s preview. Pages the PR reaches come first.`
+                    : route === undefined
                     ? 'The page opens twice: Before with your edits off, After with them on. Scroll one and the other follows.'
                     : `No scanned route is called /${route}. Pick one from the list.`}
                 </p>

@@ -539,11 +539,13 @@ export type ReviewState = {
   office: Office | 'all';
   only: boolean;
   tab: 'routes' | 'changes';
+  // A pull request to review against master (see lib/pr.ts).
+  pr?: number;
 };
 
-const KEYS = ['route', 'component', 'office', 'only', 'tab'];
+const KEYS = ['route', 'component', 'office', 'only', 'tab', 'pr'];
 
-// `#/review?route=...&component=...&office=admin&only=1&tab=changes`; the
+// `#/review?route=...&component=...&office=admin&only=1&tab=changes&pr=N`; the
 // `o` parameter (overrides) belongs to useOverrides.
 export const parseReviewHash = (hash: string): ReviewState => {
   const q = hash.indexOf('?');
@@ -553,9 +555,16 @@ export const parseReviewHash = (hash: string): ReviewState => {
     route: p.get('route') ?? undefined,
     component: p.get('component') || undefined,
     office: office === 'admin' || office === 'public' ? office : 'all',
-    only: p.get('only') === '1',
+    // A pull request opens on the pages it reaches.
+    only: p.get('only') === '1' || (p.has('pr') && !p.has('only')),
     tab: p.get('tab') === 'changes' ? 'changes' : 'routes',
+    ...(prOf(p.get('pr')) ? { pr: prOf(p.get('pr')) } : {}),
   };
+};
+
+const prOf = (raw: string | null) => {
+  const n = Number(raw);
+  return Number.isInteger(n) && n > 0 ? n : undefined;
 };
 
 // The hash with the review state written, other parameters kept.
@@ -568,7 +577,9 @@ export const reviewHash = (hash: string, s: ReviewState): string => {
   if (s.component) p.set('component', s.component);
   if (s.office !== 'all') p.set('office', s.office);
   if (s.only) p.set('only', '1');
+  else if (s.pr) p.set('only', '0');
   if (s.tab !== 'routes') p.set('tab', s.tab);
+  if (s.pr) p.set('pr', String(s.pr));
   const query = p.toString();
   return query ? `${path}?${query}` : path;
 };
