@@ -1,7 +1,8 @@
 /**
  * Token generator: app/design-system/tokens/tokens.source.json (W3C DTCG)
- * to tokens.css (CSS variables per mode), tokens.ts (typed names) and
- * tokens.meta.json (panel and scanner metadata).
+ * to tokens.css (CSS variables on :root), tokens.ts (typed names) and
+ * tokens.meta.json (panel and scanner metadata). Nothing in the app imports
+ * them; Storybook and the workbench do.
  *
  *   npm run ds:tokens               write the three files
  *   npm run ds:tokens -- --check    exit 1 if they would change
@@ -10,9 +11,11 @@
  * `semantic.<category>.<key>` (tier 2). A token's CSS name is
  * `--gv-<prefix><key path joined by ->`, where the prefix defaults to
  * `<category>-` and a category group may set `$extensions.gv.prefix` (often
- * "", to keep the redesign file's names such as `--gv-grey-800`). `$value` is the today
- * value, `$extensions.gv.redesign` the redesign value; either may hold
- * `{tier.category.key}` references, which render as `var(--gv-...)`.
+ * "", to keep the design file's names such as `--gv-grey-800`). `$value` is
+ * the value the code renders now; `$extensions.gv.backOffice` is a proposed
+ * back-office value, shown on the Proposal page only and never written to
+ * tokens.css. Either may hold `{tier.category.key}` references, which render
+ * as `var(--gv-...)`.
  */
 import fs from 'fs';
 import path from 'path';
@@ -33,8 +36,9 @@ export const CATEGORIES = [
   'z',
   'focus',
 ] as const;
-export const MODES = ['today', 'redesign'] as const;
-type Mode = (typeof MODES)[number];
+// `now` is what the code renders; `backOffice` the proposal.
+type ValueSet = 'now' | 'backOffice';
+const SETS: ValueSet[] = ['now', 'backOffice'];
 type Tenant = 'primary' | 'secondary' | 'text';
 
 const TIERS: Record<string, 1 | 2> = { primitive: 1, semantic: 2 };
@@ -54,10 +58,11 @@ const EM_DASH = '\u2014';
 
 export type TokenValue = string | number;
 export type GvExtensions = {
-  redesign?: TokenValue;
+  backOffice?: TokenValue;
   legacy?: string[];
   tenant?: Tenant;
-  // A runtime input (the city slots written by ModeProvider); kept out of `t`.
+  // A runtime input (the city slots, written in Storybook by the theme
+  // context); kept out of `t`.
   slot?: boolean;
   prefix?: string;
 };
@@ -82,8 +87,8 @@ type Token = {
   category: string;
   tier: 1 | 2;
   type: string;
-  today: string;
-  redesign?: string;
+  value: string;
+  backOffice?: string;
   description?: string;
   legacy: string[];
   tenant?: Tenant;
@@ -142,9 +147,9 @@ const flatten = (source: TokenSource): Token[] => {
               category,
               tier,
               type: tokenType as string,
-              today: String(child.$value),
-              redesign:
-                gv.redesign === undefined ? undefined : String(gv.redesign),
+              value: String(child.$value),
+              backOffice:
+                gv.backOffice === undefined ? undefined : String(gv.backOffice),
               description: child.$description,
               legacy: gv.legacy ?? [],
               tenant: gv.tenant,
@@ -166,9 +171,8 @@ const flatten = (source: TokenSource): Token[] => {
 
 type Built = {
   tokens: Token[];
-  css: (tok: Token, mode: Mode) => string;
-  resolved: (tok: Token, mode: Mode) => string;
-  changes: (tok: Token) => boolean;
+  css: (tok: Token) => string;
+  resolved: (tok: Token, set: ValueSet) => string;
 };
 
 const compile = (source: TokenSource): Built => {
@@ -185,7 +189,7 @@ const compile = (source: TokenSource): Built => {
     }
     byName.set(tok.name, tok);
     byPath.set(tok.path, tok);
-    for (const text of [tok.today, tok.redesign, tok.description]) {
+    for (const text of [tok.value, tok.backOffice, tok.description]) {
       if (text?.includes(EM_DASH)) fail(`${tok.path} contains an em dash`);
     }
   }
@@ -196,12 +200,12 @@ const compile = (source: TokenSource): Built => {
   const render = (expr: string, from: Token) =>
     expr.replace(REF_RE, (_, ref: string) => `var(${target(ref, from).name})`);
 
-  const memo: Record<Mode, Map<Token, string>> = {
-    today: new Map(),
-    redesign: new Map(),
+  const memo: Record<ValueSet, Map<Token, string>> = {
+    now: new Map(),
+    backOffice: new Map(),
   };
-  const resolved = (tok: Token, mode: Mode, stack: Token[] = []): string => {
-    const hit = memo[mode].get(tok);
+  const resolved = (tok: Token, set: ValueSet, stack: Token[] = []): string => {
+    const hit = memo[set].get(tok);
     if (hit !== undefined) return hit;
     if (stack.includes(tok)) {
       fail(
@@ -209,58 +213,30 @@ const compile = (source: TokenSource): Built => {
       );
     }
     const next = [...stack, tok];
-    const own = mode === 'redesign' && tok.redesign !== undefined;
+    const own = set === 'backOffice' && tok.backOffice !== undefined;
     let value: string;
     const input = tok.tenant && !own && byName.get(`--gv-tenant-${tok.tenant}`);
     if (input) {
-      value = resolved(input, mode, next);
+      value = resolved(input, set, next);
     } else {
-      const expr = own ? (tok.redesign as string) : tok.today;
+      const expr = own ? (tok.backOffice as string) : tok.value;
       value = expr.replace(REF_RE, (_, ref: string) =>
-        resolved(target(ref, tok), mode, next)
+        resolved(target(ref, tok), set, next)
       );
     }
-    memo[mode].set(tok, value);
+    memo[set].set(tok, value);
     return value;
   };
 
-  const css = (tok: Token, mode: Mode): string => {
-    if (mode === 'redesign' && tok.redesign !== undefined) {
-      return render(tok.redesign, tok);
-    }
-    const value = render(tok.today, tok);
+  const css = (tok: Token): string => {
+    const value = render(tok.value, tok);
     return tok.tenant ? `var(--gv-tenant-${tok.tenant}, ${value})` : value;
   };
 
   // Resolve everything once so bad references and cycles throw here.
-  tokens.forEach((tok) => MODES.forEach((m) => resolved(tok, m)));
+  tokens.forEach((tok) => SETS.forEach((m) => resolved(tok, m)));
 
-  // A token goes in the redesign block when its value there differs, when it
-  // is a city slot with its own redesign value (the city writes the slot at
-  // runtime, so an equal fallback proves nothing), or when it reads such a
-  // token. CSS variables resolve where declared, so readers must be repeated.
-  const changeMemo = new Map<Token, boolean>();
-  const changes = (tok: Token): boolean => {
-    const hit = changeMemo.get(tok);
-    if (hit !== undefined) return hit;
-    changeMemo.set(tok, false); // cycles were rejected above
-    let result =
-      resolved(tok, 'today') !== resolved(tok, 'redesign') ||
-      (tok.slot && tok.redesign !== undefined);
-    if (!result) {
-      const own = tok.redesign !== undefined;
-      const expr = own ? (tok.redesign as string) : tok.today;
-      const deps = [...expr.matchAll(REF_RE)].map((m) => target(m[1], tok));
-      const input =
-        tok.tenant && !own && byName.get(`--gv-tenant-${tok.tenant}`);
-      if (input) deps.push(input);
-      result = deps.some(changes);
-    }
-    changeMemo.set(tok, result);
-    return result;
-  };
-
-  return { tokens, css, resolved: (tok, mode) => resolved(tok, mode), changes };
+  return { tokens, css, resolved: (tok, set) => resolved(tok, set) };
 };
 
 export const camelKey = (bare: string, category: string): string => {
@@ -303,18 +279,9 @@ export const tObject = (source: TokenSource) => {
 const HEADER =
   'Generated by scripts/design-system/build-tokens.ts from tokens.source.json. Do not edit.';
 
-const renderCss = ({ tokens, css, changes }: Built): string => {
-  const block = (selector: string, lines: string[]) =>
-    `${selector} {\n${lines.map((l) => `  ${l}\n`).join('')}}\n`;
-  const root = tokens.map((tok) => `${tok.name}: ${css(tok, 'today')};`);
-  const redesign = tokens
-    .filter(changes)
-    .map((tok) => `${tok.name}: ${css(tok, 'redesign')};`);
-  let out = `/* ${HEADER} */\n\n${block(':root', root)}`;
-  if (redesign.length) {
-    out += `\n${block('[data-gv-mode="redesign"]', redesign)}`;
-  }
-  return out;
+const renderCss = ({ tokens, css }: Built): string => {
+  const lines = tokens.map((tok) => `  ${tok.name}: ${css(tok)};\n`);
+  return `/* ${HEADER} */\n\n:root {\n${lines.join('')}}\n`;
 };
 
 const quote = (s: string) =>
@@ -338,11 +305,6 @@ const renderTs = ({ tokens }: Built): string => {
   const text = [
     `// ${HEADER}`,
     '',
-    "export const MODES = ['today', 'redesign'] as const;",
-    '',
-    '// ts-prune-ignore-next',
-    'export type Mode = (typeof MODES)[number];',
-    '',
     `export type TokenName =\n${names};`,
     '',
     '// ts-prune-ignore-next',
@@ -363,14 +325,13 @@ const renderMeta = ({ tokens, resolved }: Built): TokenMeta[] =>
       name: tok.name,
       category: tok.category,
       tier: tok.tier,
-      values: {
-        today: resolved(tok, 'today'),
-        redesign: resolved(tok, 'redesign'),
-      },
+      value: resolved(tok, 'now'),
       legacy: tok.legacy,
       type: tok.type,
       path: tok.path,
     };
+    const proposed = resolved(tok, 'backOffice');
+    if (proposed !== meta.value) meta.backOffice = proposed;
     if (tok.description) meta.description = tok.description;
     if (tok.tenant) meta.tenant = tok.tenant;
     if (tok.deprecated) meta.deprecated = true;
@@ -408,13 +369,12 @@ export const renderOutputs = (source: TokenSource): Output[] => {
 };
 
 const summary = (source: TokenSource) => {
-  const { meta, css } = buildTokens(source);
+  const { meta } = buildTokens(source);
   const t1 = meta.filter((m) => m.tier === 1).length;
-  const block = css.split('[data-gv-mode="redesign"]')[1] ?? '';
-  const overrides = (block.match(/^\s+--gv-/gm) ?? []).length;
+  const proposed = meta.filter((m) => m.backOffice !== undefined).length;
   return `${meta.length} tokens (${t1} primitive, ${
     meta.length - t1
-  } semantic), ${overrides} redeclared in the redesign scope`;
+  } semantic), ${proposed} with a proposed back-office value`;
 };
 
 const main = (argv: string[]): number => {

@@ -3,678 +3,549 @@
     "name": "--gv-black",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#000000",
-      "redesign": "#000000"
-    },
+    "value": "#000000",
     "legacy": [
       "colors.black",
       "theme.colors.black"
     ],
     "type": "color",
     "path": "primitive.color.black",
-    "description": "Today: themeColors.black."
+    "description": "Theme: themeColors.black."
   },
   {
     "name": "--gv-white",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#ffffff",
-      "redesign": "#ffffff"
-    },
+    "value": "#ffffff",
     "legacy": [
       "colors.white",
       "theme.colors.white"
     ],
     "type": "color",
     "path": "primitive.color.white",
-    "description": "Today: themeColors.white."
+    "description": "Theme: themeColors.white."
   },
   {
     "name": "--gv-grey-800",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#333333",
-      "redesign": "#333333"
-    },
+    "value": "#333333",
     "legacy": [
       "colors.grey800",
       "theme.colors.grey800"
     ],
     "type": "color",
     "path": "primitive.color.grey-800",
-    "description": "Today: themeColors.grey800."
+    "description": "Theme: themeColors.grey800."
   },
   {
     "name": "--gv-grey-700",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#767676",
-      "redesign": "#767676"
-    },
+    "value": "#767676",
     "legacy": [
       "colors.grey700",
       "theme.colors.grey700"
     ],
     "type": "color",
     "path": "primitive.color.grey-700",
-    "description": "Today: themeColors.grey700."
+    "description": "Theme: themeColors.grey700."
   },
   {
     "name": "--gv-grey-600",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#999999",
-      "redesign": "#999999"
-    },
+    "value": "#999999",
     "legacy": [
       "colors.grey600",
       "theme.colors.grey600"
     ],
     "type": "color",
     "path": "primitive.color.grey-600",
-    "description": "Today: themeColors.grey600."
+    "description": "Theme: themeColors.grey600."
   },
   {
     "name": "--gv-grey-500",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#BDBDBD",
-      "redesign": "#BDBDBD"
-    },
+    "value": "#BDBDBD",
     "legacy": [
       "colors.grey500",
       "theme.colors.grey500"
     ],
     "type": "color",
     "path": "primitive.color.grey-500",
-    "description": "Today: themeColors.grey500."
+    "description": "Theme: themeColors.grey500."
   },
   {
     "name": "--gv-grey-400",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#CBCBCB",
-      "redesign": "#CBCBCB"
-    },
+    "value": "#CBCBCB",
     "legacy": [
       "colors.grey400",
       "theme.colors.grey400"
     ],
     "type": "color",
     "path": "primitive.color.grey-400",
-    "description": "Today: themeColors.grey400."
+    "description": "Theme: themeColors.grey400."
   },
   {
     "name": "--gv-grey-300",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#E0E0E0",
-      "redesign": "#E0E0E0"
-    },
+    "value": "#E0E0E0",
     "legacy": [
       "colors.grey300",
       "theme.colors.grey300"
     ],
     "type": "color",
     "path": "primitive.color.grey-300",
-    "description": "Today: themeColors.grey300."
+    "description": "Theme: themeColors.grey300."
   },
   {
     "name": "--gv-grey-200",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#EBEDEF",
-      "redesign": "#EBEDEF"
-    },
+    "value": "#EBEDEF",
     "legacy": [
       "colors.grey200",
       "theme.colors.grey200"
     ],
     "type": "color",
     "path": "primitive.color.grey-200",
-    "description": "Today: themeColors.grey200."
+    "description": "Theme: themeColors.grey200."
   },
   {
     "name": "--gv-grey-100",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#F4F6F8",
-      "redesign": "#F4F6F8"
-    },
+    "value": "#F4F6F8",
     "legacy": [
       "colors.grey100",
       "theme.colors.grey100"
     ],
     "type": "color",
     "path": "primitive.color.grey-100",
-    "description": "Today: themeColors.grey100."
+    "description": "Theme: themeColors.grey100."
   },
   {
     "name": "--gv-grey-50",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#FCFCFC",
-      "redesign": "#FCFCFC"
-    },
+    "value": "#FCFCFC",
     "legacy": [
       "colors.grey50",
       "theme.colors.grey50"
     ],
     "type": "color",
     "path": "primitive.color.grey-50",
-    "description": "Today: themeColors.grey50."
+    "description": "Theme: themeColors.grey50."
   },
   {
     "name": "--gv-cool-grey-700",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#43515D",
-      "redesign": "#43515D"
-    },
+    "value": "#43515D",
     "legacy": [
       "colors.coolGrey700",
       "theme.colors.coolGrey700"
     ],
     "type": "color",
     "path": "primitive.color.cool-grey-700",
-    "description": "Today: themeColors.coolGrey700."
+    "description": "Theme: themeColors.coolGrey700."
   },
   {
     "name": "--gv-cool-grey-600",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#596B7A",
-      "redesign": "#596B7A"
-    },
+    "value": "#596B7A",
     "legacy": [
       "colors.coolGrey600",
       "theme.colors.coolGrey600"
     ],
     "type": "color",
     "path": "primitive.color.cool-grey-600",
-    "description": "Today: themeColors.coolGrey600."
+    "description": "Theme: themeColors.coolGrey600."
   },
   {
     "name": "--gv-cool-grey-500",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#84939E",
-      "redesign": "#84939E"
-    },
+    "value": "#84939E",
     "legacy": [
       "colors.coolGrey500",
       "theme.colors.coolGrey500"
     ],
     "type": "color",
     "path": "primitive.color.cool-grey-500",
-    "description": "Today: themeColors.coolGrey500."
+    "description": "Theme: themeColors.coolGrey500."
   },
   {
     "name": "--gv-cool-grey-400",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#8D9EAC",
-      "redesign": "#8D9EAC"
-    },
+    "value": "#8D9EAC",
     "legacy": [
       "bo.colors.crumbSeparator"
     ],
     "type": "color",
     "path": "primitive.color.cool-grey-400",
-    "description": "Today: bo.colors.crumbSeparator (same hex)."
+    "description": "Theme: bo.colors.crumbSeparator (same hex)."
   },
   {
     "name": "--gv-cool-grey-300",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#B8C5D0",
-      "redesign": "#B8C5D0"
-    },
+    "value": "#B8C5D0",
     "legacy": [
       "colors.coolGrey300",
       "theme.colors.coolGrey300"
     ],
     "type": "color",
     "path": "primitive.color.cool-grey-300",
-    "description": "Today: themeColors.coolGrey300."
+    "description": "Theme: themeColors.coolGrey300."
   },
   {
     "name": "--gv-blue-700",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#022331",
-      "redesign": "#022331"
-    },
+    "value": "#022331",
     "legacy": [
       "colors.blue700",
       "theme.colors.blue700"
     ],
     "type": "color",
     "path": "primitive.color.blue-700",
-    "description": "Today: themeColors.blue700."
+    "description": "Theme: themeColors.blue700."
   },
   {
     "name": "--gv-blue-500",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#044D6C",
-      "redesign": "#044D6C"
-    },
+    "value": "#044D6C",
     "legacy": [
       "colors.blue500",
       "theme.colors.blue500"
     ],
     "type": "color",
     "path": "primitive.color.blue-500",
-    "description": "Today: themeColors.blue500."
+    "description": "Theme: themeColors.blue500."
   },
   {
     "name": "--gv-blue-400",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#00577C",
-      "redesign": "#00577C"
-    },
+    "value": "#00577C",
     "legacy": [
       "colors.blue400",
       "theme.colors.blue400"
     ],
     "type": "color",
     "path": "primitive.color.blue-400",
-    "description": "Today: themeColors.blue400."
+    "description": "Theme: themeColors.blue400."
   },
   {
     "name": "--gv-blue-10",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#E6EEF1",
-      "redesign": "#E6EEF1"
-    },
+    "value": "#E6EEF1",
     "legacy": [
       "colors.blue10",
       "theme.colors.blue10"
     ],
     "type": "color",
     "path": "primitive.color.blue-10",
-    "description": "Today: themeColors.blue10."
+    "description": "Theme: themeColors.blue10."
   },
   {
     "name": "--gv-teal-700",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#0A5159",
-      "redesign": "#0A5159"
-    },
+    "value": "#0A5159",
     "legacy": [
       "colors.teal700",
       "theme.colors.teal700"
     ],
     "type": "color",
     "path": "primitive.color.teal-700",
-    "description": "Today: themeColors.teal700."
+    "description": "Theme: themeColors.teal700."
   },
   {
     "name": "--gv-teal-500",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#147985",
-      "redesign": "#147985"
-    },
+    "value": "#147985",
     "legacy": [
       "colors.teal500",
       "theme.colors.teal500"
     ],
     "type": "color",
     "path": "primitive.color.teal-500",
-    "description": "Today: themeColors.teal500."
+    "description": "Theme: themeColors.teal500."
   },
   {
     "name": "--gv-teal-400",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#01A1B1",
-      "redesign": "#01A1B1"
-    },
+    "value": "#01A1B1",
     "legacy": [
       "colors.teal400",
       "theme.colors.teal400"
     ],
     "type": "color",
     "path": "primitive.color.teal-400",
-    "description": "Today: themeColors.teal400."
+    "description": "Theme: themeColors.teal400."
   },
   {
     "name": "--gv-teal-300",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#40B8C5",
-      "redesign": "#40B8C5"
-    },
+    "value": "#40B8C5",
     "legacy": [
       "colors.teal300",
       "theme.colors.teal300"
     ],
     "type": "color",
     "path": "primitive.color.teal-300",
-    "description": "Today: themeColors.teal300."
+    "description": "Theme: themeColors.teal300."
   },
   {
     "name": "--gv-teal-200",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#80CFD8",
-      "redesign": "#80CFD8"
-    },
+    "value": "#80CFD8",
     "legacy": [
       "colors.teal200",
       "theme.colors.teal200"
     ],
     "type": "color",
     "path": "primitive.color.teal-200",
-    "description": "Today: themeColors.teal200."
+    "description": "Theme: themeColors.teal200."
   },
   {
     "name": "--gv-teal-100",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#BEE7EB",
-      "redesign": "#BEE7EB"
-    },
+    "value": "#BEE7EB",
     "legacy": [
       "colors.teal100",
       "theme.colors.teal100"
     ],
     "type": "color",
     "path": "primitive.color.teal-100",
-    "description": "Today: themeColors.teal100."
+    "description": "Theme: themeColors.teal100."
   },
   {
     "name": "--gv-teal-75",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#E5F5F7",
-      "redesign": "#E5F5F7"
-    },
+    "value": "#E5F5F7",
     "legacy": [],
     "type": "color",
     "path": "primitive.color.teal-75",
-    "description": "New, no code value today; same value in both modes. Selected-card tint (back office)."
+    "description": "New, no code value today. Selected-card tint (back office)."
   },
   {
     "name": "--gv-teal-50",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#EDF8FA",
-      "redesign": "#EDF8FA"
-    },
+    "value": "#EDF8FA",
     "legacy": [
       "colors.teal50",
       "theme.colors.teal50"
     ],
     "type": "color",
     "path": "primitive.color.teal-50",
-    "description": "Today: themeColors.teal50."
+    "description": "Theme: themeColors.teal50."
   },
   {
     "name": "--gv-red-100",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#fde9e8",
-      "redesign": "#fde9e8"
-    },
+    "value": "#fde9e8",
     "legacy": [
       "colors.red100",
       "theme.colors.red100"
     ],
     "type": "color",
     "path": "primitive.color.red-100",
-    "description": "Today: themeColors.red100."
+    "description": "Theme: themeColors.red100."
   },
   {
     "name": "--gv-red-400",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#FC3C2D",
-      "redesign": "#FC3C2D"
-    },
+    "value": "#FC3C2D",
     "legacy": [
       "colors.red400",
       "theme.colors.red400"
     ],
     "type": "color",
     "path": "primitive.color.red-400",
-    "description": "Today: themeColors.red400."
+    "description": "Theme: themeColors.red400."
   },
   {
     "name": "--gv-red-500",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#E52516",
-      "redesign": "#E52516"
-    },
+    "value": "#E52516",
     "legacy": [
       "colors.red500",
       "theme.colors.red500"
     ],
     "type": "color",
     "path": "primitive.color.red-500",
-    "description": "Today: themeColors.red500."
+    "description": "Theme: themeColors.red500."
   },
   {
     "name": "--gv-red-600",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#D61607",
-      "redesign": "#D61607"
-    },
+    "value": "#D61607",
     "legacy": [
       "colors.red600",
       "theme.colors.red600"
     ],
     "type": "color",
     "path": "primitive.color.red-600",
-    "description": "Today: themeColors.red600."
+    "description": "Theme: themeColors.red600."
   },
   {
     "name": "--gv-red-800",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#9B1005",
-      "redesign": "#9B1005"
-    },
+    "value": "#9B1005",
     "legacy": [
       "colors.red800",
       "theme.colors.red800"
     ],
     "type": "color",
     "path": "primitive.color.red-800",
-    "description": "Today: themeColors.red800."
+    "description": "Theme: themeColors.red800."
   },
   {
     "name": "--gv-green-700",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#024D2B",
-      "redesign": "#024D2B"
-    },
+    "value": "#024D2B",
     "legacy": [
       "colors.green700",
       "theme.colors.green700"
     ],
     "type": "color",
     "path": "primitive.color.green-700",
-    "description": "Today: themeColors.green700."
+    "description": "Theme: themeColors.green700."
   },
   {
     "name": "--gv-green-600",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#096F03",
-      "redesign": "#096F03"
-    },
+    "value": "#096F03",
     "legacy": [
       "colors.green600",
       "theme.colors.green600"
     ],
     "type": "color",
     "path": "primitive.color.green-600",
-    "description": "Today: themeColors.green600."
+    "description": "Theme: themeColors.green600."
   },
   {
     "name": "--gv-green-500",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#04884C",
-      "redesign": "#04884C"
-    },
+    "value": "#04884C",
     "legacy": [
       "colors.green500",
       "theme.colors.green500"
     ],
     "type": "color",
     "path": "primitive.color.green-500",
-    "description": "Today: themeColors.green500."
+    "description": "Theme: themeColors.green500."
   },
   {
     "name": "--gv-green-400",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#32B67A",
-      "redesign": "#32B67A"
-    },
+    "value": "#32B67A",
     "legacy": [
       "colors.green400",
       "theme.colors.green400"
     ],
     "type": "color",
     "path": "primitive.color.green-400",
-    "description": "Today: themeColors.green400."
+    "description": "Theme: themeColors.green400."
   },
   {
     "name": "--gv-green-300",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#62C462",
-      "redesign": "#62C462"
-    },
+    "value": "#62C462",
     "legacy": [
       "colors.green300",
       "theme.colors.green300"
     ],
     "type": "color",
     "path": "primitive.color.green-300",
-    "description": "Today: themeColors.green300."
+    "description": "Theme: themeColors.green300."
   },
   {
     "name": "--gv-green-100",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#e4f7ef",
-      "redesign": "#e4f7ef"
-    },
+    "value": "#e4f7ef",
     "legacy": [
       "colors.green100",
       "theme.colors.green100"
     ],
     "type": "color",
     "path": "primitive.color.green-100",
-    "description": "Today: themeColors.green100."
+    "description": "Theme: themeColors.green100."
   },
   {
     "name": "--gv-green-mint",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#CAE0CD",
-      "redesign": "#CAE0CD"
-    },
+    "value": "#CAE0CD",
     "legacy": [
       "colors.greenMint",
       "theme.colors.greenMint"
     ],
     "type": "color",
     "path": "primitive.color.green-mint",
-    "description": "Today: themeColors.greenMint."
+    "description": "Theme: themeColors.greenMint."
   },
   {
     "name": "--gv-orange-100",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#FFECE6",
-      "redesign": "#FFECE6"
-    },
+    "value": "#FFECE6",
     "legacy": [
       "colors.orange100",
       "theme.colors.orange100"
     ],
     "type": "color",
     "path": "primitive.color.orange-100",
-    "description": "Today: themeColors.orange100."
+    "description": "Theme: themeColors.orange100."
   },
   {
     "name": "--gv-orange-500",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#FF672F",
-      "redesign": "#FF672F"
-    },
+    "value": "#FF672F",
     "legacy": [
       "colors.orange500",
       "theme.colors.orange500"
     ],
     "type": "color",
     "path": "primitive.color.orange-500",
-    "description": "Today: themeColors.orange500."
+    "description": "Theme: themeColors.orange500."
   },
   {
     "name": "--gv-amber-100",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#F2E6D0",
-      "redesign": "#F2E6D0"
-    },
+    "value": "#F2E6D0",
     "legacy": [],
     "type": "color",
     "path": "primitive.color.amber-100",
@@ -684,10 +555,7 @@
     "name": "--gv-amber-500",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#D49210",
-      "redesign": "#D49210"
-    },
+    "value": "#D49210",
     "legacy": [],
     "type": "color",
     "path": "primitive.color.amber-500",
@@ -697,26 +565,20 @@
     "name": "--gv-brown",
     "category": "color",
     "tier": 1,
-    "values": {
-      "today": "#8C680D",
-      "redesign": "#8C680D"
-    },
+    "value": "#8C680D",
     "legacy": [
       "colors.brown",
       "theme.colors.brown"
     ],
     "type": "color",
     "path": "primitive.color.brown",
-    "description": "Today: themeColors.brown."
+    "description": "Theme: themeColors.brown."
   },
   {
     "name": "--gv-space-0",
     "category": "space",
     "tier": 1,
-    "values": {
-      "today": "0",
-      "redesign": "0"
-    },
+    "value": "0",
     "legacy": [],
     "type": "dimension",
     "path": "primitive.space.0",
@@ -726,10 +588,7 @@
     "name": "--gv-space-1",
     "category": "space",
     "tier": 1,
-    "values": {
-      "today": "4px",
-      "redesign": "4px"
-    },
+    "value": "4px",
     "legacy": [],
     "type": "dimension",
     "path": "primitive.space.1",
@@ -739,10 +598,7 @@
     "name": "--gv-space-2",
     "category": "space",
     "tier": 1,
-    "values": {
-      "today": "8px",
-      "redesign": "8px"
-    },
+    "value": "8px",
     "legacy": [],
     "type": "dimension",
     "path": "primitive.space.2",
@@ -752,10 +608,7 @@
     "name": "--gv-space-3",
     "category": "space",
     "tier": 1,
-    "values": {
-      "today": "12px",
-      "redesign": "12px"
-    },
+    "value": "12px",
     "legacy": [],
     "type": "dimension",
     "path": "primitive.space.3",
@@ -765,10 +618,7 @@
     "name": "--gv-space-4",
     "category": "space",
     "tier": 1,
-    "values": {
-      "today": "16px",
-      "redesign": "16px"
-    },
+    "value": "16px",
     "legacy": [],
     "type": "dimension",
     "path": "primitive.space.4",
@@ -778,10 +628,7 @@
     "name": "--gv-space-5",
     "category": "space",
     "tier": 1,
-    "values": {
-      "today": "20px",
-      "redesign": "20px"
-    },
+    "value": "20px",
     "legacy": [],
     "type": "dimension",
     "path": "primitive.space.5",
@@ -791,10 +638,7 @@
     "name": "--gv-space-6",
     "category": "space",
     "tier": 1,
-    "values": {
-      "today": "24px",
-      "redesign": "24px"
-    },
+    "value": "24px",
     "legacy": [],
     "type": "dimension",
     "path": "primitive.space.6",
@@ -804,10 +648,7 @@
     "name": "--gv-space-7",
     "category": "space",
     "tier": 1,
-    "values": {
-      "today": "28px",
-      "redesign": "28px"
-    },
+    "value": "28px",
     "legacy": [],
     "type": "dimension",
     "path": "primitive.space.7",
@@ -817,10 +658,7 @@
     "name": "--gv-space-8",
     "category": "space",
     "tier": 1,
-    "values": {
-      "today": "32px",
-      "redesign": "32px"
-    },
+    "value": "32px",
     "legacy": [],
     "type": "dimension",
     "path": "primitive.space.8",
@@ -830,10 +668,7 @@
     "name": "--gv-space-10",
     "category": "space",
     "tier": 1,
-    "values": {
-      "today": "40px",
-      "redesign": "40px"
-    },
+    "value": "40px",
     "legacy": [],
     "type": "dimension",
     "path": "primitive.space.10",
@@ -843,10 +678,7 @@
     "name": "--gv-space-12",
     "category": "space",
     "tier": 1,
-    "values": {
-      "today": "48px",
-      "redesign": "48px"
-    },
+    "value": "48px",
     "legacy": [],
     "type": "dimension",
     "path": "primitive.space.12",
@@ -856,10 +688,7 @@
     "name": "--gv-space-16",
     "category": "space",
     "tier": 1,
-    "values": {
-      "today": "64px",
-      "redesign": "64px"
-    },
+    "value": "64px",
     "legacy": [],
     "type": "dimension",
     "path": "primitive.space.16",
@@ -869,10 +698,7 @@
     "name": "--gv-space-20",
     "category": "space",
     "tier": 1,
-    "values": {
-      "today": "80px",
-      "redesign": "80px"
-    },
+    "value": "80px",
     "legacy": [],
     "type": "dimension",
     "path": "primitive.space.20",
@@ -882,10 +708,7 @@
     "name": "--gv-space-24",
     "category": "space",
     "tier": 1,
-    "values": {
-      "today": "96px",
-      "redesign": "96px"
-    },
+    "value": "96px",
     "legacy": [],
     "type": "dimension",
     "path": "primitive.space.24",
@@ -895,339 +718,275 @@
     "name": "--gv-radius-1",
     "category": "radius",
     "tier": 1,
-    "values": {
-      "today": "4px",
-      "redesign": "4px"
-    },
+    "value": "4px",
     "legacy": [],
     "type": "dimension",
     "path": "primitive.radius.1",
-    "description": "Radius scale. New as a scale step, so the same in both modes."
+    "description": "Radius scale. New as a scale step."
   },
   {
     "name": "--gv-radius-2",
     "category": "radius",
     "tier": 1,
-    "values": {
-      "today": "8px",
-      "redesign": "8px"
-    },
+    "value": "8px",
     "legacy": [],
     "type": "dimension",
     "path": "primitive.radius.2",
-    "description": "Radius scale; same as bo.borderRadius. New as a scale step, so the same in both modes."
+    "description": "Radius scale; same as bo.borderRadius. New as a scale step."
   },
   {
     "name": "--gv-radius-3",
     "category": "radius",
     "tier": 1,
-    "values": {
-      "today": "12px",
-      "redesign": "12px"
-    },
+    "value": "12px",
     "legacy": [],
     "type": "dimension",
     "path": "primitive.radius.3",
-    "description": "Radius scale; same as bo.panelBorderRadius. New as a scale step, so the same in both modes."
+    "description": "Radius scale; same as bo.panelBorderRadius. New as a scale step."
   },
   {
     "name": "--gv-radius-full",
     "category": "radius",
     "tier": 1,
-    "values": {
-      "today": "999px",
-      "redesign": "999px"
-    },
+    "value": "999px",
     "legacy": [],
     "type": "dimension",
     "path": "primitive.radius.full",
-    "description": "Pill and circle. New as a scale step, so the same in both modes."
+    "description": "Pill and circle. New as a scale step."
   },
   {
     "name": "--gv-fs-xxs",
     "category": "font",
     "tier": 1,
-    "values": {
-      "today": "10px",
-      "redesign": "10px"
-    },
+    "value": "10px",
     "legacy": [
       "fontSizes.xxs",
       "theme.fontSizes.xxs"
     ],
     "type": "dimension",
     "path": "primitive.font.fs-xxs",
-    "description": "Today: fontSizes.xxs. Code-only, not on the redesign type ladder."
+    "description": "Theme: fontSizes.xxs. Code-only, not on the design file's type ladder."
   },
   {
     "name": "--gv-fs-xs",
     "category": "font",
     "tier": 1,
-    "values": {
-      "today": "12px",
-      "redesign": "12px"
-    },
+    "value": "12px",
     "legacy": [
       "fontSizes.xs",
       "theme.fontSizes.xs"
     ],
     "type": "dimension",
     "path": "primitive.font.fs-xs",
-    "description": "Today: fontSizes.xs."
+    "description": "Theme: fontSizes.xs."
   },
   {
     "name": "--gv-fs-13",
     "category": "font",
     "tier": 1,
-    "values": {
-      "today": "13px",
-      "redesign": "12px"
-    },
+    "value": "13px",
     "legacy": [
       "bo.controlFontSize",
       "bo.headerFontSize"
     ],
     "type": "dimension",
     "path": "primitive.font.fs-13",
-    "description": "Today: bo.controlFontSize and bo.headerFontSize (13px). Redesign: folded into fs-xs.",
+    "backOffice": "12px",
+    "description": "Theme: bo.controlFontSize and bo.headerFontSize (13px). Proposed back office: folded into fs-xs.",
     "deprecated": true
   },
   {
     "name": "--gv-fs-s",
     "category": "font",
     "tier": 1,
-    "values": {
-      "today": "14px",
-      "redesign": "14px"
-    },
+    "value": "14px",
     "legacy": [
       "fontSizes.s",
       "theme.fontSizes.s"
     ],
     "type": "dimension",
     "path": "primitive.font.fs-s",
-    "description": "Today: fontSizes.s."
+    "description": "Theme: fontSizes.s."
   },
   {
     "name": "--gv-fs-base",
     "category": "font",
     "tier": 1,
-    "values": {
-      "today": "16px",
-      "redesign": "16px"
-    },
+    "value": "16px",
     "legacy": [
       "fontSizes.base",
       "theme.fontSizes.base"
     ],
     "type": "dimension",
     "path": "primitive.font.fs-base",
-    "description": "Today: fontSizes.base."
+    "description": "Theme: fontSizes.base."
   },
   {
     "name": "--gv-fs-m",
     "category": "font",
     "tier": 1,
-    "values": {
-      "today": "16px",
-      "redesign": "16px"
-    },
+    "value": "16px",
     "legacy": [
       "fontSizes.m",
       "theme.fontSizes.m"
     ],
     "type": "dimension",
     "path": "primitive.font.fs-m",
-    "description": "Today: fontSizes.m."
+    "description": "Theme: fontSizes.m."
   },
   {
     "name": "--gv-fs-l",
     "category": "font",
     "tier": 1,
-    "values": {
-      "today": "18px",
-      "redesign": "18px"
-    },
+    "value": "18px",
     "legacy": [
       "fontSizes.l",
       "theme.fontSizes.l"
     ],
     "type": "dimension",
     "path": "primitive.font.fs-l",
-    "description": "Today: fontSizes.l."
+    "description": "Theme: fontSizes.l."
   },
   {
     "name": "--gv-fs-xl",
     "category": "font",
     "tier": 1,
-    "values": {
-      "today": "21px",
-      "redesign": "20px"
-    },
+    "value": "21px",
     "legacy": [
       "fontSizes.xl",
       "theme.fontSizes.xl"
     ],
     "type": "dimension",
     "path": "primitive.font.fs-xl",
-    "description": "Today: fontSizes.xl."
+    "backOffice": "20px",
+    "description": "Theme: fontSizes.xl."
   },
   {
     "name": "--gv-fs-xxl",
     "category": "font",
     "tier": 1,
-    "values": {
-      "today": "25px",
-      "redesign": "24px"
-    },
+    "value": "25px",
     "legacy": [
       "fontSizes.xxl",
       "theme.fontSizes.xxl"
     ],
     "type": "dimension",
     "path": "primitive.font.fs-xxl",
-    "description": "Today: fontSizes.xxl."
+    "backOffice": "24px",
+    "description": "Theme: fontSizes.xxl."
   },
   {
     "name": "--gv-fs-xxxl",
     "category": "font",
     "tier": 1,
-    "values": {
-      "today": "30px",
-      "redesign": "30px"
-    },
+    "value": "30px",
     "legacy": [
       "fontSizes.xxxl",
       "theme.fontSizes.xxxl"
     ],
     "type": "dimension",
     "path": "primitive.font.fs-xxxl",
-    "description": "Today: fontSizes.xxxl."
+    "description": "Theme: fontSizes.xxxl."
   },
   {
     "name": "--gv-fs-xxxxl",
     "category": "font",
     "tier": 1,
-    "values": {
-      "today": "34px",
-      "redesign": "36px"
-    },
+    "value": "34px",
     "legacy": [
       "fontSizes.xxxxl",
       "theme.fontSizes.xxxxl"
     ],
     "type": "dimension",
     "path": "primitive.font.fs-xxxxl",
-    "description": "Today: fontSizes.xxxxl."
+    "backOffice": "36px",
+    "description": "Theme: fontSizes.xxxxl."
   },
   {
     "name": "--gv-fs-xxxxxl",
     "category": "font",
     "tier": 1,
-    "values": {
-      "today": "42px",
-      "redesign": "48px"
-    },
+    "value": "42px",
     "legacy": [
       "fontSizes.xxxxxl",
       "theme.fontSizes.xxxxxl"
     ],
     "type": "dimension",
     "path": "primitive.font.fs-xxxxxl",
-    "description": "Today: fontSizes.xxxxxl."
+    "backOffice": "48px",
+    "description": "Theme: fontSizes.xxxxxl."
   },
   {
     "name": "--gv-fs-display",
     "category": "font",
     "tier": 1,
-    "values": {
-      "today": "80px",
-      "redesign": "80px"
-    },
+    "value": "80px",
     "legacy": [],
     "type": "dimension",
     "path": "primitive.font.fs-display",
-    "description": "New, no code value today; same value in both modes. Hero page title."
+    "description": "New, no code value today. Hero page title."
   },
   {
     "name": "--gv-shadow",
     "category": "shadow",
     "tier": 1,
-    "values": {
-      "today": "0px 2px 4px -1px rgba(0,0,0,0.06)",
-      "redesign": "0px 2px 4px -1px rgba(0,0,0,0.06)"
-    },
+    "value": "0px 2px 4px -1px rgba(0,0,0,0.06)",
     "legacy": [
       "defaultStyles.boxShadow"
     ],
     "type": "shadow",
     "path": "primitive.shadow.shadow",
-    "description": "Today: defaultStyles.boxShadow."
+    "description": "Theme: defaultStyles.boxShadow."
   },
   {
     "name": "--gv-shadow-hover-sm",
     "category": "shadow",
     "tier": 1,
-    "values": {
-      "today": "0px 2px 4px -1px rgba(0,0,0,0.2)",
-      "redesign": "0px 2px 4px -1px rgba(0,0,0,0.2)"
-    },
+    "value": "0px 2px 4px -1px rgba(0,0,0,0.2)",
     "legacy": [
       "defaultStyles.boxShadowHoverSmall"
     ],
     "type": "shadow",
     "path": "primitive.shadow.shadow-hover-sm",
-    "description": "Today: defaultStyles.boxShadowHoverSmall."
+    "description": "Theme: defaultStyles.boxShadowHoverSmall."
   },
   {
     "name": "--gv-shadow-hover-lg",
     "category": "shadow",
     "tier": 1,
-    "values": {
-      "today": "0px 4px 12px -1px rgba(0,0,0,0.12)",
-      "redesign": "0px 4px 12px -1px rgba(0,0,0,0.12)"
-    },
+    "value": "0px 4px 12px -1px rgba(0,0,0,0.12)",
     "legacy": [
       "defaultStyles.boxShadowHoverBig"
     ],
     "type": "shadow",
     "path": "primitive.shadow.shadow-hover-lg",
-    "description": "Today: defaultStyles.boxShadowHoverBig."
+    "description": "Theme: defaultStyles.boxShadowHoverBig."
   },
   {
     "name": "--gv-motion-fast",
     "category": "motion",
     "tier": 1,
-    "values": {
-      "today": "100ms",
-      "redesign": "100ms"
-    },
+    "value": "100ms",
     "legacy": [],
     "type": "duration",
     "path": "primitive.motion.fast",
-    "description": "Today: defaultInputStyle transition. Code-only, not in the redesign file."
+    "description": "Theme: defaultInputStyle transition. Code-only, not in the design file."
   },
   {
     "name": "--gv-motion-base",
     "category": "motion",
     "tier": 1,
-    "values": {
-      "today": "150ms",
-      "redesign": "150ms"
-    },
+    "value": "150ms",
     "legacy": [],
     "type": "duration",
     "path": "primitive.motion.base",
-    "description": "Today: defaultCardHoverStyle transition. Code-only, not in the redesign file."
+    "description": "Theme: defaultCardHoverStyle transition. Code-only, not in the design file."
   },
   {
     "name": "--gv-color-text-heading",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#333333",
-      "redesign": "#474747"
-    },
+    "value": "#333333",
     "legacy": [
       "colors.textPrimary",
       "bo.colors.textHeading",
@@ -1235,394 +994,321 @@
     ],
     "type": "color",
     "path": "semantic.color.color-text-heading",
-    "description": "Heading text. Today: colors.textPrimary. Redesign: bo.colors.textHeading. Replaces the redesign's --gv-text-heading."
+    "backOffice": "#474747",
+    "description": "Heading text. Theme: colors.textPrimary. Proposed back office: bo.colors.textHeading. Replaces the design file's --gv-text-heading."
   },
   {
     "name": "--gv-text-primary",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#333333",
-      "redesign": "#333333"
-    },
+    "value": "#333333",
     "legacy": [
       "colors.textPrimary",
       "theme.colors.textPrimary"
     ],
     "type": "color",
     "path": "semantic.color.text-primary",
-    "description": "Today: semanticColors.textPrimary."
+    "description": "Theme: semanticColors.textPrimary."
   },
   {
     "name": "--gv-text-secondary",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#596B7A",
-      "redesign": "#596B7A"
-    },
+    "value": "#596B7A",
     "legacy": [
       "colors.textSecondary",
       "theme.colors.textSecondary"
     ],
     "type": "color",
     "path": "semantic.color.text-secondary",
-    "description": "Today: semanticColors.textSecondary."
+    "description": "Theme: semanticColors.textSecondary."
   },
   {
     "name": "--gv-text-heading",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#333333",
-      "redesign": "#474747"
-    },
+    "value": "#333333",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.text-heading",
-    "description": "The redesign file's heading name, kept as an alias of color-text-heading (the semantic name wins).",
+    "backOffice": "#474747",
+    "description": "The design file's heading name, kept as an alias of color-text-heading (the semantic name wins).",
     "deprecated": true
   },
   {
     "name": "--gv-text-heading-strong",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#1E1E1E",
-      "redesign": "#1E1E1E"
-    },
+    "value": "#1E1E1E",
     "legacy": [
       "bo.colors.textHeadingStrong"
     ],
     "type": "color",
     "path": "semantic.color.text-heading-strong",
-    "description": "Today: bo.colors.textHeadingStrong."
+    "description": "Theme: bo.colors.textHeadingStrong."
   },
   {
     "name": "--gv-text-pagetitle",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#474747",
-      "redesign": "#474747"
-    },
+    "value": "#474747",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.text-pagetitle",
-    "description": "New, no code value today; same value in both modes. Measured page H1 colour."
+    "description": "New, no code value today. Measured page H1 colour."
   },
   {
     "name": "--gv-text-body",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "rgba(0,0,0,0.87)",
-      "redesign": "rgba(0,0,0,0.87)"
-    },
+    "value": "rgba(0,0,0,0.87)",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.text-body",
-    "description": "New, no code value today; same value in both modes. Measured inherited body colour."
+    "description": "New, no code value today. Measured inherited body colour."
   },
   {
     "name": "--gv-header-text",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "rgba(0,0,0,0.87)",
-      "redesign": "rgba(0,0,0,0.87)"
-    },
+    "value": "rgba(0,0,0,0.87)",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.header-text",
-    "description": "New, no code value today; same value in both modes. Measured site header text colour."
+    "description": "New, no code value today. Measured site header text colour."
   },
   {
     "name": "--gv-border-dark",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#767676",
-      "redesign": "#767676"
-    },
+    "value": "#767676",
     "legacy": [
       "colors.borderDark",
       "theme.colors.borderDark"
     ],
     "type": "color",
     "path": "semantic.color.border-dark",
-    "description": "Today: semanticColors.borderDark."
+    "description": "Theme: semanticColors.borderDark."
   },
   {
     "name": "--gv-border-light",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#CBCBCB",
-      "redesign": "#CBCBCB"
-    },
+    "value": "#CBCBCB",
     "legacy": [
       "colors.borderLight",
       "theme.colors.borderLight"
     ],
     "type": "color",
     "path": "semantic.color.border-light",
-    "description": "Today: semanticColors.borderLight."
+    "description": "Theme: semanticColors.borderLight."
   },
   {
     "name": "--gv-placeholder",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#999999",
-      "redesign": "#999999"
-    },
+    "value": "#999999",
     "legacy": [
       "colors.placeholder",
       "theme.colors.placeholder"
     ],
     "type": "color",
     "path": "semantic.color.placeholder",
-    "description": "Today: semanticColors.placeholder."
+    "description": "Theme: semanticColors.placeholder."
   },
   {
     "name": "--gv-disabled",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#BDBDBD",
-      "redesign": "#BDBDBD"
-    },
+    "value": "#BDBDBD",
     "legacy": [
       "colors.disabled",
       "theme.colors.disabled"
     ],
     "type": "color",
     "path": "semantic.color.disabled",
-    "description": "Today: semanticColors.disabled."
+    "description": "Theme: semanticColors.disabled."
   },
   {
     "name": "--gv-divider",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#E0E0E0",
-      "redesign": "#E0E0E0"
-    },
+    "value": "#E0E0E0",
     "legacy": [
       "colors.divider",
       "theme.colors.divider"
     ],
     "type": "color",
     "path": "semantic.color.divider",
-    "description": "Today: semanticColors.divider."
+    "description": "Theme: semanticColors.divider."
   },
   {
     "name": "--gv-primary",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#044D6C",
-      "redesign": "#044D6C"
-    },
+    "value": "#044D6C",
     "legacy": [
       "colors.primary",
       "theme.colors.primary"
     ],
     "type": "color",
     "path": "semantic.color.primary",
-    "description": "Today: semanticColors.primary."
+    "description": "Theme: semanticColors.primary."
   },
   {
     "name": "--gv-error",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#E52516",
-      "redesign": "#E52516"
-    },
+    "value": "#E52516",
     "legacy": [
       "colors.error",
       "theme.colors.error"
     ],
     "type": "color",
     "path": "semantic.color.error",
-    "description": "Today: semanticColors.error."
+    "description": "Theme: semanticColors.error."
   },
   {
     "name": "--gv-error-light",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#fde9e8",
-      "redesign": "#fde9e8"
-    },
+    "value": "#fde9e8",
     "legacy": [
       "colors.errorLight",
       "theme.colors.errorLight"
     ],
     "type": "color",
     "path": "semantic.color.error-light",
-    "description": "Today: semanticColors.errorLight."
+    "description": "Theme: semanticColors.errorLight."
   },
   {
     "name": "--gv-success",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#04884C",
-      "redesign": "#04884C"
-    },
+    "value": "#04884C",
     "legacy": [
       "colors.success",
       "theme.colors.success"
     ],
     "type": "color",
     "path": "semantic.color.success",
-    "description": "Today: semanticColors.success."
+    "description": "Theme: semanticColors.success."
   },
   {
     "name": "--gv-success-light",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#e4f7ef",
-      "redesign": "#e4f7ef"
-    },
+    "value": "#e4f7ef",
     "legacy": [
       "colors.successLight",
       "theme.colors.successLight"
     ],
     "type": "color",
     "path": "semantic.color.success-light",
-    "description": "Today: semanticColors.successLight."
+    "description": "Theme: semanticColors.successLight."
   },
   {
     "name": "--gv-background",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#EDEFF0",
-      "redesign": "#EDEFF0"
-    },
+    "value": "#EDEFF0",
     "legacy": [
       "colors.background",
       "theme.colors.background"
     ],
     "type": "color",
     "path": "semantic.color.background",
-    "description": "Today: semanticColors.background."
+    "description": "Theme: semanticColors.background."
   },
   {
     "name": "--gv-color-teal",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#147985",
-      "redesign": "#147985"
-    },
+    "value": "#147985",
     "legacy": [
       "colors.teal",
       "theme.colors.teal"
     ],
     "type": "color",
     "path": "semantic.color.color-teal",
-    "description": "Today: semanticColors.teal. Code-only role, not in the redesign file."
+    "description": "Theme: semanticColors.teal. Code-only role, not in the design file."
   },
   {
     "name": "--gv-color-teal-light",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#BEE7EB",
-      "redesign": "#BEE7EB"
-    },
+    "value": "#BEE7EB",
     "legacy": [
       "colors.tealLight",
       "theme.colors.tealLight"
     ],
     "type": "color",
     "path": "semantic.color.color-teal-light",
-    "description": "Today: semanticColors.tealLight. Code-only role, not in the redesign file."
+    "description": "Theme: semanticColors.tealLight. Code-only role, not in the design file."
   },
   {
     "name": "--gv-survey-canvas",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#F4F6F8",
-      "redesign": "#F4F6F8"
-    },
+    "value": "#F4F6F8",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.survey-canvas",
-    "description": "New, no code value today; same value in both modes. Survey page background."
+    "description": "New, no code value today. Survey page background."
   },
   {
     "name": "--gv-warning-700",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#B8860B",
-      "redesign": "#B8860B"
-    },
+    "value": "#B8860B",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.warning-700",
-    "description": "New, no code value today; same value in both modes. Warning and on-hold state."
+    "description": "New, no code value today. Warning and on-hold state."
   },
   {
     "name": "--gv-tenant-primary",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#ef0071",
-      "redesign": "#044D6C"
-    },
+    "value": "#ef0071",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.tenant-primary",
-    "description": "City slot, written by ModeProvider from core.color_main. Today fallback as in getTheme. Redesign: back-office primary, as the redesign's .gv-bo scope."
+    "backOffice": "#044D6C",
+    "description": "City slot: the city's core.color_main (in Storybook, the City switch writes it). Fallback as in getTheme. Proposed back office: back-office primary, as the design file's .gv-bo scope."
   },
   {
     "name": "--gv-tenant-secondary",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#000000",
-      "redesign": "#044D6C"
-    },
+    "value": "#000000",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.tenant-secondary",
-    "description": "City slot, written by ModeProvider from core.color_secondary. Today fallback as in getTheme. Redesign: back-office primary, as the redesign's .gv-bo scope."
+    "backOffice": "#044D6C",
+    "description": "City slot: the city's core.color_secondary (in Storybook, the City switch writes it). Fallback as in getTheme. Proposed back office: back-office primary, as the design file's .gv-bo scope."
   },
   {
     "name": "--gv-tenant-text",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#333333",
-      "redesign": "#333333"
-    },
+    "value": "#333333",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.tenant-text",
-    "description": "City slot, written by ModeProvider from core.color_text. Today fallback as in getTheme. Redesign: text-primary, as the redesign's .gv-bo scope."
+    "description": "City slot: the city's core.color_text (in Storybook, the City switch writes it). Fallback as in getTheme. Proposed back office: text-primary, as the design file's .gv-bo scope."
   },
   {
     "name": "--gv-color-tenant-primary",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#ef0071",
-      "redesign": "#044D6C"
-    },
+    "value": "#ef0071",
     "legacy": [
       "theme.colors.tenantPrimary"
     ],
     "type": "color",
     "path": "semantic.color.color-tenant-primary",
+    "backOffice": "#044D6C",
     "description": "Tenant primary with the getTheme fallback. Read this, not --gv-tenant-primary.",
     "tenant": "primary"
   },
@@ -1630,15 +1316,13 @@
     "name": "--gv-color-tenant-secondary",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#000000",
-      "redesign": "#044D6C"
-    },
+    "value": "#000000",
     "legacy": [
       "theme.colors.tenantSecondary"
     ],
     "type": "color",
     "path": "semantic.color.color-tenant-secondary",
+    "backOffice": "#044D6C",
     "description": "Tenant secondary with the getTheme fallback.",
     "tenant": "secondary"
   },
@@ -1646,10 +1330,7 @@
     "name": "--gv-color-tenant-text",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#333333",
-      "redesign": "#333333"
-    },
+    "value": "#333333",
     "legacy": [
       "theme.colors.tenantText"
     ],
@@ -1662,81 +1343,66 @@
     "name": "--gv-tenant-primary-lighten75",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "color-mix(in srgb, #ef0071 25%, transparent)",
-      "redesign": "color-mix(in oklch, #044D6C 25%, transparent)"
-    },
+    "value": "color-mix(in srgb, #ef0071 25%, transparent)",
     "legacy": [
       "theme.colors.tenantPrimaryLighten75"
     ],
     "type": "color",
     "path": "semantic.color.tenant-primary-lighten75",
-    "description": "Today: transparentize(0.75, tenantPrimary) as sRGB color-mix. Redesign: the redesign's OKLCH mix."
+    "backOffice": "color-mix(in oklch, #044D6C 25%, transparent)",
+    "description": "Theme: transparentize(0.75, tenantPrimary) as sRGB color-mix. Proposed back office: the design file's OKLCH mix."
   },
   {
     "name": "--gv-tenant-primary-lighten90",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "color-mix(in srgb, #ef0071 10%, transparent)",
-      "redesign": "color-mix(in oklch, #044D6C 10%, transparent)"
-    },
+    "value": "color-mix(in srgb, #ef0071 10%, transparent)",
     "legacy": [
       "theme.colors.tenantPrimaryLighten90"
     ],
     "type": "color",
     "path": "semantic.color.tenant-primary-lighten90",
-    "description": "Today: transparentize(0.9, tenantPrimary) as sRGB color-mix. Redesign: the redesign's OKLCH mix."
+    "backOffice": "color-mix(in oklch, #044D6C 10%, transparent)",
+    "description": "Theme: transparentize(0.9, tenantPrimary) as sRGB color-mix. Proposed back office: the design file's OKLCH mix."
   },
   {
     "name": "--gv-tenant-primary-lighten95",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "color-mix(in srgb, #ef0071 5%, transparent)",
-      "redesign": "color-mix(in oklch, #044D6C 5%, transparent)"
-    },
+    "value": "color-mix(in srgb, #ef0071 5%, transparent)",
     "legacy": [
       "theme.colors.tenantPrimaryLighten95"
     ],
     "type": "color",
     "path": "semantic.color.tenant-primary-lighten95",
-    "description": "Today: transparentize(0.95, tenantPrimary) as sRGB color-mix. Redesign: the redesign's OKLCH mix."
+    "backOffice": "color-mix(in oklch, #044D6C 5%, transparent)",
+    "description": "Theme: transparentize(0.95, tenantPrimary) as sRGB color-mix. Proposed back office: the design file's OKLCH mix."
   },
   {
     "name": "--gv-on-primary",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#fff",
-      "redesign": "#fff"
-    },
+    "value": "#fff",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.on-primary",
-    "description": "New, no code token today (buttons use a #fff literal). The redesign's contrast-color() upgrade is not generated yet."
+    "description": "New, no code token today (buttons use a #fff literal). The design file's contrast-color() upgrade is not generated yet."
   },
   {
     "name": "--gv-on-secondary",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#fff",
-      "redesign": "#fff"
-    },
+    "value": "#fff",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.on-secondary",
-    "description": "New, no code token today (buttons use a #fff literal). The redesign's contrast-color() upgrade is not generated yet."
+    "description": "New, no code token today (buttons use a #fff literal). The design file's contrast-color() upgrade is not generated yet."
   },
   {
     "name": "--gv-bo-sidebar-bg",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#003349",
-      "redesign": "#003349"
-    },
+    "value": "#003349",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.bo-sidebar-bg",
@@ -1746,103 +1412,79 @@
     "name": "--gv-bo-sidebar-text",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#fff",
-      "redesign": "#fff"
-    },
+    "value": "#fff",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.bo-sidebar-text",
-    "description": "New, no code value today; same value in both modes. Back-office chrome, measured."
+    "description": "New, no code value today. Back-office chrome, measured."
   },
   {
     "name": "--gv-bo-sidebar-active",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "rgba(0,0,0,0.7)",
-      "redesign": "rgba(0,0,0,0.7)"
-    },
+    "value": "rgba(0,0,0,0.7)",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.bo-sidebar-active",
-    "description": "New, no code value today; same value in both modes. Back-office chrome, measured."
+    "description": "New, no code value today. Back-office chrome, measured."
   },
   {
     "name": "--gv-bo-cta",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#162466",
-      "redesign": "#162466"
-    },
+    "value": "#162466",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.bo-cta",
-    "description": "New, no code value today; same value in both modes. Back-office chrome, measured."
+    "description": "New, no code value today. Back-office chrome, measured."
   },
   {
     "name": "--gv-bo-link",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#4183C4",
-      "redesign": "#4183C4"
-    },
+    "value": "#4183C4",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.bo-link",
-    "description": "New, no code value today; same value in both modes. Back-office chrome, measured."
+    "description": "New, no code value today. Back-office chrome, measured."
   },
   {
     "name": "--gv-bo-canvas",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#EDEFF0",
-      "redesign": "#EDEFF0"
-    },
+    "value": "#EDEFF0",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.bo-canvas",
-    "description": "New, no code value today; same value in both modes. Back-office chrome, measured."
+    "description": "New, no code value today. Back-office chrome, measured."
   },
   {
     "name": "--gv-bo-tabstrip",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#FBFBFB",
-      "redesign": "#FBFBFB"
-    },
+    "value": "#FBFBFB",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.bo-tabstrip",
-    "description": "New, no code value today; same value in both modes. Back-office chrome, measured."
+    "description": "New, no code value today. Back-office chrome, measured."
   },
   {
     "name": "--gv-bo-step",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#D4D9DD",
-      "redesign": "#D4D9DD"
-    },
+    "value": "#D4D9DD",
     "legacy": [
       "bo.colors.stepBorder"
     ],
     "type": "color",
     "path": "semantic.color.bo-step",
-    "description": "Today: bo.colors.stepBorder."
+    "description": "Theme: bo.colors.stepBorder."
   },
   {
     "name": "--gv-bo-primary",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#044D6C",
-      "redesign": "#044D6C"
-    },
+    "value": "#044D6C",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.bo-primary",
@@ -1852,10 +1494,7 @@
     "name": "--gv-bo-row-alt",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#FCFCFC",
-      "redesign": "#FCFCFC"
-    },
+    "value": "#FCFCFC",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.bo-row-alt",
@@ -1865,10 +1504,7 @@
     "name": "--gv-bo-border",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#596B7A",
-      "redesign": "#596B7A"
-    },
+    "value": "#596B7A",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.bo-border",
@@ -1878,145 +1514,115 @@
     "name": "--gv-color-bo-status-fill",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#E2EEE1",
-      "redesign": "#E2EEE1"
-    },
+    "value": "#E2EEE1",
     "legacy": [
       "bo.colors.statusFill"
     ],
     "type": "color",
     "path": "semantic.color.color-bo-status-fill",
-    "description": "Today: bo.colors.statusFill. Code-only, not in the redesign file."
+    "description": "Theme: bo.colors.statusFill. Code-only, not in the design file."
   },
   {
     "name": "--gv-color-bo-step-halo",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#D7E3E7",
-      "redesign": "#D7E3E7"
-    },
+    "value": "#D7E3E7",
     "legacy": [
       "bo.colors.stepHalo"
     ],
     "type": "color",
     "path": "semantic.color.color-bo-step-halo",
-    "description": "Today: bo.colors.stepHalo. Code-only, not in the redesign file."
+    "description": "Theme: bo.colors.stepHalo. Code-only, not in the design file."
   },
   {
     "name": "--gv-color-bo-live-halo",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#DAF2E7",
-      "redesign": "#DAF2E7"
-    },
+    "value": "#DAF2E7",
     "legacy": [
       "bo.colors.liveHalo"
     ],
     "type": "color",
     "path": "semantic.color.color-bo-live-halo",
-    "description": "Today: bo.colors.liveHalo. Code-only, not in the redesign file."
+    "description": "Theme: bo.colors.liveHalo. Code-only, not in the design file."
   },
   {
     "name": "--gv-chart-navy",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#073F80",
-      "redesign": "#073F80"
-    },
+    "value": "#073F80",
     "legacy": [
       "Graphs/styling legacyColors.barFill"
     ],
     "type": "color",
     "path": "semantic.color.chart-navy",
-    "description": "Today: legacyColors.barFill in components/admin/Graphs/styling.ts (same value)."
+    "description": "Theme: legacyColors.barFill in components/admin/Graphs/styling.ts (same value)."
   },
   {
     "name": "--gv-chart-blue",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#2F478A",
-      "redesign": "#2F478A"
-    },
+    "value": "#2F478A",
     "legacy": [
       "Graphs/styling colors.categorical01"
     ],
     "type": "color",
     "path": "semantic.color.chart-blue",
-    "description": "Today: colors.categorical01 in components/admin/Graphs/styling.ts (same value)."
+    "description": "Theme: colors.categorical01 in components/admin/Graphs/styling.ts (same value)."
   },
   {
     "name": "--gv-chart-blue-light",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#4D85C6",
-      "redesign": "#4D85C6"
-    },
+    "value": "#4D85C6",
     "legacy": [
       "Graphs/styling colors.categorical02"
     ],
     "type": "color",
     "path": "semantic.color.chart-blue-light",
-    "description": "Today: colors.categorical02 in components/admin/Graphs/styling.ts (same value)."
+    "description": "Theme: colors.categorical02 in components/admin/Graphs/styling.ts (same value)."
   },
   {
     "name": "--gv-chart-line",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#7FBBCA",
-      "redesign": "#7FBBCA"
-    },
+    "value": "#7FBBCA",
     "legacy": [
       "Graphs/styling legacyColors.line"
     ],
     "type": "color",
     "path": "semantic.color.chart-line",
-    "description": "Today: legacyColors.line in components/admin/Graphs/styling.ts (same value)."
+    "description": "Theme: legacyColors.line in components/admin/Graphs/styling.ts (same value)."
   },
   {
     "name": "--gv-chart-teal",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#01A1B1",
-      "redesign": "#01A1B1"
-    },
+    "value": "#01A1B1",
     "legacy": [
       "Graphs/styling legacyColors.chartFill"
     ],
     "type": "color",
     "path": "semantic.color.chart-teal",
-    "description": "Today: legacyColors.chartFill in components/admin/Graphs/styling.ts (same value)."
+    "description": "Theme: legacyColors.chartFill in components/admin/Graphs/styling.ts (same value)."
   },
   {
     "name": "--gv-chart-teal-light",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#40B8C5",
-      "redesign": "#40B8C5"
-    },
+    "value": "#40B8C5",
     "legacy": [
       "Graphs/styling colors.lightBlue"
     ],
     "type": "color",
     "path": "semantic.color.chart-teal-light",
-    "description": "Today: colors.lightBlue in components/admin/Graphs/styling.ts (same value)."
+    "description": "Theme: colors.lightBlue in components/admin/Graphs/styling.ts (same value)."
   },
   {
     "name": "--gv-chart-pos",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#04884C",
-      "redesign": "#04884C"
-    },
+    "value": "#04884C",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.chart-pos",
@@ -2026,10 +1632,7 @@
     "name": "--gv-chart-neg",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#E52516",
-      "redesign": "#E52516"
-    },
+    "value": "#E52516",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.chart-neg",
@@ -2039,53 +1642,41 @@
     "name": "--gv-chart-axis",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#596B7A",
-      "redesign": "#596B7A"
-    },
+    "value": "#596B7A",
     "legacy": [
       "Graphs/styling legacyColors.chartLabel"
     ],
     "type": "color",
     "path": "semantic.color.chart-axis",
-    "description": "Today: legacyColors.chartLabel in components/admin/Graphs/styling.ts (same value)."
+    "description": "Theme: legacyColors.chartLabel in components/admin/Graphs/styling.ts (same value)."
   },
   {
     "name": "--gv-chart-grid",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#EBEDEF",
-      "redesign": "#EBEDEF"
-    },
+    "value": "#EBEDEF",
     "legacy": [
       "Graphs/styling colors.gridColor"
     ],
     "type": "color",
     "path": "semantic.color.chart-grid",
-    "description": "Today: colors.gridColor in components/admin/Graphs/styling.ts (same value)."
+    "description": "Theme: colors.gridColor in components/admin/Graphs/styling.ts (same value)."
   },
   {
     "name": "--gv-green-save",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#08833a",
-      "redesign": "#08833a"
-    },
+    "value": "#08833a",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.green-save",
-    "description": "New, no code value today; same value in both modes. Content builder Save fill (captured one-off)."
+    "description": "New, no code value today. Content builder Save fill (captured one-off)."
   },
   {
     "name": "--gv-event-meta-tint",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#F4F6F8",
-      "redesign": "#F4F6F8"
-    },
+    "value": "#F4F6F8",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.event-meta-tint",
@@ -2095,10 +1686,7 @@
     "name": "--gv-event-chip-grey",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#F5F6F7",
-      "redesign": "#F5F6F7"
-    },
+    "value": "#F5F6F7",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.event-chip-grey",
@@ -2108,49 +1696,37 @@
     "name": "--gv-event-card-border",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#CCC",
-      "redesign": "#CCC"
-    },
+    "value": "#CCC",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.event-card-border",
-    "description": "New, no code value today; same value in both modes. Events widget frame (captured one-off)."
+    "description": "New, no code value today. Events widget frame (captured one-off)."
   },
   {
     "name": "--gv-folder-count",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#358545",
-      "redesign": "#358545"
-    },
+    "value": "#358545",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.folder-count",
-    "description": "New, no code value today; same value in both modes. Folder card project count (captured one-off)."
+    "description": "New, no code value today. Folder card project count (captured one-off)."
   },
   {
     "name": "--gv-attachment-border",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#C8D0D7",
-      "redesign": "#C8D0D7"
-    },
+    "value": "#C8D0D7",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.attachment-border",
-    "description": "New, no code value today; same value in both modes. File attachment row outline (captured one-off)."
+    "description": "New, no code value today. File attachment row outline (captured one-off)."
   },
   {
     "name": "--gv-phase-selected-fill",
     "category": "color",
     "tier": 2,
-    "values": {
-      "today": "#596B7A",
-      "redesign": "#596B7A"
-    },
+    "value": "#596B7A",
     "legacy": [],
     "type": "color",
     "path": "semantic.color.phase-selected-fill",
@@ -2160,10 +1736,7 @@
     "name": "--gv-stack-inline",
     "category": "space",
     "tier": 2,
-    "values": {
-      "today": "8px",
-      "redesign": "8px"
-    },
+    "value": "8px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.space.stack-inline",
@@ -2173,10 +1746,7 @@
     "name": "--gv-stack-para",
     "category": "space",
     "tier": 2,
-    "values": {
-      "today": "16px",
-      "redesign": "16px"
-    },
+    "value": "16px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.space.stack-para",
@@ -2186,10 +1756,7 @@
     "name": "--gv-stack-block",
     "category": "space",
     "tier": 2,
-    "values": {
-      "today": "24px",
-      "redesign": "24px"
-    },
+    "value": "24px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.space.stack-block",
@@ -2199,10 +1766,7 @@
     "name": "--gv-stack-section",
     "category": "space",
     "tier": 2,
-    "values": {
-      "today": "48px",
-      "redesign": "48px"
-    },
+    "value": "48px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.space.stack-section",
@@ -2212,145 +1776,117 @@
     "name": "--gv-input-height",
     "category": "space",
     "tier": 2,
-    "values": {
-      "today": "48px",
-      "redesign": "48px"
-    },
+    "value": "48px",
     "legacy": [
       "stylingConsts.inputHeight",
       "theme.inputHeight"
     ],
     "type": "dimension",
     "path": "semantic.space.input-height",
-    "description": "Today: stylingConsts.inputHeight."
+    "description": "Theme: stylingConsts.inputHeight."
   },
   {
     "name": "--gv-input-padding",
     "category": "space",
     "tier": 2,
-    "values": {
-      "today": "12px",
-      "redesign": "12px"
-    },
+    "value": "12px",
     "legacy": [
       "defaultStyles.inputPadding"
     ],
     "type": "dimension",
     "path": "semantic.space.input-padding",
-    "description": "Today: defaultStyles.inputPadding."
+    "description": "Theme: defaultStyles.inputPadding."
   },
   {
     "name": "--gv-target-min",
     "category": "space",
     "tier": 2,
-    "values": {
-      "today": "24px",
-      "redesign": "24px"
-    },
+    "value": "24px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.space.target-min",
-    "description": "New, no code value today; same value in both modes. Minimum pointer target (WCAG 2.5.8)."
+    "description": "New, no code value today. Minimum pointer target (WCAG 2.5.8)."
   },
   {
     "name": "--gv-max-page-width",
     "category": "space",
     "tier": 2,
-    "values": {
-      "today": "952px",
-      "redesign": "952px"
-    },
+    "value": "952px",
     "legacy": [
       "stylingConsts.maxPageWidth",
       "theme.maxPageWidth"
     ],
     "type": "dimension",
     "path": "semantic.space.max-page-width",
-    "description": "Today: stylingConsts.maxPageWidth."
+    "description": "Theme: stylingConsts.maxPageWidth."
   },
   {
     "name": "--gv-page-width",
     "category": "space",
     "tier": 2,
-    "values": {
-      "today": "1150px",
-      "redesign": "1150px"
-    },
+    "value": "1150px",
     "legacy": [
       "stylingConsts.pageWidth",
       "theme.pageWidth"
     ],
     "type": "dimension",
     "path": "semantic.space.page-width",
-    "description": "Today: stylingConsts.pageWidth."
+    "description": "Theme: stylingConsts.pageWidth."
   },
   {
     "name": "--gv-text-width",
     "category": "space",
     "tier": 2,
-    "values": {
-      "today": "720px",
-      "redesign": "720px"
-    },
+    "value": "720px",
     "legacy": [
       "stylingConsts.textWidth",
       "theme.textWidth"
     ],
     "type": "dimension",
     "path": "semantic.space.text-width",
-    "description": "Today: stylingConsts.textWidth."
+    "description": "Theme: stylingConsts.textWidth."
   },
   {
     "name": "--gv-menu-height",
     "category": "space",
     "tier": 2,
-    "values": {
-      "today": "78px",
-      "redesign": "80px"
-    },
+    "value": "78px",
     "legacy": [
       "stylingConsts.menuHeight",
       "theme.menuHeight"
     ],
     "type": "dimension",
     "path": "semantic.space.menu-height",
-    "description": "Today: stylingConsts.menuHeight (78). Redesign: 80, on the 8 grid."
+    "backOffice": "80px",
+    "description": "Theme: stylingConsts.menuHeight (78). Proposed back office: 80, on the 8 grid."
   },
   {
     "name": "--gv-bo-cb-frame-w",
     "category": "space",
     "tier": 2,
-    "values": {
-      "today": "1000px",
-      "redesign": "1000px"
-    },
+    "value": "1000px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.space.bo-cb-frame-w",
-    "description": "New, no code value today; same value in both modes. Content builder frame width."
+    "description": "New, no code value today. Content builder frame width."
   },
   {
     "name": "--gv-radius",
     "category": "radius",
     "tier": 2,
-    "values": {
-      "today": "3px",
-      "redesign": "4px"
-    },
+    "value": "3px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.radius.radius",
-    "description": "Legacy alias from the redesign file. Today: stylingConsts.borderRadius (3px). Redesign: radius-1.",
+    "backOffice": "4px",
+    "description": "Legacy alias from the design file. Theme: stylingConsts.borderRadius (3px). Proposed back office: radius-1.",
     "deprecated": true
   },
   {
     "name": "--gv-radius-control",
     "category": "radius",
     "tier": 2,
-    "values": {
-      "today": "3px",
-      "redesign": "8px"
-    },
+    "value": "3px",
     "legacy": [
       "theme.borderRadius",
       "stylingConsts.borderRadius",
@@ -2358,16 +1894,14 @@
     ],
     "type": "dimension",
     "path": "semantic.radius.radius-control",
-    "description": "Buttons, inputs, chips. Today: theme.borderRadius. Redesign: bo.borderRadius (radius-2)."
+    "backOffice": "8px",
+    "description": "Buttons, inputs, chips. Theme: theme.borderRadius. Proposed back office: bo.borderRadius (radius-2)."
   },
   {
     "name": "--gv-radius-panel",
     "category": "radius",
     "tier": 2,
-    "values": {
-      "today": "3px",
-      "redesign": "12px"
-    },
+    "value": "3px",
     "legacy": [
       "theme.borderRadius",
       "stylingConsts.borderRadius",
@@ -2375,540 +1909,424 @@
     ],
     "type": "dimension",
     "path": "semantic.radius.radius-panel",
-    "description": "Cards, panels, modals. Today: theme.borderRadius. Redesign: bo.panelBorderRadius (radius-3)."
+    "backOffice": "12px",
+    "description": "Cards, panels, modals. Theme: theme.borderRadius. Proposed back office: bo.panelBorderRadius (radius-3)."
   },
   {
     "name": "--gv-font-family",
     "category": "font",
     "tier": 2,
-    "values": {
-      "today": "'Public Sans'",
-      "redesign": "'Public Sans', 'Public Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
-    },
+    "value": "'Public Sans'",
     "legacy": [
       "theme.fontFamily"
     ],
     "type": "fontFamily",
     "path": "semantic.font.font-family",
-    "description": "Today: getTheme fontFamily default; ModeProvider writes the tenant customFontName here. Redesign: bo-font, as the redesign's .gv-bo scope."
+    "backOffice": "'Public Sans', 'Public Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+    "description": "Theme: getTheme fontFamily default; in Storybook the City switch writes the tenant customFontName here. Proposed back office: bo-font, as the design file's .gv-bo scope."
   },
   {
     "name": "--gv-bo-font",
     "category": "font",
     "tier": 2,
-    "values": {
-      "today": "'Public Sans', 'Public Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
-      "redesign": "'Public Sans', 'Public Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif"
-    },
+    "value": "'Public Sans', 'Public Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
     "legacy": [],
     "type": "fontFamily",
     "path": "semantic.font.bo-font",
-    "description": "New, no code value today; same value in both modes. Go Vocal's own product font stack."
+    "description": "New, no code value today. Go Vocal's own product font stack."
   },
   {
     "name": "--gv-type-display-size",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "44px",
-      "redesign": "44px"
-    },
+    "value": "44px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-display-size",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-display-lh",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "52px",
-      "redesign": "52px"
-    },
+    "value": "52px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-display-lh",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-display-weight",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "700",
-      "redesign": "700"
-    },
+    "value": "700",
     "legacy": [],
     "type": "number",
     "path": "semantic.text.type-display-weight",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-h1-size",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "30px",
-      "redesign": "30px"
-    },
+    "value": "30px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-h1-size",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-h1-lh",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "36px",
-      "redesign": "36px"
-    },
+    "value": "36px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-h1-lh",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-h1-weight",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "700",
-      "redesign": "700"
-    },
+    "value": "700",
     "legacy": [],
     "type": "number",
     "path": "semantic.text.type-h1-weight",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-h2-size",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "28px",
-      "redesign": "28px"
-    },
+    "value": "28px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-h2-size",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-h2-lh",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "36px",
-      "redesign": "36px"
-    },
+    "value": "36px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-h2-lh",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-h2-weight",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "700",
-      "redesign": "700"
-    },
+    "value": "700",
     "legacy": [],
     "type": "number",
     "path": "semantic.text.type-h2-weight",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-h3-size",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "20px",
-      "redesign": "20px"
-    },
+    "value": "20px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-h3-size",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-h3-lh",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "30px",
-      "redesign": "30px"
-    },
+    "value": "30px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-h3-lh",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-h3-weight",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "600",
-      "redesign": "600"
-    },
+    "value": "600",
     "legacy": [],
     "type": "number",
     "path": "semantic.text.type-h3-weight",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-title-size",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "18px",
-      "redesign": "18px"
-    },
+    "value": "18px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-title-size",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-title-lh",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "24px",
-      "redesign": "24px"
-    },
+    "value": "24px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-title-lh",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-title-weight",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "600",
-      "redesign": "600"
-    },
+    "value": "600",
     "legacy": [],
     "type": "number",
     "path": "semantic.text.type-title-weight",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-body-size",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "18px",
-      "redesign": "18px"
-    },
+    "value": "18px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-body-size",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-body-lh",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "27px",
-      "redesign": "27px"
-    },
+    "value": "27px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-body-lh",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-body-weight",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "400",
-      "redesign": "400"
-    },
+    "value": "400",
     "legacy": [],
     "type": "number",
     "path": "semantic.text.type-body-weight",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-bodys-size",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "14px",
-      "redesign": "14px"
-    },
+    "value": "14px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-bodys-size",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-bodys-lh",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "20px",
-      "redesign": "20px"
-    },
+    "value": "20px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-bodys-lh",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-bodys-weight",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "400",
-      "redesign": "400"
-    },
+    "value": "400",
     "legacy": [],
     "type": "number",
     "path": "semantic.text.type-bodys-weight",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-label-size",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "14px",
-      "redesign": "14px"
-    },
+    "value": "14px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-label-size",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-label-lh",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "21px",
-      "redesign": "21px"
-    },
+    "value": "21px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-label-lh",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-label-weight",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "600",
-      "redesign": "600"
-    },
+    "value": "600",
     "legacy": [],
     "type": "number",
     "path": "semantic.text.type-label-weight",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-caption-size",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "12px",
-      "redesign": "12px"
-    },
+    "value": "12px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-caption-size",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-caption-lh",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "18px",
-      "redesign": "18px"
-    },
+    "value": "18px",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-caption-lh",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-caption-weight",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "400",
-      "redesign": "400"
-    },
+    "value": "400",
     "legacy": [],
     "type": "number",
     "path": "semantic.text.type-caption-weight",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-display-ls",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "-0.02em",
-      "redesign": "-0.02em"
-    },
+    "value": "-0.02em",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-display-ls",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-type-h2-ls",
     "category": "text",
     "tier": 2,
-    "values": {
-      "today": "-0.01em",
-      "redesign": "-0.01em"
-    },
+    "value": "-0.01em",
     "legacy": [],
     "type": "dimension",
     "path": "semantic.text.type-h2-ls",
-    "description": "New, no code value today; redesign type role, same in both modes."
+    "description": "New, no code value today; a type role from the design file."
   },
   {
     "name": "--gv-shadow-menu",
     "category": "shadow",
     "tier": 2,
-    "values": {
-      "today": "0px 0px 12px 0px rgba(0,0,0,0.18)",
-      "redesign": "0px 0px 12px 0px rgba(0,0,0,0.18)"
-    },
+    "value": "0px 0px 12px 0px rgba(0,0,0,0.18)",
     "legacy": [],
     "type": "shadow",
     "path": "semantic.shadow.shadow-menu",
-    "description": "Today: literal in component-library Dropdown (same value)."
+    "description": "Theme: literal in component-library Dropdown (same value)."
   },
   {
     "name": "--gv-shadow-header",
     "category": "shadow",
     "tier": 2,
-    "values": {
-      "today": "0px 2px 4px -1px rgba(0,0,0,0.10)",
-      "redesign": "0px 2px 4px -1px rgba(0,0,0,0.10)"
-    },
+    "value": "0px 2px 4px -1px rgba(0,0,0,0.10)",
     "legacy": [],
     "type": "shadow",
     "path": "semantic.shadow.shadow-header",
-    "description": "Today: literal in containers/MainHeader (same value)."
+    "description": "Theme: literal in containers/MainHeader (same value)."
   },
   {
     "name": "--gv-shadow-error",
     "category": "shadow",
     "tier": 2,
-    "values": {
-      "today": "0 0 0 3px rgba(214,22,7,0.35)",
-      "redesign": "0 0 0 3px rgba(214,22,7,0.35)"
-    },
+    "value": "0 0 0 3px rgba(214,22,7,0.35)",
     "legacy": [
       "defaultStyles.boxShadowError"
     ],
     "type": "shadow",
     "path": "semantic.shadow.shadow-error",
-    "description": "Today: defaultStyles.boxShadowError, transparentize(0.65, red600)."
+    "description": "Theme: defaultStyles.boxShadowError, transparentize(0.65, red600)."
   },
   {
     "name": "--gv-shadow-panel-left",
     "category": "shadow",
     "tier": 2,
-    "values": {
-      "today": "-2px 0px 1px 0px rgba(0,0,0,0.06)",
-      "redesign": "-2px 0px 1px 0px rgba(0,0,0,0.06)"
-    },
+    "value": "-2px 0px 1px 0px rgba(0,0,0,0.06)",
     "legacy": [],
     "type": "shadow",
     "path": "semantic.shadow.shadow-panel-left",
-    "description": "New, no code value today; same value in both modes. Content builder settings panel edge."
+    "description": "New, no code value today. Content builder settings panel edge."
   },
   {
     "name": "--gv-focus-width",
     "category": "focus",
     "tier": 2,
-    "values": {
-      "today": "2px",
-      "redesign": "2px"
-    },
+    "value": "2px",
     "legacy": [
       "focusRing"
     ],
     "type": "dimension",
     "path": "semantic.focus.focus-width",
-    "description": "Today: focusRing outline width."
+    "description": "Theme: focusRing outline width."
   },
   {
     "name": "--gv-focus-offset",
     "category": "focus",
     "tier": 2,
-    "values": {
-      "today": "2px",
-      "redesign": "2px"
-    },
+    "value": "2px",
     "legacy": [
       "focusRing"
     ],
     "type": "dimension",
     "path": "semantic.focus.focus-offset",
-    "description": "Today: focusRing outline-offset."
+    "description": "Theme: focusRing outline-offset."
   },
   {
     "name": "--gv-focus-color",
     "category": "focus",
     "tier": 2,
-    "values": {
-      "today": "#000000",
-      "redesign": "#1a1a1a"
-    },
+    "value": "#000000",
     "legacy": [
       "focusRing"
     ],
     "type": "color",
     "path": "semantic.focus.focus-color",
-    "description": "Today: focusRing outline colour (colors.black). Redesign: the redesign's near-black."
+    "backOffice": "#1a1a1a",
+    "description": "Theme: focusRing outline colour (colors.black). Proposed back office: the design file's near-black."
   },
   {
     "name": "--gv-focus-outline",
     "category": "focus",
     "tier": 2,
-    "values": {
-      "today": "2px solid #000000",
-      "redesign": "2px solid #1a1a1a"
-    },
+    "value": "2px solid #000000",
     "legacy": [
       "focusRing"
     ],
     "type": "border",
     "path": "semantic.focus.focus-outline",
-    "description": "Today: focusRing outline."
+    "backOffice": "2px solid #1a1a1a",
+    "description": "Theme: focusRing outline."
   },
   {
     "name": "--gv-focus-halo",
     "category": "focus",
     "tier": 2,
-    "values": {
-      "today": "0 0 0 2px #fff",
-      "redesign": "0 0 0 2px #fff"
-    },
+    "value": "0 0 0 2px #fff",
     "legacy": [
       "focusRing"
     ],
     "type": "shadow",
     "path": "semantic.focus.focus-halo",
-    "description": "Today: focusRing box-shadow (white halo)."
+    "description": "Theme: focusRing box-shadow (white halo)."
   }
 ]

@@ -85,12 +85,15 @@ export type ScanOutput = {
   routeFiles?: Record<string, string[]>;
 };
 
-// Mirrors the entries of app/design-system/tokens/tokens.meta.json (Task 4).
+// Mirrors the entries of app/design-system/tokens/tokens.meta.json.
 export type TokenMeta = {
   name: string;
   category: string;
   tier: 1 | 2;
-  values: { today: string; redesign: string };
+  // What the code renders now, references followed.
+  value: string;
+  // The proposed back-office value, when it differs (Proposal page only).
+  backOffice?: string;
   legacy: string[];
   // Optional extras for the Tokens panel; the scanner reads only the above.
   type?: string;
