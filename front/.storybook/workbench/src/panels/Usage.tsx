@@ -19,6 +19,12 @@ import {
   isHealable,
   routeLabel,
 } from '../lib/healTask';
+import {
+  formatMergeTask,
+  LookAlike,
+  lookAlikesFor,
+  routesOfFile,
+} from '../lib/lookAlikes';
 import type { StoryGroup } from '../lib/stories';
 import type { Indexes } from '../lib/useScanIndexes';
 import { plural } from '../lib/plural';
@@ -42,6 +48,7 @@ const FIRST = {
   routes: 8,
   findings: 10,
   props: 10,
+  lookAlikes: 6,
 };
 
 const Section = ({
@@ -182,8 +189,44 @@ const FindingRow = ({ f, task }: { f: Finding; task?: string }) => {
   );
 };
 
-// Where the component is used (files, routes by office, props) and what
-// the scan found in its file, each finding with its heal task.
+const LookAlikeRow = ({ l, task }: { l: LookAlike; task: string }) => {
+  const { copied, copy, clear } = useCopy(task);
+  const { name, dir } = fileParts(l.finding.file);
+  return (
+    <li className="wb-finding" data-testid="wb-usage-lookalike">
+      <div className="wb-finding-row">
+        <a
+          className="wb-line"
+          href={githubLink(l.finding.file, l.finding.line)}
+          target="_blank"
+          rel="noreferrer"
+          title="Open the line on GitHub"
+        >
+          L{l.finding.line}
+        </a>
+        <span className="wb-finding-change" title={l.finding.file}>
+          <code className="wb-finding-raw">{l.name}</code>
+          <span className="wb-muted">{`in ${name}`}</span>
+        </span>
+        <HealButton
+          iconOnly
+          label={`Copy the task to merge ${l.name} into ${l.target}`}
+          onClick={() => copy(task)}
+          testId="wb-usage-merge"
+        />
+      </div>
+      <span className="wb-finding-where">
+        {dir}
+        {l.note && ` · ${l.note}`}
+      </span>
+      <CopiedText copied={copied} onClose={clear} />
+    </li>
+  );
+};
+
+// Where the component is used (files, routes by office, props), what the
+// scan found in its file, each finding with its heal task, and the
+// homemade look-alikes it could replace, each with its merge task.
 const Usage = ({ storyId, group, indexes }: Props) => {
   const { scan } = indexes;
   const component = group.score?.component ?? group.name;
@@ -205,8 +248,17 @@ const Usage = ({ storyId, group, indexes }: Props) => {
       offices: routesByOffice(scan, routes),
       routes,
       findings: fileFindings(scan, group.file),
+      lookAlikes: lookAlikesFor(scan, component).map((l) => ({
+        l,
+        task: formatMergeTask(
+          l,
+          group.file,
+          storyId,
+          routesOfFile(scan, l.finding.file)
+        ),
+      })),
     };
-  }, [scan, component, group.file, group.score]);
+  }, [scan, component, group.file, group.score, storyId]);
 
   // Each component opens on the office with routes, admin first.
   useEffect(() => {
@@ -236,7 +288,7 @@ const Usage = ({ storyId, group, indexes }: Props) => {
     );
   }
 
-  const { files, props, offices, findings } = data;
+  const { files, props, offices, findings, lookAlikes } = data;
   const routeList = offices[office];
   const categories = [...new Set(findings.map((f) => f.category))];
   const shownFindings =
@@ -462,6 +514,39 @@ const Usage = ({ storyId, group, indexes }: Props) => {
           </>
         )}
       </Section>
+
+      {lookAlikes.length > 0 && (
+        <Section
+          icon="swap"
+          title="Look-alikes"
+          count={lookAlikes.length}
+          testId="wb-usage-lookalikes"
+        >
+          <p className="wb-panel-note">
+            {`${plural(
+              lookAlikes.length,
+              'homemade copy',
+              'homemade copies'
+            )} of ${component} outside the library, back office first. Merge one into ${component}: copy its task and paste it into Claude Code. Each merge is its own commit.`}
+          </p>
+          <ul className="wb-findings">
+            {cap(lookAlikes, 'lookAlikes').map(({ l, task }) => (
+              <LookAlikeRow
+                key={`${l.finding.file}:${l.finding.line}`}
+                l={l}
+                task={task}
+              />
+            ))}
+          </ul>
+          <More
+            total={lookAlikes.length}
+            first={FIRST.lookAlikes}
+            open={!!open.lookAlikes}
+            onToggle={() => toggle('lookAlikes')}
+            noun="look-alikes"
+          />
+        </Section>
+      )}
     </div>
   );
 };

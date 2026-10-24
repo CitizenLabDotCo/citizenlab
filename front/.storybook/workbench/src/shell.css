@@ -3543,6 +3543,7 @@ a.wb-line:hover {
   margin: 2px 0 0 34px;
   font-size: 11px;
   color: var(--wb-muted);
+  overflow-wrap: anywhere;
 }
 
 .wb-conf {

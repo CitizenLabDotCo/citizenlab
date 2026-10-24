@@ -165,6 +165,14 @@ why: design change from the workbench (<kind>); it changes the look wherever the
 check: story <story id>, routes <list>
 ```
 
+- On a library component, the Usage tab's Look-alikes lists the homemade copies of it outside the library (`lib/lookAlikes.ts`: a styled `button`, `input`, `select`, `textarea`, `label`, or a styled link for `ButtonWithLink`), back office first, each with a merge task the `heal` skill runs (its Merge into section), one commit each:
+
+```
+merge: <local name> · <file>:<line> · <styled block> → <Component> (<library file>)
+why: look-alike, homemade markup the library component covers
+check: story <story id>, routes <list>
+```
+
 ## Local edits
 
 `npm run ds:local` adds a write API at `/__ds/` (`scripts/design-system/local/`), answering only this machine and pages of its own origin. The Changes drawer then shows Save to code and the saved, unpushed edits, each with Undo; the journal is `.git/ds-local/journal.json`.

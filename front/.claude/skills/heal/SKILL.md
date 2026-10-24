@@ -1,6 +1,6 @@
 ---
 name: heal
-description: Use when given a heal task (the three lines `heal:`, `why:`, `check:` copied from the workbench Usage tab or Changes drawer) or asked to replace an off-spec value, a legacy theme read or local markup with a design token or a library component. One value or one swap in one component, style only, in its own small branch and PR off master.
+description: Use when given a heal task (the three lines `heal:`, `why:`, `check:` copied from the workbench Usage tab or Changes drawer), a merge task (`merge:`, `why:`, `check:`, from the Usage tab's Look-alikes) or asked to replace an off-spec value, a legacy theme read or local markup with a design token or a library component. One value or one swap in one component, style only, in its own small branch and PR off master.
 ---
 
 # heal
@@ -96,6 +96,32 @@ Stop, change nothing (or revert what you changed), and report why with the evide
   git commit
   ```
   Do not push and do not open the PR: report, and a person opens it. To show the heal on the workbench's Proposal page, a person may later copy the two shots to `.storybook/static/heals/<sha>/before.png` and `after.png` on `design-system/workbench`, in a `design-system(proposal)` commit.
+
+## Merge into: a look-alike
+
+A `merge:` task (the Usage tab's Look-alikes section) swaps homemade markup for the library component that covers it:
+
+```
+merge: <local name> · <file>:<line> · <styled block> → <Component> (<library file>)
+why: look-alike, homemade markup the library component covers
+check: story <library story id>, routes <list>
+```
+
+It follows the steps above with these differences. One look-alike is one merge and one commit; the branch is `design-system/merge-<file name>-<component>`.
+
+- **The look moves to the library's.** Stop 2 does not apply as written: the look-alike may differ from the library component, and the merge brings it in line. Pick the library variant closest to the look now (`buttonStyle`, `size`, `icon`); the diff in the compare is expected only in the stories and routes that render the file, and the before and after shots go in the PR so the reviewer sees the change. A difference the library cannot express (a colour no `buttonStyle` has, a layout the component does not allow) is a stop: report it, it is a design decision.
+- **Same behaviour.** The handlers, `type`, `disabled`, `aria-*`, `data-testid` and the children move to the library component's props unchanged. A prop the library component does not take, or a handler it would call differently (`onClick` with another event), is stop 3. A `styled.a` or a styled `Link` is a merge into `ButtonWithLink` only when it looks like a button; a text link stays.
+- **Remove the styled block** and any style rule only it used. Imports come from the library barrel (`component-library`) the way the file's other imports do.
+- **No tokens needed.** Stop 1 does not apply.
+- **Commit message:**
+  ```
+  design-system(merge): <local name> in <file name> → <Component> [AI-assisted]
+
+  <file>:<line>, look-alike of <Component>. Variant <props>. Looks: <same | differs, see the shots>.
+  Visual compare: <stories> stories, <diffs> diffs (<where>).
+
+  Co-Authored-By: <the line your session gives>
+  ```
 
 ## Two-sided spacing rule
 
