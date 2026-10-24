@@ -93,14 +93,23 @@ const LocalSave = ({
     if ((await local.undo(id)) && kind === 'token') window.location.reload();
   };
 
+  const needsBranch =
+    status.protected && status.edits.some((e) => e.kind === 'token');
   const push = async () => {
-    const out = await local.push(status.protected ? branch : undefined);
+    const out = await local.push(needsBranch ? branch : undefined);
     if (out) {
-      setPushed(
-        `Pushed ${out.sha.slice(0, 7)} to ${
-          out.branch
-        }. Open or update its pull request; the review gallery shows what it reaches.`
+      const lines = out.pushed.map((p) =>
+        p.kind === 'heal'
+          ? `Pushed the heal to its own branch, ${p.branch}, off master.`
+          : `Pushed ${p.sha.slice(0, 7)} to ${p.branch}.`
       );
+      if (lines.length) {
+        lines.push(
+          'Open or update the pull request; the review gallery shows what it reaches.'
+        );
+      }
+      if (out.held) lines.push(out.held);
+      setPushed(lines.join(' '));
     }
   };
 
@@ -164,7 +173,7 @@ const LocalSave = ({
             ))}
           </ul>
           <div className="wb-local-row">
-            {status.protected && (
+            {needsBranch && (
               <label className="wb-local-branch">
                 New branch
                 <input
@@ -179,20 +188,21 @@ const LocalSave = ({
               type="button"
               className="wb-button wb-button-primary"
               data-testid="wb-local-push"
-              disabled={busy || (status.protected && !BRANCH.test(branch))}
+              disabled={busy || (needsBranch && !BRANCH.test(branch))}
               onClick={push}
             >
               <Icon name="up" size={14} />
               Push {status.edits.length === 1 ? 'it' : 'them'}
-              {status.protected ? '' : ` to ${status.branch}`}
             </button>
           </div>
-          {status.protected && (
-            <p className="wb-muted">
-              You are on {status.branch}; a push goes to a new branch named{' '}
-              design-system/ and what it does.
-            </p>
-          )}
+          <p className="wb-muted">
+            {status.edits.some((e) => e.kind === 'token') &&
+              (status.protected
+                ? `Token edits go to a new branch: you are on ${status.branch}. `
+                : `Token edits go to ${status.branch}. `)}
+            {status.edits.some((e) => e.kind === 'style') &&
+              'Component edits go to their own heal branch off master, one small pull request.'}
+          </p>
         </>
       )}
       {error && (

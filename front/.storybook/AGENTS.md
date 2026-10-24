@@ -1,6 +1,6 @@
 # Design system workbench: notes for agents
 
-The workbench reads the repo and never changes the platform. This branch holds tools only: CSS-variable design tokens that Storybook and the workbench read, a scanner that finds off-spec values, a shell on Storybook's engine (galleries, Foundations, the component page's Design, A11y and Usage tabs, the Review and Proposal pages), and skills that draft heals. Everything the workbench knows is a plain file on the branch; this page says what each one is. Launch Claude Code from `front/`; run every command there. The skills are in `front/.claude/skills/`.
+Online the workbench only reads. Run locally (`npm run ds:local`), it saves an edit to the source and pushes it with the person's own git: token edits on their branch, component edits as a heal on its own branch off `master`; nothing lands as platform code on this branch. This branch holds tools only: CSS-variable design tokens that Storybook and the workbench read, a scanner that finds off-spec values, a shell on Storybook's engine (galleries, Foundations, the component page's Design, A11y and Usage tabs, the Review and Proposal pages), and skills that draft heals. Everything the workbench knows is a plain file on the branch; this page says what each one is. Launch Claude Code from `front/`; run every command there. The skills are in `front/.claude/skills/`.
 
 ## Vocabulary
 
@@ -38,6 +38,7 @@ The workbench reads the repo and never changes the platform. This branch holds t
 | Command | What it does |
 |---|---|
 | `npm run storybook` | `ds:prepare`, then Storybook dev on port 6006. The workbench is at `http://localhost:6006/workbench/`, the MCP server at `http://localhost:6006/mcp`. |
+| `API_URL=<platform> npm run ds:local` | The platform's dev server on that back end (no database, no Docker) and Storybook behind one address: the platform at `http://localhost:3000/`, the workbench at `/storybook/workbench/`. Edits save to the code and hot reload repaints; see Local edits. `PORT` and `DS_STORYBOOK_PORT` move the ports. Use a test tenant, never a customer platform. |
 | `npm run build-storybook` | `ds:prepare`, then `storybook build` (CI adds `-o build/storybook`). Slow: once per task. |
 | `npm run ds:prepare` | `ds:tokens`, `ds:scan`, `ds:changes`, then `ds:workbench` even if one failed. npm pre-scripts are off in this repo (`ignore-scripts`), so the Storybook scripts call it. |
 | `npm run ds:tokens` | Generate `tokens.css`, `tokens.ts`, `tokens.meta.json` from `tokens.source.json`. `-- --check` exits 1 when an output is stale or a name is invalid. |
@@ -161,6 +162,15 @@ change: <Component> · <file> · <props, comma separated> <from> → <to>
 why: design change from the workbench (<kind>); it changes the look wherever the component renders, so a token change or its own PR off master
 check: story <story id>, routes <list>
 ```
+
+## Local edits
+
+`npm run ds:local` adds a write API at `/__ds/` (`scripts/design-system/local/`), answering only this machine and pages of its own origin. The Changes drawer then shows Save to code and the saved, unpushed edits, each with Undo; the journal is `.git/ds-local/journal.json`.
+
+- A token edit writes `tokens.source.json` and regenerates its outputs. A push commits it on the current branch, or a new `design-system/<what>` branch when that is `master`.
+- A component edit writes the file at a scan finding only: a token as `t.<path>` (with the `t` import), or `var(--gv-…)` under `app/component-library/`, or a plain value. A token read also adds the tokens stylesheet import to the app root once (a setup edit, never pushed). A push commits component edits as a heal on `design-system/heal-<label>` off `origin/master` without a checkout (a scratch index), then puts this checkout's files back. It refuses when the file differs on master from what was edited.
+- A heal onto a token is held while `master` has no `app/design-system/tokens/` (Iva's call): it stays saved locally.
+- The push is the person's git and credentials; no token reaches the browser. A failed token push leaves the commit for `git push` in the terminal.
 
 ## Stories
 

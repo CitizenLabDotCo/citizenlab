@@ -111,7 +111,7 @@ const RINGS: {
   },
   {
     title: 'A back-office token set',
-    what: 'Proposed back-office values, kept beside today\'s in the token source. Nothing renders them; whether and where they land is the FE lead\'s call.',
+    what: "Proposed back-office values, kept beside today's in the token source. Nothing renders them; whether and where they land is the FE lead's call.",
     cost: 'Your call',
     icon: 'pages',
   },
@@ -247,8 +247,8 @@ const STEPS: { icon: IconName; title: string; text: string }[] = [
   },
   {
     icon: 'link',
-    title: 'Read only',
-    text: 'The workbench reads the repo and never changes the platform. Each heal or lift is its own small PR off master.',
+    title: 'Your git, your PR',
+    text: 'Online the workbench only reads. Run locally, it saves an edit to the source and pushes it with your own git. Each heal or lift is its own small PR off master.',
   },
   {
     icon: 'checklist',
@@ -278,7 +278,13 @@ const Mechanism = () => (
 
 // A token's proposed value as a small picture: a corner, a type size or a
 // swatch; nothing for the rest (a family, a height, an outline).
-const TokenPicture = ({ token, value }: { token: TokenMeta; value: string }) => {
+const TokenPicture = ({
+  token,
+  value,
+}: {
+  token: TokenMeta;
+  value: string;
+}) => {
   if (token.name.startsWith('--gv-radius')) {
     return (
       <span
@@ -306,6 +312,12 @@ const TokenPicture = ({ token, value }: { token: TokenMeta; value: string }) => 
     );
   }
   return null;
+};
+
+// "#ef0071 at 25%" for a mix with transparent; anything else as written.
+const shownValue = (v: string) => {
+  const mix = /^color-mix\(in \w+,\s*(\S+)\s+(\d+%),\s*transparent\)$/.exec(v);
+  return mix ? `${mix[1]} at ${mix[2]}` : v;
 };
 
 const BackOffice = () => {
@@ -336,12 +348,12 @@ const BackOffice = () => {
               <span className="wb-prop-proposed-pair">
                 <span className="wb-prop-proposed-side">
                   <TokenPicture token={t} value={t.value} />
-                  <span>{t.value}</span>
+                  <span title={t.value}>{shownValue(t.value)}</span>
                 </span>
                 <Icon name="arrow" size={16} />
                 <span className="wb-prop-proposed-side wb-prop-proposed-new">
                   <TokenPicture token={t} value={t.backOffice} />
-                  <span>{t.backOffice}</span>
+                  <span title={t.backOffice}>{shownValue(t.backOffice)}</span>
                 </span>
               </span>
             </li>
@@ -747,8 +759,8 @@ const Proposal = () => {
           <h1>Proposal</h1>
           <p className="wb-lead">
             Design values in code, measured, and healed in small reviewed steps.
-            The workbench only reads the repo; every platform change is its
-            own small PR.
+            The workbench only reads the repo; every platform change is its own
+            small PR.
           </p>
           <div className="wb-hero-actions">
             <a className="wb-button wb-button-primary" href={REVIEW_EXAMPLE}>

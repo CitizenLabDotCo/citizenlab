@@ -236,7 +236,7 @@
 /* The back-office proposal */
 .wb-prop-proposed {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: var(--gv-space-3);
   margin: 0;
   padding: 0;
@@ -272,7 +272,7 @@
   min-width: 0;
   font-size: var(--gv-fs-xs);
   font-variant-numeric: tabular-nums;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
 }
 
 .wb-prop-proposed-new {
@@ -298,9 +298,10 @@
 
 .wb-prop-pic-type {
   width: auto;
-  height: 48px;
+  height: 56px;
   font-weight: 700;
-  line-height: 48px;
+  line-height: 56px;
+  white-space: nowrap;
   color: var(--wb-heading);
 }
 

@@ -7,10 +7,14 @@
 //   POST /__ds/style    { file, line, col, token | value, label }
 //                       a component's own style value, at a scan finding
 //   POST /__ds/undo     { id }
-//   POST /__ds/push     { branch? }   commit the edits, the person's git push
+//   POST /__ds/push     { branch?, heal? }   the person's own git push
 //
-// It writes only the token source and its outputs, and component files at
-// a place the scan found; it answers only this machine and this origin.
+// A push commits token edits on the current branch (a new one when that is
+// master), and component edits as a heal: their own branch off
+// origin/master, built without a checkout, so platform code never lands on
+// the branch the workbench lives on. It writes only the token source and
+// its outputs, and component files at a place the scan found; it answers
+// only this machine and this origin.
 import { execFileSync } from 'child_process';
 import fs from 'fs';
 import type { IncomingMessage, ServerResponse } from 'http';
@@ -18,7 +22,7 @@ import path from 'path';
 
 import { renderOutputs, tObject, TokenSource } from '../build-tokens';
 
-import { Entry, Journal, unswap } from './journal';
+import { Entry, FileChange, Journal, unswap } from './journal';
 import {
   accessors,
   applyTokenPatch,
@@ -35,13 +39,19 @@ export const APP_ROOT = 'app/containers/App/index.tsx';
 const META = 'app/design-system/tokens/tokens.meta.json';
 const SCAN = '.storybook/static/design-scan.json';
 const PROTECTED = new Set(['master', 'main', 'production', 'HEAD']);
+const BRANCH = /^design-system\/[a-z0-9][a-z0-9-]{1,60}$/;
+// Files here may not import from design-system/; they read the variable.
+const VAR_ONLY = 'app/component-library/';
 const MAX_BODY = 200_000;
 
 export type Deps = {
   // The front folder; every path below is relative to it.
   root: string;
   journal: Journal;
-  git: (args: string[]) => string;
+  git: (
+    args: string[],
+    opts?: { env?: Record<string, string>; input?: string }
+  ) => string;
   // Formats the files about to be committed (eslint --fix); best effort.
   format?: (files: string[]) => void;
 };
@@ -179,7 +189,15 @@ export const createApi = (deps: Deps) => {
     }
     let to: string;
     let literal = false;
-    if (typeof token === 'string') {
+    const byToken = typeof token === 'string';
+    if (byToken && file.startsWith(VAR_ONLY)) {
+      const meta = JSON.parse(read(META)) as { name: string }[];
+      if (!/^--gv-[\w-]+$/.test(token) || !meta.some((m) => m.name === token)) {
+        throw new Refusal(`${token} is not a token.`);
+      }
+      to = `var(${token})`;
+      literal = true;
+    } else if (byToken) {
       const accessor = accessors(
         tObject(JSON.parse(read(SOURCE)) as TokenSource)
       ).get(token);
@@ -202,7 +220,7 @@ export const createApi = (deps: Deps) => {
     const entries: Entry[] = [];
     // The platform loads the tokens stylesheet once, so what it reads from
     // `t` is defined.
-    if (!literal && exists(APP_ROOT)) {
+    if (byToken && exists(APP_ROOT)) {
       const app = read(APP_ROOT);
       const withCss = ensureCssImport(app);
       if (withCss !== app) {
@@ -295,16 +313,20 @@ export const createApi = (deps: Deps) => {
     };
   };
 
-  const push = (body: any) => {
-    const edits = deps.journal.list();
-    if (!edits.length) throw new Refusal('Nothing to push.');
+  const subjectOf = (kind: string, edits: Entry[]) => {
+    const named = edits.map((e) => e.label);
+    const head = named.length === 1 ? named[0] : `${named.length} edits`;
+    return {
+      subject: `design-system(${kind}): ${head}`.slice(0, 100),
+      body: `From the workbench:\n${named.map((l) => `- ${l}`).join('\n')}`,
+    };
+  };
+
+  const pushTokens = (edits: Entry[], body: any) => {
     let branch = gitOr(['rev-parse', '--abbrev-ref', 'HEAD']) ?? 'HEAD';
     if (PROTECTED.has(branch)) {
       const name = body.branch;
-      if (
-        typeof name !== 'string' ||
-        !/^design-system\/[a-z0-9][a-z0-9-]{1,60}$/.test(name)
-      ) {
+      if (typeof name !== 'string' || !BRANCH.test(name)) {
         throw new Refusal(
           `You are on ${branch}. Name a branch, design-system/<what-it-does>, and push again.`,
           409
@@ -316,22 +338,16 @@ export const createApi = (deps: Deps) => {
     const files = [
       ...new Set(edits.flatMap((e) => e.files.map((f) => f.file))),
     ];
-    deps.format?.(files.filter((f) => /\.tsx?$/.test(f)));
     deps.git(['add', '--', ...files]);
-    const kinds = new Set(edits.map((e) => e.kind));
-    const kind = kinds.has('style') ? 'heal' : 'token';
-    const named = edits.filter((e) => e.kind !== 'setup').map((e) => e.label);
-    const head = named.length === 1 ? named[0] : `${named.length} edits`;
-    const subject = `design-system(${kind}): ${head}`.slice(0, 100);
-    const lines = edits.map((e) => `- ${e.label}`).join('\n');
-    deps.git(['commit', '-m', subject, '-m', `From the workbench:\n${lines}`]);
+    const { subject, body: text } = subjectOf('token', edits);
+    deps.git(['commit', '-m', subject, '-m', text]);
     const sha = deps.git(['rev-parse', 'HEAD']).trim();
     const upstream = gitOr(['rev-parse', '--abbrev-ref', '@{u}']);
     try {
       deps.git(upstream ? ['push'] : ['push', '-u', 'origin', branch]);
     } catch (e) {
       // Committed but not pushed: the edits stay in git, the list empties.
-      deps.journal.clear();
+      edits.forEach((e) => deps.journal.remove(e.id));
       throw new Refusal(
         `Committed ${sha.slice(0, 7)} on ${branch}, but the push failed: ${
           e instanceof Error ? e.message.split('\n')[0] : e
@@ -339,8 +355,141 @@ export const createApi = (deps: Deps) => {
         502
       );
     }
-    deps.journal.clear();
-    return { sha, branch, subject };
+    edits.forEach((e) => deps.journal.remove(e.id));
+    return { kind: 'token', sha, branch, subject };
+  };
+
+  const readsToken = (e: Entry) => /\bt\.|var\(--gv-/.test(e.swap?.to ?? '');
+
+  // Component edits, chained per file from master's own text, committed on
+  // a new branch off origin/master through a scratch index: no checkout,
+  // the working tree untouched until the push is through.
+  const pushHeal = (edits: Entry[], body: any) => {
+    deps.git(['fetch', '-q', 'origin', 'master']);
+    const master = 'refs/remotes/origin/master';
+    const prefix = gitOr(['rev-parse', '--show-prefix']) ?? '';
+    const byFile = new Map<string, FileChange[]>();
+    for (const e of edits) {
+      for (const f of e.files) {
+        byFile.set(f.file, [...(byFile.get(f.file) ?? []), f]);
+      }
+    }
+    const index = path.join(
+      deps.git(['rev-parse', '--absolute-git-dir']).trim(),
+      'ds-local',
+      'heal-index'
+    );
+    fs.mkdirSync(path.dirname(index), { recursive: true });
+    const env = { GIT_INDEX_FILE: index };
+    deps.git(['read-tree', master], { env });
+    const finals = new Map<string, string>();
+    for (const [file, changes] of byFile) {
+      let onMaster: string;
+      try {
+        onMaster = deps.git(['cat-file', 'blob', `${master}:${prefix}${file}`]);
+      } catch {
+        throw new Refusal(`${file} is not on master.`, 409);
+      }
+      changes.forEach((c, i) => {
+        const from = i === 0 ? onMaster : changes[i - 1].after;
+        if (c.before !== from) {
+          throw new Refusal(
+            `${file} differs on master from what was edited; pull master into your branch, or hand this one to the agent.`,
+            409
+          );
+        }
+      });
+      // Formatted in place when the file is as the last edit left it.
+      let final = changes[changes.length - 1].after;
+      if (read(file) === final && /\.tsx?$/.test(file)) {
+        deps.format?.([file]);
+        final = read(file);
+      }
+      finals.set(file, final);
+      const blob = deps
+        .git(['hash-object', '-w', '--stdin'], { input: final })
+        .trim();
+      deps.git(
+        ['update-index', '--cacheinfo', `100644,${blob},${prefix}${file}`],
+        { env }
+      );
+    }
+    const tree = deps.git(['write-tree'], { env }).trim();
+    fs.rmSync(index, { force: true });
+    const { subject, body: text } = subjectOf('heal', edits);
+    const sha = deps
+      .git(['commit-tree', tree, '-p', master, '-m', subject, '-m', text])
+      .trim();
+    const slug = (edits[0].label.toLowerCase().match(/[a-z0-9]+/g) ?? ['edit'])
+      .join('-')
+      .slice(0, 40)
+      .replace(/-$/, '');
+    let branch =
+      typeof body.heal === 'string' && BRANCH.test(body.heal)
+        ? body.heal
+        : `design-system/heal-${slug}`;
+    const taken = (b: string) =>
+      !!gitOr(['ls-remote', '--heads', 'origin', `refs/heads/${b}`]);
+    for (let n = 2; taken(branch); n++) {
+      branch = `${branch.replace(/-\d+$/, '')}-${n}`;
+    }
+    try {
+      deps.git(['push', '-q', 'origin', `${sha}:refs/heads/${branch}`]);
+    } catch (e) {
+      throw new Refusal(
+        `The push failed: ${
+          e instanceof Error ? e.message.split('\n')[0] : e
+        }. The edits stay saved.`,
+        502
+      );
+    }
+    // On its branch now: this checkout goes back to how it was.
+    for (const [file, changes] of byFile) {
+      if (read(file) === finals.get(file)) {
+        write(file, changes[0].before);
+      }
+    }
+    edits.forEach((e) => deps.journal.remove(e.id));
+    return { kind: 'heal', sha, branch, subject };
+  };
+
+  const push = (body: any) => {
+    const edits = deps.journal.list();
+    const tokens = edits.filter((e) => e.kind === 'token');
+    const styles = edits.filter((e) => e.kind === 'style');
+    if (!tokens.length && !styles.length) throw new Refusal('Nothing to push.');
+    // A heal onto a token waits until master has the tokens (Iva's call).
+    let masterHasTokens = false;
+    if (styles.some(readsToken)) {
+      deps.git(['fetch', '-q', 'origin', 'master']);
+      const prefix = gitOr(['rev-parse', '--show-prefix']) ?? '';
+      masterHasTokens =
+        gitOr([
+          'cat-file',
+          '-e',
+          `refs/remotes/origin/master:${prefix}app/design-system/tokens/tokens.ts`,
+        ]) !== undefined;
+    }
+    const heals = styles.filter((e) => masterHasTokens || !readsToken(e));
+    const held = styles.filter((e) => !heals.includes(e));
+    const pushed = [];
+    if (heals.length) pushed.push(pushHeal(heals, body));
+    if (tokens.length) pushed.push(pushTokens(tokens, body));
+    // Nothing left that reads a token: the app root goes back too.
+    if (!held.length) {
+      deps.journal
+        .list()
+        .filter((e) => e.kind === 'setup')
+        .forEach((e) => undo(e.id));
+    }
+    return {
+      pushed,
+      held: held.length
+        ? `${
+            held.length === 1 ? 'One edit reads' : `${held.length} edits read`
+          } a token, and master has no tokens yet; it stays saved here until they land.`
+        : null,
+    };
   };
 
   return async (
@@ -384,10 +533,13 @@ export const createApi = (deps: Deps) => {
   };
 };
 
-export const gitIn = (cwd: string) => (args: string[]) =>
-  execFileSync('git', args, {
-    cwd,
-    encoding: 'utf8',
-    env: { ...process.env, GIT_TERMINAL_PROMPT: '0' },
-    stdio: ['ignore', 'pipe', 'pipe'],
-  });
+export const gitIn =
+  (cwd: string): Deps['git'] =>
+  (args, opts = {}) =>
+    execFileSync('git', args, {
+      cwd,
+      encoding: 'utf8',
+      env: { ...process.env, GIT_TERMINAL_PROMPT: '0', ...opts.env },
+      input: opts.input,
+      stdio: [opts.input === undefined ? 'ignore' : 'pipe', 'pipe', 'pipe'],
+    });

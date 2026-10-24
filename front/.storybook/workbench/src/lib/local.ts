@@ -21,7 +21,17 @@ export type LocalStatus = {
   edits: SavedEdit[];
 };
 
-export type Pushed = { sha: string; branch: string; subject: string };
+export type Pushed = {
+  // A token edit commits on this branch; a component edit is a heal, on
+  // its own branch off master.
+  pushed: {
+    kind: 'token' | 'heal';
+    sha: string;
+    branch: string;
+    subject: string;
+  }[];
+  held: string | null;
+};
 
 const API = '/__ds/';
 
