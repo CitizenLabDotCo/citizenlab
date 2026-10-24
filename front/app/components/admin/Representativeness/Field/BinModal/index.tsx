@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import {
-  Box,
-  Icon,
-  Text,
-  Button,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
 import { isEqual } from 'lodash-es';
 import styled from 'styled-components';
 
@@ -38,28 +32,6 @@ const ClearAllButton = styled.button`
       color: ${colors.red800};
     }
   }
-`;
-
-const ApplyExampleGroupingButton = styled.button`
-  cursor: pointer;
-
-  p {
-    color: ${colors.textSecondary};
-    &:hover {
-      color: ${colors.textPrimary};
-    }
-  }
-
-  svg {
-    fill: ${colors.textSecondary};
-    &:hover {
-      fill: ${colors.textPrimary};
-    }
-  }
-`;
-
-const StyledIcon = styled(Icon)`
-  transform: translateY(-1px);
 `;
 
 interface Props {
@@ -163,17 +135,16 @@ const BinModal = ({ open, bins, onClose, onSave }: Props) => {
               </Text>
             </ClearAllButton>
             {!isExampleBins(currentBins) && (
-              <ApplyExampleGroupingButton onClick={applyExampleGrouping}>
-                <Text variant="bodyS" mt="0px" mb="0px">
-                  <StyledIcon
-                    name="group"
-                    height="16px"
-                    width="16px"
-                    mr="6px"
-                  />
-                  <FormattedMessage {...messages.applyExampleGrouping} />
-                </Text>
-              </ApplyExampleGroupingButton>
+              <Button
+                buttonStyle="text"
+                size="s"
+                icon="group"
+                textHoverColor={colors.textPrimary}
+                iconHoverColor={colors.textPrimary}
+                onClick={applyExampleGrouping}
+              >
+                <FormattedMessage {...messages.applyExampleGrouping} />
+              </Button>
             )}
           </Box>
         </Box>
