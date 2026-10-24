@@ -2327,6 +2327,46 @@ tr:hover .wb-pv-motion > span,
   background: var(--wb-bg);
 }
 
+.wb-chip-nostory {
+  color: var(--wb-muted);
+  background: var(--wb-bg);
+  border: 1px dashed var(--wb-border);
+  box-shadow: none;
+}
+
+/* The In use list: a crop from the platform, centred on the dotted
+   ground the live previews sit on, never scaled up. */
+.wb-crop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--gv-space-3);
+}
+
+.wb-crop img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  background: var(--wb-bg);
+  border-radius: var(--gv-radius-1);
+  box-shadow: 0 0 0 1px var(--wb-border);
+}
+
+.wb-crop-seen {
+  overflow: hidden;
+  font-size: var(--gv-fs-xs);
+  color: var(--wb-muted);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.wb-view-switch {
+  margin-bottom: var(--gv-space-4);
+}
+
 .wb-score {
   position: relative;
   display: inline-grid;

@@ -1,11 +1,14 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import GalleryFrame from '../components/GalleryFrame';
 import Icon from '../components/Icon';
+import InUseGrid from '../components/InUseGrid';
 import Segmented from '../components/Segmented';
 import StoryThumb from '../components/StoryThumb';
 import { A11yResults, checklistOf } from '../lib/a11y';
 import { CHECKLISTS } from '../lib/checklists';
+import { loadCrops, loadScan } from '../lib/data';
+import { buildInUse, filterInUse, InUseRow } from '../lib/inUse';
 import {
   ALL,
   filterGroups,
@@ -71,6 +74,25 @@ const STATUSES: { value: Status | 'all'; label: string }[] = [
   { value: 'unscanned', label: 'Not scanned' },
 ];
 
+type View = 'library' | 'inuse';
+
+// Every component the scan found the platform using, joined with the story
+// groups and the crops; null while the scan and crops.json load.
+const useInUse = (groups: StoryGroup[] | null): InUseRow[] | null => {
+  const [rows, setRows] = useState<InUseRow[] | null>(null);
+  useEffect(() => {
+    if (!groups) return undefined;
+    let live = true;
+    Promise.all([loadScan(), loadCrops()]).then(([scan, crops]) => {
+      if (live) setRows(buildInUse(scan.components, groups, crops));
+    });
+    return () => {
+      live = false;
+    };
+  }, [groups]);
+  return rows;
+};
+
 type Props = {
   section: Section;
   globals: FrameGlobals;
@@ -128,6 +150,8 @@ const Gallery = ({ section, globals }: Props) => {
   const all = useStoryGroups();
   const { results } = useA11yResults();
   const [filter, setFilter] = useState<GalleryFilter>(ALL);
+  const [view, setView] = useState<View>('library');
+  const inUse = useInUse(section === 'components' ? all : null);
   const copy = COPY[section];
   const mine = useMemo(
     () => all?.filter((g) => g.section === section) ?? [],
@@ -147,14 +171,23 @@ const Gallery = ({ section, globals }: Props) => {
     filter.office !== ALL.office ||
     filter.status !== ALL.status ||
     filter.query.trim() !== '';
+  const inuse = section === 'components' && view === 'inuse';
+  const inUseShown = inUse ? filterInUse(inUse, filter) : [];
+  const total = inuse ? inUse?.length ?? 0 : pool.length;
+  const shownCount = inuse
+    ? inUseShown.length
+    : shown.length + shownUnfiled.length;
   const countOf = (status: Status | 'all') =>
-    filterGroups(pool, { ...filter, status }).length;
+    inuse
+      ? filterInUse(inUse ?? [], { ...filter, status }).length
+      : filterGroups(pool, { ...filter, status }).length;
+  const present = (status: Status) =>
+    inuse
+      ? inUse?.some((r) => r.score.status === status)
+      : pool.some((g) => g.status === status);
   // A status filter with one value filters nothing: it hides then.
   const statuses = STATUSES.filter(
-    (s) =>
-      s.value === 'all' ||
-      s.value === filter.status ||
-      pool.some((g) => g.status === s.value)
+    (s) => s.value === 'all' || s.value === filter.status || present(s.value)
   ).map((s) => ({ ...s, count: countOf(s.value) }));
   const set = (patch: Partial<GalleryFilter>) =>
     setFilter((f) => ({ ...f, ...patch }));
@@ -167,6 +200,31 @@ const Gallery = ({ section, globals }: Props) => {
           {copy.lead && <p className="wb-lead">{copy.lead}</p>}
         </div>
       </header>
+
+      {section === 'components' && all !== null && (
+        <div className="wb-view-switch">
+          <Segmented
+            label="Show"
+            value={view}
+            options={[
+              {
+                value: 'library',
+                label: 'Library',
+                title: 'The components with a story, by name',
+              },
+              {
+                value: 'inuse',
+                label: 'In use',
+                count: inUse?.length,
+                title:
+                  'Every component the platform uses, most used first, stories or not',
+              },
+            ]}
+            onChange={setView}
+            testId="wb-gallery-view"
+          />
+        </div>
+      )}
 
       {all === null ? (
         <SkeletonGrid />
@@ -223,7 +281,9 @@ const Gallery = ({ section, globals }: Props) => {
           </div>
 
           <p className="wb-result-count" aria-live="polite">
-            {`${shown.length + shownUnfiled.length} of ${pool.length}`}
+            {inuse
+              ? `${shownCount} of ${total}, most used first`
+              : `${shownCount} of ${total}`}
             {filtered && (
               <button
                 type="button"
@@ -235,7 +295,7 @@ const Gallery = ({ section, globals }: Props) => {
             )}
           </p>
 
-          {shown.length + shownUnfiled.length === 0 && (
+          {shownCount === 0 && !(inuse && inUse === null) && (
             <div className="wb-empty-filter" data-testid="wb-gallery-empty">
               <span className="wb-empty-filter-icon">
                 <Icon name="search" size={22} />
@@ -254,7 +314,16 @@ const Gallery = ({ section, globals }: Props) => {
             globals={globals}
             frameWidth={THUMB_FRAME_WIDTH[section]}
           >
-            {shown.length > 0 && (
+            {inuse && inUse === null && <SkeletonGrid />}
+            {inuse && inUseShown.length > 0 && (
+              <InUseGrid
+                rows={inUseShown}
+                globals={globals}
+                frameWidth={THUMB_FRAME_WIDTH[section]}
+                results={results}
+              />
+            )}
+            {!inuse && shown.length > 0 && (
               <Grid
                 groups={shown}
                 section={section}
@@ -263,7 +332,7 @@ const Gallery = ({ section, globals }: Props) => {
                 testId="wb-gallery-grid"
               />
             )}
-            {shownUnfiled.length > 0 && (
+            {!inuse && shownUnfiled.length > 0 && (
               <section className="wb-gallery-group">
                 <h2 className="wb-section-title">Outside the sections</h2>
                 <p className="wb-section-note">

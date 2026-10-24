@@ -60,6 +60,7 @@
     "ds:check": "npm run ds:tokens -- --check && npm run ds:lint && npm run ds:a11y -- --check",
     "ds:a11y": "tsx scripts/design-system/a11y-run.ts",
     "ds:visual": "tsx scripts/design-system/visual-run.ts",
+    "ds:crops": "tsx scripts/design-system/crops.ts",
     "ds:prepare": "(npm run ds:tokens && npm run ds:scan && npm run ds:changes); npm run ds:workbench"
   },
   "jest-junit": {

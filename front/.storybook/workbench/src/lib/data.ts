@@ -6,6 +6,7 @@ import tokensMeta from '@ds/tokens/tokens.meta.json';
 
 import { setTokenSource } from './liveSource';
 
+import type { Crop } from './inUse';
 import type { A11yResults } from '../../../../scripts/design-system/a11y-results';
 import type {
   ComponentScore,
@@ -106,3 +107,7 @@ export const loadA11y = () =>
   fetchJson<A11yResults | null>('../a11y-results.json', null).then((r) =>
     r && typeof r === 'object' && 'stories' in r ? r : null
   );
+
+// The pictures ds:crops took of components with no story, per component.
+export const loadCrops = () =>
+  fetchJson<Record<string, Crop>>('../crops.json', {});

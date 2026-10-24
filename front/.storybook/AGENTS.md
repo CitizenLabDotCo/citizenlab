@@ -49,6 +49,7 @@ Online the workbench only reads. Run locally (`npm run ds:local`), it saves an e
 | `npm run ds:routes-fixture [-- --host <url>]` | Refresh `routes.fixture.json` from the test tenant's public API. |
 | `npm run ds:workbench` | Build the shell into `.storybook/static/workbench/`. `npm run ds:workbench:typecheck` typechecks it. |
 | `npm run ds:visual -- --baseline <dir>` / `-- --compare <dir> [--stories <glob,glob>] [--summary <file>] [--allow-px N] [--url <storybook>]` | Screenshot every story (or the story ids `--stories` matches, `*` a wildcard) at 1280x900 and 390x844, save or compare. A full compare writes `visual-summary.json`; a filtered run writes `<dir>/_summary.json`; `--summary` overrides both. Default URL `http://localhost:6006`. |
+| `npm run ds:crops -- [--session <state.json>] [--only Name,Name] [--max-routes N] [--url <platform>]` | With `ds:local` running: picture each component the platform uses that has no story, on the routes the scan found it on, into `static/crops/` and `crops.json` (the Components page's In use list). `--session` is a Playwright storage state of a test admin; without it only routes outside the admin open. Routes with ids are skipped (the fixture's ids are another tenant's). |
 | `npm run ds:smoke -- --dir <storybook output> [--screenshot <png>] [--canvas-screenshot <png>] [--colour-screenshot <png>] [--spacing-screenshot <png>] [--review-host <origin>] [--port N]` | Serve a built Storybook (on `--port`, else a free one) and check the shell pages and the console. |
 | `npm run ds:a11y -- [--url <storybook>] [--stories <glob,glob>] [--workers N] [--out <file>]` | Run axe (WCAG 2.0, 2.1, 2.2 A and AA) on every story, or the matched ones, at 1280x900; write `a11y-results.json`, or `--out` (a filtered run keeps the other stories). `-- --check` exits 1 on a critical violation in a `Components/` story that is not in `a11y-known.json`, on a listed one that no longer fails or whose story errored, or when the results file is missing, and prints how many known ones remain; `ds:check` runs it. Default URL `http://localhost:6006`. |
 | `npm run typecheck` | App typecheck (does not cover `.storybook/` or `scripts/`). Slow: once per task. |
@@ -79,6 +80,7 @@ Scripts, `scripts/design-system/`:
 - `changes.ts`: commits since the merge-base with master, per kind and component, plus token value changes (`ds:changes`).
 - `routes-fixture.ts`: fills route params from the test tenant (`ds:routes-fixture`).
 - `visual-run.ts`, `visual-summary.ts`: story screenshots and pixel compare (`ds:visual`).
+- `crops.ts`, `crops-plan.ts` (tested in `crops-plan.test.ts`): the In use crops (`ds:crops`); the workbench joins them with the scan in `lib/inUse.ts`.
 - `workbench-smoke.ts`: smoke test of the built shell (`ds:smoke`).
 - `playwright.ts`: loads Playwright from `GV_PLAYWRIGHT_DIR`.
 - `fixtures/`: scanner test inputs (`findings/`, `routes/app/`).
