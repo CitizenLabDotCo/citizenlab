@@ -2118,7 +2118,7 @@
   "app.containers.Admin.projects.project.publishOpenAdmins": "Administratori i voditelji",
   "app.containers.Admin.projects.project.publishOpenAdminsDescription": "Samo administratori i voditelji projekata.",
   "app.containers.Admin.projects.project.publishOpenEveryone": "Svi",
-  "app.containers.Admin.projects.project.publishOpenEveryoneDescription2": "Bilo koji stanovnik može ga vidjeti.",
+  "app.containers.Admin.projects.project.publishOpenEveryoneDescription2": "Bilo koji stanovnik ga može vidjeti.",
   "app.containers.Admin.projects.project.publishOpenGroups": "Odabrane grupe",
   "app.containers.Admin.projects.project.publishOpenGroupsDescription": "Samo osobe u grupama koje odaberete.",
   "app.containers.Admin.projects.project.publishRestoreToDraft": "Vrati u nacrt",

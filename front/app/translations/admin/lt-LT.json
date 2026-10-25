@@ -2118,7 +2118,7 @@
   "app.containers.Admin.projects.project.publishOpenAdmins": "Administratoriai ir vadovai",
   "app.containers.Admin.projects.project.publishOpenAdminsDescription": "Tik administratoriai ir projektų vadovai.",
   "app.containers.Admin.projects.project.publishOpenEveryone": "Visi",
-  "app.containers.Admin.projects.project.publishOpenEveryoneDescription2": "Matyti gali visi gyventojai.",
+  "app.containers.Admin.projects.project.publishOpenEveryoneDescription2": "Jį gali matyti bet kuris gyventojas.",
   "app.containers.Admin.projects.project.publishOpenGroups": "Pasirinktos grupės",
   "app.containers.Admin.projects.project.publishOpenGroupsDescription": "Tik jūsų pasirinktų grupių asmenys.",
   "app.containers.Admin.projects.project.publishRestoreToDraft": "Atkurti į juodraštį",
