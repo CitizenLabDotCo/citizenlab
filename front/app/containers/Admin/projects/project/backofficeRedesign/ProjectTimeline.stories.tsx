@@ -16,8 +16,8 @@ import ProjectTimeline from './ProjectTimeline';
 // timeline, then the project's events.
 
 const meta = {
-  title: 'Components/Redesigned/Project timeline',
-  tags: ['bo'],
+  title: 'Components/Redesigned/Timeline and phases/Project timeline',
+  tags: ['bo', 'redesigned'],
   component: ProjectTimeline,
   parameters: { msw: backofficeRedesignHandlers },
   args: { projectId: project1.id },

@@ -2,7 +2,9 @@ import type { ScanOutput, StoryIndex } from './data';
 import { controlOf, controlsOf } from './preview';
 import {
   ALL,
+  areaOf,
   buildGroups,
+  byArea,
   filterGroups,
   groupOfStory,
   officeOf,
@@ -134,6 +136,51 @@ describe('buildGroups', () => {
     expect(
       filterGroups(groups, { ...ALL, status: 'unscanned' }).map((g) => g.name)
     ).toEqual(['IdeaCard', 'Sign in']);
+  });
+
+  it('marks the redesign and files it by area', () => {
+    const redesign = buildGroups(
+      {
+        entries: Object.fromEntries(
+          [
+            entry(
+              'r--card',
+              'Components/Redesigned/Events/Image card',
+              'Default',
+              { tags: ['dev', 'bo', 'redesigned'] }
+            ),
+            entry('r--ws', 'Pages/Project workspace', 'Default', {
+              tags: ['dev', 'bo', 'redesigned'],
+            }),
+            entry(
+              'r--hdr',
+              'Components/Redesigned/Project header/Workspace header',
+              'Default',
+              { tags: ['dev', 'bo', 'redesigned'] }
+            ),
+          ].map((e) => [e.id, e])
+        ),
+      },
+      scan
+    );
+    const groups = [
+      ...redesign,
+      ...buildGroups(index, scan).filter((g) => g.name === 'Button'),
+    ];
+    const card = groups.find((g) => g.name === 'Image card');
+    expect(card?.redesigned).toBe(true);
+    expect(card?.area).toBe('Events');
+    expect(groups.find((g) => g.name === 'Button')?.redesigned).toBe(false);
+    expect(areaOf('Pages/Project workspace', true)).toBe('Pages');
+    expect(areaOf('Components/Forms/Input', false)).toBe('Forms');
+    expect(
+      filterGroups(groups, { ...ALL, set: 'redesigned' }).map((g) => g.name)
+    ).toEqual(['Image card', 'Project workspace', 'Workspace header']);
+    expect(
+      byArea(filterGroups(groups, { ...ALL, set: 'redesigned' })).map(
+        (a) => a.area
+      )
+    ).toEqual(['Pages', 'Project header', 'Events']);
   });
 
   it('knows the sections', () => {

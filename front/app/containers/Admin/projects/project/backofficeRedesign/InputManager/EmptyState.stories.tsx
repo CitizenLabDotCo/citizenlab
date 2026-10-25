@@ -5,8 +5,8 @@ import EmptyState from './EmptyState';
 // What the input manager shows when a phase has no inputs yet.
 
 const meta = {
-  title: 'Components/Redesigned/Input manager empty state',
-  tags: ['bo'],
+  title: 'Components/Redesigned/Input manager/Input manager empty state',
+  tags: ['bo', 'redesigned'],
   component: EmptyState,
 } satisfies Meta<typeof EmptyState>;
 

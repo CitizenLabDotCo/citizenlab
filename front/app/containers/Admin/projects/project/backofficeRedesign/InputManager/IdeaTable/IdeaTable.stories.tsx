@@ -17,8 +17,8 @@ import IdeaTable from '.';
 // status, assignee and counts, sortable columns and row selection.
 
 const meta = {
-  title: 'Components/Redesigned/Idea table',
-  tags: ['bo'],
+  title: 'Components/Redesigned/Input manager/Idea table',
+  tags: ['bo', 'redesigned'],
   component: IdeaTable,
   parameters: { msw: backofficeRedesignHandlers },
   args: {

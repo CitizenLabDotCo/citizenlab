@@ -18,8 +18,8 @@ import EventWorkspace from './EventWorkspace';
 // and a preview of the event as participants will see it.
 
 const meta = {
-  title: 'Components/Redesigned/Event workspace',
-  tags: ['bo'],
+  title: 'Components/Redesigned/Events/Event workspace',
+  tags: ['bo', 'redesigned'],
   component: EventWorkspace,
   parameters: { layout: 'fullscreen', msw: backofficeRedesignHandlers },
   args: { project: project1, onCreate: fn() },

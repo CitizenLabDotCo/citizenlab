@@ -17,8 +17,8 @@ import MethodSettings from './MethodSettings';
 // the method, who can, and the method's options.
 
 const meta = {
-  title: 'Components/Redesigned/Method settings',
-  tags: ['bo'],
+  title: 'Components/Redesigned/Timeline and phases/Method settings',
+  tags: ['bo', 'redesigned'],
   component: MethodSettings,
   parameters: { msw: backofficeRedesignHandlers },
   args: { phase: ideationPhase },

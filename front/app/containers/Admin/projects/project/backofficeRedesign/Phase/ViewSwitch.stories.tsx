@@ -36,8 +36,8 @@ const PhaseViewSwitch = ({
 };
 
 const meta = {
-  title: 'Components/Redesigned/View switch',
-  tags: ['bo'],
+  title: 'Components/Redesigned/Timeline and phases/View switch',
+  tags: ['bo', 'redesigned'],
   component: PhaseViewSwitch,
   args: { phase: ideationPhase, activeView: 'build' },
   play: async ({ canvasElement }) => {

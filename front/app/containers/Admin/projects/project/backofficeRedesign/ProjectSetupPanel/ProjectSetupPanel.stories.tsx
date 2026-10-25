@@ -29,8 +29,8 @@ const draftProject: IProjectData = {
 };
 
 const meta = {
-  title: 'Components/Redesigned/Project setup panel',
-  tags: ['bo'],
+  title: 'Components/Redesigned/Setup panel/Project setup panel',
+  tags: ['bo', 'redesigned'],
   component: ProjectSetupPanel,
   parameters: { msw: backofficeRedesignHandlers },
   args: { project: project1, onOpenDropdown: fn() },

@@ -31,7 +31,7 @@ const Slot = ({ label }: { label: string }) => (
 
 const meta = {
   title: 'Pages/Project workspace',
-  tags: ['bo'],
+  tags: ['bo', 'redesigned'],
   parameters: { gv: {}, layout: 'fullscreen' },
   component: ProjectWorkspace,
   args: {

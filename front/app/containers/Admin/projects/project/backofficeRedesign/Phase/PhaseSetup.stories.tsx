@@ -20,8 +20,8 @@ import PhaseSetup from './PhaseSetup';
 // The build panel of a phase: its method, dates, description and files.
 
 const meta = {
-  title: 'Components/Redesigned/Phase setup',
-  tags: ['bo'],
+  title: 'Components/Redesigned/Timeline and phases/Phase setup',
+  tags: ['bo', 'redesigned'],
   component: PhaseSetup,
   parameters: { msw: backofficeRedesignHandlers },
   args: { projectId: project1.id, phase: ideationPhase },

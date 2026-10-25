@@ -19,8 +19,8 @@ import RightColumn from '.';
 // offline collection and exports.
 
 const meta = {
-  title: 'Components/Redesigned/Input manager right column',
-  tags: ['bo'],
+  title: 'Components/Redesigned/Input manager/Input manager right column',
+  tags: ['bo', 'redesigned'],
   component: RightColumn,
   parameters: { msw: backofficeRedesignHandlers },
   args: {

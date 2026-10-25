@@ -28,8 +28,8 @@ const PhaseEmptyState = ({ size }: { size: 'large' | 'small' }) => {
 };
 
 const meta = {
-  title: 'Components/Redesigned/Phase empty state',
-  tags: ['bo'],
+  title: 'Components/Redesigned/Timeline and phases/Phase empty state',
+  tags: ['bo', 'redesigned'],
   component: PhaseEmptyState,
   args: { size: 'large' },
   decorators: [

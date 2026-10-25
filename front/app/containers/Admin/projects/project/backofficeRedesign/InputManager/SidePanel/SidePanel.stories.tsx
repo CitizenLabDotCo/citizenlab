@@ -14,8 +14,8 @@ import SidePanel from '.';
 // its overview, properties, quick actions and content.
 
 const meta = {
-  title: 'Components/Redesigned/Idea side panel',
-  tags: ['bo'],
+  title: 'Components/Redesigned/Input manager/Idea side panel',
+  tags: ['bo', 'redesigned'],
   component: SidePanel,
   parameters: { layout: 'fullscreen', msw: backofficeRedesignHandlers },
   args: {

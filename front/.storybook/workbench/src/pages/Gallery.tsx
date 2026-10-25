@@ -11,8 +11,10 @@ import { loadCrops, loadScan } from '../lib/data';
 import { buildInUse, filterInUse, InUseRow } from '../lib/inUse';
 import {
   ALL,
+  byArea,
   filterGroups,
   GalleryFilter,
+  GallerySet,
   Office,
   Section,
   Status,
@@ -76,6 +78,23 @@ const STATUSES: { value: Status | 'all'; label: string }[] = [
 
 type View = 'library' | 'inuse';
 
+// The set in the hash (`#/components?set=redesigned`), so a link opens the
+// redesign view straight away.
+const setOfHash = (): GallerySet =>
+  new URLSearchParams(window.location.hash.split('?')[1] ?? '').get('set') ===
+  'redesigned'
+    ? 'redesigned'
+    : 'all';
+
+const writeSetToHash = (set: GallerySet) => {
+  const [path, query] = window.location.hash.split('?');
+  const params = new URLSearchParams(query ?? '');
+  if (set === 'all') params.delete('set');
+  else params.set('set', set);
+  const q = params.toString();
+  window.history.replaceState(null, '', q ? `${path}?${q}` : path);
+};
+
 // Every component the scan found the platform using, joined with the story
 // groups and the crops; null while the scan and crops.json load.
 const useInUse = (groups: StoryGroup[] | null): InUseRow[] | null => {
@@ -114,6 +133,41 @@ const SkeletonGrid = () => (
   </ul>
 );
 
+// The redesign view: one block per area of the new back office, so the
+// whole set reads at a glance.
+const AreaGrids = ({
+  groups,
+  section,
+  globals,
+  results,
+}: {
+  groups: StoryGroup[];
+  section: Section;
+  globals: FrameGlobals;
+  results: A11yResults | null;
+}) => (
+  <div className="wb-area-blocks" data-testid="wb-gallery-areas">
+    {byArea(groups).map(({ area, groups: list }) => (
+      <section
+        key={area}
+        className="wb-gallery-group wb-area-block"
+        aria-label={area}
+      >
+        <h2 className="wb-section-title">
+          {area}
+          <span className="wb-area-count">{list.length}</span>
+        </h2>
+        <Grid
+          groups={list}
+          section={section}
+          globals={globals}
+          results={results}
+        />
+      </section>
+    ))}
+  </div>
+);
+
 const Grid = ({
   groups,
   section,
@@ -149,7 +203,11 @@ const Grid = ({
 const Gallery = ({ section, globals }: Props) => {
   const all = useStoryGroups();
   const { results } = useA11yResults();
-  const [filter, setFilter] = useState<GalleryFilter>(ALL);
+  const [filter, setFilter] = useState<GalleryFilter>(() => ({
+    ...ALL,
+    set: setOfHash(),
+  }));
+  useEffect(() => writeSetToHash(filter.set), [filter.set]);
   const [view, setView] = useState<View>('library');
   const inUse = useInUse(section === 'components' ? all : null);
   const copy = COPY[section];
@@ -170,6 +228,7 @@ const Gallery = ({ section, globals }: Props) => {
   const filtered =
     filter.office !== ALL.office ||
     filter.status !== ALL.status ||
+    filter.set !== ALL.set ||
     filter.query.trim() !== '';
   const inuse = section === 'components' && view === 'inuse';
   const inUseShown = inUse ? filterInUse(inUse, filter) : [];
@@ -189,6 +248,29 @@ const Gallery = ({ section, globals }: Props) => {
   const statuses = STATUSES.filter(
     (s) => s.value === 'all' || s.value === filter.status || present(s.value)
   ).map((s) => ({ ...s, count: countOf(s.value) }));
+  const redesignedCount = inuse
+    ? filterInUse(inUse ?? [], { ...filter, set: 'redesigned' }).length
+    : filterGroups(pool, { ...filter, set: 'redesigned' }).length;
+  const hasRedesigned = inuse
+    ? redesignedCount > 0
+    : pool.some((g) => g.redesigned);
+  const sets = [
+    {
+      value: 'all' as const,
+      label: 'All',
+      count: inuse
+        ? filterInUse(inUse ?? [], { ...filter, set: 'all' }).length
+        : filterGroups(pool, { ...filter, set: 'all' }).length,
+    },
+    {
+      value: 'redesigned' as const,
+      label: 'Redesigned',
+      count: redesignedCount,
+      title:
+        'The new back office: the project pages Edwin and Amira rebuilt, and the back-office styles they added to the library',
+    },
+  ];
+  const byAreas = filter.set === 'redesigned' && !inuse;
   const set = (patch: Partial<GalleryFilter>) =>
     setFilter((f) => ({ ...f, ...patch }));
 
@@ -256,6 +338,18 @@ const Gallery = ({ section, globals }: Props) => {
                 onChange={(e) => set({ query: e.target.value })}
               />
             </label>
+            {(hasRedesigned || filter.set !== 'all') && (
+              <div className="wb-filter">
+                <span className="wb-filter-label">Set</span>
+                <Segmented
+                  label="Set"
+                  value={filter.set}
+                  options={sets}
+                  onChange={(s) => set({ set: s })}
+                  testId="wb-filter-set"
+                />
+              </div>
+            )}
             <div className="wb-filter">
               <span className="wb-filter-label">Office</span>
               <Segmented
@@ -323,7 +417,15 @@ const Gallery = ({ section, globals }: Props) => {
                 results={results}
               />
             )}
-            {!inuse && shown.length > 0 && (
+            {byAreas && shown.length > 0 && (
+              <AreaGrids
+                groups={shown}
+                section={section}
+                globals={globals}
+                results={results}
+              />
+            )}
+            {!byAreas && !inuse && shown.length > 0 && (
               <Grid
                 groups={shown}
                 section={section}
@@ -332,7 +434,7 @@ const Gallery = ({ section, globals }: Props) => {
                 testId="wb-gallery-grid"
               />
             )}
-            {!inuse && shownUnfiled.length > 0 && (
+            {!byAreas && !inuse && shownUnfiled.length > 0 && (
               <section className="wb-gallery-group">
                 <h2 className="wb-section-title">Outside the sections</h2>
                 <p className="wb-section-note">

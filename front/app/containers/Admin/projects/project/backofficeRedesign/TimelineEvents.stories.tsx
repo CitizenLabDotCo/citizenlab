@@ -16,8 +16,8 @@ import TimelineEvents from './TimelineEvents';
 // each with its date, and the button to add one.
 
 const meta = {
-  title: 'Components/Redesigned/Timeline events',
-  tags: ['bo'],
+  title: 'Components/Redesigned/Timeline and phases/Timeline events',
+  tags: ['bo', 'redesigned'],
   component: TimelineEvents,
   parameters: { msw: backofficeRedesignHandlers },
   args: { projectId: project1.id },

@@ -54,9 +54,18 @@ export const buildInUse = (
     .sort((a, b) => b.uses - a.uses || a.name.localeCompare(b.name));
 };
 
+// The folders the back-office redesign added its pieces in.
+const REDESIGN_DIRS = [
+  'app/containers/Admin/projects/project/backofficeRedesign/',
+  'app/containers/Admin/projects/_shared/components/',
+];
+
+export const isRedesignedRow = (r: InUseRow) =>
+  r.group?.redesigned ?? REDESIGN_DIRS.some((d) => r.file.startsWith(d));
+
 export const filterInUse = (
   rows: InUseRow[],
-  f: { office: Office | 'all'; status: string; query: string }
+  f: { office: Office | 'all'; status: string; query: string; set?: string }
 ) => {
   const q = f.query.trim().toLowerCase();
   return rows.filter(
@@ -65,6 +74,7 @@ export const filterInUse = (
         r.office === f.office ||
         (r.office === 'shared' && (f.office === 'bo' || f.office === 'fo'))) &&
       (f.status === 'all' || r.score.status === f.status) &&
+      (!f.set || f.set === 'all' || isRedesignedRow(r)) &&
       (!q || `${r.name} ${r.file}`.toLowerCase().includes(q))
   );
 };

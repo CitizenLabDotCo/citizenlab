@@ -18,8 +18,8 @@ import WorkspaceHeader from '.';
 // phase's view switch, and preview, share and publish, or save in a phase.
 
 const meta = {
-  title: 'Components/Redesigned/Workspace header',
-  tags: ['bo'],
+  title: 'Components/Redesigned/Project header/Workspace header',
+  tags: ['bo', 'redesigned'],
   component: WorkspaceHeader,
   parameters: { layout: 'fullscreen', msw: backofficeRedesignHandlers },
   args: {

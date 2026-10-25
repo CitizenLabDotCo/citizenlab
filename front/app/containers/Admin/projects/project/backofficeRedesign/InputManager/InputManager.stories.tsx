@@ -17,8 +17,8 @@ import InputManager from '.';
 // toolbar and filters, and the stats and exports beside it.
 
 const meta = {
-  title: 'Components/Redesigned/Input manager',
-  tags: ['bo'],
+  title: 'Components/Redesigned/Input manager/Input manager',
+  tags: ['bo', 'redesigned'],
   component: InputManager,
   parameters: { layout: 'fullscreen', msw: backofficeRedesignHandlers },
   args: { project: project1, phase: ideationPhase },

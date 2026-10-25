@@ -34,8 +34,8 @@ const at = (search: string) => (Story: React.ComponentType) =>
   );
 
 const meta = {
-  title: 'Components/Redesigned/New phase',
-  tags: ['bo'],
+  title: 'Components/Redesigned/Timeline and phases/New phase',
+  tags: ['bo', 'redesigned'],
   component: NewPhase,
   parameters: { layout: 'fullscreen', msw: backofficeRedesignHandlers },
   args: { project: project1 },

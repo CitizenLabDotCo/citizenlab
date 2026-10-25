@@ -2452,6 +2452,25 @@ tr:hover .wb-pv-motion > span,
   margin-top: var(--gv-space-10);
 }
 
+/* The redesign view: one block per area, a small count by its name. */
+.wb-area-blocks .wb-area-block:first-child {
+  margin-top: var(--gv-space-4);
+}
+
+.wb-area-block .wb-section-title {
+  display: flex;
+  align-items: baseline;
+  gap: var(--gv-space-2);
+  margin-bottom: var(--gv-space-4);
+}
+
+.wb-area-count {
+  font-size: var(--gv-fs-s);
+  font-weight: 500;
+  color: var(--wb-muted);
+  font-variant-numeric: tabular-nums;
+}
+
 /* Component page */
 .wb-story-tabs {
   display: flex;

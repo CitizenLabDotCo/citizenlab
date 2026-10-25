@@ -34,6 +34,8 @@ const group = (name: string, file?: string): StoryGroup => ({
   file,
   office: 'shared',
   status: 'partly',
+  redesigned: false,
+  area: '',
 });
 
 describe('buildInUse', () => {
@@ -94,6 +96,28 @@ describe('filterInUse', () => {
         (r) => r.name
       )
     ).toEqual(['Pill']);
+  });
+
+  it('keeps only the redesign when asked: its folders or its stories', () => {
+    const rows = buildInUse(
+      [
+        {
+          ...comp('StepRow', 2, ['admin/projects']),
+          file: 'app/containers/Admin/projects/project/backofficeRedesign/StepRow.tsx',
+        },
+        comp('Box', 9),
+      ],
+      [],
+      {}
+    );
+    expect(
+      filterInUse(rows, {
+        office: 'all',
+        status: 'all',
+        query: '',
+        set: 'redesigned',
+      }).map((r) => r.name)
+    ).toEqual(['StepRow']);
   });
 });
 
