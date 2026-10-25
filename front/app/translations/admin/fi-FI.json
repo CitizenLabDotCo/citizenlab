@@ -1487,7 +1487,7 @@
   "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Tällä kyselyllä ei ole päättymispäivää. Vain aikajanan viimeinen vaihe voi olla avoin.",
   "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "\"{phaseName}\" on käynnissä samaan aikaan kuin tämä kysely. Aikajanan vaiheet eivät voi olla päällekkäisiä.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Päällekkäinen vaiheen ”{phaseName}” kanssa. Päätä tämä vaihe viimeistään {date} tai muuta kyseisen vaiheen päivämääriä.",
-  "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "Vaiheella ”{phaseName}” ei ole päättymispäivää. Lisää kyseiselle vaiheelle päättymispäivä ennen tämän vaiheen alkamista.",
+  "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "Vaiheella ”{phaseName}” ei ole päättymispäivää. Lisää kyseiselle vaiheelle päättymispäivä ennen tämän vaiheen alkua.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Päällekkäinen vaiheen ”{phaseName}” kanssa. Aloita tämä vaihe {date} tai sen jälkeen, tai muuta kyseisen vaiheen päivämääriä.",
   "app.containers.Admin.projects.PhasePlacement.resolveDateConflicts": "Ratkaise {count, plural, one {# päivämääräristiriita} other {# päivämääräristiriitaa}} siirtääksesi kyselyn.",
   "app.containers.Admin.projects.PhasePlacement.spotlight": "Nosto",

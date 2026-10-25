@@ -1474,7 +1474,7 @@
   "app.containers.Admin.projects.PhasePlacement.editTimelineDates": "Bu anketin veya aşağıdaki başka bir aşamanın tarihlerini değiştirin. Siz anketi taşıyana kadar hiçbir şey değişmez.",
   "app.containers.Admin.projects.PhasePlacement.endBeforeStart": "Bitiş tarihi başlangıç tarihinden sonra olmalıdır.",
   "app.containers.Admin.projects.PhasePlacement.endInvalid": "Geçerli bir bitiş tarihi girin.",
-  "app.containers.Admin.projects.PhasePlacement.endRequired2": "\"{phaseName}\" aşamasının başladığı {date} tarihine veya öncesine bir bitiş tarihi ekleyin.",
+  "app.containers.Admin.projects.PhasePlacement.endRequired2": "\"{phaseName}\" aşamasının başladığı {date} tarihine veya bu tarihten öncesine bir bitiş tarihi ekleyin.",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Bu anket sona erdi. Sakinler, sona ermiş bir öne çıkan anketi yalnızca proje sayfanıza eklerseniz görebilirler.",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "Bu anketten sonraki aşamaların bağlantıları yeni bir numara alacak, bu nedenle onlarla paylaştığınız bağlantılar çalışmayı durduracaktır.",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "Öne çıkan anketlere taşı",

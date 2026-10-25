@@ -1489,7 +1489,7 @@
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "\"{phaseName}\" کے ساتھ اوورلیپ ہو رہا ہے۔ اس مرحلے کو {date} تک ختم کریں، یا اس مرحلے کی تاریخیں تبدیل کریں۔",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "\"{phaseName}\" کی کوئی اختتامی تاریخ نہیں ہے۔ اس مرحلے کے شروع ہونے سے پہلے اس مرحلے کے لیے اختتامی تاریخ شامل کریں۔",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "\"{phaseName}\" کے ساتھ اوورلیپ ہو رہا ہے۔ اس مرحلے کو {date} کو یا اس کے بعد شروع کریں، یا اس مرحلے کی تاریخیں تبدیل کریں۔",
-  "app.containers.Admin.projects.PhasePlacement.resolveDateConflicts": "سروے کو منتقل کرنے کے لیے {count, plural, one {# تاریخ کا تنازع} other {# تاریخ کے تنازعات}} حل کریں۔",
+  "app.containers.Admin.projects.PhasePlacement.resolveDateConflicts": "سروے کو منتقل کرنے کے لیے {count, plural, one {# تاریخ کا تنازعہ} other {# تاریخ کے تنازعات}} کو حل کریں۔",
   "app.containers.Admin.projects.PhasePlacement.spotlight": "سپاٹ لائٹ",
   "app.containers.Admin.projects.PhasePlacement.spotlightDescription": "ٹائم لائن سے باہر، آزادانہ طور پر چلتا ہے",
   "app.containers.Admin.projects.PhasePlacement.startRequired": "آغاز کی تاریخ درج کریں۔",

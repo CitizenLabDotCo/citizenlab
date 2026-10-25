@@ -1489,7 +1489,7 @@
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Overlapper med \"{phaseName}\". Afslut denne fase senest {date}, eller ændr datoerne for den fase.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "\"{phaseName}\" har ingen slutdato. Tilføj en slutdato til den fase, før denne fase starter.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Overlapper med \"{phaseName}\". Start denne fase på eller efter {date}, eller ændr datoerne for den fase.",
-  "app.containers.Admin.projects.PhasePlacement.resolveDateConflicts": "Løs {count, plural, one {# datokonflikt} other {# datokonflikter}} for at flytte spørgeundersøgelsen.",
+  "app.containers.Admin.projects.PhasePlacement.resolveDateConflicts": "Løs {count, plural, one {# datokonflikt} other {# datokonflikter}} for at flytte spørgeskemaet.",
   "app.containers.Admin.projects.PhasePlacement.spotlight": "Spotlight",
   "app.containers.Admin.projects.PhasePlacement.spotlightDescription": "Kører for sig selv, uden for tidslinjen",
   "app.containers.Admin.projects.PhasePlacement.startRequired": "Indtast en startdato.",

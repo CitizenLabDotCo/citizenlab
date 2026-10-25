@@ -1489,7 +1489,7 @@
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Persidengia su „{phaseName}“. Užbaikite šį etapą iki {date} arba pakeiskite to etapo datas.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "„{phaseName}“ neturi pabaigos datos. Pridėkite pabaigos datą tam etapui prieš prasidedant šiam etapui.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Persidengia su „{phaseName}“. Pradėkite šį etapą {date} arba vėliau, arba pakeiskite to etapo datas.",
-  "app.containers.Admin.projects.PhasePlacement.resolveDateConflicts": "Išspręskite {count, plural, one {# datos konfliktą} few {# datos konfliktus} other {# datos konfliktų}}, norėdami perkelti apklausą.",
+  "app.containers.Admin.projects.PhasePlacement.resolveDateConflicts": "Išspręskite {count, plural, one {# datos konfliktą} few {# datos konfliktus} other {# datos konfliktų}}, kad galėtumėte perkelti apklausą.",
   "app.containers.Admin.projects.PhasePlacement.spotlight": "Akcentas",
   "app.containers.Admin.projects.PhasePlacement.spotlightDescription": "Vykdoma atskirai, ne laiko juostoje",
   "app.containers.Admin.projects.PhasePlacement.startRequired": "Įveskite pradžios datą.",
