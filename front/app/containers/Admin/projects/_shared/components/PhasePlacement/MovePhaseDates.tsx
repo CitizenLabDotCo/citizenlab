@@ -17,17 +17,13 @@ const MovePhaseDates = ({ placementMove }: Props) => {
   const { formatMessage } = useIntl();
   const { proposedTimeline, draftPhase, changeDates, isPending } =
     placementMove;
-  const orderedPhases = [...proposedTimeline].sort(
-    (a, b) =>
-      Date.parse(a.attributes.start_at) - Date.parse(b.attributes.start_at)
-  );
 
   return (
     <Box as="fieldset" disabled={isPending} border="none" p="0" m="16px 0 0">
       <Text variant="boHelper">
         {formatMessage(messages.editTimelineDates)}
       </Text>
-      {orderedPhases.map((phase) => (
+      {proposedTimeline.map((phase) => (
         <MovePhaseDateRow
           key={phase.id}
           phase={phase}

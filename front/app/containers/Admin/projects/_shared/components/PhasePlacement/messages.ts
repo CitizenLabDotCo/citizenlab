@@ -1,18 +1,6 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  startDate: {
-    id: 'app.containers.Admin.projects.PhasePlacement.startDate',
-    defaultMessage: 'Start date',
-  },
-  endDate: {
-    id: 'app.containers.Admin.projects.PhasePlacement.endDate',
-    defaultMessage: 'End date',
-  },
-  dateTimezone: {
-    id: 'app.containers.Admin.projects.PhasePlacement.dateTimezone',
-    defaultMessage: 'Dates and times use {timeZone}.',
-  },
   moveSaveChangesFirst: {
     id: 'app.containers.AdminPage.ProjectTimeline.moveSaveChangesFirst',
     defaultMessage: 'Save your changes before you move the survey.',
@@ -74,15 +62,30 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.PhasePlacement.durationTooShort',
     defaultMessage: 'The phase must last at least 24 hours.',
   },
-  endRequired: {
-    id: 'app.containers.Admin.projects.PhasePlacement.endRequired',
+  endRequired2: {
+    id: 'app.containers.Admin.projects.PhasePlacement.endRequired2',
     defaultMessage:
-      'Add an end date on or before "{phaseName}" starts. Only the last phase on the timeline can have no end date.',
+      'Add an end date on or before {date}, when "{phaseName}" starts.',
   },
-  overlap: {
-    id: 'app.containers.Admin.projects.PhasePlacement.overlap',
+  overlapEndBefore: {
+    id: 'app.containers.Admin.projects.PhasePlacement.overlapEndBefore',
     defaultMessage:
-      'These dates overlap with "{phaseName}". Change the dates so the phases do not overlap.',
+      'Overlaps with "{phaseName}". End this phase by {date}, or change that phase’s dates.',
+  },
+  overlapStartAfter: {
+    id: 'app.containers.Admin.projects.PhasePlacement.overlapStartAfter',
+    defaultMessage:
+      'Overlaps with "{phaseName}". Start this phase on or after {date}, or change that phase’s dates.',
+  },
+  overlapOpenEnded: {
+    id: 'app.containers.Admin.projects.PhasePlacement.overlapOpenEnded',
+    defaultMessage:
+      '"{phaseName}" has no end date. Add an end date to that phase before this phase starts.',
+  },
+  resolveDateConflicts: {
+    id: 'app.containers.Admin.projects.PhasePlacement.resolveDateConflicts',
+    defaultMessage:
+      'Resolve {count, plural, one {# date conflict} other {# date conflicts}} to move the survey.',
   },
   surveyPlacement: {
     id: 'app.containers.Admin.projects.PhasePlacement.surveyPlacement',

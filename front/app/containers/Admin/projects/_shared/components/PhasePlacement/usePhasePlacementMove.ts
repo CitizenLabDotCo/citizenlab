@@ -15,6 +15,7 @@ import {
   checkMoveToSpotlightSurveys,
   checkMoveToTimeline,
   invalidTimelineDates,
+  getPhaseDateErrors,
 } from './utils';
 
 export type PlacementDates = Pick<
@@ -39,9 +40,14 @@ const usePhasePlacementMove = (phase: IPhaseData) => {
   const draftPhase = withDraftDates(phase);
   const draftTimeline = timelinePhases?.data.map(withDraftDates) ?? [];
   const proposedTimeline = [
-    ...draftTimeline.filter(({ id }) => id !== phase.id),
-    draftPhase,
-  ];
+    ...(timelinePhases?.data.filter(({ id }) => id !== phase.id) ?? []),
+    phase,
+  ]
+    .sort(
+      (a, b) =>
+        Date.parse(a.attributes.start_at) - Date.parse(b.attributes.start_at)
+    )
+    .map(withDraftDates);
 
   const target: PhasePlacementType = onTimeline ? 'standalone' : 'on_timeline';
   const toTimelineCheck =
@@ -54,6 +60,15 @@ const usePhasePlacementMove = (phase: IPhaseData) => {
       : undefined;
   const invalidDates = onTimeline ? [] : invalidTimelineDates(proposedTimeline);
   const blocked = invalidDates.length > 0;
+  const dateConflictCount = new Set(
+    invalidDates.flatMap((invalidPhase) =>
+      getPhaseDateErrors(invalidPhase, proposedTimeline).map((error) =>
+        'phase' in error
+          ? [invalidPhase.id, error.phase.id].sort().join(':')
+          : `${invalidPhase.id}:${error.type}`
+      )
+    )
+  ).size;
 
   const move = ({ onSuccess }: { onSuccess: (phase: IPhaseData) => void }) => {
     updatePhase(
@@ -85,6 +100,7 @@ const usePhasePlacementMove = (phase: IPhaseData) => {
     draftPhase,
     proposedTimeline,
     invalidDates,
+    dateConflictCount,
     datesChanged: Object.keys(dateChanges).length > 0,
     changeDates: (id: string, dates: PlacementDates) => {
       reset();

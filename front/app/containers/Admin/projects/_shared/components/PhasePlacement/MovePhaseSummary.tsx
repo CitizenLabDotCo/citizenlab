@@ -26,7 +26,6 @@ const MovePhaseSummary = ({ phase, placementMove }: Props) => {
     onTimeline,
     toTimelineCheck,
     toSpotlightCheck,
-    blocked,
     shownOnProjectPage,
     errors,
   } = placementMove;
@@ -77,36 +76,16 @@ const MovePhaseSummary = ({ phase, placementMove }: Props) => {
         )}
       </Text>
 
-      {blocked && toTimelineCheck ? (
-        <Box>
-          {toTimelineCheck.overlappingPhases.map((other) => (
-            <Error
-              key={other.id}
-              marginTop="0"
-              text={formatMessage(messages.overlapBlocker, {
-                phaseName: localize(other.attributes.title_multiloc),
-              })}
-            />
-          ))}
-          {toTimelineCheck.openEndedNotLast && (
-            <Error
-              marginTop="0"
-              text={formatMessage(messages.openEndedBlocker)}
-            />
-          )}
-        </Box>
-      ) : (
-        notices.length > 0 && (
-          <Warning>
-            <Box as="ul" m="0" pl="20px">
-              {notices.map((notice) => (
-                <Text as="li" m="0" key={notice}>
-                  {notice}
-                </Text>
-              ))}
-            </Box>
-          </Warning>
-        )
+      {notices.length > 0 && (
+        <Warning>
+          <Box as="ul" m="0" pl="20px">
+            {notices.map((notice) => (
+              <Text as="li" m="0" key={notice}>
+                {notice}
+              </Text>
+            ))}
+          </Box>
+        </Warning>
       )}
 
       {errors && (

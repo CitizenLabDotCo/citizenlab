@@ -38,7 +38,7 @@ const MovePhaseModal = ({
     <Modal
       opened
       close={close}
-      width={editingDates ? 680 : 560}
+      width={editingDates ? 760 : 560}
       header={formatMessage(
         editingDates
           ? placementMessages.changeDatesButton
@@ -47,7 +47,27 @@ const MovePhaseModal = ({
           : placementMessages.moveToTimelineTitle
       )}
       footer={
-        <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="flex-end"
+          gap="8px"
+          width="100%"
+          flexWrap="wrap"
+        >
+          {blocked && (
+            <Text
+              variant="boHelper"
+              m="0"
+              mr="auto"
+              role="status"
+              aria-live="polite"
+            >
+              {formatMessage(placementMessages.resolveDateConflicts, {
+                count: placementMove.dateConflictCount,
+              })}
+            </Text>
+          )}
           <Button
             buttonStyle="bo-secondary"
             disabled={isPending}

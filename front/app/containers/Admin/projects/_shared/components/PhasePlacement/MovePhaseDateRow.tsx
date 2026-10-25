@@ -1,13 +1,13 @@
 import React from 'react';
 
-import { Box, Input, Text } from '@citizenlab/cl2-component-library';
-import { format } from 'date-fns';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IPhaseData } from 'api/phases/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import DatePhasePicker from 'components/admin/DatePickers/DatePhasePicker';
 import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
@@ -40,65 +40,58 @@ const MovePhaseDateRow = ({ phase, defaultOpen, errors, onChange }: Props) => {
     .map((date) => formatDate(date, { dateStyle: 'medium', timeZone }))
     .join(' – ');
 
+  const boundaryDate = (date: string) =>
+    formatDate(date, { dateStyle: 'medium', timeStyle: 'short', timeZone });
+  const errorText = (error: PhaseDateError) => {
+    if (!('phase' in error)) return formatMessage(messages[error.type]);
+
+    const phaseName = localize(error.phase.attributes.title_multiloc);
+    const otherStart = error.phase.attributes.start_at;
+    const otherEnd = error.phase.attributes.end_at;
+
+    if (error.type === 'endRequired') {
+      return formatMessage(messages.endRequired2, {
+        phaseName,
+        date: boundaryDate(otherStart),
+      });
+    }
+    if (Date.parse(start_at) < Date.parse(otherStart)) {
+      return formatMessage(messages.overlapEndBefore, {
+        phaseName,
+        date: boundaryDate(otherStart),
+      });
+    }
+    if (otherEnd) {
+      return formatMessage(messages.overlapStartAfter, {
+        phaseName,
+        date: boundaryDate(otherEnd),
+      });
+    }
+    return formatMessage(messages.overlapOpenEnded, { phaseName });
+  };
+
   return (
     <PanelGroup label={`${title} · ${dates}`} defaultOpen={defaultOpen}>
       <Box px="12px">
-        <Box display="flex" gap="12px">
-          <Box flex="1">
-            <Input
-              id={`move-start-${phase.id}`}
-              type="datetime-local"
-              variant="bo"
-              label={formatMessage(messages.startDate)}
-              ariaLabel={`${formatMessage(messages.startDate)} · ${title}`}
-              value={from ? format(from, "yyyy-MM-dd'T'HH:mm") : ''}
-              disabled={!timeZone}
-              onChange={(value) =>
-                onChange({
-                  start_at: value
-                    ? convertToTimeZoneISO(new Date(value), timeZone)
-                    : '',
-                  end_at,
-                })
-              }
-            />
-          </Box>
-          <Box flex="1">
-            <Input
-              id={`move-end-${phase.id}`}
-              type="datetime-local"
-              variant="bo"
-              label={formatMessage(messages.endDate)}
-              ariaLabel={`${formatMessage(messages.endDate)} · ${title}`}
-              value={to ? format(to, "yyyy-MM-dd'T'HH:mm") : ''}
-              disabled={!timeZone}
-              onChange={(value) =>
-                onChange({
-                  start_at,
-                  end_at: value
-                    ? convertToTimeZoneISO(new Date(value), timeZone)
-                    : null,
-                })
-              }
-            />
-          </Box>
-        </Box>
-        {timeZone && (
-          <Text variant="boMicro">
-            {formatMessage(messages.dateTimezone, { timeZone })}
-          </Text>
-        )}
+        <DatePhasePicker
+          selectedRange={{ from, to }}
+          defaultMonth={from}
+          onUpdateRange={({ from, to }) => {
+            const start = convertToTimeZoneISO(from, timeZone);
+            if (!start) return;
+
+            onChange({
+              start_at: start,
+              end_at: to ? convertToTimeZoneISO(to, timeZone) : null,
+            });
+          }}
+        />
         {errors.map((error) => (
           <Error
             key={
               'phase' in error ? `${error.type}-${error.phase.id}` : error.type
             }
-            text={formatMessage(
-              messages[error.type],
-              'phase' in error
-                ? { phaseName: localize(error.phase.attributes.title_multiloc) }
-                : {}
-            )}
+            text={errorText(error)}
           />
         ))}
       </Box>

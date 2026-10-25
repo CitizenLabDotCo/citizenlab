@@ -53,6 +53,7 @@ beforeEach(() => jest.clearAllMocks());
 it('keeps date edits local and discards them when the dialog is reopened', () => {
   const { result, unmount } = renderHook(() => usePhasePlacementMove(survey));
   expect(result.current.blocked).toBe(true);
+  expect(result.current.dateConflictCount).toBe(1);
 
   act(() =>
     result.current.changeDates('timeline', {
@@ -62,6 +63,7 @@ it('keeps date edits local and discards them when the dialog is reopened', () =>
   );
 
   expect(result.current.blocked).toBe(false);
+  expect(result.current.dateConflictCount).toBe(0);
   expect(mockUpdate).not.toHaveBeenCalled();
   unmount();
 
@@ -98,4 +100,24 @@ it('sends survey and timeline date changes in one move request', () => {
     },
     expect.objectContaining({ onSuccess: expect.any(Function) })
   );
+});
+
+it('keeps rows in their original order when draft start dates cross other phases', () => {
+  const { result } = renderHook(() => usePhasePlacementMove(survey));
+  expect(result.current.proposedTimeline.map(({ id }) => id)).toEqual([
+    'timeline',
+    'survey',
+  ]);
+
+  act(() =>
+    result.current.changeDates('survey', {
+      start_at: '2026-05-01',
+      end_at: '2026-05-10',
+    })
+  );
+  expect(result.current.proposedTimeline.map(({ id }) => id)).toEqual([
+    'timeline',
+    'survey',
+  ]);
+  expect(result.current.blocked).toBe(false);
 });
