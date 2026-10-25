@@ -61,6 +61,7 @@
     "ds:a11y": "tsx scripts/design-system/a11y-run.ts",
     "ds:visual": "tsx scripts/design-system/visual-run.ts",
     "ds:crops": "tsx scripts/design-system/crops.ts",
+    "ds:thumbs": "tsx scripts/design-system/thumbs.ts",
     "ds:prepare": "(npm run ds:tokens && npm run ds:scan && npm run ds:changes); npm run ds:workbench"
   },
   "jest-junit": {

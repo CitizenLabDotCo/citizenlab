@@ -20,6 +20,7 @@ import {
   Status,
   StoryGroup,
 } from '../lib/stories';
+import { THUMB_FRAME_WIDTH } from '../lib/thumbs';
 import { useA11yResults } from '../lib/useA11y';
 import { useStoryGroups } from '../lib/useStoryGroups';
 
@@ -42,15 +43,6 @@ const COPY: Record<Section, { title: string; lead?: string; noun: string }> = {
     lead: 'Whole pages of the platform, rendered live from their stories.',
     noun: 'page',
   },
-};
-
-// Width each story is laid out at before it is scaled to the card: a
-// phone-sized column for library components (about 80% in a desktop card,
-// so labels stay readable), wider for patterns and pages.
-const THUMB_FRAME_WIDTH: Record<Section, number> = {
-  components: 320,
-  patterns: 520,
-  pages: 520,
 };
 
 const OFFICES: { value: Office | 'all'; label: string; title?: string }[] = [

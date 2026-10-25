@@ -2088,6 +2088,32 @@ tr:hover .wb-pv-motion > span,
   border-bottom: 1px solid var(--wb-border);
 }
 
+/* A build-time picture of the card's story (ds:thumbs), in place of a
+   live preview. It fades in like a live story. */
+.wb-thumb-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity var(--gv-motion-base);
+}
+
+.wb-thumb-img[data-shown] {
+  opacity: 1;
+}
+
+:root[data-wb-theme='dark'] .wb-thumb-img {
+  background: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wb-thumb-img {
+    transition: none;
+  }
+}
+
 .wb-thumb iframe {
   position: absolute;
   top: 0;

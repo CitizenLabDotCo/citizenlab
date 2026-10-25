@@ -25,6 +25,8 @@ import {
 import { storyUrl } from '../lib/frame';
 import { thumbScale } from '../lib/gallery';
 import { channelOf, isRendered } from '../lib/preview';
+import { thumbOf } from '../lib/thumbs';
+import { useThumbs } from '../lib/useThumbs';
 import {
   OFFICE_LABEL,
   STATUS_LABEL,
@@ -280,8 +282,18 @@ const StoryThumb = ({
   const [width, setWidth] = useState(0);
   const box = useRef<HTMLSpanElement>(null);
   const id = group.defaultId;
+  // The build's picture of the story, when it has one for these globals: no
+  // preview boots for the card then. Undecided while thumbs.json loads.
+  const manifest = useThumbs();
+  const [pictureFailed, setPictureFailed] = useState(false);
+  const deciding = manifest === undefined;
+  const picture = pictureFailed
+    ? undefined
+    : thumbOf(manifest ?? null, id, globals);
+  const [pictureLoaded, setPictureLoaded] = useState(false);
+  const live = !deciding && !picture;
   const shared = gallery?.stateOf(id);
-  const own = !gallery || shared === 'isolated';
+  const own = live && (!gallery || shared === 'isolated');
   useEffect(() => {
     const el = box.current;
     if (!el || !own) return undefined;
@@ -291,10 +303,21 @@ const StoryThumb = ({
   }, [own]);
   const register = gallery?.register;
   useEffect(() => {
+    if (!live) return undefined;
     register?.(id, box.current);
     return () => register?.(id, null);
-  }, [register, id]);
-  const state = own ? (loaded ? 'rendered' : 'loading') : shared;
+  }, [register, id, live]);
+  const state = picture
+    ? pictureLoaded
+      ? 'rendered'
+      : 'loading'
+    : deciding
+    ? 'loading'
+    : own
+    ? loaded
+      ? 'rendered'
+      : 'loading'
+    : shared;
   const className = [
     'wb-thumb',
     state === 'loading' && 'wb-thumb-loading',
@@ -311,7 +334,8 @@ const StoryThumb = ({
       data-story={id}
       data-state={state}
       // A gallery card the shared frame cannot show, in a frame of its own.
-      data-isolated={gallery && shared === 'isolated' ? '' : undefined}
+      data-isolated={live && gallery && shared === 'isolated' ? '' : undefined}
+      data-picture={picture ? '' : undefined}
     >
       <span
         ref={box}
@@ -326,6 +350,18 @@ const StoryThumb = ({
       >
         {/* Once measured: a frame that starts at another size can keep
             the layout of that size (a modal placed once). */}
+        {picture && (
+          <img
+            className="wb-thumb-img"
+            src={`../thumbs/${picture.file}`}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            data-shown={pictureLoaded ? '' : undefined}
+            onLoad={() => setPictureLoaded(true)}
+            onError={() => setPictureFailed(true)}
+          />
+        )}
         {own && width > 0 && (
           <OwnFrame
             box={box}
