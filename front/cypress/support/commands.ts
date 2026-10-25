@@ -1366,6 +1366,7 @@ function apiCreatePhase({
   description,
   surveyUrl,
   surveyService,
+  documentAnnotationUrl,
   votingMaxTotal,
   allow_anonymous_participation,
   allow_multiple_responses,
@@ -1390,6 +1391,7 @@ function apiCreatePhase({
   description?: string;
   surveyUrl?: string;
   surveyService?: 'typeform' | 'survey_monkey' | 'google_forms';
+  documentAnnotationUrl?: string;
   presentation_mode?: 'card' | 'map' | 'feed';
   available_views?: ('card' | 'map' | 'feed')[];
   votingMaxTotal?: number;
@@ -1433,6 +1435,7 @@ function apiCreatePhase({
           description_multiloc: { en: description },
           survey_embed_url: surveyUrl,
           survey_service: surveyService,
+          document_annotation_embed_url: documentAnnotationUrl,
           voting_max_total: votingMaxTotal,
           allow_anonymous_participation: allow_anonymous_participation,
           allow_multiple_responses: allow_multiple_responses,
