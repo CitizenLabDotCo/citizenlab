@@ -40,5 +40,6 @@ export const Default: Story = {};
 
 export const RTL: Story = {
   globals: { lang: 'ar' },
-  play: undefined,
+  // An empty play: `undefined` would keep the meta's English wait.
+  play: async () => {},
 };

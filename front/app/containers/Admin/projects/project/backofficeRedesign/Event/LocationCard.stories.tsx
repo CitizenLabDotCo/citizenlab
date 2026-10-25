@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { Meta, StoryObj } from '@storybook/react';
+import { waitFor } from 'storybook/test';
 
 import {
   waitForElement,
-  waitForText,
 } from '../../../../../../../.storybook/mocks/backofficeRedesign';
 import {
   EventFormHarness,
@@ -65,7 +65,16 @@ export const Online: Story = {
 export const WithDetails: Story = {
   args: { eventId: multiDayEvent.id },
   play: async ({ canvasElement }) => {
-    await waitForText(canvasElement, 'blue tent');
+    // The address details are an input's value, not text.
+    await waitFor(
+      () => {
+        const values = [...canvasElement.querySelectorAll('input, textarea')]
+          .map((field) => (field as HTMLInputElement).value)
+          .join(' ');
+        if (!values.includes('blue tent')) throw new Error('not filled yet');
+      },
+      { timeout: 10000 }
+    );
   },
 };
 

@@ -15,6 +15,24 @@ import { IntlProvider } from 'react-intl';
 import { JSX } from 'react/jsx-runtime';
 import '../app/design-system/tokens/tokens.css';
 
+// A stand-in session: the front end trusts the signed-in user only next to
+// a token whose highest role matches /users/me (TAN-8522), and the mocked
+// user is an admin. Unsigned: nothing here checks the signature.
+const base64url = (value: object) =>
+  btoa(JSON.stringify(value))
+    .replace(/=+$/, '')
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_');
+document.cookie = `cl2_jwt=${[
+  base64url({ alg: 'none', typ: 'JWT' }),
+  base64url({
+    sub: 'storybook-admin',
+    highest_role: 'admin',
+    exp: 4102444800,
+  }),
+  'storybook',
+].join('.')}; path=/`;
+
 // The mock worker posts MOCKING_ENABLED once it serves this page. Requests
 // sent before that reach the static server instead (the app configuration
 // stream fetches as soon as it is imported), fail, and are not retried.

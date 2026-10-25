@@ -40,7 +40,7 @@ const meta = {
     ),
   ],
   play: async ({ canvasElement }) => {
-    await waitForText(canvasElement, 'Areas');
+    await waitForText(canvasElement, 'Area filter');
   },
 } satisfies Meta<typeof AreaFilterDropdown>;
 

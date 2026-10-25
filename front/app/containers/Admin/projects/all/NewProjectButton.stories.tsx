@@ -1,5 +1,10 @@
 import React from 'react';
 
+// Load the app's route tree first: the modal imports the admin project
+// routes, which reach back into it, and loaded the other way round the
+// admin routes are read before they exist.
+import 'routes';
+
 import { Box } from '@citizenlab/cl2-component-library';
 import { Meta, StoryObj } from '@storybook/react';
 import { userEvent, within } from 'storybook/test';
@@ -15,9 +20,14 @@ import NewProjectButton from './NewProjectButton';
 // template picker.
 
 const openMenu = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
-  await waitForText(canvasElement, 'New project');
+  // Until the configuration loads the old link shows with the same text, so
+  // wait for the redesign's menu button itself.
   await userEvent.click(
-    within(canvasElement).getByRole('button', { name: /New project/ })
+    await within(canvasElement).findByRole(
+      'button',
+      { name: /New project/ },
+      { timeout: 10000 }
+    )
   );
   await waitForText(canvasElement, 'From scratch');
 };
@@ -80,6 +90,11 @@ export const ModalOpen: Story = {
 export const RTL: Story = {
   globals: { lang: 'ar' },
   play: async ({ canvasElement }) => {
-    await userEvent.click(within(canvasElement).getAllByRole('button')[0]);
+    const [button] = await within(canvasElement).findAllByRole(
+      'button',
+      {},
+      { timeout: 10000 }
+    );
+    await userEvent.click(button);
   },
 };

@@ -63,7 +63,7 @@ export const Proposals: Story = {
 export const StatusMenuOpen: Story = {
   play: async (context) => {
     await openMenu(/^Status$/)(context);
-    await waitForText(context.canvasElement, 'Proposed');
+    await waitForText(context.canvasElement, 'Idea status 2');
   },
 };
 

@@ -115,6 +115,7 @@ export const Information: Story = {
 export const RTL: Story = {
   globals: { lang: 'ar' },
   play: async ({ canvasElement }) => {
-    await waitForText(canvasElement, 'Collect ideas');
+    // "Add questions" in Arabic.
+    await waitForText(canvasElement, 'إضافة أسئلة');
   },
 };

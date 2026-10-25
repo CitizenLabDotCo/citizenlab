@@ -280,6 +280,11 @@ const handlers = {
   phasePermissions: http.get(`${API}/phases/:id/permissions`, () =>
     HttpResponse.json({ data: [] })
   ),
+  // No extra registration questions on an action.
+  permissionCustomFields: http.get(
+    `${API}/phases/:id/permissions/:action/permissions_custom_fields`,
+    () => HttpResponse.json({ data: [] })
+  ),
   phases: http.get(`${API}/projects/:projectId/phases`, () =>
     HttpResponse.json({ data: mockPhases })
   ),

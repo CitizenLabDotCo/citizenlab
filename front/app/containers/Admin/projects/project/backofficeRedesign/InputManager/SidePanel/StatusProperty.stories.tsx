@@ -28,7 +28,7 @@ const meta = {
     ),
   ],
   play: async ({ canvasElement }) => {
-    await waitForText(canvasElement, 'Proposed');
+    await waitForText(canvasElement, 'Idea status 1');
   },
 } satisfies Meta<typeof StatusProperty>;
 
@@ -40,19 +40,21 @@ export const Default: Story = {};
 /** Another input, with other values. */
 export const OtherInput: Story = {
   args: { idea: managedIdeas[1] },
-  play: undefined,
+  // An empty play: `undefined` would keep the meta's English wait.
+  play: async () => {},
 };
 
 export const Open: Story = {
   play: async (context) => {
     await meta.play(context);
     await userEvent.click(
-      within(context.canvasElement).getByRole('button', { name: /Proposed/ })
+      within(context.canvasElement).getByRole('button', { name: /Idea status 1/ })
     );
   },
 };
 
 export const RTL: Story = {
   globals: { lang: 'ar' },
-  play: undefined,
+  // An empty play: `undefined` would keep the meta's English wait.
+  play: async () => {},
 };

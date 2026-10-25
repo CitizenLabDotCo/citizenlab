@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Meta, StoryObj } from '@storybook/react';
-import { userEvent, within } from 'storybook/test';
+import { userEvent, waitFor, within } from 'storybook/test';
 
 import { project1 } from 'api/projects/__mocks__/_mockServer';
 
@@ -91,10 +91,19 @@ export const AddQuestionsOpen: Story = {
     msw: [postingPermissionHandler, ...timelineAndPhasesHandlers],
   },
   play: async ({ canvasElement }) => {
-    await waitForText(canvasElement, 'Add questions');
-    await userEvent.click(
-      within(canvasElement).getByRole('button', { name: 'Add questions' })
+    // The button stays disabled until the phase permissions load.
+    const button = await within(canvasElement).findByRole('button', {
+      name: 'Add questions',
+    });
+    await waitFor(
+      () => {
+        if (button.getAttribute('aria-disabled') !== 'false') {
+          throw new Error('still disabled');
+        }
+      },
+      { timeout: 10000 }
     );
+    await userEvent.click(button);
     await waitForText(document.body, 'Information collected');
   },
 };

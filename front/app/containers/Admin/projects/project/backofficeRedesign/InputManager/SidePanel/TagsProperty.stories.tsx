@@ -40,7 +40,8 @@ export const Default: Story = {};
 /** Another input, with other values. */
 export const OtherInput: Story = {
   args: { idea: managedIdeas[1] },
-  play: undefined,
+  // An empty play: `undefined` would keep the meta's English wait.
+  play: async () => {},
 };
 
 export const Open: Story = {
@@ -54,5 +55,6 @@ export const Open: Story = {
 
 export const RTL: Story = {
   globals: { lang: 'ar' },
-  play: undefined,
+  // An empty play: `undefined` would keep the meta's English wait.
+  play: async () => {},
 };

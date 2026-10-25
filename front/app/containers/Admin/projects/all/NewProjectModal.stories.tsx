@@ -1,5 +1,10 @@
 import React from 'react';
 
+// Load the app's route tree first: the modal imports the admin project
+// routes, which reach back into it, and loaded the other way round the
+// admin routes are read before they exist.
+import 'routes';
+
 import { Box } from '@citizenlab/cl2-component-library';
 import { Meta, StoryObj } from '@storybook/react';
 import { fn, userEvent, within } from 'storybook/test';

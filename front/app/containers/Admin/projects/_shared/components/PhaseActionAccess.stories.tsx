@@ -70,7 +70,7 @@ export const Open: Story = {
   play: async ({ canvasElement }) => {
     await waitForText(canvasElement, 'Sign-in required');
     await userEvent.click(within(canvasElement).getByRole('button'));
-    await waitForText(document.body, 'Submitting');
+    await waitForText(document.body, 'Who can participate');
   },
 };
 
