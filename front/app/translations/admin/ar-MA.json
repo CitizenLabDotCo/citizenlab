@@ -1470,7 +1470,7 @@
   "app.containers.Admin.projects.NewProjectForm.titleRequired2": "إضافة عنوان للمشروع بجميع اللغات.",
   "app.containers.Admin.projects.NewProjectForm.titleRequiredSingleLocale": "إضافة عنوان للمشروع.",
   "app.containers.Admin.projects.PhasePlacement.changeDatesButton": "تغيير التواريخ",
-  "app.containers.Admin.projects.PhasePlacement.dateTimezone": "تعتمد التواريخ والأوقات {timeZone}.",
+  "app.containers.Admin.projects.PhasePlacement.dateTimezone": "التواريخ والأوقات تستخدم {timeZone}.",
   "app.containers.Admin.projects.PhasePlacement.editTimelineDates": "غير التواريخ ديال هاد الاستطلاع ولا شي مرحلة خرى لتحت. حتى حاجة ما غتغير حتى تحول الاستطلاع.",
   "app.containers.Admin.projects.PhasePlacement.endDate": "تاريخ الانتهاء",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "انتهى هذا الاستطلاع. لا يرى السكان الاستطلاعات المتميزة المنتهية إلا إذا أضفتها إلى صفحة مشروعك.",

@@ -1470,7 +1470,7 @@
   "app.containers.Admin.projects.NewProjectForm.titleRequired2": "Pievienot projekta nosaukumu visās valodās.",
   "app.containers.Admin.projects.NewProjectForm.titleRequiredSingleLocale": "Pievienot projekta nosaukumu.",
   "app.containers.Admin.projects.PhasePlacement.changeDatesButton": "Mainīt datumus",
-  "app.containers.Admin.projects.PhasePlacement.dateTimezone": "Datumi un laiki ir norādīti {timeZone}.",
+  "app.containers.Admin.projects.PhasePlacement.dateTimezone": "Datumos un laikos tiek izmantota {timeZone} laika zona.",
   "app.containers.Admin.projects.PhasePlacement.editTimelineDates": "Mainiet šīs aptaujas vai citas zemāk esošās fāzes datumus. Nekas netiks mainīts, kamēr nepārvietosiet aptauju.",
   "app.containers.Admin.projects.PhasePlacement.endDate": "Beigu datums",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Šī aptauja ir beigusies. Iedzīvotāji redz beigušos izcelto aptauju tikai tad, ja pievienojat to sava projekta lapai.",

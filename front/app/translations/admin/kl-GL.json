@@ -1470,7 +1470,7 @@
   "app.containers.Admin.projects.NewProjectForm.titleRequired2": "Oqaatsini tamani suliniutip qulequtaa ilannguguk.",
   "app.containers.Admin.projects.NewProjectForm.titleRequiredSingleLocale": "Suliniutip qulequtaa ilannguguk.",
   "app.containers.Admin.projects.PhasePlacement.changeDatesButton": "Piffissaliussat allanngortikkit",
-  "app.containers.Admin.projects.PhasePlacement.dateTimezone": "Ulloq piffissarlu {timeZone} atorneqarput.",
+  "app.containers.Admin.projects.PhasePlacement.dateTimezone": "Ullut piffissallu {timeZone} atorpaat.",
   "app.containers.Admin.projects.PhasePlacement.editTimelineDates": "Misissuinerup uuma imaluunniit immikkoortup ataaniittup ullui allanngortikkit. Misissuineq nuutsinnagu suulluunniit allanngunngillat.",
   "app.containers.Admin.projects.PhasePlacement.endDate": "Naaffissaa",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Misissuineq una naavoq. Najugaqartut misissuinermik saqqumilaartumik naasumik takunnissinnaapput aatsaat suliavit qupperneranut ilanngukkukku.",

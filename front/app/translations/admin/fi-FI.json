@@ -1470,7 +1470,7 @@
   "app.containers.Admin.projects.NewProjectForm.titleRequired2": "Lisää projektin nimi kaikilla kielillä.",
   "app.containers.Admin.projects.NewProjectForm.titleRequiredSingleLocale": "Lisää projektin nimi.",
   "app.containers.Admin.projects.PhasePlacement.changeDatesButton": "Muuta päivämääriä",
-  "app.containers.Admin.projects.PhasePlacement.dateTimezone": "Päivämäärät ja kellonajat käyttävät aikavyöhykettä {timeZone}.",
+  "app.containers.Admin.projects.PhasePlacement.dateTimezone": "Päivämäärät ja kellonajat noudattavat aikavyöhykettä {timeZone}.",
   "app.containers.Admin.projects.PhasePlacement.editTimelineDates": "Muuta tämän kyselyn tai jonkin muun alla olevan vaiheen päivämääriä. Mitään ei muuteta ennen kuin siirrät kyselyn.",
   "app.containers.Admin.projects.PhasePlacement.endDate": "Päättymispäivä",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Tämä kysely on päättynyt. Asukkaat näkevät päättyneen spotlight-kyselyn vain, jos lisäät sen projektisivullesi.",

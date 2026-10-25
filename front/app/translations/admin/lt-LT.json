@@ -1470,7 +1470,7 @@
   "app.containers.Admin.projects.NewProjectForm.titleRequired2": "Pridėkite projekto pavadinimą visomis kalbomis.",
   "app.containers.Admin.projects.NewProjectForm.titleRequiredSingleLocale": "Pridėkite projekto pavadinimą.",
   "app.containers.Admin.projects.PhasePlacement.changeDatesButton": "Pakeisti datas",
-  "app.containers.Admin.projects.PhasePlacement.dateTimezone": "Datoms ir laikui naudojama {timeZone}.",
+  "app.containers.Admin.projects.PhasePlacement.dateTimezone": "Datos ir laikas nurodomi pagal {timeZone}.",
   "app.containers.Admin.projects.PhasePlacement.editTimelineDates": "Pakeiskite šios apklausos arba kito žemiau esančio etapo datas. Niekas nepasikeis, kol neperkelsite apklausos.",
   "app.containers.Admin.projects.PhasePlacement.endDate": "Pabaigos data",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Ši apklausa pasibaigė. Gyventojai pasibaigusią išskirtą apklausą mato tik tada, jei pridedate ją prie savo projekto puslapio.",

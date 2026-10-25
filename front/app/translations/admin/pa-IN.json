@@ -1472,7 +1472,7 @@
   "app.containers.Admin.projects.PhasePlacement.changeDatesButton": "ਮਿਤੀਆਂ ਬਦਲੋ",
   "app.containers.Admin.projects.PhasePlacement.dateTimezone": "ਮਿਤੀਆਂ ਅਤੇ ਸਮਾਂ {timeZone} ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹਨ।",
   "app.containers.Admin.projects.PhasePlacement.editTimelineDates": "ਇਸ ਸਰਵੇਖਣ ਜਾਂ ਹੇਠਾਂ ਦਿੱਤੇ ਕਿਸੇ ਹੋਰ ਪੜਾਅ ਦੀਆਂ ਮਿਤੀਆਂ ਬਦਲੋ। ਜਦੋਂ ਤੱਕ ਤੁਸੀਂ ਸਰਵੇਖਣ ਨੂੰ ਮੂਵ ਨਹੀਂ ਕਰਦੇ, ਉਦੋਂ ਤੱਕ ਕੁਝ ਵੀ ਨਹੀਂ ਬਦਲੇਗਾ।",
-  "app.containers.Admin.projects.PhasePlacement.endDate": "ਸਮਾਪਤੀ ਦੀ ਮਿਤੀ",
+  "app.containers.Admin.projects.PhasePlacement.endDate": "ਸਮਾਪਤੀ ਮਿਤੀ",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "ਇਹ ਸਰਵੇਖਣ ਖਤਮ ਹੋ ਗਿਆ ਹੈ। ਨਿਵਾਸੀਆਂ ਨੂੰ ਖਤਮ ਹੋਇਆ ਸਪੌਟਲਾਈਟ ਸਰਵੇਖਣ ਤਾਂ ਹੀ ਦਿਖਾਈ ਦਿੰਦਾ ਹੈ ਜੇਕਰ ਤੁਸੀਂ ਇਸਨੂੰ ਆਪਣੇ ਪ੍ਰੋਜੈਕਟ ਪੰਨੇ ਵਿੱਚ ਜੋੜਦੇ ਹੋ।",
   "app.containers.Admin.projects.PhasePlacement.invalidDates": "\"{phaseName}\" ਲਈ ਇੱਕ ਸ਼ੁਰੂਆਤੀ ਮਿਤੀ ਦੀ ਲੋੜ ਹੈ ਅਤੇ ਇਹ ਘੱਟੋ-ਘੱਟ 24 ਘੰਟੇ ਚੱਲਣਾ ਚਾਹੀਦਾ ਹੈ। ਸਮਾਂ-ਰੇਖਾ ਦੇ ਪੜਾਅ ਇੱਕ ਦੂਜੇ ਦੇ ਉੱਪਰ ਨਹੀਂ ਹੋ ਸਕਦੇ, ਅਤੇ ਸਿਰਫ਼ ਆਖਰੀ ਪੜਾਅ ਦੀ ਕੋਈ ਸਮਾਪਤੀ ਮਿਤੀ ਨਹੀਂ ਹੋ ਸਕਦੀ।",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "ਇਸ ਸਰਵੇਖਣ ਤੋਂ ਬਾਅਦ ਵਾਲੇ ਪੜਾਵਾਂ ਨੂੰ ਉਹਨਾਂ ਦੇ ਲਿੰਕ ਵਿੱਚ ਇੱਕ ਨਵਾਂ ਨੰਬਰ ਮਿਲਦਾ ਹੈ, ਇਸ ਲਈ ਤੁਹਾਡੇ ਵੱਲੋਂ ਉਹਨਾਂ ਲਈ ਸਾਂਝੇ ਕੀਤੇ ਲਿੰਕ ਕੰਮ ਕਰਨਾ ਬੰਦ ਕਰ ਦੇਣਗੇ।",

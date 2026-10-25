@@ -1487,7 +1487,7 @@
   "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "Ritheann \"{phaseName}\" ag an am céanna leis an suirbhé seo. Ní féidir le céimeanna ar an amlíne forluí ar a chéile.",
   "app.containers.Admin.projects.PhasePlacement.spotlight": "Spotsolas",
   "app.containers.Admin.projects.PhasePlacement.spotlightDescription": "Ritheann sé leis féin, lasmuigh den amlíne",
-  "app.containers.Admin.projects.PhasePlacement.startDate": "Dáta tosaigh",
+  "app.containers.Admin.projects.PhasePlacement.startDate": "Dáta tosaithe",
   "app.containers.Admin.projects.PhasePlacement.surveyPlacement": "Socrú an tsuirbhé",
   "app.containers.Admin.projects.PhasePlacement.timeline": "Amlíne",
   "app.containers.Admin.projects.PhasePlacement.timelineDescription": "Le feiceáil ar an amlíne",

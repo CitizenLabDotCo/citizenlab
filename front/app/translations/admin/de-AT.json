@@ -1470,7 +1470,7 @@
   "app.containers.Admin.projects.NewProjectForm.titleRequired2": "Projekttitel in allen Sprachen hinzufügen.",
   "app.containers.Admin.projects.NewProjectForm.titleRequiredSingleLocale": "Projekttitel hinzufügen.",
   "app.containers.Admin.projects.PhasePlacement.changeDatesButton": "Daten ändern",
-  "app.containers.Admin.projects.PhasePlacement.dateTimezone": "Für Datums- und Zeitangaben wird {timeZone} verwendet.",
+  "app.containers.Admin.projects.PhasePlacement.dateTimezone": "Datums- und Zeitangaben verwenden {timeZone}.",
   "app.containers.Admin.projects.PhasePlacement.editTimelineDates": "Ändern Sie die Daten dieser Umfrage oder einer anderen Phase unten. Es wird nichts geändert, bis Sie die Umfrage verschieben.",
   "app.containers.Admin.projects.PhasePlacement.endDate": "Enddatum",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Diese Umfrage ist beendet. Bürger*innen sehen eine beendete zusätzliche Umfrage nur dann, wenn Sie diese zu Ihrer Projektseite hinzufügen.",
