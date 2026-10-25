@@ -3644,6 +3644,56 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.Admin.FeedbackPrompt.close": {
+    "state": "verified",
+    "verified_at": "2026-10-13T09:36:14.610250Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.FeedbackPrompt.commentLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-13T09:36:14.610250Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.FeedbackPrompt.projectSetupEaseQuestion": {
+    "state": "verified",
+    "verified_at": "2026-10-13T09:36:14.610250Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.FeedbackPrompt.returnFindabilityQuestion2": {
+    "state": "verified",
+    "verified_at": "2026-10-13T09:36:14.610250Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.FeedbackPrompt.saveError": {
+    "state": "verified",
+    "verified_at": "2026-10-14T14:08:22.726011Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.FeedbackPrompt.scaleHint": {
+    "state": "verified",
+    "verified_at": "2026-10-13T09:36:14.610250Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.FeedbackPrompt.send": {
+    "state": "verified",
+    "verified_at": "2026-10-13T09:36:14.610250Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.FeedbackPrompt.thanks": {
+    "state": "verified",
+    "verified_at": "2026-10-13T09:36:14.610250Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.FeedbackPrompt.veryEasy": {
+    "state": "verified",
+    "verified_at": "2026-10-13T09:36:14.610250Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.FeedbackPrompt.veryHard": {
+    "state": "verified",
+    "verified_at": "2026-10-13T09:36:14.610250Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.Insights.tabReports": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",
