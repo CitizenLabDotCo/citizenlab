@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "L'enquête devient une phase de la chronologie. Elle conserve ses questions et ses réponses, et son lien continue de fonctionner.",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "Déplacer cette enquête vers la chronologie ?",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "« {phaseName} » devient la dernière phase de la chronologie. Elle se termine le {date}.",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Cette enquête n'a pas de date de fin. Seule la dernière phase de la chronologie peut être sans date de fin.",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "« {phaseName} » se déroule en même temps que cette enquête. Les phases de la chronologie ne peuvent pas se chevaucher.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Chevauche « {phaseName} ». Terminez cette étape d'ici le {date}, ou modifiez les dates de cette étape.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "« {phaseName} » n'a pas de date de fin. Ajoutez une date de fin à cette étape avant que celle-ci ne commence.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Chevauche « {phaseName} ». Commencez cette étape le {date} ou après, ou modifiez les dates de cette étape.",

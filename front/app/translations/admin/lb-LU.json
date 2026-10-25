@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "D'Ëmfro gëtt eng Phas op der Timeline. Si behält hir Froen an Äntwerten, an hire Link funktionéiert weiderhin.",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "Dës Ëmfro op d'Timeline réckelen?",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "\"{phaseName}\" gëtt déi lescht Phas op der Timeline. Si hält den {date} op.",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Dës Ëmfro huet keen Enddatum. Nëmmen déi lescht Phas op der Timeline kann en oppent Enn hunn.",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "\"{phaseName}\" leeft zur selwechter Zäit wéi dës Ëmfro. Phasen op der Timeline kënnen sech net iwwerschneiden.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Iwwerschneit sech mat \"{phaseName}\". Beend dës Phas bis den {date}, oder änner d'Datumer vun där Phas.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "\"{phaseName}\" huet keen Enddatum. Füügt där Phas en Enddatum bäi, éier dës Phas ufänkt.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Iwwerschneit sech mat \"{phaseName}\". Start dës Phas op oder nom {date}, oder änner d'Datumer vun där Phas.",

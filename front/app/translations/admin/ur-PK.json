@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "سروے ٹائم لائن پر ایک مرحلہ بن جاتا ہے۔ یہ اپنے سوالات اور جوابات کو برقرار رکھتا ہے، اور اس کا سروے لنک کام کرتا رہتا ہے۔",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "کیا اس سروے کو ٹائم لائن پر منتقل کرنا چاہتے ہیں؟",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "\"{phaseName}\" ٹائم لائن کا آخری مرحلہ بن جاتا ہے۔ یہ {date} کو ختم ہوتا ہے۔",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "اس سروے کی کوئی اختتامی تاریخ نہیں ہے۔ ٹائم لائن کا صرف آخری مرحلہ ہی غیر معینہ مدت کے لیے ہو سکتا ہے۔",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "\"{phaseName}\" اس سروے کے ساتھ ہی چل رہا ہے۔ ٹائم لائن کے مراحل ایک دوسرے کے وقت میں اوورلیپ نہیں کر سکتے۔",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "\"{phaseName}\" کے ساتھ اوورلیپ ہو رہا ہے۔ اس مرحلے کو {date} تک ختم کریں، یا اس مرحلے کی تاریخیں تبدیل کریں۔",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "\"{phaseName}\" کی کوئی اختتامی تاریخ نہیں ہے۔ اس مرحلے کے شروع ہونے سے پہلے اس مرحلے کے لیے اختتامی تاریخ شامل کریں۔",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "\"{phaseName}\" کے ساتھ اوورلیپ ہو رہا ہے۔ اس مرحلے کو {date} کو یا اس کے بعد شروع کریں، یا اس مرحلے کی تاریخیں تبدیل کریں۔",

@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "La encuesta se convierte en una fase de la cronología. Mantiene sus preguntas y respuestas, y el enlace a la encuesta sigue funcionando.",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "¿Mover esta encuesta a la cronología?",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "\"{phaseName}\" pasa a ser la última fase de la cronología. Termina el {date}.",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Esta encuesta no tiene fecha de finalización. Solo la última fase de la cronología puede ser abierta.",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "\"{phaseName}\" se desarrolla al mismo tiempo que esta encuesta. Las fases de la cronología no pueden solaparse.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Se solapa con \"{phaseName}\". Finaliza esta fase el {date} o antes, o cambia las fechas de esa fase.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "\"{phaseName}\" no tiene fecha de finalización. Añade una fecha de finalización a esa fase antes de que comience esta fase.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Se solapa con \"{phaseName}\". Comienza esta fase el {date} o después, o cambia las fechas de esa fase.",

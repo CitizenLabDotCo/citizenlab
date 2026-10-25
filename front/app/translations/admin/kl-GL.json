@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "Misissuineq piffissaliussami immikkoortunngussaaq. Apeqqutit akissutillu pigiinnarpai, misissuinermullu attavia suli atuuppoq.",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "Misissuineq una piffissaliussamut nuunniarpiuk?",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "\"{phaseName}\" piffissaliussami immikkoortunngussaaq kingulleq. {date}-mi naassaaq.",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Misissuineq una naaffissaqanngilaq. Piffissaliussami immikkoortoq kingulleq kisiat killeqanngitsumik naaffissaqartinneqarsinnaavoq.",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "\"{phaseName}\" misissuineq una peqatigalugu ingerlavoq. Piffissaliussami immikkoortut imminnut qaleriissinnaanngillat.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "\"{phaseName}\"-mut piffissatigut tulluunngilaq. Una immikkoortoq {date} nallertinnagu naasussanngortiguk, imaluunniit immikkoortup taassuma ullui allanngortikkit.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "\"{phaseName}\" naaneranut ullulerneqanngilaq. Immikkoortoq taanna naaneranut ulluleruk una aallartitsinnagu.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "\"{phaseName}\"-mut piffissatigut tulluunngilaq. Una immikkoortoq {date}-mi imaluunniit kingusinnerusukkut aallartiguk, imaluunniit immikkoortup taassuma ullui allanngortikkit.",

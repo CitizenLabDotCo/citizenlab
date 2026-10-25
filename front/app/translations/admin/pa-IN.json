@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "ਸਰਵੇਖਣ ਟਾਈਮਲਾਈਨ 'ਤੇ ਇੱਕ ਪੜਾਅ ਬਣ ਜਾਂਦਾ ਹੈ। ਇਹ ਆਪਣੇ ਸਵਾਲਾਂ ਅਤੇ ਜਵਾਬਾਂ ਨੂੰ ਬਰਕਰਾਰ ਰੱਖਦਾ ਹੈ, ਅਤੇ ਇਸਦਾ ਸਰਵੇਖਣ ਲਿੰਕ ਕੰਮ ਕਰਦਾ ਰਹਿੰਦਾ ਹੈ।",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "ਕੀ ਇਸ ਸਰਵੇਖਣ ਨੂੰ ਟਾਈਮਲਾਈਨ 'ਤੇ ਭੇਜਣਾ ਹੈ?",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "\"{phaseName}\" ਟਾਈਮਲਾਈਨ ਦਾ ਆਖਰੀ ਪੜਾਅ ਬਣ ਜਾਂਦਾ ਹੈ। ਇਹ {date} ਨੂੰ ਖਤਮ ਹੁੰਦਾ ਹੈ।",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "ਇਸ ਸਰਵੇਖਣ ਦੀ ਕੋਈ ਅੰਤਮ ਮਿਤੀ ਨਹੀਂ ਹੈ। ਟਾਈਮਲਾਈਨ 'ਤੇ ਸਿਰਫ਼ ਆਖਰੀ ਪੜਾਅ ਹੀ ਬਿਨਾਂ ਕਿਸੇ ਅੰਤਮ ਮਿਤੀ ਦੇ ਹੋ ਸਕਦਾ ਹੈ।",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "\"{phaseName}\" ਇਸ ਸਰਵੇਖਣ ਦੇ ਨਾਲ ਹੀ ਚੱਲਦਾ ਹੈ। ਟਾਈਮਲਾਈਨ ਦੇ ਪੜਾਅ ਓਵਰਲੈਪ ਨਹੀਂ ਹੋ ਸਕਦੇ।",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "\"{phaseName}\" ਨਾਲ ਓਵਰਲੈਪ ਹੁੰਦਾ ਹੈ। ਇਸ ਪੜਾਅ ਨੂੰ {date} ਤੱਕ ਖਤਮ ਕਰੋ, ਜਾਂ ਉਸ ਪੜਾਅ ਦੀਆਂ ਮਿਤੀਆਂ ਬਦਲੋ।",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "\"{phaseName}\" ਦੀ ਕੋਈ ਸਮਾਪਤੀ ਮਿਤੀ ਨਹੀਂ ਹੈ। ਇਸ ਪੜਾਅ ਦੇ ਸ਼ੁਰੂ ਹੋਣ ਤੋਂ ਪਹਿਲਾਂ ਉਸ ਪੜਾਅ ਵਿੱਚ ਇੱਕ ਸਮਾਪਤੀ ਮਿਤੀ ਸ਼ਾਮਲ ਕਰੋ।",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "\"{phaseName}\" ਨਾਲ ਓਵਰਲੈਪ ਹੁੰਦਾ ਹੈ। ਇਸ ਪੜਾਅ ਨੂੰ {date} ਨੂੰ ਜਾਂ ਇਸ ਤੋਂ ਬਾਅਦ ਸ਼ੁਰੂ ਕਰੋ, ਜਾਂ ਉਸ ਪੜਾਅ ਦੀਆਂ ਮਿਤੀਆਂ ਬਦਲੋ।",

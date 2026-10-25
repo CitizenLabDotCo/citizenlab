@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "Undersøgelsen bliver en fase på tidslinjen. Den beholder sine spørgsmål og svar, og dens undersøgelseslink bliver ved med at virke.",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "Flyt denne undersøgelse til tidslinjen?",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "\"{phaseName}\" bliver den sidste fase på tidslinjen. Den slutter den {date}.",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Denne undersøgelse har ingen slutdato. Kun den sidste fase på tidslinjen kan være uden slutdato.",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "\"{phaseName}\" kører samtidig med denne undersøgelse. Faser på tidslinjen kan ikke overlappe.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Overlapper med \"{phaseName}\". Afslut denne fase senest {date}, eller ændr datoerne for den fase.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "\"{phaseName}\" har ingen slutdato. Tilføj en slutdato til den fase, før denne fase starter.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Overlapper med \"{phaseName}\". Start denne fase på eller efter {date}, eller ændr datoerne for den fase.",

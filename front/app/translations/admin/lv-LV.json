@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "Aptauja kļūst par posmu laika skalā. Tā saglabā savus jautājumus un atbildes, un tās aptaujas saite turpina darboties.",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "Vai pārvietot šo aptauju uz laika skalu?",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "\"{phaseName}\" kļūst par pēdējo posmu laika skalā. Tas beidzas {date}.",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Šai aptaujai nav beigu datuma. Tikai pēdējais posms laika skalā var būt bez beigu datuma.",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "\"{phaseName}\" norisinās tajā pašā laikā, kad šī aptauja. Laika skalas posmi nevar pārklāties.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Pārklājas ar posmu \"{phaseName}\". Beidziet šo posmu līdz {date} vai mainiet tā posma datumus.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "Posmam \"{phaseName}\" nav beigu datuma. Pievienojiet tam posmam beigu datumu pirms šī posma sākuma.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Pārklājas ar posmu \"{phaseName}\". Sāciet šo posmu {date} vai vēlāk, vai mainiet tā posma datumus.",

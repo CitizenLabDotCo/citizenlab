@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "L'enquesta passa a ser una fase de la línia de temps. Manté les preguntes i les respostes, i l'enllaç de l'enquesta continua funcionant.",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "Voleu moure aquesta enquesta a la línia de temps?",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "\"{phaseName}\" passa a ser l'última fase de la línia de temps. Acaba el {date}.",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Aquesta enquesta no té data de finalització. Només l'última fase de la línia de temps pot ser oberta.",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "\"{phaseName}\" s'executa al mateix temps que aquesta enquesta. Les fases de la línia de temps no es poden encavalcar.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Se superposa amb \"{phaseName}\". Finalitza aquesta fase el {date} o abans, o canvia les dates d'aquella fase.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "\"{phaseName}\" no té data de finalització. Afegeix una data de finalització a aquella fase abans que comenci aquesta.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Se superposa amb \"{phaseName}\". Comença aquesta fase el {date} o després, o canvia les dates d'aquella fase.",

@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "Spørreundersøkelsen blir en fase på tidslinjen. Den beholder spørsmålene og svarene sine, og lenken til undersøkelsen fortsetter å fungere.",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "Flytte denne spørreundersøkelsen til tidslinjen?",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "\"{phaseName}\" blir den siste fasen på tidslinjen. Den avsluttes {date}.",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Denne spørreundersøkelsen har ingen sluttdato. Bare den siste fasen på tidslinjen kan være uten sluttdato.",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "\"{phaseName}\" kjører samtidig som denne spørreundersøkelsen. Faser på tidslinjen kan ikke overlappe.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Overlapper med «{phaseName}». Avslutt denne fasen innen {date}, eller endre datoene for den fasen.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "«{phaseName}» har ingen sluttdato. Legg til en sluttdato for den fasen før denne fasen starter.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Overlapper med «{phaseName}». Start denne fasen på eller etter {date}, eller endre datoene for den fasen.",

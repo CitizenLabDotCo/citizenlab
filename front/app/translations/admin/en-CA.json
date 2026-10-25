@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "The survey becomes a phase on the timeline. It keeps its questions and responses, and its survey link keeps working.",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "Move this survey to the timeline?",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "\"{phaseName}\" becomes the last phase on the timeline. It ends on {date}.",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "This survey has no end date. Only the last phase on the timeline can be open-ended.",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "\"{phaseName}\" runs at the same time as this survey. Phases on the timeline cannot overlap.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Overlaps with \"{phaseName}\". End this phase by {date}, or change that phase’s dates.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "\"{phaseName}\" has no end date. Add an end date to that phase before this phase starts.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Overlaps with \"{phaseName}\". Start this phase on or after {date}, or change that phase’s dates.",

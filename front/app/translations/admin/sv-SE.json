@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "Enkäten blir en fas på tidslinjen. Den behåller sina frågor och svar, och dess enkätlänk fortsätter att fungera.",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "Flytta denna enkät till tidslinjen?",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "\"{phaseName}\" blir den sista fasen på tidslinjen. Den avslutas den {date}.",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Denna enkät har inget slutdatum. Endast den sista fasen på tidslinjen kan sakna slutdatum.",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "\"{phaseName}\" pågår samtidigt som denna enkät. Faser på tidslinjen kan inte överlappa varandra.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Överlappar med ”{phaseName}”. Avsluta den här fasen senast {date}, eller ändra den fasens datum.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "”{phaseName}” saknar slutdatum. Lägg till ett slutdatum för den fasen innan den här fasen börjar.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Överlappar med ”{phaseName}”. Starta den här fasen på eller efter {date}, eller ändra den fasens datum.",

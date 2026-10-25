@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "Anket, zaman çizelgesinde bir aşama haline gelir. Sorularını ve yanıtlarını korur ve anket bağlantısı çalışmaya devam eder.",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "Bu anket zaman çizelgesine taşınsın mı?",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "\"{phaseName}\" zaman çizelgesindeki son aşama olur. {date} tarihinde sona erer.",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Bu anketin bitiş tarihi yok. Zaman çizelgesindeki yalnızca son aşama ucu açık olabilir.",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "\"{phaseName}\" bu anketle aynı anda çalışıyor. Zaman çizelgesindeki aşamalar çakışamaz.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "\"{phaseName}\" ile çakışıyor. Bu aşamayı {date} tarihine kadar sonlandırın veya o aşamanın tarihlerini değiştirin.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "\"{phaseName}\" aşamasının bitiş tarihi yok. Bu aşama başlamadan önce o aşamaya bir bitiş tarihi ekleyin.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "\"{phaseName}\" ile çakışıyor. Bu aşamayı {date} tarihinde veya sonrasında başlatın veya o aşamanın tarihlerini değiştirin.",

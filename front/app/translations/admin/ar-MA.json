@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "سيصبح الاستطلاع مرحلة في الجدول الزمني. سيحتفظ بأسئلته وردوده، وسيبقى رابط الاستطلاع صالحاً.",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "هل تريد نقل هذا الاستطلاع إلى الجدول الزمني؟",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "ستصبح \"{phaseName}\" المرحلة الأخيرة في الجدول الزمني. ستنتهي في {date}.",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "ليس لهذا الاستطلاع تاريخ انتهاء. فقط المرحلة الأخيرة في الجدول الزمني يمكن أن تكون مفتوحة.",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "يتم تشغيل \"{phaseName}\" في نفس وقت هذا الاستطلاع. لا يمكن للمراحل في الجدول الزمني أن تتداخل.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "كاين تداخل مع \"{phaseName}\". سالي هاد المرحلة فـ {date}، ولاّ بدّل التواريخ ديال هاديك المرحلة.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "\"{phaseName}\" ما عندهاش تاريخ النهاية. زيد تاريخ النهاية لهاديك المرحلة قبل ما تبدا هاد المرحلة.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "كاين تداخل مع \"{phaseName}\". بدا هاد المرحلة فـ {date} ولاّ من بعدو، ولاّ بدّل التواريخ ديال هاديك المرحلة.",

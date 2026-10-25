@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "A pesquisa torna-se uma etapa na linha do tempo. Ela mantém suas perguntas e respostas, e o link da pesquisa continua funcionando.",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "Mover esta pesquisa para a linha do tempo?",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "\"{phaseName}\" torna-se a última etapa na linha do tempo. Ela termina em {date}.",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Esta pesquisa não tem data de término. Apenas a última etapa da linha do tempo pode ser aberta.",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "\"{phaseName}\" ocorre ao mesmo tempo que esta pesquisa. As etapas na linha do tempo não podem se sobrepor.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Sobrepõe-se a \"{phaseName}\". Encerre esta fase até {date} ou altere as datas daquela fase.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "\"{phaseName}\" não tem data de término. Adicione uma data de término a essa fase antes que esta fase comece.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Sobrepõe-se a \"{phaseName}\". Inicie esta fase em ou após {date} ou altere as datas daquela fase.",

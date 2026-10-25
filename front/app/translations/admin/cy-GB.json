@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "Daw'r arolwg yn gam ar y llinell amser. Mae'n cadw ei gwestiynau a'i ymatebion, ac mae dolen yr arolwg yn parhau i weithio.",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "Symud yr arolwg hwn i'r llinell amser?",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "Daw \"{phaseName}\" yn gam olaf ar y llinell amser. Mae'n dod i ben ar {date}.",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Nid oes dyddiad gorffen i'r arolwg hwn. Dim ond cam olaf y llinell amser all fod yn benagored.",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "Mae \"{phaseName}\" yn rhedeg ar yr un pryd â'r arolwg hwn. Ni all camau ar y llinell amser orgyffwrdd.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Yn gorgyffwrdd â \"{phaseName}\". Gorffennwch y cam hwn erbyn {date}, neu newidiwch ddyddiadau'r cam hwnnw.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "Nid oes gan \"{phaseName}\" ddyddiad gorffen. Ychwanegwch ddyddiad gorffen i'r cam hwnnw cyn i'r cam hwn ddechrau.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Yn gorgyffwrdd â \"{phaseName}\". Dechreuwch y cam hwn ar neu ar ôl {date}, neu newidiwch ddyddiadau'r cam hwnnw.",

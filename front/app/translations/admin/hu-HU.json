@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "A felmérés az idővonal egyik szakaszává válik. Megtartja a kérdéseket és a válaszokat, és a felmérés hivatkozása továbbra is működni fog.",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "Áthelyezi ezt a felmérést az idővonalra?",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "A(z) „{phaseName}” lesz az idővonal utolsó szakasza. {date} napon ér véget.",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Ennek a felmérésnek nincs befejezési dátuma. Csak az idővonal utolsó szakasza lehet nyitott végű.",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "A(z) „{phaseName}” szakasz a felméréssel egy időben fut. Az idővonal szakaszai nem fedhetik át egymást.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Átfedi a(z) „{phaseName}” szakaszt. Fejezze be ezt a szakaszt {date} időpontig, vagy módosítsa a másik szakasz dátumait.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "A(z) „{phaseName}” szakasznak nincs befejezési dátuma. Adjon meg egy befejezési dátumot ahhoz a szakaszhoz, mielőtt ez a szakasz elkezdődne.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Átfedi a(z) „{phaseName}” szakaszt. Kezdje el ezt a szakaszt {date} napon vagy azután, vagy módosítsa a másik szakasz dátumait.",

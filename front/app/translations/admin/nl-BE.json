@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "De vragenlijst wordt een fase op de tijdlijn. De vragen en antwoorden blijven behouden en de link naar de vragenlijst blijft werken.",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "Deze vragenlijst naar de tijdlijn verplaatsen?",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "\"{phaseName}\" wordt de laatste fase op de tijdlijn. Deze eindigt op {date}.",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Deze vragenlijst heeft geen einddatum. Alleen de laatste fase op de tijdlijn kan een open einde hebben.",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "\"{phaseName}\" loopt tegelijkertijd met deze vragenlijst. Fasen op de tijdlijn mogen elkaar niet overlappen.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Overlapt met \"{phaseName}\". Beëindig deze fase uiterlijk op {date}, of wijzig de datums van die fase.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "\"{phaseName}\" heeft geen einddatum. Voeg een einddatum toe aan die fase voordat deze fase begint.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Overlapt met \"{phaseName}\". Start deze fase op of na {date}, of wijzig de datums van die fase.",

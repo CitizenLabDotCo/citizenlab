@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "Anketa postaje faza na vremenskoj traci. Zadržava svoja pitanja i odgovore, a poveznica na anketu nastavlja raditi.",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "Želite li premjestiti ovu anketu na vremensku traku?",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "\"{phaseName}\" postaje posljednja faza na vremenskoj traci. Završava {date}.",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Ova anketa nema datum završetka. Samo posljednja faza na vremenskoj traci može biti bez datuma završetka.",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "\"{phaseName}\" se odvija u isto vrijeme kad i ova anketa. Faze na vremenskoj traci ne smiju se preklapati.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Preklapa se s fazom \"{phaseName}\". Završite ovu fazu do {date} ili promijenite datume te faze.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "\"{phaseName}\" nema datum završetka. Dodajte datum završetka toj fazi prije nego što ova faza započne.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Preklapa se s fazom \"{phaseName}\". Započnite ovu fazu na dan {date} ili kasnije, ili promijenite datume te faze.",

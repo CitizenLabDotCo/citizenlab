@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "Η έρευνα γίνεται φάση στο χρονοδιάγραμμα. Διατηρεί τις ερωτήσεις και τις απαντήσεις της και ο σύνδεσμος της έρευνας συνεχίζει να λειτουργεί.",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "Μετακίνηση αυτής της έρευνας στο χρονοδιάγραμμα;",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "Η φάση \"{phaseName}\" γίνεται η τελευταία φάση στο χρονοδιάγραμμα. Λήγει στις {date}.",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Αυτή η έρευνα δεν έχει ημερομηνία λήξης. Μόνο η τελευταία φάση στο χρονοδιάγραμμα μπορεί να είναι ανοιχτή.",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "Η φάση \"{phaseName}\" εκτελείται ταυτόχρονα με αυτήν την έρευνα. Οι φάσεις στο χρονοδιάγραμμα δεν μπορούν να συμπίπτουν.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Επικαλύπτεται με τη φάση \"{phaseName}\". Ολοκληρώστε αυτή τη φάση έως τις {date} ή αλλάξτε τις ημερομηνίες εκείνης της φάσης.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "Η φάση \"{phaseName}\" δεν έχει ημερομηνία λήξης. Προσθέστε μια ημερομηνία λήξης σε εκείνη τη φάση προτού ξεκινήσει αυτή η φάση.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Επικαλύπτεται με τη φάση \"{phaseName}\". Ξεκινήστε αυτή τη φάση στις ή μετά τις {date} ή αλλάξτε τις ημερομηνίες εκείνης της φάσης.",

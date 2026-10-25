@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "Ankieta staje się etapem na osi czasu. Zachowuje swoje pytania i odpowiedzi, a link do ankiety nadal działa.",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "Przenieść tę ankietę na oś czasu?",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "Etap „{phaseName}” staje się ostatnim etapem na osi czasu. Kończy się {date}.",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Ta ankieta nie ma daty zakończenia. Tylko ostatni etap na osi czasu może nie mieć daty zakończenia.",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "Etap „{phaseName}” trwa w tym samym czasie co ta ankieta. Etapy na osi czasu nie mogą się nakładać.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Nakłada się na „{phaseName}”. Zakończ tę fazę do {date} lub zmień daty tamtej fazy.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "„{phaseName}” nie ma daty zakończenia. Dodaj datę zakończenia tej fazy, zanim rozpocznie się obecna faza.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Nakłada się na „{phaseName}”. Rozpocznij tę fazę {date} lub później, albo zmień daty tamtej fazy.",

@@ -1485,8 +1485,6 @@
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineExplanation": "Il sondaggio diventa una fase della timeline. Mantiene le domande e le risposte e il link al sondaggio continua a funzionare.",
   "app.containers.Admin.projects.PhasePlacement.moveToTimelineTitle": "Vuoi spostare questo sondaggio nella timeline?",
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "\"{phaseName}\" diventa l'ultima fase della timeline. Termina il {date}.",
-  "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Questo sondaggio non ha una data di fine. Solo l'ultima fase della timeline può essere senza data di fine.",
-  "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "\"{phaseName}\" si svolge contemporaneamente a questo sondaggio. Le fasi della timeline non possono sovrapporsi.",
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Si sovrappone a \"{phaseName}\". Termina questa fase entro il {date} o modifica le date di quella fase.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "\"{phaseName}\" non ha una data di fine. Aggiungi una data di fine a quella fase prima dell'inizio di questa fase.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Si sovrappone a \"{phaseName}\". Inizia questa fase il {date} o dopo, oppure modifica le date di quella fase.",
