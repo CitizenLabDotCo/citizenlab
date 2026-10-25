@@ -1483,7 +1483,7 @@
   "app.containers.Admin.projects.PhasePlacement.newLastPhase": "\"{phaseName}\" zaman çizelgesindeki son aşama olur. {date} tarihinde sona erer.",
   "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Bu anketin bitiş tarihi yok. Zaman çizelgesindeki yalnızca son aşama ucu açık olabilir.",
   "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "\"{phaseName}\" bu anketle aynı anda çalışıyor. Zaman çizelgesindeki aşamalar çakışamaz.",
-  "app.containers.Admin.projects.PhasePlacement.spotlight": "Öne çıkanlar",
+  "app.containers.Admin.projects.PhasePlacement.spotlight": "Spotlight",
   "app.containers.Admin.projects.PhasePlacement.spotlightDescription": "Zaman çizelgesinin dışında, bağımsız olarak çalışır",
   "app.containers.Admin.projects.PhasePlacement.surveyPlacement": "Anket yerleşimi",
   "app.containers.Admin.projects.PhasePlacement.timeline": "Zaman çizelgesi",

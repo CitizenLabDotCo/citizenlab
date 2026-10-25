@@ -1485,7 +1485,7 @@
   "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "Etap „{phaseName}” trwa w tym samym czasie co ta ankieta. Etapy na osi czasu nie mogą się nakładać.",
   "app.containers.Admin.projects.PhasePlacement.spotlight": "Wyróżnione",
   "app.containers.Admin.projects.PhasePlacement.spotlightDescription": "Działa niezależnie, poza osią czasu",
-  "app.containers.Admin.projects.PhasePlacement.surveyPlacement": "Miejsce publikacji ankiety",
+  "app.containers.Admin.projects.PhasePlacement.surveyPlacement": "Umiejscowienie ankiety",
   "app.containers.Admin.projects.PhasePlacement.timeline": "Oś czasu",
   "app.containers.Admin.projects.PhasePlacement.timelineDescription": "Pojawia się na osi czasu",
   "app.containers.Admin.projects.PhasePlacement.timelineGap": "Na osi czasu nie będzie żadnego etapu od {from} do {to}.",

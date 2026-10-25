@@ -1484,7 +1484,7 @@
   "app.containers.Admin.projects.PhasePlacement.openEndedBlocker": "Esta pesquisa não tem data de término. Apenas a última etapa da linha do tempo pode ser aberta.",
   "app.containers.Admin.projects.PhasePlacement.overlapBlocker": "\"{phaseName}\" ocorre ao mesmo tempo que esta pesquisa. As etapas na linha do tempo não podem se sobrepor.",
   "app.containers.Admin.projects.PhasePlacement.spotlight": "Destaque",
-  "app.containers.Admin.projects.PhasePlacement.spotlightDescription": "Ocorre de forma independente, fora da linha do tempo",
+  "app.containers.Admin.projects.PhasePlacement.spotlightDescription": "Funciona de forma independente, fora da linha do tempo",
   "app.containers.Admin.projects.PhasePlacement.surveyPlacement": "Posicionamento da enquete",
   "app.containers.Admin.projects.PhasePlacement.timeline": "Linha do tempo",
   "app.containers.Admin.projects.PhasePlacement.timelineDescription": "Aparece na linha do tempo",

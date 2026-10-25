@@ -1472,7 +1472,7 @@
   "app.containers.Admin.projects.PhasePlacement.changeDatesButton": "D'Datumer änneren",
   "app.containers.Admin.projects.PhasePlacement.editTimelineDates": "Ännert d'Datumer vun dëser Ëmfro oder vun enger anerer Phas hei drënner. Et ännert sech näischt, bis Dir d'Ëmfro réckelt.",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Dës Ëmfro ass eriwwer. Awunner gesinn eng ofgeschloss Spotlight-Ëmfro nëmmen, wann Dir se op Är Projetsäit bäisetzt.",
-  "app.containers.Admin.projects.PhasePlacement.invalidDates": "\"{phaseName}\" brauch en Startdatum a muss op d'mannst 24 Stonnen daueren. Phasen op der Timeline däerfen sech net iwwerschneiden, an nëmmen déi lescht Phas däerf keen Enddatum hunn.",
+  "app.containers.Admin.projects.PhasePlacement.invalidDates": "\"{phaseName}\" brauch en Startdatum a muss op d'mannst 24 Stonnen daueren. Timeline-Phasen däerfen sech net iwwerschneiden, an nëmmen déi lescht Phas däerf keen Enddatum hunn.",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "D'Phase no dëser Ëmfro kréien eng nei Nummer an hirem Link, dofir funktionéiere Linken, déi Dir op dës gedeelt hutt, net méi.",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "Bei d'Spotlight-Ëmfroen réckelen",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": "D'Ëmfro leeft parallel zur Timeline. Si behält hir Froen an Äntwerten, an hire Link funktionéiert weiderhin.",

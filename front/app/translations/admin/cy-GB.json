@@ -1472,7 +1472,7 @@
   "app.containers.Admin.projects.PhasePlacement.changeDatesButton": "Newid y dyddiadau",
   "app.containers.Admin.projects.PhasePlacement.editTimelineDates": "Newidiwch ddyddiadau'r arolwg hwn neu gam arall isod. Ni fydd dim yn newid nes i chi symud yr arolwg.",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Mae'r arolwg hwn wedi dod i ben. Dim ond os byddwch yn ei ychwanegu at dudalen eich prosiect y bydd preswylwyr yn gweld arolwg dan sylw sydd wedi dod i ben.",
-  "app.containers.Admin.projects.PhasePlacement.invalidDates": "Mae angen dyddiad dechrau ar \"{phaseName}\" a rhaid iddo barhau am o leiaf 24 awr. Ni all camau'r llinell amser orgyffwrdd, a dim ond y cam olaf all fod heb ddyddiad gorffen.",
+  "app.containers.Admin.projects.PhasePlacement.invalidDates": "Mae angen dyddiad dechrau ar \"{phaseName}\" a rhaid iddo barhau am o leiaf 24 awr. Ni all camau llinell amser orgyffwrdd, a dim ond y cam olaf all fod heb ddyddiad gorffen.",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "Mae'r camau ar ôl yr arolwg hwn yn cael rhif newydd yn eu dolen, felly bydd dolenni y gwnaethoch eu rhannu iddynt yn peidio â gweithio.",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "Symud i arolygon dan sylw",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": "Mae'r arolwg yn rhedeg ochr yn ochr â'r llinell amser. Mae'n cadw ei gwestiynau a'i ymatebion, ac mae dolen yr arolwg yn parhau i weithio.",
