@@ -7959,14 +7959,34 @@
     "verified_at": "2026-10-25T10:28:22.036072Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Admin.projects.PhasePlacement.durationTooShort": {
+    "state": "verified",
+    "verified_at": "2026-10-25T11:16:41.690465Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.projects.PhasePlacement.editTimelineDates": {
     "state": "verified",
     "verified_at": "2026-10-25T10:28:22.036072Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Admin.projects.PhasePlacement.endBeforeStart": {
+    "state": "verified",
+    "verified_at": "2026-10-25T11:16:41.690465Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.projects.PhasePlacement.endDate": {
     "state": "verified",
     "verified_at": "2026-10-25T10:28:22.036072Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects.PhasePlacement.endInvalid": {
+    "state": "verified",
+    "verified_at": "2026-10-25T11:16:41.690465Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects.PhasePlacement.endRequired2": {
+    "state": "verified",
+    "verified_at": "2026-10-25T11:16:41.690465Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": {
@@ -8029,6 +8049,26 @@
     "verified_at": "2026-10-09T13:13:55.614888Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": {
+    "state": "verified",
+    "verified_at": "2026-10-25T11:16:41.690465Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": {
+    "state": "verified",
+    "verified_at": "2026-10-25T11:16:41.690465Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": {
+    "state": "verified",
+    "verified_at": "2026-10-25T11:16:41.690465Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects.PhasePlacement.resolveDateConflicts": {
+    "state": "verified",
+    "verified_at": "2026-10-25T11:16:41.690465Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.projects.PhasePlacement.spotlight": {
     "state": "verified",
     "verified_at": "2026-10-25T10:28:22.036072Z",
@@ -8042,6 +8082,11 @@
   "app.containers.Admin.projects.PhasePlacement.startDate": {
     "state": "verified",
     "verified_at": "2026-10-25T10:28:22.036072Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects.PhasePlacement.startRequired": {
+    "state": "verified",
+    "verified_at": "2026-10-25T11:16:41.690465Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Admin.projects.PhasePlacement.surveyPlacement": {
