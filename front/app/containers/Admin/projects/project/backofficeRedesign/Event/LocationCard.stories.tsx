@@ -26,7 +26,6 @@ interface StoryArgs {
 const meta = {
   title: 'Components/Redesigned/Events/Location card',
   tags: ['bo', 'redesigned'],
-  component: LocationCard,
   parameters: { msw: eventStoryHandlers },
   args: { eventId: 'bo-event-1' },
   render: ({ eventId }) => (

@@ -28,7 +28,6 @@ interface StoryArgs {
 const meta = {
   title: 'Components/Redesigned/Events/Event setup',
   tags: ['bo', 'redesigned'],
-  component: EventSetup,
   parameters: { msw: eventStoryHandlers },
   args: { eventId: 'bo-event-1' },
   render: ({ eventId, withImage }) => (

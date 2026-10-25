@@ -28,7 +28,6 @@ interface StoryArgs {
 const meta = {
   title: 'Components/Redesigned/Events/Event preview',
   tags: ['bo', 'redesigned'],
-  component: EventPreview,
   parameters: { layout: 'fullscreen', msw: eventStoryHandlers },
   args: { eventId: 'bo-event-1' },
   render: ({ eventId, withImage }) => (

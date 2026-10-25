@@ -9,4 +9,7 @@ import Link from '../../app/utils/cl-router/__mocks__/Link';
 
 export const typedStyled = (component: any) => styled(component);
 
+// The real module's `as={LinkAs}` escape hatch is the same component.
+export const LinkAs = Link;
+
 export default Link;

@@ -21,7 +21,6 @@ interface StoryArgs {
 const meta = {
   title: 'Components/Redesigned/Events/Image card',
   tags: ['bo', 'redesigned'],
-  component: ImageCard,
   parameters: { msw: eventStoryHandlers },
   args: { withImage: false },
   render: ({ withImage }) => (

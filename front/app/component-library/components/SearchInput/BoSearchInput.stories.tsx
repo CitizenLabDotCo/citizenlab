@@ -21,6 +21,7 @@ const meta = {
     variant: 'bo',
     placeholder: 'Search inputs',
     ariaLabel: 'Search inputs',
+    a11y_closeIconTitle: 'Clear search',
     onChange: fn(),
   },
   decorators: [

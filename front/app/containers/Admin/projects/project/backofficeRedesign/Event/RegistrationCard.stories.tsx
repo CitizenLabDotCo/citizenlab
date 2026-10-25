@@ -22,7 +22,6 @@ interface StoryArgs {
 const meta = {
   title: 'Components/Redesigned/Events/Registration card',
   tags: ['bo', 'redesigned'],
-  component: RegistrationCard,
   parameters: { msw: eventStoryHandlers },
   args: { eventId: undefined },
   render: ({ eventId }) => (
