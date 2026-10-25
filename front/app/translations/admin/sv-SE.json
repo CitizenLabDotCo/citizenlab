@@ -1478,7 +1478,6 @@
   "app.containers.Admin.projects.PhasePlacement.endInvalid": "Ange ett giltigt slutdatum.",
   "app.containers.Admin.projects.PhasePlacement.endRequired": "Lägg till ett slutdatum på eller före \"{phaseName}\" börjar. Endast den sista fasen i tidslinjen kan sakna slutdatum.",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Denna enkät har avslutats. Invånare ser endast en avslutad spotlight-enkät om du lägger till den på din projektsida.",
-  "app.containers.Admin.projects.PhasePlacement.invalidDates": "\"{phaseName}\" behöver ett startdatum och måste pågå i minst 24 timmar. Faser i tidslinjen kan inte överlappa, och endast den sista fasen kan sakna slutdatum.",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "Faserna efter denna enkät får ett nytt nummer i sin länk, så länkar du har delat till dem kommer att sluta fungera.",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "Flytta till spotlight-enkäter",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": "Enkäten löper parallellt med tidslinjen. Den behåller sina frågor och svar, och dess enkätlänk fortsätter att fungera.",

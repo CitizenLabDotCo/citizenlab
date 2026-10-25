@@ -1478,7 +1478,6 @@
   "app.containers.Admin.projects.PhasePlacement.endInvalid": "Introduce una fecha de finalización válida.",
   "app.containers.Admin.projects.PhasePlacement.endRequired": "Añade una fecha de finalización igual o anterior al inicio de \"{phaseName}\". Solo la última fase de la cronología puede no tener fecha de finalización.",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Esta encuesta ha finalizado. Los residentes solo ven una encuesta destacada finalizada si la añades a la página de tu proyecto.",
-  "app.containers.Admin.projects.PhasePlacement.invalidDates": "\"{phaseName}\" necesita una fecha de inicio y debe durar al menos 24 horas. Las fases de la cronología no pueden solaparse, y solo la última fase puede no tener fecha de finalización.",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "Las fases posteriores a esta encuesta recibirán un nuevo número en su enlace, por lo que los enlaces que hayas compartido a ellas dejarán de funcionar.",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "Mover a encuestas destacadas",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": "La encuesta se desarrolla de forma paralela a la cronología. Mantiene sus preguntas y respuestas, y el enlace a la encuesta sigue funcionando.",

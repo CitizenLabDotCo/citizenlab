@@ -1478,7 +1478,6 @@
   "app.containers.Admin.projects.PhasePlacement.endInvalid": "ایک درست اختتامی تاریخ درج کریں۔",
   "app.containers.Admin.projects.PhasePlacement.endRequired": "\"{phaseName}\" کے شروع ہونے سے پہلے یا اس وقت تک کی اختتامی تاریخ شامل کریں۔ ٹائم لائن پر صرف آخری مرحلے کو اختتامی تاریخ کے بغیر چھوڑا جا سکتا ہے۔",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "یہ سروے ختم ہو چکا ہے۔ رہائشی صرف اسی صورت میں ختم شدہ سپاٹ لائٹ سروے دیکھ سکتے ہیں اگر آپ اسے اپنے پراجیکٹ پیج میں شامل کریں۔",
-  "app.containers.Admin.projects.PhasePlacement.invalidDates": "\"{phaseName}\" کے لیے آغاز کی تاریخ درکار ہے اور اس کا دورانیہ کم از کم 24 گھنٹے ہونا چاہیے۔ ٹائم لائن کے مراحل ایک دوسرے پر نہیں آ سکتے، اور صرف آخری مرحلہ اختتامی تاریخ کے بغیر ہو سکتا ہے۔",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "اس سروے کے بعد کے مراحل کو ان کے لنک میں ایک نیا نمبر ملتا ہے، اس لیے ان کے لیے آپ کے شیئر کردہ لنکس کام کرنا بند کر دیں گے۔",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "سپاٹ لائٹ سروے میں منتقل کریں",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": "سروے ٹائم لائن کے ساتھ ساتھ چلتا ہے۔ یہ اپنے سوالات اور جوابات کو برقرار رکھتا ہے، اور اس کا سروے لنک کام کرتا رہتا ہے۔",

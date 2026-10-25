@@ -1478,7 +1478,6 @@
   "app.containers.Admin.projects.PhasePlacement.endInvalid": "Anna kelvollinen päättymispäivä.",
   "app.containers.Admin.projects.PhasePlacement.endRequired": "Lisää päättymispäivä, joka on viimeistään vaiheen \"{phaseName}\" alkaessa. Vain aikajanan viimeisellä vaiheella voi olla tyhjä päättymispäivä.",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Tämä kysely on päättynyt. Asukkaat näkevät päättyneen spotlight-kyselyn vain, jos lisäät sen projektisivullesi.",
-  "app.containers.Admin.projects.PhasePlacement.invalidDates": "\"{phaseName}\" tarvitsee alkamispäivän ja sen on kestettävä vähintään 24 tuntia. Aikajanan vaiheet eivät voi olla päällekkäisiä, ja vain viimeinen vaihe voi olla ilman päättymispäivää.",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "Tämän kyselyn jälkeiset vaiheet saavat linkkiinsä uuden numeron, joten niihin jaetut linkit lakkaavat toimimasta.",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "Siirrä spotlight-kyselyihin",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": "Kysely on käynnissä aikajanan rinnalla. Se säilyttää kysymyksensä ja vastauksensa, ja sen kyselylinkki toimii edelleen.",

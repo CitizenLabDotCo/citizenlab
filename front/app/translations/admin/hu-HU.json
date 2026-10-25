@@ -1478,7 +1478,6 @@
   "app.containers.Admin.projects.PhasePlacement.endInvalid": "Adjon meg egy érvényes befejezési dátumot.",
   "app.containers.Admin.projects.PhasePlacement.endRequired": "Adjon meg egy befejezési dátumot a(z) „{phaseName}” kezdete előtti vagy azzal megegyező időpontra. Csak az idővonal utolsó szakasza maradhat befejezési dátum nélkül.",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Ez a felmérés lezárult. A lakosok csak akkor látják a lezárt kiemelt felmérést, ha hozzáadja azt a projektoldalhoz.",
-  "app.containers.Admin.projects.PhasePlacement.invalidDates": "A(z) „{phaseName}” fázisnak kezdési dátummal kell rendelkeznie, és legalább 24 óráig kell tartania. Az idővonal fázisai nem fedhetik át egymást, és csak az utolsó fázis maradhat befejezési dátum nélkül.",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "A felmérés utáni szakaszok hivatkozásában megváltozik a sorszám, így a korábban megosztott hivatkozások nem fognak működni.",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "Áthelyezés a kiemelt felmérések közé",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": "A felmérés az idővonallal párhuzamosan fut. Megtartja a kérdéseket és a válaszokat, és a felmérés hivatkozása továbbra is működni fog.",

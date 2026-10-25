@@ -1478,7 +1478,6 @@
   "app.containers.Admin.projects.PhasePlacement.endInvalid": "دخل تاريخ نهاية صحيح.",
   "app.containers.Admin.projects.PhasePlacement.endRequired": "زيد تاريخ النهاية فـ أو قبل ما تبدا \"{phaseName}\". غير المرحلة اللخرة فـ الجدول الزمني هي اللي تقدر تكون بلا تاريخ نهاية.",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "انتهى هذا الاستطلاع. لا يرى السكان الاستطلاعات المتميزة المنتهية إلا إذا أضفتها إلى صفحة مشروعك.",
-  "app.containers.Admin.projects.PhasePlacement.invalidDates": "\"{phaseName}\" خاصو تاريخ البدية ويدوم 24 ساعة على الأقل. المراحل ديال الجدول الزمني ما يمكنش يتداخلوا، وفقط المرحلة اللخرة هي اللي يقدر ما يكونش عندها تاريخ النهاية.",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "ستحصل المراحل التي تلي هذا الاستطلاع على رقم جديد في روابطها، لذا ستتوقف الروابط التي شاركتها عن العمل.",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "نقل إلى الاستطلاعات المتميزة",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": "يتم تشغيل الاستطلاع جنباً إلى جنب مع الجدول الزمني. سيحتفظ بأسئلته وردوده، وسيبقى رابط الاستطلاع صالحاً.",

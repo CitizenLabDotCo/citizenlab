@@ -1478,7 +1478,6 @@
   "app.containers.Admin.projects.PhasePlacement.endInvalid": "Ievadiet derīgu beigu datumu.",
   "app.containers.Admin.projects.PhasePlacement.endRequired": "Pievienojiet beigu datumu, kas ir pirms \"{phaseName}\" sākuma vai tajā pašā laikā. Tikai pēdējam laika joslas posmam var nebūt beigu datuma.",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Šī aptauja ir beigusies. Iedzīvotāji redz beigušos izcelto aptauju tikai tad, ja pievienojat to sava projekta lapai.",
-  "app.containers.Admin.projects.PhasePlacement.invalidDates": "\"{phaseName}\" ir nepieciešams sākuma datums, un tai jāilgst vismaz 24 stundas. Laika skalas fāzes nedrīkst pārklāties, un tikai pēdējai fāzei var nebūt beigu datuma.",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "Posmiem pēc šīs aptaujas saitē tiks piešķirts jauns numurs, tāpēc saites, kuras kopīgojāt uz tiem, vairs nedarbosies.",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "Pārvietot uz izceltajām aptaujām",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": "Aptauja norisinās paralēli laika skalai. Tā saglabā savus jautājumus un atbildes, un tās aptaujas saite turpina darboties.",

@@ -1478,7 +1478,6 @@
   "app.containers.Admin.projects.PhasePlacement.endInvalid": "Insira uma data de término válida.",
   "app.containers.Admin.projects.PhasePlacement.endRequired": "Adicione uma data de término até o início de \"{phaseName}\". Apenas a última etapa da linha do tempo pode ficar sem data de término.",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Esta pesquisa terminou. Os residentes só veem uma pesquisa de destaque encerrada se você a adicionar à página do seu projeto.",
-  "app.containers.Admin.projects.PhasePlacement.invalidDates": "\"{phaseName}\" precisa de uma data de início e deve durar pelo menos 24 horas. As fases da linha do tempo não podem se sobrepor, e apenas a última fase pode não ter uma data de término.",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "As etapas após esta pesquisa receberão um novo número em seus links, portanto, os links que você compartilhou para elas deixarão de funcionar.",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "Mover para pesquisas de destaque",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": "A pesquisa ocorre paralelamente à linha do tempo. Ela mantém suas perguntas e respostas, e o link da pesquisa continua funcionando.",

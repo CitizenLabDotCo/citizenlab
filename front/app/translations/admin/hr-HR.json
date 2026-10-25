@@ -1478,7 +1478,6 @@
   "app.containers.Admin.projects.PhasePlacement.endInvalid": "Unesite valjan datum završetka.",
   "app.containers.Admin.projects.PhasePlacement.endRequired": "Dodajte datum završetka na dan ili prije početka faze „{phaseName}”. Samo posljednja faza na vremenskoj traci može biti bez datuma završetka.",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Ova je anketa završila. Stanovnici vide završenu istaknutu anketu samo ako je dodate na stranicu svog projekta.",
-  "app.containers.Admin.projects.PhasePlacement.invalidDates": "„{phaseName}” mora imati datum početka i trajati najmanje 24 sata. Faze vremenske trake ne smiju se preklapati, a samo posljednja faza može biti bez datuma završetka.",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "Faze nakon ove ankete dobit će novi broj u svojoj poveznici, pa će poveznice na njih koje ste podijelili prestati raditi.",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "Premjesti u istaknute ankete",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": "Anketa se odvija usporedno s vremenskom trakom. Zadržava svoja pitanja i odgovore, a poveznica na anketu nastavlja raditi.",

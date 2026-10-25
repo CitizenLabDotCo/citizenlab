@@ -1478,7 +1478,6 @@
   "app.containers.Admin.projects.PhasePlacement.endInvalid": "Εισαγάγετε μια έγκυρη ημερομηνία λήξης.",
   "app.containers.Admin.projects.PhasePlacement.endRequired": "Προσθέστε μια ημερομηνία λήξης κατά ή πριν την έναρξη της φάσης \"{phaseName}\". Μόνο η τελευταία φάση στο χρονοδιάγραμμα μπορεί να μην έχει ημερομηνία λήξης.",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Αυτή η έρευνα έχει λήξει. Οι κάτοικοι βλέπουν μια ληγμένη έρευνα spotlight μόνο εάν την προσθέσετε στη σελίδα του έργου σας.",
-  "app.containers.Admin.projects.PhasePlacement.invalidDates": "Η φάση \"{phaseName}\" χρειάζεται ημερομηνία έναρξης και πρέπει να διαρκεί τουλάχιστον 24 ώρες. Οι φάσεις του χρονοδιαγράμματος δεν μπορούν να αλληλοκαλύπτονται και μόνο η τελευταία φάση μπορεί να μην έχει ημερομηνία λήξης.",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "Οι φάσεις μετά από αυτήν την έρευνα αποκτούν νέο αριθμό στον σύνδεσμό τους, επομένως οι σύνδεσμοι που μοιραστήκατε για αυτές θα σταματήσουν να λειτουργούν.",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "Μετακίνηση στις έρευνες spotlight",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": "Η έρευνα εκτελείται παράλληλα με το χρονοδιάγραμμα. Διατηρεί τις ερωτήσεις και τις απαντήσεις της και ο σύνδεσμος της έρευνας συνεχίζει να λειτουργεί.",

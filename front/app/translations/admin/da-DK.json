@@ -1478,7 +1478,6 @@
   "app.containers.Admin.projects.PhasePlacement.endInvalid": "Indtast en gyldig slutdato.",
   "app.containers.Admin.projects.PhasePlacement.endRequired": "Tilføj en slutdato på eller før \"{phaseName}\" starter. Kun den sidste fase på tidslinjen kan være uden slutdato.",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Denne undersøgelse er afsluttet. Borgere ser kun en afsluttet spotlight-undersøgelse, hvis du tilføjer den til din projektside.",
-  "app.containers.Admin.projects.PhasePlacement.invalidDates": "\"{phaseName}\" skal have en startdato og skal vare i mindst 24 timer. Faser på tidslinjen må ikke overlappe, og kun den sidste fase kan være uden slutdato.",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "Faserne efter denne undersøgelse får et nyt nummer i deres link, så links du har delt til dem, vil holde op med at virke.",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "Flyt til spotlight-undersøgelser",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": "Undersøgelsen kører sideløbende med tidslinjen. Den beholder sine spørgsmål og svar, og dens undersøgelseslink bliver ved med at virke.",

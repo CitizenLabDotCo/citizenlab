@@ -1478,7 +1478,6 @@
   "app.containers.Admin.projects.PhasePlacement.endInvalid": "Geçerli bir bitiş tarihi girin.",
   "app.containers.Admin.projects.PhasePlacement.endRequired": "\"{phaseName}\" başlamadan önce veya başladığı tarihte bitecek bir bitiş tarihi ekleyin. Zaman çizelgesindeki yalnızca son aşamanın bitiş tarihi olmayabilir.",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Bu anket sona erdi. Sakinler, sona ermiş bir öne çıkan anketi yalnızca proje sayfanıza eklerseniz görebilirler.",
-  "app.containers.Admin.projects.PhasePlacement.invalidDates": "\"{phaseName}\" için bir başlangıç tarihi gereklidir ve en az 24 saat sürmelidir. Zaman çizelgesi aşamaları çakışamaz ve yalnızca son aşamanın bitiş tarihi olmayabilir.",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "Bu anketten sonraki aşamaların bağlantıları yeni bir numara alacak, bu nedenle onlarla paylaştığınız bağlantılar çalışmayı durduracaktır.",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "Öne çıkan anketlere taşı",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": "Anket, zaman çizelgesiyle birlikte çalışır. Sorularını ve yanıtlarını korur ve anket bağlantısı çalışmaya devam eder.",

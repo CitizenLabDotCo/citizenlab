@@ -1478,7 +1478,6 @@
   "app.containers.Admin.projects.PhasePlacement.endInvalid": "أدخل تاريخ انتهاء صالحاً.",
   "app.containers.Admin.projects.PhasePlacement.endRequired": "أضف تاريخ انتهاء في تاريخ بدء \"{phaseName}\" أو قبله. يمكن فقط للمرحلة الأخيرة في الجدول الزمني ألا يكون لها تاريخ انتهاء.",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "انتهى هذا الاستطلاع. لن يرى السكان الاستطلاع المميز المنتهي إلا إذا أضفته إلى صفحة مشروعك.",
-  "app.containers.Admin.projects.PhasePlacement.invalidDates": "يحتاج \"{phaseName}\" إلى تاريخ بدء ويجب أن يستمر لمدة 24 ساعة على الأقل. لا يمكن أن تتداخل مراحل الجدول الزمني، ويمكن للمرحلة الأخيرة فقط ألا يكون لها تاريخ انتهاء.",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "ستحصل المراحل التي تلي هذا الاستطلاع على رقم جديد في روابطها، لذا ستتوقف الروابط التي شاركتها لها عن العمل.",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "نقل إلى الاستطلاعات المميزة",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": "يعمل الاستطلاع جنباً إلى جنب مع الجدول الزمني. سيحتفظ بأسئلته وردوده، وسيظل رابط الاستطلاع يعمل.",

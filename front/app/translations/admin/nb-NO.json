@@ -1478,7 +1478,6 @@
   "app.containers.Admin.projects.PhasePlacement.endInvalid": "Oppgi en gyldig sluttdato.",
   "app.containers.Admin.projects.PhasePlacement.endRequired": "Legg til en sluttdato på eller før \"{phaseName}\" starter. Bare den siste fasen på tidslinjen kan være uten sluttdato.",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Denne spørreundersøkelsen er avsluttet. Innbyggere ser bare en avsluttet fremhevet spørreundersøkelse hvis du legger den til på prosjektsiden din.",
-  "app.containers.Admin.projects.PhasePlacement.invalidDates": "\"{phaseName}\" må ha en startdato og vare i minst 24 timer. Faser på tidslinjen kan ikke overlappe, og bare den siste fasen kan være uten sluttdato.",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "Fasene etter denne spørreundersøkelsen får et nytt nummer i lenken sin, så lenker du har delt til dem vil slutte å fungere.",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "Flytt til fremhevede spørreundersøkelser",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": "Spørreundersøkelsen kjører parallelt med tidslinjen. Den beholder spørsmålene og svarene sine, og lenken til undersøkelsen fortsetter å fungere.",

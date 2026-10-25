@@ -1478,7 +1478,6 @@
   "app.containers.Admin.projects.PhasePlacement.endInvalid": "Įveskite teisingą pabaigos datą.",
   "app.containers.Admin.projects.PhasePlacement.endRequired": "Pridėkite pabaigos datą, kuri būtų ne vėlesnė nei „{phaseName}“ pradžia. Tik paskutinis laiko juostos etapas gali neturėti pabaigos datos.",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Ši apklausa pasibaigė. Gyventojai pasibaigusią išskirtą apklausą mato tik tada, jei pridedate ją prie savo projekto puslapio.",
-  "app.containers.Admin.projects.PhasePlacement.invalidDates": "„{phaseName}“ turi turėti pradžios datą ir trukti bent 24 valandas. Laiko juostos etapai negali persidengti, o pabaigos datos gali neturėti tik paskutinis etapas.",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "Etapai po šios apklausos gaus naują numerį savo nuorodoje, todėl nuorodos, kuriomis pasidalijote į juos, nustos veikti.",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "Perkelti į išskirtas apklausas",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": "Apklausa vykdoma kartu su laiko juosta. Joje išlieka klausimai ir atsakymai, o apklausos nuoroda veikia toliau.",

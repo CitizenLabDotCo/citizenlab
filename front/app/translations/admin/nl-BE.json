@@ -1478,7 +1478,6 @@
   "app.containers.Admin.projects.PhasePlacement.endInvalid": "Voer een geldige einddatum in.",
   "app.containers.Admin.projects.PhasePlacement.endRequired": "Voeg een einddatum toe op of voor de start van \"{phaseName}\". Alleen de laatste fase op de tijdlijn kan zonder einddatum zijn.",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Deze vragenlijst is afgelopen. Inwoners zien een afgelopen uitgelichte vragenlijst alleen als je deze toevoegt aan je projectpagina.",
-  "app.containers.Admin.projects.PhasePlacement.invalidDates": "\"{phaseName}\" heeft een startdatum nodig en moet minstens 24 uur duren. Fasen op de tijdlijn mogen niet overlappen en alleen de laatste fase kan geen einddatum hebben.",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "De fasen na deze vragenlijst krijgen een nieuw nummer in hun link, dus links die je daarnaartoe hebt gedeeld, zullen niet meer werken.",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "Verplaatsen naar uitgelichte vragenlijsten",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": "De vragenlijst loopt naast de tijdlijn. De vragen en antwoorden blijven behouden en de link naar de vragenlijst blijft werken.",

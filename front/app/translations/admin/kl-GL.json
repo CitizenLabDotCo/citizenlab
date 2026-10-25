@@ -1478,7 +1478,6 @@
   "app.containers.Admin.projects.PhasePlacement.endInvalid": "Naaffissap ullua eqqortoq ikkuguk.",
   "app.containers.Admin.projects.PhasePlacement.endRequired": "Naaffissap ullua \"{phaseName}\" aallartitsinnagu imaluunniit aallartinnerani ikkuguk. Piffissap ingerlanerani immikkoortoq kingulleq kisimi naaffissaqanngissinnaavoq.",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Misissuineq una naavoq. Najugaqartut misissuinermik saqqumilaartumik naasumik takunnissinnaapput aatsaat suliavit qupperneranut ilanngukkukku.",
-  "app.containers.Admin.projects.PhasePlacement.invalidDates": "\"{phaseName}\" aallartiffissaqartariaqarpoq minnerpaamillu akunnerni 24-ni sivisussuseqassalluni. Piffissaliussami immikkoortut imminnut kalluuteqassanngillat, immikkoortullu kingullersaannaat naaffissaqanngissinnaavoq.",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "Misissuinerup uuma kingorna immikkoortut attaviini normu nutaaq pissavaat, taamaattumik taakkununnga attaviit avitseqatigiissutigisatit atorunnaassapput.",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "Misissuinernut saqqumilaartunut nuuguk",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": "Misissuineq piffissaliussaq peqatigalugu ingerlavoq. Apeqqutit akissutillu pigiinnarpai, misissuinermullu attavia suli atuuppoq.",

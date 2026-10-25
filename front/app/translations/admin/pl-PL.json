@@ -1478,7 +1478,6 @@
   "app.containers.Admin.projects.PhasePlacement.endInvalid": "Wprowadź poprawną datę zakończenia.",
   "app.containers.Admin.projects.PhasePlacement.endRequired": "Dodaj datę zakończenia przypadającą w dniu rozpoczęcia fazy „{phaseName}” lub wcześniej. Tylko ostatnia faza na osi czasu może nie mieć daty zakończenia.",
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": "Ta ankieta zakończyła się. Mieszkańcy widzą zakończoną ankietę wyróżnioną tylko wtedy, gdy dodasz ją do strony projektu.",
-  "app.containers.Admin.projects.PhasePlacement.invalidDates": "„{phaseName}” musi mieć datę rozpoczęcia i trwać co najmniej 24 godziny. Etapy na osi czasu nie mogą się nakładać, a tylko ostatni etap może nie mieć daty zakończenia.",
   "app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered": "Etapy po tej ankiecie otrzymają nowy numer w linku, więc udostępnione do nich linki przestaną działać.",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": "Przenieś do ankiet wyróżnionych",
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation": "Ankieta trwa równolegle do osi czasu. Zachowuje swoje pytania i odpowiedzi, a link do ankiety nadal działa.",
