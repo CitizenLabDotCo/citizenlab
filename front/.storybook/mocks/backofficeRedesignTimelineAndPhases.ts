@@ -270,11 +270,6 @@ export const noCausesHandler = http.get(`${API}/phases/:id/causes`, () =>
   HttpResponse.json({ data: [], links: links('/causes') })
 );
 
-export const noPollQuestionsHandler = http.get(
-  `${API}/phases/:id/poll_questions`,
-  () => HttpResponse.json({ data: [] })
-);
-
 const handlers = {
   appConfiguration: appConfigurationHandler,
   phases: http.get(`${API}/projects/:projectId/phases`, () =>

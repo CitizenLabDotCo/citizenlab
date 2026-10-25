@@ -362,8 +362,6 @@ const handlers = {
 
 export const backofficeRedesignHandlers = Object.values(handlers);
 
-export default handlers;
-
 // The play step of a story whose content loads through MSW: waits until
 // the canvas shows `text`.
 export const waitForText = (canvasElement: HTMLElement, text: string) =>
