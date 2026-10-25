@@ -178,6 +178,19 @@ resource 'Phases' do
             expect(other_phase.reload.end_at).to eq Time.zone.parse('2026-06-15')
           end
 
+          example 'Rejects a missing start date without saving related date edits', document: false do
+            do_request(phase: {
+              placement_type: 'on_timeline',
+              start_at: nil,
+              timeline_phase_dates: [{ id: other_phase.id, end_at: '2026-06-10' }]
+            })
+
+            assert_status 422
+            expect(json_response.dig(:errors, :start_at)).to include(hash_including(error: 'blank'))
+            expect(phase.reload.placement_type).to eq 'standalone'
+            expect(other_phase.reload.end_at).to eq Time.zone.parse('2026-06-15')
+          end
+
           example 'Does not edit phases from another project', document: false do
             foreign_phase = create(:phase)
 

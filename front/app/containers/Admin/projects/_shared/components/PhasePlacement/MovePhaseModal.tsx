@@ -38,7 +38,7 @@ const MovePhaseModal = ({
     <Modal
       opened
       close={close}
-      width={editingDates ? 760 : 560}
+      width={editingDates ? 680 : 560}
       header={formatMessage(
         editingDates
           ? placementMessages.changeDatesButton

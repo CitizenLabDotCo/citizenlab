@@ -70,7 +70,14 @@ class WebApi::V1::PhasesController < ApplicationController
       # Validate against the final timeline, including edits to other phases.
       # These writes roll back together if any phase fails validation.
       if timeline_dates.any?
+        # Reject invalid ranges before staging dates, which would otherwise
+        # violate the database constraint before model validation can respond.
         phases.each do |phase|
+          phase.valid?
+          if phase.errors.of_kind?(:start_at, :blank) || phase.errors.of_kind?(:base, :duration_too_short)
+            raise ApiError.from_record(phase)
+          end
+
           dates = phase.changes.slice('start_at', 'end_at', 'placement_type').transform_values(&:last)
           Phase.where(id: phase.id).update_all(dates) if dates.any?
         end
@@ -80,7 +87,8 @@ class WebApi::V1::PhasesController < ApplicationController
         sidefx.before_update(phase, current_user)
         save_or_raise!(phase)
       end
-      phases.each { |phase| sidefx.after_update(phase, current_user) }
+      # Run side effects only after every phase has passed validation and saved.
+      phases.each { |phase| sidefx.after_update(phase, current_user) } # rubocop:disable Style/CombinableLoops
     end
 
     render json: WebApi::V1::PhaseSerializer.new(@phase, params: phase_serializer_params).serializable_hash, status: :ok

@@ -138,6 +138,7 @@ export interface InputProps {
     | 'password'
     | 'number'
     | 'date'
+    | 'datetime-local'
     | 'search'
     | 'hidden'
     | 'tel';

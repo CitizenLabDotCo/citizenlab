@@ -163,7 +163,7 @@ describe('Moving a survey phase on and off the timeline', () => {
           .find('button')
           .should('have.attr', 'aria-disabled', 'true');
         cy.get('[role="dialog"]')
-          .find('.e2e-date-phase-picker-input')
+          .find('input[type="datetime-local"]')
           .should('be.visible');
         cy.get('[role="dialog"]').contains('button', 'Cancel').click();
 

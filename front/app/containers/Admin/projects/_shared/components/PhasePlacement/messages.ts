@@ -1,6 +1,18 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  startDate: {
+    id: 'app.containers.Admin.projects.PhasePlacement.startDate',
+    defaultMessage: 'Start date',
+  },
+  endDate: {
+    id: 'app.containers.Admin.projects.PhasePlacement.endDate',
+    defaultMessage: 'End date',
+  },
+  dateTimezone: {
+    id: 'app.containers.Admin.projects.PhasePlacement.dateTimezone',
+    defaultMessage: 'Dates and times use {timeZone}.',
+  },
   moveSaveChangesFirst: {
     id: 'app.containers.AdminPage.ProjectTimeline.moveSaveChangesFirst',
     defaultMessage: 'Save your changes before you move the survey.',
