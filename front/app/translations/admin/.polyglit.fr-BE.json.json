@@ -10329,6 +10329,11 @@
     "verified_at": "2026-09-16T19:26:50.773492Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.publishOpenEveryoneDescription2": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:33:25.146156Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.projects.project.publishOpenGroups": {
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.773492Z",
@@ -10382,6 +10387,11 @@
   "app.containers.Admin.projects.project.publishWhoCanOpen": {
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.773492Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.publishWhoCanSee": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:33:25.146156Z",
     "verified_by": "Cindy EB"
   },
   "app.containers.Admin.projects.project.selectAMethod": {
