@@ -42,8 +42,10 @@ export default (Story, context) => {
                 width: '100%',
                 height: '100%',
                 display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
+                // Safe: a story taller or wider than the frame starts at
+                // its top-left edge instead of being cut off above it.
+                alignItems: 'safe center',
+                justifyContent: 'safe center',
               }}
             >
               <Story />

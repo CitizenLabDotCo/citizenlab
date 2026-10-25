@@ -21,8 +21,16 @@ const meta = {
   parameters: { msw: inputManagerHandlers },
   args: { idea: managedIdea },
   decorators: [
-    (Story) => (
-      <div style={{ width: 592, maxWidth: "100%", minHeight: 320 }}>
+    (Story, { parameters }) => (
+      <div
+        style={{
+          width: 592,
+          maxWidth: '100%',
+          // Room below for a menu, only where one is open: a taller box
+          // centred in a small card pushes the closed field out of view.
+          minHeight: parameters.menuOpen ? 320 : undefined,
+        }}
+      >
         <Story />
       </div>
     ),
@@ -45,10 +53,13 @@ export const OtherInput: Story = {
 };
 
 export const Open: Story = {
+  parameters: { menuOpen: true },
   play: async (context) => {
     await meta.play(context);
     await userEvent.click(
-      within(context.canvasElement).getByRole('button', { name: /Test Go Vocal/ })
+      within(context.canvasElement).getByRole('button', {
+        name: /Test Go Vocal/,
+      })
     );
   },
 };
