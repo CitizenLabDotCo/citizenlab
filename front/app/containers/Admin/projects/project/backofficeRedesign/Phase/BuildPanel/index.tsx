@@ -16,12 +16,12 @@ import { SurveyMethod } from 'containers/Admin/projects/project/phaseSetup/compo
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import { validateDates } from 'containers/Admin/projects/project/phaseSetup/validate';
 
-import { useIntl } from 'utils/cl-intl';
-
 import {
   usePageSave,
   useRegisterPageSaver,
-} from '../../_shared/PageSaveContext';
+} from 'components/admin/PageSaveContext';
+
+import { useIntl } from 'utils/cl-intl';
 
 import BuildFields from './BuildFields';
 import SurveyPlacement from './SurveyPlacement';

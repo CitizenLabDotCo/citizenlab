@@ -11,9 +11,9 @@ import useLocalize from 'hooks/useLocalize';
 import placementMessages from 'containers/Admin/projects/_shared/components/PhasePlacement/messages';
 import MovePhaseModal from 'containers/Admin/projects/_shared/components/PhasePlacement/MovePhaseModal';
 import { canChangePlacement } from 'containers/Admin/projects/_shared/components/PhasePlacement/utils';
-import { usePageSave } from 'containers/Admin/projects/project/backofficeRedesign/_shared/PageSaveContext';
 import phaseMessages from 'containers/Admin/projects/project/phase/messages';
 
+import { usePageSave } from 'components/admin/PageSaveContext';
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 import TypedDeleteConfirmationModal from 'components/UI/TypedDeleteConfirmationModal';
 import typedDeleteConfirmationMessages from 'components/UI/TypedDeleteConfirmationModal/messages';
