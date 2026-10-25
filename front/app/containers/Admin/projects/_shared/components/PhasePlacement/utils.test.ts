@@ -29,42 +29,6 @@ const ids = (phases: IPhaseData[]) => phases.map(({ id }) => id);
 describe('checkMoveToTimeline', () => {
   const survey = buildPhase('survey', '2026-06-01', '2026-07-01', 'standalone');
 
-  it('finds the timeline phases the survey overlaps', () => {
-    const before = buildPhase('before', '2026-05-01', '2026-06-01');
-    const overlapping = buildPhase('overlapping', '2026-06-15', '2026-08-01');
-    const after = buildPhase('after', '2026-07-01', '2026-08-01');
-
-    const check = checkMoveToTimeline(survey, [before, overlapping, after]);
-
-    expect(ids(check.overlappingPhases)).toEqual(['overlapping']);
-  });
-
-  it('requires an explicit end date for an earlier open-ended phase', () => {
-    const openEnded = buildPhase('open-ended', '2026-05-01', null);
-
-    const check = checkMoveToTimeline(survey, [openEnded]);
-
-    expect(ids(check.overlappingPhases)).toEqual(['open-ended']);
-  });
-
-  it('blocks an open-ended survey that would not be the last phase', () => {
-    const openEndedSurvey = buildPhase(
-      'survey',
-      '2026-06-01',
-      null,
-      'standalone'
-    );
-    const before = buildPhase('before', '2026-05-01', '2026-06-01');
-    const after = buildPhase('after', '2026-09-01', '2026-10-01');
-
-    expect(
-      checkMoveToTimeline(openEndedSurvey, [before]).openEndedNotLast
-    ).toBe(false);
-    expect(
-      checkMoveToTimeline(openEndedSurvey, [before, after]).openEndedNotLast
-    ).toBe(true);
-  });
-
   it('flags when later phases get renumbered', () => {
     const before = buildPhase('before', '2026-05-01', '2026-06-01');
     const after = buildPhase('after', '2026-07-01', '2026-08-01');

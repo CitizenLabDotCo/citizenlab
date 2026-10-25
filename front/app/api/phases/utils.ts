@@ -220,6 +220,7 @@ export function getPhaseSaveRedirectTab(phase: IPhaseData) {
     ? 'survey-form'
     : getPhaseLandingTab(phase);
 }
+
 export const INPUT_TERMS = [
   'idea',
   'option',

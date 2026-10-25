@@ -1,4 +1,4 @@
-import { IRelationship, Multiloc } from 'typings';
+import { CLErrorsWrapper, IRelationship, Multiloc } from 'typings';
 
 import { UserDataCollection } from 'api/permissions/types';
 import { PhaseActionDescriptors } from 'api/projects/types';
@@ -235,3 +235,7 @@ export const presentationModes = ['card', 'map', 'feed'] as const;
 export type PresentationMode = (typeof presentationModes)[number];
 
 export type PrescreeningMode = 'flagged_only' | 'all';
+
+export interface PhaseUpdateError extends CLErrorsWrapper {
+  meta?: { phase_id: string };
+}

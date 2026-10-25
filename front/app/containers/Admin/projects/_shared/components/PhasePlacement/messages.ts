@@ -1,6 +1,20 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  phaseUpdateFailed: {
+    id: 'app.containers.Admin.projects.PhasePlacement.phaseUpdateFailed',
+    defaultMessage:
+      'Could not save changes to "{phaseName}". Review its dates and try again.',
+  },
+  retryLoading: {
+    id: 'app.containers.Admin.projects.PhasePlacement.retryLoading',
+    defaultMessage: 'Retry',
+  },
+  loadFailed: {
+    id: 'app.containers.Admin.projects.PhasePlacement.loadFailed',
+    defaultMessage:
+      'Could not load the information needed to move this survey. Try again.',
+  },
   moveSaveChangesFirst: {
     id: 'app.containers.AdminPage.ProjectTimeline.moveSaveChangesFirst',
     defaultMessage: 'Save your changes before you move the survey.',
@@ -30,16 +44,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveysExplanation',
     defaultMessage:
       'The survey runs alongside the timeline. It keeps its questions and responses, and its survey link keeps working.',
-  },
-  overlapBlocker: {
-    id: 'app.containers.Admin.projects.PhasePlacement.overlapBlocker',
-    defaultMessage:
-      '"{phaseName}" runs at the same time as this survey. Phases on the timeline cannot overlap.',
-  },
-  openEndedBlocker: {
-    id: 'app.containers.Admin.projects.PhasePlacement.openEndedBlocker',
-    defaultMessage:
-      'This survey has no end date. Only the last phase on the timeline can be open-ended.',
   },
   editTimelineDates: {
     id: 'app.containers.Admin.projects.PhasePlacement.editTimelineDates',

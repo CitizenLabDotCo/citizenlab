@@ -43,7 +43,16 @@ const MovePhaseDateRow = ({ phase, defaultOpen, errors, onChange }: Props) => {
   const boundaryDate = (date: string) =>
     formatDate(date, { dateStyle: 'medium', timeStyle: 'short', timeZone });
   const errorText = (error: PhaseDateError) => {
-    if (!('phase' in error)) return formatMessage(messages[error.type]);
+    switch (error.type) {
+      case 'startRequired':
+        return formatMessage(messages.startRequired);
+      case 'endInvalid':
+        return formatMessage(messages.endInvalid);
+      case 'endBeforeStart':
+        return formatMessage(messages.endBeforeStart);
+      case 'durationTooShort':
+        return formatMessage(messages.durationTooShort);
+    }
 
     const phaseName = localize(error.phase.attributes.title_multiloc);
     const otherStart = error.phase.attributes.start_at;

@@ -28,6 +28,7 @@ const MovePhaseSummary = ({ phase, placementMove }: Props) => {
     toSpotlightCheck,
     shownOnProjectPage,
     errors,
+    errorPhase,
   } = placementMove;
   const { start_at, end_at } = phase.attributes;
   const longDate = (date: string) => formatDate(date, { dateStyle: 'long' });
@@ -90,6 +91,13 @@ const MovePhaseSummary = ({ phase, placementMove }: Props) => {
 
       {errors && (
         <Box>
+          {errorPhase && (
+            <Error
+              text={formatMessage(messages.phaseUpdateFailed, {
+                phaseName: localize(errorPhase.attributes.title_multiloc),
+              })}
+            />
+          )}
           <Error apiErrors={errors.base} />
           <Error apiErrors={errors.participation_method} />
           <Error apiErrors={errors.end_at} />

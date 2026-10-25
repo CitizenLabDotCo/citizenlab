@@ -54,32 +54,6 @@ describe('Moving a survey phase on and off the timeline', () => {
   };
 
   describe('in the old back office', () => {
-    let redesignWasEnabled = false;
-
-    before(() => {
-      cy.apiGetAppConfiguration().then((config) => {
-        redesignWasEnabled =
-          config.body.data.attributes.settings.project_backoffice_redesign
-            ?.enabled === true;
-      });
-      cy.apiUpdateAppConfiguration({
-        settings: {
-          project_backoffice_redesign: { allowed: true, enabled: false },
-        },
-      });
-    });
-
-    after(() => {
-      cy.apiUpdateAppConfiguration({
-        settings: {
-          project_backoffice_redesign: {
-            allowed: true,
-            enabled: redesignWasEnabled,
-          },
-        },
-      });
-    });
-
     it('moves the survey off the timeline and back onto it', () => {
       cy.visit(`/admin/projects/${projectId}/phases/${surveyPhaseId}/setup`);
 
@@ -171,6 +145,82 @@ describe('Moving a survey phase on and off the timeline', () => {
           `input[name="survey-placement-${phaseId}"][value="standalone"]`
         ).should('be.checked');
         cy.get('@moveSpotlight.all').should('have.length', 0);
+      });
+    });
+
+    it('allows moving when the project page layout does not exist', () => {
+      cy.apiCreateNativeSurveyPhase({
+        projectId,
+        title: randomString(),
+        startAt: format(addMonths(new Date(), 3), 'dd/MM/yyyy'),
+        endAt: format(addMonths(new Date(), 4), 'dd/MM/yyyy'),
+        placementType: 'standalone',
+      }).then((phase) => {
+        const phaseId = phase.body.data.id;
+        cy.intercept(
+          'GET',
+          `**/projects/${projectId}/content_builder_layouts/project_page`,
+          {
+            statusCode: 404,
+            body: '',
+          }
+        );
+        cy.intercept('PATCH', `**/phases/${phaseId}`).as('moveWithoutLayout');
+        cy.visit(
+          `/admin/projects/${projectId}/phases/${phaseId}/setup?project_backoffice_redesign`
+        );
+        cy.contains('label', 'Appears on the timeline').click();
+        confirmMove();
+        cy.wait('@moveWithoutLayout')
+          .its('response.body.data.attributes.placement_type')
+          .should('eq', 'on_timeline');
+      });
+    });
+
+    it('shows a loading error and lets the manager retry before moving', () => {
+      cy.apiCreateNativeSurveyPhase({
+        projectId,
+        title: randomString(),
+        startAt: format(addMonths(new Date(), 5), 'dd/MM/yyyy'),
+        endAt: format(addMonths(new Date(), 6), 'dd/MM/yyyy'),
+        placementType: 'standalone',
+      }).then((phase) => {
+        const phaseId = phase.body.data.id;
+        let failLayoutRequest = true;
+        cy.intercept(
+          'GET',
+          `**/projects/${projectId}/content_builder_layouts/project_page`,
+          (request) => {
+            if (failLayoutRequest) request.reply({ statusCode: 503, body: '' });
+            else {
+              request.alias = 'retriedLayout';
+              request.continue();
+            }
+          }
+        );
+        cy.intercept('PATCH', `**/phases/${phaseId}`).as('moveAfterRetry');
+        cy.visit(
+          `/admin/projects/${projectId}/phases/${phaseId}/setup?project_backoffice_redesign`
+        );
+        cy.contains('label', 'Appears on the timeline').click();
+        cy.contains(
+          'Could not load the information needed to move this survey. Try again.'
+        ).should('be.visible');
+        cy.dataCy('e2e-phase-placement-confirm')
+          .find('button')
+          .should('have.attr', 'aria-disabled', 'true');
+        cy.then(() => {
+          failLayoutRequest = false;
+        });
+        cy.get('[role="dialog"]')
+          .contains('button', 'Retry')
+          .should('have.attr', 'aria-disabled', 'false')
+          .click();
+        cy.wait('@retriedLayout').its('response.statusCode').should('eq', 200);
+        confirmMove();
+        cy.wait('@moveAfterRetry')
+          .its('response.body.data.attributes.placement_type')
+          .should('eq', 'on_timeline');
       });
     });
 

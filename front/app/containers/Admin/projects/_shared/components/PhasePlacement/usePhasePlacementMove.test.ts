@@ -1,13 +1,16 @@
 import { mockPhaseIdeationData } from 'api/phases/__mocks__/_mockServer';
-import { IPhaseData } from 'api/phases/types';
+import { IPhaseData, PhaseUpdateError } from 'api/phases/types';
 
+import { HttpError } from 'utils/cl-react-query/fetcher';
 import { act, renderHook } from 'utils/testUtils/rtl';
 
 import usePhasePlacementMove from './usePhasePlacementMove';
 
 const mockUpdate = jest.fn();
 const mockReset = jest.fn();
+let mockUpdateError: PhaseUpdateError | null = null;
 const mockInvalidate = jest.fn();
+const mockTimelineRefetch = jest.fn();
 const mockTimeline: IPhaseData[] = [
   {
     ...mockPhaseIdeationData,
@@ -38,17 +41,39 @@ jest.mock('@tanstack/react-query', () => ({
 }));
 jest.mock('api/phases/usePhases', () => () => ({
   data: { data: mockTimeline },
+  isError: false,
+  isFetching: false,
+  refetch: mockTimelineRefetch,
 }));
 jest.mock('api/phases/useUpdatePhase', () => () => ({
   mutate: mockUpdate,
+  error: mockUpdateError,
   isPending: false,
   reset: mockReset,
 }));
-jest.mock('api/project_page_layout/useProjectPageLayout', () => () => ({
+const mockLayoutRefetch = jest.fn();
+let mockLayoutResult: {
+  data: { data: { attributes: { craftjs_json: object } } } | undefined;
+  isError: boolean;
+  error: HttpError | null;
+  isFetching: boolean;
+  refetch: typeof mockLayoutRefetch;
+} = {
   data: { data: { attributes: { craftjs_json: {} } } },
-}));
+  isError: false,
+  error: null,
+  isFetching: false,
+  refetch: mockLayoutRefetch,
+};
+jest.mock(
+  'api/project_page_layout/useProjectPageLayout',
+  () => () => mockLayoutResult
+);
 
-beforeEach(() => jest.clearAllMocks());
+beforeEach(() => {
+  jest.clearAllMocks();
+  mockUpdateError = null;
+});
 
 it('keeps date edits local and discards them when the dialog is reopened', () => {
   const { result, unmount } = renderHook(() => usePhasePlacementMove(survey));
@@ -120,4 +145,50 @@ it('keeps rows in their original order when draft start dates cross other phases
     'survey',
   ]);
   expect(result.current.blocked).toBe(false);
+});
+
+it('allows moving when the project has no page layout', () => {
+  const previous = mockLayoutResult;
+  mockLayoutResult = {
+    ...previous,
+    data: undefined,
+    isError: true,
+    error: new HttpError('Unsupported case. No valid JSON.', 404),
+  };
+  try {
+    const { result } = renderHook(() => usePhasePlacementMove(survey));
+    expect(result.current.loaded).toBe(true);
+    expect(result.current.loadFailed).toBe(false);
+    expect(result.current.shownOnProjectPage).toBe(false);
+  } finally {
+    mockLayoutResult = previous;
+  }
+});
+
+it('exposes a retry when loading the layout fails', () => {
+  const previous = mockLayoutResult;
+  mockLayoutResult = {
+    ...previous,
+    data: undefined,
+    isError: true,
+    error: new HttpError('Unsupported case. No valid JSON.', 500),
+  };
+  try {
+    const { result } = renderHook(() => usePhasePlacementMove(survey));
+    expect(result.current.loaded).toBe(false);
+    expect(result.current.loadFailed).toBe(true);
+    act(() => result.current.retryLoading());
+    expect(mockLayoutRefetch).toHaveBeenCalledTimes(1);
+  } finally {
+    mockLayoutResult = previous;
+  }
+});
+
+it('identifies the edited phase responsible for a server validation error', () => {
+  mockUpdateError = {
+    errors: { base: [{ error: 'duration_too_short' }] },
+    meta: { phase_id: 'timeline' },
+  };
+  const { result } = renderHook(() => usePhasePlacementMove(survey));
+  expect(result.current.errorPhase?.id).toBe('timeline');
 });

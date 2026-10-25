@@ -11,6 +11,8 @@ import useProjectPageLayout from 'api/project_page_layout/useProjectPageLayout';
 
 import { linkedSurveyPhaseIds } from 'components/ProjectPageBuilder/Widgets/SpotlightSurveys/linkedSurveyPhaseIds';
 
+import { HttpError } from 'utils/cl-react-query/fetcher';
+
 import {
   checkMoveToSpotlightSurveys,
   checkMoveToTimeline,
@@ -28,8 +30,15 @@ const usePhasePlacementMove = (phase: IPhaseData) => {
   const queryClient = useQueryClient();
   const projectId = phase.relationships.project.data.id;
   const onTimeline = isTimelinePhase(phase);
-  const { data: layout } = useProjectPageLayout(projectId, !onTimeline);
-  const { data: timelinePhases } = usePhases(projectId, 'on_timeline');
+  const layoutQuery = useProjectPageLayout(projectId, !onTimeline);
+  const { data: layout } = layoutQuery;
+  const missingLayout =
+    layoutQuery.error instanceof HttpError && layoutQuery.error.status === 404;
+  const timelineQuery = usePhases(projectId, 'on_timeline');
+  const { data: timelinePhases } = timelineQuery;
+  const loadFailed =
+    timelineQuery.isError ||
+    (!onTimeline && layoutQuery.isError && !missingLayout);
   const [dateChanges, setDateChanges] = useState<
     Record<string, PlacementDates>
   >({});
@@ -60,6 +69,7 @@ const usePhasePlacementMove = (phase: IPhaseData) => {
       : undefined;
   const invalidDates = onTimeline ? [] : invalidTimelineDates(proposedTimeline);
   const blocked = invalidDates.length > 0;
+  // A/B and B/A describe one overlap, so count the sorted pair only once.
   const dateConflictCount = new Set(
     invalidDates.flatMap((invalidPhase) =>
       getPhaseDateErrors(invalidPhase, proposedTimeline).map((error) =>
@@ -93,13 +103,22 @@ const usePhasePlacementMove = (phase: IPhaseData) => {
 
   return {
     onTimeline,
-    loaded: !!timelinePhases && (onTimeline || !!layout),
+    loaded:
+      !!timelinePhases &&
+      (onTimeline || !!layout || missingLayout) &&
+      !loadFailed,
+    loadFailed,
+    retrying:
+      timelineQuery.isFetching || (!onTimeline && layoutQuery.isFetching),
+    retryLoading: () => {
+      timelineQuery.refetch();
+      if (!onTimeline) layoutQuery.refetch();
+    },
     toTimelineCheck,
     toSpotlightCheck,
     blocked,
     draftPhase,
     proposedTimeline,
-    invalidDates,
     dateConflictCount,
     datesChanged: Object.keys(dateChanges).length > 0,
     changeDates: (id: string, dates: PlacementDates) => {
@@ -112,7 +131,7 @@ const usePhasePlacementMove = (phase: IPhaseData) => {
     move,
     isPending,
     errors: error?.errors ?? null,
-    reset,
+    errorPhase: proposedTimeline.find(({ id }) => id === error?.meta?.phase_id),
   };
 };
 

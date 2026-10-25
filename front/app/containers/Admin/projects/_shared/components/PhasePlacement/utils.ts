@@ -20,18 +20,7 @@ export const checkMoveToTimeline = (
 ) => {
   const others = otherTimelinePhases(survey, timelinePhases);
   const start = time(survey.attributes.start_at);
-  const end = endTime(survey);
-
-  const overlappingPhases = others.filter((other) => {
-    const otherStart = time(other.attributes.start_at);
-    return start < endTime(other) && otherStart < end;
-  });
-  const openEndedNotLast =
-    !survey.attributes.end_at &&
-    others.some((other) => time(other.attributes.start_at) >= start);
   return {
-    overlappingPhases,
-    openEndedNotLast,
     renumbersLaterPhases: others.some(
       (other) => time(other.attributes.start_at) > start
     ),

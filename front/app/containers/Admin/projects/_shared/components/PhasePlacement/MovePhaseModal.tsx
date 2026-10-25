@@ -4,6 +4,7 @@ import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
 
+import Error from 'components/UI/Error';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
@@ -97,6 +98,18 @@ const MovePhaseModal = ({
       <Box p="24px">
         {hasUnsavedChanges && (
           <Text>{formatMessage(placementMessages.moveSaveChangesFirst)}</Text>
+        )}
+        {placementMove.loadFailed && (
+          <Box role="alert" mb="16px">
+            <Error text={formatMessage(placementMessages.loadFailed)} />
+            <Button
+              buttonStyle="bo-secondary"
+              processing={placementMove.retrying}
+              onClick={placementMove.retryLoading}
+            >
+              {formatMessage(placementMessages.retryLoading)}
+            </Button>
+          </Box>
         )}
         <MovePhaseSummary
           phase={placementMove.draftPhase}

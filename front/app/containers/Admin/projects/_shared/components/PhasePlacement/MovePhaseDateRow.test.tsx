@@ -36,7 +36,9 @@ it('uses the shared range picker and converts tenant-local selections to UTC', (
     />
   );
 
-  const props = jest.mocked(DatePhasePicker).mock.calls.at(-1)![0];
+  const lastCall = jest.mocked(DatePhasePicker).mock.calls.at(-1);
+  if (!lastCall) throw new Error('Expected the shared date picker to render');
+  const [props] = lastCall;
   expect(props.selectedRange.from).toEqual(new Date(2026, 10, 5, 1));
   expect(props.selectedRange.to).toEqual(new Date(2026, 10, 15, 1));
 
