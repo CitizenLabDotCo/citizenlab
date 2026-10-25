@@ -47,11 +47,7 @@ export async function htmlToImageBuffer(
     backgroundColor,
     useCORS: true,
     logging: false,
-    windowWidth: element.scrollWidth,
-    windowHeight: element.scrollHeight,
   });
-
-  const elRect = element.getBoundingClientRect();
 
   return new Promise((resolve, reject) => {
     canvas.toBlob(
@@ -62,10 +58,14 @@ export async function htmlToImageBuffer(
         }
         try {
           const arrayBuffer = await blob.arrayBuffer();
+          // html2canvas measures the element inside its cloned document, which
+          // can lay out at a different size than the live one. Reporting the
+          // canvas size keeps the declared aspect ratio equal to the pixel
+          // data, so Word scales the image instead of stretching it.
           resolve({
             buffer: new Uint8Array(arrayBuffer),
-            width: Math.round(elRect.width),
-            height: Math.round(elRect.height),
+            width: Math.round(canvas.width / scale),
+            height: Math.round(canvas.height / scale),
           });
         } catch (error) {
           reject(error);

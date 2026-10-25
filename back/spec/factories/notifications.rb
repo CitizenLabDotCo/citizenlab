@@ -157,6 +157,12 @@ FactoryBot.define do
     project
   end
 
+  factory :report_generated, parent: :notification, class: 'Notifications::ReportGenerated' do
+    recipient factory: :admin
+    project
+    report { association :report, project: project }
+  end
+
   factory :project_review_request, parent: :notification, class: 'Notifications::ProjectReviewRequest' do
     initiating_user
     project_review
