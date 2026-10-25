@@ -8004,6 +8004,11 @@
     "verified_at": "2026-10-09T13:13:55.614888Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Admin.projects.PhasePlacement.loadFailed": {
+    "state": "verified",
+    "verified_at": "2026-10-25T15:03:50.504125Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": {
     "state": "verified",
     "verified_at": "2026-10-09T13:13:55.614888Z",
@@ -8064,9 +8069,19 @@
     "verified_at": "2026-10-25T11:16:41.690465Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Admin.projects.PhasePlacement.phaseUpdateFailed": {
+    "state": "verified",
+    "verified_at": "2026-10-25T15:03:50.504125Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.projects.PhasePlacement.resolveDateConflicts": {
     "state": "verified",
     "verified_at": "2026-10-25T11:16:41.690465Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects.PhasePlacement.retryLoading": {
+    "state": "verified",
+    "verified_at": "2026-10-25T15:03:50.504125Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Admin.projects.PhasePlacement.spotlight": {
