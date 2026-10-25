@@ -34,6 +34,15 @@ class SideFxPhaseService
   end
 
   def after_update(phase, user)
+    after_update_in_transaction(phase, user)
+    after_update_notifications(phase, user)
+  end
+
+  def after_update_in_transaction(phase, _user)
+    permissions_update_service.update_permissions_for_scope(phase)
+  end
+
+  def after_update_notifications(phase, user)
     change = phase.saved_changes
     payload = { phase: clean_time_attributes(phase.attributes) }
     payload[:change] = sanitize_change(change) if change.present?
@@ -45,8 +54,6 @@ class SideFxPhaseService
       phase.updated_at.to_i,
       payload: payload
     )
-
-    permissions_update_service.update_permissions_for_scope(phase)
 
     %i[
       description_multiloc voting_method voting_max_votes_per_idea voting_min_selected_options voting_max_total voting_min_total

@@ -3,7 +3,7 @@
 module ContentBuilder
   module Patches
     module SideFxPhaseService
-      def after_update(phase, user)
+      def after_update_in_transaction(phase, user)
         super
         return unless phase.placement_type_previously_changed? && phase.on_timeline?
 

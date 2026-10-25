@@ -191,6 +191,73 @@ resource 'Phases' do
             expect(other_phase.reload.end_at).to eq Time.zone.parse('2026-06-15')
           end
 
+          example 'Rejects duplicate timeline phase IDs without changing any phase', document: false do
+            do_request(phase: {
+              placement_type: 'on_timeline',
+              timeline_phase_dates: [
+                { id: other_phase.id, end_at: '2026-06-10' },
+                { id: other_phase.id.upcase, end_at: '2026-06-10' }
+              ]
+            })
+
+            assert_status 422
+            expect(json_response.dig(:errors, :timeline_phase_dates))
+              .to include(hash_including(error: 'duplicate_phase_ids'))
+            expect(phase.reload.placement_type).to eq 'standalone'
+            expect(other_phase.reload.end_at).to eq Time.zone.parse('2026-06-15')
+          end
+
+          example 'Identifies the timeline phase whose dates failed validation', document: false do
+            do_request(phase: {
+              placement_type: 'on_timeline',
+              timeline_phase_dates: [{ id: other_phase.id, end_at: '2026-06-01' }]
+            })
+
+            assert_status 422
+            expect(json_response.dig(:meta, :phase_id)).to eq other_phase.id
+          end
+
+          example 'Schedules notifications after releasing the project lock', document: false do
+            inside_lock = false
+            allow_any_instance_of(Project).to receive(:with_lock).and_wrap_original do |original, &block|
+              original.call do
+                inside_lock = true
+                begin
+                  block.call
+                ensure
+                  inside_lock = false
+                end
+              end
+            end
+            expect_any_instance_of(SideFxPhaseService).to receive(:after_update_notifications).at_least(:once) do
+              expect(inside_lock).to be false
+            end
+
+            do_request(phase: {
+              placement_type: 'on_timeline',
+              timeline_phase_dates: [{ id: other_phase.id, end_at: '2026-06-10' }]
+            })
+
+            assert_status 200
+          end
+
+          example 'Rolls back the move if transactional side effects fail', document: false do
+            service = SideFxPhaseService.new
+            allow(SideFxPhaseService).to receive(:new).and_return(service)
+            allow(service).to receive(:after_update_in_transaction).and_raise('permission update failed')
+            expect(service).not_to receive(:after_update_notifications)
+
+            expect do
+              do_request(phase: {
+                placement_type: 'on_timeline',
+                timeline_phase_dates: [{ id: other_phase.id, end_at: '2026-06-10' }]
+              })
+            end.to raise_error('permission update failed')
+
+            expect(phase.reload.placement_type).to eq 'standalone'
+            expect(other_phase.reload.end_at).to eq Time.zone.parse('2026-06-15')
+          end
+
           example 'Does not edit phases from another project', document: false do
             foreign_phase = create(:phase)
 
