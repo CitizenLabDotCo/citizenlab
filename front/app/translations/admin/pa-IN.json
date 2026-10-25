@@ -2135,7 +2135,7 @@
   "app.containers.Admin.projects.project.publishWhoCanFind": "ਇਸਨੂੰ ਕੌਣ ਲੱਭ ਸਕਦਾ ਹੈ",
   "app.containers.Admin.projects.project.publishWhoCanFindDescription": "ਕੀ ਨਿਵਾਸੀ ਇਸ ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਖੋਜ ਸਕਦੇ ਹਨ, ਜਾਂ ਸਿਰਫ਼ ਲਿੰਕ ਰਾਹੀਂ ਇਸ ਤੱਕ ਪਹੁੰਚ ਸਕਦੇ ਹਨ।",
   "app.containers.Admin.projects.project.publishWhoCanOpenDescription": "ਕਿਸ ਨੂੰ ਇਸ ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਖੋਲ੍ਹਣ ਅਤੇ ਹਿੱਸਾ ਲੈਣ ਦੀ ਇਜਾਜ਼ਤ ਹੈ।",
-  "app.containers.Admin.projects.project.publishWhoCanSee": "ਇਸਨੂੰ ਕੌਣ ਦੇਖ ਸਕਦਾ ਹੈ।",
+  "app.containers.Admin.projects.project.publishWhoCanSee": "ਇਸਨੂੰ ਕੌਣ ਦੇਖ ਸਕਦਾ ਹੈ",
   "app.containers.Admin.projects.project.recommendedActionsHint": "ਜਦੋਂ ਭਾਗੀਦਾਰ ਹਿੱਸਾ ਲੈਂਦੇ ਹਨ, ਤਾਂ ਸਿਫ਼ਾਰਿਸ਼ ਕੀਤੀਆਂ ਕਾਰਵਾਈਆਂ ਇੱਥੇ ਦਿਖਾਈ ਦਿੰਦੀਆਂ ਹਨ।",
   "app.containers.Admin.projects.project.saveToEditForm": "ਸਵਾਲ ਜੋੜਨ ਅਤੇ ਆਫ਼ਲਾਈਨ ਇਨਪੁਟ ਇੰਪੋਰਟ ਕਰਨ ਲਈ ਪੜਾਅ ਨੂੰ ਸੇਵ ਕਰੋ।",
   "app.containers.Admin.projects.project.saveToEditSettings": "ਪਹੁੰਚ ਅਧਿਕਾਰ, ਨੋਟੀਫਿਕੇਸ਼ਨ ਅਤੇ ਹੋਰ ਸੈਟਿੰਗਾਂ ਤੁਹਾਡੇ ਦੁਆਰਾ ਪੜਾਅ ਨੂੰ ਸੇਵ ਕਰਨ ਤੋਂ ਬਾਅਦ ਉਪਲਬਧ ਹੋ ਜਾਣਗੀਆਂ।",

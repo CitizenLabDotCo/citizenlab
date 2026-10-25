@@ -2118,7 +2118,7 @@
   "app.containers.Admin.projects.project.publishOpenAdmins": "Yöneticiler ve proje yöneticileri",
   "app.containers.Admin.projects.project.publishOpenAdminsDescription": "Sadece yöneticiler ve proje yöneticileri.",
   "app.containers.Admin.projects.project.publishOpenEveryone": "Herkes",
-  "app.containers.Admin.projects.project.publishOpenEveryoneDescription2": "Herhangi bir sakin görebilir.",
+  "app.containers.Admin.projects.project.publishOpenEveryoneDescription2": "Her mahalle sakini görebilir.",
   "app.containers.Admin.projects.project.publishOpenGroups": "Seçili gruplar",
   "app.containers.Admin.projects.project.publishOpenGroupsDescription": "Sadece seçtiğiniz gruplardaki kişiler.",
   "app.containers.Admin.projects.project.publishRestoreToDraft": "Taslağa geri yükle",

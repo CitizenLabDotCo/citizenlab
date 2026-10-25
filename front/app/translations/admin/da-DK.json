@@ -2118,7 +2118,7 @@
   "app.containers.Admin.projects.project.publishOpenAdmins": "Administratorer og projektledere",
   "app.containers.Admin.projects.project.publishOpenAdminsDescription": "Kun administratorer og projektledere.",
   "app.containers.Admin.projects.project.publishOpenEveryone": "Alle",
-  "app.containers.Admin.projects.project.publishOpenEveryoneDescription2": "Alle borgere kan se det.",
+  "app.containers.Admin.projects.project.publishOpenEveryoneDescription2": "Enhver borger kan se det.",
   "app.containers.Admin.projects.project.publishOpenGroups": "Udvalgte grupper",
   "app.containers.Admin.projects.project.publishOpenGroupsDescription": "Kun personer i de grupper, du vælger.",
   "app.containers.Admin.projects.project.publishRestoreToDraft": "Gendan til kladde",
