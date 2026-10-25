@@ -21,7 +21,7 @@ const useUpdatePhase = () => {
   const queryClient = useQueryClient();
   return useMutation<IPhase, { errors: CLErrors }, UpdatePhaseObject>({
     mutationFn: updatePhase,
-    onSuccess: (data, variables) => {
+    onSuccess: async (data, variables) => {
       const projectId = data.data.relationships.project.data.id;
       queryClient.invalidateQueries({
         queryKey: projectsKeys.item({ id: projectId }),
@@ -29,9 +29,16 @@ const useUpdatePhase = () => {
       queryClient.invalidateQueries({
         queryKey: phasesKeys.list({ projectId }),
       });
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: phasesKeys.item({ phaseId: variables.phaseId }),
       });
+      await Promise.all(
+        variables.timeline_phase_dates?.map(({ id }) =>
+          queryClient.invalidateQueries({
+            queryKey: phasesKeys.item({ phaseId: id }),
+          })
+        ) ?? []
+      );
       queryClient.invalidateQueries({ queryKey: emailCampaignsKeys.lists() });
       queryClient.invalidateQueries({
         queryKey: supportedCampaignNamesKeys.lists({

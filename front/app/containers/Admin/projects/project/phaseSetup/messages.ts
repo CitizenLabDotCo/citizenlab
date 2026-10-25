@@ -133,8 +133,4 @@ export default defineMessages({
     defaultMessage:
       'This is a spotlight survey. It runs alongside the timeline and can overlap other phases.',
   },
-  moveSaveChangesFirst: {
-    id: 'app.containers.AdminPage.ProjectTimeline.moveSaveChangesFirst',
-    defaultMessage: 'Save your changes before you move the survey.',
-  },
 });

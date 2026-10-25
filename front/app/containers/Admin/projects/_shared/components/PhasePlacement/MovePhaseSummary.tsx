@@ -41,14 +41,6 @@ const MovePhaseSummary = ({ phase, placementMove }: Props) => {
 
   if (toTimelineCheck) {
     if (shownOnProjectPage) addNotice(messages.widgetRemoved);
-    if (toTimelineCheck.phaseToClose) {
-      addNotice(messages.previousPhaseEnds, {
-        phaseName: localize(
-          toTimelineCheck.phaseToClose.attributes.title_multiloc
-        ),
-        date: longDate(start_at),
-      });
-    }
     if (toTimelineCheck.renumbersLaterPhases) {
       addNotice(messages.laterPhasesRenumbered);
     }
@@ -102,7 +94,6 @@ const MovePhaseSummary = ({ phase, placementMove }: Props) => {
               text={formatMessage(messages.openEndedBlocker)}
             />
           )}
-          <Text m="8px 0 0 0">{formatMessage(messages.changeDatesHint)}</Text>
         </Box>
       ) : (
         notices.length > 0 && (
@@ -123,6 +114,7 @@ const MovePhaseSummary = ({ phase, placementMove }: Props) => {
           <Error apiErrors={errors.base} />
           <Error apiErrors={errors.participation_method} />
           <Error apiErrors={errors.end_at} />
+          <Error apiErrors={errors.start_at} />
           {'previous_phase' in errors && (
             <Error text={formatMessage(messages.previousPhaseError)} />
           )}

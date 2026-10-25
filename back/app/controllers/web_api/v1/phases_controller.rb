@@ -53,13 +53,36 @@ class WebApi::V1::PhasesController < ApplicationController
 
   def update
     update_params = phase_params
+    timeline_dates = update_params.delete(:timeline_phase_dates) || []
     @phase.set_manual_voters(update_params[:manual_voters_amount], current_user) if update_params[:manual_voters_amount]
     @phase.assign_attributes update_params
     authorize @phase
-    sidefx.before_update(@phase, current_user)
 
-    save_or_raise!(@phase)
-    sidefx.after_update(@phase, current_user)
+    @phase.project.with_lock do
+      phases = timeline_dates.map do |dates|
+        phase = @phase.project.phases.on_timeline.where.not(id: @phase.id).find(dates[:id])
+        authorize phase, :update?
+        phase.assign_attributes(dates.except(:id))
+        phase
+      end
+      phases << @phase
+
+      # Validate against the final timeline, including edits to other phases.
+      # These writes roll back together if any phase fails validation.
+      if timeline_dates.any?
+        phases.each do |phase|
+          dates = phase.changes.slice('start_at', 'end_at', 'placement_type').transform_values(&:last)
+          Phase.where(id: phase.id).update_all(dates) if dates.any?
+        end
+      end
+
+      phases.each do |phase|
+        sidefx.before_update(phase, current_user)
+        save_or_raise!(phase)
+      end
+      phases.each { |phase| sidefx.after_update(phase, current_user) }
+    end
+
     render json: WebApi::V1::PhaseSerializer.new(@phase, params: phase_serializer_params).serializable_hash, status: :ok
   end
 
@@ -260,7 +283,9 @@ class WebApi::V1::PhasesController < ApplicationController
   end
 
   def phase_params
-    params.require(:phase).permit(:placement_type, *shared_phase_params)
+    permitted = [:placement_type, *shared_phase_params]
+    permitted << { timeline_phase_dates: %i[id start_at end_at] } if action_name == 'update'
+    params.require(:phase).permit(*permitted)
   end
 
   def ensure_input_export_review

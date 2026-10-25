@@ -30,6 +30,7 @@ def phase_params(spec)
   spec.parameter :vote_term, "The term used to describe the concept of a vote (noun). One of #{Phase::VOTE_TERMS.join(', ')}. Defaults to 'vote'.", scope: :phase
   spec.parameter :start_at, 'The start date of the phase', scope: :phase
   spec.parameter :end_at, 'The end date of the phase', scope: :phase
+  spec.parameter :timeline_phase_dates, 'Date changes for other timeline phases in this project, saved together with the move. Each entry has id, start_at and end_at.', scope: :phase
   spec.parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", scope: :phase
   spec.parameter :ideas_order, 'The default order of ideas.', scope: :phase
   spec.parameter :prescreening_mode, "The pre-screening mode. Either nil, 'all', or 'flagged_only'.", scope: :phase
@@ -132,6 +133,63 @@ resource 'Phases' do
           expect(json_response.dig(:errors, :base))
             .to include(hash_including(error: 'has_other_overlapping_phases'))
           expect(phase.reload.placement_type).to eq 'standalone'
+        end
+
+        context 'when resolving date conflicts' do
+          let(:phase) do
+            create(:native_survey_phase, project: project, placement_type: 'standalone',
+              start_at: '2026-06-10', end_at: '2026-06-20')
+          end
+          let!(:other_phase) { create(:phase, project: project, start_at: '2026-06-01', end_at: '2026-06-15') }
+
+          example 'Saves the move and edited timeline dates together', document: false do
+            do_request(phase: {
+              placement_type: 'on_timeline',
+              timeline_phase_dates: [{ id: other_phase.id, end_at: '2026-06-10' }]
+            })
+
+            assert_status 200
+            expect(phase.reload.placement_type).to eq 'on_timeline'
+            expect(other_phase.reload.end_at).to eq Time.zone.parse('2026-06-10')
+          end
+
+          example 'Rolls back the other dates when the survey move is invalid', document: false do
+            do_request(phase: {
+              placement_type: 'on_timeline',
+              start_at: '2026-06-20',
+              end_at: '2026-06-20',
+              timeline_phase_dates: [{ id: other_phase.id, end_at: '2026-06-10' }]
+            })
+
+            assert_status 422
+            expect(phase.reload.placement_type).to eq 'standalone'
+            expect(phase.start_at).to eq Time.zone.parse('2026-06-10')
+            expect(other_phase.reload.end_at).to eq Time.zone.parse('2026-06-15')
+          end
+
+          example 'Rejects invalid edits to another phase', document: false do
+            do_request(phase: {
+              placement_type: 'on_timeline',
+              timeline_phase_dates: [{ id: other_phase.id, end_at: '2026-06-01' }]
+            })
+
+            assert_status 422
+            expect(phase.reload.placement_type).to eq 'standalone'
+            expect(other_phase.reload.end_at).to eq Time.zone.parse('2026-06-15')
+          end
+
+          example 'Does not edit phases from another project', document: false do
+            foreign_phase = create(:phase)
+
+            do_request(phase: {
+              placement_type: 'on_timeline',
+              timeline_phase_dates: [{ id: foreign_phase.id, end_at: '2026-06-10' }]
+            })
+
+            assert_status 404
+            expect(phase.reload.placement_type).to eq 'standalone'
+            expect(foreign_phase.reload.end_at).not_to eq Time.zone.parse('2026-06-10')
+          end
         end
       end
 

@@ -12,9 +12,8 @@ const otherTimelinePhases = (survey: IPhaseData, phases: IPhaseData[]) =>
 export const canChangePlacement = (phase: IPhaseData) =>
   phase.attributes.participation_method === 'native_survey';
 
-// Mirrors the timeline rules the back end enforces on save
-// (Phase#validate_no_other_overlapping_phases, #validate_end_at and
-// #close_previous_open_phase); keep them in sync.
+// Require explicit date changes before moving, including for open-ended phases
+// that the backend would otherwise close automatically.
 export const checkMoveToTimeline = (
   survey: IPhaseData,
   timelinePhases: IPhaseData[]
@@ -25,26 +24,37 @@ export const checkMoveToTimeline = (
 
   const overlappingPhases = others.filter((other) => {
     const otherStart = time(other.attributes.start_at);
-    if (!other.attributes.end_at && otherStart < start) return false;
     return start < endTime(other) && otherStart < end;
   });
   const openEndedNotLast =
     !survey.attributes.end_at &&
     others.some((other) => time(other.attributes.start_at) >= start);
-  const previousPhase = getPreviousTimelinePhase(others, survey);
-
   return {
     overlappingPhases,
     openEndedNotLast,
-    phaseToClose:
-      previousPhase && !previousPhase.attributes.end_at
-        ? previousPhase
-        : undefined,
     renumbersLaterPhases: others.some(
       (other) => time(other.attributes.start_at) > start
     ),
   };
 };
+
+export const invalidTimelineDates = (phases: IPhaseData[]) =>
+  phases.filter((phase) => {
+    const start = time(phase.attributes.start_at);
+    const end = endTime(phase);
+
+    return (
+      !Number.isFinite(start) ||
+      (phase.attributes.end_at !== null && !Number.isFinite(end)) ||
+      end - start < 24 * 60 * 60 * 1000 ||
+      phases.some(
+        (other) =>
+          other.id !== phase.id &&
+          start < endTime(other) &&
+          time(other.attributes.start_at) < end
+      )
+    );
+  });
 
 export const checkMoveToSpotlightSurveys = (
   survey: IPhaseData,

@@ -143,6 +143,37 @@ describe('Moving a survey phase on and off the timeline', () => {
       moveFromSidebar('Move to timeline', 'on_timeline');
     });
 
+    it('shows conflicting dates in the survey setup and allows cancelling the move', () => {
+      cy.apiCreateNativeSurveyPhase({
+        projectId,
+        title: randomString(),
+        startAt: format(subMonths(new Date(), 1), 'dd/MM/yyyy'),
+        endAt: format(addMonths(new Date(), 1), 'dd/MM/yyyy'),
+        placementType: 'standalone',
+      }).then((phase) => {
+        const phaseId = phase.body.data.id;
+        cy.intercept('PATCH', `**/phases/${phaseId}`).as('moveSpotlight');
+        cy.visit(
+          `/admin/projects/${projectId}/phases/${phaseId}/setup?project_backoffice_redesign`
+        );
+
+        cy.contains('label', 'Appears on the timeline').click();
+        cy.contains('Change the dates').should('be.visible');
+        cy.dataCy('e2e-phase-placement-confirm')
+          .find('button')
+          .should('have.attr', 'aria-disabled', 'true');
+        cy.get('[role="dialog"]')
+          .find('.e2e-date-phase-picker-input')
+          .should('be.visible');
+        cy.get('[role="dialog"]').contains('button', 'Cancel').click();
+
+        cy.get(
+          `input[name="survey-placement-${phaseId}"][value="standalone"]`
+        ).should('be.checked');
+        cy.get('@moveSpotlight.all').should('have.length', 0);
+      });
+    });
+
     it('deletes a spotlight survey from its menu in the sidebar', () => {
       cy.dataCy(`e2e-phase-options-${spotlightPhaseId}`).click();
       cy.get('.e2e-action-delete-phase').click();

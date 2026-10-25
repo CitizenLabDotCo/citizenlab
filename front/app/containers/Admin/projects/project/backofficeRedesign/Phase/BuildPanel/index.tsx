@@ -18,9 +18,13 @@ import { validateDates } from 'containers/Admin/projects/project/phaseSetup/vali
 
 import { useIntl } from 'utils/cl-intl';
 
-import { useRegisterPageSaver } from '../../_shared/PageSaveContext';
+import {
+  usePageSave,
+  useRegisterPageSaver,
+} from '../../_shared/PageSaveContext';
 
 import BuildFields from './BuildFields';
+import SurveyPlacement from './SurveyPlacement';
 import SwitchSurveyMethodModal from './SwitchSurveyMethodModal';
 import useSurveyMethodLocks from './useSurveyMethodLocks';
 
@@ -34,6 +38,7 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
   const { formatMessage } = useIntl();
   const { data: phases } = usePhases(projectId);
   const { mutateAsync: updatePhase } = useUpdatePhase();
+  const pageSave = usePageSave();
 
   const [formData, setFormData] = useState<IUpdatedPhaseProperties>(
     phase.attributes
@@ -97,6 +102,11 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
   return (
     <Box display="flex" flexDirection="column" flexGrow={1} minHeight="0">
       <Box flexGrow={1} p="20px">
+        <SurveyPlacement
+          phase={phase}
+          hasUnsavedChanges={dirty || !!pageSave?.dirty}
+          onMoved={(updatedPhase) => setFormData(updatedPhase.attributes)}
+        />
         <BuildFields
           projectId={projectId}
           phaseId={phase.id}

@@ -9,7 +9,9 @@ import { isTimelinePhase } from 'api/phases/utils';
 import useLocalize from 'hooks/useLocalize';
 
 import placementMessages from 'containers/Admin/projects/_shared/components/PhasePlacement/messages';
+import MovePhaseModal from 'containers/Admin/projects/_shared/components/PhasePlacement/MovePhaseModal';
 import { canChangePlacement } from 'containers/Admin/projects/_shared/components/PhasePlacement/utils';
+import { usePageSave } from 'containers/Admin/projects/project/backofficeRedesign/_shared/PageSaveContext';
 import phaseMessages from 'containers/Admin/projects/project/phase/messages';
 
 import MoreActionsMenu from 'components/UI/MoreActionsMenu';
@@ -20,8 +22,6 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { useParams } from 'utils/router';
 
-import MovePhaseModal from './MovePhaseModal';
-
 interface Props {
   projectId: string;
   phase: IPhaseData;
@@ -30,6 +30,7 @@ interface Props {
 const PhaseOptionsMenu = ({ projectId, phase }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const pageSave = usePageSave();
   const { phaseId } = useParams({ strict: false });
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showMoveModal, setShowMoveModal] = useState(false);
@@ -82,8 +83,9 @@ const PhaseOptionsMenu = ({ projectId, phase }: Props) => {
       />
       {showMoveModal && (
         <MovePhaseModal
-          projectId={projectId}
           phase={phase}
+          hasUnsavedChanges={pageSave?.dirty}
+          onMoved={() => pageSave?.discardAll()}
           onClose={() => setShowMoveModal(false)}
         />
       )}

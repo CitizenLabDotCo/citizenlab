@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  moveSaveChangesFirst: {
+    id: 'app.containers.AdminPage.ProjectTimeline.moveSaveChangesFirst',
+    defaultMessage: 'Save your changes before you move the survey.',
+  },
   moveToTimeline: {
     id: 'app.containers.Admin.projects.PhasePlacement.moveToTimeline',
     defaultMessage: 'Move to timeline',
@@ -37,9 +41,35 @@ export default defineMessages({
     defaultMessage:
       'This survey has no end date. Only the last phase on the timeline can be open-ended.',
   },
-  changeDatesHint: {
-    id: 'app.containers.Admin.projects.PhasePlacement.changeDatesHint',
-    defaultMessage: 'Change the survey dates, then try again.',
+  editTimelineDates: {
+    id: 'app.containers.Admin.projects.PhasePlacement.editTimelineDates',
+    defaultMessage:
+      'Change the dates of this survey or another phase below. Nothing changes until you move the survey.',
+  },
+  invalidDates: {
+    id: 'app.containers.Admin.projects.PhasePlacement.invalidDates',
+    defaultMessage:
+      '"{phaseName}" needs a start date and must last at least 24 hours. Timeline phases cannot overlap, and only the last phase can have no end date.',
+  },
+  surveyPlacement: {
+    id: 'app.containers.Admin.projects.PhasePlacement.surveyPlacement',
+    defaultMessage: 'Survey placement',
+  },
+  timeline: {
+    id: 'app.containers.Admin.projects.PhasePlacement.timeline',
+    defaultMessage: 'Timeline',
+  },
+  timelineDescription: {
+    id: 'app.containers.Admin.projects.PhasePlacement.timelineDescription',
+    defaultMessage: 'Appears on the timeline',
+  },
+  spotlight: {
+    id: 'app.containers.Admin.projects.PhasePlacement.spotlight',
+    defaultMessage: 'Spotlight',
+  },
+  spotlightDescription: {
+    id: 'app.containers.Admin.projects.PhasePlacement.spotlightDescription',
+    defaultMessage: 'Runs on its own, outside the timeline',
   },
   changeDatesButton: {
     id: 'app.containers.Admin.projects.PhasePlacement.changeDatesButton',
@@ -49,11 +79,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.moveWarningWidgetRemoved',
     defaultMessage:
       'The survey is shown in a block on your project page. That block will be removed.',
-  },
-  previousPhaseEnds: {
-    id: 'app.containers.AdminPage.ProjectTimeline.moveWarningPreviousPhaseEnds',
-    defaultMessage:
-      '"{phaseName}" has no end date. It will end on {date}, when this survey starts.',
   },
   laterPhasesRenumbered: {
     id: 'app.containers.Admin.projects.PhasePlacement.laterPhasesRenumbered',

@@ -160,6 +160,11 @@ export interface AddPhaseObject extends IUpdatedPhaseProperties {
 
 export interface UpdatePhaseObject extends IUpdatedPhaseProperties {
   phaseId: string;
+  timeline_phase_dates?: {
+    id: string;
+    start_at?: string;
+    end_at?: string | null;
+  }[];
 }
 
 export type TSurveyService =

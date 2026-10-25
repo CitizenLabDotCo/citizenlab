@@ -186,7 +186,6 @@ const FormBuilderTopBar = ({
           customFields={customFields}
           projectId={projectId}
           phase={phase.data}
-          isFormPhaseSpecific={builderConfig.isFormPhaseSpecific}
           onSaveSuccess={onFormSave}
         />
         <ButtonWithLink

@@ -1,7 +1,11 @@
 import { mockPhaseIdeationData } from 'api/phases/__mocks__/_mockServer';
 import { IPhaseData, PhasePlacementType } from 'api/phases/types';
 
-import { checkMoveToSpotlightSurveys, checkMoveToTimeline } from './utils';
+import {
+  checkMoveToSpotlightSurveys,
+  checkMoveToTimeline,
+  invalidTimelineDates,
+} from './utils';
 
 const buildPhase = (
   id: string,
@@ -34,13 +38,12 @@ describe('checkMoveToTimeline', () => {
     expect(ids(check.overlappingPhases)).toEqual(['overlapping']);
   });
 
-  it('closes an earlier open-ended phase instead of counting it as an overlap', () => {
+  it('requires an explicit end date for an earlier open-ended phase', () => {
     const openEnded = buildPhase('open-ended', '2026-05-01', null);
 
     const check = checkMoveToTimeline(survey, [openEnded]);
 
-    expect(check.overlappingPhases).toEqual([]);
-    expect(check.phaseToClose?.id).toBe('open-ended');
+    expect(ids(check.overlappingPhases)).toEqual(['open-ended']);
   });
 
   it('blocks an open-ended survey that would not be the last phase', () => {
@@ -71,6 +74,40 @@ describe('checkMoveToTimeline', () => {
     expect(
       checkMoveToTimeline(survey, [before, after]).renumbersLaterPhases
     ).toBe(true);
+  });
+});
+
+describe('invalidTimelineDates', () => {
+  it('allows consecutive phases and an open-ended last phase', () => {
+    expect(
+      invalidTimelineDates([
+        buildPhase('first', '2026-06-01', '2026-06-10'),
+        buildPhase('last', '2026-06-10', null),
+      ])
+    ).toEqual([]);
+  });
+
+  it('blocks an overlap with an open-ended earlier phase', () => {
+    expect(
+      ids(
+        invalidTimelineDates([
+          buildPhase('first', '2026-06-01', null),
+          buildPhase('survey', '2026-06-10', '2026-06-20'),
+        ])
+      )
+    ).toEqual(['first', 'survey']);
+  });
+
+  it('blocks missing start dates, reversed dates and durations below 24 hours', () => {
+    expect(
+      ids(
+        invalidTimelineDates([
+          buildPhase('missing', '', null),
+          buildPhase('reversed', '2026-06-03', '2026-06-01'),
+          buildPhase('short', '2026-07-01T00:00:00Z', '2026-07-01T12:00:00Z'),
+        ])
+      )
+    ).toEqual(['missing', 'reversed', 'short']);
   });
 });
 

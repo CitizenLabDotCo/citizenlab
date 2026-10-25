@@ -55,7 +55,7 @@ module Analytics
           'creation_phase_id' => <<~DOC.squish,
             The phase the input was created in, for phase-specific methods like
             surveys. NULL for ideation and proposals inputs, which live across
-            phases.
+            phases: reporting_input_phases lists every phase an input belongs to.
           DOC
           'participation_method' => <<~DOC.squish,
             The participation method the input was originally posted through
@@ -76,12 +76,17 @@ module Analytics
             'answered', 'ineligible'. Prefer this over status_label for
             filtering.
           DOC
-          'imported' => 'TRUE when the input was imported by an administrator (e.g. from paper forms) rather than posted online.',
+          'imported' => <<~DOC.squish,
+            TRUE when the input was imported by an administrator (e.g. from paper
+            forms) rather than posted online. Import details are in
+            reporting_input_imports.
+          DOC
           'received_feedback' => <<~DOC.squish,
             TRUE when an administrator gave official feedback on the input or
             changed its status. Only meaningful for publicly visible methods
             (ideation, proposals). The feedback texts are in
-            reporting_official_feedbacks.
+            reporting_official_feedbacks, the status changes in
+            reporting_input_status_changes.
           DOC
           'likes_count' => 'Number of likes on the input.',
           'dislikes_count' => 'Number of dislikes on the input.',

@@ -6,6 +6,7 @@ import { IPhaseData } from 'api/phases/types';
 import { isTimelinePhase } from 'api/phases/utils';
 
 import placementMessages from 'containers/Admin/projects/_shared/components/PhasePlacement/messages';
+import MovePhaseModal from 'containers/Admin/projects/_shared/components/PhasePlacement/MovePhaseModal';
 import { canChangePlacement } from 'containers/Admin/projects/_shared/components/PhasePlacement/utils';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
@@ -13,8 +14,6 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
-
-import ConfirmMoveModal from './ConfirmMoveModal';
 
 interface Props {
   phase: IPhaseData;
@@ -60,11 +59,11 @@ const PhasePlacement = ({ phase, hasUnsavedChanges }: Props) => {
       </Box>
       {hasUnsavedChanges && (
         <Text mb="0" fontSize="s" color="textSecondary">
-          <FormattedMessage {...messages.moveSaveChangesFirst} />
+          <FormattedMessage {...placementMessages.moveSaveChangesFirst} />
         </Text>
       )}
       {modalOpened && (
-        <ConfirmMoveModal phase={phase} onClose={() => setModalOpened(false)} />
+        <MovePhaseModal phase={phase} onClose={() => setModalOpened(false)} />
       )}
     </SectionField>
   );

@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { useQueryClient } from '@tanstack/react-query';
 
 import { IPhaseData, PhasePlacementType } from 'api/phases/types';
@@ -9,7 +11,16 @@ import useProjectPageLayout from 'api/project_page_layout/useProjectPageLayout';
 
 import { linkedSurveyPhaseIds } from 'components/ProjectPageBuilder/Widgets/SpotlightSurveys/linkedSurveyPhaseIds';
 
-import { checkMoveToSpotlightSurveys, checkMoveToTimeline } from './utils';
+import {
+  checkMoveToSpotlightSurveys,
+  checkMoveToTimeline,
+  invalidTimelineDates,
+} from './utils';
+
+export type PlacementDates = Pick<
+  IPhaseData['attributes'],
+  'start_at' | 'end_at'
+>;
 
 const usePhasePlacementMove = (phase: IPhaseData) => {
   const { mutate: updatePhase, isPending, error, reset } = useUpdatePhase();
@@ -18,30 +29,48 @@ const usePhasePlacementMove = (phase: IPhaseData) => {
   const onTimeline = isTimelinePhase(phase);
   const { data: layout } = useProjectPageLayout(projectId, !onTimeline);
   const { data: timelinePhases } = usePhases(projectId, 'on_timeline');
+  const [dateChanges, setDateChanges] = useState<
+    Record<string, PlacementDates>
+  >({});
+  const withDraftDates = (phase: IPhaseData): IPhaseData => ({
+    ...phase,
+    attributes: { ...phase.attributes, ...dateChanges[phase.id] },
+  });
+  const draftPhase = withDraftDates(phase);
+  const draftTimeline = timelinePhases?.data.map(withDraftDates) ?? [];
+  const proposedTimeline = [
+    ...draftTimeline.filter(({ id }) => id !== phase.id),
+    draftPhase,
+  ];
 
   const target: PhasePlacementType = onTimeline ? 'standalone' : 'on_timeline';
   const toTimelineCheck =
     !onTimeline && timelinePhases
-      ? checkMoveToTimeline(phase, timelinePhases.data)
+      ? checkMoveToTimeline(draftPhase, draftTimeline)
       : undefined;
   const toSpotlightCheck =
     onTimeline && timelinePhases
-      ? checkMoveToSpotlightSurveys(phase, timelinePhases.data)
+      ? checkMoveToSpotlightSurveys(draftPhase, draftTimeline)
       : undefined;
-  const blocked =
-    !!toTimelineCheck &&
-    (toTimelineCheck.overlappingPhases.length > 0 ||
-      toTimelineCheck.openEndedNotLast);
+  const invalidDates = onTimeline ? [] : invalidTimelineDates(proposedTimeline);
+  const blocked = invalidDates.length > 0;
 
-  const move = ({ onSuccess }: { onSuccess: () => void }) => {
+  const move = ({ onSuccess }: { onSuccess: (phase: IPhaseData) => void }) => {
     updatePhase(
-      { phaseId: phase.id, placement_type: target },
       {
-        onSuccess: () => {
+        phaseId: phase.id,
+        placement_type: target,
+        ...dateChanges[phase.id],
+        timeline_phase_dates: Object.entries(dateChanges)
+          .filter(([id]) => id !== phase.id)
+          .map(([id, dates]) => ({ id, ...dates })),
+      },
+      {
+        onSuccess: (response) => {
           queryClient.invalidateQueries({
             queryKey: projectPageLayoutKeys.item({ projectId }),
           });
-          onSuccess();
+          onSuccess(response.data);
         },
       }
     );
@@ -53,6 +82,14 @@ const usePhasePlacementMove = (phase: IPhaseData) => {
     toTimelineCheck,
     toSpotlightCheck,
     blocked,
+    draftPhase,
+    proposedTimeline,
+    invalidDates,
+    datesChanged: Object.keys(dateChanges).length > 0,
+    changeDates: (id: string, dates: PlacementDates) => {
+      reset();
+      setDateChanges((changes) => ({ ...changes, [id]: dates }));
+    },
     shownOnProjectPage: linkedSurveyPhaseIds(
       layout?.data.attributes.craftjs_json
     ).has(phase.id),
