@@ -1,17 +1,19 @@
 import React, { Suspense } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
+import { getPhaseActionDescriptor } from 'api/phases/utils';
 import { IProjectData } from 'api/projects/types';
 
+import ParticipationPermission from 'containers/ProjectsShowPage/shared/ParticipationPermission';
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
 
-import previewMessages from 'components/admin/PhasePreview/messages';
+import PreviewSkeleton from 'components/admin/PhasePreview/PreviewSkeleton';
 import ContentContainer from 'components/ContentContainer';
 import StatusModule from 'components/StatusModule';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { getPhasePreview } from 'utils/phasePreview/runtime';
 
@@ -41,9 +43,15 @@ const PhaseParticipationContent = ({
   if (getPhasePreview()?.unsaved) {
     return (
       <Box p="20px">
-        <Text>
-          <FormattedMessage {...previewMessages.newPhase} />
-        </Text>
+        <PreviewSkeleton
+          kind={
+            ['native_survey', 'poll', 'survey'].includes(
+              phase.attributes.participation_method
+            )
+              ? 'form'
+              : 'cards'
+          }
+        />
       </Box>
     );
   }
@@ -57,6 +65,70 @@ const PhaseParticipationContent = ({
     survey_service: surveyService,
     document_annotation_embed_url: documentUrl,
   } = phase.attributes;
+
+  if (
+    getPhasePreview() &&
+    participationMethod === 'native_survey' &&
+    !children
+  ) {
+    return (
+      <ContentContainer maxWidth={maxPageWidth}>
+        <PreviewSkeleton kind="form" />
+      </ContentContainer>
+    );
+  }
+
+  // Provider embeds cannot run inside the isolated preview. Show their shape
+  // without loading third-party scripts or allowing provider-side submissions.
+  if (
+    getPhasePreview() &&
+    ['survey', 'document_annotation'].includes(participationMethod)
+  ) {
+    const action =
+      participationMethod === 'document_annotation'
+        ? 'annotating_document'
+        : 'taking_survey';
+    const { disabled_reason } = getPhaseActionDescriptor(phase, action);
+    const lifecycle = getPhasePreview()?.lifecycle;
+    if (
+      (lifecycle === 'before' || lifecycle === 'ended') &&
+      (documentUrl || surveyEmbedUrl)
+    ) {
+      return (
+        <ContentContainer maxWidth={maxPageWidth}>
+          <ParticipationPermission
+            id={
+              participationMethod === 'document_annotation'
+                ? 'document-annotation'
+                : 'project-survey'
+            }
+            action={action}
+            enabled={false}
+            phaseId={phase.id}
+            disabledReason={disabled_reason}
+            disabledMessage={
+              getPermissionsDisabledMessage(action, disabled_reason) ?? null
+            }
+          >
+            <PreviewSkeleton kind="document" />
+          </ParticipationPermission>
+        </ContentContainer>
+      );
+    }
+
+    return (
+      <ContentContainer
+        id={
+          participationMethod === 'document_annotation'
+            ? 'document-annotation'
+            : 'project-survey'
+        }
+        maxWidth={maxPageWidth}
+      >
+        <PreviewSkeleton kind="document" />
+      </ContentContainer>
+    );
+  }
   const isPastPhase =
     !!phase.attributes.end_at &&
     pastPresentOrFuture(phase.attributes.end_at) === 'past';

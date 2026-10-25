@@ -1,3 +1,4 @@
+import ideasKeys from 'api/ideas/keys';
 import phasesKeys from 'api/phases/keys';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
@@ -88,14 +89,10 @@ export const createPreviewFetch =
       init
     );
     if (
-      !isApi ||
-      !response.ok ||
-      !response.headers.get('content-type')?.includes('json')
+      isApi &&
+      path === `/phases/${preview.phaseId}/progress` &&
+      (response.ok || preview.snapshot.lifecycle)
     ) {
-      return response;
-    }
-
-    if (path === `/phases/${preview.phaseId}/progress`) {
       // Load one page at a time so large phases do not inflate the iframe's memory.
       const statementsUrl = new URL(`${apiPrefix}/ideas`, origin);
       statementsUrl.searchParams.set('phase', preview.phaseId);
@@ -109,6 +106,27 @@ export const createPreviewFetch =
       const statements = await originalFetch(statementsUrl, init);
       if (!statements.ok) return statements;
       preview.setStatements(await statements.json());
+      if (preview.snapshot.lifecycle) {
+        return jsonResponse(
+          preview.transform({
+            data: {
+              id: preview.phaseId,
+              type: 'common_ground_progress',
+              attributes: {
+                num_ideas: preview.snapshot.phase.attributes.ideas_count,
+              },
+            },
+          })
+        );
+      }
+    }
+
+    if (
+      !isApi ||
+      !response.ok ||
+      !response.headers.get('content-type')?.includes('json')
+    ) {
+      return response;
     }
 
     const data: JsonObject = await response.json();
@@ -193,6 +211,8 @@ export const initializePhasePreview = async () => {
       if (!isPreviewSnapshot(snapshot)) return;
 
       if (session) {
+        const lifecycleChanged =
+          session.snapshot.lifecycle !== snapshot.lifecycle;
         if (session.updateSnapshot(snapshot)) {
           // Refresh phase data without remounting forms or clearing local answers.
           void queryClient.invalidateQueries({
@@ -201,6 +221,11 @@ export const initializePhasePreview = async () => {
           void queryClient.invalidateQueries({
             queryKey: phasesKeys.list({ projectId: snapshot.project.id }),
           });
+          if (lifecycleChanged) {
+            // Option cards cache their own action descriptors, independently of
+            // the phase. Re-read them when simulated participation opens/closes.
+            void queryClient.invalidateQueries({ queryKey: ideasKeys.all() });
+          }
         }
         return;
       }

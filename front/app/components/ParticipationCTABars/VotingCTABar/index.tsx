@@ -14,6 +14,7 @@ import {
 
 import { useIntl } from 'utils/cl-intl';
 import useFormatCurrency from 'utils/currency/useFormatCurrency';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 
 import CTAButton from './CTAButton';
 import { getOptionSelectionCounter, getVotesCounter } from './utils';
@@ -50,6 +51,7 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
 
   const submittedAt = basket?.data.attributes.submitted_at || null;
   const hasUserParticipated = !!submittedAt;
+  const counterColor = getPhasePreview() ? 'textSecondary' : 'white';
 
   return (
     <>
@@ -66,7 +68,7 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
           participationState={
             <Box ml="21px" display={isMobileOrSmaller ? 'block' : 'flex'}>
               <Text
-                color="white"
+                color={counterColor}
                 m="0px"
                 mr="4px"
                 fontSize="s"
@@ -75,7 +77,12 @@ const VotingCTABar = ({ phases, project }: CTABarProps) => {
                 {votesCounter}
               </Text>
               {optionSelectionCounter && (
-                <Text color="white" m="0px" fontSize="s" aria-live="polite">
+                <Text
+                  color={counterColor}
+                  m="0px"
+                  fontSize="s"
+                  aria-live="polite"
+                >
                   {isMobileOrSmaller ? '' : ' • '}
                   {optionSelectionCounter}
                 </Text>

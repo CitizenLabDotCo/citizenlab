@@ -14,6 +14,7 @@ interface Props {
   // Starts the phone at the top of the area, to line up with content beside it. The area then
   // takes its height from the phone, so nothing is clipped and a hover ring can show at the top.
   alignTop?: boolean;
+  bottomSpace?: number;
   children?: ReactNode;
 }
 
@@ -25,12 +26,14 @@ const PhonePreview = ({
   className,
   dataCy,
   alignTop = false,
+  bottomSpace = 0,
   children,
 }: Props) => (
   <PhonePreviewFrame
     className={className}
     dataCy={dataCy}
     alignTop={alignTop}
+    bottomSpace={bottomSpace}
     screen={
       <Box
         as="iframe"

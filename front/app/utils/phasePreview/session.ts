@@ -1,3 +1,4 @@
+import { previewActions, previewDates } from './lifecycle';
 import { Json, JsonObject, object, PreviewSnapshot, relation } from './types';
 
 const unavailable = (reason: string) => ({
@@ -8,6 +9,7 @@ const unavailable = (reason: string) => ({
 export class PreviewSession {
   readonly phaseId: string;
   readonly basketId = 'preview-basket';
+  private readonly now = Date.now();
   private votes = new Map<string, number>();
   private volunteers = new Map<string, string>();
   private events = new Map<string, JsonObject>();
@@ -66,10 +68,35 @@ export class PreviewSession {
       attributes.description_multiloc = draftDescription;
     }
 
-    const actions = object(attributes.action_descriptors);
+    if (this.snapshot.lifecycle) {
+      Object.assign(
+        attributes,
+        previewDates(
+          {
+            start_at:
+              typeof attributes.start_at === 'string'
+                ? attributes.start_at
+                : undefined,
+            end_at:
+              typeof attributes.end_at === 'string' ? attributes.end_at : null,
+          },
+          this.snapshot.lifecycle,
+          this.now
+        )
+      );
+    }
+
+    const actions =
+      this.snapshot.lifecycle && !this.snapshot.unsaved
+        ? previewActions(
+            object(attributes.action_descriptors),
+            this.snapshot.lifecycle
+          )
+        : object(attributes.action_descriptors);
     if (this.pollSubmitted) {
       actions.taking_poll = unavailable('already_responded');
     }
+    attributes.action_descriptors = actions;
 
     phase.attributes = attributes;
     phase.relationships = {
@@ -178,7 +205,12 @@ export class PreviewSession {
     method: string,
     body: JsonObject
   ): JsonObject | undefined {
-    if (this.snapshot.unsaved) return undefined;
+    if (
+      this.snapshot.unsaved ||
+      (this.snapshot.lifecycle && this.snapshot.lifecycle !== 'open')
+    ) {
+      return undefined;
+    }
 
     const parts = path.split('/').filter(Boolean);
 
@@ -344,7 +376,9 @@ export class PreviewSession {
       if (item.type === 'project' && id === this.snapshot.project.id) {
         return {
           ...item,
-          attributes,
+          attributes: this.snapshot.lifecycle
+            ? { ...attributes, publication_status: 'published' }
+            : attributes,
           relationships: {
             ...relationships,
             user_basket: { data: null },
@@ -355,7 +389,16 @@ export class PreviewSession {
       if (item.type === 'idea') {
         return {
           ...item,
-          attributes,
+          attributes:
+            this.snapshot.lifecycle && attributes.action_descriptors
+              ? {
+                  ...attributes,
+                  action_descriptors: previewActions(
+                    object(attributes.action_descriptors),
+                    this.snapshot.lifecycle
+                  ),
+                }
+              : attributes,
           relationships: {
             ...relationships,
             user_reaction: this.reactions.has(id)

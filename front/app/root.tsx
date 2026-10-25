@@ -59,7 +59,7 @@ const Root = () => {
           </LanguageProvider>
         </HelmetProvider>
       </OutletsProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {!getPhasePreview() && <ReactQueryDevtools initialIsOpen={false} />}
     </QueryClientProvider>
   );
 };

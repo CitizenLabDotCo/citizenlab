@@ -57,10 +57,9 @@ const ProjectCTABar = ({ projectId, className }: ProjectCTABarProps) => {
     zIndex: '1000',
     background: colors.white,
   };
-  const verticalPositionProps = getVerticalPositionProps({
-    isSmallerThanTablet,
-    windowHeight,
-  });
+  const verticalPositionProps: BoxProps = getPhasePreview()
+    ? { position: 'fixed', bottom: '0px' }
+    : getVerticalPositionProps({ isSmallerThanTablet, windowHeight });
 
   return (
     <Box className={className} {...sharedProps} {...verticalPositionProps}>

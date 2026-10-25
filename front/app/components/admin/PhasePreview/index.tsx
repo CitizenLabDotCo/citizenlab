@@ -1,11 +1,16 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
 import PhonePreview from 'components/admin/PhonePreview';
 
 import { useIntl } from 'utils/cl-intl';
-import { PREVIEW_FRAME_NAME, PreviewSnapshot } from 'utils/phasePreview/types';
+import { getPreviewLifecycle } from 'utils/phasePreview/lifecycle';
+import {
+  PREVIEW_FRAME_NAME,
+  PreviewSnapshot,
+  PreviewLifecycle,
+} from 'utils/phasePreview/types';
 
 import messages from './messages';
 
@@ -20,7 +25,10 @@ interface Props {
 const PhasePreview = ({ src, title, snapshot }: Props) => {
   const { formatMessage } = useIntl();
   const frameRef = useRef<HTMLIFrameElement>(null);
-  const payload = JSON.stringify(snapshot);
+  const [lifecycle, setLifecycle] = useState<PreviewLifecycle>(() =>
+    getPreviewLifecycle({ ...snapshot.phase?.attributes, ...snapshot.draft })
+  );
+  const payload = JSON.stringify({ ...snapshot, lifecycle });
   const payloadRef = useRef(payload);
   payloadRef.current = payload;
 
@@ -68,13 +76,57 @@ const PhasePreview = ({ src, title, snapshot }: Props) => {
   }
 
   return (
-    <PhonePreview
-      src={src}
-      title={title}
-      frameName={PREVIEW_FRAME_NAME}
-      frameRef={frameRef}
-      dataCy="e2e-phase-preview"
-    />
+    <Box height="100%" display="flex" flexDirection="column">
+      <Box flex="1" minHeight="0">
+        <PhonePreview
+          src={src}
+          title={title}
+          frameName={PREVIEW_FRAME_NAME}
+          frameRef={frameRef}
+          dataCy="e2e-phase-preview"
+          bottomSpace={snapshot.unsaved ? 110 : 60}
+        />
+      </Box>
+      <Box
+        role="group"
+        aria-label={formatMessage(messages.lifecycle)}
+        display="flex"
+        justifyContent="center"
+        gap="8px"
+        p="8px"
+      >
+        {(
+          [
+            { value: 'before', label: messages.before },
+            { value: 'open', label: messages.open },
+            { value: 'ended', label: messages.ended },
+          ] as const
+        ).map(({ value, label }) => (
+          <Button
+            key={value}
+            buttonStyle={
+              lifecycle === value ? 'admin-dark' : 'secondary-outlined'
+            }
+            ariaPressed={lifecycle === value}
+            padding="8px 12px"
+            onClick={() => setLifecycle(value)}
+          >
+            {formatMessage(label)}
+          </Button>
+        ))}
+      </Box>
+      {snapshot.unsaved && (
+        <Text
+          fontSize="s"
+          color="textSecondary"
+          textAlign="center"
+          m="0"
+          p="12px"
+        >
+          {formatMessage(messages.newPhase)}
+        </Text>
+      )}
+    </Box>
   );
 };
 

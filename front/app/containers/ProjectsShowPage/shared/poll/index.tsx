@@ -1,16 +1,20 @@
 import React from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import usePhase from 'api/phases/usePhase';
 import { getPhaseActionDescriptor } from 'api/phases/utils';
 import usePollQuestions from 'api/poll_questions/usePollQuestions';
 
+import PreviewSkeleton from 'components/admin/PhasePreview/PreviewSkeleton';
+
 import {
   getPermissionsDisabledMessage,
   isFixableByAuthentication,
 } from 'utils/actionDescriptors';
 import { isNilOrError } from 'utils/helperUtils';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 
 import FormCompleted from './FormCompleted';
 import messages from './messages';
@@ -45,6 +49,14 @@ const Poll = ({ projectId, phaseId }: Props) => {
 
   if (isNilOrError(pollQuestions) || !phase) {
     return null;
+  }
+
+  if (getPhasePreview() && pollQuestions.data.length === 0) {
+    return (
+      <Box id="project-poll">
+        <PreviewSkeleton kind="form" />
+      </Box>
+    );
   }
 
   const { enabled, disabled_reason } = getPhaseActionDescriptor(

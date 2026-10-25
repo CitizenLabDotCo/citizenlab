@@ -19,6 +19,7 @@ import useLocalize from 'hooks/useLocalize';
 import messages from 'containers/ProjectsShowPage/messages';
 
 import previewMessages from 'components/admin/PhasePreview/messages';
+import SkeletonBar from 'components/ProjectPageBuilder/Widgets/EmptyState/SkeletonBar';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import {
@@ -122,18 +123,18 @@ const PhaseTitle = ({
       phase.data.attributes.start_at,
       phase.data.attributes.end_at,
     ]);
-    const startDate = phase.data.attributes.start_at
+    const preview = getPhasePreview();
+    const dates = preview
+      ? { ...preview.phase.attributes, ...preview.draft }
+      : phase.data.attributes;
+    const startDate = dates.start_at
       ? getLocalisedDateString(
-          getPhasePreview()
-            ? getIsoDate(phase.data.attributes.start_at)
-            : phase.data.attributes.start_at
+          getPhasePreview() ? getIsoDate(dates.start_at) : dates.start_at
         )
       : undefined;
-    const endDate = phase.data.attributes.end_at
+    const endDate = dates.end_at
       ? getLocalisedDateString(
-          getPhasePreview()
-            ? getIsoDate(phase.data.attributes.end_at)
-            : phase.data.attributes.end_at
+          getPhasePreview() ? getIsoDate(dates.end_at) : dates.end_at
         )
       : formatMessage(messages.noEndDate);
 
@@ -153,21 +154,29 @@ const PhaseTitle = ({
         </PhaseNumber>
         <HeaderTitleWrapper>
           <Title
+            id={getPhasePreview() ? 'phase-preview-title' : undefined}
             variant="h3"
             className={`e2e-phase-title ${phaseStatus}`}
             m="0"
-            color={phaseStatus === 'present' ? 'success' : 'textSecondary'}
+            color={
+              getPhasePreview()
+                ? 'tenantText'
+                : phaseStatus === 'present'
+                ? 'success'
+                : 'textSecondary'
+            }
           >
-            {phaseTitle || (
-              <FormattedMessage
-                {...(getPhasePreview()?.unsaved
-                  ? previewMessages.noTitle
-                  : messages.noPhaseSelected)}
-              />
-            )}
+            {phaseTitle ||
+              (getPhasePreview() ? (
+                <SkeletonBar width="200px" height="22px" />
+              ) : (
+                <FormattedMessage {...messages.noPhaseSelected} />
+              ))}
           </Title>
           <PhaseDate className={phaseStatus}>
-            {!startDate ? (
+            {!startDate && getPhasePreview() ? (
+              <SkeletonBar width="150px" />
+            ) : !startDate ? (
               <FormattedMessage {...previewMessages.noDates} />
             ) : isOneDayPhase ? (
               startDate
@@ -176,14 +185,14 @@ const PhaseTitle = ({
                 {startDate}
                 <>
                   {' '}
-                  <FormattedTime value={phase.data.attributes.start_at} />
+                  <FormattedTime value={dates.start_at} />
                 </>
                 {' - '}
                 {endDate}
-                {phase.data.attributes.end_at && (
+                {dates.end_at && (
                   <>
                     {' '}
-                    <FormattedTime value={phase.data.attributes.end_at} />
+                    <FormattedTime value={dates.end_at} />
                   </>
                 )}
               </>

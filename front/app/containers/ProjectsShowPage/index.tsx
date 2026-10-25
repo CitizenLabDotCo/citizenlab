@@ -29,9 +29,11 @@ import Navigate from 'utils/cl-router/Navigate';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { anyIsUndefined } from 'utils/helperUtils';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 import { useParams, useSearch } from 'utils/router';
 import { scrollToElement } from 'utils/scroll';
 
+import PhasePreviewPage from './PhasePreviewPage';
 import ProjectHeader from './shared/header/ProjectHeader';
 import ProjectShowPageMeta from './shared/header/ProjectShowPageMeta';
 import SuccessModal from './SucessModal';
@@ -182,6 +184,10 @@ const ProjectsShowPageWrapper = () => {
 
   if (!project) return null;
 
+  const previewPhase = phases?.data.find(
+    ({ id }) => id === getPhasePreview()?.phase.id
+  );
+
   return (
     <>
       <ProjectShowPageMeta project={project.data} />
@@ -194,7 +200,11 @@ const ProjectsShowPageWrapper = () => {
             : phases?.data && getLatestRelevantPhase(phases.data)?.id
         }
       >
-        <ProjectsShowPage project={project.data} />
+        {previewPhase ? (
+          <PhasePreviewPage project={project.data} phase={previewPhase} />
+        ) : (
+          <ProjectsShowPage project={project.data} />
+        )}
       </VotingContext>
     </>
   );

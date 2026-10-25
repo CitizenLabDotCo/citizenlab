@@ -8,7 +8,10 @@ import {
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
+import PreviewSkeleton from 'components/admin/PhasePreview/PreviewSkeleton';
+
 import { FormattedMessage } from 'utils/cl-intl';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 
 import messages from '../../messages';
 
@@ -57,6 +60,8 @@ const EmptyMessageMainLine = styled.div`
 `;
 
 const EmptyIdeas = () => {
+  if (getPhasePreview()) return <PreviewSkeleton />;
+
   return (
     <EmptyContainer>
       <EmptyContainerInner>
