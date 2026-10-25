@@ -1,6 +1,7 @@
 import 'cypress-file-upload';
 import './dnd';
 import './form-builder';
+import './input-form';
 import * as moment from 'moment';
 import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
@@ -119,6 +120,9 @@ declare global {
       dragToolboxItemTo(
         toolboxSelector: string,
         targetSelector: string
+      ): Chainable<JQuery<HTMLElement>>;
+      clickInputFormPageButton(
+        dataCy: 'e2e-next-page' | 'e2e-submit-form'
       ): Chainable<JQuery<HTMLElement>>;
       selectReactSelectOption: typeof selectReactSelectOption;
       apiCreateInputTopic: typeof apiCreateInputTopic;

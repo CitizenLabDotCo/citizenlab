@@ -27,6 +27,15 @@ resource 'Custom Forms' do
             print_personal_data_fields
           ]
         end
+
+        example 'Return the custom form of the project for an ideation phase', document: false do
+          project = create(:single_phase_ideation_project)
+          project_form = create(:custom_form, participation_context: project)
+
+          do_request(phase_id: project.phases.first.id)
+          assert_status 200
+          expect(response_data[:id]).to eq project_form.id
+        end
       end
 
       patch 'web_api/v1/phases/:phase_id/custom_form' do

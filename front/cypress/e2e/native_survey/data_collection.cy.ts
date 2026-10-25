@@ -70,15 +70,6 @@ const deselectSurveyFields = [
   },
 ];
 
-// The next/submit buttons stay disabled until the page's last question has
-// been scrolled into view, so wait for the enabled state instead of
-// force-clicking — a force-click on a disabled button silently does nothing.
-const clickPageButton = (dataCy: 'e2e-next-page' | 'e2e-submit-form') => {
-  cy.get('[data-question-id]').last().scrollIntoView();
-  cy.dataCy(dataCy).should('be.visible').should('not.have.class', 'disabled');
-  cy.dataCy(dataCy).click();
-};
-
 const scaleOption = () => cy.get(`#linear-scale-option-${SCALE_VALUE}`);
 
 const expectScaleChecked = (checked: boolean) =>
@@ -277,7 +268,7 @@ describe('Native survey data collection', () => {
     });
 
     const goToPageTwoAndBack = () => {
-      clickPageButton('e2e-next-page');
+      cy.clickInputFormPageButton('e2e-next-page');
       cy.dataCy('e2e-page-number-2').should('exist');
       cy.dataCy('e2e-previous-page').click();
       cy.dataCy('e2e-page-number-1').should('exist');
@@ -298,11 +289,11 @@ describe('Native survey data collection', () => {
         goToPageTwoAndBack();
         expectScaleChecked(false);
 
-        clickPageButton('e2e-next-page');
+        cy.clickInputFormPageButton('e2e-next-page');
         cy.get(`input#${textKey}`).type(TEXT_ANSWER);
 
         cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitSurvey');
-        clickPageButton('e2e-submit-form');
+        cy.clickInputFormPageButton('e2e-submit-form');
 
         cy.wait('@submitSurvey').then(({ request }) => {
           expect(request.body.idea).not.to.have.property(scaleKey);
@@ -334,7 +325,7 @@ describe('Native survey data collection', () => {
         cy.visit(`/projects/${projectSlug}/surveys/new`);
 
         scaleOption().click();
-        clickPageButton('e2e-next-page');
+        cy.clickInputFormPageButton('e2e-next-page');
 
         // The answer reaches the draft first, so the final payload dropping it
         // is what clears it rather than it never having been stored.
@@ -349,11 +340,11 @@ describe('Native survey data collection', () => {
         scaleOption().click();
         expectScaleChecked(false);
 
-        clickPageButton('e2e-next-page');
+        cy.clickInputFormPageButton('e2e-next-page');
         cy.wait('@updateDraft');
 
         cy.get(`input#${textKey}`).type(TEXT_ANSWER);
-        clickPageButton('e2e-submit-form');
+        cy.clickInputFormPageButton('e2e-submit-form');
 
         // A key missing from the payload tells the back end to clear the
         // stored value (CustomFieldParamsService#mark_custom_field_values_to_clear!).

@@ -45,7 +45,10 @@ const useInfiniteProjectsMiniAdmin = (
     QueryKey,
     number
   >({
-    queryKey: miniProjectsKeys.list(paramsWithLocale),
+    queryKey: miniProjectsKeys.list({
+      ...paramsWithLocale,
+      'page[size]': pageSize,
+    }),
     queryFn: ({ pageParam }) =>
       fetchPage(paramsWithLocale, pageParam, pageSize),
     initialPageParam: 1,

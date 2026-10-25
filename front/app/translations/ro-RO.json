@@ -378,7 +378,6 @@
   "app.components.formBuilder.errorMessage": "Există o problemă, vă rugăm să o remediați pentru a putea salva modificările.",
   "app.components.formBuilder.fieldGroup.description": "Descriere (opțional)",
   "app.components.formBuilder.fieldGroup.title": "Titlu (opțional)",
-  "app.components.formBuilder.fieldIsNotVisibleTooltip": "În prezent, răspunsurile la aceste întrebări sunt disponibile doar în fișierul Excel exportat în Input Manager și nu sunt vizibile pentru utilizatori.",
   "app.components.formBuilder.fieldLabel": "Opțiuni de răspuns",
   "app.components.formBuilder.fileUpload": "Încărcarea fișierelor",
   "app.components.formBuilder.formEnd": "Sfârșitul formularului",

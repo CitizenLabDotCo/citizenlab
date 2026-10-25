@@ -127,6 +127,16 @@ resource 'Idea Custom Fields' do
           custom_field1.key
         ]
       end
+
+      example 'List the custom fields of the project form for an ideation phase', document: false do
+        project = create(:single_phase_ideation_project)
+        project_form = create(:custom_form, participation_context: project)
+        ideation_field = create(:custom_field_text, resource: project_form, key: 'ideation_field')
+
+        do_request(phase_id: project.phases.first.id)
+        assert_status 200
+        expect(response_data.map { |d| d.dig(:attributes, :key) }).to eq [ideation_field.key]
+      end
     end
 
     context 'when regular user' do

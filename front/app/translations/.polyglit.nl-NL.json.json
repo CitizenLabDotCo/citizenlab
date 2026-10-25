@@ -744,6 +744,16 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.ManagersOnlyAnswerNote.managersOnly": {
+    "state": "verified",
+    "verified_at": "2026-10-16T18:08:15.518946Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.CustomFieldsForm.ModeratorsOnlyAnswerNote.moderatorsOnly": {
+    "state": "verified",
+    "verified_at": "2026-10-15T19:48:15.464225Z",
+    "verified_by": "Luuc"
+  },
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.preferToStayAnonymous": {
     "state": "verified",
     "verified_at": "2026-08-20T12:11:02.511157Z",
@@ -1364,6 +1374,16 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.components.FileRepositorySelectAndUpload.removeFile": {
+    "state": "verified",
+    "verified_at": "2026-10-20T11:54:17.089174Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.FileRepositorySelectAndUpload.removeFileAriaLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-20T11:54:17.089174Z",
+    "verified_by": "Luuc"
+  },
   "app.components.FileRepositorySelectAndUpload.selectExistingFile": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -1508,6 +1528,41 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": {
+    "state": "verified",
+    "verified_at": "2026-10-15T19:48:15.464225Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.FormBuilder.components.AnswerVisibilityToggle.confirm": {
+    "state": "verified",
+    "verified_at": "2026-10-15T19:48:15.464225Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2": {
+    "state": "verified",
+    "verified_at": "2026-10-15T19:48:15.464225Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmSubmissions": {
+    "state": "verified",
+    "verified_at": "2026-10-15T19:48:15.464225Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmTitle": {
+    "state": "verified",
+    "verified_at": "2026-10-15T19:48:15.464225Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.FormBuilder.components.AnswerVisibilityToggle.publicAnswers": {
+    "state": "verified",
+    "verified_at": "2026-10-15T19:48:15.464225Z",
+    "verified_by": "Luuc"
+  },
+  "app.components.FormBuilder.components.AnswerVisibilityToggle.publicAnswersDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-15T19:48:15.464225Z",
+    "verified_by": "Luuc"
   },
   "app.components.FormBuilder.components.FieldTypeSwitcher.formHasSubmissionsWarning2": {
     "state": "verified",
@@ -5419,6 +5474,11 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.components.formBuilder.managersOnly": {
+    "state": "verified",
+    "verified_at": "2026-10-16T18:08:15.518946Z",
+    "verified_by": "Luuc"
+  },
   "app.components.formBuilder.mapConfiguration": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -5458,6 +5518,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.components.formBuilder.moderatorsOnly": {
+    "state": "verified",
+    "verified_at": "2026-10-15T19:48:15.464225Z",
+    "verified_by": "Luuc"
   },
   "app.components.formBuilder.multipleChoice": {
     "state": "verified",
@@ -5648,6 +5713,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.components.formBuilder.requiredToggleDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-15T19:48:15.464225Z",
+    "verified_by": "Luuc"
   },
   "app.components.formBuilder.requiredToggleLabel": {
     "state": "verified",
@@ -10013,6 +10083,16 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.containers.IdeasShow.moreFromThisSubmission": {
+    "state": "verified",
+    "verified_at": "2026-10-15T19:48:15.464225Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.IdeasShow.notAnswered": {
+    "state": "verified",
+    "verified_at": "2026-10-15T19:48:15.464225Z",
+    "verified_by": "Luuc"
   },
   "app.containers.IdeasShow.observationEmailSharingBody": {
     "state": "verified",
