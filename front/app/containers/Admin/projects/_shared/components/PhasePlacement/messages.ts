@@ -58,10 +58,31 @@ export default defineMessages({
     defaultMessage:
       'Change the dates of this survey or another phase below. Nothing changes until you move the survey.',
   },
-  invalidDates: {
-    id: 'app.containers.Admin.projects.PhasePlacement.invalidDates',
+  startRequired: {
+    id: 'app.containers.Admin.projects.PhasePlacement.startRequired',
+    defaultMessage: 'Enter a start date.',
+  },
+  endInvalid: {
+    id: 'app.containers.Admin.projects.PhasePlacement.endInvalid',
+    defaultMessage: 'Enter a valid end date.',
+  },
+  endBeforeStart: {
+    id: 'app.containers.Admin.projects.PhasePlacement.endBeforeStart',
+    defaultMessage: 'The end date must be after the start date.',
+  },
+  durationTooShort: {
+    id: 'app.containers.Admin.projects.PhasePlacement.durationTooShort',
+    defaultMessage: 'The phase must last at least 24 hours.',
+  },
+  endRequired: {
+    id: 'app.containers.Admin.projects.PhasePlacement.endRequired',
     defaultMessage:
-      '"{phaseName}" needs a start date and must last at least 24 hours. Timeline phases cannot overlap, and only the last phase can have no end date.',
+      'Add an end date on or before "{phaseName}" starts. Only the last phase on the timeline can have no end date.',
+  },
+  overlap: {
+    id: 'app.containers.Admin.projects.PhasePlacement.overlap',
+    defaultMessage:
+      'These dates overlap with "{phaseName}". Change the dates so the phases do not overlap.',
   },
   surveyPlacement: {
     id: 'app.containers.Admin.projects.PhasePlacement.surveyPlacement',

@@ -7,6 +7,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from './messages';
 import MovePhaseDateRow from './MovePhaseDateRow';
 import { PhasePlacementMove } from './usePhasePlacementMove';
+import { getPhaseDateErrors } from './utils';
 
 interface Props {
   placementMove: PhasePlacementMove;
@@ -14,7 +15,7 @@ interface Props {
 
 const MovePhaseDates = ({ placementMove }: Props) => {
   const { formatMessage } = useIntl();
-  const { proposedTimeline, draftPhase, invalidDates, changeDates, isPending } =
+  const { proposedTimeline, draftPhase, changeDates, isPending } =
     placementMove;
   const orderedPhases = [...proposedTimeline].sort(
     (a, b) =>
@@ -31,7 +32,7 @@ const MovePhaseDates = ({ placementMove }: Props) => {
           key={phase.id}
           phase={phase}
           defaultOpen={phase.id === draftPhase.id}
-          invalid={invalidDates.some(({ id }) => id === phase.id)}
+          errors={getPhaseDateErrors(phase, proposedTimeline)}
           onChange={(dates) => changeDates(phase.id, dates)}
         />
       ))}

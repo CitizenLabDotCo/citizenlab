@@ -38,23 +38,58 @@ export const checkMoveToTimeline = (
   };
 };
 
-export const invalidTimelineDates = (phases: IPhaseData[]) =>
-  phases.filter((phase) => {
-    const start = time(phase.attributes.start_at);
-    const end = endTime(phase);
+export type PhaseDateError =
+  | {
+      type:
+        | 'startRequired'
+        | 'endInvalid'
+        | 'endBeforeStart'
+        | 'durationTooShort';
+    }
+  | { type: 'endRequired' | 'overlap'; phase: IPhaseData };
 
-    return (
-      !Number.isFinite(start) ||
-      (phase.attributes.end_at !== null && !Number.isFinite(end)) ||
-      end - start < 24 * 60 * 60 * 1000 ||
-      phases.some(
-        (other) =>
-          other.id !== phase.id &&
-          start < endTime(other) &&
-          time(other.attributes.start_at) < end
-      )
-    );
-  });
+export const getPhaseDateErrors = (
+  phase: IPhaseData,
+  phases: IPhaseData[]
+): PhaseDateError[] => {
+  const start = time(phase.attributes.start_at);
+  const end = endTime(phase);
+
+  if (!Number.isFinite(start)) return [{ type: 'startRequired' }];
+  if (phase.attributes.end_at !== null && !Number.isFinite(end)) {
+    return [{ type: 'endInvalid' }];
+  }
+  if (end <= start) return [{ type: 'endBeforeStart' }];
+  if (end - start < 24 * 60 * 60 * 1000) {
+    return [{ type: 'durationTooShort' }];
+  }
+
+  const others = phases.filter((other) => other.id !== phase.id);
+  const nextPhase = [...others]
+    .sort((a, b) => time(a.attributes.start_at) - time(b.attributes.start_at))
+    .find((other) => time(other.attributes.start_at) >= start);
+
+  if (phase.attributes.end_at === null && nextPhase) {
+    return [{ type: 'endRequired', phase: nextPhase }];
+  }
+
+  return others
+    .filter((other) => {
+      const otherStart = time(other.attributes.start_at);
+      const otherEnd = endTime(other);
+
+      return (
+        Number.isFinite(otherStart) &&
+        otherEnd > otherStart &&
+        start < otherEnd &&
+        otherStart < end
+      );
+    })
+    .map((other) => ({ type: 'overlap', phase: other }));
+};
+
+export const invalidTimelineDates = (phases: IPhaseData[]) =>
+  phases.filter((phase) => getPhaseDateErrors(phase, phases).length > 0);
 
 export const checkMoveToSpotlightSurveys = (
   survey: IPhaseData,

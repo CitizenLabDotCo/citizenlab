@@ -25,7 +25,7 @@ it('shows tenant-local dates and converts edits back to UTC', () => {
     <MovePhaseDateRow
       phase={phase}
       defaultOpen
-      invalid={false}
+      errors={[]}
       onChange={onChange}
     />
   );
@@ -54,7 +54,7 @@ it('allows clearing the end date and preserves a missing start for validation', 
     <MovePhaseDateRow
       phase={phase}
       defaultOpen
-      invalid={false}
+      errors={[]}
       onChange={onChange}
     />
   );
@@ -74,4 +74,41 @@ it('allows clearing the end date and preserves a missing start for validation', 
     start_at: '',
     end_at: phase.attributes.end_at,
   });
+});
+
+it('shows only the relevant conflict and clears it when dates are corrected', () => {
+  const other = {
+    ...phase,
+    id: 'other',
+    attributes: {
+      ...phase.attributes,
+      title_multiloc: { en: 'Timeline survey B' },
+    },
+  };
+  const onChange = jest.fn();
+  const { rerender } = render(
+    <MovePhaseDateRow
+      phase={phase}
+      defaultOpen
+      errors={[{ type: 'overlap', phase: other }]}
+      onChange={onChange}
+    />
+  );
+
+  expect(
+    screen.getByText(/These dates overlap with "Timeline survey B"/)
+  ).toBeInTheDocument();
+  expect(
+    screen.queryByText(/must last at least 24 hours/)
+  ).not.toBeInTheDocument();
+
+  rerender(
+    <MovePhaseDateRow
+      phase={phase}
+      defaultOpen
+      errors={[]}
+      onChange={onChange}
+    />
+  );
+  expect(screen.queryByText(/These dates overlap/)).not.toBeInTheDocument();
 });

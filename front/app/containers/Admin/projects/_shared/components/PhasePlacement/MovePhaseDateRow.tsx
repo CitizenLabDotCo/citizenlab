@@ -17,15 +17,16 @@ import PanelGroup from '../SettingsPanel/PanelGroup';
 
 import messages from './messages';
 import { PlacementDates } from './usePhasePlacementMove';
+import { PhaseDateError } from './utils';
 
 interface Props {
   phase: IPhaseData;
   defaultOpen: boolean;
-  invalid: boolean;
+  errors: PhaseDateError[];
   onChange: (dates: PlacementDates) => void;
 }
 
-const MovePhaseDateRow = ({ phase, defaultOpen, invalid, onChange }: Props) => {
+const MovePhaseDateRow = ({ phase, defaultOpen, errors, onChange }: Props) => {
   const { data: configuration } = useAppConfiguration();
   const timeZone = configuration?.data.attributes.settings.core.timezone;
   const { formatMessage, formatDate } = useIntl();
@@ -87,11 +88,19 @@ const MovePhaseDateRow = ({ phase, defaultOpen, invalid, onChange }: Props) => {
             {formatMessage(messages.dateTimezone, { timeZone })}
           </Text>
         )}
-        {invalid && (
+        {errors.map((error) => (
           <Error
-            text={formatMessage(messages.invalidDates, { phaseName: title })}
+            key={
+              'phase' in error ? `${error.type}-${error.phase.id}` : error.type
+            }
+            text={formatMessage(
+              messages[error.type],
+              'phase' in error
+                ? { phaseName: localize(error.phase.attributes.title_multiloc) }
+                : {}
+            )}
           />
-        )}
+        ))}
       </Box>
     </PanelGroup>
   );
