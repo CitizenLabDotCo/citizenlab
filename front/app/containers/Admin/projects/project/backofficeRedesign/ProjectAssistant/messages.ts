@@ -253,34 +253,110 @@ export default defineMessages({
     id: `${scope}.intakeClosingDetailBrief`,
     defaultMessage: 'Feedback timing: {detail}.',
   },
-  // Tone — the prompt already branches on tone; this gives it a signal.
-  intakeToneAsk: {
-    id: `${scope}.intakeToneAsk`,
-    defaultMessage: 'What tone should the draft strike?',
+  // Real influence — the IAP2 ladder (intake skill Q4), asked directly. The
+  // ask carries the skill's truth-check ("the real level, not the one you wish
+  // for"). Each option drives the influence lever and states the promise in the
+  // brief so the draft's close-the-loop language matches the power on offer.
+  intakeInfluenceAsk: {
+    id: `${scope}.intakeInfluenceAsk`,
+    defaultMessage:
+      'How much say will residents really have? (the real level, not the one you’d wish for)',
   },
-  intakeToneWarm: {
-    id: `${scope}.intakeToneWarm`,
-    defaultMessage: 'Warm and community',
+  intakeInfluenceInform: {
+    id: `${scope}.intakeInfluenceInform`,
+    defaultMessage: 'Inform — we’re explaining a decision',
   },
-  intakeToneWarmBrief: {
-    id: `${scope}.intakeToneWarmBrief`,
-    defaultMessage: 'Tone: warm and community-minded.',
+  intakeInfluenceInformBrief: {
+    id: `${scope}.intakeInfluenceInformBrief`,
+    defaultMessage:
+      'Influence level — Inform: the decision is already made; this is about explaining it clearly, not collecting input that changes it.',
   },
-  intakeToneNeutral: {
-    id: `${scope}.intakeToneNeutral`,
-    defaultMessage: 'Neutral and factual',
+  intakeInfluenceConsult: {
+    id: `${scope}.intakeInfluenceConsult`,
+    defaultMessage: 'Consult — we’ll listen, but we decide',
   },
-  intakeToneNeutralBrief: {
-    id: `${scope}.intakeToneNeutralBrief`,
-    defaultMessage: 'Tone: neutral and factual.',
+  intakeInfluenceConsultBrief: {
+    id: `${scope}.intakeInfluenceConsultBrief`,
+    defaultMessage:
+      'Influence level — Consult: input is gathered, but the council or organisation makes the final call, so don’t over-promise that feedback will be acted on.',
   },
-  intakeToneFormal: {
-    id: `${scope}.intakeToneFormal`,
-    defaultMessage: 'Formal and institutional',
+  intakeInfluenceInvolve: {
+    id: `${scope}.intakeInfluenceInvolve`,
+    defaultMessage: 'Involve — input visibly shapes the proposal',
   },
-  intakeToneFormalBrief: {
-    id: `${scope}.intakeToneFormalBrief`,
-    defaultMessage: 'Tone: formal and institutional — no emoji.',
+  intakeInfluenceInvolveBrief: {
+    id: `${scope}.intakeInfluenceInvolveBrief`,
+    defaultMessage:
+      'Influence level — Involve: residents’ input visibly shapes the proposal, and we can point to specific changes made because of what they said.',
+  },
+  intakeInfluenceCodesign: {
+    id: `${scope}.intakeInfluenceCodesign`,
+    defaultMessage: 'Co-design — we shape the options together',
+  },
+  intakeInfluenceCodesignBrief: {
+    id: `${scope}.intakeInfluenceCodesignBrief`,
+    defaultMessage:
+      'Influence level — Collaborate: residents are at the table throughout, shaping the options together with the decision-maker rather than just giving input.',
+  },
+  intakeInfluenceDecide: {
+    id: `${scope}.intakeInfluenceDecide`,
+    defaultMessage: 'Residents decide — a binding vote',
+  },
+  intakeInfluenceDecideBrief: {
+    id: `${scope}.intakeInfluenceDecideBrief`,
+    defaultMessage:
+      'Influence level — Empower: the participation itself is the decision (a binding vote, a participatory budget allocation, a referendum).',
+  },
+  // Success — what a win looks like (intake skill Q8). One tap for the type of
+  // win (nudges the reach lever, breadth vs depth), plus an optional concrete
+  // target in free text — the highest-signal part.
+  intakeSuccessAsk: {
+    id: `${scope}.intakeSuccessAsk`,
+    defaultMessage: 'What would make this a win?',
+  },
+  intakeSuccessTurnout: {
+    id: `${scope}.intakeSuccessTurnout`,
+    defaultMessage: 'Turnout — lots of people take part',
+  },
+  intakeSuccessTurnoutBrief: {
+    id: `${scope}.intakeSuccessTurnoutBrief`,
+    defaultMessage:
+      'Success looks like: broad turnout — getting as many people as possible to take part.',
+  },
+  intakeSuccessRepresentative: {
+    id: `${scope}.intakeSuccessRepresentative`,
+    defaultMessage: 'Representative — the right mix of people',
+  },
+  intakeSuccessRepresentativeBrief: {
+    id: `${scope}.intakeSuccessRepresentativeBrief`,
+    defaultMessage:
+      'Success looks like: a representative mix of participants — not just the usual voices, but reflecting the wider community.',
+  },
+  intakeSuccessDepth: {
+    id: `${scope}.intakeSuccessDepth`,
+    defaultMessage: 'Depth — rich, usable input',
+  },
+  intakeSuccessDepthBrief: {
+    id: `${scope}.intakeSuccessDepthBrief`,
+    defaultMessage:
+      'Success looks like: depth — fewer but richer, more considered contributions that are genuinely usable for the decision.',
+  },
+  intakeSuccessDecision: {
+    id: `${scope}.intakeSuccessDecision`,
+    defaultMessage: 'A decision we can defend',
+  },
+  intakeSuccessDecisionBrief: {
+    id: `${scope}.intakeSuccessDecisionBrief`,
+    defaultMessage:
+      'Success looks like: input clear and credible enough to make, and defend, the decision at the end.',
+  },
+  intakeSuccessDetailPlaceholder: {
+    id: `${scope}.intakeSuccessDetailPlaceholder`,
+    defaultMessage: 'A concrete target? e.g. 200 responses, or 5% of residents',
+  },
+  intakeSuccessDetailBrief: {
+    id: `${scope}.intakeSuccessDetailBrief`,
+    defaultMessage: 'Success target: {detail}.',
   },
   // Audience distinctiveness — what makes the draft name THIS community
   // (intake skill Q7).
@@ -365,16 +441,24 @@ export default defineMessages({
     id: `${scope}.leverInfluenceQuestion`,
     defaultMessage: 'How much influence will residents have?',
   },
-  leverInfluenceGather: {
-    id: `${scope}.leverInfluenceGather`,
-    defaultMessage: 'We gather input',
+  leverInfluenceInform: {
+    id: `${scope}.leverInfluenceInform`,
+    defaultMessage: 'Inform',
   },
-  leverInfluenceTogether: {
-    id: `${scope}.leverInfluenceTogether`,
-    defaultMessage: 'We decide together',
+  leverInfluenceConsult: {
+    id: `${scope}.leverInfluenceConsult`,
+    defaultMessage: 'Consult',
   },
-  leverInfluenceResidents: {
-    id: `${scope}.leverInfluenceResidents`,
+  leverInfluenceInvolve: {
+    id: `${scope}.leverInfluenceInvolve`,
+    defaultMessage: 'Involve',
+  },
+  leverInfluenceCodesign: {
+    id: `${scope}.leverInfluenceCodesign`,
+    defaultMessage: 'Co-design',
+  },
+  leverInfluenceDecide: {
+    id: `${scope}.leverInfluenceDecide`,
     defaultMessage: 'Residents decide',
   },
   leverHowFixedQuestion: {

@@ -16,10 +16,11 @@ import messages from './messages';
 
 export type IntakeQuestionId =
   | 'stage'
+  | 'influence'
+  | 'success'
   | 'audience'
   | 'closing'
   | 'timing'
-  | 'tone'
   | 'distinctiveness'
   | 'statutory';
 
@@ -52,7 +53,10 @@ export const INTAKE_QUESTIONS: IntakeQuestionConfig[] = [
     // The decision-making stage — the GSM framework from the intake skill.
     // It's asked first because it's what most steers the archetype the engine
     // picks (the backend prompt maps Problem/Solution/Decision/Implementation
-    // to a method). Each option also nudges the funnel-appropriate levers.
+    // to a method). Stage sets how_fixed/format but NOT influence: how much
+    // power residents hold is asked directly in the next question, because the
+    // two are orthogonal (a "Decision"-stage project can be a mere Consult or a
+    // binding Decide).
     id: 'stage',
     ask: messages.intakeStageAsk,
     options: [
@@ -60,28 +64,28 @@ export const INTAKE_QUESTIONS: IntakeQuestionConfig[] = [
         id: 'problem',
         label: messages.intakeStageProblem,
         // Nothing decided yet; listen widely.
-        levers: { influence: 1, how_fixed: 0, format: 2 },
+        levers: { how_fixed: 0, format: 2 },
         brief: messages.intakeStageProblemBrief,
       },
       {
         id: 'solution',
         label: messages.intakeStageSolution,
         // Problem is clear; co-create ideas in the open.
-        levers: { influence: 1, how_fixed: 0, format: 0 },
+        levers: { how_fixed: 0, format: 0 },
         brief: messages.intakeStageSolutionBrief,
       },
       {
         id: 'decision',
         label: messages.intakeStageDecision,
         // Options exist; residents help choose between them.
-        levers: { influence: 2, how_fixed: 1 },
+        levers: { how_fixed: 1 },
         brief: messages.intakeStageDecisionBrief,
       },
       {
         id: 'implementation',
         label: messages.intakeStageImplementation,
         // The plan is set; consult on how to roll it out.
-        levers: { influence: 1, how_fixed: 2 },
+        levers: { how_fixed: 2 },
         brief: messages.intakeStageImplementationBrief,
       },
       {
@@ -94,6 +98,84 @@ export const INTAKE_QUESTIONS: IntakeQuestionConfig[] = [
     ],
     detailPlaceholder: messages.intakeStageDetailPlaceholder,
     detailBrief: messages.intakeStageDetailBrief,
+  },
+  {
+    // Real influence — the IAP2 ladder, asked directly (the single highest-
+    // judgement moment in the original intake). The "real level, not the hoped-
+    // for one" framing in the ask carries the skill's truth-check cheaply,
+    // without a second turn. Drives the influence lever 0..4.
+    id: 'influence',
+    ask: messages.intakeInfluenceAsk,
+    options: [
+      {
+        id: 'inform',
+        label: messages.intakeInfluenceInform,
+        levers: { influence: 0 },
+        brief: messages.intakeInfluenceInformBrief,
+      },
+      {
+        id: 'consult',
+        label: messages.intakeInfluenceConsult,
+        levers: { influence: 1 },
+        brief: messages.intakeInfluenceConsultBrief,
+      },
+      {
+        id: 'involve',
+        label: messages.intakeInfluenceInvolve,
+        levers: { influence: 2 },
+        brief: messages.intakeInfluenceInvolveBrief,
+      },
+      {
+        id: 'codesign',
+        label: messages.intakeInfluenceCodesign,
+        levers: { influence: 3 },
+        brief: messages.intakeInfluenceCodesignBrief,
+      },
+      {
+        id: 'decide',
+        label: messages.intakeInfluenceDecide,
+        levers: { influence: 4 },
+        brief: messages.intakeInfluenceDecideBrief,
+      },
+    ],
+  },
+  {
+    // Success — what a win looks like. One tap for the type of win (which nudges
+    // the reach lever: breadth vs depth), plus an optional concrete target in
+    // free text — the highest-signal part, matching the skill's examples
+    // ("200 responses", "5% of residents").
+    id: 'success',
+    ask: messages.intakeSuccessAsk,
+    options: [
+      {
+        id: 'turnout',
+        label: messages.intakeSuccessTurnout,
+        // Breadth: many quick voices.
+        levers: { reach: 0 },
+        brief: messages.intakeSuccessTurnoutBrief,
+      },
+      {
+        id: 'representative',
+        label: messages.intakeSuccessRepresentative,
+        levers: { reach: 1 },
+        brief: messages.intakeSuccessRepresentativeBrief,
+      },
+      {
+        id: 'depth',
+        label: messages.intakeSuccessDepth,
+        // Depth: fewer, richer contributions.
+        levers: { reach: 2 },
+        brief: messages.intakeSuccessDepthBrief,
+      },
+      {
+        id: 'decision',
+        label: messages.intakeSuccessDecision,
+        // Decision-readiness isn't a reach trade-off; the brief carries it.
+        brief: messages.intakeSuccessDecisionBrief,
+      },
+    ],
+    detailPlaceholder: messages.intakeSuccessDetailPlaceholder,
+    detailBrief: messages.intakeSuccessDetailBrief,
   },
   {
     id: 'audience',
@@ -168,28 +250,6 @@ export const INTAKE_QUESTIONS: IntakeQuestionConfig[] = [
     ],
     detailPlaceholder: messages.intakeTimingDetailPlaceholder,
     detailBrief: messages.intakeTimingDetailBrief,
-  },
-  {
-    // Tone — the backend prompt already branches on tone; this feeds it.
-    id: 'tone',
-    ask: messages.intakeToneAsk,
-    options: [
-      {
-        id: 'warm',
-        label: messages.intakeToneWarm,
-        brief: messages.intakeToneWarmBrief,
-      },
-      {
-        id: 'neutral',
-        label: messages.intakeToneNeutral,
-        brief: messages.intakeToneNeutralBrief,
-      },
-      {
-        id: 'formal',
-        label: messages.intakeToneFormal,
-        brief: messages.intakeToneFormalBrief,
-      },
-    ],
   },
   {
     // Audience distinctiveness — grounds the draft in THIS community. The chip

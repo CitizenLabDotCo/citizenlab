@@ -16,12 +16,16 @@ export type LeverConfig = {
 // stop (index 1) is the default.
 export const LEVERS: LeverConfig[] = [
   {
+    // Five stops matching the IAP2 ladder asked in the intake (influence 0..4),
+    // so the fine-tune panel and the intake question stay in step.
     id: 'influence',
     question: messages.leverInfluenceQuestion,
     options: [
-      messages.leverInfluenceGather,
-      messages.leverInfluenceTogether,
-      messages.leverInfluenceResidents,
+      messages.leverInfluenceInform,
+      messages.leverInfluenceConsult,
+      messages.leverInfluenceInvolve,
+      messages.leverInfluenceCodesign,
+      messages.leverInfluenceDecide,
     ],
   },
   {

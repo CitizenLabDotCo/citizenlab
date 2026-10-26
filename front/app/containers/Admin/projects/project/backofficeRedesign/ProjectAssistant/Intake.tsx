@@ -158,7 +158,7 @@ const Intake = ({
         </Text>
       </Box>
 
-      <Box display="flex" flexDirection="column" gap="18px">
+      <Box display="flex" flexDirection="column" gap="4px">
         {visible.map((question, index) => {
           const answer = answers[question.id];
           const isLastVisible = index === visible.length - 1;
@@ -179,62 +179,112 @@ const Intake = ({
           return (
             <Reveal key={question.id}>
               <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="baseline"
-                gap="12px"
-                mb="8px"
+                borderTop={index > 0 ? `1px solid ${colors.teal100}` : undefined}
+                pt={index > 0 ? '18px' : '0px'}
               >
-                <Text m="0px" fontSize="s" color="textPrimary">
-                  {formatMessage(question.ask)}
-                </Text>
-                {canSkip && (
-                  <LinkButton
-                    type="button"
-                    disabled={disabled}
-                    onClick={advance}
-                  >
-                    {formatMessage(messages.intakeSkip)}
-                  </LinkButton>
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="flex-start"
+                  gap="12px"
+                  mb="10px"
+                >
+                  {/* A numbered step badge + bold title gives each question its
+                      own clear header, well above the option chips. The badge
+                      ticks to a check once answered, so progress reads at a
+                      glance. */}
+                  <Box display="flex" gap="10px" alignItems="center">
+                    <Box
+                      flex="0 0 auto"
+                      width="22px"
+                      height="22px"
+                      borderRadius="50%"
+                      bgColor={isAnswered ? colors.teal500 : colors.white}
+                      border={
+                        isAnswered ? undefined : `1.5px solid ${colors.teal200}`
+                      }
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                    >
+                      {isAnswered ? (
+                        <Icon
+                          name="check"
+                          width="13px"
+                          height="13px"
+                          fill={colors.white}
+                        />
+                      ) : (
+                        <Text
+                          m="0px"
+                          fontSize="xs"
+                          fontWeight="bold"
+                          color="teal700"
+                        >
+                          {index + 1}
+                        </Text>
+                      )}
+                    </Box>
+                    <Text
+                      m="0px"
+                      fontSize="m"
+                      fontWeight="bold"
+                      color="textPrimary"
+                      lineHeight="1.3"
+                    >
+                      {formatMessage(question.ask)}
+                    </Text>
+                  </Box>
+                  {canSkip && (
+                    <LinkButton
+                      type="button"
+                      disabled={disabled}
+                      onClick={advance}
+                    >
+                      {formatMessage(messages.intakeSkip)}
+                    </LinkButton>
+                  )}
+                </Box>
+
+                {/* Chips sit indented under the title, so title and options read
+                    as two clear levels rather than one wall of pills. */}
+                <Box display="flex" flexWrap="wrap" gap="8px" pl="32px">
+                  {question.options.map((option) => (
+                    <Chip
+                      key={option.id}
+                      type="button"
+                      $selected={answer?.optionId === option.id}
+                      disabled={disabled}
+                      onClick={() => {
+                        onAnswer(question.id, option);
+                        if (isLastVisible) advance();
+                      }}
+                    >
+                      {formatMessage(option.label)}
+                    </Chip>
+                  ))}
+                </Box>
+
+                {/* The optional free-text appears only once a chip is picked, so
+                    it never gets in the way of the one-tap path. */}
+                {showDetail && (
+                  <Box mt="10px" pl="32px">
+                    <DetailInput
+                      type="text"
+                      value={answer?.detail ?? ''}
+                      placeholder={
+                        question.detailPlaceholder
+                          ? formatMessage(question.detailPlaceholder)
+                          : undefined
+                      }
+                      disabled={disabled}
+                      onChange={(event) =>
+                        onDetail(question.id, event.target.value)
+                      }
+                    />
+                  </Box>
                 )}
               </Box>
-
-              <Box display="flex" flexWrap="wrap" gap="7px">
-                {question.options.map((option) => (
-                  <Chip
-                    key={option.id}
-                    type="button"
-                    $selected={answer?.optionId === option.id}
-                    disabled={disabled}
-                    onClick={() => {
-                      onAnswer(question.id, option);
-                      if (isLastVisible) advance();
-                    }}
-                  >
-                    {formatMessage(option.label)}
-                  </Chip>
-                ))}
-              </Box>
-
-              {/* The optional free-text appears only once a chip is picked, so
-                  it never gets in the way of the one-tap path. */}
-              {showDetail && (
-                <Box mt="8px">
-                  <DetailInput
-                    type="text"
-                    value={answer?.detail ?? ''}
-                    placeholder={
-                      question.detailPlaceholder
-                        ? formatMessage(question.detailPlaceholder)
-                        : undefined
-                    }
-                    disabled={disabled}
-                    onChange={(event) =>
-                      onDetail(question.id, event.target.value)
-                    }
-                  />
-                </Box>
-              )}
             </Reveal>
           );
         })}
