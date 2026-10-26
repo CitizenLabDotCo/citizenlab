@@ -11709,6 +11709,11 @@
     "verified_at": "2026-09-15T12:47:12.657839Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.publishOpenEveryoneDescription2": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:52.432666Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.publishOpenGroups": {
     "state": "verified",
     "verified_at": "2026-09-15T12:47:12.657839Z",
@@ -11793,6 +11798,11 @@
     "state": "verified",
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.project.publishWhoCanSee": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:52.432666Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.recommendedActionsHint": {
     "state": "verified",
