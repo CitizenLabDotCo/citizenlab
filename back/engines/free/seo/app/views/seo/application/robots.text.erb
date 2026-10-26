@@ -1,6 +1,5 @@
 User-agent: *
 Disallow: /admin/
-<%- unless @allow_ai_crawler_files -%>
 
 # AI training crawlers may read pages but not download uploaded files, which
 # can be large documents. A crawler only follows its own group, so /admin/ is
@@ -19,6 +18,5 @@ Disallow: /uploads/*/idea_file/
 Disallow: /uploads/*/static_page_file/
 Disallow: /uploads/*/project_folders/file/
 Disallow: /uploads/*/file_upload/
-<%- end -%>
 
 SITEMAP: https://<%= @host %>/sitemap.xml

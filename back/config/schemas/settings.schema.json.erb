@@ -1473,18 +1473,6 @@
         }
       },
 
-      "ai_crawler_file_indexing": {
-        "type": "object",
-        "title": "Allow AI crawlers to index files",
-        "description": "By default, robots.txt asks AI training crawlers (such as Meta, OpenAI, Anthropic and Common Crawl) not to download uploaded files like PDFs. Search engines and the rest of the site are not affected. Enable this to let AI crawlers download files too.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
       "custom_page_builder": {
         "type": "object",
         "title": "Custom page builder [DO NOT ENABLE]",

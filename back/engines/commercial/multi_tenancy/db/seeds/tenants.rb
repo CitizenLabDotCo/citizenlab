@@ -424,10 +424,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            ai_crawler_file_indexing: {
-              enabled: false,
-              allowed: true
-            },
             sms: {
               enabled: true,
               allowed: true,

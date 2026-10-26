@@ -41,9 +41,7 @@ module Seo
         .group_by(&:project_id)
     end
 
-    def robots
-      @allow_ai_crawler_files = AppConfiguration.instance.feature_activated?('ai_crawler_file_indexing')
-    end
+    def robots; end
 
     private
 

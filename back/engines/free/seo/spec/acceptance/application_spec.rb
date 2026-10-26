@@ -146,14 +146,5 @@ resource 'SEO' do
       expect(response_body).to include 'User-agent: meta-externalagent'
       expect(response_body).to include 'Disallow: /uploads/*/files/'
     end
-
-    example 'lets AI crawlers download files when ai_crawler_file_indexing is enabled', document: false do
-      SettingsService.new.activate_feature!('ai_crawler_file_indexing')
-      do_request
-      expect(response_status).to eq 200
-      expect(response_body).to include 'Disallow: /admin/'
-      expect(response_body).not_to include 'meta-externalagent'
-      expect(response_body).not_to include '/uploads/'
-    end
   end
 end
