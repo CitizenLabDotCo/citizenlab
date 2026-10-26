@@ -55,3 +55,11 @@ export const thumbOf = (
   if (g.city !== globals.city || g.lang !== globals.lang) return undefined;
   return manifest.thumbs[storyId];
 };
+
+// The build's picture of a story whatever the globals on show: a card shows
+// it, marked with the globals it was taken with, rather than booting a live
+// preview per card when the city or language differs.
+export const anyThumbOf = (
+  manifest: ThumbManifest | null,
+  storyId: string
+): ThumbEntry | undefined => manifest?.thumbs[storyId];

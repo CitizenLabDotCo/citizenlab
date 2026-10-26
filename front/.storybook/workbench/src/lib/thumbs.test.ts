@@ -1,4 +1,4 @@
-import { thumbFile, thumbOf, thumbViewport, ThumbManifest } from './thumbs';
+import { anyThumbOf, thumbFile, thumbOf, thumbViewport, ThumbManifest } from './thumbs';
 
 const manifest: ThumbManifest = {
   globals: { city: 'linz', lang: 'en' },
@@ -32,5 +32,12 @@ describe('thumbs', () => {
     ).toBeUndefined();
     expect(thumbOf(manifest, 'nope', en)).toBeUndefined();
     expect(thumbOf(null, 'components-button--default', en)).toBeUndefined();
+  });
+
+  it('still has the picture in another city, for the card to mark', () => {
+    expect(anyThumbOf(manifest, 'components-button--default')?.file).toBe(
+      'components-button--default.png'
+    );
+    expect(anyThumbOf(null, 'components-button--default')).toBeUndefined();
   });
 });

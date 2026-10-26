@@ -22,10 +22,12 @@ import {
   reviewedLine,
   worstCount,
 } from '../lib/a11y';
+import { cities } from '../../../cities';
 import { storyUrl } from '../lib/frame';
 import { thumbScale } from '../lib/gallery';
 import { channelOf, isRendered } from '../lib/preview';
-import { thumbOf } from '../lib/thumbs';
+import { framePool } from '../lib/framePool';
+import { anyThumbOf, thumbOf } from '../lib/thumbs';
 import { useThumbs } from '../lib/useThumbs';
 import {
   OFFICE_LABEL,
@@ -202,9 +204,10 @@ const REVEAL_MS = 5000;
 const NEAR = '600px';
 
 // The card's own preview frame, for a story the gallery's shared frame
-// cannot show (see lib/galleryFrame.ts) or a card outside a gallery:
-// loaded only when it nears the viewport, faded in once Storybook has
-// rendered it.
+// cannot show (see lib/galleryFrame.ts) or a card outside a gallery: loaded
+// only while it is near the viewport and the frame pool gives it a slot
+// (lib/framePool.ts), faded in once Storybook has rendered it, and removed
+// again when it scrolls away.
 const OwnFrame = ({
   box,
   storyId,
@@ -219,51 +222,67 @@ const OwnFrame = ({
   onLoaded: (loaded: boolean) => void;
 }) => {
   const [near, setNear] = useState(false);
+  const [slot, setSlot] = useState(false);
+  const release = useRef<() => void>();
   const timer = useRef<number>();
   const src = storyUrl(storyId, globals);
   useEffect(() => {
     const el = box.current;
-    if (!el || near) return undefined;
+    if (!el) return undefined;
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) setNear(true);
-      },
+      (entries) => setNear(entries.some((e) => e.isIntersecting)),
       { rootMargin: NEAR }
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [box, near]);
+  }, [box]);
+  useEffect(() => {
+    if (!near) return undefined;
+    const give = framePool.request(() => setSlot(true));
+    release.current = give;
+    return () => {
+      give();
+      release.current = undefined;
+      setSlot(false);
+    };
+  }, [near, src]);
   useEffect(() => {
     onLoaded(false);
     return () => window.clearTimeout(timer.current);
-  }, [src, onLoaded]);
+  }, [src, slot, onLoaded]);
   const onLoad = (e: SyntheticEvent<HTMLIFrameElement>) => {
     const win = e.currentTarget.contentWindow;
     const doc = e.currentTarget.contentDocument;
-    if (!win || !doc) return onLoaded(true);
+    const show = () => {
+      window.clearTimeout(timer.current);
+      if (release.current) framePool.booted(release.current);
+      onLoaded(true);
+    };
+    if (!win || !doc) return show();
     const style = doc.createElement('style');
     style.textContent = THUMB_CSS;
     doc.head.appendChild(style);
-    const show = () => onLoaded(true);
     if (isRendered(win)) return show();
     channelOf(win)?.on('storyRendered', show);
     channelOf(win)?.on('storyErrored', show);
     channelOf(win)?.on('storyThrewException', show);
     timer.current = window.setTimeout(show, REVEAL_MS);
   };
-  if (!near) return null;
+  if (!near || !slot) return null;
   return (
     <iframe
       key={src}
       src={src}
       title={`${name} preview`}
-      loading="lazy"
       tabIndex={-1}
       aria-hidden="true"
       onLoad={onLoad}
     />
   );
 };
+
+const cityTitle = (key: string) =>
+  (cities as Record<string, { title: string }>)[key]?.title ?? key;
 
 // A gallery card: the group's Default story rendered live and scaled down,
 // shown once it has rendered. In a gallery the story renders in the
@@ -287,11 +306,18 @@ const StoryThumb = ({
   const manifest = useThumbs();
   const [pictureFailed, setPictureFailed] = useState(false);
   const deciding = manifest === undefined;
+  // Another city or language than the pictures were taken in: the card
+  // keeps the picture, marked with its globals, and renders the story live
+  // only once someone points at the card, so a city switch never boots a
+  // live preview for every card at once.
+  const exact = thumbOf(manifest ?? null, id, globals);
   const picture = pictureFailed
     ? undefined
-    : thumbOf(manifest ?? null, id, globals);
+    : exact ?? anyThumbOf(manifest ?? null, id);
+  const stale = !!picture && !exact;
+  const [wanted, setWanted] = useState(false);
   const [pictureLoaded, setPictureLoaded] = useState(false);
-  const live = !deciding && !picture;
+  const live = !deciding && (!picture || (stale && wanted));
   const shared = gallery?.stateOf(id);
   const own = live && (!gallery || shared === 'isolated');
   useEffect(() => {
@@ -307,7 +333,7 @@ const StoryThumb = ({
     register?.(id, box.current);
     return () => register?.(id, null);
   }, [register, id, live]);
-  const state = picture
+  const state = picture && !live
     ? pictureLoaded
       ? 'rendered'
       : 'loading'
@@ -336,6 +362,9 @@ const StoryThumb = ({
       // A gallery card the shared frame cannot show, in a frame of its own.
       data-isolated={live && gallery && shared === 'isolated' ? '' : undefined}
       data-picture={picture ? '' : undefined}
+      data-stale={stale ? '' : undefined}
+      onPointerEnter={stale ? () => setWanted(true) : undefined}
+      onFocus={stale ? () => setWanted(true) : undefined}
     >
       <span
         ref={box}
@@ -361,6 +390,12 @@ const StoryThumb = ({
             onLoad={() => setPictureLoaded(true)}
             onError={() => setPictureFailed(true)}
           />
+        )}
+        {stale && !(live && state === 'rendered') && manifest && (
+          <span className="wb-thumb-stale">
+            Picture: {cityTitle(manifest.globals.city)} ·{' '}
+            {manifest.globals.lang.toUpperCase()}
+          </span>
         )}
         {own && width > 0 && (
           <OwnFrame
