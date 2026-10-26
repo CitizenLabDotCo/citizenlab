@@ -173,8 +173,8 @@ const PairsTable = ({
         which element sits on which, so some pairs never meet on screen. Ratios
         follow WCAG 2.2: AA needs 4.5 for normal text and 3 for large text
         (24px, or 18.7px bold)
-        {edited ? '. Checked with your edits applied' : ''}. Platform colours use the
-        default pink (#ef0071), not the city picked in the toolbar.
+        {edited ? '. Checked with your edits applied' : ''}. Platform colours
+        use the default pink (#ef0071), not the city picked in the toolbar.
       </p>
       {!loaded ? (
         <p className="wb-muted">Loading the scan...</p>
@@ -351,9 +351,7 @@ const Foundations = ({
     [meta, category]
   );
   const scale = useMemo(
-    () => [
-      ...new Set(tokens.filter((t) => t.tier === 1).map((t) => t.value)),
-    ],
+    () => [...new Set(tokens.filter((t) => t.tier === 1).map((t) => t.value))],
     [tokens]
   );
 
@@ -430,16 +428,16 @@ const Foundations = ({
 
   return (
     <article className="wb-page wb-page-wide">
-      <header className="wb-page-head">
-        <h1>{info.label}</h1>
-        <p className="wb-lead">{info.intro}</p>
-      </header>
-      <ul className="wb-chips" aria-label="Categories">
+      {/* The tabs are the page's navigation; the heading is for screen
+          readers. */}
+      <h1 className="wb-visually-hidden">{info.label}</h1>
+      <ul className="wb-chips wb-foundation-tabs" aria-label="Categories">
         {CATEGORIES.filter((c) => countOf(meta, c.id) > 0).map((c) => (
           <li key={c.id}>
             <a
               href={`#/foundations/${c.id}`}
               aria-current={c.id === category ? 'page' : undefined}
+              title={c.intro}
             >
               {c.label}
             </a>
