@@ -8,8 +8,9 @@ import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { useParams } from 'utils/router';
 
-import CauseForm, { SubmitValues } from './CauseForm';
+import CauseForm from './CauseForm';
 import messages from './messages';
+import { SubmitValues } from './useCauseForm';
 
 const NewCause = () => {
   const { projectId, phaseId } = useParams({

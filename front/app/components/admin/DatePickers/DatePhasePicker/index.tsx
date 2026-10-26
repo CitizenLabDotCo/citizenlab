@@ -51,6 +51,7 @@ const DatePhasePicker = ({
           </Box>
         }
         placement="bottom"
+        popperOptions={{ strategy: 'fixed' }}
         visible={calendarOpen}
         width="1200px"
       >
