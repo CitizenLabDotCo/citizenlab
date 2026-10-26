@@ -67,11 +67,11 @@ const Shell = styled.div<{ $wide: boolean }>`
   background: ${colors.white};
   border-radius: 20px;
   width: 100%;
-  /* Narrow, portrait chat column through brief/questions/drafting (matching the
-     augur prototype's slim assistant rail); only the review step widens into the
+  /* A generous, comfortably-sized dialog through brief/questions/drafting so the
+     ~8-question list isn't cramped; the review step widens further into the
      two-pane preview. */
-  max-width: ${({ $wide }) => ($wide ? '1040px' : '540px')};
-  height: ${({ $wide }) => ($wide ? '88vh' : '640px')};
+  max-width: ${({ $wide }) => ($wide ? '1160px' : '720px')};
+  height: ${({ $wide }) => ($wide ? '88vh' : 'min(88vh, 860px)')};
   max-height: 88vh;
   display: flex;
   overflow: hidden;

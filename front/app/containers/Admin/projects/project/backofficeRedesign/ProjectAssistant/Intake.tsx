@@ -17,42 +17,37 @@ import { LeverId } from './leverConfig';
 import Levers from './Levers';
 import messages from './messages';
 
-// Each question slides in as the one before it is answered, so the panel reads
-// as a conversation unfolding rather than a form sitting there all at once.
-const Reveal = styled(Box)`
-  @keyframes intakeReveal {
-    from {
-      opacity: 0;
-      transform: translateY(-4px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  animation: intakeReveal 180ms ease both;
-`;
+// The intake reads as a short "setup questions" sheet: every question on screen
+// at once under a sectioned header, each one numbered, bold-titled and
+// skippable — flat on white with hairline dividers, matching the prototype.
 
-// Soft teal chips — the assistant's own colour, distinct from the navy "Draft"
-// action, so answering reads as talking to the assistant, not committing.
+// A pill option. Selected reads as a dark filled chip ringed in orange with a
+// check — clearly "chosen" without shifting the layout (the ring is a shadow,
+// so the chip doesn't change size when picked).
 const Chip = styled.button<{ $selected: boolean }>`
   appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   font-family: inherit;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.2;
-  padding: 7px 13px;
+  padding: 9px 16px;
   border-radius: 999px;
   cursor: pointer;
-  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+  transition: background 120ms ease, border-color 120ms ease,
+    box-shadow 120ms ease, color 120ms ease;
   border: 1px solid
-    ${({ $selected }) => ($selected ? colors.teal500 : colors.grey300)};
-  background: ${({ $selected }) => ($selected ? colors.teal500 : '#fff')};
+    ${({ $selected }) => ($selected ? 'transparent' : colors.grey300)};
+  background: ${({ $selected }) => ($selected ? colors.teal700 : '#fff')};
   color: ${({ $selected }) => ($selected ? '#fff' : colors.textPrimary)};
   font-weight: ${({ $selected }) => ($selected ? 600 : 400)};
+  box-shadow: ${({ $selected }) =>
+    $selected ? `0 0 0 2px ${colors.orange500}` : 'none'};
 
   &:hover:not(:disabled) {
     border-color: ${({ $selected }) =>
-      $selected ? colors.teal700 : colors.grey400};
+      $selected ? 'transparent' : colors.grey400};
     background: ${({ $selected }) =>
       $selected ? colors.teal700 : colors.grey100};
   }
@@ -87,25 +82,30 @@ const DetailInput = styled.input`
   }
 `;
 
+// Teal underlined links — Skip, Undo, Fine-tune — matching the prototype.
 const LinkButton = styled.button`
   appearance: none;
   background: none;
   border: none;
   padding: 0;
   font: inherit;
-  font-size: 13px;
-  color: ${colors.textSecondary};
+  font-size: 14px;
+  color: ${colors.teal700};
   cursor: pointer;
   text-decoration: underline;
 
   &:hover:not(:disabled) {
-    color: ${colors.textPrimary};
+    color: ${colors.teal500};
   }
   &:disabled {
     opacity: 0.6;
     cursor: default;
   }
 `;
+
+// Left margin that lines options and detail up under the question title (past
+// the number column), so title and options read as two clear levels.
+const INDENT = '38px';
 
 type Props = {
   answers: IntakeAnswers;
@@ -125,150 +125,157 @@ const Intake = ({
   onLeverChange,
 }: Props) => {
   const { formatMessage } = useIntl();
-  // How many questions are on screen. The first is there from the start; each
-  // next one appears as the current one is answered or skipped.
-  const [revealedCount, setRevealedCount] = useState(1);
+  const [skipped, setSkipped] = useState<Set<IntakeQuestionId>>(new Set());
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   const total = INTAKE_QUESTIONS.length;
-  const visible = INTAKE_QUESTIONS.slice(0, revealedCount);
-  const advance = () =>
-    setRevealedCount((count) => Math.min(count + 1, total));
+  const answeredCount = INTAKE_QUESTIONS.filter(
+    (question) => !!answers[question.id]?.optionId
+  ).length;
+
+  const skip = (id: IntakeQuestionId) =>
+    setSkipped((current) => new Set(current).add(id));
+  const unskip = (id: IntakeQuestionId) =>
+    setSkipped((current) => {
+      const next = new Set(current);
+      next.delete(id);
+      return next;
+    });
 
   return (
-    // A distinct tinted card — the assistant stepping in to ask, clearly set
-    // apart from the composer above so the follow-up questions don't blend in.
-    <Reveal
-      mt="12px"
-      p="16px"
-      borderRadius="12px"
-      bgColor={colors.teal50}
-      border={`1px solid ${colors.teal100}`}
-    >
-      <Box display="flex" gap="10px" mb="16px">
-        <Icon
-          name="stars"
-          width="18px"
-          height="18px"
-          fill={colors.teal500}
-          my="2px"
-        />
-        <Text m="0px" fontSize="s" color="textPrimary" fontWeight="bold" lineHeight="1.45">
-          {formatMessage(messages.intakeLead)}
+    <Box mt="8px">
+      {/* Sectioned header with a running answered-count, so the whole set reads
+          as one short, optional sheet. */}
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="baseline"
+        pb="10px"
+        mb="4px"
+        borderBottom={`1px solid ${colors.grey200}`}
+      >
+        <Text
+          m="0px"
+          fontSize="xs"
+          fontWeight="bold"
+          color="textSecondary"
+          style={{ letterSpacing: '0.08em', textTransform: 'uppercase' }}
+        >
+          Setup questions
+        </Text>
+        <Text m="0px" fontSize="s" color="textSecondary">
+          {answeredCount} of {total} answered
         </Text>
       </Box>
 
-      <Box display="flex" flexDirection="column" gap="4px">
-        {visible.map((question, index) => {
-          const answer = answers[question.id];
-          const isLastVisible = index === visible.length - 1;
-          const isAnswered = !!answer?.optionId;
-          const canSkip =
-            isLastVisible && !isAnswered && revealedCount < total;
-          // The free-text shows once answered — but on a question that has an
-          // explicit "Other" chip, only when that chip is the one picked.
-          const selectedOption = question.options.find(
-            (option) => option.id === answer?.optionId
-          );
-          const questionHasOther = question.options.some((o) => o.isOther);
-          const showDetail =
-            !!question.detailPlaceholder &&
-            isAnswered &&
-            (!questionHasOther || !!selectedOption?.isOther);
+      {INTAKE_QUESTIONS.map((question, index) => {
+        const answer = answers[question.id];
+        const isAnswered = !!answer?.optionId;
+        const isSkipped = skipped.has(question.id);
+        const selectedOption = question.options.find(
+          (option) => option.id === answer?.optionId
+        );
+        const questionHasOther = question.options.some((o) => o.isOther);
+        const showDetail =
+          !!question.detailPlaceholder &&
+          isAnswered &&
+          (!questionHasOther || !!selectedOption?.isOther);
 
-          return (
-            <Reveal key={question.id}>
-              <Box
-                borderTop={index > 0 ? `1px solid ${colors.teal100}` : undefined}
-                pt={index > 0 ? '18px' : '0px'}
-              >
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="flex-start"
-                  gap="12px"
-                  mb="10px"
-                >
-                  {/* A numbered step badge + bold title gives each question its
-                      own clear header, well above the option chips. The badge
-                      ticks to a check once answered, so progress reads at a
-                      glance. */}
-                  <Box display="flex" gap="10px" alignItems="center">
-                    <Box
-                      flex="0 0 auto"
-                      width="22px"
-                      height="22px"
-                      borderRadius="50%"
-                      bgColor={isAnswered ? colors.teal500 : colors.white}
-                      border={
-                        isAnswered ? undefined : `1.5px solid ${colors.teal200}`
-                      }
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                    >
-                      {isAnswered ? (
-                        <Icon
-                          name="check"
-                          width="13px"
-                          height="13px"
-                          fill={colors.white}
-                        />
-                      ) : (
-                        <Text
-                          m="0px"
-                          fontSize="xs"
-                          fontWeight="bold"
-                          color="teal700"
-                        >
-                          {index + 1}
-                        </Text>
-                      )}
-                    </Box>
-                    <Text
-                      m="0px"
-                      fontSize="m"
-                      fontWeight="bold"
-                      color="textPrimary"
-                      lineHeight="1.3"
-                    >
-                      {formatMessage(question.ask)}
-                    </Text>
-                  </Box>
-                  {canSkip && (
-                    <LinkButton
-                      type="button"
-                      disabled={disabled}
-                      onClick={advance}
-                    >
-                      {formatMessage(messages.intakeSkip)}
-                    </LinkButton>
-                  )}
+        return (
+          <Box
+            key={question.id}
+            py="16px"
+            borderBottom={`1px solid ${colors.grey200}`}
+          >
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="flex-start"
+              gap="12px"
+            >
+              <Box display="flex" gap="14px" alignItems="baseline" minWidth="0">
+                <Box flex="0 0 auto">
+                  <Text m="0px" fontSize="s" fontWeight="bold" color="textSecondary">
+                    {String(index + 1).padStart(2, '0')}
+                  </Text>
                 </Box>
+                <Text
+                  m="0px"
+                  fontSize="l"
+                  fontWeight="bold"
+                  color="textPrimary"
+                  lineHeight="1.3"
+                >
+                  {formatMessage(question.ask)}
+                </Text>
+              </Box>
+              {!isSkipped && (
+                <LinkButton
+                  type="button"
+                  disabled={disabled}
+                  onClick={() => skip(question.id)}
+                >
+                  {formatMessage(messages.intakeSkip)}
+                </LinkButton>
+              )}
+            </Box>
 
-                {/* Chips sit indented under the title, so title and options read
-                    as two clear levels rather than one wall of pills. */}
-                <Box display="flex" flexWrap="wrap" gap="8px" pl="32px">
-                  {question.options.map((option) => (
-                    <Chip
-                      key={option.id}
-                      type="button"
-                      $selected={answer?.optionId === option.id}
-                      disabled={disabled}
-                      onClick={() => {
-                        onAnswer(question.id, option);
-                        if (isLastVisible) advance();
-                      }}
-                    >
-                      {formatMessage(option.label)}
-                    </Chip>
-                  ))}
+            {isSkipped ? (
+              <Box
+                mt="10px"
+                ml={INDENT}
+                display="flex"
+                alignItems="center"
+                gap="8px"
+              >
+                <Text m="0px" fontSize="s" color="textSecondary">
+                  Skipped
+                </Text>
+                <LinkButton
+                  type="button"
+                  disabled={disabled}
+                  onClick={() => unskip(question.id)}
+                >
+                  Undo
+                </LinkButton>
+              </Box>
+            ) : (
+              <>
+                <Box
+                  mt="12px"
+                  ml={INDENT}
+                  display="flex"
+                  flexWrap="wrap"
+                  gap="8px"
+                >
+                  {question.options.map((option) => {
+                    const selected = answer?.optionId === option.id;
+                    return (
+                      <Chip
+                        key={option.id}
+                        type="button"
+                        $selected={selected}
+                        disabled={disabled}
+                        onClick={() => onAnswer(question.id, option)}
+                      >
+                        {selected && (
+                          <Icon
+                            name="check"
+                            width="14px"
+                            height="14px"
+                            fill="#fff"
+                          />
+                        )}
+                        {formatMessage(option.label)}
+                      </Chip>
+                    );
+                  })}
                 </Box>
 
                 {/* The optional free-text appears only once a chip is picked, so
                     it never gets in the way of the one-tap path. */}
                 {showDetail && (
-                  <Box mt="10px" pl="32px">
+                  <Box mt="10px" ml={INDENT}>
                     <DetailInput
                       type="text"
                       value={answer?.detail ?? ''}
@@ -284,16 +291,16 @@ const Intake = ({
                     />
                   </Box>
                 )}
-              </Box>
-            </Reveal>
-          );
-        })}
-      </Box>
+              </>
+            )}
+          </Box>
+        );
+      })}
 
       {/* The raw structural dials, for managers who want them. Hidden by default
-          so the conversation stays the main path; the answers above have already
-          set these. */}
-      <Box mt="18px">
+          so the questions stay the main path; the answers above already set
+          these. */}
+      <Box pt="16px">
         <LinkButton
           type="button"
           disabled={disabled}
@@ -302,15 +309,15 @@ const Intake = ({
           {formatMessage(messages.intakeAdvancedToggle)}
         </LinkButton>
         {showAdvanced && (
-          <Reveal mt="4px">
+          <Box mt="4px">
             <Text m="0px" mb="4px" fontSize="s" color="textSecondary">
               {formatMessage(messages.intakeAdvancedHelper)}
             </Text>
             <Levers values={levers} disabled={disabled} onChange={onLeverChange} />
-          </Reveal>
+          </Box>
         )}
       </Box>
-    </Reveal>
+    </Box>
   );
 };
 

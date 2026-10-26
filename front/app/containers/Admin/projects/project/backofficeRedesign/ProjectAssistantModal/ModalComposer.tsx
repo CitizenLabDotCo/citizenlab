@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 
 import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
@@ -10,6 +10,11 @@ import styled from 'styled-components';
 
 const ACCEPTED = '.pdf,.md,.txt,.doc,.docx';
 const MAX_FILES = 3;
+
+// Auto-grow bounds for the textarea: starts around two rows and grows to fit
+// content, then scrolls internally once it gets tall.
+const MIN_FIELD_HEIGHT = 44; // ~2 rows at 15px / 1.45 line-height
+const MAX_FIELD_HEIGHT = 160; // ~6–8 lines before it scrolls instead of growing
 
 // A soft rounded frame that owns the only visible border; it lifts gently on
 // focus (no hard outline), matching the prototype's clean composer.
@@ -29,6 +34,10 @@ const Field = styled.textarea`
   width: 100%;
   border: none;
   resize: none;
+  display: block;
+  min-height: ${MIN_FIELD_HEIGHT}px;
+  max-height: ${MAX_FIELD_HEIGHT}px;
+  overflow-y: auto;
   font-family: inherit;
   font-size: 15px;
   line-height: 1.45;
@@ -93,8 +102,22 @@ const ModalComposer = ({
 }: Props) => {
   const [text, setText] = useState('');
   const fileInput = useRef<HTMLInputElement>(null);
+  const fieldRef = useRef<HTMLTextAreaElement>(null);
 
   const canSend = text.trim() !== '' && !disabled;
+
+  // Grow the field to fit its content, capped at MAX_FIELD_HEIGHT (beyond which
+  // overflow-y handles scrolling). Reset to 'auto' first so it can also shrink.
+  const autoSize = () => {
+    const el = fieldRef.current;
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = `${Math.min(el.scrollHeight, MAX_FIELD_HEIGHT)}px`;
+  };
+
+  // Keep the height in sync with the value on mount and after it changes
+  // (including the reset to '' after send, which shrinks it back to minimum).
+  useLayoutEffect(autoSize, [text]);
 
   const submit = () => {
     if (!canSend) return;
@@ -110,9 +133,9 @@ const ModalComposer = ({
   return (
     <Frame>
       <Field
+        ref={fieldRef}
         value={text}
         placeholder={placeholder}
-        rows={2}
         disabled={disabled}
         onChange={(e) => setText(e.target.value)}
         onKeyDown={(e) => {
