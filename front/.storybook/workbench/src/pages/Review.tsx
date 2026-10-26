@@ -663,7 +663,7 @@ const Review = ({ meta, overrides }: Props) => {
               data-testid="wb-review-pr-input"
             />
             <button type="submit" className="wb-button">
-              <Icon name="proposal" size={16} />
+              <Icon name="pullRequest" size={16} />
               {state.pr ? 'Change PR' : 'Review a PR'}
             </button>
             {state.pr && (

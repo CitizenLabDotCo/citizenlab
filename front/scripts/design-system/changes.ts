@@ -11,8 +11,7 @@
  * ...`), and the offSpec delta when the commit refreshed the committed scan
  * summary. A commit lists only files that still differ from the base, so a
  * change a later commit reverted marks nothing. Token changes compare the
- * values in tokens.source.json at the base and at HEAD. It then writes
- * trend.json (see trend.ts).
+ * values in tokens.source.json at the base and at HEAD.
  *
  * The base is the merge-base with --base, else master, else origin/master,
  * else the merge-base the last local scan cached in design-scan.summary.json
@@ -27,7 +26,6 @@ import fs from 'fs';
 import path from 'path';
 
 import { buildTokens, TokenSource } from './build-tokens';
-import { runTrend } from './trend';
 
 export type RunGit = (args: string[]) => string | undefined;
 
@@ -324,8 +322,6 @@ const main = () => {
     else if (argv[i] === '--out') outDir = argv[++i];
     else console.warn(`ds:changes warning: unknown argument ${argv[i]}`);
   }
-  // The drift trend for the Proposal page; logs its own line, never throws.
-  runTrend(outDir);
   const summary = readJsonFile('.storybook/static/design-scan.summary.json');
   const scan = readJsonFile('.storybook/static/design-scan.json');
   const known: string[] | undefined = Array.isArray(scan?.components)

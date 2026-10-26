@@ -1,11 +1,11 @@
 # Design system workbench: notes for agents
 
-Online the workbench only reads. Run locally (`npm run ds:local`), it saves an edit to the source and pushes it with the person's own git: token edits on their branch, component edits as a heal on its own branch off `master`; nothing lands as platform code on this branch. This branch holds tools only: CSS-variable design tokens that Storybook and the workbench read, a scanner that finds off-spec values, a shell on Storybook's engine (galleries, Foundations, the component page's Design, A11y and Usage tabs, the Review and Proposal pages), and skills that draft heals. Everything the workbench knows is a plain file on the branch; this page says what each one is. Launch Claude Code from `front/`; run every command there. The skills are in `front/.claude/skills/`. Start with `.storybook/START.md` (the setup for a person); this page is for the agent.
+Online the workbench only reads. Run locally (`npm run ds:local`), it saves an edit to the source and pushes it with the person's own git: token edits on their branch, component edits as a heal on its own branch off `master`; nothing lands as platform code on this branch. This branch holds tools only: CSS-variable design tokens that Storybook and the workbench read, a scanner that finds off-spec values, a shell on Storybook's engine (galleries, Foundations, the component page's Design, A11y and Usage tabs, the Review and Inspect pages), and skills that draft heals. Everything the workbench knows is a plain file on the branch; this page says what each one is. Launch Claude Code from `front/`; run every command there. The skills are in `front/.claude/skills/`. Start with `.storybook/START.md` (the setup for a person); this page is for the agent.
 
 ## Vocabulary
 
 - **Token**: a named design value, a CSS variable `--gv-…`. Tier 1 primitive (`--gv-blue-500`, `--gv-space-4`), Tier 2 semantic (`--gv-color-text-heading`, `--gv-radius-control`). Components use Tier 2; spacing uses the `--gv-space-N` scale (4px steps). A token's value is the value the code renders now. The app does not load the tokens; Storybook and the workbench do.
-- **Back-office token set**: a proposed value per token for the back office (`$extensions.gv.backOffice` in the source). It is a proposal for the FE lead, shown only on the Proposal page; nothing renders it.
+- **Back-office token set**: a proposed value per token for the back office (`$extensions.gv.backOffice` in the source). It is a proposal for the FE lead; nothing renders it.
 - **City (tenant)**: the colours, font and language a platform is configured with (`getTheme(tenant)` in code). In Storybook the theme context writes them into `--gv-tenant-*` and `--gv-font-family`. In the workbench it is a switch.
 - **Office**: back office (`bo`, admin routes), front office (`fo`, residents' routes), `shared` (both). From story tags first, else from the routes the scan finds.
 - **Off-spec**: a style value that is neither a token read nor a library component: hand-typed `8px`, `#1E1E1E`, `rgba(...)`, a `styled.div` with its own values, a local copy of a library component.
@@ -14,7 +14,6 @@ Online the workbench only reads. Run locally (`npm run ds:local`), it saves an e
 - **Lift**: moving a local piece of the redesigned back office into the library. Platform code too: its own PR off master.
 - **Usage map**: for each library component, where it is imported, the props at each call site, on which routes it shows and how many off-spec values sit there.
 - **Review page**: the workbench page that frames the real platform before and after the session's token edits.
-- **Proposal page**: the case for the FE lead: the numbers, the trend, how a heal goes, the back-office token set, the migration order and the cost.
 - **Workbench**: the Storybook on this branch with its own shell at `<storybook>/workbench/`.
 
 ## Guardrails
@@ -45,7 +44,7 @@ Online the workbench only reads. Run locally (`npm run ds:local`), it saves an e
 | `npm run ds:scan` | Scan `app/`: usages, off-spec findings, legacy and token reads, routes, scores. Writes `design-scan.json` and `design-scan.summary.json`. |
 | `npm run ds:lint` | Off-spec values on lines added under `app/component-library/` and `app/design-system/` since the merge-base with `master`. Exits 1 if any. |
 | `npm run ds:check` | `ds:tokens -- --check`, `ds:lint`, then `ds:a11y -- --check`. Run before every commit. It passes unless the committed `a11y-results.json` has a critical axe violation in a `Components/` story that is not in `scripts/design-system/a11y-known.json`; fixing a known one means removing its entry (a listed one that no longer fails also fails the check, and so does a listed one whose story errored in axe: keep that entry and fix the story). |
-| `npm run ds:changes [-- --base <ref>] [--out <dir>]` | Write `design-changes.json` for the Review page and `trend.json` for the Proposal page. `--out` writes both to another folder; the inputs (the committed scan summary and the previous files) are still read from `.storybook/static/`. |
+| `npm run ds:changes [-- --base <ref>] [--out <dir>]` | Write `design-changes.json` for the Review page. `--out` writes it to another folder; the inputs (the committed scan summary and the previous files) are still read from `.storybook/static/`. |
 | `npm run ds:routes-fixture [-- --host <url>]` | Refresh `routes.fixture.json` from the test tenant's public API. |
 | `npm run ds:workbench` | Build the shell into `.storybook/static/workbench/`. `npm run ds:workbench:typecheck` typechecks it. |
 | `npm run ds:visual -- --baseline <dir>` / `-- --compare <dir> [--stories <glob,glob>] [--summary <file>] [--allow-px N] [--url <storybook>]` | Screenshot every story (or the story ids `--stories` matches, `*` a wildcard) at 1280x900 and 390x844, save or compare. A full compare writes `visual-summary.json`; a filtered run writes `<dir>/_summary.json`; `--summary` overrides both. Default URL `http://localhost:6006`. |
@@ -86,7 +85,6 @@ Scripts, `scripts/design-system/`:
 - `fixtures/`: scanner test inputs (`findings/`, `routes/app/`).
 - `README.md`: the scripts in more detail.
 - `a11y-run.ts`: the axe run (`ds:a11y`); `a11y-results.ts` (tested in `a11y-results.test.ts`): its options, merge and check; `a11y-known.json`: the criticals the check accepts for now, by story id and rule.
-- `trend.ts` (tested in `trend.test.ts`): `trend.json` from the git history of the summary, and the heal example the Proposal page shows; `changes.ts` runs it.
 
 Storybook, `.storybook/`:
 - `main.ts`: stories glob `app/**/*.stories.*`, addons (accessibility, pseudo states, MCP), aliases for the app folders, `staticDirs` `public` and `static`.
@@ -100,16 +98,14 @@ Data, `.storybook/static/` (served next to the stories):
 - `design-scan.json` (gen, git-ignored): the whole scan: `findings`, `usages`, `routes`, `components`, `pages`, `totals`, `unmapped`, `routeFiles`.
 - `design-scan.summary.json` (gen, c): totals; one commit per change gives the trend in git history.
 - `design-changes.json` (gen, c): the Review page's change list. See "Refreshing".
-- `trend.json` (gen, c): scan totals at each commit of the summary, for the Proposal page's trend; `ds:changes` writes it, a shallow clone keeps the committed file. See "Refreshing".
 - `routes.fixture.json` (c): real ids and slugs for `$param` segments; `paths` (per route) is read before `params` (per name).
 - `visual-summary.json` (gen, c): last visual compare: stories, diffs, errors, retried.
 - `a11y-results.json` (gen, c): axe per story: violations by rule and impact, passes, focusable elements, and whether a play function passed.
-- `heals/<sha>/` (c): `before.png` and `after.png` of the heal the Proposal page shows, `<sha>` the commit the heal started from.
 - `workbench/` (gen, git-ignored): the built shell.
 - `images/`: story images.
 
 The shell, `.storybook/workbench/` (React and Vite, its own `tsconfig.json`, `@ds/*` mapped to `app/design-system/*`):
-- `vite.config.ts`, `index.html`, `src/main.tsx`, `src/App.tsx`, `src/shell.css`: the app, hash routes `#/components` (the default: an empty hash and the old `#/start` are replaced with it), `#/foundations/<category>` (`#/foundations` is replaced with `#/foundations/color`; `#/foundations/<category>/<token>` scrolls to and focuses that token's row), `#/patterns`, `#/pages`, `#/review`, `#/proposal`.
+- `vite.config.ts`, `index.html`, `src/main.tsx`, `src/App.tsx`, `src/shell.css`: the app, hash routes `#/components` (the default: an empty hash and the old `#/start` are replaced with it), `#/foundations/<category>` (`#/foundations` is replaced with `#/foundations/color`; `#/foundations/<category>/<token>` scrolls to and focuses that token's row), `#/patterns`, `#/pages`, `#/review`, `#/inspect`.
 - `src/lib/data.ts`: loads the JSON files one level up and Storybook's `index.json`; a missing or broken file reads as empty.
 - `src/lib/overrides.ts`: the session's token edits, snapping, the share-link codec (`o` in the hash).
 - `src/lib/shareEntry.ts` (tested): the share link and the browser history. The hook writes its value into the current entry with replaceState and marks it in `history.state.wbShare`; Back to an entry whose value equals its mark is the session's own older value, so the hook writes the current one back instead of applying it. A pasted link has no mark and applies.
@@ -128,9 +124,8 @@ The shell, `.storybook/workbench/` (React and Vite, its own `tsconfig.json`, `@d
 - `src/lib/stories.ts`, `src/lib/useStoryGroups.ts`: the story index grouped by component, office from tags.
 - `src/lib/review.ts`: affected routes, frame URLs, the "Copy for PR" text.
 - `src/lib/sourceDiff.ts`: session edits as a `tokens.source.json` patch.
-- `src/lib/proposal.ts`: the Proposal page's numbers, trend series, migration order and cost.
 - `src/lib/router.ts`, `src/lib/clipboard.ts`: hash routes, copy with a text fallback.
-- `src/pages/`: `Foundations` (one page per token category, with category tabs; a token's Value cell is its field, the edit; a token that reads another is a pill linking to it, with Detach; a shadow opens its layers in `ShadowEditor`), `Gallery`, `Component`, `Review`, `Proposal` (with `proposal.css`); `Placeholder` holds the empty-state pictures.
+- `src/pages/`: `Foundations` (one page per token category, with category tabs; a token's Value cell is its field, the edit; a token that reads another is a pill linking to it, with Detach; a shadow opens its layers in `ShadowEditor`), `Gallery`, `Component`, `Review`; `Placeholder` holds the empty-state pictures.
 - The component page: one top row built like the panel's tab bar (breadcrumbs; on their right the Changes pencil with its count; `data-testid="wb-canvas-bar"`), every Variant, then every State, as a chip under it (`components/StoryChips.tsx`, `wb-insp-story`); a State goes on top of the variant (`#…/button--primary?state=disabled`): its args change from Default and its `parameters.pseudo` as the addon's `pseudo-*-all` root classes (`lib/storyState.ts`, `lib/useStoryState.ts`, `setLayerArgs` in `lib/preview.ts`); a State with its own render (RTL) opens as its own story. The dotted stage fills the rest of the column, with a bar floating 24px above the screen's foot (Select / Interact, viewport Fit | Desktop | Tablet | Mobile, zoom, City; `wb-float-bar`), and the inspector has three tabs. No title, status chips, file path or language picker: the story is the page. **Design** is Figma's Design tab over the selected element: the layer and its parents, then sections Layout, Fill, Stroke, Radius, Text, Effects; a value is a pill when bound to a token (click = token picker, hover = detach) or a field (type to snap to the scale or palette; a link glyph attaches the token the value equals); "Also in this file" lists the file's healable findings; Props (the story's controls) last. Element edits paint the frame as inline styles and sit with token edits in the one Changes drawer that opens over the canvas under the top row, whose "Copy for agent" gives the heal and change tasks. **A11y**: axe results and the checklist. **Usage**: files, props, routes and findings, each finding with its heal task. Low text: glyphs carry the meaning, `aria-label`s the words, no title tooltips on values.
 - `src/panels/`: `Design`, `Usage`, `Controls`, `A11y`.
 - `src/components/`: `Nav`, `Toolbar`, `Canvas`, `FrameView`, `ChangeList`, `ChangesDrawer`, `InspSection`, `ValueField`, `TokenPicker`, `RouteList`, `TokenRow`, `ShadowEditor`, `HealCopy`, `LineChart` and smaller parts.
@@ -206,7 +201,7 @@ check: story <story id>, routes <list>
 
 ## Refreshing
 
-- `design-changes.json` and `trend.json` are committed. Both name the latest commits, so they cannot ship in the commit that changes the summary: after a summary commit, and before each push, run `npm run ds:changes` and commit the two together (`design-system(review): refresh the change list and trend [AI-assisted]`). CI clones with depth 1, reaches no history, and keeps the committed files.
+- `design-changes.json` is committed. It names the latest commits, so they cannot ship in the commit that changes the summary: after a summary commit, and before each push, run `npm run ds:changes` and commit it (`design-system(review): refresh the change list [AI-assisted]`). CI clones with depth 1, reaches no history, and keeps the committed files.
 - `routes.fixture.json`: `npm run ds:routes-fixture` after the test tenant is reseeded (or `-- --host <url>` for another test tenant). It prints the params it could not fill (admin-only records); fill those by hand, later runs keep them. `paths` stays before `params`.
 - `design-scan.summary.json`: `npm run ds:scan`.
 - `visual-summary.json`: `ds:visual -- --baseline <dir>` on the commit before, `-- --compare <dir>` on the commit after; the compare writes it.

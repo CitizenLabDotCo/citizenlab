@@ -186,7 +186,7 @@ code {
   max-width: 880px;
 }
 
-/* Galleries, Foundations, Proposal: the whole main column, so a collapsed
+/* Galleries and Foundations: the whole main column, so a collapsed
    nav or a wide window gives the grids more columns. Prose keeps its own
    measure. */
 .wb-page-wide {
@@ -639,40 +639,6 @@ a.wb-card:hover {
   font-size: var(--gv-fs-base);
   font-weight: 600;
   color: var(--wb-heading);
-}
-
-/* Hero (Proposal) */
-.wb-hero {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--gv-space-8);
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--gv-space-10);
-  background: linear-gradient(
-    135deg,
-    var(--wb-accent-soft),
-    var(--wb-info-subtle) 60%,
-    var(--wb-bg)
-  );
-  border: 1px solid var(--wb-border);
-  border-radius: 16px;
-}
-
-.wb-hero-text {
-  flex: 1 1 380px;
-  max-width: 600px;
-}
-
-.wb-hero h1 {
-  font-size: var(--gv-fs-xxxxl);
-}
-
-.wb-hero-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--gv-space-3);
-  margin-top: var(--gv-space-6);
 }
 
 /* Empty states */
@@ -3720,14 +3686,6 @@ a.wb-line:hover {
 
   .wb-page h1 {
     font-size: var(--gv-fs-xxl);
-  }
-
-  .wb-hero {
-    padding: var(--gv-space-6);
-  }
-
-  .wb-hero h1 {
-    font-size: var(--gv-fs-xxxl);
   }
 
   .wb-empty {

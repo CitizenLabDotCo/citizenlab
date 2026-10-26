@@ -12,7 +12,6 @@ import Component from './pages/Component';
 import Foundations from './pages/Foundations';
 import Gallery from './pages/Gallery';
 import Inspect from './pages/Inspect';
-import Proposal from './pages/Proposal';
 import Review from './pages/Review';
 
 type CanvasProps = {
@@ -63,8 +62,6 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
       );
     case 'review':
       return <Review meta={TOKEN_META} overrides={canvas.overrides} />;
-    case 'proposal':
-      return <Proposal />;
     case 'inspect':
       return <Inspect meta={TOKEN_META} />;
     case 'not-found':

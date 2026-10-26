@@ -19,9 +19,7 @@ const tokenCss = fs.readFileSync(
 );
 
 const shell = read('shell.css');
-const sheets = [shell, read('pages/proposal.css')]
-  .join('\n')
-  .replace(/\/\*[\s\S]*?\*\//g, '');
+const sheets = shell.replace(/\/\*[\s\S]*?\*\//g, '');
 
 const roles = (selector: string) => {
   const start = shell.indexOf(`${selector} {`);

@@ -44,7 +44,7 @@ const PATHS = {
       <path d="M11 10l7 4-3 .8-1.6 3z" />
     </>
   ),
-  proposal: (
+  pullRequest: (
     <>
       <circle cx="7" cy="6" r="2" />
       <circle cx="7" cy="18" r="2" />

@@ -89,17 +89,6 @@ export const loadStoryIndex = () =>
 export const loadChanges = () =>
   fetchJson<Record<string, unknown>>('../design-changes.json', {});
 
-// The committed scan totals and their history (trend.json), for the
-// Proposal page; null when the build has none.
-export const loadSummary = () =>
-  fetchJson<Record<string, unknown> | null>(
-    '../design-scan.summary.json',
-    null
-  );
-
-export const loadTrend = () =>
-  fetchJson<{ points?: unknown } | null>('../trend.json', null);
-
 export const loadRouteFixture = () =>
   fetchJson<unknown>('../routes.fixture.json', {});
 

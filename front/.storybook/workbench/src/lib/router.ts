@@ -7,7 +7,6 @@ export type Route =
   | { name: 'patterns'; storyId?: string }
   | { name: 'pages'; storyId?: string }
   | { name: 'review' }
-  | { name: 'proposal' }
   | { name: 'inspect' }
   | { name: 'not-found'; path: string };
 
@@ -56,7 +55,6 @@ export const parseHash = (hash: string): Route => {
     case 'pages':
       return { name: first, storyId: param };
     case 'review':
-    case 'proposal':
     case 'inspect':
       return param ? { name: 'not-found', path } : { name: first };
     default:

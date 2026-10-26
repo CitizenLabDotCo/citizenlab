@@ -45,12 +45,6 @@ export const NAV: NavEntry[] = [
     hash: '#/inspect',
     hint: 'Click anything in your local platform',
   },
-  {
-    name: 'proposal',
-    label: 'Proposal',
-    hash: '#/proposal',
-    hint: 'The case for developers',
-  },
 ];
 
 type Props = {
