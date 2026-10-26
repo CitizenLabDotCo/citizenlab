@@ -318,17 +318,17 @@ class WebApi::V1::IdeasController < ApplicationController
     idea.project_id = phase.project_id
     service = SimilarIdeasService.new(idea)
 
-    title_threshold = phase.similarity_threshold_title
-    body_threshold = phase.similarity_threshold_body
-    cache_key = "similar_ideas/#{{ id: idea.id, title_multiloc: idea.title_multiloc, body_multiloc: idea.body_multiloc, project_id: idea.project_id, title_threshold:, body_threshold: }}"
+    # Don't cache the response: it depends on the current user (policy scope
+    # and private attributes). SimilarIdeasService caches the text embeddings.
+    scope = policy_scope(Idea).where(project_id: idea.project_id)
+    results = service.similar_ideas(
+      scope:,
+      title_threshold: phase.similarity_threshold_title,
+      body_threshold: phase.similarity_threshold_body,
+      limit: SIMILARITIES_LIMIT
+    )
 
-    json_result = Rails.cache.fetch(cache_key, expires_in: 10.minutes) do
-      scope = policy_scope(Idea).where(project_id: idea.project_id)
-      results = service.similar_ideas(scope:, title_threshold:, body_threshold:, limit: SIMILARITIES_LIMIT)
-      WebApi::V1::IdeaSerializer.new(results, serialization_options_for(results)).serializable_hash
-    end
-
-    render json: json_result
+    render json: WebApi::V1::IdeaSerializer.new(results, serialization_options_for(results)).serializable_hash
   end
 
   def copy
