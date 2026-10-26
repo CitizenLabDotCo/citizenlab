@@ -318,8 +318,6 @@ class WebApi::V1::IdeasController < ApplicationController
     idea.project_id = phase.project_id
     service = SimilarIdeasService.new(idea)
 
-    # Don't cache the response: it depends on the current user (policy scope
-    # and private attributes). SimilarIdeasService caches the text embeddings.
     scope = policy_scope(Idea).where(project_id: idea.project_id)
     results = service.similar_ideas(
       scope:,
