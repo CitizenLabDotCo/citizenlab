@@ -87,6 +87,12 @@ const BuildPanel = ({ projectId, phase, savedAttachments }: Props) => {
         start_at: formData.start_at,
         end_at: formData.end_at,
         input_term: formData.input_term,
+        ...(phase.attributes.participation_method === 'document_annotation'
+          ? {
+              document_annotation_embed_url:
+                formData.document_annotation_embed_url,
+            }
+          : {}),
         // A draft description publishes on its own; sending the loaded value
         // would undo a publish made since.
         ...(draftDescriptionEnabled

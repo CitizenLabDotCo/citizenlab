@@ -23,6 +23,7 @@ import eventMessages from '../../Event/messages';
 import messages from '../../messages';
 
 import DescriptionField from './DescriptionField';
+import DocumentUrlCard from './DocumentUrlCard';
 import InputTermCard from './InputTermCard';
 import MethodSection from './MethodSection';
 import PanelField from './PanelField';
@@ -153,6 +154,16 @@ const BuildFields = ({
               onChange={(input_term) => onChange({ input_term })}
             />
           </>
+        )}
+
+        {participationMethod === 'document_annotation' && (
+          <DocumentUrlCard
+            value={formData.document_annotation_embed_url}
+            errors={errors}
+            onChange={(document_annotation_embed_url) =>
+              onChange({ document_annotation_embed_url })
+            }
+          />
         )}
 
         {!standalone && isSurveyMethod(participationMethod) && (

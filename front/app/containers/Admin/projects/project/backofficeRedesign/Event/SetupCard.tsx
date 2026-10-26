@@ -1,14 +1,21 @@
 import React, { ReactNode } from 'react';
 
-import { Box, Text, bo, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  IconTooltip,
+  Text,
+  bo,
+  colors,
+} from '@citizenlab/cl2-component-library';
 
 interface Props {
   title: string;
+  titleTooltip?: JSX.Element;
   action?: ReactNode;
   children?: ReactNode;
 }
 
-const SetupCard = ({ title, action, children }: Props) => (
+const SetupCard = ({ title, titleTooltip, action, children }: Props) => (
   <Box
     as="section"
     display="flex"
@@ -24,10 +31,11 @@ const SetupCard = ({ title, action, children }: Props) => (
       minHeight="44px"
       p="8px 8px 8px 12px"
     >
-      <Box as="h3" m="0">
+      <Box as="h3" m="0" display="flex" alignItems="center" gap="4px">
         <Text as="span" variant="boControl" fontSize="xs" m="0">
           {title}
         </Text>
+        {titleTooltip && <IconTooltip content={titleTooltip} />}
       </Box>
       {action}
     </Box>

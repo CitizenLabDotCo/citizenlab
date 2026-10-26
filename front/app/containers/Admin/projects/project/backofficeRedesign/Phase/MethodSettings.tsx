@@ -45,6 +45,10 @@ const ACCESS_ONLY_ACTIONS: Partial<
     { action: 'volunteering', label: configMessages.volunteeringAction },
     { action: 'attending_event', label: projectMessages.attendingEventAction },
   ],
+  document_annotation: [
+    { action: 'annotating_document', label: messages.annotatingDocumentAction },
+    { action: 'attending_event', label: projectMessages.attendingEventAction },
+  ],
 };
 
 interface Props {
