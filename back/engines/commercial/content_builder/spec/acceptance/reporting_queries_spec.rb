@@ -227,6 +227,33 @@ resource 'ReportingQueries' do
         expect(json_response_body[:errors][:base].first[:error]).to eq 'execution_failed'
         expect(snapshot.reload.executed_at).to be < 1.minute.ago
       end
+
+      # All of them or none. Half a refresh would leave the report showing two
+      # moments at once, which is the thing storing the answers was for.
+      example '[error] Try to refresh when the second query is the one that fails', document: false do
+        other_sql = 'SELECT count(*) AS other FROM reporting_contributions'
+        create(
+          :query_snapshot,
+          layout: layout,
+          sql: McpServer::SqlSandboxer.validate(other_sql).normalized_sql,
+          data: { 'columns' => ['other'], 'rows' => [{ 'other' => 0 }], 'truncated' => false },
+          executed_at: 1.week.ago
+        )
+        call = 0
+        allow(McpServer::ReportingQueryRunner).to receive(:run) do
+          call += 1
+          raise ActiveRecord::StatementInvalid, 'canceling statement due to statement timeout' if call > 1
+
+          McpServer::ReportingQueryRunner::Result.new(
+            columns: ['contributions'], rows: [{ 'contributions' => 42 }], truncated: false
+          )
+        end
+
+        do_request
+
+        assert_status 422
+        expect(layout.query_snapshots.map { |s| s.reload.executed_at }).to all(be < 1.minute.ago)
+      end
     end
 
     # LayoutPolicy#update? goes through UserRoleService#can_moderate?, which has no

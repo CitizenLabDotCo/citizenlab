@@ -47,10 +47,12 @@ module ContentBuilder
           layout = Layout.find(params[:layout_id])
           authorize_editing(layout)
 
-          refreshed = layout.query_snapshots.map do |snapshot|
-            result = McpServer::ReportingQueryRunner.run(snapshot.sql)
-            snapshot.update!(data: result_data(result), executed_at: Time.current)
-            snapshot
+          refreshed = QuerySnapshot.transaction do
+            layout.query_snapshots.map do |snapshot|
+              result = McpServer::ReportingQueryRunner.run(snapshot.sql)
+              snapshot.update!(data: result_data(result), executed_at: Time.current)
+              snapshot
+            end
           end
 
           render json: {
