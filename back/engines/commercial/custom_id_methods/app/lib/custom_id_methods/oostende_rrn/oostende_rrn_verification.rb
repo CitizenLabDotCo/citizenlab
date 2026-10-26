@@ -57,7 +57,7 @@ module CustomIdMethods::OostendeRrn
       api = WijkBudgetApi.new(api_key: config[:api_key], environment: config[:environment])
       response = api.verificatie(rrn)
 
-      raise RuntimeError(response) unless response.success?
+      raise "Oostende WijkBudget API responded with HTTP #{response.code}" unless response.success?
 
       body = response.parsed_response
       reason = body.dig('verificatieResultaat', 'redenNietGeldig')

@@ -115,6 +115,18 @@ resource 'Verifications' do
     end
 
     describe do
+      let(:rrn) { '85102317223' }
+
+      example '[error] Verify when the Gent API responds with an error' do
+        stub_request(:get, "https://apidgqa.gent.be/services/wijkbudget/v1/WijkBudget/verificatie/#{rrn}")
+          .to_return(status: 503)
+
+        expect { do_request }.to raise_error(RuntimeError, 'Gent WijkBudget API responded with HTTP 503')
+        expect(@user.reload.verified).to be false
+      end
+    end
+
+    describe do
       let(:rrn) { '172639283' }
 
       example '[error] Verify with an invalid rrn' do
