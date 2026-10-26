@@ -72,6 +72,48 @@ describe ContentBuilder::CustomBlocks::RendererClient do
     end
   end
 
+  describe '#render' do
+    let(:render_url) { 'http://custom_block_renderer:3100/render' }
+    let(:args) do
+      { target: { kind: 'layout', craftjs_json: {} }, locale: 'en', layout_id: 'layout-id',
+        app_origin: 'http://localhost:3000', token: 'jwt' }
+    end
+
+    # The service reads camelCase; everything else here is snake_case, so this is the
+    # one place the two spellings have to line up.
+    it 'sends the target with the camelCase keys the service reads' do
+      stub_request(:post, render_url).to_return(status: 200, body: '{"ok":true}')
+
+      expect(client.render(**args)).to include('ok' => true)
+      expect(a_request(:post, render_url).with(
+        headers: { 'X-Renderer-Secret' => 'test-secret' },
+        body: hash_including('layoutId' => 'layout-id', 'appOrigin' => 'http://localhost:3000', 'token' => 'jwt')
+      )).to have_been_made
+    end
+
+    it 'raises Unavailable on a non-success response' do
+      stub_request(:post, render_url).to_return(status: 503, body: 'busy')
+
+      expect { client.render(**args) }.to raise_error described_class::Unavailable, /responded with 503/
+    end
+  end
+
+  describe '#sdk_declarations' do
+    let(:sdk_url) { 'http://custom_block_renderer:3100/sdk/v1.d.ts' }
+
+    it 'returns the declarations' do
+      stub_request(:get, sdk_url).to_return(status: 200, body: 'declare module "gv-sdk" {}')
+
+      expect(client.sdk_declarations).to eq 'declare module "gv-sdk" {}'
+    end
+
+    it 'raises Unavailable on a non-success response' do
+      stub_request(:get, sdk_url).to_return(status: 503)
+
+      expect { client.sdk_declarations }.to raise_error described_class::Unavailable
+    end
+  end
+
   describe '#up?' do
     it 'is true when the health endpoint answers' do
       stub_request(:get, 'http://custom_block_renderer:3100/health').to_return(status: 200, body: '{}')
