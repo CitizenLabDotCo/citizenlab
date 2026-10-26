@@ -25,7 +25,10 @@ module Analytics
       # Must give the visitors the phase insights show (Insights::VisitsService
       # for the phase's project and dates), or reports will disagree with them:
       # visitors with a pageview of the project from start_at up to, not
-      # including, end_at.
+      # including, end_at. No column holds a phase's visitors, and a query the
+      # model writes itself easily gets one of those details wrong. So the
+      # description gives it this exact query, not a hint. The parity spec
+      # runs this constant, so the description cannot drift from the insights.
       VISITORS_SQL = <<~SQL.squish
         SELECT COUNT(DISTINCT s.visitor_id)
         FROM reporting_phases ph
