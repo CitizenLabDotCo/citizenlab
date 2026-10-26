@@ -4,7 +4,13 @@ import { hideVisually, darken } from 'polished';
 import styled, { css } from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
-import { colors, fontSizes, focusRing, isRtl } from '../../utils/styleUtils';
+import {
+  bo,
+  colors,
+  fontSizes,
+  focusRing,
+  isRtl,
+} from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 
 type Size = 'small' | 'medium';
@@ -141,18 +147,23 @@ const LabelAndDescription = styled.div`
   `}
 `;
 
-const Label = styled.label<{ labelTextColor?: string }>`
-  color: ${({ labelTextColor }) => labelTextColor || colors.textPrimary};
-  font-size: ${fontSizes.base}px;
+const Label = styled.label<{ labelTextColor?: string; variant: Variant }>`
+  color: ${({ labelTextColor, variant }) =>
+    labelTextColor ||
+    (variant === 'bo' ? bo.colors.textHeadingStrong : colors.textPrimary)};
+  font-size: ${({ variant }) =>
+    variant === 'bo' ? bo.controlFontSize : fontSizes.base}px;
   font-weight: 400;
   line-height: normal;
   cursor: pointer;
 `;
 
-const Description = styled.span`
+const Description = styled.span<{ variant: Variant }>`
   display: block;
-  color: ${colors.textSecondary};
-  font-size: ${fontSizes.s}px;
+  color: ${({ variant }) =>
+    variant === 'bo' ? colors.coolGrey600 : colors.textSecondary};
+  font-size: ${({ variant }) =>
+    variant === 'bo' ? fontSizes.xs : fontSizes.s}px;
 `;
 
 interface Props {
@@ -162,7 +173,6 @@ interface Props {
   description?: ReactNode;
   labelTextColor?: string;
   size?: Size;
-  /** 'bo' is the back-office switch; it ignores `size`. */
   variant?: Variant;
   onChange: (event: FormEvent) => void;
   className?: string;
@@ -231,12 +241,15 @@ class Toggle extends PureComponent<Props> {
               htmlFor={inputId}
               onClick={this.handleOnClick}
               labelTextColor={labelTextColor}
+              variant={variant}
               data-cy={id}
             >
               {label}
             </Label>
             {description && (
-              <Description id={this.descriptionId}>{description}</Description>
+              <Description id={this.descriptionId} variant={variant}>
+                {description}
+              </Description>
             )}
           </LabelAndDescription>
         )}

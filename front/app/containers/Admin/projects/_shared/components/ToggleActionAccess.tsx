@@ -1,24 +1,10 @@
 import React, { ReactNode } from 'react';
 
-import { Box, bo, colors, fontSizes } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
 
 import PhaseActionAccess from './PhaseActionAccess';
-
-// The toggle brings its own label; in the panel row it reads at control size.
-const Row = styled(Box)`
-  label {
-    font-size: ${bo.controlFontSize}px;
-    color: ${bo.colors.textHeadingStrong};
-  }
-
-  label + span {
-    font-size: ${fontSizes.xs}px;
-    color: ${colors.coolGrey600};
-  }
-`;
 
 interface Props {
   phaseId: string;
@@ -27,7 +13,7 @@ interface Props {
 }
 
 const ToggleActionAccess = ({ phaseId, action, children }: Props) => (
-  <Row
+  <Box
     display="flex"
     alignItems="center"
     justifyContent="space-between"
@@ -36,7 +22,7 @@ const ToggleActionAccess = ({ phaseId, action, children }: Props) => (
   >
     {children}
     <PhaseActionAccess phaseId={phaseId} action={action} />
-  </Row>
+  </Box>
 );
 
 export default ToggleActionAccess;
