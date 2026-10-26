@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Veure al lloc web",
   "app.containers.Admin.projects.project.buildView": "Construcció",
   "app.containers.Admin.projects.project.causesSection": "Causes",
-  "app.containers.Admin.projects.project.causesSectionDescription": "Configura les causes en què la gent pot participar com a voluntària.",
   "app.containers.Admin.projects.project.collectingNow": "Recollint ara",
   "app.containers.Admin.projects.project.contextFolderDescription": "Una carpeta agrupa projectes relacionats dins d'un espai.",
   "app.containers.Admin.projects.project.contextNoFolder": "Cap carpeta",

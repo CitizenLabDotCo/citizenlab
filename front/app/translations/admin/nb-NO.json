@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Se på nettstedet",
   "app.containers.Admin.projects.project.buildView": "Bygg",
   "app.containers.Admin.projects.project.causesSection": "Formål",
-  "app.containers.Admin.projects.project.causesSectionDescription": "Sett opp formålene folk kan melde seg som frivillig til.",
   "app.containers.Admin.projects.project.collectingNow": "Samler inn nå",
   "app.containers.Admin.projects.project.contextFolderDescription": "En mappe grupperer relaterte prosjekter i et område.",
   "app.containers.Admin.projects.project.contextNoFolder": "Ingen mappe",

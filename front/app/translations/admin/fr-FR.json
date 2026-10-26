@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Voir sur le site",
   "app.containers.Admin.projects.project.buildView": "Conception",
   "app.containers.Admin.projects.project.causesSection": "Causes",
-  "app.containers.Admin.projects.project.causesSectionDescription": "Configurez les causes pour lesquelles les citoyens peuvent se porter volontaires.",
   "app.containers.Admin.projects.project.collectingNow": "Collecte en cours",
   "app.containers.Admin.projects.project.contextFolderDescription": "Un dossier regroupe des projets connexes au sein d'un espace.",
   "app.containers.Admin.projects.project.contextNoFolder": "Aucun dossier",

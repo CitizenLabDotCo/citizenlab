@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Bekijk op de site",
   "app.containers.Admin.projects.project.buildView": "Bouwen",
   "app.containers.Admin.projects.project.causesSection": "Doelen",
-  "app.containers.Admin.projects.project.causesSectionDescription": "Stel de doelen in waarvoor mensen zich als vrijwilliger kunnen aanmelden.",
   "app.containers.Admin.projects.project.collectingNow": "Nu aan het verzamelen",
   "app.containers.Admin.projects.project.contextFolderDescription": "Een map groepeert gerelateerde projecten binnen een ruimte.",
   "app.containers.Admin.projects.project.contextNoFolder": "Geen map",

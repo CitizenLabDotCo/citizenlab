@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Auf der Website ansehen",
   "app.containers.Admin.projects.project.buildView": "Erstellen",
   "app.containers.Admin.projects.project.causesSection": "Anliegen",
-  "app.containers.Admin.projects.project.causesSectionDescription": "Richten Sie die Anliegen ein, für die sich Personen freiwillig engagieren können.",
   "app.containers.Admin.projects.project.collectingNow": "Sammelt jetzt Beiträge",
   "app.containers.Admin.projects.project.contextFolderDescription": "Ein Ordner gruppiert verwandte Projekte innerhalb eines Spaces.",
   "app.containers.Admin.projects.project.contextNoFolder": "Kein Ordner",

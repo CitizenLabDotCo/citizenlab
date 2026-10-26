@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "View on the site",
   "app.containers.Admin.projects.project.buildView": "Build",
   "app.containers.Admin.projects.project.causesSection": "Causes",
-  "app.containers.Admin.projects.project.causesSectionDescription": "Set up the causes people can volunteer for.",
   "app.containers.Admin.projects.project.collectingNow": "Collecting now",
   "app.containers.Admin.projects.project.contextFolderDescription": "A folder groups related projects inside a space.",
   "app.containers.Admin.projects.project.contextNoFolder": "No folder",

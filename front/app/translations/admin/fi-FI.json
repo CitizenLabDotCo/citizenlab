@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Näytä sivustolla",
   "app.containers.Admin.projects.project.buildView": "Rakenna",
   "app.containers.Admin.projects.project.causesSection": "Kohteet",
-  "app.containers.Admin.projects.project.causesSectionDescription": "Määritä kohteet, joihin ihmiset voivat ilmoittautua vapaaehtoisiksi.",
   "app.containers.Admin.projects.project.collectingNow": "Keruu käynnissä",
   "app.containers.Admin.projects.project.contextFolderDescription": "Kansio ryhmittelee aiheeseen liittyvät projektit tilan sisällä.",
   "app.containers.Admin.projects.project.contextNoFolder": "Ei kansiota",

@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Gweld ar y wefan",
   "app.containers.Admin.projects.project.buildView": "Adeiladu",
   "app.containers.Admin.projects.project.causesSection": "Achosion",
-  "app.containers.Admin.projects.project.causesSectionDescription": "Gosodwch yr achosion y gall pobl wirfoddoli drostynt.",
   "app.containers.Admin.projects.project.collectingNow": "Wrthi'n casglu nawr",
   "app.containers.Admin.projects.project.contextFolderDescription": "Mae ffolder yn grwpio prosiectau cysylltiedig o fewn gofod.",
   "app.containers.Admin.projects.project.contextNoFolder": "Dim ffolder",

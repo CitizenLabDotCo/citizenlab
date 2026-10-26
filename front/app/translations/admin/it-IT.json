@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Visualizza sul sito",
   "app.containers.Admin.projects.project.buildView": "Costruisci",
   "app.containers.Admin.projects.project.causesSection": "Cause",
-  "app.containers.Admin.projects.project.causesSectionDescription": "Configura le cause per cui le persone possono fare volontariato.",
   "app.containers.Admin.projects.project.collectingNow": "In fase di raccolta",
   "app.containers.Admin.projects.project.contextFolderDescription": "Una cartella raggruppa progetti correlati all'interno di uno spazio.",
   "app.containers.Admin.projects.project.contextNoFolder": "Nessuna cartella",

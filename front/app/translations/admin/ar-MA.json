@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "عرض على الموقع",
   "app.containers.Admin.projects.project.buildView": "بناء",
   "app.containers.Admin.projects.project.causesSection": "القضايا",
-  "app.containers.Admin.projects.project.causesSectionDescription": "قم بإعداد القضايا التي يمكن للأشخاص التطوع من أجلها.",
   "app.containers.Admin.projects.project.collectingNow": "جاري الجمع حالياً",
   "app.containers.Admin.projects.project.contextFolderDescription": "يقوم المجلد بتجميع المشاريع ذات الصلة داخل فضاء معين.",
   "app.containers.Admin.projects.project.contextNoFolder": "لا يوجد مجلد",
