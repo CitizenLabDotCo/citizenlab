@@ -92,11 +92,10 @@ const FormEdit = ({
   >(undefined);
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(false);
   const [autosaveEnabled, setAutosaveEnabled] = useState(true);
-  const { isFormPhaseSpecific } = builderConfig;
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const { data: formCustomFields, isFetching } = useFormCustomFields({
     projectId,
-    phaseId: isFormPhaseSpecific ? phaseId : undefined,
+    phaseId,
   });
 
   const { data: customForm } = useCustomForm(phase);
@@ -236,7 +235,7 @@ const FormEdit = ({
         {
           projectId,
           customFields: finalResponseArray,
-          phaseId: isFormPhaseSpecific ? phaseId : undefined,
+          phaseId,
           customForm: {
             saveType: autosave ? 'auto' : 'manual',
             openedAt: formOpenedAt,

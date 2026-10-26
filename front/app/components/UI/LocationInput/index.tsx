@@ -1,10 +1,17 @@
 import React, { useCallback, useMemo } from 'react';
 
-import { Text } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Icon,
+  Text,
+  bo,
+  colors,
+  fontSizes,
+} from '@citizenlab/cl2-component-library';
 import { debounce } from 'lodash-es';
 import { SelectInstance } from 'react-select';
 import AsyncSelect from 'react-select/async';
-import { useTheme } from 'styled-components';
+import { DefaultTheme, useTheme } from 'styled-components';
 
 import useLocale from 'hooks/useLocale';
 
@@ -35,13 +42,47 @@ export type LocationInputProps = React.ComponentProps<typeof AsyncSelect> & {
   setRef?: (arg: SelectInstance<any, boolean> | null) => void;
   ariaInvalid?: boolean;
   ariaDescribedBy?: string;
+  variant?: 'default' | 'bo';
+};
+
+const boSelectStyles = (theme: DefaultTheme) => {
+  const base = selectStyles(theme, { fontSize: fontSizes.xs, minHeight: 36 });
+
+  return {
+    ...base,
+    control: (styles, state) => ({
+      ...base.control(styles, state),
+      borderWidth: '1px',
+      borderColor: state.isFocused
+        ? theme.colors.tenantPrimary
+        : colors.grey300,
+      borderRadius: bo.borderRadius,
+      paddingLeft: '22px',
+      '&:hover': {
+        borderColor: state.isFocused
+          ? theme.colors.tenantPrimary
+          : colors.grey300,
+      },
+    }),
+    singleValue: (styles) => ({
+      ...styles,
+      color: bo.colors.textHeadingStrong,
+    }),
+    dropdownIndicator: () => ({ display: 'none' }),
+  };
 };
 
 const LocationInput = (props: LocationInputProps) => {
   const { formatMessage } = useIntl();
   const locale = useLocale();
   const theme = useTheme();
-  const { setRef, ariaInvalid, ariaDescribedBy, ...rest } = props;
+  const {
+    setRef,
+    ariaInvalid,
+    ariaDescribedBy,
+    variant = 'default',
+    ...rest
+  } = props;
 
   const defaultOptions = props.value
     ? [{ label: props.value.value, value: props.value.value }]
@@ -94,12 +135,12 @@ const LocationInput = (props: LocationInputProps) => {
     [loadOptions]
   );
 
-  return (
+  const select = (
     <AsyncSelect
       id="e2e-location-input"
       defaultOptions={defaultOptions}
       loadOptions={promiseOptions}
-      styles={selectStyles(theme)}
+      styles={variant === 'bo' ? boSelectStyles(theme) : selectStyles(theme)}
       noOptionsMessage={() => formatMessage(messages.noOptions)}
       blurInputOnSelect
       menuShouldScrollIntoView={false}
@@ -113,12 +154,40 @@ const LocationInput = (props: LocationInputProps) => {
       aria-describedby={ariaDescribedBy}
       placeholder={
         props.placeholder ? (
-          <Text m="0" color="coolGrey600">
+          <Text
+            m="0"
+            color={variant === 'bo' ? 'coolGrey500' : 'coolGrey600'}
+            fontSize={variant === 'bo' ? 'xs' : undefined}
+          >
             {props.placeholder}
           </Text>
         ) : undefined
       }
     />
+  );
+
+  if (variant === 'default') return select;
+
+  return (
+    <Box position="relative">
+      {select}
+      <Box
+        position="absolute"
+        left="11px"
+        top="50%"
+        display="flex"
+        transform="translateY(-50%)"
+        pointerEvents="none"
+      >
+        <Icon
+          name="search"
+          width="15px"
+          height="15px"
+          fill={colors.coolGrey500}
+          ariaHidden
+        />
+      </Box>
+    </Box>
   );
 };
 

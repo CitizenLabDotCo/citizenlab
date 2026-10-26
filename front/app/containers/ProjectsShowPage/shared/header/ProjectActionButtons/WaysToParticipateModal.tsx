@@ -17,21 +17,21 @@ interface Props {
   opened: boolean;
   onClose: () => void;
   methodCTA: ReactNode;
-  openSurveys: IPhaseData[];
-  upcomingSurveys: IPhaseData[];
+  openSpotlightSurveys: IPhaseData[];
+  upcomingSpotlightSurveys: IPhaseData[];
 }
 
 const WaysToParticipateModal = ({
   opened,
   onClose,
   methodCTA,
-  openSurveys,
-  upcomingSurveys,
+  openSpotlightSurveys,
+  upcomingSpotlightSurveys,
 }: Props) => {
   const { formatMessage } = useIntl();
   const isPhone = useBreakpoint('phone');
 
-  const sortedOpenSurveys = [...openSurveys].sort(
+  const sortedOpenSpotlightSurveys = [...openSpotlightSurveys].sort(
     (a, b) =>
       Number(getSpotlightSurveyState(a) !== 'open') -
       Number(getSpotlightSurveyState(b) !== 'open')
@@ -39,10 +39,13 @@ const WaysToParticipateModal = ({
 
   const openNowCount =
     (methodCTA ? 1 : 0) +
-    openSurveys.filter((phase) => getSpotlightSurveyState(phase) === 'open')
-      .length;
+    openSpotlightSurveys.filter(
+      (phase) => getSpotlightSurveyState(phase) === 'open'
+    ).length;
   const totalCount =
-    (methodCTA ? 1 : 0) + openSurveys.length + upcomingSurveys.length;
+    (methodCTA ? 1 : 0) +
+    openSpotlightSurveys.length +
+    upcomingSpotlightSurveys.length;
 
   const header = (
     <Box>
@@ -61,19 +64,19 @@ const WaysToParticipateModal = ({
   const buttonStack = (
     <Box display="flex" flexDirection="column" gap="8px">
       {methodCTA}
-      {sortedOpenSurveys.map((surveyPhase, index) => (
+      {sortedOpenSpotlightSurveys.map((spotlightSurveyPhase, index) => (
         <SpotlightSurveyActionButton
-          key={surveyPhase.id}
-          phase={surveyPhase}
+          key={spotlightSurveyPhase.id}
+          phase={spotlightSurveyPhase}
           buttonStyle={
             !methodCTA && index === 0 ? 'primary' : 'secondary-outlined'
           }
         />
       ))}
-      {upcomingSurveys.map((surveyPhase) => (
+      {upcomingSpotlightSurveys.map((spotlightSurveyPhase) => (
         <SpotlightSurveyActionButton
-          key={surveyPhase.id}
-          phase={surveyPhase}
+          key={spotlightSurveyPhase.id}
+          phase={spotlightSurveyPhase}
           buttonStyle="secondary-outlined"
         />
       ))}

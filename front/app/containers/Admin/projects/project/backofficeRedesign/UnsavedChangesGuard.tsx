@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
@@ -16,15 +16,10 @@ const UnsavedChangesGuard = () => {
   const { formatMessage } = useIntl();
   const pageSave = usePageSave();
   const dirty = !!pageSave?.dirty;
-  const leaving = useRef(false);
-
-  useEffect(() => {
-    if (!dirty) leaving.current = false;
-  }, [dirty]);
 
   const blocker = useBlocker({
     shouldBlockFn: ({ current, next }) =>
-      !leaving.current && dirty && current.pathname !== next.pathname,
+      !pageSave?.isLeaving() && dirty && current.pathname !== next.pathname,
     enableBeforeUnload: dirty,
     withResolver: true,
   });
@@ -32,7 +27,7 @@ const UnsavedChangesGuard = () => {
   if (!pageSave || blocker.status !== 'blocked') return null;
 
   const proceed = () => {
-    leaving.current = true;
+    pageSave.leave();
     blocker.proceed();
   };
 
