@@ -34,7 +34,7 @@ const AnswerFilterToggle = ({ field }: Props) => {
   }
 
   return (
-    <SectionField>
+    <SectionField id="e2e-answer-filter-toggle">
       <Toggle
         id={name}
         checked={checked}
