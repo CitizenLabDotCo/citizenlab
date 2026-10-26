@@ -54,6 +54,8 @@ const IdeaForm = ({
   const { methods } = usePageForm({
     pageQuestions: questions || [],
     defaultValues: formData,
+    // A blank "please specify" line on a scanned form is a complete answer
+    otherTextOptional: true,
   });
 
   // Trigger validation on mount so errors show immediately
