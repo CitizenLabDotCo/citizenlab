@@ -7,6 +7,7 @@ import ideaMarkersKeys from 'api/idea_markers/keys';
 import ideaFilterCountsKeys from 'api/ideas_filter_counts/keys';
 import { importedIdeasKeys } from 'api/import_ideas/keys';
 import meKeys from 'api/me/keys';
+import { invalidateProjectPhases } from 'api/phases/invalidateProjectPhases';
 import projectsKeys from 'api/projects/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -60,6 +61,12 @@ const useUpdateIdea = () => {
         queryClient.invalidateQueries({
           queryKey: projectsKeys.item({ id: projectId }),
         });
+
+        // Publishing a draft input (e.g. submitting a survey) can change the
+        // phases' action descriptors, e.g. posting_limited_max_reached.
+        if (variables.requestBody.publication_status === 'published') {
+          invalidateProjectPhases(queryClient, projectId);
+        }
 
         queryClient.invalidateQueries({
           queryKey: importedIdeasKeys.list({ projectId }),

@@ -6,6 +6,7 @@ import ideaImagesKeys from 'api/idea_images/keys';
 import ideaMarkersKeys from 'api/idea_markers/keys';
 import ideaFilterCountsKeys from 'api/ideas_filter_counts/keys';
 import meKeys from 'api/me/keys';
+import { invalidateProjectPhases } from 'api/phases/invalidateProjectPhases';
 import projectsKeys from 'api/projects/keys';
 import submissionsCountKeys from 'api/submission_count/keys';
 import userIdeaCountKeys from 'api/user_ideas_count/keys';
@@ -66,6 +67,12 @@ const useAddIdea = () => {
         queryClient.invalidateQueries({
           queryKey: projectsKeys.item({ id: projectId }),
         });
+
+        // Publishing an input can change the phases' action descriptors
+        // (e.g. posting_limited_max_reached after submitting a survey).
+        if (idea.data.attributes.publication_status === 'published') {
+          invalidateProjectPhases(queryClient, projectId);
+        }
       }
 
       queryClient.invalidateQueries({
