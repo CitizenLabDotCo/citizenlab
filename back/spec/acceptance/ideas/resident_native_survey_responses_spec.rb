@@ -445,6 +445,15 @@ resource 'Ideas' do
             expect(project.reload.ideas).to be_empty
           end
 
+          context 'when an optional select is left blank' do
+            let(:select_field) { '' }
+
+            example_request 'Create an input that leaves the blank answer out' do
+              assert_status 201
+              expect(project.reload.ideas.first.custom_field_answers.pluck(:key, :value)).to eq [%w[custom_field_name1 Cat]]
+            end
+          end
+
           context 'with a draft input' do
             let(:publication_status) { 'draft' }
 

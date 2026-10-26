@@ -136,7 +136,9 @@ commands:
       # a change of SSL certificate. For more information, see:
       # https://github.com/lastpass/lastpass-cli/issues/653
       - run: sudo apt-get update && sudo apt-get install -y libxml2-dev
-      - run: sudo .circleci/install_lpass.sh master
+      # v1.6.2+ is required since LastPass moved to the GlobalSign R46/E46 certificate
+      # chain (older versions pin the previous certificates).
+      - run: sudo .circleci/install_lpass.sh v1.6.2
       - run: echo $LASTPASS_PASSWORD | LPASS_DISABLE_PINENTRY=1 lpass login ${LASTPASS_EMAIL}
       - run: lpass show --notes 'citizenlab back-secret.env' > env_files/back-secret.env
       - run: lpass show --notes 'citizenlab front-secret.env' > env_files/front-secret.env
