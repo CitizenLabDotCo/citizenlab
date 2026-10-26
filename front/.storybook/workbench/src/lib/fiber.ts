@@ -16,6 +16,7 @@ type Fiber = {
   memoizedProps?: unknown;
   _debugSource?: DebugSource | null;
   _debugOwner?: Fiber | null;
+  alternate?: Fiber | null;
 };
 
 // One JSX site above the element: `<StyledButton …>` in Button/index.tsx
@@ -149,6 +150,32 @@ export const sourceOf = (el: Element): Source | null => {
     sites: own.length ? own : sites,
     props: first ? propsOf(first.memoizedProps) : [],
   };
+};
+
+// The component an element belongs to: the nearest JSX above it written in
+// the platform's own code, and the mounted component that wrote it. `keys`
+// are that mount's two fibers (React swaps them between renders), so the
+// elements of one mount group together.
+export type Owner = { file: string; name: string; keys: object[] };
+
+export const ownerOf = (el: Element): Owner | null => {
+  let fiber: Fiber | null | undefined = fiberOf(el);
+  for (let i = 0; fiber && i < 60; i++) {
+    const src = fiber._debugSource;
+    const file = src ? platformFile(src.fileName) : undefined;
+    if (file && !PLUMBING.test(file)) {
+      const owner = fiber._debugOwner;
+      const name = owner ? nameOf(owner.type) : undefined;
+      const mount = owner ?? fiber;
+      return {
+        file,
+        name: name && !generated(name) ? name : fileTitle(file),
+        keys: mount.alternate ? [mount, mount.alternate] : [mount],
+      };
+    }
+    fiber = fiber.return;
+  }
+  return null;
 };
 
 export const isLibrary = (site: Site) =>
