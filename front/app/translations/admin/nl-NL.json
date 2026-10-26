@@ -1491,7 +1491,7 @@
   "app.containers.Admin.projects.PhasePlacement.phaseUpdateFailed": "De wijzigingen aan \"{phaseName}\" konden niet worden opgeslagen. Controleer de datums en probeer het opnieuw.",
   "app.containers.Admin.projects.PhasePlacement.resolveDateConflicts": "Los {count, plural, one {# datumconflict} other {# datumconflicten}} op om de vragenlijst te verplaatsen.",
   "app.containers.Admin.projects.PhasePlacement.retryLoading": "Opnieuw proberen",
-  "app.containers.Admin.projects.PhasePlacement.spotlight": "Spotlight",
+  "app.containers.Admin.projects.PhasePlacement.spotlight": "Uitgelicht",
   "app.containers.Admin.projects.PhasePlacement.spotlightDescription": "Staat op zichzelf, buiten de tijdlijn",
   "app.containers.Admin.projects.PhasePlacement.startRequired": "Voer een startdatum in.",
   "app.containers.Admin.projects.PhasePlacement.surveyPlacement": "Plaatsing vragenlijst",

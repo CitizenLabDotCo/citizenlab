@@ -7969,6 +7969,31 @@
     "verified_at": "2026-10-08T07:50:56.377404Z",
     "verified_by": "Pauline"
   },
+  "app.containers.Admin.projects.PhasePlacement.durationTooShort": {
+    "state": "verified",
+    "verified_at": "2026-10-26T10:37:16.709750Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.PhasePlacement.editTimelineDates": {
+    "state": "verified",
+    "verified_at": "2026-10-26T10:37:16.709750Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.PhasePlacement.endBeforeStart": {
+    "state": "verified",
+    "verified_at": "2026-10-26T10:37:16.709750Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.PhasePlacement.endInvalid": {
+    "state": "verified",
+    "verified_at": "2026-10-26T10:37:16.709750Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.PhasePlacement.endRequired2": {
+    "state": "verified",
+    "verified_at": "2026-10-26T10:37:16.709750Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": {
     "state": "verified",
     "verified_at": "2026-10-08T07:50:56.377404Z",
@@ -7978,6 +8003,11 @@
     "state": "verified",
     "verified_at": "2026-10-08T07:50:56.377404Z",
     "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.PhasePlacement.loadFailed": {
+    "state": "verified",
+    "verified_at": "2026-10-26T10:37:16.709750Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": {
     "state": "verified",
@@ -8023,6 +8053,66 @@
     "state": "verified",
     "verified_at": "2026-10-08T07:50:56.377404Z",
     "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": {
+    "state": "verified",
+    "verified_at": "2026-10-26T10:37:16.709750Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": {
+    "state": "verified",
+    "verified_at": "2026-10-26T10:37:16.709750Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": {
+    "state": "verified",
+    "verified_at": "2026-10-26T10:37:16.709750Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.PhasePlacement.phaseUpdateFailed": {
+    "state": "verified",
+    "verified_at": "2026-10-26T10:37:16.709750Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.PhasePlacement.resolveDateConflicts": {
+    "state": "verified",
+    "verified_at": "2026-10-26T10:37:16.709750Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.PhasePlacement.retryLoading": {
+    "state": "verified",
+    "verified_at": "2026-10-26T10:37:16.709750Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.PhasePlacement.spotlight": {
+    "state": "verified",
+    "verified_at": "2026-10-26T10:37:16.709750Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.PhasePlacement.spotlightDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-26T10:37:16.709750Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.PhasePlacement.startRequired": {
+    "state": "verified",
+    "verified_at": "2026-10-26T10:37:16.709750Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.PhasePlacement.surveyPlacement": {
+    "state": "verified",
+    "verified_at": "2026-10-26T10:37:16.709750Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.PhasePlacement.timeline": {
+    "state": "verified",
+    "verified_at": "2026-10-26T10:37:16.709750Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.PhasePlacement.timelineDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-26T10:37:16.709750Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.PhasePlacement.timelineGap": {
     "state": "verified",
