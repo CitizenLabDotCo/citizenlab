@@ -42,6 +42,7 @@ import DraftPreviewPane from './DraftPreviewPane';
 import GenerationWatcher from './GenerationWatcher';
 import ModalComposer from './ModalComposer';
 import { INTAKE_LEAD, INTRO, REVIEW_PROMPT } from './script';
+import ThinkingDots from './ThinkingDots';
 
 // The AI project assistant as a create-flow modal, wired to the real generation
 // pipeline: describe the project → answer a few questions → it creates a draft
@@ -168,6 +169,15 @@ const ProjectAssistantModal = ({
   // The "why these choices" rationale is collapsed by default — the headline and
   // the before-you-publish checklist are what the manager needs first.
   const [showWhy, setShowWhy] = useState(false);
+  // A brief "assistant is thinking" beat after the brief is sent, before the
+  // questions appear — so the intake reads as generated, not snapped open.
+  const [intakeThinking, setIntakeThinking] = useState(false);
+
+  useEffect(() => {
+    if (!intakeThinking) return undefined;
+    const timer = setTimeout(() => setIntakeThinking(false), 1200);
+    return () => clearTimeout(timer);
+  }, [intakeThinking]);
 
   const { data: project } = useProjectById(projectId ?? '');
   const summary = project?.data.attributes.ai_generation_summary ?? null;
@@ -348,19 +358,22 @@ const ProjectAssistantModal = ({
           <>
             {brief && <UserBubble text={brief} />}
 
-            {phase === 'question' && (
-              <>
-                <AssistantLine>{INTAKE_LEAD}</AssistantLine>
-                <Intake
-                  answers={answers}
-                  levers={levers}
-                  disabled={starting}
-                  onAnswer={handleAnswer}
-                  onDetail={handleDetail}
-                  onLeverChange={setLever}
-                />
-              </>
-            )}
+            {phase === 'question' &&
+              (intakeThinking ? (
+                <ThinkingDots />
+              ) : (
+                <>
+                  <AssistantLine>{INTAKE_LEAD}</AssistantLine>
+                  <Intake
+                    answers={answers}
+                    levers={levers}
+                    disabled={starting}
+                    onAnswer={handleAnswer}
+                    onDetail={handleDetail}
+                    onLeverChange={setLever}
+                  />
+                </>
+              ))}
 
             {(phase === 'drafting' || phase === 'review') && jobStartedAt && (
               <DraftingProgress startedAt={jobStartedAt} done={phase === 'review'} />
@@ -497,6 +510,7 @@ const ProjectAssistantModal = ({
             onFilesChange={setFiles}
             onSend={(text) => {
               setBrief(text);
+              setIntakeThinking(true);
               setPhase('question');
             }}
           />

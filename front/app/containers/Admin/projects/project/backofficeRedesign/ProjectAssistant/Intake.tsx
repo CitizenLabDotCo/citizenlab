@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
+
+import ThinkingDots from '../ProjectAssistantModal/ThinkingDots';
 
 import { ProjectGenerationLevers } from 'api/project_generations/types';
 
@@ -103,6 +105,22 @@ const LinkButton = styled.button`
   }
 `;
 
+// Each newly revealed question eases in, so it reads as generated after the
+// thinking beat rather than popping into place.
+const FadeIn = styled(Box)`
+  @keyframes intakeQuestionIn {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  animation: intakeQuestionIn 260ms ease both;
+`;
+
 // Left margin that lines options and detail up under the question title (past
 // the number column), so title and options read as two clear levels.
 const INDENT = '38px';
@@ -130,6 +148,11 @@ const Intake = ({
   // a wall of eight questions at once.
   const [revealedCount, setRevealedCount] = useState(1);
   const [showAdvanced, setShowAdvanced] = useState(false);
+  // A short "thinking" beat before the next question appears, so each follow-up
+  // feels generated rather than snapping in the instant you answer.
+  const [thinking, setThinking] = useState(false);
+  const revealTimer = useRef<ReturnType<typeof setTimeout>>();
+  useEffect(() => () => clearTimeout(revealTimer.current), []);
 
   const total = INTAKE_QUESTIONS.length;
   const visible = INTAKE_QUESTIONS.slice(0, revealedCount);
@@ -137,8 +160,14 @@ const Intake = ({
     (question) => !!answers[question.id]?.optionId
   ).length;
 
-  const advance = () =>
-    setRevealedCount((count) => Math.min(count + 1, total));
+  const advance = () => {
+    if (thinking || revealedCount >= total) return;
+    setThinking(true);
+    revealTimer.current = setTimeout(() => {
+      setRevealedCount((count) => Math.min(count + 1, total));
+      setThinking(false);
+    }, 650);
+  };
 
   return (
     <Box mt="8px">
@@ -183,7 +212,7 @@ const Intake = ({
           (!questionHasOther || !!selectedOption?.isOther);
 
         return (
-          <Box
+          <FadeIn
             key={question.id}
             py="16px"
             borderBottom={`1px solid ${colors.grey200}`}
@@ -265,9 +294,15 @@ const Intake = ({
                 />
               </Box>
             )}
-          </Box>
+          </FadeIn>
         );
       })}
+
+      {thinking && revealedCount < total && (
+        <Box py="16px" ml={INDENT}>
+          <ThinkingDots />
+        </Box>
+      )}
 
       {/* The raw structural dials, for managers who want them. Hidden by default
           so the questions stay the main path; the answers above already set
