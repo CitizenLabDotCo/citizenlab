@@ -11,9 +11,9 @@ module ContentBuilder
       # can be public.
       #
       # The block's own title and status ride along because they are part of rendering a
-      # placed block (the builder labels it, a disabled block renders nothing), and
-      # because reading them from a separate block endpoint is what let a version's
-      # metadata drift away from the version actually being rendered.
+      # placed block (the builder labels it, and tells an admin a disabled block is
+      # off), and because reading them from a separate block endpoint is what let a
+      # version's metadata drift away from the version actually being rendered.
       class CustomBlockVersionSerializer < ::WebApi::V1::BaseSerializer
         set_type :custom_block_version
 

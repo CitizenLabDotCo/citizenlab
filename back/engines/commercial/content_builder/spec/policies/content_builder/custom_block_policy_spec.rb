@@ -75,10 +75,24 @@ RSpec.describe ContentBuilder::CustomBlockPolicy do
       it { is_expected.to contain_exactly(draft_block, published_block) }
     end
 
+    # A moderator edits reports, but a block names no project, so the list cannot be
+    # narrowed to the ones they moderate.
+    context 'for a project moderator' do
+      let(:user) { create(:project_moderator) }
+
+      it { is_expected.to be_empty }
+    end
+
+    context 'for a regular user' do
+      let(:user) { create(:user) }
+
+      it { is_expected.to be_empty }
+    end
+
     context 'for a visitor' do
       let(:user) { nil }
 
-      it { is_expected.to contain_exactly(published_block) }
+      it { is_expected.to be_empty }
     end
 
     context 'when the feature is not activated' do

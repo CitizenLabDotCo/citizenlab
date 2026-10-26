@@ -8,12 +8,14 @@ module ContentBuilder
       AppConfiguration.instance.feature_activated?(FEATURE_NAME)
     end
 
+    # Admins only. A block is published the moment it is written and belongs to no
+    # project, so the list would otherwise name every chart of every unreleased report
+    # on the platform, and an id is all it takes to read that chart through +show?+.
     class Scope < ApplicationPolicy::Scope
       def resolve
-        return scope.none if !CustomBlockPolicy.feature_activated?
-        return scope.all if active_admin?
+        return scope.none if !CustomBlockPolicy.feature_activated? || !active_admin?
 
-        scope.where(status: 'published')
+        scope.all
       end
     end
 
