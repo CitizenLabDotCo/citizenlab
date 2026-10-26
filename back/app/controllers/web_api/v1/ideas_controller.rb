@@ -128,7 +128,9 @@ class WebApi::V1::IdeasController < ApplicationController
     end
     params_for_create = idea_params(form).except(:project_id, :phase_ids)
     files_params = extract_file_params(params_for_create)
-    custom_field_values = params_for_create.delete(:custom_field_values).to_h
+    # Blank answers mean unanswered, as in #update. Left in, an optional select
+    # sent as '' fails the publication validation for not being one of its options.
+    custom_field_values = CustomFieldService.new.compact_custom_field_values!(params_for_create.delete(:custom_field_values).to_h)
 
     input = Idea.new params_for_create
     input.project = phase.project

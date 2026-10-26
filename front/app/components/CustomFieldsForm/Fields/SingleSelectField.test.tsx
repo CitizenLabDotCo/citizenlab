@@ -99,14 +99,15 @@ describe('SingleSelectField', () => {
       await waitFor(() => expect(latestValues[FIELD]).toBe('estate_3'));
     });
 
-    // The blank first option the native select used to carry is now a clear
-    // button, but the value it writes back has to stay the same.
-    it('clears an optional question back to an empty value', async () => {
+    // Regression test: clearing used to store '', which a visitor's survey
+    // then sent on submit and the back end rejected as not being an option.
+    it('clears an optional question back to no answer', async () => {
       renderField(buildQuestion(12), 'estate_3');
 
       await selectEvent.clearAll(screen.getByRole('combobox'));
 
-      await waitFor(() => expect(latestValues[FIELD]).toBe(''));
+      await waitFor(() => expect(latestValues[FIELD]).toBeUndefined());
+      expect(screen.queryByText('Estate 3')).not.toBeInTheDocument();
     });
   });
 
@@ -154,5 +155,16 @@ describe('SingleSelectField', () => {
 
     expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
     expect(screen.getAllByRole('radio')).toHaveLength(3);
+  });
+
+  // Regression test: unticking used to store '', like clearing the dropdown.
+  it('clears a radio answer when it is clicked again', async () => {
+    const user = userEvent.setup();
+    renderField(buildQuestion(3, { dropdown_layout: false }), 'estate_2');
+
+    await user.click(screen.getByRole('radio', { name: 'Estate 2' }));
+
+    await waitFor(() => expect(latestValues[FIELD]).toBeUndefined());
+    expect(screen.getByRole('radio', { name: 'Estate 2' })).not.toBeChecked();
   });
 });
