@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# This rake task audits all multiloc fields across all models for a given demo tenant,
+# This rake task audits all multiloc fields across all models for a given demo or trial tenant,
 # identifying records where translations are missing or empty for configured locales.
 # Optionally, it can also translate missing content using Machine Translation (or copy in dev mode).
 #
@@ -12,7 +12,7 @@
 # NOTE: needs to be run on production with rake not rails to ensure it loads the full Rails environment and all models.
 #
 # Parameters:
-#   - host: The demo tenant hostname
+#   - host: The demo or trial tenant hostname
 #   - source_locale: The locale to translate from (must exist in tenant's configured locales)
 #   - translate: Set to 'true' to perform translations, otherwise audit only - to count characters needing translation
 #   - extra_locales: Optional colon-separated list of additional locales (not in app config) to translate to
@@ -26,14 +26,14 @@
 #   6. Display a summary with issue counts per model and total characters to translate
 #
 # Notes:
-#   - Translations can only be run on demo platforms (lifecycle_stage = 'demo') or local development
+#   - Translations can only be run on demo or trial platforms (lifecycle_stage = 'demo' or 'trial') or local development
 #   - If the main locale value is empty the record is skipped
 #   - If a translation exists for the same language but different locale (e.g., fr-FR exists but fr-BE
 #     is missing), the existing translation is copied instead of calling the translation API
 #   - In development mode, translation just copies the source text (no API calls)
 
 namespace :demos do
-  desc 'Audit and optionally translate missing multiloc fields for a demo tenant'
+  desc 'Audit and optionally translate missing multiloc fields for a demo or trial tenant'
   task :translate_missing_locales, %i[host source_locale translate extra_locales] => :environment do |_t, args|
     if args[:host].blank? || args[:source_locale].blank?
       puts 'Host and source_locale parameters are required.'
@@ -93,10 +93,10 @@ module TranslateMissingLocales
       end
 
       lifecycle_stage = AppConfiguration.instance.settings('core', 'lifecycle_stage')
-      is_demo = lifecycle_stage == 'demo'
+      translatable_stage = %w[demo trial].include?(lifecycle_stage)
 
-      if translate_missing && !is_demo && !Rails.env.development?
-        puts "ERROR: Translations can only be run on demo platforms (current: #{lifecycle_stage})"
+      if translate_missing && !translatable_stage && !Rails.env.development?
+        puts "ERROR: Translations can only be run on demo or trial platforms (current: #{lifecycle_stage})"
         puts 'Run without the translate flag to audit only.'
         return false
       end

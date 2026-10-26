@@ -134,6 +134,7 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
             locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
             selectedLocale={selectedLocale}
             values={{ valueMultiloc }}
+            variant={quillProps.variant}
           />
         )}
       </LabelContainer>
@@ -141,7 +142,9 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
       <QuillEditor
         {...quillProps}
         id={id}
-        ariaLabelledBy={`${sanitizeForClassname(props.id)}-label`}
+        ariaLabelledBy={
+          label ? `${sanitizeForClassname(props.id)}-label` : undefined
+        }
         ariaDescribedBy={ariaDescribedBy}
         ariaInvalid={ariaInvalid}
         value={valueMultiloc?.[selectedLocale]}

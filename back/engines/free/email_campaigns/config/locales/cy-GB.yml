@@ -36,6 +36,7 @@ cy-GB:
         project_participants: I gyfranogwyr y prosiect
         registered_users: I ddefnyddwyr cofrestredig
       recipient_segment:
+        admin_who_generated_the_report: Y gweinyddwr a ofynnodd am yr adroddiad
         admins: Gweinyddwyr
         admins_and_managers: Gweinyddwyr a rheolwyr
         admins_and_managers_assigned_to_the_input: "Gweinyddwyr a rheolwyr wedi'u neilltuo i'r mewnbwn"
@@ -109,6 +110,7 @@ cy-GB:
         proposal_is_upvoted_above_threshold: "Mae'r cynnig yn uwch na'r trothwy"
         proposal_status_changes: Newidiadau i statws cynigion
         registration_to_event: Cofrestru i ddigwyddiad
+        report_generated: Mae adroddiad wedi gorffen cael ei gynhyrchu
         survey_1_day_after_draft_saved: 1 diwrnod ar ôl i'r defnyddiwr arbed yr arolwg ar ffurf drafft ddiwethaf
         user_accepts_invitation_to_cosponsor_a_proposal: Defnyddiwr yn derbyn gwahoddiad i gyd-noddi cynnig
         user_changes_email: Defnyddiwr yn newid eu cyfeiriad e-bost
@@ -206,6 +208,7 @@ cy-GB:
       project_review_request: Cais am adolygiad prosiect
       project_review_state_change: Prosiect wedi'i gymeradwyo
       proposal_expired_for_admin: Cynnig wedi dod i ben heb gyrraedd y trothwy pleidleisio
+      report_generated: Cynhyrchwyd yr adroddiad
       screening_digest: Nodyn atgoffa sgrinio wythnosol
       sms_manual: Negeseuon SMS swyddogol
       space_moderation_rights_received: Hawliau rheolwr gofod wedi'u derbyn
@@ -661,6 +664,13 @@ cy-GB:
       preheader: Daeth mewnbwn i ben heb gyrraedd y trothwy
       subject: Daeth "%{input_title}" i ben heb gyrraedd y trothwy
       title: Daeth mewnbwn i ben heb gyrraedd y trothwy pleidleisio
+    report_generated:
+      cta_button: Agor yr adroddiad
+      event_description: "Mae'r adroddiad wedi'i ysgrifennu ac mae'n barod i chi ei adolygu a'i olygu."
+      preheader: Mae eich adroddiad yn barod
+      stopped_early: "Daeth yr ysgrifennu i ben cyn i'r adroddiad gael ei orffen. Mae popeth a ysgrifennwyd hyd yn hyn wedi'i gadw — agorwch ef a gofynnwch am y gweddill yn y sgwrs."
+      subject: "Mae eich adroddiad ar gyfer '%{projectName}' yn barod"
+      title: Mae eich adroddiad yn barod
     schedules:
       quarterly: Chwarterol, ar y dydd cyntaf o'r chwarter
       weekly:
