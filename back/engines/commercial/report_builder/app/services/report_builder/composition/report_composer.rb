@@ -150,7 +150,8 @@ module ReportBuilder
         @current_layout = current_layout
         @layout = current_layout || {}
         # Charts already in the report stay placeable; the model keeps what it keeps.
-        @authored_blocks |= block_ids_in(current_layout)
+        # So do charts an earlier run wrote but never placed — this turn continues it.
+        @authored_blocks |= block_ids_in(current_layout) | blocks_from_earlier_runs
         @history_size = history.size
 
         messages = history + [{ role: 'user', content: [{ text: revision_turn(instruction, history.empty?) }] }]
@@ -246,7 +247,9 @@ module ReportBuilder
       def finish(patched, reply, stopped)
         return { layout: nil, reply: reply, stopped: stopped } unless patched
 
-        discard_unplaced_blocks(@layout)
+        # A run cut short had not finished choosing what to place, and the next turn
+        # continues from its charts. Only a run that ended of its own accord tidies up.
+        discard_unplaced_blocks(@layout) unless GenerationTranscript::STOPPED_EARLY.include?(stopped)
         { layout: @layout, reply: reply, stopped: stopped }
       end
 
@@ -254,6 +257,18 @@ module ReportBuilder
         return [] unless layout.is_a?(Hash)
 
         layout.values.filter_map { |node| node.is_a?(Hash) ? node.dig('props', 'blockId') : nil }
+      end
+
+      # Every chart written for this report, placed or not: a version records the run
+      # that wrote it, and the run records the report.
+      def blocks_from_earlier_runs
+        report_id = @run_record&.report_id
+        return [] if report_id.blank?
+
+        ContentBuilder::CustomBlockVersion
+          .where(generation_transcript_id: GenerationTranscript.where(report_id: report_id).select(:id))
+          .distinct
+          .pluck(:custom_block_id)
       end
 
       def discard_authored_blocks
