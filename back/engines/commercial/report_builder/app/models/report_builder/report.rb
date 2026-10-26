@@ -15,6 +15,7 @@
 #  year              :integer
 #  quarter           :integer
 #  community_monitor :boolean          default(FALSE), not null
+#  project_id        :uuid
 #
 # Indexes
 #
@@ -22,11 +23,13 @@
 #  index_report_builder_reports_on_name_tsvector  (name_tsvector) USING gin
 #  index_report_builder_reports_on_owner_id       (owner_id)
 #  index_report_builder_reports_on_phase_id       (phase_id)
+#  index_report_builder_reports_on_project_id     (project_id) UNIQUE
 #
 # Foreign Keys
 #
 #  fk_rails_...  (owner_id => users.id)
 #  fk_rails_...  (phase_id => phases.id)
+#  fk_rails_...  (project_id => projects.id)
 #
 module ReportBuilder
   class Report < ::ApplicationRecord
@@ -34,7 +37,23 @@ module ReportBuilder
 
     belongs_to :owner, class_name: 'User', optional: true
     belongs_to :phase, class_name: 'Phase', optional: true
+    # A report is about a phase, a whole project, or neither (a global report);
+    # never both.
+    belongs_to :project, optional: true
     has_many :published_graph_data_units, dependent: :destroy
+    # delete_all, not destroy: a transcript holds a run's whole message history and
+    # has no callbacks, so loading every one of them to delete them one at a time
+    # buys nothing. The foreign key cascades anyway.
+    has_many :generation_transcripts, class_name: 'ReportBuilder::GenerationTranscript',
+      dependent: :delete_all, inverse_of: :report
+
+    # The "your report is ready" notification points at the report, so deleting one
+    # would otherwise be refused by the foreign key. Nullifying is tried first and
+    # fails — ReportGenerated validates the report's presence — which leaves the
+    # notification to be destroyed along with the report it was about.
+    # before_destroy must be declared above the association: rails/rails#5205.
+    before_destroy :remove_notifications
+    has_many :notifications, class_name: '::Notification', dependent: :nullify
 
     has_one(
       :layout,
@@ -45,12 +64,15 @@ module ReportBuilder
     accepts_nested_attributes_for :layout
 
     scope :global, -> { where(phase_id: nil) }
+
     pg_search_scope :search_name, against: :name_tsvector, using: {
       tsearch: { tsvector_column: 'name_tsvector', prefix: true }
     }
 
     validates :name, uniqueness: true, allow_nil: true
     validates :phase_id, uniqueness: true, unless: :supports_multiple_phase_reports?, allow_nil: true
+    validates :project_id, uniqueness: true, allow_nil: true
+    validates :project_id, absence: true, if: :phase?
     validates :visible, inclusion: { in: [false], unless: :phase? }
     validates :year, numericality: { in: 2024..2050 }, allow_nil: true
     validates :quarter, numericality: { in: 1..4 }, allow_nil: true
@@ -59,11 +81,30 @@ module ReportBuilder
       !phase_id.nil?
     end
 
+    # The project the report is about, whether it is scoped to the whole project or
+    # to one of its phases.
+    def reported_project
+      project || phase&.project
+    end
+
+    # The latest generation that ran to a stop without failing. A failed run is
+    # skipped: it wrote nothing, so what the report holds is still the work of the
+    # run before it, and that is what the "is this report whole" answer is about.
+    def last_generation
+      generation_transcripts.generations.finished.not_failed.newest_first.first
+    end
+
     def public?
       phase? && phase.started? && visible?
     end
 
     private
+
+    def remove_notifications
+      notifications.each do |notification|
+        notification.destroy! unless notification.update(report: nil)
+      end
+    end
 
     def supports_multiple_phase_reports?
       phase&.pmethod&.supports_multiple_phase_reports?

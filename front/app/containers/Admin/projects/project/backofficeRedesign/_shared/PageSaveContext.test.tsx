@@ -103,7 +103,7 @@ describe('PageSaveContext', () => {
     expect(result.current?.revision).toBe(1);
   });
 
-  it('lets one navigation through after leave, until the changes change', () => {
+  it('lets navigation through after leave, until the page has new changes', () => {
     const save = jest.fn().mockResolvedValue(undefined);
     const { result, rerender } = renderPanels({ build: { dirty: true, save } });
 
@@ -115,7 +115,12 @@ describe('PageSaveContext', () => {
 
     expect(result.current?.isLeaving()).toBe(true);
 
+    // The save before leaving makes the page clean.
     rerender({ build: { dirty: false, save } });
+
+    expect(result.current?.isLeaving()).toBe(true);
+
+    rerender({ build: { dirty: true, save } });
 
     expect(result.current?.isLeaving()).toBe(false);
   });

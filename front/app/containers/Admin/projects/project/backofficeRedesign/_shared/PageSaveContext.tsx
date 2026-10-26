@@ -36,11 +36,13 @@ export const PageSaveProvider = ({ children }: { children: ReactNode }) => {
   const [saving, setSaving] = useState(false);
   const [revision, setRevision] = useState(0);
 
+  const dirty = dirtyKeys.length > 0;
+
   const leaving = useRef(false);
 
   useEffect(() => {
-    leaving.current = false;
-  }, [dirtyKeys]);
+    if (dirty) leaving.current = false;
+  }, [dirty]);
 
   const leave = useCallback(() => {
     leaving.current = true;
@@ -78,8 +80,6 @@ export const PageSaveProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const value = useMemo(() => {
-    const dirty = dirtyKeys.length > 0;
-
     return {
       register,
       setDirty,
@@ -94,16 +94,7 @@ export const PageSaveProvider = ({ children }: { children: ReactNode }) => {
       leave,
       isLeaving,
     };
-  }, [
-    register,
-    setDirty,
-    dirtyKeys,
-    saving,
-    saveAll,
-    revision,
-    leave,
-    isLeaving,
-  ]);
+  }, [register, setDirty, dirty, saving, saveAll, revision, leave, isLeaving]);
 
   return (
     <PageSaveContext.Provider value={value}>

@@ -36,6 +36,7 @@ ga-IE:
         project_participants: Do rannpháirtithe an tionscadail
         registered_users: Do úsáideoirí cláraithe
       recipient_segment:
+        admin_who_generated_the_report: An riarthóir a d'iarr an tuairisc
         admins: Riarthóirí
         admins_and_managers: Riarthóirí & bainisteoirí
         admins_and_managers_assigned_to_the_input: Riarthóirí & bainisteoirí atá sannta don ionchur
@@ -109,6 +110,7 @@ ga-IE:
         proposal_is_upvoted_above_threshold: Tá an togra vótáilte suas os cionn na tairsí
         proposal_status_changes: Athruithe ar stádas an togra
         registration_to_event: Clárú chuig imeacht
+        report_generated: Tá giniúint tuairisce críochnaithe
         survey_1_day_after_draft_saved: 1 lá tar éis don úsáideoir an suirbhé a shábháil i ndréacht go deireanach
         user_accepts_invitation_to_cosponsor_a_proposal: Glacann an t-úsáideoir le cuireadh chun comhurraíocht a dhéanamh ar thogra
         user_changes_email: Athraíonn úsáideoir a sheoladh ríomhphoist
@@ -206,6 +208,7 @@ ga-IE:
       project_review_request: Iarratas ar athbhreithniú tionscadail
       project_review_state_change: Tionscadal ceadaithe
       proposal_expired_for_admin: Chuaigh moladh in éag gan an tairseach vótála a bhaint amach
+      report_generated: Gineadh an tuairisc
       screening_digest: Meabhrúchán scagthástála seachtainiúil
       sms_manual: Teachtaireachtaí SMS oifigiúla
       space_moderation_rights_received: Cearta bainisteora spáis faighte
@@ -661,6 +664,13 @@ ga-IE:
       preheader: Chuaigh ionchur in éag gan an tairseach a bhaint amach
       subject: Chuaigh "%{input_title}" in éag gan an tairseach a bhaint amach
       title: Chuaigh ionchur in éag gan an tairseach vótála a bhaint amach
+    report_generated:
+      cta_button: Oscail an tuairisc
+      event_description: Tá an tuairisc scríofa agus tá sí réidh le go ndéanfaidh tú athbhreithniú agus eagarthóireacht uirthi.
+      preheader: Tá do thuairisc réidh
+      stopped_early: Stopadh an scríobh sula raibh an tuairisc críochnaithe. Tá gach a bhfuil scríofa go dtí seo sábháilte — oscail í agus iarr an chuid eile sa chomhrá.
+      subject: "Tá do thuairisc do '%{projectName}' réidh"
+      title: Tá do thuairisc réidh
     schedules:
       quarterly: Ráithiúil, ar an gcéad lá den ráithe
       weekly:

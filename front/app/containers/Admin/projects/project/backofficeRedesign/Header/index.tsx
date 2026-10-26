@@ -164,7 +164,7 @@ const WorkspaceHeader = ({
         gap="8px"
       >
         {inPhase || pageSave?.dirty ? (
-          <SaveChangesButton label={saveButtonLabel} />
+          <SaveChangesButton key={phase?.id} label={saveButtonLabel} />
         ) : (
           <>
             <Tooltip

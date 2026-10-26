@@ -2,6 +2,7 @@ import { UploadFile } from 'typings';
 
 import { IFileData } from 'api/files/types';
 
+import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { act, renderHook } from 'utils/testUtils/rtl';
 
 import useEventForm from './useEventForm';
@@ -10,6 +11,7 @@ const mockAddEvent = jest.fn();
 const mockUpdateEvent = jest.fn();
 const mockGeocode = jest.fn();
 const mockAddEventImage = jest.fn();
+const mockUpdateEventImage = jest.fn();
 const mockDeleteEventImage = jest.fn();
 const mockSyncFiles = jest.fn();
 
@@ -28,7 +30,7 @@ jest.mock('api/event_images/useAddEventImage', () => () => ({
   mutateAsync: mockAddEventImage,
 }));
 jest.mock('api/event_images/useUpdateEventImage', () => () => ({
-  mutateAsync: jest.fn(),
+  mutateAsync: mockUpdateEventImage,
 }));
 jest.mock('api/event_images/useDeleteEventImage', () => () => ({
   mutateAsync: mockDeleteEventImage,
@@ -89,13 +91,16 @@ const startSaveThenEdit = async (
 };
 
 const renderForm = () =>
-  renderHook(() => useEventForm({ projectId: 'project-1' }));
+  renderHook(() => useEventForm({ projectId: 'project-1' }), {
+    wrapper: createQueryClientWrapper(),
+  });
 
 describe('useEventForm', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockUpdateEvent.mockResolvedValue({});
+    mockUpdateEvent.mockResolvedValue({ data: { id: 'event-1' } });
     mockAddEventImage.mockResolvedValue({ data: { id: 'image-1' } });
+    mockUpdateEventImage.mockResolvedValue({});
     mockDeleteEventImage.mockResolvedValue(undefined);
     mockSyncFiles.mockResolvedValue(undefined);
   });
@@ -130,6 +135,20 @@ describe('useEventForm', () => {
       event: expect.objectContaining({ title_multiloc: { en: 'Edited' } }),
     });
     expect(result.current.dirty).toBe(false);
+  });
+
+  it('does not send the edits of a previous save again', async () => {
+    mockAddEvent.mockResolvedValue({ data: { id: 'event-1' } });
+    const { result } = renderForm();
+
+    act(() => {
+      result.current.updateAttributes({ title_multiloc: { en: 'Edited' } });
+    });
+    await act(() => result.current.save());
+    act(() => result.current.files.attachFile(fileData('file-1')));
+    await act(() => result.current.save());
+
+    expect(mockUpdateEvent).not.toHaveBeenCalled();
   });
 
   it('stays unsaved when edited during a save', async () => {
@@ -197,6 +216,22 @@ describe('useEventForm', () => {
     expect(mockDeleteEventImage).toHaveBeenCalledWith({
       eventId: 'event-1',
       imageId: 'image-1',
+    });
+  });
+
+  it('updates the alt text of the image the previous save added without resending a file', async () => {
+    mockAddEvent.mockResolvedValue({ data: { id: 'event-1' } });
+    const { result } = renderForm();
+
+    act(() => result.current.addImage([imageFile('new')]));
+    await act(() => result.current.save());
+    act(() => result.current.changeImageAltText({ en: 'A cute puppy' }));
+    await act(() => result.current.save());
+
+    expect(mockUpdateEventImage).toHaveBeenCalledWith({
+      eventId: 'event-1',
+      imageId: 'image-1',
+      image: { alt_text_multiloc: { en: 'A cute puppy' } },
     });
   });
 

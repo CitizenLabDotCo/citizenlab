@@ -11,11 +11,7 @@ class WebApi::V1::IdeasController < ApplicationController
   after_action :verify_policy_scoped, only: %i[index index_mini]
 
   def index
-    ideas = IdeasFinder.new(
-      params,
-      scope: policy_scope(Idea).submitted_or_published,
-      current_user: current_user
-    ).find_records
+    ideas = find_ideas
 
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
 
@@ -40,11 +36,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def index_mini
-    ideas = IdeasFinder.new(
-      params,
-      scope: policy_scope(Idea).submitted_or_published,
-      current_user: current_user
-    ).find_records
+    ideas = find_ideas
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
     ideas = ideas.includes(:idea_trending_info)
 
@@ -52,11 +44,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def index_idea_markers
-    ideas = IdeasFinder.new(
-      params,
-      scope: policy_scope(Idea).submitted_or_published,
-      current_user: current_user
-    ).find_records
+    ideas = find_ideas
     ideas = paginate SortByParamsService.new.sort_ideas(ideas, params, current_user)
     ideas = ideas.includes(:author, :input_topics, :project, :idea_status)
 
@@ -64,11 +52,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def index_xlsx
-    ideas = IdeasFinder.new(
-      params.merge(filter_can_moderate: true),
-      scope: policy_scope(Idea).submitted_or_published,
-      current_user: current_user
-    ).find_records
+    ideas = find_ideas(finder_params: params.merge(filter_can_moderate: true))
     ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
     ideas = ideas.includes(:author, :input_topics, :project, :idea_status, :idea_files, :attached_files)
 
@@ -102,17 +86,8 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def filter_counts
-    ideas = IdeasFinder.new(
-      params,
-      scope: policy_scope(Idea),
-      current_user: current_user
-    ).find_records
-    ideas = SortByParamsService.new.sort_ideas(ideas, params, current_user)
-    ideas = ideas.includes(:idea_trending_info)
-
-    result = IdeasCountService.counts(ideas, filter_counts_attributes(ideas))
-    result['total'] = ideas.count
-    render json: raw_json(result)
+    ideas = find_ideas(scope: policy_scope(Idea))
+    render json: raw_json(Facets::CountsService.new(ideas, filter_count_facets(ideas)).counts)
   end
 
   def show
@@ -379,8 +354,18 @@ class WebApi::V1::IdeasController < ApplicationController
 
   private
 
-  def filter_counts_attributes(_ideas)
-    IdeasCountService::DEFAULT_ATTRIBUTES
+  def find_ideas(scope: policy_scope(Idea).submitted_or_published, finder_params: params)
+    IdeasFinder.new(finder_params, scope:, current_user:).find_records
+  end
+
+  def filter_count_facets(_ideas)
+    [Facets::Column.new(:idea_status_id), Facets::IdeaInputTopic.new] + answer_facets
+  end
+
+  def answer_facets
+    CustomField.where(id: params[:custom_field_ids])
+      .select { |field| policy(field).show? && field.answers_visible_to_public? && field.supports_answer_facet? }
+      .map { |field| Facets::IdeaCustomFieldAnswer.new(field) }
   end
 
   def phase

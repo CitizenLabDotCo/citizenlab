@@ -36,6 +36,7 @@ el-GR:
         project_participants: Για τους συμμετέχοντες στο έργο
         registered_users: Για εγγεγραμμένους χρήστες
       recipient_segment:
+        admin_who_generated_the_report: Ο διαχειριστής που ζήτησε την αναφορά
         admins: Διαχειριστές
         admins_and_managers: Διαχειριστές και διευθυντές
         admins_and_managers_assigned_to_the_input: Διαχειριστές & διαχειριστές που έχουν οριστεί για την είσοδο
@@ -109,6 +110,7 @@ el-GR:
         proposal_is_upvoted_above_threshold: Η πρόταση υπερκαλύπτει το όριο
         proposal_status_changes: Αλλαγές στην κατάσταση της πρότασης
         registration_to_event: Εγγραφή σε μια εκδήλωση
+        report_generated: Η δημιουργία μιας αναφοράς ολοκληρώθηκε
         survey_1_day_after_draft_saved: 1 ημέρα μετά την τελευταία αποθήκευση της έρευνας σε προσχέδιο
         user_accepts_invitation_to_cosponsor_a_proposal: Ο χρήστης αποδέχεται την πρόσκληση να συνυπογράψει μια πρόταση
         user_changes_email: Ο χρήστης αλλάζει τη διεύθυνση email του
@@ -206,6 +208,7 @@ el-GR:
       project_review_request: Αίτημα αξιολόγησης του έργου
       project_review_state_change: Το έργο εγκρίθηκε
       proposal_expired_for_admin: Η πρόταση έληξε χωρίς να συμπληρώσει το όριο ψήφων
+      report_generated: Η αναφορά δημιουργήθηκε
       screening_digest: Εβδομαδιαία υπενθύμιση ελέγχου
       sms_manual: Επίσημα μηνύματα SMS
       space_moderation_rights_received: Λήφθηκαν δικαιώματα διαχειριστή χώρου
@@ -661,6 +664,13 @@ el-GR:
       preheader: Μια συμμετοχή έληξε χωρίς να συμπληρώσει το όριο
       subject: Το "%{input_title}" έληξε χωρίς να συμπληρώσει το όριο
       title: Μια συμμετοχή έληξε χωρίς να συμπληρώσει το όριο ψήφων
+    report_generated:
+      cta_button: Άνοιγμα της αναφοράς
+      event_description: Η αναφορά έχει συνταχθεί και είναι έτοιμη για έλεγχο και επεξεργασία.
+      preheader: Η αναφορά σας είναι έτοιμη
+      stopped_early: Η σύνταξη διακόπηκε πριν ολοκληρωθεί η αναφορά. Ό,τι έχει γραφτεί μέχρι στιγμής έχει αποθηκευτεί — ανοίξτε την και ζητήστε τα υπόλοιπα στη συνομιλία.
+      subject: "Η αναφορά σας για το έργο '%{projectName}' είναι έτοιμη"
+      title: Η αναφορά σας είναι έτοιμη
     schedules:
       quarterly: Τριμηνιαία, την πρώτη ημέρα του τριμήνου
       weekly:

@@ -19,6 +19,22 @@ describe('<Toggle />', () => {
     expect(handleOnChange).toHaveBeenCalledTimes(1);
   });
 
+  it('describes the control with the description', () => {
+    render(
+      <Toggle
+        checked={false}
+        label="Public answers"
+        description="Shown to other participants."
+        onChange={jest.fn()}
+      />
+    );
+
+    const checkbox = screen.getByRole('checkbox', { name: 'Public answers' });
+    expect(checkbox).toHaveAccessibleDescription(
+      'Shown to other participants.'
+    );
+  });
+
   it('does not toggle when disabled', () => {
     const handleOnChange = jest.fn();
     render(<Toggle checked={false} disabled onChange={handleOnChange} />);

@@ -1,30 +1,20 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
-import { CLErrors, Multiloc, UploadFile } from 'typings';
+import { useQueryClient } from '@tanstack/react-query';
+import { CLErrors } from 'typings';
 
-import useAddEventImage from 'api/event_images/useAddEventImage';
-import useDeleteEventImage from 'api/event_images/useDeleteEventImage';
-import useEventImage from 'api/event_images/useEventImage';
-import useUpdateEventImage from 'api/event_images/useUpdateEventImage';
-import { IEventProperties } from 'api/events/types';
+import eventsKeys from 'api/events/keys';
+import { IEvent, IEventProperties } from 'api/events/types';
 import useAddEvent from 'api/events/useAddEvent';
 import useEvent from 'api/events/useEvent';
 import useUpdateEvent from 'api/events/useUpdateEvent';
-import { IFileAttachmentData } from 'api/file_attachments/types';
-import useFileAttachments from 'api/file_attachments/useFileAttachments';
-import { IFileData } from 'api/files/types';
-import useAddFile from 'api/files/useAddFile';
-
-import { useSyncFiles } from 'hooks/files/useSyncFiles';
 
 import { isCLErrorsWrapper } from 'utils/errorUtils';
-import {
-  convertUrlToUploadFile,
-  generateTemporaryFileAttachment,
-} from 'utils/fileUtils';
-import { geocode } from 'utils/locationTools';
 
 import { SubmitState } from './types';
+import useEventFormAttachments from './useEventFormAttachments';
+import useEventFormImage from './useEventFormImage';
+import useEventFormLocation from './useEventFormLocation';
 import { initializeEventTimes } from './utils';
 
 interface QueuedSave {
@@ -57,19 +47,10 @@ const useEventForm = ({ projectId, eventId, onCreate }: Options) => {
   const currentEventId = eventId ?? createdEventId;
 
   const { data: event, isLoading } = useEvent(currentEventId);
-  const { data: savedAttachments } = useFileAttachments({
-    attachable_id: currentEventId,
-    attachable_type: 'Event',
-  });
-  const { data: remoteImage } = useEventImage(event?.data);
+  const queryClient = useQueryClient();
 
   const { mutateAsync: addEvent } = useAddEvent();
   const { mutateAsync: updateEvent } = useUpdateEvent();
-  const { mutateAsync: addEventImage } = useAddEventImage();
-  const { mutateAsync: updateEventImage } = useUpdateEventImage();
-  const { mutateAsync: deleteEventImage } = useDeleteEventImage();
-  const { mutate: addFile, isPending: isUploadingFile } = useAddFile();
-  const syncFiles = useSyncFiles();
 
   const [status, setStatus] = useState<SubmitState>('disabled');
   const [saving, setSaving] = useState(false);
@@ -82,178 +63,31 @@ const useEventForm = ({ projectId, eventId, onCreate }: Options) => {
     eventId ? {} : initializeEventTimes()
   );
   const [customButtonToggle, setCustomButtonToggle] = useState<boolean>();
-  const [localImage, setLocalImage] = useState<UploadFile | null>();
-  const [remoteImageFile, setRemoteImageFile] = useState<UploadFile | null>(
-    null
-  );
-  const [croppedImage, setCroppedImage] = useState<string | null>(null);
-  const [altText, setAltText] = useState<Multiloc | null>();
-  const [locationPoint, setLocationPoint] = useState<GeoJSON.Point | null>();
-  const [geocodedPoint, setGeocodedPoint] = useState<GeoJSON.Point | null>(
-    null
-  );
-  const geocodedAddress = useRef<string | null>();
-  // Undefined until this form saves an image change.
-  const savedImageId = useRef<string | null>();
+
   const markDirty = () => {
     editCount.current += 1;
     setStatus('enabled');
     setErrors(null);
   };
 
-  const [stagedAttachments, setStagedAttachments] =
-    useState<IFileAttachmentData[]>();
-  const [attachmentsToRemove, setAttachmentsToRemove] = useState<
-    IFileAttachmentData[]
-  >([]);
-  const attachments = stagedAttachments ?? savedAttachments?.data ?? [];
-
-  const stageAttachments = (
-    update: (current: IFileAttachmentData[]) => IFileAttachmentData[]
-  ) => {
-    markDirty();
-    setStagedAttachments((staged) =>
-      update(staged ?? savedAttachments?.data ?? [])
-    );
-  };
-
-  const attachFile = (file: IFileData) =>
-    stageAttachments((current) =>
-      current.some(
-        (attachment) => attachment.relationships.file.data.id === file.id
-      )
-        ? current
-        : [
-            ...current,
-            generateTemporaryFileAttachment({
-              fileId: file.id,
-              attachableId: currentEventId,
-              attachableType: 'Event',
-              position: current.length,
-            }),
-          ]
-    );
-
-  const uploadFile = (fileToAdd: UploadFile) =>
-    addFile(
-      {
-        content: fileToAdd.base64,
-        project: projectId,
-        name: fileToAdd.name,
-        category: 'other',
-        ai_processing_allowed: false,
-      },
-      { onSuccess: (newFile) => attachFile(newFile.data) }
-    );
-
-  const removeFile = (attachmentToRemove: IFileAttachmentData) => {
-    stageAttachments((current) =>
-      current.filter((attachment) => attachment.id !== attachmentToRemove.id)
-    );
-    setAttachmentsToRemove((toRemove) => [...toRemove, attachmentToRemove]);
-  };
-
-  const reorderFiles = (reordered: IFileAttachmentData[]) =>
-    stageAttachments(() =>
-      reordered.map((attachment, position) => ({
-        ...attachment,
-        attributes: { ...attachment.attributes, position },
-      }))
-    );
-
-  const saveAttachments = async (savedEventId: string) => {
-    if (!stagedAttachments) return;
-
-    await syncFiles({
-      attachableId: savedEventId,
-      attachableType: 'Event',
-      fileAttachments: stagedAttachments,
-      fileAttachmentsToRemove: attachmentsToRemove,
-      fileAttachmentOrdering: Object.fromEntries(
-        (savedAttachments?.data ?? []).map((attachment) => [
-          attachment.id,
-          attachment.attributes.position,
-        ])
-      ),
-    });
-    // An upload that finishes during the save is staged on top of what was
-    // sent. Keep it, but drop what was sent, or the next save adds it again.
-    const sent = new Set(
-      [
-        ...stagedAttachments.filter(({ id }) => id.startsWith('TEMP-')),
-        ...attachmentsToRemove,
-      ].map(({ id }) => id)
-    );
-    setStagedAttachments((staged) =>
-      staged === stagedAttachments
-        ? undefined
-        : staged?.filter(({ id }) => !sent.has(id))
-    );
-    setAttachmentsToRemove((toRemove) =>
-      toRemove.filter(({ id }) => !sent.has(id))
-    );
-  };
-
   const savedAttributes = event?.data.attributes;
   const attributes = { ...savedAttributes, ...attributeDiff };
-  const savedPoint = savedAttributes?.location_point_geojson ?? null;
-  const remoteImageUrl = remoteImage?.data.attributes.versions.medium;
 
-  useEffect(() => {
-    if (!remoteImageUrl) {
-      setRemoteImageFile(null);
-      return;
-    }
-
-    let cancelled = false;
-    convertUrlToUploadFile(remoteImageUrl).then((file) => {
-      if (!cancelled) setRemoteImageFile(file);
+  const { files, saveAttachments } = useEventFormAttachments({
+    projectId,
+    eventId: currentEventId,
+    markDirty,
+  });
+  const { saveImage, ...imageFields } = useEventFormImage({
+    event,
+    markDirty,
+  });
+  const { locationPointToSave, markPointSaved, ...locationFields } =
+    useEventFormLocation({
+      changedAddress: attributeDiff.address_1,
+      savedPoint: savedAttributes?.location_point_geojson ?? null,
+      markDirty,
     });
-    return () => {
-      cancelled = true;
-    };
-  }, [remoteImageUrl]);
-
-  const changedAddress = attributeDiff.address_1;
-  useEffect(() => {
-    if (
-      changedAddress === undefined ||
-      geocodedAddress.current === changedAddress
-    ) {
-      return;
-    }
-
-    let cancelled = false;
-    const timeout = setTimeout(async () => {
-      if (geocodedAddress.current === changedAddress) return;
-      const point = changedAddress ? await geocode(changedAddress) : null;
-      if (cancelled || geocodedAddress.current === changedAddress) return;
-      geocodedAddress.current = changedAddress;
-      setGeocodedPoint(point);
-      setLocationPoint(point);
-    }, 500);
-    return () => {
-      cancelled = true;
-      clearTimeout(timeout);
-    };
-  }, [changedAddress]);
-
-  // Saving right after an address change must not wait for the delayed
-  // lookup above, or the event is saved with the previous point.
-  const locationPointToSave = async () => {
-    if (
-      changedAddress === undefined ||
-      geocodedAddress.current === changedAddress
-    ) {
-      return locationPoint;
-    }
-
-    const point = changedAddress ? await geocode(changedAddress) : null;
-    geocodedAddress.current = changedAddress;
-    setGeocodedPoint(point);
-    setLocationPoint(point);
-    return point;
-  };
 
   const updateAttributeDiff: Dispatch<SetStateAction<IEventProperties>> = (
     update
@@ -267,47 +101,6 @@ const useEventForm = ({ projectId, eventId, onCreate }: Options) => {
 
   const registrationLimitOn = typeof attributes.maximum_attendees === 'number';
   const customButtonOn = customButtonToggle ?? !!attributes.using_url;
-  const image = localImage === undefined ? remoteImageFile : localImage;
-  const imageAltText =
-    altText === undefined
-      ? remoteImage?.data.attributes.alt_text_multiloc ?? null
-      : altText;
-
-  const saveImage = async (savedEventId: string) => {
-    // The loaded event lags behind this form's own saves, so a save that runs
-    // right after another works on the image that one left.
-    const imageId =
-      savedImageId.current === undefined
-        ? event?.data.relationships.event_images.data.at(0)?.id
-        : savedImageId.current;
-
-    if (localImage !== undefined) {
-      if (imageId) {
-        await deleteEventImage({ eventId: savedEventId, imageId });
-        savedImageId.current = null;
-      }
-      if (localImage && croppedImage) {
-        const added = await addEventImage({
-          eventId: savedEventId,
-          image: {
-            image: croppedImage,
-            ...(imageAltText ? { alt_text_multiloc: imageAltText } : {}),
-          },
-        });
-        savedImageId.current = added.data.id;
-      }
-    } else if (altText && imageId && image) {
-      await updateEventImage({
-        eventId: savedEventId,
-        imageId,
-        image: { image: image.base64, alt_text_multiloc: altText },
-      });
-    }
-
-    // Keep an image or alt text chosen during the save for the next one.
-    setLocalImage((current) => (current === localImage ? undefined : current));
-    setAltText((current) => (current === altText ? undefined : current));
-  };
 
   // Two saves at once would create a new event twice, so a save asked for
   // while another runs is queued until that one ends.
@@ -349,21 +142,29 @@ const useEventForm = ({ projectId, eventId, onCreate }: Options) => {
         }),
       };
 
+      const showSaved = (saved: IEvent) =>
+        queryClient.setQueryData(eventsKeys.item({ id: saved.data.id }), saved);
+
       let savedEventId = currentEventId;
       if (!savedEventId) {
-        savedEventId = (await addEvent({ projectId, event: changes })).data.id;
+        const created = await addEvent({ projectId, event: changes });
+        showSaved(created);
+        savedEventId = created.data.id;
         setCreatedEventId(savedEventId);
         onCreate?.(savedEventId);
       } else if (Object.keys(changes).length > 0) {
         // Only the image or files may have changed, and the API refuses an
         // empty update.
-        await updateEvent({ eventId: savedEventId, event: changes });
+        showSaved(await updateEvent({ eventId: savedEventId, event: changes }));
       }
 
       await Promise.all([
         saveAttachments(savedEventId),
         saveImage(savedEventId),
       ]);
+
+      setAttributeDiff((diff) => (diff === attributeDiff ? {} : diff));
+      markPointSaved(point);
 
       savedEditCount.current = editsAtStart;
       // Edits made during the save weren't sent, so the form stays unsaved.
@@ -408,42 +209,9 @@ const useEventForm = ({ projectId, eventId, onCreate }: Options) => {
       updateAttributes({ using_url: '' });
     },
 
-    image,
-    croppedImage,
-    imageAltText,
-    imageNeedsCrop: !!image && !image.remote,
-    addImage: (images: UploadFile[]) => {
-      markDirty();
-      setLocalImage(images[0]);
-      setCroppedImage(images[0].base64);
-    },
-    removeImage: () => {
-      markDirty();
-      setLocalImage(null);
-    },
-    cropImage: setCroppedImage,
-    changeImageAltText: (altText: Multiloc) => {
-      markDirty();
-      setAltText(altText);
-    },
-
-    hasLocationPoint: !!(locationPoint === undefined
-      ? savedPoint
-      : locationPoint),
-    mapPosition: geocodedPoint ?? savedPoint,
-    moveLocationPoint: (point: GeoJSON.Point) => {
-      markDirty();
-      setLocationPoint(point);
-    },
-
-    files: {
-      attachments,
-      isUploadingFile,
-      attachFile,
-      uploadFile,
-      removeFile,
-      reorderFiles,
-    },
+    ...imageFields,
+    ...locationFields,
+    files,
   };
 };
 

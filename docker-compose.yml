@@ -112,12 +112,24 @@ services:
   # For generating PDFs
   gotenberg:
     container_name: ${WORKTREE_PREFIX:-cl}-gotenberg
-    image: gotenberg/gotenberg:8.21
+    # Keep at >= 8.34.0: from 8.34.0 LibreOffice conversion renders only the
+    # document's own embedded content. Production's deploy config must match.
+    image: gotenberg/gotenberg:8.37.0
     restart: always
-    # Big renders (e.g. the input responses PDF) can take minutes.
-    # GotenbergClient::JOB_TIMEOUT_SECONDS is set slightly above this timeout.
-    # Production Gotenberg needs the same flag in its own deploy config.
-    command: ["gotenberg", "--api-timeout=600s"]
+    command:
+      - gotenberg
+      # Big renders (e.g. the input responses PDF) can take minutes.
+      # GotenbergClient::JOB_TIMEOUT_SECONDS is set slightly above this.
+      - --api-timeout=600s
+      # Office-doc conversion should render only the file's own embedded
+      # content, not fetch anything it links to.
+      - --libreoffice-deny-private-ips
+      - --libreoffice-deny-public-ips
+      # We only call /forms/chromium/convert/html and /forms/libreoffice/convert;
+      # disable the routes we don't use.
+      - --pdfengines-disable-routes
+      - --webhook-disable
+      - --api-disable-download-from
 
   # Fake OIDC provider used by the `fake_sso` verification/auth method.
   # Only starts if you run `docker compose --profile fake_sso up`

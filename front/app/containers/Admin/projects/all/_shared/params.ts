@@ -8,6 +8,8 @@ import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
 import { useSearch } from 'utils/router';
 
+import { clearPersistedParamsIfEmpty } from './usePersistedParams';
+
 export const PARAMS = [
   'status',
   'managers',
@@ -32,6 +34,11 @@ type _ParamsCheck = Parameter extends keyof Parameters ? true : never;
 const _paramsCheck: _ParamsCheck = true;
 void _paramsCheck;
 
+export const removeParams = (paramNames: readonly string[]) => {
+  removeSearchParams(paramNames);
+  clearPersistedParamsIfEmpty();
+};
+
 export const setParam = <ParamName extends Parameter>(
   paramName: ParamName,
   paramValue: Parameters[ParamName]
@@ -40,7 +47,7 @@ export const setParam = <ParamName extends Parameter>(
     !paramValue || (Array.isArray(paramValue) && paramValue.length === 0);
 
   if (isNullishParam) {
-    removeSearchParams([paramName]);
+    removeParams([paramName]);
   } else {
     updateSearchParams({ [paramName]: paramValue });
   }

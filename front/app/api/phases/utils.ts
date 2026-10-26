@@ -190,6 +190,12 @@ export function getPhaseLandingTab(
   return 'setup';
 }
 
+export function getPhaseSaveRedirectTab(phase: IPhaseData) {
+  return phase.attributes.participation_method === 'native_survey'
+    ? 'survey-form'
+    : getPhaseLandingTab(phase);
+}
+
 export const INPUT_TERMS = [
   'idea',
   'option',
