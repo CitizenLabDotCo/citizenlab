@@ -2174,6 +2174,16 @@
     "verified_at": "2026-03-18T11:50:36.802938Z",
     "verified_by": "Admin"
   },
+  "email_campaigns.merge_account_confirmation.expire_code": {
+    "state": "verified",
+    "verified_at": "2026-10-26T13:30:56.589804Z",
+    "verified_by": "Adrien"
+  },
+  "email_campaigns.merge_account_confirmation.hours_24": {
+    "state": "verified",
+    "verified_at": "2026-10-26T13:30:56.589804Z",
+    "verified_by": "Adrien"
+  },
   "email_campaigns.merge_account_confirmation.title": {
     "state": "verified",
     "verified_at": "2026-10-26T13:27:19.647893Z",
