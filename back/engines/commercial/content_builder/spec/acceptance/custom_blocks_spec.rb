@@ -38,6 +38,26 @@ resource 'CustomBlocks' do
       expect(response_body).not_to include draft.id
     end
 
+    # A block is published as soon as it is written and names no project, so this list
+    # is every chart of every unreleased report on the platform.
+    example 'List nothing as a report moderator', document: false do
+      header_token_for create(:project_moderator)
+
+      do_request
+
+      assert_status 200
+      expect(response_data).to be_empty
+    end
+
+    example 'List nothing as a resident', document: false do
+      header_token_for create(:user)
+
+      do_request
+
+      assert_status 200
+      expect(response_data).to be_empty
+    end
+
     example '[error] List the blocks while the feature is off', document: false do
       SettingsService.new.deactivate_feature!('llm_reporting')
 
