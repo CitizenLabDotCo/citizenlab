@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { Box, Dropdown, Icon, Spinner, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, Icon, Spinner, Text, colors } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
 
@@ -67,10 +67,11 @@ const Shell = styled.div<{ $wide: boolean }>`
   background: ${colors.white};
   border-radius: 20px;
   width: 100%;
-  max-width: ${({ $wide }) => ($wide ? '1240px' : '760px')};
-  /* Give the first step a substantial, centred presence (matching the augur
-     prototype) rather than a thin auto-height sliver before any text. */
-  height: ${({ $wide }) => ($wide ? '88vh' : '620px')};
+  /* Narrow, portrait chat column through brief/questions/drafting (matching the
+     augur prototype's slim assistant rail); only the review step widens into the
+     two-pane preview. */
+  max-width: ${({ $wide }) => ($wide ? '1040px' : '540px')};
+  height: ${({ $wide }) => ($wide ? '88vh' : '640px')};
   max-height: 88vh;
   display: flex;
   overflow: hidden;
@@ -88,109 +89,32 @@ const LinkButton = styled.button`
   cursor: pointer;
 `;
 
-const MenuItem = styled.button`
-  appearance: none;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  width: 100%;
-  border: none;
-  background: transparent;
-  padding: 10px 14px;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  color: ${colors.textPrimary};
-  &:hover {
-    background: ${colors.grey100};
-  }
-`;
-
-// The alternatives to the AI flow (start from scratch, the retiring template
-// gallery) are tucked behind one compact menu so the header doesn't crowd its
-// corner — the AI flow is the main path, these are the escape hatches.
-const Header = ({
-  onStartFromScratch,
-  onBrowseTemplates,
-  onClose,
-}: {
-  onStartFromScratch: () => void;
-  onBrowseTemplates: () => void;
-  onClose: () => void;
-}) => {
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  return (
-    <Box display="flex" alignItems="center" justifyContent="space-between" px="24px" py="18px" flex="0 0 auto">
-      <Box display="flex" alignItems="center" gap="10px">
-        <Icon name="stars" width="20px" height="20px" fill={colors.teal500} />
-        <Text m="0px" fontSize="l" fontWeight="bold" color="textPrimary">
-          Project assistant
+// The assistant is the main path, so the header stays clean — just the title
+// and a close. The alternatives (start from scratch, the retiring template
+// gallery) sit as quiet links under the composer instead.
+const Header = ({ onClose }: { onClose: () => void }) => (
+  <Box display="flex" alignItems="center" justifyContent="space-between" px="24px" py="18px" flex="0 0 auto">
+    <Box display="flex" alignItems="center" gap="10px">
+      <Icon name="stars" width="20px" height="20px" fill={colors.teal500} />
+      <Text m="0px" fontSize="l" fontWeight="bold" color="textPrimary">
+        Project assistant
+      </Text>
+      <Box px="8px" py="2px" borderRadius="999px" bgColor={colors.grey100}>
+        <Text m="0px" fontSize="s" color="textSecondary" fontWeight="bold">
+          Beta
         </Text>
-        <Box px="8px" py="2px" borderRadius="999px" bgColor={colors.grey100}>
-          <Text m="0px" fontSize="s" color="textSecondary" fontWeight="bold">
-            Beta
-          </Text>
-        </Box>
-      </Box>
-      <Box display="flex" alignItems="center" gap="14px">
-        <Box position="relative">
-          <LinkButton
-            type="button"
-            onClick={() => setMenuOpen((open) => !open)}
-            style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
-          >
-            Other ways to start
-            <Icon name="chevron-down" width="12px" height="12px" fill={colors.teal700} />
-          </LinkButton>
-          <Dropdown
-            opened={menuOpen}
-            onClickOutside={() => setMenuOpen(false)}
-            right="0px"
-            top="28px"
-            width="240px"
-            content={
-              <Box py="4px">
-                <MenuItem
-                  type="button"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    onStartFromScratch();
-                  }}
-                >
-                  Start from scratch
-                </MenuItem>
-                <MenuItem
-                  type="button"
-                  onClick={() => {
-                    setMenuOpen(false);
-                    onBrowseTemplates();
-                  }}
-                >
-                  <span>Browse templates</span>
-                  <Box px="6px" py="1px" borderRadius="999px" bgColor={colors.grey100}>
-                    <Text m="0px" fontSize="xs" color="textSecondary">
-                      being retired
-                    </Text>
-                  </Box>
-                </MenuItem>
-              </Box>
-            }
-          />
-        </Box>
-        <button
-          type="button"
-          onClick={onClose}
-          style={{ border: 'none', background: 'transparent', cursor: 'pointer', padding: 0 }}
-          aria-label="Close"
-        >
-          <Icon name="close" width="18px" height="18px" fill={colors.textSecondary} />
-        </button>
       </Box>
     </Box>
-  );
-};
+    <button
+      type="button"
+      onClick={onClose}
+      style={{ border: 'none', background: 'transparent', cursor: 'pointer', padding: 0 }}
+      aria-label="Close"
+    >
+      <Icon name="close" width="18px" height="18px" fill={colors.textSecondary} />
+    </button>
+  </Box>
+);
 
 const UserBubble = ({ text }: { text: string }) => (
   <Box display="flex" justifyContent="flex-end">
@@ -241,6 +165,9 @@ const ProjectAssistantModal = ({
   const [error, setError] = useState<string>();
   // Redraft exchanges shown in the review conversation.
   const [replies, setReplies] = useState<{ user: string; assistant?: string }[]>([]);
+  // The "why these choices" rationale is collapsed by default — the headline and
+  // the before-you-publish checklist are what the manager needs first.
+  const [showWhy, setShowWhy] = useState(false);
 
   const { data: project } = useProjectById(projectId ?? '');
   const summary = project?.data.attributes.ai_generation_summary ?? null;
@@ -412,11 +339,7 @@ const ProjectAssistantModal = ({
 
   const conversation = (
     <>
-      <Header
-        onStartFromScratch={onStartFromScratch}
-        onBrowseTemplates={onBrowseTemplates}
-        onClose={onClose}
-      />
+      <Header onClose={onClose} />
 
       <Box flex="1" minHeight="0" overflowY="auto" px="24px" pb="20px" display="flex" flexDirection="column" gap="18px">
         {phase === 'brief' && <AssistantLine>{INTRO}</AssistantLine>}
@@ -453,26 +376,75 @@ const ProjectAssistantModal = ({
                     <Text m="0px" color="textPrimary" lineHeight="1.5">
                       {summary.headline}
                     </Text>
+
+                    {/* The actionable part, shown up front: what the manager
+                        should actually do before publishing (incl. setting up
+                        offline participation), as a tickable checklist. */}
+                    {summary.next_steps && summary.next_steps.length > 0 && (
+                      <Box mt="16px">
+                        <Text m="0 0 10px" fontSize="s" fontWeight="bold" color="textPrimary">
+                          Before you publish
+                        </Text>
+                        <Box display="flex" flexDirection="column" gap="10px">
+                          {summary.next_steps.map((step, i) => (
+                            <Box key={i} display="flex" gap="10px" alignItems="flex-start">
+                              <Box
+                                flex="0 0 auto"
+                                width="16px"
+                                height="16px"
+                                mt="3px"
+                                borderRadius="4px"
+                                border={`1.5px solid ${colors.teal400}`}
+                                bgColor={colors.white}
+                              />
+                              <Text m="0px" color="textPrimary" lineHeight="1.45">
+                                {step}
+                              </Text>
+                            </Box>
+                          ))}
+                        </Box>
+                      </Box>
+                    )}
+
+                    {/* The "why" rationale, collapsed by default so the card
+                        stays short — expandable for the manager who wants it. */}
                     {summary.highlights && summary.highlights.length > 0 && (
-                      <Box
-                        as="ul"
-                        m="12px 0 0"
-                        pl="18px"
-                        display="flex"
-                        flexDirection="column"
-                        gap="8px"
-                      >
-                        {summary.highlights.map((point, i) => (
-                          <Text
-                            key={i}
-                            as="li"
-                            m="0px"
-                            color="textPrimary"
-                            lineHeight="1.5"
+                      <Box mt="14px" pt="14px" borderTop={`1px solid ${colors.grey300}`}>
+                        <LinkButton
+                          type="button"
+                          onClick={() => setShowWhy((show) => !show)}
+                          style={{ display: 'flex', alignItems: 'center', gap: '4px' }}
+                        >
+                          Why these choices
+                          <Icon
+                            name={showWhy ? 'chevron-up' : 'chevron-down'}
+                            width="12px"
+                            height="12px"
+                            fill={colors.teal700}
+                          />
+                        </LinkButton>
+                        {showWhy && (
+                          <Box
+                            as="ul"
+                            m="10px 0 0"
+                            pl="18px"
+                            display="flex"
+                            flexDirection="column"
+                            gap="8px"
                           >
-                            {point}
-                          </Text>
-                        ))}
+                            {summary.highlights.map((point, i) => (
+                              <Text
+                                key={i}
+                                as="li"
+                                m="0px"
+                                color="textSecondary"
+                                lineHeight="1.5"
+                              >
+                                {point}
+                              </Text>
+                            ))}
+                          </Box>
+                        )}
                       </Box>
                     )}
                   </Box>
@@ -528,6 +500,24 @@ const ProjectAssistantModal = ({
               setPhase('question');
             }}
           />
+          {/* The escape hatches from the AI flow: quiet links under the
+              composer, not competing with it. Scratch leads to the blank
+              builder; template opens the existing (retiring) gallery. */}
+          <Box display="flex" justifyContent="center" alignItems="center" gap="10px">
+            <LinkButton type="button" onClick={onStartFromScratch}>
+              Start from scratch
+            </LinkButton>
+            <Text m="0px" fontSize="s" color="textSecondary">
+              ·
+            </Text>
+            <LinkButton
+              type="button"
+              onClick={onBrowseTemplates}
+              style={{ color: colors.textSecondary, fontWeight: 400 }}
+            >
+              Start from a template
+            </LinkButton>
+          </Box>
         </Box>
       )}
     </>

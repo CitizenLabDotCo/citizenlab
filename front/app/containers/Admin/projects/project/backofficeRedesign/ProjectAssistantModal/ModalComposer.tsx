@@ -11,16 +11,39 @@ import styled from 'styled-components';
 const ACCEPTED = '.pdf,.md,.txt,.doc,.docx';
 const MAX_FILES = 3;
 
+// A soft rounded frame that owns the only visible border; it lifts gently on
+// focus (no hard outline), matching the prototype's clean composer.
+const Frame = styled.div`
+  border: 1px solid ${colors.grey300};
+  border-radius: 16px;
+  padding: 14px 16px;
+  background: ${colors.white};
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+  &:focus-within {
+    border-color: ${colors.teal400};
+    box-shadow: 0 0 0 3px rgba(4, 139, 168, 0.12);
+  }
+`;
+
 const Field = styled.textarea`
   width: 100%;
   border: none;
   resize: none;
-  outline: none;
   font-family: inherit;
   font-size: 15px;
   line-height: 1.45;
   color: ${colors.textPrimary};
   background: transparent;
+  /* Kill the field's own outline/border in every state — the Frame is the only
+     thing that should show focus. */
+  outline: none;
+  box-shadow: none;
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    box-shadow: none;
+    border: none;
+  }
   &::placeholder {
     color: ${colors.grey600};
   }
@@ -85,7 +108,7 @@ const ModalComposer = ({
   };
 
   return (
-    <Box border={`1px solid ${colors.grey300}`} borderRadius="16px" p="14px 16px" bgColor={colors.white}>
+    <Frame>
       <Field
         value={text}
         placeholder={placeholder}
@@ -154,7 +177,7 @@ const ModalComposer = ({
           <Icon name="arrow-up" width="18px" height="18px" fill={canSend ? colors.white : colors.grey600} />
         </SendButton>
       </Box>
-    </Box>
+    </Frame>
   );
 };
 

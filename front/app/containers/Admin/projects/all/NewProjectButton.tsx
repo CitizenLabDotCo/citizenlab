@@ -63,39 +63,48 @@ const NewProjectButton = () => {
         className="intercom-admin-projects-new-project-button"
         icon="plus-circle"
         buttonStyle="admin-dark"
-        onClick={() => setDropdownOpened(!dropdownOpened)}
+        // Assistant-first: where the AI generator is on, the button opens the
+        // assistant straight away (scratch + template live as links inside it),
+        // rather than stopping at a chooser. Without it, keep the card dropdown.
+        onClick={() =>
+          aiGeneratorEnabled
+            ? openAssistant()
+            : setDropdownOpened(!dropdownOpened)
+        }
       >
         <FormattedMessage {...messages.newProject} />
       </Button>
 
-      <Dropdown
-        opened={dropdownOpened}
-        onClickOutside={() => setDropdownOpened(false)}
-        width="380px"
-        right="0px"
-        content={
-          <Box>
-            <OptionCard
-              icon="stars"
-              title="Draft with AI"
-              description="Describe your project and the assistant drafts the whole thing — page, phases and survey — for you to review."
-              onClick={openAssistant}
-            />
-            <OptionCard
-              icon="plus"
-              title={formatMessage(messages.fromScratch)}
-              description={formatMessage(messages.fromScratchDescription)}
-              onClick={() => openModal('scratch')}
-            />
-            <OptionCard
-              icon="copy"
-              title={formatMessage(messages.fromTemplate)}
-              description={formatMessage(messages.fromTemplateDescription)}
-              onClick={() => openModal('template')}
-            />
-          </Box>
-        }
-      />
+      {!aiGeneratorEnabled && (
+        <Dropdown
+          opened={dropdownOpened}
+          onClickOutside={() => setDropdownOpened(false)}
+          width="380px"
+          right="0px"
+          content={
+            <Box>
+              <OptionCard
+                icon="stars"
+                title="Draft with AI"
+                description="Describe your project and the assistant drafts the whole thing — page, phases and survey — for you to review."
+                onClick={openAssistant}
+              />
+              <OptionCard
+                icon="plus"
+                title={formatMessage(messages.fromScratch)}
+                description={formatMessage(messages.fromScratchDescription)}
+                onClick={() => openModal('scratch')}
+              />
+              <OptionCard
+                icon="copy"
+                title={formatMessage(messages.fromTemplate)}
+                description={formatMessage(messages.fromTemplateDescription)}
+                onClick={() => openModal('template')}
+              />
+            </Box>
+          }
+        />
+      )}
 
       <NewProjectModal mode={mode} onClose={() => setMode(null)} />
 
