@@ -73,7 +73,10 @@ export type ProjectSetupStep = 'settings' | 'share';
 
 export interface AIGenerationSummary {
   headline: string;
+  // The "why these choices" rationale, shown behind an expander.
   highlights: string[];
+  // The "before you publish" checklist — concrete actions to take/confirm.
+  next_steps?: string[];
 }
 
 export interface IProjectAttributes {

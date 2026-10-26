@@ -179,19 +179,29 @@ module ProjectGeneration
     ASSISTANT_SUMMARY_SCHEMA = {
       type: 'object',
       additionalProperties: false,
-      required: %w[headline highlights],
+      required: %w[headline highlights next_steps],
       properties: {
         headline: { type: 'string', description: 'One plain sentence: what this project is and what it will achieve for the manager.' },
         highlights: {
           type: 'array',
           items: { type: 'string' },
           description: <<~DESC
-            5-8 points, each a full, self-contained sentence or two (not a terse fragment) that teaches the manager the thinking behind the draft. Together they must cover, at least:
-            - WHY this participation method / phase structure was chosen (name the method(s) and the archetype logic, in plain language — e.g. why ideation then voting, why a single survey).
-            - For any ideation or survey phase: an offline-participation nudge — residents can also take part on paper, and the manager can either print the phase's downloadable PDF form or collect responses on improvised paper (post-its, postcards, comment cards, workshop sheets) and feed them in via FormSync, so reach is not limited to people who come online. Only include this when the draft actually has an ideation or survey phase.
-            - WHY the access rights / permissions were set the way they were (who can take part and the barrier-vs-reach trade-off — e.g. "no account needed, lowering the barrier to maximise reach" or "registration/verification required so each person counts once for a binding vote").
-            - Any notable trade-offs or assumptions made because the brief was silent or ambiguous, so the manager knows what to double-check before publishing.
-            Write in plain manager-facing language, no internal jargon. Each point should stand on its own.
+            The "why these choices" rationale — 3-5 points, each ONE short sentence (not a paragraph), that explain the thinking behind the draft. This is read behind a "Why these choices" expander, so keep it tight. Together they should cover:
+            - WHY this participation method / phase structure was chosen (name the method(s), the archetype logic in plain language — e.g. why ideation then voting, why a single survey followed by a closing information phase).
+            - WHY the access rights / permissions were set the way they were (the barrier-vs-reach trade-off — e.g. "no account needed, to lower the barrier and maximise reach" or "verification required so each person counts once for a binding vote").
+            Plain manager-facing language, no internal jargon. One sentence each — do NOT merge multiple ideas into one long point.
+          DESC
+        },
+        next_steps: {
+          type: 'array',
+          items: { type: 'string' },
+          description: <<~DESC
+            The "before you publish" checklist — 2-5 concrete, actionable things the manager should do or confirm before publishing this draft. Each item starts with an imperative verb and names a specific action. Include, when they apply:
+            - OFFLINE PARTICIPATION (include this whenever the draft has an ideation or native_survey phase): tell the manager to set up offline participation so reach isn't limited to people online — either download that phase's ready-made PDF form from the platform, or make their own paper forms / postcards / comment cards and import the responses via FormSync. Phrase it as an action, e.g. "Set up offline participation: download the survey's PDF form, or create your own postcards and import responses via FormSync."
+            - Fill in anything the draft left as a placeholder because the brief was silent (e.g. a specific location / venue, dates, named owner).
+            - Assign who will analyse the results and draft the closing-phase feedback, and confirm a realistic date to publish it.
+            - Add a header image, and review the survey questions / page copy for anything specific to this community.
+            Keep each item to one actionable sentence. Do NOT put the rationale ("why") here — only things to do.
           DESC
         }
       }
@@ -326,10 +336,15 @@ module ProjectGeneration
 
       headline = summary['headline'].to_s.strip
       highlights = Array(summary['highlights']).map { |line| line.to_s.strip }.reject(&:blank?)
-      return if headline.blank? && highlights.empty?
+      next_steps = Array(summary['next_steps']).map { |line| line.to_s.strip }.reject(&:blank?)
+      return if headline.blank? && highlights.empty? && next_steps.empty?
 
       @project.update_columns(
-        ai_generation_summary: { 'headline' => headline, 'highlights' => highlights },
+        ai_generation_summary: {
+          'headline' => headline,
+          'highlights' => highlights,
+          'next_steps' => next_steps
+        },
         updated_at: Time.current
       )
     end
