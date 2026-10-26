@@ -116,8 +116,10 @@ const ReportBuilderToolbox = ({
   });
   const llmReportingEnabled = useFeatureFlag({ name: 'llm_reporting' });
   const localize = useLocalize();
+  // Admins only: the catalogue is theirs, and a moderator would always be answered
+  // with an empty list.
   const { data: customBlocks } = useCustomBlocks({
-    enabled: llmReportingEnabled,
+    enabled: llmReportingEnabled && isUserAdmin,
   });
 
   if (
