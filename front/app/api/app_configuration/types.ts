@@ -123,6 +123,7 @@ export interface IAppConfigurationSettings {
   blocking_profanity?: AppConfigurationFeature;
   anonymous_participation?: AppConfigurationFeature;
   form_mapping?: AppConfigurationFeature;
+  input_form_answer_visibility?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
   intercom?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {
@@ -208,6 +209,7 @@ export interface IAppConfigurationSettings {
   html_block_in_content_builder?: AppConfigurationFeature;
   custom_page_builder?: AppConfigurationFeature;
   configurable_dropdown?: AppConfigurationFeature;
+  llm_reporting?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

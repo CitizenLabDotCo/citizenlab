@@ -167,6 +167,10 @@ export default defineMessages({
     id: 'app.containers.Projects.takeThePoll',
     defaultMessage: 'Take the poll',
   },
+  castYourVote: {
+    id: 'app.containers.Projects.castYourVote',
+    defaultMessage: 'Cast your vote',
+  },
   // #input_term_copy
   ideas: {
     id: 'app.containers.Projects.ideas',
@@ -255,6 +259,10 @@ export default defineMessages({
   readLess: {
     id: 'app.containers.Projects.readLess',
     defaultMessage: 'Read less',
+  },
+  seeTheResults: {
+    id: 'app.containers.Projects.seeTheResults',
+    defaultMessage: 'See the results',
   },
   seeTheIdeas: {
     id: 'app.containers.Projects.seeTheIdeas',

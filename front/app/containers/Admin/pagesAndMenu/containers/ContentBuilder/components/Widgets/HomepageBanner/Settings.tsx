@@ -476,16 +476,8 @@ const HomepageBannerSettings = () => {
           <div data-cy="e2e-banner-avatar-toggle">
             <Toggle
               disabled={!customHomepageBannerAllowed}
-              label={
-                <Box>
-                  <Text m="0px" color="primary">
-                    {formatMessage(messages.showAvatars)}
-                  </Text>
-                  <Text m="0px" color="textSecondary" fontSize="s">
-                    {formatMessage(messages.showAvatarsDescription)}
-                  </Text>
-                </Box>
-              }
+              label={formatMessage(messages.showAvatars)}
+              description={formatMessage(messages.showAvatarsDescription)}
               checked={homepageSettings.banner_avatars_enabled}
               onChange={() => {
                 setProp(

@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.spaces',
     defaultMessage: 'Spaces',
   },
+  filterCount: {
+    id: 'app.containers.Admin.projects.all.new.filterCount',
+    defaultMessage: '{count, plural, one {# filter} other {# filters}}',
+  },
   arrangeProjects: {
     id: 'app.containers.Admin.projects.all.new.arrangeProjects',
     defaultMessage: 'Arrange projects',

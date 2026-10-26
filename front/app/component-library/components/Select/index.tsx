@@ -51,7 +51,7 @@ const Container = styled.div`
 
   &.disabled {
     ${SelectIcon} {
-      fill: #666;
+      fill: ${colors.grey700};
     }
   }
 

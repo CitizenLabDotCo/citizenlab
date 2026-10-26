@@ -21,6 +21,8 @@ interface PageSaveContextValue {
   saveAll: (reason: SaveReason) => Promise<boolean>;
   discardAll: () => void;
   revision: number;
+  leave: () => void;
+  isLeaving: () => boolean;
 }
 
 const PageSaveContext = createContext<PageSaveContextValue | null>(null);
@@ -33,6 +35,19 @@ export const PageSaveProvider = ({ children }: { children: ReactNode }) => {
   const [dirtyKeys, setDirtyKeys] = useState<string[]>([]);
   const [saving, setSaving] = useState(false);
   const [revision, setRevision] = useState(0);
+
+  const dirty = dirtyKeys.length > 0;
+
+  const leaving = useRef(false);
+
+  useEffect(() => {
+    if (dirty) leaving.current = false;
+  }, [dirty]);
+
+  const leave = useCallback(() => {
+    leaving.current = true;
+  }, []);
+  const isLeaving = useCallback(() => leaving.current, []);
 
   const register = useCallback((key: string, save: SaveFn) => {
     savers.current.set(key, save);
@@ -65,8 +80,6 @@ export const PageSaveProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const value = useMemo(() => {
-    const dirty = dirtyKeys.length > 0;
-
     return {
       register,
       setDirty,
@@ -78,8 +91,10 @@ export const PageSaveProvider = ({ children }: { children: ReactNode }) => {
         setRevision((revision) => revision + 1);
       },
       revision,
+      leave,
+      isLeaving,
     };
-  }, [register, setDirty, dirtyKeys, saving, saveAll, revision]);
+  }, [register, setDirty, dirty, saving, saveAll, revision, leave, isLeaving]);
 
   return (
     <PageSaveContext.Provider value={value}>

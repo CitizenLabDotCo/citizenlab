@@ -52,23 +52,24 @@ RSpec.describe 'reporting_community_monitor_scores parity with Surveys::AverageG
       rows = Analytics::Reporting::CommunityMonitorScore.where(phase_id: phase.id).to_a
       rows = rows.reject(&:staff) if exclude_staff
       # On a request, switching tenant sets Time.zone to the platform timezone.
-      product = Time.use_zone(AppConfiguration.timezone) do
+      dashboard = Time.use_zone(AppConfiguration.timezone) do
         Surveys::AverageGenerator.new(
           phase, input_type: 'sentiment_linear_scale', exclude_admins_and_moderators: exclude_staff
         ).summary_averages_by_quarter
       end
 
-      overall = pooled(rows) { |row| "#{row.year}-#{row.quarter}" }
-      expect(overall).to eq product[:overall][:averages]
+      view_overall_averages = pooled(rows) { |row| "#{row.year}-#{row.quarter}" }
+      dashboard_overall_averages = dashboard[:overall][:averages]
+      expect(view_overall_averages).to eq dashboard_overall_averages
 
-      product[:categories][:averages].each do |category, by_quarter|
+      dashboard[:categories][:averages].each do |category, dashboard_category_averages|
         category_rows = rows.select { |row| row.question_category == category }
-        scores = pooled(category_rows) { |row| "#{row.year}-#{row.quarter}" }
+        view_category_averages = pooled(category_rows) { |row| "#{row.year}-#{row.quarter}" }
 
         # The dashboard shows 0.0 for a category without answers in a
         # quarter; the view has no rows for it.
-        expect(by_quarter.except(*scores.keys).values).to all(eq 0.0)
-        expect(scores).to eq by_quarter.slice(*scores.keys)
+        expect(dashboard_category_averages.except(*view_category_averages.keys).values).to all(eq 0.0)
+        expect(view_category_averages).to eq dashboard_category_averages.slice(*view_category_averages.keys)
       end
     end
   end

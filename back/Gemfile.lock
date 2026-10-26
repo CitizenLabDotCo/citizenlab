@@ -489,11 +489,12 @@ GEM
     crack (1.0.0)
       bigdecimal
       rexml
-    crass (1.0.7)
+    crass (1.0.8)
     crawler_detect (1.2.9)
       qonfig (>= 0.24)
-    css_parser (3.0.0)
+    css_parser (3.3.0)
       addressable
+      base64
       ssrf_filter (~> 1.5)
     csv (3.3.0)
     dalli (3.2.13)

@@ -21,9 +21,10 @@ RSpec.describe Analytics::Reporting::ReferenceDistribution do
     # Validation allows one distribution per question, but no constraint enforces it.
     build(:categorical_distribution, custom_field: gender, distribution: { male.id => 480, female.id => 520 })
       .save!(validate: false)
-    distribution_ids = described_class.where(question_id: gender.id).map { |row| row.id.split(':').first }
+    view_distribution_ids = described_class.where(question_id: gender.id).map { |row| row.id.split(':').first }.uniq
+    dashboard_distribution_id = gender.reload.current_ref_distribution.id
 
-    expect(distribution_ids.uniq).to eq [gender.reload.current_ref_distribution.id]
+    expect(view_distribution_ids).to eq [dashboard_distribution_id]
   end
 
   it 'leaves out the base data of disabled questions' do

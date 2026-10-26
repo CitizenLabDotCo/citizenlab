@@ -55,10 +55,6 @@ namespace :cl2_back do
           enabled: true,
           allowed: true
         },
-        idea_author_change: {
-          enabled: true,
-          allowed: true
-        },
         blocking_profanity: {
           enabled: true,
           allowed: true
@@ -226,6 +222,10 @@ namespace :cl2_back do
           allowed: true
         },
         form_mapping: {
+          enabled: true,
+          allowed: true
+        },
+        input_form_answer_visibility: {
           enabled: true,
           allowed: true
         },

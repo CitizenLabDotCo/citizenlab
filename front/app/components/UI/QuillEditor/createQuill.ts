@@ -24,6 +24,8 @@ interface Params {
   altTextLabel?: string;
   imageTitleLabel?: string;
   ariaLabelledBy?: string;
+  ariaLabel?: string;
+  placeholder?: string;
 }
 
 export const createQuill = (
@@ -43,10 +45,13 @@ export const createQuill = (
     altTextLabel,
     imageTitleLabel,
     ariaLabelledBy,
+    ariaLabel,
+    placeholder,
   }: Params
 ) => {
   const quill = new Quill(editorContainer, {
     theme: 'snow',
+    placeholder,
     formats: [
       'bold',
       'italic',
@@ -225,6 +230,9 @@ export const createQuill = (
   editor.setAttribute('id', id);
   if (ariaLabelledBy) {
     editor.setAttribute('aria-labelledby', ariaLabelledBy);
+  }
+  if (ariaLabel) {
+    editor.setAttribute('aria-label', ariaLabel);
   }
   editor.setAttribute('aria-multiline', 'true');
   editor.setAttribute('role', 'textbox');
