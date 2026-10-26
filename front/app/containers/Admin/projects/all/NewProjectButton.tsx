@@ -10,6 +10,7 @@ import Button from 'components/UI/ButtonWithLink';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import ProjectAssistantModal from '../project/backofficeRedesign/ProjectAssistantModal';
+import TemplateGallery from '../project/backofficeRedesign/ProjectAssistantModal/TemplateGallery';
 
 import messages from './messages';
 import NewProjectModal, { NewProjectMode } from './NewProjectModal';
@@ -31,6 +32,10 @@ const NewProjectButton = () => {
   // The AI assistant create flow opens as its own full modal, not one of the
   // NewProjectModal tabs.
   const [assistantOpened, setAssistantOpened] = useState(false);
+  // The template gallery opens as its own modal (a self-contained prototype
+  // gallery — the legacy GraphQL-backed one renders empty on staging/preview and
+  // is being deprecated).
+  const [templatesOpen, setTemplatesOpen] = useState(false);
 
   const openModal = (mode: NewProjectMode) => {
     setDropdownOpened(false);
@@ -40,6 +45,12 @@ const NewProjectButton = () => {
   const openAssistant = () => {
     setDropdownOpened(false);
     setAssistantOpened(true);
+  };
+
+  const openTemplates = () => {
+    setDropdownOpened(false);
+    setAssistantOpened(false);
+    setTemplatesOpen(true);
   };
 
   if (!showNewExperience) {
@@ -99,7 +110,7 @@ const NewProjectButton = () => {
                 icon="copy"
                 title={formatMessage(messages.fromTemplate)}
                 description={formatMessage(messages.fromTemplateDescription)}
-                onClick={() => openModal('template')}
+                onClick={openTemplates}
               />
             </Box>
           }
@@ -115,12 +126,19 @@ const NewProjectButton = () => {
             setAssistantOpened(false);
             setMode('scratch');
           }}
-          onBrowseTemplates={() => {
-            setAssistantOpened(false);
-            setMode('template');
-          }}
+          onBrowseTemplates={openTemplates}
         />
       )}
+
+      <TemplateGallery
+        opened={templatesOpen}
+        onClose={() => setTemplatesOpen(false)}
+        // Prototype: "Use template" hands off to the blank builder for now.
+        onUseTemplate={() => {
+          setTemplatesOpen(false);
+          setMode('scratch');
+        }}
+      />
     </Box>
   );
 };
