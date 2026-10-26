@@ -463,7 +463,6 @@ DROP INDEX IF EXISTS public.index_custom_block_versions_on_custom_block_id_and_n
 DROP INDEX IF EXISTS public.index_cosponsorships_on_user_id;
 DROP INDEX IF EXISTS public.index_cosponsorships_on_idea_id;
 DROP INDEX IF EXISTS public.index_content_builder_layouts_content_buidable_type_id_code;
-DROP INDEX IF EXISTS public.index_content_builder_custom_blocks_on_status;
 DROP INDEX IF EXISTS public.index_content_builder_custom_blocks_on_created_by_id;
 DROP INDEX IF EXISTS public.index_content_builder_custom_block_versions_on_custom_block_id;
 DROP INDEX IF EXISTS public.index_confirmations_on_user_id_and_type;
@@ -2374,7 +2373,6 @@ CREATE TABLE public.content_builder_custom_block_versions (
 CREATE TABLE public.content_builder_custom_blocks (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    description_multiloc jsonb DEFAULT '{}'::jsonb,
     status character varying DEFAULT 'draft'::character varying NOT NULL,
     created_by_id uuid,
     created_at timestamp(6) without time zone NOT NULL,
@@ -6968,13 +6966,6 @@ CREATE INDEX index_content_builder_custom_block_versions_on_custom_block_id ON p
 --
 
 CREATE INDEX index_content_builder_custom_blocks_on_created_by_id ON public.content_builder_custom_blocks USING btree (created_by_id);
-
-
---
--- Name: index_content_builder_custom_blocks_on_status; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_content_builder_custom_blocks_on_status ON public.content_builder_custom_blocks USING btree (status);
 
 
 --

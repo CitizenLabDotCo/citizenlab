@@ -6,7 +6,6 @@
 #
 #  id                   :uuid             not null, primary key
 #  title_multiloc       :jsonb            not null
-#  description_multiloc :jsonb
 #  status               :string           default("draft"), not null
 #  created_by_id        :uuid
 #  created_at           :datetime         not null
@@ -15,7 +14,6 @@
 # Indexes
 #
 #  index_content_builder_custom_blocks_on_created_by_id  (created_by_id)
-#  index_content_builder_custom_blocks_on_status         (status)
 #
 # Foreign Keys
 #
