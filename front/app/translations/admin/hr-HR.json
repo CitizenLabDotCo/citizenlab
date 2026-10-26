@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Pogledaj na stranici",
   "app.containers.Admin.projects.project.buildView": "Izrada",
   "app.containers.Admin.projects.project.causesSection": "Ciljevi",
-  "app.containers.Admin.projects.project.causesSectionDescription": "Postavite ciljeve za koje ljudi mogu volontirati.",
   "app.containers.Admin.projects.project.collectingNow": "Prikupljanje u tijeku",
   "app.containers.Admin.projects.project.contextFolderDescription": "Mapa grupira povezane projekte unutar prostora.",
   "app.containers.Admin.projects.project.contextNoFolder": "Nema mape",

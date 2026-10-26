@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Féach ar an suíomh",
   "app.containers.Admin.projects.project.buildView": "Tógáil",
   "app.containers.Admin.projects.project.causesSection": "Cúiseanna",
-  "app.containers.Admin.projects.project.causesSectionDescription": "Socraigh na cúiseanna ar féidir le daoine obair dheonach a dhéanamh dóibh.",
   "app.containers.Admin.projects.project.collectingNow": "Ag bailiú anois",
   "app.containers.Admin.projects.project.contextFolderDescription": "Grúpálann fillteán tionscadail ghaolmhara laistigh de spás.",
   "app.containers.Admin.projects.project.contextNoFolder": "Gan fillteán",

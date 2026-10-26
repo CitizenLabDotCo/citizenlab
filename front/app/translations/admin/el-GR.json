@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Προβολή στον ιστότοπο",
   "app.containers.Admin.projects.project.buildView": "Δημιουργία",
   "app.containers.Admin.projects.project.causesSection": "Σκοποί",
-  "app.containers.Admin.projects.project.causesSectionDescription": "Ορίστε τους σκοπούς για τους οποίους μπορούν να προσφέρουν εθελοντικά οι πολίτες.",
   "app.containers.Admin.projects.project.collectingNow": "Συλλογή σε εξέλιξη",
   "app.containers.Admin.projects.project.contextFolderDescription": "Ένας φάκελος ομαδοποιεί σχετικά έργα μέσα σε έναν χώρο.",
   "app.containers.Admin.projects.project.contextNoFolder": "Χωρίς φάκελο",

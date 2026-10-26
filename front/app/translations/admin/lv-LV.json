@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Skatīt vietnē",
   "app.containers.Admin.projects.project.buildView": "Izveide",
   "app.containers.Admin.projects.project.causesSection": "Mērķi",
-  "app.containers.Admin.projects.project.causesSectionDescription": "Iestatiet mērķus, kuriem cilvēki var pieteikties kā brīvprātīgie.",
   "app.containers.Admin.projects.project.collectingNow": "Pašlaik tiek apkopots",
   "app.containers.Admin.projects.project.contextFolderDescription": "Mape grupē saistītos projektus vietas ietvaros.",
   "app.containers.Admin.projects.project.contextNoFolder": "Nav mapes",

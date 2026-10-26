@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Megtekintés az oldalon",
   "app.containers.Admin.projects.project.buildView": "Szerkesztés",
   "app.containers.Admin.projects.project.causesSection": "Ügyek",
-  "app.containers.Admin.projects.project.causesSectionDescription": "Állítsa be az ügyeket, amelyekre az emberek önkéntesnek jelentkezhetnek.",
   "app.containers.Admin.projects.project.collectingNow": "Gyűjtés folyamatban",
   "app.containers.Admin.projects.project.contextFolderDescription": "A mappa a kapcsolódó projekteket csoportosítja egy téren belül.",
   "app.containers.Admin.projects.project.contextNoFolder": "Nincs mappa",

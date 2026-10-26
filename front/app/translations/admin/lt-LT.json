@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Peržiūrėti svetainėje",
   "app.containers.Admin.projects.project.buildView": "Kurti",
   "app.containers.Admin.projects.project.causesSection": "Tikslai",
-  "app.containers.Admin.projects.project.causesSectionDescription": "Nustatykite tikslus, kuriems žmonės gali savanoriauti.",
   "app.containers.Admin.projects.project.collectingNow": "Dabar renkama",
   "app.containers.Admin.projects.project.contextFolderDescription": "Aplankas sugrupuoja susijusius projektus erdvėje.",
   "app.containers.Admin.projects.project.contextNoFolder": "Nėra aplanko",

@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Ver no site",
   "app.containers.Admin.projects.project.buildView": "Construir",
   "app.containers.Admin.projects.project.causesSection": "Causas",
-  "app.containers.Admin.projects.project.causesSectionDescription": "Configure as causas para as quais as pessoas podem se voluntariar.",
   "app.containers.Admin.projects.project.collectingNow": "Coletando agora",
   "app.containers.Admin.projects.project.contextFolderDescription": "Uma pasta agrupa projetos relacionados dentro de um espaço.",
   "app.containers.Admin.projects.project.contextNoFolder": "Nenhuma pasta",

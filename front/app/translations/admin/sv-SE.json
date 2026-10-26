@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Visa på webbplatsen",
   "app.containers.Admin.projects.project.buildView": "Bygg",
   "app.containers.Admin.projects.project.causesSection": "Ändamål",
-  "app.containers.Admin.projects.project.causesSectionDescription": "Ställ in de ändamål som människor kan anmäla sig som volontärer för.",
   "app.containers.Admin.projects.project.collectingNow": "Samlar in nu",
   "app.containers.Admin.projects.project.contextFolderDescription": "En mapp grupperar relaterade projekt inom en yta.",
   "app.containers.Admin.projects.project.contextNoFolder": "Ingen mapp",

@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Sitede görüntüle",
   "app.containers.Admin.projects.project.buildView": "Oluştur",
   "app.containers.Admin.projects.project.causesSection": "Amaçlar",
-  "app.containers.Admin.projects.project.causesSectionDescription": "İnsanların gönüllü olabileceği amaçları ayarlayın.",
   "app.containers.Admin.projects.project.collectingNow": "Şu an toplanıyor",
   "app.containers.Admin.projects.project.contextFolderDescription": "Klasör, bir alan içindeki ilgili projeleri gruplandırır.",
   "app.containers.Admin.projects.project.contextNoFolder": "Klasör yok",

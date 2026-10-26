@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Ver en el sitio",
   "app.containers.Admin.projects.project.buildView": "Diseño",
   "app.containers.Admin.projects.project.causesSection": "Causas",
-  "app.containers.Admin.projects.project.causesSectionDescription": "Configura las causas en las que se puede colaborar como voluntario.",
   "app.containers.Admin.projects.project.collectingNow": "Recopilando ahora",
   "app.containers.Admin.projects.project.contextFolderDescription": "Una carpeta agrupa proyectos relacionados dentro de un espacio.",
   "app.containers.Admin.projects.project.contextNoFolder": "Sin carpeta",

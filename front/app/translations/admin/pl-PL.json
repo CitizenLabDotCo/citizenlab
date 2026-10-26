@@ -1715,7 +1715,6 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.viewOnSite": "Zobacz na stronie",
   "app.containers.Admin.projects.project.buildView": "Buduj",
   "app.containers.Admin.projects.project.causesSection": "Cele",
-  "app.containers.Admin.projects.project.causesSectionDescription": "Skonfiguruj cele, w które ludzie mogą się zaangażować jako wolontariusze.",
   "app.containers.Admin.projects.project.collectingNow": "Trwa zbieranie",
   "app.containers.Admin.projects.project.contextFolderDescription": "Folder grupuje powiązane projekty wewnątrz przestrzeni.",
   "app.containers.Admin.projects.project.contextNoFolder": "Brak folderu",
