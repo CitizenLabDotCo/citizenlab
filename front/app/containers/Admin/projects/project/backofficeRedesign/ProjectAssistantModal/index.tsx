@@ -358,6 +358,37 @@ const ProjectAssistantModal = ({
           <>
             {brief && <UserBubble text={brief} />}
 
+            {/* Once drafting starts, the choices the manager made in the intake
+                are shown back as their own "turn" — aligned right like a sent
+                message — so the thread keeps flowing into the drafting step
+                rather than swapping to a blank progress screen. */}
+            {(phase === 'drafting' || phase === 'review') && chosenTags.length > 0 && (
+              <Box display="flex" justifyContent="flex-end">
+                <Box maxWidth="85%" display="flex" flexWrap="wrap" gap="6px" justifyContent="flex-end">
+                  {chosenTags.map((tag) => (
+                    <Box
+                      key={tag}
+                      px="10px"
+                      py="4px"
+                      borderRadius="999px"
+                      bgColor={colors.grey100}
+                    >
+                      <Text m="0px" fontSize="s" color="textSecondary">
+                        {tag}
+                      </Text>
+                    </Box>
+                  ))}
+                </Box>
+              </Box>
+            )}
+
+            {phase === 'drafting' && (
+              <AssistantLine>
+                Perfect — I’ve got what I need. Give me a moment while I pull this
+                together.
+              </AssistantLine>
+            )}
+
             {phase === 'question' &&
               (intakeThinking ? (
                 <ThinkingDots />
@@ -390,34 +421,11 @@ const ProjectAssistantModal = ({
                       {summary.headline}
                     </Text>
 
-                    {/* The actionable part, shown up front: what the manager
-                        should actually do before publishing (incl. setting up
-                        offline participation), as a tickable checklist. */}
-                    {summary.next_steps && summary.next_steps.length > 0 && (
-                      <Box mt="16px">
-                        <Text m="0 0 10px" fontSize="s" fontWeight="bold" color="textPrimary">
-                          Before you publish
-                        </Text>
-                        <Box display="flex" flexDirection="column" gap="10px">
-                          {summary.next_steps.map((step, i) => (
-                            <Box key={i} display="flex" gap="10px" alignItems="flex-start">
-                              <Box
-                                flex="0 0 auto"
-                                width="16px"
-                                height="16px"
-                                mt="3px"
-                                borderRadius="4px"
-                                border={`1.5px solid ${colors.teal400}`}
-                                bgColor={colors.white}
-                              />
-                              <Text m="0px" color="textPrimary" lineHeight="1.45">
-                                {step}
-                              </Text>
-                            </Box>
-                          ))}
-                        </Box>
-                      </Box>
-                    )}
+                    {/* The before-you-publish checklist deliberately does NOT
+                        live here — it surfaces on the project workspace after
+                        "Create project", where the manager actually does the
+                        work (see ProjectEditChat). This card stays a short
+                        explanation of what was drafted. */}
 
                     {/* The "why" rationale, collapsed by default so the card
                         stays short — expandable for the manager who wants it. */}
@@ -546,7 +554,7 @@ const ProjectAssistantModal = ({
 
         {wide ? (
           <>
-            <Box flex="0 0 440px" display="flex" flexDirection="column" minHeight="0" borderRight={`1px solid ${colors.grey200}`}>
+            <Box flex="0 0 520px" display="flex" flexDirection="column" minHeight="0" borderRight={`1px solid ${colors.grey200}`}>
               {conversation}
             </Box>
             <Box flex="1" minWidth="0" display="flex" flexDirection="column" minHeight="0" bgColor={colors.grey50}>
