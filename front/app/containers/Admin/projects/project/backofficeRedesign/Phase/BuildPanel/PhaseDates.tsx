@@ -45,6 +45,11 @@ const PhaseDates = ({
   const forcedOpen = !formData.start_at || hasError;
   const open = expanded || forcedOpen;
 
+  const handleChange = (dates: Dates) => {
+    setExpanded(true);
+    onChange(dates);
+  };
+
   return (
     <PanelField
       label={label}
@@ -74,7 +79,7 @@ const PhaseDates = ({
           ranges={ranges}
           errors={errors}
           validationErrors={validationErrors}
-          onChange={onChange}
+          onChange={handleChange}
           variant="bo"
         />
       )}
