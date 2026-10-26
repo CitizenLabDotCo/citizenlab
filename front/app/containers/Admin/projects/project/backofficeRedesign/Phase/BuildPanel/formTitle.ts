@@ -4,7 +4,6 @@ import { getInputTermMessage } from 'utils/i18n';
 
 import messages from '../../messages';
 
-/** The input form's title, named after what participants submit. */
 const formTitle = (inputTerm: InputTerm) =>
   getInputTermMessage(inputTerm, {
     idea: messages.ideaFormTitle,

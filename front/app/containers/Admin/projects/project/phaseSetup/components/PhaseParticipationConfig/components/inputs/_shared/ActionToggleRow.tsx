@@ -12,7 +12,6 @@ interface Props {
   action: IPhasePermissionAction;
   last?: boolean;
   error?: ReactNode;
-  /** The action's toggle. */
   children: ReactNode;
 }
 

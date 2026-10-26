@@ -13,7 +13,6 @@ interface Props {
   projectId: string;
 }
 
-/** The project's default assignee, shown in a phase's moderation settings. */
 const AssigneeRow = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
   const { loaded, options, assignee, setAssignee } =

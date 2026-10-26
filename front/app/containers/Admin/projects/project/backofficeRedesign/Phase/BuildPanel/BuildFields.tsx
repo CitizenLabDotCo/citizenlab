@@ -30,7 +30,6 @@ import PhaseDates from './PhaseDates';
 import setupTitle from './setupTitle';
 import SurveyMethodSection, { SurveyMethodSwitch } from './SurveyMethodSection';
 
-// The methods whose submissions participants name with an input term.
 const USES_INPUT_TERM: ParticipationMethod[] = ['ideation', 'proposals'];
 
 interface Props {

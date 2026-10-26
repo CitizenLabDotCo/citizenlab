@@ -11,7 +11,6 @@ interface Props {
   onChange: (value: string) => void;
 }
 
-/** A setting's label with a small number field on the right of it. */
 const NumberSettingRow = ({
   id,
   label,

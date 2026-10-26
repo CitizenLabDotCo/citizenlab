@@ -315,7 +315,6 @@ const ProposalsInputs = ({
   if (layout === 'panel') {
     return (
       <>
-        {/* Sets the rules apart from the participant data cards above. */}
         <Box pt="22px" />
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}

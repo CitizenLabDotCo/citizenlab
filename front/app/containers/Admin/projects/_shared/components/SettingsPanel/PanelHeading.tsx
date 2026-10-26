@@ -6,10 +6,8 @@ interface Props {
   label: string;
 }
 
-/**
- * Names a group of setup cards, above the first card of the group. The space
- * above is padding so it doesn't merge with the previous card's margin.
- */
+// The space above is padding so it doesn't merge with the previous card's
+// margin.
 const PanelHeading = ({ label }: Props) => (
   <Box display="flex" alignItems="center" minHeight="42px" pt="14px">
     <Box as="h3" m="0">

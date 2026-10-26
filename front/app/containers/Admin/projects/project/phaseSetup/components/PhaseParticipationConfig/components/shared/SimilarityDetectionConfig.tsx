@@ -33,7 +33,6 @@ interface Props {
     field: 'similarity_threshold_title' | 'similarity_threshold_body',
     value: number
   ) => void;
-  /** 'panel' is the back-office settings row of the workspace panel. */
   variant?: 'default' | 'panel';
 }
 

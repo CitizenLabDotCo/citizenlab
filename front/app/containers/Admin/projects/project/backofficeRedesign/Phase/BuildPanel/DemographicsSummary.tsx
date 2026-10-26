@@ -16,7 +16,6 @@ interface Props {
   action: IPhasePermissionAction;
 }
 
-/** How many demographic questions an action asks, or that none are set. */
 const DemographicsSummary = ({ phaseId, action }: Props) => {
   const { formatMessage } = useIntl();
   const { data: customFields } = usePermissionsPhaseCustomFields({

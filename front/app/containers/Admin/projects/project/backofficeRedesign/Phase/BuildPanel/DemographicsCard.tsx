@@ -30,7 +30,6 @@ interface Props {
   phaseId: string;
 }
 
-/** Which demographic questions participants answer, per action. */
 const DemographicsCard = ({ phaseId }: Props) => {
   const { formatMessage } = useIntl();
   const [opened, setOpened] = useState(false);

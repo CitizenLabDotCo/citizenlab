@@ -20,7 +20,6 @@ interface Props {
   ideas_order: IdeaSortMethod | undefined;
   apiErrors: CLErrors | null | undefined;
   handleIdeaDefaultSortMethodChange: (ideas_order: IdeaSortMethod) => void;
-  /** 'panel' is the "Sorting" card of the workspace panel. */
   variant?: 'default' | 'panel';
 }
 

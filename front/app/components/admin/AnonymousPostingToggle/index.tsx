@@ -24,7 +24,6 @@ interface AnonymousPostingToggleProps {
   ) => void;
   toggleLabel?: JSX.Element;
   disabledReason?: string;
-  /** 'panel' is the back-office settings row of the workspace panel. */
   variant?: 'default' | 'panel';
 }
 

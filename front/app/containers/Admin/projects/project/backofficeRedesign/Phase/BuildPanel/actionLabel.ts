@@ -5,7 +5,6 @@ import configMessages from 'containers/Admin/projects/project/phaseSetup/compone
 
 import messages from '../../messages';
 
-/** A short name for what participants do, used as a tab label. */
 const actionLabel = (action: IPhasePermissionAction) => {
   switch (action) {
     case 'posting_idea':

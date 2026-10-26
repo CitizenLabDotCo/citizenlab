@@ -14,7 +14,6 @@ interface Props {
   onSelect: (action: IPhasePermissionAction) => void;
 }
 
-/** Segmented tabs, one per participant action. */
 const ActionTabs = ({ actions, selected, onSelect }: Props) => {
   const { formatMessage } = useIntl();
 

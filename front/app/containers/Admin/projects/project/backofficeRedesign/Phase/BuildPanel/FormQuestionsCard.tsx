@@ -33,7 +33,6 @@ interface Props {
   children?: ReactNode;
 }
 
-/** The form participants fill in: its questions, and a way to edit them. */
 const FormQuestionsCard = ({
   projectId,
   phaseId,

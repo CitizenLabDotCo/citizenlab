@@ -39,7 +39,6 @@ interface Props {
   onChange: (input_term: InputTerm) => void;
 }
 
-/** The word participants see for what they submit. */
 const InputTermCard = ({ value, onChange }: Props) => {
   const { formatMessage } = useIntl();
   const title = formatMessage(projectMessages.inputTermSelectLabel);

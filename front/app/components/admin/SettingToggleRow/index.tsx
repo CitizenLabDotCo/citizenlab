@@ -19,7 +19,6 @@ interface Props {
   onChange: () => void;
 }
 
-/** A back-office settings row: a small toggle with a title and a description. */
 const SettingToggleRow = ({
   id,
   title,

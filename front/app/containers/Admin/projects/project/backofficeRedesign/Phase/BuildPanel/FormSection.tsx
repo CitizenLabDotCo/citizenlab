@@ -28,7 +28,6 @@ interface Props {
   projectId: string;
   participationMethod: ParticipationMethod;
   phaseId?: string;
-  /** Names the input form; it follows the term picked in the card above. */
   inputTerm?: InputTerm;
 }
 

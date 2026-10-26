@@ -10,7 +10,6 @@ import messages from './messages';
 // The project stores no assignee as null; pickers need a value for it.
 export const UNASSIGNED = 'unassigned';
 
-/** The project's default assignee and the people who can be picked. */
 const useProjectAssignee = (projectId: string) => {
   const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);

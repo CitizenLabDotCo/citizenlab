@@ -28,7 +28,6 @@ const TOGGLE_LABEL_INDENT = '36px';
 interface Props {
   prescreening_mode: PrescreeningMode | null | undefined;
   onPrescreeningModeChange: (mode: PrescreeningMode | null) => void;
-  /** 'panel' is the back-office settings row of the workspace panel. */
   variant?: 'default' | 'panel';
 }
 

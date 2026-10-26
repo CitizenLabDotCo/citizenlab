@@ -39,7 +39,6 @@ interface Props {
   children?: ReactNode;
 }
 
-/** One view in the workspace panel's "Available views" card. */
 const ViewRow = ({
   title,
   description,

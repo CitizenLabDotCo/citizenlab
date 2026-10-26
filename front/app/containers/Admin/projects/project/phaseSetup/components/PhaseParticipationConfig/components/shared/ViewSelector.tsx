@@ -45,7 +45,6 @@ interface Props {
   ) => void;
   title?: MessageDescriptor;
   hideFeed?: boolean;
-  /** 'panel' is the "Available views" card of the workspace panel. */
   variant?: 'default' | 'panel';
 }
 

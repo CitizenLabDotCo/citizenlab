@@ -23,7 +23,6 @@ const Row = styled(Box)`
 interface Props {
   phaseId: string;
   action: IPhasePermissionAction;
-  /** The action's toggle, shown on the left of the row. */
   children: ReactNode;
 }
 

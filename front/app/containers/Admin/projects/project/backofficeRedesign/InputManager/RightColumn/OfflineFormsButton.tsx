@@ -18,7 +18,6 @@ interface Props {
   participationMethod: ParticipationMethod;
 }
 
-/** The printable PDF form and Excel template for collecting inputs offline. */
 const OfflineFormsButton = ({ participationMethod }: Props) => {
   const { formatMessage } = useIntl();
   const [opened, setOpened] = useState(false);

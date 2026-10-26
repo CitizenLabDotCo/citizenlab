@@ -10,7 +10,6 @@ import testEnv from '../../utils/testUtils/testEnv';
 type Size = 'small' | 'medium';
 type Variant = 'default' | 'bo';
 
-// The back-office switch: a 26 by 16 track with a 12px knob.
 const BO_KNOB = 12;
 const BO_PADDING = 2;
 
