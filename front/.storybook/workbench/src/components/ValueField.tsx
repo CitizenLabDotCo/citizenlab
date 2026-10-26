@@ -20,6 +20,9 @@ export type FieldProps = {
   onAttach: (token: TokenName) => void;
   onDetach: () => void;
   onOpenPicker: () => void;
+  // Read only (Inspect): a pill opens its token's Foundations row in a new
+  // tab instead of the picker.
+  tokenHref?: string;
 };
 
 // One value of the selection, as Figma draws it: a pill when the value is
@@ -33,6 +36,7 @@ export const ValueField = ({
   onAttach,
   onDetach,
   onOpenPicker,
+  tokenHref,
 }: FieldProps) => {
   const v = row.value;
   // A city value the theme hands over reads as bound: it follows the city.
@@ -63,17 +67,36 @@ export const ValueField = ({
         data-token={token}
         data-row={row.id}
       >
-        <button
-          type="button"
-          className="wb-vf-body"
-          aria-label={`${name}: ${shortName(token)}`}
-          aria-haspopup="dialog"
-          onClick={onOpenPicker}
-        >
-          {lead}
-          <span className="wb-vf-name">{shortName(token)}</span>
-          {liveToken && <span className="wb-vf-muted">{v.shown}</span>}
-        </button>
+        {tokenHref ? (
+          <a
+            className="wb-vf-body"
+            href={tokenHref}
+            target="_blank"
+            rel="noopener"
+            data-testid="wb-insp-token-link"
+            aria-label={`${name}: ${shortName(token)}. Open in Foundations`}
+            title={`Open ${shortName(token)} in Foundations`}
+          >
+            {lead}
+            <span className="wb-vf-name">{shortName(token)}</span>
+            <span className="wb-vf-muted">{v.shown}</span>
+            <span className="wb-vf-open" aria-hidden="true">
+              <Icon name="external" size={12} />
+            </span>
+          </a>
+        ) : (
+          <button
+            type="button"
+            className="wb-vf-body"
+            aria-label={`${name}: ${shortName(token)}`}
+            aria-haspopup="dialog"
+            onClick={onOpenPicker}
+          >
+            {lead}
+            <span className="wb-vf-name">{shortName(token)}</span>
+            {liveToken && <span className="wb-vf-muted">{v.shown}</span>}
+          </button>
+        )}
         {v.link === 'theme' && row.editable && (
           // Through the theme today: attaching reads the variable instead,
           // so token edits reach it.
