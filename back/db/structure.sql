@@ -4547,7 +4547,15 @@ CREATE VIEW public.reporting_phases AS
         CASE
             WHEN ((participation_method)::text = 'voting'::text) THEN manual_voters_last_updated_at
             ELSE NULL::timestamp without time zone
-        END AS offline_voters_updated_at
+        END AS offline_voters_updated_at,
+    ( SELECT count(DISTINCT COALESCE((s.user_id)::text, (s.monthly_user_hash)::text)) AS count
+           FROM (public.impact_tracking_pageviews pv
+             JOIN public.impact_tracking_sessions s ON ((s.id = pv.session_id)))
+          WHERE ((pv.project_id = ph.project_id) AND (pv.created_at >= ph.start_at) AND ((ph.end_at IS NULL) OR (pv.created_at < ph.end_at)))) AS visitors_count,
+    ( SELECT count(DISTINCT COALESCE((s.user_id)::text, (s.monthly_user_hash)::text)) AS count
+           FROM (public.impact_tracking_pageviews pv
+             JOIN public.impact_tracking_sessions s ON ((s.id = pv.session_id)))
+          WHERE ((pv.project_id = ph.project_id) AND (pv.created_at >= ph.start_at) AND ((ph.end_at IS NULL) OR (pv.created_at < ph.end_at)) AND ((s.highest_role IS NULL) OR ((s.highest_role)::text = 'user'::text)))) AS non_staff_visitors_count
    FROM public.phases ph;
 
 

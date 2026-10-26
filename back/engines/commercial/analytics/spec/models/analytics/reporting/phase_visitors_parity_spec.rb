@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-# The visitors recipe in the phase description must give the visitors the
-# phase insights show (Insights::VisitsService, as BasePhaseInsightsService
-# builds it), with and without platform staff.
+# The reporting_phases visitor counts must give the visitors the phase insights
+# show (Insights::VisitsService, as BasePhaseInsightsService builds it), with
+# and without platform staff.
 RSpec.describe 'reporting_phases visitors parity with the phase insights' do # rubocop:disable RSpec/DescribeClass
   let(:phase) { create(:phase, start_at: 10.days.ago.beginning_of_day, end_at: 3.days.ago.beginning_of_day) }
   let(:project) { phase.project }
@@ -35,9 +35,8 @@ RSpec.describe 'reporting_phases visitors parity with the phase insights' do # r
 
   with_them do
     it 'gives the same visitors as the phase insights' do
-      sql = Analytics::Reporting::Phase::VISITORS_SQL.sub('<phase id>', phase.id)
-      sql += " AND (s.highest_role IS NULL OR s.highest_role = 'user')" if exclude_staff
-      view_visitors = ActiveRecord::Base.connection.select_value(sql)
+      row = Analytics::Reporting::Phase.find(phase.id)
+      view_visitors = exclude_staff ? row.non_staff_visitors_count : row.visitors_count
       insights_visitors = Insights::VisitsService.new(
         phase.project_id, start_at: phase.start_at, end_at: phase.end_at, exclude_admins_and_moderators: exclude_staff
       ).total_visits[:visitors]
