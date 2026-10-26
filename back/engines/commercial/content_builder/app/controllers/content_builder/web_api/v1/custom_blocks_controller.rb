@@ -12,8 +12,15 @@ module ContentBuilder
         def index
           blocks = policy_scope(CustomBlock)
             .where(status: 'published')
-            .includes(:versions)
             .order(created_at: :desc)
+            .to_a
+          # Only the columns the serializer reads. A version's source and bundle are
+          # the bulk of its row, and a block gains a version every time it is rewritten.
+          ActiveRecord::Associations::Preloader.new(
+            records: blocks,
+            associations: :versions,
+            scope: CustomBlockVersion.select(:id, :custom_block_id, :number, :manifest)
+          ).call
 
           render json: CustomBlockSerializer.new(blocks, params: jsonapi_serializer_params).serializable_hash
         end
