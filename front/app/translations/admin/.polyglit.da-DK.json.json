@@ -11689,6 +11689,11 @@
     "verified_at": "2026-09-15T14:58:35.342697Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Admin.projects.project.publishOpenEveryoneDescription2": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:15:30.776498Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.projects.project.publishOpenGroups": {
     "state": "verified",
     "verified_at": "2026-09-15T14:58:35.342697Z",
@@ -11772,6 +11777,11 @@
   "app.containers.Admin.projects.project.publishWhoCanOpenDescription": {
     "state": "verified",
     "verified_at": "2026-09-30T07:42:44.838827Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects.project.publishWhoCanSee": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:15:30.776498Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.Admin.projects.project.recommendedActionsHint": {
@@ -24806,8 +24816,8 @@
   },
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": {
     "state": "verified",
-    "verified_at": "2026-03-18T12:49:36.692536Z",
-    "verified_by": "Admin"
+    "verified_at": "2026-10-25T10:29:14.522587Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": {
     "state": "verified",

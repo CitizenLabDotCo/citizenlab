@@ -19,6 +19,8 @@ resource 'Users - Locked attributes' do
     end
 
     before do
+      AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'clave_unica' }] }
+      AppConfiguration.instance.save!
       create(:verification, method_name: 'clave_unica', user: @user)
     end
 

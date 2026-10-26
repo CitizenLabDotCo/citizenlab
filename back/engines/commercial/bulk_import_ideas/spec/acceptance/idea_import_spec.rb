@@ -239,6 +239,36 @@ resource 'BulkImportIdeasImportIdeas' do
         expect(response_data).to eq({ type: 'approve_all', attributes: { approved: 2, not_approved: 1 } })
         expect(draft_ideas.map { |idea| idea.reload.publication_status }).to eq %w[draft published published]
       end
+
+      context 'when a required select question has an "other" option' do
+        let(:project) { create(:project_with_active_native_survey_phase) }
+        let(:phase) { project.phases.first }
+        let(:survey_form) { create(:custom_form, participation_context: phase) }
+        let!(:select_field) do
+          create(:custom_field_select, resource: survey_form, key: 'select_field', required: true).tap do |field|
+            create(:custom_field_option, custom_field: field, key: 'option1')
+            create(:custom_field_option, custom_field: field, key: 'other', other: true)
+          end
+        end
+        let!(:draft_ideas) do
+          create_list(:idea, 2, project: project, creation_phase: phase, phases: [phase], publication_status: 'draft').each do |idea|
+            idea.update! idea_import: create(:idea_import, idea: idea)
+          end
+        end
+
+        example 'Approves ideas where "other" is selected but the "other" text is blank' do
+          # The respondent ticked "other" but left the "please specify" line blank,
+          # so there is no answer for the synthetic `select_field_other` field.
+          create(:custom_field_answer, answerable: draft_ideas[0], key: 'select_field', value: 'other')
+          # The required question itself is left unanswered, which should still block approval.
+
+          do_request
+          assert_status 200
+          expect(response_data).to eq({ type: 'approve_all', attributes: { approved: 1, not_approved: 1 } })
+          expect(draft_ideas.map { |idea| idea.reload.publication_status }).to eq %w[published draft]
+          expect(draft_ideas[0].answer_for_key('select_field_other')).to be_nil
+        end
+      end
     end
 
     context 'idea import metadata' do

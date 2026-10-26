@@ -47,5 +47,7 @@ const PUBLIC_ANSWER_INPUT_TYPES: ICustomFieldInputType[] = [
   'multiselect',
 ];
 
+// Until every question shows its answers. Pages must stay excluded then,
+// since they take no answer and have no key.
 export const supportsPublicAnswers = (inputType: ICustomFieldInputType) =>
   PUBLIC_ANSWER_INPUT_TYPES.includes(inputType);

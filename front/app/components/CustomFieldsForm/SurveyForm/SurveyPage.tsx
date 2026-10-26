@@ -387,7 +387,13 @@ const SurveyPage = ({
                                 name: 'followProjectAndRedirect',
                                 params: {
                                   projectId: project.data.id,
-                                  path: `/projects/${project.data.attributes.slug}`,
+                                  // The community monitor project isn't meant to be
+                                  // browsed by residents, so send them home instead.
+                                  path:
+                                    phase?.attributes.participation_method ===
+                                    'community_monitor_survey'
+                                      ? '/'
+                                      : `/projects/${project.data.attributes.slug}`,
                                 },
                               });
                             }}
