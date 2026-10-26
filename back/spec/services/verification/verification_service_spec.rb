@@ -210,6 +210,11 @@ describe Verification::VerificationService do
   end
 
   describe 'locked_attributes' do
+    before do
+      AppConfiguration.instance.settings['id_config']['id_methods'] << { name: 'bosa_fas' }
+      AppConfiguration.instance.save!
+    end
+
     context 'for a user only authenticated with facebook' do
       it 'returns no locked attributes' do
         identity = create(:facebook_identity)
@@ -223,9 +228,21 @@ describe Verification::VerificationService do
         expect(service.locked_attributes(verification.user)).to match_array %i[first_name last_name]
       end
     end
+
+    context 'for a user verified with a method that is no longer configured' do
+      it 'returns no locked attributes' do
+        verification = create(:verification, method_name: 'clave_unica')
+        expect(service.locked_attributes(verification.user)).to eq []
+      end
+    end
   end
 
   describe 'locked_custom_fields' do
+    before do
+      AppConfiguration.instance.settings['id_config']['id_methods'] << { name: 'bogus' }
+      AppConfiguration.instance.save!
+    end
+
     context 'for a user only authenticated with facebook' do
       it 'returns no locked custom field keys' do
         identity = create(:facebook_identity)
@@ -242,6 +259,16 @@ describe Verification::VerificationService do
 
       it 'does not return locked custom field keys when the field does not exist' do
         verification = create(:verification, method_name: 'bogus')
+        expect(service.locked_custom_fields(verification.user)).to be_empty
+      end
+    end
+
+    context 'for a user verified with a method that is no longer configured' do
+      it 'returns no locked custom field keys' do
+        # gent_rrn reads its custom_field_key from the tenant config, which is
+        # gone once the method is removed from id_methods.
+        create(:custom_field_gender)
+        verification = create(:verification, method_name: 'gent_rrn')
         expect(service.locked_custom_fields(verification.user)).to be_empty
       end
     end
