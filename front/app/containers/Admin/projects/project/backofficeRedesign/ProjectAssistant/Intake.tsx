@@ -125,22 +125,20 @@ const Intake = ({
   onLeverChange,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [skipped, setSkipped] = useState<Set<IntakeQuestionId>>(new Set());
+  // Progressive disclosure: only the first question shows at first; the next
+  // appears as the current one is answered or skipped, so the set never lands as
+  // a wall of eight questions at once.
+  const [revealedCount, setRevealedCount] = useState(1);
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   const total = INTAKE_QUESTIONS.length;
+  const visible = INTAKE_QUESTIONS.slice(0, revealedCount);
   const answeredCount = INTAKE_QUESTIONS.filter(
     (question) => !!answers[question.id]?.optionId
   ).length;
 
-  const skip = (id: IntakeQuestionId) =>
-    setSkipped((current) => new Set(current).add(id));
-  const unskip = (id: IntakeQuestionId) =>
-    setSkipped((current) => {
-      const next = new Set(current);
-      next.delete(id);
-      return next;
-    });
+  const advance = () =>
+    setRevealedCount((count) => Math.min(count + 1, total));
 
   return (
     <Box mt="8px">
@@ -168,10 +166,13 @@ const Intake = ({
         </Text>
       </Box>
 
-      {INTAKE_QUESTIONS.map((question, index) => {
+      {visible.map((question, index) => {
         const answer = answers[question.id];
         const isAnswered = !!answer?.optionId;
-        const isSkipped = skipped.has(question.id);
+        const isLastVisible = index === visible.length - 1;
+        // Skip only appears on the question you're currently on, to move past it
+        // to the next one — earlier questions have already been dealt with.
+        const canSkip = isLastVisible && !isAnswered && revealedCount < total;
         const selectedOption = question.options.find(
           (option) => option.id === answer?.optionId
         );
@@ -209,89 +210,60 @@ const Intake = ({
                   {formatMessage(question.ask)}
                 </Text>
               </Box>
-              {!isSkipped && (
-                <LinkButton
-                  type="button"
-                  disabled={disabled}
-                  onClick={() => skip(question.id)}
-                >
+              {canSkip && (
+                <LinkButton type="button" disabled={disabled} onClick={advance}>
                   {formatMessage(messages.intakeSkip)}
                 </LinkButton>
               )}
             </Box>
 
-            {isSkipped ? (
-              <Box
-                mt="10px"
-                ml={INDENT}
-                display="flex"
-                alignItems="center"
-                gap="8px"
-              >
-                <Text m="0px" fontSize="s" color="textSecondary">
-                  Skipped
-                </Text>
-                <LinkButton
-                  type="button"
-                  disabled={disabled}
-                  onClick={() => unskip(question.id)}
-                >
-                  Undo
-                </LinkButton>
-              </Box>
-            ) : (
-              <>
-                <Box
-                  mt="12px"
-                  ml={INDENT}
-                  display="flex"
-                  flexWrap="wrap"
-                  gap="8px"
-                >
-                  {question.options.map((option) => {
-                    const selected = answer?.optionId === option.id;
-                    return (
-                      <Chip
-                        key={option.id}
-                        type="button"
-                        $selected={selected}
-                        disabled={disabled}
-                        onClick={() => onAnswer(question.id, option)}
-                      >
-                        {selected && (
-                          <Icon
-                            name="check"
-                            width="14px"
-                            height="14px"
-                            fill="#fff"
-                          />
-                        )}
-                        {formatMessage(option.label)}
-                      </Chip>
-                    );
-                  })}
-                </Box>
+            <Box
+              mt="12px"
+              ml={INDENT}
+              display="flex"
+              flexWrap="wrap"
+              gap="8px"
+            >
+              {question.options.map((option) => {
+                const selected = answer?.optionId === option.id;
+                return (
+                  <Chip
+                    key={option.id}
+                    type="button"
+                    $selected={selected}
+                    disabled={disabled}
+                    onClick={() => {
+                      onAnswer(question.id, option);
+                      // Picking an answer on the question you're on reveals the
+                      // next one.
+                      if (isLastVisible) advance();
+                    }}
+                  >
+                    {selected && (
+                      <Icon name="check" width="14px" height="14px" fill="#fff" />
+                    )}
+                    {formatMessage(option.label)}
+                  </Chip>
+                );
+              })}
+            </Box>
 
-                {/* The optional free-text appears only once a chip is picked, so
-                    it never gets in the way of the one-tap path. */}
-                {showDetail && (
-                  <Box mt="10px" ml={INDENT}>
-                    <DetailInput
-                      type="text"
-                      value={answer?.detail ?? ''}
-                      placeholder={
-                        question.detailPlaceholder
-                          ? formatMessage(question.detailPlaceholder)
-                          : undefined
-                      }
-                      disabled={disabled}
-                      onChange={(event) =>
-                        onDetail(question.id, event.target.value)
-                      }
-                    />
-                  </Box>
-                )}
-              </>
+            {/* The optional free-text appears only once a chip is picked, so it
+                never gets in the way of the one-tap path. */}
+            {showDetail && (
+              <Box mt="10px" ml={INDENT}>
+                <DetailInput
+                  type="text"
+                  value={answer?.detail ?? ''}
+                  placeholder={
+                    question.detailPlaceholder
+                      ? formatMessage(question.detailPlaceholder)
+                      : undefined
+                  }
+                  disabled={disabled}
+                  onChange={(event) => onDetail(question.id, event.target.value)}
+                />
+              </Box>
             )}
           </Box>
         );
