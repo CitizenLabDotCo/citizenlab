@@ -1655,8 +1655,6 @@
   "app.containers.Admin.projects.project.analysis.aiSummary": "AI-opsummering",
   "app.containers.Admin.projects.project.analysis.aiSummaryTooltipText": "Dette er AI-genereret indhold. Det er måske ikke 100% nøjagtigt. Gennemgå og krydsreferer med de faktiske input for nøjagtighed. Vær opmærksom på, at nøjagtigheden sandsynligvis forbedres, hvis antallet af valgte input reduceres.",
   "app.containers.Admin.projects.project.areaFilterAllAreas": "Alle områder",
-  "app.containers.Admin.projects.project.areaFilterChooseAreas": "Vælg hvilke områdefiltre, det skal vises i",
-  "app.containers.Admin.projects.project.areaFilterDescription": "Hvor dette projekt vises, når borgerne filtrerer efter deres område.",
   "app.containers.Admin.projects.project.areaFilterSelectedAreas": "Valgte områder",
   "app.containers.Admin.projects.project.backToProjectSetup": "Projektopsætning",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.acceptedTile": "Accepteret",
