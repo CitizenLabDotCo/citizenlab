@@ -67,9 +67,9 @@ describe ReportBuilder::Craftjs::LayoutValidator do
     end
   end
 
-  # A two-column section is stored three ways depending on who made it, and the
-  # widget renders all three. Chat sends the node back as it found it — to retitle a
-  # section, say — so refusing any of them would cost a round for nothing.
+  # A two-column section is stored two ways depending on who made it, and the widget
+  # renders both. Chat sends the node back as it found it — to retitle a section,
+  # say — so refusing either would cost a round for nothing.
   describe 'a two-column section, however it was wired' do
     def two_column_graph(**overrides)
       {
@@ -92,12 +92,20 @@ describe ReportBuilder::Craftjs::LayoutValidator do
       expect(described_class.validate(graph, convention_scope: ['col'])).to be_valid
     end
 
-    it 'accepts the slot names PlatformTemplate gives its columns' do
+    # The widget looks up only the slots it declares, so differently named ones
+    # draw two empty columns and strand what was wired to them.
+    it 'refuses slots the widget does not declare' do
       graph = two_column_graph(
         'linkedNodes' => { 'column-visitors-left' => 'leftcol', 'column-visitors-right' => 'rightcol' }
       )
 
-      expect(described_class.validate(graph, convention_scope: ['col'])).to be_valid
+      expect(described_class.validate(graph, convention_scope: ['col'])).not_to be_valid
+    end
+
+    it 'refuses a section with one column linked and the other a craft child' do
+      graph = two_column_graph('nodes' => %w[leftcol], 'linkedNodes' => { 'right' => 'rightcol' })
+
+      expect(described_class.validate(graph, convention_scope: ['col'])).not_to be_valid
     end
 
     it 'still refuses a section with only one column' do
@@ -106,7 +114,7 @@ describe ReportBuilder::Craftjs::LayoutValidator do
       result = described_class.validate(graph, convention_scope: ['col'])
 
       expect(result).not_to be_valid
-      expect(result.message).to include 'must have exactly 2 children'
+      expect(result.message).to include 'must hold 2 children'
     end
   end
 

@@ -246,7 +246,9 @@ RSpec.describe ContentBuilder::Craftjs::Validator do
     # For a widget whose content the FE renders from either wiring. Pinning slot
     # names there would refuse a node the builder itself wrote.
     context "a widget declaring 'children' rather than slots" do
-      let(:widget_specs) { { 'TwoColumn' => { 'children' => 2 }, 'Container' => {} } }
+      let(:widget_specs) do
+        { 'TwoColumn' => { 'children' => 2, 'slots' => %w[left right] }, 'Container' => {} }
+      end
 
       before do
         json.delete('T')
@@ -261,19 +263,40 @@ RSpec.describe ContentBuilder::Craftjs::Validator do
         expect(errors).to eq([])
       end
 
-      it 'accepts them as linked slots, whatever the slots are called' do
+      it 'accepts them as the declared linked slots' do
         json['TC'] = craftjs_node('TwoColumn', parent: 'ROOT',
-          linkedNodes: { 'column-visitors-left' => 'L', 'column-visitors-right' => 'R' })
+          linkedNodes: { 'left' => 'L', 'right' => 'R' })
 
         expect(errors).to eq([])
       end
 
-      it 'rejects a node holding the wrong number of columns' do
+      # The widget only looks its slots up by the names it declares, so slots of
+      # another name draw nothing at all.
+      it 'rejects linked slots it does not declare' do
+        json['TC'] = craftjs_node('TwoColumn', parent: 'ROOT',
+          linkedNodes: { 'column-visitors-left' => 'L', 'column-visitors-right' => 'R' })
+
+        expect(errors).to contain_exactly(
+          match(/\Anode TC: must hold 2 children.*slots column-visitors-left, column-visitors-right/)
+        )
+      end
+
+      # It draws `nodes` when there are any, so the linked one would be stranded.
+      it 'rejects a node that splits its children across both wirings' do
+        json['TC'] = craftjs_node('TwoColumn', parent: 'ROOT',
+          nodes: %w[L], linkedNodes: { 'right' => 'R' })
+
+        expect(errors).to contain_exactly(
+          match(/\Anode TC: must hold 2 children.*this has 1 in 'nodes' and slots right/)
+        )
+      end
+
+      it 'rejects a node holding the wrong number of children' do
         json.delete('R')
         json['TC'] = craftjs_node('TwoColumn', parent: 'ROOT', nodes: %w[L])
 
         expect(errors).to contain_exactly(
-          match(/\Anode TC: must have exactly 2 children.*this has 1/)
+          match(/\Anode TC: must hold 2 children.*this has 1 in 'nodes'/)
         )
       end
     end

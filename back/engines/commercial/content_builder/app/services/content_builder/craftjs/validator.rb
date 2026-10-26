@@ -223,16 +223,21 @@ module ContentBuilder
 
       # For a widget that renders craft children and falls back to linked slots only
       # when it has none, both wirings are correct and either may be what is stored.
-      # Pinning slot names would refuse a node the builder itself wrote, so the count
-      # is the convention: the widget draws a fixed number of places, and a node with
-      # the wrong number of children leaves one of them empty.
+      # The FE draws `nodes` when there are any and otherwise looks its slots up by
+      # name, so a node has to use one wiring fully: every child in `nodes`, or
+      # exactly the declared slots. A node holding some of each draws only the
+      # `nodes` ones and strands the rest.
       def child_count_errors(id, node, spec)
         expected = spec['children']
-        actual = node['nodes'].size + node['linkedNodes'].size
-        return [] if actual == expected
+        slots = spec['slots'] || []
+        linked = node['linkedNodes'].keys
+        return [] if node['nodes'].size == expected && linked.empty?
+        return [] if node['nodes'].empty? && slots.size == expected && linked.sort == slots.sort
 
         [error(id, :child_count,
-          "must have exactly #{expected} children, wired through 'nodes' or 'linkedNodes'; this has #{actual}")]
+          "must hold #{expected} children, either all in 'nodes' or wired to exactly the " \
+          "linkedNodes slots #{slots.join(', ')}; this has #{node['nodes'].size} in 'nodes'" \
+          "#{linked.any? ? " and slots #{linked.join(', ')}" : ''}")]
       end
 
       # Slot containers must be canvases. An edge is checked when either its parent

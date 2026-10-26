@@ -29,13 +29,13 @@ module ReportBuilder
       SPECS = {
         # Layout and text — what the composer writes.
         'TextMultiloc' => { 'multilocs' => %w[text] },
-        # Both wirings are stored and both render: the widget draws its craft
-        # children and falls back to linked slots only when it has none. The builder
-        # and the composer use slots named left and right; templates use `nodes`, or
-        # slots of their own naming. So the convention is the number of columns, not
-        # how they are wired — see Validator#child_count_errors.
+        # Two wirings are stored and both render: templates keep their columns as
+        # craft children, while the builder and the composer use the left and right
+        # slots the widget falls back to. Either is whole on its own, which is what
+        # 'children' with 'slots' says — see Validator#child_count_errors.
         'TwoColumn' => {
           'children' => 2,
+          'slots' => %w[left right],
           'enums' => { 'columnLayout' => %w[1-1 2-1 1-2] }
         },
         'WhiteSpace' => { 'enums' => { 'size' => ['small', 'medium', 'large', ''] } },
