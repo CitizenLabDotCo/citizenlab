@@ -121,7 +121,7 @@ resource 'Verifications' do
         stub_request(:get, "https://apidgqa.gent.be/services/wijkbudget/v1/WijkBudget/verificatie/#{rrn}")
           .to_return(status: 503)
 
-        expect { do_request }.to raise_error(RuntimeError, 'Gent WijkBudget API responded with HTTP 503')
+        expect { do_request }.to raise_error(RuntimeError, 'Gent WijkBudget API responded with HTTP 503 for https://apidgqa.gent.be/services/wijkbudget/v1/WijkBudget/verificatie/{rrn}')
         expect(@user.reload.verified).to be false
       end
     end

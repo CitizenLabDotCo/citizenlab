@@ -71,7 +71,10 @@ module CustomIdMethods::GentRrn
       api = WijkBudgetApi.new(api_key: config[:api_key], environment: config[:environment])
       response = api.verificatie(rrn)
 
-      raise "Gent WijkBudget API responded with HTTP #{response.code}" unless response.success?
+      unless response.success?
+        url = response.request.last_uri.to_s.sub(rrn, '{rrn}')
+        raise "Gent WijkBudget API responded with HTTP #{response.code} for #{url}"
+      end
 
       body = response.parsed_response
       reason = body.dig('verificatieResultaat', 'redenNietGeldig')

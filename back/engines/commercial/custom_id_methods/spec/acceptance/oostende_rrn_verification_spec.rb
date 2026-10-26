@@ -108,7 +108,7 @@ resource 'Verifications' do
         stub_request(:get, "https://wapaza-wijkprikkelsapi-01.azurewebsites.net/services/wijkbudget-api/v1/api/WijkBudget/verificatie/#{rrn}")
           .to_return(status: 503)
 
-        expect { do_request }.to raise_error(RuntimeError, 'Oostende WijkBudget API responded with HTTP 503')
+        expect { do_request }.to raise_error(RuntimeError, 'Oostende WijkBudget API responded with HTTP 503 for https://wapaza-wijkprikkelsapi-01.azurewebsites.net/services/wijkbudget-api/v1/api/WijkBudget/verificatie/{rrn}')
         expect(@user.reload.verified).to be false
       end
     end
