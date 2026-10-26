@@ -46,8 +46,14 @@ const AnswerVisibilityToggle = ({ field, builderConfig }: Props) => {
 
   const totalSubmissions = submissionCount?.data.attributes.totalSubmissions;
 
-  const setVisibility = (value: 'public' | 'moderators') =>
+  const setVisibility = (value: 'public' | 'moderators') => {
     setValue(name, value, { shouldDirty: true });
+    if (value === 'moderators') {
+      setValue(`customFields.${field.index}.show_as_filter`, false, {
+        shouldDirty: true,
+      });
+    }
+  };
 
   const handleChange = () => {
     if (isPublic) {
