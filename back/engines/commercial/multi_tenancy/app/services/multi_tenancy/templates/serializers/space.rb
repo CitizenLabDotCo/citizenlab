@@ -2,7 +2,7 @@ module MultiTenancy
   module Templates
     module Serializers
       class Space < Base
-        attributes %i[title_multiloc description_multiloc]
+        attributes %i[title_multiloc description_multiloc ordering]
       end
     end
   end

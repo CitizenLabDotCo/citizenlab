@@ -19,6 +19,14 @@ describe WebApi::V1::SpaceSerializer do
     expect(result.dig(:data, :attributes, :description_multiloc)).to eq({ 'en' => 'Space Description' })
   end
 
+  it 'serializes its place in the order admins arranged' do
+    other_space = create(:space)
+    other_space.insert_at(0)
+
+    serialized = described_class.new(space.reload, params: { current_user: user }).serializable_hash
+    expect(serialized.dig(:data, :attributes, :ordering)).to eq(1)
+  end
+
   it 'includes folders and projects in the space' do
     folder_in_space = create(:project_folder, space: space)
     project_in_space = create(:project, space: space)

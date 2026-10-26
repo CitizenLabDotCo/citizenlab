@@ -151,4 +151,42 @@ describe AdminPublicationPolicy do
       it { is_expected.to permit(:show) }
     end
   end
+
+  describe 'reorder for a space moderator' do
+    let(:space) { create(:space) }
+    let(:user) { create(:space_moderator, spaces: [space]) }
+    let(:folder_in_space) { create(:project_folder, space:) }
+
+    context 'with a publication at the top of their space, or inside a folder of it' do
+      where(:publication) do
+        [
+          [-> { create(:project, space:) }],
+          [-> { folder_in_space }],
+          [-> { create(:project, space:, folder: folder_in_space) }]
+        ]
+      end
+
+      with_them do
+        let(:admin_publication) { instance_exec(&publication).admin_publication }
+
+        it { is_expected.to permit(:reorder) }
+      end
+    end
+
+    context 'with a publication outside their spaces' do
+      where(:publication) do
+        [
+          [-> { create(:project, space: create(:space)) }],
+          [-> { create(:project_folder, space: create(:space)) }],
+          [-> { create(:project) }]
+        ]
+      end
+
+      with_them do
+        let(:admin_publication) { instance_exec(&publication).admin_publication }
+
+        it { is_expected.not_to permit(:reorder) }
+      end
+    end
+  end
 end
