@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Nav from './components/Nav';
 import { PanelContext } from './components/Panel';
@@ -95,7 +95,18 @@ const App = ({ local: localStatus }: { local?: LocalStatus }) => {
     [panelEl, register]
   );
   const navName = route.name === 'not-found' ? 'components' : route.name;
-  const [navCollapsed, toggleNav] = useNavCollapsed();
+  const [savedCollapsed, toggleSaved] = useNavCollapsed();
+  // Inspect wants the room: the sidebar folds each time it opens and the
+  // viewer's own choice is back on leaving. A toggle there lasts the visit.
+  const inspecting = route.name === 'inspect';
+  const [inspectExpanded, setInspectExpanded] = useState(false);
+  useEffect(() => {
+    if (inspecting) setInspectExpanded(false);
+  }, [inspecting]);
+  const navCollapsed = inspecting ? !inspectExpanded : savedCollapsed;
+  const toggleNav = inspecting
+    ? () => setInspectExpanded((x) => !x)
+    : toggleSaved;
   const [toolbar, setToolbar] = useState<ToolbarState>(DEFAULT_TOOLBAR);
   const { overrides, setOverride, reset, notice, dismissNotice } =
     useOverrides(TOKEN_META);
