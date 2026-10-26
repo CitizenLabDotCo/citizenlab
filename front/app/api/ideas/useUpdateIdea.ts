@@ -62,8 +62,6 @@ const useUpdateIdea = () => {
           queryKey: projectsKeys.item({ id: projectId }),
         });
 
-        // Publishing a draft input (e.g. submitting a survey) can change the
-        // phases' action descriptors, e.g. posting_limited_max_reached.
         if (variables.requestBody.publication_status === 'published') {
           invalidateProjectPhases(queryClient, projectId);
         }
