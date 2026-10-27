@@ -3,6 +3,7 @@ import traverseModule from '@babel/traverse';
 
 import { NAMED_COLORS, NAMED_COLOR_NAMES } from './namedColors';
 import { Finding, FindingCategory, TokenMeta } from './schema';
+import { LegacyValues, lookup } from './values';
 
 // Interop: @babel/traverse is CJS with a `default` property under some loaders.
 const traverse: typeof traverseModule =
@@ -389,11 +390,16 @@ export const parseSource = (filePath: string, source: string) => {
 
 export type ParsedFile = ReturnType<typeof parseSource>;
 
+/**
+ * With `values` (see values.ts), a legacy read whose chain reaches a static
+ * value of the default theme carries it as `value`; without, none does.
+ */
 export const scanFileResult = (
   filePath: string,
   source: string,
   tokens: TokenMeta[],
-  parsed?: ParsedFile
+  parsed?: ParsedFile,
+  values?: LegacyValues
 ): ScanResult => {
   let ast;
   try {
@@ -449,20 +455,46 @@ export const scanFileResult = (
   };
 
   // `colors` and `bo` only count when imported from the component library's
-  // style utils (or the admin graph styling re-export), never as plain names.
+  // style utils (or the admin graph styling), never as plain names.
   const legacyImports = new Map<string, FindingCategory>();
+  // Those that are the style utils' own objects, whose values are known: the
+  // admin graph styling exports a `colors` palette of its own.
+  const styleUtilsImports = new Set<string>();
   ast.program.body.forEach((node: any) => {
     if (node.type !== 'ImportDeclaration') return;
     if (!/(component-library|styleUtils|\/styling)$/.test(node.source.value))
       return;
+    const own = !/\/styling$/.test(node.source.value);
     node.specifiers.forEach((sp: any) => {
       if (sp.type !== 'ImportSpecifier') return;
       const imported = sp.imported.name ?? sp.imported.value;
       if (imported === 'colors')
         legacyImports.set(sp.local.name, 'legacy-colors');
       if (imported === 'bo') legacyImports.set(sp.local.name, 'legacy-bo');
+      if (own && (imported === 'colors' || imported === 'bo')) {
+        styleUtilsImports.add(sp.local.name);
+      }
     });
   });
+
+  // What a legacy read renders with the default theme, as `{ value }`, or {}
+  // when that is not known: a computed link, a tenant colour, a map, ...
+  const valueOf = (
+    category: FindingCategory,
+    base: string,
+    props: string[]
+  ): { value?: string } => {
+    if (!values || props.includes('[]')) return {};
+    let value: string | undefined;
+    if (category === 'legacy-theme') {
+      // `theme.a.b` or `props.theme.a.b`: from the link after `theme`.
+      value = lookup(values.theme, base === 'theme' ? props : props.slice(1));
+    } else if (styleUtilsImports.has(base)) {
+      if (category === 'legacy-colors') value = lookup(values.colors, props);
+      if (category === 'legacy-bo') value = lookup(values.bo, props);
+    }
+    return value === undefined ? {} : { value };
+  };
 
   // `t` from the generated token module (`t.radius.panel`, `t.space[4]`)
   // reads a --gv- variable, like a var() string does.
@@ -653,7 +685,12 @@ export const scanFileResult = (
         category = 'token-var';
       }
       if (!category) return;
-      mk(enclosingName(path))({ ...pos(n), raw: slice(n), category });
+      mk(enclosingName(path))({
+        ...pos(n),
+        raw: slice(n),
+        category,
+        ...valueOf(category, base.name, props),
+      });
     },
 
     TemplateElement(path) {
@@ -712,5 +749,7 @@ export const scanFileResult = (
 export const scanFile = (
   filePath: string,
   source: string,
-  tokens: TokenMeta[]
-): Finding[] => scanFileResult(filePath, source, tokens).findings;
+  tokens: TokenMeta[],
+  values?: LegacyValues
+): Finding[] =>
+  scanFileResult(filePath, source, tokens, undefined, values).findings;

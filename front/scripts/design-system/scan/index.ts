@@ -47,10 +47,12 @@ import {
   Totals,
 } from './schema';
 import { libraryIndex, usagesInFile } from './usages';
+import { LegacyValues, legacyValues } from './values';
 
 const ROOT = path.resolve(__dirname, '..', '..', '..');
 const TOKENS_META = 'app/design-system/tokens/tokens.meta.json';
 const LIB = 'app/component-library/';
+const STYLE_UTILS = 'app/component-library/utils/styleUtils.ts';
 
 type Args = {
   out: string;
@@ -156,11 +158,22 @@ export const summaryMergeBase = (
   return typeof old === 'string' ? old : undefined;
 };
 
+/** What legacy reads render (see values.ts); undefined with a warning. */
+const loadLegacyValues = (tree: SourceTree): LegacyValues | undefined => {
+  try {
+    return legacyValues(tree.source(STYLE_UTILS));
+  } catch (e: any) {
+    warn(`${STYLE_UTILS} not read (${e?.message ?? e}); no legacy values`);
+    return undefined;
+  }
+};
+
 const scanFiles = (
   tree: SourceTree,
   files: string[],
   tokens: TokenMeta[],
-  onFile?: (rel: string) => void
+  onFile?: (rel: string) => void,
+  values?: LegacyValues
 ) => {
   const findings: Finding[] = [];
   const parseErrors: string[] = [];
@@ -171,7 +184,7 @@ const scanFiles = (
       return;
     }
     tree.importsOf(rel); // cache imports before the AST is released
-    const r = scanFileResult(rel, tree.source(rel), tokens, ast);
+    const r = scanFileResult(rel, tree.source(rel), tokens, ast, values);
     if (r.parseError) parseErrors.push(`${rel}: ${r.parseError.message}`);
     findings.push(...r.findings);
     onFile?.(rel);
@@ -190,11 +203,18 @@ const runScan = (args: Args) => {
   const tree = new SourceTree(ROOT);
   const scanned = tree.files.filter(isScannedSource);
   const lib = libraryIndex(tree, isScannedSource);
+  const values = loadLegacyValues(tree);
 
   const usages: ComponentUsage[] = [];
-  const rawFindings = scanFiles(tree, scanned, tokens, (rel) => {
-    usages.push(...usagesInFile(tree, lib, rel));
-  });
+  const rawFindings = scanFiles(
+    tree,
+    scanned,
+    tokens,
+    (rel) => {
+      usages.push(...usagesInFile(tree, lib, rel));
+    },
+    values
+  );
   const findings = rawFindings.filter((f) => !isAccepted(f, accepted));
 
   const routeMap = mapRoutes(ROOT, tree);

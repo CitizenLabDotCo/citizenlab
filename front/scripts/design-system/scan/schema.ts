@@ -17,6 +17,9 @@ export type Finding = {
   col: number; // 1-based
   raw: string;
   category: FindingCategory;
+  // What a legacy read (legacy-theme, -colors, -bo) renders with the default
+  // theme, when that is static and the same in every city.
+  value?: string;
   suggestion?: { token: string; distance: number };
   confidence: 'high' | 'medium' | 'low';
   component?: string;
