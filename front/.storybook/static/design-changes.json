@@ -1,10 +1,225 @@
 {
-  "generatedAt": "2026-10-27T14:30:43.659Z",
+  "generatedAt": "2026-10-27T16:13:26.114Z",
   "base": "7b0b8940e27fb6c528eb39a06baa8a4cf2bcdf0a",
   "baseRef": "master",
-  "head": "086ba46494313a4681b3b251734f87ead539a5f5",
+  "head": "079e2a21098a3cf8acd738667cec799840fb2e2a",
   "repoUrl": "https://github.com/CitizenLabDotCo/citizenlab",
   "commits": [
+    {
+      "sha": "079e2a21098a3cf8acd738667cec799840fb2e2a",
+      "subject": "design-system(scripts): a review keeps its own change list, so its diff leaves the workbench's alone [AI-assisted]",
+      "body": "A review stacked on the workbench refreshed design-changes.json against\nthe workbench, so its diff deleted the workbench's whole list (4,430 lines\nin #15066 for a 10-line change), and a merge would have replaced the\nworkbench's list with the review's.\n\nds:changes with a --base other than master now writes review-changes.json,\nnaming its branch, and leaves design-changes.json alone. A plain run on\nthat branch (ds:prepare, every Storybook build) refreshes it against the\nbase it names; a run on any other branch drops it, a merged review's list.\nThe branch comes from CIRCLE_BRANCH on CI (a detached checkout), else git.\nThe Review page and ds:smoke read review-changes.json first.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/heal/SKILL.md",
+        "front/.claude/skills/propose/SKILL.md",
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/static/.gitignore",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/changes.test.ts",
+        "front/scripts/design-system/changes.ts",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "d96a05ddb3d4f034562fb34d70d581b79618cc5f",
+      "subject": "design-system(storybook): each frame answers its own mock requests, so a gallery story in its own frame gets its own data [AI-assisted]",
+      "body": "msw 2.3.1's worker answers a request from a frame with the first frame on\nthe page that started mocking. In the workbench's live gallery that is the\nshared gallery frame, so a story in a frame of its own got the default mock\ndata: the previous phase ideas modal crashed on ideas without links.\npublic/mockWorker.js loads msw's generated worker and adds the rule msw 2.5\nadded; npm install keeps rewriting mockServiceWorker.js, so the generated\nfile stays untouched. Delete the wrapper once the platform's msw is 2.5 or\nlater. Pictures (ds:thumbs) and the Component page were never affected:\none frame each.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/preview.tsx",
+        "front/.storybook/public/mockWorker.js"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "2cd7c5c78609d8c9b25a68b206f53378d3fd3296",
+      "subject": "design-system(scripts): smoke runs on a build without pictures and waits for the gallery frame to paint [AI-assisted]",
+      "body": "thumbs.json is optional data (a build without ds:thumbs has none), the first\nload waits for load rather than network idle (a gallery without pictures\nboots previews for long), and the painted count waits for the gallery frame\nitself: stories paint after their cards say rendered, and some rendered\ncards have frames of their own.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "d05dfcec16418dd6dae9a5da06442fe84806cc6b",
+      "subject": "design-system(scripts): a test that the platform imports nothing of the workbench or Storybook [AI-assisted]",
+      "body": "It runs with the platform's own tests, so it holds after a merge too.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/scripts/design-system/boundary.test.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "c1127454e1cb737b148af08ecec93f64570b371e",
+      "subject": "design-system(workbench): remove exports nothing reads [AI-assisted]",
+      "body": "OfficeChip, OFFICE_LABEL, VIEWPORTS, and two readers of the preview's\ninternals (loadArgTypes, storyLangOf) with the fields only they typed.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/StoryThumb.tsx",
+        "front/.storybook/workbench/src/components/Toolbar.tsx",
+        "front/.storybook/workbench/src/lib/preview.ts",
+        "front/.storybook/workbench/src/lib/stories.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "b59fc2b6e3607787fadee0785fe8cb52b21af2e5",
+      "subject": "design-system(skills): the setup commit loads the tokens and writes each city's colours [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/heal/SKILL.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "cf95a8ee55f64f9c49280e32c5434defb5678eb4",
+      "subject": "design-system(scripts): a heal onto a token waits until master loads the tokens and writes each city's colours [AI-assisted]",
+      "body": "tokens.ts on master was the only check. With tokens.css loaded and\nnothing writing the --gv-tenant-* slots, every platform would read their\ndefault pink wherever a tenant colour is read. Push now holds such a heal\nuntil master has the tokens, the app root imports tokens.css, and a file\nunder app/ writes --gv-tenant-primary.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/scripts/design-system/local/server.test.ts",
+        "front/scripts/design-system/local/server.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "fe632200155440d68a17458832b725ddeed76903",
+      "subject": "design-system(storybook): a story can name the route it renders under [AI-assisted]",
+      "body": "A page that reads its route's params with a strict useParams({ from })\nthrew \"Invariant failed\" under the platform's root-only MemoryRouter.\nparameters.route ({ from, params }) renders the story under that route,\nat its address; the other stories keep the MemoryRouter.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/preview.tsx",
+        "front/.storybook/storyRoute.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "119b3cdcea1e284b49b5b2a2cfeab7a9739c29bd",
+      "subject": "design-system(workbench): a hosted copy paints without asking for the local API [AI-assisted]",
+      "body": "The local API answers this machine only; the epic waited on its probe\n(up to 2 s) before the first paint.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/main.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "fccc56c76c885f9032a8c8cf08122582319f9d58",
+      "subject": "design-system(stories): Project settings modal under its project's route, and an Input tags story [AI-assisted]",
+      "body": "Its Input tags section is the project's tags page, which reads the\nproject from the route: opening it crashed every story of the modal. Axe\non the new story: one serious colour contrast issue, nothing critical.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/mocks/backofficeRedesignInputManager.ts",
+        "front/.storybook/static/a11y-results.json",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/ProjectSettingsModal/ProjectSettingsModal.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Project"
+    },
+    {
+      "sha": "082e83200e4b11899ce28a01ea3816311019b4dc",
+      "subject": "design-system(scripts): smoke checks the gallery's pictures, then the live frame with none [AI-assisted]",
+      "body": "With thumbs.json in the build every card showed a picture, so the\nchecks of the shared frame found no frame and failed on every real\nbuild. Now a build with pictures has them checked, and the page loads\nagain with thumbs.json answering none for the frame checks. A request to\nthe platform API may fail: a static server has none.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "983a8d89253f5c8f75ba383cc5b147e67a566537",
+      "subject": "design-system(workbench): a story still rendering in the gallery frame is transparent, not hidden, so its play function finds its roles [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/galleryFrame.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "098de351d87dda414aaa3bcaacff421ce2884f85",
+      "subject": "design-system(workbench): the wider stories' preview frame boots once someone scrolls to them [AI-assisted]",
+      "body": "A gallery load boots one preview frame again.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/pages/Gallery.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "cb3756c4bf3d0283610ffa554543ff3c525e76f5",
+      "subject": "design-system(workbench): a route change takes focus out of a frame first, so the shell keeps rendering [AI-assisted]",
+      "body": "A story that focuses itself (a modal) or a click in the canvas puts the\npage's focus in a preview frame. When a route change removed that frame,\nReact put focus back into the removed frame's document after its commit;\nuser-event (a play function's helper) patches focus there and throws, and\nReact rendered nothing after that: the shell stayed on the old page,\nwhatever the hash said. Back from a component page with focus in the\ncanvas did the same.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/router.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "0af6acb5075235dc630d4d870696ce8776ba4cd0",
+      "subject": "design-system(workbench): remove the styles nothing uses [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "4149881936b08e89359857f3302712a8fcd0481f",
+      "subject": "design-system(docs): the workbench is Foundations, Components and Review [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/START.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "f8f983d405e1e9c355bd45d493a6c76ae088df42",
+      "subject": "design-system(workbench): a card's line is always its stories and states; one empty-state picture [AI-assisted]",
+      "body": "The In use list was the only caller that replaced a card's line, and the\ngallery's is the only empty state left with a picture.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/StoryThumb.tsx",
+        "front/.storybook/workbench/src/pages/Gallery.tsx",
+        "front/.storybook/workbench/src/pages/Placeholder.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "4bfaf1bbdca1705a046fc2602b03c4269341c586",
+      "subject": "design-system(workbench): one Components gallery; Inspect, In use, Patterns and Pages go [AI-assisted]",
+      "body": "The nav is Foundations, Components and Review. The gallery shows the\nComponents stories by set, office and status, and ends with the stories\nfiled elsewhere (pages, patterns), so every story is still a card. Old\n#/patterns and #/pages links open in Components; #/inspect is not found.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/App.tsx",
+        "front/.storybook/workbench/src/components/LocalSave.tsx",
+        "front/.storybook/workbench/src/components/Nav.tsx",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/lib/local.ts",
+        "front/.storybook/workbench/src/lib/router.test.ts",
+        "front/.storybook/workbench/src/lib/router.ts",
+        "front/.storybook/workbench/src/pages/Gallery.tsx",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "2b9d97827d0a01a52554bf5f69edb26eff782d38",
+      "subject": "design-system(scripts): the local API keeps token, style and setup edits; ds:crops goes [AI-assisted]",
+      "body": "Inspect's pick (an element on a real page handed to an agent) and the\nagent edits it journalled leave the local write API, and the In use\ncrops script leaves with the view that showed them.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/package.json",
+        "front/scripts/design-system/local/journal.ts",
+        "front/scripts/design-system/local/server.test.ts",
+        "front/scripts/design-system/local/server.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "a2f06351c5aff9fc818f3fcb4757792712401ba9",
+      "subject": "design-system(review): refresh the change list [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-changes.json"
+      ],
+      "kind": "other"
+    },
     {
       "sha": "086ba46494313a4681b3b251734f87ead539a5f5",
       "subject": "design-system(docs): Send for review on the Review page, and the heal skill takes its text [AI-assisted]",
@@ -246,7 +461,6 @@
       "files": [
         "front/.storybook/AGENTS.md",
         "front/.storybook/workbench/src/App.tsx",
-        "front/.storybook/workbench/src/pages/Inspect.tsx",
         "front/.storybook/workbench/src/shell.css"
       ],
       "kind": "other"
@@ -264,11 +478,7 @@
       "sha": "a606cd9b2a12916a7d6d3cfd1f0574bd52d6fe8c",
       "subject": "design-system(workbench): off-spec levels per scan finding and the component an element belongs to [AI-assisted]",
       "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
-      "files": [
-        "front/.storybook/workbench/src/lib/fiber.ts",
-        "front/.storybook/workbench/src/lib/marks.test.ts",
-        "front/.storybook/workbench/src/lib/marks.ts"
-      ],
+      "files": [],
       "kind": "other"
     },
     {
@@ -385,8 +595,6 @@
         "front/.storybook/mocks/backofficeRedesignSetupPanel.ts",
         "front/.storybook/mocks/backofficeRedesignSharedPieces.ts",
         "front/.storybook/mocks/backofficeRedesignTimelineAndPhases.ts",
-        "front/.storybook/workbench/src/lib/inUse.test.ts",
-        "front/.storybook/workbench/src/lib/inUse.ts",
         "front/.storybook/workbench/src/lib/stories.test.ts",
         "front/.storybook/workbench/src/lib/stories.ts",
         "front/.storybook/workbench/src/pages/Gallery.tsx",
@@ -557,21 +765,11 @@
       "body": "Components gets a Library | In use switch. In use lists the 132 components\nthe scan found, by uses: the ones with a story render live, the rest show\na picture ds:crops took of them on the running platform.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
       "files": [
         "front/.storybook/AGENTS.md",
-        "front/.storybook/static/crops.json",
-        "front/.storybook/static/crops/ClickOutside.png",
-        "front/.storybook/static/crops/FilterTabs.png",
-        "front/.storybook/static/crops/UserName.png",
-        "front/.storybook/workbench/src/components/InUseGrid.tsx",
         "front/.storybook/workbench/src/components/StoryThumb.tsx",
         "front/.storybook/workbench/src/lib/data.ts",
-        "front/.storybook/workbench/src/lib/inUse.test.ts",
-        "front/.storybook/workbench/src/lib/inUse.ts",
         "front/.storybook/workbench/src/pages/Gallery.tsx",
         "front/.storybook/workbench/src/shell.css",
-        "front/package.json",
-        "front/scripts/design-system/crops-plan.test.ts",
-        "front/scripts/design-system/crops-plan.ts",
-        "front/scripts/design-system/crops.ts"
+        "front/package.json"
       ],
       "kind": "other"
     },
@@ -595,13 +793,10 @@
         "front/.storybook/workbench/src/components/Icon.tsx",
         "front/.storybook/workbench/src/components/LocalSave.tsx",
         "front/.storybook/workbench/src/components/Nav.tsx",
-        "front/.storybook/workbench/src/lib/fiber.test.ts",
-        "front/.storybook/workbench/src/lib/fiber.ts",
         "front/.storybook/workbench/src/lib/local.ts",
         "front/.storybook/workbench/src/lib/router.test.ts",
         "front/.storybook/workbench/src/lib/router.ts",
         "front/.storybook/workbench/src/lib/useCanvasSelection.ts",
-        "front/.storybook/workbench/src/pages/Inspect.tsx",
         "front/.storybook/workbench/src/shell.css",
         "front/scripts/design-system/local/journal.ts",
         "front/scripts/design-system/local/server.test.ts",
@@ -2091,8 +2286,7 @@
       "files": [
         "front/app/component-library/components/Dropdown/a11y.json"
       ],
-      "kind": "other",
-      "component": "Dropdown"
+      "kind": "other"
     },
     {
       "sha": "d6eaa802905a5060bf4019fefa5b5d61aa794270",
@@ -2111,8 +2305,7 @@
       "files": [
         "front/app/component-library/components/IconTooltip/a11y.json"
       ],
-      "kind": "other",
-      "component": "IconTooltip"
+      "kind": "other"
     },
     {
       "sha": "c7d12bfbe0a94d7f06bcd2dfa82dea0bf80ca859",
@@ -2131,8 +2324,7 @@
       "files": [
         "front/app/component-library/components/Tooltip/a11y.json"
       ],
-      "kind": "other",
-      "component": "Tooltip"
+      "kind": "other"
     },
     {
       "sha": "6a141f6430a491c099240e2a840f864c322c02fd",
@@ -2151,8 +2343,7 @@
       "files": [
         "front/app/component-library/components/Spinner/a11y.json"
       ],
-      "kind": "other",
-      "component": "Spinner"
+      "kind": "other"
     },
     {
       "sha": "58aa56dd0d3023815a7797548efade562a27ab93",
@@ -2161,8 +2352,7 @@
       "files": [
         "front/app/component-library/components/Box/a11y.json"
       ],
-      "kind": "other",
-      "component": "Box"
+      "kind": "other"
     },
     {
       "sha": "14fd5147f89439f6326272ce6f756a2412910898",
@@ -2171,8 +2361,7 @@
       "files": [
         "front/app/component-library/components/Icon/a11y.json"
       ],
-      "kind": "other",
-      "component": "Icon"
+      "kind": "other"
     },
     {
       "sha": "89fe4eff453a6d9692a85891f48956a8d95398bd",
@@ -2181,8 +2370,7 @@
       "files": [
         "front/app/component-library/components/Table/a11y.json"
       ],
-      "kind": "other",
-      "component": "Table"
+      "kind": "other"
     },
     {
       "sha": "f4f34f2193870c84a16d30a4c8d95fb834a35481",
@@ -2201,8 +2389,7 @@
       "files": [
         "front/app/component-library/components/Title/a11y.json"
       ],
-      "kind": "other",
-      "component": "Title"
+      "kind": "other"
     },
     {
       "sha": "2b698ecaacf811e2b6888ec489285f15a7ff52b2",
@@ -2211,8 +2398,7 @@
       "files": [
         "front/app/component-library/components/Text/a11y.json"
       ],
-      "kind": "other",
-      "component": "Text"
+      "kind": "other"
     },
     {
       "sha": "9f3832b1fcbe09da78c67e8a42410acf916d417b",
@@ -2221,8 +2407,7 @@
       "files": [
         "front/app/component-library/components/Label/a11y.json"
       ],
-      "kind": "other",
-      "component": "Label"
+      "kind": "other"
     },
     {
       "sha": "dc67978ed4678c50f39784484f350f855fb2ec43",
@@ -2231,8 +2416,7 @@
       "files": [
         "front/app/component-library/components/Toggle/a11y.json"
       ],
-      "kind": "other",
-      "component": "Toggle"
+      "kind": "other"
     },
     {
       "sha": "209aabcc7e5ffe8e443c042ff4cdec0ecc696ae6",
@@ -2251,8 +2435,7 @@
       "files": [
         "front/app/component-library/components/Select/a11y.json"
       ],
-      "kind": "other",
-      "component": "Select"
+      "kind": "other"
     },
     {
       "sha": "5adac0878816d359234d1caefdbdeac3606d3907",
@@ -2271,8 +2454,7 @@
       "files": [
         "front/app/component-library/components/Input/a11y.json"
       ],
-      "kind": "other",
-      "component": "Input"
+      "kind": "other"
     },
     {
       "sha": "d3a8bca07476d1e6a88dd421b8e4bfd6420c1ece",
@@ -2291,8 +2473,7 @@
       "files": [
         "front/app/component-library/components/IconButton/a11y.json"
       ],
-      "kind": "other",
-      "component": "IconButton"
+      "kind": "other"
     },
     {
       "sha": "e9192cf4a6a823e1993797c2dfa8d0bbfcc00fc5",
@@ -2311,8 +2492,7 @@
       "files": [
         "front/app/component-library/components/Button/a11y.json"
       ],
-      "kind": "other",
-      "component": "Button"
+      "kind": "other"
     },
     {
       "sha": "ff02a0c964057c9c80c2a9defdf399352e7737d5",
