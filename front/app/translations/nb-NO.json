@@ -461,6 +461,7 @@
   "app.components.PasswordInput.strength5Password": "Veldig sterk",
   "app.components.PostCardsComponents.list": "Liste",
   "app.components.PostCardsComponents.map": "Kart",
+  "app.components.PostCardsComponents.perspectives": "Perspektiver",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Legg til en offisiell oppdatering",
   "app.components.PostComponents.OfficialFeedback.cancel": "Avbryt",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Slett",

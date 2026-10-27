@@ -461,6 +461,7 @@
   "app.components.PasswordInput.strength5Password": "بہت مضبوط",
   "app.components.PostCardsComponents.list": "فہرست",
   "app.components.PostCardsComponents.map": "نقشہ",
+  "app.components.PostCardsComponents.perspectives": "نقطہ ہائے نظر",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "ایک سرکاری اپ ڈیٹ شامل کریں۔",
   "app.components.PostComponents.OfficialFeedback.cancel": "منسوخ کریں۔",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "حذف کریں۔",

@@ -461,6 +461,7 @@
   "app.components.PasswordInput.strength5Password": "Erittäin vahva",
   "app.components.PostCardsComponents.list": "Lista",
   "app.components.PostCardsComponents.map": "Kartta",
+  "app.components.PostCardsComponents.perspectives": "Näkökulmat",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Lisää kommentti",
   "app.components.PostComponents.OfficialFeedback.cancel": "Peruuta",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Poistaa",

@@ -461,6 +461,7 @@
   "app.components.PasswordInput.strength5Password": "Pitsaalluinnarpoq",
   "app.components.PostCardsComponents.list": "Alluttuiffik",
   "app.components.PostCardsComponents.map": "Nunap assinga",
+  "app.components.PostCardsComponents.perspectives": "Isiginnittaatsit",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Tamanut paasissutissat kingulliit ilanngullugit takussutissiamik ilanngussigit",
   "app.components.PostComponents.OfficialFeedback.cancel": "Atorunnaarsiguk",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Piiaruk",

@@ -461,6 +461,7 @@
   "app.components.PasswordInput.strength5Password": "Labai stiprus",
   "app.components.PostCardsComponents.list": "Sąrašas",
   "app.components.PostCardsComponents.map": "Žemėlapis",
+  "app.components.PostCardsComponents.perspectives": "Perspektyvos",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Pridėti oficialų atnaujinimą",
   "app.components.PostComponents.OfficialFeedback.cancel": "Atšaukti",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Ištrinti",

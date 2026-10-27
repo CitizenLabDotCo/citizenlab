@@ -461,6 +461,7 @@
   "app.components.PasswordInput.strength5Password": "Bardzo silne",
   "app.components.PostCardsComponents.list": "Lista",
   "app.components.PostCardsComponents.map": "Mapa",
+  "app.components.PostCardsComponents.perspectives": "Perspektywy",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Dodaj oficjalną aktualizację",
   "app.components.PostComponents.OfficialFeedback.cancel": "Anuluj",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Usuń",

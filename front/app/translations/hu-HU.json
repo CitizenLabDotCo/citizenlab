@@ -461,6 +461,7 @@
   "app.components.PasswordInput.strength5Password": "Nagyon erős",
   "app.components.PostCardsComponents.list": "Lista",
   "app.components.PostCardsComponents.map": "Térkép",
+  "app.components.PostCardsComponents.perspectives": "Nézőpontok",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Adjon hozzá egy hivatalos frissítést",
   "app.components.PostComponents.OfficialFeedback.cancel": "Mégsem",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Töröl",

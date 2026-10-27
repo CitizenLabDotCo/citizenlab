@@ -461,6 +461,7 @@
   "app.components.PasswordInput.strength5Password": "An-láidir",
   "app.components.PostCardsComponents.list": "Liosta",
   "app.components.PostCardsComponents.map": "Léarscáil",
+  "app.components.PostCardsComponents.perspectives": "Peirspictíochtaí",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Cuir nuashonrú oifigiúil leis",
   "app.components.PostComponents.OfficialFeedback.cancel": "Cealaigh",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Scrios",

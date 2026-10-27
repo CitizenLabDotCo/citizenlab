@@ -461,6 +461,7 @@
   "app.components.PasswordInput.strength5Password": "Ganz sécher",
   "app.components.PostCardsComponents.list": "Lëscht",
   "app.components.PostCardsComponents.map": "Kaart",
+  "app.components.PostCardsComponents.perspectives": "Perspektiven",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "En offiziellen Update afügen",
   "app.components.PostComponents.OfficialFeedback.cancel": "Ofbriechen",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Läschen",

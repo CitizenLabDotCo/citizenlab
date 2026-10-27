@@ -461,6 +461,7 @@
   "app.components.PasswordInput.strength5Password": "Vrlo jaka",
   "app.components.PostCardsComponents.list": "Popis",
   "app.components.PostCardsComponents.map": "Karta",
+  "app.components.PostCardsComponents.perspectives": "Perspektive",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Dodajte službenu obavijest",
   "app.components.PostComponents.OfficialFeedback.cancel": "Odustani",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Izbriši",

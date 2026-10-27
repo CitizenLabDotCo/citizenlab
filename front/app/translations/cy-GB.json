@@ -461,6 +461,7 @@
   "app.components.PasswordInput.strength5Password": "Cryf iawn",
   "app.components.PostCardsComponents.list": "Rhestr",
   "app.components.PostCardsComponents.map": "Map",
+  "app.components.PostCardsComponents.perspectives": "Safbwyntiau",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Ychwanegu diweddariad swyddogol",
   "app.components.PostComponents.OfficialFeedback.cancel": "Canslo",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Dileu",

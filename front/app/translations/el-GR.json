@@ -461,6 +461,7 @@
   "app.components.PasswordInput.strength5Password": "Πολύ ισχυρός",
   "app.components.PostCardsComponents.list": "Λίστα",
   "app.components.PostCardsComponents.map": "Χάρτης",
+  "app.components.PostCardsComponents.perspectives": "Προοπτικές",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Προσθέστε μια επίσημη ενημέρωση",
   "app.components.PostComponents.OfficialFeedback.cancel": "Ακύρωση",
   "app.components.PostComponents.OfficialFeedback.deleteOfficialFeedbackPost": "Διαγραφή",
