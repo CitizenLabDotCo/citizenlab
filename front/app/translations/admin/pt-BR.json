@@ -1789,6 +1789,7 @@
   "app.containers.Admin.projects.project.finalRecordPeople": "Pessoas",
   "app.containers.Admin.projects.project.finalRecordPhases": "Fases",
   "app.containers.Admin.projects.project.finalRecordRan": "Realizado",
+  "app.containers.Admin.projects.project.finalRecordRanOpenEnded": "Desde {start}",
   "app.containers.Admin.projects.project.finalRecordRanValue": "{start} a {end}",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Por favor, selecione um espaço.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Espaço",

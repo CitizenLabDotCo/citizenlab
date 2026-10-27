@@ -1789,6 +1789,7 @@
   "app.containers.Admin.projects.project.finalRecordPeople": "لوگ",
   "app.containers.Admin.projects.project.finalRecordPhases": "مراحل",
   "app.containers.Admin.projects.project.finalRecordRan": "منعقد ہوا",
+  "app.containers.Admin.projects.project.finalRecordRanOpenEnded": "{start} سے",
   "app.containers.Admin.projects.project.finalRecordRanValue": "{start} سے {end} تک",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "براہ کرم ایک اسپیس منتخب کریں۔",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "خلا",

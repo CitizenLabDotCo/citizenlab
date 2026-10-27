@@ -1789,6 +1789,7 @@
   "app.containers.Admin.projects.project.finalRecordPeople": "Kişiler",
   "app.containers.Admin.projects.project.finalRecordPhases": "Aşamalar",
   "app.containers.Admin.projects.project.finalRecordRan": "Yürütüldü",
+  "app.containers.Admin.projects.project.finalRecordRanOpenEnded": "{start} tarihinden beri",
   "app.containers.Admin.projects.project.finalRecordRanValue": "{start} - {end}",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Lütfen bir alan seçin.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Uzay",

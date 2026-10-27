@@ -1789,6 +1789,7 @@
   "app.containers.Admin.projects.project.finalRecordPeople": "Mensen",
   "app.containers.Admin.projects.project.finalRecordPhases": "Fases",
   "app.containers.Admin.projects.project.finalRecordRan": "Liep",
+  "app.containers.Admin.projects.project.finalRecordRanOpenEnded": "Sinds {start}",
   "app.containers.Admin.projects.project.finalRecordRanValue": "{start} tot {end}",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Selecteer een ruimte.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Ruimte",

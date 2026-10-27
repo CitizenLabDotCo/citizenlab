@@ -1789,6 +1789,7 @@
   "app.containers.Admin.projects.project.finalRecordPeople": "أشخاص",
   "app.containers.Admin.projects.project.finalRecordPhases": "المراحل",
   "app.containers.Admin.projects.project.finalRecordRan": "أُجري",
+  "app.containers.Admin.projects.project.finalRecordRanOpenEnded": "من {start}",
   "app.containers.Admin.projects.project.finalRecordRanValue": "من {start} إلى {end}",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "يرجى اختيار فضاء.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "مساحة",

@@ -1789,6 +1789,7 @@
   "app.containers.Admin.projects.project.finalRecordPeople": "ਲੋਕ",
   "app.containers.Admin.projects.project.finalRecordPhases": "ਪੜਾਅ",
   "app.containers.Admin.projects.project.finalRecordRan": "ਚੱਲਿਆ",
+  "app.containers.Admin.projects.project.finalRecordRanOpenEnded": "{start} ਤੋਂ",
   "app.containers.Admin.projects.project.finalRecordRanValue": "{start} ਤੋਂ {end}",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਸਪੇਸ ਚੁਣੋ।",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "ਸਪੇਸ",

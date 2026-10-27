@@ -1789,6 +1789,7 @@
   "app.containers.Admin.projects.project.finalRecordPeople": "Persone",
   "app.containers.Admin.projects.project.finalRecordPhases": "Fasi",
   "app.containers.Admin.projects.project.finalRecordRan": "Svoltosi",
+  "app.containers.Admin.projects.project.finalRecordRanOpenEnded": "Dal {start}",
   "app.containers.Admin.projects.project.finalRecordRanValue": "Da {start} a {end}",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Seleziona uno spazio.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Spazio",

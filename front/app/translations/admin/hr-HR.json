@@ -1789,6 +1789,7 @@
   "app.containers.Admin.projects.project.finalRecordPeople": "Ljudi",
   "app.containers.Admin.projects.project.finalRecordPhases": "Faze",
   "app.containers.Admin.projects.project.finalRecordRan": "Trajanje",
+  "app.containers.Admin.projects.project.finalRecordRanOpenEnded": "Od {start}",
   "app.containers.Admin.projects.project.finalRecordRanValue": "{start} do {end}",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Odaberite prostor.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Prostor",

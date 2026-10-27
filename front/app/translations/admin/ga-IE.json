@@ -1789,6 +1789,7 @@
   "app.containers.Admin.projects.project.finalRecordPeople": "Daoine",
   "app.containers.Admin.projects.project.finalRecordPhases": "Céimeanna",
   "app.containers.Admin.projects.project.finalRecordRan": "Ar siúl",
+  "app.containers.Admin.projects.project.finalRecordRanOpenEnded": "Ó {start}",
   "app.containers.Admin.projects.project.finalRecordRanValue": "{start} go {end}",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Roghnaigh spás, le do thoil.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Spás",

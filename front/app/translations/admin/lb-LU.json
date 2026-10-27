@@ -1789,6 +1789,7 @@
   "app.containers.Admin.projects.project.finalRecordPeople": "Leit",
   "app.containers.Admin.projects.project.finalRecordPhases": "Phasen",
   "app.containers.Admin.projects.project.finalRecordRan": "Gelaf",
+  "app.containers.Admin.projects.project.finalRecordRanOpenEnded": "Zanter {start}",
   "app.containers.Admin.projects.project.finalRecordRanValue": "{start} bis {end}",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Wielt wgl. e Space aus.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Raum",

@@ -1789,6 +1789,7 @@
   "app.containers.Admin.projects.project.finalRecordPeople": "Personer",
   "app.containers.Admin.projects.project.finalRecordPhases": "Faser",
   "app.containers.Admin.projects.project.finalRecordRan": "Pågick",
+  "app.containers.Admin.projects.project.finalRecordRanOpenEnded": "Sedan {start}",
   "app.containers.Admin.projects.project.finalRecordRanValue": "{start} till {end}",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Vänligen välj en yta.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Utrymme",

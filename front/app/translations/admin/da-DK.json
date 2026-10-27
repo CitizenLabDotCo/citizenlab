@@ -1789,6 +1789,7 @@
   "app.containers.Admin.projects.project.finalRecordPeople": "Personer",
   "app.containers.Admin.projects.project.finalRecordPhases": "Faser",
   "app.containers.Admin.projects.project.finalRecordRan": "Kørte",
+  "app.containers.Admin.projects.project.finalRecordRanOpenEnded": "Siden {start}",
   "app.containers.Admin.projects.project.finalRecordRanValue": "{start} til {end}",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Vælg venligst et rum.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Rum",

@@ -1789,6 +1789,7 @@
   "app.containers.Admin.projects.project.finalRecordPeople": "Résztvevők",
   "app.containers.Admin.projects.project.finalRecordPhases": "Fázisok",
   "app.containers.Admin.projects.project.finalRecordRan": "Lezajlott",
+  "app.containers.Admin.projects.project.finalRecordRanOpenEnded": "{start} óta",
   "app.containers.Admin.projects.project.finalRecordRanValue": "{start} – {end}",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Kérjük, válasszon egy teret.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Tér",

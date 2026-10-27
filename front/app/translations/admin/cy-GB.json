@@ -1789,6 +1789,7 @@
   "app.containers.Admin.projects.project.finalRecordPeople": "Pobl",
   "app.containers.Admin.projects.project.finalRecordPhases": "Cyfnodau",
   "app.containers.Admin.projects.project.finalRecordRan": "Rhedodd",
+  "app.containers.Admin.projects.project.finalRecordRanOpenEnded": "Ers {start}",
   "app.containers.Admin.projects.project.finalRecordRanValue": "{start} i {end}",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Dewiswch ofod os gwelwch yn dda.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Gofod",

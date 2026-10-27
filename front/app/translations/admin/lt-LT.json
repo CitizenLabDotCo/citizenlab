@@ -1789,6 +1789,7 @@
   "app.containers.Admin.projects.project.finalRecordPeople": "Žmonės",
   "app.containers.Admin.projects.project.finalRecordPhases": "Etapai",
   "app.containers.Admin.projects.project.finalRecordRan": "Vyko",
+  "app.containers.Admin.projects.project.finalRecordRanOpenEnded": "Nuo {start}",
   "app.containers.Admin.projects.project.finalRecordRanValue": "nuo {start} iki {end}",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Pasirinkite erdvę.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Erdvė",

@@ -1789,6 +1789,7 @@
   "app.containers.Admin.projects.project.finalRecordPeople": "Ihmiset",
   "app.containers.Admin.projects.project.finalRecordPhases": "Vaiheet",
   "app.containers.Admin.projects.project.finalRecordRan": "Kesto",
+  "app.containers.Admin.projects.project.finalRecordRanOpenEnded": "Alkaen {start}",
   "app.containers.Admin.projects.project.finalRecordRanValue": "{start} – {end}",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Valitse tila.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Avaruus",

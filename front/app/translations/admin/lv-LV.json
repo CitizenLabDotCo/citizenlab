@@ -1789,6 +1789,7 @@
   "app.containers.Admin.projects.project.finalRecordPeople": "Cilvēki",
   "app.containers.Admin.projects.project.finalRecordPhases": "Posmi",
   "app.containers.Admin.projects.project.finalRecordRan": "Norisinājās",
+  "app.containers.Admin.projects.project.finalRecordRanOpenEnded": "Kopš {start}",
   "app.containers.Admin.projects.project.finalRecordRanValue": "{start} līdz {end}",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Lūdzu, izvēlieties telpu.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Telpa",

@@ -1789,6 +1789,7 @@
   "app.containers.Admin.projects.project.finalRecordPeople": "Inuit",
   "app.containers.Admin.projects.project.finalRecordPhases": "Immikkoortut",
   "app.containers.Admin.projects.project.finalRecordRan": "Inerlanneqarpoq",
+  "app.containers.Admin.projects.project.finalRecordRanOpenEnded": "{start}-miilli",
   "app.containers.Admin.projects.project.finalRecordRanValue": "{start}-miit {end}-mut",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Inissaq toqqaruk.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Inissaq",

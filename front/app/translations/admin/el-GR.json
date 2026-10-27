@@ -1789,6 +1789,7 @@
   "app.containers.Admin.projects.project.finalRecordPeople": "Άτομα",
   "app.containers.Admin.projects.project.finalRecordPhases": "Φάσεις",
   "app.containers.Admin.projects.project.finalRecordRan": "Διήρκεσε",
+  "app.containers.Admin.projects.project.finalRecordRanOpenEnded": "Από {start}",
   "app.containers.Admin.projects.project.finalRecordRanValue": "{start} έως {end}",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Παρακαλούμε επιλέξτε έναν χώρο.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Χώρος",
