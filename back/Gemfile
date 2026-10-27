@@ -9,7 +9,7 @@ git_source(:github) do |repo_name|
 end
 
 gem 'rails', '~> 7.2.3'
-gem 'pg', '~> 1.5.6'
+gem 'pg', '~> 1.7.0'
 gem 'strong_migrations', '~> 2.5'
 gem 'puma', '~> 7.2.1'
 gem 'bcrypt', '~> 3.1.20' # Use ActiveModel has_secure_password
@@ -69,7 +69,7 @@ end
 
 group :test do
   gem 'shoulda-matchers', '~> 6.2.0'
-  gem 'webmock', '~> 3.23'
+  gem 'webmock', '~> 3.26'
 
   # Adds rspec matchers and helpers for testing html structure and styling.
   gem 'capybara', '~> 3.40'
@@ -78,7 +78,7 @@ group :test do
   gem 'vcr', '~> 6.2'
 end
 
-gem 'pundit', '~> 2.5.0'
+gem 'pundit', '~> 2.5.2'
 gem 'active_model_serializers', '~> 0.10.15'
 
 gem 'jwt', '~> 2.10.3'
@@ -97,7 +97,7 @@ gem 'api-pagination', '~> 6.0.0'
 gem 'kaminari', '~> 1.2'
 gem 'rails-i18n', '~> 7.0.9'
 
-gem 'awesome_nested_set', '~> 3.8.0'
+gem 'awesome_nested_set', '~> 3.9.0'
 gem 'axlsx', '3.0.0.pre' # write xlsx files
 gem 'rubyXL', '~> 3.4.27' # read xlsx files. Has issues with writing files https://github.com/CitizenLabDotCo/citizenlab/pull/7834
 gem 'docx', '~> 0.3.0'
@@ -119,8 +119,8 @@ gem 'scientist', '~> 1.6.4'
 
 gem 'okcomputer'
 gem 'simple_segment', '~>1.5'
-gem 'sentry-ruby'
-gem 'sentry-rails'
+gem 'sentry-ruby', '~> 6.6'
+gem 'sentry-rails', '~> 6.6'
 
 gem 'faraday-jwt', '~> 0.1.0'
 gem 'acts_as_list', '~> 1.2'
@@ -130,19 +130,19 @@ gem 'faker'
 gem 'order_as_specified'
 gem 'scenic'
 gem 'ice_cube', '~> 0.17'
-gem 'twilio-ruby', '~> 7.8.5'
+gem 'twilio-ruby', '~> 7.12.0'
 
 # Omniauth SSO
-gem 'omniauth', '~> 2.1.4'
-gem 'omniauth-rails_csrf_protection', '~> 1.0.2'
+gem 'omniauth', '~> 2.3.1'
+gem 'omniauth-rails_csrf_protection', '~> 2.0.1'
 gem 'omniauth-saml', '~> 2.2.3'
 gem 'omniauth_openid_connect', '~> 0.8.0'
 gem 'omniauth-facebook', '~> 10.0.0'
-gem 'omniauth-google-oauth2', '~> 1.2.1'
+gem 'omniauth-google-oauth2', '~> 1.2.2'
 
 # Libraries for PDF generation /reading
 gem 'pdf-reader'
-gem 'faraday', '~>  2.14.2'
+gem 'faraday', '~> 2.15.1'
 gem 'faraday-multipart'
 
 # AI
@@ -154,14 +154,14 @@ gem 'ruby_llm', '~> 1.16'
 # exception.
 gem 'aws-sdk-s3', '~> 1'
 gem 'aws-sdk-bedrockruntime', '~> 1'
-gem 'aws-sdk-cloudfront', '~> 1.118.0'
+gem 'aws-sdk-cloudfront', '~> 1.160.0'
 gem 'bootsnap', '~> 1', require: false
 gem 'dalli', '~> 3.2.13'
 # Pin connection_pool to < 3: connection_pool 3.0 made ConnectionPool#initialize
 # keyword-only, which is incompatible with Rails 7.2's MemCacheStore.build_mem_cache
 # (it calls ConnectionPool.new(pool_options) with a positional hash).
 gem 'connection_pool', '~> 2.5'
-gem 'mailgun-ruby', '~>1.2.16'
+gem 'mailgun-ruby', '~> 1.4.6'
 gem 'rails_semantic_logger'
 gem 'rinku', '~> 2'
 gem 'jsonapi-serializer'
@@ -174,7 +174,7 @@ gem 'intercom', '~> 4.2'
 gem 'mjml-rails', '~> 4.11'
 gem 'mrml'
 gem 'cloudfront-rails', '~> 0.4'
-gem 'combine_pdf', '~> 1.0.26'
+gem 'combine_pdf', '~> 1.0.31'
 gem 'neighbor', '~> 0.5.0'
 gem 'browser', '~> 6.1'
 
