@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
 import { addDays, format, parseISO } from 'date-fns';
-import styled, { keyframes } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 
 import customFieldsKeys from 'api/custom_fields/keys';
 import customFormKeys from 'api/custom_form/keys';
@@ -83,7 +83,9 @@ const Bar = styled.button<{ $attention: boolean }>`
   min-width: 320px;
   ${({ $attention }) =>
     $attention &&
-    `animation: ${pulse} 1.8s ease-in-out infinite;`}
+    css`
+      animation: ${pulse} 1.8s ease-in-out infinite;
+    `}
   &:hover {
     border-color: ${colors.teal400};
   }
