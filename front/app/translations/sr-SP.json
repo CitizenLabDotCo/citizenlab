@@ -415,7 +415,6 @@
   "app.components.PasswordInput.strength3Password": "Средње",
   "app.components.PasswordInput.strength4Password": "Јака",
   "app.components.PasswordInput.strength5Password": "Веома јако",
-  "app.components.PostCardsComponents.feed": "Feed",
   "app.components.PostCardsComponents.list": "Листа",
   "app.components.PostCardsComponents.map": "Мапа",
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": "Додајте званично ажурирање",
