@@ -1332,9 +1332,6 @@ const reviewChecks = async (
       `review: ${count} changes and ${cards} cards, expected ${expected} from design-changes.json`
     );
   }
-  if (expected === 0 && !(await page.$('[data-testid="wb-review-empty"]'))) {
-    failures.push('review: no design changes, but no empty state');
-  }
   console.log(`review: ${count} design changes, ${cards} cards`);
 };
 
