@@ -3720,6 +3720,106 @@ a.wb-line:hover {
   border: 0;
 }
 
+/* Who reviews: one of four, or None for a test. */
+.wb-send-who {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gv-space-2);
+  align-items: center;
+  margin-bottom: var(--gv-space-4);
+}
+
+.wb-send-who > span {
+  margin-right: var(--gv-space-1);
+  font-weight: 600;
+  color: var(--wb-heading);
+}
+
+.wb-shell .wb-send-who button {
+  min-height: 0;
+  padding: 4px var(--gv-space-3);
+  font-size: var(--gv-fs-s);
+  color: var(--wb-text);
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border);
+  border-radius: 999px;
+}
+
+.wb-shell .wb-send-who button[aria-checked='true'] {
+  color: var(--wb-accent-text);
+  background: var(--wb-accent-soft);
+  border-color: var(--wb-accent);
+}
+
+/* The exact edits, as a diff. */
+.wb-send-diff {
+  display: grid;
+  gap: var(--gv-space-2);
+  margin-bottom: var(--gv-space-4);
+}
+
+.wb-send-diff figure {
+  margin: 0;
+}
+
+.wb-send-diff figcaption {
+  font-size: var(--gv-fs-xs);
+  color: var(--wb-muted);
+}
+
+.wb-send-diff pre {
+  margin: 2px 0 0;
+  overflow: auto;
+  padding: var(--gv-space-2) var(--gv-space-3);
+  font-size: var(--gv-fs-xs);
+  background: var(--wb-subtle);
+  border-radius: var(--wb-radius);
+}
+
+.wb-send-diff del {
+  color: var(--wb-fail);
+  text-decoration: none;
+}
+
+.wb-send-diff ins {
+  color: var(--wb-pass);
+  text-decoration: none;
+}
+
+/* A review's change live: the story on the workbench's preview and on the
+   review's own, side by side; 2× renders it in half the room, scaled. */
+.wb-pr-live {
+  display: grid;
+  gap: var(--gv-space-2);
+  justify-items: start;
+}
+
+.wb-pr-live .wb-pr-shots {
+  width: 100%;
+}
+
+.wb-pr-frame {
+  height: 240px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius);
+}
+
+.wb-pr-frame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.wb-pr-live[data-zoom='true'] .wb-pr-frame iframe {
+  width: 50%;
+  height: 50%;
+  transform: scale(2);
+  transform-origin: 0 0;
+}
+
 .wb-review-text {
   max-height: 240px;
   margin: 0;

@@ -4,6 +4,7 @@ import {
   forOrigin,
   isPlatformFile,
   kindOfSubject,
+  storyOfBody,
   liveParams,
   loadPrChanges,
   pictures,
@@ -267,6 +268,16 @@ describe('what a change touches', () => {
       'HeaderDropdown · used in 1 place · on every page'
     );
     expect(scaleText(undefined, undefined, 0)).toBe('');
+  });
+});
+
+describe('storyOfBody', () => {
+  it('reads the story a commit names on its own line', () => {
+    expect(
+      storyOfBody('Value 3px.\n\nStory: components-actions-button--default')
+    ).toBe('components-actions-button--default');
+    expect(storyOfBody('See the Story: in the text')).toBeUndefined();
+    expect(storyOfBody('Story: <not a story id>')).toBeUndefined();
   });
 });
 

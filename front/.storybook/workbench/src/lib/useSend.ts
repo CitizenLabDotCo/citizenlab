@@ -5,7 +5,9 @@ import {
   GhPull,
   GhReview,
   isDone,
+  previewProbeUrl,
   REPO,
+  REVIEWERS,
   SEND_KEY,
   SendRecord,
   withPull,
@@ -43,7 +45,12 @@ const read = (): SendRecord => {
       typeof r.branch === 'string' && BRANCH.test(r.branch)
         ? r.branch
         : undefined;
-    return { ...r, pr, branch };
+    // One of the four, or null (nobody); it goes into the text too.
+    const reviewer =
+      r.reviewer === null || REVIEWERS.some((x) => x.login === r.reviewer)
+        ? (r.reviewer as string | null)
+        : undefined;
+    return { ...r, pr, branch, reviewer };
   } catch {
     return EMPTY;
   }
@@ -153,4 +160,36 @@ export const useReviewWatch = (
     };
   }, [check, waiting]);
   return answering;
+};
+
+export type PreviewState = 'building' | 'ready';
+
+const PROBE_MS = 60 * 1000;
+
+// Whether a review's preview is up: a small file of its Storybook loads (the
+// epic's sign-in covers every preview host). Asked every minute until it is.
+export const usePreviewState = (pr?: number, done?: boolean) => {
+  const [state, setState] = useState<PreviewState | undefined>();
+  useEffect(() => {
+    setState(undefined);
+    if (!pr || done) return;
+    let live = true;
+    let timer: number | undefined;
+    const probe = () => {
+      const img = new Image();
+      img.onload = () => live && setState('ready');
+      img.onerror = () => {
+        if (!live) return;
+        setState('building');
+        timer = window.setTimeout(probe, PROBE_MS);
+      };
+      img.src = previewProbeUrl(pr);
+    };
+    probe();
+    return () => {
+      live = false;
+      if (timer) window.clearTimeout(timer);
+    };
+  }, [pr, done]);
+  return state;
 };

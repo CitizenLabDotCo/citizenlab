@@ -1,14 +1,24 @@
 // Send for review: the Review page hands this browser's changes to the
 // person's agent as one text, names the branch the agent opens the PR on,
 // and follows that PR through GitHub's public API. The branch is the
-// bridge: the page never writes to GitHub and holds no key. Pure functions;
-// useSend.ts keeps the record and asks GitHub.
+// bridge: the page never writes to GitHub and holds no key. The text is
+// one command: scripts/design-system/send.js, fetched from GitHub, applies
+// the exact line edits and opens the PR through the API (no clone). Pure
+// functions; useSend.ts keeps the record and asks GitHub.
+import type { EditSource } from './patch';
 
 // Where a review goes; master once the workbench is merged.
 export const REVIEW_BASE = 'design-system/workbench';
 export const REPO = 'CitizenLabDotCo/citizenlab';
 
-// Who the agent offers as reviewer, in this order.
+// The workbench's own PR: its preview is the "before" of every review.
+export const WORKBENCH_PR = 15027;
+
+// The script the agent runs, from the repository root.
+export const SEND_SCRIPT = 'front/scripts/design-system/send.js';
+
+// Who the person can ask, in this order. `null` asks nobody (a test): the
+// review opens as a draft.
 export const REVIEWERS: { name: string; login: string }[] = [
   { name: 'Amira', login: 'amirabayoumi' },
   { name: 'Edwin', login: 'EdwinKato' },
@@ -17,6 +27,17 @@ export const REVIEWERS: { name: string; login: string }[] = [
 ];
 
 export const SEND_KEY = 'gv-review-send';
+
+// One change as the script applies it: line `line` of `file` (from the
+// repository root) reads `old` and becomes `new`.
+export type LineEdit = {
+  subject: string;
+  story?: string;
+  file: string;
+  line: number;
+  old: string;
+  new: string;
+};
 
 // What was handed over, per change: its value then and the line that puts
 // it back if the person resets it later.
@@ -37,6 +58,8 @@ export type SendRecord = {
   pr?: number;
   head?: string;
   status?: ReviewStatus;
+  // Who the person picked; null = nobody (a test).
+  reviewer?: string | null;
   // Confirmed: GitHub shows the agent's work for it.
   sent: Sent;
   // Copied, not confirmed yet; `head` is the PR's head at the copy.
@@ -45,8 +68,18 @@ export type SendRecord = {
 
 export const EMPTY: SendRecord = { sent: {} };
 
-// One change of this browser, ready to send.
-export type Item = { key: string; value: string; task: string; undo: string };
+// One change of this browser, ready to send: `edit` when the page found its
+// exact line, else `task` for the agent to do by hand. `undo` puts it back
+// later: a LineEdit as JSON when there is one, else a line of words.
+export type Item = {
+  key: string;
+  value: string;
+  task: string;
+  undo: string;
+  // What resolveItems (patch.ts) reads the file for.
+  source?: EditSource;
+  edit?: LineEdit;
+};
 
 // The keys and values of this browser's changes: an element edit by its id,
 // a token as `token:<name>`.
@@ -104,6 +137,32 @@ export const undoOfEdit = (
 export const undoOfToken = (name: string, value: string) =>
   `put back: tokens.source.json · ${name} to ${value}`;
 
+// The line edit that puts a sent one back, kept as the undo line.
+export const undoOfLineEdit = (e: LineEdit) =>
+  JSON.stringify({
+    ...e,
+    subject: e.subject.replace(/^(design-system\([^)]*\):\s*)/, '$1put back '),
+    old: e.new,
+    new: e.old,
+  });
+
+// An undo line that is a line edit, or undefined for a line of words.
+export const lineEditOfUndo = (undo: string): LineEdit | undefined => {
+  if (!undo.startsWith('{')) return undefined;
+  try {
+    const e = JSON.parse(undo);
+    return typeof e?.file === 'string' &&
+      Number.isInteger(e.line) &&
+      typeof e.old === 'string' &&
+      typeof e.new === 'string' &&
+      typeof e.subject === 'string'
+      ? (e as LineEdit)
+      : undefined;
+  } catch {
+    return undefined;
+  }
+};
+
 export const snapshotOf = (items: Item[]): Sent =>
   Object.fromEntries(
     items.map((i) => [i.key, { value: i.value, undo: i.undo }])
@@ -128,65 +187,138 @@ export const randomTag = () => {
   return [...bytes].map((b) => abc[b % abc.length]).join('');
 };
 
+export const previewOrigin = (pr: number) =>
+  `https://pr-${pr}.epic.hq.govocal.com`;
+
 export const epicReviewUrl = (pr: number) =>
-  `https://pr-${pr}.epic.hq.govocal.com/storybook/workbench/#/review`;
+  `${previewOrigin(pr)}/storybook/workbench/#/review`;
+
+// A small file every preview's Storybook serves: it loads once the preview
+// is up (the epic's Google sign-in covers every preview host).
+export const previewProbeUrl = (pr: number, now = Date.now()) =>
+  `${previewOrigin(pr)}/storybook/favicon.svg?t=${now}`;
 
 export const prUrl = (pr: number) => `https://github.com/${REPO}/pull/${pr}`;
 
 const PLAIN =
   'Talk to the person in plain words: "review", never PR, branch or commit.';
 
-const reviewerList = REVIEWERS.map((r) => `${r.name} (@${r.login})`).join(', ');
+// What the agent runs: the script from the workbench on GitHub, fed the
+// changes. Nothing to clone or install; GitHub runs the checks.
+export const sendCommand = (input: object) =>
+  [
+    `gh api -H 'Accept: application/vnd.github.raw' 'repos/${REPO}/contents/${SEND_SCRIPT}?ref=${REVIEW_BASE}' > /tmp/gv-send.js && node /tmp/gv-send.js <<'EOF'`,
+    JSON.stringify(input, null, 2),
+    'EOF',
+  ].join('\n');
 
-// The text the person gives their agent. Without a PR it opens one on
-// `branch`; with one it adds to it. `items` are the changes to make, `gone`
-// the lines that put back what was sent and reset since.
+const whoText = (reviewer: string | null) =>
+  reviewer
+    ? `it is with ${nameOf(reviewer)} for review`
+    : 'it is sent and nobody is asked to look yet (a test)';
+
+// The text the person gives their agent. Without a PR the script opens one
+// on `branch`; with one it adds to it. `edits` are the exact line edits;
+// `tasks`, the token patch and `gone` lines of words are done by hand.
+// `gone` undo lines that are line edits go to the script with the rest.
 export const sendText = ({
   branch,
   pr,
-  items,
+  reviewer,
+  edits,
+  tasks,
   gone,
   tokenPatch,
 }: {
   branch: string;
   pr?: number;
-  items: string[];
+  reviewer: string | null;
+  edits: LineEdit[];
+  tasks: string[];
   gone: string[];
   tokenPatch: string;
 }): string => {
+  const putBack = gone.map(lineEditOfUndo);
+  const changes = [...edits, ...putBack.filter((e): e is LineEdit => !!e)];
+  const words = gone.filter((_, i) => !putBack[i]);
+  const byHand = [
+    ...tasks.flatMap((t) => ['', t]),
+    ...(tokenPatch.trim()
+      ? ['', 'tokens.source.json:', tokenPatch.trim()]
+      : []),
+    ...(words.length
+      ? [
+          '',
+          'Put back (reset in the Workbench):',
+          ...words.flatMap((t) => ['', t]),
+        ]
+      : []),
+  ];
+  const input = {
+    repo: REPO,
+    base: REVIEW_BASE,
+    branch,
+    ...(pr ? { pr } : {}),
+    reviewer,
+    changes,
+  };
+  const tell = `Tell the person ${whoText(
+    reviewer
+  )}, with the preview link it printed. Do not wait for the preview: the Workbench shows when it is ready.`;
   const head = pr
     ? [
         `More Workbench changes for review #${pr} (branch ${branch}, ${REPO}). ${PLAIN}`,
         '',
-        '1. If its reviewer asked for changes, read their comments first and answer them in these commits.',
-        `2. One commit per change onto ${branch}, the same way as before (heal skill, "Stacked on the workbench"): its before and after pictures in .storybook/static/changes/<sha>/, all in one pictures commit after the last change.`,
-        `3. Ask the reviewer to look again. When the preview has redeployed, open ${epicReviewUrl(
-          pr
-        )}, check each card shows its change, then tell the person, with that link.`,
+        '1. If its reviewer asked for changes, read their comments on GitHub first.',
       ]
-    : [
-        `Workbench changes to send for review. ${PLAIN}`,
-        '',
-        `1. Ask who should review it, offering in this order: ${reviewerList}.`,
-        `2. In ${REPO}, make branch ${branch} off origin/${REVIEW_BASE}. Heal skill ("Stacked on the workbench"): one commit per change, its before and after pictures in .storybook/static/changes/<sha>/, all in one pictures commit after the last change.`,
-        `3. Open the PR into ${REVIEW_BASE}: ready for review, label epic, review requested from the person picked.`,
-        `4. The review gets a preview of its own, numbered as the PR you opened (not the workbench's own): when it is up, open https://pr-<that number>.epic.hq.govocal.com/storybook/workbench/#/review, check each card shows its change, then tell the person it is with the reviewer, with that link.`,
-      ];
+    : [`Workbench changes to send for review (${REPO}). ${PLAIN}`];
+  if (!changes.length) {
+    // Nothing the script can apply: the review is made by hand.
+    return [
+      ...head,
+      '',
+      `${pr ? 2 : 1}. ${
+        pr
+          ? `One commit per change onto ${branch}`
+          : `Make branch ${branch} off origin/${REVIEW_BASE}, one commit per change`
+      } (heal skill, "Stacked on the workbench"), its last line "Story: <story id>"; no pictures. ${
+        pr
+          ? 'Ask the reviewer to look again.'
+          : `Open the PR into ${REVIEW_BASE}: label epic; ${
+              reviewer
+                ? `ready for review, review requested from @${reviewer}`
+                : 'a draft, nobody asked'
+            }.`
+      }`,
+      `${pr ? 3 : 2}. ${tell}`,
+      '',
+      'Changes:',
+      ...byHand,
+    ].join('\n');
+  }
+  const step = pr ? 2 : 1;
+  const hand = byHand.length > 0;
   return [
     ...head,
-    ...(items.length || tokenPatch.trim()
-      ? ['', 'Changes:', ...items.flatMap((t) => ['', t])]
-      : []),
-    ...(tokenPatch.trim()
-      ? ['', 'tokens.source.json:', tokenPatch.trim()]
-      : []),
-    ...(gone.length
+    '',
+    `${step}. Run this as it is, in a terminal where gh is signed in to GitHub. It ${
+      pr
+        ? `adds the changes to review #${pr} and asks the reviewer to look again`
+        : 'opens the review on GitHub'
+    } in seconds:`,
+    '',
+    sendCommand(input),
+    '',
+    ...(hand
       ? [
+          `${
+            step + 1
+          }. Then by hand on ${branch} (heal skill, "Stacked on the workbench"): each change under "By hand" below, and any change step ${step} printed as by hand. One commit per change, its last line "Story: <story id>"; no pictures.`,
           '',
-          'Put back (reset in the Workbench):',
-          ...gone.flatMap((t) => ['', t]),
         ]
       : []),
+    `${step + (hand ? 2 : 1)}. ${tell}`,
+    ...(hand ? ['', 'By hand:', ...byHand] : []),
   ].join('\n');
 };
 

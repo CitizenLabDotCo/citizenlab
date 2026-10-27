@@ -3,13 +3,16 @@ import tokensMeta from '../../../../app/design-system/tokens/tokens.meta.json';
 import type { Finding, TokenMeta } from './data';
 import {
   applyElementEdits,
+  candidatesOf,
   changesLook,
   editId,
   ElementEdit,
   inlineValue,
   parseStored,
+  subjectOfEdit,
   taskOfEdit,
   valueFits,
+  wordsOfEdit,
 } from './elementEdits';
 
 const meta = tokensMeta as TokenMeta[];
@@ -29,6 +32,47 @@ const base: ElementEdit = {
 };
 
 describe('element edits', () => {
+  it('finds the lines an attached token stands for, by literal or by the value a legacy read renders', () => {
+    const radius: ElementEdit = {
+      ...base,
+      rowId: 'radius',
+      label: 'Radius',
+      from: { raw: '3px', shown: '3' },
+      to: { value: '4px', token: '--gv-radius-1' },
+    };
+    const f = (over: Partial<Finding>): Finding =>
+      ({
+        file: 'app/b.tsx',
+        line: 1,
+        col: 1,
+        raw: '3px',
+        category: 'px',
+        confidence: 'high',
+        ...over,
+      } as Finding);
+    const findings = [
+      f({ line: 2 }),
+      f({
+        line: 3,
+        raw: 'props.theme.borderRadius',
+        category: 'legacy-theme',
+        value: '3px',
+      }),
+      f({ line: 4, raw: '4px' }),
+      f({ line: 5, file: 'app/other.tsx' }),
+    ];
+    expect(
+      candidatesOf(radius, { file: 'app/b.tsx', findings }).map((x) => x.line)
+    ).toEqual([2, 3]);
+    expect(subjectOfEdit(radius, 'Button', true)).toBe(
+      'design-system(design): Button radius 3px \u2192 --gv-radius-1 [AI-assisted]'
+    );
+    expect(subjectOfEdit(base, 'Button', false)).toBe(
+      'design-system(heal): Button padding · vertical 9px \u2192 --gv-space-3 [AI-assisted]'
+    );
+    expect(wordsOfEdit(base)).toEqual(['padding', 'vertical']);
+  });
+
   it('builds a stable id', () => {
     expect(editId('s', [0, 1], 'fill')).toBe('s|0.1|fill');
     expect(editId('s', null, '12:4')).toBe('s|file|12:4');

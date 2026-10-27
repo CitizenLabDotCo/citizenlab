@@ -5,6 +5,8 @@ import {
   freshKeys,
   GhPull,
   Item,
+  LineEdit,
+  lineEditOfUndo,
   nameOf,
   REVIEWERS,
   SendRecord,
@@ -13,6 +15,7 @@ import {
   statusOf,
   statusText,
   undoOfEdit,
+  undoOfLineEdit,
   undoOfToken,
   unsentCount,
   withCopy,
@@ -127,53 +130,134 @@ describe('branchFor', () => {
 });
 
 describe('sendText', () => {
-  it('asks for a new review: plain words, the reviewers in order, the branch', () => {
+  const radius: LineEdit = {
+    subject:
+      'design-system(design): Button radius 3px \u2192 --gv-radius-1 [AI-assisted]',
+    story: 'components-actions-button--default',
+    file: 'front/app/component-library/components/Button/index.tsx',
+    line: 344,
+    old: '    props.theme.borderRadius;',
+    new: "    'var(--gv-radius-1)';",
+  };
+  // The JSON the script is fed, between the heredoc lines.
+  const inputOf = (text: string) =>
+    JSON.parse(text.split("<<'EOF'\n")[1].split('\nEOF')[0]);
+
+  it('opens a review with one command: the script fed the exact edits', () => {
     const text = sendText({
       branch: 'design-system/button-k3f9',
-      items: ['change: A', 'change: B'],
+      reviewer: 'IvaKop',
+      edits: [radius],
+      tasks: [],
       gone: [],
       tokenPatch: '',
     });
     expect(text).toContain('never PR, branch or commit');
     expect(text).toContain(
-      'Amira (@amirabayoumi), Edwin (@EdwinKato), Luuc (@luucvanderzee), Iva (@IvaKop)'
+      "gh api -H 'Accept: application/vnd.github.raw' 'repos/CitizenLabDotCo/citizenlab/contents/front/scripts/design-system/send.js?ref=design-system/workbench' > /tmp/gv-send.js && node /tmp/gv-send.js <<'EOF'"
     );
-    expect(text).toContain(
-      'make branch design-system/button-k3f9 off origin/design-system/workbench'
-    );
-    expect(text).toContain('ready for review, label epic');
-    // The new review's own preview, whose number only the opened PR gives.
-    expect(text).toContain(
-      "numbered as the PR you opened (not the workbench's own)"
-    );
-    expect(text).toContain(
-      'https://pr-<that number>.epic.hq.govocal.com/storybook/workbench/#/review'
-    );
-    expect(text).toContain('Changes:\n\nchange: A\n\nchange: B');
-    expect(text).not.toContain('tokens.source.json');
-    expect(text).not.toContain('Put back');
+    expect(inputOf(text)).toEqual({
+      repo: 'CitizenLabDotCo/citizenlab',
+      base: 'design-system/workbench',
+      branch: 'design-system/button-k3f9',
+      reviewer: 'IvaKop',
+      changes: [radius],
+    });
+    expect(text).toContain('it is with Iva for review');
+    // No clone, no pictures, no waiting on the preview.
+    expect(text).not.toContain('pictures in');
+    expect(text).toContain('Do not wait for the preview');
+    expect(text).not.toContain('By hand');
     expect(text).not.toContain('\u2014');
   });
 
-  it('adds to a linked review, with the token patch and what to put back', () => {
+  it('asks nobody for a test', () => {
+    const text = sendText({
+      branch: 'design-system/button-k3f9',
+      reviewer: null,
+      edits: [radius],
+      tasks: [],
+      gone: [],
+      tokenPatch: '',
+    });
+    expect(inputOf(text).reviewer).toBeNull();
+    expect(text).toContain('nobody is asked to look yet (a test)');
+  });
+
+  it('adds to a linked review: put-back edits to the script, the rest by hand', () => {
+    const putBack = undoOfLineEdit(radius);
     const text = sendText({
       branch: 'design-system/button-k3f9',
       pr: 15071,
-      items: ['change: C'],
-      gone: ['put back: A'],
+      reviewer: 'IvaKop',
+      edits: [],
+      tasks: ['change: C'],
+      gone: [putBack, 'put back: A'],
       tokenPatch: '[ x ]\n',
     });
     expect(text.split('\n')[0]).toContain(
       'review #15071 (branch design-system/button-k3f9'
     );
-    expect(text).toContain('read their comments first');
+    expect(text).toContain('read their comments on GitHub first');
+    const input = inputOf(text);
+    expect(input.pr).toBe(15071);
+    expect(input.changes).toEqual([
+      {
+        ...radius,
+        subject:
+          'design-system(design): put back Button radius 3px \u2192 --gv-radius-1 [AI-assisted]',
+        old: radius.new,
+        new: radius.old,
+      },
+    ]);
     expect(text).toContain(
-      'https://pr-15071.epic.hq.govocal.com/storybook/workbench/#/review'
+      'By hand:\n\nchange: C\n\ntokens.source.json:\n[ x ]\n\nPut back (reset in the Workbench):\n\nput back: A'
     );
-    expect(text).not.toContain('Ask who should review');
+    // The by-hand step comes before the person is told.
+    expect(
+      text.indexOf('3. Then by hand on design-system/button-k3f9')
+    ).toBeGreaterThan(0);
+    expect(text).toContain('\n4. Tell the person it is with Iva for review');
+  });
+
+  it('makes the review by hand when no change has an exact edit', () => {
+    const text = sendText({
+      branch: 'design-system/button-k3f9',
+      reviewer: null,
+      edits: [],
+      tasks: ['change: A'],
+      gone: [],
+      tokenPatch: '',
+    });
+    expect(text).not.toContain('gv-send.js');
     expect(text).toContain(
-      'Changes:\n\nchange: C\n\ntokens.source.json:\n[ x ]\n\nPut back (reset in the Workbench):\n\nput back: A'
+      'Make branch design-system/button-k3f9 off origin/design-system/workbench'
     );
+    expect(text).toContain('a draft, nobody asked');
+    expect(text).toContain('Changes:\n\nchange: A');
+  });
+});
+
+describe('put-back line edits', () => {
+  it('read back as line edits; words do not', () => {
+    const e: LineEdit = {
+      subject: 'design-system(heal): Badge radius 8px \u2192 --gv-radius-2',
+      file: 'front/app/x.tsx',
+      line: 3,
+      old: 'a',
+      new: 'b',
+    };
+    expect(lineEditOfUndo(undoOfLineEdit(e))).toEqual({
+      ...e,
+      subject:
+        'design-system(heal): put back Badge radius 8px \u2192 --gv-radius-2',
+      old: 'b',
+      new: 'a',
+    });
+    expect(
+      lineEditOfUndo('put back: Badge \u00b7 x \u00b7 8px')
+    ).toBeUndefined();
+    expect(lineEditOfUndo('{"file":1}')).toBeUndefined();
   });
 });
 

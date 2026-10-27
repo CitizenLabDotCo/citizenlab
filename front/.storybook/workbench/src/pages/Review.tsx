@@ -16,10 +16,13 @@ import {
   TOKEN_META,
 } from '../lib/data';
 import {
+  candidatesOf,
   changesLook,
   ElementEdit,
+  subjectOfEdit,
   TaskContext,
   taskOfEdit,
+  wordsOfEdit,
 } from '../lib/elementEdits';
 import { storyHash } from '../lib/hash';
 import { shortName } from '../lib/inspect';
@@ -51,16 +54,19 @@ import {
 import {
   currentOf,
   epicReviewUrl,
+  isDone,
   Item,
+  previewOrigin,
   prUrl,
   undoOfEdit,
   undoOfToken,
+  WORKBENCH_PR,
 } from '../lib/send';
 import { sourceChanges, sourcePatch } from '../lib/sourceDiff';
 import { groupOfStory, StoryGroup } from '../lib/stories';
 import { DEFS } from '../lib/tokenValues';
 import { useElementEdits } from '../lib/useElementEdits';
-import { useReviewWatch, useSendRecord } from '../lib/useSend';
+import { usePreviewState, useReviewWatch, useSendRecord } from '../lib/useSend';
 import { useStoryGroups } from '../lib/useStoryGroups';
 
 const loadImage = (src: string) =>
@@ -137,6 +143,51 @@ const Pictures = ({ sha }: { sha: string }) => {
   );
 };
 
+const storyPath = (story: string) =>
+  `iframe.html?id=${encodeURIComponent(story)}&viewMode=story`;
+
+// A change's story live, twice: as the workbench's own preview renders it
+// (before) and as this review's preview does (after). Both are signed in
+// by the same epic gateway; 2× shows a pixel's change.
+const Live = ({ story }: { story: string }) => {
+  const [zoom, setZoom] = useState(false);
+  const before = `${previewOrigin(WORKBENCH_PR)}/storybook/${storyPath(story)}`;
+  const after = new URL(`../${storyPath(story)}`, window.location.href).href;
+  return (
+    <div className="wb-pr-live" data-zoom={zoom} data-testid="wb-pr-live">
+      <div className="wb-pr-shots">
+        {[
+          { src: before, label: 'Before' },
+          { src: after, label: 'After' },
+        ].map((s) => (
+          <figure key={s.label} className="wb-pr-shot">
+            <div className="wb-pr-frame">
+              <iframe
+                src={s.src}
+                title={`${s.label}: ${story}`}
+                loading="lazy"
+              />
+            </div>
+            <figcaption>
+              <a href={s.src} target="_blank" rel="noreferrer">
+                {s.label}
+              </a>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+      <button
+        type="button"
+        className="wb-review-reset"
+        aria-pressed={zoom}
+        onClick={() => setZoom((z) => !z)}
+      >
+        {zoom ? 'Actual size' : 'Zoom 2×'}
+      </button>
+    </div>
+  );
+};
+
 // One line under a card's title for the developer: what kind of change, what
 // it touches, how far it reaches.
 const Meta = ({
@@ -166,10 +217,13 @@ const Card = ({
   commit,
   scan,
   fixture,
+  live,
 }: {
   commit: ChangeCommit;
   scan?: ScanOutput;
   fixture: RouteFixture;
+  // A review's own preview: its story shows live beside the workbench's.
+  live: boolean;
 }) => {
   const page = useMemo(
     () =>
@@ -222,7 +276,11 @@ const Card = ({
         areas={areasOfText(commit.subject)}
         scale={scale}
       />
-      <Pictures sha={commit.sha} />
+      {live && commit.story ? (
+        <Live story={commit.story} />
+      ) : (
+        <Pictures sha={commit.sha} />
+      )}
     </li>
   );
 };
@@ -318,6 +376,7 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
   const { edits, remove } = useElementEdits(TOKEN_META);
   const { record, update } = useSendRecord();
   const answering = useReviewWatch(record, update);
+  const preview = usePreviewState(record.pr, isDone(record.status));
 
   useEffect(() => {
     let live = true;
@@ -365,7 +424,9 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
     groups ? groupOfStory(groups, storyId) : undefined;
 
   // Every change of this browser with its task for the agent and the line
-  // that puts it back; tokens go in the patch, not as tasks.
+  // that puts it back; tokens go in the patch, not as tasks. An attached
+  // token also names the findings it can stand for, so the Send window can
+  // read the file and write the exact line edit.
   const items = (): Item[] => [
     ...drafts.flatMap(([storyId, list]) => {
       const g = groupOf(storyId);
@@ -377,12 +438,35 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
         layer: '',
         findings: scan && g?.file ? fileFindings(scan, g.file) : [],
       };
-      return list.map((e) => ({
-        key: e.id,
-        value: e.to.token ?? e.to.value,
-        task: taskOfEdit(e, ctx),
-        undo: undoOfEdit(e, ctx.component, e.file ?? ctx.file),
-      }));
+      return list.map((e): Item => {
+        const file = e.file ?? ctx.file;
+        const candidates =
+          (e.kind === 'attach' || e.kind === 'file') && e.to.token && file
+            ? candidatesOf(e, ctx)
+            : [];
+        return {
+          key: e.id,
+          value: e.to.token ?? e.to.value,
+          task: taskOfEdit(e, ctx),
+          undo: undoOfEdit(e, ctx.component, file),
+          ...(candidates.length && e.to.token && file
+            ? {
+                source: {
+                  file,
+                  story: storyId,
+                  subject: subjectOfEdit(
+                    e,
+                    ctx.component,
+                    changesLook(e, (t) => live[t] ?? '')
+                  ),
+                  token: e.to.token,
+                  candidates,
+                  words: wordsOfEdit(e),
+                },
+              }
+            : {}),
+        };
+      });
     }),
     ...tokens.map(([name, value]) => ({
       key: `token:${name}`,
@@ -442,8 +526,11 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
                   href={epicReviewUrl(record.pr)}
                   target="_blank"
                   rel="noreferrer"
+                  data-testid="wb-review-preview"
                 >
-                  its preview
+                  {preview === 'building'
+                    ? 'its preview is on its way'
+                    : 'its preview'}
                 </a>
               </>
             )}
@@ -454,6 +541,7 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
             record={record}
             update={update}
             answering={answering}
+            preview={preview}
             current={current}
             items={items}
             tokenPatch={tokenPatch}
@@ -519,7 +607,13 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
           </h2>
           <ol className="wb-pr-cards">
             {cards.map((c) => (
-              <Card key={c.sha} commit={c} scan={routed} fixture={fixture} />
+              <Card
+                key={c.sha}
+                commit={c}
+                scan={routed}
+                fixture={fixture}
+                live={!!hostPr && hostPr !== WORKBENCH_PR}
+              />
             ))}
           </ol>
         </section>

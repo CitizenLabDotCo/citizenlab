@@ -160,6 +160,11 @@ export const kindOfSubject = (
   return component ? { kind, component } : { kind };
 };
 
+// The story a commit names on its own line (`Story: <id>`), which the
+// Review page shows live before and after.
+export const storyOfBody = (body: string) =>
+  /^Story:\s*([a-z0-9-]+--[a-z0-9-]+)\s*$/m.exec(body)?.[1];
+
 type GhCommit = { sha: string; commit: { message: string } };
 type GhFile = { filename: string };
 
@@ -192,12 +197,15 @@ export const loadPrChanges = async (
         const own: GhFile[] = DESIGN_KINDS.has(parsed.kind)
           ? (await getJson(fetcher, `${api}/commits/${c.sha}`)).files ?? []
           : [];
+        const body = rest.join('\n').trim();
+        const story = storyOfBody(body);
         return {
           sha: c.sha,
           subject,
-          body: rest.join('\n').trim(),
+          body,
           files: own.map((f) => f.filename).filter((f) => differ.has(f)),
           ...parsed,
+          ...(story ? { story } : {}),
         };
       })
     );

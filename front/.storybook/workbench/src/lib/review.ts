@@ -18,6 +18,8 @@ export type ChangeCommit = {
   component?: string;
   kind: 'heal' | 'lift' | 'token' | 'design' | 'story' | 'other';
   scanDelta?: { offSpec: number };
+  // The story that shows the change (the commit's `Story:` line).
+  story?: string;
 };
 
 export type TokenChange = {

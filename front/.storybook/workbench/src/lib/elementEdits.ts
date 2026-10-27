@@ -127,18 +127,49 @@ const routeList = (routes: string[]) => {
   return rest > 0 ? `${named} and ${rest} more` : named;
 };
 
-// The scan finding an edit stands for: the `file` edit's own line, or a
-// finding of the file whose raw value is the edit's rendered value.
-const findingOf = (e: ElementEdit, ctx: TaskContext) =>
-  e.kind === 'file'
-    ? ctx.findings.find(
-        (f) => f.file === e.file && f.line === e.line && f.col === e.col
-      )
-    : ctx.findings.find(
-        (f) =>
-          f.file === ctx.file &&
-          [e.from.raw, e.from.shown, `${e.from.shown}px`].includes(flat(f.raw))
-      );
+// The scan findings an edit can stand for: the `file` edit's own line, or
+// the findings of the file whose raw value, or the value a legacy read
+// renders (`props.theme.borderRadius` is 3px), is the edit's rendered value.
+export const candidatesOf = (
+  e: ElementEdit,
+  ctx: Pick<TaskContext, 'file' | 'findings'>
+): Finding[] => {
+  if (e.kind === 'file') {
+    return ctx.findings.filter(
+      (f) => f.file === e.file && f.line === e.line && f.col === e.col
+    );
+  }
+  const seen = [e.from.raw, e.from.shown, `${e.from.shown}px`];
+  return ctx.findings.filter(
+    (f) =>
+      f.file === ctx.file &&
+      (seen.includes(flat(f.raw)) ||
+        (f.value !== undefined && seen.includes(f.value)))
+  );
+};
+
+const findingOf = (e: ElementEdit, ctx: TaskContext) => candidatesOf(e, ctx)[0];
+
+// The commit subject of an attached token: a design change when the look
+// changes, a heal when it does not.
+export const subjectOfEdit = (
+  e: ElementEdit,
+  component: string,
+  look: boolean
+) =>
+  `design-system(${look ? 'design' : 'heal'}): ${component} ${e.label
+    .toLowerCase()
+    .replace(/\s+/g, ' ')} ${e.from.token ?? flat(e.from.raw)} → ${
+    e.to.token ?? e.to.value
+  } [AI-assisted]`;
+
+// Words of the edit's row ("Padding · Vertical": padding, vertical) that pick
+// its line when several lines render the same value.
+export const wordsOfEdit = (e: ElementEdit) =>
+  e.label
+    .toLowerCase()
+    .split(/[^a-z]+/)
+    .filter((w) => w.length > 2);
 
 export const taskOfEdit = (e: ElementEdit, ctx: TaskContext): string => {
   const file = e.file ?? ctx.file ?? '(file unknown)';
