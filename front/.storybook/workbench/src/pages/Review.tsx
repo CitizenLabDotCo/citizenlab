@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import type { TokenName } from '@ds/tokens/tokens';
 
@@ -42,6 +42,7 @@ import {
   KIND_WORDS,
   REPO_URL,
   routeLinks,
+  samePictures,
   scaleText,
 } from '../lib/prReview';
 import {
@@ -69,54 +70,41 @@ import { useElementEdits } from '../lib/useElementEdits';
 import { usePreviewState, useReviewWatch, useSendRecord } from '../lib/useSend';
 import { useStoryGroups } from '../lib/useStoryGroups';
 
-const loadImage = (src: string) =>
-  new Promise<HTMLImageElement>((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => resolve(img);
-    img.onerror = () => reject(new Error(src));
-    img.src = src;
-  });
-
-const pixelsOf = (img: HTMLImageElement) => {
-  const canvas = document.createElement('canvas');
-  canvas.width = img.naturalWidth;
-  canvas.height = img.naturalHeight;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) return undefined;
-  ctx.drawImage(img, 0, 0);
-  return ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-};
-
-// Equal sizes and equal pixels: the change does not show.
-const sameImages = (a: HTMLImageElement, b: HTMLImageElement) => {
-  if (a.naturalWidth !== b.naturalWidth) return false;
-  if (a.naturalHeight !== b.naturalHeight) return false;
-  const pa = pixelsOf(a);
-  const pb = pixelsOf(b);
-  if (!pa || !pb || pa.length !== pb.length) return false;
-  for (let i = 0; i < pa.length; i++) if (pa[i] !== pb[i]) return false;
-  return true;
-};
-
 // The agent's before and after pictures of one change; one picture when
-// the two are the same.
+// the two are the same file. Nothing loads until the card is near the
+// screen.
 const Pictures = ({ sha }: { sha: string }) => {
   const urls = pictures(sha);
+  const ref = useRef<HTMLDivElement>(null);
+  const [near, setNear] = useState(false);
   const [state, setState] = useState<'loading' | 'diff' | 'same' | 'none'>(
     'loading'
   );
   useEffect(() => {
+    const el = ref.current;
+    if (!el || near) return undefined;
+    const observer = new IntersectionObserver(
+      (records) => {
+        if (records.some((r) => r.isIntersecting)) setNear(true);
+      },
+      { rootMargin: '600px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [near]);
+  useEffect(() => {
+    if (!near) return undefined;
     let live = true;
-    Promise.all([loadImage(urls.before), loadImage(urls.after)]).then(
-      ([a, b]) => live && setState(sameImages(a, b) ? 'same' : 'diff'),
+    samePictures(urls.before, urls.after).then(
+      (same) => live && setState(same ? 'same' : 'diff'),
       () => live && setState('none')
     );
     return () => {
       live = false;
     };
-  }, [urls.before, urls.after]);
+  }, [near, urls.before, urls.after]);
 
-  if (state === 'loading') return null;
+  if (state === 'loading') return <div ref={ref} className="wb-pr-shots" />;
   if (state === 'none') {
     return (
       <p className="wb-muted" data-testid="wb-pr-noshots">

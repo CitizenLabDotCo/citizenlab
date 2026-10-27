@@ -1,5 +1,8 @@
+import { webcrypto } from 'crypto';
+
 import type { ScanOutput } from './data';
 import {
+  samePictures,
   designChanges,
   forOrigin,
   isPlatformFile,
@@ -377,5 +380,36 @@ describe('loadPrChanges', () => {
   it('is undefined when GitHub does not answer', async () => {
     const out = await loadPrChanges(7, github({}) as unknown as typeof fetch);
     expect(out).toBeUndefined();
+  });
+});
+
+describe('samePictures', () => {
+  // jsdom has no crypto.subtle; the browser's is the one Node implements.
+  beforeAll(() => {
+    if (!globalThis.crypto?.subtle) {
+      Object.defineProperty(globalThis, 'crypto', {
+        value: webcrypto,
+        configurable: true,
+      });
+    }
+  });
+  const bytes = (s: string) => Uint8Array.from(Buffer.from(s)).buffer;
+  const files: Record<string, ArrayBuffer> = {
+    a: bytes('png one'),
+    b: bytes('png one'),
+    c: bytes('png two'),
+  };
+  const load = async (url: string) => {
+    if (!files[url]) throw new Error(url);
+    return files[url];
+  };
+
+  it('is true for the same bytes and false for others', async () => {
+    await expect(samePictures('a', 'b', load)).resolves.toBe(true);
+    await expect(samePictures('a', 'c', load)).resolves.toBe(false);
+  });
+
+  it('rejects when a picture is missing', async () => {
+    await expect(samePictures('a', 'missing', load)).rejects.toThrow();
   });
 });

@@ -59,6 +59,33 @@ export const pictures = (sha: string) => ({
   after: `../changes/${sha}/after.png`,
 });
 
+const hex = (buf: ArrayBuffer) =>
+  Array.from(new Uint8Array(buf), (b) => b.toString(16).padStart(2, '0')).join(
+    ''
+  );
+
+/**
+ * Whether two pictures are the same file: the SHA-256 of their bytes, hashed
+ * off the main thread by the browser, so a page of cards never decodes or
+ * compares pixels. Rejects when either fails to load.
+ */
+export const samePictures = async (
+  a: string,
+  b: string,
+  load: (url: string) => Promise<ArrayBuffer> = (url) =>
+    fetch(url).then((r) => {
+      if (!r.ok) throw new Error(`${r.status} ${url}`);
+      return r.arrayBuffer();
+    })
+): Promise<boolean> => {
+  const [da, db] = await Promise.all(
+    [a, b].map(async (url) =>
+      hex(await crypto.subtle.digest('SHA-256', await load(url)))
+    )
+  );
+  return da === db;
+};
+
 // The route fixture holds ids of the tenant it was read from. On another
 // platform (every epic has its own data) only the params read live from
 // this platform are good.
