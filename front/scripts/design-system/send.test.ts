@@ -4,6 +4,7 @@ import {
   appendToBody,
   applyLineEdit,
   prBody,
+  isTokenSwap,
   run,
   setupApp,
   SETUP_SUBJECT,
@@ -724,5 +725,42 @@ describe('run', () => {
     ).rejects.toThrow(
       'review #15069 is on CitizenLabDotCo:design-system/other-1234, not design-system/button-k3f9'
     );
+  });
+});
+
+describe('isTokenSwap', () => {
+  it.each([
+    ['    props.theme.borderRadius;', "    'var(--gv-radius-control)';"],
+    ["        return '9px 18px';", "        return 'var(--gv-space-2) 18px';"],
+    [
+      '        return `${fontSizes.base}px`;',
+      "        return 'var(--gv-fs-base)';",
+    ],
+    [
+      '  borderRadius: bo.borderRadius,',
+      "  borderRadius: 'var(--gv-radius-2)',",
+    ],
+    ['  border-radius: 3px;', '  border-radius: var(--gv-radius-1);'],
+  ])('lets a token in: %s', (before, after) => {
+    expect(isTokenSwap(before, after)).toBe(true);
+    // The reverse is a put-back.
+    expect(isTokenSwap(after, before)).toBe(true);
+  });
+
+  it.each([
+    ['a token that is not ours', '  r: 3px;', '  r: var(--other);'],
+    [
+      'two spans',
+      "  a: '3px', b: '4px',",
+      "  a: 'var(--gv-x)', b: 'var(--gv-y)',",
+    ],
+    ['code around the token', '  r: x;', '  r: var(--gv-x); run();'],
+    ['a value swap', "  r: '3px',", "  r: '4px',"],
+    ['eating code', '  r: a; b();', "  r: 'var(--gv-x)';"],
+    ['eating a comment', '  r: a, // keep', "  r: 'var(--gv-x)',"],
+    ['the same line', '  r: x;', '  r: x;'],
+    ['not text', '  r: x;', undefined],
+  ])('refuses %s', (_, before, after) => {
+    expect(isTokenSwap(before, after as string)).toBe(false);
   });
 });

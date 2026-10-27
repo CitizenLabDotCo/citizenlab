@@ -163,6 +163,52 @@ const validate = (input) => {
 
 // ------------------------------------------------------------ the edits
 
+// A design token as the workbench writes it, bare or quoted.
+const TOKEN = /(['"]?)var\(--gv-[a-z0-9-]+\)\1/g;
+
+// Balanced brackets and quotes, no statement end and no comment: a value,
+// never a piece of code that changes what runs.
+const isPlainSpan = (span) => {
+  if (!span || /;|\/\/|\/\*|\*\//.test(span)) return false;
+  const close = { ')': '(', ']': '[', '}': '{' };
+  const stack = [];
+  for (const ch of span) {
+    if ('([{'.includes(ch)) stack.push(ch);
+    else if (close[ch] && stack.pop() !== close[ch]) return false;
+  }
+  if (stack.length) return false;
+  return ["'", '"', '`'].every((q) => span.split(q).length % 2 === 1);
+};
+
+// `to` is `from` with one contiguous span replaced by a token.
+const swapsInToken = (from, to) => {
+  for (const m of to.matchAll(TOKEN)) {
+    const head = to.slice(0, m.index);
+    const tail = to.slice(m.index + m[0].length);
+    if (
+      head.length + tail.length < from.length &&
+      from.startsWith(head) &&
+      from.endsWith(tail) &&
+      isPlainSpan(from.slice(head.length, from.length - tail.length))
+    ) {
+      return true;
+    }
+  }
+  return false;
+};
+
+/**
+ * The sender's own guard, whatever the workbench sent: the two lines differ
+ * in one contiguous span, and the new span is a design token
+ * (`var(--gv-…)`, optionally quoted) where the old one was a plain value, or
+ * the reverse (a put-back). Anything else is for a person.
+ */
+const isTokenSwap = (oldLine, newLine) =>
+  isText(oldLine) &&
+  isText(newLine) &&
+  oldLine !== newLine &&
+  (swapsInToken(oldLine, newLine) || swapsInToken(newLine, oldLine));
+
 const count = (lines, line) => lines.filter((l) => l === line).length;
 
 // One line swapped. The file may have moved on since the workbench read it:
@@ -341,6 +387,10 @@ const plan = async (api, input, start, compareBase) => {
     const text = texts.get(c.file);
     if (text == null) {
       out.byHand.push(`${c.subject} (no such file)`);
+      continue;
+    }
+    if (!isTokenSwap(c.old, c.new)) {
+      out.byHand.push(`${c.subject} (by hand: not a token swap)`);
       continue;
     }
     const edit = applyLineEdit(text, c);
@@ -743,6 +793,7 @@ module.exports = {
   appendToBody,
   applyLineEdit,
   githubApi,
+  isTokenSwap,
   prBody,
   run,
   setupApp,
