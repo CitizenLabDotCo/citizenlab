@@ -49,11 +49,18 @@ class WebApi::V1::ProjectGenerationsController < ApplicationController
   end
 
   def generation_params
-    params.require(:project_generation).permit(:prompt, :locale, file_ids: [], levers: LEVER_KEYS)
+    params.require(:project_generation).permit(:prompt, :instruction, :locale, file_ids: [], levers: LEVER_KEYS)
   end
 
   def prompt
     generation_params[:prompt].presence
+  end
+
+  # When set, this is a targeted EDIT of the existing draft (the "chat to change
+  # anything" dock) rather than a full generation; the job routes it to
+  # ProjectEditor instead of ProjectGenerator.
+  def instruction
+    generation_params[:instruction].presence
   end
 
   def locale
@@ -77,7 +84,9 @@ class WebApi::V1::ProjectGenerationsController < ApplicationController
   def validation_errors
     errors = {}
 
-    if prompt.nil? && file_ids.empty?
+    if instruction
+      errors[:instruction] = [{ error: 'too_long', count: MAX_PROMPT_LENGTH }] if instruction.length > MAX_PROMPT_LENGTH
+    elsif prompt.nil? && file_ids.empty?
       errors[:prompt] = [{ error: 'blank' }]
     elsif prompt.to_s.length > MAX_PROMPT_LENGTH
       errors[:prompt] = [{ error: 'too_long', count: MAX_PROMPT_LENGTH }]
@@ -116,7 +125,7 @@ class WebApi::V1::ProjectGenerationsController < ApplicationController
   def enqueue_job
     job = ProjectGeneration::ProjectGenerationJob
       .with_tracking(owner: current_user)
-      .perform_later(@project, current_user, prompt, files, locale, levers)
+      .perform_later(@project, current_user, prompt, files, locale, levers, instruction)
 
     # The tracker's context is the project, but a Project has no `project_id`, so
     # with_tracking leaves the tracker's project_id blank. Set it so project

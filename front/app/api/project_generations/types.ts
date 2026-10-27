@@ -15,8 +15,12 @@ export type ProjectGenerationLevers = {
 
 export type AddProjectGenerationParams = {
   projectId: string;
-  prompt: string;
   locale: SupportedLocale;
-  fileIds: string[];
-  levers: ProjectGenerationLevers;
+  // A full generation sends a prompt (+ optional files and levers). A targeted
+  // edit of an existing draft sends `instruction` instead — the backend routes
+  // it to the project editor, which patches the draft in place.
+  prompt?: string;
+  fileIds?: string[];
+  levers?: ProjectGenerationLevers;
+  instruction?: string;
 };

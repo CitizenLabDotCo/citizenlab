@@ -20,9 +20,16 @@ module ProjectGeneration
       RubyLLM::ServiceUnavailableError
     ].freeze
 
-    def perform(project, user, prompt, files, locale, levers)
-      result = ProjectGenerator.new(project, user, locale)
-        .generate_and_persist(prompt: prompt, files: files, levers: levers)
+    # `instruction`, when present, is a targeted edit of the existing draft (the
+    # "chat to change anything" dock): it runs ProjectEditor instead of a full
+    # ProjectGenerator run. Both return a GenerationResult, so the rest is shared.
+    def perform(project, user, prompt, files, locale, levers, instruction = nil)
+      result = if instruction.present?
+        ProjectEditor.new(project, user, locale).edit_and_persist(instruction: instruction)
+      else
+        ProjectGenerator.new(project, user, locale)
+          .generate_and_persist(prompt: prompt, files: files, levers: levers)
+      end
 
       if result.failed?
         ErrorReporter.report_msg("Project generation could not save the project: #{result.errors.to_json}")
@@ -32,7 +39,7 @@ module ProjectGeneration
         track_progress
         mark_as_complete!
       end
-    rescue ProjectGenerator::InvalidOutputError => e
+    rescue ProjectGenerator::InvalidOutputError, ProjectEditor::InvalidOutputError => e
       ErrorReporter.report(e)
       fail_generation!
     end

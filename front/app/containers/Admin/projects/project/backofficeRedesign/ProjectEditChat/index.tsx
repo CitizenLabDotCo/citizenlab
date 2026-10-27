@@ -1,67 +1,44 @@
 import React, { useState } from 'react';
 
-import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, Icon, Spinner, Text, colors } from '@citizenlab/cl2-component-library';
 import { useQueryClient } from '@tanstack/react-query';
-import { addDays, format, parseISO } from 'date-fns';
 import styled, { css, keyframes } from 'styled-components';
 
 import customFieldsKeys from 'api/custom_fields/keys';
 import customFormKeys from 'api/custom_form/keys';
-import useAddPhase from 'api/phases/useAddPhase';
 import phasesKeys from 'api/phases/keys';
-import usePhases from 'api/phases/usePhases';
-import { ParticipationMethod } from 'api/phases/types';
 import projectPageLayoutKeys from 'api/project_page_layout/keys';
 import useAddProjectGeneration from 'api/project_generations/useAddProjectGeneration';
 import projectsKeys from 'api/projects/keys';
 import { IProjectData } from 'api/projects/types';
 
-import useLocalize from 'hooks/useLocalize';
 import useLocale from 'hooks/useLocale';
+import useLocalize from 'hooks/useLocalize';
 
-import DraftingProgress from '../ProjectAssistantModal/DraftingProgress';
 import GenerationWatcher from '../ProjectAssistantModal/GenerationWatcher';
 import ModalComposer from '../ProjectAssistantModal/ModalComposer';
-import { DEFAULT_LEVERS } from '../ProjectAssistant/leverConfig';
 
 // The persistent "chat to change anything" entry in the project setup
 // workspace. Two jobs:
 //
 //  1. On arrival from the assistant it carries the before-you-publish checklist
 //     (the generator's next_steps) — the bar pulses for attention and, once
-//     opened, the steps show as a tickable list. This is where the manager
-//     actually does the work, so the checklist lives here rather than in the
-//     create modal.
+//     opened, the steps show as a tickable list.
 //
-//  2. It answers change requests. A *targeted* edit — "add a phase" — is routed
-//     to the matching tool (it really creates the phase and asks a question
-//     first), NOT a full regeneration. Broad asks ("make it more ambitious")
-//     still fall back to a whole-project redraft via the engine. (Prototype:
-//     only the phase intent is wired to a real targeted tool so far — the same
-//     pattern is what every other intent should route through.)
+//  2. It answers change requests. Each request is sent as an `instruction` to
+//     the backend project editor, which turns it into targeted MCP-tool edits
+//     (change copy, add / rename / remove a phase, change who can take part, …)
+//     and patches the draft in place — it does NOT regenerate the whole
+//     project. The workspace preview refreshes when the edit lands.
 
 const INTRO =
-  'Ask for a change and I’ll make it. Small edits — like adding a phase — I do directly; bigger reshapes I’ll redraft.';
+  'Ask for a change and I’ll make it — reword the page, add or rename a phase, change who can take part. I edit the draft in place.';
 
 const SUGGESTIONS = [
-  'Add a new phase',
-  'Make the introduction shorter and punchier',
-  'Make the survey shorter',
+  'Make the introduction shorter and more informal',
+  'Add a voting phase at the end',
+  'Let anyone take part in the first phase without an account',
 ];
-
-// The quick-reply options offered when the manager asks to add a phase, mapped
-// to the real participation method the new phase is created with.
-const PHASE_METHODS: { label: string; method: ParticipationMethod }[] = [
-  { label: 'Information', method: 'information' },
-  { label: 'Collect ideas', method: 'ideation' },
-  { label: 'Voting', method: 'voting' },
-  { label: 'Survey', method: 'native_survey' },
-  { label: 'Poll', method: 'poll' },
-];
-
-// "add / new / another … phase" — a targeted structural edit, not a redraft.
-const isAddPhaseIntent = (text: string) =>
-  /\bphases?\b/i.test(text) && /\b(add|new|another|extra|insert|include)\b/i.test(text);
 
 const pulse = keyframes`
   0%, 100% { box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12), 0 0 0 0 rgba(4, 77, 108, 0.35); }
@@ -114,6 +91,7 @@ const Chip = styled.button`
   font-size: 14px;
   color: ${colors.textPrimary};
   cursor: pointer;
+  text-align: left;
   &:hover:not(:disabled) {
     border-color: ${colors.teal400};
     background: ${colors.grey100};
@@ -134,8 +112,6 @@ const ProjectEditChat = ({ project }: Props) => {
   const localize = useLocalize();
   const queryClient = useQueryClient();
   const { mutateAsync: addProjectGeneration } = useAddProjectGeneration();
-  const { mutateAsync: addPhase } = useAddPhase();
-  const { data: phases } = usePhases(projectId);
 
   const nextSteps = project.attributes.ai_generation_summary?.next_steps ?? [];
 
@@ -143,18 +119,13 @@ const ProjectEditChat = ({ project }: Props) => {
   // The checklist pulses for attention until the manager has opened the panel
   // at least once.
   const [seen, setSeen] = useState(false);
-  const [regenerating, setRegenerating] = useState(false);
-  const [busy, setBusy] = useState(false);
+  const [working, setWorking] = useState(false);
   const [jobStartedAt, setJobStartedAt] = useState<string>();
   const [error, setError] = useState<string>();
   const [exchanges, setExchanges] = useState<Exchange[]>([]);
   const [checked, setChecked] = useState<Set<number>>(new Set());
-  // When the manager asks to add a phase we ask one question (what kind) before
-  // doing it; this flag drives the method quick-replies.
-  const [awaitingPhaseKind, setAwaitingPhaseKind] = useState(false);
 
   const title = localize(project.attributes.title_multiloc);
-  const preview = localize(project.attributes.description_preview_multiloc);
 
   const hasPendingSteps = nextSteps.length > 0 && !seen;
 
@@ -178,90 +149,23 @@ const ProjectEditChat = ({ project }: Props) => {
       return next;
     });
 
-  const pushAssistant = (user: string, assistant: string) =>
-    setExchanges((prev) => [...prev, { user, assistant }]);
-
-  // A broad reshape: redraft the whole project with the engine (the heavy path).
-  const redraft = async (direction: string) => {
+  // Send the change request to the backend editor as an instruction; it makes
+  // the targeted edits and the preview refreshes when the job completes.
+  const send = async (instruction: string) => {
     setError(undefined);
-    setExchanges((prev) => [...prev, { user: direction }]);
+    setExchanges((prev) => [...prev, { user: instruction }]);
     try {
-      const context = [
-        `This is an existing project titled "${title}".`,
-        preview ? `Its summary: ${preview}` : '',
-        'Please revise the whole project with this direction:',
-        direction,
-      ]
-        .filter(Boolean)
-        .join('\n');
-      await addProjectGeneration({
-        projectId,
-        prompt: context,
-        locale,
-        fileIds: [],
-        levers: DEFAULT_LEVERS,
-      });
+      await addProjectGeneration({ projectId, locale, instruction });
       setJobStartedAt(new Date().toISOString());
-      setRegenerating(true);
+      setWorking(true);
     } catch {
       setError('Something went wrong with that change. Please try again.');
     }
   };
 
-  // A targeted edit: actually add a phase after the last one, no regeneration.
-  const addPhaseOfKind = async (label: string, method: ParticipationMethod) => {
-    setError(undefined);
-    setAwaitingPhaseKind(false);
-    setBusy(true);
-    try {
-      const ends = (phases?.data ?? [])
-        .map((p) => p.attributes.end_at)
-        .filter((d): d is string => !!d)
-        .sort();
-      const start = ends.length ? addDays(parseISO(ends[ends.length - 1]), 1) : new Date();
-      const end = addDays(start, 13);
-      await addPhase({
-        projectId,
-        placement_type: 'on_timeline',
-        participation_method: method,
-        title_multiloc: { [locale]: label },
-        start_at: format(start, 'yyyy-MM-dd'),
-        end_at: format(end, 'yyyy-MM-dd'),
-      });
-      refreshWorkspace();
-      const when = `${format(start, 'd MMM')} – ${format(end, 'd MMM')}`;
-      pushAssistant(
-        `${label} phase`,
-        `Done — I added a “${label}” phase (${when}) after your last one. You can rename it, move it, or set it up on the timeline.`
-      );
-    } catch {
-      setError('Something went wrong adding the phase. Please try again.');
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  // Route the request: targeted intents are handled directly; everything else
-  // is a redraft.
-  const send = (text: string) => {
-    if (isAddPhaseIntent(text)) {
-      setExchanges((prev) => [
-        ...prev,
-        {
-          user: text,
-          assistant:
-            'Sure — what should this phase do? Pick one and I’ll slot it in after your last phase.',
-        },
-      ]);
-      setAwaitingPhaseKind(true);
-      return;
-    }
-    redraft(text);
-  };
-
   const onComplete = (succeeded: boolean) => {
     refreshWorkspace();
-    setRegenerating(false);
+    setWorking(false);
     setExchanges((prev) => {
       const last = prev[prev.length - 1];
       if (last && !last.assistant) {
@@ -270,8 +174,8 @@ const ProjectEditChat = ({ project }: Props) => {
           {
             ...last,
             assistant: succeeded
-              ? 'Done — I’ve redrafted the project. The preview is updated.'
-              : 'I’ve redrafted most of it; one or two parts may need a look.',
+              ? 'Done — I made that change. The preview on the left is updated.'
+              : 'I couldn’t make that change — try rephrasing it, or ask for something smaller.',
           },
         ];
       }
@@ -281,7 +185,7 @@ const ProjectEditChat = ({ project }: Props) => {
 
   return (
     <Box position="absolute" bottom="20px" left="0" right="0" display="flex" justifyContent="center" zIndex="20">
-      {regenerating && jobStartedAt && (
+      {working && jobStartedAt && (
         <GenerationWatcher projectId={projectId} since={jobStartedAt} onComplete={onComplete} />
       )}
 
@@ -402,26 +306,16 @@ const ProjectEditChat = ({ project }: Props) => {
               </React.Fragment>
             ))}
 
-            {/* The one clarifying question for "add a phase": pick a kind and it
-                gets created directly. */}
-            {awaitingPhaseKind && (
-              <Box display="flex" flexWrap="wrap" gap="8px">
-                {PHASE_METHODS.map((m) => (
-                  <Chip
-                    key={m.method}
-                    type="button"
-                    disabled={busy}
-                    onClick={() => addPhaseOfKind(m.label, m.method)}
-                  >
-                    {m.label}
-                  </Chip>
-                ))}
+            {working && (
+              <Box display="flex" alignItems="center" gap="10px">
+                <Spinner size="20px" />
+                <Text m="0px" color="textSecondary">
+                  Making your change…
+                </Text>
               </Box>
             )}
 
-            {regenerating && jobStartedAt && <DraftingProgress startedAt={jobStartedAt} />}
-
-            {!regenerating && !awaitingPhaseKind && exchanges.length === 0 && (
+            {!working && exchanges.length === 0 && (
               <Box display="flex" flexWrap="wrap" gap="8px">
                 {SUGGESTIONS.map((s) => (
                   <Chip key={s} type="button" onClick={() => send(s)}>
@@ -439,7 +333,7 @@ const ProjectEditChat = ({ project }: Props) => {
           </Box>
 
           <Box flex="0 0 auto" p="12px 18px 16px" borderTop={`1px solid ${colors.grey200}`}>
-            <ModalComposer placeholder="Describe a change…" disabled={regenerating || busy} onSend={send} />
+            <ModalComposer placeholder="Describe a change…" disabled={working} onSend={send} />
           </Box>
         </Panel>
       )}

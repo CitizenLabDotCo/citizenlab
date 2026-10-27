@@ -14,6 +14,7 @@ const addProjectGeneration = ({
   locale,
   fileIds,
   levers,
+  instruction,
 }: AddProjectGenerationParams) =>
   fetcher<null>({
     path: `/projects/${projectId}/project_generations`,
@@ -24,6 +25,7 @@ const addProjectGeneration = ({
         locale,
         file_ids: fileIds,
         levers,
+        instruction,
       },
     },
   });
