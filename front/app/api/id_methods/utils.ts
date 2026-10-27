@@ -1,3 +1,5 @@
+import { CLError } from 'typings';
+
 import {
   IdMethods,
   IDAzureAdMethod,
@@ -51,6 +53,16 @@ export const isEmployeeSsoMethod = (
 
 export const getEmployeeSsoConfigs = (idMethods?: IdMethods) =>
   idMethods?.data.filter(isEmployeeSsoMethod) ?? [];
+
+// The staff method that an `sso_enforced_for_domain` error says the user must
+// sign in with.
+export const getSsoEnforcedMethod = (
+  idMethods: IdMethods | undefined,
+  error: Pick<CLError, 'payload'>
+) =>
+  getEmployeeSsoConfigs(idMethods).find(
+    (method) => method.attributes.name === error.payload?.id_method
+  );
 
 export const getFacebookConfig = (idMethods?: IdMethods) => {
   const facebookConfig = idMethods?.data.find(

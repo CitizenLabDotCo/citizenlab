@@ -4,7 +4,11 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { SetError, State } from 'containers/Authentication/typings';
+import {
+  SetError,
+  SSOProviderWithoutVienna,
+  State,
+} from 'containers/Authentication/typings';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -21,6 +25,7 @@ interface Props {
   setError: SetError;
   onSubmitEmail: (email: string) => void;
   onSubmitPhone: (phone: string) => void;
+  onSwitchToSSO: (ssoProvider: SSOProviderWithoutVienna) => void;
 }
 
 // The entry point of the password_login flow: the user identifies themselves
@@ -33,6 +38,7 @@ const StartForm = ({
   setError,
   onSubmitEmail,
   onSubmitPhone,
+  onSwitchToSSO,
 }: Props) => {
   const { formatMessage } = useIntl();
   const smsFFEnabled = useFeatureFlag({ name: 'sms' });
@@ -52,6 +58,7 @@ const StartForm = ({
         email={state.email}
         setError={setError}
         onSubmit={onSubmitEmail}
+        onSwitchToSSO={onSwitchToSSO}
       />
     );
   }
@@ -72,6 +79,7 @@ const StartForm = ({
           email={state.email}
           setError={setError}
           onSubmit={onSubmitEmail}
+          onSwitchToSSO={onSwitchToSSO}
         />
       )}
       <TextButton

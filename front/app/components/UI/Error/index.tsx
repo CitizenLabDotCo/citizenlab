@@ -11,12 +11,13 @@ import { isArray, isEmpty, uniqBy } from 'lodash-es';
 import { darken } from 'polished';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import styled from 'styled-components';
-import { CLError, Multiloc } from 'typings';
+import { CLError } from 'typings';
 
 import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { IdMethods } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
-import { getEmployeeSsoConfigs } from 'api/id_methods/utils';
+import { getSsoEnforcedMethod } from 'api/id_methods/utils';
 import { IInviteError } from 'api/invites/types';
 
 import useLocalize, { Localize } from 'hooks/useLocalize';
@@ -226,16 +227,17 @@ export const getApiErrorValues = (
 
 // Allow custom error messages (configured on a verification method) for specific
 // API errors. The staff SSO methods (Azure AD, Okta) can define a custom message
-// for users who must sign in via SSO because of their email domain.
+// for users who must sign in via SSO because of their email domain. The error
+// names the method that enforces the domain, so we use that method's message.
 const findCustomErrorMessage = (
-  error: string,
-  ssoEnforcedForDomainMultiloc: Multiloc | undefined,
+  error: CLError | IInviteError,
+  idMethods: IdMethods | undefined,
   localize: Localize
 ) => {
-  if (error === 'sso_enforced_for_domain') {
-    return ssoEnforcedForDomainMultiloc
-      ? localize(ssoEnforcedForDomainMultiloc)
-      : undefined;
+  if (error.error === 'sso_enforced_for_domain') {
+    const multiloc = getSsoEnforcedMethod(idMethods, error)?.attributes
+      .enforced_email_domain_error_multiloc;
+    return multiloc ? localize(multiloc) : undefined;
   }
   return;
 };
@@ -246,10 +248,6 @@ const Error = (props: ErrorProps) => {
   const { data: idMethods } = useIdMethods();
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-
-  const ssoEnforcedForDomainMultiloc = getEmployeeSsoConfigs(idMethods).find(
-    (method) => method.attributes.enforced_email_domain_error_multiloc
-  )?.attributes.enforced_email_domain_error_multiloc;
 
   const {
     text,
@@ -334,8 +332,8 @@ const Error = (props: ErrorProps) => {
                       const values = getApiErrorValues(error, appConfiguration);
 
                       const customErrorMessage = findCustomErrorMessage(
-                        error.error,
-                        ssoEnforcedForDomainMultiloc,
+                        error,
+                        idMethods,
                         localize
                       );
 

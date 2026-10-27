@@ -5,10 +5,10 @@ require 'rails_helper'
 describe AuthenticationService do
   let(:service) { described_class.new }
 
-  describe '.sso_enforced_for_email?' do
+  describe '#sso_method_enforced_for_email' do
     context 'when no enforced domains are configured' do
-      it 'returns false' do
-        expect(described_class.new.sso_enforced_for_email?('user@example.com')).to be false
+      it 'returns nil' do
+        expect(described_class.new.sso_method_enforced_for_email('user@example.com')).to be_nil
       end
     end
 
@@ -25,28 +25,28 @@ describe AuthenticationService do
         AppConfiguration.instance.update!(settings: settings)
       end
 
-      it 'returns true when the email domain matches' do
-        expect(described_class.new.sso_enforced_for_email?('user@example.com')).to be true
+      it 'returns the method when the email domain matches' do
+        expect(described_class.new.sso_method_enforced_for_email('user@example.com').name).to eq 'azureactivedirectory'
       end
 
-      it 'returns true for another matching domain' do
-        expect(described_class.new.sso_enforced_for_email?('user@company.org')).to be true
+      it 'returns the method for another matching domain' do
+        expect(described_class.new.sso_method_enforced_for_email('user@company.org').name).to eq 'azureactivedirectory'
       end
 
-      it 'returns false when the email domain does not match' do
-        expect(described_class.new.sso_enforced_for_email?('user@other.com')).to be false
+      it 'returns nil when the email domain does not match' do
+        expect(described_class.new.sso_method_enforced_for_email('user@other.com')).to be_nil
       end
 
       it 'is case-insensitive' do
-        expect(described_class.new.sso_enforced_for_email?('user@EXAMPLE.COM')).to be true
+        expect(described_class.new.sso_method_enforced_for_email('user@EXAMPLE.COM').name).to eq 'azureactivedirectory'
       end
 
-      it 'returns false for blank email' do
-        expect(described_class.new.sso_enforced_for_email?('')).to be false
+      it 'returns nil for blank email' do
+        expect(described_class.new.sso_method_enforced_for_email('')).to be_nil
       end
 
-      it 'returns false for nil email' do
-        expect(described_class.new.sso_enforced_for_email?(nil)).to be false
+      it 'returns nil for nil email' do
+        expect(described_class.new.sso_method_enforced_for_email(nil)).to be_nil
       end
     end
 
@@ -63,12 +63,32 @@ describe AuthenticationService do
         AppConfiguration.instance.update!(settings: settings)
       end
 
-      it 'returns true when the email domain matches' do
-        expect(described_class.new.sso_enforced_for_email?('user@example.gov')).to be true
+      it 'returns the method when the email domain matches' do
+        expect(described_class.new.sso_method_enforced_for_email('user@example.gov').name).to eq 'okta'
       end
 
-      it 'returns false when the email domain does not match' do
-        expect(described_class.new.sso_enforced_for_email?('user@other.com')).to be false
+      it 'returns nil when the email domain does not match' do
+        expect(described_class.new.sso_method_enforced_for_email('user@other.com')).to be_nil
+      end
+    end
+
+    context 'when Azure AD and Okta enforce different domains' do
+      before do
+        settings = AppConfiguration.instance.settings
+        settings['id_config'] = {
+          'allowed' => true,
+          'enabled' => true,
+          'id_methods' => [
+            { 'name' => 'azureactivedirectory', 'enforced_email_domains' => 'example.com' },
+            { 'name' => 'okta', 'enforced_email_domains' => 'example.gov' }
+          ]
+        }
+        AppConfiguration.instance.update!(settings: settings)
+      end
+
+      it 'returns the method that enforces the email domain' do
+        expect(described_class.new.sso_method_enforced_for_email('user@example.com').name).to eq 'azureactivedirectory'
+        expect(described_class.new.sso_method_enforced_for_email('user@example.gov').name).to eq 'okta'
       end
     end
   end

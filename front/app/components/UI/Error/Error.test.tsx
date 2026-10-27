@@ -2,6 +2,8 @@ import React from 'react';
 
 import translationMessages from 'i18n/en';
 
+import { IdMethodData } from 'api/id_methods/types';
+
 import { screen, render } from 'utils/testUtils/rtl';
 
 import Error from './';
@@ -9,6 +11,12 @@ import Error from './';
 jest.mock('react-transition-group/CSSTransition', () => ({ children }) => (
   <>{children}</>
 ));
+
+let mockIdMethods: { data: IdMethodData[] } = { data: [] };
+
+jest.mock('api/id_methods/useIdMethods', () =>
+  jest.fn(() => ({ data: mockIdMethods }))
+);
 
 describe('Error', () => {
   it('should render Error component', () => {
@@ -66,5 +74,52 @@ describe('Error', () => {
         ]
       )
     ).toBeInTheDocument();
+  });
+
+  it("shows the custom SSO message of the method that enforces the user's domain", () => {
+    const baseAttributes = {
+      authentication_method: true,
+      verification_method: false,
+    };
+    mockIdMethods = {
+      data: [
+        {
+          id: 'azure',
+          type: 'id_method',
+          attributes: {
+            ...baseAttributes,
+            name: 'azureactivedirectory',
+            enforced_email_domain_error_multiloc: {
+              en: 'Use your Microsoft account',
+            },
+          },
+        },
+        {
+          id: 'okta',
+          type: 'id_method',
+          attributes: {
+            ...baseAttributes,
+            name: 'okta',
+            enforced_email_domain_error_multiloc: {
+              en: 'Use your Okta account',
+            },
+          },
+        },
+      ],
+    };
+
+    render(
+      <Error
+        apiErrors={[
+          { error: 'sso_enforced_for_domain', payload: { id_method: 'okta' } },
+        ]}
+        fieldName="email"
+      />
+    );
+
+    expect(screen.getByText('Use your Okta account')).toBeInTheDocument();
+    expect(
+      screen.queryByText('Use your Microsoft account')
+    ).not.toBeInTheDocument();
   });
 });

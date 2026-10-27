@@ -100,6 +100,7 @@ const VerificationVariant = ({
                 setError={setError}
                 onSubmitEmail={onSubmitEmail}
                 onSubmitPhone={onSubmitPhone}
+                onSwitchToSSO={onSwitchToSSO}
               />
               {authenticationOnlyMethodsExceptFC.length > 0 && (
                 <Box mt="24px">

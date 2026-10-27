@@ -9,14 +9,15 @@ class AuthenticationService
     @id_method_service.configured_methods(app_configuration).select(&:authentication?)
   end
 
-  # Returns true if SSO is enforced for this email's domain, false otherwise.
-  def sso_enforced_for_email?(email)
-    return false if email.blank?
+  # Returns the method that users with this email's domain must sign in with,
+  # or nil when no method enforces the domain.
+  def sso_method_enforced_for_email(email)
+    return if email.blank?
 
     domain = email.split('@').last&.strip&.downcase
-    return false if domain.blank?
+    return if domain.blank?
 
-    active_methods(AppConfiguration.instance).any? do |method|
+    active_methods(AppConfiguration.instance).find do |method|
       method.enforced_email_domains.include?(domain)
     end
   end

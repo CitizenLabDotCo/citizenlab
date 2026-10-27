@@ -12,11 +12,12 @@ import StartForm from './StartForm';
 
 jest.mock('hooks/useFeatureFlag', () => jest.fn());
 
-// Stubbed: its own visibility rules are covered in SSOEnforcedLink.test.tsx.
-jest.mock('./SSOEnforcedLink', () => () => <div>sso-enforced-link</div>);
+// Stubbed: its own visibility rules are covered in SSOEnforcedButton.test.tsx.
+jest.mock('./SSOEnforcedButton', () => () => <div>sso-enforced-button</div>);
 
 const onSubmitEmail = jest.fn();
 const onSubmitPhone = jest.fn();
+const onSwitchToSSO = jest.fn();
 
 const state = {
   flow: 'signup',
@@ -40,6 +41,7 @@ const renderStartForm = (stateOverrides: Partial<State> = {}) =>
       setError={jest.fn()}
       onSubmitEmail={onSubmitEmail}
       onSubmitPhone={onSubmitPhone}
+      onSwitchToSSO={onSwitchToSSO}
     />
   );
 
@@ -111,10 +113,7 @@ describe('StartForm', () => {
   describe('when submitting the email fails', () => {
     beforeEach(() => (useFeatureFlag as jest.Mock).mockReturnValue(false));
 
-    const submitWithError = async (error: string) => {
-      onSubmitEmail.mockRejectedValueOnce({ errors: { email: [{ error }] } });
-      renderStartForm();
-
+    const submit = async () => {
       fireEvent.change(screen.getByLabelText(/email/i), {
         target: { value: 'staff@example.gov' },
       });
@@ -123,16 +122,42 @@ describe('StartForm', () => {
       await waitFor(() => expect(onSubmitEmail).toHaveBeenCalled());
     };
 
-    it('offers the SSO link when the email domain must use SSO', async () => {
+    const submitWithError = async (error: string) => {
+      onSubmitEmail.mockRejectedValueOnce({ errors: { email: [{ error }] } });
+      renderStartForm();
+      await submit();
+    };
+
+    beforeEach(() => onSubmitEmail.mockReset());
+
+    it('offers the SSO button when the email domain must use SSO', async () => {
       await submitWithError('sso_enforced_for_domain');
 
-      expect(await screen.findByText('sso-enforced-link')).toBeInTheDocument();
+      expect(
+        await screen.findByText('sso-enforced-button')
+      ).toBeInTheDocument();
     });
 
-    it('does not offer the SSO link for other errors', async () => {
+    it('does not offer the SSO button for other errors', async () => {
       await submitWithError('taken');
 
-      expect(screen.queryByText('sso-enforced-link')).not.toBeInTheDocument();
+      expect(screen.queryByText('sso-enforced-button')).not.toBeInTheDocument();
+    });
+
+    it('hides the SSO button again when the next submit fails differently', async () => {
+      await submitWithError('sso_enforced_for_domain');
+      expect(
+        await screen.findByText('sso-enforced-button')
+      ).toBeInTheDocument();
+
+      onSubmitEmail.mockRejectedValueOnce(new Error('network'));
+      fireEvent.click(screen.getByRole('button', { name: /continue/i }));
+
+      await waitFor(() =>
+        expect(
+          screen.queryByText('sso-enforced-button')
+        ).not.toBeInTheDocument()
+      );
     });
   });
 });

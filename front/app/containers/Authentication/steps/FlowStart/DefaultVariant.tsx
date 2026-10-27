@@ -70,6 +70,7 @@ const DefaultVariant = ({
             setError={setError}
             onSubmitEmail={onSubmitEmail}
             onSubmitPhone={onSubmitPhone}
+            onSwitchToSSO={onSwitchToSSO}
           />
           {authMethodsEnabledBesidesFC.length > 0 && (
             <Box mt="24px">

@@ -3,9 +3,13 @@ import React, { useMemo, useState } from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
+import { CLError } from 'typings';
 import { string, object } from 'yup';
 
-import { SetError } from 'containers/Authentication/typings';
+import {
+  SetError,
+  SSOProviderWithoutVienna,
+} from 'containers/Authentication/typings';
 
 import Input from 'components/HookForm/Input';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -19,7 +23,7 @@ import { isValidEmail } from 'utils/validate';
 
 import sharedMessages from '../../messages';
 
-import SSOEnforcedLink from './SSOEnforcedLink';
+import SSOEnforcedButton from './SSOEnforcedButton';
 
 interface FormValues {
   email: string;
@@ -34,11 +38,19 @@ interface Props {
   email: string | null;
   setError: SetError;
   onSubmit: (email: string) => void;
+  onSwitchToSSO: (ssoProvider: SSOProviderWithoutVienna) => void;
 }
 
-const EmailForm = ({ loading, topText, email, setError, onSubmit }: Props) => {
+const EmailForm = ({
+  loading,
+  topText,
+  email,
+  setError,
+  onSubmit,
+  onSwitchToSSO,
+}: Props) => {
   const { formatMessage } = useIntl();
-  const [ssoEnforced, setSsoEnforced] = useState(false);
+  const [ssoEnforcedError, setSsoEnforcedError] = useState<CLError>();
 
   const schema = useMemo(
     () =>
@@ -63,16 +75,19 @@ const EmailForm = ({ loading, topText, email, setError, onSubmit }: Props) => {
   });
 
   const handleSubmit = async ({ email }: FormValues) => {
+    setSsoEnforcedError(undefined);
+
     try {
       await onSubmit(email);
     } catch (e) {
       if (isCLErrorsWrapper(e)) {
-        setSsoEnforced(
-          'email' in e.errors &&
-            e.errors.email.some(
+        if ('email' in e.errors) {
+          setSsoEnforcedError(
+            e.errors.email.find(
               (error) => error.error === 'sso_enforced_for_domain'
             )
-        );
+          );
+        }
         handleHookFormSubmissionError(e, methods.setError);
         return;
       }
@@ -95,7 +110,12 @@ const EmailForm = ({ loading, topText, email, setError, onSubmit }: Props) => {
             label={formatMessage(sharedMessages.email)}
             required
           />
-          {ssoEnforced && <SSOEnforcedLink />}
+          {ssoEnforcedError && (
+            <SSOEnforcedButton
+              error={ssoEnforcedError}
+              onClickSSO={onSwitchToSSO}
+            />
+          )}
         </Box>
         <Box w="100%" display="flex" mt="32px">
           <ButtonWithLink
