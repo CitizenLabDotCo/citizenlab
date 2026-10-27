@@ -29,7 +29,6 @@ export const SDK_EXPORT_NAMES = [
   'colors',
   // Platform hooks
   'useAuthUser',
-  'useProjectsMini',
   'useAppConfiguration',
   'useLocale',
   'useLocalize',
