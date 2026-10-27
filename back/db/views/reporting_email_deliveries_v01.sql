@@ -7,6 +7,11 @@
 --
 -- Covers email only: SMS deliveries live in their own table with other
 -- statuses. Days are in the platform timezone, like the other totals views.
+--
+-- subject is only given for manual campaigns, where the stored subject is what
+-- was sent. An automatic notification stores only an admin's customisation, if
+-- any: the subject sent falls back to defaults in the translation files, with
+-- placeholders filled per email.
 SELECT
     c.id AS campaign_id,
     -- Campaign#campaign_name: the class name's last part, in snake case.
@@ -15,10 +20,12 @@ SELECT
         '([a-z\d])([A-Z])', '\1_\2', 'g'
     )) AS campaign_type,
     c.type IN ('EmailCampaigns::Campaigns::Manual', 'EmailCampaigns::Campaigns::ManualProjectParticipants') AS manual,
-    COALESCE(
-        NULLIF(c.subject_multiloc ->> (SELECT ac.settings -> 'core' -> 'locales' ->> 0 FROM app_configurations ac LIMIT 1), ''),
-        (SELECT t.value FROM jsonb_each_text(c.subject_multiloc) t WHERE t.value <> '' ORDER BY t.key LIMIT 1)
-    ) AS subject,
+    CASE WHEN c.type IN ('EmailCampaigns::Campaigns::Manual', 'EmailCampaigns::Campaigns::ManualProjectParticipants') THEN
+        COALESCE(
+            NULLIF(c.subject_multiloc ->> (SELECT ac.settings -> 'core' -> 'locales' ->> 0 FROM app_configurations ac LIMIT 1), ''),
+            (SELECT t.value FROM jsonb_each_text(c.subject_multiloc) t WHERE t.value <> '' ORDER BY t.key LIMIT 1)
+        )
+    END AS subject,
     CASE c.context_type
         WHEN 'Project' THEN c.context_id
         WHEN 'Phase' THEN ph.project_id

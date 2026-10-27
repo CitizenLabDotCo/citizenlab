@@ -38,6 +38,16 @@ RSpec.describe Analytics::Reporting::EmailDelivery do
     ]
   end
 
+  # A customised subject is not what was sent: missing locales fall back to
+  # defaults, and placeholders are filled per email.
+  it 'gives no subject for an automatic notification, even a customised one' do
+    campaign = create(:project_phase_started_campaign)
+    campaign.update_column(:subject_multiloc, { 'en' => 'New phase in {{projectName}}' })
+    create(:delivery, campaign: campaign)
+
+    expect(described_class.where(campaign_id: campaign.id).pick(:manual, :subject)).to eq [false, nil]
+  end
+
   it 'links campaigns about a project or one of its phases to the project' do
     project_campaign = create(:manual_project_participants_campaign)
     phase = create(:phase)

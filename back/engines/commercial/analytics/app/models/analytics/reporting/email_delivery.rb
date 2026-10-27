@@ -53,7 +53,8 @@ module Analytics
           'manual' => 'TRUE for emails administrators wrote and sent, FALSE for automatic notifications.',
           'subject' => <<~DOC.squish,
             Subject of a manual campaign, resolved to the platform primary
-            locale. NULL for automatic notifications.
+            locale. NULL for automatic notifications, even when an admin
+            customised their subject: name those by campaign_type.
           DOC
           'project_id' => <<~DOC.squish,
             The project the campaign is about: set for emails to a project's
