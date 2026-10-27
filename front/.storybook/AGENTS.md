@@ -1,6 +1,6 @@
 # Design system workbench: notes for agents
 
-Online the workbench only reads. Run locally (`npm run ds:local`), it saves an edit to the source and pushes it with the person's own git: token edits on their branch, component edits as a heal on its own branch off `master`; nothing lands as platform code on this branch. This branch holds tools only: CSS-variable design tokens that Storybook and the workbench read, a scanner that finds off-spec values, a shell on Storybook's engine (galleries, Foundations, the component page's Design, A11y and Usage tabs, the Review and Inspect pages), and skills that draft heals. Everything the workbench knows is a plain file on the branch; this page says what each one is. Launch Claude Code from `front/`; run every command there. The skills are in `front/.claude/skills/`. Start with `.storybook/START.md` (the setup for a person); this page is for the agent.
+Online the workbench only reads. Run locally (`npm run ds:local`), it saves an edit to the source and pushes it with the person's own git: token edits on their branch, component edits as a heal on its own branch off `master`; nothing lands as platform code on this branch. This branch holds tools only: CSS-variable design tokens that Storybook and the workbench read, a scanner that finds off-spec values, a shell on Storybook's engine (the gallery, Foundations, the component page's Design, A11y and Usage tabs, and Review), and skills that draft heals. Everything the workbench knows is a plain file on the branch; this page says what each one is. Launch Claude Code from `front/`; run every command there. The skills are in `front/.claude/skills/`. Start with `.storybook/START.md` (the setup for a person); this page is for the agent.
 
 ## Vocabulary
 
@@ -48,7 +48,6 @@ Online the workbench only reads. Run locally (`npm run ds:local`), it saves an e
 | `npm run ds:routes-fixture [-- --host <url>]` | Refresh `routes.fixture.json` from the test tenant's public API. |
 | `npm run ds:workbench` | Build the shell into `.storybook/static/workbench/`. `npm run ds:workbench:typecheck` typechecks it. |
 | `npm run ds:visual -- --baseline <dir>` / `-- --compare <dir> [--stories <glob,glob>] [--summary <file>] [--allow-px N] [--url <storybook>]` | Screenshot every story (or the story ids `--stories` matches, `*` a wildcard) at 1280x900 and 390x844, save or compare. A full compare writes `visual-summary.json`; a filtered run writes `<dir>/_summary.json`; `--summary` overrides both. Default URL `http://localhost:6006`. |
-| `npm run ds:crops -- [--session <state.json>] [--only Name,Name] [--max-routes N] [--url <platform>]` | With `ds:local` running: picture each component the platform uses that has no story, on the routes the scan found it on, into `static/crops/` and `crops.json` (the Components page's In use list). `--session` is a Playwright storage state of a test admin; without it only routes outside the admin open. Routes with ids are skipped (the fixture's ids are another tenant's). |
 | `npm run ds:smoke -- --dir <storybook output> [--screenshot <png>] [--canvas-screenshot <png>] [--colour-screenshot <png>] [--spacing-screenshot <png>] [--port N]` | Serve a built Storybook (on `--port`, else a free one) and check the shell pages and the console. |
 | `npm run ds:a11y -- [--url <storybook>] [--stories <glob,glob>] [--workers N] [--out <file>]` | Run axe (WCAG 2.0, 2.1, 2.2 A and AA) on every story, or the matched ones, at 1280x900; write `a11y-results.json`, or `--out` (a filtered run keeps the other stories). `-- --check` exits 1 on a critical violation in a `Components/` story that is not in `a11y-known.json`, on a listed one that no longer fails or whose story errored, or when the results file is missing, and prints how many known ones remain; `ds:check` runs it. Default URL `http://localhost:6006`. |
 | `npm run typecheck` | App typecheck (does not cover `.storybook/` or `scripts/`). Slow: once per task. |
@@ -79,7 +78,6 @@ Scripts, `scripts/design-system/`:
 - `changes.ts`: commits since the merge-base with master, per kind and component, plus token value changes (`ds:changes`).
 - `routes-fixture.ts`: fills route params from the test tenant (`ds:routes-fixture`).
 - `visual-run.ts`, `visual-summary.ts`: story screenshots and pixel compare (`ds:visual`).
-- `crops.ts`, `crops-plan.ts` (tested in `crops-plan.test.ts`): the In use crops (`ds:crops`); the workbench joins them with the scan in `lib/inUse.ts`.
 - `workbench-smoke.ts`: smoke test of the built shell (`ds:smoke`).
 - `playwright.ts`: loads Playwright from `GV_PLAYWRIGHT_DIR`.
 - `fixtures/`: scanner test inputs (`findings/`, `routes/app/`).
@@ -106,7 +104,7 @@ Data, `.storybook/static/` (served next to the stories):
 - `images/`: story images.
 
 The shell, `.storybook/workbench/` (React and Vite, its own `tsconfig.json`, `@ds/*` mapped to `app/design-system/*`):
-- `vite.config.ts`, `index.html`, `src/main.tsx`, `src/App.tsx`, `src/shell.css`: the app, hash routes `#/components` (the default: an empty hash and the old `#/start` are replaced with it), `#/foundations/<category>` (`#/foundations` is replaced with `#/foundations/color`; `#/foundations/<category>/<token>` scrolls to and focuses that token's row), `#/patterns`, `#/pages`, `#/review`, `#/inspect`.
+- `vite.config.ts`, `index.html`, `src/main.tsx`, `src/App.tsx`, `src/shell.css`: the app, hash routes `#/components` (the default: an empty hash and the old `#/start` are replaced with it), `#/foundations/<category>` (`#/foundations` is replaced with `#/foundations/color`; `#/foundations/<category>/<token>` scrolls to and focuses that token's row), `#/review`. The old `#/patterns/…` and `#/pages/…` links open in Components, whose gallery ends with the stories filed outside `Components/`.
 - `src/lib/data.ts`: loads the JSON files one level up and Storybook's `index.json`; a missing or broken file reads as empty.
 - `src/lib/overrides.ts`: the session's token edits, snapping, the share-link codec (`o` in the hash).
 - `src/lib/shareEntry.ts` (tested): the share link and the browser history. The hook writes its value into the current entry with replaceState and marks it in `history.state.wbShare`; Back to an entry whose value equals its mark is the session's own older value, so the hook writes the current one back instead of applying it. A pasted link has no mark and applies.
@@ -120,7 +118,6 @@ The shell, `.storybook/workbench/` (React and Vite, its own `tsconfig.json`, `@d
 - `src/lib/nudge.ts` (tested): arrow keys on a value field (1, Shift 10, the unit kept, clamped where a negative makes no sense), for Foundations and the Design tab alike.
 - `src/lib/shadow.ts` (tested): a box-shadow as editor layers and back; a value the fields cannot show (var(), rem) parses to null and stays text.
 - `src/lib/inspect.ts`: what the Design tab reads from the selected element (sections, rows with their longhands, glyph and snap kind).
-- `src/lib/marks.ts` (tested): Inspect's off-spec badges: a scan finding's level (strong: off the scale or local markup; faint: hand-typed on the scale, old theme read), per file, and a component's badge level (faint too when it has no story).
 - `src/lib/a11y.ts`, `src/lib/checklists.ts`, `src/lib/useA11y.ts`: what the A11y panel and the gallery badges say (axe per component, keyboard tested or untested, the checklist line); `checklists.ts` bundles every `components/*/a11y.json` at build time.
 - `src/lib/usage.ts`, `src/lib/componentPanels.ts`, `src/lib/useScanIndexes.ts`: what the Usage tab and the Design tab's "Also in this file" show.
 - `src/lib/stories.ts`, `src/lib/useStoryGroups.ts`: the story index grouped by component, office from tags.
@@ -180,7 +177,6 @@ check: story <story id>, routes <list>
 - A component edit writes the file at a scan finding only: a token as `t.<path>` (with the `t` import), or `var(--gv-…)` under `app/component-library/`, or a plain value. A token read also adds the tokens stylesheet import to the app root once (a setup edit, never pushed). A push commits component edits as a heal on `design-system/heal-<label>` off `origin/master` without a checkout (a scratch index), then puts this checkout's files back. It refuses when the file differs on master from what was edited.
 - A heal onto a token is held while `master` has no `app/design-system/tokens/` (Iva's call): it stays saved locally.
 - The push is the person's git and credentials; no token reaches the browser. A failed token push leaves the commit for `git push` in the terminal.
-- The Inspect tab shows the local platform in a frame. A click reads the element's JSX sites, props and values from React's dev build (`lib/fiber.ts`); Hand to my agent writes `$(git rev-parse --git-dir)/ds-local/selection.json` (`file`, `line`, `label`, `context` with the ask, sites, props, values and tokens). When the person says "the one I picked", read that file and edit `file` (or a file in `context.sites`), with tokens over raw values. The edit lists under Saved as `Agent: <label>`, with Undo, and a push takes it as a heal. Off-spec (the floating bar, Select only) badges each mounted component whose file the scan marks or that has no story (`ownerOf` in `lib/fiber.ts`, `lib/marks.ts`); a badge picks its component, and the panel lists the file's findings under To fix. The panel's story links open the component's workbench page in a new tab (a story with no section prefix opens under Patterns), its token pills the token's Foundations row.
 
 ## Stories
 
