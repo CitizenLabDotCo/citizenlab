@@ -341,7 +341,7 @@ function getButtonStyle(
   const borderRadius =
     props.borderRadius ||
     get(defaultStyleValues, `${props.buttonStyle}.borderRadius`) ||
-    props.theme.borderRadius;
+    'var(--gv-radius-1)';
   const textDecoration =
     props.textDecoration ||
     // TODO: Fix this the next time the file is edited.
