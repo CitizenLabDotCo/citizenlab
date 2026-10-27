@@ -95,10 +95,14 @@ export const mockCounts: PhaseCounts = {
   online: 10,
 };
 
+// A project's tags: the mock tags whatever the project.
+export const inputTopicsHandler = http.get(
+  `${API}/projects/:projectId/input_topics`,
+  () => HttpResponse.json({ data: mockTopics })
+);
+
 export const inputManagerHandlers = [
-  http.get(`${API}/projects/:projectId/input_topics`, () =>
-    HttpResponse.json({ data: mockTopics })
-  ),
+  inputTopicsHandler,
   http.get(`${API}/ideas/:id`, ({ params }) => {
     const idea = managedIdeas.find((item) => item.id === params.id);
     return idea ? HttpResponse.json({ data: idea }) : undefined;

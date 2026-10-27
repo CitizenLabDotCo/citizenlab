@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T21:02:56.251Z",
+  "generatedAt": "2026-10-27T14:39:12.976Z",
   "axe": "4.10.2",
   "tags": [
     "wcag2a",
@@ -4188,6 +4188,23 @@
       "passes": 18,
       "incomplete": 0,
       "focusable": 13,
+      "play": "passed"
+    },
+    "components-redesigned-setup-panel-project-settings-modal--input-tags": {
+      "title": "Components/Redesigned/Setup panel/Project settings modal",
+      "checkedAt": "2026-10-27T14:39:11.402Z",
+      "violations": [
+        {
+          "id": "color-contrast",
+          "impact": "serious",
+          "nodes": 1,
+          "help": "Elements must meet minimum color contrast ratio thresholds",
+          "helpUrl": "https://dequeuniversity.com/rules/axe/4.10/color-contrast"
+        }
+      ],
+      "passes": 22,
+      "incomplete": 1,
+      "focusable": 20,
       "play": "passed"
     },
     "components-redesigned-timeline-events--default": {

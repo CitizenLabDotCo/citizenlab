@@ -9,6 +9,7 @@ import {
   backofficeRedesignHandlers,
   waitForText,
 } from '../../../../../../../../.storybook/mocks/backofficeRedesign';
+import { inputTopicsHandler } from '../../../../../../../../.storybook/mocks/backofficeRedesignInputManager';
 import {
   filesHandler,
   topicsHandler,
@@ -19,11 +20,14 @@ import ProjectSettingsModal from '.';
 
 // The project settings modal, opened from the cog in the setup panel:
 // sections on the left (general, resources, management, input tags), the
-// section's form on the right, cancel and save at the bottom.
+// section's form on the right, cancel and save at the bottom. The input tags
+// section is the project's tags page, which reads the project from its
+// route: the stories render under that route.
 
 const handlers = [
   filesHandler,
   topicsHandler,
+  inputTopicsHandler,
   ...backofficeRedesignHandlers,
   usersHandler,
 ];
@@ -41,7 +45,14 @@ const meta = {
   title: 'Components/Redesigned/Setup panel/Project settings modal',
   tags: ['bo', 'redesigned'],
   component: ProjectSettingsModal,
-  parameters: { layout: 'fullscreen', msw: handlers },
+  parameters: {
+    layout: 'fullscreen',
+    msw: handlers,
+    route: {
+      from: '/$locale/admin/projects/$projectId',
+      params: { projectId: project1.id },
+    },
+  },
   args: { project: project1, opened: true, onClose: fn() },
   decorators: [
     (Story) => (
@@ -69,6 +80,14 @@ export const Resources: Story = {
 /** Management: who manages the project. */
 export const Management: Story = {
   play: openSection(2),
+};
+
+/** Input tags: the tags people can give their input in this project. */
+export const InputTags: Story = {
+  play: async (context) => {
+    await openSection(3)(context);
+    await waitForText(context.canvasElement, 'Trees');
+  },
 };
 
 export const RTL: Story = {
