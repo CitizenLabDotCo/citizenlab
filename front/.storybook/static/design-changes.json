@@ -1,10 +1,53 @@
 {
-  "generatedAt": "2026-10-27T16:13:26.114Z",
+  "generatedAt": "2026-10-27T16:24:26.019Z",
   "base": "7b0b8940e27fb6c528eb39a06baa8a4cf2bcdf0a",
   "baseRef": "master",
-  "head": "079e2a21098a3cf8acd738667cec799840fb2e2a",
+  "head": "2735cd7109e486353ca58b7f748bfac27c53e445",
   "repoUrl": "https://github.com/CitizenLabDotCo/citizenlab",
   "commits": [
+    {
+      "sha": "2735cd7109e486353ca58b7f748bfac27c53e445",
+      "subject": "design-system(workbench): a stacked review reads its changes from GitHub, so it commits only its code and pictures [AI-assisted]",
+      "body": "Rob, on #15066: why does a review need a change list at all? It does not.\nThe Review page of a PR into design-system/workbench now reads the PR, its\ncommits and files from GitHub's public API, then each design commit's own\nfiles (3 calls plus one per design commit), and draws the same cards. The\nworkbench itself, a local run, or a GitHub that does not answer read the\ncommitted design-changes.json as before.\n\nThis takes back 079e2a2109 (review-changes.json): nothing to commit, so\nnothing to drop after a merge. The Send for review text and the heal skill\nnow end a review with one pictures commit, no refresh.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/heal/SKILL.md",
+        "front/.claude/skills/propose/SKILL.md",
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/static/.gitignore",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/lib/prReview.test.ts",
+        "front/.storybook/workbench/src/lib/prReview.ts",
+        "front/.storybook/workbench/src/lib/send.ts",
+        "front/.storybook/workbench/src/pages/Review.tsx",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/changes.test.ts",
+        "front/scripts/design-system/changes.ts",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "7eb2d9919226a8fe3659210fab276f6674f88b83",
+      "subject": "design-system(workbench): the gallery shows its cards before the scan has loaded [AI-assisted]",
+      "body": "The gallery waited for index.json and the scan (7 MB, about 3 s to\ndownload on the epic) before it drew a card. The scan only adds each\ncard's status, score and office, so the cards now come from index.json\nalone first, with every status pending (no chip, no filter value), and the\nscan fills them in when it lands. With the scan held 3 s, the first card\nshows at 0.2 s instead of 3.4 s; the filters end the same. The component\nand Review pages wait for the scan as before.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/StoryThumb.tsx",
+        "front/.storybook/workbench/src/lib/stories.test.ts",
+        "front/.storybook/workbench/src/lib/stories.ts",
+        "front/.storybook/workbench/src/lib/useStoryGroups.ts",
+        "front/.storybook/workbench/src/pages/Gallery.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "26e68be835d027d0391bcd9f04caac821ea0e2fe",
+      "subject": "design-system(review): refresh the change list [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-changes.json"
+      ],
+      "kind": "other"
+    },
     {
       "sha": "079e2a21098a3cf8acd738667cec799840fb2e2a",
       "subject": "design-system(scripts): a review keeps its own change list, so its diff leaves the workbench's alone [AI-assisted]",
