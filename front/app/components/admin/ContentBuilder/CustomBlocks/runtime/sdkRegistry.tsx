@@ -34,7 +34,6 @@ import { useTheme } from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
-import useProjectsMini from 'api/projects_mini/useProjectsMini';
 import useReportingData from 'api/reporting_queries/useReportingData';
 
 import useLocale from 'hooks/useLocale';
@@ -102,7 +101,6 @@ const buildSdkV1 = (): Record<SdkExportName, unknown> => ({
   Spinner,
   colors,
   useAuthUser,
-  useProjectsMini,
   useAppConfiguration,
   useLocale,
   useLocalize,
