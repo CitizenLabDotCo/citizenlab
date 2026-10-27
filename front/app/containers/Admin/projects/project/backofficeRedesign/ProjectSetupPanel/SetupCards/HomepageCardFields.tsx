@@ -71,7 +71,12 @@ const HomepageCardFields = ({ project }: Props) => {
     pickedImage === undefined ? savedImage : pickedImage?.file ?? null;
 
   const pickImage = (images: UploadFile[]) => {
-    changeImage({ image: { file: images[0], cropped: images[0].base64 } });
+    changeImage({
+      image: { file: images[0], cropped: images[0].base64 },
+      ...(imageChanges.altText === undefined && savedAltText
+        ? { altText: savedAltText }
+        : {}),
+    });
     setCropOpened(true);
   };
 
