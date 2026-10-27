@@ -659,29 +659,6 @@ a.wb-card:hover {
   font-size: var(--gv-fs-l);
 }
 
-.wb-checklist {
-  margin: 0 0 var(--gv-space-5);
-  padding: 0;
-  list-style: none;
-}
-
-.wb-checklist li {
-  position: relative;
-  padding: var(--gv-space-1) 0 var(--gv-space-1) var(--gv-space-6);
-  color: var(--wb-text);
-}
-
-.wb-checklist li::before {
-  content: '';
-  position: absolute;
-  top: 0.75em;
-  left: 4px;
-  width: 8px;
-  height: 8px;
-  background: var(--wb-info);
-  border-radius: 50%;
-}
-
 .wb-empty-small {
   padding: var(--gv-space-6);
 }
@@ -718,14 +695,12 @@ a.wb-card:hover {
   background: var(--wb-subtle);
 }
 
-.wb-shell .wb-chips a[aria-current='page'],
-.wb-tabs a[aria-current='page'] {
+.wb-shell .wb-chips a[aria-current='page'] {
   font-weight: 600;
   color: var(--wb-heading);
 }
 
-.wb-chips a[aria-current='page']::after,
-.wb-tabs a[aria-current='page']::after {
+.wb-chips a[aria-current='page']::after {
   content: '';
   position: absolute;
   right: var(--gv-space-3);
@@ -737,9 +712,6 @@ a.wb-card:hover {
 }
 
 /* The story rows scroll, which clips anything below their box. */
-.wb-tabs a[aria-current='page']::after {
-  bottom: 0;
-}
 
 .wb-toolbar {
   position: sticky;
@@ -2319,39 +2291,6 @@ tr:hover .wb-pv-motion > span,
   box-shadow: none;
 }
 
-/* The In use list: a crop from the platform, centred on the dotted
-   ground the live previews sit on, never scaled up. */
-.wb-crop {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--gv-space-3);
-}
-
-.wb-crop img {
-  display: block;
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  background: var(--wb-bg);
-  border-radius: var(--gv-radius-1);
-  box-shadow: 0 0 0 1px var(--wb-border);
-}
-
-.wb-crop-seen {
-  overflow: hidden;
-  font-size: var(--gv-fs-xs);
-  color: var(--wb-muted);
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.wb-view-switch {
-  margin-bottom: var(--gv-space-4);
-}
-
 .wb-score {
   position: relative;
   display: inline-grid;
@@ -2457,103 +2396,9 @@ tr:hover .wb-pv-motion > span,
 }
 
 /* Component page */
-.wb-story-tabs {
-  display: flex;
-  flex-direction: column;
-  gap: var(--gv-space-2);
-  margin-bottom: var(--gv-space-4);
-}
-
-.wb-tab-group {
-  display: flex;
-  gap: var(--gv-space-3);
-  align-items: center;
-  min-width: 0;
-}
-
-.wb-tab-group-label {
-  flex: none;
-  width: 72px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--wb-muted);
-}
-
-.wb-tabs {
-  display: flex;
-  flex: 1;
-  flex-wrap: nowrap;
-  gap: var(--gv-space-1);
-  min-width: 0;
-  margin: 0;
-  padding: 0;
-  overflow-x: auto;
-  list-style: none;
-  scrollbar-width: none;
-  scroll-padding-inline: var(--gv-space-8);
-  box-shadow: inset 0 -1px 0 var(--wb-border);
-}
 
 /* One row per group: when it scrolls, the edges fade to say so. */
 /* With arrows to step through it. */
-.wb-tabs-scroll {
-  display: inline-flex;
-  flex: none;
-  gap: 2px;
-}
-
-.wb-shell .wb-tabs-scroll .wb-icon-button {
-  width: 28px;
-  height: 28px;
-  min-height: 0;
-}
-
-.wb-tabs-scroll .wb-icon-button:first-child .wb-icon {
-  transform: rotate(90deg);
-}
-
-.wb-tabs-scroll .wb-icon-button:last-child .wb-icon {
-  transform: rotate(-90deg);
-}
-
-.wb-tabs[data-overflow='end'] {
-  mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent);
-}
-
-.wb-tabs[data-overflow='start'] {
-  mask-image: linear-gradient(to left, #000 calc(100% - 48px), transparent);
-}
-
-.wb-tabs[data-overflow='both'] {
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    #000 48px,
-    #000 calc(100% - 48px),
-    transparent
-  );
-}
-
-.wb-tabs a {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  height: 32px;
-  padding: 0 var(--gv-space-3);
-  font-size: var(--gv-fs-13);
-  font-weight: 500;
-  color: var(--wb-muted);
-  white-space: nowrap;
-  text-decoration: none;
-  border-radius: var(--wb-radius) var(--wb-radius) 0 0;
-}
-
-.wb-tabs a:hover {
-  color: var(--wb-heading);
-  background: var(--wb-subtle);
-}
 
 .wb-toolbar-tools {
   display: flex;
@@ -3007,250 +2852,6 @@ tr:hover .wb-pv-motion > span,
 }
 
 /* Tokens panel */
-.wb-ptokens-head {
-  display: flex;
-  gap: var(--gv-space-2);
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--gv-space-3);
-}
-
-.wb-ptokens-sum {
-  font-size: var(--gv-fs-13);
-  color: var(--wb-heading);
-}
-
-.wb-ptokens-panel > .wb-segmented {
-  display: flex;
-  margin-bottom: var(--gv-space-3);
-}
-
-.wb-shell .wb-ptokens-panel > .wb-segmented button {
-  flex: 1;
-  gap: 4px;
-  padding: 0 var(--gv-space-1);
-  font-size: var(--gv-fs-xs);
-}
-
-.wb-match {
-  display: inline-flex;
-  gap: 5px;
-  align-items: center;
-  padding: 0 6px;
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 18px;
-  white-space: nowrap;
-  border-radius: var(--gv-radius-1);
-}
-
-.wb-match-linked {
-  color: var(--wb-ok-text);
-  background: var(--wb-ok-soft);
-}
-
-.wb-match-linked .wb-chip-dot {
-  background: var(--wb-ok);
-}
-
-.wb-match-equal {
-  color: var(--wb-text);
-  background: var(--wb-caution-soft);
-}
-
-.wb-match-equal .wb-chip-dot {
-  background: var(--wb-caution);
-}
-
-.wb-match-none {
-  color: var(--wb-muted);
-  background: var(--wb-subtle);
-}
-
-.wb-panel .wb-ptokens,
-.wb-panel .wb-ptokens tbody {
-  display: block;
-}
-
-.wb-panel .wb-ptokens tr {
-  display: grid;
-  grid-template-columns: 48px minmax(0, 1fr);
-  gap: var(--gv-space-2) var(--gv-space-3);
-  margin-bottom: var(--gv-space-2);
-  padding: var(--gv-space-3);
-  background: var(--wb-bg);
-  border: 1px solid var(--wb-border);
-  border-radius: var(--wb-radius-lg);
-}
-
-.wb-panel .wb-ptokens tr:hover {
-  background: var(--wb-bg);
-  border-color: var(--wb-border-strong);
-}
-
-.wb-panel .wb-ptokens tr.wb-token-edited {
-  background: var(--wb-accent-soft);
-}
-
-.wb-panel .wb-ptokens th,
-.wb-panel .wb-ptokens td {
-  display: block;
-  min-width: 0;
-  max-width: none;
-  padding: 0;
-  border: 0;
-}
-
-.wb-panel .wb-ptokens td::before {
-  display: none;
-}
-
-.wb-panel .wb-ptokens .wb-token-preview {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  overflow: hidden;
-  background: var(--wb-subtle);
-  border-radius: var(--wb-radius);
-}
-
-.wb-panel .wb-ptokens .wb-pv-swatch {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--wb-radius);
-}
-
-.wb-panel .wb-ptokens .wb-pv-space {
-  width: 40px;
-  background: none;
-}
-
-.wb-panel .wb-ptokens .wb-pv-radius > span {
-  width: 32px;
-  height: 32px;
-}
-
-.wb-panel .wb-ptokens .wb-pv-type {
-  max-width: 44px;
-  font-size: 18px !important;
-}
-
-.wb-panel .wb-ptokens .wb-pv-shadow,
-.wb-panel .wb-ptokens .wb-pv-lh,
-.wb-panel .wb-ptokens .wb-pv-motion {
-  transform: scale(0.45);
-}
-
-.wb-panel .wb-ptokens .wb-token-name {
-  align-self: center;
-}
-
-.wb-panel .wb-ptokens .wb-token-name > code {
-  font-size: var(--gv-fs-xs);
-}
-
-.wb-panel .wb-ptokens .wb-tags {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 4px 0 0;
-}
-
-.wb-panel .wb-ptokens .wb-token-note {
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
-.wb-panel .wb-ptokens .wb-token-values,
-.wb-panel .wb-ptokens td[data-label='Edit'],
-.wb-panel .wb-ptokens .wb-token-usage,
-.wb-panel .wb-ptokens .wb-token-footer {
-  grid-column: 1 / -1;
-}
-
-.wb-panel .wb-ptokens .wb-token-edit input:not([type='color']) {
-  flex: 1;
-  width: auto;
-  min-width: 0;
-}
-
-.wb-panel .wb-ptokens .wb-token-usage {
-  display: flex;
-  gap: 4px;
-  align-items: baseline;
-  font-size: var(--gv-fs-xs);
-}
-
-.wb-panel .wb-ptokens .wb-usage-count {
-  font-size: var(--gv-fs-xs);
-}
-
-.wb-panel .wb-ptokens .wb-token-usage .wb-token-note {
-  display: inline;
-  margin: 0 0 0 var(--gv-space-1);
-}
-
-.wb-panel .wb-ptokens .wb-token-usage .wb-token-note::before {
-  content: '\00b7';
-  margin-right: var(--gv-space-1);
-}
-
-.wb-panel .wb-ptokens .wb-token-footer {
-  margin: 0 calc(-1 * var(--gv-space-3)) calc(-1 * var(--gv-space-3));
-  padding: var(--gv-space-2) var(--gv-space-3);
-  background: var(--wb-subtle);
-  border-top: 1px solid var(--wb-border);
-  border-radius: 0 0 var(--wb-radius-lg) var(--wb-radius-lg);
-}
-
-.wb-ptoken-foot-row {
-  display: flex;
-  gap: var(--gv-space-2);
-  align-items: center;
-  justify-content: space-between;
-  min-height: 28px;
-}
-
-.wb-ptoken-code {
-  display: inline-flex;
-  gap: 6px;
-  align-items: center;
-  font-size: var(--gv-fs-xs);
-  font-weight: 500;
-  color: var(--wb-heading);
-}
-
-.wb-ptoken-code > .wb-icon {
-  color: var(--wb-pass);
-}
-
-.wb-ptoken-heals {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  margin: var(--gv-space-1) 0 0;
-  padding: 0;
-  list-style: none;
-  font-size: 11px;
-}
-
-.wb-ptoken-heals li {
-  display: inline-flex;
-  gap: 4px;
-  align-items: center;
-  padding: 1px 6px 1px 2px;
-  background: var(--wb-bg);
-  border: 1px solid var(--wb-border);
-  border-radius: var(--gv-radius-1);
-}
-
-.wb-ptoken-heals li.wb-muted {
-  padding-left: 6px;
-  border-style: dashed;
-}
 
 .wb-line {
   flex: none;
@@ -3694,7 +3295,6 @@ a.wb-line:hover {
     display: none;
   }
 
-  /* The canvas fields fold into one button that opens a bottom sheet. */
   /* The summary takes its own row when the page tools leave it too little
      room to show its values. */
   .wb-shell .wb-toolbar-summary {
@@ -3914,17 +3514,7 @@ a.wb-line:hover {
     padding: var(--gv-space-3);
   }
 
-  .wb-tab-group {
-    flex-direction: column;
-    gap: var(--gv-space-1);
-    align-items: stretch;
-    max-width: 100%;
-  }
-
   /* Touch scrolls the tab rows; the arrows would only add a row. */
-  .wb-tabs-scroll {
-    display: none;
-  }
 
   .wb-toolbar-tools {
     margin-left: 0;
@@ -5034,11 +4624,6 @@ tr[data-result='needs-human'] .wb-a11y-note {
   margin-top: var(--gv-space-2);
 }
 
-.wb-insp-editor .wb-token-edit input {
-  min-width: 0;
-  flex: 1;
-}
-
 .wb-insp-props > summary {
   list-style: none;
   cursor: pointer;
@@ -5093,11 +4678,6 @@ tr[data-result='needs-human'] .wb-a11y-note {
 
 .wb-insp-key-equal {
   border-style: dashed;
-}
-
-.wb-insp-key-equal .wb-diff-dot {
-  width: 5px;
-  height: 5px;
 }
 
 .wb-insp-key-equal ~ * {
@@ -5794,134 +5374,6 @@ tr[data-result='needs-human'] .wb-a11y-note {
   color: var(--wb-muted);
 }
 
-/* Inspect: the local platform in a frame, the reading in the panel. */
-.wb-main:has(> .wb-inspect-page) {
-  overflow: hidden;
-  padding: 0;
-}
-
-/* Inspect as a design tool, like the component page: the platform's frame
-   fills the column on the dotted canvas, the bar floats at its foot. */
-.wb-inspect-page {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  min-width: 0;
-}
-
-.wb-ins-stage {
-  display: flex;
-  flex: 1;
-  justify-content: safe center;
-  min-height: 0;
-  overflow: auto;
-  /* Room under the frame for the floating bar. */
-  padding: var(--gv-space-4) var(--gv-space-4) calc(var(--gv-space-6) + 64px);
-  background-color: var(--wb-subtle);
-  background-image: radial-gradient(var(--wb-border) 1px, transparent 1px);
-  background-size: 16px 16px;
-}
-
-.wb-ins-sized {
-  position: relative;
-  flex: none;
-  overflow: hidden;
-  border: 1px solid var(--wb-border);
-  border-radius: var(--wb-radius);
-  box-shadow: var(--wb-shadow);
-}
-
-.wb-ins-sized iframe {
-  display: block;
-  border: 0;
-  background: var(--gv-white);
-  transform-origin: 0 0;
-}
-
-.wb-ins-address {
-  display: inline-flex;
-  gap: var(--gv-space-1);
-  align-items: center;
-  padding: 0 var(--gv-space-2);
-  color: var(--wb-muted);
-}
-
-.wb-ins-address input {
-  width: 9em;
-  min-height: 32px;
-  padding: 0 var(--gv-space-2);
-  font-family: var(--gv-font-mono, ui-monospace, monospace);
-  font-size: var(--gv-fs-13);
-  color: var(--wb-text);
-  background: var(--wb-subtle);
-  border: 1px solid var(--wb-border);
-  border-radius: var(--wb-radius);
-}
-
-.wb-ins-head {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0 calc(-1 * var(--gv-space-4)) var(--gv-space-3);
-  padding: var(--gv-space-3) var(--gv-space-4) var(--gv-space-2);
-  background: var(--wb-bg);
-}
-
-.wb-ins-head h2 {
-  margin: 0;
-}
-
-/* The picked element's component and where the workbench shows it. */
-.wb-ins-comp h3 {
-  margin: 0 0 var(--gv-space-2);
-  font-size: var(--gv-fs-m, 16px);
-  color: var(--wb-heading);
-}
-
-.wb-ins-comp p {
-  margin: 0;
-  font-size: var(--gv-fs-13);
-}
-
-.wb-ins-open {
-  display: grid;
-  gap: var(--gv-space-1);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.wb-ins-open a {
-  display: flex;
-  gap: var(--gv-space-2);
-  align-items: center;
-  min-height: 36px;
-  padding: 0 var(--gv-space-3);
-  font-size: var(--gv-fs-13);
-  color: var(--wb-text);
-  text-decoration: none;
-  background: var(--wb-subtle);
-  border-radius: var(--wb-radius);
-}
-
-.wb-ins-open a:hover {
-  color: var(--wb-heading);
-  background: var(--wb-accent-soft);
-}
-
-.wb-ins-open-name {
-  flex: 1;
-  min-width: 0;
-  overflow: hidden;
-  font-weight: 600;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
 /* A read-only pill is a link to its token. */
 a.wb-vf-body {
   color: inherit;
@@ -5940,157 +5392,13 @@ a.wb-vf-body:focus-visible .wb-vf-open {
   opacity: 1;
 }
 
-.wb-ins-design .wb-ins-props {
-  margin-top: var(--gv-space-2);
-}
-
-.wb-ins-sites,
-.wb-ins-values {
-  display: grid;
-  gap: var(--gv-space-1);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-size: var(--gv-fs-13);
-}
-
-.wb-ins-sites li {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.wb-ins-sites code {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.wb-ins-values li {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto auto;
-  gap: var(--gv-space-2);
-  align-items: baseline;
-}
-
-.wb-ins-values li > :first-child {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.wb-ins-token {
-  color: var(--wb-accent);
-}
-
-.wb-ins-raw {
-  font-size: var(--gv-fs-xs);
-  color: var(--wb-warning, var(--wb-muted));
-}
-
-.wb-ins-hand {
-  display: grid;
-  gap: var(--gv-space-2);
-}
-
-.wb-ins-hand label {
-  font-weight: 600;
-  color: var(--wb-heading);
-}
-
-.wb-ins-hand textarea {
-  padding: var(--gv-space-2) var(--gv-space-3);
-  font: inherit;
-  color: var(--wb-text);
-  background: var(--wb-bg);
-  border: 1px solid var(--wb-border-strong);
-  border-radius: var(--wb-radius);
-  resize: vertical;
-}
-
-.wb-ins-prompt pre {
-  margin: var(--gv-space-2) 0;
-  padding: var(--gv-space-3);
-  font-size: var(--gv-fs-xs);
-  white-space: pre-wrap;
-  background: var(--wb-bg-subtle, var(--wb-bg));
-  border: 1px solid var(--wb-border);
-  border-radius: var(--wb-radius);
-}
-
 .wb-inspect > section + section {
   margin-top: var(--gv-space-5);
-}
-
-.wb-ins-parent {
-  margin-top: var(--gv-space-2);
-}
-
-.wb-ins-props li {
-  grid-template-columns: auto minmax(0, 1fr);
-}
-
-.wb-ins-props code {
-  overflow: hidden;
-  text-align: right;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .wb-shell .wb-button-primary:disabled {
   cursor: not-allowed;
   opacity: 0.5;
-}
-
-/* Inspect's To fix list: what the scan found in the component's file. */
-.wb-ins-fix-file {
-  margin: 0;
-  font-size: var(--gv-fs-xs);
-}
-
-.wb-ins-fix {
-  display: grid;
-  gap: var(--gv-space-1);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  font-size: var(--gv-fs-13);
-}
-
-.wb-ins-fix li {
-  display: flex;
-  gap: var(--gv-space-2);
-  align-items: center;
-  min-width: 0;
-}
-
-.wb-ins-fix li > code:first-of-type {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.wb-ins-fix-dot {
-  flex: none;
-  width: 8px;
-  height: 8px;
-  border-radius: var(--gv-radius-full);
-  background: #f24822;
-}
-
-.wb-ins-fix li[data-level='faint'] .wb-ins-fix-dot {
-  background: #ffa629;
-}
-
-.wb-ins-fix-line {
-  margin-left: auto;
-  font-size: var(--gv-fs-xs);
-}
-
-/* Centred at left 50%, the bar would wrap to half the column; it takes its
-   own width, up to the max-width. */
-.wb-inspect-page .wb-float-bar {
-  width: max-content;
 }
 
 /* Foundations has no title: its category tabs lead the page, a size up. */
