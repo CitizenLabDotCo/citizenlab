@@ -49,6 +49,10 @@ export const isEmployeeSsoMethod = (
   method.attributes.name === 'azureactivedirectory' ||
   method.attributes.name === 'okta';
 
+// Callers treat these methods as one group: the enforced-domain error message
+// and the SSO link don't know which method enforces the user's domain. We
+// accept this on purpose, as a platform with both Azure AD and Okta enabled is
+// very unlikely.
 export const getEmployeeSsoConfigs = (idMethods?: IdMethods) =>
   idMethods?.data.filter(isEmployeeSsoMethod) ?? [];
 
