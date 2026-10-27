@@ -24,9 +24,8 @@ interface Props {
   config?: BlockConfigValues;
 }
 
-// Where a broken block must say so rather than leave a gap: the builder an admin is
-// working in, and the harness the custom block renderer renders in. On a report
-// a resident reads, a block that failed renders nothing at all.
+// Where a broken block must say so rather than leave a gap. On a report a
+// resident reads, a block that failed renders nothing at all.
 const useShowsFailures = () => {
   const { pathname } = useLocation();
 
@@ -37,12 +36,11 @@ const useShowsFailures = () => {
 };
 
 /**
- * Hosts one generated block on a page.
+ * Hosts one generated block.
  *
- * The node pins `{ blockId, version, config }`, and everything rendered here
- * follows that pin: the bundle, the message catalogues and the settings all come
- * from that one version. The resolver has a single entry for every generated
- * block, so a new block never needs a rebuild or an editor remount.
+ * The node pins `{ blockId, version, config }`, and the bundle, the catalogues and
+ * the settings all come from that one version. One resolver entry serves every
+ * generated block, so a new block needs no rebuild and no editor remount.
  */
 const CustomBlock = ({ blockId, version, config = {} }: Props) => {
   const showsFailures = useShowsFailures();
@@ -99,8 +97,8 @@ const CustomBlock = ({ blockId, version, config = {} }: Props) => {
       className="e2e-custom-block"
     >
       <BlockErrorBoundary
-        // Remounting is how the boundary retries: a new version, or a setting
-        // the admin corrected, gets one fresh attempt.
+        // Remounting is how the boundary retries: a new version or a corrected
+        // setting gets one fresh attempt.
         key={`${blockId}:${version}:${JSON.stringify(config)}`}
         blockId={blockId}
         version={version}

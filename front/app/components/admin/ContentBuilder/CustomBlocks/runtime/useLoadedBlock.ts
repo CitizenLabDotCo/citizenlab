@@ -19,15 +19,10 @@ interface LoadedBlock {
 /**
  * Imports a version's compiled bundle and hands back its component.
  *
- * The bundle is built before the version is written, so this is a plain import:
- * no compile step, no pending state, nothing to repair here. The endpoint serves
- * it with immutable cache headers, which is what makes it cheap on every later
- * render.
- *
  * Not a TanStack Query hook, unlike the rest of our fetching: the bundle has to
- * arrive as an ES module so that its `gv-sdk` import resolves through the shim to
- * the app's own React. That is a module-graph operation, not a request whose body
- * we hold, which is also why the cache for it lives in `loadBlockModule`.
+ * arrive as an ES module so its `gv-sdk` import resolves through the shim to the
+ * app's own React. That is a module-graph operation rather than a request whose
+ * body we hold, which is also why its cache lives in `loadBlockModule`.
  */
 const useLoadedBlock = ({ blockId, version }: Params): LoadedBlock => {
   const [component, setComponent] = useState<ComponentType<BlockProps> | null>(

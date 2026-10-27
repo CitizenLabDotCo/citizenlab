@@ -5,9 +5,8 @@ import { CustomBlockModule } from './types';
 
 const moduleCache = new Map<string, Promise<CustomBlockModule>>();
 
-// A dynamically imported module is an untyped boundary, like parsed JSON: the
-// cast is what this check earns, and anything that fails it never reaches a
-// caller.
+// A dynamically imported module is an untyped boundary, like parsed JSON: this
+// check is what earns the cast below.
 const validate = (module: unknown): CustomBlockModule => {
   const candidate = module as Partial<CustomBlockModule>;
   if (typeof candidate.default !== 'function') {
@@ -16,10 +15,9 @@ const validate = (module: unknown): CustomBlockModule => {
   return candidate as CustomBlockModule;
 };
 
-// A blob has no hierarchical base, so the root-absolute shim specifier a compiled
-// bundle carries cannot resolve inside one: the browser rejects the module before
-// it runs. Only blob imports need this — served bundles resolve it against the
-// origin they came from.
+// A blob has no hierarchical base, so the root-absolute shim specifier in a
+// compiled bundle cannot resolve inside one and the browser rejects the module
+// before it runs. Served bundles resolve it against their origin and are fine.
 const absolutizeShimImport = (bundle: string, origin: string): string => {
   const absolute = new URL(SDK_SHIM_URL, origin).href;
 

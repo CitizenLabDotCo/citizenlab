@@ -22,14 +22,10 @@ const multilocsByKey = (messages: BlockMessages): Record<string, Multiloc> => {
 /**
  * The values to show in a block's settings, with the block's own text filled in.
  *
- * A generated chart renders `localize(config.title) || msg('title')`: its text lives
- * in the message catalogue, and config only overrides it. Showing just config would
- * put an empty "Chart title" box next to a chart that plainly has one, and the first
- * keystroke in that box would read as the admin writing the title from scratch.
- *
- * So a text setting whose name matches a catalogue key starts filled in with what the
- * block is rendering. Nothing is written to the node: an untouched field shows the
- * catalogue text and stays absent from the props, exactly as a schema default does.
+ * A chart renders `localize(config.title) || msg('title')`, so its text lives in the
+ * catalogue and config only overrides it. Showing config alone would put an empty
+ * "Chart title" box beside a chart that plainly has one. Nothing is written to the
+ * node: an untouched field stays absent from the props, as a schema default does.
  */
 const catalogueValues = (
   schema: ConfigSchema | undefined,

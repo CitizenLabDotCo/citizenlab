@@ -20,12 +20,9 @@ const fetchCustomBlockVersion = ({
   });
 
 /**
- * Reads the exact version a layout pinned.
- *
- * There is deliberately no hook for "the block's current version". The layout
- * node holds `{ blockId, version }`, and that pin is what decides what renders:
- * regenerating a block, or upgrading it to a new SDK, must not change a report
- * someone has already read and approved.
+ * Reads the exact version a layout pinned. There is deliberately no hook for "the
+ * block's current version": regenerating a block must not change a report someone
+ * has already read and approved.
  */
 const useCustomBlockVersion = ({
   blockId,
