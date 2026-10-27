@@ -30,6 +30,7 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 import { ConfirmableStatus } from './ConfirmStatusChangeModal';
+import { MissingEssentialsIntent } from './MissingEssentialsModal';
 import getPublicationState, { PublicationState } from './publicationState';
 import usePublishNow from './usePublishNow';
 
@@ -44,7 +45,7 @@ interface Props {
   project: IProjectData;
   onSchedule: () => void;
   onConfirmStatusChange: (status: ConfirmableStatus) => void;
-  onMissingEssentials: () => void;
+  onMissingEssentials: (intent: MissingEssentialsIntent) => void;
   onDone: () => void;
 }
 
@@ -116,7 +117,10 @@ const PublishPanel = ({
     });
 
   const handlePublishNow = () =>
-    hasMissingItems ? onMissingEssentials() : publishNow(onDone);
+    hasMissingItems ? onMissingEssentials('publish') : publishNow(onDone);
+
+  const handleSchedule = () =>
+    hasMissingItems ? onMissingEssentials('schedule') : onSchedule();
 
   const count = recipientCount?.data.attributes.count;
 
@@ -240,7 +244,8 @@ const PublishPanel = ({
                 buttonStyle="bo-secondary"
                 width="100%"
                 icon="calendar"
-                onClick={onSchedule}
+                onClick={handleSchedule}
+                processing={readinessLoading}
               >
                 {formatMessage(messages.publishSchedule)}
               </Button>

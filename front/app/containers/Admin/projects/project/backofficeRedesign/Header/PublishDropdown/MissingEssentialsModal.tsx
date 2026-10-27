@@ -13,30 +13,63 @@ import useSetupReadiness from 'containers/Admin/projects/project/backofficeRedes
 
 import Modal from 'components/UI/Modal';
 
-import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
 import usePublishNow from './usePublishNow';
 
+export type MissingEssentialsIntent = 'publish' | 'schedule';
+
+const INTENT_MESSAGES: Record<
+  MissingEssentialsIntent,
+  { title: MessageDescriptor; confirm: MessageDescriptor }
+> = {
+  publish: {
+    title: messages.publishMissingTitle,
+    confirm: messages.publishMissingConfirm,
+  },
+  schedule: {
+    title: messages.publishMissingScheduleTitle,
+    confirm: messages.publishMissingScheduleConfirm,
+  },
+};
+
 interface Props {
   opened: boolean;
+  intent: MissingEssentialsIntent;
   project: IProjectData;
   onClose: () => void;
+  onSchedule: () => void;
 }
 
-const MissingEssentialsModal = ({ opened, project, onClose }: Props) => {
+const MissingEssentialsModal = ({
+  opened,
+  intent,
+  project,
+  onClose,
+  onSchedule,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { publishNow, isPending } = usePublishNow(project);
 
   const missing = getMissingItems(useSetupReadiness(project).readiness);
+
+  const handleConfirm = () => {
+    if (intent === 'schedule') {
+      onClose();
+      onSchedule();
+      return;
+    }
+    publishNow(onClose);
+  };
 
   return (
     <Modal
       variant="bo"
       opened={opened}
       close={onClose}
-      header={formatMessage(messages.publishMissingTitle)}
+      header={formatMessage(INTENT_MESSAGES[intent].title)}
       footer={
         <Box display="flex" justifyContent="flex-end" gap="8px" w="100%">
           <Button
@@ -49,10 +82,10 @@ const MissingEssentialsModal = ({ opened, project, onClose }: Props) => {
           <Button
             buttonStyle="bo-primary"
             processing={isPending}
-            onClick={() => publishNow(onClose)}
+            onClick={handleConfirm}
             id="e2e-publish-anyway"
           >
-            {formatMessage(messages.publishMissingConfirm)}
+            {formatMessage(INTENT_MESSAGES[intent].confirm)}
           </Button>
         </Box>
       }

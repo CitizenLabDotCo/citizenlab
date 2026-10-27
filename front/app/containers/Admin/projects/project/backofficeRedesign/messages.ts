@@ -607,6 +607,14 @@ export default defineMessages({
     defaultMessage:
       '{missing, plural, one {# of {total} essentials is not set yet. The project will go live without it, and you can add it later.} other {# of {total} essentials are not set yet. The project will go live without them, and you can add them later.}}',
   },
+  publishMissingScheduleTitle: {
+    id: 'app.containers.Admin.projects.project.publishMissingScheduleTitle',
+    defaultMessage: 'Schedule project',
+  },
+  publishMissingScheduleConfirm: {
+    id: 'app.containers.Admin.projects.project.publishMissingScheduleConfirm',
+    defaultMessage: 'Continue to schedule',
+  },
   publishMissingBack: {
     id: 'app.containers.Admin.projects.project.publishMissingBack',
     defaultMessage: 'Back to setup',

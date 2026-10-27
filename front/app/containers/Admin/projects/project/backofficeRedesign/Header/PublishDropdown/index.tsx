@@ -16,7 +16,9 @@ import HeaderDropdown from '../HeaderDropdown';
 import ConfirmStatusChangeModal, {
   ConfirmableStatus,
 } from './ConfirmStatusChangeModal';
-import MissingEssentialsModal from './MissingEssentialsModal';
+import MissingEssentialsModal, {
+  MissingEssentialsIntent,
+} from './MissingEssentialsModal';
 import getPublicationState, { PublicationState } from './publicationState';
 import PublishPanel from './PublishPanel';
 
@@ -44,7 +46,8 @@ const PublishDropdown = ({ project, opened, onOpenChange }: Props) => {
   const { formatMessage } = useIntl();
   const { showPublish, publishDisabled } = usePublishAccess(project);
   const [scheduleOpened, setScheduleOpened] = useState(false);
-  const [missingOpened, setMissingOpened] = useState(false);
+  const [missingIntent, setMissingIntent] =
+    useState<MissingEssentialsIntent | null>(null);
   const [confirm, setConfirm] = useState<{
     status: ConfirmableStatus;
     opened: boolean;
@@ -104,9 +107,9 @@ const PublishDropdown = ({ project, opened, onOpenChange }: Props) => {
                     close();
                     setConfirm({ status, opened: true });
                   }}
-                  onMissingEssentials={() => {
+                  onMissingEssentials={(intent) => {
                     close();
-                    setMissingOpened(true);
+                    setMissingIntent(intent);
                   }}
                   onDone={close}
                 />
@@ -116,11 +119,13 @@ const PublishDropdown = ({ project, opened, onOpenChange }: Props) => {
         </Tooltip>
       )}
 
-      {missingOpened && (
+      {missingIntent && (
         <MissingEssentialsModal
           opened
+          intent={missingIntent}
           project={project}
-          onClose={() => setMissingOpened(false)}
+          onClose={() => setMissingIntent(null)}
+          onSchedule={() => setScheduleOpened(true)}
         />
       )}
 
