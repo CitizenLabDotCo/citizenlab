@@ -8,6 +8,7 @@ import {
   IconNames,
   bo,
 } from '@citizenlab/cl2-component-library';
+import { t } from 'design-system/tokens/tokens';
 
 export type HeaderDropdownName = 'publish' | 'share';
 
@@ -65,7 +66,7 @@ const HeaderDropdown = ({
         width={width}
         maxHeight="none"
         zIndex="2000"
-        borderRadius={bo.borderRadius}
+        borderRadius={t.radius[2]}
         content={content}
       />
     </>
