@@ -160,16 +160,23 @@ module ProjectGeneration
       }
     }.freeze
 
+    # The self-eval rubric. Deliberately the SAME four dimensions the Project
+    # Library scores finished projects on (1-5), and the same ones the
+    # govocal-project-setup skill's §6 rubric drafts against — so the drafting
+    # prompt, this self-score, and a future LLM-as-judge all speak one
+    # vocabulary and can be compared against the ~13.5K labelled library
+    # projects. (Was clear_ask / right_method / realistic_scope / closes_the_loop,
+    # which no library or judge could line up against.)
     RUBRIC_SCHEMA = {
       type: 'object',
       additionalProperties: false,
-      required: %w[clear_ask right_method realistic_scope closes_the_loop justification],
+      required: %w[participation process_design influence feedback justification],
       properties: {
-        clear_ask: { type: 'integer', description: 'Score 1-5 for how clear the ask to residents is.' },
-        right_method: { type: 'integer', description: 'Score 1-5 for method fit.' },
-        realistic_scope: { type: 'integer', description: 'Score 1-5 for realistic scope and timing.' },
-        closes_the_loop: { type: 'integer', description: 'Score 1-5 for whether the plan closes the loop back to residents.' },
-        justification: { type: 'string' }
+        participation: { type: 'integer', description: 'Score 1-5 on PARTICIPATION: how well the method/recipe and reach are set up to draw participants proportionate to the audience size (the recipe fit for the intended reach).' },
+        process_design: { type: 'integer', description: 'Score 1-5 on PROCESS DESIGN: how clearly the project and phase text convey the purpose and the process — why this is happening, what is up for influence, and how input will be used — in plain, scannable language.' },
+        influence: { type: 'integer', description: 'Score 1-5 on INFLUENCE: how much resident input genuinely shapes the outcome, with language that matches the real IAP2 level and stays within the archetype ceiling (no overstatement).' },
+        feedback: { type: 'integer', description: 'Score 1-5 on FEEDBACK (closing the loop): whether the plan closes the loop back to residents — a closing information phase that commits to what participants will hear back and when.' },
+        justification: { type: 'string', description: 'One or two sentences explaining the scores, and flagging any dimension scored below 4.' }
       }
     }.freeze
 
@@ -331,22 +338,38 @@ module ProjectGeneration
     # trip project validations; the explicit updated_at bump also refreshes the
     # project page preview.
     def store_assistant_summary(plan)
-      summary = plan['assistant_summary']
-      return unless summary.is_a?(Hash)
+      summary = plan['assistant_summary'].is_a?(Hash) ? plan['assistant_summary'] : {}
+      rubric = clean_rubric(plan['rubric'])
 
       headline = summary['headline'].to_s.strip
       highlights = Array(summary['highlights']).map { |line| line.to_s.strip }.reject(&:blank?)
       next_steps = Array(summary['next_steps']).map { |line| line.to_s.strip }.reject(&:blank?)
-      return if headline.blank? && highlights.empty? && next_steps.empty?
+      return if headline.blank? && highlights.empty? && next_steps.empty? && rubric.nil?
 
-      @project.update_columns(
-        ai_generation_summary: {
-          'headline' => headline,
-          'highlights' => highlights,
-          'next_steps' => next_steps
-        },
-        updated_at: Time.current
-      )
+      payload = {
+        'headline' => headline,
+        'highlights' => highlights,
+        'next_steps' => next_steps
+      }
+      # Keep the self-eval scores on the project alongside the briefing so every
+      # generated draft carries its four-dimension rubric — the substrate a
+      # future eval / LLM-as-judge lines up against the Project Library.
+      payload['rubric'] = rubric if rubric
+
+      @project.update_columns(ai_generation_summary: payload, updated_at: Time.current)
+    end
+
+    # The self-eval scores on the four Project-Library dimensions, clamped to the
+    # 1-5 range the library uses. nil when the model returned no usable rubric.
+    def clean_rubric(rubric)
+      return unless rubric.is_a?(Hash)
+
+      scores = %w[participation process_design influence feedback].index_with do |dimension|
+        rubric[dimension].to_i.clamp(1, 5)
+      end
+      justification = rubric['justification'].to_s.strip
+      scores['justification'] = justification if justification.present?
+      scores
     end
 
     # On a re-generation, wipe what a previous run created so the new plan is a
