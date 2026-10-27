@@ -99,6 +99,22 @@ describe('sourceLine', () => {
     expect(line?.place).toBeUndefined();
   });
 
+  it('names a global rule by the first three parts of its selector', () => {
+    const rule = (selector: string) =>
+      ({
+        selector,
+        sheet: 'styled',
+        media: [],
+      } as unknown as PropTrace['rule']);
+    const at = (selector: string) =>
+      sourceLine([trace({ status: 'global', rule: rule(selector) })], 'c')
+        ?.text;
+    expect(at('html, body, h1, h2, button')).toBe(
+      'global CSS html, body, h1, …'
+    );
+    expect(at('p')).toBe('global CSS p');
+  });
+
   it('points a story frame at its line in the story file', () => {
     const line = sourceLine(
       [

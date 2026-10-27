@@ -761,8 +761,11 @@ export const traceStyled = async (
   // 1. The owner, its template, its CSS with origins.
   const g = generatedClasses(el.ownerDocument);
   const name = ownerClass(originalPart(m.rule.selectorText, m.part), g);
-  const element = name ? ownerElement(el, name) : undefined;
-  if (!name || !element) return fail('no-owner');
+  // A rule scoped by no component's class is a global style's
+  // (createGlobalStyle): global CSS, as a stylesheet's rule is.
+  if (!name) return { trace: { ...base, status: 'global' } };
+  const element = ownerElement(el, name);
+  if (!element) return fail('no-owner');
   const run = await runFor(element, name, deps);
   if (!run.ok) return fail(run.why);
   const root = run.alignment.template;

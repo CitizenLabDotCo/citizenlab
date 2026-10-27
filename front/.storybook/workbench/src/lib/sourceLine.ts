@@ -94,8 +94,15 @@ const words = (t: PropTrace): string => {
       return 'browser default';
     case 'inherited':
       return 'inherited';
-    case 'global':
-      return `global CSS ${t.rule?.selector ?? ''}`.trim();
+    case 'global': {
+      // A long selector list by its first three.
+      const parts = (t.rule?.selector ?? '').split(',').map((x) => x.trim());
+      const shown =
+        parts.length > 3
+          ? `${parts.slice(0, 3).join(', ')}, …`
+          : parts.join(', ');
+      return `global CSS ${shown}`.trim();
+    }
     case 'untraced': {
       const why = t.why ? WHY_WORDS[t.why] : 'no reason recorded';
       return `not traced: ${why}${s?.text ? ` (${s.text})` : ''}`;
