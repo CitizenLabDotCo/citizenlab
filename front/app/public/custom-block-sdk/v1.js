@@ -5,8 +5,8 @@
 // app installed on window.__GV_SDK__.v1 (see runtime/sdkRegistry.ts), so
 // blocks share the app's React instance and platform hooks.
 //
-// The export list must match SDK_EXPORT_NAMES in runtime/sdkContract.ts.
-// sdkShimSync.test.ts guards this.
+// The export list must match SDK_EXPORT_NAMES in the app's
+// CustomBlocks/sdk/v1/contract.ts. sdkContractSync.test.ts guards this.
 const sdk = window.__GV_SDK__ && window.__GV_SDK__.v1;
 
 if (!sdk) {
@@ -28,7 +28,6 @@ export const Icon = sdk.Icon;
 export const Spinner = sdk.Spinner;
 export const colors = sdk.colors;
 export const useAuthUser = sdk.useAuthUser;
-export const useProjectsMini = sdk.useProjectsMini;
 export const useAppConfiguration = sdk.useAppConfiguration;
 export const useLocale = sdk.useLocale;
 export const useLocalize = sdk.useLocalize;
