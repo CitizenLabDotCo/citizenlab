@@ -741,6 +741,7 @@
   "app.components.TypedConfirmationModal.cancel": "ਰੱਦ ਕਰੋ",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "ਮਿਟਾਓ",
   "app.components.TypedConfirmationModal.typeToConfirm1": "{entityName}ਨੂੰ ਮਿਟਾਉਣ ਦੀ ਪੁਸ਼ਟੀ ਕਰਨ ਲਈ, ਹੇਠਾਂ {confirmationWord} ਟਾਈਪ ਕਰੋ:",
+  "app.components.TypedConfirmationModal.typeToConfirmShort": "ਪੁਸ਼ਟੀ ਕਰਨ ਲਈ {confirmationWord} ਟਾਈਪ ਕਰੋ",
   "app.components.TypedConfirmationModal.warning": "ਇਹ ਕਾਰਵਾਈ ਸਥਾਈ ਹੈ ਅਤੇ ਇਸਨੂੰ ਅਣਕੀਤਾ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ।",
   "app.components.UI.EmojiPicker.clear": "ਸਾਫ਼ ਕਰੋ",
   "app.components.UI.FeatureCallout.dismiss": "ਹਟਾਓ",

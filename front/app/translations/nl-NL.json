@@ -741,6 +741,7 @@
   "app.components.TypedConfirmationModal.cancel": "Annuleer",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "VERWIJDEREN",
   "app.components.TypedConfirmationModal.typeToConfirm1": "Om de verwijdering van {entityName} te bevestigen, typ je hieronder {confirmationWord}:",
+  "app.components.TypedConfirmationModal.typeToConfirmShort": "Typ {confirmationWord} om te bevestigen",
   "app.components.TypedConfirmationModal.warning": "Deze actie is permanent en kan niet ongedaan worden gemaakt.",
   "app.components.UI.EmojiPicker.clear": "Wissen",
   "app.components.UI.FeatureCallout.dismiss": "Sluiten",

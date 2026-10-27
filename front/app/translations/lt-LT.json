@@ -741,6 +741,7 @@
   "app.components.TypedConfirmationModal.cancel": "Atšaukti",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "DELETE",
   "app.components.TypedConfirmationModal.typeToConfirm1": "Norėdami patvirtinti {entityName}ištrynimą, toliau įveskite {confirmationWord} :",
+  "app.components.TypedConfirmationModal.typeToConfirmShort": "Norėdami patvirtinti, įrašykite {confirmationWord}",
   "app.components.TypedConfirmationModal.warning": "Šis veiksmas yra nuolatinis ir negali būti atšauktas.",
   "app.components.UI.EmojiPicker.clear": "Išvalyti",
   "app.components.UI.FeatureCallout.dismiss": "Atmesti",

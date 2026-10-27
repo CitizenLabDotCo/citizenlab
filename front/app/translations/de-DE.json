@@ -741,6 +741,7 @@
   "app.components.TypedConfirmationModal.cancel": "Abbrechen",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "LÖSCHEN",
   "app.components.TypedConfirmationModal.typeToConfirm1": "Um die Löschung von {entityName} zu bestätigen, geben Sie {confirmationWord} ein:",
+  "app.components.TypedConfirmationModal.typeToConfirmShort": "Gib {confirmationWord} zur Bestätigung ein",
   "app.components.TypedConfirmationModal.warning": "Diese Aktion ist dauerhaft und kann nicht rückgängig gemacht werden.",
   "app.components.UI.EmojiPicker.clear": "Löschen",
   "app.components.UI.FeatureCallout.dismiss": "Verwerfen",

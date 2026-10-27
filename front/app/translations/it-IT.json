@@ -741,6 +741,7 @@
   "app.components.TypedConfirmationModal.cancel": "Annulla",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "CANCELLARE",
   "app.components.TypedConfirmationModal.typeToConfirm1": "Per confermare la cancellazione di {entityName}, digita {confirmationWord} qui sotto:",
+  "app.components.TypedConfirmationModal.typeToConfirmShort": "Digita {confirmationWord} per confermare",
   "app.components.TypedConfirmationModal.warning": "Questa azione è permanente e non può essere annullata.",
   "app.components.UI.EmojiPicker.clear": "Rimuovi",
   "app.components.UI.FeatureCallout.dismiss": "Ignora",

@@ -741,6 +741,7 @@
   "app.components.TypedConfirmationModal.cancel": "Annuller",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "SLET",
   "app.components.TypedConfirmationModal.typeToConfirm1": "For at bekræfte sletningen af {entityName}skal du skrive {confirmationWord} nedenfor:",
+  "app.components.TypedConfirmationModal.typeToConfirmShort": "Skriv {confirmationWord} for at bekræfte",
   "app.components.TypedConfirmationModal.warning": "Denne handling er permanent og kan ikke fortrydes.",
   "app.components.UI.EmojiPicker.clear": "Ryd",
   "app.components.UI.FeatureCallout.dismiss": "Afvis",

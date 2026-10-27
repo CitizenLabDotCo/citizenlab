@@ -741,6 +741,7 @@
   "app.components.TypedConfirmationModal.cancel": "Avbryt",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "RADERA",
   "app.components.TypedConfirmationModal.typeToConfirm1": "För att bekräfta borttagningen av {entityName}, skriv {confirmationWord} nedan:",
+  "app.components.TypedConfirmationModal.typeToConfirmShort": "Skriv {confirmationWord} för att bekräfta",
   "app.components.TypedConfirmationModal.warning": "Denna åtgärd är permanent och kan inte ångras.",
   "app.components.UI.EmojiPicker.clear": "Rensa",
   "app.components.UI.FeatureCallout.dismiss": "Avfärda",

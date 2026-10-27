@@ -741,6 +741,7 @@
   "app.components.TypedConfirmationModal.cancel": "Canslo",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "DILEU",
   "app.components.TypedConfirmationModal.typeToConfirm1": "I gadarnhau dileu {entityName}, teipiwch {confirmationWord} isod:",
+  "app.components.TypedConfirmationModal.typeToConfirmShort": "Teipiwch {confirmationWord} i gadarnhau",
   "app.components.TypedConfirmationModal.warning": "Mae'r weithred hon yn barhaol ac ni ellir ei dadwneud.",
   "app.components.UI.EmojiPicker.clear": "Clirio",
   "app.components.UI.FeatureCallout.dismiss": "Diystyru",

@@ -741,6 +741,7 @@
   "app.components.TypedConfirmationModal.cancel": "Cancelar",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "DELETE",
   "app.components.TypedConfirmationModal.typeToConfirm1": "Para confirmar a exclusão de {entityName}, digite {confirmationWord} abaixo:",
+  "app.components.TypedConfirmationModal.typeToConfirmShort": "Digite {confirmationWord} para confirmar",
   "app.components.TypedConfirmationModal.warning": "Essa ação é permanente e não pode ser desfeita.",
   "app.components.UI.EmojiPicker.clear": "Limpar",
   "app.components.UI.FeatureCallout.dismiss": "Descartar",

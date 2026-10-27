@@ -741,6 +741,7 @@
   "app.components.TypedConfirmationModal.cancel": "Cealaigh",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "SCRÍOS",
   "app.components.TypedConfirmationModal.typeToConfirm1": "Chun scriosadh {entityName}a dhearbhú, clóscríobh {confirmationWord} thíos:",
+  "app.components.TypedConfirmationModal.typeToConfirmShort": "Clóscríobh {confirmationWord} chun deimhniú",
   "app.components.TypedConfirmationModal.warning": "Tá an gníomh seo buan agus ní féidir é a chealú.",
   "app.components.UI.EmojiPicker.clear": "Glan",
   "app.components.UI.FeatureCallout.dismiss": "Díbh",
