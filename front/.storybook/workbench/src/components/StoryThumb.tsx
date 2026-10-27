@@ -183,8 +183,6 @@ type Props = {
   // uncropped.
   frameWidth?: number;
   a11y?: { results: A11yResults | null; checklist: Checklist | null };
-  // Replaces the line under the name (the In use list's uses and routes).
-  meta?: string;
 };
 
 // The story sits on the card's own surface, without page scrollbars, and
@@ -294,7 +292,6 @@ const StoryThumb = ({
   globals,
   frameWidth = 320,
   a11y,
-  meta,
 }: Props) => {
   const gallery = useContext(GalleryContext);
   const [loaded, setLoaded] = useState(false);
@@ -333,17 +330,18 @@ const StoryThumb = ({
     register?.(id, box.current);
     return () => register?.(id, null);
   }, [register, id, live]);
-  const state = picture && !live
-    ? pictureLoaded
-      ? 'rendered'
-      : 'loading'
-    : deciding
-    ? 'loading'
-    : own
-    ? loaded
-      ? 'rendered'
-      : 'loading'
-    : shared;
+  const state =
+    picture && !live
+      ? pictureLoaded
+        ? 'rendered'
+        : 'loading'
+      : deciding
+      ? 'loading'
+      : own
+      ? loaded
+        ? 'rendered'
+        : 'loading'
+      : shared;
   const className = [
     'wb-thumb',
     state === 'loading' && 'wb-thumb-loading',
@@ -415,14 +413,13 @@ const StoryThumb = ({
           <span className="wb-thumb-title">
             <span className="wb-card-title">{group.name}</span>
             <span className="wb-thumb-meta">
-              {meta ??
-                [
-                  group.category,
-                  plural(group.stories.length, 'story', 'stories'),
-                  states > 0 && plural(states, 'state', 'states'),
-                ]
-                  .filter(Boolean)
-                  .join(' · ')}
+              {[
+                group.category,
+                plural(group.stories.length, 'story', 'stories'),
+                states > 0 && plural(states, 'state', 'states'),
+              ]
+                .filter(Boolean)
+                .join(' · ')}
             </span>
           </span>
           <ScoreRing score={group.score?.score} status={group.status} />

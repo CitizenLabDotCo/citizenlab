@@ -205,7 +205,7 @@ const Gallery = ({ globals }: Props) => {
         <SkeletonGrid />
       ) : pool.length === 0 ? (
         <section className="wb-empty" aria-label="No stories yet">
-          <PlaceholderArt kind="components" />
+          <PlaceholderArt />
           <div className="wb-empty-text">
             <span className="wb-badge wb-badge-soon">No stories yet</span>
             <h2>No stories in this build</h2>
