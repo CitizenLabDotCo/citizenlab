@@ -133,3 +133,32 @@ export const plainSubject = (subject: string) =>
   subject
     .replace(/^[a-z-]+\([^)]*\):\s*/i, '')
     .replace(/\s*\[AI-assisted\]\s*$/, '');
+
+// The session's element edits per story, stories in the order they were
+// first edited.
+export const byStory = <E extends { storyId: string }>(
+  edits: E[]
+): [string, E[]][] => {
+  const out = new Map<string, E[]>();
+  for (const e of edits) out.set(e.storyId, [...(out.get(e.storyId) ?? []), e]);
+  return [...out];
+};
+
+// What "Copy for agent" on the Review page hands on: every change collected
+// in this browser, for the PR it is connected to or a new one.
+export const agentText = (
+  pr: number | undefined,
+  tasks: string[],
+  tokenPatch: string
+): string =>
+  [
+    'Workbench changes to turn into design commits (heal skill, "Stacked on the workbench").',
+    pr
+      ? `PR: #${pr}. Add the commits to its branch.`
+      : 'PR: a new one, off origin/design-system/workbench, into design-system/workbench, label epic.',
+    'One commit per change, its before and after pictures in .storybook/static/changes/<sha>/, then the change list.',
+    ...tasks.flatMap((t) => ['', t]),
+    ...(tokenPatch.trim()
+      ? ['', 'tokens.source.json:', tokenPatch.trim()]
+      : []),
+  ].join('\n');

@@ -51,6 +51,8 @@ type Props = {
   current: Route['name'];
   collapsed: boolean;
   onToggleCollapsed: () => void;
+  // A number after an entry's label (Review: the changes collected).
+  counts?: Partial<Record<Route['name'], number>>;
 };
 
 // The mark of the workbench: four tiles, one of them the accent.
@@ -137,7 +139,7 @@ const ThemeSwitch = ({ compact }: { compact: boolean }) => {
   );
 };
 
-const Nav = ({ current, collapsed, onToggleCollapsed }: Props) => {
+const Nav = ({ current, collapsed, onToggleCollapsed, counts }: Props) => {
   // Narrow screens: the list folds into a menu under the top bar.
   const [open, setOpen] = useState(false);
   const menuButton = useRef<HTMLButtonElement>(null);
@@ -199,6 +201,14 @@ const Nav = ({ current, collapsed, onToggleCollapsed }: Props) => {
               >
                 <Icon name={e.name as IconName} />
                 <span className="wb-nav-label">{e.label}</span>
+                {!!counts?.[e.name] && (
+                  <span
+                    className="wb-count wb-count-on wb-nav-count"
+                    data-testid={`wb-nav-count-${e.name}`}
+                  >
+                    {counts[e.name]}
+                  </span>
+                )}
               </a>
             </li>
           ))}

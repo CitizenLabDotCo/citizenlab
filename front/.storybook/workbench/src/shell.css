@@ -4002,6 +4002,93 @@ a.wb-line:hover {
   color: var(--wb-heading);
 }
 
+.wb-review-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gv-space-4);
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.wb-review-actions,
+.wb-review-connect {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gv-space-2);
+  align-items: center;
+}
+
+.wb-review-connect input {
+  width: 9em;
+  min-height: 36px;
+  padding: 0 var(--gv-space-3);
+  font: inherit;
+  color: var(--wb-text);
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border-strong);
+  border-radius: var(--wb-radius);
+}
+
+.wb-review-reset {
+  padding: 0;
+  font: inherit;
+  font-size: var(--gv-fs-s);
+  color: var(--wb-muted);
+  text-decoration: underline;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.wb-review-sum .wb-review-reset {
+  margin-left: var(--gv-space-3);
+}
+
+.wb-review-reset:hover {
+  color: var(--wb-heading);
+}
+
+.wb-review-edits {
+  display: grid;
+  gap: var(--gv-space-1);
+  margin: 0;
+  padding: 0;
+  font-size: var(--gv-fs-s);
+  list-style: none;
+}
+
+.wb-review-text {
+  max-height: 240px;
+  margin: 0;
+  overflow: auto;
+  padding: var(--gv-space-3);
+  font-size: var(--gv-fs-xs);
+  white-space: pre-wrap;
+  background: var(--wb-subtle);
+  border-radius: var(--wb-radius);
+}
+
+.wb-review-pr h2 {
+  margin: 0 0 var(--gv-space-4);
+  font-size: var(--gv-fs-l);
+  color: var(--wb-heading);
+}
+
+/* The live before and after: the component page's canvas, smaller. */
+.wb-pr-shot .wb-canvas {
+  padding: var(--gv-space-3);
+  background-color: var(--wb-subtle);
+  border-radius: var(--wb-radius);
+}
+
+.wb-nav-count {
+  margin-left: auto;
+}
+
+.wb-nav-collapsed .wb-nav-count {
+  display: none;
+}
+
 .wb-pr-cards {
   display: grid;
   gap: var(--gv-space-10);

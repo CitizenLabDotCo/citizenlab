@@ -8,6 +8,8 @@ import {
   plainSubject,
   prOfHost,
   routeLinks,
+  byStory,
+  agentText,
 } from './prReview';
 import { ChangeCommit, DesignChanges, normaliseFixture } from './review';
 
@@ -220,5 +222,38 @@ describe('plainSubject', () => {
         'design-system(heal): HeaderDropdown 8px → --gv-radius-2 [AI-assisted]'
       )
     ).toBe('HeaderDropdown 8px → --gv-radius-2');
+  });
+});
+
+describe('byStory', () => {
+  it('groups edits per story, in the order stories were first edited', () => {
+    const e = (id: string, storyId: string) => ({ id, storyId });
+    expect(
+      byStory([e('1', 'b'), e('2', 'a'), e('3', 'b')]).map(([s, list]) => [
+        s,
+        list.map((x) => x.id),
+      ])
+    ).toEqual([
+      ['b', ['1', '3']],
+      ['a', ['2']],
+    ]);
+  });
+});
+
+describe('agentText', () => {
+  it('names the connected PR, then the tasks, then the token patch', () => {
+    const text = agentText(15063, ['change: A', 'heal: B'], '+ x\n');
+    expect(text.split('\n')[1]).toBe(
+      'PR: #15063. Add the commits to its branch.'
+    );
+    expect(text).toContain(
+      '\n\nchange: A\n\nheal: B\n\ntokens.source.json:\n+ x'
+    );
+  });
+  it('asks for a new PR when none is connected, and leaves out an empty patch', () => {
+    const text = agentText(undefined, ['change: A'], '');
+    expect(text).toContain('PR: a new one');
+    expect(text).not.toContain('tokens.source.json');
+    expect(text).not.toContain('—');
   });
 });

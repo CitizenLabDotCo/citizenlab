@@ -8,6 +8,7 @@ import { LocalContext, LocalStatus, useLocalApi } from './lib/local';
 import { useNavCollapsed } from './lib/navCollapsed';
 import { Overrides, useOverrides } from './lib/overrides';
 import { Route, useRoute } from './lib/router';
+import { useElementEdits } from './lib/useElementEdits';
 import Component from './pages/Component';
 import Foundations from './pages/Foundations';
 import Gallery from './pages/Gallery';
@@ -61,7 +62,13 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
         />
       );
     case 'review':
-      return <Review />;
+      return (
+        <Review
+          toolbar={canvas.toolbar}
+          overrides={canvas.overrides}
+          reset={canvas.reset}
+        />
+      );
     case 'inspect':
       return <Inspect meta={TOKEN_META} />;
     case 'not-found':
@@ -110,6 +117,11 @@ const App = ({ local: localStatus }: { local?: LocalStatus }) => {
   const [toolbar, setToolbar] = useState<ToolbarState>(DEFAULT_TOOLBAR);
   const { overrides, setOverride, reset, notice, dismissNotice } =
     useOverrides(TOKEN_META);
+  // What Review collects: the element edits and the token edits.
+  const { edits } = useElementEdits(TOKEN_META);
+  const changes =
+    edits.length +
+    Object.values(overrides).filter((v) => typeof v === 'string').length;
 
   return (
     <LocalContext.Provider value={local}>
@@ -127,6 +139,7 @@ const App = ({ local: localStatus }: { local?: LocalStatus }) => {
             current={navName}
             collapsed={navCollapsed}
             onToggleCollapsed={toggleNav}
+            counts={{ review: changes }}
           />
           <main className="wb-main">
             {notice && (
