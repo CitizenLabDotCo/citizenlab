@@ -261,7 +261,7 @@ export const ssoIcons = {
       />
     </Svg>
   ),
-  // Okta mark (the "okta" wordmark is left out), used for the okta SSO method
+  // Okta logo for the okta SSO method
   okta: (props: IconPropsWithoutName) => (
     <Svg viewBox="0 0 36 36" aria-label="Okta logo" {...props}>
       <path

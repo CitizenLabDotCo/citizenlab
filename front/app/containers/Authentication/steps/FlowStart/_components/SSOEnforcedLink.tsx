@@ -30,7 +30,9 @@ const SSOEnforcedLink = () => {
 
   return (
     <Box mt="16px">
-      <Link to="/sign-in/admin">{formatMessage(messages.signInWithSSO)}</Link>
+      <Link to="/sign-in/admin">
+        {formatMessage(messages.signInWithEmployeeAccount)}
+      </Link>
     </Box>
   );
 };

@@ -37,10 +37,7 @@ module CustomIdMethods::Okta
           private: true,
           type: 'string',
           title: 'Issuer',
-          description: <<~DESC.squish
-            Copy the `issuer` from the customer's /.well-known/openid-configuration,
-            e.g. https://tempe.okta.com or https://tempe.okta.com/oauth2/default.
-          DESC
+          description: 'Copy the `issuer` from the customer /.well-known/openid-configuration'
         },
         client_id: {
           private: true,

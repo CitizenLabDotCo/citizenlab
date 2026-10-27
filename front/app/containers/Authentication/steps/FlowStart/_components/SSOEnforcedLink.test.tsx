@@ -32,7 +32,7 @@ const okta = (visibility?: 'show' | 'link' | 'hide'): IdMethodData => ({
 });
 
 const queryLink = () =>
-  screen.queryByRole('link', { name: /sign in with single sign-on/i });
+  screen.queryByRole('link', { name: /sign in with your employee account/i });
 
 describe('SSOEnforcedLink', () => {
   beforeEach(() => {
