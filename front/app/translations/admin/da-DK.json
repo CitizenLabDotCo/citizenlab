@@ -3212,6 +3212,7 @@
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Del information",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Snap-undersøgelse",
+  "app.containers.AdminPage.ProjectEdit.statusPrioritySortingMethod": "Status (foreslået først)",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Opsæt og personliggør din projekt.",
   "app.containers.AdminPage.ProjectEdit.supportPageLinkText": "besøg vores supportcenter",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent2": "Tilføj indhold til undersøgelsen",

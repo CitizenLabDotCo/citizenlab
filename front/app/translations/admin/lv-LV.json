@@ -3212,6 +3212,7 @@
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Kopīgot informāciju",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Snap Survey",
+  "app.containers.AdminPage.ProjectEdit.statusPrioritySortingMethod": "Statuss (vispirms ierosinātie)",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Iestatīt un personalizēt projektu.",
   "app.containers.AdminPage.ProjectEdit.supportPageLinkText": "apmeklējiet mūsu atbalsta centru",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent2": "Pievienojiet apsekojuma saturu",

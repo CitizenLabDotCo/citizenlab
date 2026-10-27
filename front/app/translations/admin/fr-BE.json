@@ -3212,6 +3212,7 @@
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Partager l'information",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Enquête instantanée",
+  "app.containers.AdminPage.ProjectEdit.statusPrioritySortingMethod": "Statut (proposés en premier)",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Créez et personnalisez votre projet.",
   "app.containers.AdminPage.ProjectEdit.supportPageLinkText": "visitez notre centre d'assistance",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent2": "Ajouter le contenu de l'enquête",
