@@ -70,11 +70,17 @@ export const since = (current: Record<string, string>, base: Sent) => ({
 });
 
 // The count on the nav and on "Send N more": changes since the last copy.
+// A review closed without merging landed nothing, so nothing sent to it
+// needs putting back: every change here counts as unsent again.
 export const unsentCount = (
   current: Record<string, string>,
   record: SendRecord
 ) => {
-  const d = since(current, record.pending?.sent ?? record.sent);
+  const base =
+    record.status?.state === 'closed'
+      ? {}
+      : record.pending?.sent ?? record.sent;
+  const d = since(current, base);
   return d.changed.length + d.gone.length;
 };
 

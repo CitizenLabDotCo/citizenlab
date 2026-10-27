@@ -81,6 +81,16 @@ describe('what has not been sent', () => {
       })
     ).toBe(0);
   });
+
+  it('counts nothing to put back once the review closed without merging', () => {
+    const sent = { 'btn|0|fill': { value: '--gv-error', undo: 'put back' } };
+    const closed = { state: 'closed' as const, who: [] };
+    // The sent edit was reset since: a merged review needs it put back,
+    // a closed one landed nothing.
+    expect(unsentCount({}, { sent })).toBe(1);
+    expect(unsentCount({}, { sent, status: closed })).toBe(0);
+    expect(unsentCount(current, { sent, status: closed })).toBe(3);
+  });
 });
 
 describe('put-back lines', () => {
