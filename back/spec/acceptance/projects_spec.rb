@@ -25,7 +25,7 @@ resource 'Projects' do
       parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned', required: false
       parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)'
       parameter :live_auto_input_topics_enabled, 'Whether the project should automatically detect topics and assign inputs to them. Defaults to false.', required: false
-      parameter :completed_setup_steps, "Steps of the admin setup checklist the manager has been through, a subset of #{Project::SETUP_STEPS.join(', ')}.", required: false
+      parameter :completed_setup_steps, "Steps of the admin setup checklist the manager has been through, a subset of #{Project::SETUP_STEPS.join(', ')}. Added to the steps already stored; steps can't be removed.", required: false
     end
 
     with_options scope: %i[project admin_publication_attributes] do
@@ -379,6 +379,14 @@ resource 'Projects' do
           assert_status 200
           expect(json_response.dig(:data, :attributes, :completed_setup_steps)).to eq ['share']
           expect(@project.reload.completed_setup_steps).to eq ['share']
+        end
+
+        example 'Marking a setup step keeps the steps already done', document: false do
+          @project.update!(completed_setup_steps: %w[page])
+          do_request(project: { completed_setup_steps: %w[settings] })
+
+          assert_status 200
+          expect(@project.reload.completed_setup_steps).to eq %w[page settings]
         end
 
         example '[error] Mark an unknown setup step as gone through', document: false do
