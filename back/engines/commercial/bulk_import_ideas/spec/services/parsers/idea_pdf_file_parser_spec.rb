@@ -114,6 +114,50 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
     end
   end
 
+  describe 'parse_rows with a domicile question asked in the survey' do
+    let(:survey_project) { create(:single_phase_native_survey_project, phase_attrs: { with_permissions: true }) }
+    let(:phase) { survey_project.phases.first }
+    let(:custom_form) { create(:custom_form, participation_context: phase) }
+    let!(:area) { create(:area, title_multiloc: { 'en' => 'Westside' }) }
+    let(:domicile) { create(:custom_field_domicile) }
+    let(:parser) { described_class.new(create(:admin), 'en', phase.id, false) }
+
+    before do
+      create(:custom_field_page, resource: custom_form)
+      transport = create(:custom_field_select, resource: custom_form, key: 'transport', title_multiloc: { 'en' => 'How do you travel?' })
+      create(:custom_field_option, custom_field: transport, key: 'bike', title_multiloc: { 'en' => 'By bike' })
+      create(:custom_field_form_end_page, resource: custom_form)
+
+      permission = phase.permissions.find_by(action: 'posting_idea')
+      permission.update!(permitted_by: 'users', custom_fields_behavior: 'custom', user_fields_in_form: true, user_data_collection: 'all_data')
+      create(:permissions_custom_field, permission: permission, custom_field: domicile)
+
+      allow_any_instance_of(BulkImportIdeas::Parsers::Pdf::LLMFormParser)
+        .to receive(:parse)
+        .and_return({ 'question_1' => ['By bike'], 'question_2' => [answer] })
+    end
+
+    context 'when the respondent picked an area' do
+      let(:answer) { 'Westside' }
+
+      it 'answers domicile with the area id, and other questions with the option key' do
+        rows = parser.parse_rows(create(:idea_import_file, num_pages: 2))
+
+        expect(rows.pluck(:custom_field_values)).to eq([{ transport: 'bike', u_domicile: area.id }])
+      end
+    end
+
+    context 'when the respondent picked the somewhere else option' do
+      let(:answer) { 'Somewhere else' }
+
+      it "answers domicile with 'outside'" do
+        rows = parser.parse_rows(create(:idea_import_file, num_pages: 2))
+
+        expect(rows.pluck(:custom_field_values)).to eq([{ transport: 'bike', u_domicile: 'outside' }])
+      end
+    end
+  end
+
   describe 'create_files' do
     let(:service_with_split) { described_class.new create(:admin), 'en', project.phases.first&.id, false, pages_per_form: 2 }
 

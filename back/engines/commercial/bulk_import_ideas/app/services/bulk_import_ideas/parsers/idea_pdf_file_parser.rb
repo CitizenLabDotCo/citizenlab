@@ -91,7 +91,7 @@ module BulkImportIdeas::Parsers
               type: 'option',
               input_type: 'option',
               code: option[:code],
-              key: option[:key],
+              key: option_key(field, option),
               parent_key: field[:key]
             }
           end
@@ -99,6 +99,14 @@ module BulkImportIdeas::Parsers
 
         { fields: fields + options }
       end
+    end
+
+    # A domicile answer holds the id of the chosen area, or 'outside' for the
+    # "somewhere else" option, never the option key.
+    def option_key(field, option)
+      return option[:key] unless field.domicile?
+
+      option.area&.id || 'outside'
     end
   end
 end
