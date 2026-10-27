@@ -115,10 +115,6 @@ declare module 'gv-sdk' {
     };
   };
 
-  export const useProjectsMini: (params?: Record<string, unknown>) => {
-    data?: { data: { id: string; attributes: { title_multiloc: Multiloc } }[] };
-  };
-
   // --- Reporting data ----------------------------------------------------
 
   /** One row of a query result: column name to value. */

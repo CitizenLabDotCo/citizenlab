@@ -4,7 +4,7 @@
 # Build context is the repository root, because the image needs the SDK type
 # definitions out of the front-end tree — they are the single source the type
 # checker and the model's prompt both read.
-FROM node:22-slim AS build
+FROM node:26-slim AS build
 
 WORKDIR /app
 
