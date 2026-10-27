@@ -25,6 +25,12 @@ import Box, {
 import Icon, { IconProps } from '../Icon';
 import Spinner from '../Spinner';
 
+// polished cannot read a CSS variable, so a var() colour is darkened in CSS.
+const shade = (amount: number, color: string) =>
+  /^(var|color-mix)\(/.test(color)
+    ? `color-mix(in srgb, ${color}, black ${Math.round(amount * 100)}%)`
+    : darken(amount, color);
+
 export type ButtonStyles =
   | 'primary'
   | 'primary-inverse'
@@ -143,7 +149,7 @@ function getButtonStyle(
 ) {
   const defaultStyleValues: DefaultStyleValues = {
     primary: {
-      bgColor: get(props.theme.colors, 'tenantPrimary'),
+      bgColor: 'var(--gv-error)',
       textColor: '#fff',
       textHoverColor: '#fff',
       iconColor: '#fff',
@@ -280,14 +286,14 @@ function getButtonStyle(
   const backgroundHoverColor =
     props.bgHoverColor ||
     get(defaultStyleValues, `${props.buttonStyle}.bgHoverColor`) ||
-    darken(0.12, backgroundColor);
+    shade(0.12, backgroundColor);
   const backgroundActiveColor =
     backgroundHoverColor !== 'transparent'
       ? // TODO: Fix this the next time the file is edited.
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         backgroundHoverColor?.startsWith('rgba')
         ? opacify(0.12, backgroundHoverColor)
-        : darken(0.12, backgroundHoverColor)
+        : shade(0.12, backgroundHoverColor)
       : 'inherit';
   const backgroundDisabledColor =
     props.bgDisabledColor ||
