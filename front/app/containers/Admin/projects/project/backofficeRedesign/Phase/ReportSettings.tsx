@@ -13,6 +13,7 @@ import useReport from 'api/reports/useReport';
 import useReportBuilderEnabled from 'api/reports/useReportBuilderEnabled';
 import useUpdateReport from 'api/reports/useUpdateReport';
 
+import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 import visibilityWarning from 'containers/Admin/projects/project/information/ReportTab/visibilityWarning';
 import useConfirmDeleteReport from 'containers/Admin/reporting/components/ReportBuilderPage/ReportRow/useConfirmDeleteReport';
 
@@ -21,7 +22,6 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 import PanelField from './BuildPanel/PanelField';
-import SummaryPill from './BuildPanel/SummaryPill';
 
 interface Props {
   phase: IPhaseData;

@@ -6,6 +6,8 @@ import useCustomFields from 'api/custom_fields/useCustomFields';
 
 import useLocalize from 'hooks/useLocalize';
 
+import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
+
 import actionFormMessages from 'components/admin/ActionForm/messages';
 import formBuilderMessages from 'components/FormBuilder/components/messages';
 import { getTranslatedStringKey } from 'components/FormBuilder/utils';
@@ -16,7 +18,6 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 import PanelField from './PanelField';
-import SummaryPill from './SummaryPill';
 
 interface Props {
   projectId: string;

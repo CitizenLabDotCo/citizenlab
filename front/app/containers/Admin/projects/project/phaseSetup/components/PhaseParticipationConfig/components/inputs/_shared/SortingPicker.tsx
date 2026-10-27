@@ -5,7 +5,7 @@ import { CLErrors } from 'typings';
 
 import { IdeaSortMethod } from 'api/phases/types';
 
-import SetupCard from 'containers/Admin/projects/project/backofficeRedesign/Event/SetupCard';
+import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';

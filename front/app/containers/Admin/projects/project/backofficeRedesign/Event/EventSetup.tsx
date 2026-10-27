@@ -3,6 +3,7 @@ import React from 'react';
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { Multiloc } from 'typings';
 
+import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
@@ -20,7 +21,6 @@ import ImageCard from './ImageCard';
 import LocationCard from './LocationCard';
 import messages from './messages';
 import RegistrationCard from './RegistrationCard';
-import SetupCard from './SetupCard';
 
 interface Props {
   projectId: string;

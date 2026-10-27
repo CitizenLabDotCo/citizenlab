@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 
-import SetupCard from '../../Event/SetupCard';
+import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 
 interface Props {
   label: string;
