@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import GalleryFrame from '../components/GalleryFrame';
 import Icon from '../components/Icon';
@@ -139,6 +139,54 @@ const Grid = ({
     ))}
   </ul>
 );
+
+// Stories filed outside Components/, laid out wider: their preview frame
+// is a second one, so it boots only once someone scrolls to them.
+const Others = ({
+  groups,
+  globals,
+  results,
+}: {
+  groups: StoryGroup[];
+  globals: FrameGlobals;
+  results: A11yResults | null;
+}) => {
+  const ref = useRef<HTMLElement>(null);
+  const [near, setNear] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || near) return undefined;
+    const observer = new IntersectionObserver(
+      (records) => {
+        if (records.some((r) => r.isIntersecting)) setNear(true);
+      },
+      { rootMargin: '600px' }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [near]);
+  return (
+    <section ref={ref} className="wb-gallery-group">
+      <h2 className="wb-section-title">Pages and other stories</h2>
+      <p className="wb-section-note">
+        Stories filed outside <code>Components/</code>, such as{' '}
+        <code>Pages/</code>, <code>Cards/</code> and{' '}
+        <code>HomepageBuilder/</code>, laid out wider.
+      </p>
+      {near && (
+        <GalleryFrame globals={globals} frameWidth={THUMB_FRAME_WIDTH.pages}>
+          <Grid
+            groups={groups}
+            globals={globals}
+            results={results}
+            frameWidth={THUMB_FRAME_WIDTH.pages}
+            testId="wb-gallery-others"
+          />
+        </GalleryFrame>
+      )}
+    </section>
+  );
+};
 
 // The gallery: a thumbnail per story title, with the scan's score, status
 // and office, filtered by set, office, status and name. Stories filed
@@ -310,26 +358,7 @@ const Gallery = ({ globals }: Props) => {
           </GalleryFrame>
 
           {shownOthers.length > 0 && (
-            <section className="wb-gallery-group">
-              <h2 className="wb-section-title">Pages and other stories</h2>
-              <p className="wb-section-note">
-                Stories filed outside <code>Components/</code>, such as{' '}
-                <code>Pages/</code>, <code>Cards/</code> and{' '}
-                <code>HomepageBuilder/</code>, laid out wider.
-              </p>
-              <GalleryFrame
-                globals={globals}
-                frameWidth={THUMB_FRAME_WIDTH.pages}
-              >
-                <Grid
-                  groups={shownOthers}
-                  globals={globals}
-                  results={results}
-                  frameWidth={THUMB_FRAME_WIDTH.pages}
-                  testId="wb-gallery-others"
-                />
-              </GalleryFrame>
-            </section>
+            <Others groups={shownOthers} globals={globals} results={results} />
           )}
         </>
       )}
