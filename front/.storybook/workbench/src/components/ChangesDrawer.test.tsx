@@ -56,7 +56,6 @@ describe('ChangesDrawer with element edits', () => {
           storyId: 's',
           routes: [],
           layer: 'button',
-          findings: [],
         }}
       />
     );

@@ -7,10 +7,13 @@ import InspSection from '../components/InspSection';
 import TokenPicker from '../components/TokenPicker';
 import { ValueField } from '../components/ValueField';
 import { resolveTokens } from '../lib/contrast';
+import { loadStoryIndex } from '../lib/data';
 import type { Finding, TokenMeta } from '../lib/data';
 import { editId, ElementEdit, valueFits } from '../lib/elementEdits';
 import { healToken, isHealable } from '../lib/healTask';
+import { suggestionsFor } from '../lib/legacyTokens';
 import {
+  atPath,
   ColourGroup,
   ColourUse,
   defaultTarget,
@@ -29,8 +32,17 @@ import {
 } from '../lib/inspect';
 import type { Overrides } from '../lib/overrides';
 import { snapValue } from '../lib/overrides';
+import {
+  shortFile,
+  sourceLine,
+  SourceLine,
+  tracedWords,
+  commitLink,
+} from '../lib/sourceLine';
 import { pickerGroups } from '../lib/tokenPicker';
 import { DEFS } from '../lib/tokenValues';
+import { Painted, traceElement } from '../lib/trace';
+import type { ElementTrace } from '../lib/trace/types';
 
 import Controls from './Controls';
 
@@ -63,6 +75,46 @@ const ALSO_FIRST = 12;
 const COLOURS_FIRST = 8;
 // Rows whose typed bare number is a length in px.
 const PX_ROWS = /^(size|ls|stroke-width(-.+)?|icon-stroke-width)$/;
+
+// The Source line at the top of the tab: the component that owns the
+// selection's styles, its line, and how many of its values are traced.
+const SourceHead = ({ trace }: { trace?: ElementTrace }) => {
+  if (!trace) return null;
+  const noIndex =
+    trace.props.length > 0 && trace.props.every((p) => p.why === 'no-index');
+  if (noIndex) {
+    return (
+      <p className="wb-insp-source-head" data-testid="wb-insp-source-head">
+        No code index in this build: values are not traced
+      </p>
+    );
+  }
+  const { owner } = trace;
+  return (
+    <p
+      className="wb-insp-source-head"
+      data-testid="wb-insp-source-head"
+      data-traced={trace.traced}
+      data-total={trace.total}
+    >
+      {owner ? (
+        <>
+          <code>{owner.name ?? 'component'}</code>
+          {' · '}
+          <a
+            href={commitLink(trace.commit, owner.file, owner.line)}
+            target="_blank"
+            rel="noopener"
+          >
+            {`${shortFile(owner.file)}:${owner.line}`}
+          </a>
+          {' · '}
+        </>
+      ) : null}
+      {tracedWords(trace.traced, trace.total)}
+    </p>
+  );
+};
 
 // The layer button's glyph, as Figma marks a layer's kind.
 const KIND_GLYPH: Record<LayerKind, IconName> = {
@@ -168,9 +220,7 @@ const Design = ({
     }
     const read = () => {
       try {
-        setInspection(
-          inspectElement(selected, meta, fontCheck(frame.document))
-        );
+        setInspection(inspectElement(selected, fontCheck(frame.document)));
       } catch {
         setInspection(null);
       }
@@ -194,6 +244,79 @@ const Design = ({
     setColoursAll(false);
   }, [selected]);
 
+  // Where each value comes from: traced after the rows render, so a row
+  // shows its value at once and its source line when the trace lands.
+  const [trace, setTrace] = useState<{
+    el: Element;
+    key: string;
+    t: ElementTrace;
+  } | null>(null);
+  const longhands = useMemo(
+    () => [
+      ...new Set(
+        (inspection?.sections ?? []).flatMap((s) =>
+          s.rows.flatMap((r) => r.props)
+        )
+      ),
+    ],
+    [inspection]
+  );
+  const longKey = longhands.join(',');
+  useEffect(() => {
+    if (!selected || !frame || longhands.length === 0) {
+      setTrace(null);
+      return undefined;
+    }
+    let live = true;
+    // What the session's edits paint inline reads as "your edit", not as
+    // the story's own inline style.
+    const painted: Painted = (el, longhand) =>
+      edits.some(
+        (e) =>
+          e.storyId === storyId &&
+          !!e.path &&
+          e.props.includes(longhand) &&
+          atPath(el.ownerDocument, e.path) === el
+      );
+    // The story's own file tells its frame from a look-alike in another
+    // story.
+    loadStoryIndex()
+      .then((index) =>
+        traceElement(frame, selected, longhands, {
+          painted,
+          storyFile: index.entries[storyId]?.importPath.replace(/^\.\//, ''),
+        })
+      )
+      .then((t) => {
+        if (live) setTrace({ el: selected, key: longKey, t });
+      })
+      .catch(() => {
+        if (live) setTrace(null);
+      });
+    return () => {
+      live = false;
+    };
+    // longKey stands for longhands.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selected, frame, longKey, version, edits, storyId]);
+  const sourceOf = (r: InspectRow): SourceLine | 'pending' | undefined => {
+    // A row with no style behind it: an image's picture is its src.
+    if (r.props.length === 0) {
+      return {
+        status: 'untraced',
+        text: 'not traced: an image shows its src, which is not a style',
+      };
+    }
+    // A trace of the same element for other rows is not this one's yet.
+    if (!trace || trace.el !== selected || trace.key !== longKey) {
+      return 'pending';
+    }
+    return sourceLine(
+      trace.t.props.filter((p) => r.props.includes(p.prop)),
+      trace.t.commit
+    );
+  };
+
   const path = selected ? pathOf(selected) : null;
   const idOf = (t: Target) => editId(storyId, t.path, t.row.id);
   const editOf = (t: Target) => edits.find((e) => e.id === idOf(t));
@@ -202,10 +325,7 @@ const Design = ({
     editOf(t)?.from ?? {
       raw: t.row.value.raw,
       shown: t.row.value.shown,
-      token:
-        t.row.value.link === 'linked' || t.row.value.link === 'theme'
-          ? t.row.value.token
-          : undefined,
+      token: t.row.value.token,
     };
   // The property a row of the selection belongs to: Layout holds padding
   // and gap rows, Appearance the radius.
@@ -239,25 +359,22 @@ const Design = ({
   const bind = (t: Target, token: TokenName) => {
     const from = originOf(t);
     const v = t.row.value;
-    // A city value read through the theme: attaching its own token is the
-    // heal (read the variable), drawn the same.
-    if (!editOf(t) && v.link === 'theme' && v.token === token) {
-      addEdit({
-        ...base(t),
-        from: { raw: from.raw, shown: from.shown },
-        to: { value: resolved[token] ?? v.raw, token },
-        kind: 'attach',
-      });
-      return;
-    }
     if (from.token === token) {
       removeEdit(idOf(t));
       return;
     }
+    // An attach of a traced value carries the expression it replaces, so
+    // Send writes that line; untraced, it goes as a task.
+    // Once edited the row traces to the edit: keep the first trace.
+    const line = from.token ? undefined : sourceOf(t.row);
+    const source =
+      editOf(t)?.source ??
+      (line && line !== 'pending' ? line.trace : undefined);
     addEdit({
       ...base(t),
       to: { value: resolved[token] ?? v.raw, token },
       kind: from.token ? 'swap' : 'attach',
+      ...(source ? { source } : {}),
     });
   };
   const detach = (t: Target) => {
@@ -427,6 +544,22 @@ const Design = ({
       <Controls storyId={storyId} frames={frames} />
     </details>
   );
+  // The tokens the token data lists for the code a traced value is read
+  // from, each with what it does to the look.
+  const suggestOf = (r: InspectRow, line?: SourceLine | 'pending') => {
+    if (!line || line === 'pending' || line.status !== 'traced') {
+      return undefined;
+    }
+    // Only a token the codemod can write: the line names one expression.
+    if (!line.legacyKey || !line.trace || !r.editable) return undefined;
+    const hex = /^[0-9A-F]{6}$/i.test(r.value.shown);
+    return suggestionsFor(
+      line.legacyKey,
+      r.snap === 'color' && hex ? `#${r.value.shown}` : r.value.raw,
+      meta,
+      (token) => resolved[token] ?? ''
+    );
+  };
   const field = (
     key: string,
     r: InspectRow,
@@ -435,7 +568,8 @@ const Design = ({
       commit: (typed: string, exact?: boolean) => boolean;
       attach: (token: TokenName) => void;
       detach: () => void;
-    }
+    },
+    line?: SourceLine | 'pending'
   ) => (
     <div
       key={key}
@@ -449,6 +583,10 @@ const Design = ({
         onAttach={on.attach}
         onDetach={on.detach}
         onOpenPicker={() => setPicker(picker === key ? undefined : key)}
+        source={line}
+        suggestions={suggestOf(r, line)}
+        onSelect={pick}
+        labelOf={labelOf}
       />
       {picker === key && (
         <TokenPicker
@@ -488,13 +626,32 @@ const Design = ({
         )
       }
     >
-      {s.rows.map((r) => {
+      {s.rows.map((plain) => {
+        const line = sourceOf(plain);
+        // A row is bound when the winning declaration reads a token, or the
+        // session's edit attached one.
+        const e = editOf(at(plain, s.label));
+        const token = e
+          ? e.to.token
+          : line && line !== 'pending'
+          ? (line.token as TokenName | undefined)
+          : undefined;
+        const r =
+          token === plain.value.token
+            ? plain
+            : { ...plain, value: { ...plain.value, token } };
         const t = at(r, s.label);
-        return field(`${s.id}:${r.id}`, r, t, {
-          commit: (typed, exact) => commit(t, typed, exact),
-          attach: (token) => bind(t, token),
-          detach: () => detach(t),
-        });
+        return field(
+          `${s.id}:${r.id}`,
+          r,
+          t,
+          {
+            commit: (typed, exact) => commit(t, typed, exact),
+            attach: (token) => bind(t, token),
+            detach: () => detach(t),
+          },
+          line
+        );
       })}
     </InspSection>
   );
@@ -530,6 +687,13 @@ const Design = ({
               <span className="wb-insp-layer-name">{labelOf(selected)}</span>
               <Icon name="chevron" size={14} />
             </button>
+            <SourceHead
+              trace={
+                trace && trace.el === selected && trace.key === longKey
+                  ? trace.t
+                  : undefined
+              }
+            />
             {ancestors && (
               <ul
                 className="wb-insp-ancestors"

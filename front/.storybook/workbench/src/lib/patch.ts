@@ -1,120 +1,69 @@
-// The exact line edit of one element edit, for the send script: the scan
-// finding the edit stands for, read in the file as GitHub has it now, with
-// the token written in. Undefined when the line is not plain enough to edit
-// without a person (a value over several lines, a spacing call site, a
-// colour built in code): that change goes as a task instead.
-import type { Finding } from './data';
+// The exact line edit of one element edit, for the send script: the
+// expression the trace points at (trace/codemod.ts), read in the file as
+// GitHub has it now, with the token written in. When the codemod cannot
+// prove the edit is only the token (the line moved, the range is not a whole
+// value), the change goes as a task instead, with the reason.
+import type { EditTrace, Parse } from './trace/codemod';
+import { lineEditOf } from './trace/codemod';
 import { Item, LineEdit, REPO, REVIEW_BASE, undoOfLineEdit } from './send';
 
 // What the page knows of an attached token before it reads the file: the
-// findings the edit can stand for and the words that pick among them.
+// traced expression it replaces.
 export type EditSource = {
-  // From front/, as the scan names files.
+  // From front/, as the index names files.
   file: string;
   story: string;
   subject: string;
   token: string;
-  candidates: Pick<Finding, 'line' | 'col' | 'raw' | 'category'>[];
-  words: string[];
+  trace: EditTrace;
 };
 
-// A legacy read inside a template's `${…}`, alone or as an arrow's body:
-// `${(props) => props.theme.borderRadius}`, `${({ theme }) => theme.x}`.
-const ARROW_HEAD =
-  /^\s*(?:\(\s*\w*\s*\)|\(\s*\{[^}]*\}\s*\)|\w+)?\s*(?:=>)?\s*$/;
-
-// Literals a token replaces in place: they only occur inside a string or a
-// template (`3px`, `#fff` and `white` are not code). An rgba() that reads a
-// value from code (`rgba(colors.x, 0.5)`) is code.
-const LITERAL = new Set<Finding['category']>([
-  'px',
-  'hex',
-  'rgba',
-  'named-color',
-]);
-
-const at = (src: string, raw: string, col: number) => {
-  const i = col - 1;
-  if (src.slice(i, i + raw.length) === raw) return i;
-  const first = src.indexOf(raw);
-  return first >= 0 && src.indexOf(raw, first + 1) < 0 ? first : -1;
+// @babel/parser, loaded only when a change is sent.
+export const loadParse = async (): Promise<Parse> => {
+  const { parse } = await import('@babel/parser');
+  return (code) =>
+    parse(code, {
+      sourceType: 'module',
+      plugins: ['typescript', 'jsx'],
+      tokens: true,
+    }) as unknown as ReturnType<Parse>;
 };
 
-export const lineEditOf = (
-  text: string,
-  f: Pick<Finding, 'line' | 'col' | 'raw' | 'category'>,
-  token: string
-): { line: number; old: string; new: string } | undefined => {
-  if (f.raw.includes('\n')) return undefined;
-  const src = text.split('\n')[f.line - 1];
-  if (src === undefined) return undefined;
-  const i = at(src, f.raw, f.col);
-  if (i < 0) return undefined;
-  const end = i + f.raw.length;
-  const read = `var(${token})`;
-  let next: string | undefined;
-  if (f.category.startsWith('legacy-')) {
-    const open = src.lastIndexOf('${', i);
-    const close = src.indexOf('}', end);
-    if (
-      open >= 0 &&
-      close >= 0 &&
-      ARROW_HEAD.test(src.slice(open + 2, i)) &&
-      src.slice(end, close).trim() === '' &&
-      !src.slice(open + 2, i).includes('}')
-    ) {
-      next = src.slice(0, open) + read + src.slice(close + 1);
-    } else {
-      next = `${src.slice(0, i)}'${read}'${src.slice(end)}`;
-    }
-  } else if (
-    LITERAL.has(f.category) &&
-    !(f.category === 'rgba' && /[A-Za-z_$][\w$]*\.[A-Za-z_$]/.test(f.raw))
-  ) {
-    next = src.slice(0, i) + read + src.slice(end);
-  }
-  return next === undefined || next === src
-    ? undefined
-    : { line: f.line, old: src, new: next };
-};
-
-// The line edit of one change: its one candidate, or the one whose line
-// names the edit's row when several render the same value.
+// The line edit of one change, or why a person makes it.
 export const lineEditFrom = (
   text: string,
-  s: EditSource
-): LineEdit | undefined => {
-  const lines = text.split('\n');
-  const picks =
-    s.candidates.length > 1
-      ? s.candidates.filter((f) =>
-          s.words.some((w) =>
-            (lines[f.line - 1] ?? '').toLowerCase().includes(w)
-          )
-        )
-      : s.candidates;
-  if (picks.length !== 1) return undefined;
-  const e = lineEditOf(text, picks[0], s.token);
-  return (
-    e && { subject: s.subject, story: s.story, file: `front/${s.file}`, ...e }
-  );
+  s: EditSource,
+  parse: Parse
+): LineEdit | { byHand: string } => {
+  const e = lineEditOf(text, s.trace, s.token, parse);
+  return 'byHand' in e
+    ? e
+    : { subject: s.subject, story: s.story, file: `front/${s.file}`, ...e };
 };
 
 // Items with their exact line edits, read from GitHub; an item whose line
-// cannot be found or edited plainly keeps its task.
-export const resolveItems = (
+// cannot be edited plainly keeps its task, with the reason after it.
+export const resolveItems = async (
   items: Item[],
-  load: (file: string) => Promise<string | undefined> = loadSource
-): Promise<Item[]> =>
-  Promise.all(
+  load: (file: string) => Promise<string | undefined> = loadSource,
+  parser: () => Promise<Parse> = loadParse
+): Promise<Item[]> => {
+  if (!items.some((i) => i.source)) return items;
+  const parse = await parser();
+  return Promise.all(
     items.map(async (i) => {
       if (!i.source) return i;
       const text = await load(i.source.file);
-      const edit =
-        text === undefined ? undefined : lineEditFrom(text, i.source);
-      return edit ? { ...i, edit, undo: undoOfLineEdit(edit) } : i;
+      if (text === undefined) {
+        return { ...i, task: `${i.task}\nby hand: GitHub did not answer` };
+      }
+      const edit = lineEditFrom(text, i.source, parse);
+      return 'byHand' in edit
+        ? { ...i, task: `${i.task}\nby hand: ${edit.byHand}` }
+        : { ...i, edit, undo: undoOfLineEdit(edit) };
     })
   );
+};
 
 // The file as the workbench branch has it now; `file` is from front/.
 export const rawUrl = (file: string, ref = REVIEW_BASE) =>

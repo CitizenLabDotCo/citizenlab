@@ -1,7 +1,6 @@
 import type { TokenMeta } from './data';
 import {
   atPath,
-  candidatesFor,
   choiceText,
   colourText,
   ColourUse,
@@ -10,7 +9,6 @@ import {
   fitsProp,
   groupColours,
   holdsText,
-  isCityToken,
   kindOf,
   labelOf,
   layerOf,
@@ -56,30 +54,6 @@ describe('varsOf', () => {
     expect(
       varsOf('var(--gv-a) var(--gv-b, var(--gv-c)) var(--gv-a) var(--other)')
     ).toEqual(['--gv-a', '--gv-b', '--gv-c']);
-  });
-});
-
-describe('candidatesFor', () => {
-  it('finds a longhand through its shorthand, the last declaration first', () => {
-    const decls: [string, string][] = [
-      ['padding', 'var(--gv-space-2)'],
-      ['padding-top', 'var(--gv-space-4)'],
-      ['color', 'var(--gv-text)'],
-    ];
-    expect(candidatesFor('padding-top', decls)).toEqual([
-      '--gv-space-4',
-      '--gv-space-2',
-    ]);
-    expect(candidatesFor('padding-left', decls)).toEqual(['--gv-space-2']);
-    expect(candidatesFor('background-color', decls)).toEqual([]);
-  });
-
-  it('reads the background shorthand for the fill', () => {
-    expect(
-      candidatesFor('background-color', [
-        ['background', 'var(--gv-tenant-primary)'],
-      ])
-    ).toEqual(['--gv-tenant-primary']);
   });
 });
 
@@ -247,18 +221,6 @@ describe('fitsProp', () => {
   });
 });
 
-describe('isCityToken', () => {
-  it('knows the tokens the theme carries per city', () => {
-    expect(isCityToken({ legacy: ['theme.colors.tenantPrimary'] })).toBe(true);
-    expect(
-      isCityToken({ legacy: ['theme.colors.tenantPrimaryLighten75'] })
-    ).toBe(true);
-    expect(isCityToken({ legacy: ['theme.fontFamily'] })).toBe(true);
-    expect(isCityToken({ legacy: ['theme.colors.grey800'] })).toBe(false);
-    expect(isCityToken({ legacy: [] })).toBe(false);
-  });
-});
-
 describe('holdsText', () => {
   const html = (markup: string) => {
     const box = document.createElement('div');
@@ -412,15 +374,10 @@ describe('stroke rows', () => {
 
 describe('groupColours', () => {
   const el = document.createElement('div');
-  const use = (
-    rowId: string,
-    raw: string,
-    token?: string,
-    link?: 'linked' | 'theme' | 'equal'
-  ): ColourUse => ({
+  const use = (rowId: string, raw: string, token?: string): ColourUse => ({
     el,
     rowId,
-    value: { raw, shown: colourText(raw), token: token as never, link },
+    value: { raw, shown: colourText(raw), token: token as never },
   });
 
   it('lists each colour once, the most used first', () => {
@@ -437,24 +394,10 @@ describe('groupColours', () => {
 
   it('groups a bound colour by its token, a plain one by its value', () => {
     const groups = groupColours([
-      use('fill', 'rgb(4, 136, 76)', '--gv-green-500', 'linked'),
+      use('fill', 'rgb(4, 136, 76)', '--gv-green-500'),
       use('color', 'rgb(4, 136, 76)'),
-      use('icon-fill', 'rgb(4, 136, 76)', '--gv-success', 'linked'),
+      use('icon-fill', 'rgb(4, 136, 76)', '--gv-success'),
     ]);
     expect(groups).toHaveLength(3);
-  });
-
-  it('keeps a suggested token only while every use equals it', () => {
-    const same = groupColours([
-      use('fill', 'rgb(1, 2, 3)', '--gv-a', 'equal'),
-      use('color', 'rgb(1, 2, 3)', '--gv-a', 'equal'),
-    ]);
-    expect(same[0].value.token).toBe('--gv-a');
-    const mixed = groupColours([
-      use('fill', 'rgb(1, 2, 3)', '--gv-a', 'equal'),
-      use('color', 'rgb(1, 2, 3)'),
-    ]);
-    expect(mixed[0].value.token).toBeUndefined();
-    expect(mixed[0].value.link).toBeUndefined();
   });
 });

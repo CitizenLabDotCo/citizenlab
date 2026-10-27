@@ -1,9 +1,8 @@
 import tokensMeta from '../../../../app/design-system/tokens/tokens.meta.json';
 
-import type { Finding, TokenMeta } from './data';
+import type { TokenMeta } from './data';
 import {
   applyElementEdits,
-  candidatesOf,
   changesLook,
   editId,
   ElementEdit,
@@ -12,8 +11,8 @@ import {
   subjectOfEdit,
   taskOfEdit,
   valueFits,
-  wordsOfEdit,
 } from './elementEdits';
+import type { EditTrace } from './trace/codemod';
 
 const meta = tokensMeta as TokenMeta[];
 
@@ -31,46 +30,33 @@ const base: ElementEdit = {
   at: 1,
 };
 
+const trace: EditTrace = {
+  commit: 'abc1234',
+  file: 'app/component-library/components/Button/index.tsx',
+  line: 344,
+  start: 9000,
+  end: 9024,
+  context: 'js',
+  lineText: '    props.theme.borderRadius;',
+  text: 'theme.borderRadius',
+};
+
 describe('element edits', () => {
-  it('finds the lines an attached token stands for, by literal or by the value a legacy read renders', () => {
+  it('names the commit by the traced code', () => {
     const radius: ElementEdit = {
       ...base,
       rowId: 'radius',
       label: 'Radius',
       from: { raw: '3px', shown: '3' },
-      to: { value: '4px', token: '--gv-radius-1' },
+      to: { value: '3px', token: '--gv-radius-control' },
+      source: trace,
     };
-    const f = (over: Partial<Finding>): Finding =>
-      ({
-        file: 'app/b.tsx',
-        line: 1,
-        col: 1,
-        raw: '3px',
-        category: 'px',
-        confidence: 'high',
-        ...over,
-      } as Finding);
-    const findings = [
-      f({ line: 2 }),
-      f({
-        line: 3,
-        raw: 'props.theme.borderRadius',
-        category: 'legacy-theme',
-        value: '3px',
-      }),
-      f({ line: 4, raw: '4px' }),
-      f({ line: 5, file: 'app/other.tsx' }),
-    ];
-    expect(
-      candidatesOf(radius, { file: 'app/b.tsx', findings }).map((x) => x.line)
-    ).toEqual([2, 3]);
-    expect(subjectOfEdit(radius, 'Button', true)).toBe(
-      'design-system(design): Button radius 3px \u2192 --gv-radius-1 [AI-assisted]'
+    expect(subjectOfEdit(radius, 'Button', false)).toBe(
+      'design-system(heal): Button radius theme.borderRadius \u2192 --gv-radius-control [AI-assisted]'
     );
     expect(subjectOfEdit(base, 'Button', false)).toBe(
       'design-system(heal): Button padding · vertical 9px \u2192 --gv-space-3 [AI-assisted]'
     );
-    expect(wordsOfEdit(base)).toEqual(['padding', 'vertical']);
   });
 
   it('builds a stable id', () => {
@@ -122,47 +108,40 @@ describe('element edits', () => {
     ).not.toThrow();
   });
 
-  it('formats an attach with a matching finding as a heal task', () => {
-    const f: Finding = {
-      file: 'app/component-library/components/Button/index.tsx',
-      line: 76,
-      col: 5,
-      raw: '9px',
-      category: 'px',
-      confidence: 'high',
-    };
-    const text = taskOfEdit(base, {
-      component: 'Button',
-      file: f.file,
-      storyId: 'button--default',
-      routes: ['admin'],
-      layer: 'button "Save changes"',
-      findings: [f],
-    });
+  it('formats a traced attach as a heal task at its line', () => {
+    const text = taskOfEdit(
+      { ...base, source: { ...trace, line: 121, text: "'9px 18px'" } },
+      {
+        component: 'Button',
+        file: trace.file,
+        storyId: 'button--default',
+        routes: ['admin'],
+        layer: 'button "Save changes"',
+      }
+    );
     expect(text).toBe(
-      'heal: Button · app/component-library/components/Button/index.tsx:76 · 9px → --gv-space-3\n' +
-        'why: px, scan confidence high\n' +
+      "heal: Button · app/component-library/components/Button/index.tsx:121 · '9px 18px' → --gv-space-3\n" +
+        'why: the workbench traced padding · vertical (button "Save changes") to this line\n' +
         'check: story button--default, routes /admin'
     );
   });
 
-  it('formats an attach without a finding and a custom change', () => {
+  it('formats an untraced attach and a custom change', () => {
     const ctx = {
       component: 'Button',
       file: 'f.tsx',
       storyId: 's',
       routes: [],
       layer: 'button "Save"',
-      findings: [],
     };
     expect(taskOfEdit(base, ctx)).toBe(
       'heal: Button · f.tsx · 9px → --gv-space-3\n' +
-        'why: hard-coded padding · vertical seen in the workbench (button "Save"), scan confidence low\n' +
+        'why: padding · vertical set in the workbench (button "Save"); not traced to a line, so find it by hand\n' +
         'check: story s, routes none'
     );
     // The Review page knows no layer: no empty brackets.
     expect(taskOfEdit(base, { ...ctx, layer: '' })).toContain(
-      'seen in the workbench, scan confidence low'
+      'set in the workbench; not traced'
     );
     expect(
       taskOfEdit({ ...base, kind: 'custom', to: { value: '11px' } }, ctx)
@@ -198,6 +177,15 @@ describe('element edits', () => {
       )
     ).toEqual([]);
     expect(parseStored('nonsense', meta)).toEqual([]);
+    expect(
+      parseStored(JSON.stringify([{ ...base, source: trace }]), meta)
+    ).toHaveLength(1);
+    expect(
+      parseStored(
+        JSON.stringify([{ ...base, source: { ...trace, file: '../x.ts' } }]),
+        meta
+      )
+    ).toEqual([]);
     expect(
       parseStored(
         JSON.stringify([

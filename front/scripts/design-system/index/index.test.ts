@@ -3,7 +3,7 @@ import os from 'os';
 import path from 'path';
 
 import { fnv1a32 } from './hash';
-import { buildIndex, isIndexedSource, writeIndex } from './index';
+import { BLANK_KEY, buildIndex, isIndexedSource, writeIndex } from './index';
 import {
   IndexFiles,
   IndexLookup,
@@ -100,15 +100,17 @@ describe('ds:index', () => {
       q.length > a.length ? q : a
     );
     expect(lookup[fnv1a32(longest as string)]).toContain(string?.id);
-    Object.values(lookup).forEach((ids) => {
+    const { [BLANK_KEY]: blank = [], ...hashed } = lookup;
+    Object.values(hashed).forEach((ids) => {
       expect(ids.length).toBeLessThanOrEqual(20);
       expect(ids).toEqual([...ids].sort());
     });
+    expect(blank).toEqual([...blank].sort());
     // Sorted in the file (a parsed object lists index-like keys first).
     const text = fs.readFileSync(path.join(dirs[0], 'lookup.json'), 'utf8');
     const keys = [...text.matchAll(/"([0-9a-f]{8})":/g)].map((m) => m[1]);
     expect(keys).toEqual([...keys].sort());
-    expect(keys).toHaveLength(Object.keys(lookup).length);
+    expect(keys).toHaveLength(Object.keys(hashed).length);
   });
 
   it('writes files.json with the design counts of Button', () => {

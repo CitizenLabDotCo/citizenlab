@@ -1,35 +1,25 @@
 // What the Design panel shows for the element selected on the canvas: its
 // rendered properties grouped like Figma's inspector for its kind of layer
 // (Layout, Appearance, Typography, Fill, Stroke, Effects, and the Selection
-// colours of what it holds), and for each value the token it comes from. A value is `linked` when a style rule (or inline style) that
-// applies to the element names the token for that property and the token
-// resolves to the rendered value; `theme` when the value equals a city token
-// (tenant colours, the font) the component reads through the styled theme,
-// which hands it the same city value as a literal; `equal` when no rule names
-// it but the rendered value equals a token (a hard-coded value that happens to
-// match); otherwise it is a plain value.
+// colours of what it holds). Every value is the browser's computed one.
+// Where a value comes from is not read here: lib/trace follows the rule that
+// wins in the cascade back to the line of code that writes it, and a row
+// shows a token only when that rule's value reads var(--gv-…). Nothing is
+// matched by value.
 import type { TokenName } from '@ds/tokens/tokens';
 
 import type { IconName } from '../components/Icon';
 
 import type { TokenMeta } from './data';
 
-export type Link = 'linked' | 'theme' | 'equal';
-
-// Tokens the styled theme also carries per city (theme.colors.tenant*,
-// theme.fontFamily). A rendered value equal to one comes from the city.
-export const isCityToken = (t: Pick<TokenMeta, 'legacy'>) =>
-  (t.legacy ?? []).some((k) =>
-    /^theme\.(colors\.tenant\w*|fontFamily)$/.test(k)
-  );
-
 export type InspectValue = {
   // The computed value as the browser writes it.
   raw: string;
   // How it reads in the panel (FDFDFD, 12, Public Sans).
   shown: string;
+  // The token the winning declaration reads (var(--gv-…)), from the trace,
+  // or the one the session's edit attached.
   token?: TokenName;
-  link?: Link;
   // A colour to draw as a swatch.
   swatch?: string;
 };
@@ -196,22 +186,6 @@ for (const side of SIDES) {
   }
 }
 
-// Token names the declarations offer for a longhand, nearest last (a later
-// declaration wins in the cascade, so its names are tried first).
-export const candidatesFor = (
-  longhand: string,
-  decls: [string, string][]
-): TokenName[] => {
-  const family = FAMILY[longhand] ?? [longhand];
-  const out: TokenName[] = [];
-  for (let i = decls.length - 1; i >= 0; i--) {
-    const [prop, value] = decls[i];
-    if (!family.includes(prop)) continue;
-    for (const name of varsOf(value)) if (!out.includes(name)) out.push(name);
-  }
-  return out;
-};
-
 // ------------------------------------------------------------ formatting
 
 const RGB =
@@ -262,55 +236,6 @@ export const shortName = (name: string) => name.replace(/^--gv-/, '');
 
 // ------------------------------------------------------------ reading
 
-type RuleDecls = { selector: string; decls: [string, string][] };
-
-const MAX_RULES = 20000;
-
-// Style rules that name a --gv- token, with their declarations.
-const tokenRules = (doc: Document): RuleDecls[] => {
-  const out: RuleDecls[] = [];
-  let seen = 0;
-  const walk = (rules: CSSRuleList) => {
-    for (let i = 0; i < rules.length && seen < MAX_RULES; i++) {
-      seen++;
-      const rule = rules[i] as CSSStyleRule & { cssRules?: CSSRuleList };
-      if (rule.selectorText !== undefined) {
-        const text = rule.style?.cssText ?? '';
-        if (text.includes('var(--gv-')) {
-          out.push({ selector: rule.selectorText, decls: declarations(text) });
-        }
-      }
-      if (rule.cssRules) walk(rule.cssRules);
-    }
-  };
-  for (const sheet of Array.from(doc.styleSheets)) {
-    try {
-      walk(sheet.cssRules);
-    } catch {
-      // A cross-origin sheet throws on cssRules; skip it.
-    }
-  }
-  return out;
-};
-
-const matches = (el: Element, selector: string) => {
-  try {
-    return el.matches(selector);
-  } catch {
-    // A pseudo-element selector (::before) does not apply to the element.
-    return false;
-  }
-};
-
-// Declarations that apply to the element, in cascade order as far as source
-// order goes (rules first, the inline style last).
-const declsOf = (el: Element, rules: RuleDecls[]): [string, string][] => {
-  const out: [string, string][] = [];
-  for (const r of rules) if (matches(el, r.selector)) out.push(...r.decls);
-  out.push(...declarations(el.getAttribute('style') ?? ''));
-  return out;
-};
-
 // Which token categories may stand for a longhand.
 const CATEGORY: Record<string, (t: TokenMeta) => boolean> = {
   'background-color': (t) => t.category === 'color',
@@ -345,66 +270,18 @@ for (const side of SIDES) {
 // The token categories that fit a longhand (the picker's filter).
 export const fitsProp = (prop: string) => CATEGORY[prop];
 
-// Resolves tokens through a hidden probe the way the browser computes the
-// property, cached per call of inspectElement.
-const resolver = (doc: Document, parent: Element) => {
-  const win = doc.defaultView;
-  const probe = doc.createElement('div');
-  probe.style.cssText =
-    'position:absolute;visibility:hidden;pointer-events:none;border-style:solid';
-  parent.appendChild(probe);
-  const cache = new Map<string, string>();
-  const resolve = (prop: string, name: string) => {
-    const key = `${prop}|${name}`;
-    let v = cache.get(key);
-    if (v === undefined) {
-      probe.style.setProperty(prop, `var(${name})`);
-      v = win?.getComputedStyle(probe).getPropertyValue(prop).trim() ?? '';
-      probe.style.removeProperty(prop);
-      cache.set(key, v);
-    }
-    return v;
-  };
-  return { resolve, done: () => probe.remove() };
-};
-
 const NEUTRAL = new Set(['', 'none', 'normal', 'auto']);
 
-// The rendered property of the element and its token.
+// The rendered property of the element, as the browser computes it.
 const valueOf = (
   prop: string,
   cs: CSSStyleDeclaration,
-  decls: [string, string][],
-  meta: TokenMeta[],
-  resolve: (prop: string, name: string) => string,
   format: (v: string) => string
 ): InspectValue => {
   const raw = cs.getPropertyValue(prop).trim();
   const out: InspectValue = { raw, shown: format(raw) };
   if (/color$|^fill$|^stroke$/.test(prop) && !isTransparent(raw)) {
     out.swatch = raw;
-  }
-  if (NEUTRAL.has(raw)) return out;
-  for (const name of candidatesFor(prop, decls)) {
-    if (resolve(prop, name) === raw)
-      return { ...out, token: name, link: 'linked' };
-  }
-  const fits = CATEGORY[prop];
-  if (!fits) return out;
-  for (const t of meta) {
-    if (t.deprecated || !fits(t) || !isCityToken(t)) continue;
-    if (resolve(prop, t.name) === raw) {
-      return { ...out, token: t.name as TokenName, link: 'theme' };
-    }
-  }
-  // Scale tokens first: a value that equals both a role and a scale step
-  // reads as the step.
-  const ordered = [...meta].sort((a, b) => a.tier - b.tier);
-  for (const t of ordered) {
-    if (t.deprecated || !fits(t)) continue;
-    if (resolve(prop, t.name) === raw) {
-      return { ...out, token: t.name as TokenName, link: 'equal' };
-    }
   }
   return out;
 };
@@ -528,14 +405,14 @@ const SPECS: Record<string, Spec> = {
     snap: 'color',
   },
   'stroke-color': {
-    props: ['border-color'],
+    props: SIDES.map((side) => `border-${side}-color`),
     glyph: 'stroke',
     half: true,
     editable: true,
     snap: 'color',
   },
   'stroke-width': {
-    props: ['border-width'],
+    props: SIDES.map((side) => `border-${side}-width`),
     glyph: 'stroke-width',
     half: true,
     editable: true,
@@ -815,25 +692,15 @@ const flatColour = (raw: string) => raw.replace(/\s+/g, '').toLowerCase();
 
 // The selection's colours, each once (Figma's Selection colors): a colour
 // bound to a token by its token, any other by its value, most used first.
-// A suggested token stays only while every use of the value equals it.
 export const groupColours = (uses: ColourUse[]): ColourGroup[] => {
   const groups = new Map<string, ColourGroup>();
   for (const u of uses) {
-    const bound =
-      (u.value.link === 'linked' || u.value.link === 'theme') &&
-      !!u.value.token;
-    const key = bound
+    const key = u.value.token
       ? `token:${u.value.token}`
       : `value:${flatColour(u.value.raw)}`;
     const g = groups.get(key);
-    if (!g) {
-      groups.set(key, { key, value: u.value, uses: [u] });
-      continue;
-    }
-    g.uses.push(u);
-    if (!bound && g.value.token && g.value.token !== u.value.token) {
-      g.value = { ...g.value, token: undefined, link: undefined };
-    }
+    if (g) g.uses.push(u);
+    else groups.set(key, { key, value: u.value, uses: [u] });
   }
   return [...groups.values()].sort((a, b) => b.uses.length - a.uses.length);
 };
@@ -864,7 +731,11 @@ const borderRows = (
     a.raw === b.raw && a.token === b.token;
   const out: InspectRow[] = [];
   if (on.every((i) => same(colours[i], colours[on[0]]))) {
-    out.push(row('stroke-color', 'Colour', colours[on[0]]));
+    // The sides that draw: a hidden side's colour is not this one.
+    out.push({
+      ...row('stroke-color', 'Colour', colours[on[0]]),
+      props: on.map((i) => `border-${SIDES[i]}-color`),
+    });
   } else {
     for (const i of on) {
       out.push(row(`stroke-color-${i}`, `${SIDE_WORDS[i]} colour`, colours[i]));
@@ -901,295 +772,254 @@ const ADDED = {
 // in the frame).
 export const inspectElement = (
   el: Element,
-  meta: TokenMeta[],
   available: (family: string) => boolean = () => true
 ): Inspection | null => {
   const doc = el.ownerDocument;
   const win = doc.defaultView;
   if (!win) return null;
   const cs = win.getComputedStyle(el);
-  const rules = tokenRules(doc);
-  const decls = declsOf(el, rules);
-  const { resolve, done } = resolver(doc, el.parentElement ?? doc.body);
-  try {
-    const v = (prop: string, format: (s: string) => string = pxText) =>
-      valueOf(prop, cs, decls, meta, resolve, format);
-    const look = (prop: string) => cs.getPropertyValue(prop).trim();
-    const kind = kindOf(el, look);
-    // A box, a field and an image are frames: radius, stroke, shadow.
-    const framed = kind === 'box' || kind === 'field' || kind === 'image';
-    const text =
-      kind === 'text' ||
-      ((kind === 'box' || kind === 'field') && holdsText(el));
-    const sections: InspectSection[] = [];
+  const v = (prop: string, format: (s: string) => string = pxText) =>
+    valueOf(prop, cs, format);
+  const look = (prop: string) => cs.getPropertyValue(prop).trim();
+  const kind = kindOf(el, look);
+  // A box, a field and an image are frames: radius, stroke, shadow.
+  const framed = kind === 'box' || kind === 'field' || kind === 'image';
+  const text =
+    kind === 'text' || ((kind === 'box' || kind === 'field') && holdsText(el));
+  const sections: InspectSection[] = [];
 
-    // Layout: Figma's Auto layout for a flex or grid box (direction, size,
-    // alignment, gap, padding), the size otherwise.
-    const rect = el.getBoundingClientRect();
-    const sizeRow = (id: 'w' | 'h', n: number): InspectRow =>
-      row(id, id === 'w' ? 'Width' : 'Height', {
-        raw: `${n}px`,
-        shown: String(Math.round(n)),
-      });
-    const display = look('display');
-    const flex = /flex/.test(display);
-    const auto = flex || /grid/.test(display);
-    const choice = (id: string) => (s: string) => choiceText(id, s);
-    const layout: InspectRow[] = [];
-    if (flex) {
-      layout.push(
-        row('direction', 'Direction', v('flex-direction', choice('direction'))),
-        row('wrap', 'Wrap', v('flex-wrap', choice('wrap')))
-      );
-    }
-    layout.push(sizeRow('w', rect.width), sizeRow('h', rect.height));
-    if (flex) {
-      layout.push(
-        row('align', 'Align', v('align-items', choice('align'))),
-        row('justify', 'Justify', v('justify-content', choice('justify')))
-      );
-    }
-    if (auto) {
-      const gapText = (s: string) => (s === 'normal' ? '0' : pxText(s));
-      const rowGap = v('row-gap', gapText);
-      const colGap = v('column-gap', gapText);
-      layout.push(
-        ...(rowGap.raw === colGap.raw
-          ? [row('gap', 'Gap', rowGap)]
-          : [row('gap-row', 'Rows', rowGap), row('gap-col', 'Columns', colGap)])
-      );
-    }
-    if (framed) {
-      const padding = sides(
-        'padding',
-        P.map((p) => v(p)),
-        ['Top', 'Right', 'Bottom', 'Left'],
-        ['Vertical', 'Horizontal'],
-        'Padding'
-      );
-      if (auto || padding.some((r) => r.value.raw !== '0px')) {
-        layout.push(...padding);
-      }
-    }
-    sections.push({
-      id: 'layout',
-      label: auto ? 'Auto layout' : 'Layout',
-      rows: layout,
+  // Layout: Figma's Auto layout for a flex or grid box (direction, size,
+  // alignment, gap, padding), the size otherwise.
+  const rect = el.getBoundingClientRect();
+  const sizeRow = (id: 'w' | 'h', n: number): InspectRow =>
+    row(id, id === 'w' ? 'Width' : 'Height', {
+      raw: `${n}px`,
+      shown: String(Math.round(n)),
     });
-
-    // Appearance: opacity for every layer, the corner radius for a frame.
-    const appearance = [row('opacity', 'Opacity', v('opacity', opacityText))];
-    if (framed) {
-      appearance.push(
-        ...sides(
-          'radius',
-          R.map((r) => v(r)),
-          ['Top left', 'Top right', 'Bottom right', 'Bottom left'],
-          ['Top left, bottom right', 'Top right, bottom left'],
-          'Radius'
-        )
-      );
+  const display = look('display');
+  const flex = /flex/.test(display);
+  const auto = flex || /grid/.test(display);
+  const choice = (id: string) => (s: string) => choiceText(id, s);
+  const layout: InspectRow[] = [];
+  if (flex) {
+    layout.push(
+      row('direction', 'Direction', v('flex-direction', choice('direction'))),
+      row('wrap', 'Wrap', v('flex-wrap', choice('wrap')))
+    );
+  }
+  layout.push(sizeRow('w', rect.width), sizeRow('h', rect.height));
+  if (flex) {
+    layout.push(
+      row('align', 'Align', v('align-items', choice('align'))),
+      row('justify', 'Justify', v('justify-content', choice('justify')))
+    );
+  }
+  if (auto) {
+    const gapText = (s: string) => (s === 'normal' ? '0' : pxText(s));
+    const rowGap = v('row-gap', gapText);
+    const colGap = v('column-gap', gapText);
+    layout.push(
+      ...(rowGap.raw === colGap.raw
+        ? [row('gap', 'Gap', rowGap)]
+        : [row('gap-row', 'Rows', rowGap), row('gap-col', 'Columns', colGap)])
+    );
+  }
+  if (framed) {
+    const padding = sides(
+      'padding',
+      P.map((p) => v(p)),
+      ['Top', 'Right', 'Bottom', 'Left'],
+      ['Vertical', 'Horizontal'],
+      'Padding'
+    );
+    if (auto || padding.some((r) => r.value.raw !== '0px')) {
+      layout.push(...padding);
     }
-    sections.push({ id: 'appearance', label: 'Appearance', rows: appearance });
+  }
+  sections.push({
+    id: 'layout',
+    label: auto ? 'Auto layout' : 'Layout',
+    rows: layout,
+  });
 
-    // Typography, for a layer that holds text; its colour is a Fill.
-    if (text) {
-      const family = v('font-family', (s) => shownFamily(s, available));
-      // A family token holds a stack, which the rendered value starts with
-      // (the rule may add fallbacks after it).
-      if (!family.token) {
-        const named = candidatesFor('font-family', decls);
-        const stacks = meta.filter((t) => t.type === 'fontFamily');
-        const starts = (name: string) => {
-          const stack = resolve('font-family', name);
-          return !!stack && family.raw.startsWith(stack);
-        };
-        const linked = named.find(starts);
-        const equal = linked ? undefined : stacks.find((t) => starts(t.name));
-        const city = linked
-          ? undefined
-          : stacks.find((t) => isCityToken(t) && starts(t.name));
-        if (linked) Object.assign(family, { token: linked, link: 'linked' });
-        else if (city) {
-          Object.assign(family, { token: city.name, link: 'theme' });
-        } else if (equal) {
-          Object.assign(family, { token: equal.name, link: 'equal' });
-        }
-      }
-      const type = [
-        row('family', 'Font', family),
-        row('weight', 'Weight', v('font-weight')),
-        row('size', 'Size', v('font-size')),
-        row('lh', 'Line height', v('line-height')),
-      ];
-      const ls = v('letter-spacing');
-      if (!NEUTRAL.has(ls.raw)) type.push(row('ls', 'Letter spacing', ls));
-      type.push(
-        row('text-align', 'Align', v('text-align', choice('text-align')))
-      );
-      sections.push({ id: 'typography', label: 'Typography', rows: type });
+  // Appearance: opacity for every layer, the corner radius for a frame.
+  const appearance = [row('opacity', 'Opacity', v('opacity', opacityText))];
+  if (framed) {
+    appearance.push(
+      ...sides(
+        'radius',
+        R.map((r) => v(r)),
+        ['Top left', 'Top right', 'Bottom right', 'Bottom left'],
+        ['Top left, bottom right', 'Top right, bottom left'],
+        'Radius'
+      )
+    );
+  }
+  sections.push({ id: 'appearance', label: 'Appearance', rows: appearance });
+
+  // Typography, for a layer that holds text; its colour is a Fill.
+  if (text) {
+    const family = v('font-family', (s) => shownFamily(s, available));
+    const type = [
+      row('family', 'Font', family),
+      row('weight', 'Weight', v('font-weight')),
+      row('size', 'Size', v('font-size')),
+      row('lh', 'Line height', v('line-height')),
+    ];
+    const ls = v('letter-spacing');
+    if (!NEUTRAL.has(ls.raw)) type.push(row('ls', 'Letter spacing', ls));
+    type.push(
+      row('text-align', 'Align', v('text-align', choice('text-align')))
+    );
+    sections.push({ id: 'typography', label: 'Typography', rows: type });
+  }
+
+  // Fill: a text layer's is its colour; a frame's its background, and
+  // the colour of its text when it holds some; an icon's its own paint.
+  const paint = (prop: string) => {
+    const p = v(prop, colourText);
+    return p.raw === 'none' || isTransparent(p.raw) ? undefined : p;
+  };
+  const bg = v('background-color', colourText);
+  const hasBg = !isTransparent(bg.raw);
+  const fills: InspectRow[] = [];
+  let addFill: SectionAdd | undefined;
+  if (kind === 'text') {
+    fills.push(row('color', 'Fill', v('color', colourText)));
+  } else if (kind === 'icon') {
+    const own = paint('fill');
+    if (own) fills.push(row('icon-fill', 'Fill', own));
+    else {
+      addFill = {
+        rowId: 'icon-fill',
+        label: 'Add fill',
+        from: look('fill'),
+        value: ADDED.paint,
+      };
     }
+    if (hasBg) fills.push(row('fill', 'Background', bg));
+  } else {
+    if (kind === 'image') {
+      fills.push(row('image', 'Image', { raw: 'image', shown: 'Image' }));
+    }
+    if (hasBg) {
+      fills.push(
+        row('fill', text || kind === 'image' ? 'Background' : 'Fill', bg)
+      );
+    } else if (kind !== 'image') {
+      addFill = {
+        rowId: 'fill',
+        label: text ? 'Add background' : 'Add fill',
+        from: bg.raw,
+        value: ADDED.fill,
+      };
+    }
+    if (text) fills.push(row('color', 'Text', v('color', colourText)));
+  }
+  sections.push({ id: 'fill', label: 'Fill', rows: fills, add: addFill });
 
-    // Fill: a text layer's is its colour; a frame's its background, and
-    // the colour of its text when it holds some; an icon's its own paint.
-    const paint = (prop: string) => {
-      const p = v(prop, colourText);
-      return p.raw === 'none' || isTransparent(p.raw) ? undefined : p;
-    };
-    const bg = v('background-color', colourText);
-    const hasBg = !isTransparent(bg.raw);
-    const fills: InspectRow[] = [];
-    let addFill: SectionAdd | undefined;
-    if (kind === 'text') {
-      fills.push(row('color', 'Fill', v('color', colourText)));
-    } else if (kind === 'icon') {
-      const own = paint('fill');
-      if (own) fills.push(row('icon-fill', 'Fill', own));
-      else {
-        addFill = {
-          rowId: 'icon-fill',
-          label: 'Add fill',
-          from: look('fill'),
+  // Stroke: every side of a frame's border; an icon's own stroke.
+  if (kind !== 'text') {
+    const strokes = borderRows(v, look);
+    let addStroke: SectionAdd | undefined;
+    if (kind === 'icon') {
+      const own = paint('stroke');
+      if (own) {
+        strokes.push(
+          row('icon-stroke', 'Colour', own),
+          row('icon-stroke-width', 'Width', v('stroke-width'))
+        );
+      } else if (strokes.length === 0) {
+        addStroke = {
+          rowId: 'icon-stroke',
+          label: 'Add stroke',
+          from: look('stroke'),
           value: ADDED.paint,
         };
       }
-      if (hasBg) fills.push(row('fill', 'Background', bg));
-    } else {
-      if (kind === 'image') {
-        fills.push(row('image', 'Image', { raw: 'image', shown: 'Image' }));
-      }
-      if (hasBg) {
-        fills.push(
-          row('fill', text || kind === 'image' ? 'Background' : 'Fill', bg)
-        );
-      } else if (kind !== 'image') {
-        addFill = {
-          rowId: 'fill',
-          label: text ? 'Add background' : 'Add fill',
-          from: bg.raw,
-          value: ADDED.fill,
-        };
-      }
-      if (text) fills.push(row('color', 'Text', v('color', colourText)));
+    } else if (strokes.length === 0) {
+      addStroke = {
+        rowId: 'stroke',
+        label: 'Add stroke',
+        from: look('border') || 'none',
+        value: ADDED.stroke,
+      };
     }
-    sections.push({ id: 'fill', label: 'Fill', rows: fills, add: addFill });
-
-    // Stroke: every side of a frame's border; an icon's own stroke.
-    if (kind !== 'text') {
-      const strokes = borderRows(v, look);
-      let addStroke: SectionAdd | undefined;
-      if (kind === 'icon') {
-        const own = paint('stroke');
-        if (own) {
-          strokes.push(
-            row('icon-stroke', 'Colour', own),
-            row('icon-stroke-width', 'Width', v('stroke-width'))
-          );
-        } else if (strokes.length === 0) {
-          addStroke = {
-            rowId: 'icon-stroke',
-            label: 'Add stroke',
-            from: look('stroke'),
-            value: ADDED.paint,
-          };
-        }
-      } else if (strokes.length === 0) {
-        addStroke = {
-          rowId: 'stroke',
-          label: 'Add stroke',
-          from: look('border') || 'none',
-          value: ADDED.stroke,
-        };
-      }
-      sections.push({
-        id: 'stroke',
-        label: 'Stroke',
-        rows: strokes,
-        add: addStroke,
-      });
-    }
-
-    // Effects: a frame's shadow, or a "+" for one.
-    const shadow = v('box-shadow', (s) => (s === 'none' ? 'None' : 'Shadow'));
-    if (shadow.raw !== 'none' || framed) {
-      sections.push({
-        id: 'effects',
-        label: 'Effects',
-        rows:
-          shadow.raw !== 'none' ? [row('shadow', 'Drop shadow', shadow)] : [],
-        add:
-          shadow.raw === 'none'
-            ? {
-                rowId: 'shadow',
-                label: 'Add shadow',
-                from: 'none',
-                value: ADDED.shadow,
-              }
-            : undefined,
-      });
-    }
-
-    // Selection colours: the layer's own and those of what it holds. Text
-    // of its own is a layer it holds, as a frame holds a text layer.
-    const uses: ColourUse[] = [];
-    if (el.children.length > 0 || (text && kind !== 'text')) {
-      const all = [el, ...Array.from(el.querySelectorAll('*'))].slice(
-        0,
-        MAX_LAYERS
-      );
-      for (const e of all) {
-        const c = e === el ? cs : win.getComputedStyle(e);
-        if (c.display === 'none' || c.visibility === 'hidden') continue;
-        let d: [string, string][] | undefined;
-        const val = (prop: string) =>
-          valueOf(
-            prop,
-            c,
-            (d = d ?? declsOf(e, rules)),
-            meta,
-            resolve,
-            colourText
-          );
-        const at = (rowId: string, value: InspectValue) =>
-          uses.push({ el: e, rowId, value });
-        if (e.namespaceURI === SVG) {
-          if (!SVG_PAINTS.test(e.localName)) continue;
-          // A shape painted as its parent is (an icon's paths) is the
-          // parent's colour, not one more.
-          const parent =
-            e.localName === 'svg' || !e.parentElement
-              ? undefined
-              : win.getComputedStyle(e.parentElement);
-          for (const [prop, rowId] of [
-            ['fill', 'icon-fill'],
-            ['stroke', 'icon-stroke'],
-          ]) {
-            const raw = c.getPropertyValue(prop).trim();
-            if (raw === 'none' || isTransparent(raw)) continue;
-            if (parent && parent.getPropertyValue(prop).trim() === raw)
-              continue;
-            at(rowId, val(prop));
-          }
-          continue;
-        }
-        if (!isTransparent(c.backgroundColor)) {
-          at('fill', val('background-color'));
-        }
-        if (holdsText(e)) at('color', val('color'));
-        const elLook = (prop: string) => c.getPropertyValue(prop).trim();
-        for (const r of borderRows((prop) => val(prop), elLook)) {
-          if (r.snap === 'color') at(r.id, r.value);
-        }
-      }
-    }
-    const colours = uses.some((u) => u.el !== el || u.rowId === 'color')
-      ? groupColours(uses)
-      : [];
-
-    return { label: labelOf(el), kind, sections, colours };
-  } finally {
-    done();
+    sections.push({
+      id: 'stroke',
+      label: 'Stroke',
+      rows: strokes,
+      add: addStroke,
+    });
   }
+
+  // Effects: a frame's shadow, or a "+" for one.
+  const shadow = v('box-shadow', (s) => (s === 'none' ? 'None' : 'Shadow'));
+  if (shadow.raw !== 'none' || framed) {
+    sections.push({
+      id: 'effects',
+      label: 'Effects',
+      rows: shadow.raw !== 'none' ? [row('shadow', 'Drop shadow', shadow)] : [],
+      add:
+        shadow.raw === 'none'
+          ? {
+              rowId: 'shadow',
+              label: 'Add shadow',
+              from: 'none',
+              value: ADDED.shadow,
+            }
+          : undefined,
+    });
+  }
+
+  // Selection colours: the layer's own and those of what it holds. Text
+  // of its own is a layer it holds, as a frame holds a text layer.
+  const uses: ColourUse[] = [];
+  if (el.children.length > 0 || (text && kind !== 'text')) {
+    const all = [el, ...Array.from(el.querySelectorAll('*'))].slice(
+      0,
+      MAX_LAYERS
+    );
+    for (const e of all) {
+      const c = e === el ? cs : win.getComputedStyle(e);
+      if (c.display === 'none' || c.visibility === 'hidden') continue;
+      const val = (prop: string) => valueOf(prop, c, colourText);
+      const at = (rowId: string, value: InspectValue) =>
+        uses.push({ el: e, rowId, value });
+      if (e.namespaceURI === SVG) {
+        if (!SVG_PAINTS.test(e.localName)) continue;
+        // A shape painted as its parent is (an icon's paths) is the
+        // parent's colour, not one more.
+        const parent =
+          e.localName === 'svg' || !e.parentElement
+            ? undefined
+            : win.getComputedStyle(e.parentElement);
+        for (const [prop, rowId] of [
+          ['fill', 'icon-fill'],
+          ['stroke', 'icon-stroke'],
+        ]) {
+          const raw = c.getPropertyValue(prop).trim();
+          if (raw === 'none' || isTransparent(raw)) continue;
+          if (parent && parent.getPropertyValue(prop).trim() === raw) continue;
+          at(rowId, val(prop));
+        }
+        continue;
+      }
+      if (!isTransparent(c.backgroundColor)) {
+        at('fill', val('background-color'));
+      }
+      if (holdsText(e)) at('color', val('color'));
+      const elLook = (prop: string) => c.getPropertyValue(prop).trim();
+      for (const r of borderRows((prop) => val(prop), elLook)) {
+        if (r.snap === 'color') at(r.id, r.value);
+      }
+    }
+  }
+  const colours = uses.some((u) => u.el !== el || u.rowId === 'color')
+    ? groupColours(uses)
+    : [];
+
+  return { label: labelOf(el), kind, sections, colours };
 };
 
 // ------------------------------------------------------------ layers

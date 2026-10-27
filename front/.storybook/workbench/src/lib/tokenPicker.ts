@@ -11,8 +11,10 @@ export type PickerGroup = {
   tokens: TokenMeta[];
 };
 
+// Nearest tokens: those whose value equals the field's. Inside the picker
+// only; a value is never bound to one because it is equal.
 const LABEL = {
-  match: 'Matches',
+  match: 'Nearest tokens',
   semantic: 'Semantic',
   scale: 'Scale',
   results: 'Results',

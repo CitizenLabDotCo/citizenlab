@@ -2284,6 +2284,13 @@ tr:hover .wb-pv-motion > span,
   background: var(--wb-bg);
 }
 
+.wb-chip-no-styles,
+.wb-chip-no-file,
+.wb-chip-no-index {
+  color: var(--wb-muted);
+  background: var(--wb-bg);
+}
+
 .wb-chip-nostory {
   color: var(--wb-muted);
   background: var(--wb-bg);
@@ -5594,4 +5601,93 @@ a.wb-vf-body:focus-visible .wb-vf-open {
 .wb-about-numbers dd:first-of-type {
   font-size: var(--gv-fs-xl);
   font-weight: 600;
+}
+
+/* Where the code writes a Design tab value: one small line under it. */
+.wb-vf-source {
+  min-height: 14px;
+  margin-top: 2px;
+  font-size: 11px;
+  line-height: 14px;
+  color: var(--wb-muted);
+  overflow-wrap: anywhere;
+}
+.wb-vf-source code {
+  font-family: var(--wb-mono);
+  font-size: 10.5px;
+  color: var(--wb-text);
+}
+.wb-vf-source a {
+  font-family: var(--wb-mono);
+  font-size: 10.5px;
+  color: var(--wb-accent-text);
+  text-decoration: none;
+}
+.wb-vf-source a:hover {
+  text-decoration: underline;
+}
+.wb-vf-untraced {
+  padding-left: 6px;
+  box-shadow: inset 2px 0 0 var(--wb-warn);
+}
+.wb-vf-untraced span {
+  color: var(--wb-text);
+}
+.wb-vf-source-from {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--wb-accent-text);
+  cursor: pointer;
+}
+.wb-vf-suggest {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.wb-vf-suggest button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 3px 6px;
+  border: 1px dashed var(--wb-border);
+  border-radius: 4px;
+  background: none;
+  font-size: 11px;
+  color: var(--wb-text);
+  text-align: left;
+  cursor: pointer;
+}
+.wb-vf-suggest button:hover {
+  background: var(--wb-accent-soft);
+}
+.wb-vf-suggest code {
+  font-family: var(--wb-mono);
+  font-size: 10.5px;
+}
+.wb-vf-changes {
+  font-weight: 600;
+  color: var(--wb-text);
+}
+.wb-insp-source-head {
+  margin: 6px 0 0;
+  font-size: 11px;
+  color: var(--wb-muted);
+}
+.wb-insp-source-head code,
+.wb-insp-source-head a {
+  font-family: var(--wb-mono);
+  font-size: 10.5px;
+}
+.wb-insp-source-head code {
+  color: var(--wb-text);
+}
+.wb-insp-source-head a {
+  color: var(--wb-accent-text);
+  text-decoration: none;
 }

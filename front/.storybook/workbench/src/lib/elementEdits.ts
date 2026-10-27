@@ -6,10 +6,11 @@ import type { TokenName } from '@ds/tokens/tokens';
 
 import type { IconName } from '../components/Icon';
 
-import type { Finding, TokenMeta } from './data';
-import { formatHealTask, MAX_TASK_ROUTES, routeLabel } from './healTask';
+import type { TokenMeta } from './data';
+import { MAX_TASK_ROUTES, routeLabel } from './healTask';
 import { atPath, rowSpec } from './inspect';
 import { parseColour } from './overrides';
+import type { EditTrace } from './trace/codemod';
 
 export type EditKind = 'attach' | 'swap' | 'detach' | 'custom' | 'file';
 
@@ -30,7 +31,10 @@ export type ElementEdit = {
   // `value`: the literal, or the token's resolved value.
   to: { value: string; token?: TokenName };
   kind: EditKind;
-  // From the scan finding, when one matched.
+  // A token attached to traced code: where the codemod writes it (the
+  // trace's editable range, at the index's commit).
+  source?: EditTrace;
+  // A `file` edit: the scan finding's place.
   file?: string;
   line?: number;
   col?: number;
@@ -115,7 +119,6 @@ export type TaskContext = {
   storyId: string;
   routes: string[];
   layer: string;
-  findings: Finding[];
 };
 
 const flat = (s: string) => s.replace(/\s+/g, ' ').trim();
@@ -127,30 +130,8 @@ const routeList = (routes: string[]) => {
   return rest > 0 ? `${named} and ${rest} more` : named;
 };
 
-// The scan findings an edit can stand for: the `file` edit's own line, or
-// the findings of the file whose raw value, or the value a legacy read
-// renders (`props.theme.borderRadius` is 3px), is the edit's rendered value.
-export const candidatesOf = (
-  e: ElementEdit,
-  ctx: Pick<TaskContext, 'file' | 'findings'>
-): Finding[] => {
-  if (e.kind === 'file') {
-    return ctx.findings.filter(
-      (f) => f.file === e.file && f.line === e.line && f.col === e.col
-    );
-  }
-  const seen = [e.from.raw, e.from.shown, `${e.from.shown}px`];
-  return ctx.findings.filter(
-    (f) =>
-      f.file === ctx.file &&
-      (seen.includes(flat(f.raw)) ||
-        (f.value !== undefined && seen.includes(f.value)))
-  );
-};
-
-const findingOf = (e: ElementEdit, ctx: TaskContext) => candidatesOf(e, ctx)[0];
-
-// The commit subject of an attached token: a design change when the look
+// The commit subject of an attached token, in the trace's words
+// (theme.borderRadius → --gv-radius-control): a design change when the look
 // changes, a heal when it does not.
 export const subjectOfEdit = (
   e: ElementEdit,
@@ -159,35 +140,29 @@ export const subjectOfEdit = (
 ) =>
   `design-system(${look ? 'design' : 'heal'}): ${component} ${e.label
     .toLowerCase()
-    .replace(/\s+/g, ' ')} ${e.from.token ?? flat(e.from.raw)} → ${
-    e.to.token ?? e.to.value
-  } [AI-assisted]`;
-
-// Words of the edit's row ("Padding · Vertical": padding, vertical) that pick
-// its line when several lines render the same value.
-export const wordsOfEdit = (e: ElementEdit) =>
-  e.label
-    .toLowerCase()
-    .split(/[^a-z]+/)
-    .filter((w) => w.length > 2);
+    .replace(/\s+/g, ' ')} ${
+    e.source?.text ?? e.from.token ?? flat(e.from.raw)
+  } → ${e.to.token ?? e.to.value} [AI-assisted]`;
 
 export const taskOfEdit = (e: ElementEdit, ctx: TaskContext): string => {
   const file = e.file ?? ctx.file ?? '(file unknown)';
   const check = `check: story ${ctx.storyId}, routes ${routeList(ctx.routes)}`;
   if (e.kind === 'attach' || e.kind === 'file') {
-    const f = findingOf(e, ctx);
-    if (f && e.to.token) {
-      return formatHealTask(f, ctx.component, ctx.storyId, ctx.routes, {
-        token: e.to.token,
-      });
-    }
+    // The trace's line when there is one; a file edit's finding line.
+    const where = e.source
+      ? `${e.source.file}:${e.source.line}`
+      : e.line
+      ? `${file}:${e.line}`
+      : file;
+    const layer = ctx.layer ? ` (${ctx.layer})` : '';
+    const label = e.label.toLowerCase();
     return [
-      `heal: ${ctx.component} · ${file} · ${e.from.raw} → ${
+      `heal: ${ctx.component} · ${where} · ${e.source?.text ?? e.from.raw} → ${
         e.to.token ?? '(choose a token)'
       }`,
-      `why: hard-coded ${e.label.toLowerCase()} seen in the workbench${
-        ctx.layer ? ` (${ctx.layer})` : ''
-      }, scan confidence low`,
+      e.source
+        ? `why: the workbench traced ${label}${layer} to this line`
+        : `why: ${label} set in the workbench${layer}; not traced to a line, so find it by hand`,
       check,
     ].join('\n');
   }
@@ -224,6 +199,31 @@ export const valueFits = (rowId: string, value: string) => {
   return true;
 };
 
+// A stored trace: a plain place in a front/ file, nothing that walks out.
+const isTrace = (v: unknown): v is EditTrace => {
+  if (typeof v !== 'object' || v === null) return false;
+  const t = v as Record<string, unknown>;
+  const int = (n: unknown) => Number.isInteger(n) && (n as number) >= 0;
+  return (
+    typeof t.commit === 'string' &&
+    /^[0-9a-f]{7,40}$/.test(t.commit) &&
+    typeof t.file === 'string' &&
+    /^[\w@.-]+(\/[\w@.-]+)*$/.test(t.file) &&
+    !t.file.split('/').includes('..') &&
+    int(t.line) &&
+    int(t.start) &&
+    int(t.end) &&
+    (t.end as number) > (t.start as number) &&
+    (t.context === 'js' || t.context === 'template') &&
+    (t.part === undefined || int(t.part)) &&
+    typeof t.lineText === 'string' &&
+    t.lineText.length <= 400 &&
+    !/[\r\n]/.test(t.lineText) &&
+    (t.text === undefined ||
+      (typeof t.text === 'string' && t.text.length <= 200))
+  );
+};
+
 const isEdit = (v: unknown, known: Set<string>): v is ElementEdit => {
   if (typeof v !== 'object' || v === null) return false;
   const e = v as Record<string, unknown>;
@@ -247,6 +247,7 @@ const isEdit = (v: unknown, known: Set<string>): v is ElementEdit => {
     !!to &&
     typeof to.value === 'string' &&
     (to.token === undefined || known.has(to.token as string)) &&
+    (e.source === undefined || isTrace(e.source)) &&
     // A token edit paints var(token); its value is only shown.
     (to.token !== undefined
       ? (to.value as string).length <= 256 && !/[<>]/.test(to.value as string)

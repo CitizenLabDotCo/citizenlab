@@ -36,8 +36,8 @@ describe('ValueField', () => {
     fireEvent.change(input, { target: { value: '12' } });
     fireEvent.keyDown(input, { key: 'Enter' });
     expect(onCommit).toHaveBeenCalledWith('12');
-    expect(screen.getByTestId('wb-insp-value').getAttribute('data-link')).toBe(
-      'none'
+    expect(screen.getByTestId('wb-insp-value').getAttribute('data-raw')).toBe(
+      '9px'
     );
   });
 
@@ -128,22 +128,6 @@ describe('ValueField', () => {
     expect(onCommit).toHaveBeenLastCalledWith('500', true);
   });
 
-  it('offers to attach when the value equals a token', () => {
-    const onAttach = jest.fn();
-    render(
-      <ValueField
-        row={row({ token: '--gv-space-2', link: 'equal' })}
-        onCommit={noop}
-        onAttach={onAttach}
-        onDetach={noop}
-        onOpenPicker={noop}
-      />
-    );
-    fireEvent.click(screen.getByTestId('wb-insp-suggest'));
-    expect(onAttach).toHaveBeenCalledWith('--gv-space-2');
-    expect(screen.getByLabelText('Attach space-2')).toBeTruthy();
-  });
-
   it('draws a bound value as a pill that opens the picker and can detach', () => {
     const onOpenPicker = jest.fn();
     const onDetach = jest.fn();
@@ -151,7 +135,6 @@ describe('ValueField', () => {
       <ValueField
         row={row({
           token: '--gv-space-2',
-          link: 'linked',
           raw: '8px',
           shown: '8',
         })}
@@ -162,8 +145,8 @@ describe('ValueField', () => {
         onOpenPicker={onOpenPicker}
       />
     );
-    expect(screen.getByTestId('wb-insp-value').getAttribute('data-link')).toBe(
-      'linked'
+    expect(screen.getByTestId('wb-insp-value').getAttribute('data-token')).toBe(
+      '--gv-space-2'
     );
     expect(screen.getByText('space-2')).toBeTruthy();
     fireEvent.click(screen.getByText('space-2'));
@@ -172,34 +155,86 @@ describe('ValueField', () => {
     expect(onDetach).toHaveBeenCalled();
   });
 
-  it('draws a city value from the theme as a pill whose city glyph attaches', () => {
+  it('writes where the code sets the value under it, with GitHub links', () => {
+    render(
+      <ValueField
+        row={row({ raw: '3px', shown: '3' }, 'radius')}
+        source={{
+          status: 'traced',
+          read: 'theme',
+          text: 'props.theme.borderRadius',
+          place: {
+            file: 'app/component-library/components/Button/index.tsx',
+            line: 344,
+            href: 'https://github.com/x/blob/c/front/b.tsx#L344',
+          },
+          def: {
+            file: 'app/component-library/utils/styleUtils.ts',
+            line: 242,
+            href: 'https://github.com/x/blob/c/front/s.ts#L242',
+          },
+        }}
+        onCommit={noop}
+        onAttach={noop}
+        onDetach={noop}
+        onOpenPicker={noop}
+      />
+    );
+    const line = screen.getByTestId('wb-insp-source');
+    expect(line.getAttribute('data-status')).toBe('traced');
+    expect(line.getAttribute('data-line')).toBe('344');
+    expect(line.textContent).toBe(
+      'props.theme.borderRadius · Button/index.tsx:344 (defined at utils/styleUtils.ts:242)'
+    );
+    expect(screen.getByText('Button/index.tsx:344').getAttribute('href')).toBe(
+      'https://github.com/x/blob/c/front/b.tsx#L344'
+    );
+  });
+
+  it('says why a value is not traced', () => {
+    render(
+      <ValueField
+        row={row({})}
+        source={{
+          status: 'untraced',
+          text: 'not traced: this build has no code index',
+        }}
+        onCommit={noop}
+        onAttach={noop}
+        onDetach={noop}
+        onOpenPicker={noop}
+      />
+    );
+    expect(screen.getByTestId('wb-insp-source').textContent).toBe(
+      'not traced: this build has no code index'
+    );
+  });
+
+  it('offers the listed tokens with what each does to the look', () => {
     const onAttach = jest.fn();
     render(
       <ValueField
-        row={row(
+        row={row({ raw: '8px', shown: '8' }, 'radius')}
+        suggestions={[
           {
-            token: '--gv-color-tenant-primary',
-            link: 'theme',
-            raw: 'rgb(98, 70, 159)',
-            shown: '62469F',
-            swatch: 'rgb(98, 70, 159)',
+            token: '--gv-radius-control',
+            from: '8px',
+            to: '3px',
+            sameLook: false,
           },
-          'fill'
-        )}
-        liveToken="#62469F"
+        ]}
         onCommit={noop}
         onAttach={onAttach}
         onDetach={noop}
         onOpenPicker={noop}
       />
     );
-    expect(screen.getByTestId('wb-insp-value').getAttribute('data-link')).toBe(
-      'theme'
+    const offer = screen.getByTestId('wb-insp-suggest');
+    expect(offer.textContent).toBe(
+      'radius-control' + 'changes the look: 8px → 3px'
     );
-    expect(screen.getByText('color-tenant-primary')).toBeTruthy();
-    expect(screen.queryByTestId('wb-insp-detach')).toBeNull();
-    fireEvent.click(screen.getByTestId('wb-insp-suggest'));
-    expect(onAttach).toHaveBeenCalledWith('--gv-color-tenant-primary');
+    fireEvent.click(offer);
+    expect(onAttach).toHaveBeenCalledWith('--gv-radius-control');
   });
 
   it('keeps W read-only', () => {

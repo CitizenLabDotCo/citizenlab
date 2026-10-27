@@ -6,7 +6,6 @@ import Canvas from '../components/Canvas';
 import Icon from '../components/Icon';
 import SendForReview, { sendLine } from '../components/SendForReview';
 import type { ToolbarState } from '../components/Toolbar';
-import { fileFindings } from '../lib/componentPanels';
 import { resolveTokens } from '../lib/contrast';
 import {
   loadChanges,
@@ -16,13 +15,11 @@ import {
   TOKEN_META,
 } from '../lib/data';
 import {
-  candidatesOf,
   changesLook,
   ElementEdit,
   subjectOfEdit,
   TaskContext,
   taskOfEdit,
-  wordsOfEdit,
 } from '../lib/elementEdits';
 import { storyHash } from '../lib/hash';
 import { shortName } from '../lib/inspect';
@@ -413,8 +410,8 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
 
   // Every change of this browser with its task for the agent and the line
   // that puts it back; tokens go in the patch, not as tasks. An attached
-  // token also names the findings it can stand for, so the Send window can
-  // read the file and write the exact line edit.
+  // token traced to its line carries that trace, so the Send window can read
+  // the file and write the exact line edit.
   const items = (): Item[] => [
     ...drafts.flatMap(([storyId, list]) => {
       const g = groupOf(storyId);
@@ -424,23 +421,22 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
         storyId,
         routes: g?.score?.routes ?? [],
         layer: '',
-        findings: scan && g?.file ? fileFindings(scan, g.file) : [],
       };
       return list.map((e): Item => {
         const file = e.file ?? ctx.file;
-        const candidates =
-          (e.kind === 'attach' || e.kind === 'file') && e.to.token && file
-            ? candidatesOf(e, ctx)
-            : [];
+        const trace =
+          (e.kind === 'attach' || e.kind === 'file') && e.to.token
+            ? e.source
+            : undefined;
         return {
           key: e.id,
           value: e.to.token ?? e.to.value,
           task: taskOfEdit(e, ctx),
           undo: undoOfEdit(e, ctx.component, file),
-          ...(candidates.length && e.to.token && file
+          ...(trace && e.to.token
             ? {
                 source: {
-                  file,
+                  file: trace.file,
                   story: storyId,
                   subject: subjectOfEdit(
                     e,
@@ -448,8 +444,7 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
                     changesLook(e, (t) => live[t] ?? '')
                   ),
                   token: e.to.token,
-                  candidates,
-                  words: wordsOfEdit(e),
+                  trace,
                 },
               }
             : {}),

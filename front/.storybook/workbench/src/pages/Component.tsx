@@ -204,7 +204,6 @@ const Component = ({
     storyId,
     routes: group.score?.routes ?? [],
     layer: selection.label ?? '',
-    findings,
   };
 
   return (
@@ -404,11 +403,7 @@ const Component = ({
             count: group.score?.usageCount,
             content: (
               <div className="wb-inspect" data-testid="wb-panel-usage">
-                <Usage
-                  storyId={storyId}
-                  group={group}
-                  indexes={indexes}
-                />
+                <Usage storyId={storyId} group={group} indexes={indexes} />
               </div>
             ),
           },

@@ -40,11 +40,12 @@
 // reload, and the frame ends with the last edit and the new city; the same
 // burst on a settled frame ends on the last click too. The canvas
 // fits the Button frame to the story by default (MAX_FIT_HEIGHT). The Design tab
-// selects the button and offers the radius token its corner radius equals
-// (or links it); a click on the canvas selects the element under it; Size's
-// attach suggestion turns it into a --gv-fs-s pill and the Changes badge
-// counts it; 12 typed into the vertical padding becomes a --gv-space-3
-// pill; Copy for agent names --gv-fs-s; Reset all clears the list. The
+// selects the button, traces its corner radius to a line of code and offers
+// the radius token the token data lists for it; a click on the canvas
+// selects the element under it; the token listed for the label's Size
+// attaches as a pill and the Changes badge counts it; 12 typed into the
+// vertical padding becomes a --gv-space-3 pill; Copy for agent names the
+// attached token; Reset all clears the list. The
 // Usage tab lists at least one back office (admin) route.
 // The Review page shows as many change cards as design-changes.json has
 // design changes, or its empty state.
@@ -65,16 +66,17 @@ const ROUTES: [string, string][] = [
   ['#/review', 'Review'],
 ];
 
-// The canvas checks need a story whose radius goes through the theme bridge
-// (theme.borderRadius is var(--gv-radius-control, 3px)).
+// The token the canvas checks edit; the token data lists it for
+// theme.borderRadius, which the button's radius reads.
 const RADIUS_TOKEN = '--gv-radius-control';
 const RADIUS_OVERRIDE = '20px';
 // The shadow token whose layers the Foundations check opens.
 const SHADOW_TOKEN = '--gv-shadow-menu';
 const SHADOW_FIELDS = ['x', 'y', 'blur', 'spread', 'color', 'alpha'];
 
-// The Design tab's checks: the label's Size is hard-coded and equals a font
-// size token, and 12 typed into the vertical padding snaps to --gv-space-3.
+// The Design tab's checks: the label's Size reads a font size constant the
+// token data lists, and 12 typed into the vertical padding snaps to
+// --gv-space-3.
 const SNAP_TOKEN = '--gv-space-3';
 
 // Hashes that open another page, and the hash each is replaced with.
@@ -1120,30 +1122,31 @@ const panelChecks = async (
   await page.goto(`${base}/workbench/#/components/${storyId}`);
   await page.reload();
   await page.click('[data-testid="wb-panel-tab"][data-tab="design"]');
-  const radius = `[data-testid="wb-panel-design"] [data-testid="wb-insp-value"][data-token="${RADIUS_TOKEN}"]`;
-  let link: string | null = null;
+  // The button's radius is traced to a line of code, and the token data's
+  // legacy list offers RADIUS_TOKEN for what it reads (theme.borderRadius).
+  const radiusSource = `[data-testid="wb-panel-design"] [data-testid="wb-insp-source"][data-row="radius"]`;
+  const radiusOffer = `[data-testid="wb-panel-design"] [data-row="radius"] [data-testid="wb-insp-suggest"][data-token="${RADIUS_TOKEN}"]`;
   try {
     await page.waitForFunction(
-      (sel: string) =>
-        ['equal', 'linked'].includes(
-          document.querySelector(sel)?.getAttribute('data-link') ?? ''
-        ),
-      radius,
+      (sel: string) => {
+        const status = document.querySelector(sel)?.getAttribute('data-status');
+        return !!status && status !== 'pending';
+      },
+      radiusSource,
       { timeout: 20000 }
     );
   } catch {
-    // Reported below with the last value.
+    // Reported below with the last status.
   }
-  link = await page
-    .$eval(radius, (el: Element) => el.getAttribute('data-link'))
+  const link: string | null = await page
+    .$eval(radiusSource, (el: Element) => el.getAttribute('data-status'))
     .catch(() => null);
-  // The button's radius is a raw 3px on the platform: the Design tab
-  // offers the token it equals.
-  if (link !== 'equal' && link !== 'linked') {
+  const radiusOffered = !!(await page.$(radiusOffer));
+  if (link !== 'traced' || !radiusOffered) {
     failures.push(
-      `the Design tab shows the button's radius as ${
-        link ?? 'missing'
-      }, expected it to equal ${RADIUS_TOKEN}`
+      `the Design tab shows the button's radius as ${link ?? 'missing'}${
+        radiusOffered ? '' : `, without offering ${RADIUS_TOKEN}`
+      }`
     );
   }
   // A click on the canvas picks the element under it: the button's label.
@@ -1170,8 +1173,9 @@ const panelChecks = async (
     }
   }
 
-  // The label is a text layer, so its Typography shows: Size is hard-coded
-  // and equals a font size token, so its field offers to attach it.
+  // The label is a text layer, so its Typography shows: Size reads a font
+  // size constant, and its field offers the token the token data lists for
+  // that constant.
   const value = (row: string) =>
     `[data-testid="wb-panel-design"] [data-row="${row}"][data-testid="wb-insp-value"]`;
   const suggest = `[data-testid="wb-panel-design"] [data-row="size"] [data-testid="wb-insp-suggest"]`;
@@ -1179,7 +1183,7 @@ const panelChecks = async (
     try {
       await page.waitForFunction(
         (sel: string) =>
-          document.querySelector(sel)?.getAttribute('data-link') === 'linked',
+          !!document.querySelector(sel)?.getAttribute('data-token'),
         value(row),
         { timeout: 10000 }
       );
@@ -1300,8 +1304,7 @@ const panelChecks = async (
   }
   const back = await page
     .waitForFunction(
-      (sel: string) =>
-        document.querySelector(sel)?.getAttribute('data-link') !== 'linked',
+      (sel: string) => !document.querySelector(sel)?.getAttribute('data-token'),
       value('size'),
       { timeout: 10000 }
     )

@@ -239,8 +239,24 @@ const contextOf = (
   };
 };
 
+/**
+ * The lookup key, besides the quasi hashes, listing every styled template
+ * made of interpolations only: no quasi names it, so the trace aligns the
+ * whole list. Not capped.
+ */
+export const BLANK_KEY = 'blank';
+
 const lookupOf = (templates: Template[]): IndexLookup => {
   const ids = new Map<string, Set<string>>();
+  const blank = templates
+    .filter(
+      (t) =>
+        t.kind === 'styled' &&
+        t.exprs.length > 0 &&
+        t.quasis.every((q) => q.trim() === '')
+    )
+    .map((t) => t.id)
+    .sort();
   const add = (q: string, id: string) => {
     // A blank quasi would match every template; it names none.
     if (q.trim() === '') return;
@@ -257,9 +273,13 @@ const lookupOf = (templates: Template[]): IndexLookup => {
     });
     add(longest, t.id);
   });
-  return sortedRecord(
-    [...ids].map(([k, set]) => [k, [...set].sort().slice(0, LOOKUP_MAX_IDS)])
-  );
+  return sortedRecord([
+    ...[...ids].map(([k, set]): [string, string[]] => [
+      k,
+      [...set].sort().slice(0, LOOKUP_MAX_IDS),
+    ]),
+    ...(blank.length ? [[BLANK_KEY, blank] as [string, string[]]] : []),
+  ]);
 };
 
 const defsOf = (defs: Record<string, ValueDef>) => {
