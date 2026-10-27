@@ -1,10 +1,33 @@
 {
-  "generatedAt": "2026-10-27T13:04:09.366Z",
+  "generatedAt": "2026-10-27T13:07:21.028Z",
   "base": "7b0b8940e27fb6c528eb39a06baa8a4cf2bcdf0a",
   "baseRef": "master",
-  "head": "b8c844aa65fe3f1aa633bfc3d45ff000efbe0a97",
+  "head": "b21a34ec3efc31eeb5e1f1a135be200323e17f30",
   "repoUrl": "https://github.com/CitizenLabDotCo/citizenlab",
   "commits": [
+    {
+      "sha": "b21a34ec3efc31eeb5e1f1a135be200323e17f30",
+      "subject": "design-system(review): a design kind for a change meant to show [AI-assisted]",
+      "body": "`design-system(design): <Component> …` is a change the designer wants\nseen, such as a new radius; a heal shows none. The change list reads it,\nthe Review page and the smoke count it as a change to the platform.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/workbench/src/lib/prReview.test.ts",
+        "front/.storybook/workbench/src/lib/review.ts",
+        "front/scripts/design-system/changes.test.ts",
+        "front/scripts/design-system/changes.ts",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "9bc7f53102d437741153b6aae82bd47ce2b10606",
+      "subject": "design-system(review): refresh the change list [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-changes.json"
+      ],
+      "kind": "other"
+    },
     {
       "sha": "b8c844aa65fe3f1aa633bfc3d45ff000efbe0a97",
       "subject": "design-system(docs): the simpler Review; the PR text is the link and the changes, written by the agent [AI-assisted]",
