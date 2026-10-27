@@ -1,10 +1,52 @@
 {
-  "generatedAt": "2026-10-27T17:11:03.030Z",
+  "generatedAt": "2026-10-27T17:45:11.701Z",
   "base": "7b0b8940e27fb6c528eb39a06baa8a4cf2bcdf0a",
   "baseRef": "master",
-  "head": "488762a3b1510341e9cd0c30b7c2f33f95f547aa",
+  "head": "97938d9b3d45e6b840b015a2bd1bee1fd8d58b9d",
   "repoUrl": "https://github.com/CitizenLabDotCo/citizenlab",
   "commits": [
+    {
+      "sha": "97938d9b3d45e6b840b015a2bd1bee1fd8d58b9d",
+      "subject": "design-system(workbench): the review text says its preview is the new review's own; no empty brackets for a layer the Review page does not know [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/elementEdits.test.ts",
+        "front/.storybook/workbench/src/lib/elementEdits.ts",
+        "front/.storybook/workbench/src/lib/send.test.ts",
+        "front/.storybook/workbench/src/lib/send.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "7e6862278a996974bc1c88fdcf3766024ecbf4d9",
+      "subject": "design-system(workbench): the Design tab by kind of layer, as Figma's UI3: Selection colours, \"+\" on empty Fill, Stroke and Effects [AI-assisted]",
+      "body": "- The panel reads the selection's kind (box, text, icon, image, field). A\n  click on an icon's shape selects the whole icon; Enter goes inside.\n- Sections in Figma's order: Props on top (open for the component itself,\n  folded for a layer inside it), Layout or Auto layout (direction, wrap,\n  size, align, justify, gap, padding), Appearance (opacity; radius for a\n  frame), Typography (only a layer that holds text), Fill (a text layer's\n  colour; a box's background and its text colour; an icon's own fill),\n  Stroke (every side of the border; an icon's stroke and width), Selection\n  colours, Effects.\n- Selection colours: every colour of the layer and what it holds, once\n  each (by token when bound, else by value); a swap edits each use on its\n  own element, so the Badge's grey text and border change in one pick.\n- An empty Fill, Stroke or Effects shows a greyed title and \"+\", which\n  paints Figma's default (white fill, 1px black stroke, 0 4 4 25% shadow)\n  as a custom edit until a token is picked.\n- Menus for direction, wrap, align, justify and text align; opacity typed\n  as a percent.\n- Smoke: Size is the label's (the text layer), not the button's.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/workbench/src/components/Icon.test.tsx",
+        "front/.storybook/workbench/src/components/Icon.tsx",
+        "front/.storybook/workbench/src/components/InspSection.tsx",
+        "front/.storybook/workbench/src/components/ValueField.tsx",
+        "front/.storybook/workbench/src/lib/elementEdits.test.ts",
+        "front/.storybook/workbench/src/lib/elementEdits.ts",
+        "front/.storybook/workbench/src/lib/inspect.test.ts",
+        "front/.storybook/workbench/src/lib/inspect.ts",
+        "front/.storybook/workbench/src/lib/useCanvasSelection.ts",
+        "front/.storybook/workbench/src/panels/Design.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "0aa3d53a16df3bd49cce20172205db294b05b538",
+      "subject": "design-system(review): refresh the change list [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-changes.json"
+      ],
+      "kind": "other"
+    },
     {
       "sha": "488762a3b1510341e9cd0c30b7c2f33f95f547aa",
       "subject": "design-system(workbench): the Design tab shows what the clicked layer is made of: an icon its fill, text its type, a box no text [AI-assisted]",
@@ -2378,7 +2420,8 @@
       "files": [
         "front/app/component-library/components/Dropdown/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Dropdown"
     },
     {
       "sha": "d6eaa802905a5060bf4019fefa5b5d61aa794270",
@@ -2397,7 +2440,8 @@
       "files": [
         "front/app/component-library/components/IconTooltip/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "IconTooltip"
     },
     {
       "sha": "c7d12bfbe0a94d7f06bcd2dfa82dea0bf80ca859",
@@ -2416,7 +2460,8 @@
       "files": [
         "front/app/component-library/components/Tooltip/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Tooltip"
     },
     {
       "sha": "6a141f6430a491c099240e2a840f864c322c02fd",
@@ -2435,7 +2480,8 @@
       "files": [
         "front/app/component-library/components/Spinner/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Spinner"
     },
     {
       "sha": "58aa56dd0d3023815a7797548efade562a27ab93",
@@ -2444,7 +2490,8 @@
       "files": [
         "front/app/component-library/components/Box/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Box"
     },
     {
       "sha": "14fd5147f89439f6326272ce6f756a2412910898",
@@ -2453,7 +2500,8 @@
       "files": [
         "front/app/component-library/components/Icon/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Icon"
     },
     {
       "sha": "89fe4eff453a6d9692a85891f48956a8d95398bd",
@@ -2462,7 +2510,8 @@
       "files": [
         "front/app/component-library/components/Table/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Table"
     },
     {
       "sha": "f4f34f2193870c84a16d30a4c8d95fb834a35481",
@@ -2481,7 +2530,8 @@
       "files": [
         "front/app/component-library/components/Title/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Title"
     },
     {
       "sha": "2b698ecaacf811e2b6888ec489285f15a7ff52b2",
@@ -2490,7 +2540,8 @@
       "files": [
         "front/app/component-library/components/Text/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Text"
     },
     {
       "sha": "9f3832b1fcbe09da78c67e8a42410acf916d417b",
@@ -2499,7 +2550,8 @@
       "files": [
         "front/app/component-library/components/Label/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Label"
     },
     {
       "sha": "dc67978ed4678c50f39784484f350f855fb2ec43",
@@ -2508,7 +2560,8 @@
       "files": [
         "front/app/component-library/components/Toggle/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Toggle"
     },
     {
       "sha": "209aabcc7e5ffe8e443c042ff4cdec0ecc696ae6",
@@ -2527,7 +2580,8 @@
       "files": [
         "front/app/component-library/components/Select/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Select"
     },
     {
       "sha": "5adac0878816d359234d1caefdbdeac3606d3907",
@@ -2546,7 +2600,8 @@
       "files": [
         "front/app/component-library/components/Input/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Input"
     },
     {
       "sha": "d3a8bca07476d1e6a88dd421b8e4bfd6420c1ece",
@@ -2565,7 +2620,8 @@
       "files": [
         "front/app/component-library/components/IconButton/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "IconButton"
     },
     {
       "sha": "e9192cf4a6a823e1993797c2dfa8d0bbfcc00fc5",
@@ -2584,7 +2640,8 @@
       "files": [
         "front/app/component-library/components/Button/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Button"
     },
     {
       "sha": "ff02a0c964057c9c80c2a9defdf399352e7737d5",
