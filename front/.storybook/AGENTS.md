@@ -13,7 +13,7 @@ Online the workbench only reads. Run locally (`npm run ds:local`), it saves an e
 - **Heal**: replacing one off-spec value or local markup with a token or a library component, style only. A heal is platform code, so it is its own small PR off master, never a commit on this branch.
 - **Lift**: moving a local piece of the redesigned back office into the library. Platform code too: its own PR off master.
 - **Usage map**: for each library component, where it is imported, the props at each call site, on which routes it shows and how many off-spec values sit there.
-- **Review page**: the PR its epic serves. One PR, one epic, one Review: the epic dies with its PR. It shows the PR's design changes, each with the agent's before and after pictures and the pages it reaches on that epic.
+- **Review page**: what this browser is changing, then the PR its epic serves. Edits made on any component collect there as you go (a count on its nav entry), each component with a live before and after; Copy for agent hands them all on for a PR. One PR, one epic: the epic dies with its PR, and its Review also shows the PR's committed design changes with the agent's pictures.
 - **Workbench**: the Storybook on this branch with its own shell at `<storybook>/workbench/`.
 
 ## Guardrails
@@ -198,7 +198,9 @@ check: story <story id>, routes <list>
 
 ## Review page
 
-- One PR, one epic, one Review. The page reads its PR from its own host (`pr-<n>.epic.hq.govocal.com`) and links it; off an epic it says there is none. It shows the PR's changes to the platform, nothing else: no buttons, no filters.
+- First what this browser is changing: the element edits (`gv-element-edits`) and token edits (`gv-overrides`) in localStorage, counted on the nav entry and kept in step across views (`useElementEdits` says `gv-element-edits-changed` on window). One card per component: its edits, Edit (back to the component), Reset, then two canvases, the story as it is and with the edits painted on (the component page's `Canvas`, fit). Token edits are one card; they show in every After.
+- "Copy for agent" copies every collected change as one task (`agentText`): for the connected PR, else a new one stacked on the workbench. "Connect PR" keeps a PR number in localStorage (`gv-review-pr`) and links it and its epic's Review; on a PR's own epic that carries changes, the PR is connected already.
+- Then the PR's committed changes. One PR, one epic, one Review: the page reads its PR from its own host (`pr-<n>.epic.hq.govocal.com`).
 - The changes are `design-changes.json`, built against the PR's base (`ds:changes -- --base origin/design-system/workbench` for a PR stacked on the workbench). A card is a `heal`, `lift`, `token` or `design` commit that still changes platform code (`design` is a change meant to show, such as a new radius; a heal shows none): files under `front/app/` less what the no-platform-code check leaves out (stories, tests, mocks, `a11y.json`, `app/design-system/tokens/`, `app/utils/storybook/`). Once the app loads the tokens on master, token value commits are platform changes too: take `app/design-system/tokens/` out of that list (`isPlatformFile`).
 - A card: the commit subject, "Open on the platform" (the shortest route the commit reaches, on this epic, with ids read from this platform's public API) and the commit; then `static/changes/<sha>/before.png` and `after.png`, or one picture marked "No visual change" when their pixels are equal. The agent that makes a change takes them (heal skill).
 
