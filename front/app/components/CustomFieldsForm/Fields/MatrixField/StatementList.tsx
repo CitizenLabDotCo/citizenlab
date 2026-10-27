@@ -7,7 +7,7 @@ import { IMatrixStatementsType } from 'api/custom_fields/types';
 
 import useLocalize from 'hooks/useLocalize';
 
-import RadioOptionBox from '../_shared/RadioOptionBox';
+import RadioOptionBox, { radioOptionPadding } from '../_shared/RadioOptionBox';
 
 interface Props {
   id: string;
@@ -57,6 +57,7 @@ const StatementList = ({ id, statements, columns, value, onChange }: Props) => {
                     [statement.key]: columnValue + 1,
                   });
                 }}
+                {...radioOptionPadding}
               />
             </RadioOptionBox>
           ))}
