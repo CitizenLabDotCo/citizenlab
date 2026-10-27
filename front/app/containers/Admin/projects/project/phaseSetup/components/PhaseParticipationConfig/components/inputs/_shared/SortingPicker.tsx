@@ -6,14 +6,13 @@ import { CLErrors } from 'typings';
 import { IdeaSortMethod } from 'api/phases/types';
 
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
+import messages from 'containers/Admin/projects/project/messages';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import OptionPicker from 'components/UI/OptionPicker';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-
-import messages from '../../../../../../messages';
 
 interface Props {
   options: { key: string; value: IdeaSortMethod }[];
