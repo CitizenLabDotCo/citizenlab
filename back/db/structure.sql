@@ -4254,13 +4254,16 @@ CREATE VIEW public.reporting_email_deliveries AS
  SELECT c.id AS campaign_id,
     lower(regexp_replace(regexp_replace("substring"((c.type)::text, '([^:]+)$'::text), '([A-Z]+)([A-Z][a-z])'::text, '\1_\2'::text, 'g'::text), '([a-z\d])([A-Z])'::text, '\1_\2'::text, 'g'::text)) AS campaign_type,
     ((c.type)::text = ANY ((ARRAY['EmailCampaigns::Campaigns::Manual'::character varying, 'EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying])::text[])) AS manual,
-    COALESCE(NULLIF((c.subject_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
-           FROM public.app_configurations ac
-         LIMIT 1)), ''::text), ( SELECT t.value
-           FROM jsonb_each_text(c.subject_multiloc) t(key, value)
-          WHERE (t.value <> ''::text)
-          ORDER BY t.key
-         LIMIT 1)) AS subject,
+        CASE
+            WHEN ((c.type)::text = ANY ((ARRAY['EmailCampaigns::Campaigns::Manual'::character varying, 'EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying])::text[])) THEN COALESCE(NULLIF((c.subject_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+               FROM public.app_configurations ac
+             LIMIT 1)), ''::text), ( SELECT t.value
+               FROM jsonb_each_text(c.subject_multiloc) t(key, value)
+              WHERE (t.value <> ''::text)
+              ORDER BY t.key
+             LIMIT 1))
+            ELSE NULL::text
+        END AS subject,
         CASE c.context_type
             WHEN 'Project'::text THEN c.context_id
             WHEN 'Phase'::text THEN ph.project_id
