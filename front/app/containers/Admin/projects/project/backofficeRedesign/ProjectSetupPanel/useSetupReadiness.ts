@@ -16,14 +16,20 @@ export interface SetupReadiness {
   topics: boolean;
 }
 
-const useSetupReadiness = (project: IProjectData): SetupReadiness => {
+const useSetupReadiness = (
+  project: IProjectData
+): { readiness: SetupReadiness; isLoading: boolean } => {
   const localize = useLocalize();
   const draft = useOptionalSetupDraft();
   const changes = draft?.changes ?? {};
   const imageChanges = draft?.imageChanges ?? {};
-  const { data: phases } = usePhases(project.id);
-  const { data: images } = useProjectImages(project.id);
-  const { data: platformTopics } = useGlobalTopics({});
+  const { data: phases, isLoading: phasesLoading } = usePhases(project.id);
+  const { data: images, isLoading: imagesLoading } = useProjectImages(
+    project.id
+  );
+  const { data: platformTopics, isLoading: topicsLoading } = useGlobalTopics(
+    {}
+  );
 
   const { attributes } = project;
 
@@ -48,12 +54,15 @@ const useSetupReadiness = (project: IProjectData): SetupReadiness => {
     : true;
 
   return {
-    general: completedSteps.includes('settings'),
-    methods: (phases?.data.length ?? 0) > 0,
-    page: completedSteps.includes('page'),
-    homepageCard: hasCardImage && hasCardDescription,
-    area: areaIds.length > 0 || includeAllAreas,
-    topics: !platformHasTopics || topicIds.length > 0,
+    readiness: {
+      general: completedSteps.includes('settings'),
+      methods: (phases?.data.length ?? 0) > 0,
+      page: completedSteps.includes('page'),
+      homepageCard: hasCardImage && hasCardDescription,
+      area: areaIds.length > 0 || includeAllAreas,
+      topics: !platformHasTopics || topicIds.length > 0,
+    },
+    isLoading: phasesLoading || imagesLoading || topicsLoading,
   };
 };
 

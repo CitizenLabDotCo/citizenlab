@@ -29,7 +29,7 @@ const MissingEssentialsModal = ({ opened, project, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const { publishNow, isPending } = usePublishNow(project);
 
-  const missing = getMissingItems(useSetupReadiness(project));
+  const missing = getMissingItems(useSetupReadiness(project).readiness);
 
   return (
     <Modal

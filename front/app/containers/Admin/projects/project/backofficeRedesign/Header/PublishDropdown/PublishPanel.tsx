@@ -58,8 +58,8 @@ const PublishPanel = ({
   const { formatMessage, formatDate, formatTime } = useIntl();
   const { mutate: updateProject } = useUpdateProject();
   const { publishNow, isPending } = usePublishNow(project);
-  const hasMissingItems =
-    getMissingItems(useSetupReadiness(project)).length > 0;
+  const { readiness, isLoading: readinessLoading } = useSetupReadiness(project);
+  const hasMissingItems = getMissingItems(readiness).length > 0;
   const { data: recipientCount } = useProjectPublicationRecipientCount(
     project.id
   );
@@ -251,7 +251,7 @@ const PublishPanel = ({
                 width="100%"
                 icon="send"
                 onClick={handlePublishNow}
-                processing={isPending}
+                processing={isPending || readinessLoading}
                 id="e2e-publish-now"
               >
                 {formatMessage(messages.publishNow)}

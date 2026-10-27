@@ -29,7 +29,7 @@ interface Props {
 const BeforeYouPublish = ({ project, onOpenSettings }: Props) => {
   const { formatMessage, formatDate } = useIntl();
   const projectId = project.id;
-  const readiness = useSetupReadiness(project);
+  const { readiness } = useSetupReadiness(project);
   const [methodModalOpened, setMethodModalOpened] = useState(false);
 
   const isProjectReviewEnabled = useFeatureFlag({ name: 'project_review' });
