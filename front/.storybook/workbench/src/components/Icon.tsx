@@ -320,6 +320,24 @@ const PATHS = {
     </>
   ),
   caution: <path d="M12 4 2.5 20h19zM12 10v4.5M12 17.2v.3" />,
+  opacity: (
+    <>
+      <circle cx="12" cy="12" r="7.5" />
+      <path d="M12 4.5v15M15.5 5.4v13.2M18.6 8v8" />
+    </>
+  ),
+  direction: <path d="M4 12h13m-4-4 4 4-4 4M20 5v14" />,
+  wrap: <path d="M4 7h12a3.5 3.5 0 0 1 0 7H9m3-3-3 3 3 3M4 18h4" />,
+  align: <path d="M5 4v16M9 8h9M9 12h11M9 16h6" />,
+  justify: <path d="M4 5v14M20 5v14M8 9h3v6H8zM13 9h3v6h-3z" />,
+  'text-align': <path d="M4 6h16M4 10h10M4 14h16M4 18h10" />,
+  image: (
+    <>
+      <rect x="4" y="5" width="16" height="14" rx="2" />
+      <path d="m4 16 5-5 4 4 2-2 5 5" />
+      <circle cx="15.5" cy="9.5" r="1.25" />
+    </>
+  ),
   tablet: (
     <>
       <rect x="5" y="3.5" width="14" height="17" rx="2" />

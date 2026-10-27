@@ -1,7 +1,7 @@
 // What the Design panel shows for the element selected on the canvas: its
-// rendered properties grouped like Figma's inspector (Layout, Fill, Stroke,
-// Radius, Text, Effects), and for each value the token it
-// comes from. A value is `linked` when a style rule (or inline style) that
+// rendered properties grouped like Figma's inspector for its kind of layer
+// (Layout, Appearance, Typography, Fill, Stroke, Effects, and the Selection
+// colours of what it holds), and for each value the token it comes from. A value is `linked` when a style rule (or inline style) that
 // applies to the element names the token for that property and the token
 // resolves to the rendered value; `theme` when the value equals a city token
 // (tenant colours, the font) the component reads through the styled theme,
@@ -50,25 +50,57 @@ export type InspectRow = {
   editable: boolean;
   // What a typed value snaps to.
   snap?: SnapKind;
+  // A short list of values, drawn as a menu: [value, words].
+  choices?: [string, string][];
+  // Read-only, but a token can still be picked for it (the shadow).
+  pickOnly?: boolean;
+};
+
+// What a section's "+" paints on an element that has none of it (Figma's
+// empty Fill, Stroke and Effects).
+export type SectionAdd = {
+  rowId: string;
+  // Words for the button ("Add fill").
+  label: string;
+  // What the element renders today, and what the add paints.
+  from: string;
+  value: string;
 };
 
 export type InspectSection = {
   id: SectionId;
   label: string;
   rows: InspectRow[];
+  add?: SectionAdd;
 };
 
 export type SectionId =
   | 'layout'
+  | 'appearance'
+  | 'typography'
   | 'fill'
   | 'stroke'
-  | 'radius'
-  | 'text'
   | 'effects';
+
+// Figma's kinds of layer: a frame (box), text, a vector (icon), an image,
+// and a field people type in.
+export type LayerKind = 'box' | 'text' | 'icon' | 'image' | 'field';
+
+// One colour the selection paints with, on one element and row.
+export type ColourUse = { el: Element; rowId: string; value: InspectValue };
+export type ColourGroup = {
+  key: string;
+  value: InspectValue;
+  uses: ColourUse[];
+};
 
 export type Inspection = {
   label: string;
+  kind: LayerKind;
   sections: InspectSection[];
+  // Every colour of the selection and what it holds, each once; empty for
+  // a layer that holds no other.
+  colours: ColourGroup[];
 };
 
 // ------------------------------------------------------------ declarations
@@ -120,18 +152,6 @@ export const FAMILY: Record<string, string[]> = {
   'font-weight': ['font-weight', 'font'],
   'line-height': ['line-height', 'font'],
   'letter-spacing': ['letter-spacing'],
-  'border-top-color': [
-    'border-top-color',
-    'border-color',
-    'border-top',
-    'border',
-  ],
-  'border-top-width': [
-    'border-top-width',
-    'border-width',
-    'border-top',
-    'border',
-  ],
   'border-top-left-radius': ['border-top-left-radius', 'border-radius'],
   'border-top-right-radius': ['border-top-right-radius', 'border-radius'],
   'border-bottom-right-radius': ['border-bottom-right-radius', 'border-radius'],
@@ -164,6 +184,17 @@ export const FAMILY: Record<string, string[]> = {
   'column-gap': ['column-gap', 'gap'],
   'box-shadow': ['box-shadow'],
 };
+const SIDES = ['top', 'right', 'bottom', 'left'] as const;
+for (const side of SIDES) {
+  for (const part of ['color', 'width']) {
+    FAMILY[`border-${side}-${part}`] = [
+      `border-${side}-${part}`,
+      `border-${part}`,
+      `border-${side}`,
+      'border',
+    ];
+  }
+}
 
 // Token names the declarations offer for a longhand, nearest last (a later
 // declaration wins in the cascade, so its names are tried first).
@@ -307,6 +338,9 @@ CATEGORY['padding-right'] = CATEGORY['padding-top'];
 CATEGORY['padding-bottom'] = CATEGORY['padding-top'];
 CATEGORY['padding-left'] = CATEGORY['padding-top'];
 CATEGORY['column-gap'] = CATEGORY['row-gap'];
+for (const side of SIDES) {
+  CATEGORY[`border-${side}-color`] = CATEGORY['border-color'];
+}
 
 // The token categories that fit a longhand (the picker's filter).
 export const fitsProp = (prop: string) => CATEGORY[prop];
@@ -377,7 +411,10 @@ const valueOf = (
 
 // ------------------------------------------------------------ rows
 
-type Spec = Pick<InspectRow, 'props' | 'glyph' | 'half' | 'editable' | 'snap'>;
+type Spec = Pick<
+  InspectRow,
+  'props' | 'glyph' | 'half' | 'editable' | 'snap' | 'choices' | 'pickOnly'
+>;
 
 const P = ['padding-top', 'padding-right', 'padding-bottom', 'padding-left'];
 const R = [
@@ -392,6 +429,51 @@ const SIDE_GLYPH: IconName[] = [
   'padding-bottom',
   'padding-left',
 ];
+const SIDE_WORDS = ['Top', 'Right', 'Bottom', 'Left'] as const;
+
+// The values a menu row offers, as Figma names them.
+const CHOICES: Record<string, [string, string][]> = {
+  direction: [
+    ['row', 'Horizontal'],
+    ['column', 'Vertical'],
+    ['row-reverse', 'Horizontal, reversed'],
+    ['column-reverse', 'Vertical, reversed'],
+  ],
+  wrap: [
+    ['nowrap', 'No wrap'],
+    ['wrap', 'Wrap'],
+    ['wrap-reverse', 'Wrap, reversed'],
+  ],
+  align: [
+    ['normal', 'Normal'],
+    ['stretch', 'Stretch'],
+    ['flex-start', 'Start'],
+    ['center', 'Centre'],
+    ['flex-end', 'End'],
+    ['baseline', 'Baseline'],
+  ],
+  justify: [
+    ['normal', 'Normal'],
+    ['flex-start', 'Start'],
+    ['center', 'Centre'],
+    ['flex-end', 'End'],
+    ['space-between', 'Space between'],
+    ['space-around', 'Space around'],
+    ['space-evenly', 'Space evenly'],
+  ],
+  'text-align': [
+    ['start', 'Start'],
+    ['left', 'Left'],
+    ['center', 'Centre'],
+    ['right', 'Right'],
+    ['end', 'End'],
+    ['justify', 'Justified'],
+  ],
+};
+
+// A menu row's words for a value; a value the menu lacks reads as it is.
+export const choiceText = (rowId: string, value: string) =>
+  CHOICES[rowId]?.find(([v]) => v === value)?.[1] ?? value;
 
 const SPECS: Record<string, Spec> = {
   w: { props: ['width'], glyph: 'width', half: true, editable: false },
@@ -458,13 +540,59 @@ const SPECS: Record<string, Spec> = {
     half: true,
     editable: true,
   },
+  'stroke-width-v': {
+    props: ['border-top-width', 'border-bottom-width'],
+    glyph: 'stroke-width',
+    half: true,
+    editable: true,
+  },
+  'stroke-width-h': {
+    props: ['border-left-width', 'border-right-width'],
+    glyph: 'stroke-width',
+    half: true,
+    editable: true,
+  },
+  // The "+" of an empty Stroke: a whole border in one value.
+  stroke: {
+    props: ['border'],
+    glyph: 'stroke',
+    half: false,
+    editable: true,
+  },
   radius: {
     props: R,
     glyph: 'radius',
-    half: false,
+    half: true,
     editable: true,
     snap: 'radius',
   },
+  opacity: {
+    props: ['opacity'],
+    glyph: 'opacity',
+    half: true,
+    editable: true,
+  },
+  direction: {
+    props: ['flex-direction'],
+    glyph: 'direction',
+    half: true,
+    editable: true,
+  },
+  wrap: { props: ['flex-wrap'], glyph: 'wrap', half: true, editable: true },
+  align: { props: ['align-items'], glyph: 'align', half: true, editable: true },
+  justify: {
+    props: ['justify-content'],
+    glyph: 'justify',
+    half: true,
+    editable: true,
+  },
+  'text-align': {
+    props: ['text-align'],
+    glyph: 'text-align',
+    half: true,
+    editable: true,
+  },
+  image: { props: [], glyph: 'image', half: false, editable: false },
   'radius-v': {
     props: [R[0], R[2]],
     glyph: 'radius',
@@ -527,17 +655,27 @@ const SPECS: Record<string, Spec> = {
   'icon-stroke': {
     props: ['stroke'],
     glyph: 'stroke',
-    half: false,
+    half: true,
     editable: true,
     snap: 'color',
+  },
+  'icon-stroke-width': {
+    props: ['stroke-width'],
+    glyph: 'stroke-width',
+    half: true,
+    editable: true,
   },
   shadow: {
     props: ['box-shadow'],
     glyph: 'shadow',
     half: false,
     editable: false,
+    pickOnly: true,
   },
 };
+for (const [id, choices] of Object.entries(CHOICES)) {
+  SPECS[id] = { ...SPECS[id], choices };
+}
 for (let i = 0; i < 4; i++) {
   SPECS[`padding-${i}`] = {
     props: [P[i]],
@@ -552,6 +690,19 @@ for (let i = 0; i < 4; i++) {
     half: true,
     editable: true,
     snap: 'radius',
+  };
+  SPECS[`stroke-color-${i}`] = {
+    props: [`border-${SIDES[i]}-color`],
+    glyph: 'stroke',
+    half: true,
+    editable: true,
+    snap: 'color',
+  };
+  SPECS[`stroke-width-${i}`] = {
+    props: [`border-${SIDES[i]}-width`],
+    glyph: 'stroke-width',
+    half: true,
+    editable: true,
   };
 }
 
@@ -587,19 +738,167 @@ const sides = (
   return values.map((v, i) => row(`${id}-${i}`, labels[i], v));
 };
 
-// Figma shows a layer the properties of its kind: Text for an element
-// that holds text of its own (a text node child, or a field people type
-// in), never for a box of other elements or an icon.
+const SVG = 'http://www.w3.org/2000/svg';
+const SVG_TEXT = /^(text|tspan|textPath)$/;
+// The input types people type text in.
+const TYPED =
+  /^(|text|search|email|url|tel|password|number|date|datetime-local|month|week|time)$/;
+
+// A form field people type in or pick a value from.
+const isField = (el: Element) =>
+  /^(textarea|select)$/.test(el.localName) ||
+  (el.localName === 'input' &&
+    TYPED.test((el.getAttribute('type') ?? '').toLowerCase()));
+
+// Figma shows a layer the properties of its kind: Typography for an
+// element that holds text of its own (a text node child, or a field people
+// type in), never for a box of other elements or an icon.
 export const holdsText = (el: Element) =>
-  el.namespaceURI === 'http://www.w3.org/2000/svg'
-    ? /^(text|tspan|textPath)$/.test(el.localName)
-    : /^(input|textarea|select)$/.test(el.localName) ||
+  el.namespaceURI === SVG
+    ? SVG_TEXT.test(el.localName)
+    : isField(el) ||
       [...el.childNodes].some(
         (n) => n.nodeType === 3 && !!n.textContent?.trim()
       );
 
-// The panel's reading of one element. `available` says whether the
-// document can draw a font family (document.fonts.check in the frame).
+// Whether an element draws a box of its own around what it holds.
+const drawsBox = (look: (prop: string) => string) =>
+  !isTransparent(look('background-color')) ||
+  !NEUTRAL.has(look('background-image')) ||
+  !NEUTRAL.has(look('box-shadow')) ||
+  P.some((p) => parseFloat(look(p)) > 0) ||
+  SIDES.some(
+    (side) =>
+      parseFloat(look(`border-${side}-width`)) > 0 &&
+      !/^(none|hidden|)$/.test(look(`border-${side}-style`))
+  );
+
+// The kind of layer an element is. Text is text of its own and nothing
+// drawn around it; text in a box of its own (a badge, a button) is a box
+// that holds text. `look` reads the element's computed style.
+export const kindOf = (
+  el: Element,
+  look: (prop: string) => string
+): LayerKind => {
+  if (el.namespaceURI === SVG) {
+    return SVG_TEXT.test(el.localName) ? 'text' : 'icon';
+  }
+  if (/^(img|picture|video|canvas)$/.test(el.localName)) return 'image';
+  if (isField(el)) return 'field';
+  if (holdsText(el) && el.children.length === 0 && !drawsBox(look)) {
+    return 'text';
+  }
+  return 'box';
+};
+
+// What a click on the canvas selects: the whole icon for a click on one of
+// its shapes, as Figma selects the top layer first; Enter goes inside.
+export const layerOf = (el: Element): Element =>
+  el.namespaceURI === SVG && el.localName !== 'svg'
+    ? el.closest('svg') ?? el
+    : el;
+
+// A typed opacity is a percent, as in Figma (50, 50%); the CSS share it
+// stands for (0.5), or undefined past 0 to 100.
+export const opacityValue = (typed: string): string | undefined => {
+  const m = /^(\d+(?:\.\d+)?|\.\d+)\s*%?$/.exec(typed.trim());
+  if (!m) return undefined;
+  const n = parseFloat(m[1]);
+  if (n > 100) return undefined;
+  return String(Math.round(n * 10) / 1000);
+};
+
+export const opacityText = (raw: string) =>
+  `${Math.round(parseFloat(raw) * 100)}%`;
+
+const flatColour = (raw: string) => raw.replace(/\s+/g, '').toLowerCase();
+
+// The selection's colours, each once (Figma's Selection colors): a colour
+// bound to a token by its token, any other by its value, most used first.
+// A suggested token stays only while every use of the value equals it.
+export const groupColours = (uses: ColourUse[]): ColourGroup[] => {
+  const groups = new Map<string, ColourGroup>();
+  for (const u of uses) {
+    const bound =
+      (u.value.link === 'linked' || u.value.link === 'theme') &&
+      !!u.value.token;
+    const key = bound
+      ? `token:${u.value.token}`
+      : `value:${flatColour(u.value.raw)}`;
+    const g = groups.get(key);
+    if (!g) {
+      groups.set(key, { key, value: u.value, uses: [u] });
+      continue;
+    }
+    g.uses.push(u);
+    if (!bound && g.value.token && g.value.token !== u.value.token) {
+      g.value = { ...g.value, token: undefined, link: undefined };
+    }
+  }
+  return [...groups.values()].sort((a, b) => b.uses.length - a.uses.length);
+};
+
+// Layers read for Selection colours, at most.
+const MAX_LAYERS = 400;
+// SVG elements that paint.
+const SVG_PAINTS =
+  /^(svg|g|path|circle|rect|ellipse|line|polyline|polygon|text|tspan|use)$/;
+
+// The visible borders of an element: one colour row when they share it,
+// one per side otherwise; the widths of all four as sides(), or of each
+// visible side.
+const borderRows = (
+  v: (prop: string, format?: (s: string) => string) => InspectValue,
+  look: (prop: string) => string
+): InspectRow[] => {
+  const on = [0, 1, 2, 3].filter(
+    (i) =>
+      parseFloat(look(`border-${SIDES[i]}-width`)) > 0 &&
+      !/^(none|hidden)$/.test(look(`border-${SIDES[i]}-style`)) &&
+      !isTransparent(look(`border-${SIDES[i]}-color`))
+  );
+  if (on.length === 0) return [];
+  const colours = SIDES.map((side) => v(`border-${side}-color`, colourText));
+  const widths = SIDES.map((side) => v(`border-${side}-width`));
+  const same = (a: InspectValue, b: InspectValue) =>
+    a.raw === b.raw && a.token === b.token;
+  const out: InspectRow[] = [];
+  if (on.every((i) => same(colours[i], colours[on[0]]))) {
+    out.push(row('stroke-color', 'Colour', colours[on[0]]));
+  } else {
+    for (const i of on) {
+      out.push(row(`stroke-color-${i}`, `${SIDE_WORDS[i]} colour`, colours[i]));
+    }
+  }
+  if (on.length === 4) {
+    out.push(
+      ...sides(
+        'stroke-width',
+        widths,
+        ['Top width', 'Right width', 'Bottom width', 'Left width'],
+        ['Vertical width', 'Horizontal width'],
+        'Width'
+      )
+    );
+  } else {
+    for (const i of on) {
+      out.push(row(`stroke-width-${i}`, `${SIDE_WORDS[i]} width`, widths[i]));
+    }
+  }
+  return out;
+};
+
+// Figma's default looks for an added fill, stroke and shadow.
+const ADDED = {
+  fill: '#FFFFFF',
+  paint: '#000000',
+  stroke: '1px solid #000000',
+  shadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+};
+
+// The panel's reading of one element, by its kind of layer. `available`
+// says whether the document can draw a font family (document.fonts.check
+// in the frame).
 export const inspectElement = (
   el: Element,
   meta: TokenMeta[],
@@ -609,148 +908,285 @@ export const inspectElement = (
   const win = doc.defaultView;
   if (!win) return null;
   const cs = win.getComputedStyle(el);
-  const decls = declsOf(el, tokenRules(doc));
+  const rules = tokenRules(doc);
+  const decls = declsOf(el, rules);
   const { resolve, done } = resolver(doc, el.parentElement ?? doc.body);
   try {
     const v = (prop: string, format: (s: string) => string = pxText) =>
       valueOf(prop, cs, decls, meta, resolve, format);
+    const look = (prop: string) => cs.getPropertyValue(prop).trim();
+    const kind = kindOf(el, look);
+    // A box, a field and an image are frames: radius, stroke, shadow.
+    const framed = kind === 'box' || kind === 'field' || kind === 'image';
+    const text =
+      kind === 'text' ||
+      ((kind === 'box' || kind === 'field') && holdsText(el));
     const sections: InspectSection[] = [];
 
+    // Layout: Figma's Auto layout for a flex or grid box (direction, size,
+    // alignment, gap, padding), the size otherwise.
     const rect = el.getBoundingClientRect();
     const sizeRow = (id: 'w' | 'h', n: number): InspectRow =>
       row(id, id === 'w' ? 'Width' : 'Height', {
         raw: `${n}px`,
         shown: String(Math.round(n)),
       });
-    const layout: InspectRow[] = [
-      sizeRow('w', rect.width),
-      sizeRow('h', rect.height),
-    ];
-    const padding = sides(
-      'padding',
-      [
-        v('padding-top'),
-        v('padding-right'),
-        v('padding-bottom'),
-        v('padding-left'),
-      ],
-      ['Top', 'Right', 'Bottom', 'Left'],
-      ['Vertical', 'Horizontal'],
-      'Padding'
-    );
-    if (padding.some((r) => r.value.raw !== '0px')) layout.push(...padding);
-    const display = cs.getPropertyValue('display');
-    if (/flex|grid/.test(display)) {
-      const rowGap = v('row-gap');
-      const colGap = v('column-gap');
-      const gaps =
-        rowGap.raw === colGap.raw
+    const display = look('display');
+    const flex = /flex/.test(display);
+    const auto = flex || /grid/.test(display);
+    const choice = (id: string) => (s: string) => choiceText(id, s);
+    const layout: InspectRow[] = [];
+    if (flex) {
+      layout.push(
+        row('direction', 'Direction', v('flex-direction', choice('direction'))),
+        row('wrap', 'Wrap', v('flex-wrap', choice('wrap')))
+      );
+    }
+    layout.push(sizeRow('w', rect.width), sizeRow('h', rect.height));
+    if (flex) {
+      layout.push(
+        row('align', 'Align', v('align-items', choice('align'))),
+        row('justify', 'Justify', v('justify-content', choice('justify')))
+      );
+    }
+    if (auto) {
+      const gapText = (s: string) => (s === 'normal' ? '0' : pxText(s));
+      const rowGap = v('row-gap', gapText);
+      const colGap = v('column-gap', gapText);
+      layout.push(
+        ...(rowGap.raw === colGap.raw
           ? [row('gap', 'Gap', rowGap)]
-          : [row('gap-row', 'Rows', rowGap), row('gap-col', 'Columns', colGap)];
-      if (
-        gaps.some((g) => !NEUTRAL.has(g.value.raw) && g.value.raw !== '0px')
-      ) {
-        layout.push(...gaps);
+          : [row('gap-row', 'Rows', rowGap), row('gap-col', 'Columns', colGap)])
+      );
+    }
+    if (framed) {
+      const padding = sides(
+        'padding',
+        P.map((p) => v(p)),
+        ['Top', 'Right', 'Bottom', 'Left'],
+        ['Vertical', 'Horizontal'],
+        'Padding'
+      );
+      if (auto || padding.some((r) => r.value.raw !== '0px')) {
+        layout.push(...padding);
       }
     }
-    sections.push({ id: 'layout', label: 'Layout', rows: layout });
+    sections.push({
+      id: 'layout',
+      label: auto ? 'Auto layout' : 'Layout',
+      rows: layout,
+    });
 
-    // An icon paints with its fill and stroke, never with the text colour,
-    // so it shows those and no Text section.
-    const icon =
-      el.namespaceURI === 'http://www.w3.org/2000/svg' &&
-      !/^(text|tspan|textPath)$/.test(el.localName);
+    // Appearance: opacity for every layer, the corner radius for a frame.
+    const appearance = [row('opacity', 'Opacity', v('opacity', opacityText))];
+    if (framed) {
+      appearance.push(
+        ...sides(
+          'radius',
+          R.map((r) => v(r)),
+          ['Top left', 'Top right', 'Bottom right', 'Bottom left'],
+          ['Top left, bottom right', 'Top right, bottom left'],
+          'Radius'
+        )
+      );
+    }
+    sections.push({ id: 'appearance', label: 'Appearance', rows: appearance });
+
+    // Typography, for a layer that holds text; its colour is a Fill.
+    if (text) {
+      const family = v('font-family', (s) => shownFamily(s, available));
+      // A family token holds a stack, which the rendered value starts with
+      // (the rule may add fallbacks after it).
+      if (!family.token) {
+        const named = candidatesFor('font-family', decls);
+        const stacks = meta.filter((t) => t.type === 'fontFamily');
+        const starts = (name: string) => {
+          const stack = resolve('font-family', name);
+          return !!stack && family.raw.startsWith(stack);
+        };
+        const linked = named.find(starts);
+        const equal = linked ? undefined : stacks.find((t) => starts(t.name));
+        const city = linked
+          ? undefined
+          : stacks.find((t) => isCityToken(t) && starts(t.name));
+        if (linked) Object.assign(family, { token: linked, link: 'linked' });
+        else if (city) {
+          Object.assign(family, { token: city.name, link: 'theme' });
+        } else if (equal) {
+          Object.assign(family, { token: equal.name, link: 'equal' });
+        }
+      }
+      const type = [
+        row('family', 'Font', family),
+        row('weight', 'Weight', v('font-weight')),
+        row('size', 'Size', v('font-size')),
+        row('lh', 'Line height', v('line-height')),
+      ];
+      const ls = v('letter-spacing');
+      if (!NEUTRAL.has(ls.raw)) type.push(row('ls', 'Letter spacing', ls));
+      type.push(
+        row('text-align', 'Align', v('text-align', choice('text-align')))
+      );
+      sections.push({ id: 'typography', label: 'Typography', rows: type });
+    }
+
+    // Fill: a text layer's is its colour; a frame's its background, and
+    // the colour of its text when it holds some; an icon's its own paint.
     const paint = (prop: string) => {
       const p = v(prop, colourText);
       return p.raw === 'none' || isTransparent(p.raw) ? undefined : p;
     };
-    const iconFill = icon ? paint('fill') : undefined;
-    const iconStroke = icon ? paint('stroke') : undefined;
-
-    const fill = v('background-color', colourText);
+    const bg = v('background-color', colourText);
+    const hasBg = !isTransparent(bg.raw);
     const fills: InspectRow[] = [];
-    if (!isTransparent(fill.raw)) {
-      fills.push(row('fill', iconFill ? 'Background' : 'Fill', fill));
+    let addFill: SectionAdd | undefined;
+    if (kind === 'text') {
+      fills.push(row('color', 'Fill', v('color', colourText)));
+    } else if (kind === 'icon') {
+      const own = paint('fill');
+      if (own) fills.push(row('icon-fill', 'Fill', own));
+      else {
+        addFill = {
+          rowId: 'icon-fill',
+          label: 'Add fill',
+          from: look('fill'),
+          value: ADDED.paint,
+        };
+      }
+      if (hasBg) fills.push(row('fill', 'Background', bg));
+    } else {
+      if (kind === 'image') {
+        fills.push(row('image', 'Image', { raw: 'image', shown: 'Image' }));
+      }
+      if (hasBg) {
+        fills.push(
+          row('fill', text || kind === 'image' ? 'Background' : 'Fill', bg)
+        );
+      } else if (kind !== 'image') {
+        addFill = {
+          rowId: 'fill',
+          label: text ? 'Add background' : 'Add fill',
+          from: bg.raw,
+          value: ADDED.fill,
+        };
+      }
+      if (text) fills.push(row('color', 'Text', v('color', colourText)));
     }
-    if (iconFill) fills.push(row('icon-fill', 'Fill', iconFill));
-    if (fills.length) sections.push({ id: 'fill', label: 'Fill', rows: fills });
+    sections.push({ id: 'fill', label: 'Fill', rows: fills, add: addFill });
 
-    const width = parseFloat(cs.getPropertyValue('border-top-width')) || 0;
-    const strokes: InspectRow[] = [];
-    if (
-      width > 0 &&
-      cs.getPropertyValue('border-top-style') !== 'none' &&
-      !isTransparent(cs.getPropertyValue('border-top-color'))
-    ) {
-      strokes.push(
-        row('stroke-color', 'Colour', v('border-top-color', colourText)),
-        row('stroke-width', 'Width', v('border-top-width'))
-      );
-    }
-    if (iconStroke) strokes.push(row('icon-stroke', 'Colour', iconStroke));
-    if (strokes.length) {
-      sections.push({ id: 'stroke', label: 'Stroke', rows: strokes });
-    }
-
-    const radius = sides(
-      'radius',
-      [
-        v('border-top-left-radius'),
-        v('border-top-right-radius'),
-        v('border-bottom-right-radius'),
-        v('border-bottom-left-radius'),
-      ],
-      ['Top left', 'Top right', 'Bottom right', 'Bottom left'],
-      ['Top left, bottom right', 'Top right, bottom left'],
-      'Radius'
-    );
-    if (radius.some((r) => r.value.raw !== '0px')) {
-      sections.push({ id: 'radius', label: 'Radius', rows: radius });
-    }
-
-    const family = v('font-family', (s) => shownFamily(s, available));
-    // A family token holds a stack, which the rendered value starts with
-    // (the rule may add fallbacks after it).
-    if (!family.token) {
-      const named = candidatesFor('font-family', decls);
-      const stacks = meta.filter((t) => t.type === 'fontFamily');
-      const starts = (name: string) => {
-        const stack = resolve('font-family', name);
-        return !!stack && family.raw.startsWith(stack);
-      };
-      const linked = named.find(starts);
-      const equal = linked ? undefined : stacks.find((t) => starts(t.name));
-      const city = linked
-        ? undefined
-        : stacks.find((t) => isCityToken(t) && starts(t.name));
-      if (linked) Object.assign(family, { token: linked, link: 'linked' });
-      else if (city) Object.assign(family, { token: city.name, link: 'theme' });
-      else if (equal)
-        Object.assign(family, { token: equal.name, link: 'equal' });
-    }
-    const textRows = [
-      row('family', 'Font', family),
-      row('weight', 'Weight', v('font-weight')),
-      row('size', 'Size', v('font-size')),
-      row('lh', 'Line height', v('line-height')),
-    ];
-    const ls = v('letter-spacing');
-    if (!NEUTRAL.has(ls.raw)) textRows.push(row('ls', 'Letter spacing', ls));
-    textRows.push(row('color', 'Colour', v('color', colourText)));
-    if (holdsText(el)) {
-      sections.push({ id: 'text', label: 'Text', rows: textRows });
-    }
-
-    const shadow = v('box-shadow', (s) => (s === 'none' ? 'None' : 'Shadow'));
-    if (shadow.raw !== 'none') {
+    // Stroke: every side of a frame's border; an icon's own stroke.
+    if (kind !== 'text') {
+      const strokes = borderRows(v, look);
+      let addStroke: SectionAdd | undefined;
+      if (kind === 'icon') {
+        const own = paint('stroke');
+        if (own) {
+          strokes.push(
+            row('icon-stroke', 'Colour', own),
+            row('icon-stroke-width', 'Width', v('stroke-width'))
+          );
+        } else if (strokes.length === 0) {
+          addStroke = {
+            rowId: 'icon-stroke',
+            label: 'Add stroke',
+            from: look('stroke'),
+            value: ADDED.paint,
+          };
+        }
+      } else if (strokes.length === 0) {
+        addStroke = {
+          rowId: 'stroke',
+          label: 'Add stroke',
+          from: look('border') || 'none',
+          value: ADDED.stroke,
+        };
+      }
       sections.push({
-        id: 'effects',
-        label: 'Effects',
-        rows: [row('shadow', 'Drop shadow', shadow)],
+        id: 'stroke',
+        label: 'Stroke',
+        rows: strokes,
+        add: addStroke,
       });
     }
 
-    return { label: labelOf(el), sections };
+    // Effects: a frame's shadow, or a "+" for one.
+    const shadow = v('box-shadow', (s) => (s === 'none' ? 'None' : 'Shadow'));
+    if (shadow.raw !== 'none' || framed) {
+      sections.push({
+        id: 'effects',
+        label: 'Effects',
+        rows:
+          shadow.raw !== 'none' ? [row('shadow', 'Drop shadow', shadow)] : [],
+        add:
+          shadow.raw === 'none'
+            ? {
+                rowId: 'shadow',
+                label: 'Add shadow',
+                from: 'none',
+                value: ADDED.shadow,
+              }
+            : undefined,
+      });
+    }
+
+    // Selection colours: the layer's own and those of what it holds. Text
+    // of its own is a layer it holds, as a frame holds a text layer.
+    const uses: ColourUse[] = [];
+    if (el.children.length > 0 || (text && kind !== 'text')) {
+      const all = [el, ...Array.from(el.querySelectorAll('*'))].slice(
+        0,
+        MAX_LAYERS
+      );
+      for (const e of all) {
+        const c = e === el ? cs : win.getComputedStyle(e);
+        if (c.display === 'none' || c.visibility === 'hidden') continue;
+        let d: [string, string][] | undefined;
+        const val = (prop: string) =>
+          valueOf(
+            prop,
+            c,
+            (d = d ?? declsOf(e, rules)),
+            meta,
+            resolve,
+            colourText
+          );
+        const at = (rowId: string, value: InspectValue) =>
+          uses.push({ el: e, rowId, value });
+        if (e.namespaceURI === SVG) {
+          if (!SVG_PAINTS.test(e.localName)) continue;
+          // A shape painted as its parent is (an icon's paths) is the
+          // parent's colour, not one more.
+          const parent =
+            e.localName === 'svg' || !e.parentElement
+              ? undefined
+              : win.getComputedStyle(e.parentElement);
+          for (const [prop, rowId] of [
+            ['fill', 'icon-fill'],
+            ['stroke', 'icon-stroke'],
+          ]) {
+            const raw = c.getPropertyValue(prop).trim();
+            if (raw === 'none' || isTransparent(raw)) continue;
+            if (parent && parent.getPropertyValue(prop).trim() === raw)
+              continue;
+            at(rowId, val(prop));
+          }
+          continue;
+        }
+        if (!isTransparent(c.backgroundColor)) {
+          at('fill', val('background-color'));
+        }
+        if (holdsText(e)) at('color', val('color'));
+        const elLook = (prop: string) => c.getPropertyValue(prop).trim();
+        for (const r of borderRows((prop) => val(prop), elLook)) {
+          if (r.snap === 'color') at(r.id, r.value);
+        }
+      }
+    }
+    const colours = uses.some((u) => u.el !== el || u.rowId === 'color')
+      ? groupColours(uses)
+      : [];
+
+    return { label: labelOf(el), kind, sections, colours };
   } finally {
     done();
   }

@@ -28,6 +28,7 @@ const InspSection = ({
   title,
   count,
   defaultOpen = true,
+  empty = false,
   actions,
   children,
 }: {
@@ -35,14 +36,32 @@ const InspSection = ({
   title: string;
   count?: number;
   defaultOpen?: boolean;
+  // Nothing of its kind yet: the title greyed, no fold, only the actions
+  // (Figma's empty Fill with its "+").
+  empty?: boolean;
   actions?: ReactNode;
-  children: ReactNode;
+  children?: ReactNode;
 }) => {
   const [open, setOpen] = useState(() => readOpen(id, defaultOpen));
   const toggle = () => {
     setOpen(!open);
     writeOpen(id, !open);
   };
+  if (empty) {
+    return (
+      <section
+        className="wb-insp-block wb-insp-empty"
+        data-testid="wb-insp-section"
+        data-section={id}
+        data-empty="true"
+      >
+        <header className="wb-insp-head">
+          <h3>{title}</h3>
+          {actions}
+        </header>
+      </section>
+    );
+  }
   return (
     <section
       className="wb-insp-block"

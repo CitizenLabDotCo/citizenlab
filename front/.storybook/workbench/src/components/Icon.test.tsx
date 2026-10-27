@@ -34,6 +34,13 @@ const NEW: IconName[] = [
   'city',
   'language',
   'caution',
+  'opacity',
+  'direction',
+  'wrap',
+  'align',
+  'justify',
+  'text-align',
+  'image',
 ];
 
 describe('Icon', () => {

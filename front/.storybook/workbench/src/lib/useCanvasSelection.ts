@@ -4,6 +4,7 @@ import {
   atPath,
   defaultTarget,
   labelOf,
+  layerOf,
   parentTarget,
   pathOf,
 } from './inspect';
@@ -168,10 +169,13 @@ export const useCanvasSelection = (
     cover.style.cssText =
       'position:fixed;inset:0;z-index:2147483646;cursor:default;background:transparent';
     doc.body.appendChild(cover);
-    const under = (e: MouseEvent): Element | null =>
-      doc
+    // A shape of an icon picks the whole icon, as Figma picks the top layer.
+    const under = (e: MouseEvent): Element | null => {
+      const el = doc
         .elementsFromPoint(e.clientX, e.clientY)
-        .find((el): el is Element => inStory(el)) ?? null;
+        .find((at): at is Element => inStory(at));
+      return el ? layerOf(el) : null;
+    };
     const onMove = (e: PointerEvent) => {
       hovered = under(e);
     };

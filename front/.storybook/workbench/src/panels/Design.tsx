@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import type { TokenName } from '@ds/tokens/tokens';
 
@@ -11,13 +11,20 @@ import type { Finding, TokenMeta } from '../lib/data';
 import { editId, ElementEdit, valueFits } from '../lib/elementEdits';
 import { healToken, isHealable } from '../lib/healTask';
 import {
+  ColourGroup,
+  ColourUse,
+  defaultTarget,
   fitsProp,
-  Inspection,
   InspectRow,
+  InspectSection,
+  Inspection,
   inspectElement,
+  LayerKind,
   labelOf,
+  opacityValue,
   parentTarget,
   pathOf,
+  rowSpec,
   shortName,
 } from '../lib/inspect';
 import type { Overrides } from '../lib/overrides';
@@ -52,8 +59,31 @@ type Props = {
 const SETTLE_MS = [60, 600];
 // "Also in this file" rows shown before "Show all".
 const ALSO_FIRST = 12;
+// Selection colours shown before "Show all".
+const COLOURS_FIRST = 8;
 // Rows whose typed bare number is a length in px.
-const PX_ROWS = new Set(['size', 'ls', 'stroke-width']);
+const PX_ROWS = /^(size|ls|stroke-width(-.+)?|icon-stroke-width)$/;
+
+// The layer button's glyph, as Figma marks a layer's kind.
+const KIND_GLYPH: Record<LayerKind, IconName> = {
+  box: 'layers',
+  text: 'text',
+  icon: 'fill',
+  image: 'image',
+  field: 'edit',
+};
+
+// Where a Selection colour sits on its element, for the Changes list.
+const USE_GROUP: Record<string, string> = {
+  fill: 'Fill',
+  color: 'Text',
+  'icon-fill': 'Fill',
+  'icon-stroke': 'Stroke',
+};
+
+// What an edit is on: the element (its path under the story box), the row,
+// and the property it belongs to in the Changes list.
+type Target = { path: number[] | null; row: InspectRow; group: string };
 
 // Whether the frame can draw a font family: the text measures differently
 // from two fallbacks when it can. Generic families always can.
@@ -123,6 +153,7 @@ const Design = ({
   const [picker, setPicker] = useState<string | undefined>();
   const [ancestors, setAncestors] = useState(false);
   const [alsoAll, setAlsoAll] = useState(false);
+  const [coloursAll, setColoursAll] = useState(false);
   const { selected, version, pick } = selection;
   const live = useMemo(() => resolveTokens(DEFS, overrides), [overrides]);
   const resolved = live;
@@ -160,107 +191,113 @@ const Design = ({
   useEffect(() => {
     setPicker(undefined);
     setAncestors(false);
+    setColoursAll(false);
   }, [selected]);
 
   const path = selected ? pathOf(selected) : null;
-  const editOf = (row: InspectRow) =>
-    edits.find((e) => e.id === editId(storyId, path, row.id));
+  const idOf = (t: Target) => editId(storyId, t.path, t.row.id);
+  const editOf = (t: Target) => edits.find((e) => e.id === idOf(t));
   // What the row was before the session touched it: the first edit keeps it.
-  const originOf = (row: InspectRow): ElementEdit['from'] =>
-    editOf(row)?.from ?? {
-      raw: row.value.raw,
-      shown: row.value.shown,
+  const originOf = (t: Target): ElementEdit['from'] =>
+    editOf(t)?.from ?? {
+      raw: t.row.value.raw,
+      shown: t.row.value.shown,
       token:
-        row.value.link === 'linked' || row.value.link === 'theme'
-          ? row.value.token
+        t.row.value.link === 'linked' || t.row.value.link === 'theme'
+          ? t.row.value.token
           : undefined,
     };
-  // The property a row belongs to: Layout holds padding and gap rows.
-  const groupOf = (row: InspectRow, sectionLabel: string) =>
-    row.id.startsWith('padding')
+  // The property a row of the selection belongs to: Layout holds padding
+  // and gap rows, Appearance the radius.
+  const at = (row: InspectRow, sectionLabel: string): Target => ({
+    path,
+    row,
+    group: row.id.startsWith('padding')
       ? 'Padding'
       : row.id.startsWith('gap')
       ? 'Gap'
-      : sectionLabel;
-  const base = (row: InspectRow, sectionLabel: string) => ({
-    id: editId(storyId, path, row.id),
+      : row.id.startsWith('radius')
+      ? 'Radius'
+      : sectionLabel,
+  });
+  const base = (t: Target) => ({
+    id: idOf(t),
     storyId,
-    path,
-    rowId: row.id,
+    path: t.path,
+    rowId: t.row.id,
     label:
-      row.label && row.label !== groupOf(row, sectionLabel)
-        ? `${groupOf(row, sectionLabel)} · ${row.label}`
-        : groupOf(row, sectionLabel),
-    glyph: row.glyph,
-    props: row.props,
-    from: originOf(row),
+      t.row.label && t.row.label !== t.group
+        ? `${t.group} · ${t.row.label}`
+        : t.group,
+    glyph: t.row.glyph,
+    props: t.row.props,
+    from: originOf(t),
     at: Date.now(),
   });
   // A token for the row: an attach when the row started as a text value,
   // a swap when it started bound. Back to where it started = no edit.
-  const bind = (row: InspectRow, sectionLabel: string, token: TokenName) => {
-    const from = originOf(row);
+  const bind = (t: Target, token: TokenName) => {
+    const from = originOf(t);
+    const v = t.row.value;
     // A city value read through the theme: attaching its own token is the
     // heal (read the variable), drawn the same.
-    if (
-      !editOf(row) &&
-      row.value.link === 'theme' &&
-      row.value.token === token
-    ) {
+    if (!editOf(t) && v.link === 'theme' && v.token === token) {
       addEdit({
-        ...base(row, sectionLabel),
+        ...base(t),
         from: { raw: from.raw, shown: from.shown },
-        to: { value: resolved[token] ?? row.value.raw, token },
+        to: { value: resolved[token] ?? v.raw, token },
         kind: 'attach',
       });
       return;
     }
     if (from.token === token) {
-      removeEdit(editId(storyId, path, row.id));
+      removeEdit(idOf(t));
       return;
     }
     addEdit({
-      ...base(row, sectionLabel),
-      to: { value: resolved[token] ?? row.value.raw, token },
+      ...base(t),
+      to: { value: resolved[token] ?? v.raw, token },
       kind: from.token ? 'swap' : 'attach',
     });
   };
-  const detach = (row: InspectRow, sectionLabel: string) => {
-    const from = originOf(row);
+  const detach = (t: Target) => {
+    const from = originOf(t);
     // A pill the session attached goes back to its text value.
-    if (!from.token && editOf(row)) {
-      removeEdit(editId(storyId, path, row.id));
+    if (!from.token && editOf(t)) {
+      removeEdit(idOf(t));
       return;
     }
-    addEdit({
-      ...base(row, sectionLabel),
-      to: { value: row.value.raw },
-      kind: 'detach',
-    });
+    addEdit({ ...base(t), to: { value: t.row.value.raw }, kind: 'detach' });
   };
-  const commit = (
-    row: InspectRow,
-    sectionLabel: string,
-    typed: string,
-    exact = false
-  ): boolean => {
+  // A value as it is; back where the row started it is no edit.
+  const custom = (t: Target, value: string) => {
+    if (value === originOf(t).raw) {
+      if (editOf(t)) removeEdit(idOf(t));
+    } else {
+      addEdit({ ...base(t), to: { value }, kind: 'custom' });
+    }
+  };
+  const commit = (t: Target, typed: string, exact = false): boolean => {
+    const { row } = t;
+    if (row.id === 'opacity') {
+      const share = opacityValue(typed);
+      if (share === undefined) return false;
+      custom(t, share);
+      return true;
+    }
     const bare = /^-?\d+(\.\d+)?$/.test(typed);
     const length =
-      (row.snap === 'space' || row.snap === 'radius' || PX_ROWS.has(row.id)) &&
+      (row.snap === 'space' || row.snap === 'radius' || PX_ROWS.test(row.id)) &&
       bare;
     let value = length ? `${typed}px` : typed;
     if (row.snap === 'color' && /^[0-9a-f]{3,8}$/i.test(value)) {
       value = `#${value}`;
     }
     if (!valueFits(row.id, value)) return false;
-    // An arrow step lands where it points, off the scale or not; back where
-    // the row started it is no edit.
-    if (exact) {
-      if (value === originOf(row).raw) {
-        if (editOf(row)) removeEdit(editId(storyId, path, row.id));
-      } else {
-        addEdit({ ...base(row, sectionLabel), to: { value }, kind: 'custom' });
-      }
+    // An arrow step or a menu choice lands where it points, off the scale
+    // or not.
+    if (exact || row.choices) {
+      custom(t, value);
       return true;
     }
     const r = snapValue(row.snap, value, meta);
@@ -275,12 +312,61 @@ const Design = ({
           ''
         ).find((g) => g.id === 'match')?.tokens[0];
     const token = (r.to ?? equal?.name) as TokenName | undefined;
-    if (token) bind(row, sectionLabel, token);
-    else {
-      addEdit({ ...base(row, sectionLabel), to: { value }, kind: 'custom' });
-    }
+    if (token) bind(t, token);
+    else custom(t, value);
     return true;
   };
+  // "+" on an empty Fill, Stroke or Effects: Figma's default look, a
+  // custom value until a token is picked for it.
+  const add = (s: InspectSection) => {
+    if (!s.add) return;
+    const spec = rowSpec(s.add.rowId);
+    const t: Target = {
+      path,
+      row: {
+        id: s.add.rowId,
+        label: '',
+        value: { raw: s.add.from, shown: 'None' },
+        ...spec,
+      },
+      group: s.label,
+    };
+    addEdit({ ...base(t), to: { value: s.add.value }, kind: 'custom' });
+  };
+
+  // A Selection colour stands for every use of it: each use is the row of
+  // its own element, so the edit shows there too.
+  const useTarget = (u: ColourUse): Target | null => {
+    const p = pathOf(u.el);
+    if (!p) return null;
+    const group = USE_GROUP[u.rowId] ?? 'Stroke';
+    return {
+      path: p,
+      row: {
+        id: u.rowId,
+        label: labelOf(u.el),
+        value: u.value,
+        ...rowSpec(u.rowId),
+      },
+      group,
+    };
+  };
+  const eachUse = (g: ColourGroup, f: (t: Target) => void) => {
+    for (const u of g.uses) {
+      const t = useTarget(u);
+      if (t) f(t);
+    }
+  };
+  const colourRow = (g: ColourGroup): InspectRow => ({
+    id: `colour-${g.key}`,
+    label: `Colour, ${g.uses.length} ${g.uses.length === 1 ? 'use' : 'uses'}`,
+    value: g.value,
+    props: ['color'],
+    glyph: 'fill',
+    half: false,
+    editable: true,
+    snap: 'color',
+  });
 
   // Hard values of the file the selection does not cover: every healable
   // finding, minus those a file edit already stands for.
@@ -313,6 +399,112 @@ const Design = ({
   };
 
   const up = selected ? ancestorsOf(selected) : [];
+  // The component's own props sit on top, open while the component itself
+  // is selected (Figma shows an instance's properties first), folded for a
+  // layer inside it. A selection the story's remount left behind (a city
+  // switch) keeps the last answer until the new element is found.
+  const rootRef = useRef(true);
+  if (!selected) rootRef.current = true;
+  else if (selected.isConnected && frame) {
+    try {
+      rootRef.current = selected === defaultTarget(frame.document);
+    } catch {
+      // The frame navigated away.
+    }
+  }
+  const root = rootRef.current;
+  const props = (
+    <details
+      className="wb-insp-block wb-insp-props"
+      data-testid="wb-insp-props"
+      data-root={root}
+      open={root}
+    >
+      <summary className="wb-insp-head">
+        <h3>Props</h3>
+        <Icon name="chevron" size={14} />
+      </summary>
+      <Controls storyId={storyId} frames={frames} />
+    </details>
+  );
+  const field = (
+    key: string,
+    r: InspectRow,
+    t: Target,
+    on: {
+      commit: (typed: string, exact?: boolean) => boolean;
+      attach: (token: TokenName) => void;
+      detach: () => void;
+    }
+  ) => (
+    <div
+      key={key}
+      className={r.half ? 'wb-insp-prop' : 'wb-insp-prop wb-insp-full'}
+    >
+      <ValueField
+        row={r}
+        liveToken={r.value.token ? resolved[r.value.token] : undefined}
+        edit={editOf(t)}
+        onCommit={on.commit}
+        onAttach={on.attach}
+        onDetach={on.detach}
+        onOpenPicker={() => setPicker(picker === key ? undefined : key)}
+      />
+      {picker === key && (
+        <TokenPicker
+          row={r}
+          meta={meta}
+          resolved={resolved}
+          onPick={(token) => {
+            on.attach(token);
+            setPicker(undefined);
+          }}
+          onClose={() => setPicker(undefined)}
+        />
+      )}
+    </div>
+  );
+  const colours = inspection?.colours ?? [];
+  const coloursShown = coloursAll ? colours : colours.slice(0, COLOURS_FIRST);
+  const sectionOf = (s: InspectSection) => (
+    <InspSection
+      key={s.id}
+      id={s.id}
+      title={s.label}
+      empty={s.rows.length === 0}
+      actions={
+        s.add && (
+          <button
+            type="button"
+            className="wb-icon-button wb-insp-action"
+            data-testid="wb-insp-add"
+            data-section={s.id}
+            aria-label={s.add.label}
+            title={s.add.label}
+            onClick={() => add(s)}
+          >
+            <Icon name="plus" size={14} />
+          </button>
+        )
+      }
+    >
+      {s.rows.map((r) => {
+        const t = at(r, s.label);
+        return field(`${s.id}:${r.id}`, r, t, {
+          commit: (typed, exact) => commit(t, typed, exact),
+          attach: (token) => bind(t, token),
+          detach: () => detach(t),
+        });
+      })}
+    </InspSection>
+  );
+  const sections = (inspection?.sections ?? []).filter(
+    (s) => s.rows.length > 0 || s.add
+  );
+  // Selection colours sit where Figma has them: after Stroke, before
+  // Effects.
+  const beforeColours = sections.filter((s) => s.id !== 'effects');
+  const afterColours = sections.filter((s) => s.id === 'effects');
 
   return (
     <div className="wb-insp" data-testid="wb-panel-design">
@@ -331,7 +523,10 @@ const Design = ({
               aria-label={`Layer ${labelOf(selected)}. Select a parent`}
               onClick={() => setAncestors((a) => !a)}
             >
-              <Icon name="layers" size={14} />
+              <Icon
+                name={inspection ? KIND_GLYPH[inspection.kind] : 'layers'}
+                size={14}
+              />
               <span className="wb-insp-layer-name">{labelOf(selected)}</span>
               <Icon name="chevron" size={14} />
             </button>
@@ -371,51 +566,53 @@ const Design = ({
         )}
       </section>
 
-      {inspection?.sections
-        .filter((s) => s.rows.length > 0)
-        .map((s) => (
-          <InspSection key={s.id} id={s.id} title={s.label}>
-            {s.rows.map((r) => {
-              const key = `${s.id}:${r.id}`;
-              return (
-                <div
-                  key={key}
-                  className={
-                    r.half ? 'wb-insp-prop' : 'wb-insp-prop wb-insp-full'
-                  }
-                >
-                  <ValueField
-                    row={r}
-                    liveToken={
-                      r.value.token ? resolved[r.value.token] : undefined
-                    }
-                    edit={editOf(r)}
-                    onCommit={(typed, exact) =>
-                      commit(r, s.label, typed, exact)
-                    }
-                    onAttach={(token) => bind(r, s.label, token)}
-                    onDetach={() => detach(r, s.label)}
-                    onOpenPicker={() =>
-                      setPicker(picker === key ? undefined : key)
-                    }
-                  />
-                  {picker === key && (
-                    <TokenPicker
-                      row={r}
-                      meta={meta}
-                      resolved={resolved}
-                      onPick={(token) => {
-                        bind(r, s.label, token);
-                        setPicker(undefined);
-                      }}
-                      onClose={() => setPicker(undefined)}
-                    />
-                  )}
-                </div>
-              );
-            })}
-          </InspSection>
-        ))}
+      {props}
+
+      {beforeColours.map(sectionOf)}
+
+      {colours.length > 0 && (
+        <InspSection
+          id="selection-colours"
+          title="Selection colours"
+          count={colours.length}
+        >
+          {coloursShown.map((g) => {
+            const r = colourRow(g);
+            // The group's own row stands for its first use: the custom mark
+            // shows when that one is a custom value.
+            const first = g.uses.map(useTarget).find(Boolean) as
+              | Target
+              | undefined;
+            return field(
+              `selection-colours:${g.key}`,
+              r,
+              first ?? { path: null, row: r, group: 'Fill' },
+              {
+                commit: (typed, exact) => {
+                  let ok = true;
+                  eachUse(g, (t) => {
+                    ok = commit(t, typed, exact) && ok;
+                  });
+                  return ok;
+                },
+                attach: (token) => eachUse(g, (t) => bind(t, token)),
+                detach: () => eachUse(g, detach),
+              }
+            );
+          })}
+          {!coloursAll && colours.length > COLOURS_FIRST && (
+            <button
+              type="button"
+              className="wb-controls-more wb-insp-full"
+              onClick={() => setColoursAll(true)}
+            >
+              {`Show all ${colours.length}`}
+            </button>
+          )}
+        </InspSection>
+      )}
+
+      {afterColours.map(sectionOf)}
 
       {also.length > 0 && (
         <InspSection
@@ -466,17 +663,6 @@ const Design = ({
           )}
         </InspSection>
       )}
-
-      <details
-        className="wb-insp-block wb-insp-props"
-        data-testid="wb-insp-props"
-      >
-        <summary className="wb-insp-head">
-          <h3>Props</h3>
-          <Icon name="chevron" size={14} />
-        </summary>
-        <Controls storyId={storyId} frames={frames} />
-      </details>
     </div>
   );
 };

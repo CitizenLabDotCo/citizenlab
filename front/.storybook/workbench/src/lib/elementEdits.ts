@@ -182,7 +182,11 @@ export const valueFits = (rowId: string, value: string) => {
   if (value.length > MAX_VALUE || /url\(|expression\(|[<>;{}\\]/i.test(value)) {
     return false;
   }
-  const kind = rowSpec(rowId).snap;
+  const spec = rowSpec(rowId);
+  if (spec.choices) return spec.choices.some(([v]) => v === value);
+  // A share of 0 to 1, as opacityValue writes it.
+  if (rowId === 'opacity') return /^(0|1|0?\.\d+)$/.test(value);
+  const kind = spec.snap;
   if (kind === 'space' || kind === 'radius')
     return value === '0' || PX.test(value);
   if (kind === 'color') return parseColour(value) !== null;

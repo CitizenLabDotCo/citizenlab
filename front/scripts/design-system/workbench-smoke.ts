@@ -73,9 +73,8 @@ const RADIUS_OVERRIDE = '20px';
 const SHADOW_TOKEN = '--gv-shadow-menu';
 const SHADOW_FIELDS = ['x', 'y', 'blur', 'spread', 'color', 'alpha'];
 
-// The Design tab's checks: Size is hard-coded at --gv-fs-s, and 12 typed
-// into the vertical padding snaps to --gv-space-3.
-const SIZE_TOKEN = '--gv-fs-s';
+// The Design tab's checks: the label's Size is hard-coded and equals a font
+// size token, and 12 typed into the vertical padding snaps to --gv-space-3.
 const SNAP_TOKEN = '--gv-space-3';
 
 // Hashes that open another page, and the hash each is replaced with.
@@ -1171,12 +1170,11 @@ const panelChecks = async (
     }
   }
 
-  // Back to the button (Esc selects the parent): Size is hard-coded and
-  // equals SIZE_TOKEN, so its field offers to attach it.
-  await page.keyboard.press('Escape');
+  // The label is a text layer, so its Typography shows: Size is hard-coded
+  // and equals a font size token, so its field offers to attach it.
   const value = (row: string) =>
     `[data-testid="wb-panel-design"] [data-row="${row}"][data-testid="wb-insp-value"]`;
-  const suggest = `[data-testid="wb-panel-design"] [data-row="size"] [data-testid="wb-insp-suggest"][data-token="${SIZE_TOKEN}"]`;
+  const suggest = `[data-testid="wb-panel-design"] [data-row="size"] [data-testid="wb-insp-suggest"]`;
   const linkedTo = async (row: string) => {
     try {
       await page.waitForFunction(
@@ -1193,16 +1191,22 @@ const panelChecks = async (
       .catch(() => null);
   };
   let attached: string | null = null;
+  let offered: string | null = null;
   try {
     await page.waitForSelector(suggest, { timeout: 20000 });
+    offered = await page.$eval(suggest, (el: Element) =>
+      el.getAttribute('data-token')
+    );
     await page.click(suggest);
     attached = await linkedTo('size');
   } catch {
     // Reported below.
   }
-  if (attached !== SIZE_TOKEN) {
+  if (!offered || attached !== offered) {
     failures.push(
-      `attaching ${SIZE_TOKEN} to Size left the field ${attached ?? 'unbound'}`
+      `attaching ${
+        offered ?? 'a font size token'
+      } to the label's Size left the field ${attached ?? 'unbound'}`
     );
   }
   const badge = async () =>
@@ -1230,10 +1234,20 @@ const panelChecks = async (
       }`
     );
   }
-  // Typing 12 into the vertical padding snaps to the space scale.
+  // Back to the button (Esc selects the parent): typing 12 into the
+  // vertical padding snaps to the space scale.
+  await page.keyboard.press('Escape');
+  await page
+    .waitForFunction(
+      (sel: string) =>
+        document.querySelector(sel)?.textContent?.startsWith('button'),
+      layer,
+      { timeout: 5000 }
+    )
+    .catch(() => undefined);
   const pad = `[data-testid="wb-panel-design"] [data-row="padding-v"] [data-testid="wb-insp-input"]`;
   let snapped: string | null = null;
-  if (await page.$(pad)) {
+  if (await page.waitForSelector(pad, { timeout: 10000 }).catch(() => null)) {
     await page.fill(pad, '12');
     await page.press(pad, 'Enter');
     snapped = await linkedTo('padding-v');
@@ -1268,9 +1282,9 @@ const panelChecks = async (
     .catch(() =>
       page.evaluate(() => navigator.clipboard.readText()).catch(() => '')
     );
-  if (!task.includes(`→ ${SIZE_TOKEN}`)) {
+  if (!offered || !task.includes(`→ ${offered}`)) {
     failures.push(
-      `the agent task does not name ${SIZE_TOKEN}: ${
+      `the agent task does not name ${offered ?? 'the size token'}: ${
         task.slice(0, 160) || 'nothing copied'
       }`
     );

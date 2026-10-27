@@ -9,6 +9,7 @@ import {
   inlineValue,
   parseStored,
   taskOfEdit,
+  valueFits,
 } from './elementEdits';
 
 const meta = tokensMeta as TokenMeta[];
@@ -161,5 +162,41 @@ describe('element edits', () => {
         meta
       )
     ).toEqual([]);
+  });
+
+  it('takes an opacity share, a listed choice and a whole added stroke', () => {
+    expect(valueFits('opacity', '0.5')).toBe(true);
+    expect(valueFits('opacity', '1')).toBe(true);
+    expect(valueFits('opacity', '1.5')).toBe(false);
+    expect(valueFits('opacity', '50%')).toBe(false);
+    expect(valueFits('direction', 'column')).toBe(true);
+    expect(valueFits('direction', 'sideways')).toBe(false);
+    expect(valueFits('text-align', 'center')).toBe(true);
+    expect(valueFits('stroke', '1px solid #000000')).toBe(true);
+    expect(valueFits('shadow', '0px 4px 4px rgba(0, 0, 0, 0.25)')).toBe(true);
+    expect(valueFits('stroke-width-2', '2px')).toBe(true);
+    expect(valueFits('stroke-color-0', '#00ff00')).toBe(true);
+    expect(valueFits('stroke-color-0', 'banana')).toBe(false);
+  });
+
+  it('paints an icon, a path inside it untouched', () => {
+    document.body.innerHTML =
+      '<div data-gv-story-box><svg viewBox="0 0 24 24"><path d="M0 0"/></svg></div>';
+    const svg = document.querySelector('svg') as SVGElement;
+    const applied = new Map<string, Map<string, string>>();
+    const fill: ElementEdit = {
+      ...base,
+      id: editId('button--default', [0], 'icon-fill'),
+      path: [0],
+      rowId: 'icon-fill',
+      props: ['fill'],
+      to: { value: '#00ff00' },
+      kind: 'custom',
+    };
+    applyElementEdits(document, [fill], 'button--default', applied);
+    expect(svg.style.getPropertyValue('fill')).toBe('#00ff00');
+    expect(
+      (svg.firstElementChild as SVGElement).style.getPropertyValue('fill')
+    ).toBe('');
   });
 });

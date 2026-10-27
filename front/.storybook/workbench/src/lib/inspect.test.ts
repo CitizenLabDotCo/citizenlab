@@ -2,13 +2,20 @@ import type { TokenMeta } from './data';
 import {
   atPath,
   candidatesFor,
+  choiceText,
   colourText,
+  ColourUse,
   declarations,
   defaultTarget,
   fitsProp,
+  groupColours,
   holdsText,
   isCityToken,
+  kindOf,
   labelOf,
+  layerOf,
+  opacityText,
+  opacityValue,
   parentTarget,
   pathOf,
   pxText,
@@ -266,6 +273,7 @@ describe('holdsText', () => {
       true
     );
     expect(holdsText(html('<input value="x">'))).toBe(true);
+    expect(holdsText(html('<input type="checkbox">'))).toBe(false);
   });
   it('gives no Text to a box of other elements or an icon', () => {
     expect(holdsText(html('<div>\n  <span>Label</span>\n</div>'))).toBe(false);
@@ -275,5 +283,178 @@ describe('holdsText', () => {
     expect(
       holdsText(html('<svg><text>Axis</text></svg>').firstElementChild!)
     ).toBe(true);
+  });
+});
+
+const html = (markup: string) => {
+  const box = document.createElement('div');
+  box.innerHTML = markup;
+  return box.firstElementChild as Element;
+};
+
+describe('kindOf', () => {
+  const PLAIN: Record<string, string> = {
+    'background-color': 'rgba(0, 0, 0, 0)',
+    'background-image': 'none',
+    'box-shadow': 'none',
+  };
+  const looks =
+    (over: Record<string, string> = {}) =>
+    (prop: string) =>
+      over[prop] ??
+      PLAIN[prop] ??
+      (/-width$|^padding/.test(prop)
+        ? '0px'
+        : /-style$/.test(prop)
+        ? 'none'
+        : '');
+
+  it('reads an icon, an image and a field', () => {
+    const svg = html('<svg viewBox="0 0 24 24"><path d="M0 0"/></svg>');
+    expect(kindOf(svg, looks())).toBe('icon');
+    expect(kindOf(svg.firstElementChild!, looks())).toBe('icon');
+    expect(kindOf(html('<img alt="">'), looks())).toBe('image');
+    expect(kindOf(html('<input value="x">'), looks())).toBe('field');
+    expect(kindOf(html('<textarea></textarea>'), looks())).toBe('field');
+  });
+
+  it('reads text with nothing drawn around it as text', () => {
+    expect(
+      kindOf(html('<span>Configure project settings</span>'), looks())
+    ).toBe('text');
+    expect(
+      kindOf(html('<svg><text>Axis</text></svg>').firstElementChild!, looks())
+    ).toBe('text');
+  });
+
+  it('reads text in a box of its own as a box', () => {
+    const badge = html('<span>Default</span>');
+    expect(kindOf(badge, looks({ 'background-color': 'rgb(1, 2, 3)' }))).toBe(
+      'box'
+    );
+    expect(kindOf(badge, looks({ 'padding-left': '8px' }))).toBe('box');
+    expect(
+      kindOf(
+        badge,
+        looks({ 'border-top-width': '1px', 'border-top-style': 'solid' })
+      )
+    ).toBe('box');
+    // A border with no style draws nothing.
+    expect(kindOf(badge, looks({ 'border-top-width': '1px' }))).toBe('text');
+  });
+
+  it('reads text beside other elements, and a checkbox, as a box', () => {
+    expect(kindOf(html('<div>Hello <b>you</b></div>'), looks())).toBe('box');
+    expect(kindOf(html('<input type="checkbox">'), looks())).toBe('box');
+    expect(kindOf(html('<div><span>Label</span></div>'), looks())).toBe('box');
+  });
+});
+
+describe('layerOf', () => {
+  it('picks the whole icon for a click on its path', () => {
+    const svg = html('<svg viewBox="0 0 24 24"><g><path d="M0 0"/></g></svg>');
+    expect(layerOf(svg.querySelector('path')!)).toBe(svg);
+    expect(layerOf(svg)).toBe(svg);
+  });
+
+  it('keeps any other element', () => {
+    const span = html('<span>Hi</span>');
+    expect(layerOf(span)).toBe(span);
+  });
+});
+
+describe('opacity', () => {
+  it("reads a typed opacity as Figma's percent", () => {
+    expect(opacityValue('50')).toBe('0.5');
+    expect(opacityValue('50%')).toBe('0.5');
+    expect(opacityValue(' 100 % ')).toBe('1');
+    expect(opacityValue('0')).toBe('0');
+    expect(opacityValue('12.5')).toBe('0.125');
+    expect(opacityValue('101')).toBeUndefined();
+    expect(opacityValue('-5')).toBeUndefined();
+    expect(opacityValue('half')).toBeUndefined();
+  });
+
+  it('shows it as a percent', () => {
+    expect(opacityText('0.5')).toBe('50%');
+    expect(opacityText('1')).toBe('100%');
+    expect(opacityText('0.125')).toBe('13%');
+  });
+});
+
+describe('choices', () => {
+  it('names layout and text values as Figma does', () => {
+    expect(rowSpec('direction')).toMatchObject({
+      props: ['flex-direction'],
+      editable: true,
+    });
+    expect(choiceText('direction', 'column')).toBe('Vertical');
+    expect(choiceText('wrap', 'wrap')).toBe('Wrap');
+    expect(choiceText('justify', 'space-between')).toBe('Space between');
+    expect(choiceText('text-align', 'center')).toBe('Centre');
+    // A value the list does not have reads as it is.
+    expect(choiceText('align', 'self-start')).toBe('self-start');
+  });
+});
+
+describe('stroke rows', () => {
+  it('edits each side of a border on its own', () => {
+    expect(rowSpec('stroke-width-2').props).toEqual(['border-bottom-width']);
+    expect(rowSpec('stroke-color-3').props).toEqual(['border-left-color']);
+    expect(rowSpec('stroke-width-h').props).toEqual([
+      'border-left-width',
+      'border-right-width',
+    ]);
+    expect(rowSpec('stroke')).toMatchObject({ props: ['border'] });
+    expect(fitsProp('border-left-color')).toBeDefined();
+  });
+});
+
+describe('groupColours', () => {
+  const el = document.createElement('div');
+  const use = (
+    rowId: string,
+    raw: string,
+    token?: string,
+    link?: 'linked' | 'theme' | 'equal'
+  ): ColourUse => ({
+    el,
+    rowId,
+    value: { raw, shown: colourText(raw), token: token as never, link },
+  });
+
+  it('lists each colour once, the most used first', () => {
+    const groups = groupColours([
+      use('fill', 'rgb(255, 255, 255)'),
+      use('color', 'rgb(0, 0, 0)'),
+      use('color', 'rgb(0,0,0)'),
+    ]);
+    expect(groups.map((g) => [g.value.shown, g.uses.length])).toEqual([
+      ['000000', 2],
+      ['FFFFFF', 1],
+    ]);
+  });
+
+  it('groups a bound colour by its token, a plain one by its value', () => {
+    const groups = groupColours([
+      use('fill', 'rgb(4, 136, 76)', '--gv-green-500', 'linked'),
+      use('color', 'rgb(4, 136, 76)'),
+      use('icon-fill', 'rgb(4, 136, 76)', '--gv-success', 'linked'),
+    ]);
+    expect(groups).toHaveLength(3);
+  });
+
+  it('keeps a suggested token only while every use equals it', () => {
+    const same = groupColours([
+      use('fill', 'rgb(1, 2, 3)', '--gv-a', 'equal'),
+      use('color', 'rgb(1, 2, 3)', '--gv-a', 'equal'),
+    ]);
+    expect(same[0].value.token).toBe('--gv-a');
+    const mixed = groupColours([
+      use('fill', 'rgb(1, 2, 3)', '--gv-a', 'equal'),
+      use('color', 'rgb(1, 2, 3)'),
+    ]);
+    expect(mixed[0].value.token).toBeUndefined();
+    expect(mixed[0].value.link).toBeUndefined();
   });
 });

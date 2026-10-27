@@ -41,19 +41,30 @@ export const ValueField = ({
   const v = row.value;
   // A city value the theme hands over reads as bound: it follows the city.
   const bound = (v.link === 'linked' || v.link === 'theme') && !!v.token;
-  const lead = v.swatch ? (
+  const swatch = v.swatch && (
     <span
       className="wb-vf-swatch"
       style={{ background: v.swatch }}
       aria-hidden="true"
     />
-  ) : (
+  );
+  // A box's Fill holds its background and the colour of its text: the
+  // text one carries the text glyph too.
+  const lead = !swatch ? (
     <Icon name={row.glyph} size={14} />
+  ) : row.id === 'color' && row.label === 'Text' ? (
+    <>
+      <Icon name="text" size={14} />
+      {swatch}
+    </>
+  ) : (
+    swatch
   );
   const name = row.label || row.id;
   // A text value's glyph opens the picker, as a pill's body does, when
   // some token can stand for the property.
-  const pickable = row.editable && !!fitsProp(row.props[0] ?? '');
+  const pickable =
+    (row.editable || !!row.pickOnly) && !!fitsProp(row.props[0] ?? '');
   const [draft, setDraft] = useState(v.shown);
   useEffect(() => setDraft(v.shown), [v.shown]);
 
@@ -126,6 +137,37 @@ export const ValueField = ({
     );
   }
 
+  // A short list of values (direction, alignment): a menu, each choice
+  // applied as it is.
+  if (row.choices && row.editable) {
+    const known = row.choices.some(([c]) => c === v.raw);
+    return (
+      <div
+        className="wb-vf wb-vf-menu"
+        data-testid="wb-insp-value"
+        data-link="none"
+        data-row={row.id}
+      >
+        <span className="wb-vf-body">
+          {lead}
+          <select
+            data-testid="wb-insp-choice"
+            aria-label={name}
+            value={v.raw}
+            onChange={(e) => onCommit(e.target.value, true)}
+          >
+            {!known && <option value={v.raw}>{v.shown}</option>}
+            {row.choices.map(([value, words]) => (
+              <option key={value} value={value}>
+                {words}
+              </option>
+            ))}
+          </select>
+        </span>
+      </div>
+    );
+  }
+
   const commit = (text: string) => {
     const t = text.trim();
     if (!t || t === v.shown) {
@@ -185,6 +227,8 @@ export const ValueField = ({
                   caret: e.currentTarget.selectionStart ?? undefined,
                   ...(row.id === 'weight'
                     ? { by: 100, min: 100, max: 900 }
+                    : row.id === 'opacity'
+                    ? { min: 0, max: 100 }
                     : {
                         min: row.id === 'ls' ? undefined : 0,
                         fine: row.id === 'lh',

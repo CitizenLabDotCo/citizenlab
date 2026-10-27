@@ -4730,6 +4730,30 @@ tr[data-result='needs-human'] .wb-a11y-note {
   margin: 0;
 }
 
+/* Nothing of its kind yet: a greyed title and its "+" (Figma). */
+.wb-insp-empty > .wb-insp-head {
+  margin-bottom: 0;
+}
+
+.wb-insp-empty > .wb-insp-head h3 {
+  font-weight: 500;
+  color: var(--wb-muted);
+}
+
+/* A menu row (direction, alignment): the select fills the field. */
+.wb-vf-menu select {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  outline: none;
+}
+
 .wb-vf {
   position: relative;
   display: flex;
