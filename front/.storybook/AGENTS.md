@@ -125,7 +125,7 @@ The shell, `.storybook/workbench/` (React and Vite, its own `tsconfig.json`, `@d
 - `src/lib/usage.ts`, `src/lib/componentPanels.ts`, `src/lib/useScanIndexes.ts`: what the Usage tab and the Design tab's "Also in this file" show.
 - `src/lib/stories.ts`, `src/lib/useStoryGroups.ts`: the story index grouped by component, office from tags.
 - `src/lib/review.ts`: the change list's shape, the route fixture and a route's URL on a host, the routes one design commit reaches, the token edits written into a frame.
-- `src/lib/prReview.ts` (tested), `src/lib/pr.ts`: the Review page: the PR from the epic's host (`pr-<n>.epic.hq.govocal.com`) and its header from GitHub's public API (once per session), the design changes, the rest of the PR, the pictures' URLs, route params read live from this platform, the "Copy for PR" text.
+- `src/lib/prReview.ts` (tested): the Review page: the PR from the epic's host (`pr-<n>.epic.hq.govocal.com`), the design changes, the pictures' URLs, route params read live from this platform.
 - `src/lib/sourceDiff.ts`: session edits as a `tokens.source.json` patch.
 - `src/lib/router.ts`, `src/lib/clipboard.ts`: hash routes, copy with a text fallback.
 - `src/pages/`: `Foundations` (one page per token category, with category tabs; a token's Value cell is its field, the edit; a token that reads another is a pill linking to it, with Detach; a shadow opens its layers in `ShadowEditor`), `Gallery`, `Component`, `Review`; `Placeholder` holds the empty-state pictures.
@@ -198,11 +198,9 @@ check: story <story id>, routes <list>
 
 ## Review page
 
-- One PR, one epic, one Review. The page reads its PR from its own host (`pr-<n>.epic.hq.govocal.com`); off an epic (a local run) it says there is no PR and shows the branch as built. It never reviews another PR.
-- The changes are `design-changes.json`, built against the PR's base (`ds:changes -- --base origin/design-system/workbench` for a PR stacked on the workbench). A card is a `heal`, `lift` or `token` commit that still changes platform code: files under `front/app/` less what the no-platform-code check leaves out (stories, tests, mocks, `a11y.json`, `app/design-system/tokens/`, `app/utils/storybook/`). Other commits that change platform code are listed as setup (the app loading the tokens); stories and tooling are counted. Once the app loads the tokens on master, token value commits are platform changes too: take `app/design-system/tokens/` out of that list (`isPlatformFile`).
-- Each card shows `static/changes/<sha>/before.png` and `after.png`, "No visual change" when the two have equal pixels, and "No pictures for this change" when they are missing. The agent that makes a change takes them (heal skill).
-- "See on the platform" lists the routes the commit reaches (the scan's route closures; shell files, in at least 90% of them, mark none and say "every page"), as links on this epic. Its ids come from this platform's public API (a project, its slug, its first phase); the fixture's are used only on the host it was read from. A route with a param neither has is shown without a link.
-- "Copy for PR" gives the PR description's Review section: the link to this page first, then the changes in order.
+- One PR, one epic, one Review. The page reads its PR from its own host (`pr-<n>.epic.hq.govocal.com`) and links it; off an epic it says there is none. It shows the PR's changes to the platform, nothing else: no buttons, no filters.
+- The changes are `design-changes.json`, built against the PR's base (`ds:changes -- --base origin/design-system/workbench` for a PR stacked on the workbench). A card is a `heal`, `lift` or `token` commit that still changes platform code: files under `front/app/` less what the no-platform-code check leaves out (stories, tests, mocks, `a11y.json`, `app/design-system/tokens/`, `app/utils/storybook/`). Once the app loads the tokens on master, token value commits are platform changes too: take `app/design-system/tokens/` out of that list (`isPlatformFile`).
+- A card: the commit subject, "Open on the platform" (the shortest route the commit reaches, on this epic, with ids read from this platform's public API) and the commit; then `static/changes/<sha>/before.png` and `after.png`, or one picture marked "No visual change" when their pixels are equal. The agent that makes a change takes them (heal skill).
 
 ## Refreshing
 

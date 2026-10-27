@@ -146,7 +146,7 @@ Until the workbench is on master, a design PR that should have its own Review pa
 - **One worktree** is enough: the tools are on the base.
 - **Pictures for the Review page.** After each change commit, copy `<scratch>/heal/before.png` and `after.png` to `.storybook/static/changes/<sha>/`, `<sha>` that commit's full sha. They cannot go in the commit itself; they go in the refresh commit below.
 - **Refresh**, after the last change: `npm run ds:changes -- --base origin/design-system/workbench`, then commit `design-changes.json` and every `changes/<sha>/` folder together: `design-system(review): pictures and change list [AI-assisted]`.
-- **The PR**, when the person asks for it: base `design-system/workbench`, label `epic` (its preview serves the Review page), and the description starts with the Review section ("Copy for PR" on `https://pr-<n>.epic.hq.govocal.com/storybook/workbench/#/review`, or the same text by hand: the link, then the changes in order).
+- **The PR**, when the person asks for it: base `design-system/workbench`, label `epic` (its preview serves the Review page), and the description starts with a Review section: the link `https://pr-<n>.epic.hq.govocal.com/storybook/workbench/#/review`, then the changes in order (subject and short sha).
 
 ## Commit message
 

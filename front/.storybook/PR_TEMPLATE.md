@@ -4,7 +4,7 @@
 
 ## Review
 
-<!-- Paste the "Copy for PR" block from this PR's own Review page (https://pr-<n>.epic.hq.govocal.com/storybook/workbench/#/review): the link first, then the changes in order. -->
+<!-- The link to this PR's own Review page (https://pr-<n>.epic.hq.govocal.com/storybook/workbench/#/review), then the changes in order: subject and short sha. -->
 
 ## Design commits
 
