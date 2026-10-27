@@ -23,13 +23,18 @@ const FinalRecordCard = ({ project }: Props) => {
     .map((phase) => phase.attributes.end_at)
     .filter((end): end is string => !!end)
     .sort();
+  const openEnded = ends.length < phaseList.length;
 
   const formatDay = (date: string) =>
     formatDate(date, { day: 'numeric', month: 'long' });
 
   const getRan = () => {
     if (starts.length === 0) return undefined;
-    if (ends.length === 0) return formatDay(starts[0]);
+    if (openEnded) {
+      return formatMessage(messages.finalRecordRanOpenEnded, {
+        start: formatDay(starts[0]),
+      });
+    }
     return formatMessage(messages.finalRecordRanValue, {
       start: formatDay(starts[0]),
       end: formatDay(ends[ends.length - 1]),

@@ -547,6 +547,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.finalRecordRanValue',
     defaultMessage: '{start} to {end}',
   },
+  finalRecordRanOpenEnded: {
+    id: 'app.containers.Admin.projects.project.finalRecordRanOpenEnded',
+    defaultMessage: 'Since {start}',
+  },
   finalRecordPeople: {
     id: 'app.containers.Admin.projects.project.finalRecordPeople',
     defaultMessage: 'People',
