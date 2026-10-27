@@ -1,10 +1,545 @@
 {
-  "generatedAt": "2026-10-24T20:16:28.942Z",
-  "base": "1a0d06e3afa8b33db8a01f33168c445daa9767c0",
+  "generatedAt": "2026-10-27T12:59:38.550Z",
+  "base": "7b0b8940e27fb6c528eb39a06baa8a4cf2bcdf0a",
   "baseRef": "master",
-  "head": "8008a2bea9f51cf5cf047cbce6711a14b98094b5",
+  "head": "5d050d3afe8c9ad7bed9611473eb09352bc7602e",
   "repoUrl": "https://github.com/CitizenLabDotCo/citizenlab",
   "commits": [
+    {
+      "sha": "5d050d3afe8c9ad7bed9611473eb09352bc7602e",
+      "subject": "design-system(docs): Review is the PR of its epic; stacked design PRs leave before and after pictures [AI-assisted]",
+      "body": "AGENTS.md's Review page section, files and smoke flags follow the new\npage. The heal skill gains \"Stacked on the workbench\": until the\nworkbench is on master a design PR that should have its Review branches\noff it, adds the app's tokens.css import first when missing, copies each\nchange's pictures to static/changes/<sha>/ and refreshes the change list\nagainst the workbench. The PR template and propose skill point at the\nPR's own Review.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/heal/SKILL.md",
+        "front/.claude/skills/propose/SKILL.md",
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/PR_TEMPLATE.md",
+        "front/.storybook/START.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "5c5b4e7fdf482ae45e24b454e9e07199fe55a76b",
+      "subject": "design-system(scripts): smoke checks the PR Review [AI-assisted]",
+      "body": "The Review page shows as many cards as design-changes.json has design\nchanges, or its empty state. --review-host and the frame checks go with\nthe frames. The other smoke failures (the nav list without Inspect, the\nroutes after Patterns, a story's play step) were there before.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "cf18ce9be146adba7cb91397e4fd536b9028db66",
+      "subject": "design-system(workbench): Review shows this epic's PR: its changes, before and after, the pages they reach [AI-assisted]",
+      "body": "One PR, one epic, one Review. The page reads its PR from its own host\n(pr-<n>.epic.hq.govocal.com) and the header from GitHub once per\nsession. design-changes.json gives the changes: a card per heal, lift or\ntoken commit that still changes platform code, numbered in order, with\nthe agent's pictures from static/changes/<sha>/ (\"No visual change\" when\nthey match) and the routes it reaches as links on this epic, their ids\nread from this platform's API. Setup commits are listed, stories and\ntooling counted. Copy for PR puts the link to this page first.\n\nThe two-host compare goes: the PR number field, Hosts, the frames, the\nroute list and the change list (FrameView, RouteList, ChangeList), and\nwhat only they used in review.ts and pr.ts.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/App.tsx",
+        "front/.storybook/workbench/src/lib/pr.ts",
+        "front/.storybook/workbench/src/lib/prReview.test.ts",
+        "front/.storybook/workbench/src/lib/prReview.ts",
+        "front/.storybook/workbench/src/lib/review.test.ts",
+        "front/.storybook/workbench/src/lib/review.ts",
+        "front/.storybook/workbench/src/pages/Review.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "57128aca5192b7771f6d28ae6792d65453f8a97f",
+      "subject": "design-system(workbench): a city switch keeps the gallery pictures and live previews queue (2 booting, 8 alive) [AI-assisted]",
+      "body": "Switching city or language made every card drop its picture and boot a\nfull live preview, with no cap and none ever removed: on the epic 38\npreviews, 2.6 GB and 8k requests within a minute. Cards now keep the\npicture, marked with the city it was taken in, and go live on hover;\nlive frames take a slot from a shared pool and give it back off screen.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/StoryThumb.tsx",
+        "front/.storybook/workbench/src/lib/framePool.test.ts",
+        "front/.storybook/workbench/src/lib/framePool.ts",
+        "front/.storybook/workbench/src/lib/thumbs.test.ts",
+        "front/.storybook/workbench/src/lib/thumbs.ts",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "adc837d4b8c444137334fa2681edcbbcf86f4071",
+      "subject": "design-system(workbench): Foundations leads with its category tabs, no title or intro [AI-assisted]",
+      "body": "The heading stays for screen readers; each tab's tooltip carries the intro.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/pages/Foundations.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "ff8d56307fe95d03a2d8b2dc2873bbde6b43ab67",
+      "subject": "design-system(workbench): Inspect as a canvas with the floating bar, the Design panel and off-spec badges [AI-assisted]",
+      "body": "The platform fills the column; path, tool, device and zoom, Off-spec and\nSaved float at its foot. The sidebar folds on entering, the panel opens on\na pick or Saved (Esc closes). The panel reads like the component page's\nDesign tab, with links to the component's or pattern's workbench page and\nthe tokens' Foundations rows, and the file's findings under To fix.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/workbench/src/App.tsx",
+        "front/.storybook/workbench/src/pages/Inspect.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "fb61c7ada7e01b4180f786eb738f89132dc236ba",
+      "subject": "design-system(workbench): a read-only token pill links to its Foundations row [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/ValueField.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "a606cd9b2a12916a7d6d3cfd1f0574bd52d6fe8c",
+      "subject": "design-system(workbench): off-spec levels per scan finding and the component an element belongs to [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/fiber.ts",
+        "front/.storybook/workbench/src/lib/marks.test.ts",
+        "front/.storybook/workbench/src/lib/marks.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "f37aa050df932211f84fa093dc242fcaa13412d8",
+      "subject": "design-system(workbench): remove the Proposal page [AI-assisted]",
+      "body": "The ask for developers belongs in a conversation, not in the tool. Drops\nthe page, its trend chart and trend.json, the heal pictures it showed,\nits smoke checks and docs. The Review icon is now named pullRequest.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/static/.gitignore",
+        "front/.storybook/workbench/src/App.tsx",
+        "front/.storybook/workbench/src/components/Icon.tsx",
+        "front/.storybook/workbench/src/components/Nav.tsx",
+        "front/.storybook/workbench/src/lib/chromePalette.test.ts",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/lib/router.ts",
+        "front/.storybook/workbench/src/pages/Review.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/scripts/design-system/changes.ts",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "aee04ad8560de92b87c323b317956f6034a6ef80",
+      "subject": "design-system(stories): drop two unused mock exports (detect-deadcode) [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/mocks/backofficeRedesign.ts",
+        "front/.storybook/mocks/backofficeRedesignTimelineAndPhases.ts"
+      ],
+      "kind": "story"
+    },
+    {
+      "sha": "c246ca43358ed70ec7587cb6df703975a1a333b7",
+      "subject": "design-system(stories): stories taller than their frame start at the top, so their pictures are not empty [AI-assisted]",
+      "body": "The story box centres with safe centring, as the workbench canvas already\ndoes for live cards: content taller or wider than the frame starts at its\ntop-left edge instead of being cut off above it. The input manager's\nproperty and filter menu stories keep their room for a menu only where\none is open. ds:thumbs, run end to end on the static build: 218 of 218\npictures, none empty; all 955 stories render.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/contexts/index.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/FilterMenu/FilterMenu.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/AssigneeProperty.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/PhasesProperty.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/StatusProperty.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/TagsProperty.stories.tsx"
+      ],
+      "kind": "story"
+    },
+    {
+      "sha": "add34ea590dd8ac7978c617212a5445f3f09a8d5",
+      "subject": "design-system(stories): every Redesigned story renders and its play step passes [AI-assisted]",
+      "body": "- preview: a stand-in admin session token, since the front end now trusts\n  the signed-in user only next to a matching token (TAN-8522)\n- mocks: empty permission custom fields, so the access form loads\n- New project stories load the route tree first (circular import) and\n  wait for the redesign's menu button, not the old link\n- RTL stories get an empty play (play: undefined keeps the meta's\n  English wait); waits match the shared mocks' texts; buttons that\n  stay disabled until data loads are clicked once enabled\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/mocks/backofficeRedesign.ts",
+        "front/.storybook/preview.tsx",
+        "front/app/containers/Admin/projects/_shared/components/PhaseActionAccess.stories.tsx",
+        "front/app/containers/Admin/projects/all/NewProjectButton.stories.tsx",
+        "front/app/containers/Admin/projects/all/NewProjectModal.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/LocationCard.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/BatchBar/BatchBar.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/RightColumn/ExportsCard.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/RightColumn/OfflineCollection.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/AssigneeProperty.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/PhasesProperty.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/StatusProperty.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/TagsProperty.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/BuildPanel.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/FormSection.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/SetupCards/AreaFilterDropdown.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Redesigned"
+    },
+    {
+      "sha": "f27e51c752a41d0d6596161ec867df4458558b82",
+      "subject": "design-system(stories): fix the Redesigned story types and the Link mock so build-storybook passes [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/mocks/Link.tsx",
+        "front/app/component-library/components/SearchInput/BoSearchInput.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/EventPreview.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/EventSetup.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/ImageCard.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/LocationCard.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/RegistrationCard.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Redesigned"
+    },
+    {
+      "sha": "266c6435e6a183e15b44f3658ec8beb4b9a0eabe",
+      "subject": "design-system(workbench): picture thumbnails, galleries show build-time pictures instead of booting a preview per card [AI-assisted]",
+      "body": "ds:thumbs takes one picture of each gallery card's story from the static\nStorybook build (Playwright, transparent, 2x) and writes thumbs/ and\nthumbs.json next to it. A card with a picture for the globals on show\nshows it and boots no preview; a gallery of pictures boots no shared\nframe. Other globals (city, language) or a missing picture render live\nas before. CI takes the pictures after build-storybook on design-system\nbranches, with Playwright outside the repo; a failure leaves live cards.\n\nNot run end to end yet.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        ".circleci/config.yml",
+        "front/.storybook/workbench/src/components/StoryThumb.tsx",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/lib/thumbs.test.ts",
+        "front/.storybook/workbench/src/lib/thumbs.ts",
+        "front/.storybook/workbench/src/lib/useThumbs.ts",
+        "front/.storybook/workbench/src/pages/Gallery.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/package.json",
+        "front/scripts/design-system/thumbs.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "0acdb49e865d72b03b76b10179bfbe8a9e06dceb",
+      "subject": "design-system(workbench): Redesigned set, every new back-office piece behind a Set filter, grouped by area, with stories for each [AI-assisted]",
+      "body": "Stories for the redesigned project back office (Edwin and Amira's\nbackofficeRedesign folder, the projects _shared pieces, the new project\nmodal) and the back-office looks they added to the library (bo button\nstyles, bo Input, SearchInput, Radio, Modal, type roles, Breadcrumbs,\nOptionPicker, PillPicker, SettingsModal), tagged redesigned and filed\nunder Components/Redesigned/<area>. The Components gallery gets a Set\nfilter (All | Redesigned, kept in the link) that shows them by area.\n\nNot all stories are render-checked yet.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/mocks/backofficeRedesignEvents.ts",
+        "front/.storybook/mocks/backofficeRedesignInputManager.ts",
+        "front/.storybook/mocks/backofficeRedesignProjectHeader.ts",
+        "front/.storybook/mocks/backofficeRedesignSetupPanel.ts",
+        "front/.storybook/mocks/backofficeRedesignSharedPieces.ts",
+        "front/.storybook/mocks/backofficeRedesignTimelineAndPhases.ts",
+        "front/.storybook/workbench/src/lib/inUse.test.ts",
+        "front/.storybook/workbench/src/lib/inUse.ts",
+        "front/.storybook/workbench/src/lib/stories.test.ts",
+        "front/.storybook/workbench/src/lib/stories.ts",
+        "front/.storybook/workbench/src/pages/Gallery.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/app/component-library/components/Button/BoButton.stories.tsx",
+        "front/app/component-library/components/Input/BoInput.stories.tsx",
+        "front/app/component-library/components/LocaleSwitcher/BoLocaleSwitcher.stories.tsx",
+        "front/app/component-library/components/Radio/BoRadio.stories.tsx",
+        "front/app/component-library/components/SearchInput/BoSearchInput.stories.tsx",
+        "front/app/component-library/components/Text/BoTypeRoles.stories.tsx",
+        "front/app/components/UI/Breadcrumbs/BoBreadcrumbs.stories.tsx",
+        "front/app/components/UI/FileRepositorySelectAndUpload/BoFileAttachmentDisplay.stories.tsx",
+        "front/app/components/UI/IconAction/IconAction.stories.tsx",
+        "front/app/components/UI/LocationInput/BoLocationInput.stories.tsx",
+        "front/app/components/UI/Modal/BoModal.stories.tsx",
+        "front/app/components/UI/OptionPicker/OptionPicker.stories.tsx",
+        "front/app/components/UI/OptionRow/OptionRow.stories.tsx",
+        "front/app/components/UI/PillPicker/PillPicker.stories.tsx",
+        "front/app/components/UI/QuillEditor/BoQuillEditor.stories.tsx",
+        "front/app/components/UI/SettingsModal/SettingsModal.stories.tsx",
+        "front/app/components/admin/PhonePreview/PhonePreviewFrame.stories.tsx",
+        "front/app/containers/Admin/projects/_shared/components/NewProjectForm/ChoiceRadio.stories.tsx",
+        "front/app/containers/Admin/projects/_shared/components/NewProjectForm/FormSection.stories.tsx",
+        "front/app/containers/Admin/projects/_shared/components/NewProjectForm/GroupsPicker.stories.tsx",
+        "front/app/containers/Admin/projects/_shared/components/NewProjectForm/NewProjectForm.stories.tsx",
+        "front/app/containers/Admin/projects/_shared/components/PhaseActionAccess.stories.tsx",
+        "front/app/containers/Admin/projects/_shared/components/PhaseActionAccessRow.stories.tsx",
+        "front/app/containers/Admin/projects/_shared/components/ProjectContextPickers/ProjectContextPickers.stories.tsx",
+        "front/app/containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup.stories.tsx",
+        "front/app/containers/Admin/projects/_shared/components/SettingsPanel/PanelRow.stories.tsx",
+        "front/app/containers/Admin/projects/_shared/components/SettingsPanel/PanelRowButton.stories.tsx",
+        "front/app/containers/Admin/projects/_shared/components/SettingsPanel/PanelRowModal.stories.tsx",
+        "front/app/containers/Admin/projects/_shared/components/ToggleActionAccess.stories.tsx",
+        "front/app/containers/Admin/projects/all/NewProjectButton.stories.tsx",
+        "front/app/containers/Admin/projects/all/NewProjectMenuItem.stories.tsx",
+        "front/app/containers/Admin/projects/all/NewProjectModal.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/AdminOnlyPlaceholder.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/DateFieldRow.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/DeleteEventButton.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/EventDates.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/EventPreview.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/EventSetup.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/EventWorkspace.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/ImageCard.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/ImageCropModal.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/ImageFileRow.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/LocationCard.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/PlatformTimeNote.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/PreviewAttachment.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/PreviewDateBlock.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/PreviewInfoCard.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/PreviewInfoRow.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/RegistrationCard.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/SetupCard.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Header/HeaderDropdown.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Header/PublishDropdown/ConfirmStatusChangeModal.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Header/PublishDropdown/PublishDropdown.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Header/PublishDropdown/PublishPanel.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Header/SaveChangesButton.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Header/ShareDropdown/AccessPeopleRow.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Header/ShareDropdown/ShareDropdown.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Header/ShareDropdown/SharePanel.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Header/WorkspaceHeader.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/BatchBar/BatchBar.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/BatchBar/BatchMenuButton.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/EmptyState.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/FilterMenu/FilterChips.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/FilterMenu/FilterMenu.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/IdeaTable/AssigneeMark.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/IdeaTable/ColumnsMenu.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/IdeaTable/HeaderRow.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/IdeaTable/IdeaCell.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/IdeaTable/IdeaRow.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/IdeaTable/IdeaTable.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/IdeaTable/TagChips.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/InputManager.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/ListToolbar.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/MenuButton.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/OptionList.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/RightColumn/AwaitingReply.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/RightColumn/Card.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/RightColumn/ExportsCard.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/RightColumn/OfflineCollection.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/RightColumn/RightColumn.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/RightColumn/StatTile.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/RightColumn/StatTiles.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SearchToggle.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/AssigneeProperty.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/IdeaContent.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/IdeaOverview.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/PanelHeader.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/PhasesProperty.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/PropertyMenu.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/PropertyRow.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/QuickActions.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/SidePanel.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/StatusProperty.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/TagsProperty.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/VotingDetails.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/TagChip.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/ToolbarIconButton.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/NewPhase/NewPhase.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/NewPhase/NewPhaseWorkspace.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/AddPreviousPhaseIdeasModal.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/AddQuestionsModal.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/BuildFields.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/BuildPanel.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/CausesSection.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/CommonGroundSection.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/FormSection.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/PanelField.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/PhaseDates.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/PollSection.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/SurveyMethodSection.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/SwitchSurveyMethodModal.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/DraftMethodSettings.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/EditAccessButton.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/EmptyState.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/MethodSettings.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/ParticipantActionsGroup.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/PhasePreview.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/PhaseSetup.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/ReportSection.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/ViewContent.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/ViewSwitch.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/GetStarted/GetStarted.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/GetStarted/StepRow.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/NextActions.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/PanelHeading.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/ParticipantsGraph/GraphCard.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/ParticipantsGraph/Sparkline.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/PlacementTabs.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/ProjectSettingsModal/GeneralSection.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/ProjectSettingsModal/ProjectSettingsModal.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/ProjectSettingsModal/ResetSection.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/ProjectSettingsModal/ResourcesSection.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/ProjectSetupPanel.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/SelectMethodModal.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/SetupCards/AreaFilterDropdown.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/SetupCards/ListingCard.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/SetupCards/TopicTagsCard.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectTimeline.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectWorkspace.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/TimelineEvents.stories.tsx",
+        "front/app/containers/Admin/projects/project/earlyAccess/FeedbackNotice.stories.tsx",
+        "front/app/containers/Admin/projects/project/earlyAccess/TurnOnNotice.stories.tsx",
+        "front/app/containers/Admin/sideBar/RailTooltip.stories.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "2d6821fefdbabcff766663963505f79d4ee919db",
+      "subject": "design-system(workbench): Merge into, look-alikes of a library component with a merge task each [AI-assisted]",
+      "body": "The Usage tab of a library component lists the homemade copies of it the\nscan finds outside the library (a styled button, input, select, textarea,\nlabel, or a link styled as a button), back office first. Each copies a\nmerge task; the heal skill runs it as one commit on its own branch.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/heal/SKILL.md",
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/workbench/src/lib/lookAlikes.test.ts",
+        "front/.storybook/workbench/src/lib/lookAlikes.ts",
+        "front/.storybook/workbench/src/panels/Usage.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "14f264770e01422a02a64f325ad52dd7ee5479de",
+      "subject": "design-system(workbench): In use list, every component the platform uses, most used first, with crops from the live platform [AI-assisted]",
+      "body": "Components gets a Library | In use switch. In use lists the 132 components\nthe scan found, by uses: the ones with a story render live, the rest show\na picture ds:crops took of them on the running platform.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/static/crops.json",
+        "front/.storybook/static/crops/ClickOutside.png",
+        "front/.storybook/static/crops/FilterTabs.png",
+        "front/.storybook/static/crops/UserName.png",
+        "front/.storybook/workbench/src/components/InUseGrid.tsx",
+        "front/.storybook/workbench/src/components/StoryThumb.tsx",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/lib/inUse.test.ts",
+        "front/.storybook/workbench/src/lib/inUse.ts",
+        "front/.storybook/workbench/src/pages/Gallery.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/package.json",
+        "front/scripts/design-system/crops-plan.test.ts",
+        "front/scripts/design-system/crops-plan.ts",
+        "front/scripts/design-system/crops.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "8c3c4954f7e577248faa48075586e02c322a0f30",
+      "subject": "design-system(workbench): Start here for the person: setup, daily run, how to change and the boundaries [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/START.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "1735498c9d64d222d9a0da9e2b53138e9c35897e",
+      "subject": "design-system(workbench): Inspect tab, click an element of the local platform and hand it to the agent [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/workbench/src/App.tsx",
+        "front/.storybook/workbench/src/components/Icon.tsx",
+        "front/.storybook/workbench/src/components/LocalSave.tsx",
+        "front/.storybook/workbench/src/components/Nav.tsx",
+        "front/.storybook/workbench/src/lib/fiber.test.ts",
+        "front/.storybook/workbench/src/lib/fiber.ts",
+        "front/.storybook/workbench/src/lib/local.ts",
+        "front/.storybook/workbench/src/lib/router.test.ts",
+        "front/.storybook/workbench/src/lib/router.ts",
+        "front/.storybook/workbench/src/lib/useCanvasSelection.ts",
+        "front/.storybook/workbench/src/pages/Inspect.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/scripts/design-system/local/journal.ts",
+        "front/scripts/design-system/local/server.test.ts",
+        "front/scripts/design-system/local/server.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "ced46f21dc448b7d0310838e58392bf78aa8b1ec",
+      "subject": "design-system(stories): page-sized Redesigned stories lay out at desktop width in a small frame [AI-assisted]",
+      "body": "Gallery cards of the Event workspace, New phase and Input manager were blank: the page squeezed into a 320px card. They now lay out at 1200px and zoom down to the card.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/mocks/backofficeRedesign.ts",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/EventWorkspace.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/InputManager.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/NewPhase/NewPhase.stories.tsx"
+      ],
+      "kind": "story",
+      "component": "Redesigned"
+    },
+    {
+      "sha": "a34af02f71a653a21c270198328e7e9f9b462380",
+      "subject": "design-system(local): component edits push as a heal off master; ds:local docs [AI-assisted]",
+      "body": "A saved component edit is platform code, so a push commits it on its own\ndesign-system/heal-<label> branch off origin/master (scratch index, no\ncheckout) and puts this checkout back; token edits still commit on the\ncurrent branch. A heal onto a token waits while master has no tokens.\ncomponent-library files get var(--gv-...). Proposal page copy and cards.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/workbench/src/components/LocalSave.tsx",
+        "front/.storybook/workbench/src/lib/local.ts",
+        "front/scripts/design-system/README.md",
+        "front/scripts/design-system/local/server.test.ts",
+        "front/scripts/design-system/local/server.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "b2b2eaa16c96d879b9287f3dc1c694b480dee0a5",
+      "subject": "design-system(stories): redesigned project back office under Components/Redesigned [AI-assisted]",
+      "body": "Stories for the redesigned project workspace pieces: the workspace\nheader, project setup panel, timeline and events, phase setup, method\nsettings, view switch, empty states, new phase, event workspace and the\ninput manager (table, right column, side panel). They read the shared\nmocks through MSW handlers in .storybook/mocks/backofficeRedesign.ts and\nwait for their data in a play step. Each has an RTL story.\n\nThe Storybook stand-ins for utils/locale and utils/cl-router/Link move to\n.storybook/mocks: locale adds updateLocale for the language selector, and\ntypedStyled(Link) now keeps its styles in stories.\n\nThe new stories' axe results are in a11y-results.json; their critical\nviolations (unnamed buttons, unlabelled fields in the platform code) are\nlisted in a11y-known.json.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/mockModules.ts",
+        "front/.storybook/mocks/Link.tsx",
+        "front/.storybook/mocks/backofficeRedesign.ts",
+        "front/.storybook/mocks/locale.ts",
+        "front/.storybook/static/a11y-results.json",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Event/EventWorkspace.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Header/WorkspaceHeader.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/EmptyState.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/IdeaTable/IdeaTable.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/InputManager.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/RightColumn/RightColumn.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/InputManager/SidePanel/SidePanel.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/NewPhase/NewPhase.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/EmptyState.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/MethodSettings.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/PhaseSetup.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/Phase/ViewSwitch.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectSetupPanel/ProjectSetupPanel.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectTimeline.stories.tsx",
+        "front/app/containers/Admin/projects/project/backofficeRedesign/TimelineEvents.stories.tsx",
+        "front/scripts/design-system/a11y-known.json"
+      ],
+      "kind": "story",
+      "component": "Components/Redesigned"
+    },
+    {
+      "sha": "2d390bef1fbf41997a48d428e19ecbc7dcabf2ce",
+      "subject": "design-system(local): npm run ds:local, save edits to the code and push them [AI-assisted]",
+      "body": "The platform on a remote back end (API_URL) and the workbench behind one\naddress, no database and no Docker. In that run the Changes drawer can\nsave token and component style edits to the source, lists what is saved\nand not pushed with an Undo each, and pushes through this machine's git\n(a new design-system/ branch when on master). The write API answers only\nthis machine and pages of its own origin; it writes only the token source\nand its outputs, and component files at a place the scan found.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/main.ts",
+        "front/.storybook/workbench/src/App.tsx",
+        "front/.storybook/workbench/src/components/ChangesDrawer.tsx",
+        "front/.storybook/workbench/src/components/LocalSave.tsx",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/lib/liveSource.ts",
+        "front/.storybook/workbench/src/lib/local.ts",
+        "front/.storybook/workbench/src/lib/overrides.ts",
+        "front/.storybook/workbench/src/main.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/package.json",
+        "front/scripts/design-system/local/journal.ts",
+        "front/scripts/design-system/local/launch.ts",
+        "front/scripts/design-system/local/server.test.ts",
+        "front/scripts/design-system/local/server.ts",
+        "front/scripts/design-system/local/writes.test.ts",
+        "front/scripts/design-system/local/writes.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "ac2066f79b6866e21830efbebb387543d9eb1283",
+      "subject": "design-system(workbench): review any pull request against master [AI-assisted]",
+      "body": "Review takes a PR number (#/review?pr=N). It reads the PR's commits and\nfiles from GitHub's public API, leaves merge commits out, and opens on\nthe pages those files reach. Before is master on this preview, after is\nthe PR's own preview (pr-N.epic), shown but not inspected because it is\nanother site.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/pr.ts",
+        "front/.storybook/workbench/src/lib/review.ts",
+        "front/.storybook/workbench/src/pages/Review.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "17b5a010736aa3d58feb473909adb215e7b90468",
+      "subject": "design-system(review): refresh the change list and trend [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-changes.json"
+      ],
+      "kind": "other"
+    },
     {
       "sha": "8008a2bea9f51cf5cf047cbce6711a14b98094b5",
       "subject": "design-system(scripts): smoke checks for a platform that reads no tokens [AI-assisted]",
@@ -19,8 +554,7 @@
       "subject": "design-system(review): refresh the change list and trend [AI-assisted]",
       "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
       "files": [
-        "front/.storybook/static/design-changes.json",
-        "front/.storybook/static/trend.json"
+        "front/.storybook/static/design-changes.json"
       ],
       "kind": "other"
     },
@@ -59,10 +593,8 @@
       "files": [
         "front/.storybook/workbench/src/App.tsx",
         "front/.storybook/workbench/src/components/Canvas.tsx",
-        "front/.storybook/workbench/src/components/ChangeList.tsx",
         "front/.storybook/workbench/src/components/ChangesDrawer.test.tsx",
         "front/.storybook/workbench/src/components/ChangesDrawer.tsx",
-        "front/.storybook/workbench/src/components/FrameView.tsx",
         "front/.storybook/workbench/src/components/TokenPicker.tsx",
         "front/.storybook/workbench/src/components/TokenRow.test.tsx",
         "front/.storybook/workbench/src/components/TokenRow.tsx",
@@ -104,9 +636,7 @@
         "front/.storybook/workbench/src/pages/Component.tsx",
         "front/.storybook/workbench/src/pages/Foundations.tsx",
         "front/.storybook/workbench/src/pages/Gallery.tsx",
-        "front/.storybook/workbench/src/pages/Proposal.tsx",
         "front/.storybook/workbench/src/pages/Review.tsx",
-        "front/.storybook/workbench/src/pages/proposal.css",
         "front/.storybook/workbench/src/panels/Design.tsx",
         "front/.storybook/workbench/src/panels/Usage.tsx",
         "front/.storybook/workbench/src/shell.css"
@@ -124,16 +654,6 @@
         "front/.storybook/preview.tsx",
         "front/.storybook/static/.gitignore",
         "front/.storybook/static/a11y-results.json",
-        "front/.storybook/static/heals/3bd751dee85/after.png",
-        "front/.storybook/static/heals/3bd751dee85/before.png",
-        "front/.storybook/static/heals/5be0131cb50/after.png",
-        "front/.storybook/static/heals/5be0131cb50/before.png",
-        "front/.storybook/static/heals/6ac230f9438/after.png",
-        "front/.storybook/static/heals/6ac230f9438/before.png",
-        "front/.storybook/static/heals/7fe9ca304f8/after.png",
-        "front/.storybook/static/heals/7fe9ca304f8/before.png",
-        "front/.storybook/static/heals/d7da7b947c0/after.png",
-        "front/.storybook/static/heals/d7da7b947c0/before.png",
         "front/app/containers/Admin/projects/project/backofficeRedesign/ProjectWorkspace.stories.tsx"
       ],
       "kind": "other"
@@ -152,8 +672,6 @@
         "front/scripts/design-system/scan/findings.ts",
         "front/scripts/design-system/scan/index.test.ts",
         "front/scripts/design-system/scan/routes.test.ts",
-        "front/scripts/design-system/trend.test.ts",
-        "front/scripts/design-system/trend.ts",
         "front/scripts/design-system/visual-run.ts",
         "front/scripts/design-system/visual-summary.test.ts",
         "front/scripts/design-system/visual-summary.ts",
@@ -616,6 +1134,15 @@
       "kind": "other"
     },
     {
+      "sha": "7ab11793bd4fa5a14118f69c4be3244df9620b3b",
+      "subject": "Expand multiselect survey answers through the shared per_selection scope",
+      "body": "Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
+      "files": [
+        "back/app/services/surveys/results_generator.rb"
+      ],
+      "kind": "other"
+    },
+    {
       "sha": "cf047e864b98e89eb901c5d5e8dc755e98c0c301",
       "subject": "design-system(workbench): gallery frame review fixes [AI-assisted]",
       "body": "A card the filters hid while it rendered, when the globals changed\nmeanwhile, waits on the skeleton instead of showing the old globals.\nStories the shared frame cannot show are remembered for the session, and\na gallery of only such cards (Pages) mounts no shared frame. The smoke\nrecords a missing isolated card as a failure and carries on.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
@@ -716,6 +1243,19 @@
         "front/.storybook/workbench/src/lib/gallery.ts",
         "front/.storybook/workbench/src/lib/galleryFrame.test.ts",
         "front/.storybook/workbench/src/lib/galleryFrame.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "39b920cc8af89abd46861b94a46ef3f712599c0e",
+      "subject": "Count the answers of the field itself, and only of questions the requester may see",
+      "body": "Matching on the key alone mixed in the answers of a copied form, which\nkeeps the field keys. The expansion into one row per chosen option moves\nto a scope on CustomFieldAnswer, and the field policy replaces a\nhand-written visibility check.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
+      "files": [
+        "back/app/controllers/web_api/v1/ideas_controller.rb",
+        "back/app/models/custom_field_answer.rb",
+        "back/app/services/facets/idea_custom_field_answer.rb",
+        "back/spec/acceptance/ideas/ideas_spec.rb",
+        "back/spec/services/facets/idea_custom_field_answer_spec.rb"
       ],
       "kind": "other"
     },
@@ -853,7 +1393,6 @@
       "body": "On-accent text sits on the accent fill, failed and critical chips on a\nnew fail fill, the dark fail text is lighter, the primary hover darker,\nand the Back office chip and pressed actual-size button use roles that\nread on their fills. The Review filter counts are no longer dimmed.\nlib/chromePalette.test.ts checks every text and background pair of the\n--wb-* roles in the light and the dark chrome.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
       "files": [
         "front/.storybook/workbench/src/lib/chromePalette.test.ts",
-        "front/.storybook/workbench/src/pages/proposal.css",
         "front/.storybook/workbench/src/shell.css"
       ],
       "kind": "other"
@@ -928,10 +1467,7 @@
       "sha": "8e2c4b3777b0474bbfb9498203f20ff7e2d4453f",
       "subject": "design-system(workbench): calmer Start page and Proposal: even grids, one card and step style, no alarm colours for policies [AI-assisted]",
       "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
-      "files": [
-        "front/.storybook/workbench/src/pages/Proposal.tsx",
-        "front/.storybook/workbench/src/pages/proposal.css"
-      ],
+      "files": [],
       "kind": "other"
     },
     {
@@ -966,8 +1502,6 @@
         "front/.storybook/workbench/src/components/Nav.tsx",
         "front/.storybook/workbench/src/lib/theme.ts",
         "front/.storybook/workbench/src/main.tsx",
-        "front/.storybook/workbench/src/pages/Proposal.tsx",
-        "front/.storybook/workbench/src/pages/proposal.css",
         "front/.storybook/workbench/src/shell.css"
       ],
       "kind": "other"
@@ -982,7 +1516,6 @@
         "front/.storybook/workbench/src/lib/plural.ts",
         "front/.storybook/workbench/src/pages/Foundations.tsx",
         "front/.storybook/workbench/src/pages/Gallery.tsx",
-        "front/.storybook/workbench/src/pages/Proposal.tsx",
         "front/.storybook/workbench/src/panels/Usage.tsx",
         "front/app/design-system/tokens/tokens.meta.json",
         "front/app/design-system/tokens/tokens.source.json",
@@ -1011,7 +1544,6 @@
       "subject": "design-system(workbench): contain hidden labels so the shell never scrolls away, Review empty state fits a phone, Tooling closed [AI-assisted]",
       "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
       "files": [
-        "front/.storybook/workbench/src/components/ChangeList.tsx",
         "front/.storybook/workbench/src/shell.css"
       ],
       "kind": "other"
@@ -1245,11 +1777,6 @@
       "subject": "design-system(workbench): Proposal review fixes: lint copy, delta since the scanner settled, Quote mode demo [AI-assisted]",
       "body": "ds:lint already fails on new raw values; the copy and the decision say\nso. The trend headline counts from the last scanner change. Quote\n(3px to 8px corners) is the live mode demo, Button keeps one line; the\nsmoke reads both corners. Heal card links the screenshots instead of\nunreadable thumbnails; LineChart has its own file; other areas read as\nOther change.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
       "files": [
-        "front/.storybook/workbench/src/components/LineChart.tsx",
-        "front/.storybook/workbench/src/lib/proposal.test.ts",
-        "front/.storybook/workbench/src/lib/proposal.ts",
-        "front/.storybook/workbench/src/pages/Proposal.tsx",
-        "front/.storybook/workbench/src/pages/proposal.css",
         "front/scripts/design-system/workbench-smoke.ts"
       ],
       "kind": "other"
@@ -1284,11 +1811,7 @@
       "files": [
         "front/.storybook/workbench/src/App.tsx",
         "front/.storybook/workbench/src/lib/data.ts",
-        "front/.storybook/workbench/src/lib/proposal.test.ts",
-        "front/.storybook/workbench/src/lib/proposal.ts",
         "front/.storybook/workbench/src/pages/Placeholder.tsx",
-        "front/.storybook/workbench/src/pages/Proposal.tsx",
-        "front/.storybook/workbench/src/pages/proposal.css",
         "front/scripts/design-system/workbench-smoke.ts"
       ],
       "kind": "other"
@@ -1297,10 +1820,7 @@
       "sha": "c0fb282bb66efe187cfaa69535df91a88ae89d3b",
       "subject": "design-system(trend): RunGit defined in trend.ts so the workbench typecheck reads it without the token build [AI-assisted]",
       "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
-      "files": [
-        "front/scripts/design-system/trend.test.ts",
-        "front/scripts/design-system/trend.ts"
-      ],
+      "files": [],
       "kind": "other"
     },
     {
@@ -1336,10 +1856,7 @@
       "files": [
         "front/.storybook/static/.gitignore",
         "front/.storybook/static/design-changes.json",
-        "front/.storybook/static/trend.json",
-        "front/scripts/design-system/changes.ts",
-        "front/scripts/design-system/trend.test.ts",
-        "front/scripts/design-system/trend.ts"
+        "front/scripts/design-system/changes.ts"
       ],
       "kind": "other"
     },
@@ -1403,8 +1920,7 @@
       "files": [
         "front/app/component-library/components/Dropdown/a11y.json"
       ],
-      "kind": "other",
-      "component": "Dropdown"
+      "kind": "other"
     },
     {
       "sha": "d6eaa802905a5060bf4019fefa5b5d61aa794270",
@@ -1423,8 +1939,7 @@
       "files": [
         "front/app/component-library/components/IconTooltip/a11y.json"
       ],
-      "kind": "other",
-      "component": "IconTooltip"
+      "kind": "other"
     },
     {
       "sha": "c7d12bfbe0a94d7f06bcd2dfa82dea0bf80ca859",
@@ -1443,8 +1958,7 @@
       "files": [
         "front/app/component-library/components/Tooltip/a11y.json"
       ],
-      "kind": "other",
-      "component": "Tooltip"
+      "kind": "other"
     },
     {
       "sha": "6a141f6430a491c099240e2a840f864c322c02fd",
@@ -1463,8 +1977,7 @@
       "files": [
         "front/app/component-library/components/Spinner/a11y.json"
       ],
-      "kind": "other",
-      "component": "Spinner"
+      "kind": "other"
     },
     {
       "sha": "58aa56dd0d3023815a7797548efade562a27ab93",
@@ -1473,8 +1986,7 @@
       "files": [
         "front/app/component-library/components/Box/a11y.json"
       ],
-      "kind": "other",
-      "component": "Box"
+      "kind": "other"
     },
     {
       "sha": "14fd5147f89439f6326272ce6f756a2412910898",
@@ -1483,8 +1995,7 @@
       "files": [
         "front/app/component-library/components/Icon/a11y.json"
       ],
-      "kind": "other",
-      "component": "Icon"
+      "kind": "other"
     },
     {
       "sha": "89fe4eff453a6d9692a85891f48956a8d95398bd",
@@ -1493,8 +2004,7 @@
       "files": [
         "front/app/component-library/components/Table/a11y.json"
       ],
-      "kind": "other",
-      "component": "Table"
+      "kind": "other"
     },
     {
       "sha": "f4f34f2193870c84a16d30a4c8d95fb834a35481",
@@ -1513,8 +2023,7 @@
       "files": [
         "front/app/component-library/components/Title/a11y.json"
       ],
-      "kind": "other",
-      "component": "Title"
+      "kind": "other"
     },
     {
       "sha": "2b698ecaacf811e2b6888ec489285f15a7ff52b2",
@@ -1523,8 +2032,7 @@
       "files": [
         "front/app/component-library/components/Text/a11y.json"
       ],
-      "kind": "other",
-      "component": "Text"
+      "kind": "other"
     },
     {
       "sha": "9f3832b1fcbe09da78c67e8a42410acf916d417b",
@@ -1533,8 +2041,7 @@
       "files": [
         "front/app/component-library/components/Label/a11y.json"
       ],
-      "kind": "other",
-      "component": "Label"
+      "kind": "other"
     },
     {
       "sha": "dc67978ed4678c50f39784484f350f855fb2ec43",
@@ -1543,8 +2050,7 @@
       "files": [
         "front/app/component-library/components/Toggle/a11y.json"
       ],
-      "kind": "other",
-      "component": "Toggle"
+      "kind": "other"
     },
     {
       "sha": "209aabcc7e5ffe8e443c042ff4cdec0ecc696ae6",
@@ -1563,8 +2069,7 @@
       "files": [
         "front/app/component-library/components/Select/a11y.json"
       ],
-      "kind": "other",
-      "component": "Select"
+      "kind": "other"
     },
     {
       "sha": "5adac0878816d359234d1caefdbdeac3606d3907",
@@ -1583,8 +2088,7 @@
       "files": [
         "front/app/component-library/components/Input/a11y.json"
       ],
-      "kind": "other",
-      "component": "Input"
+      "kind": "other"
     },
     {
       "sha": "d3a8bca07476d1e6a88dd421b8e4bfd6420c1ece",
@@ -1603,8 +2107,7 @@
       "files": [
         "front/app/component-library/components/IconButton/a11y.json"
       ],
-      "kind": "other",
-      "component": "IconButton"
+      "kind": "other"
     },
     {
       "sha": "e9192cf4a6a823e1993797c2dfa8d0bbfcc00fc5",
@@ -1623,8 +2126,7 @@
       "files": [
         "front/app/component-library/components/Button/a11y.json"
       ],
-      "kind": "other",
-      "component": "Button"
+      "kind": "other"
     },
     {
       "sha": "ff02a0c964057c9c80c2a9defdf399352e7737d5",
@@ -1968,8 +2470,6 @@
       "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
       "files": [
         "front/.storybook/static/design-changes.json",
-        "front/.storybook/workbench/src/components/ChangeList.tsx",
-        "front/.storybook/workbench/src/components/RouteList.tsx",
         "front/.storybook/workbench/src/lib/review.test.ts",
         "front/.storybook/workbench/src/lib/review.ts",
         "front/.storybook/workbench/src/pages/Review.tsx",
@@ -1982,9 +2482,6 @@
       "subject": "design-system(review): readable frames, honest PR summary, shell-aware affected routes [AI-assisted]",
       "body": "Frames pick the widest viewport that stays readable and the route list\nfolds once a route is picked; a frame under 45% offers actual size. Both\nframes decline the platform's cookie modal with its own button. Files in\nnine in ten route closures count as the shell: they mark no route and are\nlisted as affecting every page. Design changes are token, heal and lift\ncommits; stories and tooling are counted apart, and scanner rule commits\nstay out of the off-spec delta. The smoke waits for the Tokens panel match\ninstead of reading it once, and checks the cookie modal is gone.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
       "files": [
-        "front/.storybook/workbench/src/components/ChangeList.tsx",
-        "front/.storybook/workbench/src/components/FrameView.tsx",
-        "front/.storybook/workbench/src/components/RouteList.tsx",
         "front/.storybook/workbench/src/lib/review.test.ts",
         "front/.storybook/workbench/src/lib/review.ts",
         "front/.storybook/workbench/src/pages/Placeholder.tsx",
@@ -2259,9 +2756,6 @@
       "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
       "files": [
         "front/.storybook/workbench/src/App.tsx",
-        "front/.storybook/workbench/src/components/ChangeList.tsx",
-        "front/.storybook/workbench/src/components/FrameView.tsx",
-        "front/.storybook/workbench/src/components/RouteList.tsx",
         "front/.storybook/workbench/src/lib/data.ts",
         "front/.storybook/workbench/src/lib/review.test.ts",
         "front/.storybook/workbench/src/lib/review.ts",
@@ -3661,6 +4155,101 @@
         "front/.storybook-build/main.ts",
         "front/.storybook-build/preview.tsx",
         "front/package.json"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "9d32c021963b0da09cebb7af384cc9a6a0dd75b9",
+      "subject": "Count the answers of the public choice questions named in the filter counts request",
+      "body": "The request takes custom_field_ids; private or unsupported questions\nare dropped. The five finder-backed actions share a find_ideas helper,\nand the class length limit follows the controller down.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
+      "files": [
+        "back/.rubocop.yml",
+        "back/app/controllers/web_api/v1/ideas_controller.rb",
+        "back/spec/acceptance/ideas/ideas_spec.rb"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "50f2b8808573fa4c4df9af3424000e1ed301cf4a",
+      "subject": "Add a facet counting the ideas per chosen option of a choice question",
+      "body": "Select and multiselect questions support an answer facet. One query\nunnests single and multiple choice answers alike into one row per\nchosen option.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
+      "files": [
+        "back/app/models/custom_field.rb",
+        "back/app/services/facets/idea_custom_field_answer.rb",
+        "back/lib/input_type_strategy/base.rb",
+        "back/lib/input_type_strategy/multiselect.rb",
+        "back/lib/input_type_strategy/select.rb",
+        "back/spec/lib/input_type_strategy/checkbox_spec.rb",
+        "back/spec/lib/input_type_strategy/cosponsor_ids_spec.rb",
+        "back/spec/lib/input_type_strategy/date_spec.rb",
+        "back/spec/lib/input_type_strategy/file_upload_spec.rb",
+        "back/spec/lib/input_type_strategy/files_spec.rb",
+        "back/spec/lib/input_type_strategy/html_multiloc_spec.rb",
+        "back/spec/lib/input_type_strategy/html_spec.rb",
+        "back/spec/lib/input_type_strategy/image_files_spec.rb",
+        "back/spec/lib/input_type_strategy/line_spec.rb",
+        "back/spec/lib/input_type_strategy/linear_scale_spec.rb",
+        "back/spec/lib/input_type_strategy/matrix_linear_scale_spec.rb",
+        "back/spec/lib/input_type_strategy/multiline_text_multiloc_spec.rb",
+        "back/spec/lib/input_type_strategy/multiline_text_spec.rb",
+        "back/spec/lib/input_type_strategy/multiselect_image_spec.rb",
+        "back/spec/lib/input_type_strategy/multiselect_spec.rb",
+        "back/spec/lib/input_type_strategy/number_spec.rb",
+        "back/spec/lib/input_type_strategy/page_spec.rb",
+        "back/spec/lib/input_type_strategy/point_spec.rb",
+        "back/spec/lib/input_type_strategy/polygon_spec.rb",
+        "back/spec/lib/input_type_strategy/ranking_spec.rb",
+        "back/spec/lib/input_type_strategy/rating_spec.rb",
+        "back/spec/lib/input_type_strategy/select_image_spec.rb",
+        "back/spec/lib/input_type_strategy/select_spec.rb",
+        "back/spec/lib/input_type_strategy/sentiment_linear_scale_spec.rb",
+        "back/spec/lib/input_type_strategy/shapefile_upload_spec.rb",
+        "back/spec/lib/input_type_strategy/text_multiloc_spec.rb",
+        "back/spec/lib/input_type_strategy/text_spec.rb",
+        "back/spec/lib/input_type_strategy/topic_ids_spec.rb",
+        "back/spec/services/facets/idea_custom_field_answer_spec.rb"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "e05143bec3fe86ea6aeb8657b5ba0a216933265f",
+      "subject": "Count the idea filter options with facets",
+      "body": "The ideas filter counts, the topic ordering and the assignment engine\nuse the facets instead of IdeasCountService. A plain column is a\nFacets::Column, topics keep their own facet. The stats controllers keep\ntheir roll-up of child topic counts as a private helper on their base\nclass.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
+      "files": [
+        "back/app/controllers/web_api/v1/ideas_controller.rb",
+        "back/app/controllers/web_api/v1/stats_comments_controller.rb",
+        "back/app/controllers/web_api/v1/stats_controller.rb",
+        "back/app/controllers/web_api/v1/stats_ideas_controller.rb",
+        "back/app/controllers/web_api/v1/stats_reactions_controller.rb",
+        "back/app/models/input_topic.rb",
+        "back/app/services/facets/column.rb",
+        "back/app/services/ideas_count_service.rb",
+        "back/engines/commercial/idea_assignment/app/controllers/idea_assignment/patches/web_api/v1/ideas_controller.rb",
+        "back/spec/acceptance/ideas/ideas_spec.rb",
+        "back/spec/services/facets/column_spec.rb",
+        "back/spec/services/facets/counts_service_spec.rb",
+        "back/spec/services/idea_count_service_spec.rb"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "142240f41b4edc0d6657175decbf71344329f953",
+      "subject": "Add facets for the idea filter counts",
+      "body": "A facet counts how many records fall under each of its options. The\ncounts service runs the facets on a scope and adds the total. The topic\nfacet counts the parents of tagged children in the same query, so an\nidea counts once per topic however it is tagged.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
+      "files": [
+        "back/app/services/facets/counts_service.rb",
+        "back/app/services/facets/idea_input_topic.rb",
+        "back/spec/services/facets/counts_service_spec.rb",
+        "back/spec/services/facets/idea_input_topic_spec.rb"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "5515b4be6369f4ed4ccaa6a2a9d618140c55a595",
+      "subject": "Document that an idea tagged with a parent topic and its child counts once",
+      "body": "IdeasInputTopic drops the parent tag when a child is added, so the\nroll-up of child counts into parents never double counts an idea.\n\nCo-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>",
+      "files": [
+        "back/spec/services/idea_count_service_spec.rb"
       ],
       "kind": "other"
     }
