@@ -1420,6 +1420,7 @@
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Κάντε κλικ εδώ για να συνδεθείτε ως διαχειριστής ή διαχειριστής έργου",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE ή CNS",
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "Ή συνδεθείτε με:",
+  "app.containers.Authentication.steps.FlowStart.signInWithSSO": "Σύνδεση μέσω ενιαίας σύνδεσης (SSO)",
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": "Χρησιμοποιήστε τη διεύθυνση email σας αντ' αυτού",
   "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": "Χρησιμοποιήστε τον αριθμό τηλεφώνου σας αντ' αυτού",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Παρακαλούμε εισάγετε ένα διακριτικό",

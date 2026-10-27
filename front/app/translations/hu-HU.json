@@ -1420,6 +1420,7 @@
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Kattintson ide adminisztrátorként vagy projektmenedzserként való bejelentkezéshez",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE vagy CNS",
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "Vagy jelentkezzen be a következővel:",
+  "app.containers.Authentication.steps.FlowStart.signInWithSSO": "Bejelentkezés egyszeri bejelentkezéssel (SSO)",
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": "Használja inkább az e-mail-címét",
   "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": "Használja inkább a telefonszámát",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Kérjük, adjon meg egy tokent",

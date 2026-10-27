@@ -1420,6 +1420,7 @@
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Feu clic aquí per iniciar sessió com a administrador o gestor de projectes",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE o CNS",
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "O inicia la sessió amb:",
+  "app.containers.Authentication.steps.FlowStart.signInWithSSO": "Inicia la sessió amb l'inici de sessió únic (SSO)",
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": "Utilitza la teva adreça electrònica en comptes d'això",
   "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": "Utilitza el teu número de telèfon en comptes d'això",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Introduïu un testimoni",

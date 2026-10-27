@@ -1420,6 +1420,7 @@
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Spustelėkite čia, jei norite prisijungti kaip administratorius arba projekto vadovas",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE arba CNS",
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "Arba prisijunkite per:",
+  "app.containers.Authentication.steps.FlowStart.signInWithSSO": "Prisijungti naudojant vienkartinį prisijungimą (SSO)",
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": "Vietoj to naudokite savo el. pašto adresą",
   "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": "Vietoj to naudokite savo telefono numerį",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Įveskite simbolį",
