@@ -6,6 +6,7 @@ import mockServer from './mockServer';
 import { loadMessages, reactIntl } from './reactIntl';
 import { LANGUAGES } from './languages';
 import { cities, DEFAULT_CITY } from './cities';
+import { AtRoute, StoryRoute } from './storyRoute';
 import { GV_VIEWPORTS } from './viewports';
 import { MemoryRouter } from 'utils/router';
 import { queryClient } from 'utils/cl-react-query/queryClient';
@@ -66,8 +67,10 @@ const intlLoader = async (context: StoryContext) => ({
   intlMessages: await loadMessages(context.globals.lang),
 });
 
-const routerDecorator = (Story: () => JSX.Element, context: StoryContext) => (
-  <MemoryRouter>
+// A story renders under the root route, or under the route its
+// `parameters.route` names (see storyRoute.tsx).
+const routerDecorator = (Story: () => JSX.Element, context: StoryContext) => {
+  const content = (
     <IntlProvider
       locale={context.globals.lang}
       defaultLocale={reactIntl.defaultLocale}
@@ -75,8 +78,16 @@ const routerDecorator = (Story: () => JSX.Element, context: StoryContext) => (
     >
       <Story />
     </IntlProvider>
-  </MemoryRouter>
-);
+  );
+  const route: StoryRoute | undefined = context.parameters.route;
+  return route ? (
+    <AtRoute route={route} locale={context.globals.lang}>
+      {content}
+    </AtRoute>
+  ) : (
+    <MemoryRouter>{content}</MemoryRouter>
+  );
+};
 
 // The a11y addon runs axe (a 546 KB chunk and a few hundred ms of CPU)
 // after every render. Only Storybook's own a11y panel shows that result,

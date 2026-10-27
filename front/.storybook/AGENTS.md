@@ -87,6 +87,7 @@ Scripts, `scripts/design-system/`:
 Storybook, `.storybook/`:
 - `main.ts`: stories glob `app/**/*.stories.*`, addons (accessibility, pseudo states, MCP), aliases for the app folders, `staticDirs` `public` and `static`.
 - `preview.tsx`: imports `tokens.css`; globals `city`, `lang`, viewport; decorators for the router, intl, the theme and query contexts, MSW.
+- `storyRoute.tsx`: the router of a story that names its route (`parameters.route`); the others get the platform's root-only `MemoryRouter`.
 - `cities.ts`, `languages.ts`, `viewports.ts`, `modes.ts`: toolbar presets shared with the shell (7 languages, `ar` is RTL; `modes.ts` holds Chromatic's viewport modes).
 - `contexts/`: theme (city, `isRtl` from `lang: 'ar'`, `TenantTokens` writing the city into `--gv-tenant-*`) and query providers.
 - `mockServer.ts`, `mockModules.ts`, `public/mockServiceWorker.js`: MSW data and module mocks for stories.
@@ -184,6 +185,7 @@ check: story <story id>, routes <list>
 - Hover and Focus point the pseudo-states addon at the element that carries the style (`pseudo: { hover: ['button'] }`), or use a `play` step with `userEvent.tab()` when the style hangs on a class the addon cannot set.
 - Every state must render differently from `Default`; a state that does not is dropped, never faked.
 - Stories may read tokens (`design-system/tokens/...`); the component they show may not.
+- A story renders under the root route unless it names one. A page that reads its route's params with a strict `useParams({ from })` throws "Invariant failed" under the root route, so its story names the route: `parameters: { route: { from: '/$locale/admin/projects/$projectId', params: { projectId: project1.id } } }` (`$locale` is the story's language; `.storybook/storyRoute.tsx`).
 - The `story` skill has the rest (titles, categories, office tags).
 
 ## Visual runs
