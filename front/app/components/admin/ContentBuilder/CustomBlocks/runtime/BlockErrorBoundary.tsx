@@ -1,8 +1,6 @@
-import React, { Component, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 
-import { withScope } from '@sentry/react';
-
-import { reportError } from 'utils/loggingUtils';
+import { ErrorBoundary } from '@sentry/react';
 
 interface Props {
   /** Identifies the failing code in Sentry. A stack trace alone cannot. */
@@ -14,44 +12,30 @@ interface Props {
 }
 
 /**
- * Contains a custom block's own failures.
+ * Contains a custom block's failures so one piece of generated code cannot take
+ * the report down with it.
  *
- * A block is generated code running inside a report. When it throws, the report
- * around it has to stay readable and the other blocks have to keep rendering, so
- * the failure stops here.
- *
- * To retry, give the element a `key` that changes — the host widget keys it on
- * the block, the version and the config. Nothing resets it from the inside: a
- * boundary that re-arms itself while its children still throw spins in a
- * throw/catch/reset cycle and locks the main thread.
+ * To retry, give the element a `key` that changes — the host widget keys it on the
+ * block, the version and the config. Nothing resets it from the inside: a boundary
+ * that re-arms while its children still throw spins and locks the main thread.
  */
-class BlockErrorBoundary extends Component<Props, { hasError: boolean }> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error: Error, info: React.ErrorInfo) {
-    const { blockId, version } = this.props;
-
-    withScope((scope) => {
+const BlockErrorBoundary = ({
+  blockId,
+  version,
+  fallback,
+  children,
+}: Props) => (
+  <ErrorBoundary
+    fallback={<>{fallback}</>}
+    beforeCapture={(scope, _error, componentStack) => {
       scope.setExtra('from', 'CustomBlock');
       scope.setExtra('customBlockId', blockId);
       scope.setExtra('customBlockVersion', version ?? 'draft');
-      scope.setExtra('componentStack', info.componentStack ?? null);
-      reportError(error);
-    });
-  }
-
-  render() {
-    if (this.state.hasError) return this.props.fallback ?? null;
-
-    return this.props.children;
-  }
-}
+      scope.setExtra('componentStack', componentStack);
+    }}
+  >
+    {children}
+  </ErrorBoundary>
+);
 
 export default BlockErrorBoundary;

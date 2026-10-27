@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { SerializedNodes } from '@craftjs/core';
+import { ErrorBoundary } from '@sentry/react';
 import { useQueryClient } from '@tanstack/react-query';
 import { SupportedLocale } from 'typings';
 
@@ -195,14 +196,12 @@ interface BoundaryProps {
   children: React.ReactNode;
 }
 
-class HarnessBoundary extends React.Component<BoundaryProps> {
-  componentDidCatch(error: Error) {
-    this.props.onError(error);
-  }
-
-  render() {
-    return this.props.children;
-  }
-}
+// Catches what escapes a block's own boundary — a layout the editor cannot render
+// at all — so the renderer reports that instead of timing out on a blank page.
+const HarnessBoundary = ({ onError, children }: BoundaryProps) => (
+  <ErrorBoundary fallback={<></>} onError={(error) => onError(error as Error)}>
+    {children}
+  </ErrorBoundary>
+);
 
 export default BlockHarness;
