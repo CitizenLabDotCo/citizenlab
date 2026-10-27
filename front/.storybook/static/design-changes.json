@@ -1,10 +1,39 @@
 {
-  "generatedAt": "2026-10-27T16:24:26.019Z",
+  "generatedAt": "2026-10-27T16:59:16.368Z",
   "base": "7b0b8940e27fb6c528eb39a06baa8a4cf2bcdf0a",
   "baseRef": "master",
-  "head": "2735cd7109e486353ca58b7f748bfac27c53e445",
+  "head": "956b799fc50c4141387158e315f0e2fb53d0a6d5",
   "repoUrl": "https://github.com/CitizenLabDotCo/citizenlab",
   "commits": [
+    {
+      "sha": "956b799fc50c4141387158e315f0e2fb53d0a6d5",
+      "subject": "design-system(workbench): the token picker finds what people type, closest match on top [AI-assisted]",
+      "body": "Rob typed `--gv` in the picker and it found nothing: the search compared\nthe query with names stripped of `--gv-`, as one exact substring. Now\n`--gv-…`, `var(--gv-…)`, `text secondary`, `textSecondary`, a value\n(`#596b`, `12px`), a legacy name (`colors.disabled`), one typo\n(`secondery`) or letters in order (`txtsec`) all find their token, and a\nbare `--gv` lists everything. With a query the picker shows one list,\nranked: exact name, start, every word, anywhere, value, legacy name, typo,\nletters in order; semantic tokens first on a tie. Nothing typed keeps the\nthree groups.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/tokenPicker.test.ts",
+        "front/.storybook/workbench/src/lib/tokenPicker.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "a6af49e75121f021cd77798baf92923e5618c066",
+      "subject": "design-system(workbench): Review's count leaves out what was sent to a review closed without merging [AI-assisted]",
+      "body": "The nav counted a sent edit that is no longer in this browser as one to\nput back, also when its review was closed without merging. Nothing landed\nthen, so the nav said 1 over a Review page with 0 changes and Start fresh.\nA closed review now counts every change here as unsent again and nothing\nto put back; Start fresh still clears the link.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/send.test.ts",
+        "front/.storybook/workbench/src/lib/send.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "0f0eccd1788f0207ae4735651871e4d2bcae924e",
+      "subject": "design-system(review): refresh the change list [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-changes.json"
+      ],
+      "kind": "other"
+    },
     {
       "sha": "2735cd7109e486353ca58b7f748bfac27c53e445",
       "subject": "design-system(workbench): a stacked review reads its changes from GitHub, so it commits only its code and pictures [AI-assisted]",
