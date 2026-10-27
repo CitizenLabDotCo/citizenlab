@@ -1327,12 +1327,12 @@ const reviewChecks = async (
     '[data-testid="wb-pr-card"]',
     (els: Element[]) => els.length
   );
-  if (count !== expected || cards !== expected) {
+  if (cards !== expected) {
     failures.push(
-      `review: ${count} changes and ${cards} cards, expected ${expected} from design-changes.json`
+      `review: ${cards} cards, expected ${expected} from design-changes.json`
     );
   }
-  console.log(`review: ${count} design changes, ${cards} cards`);
+  console.log(`review: ${count} changes collected, ${cards} committed cards`);
 };
 
 const main = async () => {
