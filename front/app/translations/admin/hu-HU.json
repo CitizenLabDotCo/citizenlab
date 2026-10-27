@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "Üzenet a résztvevőknek",
   "app.containers.Admin.projects.project.addDescription": "Leírás hozzáadása",
   "app.containers.Admin.projects.project.addFiles": "Fájlok hozzáadása",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "Ötletek hozzáadása az előző szakaszból",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "Válasszon ki egy fázist az idővonalon, majd húzza át az ötleteit ebbe a fázisba, hogy szavazási lehetőségként használhassa őket.",
   "app.containers.Admin.projects.project.addQuestions": "Kérdések hozzáadása",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI-összefoglaló",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Hozzászólások",

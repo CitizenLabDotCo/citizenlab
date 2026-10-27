@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "Μήνυμα προς συμμετέχοντες",
   "app.containers.Admin.projects.project.addDescription": "Προσθήκη περιγραφής",
   "app.containers.Admin.projects.project.addFiles": "Προσθήκη αρχείων",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "Προσθήκη ιδεών από προηγούμενη φάση",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "Επιλέξτε μια φάση στο χρονοδιάγραμμα και, στη συνέχεια, σύρετε τις ιδέες της σε αυτήν τη φάση για να τις χρησιμοποιήσετε ως επιλογές ψηφοφορίας.",
   "app.containers.Admin.projects.project.addQuestions": "Προσθήκη ερωτήσεων",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "Σύνοψη AI",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Σχόλια",

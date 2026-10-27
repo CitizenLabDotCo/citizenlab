@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "Lähetä viesti osallistujille",
   "app.containers.Admin.projects.project.addDescription": "Lisää kuvaus",
   "app.containers.Admin.projects.project.addFiles": "Lisää tiedostoja",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "Lisää ideoita edellisestä vaiheesta",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "Valitse vaihe aikajanalta ja vedä sen ideat tähän vaiheeseen käyttääksesi niitä äänestysvaihtoehtoina.",
   "app.containers.Admin.projects.project.addQuestions": "Lisää kysymyksiä",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI yhteenveto",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Kommentit",

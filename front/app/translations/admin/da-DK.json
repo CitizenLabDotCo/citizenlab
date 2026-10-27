@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "Send besked til deltagere",
   "app.containers.Admin.projects.project.addDescription": "Tilføj en beskrivelse",
   "app.containers.Admin.projects.project.addFiles": "Tilføj filer",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "Tilføj idéer fra tidligere fase",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "Vælg en fase i tidslinjen og træk derefter dens idéer over på denne fase for at bruge dem som stemmemuligheder.",
   "app.containers.Admin.projects.project.addQuestions": "Tilføj spørgsmål",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "Sammenfatning af AI",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Kommentarer",

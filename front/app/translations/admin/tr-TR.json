@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "Katılımcılara mesaj gönder",
   "app.containers.Admin.projects.project.addDescription": "Açıklama ekle",
   "app.containers.Admin.projects.project.addFiles": "Dosya ekle",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "Önceki aşamadan fikirler ekle",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "Zaman çizelgesinden bir aşama seçin, ardından fikirlerini oylama seçenekleri olarak kullanmak için bu aşamaya sürükleyin.",
   "app.containers.Admin.projects.project.addQuestions": "Soru ekle",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "Yapay Zeka Özeti",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Yorumlar",

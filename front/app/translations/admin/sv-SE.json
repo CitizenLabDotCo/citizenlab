@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "Meddela deltagare",
   "app.containers.Admin.projects.project.addDescription": "Lägg till en beskrivning",
   "app.containers.Admin.projects.project.addFiles": "Lägg till filer",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "Lägg till idéer från föregående fas",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "Välj en fas i tidslinjen och dra sedan dess idéer till den här fasen för att använda dem som röstningsalternativ.",
   "app.containers.Admin.projects.project.addQuestions": "Lägg till frågor",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "Sammanfattning av AI",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Kommentarer",

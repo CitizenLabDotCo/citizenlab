@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "Peqataasunut nalunaaruteqarit",
   "app.containers.Admin.projects.project.addDescription": "Nassuiaammik ilanngussigit",
   "app.containers.Admin.projects.project.addFiles": "Fiilit ilanngukkit",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "Immikkoortumit siuliinit isumassarsiat ilanngukkit",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "Piffissaliussami immikkoortoq toqqaruk, taavalu isumassarsiai uunga immikkoortumut nuukkit taasissutissatut atorniarlugit.",
   "app.containers.Admin.projects.project.addQuestions": "Apeqqutinik ilanngussigit",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI-mik eqikkaaneq",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Oqaaseqaatit",

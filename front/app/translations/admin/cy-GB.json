@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "Anfon neges at gyfranogwyr",
   "app.containers.Admin.projects.project.addDescription": "Ychwanegu disgrifiad",
   "app.containers.Admin.projects.project.addFiles": "Ychwanegu ffeiliau",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "Ychwanegu syniadau o'r cam blaenorol",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "Dewiswch gyfnod yn y llinell amser, yna llusgwch ei syniadau i'r cyfnod hwn i'w defnyddio fel opsiynau pleidleisio.",
   "app.containers.Admin.projects.project.addQuestions": "Ychwanegu cwestiynau",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "Crynodeb AI",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Sylwadau",

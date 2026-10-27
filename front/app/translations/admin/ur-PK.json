@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "شرکاء کو پیغام بھیجیں",
   "app.containers.Admin.projects.project.addDescription": "تفصیل شامل کریں",
   "app.containers.Admin.projects.project.addFiles": "فائلیں شامل کریں",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "پچھلے مرحلے سے خیالات شامل کریں",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "ٹائم لائن میں ایک مرحلہ منتخب کریں، پھر اس کے خیالات کو اس مرحلے پر کھینچ کر لائیں تاکہ انہیں ووٹنگ کے اختیارات کے طور پر استعمال کیا جا سکے۔",
   "app.containers.Admin.projects.project.addQuestions": "سوالات شامل کریں",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI کا خلاصہ",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "تبصرے",

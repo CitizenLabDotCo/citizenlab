@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "Siųsti žinutę dalyviams",
   "app.containers.Admin.projects.project.addDescription": "Pridėti aprašymą",
   "app.containers.Admin.projects.project.addFiles": "Pridėti failus",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "Pridėti idėjas iš ankstesnio etapo",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "Pasirinkite etapą laiko juostoje, tada nutempkite jo idėjas į šį etapą, kad galėtumėte jas naudoti kaip balsavimo parinktis.",
   "app.containers.Admin.projects.project.addQuestions": "Pridėti klausimų",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI santrauka",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Komentarai",

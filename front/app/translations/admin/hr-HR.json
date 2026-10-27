@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "Pošalji poruku sudionicima",
   "app.containers.Admin.projects.project.addDescription": "Dodaj opis",
   "app.containers.Admin.projects.project.addFiles": "Dodaj datoteke",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "Dodaj ideje iz prethodne faze",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "Odaberite fazu u vremenskom slijedu, a zatim povucite njezine ideje u ovu fazu kako biste ih koristili kao opcije za glasovanje.",
   "app.containers.Admin.projects.project.addQuestions": "Dodaj pitanja",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI Sažetak",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Komentari",

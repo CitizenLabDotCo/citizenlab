@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "Message participants",
   "app.containers.Admin.projects.project.addDescription": "Add a description",
   "app.containers.Admin.projects.project.addFiles": "Add files",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "Add ideas from previous phase",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "Pick a phase in the timeline, then drag its ideas onto this phase to use them as voting options.",
   "app.containers.Admin.projects.project.addQuestions": "Add questions",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI Summary",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Comments",

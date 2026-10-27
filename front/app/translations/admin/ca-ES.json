@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "Envia un missatge als participants",
   "app.containers.Admin.projects.project.addDescription": "Afegeix una descripció",
   "app.containers.Admin.projects.project.addFiles": "Afegeix fitxers",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "Afegeix idees de la fase anterior",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "Tria una fase de la línia de temps i, després, arrossega les seves idees a aquesta fase per fer-les servir com a opcions de votació.",
   "app.containers.Admin.projects.project.addQuestions": "Afegeix preguntes",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "Resum per IA",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Comentaris",

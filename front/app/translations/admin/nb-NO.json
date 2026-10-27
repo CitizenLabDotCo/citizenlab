@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "Send melding til deltakere",
   "app.containers.Admin.projects.project.addDescription": "Legg til en beskrivelse",
   "app.containers.Admin.projects.project.addFiles": "Legg til filer",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "Legg til ideer fra forrige fase",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "Velg en fase i tidslinjen, og dra deretter ideene over til denne fasen for å bruke dem som stemmealternativer.",
   "app.containers.Admin.projects.project.addQuestions": "Legg til spørsmål",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "Sammendrag av AI",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Kommentarer",

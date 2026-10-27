@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "Contacter les participants",
   "app.containers.Admin.projects.project.addDescription": "Ajouter une description",
   "app.containers.Admin.projects.project.addFiles": "Ajouter des fichiers",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "Ajouter des idées de la phase précédente",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "Choisissez une phase dans le calendrier, puis faites glisser ses idées vers cette phase pour les utiliser comme options de vote.",
   "app.containers.Admin.projects.project.addQuestions": "Ajouter des questions",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "Résumé",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Commentaires",

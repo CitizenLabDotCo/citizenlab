@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "مراسلة المشاركين",
   "app.containers.Admin.projects.project.addDescription": "إضافة وصف",
   "app.containers.Admin.projects.project.addFiles": "إضافة ملفات",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "إضافة أفكار من المرحلة السابقة",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "ختار مرحلة فـ الجدول الزمني، ومن بعد جر الأفكار ديالها لهاد المرحلة باش تستعملهم كخيارات للتصويت.",
   "app.containers.Admin.projects.project.addQuestions": "إضافة أسئلة",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "ملخص الذكاء الاصطناعي",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "تعليقات",

@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "Participante kontaktéieren",
   "app.containers.Admin.projects.project.addDescription": "Eng Beschreiwung dobäisetzen",
   "app.containers.Admin.projects.project.addFiles": "Dateie bäisetzen",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "Ideen aus der viregter Phas bäisetzen",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "Wielt eng Phas an der Timeline aus, an zitt hir Iddien dann op dës Phas, fir se als Optioune fir d'Ofstëmmung ze benotzen.",
   "app.containers.Admin.projects.project.addQuestions": "Froe bäisetzen",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "KI-Zesummefaassung",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Kommentaren",

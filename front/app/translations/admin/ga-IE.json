@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "Seol teachtaireacht chuig rannpháirtithe",
   "app.containers.Admin.projects.project.addDescription": "Cuir tuairisc leis",
   "app.containers.Admin.projects.project.addFiles": "Cuir comhaid leis",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "Cuir smaointe ón gcéim roimhe seo leis",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "Roghnaigh céim san amlíne, ansin tarraing a cuid smaointe go dtí an chéim seo chun iad a úsáid mar roghanna vótála.",
   "app.containers.Admin.projects.project.addQuestions": "Cuir ceisteanna leis",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "Achoimre ar Intleacht Shaorga",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Tráchtanna",

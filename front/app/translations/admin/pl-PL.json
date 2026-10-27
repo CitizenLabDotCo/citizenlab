@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "Wyślij wiadomość do uczestników",
   "app.containers.Admin.projects.project.addDescription": "Dodaj opis",
   "app.containers.Admin.projects.project.addFiles": "Dodaj pliki",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "Dodaj pomysły z poprzedniej fazy",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "Wybierz etap na osi czasu, a następnie przeciągnij z niego pomysły do tego etapu, aby użyć ich jako opcji głosowania.",
   "app.containers.Admin.projects.project.addQuestions": "Dodaj pytania",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "Podsumowanie AI",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Komentarze",

@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "ਭਾਗੀਦਾਰਾਂ ਨੂੰ ਸੁਨੇਹਾ ਭੇਜੋ",
   "app.containers.Admin.projects.project.addDescription": "ਵੇਰਵਾ ਸ਼ਾਮਲ ਕਰੋ",
   "app.containers.Admin.projects.project.addFiles": "ਫ਼ਾਈਲਾਂ ਜੋੜੋ",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "ਪਿਛਲੇ ਪੜਾਅ ਤੋਂ ਵਿਚਾਰ ਜੋੜੋ",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "ਟਾਈਮਲਾਈਨ ਵਿੱਚ ਇੱਕ ਪੜਾਅ ਚੁਣੋ, ਫਿਰ ਇਸਦੇ ਵਿਚਾਰਾਂ ਨੂੰ ਵੋਟਿੰਗ ਵਿਕਲਪਾਂ ਵਜੋਂ ਵਰਤਣ ਲਈ ਇਸ ਪੜਾਅ 'ਤੇ ਡਰੈਗ ਕਰੋ।",
   "app.containers.Admin.projects.project.addQuestions": "ਸਵਾਲ ਜੋੜੋ",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "ਏਆਈ ਸੰਖੇਪ",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "ਟਿੱਪਣੀਆਂ",

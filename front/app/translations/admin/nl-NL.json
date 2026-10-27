@@ -1650,8 +1650,6 @@
   "app.containers.Admin.projects.project.actionMessageParticipants": "Deelnemers berichten",
   "app.containers.Admin.projects.project.addDescription": "Voeg een beschrijving toe",
   "app.containers.Admin.projects.project.addFiles": "Bestanden toevoegen",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhase": "Ideeën uit de vorige fase toevoegen",
-  "app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription": "Kies een fase in de tijdlijn en sleep de bijbehorende ideeën naar deze fase om ze als stemopties te gebruiken.",
   "app.containers.Admin.projects.project.addQuestions": "Vragen toevoegen",
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": "AI Samenvatting",
   "app.containers.Admin.projects.project.analysis.Comments.comments": "Reacties",
