@@ -454,24 +454,46 @@ export const createApi = (deps: Deps) => {
     return { kind: 'heal', sha, branch, subject };
   };
 
+  // A heal onto a token waits until master can show it (Iva's call): the
+  // tokens, the app loading tokens.css, and the app writing each city's
+  // colours into its --gv-tenant-* slots, which otherwise read their default
+  // pink on every platform.
+  const masterShowsTokens = () => {
+    deps.git(['fetch', '-q', 'origin', 'master']);
+    const prefix = gitOr(['rev-parse', '--show-prefix']) ?? '';
+    const master = 'refs/remotes/origin/master';
+    const at = (file: string) => `${master}:${prefix}${file}`;
+    const tokens = gitOr([
+      'cat-file',
+      '-e',
+      at('app/design-system/tokens/tokens.ts'),
+    ]);
+    const app = gitOr(['show', at(APP_ROOT)]) ?? '';
+    const writer = gitOr([
+      'grep',
+      '-l',
+      '-e',
+      '--gv-tenant-primary',
+      master,
+      '--',
+      'app',
+      ':!app/design-system/tokens',
+      ':!*.stories.tsx',
+    ]);
+    return (
+      tokens !== undefined &&
+      app.includes('design-system/tokens/tokens.css') &&
+      !!writer
+    );
+  };
+
   const push = (body: any) => {
     const all = edits();
     const tokens = all.filter((e) => e.kind === 'token');
     const styles = all.filter((e) => e.kind === 'style');
     if (!tokens.length && !styles.length) throw new Refusal('Nothing to push.');
-    // A heal onto a token waits until master has the tokens (Iva's call).
-    let masterHasTokens = false;
-    if (styles.some(readsToken)) {
-      deps.git(['fetch', '-q', 'origin', 'master']);
-      const prefix = gitOr(['rev-parse', '--show-prefix']) ?? '';
-      masterHasTokens =
-        gitOr([
-          'cat-file',
-          '-e',
-          `refs/remotes/origin/master:${prefix}app/design-system/tokens/tokens.ts`,
-        ]) !== undefined;
-    }
-    const heals = styles.filter((e) => masterHasTokens || !readsToken(e));
+    const ready = styles.some(readsToken) && masterShowsTokens();
+    const heals = styles.filter((e) => ready || !readsToken(e));
     const held = styles.filter((e) => !heals.includes(e));
     const pushed = [];
     if (heals.length) pushed.push(pushHeal(heals, body));
@@ -488,7 +510,7 @@ export const createApi = (deps: Deps) => {
       held: held.length
         ? `${
             held.length === 1 ? 'One edit reads' : `${held.length} edits read`
-          } a token, and master has no tokens yet; it stays saved here until they land.`
+          } a token, and the platform does not load the tokens and each city's colours yet; it stays saved here until it does.`
         : null,
     };
   };

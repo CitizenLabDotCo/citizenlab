@@ -297,7 +297,27 @@ it('pushes a component edit as a heal off master, not on this branch', async () 
   expect(again.json.pushed[0].branch).toBe(`${heal.branch}-2`);
 });
 
-it('heals onto a token when master has the tokens, then drops the setup', async () => {
+// Master as the setup PR leaves it: the app loads tokens.css and, unless
+// `writer` is false, writes each city's colours. The checkout stays as it was.
+const setUpMaster = (writer = true) => {
+  put(
+    APP_ROOT,
+    "import 'design-system/tokens/tokens.css';\nimport React from 'react';\n\nexport default () => null;\n"
+  );
+  if (writer) {
+    put(
+      'app/containers/App/TenantTokens.tsx',
+      "document.documentElement.style.setProperty('--gv-tenant-primary', 'red');\n"
+    );
+  }
+  sh(dir, 'add', '-A');
+  sh(dir, 'commit', '-qm', 'setup');
+  sh(dir, 'push', '-q', 'origin', 'HEAD:master');
+  sh(dir, 'reset', '-q', '--hard', 'HEAD~1');
+};
+
+it('heals onto a token when master shows the tokens, then drops the setup', async () => {
+  setUpMaster();
   await call('/__ds/style', {
     file: COMPONENT,
     line: 6,
@@ -327,8 +347,23 @@ it('holds a heal onto a token while master has no tokens', async () => {
   const r = await call('/__ds/push', {});
   expect(r.status).toBe(200);
   expect(r.json.pushed).toHaveLength(0);
-  expect(r.json.held).toMatch(/no tokens yet/);
+  expect(r.json.held).toMatch(/does not load the tokens/);
   expect(r.json.edits.map((e: any) => e.kind)).toEqual(['setup', 'style']);
+  expect(heads()).toEqual(['master']);
+});
+
+it('holds a heal onto a token while master writes no city colours', async () => {
+  // tokens.css alone gives every platform its default pink.
+  setUpMaster(false);
+  await call('/__ds/style', {
+    file: COMPONENT,
+    line: 6,
+    col: 16,
+    token: '--gv-space-3',
+  });
+  const r = await call('/__ds/push', {});
+  expect(r.json.pushed).toHaveLength(0);
+  expect(r.json.held).toMatch(/each city's colours/);
   expect(heads()).toEqual(['master']);
 });
 
