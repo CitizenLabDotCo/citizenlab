@@ -74,6 +74,7 @@ export interface QueryParametersUpdate {
   search?: string;
   idea_status?: string;
   topics?: string[];
+  answers?: Record<string, string[]>;
 }
 
 export interface Props {

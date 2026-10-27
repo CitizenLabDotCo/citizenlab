@@ -22,6 +22,11 @@ export interface IIdeasFilterCounts {
       assignee_id?: {
         [key: string]: number;
       };
+      custom_field_answers?: {
+        [fieldId: string]: {
+          [optionKey: string]: number;
+        };
+      };
       total: number;
     };
   };
@@ -33,4 +38,5 @@ export interface IIdeasFilterCountsQueryParameters
     'page[number]' | 'page[size]' | 'sort'
   > {
   sort?: Sort;
+  custom_field_ids?: string[];
 }
