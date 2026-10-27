@@ -525,6 +525,7 @@ DROP INDEX IF EXISTS public.index_admin_publications_on_depth;
 DROP INDEX IF EXISTS public.index_activities_on_user_id;
 DROP INDEX IF EXISTS public.index_activities_on_project_id;
 DROP INDEX IF EXISTS public.index_activities_on_item_type_and_item_id;
+DROP INDEX IF EXISTS public.index_activities_on_item_type_and_action;
 DROP INDEX IF EXISTS public.index_activities_on_action;
 DROP INDEX IF EXISTS public.index_activities_on_acted_at;
 DROP INDEX IF EXISTS public.inappropriate_content_flags_flaggable;
@@ -6618,6 +6619,13 @@ CREATE INDEX index_activities_on_action ON public.activities USING btree (action
 
 
 --
+-- Name: index_activities_on_item_type_and_action; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_activities_on_item_type_and_action ON public.activities USING btree (item_type, action);
+
+
+--
 -- Name: index_activities_on_item_type_and_item_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -10409,6 +10417,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261027120100'),
 ('20261014200000'),
 ('20261014130100'),
 ('20261014120100'),
