@@ -655,4 +655,12 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.proposalsAndParticipantData',
     defaultMessage: 'Proposals and participant data',
   },
+  addDescription: {
+    id: 'app.containers.Admin.projects.project.addDescription',
+    defaultMessage: 'Add a description',
+  },
+  attachments: {
+    id: 'app.containers.Admin.projects.project.attachments',
+    defaultMessage: 'Attachments',
+  },
 });

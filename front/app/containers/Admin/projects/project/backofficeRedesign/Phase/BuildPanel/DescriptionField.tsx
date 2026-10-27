@@ -17,7 +17,7 @@ import Warning from 'components/UI/Warning';
 import { useIntl } from 'utils/cl-intl';
 import { isEmptyMultiloc } from 'utils/helperUtils';
 
-import eventMessages from '../../Event/messages';
+import messages from '../../messages';
 
 interface Props {
   projectId: string;
@@ -52,7 +52,7 @@ const DescriptionField = ({ projectId, value, errors, onChange }: Props) => {
         variant="bo"
         minHeight="74px"
         ariaLabel={formatMessage(descriptionMessages.descriptionLabel)}
-        placeholder={formatMessage(eventMessages.addDescription)}
+        placeholder={formatMessage(messages.addDescription)}
         valueMultiloc={value}
         onChange={onChange}
         withCTAButton

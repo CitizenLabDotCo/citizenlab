@@ -19,7 +19,6 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 
 import { useIntl } from 'utils/cl-intl';
 
-import eventMessages from '../../Event/messages';
 import messages from '../../messages';
 
 import DescriptionField from './DescriptionField';
@@ -110,7 +109,7 @@ const BuildFields = ({
 
       <Box display="flex" flexDirection="column" gap="10px">
         <PanelField
-          label={formatMessage(eventMessages.attachments)}
+          label={formatMessage(messages.attachments)}
           action={
             <FileSelectOrUploadModal
               fileAttachments={files.attachments}
