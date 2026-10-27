@@ -6,7 +6,6 @@ import tokensMeta from '@ds/tokens/tokens.meta.json';
 
 import { setTokenSource } from './liveSource';
 
-import type { Crop } from './inUse';
 import type { ThumbManifest } from './thumbs';
 import type { A11yResults } from '../../../../scripts/design-system/a11y-results';
 import type {
@@ -104,7 +103,3 @@ export const loadThumbs = () =>
   fetchJson<ThumbManifest | null>('../thumbs.json', null).then((m) =>
     m && typeof m === 'object' && 'thumbs' in m ? m : null
   );
-
-// The pictures ds:crops took of components with no story, per component.
-export const loadCrops = () =>
-  fetchJson<Record<string, Crop>>('../crops.json', {});

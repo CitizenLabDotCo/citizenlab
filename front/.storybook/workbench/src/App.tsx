@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import Nav from './components/Nav';
 import { PanelContext } from './components/Panel';
@@ -14,7 +14,6 @@ import { useSendRecord } from './lib/useSend';
 import Component from './pages/Component';
 import Foundations from './pages/Foundations';
 import Gallery from './pages/Gallery';
-import Inspect from './pages/Inspect';
 import Review from './pages/Review';
 
 type CanvasProps = {
@@ -39,11 +38,7 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
         />
       );
     case 'components':
-    case 'patterns':
-    case 'pages':
       return route.storyId ? (
-        // No key: opening a component of a pattern (another section) keeps
-        // the page, so the canvas switches its frame in place.
         <Component
           section={route.name}
           storyId={route.storyId}
@@ -55,8 +50,6 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
         />
       ) : (
         <Gallery
-          key={route.name}
-          section={route.name}
           globals={{
             city: canvas.toolbar.city,
             lang: canvas.toolbar.lang,
@@ -71,8 +64,6 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
           reset={canvas.reset}
         />
       );
-    case 'inspect':
-      return <Inspect meta={TOKEN_META} />;
     case 'not-found':
       return (
         <article className="wb-page">
@@ -104,18 +95,7 @@ const App = ({ local: localStatus }: { local?: LocalStatus }) => {
     [panelEl, register]
   );
   const navName = route.name === 'not-found' ? 'components' : route.name;
-  const [savedCollapsed, toggleSaved] = useNavCollapsed();
-  // Inspect wants the room: the sidebar folds each time it opens and the
-  // viewer's own choice is back on leaving. A toggle there lasts the visit.
-  const inspecting = route.name === 'inspect';
-  const [inspectExpanded, setInspectExpanded] = useState(false);
-  useEffect(() => {
-    if (inspecting) setInspectExpanded(false);
-  }, [inspecting]);
-  const navCollapsed = inspecting ? !inspectExpanded : savedCollapsed;
-  const toggleNav = inspecting
-    ? () => setInspectExpanded((x) => !x)
-    : toggleSaved;
+  const [navCollapsed, toggleNav] = useNavCollapsed();
   const [toolbar, setToolbar] = useState<ToolbarState>(DEFAULT_TOOLBAR);
   const { overrides, setOverride, reset, notice, dismissNotice } =
     useOverrides(TOKEN_META);

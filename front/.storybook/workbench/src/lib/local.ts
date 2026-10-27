@@ -7,8 +7,7 @@ import type { TokenMeta } from './data';
 
 export type SavedEdit = {
   id: string;
-  // `agent`: what the person's agent changed in a file picked in Inspect.
-  kind: 'token' | 'style' | 'setup' | 'agent';
+  kind: 'token' | 'style' | 'setup';
   label: string;
   at: number;
   files: string[];
@@ -84,15 +83,6 @@ export type Local = {
     label: string
   ) => Promise<boolean>;
   undo: (id: string) => Promise<boolean>;
-  // Hands an element picked in Inspect to the agent, and watches its file.
-  // `also`: the files above it (where it is used), watched too.
-  pick: (
-    at: { file: string; line: number; also?: string[] },
-    label: string,
-    context: unknown
-  ) => Promise<boolean>;
-  // Reads the list again (an agent edits files behind the page's back).
-  refresh: () => Promise<void>;
   push: (branch?: string) => Promise<Pushed | undefined>;
 };
 
@@ -130,12 +120,6 @@ export const useLocalApi = (initial?: LocalStatus): Local | undefined => {
     saveStyle: async (at, to, label) =>
       !!(await run('style', { ...at, ...to, label })),
     undo: async (id) => !!(await run('undo', { id })),
-    pick: async (at, label, context) =>
-      !!(await run('pick', { ...at, label, context })),
-    refresh: async () => {
-      const next = await detectLocal();
-      if (next) setStatus(next);
-    },
     push: (branch) => run<Pushed>('push', branch ? { branch } : {}),
   };
 };

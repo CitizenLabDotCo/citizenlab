@@ -90,12 +90,19 @@ describe('useRoute', () => {
   });
 });
 
-describe('inspect', () => {
-  it('opens the Inspect tab, which takes no parameter', () => {
-    expect(parseHash('#/inspect')).toEqual({ name: 'inspect' });
-    expect(parseHash('#/inspect/x')).toEqual({
+describe('old sections', () => {
+  it('opens Patterns and Pages links in Components', () => {
+    expect(parseHash('#/patterns')).toEqual({ name: 'components' });
+    expect(parseHash('#/pages/pages-x--default')).toEqual({
+      name: 'components',
+      storyId: 'pages-x--default',
+    });
+  });
+
+  it('has no Inspect page any more', () => {
+    expect(parseHash('#/inspect')).toEqual({
       name: 'not-found',
-      path: '/inspect/x',
+      path: '/inspect',
     });
   });
 });

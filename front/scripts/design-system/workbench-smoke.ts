@@ -55,19 +55,11 @@ import path from 'path';
 
 import { loadPlaywright } from './playwright';
 
-export const EXPECTED_NAV = [
-  'Foundations',
-  'Components',
-  'Patterns',
-  'Pages',
-  'Review',
-];
+export const EXPECTED_NAV = ['Foundations', 'Components', 'Review'];
 
 const ROUTES: [string, string][] = [
   ['#/foundations/color', 'Colour'],
   ['#/components', 'Components'],
-  ['#/patterns', 'Patterns'],
-  ['#/pages', 'Pages'],
   ['#/review', 'Review'],
 ];
 

@@ -4,10 +4,7 @@ import { useEffect, useState } from 'react';
 export type Route =
   | { name: 'foundations'; category?: string; token?: string }
   | { name: 'components'; storyId?: string }
-  | { name: 'patterns'; storyId?: string }
-  | { name: 'pages'; storyId?: string }
   | { name: 'review' }
-  | { name: 'inspect' }
   | { name: 'not-found'; path: string };
 
 export const DEFAULT_HASH = '#/components';
@@ -50,13 +47,14 @@ export const parseHash = (hash: string): Route => {
             token: decodeURIComponent(rest[0]),
           }
         : { name: 'foundations', category: param };
+    // Patterns and Pages were sections of their own: their stories are in
+    // Components now, so their links still open.
     case 'components':
     case 'patterns':
     case 'pages':
-      return { name: first, storyId: param };
+      return { name: 'components', storyId: param };
     case 'review':
-    case 'inspect':
-      return param ? { name: 'not-found', path } : { name: first };
+      return param ? { name: 'not-found', path } : { name: 'review' };
     default:
       return { name: 'not-found', path };
   }

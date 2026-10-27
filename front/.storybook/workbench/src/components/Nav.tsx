@@ -27,23 +27,10 @@ export const NAV: NavEntry[] = [
     hint: 'Every library component',
   },
   {
-    name: 'patterns',
-    label: 'Patterns',
-    hash: '#/patterns',
-    hint: 'Compositions of components',
-  },
-  { name: 'pages', label: 'Pages', hash: '#/pages', hint: 'Redesigned pages' },
-  {
     name: 'review',
     label: 'Review',
     hash: '#/review',
     hint: 'Before and after, page by page',
-  },
-  {
-    name: 'inspect',
-    label: 'Inspect',
-    hash: '#/inspect',
-    hint: 'Click anything in your local platform',
   },
 ];
 
