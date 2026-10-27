@@ -353,6 +353,8 @@ const OPTIONAL_DATA = [
   '/design-changes.json',
   '/routes.fixture.json',
   '/design-scan.summary.json',
+  // The gallery's pictures, which a build without ds:thumbs has none of.
+  '/thumbs.json',
   // The pictures of each change on the Review page.
   '/before.png',
   '/after.png',
@@ -674,15 +676,22 @@ const liveGalleryChecks = async (
       `fewer than ${MIN_REVEALED_THUMBS} gallery thumbnails revealed their story`
     );
   }
-  const shared = await page.evaluate(() => {
+  // Stories that painted something in a revealed card. They paint after
+  // their cards say rendered, and some rendered cards have frames of their
+  // own: wait for the gallery frame itself.
+  const PAINTED = '.gvg-item[data-shown]:has([data-gv-story-box] > *)';
+  await page
+    .frameLocator('[data-testid="wb-gallery-frame"]')
+    .locator(PAINTED)
+    .nth(MIN_REVEALED_THUMBS - 1)
+    .waitFor({ state: 'attached', timeout: 30000 })
+    .catch(() => undefined);
+  const shared = await page.evaluate((selector: string) => {
     const frame = document.querySelector<HTMLIFrameElement>(
       '[data-testid="wb-gallery-frame"]'
     );
     const doc = frame?.contentDocument;
-    // Stories that painted something in a revealed card.
-    const painted = Array.from(
-      doc?.querySelectorAll('.gvg-item[data-shown]') ?? []
-    ).filter((item) => item.querySelector('[data-gv-story-box] > *'));
+    const painted = Array.from(doc?.querySelectorAll(selector) ?? []);
     // The first one sits over its card's preview box: frame pixels, scaled
     // by the frame's scale, from the frame's corner.
     let offBy: number | null = null;
@@ -706,7 +715,7 @@ const liveGalleryChecks = async (
       );
     }
     return { painted: painted.length, id, offBy };
-  });
+  }, PAINTED);
   if (shared.painted < MIN_REVEALED_THUMBS) {
     failures.push(
       `the gallery frame painted ${shared.painted} stories, expected ${MIN_REVEALED_THUMBS} or more`
@@ -1450,7 +1459,8 @@ const main = async () => {
       failures.push(`page error: ${err.message}`)
     );
 
-    await page.goto(`${base}/workbench/`, { waitUntil: 'networkidle' });
+    // Not networkidle: a gallery without pictures boots previews for long.
+    await page.goto(`${base}/workbench/`, { waitUntil: 'load' });
     await page.waitForSelector('main h1:has-text("Components")', {
       timeout: 10000,
     });
