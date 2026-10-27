@@ -1,10 +1,40 @@
 {
-  "generatedAt": "2026-10-27T13:37:33.849Z",
+  "generatedAt": "2026-10-27T14:01:09.866Z",
   "base": "7b0b8940e27fb6c528eb39a06baa8a4cf2bcdf0a",
   "baseRef": "master",
-  "head": "fdce57460358e0a7106e6f9f81ef8038781f0944",
+  "head": "c2fd25227fdc29c33425a166287b81c8e86afc92",
   "repoUrl": "https://github.com/CitizenLabDotCo/citizenlab",
   "commits": [
+    {
+      "sha": "c2fd25227fdc29c33425a166287b81c8e86afc92",
+      "subject": "design-system(docs): the Review card's kind, areas and scale line [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "6d69b5164a7e8933ac1491862206da3477f9f2e5",
+      "subject": "design-system(workbench): each Review card says what kind of change, what it touches and how far it reaches [AI-assisted]",
+      "body": "One line under every card, live or committed: Same look / Look change /\nToken value / Whole component, the areas it touches (Colour, Radius,\nSpacing, Type, Shadow, Border, Size, Animation) and the scale, such as\n\"Button · used in 304 places · on 187 pages\". Leftover rules of the old\nReview (wb-review-picked, wb-rstats-*, wb-eyebrow, wb-diff-dot outside\nInspect) go.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/prReview.test.ts",
+        "front/.storybook/workbench/src/lib/prReview.ts",
+        "front/.storybook/workbench/src/pages/Review.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "dbd97b50da7349984cd7e7c57a81dabb56def098",
+      "subject": "design-system(review): refresh the change list [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-changes.json"
+      ],
+      "kind": "other"
+    },
     {
       "sha": "fdce57460358e0a7106e6f9f81ef8038781f0944",
       "subject": "design-system(docs): Review collects the browser's changes first [AI-assisted]",
