@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Meta, StoryObj } from '@storybook/react';
+import { t } from 'design-system/tokens/tokens';
 import { fn } from 'storybook/test';
 
 import { project1 } from 'api/projects/__mocks__/_mockServer';
@@ -34,7 +35,7 @@ const meta = {
           width: 420,
           padding: 16,
           background: 'white',
-          borderRadius: 8,
+          borderRadius: t.radius[2],
           boxShadow: '0 2px 12px rgba(0, 0, 0, 0.12)',
         }}
       >
