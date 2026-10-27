@@ -15,6 +15,7 @@ import testEnv from '../../utils/testUtils/testEnv';
 
 type Size = 'small' | 'medium';
 type Variant = 'default' | 'bo';
+type LabelAlign = 'center' | 'top';
 
 const BO_KNOB = 12;
 const BO_PADDING = 2;
@@ -28,12 +29,13 @@ const SIZES: Record<Size, number> = {
   medium: mediumSize,
 };
 
-const Container = styled.div`
+const Container = styled.div<{ labelAlign: LabelAlign }>`
   display: inline-block;
 
   &.hasLabel {
     display: flex;
-    align-items: center;
+    align-items: ${({ labelAlign }) =>
+      labelAlign === 'top' ? 'flex-start' : 'center'};
 
     ${isRtl`
         flex-direction: row-reverse;
@@ -174,6 +176,7 @@ interface Props {
   labelTextColor?: string;
   size?: Size;
   variant?: Variant;
+  labelAlign?: LabelAlign;
   onChange: (event: FormEvent) => void;
   className?: string;
   id?: string;
@@ -201,6 +204,7 @@ class Toggle extends PureComponent<Props> {
       id,
       size = 'medium',
       variant = 'default',
+      labelAlign = 'center',
       onChange,
     } = this.props;
 
@@ -208,7 +212,10 @@ class Toggle extends PureComponent<Props> {
     const inputId = id ?? `toggle-${this.instanceId}`;
 
     return (
-      <Container className={`${className || ''} ${label ? 'hasLabel' : ''}`}>
+      <Container
+        className={`${className || ''} ${label ? 'hasLabel' : ''}`}
+        labelAlign={labelAlign}
+      >
         <HiddenCheckbox
           onChange={onChange}
           checked={checked}

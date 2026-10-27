@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Tooltip, bo } from '@citizenlab/cl2-component-library';
+import { Box, Button, Tooltip } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
 import useReport from 'api/reports/useReport';
@@ -43,10 +43,7 @@ const ReportSection = ({ projectId, phase }: Props) => {
               id="e2e-create-report-button"
               buttonStyle="bo-primary"
               icon="plus"
-              height={bo.buttonMedium.height}
-              padding={bo.buttonMedium.padding}
-              fontSize={bo.buttonMedium.fontSize}
-              iconSize={bo.buttonMedium.iconSize}
+              boSize="medium"
               width="auto"
               onClick={() => setCreateOpened(true)}
             >
@@ -74,9 +71,7 @@ const ReportSection = ({ projectId, phase }: Props) => {
         <Box display="flex" alignItems="center" gap="8px">
           <Button
             buttonStyle="bo-secondary"
-            height={bo.buttonMedium.height}
-            padding={bo.buttonMedium.padding}
-            fontSize={bo.buttonMedium.fontSize}
+            boSize="medium"
             width="auto"
             onClick={() =>
               window.open(
@@ -96,9 +91,7 @@ const ReportSection = ({ projectId, phase }: Props) => {
             <div>
               <ButtonWithLink
                 buttonStyle="bo-secondary"
-                height={bo.buttonMedium.height}
-                padding={bo.buttonMedium.padding}
-                fontSize={bo.buttonMedium.fontSize}
+                boSize="medium"
                 width="auto"
                 disabled={!canEdit}
                 to="/admin/reporting/report-builder/$reportId/editor"

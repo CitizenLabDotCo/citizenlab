@@ -2,8 +2,8 @@ import React, { ReactNode, useState } from 'react';
 
 import { Box, Button, colors } from '@citizenlab/cl2-component-library';
 
-import SetupCard from 'containers/Admin/projects/project/backofficeRedesign/Event/SetupCard';
-import SummaryPill from 'containers/Admin/projects/project/backofficeRedesign/Phase/BuildPanel/SummaryPill';
+import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
+import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 
 import PanelRowButton from './PanelRowButton';
 

@@ -2,14 +2,13 @@ import React from 'react';
 
 import useLocale from 'hooks/useLocale';
 
+import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 import { formatDateRange } from 'containers/Admin/projects/project/projectPage/phaseRowUtils';
 
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';
 import pickerMessages from 'components/admin/DatePickers/DatePhasePicker/messages';
 
 import { useIntl } from 'utils/cl-intl';
-
-import SummaryPill from './SummaryPill';
 
 interface Props {
   startAt: string;

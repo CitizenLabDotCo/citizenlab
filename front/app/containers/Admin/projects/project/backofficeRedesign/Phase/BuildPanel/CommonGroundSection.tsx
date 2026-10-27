@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Spinner, bo } from '@citizenlab/cl2-component-library';
+import { Box, Button, Spinner } from '@citizenlab/cl2-component-library';
+
+import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 
 import ImportInputsModal from 'components/admin/PostManager/CommonGroundInputManager/ImportInputsModal';
 import IconAction from 'components/UI/IconAction';
@@ -11,7 +13,6 @@ import messages from '../../messages';
 
 import AddStatementModal from './AddStatementModal';
 import PanelField from './PanelField';
-import SummaryPill from './SummaryPill';
 import useStagedStatements from './useStagedStatements';
 
 interface Props {
@@ -74,9 +75,7 @@ const CommonGroundSection = ({ projectId, phaseId }: Props) => {
             >
               <Button
                 buttonStyle="bo-secondary"
-                height={bo.buttonMedium.height}
-                padding={bo.buttonMedium.padding}
-                fontSize={bo.buttonMedium.fontSize}
+                boSize="medium"
                 width="auto"
                 onClick={() => setAddOpened(true)}
               >
@@ -84,9 +83,7 @@ const CommonGroundSection = ({ projectId, phaseId }: Props) => {
               </Button>
               <Button
                 buttonStyle="bo-primary"
-                height={bo.buttonMedium.height}
-                padding={bo.buttonMedium.padding}
-                fontSize={bo.buttonMedium.fontSize}
+                boSize="medium"
                 width="auto"
                 onClick={() => setImportOpened(true)}
               >

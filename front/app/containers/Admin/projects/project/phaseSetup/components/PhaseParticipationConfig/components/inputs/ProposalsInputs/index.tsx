@@ -315,14 +315,15 @@ const ProposalsInputs = ({
   if (layout === 'panel') {
     return (
       <>
-        <Box pt="22px" />
-        <PanelGroup
-          label={formatMessage(configMessages.participantActionsGroup)}
-          defaultOpen
-        >
-          {userActions}
-          {likes}
-        </PanelGroup>
+        <Box pt="22px">
+          <PanelGroup
+            label={formatMessage(configMessages.participantActionsGroup)}
+            defaultOpen
+          >
+            {userActions}
+            {likes}
+          </PanelGroup>
+        </Box>
         {requirements}
         <PanelGroup
           label={formatMessage(configMessages.moderationGroup)}

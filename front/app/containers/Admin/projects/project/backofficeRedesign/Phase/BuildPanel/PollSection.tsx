@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Button, bo } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import usePollQuestions from 'api/poll_questions/usePollQuestions';
 
@@ -30,9 +30,7 @@ const PollSection = ({ phaseId }: Props) => {
         action={
           <Button
             buttonStyle="bo-secondary"
-            height={bo.buttonMedium.height}
-            padding={bo.buttonMedium.padding}
-            fontSize={bo.buttonMedium.fontSize}
+            boSize="medium"
             width="auto"
             onClick={() => setOpened(true)}
           >

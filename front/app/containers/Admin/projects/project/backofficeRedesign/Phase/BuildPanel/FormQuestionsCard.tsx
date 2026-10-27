@@ -1,16 +1,12 @@
 import React, { ReactNode, useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Text,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
 
 import useLocalize from 'hooks/useLocalize';
+
+import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 
 import actionFormMessages from 'components/admin/ActionForm/messages';
 import formBuilderMessages from 'components/FormBuilder/components/messages';
@@ -22,7 +18,6 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../../messages';
 
 import PanelField from './PanelField';
-import SummaryPill from './SummaryPill';
 
 interface Props {
   projectId: string;
@@ -125,9 +120,7 @@ const FormQuestionsCard = ({
               <Box display="flex">
                 <ButtonWithLink
                   buttonStyle="bo-secondary"
-                  height={bo.buttonMedium.height}
-                  padding={bo.buttonMedium.padding}
-                  fontSize={bo.buttonMedium.fontSize}
+                  boSize="medium"
                   width="auto"
                   to={
                     survey

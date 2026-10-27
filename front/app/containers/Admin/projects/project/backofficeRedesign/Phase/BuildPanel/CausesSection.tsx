@@ -4,6 +4,8 @@ import { Box, Button, bo } from '@citizenlab/cl2-component-library';
 
 import { exportVolunteers } from 'api/causes/util';
 
+import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
+
 import IconAction from 'components/UI/IconAction';
 
 import { useIntl } from 'utils/cl-intl';
@@ -14,7 +16,6 @@ import CauseModal from './CauseModal';
 import CauseRow from './CauseRow';
 import DeleteCauseModal from './DeleteCauseModal';
 import PanelField from './PanelField';
-import SummaryPill from './SummaryPill';
 import useStagedCauses, {
   StagedCause,
   causeImageUrl,

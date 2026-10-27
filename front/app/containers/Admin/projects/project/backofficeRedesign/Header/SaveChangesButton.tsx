@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Button, bo } from '@citizenlab/cl2-component-library';
+import { Button } from '@citizenlab/cl2-component-library';
 
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 
@@ -31,9 +31,7 @@ const SaveChangesButton = ({ label }: Props) => {
   return (
     <Button
       buttonStyle="bo-primary"
-      height={bo.buttonMedium.height}
-      padding={bo.buttonMedium.padding}
-      fontSize={bo.buttonMedium.fontSize}
+      boSize="medium"
       width="auto"
       icon={showSaved ? 'check' : undefined}
       disabled={!pageSave.dirty}
