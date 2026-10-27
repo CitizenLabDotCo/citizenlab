@@ -68,10 +68,22 @@ const readRoute = (): Route => {
   return parseHash(window.location.hash);
 };
 
+// A route change can remove the frame that has focus (the canvas, a card's
+// preview). After its commit React puts focus back where it was, inside the
+// removed frame's document; a story's test helpers patch focus there and
+// throw, and React renders nothing after that. Focus leaves the frame first.
+const leaveFrame = () => {
+  const el = document.activeElement;
+  if (el instanceof HTMLIFrameElement) el.blur();
+};
+
 export const useRoute = (): Route => {
   const [route, setRoute] = useState(readRoute);
   useEffect(() => {
-    const onChange = () => setRoute(readRoute());
+    const onChange = () => {
+      leaveFrame();
+      setRoute(readRoute());
+    };
     window.addEventListener('hashchange', onChange);
     return () => window.removeEventListener('hashchange', onChange);
   }, []);
