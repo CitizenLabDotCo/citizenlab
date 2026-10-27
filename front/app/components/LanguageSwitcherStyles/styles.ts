@@ -1,3 +1,13 @@
+/**
+ * Shared look of the platform's language controls: the locale selector
+ * (MainHeader/Components/LanguageSelector) and the Weglot switcher
+ * (components/WeglotSwitcher).
+ *
+ * The two behave differently. One routes the platform locale, the other
+ * drives Weglot's client-side translation. They look alike everywhere they
+ * appear though: the navigation bar, the survey form footer, and floating on
+ * pages with neither. Restyling one means restyling both.
+ */
 import {
   Icon,
   colors,
@@ -5,17 +15,6 @@ import {
   isRtl,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
-
-/**
- * How a language control looks in the navigation bar. Shared by the
- * platform-locale selector (MainHeader/Components/LanguageSelector) and the
- * Weglot switcher (components/WeglotSwitcher).
- *
- * The two behave differently: one routes the platform locale, the other
- * drives Weglot's client-side translation. Their appearance is the same
- * thing though. Both take the navbar's text colour, font size and reading
- * direction, so restyling one means restyling the other.
- */
 
 export const DropdownButtonText = styled.span`
   color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
