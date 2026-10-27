@@ -24,6 +24,12 @@ ContentBuilder::Engine.routes.draw do
         end
       end
       resources :content_builder_layout_images, only: :create, controller: :layout_images
+
+      resources :reporting_queries, only: %i[create]
+      # Replaces every stored answer a layout holds. Keyed by layout, because the
+      # layout is what asks the questions.
+      post 'content_builder_layouts/:layout_id/refresh_snapshots',
+        to: 'reporting_queries#refresh'
     end
   end
 end
