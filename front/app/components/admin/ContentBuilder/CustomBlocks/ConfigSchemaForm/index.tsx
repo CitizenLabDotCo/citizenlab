@@ -13,10 +13,8 @@ interface Props {
 }
 
 /**
- * Renders the settings a custom block declares in `manifest.config_schema`.
- *
- * The schema is a JSON Schema object; property order is the order the block's
- * author put them in, which is the order they are shown.
+ * Renders the settings a custom block declares in `manifest.config_schema`, in the
+ * property order its author wrote them in.
  */
 const ConfigSchemaForm = ({ schema, values, onChange }: Props) => (
   <>

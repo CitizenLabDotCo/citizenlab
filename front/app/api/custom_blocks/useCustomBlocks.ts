@@ -10,8 +10,7 @@ const fetchCustomBlocks = () =>
   fetcher<ICustomBlocks>({ path: '/custom_blocks', action: 'get' });
 
 // The published blocks an admin can place by hand, each with the version a new
-// placement pins. The toolbox is the only reader: a placed block never asks what the
-// newest version is, it renders the one its node holds.
+// placement pins. The toolbox is the only reader.
 const useCustomBlocks = ({ enabled }: { enabled: boolean }) =>
   useQuery<ICustomBlocks, CLErrors, ICustomBlocks, CustomBlocksKeys>({
     queryKey: customBlocksKeys.lists(),

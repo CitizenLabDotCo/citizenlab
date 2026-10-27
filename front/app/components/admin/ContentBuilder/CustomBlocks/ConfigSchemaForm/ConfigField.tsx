@@ -24,10 +24,9 @@ const isMultiloc = (value: unknown): value is Multiloc =>
 /**
  * One control for one property of a block's `config_schema`.
  *
- * Fully controlled, and it never writes the schema default back through
- * `onChange`: an untouched field shows the default and stays absent from the
- * node's props, so a block keeps rendering as it was generated until someone
- * deliberately changes something.
+ * It never writes the schema default back through `onChange`: an untouched field
+ * stays absent from the node's props, so a block renders as it was generated until
+ * someone deliberately changes something.
  */
 const ConfigField = ({ name, schema, value, onChange }: Props) => {
   const id = `custom-block-config-${name}`;
