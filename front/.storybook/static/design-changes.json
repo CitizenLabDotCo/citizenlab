@@ -1,10 +1,52 @@
 {
-  "generatedAt": "2026-10-27T13:07:21.028Z",
+  "generatedAt": "2026-10-27T13:37:33.849Z",
   "base": "7b0b8940e27fb6c528eb39a06baa8a4cf2bcdf0a",
   "baseRef": "master",
-  "head": "b21a34ec3efc31eeb5e1f1a135be200323e17f30",
+  "head": "fdce57460358e0a7106e6f9f81ef8038781f0944",
   "repoUrl": "https://github.com/CitizenLabDotCo/citizenlab",
   "commits": [
+    {
+      "sha": "fdce57460358e0a7106e6f9f81ef8038781f0944",
+      "subject": "design-system(docs): Review collects the browser's changes first [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/AGENTS.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "8fac8f85e37945084007f2c7b734aabb3c802aef",
+      "subject": "design-system(scripts): smoke counts Review's committed cards; the count up top is this browser's [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "c8a7266a74571a872ec5dbcb80a82dc7bb229a27",
+      "subject": "design-system(workbench): Review collects this browser's changes as you make them, live before and after [AI-assisted]",
+      "body": "Every element and token edit made in the workbench shows on Review at\nonce, with a count on its nav entry: one card per component with its\nedits and two canvases, the story as it is and with the edits painted\non. Copy for agent hands them all on as one task, for the PR connected\n(Connect PR, kept in this browser) or a new one. The PR's committed\nchanges follow. useElementEdits tells the other views when the edits\nchange, so the component page, the nav and Review stay in step.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/App.tsx",
+        "front/.storybook/workbench/src/components/Nav.tsx",
+        "front/.storybook/workbench/src/lib/prReview.test.ts",
+        "front/.storybook/workbench/src/lib/prReview.ts",
+        "front/.storybook/workbench/src/lib/useElementEdits.ts",
+        "front/.storybook/workbench/src/pages/Review.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "059d42f5970c53e09442df78ad5fdb2a515f8b03",
+      "subject": "design-system(review): refresh the change list [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-changes.json"
+      ],
+      "kind": "other"
+    },
     {
       "sha": "b21a34ec3efc31eeb5e1f1a135be200323e17f30",
       "subject": "design-system(review): a design kind for a change meant to show [AI-assisted]",
