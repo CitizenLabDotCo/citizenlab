@@ -1,7 +1,7 @@
 import React, { PureComponent, FocusEvent, ChangeEvent } from 'react';
 
 import { isString, get, isNumber } from 'lodash-es';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Placement } from 'tippy.js';
 
 import {
@@ -14,6 +14,7 @@ import testEnv from '../../utils/testUtils/testEnv';
 import { IOption, InputSize } from '../../utils/typings';
 import Icon from '../Icon';
 import IconTooltip from '../IconTooltip';
+import { boInputStyle, boLabelStyle } from '../Input';
 import Label from '../Label';
 
 export const SelectIcon = styled(Icon)`
@@ -31,7 +32,7 @@ export const SelectIcon = styled(Icon)`
   `}
 `;
 
-const Container = styled.div`
+const Container = styled.div<{ variant?: 'bo' }>`
   position: relative;
   outline: none !important;
 
@@ -62,12 +63,21 @@ const Container = styled.div`
   select.placeholder > option {
     color: ${colors.textPrimary};
   }
+
+  ${({ variant }) => variant === 'bo' && boLabelStyle}
+`;
+
+const boSelectStyle = css`
+  ${boInputStyle};
+  padding-right: 27px;
+  cursor: pointer;
 `;
 
 export const SelectWrapper = styled.div<{
   mr?: string;
   size?: InputSize;
   height?: string;
+  variant?: 'bo';
 }>`
   width: 100%;
   position: relative;
@@ -87,9 +97,12 @@ export const SelectWrapper = styled.div<{
     &::-ms-expand {
       display: none;
     }
-    ${defaultInputStyle};
-    height: ${({ height }) =>
-      height ? height : `${stylingConsts.inputHeight}px`} !important;
+    ${({ variant }) => (variant === 'bo' ? boSelectStyle : defaultInputStyle)};
+    height: ${({ height, variant }) =>
+      height ||
+      (variant === 'bo'
+        ? '36px'
+        : `${stylingConsts.inputHeight}px`)} !important;
   }
 `;
 
@@ -116,6 +129,7 @@ export interface Props extends DefaultProps {
   setRef?: (arg: HTMLSelectElement | null) => void;
   ariaInvalid?: boolean;
   ariaDescribedBy?: string;
+  variant?: 'bo';
 }
 
 const DEFAULT_VALUE = 'DEFAULT_SELECT_VALUE';
@@ -178,6 +192,7 @@ class Select extends PureComponent<Props> {
       setRef,
       ariaInvalid,
       ariaDescribedBy,
+      variant,
     } = this.props;
 
     const safeValue =
@@ -190,6 +205,7 @@ class Select extends PureComponent<Props> {
     return (
       <Container
         className={`${className} ${disabled ? 'disabled' : 'enabled'}`}
+        variant={variant}
       >
         {label && (
           <Label htmlFor={id}>
@@ -202,7 +218,7 @@ class Select extends PureComponent<Props> {
             )}
           </Label>
         )}
-        <SelectWrapper mr={mr} size={size} height={height}>
+        <SelectWrapper mr={mr} size={size} height={height} variant={variant}>
           <select
             id={id}
             disabled={disabled}

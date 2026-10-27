@@ -403,9 +403,58 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.pollQuestions',
     defaultMessage: 'Poll questions',
   },
-  inputsSection: {
-    id: 'app.containers.Admin.projects.project.inputsSection',
-    defaultMessage: 'Inputs',
+  statementsSection: {
+    id: 'app.containers.Admin.projects.project.statementsSection',
+    defaultMessage: 'Statements',
+  },
+  addStatement: {
+    id: 'app.containers.Admin.projects.project.addStatement',
+    defaultMessage: 'Add',
+  },
+  importStatements: {
+    id: 'app.containers.Admin.projects.project.importStatements',
+    defaultMessage: 'Import',
+  },
+  addAStatement: {
+    id: 'app.containers.Admin.projects.project.addAStatement',
+    defaultMessage: 'Add a statement',
+  },
+  statementLabel: {
+    id: 'app.containers.Admin.projects.project.statementLabel',
+    defaultMessage: 'Statement',
+  },
+  statementPlaceholder: {
+    id: 'app.containers.Admin.projects.project.statementPlaceholder',
+    defaultMessage: 'e.g. The park needs more shade.',
+  },
+  emptyStatementError: {
+    id: 'app.containers.Admin.projects.project.emptyStatementError',
+    defaultMessage: 'Write the statement in at least one language',
+  },
+  statementProfileVisibility: {
+    id: 'app.containers.Admin.projects.project.statementProfileVisibility',
+    defaultMessage: 'Profile visibility',
+  },
+  statementAnonymousTooltip: {
+    id: 'app.containers.Admin.projects.project.statementAnonymousTooltip',
+    defaultMessage:
+      'By default the statement is linked to its author, unless you select this option.',
+  },
+  statementPostAnonymously: {
+    id: 'app.containers.Admin.projects.project.statementPostAnonymously',
+    defaultMessage: 'Post anonymously',
+  },
+  statementCancel: {
+    id: 'app.containers.Admin.projects.project.statementCancel',
+    defaultMessage: 'Cancel',
+  },
+  importingStatements: {
+    id: 'app.containers.Admin.projects.project.importingStatements',
+    defaultMessage: 'Importing {done}/{total}',
+  },
+  nStatements: {
+    id: 'app.containers.Admin.projects.project.nStatements',
+    defaultMessage: '{count, plural, one {# statement} other {# statements}}',
   },
   causesSection: {
     id: 'app.containers.Admin.projects.project.causesSection',

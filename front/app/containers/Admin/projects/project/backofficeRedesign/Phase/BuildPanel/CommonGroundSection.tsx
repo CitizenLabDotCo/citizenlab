@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
 
-import { Box, Button, bo } from '@citizenlab/cl2-component-library';
-
-import useProjectById from 'api/projects/useProjectById';
+import { Box, Button, Spinner, bo } from '@citizenlab/cl2-component-library';
 
 import ImportInputsModal from 'components/admin/PostManager/CommonGroundInputManager/ImportInputsModal';
-import commonGroundMessages from 'components/admin/PostManager/CommonGroundInputManager/messages';
-import ButtonWithLink from 'components/UI/ButtonWithLink';
+import IconAction from 'components/UI/IconAction';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
+import AddStatementModal from './AddStatementModal';
 import PanelField from './PanelField';
+import SummaryPill from './SummaryPill';
+import useStagedStatements from './useStagedStatements';
 
 interface Props {
   projectId: string;
@@ -21,52 +21,96 @@ interface Props {
 
 const CommonGroundSection = ({ projectId, phaseId }: Props) => {
   const { formatMessage } = useIntl();
+  const [addOpened, setAddOpened] = useState(false);
   const [importOpened, setImportOpened] = useState(false);
-  const { data: project } = useProjectById(projectId);
-  const slug = project?.data.attributes.slug;
+  const { count, saving, importProgress, add, addImport } = useStagedStatements(
+    projectId,
+    phaseId
+  );
+
+  const addLabel = formatMessage(messages.addStatement);
+  const importLabel = formatMessage(messages.importStatements);
 
   return (
     <>
       <PanelField
-        label={formatMessage(messages.inputsSection)}
+        label={formatMessage(messages.statementsSection)}
         action={
-          <Box
-            display="flex"
-            gap="8px"
-            flexWrap="wrap"
-            justifyContent="flex-end"
-          >
-            <ButtonWithLink
-              buttonStyle="bo-secondary"
-              height={bo.buttonMedium.height}
-              padding={bo.buttonMedium.padding}
-              fontSize={bo.buttonMedium.fontSize}
-              width="auto"
-              to={slug ? '/projects/$slug/ideas/new' : undefined}
-              params={slug ? { slug } : undefined}
-              search={{ phase_id: phaseId }}
-              disabled={!slug}
+          count > 0 || importProgress ? (
+            <Box display="flex" alignItems="center" gap="4px">
+              <IconAction
+                icon="plus"
+                tooltip={addLabel}
+                ariaLabel={addLabel}
+                onClick={() => setAddOpened(true)}
+              />
+              <IconAction
+                icon="upload-file"
+                tooltip={importLabel}
+                ariaLabel={importLabel}
+                disabled={!!importProgress}
+                onClick={() => setImportOpened(true)}
+              />
+              <Box display="flex" alignItems="center" gap="6px">
+                {(saving || importProgress) && <Spinner size="14px" />}
+                <SummaryPill
+                  label={
+                    importProgress
+                      ? formatMessage(messages.importingStatements, {
+                          done: importProgress.done,
+                          total: importProgress.total,
+                        })
+                      : formatMessage(messages.nStatements, { count })
+                  }
+                />
+              </Box>
+            </Box>
+          ) : (
+            <Box
+              display="flex"
+              gap="8px"
+              flexWrap="wrap"
+              justifyContent="flex-end"
             >
-              {formatMessage(commonGroundMessages.createInput)}
-            </ButtonWithLink>
-            <Button
-              buttonStyle="bo-primary"
-              height={bo.buttonMedium.height}
-              padding={bo.buttonMedium.padding}
-              fontSize={bo.buttonMedium.fontSize}
-              width="auto"
-              onClick={() => setImportOpened(true)}
-            >
-              {formatMessage(commonGroundMessages.startFromPastInputs)}
-            </Button>
-          </Box>
+              <Button
+                buttonStyle="bo-secondary"
+                height={bo.buttonMedium.height}
+                padding={bo.buttonMedium.padding}
+                fontSize={bo.buttonMedium.fontSize}
+                width="auto"
+                onClick={() => setAddOpened(true)}
+              >
+                {addLabel}
+              </Button>
+              <Button
+                buttonStyle="bo-primary"
+                height={bo.buttonMedium.height}
+                padding={bo.buttonMedium.padding}
+                fontSize={bo.buttonMedium.fontSize}
+                width="auto"
+                onClick={() => setImportOpened(true)}
+              >
+                {importLabel}
+              </Button>
+            </Box>
+          )
         }
       />
+
+      {addOpened && (
+        <AddStatementModal
+          phaseId={phaseId}
+          onSubmit={add}
+          onClose={() => setAddOpened(false)}
+        />
+      )}
 
       <ImportInputsModal
         showPastInputsModal={importOpened}
         setShowPastInputsModal={setImportOpened}
         currentPhaseid={phaseId}
+        variant="bo"
+        onImport={addImport}
       />
     </>
   );

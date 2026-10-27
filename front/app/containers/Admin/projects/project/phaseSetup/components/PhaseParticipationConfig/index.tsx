@@ -24,6 +24,7 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
 import anonymousMessages from 'components/admin/AnonymousPostingToggle/messages';
@@ -440,6 +441,33 @@ const PhaseParticipationConfig = ({
     return null;
   }
 
+  const commonGroundActions = (
+    <UserActions
+      submission_enabled={submission_enabled || false}
+      commenting_enabled={commenting_enabled || false}
+      reacting_enabled={false} // The ability to configure number of likes is irrelevant for common ground
+      togglePostingEnabled={togglePostingEnabled}
+      toggleCommentingEnabled={toggleCommentingEnabled}
+      toggleReactingEnabled={toggleReactingEnabled}
+      apiErrors={apiErrors}
+      reacting_like_method={reacting_like_method}
+      reacting_like_limited_max={reacting_like_limited_max}
+      noLikingLimitError={validationErrors.noLikingLimitError}
+      handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
+      handleLikingLimitOnChange={handleLikingLimitOnChange}
+      showCommentingToggle={false}
+      showReactingToggle={false}
+      phaseId={panelPhaseId}
+      layout={layout}
+      accessOnlyActions={[
+        {
+          action: 'reacting_idea',
+          label: messages.votingOnInputsAction,
+        },
+      ]}
+    />
+  );
+
   return (
     <Container>
       <StyledSection>
@@ -473,31 +501,17 @@ const PhaseParticipationConfig = ({
             />
           </Box>
         )}
-        {participation_method === 'common_ground' && (
-          <UserActions
-            submission_enabled={submission_enabled || false}
-            commenting_enabled={commenting_enabled || false}
-            reacting_enabled={false} // The ability to configure number of likes is irrelevant for common ground
-            togglePostingEnabled={togglePostingEnabled}
-            toggleCommentingEnabled={toggleCommentingEnabled}
-            toggleReactingEnabled={toggleReactingEnabled}
-            apiErrors={apiErrors}
-            reacting_like_method={reacting_like_method}
-            reacting_like_limited_max={reacting_like_limited_max}
-            noLikingLimitError={validationErrors.noLikingLimitError}
-            handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
-            handleLikingLimitOnChange={handleLikingLimitOnChange}
-            showCommentingToggle={false}
-            showReactingToggle={false}
-            phaseId={panelPhaseId}
-            accessOnlyActions={[
-              {
-                action: 'reacting_idea',
-                label: messages.votingOnInputsAction,
-              },
-            ]}
-          />
-        )}
+        {participation_method === 'common_ground' &&
+          (layout === 'panel' ? (
+            <PanelGroup
+              label={formatMessage(messages.participantActionsGroup)}
+              defaultOpen
+            >
+              {commonGroundActions}
+            </PanelGroup>
+          ) : (
+            commonGroundActions
+          ))}
 
         {participation_method === 'voting' && (
           <VotingInputs
