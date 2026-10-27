@@ -47,8 +47,9 @@ const mocksReady = new Promise<void>((resolve) => {
 // Relative URL so the worker also loads when Storybook is served from a
 // sub-path (e.g. /storybook/ in epic previews). The default handlers are
 // registered from the start, not only once the first story renders.
+// mockWorker.js is msw's worker with each frame answering its own requests.
 initialize(
-  { serviceWorker: { url: './mockServiceWorker.js' } },
+  { serviceWorker: { url: './mockWorker.js' } },
   Object.values(mockServer)
 );
 

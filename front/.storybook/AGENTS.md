@@ -91,7 +91,7 @@ Storybook, `.storybook/`:
 - `storyRoute.tsx`: the router of a story that names its route (`parameters.route`); the others get the platform's root-only `MemoryRouter`.
 - `cities.ts`, `languages.ts`, `viewports.ts`, `modes.ts`: toolbar presets shared with the shell (7 languages, `ar` is RTL; `modes.ts` holds Chromatic's viewport modes).
 - `contexts/`: theme (city, `isRtl` from `lang: 'ar'`, `TenantTokens` writing the city into `--gv-tenant-*`) and query providers.
-- `mockServer.ts`, `mockModules.ts`, `public/mockServiceWorker.js`: MSW data and module mocks for stories.
+- `mockServer.ts`, `mockModules.ts`, `public/mockServiceWorker.js`: MSW data and module mocks for stories. `public/mockWorker.js` wraps msw's worker so each frame answers its own requests (msw 2.5 does this itself; delete it then).
 - `AGENTS.md`: this file. `PR_TEMPLATE.md`: the PR text shape the `propose` skill fills.
 
 Data, `.storybook/static/` (served next to the stories):
