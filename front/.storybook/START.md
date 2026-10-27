@@ -43,7 +43,7 @@ Only the test platform, never a customer's.
 - **A value in a component**: on its Design tab, click the element in the canvas and pick the token for a value that has none. Then Changes, Save to code.
 - **Anything on a real page**: Inspect tab, click the element, say what should change, Hand to my agent. Paste the prompt it shows into Claude Code. Its edit repaints the page in a second.
 
-Every saved edit lists under Saved, not pushed, with Undo. Push sends them: token edits to the current branch, component edits each to their own small branch off master. Then the Review tab shows the pages the change reaches, before and after, for the pull request.
+Every saved edit lists under Saved, not pushed, with Undo. Push sends them: token edits to the current branch, component edits each to their own small branch off master. Then the PR's own epic shows it on its Review tab: how many changes the PR carries and, for each, before and after and the pages it reaches.
 
 ## The boundaries
 

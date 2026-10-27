@@ -27,7 +27,7 @@ propose [· base <ref>] [· review link <URL>]
   npm run ds:changes
   ```
   `ds:changes` needs the merge-base with `master` (or `origin/master`); in a shallow clone it keeps the committed file and warns.
-- [ ] 2. Get the Review block: open `<storybook>/workbench/#/review`, press "Copy for PR" and paste it in, or rebuild it from `design-changes.json` (design commits are kinds `heal`, `lift` and `token`; stories and tooling are listed apart, not counted as design changes).
+- [ ] 2. Get the Review block: open this PR's own Review (`https://pr-<n>.epic.hq.govocal.com/storybook/workbench/#/review`), press "Copy for PR" and paste it in, or rebuild it from `design-changes.json` (design commits are kinds `heal`, `lift` and `token`; stories and tooling are listed apart, not counted as design changes).
 - [ ] 3. Fill `.storybook/PR_TEMPLATE.md`, section by section: the Review block, the design commits grouped by component (subject and sha), the off-spec totals from the summary (before the design commits, now, and the scanner rule delta apart), the visual result from `visual-summary.json`, the accessibility state (`a11y.json` files, `a11y-results.json`), what is preview-grade, the decisions developers need to take.
 - [ ] 4. Print the text. Write it to a file only if asked, outside the repo or in a scratch path.
 

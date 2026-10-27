@@ -89,13 +89,13 @@ Stop, change nothing (or revert what you changed), and report why with the evide
   ```
   npm run ds:visual -- --url http://localhost:6007 --baseline <scratch>/after --stories <story id>
   ```
-  Copy `desktop__<story id>.png` to `<scratch>/heal/after.png`. The two shots go in the PR description, not in the heal branch.
+  Copy `desktop__<story id>.png` to `<scratch>/heal/after.png`. Off master the two shots go in the PR description, not in the heal branch; stacked on the workbench they go in the branch for the Review page (below).
 - [ ] 9. Commit only your files in the heal worktree:
   ```
   git add <component files> <call-site files> <stories>
   git commit
   ```
-  Do not push and do not open the PR: report, and a person opens it. To show the heal on the workbench's Proposal page, a person may later copy the two shots to `.storybook/static/heals/<sha>/before.png` and `after.png` on `design-system/workbench`, in a `design-system(proposal)` commit.
+  Do not push and do not open the PR unless the person asks for that by name: report, and a person opens it.
 
 ## Merge into: a look-alike
 
@@ -137,6 +137,16 @@ A component owns only its inside spacing. The space between components belongs t
   3. Remove the margin from the component.
   4. At each call site give the same space to the layout primitive: the component's own Box margin props if it takes them (`mb={t.space[4]}`), else the gap or padding of the `Box` that already holds it, else a `<Box mb={t.space[4]}>` wrapper. If a wrapper changes layout (a flex or grid child), stop 3.
 - **Call-site findings** (`layout-spacing`, a literal on a `Box` prop): one-sided, replace the literal with the scale step.
+
+## Stacked on the workbench
+
+Until the workbench is on master, a design PR that should have its own Review page (the workbench in its epic) branches off `origin/design-system/workbench` and its PR merges into `design-system/workbench`. The steps above hold, with these differences:
+
+- **Stop 1 does not apply**: the tokens are on the base. If the app does not load `tokens.css` yet (`grep -n "tokens.css" app/containers/App/index.tsx` prints nothing), the PR's first commit adds `import 'design-system/tokens/tokens.css';` to `app/containers/App/index.tsx`, alone, as `design-system(setup): the app loads the tokens stylesheet [AI-assisted]`. Without it a token read renders nothing on the platform.
+- **One worktree** is enough: the tools are on the base.
+- **Pictures for the Review page.** After each change commit, copy `<scratch>/heal/before.png` and `after.png` to `.storybook/static/changes/<sha>/`, `<sha>` that commit's full sha. They cannot go in the commit itself; they go in the refresh commit below.
+- **Refresh**, after the last change: `npm run ds:changes -- --base origin/design-system/workbench`, then commit `design-changes.json` and every `changes/<sha>/` folder together: `design-system(review): pictures and change list [AI-assisted]`.
+- **The PR**, when the person asks for it: base `design-system/workbench`, label `epic` (its preview serves the Review page), and the description starts with the Review section ("Copy for PR" on `https://pr-<n>.epic.hq.govocal.com/storybook/workbench/#/review`, or the same text by hand: the link, then the changes in order).
 
 ## Commit message
 

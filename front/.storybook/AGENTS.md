@@ -13,7 +13,7 @@ Online the workbench only reads. Run locally (`npm run ds:local`), it saves an e
 - **Heal**: replacing one off-spec value or local markup with a token or a library component, style only. A heal is platform code, so it is its own small PR off master, never a commit on this branch.
 - **Lift**: moving a local piece of the redesigned back office into the library. Platform code too: its own PR off master.
 - **Usage map**: for each library component, where it is imported, the props at each call site, on which routes it shows and how many off-spec values sit there.
-- **Review page**: the workbench page that frames the real platform before and after the session's token edits.
+- **Review page**: the PR its epic serves. One PR, one epic, one Review: the epic dies with its PR. It shows the PR's design changes, each with the agent's before and after pictures and the pages it reaches on that epic.
 - **Workbench**: the Storybook on this branch with its own shell at `<storybook>/workbench/`.
 
 ## Guardrails
@@ -23,7 +23,7 @@ Online the workbench only reads. Run locally (`npm run ds:local`), it saves an e
 - No pull request, issue, PR comment or label unless the person asks for that one by name. The `propose` skill drafts PR text only.
 - This branch changes no platform code. New code goes only in `.storybook/`, `scripts/design-system/`, `app/design-system/tokens/` and `.claude/skills/`, plus `package.json` scripts and devDependencies. Stories (`*.stories.tsx`) and `a11y.json` checklists sit beside their components; they are not product code. Nothing under `app/` outside `app/design-system/` and stories imports `design-system/`.
 - Check it before every push: `git diff --stat $(git merge-base HEAD origin/master) -- app ':!*.stories.tsx' ':!*/a11y.json' ':!app/design-system/tokens' ':!app/utils/storybook' ':!app/api/id_methods/__mocks__'` prints nothing.
-- Heals and lifts are separate PRs off master, one small branch each (`design-system/heal-<component>-<what>`, `design-system/lift-<name>`). The skills say how.
+- Heals and lifts are separate PRs off master, one small branch each (`design-system/heal-<component>-<what>`, `design-system/lift-<name>`). The skills say how. Until the workbench is on master, a design PR that should have its Review stacks on `design-system/workbench` instead (base the PR there); see the heal skill, "Stacked on the workbench".
 - Never introduce a raw value where a token exists. New values go into `app/design-system/tokens/tokens.source.json`, in a `design-system(token)` commit.
 - Commits: small, `design-system(<area>): <what> [AI-assisted]`, the repo's configured git identity. Areas the Review page reads: `heal`, `lift`, `token` (design changes), `stories` (stories), anything else is tooling.
 - Stage files by name (`git add <paths>`, never `git add -A`): other work may be uncommitted in the tree.
@@ -49,7 +49,7 @@ Online the workbench only reads. Run locally (`npm run ds:local`), it saves an e
 | `npm run ds:workbench` | Build the shell into `.storybook/static/workbench/`. `npm run ds:workbench:typecheck` typechecks it. |
 | `npm run ds:visual -- --baseline <dir>` / `-- --compare <dir> [--stories <glob,glob>] [--summary <file>] [--allow-px N] [--url <storybook>]` | Screenshot every story (or the story ids `--stories` matches, `*` a wildcard) at 1280x900 and 390x844, save or compare. A full compare writes `visual-summary.json`; a filtered run writes `<dir>/_summary.json`; `--summary` overrides both. Default URL `http://localhost:6006`. |
 | `npm run ds:crops -- [--session <state.json>] [--only Name,Name] [--max-routes N] [--url <platform>]` | With `ds:local` running: picture each component the platform uses that has no story, on the routes the scan found it on, into `static/crops/` and `crops.json` (the Components page's In use list). `--session` is a Playwright storage state of a test admin; without it only routes outside the admin open. Routes with ids are skipped (the fixture's ids are another tenant's). |
-| `npm run ds:smoke -- --dir <storybook output> [--screenshot <png>] [--canvas-screenshot <png>] [--colour-screenshot <png>] [--spacing-screenshot <png>] [--review-host <origin>] [--port N]` | Serve a built Storybook (on `--port`, else a free one) and check the shell pages and the console. |
+| `npm run ds:smoke -- --dir <storybook output> [--screenshot <png>] [--canvas-screenshot <png>] [--colour-screenshot <png>] [--spacing-screenshot <png>] [--port N]` | Serve a built Storybook (on `--port`, else a free one) and check the shell pages and the console. |
 | `npm run ds:a11y -- [--url <storybook>] [--stories <glob,glob>] [--workers N] [--out <file>]` | Run axe (WCAG 2.0, 2.1, 2.2 A and AA) on every story, or the matched ones, at 1280x900; write `a11y-results.json`, or `--out` (a filtered run keeps the other stories). `-- --check` exits 1 on a critical violation in a `Components/` story that is not in `a11y-known.json`, on a listed one that no longer fails or whose story errored, or when the results file is missing, and prints how many known ones remain; `ds:check` runs it. Default URL `http://localhost:6006`. |
 | `npm run typecheck` | App typecheck (does not cover `.storybook/` or `scripts/`). Slow: once per task. |
 | `npx jest <path>` | Tests for a path (`npm run test -- <path>` is the same). |
@@ -98,6 +98,7 @@ Data, `.storybook/static/` (served next to the stories):
 - `design-scan.json` (gen, git-ignored): the whole scan: `findings`, `usages`, `routes`, `components`, `pages`, `totals`, `unmapped`, `routeFiles`.
 - `design-scan.summary.json` (gen, c): totals; one commit per change gives the trend in git history.
 - `design-changes.json` (gen, c): the Review page's change list. See "Refreshing".
+- `changes/<sha>/before.png`, `after.png` (c): the agent's pictures of one design change, the story before and after the commit `<sha>`; the Review page's card shows them.
 - `routes.fixture.json` (c): real ids and slugs for `$param` segments; `paths` (per route) is read before `params` (per name).
 - `visual-summary.json` (gen, c): last visual compare: stories, diffs, errors, retried.
 - `a11y-results.json` (gen, c): axe per story: violations by rule and impact, passes, focusable elements, and whether a play function passed.
@@ -110,7 +111,7 @@ The shell, `.storybook/workbench/` (React and Vite, its own `tsconfig.json`, `@d
 - `src/lib/overrides.ts`: the session's token edits, snapping, the share-link codec (`o` in the hash).
 - `src/lib/shareEntry.ts` (tested): the share link and the browser history. The hook writes its value into the current entry with replaceState and marks it in `history.state.wbShare`; Back to an entry whose value equals its mark is the session's own older value, so the hook writes the current one back instead of applying it. A pasted link has no mark and applies.
 - `src/lib/hash.ts` (tested): a hash's params and the hash of a story page (`storyHash`, never with `o`).
-- `src/lib/frame.ts`, `src/lib/preview.ts`: the canvas and review frames (same origin), Storybook preview access.
+- `src/lib/frame.ts`, `src/lib/preview.ts`: the canvas frames (same origin), Storybook preview access.
 - `src/lib/contrast.ts`, `src/lib/tokenValues.ts`: WCAG ratios and live token values.
 - `src/lib/healTask.ts`: the heal task text (`formatHealTask`).
 - `src/lib/elementEdits.ts` (tested), `src/lib/useElementEdits.ts`: element edits of the Design tab (attach, swap, detach, custom, file): the model, the inline styles they paint in the frame, their task text (`taskOfEdit`), localStorage `gv-element-edits` (checked on read).
@@ -123,13 +124,14 @@ The shell, `.storybook/workbench/` (React and Vite, its own `tsconfig.json`, `@d
 - `src/lib/a11y.ts`, `src/lib/checklists.ts`, `src/lib/useA11y.ts`: what the A11y panel and the gallery badges say (axe per component, keyboard tested or untested, the checklist line); `checklists.ts` bundles every `components/*/a11y.json` at build time.
 - `src/lib/usage.ts`, `src/lib/componentPanels.ts`, `src/lib/useScanIndexes.ts`: what the Usage tab and the Design tab's "Also in this file" show.
 - `src/lib/stories.ts`, `src/lib/useStoryGroups.ts`: the story index grouped by component, office from tags.
-- `src/lib/review.ts`: affected routes, frame URLs, the "Copy for PR" text.
+- `src/lib/review.ts`: the change list's shape, the route fixture and a route's URL on a host, the routes one design commit reaches, the token edits written into a frame.
+- `src/lib/prReview.ts` (tested), `src/lib/pr.ts`: the Review page: the PR from the epic's host (`pr-<n>.epic.hq.govocal.com`) and its header from GitHub's public API (once per session), the design changes, the rest of the PR, the pictures' URLs, route params read live from this platform, the "Copy for PR" text.
 - `src/lib/sourceDiff.ts`: session edits as a `tokens.source.json` patch.
 - `src/lib/router.ts`, `src/lib/clipboard.ts`: hash routes, copy with a text fallback.
 - `src/pages/`: `Foundations` (one page per token category, with category tabs; a token's Value cell is its field, the edit; a token that reads another is a pill linking to it, with Detach; a shadow opens its layers in `ShadowEditor`), `Gallery`, `Component`, `Review`; `Placeholder` holds the empty-state pictures.
 - The component page: one top row built like the panel's tab bar (breadcrumbs; on their right the Changes pencil with its count; `data-testid="wb-canvas-bar"`), every Variant, then every State, as a chip under it (`components/StoryChips.tsx`, `wb-insp-story`); a State goes on top of the variant (`#…/button--primary?state=disabled`): its args change from Default and its `parameters.pseudo` as the addon's `pseudo-*-all` root classes (`lib/storyState.ts`, `lib/useStoryState.ts`, `setLayerArgs` in `lib/preview.ts`); a State with its own render (RTL) opens as its own story. The dotted stage fills the rest of the column, with a bar floating 24px above the screen's foot (Select / Interact, viewport Fit | Desktop | Tablet | Mobile, zoom, City; `wb-float-bar`), and the inspector has three tabs. No title, status chips, file path or language picker: the story is the page. **Design** is Figma's Design tab over the selected element: the layer and its parents, then sections Layout, Fill, Stroke, Radius, Text, Effects; a value is a pill when bound to a token (click = token picker, hover = detach) or a field (type to snap to the scale or palette; a link glyph attaches the token the value equals); "Also in this file" lists the file's healable findings; Props (the story's controls) last. Element edits paint the frame as inline styles and sit with token edits in the one Changes drawer that opens over the canvas under the top row, whose "Copy for agent" gives the heal and change tasks. **A11y**: axe results and the checklist. **Usage**: files, props, routes and findings, each finding with its heal task. Low text: glyphs carry the meaning, `aria-label`s the words, no title tooltips on values.
 - `src/panels/`: `Design`, `Usage`, `Controls`, `A11y`.
-- `src/components/`: `Nav`, `Toolbar`, `Canvas`, `FrameView`, `ChangeList`, `ChangesDrawer`, `InspSection`, `ValueField`, `TokenPicker`, `RouteList`, `TokenRow`, `ShadowEditor`, `HealCopy`, `LineChart` and smaller parts.
+- `src/components/`: `Nav`, `Toolbar`, `Canvas`, `ChangesDrawer`, `InspSection`, `ValueField`, `TokenPicker`, `TokenRow`, `ShadowEditor`, `HealCopy`, `LineChart` and smaller parts.
 
 Components, `app/component-library/` (platform code, unchanged by this branch):
 - `components/<Name>/<Name>.stories.tsx`: its states, office tag.
@@ -196,9 +198,11 @@ check: story <story id>, routes <list>
 
 ## Review page
 
-- Only design commits (`heal`, `lift`, `token`) and the session's token edits mark routes as affected. Story, tooling and scan commits mark none; they are listed under Changes only.
-- Shell files: a file in at least 90% of the route import closures (needs 10 or more routes) marks no route. It is reported as "affects every page", with its commits.
-- Route frames fill `$param` segments from `routes.fixture.json`; a route with an unfilled param says so.
+- One PR, one epic, one Review. The page reads its PR from its own host (`pr-<n>.epic.hq.govocal.com`); off an epic (a local run) it says there is no PR and shows the branch as built. It never reviews another PR.
+- The changes are `design-changes.json`, built against the PR's base (`ds:changes -- --base origin/design-system/workbench` for a PR stacked on the workbench). A card is a `heal`, `lift` or `token` commit that still changes platform code: files under `front/app/` less what the no-platform-code check leaves out (stories, tests, mocks, `a11y.json`, `app/design-system/tokens/`, `app/utils/storybook/`). Other commits that change platform code are listed as setup (the app loading the tokens); stories and tooling are counted. Once the app loads the tokens on master, token value commits are platform changes too: take `app/design-system/tokens/` out of that list (`isPlatformFile`).
+- Each card shows `static/changes/<sha>/before.png` and `after.png`, "No visual change" when the two have equal pixels, and "No pictures for this change" when they are missing. The agent that makes a change takes them (heal skill).
+- "See on the platform" lists the routes the commit reaches (the scan's route closures; shell files, in at least 90% of them, mark none and say "every page"), as links on this epic. Its ids come from this platform's public API (a project, its slug, its first phase); the fixture's are used only on the host it was read from. A route with a param neither has is shown without a link.
+- "Copy for PR" gives the PR description's Review section: the link to this page first, then the changes in order.
 
 ## Refreshing
 
@@ -227,7 +231,7 @@ What the shell relies on (`.storybook/workbench/src/lib/preview.ts`):
 ## Preview-grade
 
 Treat these as previews, not final:
-- The branch's platform preview (`pr-15027`) is temporary; its URL is the default host of `ds:routes-fixture` and the Review page.
+- The branch's platform preview (`pr-15027`) is temporary; its URL is the default host of `ds:routes-fixture`. Every epic is: its Review goes with it.
 - Route reach is per file and its import closure, not per export: a component imported by a shared barrel shows on many routes (Button on 187).
 - Contrast pairs are inferred from usage (tokens a component reaches), not from rendered pairs.
 - `duplicate-candidate` findings are a low-confidence name heuristic.
