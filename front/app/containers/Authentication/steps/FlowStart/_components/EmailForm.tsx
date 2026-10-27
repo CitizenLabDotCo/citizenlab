@@ -63,6 +63,8 @@ const EmailForm = ({ loading, topText, email, setError, onSubmit }: Props) => {
   });
 
   const handleSubmit = async ({ email }: FormValues) => {
+    setSsoEnforced(false);
+
     try {
       await onSubmit(email);
     } catch (e) {

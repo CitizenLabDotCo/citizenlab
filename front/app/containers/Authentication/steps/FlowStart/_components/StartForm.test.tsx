@@ -134,5 +134,17 @@ describe('StartForm', () => {
 
       expect(screen.queryByText('sso-enforced-link')).not.toBeInTheDocument();
     });
+
+    it('hides the SSO link again when the next submit fails differently', async () => {
+      await submitWithError('sso_enforced_for_domain');
+      expect(await screen.findByText('sso-enforced-link')).toBeInTheDocument();
+
+      onSubmitEmail.mockRejectedValueOnce(new Error('network'));
+      fireEvent.click(screen.getByRole('button', { name: /continue/i }));
+
+      await waitFor(() =>
+        expect(screen.queryByText('sso-enforced-link')).not.toBeInTheDocument()
+      );
+    });
   });
 });
