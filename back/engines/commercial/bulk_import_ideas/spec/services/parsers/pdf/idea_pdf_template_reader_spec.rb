@@ -134,5 +134,37 @@ describe BulkImportIdeas::Parsers::Pdf::IdeaPdfTemplateReader do
         expect(importer_data2).to eq importer_data1
       end
     end
+
+    # The PDF fixture does not match this form, so only the keys are asserted:
+    # they are read from the form, not from the PDF text.
+    context 'survey form with the domicile question' do
+      let_it_be(:survey_project) { create(:single_phase_native_survey_project, phase_attrs: { with_permissions: true }) }
+      let_it_be(:phase) { survey_project.phases.first }
+      let_it_be(:area) { create(:area, title_multiloc: { 'en' => 'Westside' }) }
+
+      let(:service) { described_class.new phase, 'en', false }
+
+      before do
+        custom_form = create(:custom_form, participation_context: phase)
+        create(:custom_field_page, resource: custom_form)
+        create(:custom_field_text, resource: custom_form, key: 'missing', title_multiloc: { 'en' => 'What is missing?' })
+        create(:custom_field_form_end_page, resource: custom_form)
+
+        permission = phase.permissions.find_by(action: 'posting_idea')
+        permission.update!(permitted_by: 'users', custom_fields_behavior: 'custom', user_fields_in_form: true, user_data_collection: 'all_data')
+        create(:permissions_custom_field, permission: permission, custom_field: create(:custom_field_domicile))
+
+        allow_any_instance_of(BulkImportIdeas::Exporters::IdeaPdfFormExporter).to receive(:export).and_return(Rails.root.join('engines/commercial/bulk_import_ideas/spec/fixtures/ideation_form.pdf'))
+      end
+
+      it 'keys the domicile options by area id, and the somewhere else option by outside' do
+        options = service.template_data[:fields].select { |field| field[:type] == 'option' }
+
+        expect(options.pluck(:name, :key, :parent_key)).to eq [
+          ['Westside', area.id, 'u_domicile'],
+          ['Somewhere else', 'outside', 'u_domicile']
+        ]
+      end
+    end
   end
 end
