@@ -1,10 +1,46 @@
 {
-  "generatedAt": "2026-10-27T14:01:09.866Z",
+  "generatedAt": "2026-10-27T14:30:43.659Z",
   "base": "7b0b8940e27fb6c528eb39a06baa8a4cf2bcdf0a",
   "baseRef": "master",
-  "head": "c2fd25227fdc29c33425a166287b81c8e86afc92",
+  "head": "086ba46494313a4681b3b251734f87ead539a5f5",
   "repoUrl": "https://github.com/CitizenLabDotCo/citizenlab",
   "commits": [
+    {
+      "sha": "086ba46494313a4681b3b251734f87ead539a5f5",
+      "subject": "design-system(docs): Send for review on the Review page, and the heal skill takes its text [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/heal/SKILL.md",
+        "front/.storybook/AGENTS.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "344bb8e18b4198fbabdc08c8c97071cbcac1a8dc",
+      "subject": "design-system(workbench): Send for review hands the changes to an agent once and follows the review on GitHub [AI-assisted]",
+      "body": "The Review page's one action replaces Copy for agent and Connect PR, in\nwords a designer knows (no PR, branch or commit). Its modal gives the\ntext for the person's agent: ask who reviews (Amira, Edwin, Luuc, Iva),\nmake the branch the page named, commits with pictures, a PR ready for\nreview with the epic label, then the preview's link back to the person.\nThe page finds that PR by the branch through GitHub's public API (no\nkey, no writes) and shows where it stands: waiting for your agent, with\nAmira for review, changes asked, approved, merged (Start fresh), closed.\nLater sends carry only what changed since the last confirmed send, plus\nput-back lines; the nav counts what has not been sent.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/App.tsx",
+        "front/.storybook/workbench/src/components/SendForReview.tsx",
+        "front/.storybook/workbench/src/lib/prReview.test.ts",
+        "front/.storybook/workbench/src/lib/prReview.ts",
+        "front/.storybook/workbench/src/lib/send.test.ts",
+        "front/.storybook/workbench/src/lib/send.ts",
+        "front/.storybook/workbench/src/lib/useSend.ts",
+        "front/.storybook/workbench/src/pages/Review.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "6eff4c690d66684d38faafbfbed6c2602bed4d16",
+      "subject": "design-system(review): refresh the change list [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-changes.json"
+      ],
+      "kind": "other"
+    },
     {
       "sha": "c2fd25227fdc29c33425a166287b81c8e86afc92",
       "subject": "design-system(docs): the Review card's kind, areas and scale line [AI-assisted]",
