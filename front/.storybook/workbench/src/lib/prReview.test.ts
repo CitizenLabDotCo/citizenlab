@@ -70,12 +70,13 @@ describe('isPlatformFile', () => {
 describe('designChanges', () => {
   it('keeps design commits that still change platform code, oldest first', () => {
     const list = changes([
+      commit('c4', 'design', [DROPDOWN]),
       commit('c3', 'heal', [DROPDOWN]),
       commit('c2', 'story', [STORY]),
       commit('c1', 'heal', [DROPDOWN]),
       commit('c0', 'other', [DROPDOWN]),
     ]);
-    expect(designChanges(list).map((c) => c.sha)).toEqual(['c1', 'c3']);
+    expect(designChanges(list).map((c) => c.sha)).toEqual(['c1', 'c3', 'c4']);
   });
   it('drops commits whose files are only stories or tokens, or were all reverted', () => {
     const list = changes([

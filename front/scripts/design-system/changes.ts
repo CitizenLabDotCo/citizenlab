@@ -29,7 +29,7 @@ import { buildTokens, TokenSource } from './build-tokens';
 
 export type RunGit = (args: string[]) => string | undefined;
 
-export type Kind = 'heal' | 'lift' | 'token' | 'story' | 'other';
+export type Kind = 'heal' | 'lift' | 'token' | 'design' | 'story' | 'other';
 
 export type ChangeCommit = {
   sha: string;
@@ -71,13 +71,14 @@ const KINDS: Record<string, Kind> = {
   lift: 'lift',
   token: 'token',
   tokens: 'token',
+  design: 'design',
   story: 'story',
   stories: 'story',
 };
 const SUBJECT_RE = /^design-system\(([^)]*)\):\s*(.*)$/;
 // PascalCase, optionally under a folder (`UI/Error`).
 const COMPONENT_RE = /^(?:[A-Za-z]+\/)?[A-Z][a-z0-9]+(?:[A-Z][A-Za-z0-9]*)*$/;
-const NAMED_KINDS = new Set<Kind>(['heal', 'lift', 'story']);
+const NAMED_KINDS = new Set<Kind>(['heal', 'lift', 'design', 'story']);
 
 /**
  * Kind from the `design-system(<area>)` prefix; component from the first

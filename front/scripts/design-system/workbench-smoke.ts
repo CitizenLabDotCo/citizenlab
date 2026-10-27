@@ -1266,12 +1266,12 @@ const panelChecks = async (
 export const A11Y_REVIEWED =
   /reviewed (by \S+ )?on \d{1,2} \w{3} \d{4}.*\d+ pass/i;
 
-// The design changes the Review page shows: heal, lift and token commits
+// The design changes the Review page shows: heal, lift, token and design commits
 // that still change platform code (prReview.designChanges in the shell).
 export const designChangeCount = (changes: any): number =>
   (Array.isArray(changes?.commits) ? changes.commits : []).filter(
     (c: any) =>
-      ['heal', 'lift', 'token'].includes(c?.kind) &&
+      ['heal', 'lift', 'token', 'design'].includes(c?.kind) &&
       (c.files ?? []).some(
         (f: string) =>
           f.startsWith('front/app/') &&

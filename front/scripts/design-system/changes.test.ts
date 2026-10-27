@@ -98,6 +98,9 @@ describe('parseSubject', () => {
     expect(parseSubject('design-system(stories): add X stories').kind).toBe(
       'story'
     );
+    expect(
+      parseSubject('design-system(design): HeaderDropdown radius 8px → 12px')
+    ).toEqual({ kind: 'design', component: 'HeaderDropdown' });
     expect(parseSubject('design-system(scan): faster').kind).toBe('other');
     expect(parseSubject('Fix a typo').kind).toBe('other');
   });
@@ -170,9 +173,7 @@ describe('tokenChanges', () => {
 
 describe('buildChanges', () => {
   const objects = {
-    [`base1:${TOKENS_SOURCE}`]: JSON.stringify(
-      source({ control: '3px' })
-    ),
+    [`base1:${TOKENS_SOURCE}`]: JSON.stringify(source({ control: '3px' })),
     [`HEAD:${TOKENS_SOURCE}`]: JSON.stringify(source({ control: '6px' })),
     [`c3:${SCAN_SUMMARY}`]: JSON.stringify({ offSpec: 95 }),
     [`c3^:${SCAN_SUMMARY}`]: JSON.stringify({ offSpec: 100 }),

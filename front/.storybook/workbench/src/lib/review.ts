@@ -16,7 +16,7 @@ export type ChangeCommit = {
   // Relative to the repository root (`front/app/...`).
   files: string[];
   component?: string;
-  kind: 'heal' | 'lift' | 'token' | 'story' | 'other';
+  kind: 'heal' | 'lift' | 'token' | 'design' | 'story' | 'other';
   scanDelta?: { offSpec: number };
 };
 
@@ -176,7 +176,7 @@ export const shellFiles = (
 
 // The commits that change how pages look. Stories, tags, tooling and
 // scanner commits never mark a route; they are listed in Changes only.
-export const DESIGN_KINDS = new Set(['token', 'heal', 'lift']);
+export const DESIGN_KINDS = new Set(['token', 'heal', 'lift', 'design']);
 
 export const isDesignCommit = (c: ChangeCommit) => DESIGN_KINDS.has(c.kind);
 
