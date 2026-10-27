@@ -29,13 +29,7 @@ import { channelOf, isRendered } from '../lib/preview';
 import { framePool } from '../lib/framePool';
 import { anyThumbOf, thumbOf } from '../lib/thumbs';
 import { useThumbs } from '../lib/useThumbs';
-import {
-  OFFICE_LABEL,
-  STATUS_LABEL,
-  StoryGroup,
-  Status,
-  Office,
-} from '../lib/stories';
+import { STATUS_LABEL, StoryGroup, Status } from '../lib/stories';
 
 import { GalleryContext } from './GalleryFrame';
 import Icon from './Icon';
@@ -87,12 +81,6 @@ export const StatusChip = ({ status }: { status: Status }) => (
   <span className={`wb-chip wb-chip-${status}`} data-testid="wb-status">
     <span className="wb-chip-dot" aria-hidden="true" />
     {STATUS_LABEL[status]}
-  </span>
-);
-
-export const OfficeChip = ({ office }: { office: Office }) => (
-  <span className="wb-chip wb-chip-office" data-testid="wb-office">
-    {OFFICE_LABEL[office]}
   </span>
 );
 

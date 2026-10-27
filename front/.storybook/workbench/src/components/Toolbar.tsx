@@ -25,14 +25,6 @@ export const DEFAULT_TOOLBAR: ToolbarState = {
   zoom: 'fit',
 };
 
-export const VIEWPORTS: { value: CanvasViewport; label: string }[] = [
-  { value: 'fit', label: 'Fit to story' },
-  ...Object.entries(GV_VIEWPORTS).map(([v, vp]) => ({
-    value: v as GvViewport,
-    label: vp.name,
-  })),
-];
-
 type FieldProps = {
   id: keyof ToolbarState;
   label: string;

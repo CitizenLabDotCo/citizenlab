@@ -60,13 +60,6 @@ export const STATE_ORDER = [
   'RTL',
 ];
 
-export const OFFICE_LABEL: Record<Office, string> = {
-  bo: 'Back office',
-  fo: 'Front office',
-  shared: 'Shared',
-  unknown: 'Office unknown',
-};
-
 export const STATUS_LABEL: Record<Status, string> = {
   'on-tokens': 'On tokens',
   partly: 'Partly',

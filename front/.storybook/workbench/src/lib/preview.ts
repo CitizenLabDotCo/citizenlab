@@ -51,14 +51,10 @@ type PreviewWindow = Window & {
         id: string;
         argTypes?: Record<string, ArgType>;
         initialArgs?: Record<string, unknown>;
-        storyGlobals?: Record<string, unknown>;
       };
     };
     storyStoreValue?: {
       args?: { get: (id: string) => Record<string, unknown> | undefined };
-      loadStory?: (q: {
-        storyId: string;
-      }) => Promise<{ argTypes?: Record<string, ArgType> }>;
       userGlobals?: {
         get: () => Record<string, unknown>;
         update: (globals: Record<string, unknown>) => void;
@@ -132,36 +128,6 @@ export const readStory = (
   } catch {
     // The frame navigated away (or to another origin) mid-read.
     return null;
-  }
-};
-
-// The argTypes of another story in the frame's index (a library
-// component's own story), without rendering it: the store loads its CSF
-// file. Null when the frame or the story is not there.
-export const loadArgTypes = async (
-  win: Window | null | undefined,
-  storyId: string
-): Promise<Record<string, ArgType> | null> => {
-  try {
-    const store = (win as PreviewWindow | null | undefined)
-      ?.__STORYBOOK_PREVIEW__?.storyStoreValue;
-    if (!store?.loadStory) return null;
-    const story = await store.loadStory({ storyId });
-    return story.argTypes ?? {};
-  } catch {
-    return null;
-  }
-};
-
-// The language the frame's story sets for itself (`globals: { lang }` in
-// the story), or undefined.
-export const storyLangOf = (win: Window | null | undefined) => {
-  try {
-    const lang = (win as PreviewWindow | null | undefined)
-      ?.__STORYBOOK_PREVIEW__?.currentRender?.story?.storyGlobals?.lang;
-    return typeof lang === 'string' ? lang : undefined;
-  } catch {
-    return undefined;
   }
 };
 
