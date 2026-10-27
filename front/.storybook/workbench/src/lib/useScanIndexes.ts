@@ -36,16 +36,19 @@ const indexesOf = (scan: ScanOutput, meta: TokenMeta[], withPairs: boolean) => {
 
 export const useScanIndexes = (
   meta: TokenMeta[],
-  withPairs = false
+  withPairs = false,
+  // The scan waits while this holds (the component page's canvas first).
+  hold = false
 ): Indexes => {
   const [scan, setScan] = useState<ScanOutput | undefined>();
   useEffect(() => {
+    if (hold) return undefined;
     let live = true;
     loadScan().then((s) => live && setScan(s));
     return () => {
       live = false;
     };
-  }, []);
+  }, [hold]);
   return useMemo(() => {
     if (!scan || scan.findings.length === 0) {
       return { ...NO_SCAN, loaded: !!scan };

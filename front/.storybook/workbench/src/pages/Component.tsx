@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import Canvas from '../components/Canvas';
 import ChangesDrawer from '../components/ChangesDrawer';
@@ -96,8 +96,16 @@ const Component = ({
   overrides,
   reset,
 }: Props) => {
-  const groups = useStoryGroups();
-  const indexes = useScanIndexes(TOKEN_META);
+  // The scan (the biggest file) waits for the canvas to load, at most 10 s:
+  // on a slow link the story gets the bandwidth first. The groups come from
+  // index.json meanwhile.
+  const [scanHeld, setScanHeld] = useState(true);
+  useEffect(() => {
+    const t = window.setTimeout(() => setScanHeld(false), 10000);
+    return () => window.clearTimeout(t);
+  }, []);
+  const groups = useStoryGroups({ early: true, hold: scanHeld });
+  const indexes = useScanIndexes(TOKEN_META, false, scanHeld);
   const a11y = useA11yResults();
   const [tab, setTab] = useState<Tab>(storedTab);
   const [drawer, setDrawer] = useState(false);
@@ -108,7 +116,10 @@ const Component = ({
   // globals switch keeps both (Canvas); readers key on the story id.
   const [loads, setLoads] = useState(0);
   const onFrame = useCallback((win: Window | null) => {
-    if (win) setLoads((n) => n + 1);
+    if (win) {
+      setLoads((n) => n + 1);
+      setScanHeld(false);
+    }
     setFrame(win);
   }, []);
   const [fitScale, setFitScale] = useState<number | undefined>();
