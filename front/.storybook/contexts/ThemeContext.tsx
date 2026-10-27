@@ -6,7 +6,13 @@ import '../../app/assets/css/reset.min.css';
 import '../../app/assets/fonts/fonts.css';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
-import { CityKey, DEFAULT_CITY, cityOf, cityTenant } from '../cities';
+import {
+  CityKey,
+  DEFAULT_CITY,
+  cityOf,
+  cityTenant,
+  setCanvasCity,
+} from '../cities';
 import TenantTokens from './TenantTokens';
 
 // Adds the city's web font stylesheet once; it stays for later stories.
@@ -30,6 +36,9 @@ const ThemeContext = ({
   children: React.ReactNode;
 }) => {
   const tenant = cityTenant(city);
+  // Before the story's queries run: the mocked app configuration answers
+  // with this city too.
+  setCanvasCity(city);
   useFontCss(cityOf(city).fontCss);
   return (
     <ThemeProvider
