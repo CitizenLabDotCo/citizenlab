@@ -1420,6 +1420,7 @@
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klikkaa tästä kirjautuaksesi sisään ylläpitäjänä tai projektipäällikkönä",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE tai CNS",
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "Tai kirjaudu sisään:",
+  "app.containers.Authentication.steps.FlowStart.signInWithEmployeeAccount": "Kirjaudu sisään työntekijätililläsi",
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": "Käytä sen sijaan sähköpostiosoitettasi",
   "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": "Käytä sen sijaan puhelinnumeroasi",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Anna tunnus",

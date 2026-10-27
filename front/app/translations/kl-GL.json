@@ -1420,6 +1420,7 @@
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Click here to login as admin or project manager",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE imaluunniit CNS",
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "Imaluunniit uuminnga iserit:",
+  "app.containers.Authentication.steps.FlowStart.signInWithEmployeeAccount": "Sulisutut kontut atorlugu isigit",
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": "Taarsiullugu e-mailit atoruk",
   "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": "Taarsiullugu oqarasuaativit normua atoruk",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Please enter a token",

@@ -1420,6 +1420,7 @@
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Yönetici veya proje yöneticisi olarak giriş yapmak için buraya tıklayın",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE veya CNS",
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "Veya şununla giriş yapın:",
+  "app.containers.Authentication.steps.FlowStart.signInWithEmployeeAccount": "Personel hesabınızla giriş yapın",
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": "Bunun yerine e-posta adresinizi kullanın",
   "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": "Bunun yerine telefon numaranızı kullanın",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Lütfen bir belirteç girin",

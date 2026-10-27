@@ -1420,6 +1420,7 @@
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klik her for at logge ind som administrator eller projektleder",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE eller CNS",
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "Eller log ind med:",
+  "app.containers.Authentication.steps.FlowStart.signInWithEmployeeAccount": "Log ind med din medarbejderkonto",
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": "Brug din e-mailadresse i stedet",
   "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": "Brug dit telefonnummer i stedet",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Indtast venligst et token",

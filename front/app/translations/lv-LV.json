@@ -1420,6 +1420,7 @@
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Noklikšķiniet šeit, lai pieteiktos kā administrators vai projekta vadītājs",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE vai CNS",
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "Vai piesakieties ar:",
+  "app.containers.Authentication.steps.FlowStart.signInWithEmployeeAccount": "Pieslēdzieties ar savu darbinieka kontu",
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": "Tā vietā izmantojiet savu e-pasta adresi",
   "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": "Tā vietā izmantojiet savu tālruņa numuru",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Lūdzu, ievadiet žetonu",
