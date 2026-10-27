@@ -7,11 +7,7 @@ import type { TokenName } from '@ds/tokens/tokens';
 import type { IconName } from '../components/Icon';
 
 import type { Finding, TokenMeta } from './data';
-import {
-  formatHealTask,
-  MAX_TASK_ROUTES,
-  routeLabel,
-} from './healTask';
+import { formatHealTask, MAX_TASK_ROUTES, routeLabel } from './healTask';
 import { atPath, rowSpec } from './inspect';
 import { parseColour } from './overrides';
 
@@ -59,8 +55,14 @@ export const changesLook = (
   return after.trim().toLowerCase() !== e.from.raw.trim().toLowerCase();
 };
 
-const isElement = (doc: Document, el: Element | null): el is HTMLElement =>
-  !!el && el instanceof (doc.defaultView?.HTMLElement ?? HTMLElement);
+// An icon is an SVG element: it has an inline style too.
+const isElement = (
+  doc: Document,
+  el: Element | null
+): el is HTMLElement | SVGElement =>
+  !!el &&
+  (el instanceof (doc.defaultView?.HTMLElement ?? HTMLElement) ||
+    el instanceof (doc.defaultView?.SVGElement ?? SVGElement));
 
 // `applied`: per edit id, the element's inline values before the edit, so a
 // removed edit gets them back. Edits of other stories are left alone; an
@@ -144,13 +146,9 @@ export const taskOfEdit = (e: ElementEdit, ctx: TaskContext): string => {
   if (e.kind === 'attach' || e.kind === 'file') {
     const f = findingOf(e, ctx);
     if (f && e.to.token) {
-      return formatHealTask(
-        f,
-        ctx.component,
-        ctx.storyId,
-        ctx.routes,
-        { token: e.to.token }
-      );
+      return formatHealTask(f, ctx.component, ctx.storyId, ctx.routes, {
+        token: e.to.token,
+      });
     }
     return [
       `heal: ${ctx.component} · ${file} · ${e.from.raw} → ${

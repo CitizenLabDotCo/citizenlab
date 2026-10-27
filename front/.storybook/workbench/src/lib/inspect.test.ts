@@ -6,6 +6,7 @@ import {
   declarations,
   defaultTarget,
   fitsProp,
+  holdsText,
   isCityToken,
   labelOf,
   parentTarget,
@@ -202,6 +203,21 @@ describe('rowSpec', () => {
       snap: 'color',
     });
   });
+
+  it("edits an icon's own paint, not its text colour", () => {
+    expect(rowSpec('icon-fill')).toMatchObject({
+      props: ['fill'],
+      glyph: 'fill',
+      editable: true,
+      snap: 'color',
+    });
+    expect(rowSpec('icon-stroke')).toMatchObject({
+      props: ['stroke'],
+      glyph: 'stroke',
+      editable: true,
+      snap: 'color',
+    });
+  });
 });
 
 describe('fitsProp', () => {
@@ -218,6 +234,8 @@ describe('fitsProp', () => {
     expect(fitsProp('border-color')?.(t('--gv-white', 'color'))).toBe(true);
     expect(fitsProp('padding-left')?.(t('--gv-space-2', 'space'))).toBe(true);
     expect(fitsProp('padding-left')?.(t('--gv-white', 'color'))).toBe(false);
+    expect(fitsProp('fill')?.(t('--gv-green-500', 'color'))).toBe(true);
+    expect(fitsProp('stroke')?.(t('--gv-green-500', 'color'))).toBe(true);
     expect(fitsProp('width')).toBeUndefined();
   });
 });
@@ -231,5 +249,31 @@ describe('isCityToken', () => {
     expect(isCityToken({ legacy: ['theme.fontFamily'] })).toBe(true);
     expect(isCityToken({ legacy: ['theme.colors.grey800'] })).toBe(false);
     expect(isCityToken({ legacy: [] })).toBe(false);
+  });
+});
+
+describe('holdsText', () => {
+  const html = (markup: string) => {
+    const box = document.createElement('div');
+    box.innerHTML = markup;
+    return box.firstElementChild as Element;
+  };
+  it('gives Text to an element with text of its own or a field', () => {
+    expect(holdsText(html('<span>Configure project settings</span>'))).toBe(
+      true
+    );
+    expect(holdsText(html('<div>A Badge with label <b>!</b></div>'))).toBe(
+      true
+    );
+    expect(holdsText(html('<input value="x">'))).toBe(true);
+  });
+  it('gives no Text to a box of other elements or an icon', () => {
+    expect(holdsText(html('<div>\n  <span>Label</span>\n</div>'))).toBe(false);
+    expect(
+      holdsText(html('<svg viewBox="0 0 24 24"><path d="M0 0"/></svg>'))
+    ).toBe(false);
+    expect(
+      holdsText(html('<svg><text>Axis</text></svg>').firstElementChild!)
+    ).toBe(true);
   });
 });

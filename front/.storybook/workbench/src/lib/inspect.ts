@@ -113,6 +113,8 @@ export const varsOf = (value: string): TokenName[] => [
 export const FAMILY: Record<string, string[]> = {
   'background-color': ['background-color', 'background'],
   color: ['color'],
+  fill: ['fill'],
+  stroke: ['stroke'],
   'font-family': ['font-family', 'font'],
   'font-size': ['font-size', 'font'],
   'font-weight': ['font-weight', 'font'],
@@ -282,6 +284,8 @@ const declsOf = (el: Element, rules: RuleDecls[]): [string, string][] => {
 const CATEGORY: Record<string, (t: TokenMeta) => boolean> = {
   'background-color': (t) => t.category === 'color',
   color: (t) => t.category === 'color',
+  fill: (t) => t.category === 'color',
+  stroke: (t) => t.category === 'color',
   'border-top-color': (t) => t.category === 'color',
   'border-color': (t) => t.category === 'color',
   'font-family': (t) => t.type === 'fontFamily',
@@ -343,7 +347,9 @@ const valueOf = (
 ): InspectValue => {
   const raw = cs.getPropertyValue(prop).trim();
   const out: InspectValue = { raw, shown: format(raw) };
-  if (/color$/.test(prop) && !isTransparent(raw)) out.swatch = raw;
+  if (/color$|^fill$|^stroke$/.test(prop) && !isTransparent(raw)) {
+    out.swatch = raw;
+  }
   if (NEUTRAL.has(raw)) return out;
   for (const name of candidatesFor(prop, decls)) {
     if (resolve(prop, name) === raw)
@@ -510,6 +516,21 @@ const SPECS: Record<string, Spec> = {
     editable: true,
     snap: 'color',
   },
+  // An icon's own paint (SVG fill and stroke).
+  'icon-fill': {
+    props: ['fill'],
+    glyph: 'fill',
+    half: false,
+    editable: true,
+    snap: 'color',
+  },
+  'icon-stroke': {
+    props: ['stroke'],
+    glyph: 'stroke',
+    half: false,
+    editable: true,
+    snap: 'color',
+  },
   shadow: {
     props: ['box-shadow'],
     glyph: 'shadow',
@@ -565,6 +586,17 @@ const sides = (
   }
   return values.map((v, i) => row(`${id}-${i}`, labels[i], v));
 };
+
+// Figma shows a layer the properties of its kind: Text for an element
+// that holds text of its own (a text node child, or a field people type
+// in), never for a box of other elements or an icon.
+export const holdsText = (el: Element) =>
+  el.namespaceURI === 'http://www.w3.org/2000/svg'
+    ? /^(text|tspan|textPath)$/.test(el.localName)
+    : /^(input|textarea|select)$/.test(el.localName) ||
+      [...el.childNodes].some(
+        (n) => n.nodeType === 3 && !!n.textContent?.trim()
+      );
 
 // The panel's reading of one element. `available` says whether the
 // document can draw a font family (document.fonts.check in the frame).
@@ -623,29 +655,41 @@ export const inspectElement = (
     }
     sections.push({ id: 'layout', label: 'Layout', rows: layout });
 
+    // An icon paints with its fill and stroke, never with the text colour,
+    // so it shows those and no Text section.
+    const icon =
+      el.namespaceURI === 'http://www.w3.org/2000/svg' &&
+      !/^(text|tspan|textPath)$/.test(el.localName);
+    const paint = (prop: string) => {
+      const p = v(prop, colourText);
+      return p.raw === 'none' || isTransparent(p.raw) ? undefined : p;
+    };
+    const iconFill = icon ? paint('fill') : undefined;
+    const iconStroke = icon ? paint('stroke') : undefined;
+
     const fill = v('background-color', colourText);
+    const fills: InspectRow[] = [];
     if (!isTransparent(fill.raw)) {
-      sections.push({
-        id: 'fill',
-        label: 'Fill',
-        rows: [row('fill', 'Fill', fill)],
-      });
+      fills.push(row('fill', iconFill ? 'Background' : 'Fill', fill));
     }
+    if (iconFill) fills.push(row('icon-fill', 'Fill', iconFill));
+    if (fills.length) sections.push({ id: 'fill', label: 'Fill', rows: fills });
 
     const width = parseFloat(cs.getPropertyValue('border-top-width')) || 0;
+    const strokes: InspectRow[] = [];
     if (
       width > 0 &&
       cs.getPropertyValue('border-top-style') !== 'none' &&
       !isTransparent(cs.getPropertyValue('border-top-color'))
     ) {
-      sections.push({
-        id: 'stroke',
-        label: 'Stroke',
-        rows: [
-          row('stroke-color', 'Colour', v('border-top-color', colourText)),
-          row('stroke-width', 'Width', v('border-top-width')),
-        ],
-      });
+      strokes.push(
+        row('stroke-color', 'Colour', v('border-top-color', colourText)),
+        row('stroke-width', 'Width', v('border-top-width'))
+      );
+    }
+    if (iconStroke) strokes.push(row('icon-stroke', 'Colour', iconStroke));
+    if (strokes.length) {
+      sections.push({ id: 'stroke', label: 'Stroke', rows: strokes });
     }
 
     const radius = sides(
@@ -693,7 +737,9 @@ export const inspectElement = (
     const ls = v('letter-spacing');
     if (!NEUTRAL.has(ls.raw)) textRows.push(row('ls', 'Letter spacing', ls));
     textRows.push(row('color', 'Colour', v('color', colourText)));
-    sections.push({ id: 'text', label: 'Text', rows: textRows });
+    if (holdsText(el)) {
+      sections.push({ id: 'text', label: 'Text', rows: textRows });
+    }
 
     const shadow = v('box-shadow', (s) => (s === 'none' ? 'None' : 'Shadow'));
     if (shadow.raw !== 'none') {
