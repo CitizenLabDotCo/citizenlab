@@ -11,6 +11,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import * as Sentry from '@sentry/react';
 import GlobalStyle from 'global-styles';
+import 'design-system/tokens/tokens.css';
 import 'intersection-observer';
 // moment-timezone extends regular moment library,
 // so there's no need to import both moment and moment-timezone
