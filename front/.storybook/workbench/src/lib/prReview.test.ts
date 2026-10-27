@@ -1,14 +1,12 @@
 import type { ScanOutput } from './data';
-import { loadPullHeader } from './pr';
 import {
-  alsoInPr,
   designChanges,
   forOrigin,
   isPlatformFile,
   liveParams,
   pictures,
+  plainSubject,
   prOfHost,
-  prText,
   routeLinks,
 } from './prReview';
 import { ChangeCommit, DesignChanges, normaliseFixture } from './review';
@@ -94,25 +92,6 @@ describe('designChanges', () => {
   });
   it('is empty without a change list', () => {
     expect(designChanges(undefined)).toEqual([]);
-  });
-});
-
-describe('alsoInPr', () => {
-  it('lists setup commits and counts stories and tooling', () => {
-    const list = changes([
-      commit('t2', 'other', ['front/.storybook/workbench/src/App.tsx']),
-      commit('s1', 'story', [STORY]),
-      commit('u1', 'other', ['front/app/containers/App/index.tsx']),
-      commit('h1', 'heal', [DROPDOWN]),
-      commit('t1', 'other', ['front/scripts/design-system/changes.ts']),
-    ]);
-    const also = alsoInPr(list);
-    expect(also.setup.map((c) => c.sha)).toEqual(['u1']);
-    expect(also.stories).toBe(1);
-    expect(also.tooling).toBe(2);
-  });
-  it('counts a heal that changes no platform code as tooling', () => {
-    expect(alsoInPr(changes([commit('h1', 'heal', [])])).tooling).toBe(1);
   });
 });
 
@@ -233,66 +212,12 @@ describe('liveParams', () => {
   });
 });
 
-describe('prText', () => {
-  it('puts the Review link first, then the changes in order', () => {
-    const text = prText(
-      {
-        number: 15100,
-        title: 'Share dropdown radius',
-        url: 'https://github.com/CitizenLabDotCo/citizenlab/pull/15100',
-        state: 'open',
-        base: 'design-system/workbench',
-      },
-      [
-        commit(
-          'aaaaaaaaaa',
-          'heal',
-          [DROPDOWN],
-          'design-system(heal): HeaderDropdown bo.borderRadius → --gv-radius-2 [AI-assisted]'
-        ),
-        commit('bbbbbbbbbb', 'heal', [DROPDOWN], 'Plain subject'),
-      ],
-      'https://pr-15100.epic.hq.govocal.com/storybook/workbench/#/review',
-      'https://github.com/CitizenLabDotCo/citizenlab'
-    );
-    const lines = text.split('\n');
-    expect(lines[0]).toBe('## Review');
-    expect(text).toContain(
-      '[2 changes, before and after](https://pr-15100.epic.hq.govocal.com/storybook/workbench/#/review)'
-    );
-    expect(text).toContain(
-      '1. HeaderDropdown bo.borderRadius → --gv-radius-2 ([aaaaaaa](https://github.com/CitizenLabDotCo/citizenlab/commit/aaaaaaaaaa))'
-    );
-    expect(text).toContain('2. Plain subject');
-    expect(text).not.toContain('\u2014');
-  });
-});
-
-describe('loadPullHeader', () => {
-  it('reads the PR from GitHub', async () => {
-    const fetcher = ((url: string) =>
-      url.endsWith('/pulls/15059')
-        ? respond({
-            number: 15059,
-            title: 'T',
-            html_url: 'https://github.com/x/pull/15059',
-            state: 'closed',
-            merged_at: '2026-10-27T00:00:00Z',
-            base: { ref: 'design-system/workbench' },
-          })
-        : respond({}, 404)) as unknown as typeof fetch;
-    expect(await loadPullHeader(15059, fetcher)).toEqual({
-      number: 15059,
-      title: 'T',
-      url: 'https://github.com/x/pull/15059',
-      state: 'merged',
-      base: 'design-system/workbench',
-    });
-  });
-  it('says what went wrong', async () => {
-    const fetcher = (() => respond({}, 404)) as unknown as typeof fetch;
-    await expect(loadPullHeader(1, fetcher)).rejects.toThrow(
-      'No such pull request.'
-    );
+describe('plainSubject', () => {
+  it('drops the area and the AI tag', () => {
+    expect(
+      plainSubject(
+        'design-system(heal): HeaderDropdown 8px → --gv-radius-2 [AI-assisted]'
+      )
+    ).toBe('HeaderDropdown 8px → --gv-radius-2');
   });
 });

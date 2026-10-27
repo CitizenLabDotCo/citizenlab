@@ -1,10 +1,9 @@
 // The Review page's logic: one PR per epic. The epic's host names its PR
 // (pr-<n>.epic.hq.govocal.com), design-changes.json lists what the branch
 // changes against the PR's base, and each design commit is a card with the
-// pictures the agent took before and after it and the pages it reaches on
+// pictures the agent took before and after it and a page it reaches on
 // this platform. Pure functions plus one loader of route params.
 import type { ScanOutput } from './data';
-import type { PullHeader } from './pr';
 import {
   ChangeCommit,
   commitReach,
@@ -15,6 +14,8 @@ import {
   shellFiles,
   unfilledParams,
 } from './review';
+
+export const REPO_URL = 'https://github.com/CitizenLabDotCo/citizenlab';
 
 const EPIC_HOST = /^pr-(\d{1,7})\.epic\.hq\.govocal\.com$/;
 
@@ -48,23 +49,6 @@ const oldestFirst = (changes?: DesignChanges) =>
 // files), oldest first.
 export const designChanges = (changes?: DesignChanges): ChangeCommit[] =>
   oldestFirst(changes).filter((c) => isDesignCommit(c) && changesPlatform(c));
-
-// The rest of the PR: commits that change platform code without being a
-// design change (setup, such as the app loading the tokens) are listed;
-// stories and tooling are counted.
-export const alsoInPr = (
-  changes?: DesignChanges
-): { setup: ChangeCommit[]; stories: number; tooling: number } => {
-  const rest = oldestFirst(changes).filter(
-    (c) => !(isDesignCommit(c) && changesPlatform(c))
-  );
-  return {
-    setup: rest.filter((c) => c.kind === 'other' && changesPlatform(c)),
-    stories: rest.filter((c) => c.kind === 'story').length,
-    tooling: rest.filter((c) => c.kind !== 'story' && !changesPlatform(c))
-      .length,
-  };
-};
 
 // The agent's pictures of a change, in .storybook/static/changes/<sha>/.
 export const pictures = (sha: string) => ({
@@ -149,29 +133,3 @@ export const plainSubject = (subject: string) =>
   subject
     .replace(/^[a-z-]+\([^)]*\):\s*/i, '')
     .replace(/\s*\[AI-assisted\]\s*$/, '');
-
-const plural = (n: number, one: string, many: string) =>
-  `${n} ${n === 1 ? one : many}`;
-
-// The PR text's Review section: the link first, then the changes in order.
-export const prText = (
-  head: PullHeader | undefined,
-  cards: ChangeCommit[],
-  link: string,
-  repoUrl: string
-): string =>
-  [
-    '## Review',
-    '',
-    `[${plural(cards.length, 'change', 'changes')}, before and after](${link})${
-      head ? ` on the epic of #${head.number}.` : '.'
-    }`,
-    '',
-    ...cards.map(
-      (c, i) =>
-        `${i + 1}. ${plainSubject(c.subject)} ([${c.sha.slice(
-          0,
-          7
-        )}](${repoUrl}/commit/${c.sha}))`
-    ),
-  ].join('\n');
