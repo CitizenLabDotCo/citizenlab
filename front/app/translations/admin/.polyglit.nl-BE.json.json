@@ -17459,6 +17459,11 @@
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectEdit.statusPrioritySortingMethod": {
+    "state": "verified",
+    "verified_at": "2026-10-27T14:00:58.906525Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
