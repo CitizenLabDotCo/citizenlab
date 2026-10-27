@@ -7,6 +7,7 @@ import Icon from '../components/Icon';
 import type { ToolbarState } from '../components/Toolbar';
 import { copyText } from '../lib/clipboard';
 import { fileFindings } from '../lib/componentPanels';
+import { resolveTokens } from '../lib/contrast';
 import {
   loadChanges,
   loadRouteFixture,
@@ -14,13 +15,20 @@ import {
   ScanOutput,
   TOKEN_META,
 } from '../lib/data';
-import { ElementEdit, TaskContext, taskOfEdit } from '../lib/elementEdits';
+import {
+  changesLook,
+  ElementEdit,
+  TaskContext,
+  taskOfEdit,
+} from '../lib/elementEdits';
 import { storyHash } from '../lib/hash';
 import { shortName } from '../lib/inspect';
 import { tokenSource } from '../lib/liveSource';
 import type { Overrides } from '../lib/overrides';
 import {
   agentText,
+  areasOfProps,
+  areasOfText,
   byStory,
   designChanges,
   forOrigin,
@@ -28,17 +36,21 @@ import {
   pictures,
   plainSubject,
   prOfHost,
+  KIND_WORDS,
   REPO_URL,
   routeLinks,
+  scaleText,
 } from '../lib/prReview';
 import {
   ChangeCommit,
+  commitReach,
   DesignChanges,
   normaliseFixture,
   RouteFixture,
 } from '../lib/review';
 import { sourceChanges, sourcePatch } from '../lib/sourceDiff';
 import { groupOfStory, StoryGroup } from '../lib/stories';
+import { DEFS } from '../lib/tokenValues';
 import { useElementEdits } from '../lib/useElementEdits';
 import { useStoryGroups } from '../lib/useStoryGroups';
 
@@ -116,6 +128,31 @@ const Pictures = ({ sha }: { sha: string }) => {
   );
 };
 
+// One line under a card's title for the developer: what kind of change, what
+// it touches, how far it reaches.
+const Meta = ({
+  kind,
+  areas,
+  scale,
+}: {
+  kind?: string;
+  areas: string[];
+  scale: string;
+}) => {
+  const rest = [...areas, scale].filter(Boolean).join(' · ');
+  if (!kind && !rest) return null;
+  return (
+    <p className="wb-review-meta" data-testid="wb-review-meta">
+      {kind && (
+        <span className="wb-review-kind" data-same={kind === 'Same look'}>
+          {kind}
+        </span>
+      )}
+      {rest}
+    </p>
+  );
+};
+
 const Card = ({
   commit,
   scan,
@@ -134,6 +171,18 @@ const Card = ({
         : undefined,
     [scan, commit, fixture]
   );
+  const scale = useMemo(() => {
+    const reach = scan ? commitReach(scan, commit) : undefined;
+    const score = scan?.components.find(
+      (c) => c.component === commit.component
+    );
+    return scaleText(
+      commit.component,
+      score?.usageCount,
+      reach?.routes.size ?? 0,
+      reach?.shell
+    );
+  }, [scan, commit]);
   return (
     <li className="wb-pr-card" data-testid="wb-pr-card" data-sha={commit.sha}>
       <div className="wb-pr-line">
@@ -159,6 +208,11 @@ const Card = ({
           <Icon name="external" size={12} />
         </a>
       </div>
+      <Meta
+        kind={KIND_WORDS[commit.kind]}
+        areas={areasOfText(commit.subject)}
+        scale={scale}
+      />
       <Pictures sha={commit.sha} />
     </li>
   );
@@ -198,6 +252,7 @@ const Draft = ({
   group,
   toolbar,
   overrides,
+  resolve,
   onReset,
 }: {
   storyId: string;
@@ -205,6 +260,7 @@ const Draft = ({
   group?: StoryGroup;
   toolbar: ToolbarState;
   overrides: Overrides;
+  resolve: (token: TokenName) => string;
   onReset: () => void;
 }) => (
   <li className="wb-pr-card" data-testid="wb-review-draft" data-story={storyId}>
@@ -215,6 +271,17 @@ const Draft = ({
         Reset
       </button>
     </div>
+    <Meta
+      kind={
+        edits.some((e) => changesLook(e, resolve)) ? 'Look change' : 'Same look'
+      }
+      areas={areasOfProps(edits.flatMap((e) => e.props))}
+      scale={scaleText(
+        group?.score?.component,
+        group?.score?.usageCount,
+        group?.score?.routes.length ?? 0
+      )}
+    />
     <ul className="wb-review-edits">
       {edits.map((e) => (
         <li key={e.id}>
@@ -291,6 +358,7 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
   }, []);
 
   const cards = useMemo(() => designChanges(changes), [changes]);
+  const live = useMemo(() => resolveTokens(DEFS, overrides), [overrides]);
   const drafts = useMemo(() => byStory(edits), [edits]);
   const tokens = Object.entries(overrides).filter(
     (e): e is [string, string] => typeof e[1] === 'string'
@@ -440,6 +508,7 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
               group={groups ? groupOfStory(groups, storyId) : undefined}
               toolbar={frame}
               overrides={overrides}
+              resolve={(t) => live[t] ?? ''}
               onReset={() => list.forEach((e) => remove(e.id))}
             />
           ))}

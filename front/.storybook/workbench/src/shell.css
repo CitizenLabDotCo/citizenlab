@@ -458,15 +458,6 @@ code {
   color: var(--wb-muted);
 }
 
-.wb-eyebrow {
-  margin: 0 0 var(--gv-space-2);
-  font-size: var(--gv-fs-xs);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--wb-accent);
-}
-
 .wb-section-title {
   font-size: var(--gv-fs-l);
 }
@@ -937,15 +928,6 @@ a.wb-card:hover {
   font-weight: 600;
   background: var(--wb-bg);
   box-shadow: var(--gv-shadow-hover-sm);
-}
-
-.wb-diff-dot {
-  display: inline-block;
-  flex: none;
-  width: 8px;
-  height: 8px;
-  background: var(--wb-warn);
-  border-radius: 50%;
 }
 
 .wb-notice {
@@ -1508,10 +1490,6 @@ tr:hover .wb-pv-motion > span,
 .wb-tf-notes code {
   font-family: var(--wb-mono);
   color: var(--wb-text);
-}
-
-.wb-tf-notes .wb-diff-dot {
-  margin-right: var(--gv-space-1);
 }
 
 .wb-tf-notes a {
@@ -4048,6 +4026,32 @@ a.wb-line:hover {
   color: var(--wb-heading);
 }
 
+.wb-review-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gv-space-2);
+  align-items: center;
+  margin: 0;
+  font-size: var(--gv-fs-s);
+  color: var(--wb-muted);
+}
+
+.wb-review-kind {
+  padding: 0 var(--gv-space-2);
+  font-size: var(--gv-fs-xs);
+  font-weight: 600;
+  line-height: 20px;
+  color: var(--wb-on-accent);
+  background: var(--wb-accent-fill);
+  border-radius: var(--gv-radius-full);
+}
+
+.wb-review-kind[data-same='true'] {
+  color: var(--wb-muted);
+  background: var(--wb-subtle);
+  box-shadow: inset 0 0 0 1px var(--wb-border);
+}
+
 .wb-review-edits {
   display: grid;
   gap: var(--gv-space-1);
@@ -4708,52 +4712,6 @@ tr[data-result='needs-human'] .wb-a11y-note {
 
 .wb-a11y-mini.wb-a11y-tone-warn {
   color: var(--wb-text);
-}
-
-/* Review with a route picked: a short header and the summary as one
-   line, so the frames get the height. After the breakpoints above, so the
-   strip wins over their grid borders. */
-.wb-review-picked {
-  gap: var(--gv-space-3);
-}
-
-.wb-review-picked .wb-review-head {
-  align-items: center;
-}
-
-.wb-review-picked .wb-review-head .wb-eyebrow,
-.wb-review-picked .wb-review-head .wb-lead {
-  display: none;
-}
-
-.wb-review-picked .wb-review-head h1 {
-  font-size: var(--gv-fs-xxl);
-}
-
-.wb-rstats-strip {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.wb-rstats-strip .wb-rstat {
-  display: flex;
-  flex: 1 1 auto;
-  gap: var(--gv-space-2);
-  align-items: baseline;
-  padding: var(--gv-space-2) var(--gv-space-4);
-  border-top: 0;
-}
-
-.wb-rstats-strip .wb-rstat + .wb-rstat {
-  border-left: 1px solid var(--wb-border);
-}
-
-.wb-rstats-strip .wb-rstat-value {
-  font-size: var(--gv-fs-m);
-}
-
-.wb-rstats-strip .wb-rstat-note {
-  display: none;
 }
 
 /* Component page as a design tool: the top row in line with the panel's

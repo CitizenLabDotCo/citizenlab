@@ -162,3 +162,62 @@ export const agentText = (
       ? ['', 'tokens.source.json:', tokenPatch.trim()]
       : []),
   ].join('\n');
+
+// What a change touches, from the CSS properties an edit sets.
+const PROP_AREAS: [string, RegExp][] = [
+  ['Colour', /colou?r|background|fill|stroke/],
+  ['Radius', /radius/],
+  ['Spacing', /^(padding|margin|gap|row-gap|column-gap)/],
+  ['Type', /^(font|line-height|letter-spacing|text-)/],
+  ['Shadow', /shadow/],
+  ['Border', /^border(-(top|right|bottom|left))?-(width|style)$/],
+  ['Size', /^(min-|max-)?(width|height)$/],
+  ['Animation', /^(transition|animation)/],
+];
+
+export const areasOfProps = (props: string[]): string[] =>
+  PROP_AREAS.filter(([, re]) => props.some((p) => re.test(p))).map(
+    ([area]) => area
+  );
+
+// The same from a commit's words (`HeaderDropdown radius 8px → 12px`).
+const TEXT_AREAS: [string, RegExp][] = [
+  [
+    'Colour',
+    /colou?r|fill|background|--gv-(grey|red|green|blue|teal|orange|error|success|warning|tenant|primary|text|bg)/i,
+  ],
+  ['Radius', /radius/i],
+  ['Spacing', /padding|margin|\bgap\b|--gv-space|spacing/i],
+  ['Type', /font|line-height|--gv-fs/i],
+  ['Shadow', /shadow/i],
+  ['Animation', /animation|transition|duration|easing|motion/i],
+];
+
+export const areasOfText = (text: string): string[] =>
+  TEXT_AREAS.filter(([, re]) => re.test(text)).map(([area]) => area);
+
+// What kind of change a commit is, in a developer's words.
+export const KIND_WORDS: Record<string, string> = {
+  heal: 'Same look',
+  design: 'Look change',
+  token: 'Token value',
+  lift: 'Whole component',
+};
+
+// How far a change reaches: the component's uses in the code and the pages
+// that render it.
+export const scaleText = (
+  component: string | undefined,
+  uses: number | undefined,
+  pages: number,
+  everyPage = false
+): string =>
+  [
+    component,
+    uses !== undefined && `used in ${uses} ${uses === 1 ? 'place' : 'places'}`,
+    everyPage
+      ? 'on every page'
+      : pages > 0 && `on ${pages} ${pages === 1 ? 'page' : 'pages'}`,
+  ]
+    .filter(Boolean)
+    .join(' · ');

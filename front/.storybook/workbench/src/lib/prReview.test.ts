@@ -10,6 +10,9 @@ import {
   routeLinks,
   byStory,
   agentText,
+  areasOfProps,
+  areasOfText,
+  scaleText,
 } from './prReview';
 import { ChangeCommit, DesignChanges, normaliseFixture } from './review';
 
@@ -255,5 +258,31 @@ describe('agentText', () => {
     expect(text).toContain('PR: a new one');
     expect(text).not.toContain('tokens.source.json');
     expect(text).not.toContain('—');
+  });
+});
+
+describe('what a change touches', () => {
+  it('reads areas from CSS properties', () => {
+    expect(areasOfProps(['background-color'])).toEqual(['Colour']);
+    expect(
+      areasOfProps(['border-top-left-radius', 'padding-top', 'transition'])
+    ).toEqual(['Radius', 'Spacing', 'Animation']);
+    expect(areasOfProps(['display'])).toEqual([]);
+  });
+  it('reads areas from a commit subject', () => {
+    expect(
+      areasOfText('HeaderDropdown radius 8px → 12px (--gv-radius-3)')
+    ).toEqual(['Radius']);
+    expect(areasOfText('Badge #E52516 → --gv-error')).toEqual(['Colour']);
+    expect(areasOfText('Card 16px → --gv-space-4')).toEqual(['Spacing']);
+  });
+  it('says how far it reaches', () => {
+    expect(scaleText('Button', 304, 58)).toBe(
+      'Button · used in 304 places · on 58 pages'
+    );
+    expect(scaleText('HeaderDropdown', 1, 0, true)).toBe(
+      'HeaderDropdown · used in 1 place · on every page'
+    );
+    expect(scaleText(undefined, undefined, 0)).toBe('');
   });
 });
