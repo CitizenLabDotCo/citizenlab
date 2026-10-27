@@ -84,18 +84,9 @@ export const setLiveTokens = (live: { meta: TokenMeta[]; source: unknown }) => {
 export const loadStoryIndex = () =>
   fetchJson<StoryIndex>('../index.json', { entries: {} });
 
-// Shapes are owned by the tasks that produce these files. A review stacked
-// on the workbench ships its own list (review-changes.json, ds:changes);
-// every other build has only design-changes.json.
+// Shapes are owned by the tasks that produce these files.
 export const loadChanges = () =>
-  fetchJson<Record<string, unknown> | null>(
-    '../review-changes.json',
-    null
-  ).then((review) =>
-    review && Array.isArray(review.commits)
-      ? review
-      : fetchJson<Record<string, unknown>>('../design-changes.json', {})
-  );
+  fetchJson<Record<string, unknown>>('../design-changes.json', {});
 
 export const loadRouteFixture = () =>
   fetchJson<unknown>('../routes.fixture.json', {});

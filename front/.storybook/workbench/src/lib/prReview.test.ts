@@ -3,7 +3,9 @@ import {
   designChanges,
   forOrigin,
   isPlatformFile,
+  kindOfSubject,
   liveParams,
+  loadPrChanges,
   pictures,
   plainSubject,
   prOfHost,
@@ -265,5 +267,104 @@ describe('what a change touches', () => {
       'HeaderDropdown · used in 1 place · on every page'
     );
     expect(scaleText(undefined, undefined, 0)).toBe('');
+  });
+});
+
+describe('kindOfSubject', () => {
+  it('reads the kind and component as ds:changes does', () => {
+    expect(
+      kindOfSubject(
+        'design-system(design): Button primary background → --gv-error [AI-assisted]'
+      )
+    ).toEqual({ kind: 'design', component: 'Button' });
+    expect(kindOfSubject('design-system(stories): Badge states')).toEqual({
+      kind: 'story',
+      component: 'Badge',
+    });
+    expect(
+      kindOfSubject('design-system(setup): the app loads the tokens')
+    ).toEqual({ kind: 'other' });
+    expect(kindOfSubject('Merge branch master')).toEqual({ kind: 'other' });
+  });
+});
+
+describe('loadPrChanges', () => {
+  const API = 'https://api.github.com/repos/CitizenLabDotCo/citizenlab';
+  const BUTTON = 'front/app/component-library/components/Button/index.tsx';
+  const APP = 'front/app/containers/App/index.tsx';
+  const github =
+    (answers: Record<string, unknown>, asked: string[] = []) =>
+    (url: string) => {
+      asked.push(url);
+      const path = url.slice(API.length);
+      return path in answers
+        ? respond(answers[path])
+        : Promise.resolve({ ok: false, status: 404 } as Response);
+    };
+  const stacked = {
+    '/pulls/7': {
+      base: { ref: 'design-system/workbench' },
+      head: { sha: 'c3' },
+    },
+    '/pulls/7/commits?per_page=100': [
+      {
+        sha: 'c1',
+        commit: { message: 'design-system(setup): the app loads the tokens' },
+      },
+      {
+        sha: 'c2',
+        commit: {
+          message:
+            'design-system(design): Button background → --gv-error [AI-assisted]\n\nWhy.',
+        },
+      },
+      {
+        sha: 'c3',
+        commit: { message: 'design-system(review): pictures [AI-assisted]' },
+      },
+    ],
+    '/pulls/7/files?per_page=100': [{ filename: BUTTON }, { filename: APP }],
+    '/commits/c2': {
+      files: [{ filename: BUTTON }, { filename: 'front/app/reverted.tsx' }],
+    },
+  };
+
+  it("reads a stacked PR's commits from GitHub, newest first, files that still differ", async () => {
+    const asked: string[] = [];
+    const out = await loadPrChanges(
+      7,
+      github(stacked, asked) as unknown as typeof fetch
+    );
+    expect(out?.commits.map((c) => [c.sha, c.kind, c.files])).toEqual([
+      ['c3', 'other', []],
+      ['c2', 'design', [BUTTON]],
+      ['c1', 'other', []],
+    ]);
+    expect(out?.commits[1]).toMatchObject({
+      subject:
+        'design-system(design): Button background → --gv-error [AI-assisted]',
+      body: 'Why.',
+      component: 'Button',
+    });
+    expect(designChanges(out).map((c) => c.sha)).toEqual(['c2']);
+    // Only design commits cost a call of their own.
+    expect(asked.filter((u) => u.includes('/commits/'))).toEqual([
+      `${API}/commits/c2`,
+    ]);
+  });
+
+  it('leaves a PR into another base to design-changes.json', async () => {
+    const out = await loadPrChanges(
+      7,
+      github({
+        '/pulls/7': { base: { ref: 'master' }, head: { sha: 'x' } },
+      }) as unknown as typeof fetch
+    );
+    expect(out).toBeUndefined();
+  });
+
+  it('is undefined when GitHub does not answer', async () => {
+    const out = await loadPrChanges(7, github({}) as unknown as typeof fetch);
+    expect(out).toBeUndefined();
   });
 });

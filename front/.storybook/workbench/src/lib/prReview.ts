@@ -1,19 +1,22 @@
 // The Review page's logic: one PR per epic. The epic's host names its PR
-// (pr-<n>.epic.hq.govocal.com), design-changes.json lists what the branch
-// changes against the PR's base, and each design commit is a card with the
-// pictures the agent took before and after it and a page it reaches on
-// this platform. Pure functions plus one loader of route params.
+// (pr-<n>.epic.hq.govocal.com). A PR stacked on the workbench reads what it
+// changes from GitHub; the workbench itself from design-changes.json. Each
+// design commit is a card with the pictures the agent took before and after
+// it and a page it reaches on this platform. Pure functions plus loaders of
+// route params and of a stacked PR's commits.
 import type { ScanOutput } from './data';
 import {
   ChangeCommit,
   commitReach,
   DesignChanges,
+  DESIGN_KINDS,
   isDesignCommit,
   resolveRoute,
   RouteFixture,
   shellFiles,
   unfilledParams,
 } from './review';
+import { REPO, REVIEW_BASE } from './send';
 
 export const REPO_URL = 'https://github.com/CitizenLabDotCo/citizenlab';
 
@@ -125,6 +128,92 @@ export const liveParams = async (
     // What was read so far.
   }
   return out;
+};
+
+// Mirrors parseSubject in scripts/design-system/changes.ts: the kind from
+// the `design-system(<area>)` prefix, the component from the first
+// PascalCase word after the colon.
+const KINDS: Record<string, ChangeCommit['kind']> = {
+  heal: 'heal',
+  lift: 'lift',
+  token: 'token',
+  tokens: 'token',
+  design: 'design',
+  story: 'story',
+  stories: 'story',
+};
+const NAMED = new Set(['heal', 'lift', 'design', 'story']);
+const COMPONENT = /^(?:[A-Za-z]+\/)?[A-Z][a-z0-9]+(?:[A-Z][A-Za-z0-9]*)*$/;
+
+export const kindOfSubject = (
+  subject: string
+): Pick<ChangeCommit, 'kind' | 'component'> => {
+  const m = /^design-system\(([^)]*)\):\s*(.*)$/.exec(subject);
+  const kind = (m && KINDS[m[1].trim().toLowerCase()]) || 'other';
+  const component = NAMED.has(kind)
+    ? m?.[2]
+        .split(/\s+/)
+        .slice(0, 6)
+        .map((w) => w.replace(/[,.:;]+$/, ''))
+        .find((w) => COMPONENT.test(w))
+    : undefined;
+  return component ? { kind, component } : { kind };
+};
+
+type GhCommit = { sha: string; commit: { message: string } };
+type GhFile = { filename: string };
+
+// A PR stacked on the workbench, from GitHub's public API (the preview's
+// build has no git history): its commits, newest first as git log lists
+// them, each design commit with the files it changed that still differ
+// from the base. Undefined for a PR into any other base (the workbench's
+// own list is design-changes.json) or when GitHub does not answer.
+export const loadPrChanges = async (
+  pr: number,
+  fetcher: typeof fetch = fetch
+): Promise<DesignChanges | undefined> => {
+  const api = `https://api.github.com/repos/${REPO}`;
+  try {
+    const pull = await getJson(fetcher, `${api}/pulls/${pr}`);
+    if (pull?.base?.ref !== REVIEW_BASE) return undefined;
+    const commits: GhCommit[] = await getJson(
+      fetcher,
+      `${api}/pulls/${pr}/commits?per_page=100`
+    );
+    const files: GhFile[] = await getJson(
+      fetcher,
+      `${api}/pulls/${pr}/files?per_page=100`
+    );
+    const differ = new Set(files.map((f) => f.filename));
+    const out = await Promise.all(
+      commits.map(async (c): Promise<ChangeCommit> => {
+        const [subject, ...rest] = c.commit.message.split('\n');
+        const parsed = kindOfSubject(subject);
+        const own: GhFile[] = DESIGN_KINDS.has(parsed.kind)
+          ? (await getJson(fetcher, `${api}/commits/${c.sha}`)).files ?? []
+          : [];
+        return {
+          sha: c.sha,
+          subject,
+          body: rest.join('\n').trim(),
+          files: own.map((f) => f.filename).filter((f) => differ.has(f)),
+          ...parsed,
+        };
+      })
+    );
+    return {
+      generatedAt: new Date().toISOString(),
+      base: null,
+      baseRef: REVIEW_BASE,
+      head: pull.head?.sha ?? '',
+      repoUrl: REPO_URL,
+      commits: out.reverse(),
+      tokenChanges: [],
+      warnings: [],
+    };
+  } catch {
+    return undefined;
+  }
 };
 
 // `design-system(heal): Button 8px → --gv-radius-2 [AI-assisted]` reads

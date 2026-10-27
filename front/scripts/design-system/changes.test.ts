@@ -6,8 +6,6 @@ import {
   buildChanges,
   parseLog,
   parseSubject,
-  planList,
-  REVIEW_FILE,
   RunGit,
   SCAN_SUMMARY,
   TOKENS_SOURCE,
@@ -310,61 +308,5 @@ describe('writeChanges', () => {
     });
     expect(writeChanges(file, fresh)).toBe('written');
     expect(JSON.parse(fs.readFileSync(file, 'utf8')).base).toBe('base1');
-  });
-});
-
-describe('planList', () => {
-  // A review stacked on the workbench keeps its own list, so its diff never
-  // rewrites the workbench's; once merged, the workbench drops it.
-  const review = {
-    branch: 'design-system/button-dhse',
-    baseRef: 'origin/design-system/workbench',
-  };
-
-  it('writes a review list for a base other than master', () => {
-    expect(
-      planList({
-        base: 'origin/design-system/workbench',
-        branch: 'design-system/button-dhse',
-      })
-    ).toEqual({
-      file: REVIEW_FILE,
-      base: 'origin/design-system/workbench',
-      drop: false,
-    });
-  });
-
-  it("refreshes the review's list against its base on the review's branch", () => {
-    expect(planList({ branch: 'design-system/button-dhse', review })).toEqual({
-      file: REVIEW_FILE,
-      base: 'origin/design-system/workbench',
-      drop: false,
-    });
-  });
-
-  it("drops a merged review's list on any other branch", () => {
-    expect(planList({ branch: 'design-system/workbench', review })).toEqual({
-      file: 'design-changes.json',
-      base: undefined,
-      drop: true,
-    });
-  });
-
-  it('writes the branch list against master as before', () => {
-    for (const base of [undefined, 'master', 'origin/master']) {
-      expect(planList({ base, branch: 'design-system/workbench' })).toEqual({
-        file: 'design-changes.json',
-        base,
-        drop: false,
-      });
-    }
-  });
-
-  it('drops nothing when the branch is unknown (detached HEAD)', () => {
-    expect(planList({ review })).toEqual({
-      file: 'design-changes.json',
-      base: undefined,
-      drop: false,
-    });
   });
 });

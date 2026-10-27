@@ -153,7 +153,7 @@ export const sendText = ({
         `More Workbench changes for review #${pr} (branch ${branch}, ${REPO}). ${PLAIN}`,
         '',
         '1. If its reviewer asked for changes, read their comments first and answer them in these commits.',
-        `2. One commit per change onto ${branch}, the same way as before (heal skill, "Stacked on the workbench"): its before and after pictures in .storybook/static/changes/<sha>/, then refresh the change list.`,
+        `2. One commit per change onto ${branch}, the same way as before (heal skill, "Stacked on the workbench"): its before and after pictures in .storybook/static/changes/<sha>/, all in one pictures commit after the last change.`,
         `3. Ask the reviewer to look again. When the preview has redeployed, open ${epicReviewUrl(
           pr
         )}, check each card shows its change, then tell the person, with that link.`,
@@ -162,7 +162,7 @@ export const sendText = ({
         `Workbench changes to send for review. ${PLAIN}`,
         '',
         `1. Ask who should review it, offering in this order: ${reviewerList}.`,
-        `2. In ${REPO}, make branch ${branch} off origin/${REVIEW_BASE}. Heal skill ("Stacked on the workbench"): one commit per change, its before and after pictures in .storybook/static/changes/<sha>/, then refresh the change list.`,
+        `2. In ${REPO}, make branch ${branch} off origin/${REVIEW_BASE}. Heal skill ("Stacked on the workbench"): one commit per change, its before and after pictures in .storybook/static/changes/<sha>/, all in one pictures commit after the last change.`,
         `3. Open the PR into ${REVIEW_BASE}: ready for review, label epic, review requested from the person picked.`,
         `4. When its preview is up, open https://pr-<n>.epic.hq.govocal.com/storybook/workbench/#/review, check each card shows its change, then tell the person it is with the reviewer, with that link.`,
       ];

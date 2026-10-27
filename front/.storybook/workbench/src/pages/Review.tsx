@@ -32,6 +32,7 @@ import {
   designChanges,
   forOrigin,
   liveParams,
+  loadPrChanges,
   pictures,
   plainSubject,
   prOfHost,
@@ -320,14 +321,19 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
 
   useEffect(() => {
     let live = true;
-    loadChanges().then((c) => {
-      if (!live) return;
-      setChanges(
-        Array.isArray((c as Partial<DesignChanges>).commits)
-          ? (c as unknown as DesignChanges)
-          : undefined
-      );
-    });
+    // A PR stacked on the workbench reads its commits from GitHub; the
+    // workbench, a local run or a GitHub that does not answer read the
+    // committed design-changes.json.
+    (hostPr ? loadPrChanges(hostPr) : Promise.resolve(undefined))
+      .then((pr) => pr ?? loadChanges())
+      .then((c) => {
+        if (!live) return;
+        setChanges(
+          Array.isArray((c as Partial<DesignChanges>).commits)
+            ? (c as unknown as DesignChanges)
+            : undefined
+        );
+      });
     loadScan().then((s) => live && setScan(s));
     loadRouteFixture().then(async (raw) => {
       const f = normaliseFixture(raw);
