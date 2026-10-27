@@ -11,6 +11,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import * as Sentry from '@sentry/react';
 import GlobalStyle from 'global-styles';
+import 'design-system/tokens/tokens.css';
 import 'intersection-observer';
 // moment-timezone extends regular moment library,
 // so there's no need to import both moment and moment-timezone
@@ -54,6 +55,7 @@ import Meta from './Meta';
 import { ModalQueueProvider } from './ModalQueue';
 import CommunityMonitorModalManager from './ModalQueue/modals/CommunityMonitor/ModalManager';
 import UserSessionRecordingModalManager from './ModalQueue/modals/UserSessionRecording/ModalManager';
+import TenantTokens from './TenantTokens';
 
 const UserDeletedModal = lazy(() => import('./UserDeletedModal'));
 const SessionExpiryModal = lazy(() => import('./SessionExpiryModal'));
@@ -392,6 +394,7 @@ const App = ({ children }: Props) => {
       <ThemeProvider theme={{ ...theme, isRtl: locale.startsWith('ar') }}>
         <ModalQueueProvider>
           <GlobalStyle />
+          <TenantTokens />
           <Box
             className={appContainerClassName}
             display="flex"
