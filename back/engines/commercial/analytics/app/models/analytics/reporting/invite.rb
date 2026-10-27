@@ -20,8 +20,10 @@ module Analytics
         <<~DOC.squish
           Invitations to join the platform, as totals per day invited and
           inviter role: how many people were invited and how many of them
-          accepted. There are no rows per person, so it can't tell who was
-          invited or who invited them. Counts every invitation ever sent,
+          accepted. There are no rows per person and no names or user ids,
+          but an inviter role can still be one person, such as a platform's
+          only administrator: don't present a figure as what an individual
+          did. Counts every invitation ever sent,
           including those the platform has deleted since (it deletes
           invitations 30 days after sending them). Acceptances are counted
           against the day of the invitation; invitations expire after 30 days,

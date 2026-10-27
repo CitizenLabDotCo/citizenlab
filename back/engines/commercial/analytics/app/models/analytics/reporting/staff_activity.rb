@@ -33,11 +33,13 @@ module Analytics
           How much management work staff (administrators and managers) did:
           one row per day, project, role and activity, with a count. Use it
           to report staff adoption, for example how many statuses managers
-          changed in a project per month. It never says which staff member
-          did what, and there is no way to get per-person figures: report
-          by role, never guess at individuals. Only actions that staff
-          alone can take are counted, so totals are a measure of management
-          work, not of all staff activity on the platform.
+          changed in a project per month. It holds no names or user ids, but
+          a small group can still be one person: a project with a single
+          moderator, or Go Vocal staff (often one support person). Report
+          totals by role across projects or periods, and don't present a
+          figure as what an individual did. Only actions that staff alone can
+          take are counted, so totals are a measure of management work, not
+          of all staff activity on the platform.
         DOC
       end
 
