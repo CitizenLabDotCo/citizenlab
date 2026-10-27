@@ -6,30 +6,42 @@ import PhonePreviewFrame from './PhonePreviewFrame';
 
 interface Props {
   src: string;
+  frameName?: string;
+  frameRef?: React.Ref<HTMLIFrameElement>;
   title: string;
   className?: string;
   dataCy?: string;
   // Starts the phone at the top of the area, to line up with content beside it. The area then
   // takes its height from the phone, so nothing is clipped and a hover ring can show at the top.
   alignTop?: boolean;
+  bottomSpace?: number;
   children?: ReactNode;
 }
 
 const PhonePreview = ({
   src,
+  frameName,
+  frameRef,
   title,
   className,
   dataCy,
   alignTop = false,
+  bottomSpace = 0,
   children,
 }: Props) => (
   <PhonePreviewFrame
     className={className}
     dataCy={dataCy}
     alignTop={alignTop}
+    bottomSpace={bottomSpace}
     screen={
       <Box
         as="iframe"
+        ref={frameRef}
+        name={frameName}
+        sandbox={
+          frameName ? 'allow-scripts allow-same-origin allow-forms' : undefined
+        }
         src={src}
         title={title}
         display="block"

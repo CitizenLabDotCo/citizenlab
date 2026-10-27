@@ -5,6 +5,7 @@ import { IProjectData } from 'api/projects/types';
 import { isValidPhase } from 'containers/ProjectsShowPage/phaseParam';
 
 import clHistory from 'utils/cl-router/history';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 import { useParams } from 'utils/router';
 import { scrollToElement } from 'utils/scroll';
 
@@ -13,8 +14,14 @@ export type CTABarProps = {
   phases: IPhaseData[] | undefined;
 };
 
-// The CTA refers to the current phase, so reselect it before scrolling if
-// another phase is selected.
+// Public pages use the current phase; the phone follows the phase being edited.
+export const getCTAPhase = (phases: IPhaseData[] | undefined) => {
+  const preview = getPhasePreview();
+  return preview
+    ? phases?.find((phase) => phase.id === preview.phase.id)
+    : getCurrentPhase(phases);
+};
+
 export const useScrollToCurrentPhaseElement = (
   project: IProjectData,
   phases: IPhaseData[] | undefined
@@ -24,7 +31,7 @@ export const useScrollToCurrentPhaseElement = (
   };
 
   return (elementId: string) => {
-    const currentPhase = getCurrentPhase(phases);
+    const currentPhase = getCTAPhase(phases);
     const selectedPhase =
       phases && isValidPhase(phaseNumber, phases)
         ? phases[Number(phaseNumber) - 1]

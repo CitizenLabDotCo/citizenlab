@@ -24,6 +24,7 @@ import PageLoading from 'components/UI/PageLoading';
 
 import { permissiveOneOf } from 'utils/cl-router/permissiveOneOf';
 import type { Routes } from 'utils/moduleUtils';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 
 const HomePage = lazy(() => import('containers/HomePage'));
 const OAuthAuthorize = lazy(() => import('containers/OAuthAuthorize'));
@@ -127,9 +128,11 @@ const rootRoute = createRootRoute({
   component: () => (
     <App>
       <Outlet />
-      <React.Suspense fallback={null}>
-        <TanStackRouterDevtools />
-      </React.Suspense>
+      {!getPhasePreview() && (
+        <React.Suspense fallback={null}>
+          <TanStackRouterDevtools />
+        </React.Suspense>
+      )}
     </App>
   ),
   notFoundComponent: () => (

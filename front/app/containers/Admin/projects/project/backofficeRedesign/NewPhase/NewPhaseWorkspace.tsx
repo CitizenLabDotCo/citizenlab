@@ -151,7 +151,7 @@ const NewPhaseWorkspace = ({
         </Box>
       }
     >
-      <PhasePreview projectId={projectId} />
+      <PhasePreview projectId={projectId} draft={formData} />
     </ProjectWorkspace>
   );
 };

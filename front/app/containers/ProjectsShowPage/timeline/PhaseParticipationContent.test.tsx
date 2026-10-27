@@ -4,9 +4,18 @@ import { phasesData } from 'api/phases/__mocks__/_mockServer';
 import { IPhaseData, ParticipationMethod } from 'api/phases/types';
 import { project1 } from 'api/projects/__mocks__/_mockServer';
 
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 import { render, screen, waitFor } from 'utils/testUtils/rtl';
 
 import PhaseParticipationContent from './PhaseParticipationContent';
+
+jest.mock('utils/phasePreview/runtime', () => ({
+  getPhasePreview: jest.fn(),
+}));
+
+const mockPreview = jest.mocked(getPhasePreview);
+
+beforeEach(() => mockPreview.mockReturnValue(undefined));
 
 // Every piece of content a phase can render, stubbed down to one marker, so the
 // assertions are about which branches fire rather than what the leaves draw.
@@ -99,6 +108,40 @@ const renderPhase = (phase: IPhaseData) =>
   );
 
 describe('PhaseParticipationContent', () => {
+  it.each(['survey', 'document_annotation'] as const)(
+    'shows a provider placeholder for %s without mounting an embed',
+    (method) => {
+      const phase = buildPhase(method);
+      mockPreview.mockReturnValue({ project: project1, phase, draft: {} });
+      renderPhase(phase);
+
+      expect(
+        document.querySelector('[data-cy="e2e-phase-preview-skeleton"]')
+      ).toBeInTheDocument();
+      expect(document.querySelector('iframe')).not.toBeInTheDocument();
+      expect(screen.queryByTestId('phase-content')).not.toBeInTheDocument();
+    }
+  );
+
+  it('shows an unsaved phase skeleton without enabling participation', () => {
+    const phase = buildPhase('ideation');
+    mockPreview.mockReturnValue({
+      project: project1,
+      phase,
+      draft: {},
+      unsaved: true,
+    });
+    renderPhase(phase);
+
+    expect(
+      document.querySelector('[data-cy="e2e-phase-preview-skeleton"]')
+    ).toBeInTheDocument();
+    expect(screen.queryByTestId('phase-content')).not.toBeInTheDocument();
+    expect(
+      screen.queryByText('Save this phase to preview its participation form.')
+    ).not.toBeInTheDocument();
+  });
+
   it.each(withContent)('renders content for %s', async (_, phase) => {
     renderPhase(phase);
 

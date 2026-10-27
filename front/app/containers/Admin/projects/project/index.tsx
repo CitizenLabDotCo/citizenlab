@@ -9,6 +9,8 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
+import { PhasePreviewDraftProvider } from 'components/admin/PhasePreview/DraftContext';
+
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { Outlet as RouterOutlet, useMatchRoute, useParams } from 'utils/router';
 
@@ -57,30 +59,32 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
 
   if (workspaceEnabled) {
     return (
-      <PageSaveProvider>
-        <UnsavedChangesGuard />
-        {page === 'newPhase' && <NewPhase project={project} />}
-        {page === 'event' && <Event project={project} />}
-        {page === 'project' && (
-          <ProjectWorkspace
-            project={project}
-            phase={selectedPhase}
-            sidePanel={
-              selectedPhase ? (
-                <PhaseSetup
-                  key={selectedPhase.id}
-                  projectId={projectId}
-                  phase={selectedPhase}
-                />
-              ) : (
-                <ProjectTimeline projectId={projectId} />
-              )
-            }
-          >
-            <RouterOutlet />
-          </ProjectWorkspace>
-        )}
-      </PageSaveProvider>
+      <PhasePreviewDraftProvider>
+        <PageSaveProvider>
+          <UnsavedChangesGuard />
+          {page === 'newPhase' && <NewPhase project={project} />}
+          {page === 'event' && <Event project={project} />}
+          {page === 'project' && (
+            <ProjectWorkspace
+              project={project}
+              phase={selectedPhase}
+              sidePanel={
+                selectedPhase ? (
+                  <PhaseSetup
+                    key={selectedPhase.id}
+                    projectId={projectId}
+                    phase={selectedPhase}
+                  />
+                ) : (
+                  <ProjectTimeline projectId={projectId} />
+                )
+              }
+            >
+              <RouterOutlet />
+            </ProjectWorkspace>
+          )}
+        </PageSaveProvider>
+      </PhasePreviewDraftProvider>
     );
   }
 

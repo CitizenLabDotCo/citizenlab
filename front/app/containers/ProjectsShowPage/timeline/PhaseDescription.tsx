@@ -15,6 +15,7 @@ import usePhases from 'api/phases/usePhases';
 
 import useLocalize from 'hooks/useLocalize';
 
+import PreviewSkeleton from 'components/admin/PhasePreview/PreviewSkeleton';
 import EventPreviews from 'components/EventPreviews';
 import ReadMoreWrapper from 'components/ReadMoreWrapper/ReadMoreWrapper';
 import T from 'components/T';
@@ -22,6 +23,7 @@ import FileAttachments from 'components/UI/FileAttachments';
 
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 
 import PhaseTitle from './PhaseTitle';
 
@@ -83,10 +85,12 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
   return (
     <Container
       className="e2e-phase-description"
-      role="tabpanel"
+      role={getPhasePreview() ? 'region' : 'tabpanel'}
       tabIndex={0}
       id={`phase-description-panel-${phaseNumber}`}
-      aria-labelledby={`phase-tab-${phaseNumber}`}
+      aria-labelledby={
+        getPhasePreview() ? 'phase-preview-title' : `phase-tab-${phaseNumber}`
+      }
       hasBottomMargin={
         !['information', 'common_ground'].includes(
           phase.data.attributes.participation_method
@@ -98,6 +102,11 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
         phaseId={selectedPhaseId}
         descriptionHasContent={descriptionHasContent}
       />
+      {getPhasePreview() && contentIsEmpty && (
+        <Box mt="20px">
+          <PreviewSkeleton kind="text" />
+        </Box>
+      )}
       {descriptionHasContent && (
         <Box id={`phase-description-${selectedPhaseId}`}>
           <ReadMoreWrapper
@@ -116,7 +125,7 @@ const PhaseDescription = ({ projectId, selectedPhaseId }: Props) => {
           )}
         </Box>
       )}
-      {isActivePhase && (
+      {isActivePhase && !getPhasePreview() && (
         <EventPreviews projectId={phase.data.relationships.project.data.id} />
       )}
     </Container>

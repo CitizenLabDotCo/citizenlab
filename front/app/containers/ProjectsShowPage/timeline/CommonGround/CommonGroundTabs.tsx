@@ -11,11 +11,13 @@ import useLocalize from 'hooks/useLocalize';
 
 import ParticipationPermission from 'containers/ProjectsShowPage/shared/ParticipationPermission';
 
+import PreviewSkeleton from 'components/admin/PhasePreview/PreviewSkeleton';
 import Tabs, { TabData } from 'components/UI/FilterTabs';
 
 import { getPermissionsDisabledMessage } from 'utils/actionDescriptors';
 import { FormattedMessage } from 'utils/cl-intl';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 import { useSearch } from 'utils/router';
 
 import CommonGroundResults from './CommonGroundResults';
@@ -66,6 +68,31 @@ const CommonGroundTabs = ({ phase, project, isPastPhase }: Props) => {
   const onChangeTab = (tab: string) => {
     updateSearchParams({ tab });
   };
+
+  const lifecycle = getPhasePreview()?.lifecycle;
+  if (lifecycle === 'before' || lifecycle === 'ended') {
+    return (
+      <ParticipationPermission
+        action="reacting_idea"
+        enabled={false}
+        phaseId={phaseId}
+        disabledReason={disabled_reason}
+        disabledMessage={disabledMessage}
+        projectName={projectName}
+        id="common-ground-tabs"
+      >
+        <Box />
+      </ParticipationPermission>
+    );
+  }
+
+  if (getPhasePreview() && progressData?.data.attributes.num_ideas === 0) {
+    return (
+      <Box id="common-ground-tabs">
+        <PreviewSkeleton />
+      </Box>
+    );
+  }
 
   // When the phase has ended, show the warning message and results only.
   // We pass enabled={true} so ParticipationPermission renders the children

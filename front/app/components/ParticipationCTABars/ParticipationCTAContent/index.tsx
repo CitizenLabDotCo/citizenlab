@@ -1,11 +1,21 @@
 import React from 'react';
 
-import { Box, colors, useBreakpoint } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  colors,
+  Text,
+  useBreakpoint,
+} from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
 
 import { maxPageWidth } from 'containers/ProjectsShowPage/styles';
+
+import previewMessages from 'components/admin/PhasePreview/messages';
+
+import { FormattedMessage } from 'utils/cl-intl';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 
 import TimeIndicator from './TimeIndicator';
 
@@ -34,6 +44,42 @@ const ParticipationCTAContent = ({
   const isSmallerThanPhone = useBreakpoint('phone');
   // This is the same condition we have in ProjectCTABar.
   const sticksToBottom = isSmallerThanPhone;
+
+  const preview = getPhasePreview();
+  if (preview) {
+    return (
+      <Box
+        data-cy="e2e-phase-preview-footer"
+        display="flex"
+        flexDirection="column"
+        gap="12px"
+        background={colors.grey300}
+        p="12px"
+      >
+        {preview.lifecycle === 'before' || preview.lifecycle === 'ended' ? (
+          <Text color="textSecondary" fontSize="s" m="0">
+            <FormattedMessage
+              {...(preview.lifecycle === 'before'
+                ? previewMessages.beforeStarts
+                : previewMessages.phaseEnded)}
+            />
+          </Text>
+        ) : (
+          <TimeIndicator
+            hasUserParticipated={hasUserParticipated}
+            currentPhase={currentPhase}
+            color="textSecondary"
+          />
+        )}
+        {(!preview.lifecycle || preview.lifecycle === 'open') && (
+          <>
+            {participationState}
+            <CTAButtonWrapper>{CTAButton}</CTAButtonWrapper>
+          </>
+        )}
+      </Box>
+    );
+  }
 
   return sticksToBottom ? (
     <Box

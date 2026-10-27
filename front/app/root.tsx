@@ -22,6 +22,7 @@ import OutletsProvider from 'containers/OutletsProvider';
 import 'utils/locale';
 
 import { queryClient } from 'utils/cl-react-query/queryClient';
+import { getPhasePreview } from 'utils/phasePreview/runtime';
 import { RouterProvider } from 'utils/router';
 
 import prefetchData from './prefetchData';
@@ -32,6 +33,7 @@ import { initRouter, router } from './routes';
 initRouter(modules.routes);
 
 Sentry.init({
+  enabled: !getPhasePreview(),
   dsn: process.env.SENTRY_DSN,
   environment: process.env.SENTRY_ENV,
   integrations: [
@@ -45,7 +47,7 @@ Sentry.init({
 const Root = () => {
   useEffect(() => {
     prefetchData();
-    modules.afterMountApplication();
+    if (!getPhasePreview()) modules.afterMountApplication();
   }, []);
 
   return (
@@ -57,7 +59,7 @@ const Root = () => {
           </LanguageProvider>
         </HelmetProvider>
       </OutletsProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {!getPhasePreview() && <ReactQueryDevtools initialIsOpen={false} />}
     </QueryClientProvider>
   );
 };
@@ -66,7 +68,7 @@ const mountApplication = () => {
   const container = document.getElementById('app');
   const root = createRoot(container!);
   try {
-    modules.beforeMountApplication();
+    if (!getPhasePreview()) modules.beforeMountApplication();
   } finally {
     // We don't want to use StrictMode during E2E tests, since it causes test failures due to
     // some issues with the re-rendering & re-running of effects in the JSONForms and react-select libraries.
