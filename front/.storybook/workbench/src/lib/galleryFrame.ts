@@ -95,7 +95,9 @@ const UNSETTLED = new Set([
 
 // The story sits on the card's own surface, without page scrollbars, and
 // keeps clear of the card's edges (the story decorator fills its element).
-// Storybook's own story root and messages stay hidden.
+// Storybook's own story root and messages stay hidden. A story still
+// rendering is transparent, not hidden: its play function finds no role in a
+// hidden element.
 const FRAME_CSS = `
 html,body{margin:0!important;padding:0!important;background:transparent!important;overflow:hidden!important}
 body>.sb-wrapper,#storybook-root,#storybook-docs{display:none!important}
@@ -104,7 +106,7 @@ body>.sb-wrapper,#storybook-root,#storybook-docs{display:none!important}
 .gvg-item[data-hover]{transform:translateY(calc(-1px / var(--gvg-k, 1)))}
 .gvg-scale{position:absolute;top:0;left:0;transform-origin:0 0}
 .gvg-story{position:absolute;inset:24px}
-.gvg-story[data-pending]{visibility:hidden}
+.gvg-story[data-pending]{opacity:0}
 html[data-gvg-backdrop] .gvg-item{background:#fff}
 @media (prefers-reduced-motion: reduce){.gvg-item{transition:none}}
 `;
