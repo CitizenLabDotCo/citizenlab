@@ -4,6 +4,7 @@ import {
   Box,
   CardButton,
   IconTooltip,
+  Radio,
   Text,
 } from '@citizenlab/cl2-component-library';
 
@@ -19,15 +20,27 @@ import SingleVotingIcon from './CardIcons/SingleVotingIcon';
 import messages from './messages';
 
 const VOTING_METHODS = [
-  { method: 'single_voting', title: messages.singleVotingMethodTitle },
-  { method: 'multiple_voting', title: messages.multipleVotingMethodTitle },
-  { method: 'budgeting', title: messages.budgetingVotingMethodTitle },
+  {
+    method: 'single_voting',
+    title: messages.singleVotingMethodTitle,
+    subtitle: messages.singleVotingMethodSubtitle,
+  },
+  {
+    method: 'multiple_voting',
+    title: messages.multipleVotingMethodTitle,
+    subtitle: messages.multipleVotingMethodSubtitle,
+  },
+  {
+    method: 'budgeting',
+    title: messages.budgetingVotingMethodTitle,
+    subtitle: messages.budgetingVotingMethodSubtitle,
+  },
 ] as const;
 
 type VotingMethodSelectorProps = {
   voting_method?: VotingMethod | null;
   handleVotingMethodOnChange: (voting_method: VotingMethod) => void;
-  /** 'panel' shows the methods as a narrow list of titles. */
+  /** 'panel' shows the methods as a narrow list of radios. */
   layout?: 'page' | 'panel';
 };
 
@@ -40,25 +53,28 @@ const VotingMethodSelector = ({
 
   if (layout === 'panel') {
     return (
-      <Box mb="24px">
-        <SubSectionTitle>
-          {formatMessage(messages.votingMethodSelectorTitle)}
-        </SubSectionTitle>
-        <Box display="flex" flexDirection="column" gap="12px">
-          {VOTING_METHODS.map(({ method, title }) => (
-            <CardButton
-              key={method}
-              width="100%"
-              minHeight="auto"
-              selected={voting_method === method}
-              onClick={(e) => {
-                e.preventDefault();
-                handleVotingMethodOnChange(method);
-              }}
-              title={formatMessage(title)}
-            />
-          ))}
-        </Box>
+      <Box display="flex" flexDirection="column" gap="16px">
+        {VOTING_METHODS.map(({ method, title, subtitle }) => (
+          <Radio
+            key={method}
+            variant="bo"
+            name="voting_method"
+            id={`voting-method-${method}`}
+            value={method}
+            currentValue={voting_method}
+            onChange={handleVotingMethodOnChange}
+            label={
+              <Box display="flex" flexDirection="column" gap="2px">
+                <Text as="span" variant="boControl" m="0">
+                  {formatMessage(title)}
+                </Text>
+                <Text as="span" variant="boHelper" m="0">
+                  {formatMessage(subtitle)}
+                </Text>
+              </Box>
+            }
+          />
+        ))}
       </Box>
     );
   }

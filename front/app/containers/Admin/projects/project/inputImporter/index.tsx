@@ -4,12 +4,17 @@ import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 
+import { useParams } from 'utils/router';
+
 import ImportExcelModal from './ImportModal/ImportExcelModal';
 import ImportPdfModal from './ImportModal/ImportPdfModal';
 import ReviewSection from './ReviewSection';
 import TopBar from './TopBar';
 
 const InputImporter = () => {
+  const { projectId, phaseId } = useParams({
+    from: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
+  });
   const [importPdfModalOpen, setImportPdfModalOpen] = useState(false);
   const [importExcelModalOpen, setImportExcelModalOpen] = useState(false);
 
@@ -47,6 +52,8 @@ const InputImporter = () => {
         </FocusOn>
       </Box>
       <ImportExcelModal
+        projectId={projectId}
+        phaseId={phaseId}
         open={importExcelModalOpen}
         onClose={closeImportExcelModal}
       />

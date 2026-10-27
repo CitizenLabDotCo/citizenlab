@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
+import { Text } from '@citizenlab/cl2-component-library';
 
 import { InputTerm, ParticipationMethod } from 'api/phases/types';
 
@@ -13,7 +13,6 @@ import inputManagerMessages from '../../InputManager/messages';
 import OfflineFormsButton from '../../InputManager/RightColumn/OfflineFormsButton';
 import messages from '../../messages';
 
-import AddPreviousPhaseIdeasModal from './AddPreviousPhaseIdeasModal';
 import DemographicsCard from './DemographicsCard';
 import FormQuestionsCard from './FormQuestionsCard';
 import formTitle from './formTitle';
@@ -38,7 +37,6 @@ const FormSection = ({
   inputTerm,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const [ideasModalOpened, setIdeasModalOpened] = useState(false);
 
   const formEditor = getMethodConfig(participationMethod).formEditor;
 
@@ -46,7 +44,6 @@ const FormSection = ({
   if (formEditor === null) return null;
 
   const survey = formEditor === 'surveyEditor';
-  const voting = participationMethod === 'voting';
   const title = formatMessage(getFormTitle(survey, inputTerm));
 
   return (
@@ -57,20 +54,7 @@ const FormSection = ({
           phaseId={phaseId}
           title={title}
           survey={survey}
-        >
-          {voting && (
-            <Box display="flex">
-              <Button
-                buttonStyle="bo-secondary"
-                boSize="medium"
-                width="auto"
-                onClick={() => setIdeasModalOpened(true)}
-              >
-                {formatMessage(messages.addIdeasFromPreviousPhase)}
-              </Button>
-            </Box>
-          )}
-        </FormQuestionsCard>
+        />
       ) : (
         <PanelField label={title}>
           <Text variant="boHelper" m="0">
@@ -89,15 +73,6 @@ const FormSection = ({
         >
           <OfflineFormsButton participationMethod={participationMethod} />
         </PanelField>
-      )}
-
-      {phaseId && voting && (
-        <AddPreviousPhaseIdeasModal
-          projectId={projectId}
-          phaseId={phaseId}
-          opened={ideasModalOpened}
-          onClose={() => setIdeasModalOpened(false)}
-        />
       )}
     </>
   );

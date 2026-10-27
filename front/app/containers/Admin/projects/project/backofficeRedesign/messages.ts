@@ -456,6 +456,63 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.nStatements',
     defaultMessage: '{count, plural, one {# statement} other {# statements}}',
   },
+  votingOptionsSection: {
+    id: 'app.containers.Admin.projects.project.votingOptionsSection',
+    defaultMessage: 'Options to vote on',
+  },
+  addVotingOption: {
+    id: 'app.containers.Admin.projects.project.addVotingOption',
+    defaultMessage: 'Add input',
+  },
+  importVotingOptions: {
+    id: 'app.containers.Admin.projects.project.importVotingOptions',
+    defaultMessage: 'Import options',
+  },
+  importFromPreviousPhase: {
+    id: 'app.containers.Admin.projects.project.importFromPreviousPhase',
+    defaultMessage: 'Import from previous phase',
+  },
+  createForm: {
+    id: 'app.containers.Admin.projects.project.createForm',
+    defaultMessage: 'Create form',
+  },
+  nVotingOptions: {
+    id: 'app.containers.Admin.projects.project.nVotingOptions',
+    defaultMessage: '{count, plural, one {# option} other {# options}}',
+  },
+  addAnOption: {
+    id: 'app.containers.Admin.projects.project.addAnOption',
+    defaultMessage: 'Add an option',
+  },
+  optionLabel: {
+    id: 'app.containers.Admin.projects.project.optionLabel',
+    defaultMessage: 'Title',
+  },
+  optionPlaceholder: {
+    id: 'app.containers.Admin.projects.project.optionPlaceholder',
+    defaultMessage: 'e.g. A new playground in the park',
+  },
+  emptyOptionError: {
+    id: 'app.containers.Admin.projects.project.emptyOptionError',
+    defaultMessage: 'Write the title in at least one language',
+  },
+  paperForms: {
+    id: 'app.containers.Admin.projects.project.paperForms',
+    defaultMessage: 'Paper forms',
+  },
+  paperFormsDescription: {
+    id: 'app.containers.Admin.projects.project.paperFormsDescription',
+    defaultMessage: 'Import inputs collected on paper',
+  },
+  spreadsheetImportDescription: {
+    id: 'app.containers.Admin.projects.project.spreadsheetImportDescription',
+    defaultMessage: 'Import inputs collected in another tool or on paper',
+  },
+  optionAnonymousTooltip: {
+    id: 'app.containers.Admin.projects.project.optionAnonymousTooltip',
+    defaultMessage:
+      'By default the input is linked to its author, unless you select this option.',
+  },
   causesSection: {
     id: 'app.containers.Admin.projects.project.causesSection',
     defaultMessage: 'Causes',
@@ -520,15 +577,6 @@ export default defineMessages({
   causeSaveChanges: {
     id: 'app.containers.Admin.projects.project.causeSaveChanges',
     defaultMessage: 'Save changes',
-  },
-  addIdeasFromPreviousPhase: {
-    id: 'app.containers.Admin.projects.project.addIdeasFromPreviousPhase',
-    defaultMessage: 'Add ideas from previous phase',
-  },
-  addIdeasFromPreviousPhaseDescription: {
-    id: 'app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription',
-    defaultMessage:
-      'Pick a phase in the timeline, then drag its ideas onto this phase to use them as voting options.',
   },
   editAccess: {
     id: 'app.containers.Admin.projects.project.editAccess',

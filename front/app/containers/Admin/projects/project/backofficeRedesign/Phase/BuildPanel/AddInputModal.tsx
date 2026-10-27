@@ -23,51 +23,67 @@ import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
 import messages from '../../messages';
 
-import { StatementValues } from './useStagedStatements';
+import { InputValues } from './useStagedInputs';
 
-// The common ground form fixes these limits on the statement title.
+const COPY = {
+  statement: {
+    header: messages.addAStatement,
+    label: messages.statementLabel,
+    placeholder: messages.statementPlaceholder,
+    emptyError: messages.emptyStatementError,
+    anonymousTooltip: messages.statementAnonymousTooltip,
+  },
+  option: {
+    header: messages.addAnOption,
+    label: messages.optionLabel,
+    placeholder: messages.optionPlaceholder,
+    emptyError: messages.emptyOptionError,
+    anonymousTooltip: messages.optionAnonymousTooltip,
+  },
+};
+
+// The input forms fix these limits on the title.
 const MIN_CHARACTERS = 3;
 const MAX_CHARACTERS = 120;
 
 interface Props {
   phaseId: string;
-  onSubmit: (values: StatementValues) => void;
+  kind: keyof typeof COPY;
+  onSubmit: (values: InputValues) => void;
   onClose: () => void;
 }
 
-const AddStatementModal = ({ phaseId, onSubmit, onClose }: Props) => {
+const AddInputModal = ({ phaseId, kind, onSubmit, onClose }: Props) => {
   const { formatMessage } = useIntl();
   const { data: phase } = usePhase(phaseId);
   const allowAnonymous = !!phase?.data.attributes.allow_anonymous_participation;
-  const fieldName = formatMessage(messages.statementLabel);
+  const copy = COPY[kind];
+  const fieldName = formatMessage(copy.label);
 
-  const schema: ObjectSchema<StatementValues> = object({
-    title_multiloc: validateAtLeastOneLocale(
-      formatMessage(messages.emptyStatementError),
-      {
-        validateEachNonEmptyLocale: (schema) =>
-          schema
-            .min(
-              MIN_CHARACTERS,
-              formatMessage(fieldMessages.fieldMinLength, {
-                min: MIN_CHARACTERS,
-                fieldName,
-              })
-            )
-            .max(
-              MAX_CHARACTERS,
-              formatMessage(fieldMessages.fieldMaxLength, {
-                max: MAX_CHARACTERS,
-                fieldName,
-              })
-            ),
-      }
-    ),
+  const schema: ObjectSchema<InputValues> = object({
+    title_multiloc: validateAtLeastOneLocale(formatMessage(copy.emptyError), {
+      validateEachNonEmptyLocale: (schema) =>
+        schema
+          .min(
+            MIN_CHARACTERS,
+            formatMessage(fieldMessages.fieldMinLength, {
+              min: MIN_CHARACTERS,
+              fieldName,
+            })
+          )
+          .max(
+            MAX_CHARACTERS,
+            formatMessage(fieldMessages.fieldMaxLength, {
+              max: MAX_CHARACTERS,
+              fieldName,
+            })
+          ),
+    }),
     author_id: string().nullable(),
     anonymous: boolean(),
   });
 
-  const methods = useForm<StatementValues>({
+  const methods = useForm<InputValues>({
     mode: 'onTouched',
     resolver: yupResolver(schema),
   });
@@ -83,7 +99,7 @@ const AddStatementModal = ({ phaseId, onSubmit, onClose }: Props) => {
       close={onClose}
       width={560}
       variant="bo"
-      header={formatMessage(messages.addAStatement)}
+      header={formatMessage(copy.header)}
       footer={
         <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
           <Button buttonStyle="bo-text" onClick={onClose}>
@@ -111,7 +127,7 @@ const AddStatementModal = ({ phaseId, onSubmit, onClose }: Props) => {
             name="title_multiloc"
             variant="bo"
             label={fieldName}
-            placeholder={formatMessage(messages.statementPlaceholder)}
+            placeholder={formatMessage(copy.placeholder)}
             maxCharCount={MAX_CHARACTERS}
           />
           {allowAnonymous && (
@@ -123,7 +139,7 @@ const AddStatementModal = ({ phaseId, onSubmit, onClose }: Props) => {
                 <IconTooltip
                   content={
                     <Text color="white" fontSize="s" m="0">
-                      {formatMessage(messages.statementAnonymousTooltip)}
+                      {formatMessage(copy.anonymousTooltip)}
                     </Text>
                   }
                   placement="top-start"
@@ -146,4 +162,4 @@ const AddStatementModal = ({ phaseId, onSubmit, onClose }: Props) => {
   );
 };
 
-export default AddStatementModal;
+export default AddInputModal;

@@ -27,6 +27,14 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.moderationGroup',
     defaultMessage: 'Moderation',
   },
+  votingAction: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.votingAction',
+    defaultMessage: 'Voting',
+  },
+  votingDisplayGroup: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.votingDisplayGroup',
+    defaultMessage: 'Filtering and results',
+  },
   votingOnInputsAction: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction',
     defaultMessage: 'Voting on inputs',

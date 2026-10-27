@@ -11,7 +11,7 @@ import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 import { useRegisterPageSaver } from '../../_shared/PageSaveContext';
 
-export interface StatementValues {
+export interface InputValues {
   title_multiloc: Multiloc;
   author_id?: string | null;
   anonymous?: boolean;
@@ -27,7 +27,6 @@ const useSavedCount = (projectId: string, phaseId: string) => {
     'page[size]': 1,
     projects: [projectId],
     phase: phaseId,
-    transitive: false,
   });
 
   const count =
@@ -37,7 +36,7 @@ const useSavedCount = (projectId: string, phaseId: string) => {
   return { count, refetch };
 };
 
-const useStagedStatements = (projectId: string, phaseId: string) => {
+const useStagedInputs = (projectId: string, phaseId: string) => {
   const { count: savedCount, refetch: refetchSavedCount } = useSavedCount(
     projectId,
     phaseId
@@ -46,12 +45,12 @@ const useStagedStatements = (projectId: string, phaseId: string) => {
   const { mutateAsync: copyInputs } = useCopyInputs();
   // Polls a running import and refreshes the idea lists once it's done.
   const { data: jobs, refetch: refetchJobs } = useJobInProgressByPhase(phaseId);
-  const [staged, setStaged] = useState<StatementValues[]>([]);
+  const [staged, setStaged] = useState<InputValues[]>([]);
   const [imports, setImports] = useState<StagedImport[]>([]);
   // The count shown while saving, so it doesn't dip before the new one loads.
   const [savingCount, setSavingCount] = useState<number | null>(null);
 
-  const add = (values: StatementValues) =>
+  const add = (values: InputValues) =>
     setStaged((staged) => [...staged, values]);
 
   // Importing the same phase twice copies it once, so a repeat replaces it.
@@ -86,7 +85,7 @@ const useStagedStatements = (projectId: string, phaseId: string) => {
     }
   };
 
-  useRegisterPageSaver('statements', {
+  useRegisterPageSaver('inputs', {
     dirty: staged.length > 0 || imports.length > 0,
     save,
   });
@@ -102,4 +101,4 @@ const useStagedStatements = (projectId: string, phaseId: string) => {
   };
 };
 
-export default useStagedStatements;
+export default useStagedInputs;

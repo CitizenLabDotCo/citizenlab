@@ -13,12 +13,16 @@ import { CLErrors, IOption } from 'typings';
 import { PresentationMode, VoteTerm, VotingMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 
+import PhaseActionAccessRow from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
+import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+
 import {
   SectionDescription,
   SectionField,
   SubSectionTitle,
   SubSectionTitleWithDescription,
 } from 'components/admin/Section';
+import SettingToggleRow from 'components/admin/SettingToggleRow';
 import Error from 'components/UI/Error';
 import Warning from 'components/UI/Warning';
 
@@ -28,16 +32,20 @@ import { useParams } from 'utils/router';
 
 import messages from '../../../../../../messages';
 import { ValidationErrors } from '../../../../../typings';
+import configMessages from '../../../messages';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import { ToggleRow } from '../../shared/styling';
 import ViewSelector from '../../shared/ViewSelector';
 import ActionToggleRow from '../_shared/ActionToggleRow';
 
+import votingMessages from './messages';
 import VotingMethodChangeModal from './VotingMethodChangeModal';
 import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
+import shareMessages from './votingMethodInputs/messages';
 import MultipleVotingInputs from './votingMethodInputs/MultipleVotingInputs';
 import ShareResultsToggle from './votingMethodInputs/ShareResultsToggle/ShareResultsToggle';
 import SingleVotingInputs from './votingMethodInputs/SingleVotingInputs';
+import VotingMethodPanelSettings from './VotingMethodPanelSettings';
 import VotingMethodSelector from './VotingMethodSelector';
 
 export const StyledSectionDescription = styled(SectionDescription)`
@@ -157,51 +165,178 @@ const VotingInputs = ({
     }
   };
 
+  const methodSelector = (
+    <VotingMethodSelector
+      voting_method={voting_method}
+      handleVotingMethodOnChange={handleVotingMethodSelect}
+      layout={layout}
+    />
+  );
+
+  const changeModal = (
+    <VotingMethodChangeModal
+      opened={pendingVotingMethod !== null}
+      onClose={() => setPendingVotingMethod(null)}
+      onConfirm={() => {
+        if (pendingVotingMethod) {
+          handleVotingMethodOnChange(pendingVotingMethod);
+        }
+        setPendingVotingMethod(null);
+      }}
+    />
+  );
+
+  const similarity = (
+    <SimilarityDetectionConfig
+      variant={panel ? 'panel' : undefined}
+      apiErrors={apiErrors}
+      similarity_enabled={similarity_enabled}
+      similarity_threshold_title={similarity_threshold_title}
+      similarity_threshold_body={similarity_threshold_body}
+      handleSimilarityEnabledChange={handleSimilarityEnabledChange}
+      handleThresholdChange={handleThresholdChange}
+    />
+  );
+
+  const views = (
+    <ViewSelector
+      presentation_mode={presentation_mode}
+      available_views={available_views}
+      apiErrors={apiErrors}
+      handleIdeasDisplayChange={handleIdeasDisplayChange}
+      handleAvailableViewsChange={handleAvailableViewsChange}
+      title={messages.defaultViewOptions}
+      hideFeed
+      variant={panel ? 'panel' : undefined}
+    />
+  );
+
+  if (panel) {
+    return (
+      <>
+        <PanelGroup
+          label={formatMessage(votingMessages.votingMethodSelectorTitle)}
+          defaultOpen
+        >
+          {methodSelector}
+          {voting_method && (
+            <Box
+              mt="16px"
+              pt="16px"
+              borderTop={`1px solid ${colors.grey200}`}
+              display="flex"
+              flexDirection="column"
+              gap="4px"
+            >
+              {/* Remounts per method, as switching resets the vote limits. */}
+              <VotingMethodPanelSettings
+                key={voting_method}
+                voting_method={voting_method}
+                voting_min_total={voting_min_total}
+                voting_max_total={voting_max_total}
+                voting_max_votes_per_idea={voting_max_votes_per_idea}
+                voting_min_selected_options={voting_min_selected_options}
+                voteTerm={voteTerm}
+                apiErrors={apiErrors}
+                validationErrors={validationErrors}
+                handleVotingMinTotalChange={handleVotingMinTotalChange}
+                handleVotingMaxTotalChange={handleVotingMaxTotalChange}
+                handleMaxVotesPerOptionAmountChange={
+                  handleMaxVotesPerOptionAmountChange
+                }
+                handleMinVotingOptionsChange={handleMinVotingOptionsChange}
+                handleVoteTermChange={handleVoteTermChange}
+              />
+            </Box>
+          )}
+        </PanelGroup>
+        <PanelGroup
+          label={formatMessage(configMessages.participantActionsGroup)}
+          defaultOpen
+        >
+          {phaseId && (
+            <PhaseActionAccessRow
+              phaseId={phaseId}
+              action="voting"
+              label={configMessages.votingAction}
+            />
+          )}
+          <ActionToggleRow
+            phaseId={phaseId}
+            action="commenting_idea"
+            error={
+              <Error apiErrors={apiErrors && apiErrors.commenting_enabled} />
+            }
+          >
+            <Toggle
+              variant="bo"
+              checked={!!commenting_enabled}
+              onChange={toggleCommentingEnabled}
+              label={formatMessage(messages.inputCommentingEnabled)}
+            />
+          </ActionToggleRow>
+          {phaseId && (
+            <PhaseActionAccessRow
+              phaseId={phaseId}
+              action="attending_event"
+              label={messages.attendingEventAction}
+            />
+          )}
+        </PanelGroup>
+        <PanelGroup
+          label={formatMessage(configMessages.votingDisplayGroup)}
+          defaultOpen
+        >
+          <Box display="flex" flexDirection="column" gap="16px">
+            <SettingToggleRow
+              title={formatMessage(messages.enabledVotingFiltering)}
+              description={formatMessage(messages.votingFilteringEnabled)}
+              checked={!!voting_filtering_enabled}
+              onChange={toggleVotingFilteringEnabled}
+            />
+            <SettingToggleRow
+              title={formatMessage(shareMessages.autoshareResults)}
+              description={formatMessage(
+                shareMessages.autoshareResultsToggleDescription
+              )}
+              checked={!!autoshare_results_enabled}
+              onChange={toggleAutoshareResultsEnabled}
+            />
+            {similarity}
+          </Box>
+        </PanelGroup>
+        {views}
+        {changeModal}
+      </>
+    );
+  }
+
   return (
     <>
-      <VotingMethodSelector
-        voting_method={voting_method}
-        handleVotingMethodOnChange={handleVotingMethodSelect}
-        layout={layout}
-      />
-      <VotingMethodChangeModal
-        opened={pendingVotingMethod !== null}
-        onClose={() => setPendingVotingMethod(null)}
-        onConfirm={() => {
-          if (pendingVotingMethod) {
-            handleVotingMethodOnChange(pendingVotingMethod);
-          }
-          setPendingVotingMethod(null);
-        }}
-      />
-      <Box
-        paddingLeft={panel ? undefined : '32px'}
-        borderLeft={panel ? undefined : `1px solid ${colors.divider}`}
-      >
-        {!panel && (
-          <Box my="16px" maxWidth="700px">
-            <Warning>
-              <FormattedMessage
-                {...messages.learnMoreVotingMethod}
-                values={{
-                  b: (chunks) => (
-                    <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
-                  ),
-                  voteTypeDescription: getVoteTypeDescription(),
-                  optionAnalysisArticleLink: (
-                    <a
-                      href="https://support.govocal.com/en/articles/527581-voting-and-prioritization-methods-for-enhanced-decision-making"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <FormattedMessage {...messages.optionAnalysisLinkText} />
-                    </a>
-                  ),
-                }}
-              />
-            </Warning>
-          </Box>
-        )}
+      {methodSelector}
+      <Box paddingLeft="32px" borderLeft={`1px solid ${colors.divider}`}>
+        <Box my="16px" maxWidth="700px">
+          <Warning>
+            <FormattedMessage
+              {...messages.learnMoreVotingMethod}
+              values={{
+                b: (chunks) => (
+                  <strong style={{ fontWeight: 'bold' }}>{chunks}</strong>
+                ),
+                voteTypeDescription: getVoteTypeDescription(),
+                optionAnalysisArticleLink: (
+                  <a
+                    href="https://support.govocal.com/en/articles/527581-voting-and-prioritization-methods-for-enhanced-decision-making"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <FormattedMessage {...messages.optionAnalysisLinkText} />
+                  </a>
+                ),
+              }}
+            />
+          </Warning>
+        </Box>
         <SectionField>
           <SubSectionTitleWithDescription>
             <FormattedMessage {...messages.optionsToVoteOn} />
@@ -275,12 +410,8 @@ const VotingInputs = ({
           <StyledSectionDescription>
             <FormattedMessage {...messages.enabledActionsForUsersDescription} />
           </StyledSectionDescription>
-          <ActionToggleRow
-            phaseId={panel ? phaseId : undefined}
-            action="commenting_idea"
-          >
+          <ActionToggleRow action="commenting_idea">
             <Toggle
-              variant={panel ? 'bo' : undefined}
               checked={!!commenting_enabled}
               onChange={toggleCommentingEnabled}
               label={formatMessage(messages.inputCommentingEnabled)}
@@ -311,25 +442,8 @@ const VotingInputs = ({
           apiErrors={apiErrors}
         />
 
-        <SimilarityDetectionConfig
-          apiErrors={apiErrors}
-          similarity_enabled={similarity_enabled}
-          similarity_threshold_title={similarity_threshold_title}
-          similarity_threshold_body={similarity_threshold_body}
-          handleSimilarityEnabledChange={handleSimilarityEnabledChange}
-          handleThresholdChange={handleThresholdChange}
-        />
-
-        <ViewSelector
-          presentation_mode={presentation_mode}
-          available_views={available_views}
-          apiErrors={apiErrors}
-          handleIdeasDisplayChange={handleIdeasDisplayChange}
-          handleAvailableViewsChange={handleAvailableViewsChange}
-          title={messages.defaultViewOptions}
-          hideFeed
-          variant={panel ? 'panel' : undefined}
-        />
+        {similarity}
+        {views}
       </Box>
     </>
   );

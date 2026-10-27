@@ -11,9 +11,9 @@ import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
-import AddStatementModal from './AddStatementModal';
+import AddInputModal from './AddInputModal';
 import PanelField from './PanelField';
-import useStagedStatements from './useStagedStatements';
+import useStagedInputs from './useStagedInputs';
 
 interface Props {
   projectId: string;
@@ -24,7 +24,7 @@ const CommonGroundSection = ({ projectId, phaseId }: Props) => {
   const { formatMessage } = useIntl();
   const [addOpened, setAddOpened] = useState(false);
   const [importOpened, setImportOpened] = useState(false);
-  const { count, saving, importProgress, add, addImport } = useStagedStatements(
+  const { count, saving, importProgress, add, addImport } = useStagedInputs(
     projectId,
     phaseId
   );
@@ -95,8 +95,9 @@ const CommonGroundSection = ({ projectId, phaseId }: Props) => {
       />
 
       {addOpened && (
-        <AddStatementModal
+        <AddInputModal
           phaseId={phaseId}
+          kind="statement"
           onSubmit={add}
           onClose={() => setAddOpened(false)}
         />

@@ -33,6 +33,7 @@ const METHODS_WITH_ACTION_TOGGLES: ParticipationMethod[] = [
   'ideation',
   'proposals',
   'common_ground',
+  'voting',
 ];
 
 const ACCESS_ONLY_ACTIONS: Partial<
