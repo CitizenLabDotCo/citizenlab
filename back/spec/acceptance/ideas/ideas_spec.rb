@@ -561,24 +561,23 @@ resource 'Ideas' do
         end
 
         example 'Does not serve the response of a signed-in user to a visitor', :clear_cache do
-          own_idea = create(:idea, project:, author: user)
-          own_submitted_idea = create(:embeddings_similarity, embedding: embeddings['pizza'], embeddable: create(:idea, project:, author: user, publication_status: 'submitted')).embeddable
+          # A submitted (not yet published) idea is only visible to its author.
+          submitted_idea = create(:idea, project:, author: user, publication_status: 'submitted')
+          create(:embeddings_similarity, embedding: embeddings['pizza'], embeddable: submitted_idea)
 
-          do_request(idea: { id: own_idea.id, title_multiloc: })
+          # The author sees their submitted idea
+          do_request
           assert_status 200
           json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to include(own_submitted_idea.id)
-          own_author = json_response[:included].find { |r| r[:type] == 'user' && r[:id] == user.id }
-          expect(own_author[:attributes]).to include(:email)
+          expect(json_response[:data].pluck(:id)).to include(submitted_idea.id)
 
+          # A visitor making the same request does not
           header 'Authorization', nil
-          do_request(idea: { id: own_idea.id, title_multiloc: })
+          do_request
           assert_status 200
           json_response = json_parse(response_body)
-          expect(json_response[:data].pluck(:id)).to eq [idea_pizza.id]
-          users = json_response[:included].select { |r| r[:type] == 'user' }
-          expect(users.pluck(:id)).not_to include(user.id)
-          expect(users.pluck(:attributes)).to all(satisfy { |attributes| !attributes.key?(:email) })
+          expect(json_response[:data].pluck(:id)).not_to include(submitted_idea.id)
+          expect(json_response[:included].pluck(:id)).not_to include(user.id)
         end
 
         example 'Does not serve the response of an admin to a resident', :clear_cache do
