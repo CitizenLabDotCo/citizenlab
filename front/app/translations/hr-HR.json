@@ -1420,7 +1420,6 @@
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Kliknite ovdje za prijavu kao administrator ili voditelj projekta",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE ili CNS",
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "Ili se prijavite putem:",
-  "app.containers.Authentication.steps.FlowStart.signInWithSSO": "Prijavite se putem jedinstvene prijave (SSO)",
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": "Umjesto toga upotrijebite svoju adresu e-pošte",
   "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": "Umjesto toga upotrijebite svoj broj telefona",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Unesite token",

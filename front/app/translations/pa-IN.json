@@ -1420,7 +1420,6 @@
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "ਐਡਮਿਨ ਜਾਂ ਪ੍ਰੋਜੈਕਟ ਮੈਨੇਜਰ ਵਜੋਂ ਲੌਗਇਨ ਕਰਨ ਲਈ ਇੱਥੇ ਕਲਿੱਕ ਕਰੋ।",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE ਜਾਂ CNS",
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "ਜਾਂ ਇਸ ਨਾਲ ਲੌਗਇਨ ਕਰੋ:",
-  "app.containers.Authentication.steps.FlowStart.signInWithSSO": "ਸਿੰਗਲ ਸਾਈਨ-ਆਨ (SSO) ਨਾਲ ਸਾਈਨ ਇਨ ਕਰੋ",
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": "ਇਸਦੀ ਬਜਾਏ ਆਪਣਾ ਈਮੇਲ ਪਤਾ ਵਰਤੋ",
   "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": "ਇਸਦੀ ਬਜਾਏ ਆਪਣਾ ਫ਼ੋਨ ਨੰਬਰ ਵਰਤੋ",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "ਕਿਰਪਾ ਕਰਕੇ ਇੱਕ ਟੋਕਨ ਦਾਖਲ ਕਰੋ",

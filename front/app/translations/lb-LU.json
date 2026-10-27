@@ -1420,7 +1420,6 @@
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klickt hei fir Iech als Admin oder Projetmanager anzeloggen",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE oder CNS",
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "Oder alogge mat:",
-  "app.containers.Authentication.steps.FlowStart.signInWithSSO": "Aloggen mat Single Sign-On (SSO)",
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": "Benotzt amplaz Är E-Mail-Adress",
   "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": "Benotzt amplaz Är Telefonsnummer",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Gitt w.e.g. en Token un",

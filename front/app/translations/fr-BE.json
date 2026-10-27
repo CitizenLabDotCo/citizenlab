@@ -1420,7 +1420,6 @@
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Cliquez ici pour vous connecter en tant qu'administrateur ou gestionnaire de projet",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE ou CNS",
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "Ou connectez-vous avec :",
-  "app.containers.Authentication.steps.FlowStart.signInWithSSO": "Se connecter avec l'authentification unique (SSO)",
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": "Utiliser plutôt votre adresse e-mail",
   "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": "Utiliser plutôt votre numéro de téléphone",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Veuillez saisir le code d'invitation",

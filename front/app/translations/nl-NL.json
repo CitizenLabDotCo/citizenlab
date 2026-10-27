@@ -1420,7 +1420,6 @@
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klik hier om in te loggen als admin of projectbeheerder",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE of CNS",
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "Of log in met:",
-  "app.containers.Authentication.steps.FlowStart.signInWithSSO": "Inloggen met single sign-on (SSO)",
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": "Gebruik in plaats daarvan je e-mailadres",
   "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": "Gebruik in plaats daarvan je telefoonnummer",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Voer een token in",

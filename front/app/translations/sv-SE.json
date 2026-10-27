@@ -1420,7 +1420,6 @@
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Klicka här för att logga in som administratör eller projektledare",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE eller CNS",
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "Eller logga in med:",
-  "app.containers.Authentication.steps.FlowStart.signInWithSSO": "Logga in med enkel inloggning (SSO)",
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": "Använd din e-postadress istället",
   "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": "Använd ditt telefonnummer istället",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Ange en token",

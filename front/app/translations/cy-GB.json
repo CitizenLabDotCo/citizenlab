@@ -1420,7 +1420,6 @@
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Cliciwch yma i fewngofnodi fel gweinyddwr neu reolwr prosiect",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE neu CNS",
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "Neu mewngofnodi gyda:",
-  "app.containers.Authentication.steps.FlowStart.signInWithSSO": "Mewngofnodi gyda mewngofnodi sengl (SSO)",
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": "Defnyddio eich cyfeiriad e-bost yn lle hynny",
   "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": "Defnyddio eich rhif ffôn yn lle hynny",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Rhowch tocyn",
