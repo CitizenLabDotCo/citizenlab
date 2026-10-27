@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-10-27T16:14:05.683Z",
+  "base": "26e68be835d027d0391bcd9f04caac821ea0e2fe",
+  "baseRef": "origin/design-system/workbench",
+  "head": "92c00ac00e9c8e03518f98409e0e382b1c0a5bfc",
+  "repoUrl": "https://github.com/CitizenLabDotCo/citizenlab",
+  "commits": [
+    {
+      "sha": "92c00ac00e9c8e03518f98409e0e382b1c0a5bfc",
+      "subject": "design-system(design): Button primary background tenant primary → --gv-error [AI-assisted]",
+      "body": "Button/index.tsx, the primary style's background, from the city's primary\ncolour (theme.colors.tenantPrimary, --gv-color-tenant-primary) to\nvar(--gv-error). A swap from the workbench, sent as a test: every primary\nbutton turns the error red, on every platform and page that renders one.\n\npolished cannot darken a CSS variable, so hover and active darken a var()\ncolour in CSS (color-mix with black, 12% each step) through a small shade()\nhelper; every other style still darkens with polished as before.\n\nVisual compare: 27 Button stories, 12 diffs, all primary-style stories\n(Default, Hover, Focus, Active, Disabled, Loading, Long content, RTL,\nKeyboard, Primary, Primary with icon, Button link). The other 15 styles\nare unchanged. Axe: no new criticals, no contrast finding. eslint ok,\njest 10 passed, typecheck ok.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/app/component-library/components/Button/index.tsx"
+      ],
+      "kind": "design",
+      "component": "Button"
+    },
+    {
+      "sha": "03a4748bf54bb7e4de179ac75422df06186509af",
+      "subject": "design-system(setup): the app loads the tokens stylesheet [AI-assisted]",
+      "body": "app/containers/App/index.tsx imports design-system/tokens/tokens.css, so\nvar(--gv-*) reads resolve on the platform. The file only declares custom\nproperties on :root: nothing renders differently until a component\nreads one.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/app/containers/App/index.tsx"
+      ],
+      "kind": "other"
+    }
+  ],
+  "tokenChanges": [],
+  "warnings": [],
+  "branch": "design-system/button-dhse"
+}
