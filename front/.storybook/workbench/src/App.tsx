@@ -61,7 +61,7 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
         />
       );
     case 'review':
-      return <Review meta={TOKEN_META} overrides={canvas.overrides} />;
+      return <Review />;
     case 'inspect':
       return <Inspect meta={TOKEN_META} />;
     case 'not-found':

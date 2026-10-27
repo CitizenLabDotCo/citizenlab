@@ -1,21 +1,12 @@
-import type { ScanOutput, TokenMeta } from './data';
+import type { ScanOutput } from './data';
 import {
   adoptPageTokens,
-  affectedRoutes,
   applyEdits,
-  changeReach,
-  dismissConsent,
+  commitReach,
   DesignChanges,
-  frameState,
-  groupCommits,
   normaliseFixture,
-  parseReviewHash,
-  prMarkdown,
   resolveRoute,
-  reviewHash,
-  reviewSummary,
   RouteFixture,
-  routesFor,
   shellFiles,
   unfilledParams,
 } from './review';
@@ -66,23 +57,6 @@ const scan = (over: Partial<ScanOutput> = {}): ScanOutput => ({
   },
   ...over,
 });
-
-const meta: TokenMeta[] = [
-  {
-    name: '--gv-radius-2',
-    category: 'radius',
-    tier: 1,
-    value: '4px',
-    legacy: [],
-  },
-  {
-    name: '--gv-radius-control',
-    category: 'radius',
-    tier: 2,
-    value: 'var(--gv-radius-2)',
-    legacy: ['theme.borderRadius'],
-  },
-];
 
 const changes = (files: string[][]): DesignChanges => ({
   generatedAt: '',
@@ -151,133 +125,12 @@ describe('normaliseFixture', () => {
   });
 });
 
-describe('routesFor', () => {
-  it('lists each path once with its office', () => {
-    const paths = routesFor(scan(), {}).map((r) => r.path);
-    expect(paths).toEqual([
-      '',
-      'admin/projects',
-      'admin/projects/$projectId',
-      'ideas/$slug',
-    ]);
-  });
-
-  it('keeps only touched routes with onlyAffected', () => {
-    const touched = routesFor(scan(), {
-      onlyAffected: true,
-      changes: changes([['front/app/shared.tsx']]),
-    }).map((r) => r.path);
-    expect(touched).toEqual(['', 'ideas/$slug']);
-  });
-
-  it('counts routes that read an overridden token as affected', () => {
-    const s = scan({
-      findings: [
-        {
-          file: 'app/radius.tsx',
-          line: 1,
-          col: 1,
-          raw: 'theme.borderRadius',
-          category: 'legacy-theme',
-          confidence: 'high',
-        },
-      ],
-    });
-    // The primitive reaches the tier-2 token that reads it.
-    const touched = routesFor(s, {
-      onlyAffected: true,
-      overrides: { '--gv-radius-2': '8px' },
-      meta,
-    }).map((r) => r.path);
-    expect(touched).toEqual(['admin/projects/$projectId']);
-  });
-
-  it('keeps nothing with onlyAffected and no changes', () => {
-    expect(routesFor(scan(), { onlyAffected: true })).toEqual([]);
-  });
-
-  it('filters by component, office and search', () => {
-    expect(
-      routesFor(scan(), { component: 'Button' }).map((r) => r.path)
-    ).toEqual(['admin/projects', 'ideas/$slug']);
-    expect(
-      routesFor(scan(), { component: 'Button', office: 'admin' }).map(
-        (r) => r.path
-      )
-    ).toEqual(['admin/projects']);
-    expect(
-      routesFor(scan(), { search: 'PROJECTS/$' }).map((r) => r.path)
-    ).toEqual(['admin/projects/$projectId']);
-  });
-
-  it('finds the routes of one commit', () => {
-    expect(
-      routesFor(scan(), {
-        commit: 'sha0',
-        changes: changes([['front/app/admin/p.tsx']]),
-      }).map((r) => r.path)
-    ).toEqual(['admin/projects/$projectId']);
-  });
-});
-
-describe('affectedRoutes', () => {
-  it('maps changed files without the front/ prefix', () => {
-    expect([
-      ...affectedRoutes(scan(), changes([['front/app/admin/b.tsx']]), {}, []),
-    ]).toEqual(['admin/projects']);
-  });
-});
-
 const doc = (url: string, html = ''): Document => {
   const d = document.implementation.createHTMLDocument('x');
   d.body.innerHTML = html;
   Object.defineProperty(d, 'URL', { value: url });
   return d;
 };
-
-describe('frameState', () => {
-  it('is blank without a document or before navigation', () => {
-    expect(frameState(null)).toBe('blank');
-    expect(frameState(doc('about:blank'))).toBe('blank');
-  });
-
-  it('is login on the sign-in page', () => {
-    expect(frameState(doc('https://h/en/sign-in/admin'))).toBe('login');
-  });
-
-  it('is login when the body has a sign-in form', () => {
-    expect(
-      frameState(doc('https://h/en/x', '<form action="/users/sign_in"></form>'))
-    ).toBe('login');
-  });
-
-  it('is login when an admin route redirected away from the admin', () => {
-    expect(frameState(doc('https://h/en'), 'admin/projects')).toBe('login');
-    expect(
-      frameState(doc('https://h/en/admin/projects'), 'admin/projects')
-    ).toBe('ok');
-  });
-
-  it('is cross-origin when access throws', () => {
-    const throwing = {
-      get URL(): string {
-        throw new Error('SecurityError');
-      },
-    } as unknown as Document;
-    expect(frameState(throwing)).toBe('cross-origin');
-    expect(
-      frameState(() => {
-        throw new Error('SecurityError');
-      })
-    ).toBe('cross-origin');
-  });
-
-  it('is ok on a page', () => {
-    expect(frameState(doc('https://h/en/projects/a', '<main></main>'))).toBe(
-      'ok'
-    );
-  });
-});
 
 describe('applyEdits', () => {
   it('keeps the page own inline tokens and restores them on reset', () => {
@@ -367,48 +220,6 @@ describe('adoptPageTokens', () => {
   });
 });
 
-describe('groupCommits', () => {
-  it('groups by component, then kind, components A to Z and none last', () => {
-    const c = changes([['a'], ['b'], ['c']]);
-    c.commits[1].component = undefined;
-    c.commits[1].kind = 'other';
-    c.commits[2].component = 'Accordion';
-    c.commits[2].kind = 'story';
-    const groups = groupCommits(c.commits);
-    expect(groups.map((g) => g.component)).toEqual([
-      'Accordion',
-      'Button',
-      null,
-    ]);
-    expect(groups[1].kinds.map((k) => [k.kind, k.commits.length])).toEqual([
-      ['heal', 1],
-    ]);
-  });
-});
-
-describe('review hash', () => {
-  it('reads and writes the review state, keeping the overrides', () => {
-    const state = parseReviewHash(
-      '#/review?route=admin%2Fprojects&component=Button&o=abc&only=1&office=admin'
-    );
-    expect(state).toEqual({
-      route: 'admin/projects',
-      component: 'Button',
-      office: 'admin',
-      only: true,
-      tab: 'routes',
-    });
-    expect(
-      reviewHash('#/review?o=abc&route=x', { ...state, route: 'ideas/$slug' })
-    ).toBe(
-      '#/review?o=abc&route=ideas%2F%24slug&component=Button&office=admin&only=1'
-    );
-    expect(parseReviewHash('#/review').office).toBe('all');
-  });
-});
-
-// Twelve routes, each with its own page file; App.tsx is in all of them and
-// almost.tsx in 11 of 12 (over the 90% shell share), rare.tsx in 2.
 const bigScan = (): ScanOutput => {
   const paths = Array.from({ length: 12 }, (_, i) => `admin/p${i}`);
   return scan({
@@ -440,191 +251,20 @@ describe('shell files', () => {
     // Four routes are too few to tell the shell apart.
     expect(shellFiles(scan()).size).toBe(0);
   });
-
-  it('do not mark routes as affected, and are reported', () => {
-    const c = changes([
-      ['front/app/App.tsx'],
-      ['front/app/rare.tsx', 'front/app/almost.tsx'],
-    ]);
-    expect([...affectedRoutes(bigScan(), c, {}, [])].sort()).toEqual([
-      'admin/p0',
-      'admin/p1',
-    ]);
-    const reach = changeReach(bigScan(), c, {}, []);
-    expect(reach.shellFiles).toEqual(['app/App.tsx', 'app/almost.tsx']);
-    expect(reach.shellCommits).toEqual(['sha0', 'sha1']);
-  });
-
-  it('are left out of the routes of one commit', () => {
-    expect(
-      routesFor(bigScan(), {
-        commit: 'sha0',
-        changes: changes([['front/app/App.tsx']]),
-      })
-    ).toEqual([]);
-  });
 });
 
-describe('dismissConsent', () => {
-  it('declines the cookie modal once it shows', () => {
-    const d = document.implementation.createHTMLDocument('x');
-    expect(dismissConsent(d)).toBe(false);
-    d.body.innerHTML =
-      '<button data-testid="accept-cookies-btn"></button><button data-testid="reject-cookies-btn"></button>';
-    const clicked: string[] = [];
-    d.querySelectorAll('button').forEach((b) =>
-      b.addEventListener('click', () =>
-        clicked.push(b.getAttribute('data-testid') ?? '')
-      )
-    );
-    expect(dismissConsent(d)).toBe(true);
-    expect(clicked).toEqual(['reject-cookies-btn']);
-  });
-});
-
-describe('design commits only', () => {
-  it('a tags-like tooling commit touching many library files marks no route', () => {
-    const c = changes([
-      Array.from({ length: 12 }, (_, i) => `front/app/p${i}.tsx`),
-      ['front/app/admin/a.stories.tsx', 'front/app/p4.tsx'],
-      ['front/app/p3.tsx'],
-    ]);
-    c.commits[0].kind = 'other';
-    c.commits[0].component = undefined;
-    c.commits[1].kind = 'story';
-    c.commits[2].kind = 'lift';
-    const reach = changeReach(bigScan(), c, {}, []);
-    expect([...reach.routes]).toEqual(['admin/p3']);
-    expect(reach.shellFiles).toEqual([]);
-    expect(
-      routesFor(bigScan(), { commit: 'sha0', changes: c }).map((r) => r.path)
-    ).toEqual([]);
-  });
-
-  it('a token override still marks the routes that read it', () => {
-    const s = scan({
-      findings: [
-        {
-          file: 'app/radius.tsx',
-          line: 1,
-          col: 1,
-          raw: 'theme.borderRadius',
-          category: 'legacy-theme',
-          confidence: 'high',
-        },
-      ],
+describe('commitReach', () => {
+  it('reaches the routes of the files a design commit changes, the shell left out', () => {
+    const c = changes([['front/app/rare.tsx', 'front/app/almost.tsx']]);
+    expect(commitReach(bigScan(), c.commits[0])).toEqual({
+      routes: new Set(['admin/p0', 'admin/p1']),
+      shell: true,
     });
-    const c = changes([['front/app/shared.tsx']]);
-    c.commits[0].kind = 'other';
-    expect([...affectedRoutes(s, c, { '--gv-radius-2': '8px' }, meta)]).toEqual(
-      ['admin/projects/$projectId']
-    );
-  });
-});
-
-describe('prMarkdown headline', () => {
-  it('names shell files when no route is reached', () => {
-    const md = prMarkdown(
-      {
-        ...reviewSummary(bigScan(), { overrides: {}, meta: [] }),
-        designCommits: 3,
-        components: [],
-        routes: [],
-        shellFiles: ['app/component-library/utils/styleUtils.ts'],
-      },
-      'L'
-    );
-    expect(md).toContain(
-      '**3 design changes to shell files on every page, reviewed in the workbench.**'
-    );
-  });
-});
-
-describe('summary and PR text', () => {
-  const mixed = () => {
-    const c = changes([
-      ['front/app/shared.tsx'],
-      ['front/app/admin/a.tsx'],
-      ['front/app/admin/a.stories.tsx'],
-      ['front/scripts/design-system/scan/findings.ts'],
-      ['front/.storybook/workbench/src/App.tsx'],
-    ]);
-    c.commits[0].scanDelta = { offSpec: -5 };
-    c.commits[1].component = 'Input';
-    c.commits[1].kind = 'lift';
-    c.commits[2].component = 'Arabic';
-    c.commits[2].kind = 'story';
-    c.commits[3].kind = 'other';
-    c.commits[3].component = undefined;
-    c.commits[3].scanDelta = { offSpec: 1743 };
-    c.commits[4].kind = 'other';
-    c.commits[4].component = undefined;
-    c.commits[4].scanDelta = { offSpec: 2 };
-    return c;
-  };
-
-  it('counts design changes apart from stories, tooling and scanner rules', () => {
-    const summary = reviewSummary(scan({ totals: { offSpec: 100 } as never }), {
-      changes: mixed(),
-      overrides: { '--gv-radius-2': '8px' },
-      meta,
-    });
-    expect(summary).toMatchObject({
-      commits: 5,
-      designCommits: 2,
-      stories: 1,
-      tooling: 2,
-      tokenEdits: 1,
-      components: ['Button', 'Input'],
-      offSpecBefore: 105,
-      offSpecAfter: 100,
-      scannerDelta: 1743,
-      otherDelta: 2,
-    });
-    // Design commits (shared.tsx, admin/a.tsx) and the token edit only.
-    expect(summary.routes).toEqual(['', 'admin/projects', 'ideas/$slug']);
-
-    const md = prMarkdown(
-      summary,
-      'https://h/storybook/workbench/#/review?o=x'
-    );
-    expect(md).toContain(
-      '3 design changes across 2 components and 3 routes, reviewed in the workbench'
-    );
-    expect(md).toContain('- Design commits: 2 (1 heal, 1 lift)');
-    expect(md).toContain(
-      '- Not counted as design changes: 1 story commit, 2 tooling commits'
-    );
-    expect(md).toContain(
-      'Off-spec values: 105 before the design commits, 100 now (-5)'
-    );
-    expect(md).toContain(
-      'Scanner rule changes moved the count by +1743 and are not in this delta'
-    );
-    expect(md).toContain('Other commits moved it by +2');
-    expect(md).toContain('`/ideas/:slug`');
-    expect(md).not.toContain('$slug');
-    expect(md).toContain('`--gv-radius-2`: 8px');
-    expect(md).toContain(
-      '[Open the review](https://h/storybook/workbench/#/review?o=x)'
-    );
-    expect(md).not.toContain('\u2014');
   });
 
-  it('names shell files as affecting every page', () => {
-    const summary = reviewSummary(bigScan(), {
-      changes: changes([['front/app/App.tsx'], ['front/app/p3.tsx']]),
-      overrides: {},
-      meta,
-    });
-    expect(summary.routes).toEqual(['admin/p3']);
-    expect(summary.shellFiles).toEqual(['app/App.tsx']);
-    const md = prMarkdown(summary, 'l');
-    expect(md).toContain(
-      '2 design changes across 1 component and 1 route (plus shell files on every page)'
-    );
-    expect(md).toContain(
-      '- Shell files changed, they affect every page: `app/App.tsx`'
-    );
+  it('reaches nothing for a commit that is not a design change', () => {
+    const c = changes([['front/app/p3.tsx']]);
+    c.commits[0].kind = 'story';
+    expect(commitReach(bigScan(), c.commits[0]).routes.size).toBe(0);
   });
 });
