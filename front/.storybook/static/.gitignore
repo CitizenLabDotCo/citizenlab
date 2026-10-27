@@ -2,4 +2,5 @@
 # design-scan.summary.json, design-changes.json, routes.fixture.json,
 # visual-summary.json, and a11y-results.json are committed.
 design-scan.json
+design-index/
 workbench/

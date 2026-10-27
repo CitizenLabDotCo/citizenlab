@@ -1,5 +1,8 @@
+import fs from 'fs';
+import path from 'path';
+
 import { scanFile } from './findings';
-import { legacyValues, lookup } from './values';
+import { legacyValues, lookup, STYLE_UTILS_FILE } from './values';
 
 // The shapes of app/component-library/utils/styleUtils.ts, small.
 const STYLE_UTILS = [
@@ -40,7 +43,9 @@ describe('legacyValues', () => {
       grey800: '#333333',
       grey300: '#E0E0E0',
     };
-    expect(VALUES).toEqual({
+    // The value maps; viewportWidths and defs have their own tests below.
+    const { viewportWidths: _w, defs: _d, ...maps } = VALUES;
+    expect(maps).toEqual({
       theme: {
         // No tenant colours: they are the city's.
         colors: grey,
@@ -78,7 +83,88 @@ describe('legacyValues', () => {
       theme: { colors: {}, fontSizes: {} },
       colors: {},
       bo: {},
+      viewportWidths: {},
+      defs: {},
     });
+  });
+
+  it('places each value at the property that wrote it, through spreads', () => {
+    const at = (line: number, col = 2) => ({
+      file: STYLE_UTILS_FILE,
+      line,
+      col,
+    });
+    // Lines of STYLE_UTILS above, 1-based; columns 0-based.
+    expect(VALUES.defs['theme.borderRadius']).toEqual(at(23));
+    expect(VALUES.defs['stylingConsts.borderRadius']).toEqual(at(23));
+    expect(VALUES.defs['bo.borderRadius']).toEqual(at(17));
+    // A key spread into colors is placed where its own object wrote it, and
+    // a value read through a member is placed at the key that read it.
+    expect(VALUES.defs['colors.grey800']).toEqual(at(3, 29));
+    expect(VALUES.defs['colors.textPrimary']).toEqual(at(5));
+    expect(VALUES.defs['theme.colors.textPrimary']).toEqual(at(5));
+    expect(VALUES.defs['theme.fontSizes.base']).toEqual(at(14, 27));
+    expect(VALUES.defs['fontSizes.base']).toEqual(at(14, 27));
+    expect(VALUES.defs['bo.buttonMedium.fontSize']).toEqual(at(19, 34));
+    // No value, no place: a tenant colour, a call.
+    expect(VALUES.defs['theme.colors.tenantPrimary']).toBeUndefined();
+    expect(VALUES.defs['colors.faded']).toBeUndefined();
+    // Every value returned has a place, and nothing else does.
+    const paths = (map: object, prefix: string): string[] =>
+      Object.entries(map).flatMap(([key, v]) =>
+        typeof v === 'string' ? [prefix + key] : paths(v, `${prefix}${key}.`)
+      );
+    expect(
+      [
+        ...paths(VALUES.theme, 'theme.'),
+        ...paths(VALUES.colors, 'colors.'),
+        ...paths(VALUES.bo, 'bo.'),
+        ...paths(VALUES.theme.fontSizes as object, 'fontSizes.'),
+        'stylingConsts.menuHeight',
+        'stylingConsts.borderRadius',
+        'stylingConsts.border',
+      ].sort()
+    ).toEqual(Object.keys(VALUES.defs));
+  });
+
+  it('drops the place of a key a later unknown spread may override', () => {
+    const v = legacyValues(
+      [
+        "import { other } from 'x';",
+        "export const bo = { a: '1px', ...other, b: '2px' };",
+      ].join('\n')
+    );
+    expect(v.defs).toEqual({
+      'bo.b': { file: STYLE_UTILS_FILE, line: 2, col: 40 },
+    });
+  });
+
+  it('reads the real styleUtils.ts: values and their definition lines', () => {
+    const real = legacyValues(
+      fs.readFileSync(
+        path.join(__dirname, '..', '..', '..', STYLE_UTILS_FILE),
+        'utf8'
+      )
+    );
+    const line = (key: string) => real.defs[key]?.line;
+    expect([
+      lookup(real.theme, ['borderRadius']),
+      line('theme.borderRadius'),
+    ]).toEqual(['3px', 242]);
+    expect([
+      lookup(real.bo, ['borderRadius']),
+      line('bo.borderRadius'),
+    ]).toEqual(['8px', 220]);
+    expect([
+      lookup(real.theme, ['fontSizes', 'base']),
+      line('theme.fontSizes.base'),
+    ]).toEqual(['16', 153]);
+    expect(real.viewportWidths).toEqual({
+      phone: '769',
+      tablet: '1200',
+      smallDesktop: '1366',
+    });
+    expect(line('viewportWidths.phone')).toBe(15);
   });
 
   it('looks up own keys down to a value only', () => {

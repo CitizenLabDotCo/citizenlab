@@ -42,7 +42,13 @@ export type Template = {
   decls: Decl[];
 };
 
-export type ExprShape = 'fn' | 'value' | 'css' | 'component' | 'helper' | 'unknown';
+export type ExprShape =
+  | 'fn'
+  | 'value'
+  | 'css'
+  | 'component'
+  | 'helper'
+  | 'unknown';
 
 export type Expr = {
   /** The expression inside ${ } */
@@ -73,11 +79,24 @@ export type ConstSource =
   | 'stylingConsts'
   | 'viewportWidths';
 
-export type Read =
+/**
+ * A const the data flow went through (rule 2): `const borderRadius =` at
+ * Button/index.tsx:341, or a spread `...BO_GEOMETRY` (loc: the const's name
+ * where it is declared).
+ */
+export type ConstHop = { name: string; loc: Loc };
+
+export type ReadNode =
   | { k: 'literal'; value: string; loc: Loc }
   | { k: 'token'; name: string; loc: Loc }
   | { k: 'theme'; path: string[]; value?: string; loc: Loc }
-  | { k: 'const'; source: ConstSource; path: string[]; value?: string; loc: Loc }
+  | {
+      k: 'const';
+      source: ConstSource;
+      path: string[];
+      value?: string;
+      loc: Loc;
+    }
   | { k: 'prop'; name: string; loc: Loc }
   | { k: 'or' | 'and' | 'nullish'; items: Read[]; loc: Loc }
   | { k: 'cond'; test: Read; then: Read; else: Read; loc: Loc }
@@ -100,6 +119,13 @@ export type Read =
   | { k: 'call'; callee: string; args: Read[]; returns?: Read; loc: Loc }
   | { k: 'template'; id: string; loc: Loc }
   | { k: 'unknown'; text: string; loc: Loc };
+
+/**
+ * What a value reads. `consts` lists the consts followed to reach this read,
+ * outermost first (absent when none): `${borderRadius}` at line 412 reads the
+ * `or` at lines 342-344 through `const borderRadius` at line 341.
+ */
+export type Read = ReadNode & { consts?: ConstHop[] };
 
 export type ReadKind = Read['k'];
 
@@ -141,3 +167,31 @@ export type IndexMeta = {
 
 /** lookup.json: fnv1a32 of a quasi -> template ids */
 export type IndexLookup = Record<string, string[]>;
+
+/** The trace classes of a file's design declarations (see designCounts.ts). */
+export type DesignCounts = {
+  token: number;
+  legacy: number;
+  literal: number;
+  prop: number;
+  unknown: number;
+};
+
+/** files.json: per file with templates, keys sorted. */
+export type IndexFiles = Record<
+  string,
+  { templates: number; decls: number; design: DesignCounts }
+>;
+
+/**
+ * styles.json: the inline `style={{…}}` objects of the story files and the
+ * Storybook setup, sorted by file and position. The same shape as
+ * styleObjects.ts's StyleObject (written out here so the workbench, which
+ * compiles this file, needs none of the indexer's code).
+ */
+export type IndexStyles = {
+  file: string;
+  loc: Loc;
+  /** Only when every entry is a plain key with a string or number literal */
+  entries?: Record<string, { value: string | number; loc: Loc }>;
+}[];
