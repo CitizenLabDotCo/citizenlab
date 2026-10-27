@@ -93,7 +93,7 @@ export type IDAuth0Method = TGenericMethod<
 >;
 
 // Attributes of the methods that city staff sign in with.
-type TEmployeeSsoAttributes = {
+type EmployeeSsoAttributes = {
   logo_url?: string;
   login_mechanism_name?: string;
   visibility?: 'show' | 'link' | 'hide';
@@ -102,7 +102,7 @@ type TEmployeeSsoAttributes = {
 
 export type IDAzureAdMethod = TGenericMethod<
   'azureactivedirectory',
-  TEmployeeSsoAttributes
+  EmployeeSsoAttributes
 >;
 
 export type IDAzureAdB2cMethod = TGenericMethod<
@@ -138,7 +138,7 @@ export type IDKeycloakMethod = TGenericMethod<
   { ui_method_name: string; provider: IconNames }
 >;
 
-export type IDOktaMethod = TGenericMethod<'okta', TEmployeeSsoAttributes>;
+export type IDOktaMethod = TGenericMethod<'okta', EmployeeSsoAttributes>;
 
 export type IDPublikMethod = TGenericMethod<'publik', { logo_url?: string }>;
 
