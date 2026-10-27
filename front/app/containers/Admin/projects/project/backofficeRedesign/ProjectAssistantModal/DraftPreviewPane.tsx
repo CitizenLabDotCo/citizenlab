@@ -160,7 +160,14 @@ const DraftPreviewPane = ({ projectId, tags = [] }: Props) => {
   });
 
   return (
-    <Box flex="1" minHeight="0" overflowY="auto" px="32px" py="24px">
+    <Box
+      flex="1"
+      minHeight="0"
+      overflowY="auto"
+      px="32px"
+      py="24px"
+      style={{ overscrollBehavior: 'contain' }}
+    >
       <Box display="flex" flexDirection="column" gap="28px">
         <Box>
           <Text m="0 0 14px" fontSize="l" fontWeight="bold" color="textPrimary">

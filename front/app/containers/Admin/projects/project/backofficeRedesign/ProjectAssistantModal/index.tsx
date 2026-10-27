@@ -173,6 +173,17 @@ const ProjectAssistantModal = ({
   // questions appear — so the intake reads as generated, not snapped open.
   const [intakeThinking, setIntakeThinking] = useState(false);
 
+  // Lock background scroll while the modal is open so the wheel never chains
+  // out to the project list behind the scrim; restore whatever was there on
+  // unmount.
+  useEffect(() => {
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = previous;
+    };
+  }, []);
+
   useEffect(() => {
     if (!intakeThinking) return undefined;
     const timer = setTimeout(() => setIntakeThinking(false), 1200);
@@ -560,7 +571,7 @@ const ProjectAssistantModal = ({
             <Box flex="1" minWidth="0" display="flex" flexDirection="column" minHeight="0" bgColor={colors.grey50}>
               {phase === 'review' && projectId ? (
                 <>
-                  <Box flex="1" minHeight="0">
+                  <Box flex="1" minHeight="0" display="flex" flexDirection="column">
                     <DraftPreviewPane projectId={projectId} tags={chosenTags} />
                   </Box>
                   <Box
