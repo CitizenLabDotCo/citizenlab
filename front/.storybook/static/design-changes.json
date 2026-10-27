@@ -1,10 +1,52 @@
 {
-  "generatedAt": "2026-10-27T12:59:38.550Z",
+  "generatedAt": "2026-10-27T13:04:09.366Z",
   "base": "7b0b8940e27fb6c528eb39a06baa8a4cf2bcdf0a",
   "baseRef": "master",
-  "head": "5d050d3afe8c9ad7bed9611473eb09352bc7602e",
+  "head": "b8c844aa65fe3f1aa633bfc3d45ff000efbe0a97",
   "repoUrl": "https://github.com/CitizenLabDotCo/citizenlab",
   "commits": [
+    {
+      "sha": "b8c844aa65fe3f1aa633bfc3d45ff000efbe0a97",
+      "subject": "design-system(docs): the simpler Review; the PR text is the link and the changes, written by the agent [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/heal/SKILL.md",
+        "front/.claude/skills/propose/SKILL.md",
+        "front/.storybook/AGENTS.md",
+        "front/.storybook/PR_TEMPLATE.md"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "8f0358f595840b8efa8db06718aa6e35f744057e",
+      "subject": "design-system(scripts): smoke reads the Review count alone [AI-assisted]",
+      "body": "With no changes the page says 0 and shows no cards; there is no empty\nstate to look for.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "16bccae8ecc31ed14397dd0eef5833efaba19a51",
+      "subject": "design-system(workbench): Review is simpler: the PR, the count, each change with before and after [AI-assisted]",
+      "body": "The page keeps a title, one line (the PR link and how many changes it\nmakes to the platform) and a card per change: its subject, a link to the\nshortest page it reaches on this epic, the commit, and the before and\nafter pictures, or one picture marked \"No visual change\". Copy for PR,\nthe GitHub fetch, the chips, the commit body, the setup and tooling\ncounts and the empty-state art go, with pr.ts, alsoInPr and prText.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/prReview.test.ts",
+        "front/.storybook/workbench/src/lib/prReview.ts",
+        "front/.storybook/workbench/src/pages/Review.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "63581930183bdb5fb9dbcb6b34de494c13128afb",
+      "subject": "design-system(review): refresh the change list [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-changes.json"
+      ],
+      "kind": "other"
+    },
     {
       "sha": "5d050d3afe8c9ad7bed9611473eb09352bc7602e",
       "subject": "design-system(docs): Review is the PR of its epic; stacked design PRs leave before and after pictures [AI-assisted]",
@@ -33,7 +75,6 @@
       "body": "One PR, one epic, one Review. The page reads its PR from its own host\n(pr-<n>.epic.hq.govocal.com) and the header from GitHub once per\nsession. design-changes.json gives the changes: a card per heal, lift or\ntoken commit that still changes platform code, numbered in order, with\nthe agent's pictures from static/changes/<sha>/ (\"No visual change\" when\nthey match) and the routes it reaches as links on this epic, their ids\nread from this platform's API. Setup commits are listed, stories and\ntooling counted. Copy for PR puts the link to this page first.\n\nThe two-host compare goes: the PR number field, Hosts, the frames, the\nroute list and the change list (FrameView, RouteList, ChangeList), and\nwhat only they used in review.ts and pr.ts.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
       "files": [
         "front/.storybook/workbench/src/App.tsx",
-        "front/.storybook/workbench/src/lib/pr.ts",
         "front/.storybook/workbench/src/lib/prReview.test.ts",
         "front/.storybook/workbench/src/lib/prReview.ts",
         "front/.storybook/workbench/src/lib/review.test.ts",
@@ -524,7 +565,6 @@
       "subject": "design-system(workbench): review any pull request against master [AI-assisted]",
       "body": "Review takes a PR number (#/review?pr=N). It reads the PR's commits and\nfiles from GitHub's public API, leaves merge commits out, and opens on\nthe pages those files reach. Before is master on this preview, after is\nthe PR's own preview (pr-N.epic), shown but not inspected because it is\nanother site.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
       "files": [
-        "front/.storybook/workbench/src/lib/pr.ts",
         "front/.storybook/workbench/src/lib/review.ts",
         "front/.storybook/workbench/src/pages/Review.tsx",
         "front/.storybook/workbench/src/shell.css"
@@ -1920,7 +1960,8 @@
       "files": [
         "front/app/component-library/components/Dropdown/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Dropdown"
     },
     {
       "sha": "d6eaa802905a5060bf4019fefa5b5d61aa794270",
@@ -1939,7 +1980,8 @@
       "files": [
         "front/app/component-library/components/IconTooltip/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "IconTooltip"
     },
     {
       "sha": "c7d12bfbe0a94d7f06bcd2dfa82dea0bf80ca859",
@@ -1958,7 +2000,8 @@
       "files": [
         "front/app/component-library/components/Tooltip/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Tooltip"
     },
     {
       "sha": "6a141f6430a491c099240e2a840f864c322c02fd",
@@ -1977,7 +2020,8 @@
       "files": [
         "front/app/component-library/components/Spinner/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Spinner"
     },
     {
       "sha": "58aa56dd0d3023815a7797548efade562a27ab93",
@@ -1986,7 +2030,8 @@
       "files": [
         "front/app/component-library/components/Box/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Box"
     },
     {
       "sha": "14fd5147f89439f6326272ce6f756a2412910898",
@@ -1995,7 +2040,8 @@
       "files": [
         "front/app/component-library/components/Icon/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Icon"
     },
     {
       "sha": "89fe4eff453a6d9692a85891f48956a8d95398bd",
@@ -2004,7 +2050,8 @@
       "files": [
         "front/app/component-library/components/Table/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Table"
     },
     {
       "sha": "f4f34f2193870c84a16d30a4c8d95fb834a35481",
@@ -2023,7 +2070,8 @@
       "files": [
         "front/app/component-library/components/Title/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Title"
     },
     {
       "sha": "2b698ecaacf811e2b6888ec489285f15a7ff52b2",
@@ -2032,7 +2080,8 @@
       "files": [
         "front/app/component-library/components/Text/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Text"
     },
     {
       "sha": "9f3832b1fcbe09da78c67e8a42410acf916d417b",
@@ -2041,7 +2090,8 @@
       "files": [
         "front/app/component-library/components/Label/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Label"
     },
     {
       "sha": "dc67978ed4678c50f39784484f350f855fb2ec43",
@@ -2050,7 +2100,8 @@
       "files": [
         "front/app/component-library/components/Toggle/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Toggle"
     },
     {
       "sha": "209aabcc7e5ffe8e443c042ff4cdec0ecc696ae6",
@@ -2069,7 +2120,8 @@
       "files": [
         "front/app/component-library/components/Select/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Select"
     },
     {
       "sha": "5adac0878816d359234d1caefdbdeac3606d3907",
@@ -2088,7 +2140,8 @@
       "files": [
         "front/app/component-library/components/Input/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Input"
     },
     {
       "sha": "d3a8bca07476d1e6a88dd421b8e4bfd6420c1ece",
@@ -2107,7 +2160,8 @@
       "files": [
         "front/app/component-library/components/IconButton/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "IconButton"
     },
     {
       "sha": "e9192cf4a6a823e1993797c2dfa8d0bbfcc00fc5",
@@ -2126,7 +2180,8 @@
       "files": [
         "front/app/component-library/components/Button/a11y.json"
       ],
-      "kind": "other"
+      "kind": "other",
+      "component": "Button"
     },
     {
       "sha": "ff02a0c964057c9c80c2a9defdf399352e7737d5",
