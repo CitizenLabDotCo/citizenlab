@@ -66,7 +66,7 @@ const HeaderDropdown = ({
         width={width}
         maxHeight="none"
         zIndex="2000"
-        borderRadius={t.radius[2]}
+        borderRadius={t.radius[3]}
         content={content}
       />
     </>
