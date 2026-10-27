@@ -231,6 +231,7 @@ resource 'Ideas' do
         parameter :phase, 'Filter by project phase', required: false
         parameter :author, 'Filter by author (user id)', required: false
         parameter :idea_status, 'Filter by status (idea status id)', required: false
+        parameter :custom_field_answers, 'Filter by answers to public choice questions: { field_id: [option_key, ...] } (OR within a question, AND across questions)', required: false
         parameter :search, 'Filter by searching in title and body', required: false
         parameter :publication_status, 'Return only ideas with the specified publication status; returns all pusblished ideas by default', required: false
         parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(', ')}", required: false
