@@ -9,8 +9,9 @@
 // and checks that the default route is Components (`#/components`, also for
 // the old `#/start`), the nav lists every section with Components current,
 // and nothing is logged as a console error. Optional data files that a build
-// may lack (see OPTIONAL_DATA) are allowed to 404. `#/foundations` lands on
-// the Colour page with no overview cards or breadcrumb. Then opens a
+// may lack (see OPTIONAL_DATA) and the platform API are allowed to 404.
+// `#/foundations` lands on the Colour page with no overview cards or
+// breadcrumb. Then opens a
 // Button story on the canvas: a share link override reaches the frame's
 // radius token, and a bad share link shows a notice and keeps the
 // session. The Foundations colour page lists at least MIN_COLOUR_TOKENS
@@ -20,10 +21,11 @@
 // a typed value shows in the Changes drawer and in the hash. The Shadow
 // page opens a shadow token's layer editor, a Drop shadow with X, Y, Blur,
 // Spread, Color and opacity fields, and ArrowUp on Blur reaches the row's
-// preview. The Components gallery shows
-// at least MIN_GALLERY_THUMBS story thumbnails, rendered in one shared
-// preview frame: at least MIN_REVEALED_THUMBS reveal their story, the
-// first sits over its card within 1px, and a card the frame cannot show
+// preview. The Components gallery shows the build's pictures when it has
+// them (thumbs.json; at least MIN_REVEALED_THUMBS show), and, loaded again
+// with no pictures, at least MIN_GALLERY_THUMBS story thumbnails rendered in
+// one shared preview frame: at least MIN_REVEALED_THUMBS reveal their story,
+// the first sits over its card within 1px, and a card the frame cannot show
 // renders in a frame of its own (no other card has one); the Button page's
 // State and Variant menus offer at least MIN_STATE_TABS stories, another
 // State switches the story in the same canvas frame (the element is not
@@ -351,13 +353,21 @@ const OPTIONAL_DATA = [
   '/design-changes.json',
   '/routes.fixture.json',
   '/design-scan.summary.json',
-  // The Review page reads route params from the platform's API and the
-  // pictures of each change; a static server has neither.
-  '/web_api/v1/projects?page[size]=1',
+  // The pictures of each change on the Review page.
   '/before.png',
   '/after.png',
   '/a11y-results.json',
 ];
+
+// Stories and the Review page call the platform's API, which a static
+// server does not have (the epic does): those requests may fail.
+const platformApi = (url: string) => {
+  try {
+    return new URL(url).pathname.startsWith('/web_api/');
+  } catch {
+    return false;
+  }
+};
 
 const TYPES: Record<string, string> = {
   '.html': 'text/html; charset=utf-8',
@@ -557,7 +567,77 @@ const canvasChecks = async (
   }
 };
 
-const galleryChecks = async (page: any, base: string, failures: string[]) => {
+// The pictures ds:thumbs took, when the build has them: a card shows its
+// picture and boots no preview.
+const pictureChecks = async (page: any, base: string, failures: string[]) => {
+  await page.goto(`${base}/workbench/#/components`);
+  try {
+    await page.waitForFunction(
+      (min: number) =>
+        document.querySelectorAll('[data-testid="wb-thumb"] img[data-shown]')
+          .length >= min,
+      MIN_REVEALED_THUMBS,
+      { timeout: 30000 }
+    );
+  } catch {
+    failures.push(
+      `fewer than ${MIN_REVEALED_THUMBS} gallery cards show their picture`
+    );
+  }
+  const shown = await page.evaluate(() => {
+    const cards = Array.from(
+      document.querySelectorAll('[data-testid="wb-thumb"]')
+    );
+    const pictured = cards.filter((c) => c.querySelector('img[data-shown]'));
+    return {
+      cards: cards.length,
+      pictured: pictured.length,
+      framed: pictured.filter((c) => c.querySelector('iframe')).length,
+    };
+  });
+  if (shown.framed) {
+    failures.push(
+      `${shown.framed} gallery cards with a picture booted a preview too`
+    );
+  }
+  console.log(
+    `gallery: ${shown.pictured} of ${shown.cards} cards show their picture`
+  );
+};
+
+// The gallery a build without pictures shows (and a card whose picture is
+// missing): the shell reads thumbs.json once per load, so the page loads
+// again with the file answering none, and keeps no pictures for the rest of
+// the run.
+const galleryChecks = async (
+  page: any,
+  base: string,
+  root: string,
+  failures: string[]
+) => {
+  if (fs.existsSync(path.join(root, 'thumbs.json'))) {
+    await pictureChecks(page, base, failures);
+  }
+  const none = (route: any) =>
+    route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: 'null',
+    });
+  await page.route('**/thumbs.json', none);
+  await page.goto('about:blank');
+  try {
+    await liveGalleryChecks(page, base, failures);
+  } finally {
+    await page.unroute('**/thumbs.json', none);
+  }
+};
+
+const liveGalleryChecks = async (
+  page: any,
+  base: string,
+  failures: string[]
+) => {
   await page.goto(`${base}/workbench/#/components`);
   await page.waitForSelector('[data-testid="wb-thumb"]', { timeout: 10000 });
   const thumbs: number = await page.$$eval(
@@ -1361,7 +1441,8 @@ const main = async () => {
     page.on('console', (msg: any) => {
       if (msg.type() !== 'error') return;
       const url: string = msg.location()?.url ?? '';
-      const optional = OPTIONAL_DATA.some((p) => url.endsWith(p));
+      const optional =
+        platformApi(url) || OPTIONAL_DATA.some((p) => url.endsWith(p));
       if (optional && /Failed to load resource/.test(msg.text())) return;
       failures.push(`console error: ${msg.text()} ${url}`.trim());
     });
@@ -1417,7 +1498,7 @@ const main = async () => {
       spacing: spacingScreenshot,
     });
 
-    await galleryChecks(page, base, failures);
+    await galleryChecks(page, base, root, failures);
 
     await reviewChecks(page, base, root, failures);
 
