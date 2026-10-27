@@ -1,10 +1,30 @@
 {
-  "generatedAt": "2026-10-27T16:59:16.368Z",
+  "generatedAt": "2026-10-27T17:11:03.030Z",
   "base": "7b0b8940e27fb6c528eb39a06baa8a4cf2bcdf0a",
   "baseRef": "master",
-  "head": "956b799fc50c4141387158e315f0e2fb53d0a6d5",
+  "head": "488762a3b1510341e9cd0c30b7c2f33f95f547aa",
   "repoUrl": "https://github.com/CitizenLabDotCo/citizenlab",
   "commits": [
+    {
+      "sha": "488762a3b1510341e9cd0c30b7c2f33f95f547aa",
+      "subject": "design-system(workbench): the Design tab shows what the clicked layer is made of: an icon its fill, text its type, a box no text [AI-assisted]",
+      "body": "Rob picked green for a tick icon in Get started and nothing changed. Two\ncauses: the panel offered the icon a Text colour (CSS color), which an\nSVG does not paint with, and the painter skipped every SVG element (it\naccepted HTMLElement only), so no edit on an icon ever showed.\n\nNow an icon (an SVG element that is not text) shows Fill and Stroke rows\nfor its own paint (`fill`, `stroke`, colour tokens, the picker) and no\nText section; the painter paints SVG elements. Text shows only on a layer\nthat holds text of its own (a text node child or a field), as in Figma, so\na box of other elements no longer offers text properties. Checked on the\nlocal workbench: tick → Layout, Fill; label → Layout, Text; row button →\nLayout with gap; green-500 on the tick paints it rgb(4, 136, 76).\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/elementEdits.ts",
+        "front/.storybook/workbench/src/lib/inspect.test.ts",
+        "front/.storybook/workbench/src/lib/inspect.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "c237c7d759e9265102105cb1241a707ff0578ce3",
+      "subject": "design-system(review): refresh the change list [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-changes.json"
+      ],
+      "kind": "other"
+    },
     {
       "sha": "956b799fc50c4141387158e315f0e2fb53d0a6d5",
       "subject": "design-system(workbench): the token picker finds what people type, closest match on top [AI-assisted]",
