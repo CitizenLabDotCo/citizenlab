@@ -20,6 +20,13 @@
  * is: the file is committed, because the CI build clones with --depth 1 and
  * reaches no base, so the Review page shows the list last refreshed
  * locally. It always exits 0, so a Storybook build never fails on it.
+ *
+ * A review stacked on another branch (--base origin/design-system/workbench)
+ * writes its own list, review-changes.json, naming its branch, and leaves
+ * the base's design-changes.json alone: the review's diff stays its own
+ * change. On that branch a plain run refreshes the review's list against
+ * the base it names. On any other branch (the base, once the review is
+ * merged) a run drops it, so the page reads that branch's list again.
  */
 import { execFileSync } from 'child_process';
 import fs from 'fs';
@@ -58,6 +65,8 @@ export type DesignChanges = {
   // Tokens at HEAD when the base has no token source (all new).
   tokensNew?: number;
   warnings: string[];
+  // A review's list only: the branch it was written on.
+  branch?: string;
 };
 
 // Paths from the repository root, as git log --name-only prints them.
@@ -272,6 +281,31 @@ export const buildChanges = (opts: {
   return out;
 };
 
+export const DESIGN_FILE = 'design-changes.json';
+export const REVIEW_FILE = 'review-changes.json';
+
+/**
+ * Which list a run writes, against which base, and whether it drops a
+ * review's list left by a merged review. A --base other than master is a
+ * review; so is the branch a review's list names, against the base it
+ * names. A branch that is unknown (detached HEAD) drops nothing.
+ */
+export const planList = (opts: {
+  base?: string;
+  branch?: string;
+  review?: { branch?: unknown; baseRef?: unknown };
+}): { file: string; base?: string; drop: boolean } => {
+  const { base, branch, review } = opts;
+  if (base && !/^(origin\/)?master$/.test(base)) {
+    return { file: REVIEW_FILE, base, drop: false };
+  }
+  const mine = !!branch && review?.branch === branch;
+  if (!base && mine && typeof review.baseRef === 'string') {
+    return { file: REVIEW_FILE, base: review.baseRef, drop: false };
+  }
+  return { file: DESIGN_FILE, base, drop: !!review && !!branch && !mine };
+};
+
 /**
  * Writes the change list, except when no base was reachable and a file
  * already exists: CI clones with --depth 1 (no master, no history), so there
@@ -328,15 +362,31 @@ const main = () => {
   const known: string[] | undefined = Array.isArray(scan?.components)
     ? scan.components.map((c: any) => c.component)
     : undefined;
+  const runGit = gitIn(ROOT);
+  // CI checks out a commit, not a branch, and names the branch in its env.
+  const head = runGit(['rev-parse', '--abbrev-ref', 'HEAD'])?.trim();
+  const branch =
+    process.env.CIRCLE_BRANCH || (head && head !== 'HEAD' ? head : undefined);
+  const reviewRel = `.storybook/static/${REVIEW_FILE}`;
+  const plan = planList({ base, branch, review: readJsonFile(reviewRel) });
+  if (plan.drop) {
+    fs.rmSync(path.join(ROOT, reviewRel));
+    console.log(`ds:changes: dropped ${reviewRel}, a merged review's list`);
+  }
+  const review = plan.file === REVIEW_FILE;
   const changes = buildChanges({
-    runGit: gitIn(ROOT),
-    base,
+    runGit,
+    base: plan.base,
+    // The cached merge-base is master's: never a review's base.
     cachedMergeBase:
-      typeof summary?.mergeBase === 'string' ? summary.mergeBase : undefined,
+      !review && typeof summary?.mergeBase === 'string'
+        ? summary.mergeBase
+        : undefined,
     knownComponents: known,
   });
+  if (review) changes.branch = branch;
   const dir = path.resolve(ROOT, outDir);
-  const file = path.join(dir, 'design-changes.json');
+  const file = path.join(dir, plan.file);
   changes.warnings.forEach((w) => console.warn(`ds:changes warning: ${w}`));
   if (writeChanges(file, changes) === 'kept') {
     console.warn(

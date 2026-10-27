@@ -351,6 +351,8 @@ const foundationsChecks = async (
 const OPTIONAL_DATA = [
   '/design-scan.json',
   '/design-changes.json',
+  // A review's own list, which only a review stacked on the workbench has.
+  '/review-changes.json',
   '/routes.fixture.json',
   '/design-scan.summary.json',
   // The gallery's pictures, which a build without ds:thumbs has none of.
@@ -1365,8 +1367,9 @@ export const designChangeCount = (changes: any): number =>
   ).length;
 
 // The Review page: the PR line (no PR on a local server), the count of
-// design changes equal to design-changes.json's, one card per change, and
-// the empty state when there is none.
+// design changes equal to the change list's (a review's own list when the
+// build has one, else design-changes.json), one card per change, and the
+// empty state when there is none.
 const reviewChecks = async (
   page: any,
   base: string,
@@ -1374,11 +1377,12 @@ const reviewChecks = async (
   failures: string[]
 ) => {
   let expected = 0;
+  const list = ['review-changes.json', 'design-changes.json'].find((f) =>
+    fs.existsSync(path.join(root, f))
+  );
   try {
     expected = designChangeCount(
-      JSON.parse(
-        fs.readFileSync(path.join(root, 'design-changes.json'), 'utf8')
-      )
+      JSON.parse(fs.readFileSync(path.join(root, list ?? ''), 'utf8'))
     );
   } catch {
     // No change list in the build: the page shows none.
@@ -1410,7 +1414,7 @@ const reviewChecks = async (
   );
   if (cards !== expected) {
     failures.push(
-      `review: ${cards} cards, expected ${expected} from design-changes.json`
+      `review: ${cards} cards, expected ${expected} from ${list ?? 'no list'}`
     );
   }
   console.log(`review: ${count} changes collected, ${cards} committed cards`);
