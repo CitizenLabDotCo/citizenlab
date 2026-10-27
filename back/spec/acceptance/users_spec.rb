@@ -2135,6 +2135,11 @@ resource 'Users' do
         end
 
         describe do
+          before do
+            AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'franceconnect' }] }
+            AppConfiguration.instance.save!
+          end
+
           let(:cf) { create(:custom_field) }
           let(:birthyear_cf) { create(:custom_field_birthyear) }
           let(:custom_field_values) do
@@ -2171,6 +2176,11 @@ resource 'Users' do
         end
 
         describe do
+          before do
+            AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'bogus' }] }
+            AppConfiguration.instance.save!
+          end
+
           let(:cf) { create(:custom_field) }
           let(:gender_cf) { create(:custom_field_gender) }
           let(:custom_field_values) do
