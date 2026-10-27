@@ -306,4 +306,51 @@ RSpec.describe ReportBuilder::ReportPolicy do
       end
     end
   end
+
+  describe '#generate?' do
+    let(:report) { create(:report, phase: current_phase) }
+
+    context 'with the llm_reporting feature activated' do
+      before { SettingsService.new.activate_feature!('llm_reporting') }
+
+      context 'when user has admin rights' do
+        let(:user) { build(:admin) }
+
+        it { is_expected.to permit(:generate) }
+        it { is_expected.to permit(:chat) }
+        it { is_expected.to permit(:chat_turn) }
+
+        context 'when the report is about a whole project' do
+          let(:report) { create(:report, project: project) }
+
+          it { is_expected.to permit(:generate) }
+        end
+
+        context 'when the report is about neither a phase nor a project' do
+          let(:report) { create(:report) }
+
+          it { is_expected.not_to permit(:generate) }
+        end
+      end
+
+      context 'when user is a normal user' do
+        let(:user) { build(:user) }
+
+        it { is_expected.not_to permit(:generate) }
+        it { is_expected.not_to permit(:chat) }
+      end
+
+      context 'when user is a moderator of another project' do
+        let(:user) { create(:project_moderator, projects: [another_project]) }
+
+        it { is_expected.not_to permit(:generate) }
+      end
+    end
+
+    context 'with the llm_reporting feature deactivated' do
+      let(:user) { build(:admin) }
+
+      it { is_expected.not_to permit(:generate) }
+    end
+  end
 end

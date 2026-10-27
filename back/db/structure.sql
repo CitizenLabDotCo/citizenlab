@@ -69,6 +69,7 @@ ALTER TABLE IF EXISTS ONLY public.oauth_access_grants DROP CONSTRAINT IF EXISTS 
 ALTER TABLE IF EXISTS ONLY public.official_feedbacks DROP CONSTRAINT IF EXISTS fk_rails_b4a1624855;
 ALTER TABLE IF EXISTS ONLY public.custom_field_options DROP CONSTRAINT IF EXISTS fk_rails_b48da9e6c7;
 ALTER TABLE IF EXISTS ONLY public.baskets DROP CONSTRAINT IF EXISTS fk_rails_b3d04c10d5;
+ALTER TABLE IF EXISTS ONLY public.report_builder_report_chats DROP CONSTRAINT IF EXISTS fk_rails_b130536620;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS fk_rails_b0efe660f5;
 ALTER TABLE IF EXISTS ONLY public.analysis_tags DROP CONSTRAINT IF EXISTS fk_rails_afc2d02258;
 ALTER TABLE IF EXISTS ONLY public.idea_exposures DROP CONSTRAINT IF EXISTS fk_rails_ad985054f0;
@@ -239,6 +240,7 @@ DROP INDEX IF EXISTS public.index_spam_reports_on_reported_at;
 DROP INDEX IF EXISTS public.index_sms_deliveries_on_user_id;
 DROP INDEX IF EXISTS public.index_sms_deliveries_on_status;
 DROP INDEX IF EXISTS public.index_sms_deliveries_on_campaign_id;
+DROP INDEX IF EXISTS public.index_report_chats_on_report_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_project_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_phase_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_owner_id;
@@ -569,6 +571,7 @@ ALTER TABLE IF EXISTS ONLY public.sms_deliveries DROP CONSTRAINT IF EXISTS sms_d
 ALTER TABLE IF EXISTS ONLY public.schema_migrations DROP CONSTRAINT IF EXISTS schema_migrations_pkey;
 ALTER TABLE IF EXISTS public.admin_publications DROP CONSTRAINT IF EXISTS scheduled_fields_both_or_neither;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS report_builder_reports_pkey;
+ALTER TABLE IF EXISTS ONLY public.report_builder_report_chats DROP CONSTRAINT IF EXISTS report_builder_report_chats_pkey;
 ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS report_builder_published_graph_data_units_pkey;
 ALTER TABLE IF EXISTS ONLY public.report_builder_generation_transcripts DROP CONSTRAINT IF EXISTS report_builder_generation_transcripts_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_values DROP CONSTRAINT IF EXISTS que_values_pkey;
@@ -738,6 +741,7 @@ DROP VIEW IF EXISTS public.reporting_contributions;
 DROP VIEW IF EXISTS public.reporting_community_monitor_scores;
 DROP VIEW IF EXISTS public.reporting_input_question_answers;
 DROP TABLE IF EXISTS public.report_builder_reports;
+DROP TABLE IF EXISTS public.report_builder_report_chats;
 DROP TABLE IF EXISTS public.report_builder_published_graph_data_units;
 DROP TABLE IF EXISTS public.report_builder_generation_transcripts;
 DROP TABLE IF EXISTS public.que_values;
@@ -3837,7 +3841,8 @@ CREATE TABLE public.report_builder_generation_transcripts (
     stopped_because character varying,
     cancel_requested_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    report_saved_at timestamp(6) without time zone
 );
 
 
@@ -3850,6 +3855,19 @@ CREATE TABLE public.report_builder_published_graph_data_units (
     report_id uuid NOT NULL,
     graph_id character varying NOT NULL,
     data jsonb NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: report_builder_report_chats; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.report_builder_report_chats (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    report_id uuid NOT NULL,
+    transcript jsonb DEFAULT '[]'::jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -6206,6 +6224,14 @@ ALTER TABLE ONLY public.report_builder_published_graph_data_units
 
 
 --
+-- Name: report_builder_report_chats report_builder_report_chats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_builder_report_chats
+    ADD CONSTRAINT report_builder_report_chats_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: report_builder_reports report_builder_reports_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8537,6 +8563,13 @@ CREATE UNIQUE INDEX index_report_builder_reports_on_project_id ON public.report_
 
 
 --
+-- Name: index_report_chats_on_report_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_report_chats_on_report_id ON public.report_builder_report_chats USING btree (report_id);
+
+
+--
 -- Name: index_sms_deliveries_on_campaign_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -9842,6 +9875,14 @@ ALTER TABLE ONLY public.phases
 
 
 --
+-- Name: report_builder_report_chats fk_rails_b130536620; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_builder_report_chats
+    ADD CONSTRAINT fk_rails_b130536620 FOREIGN KEY (report_id) REFERENCES public.report_builder_reports(id) ON DELETE CASCADE;
+
+
+--
 -- Name: baskets fk_rails_b3d04c10d5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -10328,6 +10369,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261014100000'),
 ('20261012130100'),
 ('20261012120000'),
 ('20261012100100'),
@@ -10355,6 +10397,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20260915120000'),
 ('20260915103146'),
 ('20260915081521'),
+('20260910103205'),
 ('20260910082118'),
 ('20260909100000'),
 ('20260908144646'),
