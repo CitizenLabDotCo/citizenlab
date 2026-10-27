@@ -123,7 +123,7 @@ describe('<CheckboxWithLabel />', () => {
     expect(screen.getByTestId('check-mark')).toBeInTheDocument();
   });
 
-  describe('toggleOnContainerClick', () => {
+  describe('container clicks', () => {
     it('toggles when the container padding is clicked', () => {
       const handleChange = jest.fn();
       render(
@@ -132,7 +132,6 @@ describe('<CheckboxWithLabel />', () => {
           padding="20px"
           label="Test checkbox"
           onChange={handleChange}
-          toggleOnContainerClick
         />
       );
 
@@ -149,7 +148,6 @@ describe('<CheckboxWithLabel />', () => {
           checked={false}
           label="Test checkbox"
           onChange={handleChange}
-          toggleOnContainerClick
         />
       );
 
@@ -164,22 +162,6 @@ describe('<CheckboxWithLabel />', () => {
         <CheckboxWithLabel
           checked={false}
           disabled
-          label="Test checkbox"
-          onChange={handleChange}
-          toggleOnContainerClick
-        />
-      );
-
-      fireEvent.click(screen.getByTestId('check-mark-label'));
-
-      expect(handleChange).not.toHaveBeenCalled();
-    });
-
-    it('is off by default', () => {
-      const handleChange = jest.fn();
-      render(
-        <CheckboxWithLabel
-          checked={false}
           label="Test checkbox"
           onChange={handleChange}
         />

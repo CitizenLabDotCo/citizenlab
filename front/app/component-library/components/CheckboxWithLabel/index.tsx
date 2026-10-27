@@ -15,9 +15,6 @@ type Props = {
   ariaLabel?: string;
   tabIndex?: number;
   dataCy?: string;
-  // Also toggle on clicks in the container's padding, e.g. when the padding
-  // makes the checkbox fill a bordered box that should be clickable as a whole
-  toggleOnContainerClick?: boolean;
 } & CheckboxProps &
   BoxPaddingProps &
   BoxMarginProps;
@@ -43,7 +40,6 @@ const CheckboxWithLabel = ({
   setRef,
   ariaInvalid,
   ariaDescribedBy,
-  toggleOnContainerClick,
   ...boxProps
 }: Props) => {
   const uuid = useInstanceId();
@@ -52,12 +48,9 @@ const CheckboxWithLabel = ({
   const handleContainerClick = (event: React.MouseEvent) => {
     stopLabelPropagation && event.stopPropagation();
 
-    // Clicks on the checkbox or label already toggle it
-    if (
-      toggleOnContainerClick &&
-      !disabled &&
-      event.target === event.currentTarget
-    ) {
+    // Toggle on clicks in the container's padding too. Clicks on the checkbox
+    // or label already toggle it.
+    if (!disabled && event.target === event.currentTarget) {
       onChange({
         target: { checked: !checked },
       } as React.ChangeEvent<HTMLInputElement>);

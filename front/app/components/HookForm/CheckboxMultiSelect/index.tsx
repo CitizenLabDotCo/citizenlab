@@ -106,7 +106,6 @@ const CheckboxMultiSelect = ({
                   <CheckboxWithLabel
                     size="20px"
                     padding="18px 20px 18px 20px"
-                    toggleOnContainerClick
                     checkedColor={'tenantPrimary'}
                     label={
                       <Text m="0px" color="black">
