@@ -1,11 +1,11 @@
-import { FormEvent, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import type { TokenName } from '@ds/tokens/tokens';
 
 import Canvas from '../components/Canvas';
 import Icon from '../components/Icon';
+import SendForReview, { sendLine } from '../components/SendForReview';
 import type { ToolbarState } from '../components/Toolbar';
-import { copyText } from '../lib/clipboard';
 import { fileFindings } from '../lib/componentPanels';
 import { resolveTokens } from '../lib/contrast';
 import {
@@ -26,7 +26,6 @@ import { shortName } from '../lib/inspect';
 import { tokenSource } from '../lib/liveSource';
 import type { Overrides } from '../lib/overrides';
 import {
-  agentText,
   areasOfProps,
   areasOfText,
   byStory,
@@ -48,10 +47,19 @@ import {
   normaliseFixture,
   RouteFixture,
 } from '../lib/review';
+import {
+  currentOf,
+  epicReviewUrl,
+  Item,
+  prUrl,
+  undoOfEdit,
+  undoOfToken,
+} from '../lib/send';
 import { sourceChanges, sourcePatch } from '../lib/sourceDiff';
 import { groupOfStory, StoryGroup } from '../lib/stories';
 import { DEFS } from '../lib/tokenValues';
 import { useElementEdits } from '../lib/useElementEdits';
+import { useReviewWatch, useSendRecord } from '../lib/useSend';
 import { useStoryGroups } from '../lib/useStoryGroups';
 
 const loadImage = (src: string) =>
@@ -220,30 +228,6 @@ const Card = ({
 
 const NO_TOKENS: Overrides = {};
 
-// The PR this browser's changes go to, typed in once ("Connect PR").
-const PR_KEY = 'gv-review-pr';
-
-const readPr = (): number | undefined => {
-  try {
-    const n = Number(window.localStorage.getItem(PR_KEY));
-    return Number.isInteger(n) && n > 0 ? n : undefined;
-  } catch {
-    return undefined;
-  }
-};
-
-const keepPr = (n?: number) => {
-  try {
-    if (n) window.localStorage.setItem(PR_KEY, String(n));
-    else window.localStorage.removeItem(PR_KEY);
-  } catch {
-    // Connected for this visit only.
-  }
-};
-
-const epicReview = (n: number) =>
-  `https://pr-${n}.epic.hq.govocal.com/storybook/workbench/#/review`;
-
 // One component changed in this browser: its edits, then the story as it
 // is and with the edits painted on (the same canvas the component page has).
 const Draft = ({
@@ -319,8 +303,9 @@ type Props = {
 };
 
 // The Review page: the changes collected in this browser, live, before and
-// after, with the way to hand them to an agent for a PR; then what the PR
-// this epic serves already changes on the platform.
+// after, with Send for review (the text for the person's agent, then where
+// the review stands on GitHub); then what the PR this epic serves already
+// changes on the platform.
 const Review = ({ toolbar, overrides, reset }: Props) => {
   const hostPr = prOfHost(window.location.hostname);
   const [changes, setChanges] = useState<DesignChanges | undefined>();
@@ -330,9 +315,8 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
   );
   const groups = useStoryGroups();
   const { edits, remove } = useElementEdits(TOKEN_META);
-  const [storedPr, setStoredPr] = useState(readPr);
-  const [asking, setAsking] = useState(false);
-  const [copied, setCopied] = useState<string | undefined>();
+  const { record, update } = useSendRecord();
+  const answering = useReviewWatch(record, update);
 
   useEffect(() => {
     let live = true;
@@ -364,16 +348,21 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
     (e): e is [string, string] => typeof e[1] === 'string'
   );
   const count = edits.length + tokens.length;
-  // A copied text goes stale as soon as the changes do.
-  useEffect(() => setCopied(undefined), [edits, overrides]);
-  // This epic's own PR, once it carries changes, else the one typed in.
-  const pr = storedPr ?? (hostPr && cards.length > 0 ? hostPr : undefined);
+  const current = useMemo(
+    () => currentOf(edits, overrides),
+    [edits, overrides]
+  );
+  const line = sendLine(record, count);
   const routed = scan?.routes.length ? scan : undefined;
   const frame: ToolbarState = { ...toolbar, viewport: 'fit', zoom: 'fit' };
+  const groupOf = (storyId: string) =>
+    groups ? groupOfStory(groups, storyId) : undefined;
 
-  const copy = async () => {
-    const tasks = drafts.flatMap(([storyId, list]) => {
-      const g = groups ? groupOfStory(groups, storyId) : undefined;
+  // Every change of this browser with its task for the agent and the line
+  // that puts it back; tokens go in the patch, not as tasks.
+  const items = (): Item[] => [
+    ...drafts.flatMap(([storyId, list]) => {
+      const g = groupOf(storyId);
       const ctx: TaskContext = {
         component: g?.score?.component ?? g?.name ?? storyId,
         file: g?.file,
@@ -382,30 +371,43 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
         layer: '',
         findings: scan && g?.file ? fileFindings(scan, g.file) : [],
       };
-      return list.map((e) => taskOfEdit(e, ctx));
-    });
-    const diff = sourceChanges(overrides, TOKEN_META, tokenSource());
-    const text = agentText(
-      pr,
-      tasks,
-      diff.changes.length ? sourcePatch(diff.changes) : ''
+      return list.map((e) => ({
+        key: e.id,
+        value: e.to.token ?? e.to.value,
+        task: taskOfEdit(e, ctx),
+        undo: undoOfEdit(e, ctx.component, e.file ?? ctx.file),
+      }));
+    }),
+    ...tokens.map(([name, value]) => ({
+      key: `token:${name}`,
+      value,
+      task: '',
+      undo: undoOfToken(
+        name,
+        TOKEN_META.find((t) => t.name === name)?.value ?? '(its source value)'
+      ),
+    })),
+  ];
+
+  const tokenPatch = (keys: string[]) => {
+    const names = new Set(keys.map((k) => k.slice('token:'.length)));
+    const picked = Object.fromEntries(
+      Object.entries(overrides).filter(([n]) => names.has(n))
     );
-    setCopied((await copyText(text)) ? 'ok' : text);
+    const diff = sourceChanges(picked, TOKEN_META, tokenSource());
+    return diff.changes.length ? sourcePatch(diff.changes) : '';
   };
 
-  const connect = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const n = Number(new FormData(e.currentTarget).get('pr'));
-    if (!Number.isInteger(n) || n <= 0) return;
-    keepPr(n);
-    setStoredPr(n);
-    setAsking(false);
-  };
+  const drop = (keys: string[]) =>
+    keys.forEach((k) =>
+      k.startsWith('token:')
+        ? reset(k.slice('token:'.length) as TokenName)
+        : remove(k)
+    );
 
-  const disconnect = () => {
-    keepPr();
-    setStoredPr(undefined);
-  };
+  const firstName = drafts.length
+    ? groupOf(drafts[0][0])?.name ?? drafts[0][0]
+    : 'tokens';
 
   return (
     <article className="wb-review" data-testid="wb-review">
@@ -415,82 +417,45 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
           <p className="wb-review-sum" data-testid="wb-review-pr">
             <strong data-testid="wb-review-count">{count}</strong>{' '}
             {count === 1 ? 'change' : 'changes'}
-            {' · '}
-            {pr ? (
+            {line && (
               <>
+                {' · '}
+                {record.pr ? (
+                  <a href={prUrl(record.pr)} target="_blank" rel="noreferrer">
+                    {line}
+                  </a>
+                ) : (
+                  line
+                )}
+              </>
+            )}
+            {record.pr && (
+              <>
+                {' · '}
                 <a
-                  href={`${REPO_URL}/pull/${pr}`}
+                  href={epicReviewUrl(record.pr)}
                   target="_blank"
                   rel="noreferrer"
                 >
-                  PR #{pr}
+                  its preview
                 </a>
-                {pr !== hostPr && (
-                  <>
-                    {' · '}
-                    <a href={epicReview(pr)} target="_blank" rel="noreferrer">
-                      its Review
-                    </a>
-                  </>
-                )}
-                {storedPr && (
-                  <button
-                    type="button"
-                    className="wb-review-reset"
-                    onClick={disconnect}
-                  >
-                    Disconnect
-                  </button>
-                )}
               </>
-            ) : (
-              'not in a PR yet'
             )}
           </p>
         </div>
         <div className="wb-review-actions">
-          <button
-            type="button"
-            className="wb-button wb-button-primary"
-            onClick={copy}
-            disabled={count === 0}
-            data-testid="wb-review-copy"
-          >
-            <Icon name={copied === 'ok' ? 'check' : 'copy'} size={16} />
-            {copied === 'ok' ? 'Copied' : 'Copy for agent'}
-          </button>
-          {!pr &&
-            (asking ? (
-              <form className="wb-review-connect" onSubmit={connect}>
-                <input
-                  name="pr"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  placeholder="PR number"
-                  aria-label="PR number"
-                  autoFocus
-                />
-                <button type="submit" className="wb-button">
-                  Connect
-                </button>
-              </form>
-            ) : (
-              <button
-                type="button"
-                className="wb-button"
-                onClick={() => setAsking(true)}
-              >
-                Connect PR
-              </button>
-            ))}
+          <SendForReview
+            record={record}
+            update={update}
+            answering={answering}
+            current={current}
+            items={items}
+            tokenPatch={tokenPatch}
+            component={firstName}
+            drop={drop}
+          />
         </div>
       </header>
-
-      {copied && copied !== 'ok' && (
-        <pre className="wb-review-text" tabIndex={0}>
-          {copied}
-        </pre>
-      )}
 
       {count === 0 && cards.length === 0 && (
         <p className="wb-muted" data-testid="wb-review-empty">
@@ -505,7 +470,7 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
               key={storyId}
               storyId={storyId}
               edits={list}
-              group={groups ? groupOfStory(groups, storyId) : undefined}
+              group={groupOf(storyId)}
               toolbar={frame}
               overrides={overrides}
               resolve={(t) => live[t] ?? ''}

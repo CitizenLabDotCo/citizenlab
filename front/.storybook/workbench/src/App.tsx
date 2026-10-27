@@ -8,7 +8,9 @@ import { LocalContext, LocalStatus, useLocalApi } from './lib/local';
 import { useNavCollapsed } from './lib/navCollapsed';
 import { Overrides, useOverrides } from './lib/overrides';
 import { Route, useRoute } from './lib/router';
+import { currentOf, unsentCount } from './lib/send';
 import { useElementEdits } from './lib/useElementEdits';
+import { useSendRecord } from './lib/useSend';
 import Component from './pages/Component';
 import Foundations from './pages/Foundations';
 import Gallery from './pages/Gallery';
@@ -117,11 +119,11 @@ const App = ({ local: localStatus }: { local?: LocalStatus }) => {
   const [toolbar, setToolbar] = useState<ToolbarState>(DEFAULT_TOOLBAR);
   const { overrides, setOverride, reset, notice, dismissNotice } =
     useOverrides(TOKEN_META);
-  // What Review collects: the element edits and the token edits.
+  // Review's count: the element and token edits made since the last
+  // Send for review.
   const { edits } = useElementEdits(TOKEN_META);
-  const changes =
-    edits.length +
-    Object.values(overrides).filter((v) => typeof v === 'string').length;
+  const { record } = useSendRecord();
+  const changes = unsentCount(currentOf(edits, overrides), record);
 
   return (
     <LocalContext.Provider value={local}>

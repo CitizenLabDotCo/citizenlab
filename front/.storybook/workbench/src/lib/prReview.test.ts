@@ -9,7 +9,6 @@ import {
   prOfHost,
   routeLinks,
   byStory,
-  agentText,
   areasOfProps,
   areasOfText,
   scaleText,
@@ -240,24 +239,6 @@ describe('byStory', () => {
       ['b', ['1', '3']],
       ['a', ['2']],
     ]);
-  });
-});
-
-describe('agentText', () => {
-  it('names the connected PR, then the tasks, then the token patch', () => {
-    const text = agentText(15063, ['change: A', 'heal: B'], '+ x\n');
-    expect(text.split('\n')[1]).toBe(
-      'PR: #15063. Add the commits to its branch.'
-    );
-    expect(text).toContain(
-      '\n\nchange: A\n\nheal: B\n\ntokens.source.json:\n+ x'
-    );
-  });
-  it('asks for a new PR when none is connected, and leaves out an empty patch', () => {
-    const text = agentText(undefined, ['change: A'], '');
-    expect(text).toContain('PR: a new one');
-    expect(text).not.toContain('tokens.source.json');
-    expect(text).not.toContain('—');
   });
 });
 

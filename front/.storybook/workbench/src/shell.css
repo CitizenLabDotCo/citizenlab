@@ -4061,6 +4061,75 @@ a.wb-line:hover {
   list-style: none;
 }
 
+/* Send for review: the modal with the text for the agent */
+.wb-send {
+  width: min(640px, calc(100vw - 32px));
+  padding: var(--gv-space-6);
+  color: var(--wb-text);
+  background: var(--wb-bg);
+  border: 1px solid var(--wb-border);
+  border-radius: var(--wb-radius);
+  box-shadow: var(--wb-shadow-raised);
+}
+
+.wb-send::backdrop {
+  background: rgb(0 0 0 / 40%);
+}
+
+.wb-send p {
+  margin: 0 0 var(--gv-space-4);
+}
+
+.wb-send-head {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--gv-space-4);
+}
+
+.wb-send h2 {
+  margin: 0;
+  font-size: var(--gv-fs-l);
+  color: var(--wb-heading);
+}
+
+.wb-send .wb-review-text {
+  max-height: 320px;
+}
+
+.wb-send-actions {
+  display: flex;
+  gap: var(--gv-space-3);
+  align-items: center;
+  justify-content: flex-end;
+  margin: var(--gv-space-3) 0 var(--gv-space-4);
+}
+
+.wb-send-status {
+  font-weight: 600;
+  color: var(--wb-heading);
+}
+
+.wb-send-links {
+  display: flex;
+  gap: var(--gv-space-4);
+}
+
+.wb-send-links a {
+  font-weight: 600;
+  color: var(--wb-heading);
+}
+
+.wb-shell .wb-send-foot > .wb-review-reset {
+  min-height: 0;
+  padding: 0;
+  font-size: var(--gv-fs-s);
+  font-weight: 400;
+  color: var(--wb-muted);
+  text-decoration: underline;
+  background: none;
+  border: 0;
+}
+
 .wb-review-text {
   max-height: 240px;
   margin: 0;

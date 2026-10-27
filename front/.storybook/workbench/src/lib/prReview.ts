@@ -144,25 +144,6 @@ export const byStory = <E extends { storyId: string }>(
   return [...out];
 };
 
-// What "Copy for agent" on the Review page hands on: every change collected
-// in this browser, for the PR it is connected to or a new one.
-export const agentText = (
-  pr: number | undefined,
-  tasks: string[],
-  tokenPatch: string
-): string =>
-  [
-    'Workbench changes to turn into design commits (heal skill, "Stacked on the workbench").',
-    pr
-      ? `PR: #${pr}. Add the commits to its branch.`
-      : 'PR: a new one, off origin/design-system/workbench, into design-system/workbench, label epic.',
-    'One commit per change, its before and after pictures in .storybook/static/changes/<sha>/, then the change list.',
-    ...tasks.flatMap((t) => ['', t]),
-    ...(tokenPatch.trim()
-      ? ['', 'tokens.source.json:', tokenPatch.trim()]
-      : []),
-  ].join('\n');
-
 // What a change touches, from the CSS properties an edit sets.
 const PROP_AREAS: [string, RegExp][] = [
   ['Colour', /colou?r|background|fill|stroke/],
