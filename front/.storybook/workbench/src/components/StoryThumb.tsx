@@ -77,12 +77,14 @@ export const ScoreRing = ({
   );
 };
 
-export const StatusChip = ({ status }: { status: Status }) => (
-  <span className={`wb-chip wb-chip-${status}`} data-testid="wb-status">
-    <span className="wb-chip-dot" aria-hidden="true" />
-    {STATUS_LABEL[status]}
-  </span>
-);
+// None while the scan loads.
+export const StatusChip = ({ status }: { status: Status }) =>
+  status === 'pending' ? null : (
+    <span className={`wb-chip wb-chip-${status}`} data-testid="wb-status">
+      <span className="wb-chip-dot" aria-hidden="true" />
+      {STATUS_LABEL[status]}
+    </span>
+  );
 
 // The accessibility line of a card (SPEC 7.6): one chip in the worst tone
 // of the axe run, the keyboard test and the review, naming the worst of

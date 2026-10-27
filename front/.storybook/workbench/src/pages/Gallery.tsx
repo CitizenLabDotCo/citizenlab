@@ -191,9 +191,9 @@ const Others = ({
 // The gallery: a thumbnail per story title, with the scan's score, status
 // and office, filtered by set, office, status and name. Stories filed
 // outside Components/ (pages, cards, the homepage builder) close it, laid
-// out wider.
+// out wider. The cards show before the scan has loaded; its parts follow.
 const Gallery = ({ globals }: Props) => {
-  const all = useStoryGroups();
+  const all = useStoryGroups({ early: true });
   const { results } = useA11yResults();
   const [filter, setFilter] = useState<GalleryFilter>(() => ({
     ...ALL,

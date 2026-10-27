@@ -111,6 +111,12 @@ describe('buildGroups', () => {
     expect(groups.find((g) => g.name === 'IdeaCard')?.status).toBe('unscanned');
   });
 
+  it('builds the same groups before the scan, every status pending', () => {
+    const early = buildGroups(index, null);
+    expect(early.map((g) => g.title)).toEqual(groups.map((g) => g.title));
+    expect(early.every((g) => g.status === 'pending' && !g.score)).toBe(true);
+  });
+
   it('takes the office from tags, else from routes', () => {
     expect(button?.office).toBe('shared');
     expect(groups.find((g) => g.name === 'Accordion')?.office).toBe('shared');

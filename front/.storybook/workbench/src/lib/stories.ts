@@ -14,7 +14,8 @@ export type Section = 'components' | 'patterns' | 'pages';
 // Office of a component: back office, front office, both, or not known.
 export type Office = 'bo' | 'fo' | 'shared' | 'unknown';
 
-export type Status = ComponentScore['status'] | 'unscanned';
+// 'pending': the scan has not loaded yet.
+export type Status = ComponentScore['status'] | 'unscanned' | 'pending';
 
 export type StoryRef = {
   id: string;
@@ -60,7 +61,7 @@ export const STATE_ORDER = [
   'RTL',
 ];
 
-export const STATUS_LABEL: Record<Status, string> = {
+export const STATUS_LABEL: Record<Exclude<Status, 'pending'>, string> = {
   'on-tokens': 'On tokens',
   partly: 'Partly',
   'off-tokens': 'Off tokens',
@@ -109,12 +110,14 @@ export const areaOf = (title: string, redesigned: boolean) => {
   return parts.slice(1, -1).join(' / ');
 };
 
+// `scan` null: it is still loading, and every status is 'pending'.
 export const buildGroups = (
   index: StoryIndex,
-  scan: ScanOutput
+  scan: ScanOutput | null
 ): StoryGroup[] => {
-  const byFile = new Map(scan.components.map((c) => [c.file, c]));
-  const byName = new Map(scan.components.map((c) => [c.component, c]));
+  const components = scan?.components ?? [];
+  const byFile = new Map(components.map((c) => [c.file, c]));
+  const byName = new Map(components.map((c) => [c.component, c]));
   const byTitle = new Map<string, StoryEntry[]>();
   for (const e of Object.values(index.entries)) {
     if (e.type && e.type !== 'story') continue;
@@ -159,7 +162,7 @@ export const buildGroups = (
         stories.find((s) => s.exportName === 'Default')?.id ?? stories[0].id,
       file: file ?? score?.file,
       office: officeOf(tags, score?.routes),
-      status: score?.status ?? 'unscanned',
+      status: scan ? score?.status ?? 'unscanned' : 'pending',
       score,
       redesigned,
       area: areaOf(title, redesigned),
