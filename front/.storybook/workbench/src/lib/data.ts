@@ -14,7 +14,10 @@ import type {
   ScanOutput,
   TokenMeta,
 } from '../../../../scripts/design-system/scan/schema';
-import type { IndexMeta } from '../../../../scripts/design-system/index/schema';
+import type {
+  IndexFiles,
+  IndexMeta,
+} from '../../../../scripts/design-system/index/schema';
 
 export type { ComponentScore, Finding, ScanOutput, TokenMeta };
 
@@ -77,6 +80,11 @@ export const loadScan = () =>
 // none.
 export const loadIndexMeta = () =>
   fetchJson<IndexMeta | null>('../design-index/meta.json', null);
+
+// Per file with styles, its design declarations by how the code reads them
+// (the index's files.json), or null when this build has no index.
+export const loadIndexFiles = () =>
+  fetchJson<IndexFiles | null>('../design-index/files.json', null);
 
 // What happened to each story in the last render audit (npm run
 // ds:audit-stories), or null when there is none.

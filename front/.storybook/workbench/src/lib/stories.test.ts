@@ -5,10 +5,12 @@ import {
   areaOf,
   buildGroups,
   byArea,
+  designWords,
   filterGroups,
   groupOfStory,
   officeOf,
   sectionOf,
+  statusOf,
 } from './stories';
 
 const entry = (
@@ -63,8 +65,25 @@ const scan = {
   ],
 } as unknown as ScanOutput;
 
+const design = (token: number, legacy = 0, literal = 0) => ({
+  token,
+  legacy,
+  literal,
+  prop: 0,
+  unknown: 0,
+});
+
+const files = {
+  'app/component-library/components/Button/index.tsx': {
+    templates: 9,
+    decls: 40,
+    design: design(2, 5, 3),
+  },
+  'elsewhere/Accordion.tsx': { templates: 1, decls: 2, design: design(0) },
+};
+
 describe('buildGroups', () => {
-  const groups = buildGroups(index, scan);
+  const groups = buildGroups(index, scan, files);
   const button = groups.find((g) => g.name === 'Button');
 
   it('makes one group per title, sorted by name', () => {
@@ -101,14 +120,37 @@ describe('buildGroups', () => {
   });
 
   it('joins the scan by component file, then by name', () => {
-    expect(button?.status).toBe('partly');
     expect(button?.file).toBe(
       'app/component-library/components/Button/index.tsx'
     );
     const acc = groups.find((g) => g.name === 'Accordion');
     expect(acc?.score?.file).toBe('elsewhere/Accordion.tsx');
     expect(acc?.defaultId).toBe('a--basic');
-    expect(groups.find((g) => g.name === 'IdeaCard')?.status).toBe('unscanned');
+  });
+
+  it("takes the status from the index's counts of the file", () => {
+    expect(button?.status).toBe('partly');
+    expect(button?.onTokens).toBe(0.2);
+    expect(designWords(button?.design ?? design(0))).toBe(
+      '10 design values: 2 on tokens, 5 theme or constant, 3 written values'
+    );
+    // A file with no design values of its own, and a story with no file.
+    expect(groups.find((g) => g.name === 'Accordion')?.status).toBe(
+      'no-styles'
+    );
+    expect(groups.find((g) => g.name === 'IdeaCard')?.status).toBe('no-file');
+    expect(
+      statusOf('a.tsx', {
+        'a.tsx': { templates: 1, decls: 1, design: design(1) },
+      }).status
+    ).toBe('on-tokens');
+    expect(
+      statusOf('a.tsx', {
+        'a.tsx': { templates: 1, decls: 1, design: design(0, 1) },
+      }).status
+    ).toBe('off-tokens');
+    expect(statusOf('a.tsx', null).status).toBe('no-index');
+    expect(statusOf('a.tsx', undefined).status).toBe('pending');
   });
 
   it('builds the same groups before the scan, every status pending', () => {
@@ -140,7 +182,7 @@ describe('buildGroups', () => {
       filterGroups(groups, { ...ALL, office: 'bo' }).map((g) => g.name)
     ).toEqual(['Accordion', 'Button']);
     expect(
-      filterGroups(groups, { ...ALL, status: 'unscanned' }).map((g) => g.name)
+      filterGroups(groups, { ...ALL, status: 'no-file' }).map((g) => g.name)
     ).toEqual(['IdeaCard', 'Sign in']);
   });
 

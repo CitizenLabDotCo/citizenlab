@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
 
-import { loadScan, loadStoryIndex } from './data';
+import { loadIndexFiles, loadScan, loadStoryIndex } from './data';
 import { buildGroups, StoryGroup } from './stories';
 
 // The story groups of the build, or null while index.json and the scan load.
 // With `early`, the groups come from index.json alone first, every status
 // 'pending', so the gallery's cards show without waiting for the scan
-// (7 MB); then the same groups with the scan's status, score and office.
+// (7 MB); then the same groups with the scan's office and routes, and each
+// file's status from the code index (files.json).
 export const useStoryGroups = ({ early = false } = {}): StoryGroup[] | null => {
   const [groups, setGroups] = useState<StoryGroup[] | null>(null);
   useEffect(() => {
@@ -17,10 +18,12 @@ export const useStoryGroups = ({ early = false } = {}): StoryGroup[] | null => {
         if (live && !scanned) setGroups(buildGroups(index, null));
       });
     }
-    Promise.all([loadStoryIndex(), loadScan()]).then(([index, scan]) => {
-      scanned = true;
-      if (live) setGroups(buildGroups(index, scan));
-    });
+    Promise.all([loadStoryIndex(), loadScan(), loadIndexFiles()]).then(
+      ([index, scan, files]) => {
+        scanned = true;
+        if (live) setGroups(buildGroups(index, scan, files));
+      }
+    );
     return () => {
       live = false;
     };

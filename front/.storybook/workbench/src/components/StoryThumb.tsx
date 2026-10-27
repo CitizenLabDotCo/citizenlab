@@ -29,7 +29,7 @@ import { channelOf, isRendered } from '../lib/preview';
 import { framePool } from '../lib/framePool';
 import { anyThumbOf, thumbOf } from '../lib/thumbs';
 import { useThumbs } from '../lib/useThumbs';
-import { STATUS_LABEL, StoryGroup, Status } from '../lib/stories';
+import { designWords, STATUS_LABEL, StoryGroup, Status } from '../lib/stories';
 
 import { GalleryContext } from './GalleryFrame';
 import Icon from './Icon';
@@ -37,9 +37,9 @@ import Icon from './Icon';
 import type { FrameGlobals } from '../lib/frame';
 import { plural } from '../lib/plural';
 
-// How much of the component file follows the tokens, as a ring. Only a
-// partial score gets one: at 0 or 100 (or unscanned) the status chip says
-// it all.
+// How much of the component file's design values are on tokens, as a
+// ring. Only a partial share gets one: at 0 or 100 (or with no styles) the
+// status chip says it all.
 export const ScoreRing = ({
   score,
   status,
@@ -53,7 +53,7 @@ export const ScoreRing = ({
   const c = 2 * Math.PI * r;
   const pct = score === undefined ? null : Math.round(score * 100);
   if (pct === null || pct <= 0 || pct >= 100) return null;
-  const label = `Follows tokens: ${pct}%`;
+  const label = `On tokens: ${pct}%`;
   return (
     <span
       className={`wb-score wb-score-${status}`}
@@ -77,10 +77,22 @@ export const ScoreRing = ({
   );
 };
 
-// None while the scan loads.
-export const StatusChip = ({ status }: { status: Status }) =>
+// None while the index loads. Its title gives the counts from the code
+// index; the ring beside it, the share on tokens.
+export const StatusChip = ({
+  status,
+  group,
+}: {
+  status: Status;
+  group?: Pick<StoryGroup, 'design' | 'onTokens'>;
+}) =>
   status === 'pending' ? null : (
-    <span className={`wb-chip wb-chip-${status}`} data-testid="wb-status">
+    <span
+      className={`wb-chip wb-chip-${status}`}
+      data-testid="wb-status"
+      data-status={status}
+      title={group?.design ? designWords(group.design) : undefined}
+    >
       <span className="wb-chip-dot" aria-hidden="true" />
       {STATUS_LABEL[status]}
     </span>
@@ -412,10 +424,10 @@ const StoryThumb = ({
                 .join(' · ')}
             </span>
           </span>
-          <ScoreRing score={group.score?.score} status={group.status} />
+          <ScoreRing score={group.onTokens} status={group.status} />
         </span>
         <span className="wb-chip-row">
-          <StatusChip status={group.status} />
+          <StatusChip status={group.status} group={group} />
           {a11y && (
             <A11yBadges
               group={group}

@@ -1,7 +1,12 @@
 // Storybook's index grouped the way the galleries and the component page
 // show it: one group per story title, its stories split into states (the
 // story names of the conventions) and variants, joined with the scan's
-// score for the component file. Pure functions over index.json and the scan.
+// score for the component file. Pure functions over index.json, the scan
+// and the code index's per-file counts.
+import type {
+  DesignCounts,
+  IndexFiles,
+} from '../../../../scripts/design-system/index/schema';
 import type {
   ComponentScore,
   ScanOutput,
@@ -14,8 +19,17 @@ export type Section = 'components' | 'patterns' | 'pages';
 // Office of a component: back office, front office, both, or not known.
 export type Office = 'bo' | 'fo' | 'shared' | 'unknown';
 
-// 'pending': the scan has not loaded yet.
-export type Status = ComponentScore['status'] | 'unscanned' | 'pending';
+// How the component file's own design values are written, from the code
+// index: all on tokens, partly, none yet; no design values of its own; no
+// component file; no index in this build; 'pending' while it loads.
+export type Status =
+  | 'on-tokens'
+  | 'partly'
+  | 'off-tokens'
+  | 'no-styles'
+  | 'no-file'
+  | 'no-index'
+  | 'pending';
 
 export type StoryRef = {
   id: string;
@@ -38,6 +52,10 @@ export type StoryGroup = {
   file?: string;
   office: Office;
   status: Status;
+  // The file's design declarations by how they are read (files.json).
+  design?: DesignCounts;
+  // The share of them on tokens, 0 to 1.
+  onTokens?: number;
   score?: ComponentScore;
   // Part of the back-office redesign (story tag `redesigned`).
   redesigned: boolean;
@@ -63,9 +81,56 @@ export const STATE_ORDER = [
 
 export const STATUS_LABEL: Record<Exclude<Status, 'pending'>, string> = {
   'on-tokens': 'On tokens',
-  partly: 'Partly',
-  'off-tokens': 'Off tokens',
-  unscanned: 'Not scanned',
+  partly: 'Partly on tokens',
+  'off-tokens': 'Not on tokens yet',
+  'no-styles': 'No styles of its own',
+  'no-file': 'No component file',
+  'no-index': 'No code index',
+};
+
+const KINDS: [keyof DesignCounts, string][] = [
+  ['token', 'on tokens'],
+  ['legacy', 'theme or constant'],
+  ['literal', 'written values'],
+  ['prop', 'from props'],
+  ['unknown', 'computed'],
+];
+
+export const designTotal = (d: DesignCounts) =>
+  d.token + d.legacy + d.literal + d.prop + d.unknown;
+
+// "12 design values: 5 on tokens, 4 theme or constant, 3 written values".
+export const designWords = (d: DesignCounts) => {
+  const total = designTotal(d);
+  const parts = KINDS.filter(([k]) => d[k] > 0).map(([k, w]) => `${d[k]} ${w}`);
+  return `${total} design ${total === 1 ? 'value' : 'values'}: ${parts.join(
+    ', '
+  )}`;
+};
+
+// The status of a component file from the index's counts. `files`
+// undefined: still loading; null: the build has no index.
+export const statusOf = (
+  file: string | undefined,
+  files: IndexFiles | null | undefined
+): Pick<StoryGroup, 'status' | 'design' | 'onTokens'> => {
+  if (files === undefined) return { status: 'pending' };
+  if (!file) return { status: 'no-file' };
+  if (files === null) return { status: 'no-index' };
+  const design = files[file]?.design;
+  const total = design ? designTotal(design) : 0;
+  if (!design || total === 0) return { status: 'no-styles' };
+  const onTokens = design.token / total;
+  return {
+    status:
+      design.token === total
+        ? 'on-tokens'
+        : design.token === 0
+        ? 'off-tokens'
+        : 'partly',
+    design,
+    onTokens,
+  };
 };
 
 const SECTIONS: Record<string, Section> = {
@@ -110,10 +175,12 @@ export const areaOf = (title: string, redesigned: boolean) => {
   return parts.slice(1, -1).join(' / ');
 };
 
-// `scan` null: it is still loading, and every status is 'pending'.
+// `scan` null: it is still loading. `files` undefined: the index is still
+// loading, and every status is 'pending'.
 export const buildGroups = (
   index: StoryIndex,
-  scan: ScanOutput | null
+  scan: ScanOutput | null,
+  files?: IndexFiles | null
 ): StoryGroup[] => {
   const components = scan?.components ?? [];
   const byFile = new Map(components.map((c) => [c.file, c]));
@@ -162,7 +229,7 @@ export const buildGroups = (
         stories.find((s) => s.exportName === 'Default')?.id ?? stories[0].id,
       file: file ?? score?.file,
       office: officeOf(tags, score?.routes),
-      status: scan ? score?.status ?? 'unscanned' : 'pending',
+      ...statusOf(file ?? score?.file, files),
       score,
       redesigned,
       area: areaOf(title, redesigned),

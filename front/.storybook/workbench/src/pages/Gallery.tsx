@@ -43,8 +43,9 @@ const STATUSES: { value: Status | 'all'; label: string }[] = [
   { value: 'all', label: 'All' },
   { value: 'on-tokens', label: 'On tokens' },
   { value: 'partly', label: 'Partly' },
-  { value: 'off-tokens', label: 'Off tokens' },
-  { value: 'unscanned', label: 'Not scanned' },
+  { value: 'off-tokens', label: 'Not on tokens yet' },
+  { value: 'no-styles', label: 'No styles of its own' },
+  { value: 'no-file', label: 'No component file' },
 ];
 
 // The set in the hash (`#/components?set=redesigned`), so a link opens the
