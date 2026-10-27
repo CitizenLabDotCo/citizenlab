@@ -1839,7 +1839,6 @@
   "app.containers.Admin.projects.project.inputResponseExport.xlsxPageTitle": "Vie vastaukset Exceliin",
   "app.containers.Admin.projects.project.inputResponseExport.zoomIn": "Lähennä",
   "app.containers.Admin.projects.project.inputResponseExport.zoomOut": "Loitonna",
-  "app.containers.Admin.projects.project.inputsSection": "Syötteet",
   "app.containers.Admin.projects.project.insights": "Näkemyksiä",
   "app.containers.Admin.projects.project.insights.age": "Ikä",
   "app.containers.Admin.projects.project.insights.aiAnalysis": "Tekoälyanalyysi",

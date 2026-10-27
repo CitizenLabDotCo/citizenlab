@@ -1839,7 +1839,6 @@
   "app.containers.Admin.projects.project.inputResponseExport.xlsxPageTitle": "تصدير الردود إلى Excel",
   "app.containers.Admin.projects.project.inputResponseExport.zoomIn": "تكبير",
   "app.containers.Admin.projects.project.inputResponseExport.zoomOut": "تصغير",
-  "app.containers.Admin.projects.project.inputsSection": "المدخلات",
   "app.containers.Admin.projects.project.insights": "رؤى",
   "app.containers.Admin.projects.project.insights.age": "عمر",
   "app.containers.Admin.projects.project.insights.aiAnalysis": "تحليل الذكاء الاصطناعي",

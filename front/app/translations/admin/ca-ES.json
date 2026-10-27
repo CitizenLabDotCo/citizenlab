@@ -1839,7 +1839,6 @@
   "app.containers.Admin.projects.project.inputResponseExport.xlsxPageTitle": "Exporta les respostes a Excel",
   "app.containers.Admin.projects.project.inputResponseExport.zoomIn": "Apropa",
   "app.containers.Admin.projects.project.inputResponseExport.zoomOut": "Allunya",
-  "app.containers.Admin.projects.project.inputsSection": "Aportacions",
   "app.containers.Admin.projects.project.insights": "Estadístiques",
   "app.containers.Admin.projects.project.insights.age": "Edat",
   "app.containers.Admin.projects.project.insights.aiAnalysis": "Anàlisi per IA",

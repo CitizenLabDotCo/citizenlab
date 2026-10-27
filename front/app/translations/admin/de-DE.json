@@ -1839,7 +1839,6 @@
   "app.containers.Admin.projects.project.inputResponseExport.xlsxPageTitle": "Antworten nach Excel exportieren",
   "app.containers.Admin.projects.project.inputResponseExport.zoomIn": "Vergrößern",
   "app.containers.Admin.projects.project.inputResponseExport.zoomOut": "Verkleinern",
-  "app.containers.Admin.projects.project.inputsSection": "Beiträge",
   "app.containers.Admin.projects.project.insights": "Einblicke",
   "app.containers.Admin.projects.project.insights.age": "Alter",
   "app.containers.Admin.projects.project.insights.aiAnalysis": "KI-Analyse",

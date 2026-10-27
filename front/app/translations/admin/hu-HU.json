@@ -1839,7 +1839,6 @@
   "app.containers.Admin.projects.project.inputResponseExport.xlsxPageTitle": "Válaszok exportálása Excelbe",
   "app.containers.Admin.projects.project.inputResponseExport.zoomIn": "Nagyítás",
   "app.containers.Admin.projects.project.inputResponseExport.zoomOut": "Kicsinyítés",
-  "app.containers.Admin.projects.project.inputsSection": "Inputok",
   "app.containers.Admin.projects.project.insights": "Elemzések",
   "app.containers.Admin.projects.project.insights.age": "Életkor",
   "app.containers.Admin.projects.project.insights.aiAnalysis": "MI-elemzés",

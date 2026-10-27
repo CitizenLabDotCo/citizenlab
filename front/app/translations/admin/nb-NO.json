@@ -1839,7 +1839,6 @@
   "app.containers.Admin.projects.project.inputResponseExport.xlsxPageTitle": "Eksporter svar til Excel",
   "app.containers.Admin.projects.project.inputResponseExport.zoomIn": "Zoom inn",
   "app.containers.Admin.projects.project.inputResponseExport.zoomOut": "Zoom ut",
-  "app.containers.Admin.projects.project.inputsSection": "Innlegg",
   "app.containers.Admin.projects.project.insights": "Innsikt",
   "app.containers.Admin.projects.project.insights.age": "Alder",
   "app.containers.Admin.projects.project.insights.aiAnalysis": "AI-analyse",

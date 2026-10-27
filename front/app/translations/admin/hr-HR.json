@@ -1839,7 +1839,6 @@
   "app.containers.Admin.projects.project.inputResponseExport.xlsxPageTitle": "Izvezi odgovore u Excel",
   "app.containers.Admin.projects.project.inputResponseExport.zoomIn": "Povećaj",
   "app.containers.Admin.projects.project.inputResponseExport.zoomOut": "Smanji",
-  "app.containers.Admin.projects.project.inputsSection": "Unosi",
   "app.containers.Admin.projects.project.insights": "Uvidi",
   "app.containers.Admin.projects.project.insights.age": "Dob",
   "app.containers.Admin.projects.project.insights.aiAnalysis": "Analiza umjetne inteligencije",

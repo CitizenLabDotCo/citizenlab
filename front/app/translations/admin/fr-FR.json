@@ -1839,7 +1839,6 @@
   "app.containers.Admin.projects.project.inputResponseExport.xlsxPageTitle": "Exporter les réponses vers Excel",
   "app.containers.Admin.projects.project.inputResponseExport.zoomIn": "Zoom avant",
   "app.containers.Admin.projects.project.inputResponseExport.zoomOut": "Zoom arrière",
-  "app.containers.Admin.projects.project.inputsSection": "Contributions",
   "app.containers.Admin.projects.project.insights": "Statistiques",
   "app.containers.Admin.projects.project.insights.age": "Age",
   "app.containers.Admin.projects.project.insights.aiAnalysis": "Analyse IA",

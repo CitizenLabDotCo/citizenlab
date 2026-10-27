@@ -1839,7 +1839,6 @@
   "app.containers.Admin.projects.project.inputResponseExport.xlsxPageTitle": "Εξαγωγή απαντήσεων σε Excel",
   "app.containers.Admin.projects.project.inputResponseExport.zoomIn": "Μεγέθυνση",
   "app.containers.Admin.projects.project.inputResponseExport.zoomOut": "Σμίκρυνση",
-  "app.containers.Admin.projects.project.inputsSection": "Συνεισφορές",
   "app.containers.Admin.projects.project.insights": "Στατιστικά στοιχεία",
   "app.containers.Admin.projects.project.insights.age": "Ηλικία",
   "app.containers.Admin.projects.project.insights.aiAnalysis": "Ανάλυση AI",

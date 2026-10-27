@@ -1839,7 +1839,6 @@
   "app.containers.Admin.projects.project.inputResponseExport.xlsxPageTitle": "Eksportēt atbildes uz Excel",
   "app.containers.Admin.projects.project.inputResponseExport.zoomIn": "Pietuvināt",
   "app.containers.Admin.projects.project.inputResponseExport.zoomOut": "Attālināt",
-  "app.containers.Admin.projects.project.inputsSection": "Iesniegumi",
   "app.containers.Admin.projects.project.insights": "Ieskats",
   "app.containers.Admin.projects.project.insights.age": "Vecums",
   "app.containers.Admin.projects.project.insights.aiAnalysis": "AI analīze",
