@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Button, bo } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import useProjectById from 'api/projects/useProjectById';
 
@@ -38,9 +38,7 @@ const CommonGroundSection = ({ projectId, phaseId }: Props) => {
           >
             <ButtonWithLink
               buttonStyle="bo-secondary"
-              height={bo.buttonMedium.height}
-              padding={bo.buttonMedium.padding}
-              fontSize={bo.buttonMedium.fontSize}
+              boSize="medium"
               width="auto"
               to={slug ? '/projects/$slug/ideas/new' : undefined}
               params={slug ? { slug } : undefined}
@@ -51,9 +49,7 @@ const CommonGroundSection = ({ projectId, phaseId }: Props) => {
             </ButtonWithLink>
             <Button
               buttonStyle="bo-primary"
-              height={bo.buttonMedium.height}
-              padding={bo.buttonMedium.padding}
-              fontSize={bo.buttonMedium.fontSize}
+              boSize="medium"
               width="auto"
               onClick={() => setImportOpened(true)}
             >

@@ -8,7 +8,6 @@ import {
   Icon,
   IconTooltip,
   Divider,
-  bo,
   colors,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
@@ -173,10 +172,7 @@ const ActionForm = ({
             <Button
               buttonStyle="bo-secondary"
               icon="edit"
-              height={bo.buttonMedium.height}
-              padding={bo.buttonMedium.padding}
-              fontSize={bo.buttonMedium.fontSize}
-              iconSize={bo.buttonMedium.iconSize}
+              boSize="medium"
               width="auto"
               processing={processing}
               onClick={handleOverride}

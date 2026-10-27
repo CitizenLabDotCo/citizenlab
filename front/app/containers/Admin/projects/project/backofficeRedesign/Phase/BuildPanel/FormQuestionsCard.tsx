@@ -1,12 +1,6 @@
 import React, { ReactNode, useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Text,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
 
@@ -125,9 +119,7 @@ const FormQuestionsCard = ({
               <Box display="flex">
                 <ButtonWithLink
                   buttonStyle="bo-secondary"
-                  height={bo.buttonMedium.height}
-                  padding={bo.buttonMedium.padding}
-                  fontSize={bo.buttonMedium.fontSize}
+                  boSize="medium"
                   width="auto"
                   to={
                     survey

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Text, bo } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
 import { InputTerm, ParticipationMethod } from 'api/phases/types';
 
@@ -62,9 +62,7 @@ const FormSection = ({
             <Box display="flex">
               <Button
                 buttonStyle="bo-secondary"
-                height={bo.buttonMedium.height}
-                padding={bo.buttonMedium.padding}
-                fontSize={bo.buttonMedium.fontSize}
+                boSize="medium"
                 width="auto"
                 onClick={() => setIdeasModalOpened(true)}
               >
