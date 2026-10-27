@@ -1,7 +1,6 @@
 // The saved edits not yet pushed, each with what it changed so it can be
 // undone. Kept in .git (never committed, survives a restart); emptied by a
-// push. An `agent` entry is a file picked in the Inspect tab: its text then,
-// and its text now, after the person's agent edited it.
+// push.
 import fs from 'fs';
 import path from 'path';
 
@@ -11,7 +10,7 @@ export type FileChange = { file: string; before: string; after: string };
 
 export type Entry = {
   id: string;
-  kind: 'token' | 'style' | 'setup' | 'agent';
+  kind: 'token' | 'style' | 'setup';
   // "Radius · panel 8px to 12px", for the list and the commit.
   label: string;
   at: number;
@@ -28,7 +27,6 @@ export type Journal = {
   list: () => Entry[];
   add: (e: Omit<Entry, 'id' | 'at'>) => Entry;
   remove: (id: string) => void;
-  update: (id: string, files: FileChange[]) => void;
   clear: () => void;
 };
 
@@ -55,8 +53,6 @@ export const fileJournal = (file: string, now = Date.now): Journal => {
       return entry;
     },
     remove: (id) => write(read().filter((e) => e.id !== id)),
-    update: (id, files) =>
-      write(read().map((e) => (e.id === id ? { ...e, files } : e))),
     clear: () => write([]),
   };
 };

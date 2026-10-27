@@ -6,18 +6,13 @@
 //   POST /__ds/token    { patch, label }               token source edit
 //   POST /__ds/style    { file, line, col, token | value, label }
 //                       a component's own style value, at a scan finding
-//   POST /__ds/pick     { file, line, also?, label, context }  an element
-//                       picked in the Inspect tab, handed to the agent
 //   POST /__ds/undo     { id }
 //   POST /__ds/push     { branch?, heal? }   the person's own git push
 //
 // A push commits token edits on the current branch (a new one when that is
 // master), and component edits as a heal: their own branch off
 // origin/master, built without a checkout, so platform code never lands on
-// the branch the workbench lives on. A pick writes what was clicked for the
-// person's agent to read (`<git dir>/ds-local/selection.json`) and watches
-// that file: what the agent changes in it shows as an edit, undone and
-// pushed like the others. It writes only the token source and
+// the branch the workbench lives on. It writes only the token source and
 // its outputs, and component files at a place the scan found; it answers
 // only this machine and this origin.
 import { execFileSync } from 'child_process';
@@ -251,72 +246,11 @@ export const createApi = (deps: Deps) => {
     return entries;
   };
 
-  // An agent entry follows its file: the text now is its after.
-  const sync = () => {
-    for (const e of deps.journal.list()) {
-      if (e.kind !== 'agent') continue;
-      const [f] = e.files;
-      const now = exists(f.file) ? read(f.file) : f.before;
-      if (now !== f.after) deps.journal.update(e.id, [{ ...f, after: now }]);
-    }
-  };
-  const changed = (e: Entry) =>
-    e.kind !== 'agent' || e.files.some((f) => f.before !== f.after);
-  const edits = () => {
-    sync();
-    return deps.journal.list().filter(changed);
-  };
+  const edits = () => deps.journal.list();
 
   const gitDir = () => deps.git(['rev-parse', '--absolute-git-dir']).trim();
 
-  const pick = (body: any) => {
-    const { file, line } = body;
-    const valid = (f: unknown): f is string =>
-      typeof f === 'string' &&
-      COMPONENT_FILE.test(f) &&
-      !f.includes('..') &&
-      exists(f);
-    if (!valid(file)) throw new Refusal('Only a component file under app/.');
-    if (!Number.isInteger(line)) throw new Refusal('Send the line.');
-    // The other files on the way up (where the component is used): the
-    // agent may edit there instead.
-    const files = [
-      ...new Set([
-        file,
-        ...(Array.isArray(body.also) ? body.also : []).filter(valid),
-      ]),
-    ].slice(0, 6);
-    const selection = {
-      file,
-      line,
-      label: label(body.label),
-      // What the tab read: component, props, the values and their tokens.
-      context: body.context ?? null,
-      at: new Date().toISOString(),
-    };
-    const out = path.join(gitDir(), 'ds-local', 'selection.json');
-    fs.mkdirSync(path.dirname(out), { recursive: true });
-    fs.writeFileSync(out, JSON.stringify(selection, null, 2));
-    sync();
-    const agents = () => deps.journal.list().filter((e) => e.kind === 'agent');
-    // One pick waits at a time; a file with changes stays until undone.
-    agents()
-      .filter((e) => !changed(e))
-      .forEach((e) => deps.journal.remove(e.id));
-    for (const f of files) {
-      if (agents().some((e) => e.files[0].file === f)) continue;
-      const text = read(f);
-      deps.journal.add({
-        kind: 'agent',
-        label: `Agent: ${selection.label}`,
-        files: [{ file: f, before: text, after: text }],
-      });
-    }
-    return selection;
-  };
-
   const undo = (id: unknown) => {
-    sync();
     const entry = deps.journal.list().find((e) => e.id === id);
     if (!entry) throw new Refusal('No such edit.', 404);
     if (entry.kind === 'token' && entry.patch) {
@@ -430,12 +364,7 @@ export const createApi = (deps: Deps) => {
     return { kind: 'token', sha, branch, subject };
   };
 
-  const READS = /\bt\.[a-z]|var\(--gv-/g;
-  const reads = (text: string) => (text.match(READS) ?? []).length;
-  const readsToken = (e: Entry) =>
-    e.kind === 'agent'
-      ? e.files.some((f) => reads(f.after) > reads(f.before))
-      : /\bt\.|var\(--gv-/.test(e.swap?.to ?? '');
+  const readsToken = (e: Entry) => /\bt\.|var\(--gv-/.test(e.swap?.to ?? '');
 
   // Component edits, chained per file from master's own text, committed on
   // a new branch off origin/master through a scratch index: no checkout,
@@ -528,7 +457,7 @@ export const createApi = (deps: Deps) => {
   const push = (body: any) => {
     const all = edits();
     const tokens = all.filter((e) => e.kind === 'token');
-    const styles = all.filter((e) => e.kind === 'style' || e.kind === 'agent');
+    const styles = all.filter((e) => e.kind === 'style');
     if (!tokens.length && !styles.length) throw new Refusal('Nothing to push.');
     // A heal onto a token waits until master has the tokens (Iva's call).
     let masterHasTokens = false;
@@ -588,8 +517,6 @@ export const createApi = (deps: Deps) => {
         tokenEdit(body);
       } else if (url === '/__ds/style') {
         styleEdit(body);
-      } else if (url === '/__ds/pick') {
-        pick(body);
       } else if (url === '/__ds/undo') {
         undo(body.id);
       } else if (url === '/__ds/push') {
