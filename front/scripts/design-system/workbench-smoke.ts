@@ -4,7 +4,6 @@
 //                       [--canvas-screenshot <file.png>]
 //                       [--colour-screenshot <file.png>]
 //                       [--spacing-screenshot <file.png>]
-//                       [--review-host <https://platform origin>]
 //
 // Serves the static dir on a free local port, opens /workbench/ in Chromium
 // and checks that the default route is Components (`#/components`, also for
@@ -45,13 +44,8 @@
 // counts it; 12 typed into the vertical padding becomes a --gv-space-3
 // pill; Copy for agent names --gv-fs-s; Reset all clears the list. The
 // Usage tab lists at least one back office (admin) route.
-// The Review page lists at least MIN_ADMIN_ROUTES back office routes and
-// shows "needs a record" for a route whose param the fixture lacks. With
-// --review-host <platform origin> (an epic serving this Storybook under
-// /storybook/), the build is served at that origin by request interception
-// so the platform frames are same origin: the admin/projects frames load
-// (ok, or login with the login hint) without the cookie modal, the After
-// frame carries a token edit and Before does not.
+// The Review page shows as many change cards as design-changes.json has
+// design changes, or its empty state.
 // Exits 1 on failure,
 // 2 when Playwright is missing. Playwright is loaded through ./playwright.
 import fs from 'fs';
@@ -365,8 +359,11 @@ const OPTIONAL_DATA = [
   '/design-changes.json',
   '/routes.fixture.json',
   '/design-scan.summary.json',
-  // The Review page's login probe; a static server has no platform API.
-  '/web_api/v1/users/me',
+  // The Review page reads route params from the platform's API and the
+  // pictures of each change; a static server has neither.
+  '/web_api/v1/projects?page[size]=1',
+  '/before.png',
+  '/after.png',
   '/a11y-results.json',
 ];
 
@@ -1269,169 +1266,76 @@ const panelChecks = async (
 export const A11Y_REVIEWED =
   /reviewed (by \S+ )?on \d{1,2} \w{3} \d{4}.*\d+ pass/i;
 
-export const MIN_ADMIN_ROUTES = 20;
+// The design changes the Review page shows: heal, lift and token commits
+// that still change platform code (prReview.designChanges in the shell).
+export const designChangeCount = (changes: any): number =>
+  (Array.isArray(changes?.commits) ? changes.commits : []).filter(
+    (c: any) =>
+      ['heal', 'lift', 'token'].includes(c?.kind) &&
+      (c.files ?? []).some(
+        (f: string) =>
+          f.startsWith('front/app/') &&
+          !/\.(stories|test)\.tsx?$/.test(f) &&
+          !/\/a11y\.json$/.test(f) &&
+          !f.includes('/__mocks__/') &&
+          !f.startsWith('front/app/design-system/tokens/') &&
+          !f.startsWith('front/app/utils/storybook/')
+      )
+  ).length;
 
-// A route with a param the fixture has no record for (fixture.missing).
-const NEEDS_RECORD_ROUTE = 'admin/projects/$projectId/analysis/$analysisId';
-const REVIEW_ROUTE = 'admin/projects';
-const FRAME_TIMEOUT = 45000;
-const REDIRECT_WAIT = 8000;
-
-const reviewHashFor = (route: string, extra = '') =>
-  `#/review?route=${encodeURIComponent(route)}${extra}`;
-
-// Checks that need no platform: the route list and the needs-record state.
-const reviewChecks = async (page: any, base: string, failures: string[]) => {
-  await page.goto(`${base}/workbench/#/review`);
-  await page.waitForSelector('[data-testid="wb-review-route"]', {
-    timeout: 15000,
-  });
-  const admin: number = await page.$$eval(
-    '[data-testid="wb-review-route"][data-office="admin"]',
-    (els: Element[]) => els.length
-  );
-  if (admin < MIN_ADMIN_ROUTES) {
-    failures.push(
-      `review lists ${admin} back office routes, expected ${MIN_ADMIN_ROUTES}+`
-    );
-  }
-  await page.goto(`${base}/workbench/${reviewHashFor(NEEDS_RECORD_ROUTE)}`);
-  try {
-    await page.waitForSelector('[data-testid="wb-review-needs-record"]', {
-      timeout: 5000,
-    });
-    console.log(`review: ${admin} back office routes, needs-record state`);
-  } catch {
-    failures.push(`review: ${NEEDS_RECORD_ROUTE} does not ask for a record`);
-  }
-};
-
-const frameOf = async (page: any, side: 'before' | 'after') =>
-  (
-    await page.waitForSelector(`[data-testid="wb-frame-${side}-iframe"]`)
-  ).contentFrame();
-
-// The platform frames, with the build served at `host`/storybook/.
-const reviewFrameChecks = async (
-  browser: any,
+// The Review page: the PR line (no PR on a local server), the count of
+// design changes equal to design-changes.json's, one card per change, and
+// the empty state when there is none.
+const reviewChecks = async (
+  page: any,
+  base: string,
   root: string,
-  host: string,
   failures: string[]
 ) => {
-  const origin = new URL(host).origin;
-  const context = await browser.newContext({
-    viewport: { width: 1440, height: 900 },
+  let expected = 0;
+  try {
+    expected = designChangeCount(
+      JSON.parse(
+        fs.readFileSync(path.join(root, 'design-changes.json'), 'utf8')
+      )
+    );
+  } catch {
+    // No change list in the build: the page shows none.
+  }
+  await page.goto(`${base}/workbench/#/review`);
+  await page.waitForSelector('[data-testid="wb-review-pr"]', {
+    timeout: 15000,
   });
   try {
-    await context.route(`${origin}/storybook/**`, async (route: any) => {
-      const rel = new URL(route.request().url()).pathname.replace(
-        /^\/storybook/,
-        ''
-      );
-      let file = resolveStaticPath(root, rel || '/');
-      if (file && fs.existsSync(file) && fs.statSync(file).isDirectory()) {
-        file = path.join(file, 'index.html');
-      }
-      if (!file || !fs.existsSync(file)) {
-        await route.fulfill({ status: 404, body: 'not found' });
-        return;
-      }
-      let body: Buffer | string = fs.readFileSync(file);
-      if (path.basename(file) === 'routes.fixture.json') {
-        const fixture = JSON.parse(body.toString('utf8'));
-        fixture.hosts = { ...fixture.hosts, after: origin };
-        body = JSON.stringify(fixture);
-      }
-      await route.fulfill({
-        status: 200,
-        body,
-        contentType: TYPES[path.extname(file)] ?? 'application/octet-stream',
-      });
-    });
-    const page = await context.newPage();
-    page.on('pageerror', (err: Error) =>
-      failures.push(`review page error: ${err.message}`)
+    await page.waitForFunction(
+      () =>
+        /^\d+$/.test(
+          document.querySelector('[data-testid="wb-review-count"]')
+            ?.textContent ?? ''
+        ),
+      null,
+      { timeout: 15000 }
     );
-    const edit = `&o=${sharePayload({ [RADIUS_TOKEN]: RADIUS_OVERRIDE })}`;
-    await page.goto(
-      `${origin}/storybook/workbench/${reviewHashFor(
-        REVIEW_ROUTE,
-        `&component=Button${edit}`
-      )}`
-    );
-    await page.waitForSelector('[data-testid="wb-frame-after"]', {
-      timeout: 15000,
-    });
-    const settled = async (side: string): Promise<string> => {
-      const handle = await page.waitForFunction(
-        (s: string) => {
-          const st = document.querySelector<HTMLElement>(
-            `[data-testid="wb-frame-${s}"]`
-          )?.dataset.state;
-          return st && st !== 'loading' && st !== 'blank' ? st : false;
-        },
-        side,
-        { timeout: FRAME_TIMEOUT }
-      );
-      return handle.jsonValue();
-    };
-    await settled('before');
-    await settled('after');
-    // The platform redirects a visitor without admin rights after it boots.
-    await page.waitForTimeout(REDIRECT_WAIT);
-    const states = [await settled('before'), await settled('after')];
-    states.forEach((st, i) => {
-      if (st !== 'ok' && st !== 'login') {
-        failures.push(
-          `review: the ${
-            i ? 'After' : 'Before'
-          } frame of /${REVIEW_ROUTE} is ${st}`
-        );
-      }
-    });
-    if (states.includes('login')) {
-      if (!(await page.$('[data-testid="wb-login-hint"]'))) {
-        failures.push('review: a frame shows the login page without the hint');
-      }
-    }
-
-    // The cookie modal is declined in both frames.
-    for (const side of ['before', 'after'] as const) {
-      const modal = await (
-        await frameOf(page, side)
-      ).$('[data-testid="consent-manager"]');
-      if (modal && (await modal.isVisible())) {
-        failures.push(`review: the cookie modal covers the ${side} frame`);
-      }
-    }
-
-    const radius = (side: 'before' | 'after') =>
-      frameOf(page, side).then((f: any) =>
-        f.evaluate(
-          (n: string) =>
-            document.documentElement.style.getPropertyValue(n).trim(),
-          RADIUS_TOKEN
-        )
-      );
-    // Edits go on at load and on every poll.
-    await page.waitForTimeout(1500);
-    const [before, after] = [await radius('before'), await radius('after')];
-    if (after !== RADIUS_OVERRIDE) {
-      failures.push(
-        `review: After has ${RADIUS_TOKEN} "${after}", expected ${RADIUS_OVERRIDE}`
-      );
-    }
-    if (before === RADIUS_OVERRIDE) {
-      failures.push(`review: Before carries the ${RADIUS_TOKEN} edit`);
-    }
-
-    console.log(
-      `review: /${REVIEW_ROUTE} frames ${states.join('/')} on ${origin}, ` +
-        'edit on After only'
-    );
-  } finally {
-    await context.close();
+  } catch {
+    failures.push('review: the change count never showed');
+    return;
   }
+  const count = Number(
+    await page.textContent('[data-testid="wb-review-count"]')
+  );
+  const cards: number = await page.$$eval(
+    '[data-testid="wb-pr-card"]',
+    (els: Element[]) => els.length
+  );
+  if (count !== expected || cards !== expected) {
+    failures.push(
+      `review: ${count} changes and ${cards} cards, expected ${expected} from design-changes.json`
+    );
+  }
+  if (expected === 0 && !(await page.$('[data-testid="wb-review-empty"]'))) {
+    failures.push('review: no design changes, but no empty state');
+  }
+  console.log(`review: ${count} design changes, ${cards} cards`);
 };
 
 const main = async () => {
@@ -1440,7 +1344,6 @@ const main = async () => {
   const canvasScreenshot = arg('canvas-screenshot');
   const colourScreenshot = arg('colour-screenshot');
   const spacingScreenshot = arg('spacing-screenshot');
-  const reviewHost = arg('review-host');
   if (!fs.existsSync(path.join(root, 'workbench', 'index.html'))) {
     console.error(
       `No workbench in ${root}. Run npm run build-storybook first.`
@@ -1527,12 +1430,7 @@ const main = async () => {
 
     await galleryChecks(page, base, failures);
 
-    await reviewChecks(page, base, failures);
-    if (reviewHost) {
-      await reviewFrameChecks(browser, root, reviewHost, failures);
-    } else {
-      console.log('review: no --review-host, platform frame checks skipped');
-    }
+    await reviewChecks(page, base, root, failures);
 
     if (!storyId) {
       failures.push('index.json has no Button story');
