@@ -15,6 +15,7 @@ import Component from './pages/Component';
 import Foundations from './pages/Foundations';
 import Gallery from './pages/Gallery';
 import Review from './pages/Review';
+import About from './pages/About';
 
 type CanvasProps = {
   toolbar: ToolbarState;
@@ -64,6 +65,8 @@ const Page = ({ route, canvas }: { route: Route; canvas: CanvasProps }) => {
           reset={canvas.reset}
         />
       );
+    case 'about':
+      return <About />;
     case 'not-found':
       return (
         <article className="wb-page">

@@ -5,6 +5,7 @@ export type Route =
   | { name: 'foundations'; category?: string; token?: string }
   | { name: 'components'; storyId?: string }
   | { name: 'review' }
+  | { name: 'about' }
   | { name: 'not-found'; path: string };
 
 export const DEFAULT_HASH = '#/components';
@@ -55,6 +56,8 @@ export const parseHash = (hash: string): Route => {
       return { name: 'components', storyId: param };
     case 'review':
       return param ? { name: 'not-found', path } : { name: 'review' };
+    case 'about':
+      return param ? { name: 'not-found', path } : { name: 'about' };
     default:
       return { name: 'not-found', path };
   }

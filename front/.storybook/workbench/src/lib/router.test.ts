@@ -3,6 +3,14 @@ import { act, renderHook } from '@testing-library/react';
 import { parseHash, redirectOf, useRoute } from './router';
 
 describe('parseHash foundations token', () => {
+  it('opens How it works at #/about, and nothing under it', () => {
+    expect(parseHash('#/about')).toEqual({ name: 'about' });
+    expect(parseHash('#/about/x')).toEqual({
+      name: 'not-found',
+      path: '/about/x',
+    });
+  });
+
   it('reads a third segment as the token to show', () => {
     expect(parseHash('#/foundations/space/--gv-space-3')).toEqual({
       name: 'foundations',

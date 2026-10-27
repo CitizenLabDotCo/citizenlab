@@ -5536,3 +5536,62 @@ a.wb-vf-body:focus-visible .wb-vf-open {
   right: var(--gv-space-4);
   left: var(--gv-space-4);
 }
+
+/* How it works: the link above the nav's footer controls, and its page. */
+.wb-nav-foot {
+  flex-wrap: wrap;
+}
+
+.wb-nav-about {
+  display: flex;
+  flex-basis: 100%;
+  gap: var(--gv-space-2);
+  align-items: center;
+  color: var(--wb-muted);
+  text-decoration: none;
+}
+
+.wb-nav-about:hover,
+.wb-nav-about[aria-current='page'] {
+  color: var(--wb-text);
+}
+
+.wb-about section {
+  max-width: 72ch;
+  margin-block: var(--gv-space-8);
+}
+
+.wb-about-steps,
+.wb-about-list {
+  display: grid;
+  gap: var(--gv-space-3);
+  padding-inline-start: var(--gv-space-6);
+  line-height: 1.5;
+}
+
+.wb-about-numbers {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--gv-space-4);
+  margin: 0;
+}
+
+.wb-about-numbers > div {
+  padding: var(--gv-space-4);
+  border: 1px solid var(--wb-border);
+  border-radius: var(--gv-radius-2);
+}
+
+.wb-about-numbers dt {
+  color: var(--wb-muted);
+  font-size: var(--gv-fs-s);
+}
+
+.wb-about-numbers dd {
+  margin: var(--gv-space-1) 0 0;
+}
+
+.wb-about-numbers dd:first-of-type {
+  font-size: var(--gv-fs-xl);
+  font-weight: 600;
+}

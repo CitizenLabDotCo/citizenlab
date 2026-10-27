@@ -201,6 +201,17 @@ const Nav = ({ current, collapsed, onToggleCollapsed, counts }: Props) => {
           ))}
         </ul>
         <div className="wb-nav-foot">
+          <a
+            className="wb-nav-about"
+            href="#/about"
+            aria-current={current === 'about' ? 'page' : undefined}
+            data-testid="wb-nav-about"
+          >
+            <Icon name="question" size={16} />
+            <span className={collapsed ? 'wb-visually-hidden' : undefined}>
+              How it works
+            </span>
+          </a>
           <ThemeSwitch compact={collapsed} />
           <button
             type="button"

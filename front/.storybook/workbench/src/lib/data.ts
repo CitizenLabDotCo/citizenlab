@@ -14,6 +14,7 @@ import type {
   ScanOutput,
   TokenMeta,
 } from '../../../../scripts/design-system/scan/schema';
+import type { IndexMeta } from '../../../../scripts/design-system/index/schema';
 
 export type { ComponentScore, Finding, ScanOutput, TokenMeta };
 
@@ -71,6 +72,28 @@ const EMPTY_SCAN: ScanOutput = {
 
 export const loadScan = () =>
   fetchJson<ScanOutput>('../design-scan.json', EMPTY_SCAN);
+
+// The code index's summary (npm run ds:index), or null when this build has
+// none.
+export const loadIndexMeta = () =>
+  fetchJson<IndexMeta | null>('../design-index/meta.json', null);
+
+// What happened to each story in the last render audit (npm run
+// ds:audit-stories), or null when there is none.
+export type StoryAuditEntry = {
+  rendered: boolean;
+  error?: string;
+  blank?: boolean;
+  ms?: number;
+  trace?: { traced: number; total: number } | null;
+};
+export type StoryAudit = {
+  commit: string;
+  measuredAt: string;
+  stories: Record<string, StoryAuditEntry>;
+};
+export const loadStoryAudit = () =>
+  fetchJson<StoryAudit | null>('../story-audit.json', null);
 
 // Bundled, so it is there synchronously. A local run (npm run ds:local)
 // swaps in the files as they are now before the first render, since saved
