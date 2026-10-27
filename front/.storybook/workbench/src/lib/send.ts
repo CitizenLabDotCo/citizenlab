@@ -170,7 +170,7 @@ export const sendText = ({
         `1. Ask who should review it, offering in this order: ${reviewerList}.`,
         `2. In ${REPO}, make branch ${branch} off origin/${REVIEW_BASE}. Heal skill ("Stacked on the workbench"): one commit per change, its before and after pictures in .storybook/static/changes/<sha>/, all in one pictures commit after the last change.`,
         `3. Open the PR into ${REVIEW_BASE}: ready for review, label epic, review requested from the person picked.`,
-        `4. When its preview is up, open https://pr-<n>.epic.hq.govocal.com/storybook/workbench/#/review, check each card shows its change, then tell the person it is with the reviewer, with that link.`,
+        `4. The review gets a preview of its own, numbered as the PR you opened (not the workbench's own): when it is up, open https://pr-<that number>.epic.hq.govocal.com/storybook/workbench/#/review, check each card shows its change, then tell the person it is with the reviewer, with that link.`,
       ];
   return [
     ...head,

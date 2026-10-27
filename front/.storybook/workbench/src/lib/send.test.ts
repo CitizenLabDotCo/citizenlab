@@ -142,6 +142,13 @@ describe('sendText', () => {
       'make branch design-system/button-k3f9 off origin/design-system/workbench'
     );
     expect(text).toContain('ready for review, label epic');
+    // The new review's own preview, whose number only the opened PR gives.
+    expect(text).toContain(
+      "numbered as the PR you opened (not the workbench's own)"
+    );
+    expect(text).toContain(
+      'https://pr-<that number>.epic.hq.govocal.com/storybook/workbench/#/review'
+    );
     expect(text).toContain('Changes:\n\nchange: A\n\nchange: B');
     expect(text).not.toContain('tokens.source.json');
     expect(text).not.toContain('Put back');

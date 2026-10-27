@@ -154,9 +154,9 @@ export const taskOfEdit = (e: ElementEdit, ctx: TaskContext): string => {
       `heal: ${ctx.component} · ${file} · ${e.from.raw} → ${
         e.to.token ?? '(choose a token)'
       }`,
-      `why: hard-coded ${e.label.toLowerCase()} seen in the workbench (${
-        ctx.layer
-      }), scan confidence low`,
+      `why: hard-coded ${e.label.toLowerCase()} seen in the workbench${
+        ctx.layer ? ` (${ctx.layer})` : ''
+      }, scan confidence low`,
       check,
     ].join('\n');
   }

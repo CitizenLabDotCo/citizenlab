@@ -116,6 +116,10 @@ describe('element edits', () => {
         'why: hard-coded padding · vertical seen in the workbench (button "Save"), scan confidence low\n' +
         'check: story s, routes none'
     );
+    // The Review page knows no layer: no empty brackets.
+    expect(taskOfEdit(base, { ...ctx, layer: '' })).toContain(
+      'seen in the workbench, scan confidence low'
+    );
     expect(
       taskOfEdit({ ...base, kind: 'custom', to: { value: '11px' } }, ctx)
     ).toBe(
