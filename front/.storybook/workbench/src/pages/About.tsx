@@ -111,7 +111,7 @@ const About = () => (
     </header>
 
     <section>
-      <h2 className="wb-section-title">Tonight's numbers</h2>
+      <h2 className="wb-section-title">This build's numbers</h2>
       <Numbers />
     </section>
 
@@ -184,8 +184,14 @@ const About = () => (
           edited here. That is a developer's or an agent's job, by hand.
         </li>
         <li>
-          A value read from another file (the theme's definitions) is shown with
-          its definition line, and left to a person.
+          A value read from the theme or a shared constant is shown with the
+          line that defines it, which is never changed: the edit replaces the
+          read in this component only, so others that read it stay as they are.
+        </li>
+        <li>
+          A value the story draws around the component (its frame) is shown as
+          "story frame" with its line in the story file. It is not part of the
+          component and offers no edit.
         </li>
       </ul>
     </section>
@@ -201,6 +207,12 @@ const About = () => (
           <code>npm run ds:trace-check -- --url &lt;storybook&gt;</code> opens
           known components and compares each traced value and line with the one
           written down from the code beforehand.
+        </li>
+        <li>
+          <code>npm run ds:demo-check -- --url &lt;storybook&gt;</code> opens
+          ten of the most used components, checks that every value of every
+          section has a line or a reason, makes a change on each and times the
+          send.
         </li>
         <li>
           Open DevTools on the canvas: the winning rule and its value are the
