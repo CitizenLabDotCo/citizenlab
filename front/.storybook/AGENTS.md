@@ -79,6 +79,7 @@ Scripts, `scripts/design-system/`:
 - `routes-fixture.ts`: fills route params from the test tenant (`ds:routes-fixture`).
 - `visual-run.ts`, `visual-summary.ts`: story screenshots and pixel compare (`ds:visual`).
 - `workbench-smoke.ts`: smoke test of the built shell (`ds:smoke`).
+- `boundary.test.ts`: the platform imports nothing of `.storybook/`, these scripts or Storybook (stories, tests, mocks and `app/utils/storybook/` may); it runs with the platform's own tests.
 - `playwright.ts`: loads Playwright from `GV_PLAYWRIGHT_DIR`.
 - `fixtures/`: scanner test inputs (`findings/`, `routes/app/`).
 - `README.md`: the scripts in more detail.
