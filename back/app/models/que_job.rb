@@ -71,7 +71,8 @@ class QueJob < Que::ActiveRecord::Model
   def last_error
     # Link to bulk import error throwing
     if last_error_message
-      last_error_string = last_error_message.split(': ')&.last
+      # Que stores "<error class>: <message>", and a message can itself contain ': '.
+      last_error_string = last_error_message.split(': ', 2).last
       return { error: 'uncaught_error' } unless last_error_string&.start_with?('bulk_import_')
 
       # Additional error values are separated by '##' - See BulkImportIdeas::Error
