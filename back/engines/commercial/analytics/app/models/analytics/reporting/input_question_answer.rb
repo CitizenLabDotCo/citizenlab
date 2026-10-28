@@ -15,6 +15,7 @@
 #  question_category :string
 #  statement_key     :text
 #  statement_label   :text
+#  value_geojson     :jsonb
 #
 module Analytics
   module Reporting
@@ -27,10 +28,11 @@ module Analytics
           One row per answer to a form question of an input: survey answers and
           extra idea-form fields. Multi-select and ranking questions produce one
           row per selected or ranked option, matrix questions one row per
-          answered statement. File upload answers only record that a file is
-          attached, and only while that file still exists, as on the survey
-          results page. Mapping questions are not included. Inputs that skipped a
-          question have no row for it.
+          answered statement. File and shapefile upload answers only record that
+          a file is attached, and only while that file still exists, as on the
+          survey results page. Point, line and polygon answers carry their
+          geometry in value_geojson. Inputs that skipped a question have no row
+          for it.
         DOC
       end
 
@@ -43,13 +45,15 @@ module Analytics
             Answer format: 'select', 'select_image', 'multiselect',
             'multiselect_image', 'ranking', 'checkbox', 'text', 'multiline_text',
             'date', 'number', 'linear_scale', 'rating', 'sentiment_linear_scale',
-            'matrix_linear_scale' or 'file_upload'.
+            'matrix_linear_scale', 'file_upload', 'shapefile_upload', 'point',
+            'line' or 'polygon'.
           DOC
           'question_label' => 'Question text, resolved to the platform primary locale.',
           'value_text' => <<~DOC.squish,
             Textual answer: the option key for (multi)select and ranking
             questions, free text for text questions, 'true'/'false' for
-            checkboxes. NULL for numeric, matrix and file upload questions.
+            checkboxes. NULL for numeric, matrix, file upload and mapping
+            questions.
             Option keys are stable ids, not what participants saw: report
             value_label instead.
           DOC
@@ -86,10 +90,18 @@ module Analytics
             this row answers. Group on question_id and statement_key to
             aggregate per statement. NULL for other question types.
           DOC
-          'statement_label' => <<~DOC.squish
+          'statement_label' => <<~DOC.squish,
             For 'matrix_linear_scale' questions, the statement text, resolved to
             the platform primary locale. Report it rather than statement_key.
             NULL for other question types.
+          DOC
+          'value_geojson' => <<~DOC.squish
+            For 'point', 'line' and 'polygon' questions, the drawn shape as a
+            GeoJSON geometry object (type 'Point', 'LineString' or 'Polygon').
+            Coordinates are [longitude, latitude] pairs in WGS 84, longitude
+            first: for a point, value_geojson -> 'coordinates' ->> 0 is the
+            longitude and ->> 1 the latitude. NULL for other question types,
+            including 'shapefile_upload', whose shapes stay in the uploaded file.
           DOC
         }
       end

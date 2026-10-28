@@ -3907,7 +3907,7 @@ CREATE VIEW public.reporting_input_question_answers AS
           ORDER BY t.key
          LIMIT 1)) AS question_label,
         CASE
-            WHEN ((q.input_type)::text = ANY ((ARRAY['number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying, 'file_upload'::character varying])::text[])) THEN NULL::text
+            WHEN ((q.input_type)::text = ANY ((ARRAY['number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying, 'file_upload'::character varying, 'shapefile_upload'::character varying, 'point'::character varying, 'line'::character varying, 'polygon'::character varying])::text[])) THEN NULL::text
             ELSE (a.value #>> '{}'::text[])
         END AS value_text,
         CASE
@@ -3926,9 +3926,13 @@ CREATE VIEW public.reporting_input_question_answers AS
             ELSE NULL::character varying
         END AS question_category,
     NULL::text AS statement_key,
-    NULL::text AS statement_label
+    NULL::text AS statement_label,
+        CASE
+            WHEN ((q.input_type)::text = ANY ((ARRAY['point'::character varying, 'line'::character varying, 'polygon'::character varying])::text[])) THEN a.value
+            ELSE NULL::jsonb
+        END AS value_geojson
    FROM (((form_inputs i
-     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY ((ARRAY['text'::character varying, 'multiline_text'::character varying, 'select'::character varying, 'select_image'::character varying, 'checkbox'::character varying, 'date'::character varying, 'number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying, 'file_upload'::character varying])::text[])))))
+     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY ((ARRAY['text'::character varying, 'multiline_text'::character varying, 'select'::character varying, 'select_image'::character varying, 'checkbox'::character varying, 'date'::character varying, 'number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying, 'file_upload'::character varying, 'shapefile_upload'::character varying, 'point'::character varying, 'line'::character varying, 'polygon'::character varying])::text[])))))
      JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
      CROSS JOIN LATERAL ( SELECT
                 CASE
@@ -3952,7 +3956,7 @@ CREATE VIEW public.reporting_input_question_answers AS
                     END
                     ELSE NULL::jsonb
                 END AS multiloc) label)
-  WHERE (((q.input_type)::text <> 'file_upload'::text) OR (EXISTS ( SELECT 1
+  WHERE (((q.input_type)::text <> ALL ((ARRAY['file_upload'::character varying, 'shapefile_upload'::character varying])::text[])) OR (EXISTS ( SELECT 1
            FROM public.file_attachments fa
           WHERE (fa.id =
                 CASE
@@ -3991,7 +3995,8 @@ UNION ALL
             ELSE NULL::character varying
         END AS question_category,
     NULL::text AS statement_key,
-    NULL::text AS statement_label
+    NULL::text AS statement_label,
+    NULL::jsonb AS value_geojson
    FROM ((((form_inputs i
      JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY ((ARRAY['multiselect'::character varying, 'multiselect_image'::character varying])::text[])))))
      JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
@@ -4024,7 +4029,8 @@ UNION ALL
             ELSE NULL::character varying
         END AS question_category,
     NULL::text AS statement_key,
-    NULL::text AS statement_label
+    NULL::text AS statement_label,
+    NULL::jsonb AS value_geojson
    FROM ((((form_inputs i
      JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = 'ranking'::text))))
      JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
@@ -4066,7 +4072,8 @@ UNION ALL
            FROM jsonb_each_text(s.title_multiloc) t(key, value)
           WHERE (t.value <> ''::text)
           ORDER BY t.key
-         LIMIT 1)) AS statement_label
+         LIMIT 1)) AS statement_label,
+    NULL::jsonb AS value_geojson
    FROM (((((form_inputs i
      JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = 'matrix_linear_scale'::text))))
      JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
@@ -10514,6 +10521,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261028130100'),
 ('20261028120100'),
 ('20261027120100'),
 ('20261014200000'),
