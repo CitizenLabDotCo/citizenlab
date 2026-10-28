@@ -26,4 +26,5 @@ const endpoints = {
   ),
 };
 
+// ts-prune-ignore-next
 export default endpoints;

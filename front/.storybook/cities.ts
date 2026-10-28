@@ -69,6 +69,7 @@ export const cityOf = (key: CityKey): City =>
   (cities as Record<string, City>)[key] ?? cities[DEFAULT_CITY];
 
 // The minimal tenant shape getTheme() reads.
+// ts-prune-ignore-next
 export const cityTenant = (key: CityKey) => {
   const { color_main, color_secondary, color_text, font } = cityOf(key);
   return {
@@ -84,7 +85,9 @@ export const cityTenant = (key: CityKey) => {
 // The city the canvas renders now, so the mocked app configuration answers
 // with the same colours and font as the theme: one tenant per story.
 let canvasCity: CityKey = DEFAULT_CITY;
+// ts-prune-ignore-next
 export const setCanvasCity = (key: CityKey) => {
   canvasCity = key;
 };
+// ts-prune-ignore-next
 export const getCanvasCity = () => canvasCity;
