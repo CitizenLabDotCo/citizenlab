@@ -213,8 +213,17 @@ export const ValueField = ({
   // some token can stand for the property.
   const pickable =
     (row.editable || !!row.pickOnly) && !!fitsProp(row.props[0] ?? '');
-  const [draft, setDraft] = useState(v.shown);
-  useEffect(() => setDraft(v.shown), [v.shown]);
+  const traced = source && source !== 'pending' ? source : undefined;
+  // The code's own word for the value (auto, 100%) over the measured
+  // length, until the session edits it.
+  const codeWord = !edit && !bound ? traced?.codeValue : undefined;
+  const shown = codeWord ?? v.shown;
+  const [draft, setDraft] = useState(shown);
+  useEffect(() => setDraft(shown), [shown]);
+  // A value read from a named variable is a pill, as a token is, until the
+  // person opens it to type a value.
+  const [open, setOpen] = useState(false);
+  const named = !bound && !edit && !open ? traced?.named : undefined;
 
   if (bound) {
     const token = v.token as TokenName;
@@ -274,6 +283,45 @@ export const ValueField = ({
     );
   }
 
+  if (named) {
+    return (
+      <>
+        <div
+          className="wb-vf wb-vf-pill wb-vf-named"
+          data-testid="wb-insp-value"
+          data-named={named}
+          data-raw={v.raw}
+          data-row={row.id}
+        >
+          <button
+            type="button"
+            className="wb-vf-body"
+            data-testid="wb-insp-named"
+            aria-label={`${name}: ${named}`}
+            title={`Read from ${named} in the code`}
+            onClick={() => row.editable && setOpen(true)}
+          >
+            {lead}
+            <span className="wb-vf-name">{named}</span>
+            <span className="wb-vf-muted">{v.shown}</span>
+          </button>
+          {row.editable && (
+            <button
+              type="button"
+              className="wb-vf-side wb-vf-detach"
+              data-testid="wb-insp-detach"
+              aria-label="Type a value"
+              onClick={() => setOpen(true)}
+            >
+              <Icon name="detach" size={14} />
+            </button>
+          )}
+        </div>
+        {below}
+      </>
+    );
+  }
+
   // A short list of values (direction, alignment): a menu, each choice
   // applied as it is.
   if (row.choices && row.editable) {
@@ -310,8 +358,8 @@ export const ValueField = ({
 
   const commit = (text: string) => {
     const t = text.trim();
-    if (!t || t === v.shown) {
-      setDraft(v.shown);
+    if (!t || t === shown) {
+      setDraft(shown);
       return;
     }
     onCommit(t);
@@ -348,6 +396,8 @@ export const ValueField = ({
             <input
               data-testid="wb-insp-input"
               aria-label={name}
+              data-code-value={codeWord}
+              title={codeWord ? `${codeWord} in the code` : undefined}
               value={draft}
               spellCheck={false}
               onChange={(e) => setDraft(e.target.value)}
@@ -357,7 +407,7 @@ export const ValueField = ({
                 if (e.key === 'Escape') {
                   // The panel's own Esc (select the parent) waits.
                   e.stopPropagation();
-                  setDraft(v.shown);
+                  setDraft(shown);
                 }
                 // Arrows step the number by 1, Shift by 10, as Foundations'
                 // fields do: a weight by 100 within 100 to 900, a line height
@@ -387,7 +437,7 @@ export const ValueField = ({
             />
           ) : (
             <span className="wb-vf-text" aria-label={name}>
-              {v.shown}
+              {shown}
             </span>
           )}
         </span>

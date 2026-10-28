@@ -462,6 +462,16 @@ const Design = ({
       custom(t, value);
       return true;
     }
+    // A value read from a named variable defined in the code keeps what was
+    // typed, so it can change where the variable is defined.
+    const line = editOf(t)?.define ? undefined : sourceOf(row);
+    if (
+      editOf(t)?.define ||
+      (line && line !== 'pending' && line.named && line.def)
+    ) {
+      custom(t, value);
+      return true;
+    }
     const r = snapValue(row.snap, value, meta);
     // Rows with no scale take a token whose value the typed one equals.
     const equal = r.to

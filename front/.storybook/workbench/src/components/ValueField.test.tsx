@@ -334,4 +334,48 @@ describe('ValueField glyph', () => {
       screen.getByTestId('wb-insp-define').getAttribute('aria-pressed')
     ).toBe('true');
   });
+
+  it('draws a value read from a named variable as a pill, opened to type', () => {
+    render(
+      <ValueField
+        row={row({ raw: '3px', shown: '3' }, 'radius')}
+        source={{
+          status: 'traced',
+          read: 'theme',
+          text: 'props.theme.borderRadius',
+          named: 'theme.borderRadius',
+        }}
+        onCommit={noop}
+        onAttach={noop}
+        onDetach={noop}
+        onOpenPicker={noop}
+      />
+    );
+    const pill = screen.getByTestId('wb-insp-named');
+    expect(pill.textContent).toBe('theme.borderRadius3');
+    expect(screen.queryByTestId('wb-insp-input')).toBeNull();
+    fireEvent.click(pill);
+    expect(
+      (screen.getByTestId('wb-insp-input') as HTMLInputElement).value
+    ).toBe('3');
+  });
+
+  it("shows the code's word, not the measured length", () => {
+    render(
+      <ValueField
+        row={row({ raw: '45px', shown: '45' }, 'h')}
+        source={{
+          status: 'traced',
+          read: 'literal',
+          text: "'auto'",
+          codeValue: 'auto',
+        }}
+        onCommit={noop}
+        onAttach={noop}
+        onDetach={noop}
+        onOpenPicker={noop}
+      />
+    );
+    expect(screen.getByTestId('wb-insp-value').textContent).toBe('auto');
+  });
 });

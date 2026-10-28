@@ -27,6 +27,13 @@ export type SourceLine = {
   differ?: boolean;
   token?: string;
   legacyKey?: string;
+  // The variable the code reads the value from (theme.borderRadius,
+  // theme.colors.tenantPrimary, fontSizes.xs): shown as a pill, as a token
+  // is.
+  named?: string;
+  // The value as the code writes it when it is a word, not the length the
+  // browser measured ('auto', '100%'): the field shows it.
+  codeValue?: string;
   // What an attach writes in the code: the traced expression, the same for
   // every longhand. Absent with `byHand` when a person must make the edit.
   trace?: EditTrace;
@@ -124,6 +131,10 @@ const words = (t: PropTrace): string => {
   return s.mapKey ? `${frame}${s.text} for ${s.mapKey}` : `${frame}${s.text}`;
 };
 
+// A single word the code writes: auto, 100%, fit-content, 50vh.
+const CODE_WORD = /^[a-z0-9.%-]+$/i;
+const PLAIN_LENGTH = /^-?\d+(\.\d+)?(px)?$/;
+
 /** The source line of a row from the traces of its longhands. */
 export const sourceLine = (
   traces: PropTrace[],
@@ -148,6 +159,19 @@ export const sourceLine = (
   };
   // The place: the leaf where the value is written; for a prop or a story
   // frame with no leaf, the declaration's own line.
+  if (t.status === 'traced' && !differ && s) {
+    if (s.legacyKey && s.read !== 'prop') line.named = s.legacyKey;
+    const v = s.staticValue?.trim();
+    if (
+      s.read === 'literal' &&
+      v &&
+      !(t.editable && 'part' in t.editable && t.editable.part !== undefined) &&
+      CODE_WORD.test(v) &&
+      !PLAIN_LENGTH.test(v)
+    ) {
+      line.codeValue = v;
+    }
+  }
   line.place = s
     ? placeOf(commit, s.file, s.line)
     : placeOf(commit, t.decl?.file, t.decl?.line);
