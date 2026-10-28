@@ -8554,6 +8554,11 @@
     "verified_at": "2026-10-26T13:27:19.471017Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterReply": {
+    "state": "verified",
+    "verified_at": "2026-10-28T15:49:59.788672Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterSource": {
     "state": "verified",
     "verified_at": "2026-10-28T14:54:05.807062Z",
@@ -8627,6 +8632,11 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectInput": {
     "state": "verified",
     "verified_at": "2026-10-28T14:54:05.807062Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.selectedCount": {
+    "state": "verified",
+    "verified_at": "2026-10-28T15:49:59.788672Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.sourceImported": {

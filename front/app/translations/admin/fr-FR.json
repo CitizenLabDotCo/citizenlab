@@ -1677,7 +1677,7 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filter": "Filtrer",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterAssignee": "Responsable",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterPhase": "Phase",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterReply": "Répondre",
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterReply": "Réponse",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterSource": "Source",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterStatus": "Statut",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterTags": "Étiquettes",
