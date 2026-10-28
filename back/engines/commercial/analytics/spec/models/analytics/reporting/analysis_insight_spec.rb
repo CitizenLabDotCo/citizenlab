@@ -5,10 +5,16 @@ require 'rails_helper'
 RSpec.describe Analytics::Reporting::AnalysisInsight do
   let(:analysis) { create(:analysis) }
 
+  # The task factories leave the run in progress; most examples need it finished.
+  def task(factory, state = 'succeeded')
+    create(factory, analysis: analysis, state: state, ended_at: (Time.now if %w[succeeded failed].include?(state)))
+  end
+
   it 'exposes a summary with its filters and source inputs' do
     idea = create(:idea, project: analysis.project)
     summary = create(
       :summary,
+      background_task: task(:summarization_task),
       summary: "Most want more trees [#{idea.id}].",
       accuracy: 0.8,
       insight_attributes: { analysis: analysis, filters: { 'search' => 'trees' }, inputs_ids: [idea.id] }
@@ -28,6 +34,7 @@ RSpec.describe Analytics::Reporting::AnalysisInsight do
   it 'exposes a question with its answer' do
     question = create(
       :analysis_question,
+      background_task: task(:q_and_a_task),
       question: 'What do people say about parking?',
       answer: 'They want fewer spaces.',
       insight_attributes: { analysis: analysis, filters: {} }
@@ -39,15 +46,38 @@ RSpec.describe Analytics::Reporting::AnalysisInsight do
     expect(row.body).to eq 'They want fewer spaces.'
   end
 
-  it 'leaves out insights that have no text yet' do
-    question = create(:analysis_question, answer: nil, insight_attributes: { analysis: analysis, filters: {} })
+  describe 'insights without finished text' do
+    where(:state, :answer, :exposed) do
+      [
+        ['succeeded', nil, false], # never answered
+        ['in_progress', '', false], # a run has just started
+        ['in_progress', 'They want', false], # the answer is streaming in
+        ['failed', 'They want fewer spaces.', true], # the earlier answer was put back
+        ['queued', 'They want fewer spaces.', true] # a new run hasn't started yet
+      ]
+    end
 
-    expect(described_class.where(id: question.insight.id)).to be_empty
+    with_them do
+      it 'exposes only a finished answer' do
+        question = create(
+          :analysis_question,
+          background_task: task(:q_and_a_task, state),
+          answer: answer,
+          insight_attributes: { analysis: analysis, filters: {} }
+        )
+
+        expect(described_class.exists?(question.insight.id)).to eq exposed
+      end
+    end
   end
 
   it 'gives the project of an analysis that covers a single phase' do
     phase_analysis = create(:survey_analysis)
-    summary = create(:summary, insight_attributes: { analysis: phase_analysis, filters: {} })
+    summary = create(
+      :summary,
+      background_task: task(:summarization_task),
+      insight_attributes: { analysis: phase_analysis, filters: {} }
+    )
     row = described_class.find(summary.insight.id)
 
     expect(row.phase_id).to eq phase_analysis.phase_id

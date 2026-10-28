@@ -73,7 +73,10 @@ module Analytics
             The platform's rough rating (0 to 1) of how reliable the AI setup
             used was. Treat insights with a low rating with extra care.
           DOC
-          'generated_at' => 'When the AI wrote the text (UTC).',
+          'generated_at' => <<~DOC.squish,
+            When the AI wrote the text (UTC). NULL when a later run failed and
+            the earlier text was kept.
+          DOC
           'created_at' => 'When the admin asked for the insight (UTC).'
         }
       end

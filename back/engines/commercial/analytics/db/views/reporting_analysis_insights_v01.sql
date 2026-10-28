@@ -1,7 +1,10 @@
 -- Reporting view: one row per finished insight of an AI analysis: a summary
 -- of a set of inputs, or a question an admin asked about them and the answer.
--- Insights still being generated, or that failed, have no text yet and are
--- left out. The prompt sent to the LLM is internal and not exposed.
+-- Insights without text are left out. So are insights being generated: a run
+-- empties the text, then streams the answer into it as the LLM writes. A
+-- failed run puts the earlier text back, and a queued run hasn't touched it
+-- yet, so both keep their row. The prompt sent to the LLM is internal and not
+-- exposed.
 SELECT
     ins.id,
     ins.analysis_id,
@@ -26,4 +29,7 @@ LEFT JOIN analysis_summaries s
     ON ins.insightable_type = 'Analysis::Summary' AND s.id = ins.insightable_id
 LEFT JOIN analysis_questions q
     ON ins.insightable_type = 'Analysis::Question' AND q.id = ins.insightable_id
-WHERE COALESCE(s.summary, q.answer) IS NOT NULL
+INNER JOIN analysis_background_tasks task
+    ON task.id = COALESCE(s.background_task_id, q.background_task_id)
+WHERE NULLIF(COALESCE(s.summary, q.answer), '') IS NOT NULL
+    AND task.state <> 'in_progress'

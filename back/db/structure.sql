@@ -3983,12 +3983,13 @@ CREATE VIEW public.reporting_analysis_insights AS
     COALESCE(s.accuracy, q.accuracy) AS accuracy,
     COALESCE(s.generated_at, q.generated_at) AS generated_at,
     ins.created_at
-   FROM ((((public.analysis_insights ins
+   FROM (((((public.analysis_insights ins
      JOIN public.analysis_analyses a ON ((a.id = ins.analysis_id)))
      LEFT JOIN public.phases ph ON ((ph.id = a.phase_id)))
      LEFT JOIN public.analysis_summaries s ON ((((ins.insightable_type)::text = 'Analysis::Summary'::text) AND (s.id = ins.insightable_id))))
      LEFT JOIN public.analysis_questions q ON ((((ins.insightable_type)::text = 'Analysis::Question'::text) AND (q.id = ins.insightable_id))))
-  WHERE (COALESCE(s.summary, q.answer) IS NOT NULL);
+     JOIN public.analysis_background_tasks task ON ((task.id = COALESCE(s.background_task_id, q.background_task_id))))
+  WHERE ((NULLIF(COALESCE(s.summary, q.answer), ''::text) IS NOT NULL) AND ((task.state)::text <> 'in_progress'::text));
 
 
 --
