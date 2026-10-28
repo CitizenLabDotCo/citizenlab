@@ -50,6 +50,10 @@ class AppConfiguration < ApplicationRecord
         settings_schema['dependencies'][spec.feature_name] = spec.dependencies if spec.dependencies.present?
       end
 
+      settings_schema['properties'].each_value do |feature|
+        feature['properties']['early_access_upgrade'] = EARLY_ACCESS_UPGRADE_SCHEMA if feature['early_access'] == 'internal'
+      end
+
       settings_schema.with_indifferent_access
     end
 
@@ -70,6 +74,16 @@ class AppConfiguration < ApplicationRecord
     end
 
     EARLY_ACCESS_TIERS = %w[general internal].freeze
+
+    # Lets Admin HQ offer an internal early access feature to the admins of one platform,
+    # as if its tier were general. Only added to features whose tier is internal.
+    EARLY_ACCESS_UPGRADE_SCHEMA = {
+      'type' => 'boolean',
+      'default' => false,
+      'private' => true,
+      'title' => 'Early access for admins',
+      'description' => 'Offer this feature to the admins of this platform as early access, not only to Go Vocal staff.'
+    }.freeze
 
     # @return [Hash{String => String}] feature name => early access tier, for every feature open to early access
     def self.early_access_tiers
