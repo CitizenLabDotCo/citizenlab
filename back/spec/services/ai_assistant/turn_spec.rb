@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-describe AIAssistant::Runner do
-  subject(:runner) { described_class.new(conversation) }
+describe AIAssistant::Turn do
+  subject(:turn) { described_class.new(conversation) }
 
   let(:conversation) { create(:ai_assistant_conversation, status: 'running') }
   let(:phase) { conversation.context }
@@ -16,7 +16,7 @@ describe AIAssistant::Runner do
   it 'stores a text reply and goes idle' do
     stub_bedrock(bedrock_text('Which topics should the survey cover?'))
 
-    runner.run
+    turn.run
 
     reply = conversation.messages.last
     expect(reply).to have_attributes(role: 'assistant', content: 'Which topics should the survey cover?', input_tokens: 100, output_tokens: 20)
@@ -27,7 +27,7 @@ describe AIAssistant::Runner do
   it 'fails when the context is no longer available' do
     phase.update_columns(participation_method: 'information')
 
-    runner.run
+    turn.run
 
     expect(conversation.reload).to have_attributes(status: 'failed', last_error_code: 'context_unavailable')
   end
@@ -37,7 +37,7 @@ describe AIAssistant::Runner do
       create(:ai_assistant_message, conversation:, content: 'Are you there?')
       stub_bedrock(bedrock_text('Yes.'))
 
-      runner.run
+      turn.run
 
       messages = last_request_messages
       expect(messages.pluck('role')).to eq(%w[user assistant user])

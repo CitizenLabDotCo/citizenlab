@@ -18,7 +18,7 @@ module AIAssistant
     def run(conversation)
       return unless conversation.running?
 
-      Runner.new(conversation).run
+      Turn.new(conversation).run
     end
 
     def handle_error(error)

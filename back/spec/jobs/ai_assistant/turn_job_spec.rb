@@ -7,17 +7,17 @@ describe AIAssistant::TurnJob, :active_job_que_adapter do
   let(:job) { described_class.perform_later(conversation) }
 
   it 'runs the turn of a running conversation' do
-    runner = instance_double(AIAssistant::Runner, run: nil)
-    allow(AIAssistant::Runner).to receive(:new).with(conversation).and_return(runner)
+    turn = instance_double(AIAssistant::Turn, run: nil)
+    allow(AIAssistant::Turn).to receive(:new).with(conversation).and_return(turn)
 
     job.perform_now
 
-    expect(runner).to have_received(:run)
+    expect(turn).to have_received(:run)
   end
 
   it 'does nothing for a conversation that is not running' do
     conversation.update!(status: 'idle')
-    expect(AIAssistant::Runner).not_to receive(:new)
+    expect(AIAssistant::Turn).not_to receive(:new)
 
     job.perform_now
   end
