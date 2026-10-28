@@ -10569,6 +10569,11 @@
     "verified_at": "2026-09-16T19:26:50.578477Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.publishArchiveTitle": {
+    "state": "verified",
+    "verified_at": "2026-10-28T16:04:54.365190Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.publishButton": {
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.578477Z",
