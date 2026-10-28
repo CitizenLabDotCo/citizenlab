@@ -132,6 +132,23 @@ describe Export::InputReportFields do
         )
       end
 
+      it 'are blank for an input posted anonymously' do
+        input = create(:native_survey_response, project: phase.project, creation_phase: phase, anonymous: true)
+        create(:participation_location, trackable: input, city: 'Brussels')
+        city_field = described_class.new(phase).all.find { |field| field.key == 'participation_location_city' }
+
+        expect(city_field.value_from(input.reload)).to be_nil
+      end
+
+      it 'are kept for an input that has no author but is not anonymous' do
+        input = create(:native_survey_response, project: phase.project, creation_phase: phase, author: nil)
+        create(:participation_location, trackable: input, city: 'Brussels')
+        city_field = described_class.new(phase).all.find { |field| field.key == 'participation_location_city' }
+
+        expect(input.reload.anonymous).to be false
+        expect(city_field.value_from(input)).to eq 'Brussels'
+      end
+
       it 'are empty for an input without a recorded location' do
         input = create(:native_survey_response, project: phase.project, creation_phase: phase)
         city_field = described_class.new(phase).all.find { |field| field.key == 'participation_location_city' }

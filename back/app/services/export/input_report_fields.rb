@@ -56,7 +56,7 @@ module Export
     # Every column of the export, in sheet order: the input id, the form
     # questions (with latitude/longitude ahead of the location answer), author
     # identification, method-specific meta columns, out-of-form user fields
-    # and, last, where the participant was when they submitted.
+    # and, last, where the participant was when the input was created.
     def all
       @all ||= reject_redacted(
         [input_id_report_field] +
@@ -168,16 +168,17 @@ module Export
       end
     end
 
-    # Approximate location of the participant at submission time, from the
-    # CDN's IP geolocation (see ParticipationLocationService). It is personal
-    # data, so it follows the same rule as the author columns.
+    # Approximate location of the participant when the input was created
+    # (a draft or survey response may be submitted later), from the CDN's IP
+    # geolocation (see ParticipationLocationService). It is personal data, so
+    # it follows the same rule as the author columns.
     def participation_location_report_fields
       return [] unless include_private_attributes && ParticipationLocationService.enabled_for?(phase.project)
 
       ParticipationLocation::EXPORT_COLUMNS.map do |key, attribute|
         ComputedFieldForReport.new(
           column_header_for(key),
-          ->(input) { input.participation_location&.export_value(attribute) },
+          ->(input) { input.participation_location_for_export(attribute) },
           key: key
         )
       end

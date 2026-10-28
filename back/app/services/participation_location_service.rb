@@ -36,8 +36,10 @@ class ParticipationLocationService
 
     private
 
+    # Participants who choose to post anonymously are not located, since the
+    # location could identify them.
     def should_track?(trackable)
-      enabled_for?(trackable.project)
+      enabled_for?(trackable.project) && !trackable.try(:anonymous?)
     end
 
     def parse_decimal(value)

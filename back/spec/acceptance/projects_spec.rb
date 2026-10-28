@@ -1235,6 +1235,19 @@ resource 'Projects' do
         })
       end
 
+      describe 'when two phases share a title' do
+        before do
+          project.phases.find_by(participation_method: 'native_survey')
+            .update!(title_multiloc: { 'en' => 'Phase 1: Ideation' })
+        end
+
+        example 'Gives each phase its own sheet', document: false do
+          do_request
+          assert_status 200
+          expect(xlsx_contents(response_body).pluck(:sheet_name)).to include('Phase 1 Ideation (1)', 'Phase 1 Ideation (2)')
+        end
+      end
+
       describe 'with selected inputs' do
         parameter :ideas, 'Only export these inputs, in the same sheets and columns', required: false
 

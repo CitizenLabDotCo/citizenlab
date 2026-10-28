@@ -1,6 +1,6 @@
 module Export
   module Xlsx
-    class InputsGenerator
+    class InputsGenerator < Generator
       def generate_inputs_for_phase(phase_id, redacted_field_keys: [])
         phase = eager_load_phase(phase_id)
         create_stream do |workbook|
@@ -49,27 +49,27 @@ module Export
       end
 
       def generate_for_timeline_project(workbook, project, idea_ids: nil)
-        project.phases.each do |phase|
-          next if !phase.pmethod.supports_exports?
+        phases = project.phases.select { |phase| phase.pmethod.supports_exports? }
+        phases_to_titles = add_suffix_to_duplicate_titles(phases) # avoid ArgumentError due to duplicate sheet names
 
-          generate_phase_sheet(workbook, phase, idea_ids: idea_ids)
+        phases.each do |phase|
+          generate_phase_sheet(workbook, phase, idea_ids: idea_ids, sheet_name: phases_to_titles[phase.id])
         end
       end
 
-      def generate_phase_sheet(workbook, phase, redacted_field_keys: [], idea_ids: nil)
+      def generate_phase_sheet(workbook, phase, redacted_field_keys: [], idea_ids: nil, sheet_name: nil)
         inputs = phase.inputs_for_export
         inputs = inputs.where(id: idea_ids) if idea_ids
-        generate_sheet(workbook, eager_load_inputs(inputs), phase, redacted_field_keys: redacted_field_keys)
+        generate_sheet(workbook, eager_load_inputs(inputs), phase, redacted_field_keys: redacted_field_keys, sheet_name: sheet_name)
       end
 
       def generate_input_sheet(workbook, input)
         generate_sheet(workbook, [input], input.creation_phase)
       end
 
-      def generate_sheet(workbook, inputs, phase, redacted_field_keys: [])
+      def generate_sheet(workbook, inputs, phase, redacted_field_keys: [], sheet_name: nil)
         sheet_generator = InputSheetGenerator.new(inputs, phase, redacted_field_keys: redacted_field_keys)
-        sheet_name = MultilocService.new.t phase.title_multiloc
-        sheet_generator.generate_sheet(workbook, sheet_name)
+        sheet_generator.generate_sheet(workbook, sheet_name || multiloc_service.t(phase.title_multiloc))
       end
 
       def create_stream

@@ -36,11 +36,7 @@ module Export
           f: ->(b) { b.submitted_at }, skip_sanitization: true
         }
 
-        if ParticipationLocationService.enabled_for?(phase.project)
-          columns += xlsx_service.participation_location_columns.map do |column|
-            column.merge(header: I18n.t(column[:header], scope: 'xlsx_export.column_headers'))
-          end
-        end
+        columns += xlsx_service.participation_location_columns if ParticipationLocationService.enabled_for?(phase.project)
 
         xlsx_service.generate_sheet workbook, sheet_name, columns, baskets
       end

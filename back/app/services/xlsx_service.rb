@@ -189,7 +189,9 @@ class XlsxService
     generate_xlsx 'Ideas', columns, ideas
   end
 
-  def generate_comments_xlsx(comments, view_private_attributes: false, with_participation_location: false)
+  # Participant location is only exported for comments within one project
+  # that tracks it.
+  def generate_comments_xlsx(comments, view_private_attributes: false, project: nil)
     columns = [
       { header: 'id',                 f: ->(c) { c.id }, skip_sanitization: true },
       { header: 'input',              f: ->(c) { multiloc_service.t(c.idea.title_multiloc) } },
@@ -205,7 +207,7 @@ class XlsxService
     ]
     columns.concat user_custom_field_columns(:author)
     columns.reject! { |c| %w[author_name author_email author_id].include?(c[:header]) } unless view_private_attributes
-    columns.concat participation_location_columns if view_private_attributes && with_participation_location
+    columns.concat participation_location_columns if view_private_attributes && ParticipationLocationService.enabled_for?(project)
     generate_xlsx 'Comments', columns, comments
   end
 
@@ -238,10 +240,13 @@ class XlsxService
   end
 
   # Where the participant was when they created each record (a comment,
-  # basket, ...). Headers are the untranslated column keys.
+  # basket, ...).
   def participation_location_columns
     ParticipationLocation::EXPORT_COLUMNS.map do |key, attribute|
-      { header: key, f: ->(record) { record.participation_location&.export_value(attribute) } }
+      {
+        header: I18n.t(key, scope: 'xlsx_export.column_headers'),
+        f: ->(record) { record.participation_location_for_export(attribute) }
+      }
     end
   end
 

@@ -74,7 +74,8 @@ class WebApi::V1::CommentsController < ApplicationController
 
   def index_xlsx
     if params[:project].present?
-      authorize Project.find(params[:project]), :index_xlsx?
+      project = Project.find(params[:project])
+      authorize project, :index_xlsx?
     else
       authorize :comment, :index_xlsx?
     end
@@ -88,16 +89,12 @@ class WebApi::V1::CommentsController < ApplicationController
     end
     @comments = @comments.where(idea_id: params[:ideas]) if params[:ideas].present?
 
-    # Participant location is only exported in the context of one project.
-    with_participation_location = params[:project].present? &&
-                                  ParticipationLocationService.enabled_for?(Project.find(params[:project]))
-
     I18n.with_locale(current_user&.locale) do
       service = XlsxService.new
       xlsx = service.generate_comments_xlsx(
         @comments.includes(author: :custom_field_answers),
         view_private_attributes: true,
-        with_participation_location: with_participation_location
+        project: project
       )
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments.xlsx'
     end

@@ -262,18 +262,31 @@ describe XlsxService do
     end
 
     describe 'participation location columns' do
-      let(:xlsx) { service.generate_comments_xlsx(comments, view_private_attributes: true, with_participation_location: true) }
-      let(:location_headers) { ParticipationLocation::EXPORT_COLUMNS.keys }
+      let(:project) { comments.first.idea.project }
+      let(:xlsx) { service.generate_comments_xlsx(comments, view_private_attributes: true, project: project) }
+      let(:location_headers) do
+        ['Participant country', 'Participant region', 'Participant city', 'Participant latitude', 'Participant longitude']
+      end
       let(:headers) { worksheet[0].cells.map(&:value) }
+      let(:city_of_row) { ->(row) { worksheet[row].cells.map(&:value)[headers.index('Participant city')] } }
 
-      before { create(:participation_location, trackable: comments.first, city: 'Brussels') }
+      before do
+        SettingsService.new.activate_feature!('participation_location_tracking')
+        project.update!(track_participation_location: true)
+        create(:participation_location, trackable: comments.first, city: 'Brussels')
+      end
 
       it 'are the last columns, filled from the recorded location' do
         expect(headers.last(location_headers.size)).to eq location_headers
-        expect(worksheet[1].cells.map(&:value)[headers.index('participation_location_city')]).to eq 'Brussels'
+        expect(city_of_row.call(1)).to eq 'Brussels'
       end
 
-      describe 'when not asked for' do
+      it 'are blank for an anonymous comment' do
+        comments.first.update!(anonymous: true)
+        expect(city_of_row.call(1)).to be_blank
+      end
+
+      describe 'without a project' do
         let(:xlsx) { service.generate_comments_xlsx(comments, view_private_attributes: true) }
 
         it 'are left out' do
@@ -281,8 +294,16 @@ describe XlsxService do
         end
       end
 
+      describe 'when the project does not track location' do
+        before { project.update!(track_participation_location: false) }
+
+        it 'are left out' do
+          expect(headers).not_to include(*location_headers)
+        end
+      end
+
       describe 'without private attributes' do
-        let(:xlsx) { service.generate_comments_xlsx(comments, view_private_attributes: false, with_participation_location: true) }
+        let(:xlsx) { service.generate_comments_xlsx(comments, view_private_attributes: false, project: project) }
 
         it 'are left out' do
           expect(headers).not_to include(*location_headers)
