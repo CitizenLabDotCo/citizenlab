@@ -4,19 +4,19 @@
 #
 # Table name: ai_assistant_tool_calls
 #
-#  id              :uuid             not null, primary key
-#  message_id      :uuid             not null
-#  tool_use_id     :string           not null
-#  name            :string           not null
-#  arguments       :jsonb            not null
-#  bound_arguments :jsonb            not null
-#  status          :string           not null
-#  result          :text
-#  decided_by_id   :uuid
-#  decided_at      :datetime
-#  reason          :text
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
+#  id               :uuid             not null, primary key
+#  message_id       :uuid             not null
+#  tool_use_id      :string           not null
+#  name             :string           not null
+#  arguments        :jsonb            not null
+#  pinned_arguments :jsonb            not null
+#  status           :string           not null
+#  result           :text
+#  decided_by_id    :uuid
+#  decided_at       :datetime
+#  reason           :text
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 # Indexes
 #

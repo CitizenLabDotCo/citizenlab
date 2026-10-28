@@ -6,11 +6,12 @@ module AIAssistant
   class Turn
     MAX_TOOL_CALLS = 10
     MAX_OUTPUT_TOKENS = 16_000
+    BUDGET_TEXT = { error: 'Too many tool calls in one turn. Stop and summarise for the user.' }.to_json
     # Bedrock refuses two user turns in a row, which happens when a turn failed before the
     # user wrote again.
     NO_REPLY_TEXT = '(No reply.)'
 
-    attr_reader :conversation, :user, :current_tool_call
+    attr_reader :conversation
 
     def initialize(conversation)
       @conversation = conversation
@@ -34,11 +35,29 @@ module AIAssistant
       finish
     end
 
+    # Runs a call of +tool+ by the model right away, as the conversation's user.
+    def handle_tool_call(tool, args)
+      arguments = args.except(*tool.pinned.keys)
+
+      if over_tool_budget?
+        @current_tool_call.update!(status: 'failed', arguments:, result: BUDGET_TEXT)
+        RubyLLM::Tool::Halt.new(BUDGET_TEXT)
+      else
+        run_read_tool(tool, arguments)
+      end
+    end
+
+    private
+
     def over_tool_budget?
       @tool_call_count > MAX_TOOL_CALLS
     end
 
-    private
+    def run_read_tool(tool, arguments)
+      result = tool.call(@user, arguments.merge(tool.pinned))
+      @current_tool_call.update!(status: result.error ? 'failed' : 'auto_executed', arguments:, result: result.text)
+      result.text
+    end
 
     # The turn already ended, but the worker stopped before saving the status.
     def ended?
@@ -51,7 +70,7 @@ module AIAssistant
       llm.chat_context
         .chat(model: llm.model, **llm.chat_options)
         .with_instructions(@surface.system_prompt(locale: conversation.locale))
-        .with_tools(*@surface.tools.map { |tool| McpTool.new(tool, self) })
+        .with_tools(*@surface.tools.map { |tool| LLMTool.new(tool, self) })
         .with_params(inferenceConfig: { maxTokens: MAX_OUTPUT_TOKENS })
         .after_message { |message| persist(message) }
         .before_tool_call { |tool_call| start_tool_call(tool_call) }
@@ -127,7 +146,7 @@ module AIAssistant
     # e.g. because the model asked for a tool that doesn't exist.
     def persist_tool_result(message)
       tool_call = @tool_calls_by_use_id[message.tool_call_id]
-      return unless tool_call&.reload&.pending?
+      return unless tool_call&.pending?
 
       tool_call.update!(status: 'failed', result: text_of(message.content))
     end
@@ -139,6 +158,23 @@ module AIAssistant
 
     def text_of(content)
       content.is_a?(RubyLLM::Content) ? content.text : content&.to_s.presence
+    end
+
+    # What RubyLLM sees of a Tool. The turn decides what a call does.
+    class LLMTool < RubyLLM::Tool
+      def initialize(tool, turn)
+        super()
+        @tool = tool
+        @turn = turn
+      end
+
+      def name = @tool.name
+      def description = @tool.description
+      def params_schema = @tool.llm_schema
+
+      def execute(**args)
+        @turn.handle_tool_call(@tool, args.deep_stringify_keys)
+      end
     end
   end
 end

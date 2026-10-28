@@ -41,7 +41,7 @@ describe AIAssistant::Turn do
       bedrock_text('The survey has one question.')
     )
 
-    runner.run
+    turn.run
 
     tool_call = AIAssistant::ToolCall.find_by!(tool_use_id: 'read_1')
     expect(tool_call).to have_attributes(status: 'auto_executed', arguments: {})
@@ -55,7 +55,7 @@ describe AIAssistant::Turn do
   it 'marks calls to unknown tools as failed' do
     stub_bedrock(bedrock_tool_use({ id: 'x_1', name: 'delete_everything', input: {} }), bedrock_text('Never mind.'))
 
-    runner.run
+    turn.run
 
     expect(AIAssistant::ToolCall.sole).to have_attributes(status: 'failed', result: include('delete_everything'))
   end
@@ -66,7 +66,7 @@ describe AIAssistant::Turn do
       bedrock_tool_use({ id: 'read_1', name: 'get_form_fields' }, { id: 'read_2', name: 'get_form_fields' })
     )
 
-    runner.run
+    turn.run
 
     expect(AIAssistant::ToolCall.order(:tool_use_id).pluck(:status)).to eq(%w[auto_executed failed])
     expect(conversation.reload).to have_attributes(status: 'failed', last_error_code: 'tool_budget_exceeded')
