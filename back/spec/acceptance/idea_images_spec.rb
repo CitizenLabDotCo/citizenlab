@@ -52,6 +52,20 @@ resource 'IdeaImage' do
       expect(json_response.dig(:data, :attributes, :versions).keys).to match_array %i[small medium large fb square_medium]
       expect(json_response.dig(:data, :attributes, :ordering)).to eq(1)
     end
+
+    example 'Unauthorized (401) when not signed in', document: false do
+      header 'Authorization', nil
+
+      expect { do_request }.not_to change(IdeaImage, :count)
+      assert_status 401
+    end
+
+    example 'Unauthorized (401) for a resident who is not the author', document: false do
+      resident_header_token
+
+      expect { do_request }.not_to change(IdeaImage, :count)
+      assert_status 401
+    end
   end
 
   patch 'web_api/v1/ideas/:idea_id/images/:image_id' do

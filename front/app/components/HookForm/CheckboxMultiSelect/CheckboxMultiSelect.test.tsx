@@ -59,4 +59,16 @@ describe('CheckboxMultiSelect', () => {
       expect(onSubmit).toHaveBeenCalledWith({ multiSelect: ['1'] })
     );
   });
+
+  // Regression test: clicks in the padding of an option box used to do nothing.
+  it('toggles an option when its box is clicked outside the label', async () => {
+    render(<Form />);
+
+    fireEvent.click(screen.getAllByTestId('check-mark-label')[1]);
+    fireEvent.click(screen.getByText(/submit/i));
+
+    await waitFor(() =>
+      expect(onSubmit).toHaveBeenCalledWith({ multiSelect: ['1', '2'] })
+    );
+  });
 });

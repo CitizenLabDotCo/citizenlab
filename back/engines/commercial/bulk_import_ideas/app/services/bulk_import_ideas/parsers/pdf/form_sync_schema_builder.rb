@@ -4,10 +4,11 @@ module BulkImportIdeas::Parsers::Pdf
   class FormSyncSchemaBuilder
     NOT_FOUND = '_NOT_FOUND_'
 
-    def initialize(phase, locale, personal_data_enabled: false)
+    def initialize(phase, locale, personal_data_enabled: false, printable_fields: nil)
       @phase = phase
       @locale = locale
       @personal_data_enabled = personal_data_enabled
+      @printable_form_fields = printable_fields
       @key_mapping = {}
     end
 

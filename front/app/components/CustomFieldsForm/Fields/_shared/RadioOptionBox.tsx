@@ -11,6 +11,12 @@ const StyledBox = styled(Box)<{ selected: boolean }>`
   }
 `;
 
+// Spread onto the Radio inside the box rather than set on the box itself:
+// the Radio's root handles the click, so this way the whole box is clickable.
+export const radioOptionPadding = {
+  padding: '20px 20px 8px 20px',
+} as const;
+
 interface Props {
   selected: boolean;
   children: React.ReactNode;
@@ -23,7 +29,6 @@ const RadioOptionBox = ({ selected, children }: Props) => {
   return (
     <StyledBox
       mb="12px"
-      padding="20px 20px 8px 20px"
       border={
         selected
           ? `2px solid ${theme.colors.tenantPrimary}`

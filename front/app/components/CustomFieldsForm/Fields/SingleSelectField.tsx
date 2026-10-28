@@ -19,7 +19,7 @@ import { SEARCHABLE_OPTION_COUNT } from '../constants';
 import messages from '../messages';
 import { extractOptions, isDropdownLayoutForced } from '../util';
 
-import RadioOptionBox from './_shared/RadioOptionBox';
+import RadioOptionBox, { radioOptionPadding } from './_shared/RadioOptionBox';
 
 const SingleSelectField = ({
   question,
@@ -90,6 +90,7 @@ const SingleSelectField = ({
                 buttonColor={theme.colors.tenantPrimary}
                 canDeselect
                 disabled={disabled}
+                {...radioOptionPadding}
               />
             </RadioOptionBox>
           ))}

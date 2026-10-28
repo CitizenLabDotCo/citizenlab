@@ -47,7 +47,8 @@ resource 'Users' do
       DESC
 
       parameter :sort, <<~DESC, required: false
-        Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'
+        Sort user by 'created_at', '-created_at', 'registration_completed_at', '-registration_completed_at',
+        'last_name', '-last_name', 'email', '-email', 'role', '-role'
       DESC
 
       example_request '[error] List all users' do
@@ -749,7 +750,10 @@ resource 'Users' do
           parameter :size, 'Number of users per page'
         end
         parameter :search, 'Filter by searching in first_name, last_name and email', required: false
-        parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'", required: false
+        parameter :sort, <<~DESC, required: false
+          Sort user by 'created_at', '-created_at', 'registration_completed_at', '-registration_completed_at',
+          'last_name', '-last_name', 'email', '-email', 'role', '-role'
+        DESC
         parameter :group, 'Filter by group_id', required: false
         parameter :project, 'Filter by users who participated in the project (by project id)', required: false
         parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
@@ -894,6 +898,74 @@ resource 'Users' do
           json_response = json_parse(response_body)
 
           expect(json_response[:data].map { |u| u.dig(:attributes, :email) }.last).to eq inactive_user.email
+        end
+
+        # Backdates every user, the admin from the outer context included, so they
+        # all have distinct dates and the expected order is unambiguous.
+        def create_users_registered_on_distinct_days
+          %w[Bednar Cole Hagenes].each { |l| create(:user, last_name: l) }
+          User.all.each_with_index do |user, i|
+            user.update!(registration_completed_at: Time.now - i.days)
+          end
+        end
+
+        example 'List all users sorted by registration_completed_at' do
+          create_users_registered_on_distinct_days
+
+          do_request sort: 'registration_completed_at'
+
+          assert_status 200
+          expect(response_data.pluck(:id)).to eq User.order(:registration_completed_at).pluck(:id)
+        end
+
+        example 'List all users sorted by -registration_completed_at' do
+          create_users_registered_on_distinct_days
+
+          do_request sort: '-registration_completed_at'
+
+          assert_status 200
+          expect(response_data.pluck(:id)).to eq User.order(registration_completed_at: :desc).pluck(:id)
+        end
+
+        # Users without a registration date are only returned when include_inactive is set,
+        # since the index applies the `registered` scope otherwise. A pending invite has no
+        # date and sorts as the most recent: first when descending, last when ascending.
+        {
+          'registration_completed_at' => :last,
+          '-registration_completed_at' => :first
+        }.each do |sort_param, nil_position|
+          example "List all users sorted by #{sort_param} lists nil values #{nil_position}", document: false do
+            create_users_registered_on_distinct_days
+            invitee = create(:invited_user)
+
+            do_request sort: sort_param, include_inactive: true
+
+            assert_status 200
+            expect(response_data.pluck(:id).public_send(nil_position)).to eq invitee.id
+          end
+        end
+
+        # Both invitees lack a registration date, so only the tie-breaker decides their order.
+        example 'List all users sorted by -registration_completed_at breaks ties on created_at', document: false do
+          older, newer = create_list(:invited_user, 2)
+          older.update!(created_at: 2.days.ago)
+          newer.update!(created_at: 1.day.ago)
+
+          do_request sort: '-registration_completed_at', include_inactive: true
+
+          assert_status 200
+          expect(response_data.pluck(:id).first(2)).to eq [newer.id, older.id]
+        end
+
+        example 'List all users sorted by registration_completed_at breaks ties on created_at', document: false do
+          older, newer = create_list(:invited_user, 2)
+          older.update!(created_at: 2.days.ago)
+          newer.update!(created_at: 1.day.ago)
+
+          do_request sort: 'registration_completed_at', include_inactive: true
+
+          assert_status 200
+          expect(response_data.pluck(:id).last(2)).to eq [older.id, newer.id]
         end
 
         example 'List all users in group' do
@@ -2135,6 +2207,11 @@ resource 'Users' do
         end
 
         describe do
+          before do
+            AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'franceconnect' }] }
+            AppConfiguration.instance.save!
+          end
+
           let(:cf) { create(:custom_field) }
           let(:birthyear_cf) { create(:custom_field_birthyear) }
           let(:custom_field_values) do
@@ -2171,6 +2248,11 @@ resource 'Users' do
         end
 
         describe do
+          before do
+            AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'bogus' }] }
+            AppConfiguration.instance.save!
+          end
+
           let(:cf) { create(:custom_field) }
           let(:gender_cf) { create(:custom_field_gender) }
           let(:custom_field_values) do

@@ -143,7 +143,7 @@ const NewProjectForm = ({ id, failed, apiErrors, onSubmit }: Props) => {
         ))}
       </FormSection>
 
-      <FormSection label={formatMessage(visibilityMessages.publishWhoCanOpen)}>
+      <FormSection label={formatMessage(visibilityMessages.publishWhoCanSee)}>
         {OPEN_OPTIONS.map((option) => (
           <ChoiceRadio<Visibility>
             key={option.value}

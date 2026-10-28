@@ -839,9 +839,10 @@
 
       "project_backoffice_redesign": {
         "type": "object",
-        "title": "Project Backoffice Redesign [DO NOT ENABLE]",
-        "description": "Show the project back office as a single three-pane workspace instead of a page per setting. Still under development, not ready for customer use.",
+        "title": "Project Backoffice Redesign",
+        "description": "Show the project back office as a single three-pane workspace instead of a page per setting.",
         "early_access": "internal",
+        "development": true,
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -852,8 +853,8 @@
 
       "project_static_pages": {
         "type": "object",
-        "title": "Project Static Pages [DO NOT ENABLE]",
-        "description": "Allow static pages to be created and added to individual projects. Still under development, not ready for customer use.",
+        "title": "Project Static Pages",
+        "description": "Allow static pages to be created and added to individual projects.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -867,6 +868,7 @@
         "title": "URL redirection rules",
         "description":  "Define redirection rules on certain targets",
         "additionalProperties": false,
+        "early_access": "general",
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -1201,7 +1203,7 @@
 
       "input_iq": {
         "type": "object",
-        "title": "InputIQ",
+        "title": "Similar Inputs",
         "description":	"Help the user with writing better ideas and proposals through AI assistance while typing in the input form. Inputs posted while the feature was disabled will not be listed as similar inputs.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],

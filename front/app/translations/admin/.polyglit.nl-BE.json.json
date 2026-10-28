@@ -5244,6 +5244,11 @@
     "verified_at": "2026-03-27T15:03:31.299504Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": {
+    "state": "verified",
+    "verified_at": "2026-10-16T18:06:55.079502Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
@@ -11709,6 +11714,11 @@
     "verified_at": "2026-09-15T12:47:12.657839Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.publishOpenEveryoneDescription2": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:52.432666Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.publishOpenGroups": {
     "state": "verified",
     "verified_at": "2026-09-15T12:47:12.657839Z",
@@ -11793,6 +11803,11 @@
     "state": "verified",
     "verified_at": "2026-10-01T15:12:00.428635Z",
     "verified_by": "Pauline"
+  },
+  "app.containers.Admin.projects.project.publishWhoCanSee": {
+    "state": "verified",
+    "verified_at": "2026-10-13T15:16:52.432666Z",
+    "verified_by": "Luuc"
   },
   "app.containers.Admin.projects.project.recommendedActionsHint": {
     "state": "verified",
@@ -24840,11 +24855,6 @@
     "verified_by": "Admin"
   },
   "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets.Selection.withThisWidgetFolder": {
-    "state": "verified",
-    "verified_at": "2026-03-18T11:49:32.517997Z",
-    "verified_by": "Admin"
-  },
-  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
     "verified_by": "Admin"
