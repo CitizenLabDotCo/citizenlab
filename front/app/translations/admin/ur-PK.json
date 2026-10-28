@@ -957,6 +957,7 @@
   "app.containers.Admin.Users.SeatsOverview.role": "کردار",
   "app.containers.Admin.Users.SeatsOverview.title": "نشستوں کا جائزہ",
   "app.containers.Admin.Users.SeatsOverview.unknown": "نامعلوم",
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": "رجسٹریشن مکمل نہیں ہوئی",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "دعوت نامہ زیر التواء ہے۔",
   "app.containers.Admin.Users.admin": "ایڈمن",
   "app.containers.Admin.Users.alreadyManager": "پہلے ہی مینیجر ہے",

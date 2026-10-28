@@ -33,6 +33,15 @@ describe SideFxUserService do
         .exactly(1).times
     end
 
+    it "logs a 'created' action job with flow: 'invitation' when an invitation creates the user" do
+      invitee = create(:invite).invitee
+
+      expect { service.after_create(invitee, current_user) }
+        .to enqueue_job(LogActivityJob)
+        .with(invitee, 'created', invitee, invitee.created_at.to_i, payload: { flow: 'invitation' })
+        .exactly(1).times
+    end
+
     it 'generates an avatar after a user is created' do
       expect { service.after_create(user, current_user) }
         .to have_enqueued_job(GenerateUserAvatarJob).with(user)

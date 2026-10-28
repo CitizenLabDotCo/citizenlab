@@ -286,7 +286,7 @@ export const getNestedGroupData = (
   );
 };
 
-const nullableNumber = number()
+export const nullableNumber = number()
   .transform((value, originalValue) => {
     // If the original input is null or an empty string, transform it to null.
     if (

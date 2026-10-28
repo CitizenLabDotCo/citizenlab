@@ -128,7 +128,9 @@ class WebApi::V1::IdeasController < ApplicationController
     end
     params_for_create = idea_params(form).except(:project_id, :phase_ids)
     files_params = extract_file_params(params_for_create)
-    custom_field_values = params_for_create.delete(:custom_field_values).to_h
+    # Blank answers mean unanswered, as in #update. Left in, an optional select
+    # sent as '' fails the publication validation for not being one of its options.
+    custom_field_values = CustomFieldService.new.compact_custom_field_values!(params_for_create.delete(:custom_field_values).to_h)
 
     input = Idea.new params_for_create
     input.project = phase.project
@@ -316,17 +318,15 @@ class WebApi::V1::IdeasController < ApplicationController
     idea.project_id = phase.project_id
     service = SimilarIdeasService.new(idea)
 
-    title_threshold = phase.similarity_threshold_title
-    body_threshold = phase.similarity_threshold_body
-    cache_key = "similar_ideas/#{{ id: idea.id, title_multiloc: idea.title_multiloc, body_multiloc: idea.body_multiloc, project_id: idea.project_id, title_threshold:, body_threshold: }}"
+    scope = policy_scope(Idea).where(project_id: idea.project_id)
+    results = service.similar_ideas(
+      scope:,
+      title_threshold: phase.similarity_threshold_title,
+      body_threshold: phase.similarity_threshold_body,
+      limit: SIMILARITIES_LIMIT
+    )
 
-    json_result = Rails.cache.fetch(cache_key, expires_in: 10.minutes) do
-      scope = policy_scope(Idea).where(project_id: idea.project_id)
-      results = service.similar_ideas(scope:, title_threshold:, body_threshold:, limit: SIMILARITIES_LIMIT)
-      WebApi::V1::IdeaSerializer.new(results, serialization_options_for(results)).serializable_hash
-    end
-
-    render json: json_result
+    render json: WebApi::V1::IdeaSerializer.new(results, serialization_options_for(results)).serializable_hash
   end
 
   def copy

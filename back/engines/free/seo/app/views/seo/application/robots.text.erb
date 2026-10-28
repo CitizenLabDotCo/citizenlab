@@ -1,4 +1,22 @@
 User-agent: *
 Disallow: /admin/
 
+# AI training crawlers may read pages but not download uploaded files, which
+# can be large documents. A crawler only follows its own group, so /admin/ is
+# repeated here.
+User-agent: meta-externalagent
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: CCBot
+User-agent: Google-Extended
+Disallow: /admin/
+Disallow: /uploads/*/files/
+Disallow: /uploads/*/project_file/
+Disallow: /uploads/*/phase_file/
+Disallow: /uploads/*/event_file/
+Disallow: /uploads/*/idea_file/
+Disallow: /uploads/*/static_page_file/
+Disallow: /uploads/*/project_folders/file/
+Disallow: /uploads/*/file_upload/
+
 SITEMAP: https://<%= @host %>/sitemap.xml

@@ -196,6 +196,11 @@ describe AccountMergeService do
   end
 
   describe 'locked identity attributes' do
+    before do
+      AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'cow' }, { name: 'bosa_fas' }, { name: 'bogus' }] }
+      AppConfiguration.instance.save!
+    end
+
     # A locked name is no longer editable, so it must hold what the provider asserted.
     it 'overwrites the name the target chose with the verified one' do
       source.update_columns(first_name: 'Robert', last_name: 'Smit')
@@ -236,6 +241,11 @@ describe AccountMergeService do
   end
 
   describe 'custom field values' do
+    before do
+      AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'bogus' }] }
+      AppConfiguration.instance.save!
+    end
+
     it "fills gaps in the target's profile without overwriting its answers" do
       create(:custom_field, key: 'hobby')
       source.custom_field_answers.create!(key: 'birthyear', value: 1980)
