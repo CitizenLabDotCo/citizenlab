@@ -1,7 +1,13 @@
 import React, { memo, useState, useEffect } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
-import { Input, IconTooltip, Icon } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Input,
+  IconTooltip,
+  Icon,
+  Text,
+} from '@citizenlab/cl2-component-library';
 import { isEmpty, inRange } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
@@ -74,6 +80,7 @@ interface Props {
   className?: string;
   mapView?: MapView | null;
   mapConfig: IMapConfig;
+  variant?: 'default' | 'bo';
 }
 
 interface IFormValues {
@@ -83,7 +90,8 @@ interface IFormValues {
 }
 
 const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
-  ({ className, mapConfig, mapView, intl: { formatMessage } }) => {
+  ({ className, mapConfig, mapView, variant, intl: { formatMessage } }) => {
+    const isBo = variant === 'bo';
     const { projectId } = useParams({ strict: false }) as {
       projectId: string;
     };
@@ -255,24 +263,38 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
       }
     };
 
+    const tooltip = (
+      <StyledIconTooltip
+        content={
+          <FormattedMessage
+            {...messages.mapCenterAndZoomTooltip}
+            values={{ button: <CopyIcon title="save" name="save" /> }}
+          />
+        }
+      />
+    );
+
     return (
       <Container className={className || ''}>
-        <SubSectionTitleWrapper>
-          <StyledSubSectionTitle>
-            <FormattedMessage {...messages.mapCenterAndZoom} />
-            <StyledIconTooltip
-              content={
-                <FormattedMessage
-                  {...messages.mapCenterAndZoomTooltip}
-                  values={{ button: <CopyIcon title="save" name="save" /> }}
-                />
-              }
-            />
-          </StyledSubSectionTitle>
-        </SubSectionTitleWrapper>
+        {isBo ? (
+          <Box as="h3" display="flex" alignItems="center" m="0" mb="12px">
+            <Text as="span" variant="boLabel" color="coolGrey600" m="0">
+              <FormattedMessage {...messages.mapCenterAndZoom} />
+            </Text>
+            {tooltip}
+          </Box>
+        ) : (
+          <SubSectionTitleWrapper>
+            <StyledSubSectionTitle>
+              <FormattedMessage {...messages.mapCenterAndZoom} />
+              {tooltip}
+            </StyledSubSectionTitle>
+          </SubSectionTitleWrapper>
+        )}
 
         <CenterLatInput
           id="e2e-lat-input"
+          variant={variant}
           type="text"
           value={formValues.defaultLat}
           onChange={handleCenterLatOnChange}
@@ -283,6 +305,7 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
 
         <CenterLngInput
           id="e2e-long-input"
+          variant={variant}
           type="text"
           value={formValues.defaultLng}
           onChange={handleCenterLngOnChange}
@@ -293,6 +316,7 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
 
         <ZoomInput
           id="e2e-zoom-input"
+          variant={variant}
           type="number"
           value={formValues.defaultZoom?.toString()}
           min="1"
@@ -306,7 +330,7 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
           <SaveButton
             data-cy="e2e-map-extent-save-btn"
             icon="save"
-            buttonStyle="admin-dark"
+            buttonStyle={isBo ? 'bo-primary' : 'admin-dark'}
             onClick={handleOnSave}
             processing={processing}
             disabled={!touched}

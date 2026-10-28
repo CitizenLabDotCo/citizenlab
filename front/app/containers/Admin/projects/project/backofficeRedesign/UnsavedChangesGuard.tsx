@@ -8,6 +8,7 @@ import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/mes
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { useBlocker } from 'utils/router';
 
 import messages from './messages';
@@ -37,6 +38,8 @@ const UnsavedChangesGuard = () => {
       proceed();
     } else {
       blocker.reset();
+      // The errors show in the phase panel, which the map configuration covers.
+      removeSearchParams(['map_config']);
     }
   };
 

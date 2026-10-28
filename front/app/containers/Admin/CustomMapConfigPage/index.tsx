@@ -1,7 +1,14 @@
 import React, { memo, useEffect, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Spinner,
+  Text,
+  bo,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
@@ -11,13 +18,16 @@ import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 
 import ConfigurationMap from 'components/ConfigurationMap/ConfigurationMap';
 import Centerer from 'components/UI/Centerer';
+import goBackMessages from 'components/UI/GoBackButton/messages';
 
+import { useIntl } from 'utils/cl-intl';
 import { getCenter, getZoomLevel } from 'utils/mapUtils/map';
 import { useParams } from 'utils/router';
 
 import FeatureLayerUpload from './DataImportOptions/FeatureLayerUpload';
 import WebMapUpload from './DataImportOptions/WebMapUpload';
 import MapConfigOverview from './MapConfiguration/MapConfigOverview';
+import messages from './messages';
 
 const Container = styled.div`
   display: flex;
@@ -40,9 +50,14 @@ export type ViewOptions = 'main' | 'featureLayerUpload' | 'webMapUpload';
 interface Props {
   className?: string;
   passedMapConfig?: IMapConfig;
+  /** `bo` lays the settings and the map out as back-office workspace panels. */
+  variant?: 'default' | 'bo';
+  onBack?: () => void;
 }
 
-const CustomMapConfigPage = memo<Props>(({ className, passedMapConfig }) => {
+const CustomMapConfigPage = memo<Props>((props) => {
+  const { className, passedMapConfig, variant = 'default', onBack } = props;
+  const { formatMessage } = useIntl();
   const { projectId } = useParams({ strict: false }) as {
     projectId: string;
   };
@@ -91,8 +106,8 @@ const CustomMapConfigPage = memo<Props>(({ className, passedMapConfig }) => {
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (projectId && mapConfig?.data?.id) {
-    return (
-      <Container className={className || ''}>
+    const settings = (
+      <>
         {/* TODO: Fix this the next time the file is edited. */}
         {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
         {view === 'main' && mapConfig && (
@@ -100,6 +115,7 @@ const CustomMapConfigPage = memo<Props>(({ className, passedMapConfig }) => {
             setView={setView}
             mapView={mapView}
             mapConfig={mapConfig}
+            variant={variant}
           />
         )}
         {view === 'featureLayerUpload' && (
@@ -119,12 +135,70 @@ const CustomMapConfigPage = memo<Props>(({ className, passedMapConfig }) => {
             <WebMapUpload setView={setView} mapConfigId={mapConfig?.data.id} />
           </Box>
         )}
-        <MapWrapper>
-          <ConfigurationMap
-            mapConfig={mapConfig}
-            setParentMapView={setMapView}
-          />
-        </MapWrapper>
+      </>
+    );
+    const map = (
+      <ConfigurationMap
+        mapConfig={mapConfig}
+        setParentMapView={setMapView}
+        height={variant === 'bo' ? '100%' : undefined}
+      />
+    );
+
+    if (variant === 'bo') {
+      return (
+        <Box display="flex" gap="8px" h="100%" background={colors.background}>
+          {/* Fits the 520px settings column, its padding and a scrollbar. */}
+          <Box
+            flex="0 0 580px"
+            overflowY="auto"
+            p="16px 18px"
+            borderRadius={bo.panelBorderRadius}
+            background={colors.white}
+          >
+            <Box display="flex" alignItems="center" gap="8px" mb="8px">
+              {onBack && (
+                <Button
+                  buttonStyle="bo-text"
+                  icon="arrow-left"
+                  iconSize="16px"
+                  width="28px"
+                  height="28px"
+                  padding="0"
+                  ariaLabel={formatMessage(goBackMessages.goBack)}
+                  onClick={onBack}
+                />
+              )}
+              <Text variant="boSection" fontSize="m" m="0">
+                {formatMessage(messages.mapConfigurationTitle)}
+              </Text>
+            </Box>
+            {settings}
+          </Box>
+          <Box
+            flexGrow={1}
+            p="16px"
+            borderRadius={bo.panelBorderRadius}
+            background={colors.grey100}
+          >
+            <Box
+              position="relative"
+              h="100%"
+              overflow="hidden"
+              borderRadius={bo.panelBorderRadius}
+              border={`1px solid ${colors.grey300}`}
+            >
+              {map}
+            </Box>
+          </Box>
+        </Box>
+      );
+    }
+
+    return (
+      <Container className={className || ''}>
+        {settings}
+        <MapWrapper>{map}</MapWrapper>
       </Container>
     );
   }

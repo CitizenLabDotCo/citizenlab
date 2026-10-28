@@ -16,10 +16,11 @@ import MapHelperOptions from './components/MapHelperOptions';
 export interface Props {
   mapConfig: IMapConfig;
   setParentMapView: (mapView: MapView) => void;
+  height?: string;
 }
 
 const ConfigurationMap = memo<Props>(
-  ({ mapConfig, setParentMapView }: Props) => {
+  ({ mapConfig, setParentMapView, height = '700px' }: Props) => {
     const localize = useLocalize();
     const [mapView, setMapView] = React.useState<MapView | null>(null);
     const [hoveredLayerId, setHoveredLayerId] = React.useState<string | null>(
@@ -69,7 +70,7 @@ const ConfigurationMap = memo<Props>(
             onInit: onMapInit,
           }}
           webMapId={mapConfig.data.attributes.esri_web_map_id}
-          height={'700px'}
+          height={height}
           layers={mapLayers}
           onHover={onHover}
         />

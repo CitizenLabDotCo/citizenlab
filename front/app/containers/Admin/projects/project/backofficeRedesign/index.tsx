@@ -1,13 +1,14 @@
-import React, { ReactNode, useState } from 'react';
+import React, { ReactNode, Suspense, lazy, useState } from 'react';
 
-import { Box, bo, colors } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, bo, colors } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
 import { usePageSave } from 'containers/Admin/projects/_shared/PageSaveContext';
 
-import { useLocation } from 'utils/router';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
+import { useLocation, useSearch } from 'utils/router';
 
 import FeedbackNotice from '../earlyAccess/FeedbackNotice';
 
@@ -19,6 +20,11 @@ import MethodSettings from './Phase/MethodSettings';
 import { viewFromPathname } from './Phase/usePhaseViews';
 import ViewContent from './Phase/ViewContent';
 import ProjectSetupPanel from './ProjectSetupPanel';
+
+// Lazy so ArcGIS only loads once the map is opened.
+const CustomMapConfigPage = lazy(
+  () => import('containers/Admin/CustomMapConfigPage')
+);
 
 const PROJECT_PANEL_WIDTH = '332px';
 const PHASE_PANEL_WIDTH = '560px';
@@ -47,6 +53,7 @@ const ProjectWorkspace = ({
   children,
 }: Props) => {
   const { pathname } = useLocation();
+  const { map_config } = useSearch({ strict: false });
   const [openDropdown, setOpenDropdown] = useState<HeaderDropdownName | null>(
     null
   );
@@ -64,7 +71,11 @@ const ProjectWorkspace = ({
   const inPhase = !!(phase || draft);
   // An open phase email takes the whole width, like the other views.
   const editingEmail = /\/emails\/[^/]+\/edit$/.test(pathname);
-  const showPanels = (!phase || activeView === 'build') && !editingEmail;
+  // The map configuration does the same, and keeps the phase panel mounted so
+  // a phase that isn't saved yet keeps its edits.
+  const editingMap = inPhase && !!map_config;
+  const showPanels =
+    (!phase || activeView === 'build') && !editingEmail && !editingMap;
 
   const settingsPanel = draft ? (
     draft.methodSettings
@@ -137,7 +148,16 @@ const ProjectWorkspace = ({
       borderRadius={bo.panelBorderRadius}
       background={colors.grey100}
     >
-      {children}
+      {editingMap ? (
+        <Suspense fallback={<Spinner />}>
+          <CustomMapConfigPage
+            variant="bo"
+            onBack={() => removeSearchParams(['map_config'])}
+          />
+        </Suspense>
+      ) : (
+        children
+      )}
     </Box>
   );
 
