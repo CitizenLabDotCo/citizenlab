@@ -24,6 +24,16 @@ describe AIAssistant::Turn do
     expect(bedrock_requests.sole['system'].first['text']).to include('Go Vocal assistant', phase.title_multiloc['en'])
   end
 
+  it 'only finishes a turn whose reply was already stored' do
+    create(:ai_assistant_message, conversation:, role: 'assistant', content: 'Which topics should the survey cover?')
+    stub_bedrock
+
+    turn.run
+
+    expect(bedrock_requests).to be_empty
+    expect(conversation.reload).to have_attributes(status: 'idle', last_error_code: nil)
+  end
+
   it 'fails when the context is no longer available' do
     phase.update_columns(participation_method: 'information')
 
