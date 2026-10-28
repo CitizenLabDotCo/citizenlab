@@ -2,6 +2,7 @@ import '../testing/reactGlobal';
 
 import { fireEvent, render, screen } from '@testing-library/react';
 
+import type { ElementEdit } from '../lib/elementEdits';
 import type { InspectRow } from '../lib/inspect';
 import { rowSpec } from '../lib/inspect';
 
@@ -279,5 +280,58 @@ describe('ValueField glyph', () => {
       />
     );
     expect(screen.queryByTestId('wb-insp-pick')).toBeNull();
+  });
+
+  it('offers to move a typed value to where its name is defined', () => {
+    const onDefine = jest.fn();
+    const edit = {
+      id: 's|0|radius',
+      storyId: 's',
+      path: [0],
+      rowId: 'radius',
+      label: 'Radius',
+      glyph: 'radius',
+      props: ['border-top-left-radius'],
+      from: { raw: '3px', shown: '3' },
+      to: { value: '6px' },
+      kind: 'custom',
+      define: {
+        name: 'theme.borderRadius',
+        file: 'app/component-library/utils/styleUtils.ts',
+        line: 242,
+      },
+      at: 0,
+    } satisfies ElementEdit;
+    const { rerender } = render(
+      <ValueField
+        row={row({ raw: '6px', shown: '6' }, 'radius')}
+        edit={edit}
+        onCommit={noop}
+        onAttach={noop}
+        onDetach={noop}
+        onDefine={onDefine}
+        onOpenPicker={noop}
+      />
+    );
+    const button = screen.getByTestId('wb-insp-define');
+    expect(button.textContent).toBe(
+      "Change theme.borderRadius where it's defined (utils/styleUtils.ts:242), every use follows"
+    );
+    fireEvent.click(button);
+    expect(onDefine).toHaveBeenCalled();
+    rerender(
+      <ValueField
+        row={row({ raw: '6px', shown: '6' }, 'radius')}
+        edit={{ ...edit, kind: 'define' as const }}
+        onCommit={noop}
+        onAttach={noop}
+        onDetach={noop}
+        onDefine={onDefine}
+        onOpenPicker={noop}
+      />
+    );
+    expect(
+      screen.getByTestId('wb-insp-define').getAttribute('aria-pressed')
+    ).toBe('true');
   });
 });

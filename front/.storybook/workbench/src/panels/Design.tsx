@@ -405,29 +405,37 @@ const Design = ({
     addEdit({ ...base(t), to: { value: t.row.value.raw }, kind: 'detach' });
   };
   // A value as it is; back where the row started it is no edit.
+  // A value traced to a named value keeps where that is defined, from the
+  // first trace (once edited the row traces to the edit), so it can move
+  // there; a value already moved stays moved.
   const custom = (t: Target, value: string) => {
     if (value === originOf(t).raw) {
       if (editOf(t)) removeEdit(idOf(t));
-    } else {
-      addEdit({ ...base(t), to: { value }, kind: 'custom' });
+      return;
     }
+    const was = editOf(t);
+    const line = sourceOf(t.row);
+    const define =
+      was?.define ??
+      (line && line !== 'pending' && line.def && line.legacyKey
+        ? { name: line.legacyKey, file: line.def.file, line: line.def.line }
+        : undefined);
+    addEdit({
+      ...base(t),
+      to: { value },
+      kind: was?.kind === 'define' ? 'define' : 'custom',
+      ...(define ? { define } : {}),
+    });
   };
   // A typed value moved to where its named value is defined (theme
   // .borderRadius at styleUtils.ts:242), so every use follows; again, back
   // to this element only.
-  const define = (t: Target, line: SourceLine) => {
+  const define = (t: Target) => {
     const e = editOf(t);
-    const name = line.legacyKey;
-    if (!e || !name || !line.def) return;
-    if (e.kind === 'define') {
-      const { define: _, ...rest } = e;
-      addEdit({ ...rest, kind: 'custom', at: Date.now() });
-      return;
-    }
+    if (!e?.define) return;
     addEdit({
       ...e,
-      kind: 'define',
-      define: { name, file: line.def.file, line: line.def.line },
+      kind: e.kind === 'define' ? 'custom' : 'define',
       at: Date.now(),
     });
   };
@@ -688,10 +696,7 @@ const Design = ({
             commit: (typed, exact) => commit(t, typed, exact),
             attach: (token) => bind(t, token),
             detach: () => detach(t),
-            define:
-              line && line !== 'pending' && line.def && line.legacyKey
-                ? () => define(t, line)
-                : undefined,
+            define: e?.define ? () => define(t) : undefined,
           },
           line
         );

@@ -168,10 +168,8 @@ export const ValueField = ({
         <Suggestions row={row} suggestions={suggestions} onAttach={onAttach} />
       )}
       {onDefine &&
-        source &&
-        source !== 'pending' &&
-        source.def &&
-        (edit?.kind === 'custom' || edit?.kind === 'define') && (
+        edit?.define &&
+        (edit.kind === 'custom' || edit.kind === 'define') && (
           <button
             type="button"
             className="wb-vf-define"
@@ -181,12 +179,12 @@ export const ValueField = ({
             onClick={onDefine}
           >
             {edit.kind === 'define'
-              ? `Changing ${source.legacyKey} at ${shortFile(
-                  source.def.file
-                )}:${source.def.line}, every use follows · only here instead`
-              : `Change ${source.legacyKey} where it's defined (${shortFile(
-                  source.def.file
-                )}:${source.def.line}), every use follows`}
+              ? `Changing ${edit.define.name} at ${shortFile(
+                  edit.define.file
+                )}:${edit.define.line}, every use follows · only here instead`
+              : `Change ${edit.define.name} where it's defined (${shortFile(
+                  edit.define.file
+                )}:${edit.define.line}), every use follows`}
           </button>
         )}
     </>

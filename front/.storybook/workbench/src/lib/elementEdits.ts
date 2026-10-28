@@ -252,6 +252,17 @@ const isTrace = (v: unknown): v is EditTrace => {
   );
 };
 
+const isDefine = (v: unknown) => {
+  const d = v as Record<string, unknown> | null;
+  return (
+    !!d &&
+    typeof d.name === 'string' &&
+    /^[\w$.]+$/.test(d.name) &&
+    typeof d.file === 'string' &&
+    Number.isInteger(d.line)
+  );
+};
+
 const isEdit = (v: unknown, known: Set<string>): v is ElementEdit => {
   if (typeof v !== 'object' || v === null) return false;
   const e = v as Record<string, unknown>;
@@ -276,6 +287,8 @@ const isEdit = (v: unknown, known: Set<string>): v is ElementEdit => {
     typeof to.value === 'string' &&
     (to.token === undefined || known.has(to.token as string)) &&
     (e.source === undefined || isTrace(e.source)) &&
+    (e.define === undefined || isDefine(e.define)) &&
+    (e.kind !== 'define' || e.define !== undefined) &&
     // A token edit paints var(token); its value is only shown.
     (to.token !== undefined
       ? (to.value as string).length <= 256 && !/[<>]/.test(to.value as string)
