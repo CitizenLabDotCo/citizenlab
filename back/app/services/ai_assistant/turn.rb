@@ -39,6 +39,8 @@ module AIAssistant
       end
       finish
     rescue ToolBudgetExceededError
+      # A failed turn's proposals can't be decided on anymore.
+      conversation.expire_proposals!
       conversation.fail_turn!('tool_budget_exceeded')
     end
 

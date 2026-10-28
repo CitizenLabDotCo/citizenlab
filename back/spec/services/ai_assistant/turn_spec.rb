@@ -166,6 +166,21 @@ describe AIAssistant::Turn do
     expect(conversation.reload).to have_attributes(status: 'failed', last_error_code: 'tool_budget_exceeded')
   end
 
+  it 'expires the proposals of a turn that went over the tool-call limit' do
+    stub_const("#{described_class}::MAX_TOOL_CALLS", 1)
+    stub_bedrock(
+      bedrock_tool_use(
+        { id: 'write_1', name: 'replace_form_fields', input: { fields: valid_fields } },
+        { id: 'read_1', name: 'get_form_fields' }
+      )
+    )
+
+    turn.run
+
+    expect(AIAssistant::ToolCall.find_by!(tool_use_id: 'write_1').status).to eq('expired')
+    expect(conversation.reload).to have_attributes(status: 'failed', last_error_code: 'tool_budget_exceeded')
+  end
+
   it 'fails when the surface is no longer available' do
     phase.update_columns(participation_method: 'information')
 
