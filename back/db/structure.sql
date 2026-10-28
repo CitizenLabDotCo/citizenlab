@@ -744,6 +744,7 @@ DROP VIEW IF EXISTS public.reporting_contributions;
 DROP VIEW IF EXISTS public.reporting_community_monitor_scores;
 DROP VIEW IF EXISTS public.reporting_input_question_answers;
 DROP VIEW IF EXISTS public.reporting_comments;
+DROP VIEW IF EXISTS public.reporting_analysis_heatmap_cells;
 DROP TABLE IF EXISTS public.report_builder_reports;
 DROP TABLE IF EXISTS public.report_builder_published_graph_data_units;
 DROP TABLE IF EXISTS public.report_builder_generation_transcripts;
@@ -3880,6 +3881,84 @@ CREATE TABLE public.report_builder_reports (
     community_monitor boolean DEFAULT false NOT NULL,
     project_id uuid
 );
+
+
+--
+-- Name: reporting_analysis_heatmap_cells; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_analysis_heatmap_cells AS
+ WITH sides AS (
+         SELECT 'Analysis::Tag'::text AS type,
+            t.id,
+            'tag'::text AS kind,
+            t.id AS tag_id,
+            t.name AS tag_label,
+            NULL::uuid AS question_id,
+            NULL::text AS question_label,
+            NULL::text AS answer_label
+           FROM public.analysis_tags t
+        UNION ALL
+         SELECT 'CustomFieldBin'::text AS type,
+            b.id,
+                CASE
+                    WHEN ((q.resource_type)::text = 'User'::text) THEN 'registration_question'::text
+                    ELSE 'form_question'::text
+                END AS kind,
+            NULL::uuid AS tag_id,
+            NULL::text AS tag_label,
+            q.id AS question_id,
+            COALESCE(NULLIF((q.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+                   FROM public.app_configurations ac
+                 LIMIT 1)), ''::text), ( SELECT t.value
+                   FROM jsonb_each_text(q.title_multiloc) t(key, value)
+                  WHERE (t.value <> ''::text)
+                  ORDER BY t.key
+                 LIMIT 1)) AS question_label,
+                CASE
+                    WHEN ((b.type)::text = 'CustomFieldBins::OptionBin'::text) THEN COALESCE(NULLIF((o.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+                       FROM public.app_configurations ac
+                     LIMIT 1)), ''::text), ( SELECT t.value
+                       FROM jsonb_each_text(o.title_multiloc) t(key, value)
+                      WHERE (t.value <> ''::text)
+                      ORDER BY t.key
+                     LIMIT 1))
+                    WHEN ((b.type)::text = 'CustomFieldBins::ValueBin'::text) THEN ( SELECT string_agg(v.value, ', '::text) AS string_agg
+                       FROM jsonb_array_elements_text(b."values") v(value))
+                    WHEN (lower(b.range) IS NULL) THEN (upper(b.range) || ' or less'::text)
+                    WHEN (upper(b.range) IS NULL) THEN (lower(b.range) || ' or more'::text)
+                    ELSE ((lower(b.range) || ' to '::text) || upper(b.range))
+                END AS answer_label
+           FROM ((public.custom_field_bins b
+             JOIN public.custom_fields q ON ((q.id = b.custom_field_id)))
+             LEFT JOIN public.custom_field_options o ON ((o.id = b.custom_field_option_id)))
+        )
+ SELECT c.id,
+    c.analysis_id,
+    COALESCE(a.project_id, ph.project_id) AS project_id,
+    a.phase_id,
+    c.unit,
+    r.kind AS row_kind,
+    r.tag_id AS row_tag_id,
+    r.tag_label AS row_tag_label,
+    r.question_id AS row_question_id,
+    r.question_label AS row_question_label,
+    r.answer_label AS row_answer_label,
+    col.kind AS column_kind,
+    col.tag_id AS column_tag_id,
+    col.tag_label AS column_tag_label,
+    col.question_id AS column_question_id,
+    col.question_label AS column_question_label,
+    col.answer_label AS column_answer_label,
+    c.count,
+    c.lift,
+    c.p_value,
+    c.created_at
+   FROM ((((public.analysis_heatmap_cells c
+     JOIN public.analysis_analyses a ON ((a.id = c.analysis_id)))
+     LEFT JOIN public.phases ph ON ((ph.id = a.phase_id)))
+     JOIN sides r ON (((r.type = (c.row_type)::text) AND (r.id = c.row_id))))
+     JOIN sides col ON (((col.type = (c.column_type)::text) AND (col.id = c.column_id))));
 
 
 --
@@ -10577,6 +10656,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261028170200'),
+('20261028170100'),
 ('20261028160200'),
 ('20261028160100'),
 ('20261028150100'),

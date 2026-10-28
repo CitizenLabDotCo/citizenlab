@@ -16,6 +16,7 @@ RSpec.describe 'Reporting schema documentation' do # rubocop:disable RSpec/Descr
     'reporting_inputs' => %w[status_id],
     'reporting_input_tags' => %w[tag_id parent_tag_id],
     'reporting_input_analysis_tags' => %w[analysis_id tag_id],
+    'reporting_analysis_heatmap_cells' => %w[analysis_id row_tag_id row_question_id column_tag_id column_question_id],
     'reporting_input_status_changes' => %w[from_status_id to_status_id],
     'reporting_user_question_answers' => %w[question_id],
     'reporting_input_question_answers' => %w[question_id],
