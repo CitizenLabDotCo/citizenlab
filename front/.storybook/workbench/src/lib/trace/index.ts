@@ -19,6 +19,10 @@ import { checkInternals, hostStyleOf } from './internals';
 import { ruleInfo, StyledDeps, StyledTrace, traceStyled } from './trace';
 import type { ElementTrace, PropTrace, Template, Why } from './types';
 
+// SVG presentation attributes the Design tab shows as rows.
+const SVG_ATTRS = new Set(['fill', 'stroke', 'stroke-width', 'opacity']);
+const isSvg = (e: Element) => e.namespaceURI === 'http://www.w3.org/2000/svg';
+
 export type {
   Editable,
   ElementTrace,
@@ -141,6 +145,23 @@ export const traceElement = async (
           : { trace: { prop, value, status: 'default' } };
 
       const w = winnerOf(e, prop, matchedOn(e), expands, painted);
+      // No CSS sets it: an SVG presentation attribute can (Icon's
+      // fill={props.fill}). CSS would win over it, so it counts only here.
+      if (
+        w.kind === 'none' &&
+        SVG_ATTRS.has(prop) &&
+        isSvg(e) &&
+        e.hasAttribute(prop)
+      ) {
+        return inherited({
+          trace: {
+            prop,
+            value,
+            status: 'attribute',
+            attrOn: e.tagName.toLowerCase(),
+          },
+        });
+      }
       if (w.kind === 'none') return fallback();
       const keyword = w.declared.value.trim().toLowerCase();
       if (

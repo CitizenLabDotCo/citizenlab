@@ -88,6 +88,15 @@ describe('sourceLine', () => {
     expect(line?.text).toBe('prop bgColor, set where the component is used');
   });
 
+  it('says an SVG attribute sets the value', () => {
+    expect(
+      sourceLine(
+        [trace({ prop: 'fill', status: 'attribute', attrOn: 'path' })],
+        'abc'
+      )?.text
+    ).toBe('fill attribute on <path>, set by the code that renders it');
+  });
+
   it('gives the reason when a value is not traced', () => {
     const line = sourceLine(
       [trace({ status: 'untraced', why: 'unknown-read' })],

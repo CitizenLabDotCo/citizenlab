@@ -92,6 +92,10 @@ const words = (t: PropTrace): string => {
       return 'your edit, listed in Changes';
     case 'default':
       return 'browser default';
+    case 'attribute':
+      return `${t.prop} attribute on <${
+        t.attrOn ?? 'svg'
+      }>, set by the code that renders it`;
     case 'inherited':
       return 'inherited';
     case 'global': {

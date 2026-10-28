@@ -51,6 +51,7 @@ export type TraceStatus =
   | 'inline'
   | 'edit'
   | 'default'
+  | 'attribute'
   | 'untraced';
 
 export type ViaStep = { text: string; file: string; line: number };
@@ -113,6 +114,8 @@ export type PropTrace = {
   };
   source?: TraceSource;
   from?: Element;
+  // status attribute: the tag whose SVG attribute sets it ('path').
+  attrOn?: string;
   sharedBy?: string[];
   editable?: Editable;
 };
