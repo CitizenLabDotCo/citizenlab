@@ -88,6 +88,8 @@ export type Editable =
       end: number;
       context: 'template' | 'js';
       part?: number;
+      // A unit the range takes with it after its `${…}` (`${fontSizes.xs}px`).
+      unit?: string;
       lineText: string;
       line: number;
     }

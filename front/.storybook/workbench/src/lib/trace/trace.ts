@@ -738,6 +738,60 @@ const sliceSpans = (
   return at === length ? out : undefined;
 };
 
+// `font-size: ${fontSizes.xs}px;` (288 of the 329 font sizes): the value is
+// one whole `${…}` and the unit written right after it, so the edit takes
+// both and the token's var() replaces them. Only when the leaf is the whole
+// expression, on one line.
+const unitEdit = (
+  spans: Span[],
+  o: Extract<Origin, { kind: 'expr' }>,
+  e: Editable,
+  at: Text
+): Editable | undefined => {
+  if (spans.length !== 2 || 'no' in e || e.context !== 'js') return undefined;
+  const [head, tail] = spans;
+  const q = tail.origin;
+  if (
+    head.origin !== o ||
+    head.from !== 0 ||
+    q.kind !== 'quasi' ||
+    q.template !== o.template ||
+    q.k !== o.k + 1 ||
+    tail.from !== 0
+  ) {
+    return undefined;
+  }
+  const unit = o.template.quasis[q.k].slice(0, tail.to);
+  const expr = o.template.exprs[o.k];
+  if (
+    !UNIT.test(unit) ||
+    !at.src ||
+    e.start !== expr.loc.start ||
+    e.end !== expr.loc.end ||
+    expr.loc.line !== expr.loc.endLine
+  ) {
+    return undefined;
+  }
+  const start = expr.loc.start - 2;
+  const end = expr.loc.end + 1 + unit.length;
+  if (
+    at.src.slice(start, expr.loc.start) !== '${' ||
+    at.src.slice(expr.loc.end, end) !== `}${unit}`
+  ) {
+    return undefined;
+  }
+  const line = lineAt(at.src, start);
+  return {
+    file: e.file,
+    start,
+    end,
+    context: 'template',
+    unit,
+    lineText: line.text,
+    line: line.line,
+  };
+};
+
 // The owner's templates: its root and every template the root reaches,
 // as loaded for the run.
 const ownTemplates = (root: Template, client: IndexClient): Template[] => {
@@ -936,7 +990,8 @@ export const traceStyled = async (
       meta
     );
     if ('why' in leaf) return fail(leaf.why, { decl: declInfo }, root);
-    const built = origins.length > 1;
+    const unit = unitEdit(spans, o, leaf.editable, at);
+    const built = origins.length > 1 && !unit;
     const maths =
       built || 'no' in leaf.editable
         ? undefined
@@ -948,7 +1003,7 @@ export const traceStyled = async (
         ? { no: `built in the template at line ${declInfo.line}` }
         : maths
         ? { no: colourMathWords(maths) }
-        : leaf.editable,
+        : unit ?? leaf.editable,
     });
   }
 

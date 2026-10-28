@@ -191,3 +191,30 @@ describe('quoteOf', () => {
     expect(quoteOf('a("x"); b("y")')).toBe('"');
   });
 });
+
+describe('a `${…}` with its unit (Badge: font-size: ${fontSizes.xs}px;)', () => {
+  const BADGE = 'app/component-library/components/Badge/index.tsx';
+  const badge = fs.readFileSync(path.join(FRONT, BADGE), 'utf8');
+
+  it('writes the var() over the expression and the unit', () => {
+    const t = traceAt(badge, 8, '${fontSizes.xs}px', {
+      file: BADGE,
+      context: 'template',
+      unit: 'px',
+    });
+    expect(lineEditOf(badge, t, '--gv-fs-xs', parse)).toEqual({
+      line: 8,
+      old: '  font-size: ${fontSizes.xs}px;',
+      new: '  font-size: var(--gv-fs-xs);',
+    });
+  });
+
+  it('refuses a range whose unit is not what follows', () => {
+    const t = traceAt(badge, 8, '${fontSizes.xs}px', {
+      file: BADGE,
+      context: 'template',
+      unit: 'em',
+    });
+    expect(lineEditOf(badge, t, '--gv-fs-xs', parse)).toHaveProperty('byHand');
+  });
+});

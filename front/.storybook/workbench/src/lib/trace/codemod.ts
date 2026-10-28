@@ -18,6 +18,8 @@ export type EditTrace = {
   context: 'template' | 'js';
   // A whitespace-separated part of a string ('9px 18px', part 0).
   part?: number;
+  // A unit the range takes after its `${…}`: `${fontSizes.xs}px` -> var().
+  unit?: string;
   // The whole line at `commit`.
   lineText: string;
   // The traced code, for words: 'theme.borderRadius', '9px 18px'.
@@ -89,7 +91,9 @@ const rangeFits = (program: unknown, t: EditTrace, slice: string) => {
     return !!at && isWholeValue(at);
   }
   if (slice.startsWith('${')) {
-    const at = nodeAt(program, t.start + 2, t.end - 1);
+    const tail = 1 + (t.unit?.length ?? 0);
+    if (t.unit && !slice.endsWith(`}${t.unit}`)) return false;
+    const at = nodeAt(program, t.start + 2, t.end - tail);
     return (
       !!at && at.parent?.type === 'TemplateLiteral' && at.key === 'expressions'
     );
@@ -168,7 +172,7 @@ const replacementOf = (
   }
   if (t.context === 'js') return `${quote}${read}${quote}`;
   // In a template: a whole `${…}` or static text becomes the var() itself.
-  if (slice.startsWith('${') && !slice.endsWith('}')) {
+  if (slice.startsWith('${') && !slice.endsWith(`}${t.unit ?? ''}`)) {
     return { byHand: 'the range is not a whole ${…}' };
   }
   return read;

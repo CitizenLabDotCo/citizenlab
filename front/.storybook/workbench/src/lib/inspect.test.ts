@@ -101,6 +101,17 @@ describe('layers', () => {
     expect(defaultTarget(d)?.className).toBe('inner');
   });
 
+  it("skips a visually hidden child, as the Toggle's checkbox", () => {
+    document.body.innerHTML = `
+      <div data-gv-story-box="">
+        <div class="toggle">
+          <input type="checkbox" style="position:absolute;width:1px;height:1px;clip:rect(0 0 0 0)" />
+          <div class="wrapper"><i class="track" style="background-color:#cbcbcb"></i></div>
+        </div>
+      </div>`;
+    expect(defaultTarget(document)?.className).toBe('track');
+  });
+
   it('finds a selection again by its path', () => {
     const d = doc();
     const button = d.querySelector('button') as Element;

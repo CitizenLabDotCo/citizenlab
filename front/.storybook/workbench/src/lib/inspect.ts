@@ -1039,20 +1039,29 @@ export const labelOf = (el: Element): string => {
 
 const BOX = '[data-gv-story-box]';
 
+// Hidden from sight: display none, or polished's hideVisually (the
+// Toggle's checkbox for screen readers: absolute, 1px, clipped).
+const isHidden = (cs: CSSStyleDeclaration) =>
+  cs.display === 'none' ||
+  (cs.position === 'absolute' &&
+    (/^rect\(0/.test(cs.clip) || (cs.width === '1px' && cs.height === '1px')));
+
 // What a story selects first: the outer element of the component, through
-// wrappers that draw nothing and hold a single element.
+// wrappers that draw nothing and hold a single element that shows.
 export const defaultTarget = (doc: Document): Element | null => {
   const box = doc.querySelector(BOX);
   let el = box?.firstElementChild ?? null;
   const win = doc.defaultView;
-  while (el && el.children.length === 1 && win) {
+  const shown = (e: Element) =>
+    [...e.children].filter((c) => !win || !isHidden(win.getComputedStyle(c)));
+  while (el && shown(el).length === 1 && win) {
     const cs = win.getComputedStyle(el);
     const draws =
       !isTransparent(cs.backgroundColor) ||
       parseFloat(cs.borderTopWidth) > 0 ||
       (!!cs.boxShadow && cs.boxShadow !== 'none');
     if (draws) break;
-    el = el.firstElementChild;
+    el = shown(el)[0];
   }
   return el;
 };
