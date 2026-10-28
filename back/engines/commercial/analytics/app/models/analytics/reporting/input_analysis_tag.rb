@@ -43,7 +43,7 @@ module Analytics
             phase covers the phase's published inputs (reporting_input_phases
             joined to reporting_inputs with published_at set). An analysis of a
             whole project covers the project's published inputs that have no
-            creation_phase_id (ideation and proposals). Inputs it covers but
+            creation_phase_id (ideation and voting). Inputs it covers but
             didn't tag have no row here, so count untagged inputs against that
             set.
           DOC

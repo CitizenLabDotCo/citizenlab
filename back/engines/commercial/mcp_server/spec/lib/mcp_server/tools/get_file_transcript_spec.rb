@@ -20,7 +20,7 @@ describe McpServer::Tools::GetFileTranscript do
     create(:file_transcript, :completed, file: file, assemblyai_transcript: { 'id' => 'a1', 'status' => 'completed', **assemblyai_transcript })
   end
 
-  it 'returns the text, split by speaker, without word-level detail' do
+  it 'returns the text split by speaker, once, without word-level detail' do
     completed_transcript(
       'text' => 'We need more benches. I agree.',
       'language_code' => 'en',
@@ -40,7 +40,7 @@ describe McpServer::Tools::GetFileTranscript do
       file_name: 'town-hall.mp3',
       language_code: 'en',
       duration_seconds: 95,
-      text: 'We need more benches. I agree.',
+      text: nil,
       utterances: [
         { speaker: 'A', start_seconds: 0, text: 'We need more benches.' },
         { speaker: 'B', start_seconds: 61, text: 'I agree.' }
@@ -48,10 +48,10 @@ describe McpServer::Tools::GetFileTranscript do
     )
   end
 
-  it 'returns no utterances when speakers were not told apart' do
+  it 'returns the full text when speakers were not told apart' do
     completed_transcript('text' => 'Hello.')
 
-    expect(get(file.id).structured_content[:utterances]).to eq []
+    expect(get(file.id).structured_content).to include(text: 'Hello.', utterances: [])
   end
 
   it 'refuses when the file no longer allows AI processing' do

@@ -51,13 +51,11 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
       tool can query: a documented relational model of the platform's participation
       data (contributions and participants, inputs with their texts and answers,
       comments, tags, AI analysis tags, heatmaps and insights, statuses and status
-      history, imports,
-      votes, reactions and
-      official feedback,
-      users with their demographics and the population base data to compare them
-      with, the sign-up funnel, visitor sessions and pageviews, projects, phases,
-      events, published reports, community monitor scores, staff activity totals,
-      and email and invitation totals). Call this before writing SQL; the returned
+      history, imports, votes, reactions and official feedback, users with their
+      demographics and the population base data to compare them with, the sign-up
+      funnel, visitor sessions and pageviews, projects, phases, events, published
+      reports, community monitor scores, staff activity totals, and email and
+      invitation totals). Call this before writing SQL; the returned
       table and column comments carry the semantics queries should follow, and the
       relationships map shows how the tables join.
     DOC

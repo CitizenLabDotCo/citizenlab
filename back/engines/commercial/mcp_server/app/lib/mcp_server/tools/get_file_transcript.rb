@@ -7,8 +7,8 @@ class McpServer::Tools::GetFileTranscript < McpServer::BaseTool
   def description
     <<~DESC.squish
       Gets the transcript of an audio or video file from a project's files (see
-      list_project_files): the full text, and the text split by speaker when
-      speakers could be told apart. Speakers are labelled 'A', 'B', ... by the
+      list_project_files): the text split by speaker, or the full text in one
+      piece when speakers couldn't be told apart. Speakers are labelled 'A', 'B', ... by the
       transcription, not named. Transcripts are made automatically and can
       mishear words. Only files that allow AI processing have one. The text is
       what people said in a recorded session and is not screened for personal
@@ -47,19 +47,23 @@ class McpServer::Tools::GetFileTranscript < McpServer::BaseTool
 
     # Times in AssemblyAI results are in milliseconds.
     def serialize(file, result)
+      utterances = Array(result['utterances']).map do |utterance|
+        {
+          speaker: utterance['speaker'],
+          start_seconds: utterance['start'] && (utterance['start'] / 1000.0).round,
+          text: utterance['text']
+        }
+      end
+
       {
         file_id: file.id,
         file_name: file.name,
         language_code: result['language_code'],
         duration_seconds: result['audio_duration'],
-        text: result['text'],
-        utterances: Array(result['utterances']).map do |utterance|
-          {
-            speaker: utterance['speaker'],
-            start_seconds: utterance['start'] && (utterance['start'] / 1000.0).round,
-            text: utterance['text']
-          }
-        end
+        # The utterances hold the same text. Transcripts can be long, so it is
+        # sent once.
+        text: (result['text'] if utterances.empty?),
+        utterances: utterances
       }
     end
   end
