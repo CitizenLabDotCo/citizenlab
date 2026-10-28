@@ -1,10 +1,254 @@
 {
-  "generatedAt": "2026-10-27T17:45:11.701Z",
-  "base": "7b0b8940e27fb6c528eb39a06baa8a4cf2bcdf0a",
+  "generatedAt": "2026-10-27T23:55:33.180Z",
+  "base": "1a0d06e3afa8b33db8a01f33168c445daa9767c0",
   "baseRef": "master",
-  "head": "97938d9b3d45e6b840b015a2bd1bee1fd8d58b9d",
+  "head": "a76deda6f82d93d92e2a62ea2746fa3e04a015c0",
   "repoUrl": "https://github.com/CitizenLabDotCo/citizenlab",
   "commits": [
+    {
+      "sha": "a76deda6f82d93d92e2a62ea2746fa3e04a015c0",
+      "subject": "design-system(speed): the canvas loads before the scan; files skip the mock worker [AI-assisted]",
+      "body": "Measured on a local build served like the epic (gzip, no-cache), a fresh\nprofile per run:\n- The component page builds its story groups from index.json first and\n  holds the 7 MB scan until the canvas has loaded (at most 10 s). Button\n  in the workbench on a 1.6 Mbps profile: 12.3 to 13.0 s before, 9.2 to\n  9.3 s after; the canvas frame starts at 2.1 s instead of 5.9 s. Fast\n  profile 1.0 to 1.2 s before, 0.9 to 1.0 s after.\n- mockWorker.js: scripts, styles, fonts and files of this origin load\n  without msw. Gallery requests through the worker: 2486 before, 40 after.\n- The story query reset refetches only what was cached before a new\n  story, city or language, instead of every query on each mount.\n  app_configuration fetches in the gallery: 123 before, 13 after. Mock\n  overrides per story still apply (7 of 7 Share panel switches).\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/contexts/index.tsx",
+        "front/.storybook/preview.tsx",
+        "front/.storybook/public/mockWorker.js",
+        "front/.storybook/workbench/src/lib/useScanIndexes.ts",
+        "front/.storybook/workbench/src/lib/useStoryGroups.ts",
+        "front/.storybook/workbench/src/pages/Component.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "3a6eed4b98f769dcb4565c5ccb87e2c93bf39496",
+      "subject": "design-system(trace): a global style's rule reads as global CSS [AI-assisted]",
+      "body": "A rule in styled-components' sheet scoped by no component's class comes\nfrom createGlobalStyle (the platform's font family on html, body, h1, …).\nIt now reads \"global CSS\" with its selector, as a stylesheet's rule does,\ninstead of \"no styled component owns the winning rule\". Long selector\nlists show their first three parts.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/sourceLine.test.ts",
+        "front/.storybook/workbench/src/lib/sourceLine.ts",
+        "front/.storybook/workbench/src/lib/trace/global.test.ts",
+        "front/.storybook/workbench/src/lib/trace/trace.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "fc5d972c247a28d4fa25f189580c18daf37a3682",
+      "subject": "design-system(demo): a reading guide, the How it works page, and ds:demo-check [AI-assisted]",
+      "body": "- .storybook/workbench/README.md: what the branch holds by part, the four\n  places to read first, and which script writes each generated file\n- How it works: story frames, and what an edit of a theme or constant\n  read changes\n- npm run ds:demo-check -- --url <storybook>: the demo on ten of the most\n  used components (every section's values have a line or a reason, one\n  change each, Review, Send timed); --stories and --no-edit for a\n  coverage run\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/README.md",
+        "front/.storybook/workbench/src/pages/About.tsx",
+        "front/package.json",
+        "front/scripts/design-system/demo-check.test.ts",
+        "front/scripts/design-system/demo-check.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "1ebd37e07df26ca9f683d691bb3c7b359bc19fb6",
+      "subject": "design-system(canvas): the default canvas is the platform's own default [AI-assisted]",
+      "body": "A story now renders as a new platform does: the default colours of\nsettings.schema.json.erb (#163A7D main, #CF4040 secondary) and no custom\nfont, so Public Sans. The mocked app configuration answers with the same\ncity as the theme. The real tenants stay in the City menu, their fonts\nnamed as look-alikes.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/cities.ts",
+        "front/.storybook/contexts/ThemeContext.tsx",
+        "front/.storybook/mockServer.ts",
+        "front/.storybook/mocks/appConfiguration.test.ts",
+        "front/.storybook/mocks/appConfiguration.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "8e187b542c9b6a2341e8d6dc81e2713f05cc1c54",
+      "subject": "design-system(gallery): each card's chip says what the code index found [AI-assisted]",
+      "body": "The status chip reads the index's files.json for the story's component:\non tokens, partly on tokens (with its share on the ring), not on tokens\nyet, no styles of its own, no component file, or no code index. The\nchip's title gives the counts. \"Not scanned\" is gone.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/StoryThumb.tsx",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/lib/stories.test.ts",
+        "front/.storybook/workbench/src/lib/stories.ts",
+        "front/.storybook/workbench/src/lib/useStoryGroups.ts",
+        "front/.storybook/workbench/src/pages/Gallery.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "76c78f392226665d72b5d18bba33da04b262e273",
+      "subject": "design-system(trace): trace each value to its line of code; edits are exact codemods [AI-assisted]",
+      "body": "The Design tab reads each value from the styled-components runtime and\nthe code index (npm run ds:index), and shows where it is written: a\nfile:line linked at the index commit, or \"not traced\" with the reason.\nThe value matching that guessed a token is gone; token offers come from\nthe token data's legacy list only.\n\n- lib/trace: the trace engine (owner, cascade, alignment with the index,\n  read evaluation, story frames joined by their style object)\n- an attach records the traced expression; Send rewrites exactly that\n  text, checked by token streams, or names why it is a hand edit\n- ds:trace-check: the plan's 13 rows in a browser, 13 of 13 pass\n- the index lists templates made only of interpolations (Text) under\n  a key of their own\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/components/ChangesDrawer.test.tsx",
+        "front/.storybook/workbench/src/components/ValueField.test.tsx",
+        "front/.storybook/workbench/src/components/ValueField.tsx",
+        "front/.storybook/workbench/src/lib/elementEdits.test.ts",
+        "front/.storybook/workbench/src/lib/elementEdits.ts",
+        "front/.storybook/workbench/src/lib/inspect.test.ts",
+        "front/.storybook/workbench/src/lib/inspect.ts",
+        "front/.storybook/workbench/src/lib/legacyTokens.test.ts",
+        "front/.storybook/workbench/src/lib/legacyTokens.ts",
+        "front/.storybook/workbench/src/lib/patch.test.ts",
+        "front/.storybook/workbench/src/lib/patch.ts",
+        "front/.storybook/workbench/src/lib/sourceLine.test.ts",
+        "front/.storybook/workbench/src/lib/sourceLine.ts",
+        "front/.storybook/workbench/src/lib/tokenPicker.ts",
+        "front/.storybook/workbench/src/lib/trace/align.test.ts",
+        "front/.storybook/workbench/src/lib/trace/align.ts",
+        "front/.storybook/workbench/src/lib/trace/canonical.ts",
+        "front/.storybook/workbench/src/lib/trace/cascade.test.ts",
+        "front/.storybook/workbench/src/lib/trace/cascade.ts",
+        "front/.storybook/workbench/src/lib/trace/codemod.test.ts",
+        "front/.storybook/workbench/src/lib/trace/codemod.ts",
+        "front/.storybook/workbench/src/lib/trace/cssParse.test.ts",
+        "front/.storybook/workbench/src/lib/trace/cssParse.ts",
+        "front/.storybook/workbench/src/lib/trace/drill.test.ts",
+        "front/.storybook/workbench/src/lib/trace/evaluate.test.ts",
+        "front/.storybook/workbench/src/lib/trace/evaluate.ts",
+        "front/.storybook/workbench/src/lib/trace/fixture.ts",
+        "front/.storybook/workbench/src/lib/trace/frame.test.ts",
+        "front/.storybook/workbench/src/lib/trace/frame.ts",
+        "front/.storybook/workbench/src/lib/trace/hash.test.ts",
+        "front/.storybook/workbench/src/lib/trace/hash.ts",
+        "front/.storybook/workbench/src/lib/trace/index.ts",
+        "front/.storybook/workbench/src/lib/trace/indexClient.test.ts",
+        "front/.storybook/workbench/src/lib/trace/indexClient.ts",
+        "front/.storybook/workbench/src/lib/trace/internals.test.ts",
+        "front/.storybook/workbench/src/lib/trace/internals.ts",
+        "front/.storybook/workbench/src/lib/trace/owner.ts",
+        "front/.storybook/workbench/src/lib/trace/readEval.test.ts",
+        "front/.storybook/workbench/src/lib/trace/readEval.ts",
+        "front/.storybook/workbench/src/lib/trace/trace.test.ts",
+        "front/.storybook/workbench/src/lib/trace/trace.ts",
+        "front/.storybook/workbench/src/lib/trace/types.ts",
+        "front/.storybook/workbench/src/pages/Component.tsx",
+        "front/.storybook/workbench/src/pages/Review.tsx",
+        "front/.storybook/workbench/src/panels/Design.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/package.json",
+        "front/scripts/design-system/index/index.test.ts",
+        "front/scripts/design-system/index/index.ts",
+        "front/scripts/design-system/trace-check.ts",
+        "front/scripts/design-system/workbench-smoke.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "08a291819e9bb78e79f9981fc5f2ae3a3f6ea05b",
+      "subject": "design-system(index): npm run ds:index, a static index of every styled template [AI-assisted]",
+      "body": "Added:\n- scripts/design-system/index/: Babel reads every styled-components,\n  css, keyframes, createGlobalStyle and string template in app/ and\n  writes, per template, its CSS declarations and what each ${...} reads\n  (prop, theme, const, map, call, cond, literal, token), with the line\n  of each leaf. Same commit, same bytes.\n- styles.json: the static style={{...}} objects of story files and the\n  Storybook setup, so a story frame traces to its line.\n- files.json: per file, its design declarations by how they are read\n  (token, theme or const, literal, prop, unknown), for the gallery.\n- ds:prepare runs ds:index; the output (.storybook/static/design-index/,\n  about 4 MB) is generated, not committed.\n- scan/values.ts also returns where legacy values are defined.\n\nWhole app: 5105 files, 2285 templates, 9730 declarations, 2508 of 2784\ninterpolations with a known read, in about 14 s.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/.gitignore",
+        "front/package.json",
+        "front/scripts/design-system/index/cssDecls.test.ts",
+        "front/scripts/design-system/index/cssDecls.ts",
+        "front/scripts/design-system/index/designCounts.test.ts",
+        "front/scripts/design-system/index/designCounts.ts",
+        "front/scripts/design-system/index/index.test.ts",
+        "front/scripts/design-system/index/index.ts",
+        "front/scripts/design-system/index/loc.ts",
+        "front/scripts/design-system/index/reads.test.ts",
+        "front/scripts/design-system/index/reads.ts",
+        "front/scripts/design-system/index/schema.ts",
+        "front/scripts/design-system/index/styleObjects.test.ts",
+        "front/scripts/design-system/index/styleObjects.ts",
+        "front/scripts/design-system/index/templates.test.ts",
+        "front/scripts/design-system/index/templates.ts",
+        "front/scripts/design-system/scan/values.test.ts",
+        "front/scripts/design-system/scan/values.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "37389341d087756a89bbfe53a69c6e5deb695daf",
+      "subject": "design-system(workbench): How it works, a page for developers checking the workbench [AI-assisted]",
+      "body": "#/about, linked from the nav's footer: how a value on the Design tab is\ntraced to a line of code (the index, the cascade, the component, the\ntemplate's own functions, the exact check), what an edit and the sender\nmay change, what the workbench cannot do (props set by callers, logic),\nhow to check it, and the build's numbers from the code index and the story\naudit (each says \"none in this build\" when the file is missing).\n\nAlso the code index's types (scripts/design-system/index/schema.ts) and\nits hash (fnv1a32, pinned by test vectors), which the page reads.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/App.tsx",
+        "front/.storybook/workbench/src/components/Nav.tsx",
+        "front/.storybook/workbench/src/lib/data.ts",
+        "front/.storybook/workbench/src/lib/router.test.ts",
+        "front/.storybook/workbench/src/lib/router.ts",
+        "front/.storybook/workbench/src/pages/About.tsx",
+        "front/.storybook/workbench/src/shell.css",
+        "front/scripts/design-system/index/hash.test.ts",
+        "front/scripts/design-system/index/hash.ts",
+        "front/scripts/design-system/index/schema.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "53aa22d898363a7ee923ebd46b19432fc99c26dd",
+      "subject": "design-system(review): send.js sends only token swaps [AI-assisted]",
+      "body": "A second guard in the sender itself, whatever the workbench hands it: the\nold and new line differ in one contiguous span, and the new span is a\ndesign token (var(--gv-...), optionally quoted) where the old was a plain\nvalue, or the reverse (a put-back). The replaced span holds no statement\nend, no comment and no unbalanced bracket or quote. Anything else is \"by\nhand: not a token swap\" and is not committed.\n\nAdded: isTokenSwap with tests (the four trace edits pass, both ways; two\nspans, a value swap, code or a comment eaten are refused).\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/send.js",
+        "front/scripts/design-system/send.test.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "77103dbbce4f63b71edf73c25dd9b4a21bef88c4",
+      "subject": "design-system(review): Review compares a change's pictures by their bytes, and only near the screen [AI-assisted]",
+      "body": "The Review page froze for 8 to 10 s on pr-15027: every card decoded its\nbefore and after PNGs on the main thread and compared every pixel, all at\nonce. Now a card waits until it is near the screen, fetches both files and\ncompares their SHA-256 (crypto.subtle): the same bytes give one picture,\n\"No visual change\"; anything else shows both.\n\nRemoved: loadImage, pixelsOf and sameImages (pages/Review.tsx).\nAdded: samePictures (lib/prReview.ts) with its tests.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/workbench/src/lib/prReview.test.ts",
+        "front/.storybook/workbench/src/lib/prReview.ts",
+        "front/.storybook/workbench/src/pages/Review.tsx"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "67310bc0db069d00fc5bdb38d8c46306ffa3d54d",
+      "subject": "design-system(workbench): Send for review shows the exact edits and asks who reviews; a review shows its story live [AI-assisted]",
+      "body": "- The Send window reads the changed file from GitHub and shows each change\n  as a diff (file:line, the line now, the line after); the text is the\n  send.js command fed those edits. A change it cannot edit plainly stays a\n  task, done by hand.\n- Who reviews is picked in the window: Amira, Edwin, Luuc, Iva, or None (a\n  draft, nobody asked).\n- A review's cards show their story live, before (the workbench's preview)\n  and after (the review's own), with a 2x zoom: no pictures to make or\n  commit. Older reviews keep their pictures.\n- The page says when a review's preview is still on its way.\n- The heal skill's \"Stacked on the workbench\" follows: the text first, by\n  hand only what it lists, no pictures.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.claude/skills/heal/SKILL.md",
+        "front/.storybook/workbench/src/components/SendForReview.tsx",
+        "front/.storybook/workbench/src/lib/elementEdits.test.ts",
+        "front/.storybook/workbench/src/lib/elementEdits.ts",
+        "front/.storybook/workbench/src/lib/patch.test.ts",
+        "front/.storybook/workbench/src/lib/patch.ts",
+        "front/.storybook/workbench/src/lib/prReview.test.ts",
+        "front/.storybook/workbench/src/lib/prReview.ts",
+        "front/.storybook/workbench/src/lib/review.ts",
+        "front/.storybook/workbench/src/lib/send.test.ts",
+        "front/.storybook/workbench/src/lib/send.ts",
+        "front/.storybook/workbench/src/lib/useSend.ts",
+        "front/.storybook/workbench/src/pages/Review.tsx",
+        "front/.storybook/workbench/src/shell.css"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "b006d3d749b307a9852f8202c7aac88d70dd07de",
+      "subject": "design-system(workbench): send.js sends a review through GitHub's API in seconds [AI-assisted]",
+      "body": "The Send for review text is one command: the agent fetches this script from\nthe workbench branch and feeds it the page's exact line edits. It adds the\napp's token setup while the base lacks it, one commit per change (its last\nline `Story: <id>`), moves the branch once, opens the review into\ndesign-system/workbench with label epic (a draft when nobody is asked) and\nprints the review and preview links. No clone, no install, no local checks:\nCI runs them. --dry-run reads and plans only. Node built-ins only.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/send.js",
+        "front/scripts/design-system/send.test.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "0885ed021231867ddbb73d5600393b758010c837",
+      "subject": "design-system(scan): a legacy read carries the value it renders with the default theme [AI-assisted]",
+      "body": "props.theme.borderRadius renders 3px: values.ts reads styleUtils.ts\nstatically (theme, colors, bo; never run), and a legacy-theme, -colors or\n-bo finding gets `value` when its chain reaches a static value that is the\nsame in every city (not a tenant colour, the font or the graph palette).\nThe workbench finds an edit's line by it.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/scripts/design-system/scan/findings.ts",
+        "front/scripts/design-system/scan/index.ts",
+        "front/scripts/design-system/scan/schema.ts",
+        "front/scripts/design-system/scan/values.test.ts",
+        "front/scripts/design-system/scan/values.ts"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "f785f0ad463c0351ce56e1ab66ae251dca23202d",
+      "subject": "design-system(review): refresh the change list [AI-assisted]",
+      "body": "Co-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
+      "files": [
+        "front/.storybook/static/design-changes.json"
+      ],
+      "kind": "other"
+    },
     {
       "sha": "97938d9b3d45e6b840b015a2bd1bee1fd8d58b9d",
       "subject": "design-system(workbench): the review text says its preview is the new review's own; no empty brackets for a layer the Review page does not know [AI-assisted]",
@@ -1760,6 +2004,15 @@
       "kind": "other"
     },
     {
+      "sha": "9ed830c239c40feb4c8f507446f4c6366aba3627",
+      "subject": "Fix community monitor redirect",
+      "body": "",
+      "files": [
+        "front/app/components/CustomFieldsForm/SurveyForm/SurveyPage.tsx"
+      ],
+      "kind": "other"
+    },
+    {
       "sha": "5153d9054cf82ae8b0e39ec67681d04c1dc4940d",
       "subject": "design-system(workbench): Figma-style component screen [AI-assisted]",
       "body": "The right sidebar is now an inspector with two tabs. Design holds the\nstory's state and variant, the canvas settings (mode, city, viewport,\nlanguage), the selected layer's properties and the props. Inspect holds\nTokens, Usage and A11y.\n\nSelect mode: a click on the canvas picks the element under it, Esc or the\nup button picks its parent. Each property shows a token chip when the\nrule reads that token, a dashed chip with an orange dot when a hard-coded\nvalue equals a token, and the raw value otherwise. A chip opens an inline\neditor; edits go to the Changes drawer. Interact mode hands the clicks\nback to the story.\n\nThe canvas keeps the story's inline tenant tokens when it applies edits,\nso city colours now survive in the workbench.\n\nCo-Authored-By: Claude Opus 5.5 (1M context) <noreply@anthropic.com>",
@@ -2007,6 +2260,16 @@
       "kind": "other"
     },
     {
+      "sha": "71cafff4a42ceb0f96e94d98ea719e22c1a04ff5",
+      "subject": "Refuse confirmation codes once the retry limit is reached",
+      "body": "Count each code attempt atomically before the code is compared, so the\nretry limit also applies to the correct code and to parallel attempts.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "back/app/services/user_confirmation_service.rb",
+        "back/spec/services/user_confirmation_service_spec.rb"
+      ],
+      "kind": "other"
+    },
+    {
       "sha": "eefced33b906c46217655f31a2d84271bba35b48",
       "subject": "design-system(workbench): copy fixes, plurals, neutral token wording, pattern image path [AI-assisted]",
       "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
@@ -2166,6 +2429,15 @@
       "subject": "design-system(tags): import order [AI-assisted]",
       "body": "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
       "files": [],
+      "kind": "other"
+    },
+    {
+      "sha": "8b373864cc03e0fcc6394c151e98bb85e17e6df8",
+      "subject": "[TAN-8732] Remove comments from printable_fields method",
+      "body": "Removed comments explaining the behavior of the printable_fields method.",
+      "files": [
+        "back/engines/commercial/bulk_import_ideas/app/services/bulk_import_ideas/parsers/idea_pdf_file_parser.rb"
+      ],
       "kind": "other"
     },
     {
@@ -4670,6 +4942,18 @@
         "front/.storybook-build/main.ts",
         "front/.storybook-build/preview.tsx",
         "front/package.json"
+      ],
+      "kind": "other"
+    },
+    {
+      "sha": "7dc33d558fb6109acb820f47399be90c1bd8a00b",
+      "subject": "[TAN-8732] Keep demographic answers in FormSync PDF imports",
+      "body": "Survey questions that reuse registration fields get a u_ key prefix when\nthe form is built, and that prefix is written onto shared, cached field\nrecords. FormSync built the form once for the LLM schema and again for the\nanswer template, so the second build prefixed the keys twice (u_u_...).\nThe extracted demographic answers then matched no field and were dropped.\n\nBuild the printable fields once per parser and share them with the LLM\nform parser and the schema builder.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>",
+      "files": [
+        "back/engines/commercial/bulk_import_ideas/app/services/bulk_import_ideas/parsers/idea_pdf_file_parser.rb",
+        "back/engines/commercial/bulk_import_ideas/app/services/bulk_import_ideas/parsers/pdf/form_sync_schema_builder.rb",
+        "back/engines/commercial/bulk_import_ideas/app/services/bulk_import_ideas/parsers/pdf/llm_form_parser.rb",
+        "back/engines/commercial/bulk_import_ideas/spec/services/parsers/idea_pdf_file_parser_spec.rb"
       ],
       "kind": "other"
     },

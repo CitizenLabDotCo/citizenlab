@@ -79,14 +79,16 @@ const Numbers = () => {
               <code>{audit?.commit.slice(0, 10)}</code>
             </dd>
           </div>
-          <div>
-            <dt>Values traced on each story's default element</dt>
-            <dd>{pct(counts.traced, counts.total)}</dd>
-            <dd className="wb-muted">
-              {counts.traced.toLocaleString('en')} of{' '}
-              {counts.total.toLocaleString('en')} values
-            </dd>
-          </div>
+          {counts.total > 0 && (
+            <div>
+              <dt>Values traced on each story's default element</dt>
+              <dd>{pct(counts.traced, counts.total)}</dd>
+              <dd className="wb-muted">
+                {counts.traced.toLocaleString('en')} of{' '}
+                {counts.total.toLocaleString('en')} values
+              </dd>
+            </div>
+          )}
         </>
       ) : (
         <div>

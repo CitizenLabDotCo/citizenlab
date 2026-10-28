@@ -69,6 +69,7 @@ when their checks are updated.
 | `.storybook/static/routes.fixture.json`                                | `ds:routes-fixture`   | yes       |
 | `.storybook/static/a11y-results.json`                                  | `ds:a11y`             | yes       |
 | `.storybook/static/visual-summary.json`                                | `ds:visual`           | yes       |
+| `.storybook/static/story-audit.json`                                   | `ds:audit-stories`    | yes       |
 | `.storybook/static/design-index/`                                      | `ds:index`            | no        |
 | `.storybook/static/workbench/`                                         | `ds:workbench` (Vite) | no        |
 
