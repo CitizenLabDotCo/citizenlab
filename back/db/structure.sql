@@ -5248,7 +5248,8 @@ CREATE TABLE public.tenants (
     favicon character varying,
     style jsonb DEFAULT '{}'::jsonb,
     deleted_at timestamp without time zone,
-    creation_finalized_at timestamp without time zone
+    creation_finalized_at timestamp without time zone,
+    template_application_started_at timestamp(6) without time zone
 );
 
 
@@ -10513,6 +10514,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261028120100'),
 ('20261027120100'),
 ('20261014200000'),
 ('20261014130100'),
