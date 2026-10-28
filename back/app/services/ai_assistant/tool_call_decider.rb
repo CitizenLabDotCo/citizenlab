@@ -66,7 +66,7 @@ module AIAssistant
       tool = context.tool(@tool_call.name)
       return { status: 'failed', result: { error: 'This tool is no longer available.' }.to_json } unless tool
 
-      result = tool.call(@user, @tool_call.arguments.merge(@tool_call.bound_arguments))
+      result = tool.call(@user, @tool_call.arguments.merge(@tool_call.pinned_arguments))
       { status: result.error ? 'failed' : 'executed', result: result.text }
     end
 

@@ -19,10 +19,10 @@ module AIAssistant
       def tools
         @tools ||= [
           Tool.new(McpServer::Tools::GetFormFields, pinned: container),
+          # The form version at the start of the turn: approving fails if the form changed since.
           Tool.new(
             McpServer::Tools::ReplaceFormFields,
-            pinned: container,
-            guards: { fields_last_updated_at: -> { subject.custom_form&.fields_last_updated_at&.iso8601 } }
+            pinned: container.merge(fields_last_updated_at: subject.custom_form&.fields_last_updated_at&.iso8601)
           )
         ]
       end

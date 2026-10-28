@@ -92,7 +92,7 @@ describe AIAssistant::Turn do
     expect(conversation.reload.status).to eq('awaiting_approval')
   end
 
-  it 'snapshots the form version with the proposal' do
+  it 'pins the form version to the proposal' do
     form = create(:custom_form, participation_context: phase, fields_last_updated_at: 1.hour.ago)
     stub_bedrock(bedrock_tool_use({ id: 'write_1', name: 'replace_form_fields', input: { fields: valid_fields } }))
 

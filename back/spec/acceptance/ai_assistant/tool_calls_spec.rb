@@ -24,7 +24,7 @@ resource 'AI assistant tool calls' do
           { 'input_type' => 'page', 'page_layout' => 'default', 'key' => 'form_end', 'title_multiloc' => {} }
         ]
       },
-      bound_arguments: { 'container_type' => 'phase', 'container_id' => phase.id }
+      pinned_arguments: { 'container_type' => 'phase', 'container_id' => phase.id }
     )
   end
   let(:id) { tool_call.id }
