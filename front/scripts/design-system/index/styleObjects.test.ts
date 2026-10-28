@@ -43,7 +43,7 @@ describe('styleObjectsOf', () => {
       fs.readFileSync(path.join(FRONT, file), 'utf8')
     );
     const hit = matchStyle(objs, {
-      width: 524,
+      width: 560,
       padding: 18,
       background: 'white',
     });

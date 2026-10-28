@@ -82,5 +82,7 @@ when their checks are updated.
 - `npm run ds:demo-check -- --url <storybook base>` goes through the demo on
   ten components: select, read every value's source, change one value,
   Review, Send.
+- Both take `--state <file>`, a Playwright storageState, to run against a
+  Storybook behind a sign-in such as the epic's.
 - In DevTools on the canvas, an element's value can be checked against the
   line the Design tab names.
