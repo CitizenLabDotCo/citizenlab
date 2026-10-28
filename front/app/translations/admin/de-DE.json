@@ -1750,7 +1750,7 @@
   "app.containers.Admin.projects.project.fileUploading": "Hochladen",
   "app.containers.Admin.projects.project.filesCount": "{count, plural, one {# Datei} other {# Dateien}}",
   "app.containers.Admin.projects.project.filesCountWithSize": "{count, plural, one {# Datei} other {# Dateien}} · {size}",
-  "app.containers.Admin.projects.project.filesDescription2": "Dateien zu diesem Projekt, wie Berichte, Lizenzen und Bilder. Hängen Sie diese an das Projekt, seine Phasen und Veranstaltungen an oder fügen Sie sie als Kontext für die KI-Analyse hinzu.",
+  "app.containers.Admin.projects.project.filesDescription2": "Dateien zu diesem Projekt, wie Berichte, Pläne und Bilder. Hängen Sie diese an das Projekt, seine Phasen und Veranstaltungen an oder fügen Sie sie als Kontext für die KI-Analyse hinzu.",
   "app.containers.Admin.projects.project.filesSection": "Datenportal",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Bitte wählen Sie einen Bereich aus.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Space",
