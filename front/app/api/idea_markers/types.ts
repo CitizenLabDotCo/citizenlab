@@ -14,6 +14,7 @@ export interface QueryParameters {
   sort?: Sort;
   search?: string | null;
   input_topics?: string[] | null;
+  custom_field_answers?: Record<string, string[]>;
 }
 
 export interface IIdeaMarkerData {
