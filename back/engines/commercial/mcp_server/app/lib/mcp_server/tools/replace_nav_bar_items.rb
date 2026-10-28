@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 class McpServer::Tools::ReplaceNavBarItems < McpServer::BaseTool
-  DEMO_ONLY_MESSAGE = 'Replacing navbar items via MCP is only available on demo and trial ' \
-                      'platforms. On live platforms, navigation changes stay a human action ' \
-                      'in the admin UI.'
-
   # The admin UI is built around at most 7 top-level items (its MAX_NAVBAR_ITEMS),
   # with the home item locked in first position. The model enforces neither, so the
   # tool does, to never build a menu the admin UI considers broken.
@@ -68,7 +64,7 @@ class McpServer::Tools::ReplaceNavBarItems < McpServer::BaseTool
     UUID_REGEX = /\A\h{8}-\h{4}-\h{4}-\h{4}-\h{12}\z/
 
     def run
-      return error(DEMO_ONLY_MESSAGE) unless published_writable_platform?
+      return demo_only_error('Replacing navbar items') unless published_writable_platform?
 
       authorize(NavBarItem, :create?)
 

@@ -32,9 +32,6 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
   # Deleting these stays a human action on live platforms: folders are navigation
   # structure, and deleting an area also deletes users' matching 'domicile' answers.
   DEMO_ONLY_TYPES = %w[folder area].freeze
-  DEMO_ONLY_MESSAGE = 'Destroying %<type>ss via MCP is only available on demo and trial ' \
-                      'platforms. On live platforms, %<type>s deletion stays a human ' \
-                      'action in the admin UI.'
 
   def name = 'destroy_resource'
 
@@ -78,7 +75,7 @@ class McpServer::Tools::DestroyResource < McpServer::BaseTool
       end
 
       if DEMO_ONLY_TYPES.include?(params[:resource_type]) && !published_writable_platform?
-        return error(format(DEMO_ONLY_MESSAGE, type: params[:resource_type]))
+        return demo_only_error("Destroying #{params[:resource_type]}s")
       end
 
       # Areas are platform-wide (no admin_publication), so the demo/trial gate above is

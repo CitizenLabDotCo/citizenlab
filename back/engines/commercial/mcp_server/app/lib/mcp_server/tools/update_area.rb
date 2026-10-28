@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 class McpServer::Tools::UpdateArea < McpServer::BaseTool
-  DEMO_ONLY_MESSAGE = 'Updating areas via MCP is only available on demo and trial ' \
-                      'platforms. On live platforms, area changes stay a human action ' \
-                      'in the admin UI.'
-
   def name = 'update_area'
 
   def annotations
@@ -38,7 +34,7 @@ class McpServer::Tools::UpdateArea < McpServer::BaseTool
       area = Area.find_by(id: params[:area_id])
       return not_found_error('Area', params[:area_id]) unless area
 
-      return error(DEMO_ONLY_MESSAGE) unless published_writable_platform?
+      return demo_only_error('Updating areas') unless published_writable_platform?
 
       authorize(area, :update?)
 

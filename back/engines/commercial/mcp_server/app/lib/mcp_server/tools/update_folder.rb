@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 
 class McpServer::Tools::UpdateFolder < McpServer::BaseTool
-  DEMO_ONLY_MESSAGE = 'Updating folders via MCP is only available on demo and trial ' \
-                      'platforms. On live platforms, folder changes stay a human action ' \
-                      'in the admin UI.'
-
   def name = 'update_folder'
 
   def annotations
@@ -38,7 +34,7 @@ class McpServer::Tools::UpdateFolder < McpServer::BaseTool
       folder = ProjectFolders::Folder.find_by(id: params[:folder_id])
       return not_found_error('Folder', params[:folder_id]) unless folder
 
-      return error(DEMO_ONLY_MESSAGE) unless published_writable_platform?
+      return demo_only_error('Updating folders') unless published_writable_platform?
 
       authorize(folder, :update?)
 

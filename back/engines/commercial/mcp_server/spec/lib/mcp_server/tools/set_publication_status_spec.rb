@@ -93,6 +93,31 @@ describe McpServer::Tools::SetPublicationStatus do
     expect(project.admin_publication.reload.publication_status).to eq('draft')
   end
 
+  context 'as a project moderator' do
+    let(:project) { create(:project, :draft) }
+    let(:current_user) { create(:project_moderator, projects: [project]) }
+
+    it 'refuses to publish a never-published project whose review is not approved' do
+      review = create(:project_review, project:)
+
+      response = set_status('project', project.id, 'published')
+
+      expect(response).to be_error
+      expect(response.content.sole[:text]).to include('approved review')
+      expect(project.admin_publication.reload.publication_status).to eq('draft')
+      expect(review.reload).not_to be_approved
+    end
+
+    it 'publishes a project whose review is approved' do
+      create(:project_review, :approved, project:)
+
+      response = set_status('project', project.id, 'published')
+
+      expect(response).not_to be_error
+      expect(project.admin_publication.reload.publication_status).to eq('published')
+    end
+  end
+
   it 'returns a not-found error for a missing resource' do
     response = set_status('project', SecureRandom.uuid, 'published')
 

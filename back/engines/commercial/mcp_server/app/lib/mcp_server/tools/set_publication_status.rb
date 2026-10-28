@@ -20,9 +20,8 @@ class McpServer::Tools::SetPublicationStatus < McpServer::BaseTool
   }.freeze
   private_constant :SERIALIZERS
 
-  DEMO_ONLY_MESSAGE = 'Publishing and unpublishing via MCP is only available on demo and ' \
-                      'trial platforms. On live platforms, publishing stays a human action ' \
-                      'in the admin UI.'
+  STATUS_NOT_PERMITTED_MESSAGE = 'You cannot change the publication status of this project. ' \
+                                 'A project that was never published needs an approved review first.'
 
   def name = 'set_publication_status'
 
@@ -61,9 +60,14 @@ class McpServer::Tools::SetPublicationStatus < McpServer::BaseTool
         return not_found_error("Resource (#{params[:resource_type]})", params[:resource_id])
       end
 
-      return error(DEMO_ONLY_MESSAGE) unless published_writable_platform?
+      return demo_only_error('Publishing and unpublishing') unless published_writable_platform?
 
       authorize(record, :update?)
+      unless publication_status_permitted?
+        raise Pundit::NotAuthorizedErrorWithReason,
+          reason: STATUS_NOT_PERMITTED_MESSAGE,
+          message: STATUS_NOT_PERMITTED_MESSAGE
+      end
 
       status = params[:publication_status]
       if record.admin_publication.publication_status == status
@@ -86,6 +90,18 @@ class McpServer::Tools::SetPublicationStatus < McpServer::BaseTool
     end
 
     private
+
+    # update? alone is not enough: ProjectPolicy lets a project moderator edit a project,
+    # but only permits a publication status change once the project was published before
+    # or its review was approved (admins and folder or space moderators always can).
+    def publication_status_permitted?
+      policy = policy(record)
+      # Same fallback as Pundit's permitted_attributes: FolderPolicy has no update variant.
+      attributes = policy.try(:permitted_attributes_for_update) || policy.permitted_attributes
+      attributes
+        .grep(Hash)
+        .any? { it[:admin_publication_attributes]&.include?(:publication_status) }
+    end
 
     def resource_class
       @resource_class ||= RESOURCE_TYPES.fetch(params[:resource_type])
