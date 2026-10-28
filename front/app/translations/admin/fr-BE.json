@@ -2138,7 +2138,7 @@
   "app.containers.Admin.projects.project.publishFindPublic": "Public",
   "app.containers.Admin.projects.project.publishFindPublicDescription": "Apparaît sur la page d'accueil, dans la liste des projets et dans la recherche.",
   "app.containers.Admin.projects.project.publishMissingBack": "Retour à la configuration",
-  "app.containers.Admin.projects.project.publishMissingBody": "{missing, plural, one {Il manque encore # élément sur {total}.} other {Il manque encore # éléments sur {total}.}} Vous pouvez publier dès maintenant et compléter plus tard.",
+  "app.containers.Admin.projects.project.publishMissingBody": "{missing, plural, one {Il manque encore # élément sur {total}.} other {Il manque encore # éléments sur {total}.}} Vous pouvez quand même publier dès maintenant et compléter plus tard.",
   "app.containers.Admin.projects.project.publishMissingConfirm": "Publier",
   "app.containers.Admin.projects.project.publishMissingScheduleConfirm": "Continuer vers la planification",
   "app.containers.Admin.projects.project.publishMissingScheduleTitle": "Planifier le projet",
