@@ -4,6 +4,9 @@ module AIAssistant
   # One turn of a conversation: replays the stored messages to the model, lets it call tools,
   # and stores what it does. The turn ends with a reply.
   class Turn
+    # Stops RubyLLM's loop from a callback, which has no other way to end it.
+    class ToolBudgetExceededError < StandardError; end
+
     MAX_TOOL_CALLS = 10
     MAX_OUTPUT_TOKENS = 16_000
     BUDGET_TEXT = { error: 'Too many tool calls in one turn. Stop and summarise for the user.' }.to_json
@@ -23,7 +26,7 @@ module AIAssistant
 
     def run
       unless @surface.available?
-        conversation.update!(status: 'failed', last_error_code: 'surface_unavailable')
+        fail_turn('surface_unavailable')
         return
       end
 
@@ -33,25 +36,16 @@ module AIAssistant
         chat.complete
       end
       finish
+    rescue ToolBudgetExceededError
+      fail_turn('tool_budget_exceeded')
     end
 
     # Runs a call of +tool+ by the model right away, as the conversation's user.
     def handle_tool_call(tool, args)
-      arguments = args.except(*tool.pinned.keys)
-
-      if over_tool_budget?
-        @current_tool_call.update!(status: 'failed', arguments:, result: BUDGET_TEXT)
-        RubyLLM::Tool::Halt.new(BUDGET_TEXT)
-      else
-        run_read_tool(tool, arguments)
-      end
+      run_read_tool(tool, args.except(*tool.pinned.keys))
     end
 
     private
-
-    def over_tool_budget?
-      @tool_call_count > MAX_TOOL_CALLS
-    end
 
     def run_read_tool(tool, arguments)
       result = tool.call(@user, arguments.merge(tool.pinned))
@@ -78,11 +72,11 @@ module AIAssistant
     end
 
     def finish
-      if over_tool_budget?
-        conversation.update!(status: 'failed', last_error_code: 'tool_budget_exceeded')
-      else
-        conversation.update!(status: 'idle', last_error_code: nil)
-      end
+      conversation.update!(status: 'idle', last_error_code: nil)
+    end
+
+    def fail_turn(error_code)
+      conversation.update!(status: 'failed', last_error_code: error_code)
     end
 
     def replay(chat)
@@ -152,9 +146,14 @@ module AIAssistant
       tool_call.update!(status: 'failed', result: text_of(message.content))
     end
 
+    # Runs for every call, also to tools that don't exist, so the budget covers them all.
     def start_tool_call(tool_call)
       @tool_call_count += 1
       @current_tool_call = @tool_calls_by_use_id.fetch(tool_call.id)
+      return if @tool_call_count <= MAX_TOOL_CALLS
+
+      @current_tool_call.update!(status: 'failed', result: BUDGET_TEXT)
+      raise ToolBudgetExceededError
     end
 
     def text_of(content)
