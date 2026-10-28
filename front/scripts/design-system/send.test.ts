@@ -556,9 +556,19 @@ describe('run', () => {
     expect(gitHub.to('/pulls/15069/requested_reviewers')[0].body).toEqual({
       reviewers: ['IvaKop'],
     });
-    expect(writes[writes.length - 1].body.body).toBe(
-      prBody(15069, [earlier, { subject: change.subject, sha: edit }])
-    );
+    // The description is written while the reviewer is asked.
+    expect(
+      gitHub.to('/pulls/15069').filter((c) => c.method === 'PATCH')
+    ).toEqual([
+      expect.objectContaining({
+        body: {
+          body: prBody(15069, [
+            earlier,
+            { subject: change.subject, sha: edit },
+          ]),
+        },
+      }),
+    ]);
     expect(lines).toEqual([
       ...review(15069),
       'reviewer: IvaKop asked',

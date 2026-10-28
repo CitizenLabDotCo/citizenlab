@@ -102,7 +102,7 @@ const WAIT_MS = 2 * 60 * 1000;
 // The script opens a review in seconds, so a copy is followed sooner at
 // first. GitHub answers 60 questions an hour per address without a key:
 // these 8, then one every 2 minutes, leave room for a few sends an hour.
-export const SOON_MS = [5, 10, 15, 20, 30, 45, 60, 90].map((s) => s * 1000);
+const SOON_MS = [5, 10, 15, 20, 30, 45, 60, 90].map((s) => s * 1000);
 
 // Asks GitHub's public API where the review stands: on opening, when the tab
 // comes back, and while a copy waits for the agent: at SOON_MS after it,

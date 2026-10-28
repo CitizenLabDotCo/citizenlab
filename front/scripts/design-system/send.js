@@ -611,8 +611,9 @@ const run = async (
   }
 
   // What GitHub refuses past this point is for a person, except the
-  // description, which goes last: until it lists the commits, the same
-  // command run again finishes the steps before it.
+  // description: until it lists the commits, the same command run again
+  // finishes the review. It is written with the label and the reviewer,
+  // whose refusals never stop the run.
   const soft = async (what, act) => {
     try {
       await act();
@@ -636,8 +637,8 @@ const run = async (
       });
     }
     const n = pr.number;
-    // The label and the reviewer at once; a draft is marked ready before
-    // its reviewer is asked.
+    // The label, the reviewer and the description at once; a draft is
+    // marked ready before its reviewer is asked.
     const labelling = label
       ? soft('label the review epic', () =>
           api('POST', `/repos/${REPO}/issues/${n}/labels`, {
@@ -645,20 +646,22 @@ const run = async (
           })
         )
       : null;
-    if (ready) {
-      const done = await soft('mark the review ready', () =>
-        gh(['pr', 'ready', String(n), '--repo', REPO])
-      );
-      if (done) draft = false;
-    }
-    if (ask) {
-      asked = await soft(`ask ${reviewer} to review`, () =>
-        api('POST', `/repos/${REPO}/pulls/${n}/requested_reviewers`, {
-          reviewers: [reviewer],
-        })
-      );
-    }
-    await labelling;
+    const asking = (async () => {
+      if (ready) {
+        const done = await soft('mark the review ready', () =>
+          gh(['pr', 'ready', String(n), '--repo', REPO])
+        );
+        if (done) draft = false;
+      }
+      if (ask) {
+        asked = await soft(`ask ${reviewer} to review`, () =>
+          api('POST', `/repos/${REPO}/pulls/${n}/requested_reviewers`, {
+            reviewers: [reviewer],
+          })
+        );
+      }
+    })();
+    let describing = null;
     if (entries.length) {
       let next;
       if (described) {
@@ -673,8 +676,9 @@ const run = async (
         const fresh = prBody(n, entries, setup && setup.sha);
         next = kept ? `${fresh}\n\n${kept}` : fresh;
       }
-      await api('PATCH', `/repos/${REPO}/pulls/${n}`, { body: next });
+      describing = api('PATCH', `/repos/${REPO}/pulls/${n}`, { body: next });
     }
+    await Promise.all([labelling, asking, describing]);
   } catch (e) {
     const where = shas.length ? `the commits are on ${branch}; ` : '';
     throw new Error(

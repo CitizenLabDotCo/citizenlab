@@ -1,7 +1,7 @@
 // Checks the Design tab's traces against values written down from the code.
 //
 //   npm run ds:trace-check -- --url <storybook base> [--only <story id>]
-//                             [--json <file>]
+//                             [--json <file>] [--state <storageState.json>]
 //
 // <storybook base> is where a built Storybook is served, with the workbench
 // at <base>/workbench/ (a local static build, or the epic's /storybook/).
@@ -12,8 +12,10 @@
 // from the code before any run (notes on the trace plan, section 5).
 // Prints a table; exits 1 on any failure, 2 when Playwright is missing.
 //
-// runTraceCheck(page, base) takes any Playwright page, so a launcher with
-// its own browser profile (one signed in to the epic) can call it.
+// --state is a Playwright storageState for a Storybook behind a sign-in
+// (the epic's). runTraceCheck(page, base) takes any Playwright page, so a
+// launcher with its own browser profile (one signed in to the epic) can
+// call it too.
 import fs from 'fs';
 
 import { loadPlaywright } from './playwright';
@@ -497,6 +499,7 @@ const main = async () => {
   try {
     const page = await browser.newPage({
       viewport: { width: 1440, height: 900 },
+      ...(arg('--state') ? { storageState: arg('--state') } : {}),
     });
     results = await runTraceCheck(page, base, rows);
   } finally {

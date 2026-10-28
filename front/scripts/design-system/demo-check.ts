@@ -3,6 +3,7 @@
 //   npm run ds:demo-check -- --url <storybook base> [--send-dry-run]
 //                            [--json <file>] [--shots <dir>]
 //                            [--stories <file> --no-edit]
+//                            [--state <storageState.json>]
 //
 // For each component it opens the story in the workbench and checks the
 // Design tab twice: on the first selection, then on a click on the story's
@@ -16,7 +17,8 @@
 // no write, no review opened. With --shots it saves a picture of the
 // Design tab on each first selection, 1440 by 900, light. --stories takes
 // another list ([{ component, story }] in a JSON file); --no-edit checks
-// the selections only, with no change, Review or Send.
+// the selections only, with no change, Review or Send. --state is a
+// Playwright storageState for a Storybook behind a sign-in (the epic's).
 // Prints a table; exits 1 on any failure, 2 when Playwright is missing.
 import { spawnSync } from 'child_process';
 import fs from 'fs';
@@ -434,6 +436,7 @@ const main = async () => {
     const page = await browser.newPage({
       viewport: { width: 1440, height: 900 },
       colorScheme: 'light',
+      ...(arg('--state') ? { storageState: arg('--state') } : {}),
     });
     const list: typeof DEMO = arg('--stories')
       ? JSON.parse(fs.readFileSync(arg('--stories') as string, 'utf8'))
