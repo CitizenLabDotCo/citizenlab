@@ -14,9 +14,9 @@ describe AIAssistant::ToolCallDecider do
       { 'input_type' => 'page', 'page_layout' => 'default', 'key' => 'form_end', 'title_multiloc' => {} }
     ]
   end
-  let(:bound_arguments) { { 'container_type' => 'phase', 'container_id' => phase.id } }
+  let(:pinned_arguments) { { 'container_type' => 'phase', 'container_id' => phase.id } }
   let!(:tool_call) do
-    create(:ai_assistant_tool_call, message: assistant_message, arguments: { 'fields' => fields }, bound_arguments:)
+    create(:ai_assistant_tool_call, message: assistant_message, arguments: { 'fields' => fields }, pinned_arguments:)
   end
 
   describe '#approve!' do
@@ -33,7 +33,7 @@ describe AIAssistant::ToolCallDecider do
 
     it 'fails without changes when the form changed since the proposal' do
       create(:custom_form, participation_context: phase, fields_last_updated_at: Time.current)
-      tool_call.update!(bound_arguments: bound_arguments.merge('fields_last_updated_at' => 1.hour.ago.iso8601))
+      tool_call.update!(pinned_arguments: pinned_arguments.merge('fields_last_updated_at' => 1.hour.ago.iso8601))
 
       described_class.new(tool_call, user).approve!
 

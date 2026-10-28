@@ -25,10 +25,10 @@ describe AIAssistant::Surfaces::SurveyBuilder do
     )
   end
 
-  it 'snapshots the form version when a change is proposed' do
+  it 'pins the form version to the proposed changes' do
     form = create(:custom_form, participation_context: phase, fields_last_updated_at: 1.hour.ago)
 
-    expect(surface.tool('replace_form_fields').snapshot).to eq(
+    expect(surface.tool('replace_form_fields').pinned).to eq(
       'container_type' => 'phase',
       'container_id' => phase.id,
       'fields_last_updated_at' => form.fields_last_updated_at.iso8601

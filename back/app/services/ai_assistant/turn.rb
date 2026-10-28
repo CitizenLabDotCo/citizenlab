@@ -46,7 +46,7 @@ module AIAssistant
     # the call is stored as a proposal and the turn stops, until the user approves or rejects
     # it (see ToolCallDecider).
     def handle_tool_call(tool, args)
-      arguments = args.except(*tool.hidden_keys)
+      arguments = args.except(*tool.pinned.keys)
 
       if tool.read_only?
         run_read_tool(tool, arguments)
@@ -152,8 +152,8 @@ module AIAssistant
     end
 
     def propose(tool, arguments)
-      snapshot = tool.snapshot
-      error = tool.validation_error(@user, arguments.merge(snapshot))
+      pinned = tool.pinned.compact
+      error = tool.validation_error(@user, arguments.merge(pinned))
 
       if error
         # Sent back to the model, so it fixes the call before the user is asked.
@@ -161,7 +161,7 @@ module AIAssistant
         @current_tool_call.update!(status: 'failed', arguments:, result: text)
         text
       else
-        @current_tool_call.update!(status: 'proposed', arguments:, pinned_arguments: snapshot)
+        @current_tool_call.update!(status: 'proposed', arguments:, pinned_arguments: pinned)
         RubyLLM::Tool::Halt.new(PROPOSED_TEXT)
       end
     end
