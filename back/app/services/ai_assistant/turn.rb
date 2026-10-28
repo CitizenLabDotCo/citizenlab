@@ -47,12 +47,6 @@ module AIAssistant
 
     private
 
-    def run_read_tool(tool, arguments)
-      result = tool.call(@user, arguments.merge(tool.pinned))
-      @current_tool_call.update!(status: result.error ? 'failed' : 'auto_executed', arguments:, result: result.text)
-      result.text
-    end
-
     # The turn already ended, but the worker stopped before saving the status.
     def ended?
       last_message = conversation.messages.last
@@ -69,14 +63,6 @@ module AIAssistant
         .with_params(inferenceConfig: { maxTokens: MAX_OUTPUT_TOKENS })
         .after_message { |message| persist(message) }
         .before_tool_call { |tool_call| start_tool_call(tool_call) }
-    end
-
-    def finish
-      conversation.update!(status: 'idle', last_error_code: nil)
-    end
-
-    def fail_turn(error_code)
-      conversation.update!(status: 'failed', last_error_code: error_code)
     end
 
     def replay(chat)
@@ -137,6 +123,22 @@ module AIAssistant
       end
     end
 
+    # Runs for every call, also to tools that don't exist, so the budget covers them all.
+    def start_tool_call(tool_call)
+      @tool_call_count += 1
+      @current_tool_call = @tool_calls_by_use_id.fetch(tool_call.id)
+      return if @tool_call_count <= MAX_TOOL_CALLS
+
+      @current_tool_call.update!(status: 'failed', result: BUDGET_TEXT)
+      raise ToolBudgetExceededError
+    end
+
+    def run_read_tool(tool, arguments)
+      result = tool.call(@user, arguments.merge(tool.pinned))
+      @current_tool_call.update!(status: result.error ? 'failed' : 'auto_executed', arguments:, result: result.text)
+      result.text
+    end
+
     # The tools store their own results. A call still pending here never reached a tool,
     # e.g. because the model asked for a tool that doesn't exist.
     def persist_tool_result(message)
@@ -146,14 +148,12 @@ module AIAssistant
       tool_call.update!(status: 'failed', result: text_of(message.content))
     end
 
-    # Runs for every call, also to tools that don't exist, so the budget covers them all.
-    def start_tool_call(tool_call)
-      @tool_call_count += 1
-      @current_tool_call = @tool_calls_by_use_id.fetch(tool_call.id)
-      return if @tool_call_count <= MAX_TOOL_CALLS
+    def finish
+      conversation.update!(status: 'idle', last_error_code: nil)
+    end
 
-      @current_tool_call.update!(status: 'failed', result: BUDGET_TEXT)
-      raise ToolBudgetExceededError
+    def fail_turn(error_code)
+      conversation.update!(status: 'failed', last_error_code: error_code)
     end
 
     def text_of(content)
