@@ -57,8 +57,11 @@ module AIAssistant
 
     private
 
-    # The turn already ended, but the worker stopped before saving the status.
+    # The turn already ended, with a reply or with proposals, but the worker stopped before
+    # saving the status.
     def ended?
+      return true if conversation.tool_calls.proposed.exists?
+
       last_message = conversation.messages.last
       last_message.assistant? && last_message.tool_calls.none?
     end
