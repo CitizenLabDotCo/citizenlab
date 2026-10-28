@@ -7659,6 +7659,11 @@
     "verified_at": "2026-10-28T10:13:46.350312Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.PhasePlacement.spotlightDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-28T10:40:07.117175Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.PhasePlacement.startRequired": {
     "state": "verified",
     "verified_at": "2026-10-28T10:13:46.350312Z",

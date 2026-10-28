@@ -1493,7 +1493,7 @@
   "app.containers.Admin.projects.PhasePlacement.resolveDateConflicts": "Résolvez {count, plural, one {# conflit de dates} other {# conflits de dates}} pour déplacer l'enquête",
   "app.containers.Admin.projects.PhasePlacement.retryLoading": "Réessayer",
   "app.containers.Admin.projects.PhasePlacement.spotlight": "Mise en avant",
-  "app.containers.Admin.projects.PhasePlacement.spotlightDescription": "S'affiche de manière autonome, en dehors de la chronologie",
+  "app.containers.Admin.projects.PhasePlacement.spotlightDescription": "Se déroule en dehors de la ligne du temps, en parallèle des autres phases.",
   "app.containers.Admin.projects.PhasePlacement.startRequired": "Saisissez une date de début.",
   "app.containers.Admin.projects.PhasePlacement.surveyPlacement": "Emplacement de l'enquête",
   "app.containers.Admin.projects.PhasePlacement.timeline": "Ligne du temps",
