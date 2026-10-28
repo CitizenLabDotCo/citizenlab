@@ -7279,6 +7279,11 @@
     "verified_at": "2026-07-08T12:03:15.782364Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Authentication.steps.FlowStart.signInWithEmployeeAccount": {
+    "state": "verified",
+    "verified_at": "2026-10-28T11:25:56.141112Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": {
     "state": "verified",
     "verified_at": "2026-08-17T14:35:41.629796Z",

@@ -34,6 +34,7 @@ module CustomIdMethods
         CustomIdMethods::IdCardLookup::IdCardLookupVerification.new,
         CustomIdMethods::Keycloak::KeycloakOmniauth.new,
         CustomIdMethods::NemlogIn::NemlogInOmniauth.new,
+        CustomIdMethods::Okta::OktaOmniauth.new,
         CustomIdMethods::OostendeRrn::OostendeRrnVerification.new,
         CustomIdMethods::Publik::PublikOmniauth.new,
         CustomIdMethods::Twoday::TwodayOmniauth.new,

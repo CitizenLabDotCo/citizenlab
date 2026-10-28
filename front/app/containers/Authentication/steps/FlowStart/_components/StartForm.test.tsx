@@ -12,6 +12,9 @@ import StartForm from './StartForm';
 
 jest.mock('hooks/useFeatureFlag', () => jest.fn());
 
+// Stubbed: its own visibility rules are covered in SSOEnforcedLink.test.tsx.
+jest.mock('./SSOEnforcedLink', () => () => <div>sso-enforced-link</div>);
+
 const onSubmitEmail = jest.fn();
 const onSubmitPhone = jest.fn();
 
@@ -102,6 +105,46 @@ describe('StartForm', () => {
         expect(onSubmitEmail).toHaveBeenCalledWith('test@citizenlab.co')
       );
       expect(onSubmitPhone).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('when submitting the email fails', () => {
+    beforeEach(() => (useFeatureFlag as jest.Mock).mockReturnValue(false));
+
+    const submitWithError = async (error: string) => {
+      onSubmitEmail.mockRejectedValueOnce({ errors: { email: [{ error }] } });
+      renderStartForm();
+
+      fireEvent.change(screen.getByLabelText(/email/i), {
+        target: { value: 'staff@example.gov' },
+      });
+      fireEvent.click(screen.getByRole('button', { name: /continue/i }));
+
+      await waitFor(() => expect(onSubmitEmail).toHaveBeenCalled());
+    };
+
+    it('offers the SSO link when the email domain must use SSO', async () => {
+      await submitWithError('sso_enforced_for_domain');
+
+      expect(await screen.findByText('sso-enforced-link')).toBeInTheDocument();
+    });
+
+    it('does not offer the SSO link for other errors', async () => {
+      await submitWithError('taken');
+
+      expect(screen.queryByText('sso-enforced-link')).not.toBeInTheDocument();
+    });
+
+    it('hides the SSO link again when the next submit fails differently', async () => {
+      await submitWithError('sso_enforced_for_domain');
+      expect(await screen.findByText('sso-enforced-link')).toBeInTheDocument();
+
+      onSubmitEmail.mockRejectedValueOnce(new Error('network'));
+      fireEvent.click(screen.getByRole('button', { name: /continue/i }));
+
+      await waitFor(() =>
+        expect(screen.queryByText('sso-enforced-link')).not.toBeInTheDocument()
+      );
     });
   });
 });

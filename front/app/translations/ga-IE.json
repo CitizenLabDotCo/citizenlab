@@ -1420,6 +1420,7 @@
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "Cliceáil anseo chun logáil isteach mar riarthóir nó bainisteoir tionscadail",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID, CIE nó CNS",
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "Nó logáil isteach le:",
+  "app.containers.Authentication.steps.FlowStart.signInWithEmployeeAccount": "Logáil isteach le do chuntas fostaí",
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": "Úsáid do sheoladh ríomhphoist ina ionad sin",
   "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": "Úsáid d'uimhir theileafóin ina ionad sin",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "Cuir isteach comhartha le do thoil",

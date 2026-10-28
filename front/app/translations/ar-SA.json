@@ -1420,6 +1420,7 @@
   "app.containers.Authentication.steps.EmailFlowStart.clickHereToLoginAsAdminOrPM": "انقر هنا لتسجيل الدخول كمسؤول أو مدير مشروع",
   "app.containers.Authentication.steps.EmailFlowStart.federaTitle": "SPID أو CIE أو CNS",
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": "أو تسجيل الدخول باستخدام:",
+  "app.containers.Authentication.steps.FlowStart.signInWithEmployeeAccount": "تسجيل الدخول باستخدام حساب الموظف الخاص بك",
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": "استخدم عنوان بريدك الإلكتروني بدلاً من ذلك",
   "app.containers.Authentication.steps.FlowStart.usePhoneNumberInstead": "استخدم رقم هاتفك بدلاً من ذلك",
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": "الرجاء إدخال رمز مميز",
