@@ -15809,6 +15809,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectEdit.statusPrioritySortingMethod": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:10:41.548520Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
