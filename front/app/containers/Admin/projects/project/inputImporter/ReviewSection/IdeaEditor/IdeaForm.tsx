@@ -38,7 +38,7 @@ const IdeaForm = ({
 
   const { data: customFields } = useCustomFields({
     projectId,
-    phaseId: participationMethod === 'native_survey' ? phaseId : undefined,
+    phaseId,
     publicFields: true,
   });
 
@@ -54,6 +54,8 @@ const IdeaForm = ({
   const { methods } = usePageForm({
     pageQuestions: questions || [],
     defaultValues: formData,
+    // A blank "please specify" line on a scanned form is a complete answer
+    otherTextOptional: true,
   });
 
   // Trigger validation on mount so errors show immediately
@@ -92,9 +94,7 @@ const IdeaForm = ({
                 questions={questions}
                 projectId={projectId}
                 phase={phase?.data}
-                participationMethod={
-                  phase?.data.attributes.participation_method
-                }
+                participationMethod={participationMethod}
                 showQuestionNumbers={true}
                 scrollErrorIntoView={false}
               />

@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
@@ -21,8 +22,8 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  border-top: solid 1px #ccc;
-  border-bottom: solid 1px #ccc;
+  border-top: solid 1px ${colors.grey400};
+  border-bottom: solid 1px ${colors.grey400};
 `;
 
 interface Props {

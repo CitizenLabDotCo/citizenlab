@@ -53,14 +53,9 @@ export const nativeSurveyConfig: FormBuilderConfig = {
     'line',
     'polygon',
   ],
-  formCustomFields: undefined,
-
   displayBuiltInFields: false,
   builtInFields: [],
   showStatusBadge: true,
-  isLogicEnabled: true,
-  isParticipationPublic: false,
-  isFormPhaseSpecific: true,
   getWarningNotice: () => {
     return (
       <Box id="e2e-warning-notice" mb="16px">

@@ -23,6 +23,7 @@ import { groupIncludedResources } from 'utils/cl-react-query/groupIncludedResour
 import { indexById } from 'utils/cl-react-query/indexById';
 
 import ColHeader from '../../_shared/ColHeader';
+import { DEFAULT_SORT } from '../../_shared/constants';
 import LoadingComponents from '../../_shared/LoadingComponents';
 import sharedMessages from '../../_shared/messages';
 import { useParams } from '../../_shared/params';
@@ -50,7 +51,7 @@ const Table = () => {
     {
       ...params,
       participation_methods: getParticipationMethods(participation_methods),
-      sort: sort ?? 'recently_viewed',
+      sort: sort ?? DEFAULT_SORT,
     },
     PAGE_SIZE
   );

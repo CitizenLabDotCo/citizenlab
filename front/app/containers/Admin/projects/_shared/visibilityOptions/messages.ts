@@ -28,9 +28,9 @@ export default defineMessages({
     defaultMessage:
       'Hidden from those places. Only people with the link can reach it.',
   },
-  publishWhoCanOpen: {
-    id: 'app.containers.Admin.projects.project.publishWhoCanOpen',
-    defaultMessage: 'Who can open it',
+  publishWhoCanSee: {
+    id: 'app.containers.Admin.projects.project.publishWhoCanSee',
+    defaultMessage: 'Who can see it',
   },
   publishWhoCanOpenDescription: {
     id: 'app.containers.Admin.projects.project.publishWhoCanOpenDescription',
@@ -40,9 +40,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.publishOpenEveryone',
     defaultMessage: 'Everyone',
   },
-  publishOpenEveryoneDescription: {
-    id: 'app.containers.Admin.projects.project.publishOpenEveryoneDescription',
-    defaultMessage: 'Any resident can open it and take part.',
+  publishOpenEveryoneDescription2: {
+    id: 'app.containers.Admin.projects.project.publishOpenEveryoneDescription2',
+    defaultMessage: 'Any resident can see it.',
   },
   publishOpenAdmins: {
     id: 'app.containers.Admin.projects.project.publishOpenAdmins',

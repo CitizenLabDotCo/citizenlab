@@ -286,7 +286,7 @@ export const getNestedGroupData = (
   );
 };
 
-const nullableNumber = number()
+export const nullableNumber = number()
   .transform((value, originalValue) => {
     // If the original input is null or an empty string, transform it to null.
     if (
@@ -446,6 +446,7 @@ export const transformFieldForSubmission = (
         }),
     required: field.required,
     enabled: field.enabled,
+    answers_visible_to: field.answers_visible_to,
     // TODO: Fix this the next time the file is edited.
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     title_multiloc: field.title_multiloc || {},

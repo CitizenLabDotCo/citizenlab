@@ -744,6 +744,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.CustomFieldsForm.ManagersOnlyAnswerNote.managersOnly": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:27:28.428851Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.CustomFieldsForm.PageControlButtons.SubmissionReference.saveThisCode": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -1058,6 +1063,21 @@
     "state": "verified",
     "verified_at": "2026-03-27T13:21:30.107106Z",
     "verified_by": "Cindy EB"
+  },
+  "app.components.CustomPageBuilder.Widgets.CustomPageTitle.title": {
+    "state": "verified",
+    "verified_at": "2026-10-26T13:27:19.186136Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomPageBuilder.Widgets.CustomPageTitle.titleLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-26T13:27:19.186136Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.titleLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-26T13:27:19.186136Z",
+    "verified_by": "Adrien"
   },
   "app.components.ErrorBoundary.errorFormErrorFormEntry": {
     "state": "verified",
@@ -1413,6 +1433,41 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:27:28.428851Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.FormBuilder.components.AnswerVisibilityToggle.confirm": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:27:28.428851Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:27:28.428851Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmSubmissions": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:27:28.428851Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmTitle": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:27:28.428851Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.FormBuilder.components.AnswerVisibilityToggle.publicAnswers": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:27:28.428851Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.components.FormBuilder.components.AnswerVisibilityToggle.publicAnswersDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:27:28.428851Z",
+    "verified_by": "Cindy EB"
   },
   "app.components.FormBuilder.components.FieldTypeSwitcher.formHasSubmissionsWarning2": {
     "state": "verified",
@@ -5184,6 +5239,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.formBuilder.managersOnly": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:27:28.428851Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.formBuilder.mapConfiguration": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -5413,6 +5473,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.formBuilder.requiredToggleDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:27:28.428851Z",
+    "verified_by": "Cindy EB"
   },
   "app.components.formBuilder.requiredToggleLabel": {
     "state": "verified",
@@ -9734,6 +9799,16 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.IdeasShow.moreFromThisSubmission": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:27:28.428851Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.IdeasShow.notAnswered": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:27:28.428851Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.IdeasShow.observationEmailSharingBody": {
     "state": "verified",
     "verified_at": "2026-06-30T10:19:48.483040Z",
@@ -11154,6 +11229,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.Projects.castYourVote": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:28:17.160964Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Projects.commentsTerm": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -11514,6 +11594,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.Projects.seeTheResults": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:28:17.160964Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Projects.seeTheStories": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -11534,7 +11619,6 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
-
   "app.containers.Projects.seeVolunteering": {
     "state": "verified",
     "verified_at": "2026-09-16T20:00:57.828023Z",
@@ -12910,7 +12994,6 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
-
   "app.containers.landing.editHomepage": {
     "state": "verified",
     "verified_at": "2026-09-14T08:15:27.223655Z",

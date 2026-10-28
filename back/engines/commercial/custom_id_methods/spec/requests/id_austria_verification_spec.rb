@@ -153,7 +153,7 @@ context 'id_austria verification' do
     expect_user_to_be_verified_and_identified(user)
     expect(user.identities.first.auth_hash['info']['gender']).to be_nil
 
-    # Change the auth hash so we can check that is is updated
+    # Change the auth hash so we can check that it is updated
     auth_hash['info']['gender'] = 'female'
     OmniAuth.config.mock_auth[:id_austria] = OmniAuth::AuthHash.new(auth_hash)
 

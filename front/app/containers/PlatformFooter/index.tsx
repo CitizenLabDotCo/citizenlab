@@ -43,7 +43,7 @@ const FooterContainer = styled.div`
   padding-top: 11px;
   padding-bottom: 11px;
   background: #fff;
-  border-top: solid 1px #ccc;
+  border-top: solid 1px ${colors.grey400};
   overflow: hidden;
 
   ${media.tablet`
