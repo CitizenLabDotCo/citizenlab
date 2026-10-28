@@ -742,6 +742,7 @@ DROP VIEW IF EXISTS public.reporting_email_deliveries;
 DROP VIEW IF EXISTS public.reporting_contributions;
 DROP VIEW IF EXISTS public.reporting_community_monitor_scores;
 DROP VIEW IF EXISTS public.reporting_input_question_answers;
+DROP VIEW IF EXISTS public.reporting_comments;
 DROP TABLE IF EXISTS public.report_builder_reports;
 DROP TABLE IF EXISTS public.report_builder_published_graph_data_units;
 DROP TABLE IF EXISTS public.report_builder_generation_transcripts;
@@ -3881,6 +3882,30 @@ CREATE TABLE public.report_builder_reports (
 
 
 --
+-- Name: reporting_comments; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_comments AS
+ SELECT c.id,
+    c.idea_id AS input_id,
+    c.parent_id,
+    c.author_id AS user_id,
+    regexp_replace(COALESCE(NULLIF((c.body_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(c.body_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)), '<span[^>]*class="cl-mention-user"[^>]*>[^<]*</span>'::text, '@mention'::text, 'g'::text) AS body,
+    c.likes_count,
+    c.dislikes_count,
+    c.created_at
+   FROM (public.comments c
+     JOIN public.ideas i ON ((i.id = c.idea_id)))
+  WHERE (((c.publication_status)::text = 'published'::text) AND ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[])));
+
+
+--
 -- Name: reporting_input_question_answers; Type: VIEW; Schema: public; Owner: -
 --
 
@@ -4566,11 +4591,18 @@ CREATE VIEW public.reporting_inputs AS
     i.dislikes_count,
     i.comments_count,
     i.votes_count,
-    COALESCE(i.manual_votes_amount, 0) AS offline_votes_count
+    COALESCE(i.manual_votes_amount, 0) AS offline_votes_count,
+    COALESCE(NULLIF((i.body_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(i.body_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS body
    FROM ((public.ideas i
      LEFT JOIN public.phases creation_ph ON ((creation_ph.id = i.creation_phase_id)))
      LEFT JOIN public.idea_statuses s ON ((s.id = i.idea_status_id)))
-  WHERE ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text]));
+  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
 
 
 --
@@ -10521,6 +10553,9 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261028142000'),
+('20261028141100'),
+('20261028140100'),
 ('20261028130100'),
 ('20261028120100'),
 ('20261027120100'),
