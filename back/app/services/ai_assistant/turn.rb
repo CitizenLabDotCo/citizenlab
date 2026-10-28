@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module AIAssistant
-  # Runs one turn of a conversation: replays the stored messages to the model and stores its
+  # One turn of a conversation: replays the stored messages to the model and stores its
   # reply.
-  class Runner
+  class Turn
     MAX_OUTPUT_TOKENS = 16_000
     # Bedrock refuses two user turns in a row, which happens when a turn failed before the
     # user wrote again.
