@@ -7544,6 +7544,11 @@
     "verified_at": "2026-10-28T10:24:46.539659Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.PhasePlacement.endRequired2": {
+    "state": "verified",
+    "verified_at": "2026-10-28T10:50:04.166787Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": {
     "state": "verified",
     "verified_at": "2026-10-16T09:41:31.623528Z",
@@ -7553,6 +7558,11 @@
     "state": "verified",
     "verified_at": "2026-10-16T09:41:31.623528Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.PhasePlacement.loadFailed": {
+    "state": "verified",
+    "verified_at": "2026-10-28T10:50:04.166787Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.PhasePlacement.moveToSpotlightSurveys": {
     "state": "verified",
@@ -7599,9 +7609,19 @@
     "verified_at": "2026-10-16T09:41:31.623528Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": {
+    "state": "verified",
+    "verified_at": "2026-10-28T10:50:04.166787Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": {
     "state": "verified",
     "verified_at": "2026-10-28T10:24:46.539659Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": {
+    "state": "verified",
+    "verified_at": "2026-10-28T10:50:04.166787Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.PhasePlacement.phaseUpdateFailed": {
@@ -7617,6 +7637,11 @@
   "app.containers.Admin.projects.PhasePlacement.retryLoading": {
     "state": "verified",
     "verified_at": "2026-10-28T10:13:46.554719Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.PhasePlacement.spotlight": {
+    "state": "verified",
+    "verified_at": "2026-10-28T10:50:04.166787Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.PhasePlacement.spotlightDescription": {

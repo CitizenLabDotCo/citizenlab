@@ -2249,6 +2249,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.PostCardsComponents.perspectives": {
+    "state": "verified",
+    "verified_at": "2026-10-28T10:50:04.094812Z",
+    "verified_by": "Adrien"
+  },
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
