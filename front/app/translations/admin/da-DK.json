@@ -962,6 +962,7 @@
   "app.containers.Admin.Users.SeatsOverview.role": "Rolle",
   "app.containers.Admin.Users.SeatsOverview.title": "Oversigt over pladser",
   "app.containers.Admin.Users.SeatsOverview.unknown": "Ukendt",
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": "Registrering ikke gennemført",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Invitation afventer",
   "app.containers.Admin.Users.admin": "Administrator",
   "app.containers.Admin.Users.alreadyManager": "Allerede projektleder",

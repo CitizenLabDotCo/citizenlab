@@ -962,6 +962,7 @@
   "app.containers.Admin.Users.SeatsOverview.role": "Rolė",
   "app.containers.Admin.Users.SeatsOverview.title": "Vietų apžvalga",
   "app.containers.Admin.Users.SeatsOverview.unknown": "Nežinoma",
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": "Registracija nebaigta",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Laukiama kvietimo",
   "app.containers.Admin.Users.admin": "Administratorius",
   "app.containers.Admin.Users.alreadyManager": "Jau yra valdytojas",

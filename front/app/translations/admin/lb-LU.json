@@ -962,6 +962,7 @@
   "app.containers.Admin.Users.SeatsOverview.role": "Roll",
   "app.containers.Admin.Users.SeatsOverview.title": "Iwwersiicht vun de Plazen",
   "app.containers.Admin.Users.SeatsOverview.unknown": "Onbekannt",
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": "Registréierung net ofgeschloss",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Ausstoend Invitatioun",
   "app.containers.Admin.Users.admin": "Admin",
   "app.containers.Admin.Users.alreadyManager": "Scho Manager",

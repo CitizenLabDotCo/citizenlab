@@ -7,8 +7,6 @@ import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
 import { supportsPublicAnswers } from 'api/custom_fields/util';
 import useSubmissionsCount from 'api/submission_count/useSubmissionCount';
 
-import useFeatureFlag from 'hooks/useFeatureFlag';
-
 import { SectionField } from 'components/admin/Section';
 import { ResolvedFormBuilderConfig } from 'components/FormBuilder/utils';
 
@@ -26,7 +24,6 @@ type Props = {
 const AnswerVisibilityToggle = ({ field, builderConfig }: Props) => {
   const { watch, setValue } = useFormContext();
   const { formatMessage } = useIntl();
-  const isEnabled = useFeatureFlag({ name: 'input_form_answer_visibility' });
   const { phaseId } = useParams({ strict: false });
   const { data: submissionCount } = useSubmissionsCount({ phaseId });
   const [confirming, setConfirming] = useState(false);
@@ -36,7 +33,6 @@ const AnswerVisibilityToggle = ({ field, builderConfig }: Props) => {
   const isPublic = watch(name) === 'public';
 
   if (
-    !isEnabled ||
     !builderConfig.isParticipationPublic ||
     field.code ||
     !supportsPublicAnswers(inputType)

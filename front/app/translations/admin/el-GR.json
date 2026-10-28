@@ -962,6 +962,7 @@
   "app.containers.Admin.Users.SeatsOverview.role": "Ρόλος",
   "app.containers.Admin.Users.SeatsOverview.title": "Επισκόπηση θέσεων",
   "app.containers.Admin.Users.SeatsOverview.unknown": "Άγνωστο",
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": "Η εγγραφή δεν ολοκληρώθηκε",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Εκκρεμεί πρόσκληση",
   "app.containers.Admin.Users.admin": "Admin",
   "app.containers.Admin.Users.alreadyManager": "Ήδη διαχειριστής",

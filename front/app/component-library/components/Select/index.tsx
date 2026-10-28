@@ -6,6 +6,7 @@ import { Placement } from 'tippy.js';
 
 import {
   defaultInputStyle,
+  defaultStyles,
   colors,
   isRtl,
   stylingConsts,
@@ -64,6 +65,8 @@ const Container = styled.div`
   }
 `;
 
+const CHEVRON_SPACE = '36px';
+
 export const SelectWrapper = styled.div<{
   mr?: string;
   size?: InputSize;
@@ -72,22 +75,25 @@ export const SelectWrapper = styled.div<{
   width: 100%;
   position: relative;
   select {
+    /* First, so the declarations below override its padding and cursor */
+    ${defaultInputStyle};
     width: 100%;
     margin: 0;
-    padding-right: 27px;
+    /* Keep the text clear of the chevron (24px wide, 11px from the edge) */
+    padding-right: ${CHEVRON_SPACE};
     cursor: pointer;
     outline: none !important;
 
     ${({ mr }) => (mr ? `margin-right: ${mr};` : '')}
 
     ${isRtl`
-    padding-right: 0;
-    padding-left: 27px;
-  `}
+      padding-right: ${({ size }) =>
+        size === 'small' ? '10px' : defaultStyles.inputPadding};
+      padding-left: ${CHEVRON_SPACE};
+    `}
     &::-ms-expand {
       display: none;
     }
-    ${defaultInputStyle};
     height: ${({ height }) =>
       height ? height : `${stylingConsts.inputHeight}px`} !important;
   }

@@ -962,6 +962,7 @@
   "app.containers.Admin.Users.SeatsOverview.role": "Rolle",
   "app.containers.Admin.Users.SeatsOverview.title": "Plassoversikt",
   "app.containers.Admin.Users.SeatsOverview.unknown": "Ukjent",
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": "Registrering ikke fullført",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Invitasjon avventes",
   "app.containers.Admin.Users.admin": "Administrator",
   "app.containers.Admin.Users.alreadyManager": "Allerede administrator",

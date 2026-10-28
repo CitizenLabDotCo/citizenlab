@@ -962,6 +962,7 @@
   "app.containers.Admin.Users.SeatsOverview.role": "Uloga",
   "app.containers.Admin.Users.SeatsOverview.title": "Pregled mjesta",
   "app.containers.Admin.Users.SeatsOverview.unknown": "Nepoznato",
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": "Registracija nije dovršena",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Pozivnica na čekanju",
   "app.containers.Admin.Users.admin": "Administrator",
   "app.containers.Admin.Users.alreadyManager": "Već je voditelj",

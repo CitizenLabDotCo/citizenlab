@@ -962,6 +962,7 @@
   "app.containers.Admin.Users.SeatsOverview.role": "Ruolo",
   "app.containers.Admin.Users.SeatsOverview.title": "Panoramica dei posti",
   "app.containers.Admin.Users.SeatsOverview.unknown": "Sconosciuto",
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": "Registrazione non completata",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Invito in attesa di risposta",
   "app.containers.Admin.Users.admin": "Amministratore",
   "app.containers.Admin.Users.alreadyManager": "Già manager",

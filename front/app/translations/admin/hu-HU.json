@@ -962,6 +962,7 @@
   "app.containers.Admin.Users.SeatsOverview.role": "Szerepkör",
   "app.containers.Admin.Users.SeatsOverview.title": "Helyek áttekintése",
   "app.containers.Admin.Users.SeatsOverview.unknown": "Ismeretlen",
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": "Befejezetlen regisztráció",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Meghívás folyamatban",
   "app.containers.Admin.Users.admin": "Admin",
   "app.containers.Admin.Users.alreadyManager": "Már kezelő",

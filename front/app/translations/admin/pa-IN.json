@@ -962,6 +962,7 @@
   "app.containers.Admin.Users.SeatsOverview.role": "ਭੂਮਿਕਾ",
   "app.containers.Admin.Users.SeatsOverview.title": "ਸੀਟਾਂ ਦਾ ਸੰਖੇਪ ਵੇਰਵਾ",
   "app.containers.Admin.Users.SeatsOverview.unknown": "ਅਣਜਾਣ",
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": "ਰਜਿਸਟ੍ਰੇਸ਼ਨ ਪੂਰੀ ਨਹੀਂ ਹੋਈ",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "ਸੱਦਾ ਬਕਾਇਆ",
   "app.containers.Admin.Users.admin": "ਐਡਮਿਨ",
   "app.containers.Admin.Users.alreadyManager": "ਪਹਿਲਾਂ ਹੀ ਮੈਨੇਜਰ ਹੈ",
