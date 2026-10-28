@@ -199,7 +199,7 @@ module BulkImportIdeas::Parsers::Pdf
       # The printed form has one column per scale point, labelled or not
       columns = (1..field.maximum).to_a
       columns_description = columns.map do |column|
-        label = field[:"linear_scale_label_#{column}_multiloc"]&.dig(@locale.to_s)&.squish
+        label = field.nth_linear_scale_multiloc(column)[@locale.to_s]&.squish
         label.present? ? "#{column} = '#{label}'" : "#{column} = (no label)"
       end.join(', ')
 

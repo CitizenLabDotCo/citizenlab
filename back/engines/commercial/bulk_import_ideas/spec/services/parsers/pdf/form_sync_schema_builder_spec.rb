@@ -160,8 +160,9 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::FormSyncSchemaBuilder do
         sub_prop = builder.output_schema[:properties]['question_1'][:properties]['question_1.1']
 
         expect(sub_prop[:enum]).to eq([1, 2, 3, 4, 5, 0, -1])
-        expect(sub_prop[:description]).to include("1 = 'Strongly disagree'")
-        expect(sub_prop[:description]).to include("5 = 'Strongly agree'")
+        expect(sub_prop[:description]).to include(
+          "1 = 'Strongly disagree', 2 = (no label), 3 = (no label), 4 = (no label), 5 = 'Strongly agree'"
+        )
       end
     end
 
