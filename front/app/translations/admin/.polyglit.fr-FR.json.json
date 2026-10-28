@@ -8559,6 +8559,11 @@
     "verified_at": "2026-10-28T13:09:38.034320Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.areasSelectedCount": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:09:50.189915Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.projects.project.backToProjectSetup": {
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.578477Z",
