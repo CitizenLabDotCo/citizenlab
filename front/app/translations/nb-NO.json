@@ -815,6 +815,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "Du har allerede sendt inn budsjettet ditt. Hvis du vil endre det, går du tilbake til prosjektsiden og klikker på \"Endre innsendingen\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Budsjettering er ikke tilgjengelig, siden denne fasen ikke er aktiv.",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Du har stemt på {votes, plural, =0 {~ # options} one {# option} other {# options}}",
+  "app.components.WeglotSwitcher.ariaLabel": "Oversett denne siden. Gjeldende språk: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "Dette betyr at du mister alle data som er knyttet til denne inndataen, for eksempel kommentarer, reaksjoner og stemmer. Denne handlingen kan ikke angres.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "Er du sikker på at du vil slette denne inngangen?",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "Avbryt",

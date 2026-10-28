@@ -815,6 +815,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "Je hebt je budget al ingediend. Om het te wijzigen, ga je terug naar de projectpagina en klik je op \"Wijzig indiening\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Burgerbegroting is niet beschikbaar, omdat deze fase niet actief is.",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Je hebt gestemd op {votes, plural, =0 {# opties} one {# optie} other {# opties}}",
+  "app.components.WeglotSwitcher.ariaLabel": "Vertaal deze pagina. Huidige taal: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "Dit betekent dat je alle gegevens kwijtraakt die bij deze bijdrage horen, zoals opmerkingen, reacties en stemmen. Deze actie kan niet ongedaan worden gemaakt.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "Weet je zeker dat je deze bijdrage wilt verwijderen?",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "Annuleer",

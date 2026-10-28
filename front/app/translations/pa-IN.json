@@ -815,6 +815,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "ਤੁਸੀਂ ਪਹਿਲਾਂ ਹੀ ਆਪਣਾ ਬਜਟ ਜਮ੍ਹਾਂ ਕਰ ਦਿੱਤਾ ਹੈ। ਇਸਨੂੰ ਸੋਧਣ ਲਈ, ਪ੍ਰੋਜੈਕਟ ਪੰਨੇ 'ਤੇ ਵਾਪਸ ਜਾਓ ਅਤੇ \"ਆਪਣੀ ਜਮ੍ਹਾਂ ਰਕਮ ਨੂੰ ਸੋਧੋ\" 'ਤੇ ਕਲਿੱਕ ਕਰੋ।",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "ਬਜਟ ਉਪਲਬਧ ਨਹੀਂ ਹੈ, ਕਿਉਂਕਿ ਇਹ ਪੜਾਅ ਕਿਰਿਆਸ਼ੀਲ ਨਹੀਂ ਹੈ।",
   "app.components.VoteInputs.single.youHaveVotedForX2": "ਤੁਸੀਂ {votes, plural, =0 {# ਵਿਕਲਪਾਂ ਲਈ ਵੋਟ ਕੀਤੀ ਹੈ} one {# ਵਿਕਲਪ} other {# ਵਿਕਲਪ}}",
+  "app.components.WeglotSwitcher.ariaLabel": "ਇਸ ਪੰਨੇ ਦਾ ਅਨੁਵਾਦ ਕਰੋ। ਮੌਜੂਦਾ ਭਾਸ਼ਾ: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "ਇਸਦਾ ਮਤਲਬ ਹੈ ਕਿ ਤੁਸੀਂ ਇਸ ਇਨਪੁਟ ਨਾਲ ਸੰਬੰਧਿਤ ਸਾਰਾ ਡਾਟਾ ਗੁਆ ਦੇਵੋਗੇ, ਜਿਵੇਂ ਕਿ ਟਿੱਪਣੀਆਂ, ਪ੍ਰਤੀਕਰਮਾਂ ਅਤੇ ਵੋਟਾਂ। ਇਸ ਕਾਰਵਾਈ ਨੂੰ ਅਣਕੀਤਾ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ।",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "ਕੀ ਤੁਸੀਂ ਯਕੀਨੀ ਤੌਰ 'ਤੇ ਇਸ ਇਨਪੁਟ ਨੂੰ ਮਿਟਾਉਣਾ ਚਾਹੁੰਦੇ ਹੋ?",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "ਰੱਦ ਕਰੋ",

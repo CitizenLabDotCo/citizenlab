@@ -815,6 +815,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "Ya has presentado tu presupuesto. Para modificarlo, vuelve a la página del proyecto y haz clic en \"Modificar tu participación\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "El ejercicio de asignación de presupuesto no está disponible, ya que esta fase no está activa.",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Has votado por {votes, plural, =0 {# opciones} one {# opción} other {# opciones}}",
+  "app.components.WeglotSwitcher.ariaLabel": "Traducir esta página. Idioma actual: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "Esto significa que perderás todos los datos asociados a esta entrada, como comentarios, reacciones y votos. Esta acción no se puede deshacer.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "¿Estás seguro de que deseas eliminar esta entrada?",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "Cancelar",

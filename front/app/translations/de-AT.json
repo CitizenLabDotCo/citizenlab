@@ -815,6 +815,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "Du hast dein Budget bereits eingereicht. Um es zu ändern, gehe zurück zur Projektseite und klicke auf „Beitrag ändern\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Budgetierung ist nicht möglich, da diese Phase nicht aktiv ist.",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Du hast abgestimmt für {votes, plural, =0 {# Optionen} one {# Option} other {# Optionen}}",
+  "app.components.WeglotSwitcher.ariaLabel": "Diese Seite übersetzen. Aktuelle Sprache: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "Das bedeutet, dass Sie alle mit diesem Beitrag verbundenen Daten, wie Kommentare, Reaktionen und Abstimmungen, verlieren. Diese Aktion kann nicht rückgängig gemacht werden.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "Möchten Sie diesen Beitrag wirklich löschen?",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "Abbrechen",

@@ -815,6 +815,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "Već ste poslali svoj proračun. Da biste ga izmijenili, vratite se na stranicu projekta i kliknite \"Izmijeni svoj prijedlog\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Proračun nije dostupan jer ova faza nije aktivna.",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Glasovali ste za {votes, plural, =0 {# opcija} one {#opcija} other {# opcija}}",
+  "app.components.WeglotSwitcher.ariaLabel": "Prevedite ovu stranicu. Trenutačni jezik: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "To znači da ćete izgubiti sve podatke povezane s ovim unosom, poput komentara, reakcija i glasova. Ova se radnja ne može poništiti.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "Jeste li sigurni da želite izbrisati ovaj unos?",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "Otkazati",

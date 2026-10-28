@@ -815,6 +815,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "Jūs jau esat iesniedzis savu budžetu. Lai to mainītu, atgriezieties projekta lapā un noklikšķiniet uz \"Mainīt iesniegumu\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Budžets nav pieejams, jo šis posms nav aktīvs.",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Jūs balsojāt par {votes, plural, =0 {# iespējas} one {# opcija} other {# iespējas}}",
+  "app.components.WeglotSwitcher.ariaLabel": "Tulkot šo lapu. Pašreizējā valoda: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "Tas nozīmē, ka tiks zaudēti visi ar šo ievades veidu saistītie dati, piemēram, komentāri, reakcijas un balsojumi. Šo darbību nevar atcelt.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "Vai esat pārliecināts, ka vēlaties dzēst šo ievades failu?",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "Atcelt",

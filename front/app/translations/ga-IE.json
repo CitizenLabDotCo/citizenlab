@@ -815,6 +815,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "Tá do bhuiséad curtha isteach agat cheana féin. Chun é a mhodhnú, téigh ar ais chuig leathanach an tionscadail agus cliceáil \"Modhnaigh d'aighneacht\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Níl buiséadú ar fáil, ós rud é nach bhfuil an chéim seo gníomhach.",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Tá vóta tugtha agat do {votes, plural, =0 {# rogha} one {# rogha} other {# rogha}}",
+  "app.components.WeglotSwitcher.ariaLabel": "Aistrigh an leathanach seo. An teanga reatha: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "Ciallaíonn sé seo go gcaillfidh tú na sonraí go léir a bhaineann leis an ionchur seo, amhail tuairimí, imoibrithe agus vótaí. Ní féidir an gníomh seo a chealú.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "An bhfuil tú cinnte gur mian leat an ionchur seo a scriosadh?",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "Cealaigh",

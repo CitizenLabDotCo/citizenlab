@@ -815,6 +815,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "Rydych chi eisoes wedi cyflwyno eich cyllideb. I'w haddasu, ewch yn ôl i dudalen y prosiect a chliciwch ar \"Addasu eich cyflwyniad\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Nid oes cyllidebu ar gael, gan nad yw'r cam hwn yn weithredol.",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Rydych chi wedi pleidleisio dros {votes, plural, =0 {# opsiwn} one {# opsiwn} other {# opsiwn}}",
+  "app.components.WeglotSwitcher.ariaLabel": "Cyfieithu'r dudalen hon. Iaith bresennol: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "Mae hyn yn golygu y byddwch yn colli'r holl ddata sy'n gysylltiedig â'r mewnbwn hwn, megis sylwadau, ymatebion a phleidleisiau. Ni ellir dadwneud y weithred hon.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "Ydych chi'n siŵr eich bod am ddileu'r mewnbwn hwn?",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "Canslo",
