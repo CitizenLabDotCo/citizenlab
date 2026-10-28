@@ -1491,7 +1491,7 @@
   "app.containers.Admin.projects.PhasePlacement.phaseUpdateFailed": "Änderungen an \"{phaseName}\" konnten nicht gespeichert werden. Überprüfen Sie die Daten und versuchen Sie es erneut.",
   "app.containers.Admin.projects.PhasePlacement.resolveDateConflicts": "Lösen Sie {count, plural, one {# Datumskonflikt} other {# Datumskonflikte}}, um die Umfrage zu verschieben.",
   "app.containers.Admin.projects.PhasePlacement.retryLoading": "Erneut versuchen",
-  "app.containers.Admin.projects.PhasePlacement.spotlight": "Spotlight",
+  "app.containers.Admin.projects.PhasePlacement.spotlight": "Zusätzliche Umfrage",
   "app.containers.Admin.projects.PhasePlacement.spotlightDescription": "Läuft eigenständig, außerhalb der Zeitleiste",
   "app.containers.Admin.projects.PhasePlacement.startRequired": "Geben Sie ein Startdatum ein.",
   "app.containers.Admin.projects.PhasePlacement.surveyPlacement": "Platzierung der Umfrage",
