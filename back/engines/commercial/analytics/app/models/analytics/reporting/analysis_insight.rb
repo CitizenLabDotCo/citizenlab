@@ -37,7 +37,10 @@ module Analytics
       def self.field_descriptions
         {
           'id' => 'Primary key.',
-          'analysis_id' => 'The analysis the insight belongs to (see reporting_input_analysis_tags).',
+          'analysis_id' => <<~DOC.squish,
+            The analysis the insight belongs to (reporting_input_analysis_tags.analysis_id
+            says which inputs it covers).
+          DOC
           'project_id' => 'The project the analysis covers, also for analyses of a single phase.',
           'phase_id' => 'The phase the analysis covers, or NULL when it covers the whole project.',
           'kind' => "'summary' or 'question'.",
@@ -47,6 +50,8 @@ module Analytics
             It cites inputs by id in square brackets, for example
             [52247442-b9a9-4a74-a6a1-898e9d6e2da7]: join those to
             reporting_inputs.id to read them, and never show the ids in a report.
+            Cited ids should be among input_ids, but the AI can cite others by
+            mistake: check each citation against input_ids before relying on it.
             Not screened for personal data: leave out names, contact details
             and addresses when quoting it.
           DOC

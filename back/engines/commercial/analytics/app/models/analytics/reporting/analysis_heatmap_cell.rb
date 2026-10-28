@@ -64,7 +64,10 @@ module Analytics
             about: an option title, the answer values ('true'/'false' for
             checkboxes, points for scales), or a range such as '20 to 40' or '80
             or more'. A range includes its lower bound and excludes its upper
-            one: '20 to 40' is 20 up to 39. Ages are in years. NULL for tags.
+            one: '20 to 40' is 20 up to 39. For the year of birth question the
+            ranges are ages in years, not years of birth: 'Year of birth' with
+            '20 to 40' means people aged 20 to 39 when the heatmap was computed
+            (created_at). NULL for tags.
           DOC
         }
       end
@@ -72,7 +75,10 @@ module Analytics
       def self.field_descriptions
         {
           'id' => 'Primary key.',
-          'analysis_id' => 'The analysis the cell belongs to. Never compare cells across analyses.',
+          'analysis_id' => <<~DOC.squish,
+            The analysis the cell belongs to (reporting_input_analysis_tags.analysis_id
+            says which inputs it covers). Never compare cells across analyses.
+          DOC
           'project_id' => 'The project the analysis covers, also for analyses of a single phase.',
           'phase_id' => 'The phase the analysis covers, or NULL when it covers the whole project.',
           'unit' => <<~DOC.squish,

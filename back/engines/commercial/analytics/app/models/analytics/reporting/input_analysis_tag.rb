@@ -39,15 +39,22 @@ module Analytics
           'input_id' => 'The tagged input.',
           'analysis_id' => <<~DOC.squish,
             The analysis the tag belongs to. A project or phase can have several
-            analyses; group on it to keep their tags apart.
+            analyses; group on it to keep their tags apart. An analysis of a
+            phase covers the phase's published inputs (reporting_input_phases
+            joined to reporting_inputs with published_at set). An analysis of a
+            whole project covers the project's published inputs that have no
+            creation_phase_id (ideation and proposals). Inputs it covers but
+            didn't tag have no row here, so count untagged inputs against that
+            set.
           DOC
           'project_id' => 'The project the analysis covers, also for analyses of a single phase.',
           'phase_id' => 'The phase the analysis covers, or NULL when it covers the whole project.',
           'tag_id' => 'The tag, unique to its analysis. Group on it to count inputs per tag.',
           'tag_label' => <<~DOC.squish,
             The tag name. For 'sentiment' tags, 'sentiment +' (positive) or
-            'sentiment -' (negative); inputs judged neutral have no sentiment
-            tag. For 'language' tags, the detected language.
+            'sentiment -' (negative). No sentiment tag means the input was
+            judged neutral, or was not covered by a sentiment run. For
+            'language' tags, the detected language.
           DOC
           'tag_type' => <<~DOC.squish,
             How the tag was made: 'custom' (by an admin), 'platform_topic' (the
