@@ -60,13 +60,14 @@ const MapIdeasList = memo<Props>(
       ideaQueryParameters,
       onChangeStatus,
       onChangeTopics,
+      onChangeAnswer,
       handleSortOnChange,
       ideasFilterCounts,
       numberOfSearchResults,
     } = inputFiltersProps ?? {};
 
     const hasInputFilterProps =
-      onChangeStatus && onChangeTopics && handleSortOnChange;
+      onChangeStatus && onChangeTopics && onChangeAnswer && handleSortOnChange;
 
     const { data: phase } = usePhase(phaseId);
 
@@ -131,6 +132,7 @@ const MapIdeasList = memo<Props>(
               onSearch={handleSearchOnChange}
               onChangeStatus={onChangeStatus}
               onChangeTopics={onChangeTopics}
+              onChangeAnswer={onChangeAnswer}
               handleSortOnChange={handleSortOnChange}
               opened={showFilters}
               onClose={() => {

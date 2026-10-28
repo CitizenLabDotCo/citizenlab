@@ -58,7 +58,6 @@ const StatusFilterBox = ({
   });
 
   if (ideaStatuses && ideaStatuses.data.length > 0 && ideasFilterCounts) {
-    // A status without ideas has no entry in the counts.
     const statusCounts: Partial<Record<string, number>> =
       ideasFilterCounts.data.attributes.idea_status_id;
 
