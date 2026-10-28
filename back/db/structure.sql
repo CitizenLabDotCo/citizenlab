@@ -737,6 +737,7 @@ DROP VIEW IF EXISTS public.reporting_input_status_changes;
 DROP VIEW IF EXISTS public.reporting_input_reactions;
 DROP VIEW IF EXISTS public.reporting_input_phases;
 DROP VIEW IF EXISTS public.reporting_input_imports;
+DROP VIEW IF EXISTS public.reporting_input_analysis_tags;
 DROP VIEW IF EXISTS public.reporting_events;
 DROP VIEW IF EXISTS public.reporting_email_deliveries;
 DROP VIEW IF EXISTS public.reporting_contributions;
@@ -4400,6 +4401,29 @@ CREATE VIEW public.reporting_events AS
     maximum_attendees,
     created_at
    FROM public.events e;
+
+
+--
+-- Name: reporting_input_analysis_tags; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_input_analysis_tags AS
+ SELECT tg.id,
+    tg.input_id,
+    a.id AS analysis_id,
+    COALESCE(a.project_id, ph.project_id) AS project_id,
+    a.phase_id,
+    t.id AS tag_id,
+    t.name AS tag_label,
+    t.tag_type,
+    (tg.background_task_id IS NOT NULL) AS auto_tagged,
+    tg.created_at
+   FROM ((((public.analysis_taggings tg
+     JOIN public.analysis_tags t ON ((t.id = tg.tag_id)))
+     JOIN public.analysis_analyses a ON ((a.id = t.analysis_id)))
+     LEFT JOIN public.phases ph ON ((ph.id = a.phase_id)))
+     JOIN public.ideas i ON ((i.id = tg.input_id)))
+  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
 
 
 --
@@ -10553,6 +10577,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261028160200'),
+('20261028160100'),
 ('20261028150100'),
 ('20261028142000'),
 ('20261028141100'),
