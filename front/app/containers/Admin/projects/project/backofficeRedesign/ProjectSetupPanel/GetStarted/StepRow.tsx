@@ -32,7 +32,7 @@ const StepRow = ({ step, isLast }: Props) => {
           name="check-circle"
           width="18px"
           height="18px"
-          fill={colors.textPrimary}
+          fill={colors.success}
           my="0px"
         />
       ) : (
