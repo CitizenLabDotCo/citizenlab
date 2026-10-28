@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import {
   Box,
   Button,
+  Divider,
   Tooltip,
-  colors,
 } from '@citizenlab/cl2-component-library';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -98,7 +98,7 @@ const InputImporterModal = ({ projectId, phaseId, opened, onClose }: Props) => {
               )}
             </Tooltip>
           </ImporterRow>
-          <Box borderTop={`1px solid ${colors.grey200}`} />
+          <Divider margin="0" />
           <ImporterRow
             title={formatMessage(formSyncMessages.spreadsheet)}
             description={formatMessage(messages.spreadsheetImportDescription)}

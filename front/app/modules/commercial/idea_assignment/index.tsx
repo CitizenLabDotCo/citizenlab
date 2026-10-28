@@ -22,8 +22,16 @@ const configuration: ModuleConfiguration = {
     'app.containers.Admin.project.edit.permissions.moderatorRights': (
       props
     ) => <InputAssignment {...props} />,
-    'app.containers.Admin.projects.phase.moderation': ({ projectId }) => (
-      <AssigneeRow projectId={projectId} />
+    'app.containers.Admin.projects.phase.moderation': ({
+      projectId,
+      assignee,
+      onAssigneeChange,
+    }) => (
+      <AssigneeRow
+        projectId={projectId}
+        assignee={assignee}
+        onAssigneeChange={onAssigneeChange}
+      />
     ),
   },
 };

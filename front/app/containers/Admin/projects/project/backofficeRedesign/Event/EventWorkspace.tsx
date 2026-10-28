@@ -5,13 +5,16 @@ import { IProjectData } from 'api/projects/types';
 import useLocalize from 'hooks/useLocalize';
 
 import useEventForm from 'containers/Admin/projects/_shared/events/useEventForm';
+import {
+  usePageSave,
+  useRegisterPageSaver,
+} from 'containers/Admin/projects/_shared/PageSaveContext';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import ProjectWorkspace from '..';
-import { usePageSave, useRegisterPageSaver } from '../_shared/PageSaveContext';
 import projectMessages from '../messages';
 
 import EventPreview from './EventPreview';

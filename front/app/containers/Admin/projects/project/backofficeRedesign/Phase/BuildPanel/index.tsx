@@ -11,6 +11,7 @@ import { isTimelinePhase } from 'api/phases/utils';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import { useRegisterPageSaver } from 'containers/Admin/projects/_shared/PageSaveContext';
 import usePhaseFileAttachments, {
   fileAttachmentErrors,
 } from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
@@ -19,8 +20,6 @@ import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/t
 import { validateDates } from 'containers/Admin/projects/project/phaseSetup/validate';
 
 import { useIntl } from 'utils/cl-intl';
-
-import { useRegisterPageSaver } from '../../_shared/PageSaveContext';
 
 import BuildFields from './BuildFields';
 import SwitchSurveyMethodModal from './SwitchSurveyMethodModal';

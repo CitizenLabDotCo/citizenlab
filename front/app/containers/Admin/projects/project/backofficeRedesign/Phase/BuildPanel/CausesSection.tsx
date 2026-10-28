@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Button, bo } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import { exportVolunteers } from 'api/causes/util';
 
@@ -46,8 +46,11 @@ const CausesSection = ({ phaseId }: Props) => {
 
   const download = async () => {
     setExporting(true);
-    await exportVolunteers(phaseId);
-    setExporting(false);
+    try {
+      await exportVolunteers(phaseId);
+    } finally {
+      setExporting(false);
+    }
   };
 
   const openAdd = () => setModal({});
@@ -119,9 +122,7 @@ const CausesSection = ({ phaseId }: Props) => {
           <Box display="flex" justifyContent="flex-end" gap="8px">
             <Button
               buttonStyle="bo-secondary"
-              height={bo.buttonMedium.height}
-              padding={bo.buttonMedium.padding}
-              fontSize={bo.buttonMedium.fontSize}
+              boSize="medium"
               width="auto"
               disabled
             >
@@ -129,9 +130,7 @@ const CausesSection = ({ phaseId }: Props) => {
             </Button>
             <Button
               buttonStyle="bo-primary"
-              height={bo.buttonMedium.height}
-              padding={bo.buttonMedium.padding}
-              fontSize={bo.buttonMedium.fontSize}
+              boSize="medium"
               width="auto"
               onClick={openAdd}
             >

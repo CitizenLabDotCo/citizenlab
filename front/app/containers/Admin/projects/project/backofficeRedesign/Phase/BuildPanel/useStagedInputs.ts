@@ -7,9 +7,9 @@ import useJobInProgressByPhase from 'api/copy_inputs/useJobInProgressByPhase';
 import useAddIdea from 'api/ideas/useAddIdea';
 import useIdeas from 'api/ideas/useIdeas';
 
-import { getPageNumberFromUrl } from 'utils/paginationUtils';
+import { useRegisterPageSaver } from 'containers/Admin/projects/_shared/PageSaveContext';
 
-import { useRegisterPageSaver } from '../../_shared/PageSaveContext';
+import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
 export interface InputValues {
   title_multiloc: Multiloc;

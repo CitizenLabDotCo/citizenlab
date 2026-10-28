@@ -1,20 +1,17 @@
 import useProjectById from 'api/projects/useProjectById';
-import useUpdateProject from 'api/projects/useUpdateProject';
 import useUsers from 'api/users/useUsers';
+
+import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
 
 import { useIntl } from 'utils/cl-intl';
 import { getFullName } from 'utils/textUtils';
 
 import messages from './messages';
 
-// The project stores no assignee as null; pickers need a value for it.
-export const UNASSIGNED = 'unassigned';
-
 const useProjectAssignee = (projectId: string) => {
   const { formatMessage } = useIntl();
   const { data: project } = useProjectById(projectId);
   const { data: adminsAndMods } = useUsers({ can_moderate_project: projectId });
-  const { mutate: updateProject } = useUpdateProject();
 
   const options = [
     { value: UNASSIGNED, label: formatMessage(messages.unassigned) },
@@ -24,19 +21,10 @@ const useProjectAssignee = (projectId: string) => {
     })),
   ];
 
-  const assignee =
-    project?.data.relationships.default_assignee?.data?.id ?? UNASSIGNED;
+  const savedAssignee =
+    project?.data.relationships.default_assignee?.data?.id ?? null;
 
-  const setAssignee = (value: string) => {
-    if (value === assignee) return;
-
-    updateProject({
-      projectId,
-      default_assignee_id: value === UNASSIGNED ? null : value,
-    });
-  };
-
-  return { loaded: !!project, options, assignee, setAssignee };
+  return { loaded: !!project, options, savedAssignee };
 };
 
 export default useProjectAssignee;

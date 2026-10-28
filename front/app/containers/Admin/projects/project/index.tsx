@@ -9,11 +9,12 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
+import { PageSaveProvider } from 'containers/Admin/projects/_shared/PageSaveContext';
+
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { Outlet as RouterOutlet, useMatchRoute, useParams } from 'utils/router';
 
 import ProjectWorkspace from './backofficeRedesign';
-import { PageSaveProvider } from './backofficeRedesign/_shared/PageSaveContext';
 import Event from './backofficeRedesign/Event';
 import NewPhase from './backofficeRedesign/NewPhase';
 import PhaseSetup from './backofficeRedesign/Phase/PhaseSetup';

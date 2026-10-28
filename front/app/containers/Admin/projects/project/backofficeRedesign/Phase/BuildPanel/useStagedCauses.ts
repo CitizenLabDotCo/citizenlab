@@ -9,12 +9,11 @@ import useCauses from 'api/causes/useCauses';
 import useDeleteCause from 'api/causes/useDeleteCause';
 import useUpdateCause from 'api/causes/useUpdateCause';
 
+import { useRegisterPageSaver } from 'containers/Admin/projects/_shared/PageSaveContext';
 import {
   CauseFormValues,
   toSubmitValues,
 } from 'containers/Admin/projects/project/volunteering/useCauseForm';
-
-import { useRegisterPageSaver } from '../../_shared/PageSaveContext';
 
 export interface StagedCause {
   key: string;
@@ -61,25 +60,43 @@ const useStagedCauses = (phaseId: string) => {
     if (saved) setRemovedIds((ids) => [...ids, saved.id]);
   };
 
+  // A saved change leaves the stage, so a failed save can be retried without
+  // deleting or creating anything twice.
+  const settle = (key: string, saved: ICauseData) =>
+    setStaged(
+      (current) =>
+        current &&
+        current.map((cause) => (cause.key === key ? { key, saved } : cause))
+    );
+
   const save = async () => {
     if (!staged) return;
 
-    await Promise.all(removedIds.map((id) => deleteCause(id)));
     await Promise.all(
-      staged.flatMap(({ saved, changes }) =>
+      removedIds.map(async (id) => {
+        await deleteCause(id);
+        setRemovedIds((ids) => ids.filter((removedId) => removedId !== id));
+      })
+    );
+    await Promise.all(
+      staged.flatMap(({ key, saved, changes }) =>
         saved && changes
           ? [
               updateCause({
                 id: saved.id,
                 requestBody: toSubmitValues(changes),
-              }),
+              }).then(({ data }) => settle(key, data)),
             ]
           : []
       )
     );
-    for (const { saved, changes } of staged) {
+    for (const { key, saved, changes } of staged) {
       if (!saved && changes) {
-        await addCause({ phase_id: phaseId, ...toSubmitValues(changes) });
+        const { data } = await addCause({
+          phase_id: phaseId,
+          ...toSubmitValues(changes),
+        });
+        settle(key, data);
       }
     }
 

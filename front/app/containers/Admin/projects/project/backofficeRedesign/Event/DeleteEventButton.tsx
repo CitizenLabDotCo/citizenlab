@@ -9,12 +9,11 @@ import {
 
 import useDeleteEvent from 'api/events/useDeleteEvent';
 
+import { usePageSave } from 'containers/Admin/projects/_shared/PageSaveContext';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-
-import { usePageSave } from '../_shared/PageSaveContext';
 
 import messages from './messages';
 

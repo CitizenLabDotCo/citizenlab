@@ -7,6 +7,10 @@ import useAddPhase from 'api/phases/useAddPhase';
 import usePhases from 'api/phases/usePhases';
 import { IProjectData } from 'api/projects/types';
 
+import {
+  SaveReason,
+  useRegisterPageSaver,
+} from 'containers/Admin/projects/_shared/PageSaveContext';
 import usePhaseFileAttachments, {
   fileAttachmentErrors,
 } from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
@@ -17,7 +21,6 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import ProjectWorkspace from '..';
-import { SaveReason, useRegisterPageSaver } from '../_shared/PageSaveContext';
 import BuildFields from '../Phase/BuildPanel/BuildFields';
 import DraftMethodSettings from '../Phase/DraftMethodSettings';
 import PhasePreview from '../Phase/PhasePreview';

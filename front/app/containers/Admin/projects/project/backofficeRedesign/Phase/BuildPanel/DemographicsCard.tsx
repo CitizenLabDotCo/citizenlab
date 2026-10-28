@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, Button } from '@citizenlab/cl2-component-library';
 
-import { IPhasePermissionAction } from 'api/permissions/types';
-import { isPhasePermissionAction } from 'api/permissions/utils';
+import { Action, IPhasePermissionAction } from 'api/permissions/types';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 
 import { useIntl } from 'utils/cl-intl';
@@ -26,6 +25,9 @@ const ACTION_ORDER: IPhasePermissionAction[] = [
   'attending_event',
 ];
 
+const isOrderedAction = (action: Action): action is IPhasePermissionAction =>
+  ACTION_ORDER.some((ordered) => ordered === action);
+
 interface Props {
   phaseId: string;
 }
@@ -36,7 +38,7 @@ const DemographicsCard = ({ phaseId }: Props) => {
   const { data: permissions } = usePhasePermissions({ phaseId });
   const actions = (permissions?.data ?? [])
     .map(({ attributes }) => attributes.action)
-    .filter(isPhasePermissionAction)
+    .filter(isOrderedAction)
     .sort((a, b) => ACTION_ORDER.indexOf(a) - ACTION_ORDER.indexOf(b));
 
   if (actions.length === 0) return null;

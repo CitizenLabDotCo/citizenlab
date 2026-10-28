@@ -67,7 +67,7 @@ const DocumentUrlCard = ({ value, errors, onChange }: Props) => {
           variant="bo"
           ariaLabel={label}
           placeholder="https://"
-          value={value ?? ''}
+          value={value}
           onChange={onChange}
         />
         <Error apiErrors={apiErrors} />

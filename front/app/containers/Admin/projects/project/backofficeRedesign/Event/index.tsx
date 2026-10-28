@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 import { IProjectData } from 'api/projects/types';
 
-import { useParams } from 'utils/router';
+import { usePageSave } from 'containers/Admin/projects/_shared/PageSaveContext';
 
-import { usePageSave } from '../_shared/PageSaveContext';
+import { useParams } from 'utils/router';
 
 import EventWorkspace from './EventWorkspace';
 
