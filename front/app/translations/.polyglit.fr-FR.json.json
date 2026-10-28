@@ -7009,6 +7009,11 @@
     "verified_at": "2026-07-17T08:20:45.182128Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Authentication.steps.FlowStart.signInWithEmployeeAccount": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:22:21.611959Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
