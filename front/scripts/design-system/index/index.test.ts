@@ -132,7 +132,7 @@ describe('ds:index', () => {
     expect(
       styles.find(
         (o) =>
-          o.entries?.width?.value === 524 &&
+          o.entries?.width?.value === 560 &&
           o.entries?.padding?.value === 18 &&
           o.entries?.background?.value === 'white'
       )?.loc.line

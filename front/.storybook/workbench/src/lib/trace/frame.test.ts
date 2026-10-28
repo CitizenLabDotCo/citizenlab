@@ -19,12 +19,12 @@ const at = (line: number): Loc => ({
   endCol: 9,
 });
 
-// SetupCard's decorator: `<div style={{ width: 524, padding: 18, background: 'white' }}>`
+// SetupCard's decorator: `<div style={{ width: 560, padding: 18, background: 'white' }}>`
 const frameStyle = (file: string, line: number): IndexStyles[number] => ({
   file,
   loc: at(line),
   entries: {
-    width: { value: 524, loc: at(line) },
+    width: { value: 560, loc: at(line) },
     padding: { value: 18, loc: at(line) },
     background: { value: 'white', loc: at(line) },
   },
@@ -48,7 +48,7 @@ const frameDiv = () => {
   stubMatchMedia(window);
   const { container } = render(
     React.createElement('div', {
-      style: { width: 524, padding: 18, background: 'white' },
+      style: { width: 560, padding: 18, background: 'white' },
     })
   );
   return container.firstChild as HTMLElement;
