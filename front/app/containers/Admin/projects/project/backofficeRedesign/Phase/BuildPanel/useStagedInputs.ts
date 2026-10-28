@@ -6,6 +6,7 @@ import useCopyInputs from 'api/copy_inputs/useCopyInputs';
 import useJobInProgressByPhase from 'api/copy_inputs/useJobInProgressByPhase';
 import useAddIdea from 'api/ideas/useAddIdea';
 import useIdeas from 'api/ideas/useIdeas';
+import useUpdateIdea from 'api/ideas/useUpdateIdea';
 
 import { useRegisterPageSaver } from 'containers/Admin/projects/_shared/PageSaveContext';
 
@@ -20,6 +21,11 @@ export interface InputValues {
 interface StagedImport {
   fromPhaseId: string;
   count: number;
+}
+
+export interface LinkedIdea {
+  id: string;
+  phaseIds: string[];
 }
 
 const useSavedCount = (projectId: string, phaseId: string) => {
@@ -43,10 +49,12 @@ const useStagedInputs = (projectId: string, phaseId: string) => {
   );
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: copyInputs } = useCopyInputs();
+  const { mutateAsync: updateIdea } = useUpdateIdea();
   // Polls a running import and refreshes the idea lists once it's done.
   const { data: jobs, refetch: refetchJobs } = useJobInProgressByPhase(phaseId);
   const [staged, setStaged] = useState<InputValues[]>([]);
   const [imports, setImports] = useState<StagedImport[]>([]);
+  const [links, setLinks] = useState<LinkedIdea[]>([]);
   // The count shown while saving, so it doesn't dip before the new one loads.
   const [savingCount, setSavingCount] = useState<number | null>(null);
 
@@ -60,8 +68,15 @@ const useStagedInputs = (projectId: string, phaseId: string) => {
       { fromPhaseId, count },
     ]);
 
+  // An idea can sit in several earlier phases, so it's only linked once.
+  const addLinks = (ideas: LinkedIdea[]) =>
+    setLinks((links) => [
+      ...links,
+      ...ideas.filter(({ id }) => !links.some((link) => link.id === id)),
+    ]);
+
   const importedCount = imports.reduce((sum, { count }) => sum + count, 0);
-  const count = savedCount + staged.length + importedCount;
+  const count = savedCount + staged.length + importedCount + links.length;
 
   const save = async () => {
     setSavingCount(count);
@@ -71,6 +86,13 @@ const useStagedInputs = (projectId: string, phaseId: string) => {
       for (const { fromPhaseId } of imports) {
         await copyInputs({ toPhaseId: phaseId, fromPhaseId });
         setImports(([, ...rest]) => rest);
+      }
+      for (const { id, phaseIds } of links) {
+        await updateIdea({
+          id,
+          requestBody: { phase_ids: [...phaseIds, phaseId] },
+        });
+        setLinks(([, ...rest]) => rest);
       }
       for (const values of staged) {
         await addIdea({
@@ -86,7 +108,7 @@ const useStagedInputs = (projectId: string, phaseId: string) => {
   };
 
   useRegisterPageSaver('inputs', {
-    dirty: staged.length > 0 || imports.length > 0,
+    dirty: staged.length > 0 || imports.length > 0 || links.length > 0,
     save,
   });
 
@@ -98,6 +120,7 @@ const useStagedInputs = (projectId: string, phaseId: string) => {
     importProgress: job && { done: job.progress, total: job.total },
     add,
     addImport,
+    addLinks,
   };
 };
 

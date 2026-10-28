@@ -7,7 +7,6 @@ import usePhases from 'api/phases/usePhases';
 
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 
-import ImportInputsModal from 'components/admin/PostManager/CommonGroundInputManager/ImportInputsModal';
 import IconAction from 'components/UI/IconAction';
 
 import { useIntl } from 'utils/cl-intl';
@@ -16,6 +15,7 @@ import messages from '../../messages';
 
 import AddInputModal from './AddInputModal';
 import InputImporterModal from './InputImporterModal';
+import LinkPhaseIdeasModal from './LinkPhaseIdeasModal';
 import PanelField from './PanelField';
 import useOpenInputForm from './useOpenInputForm';
 import useStagedInputs from './useStagedInputs';
@@ -32,10 +32,7 @@ const VotingOptionsSection = ({ projectId, phaseId }: Props) => {
   const [importerOpened, setImporterOpened] = useState(false);
   const { data: phase } = usePhase(phaseId);
   const { data: phases } = usePhases(projectId);
-  const { count, saving, importProgress, add, addImport } = useStagedInputs(
-    projectId,
-    phaseId
-  );
+  const { count, saving, add, addLinks } = useStagedInputs(projectId, phaseId);
 
   // An ideation phase earlier in the timeline is where options usually come
   // from; without one, they're collected through the form.
@@ -52,7 +49,7 @@ const VotingOptionsSection = ({ projectId, phaseId }: Props) => {
   const previousPhaseLabel = formatMessage(messages.importFromPreviousPhase);
   const editFormLabel = formatMessage(messages.editForm);
   const inputForm = useOpenInputForm(projectId, phaseId);
-  const hasOptions = count > 0 || !!importProgress;
+  const hasOptions = count > 0;
 
   return (
     <>
@@ -78,7 +75,6 @@ const VotingOptionsSection = ({ projectId, phaseId }: Props) => {
                   icon="clock"
                   tooltip={previousPhaseLabel}
                   ariaLabel={previousPhaseLabel}
-                  disabled={!!importProgress}
                   onClick={() => setPreviousPhaseOpened(true)}
                 />
               ) : (
@@ -92,16 +88,9 @@ const VotingOptionsSection = ({ projectId, phaseId }: Props) => {
               ))}
             {hasOptions ? (
               <Box display="flex" alignItems="center" gap="6px">
-                {(saving || importProgress) && <Spinner size="14px" />}
+                {saving && <Spinner size="14px" />}
                 <SummaryPill
-                  label={
-                    importProgress
-                      ? formatMessage(messages.importingStatements, {
-                          done: importProgress.done,
-                          total: importProgress.total,
-                        })
-                      : formatMessage(messages.nVotingOptions, { count })
-                  }
+                  label={formatMessage(messages.nVotingOptions, { count })}
                 />
               </Box>
             ) : (
@@ -137,13 +126,14 @@ const VotingOptionsSection = ({ projectId, phaseId }: Props) => {
         />
       )}
 
-      <ImportInputsModal
-        showPastInputsModal={previousPhaseOpened}
-        setShowPastInputsModal={setPreviousPhaseOpened}
-        currentPhaseid={phaseId}
-        variant="bo"
-        onImport={addImport}
-      />
+      {previousPhaseOpened && (
+        <LinkPhaseIdeasModal
+          projectId={projectId}
+          phaseId={phaseId}
+          onLink={addLinks}
+          onClose={() => setPreviousPhaseOpened(false)}
+        />
+      )}
 
       <InputImporterModal
         projectId={projectId}

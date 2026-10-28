@@ -15,8 +15,10 @@ interface Params {
 }
 
 const useCampaignRow = ({ campaign, context, editPath }: Params) => {
-  const { mutate: addCampaign } = useAddEmailCampaign();
-  const { mutate: updateCampaign } = useUpdateEmailCampaign();
+  const { mutate: addCampaign, mutateAsync: addCampaignAsync } =
+    useAddEmailCampaign();
+  const { mutate: updateCampaign, mutateAsync: updateCampaignAsync } =
+    useUpdateEmailCampaign();
   const globalFeatureActivated = useFeatureFlag({
     name: 'customised_automated_emails',
   });
@@ -41,6 +43,18 @@ const useCampaignRow = ({ campaign, context, editPath }: Params) => {
           enabled: !campaign.attributes.enabled,
         },
       });
+    }
+  };
+
+  const saveEnabled = async (enabled: boolean) => {
+    if (unpersistedContextCampaign) {
+      await addCampaignAsync({
+        context,
+        campaign_name: campaign.attributes.campaign_name,
+        enabled,
+      });
+    } else {
+      await updateCampaignAsync({ id: campaign.id, campaign: { enabled } });
     }
   };
 
@@ -71,6 +85,7 @@ const useCampaignRow = ({ campaign, context, editPath }: Params) => {
 
   return {
     toggleEnabled,
+    saveEnabled,
     openEditor,
     isComingSoon,
     isOutsidePlan: !!isOutsidePlan,

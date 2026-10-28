@@ -4,6 +4,7 @@ import { InputTerm, ParticipationMethod } from 'api/phases/types';
 
 import CausesSection from './CausesSection';
 import CommonGroundSection from './CommonGroundSection';
+import DemographicsCard from './DemographicsCard';
 import FormSection from './FormSection';
 import InformationSection from './InformationSection';
 import PollSection from './PollSection';
@@ -30,20 +31,12 @@ const MethodSection = ({
         <CommonGroundSection projectId={projectId} phaseId={phaseId} />
       ) : null;
     case 'voting':
-      return (
+      return phaseId ? (
         <>
-          {/* Before the first save there's no phase to add options to yet. */}
-          {phaseId && (
-            <VotingOptionsSection projectId={projectId} phaseId={phaseId} />
-          )}
-          <FormSection
-            projectId={projectId}
-            participationMethod={participationMethod}
-            phaseId={phaseId}
-            inputTerm={inputTerm}
-          />
+          <VotingOptionsSection projectId={projectId} phaseId={phaseId} />
+          <DemographicsCard phaseId={phaseId} />
         </>
-      );
+      ) : null;
     case 'volunteering':
       return phaseId ? <CausesSection phaseId={phaseId} /> : null;
     case 'information':
