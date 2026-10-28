@@ -4194,6 +4194,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.WeglotSwitcher.ariaLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-28T15:53:35.667831Z",
+    "verified_by": "Jelena"
+  },
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
