@@ -65,11 +65,7 @@ module Analysis
           when String
             texts << input
           when Files::File
-            if text_without_preview?(input)
-              texts << text_file_content(input)
-            else
-              file_paths << file_to_tempfile(input)
-            end
+            file_paths << file_to_tempfile(input)
           else
             raise ArgumentError, "Unsupported content type: #{input.class}. Must be String or Files::File."
           end
@@ -81,7 +77,11 @@ module Analysis
       # RubyLLM's `with:` param expects local file paths, not Files::File objects.
       # Writes the file content to a tempfile and returns its path.
       def file_to_tempfile(file)
-        file_content = if file.mime_type == 'application/pdf' || file.image?
+        file_content = if file.text?
+          # RubyLLM inlines text files in a <file> block, which is JSON-encoded as
+          # UTF-8, so invalid bytes have to go before the gem sees them.
+          file.content.read.force_encoding(Encoding::UTF_8).scrub
+        elsif file.mime_type == 'application/pdf' || file.image?
           file.content.read
         elsif file.preview.nil? || file.preview.status == 'failed'
           raise UnsupportedAttachmentError, file.mime_type
