@@ -30,8 +30,9 @@ module CustomFieldBins
     def in_bin?(value)
       return false if value.nil? || custom_field_option_value.nil?
 
-      # A single select answer is a string, so include? would match substrings
-      # ('female' includes 'male').
+      # Multiselect answers are arrays of option keys; single select answers are
+      # one key. Compare a single key exactly: String#include? would match
+      # substrings, putting 'female' in the 'male' bin.
       value.is_a?(Array) ? value.include?(custom_field_option_value) : value == custom_field_option_value
     end
 
