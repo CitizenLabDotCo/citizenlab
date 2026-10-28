@@ -114,6 +114,37 @@ describe McpServer::Tools::UpdateProject do
 
       expect(response).to be_not_found('Folder')
     end
+
+    context 'as a folder moderator' do
+      let(:other_folder) { create(:project_folder, admin_publication_attributes: { publication_status: 'draft' }) }
+
+      before { project.update!(folder_id: folder.id) }
+
+      it 'moves the project between folders it moderates' do
+        current_user = create(:project_folder_moderator, project_folders: [folder, other_folder])
+
+        response = run_mcp_tool(described_class, params: { project_id: project.id, folder_id: other_folder.id }, current_user:)
+
+        expect(response).not_to be_error
+        expect(project.reload.folder_id).to eq other_folder.id
+      end
+
+      it 'refuses to move the project into a folder it does not moderate, or out of its folder' do
+        current_user = create(:project_folder_moderator, project_folders: [folder])
+
+        [other_folder.id, nil].each do |folder_id|
+          response = run_mcp_tool(described_class, params: { project_id: project.id, folder_id: }, current_user:)
+
+          expect(response).to be_error
+          expect(project.reload.folder_id).to eq folder.id
+        end
+      end
+    end
+  end
+
+  it 'does not report an unknown area id as a missing folder' do
+    expect { run(project_id: project.id, area_ids: [SecureRandom.uuid]) }
+      .to raise_error(ActiveRecord::RecordNotFound, /Area/)
   end
 
   it 'replaces associations wholesale when their ids are given, and preserves them otherwise' do

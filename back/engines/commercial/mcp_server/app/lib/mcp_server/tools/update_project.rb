@@ -46,8 +46,26 @@ class McpServer::Tools::UpdateProject < McpServer::BaseTool
       authorize_project!(project)
       authorize(project, :update?)
 
-      attributes = clear_uploaders!(project, params.except(:project_id))
+      if params[:folder_id].present? && !ProjectFolders::Folder.exists?(params[:folder_id])
+        return not_found_error('Folder', params[:folder_id])
+      end
+
+      prior_project = Project.find(project.id)
+      attributes = params.except(:project_id)
+      # A null remote_<uploader>_url is a no-op on assignment; clear_uploaders! below
+      # turns it into a removal.
       project.assign_attributes(merge_multilocs(project, attributes))
+
+      # Authorize again now that the changes are assigned, like the web controller:
+      # ProjectPolicy#update? only checks a folder move (moderating both the old and
+      # the new folder) when it sees the pending change and the prior record.
+      Pundit.authorize(
+        ApplicationPolicy::UserContext.new(current_user, prior_record: prior_project),
+        project,
+        :update?
+      )
+      # Only now: removing an upload deletes the file right away.
+      clear_uploaders!(project, attributes)
 
       SideFxProjectService.new.before_update(project, current_user)
       project.save!
@@ -62,9 +80,6 @@ class McpServer::Tools::UpdateProject < McpServer::BaseTool
       )
     rescue ActiveRecord::RecordInvalid => e
       invalid_record_error(e.record)
-    rescue ActiveRecord::RecordNotFound
-      # Raised by Project#folder_id= for an id that is not a folder's.
-      not_found_error('Folder', params[:folder_id])
     end
   end
 end
