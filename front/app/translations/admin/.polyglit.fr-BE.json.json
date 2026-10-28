@@ -8639,6 +8639,11 @@
     "verified_at": "2026-10-28T14:58:12.516324Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.discardChanges": {
+    "state": "verified",
+    "verified_at": "2026-10-28T15:03:05.163228Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.edit": {
     "state": "verified",
     "verified_at": "2026-07-16T21:08:16.383613Z",
@@ -8727,6 +8732,11 @@
   "app.containers.Admin.projects.project.extrasEmptyDescription": {
     "state": "verified",
     "verified_at": "2026-08-05T13:53:13.775492Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.filesCount": {
+    "state": "verified",
+    "verified_at": "2026-10-28T15:03:05.163228Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.filesSection": {
