@@ -72,6 +72,15 @@ module MultiTenancy
       end
 
       def required_locales(template_name, external_subfolder: nil)
+        unless internal_template?(template_name)
+          # Read from the manifest when possible: fetching and parsing the models of a
+          # large template takes minutes, which is too slow for a web request.
+          external_subfolder ||= release_prefix
+          manifest = read_external_manifest(prefix: external_subfolder) if external_subfolder
+          locales = manifest&.dig(template_name, 'required_locales')
+          return locales if locales
+        end
+
         serialized_models = fetch_template_models(template_name, external_subfolder: external_subfolder)
         self.class.user_locales(serialized_models)
       end
