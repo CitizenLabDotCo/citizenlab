@@ -23,6 +23,18 @@ module MultiTenancy
       raise e
     end
 
+    def after_interrupted_apply_template(tenant, template, current_user = nil)
+      ErrorReporter.report_msg(
+        'Tenant template application was interrupted and not resumed',
+        extra: { tenant_id: tenant.id, host: tenant.host, template: template,
+                 started_at: tenant.template_application_started_at }
+      )
+      LogActivityJob.perform_later(tenant, 'creation_failed', current_user, Time.now.to_i, payload: {
+        error_message: 'Template application was interrupted (the background worker was restarted). ' \
+                       'Delete this platform and create it again.'
+      })
+    end
+
     def after_apply_template(tenant, template, current_user = nil)
       LogActivityJob.perform_later(tenant, 'template_loaded', current_user, Time.now.to_i, payload: {
         tenant_template: template

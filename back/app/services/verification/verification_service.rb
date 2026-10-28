@@ -78,9 +78,7 @@ module Verification
     end
 
     def locked_attributes(user)
-      method_names = user.verifications.active.pluck(:method_name).uniq || []
-      attributes = method_names.flat_map do |method_name|
-        ver_method = @id_method_service.method_by_name(method_name)
+      attributes = active_verification_methods(user).flat_map do |ver_method|
         if ver_method.respond_to? :locked_attributes
           ver_method.locked_attributes
         else
@@ -91,9 +89,7 @@ module Verification
     end
 
     def locked_custom_fields(user)
-      method_names = user.verifications.active.pluck(:method_name).uniq || []
-      custom_fields = method_names.flat_map do |method_name|
-        ver_method = @id_method_service.method_by_name(method_name)
+      custom_fields = active_verification_methods(user).flat_map do |ver_method|
         if ver_method.respond_to? :locked_custom_fields
           ver_method.locked_custom_fields
         else
@@ -113,6 +109,15 @@ module Verification
     end
 
     private
+
+    # The methods behind the user's active verifications, limited to those still
+    # configured on the tenant. A method that was removed from the tenant config
+    # (while its verifications remain) no longer locks anything, and calling it
+    # could fail because its config is gone.
+    def active_verification_methods(user)
+      method_names = user.verifications.active.distinct.pluck(:method_name)
+      active_methods(AppConfiguration.instance).select { |method| method_names.include?(method.name) }
+    end
 
     def make_verification(user:, uid:, method:, activity_payload: {})
       # Other accounts already verified with this uid: either an email-less SSO account
