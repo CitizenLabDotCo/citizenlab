@@ -111,3 +111,24 @@ it('reads files from the workbench branch on GitHub', () => {
     'https://raw.githubusercontent.com/CitizenLabDotCo/citizenlab/refs/heads/design-system/workbench/front/app/x.tsx'
   );
 });
+
+describe('a named value changed where it is defined', () => {
+  it('writes the definition line, not the component', () => {
+    const text = "export const theme = {\n  borderRadius: '3px',\n};\n";
+    const s: EditSource = {
+      file: 'app/component-library/utils/styleUtils.ts',
+      story: 'components-actions-button--default',
+      subject: 'design-system(design): theme.borderRadius → 6px',
+      token: '',
+      define: { line: 2, key: 'borderRadius', value: '6px' },
+    };
+    expect(lineEditFrom(text, s, parse)).toEqual({
+      subject: s.subject,
+      story: s.story,
+      file: 'front/app/component-library/utils/styleUtils.ts',
+      line: 2,
+      old: "  borderRadius: '3px',",
+      new: "  borderRadius: '6px',",
+    });
+  });
+});

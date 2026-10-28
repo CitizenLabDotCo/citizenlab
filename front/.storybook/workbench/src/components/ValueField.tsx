@@ -21,6 +21,8 @@ export type FieldProps = {
   onCommit: (typed: string, exact?: boolean) => boolean | void;
   onAttach: (token: TokenName) => void;
   onDetach: () => void;
+  // Moves a typed value to where its named value is defined, and back.
+  onDefine?: () => void;
   onOpenPicker: () => void;
   // Read only (Inspect): a pill opens its token's Foundations row in a new
   // tab instead of the picker.
@@ -147,6 +149,7 @@ export const ValueField = ({
   onCommit,
   onAttach,
   onDetach,
+  onDefine,
   onOpenPicker,
   tokenHref,
   source,
@@ -164,6 +167,28 @@ export const ValueField = ({
       {!bound && row.editable && (
         <Suggestions row={row} suggestions={suggestions} onAttach={onAttach} />
       )}
+      {onDefine &&
+        source &&
+        source !== 'pending' &&
+        source.def &&
+        (edit?.kind === 'custom' || edit?.kind === 'define') && (
+          <button
+            type="button"
+            className="wb-vf-define"
+            data-testid="wb-insp-define"
+            data-on={edit.kind === 'define' ? 'true' : undefined}
+            aria-pressed={edit.kind === 'define'}
+            onClick={onDefine}
+          >
+            {edit.kind === 'define'
+              ? `Changing ${source.legacyKey} at ${shortFile(
+                  source.def.file
+                )}:${source.def.line}, every use follows · only here instead`
+              : `Change ${source.legacyKey} where it's defined (${shortFile(
+                  source.def.file
+                )}:${source.def.line}), every use follows`}
+          </button>
+        )}
     </>
   );
   const swatch = v.swatch && (
@@ -297,7 +322,11 @@ export const ValueField = ({
   return (
     <>
       <div
-        className={edit?.kind === 'custom' ? 'wb-vf wb-vf-custom' : 'wb-vf'}
+        className={
+          edit?.kind === 'custom' || edit?.kind === 'define'
+            ? 'wb-vf wb-vf-custom'
+            : 'wb-vf'
+        }
         data-testid="wb-insp-value"
         data-raw={v.raw}
         data-row={row.id}

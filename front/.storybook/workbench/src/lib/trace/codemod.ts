@@ -269,3 +269,77 @@ export const lineEditOf = (
   }
   return { line: t.line, old: lineText, new: newLine };
 };
+
+// A named value changed where the code defines it (`borderRadius: '3px',`
+// in styleUtils.ts): every use follows, the way devs change one. The
+// property on `line` named `key` must hold one literal or one name on that
+// line; the new value is written in the same kind (a number stays a
+// number, a string keeps its quotes) and the file must parse after.
+export type DefineEdit = { line: number; key: string; value: string };
+
+const NAME_PATH = /^[A-Za-z_$][\w$]*(\.[\w$]+)+$/;
+
+const propertyOn = (root: unknown, key: string, line: number) => {
+  const stack: unknown[] = [root];
+  while (stack.length) {
+    const n = stack.pop();
+    if (!isNode(n)) continue;
+    const loc = n.loc as { start: { line: number } } | undefined;
+    const k = n.key as Node | undefined;
+    if (
+      n.type === 'ObjectProperty' &&
+      loc?.start.line === line &&
+      k &&
+      (k.name === key || k.value === key)
+    ) {
+      return n;
+    }
+    for (const [name, v] of Object.entries(n)) {
+      if (name === 'loc' || name.endsWith('Comments')) continue;
+      for (const c of Array.isArray(v) ? v : [v]) if (isNode(c)) stack.push(c);
+    }
+  }
+  return undefined;
+};
+
+export const defineEditOf = (
+  text: string,
+  d: DefineEdit,
+  parse: Parse
+): CodemodResult => {
+  const lines = text.split('\n');
+  const lineText = lines[d.line - 1];
+  if (lineText === undefined) return { byHand: 'the code moved since the trace' };
+  const ast = parsed(parse, text);
+  const prop = ast && propertyOn(ast.program, d.key, d.line);
+  if (!prop) return { byHand: `${d.key} is no longer defined on line ${d.line}` };
+  const v = prop.value as Node;
+  const vLoc = v.loc as { end: { line: number } };
+  if (vLoc.end.line !== d.line) return { byHand: 'its value spans more lines' };
+  const lineStart = lines
+    .slice(0, d.line - 1)
+    .reduce((n, l) => n + l.length + 1, 0);
+  const old = text.slice(v.start, v.end);
+  const value = d.value.trim();
+  let written: string;
+  if (v.type === 'NumericLiteral') {
+    const n = /^(-?\d+(\.\d+)?)(px)?$/.exec(value);
+    if (!n) return { byHand: `${d.key} is a number; ${value} is not` };
+    written = n[1];
+  } else if (v.type === 'StringLiteral' || v.type === 'MemberExpression') {
+    if (/['"`\\\n]/.test(value)) return { byHand: `${value} has quotes in it` };
+    const q = v.type === 'StringLiteral' ? old[0] : quoteOf(text);
+    written = NAME_PATH.test(value) ? value : `${q}${value}${q}`;
+  } else {
+    return { byHand: `${d.key} is worked out from other values` };
+  }
+  if (written === old) return { byHand: 'it already has this value' };
+  const next = text.slice(0, v.start) + written + text.slice(v.end);
+  if (!parsed(parse, next)) return { byHand: 'the file would not parse' };
+  const col = v.start - lineStart;
+  return {
+    line: d.line,
+    old: lineText,
+    new: lineText.slice(0, col) + written + lineText.slice(col + old.length),
+  };
+};

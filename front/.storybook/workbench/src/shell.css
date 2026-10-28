@@ -5604,6 +5604,27 @@ a.wb-vf-body:focus-visible .wb-vf-open {
 }
 
 /* Where the code writes a Design tab value: one small line under it. */
+.wb-vf-define {
+  display: block;
+  margin-top: 4px;
+  padding: 3px 6px;
+  border: 1px dashed var(--wb-border-strong, var(--wb-muted));
+  border-radius: 4px;
+  background: none;
+  font: inherit;
+  font-size: 11px;
+  line-height: 14px;
+  color: var(--wb-muted);
+  text-align: left;
+  cursor: pointer;
+}
+.wb-vf-define:hover {
+  color: var(--wb-text);
+}
+.wb-vf-define[data-on='true'] {
+  border-style: solid;
+  color: var(--wb-text);
+}
 .wb-vf-source {
   min-height: 14px;
   margin-top: 2px;

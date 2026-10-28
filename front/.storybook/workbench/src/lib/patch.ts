@@ -3,8 +3,8 @@
 // GitHub has it now, with the token written in. When the codemod cannot
 // prove the edit is only the token (the line moved, the range is not a whole
 // value), the change goes as a task instead, with the reason.
-import type { EditTrace, Parse } from './trace/codemod';
-import { lineEditOf } from './trace/codemod';
+import type { DefineEdit, EditTrace, Parse } from './trace/codemod';
+import { defineEditOf, lineEditOf } from './trace/codemod';
 import { Item, LineEdit, REPO, REVIEW_BASE, undoOfLineEdit } from './send';
 
 // What the page knows of an attached token before it reads the file: the
@@ -15,7 +15,9 @@ export type EditSource = {
   story: string;
   subject: string;
   token: string;
-  trace: EditTrace;
+  trace?: EditTrace;
+  // A named value changed where it is defined, instead of a token.
+  define?: DefineEdit;
 };
 
 // @babel/parser, loaded only when a change is sent.
@@ -35,7 +37,11 @@ export const lineEditFrom = (
   s: EditSource,
   parse: Parse
 ): LineEdit | { byHand: string } => {
-  const e = lineEditOf(text, s.trace, s.token, parse);
+  const e = s.define
+    ? defineEditOf(text, s.define, parse)
+    : s.trace
+    ? lineEditOf(text, s.trace, s.token, parse)
+    : { byHand: 'not traced to a line' };
   return 'byHand' in e
     ? e
     : { subject: s.subject, story: s.story, file: `front/${s.file}`, ...e };

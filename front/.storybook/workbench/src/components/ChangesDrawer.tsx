@@ -39,6 +39,9 @@ type Props = {
 const NO_ELEMENTS: ElementEdit[] = [];
 
 const markOf = (e: ElementEdit, look: boolean): [IconName, string] => {
+  if (e.kind === 'define' && e.define) {
+    return ['caution', `Changes ${e.define.name} everywhere it is used`];
+  }
   if (look) return ['caution', 'Changes the look'];
   if (e.kind === 'swap') return ['swap', 'Swaps the token'];
   return ['attach', 'Attaches the token'];

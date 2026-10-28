@@ -412,6 +412,25 @@ const Design = ({
       addEdit({ ...base(t), to: { value }, kind: 'custom' });
     }
   };
+  // A typed value moved to where its named value is defined (theme
+  // .borderRadius at styleUtils.ts:242), so every use follows; again, back
+  // to this element only.
+  const define = (t: Target, line: SourceLine) => {
+    const e = editOf(t);
+    const name = line.legacyKey;
+    if (!e || !name || !line.def) return;
+    if (e.kind === 'define') {
+      const { define: _, ...rest } = e;
+      addEdit({ ...rest, kind: 'custom', at: Date.now() });
+      return;
+    }
+    addEdit({
+      ...e,
+      kind: 'define',
+      define: { name, file: line.def.file, line: line.def.line },
+      at: Date.now(),
+    });
+  };
   const commit = (t: Target, typed: string, exact = false): boolean => {
     const { row } = t;
     if (row.id === 'opacity') {
@@ -586,6 +605,7 @@ const Design = ({
       commit: (typed: string, exact?: boolean) => boolean;
       attach: (token: TokenName) => void;
       detach: () => void;
+      define?: () => void;
     },
     line?: SourceLine | 'pending'
   ) => (
@@ -600,6 +620,7 @@ const Design = ({
         onCommit={on.commit}
         onAttach={on.attach}
         onDetach={on.detach}
+        onDefine={on.define}
         onOpenPicker={() => setPicker(picker === key ? undefined : key)}
         source={line}
         suggestions={suggestOf(r, line)}
@@ -667,6 +688,10 @@ const Design = ({
             commit: (typed, exact) => commit(t, typed, exact),
             attach: (token) => bind(t, token),
             detach: () => detach(t),
+            define:
+              line && line !== 'pending' && line.def && line.legacyKey
+                ? () => define(t, line)
+                : undefined,
           },
           line
         );

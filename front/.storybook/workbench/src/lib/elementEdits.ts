@@ -13,7 +13,13 @@ import { parseColour } from './overrides';
 import { sameValue } from './tokenPicker';
 import type { EditTrace } from './trace/codemod';
 
-export type EditKind = 'attach' | 'swap' | 'detach' | 'custom' | 'file';
+export type EditKind =
+  | 'attach'
+  | 'swap'
+  | 'detach'
+  | 'custom'
+  | 'file'
+  | 'define';
 
 export type ElementEdit = {
   // `${storyId}|${path.join('.')}|${rowId}`; file edits
@@ -35,6 +41,9 @@ export type ElementEdit = {
   // A token attached to traced code: where the codemod writes it (the
   // trace's editable range, at the index's commit).
   source?: EditTrace;
+  // A `define` edit: the named value changed where the code defines it
+  // (colors.textPrimary at styleUtils.ts:114); every use follows.
+  define?: { name: string; file: string; line: number };
   // A `file` edit: the scan finding's place.
   file?: string;
   line?: number;
@@ -140,7 +149,9 @@ export const subjectOfEdit = (
   component: string,
   look: boolean
 ) =>
-  `design-system(${look ? 'design' : 'heal'}): ${component} ${e.label
+  e.define
+    ? `design-system(design): ${e.define.name} → ${e.to.value}, where it is defined (seen on ${component}) [AI-assisted]`
+    : `design-system(${look ? 'design' : 'heal'}): ${component} ${e.label
     .toLowerCase()
     .replace(/\s+/g, ' ')} ${
     e.source?.text ?? e.from.token ?? flat(e.from.raw)
@@ -168,6 +179,14 @@ export const taskOfEdit = (e: ElementEdit, ctx: TaskContext): string => {
       check,
     ].join('\n');
   }
+  if (e.kind === 'define' && e.define) {
+    const d = e.define;
+    return [
+      `define: ${d.name} · ${d.file}:${d.line} · ${e.from.raw} → ${e.to.value}`,
+      `why: changed where ${d.name} is defined, so every use follows; seen on ${ctx.component}`,
+      check,
+    ].join('\n');
+  }
   const from = e.from.token ?? e.from.raw;
   const to = e.to.token ? `var(${e.to.token})` : e.to.value;
   return [
@@ -181,7 +200,14 @@ export const taskOfEdit = (e: ElementEdit, ctx: TaskContext): string => {
 
 // ---------------------------------------------------------------- storage
 
-const KINDS = new Set<EditKind>(['attach', 'swap', 'detach', 'custom', 'file']);
+const KINDS = new Set<EditKind>([
+  'attach',
+  'swap',
+  'detach',
+  'custom',
+  'file',
+  'define',
+]);
 const PX = /^-?\d+(\.\d+)?px$/;
 
 // A literal the row can take: the right kind for the row, short, nothing

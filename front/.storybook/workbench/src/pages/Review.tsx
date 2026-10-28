@@ -437,7 +437,21 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
           value: e.to.token ?? e.to.value,
           task: taskOfEdit(e, ctx),
           undo: undoOfEdit(e, ctx.component, file),
-          ...(trace && e.to.token
+          ...(e.kind === 'define' && e.define
+            ? {
+                source: {
+                  file: e.define.file,
+                  story: storyId,
+                  subject: subjectOfEdit(e, ctx.component, true),
+                  token: '',
+                  define: {
+                    line: e.define.line,
+                    key: e.define.name.split('.').pop() ?? e.define.name,
+                    value: e.to.value,
+                  },
+                },
+              }
+            : trace && e.to.token
             ? {
                 source: {
                   file: trace.file,

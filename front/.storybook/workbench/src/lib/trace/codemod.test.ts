@@ -3,7 +3,13 @@ import path from 'path';
 
 import { parse as babelParse } from '@babel/parser';
 
-import { EditTrace, lineEditOf, Parse, quoteOf } from './codemod';
+import {
+  defineEditOf,
+  EditTrace,
+  lineEditOf,
+  Parse,
+  quoteOf,
+} from './codemod';
 
 const parse: Parse = (code) =>
   babelParse(code, {
@@ -216,5 +222,61 @@ describe('a `${…}` with its unit (Badge: font-size: ${fontSizes.xs}px;)', () =
       unit: 'em',
     });
     expect(lineEditOf(badge, t, '--gv-fs-xs', parse)).toHaveProperty('byHand');
+  });
+});
+
+describe('defineEditOf: a named value where it is defined', () => {
+  const STYLE = 'app/component-library/utils/styleUtils.ts';
+  const style = fs.readFileSync(path.join(FRONT, STYLE), 'utf8');
+  const lines = style.split('\n');
+  const lineOf = (re: RegExp) => lines.findIndex((l) => re.test(l)) + 1;
+
+  it('changes theme.borderRadius in its string, quotes kept', () => {
+    const line = lineOf(/^  borderRadius: '3px',/);
+    expect(
+      defineEditOf(style, { line, key: 'borderRadius', value: '6px' }, parse)
+    ).toEqual({
+      line,
+      old: "  borderRadius: '3px',",
+      new: "  borderRadius: '6px',",
+    });
+  });
+
+  it('keeps a font size a number, dropping px', () => {
+    const line = lineOf(/^  xs: 12,/);
+    expect(
+      defineEditOf(style, { line, key: 'xs', value: '13px' }, parse)
+    ).toEqual({ line, old: '  xs: 12,', new: '  xs: 13,' });
+    expect(
+      defineEditOf(style, { line, key: 'xs', value: 'large' }, parse)
+    ).toEqual({ byHand: 'xs is a number; large is not' });
+  });
+
+  it('writes a colour for a colour name, or another name as a name', () => {
+    const line = lineOf(/^  textPrimary: themeColors.grey800,/);
+    expect(
+      defineEditOf(style, { line, key: 'textPrimary', value: '#1A1A1A' }, parse)
+    ).toEqual({
+      line,
+      old: '  textPrimary: themeColors.grey800,',
+      new: "  textPrimary: '#1A1A1A',",
+    });
+    expect(
+      defineEditOf(
+        style,
+        { line, key: 'textPrimary', value: 'themeColors.grey700' },
+        parse
+      )
+    ).toMatchObject({ new: '  textPrimary: themeColors.grey700,' });
+  });
+
+  it('refuses a value worked out from others, or a moved line', () => {
+    const line = lineOf(/^  border: `1px solid/);
+    expect(
+      defineEditOf(style, { line, key: 'border', value: '2px solid red' }, parse)
+    ).toEqual({ byHand: 'border is worked out from other values' });
+    expect(
+      defineEditOf(style, { line: line + 1, key: 'border', value: 'x' }, parse)
+    ).toEqual({ byHand: 'border is no longer defined on line ' + (line + 1) });
   });
 });
