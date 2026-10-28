@@ -44,7 +44,7 @@ describe AIAssistant::Turn do
 
   it 'continues a turn whose last message asked for tools' do
     tool_message = create(:ai_assistant_message, conversation:, role: 'assistant', content: nil)
-    create(:ai_assistant_tool_call, message: tool_message, result: { fields: [] }.to_json)
+    create(:ai_assistant_tool_call, message: tool_message, status: 'auto_executed', result: { fields: [] }.to_json)
     stub_bedrock(bedrock_text('The survey has no questions yet.'))
 
     turn.run
@@ -58,6 +58,17 @@ describe AIAssistant::Turn do
 
     expect { turn.run }.to raise_error(ActiveRecord::RecordInvalid)
     expect(conversation.messages.assistant).to be_empty
+  end
+
+  it 'only finishes a turn that already stopped on proposals' do
+    tool_message = create(:ai_assistant_message, conversation:, role: 'assistant', content: nil)
+    create(:ai_assistant_tool_call, message: tool_message, name: 'replace_form_fields', status: 'proposed')
+    stub_bedrock
+
+    turn.run
+
+    expect(bedrock_requests).to be_empty
+    expect(conversation.reload.status).to eq('awaiting_approval')
   end
 
   it 'runs read-only tools right away, pinned to the conversation record' do
