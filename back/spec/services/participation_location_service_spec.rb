@@ -122,4 +122,29 @@ RSpec.describe ParticipationLocationService do
       end
     end
   end
+
+  describe '.enabled_for?' do
+    let(:project) { create(:project, track_participation_location: true) }
+
+    it 'is true when the feature is on and the project tracks location' do
+      SettingsService.new.activate_feature!('participation_location_tracking')
+      expect(described_class.enabled_for?(project)).to be true
+    end
+
+    it 'is false when the feature is off' do
+      SettingsService.new.deactivate_feature!('participation_location_tracking')
+      expect(described_class.enabled_for?(project)).to be false
+    end
+
+    it 'is false when the project does not track location' do
+      SettingsService.new.activate_feature!('participation_location_tracking')
+      project.update!(track_participation_location: false)
+      expect(described_class.enabled_for?(project)).to be false
+    end
+
+    it 'is false without a project' do
+      SettingsService.new.activate_feature!('participation_location_tracking')
+      expect(described_class.enabled_for?(nil)).to be false
+    end
+  end
 end

@@ -260,6 +260,35 @@ describe XlsxService do
         expect(worksheet[0].cells.map(&:value)).to include custom_field.title_multiloc['en']
       end
     end
+
+    describe 'participation location columns' do
+      let(:xlsx) { service.generate_comments_xlsx(comments, view_private_attributes: true, with_participation_location: true) }
+      let(:location_headers) { ParticipationLocation::EXPORT_COLUMNS.keys }
+      let(:headers) { worksheet[0].cells.map(&:value) }
+
+      before { create(:participation_location, trackable: comments.first, city: 'Brussels') }
+
+      it 'are the last columns, filled from the recorded location' do
+        expect(headers.last(location_headers.size)).to eq location_headers
+        expect(worksheet[1].cells.map(&:value)[headers.index('participation_location_city')]).to eq 'Brussels'
+      end
+
+      describe 'when not asked for' do
+        let(:xlsx) { service.generate_comments_xlsx(comments, view_private_attributes: true) }
+
+        it 'are left out' do
+          expect(headers).not_to include(*location_headers)
+        end
+      end
+
+      describe 'without private attributes' do
+        let(:xlsx) { service.generate_comments_xlsx(comments, view_private_attributes: false, with_participation_location: true) }
+
+        it 'are left out' do
+          expect(headers).not_to include(*location_headers)
+        end
+      end
+    end
   end
 
   describe 'generate_invites_xlsx' do

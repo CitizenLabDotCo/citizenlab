@@ -87,6 +87,83 @@ describe Export::InputReportFields do
         expect(keys_of(fields.all)).to include('input_id', 'residence', 'author_email')
       end
     end
+
+    describe 'participation location columns' do
+      let(:location_keys) do
+        %w[
+          participation_location_country participation_location_region participation_location_city
+          participation_location_latitude participation_location_longitude
+        ]
+      end
+
+      before do
+        create(:idea_status_proposed)
+        SettingsService.new.activate_feature!('participation_location_tracking')
+        phase.project.update!(track_participation_location: true)
+      end
+
+      it 'are the last columns when tracking is on for the project' do
+        expect(keys_of(described_class.new(phase).all).last(location_keys.size)).to eq location_keys
+      end
+
+      it 'read the location recorded for the input' do
+        input = create(:native_survey_response, project: phase.project, creation_phase: phase)
+        create(
+          :participation_location,
+          trackable: input,
+          country_name: 'Belgium',
+          region: 'Brussels-Capital Region',
+          city: 'Brussels',
+          latitude: BigDecimal('50.8503'),
+          longitude: BigDecimal('4.3517')
+        )
+        input.reload
+
+        values = described_class.new(phase).all
+          .select { |field| location_keys.include?(field.key) }
+          .to_h { |field| [field.key, field.value_from(input)] }
+
+        expect(values).to eq(
+          'participation_location_country' => 'Belgium',
+          'participation_location_region' => 'Brussels-Capital Region',
+          'participation_location_city' => 'Brussels',
+          'participation_location_latitude' => 50.8503,
+          'participation_location_longitude' => 4.3517
+        )
+      end
+
+      it 'are empty for an input without a recorded location' do
+        input = create(:native_survey_response, project: phase.project, creation_phase: phase)
+        city_field = described_class.new(phase).all.find { |field| field.key == 'participation_location_city' }
+
+        expect(city_field.value_from(input)).to be_nil
+      end
+
+      it 'are excluded when the feature is off' do
+        SettingsService.new.deactivate_feature!('participation_location_tracking')
+        expect(keys_of(described_class.new(phase).all)).not_to include(*location_keys)
+      end
+
+      it 'are excluded when the project does not track location' do
+        phase.project.update!(track_participation_location: false)
+        expect(keys_of(described_class.new(phase).all)).not_to include(*location_keys)
+      end
+
+      it 'are excluded when private attributes are left out of exports' do
+        config = AppConfiguration.instance
+        config.settings['core']['private_attributes_in_export'] = false
+        config.save!
+
+        expect(keys_of(described_class.new(phase).all)).not_to include(*location_keys)
+      end
+
+      it 'flag the city and coordinates as personal data for review' do
+        by_key = described_class.new(phase).reviewable_fields.index_by(&:key)
+        expect(by_key['participation_location_city'].personal_data).to be true
+        expect(by_key['participation_location_latitude'].personal_data).to be true
+        expect(by_key['participation_location_country'].personal_data).to be false
+      end
+    end
   end
 
   describe 'for an ideation phase' do

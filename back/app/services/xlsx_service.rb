@@ -189,7 +189,7 @@ class XlsxService
     generate_xlsx 'Ideas', columns, ideas
   end
 
-  def generate_comments_xlsx(comments, view_private_attributes: false)
+  def generate_comments_xlsx(comments, view_private_attributes: false, with_participation_location: false)
     columns = [
       { header: 'id',                 f: ->(c) { c.id }, skip_sanitization: true },
       { header: 'input',              f: ->(c) { multiloc_service.t(c.idea.title_multiloc) } },
@@ -205,6 +205,7 @@ class XlsxService
     ]
     columns.concat user_custom_field_columns(:author)
     columns.reject! { |c| %w[author_name author_email author_id].include?(c[:header]) } unless view_private_attributes
+    columns.concat participation_location_columns if view_private_attributes && with_participation_location
     generate_xlsx 'Comments', columns, comments
   end
 
@@ -233,6 +234,14 @@ class XlsxService
     user_custom_fields&.map do |field|
       column_name = fields_to_columns[field.id]
       { header: column_name, f: value_getter_for_user_custom_field_columns(field, record_to_user, options) }
+    end
+  end
+
+  # Where the participant was when they created each record (a comment,
+  # basket, ...). Headers are the untranslated column keys.
+  def participation_location_columns
+    ParticipationLocation::EXPORT_COLUMNS.map do |key, attribute|
+      { header: key, f: ->(record) { record.participation_location&.export_value(attribute) } }
     end
   end
 

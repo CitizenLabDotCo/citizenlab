@@ -80,7 +80,7 @@ class WebApi::V1::CommentsController < ApplicationController
     end
 
     @comments = policy_scope(Comment)
-      .includes(:author, :idea)
+      .includes(:author, :idea, :participation_location)
       .order(:lft)
     @comments = @comments.where(ideas: { project_id: UserRoleService.new.moderatable_projects(current_user) })
     if params[:project].present?
@@ -88,9 +88,17 @@ class WebApi::V1::CommentsController < ApplicationController
     end
     @comments = @comments.where(idea_id: params[:ideas]) if params[:ideas].present?
 
+    # Participant location is only exported in the context of one project.
+    with_participation_location = params[:project].present? &&
+                                  ParticipationLocationService.enabled_for?(Project.find(params[:project]))
+
     I18n.with_locale(current_user&.locale) do
       service = XlsxService.new
-      xlsx = service.generate_comments_xlsx @comments.includes(author: :custom_field_answers), view_private_attributes: true
+      xlsx = service.generate_comments_xlsx(
+        @comments.includes(author: :custom_field_answers),
+        view_private_attributes: true,
+        with_participation_location: with_participation_location
+      )
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments.xlsx'
     end
   end

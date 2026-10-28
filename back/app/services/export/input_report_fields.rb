@@ -27,13 +27,16 @@ module Export
     # callers eager-load these to avoid N+1 queries.
     EAGER_LOADS = [
       :project, :ideas_input_topics, :input_topics, :idea_files, :attached_files,
-      :idea_status, :assignee, :custom_field_answers,
+      :idea_status, :assignee, :custom_field_answers, :participation_location,
       { author: :custom_field_answers, file_attachments: :file }
     ].freeze
 
     # Computed columns that identify a person, flagged for redaction without
     # consulting the LLM (form/user fields are classified by Export::PiiDetector).
-    STRUCTURAL_PII_KEYS = %w[author_fullname author_email author_id assignee_fullname assignee_email].freeze
+    STRUCTURAL_PII_KEYS = %w[
+      author_fullname author_email author_id assignee_fullname assignee_email
+      participation_location_city participation_location_latitude participation_location_longitude
+    ].freeze
 
     # One entry of the field-review UI: a localized title and, for form/user
     # fields, the underlying custom field (its personal_data is decided by the
@@ -52,14 +55,16 @@ module Export
 
     # Every column of the export, in sheet order: the input id, the form
     # questions (with latitude/longitude ahead of the location answer), author
-    # identification, method-specific meta columns and out-of-form user fields.
+    # identification, method-specific meta columns, out-of-form user fields
+    # and, last, where the participant was when they submitted.
     def all
       @all ||= reject_redacted(
         [input_id_report_field] +
         form_report_fields +
         author_report_fields +
         meta_report_fields +
-        user_report_fields
+        user_report_fields +
+        participation_location_report_fields
       )
     end
 
@@ -71,7 +76,8 @@ module Export
         reviewable_computed(input_id_report_field),
         *reviewable_custom_fields(question_fields),
         *reviewable_computed_fields(author_report_fields + meta_report_fields),
-        *reviewable_custom_fields(@input_fields.user_fields)
+        *reviewable_custom_fields(@input_fields.user_fields),
+        *reviewable_computed_fields(participation_location_report_fields)
       ]
     end
 
@@ -159,6 +165,21 @@ module Export
           meta_fields << assignee_fullname_report_field if include_private_attributes
           meta_fields << assignee_email_report_field if include_private_attributes
         end
+      end
+    end
+
+    # Approximate location of the participant at submission time, from the
+    # CDN's IP geolocation (see ParticipationLocationService). It is personal
+    # data, so it follows the same rule as the author columns.
+    def participation_location_report_fields
+      return [] unless include_private_attributes && ParticipationLocationService.enabled_for?(phase.project)
+
+      ParticipationLocation::EXPORT_COLUMNS.map do |key, attribute|
+        ComputedFieldForReport.new(
+          column_header_for(key),
+          ->(input) { input.participation_location&.export_value(attribute) },
+          key: key
+        )
       end
     end
 

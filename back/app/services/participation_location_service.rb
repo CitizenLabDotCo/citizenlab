@@ -29,11 +29,15 @@ class ParticipationLocationService
       ParticipationLocation.create!(trackable: trackable, **attrs)
     end
 
+    def enabled_for?(project)
+      AppConfiguration.instance.feature_activated?('participation_location_tracking') &&
+        !!project&.track_participation_location
+    end
+
     private
 
     def should_track?(trackable)
-      AppConfiguration.instance.feature_activated?('participation_location_tracking') &&
-        trackable.project&.track_participation_location
+      enabled_for?(trackable.project)
     end
 
     def parse_decimal(value)
