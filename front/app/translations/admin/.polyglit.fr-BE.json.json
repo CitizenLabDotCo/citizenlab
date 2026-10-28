@@ -10654,6 +10654,11 @@
     "verified_at": "2026-09-16T19:26:50.773492Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.settingsResources": {
+    "state": "verified",
+    "verified_at": "2026-10-28T14:58:46.008842Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.settingsSaveChanges": {
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.773492Z",
