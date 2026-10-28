@@ -1599,7 +1599,7 @@
   "app.containers.IdeaButton.postingNoPermission": "Attualmente non si accettano nuovi invii",
   "app.containers.IdeaButton.signInLinkText": "accedi",
   "app.containers.IdeaButton.signUpLinkText": "iscriversi",
-  "app.containers.IdeaButton.submitAnIssue1": "Invia un problema",
+  "app.containers.IdeaButton.submitAnIssue1": "Segnala un problema",
   "app.containers.IdeaButton.submitYourIdea": "Invia la tua idea",
   "app.containers.IdeaButton.takeTheSurvey": "Partecipa al sondaggio",
   "app.containers.IdeaButton.verificationLinkText": "Verifica la tua identità ora.",
