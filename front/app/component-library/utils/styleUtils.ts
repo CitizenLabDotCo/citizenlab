@@ -312,7 +312,6 @@ export const defaultInputStyle = css`
       font-size: ${fontSizes.s}px;
       padding: 10px;
     `}
-  }
 `;
 
 export const getFontWeightCSS = (fontWeight: FontWeight) => {

@@ -170,7 +170,11 @@ class SideFxUserService
   end
 
   def create_user_activity_payload(user)
-    if user.sso?
+    # An invitation creates the account before the person does anything, so
+    # it must not read as a sign-up they started.
+    if user.invite_pending?
+      { flow: 'invitation' }
+    elsif user.sso?
       { flow: 'sso', method: user.identities.first&.provider }
     elsif user.phone.present? && user.email.blank?
       { flow: 'phone_confirmation' }

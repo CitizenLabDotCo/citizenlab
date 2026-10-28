@@ -545,12 +545,55 @@ resource 'Ideas' do
           expect(json_parse(response_body)[:data].pluck(:id)).to eq [idea_pizza.id]
         end
 
-        example 'Caches the request' do
-          expect_any_instance_of(SimilarIdeasService).to receive(:similar_ideas).once.and_call_original
+        example 'Caches the text embedding, but not the response', :clear_cache do
+          cohere = instance_double(CohereMultilingualEmbeddings)
+          allow(CohereMultilingualEmbeddings).to receive(:new).and_return(cohere)
+          expect(cohere).to receive(:embedding).once.and_return(embeddings['pizza'])
+
           do_request
           assert_status 200
+          expect(json_parse(response_body)[:data].pluck(:id)).to eq [idea_pizza.id]
+
+          idea_pizza2 = create(:embeddings_similarity, embedding: embeddings['pizza'], embeddable: create(:idea, project:)).embeddable
           do_request
           assert_status 200
+          expect(json_parse(response_body)[:data].pluck(:id)).to contain_exactly(idea_pizza.id, idea_pizza2.id)
+        end
+
+        example 'Does not serve the response of a signed-in user to a visitor', :clear_cache do
+          # A submitted (not yet published) idea is only visible to its author.
+          submitted_idea = create(:idea, project:, author: user, publication_status: 'submitted')
+          create(:embeddings_similarity, embedding: embeddings['pizza'], embeddable: submitted_idea)
+
+          # The author sees their submitted idea
+          do_request
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].pluck(:id)).to include(submitted_idea.id)
+
+          # A visitor making the same request does not
+          header 'Authorization', nil
+          do_request
+          assert_status 200
+          json_response = json_parse(response_body)
+          expect(json_response[:data].pluck(:id)).not_to include(submitted_idea.id)
+          expect(json_response[:included].pluck(:id)).not_to include(user.id)
+        end
+
+        example 'Does not serve the response of an admin to a resident', :clear_cache do
+          header_token_for create(:admin)
+          do_request
+          assert_status 200
+          json_response = json_parse(response_body)
+          pizza_author = json_response[:included].find { |r| r[:type] == 'user' && r[:id] == idea_pizza.author_id }
+          expect(pizza_author[:attributes]).to include(:email)
+
+          header_token_for user
+          do_request
+          assert_status 200
+          json_response = json_parse(response_body)
+          pizza_author = json_response[:included].find { |r| r[:type] == 'user' && r[:id] == idea_pizza.author_id }
+          expect(pizza_author[:attributes]).not_to include(:email)
         end
 
         example 'Fetches the similarity thresholds from the corresponding phase' do

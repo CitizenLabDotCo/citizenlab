@@ -5244,6 +5244,11 @@
     "verified_at": "2026-03-27T15:03:31.299504Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": {
+    "state": "verified",
+    "verified_at": "2026-10-16T18:06:55.079502Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.517997Z",
