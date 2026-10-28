@@ -48,9 +48,9 @@ describe McpServer::Tools::ReplaceNavBarItems do
   it 'round-trips the output of get_nav_bar_items' do
     create(:nav_bar_item, code: 'home', static_page: nil, title_multiloc: nil)
     dropdown = create(:nav_bar_item, :dropdown)
-    # Titles fall back to the target's, so targets stick to active locales too:
-    # inactive locales in a fetched multiloc would be refused on the way back in.
-    child_page = create(:static_page, title_multiloc: { 'en' => 'Child page' })
+    # An inactive locale in the target's title only reaches the read-only label, so
+    # it must not block the round trip.
+    child_page = create(:static_page, title_multiloc: { 'en' => 'Child page', 'de-DE' => 'Kindseite' })
     create(:nav_bar_item, parent: dropdown, static_page: child_page, title_multiloc: nil)
     create(:nav_bar_item, static_page: create(:static_page, title_multiloc: { 'en' => 'About page' }), title_multiloc: { 'en' => 'About' })
 
@@ -62,6 +62,19 @@ describe McpServer::Tools::ReplaceNavBarItems do
     refetched = run_mcp_tool(McpServer::Tools::GetNavBarItems, params: {}, current_user:).structured_content
     strip = ->(items) { items.map { |item| item.except(:id, :children).merge(children: item[:children].map { |child| child.except(:id) }) } }
     expect(strip.call(refetched[:items])).to eq strip.call(fetched[:items])
+  end
+
+  it 'keeps titles without an override following their target after a round trip' do
+    create(:nav_bar_item, code: 'home', static_page: nil, title_multiloc: nil)
+    page = create(:static_page, title_multiloc: { 'en' => 'About page' })
+    create(:nav_bar_item, static_page: page, title_multiloc: nil)
+
+    fetched = run_mcp_tool(McpServer::Tools::GetNavBarItems, params: {}, current_user:).structured_content
+    run(items: fetched[:items], nav_last_updated_at: fetched[:nav_last_updated_at].iso8601)
+    page.update!(title_multiloc: { 'en' => 'About us' })
+
+    expect(NavBarItem.top_level.map(&:title_multiloc)).to all(be_blank)
+    expect(NavBarItem.find_by(static_page: page).title_multiloc_with_fallback).to eq('en' => 'About us')
   end
 
   it 'refuses when home is missing or not first' do

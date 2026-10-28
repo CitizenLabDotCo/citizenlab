@@ -61,13 +61,22 @@ class McpServer::Tools::NavBarItemsSchemaBuilder
         description: "The target's slug; null for built-in items and dropdowns."
       },
       title_multiloc: {
-        type: 'object',
+        type: %w[object null],
         additionalProperties: { type: 'string' },
         description: <<~DESC.squish
-          Localized label. An object mapping locale codes to their translations. Omit it
-          to fall back to the target's (or built-in item's) own title. Keep labels at most
-          25 characters: the admin UI enforces that length and the navbar truncates longer
-          ones.
+          Label override. An object mapping locale codes to their translations. Null or
+          omitted means no override: the label follows the target's (or built-in item's)
+          own title, including later renames. Keep labels at most 25 characters: the admin
+          UI enforces that length and the navbar truncates longer ones.
+        DESC
+      },
+      display_title_multiloc: {
+        type: 'object',
+        additionalProperties: { type: 'string' },
+        readOnly: true,
+        description: <<~DESC.squish
+          The label shown in the navbar: the override where set, else the target's (or
+          built-in item's) own title. To change it, set title_multiloc.
         DESC
       },
       static_page_id: {

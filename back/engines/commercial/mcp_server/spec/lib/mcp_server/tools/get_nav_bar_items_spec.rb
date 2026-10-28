@@ -23,7 +23,8 @@ describe McpServer::Tools::GetNavBarItems do
       id: page_item.id,
       static_page_id: page_item.static_page_id,
       slug: page_item.static_page.slug,
-      title_multiloc: hash_including('en' => 'About')
+      title_multiloc: { 'en' => 'About' },
+      display_title_multiloc: hash_including('en' => 'About')
     )
     expect(content[:nav_last_updated_at]).to eq NavBarItem.maximum(:updated_at)
   end
