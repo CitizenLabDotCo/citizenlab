@@ -16,6 +16,14 @@ module Analysis
         image/webp
       ].freeze
 
+      # File types Azure OpenAI reads itself. Anything else is sent as its PDF
+      # preview.
+      SUPPORTED_FILE_TYPES = %w[
+        application/pdf
+        text/markdown
+        text/plain
+      ].freeze
+
       class << self
         def gpt_model
           raise NotImplementedError
@@ -129,7 +137,6 @@ module Analysis
         case input
         in String then format_text(input)
         in Files::File if input.image? then format_image(input)
-        in Files::File if text_without_preview?(input) then format_text(text_file_content(input))
         in Files::File then format_file(input)
         else raise ArgumentError, <<~MSG.squish
           Unsupported content type: #{input.class}.
@@ -140,26 +147,27 @@ module Analysis
 
       # @param file [Files::File]
       def format_file(file)
-        # We use the PDF preview for non-PDF files because Azure OpenAI currently only
-        # supports PDFs as file inputs.
-        file_content = if file.mime_type == 'application/pdf'
-          file.content.read
-        elsif file.preview.nil? || file.preview.status == 'failed'
-          raise UnsupportedAttachmentError, file.mime_type
-        elsif file.preview.status == 'pending'
-          raise PreviewPendingError
+        content, mime_type = if file.mime_type.in?(SUPPORTED_FILE_TYPES)
+          [file.content.read, file.mime_type]
         else
-          file.preview.content.read
+          [pdf_preview_content(file), 'application/pdf']
         end
-
-        encoded = Base64.strict_encode64(file_content)
-        mime_type = 'application/pdf'
 
         {
           type: 'input_file',
           filename: file.name,
-          file_data: "data:#{mime_type};base64,#{encoded}"
+          file_data: "data:#{mime_type};base64,#{Base64.strict_encode64(content)}"
         }
+      end
+
+      # @param file [Files::File]
+      def pdf_preview_content(file)
+        preview = file.preview
+
+        raise UnsupportedAttachmentError, file.mime_type if preview.nil? || preview.status == 'failed'
+        raise PreviewPendingError if preview.status == 'pending'
+
+        preview.content.read
       end
 
       def format_image(file)
