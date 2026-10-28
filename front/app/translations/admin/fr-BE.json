@@ -1488,7 +1488,7 @@
   "app.containers.Admin.projects.PhasePlacement.overlapEndBefore": "Chevauche « {phaseName} ». Terminez cette étape d'ici le {date}, ou modifiez les dates de cette étape.",
   "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": "« {phaseName} » n'a pas de date de fin. Ajoutez-lui une date de fin avant le début de cette phase.",
   "app.containers.Admin.projects.PhasePlacement.overlapStartAfter": "Chevauche « {phaseName} ». Commencez cette étape le {date} ou après, ou modifiez les dates de cette étape.",
-  "app.containers.Admin.projects.PhasePlacement.phaseUpdateFailed": "Impossible d'enregistrer les modifications apportées à \"{phaseName}\". Vérifiez ses dates et réessayez.",
+  "app.containers.Admin.projects.PhasePlacement.phaseUpdateFailed": "Impossible d'enregistrer les modifications apportées à « {phaseName} ». Vérifiez ses dates et réessayez.",
   "app.containers.Admin.projects.PhasePlacement.resolveDateConflicts": "Résolvez {count, plural, one {# conflit de dates} other {# conflits de dates}} pour déplacer l'enquête",
   "app.containers.Admin.projects.PhasePlacement.retryLoading": "Réessayer",
   "app.containers.Admin.projects.PhasePlacement.spotlight": "Mise en avant",
