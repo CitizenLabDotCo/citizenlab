@@ -1668,7 +1668,7 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchStatus": "Statut",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.batchTags": "Étiquettes",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.clearAllFilters": "Effacer tous les filtres",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.clearFilters": "Effacer",
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.clearFilters": "Tout effacer",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.clearSelection": "Effacer la sélection",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.copyToPhase": "Copier vers la phase",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.delete": "Supprimer",
