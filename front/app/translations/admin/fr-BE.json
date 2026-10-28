@@ -2166,7 +2166,7 @@
   "app.containers.Admin.projects.project.publishWhoCanFindDescription": "Indique si les résidents peuvent découvrir ce projet ou s'ils ne peuvent y accéder que par un lien.",
   "app.containers.Admin.projects.project.publishWhoCanOpenDescription": "Qui est autorisé à accéder à ce projet et à y participer.",
   "app.containers.Admin.projects.project.publishWhoCanSee": "Qui peut le voir",
-  "app.containers.Admin.projects.project.readyForReview": "Prêt pour révision",
+  "app.containers.Admin.projects.project.readyForReview": "Prêt pour la demande d’approbation",
   "app.containers.Admin.projects.project.readyToPublish": "Prêt à être publié",
   "app.containers.Admin.projects.project.recommendedActionsHint": "Les actions recommandées apparaissent ici une fois que les participants ont participé.",
   "app.containers.Admin.projects.project.saveProjectSetup": "Enregistrer",
