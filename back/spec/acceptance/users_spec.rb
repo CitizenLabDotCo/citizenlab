@@ -957,6 +957,17 @@ resource 'Users' do
           expect(response_data.pluck(:id).first(2)).to eq [newer.id, older.id]
         end
 
+        example 'List all users sorted by registration_completed_at breaks ties on created_at', document: false do
+          older, newer = create_list(:invited_user, 2)
+          older.update!(created_at: 2.days.ago)
+          newer.update!(created_at: 1.day.ago)
+
+          do_request sort: 'registration_completed_at', include_inactive: true
+
+          assert_status 200
+          expect(response_data.pluck(:id).last(2)).to eq [older.id, newer.id]
+        end
+
         example 'List all users in group' do
           group = create(:group)
           group_users = create_list(:user, 3, manual_groups: [group])
