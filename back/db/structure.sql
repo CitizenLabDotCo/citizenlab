@@ -4653,13 +4653,13 @@ CREATE VIEW public.reporting_invites AS
 CREATE VIEW public.reporting_official_feedbacks AS
  SELECT ofb.id,
     ofb.idea_id AS input_id,
-    COALESCE(NULLIF((ofb.body_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+    regexp_replace(COALESCE(NULLIF((ofb.body_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
            FROM public.app_configurations ac
          LIMIT 1)), ''::text), ( SELECT t.value
            FROM jsonb_each_text(ofb.body_multiloc) t(key, value)
           WHERE (t.value <> ''::text)
           ORDER BY t.key
-         LIMIT 1)) AS body,
+         LIMIT 1)), '<span[^>]*class="cl-mention-user"[^>]*>[^<]*</span>'::text, '@mention'::text, 'g'::text) AS body,
     COALESCE(NULLIF((ofb.author_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
            FROM public.app_configurations ac
          LIMIT 1)), ''::text), ( SELECT t.value
@@ -4672,7 +4672,7 @@ CREATE VIEW public.reporting_official_feedbacks AS
     ofb.updated_at
    FROM (public.official_feedbacks ofb
      JOIN public.ideas i ON ((i.id = ofb.idea_id)))
-  WHERE ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text]));
+  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
 
 
 --
@@ -10553,6 +10553,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261028150100'),
 ('20261028142000'),
 ('20261028141100'),
 ('20261028140100'),
