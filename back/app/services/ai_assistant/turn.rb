@@ -22,13 +22,20 @@ module AIAssistant
         return
       end
 
-      chat = build_chat
-      replay(chat)
-      chat.complete
+      unless ended?
+        chat = build_chat
+        replay(chat)
+        chat.complete
+      end
       finish
     end
 
     private
+
+    # The turn already ended, but the worker stopped before saving the status.
+    def ended?
+      conversation.messages.last.assistant?
+    end
 
     def build_chat
       llm = LLMSelector.new.llm_class_for_use_case('ai_assistant').new
