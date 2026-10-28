@@ -20,24 +20,24 @@ RSpec.describe Analysis::LLM::RubyLLM do
 
   describe 'chat' do
     context 'text files' do
-      it 'passes a markdown file as text instead of as a file path' do
+      it 'passes a markdown file as a path, leaving the gem to inline it' do
         file = create(:global_file, name: 'notes.md')
         message = Analysis::LLM::Message.new('Summarize this transcript', file)
 
-        expect(chat).to receive(:ask).with(
-          a_string_including('Summarize this transcript')
-            .and(a_string_including('File: notes.md'))
-            .and(a_string_including('Bike lanes incomplete'))
-        )
+        expect(chat).to receive(:ask).with('Summarize this transcript', with: [a_string_ending_with('.md')])
 
         service.chat(message)
       end
 
-      it 'does not raise on bytes that are not valid UTF-8' do
+      it 'scrubs bytes that are not valid UTF-8, which the gem cannot JSON-encode' do
         file = create(:global_file, name: 'notes_latin1.md')
         message = Analysis::LLM::Message.new('Summarize this transcript', file)
 
-        expect { service.chat(message) }.not_to raise_error
+        service.chat(message)
+
+        expect(chat).to have_received(:ask) do |_text, with:|
+          expect(File.read(with.first)).to be_valid_encoding
+        end
       end
     end
 
