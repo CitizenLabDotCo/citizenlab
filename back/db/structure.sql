@@ -744,6 +744,7 @@ DROP VIEW IF EXISTS public.reporting_contributions;
 DROP VIEW IF EXISTS public.reporting_community_monitor_scores;
 DROP VIEW IF EXISTS public.reporting_input_question_answers;
 DROP VIEW IF EXISTS public.reporting_comments;
+DROP VIEW IF EXISTS public.reporting_analysis_insights;
 DROP VIEW IF EXISTS public.reporting_analysis_heatmap_cells;
 DROP TABLE IF EXISTS public.report_builder_reports;
 DROP TABLE IF EXISTS public.report_builder_published_graph_data_units;
@@ -3959,6 +3960,35 @@ CREATE VIEW public.reporting_analysis_heatmap_cells AS
      LEFT JOIN public.phases ph ON ((ph.id = a.phase_id)))
      JOIN sides r ON (((r.type = (c.row_type)::text) AND (r.id = c.row_id))))
      JOIN sides col ON (((col.type = (c.column_type)::text) AND (col.id = c.column_id))));
+
+
+--
+-- Name: reporting_analysis_insights; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_analysis_insights AS
+ SELECT ins.id,
+    ins.analysis_id,
+    COALESCE(a.project_id, ph.project_id) AS project_id,
+    a.phase_id,
+        CASE ins.insightable_type
+            WHEN 'Analysis::Summary'::text THEN 'summary'::text
+            WHEN 'Analysis::Question'::text THEN 'question'::text
+            ELSE NULL::text
+        END AS kind,
+    q.question,
+    COALESCE(s.summary, q.answer) AS body,
+    ins.filters,
+    ins.inputs_ids AS input_ids,
+    COALESCE(s.accuracy, q.accuracy) AS accuracy,
+    COALESCE(s.generated_at, q.generated_at) AS generated_at,
+    ins.created_at
+   FROM ((((public.analysis_insights ins
+     JOIN public.analysis_analyses a ON ((a.id = ins.analysis_id)))
+     LEFT JOIN public.phases ph ON ((ph.id = a.phase_id)))
+     LEFT JOIN public.analysis_summaries s ON ((((ins.insightable_type)::text = 'Analysis::Summary'::text) AND (s.id = ins.insightable_id))))
+     LEFT JOIN public.analysis_questions q ON ((((ins.insightable_type)::text = 'Analysis::Question'::text) AND (q.id = ins.insightable_id))))
+  WHERE (COALESCE(s.summary, q.answer) IS NOT NULL);
 
 
 --
@@ -10656,6 +10686,8 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261028180200'),
+('20261028180100'),
 ('20261028170200'),
 ('20261028170100'),
 ('20261028160200'),
