@@ -200,7 +200,9 @@ export const commitReach = (
 
 // ---------------------------------------------------------------- frames
 
-const inlineGv = (doc: Document): Map<string, string> => {
+// The --gv-* tokens on a document's root element: the page's own (the
+// city's tenant slots) and the session's overrides.
+export const inlineGv = (doc: Document): Map<string, string> => {
   const style = doc.documentElement.style;
   const out = new Map<string, string>();
   for (let i = 0; i < style.length; i++) {

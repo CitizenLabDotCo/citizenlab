@@ -73,6 +73,14 @@ describe('element edits', () => {
     expect(
       changesLook({ ...base, kind: 'custom', to: { value: '11px' } }, resolve)
     ).toBe(true);
+    // The fill a city's tenant token gives, as the canvas showed it.
+    const fill = {
+      ...base,
+      from: { raw: 'rgb(22, 58, 125)', shown: '163A7D' },
+      to: { value: '#163A7D', token: '--gv-color-tenant-primary' as const },
+    };
+    expect(changesLook(fill, () => '')).toBe(false);
+    expect(changesLook(fill, () => '#ef0071')).toBe(true);
   });
 
   it('writes the inline value', () => {

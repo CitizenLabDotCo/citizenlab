@@ -10,6 +10,7 @@ import type { TokenMeta } from './data';
 import { MAX_TASK_ROUTES, routeLabel } from './healTask';
 import { atPath, rowSpec } from './inspect';
 import { parseColour } from './overrides';
+import { sameValue } from './tokenPicker';
 import type { EditTrace } from './trace/codemod';
 
 export type EditKind = 'attach' | 'swap' | 'detach' | 'custom' | 'file';
@@ -51,12 +52,13 @@ export const inlineValue = (e: ElementEdit) =>
   e.to.token ? `var(${e.to.token})` : e.to.value;
 
 // True when what renders differs from what rendered before the edit.
+// Colours compare by channel: #163A7D is rgb(22, 58, 125).
 export const changesLook = (
   e: ElementEdit,
   resolve: (token: TokenName) => string
 ) => {
   const after = e.to.token ? resolve(e.to.token) || e.to.value : e.to.value;
-  return after.trim().toLowerCase() !== e.from.raw.trim().toLowerCase();
+  return !sameValue(after, e.from.raw);
 };
 
 // An icon is an SVG element: it has an inline style too.

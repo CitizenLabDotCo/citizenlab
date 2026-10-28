@@ -393,6 +393,10 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
 
   const cards = useMemo(() => designChanges(changes), [changes]);
   const live = useMemo(() => resolveTokens(DEFS, overrides), [overrides]);
+  // A token's value for a change: the session's override when it has one,
+  // else none, so the value the canvas showed at the attach counts (a
+  // city's tenant colour, not the token file's fallback).
+  const valueOf = (t: TokenName) => (t in overrides ? live[t] ?? '' : '');
   const drafts = useMemo(() => byStory(edits), [edits]);
   const tokens = Object.entries(overrides).filter(
     (e): e is [string, string] => typeof e[1] === 'string'
@@ -441,7 +445,7 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
                   subject: subjectOfEdit(
                     e,
                     ctx.component,
-                    changesLook(e, (t) => live[t] ?? '')
+                    changesLook(e, valueOf)
                   ),
                   token: e.to.token,
                   trace,
@@ -550,7 +554,7 @@ const Review = ({ toolbar, overrides, reset }: Props) => {
               group={groupOf(storyId)}
               toolbar={frame}
               overrides={overrides}
-              resolve={(t) => live[t] ?? ''}
+              resolve={valueOf}
               onReset={() => list.forEach((e) => remove(e.id))}
             />
           ))}

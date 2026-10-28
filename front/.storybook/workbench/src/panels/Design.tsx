@@ -39,6 +39,7 @@ import {
   tracedWords,
   commitLink,
 } from '../lib/sourceLine';
+import { inlineGv } from '../lib/review';
 import { pickerGroups } from '../lib/tokenPicker';
 import { DEFS } from '../lib/tokenValues';
 import { Painted, traceElement } from '../lib/trace';
@@ -207,7 +208,24 @@ const Design = ({
   const [alsoAll, setAlsoAll] = useState(false);
   const [coloursAll, setColoursAll] = useState(false);
   const { selected, version, pick } = selection;
-  const live = useMemo(() => resolveTokens(DEFS, overrides), [overrides]);
+  // Tokens as the canvas resolves them: the city's colours and font are
+  // written on its root at run time (TenantTokens), so a tenant token is
+  // the city's colour, not the file's fallback; the session's overrides go
+  // on top.
+  let canvasTokens = '{}';
+  try {
+    if (frame) {
+      canvasTokens = JSON.stringify(
+        Object.fromEntries(inlineGv(frame.document))
+      );
+    }
+  } catch {
+    // A frame between documents: the file's values.
+  }
+  const live = useMemo(
+    () => resolveTokens(DEFS, { ...JSON.parse(canvasTokens), ...overrides }),
+    [canvasTokens, overrides]
+  );
   const resolved = live;
 
   // Read the selection after it changes, renders, or an edit lands; again
