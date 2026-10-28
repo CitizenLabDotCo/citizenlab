@@ -1305,7 +1305,7 @@ CREATE TABLE public.ai_assistant_tool_calls (
     tool_use_id character varying NOT NULL,
     name character varying NOT NULL,
     arguments jsonb DEFAULT '{}'::jsonb NOT NULL,
-    bound_arguments jsonb DEFAULT '{}'::jsonb NOT NULL,
+    pinned_arguments jsonb DEFAULT '{}'::jsonb NOT NULL,
     status character varying NOT NULL,
     result text,
     decided_by_id uuid,

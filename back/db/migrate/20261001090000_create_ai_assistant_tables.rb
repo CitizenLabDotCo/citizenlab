@@ -47,7 +47,7 @@ class CreateAIAssistantTables < ActiveRecord::Migration[7.2]
       t.string :tool_use_id, null: false
       t.string :name, null: false
       t.jsonb :arguments, null: false, default: {}
-      t.jsonb :bound_arguments, null: false, default: {}
+      t.jsonb :pinned_arguments, null: false, default: {}
       t.string :status, null: false
       t.text :result
       t.references :decided_by, type: :uuid, foreign_key: { to_table: :users, on_delete: :nullify }
