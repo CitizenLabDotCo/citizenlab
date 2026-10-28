@@ -2114,7 +2114,7 @@
   "app.containers.Admin.projects.project.publishFindPrivateDescription": "Masqué de ces emplacements. Seules les personnes disposant du lien peuvent y accéder.",
   "app.containers.Admin.projects.project.publishFindPublic": "Public",
   "app.containers.Admin.projects.project.publishFindPublicDescription": "Apparaît sur la page d'accueil, dans la liste des projets et dans la recherche.",
-  "app.containers.Admin.projects.project.publishMoveToArchive": "Déplacer vers l'archive",
+  "app.containers.Admin.projects.project.publishMoveToArchive": "Archiver",
   "app.containers.Admin.projects.project.publishNow": "Publier maintenant",
   "app.containers.Admin.projects.project.publishOpenAdmins": "Administrateurs et gestionnaires",
   "app.containers.Admin.projects.project.publishOpenAdminsDescription": "Uniquement les administrateurs et les gestionnaires de projet.",
