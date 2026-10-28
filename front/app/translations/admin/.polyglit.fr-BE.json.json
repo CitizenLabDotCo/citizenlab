@@ -8569,6 +8569,11 @@
     "verified_at": "2026-10-26T13:27:19.471017Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.importInputs": {
+    "state": "verified",
+    "verified_at": "2026-10-28T15:46:09.762390Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.inputColumn": {
     "state": "verified",
     "verified_at": "2026-10-28T14:54:05.807062Z",
@@ -8582,6 +8587,11 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.inputsTile": {
     "state": "verified",
     "verified_at": "2026-10-28T14:58:12.516324Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.is": {
+    "state": "verified",
+    "verified_at": "2026-10-28T15:46:09.762390Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.nextInput": {
