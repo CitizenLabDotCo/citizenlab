@@ -3,30 +3,27 @@
 module AIAssistant
   # One MCP tool that an assistant context lets the model use.
   #
-  # +bound+ arguments pin the tool to the context's record (e.g. the phase): they are hidden
-  # from the model and added when the tool runs, so the model can't target another record.
-  class ContextTool
+  # +pinned+ arguments are set by the context, not the model (e.g. the phase): they are
+  # hidden from the model and added when the tool runs, so the model can't target another
+  # record.
+  class Tool
     Result = Data.define(:text, :error)
 
-    attr_reader :tool_class, :bound
+    attr_reader :tool_class, :pinned
 
-    def initialize(tool_class:, bound: {})
+    def initialize(tool_class, pinned: {})
       @tool_class = tool_class
-      @bound = bound.stringify_keys
+      @pinned = pinned.stringify_keys
     end
 
     delegate :name, :description, to: :definition
-
-    def hidden_keys
-      bound.keys
-    end
 
     def llm_schema
       schema = definition.input_schema.deep_stringify_keys
       {
         'type' => 'object',
-        'properties' => schema.fetch('properties', {}).except(*hidden_keys),
-        'required' => Array(schema['required']) - hidden_keys,
+        'properties' => schema.fetch('properties', {}).except(*pinned.keys),
+        'required' => Array(schema['required']) - pinned.keys,
         'additionalProperties' => false
       }
     end

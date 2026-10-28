@@ -18,7 +18,7 @@ module AIAssistant
 
       def tools
         @tools ||= [
-          ContextTool.new(tool_class: McpServer::Tools::GetFormFields, bound: container)
+          Tool.new(McpServer::Tools::GetFormFields, pinned: container)
         ]
       end
 
