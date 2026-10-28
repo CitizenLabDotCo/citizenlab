@@ -957,6 +957,7 @@
   "app.containers.Admin.Users.SeatsOverview.role": "Rol",
   "app.containers.Admin.Users.SeatsOverview.title": "Koltuk Genel Bakışı",
   "app.containers.Admin.Users.SeatsOverview.unknown": "Bilinmiyor",
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": "Kayıt tamamlanmadı",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "Davet bekleniyor",
   "app.containers.Admin.Users.admin": "Yönetici",
   "app.containers.Admin.Users.alreadyManager": "Zaten yönetici",

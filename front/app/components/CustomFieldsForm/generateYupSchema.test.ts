@@ -28,6 +28,16 @@ describe('generateYupSchema', () => {
         schema.isValidSync({ select_q: 'other', select_q_other: 'Bla' })
       ).toBe(true);
     });
+
+    it('does not make other field required if otherTextOptional is set', () => {
+      const lenientSchema = generateYupSchema({
+        pageQuestions,
+        formatMessage,
+        localize,
+        otherTextOptional: true,
+      });
+      expect(lenientSchema.isValidSync({ select_q: 'other' })).toBe(true);
+    });
   });
 
   describe('multiselect field', () => {
@@ -62,6 +72,18 @@ describe('generateYupSchema', () => {
           multiselect_q: ['Value', 'other'],
           multiselect_q_other: 'Bla',
         })
+      ).toBe(true);
+    });
+
+    it('does not make other field required if otherTextOptional is set', () => {
+      const lenientSchema = generateYupSchema({
+        pageQuestions,
+        formatMessage,
+        localize,
+        otherTextOptional: true,
+      });
+      expect(
+        lenientSchema.isValidSync({ multiselect_q: ['Value', 'other'] })
       ).toBe(true);
     });
   });

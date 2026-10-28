@@ -957,6 +957,7 @@
   "app.containers.Admin.Users.SeatsOverview.role": "الدور",
   "app.containers.Admin.Users.SeatsOverview.title": "نظرة عامة على المقاعد",
   "app.containers.Admin.Users.SeatsOverview.unknown": "غير معروف",
+  "app.containers.Admin.Users.UserTableRow.registrationNotCompleted": "التسجيل غير مكتمل",
   "app.containers.Admin.Users.UserTableRow.userInvitationPending": "الدعوة معلقة",
   "app.containers.Admin.Users.admin": "المسؤول",
   "app.containers.Admin.Users.alreadyManager": "مسير بالفعل",
