@@ -8629,6 +8629,16 @@
     "verified_at": "2026-10-28T14:54:05.807062Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.sourceImported": {
+    "state": "verified",
+    "verified_at": "2026-10-28T15:48:10.010896Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.sourceOnline": {
+    "state": "verified",
+    "verified_at": "2026-10-28T15:48:10.010896Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.statusColumn": {
     "state": "verified",
     "verified_at": "2026-10-28T14:54:05.807062Z",
