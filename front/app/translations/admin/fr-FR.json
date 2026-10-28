@@ -2240,7 +2240,7 @@
   "app.containers.Admin.projects.project.switchCancel": "Annuler",
   "app.containers.Admin.projects.project.switchChangesNotifications": "Les notifications, les analyses et les rapports s'adaptent au nouveau type de sondage.",
   "app.containers.Admin.projects.project.switchClearsEmbedUrl": "Le lien du sondage externe est supprimé.",
-  "app.containers.Admin.projects.project.switchConfirm": "Modifier",
+  "app.containers.Admin.projects.project.switchConfirm": "Changer",
   "app.containers.Admin.projects.project.switchHidesSurveyForm": "Les questions du sondage sont masquées. Elles réapparaîtront si vous revenez à un sondage.",
   "app.containers.Admin.projects.project.switchLockedPollQuestions": "Ce sondage contient déjà des questions. Supprimez-les d'abord pour utiliser un autre type de sondage.",
   "app.containers.Admin.projects.project.switchLockedResponses": "Cette phase a déjà des réponses, le type de sondage ne peut donc plus être modifié.",
