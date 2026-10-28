@@ -1472,7 +1472,7 @@
   "app.containers.Admin.projects.NewProjectForm.titleRequiredSingleLocale": "Ajouter un titre de projet.",
   "app.containers.Admin.projects.PhasePlacement.changeDatesButton": "Modifier les dates",
   "app.containers.Admin.projects.PhasePlacement.durationTooShort": "La phase doit durer au moins 24 heures.",
-  "app.containers.Admin.projects.PhasePlacement.editTimelineDates": "Modifiez les dates de ce sondage ou d'une autre phase ci-dessous. Rien ne changera tant que vous n'aurez pas déplacé le sondage.",
+  "app.containers.Admin.projects.PhasePlacement.editTimelineDates": "Ajustez les dates ci-dessous pour supprimer les chevauchements. Les modifications ne sont enregistrées que lorsque vous déplacez l'enquête.",
   "app.containers.Admin.projects.PhasePlacement.endBeforeStart": "La date de fin doit être après la date de début.",
   "app.containers.Admin.projects.PhasePlacement.endInvalid": "Saisissez une date de fin valide.",
   "app.containers.Admin.projects.PhasePlacement.endRequired2": "Ajoutez une date de fin au plus tard le {date}, lorsque « {phaseName} » commence.",
