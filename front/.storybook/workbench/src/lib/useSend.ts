@@ -99,9 +99,15 @@ const get = async <T>(path: string): Promise<T> => {
 
 const WAIT_MS = 2 * 60 * 1000;
 
+// The script opens a review in seconds, so a copy is followed sooner at
+// first. GitHub answers 60 questions an hour per address without a key:
+// these 8, then one every 2 minutes, leave room for a few sends an hour.
+export const SOON_MS = [5, 10, 15, 20, 30, 45, 60, 90].map((s) => s * 1000);
+
 // Asks GitHub's public API where the review stands: on opening, when the tab
-// comes back, and every 2 minutes while a copy waits for the agent. Returns
-// false while GitHub is not answering (the record keeps its last answer).
+// comes back, and while a copy waits for the agent: at SOON_MS after it,
+// then every 2 minutes. Returns false while GitHub is not answering (the
+// record keeps its last answer).
 export const useReviewWatch = (
   record: SendRecord,
   update: (fn: (r: SendRecord) => SendRecord) => void
@@ -153,10 +159,14 @@ export const useReviewWatch = (
     window.addEventListener('focus', onFocus);
     document.addEventListener('visibilitychange', onFocus);
     const timer = waiting ? window.setInterval(check, WAIT_MS) : undefined;
+    const soon = waiting
+      ? SOON_MS.map((ms) => window.setTimeout(check, ms))
+      : [];
     return () => {
       window.removeEventListener('focus', onFocus);
       document.removeEventListener('visibilitychange', onFocus);
       if (timer) window.clearInterval(timer);
+      soon.forEach((t) => window.clearTimeout(t));
     };
   }, [check, waiting]);
   return answering;

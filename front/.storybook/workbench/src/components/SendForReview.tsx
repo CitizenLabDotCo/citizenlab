@@ -14,10 +14,12 @@ import {
   prUrl,
   randomTag,
   REVIEWERS,
+  SendArgs,
   SendRecord,
   sendText,
   since,
   statusText,
+  terminalCommand,
   unsentCount,
   withCopy,
 } from '../lib/send';
@@ -100,7 +102,10 @@ const SendForReview = ({
 }: Props) => {
   const dialog = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
-  const [copied, setCopied] = useState<'ok' | 'manual' | undefined>();
+  // Which copy went through: the text for an agent, or the command alone.
+  const [copied, setCopied] = useState<
+    'ok' | 'command' | 'manual' | undefined
+  >();
   const [linking, setLinking] = useState(false);
   // The items with their exact edits, read from GitHub when the modal opens.
   const [ready, setReady] = useState<Item[] | undefined>();
@@ -170,30 +175,32 @@ const SendForReview = ({
       .filter((e): e is LineEdit => !!e);
   const byHand = (list: Item[]) => fresh(list).filter((i) => !i.edit && i.task);
   const reviewer = record.reviewer;
-  const body = (list: Item[]) =>
-    sendText({
-      branch,
-      pr: record.pr,
-      reviewer: reviewer ?? null,
-      edits: edits(list),
-      tasks: byHand(list).map((i) =>
-        record.sent[i.key]
-          ? `again (sent before as ${record.sent[i.key].value}):\n${i.task}`
-          : i.task
-      ),
-      gone: toSend.gone.map((k) => record.sent[k].undo),
-      tokenPatch: tokenPatch(
-        fresh(list)
-          .map((i) => i.key)
-          .filter((k) => k.startsWith('token:'))
-      ),
-    });
+  const argsOf = (list: Item[]): SendArgs => ({
+    branch,
+    pr: record.pr,
+    reviewer: reviewer ?? null,
+    edits: edits(list),
+    tasks: byHand(list).map((i) =>
+      record.sent[i.key]
+        ? `again (sent before as ${record.sent[i.key].value}):\n${i.task}`
+        : i.task
+    ),
+    gone: toSend.gone.map((k) => record.sent[k].undo),
+    tokenPatch: tokenPatch(
+      fresh(list)
+        .map((i) => i.key)
+        .filter((k) => k.startsWith('token:'))
+    ),
+  });
+  const body = (list: Item[]) => sendText(argsOf(list));
+  const command = ready ? terminalCommand(argsOf(ready)) : undefined;
 
-  const copy = async () => {
+  // `only` copies the command alone, for a terminal.
+  const copy = async (only?: string) => {
     if (!ready) return;
-    const ok = await copyText(body(ready));
+    const ok = await copyText(only ?? body(ready));
     update((r) => withCopy(r, ready));
-    setCopied(ok ? 'ok' : 'manual');
+    setCopied(ok ? (only ? 'command' : 'ok') : 'manual');
     if (!ok && text.current) {
       window.getSelection()?.selectAllChildren(text.current);
     }
@@ -284,6 +291,8 @@ const SendForReview = ({
                   {first
                     ? 'Give this to your agent. It sends it for review in seconds and gives you the link.'
                     : 'Give this to your agent. It adds these to the review in seconds.'}
+                  {command &&
+                    ' Or paste the command alone in a terminal where gh is signed in.'}
                 </p>
                 <pre
                   ref={text}
@@ -297,10 +306,25 @@ const SendForReview = ({
                   {copied === 'manual' && (
                     <span className="wb-muted">Selected: copy it by hand.</span>
                   )}
+                  {command && (
+                    <button
+                      type="button"
+                      className="wb-button"
+                      onClick={() => copy(command)}
+                      title="Only the command, to paste in a terminal where gh is signed in: the review opens in seconds"
+                      data-testid="wb-send-copy-command"
+                    >
+                      <Icon
+                        name={copied === 'command' ? 'check' : 'file'}
+                        size={16}
+                      />
+                      {copied === 'command' ? 'Command copied' : 'Copy command'}
+                    </button>
+                  )}
                   <button
                     type="button"
                     className="wb-button wb-button-primary"
-                    onClick={copy}
+                    onClick={() => copy()}
                     data-testid="wb-send-copy"
                   >
                     <Icon name={copied === 'ok' ? 'check' : 'copy'} size={16} />

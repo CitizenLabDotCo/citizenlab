@@ -507,7 +507,12 @@ const run = async (
     }
     start = pr.head.sha;
   } else {
-    start = await getRef(api, branch);
+    // Both heads at once: a first send's branch does not exist yet.
+    const [onBranch, onBase] = await Promise.all([
+      getRef(api, branch),
+      getRef(api, base),
+    ]);
+    start = onBranch;
     if (start) {
       const head = encodeURIComponent(`${OWNER}:${branch}`);
       const open = await api(
@@ -517,7 +522,7 @@ const run = async (
       pr = open[0] || null;
     } else {
       existed = false;
-      start = await getRef(api, base);
+      start = onBase;
       if (!start) throw new Error(`${REPO} has no branch ${base}`);
     }
   }
@@ -631,11 +636,15 @@ const run = async (
       });
     }
     const n = pr.number;
-    if (label) {
-      await soft('label the review epic', () =>
-        api('POST', `/repos/${REPO}/issues/${n}/labels`, { labels: ['epic'] })
-      );
-    }
+    // The label and the reviewer at once; a draft is marked ready before
+    // its reviewer is asked.
+    const labelling = label
+      ? soft('label the review epic', () =>
+          api('POST', `/repos/${REPO}/issues/${n}/labels`, {
+            labels: ['epic'],
+          })
+        )
+      : null;
     if (ready) {
       const done = await soft('mark the review ready', () =>
         gh(['pr', 'ready', String(n), '--repo', REPO])
@@ -649,6 +658,7 @@ const run = async (
         })
       );
     }
+    await labelling;
     if (entries.length) {
       let next;
       if (described) {

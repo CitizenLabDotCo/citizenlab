@@ -217,19 +217,7 @@ const whoText = (reviewer: string | null) =>
     ? `it is with ${nameOf(reviewer)} for review`
     : 'it is sent and nobody is asked to look yet (a test)';
 
-// The text the person gives their agent. Without a PR the script opens one
-// on `branch`; with one it adds to it. `edits` are the exact line edits;
-// `tasks`, the token patch and `gone` lines of words are done by hand.
-// `gone` undo lines that are line edits go to the script with the rest.
-export const sendText = ({
-  branch,
-  pr,
-  reviewer,
-  edits,
-  tasks,
-  gone,
-  tokenPatch,
-}: {
+export type SendArgs = {
   branch: string;
   pr?: number;
   reviewer: string | null;
@@ -237,7 +225,19 @@ export const sendText = ({
   tasks: string[];
   gone: string[];
   tokenPatch: string;
-}): string => {
+};
+
+// What a send hands over: the script's input, and the lines of words done
+// by hand. `gone` undo lines that are line edits go to the script.
+const partsOf = ({
+  branch,
+  pr,
+  reviewer,
+  edits,
+  tasks,
+  gone,
+  tokenPatch,
+}: SendArgs) => {
   const putBack = gone.map(lineEditOfUndo);
   const changes = [...edits, ...putBack.filter((e): e is LineEdit => !!e)];
   const words = gone.filter((_, i) => !putBack[i]);
@@ -262,6 +262,22 @@ export const sendText = ({
     reviewer,
     changes,
   };
+  return { changes, byHand, input };
+};
+
+// The command alone, for a terminal where gh is signed in: only when the
+// script makes every change, so nothing is left for an agent.
+export const terminalCommand = (args: SendArgs): string | undefined => {
+  const { changes, byHand, input } = partsOf(args);
+  return changes.length && !byHand.length ? sendCommand(input) : undefined;
+};
+
+// The text the person gives their agent. Without a PR the script opens one
+// on `branch`; with one it adds to it. `edits` are the exact line edits;
+// `tasks`, the token patch and `gone` lines of words are done by hand.
+export const sendText = (args: SendArgs): string => {
+  const { branch, pr, reviewer } = args;
+  const { changes, byHand, input } = partsOf(args);
   const tell = `Tell the person ${whoText(
     reviewer
   )}, with the preview link it printed. Do not wait for the preview: the Workbench shows when it is ready.`;

@@ -11,6 +11,7 @@ import {
   REVIEWERS,
   SendRecord,
   sendText,
+  terminalCommand,
   since,
   statusOf,
   statusText,
@@ -218,6 +219,26 @@ describe('sendText', () => {
       text.indexOf('3. Then by hand on design-system/button-k3f9')
     ).toBeGreaterThan(0);
     expect(text).toContain('\n4. Tell the person it is with Iva for review');
+  });
+
+  it('gives the command alone for a terminal only when the script does everything', () => {
+    const args = {
+      branch: 'design-system/button-k3f9',
+      reviewer: null,
+      edits: [radius],
+      tasks: [],
+      gone: [],
+      tokenPatch: '',
+    };
+    const command = terminalCommand(args);
+    expect(command?.split('\n')[0]).toMatch(
+      /^gh api .* && node \/tmp\/gv-send\.js <<'EOF'$/
+    );
+    expect(command && inputOf(command).changes).toEqual([radius]);
+    expect(sendText(args)).toContain(command);
+    expect(terminalCommand({ ...args, tasks: ['change: C'] })).toBeUndefined();
+    expect(terminalCommand({ ...args, tokenPatch: '[ x ]' })).toBeUndefined();
+    expect(terminalCommand({ ...args, edits: [] })).toBeUndefined();
   });
 
   it('makes the review by hand when no change has an exact edit', () => {
