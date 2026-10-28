@@ -237,10 +237,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            input_form_answer_visibility: {
-              enabled: true,
-              allowed: true
-            },
             input_form_answer_filters: {
               enabled: true,
               allowed: true
