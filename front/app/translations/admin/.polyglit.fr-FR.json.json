@@ -7569,6 +7569,31 @@
     "verified_at": "2026-10-16T09:41:31.388310Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.PhasePlacement.retryLoading": {
+    "state": "verified",
+    "verified_at": "2026-10-28T10:13:46.350312Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.PhasePlacement.startRequired": {
+    "state": "verified",
+    "verified_at": "2026-10-28T10:13:46.350312Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.PhasePlacement.surveyPlacement": {
+    "state": "verified",
+    "verified_at": "2026-10-28T10:13:46.350312Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.PhasePlacement.timeline": {
+    "state": "verified",
+    "verified_at": "2026-10-28T10:13:46.350312Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.PhasePlacement.timelineDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-28T10:13:46.350312Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.PhasePlacement.timelineGap": {
     "state": "verified",
     "verified_at": "2026-10-16T09:41:31.388310Z",
