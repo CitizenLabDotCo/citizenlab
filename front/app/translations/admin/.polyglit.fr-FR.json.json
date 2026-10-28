@@ -7514,6 +7514,21 @@
     "verified_at": "2026-10-16T09:41:31.388310Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.PhasePlacement.durationTooShort": {
+    "state": "verified",
+    "verified_at": "2026-10-28T10:24:46.314235Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.PhasePlacement.endBeforeStart": {
+    "state": "verified",
+    "verified_at": "2026-10-28T10:24:46.314235Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.PhasePlacement.endInvalid": {
+    "state": "verified",
+    "verified_at": "2026-10-28T10:24:46.314235Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.PhasePlacement.endedSurveyHidden": {
     "state": "verified",
     "verified_at": "2026-10-16T09:41:31.388310Z",
@@ -7568,6 +7583,16 @@
     "state": "verified",
     "verified_at": "2026-10-16T09:41:31.388310Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.PhasePlacement.overlapOpenEnded": {
+    "state": "verified",
+    "verified_at": "2026-10-28T10:24:46.314235Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.PhasePlacement.resolveDateConflicts": {
+    "state": "verified",
+    "verified_at": "2026-10-28T10:24:46.314235Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.PhasePlacement.retryLoading": {
     "state": "verified",
