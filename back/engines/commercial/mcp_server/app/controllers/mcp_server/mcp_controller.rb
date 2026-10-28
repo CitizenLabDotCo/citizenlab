@@ -127,6 +127,8 @@ module McpServer
       McpServer::Tools::GetHomepageLayout,
       McpServer::Tools::UpdateHomepageLayout,
       McpServer::Tools::ReplaceFormFields,
+      McpServer::Tools::GetNavBarItems,
+      McpServer::Tools::ReplaceNavBarItems,
       McpServer::Tools::ListProjects,
       McpServer::Tools::ListPhases,
       McpServer::Tools::ListInputs,

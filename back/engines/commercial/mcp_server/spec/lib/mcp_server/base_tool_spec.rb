@@ -101,6 +101,37 @@ describe McpServer::BaseTool do
       expect(response.content.first[:text]).to include('nl-NL')
     end
 
+    it 'ignores inactive locales in readOnly multilocs, which are stripped before the run' do
+      tool_class = Class.new(described_class) do
+        def name = 'probe'
+        def description = 'Probe tool'
+
+        def input_schema
+          {
+            properties: {
+              title_multiloc: { type: 'object' },
+              display_title_multiloc: { type: 'object', readOnly: true }
+            }
+          }
+        end
+
+        # rubocop:disable RSpec/LeakyConstantDeclaration
+        self::Runner = Class.new(McpServer::BaseTool::Runner) do
+          def run = response('params', structured: params)
+        end
+        # rubocop:enable RSpec/LeakyConstantDeclaration
+      end
+
+      response = run_mcp_tool(
+        tool_class,
+        params: { title_multiloc: { 'en' => 'Title' }, display_title_multiloc: { 'de-DE' => 'Titel' } },
+        current_user:
+      )
+
+      expect(response).not_to be_error
+      expect(response.structured_content).to eq(title_multiloc: { 'en' => 'Title' })
+    end
+
     it 'accepts multilocs written in active locales' do
       response = run_mcp_tool(
         McpServer::Tools::CreateProject,
