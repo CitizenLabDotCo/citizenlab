@@ -1,4 +1,7 @@
+import fs from 'fs';
+
 import type { StorybookConfig } from '@storybook/react-vite';
+import type { Plugin } from 'vite';
 
 import mockModules from './mockModules.ts';
 
@@ -9,6 +12,9 @@ const APP_FOLDER_ALIASES = [
   'components',
   'containers',
   'context',
+  // The app resolves it through tsconfig baseUrl; stories that read the
+  // tokens by `design-system/...` need the alias.
+  'design-system',
   'global-styles',
   'hooks',
   'i18n',
@@ -18,21 +24,52 @@ const APP_FOLDER_ALIASES = [
   'routes',
   'translations',
   'typings',
-  'utils'
+  'utils',
 ].map((folder) => ({
   find: folder,
-  replacement: `${process.cwd()}/app/${folder}`
+  replacement: `${process.cwd()}/app/${folder}`,
 }));
 
 const COMPONENT_LIBRARY_ALIAS = {
   find: '@citizenlab/cl2-component-library',
-  replacement: `${process.cwd()}/app/component-library`
+  replacement: `${process.cwd()}/app/component-library`,
 };
 
 const CONSTANTS_ALIAS = {
   find: 'app/containers/App/constants',
-  replacement: `${process.cwd()}/app/containers/App/constants.ts`
-}
+  replacement: `${process.cwd()}/app/containers/App/constants.ts`,
+};
+
+// Opt-in bundle analysis: `SB_BUNDLE_STATS=<file> npm run build-storybook`
+// writes each chunk's size, imports and modules (rendered bytes) to <file>,
+// to see what the preview frame loads before a story renders.
+const bundleStats = (file: string): Plugin => ({
+  name: 'gv-bundle-stats',
+  generateBundle(_options, bundle) {
+    const chunks = Object.values(bundle).flatMap((chunk) =>
+      chunk.type === 'chunk'
+        ? [
+            [
+              chunk.fileName,
+              {
+                isEntry: chunk.isEntry,
+                size: chunk.code.length,
+                imports: chunk.imports,
+                dynamicImports: chunk.dynamicImports,
+                modules: Object.fromEntries(
+                  Object.entries(chunk.modules).map(([id, m]) => [
+                    id,
+                    m.renderedLength,
+                  ])
+                ),
+              },
+            ],
+          ]
+        : []
+    );
+    fs.writeFileSync(file, JSON.stringify(Object.fromEntries(chunks)));
+  },
+});
 
 const config: StorybookConfig = {
   stories: ['../app/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
@@ -41,7 +78,11 @@ const config: StorybookConfig = {
     // We first need to upgrade our main app to react-router-dom >=6.4.0
     // This upgrade has breaking changes so those need to be dealt with first.
     // 'storybook-addon-react-router-v6',
-    'storybook-react-intl'
+    '@storybook/addon-a11y',
+    // Hover, focus and active states through `parameters.pseudo`.
+    'storybook-addon-pseudo-states',
+    // MCP server at /mcp on the dev server, for agents (preview software).
+    '@storybook/addon-mcp',
   ],
   framework: '@storybook/react-vite',
   core: {
@@ -60,14 +101,24 @@ const config: StorybookConfig = {
       ([find, replacement]) => ({ find, replacement })
     );
 
+    const statsFile = process.env.SB_BUNDLE_STATS;
+
     return mergeConfig(config, {
+      // `npm run ds:local`: served under /storybook/ next to the platform.
+      ...(process.env.DS_LOCAL_BASE ? { base: process.env.DS_LOCAL_BASE } : {}),
+      plugins: [
+        ...(statsFile ? [bundleStats(statsFile)] : []),
+        ...(process.env.DS_LOCAL_BASE
+          ? [underBase(process.env.DS_LOCAL_BASE)]
+          : []),
+      ],
       resolve: {
         alias: [
           ...mockModuleAliases,
           ...APP_FOLDER_ALIASES,
           COMPONENT_LIBRARY_ALIAS,
-          CONSTANTS_ALIAS
-        ]
+          CONSTANTS_ALIAS,
+        ],
       },
       define: {
         // Only expose the env vars actually read by app/ code (Storybook bundles
@@ -84,10 +135,23 @@ const config: StorybookConfig = {
           SENTRY_ENV: process.env.SENTRY_ENV,
           MATOMO_HOST: process.env.MATOMO_HOST,
           POSTHOG_API_KEY: process.env.POSTHOG_API_KEY,
-        }
-      }
+        },
+      },
     });
   },
   staticDirs: ['./public', './static'],
 };
 export default config;
+
+// Under a base, Storybook's iframe still asks for two entry scripts at the
+// root; point them under the base too.
+function underBase(base: string): Plugin {
+  return {
+    name: 'ds-local-under-base',
+    transformIndexHtml: {
+      order: 'post',
+      handler: (html) =>
+        html.replace(/(src|href)="\/(?!\/)(?!storybook\/)/g, `$1="${base}`),
+    },
+  };
+}

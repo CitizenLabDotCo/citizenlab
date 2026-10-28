@@ -1,0 +1,119 @@
+{
+  "component": "IconButton",
+  "reviewedAt": "2026-10-23",
+  "reviewer": "agent",
+  "criteria": [
+    {
+      "id": "1.1.1",
+      "name": "Non-text content",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "axe: the icon is named through aria-labelledby from a11y_buttonActionMessage on all 6 stories",
+      "note": ""
+    },
+    {
+      "id": "1.4.3",
+      "name": "Contrast (minimum)",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "source: no text, only an icon",
+      "note": ""
+    },
+    {
+      "id": "1.4.10",
+      "name": "Reflow",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "screenshots and scroll width at 1280, 390 and 320: no horizontal scroll",
+      "note": ""
+    },
+    {
+      "id": "1.4.11",
+      "name": "Non-text contrast",
+      "result": "fail",
+      "confidence": "high",
+      "evidence": "computed: the icon fill is #999999 on white, 2.85:1; 3:1 needed for the only visible part of the control",
+      "note": "Heal (a11y): default icon colour to a grey of 3:1 or more (for example the text secondary token)."
+    },
+    {
+      "id": "1.4.12",
+      "name": "Text spacing",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "source: no visible text",
+      "note": ""
+    },
+    {
+      "id": "2.1.1",
+      "name": "Keyboard",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "Keyboard story (play): Tab focuses the button by its name, Enter and Space each call onClick",
+      "note": ""
+    },
+    {
+      "id": "2.4.7",
+      "name": "Focus visible",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "keyboard run: 2px #000 outline with a 2px white ring on Tab",
+      "note": ""
+    },
+    {
+      "id": "2.4.11",
+      "name": "Focus not obscured (minimum)",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "screenshots: nothing in the component covers the focused button",
+      "note": ""
+    },
+    {
+      "id": "2.5.7",
+      "name": "Dragging movements",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "source: no drag interaction",
+      "note": ""
+    },
+    {
+      "id": "2.5.8",
+      "name": "Target size (minimum)",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "measured: 36x26 on every story",
+      "note": ""
+    },
+    {
+      "id": "3.2.6",
+      "name": "Consistent help",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "page level: the component offers no help mechanism",
+      "note": ""
+    },
+    {
+      "id": "3.3.7",
+      "name": "Redundant entry",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: the component asks for no data",
+      "note": ""
+    },
+    {
+      "id": "3.3.8",
+      "name": "Accessible authentication (minimum)",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: the component is not part of a login step",
+      "note": ""
+    },
+    {
+      "id": "4.1.2",
+      "name": "Name, role, value",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "axe button-name passes on all 6 stories; disabled uses the native attribute",
+      "note": ""
+    }
+  ]
+}

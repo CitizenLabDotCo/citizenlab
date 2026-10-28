@@ -1,0 +1,2414 @@
+{
+  "$description": "Go Vocal design tokens (W3C DTCG). $value is what the code renders now. $extensions.gv.backOffice is a proposed back-office value (from the Augur govocal-tokens.css and the .gv-bo scope, fetched 22 Oct 2026); only the workbench's Proposal page shows it, tokens.css never carries it. Generate with npm run ds:tokens.",
+  "primitive": {
+    "color": {
+      "$extensions": {
+        "gv": {
+          "prefix": ""
+        }
+      },
+      "black": {
+        "$type": "color",
+        "$value": "#000000",
+        "$description": "Theme: themeColors.black.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.black",
+              "theme.colors.black"
+            ]
+          }
+        }
+      },
+      "white": {
+        "$type": "color",
+        "$value": "#ffffff",
+        "$description": "Theme: themeColors.white.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.white",
+              "theme.colors.white"
+            ]
+          }
+        }
+      },
+      "grey-800": {
+        "$type": "color",
+        "$value": "#333333",
+        "$description": "Theme: themeColors.grey800.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.grey800",
+              "theme.colors.grey800"
+            ]
+          }
+        }
+      },
+      "grey-700": {
+        "$type": "color",
+        "$value": "#767676",
+        "$description": "Theme: themeColors.grey700.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.grey700",
+              "theme.colors.grey700"
+            ]
+          }
+        }
+      },
+      "grey-600": {
+        "$type": "color",
+        "$value": "#999999",
+        "$description": "Theme: themeColors.grey600.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.grey600",
+              "theme.colors.grey600"
+            ]
+          }
+        }
+      },
+      "grey-500": {
+        "$type": "color",
+        "$value": "#BDBDBD",
+        "$description": "Theme: themeColors.grey500.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.grey500",
+              "theme.colors.grey500"
+            ]
+          }
+        }
+      },
+      "grey-400": {
+        "$type": "color",
+        "$value": "#CBCBCB",
+        "$description": "Theme: themeColors.grey400.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.grey400",
+              "theme.colors.grey400"
+            ]
+          }
+        }
+      },
+      "grey-300": {
+        "$type": "color",
+        "$value": "#E0E0E0",
+        "$description": "Theme: themeColors.grey300.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.grey300",
+              "theme.colors.grey300"
+            ]
+          }
+        }
+      },
+      "grey-200": {
+        "$type": "color",
+        "$value": "#EBEDEF",
+        "$description": "Theme: themeColors.grey200.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.grey200",
+              "theme.colors.grey200"
+            ]
+          }
+        }
+      },
+      "grey-100": {
+        "$type": "color",
+        "$value": "#F4F6F8",
+        "$description": "Theme: themeColors.grey100.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.grey100",
+              "theme.colors.grey100"
+            ]
+          }
+        }
+      },
+      "grey-50": {
+        "$type": "color",
+        "$value": "#FCFCFC",
+        "$description": "Theme: themeColors.grey50.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.grey50",
+              "theme.colors.grey50"
+            ]
+          }
+        }
+      },
+      "cool-grey-700": {
+        "$type": "color",
+        "$value": "#43515D",
+        "$description": "Theme: themeColors.coolGrey700.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.coolGrey700",
+              "theme.colors.coolGrey700"
+            ]
+          }
+        }
+      },
+      "cool-grey-600": {
+        "$type": "color",
+        "$value": "#596B7A",
+        "$description": "Theme: themeColors.coolGrey600.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.coolGrey600",
+              "theme.colors.coolGrey600"
+            ]
+          }
+        }
+      },
+      "cool-grey-500": {
+        "$type": "color",
+        "$value": "#84939E",
+        "$description": "Theme: themeColors.coolGrey500.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.coolGrey500",
+              "theme.colors.coolGrey500"
+            ]
+          }
+        }
+      },
+      "cool-grey-400": {
+        "$type": "color",
+        "$value": "#8D9EAC",
+        "$description": "Theme: bo.colors.crumbSeparator (same hex).",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "bo.colors.crumbSeparator"
+            ]
+          }
+        }
+      },
+      "cool-grey-300": {
+        "$type": "color",
+        "$value": "#B8C5D0",
+        "$description": "Theme: themeColors.coolGrey300.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.coolGrey300",
+              "theme.colors.coolGrey300"
+            ]
+          }
+        }
+      },
+      "blue-700": {
+        "$type": "color",
+        "$value": "#022331",
+        "$description": "Theme: themeColors.blue700.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.blue700",
+              "theme.colors.blue700"
+            ]
+          }
+        }
+      },
+      "blue-500": {
+        "$type": "color",
+        "$value": "#044D6C",
+        "$description": "Theme: themeColors.blue500.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.blue500",
+              "theme.colors.blue500"
+            ]
+          }
+        }
+      },
+      "blue-400": {
+        "$type": "color",
+        "$value": "#00577C",
+        "$description": "Theme: themeColors.blue400.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.blue400",
+              "theme.colors.blue400"
+            ]
+          }
+        }
+      },
+      "blue-10": {
+        "$type": "color",
+        "$value": "#E6EEF1",
+        "$description": "Theme: themeColors.blue10.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.blue10",
+              "theme.colors.blue10"
+            ]
+          }
+        }
+      },
+      "teal-700": {
+        "$type": "color",
+        "$value": "#0A5159",
+        "$description": "Theme: themeColors.teal700.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.teal700",
+              "theme.colors.teal700"
+            ]
+          }
+        }
+      },
+      "teal-500": {
+        "$type": "color",
+        "$value": "#147985",
+        "$description": "Theme: themeColors.teal500.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.teal500",
+              "theme.colors.teal500"
+            ]
+          }
+        }
+      },
+      "teal-400": {
+        "$type": "color",
+        "$value": "#01A1B1",
+        "$description": "Theme: themeColors.teal400.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.teal400",
+              "theme.colors.teal400"
+            ]
+          }
+        }
+      },
+      "teal-300": {
+        "$type": "color",
+        "$value": "#40B8C5",
+        "$description": "Theme: themeColors.teal300.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.teal300",
+              "theme.colors.teal300"
+            ]
+          }
+        }
+      },
+      "teal-200": {
+        "$type": "color",
+        "$value": "#80CFD8",
+        "$description": "Theme: themeColors.teal200.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.teal200",
+              "theme.colors.teal200"
+            ]
+          }
+        }
+      },
+      "teal-100": {
+        "$type": "color",
+        "$value": "#BEE7EB",
+        "$description": "Theme: themeColors.teal100.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.teal100",
+              "theme.colors.teal100"
+            ]
+          }
+        }
+      },
+      "teal-75": {
+        "$type": "color",
+        "$value": "#E5F5F7",
+        "$description": "New, no code value today. Selected-card tint (back office).",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "teal-50": {
+        "$type": "color",
+        "$value": "#EDF8FA",
+        "$description": "Theme: themeColors.teal50.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.teal50",
+              "theme.colors.teal50"
+            ]
+          }
+        }
+      },
+      "red-100": {
+        "$type": "color",
+        "$value": "#fde9e8",
+        "$description": "Theme: themeColors.red100.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.red100",
+              "theme.colors.red100"
+            ]
+          }
+        }
+      },
+      "red-400": {
+        "$type": "color",
+        "$value": "#FC3C2D",
+        "$description": "Theme: themeColors.red400.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.red400",
+              "theme.colors.red400"
+            ]
+          }
+        }
+      },
+      "red-500": {
+        "$type": "color",
+        "$value": "#E52516",
+        "$description": "Theme: themeColors.red500.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.red500",
+              "theme.colors.red500"
+            ]
+          }
+        }
+      },
+      "red-600": {
+        "$type": "color",
+        "$value": "#D61607",
+        "$description": "Theme: themeColors.red600.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.red600",
+              "theme.colors.red600"
+            ]
+          }
+        }
+      },
+      "red-800": {
+        "$type": "color",
+        "$value": "#9B1005",
+        "$description": "Theme: themeColors.red800.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.red800",
+              "theme.colors.red800"
+            ]
+          }
+        }
+      },
+      "green-700": {
+        "$type": "color",
+        "$value": "#024D2B",
+        "$description": "Theme: themeColors.green700.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.green700",
+              "theme.colors.green700"
+            ]
+          }
+        }
+      },
+      "green-600": {
+        "$type": "color",
+        "$value": "#096F03",
+        "$description": "Theme: themeColors.green600.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.green600",
+              "theme.colors.green600"
+            ]
+          }
+        }
+      },
+      "green-500": {
+        "$type": "color",
+        "$value": "#04884C",
+        "$description": "Theme: themeColors.green500.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.green500",
+              "theme.colors.green500"
+            ]
+          }
+        }
+      },
+      "green-400": {
+        "$type": "color",
+        "$value": "#32B67A",
+        "$description": "Theme: themeColors.green400.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.green400",
+              "theme.colors.green400"
+            ]
+          }
+        }
+      },
+      "green-300": {
+        "$type": "color",
+        "$value": "#62C462",
+        "$description": "Theme: themeColors.green300.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.green300",
+              "theme.colors.green300"
+            ]
+          }
+        }
+      },
+      "green-100": {
+        "$type": "color",
+        "$value": "#e4f7ef",
+        "$description": "Theme: themeColors.green100.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.green100",
+              "theme.colors.green100"
+            ]
+          }
+        }
+      },
+      "green-mint": {
+        "$type": "color",
+        "$value": "#CAE0CD",
+        "$description": "Theme: themeColors.greenMint.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.greenMint",
+              "theme.colors.greenMint"
+            ]
+          }
+        }
+      },
+      "orange-100": {
+        "$type": "color",
+        "$value": "#FFECE6",
+        "$description": "Theme: themeColors.orange100.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.orange100",
+              "theme.colors.orange100"
+            ]
+          }
+        }
+      },
+      "orange-500": {
+        "$type": "color",
+        "$value": "#FF672F",
+        "$description": "Theme: themeColors.orange500.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.orange500",
+              "theme.colors.orange500"
+            ]
+          }
+        }
+      },
+      "amber-100": {
+        "$type": "color",
+        "$value": "#F2E6D0",
+        "$description": "New, no styleUtils value today; literal in analysis Tags/Tag.tsx. AI auto-tag chip.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "amber-500": {
+        "$type": "color",
+        "$value": "#D49210",
+        "$description": "New, no styleUtils value today; literal in analysis Tags/Tag.tsx. AI auto-tag chip.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "brown": {
+        "$type": "color",
+        "$value": "#8C680D",
+        "$description": "Theme: themeColors.brown.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.brown",
+              "theme.colors.brown"
+            ]
+          }
+        }
+      }
+    },
+    "space": {
+      "0": {
+        "$type": "dimension",
+        "$value": "0",
+        "$description": "Spacing scale, 4px steps.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "1": {
+        "$type": "dimension",
+        "$value": "4px",
+        "$description": "Spacing scale, 4px steps.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "2": {
+        "$type": "dimension",
+        "$value": "8px",
+        "$description": "Spacing scale, 4px steps.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "3": {
+        "$type": "dimension",
+        "$value": "12px",
+        "$description": "Spacing scale, 4px steps.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "4": {
+        "$type": "dimension",
+        "$value": "16px",
+        "$description": "Spacing scale, 4px steps.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "5": {
+        "$type": "dimension",
+        "$value": "20px",
+        "$description": "Spacing scale, 4px steps.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "6": {
+        "$type": "dimension",
+        "$value": "24px",
+        "$description": "Spacing scale, 4px steps.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "7": {
+        "$type": "dimension",
+        "$value": "28px",
+        "$description": "Spacing scale, 4px steps.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "8": {
+        "$type": "dimension",
+        "$value": "32px",
+        "$description": "Spacing scale, 4px steps.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "10": {
+        "$type": "dimension",
+        "$value": "40px",
+        "$description": "Spacing scale, 4px steps.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "12": {
+        "$type": "dimension",
+        "$value": "48px",
+        "$description": "Spacing scale, 4px steps.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "16": {
+        "$type": "dimension",
+        "$value": "64px",
+        "$description": "Spacing scale, 4px steps.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "20": {
+        "$type": "dimension",
+        "$value": "80px",
+        "$description": "Spacing scale, 4px steps.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "24": {
+        "$type": "dimension",
+        "$value": "96px",
+        "$description": "Spacing scale, 4px steps.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      }
+    },
+    "radius": {
+      "1": {
+        "$type": "dimension",
+        "$value": "4px",
+        "$description": "Radius scale. New as a scale step.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "2": {
+        "$type": "dimension",
+        "$value": "8px",
+        "$description": "Radius scale; same as bo.borderRadius. New as a scale step.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "3": {
+        "$type": "dimension",
+        "$value": "12px",
+        "$description": "Radius scale; same as bo.panelBorderRadius. New as a scale step.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "full": {
+        "$type": "dimension",
+        "$value": "999px",
+        "$description": "Pill and circle. New as a scale step.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      }
+    },
+    "font": {
+      "$extensions": {
+        "gv": {
+          "prefix": ""
+        }
+      },
+      "fs-xxs": {
+        "$type": "dimension",
+        "$value": "10px",
+        "$description": "Theme: fontSizes.xxs. Code-only, not on the design file's type ladder.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "fontSizes.xxs",
+              "theme.fontSizes.xxs"
+            ]
+          }
+        }
+      },
+      "fs-xs": {
+        "$type": "dimension",
+        "$value": "12px",
+        "$description": "Theme: fontSizes.xs.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "fontSizes.xs",
+              "theme.fontSizes.xs"
+            ]
+          }
+        }
+      },
+      "fs-13": {
+        "$type": "dimension",
+        "$value": "13px",
+        "$description": "Theme: bo.controlFontSize and bo.headerFontSize (13px). Proposed back office: folded into fs-xs.",
+        "$deprecated": "Folded into fs-xs.",
+        "$extensions": {
+          "gv": {
+            "backOffice": "{primitive.font.fs-xs}",
+            "legacy": [
+              "bo.controlFontSize",
+              "bo.headerFontSize"
+            ]
+          }
+        }
+      },
+      "fs-s": {
+        "$type": "dimension",
+        "$value": "14px",
+        "$description": "Theme: fontSizes.s.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "fontSizes.s",
+              "theme.fontSizes.s"
+            ]
+          }
+        }
+      },
+      "fs-base": {
+        "$type": "dimension",
+        "$value": "16px",
+        "$description": "Theme: fontSizes.base.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "fontSizes.base",
+              "theme.fontSizes.base"
+            ]
+          }
+        }
+      },
+      "fs-m": {
+        "$type": "dimension",
+        "$value": "16px",
+        "$description": "Theme: fontSizes.m.",
+        "$extensions": {
+          "gv": {
+            "backOffice": "{primitive.font.fs-base}",
+            "legacy": [
+              "fontSizes.m",
+              "theme.fontSizes.m"
+            ]
+          }
+        }
+      },
+      "fs-l": {
+        "$type": "dimension",
+        "$value": "18px",
+        "$description": "Theme: fontSizes.l.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "fontSizes.l",
+              "theme.fontSizes.l"
+            ]
+          }
+        }
+      },
+      "fs-xl": {
+        "$type": "dimension",
+        "$value": "21px",
+        "$description": "Theme: fontSizes.xl.",
+        "$extensions": {
+          "gv": {
+            "backOffice": "20px",
+            "legacy": [
+              "fontSizes.xl",
+              "theme.fontSizes.xl"
+            ]
+          }
+        }
+      },
+      "fs-xxl": {
+        "$type": "dimension",
+        "$value": "25px",
+        "$description": "Theme: fontSizes.xxl.",
+        "$extensions": {
+          "gv": {
+            "backOffice": "24px",
+            "legacy": [
+              "fontSizes.xxl",
+              "theme.fontSizes.xxl"
+            ]
+          }
+        }
+      },
+      "fs-xxxl": {
+        "$type": "dimension",
+        "$value": "30px",
+        "$description": "Theme: fontSizes.xxxl.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "fontSizes.xxxl",
+              "theme.fontSizes.xxxl"
+            ]
+          }
+        }
+      },
+      "fs-xxxxl": {
+        "$type": "dimension",
+        "$value": "34px",
+        "$description": "Theme: fontSizes.xxxxl.",
+        "$extensions": {
+          "gv": {
+            "backOffice": "36px",
+            "legacy": [
+              "fontSizes.xxxxl",
+              "theme.fontSizes.xxxxl"
+            ]
+          }
+        }
+      },
+      "fs-xxxxxl": {
+        "$type": "dimension",
+        "$value": "42px",
+        "$description": "Theme: fontSizes.xxxxxl.",
+        "$extensions": {
+          "gv": {
+            "backOffice": "48px",
+            "legacy": [
+              "fontSizes.xxxxxl",
+              "theme.fontSizes.xxxxxl"
+            ]
+          }
+        }
+      },
+      "fs-display": {
+        "$type": "dimension",
+        "$value": "80px",
+        "$description": "New, no code value today. Hero page title.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      }
+    },
+    "shadow": {
+      "$extensions": {
+        "gv": {
+          "prefix": ""
+        }
+      },
+      "shadow": {
+        "$type": "shadow",
+        "$value": "0px 2px 4px -1px rgba(0,0,0,0.06)",
+        "$description": "Theme: defaultStyles.boxShadow.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "defaultStyles.boxShadow"
+            ]
+          }
+        }
+      },
+      "shadow-hover-sm": {
+        "$type": "shadow",
+        "$value": "0px 2px 4px -1px rgba(0,0,0,0.2)",
+        "$description": "Theme: defaultStyles.boxShadowHoverSmall.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "defaultStyles.boxShadowHoverSmall"
+            ]
+          }
+        }
+      },
+      "shadow-hover-lg": {
+        "$type": "shadow",
+        "$value": "0px 4px 12px -1px rgba(0,0,0,0.12)",
+        "$description": "Theme: defaultStyles.boxShadowHoverBig.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "defaultStyles.boxShadowHoverBig"
+            ]
+          }
+        }
+      }
+    },
+    "motion": {
+      "fast": {
+        "$type": "duration",
+        "$value": "100ms",
+        "$description": "Theme: defaultInputStyle transition. Code-only, not in the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "base": {
+        "$type": "duration",
+        "$value": "150ms",
+        "$description": "Theme: defaultCardHoverStyle transition. Code-only, not in the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      }
+    }
+  },
+  "semantic": {
+    "color": {
+      "$extensions": {
+        "gv": {
+          "prefix": ""
+        }
+      },
+      "color-text-heading": {
+        "$type": "color",
+        "$value": "#333333",
+        "$description": "Heading text. Theme: colors.textPrimary. Proposed back office: bo.colors.textHeading. Replaces the design file's --gv-text-heading.",
+        "$extensions": {
+          "gv": {
+            "backOffice": "#474747",
+            "legacy": [
+              "colors.textPrimary",
+              "bo.colors.textHeading",
+              "--gv-text-heading"
+            ]
+          }
+        }
+      },
+      "text-primary": {
+        "$type": "color",
+        "$value": "{primitive.color.grey-800}",
+        "$description": "Theme: semanticColors.textPrimary.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.textPrimary",
+              "theme.colors.textPrimary"
+            ]
+          }
+        }
+      },
+      "text-secondary": {
+        "$type": "color",
+        "$value": "{primitive.color.cool-grey-600}",
+        "$description": "Theme: semanticColors.textSecondary.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.textSecondary",
+              "theme.colors.textSecondary"
+            ]
+          }
+        }
+      },
+      "text-heading": {
+        "$type": "color",
+        "$value": "{semantic.color.color-text-heading}",
+        "$description": "The design file's heading name, kept as an alias of color-text-heading (the semantic name wins).",
+        "$deprecated": "Use color-text-heading.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "text-heading-strong": {
+        "$type": "color",
+        "$value": "#1E1E1E",
+        "$description": "Theme: bo.colors.textHeadingStrong.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "bo.colors.textHeadingStrong"
+            ]
+          }
+        }
+      },
+      "text-pagetitle": {
+        "$type": "color",
+        "$value": "#474747",
+        "$description": "New, no code value today. Measured page H1 colour.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "text-body": {
+        "$type": "color",
+        "$value": "rgba(0,0,0,0.87)",
+        "$description": "New, no code value today. Measured inherited body colour.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "header-text": {
+        "$type": "color",
+        "$value": "rgba(0,0,0,0.87)",
+        "$description": "New, no code value today. Measured site header text colour.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "border-dark": {
+        "$type": "color",
+        "$value": "{primitive.color.grey-700}",
+        "$description": "Theme: semanticColors.borderDark.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.borderDark",
+              "theme.colors.borderDark"
+            ]
+          }
+        }
+      },
+      "border-light": {
+        "$type": "color",
+        "$value": "{primitive.color.grey-400}",
+        "$description": "Theme: semanticColors.borderLight.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.borderLight",
+              "theme.colors.borderLight"
+            ]
+          }
+        }
+      },
+      "placeholder": {
+        "$type": "color",
+        "$value": "{primitive.color.grey-600}",
+        "$description": "Theme: semanticColors.placeholder.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.placeholder",
+              "theme.colors.placeholder"
+            ]
+          }
+        }
+      },
+      "disabled": {
+        "$type": "color",
+        "$value": "{primitive.color.grey-500}",
+        "$description": "Theme: semanticColors.disabled.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.disabled",
+              "theme.colors.disabled"
+            ]
+          }
+        }
+      },
+      "divider": {
+        "$type": "color",
+        "$value": "{primitive.color.grey-300}",
+        "$description": "Theme: semanticColors.divider.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.divider",
+              "theme.colors.divider"
+            ]
+          }
+        }
+      },
+      "primary": {
+        "$type": "color",
+        "$value": "{primitive.color.blue-500}",
+        "$description": "Theme: semanticColors.primary.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.primary",
+              "theme.colors.primary"
+            ]
+          }
+        }
+      },
+      "error": {
+        "$type": "color",
+        "$value": "{primitive.color.red-500}",
+        "$description": "Theme: semanticColors.error.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.error",
+              "theme.colors.error"
+            ]
+          }
+        }
+      },
+      "error-light": {
+        "$type": "color",
+        "$value": "{primitive.color.red-100}",
+        "$description": "Theme: semanticColors.errorLight.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.errorLight",
+              "theme.colors.errorLight"
+            ]
+          }
+        }
+      },
+      "success": {
+        "$type": "color",
+        "$value": "{primitive.color.green-500}",
+        "$description": "Theme: semanticColors.success.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.success",
+              "theme.colors.success"
+            ]
+          }
+        }
+      },
+      "success-light": {
+        "$type": "color",
+        "$value": "{primitive.color.green-100}",
+        "$description": "Theme: semanticColors.successLight.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.successLight",
+              "theme.colors.successLight"
+            ]
+          }
+        }
+      },
+      "background": {
+        "$type": "color",
+        "$value": "#EDEFF0",
+        "$description": "Theme: semanticColors.background.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.background",
+              "theme.colors.background"
+            ]
+          }
+        }
+      },
+      "color-teal": {
+        "$type": "color",
+        "$value": "{primitive.color.teal-500}",
+        "$description": "Theme: semanticColors.teal. Code-only role, not in the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.teal",
+              "theme.colors.teal"
+            ]
+          }
+        }
+      },
+      "color-teal-light": {
+        "$type": "color",
+        "$value": "{primitive.color.teal-100}",
+        "$description": "Theme: semanticColors.tealLight. Code-only role, not in the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "colors.tealLight",
+              "theme.colors.tealLight"
+            ]
+          }
+        }
+      },
+      "survey-canvas": {
+        "$type": "color",
+        "$value": "#F4F6F8",
+        "$description": "New, no code value today. Survey page background.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "warning-700": {
+        "$type": "color",
+        "$value": "#B8860B",
+        "$description": "New, no code value today. Warning and on-hold state.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "tenant-primary": {
+        "$type": "color",
+        "$value": "#ef0071",
+        "$description": "City slot: the city's core.color_main (in Storybook, the City switch writes it). Fallback as in getTheme. Proposed back office: back-office primary, as the design file's .gv-bo scope.",
+        "$extensions": {
+          "gv": {
+            "backOffice": "{semantic.color.bo-primary}",
+            "slot": true,
+            "legacy": []
+          }
+        }
+      },
+      "tenant-secondary": {
+        "$type": "color",
+        "$value": "#000000",
+        "$description": "City slot: the city's core.color_secondary (in Storybook, the City switch writes it). Fallback as in getTheme. Proposed back office: back-office primary, as the design file's .gv-bo scope.",
+        "$extensions": {
+          "gv": {
+            "backOffice": "{semantic.color.bo-primary}",
+            "slot": true,
+            "legacy": []
+          }
+        }
+      },
+      "tenant-text": {
+        "$type": "color",
+        "$value": "#333333",
+        "$description": "City slot: the city's core.color_text (in Storybook, the City switch writes it). Fallback as in getTheme. Proposed back office: text-primary, as the design file's .gv-bo scope.",
+        "$extensions": {
+          "gv": {
+            "backOffice": "{semantic.color.text-primary}",
+            "slot": true,
+            "legacy": []
+          }
+        }
+      },
+      "color-tenant-primary": {
+        "$type": "color",
+        "$value": "#ef0071",
+        "$description": "Tenant primary with the getTheme fallback. Read this, not --gv-tenant-primary.",
+        "$extensions": {
+          "gv": {
+            "tenant": "primary",
+            "legacy": [
+              "theme.colors.tenantPrimary"
+            ]
+          }
+        }
+      },
+      "color-tenant-secondary": {
+        "$type": "color",
+        "$value": "#000000",
+        "$description": "Tenant secondary with the getTheme fallback.",
+        "$extensions": {
+          "gv": {
+            "tenant": "secondary",
+            "legacy": [
+              "theme.colors.tenantSecondary"
+            ]
+          }
+        }
+      },
+      "color-tenant-text": {
+        "$type": "color",
+        "$value": "#333333",
+        "$description": "Tenant text with the getTheme fallback.",
+        "$extensions": {
+          "gv": {
+            "tenant": "text",
+            "legacy": [
+              "theme.colors.tenantText"
+            ]
+          }
+        }
+      },
+      "tenant-primary-lighten75": {
+        "$type": "color",
+        "$value": "color-mix(in srgb, {semantic.color.color-tenant-primary} 25%, transparent)",
+        "$description": "Theme: transparentize(0.75, tenantPrimary) as sRGB color-mix. Proposed back office: the design file's OKLCH mix.",
+        "$extensions": {
+          "gv": {
+            "backOffice": "color-mix(in oklch, {semantic.color.tenant-primary} 25%, transparent)",
+            "legacy": [
+              "theme.colors.tenantPrimaryLighten75"
+            ]
+          }
+        }
+      },
+      "tenant-primary-lighten90": {
+        "$type": "color",
+        "$value": "color-mix(in srgb, {semantic.color.color-tenant-primary} 10%, transparent)",
+        "$description": "Theme: transparentize(0.9, tenantPrimary) as sRGB color-mix. Proposed back office: the design file's OKLCH mix.",
+        "$extensions": {
+          "gv": {
+            "backOffice": "color-mix(in oklch, {semantic.color.tenant-primary} 10%, transparent)",
+            "legacy": [
+              "theme.colors.tenantPrimaryLighten90"
+            ]
+          }
+        }
+      },
+      "tenant-primary-lighten95": {
+        "$type": "color",
+        "$value": "color-mix(in srgb, {semantic.color.color-tenant-primary} 5%, transparent)",
+        "$description": "Theme: transparentize(0.95, tenantPrimary) as sRGB color-mix. Proposed back office: the design file's OKLCH mix.",
+        "$extensions": {
+          "gv": {
+            "backOffice": "color-mix(in oklch, {semantic.color.tenant-primary} 5%, transparent)",
+            "legacy": [
+              "theme.colors.tenantPrimaryLighten95"
+            ]
+          }
+        }
+      },
+      "on-primary": {
+        "$type": "color",
+        "$value": "#fff",
+        "$description": "New, no code token today (buttons use a #fff literal). The design file's contrast-color() upgrade is not generated yet.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "on-secondary": {
+        "$type": "color",
+        "$value": "#fff",
+        "$description": "New, no code token today (buttons use a #fff literal). The design file's contrast-color() upgrade is not generated yet.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "bo-sidebar-bg": {
+        "$type": "color",
+        "$value": "#003349",
+        "$description": "New, no styleUtils value today; literal #003349 in Admin sideBar.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "bo-sidebar-text": {
+        "$type": "color",
+        "$value": "#fff",
+        "$description": "New, no code value today. Back-office chrome, measured.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "bo-sidebar-active": {
+        "$type": "color",
+        "$value": "rgba(0,0,0,0.7)",
+        "$description": "New, no code value today. Back-office chrome, measured.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "bo-cta": {
+        "$type": "color",
+        "$value": "#162466",
+        "$description": "New, no code value today. Back-office chrome, measured.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "bo-link": {
+        "$type": "color",
+        "$value": "#4183C4",
+        "$description": "New, no code value today. Back-office chrome, measured.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "bo-canvas": {
+        "$type": "color",
+        "$value": "#EDEFF0",
+        "$description": "New, no code value today. Back-office chrome, measured.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "bo-tabstrip": {
+        "$type": "color",
+        "$value": "#FBFBFB",
+        "$description": "New, no code value today. Back-office chrome, measured.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "bo-step": {
+        "$type": "color",
+        "$value": "#D4D9DD",
+        "$description": "Theme: bo.colors.stepBorder.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "bo.colors.stepBorder"
+            ]
+          }
+        }
+      },
+      "bo-primary": {
+        "$type": "color",
+        "$value": "{primitive.color.blue-500}",
+        "$description": "Back-office primary; same hex as semanticColors.primary.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "bo-row-alt": {
+        "$type": "color",
+        "$value": "{primitive.color.grey-50}",
+        "$description": "Back-office alternate row; grey-50.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "bo-border": {
+        "$type": "color",
+        "$value": "{primitive.color.cool-grey-600}",
+        "$description": "Back-office outline-button border; cool-grey-600.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "color-bo-status-fill": {
+        "$type": "color",
+        "$value": "#E2EEE1",
+        "$description": "Theme: bo.colors.statusFill. Code-only, not in the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "bo.colors.statusFill"
+            ]
+          }
+        }
+      },
+      "color-bo-step-halo": {
+        "$type": "color",
+        "$value": "#D7E3E7",
+        "$description": "Theme: bo.colors.stepHalo. Code-only, not in the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "bo.colors.stepHalo"
+            ]
+          }
+        }
+      },
+      "color-bo-live-halo": {
+        "$type": "color",
+        "$value": "#DAF2E7",
+        "$description": "Theme: bo.colors.liveHalo. Code-only, not in the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "bo.colors.liveHalo"
+            ]
+          }
+        }
+      },
+      "chart-navy": {
+        "$type": "color",
+        "$value": "#073F80",
+        "$description": "Theme: legacyColors.barFill in components/admin/Graphs/styling.ts (same value).",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "Graphs/styling legacyColors.barFill"
+            ]
+          }
+        }
+      },
+      "chart-blue": {
+        "$type": "color",
+        "$value": "#2F478A",
+        "$description": "Theme: colors.categorical01 in components/admin/Graphs/styling.ts (same value).",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "Graphs/styling colors.categorical01"
+            ]
+          }
+        }
+      },
+      "chart-blue-light": {
+        "$type": "color",
+        "$value": "#4D85C6",
+        "$description": "Theme: colors.categorical02 in components/admin/Graphs/styling.ts (same value).",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "Graphs/styling colors.categorical02"
+            ]
+          }
+        }
+      },
+      "chart-line": {
+        "$type": "color",
+        "$value": "#7FBBCA",
+        "$description": "Theme: legacyColors.line in components/admin/Graphs/styling.ts (same value).",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "Graphs/styling legacyColors.line"
+            ]
+          }
+        }
+      },
+      "chart-teal": {
+        "$type": "color",
+        "$value": "{primitive.color.teal-400}",
+        "$description": "Theme: legacyColors.chartFill in components/admin/Graphs/styling.ts (same value).",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "Graphs/styling legacyColors.chartFill"
+            ]
+          }
+        }
+      },
+      "chart-teal-light": {
+        "$type": "color",
+        "$value": "#40B8C5",
+        "$description": "Theme: colors.lightBlue in components/admin/Graphs/styling.ts (same value).",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "Graphs/styling colors.lightBlue"
+            ]
+          }
+        }
+      },
+      "chart-pos": {
+        "$type": "color",
+        "$value": "{primitive.color.green-500}",
+        "$description": "Dashboard series colour; no named constant today.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "chart-neg": {
+        "$type": "color",
+        "$value": "{primitive.color.red-500}",
+        "$description": "Dashboard series colour; no named constant today.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "chart-axis": {
+        "$type": "color",
+        "$value": "{primitive.color.cool-grey-600}",
+        "$description": "Theme: legacyColors.chartLabel in components/admin/Graphs/styling.ts (same value).",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "Graphs/styling legacyColors.chartLabel"
+            ]
+          }
+        }
+      },
+      "chart-grid": {
+        "$type": "color",
+        "$value": "{primitive.color.grey-200}",
+        "$description": "Theme: colors.gridColor in components/admin/Graphs/styling.ts (same value).",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "Graphs/styling colors.gridColor"
+            ]
+          }
+        }
+      },
+      "green-save": {
+        "$type": "color",
+        "$value": "#08833a",
+        "$description": "New, no code value today. Content builder Save fill (captured one-off).",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "event-meta-tint": {
+        "$type": "color",
+        "$value": "{primitive.color.grey-100}",
+        "$description": "Event card meta panel; grey-100 (captured one-off).",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "event-chip-grey": {
+        "$type": "color",
+        "$value": "#F5F6F7",
+        "$description": "New, no styleUtils value today; literal in EventPreviewCard and DateBlocks.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "event-card-border": {
+        "$type": "color",
+        "$value": "#CCC",
+        "$description": "New, no code value today. Events widget frame (captured one-off).",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "folder-count": {
+        "$type": "color",
+        "$value": "#358545",
+        "$description": "New, no code value today. Folder card project count (captured one-off).",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "attachment-border": {
+        "$type": "color",
+        "$value": "#C8D0D7",
+        "$description": "New, no code value today. File attachment row outline (captured one-off).",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "phase-selected-fill": {
+        "$type": "color",
+        "$value": "{primitive.color.cool-grey-600}",
+        "$description": "Phase ribbon selected segment; cool-grey-600 (captured one-off).",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      }
+    },
+    "space": {
+      "$extensions": {
+        "gv": {
+          "prefix": ""
+        }
+      },
+      "stack-inline": {
+        "$type": "dimension",
+        "$value": "{primitive.space.2}",
+        "$description": "New, no code value today; vertical rhythm step.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "stack-para": {
+        "$type": "dimension",
+        "$value": "{primitive.space.4}",
+        "$description": "New, no code value today; vertical rhythm step.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "stack-block": {
+        "$type": "dimension",
+        "$value": "{primitive.space.6}",
+        "$description": "New, no code value today; vertical rhythm step.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "stack-section": {
+        "$type": "dimension",
+        "$value": "{primitive.space.12}",
+        "$description": "New, no code value today; vertical rhythm step.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "input-height": {
+        "$type": "dimension",
+        "$value": "48px",
+        "$description": "Theme: stylingConsts.inputHeight.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "stylingConsts.inputHeight",
+              "theme.inputHeight"
+            ]
+          }
+        }
+      },
+      "input-padding": {
+        "$type": "dimension",
+        "$value": "12px",
+        "$description": "Theme: defaultStyles.inputPadding.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "defaultStyles.inputPadding"
+            ]
+          }
+        }
+      },
+      "target-min": {
+        "$type": "dimension",
+        "$value": "24px",
+        "$description": "New, no code value today. Minimum pointer target (WCAG 2.5.8).",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "max-page-width": {
+        "$type": "dimension",
+        "$value": "952px",
+        "$description": "Theme: stylingConsts.maxPageWidth.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "stylingConsts.maxPageWidth",
+              "theme.maxPageWidth"
+            ]
+          }
+        }
+      },
+      "page-width": {
+        "$type": "dimension",
+        "$value": "1150px",
+        "$description": "Theme: stylingConsts.pageWidth.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "stylingConsts.pageWidth",
+              "theme.pageWidth"
+            ]
+          }
+        }
+      },
+      "text-width": {
+        "$type": "dimension",
+        "$value": "720px",
+        "$description": "Theme: stylingConsts.textWidth.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "stylingConsts.textWidth",
+              "theme.textWidth"
+            ]
+          }
+        }
+      },
+      "menu-height": {
+        "$type": "dimension",
+        "$value": "78px",
+        "$description": "Theme: stylingConsts.menuHeight (78). Proposed back office: 80, on the 8 grid.",
+        "$extensions": {
+          "gv": {
+            "backOffice": "80px",
+            "legacy": [
+              "stylingConsts.menuHeight",
+              "theme.menuHeight"
+            ]
+          }
+        }
+      },
+      "bo-cb-frame-w": {
+        "$type": "dimension",
+        "$value": "1000px",
+        "$description": "New, no code value today. Content builder frame width.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      }
+    },
+    "radius": {
+      "$extensions": {
+        "gv": {
+          "prefix": ""
+        }
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "3px",
+        "$description": "Legacy alias from the design file. Theme: stylingConsts.borderRadius (3px). Proposed back office: radius-1.",
+        "$deprecated": "Use radius-control or radius-panel.",
+        "$extensions": {
+          "gv": {
+            "backOffice": "{primitive.radius.1}",
+            "legacy": []
+          }
+        }
+      },
+      "radius-control": {
+        "$type": "dimension",
+        "$value": "3px",
+        "$description": "Buttons, inputs, chips. Theme: theme.borderRadius. Proposed back office: bo.borderRadius (radius-2).",
+        "$extensions": {
+          "gv": {
+            "backOffice": "{primitive.radius.2}",
+            "legacy": [
+              "theme.borderRadius",
+              "stylingConsts.borderRadius",
+              "bo.borderRadius"
+            ]
+          }
+        }
+      },
+      "radius-panel": {
+        "$type": "dimension",
+        "$value": "3px",
+        "$description": "Cards, panels, modals. Theme: theme.borderRadius. Proposed back office: bo.panelBorderRadius (radius-3).",
+        "$extensions": {
+          "gv": {
+            "backOffice": "{primitive.radius.3}",
+            "legacy": [
+              "theme.borderRadius",
+              "stylingConsts.borderRadius",
+              "bo.panelBorderRadius"
+            ]
+          }
+        }
+      }
+    },
+    "font": {
+      "$extensions": {
+        "gv": {
+          "prefix": ""
+        }
+      },
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "'Public Sans'",
+        "$description": "Theme: getTheme fontFamily default; in Storybook the City switch writes the tenant customFontName here. Proposed back office: bo-font, as the design file's .gv-bo scope.",
+        "$extensions": {
+          "gv": {
+            "backOffice": "{semantic.font.bo-font}",
+            "legacy": [
+              "theme.fontFamily"
+            ]
+          }
+        }
+      },
+      "bo-font": {
+        "$type": "fontFamily",
+        "$value": "'Public Sans', 'Public Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+        "$description": "New, no code value today. Go Vocal's own product font stack.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      }
+    },
+    "text": {
+      "$extensions": {
+        "gv": {
+          "prefix": ""
+        }
+      },
+      "type-display-size": {
+        "$type": "dimension",
+        "$value": "44px",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-display-lh": {
+        "$type": "dimension",
+        "$value": "52px",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-display-weight": {
+        "$type": "number",
+        "$value": "700",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-h1-size": {
+        "$type": "dimension",
+        "$value": "{primitive.font.fs-xxxl}",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-h1-lh": {
+        "$type": "dimension",
+        "$value": "36px",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-h1-weight": {
+        "$type": "number",
+        "$value": "700",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-h2-size": {
+        "$type": "dimension",
+        "$value": "28px",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-h2-lh": {
+        "$type": "dimension",
+        "$value": "36px",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-h2-weight": {
+        "$type": "number",
+        "$value": "700",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-h3-size": {
+        "$type": "dimension",
+        "$value": "20px",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-h3-lh": {
+        "$type": "dimension",
+        "$value": "30px",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-h3-weight": {
+        "$type": "number",
+        "$value": "600",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-title-size": {
+        "$type": "dimension",
+        "$value": "{primitive.font.fs-l}",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-title-lh": {
+        "$type": "dimension",
+        "$value": "24px",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-title-weight": {
+        "$type": "number",
+        "$value": "600",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-body-size": {
+        "$type": "dimension",
+        "$value": "18px",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-body-lh": {
+        "$type": "dimension",
+        "$value": "27px",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-body-weight": {
+        "$type": "number",
+        "$value": "400",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-bodys-size": {
+        "$type": "dimension",
+        "$value": "{primitive.font.fs-s}",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-bodys-lh": {
+        "$type": "dimension",
+        "$value": "20px",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-bodys-weight": {
+        "$type": "number",
+        "$value": "400",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-label-size": {
+        "$type": "dimension",
+        "$value": "14px",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-label-lh": {
+        "$type": "dimension",
+        "$value": "21px",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-label-weight": {
+        "$type": "number",
+        "$value": "600",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-caption-size": {
+        "$type": "dimension",
+        "$value": "12px",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-caption-lh": {
+        "$type": "dimension",
+        "$value": "18px",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-caption-weight": {
+        "$type": "number",
+        "$value": "400",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-display-ls": {
+        "$type": "dimension",
+        "$value": "-0.02em",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "type-h2-ls": {
+        "$type": "dimension",
+        "$value": "-0.01em",
+        "$description": "New, no code value today; a type role from the design file.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      }
+    },
+    "shadow": {
+      "$extensions": {
+        "gv": {
+          "prefix": ""
+        }
+      },
+      "shadow-menu": {
+        "$type": "shadow",
+        "$value": "0px 0px 12px 0px rgba(0,0,0,0.18)",
+        "$description": "Theme: literal in component-library Dropdown (same value).",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "shadow-header": {
+        "$type": "shadow",
+        "$value": "0px 2px 4px -1px rgba(0,0,0,0.10)",
+        "$description": "Theme: literal in containers/MainHeader (same value).",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      },
+      "shadow-error": {
+        "$type": "shadow",
+        "$value": "0 0 0 3px rgba(214,22,7,0.35)",
+        "$description": "Theme: defaultStyles.boxShadowError, transparentize(0.65, red600).",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "defaultStyles.boxShadowError"
+            ]
+          }
+        }
+      },
+      "shadow-panel-left": {
+        "$type": "shadow",
+        "$value": "-2px 0px 1px 0px rgba(0,0,0,0.06)",
+        "$description": "New, no code value today. Content builder settings panel edge.",
+        "$extensions": {
+          "gv": {
+            "legacy": []
+          }
+        }
+      }
+    },
+    "focus": {
+      "$extensions": {
+        "gv": {
+          "prefix": ""
+        }
+      },
+      "focus-width": {
+        "$type": "dimension",
+        "$value": "2px",
+        "$description": "Theme: focusRing outline width.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "focusRing"
+            ]
+          }
+        }
+      },
+      "focus-offset": {
+        "$type": "dimension",
+        "$value": "2px",
+        "$description": "Theme: focusRing outline-offset.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "focusRing"
+            ]
+          }
+        }
+      },
+      "focus-color": {
+        "$type": "color",
+        "$value": "#000000",
+        "$description": "Theme: focusRing outline colour (colors.black). Proposed back office: the design file's near-black.",
+        "$extensions": {
+          "gv": {
+            "backOffice": "#1a1a1a",
+            "legacy": [
+              "focusRing"
+            ]
+          }
+        }
+      },
+      "focus-outline": {
+        "$type": "border",
+        "$value": "{semantic.focus.focus-width} solid {semantic.focus.focus-color}",
+        "$description": "Theme: focusRing outline.",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "focusRing"
+            ]
+          }
+        }
+      },
+      "focus-halo": {
+        "$type": "shadow",
+        "$value": "0 0 0 {semantic.focus.focus-offset} #fff",
+        "$description": "Theme: focusRing box-shadow (white halo).",
+        "$extensions": {
+          "gv": {
+            "legacy": [
+              "focusRing"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,409 @@
+{
+  "about": "Critical axe violations in Components/ stories that ds:check accepts for now (story id and rule id). ds:check fails on any other critical. When a heal fixes one, remove its entry.",
+  "known": [
+    {
+      "id": "components-data-display-graphcard--with-info-tooltip",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-data-display-graphcard--with-view-toggle",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-data-display-table--focus",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-data-display-table--hover",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-data-display-table--keyboard",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-data-display-table--with-sortable-and-tooltip-icons",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-forms-checkbox--checked",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-checkbox--default",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-checkbox--disabled",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-checkbox--focus",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-checkbox--hover",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-checkbox--indeterminate",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-checkboxwithlabel--with-tooltip",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-forms-colorpickerinput--default",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-colorpickerinput--hover",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-colorpickerinput--open",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-colorpickerinput--rtl",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-colorpickerinput--with-label-anbd-label-tooptip",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-input--date",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-input--default",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-input--disabled",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-input--email",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-input--error",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-input--focus",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-input--hover",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-input--keyboard",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-input--long-content",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-input--password",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-input--rtl",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-input--with-label",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-input--with-max-char",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-inputmultilocwithlocaleswitcher--default",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-inputmultilocwithlocaleswitcher--disabled",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-inputmultilocwithlocaleswitcher--error",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-inputmultilocwithlocaleswitcher--focus",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-inputmultilocwithlocaleswitcher--rtl",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-inputmultilocwithlocaleswitcher--single-locale",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-radio--default",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-radio--disabled",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-radio--focus",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-radio--hover",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-select--default",
+      "rule": "select-name"
+    },
+    {
+      "id": "components-forms-select--disabled",
+      "rule": "select-name"
+    },
+    {
+      "id": "components-forms-select--focus",
+      "rule": "select-name"
+    },
+    {
+      "id": "components-forms-select--hover",
+      "rule": "select-name"
+    },
+    {
+      "id": "components-forms-select--keyboard",
+      "rule": "select-name"
+    },
+    {
+      "id": "components-forms-select--long-content",
+      "rule": "select-name"
+    },
+    {
+      "id": "components-forms-select--rtl",
+      "rule": "select-name"
+    },
+    {
+      "id": "components-forms-select--with-label",
+      "rule": "select-name"
+    },
+    {
+      "id": "components-forms-select--with-number-values",
+      "rule": "select-name"
+    },
+    {
+      "id": "components-forms-select--with-placeholder",
+      "rule": "select-name"
+    },
+    {
+      "id": "components-forms-select--with-selected-option",
+      "rule": "select-name"
+    },
+    {
+      "id": "components-forms-toggle--checked",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-toggle--default",
+      "rule": "label"
+    },
+    {
+      "id": "components-forms-toggle--disabled",
+      "rule": "label"
+    },
+    {
+      "id": "components-layout-accordion--default",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-layout-accordion--focus",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-layout-accordion--hover",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-layout-accordion--open",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-layout-section--default",
+      "rule": "label"
+    },
+    {
+      "id": "components-layout-section--full-width-field",
+      "rule": "label"
+    },
+    {
+      "id": "components-layout-section--rtl",
+      "rule": "label"
+    },
+    {
+      "id": "components-navigation-gobackbutton--icon-only",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-overlays-icontooltip--default",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-overlays-icontooltip--fixed-bottom-placement",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-overlays-icontooltip--focus",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-overlays-icontooltip--hover",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-overlays-icontooltip--keyboard",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-overlays-icontooltip--long-content",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-overlays-icontooltip--open",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-overlays-icontooltip--rtl",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-overlays-icontooltip--with-jsx-element",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-overlays-icontooltip--with-transform-translate",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-event-workspace--default",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-event-workspace--default",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-event-workspace--existing",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-event-workspace--existing",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-event-workspace--rtl",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-event-workspace--rtl",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-idea-side-panel--default",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-idea-side-panel--rtl",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-method-settings--default",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-method-settings--default",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-method-settings--default",
+      "rule": "select-name"
+    },
+    {
+      "id": "components-redesigned-method-settings--rtl",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-method-settings--rtl",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-method-settings--rtl",
+      "rule": "select-name"
+    },
+    {
+      "id": "components-redesigned-method-settings--voting",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-method-settings--voting",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-new-phase--default",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-new-phase--default",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-new-phase--default",
+      "rule": "select-name"
+    },
+    {
+      "id": "components-redesigned-new-phase--pick-method",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-new-phase--rtl",
+      "rule": "button-name"
+    },
+    {
+      "id": "components-redesigned-new-phase--rtl",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-new-phase--rtl",
+      "rule": "select-name"
+    },
+    {
+      "id": "components-redesigned-phase-setup--default",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-phase-setup--information",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-phase-setup--rtl",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-phase-setup--voting",
+      "rule": "label"
+    },
+    {
+      "id": "components-redesigned-workspace-header--publish-open",
+      "rule": "label"
+    }
+  ]
+}

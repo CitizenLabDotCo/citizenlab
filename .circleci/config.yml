@@ -666,6 +666,34 @@ jobs:
               TEST_BUILD="true" npm run build
           no_output_timeout: "30m"
       - run:
+          # Design system experiment: ship Storybook inside the epic bundle so
+          # the preview serves it at /storybook/. Only on design-system/*
+          # branches, and never fails the app build.
+          name: Build Storybook into the epic bundle (design-system branches)
+          command: |
+            if [[ "${CIRCLE_BRANCH:-}" != design-system/* ]]; then
+              echo "Not a design-system branch, skipping Storybook."
+              exit 0
+            fi
+            npm run build-storybook -- -o build/storybook \
+              || echo "Storybook build failed; the app preview is unaffected."
+          no_output_timeout: "15m"
+      - run:
+          # Pictures of the gallery cards' stories, so the workbench galleries
+          # show pictures instead of booting a preview per card. Playwright
+          # is installed outside the repo; a failure leaves live cards.
+          name: Thumbnails for the Storybook workbench (design-system branches)
+          command: |
+            if [[ "${CIRCLE_BRANCH:-}" != design-system/* ]] || [ ! -f build/storybook/index.json ]; then
+              echo "No Storybook build, skipping thumbnails."
+              exit 0
+            fi
+            ( npm install --prefix /tmp/pw --no-save --no-audit --no-fund playwright@1.56.1 \
+              && /tmp/pw/node_modules/.bin/playwright install --with-deps chromium \
+              && GV_PLAYWRIGHT_DIR=/tmp/pw npm run ds:thumbs -- --dir build/storybook ) \
+              || echo "Thumbnails failed; the galleries render live."
+          no_output_timeout: "15m"
+      - run:
           name: Publish the bundle for epic previews
           command: |
             if [ -z "${EPIC_BUNDLE_ACCESS_KEY_ID:-}" ]; then

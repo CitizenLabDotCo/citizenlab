@@ -5,7 +5,9 @@ import { colors } from '../../utils/styleUtils';
 import Spinner from './';
 
 const meta = {
-  title: 'Components/Spinner',
+  title: 'Components/Feedback/Spinner',
+  tags: ['shared'],
+  parameters: { gv: {} },
   component: Spinner,
 } satisfies Meta<typeof Spinner>;
 

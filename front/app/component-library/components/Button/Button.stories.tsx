@@ -1,10 +1,19 @@
+import React from 'react';
+
+import { expect, fn, userEvent, within } from 'storybook/test';
+// eslint-plugin-storybook 0.8 knows expect from @storybook/test, not from
+// storybook/test (Storybook 10), so it flags every expect here.
+/* eslint-disable storybook/use-storybook-expect */
+
 import Button from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'Components/Button',
+  title: 'Components/Actions/Button',
   component: Button,
+  tags: ['shared'],
+  parameters: { gv: {} },
 } satisfies Meta<typeof Button>;
 
 export default meta;
@@ -143,5 +152,69 @@ export const BackOfficeIconOnly = {
     width: '36px',
     padding: '0',
     ariaLabel: 'Project settings',
+  },
+};
+
+export const Default: Story = {
+  args: {
+    buttonStyle: 'primary',
+    children: 'Save changes',
+  },
+};
+
+export const Hover: Story = {
+  args: Default.args,
+  parameters: { pseudo: { hover: ['button'] } },
+};
+
+export const Focus: Story = {
+  args: Default.args,
+  parameters: { pseudo: { focusVisible: ['button'] } },
+};
+
+export const Active: Story = {
+  args: Default.args,
+  parameters: { pseudo: { active: true } },
+};
+
+export const Disabled: Story = {
+  args: { ...Default.args, disabled: true },
+};
+
+export const Loading: Story = {
+  args: { ...Default.args, processing: true },
+};
+
+export const LongContent: Story = {
+  args: {
+    ...Default.args,
+    children:
+      'Save the changes to this phase and publish the project to every participant in the selected groups',
+    whiteSpace: 'normal',
+    width: '240px',
+  },
+};
+
+export const RTL: Story = {
+  globals: { lang: 'ar' },
+  args: { ...Default.args, icon: 'info-outline', children: 'حفظ التغييرات' },
+  render: (args) => (
+    <div>
+      <Button {...args} />
+    </div>
+  ),
+};
+
+// Tab reaches the button; Enter and Space activate it.
+export const Keyboard: Story = {
+  args: { buttonStyle: 'primary', children: 'Save', onClick: fn() },
+  play: async ({ canvasElement, args }) => {
+    const button = within(canvasElement).getByRole('button', { name: 'Save' });
+    await userEvent.tab();
+    await expect(button).toHaveFocus();
+    await userEvent.keyboard('{Enter}');
+    await expect(args.onClick).toHaveBeenCalledTimes(1);
+    await userEvent.keyboard(' ');
+    await expect(args.onClick).toHaveBeenCalledTimes(2);
   },
 };
