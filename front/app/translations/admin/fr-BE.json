@@ -2246,7 +2246,7 @@
   "app.containers.Admin.projects.project.switchLockedResponses": "Cette phase a déjà des réponses, le type de sondage ne peut donc plus être modifié.",
   "app.containers.Admin.projects.project.switchLosesAccessSettings": "Les paramètres d'accès que vous avez modifiés pour participer à cette phase sont supprimés. Le nouveau type de sondage commence avec les paramètres par défaut de la plateforme.",
   "app.containers.Admin.projects.project.switchSurveyMethodIntro": "La phase est conservée, mais une partie de sa configuration n'est pas transférée :",
-  "app.containers.Admin.projects.project.switchSurveyMethodTitle": "Modifier le type de sondage ?",
+  "app.containers.Admin.projects.project.switchSurveyMethodTitle": "Changer le type d'enquête",
   "app.containers.Admin.projects.project.timeline": "Calendrier",
   "app.containers.Admin.projects.project.timelineEmptyDescription2": "Les phases sont les étapes par lesquelles les participants passent, par exemple :",
   "app.containers.Admin.projects.project.topicTags": "Étiquettes de thématique",
