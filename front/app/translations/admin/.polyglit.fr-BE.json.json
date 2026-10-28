@@ -8534,6 +8534,11 @@
     "verified_at": "2026-10-26T13:27:19.471017Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.clearAllFilters": {
+    "state": "verified",
+    "verified_at": "2026-10-28T15:53:03.972213Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.delete": {
     "state": "verified",
     "verified_at": "2026-10-26T13:27:19.471017Z",
