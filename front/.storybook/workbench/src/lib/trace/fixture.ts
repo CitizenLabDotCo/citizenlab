@@ -332,7 +332,13 @@ export const readOf = (node: Node, s: Scope, returned = false): Read => {
           loc,
         };
       }
-      return { k: 'call', callee, args: [], loc };
+      // The indexer's argReads: what each argument reads.
+      return {
+        k: 'call',
+        callee,
+        args: n.arguments.map((x: any) => readOf(x, s)),
+        loc,
+      };
     }
     case 'ArrowFunctionExpression': {
       const inner: Scope = { ...s, local: new Map(), style: true };

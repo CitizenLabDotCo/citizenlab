@@ -147,7 +147,8 @@ describe('traceElement on the Button (plan §5 rows)', () => {
     expect(p).toMatchObject({
       status: 'traced',
       source: { read: 'literal', text: "'transparent'" },
-      editable: { context: 'js' },
+      // The hover border darkens it: a token there would throw.
+      editable: { no: 'darken at line 326 works out another colour from it' },
     });
   });
 

@@ -37,6 +37,8 @@ export type IndexClient = {
   load(id: string): Promise<Template | undefined>;
   // A template already loaded.
   get(id: string): Template | undefined;
+  // Every indexed template of the file, loaded.
+  templatesOf(file: string): Promise<Template[]>;
   // The file's text at the index's commit.
   source(file: string): Promise<string | undefined>;
   // The inline style objects of the story files and the Storybook setup.
@@ -141,6 +143,7 @@ export const createIndexClient = ({
     },
     load,
     get: (id) => templates.get(id),
+    templatesOf: async (file) => (await shard(file))?.templates ?? [],
     source: async (file) => {
       const m = await meta();
       return m?.commit ? read(sourceUrl(m.commit, file)) : undefined;

@@ -6,7 +6,7 @@
 // decl, checked against the CSSOM's own value; the expression that wrote
 // the value is read back to its leaf (readEval.ts). Each step either holds
 // exactly or names why the property is not traced.
-import { alignOutcome } from './align';
+import { alignOutcome, reachableIds } from './align';
 import {
   Declared,
   MatchedRule,
@@ -15,6 +15,7 @@ import {
   sheetKind,
 } from './cascade';
 import type { Canonicaliser } from './canonical';
+import { Code, colourMathOn, colourMathWords } from './colourMath';
 import { indexDeclAt, ParsedDecl, ParsedRule, parseCss } from './cssParse';
 import { flattenWithOrigins } from './evaluate';
 import type { IndexClient } from './indexClient';
@@ -737,6 +738,23 @@ const sliceSpans = (
   return at === length ? out : undefined;
 };
 
+// The owner's templates: its root and every template the root reaches,
+// as loaded for the run.
+const ownTemplates = (root: Template, client: IndexClient): Template[] => {
+  const seen = new Map<string, Template>();
+  const queue = [root];
+  while (queue.length) {
+    const t = queue.shift() as Template;
+    if (seen.has(t.id)) continue;
+    seen.set(t.id, t);
+    for (const id of reachableIds(t)) {
+      const next = client.get(id);
+      if (next) queue.push(next);
+    }
+  }
+  return [...seen.values()];
+};
+
 // ------------------------------------------------------------ the trace
 
 export const traceStyled = async (
@@ -837,6 +855,15 @@ export const traceStyled = async (
     file: template.file,
     src: await client.source(template.file),
   });
+  // A token at the leaf would break a colour function the code runs on it.
+  const colourMathOf = async (c: Code) => {
+    const own = ownTemplates(root, client);
+    const ids = new Set(own.map((t) => t.id));
+    const others = (await client.templatesOf(c.file)).filter(
+      (t) => !ids.has(t.id)
+    );
+    return colourMathOn(c, own, others, run.owner.context);
+  };
 
   if (
     origins.length === 1 &&
@@ -910,11 +937,17 @@ export const traceStyled = async (
     );
     if ('why' in leaf) return fail(leaf.why, { decl: declInfo }, root);
     const built = origins.length > 1;
+    const maths =
+      built || 'no' in leaf.editable
+        ? undefined
+        : await colourMathOf(leaf.editable);
     return done({
       source: leaf.source,
       ...(leaf.sharedBy ? { sharedBy: leaf.sharedBy } : {}),
       editable: built
         ? { no: `built in the template at line ${declInfo.line}` }
+        : maths
+        ? { no: colourMathWords(maths) }
         : leaf.editable,
     });
   }
