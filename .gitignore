@@ -15,6 +15,7 @@ node_modules
 
 *.DS_Store
 .tmp/
+tmp/
 
 # JetBrains settings files
 .idea/
