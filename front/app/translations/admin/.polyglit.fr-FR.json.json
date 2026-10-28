@@ -11189,6 +11189,11 @@
     "verified_at": "2026-10-26T13:27:19.241589Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.switchConfirm": {
+    "state": "verified",
+    "verified_at": "2026-10-28T15:18:05.448990Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.switchSurveyMethodTitle": {
     "state": "verified",
     "verified_at": "2026-10-28T15:08:10.194745Z",
