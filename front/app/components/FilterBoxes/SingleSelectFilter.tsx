@@ -26,6 +26,7 @@ const Count = styled.span`
   font-weight: 300;
   transition: all 80ms ease-out;
   margin-left: auto;
+  white-space: nowrap;
 
   ${isRtl`
     margin-left: 0;
@@ -43,9 +44,12 @@ const OptionButton = styled.button`
   padding: 8px;
   margin-top: 4px;
   border-radius: ${({ theme }) => theme.borderRadius};
+  text-align: left;
+  word-break: break-word;
 
   ${isRtl`
     flex-direction: row-reverse;
+    text-align: right;
   `}
 
   &:not(.selected):hover {
