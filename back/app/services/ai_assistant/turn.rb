@@ -61,7 +61,8 @@ module AIAssistant
 
     # The turn already ended, but the worker stopped before saving the status.
     def ended?
-      conversation.messages.last.assistant?
+      last_message = conversation.messages.last
+      last_message.assistant? && last_message.tool_calls.none?
     end
 
     def build_chat

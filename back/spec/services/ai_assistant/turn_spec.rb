@@ -34,6 +34,16 @@ describe AIAssistant::Turn do
     expect(conversation.reload).to have_attributes(status: 'idle', last_error_code: nil)
   end
 
+  it 'continues a turn whose last message asked for tools' do
+    tool_message = create(:ai_assistant_message, conversation:, role: 'assistant', content: nil)
+    create(:ai_assistant_tool_call, message: tool_message, result: { fields: [] }.to_json)
+    stub_bedrock(bedrock_text('The survey has no questions yet.'))
+
+    turn.run
+
+    expect(conversation.messages.last.content).to eq('The survey has no questions yet.')
+  end
+
   it 'runs read-only tools right away, pinned to the conversation record' do
     other_phase = create(:native_survey_phase)
     stub_bedrock(
