@@ -112,7 +112,7 @@ const AssistantPanel = ({ contextKey, contextId, intro }: Props) => {
             buttonStyle="secondary-outlined"
             size="s"
             icon="plus-circle"
-            disabled={status === 'running' || sending}
+            disabled={sending}
             processing={creatingConversation}
             onClick={startNewChat}
           >

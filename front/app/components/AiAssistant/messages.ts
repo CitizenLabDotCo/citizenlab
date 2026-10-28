@@ -44,6 +44,11 @@ export default defineMessages({
     id: 'app.components.aiAssistant.errorContextUnavailable',
     defaultMessage: 'The assistant is not available here.',
   },
+  errorTurnTimedOut: {
+    id: 'app.components.aiAssistant.errorTurnTimedOut',
+    defaultMessage:
+      'The assistant stopped responding. Please try again, or start a new chat.',
+  },
   errorConversationBusy: {
     id: 'app.components.aiAssistant.errorConversationBusy',
     defaultMessage:

@@ -105,6 +105,19 @@ describe('AssistantPanel', () => {
     expect(screen.getByRole('textbox')).toBeDisabled();
   });
 
+  it('lets the user start a new chat while the assistant works', () => {
+    mockConversation = conversation({
+      ...baseAttributes,
+      status: 'running',
+      last_error_code: null,
+    });
+    renderPanel();
+
+    expect(
+      screen.getByRole('button', { name: 'New chat' })
+    ).not.toHaveAttribute('aria-disabled', 'true');
+  });
+
   it('shows why the last turn failed', () => {
     mockConversation = conversation({
       ...baseAttributes,

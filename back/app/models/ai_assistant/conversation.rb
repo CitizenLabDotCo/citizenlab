@@ -29,6 +29,8 @@ module AIAssistant
   # survey of a phase. +context_key+ says which assistant context (its prompt) applies.
   class Conversation < ApplicationRecord
     STATUSES = %w[idle running failed].freeze
+    # A running turn stores a message more often than this, unless its job was lost.
+    TURN_TIMEOUT = 10.minutes
 
     belongs_to :user
     belongs_to :context, polymorphic: true
@@ -38,5 +40,12 @@ module AIAssistant
     enum :status, STATUSES.index_by(&:itself)
 
     validates :context_key, :locale, presence: true
+
+    # Gets the conversation out of a state that nothing would end anymore.
+    def recover_if_stuck!
+      return unless running? && updated_at < TURN_TIMEOUT.ago
+
+      update!(status: 'failed', last_error_code: 'turn_timed_out')
+    end
   end
 end

@@ -24,6 +24,8 @@ export const getErrorMessage = (
       return messages.errorContextTooLong;
     case 'context_unavailable':
       return messages.errorContextUnavailable;
+    case 'turn_timed_out':
+      return messages.errorTurnTimedOut;
     case 'conversation_busy':
       return messages.errorConversationBusy;
     case 'too_long':

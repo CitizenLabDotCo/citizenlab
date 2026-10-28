@@ -66,6 +66,15 @@ resource 'AI assistant conversations' do
         expect(response_data[:attributes]).to include(context_key: 'survey_builder', status: 'idle')
         expect(json_response_body[:included].pluck(:type)).to contain_exactly('ai_assistant_message', 'ai_assistant_message')
       end
+
+      example 'Get a conversation whose turn stopped making progress', document: false do
+        conversation.update_columns(status: 'running', updated_at: 11.minutes.ago)
+
+        do_request
+
+        assert_status 200
+        expect(response_data[:attributes]).to include(status: 'failed', last_error_code: 'turn_timed_out')
+      end
     end
 
     context 'when another super admin' do
