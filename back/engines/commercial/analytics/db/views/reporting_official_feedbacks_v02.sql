@@ -3,7 +3,7 @@
 -- every row joins reporting_inputs.
 --
 -- Mentions in the body are replaced by a plain '@mention', as in
--- reporting_comments, so the body never names the mentioned user.
+-- reporting_comments, with the same exception for deleted users.
 SELECT
     ofb.id,
     ofb.idea_id AS input_id,
@@ -12,7 +12,7 @@ SELECT
             NULLIF(ofb.body_multiloc ->> (SELECT ac.settings -> 'core' -> 'locales' ->> 0 FROM app_configurations ac LIMIT 1), ''),
             (SELECT t.value FROM jsonb_each_text(ofb.body_multiloc) t WHERE t.value <> '' ORDER BY t.key LIMIT 1)
         ),
-        '<span[^>]*class="cl-mention-user"[^>]*>[^<]*</span>',
+        '<span[^>]*class="cl-mention-user"[^>]*>(?:[^<]|<(?!/span>))*</span>',
         '@mention',
         'g'
     ) AS body,

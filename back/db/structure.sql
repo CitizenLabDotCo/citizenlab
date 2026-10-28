@@ -4006,7 +4006,7 @@ CREATE VIEW public.reporting_comments AS
            FROM jsonb_each_text(c.body_multiloc) t(key, value)
           WHERE (t.value <> ''::text)
           ORDER BY t.key
-         LIMIT 1)), '<span[^>]*class="cl-mention-user"[^>]*>[^<]*</span>'::text, '@mention'::text, 'g'::text) AS body,
+         LIMIT 1)), '<span[^>]*class="cl-mention-user"[^>]*>(?:[^<]|<(?!/span>))*</span>'::text, '@mention'::text, 'g'::text) AS body,
     c.likes_count,
     c.dislikes_count,
     c.created_at
@@ -4792,7 +4792,7 @@ CREATE VIEW public.reporting_official_feedbacks AS
            FROM jsonb_each_text(ofb.body_multiloc) t(key, value)
           WHERE (t.value <> ''::text)
           ORDER BY t.key
-         LIMIT 1)), '<span[^>]*class="cl-mention-user"[^>]*>[^<]*</span>'::text, '@mention'::text, 'g'::text) AS body,
+         LIMIT 1)), '<span[^>]*class="cl-mention-user"[^>]*>(?:[^<]|<(?!/span>))*</span>'::text, '@mention'::text, 'g'::text) AS body,
     COALESCE(NULLIF((ofb.author_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
            FROM public.app_configurations ac
          LIMIT 1)), ''::text), ( SELECT t.value

@@ -38,6 +38,16 @@ RSpec.describe Analytics::Reporting::Comment do
     expect(body).not_to include(mentioned.id)
   end
 
+  it 'replaces mentions whose name the sanitizer turned into a link' do
+    linked = create(:user, first_name: 'Jane', last_name: 'www.janedoe.com')
+    plain = create(:user, first_name: 'John', last_name: 'Doe')
+    comment = create(:comment_with_mentions, mentioned_users: [linked, plain])
+    body = described_class.find(comment.id).body
+
+    expect(comment.reload.body_multiloc['en']).to include('<a ')
+    expect(body).to eq '@mention, @mention are sitting in a tree'
+  end
+
   it 'has no author for anonymous comments' do
     comment = create(:comment, anonymous: true)
 

@@ -41,6 +41,16 @@ RSpec.describe Analytics::Reporting::OfficialFeedback do
     expect(body).not_to include(mentioned.id)
   end
 
+  it 'replaces mentions whose name the sanitizer turned into a link' do
+    service = MentionService.new
+    users = [create(:user, last_name: 'www.janedoe.com'), create(:user)]
+    mentions = users.map { |user| service.add_span_around(service.user_to_mention(user), user) }
+    feedback = create(:official_feedback, body_multiloc: { 'en' => "<p>Thanks #{mentions.join(' and ')}.</p>" })
+
+    expect(feedback.reload.body_multiloc['en']).to include('<a ')
+    expect(described_class.find(feedback.id).body).to eq '<p>Thanks @mention and @mention.</p>'
+  end
+
   it 'excludes feedback on draft inputs' do
     feedback = create(:official_feedback, idea: create(:idea, publication_status: 'draft'))
 

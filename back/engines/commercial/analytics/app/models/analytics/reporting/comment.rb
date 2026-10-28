@@ -41,7 +41,9 @@ module Analytics
           'body' => <<~DOC.squish,
             The comment text, resolved to the platform primary locale. Stored as
             sanitized HTML: strip the tags before quoting it. Mentions of other
-            users read '@mention', without their names. Written by residents and
+            users read '@mention', without their names, except a mention of a
+            user who deleted their account before the comment was last edited:
+            that one stays as plain text with the name. Written by residents and
             not otherwise screened for personal data: leave out names, contact
             details and addresses when quoting it.
           DOC
