@@ -28,7 +28,8 @@ module AIAssistant
     ROLES = %w[user assistant].freeze
     MAX_CONTENT_LENGTH = 5000
 
-    belongs_to :conversation, class_name: 'AIAssistant::Conversation', inverse_of: :messages
+    # Touches the conversation, so a running turn shows its progress.
+    belongs_to :conversation, class_name: 'AIAssistant::Conversation', inverse_of: :messages, touch: true
 
     enum :role, ROLES.index_by(&:itself)
 

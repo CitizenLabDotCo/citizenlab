@@ -16,6 +16,7 @@ class WebApi::V1::AIAssistant::ConversationsController < ApplicationController
 
   def show
     conversation = authorize(::AIAssistant::Conversation.includes(:messages).find(params[:id]))
+    conversation.recover_if_stuck!
     render json: serialize(conversation)
   end
 
