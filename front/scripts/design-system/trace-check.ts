@@ -181,7 +181,23 @@ export const ROWS: Row[] = [
     select: { click: 'input[type="checkbox"] + div', layer: 'div' },
     row: 'stroke-color',
     value: 'rgb(118, 118, 118)',
-    // getColor is imported from ./utils: only same-file calls are followed.
+    // getColor is imported from ./utils: only same-file calls are followed,
+    // so the trace stops at the call that writes it, and the edit is refused.
+    expect: {
+      status: 'traced',
+      read: 'call',
+      file: 'component-library/components/Checkbox/index.tsx',
+      line: 42,
+      text: 'computed by getColor',
+    },
+  },
+  {
+    story: 'components-feedback-spinner--default',
+    element: 'the spinner',
+    select: { default: true, layer: 'span' },
+    row: 'radius',
+    value: '50%',
+    // Its rules align with no template of the index: said, not guessed.
     expect: { status: 'untraced', text: 'not traced' },
   },
   {

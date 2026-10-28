@@ -78,7 +78,7 @@ when their checks are updated.
 - `npm run ds:index` prints what it indexed: files, templates, declarations
   and the share of `${}` expressions it can read.
 - `npm run ds:trace-check -- --url <storybook base>` opens the workbench in
-  Chromium and checks 13 values against the lines they come from.
+  Chromium and checks 14 values against the lines they come from.
 - `npm run ds:demo-check -- --url <storybook base>` goes through the demo on
   ten components: select, read every value's source, change one value,
   Review, Send.
