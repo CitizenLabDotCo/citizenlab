@@ -185,9 +185,10 @@ describe('AssistantPanel', () => {
     mockAddFile.mockResolvedValue({ data: { id: 'file-1' } });
     mockAddMessage.mockRejectedValue(new Error('Request failed'));
     const { container } = renderPanel();
-    const fileInput =
-      container.querySelector<HTMLInputElement>('input[type="file"]');
-    if (!fileInput) throw new Error('No file input');
+    const fileInput = container.querySelector('input[type="file"]');
+    if (!(fileInput instanceof HTMLInputElement)) {
+      throw new Error('No file input');
+    }
 
     await userEvent.type(screen.getByRole('textbox'), 'Use this brief.');
     await userEvent.upload(
