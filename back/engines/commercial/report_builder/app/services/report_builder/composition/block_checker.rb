@@ -31,6 +31,9 @@ module ReportBuilder
       # @return [Hash] { text:, error:, screenshot: } — a tool outcome.
       def check(target, screenshot: false)
         return unavailable('There is no report to check yet.') if @layout.nil?
+        # The token below lets this block's SQL read every reporting view, which
+        # ReportingQueryPolicy keeps to admins. Refuse rather than mint it for anyone else.
+        return unavailable('Checking is not available to this author.') unless may_run_queries?
 
         result = @client.render(
           target: target,
@@ -56,6 +59,10 @@ module ReportBuilder
       end
 
       private
+
+      def may_run_queries?
+        ContentBuilder::ReportingQueryPolicy.new(@author, :reporting_query).create?
+      end
 
       def unavailable(text)
         { error: true, text: text, screenshot: nil }

@@ -32,6 +32,9 @@ RSpec.describe ReportBuilder::Composition::BlockChecker do
     }
   end
 
+  # Checking runs the block's SQL, which ReportingQueryPolicy gates on the flag.
+  before { SettingsService.new.activate_feature!('llm_reporting') }
+
   # Just enough of a PNG for the size to be read off its header.
   def png(width: 794, height: 600)
     Base64.strict_encode64("\x89PNG\r\n\x1a\n".b + [13].pack('N') + 'IHDR'.b + [width, height].pack('N2'))
@@ -46,6 +49,19 @@ RSpec.describe ReportBuilder::Composition::BlockChecker do
       end
 
       checker.check(checker.layout_target({}))
+    end
+
+    # The token is good for every reporting view, so minting one for a moderator
+    # would hand them data the reporting query policy keeps to admins.
+    it 'refuses to mint a data token for an author who may not run queries' do
+      expect(client).not_to receive(:render)
+
+      outcome = described_class
+        .new(layout: layout, author: create(:project_moderator), locale: 'en', client: client)
+        .check(checker.layout_target({}))
+
+      expect(outcome[:error]).to be true
+      expect(outcome[:text]).to include 'not available to this author'
     end
 
     it 'says so in one line when everything worked' do
