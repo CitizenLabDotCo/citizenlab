@@ -356,9 +356,12 @@ class User < ApplicationRecord
     return {} if tiers.empty?
 
     config = AppConfiguration.instance
-    AppConfiguration::Settings.early_access_tiers.select do |name, tier|
-      tiers.include?(tier) && !config.feature_activated_on_platform?(name)
-    end
+    AppConfiguration::Settings.early_access_tiers.filter_map do |name, tier|
+      next if config.feature_activated_on_platform?(name)
+
+      tier = 'general' if tier == 'internal' && config.settings(name, 'early_access_upgrade')
+      [name, tier] if tiers.include?(tier)
+    end.to_h
   end
 
   # The opt-ins that still apply: a feature can stop being offered after the user opted in.
