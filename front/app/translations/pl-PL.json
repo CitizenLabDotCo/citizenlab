@@ -170,7 +170,6 @@
   "app.components.CustomFieldsForm.blockedVerified": "Nie możesz edytować tego pola, ponieważ zawiera ono zweryfikowane informacje",
   "app.components.CustomFieldsForm.budgetFieldLabel": "Budżet",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "Kliknij mapę, aby ją narysować. Następnie przeciągnij punkty, aby je przesunąć.",
-  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": "Kliknij na mapie, aby dodać lokalizacje. Następnie przeciągnij punkty, aby je przenieść.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "Kliknij na mapę lub wpisz adres poniżej, aby dodać odpowiedź.",
   "app.components.CustomFieldsForm.confirm": "Potwierdź",
   "app.components.CustomFieldsForm.continueEditing": "Kontynuuj edycję",

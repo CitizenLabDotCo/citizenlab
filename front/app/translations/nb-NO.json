@@ -170,7 +170,6 @@
   "app.components.CustomFieldsForm.blockedVerified": "Du kan ikke redigere dette feltet fordi det inneholder verifisert informasjon",
   "app.components.CustomFieldsForm.budgetFieldLabel": "Budsjett",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "Klikk på kartet for å tegne. Dra deretter på punkter for å flytte dem.",
-  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": "Klikk på kartet for å legge til steder. Dra deretter i punktene for å flytte dem.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "Klikk på kartet eller skriv inn en adresse nedenfor for å legge til svaret ditt.",
   "app.components.CustomFieldsForm.confirm": "Bekreft",
   "app.components.CustomFieldsForm.continueEditing": "Fortsett å redigere",

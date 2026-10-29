@@ -170,7 +170,6 @@
   "app.components.CustomFieldsForm.blockedVerified": "Δεν μπορείτε να επεξεργαστείτε αυτό το πεδίο επειδή περιέχει επαληθευμένες πληροφορίες.",
   "app.components.CustomFieldsForm.budgetFieldLabel": "Προϋπολογισμός",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "Κάντε κλικ στο χάρτη για να σχεδιάσετε. Στη συνέχεια, σύρετε τα σημεία για να τα μετακινήσετε.",
-  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": "Κάντε κλικ στον χάρτη για να προσθέσετε τοποθεσίες. Στη συνέχεια, σύρετε τα σημεία για να τα μετακινήσετε.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "Κάντε κλικ στο χάρτη ή πληκτρολογήστε μια διεύθυνση παρακάτω για να προσθέσετε την απάντησή σας.",
   "app.components.CustomFieldsForm.confirm": "Επιβεβαίωση",
   "app.components.CustomFieldsForm.continueEditing": "Συνέχεια επεξεργασίας",

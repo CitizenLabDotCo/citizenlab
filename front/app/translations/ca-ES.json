@@ -170,7 +170,6 @@
   "app.components.CustomFieldsForm.blockedVerified": "No podeu editar aquest camp perquè conté informació verificada.",
   "app.components.CustomFieldsForm.budgetFieldLabel": "Pressupost",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "Feu clic al mapa per dibuixar-lo. A continuació, arrossegueu els punts per moure'ls.",
-  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": "Fes clic al mapa per afegir ubicacions. Després, arrossega els punts per moure'ls.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "Feu clic al mapa o escriviu una adreça a continuació per afegir la vostra resposta.",
   "app.components.CustomFieldsForm.confirm": "Confirma",
   "app.components.CustomFieldsForm.continueEditing": "Continua editant",

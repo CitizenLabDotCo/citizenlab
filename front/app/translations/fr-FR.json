@@ -170,7 +170,6 @@
   "app.components.CustomFieldsForm.blockedVerified": "Vous ne pouvez pas modifier ce champ car il contient des informations vérifiées",
   "app.components.CustomFieldsForm.budgetFieldLabel": "Budget",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "Cliquez sur la carte pour commencer à dessiner, puis faites glisser les points pour les déplacer.",
-  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": "Cliquez sur la carte pour ajouter des adresses. Ensuite, faites glisser les repères pour les déplacer.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "Cliquez sur la carte ou entrez une adresse ci-dessous pour ajouter votre réponse.",
   "app.components.CustomFieldsForm.confirm": "Confirmer",
   "app.components.CustomFieldsForm.continueEditing": "Continuer à modifier",

@@ -170,7 +170,6 @@
   "app.components.CustomFieldsForm.blockedVerified": "لا يمكنك تعديل هذا الحقل لأنه يحتوي على معلومات تم التحقق منها",
   "app.components.CustomFieldsForm.budgetFieldLabel": "ميزانية",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "انقر على الخريطة لرسمها. ثم اسحب النقاط لتحريكها.",
-  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": "انقر على الخريطة لإضافة مواقع. بعد ذلك، اسحب النقاط لتحريكها.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "انقر على الخريطة أو اكتب عنوانًا أدناه لإضافة إجابتك.",
   "app.components.CustomFieldsForm.confirm": "يتأكد",
   "app.components.CustomFieldsForm.continueEditing": "متابعة التعديل",

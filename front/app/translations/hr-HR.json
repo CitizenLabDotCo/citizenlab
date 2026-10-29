@@ -170,7 +170,6 @@
   "app.components.CustomFieldsForm.blockedVerified": "Ne možete uređivati ovo polje jer sadrži provjerene podatke",
   "app.components.CustomFieldsForm.budgetFieldLabel": "Proračun",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "Kliknite na kartu za crtanje. Zatim povucite točke da biste ih premjestili.",
-  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": "Kliknite na kartu kako biste dodali lokacije. Zatim povucite točke kako biste ih pomaknuli.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "Kliknite na kartu ili upišite adresu ispod kako biste dodali svoj odgovor.",
   "app.components.CustomFieldsForm.confirm": "Potvrdi",
   "app.components.CustomFieldsForm.continueEditing": "Nastavi s uređivanjem",

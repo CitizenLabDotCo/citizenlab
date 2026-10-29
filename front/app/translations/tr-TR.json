@@ -170,7 +170,6 @@
   "app.components.CustomFieldsForm.blockedVerified": "Doğrulanmış bilgiler içerdiği için bu alanı düzenleyemezsiniz",
   "app.components.CustomFieldsForm.budgetFieldLabel": "Bütçe",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "Çizmek için haritaya tıklayın. Ardından, noktaları taşımak için üzerlerine sürükleyin.",
-  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": "Konum eklemek için haritaya tıklayın. Ardından, noktaları taşımak için üzerlerinden sürükleyin.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "Cevabınızı eklemek için haritaya tıklayın veya aşağıya bir adres yazın.",
   "app.components.CustomFieldsForm.confirm": "Onaylayın",
   "app.components.CustomFieldsForm.continueEditing": "Düzenlemeye devam et",

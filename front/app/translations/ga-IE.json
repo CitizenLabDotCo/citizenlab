@@ -170,7 +170,6 @@
   "app.components.CustomFieldsForm.blockedVerified": "Ní féidir leat an réimse seo a chur in eagar mar go bhfuil faisnéis fhíoraithe ann.",
   "app.components.CustomFieldsForm.budgetFieldLabel": "Buiséad",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "Cliceáil ar an léarscáil le tarraingt. Ansin, tarraing pointí le bogadh.",
-  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": "Cliceáil ar an léarscáil chun suíomhanna a chur leis. Ansin, tarraing na pointí chun iad a bhogadh.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "Cliceáil ar an léarscáil nó clóscríobh seoladh thíos chun do fhreagra a chur leis.",
   "app.components.CustomFieldsForm.confirm": "Deimhnigh",
   "app.components.CustomFieldsForm.continueEditing": "Lean ort ag eagarthóireacht",

@@ -170,7 +170,6 @@
   "app.components.CustomFieldsForm.blockedVerified": "Šo lauku nevar rediģēt, jo tas satur pārbaudītu informāciju.",
   "app.components.CustomFieldsForm.budgetFieldLabel": "Budžets",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "Noklikšķiniet uz kartes, lai zīmētu. Pēc tam velciet punktus, lai tos pārvietotu.",
-  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": "Noklikšķiniet uz kartes, lai pievienotu vietas. Pēc tam velciet punktus, lai tos pārvietotu.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "Lai pievienotu atbildi, noklikšķiniet uz kartes vai ierakstiet adresi zemāk.",
   "app.components.CustomFieldsForm.confirm": "Apstipriniet",
   "app.components.CustomFieldsForm.continueEditing": "Turpināt rediģēt",

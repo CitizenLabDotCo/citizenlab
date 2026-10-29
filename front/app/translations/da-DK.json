@@ -170,7 +170,6 @@
   "app.components.CustomFieldsForm.blockedVerified": "Du kan ikke redigere dette felt da det indeholder verificerede informationer",
   "app.components.CustomFieldsForm.budgetFieldLabel": "Budget",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "Klik på kortet for at tegne. Træk derefter i punkterne for at flytte dem.",
-  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": "Klik på kortet for at tilføje lokationer. Træk derefter i punkterne for at flytte dem.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "Klik på kortet eller skriv en adresse nedenfor for at tilføje dit svar.",
   "app.components.CustomFieldsForm.confirm": "Bekræft",
   "app.components.CustomFieldsForm.continueEditing": "Fortsæt redigering",

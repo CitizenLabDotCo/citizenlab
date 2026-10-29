@@ -170,7 +170,6 @@
   "app.components.CustomFieldsForm.blockedVerified": "No puede editar este campo porque contiene información verificada",
   "app.components.CustomFieldsForm.budgetFieldLabel": "Presupuesto",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "Haz clic en el mapa para dibujar. Luego, arrastra sobre los puntos para moverlos.",
-  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": "Haz clic en el mapa para añadir ubicaciones. Después, arrastra los puntos para moverlos.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "Haz clic en el mapa o escribe una dirección abajo para añadir tu respuesta.",
   "app.components.CustomFieldsForm.confirm": "Confirmar",
   "app.components.CustomFieldsForm.continueEditing": "Continuar editando",

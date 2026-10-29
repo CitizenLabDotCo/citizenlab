@@ -170,7 +170,6 @@
   "app.components.CustomFieldsForm.blockedVerified": "Ni allwch olygu'r maes hwn oherwydd ei fod yn cynnwys gwybodaeth wedi'i gwirio",
   "app.components.CustomFieldsForm.budgetFieldLabel": "Cyllideb",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "Cliciwch ar y map i'w luniadu. Yna, llusgwch bwyntiau i'w symud.",
-  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": "Cliciwch ar y map i ychwanegu lleoliadau. Yna, llusgwch y pwyntiau i'w symud.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "Cliciwch ar y map neu teipiwch gyfeiriad isod i ychwanegu eich ateb.",
   "app.components.CustomFieldsForm.confirm": "Cadarnhau",
   "app.components.CustomFieldsForm.continueEditing": "Parhau i olygu",

@@ -170,7 +170,6 @@
   "app.components.CustomFieldsForm.blockedVerified": "Du kannst dieses Feld nicht bearbeiten, da es verifizierte Informationen enthält",
   "app.components.CustomFieldsForm.budgetFieldLabel": "Haushalt",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "Klicke zum Zeichnen auf die Karte. Ziehe dann an den Punkten, um sie zu verschieben.",
-  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": "Auf die Karte klicken, um Standorte hinzuzufügen. Ziehe dann an den Punkten, um sie zu verschieben.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "Klicke auf die Karte oder gebe unten eine Adresse ein, um deine Antwort hinzuzufügen.",
   "app.components.CustomFieldsForm.confirm": "Bestätigen",
   "app.components.CustomFieldsForm.continueEditing": "Weiter bearbeiten",

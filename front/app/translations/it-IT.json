@@ -170,7 +170,6 @@
   "app.components.CustomFieldsForm.blockedVerified": "Non è possibile modificare questo campo perché contiene informazioni verificate",
   "app.components.CustomFieldsForm.budgetFieldLabel": "Bilancio",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "Clicca sulla mappa per disegnare. Poi, trascina i punti per spostarli.",
-  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": "Fai clic sulla mappa per aggiungere posizioni. Quindi, trascina i punti per spostarli.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "Clicca sulla mappa o digita un indirizzo qui sotto per aggiungere la tua risposta.",
   "app.components.CustomFieldsForm.confirm": "Conferma",
   "app.components.CustomFieldsForm.continueEditing": "Continua a modificare",

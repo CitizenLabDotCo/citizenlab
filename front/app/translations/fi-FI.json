@@ -170,7 +170,6 @@
   "app.components.CustomFieldsForm.blockedVerified": "Et voi muokata tätä kenttää, koska se sisältää vahvistettuja tietoja",
   "app.components.CustomFieldsForm.budgetFieldLabel": "Budjetti",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "Piirrä karttaa napsauttamalla sitä. Vedä sitten pisteitä siirtääksesi niitä.",
-  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": "Klikkaa karttaa lisätäksesi sijainteja. Voit siirtää pisteitä vetämällä niitä.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "Lisää vastauksesi napsauttamalla karttaa tai kirjoittamalla osoite alla.",
   "app.components.CustomFieldsForm.confirm": "Vahvistaa",
   "app.components.CustomFieldsForm.continueEditing": "Jatka muokkaamista",

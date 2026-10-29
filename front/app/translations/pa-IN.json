@@ -170,7 +170,6 @@
   "app.components.CustomFieldsForm.blockedVerified": "ਤੁਸੀਂ ਇਸ ਖੇਤਰ ਨੂੰ ਸੰਪਾਦਿਤ ਨਹੀਂ ਕਰ ਸਕਦੇ ਕਿਉਂਕਿ ਇਸ ਵਿੱਚ ਪੁਸ਼ਟੀ ਕੀਤੀ ਜਾਣਕਾਰੀ ਹੈ।",
   "app.components.CustomFieldsForm.budgetFieldLabel": "ਬਜਟ",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "ਖਿੱਚਣ ਲਈ ਨਕਸ਼ੇ 'ਤੇ ਕਲਿੱਕ ਕਰੋ। ਫਿਰ, ਬਿੰਦੂਆਂ ਨੂੰ ਹਿਲਾਉਣ ਲਈ ਉਨ੍ਹਾਂ 'ਤੇ ਘਸੀਟੋ।",
-  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": "ਥਾਵਾਂ ਜੋੜਨ ਲਈ ਨਕਸ਼ੇ 'ਤੇ ਕਲਿੱਕ ਕਰੋ। ਫਿਰ, ਬਿੰਦੂਆਂ ਨੂੰ ਹਿਲਾਉਣ ਲਈ ਉਹਨਾਂ ਨੂੰ ਖਿੱਚੋ।",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "ਆਪਣਾ ਜਵਾਬ ਜੋੜਨ ਲਈ ਨਕਸ਼ੇ 'ਤੇ ਕਲਿੱਕ ਕਰੋ ਜਾਂ ਹੇਠਾਂ ਇੱਕ ਪਤਾ ਟਾਈਪ ਕਰੋ।",
   "app.components.CustomFieldsForm.confirm": "ਪੁਸ਼ਟੀ ਕਰੋ",
   "app.components.CustomFieldsForm.continueEditing": "ਸੋਧਣਾ ਜਾਰੀ ਰੱਖੋ",

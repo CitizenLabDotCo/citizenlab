@@ -170,7 +170,6 @@
   "app.components.CustomFieldsForm.blockedVerified": "Šio lauko redaguoti negalima, nes jame yra patikrinta informacija.",
   "app.components.CustomFieldsForm.budgetFieldLabel": "Biudžetas",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "Spustelėkite žemėlapį ir pieškite. Tada vilkite taškus, kad juos perkeltumėte.",
-  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": "Spustelėkite žemėlapyje, kad pridėtumėte vietų. Tada vilkite taškus, kad juos perkeltumėte.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "Spustelėkite žemėlapį arba įveskite adresą ir pridėkite atsakymą.",
   "app.components.CustomFieldsForm.confirm": "Patvirtinkite",
   "app.components.CustomFieldsForm.continueEditing": "Tęsti redagavimą",

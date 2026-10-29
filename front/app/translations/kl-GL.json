@@ -170,7 +170,6 @@
   "app.components.CustomFieldsForm.blockedVerified": "You can't edit this field because it contains verified information",
   "app.components.CustomFieldsForm.budgetFieldLabel": "Budget",
   "app.components.CustomFieldsForm.clickOnMapMultipleToAdd3": "Click on the map to draw. Then, drag on points to move them.",
-  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins": "Nunap assinga tooruk sumiiffinnik ikkussiniarlutit. Taava toqqitatit kalillugit nuussinnaavatit.",
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": "Click on the map or type an address below to add your answer.",
   "app.components.CustomFieldsForm.confirm": "Confirm",
   "app.components.CustomFieldsForm.continueEditing": "Aaqqissuineq nangiguk",
