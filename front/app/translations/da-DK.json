@@ -1546,7 +1546,7 @@
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Hvad bruger vi cookies til?",
   "app.containers.CustomPageBuilder.customPage": "Tilpasset side",
   "app.containers.CustomPageBuilder.saveError": "Der opstod en fejl under gemning af den tilpassede side.",
-  "app.containers.CustomPageBuilder.saveErrorUnauthorizedFile": "Den brugerdefinerede side blev ikke gemt, fordi du ikke kan bruge en af de filer, du har tilføjet. Fjern den, eller bed en administrator om at tilføje den.",
+  "app.containers.CustomPageBuilder.saveErrorUnauthorizedFile": "Den tilpassede side blev ikke gemt, fordi du ikke kan bruge en af de filer, du har tilføjet. Fjern den, eller bed en administrator om at tilføje den.",
   "app.containers.CustomPageShow.editPage": "Rediger side",
   "app.containers.CustomPageShow.goBack": "Gå tilbage",
   "app.containers.CustomPageShow.notFound": "Side ikke fundet",

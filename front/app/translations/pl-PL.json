@@ -1546,7 +1546,7 @@
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Do czego używamy cookie?",
   "app.containers.CustomPageBuilder.customPage": "Strona niestandardowa",
   "app.containers.CustomPageBuilder.saveError": "Wystąpił błąd podczas zapisywania strony niestandardowej.",
-  "app.containers.CustomPageBuilder.saveErrorUnauthorizedFile": "Strona niestandardowa nie została zapisana, ponieważ nie możesz użyć jednego z dodanych plików. Usuń go lub poproś administratora o jego dodanie.",
+  "app.containers.CustomPageBuilder.saveErrorUnauthorizedFile": "Strona własna nie została zapisana, ponieważ nie możesz użyć jednego z dodanych plików. Usuń go lub poproś administratora o jego dodanie.",
   "app.containers.CustomPageShow.editPage": "Edytuj stronę",
   "app.containers.CustomPageShow.goBack": "Wróć",
   "app.containers.CustomPageShow.notFound": "Nie znaleziono strony",

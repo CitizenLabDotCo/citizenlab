@@ -1546,7 +1546,7 @@
   "app.containers.CookiePolicy.whatDoWeUseCookiesFor": "Hva bruker vi informasjonskapsler til?",
   "app.containers.CustomPageBuilder.customPage": "Egendefinert side",
   "app.containers.CustomPageBuilder.saveError": "Det oppsto en feil under lagring av den egendefinerte siden.",
-  "app.containers.CustomPageBuilder.saveErrorUnauthorizedFile": "Den egendefinerte siden ble ikke lagret fordi du ikke kan bruke en av filene du la til. Fjern den, eller be en administrator om å legge den til.",
+  "app.containers.CustomPageBuilder.saveErrorUnauthorizedFile": "Den tilpassede siden ble ikke lagret fordi du ikke kan bruke en av filene du la til. Fjern den, eller be en administrator om å legge den til.",
   "app.containers.CustomPageShow.editPage": "Rediger side",
   "app.containers.CustomPageShow.goBack": "Gå tilbake",
   "app.containers.CustomPageShow.notFound": "Siden ble ikke funnet",
