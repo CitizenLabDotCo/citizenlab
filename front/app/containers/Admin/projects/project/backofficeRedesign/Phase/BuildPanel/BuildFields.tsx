@@ -99,6 +99,7 @@ const BuildFields = ({
         {phaseId && (
           <DescriptionField
             projectId={projectId}
+            phaseId={phaseId}
             value={formData.description_multiloc}
             errors={errors}
             onChange={(description_multiloc) =>

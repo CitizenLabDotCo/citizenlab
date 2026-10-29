@@ -6,7 +6,6 @@ import {
   Button,
   IconTooltip,
   Spinner,
-  Badge,
   Icon,
   colors,
 } from '@citizenlab/cl2-component-library';
@@ -18,6 +17,7 @@ import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
+import { QuillVariant } from 'components/UI/QuillEditor/StyleContainer';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
@@ -25,6 +25,8 @@ import { isEmptyMultiloc } from 'utils/helperUtils';
 import { useParams } from 'utils/router';
 
 import messages from '../messages';
+
+import StatusBadges from './StatusBadges';
 
 const AUTOSAVE_DEBOUNCE_MS = 1000;
 
@@ -36,14 +38,19 @@ interface Props {
   phaseId: string;
   descriptionMultiloc: Multiloc;
   draftDescriptionMultiloc: Multiloc | undefined;
+  variant?: QuillVariant;
+  placeholder?: string;
 }
 
 const DraftPhaseDescription = ({
   phaseId,
   descriptionMultiloc,
   draftDescriptionMultiloc: initialDraft,
+  variant = 'default',
+  placeholder,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const isBo = variant === 'bo';
   const { projectId } = useParams({ strict: false }) as { projectId: string };
   const { data: phases } = usePhases(projectId);
   const { mutate: updatePhase, isPending } = useUpdatePhase();
@@ -120,45 +127,47 @@ const DraftPhaseDescription = ({
     );
   };
 
+  const statusTooltip = formatMessage(
+    isEditing
+      ? messages.draftDescriptionDraftTooltip
+      : messages.draftDescriptionPublishedTooltip
+  );
+
   return (
     <FormProvider {...methods}>
       <Box>
-        <Box display="flex" alignItems="center" gap="8px">
-          <Text fontWeight="bold" m="0px">
-            {formatMessage(messages.descriptionLabel)}
-          </Text>
-          <IconTooltip
-            content={formatMessage(
-              isEditing
-                ? messages.draftDescriptionDraftTooltip
-                : messages.draftDescriptionPublishedTooltip
-            )}
-          />
-          <Badge
-            color={isEditing ? colors.orange500 : colors.green500}
-            className="inverse"
-          >
-            {formatMessage(
-              isEditing
-                ? messages.draftDescriptionDraftBadge
-                : messages.draftDescriptionPublishedBadge
-            )}
-          </Badge>
-          <Badge color={colors.coolGrey600} className="inverse">
-            {formatMessage(messages.beta)}
-          </Badge>
-        </Box>
+        {!isBo && (
+          <Box display="flex" alignItems="center" gap="8px">
+            <Text fontWeight="bold" m="0px">
+              {formatMessage(messages.descriptionLabel)}
+            </Text>
+            <IconTooltip content={statusTooltip} />
+            <StatusBadges isEditing={!!isEditing} variant={variant} />
+          </Box>
+        )}
         {phases &&
           phases.data.length < 2 &&
           isEmptyMultiloc(descriptionMultiloc) && (
-            <Box my="16px">
-              <Warning>
+            <Box mt={isBo ? '0px' : '16px'} mb={isBo ? '8px' : '16px'}>
+              <Warning variant={variant}>
                 {formatMessage(messages.emptyDescriptionWarning)}
               </Warning>
             </Box>
           )}
         <QuillMultilocWithLocaleSwitcher
           name="draft_description_multiloc"
+          variant={variant}
+          minHeight={isBo ? '74px' : undefined}
+          label={
+            isBo ? (
+              <StatusBadges isEditing={!!isEditing} variant={variant} />
+            ) : undefined
+          }
+          labelTooltipText={isBo ? statusTooltip : undefined}
+          ariaLabel={
+            isBo ? formatMessage(messages.descriptionLabel) : undefined
+          }
+          placeholder={placeholder}
           withCTAButton
           onFocus={isEditing ? undefined : handleClickToEdit}
         />
@@ -172,7 +181,9 @@ const DraftPhaseDescription = ({
             mt="8px"
           >
             <Button
-              buttonStyle="text"
+              buttonStyle={isBo ? 'bo-text' : 'text'}
+              boSize={isBo ? 'medium' : undefined}
+              textDecoration={isBo ? 'underline' : undefined}
               onClick={handleDiscard}
               padding="0px"
               disabled={isPending}
@@ -196,7 +207,8 @@ const DraftPhaseDescription = ({
                 </Box>
               ) : null}
               <Button
-                buttonStyle="admin-dark"
+                buttonStyle={isBo ? 'bo-primary' : 'admin-dark'}
+                boSize={isBo ? 'medium' : undefined}
                 onClick={handlePublish}
                 disabled={isPending}
               >
