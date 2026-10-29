@@ -105,7 +105,8 @@ module AIAssistant
 
     def user_content(message)
       content = RubyLLM::Content.new(message.content.presence || ATTACHMENTS_ONLY_TEXT)
-      message.files.each do |file|
+      # The consent to share a file with AI can be withdrawn after it was attached.
+      message.files.where(ai_processing_allowed: true).each do |file|
         content.add_attachment(StringIO.new(file.content.read), filename: file.name)
       end
       content

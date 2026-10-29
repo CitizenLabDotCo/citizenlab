@@ -231,5 +231,16 @@ describe AIAssistant::Turn do
       expect(blocks.first['text']).to eq('Create a survey about our park.')
       expect(blocks.pluck('document').compact.sole).to include('format' => 'pdf')
     end
+
+    it 'stops sending files once they may no longer be shared with AI', :active_job_que_adapter do
+      file = create(:file, projects: [phase.project], ai_processing_allowed: true)
+      user_message.update!(file_ids: [file.id])
+      file.update!(ai_processing_allowed: false)
+      stub_bedrock(bedrock_text('Which topics should the survey cover?'))
+
+      turn.run
+
+      expect(last_request_messages.first['content'].pluck('document').compact).to be_empty
+    end
   end
 end
