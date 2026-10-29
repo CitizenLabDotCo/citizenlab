@@ -173,6 +173,7 @@ module ReportBuilder
           .registration
           .enabled
           .where(input_type: CHARTABLE_FIELD_TYPES)
+          .order(:ordering)
           .to_a
       end
 
