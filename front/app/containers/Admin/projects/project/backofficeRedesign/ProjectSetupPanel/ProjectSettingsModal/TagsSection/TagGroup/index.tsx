@@ -23,10 +23,10 @@ import { useIntl } from 'utils/cl-intl';
 import SortableTag, {
   ROOT_TAG_TYPE,
   SortableTagRenderProps,
-} from './SortableTag';
-import TagActions from './TagActions';
-import { getSiblings } from './tagUtils';
-import useSortableTags from './useSortableTags';
+} from '../SortableTag';
+import TagActions from '../TagActions';
+import useSortableTags from '../useSortableTags';
+import { getSiblings } from '../utils';
 
 interface Props {
   topic: IInputTopicData;

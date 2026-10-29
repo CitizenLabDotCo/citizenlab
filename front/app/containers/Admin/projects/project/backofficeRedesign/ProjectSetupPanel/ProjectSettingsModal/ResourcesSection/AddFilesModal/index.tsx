@@ -23,9 +23,9 @@ import Modal from 'components/UI/Modal';
 import { useIntl } from 'utils/cl-intl';
 import { returnFileSize } from 'utils/fileUtils';
 
-import { FILE_MODAL_HEIGHT } from './FileRow';
-import UploadingFileRow from './UploadingFileRow';
-import { FilesDraft, Upload } from './useFilesDraft';
+import { FILE_MODAL_HEIGHT } from '../FileRow';
+import UploadingFileRow from '../UploadingFileRow';
+import { FilesDraft, Upload } from '../useFilesDraft';
 
 interface Props {
   draft: FilesDraft;

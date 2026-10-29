@@ -24,9 +24,9 @@ import DiscardChangesModal from './DiscardChangesModal';
 import GeneralSection from './GeneralSection';
 import PerspectivesSection from './PerspectivesSection';
 import ResourcesSection from './ResourcesSection';
+import useFilesDraft from './ResourcesSection/useFilesDraft';
 import TagsSection from './TagsSection';
-import useFilesDraft from './useFilesDraft';
-import useTagsDraft from './useTagsDraft';
+import useTagsDraft from './TagsSection/useTagsDraft';
 
 interface Props {
   project: IProjectData;

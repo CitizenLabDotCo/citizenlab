@@ -31,9 +31,9 @@ import { usePermission } from 'utils/permissions';
 
 import SortableTag, { ROOT_TAG_TYPE } from './SortableTag';
 import TagGroup from './TagGroup';
-import { getSiblings } from './tagUtils';
 import useSortableTags from './useSortableTags';
 import { TagsDraft } from './useTagsDraft';
+import { getSiblings } from './utils';
 
 const TOPICS_SETTINGS_PATH = '/admin/settings/topics/input';
 

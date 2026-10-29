@@ -18,8 +18,8 @@ import filesMessages from 'containers/Admin/projects/project/files/components/me
 
 import { useIntl } from 'utils/cl-intl';
 
-import FileRow, { FILE_ROW_ACTION_CLASS } from './FileRow';
-import { getFileIcon } from './fileUtils';
+import FileRow, { FILE_ROW_ACTION_CLASS } from '../FileRow';
+import { getFileIcon } from '../utils';
 
 interface Props {
   file: File;

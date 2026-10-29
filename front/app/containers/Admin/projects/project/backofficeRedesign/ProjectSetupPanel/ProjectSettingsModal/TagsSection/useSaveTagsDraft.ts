@@ -5,7 +5,7 @@ import useInputTopics from 'api/input_topics/useInputTopics';
 import useMoveInputTopic from 'api/input_topics/useMoveInputTopic';
 import useUpdateInputTopic from 'api/input_topics/useUpdateInputTopic';
 
-import { getParentId, getSiblings, hasChanged, isDraftId } from './tagUtils';
+import { getParentId, getSiblings, hasChanged, isDraftId } from './utils';
 
 // Sends a tags draft to the API, one request per change.
 const useSaveTagsDraft = (projectId: string) => {

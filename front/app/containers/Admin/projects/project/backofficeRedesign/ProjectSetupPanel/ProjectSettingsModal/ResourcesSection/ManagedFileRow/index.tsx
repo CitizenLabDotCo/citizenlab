@@ -19,9 +19,9 @@ import UserName from 'components/UI/UserName';
 import { useIntl } from 'utils/cl-intl';
 import { saveFileToDisk } from 'utils/fileUtils';
 
-import FileActionsMenu, { FileAction } from './FileActionsMenu';
-import FileRow, { FILE_ROW_ACTION_CLASS } from './FileRow';
-import { getFileIcon } from './fileUtils';
+import FileActionsMenu, { FileAction } from '../FileActionsMenu';
+import FileRow, { FILE_ROW_ACTION_CLASS } from '../FileRow';
+import { getFileIcon } from '../utils';
 
 interface Props {
   file: IFileData;

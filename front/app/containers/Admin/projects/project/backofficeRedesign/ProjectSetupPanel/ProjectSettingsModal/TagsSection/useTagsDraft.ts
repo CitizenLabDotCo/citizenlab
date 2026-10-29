@@ -5,8 +5,8 @@ import useInputTopics from 'api/input_topics/useInputTopics';
 
 import { InputTopicFormValues } from 'containers/Admin/projects/project/topics/InputTopicModal';
 
-import { DRAFT_ID_PREFIX, getParentId } from './tagUtils';
 import useSaveTagsDraft from './useSaveTagsDraft';
+import { DRAFT_ID_PREFIX, getParentId } from './utils';
 
 // Tag changes stay in this draft until the settings modal is saved. The draft
 // has the same shape as the API data, so the tag list renders either one.

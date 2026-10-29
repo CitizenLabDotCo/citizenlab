@@ -13,11 +13,11 @@ import SearchInput from 'components/UI/SearchInput';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { FILE_MODAL_HEIGHT } from './FileRow';
-import ManagedFileRow from './ManagedFileRow';
-import UploadingFileRow from './UploadingFileRow';
-import useFilesCount from './useFilesCount';
-import { FilesDraft } from './useFilesDraft';
+import { FILE_MODAL_HEIGHT } from '../FileRow';
+import ManagedFileRow from '../ManagedFileRow';
+import UploadingFileRow from '../UploadingFileRow';
+import useFilesCount from '../useFilesCount';
+import { FilesDraft } from '../useFilesDraft';
 
 const PAGE_SIZE = 20;
 
