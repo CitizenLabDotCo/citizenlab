@@ -2067,6 +2067,7 @@
   "app.containers.Admin.projects.project.itemNotReady": "Non pronto",
   "app.containers.Admin.projects.project.itemReady": "Pronto",
   "app.containers.Admin.projects.project.itemsReady": "{ready} su {total} pronti",
+  "app.containers.Admin.projects.project.listing": "Elenco",
   "app.containers.Admin.projects.project.manageFiles": "Gestisci file",
   "app.containers.Admin.projects.project.manageView": "Gestisci",
   "app.containers.Admin.projects.project.messagingSection": "Messaggistica",

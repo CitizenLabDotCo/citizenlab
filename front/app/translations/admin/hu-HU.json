@@ -2067,6 +2067,7 @@
   "app.containers.Admin.projects.project.itemNotReady": "Nincs kész",
   "app.containers.Admin.projects.project.itemReady": "Kész",
   "app.containers.Admin.projects.project.itemsReady": "{ready} / {total} kész",
+  "app.containers.Admin.projects.project.listing": "Listázás",
   "app.containers.Admin.projects.project.manageFiles": "Fájlok kezelése",
   "app.containers.Admin.projects.project.manageView": "Kezelés",
   "app.containers.Admin.projects.project.messagingSection": "Üzenetküldés",

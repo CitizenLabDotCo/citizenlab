@@ -2067,6 +2067,7 @@
   "app.containers.Admin.projects.project.itemNotReady": "Piareersimanngilaq",
   "app.containers.Admin.projects.project.itemReady": "Piareerpoq",
   "app.containers.Admin.projects.project.itemsReady": "{ready} {total}-niit piareerput",
+  "app.containers.Admin.projects.project.listing": "Allattorsimaffik",
   "app.containers.Admin.projects.project.manageFiles": "Fiilit aqukkut",
   "app.containers.Admin.projects.project.manageView": "Aqutariuk",
   "app.containers.Admin.projects.project.messagingSection": "Nalunaaruteqarneq",

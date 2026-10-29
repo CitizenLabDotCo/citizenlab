@@ -2067,6 +2067,7 @@
   "app.containers.Admin.projects.project.itemNotReady": "Niet klaar",
   "app.containers.Admin.projects.project.itemReady": "Klaar",
   "app.containers.Admin.projects.project.itemsReady": "{ready} van de {total} gereed",
+  "app.containers.Admin.projects.project.listing": "Vermelding",
   "app.containers.Admin.projects.project.manageFiles": "Bestanden beheren",
   "app.containers.Admin.projects.project.manageView": "Beheren",
   "app.containers.Admin.projects.project.messagingSection": "Berichten",

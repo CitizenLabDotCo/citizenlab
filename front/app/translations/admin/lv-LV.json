@@ -2067,6 +2067,7 @@
   "app.containers.Admin.projects.project.itemNotReady": "Nav gatavs",
   "app.containers.Admin.projects.project.itemReady": "Gatavs",
   "app.containers.Admin.projects.project.itemsReady": "{ready} no {total} gatavi",
+  "app.containers.Admin.projects.project.listing": "Saraksts",
   "app.containers.Admin.projects.project.manageFiles": "Pārvaldīt failus",
   "app.containers.Admin.projects.project.manageView": "Pārvaldīt",
   "app.containers.Admin.projects.project.messagingSection": "Ziņapmaiņa",

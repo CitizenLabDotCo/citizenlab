@@ -2067,6 +2067,7 @@
   "app.containers.Admin.projects.project.itemNotReady": "تیار نہیں",
   "app.containers.Admin.projects.project.itemReady": "تیار",
   "app.containers.Admin.projects.project.itemsReady": "{total} میں سے {ready} تیار",
+  "app.containers.Admin.projects.project.listing": "فہرست",
   "app.containers.Admin.projects.project.manageFiles": "فائلوں کا انتظام کریں",
   "app.containers.Admin.projects.project.manageView": "انتظام کریں",
   "app.containers.Admin.projects.project.messagingSection": "پیغام رسانی",

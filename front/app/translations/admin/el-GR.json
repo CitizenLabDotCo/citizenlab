@@ -2067,6 +2067,7 @@
   "app.containers.Admin.projects.project.itemNotReady": "Μη έτοιμο",
   "app.containers.Admin.projects.project.itemReady": "Έτοιμο",
   "app.containers.Admin.projects.project.itemsReady": "{ready} από {total} έτοιμα",
+  "app.containers.Admin.projects.project.listing": "Λίστα",
   "app.containers.Admin.projects.project.manageFiles": "Διαχείριση αρχείων",
   "app.containers.Admin.projects.project.manageView": "Διαχείριση",
   "app.containers.Admin.projects.project.messagingSection": "Μηνύματα",

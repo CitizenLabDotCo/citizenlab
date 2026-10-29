@@ -2067,6 +2067,7 @@
   "app.containers.Admin.projects.project.itemNotReady": "Hazır değil",
   "app.containers.Admin.projects.project.itemReady": "Hazır",
   "app.containers.Admin.projects.project.itemsReady": "{total} üzerinden {ready} hazır",
+  "app.containers.Admin.projects.project.listing": "Listeleme",
   "app.containers.Admin.projects.project.manageFiles": "Dosyaları yönet",
   "app.containers.Admin.projects.project.manageView": "Yönet",
   "app.containers.Admin.projects.project.messagingSection": "Mesajlaşma",

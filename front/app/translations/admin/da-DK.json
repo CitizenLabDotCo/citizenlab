@@ -2067,6 +2067,7 @@
   "app.containers.Admin.projects.project.itemNotReady": "Ikke klar",
   "app.containers.Admin.projects.project.itemReady": "Klar",
   "app.containers.Admin.projects.project.itemsReady": "{ready} af {total} klar",
+  "app.containers.Admin.projects.project.listing": "Oversigt",
   "app.containers.Admin.projects.project.manageFiles": "Administrer filer",
   "app.containers.Admin.projects.project.manageView": "Administrer",
   "app.containers.Admin.projects.project.messagingSection": "Beskeder",

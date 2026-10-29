@@ -2067,6 +2067,7 @@
   "app.containers.Admin.projects.project.itemNotReady": "Níl sé réidh",
   "app.containers.Admin.projects.project.itemReady": "Réidh",
   "app.containers.Admin.projects.project.itemsReady": "{ready} as {total} réidh",
+  "app.containers.Admin.projects.project.listing": "Liostú",
   "app.containers.Admin.projects.project.manageFiles": "Bainistigh comhaid",
   "app.containers.Admin.projects.project.manageView": "Bainistigh",
   "app.containers.Admin.projects.project.messagingSection": "Teachtaireachtaí",

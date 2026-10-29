@@ -2067,6 +2067,7 @@
   "app.containers.Admin.projects.project.itemNotReady": "No està a punt",
   "app.containers.Admin.projects.project.itemReady": "A punt",
   "app.containers.Admin.projects.project.itemsReady": "{ready} de {total} a punt",
+  "app.containers.Admin.projects.project.listing": "Llistat",
   "app.containers.Admin.projects.project.manageFiles": "Gestiona els fitxers",
   "app.containers.Admin.projects.project.manageView": "Gestiona",
   "app.containers.Admin.projects.project.messagingSection": "Missatgeria",

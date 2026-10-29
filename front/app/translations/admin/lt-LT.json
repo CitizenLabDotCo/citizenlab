@@ -2067,6 +2067,7 @@
   "app.containers.Admin.projects.project.itemNotReady": "Neparuošta",
   "app.containers.Admin.projects.project.itemReady": "Paruošta",
   "app.containers.Admin.projects.project.itemsReady": "{ready} iš {total} paruošta",
+  "app.containers.Admin.projects.project.listing": "Sąrašas",
   "app.containers.Admin.projects.project.manageFiles": "Tvarkyti failus",
   "app.containers.Admin.projects.project.manageView": "Valdyti",
   "app.containers.Admin.projects.project.messagingSection": "Žinučių siuntimas",

@@ -2067,6 +2067,7 @@
   "app.containers.Admin.projects.project.itemNotReady": "Ei valmis",
   "app.containers.Admin.projects.project.itemReady": "Valmis",
   "app.containers.Admin.projects.project.itemsReady": "{ready} / {total} valmiina",
+  "app.containers.Admin.projects.project.listing": "Listaus",
   "app.containers.Admin.projects.project.manageFiles": "Hallitse tiedostoja",
   "app.containers.Admin.projects.project.manageView": "Hallinnoi",
   "app.containers.Admin.projects.project.messagingSection": "Viestintä",

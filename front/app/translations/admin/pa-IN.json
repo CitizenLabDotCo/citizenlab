@@ -2067,6 +2067,7 @@
   "app.containers.Admin.projects.project.itemNotReady": "ਤਿਆਰ ਨਹੀਂ",
   "app.containers.Admin.projects.project.itemReady": "ਤਿਆਰ",
   "app.containers.Admin.projects.project.itemsReady": "{total} ਵਿੱਚੋਂ {ready} ਤਿਆਰ",
+  "app.containers.Admin.projects.project.listing": "ਸੂਚੀ",
   "app.containers.Admin.projects.project.manageFiles": "ਫ਼ਾਈਲਾਂ ਦਾ ਪ੍ਰਬੰਧਨ ਕਰੋ",
   "app.containers.Admin.projects.project.manageView": "ਪ੍ਰਬੰਧਨ ਕਰੋ",
   "app.containers.Admin.projects.project.messagingSection": "ਮੈਸੇਜਿੰਗ",

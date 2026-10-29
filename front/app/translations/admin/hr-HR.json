@@ -2067,6 +2067,7 @@
   "app.containers.Admin.projects.project.itemNotReady": "Nije spremno",
   "app.containers.Admin.projects.project.itemReady": "Spremno",
   "app.containers.Admin.projects.project.itemsReady": "{ready} od {total} spremno",
+  "app.containers.Admin.projects.project.listing": "Popis",
   "app.containers.Admin.projects.project.manageFiles": "Upravljanje datotekama",
   "app.containers.Admin.projects.project.manageView": "Upravljaj",
   "app.containers.Admin.projects.project.messagingSection": "Slanje poruka",
