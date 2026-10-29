@@ -91,7 +91,11 @@ module Analytics
           'likes_count' => 'Number of likes on the input.',
           'dislikes_count' => 'Number of dislikes on the input.',
           'comments_count' => 'Number of published comments on the input.',
-          'votes_count' => 'Total online votes the input received in voting/budgeting phases.',
+          'votes_count' => <<~DOC.squish,
+            Online vote total: SUM of reporting_input_votes.weight. In a participatory
+            budgeting phase that weight is the amount allocated, so this is money, not a
+            number of people; count distinct user_id in reporting_input_votes for voters.
+          DOC
           'offline_votes_count' => 'Manually registered offline votes, entered by administrators. 0 when none.'
         }
       end
