@@ -18,10 +18,11 @@ import configMessages from 'containers/Admin/projects/project/phaseSetup/compone
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import { validateParticipation } from 'containers/Admin/projects/project/phaseSetup/validate';
 
+import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
+
 import { useIntl } from 'utils/cl-intl';
 import { isCLErrorsWrapper } from 'utils/errorUtils';
 
-import { useRegisterPageSaver } from '../_shared/PageSaveContext';
 import messages from '../messages';
 
 import EditAccessButton from './EditAccessButton';

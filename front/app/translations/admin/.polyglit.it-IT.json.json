@@ -20614,6 +20614,11 @@
     "verified_at": "2026-03-18T16:40:24.323274Z",
     "verified_by": "Admin"
   },
+  "app.containers.admin.content_builder.html_block.label": {
+    "state": "verified",
+    "verified_at": "2026-10-28T17:17:31.991617Z",
+    "verified_by": "Roger"
+  },
   "app.containers.admin.ideaStatuses.all.addIdeaStatus": {
     "state": "verified",
     "verified_at": "2026-03-18T16:40:24.323274Z",

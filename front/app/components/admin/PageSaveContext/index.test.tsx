@@ -7,7 +7,7 @@ import {
   SaveReason,
   usePageSave,
   useRegisterPageSaver,
-} from './PageSaveContext';
+} from '.';
 
 type Saver = { dirty: boolean; save: (reason: SaveReason) => Promise<void> };
 

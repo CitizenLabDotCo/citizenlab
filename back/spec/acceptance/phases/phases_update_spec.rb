@@ -30,6 +30,7 @@ def phase_params(spec)
   spec.parameter :vote_term, "The term used to describe the concept of a vote (noun). One of #{Phase::VOTE_TERMS.join(', ')}. Defaults to 'vote'.", scope: :phase
   spec.parameter :start_at, 'The start date of the phase', scope: :phase
   spec.parameter :end_at, 'The end date of the phase', scope: :phase
+  spec.parameter :timeline_phase_dates, 'Date changes for other timeline phases in this project, saved together with the move. Each entry has id, start_at and end_at.', scope: :phase
   spec.parameter :poll_anonymous, "Are users associated with their answer? Only applies if participation_method is 'poll'. Can't be changed after first answer.", scope: :phase
   spec.parameter :ideas_order, 'The default order of ideas.', scope: :phase
   spec.parameter :prescreening_mode, "The pre-screening mode. Either nil, 'all', or 'flagged_only'.", scope: :phase
@@ -93,11 +94,183 @@ resource 'Phases' do
         )
       end
 
-      example 'Does not update the placement type, which can only be set on creation', document: false do
+      example 'Rejects moving a phase off the timeline when its method has no standalone support', document: false do
         do_request(phase: { placement_type: 'standalone' })
 
-        assert_status 200
+        assert_status 422
+        expect(json_response.dig(:errors, :participation_method))
+          .to include(hash_including(error: 'not_supported_in_standalone_phase'))
         expect(phase.reload.placement_type).to eq 'on_timeline'
+      end
+
+      describe 'moving a phase on or off the timeline' do
+        let(:phase) { create(:native_survey_phase, project: project) }
+
+        example 'Moves a survey phase off the timeline' do
+          do_request(phase: { placement_type: 'standalone' })
+
+          assert_status 200
+          expect(phase.reload.placement_type).to eq 'standalone'
+        end
+
+        example 'Moves a survey phase onto the timeline', document: false do
+          phase.update!(placement_type: 'standalone')
+
+          do_request(phase: { placement_type: 'on_timeline' })
+
+          assert_status 200
+          expect(phase.reload.placement_type).to eq 'on_timeline'
+        end
+
+        example 'Rejects moving a phase onto the timeline when it would overlap another phase', document: false do
+          phase.update!(placement_type: 'standalone')
+          timeline_phase = create(:phase, project: project, start_at: phase.start_at + 1.day, end_at: phase.end_at)
+          expect(timeline_phase).to be_persisted
+
+          do_request(phase: { placement_type: 'on_timeline' })
+
+          assert_status 422
+          expect(json_response.dig(:errors, :base))
+            .to include(hash_including(error: 'has_other_overlapping_phases'))
+          expect(phase.reload.placement_type).to eq 'standalone'
+        end
+
+        context 'when resolving date conflicts' do
+          let(:phase) do
+            create(:native_survey_phase, project: project, placement_type: 'standalone',
+              start_at: '2026-06-10', end_at: '2026-06-20')
+          end
+          let!(:other_phase) { create(:phase, project: project, start_at: '2026-06-01', end_at: '2026-06-15') }
+
+          example 'Saves the move and edited timeline dates together', document: false do
+            do_request(phase: {
+              placement_type: 'on_timeline',
+              timeline_phase_dates: [{ id: other_phase.id, end_at: '2026-06-10' }]
+            })
+
+            assert_status 200
+            expect(phase.reload.placement_type).to eq 'on_timeline'
+            expect(other_phase.reload.end_at).to eq Time.zone.parse('2026-06-10')
+          end
+
+          example 'Rolls back the other dates when the survey move is invalid', document: false do
+            do_request(phase: {
+              placement_type: 'on_timeline',
+              start_at: '2026-06-20',
+              end_at: '2026-06-20',
+              timeline_phase_dates: [{ id: other_phase.id, end_at: '2026-06-10' }]
+            })
+
+            assert_status 422
+            expect(phase.reload.placement_type).to eq 'standalone'
+            expect(phase.start_at).to eq Time.zone.parse('2026-06-10')
+            expect(other_phase.reload.end_at).to eq Time.zone.parse('2026-06-15')
+          end
+
+          example 'Rejects invalid edits to another phase', document: false do
+            do_request(phase: {
+              placement_type: 'on_timeline',
+              timeline_phase_dates: [{ id: other_phase.id, end_at: '2026-06-01' }]
+            })
+
+            assert_status 422
+            expect(phase.reload.placement_type).to eq 'standalone'
+            expect(other_phase.reload.end_at).to eq Time.zone.parse('2026-06-15')
+          end
+
+          example 'Rejects a missing start date without saving related date edits', document: false do
+            do_request(phase: {
+              placement_type: 'on_timeline',
+              start_at: nil,
+              timeline_phase_dates: [{ id: other_phase.id, end_at: '2026-06-10' }]
+            })
+
+            assert_status 422
+            expect(json_response.dig(:errors, :start_at)).to include(hash_including(error: 'blank'))
+            expect(phase.reload.placement_type).to eq 'standalone'
+            expect(other_phase.reload.end_at).to eq Time.zone.parse('2026-06-15')
+          end
+
+          example 'Rejects duplicate timeline phase IDs without changing any phase', document: false do
+            do_request(phase: {
+              placement_type: 'on_timeline',
+              timeline_phase_dates: [
+                { id: other_phase.id, end_at: '2026-06-10' },
+                { id: other_phase.id.upcase, end_at: '2026-06-10' }
+              ]
+            })
+
+            assert_status 422
+            expect(json_response.dig(:errors, :timeline_phase_dates))
+              .to include(hash_including(error: 'duplicate_phase_ids'))
+            expect(phase.reload.placement_type).to eq 'standalone'
+            expect(other_phase.reload.end_at).to eq Time.zone.parse('2026-06-15')
+          end
+
+          example 'Identifies the timeline phase whose dates failed validation', document: false do
+            do_request(phase: {
+              placement_type: 'on_timeline',
+              timeline_phase_dates: [{ id: other_phase.id, end_at: '2026-06-01' }]
+            })
+
+            assert_status 422
+            expect(json_response.dig(:meta, :phase_id)).to eq other_phase.id
+          end
+
+          example 'Schedules notifications after releasing the project lock', document: false do
+            inside_lock = false
+            allow_any_instance_of(Project).to receive(:with_lock).and_wrap_original do |original, &block|
+              original.call do
+                inside_lock = true
+                begin
+                  block.call
+                ensure
+                  inside_lock = false
+                end
+              end
+            end
+            expect_any_instance_of(SideFxPhaseService).to receive(:after_update_notifications).at_least(:once) do
+              expect(inside_lock).to be false
+            end
+
+            do_request(phase: {
+              placement_type: 'on_timeline',
+              timeline_phase_dates: [{ id: other_phase.id, end_at: '2026-06-10' }]
+            })
+
+            assert_status 200
+          end
+
+          example 'Rolls back the move if transactional side effects fail', document: false do
+            service = SideFxPhaseService.new
+            allow(SideFxPhaseService).to receive(:new).and_return(service)
+            allow(service).to receive(:after_update_in_transaction).and_raise('permission update failed')
+            expect(service).not_to receive(:after_update_notifications)
+
+            expect do
+              do_request(phase: {
+                placement_type: 'on_timeline',
+                timeline_phase_dates: [{ id: other_phase.id, end_at: '2026-06-10' }]
+              })
+            end.to raise_error('permission update failed')
+
+            expect(phase.reload.placement_type).to eq 'standalone'
+            expect(other_phase.reload.end_at).to eq Time.zone.parse('2026-06-15')
+          end
+
+          example 'Does not edit phases from another project', document: false do
+            foreign_phase = create(:phase)
+
+            do_request(phase: {
+              placement_type: 'on_timeline',
+              timeline_phase_dates: [{ id: foreign_phase.id, end_at: '2026-06-10' }]
+            })
+
+            assert_status 404
+            expect(phase.reload.placement_type).to eq 'standalone'
+            expect(foreign_phase.reload.end_at).not_to eq Time.zone.parse('2026-06-10')
+          end
+        end
       end
 
       context 'when description_multiloc contains images' do

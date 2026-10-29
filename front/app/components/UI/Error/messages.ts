@@ -162,6 +162,11 @@ export default defineMessages({
     id: 'app.errors.has_other_overlapping_phases',
     defaultMessage: 'Projects cannot have overlapping phases.',
   },
+  not_supported_in_standalone_phase: {
+    id: 'app.errors.not_supported_in_standalone_phase',
+    defaultMessage:
+      'Only surveys can run alongside the timeline. This participation method needs to be a phase on the timeline.',
+  },
   group_ids_unauthorized_choice_moderator: {
     id: 'app.errors.group_ids_unauthorized_choice_moderator',
     defaultMessage:
