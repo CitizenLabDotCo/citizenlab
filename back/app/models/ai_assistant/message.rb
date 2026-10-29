@@ -30,7 +30,6 @@ module AIAssistant
     MAX_FILES = 3
     # Keeps requests and their cost small, as every turn sends the files again.
     MAX_FILE_SIZE = 4.megabytes
-    FILE_EXTENSIONS = %w[.pdf .md .txt].freeze
 
     # Touches the conversation, so a running turn shows its progress.
     belongs_to :conversation, class_name: 'AIAssistant::Conversation', inverse_of: :messages, touch: true
@@ -79,7 +78,17 @@ module AIAssistant
     end
 
     def unsupported?(file)
-      FILE_EXTENSIONS.exclude?(::File.extname(file.name).downcase) || file.size.to_i > MAX_FILE_SIZE
+      file.size.to_i > MAX_FILE_SIZE || !content_matches_extension?(file)
+    end
+
+    # The client picks the name, so the content must match it: otherwise every later turn
+    # fails, as each one sends the file again.
+    def content_matches_extension?(file)
+      case ::File.extname(file.name).downcase
+      when '.pdf' then file.content.read.start_with?('%PDF-')
+      when '.md', '.txt' then file.content.read.dup.force_encoding(Encoding::UTF_8).valid_encoding?
+      else false
+      end
     end
   end
 end
