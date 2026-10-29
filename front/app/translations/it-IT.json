@@ -357,7 +357,7 @@
   "app.components.IdeasMap.screenReaderLikesText": "{noOfLikes, plural, =0 {, nessun mi piace.} one {, 1 mi piace.} other {, # mi piace.}}",
   "app.components.IdeasMap.signInLinkText": "accedi",
   "app.components.IdeasMap.signUpLinkText": "iscriversi",
-  "app.components.IdeasMap.submitIdea2": "Invia un input",
+  "app.components.IdeasMap.submitIdea2": "Invia un contributo",
   "app.components.IdeasMap.tapOnMapToAdd": "Clicca sulla mappa per aggiungere il tuo contributo",
   "app.components.IdeasMap.tapOnMapToAddAdmin2": "Come amministratore, puoi toccare la mappa per aggiungere il tuo contributo, anche se questa fase non è attiva.",
   "app.components.IdeasMap.userInputs2": "Input dei partecipanti",
