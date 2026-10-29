@@ -216,4 +216,13 @@ export default defineMessages({
     defaultMessage:
       ' Talk to your Government Success Manager or admin to unlock it.',
   },
+  similarIdeaDetection: {
+    id: 'app.containers.Admin.projects.project.phaseSetup.similarIdeaDetection',
+    defaultMessage: 'Similar idea detection',
+  },
+  similarIdeaDetectionDescription: {
+    id: 'app.containers.Admin.projects.project.phaseSetup.similarIdeaDetectionDescription',
+    defaultMessage:
+      'Warn participants when their idea looks like an existing one.',
+  },
 });

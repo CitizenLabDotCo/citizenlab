@@ -120,5 +120,22 @@ describe('<Button />', () => {
 
       expect(screen.getByRole('button')).toHaveStyle({ padding: '0' });
     });
+
+    it('renders the medium size with boSize="medium"', () => {
+      render(
+        <Button buttonStyle="bo-secondary" boSize="medium">
+          Share
+        </Button>
+      );
+
+      expect(screen.getByRole('button')).toHaveStyle({
+        height: bo.buttonMedium.height,
+        padding: bo.buttonMedium.padding,
+        'border-width': '1px',
+      });
+      expect(screen.getByText('Share')).toHaveStyle({
+        'font-size': bo.buttonMedium.fontSize,
+      });
+    });
   });
 });
