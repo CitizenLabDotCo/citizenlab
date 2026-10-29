@@ -28,7 +28,7 @@ module AIAssistant
     ROLES = %w[user assistant].freeze
     MAX_CONTENT_LENGTH = 5000
     MAX_FILES = 3
-    # Bedrock refuses documents above 4.5 MB.
+    # Keeps requests and their cost small, as every turn sends the files again.
     MAX_FILE_SIZE = 4.megabytes
     FILE_EXTENSIONS = %w[.pdf .md .txt].freeze
 
