@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
 
-import { IconButton, colors } from '@citizenlab/cl2-component-library';
+import { colors } from '@citizenlab/cl2-component-library';
 
 import { IPhaseData } from 'api/phases/types';
 import useDeletePhase from 'api/phases/useDeletePhase';
+import { isTimelinePhase } from 'api/phases/utils';
 
 import useLocalize from 'hooks/useLocalize';
 
+import placementMessages from 'containers/Admin/projects/_shared/components/PhasePlacement/messages';
+import MovePhaseModal from 'containers/Admin/projects/_shared/components/PhasePlacement/MovePhaseModal';
+import { canChangePlacement } from 'containers/Admin/projects/_shared/components/PhasePlacement/utils';
 import phaseMessages from 'containers/Admin/projects/project/phase/messages';
 
+import { usePageSave } from 'components/admin/PageSaveContext';
+import MoreActionsMenu from 'components/UI/MoreActionsMenu';
 import TypedDeleteConfirmationModal from 'components/UI/TypedDeleteConfirmationModal';
 import typedDeleteConfirmationMessages from 'components/UI/TypedDeleteConfirmationModal/messages';
 
@@ -21,11 +27,13 @@ interface Props {
   phase: IPhaseData;
 }
 
-const DeletePhaseButton = ({ projectId, phase }: Props) => {
+const PhaseOptionsMenu = ({ projectId, phase }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
+  const pageSave = usePageSave();
   const { phaseId } = useParams({ strict: false });
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showMoveModal, setShowMoveModal] = useState(false);
   const { mutate: deletePhase } = useDeletePhase();
   const title = localize(phase.attributes.title_multiloc);
 
@@ -46,18 +54,41 @@ const DeletePhaseButton = ({ projectId, phase }: Props) => {
 
   return (
     <>
-      <IconButton
-        iconName="delete"
-        iconWidth="20px"
-        iconHeight="20px"
-        iconColor={colors.coolGrey600}
-        iconColorOnHover={colors.textPrimary}
-        p="8px"
-        a11y_buttonActionMessage={`${formatMessage(
-          phaseMessages.deletePhase
-        )}: ${title}`}
-        onClick={() => setShowDeleteModal(true)}
+      <MoreActionsMenu
+        showLabel={false}
+        color={colors.coolGrey500}
+        ideaTitle={title}
+        menuRight="-12px"
+        data-cy={`e2e-phase-options-${phase.id}`}
+        actions={[
+          ...(canChangePlacement(phase)
+            ? [
+                {
+                  label: formatMessage(
+                    isTimelinePhase(phase)
+                      ? placementMessages.moveToSpotlightSurveys
+                      : placementMessages.moveToTimeline
+                  ),
+                  name: 'move-phase',
+                  handler: () => setShowMoveModal(true),
+                },
+              ]
+            : []),
+          {
+            label: formatMessage(phaseMessages.deletePhase),
+            name: 'delete-phase',
+            handler: () => setShowDeleteModal(true),
+          },
+        ]}
       />
+      {showMoveModal && (
+        <MovePhaseModal
+          phase={phase}
+          hasUnsavedChanges={pageSave?.dirty}
+          onMoved={() => pageSave?.discardAll()}
+          onClose={() => setShowMoveModal(false)}
+        />
+      )}
       <TypedDeleteConfirmationModal
         opened={showDeleteModal}
         onClose={() => setShowDeleteModal(false)}
@@ -74,4 +105,4 @@ const DeletePhaseButton = ({ projectId, phase }: Props) => {
   );
 };
 
-export default DeletePhaseButton;
+export default PhaseOptionsMenu;

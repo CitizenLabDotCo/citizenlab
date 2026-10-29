@@ -14,11 +14,15 @@ import usePhaseFileAttachments, {
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import validate from 'containers/Admin/projects/project/phaseSetup/validate';
 
+import {
+  SaveReason,
+  useRegisterPageSaver,
+} from 'components/admin/PageSaveContext';
+
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import ProjectWorkspace from '..';
-import { SaveReason, useRegisterPageSaver } from '../_shared/PageSaveContext';
 import BuildFields from '../Phase/BuildPanel/BuildFields';
 import DraftMethodSettings from '../Phase/DraftMethodSettings';
 import PhasePreview from '../Phase/PhasePreview';
