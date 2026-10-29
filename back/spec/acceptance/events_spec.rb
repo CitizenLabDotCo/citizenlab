@@ -339,7 +339,9 @@ resource 'Events' do
   end
 
   get 'web_api/v1/events/:id' do
-    let(:event) { @events.first }
+    # Reload: counter_culture updates the in-memory attendees_count of the shared
+    # before_all records, which other examples' attendances would otherwise leak into.
+    let(:event) { @events.first.reload }
     let(:id) { event.id }
 
     example_request 'Get one event by id' do
