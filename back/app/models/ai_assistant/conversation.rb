@@ -55,11 +55,14 @@ module AIAssistant
       tool_calls.pending.find_each { |tool_call| tool_call.update!(status: 'failed') }
     end
 
-    # Gets the conversation out of a state that nothing would end anymore.
+    # Gets the conversation out of a state that nothing would end anymore: a turn whose job
+    # was lost, an approved change whose request died, or proposals nobody decided on.
     def recover_if_stuck!
-      return unless running? && updated_at < TURN_TIMEOUT.ago
-
-      fail_turn!('turn_timed_out')
+      if running?
+        fail_turn!('turn_timed_out') if updated_at < TURN_TIMEOUT.ago
+      elsif awaiting_approval?
+        recover_stuck_decisions!
+      end
     end
 
     # The proposals can no longer be decided on: the model will see them as expired.
@@ -69,6 +72,18 @@ module AIAssistant
           tool_call.update!(status: 'expired', result: { expired: true }.to_json)
         end
         update!(status: 'idle') if awaiting_approval?
+      end
+    end
+
+    private
+
+    def recover_stuck_decisions!
+      return unless tool_calls.interrupted_approvals.exists? || tool_calls.overdue_proposals.exists?
+
+      transaction do
+        tool_calls.interrupted_approvals.find_each { |tool_call| tool_call.update!(status: 'failed') }
+        expire_proposals! if tool_calls.overdue_proposals.exists?
+        update!(status: 'idle') if tool_calls.where(status: ToolCall::UNDECIDED_STATUSES).none?
       end
     end
   end

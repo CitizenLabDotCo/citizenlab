@@ -36,11 +36,17 @@ module AIAssistant
     # Statuses that still wait for a decision or for the approved tool to finish.
     UNDECIDED_STATUSES = %w[proposed approved].freeze
     APPROVAL_TTL = 24.hours
+    # An approved change runs in the request that approves it, so one still approved after
+    # this was interrupted.
+    RUN_TIMEOUT = 10.minutes
 
     belongs_to :message, class_name: 'AIAssistant::Message', inverse_of: :tool_calls
     belongs_to :decided_by, class_name: 'User', optional: true
 
     enum :status, STATUSES.index_by(&:itself)
+
+    scope :overdue_proposals, -> { proposed.where(created_at: ...APPROVAL_TTL.ago) }
+    scope :interrupted_approvals, -> { approved.where(decided_at: ...RUN_TIMEOUT.ago) }
 
     validates :tool_use_id, :name, presence: true
 
