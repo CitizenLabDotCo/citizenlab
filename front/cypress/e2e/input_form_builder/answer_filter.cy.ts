@@ -99,6 +99,8 @@ describe('Input form answer filter', () => {
     cy.dataCy('e2e-edit-input-form').click();
     cy.dataCy('e2e-form-fields').contains(question).click();
     cy.get('#e2e-public-answers-toggle').find('input').click({ force: true });
+    cy.dataCy('e2e-confirm-public-answers').should('be.visible');
+    cy.dataCy('e2e-confirm-public-answers').click();
     cy.get('#e2e-answer-filter-toggle').find('input').should('not.be.checked');
   });
 });
