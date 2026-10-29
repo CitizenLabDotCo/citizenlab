@@ -28,7 +28,7 @@ describe AIAssistant::Message do
   end
 
   describe 'files', :active_job_que_adapter do
-    let(:file) { create(:file, ai_processing_allowed: true) }
+    let(:file) { create(:file, ai_processing_allowed: true, projects: [conversation.context.project]) }
 
     it 'accepts PDF files that may be processed by AI' do
       expect(build(:ai_assistant_message, conversation:, file_ids: [file.id])).to be_valid
@@ -48,6 +48,14 @@ describe AIAssistant::Message do
 
       expect(message).not_to be_valid
       expect(message.errors.details[:file_ids]).to include(error: :unsupported_file_type)
+    end
+
+    it 'refuses files of another project' do
+      file.update!(projects: [create(:project)])
+      message = build(:ai_assistant_message, conversation:, file_ids: [file.id])
+
+      expect(message).not_to be_valid
+      expect(message.errors.details[:file_ids]).to include(error: :not_in_project)
     end
 
     it 'refuses unknown files' do
