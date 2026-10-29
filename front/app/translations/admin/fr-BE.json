@@ -1906,7 +1906,7 @@
   "app.containers.Admin.projects.project.inputResponseExport.preparedByLabel": "Préparé par",
   "app.containers.Admin.projects.project.inputResponseExport.previewError": "Impossible de charger l'aperçu.",
   "app.containers.Admin.projects.project.inputResponseExport.previewLabel": "Aperçu de la couverture",
-  "app.containers.Admin.projects.project.inputResponseExport.renderingPdf": "Génération du PDF… Cela peut prendre plusieurs minutes pour les enquêtes volumineuses.",
+  "app.containers.Admin.projects.project.inputResponseExport.renderingPdf": "Génération du PDF… Cela peut prendre plusieurs minutes s’il y a beaucoup de réponses.",
   "app.containers.Admin.projects.project.inputResponseExport.reportSubtitleLabel": "Sous-titre",
   "app.containers.Admin.projects.project.inputResponseExport.reportTitleLabel": "Titre du rapport",
   "app.containers.Admin.projects.project.inputResponseExport.selectAllFields": "Tout sélectionner",
