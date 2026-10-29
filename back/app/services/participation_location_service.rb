@@ -29,11 +29,17 @@ class ParticipationLocationService
       ParticipationLocation.create!(trackable: trackable, **attrs)
     end
 
+    def enabled_for?(project)
+      AppConfiguration.instance.feature_activated?('participation_location_tracking') &&
+        !!project&.track_participation_location
+    end
+
     private
 
+    # Participants who choose to post anonymously are not located, since the
+    # location could identify them.
     def should_track?(trackable)
-      AppConfiguration.instance.feature_activated?('participation_location_tracking') &&
-        trackable.project&.track_participation_location
+      enabled_for?(trackable.project) && !trackable.try(:anonymous?)
     end
 
     def parse_decimal(value)

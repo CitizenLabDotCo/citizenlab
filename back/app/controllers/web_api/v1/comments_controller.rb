@@ -73,24 +73,23 @@ class WebApi::V1::CommentsController < ApplicationController
   end
 
   def index_xlsx
-    if params[:project].present?
-      authorize Project.find(params[:project]), :index_xlsx?
-    else
-      authorize :comment, :index_xlsx?
-    end
+    project = Project.find(params[:project]) if params[:project].present?
+    authorize(project || :comment, :index_xlsx?)
 
     @comments = policy_scope(Comment)
-      .includes(:author, :idea)
+      .includes(:author, :idea, :participation_location)
       .order(:lft)
     @comments = @comments.where(ideas: { project_id: UserRoleService.new.moderatable_projects(current_user) })
-    if params[:project].present?
-      @comments = @comments.where(ideas: { project_id: params[:project] })
-    end
+    @comments = @comments.where(ideas: { project_id: project.id }) if project
     @comments = @comments.where(idea_id: params[:ideas]) if params[:ideas].present?
 
     I18n.with_locale(current_user&.locale) do
       service = XlsxService.new
-      xlsx = service.generate_comments_xlsx @comments.includes(author: :custom_field_answers), view_private_attributes: true
+      xlsx = service.generate_comments_xlsx(
+        @comments.includes(author: :custom_field_answers),
+        view_private_attributes: true,
+        project: project
+      )
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'comments.xlsx'
     end
   end

@@ -25,6 +25,7 @@ const ExportsCard = ({ type, projectId, selectedIds }: Props) => {
         type={type}
         exportType={hasSelection ? 'selected_posts' : 'project'}
         exportQueryParameter={hasSelection ? selectedIds : projectId}
+        projectId={projectId}
       />
     </Card>
   );

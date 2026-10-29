@@ -121,5 +121,48 @@ RSpec.describe ParticipationLocationService do
           .not_to change(ParticipationLocation, :count)
       end
     end
+
+    context 'when the participant posts anonymously' do
+      before { SettingsService.new.activate_feature!('participation_location_tracking') }
+
+      it 'does not create a record' do
+        anonymous_idea = create(:idea, project: project, anonymous: true)
+
+        expect { described_class.track(anonymous_idea, location_attrs) }
+          .not_to change(ParticipationLocation, :count)
+      end
+
+      it 'still creates a record for an input without an author that is not anonymous' do
+        authorless_idea = create(:idea, project: project, author: nil)
+
+        expect { described_class.track(authorless_idea, location_attrs) }
+          .to change(ParticipationLocation, :count).by(1)
+      end
+    end
+  end
+
+  describe '.enabled_for?' do
+    let(:project) { create(:project, track_participation_location: true) }
+
+    it 'is true when the feature is on and the project tracks location' do
+      SettingsService.new.activate_feature!('participation_location_tracking')
+      expect(described_class.enabled_for?(project)).to be true
+    end
+
+    it 'is false when the feature is off' do
+      SettingsService.new.deactivate_feature!('participation_location_tracking')
+      expect(described_class.enabled_for?(project)).to be false
+    end
+
+    it 'is false when the project does not track location' do
+      SettingsService.new.activate_feature!('participation_location_tracking')
+      project.update!(track_participation_location: false)
+      expect(described_class.enabled_for?(project)).to be false
+    end
+
+    it 'is false without a project' do
+      SettingsService.new.activate_feature!('participation_location_tracking')
+      expect(described_class.enabled_for?(nil)).to be false
+    end
   end
 end

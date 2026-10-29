@@ -26,6 +26,7 @@ interface Props {
   type: ManagerType;
   exportType: exportType;
   exportQueryParameter: 'all' | string | string[];
+  projectId?: string;
   className?: string;
 }
 
@@ -33,6 +34,7 @@ const ExportButtons = ({
   exportType,
   className,
   exportQueryParameter,
+  projectId,
   type,
 }: Props) => {
   return (
@@ -41,10 +43,12 @@ const ExportButtons = ({
       <ExportIdeasButton
         exportType={exportType}
         exportQueryParameter={exportQueryParameter}
+        projectId={projectId}
       />
       <ExportIdeasCommentsButton
         exportType={exportType}
         exportQueryParameter={exportQueryParameter}
+        projectId={projectId}
       />
 
       {type === 'ProjectIdeas' && (

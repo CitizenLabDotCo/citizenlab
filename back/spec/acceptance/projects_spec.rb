@@ -1234,6 +1234,55 @@ resource 'Projects' do
           ]
         })
       end
+
+      describe 'when two phases share a title' do
+        before do
+          project.phases.find_by(participation_method: 'native_survey')
+            .update!(title_multiloc: { 'en' => 'Phase 1: Ideation' })
+        end
+
+        example 'Gives each phase its own sheet', document: false do
+          do_request
+          assert_status 200
+          expect(xlsx_contents(response_body).pluck(:sheet_name)).to include('Phase 1 Ideation (1)', 'Phase 1 Ideation (2)')
+        end
+      end
+
+      describe 'with selected inputs' do
+        parameter :ideas, 'Only export these inputs, in the same sheets and columns', required: false
+
+        let(:ideas) { [survey_response.id] }
+
+        example 'Download only the selected inputs, in the same sheets and columns', document: false do
+          do_request
+          assert_status 200
+          sheets = xlsx_contents(response_body).index_by { |sheet| sheet[:sheet_name] }
+
+          expect(sheets.keys).to contain_exactly('Phase 1 Ideation', 'Phase 2 Native survey', 'Phase 4 Voting')
+          expect(sheets['Phase 1 Ideation'][:rows]).to be_empty
+          expect(sheets['Phase 2 Native survey'][:rows].map(&:first)).to eq [survey_response.id]
+          expect(sheets['Phase 2 Native survey'][:column_headers]).to include(linear_scale_field.title_multiloc['en'])
+        end
+      end
+
+      describe 'when the project tracks participant location' do
+        before do
+          SettingsService.new.activate_feature!('participation_location_tracking')
+          project.update!(track_participation_location: true)
+          create(:participation_location, trackable: survey_response, city: 'Brussels')
+        end
+
+        example 'Adds the participant location as the last columns', document: false do
+          do_request
+          assert_status 200
+          survey_sheet = xlsx_contents(response_body).find { |sheet| sheet[:sheet_name] == 'Phase 2 Native survey' }
+
+          expect(survey_sheet[:column_headers].last(5)).to eq [
+            'Participant country', 'Participant region', 'Participant city', 'Participant latitude', 'Participant longitude'
+          ]
+          expect(survey_sheet[:rows].first[survey_sheet[:column_headers].index('Participant city')]).to eq 'Brussels'
+        end
+      end
     end
   end
 
