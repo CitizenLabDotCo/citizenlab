@@ -300,6 +300,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Naziv mape:",
   "app.components.FolderFolderCard.archived": "Arhivirano",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projekata} one {# projekt} other {# projekta}}",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": "Koristi kao filtar",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": "Sudionici mogu suziti popis prema ovom odgovoru.",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": "Odustani",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirm": "Prikaži odgovore",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2": "Sudionici su možda odgovorili na ovo pitanje dok je bilo privatno. Uključivanjem ove opcije prikazat će se i ti odgovori, a ne samo oni koji će biti dani od sada nadalje.",

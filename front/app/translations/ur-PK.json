@@ -300,6 +300,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "فولڈر کا عنوان:",
   "app.components.FolderFolderCard.archived": "محفوظ شدہ",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# پروجیکٹس} one {# پروجیکٹ} other {# پروجیکٹس}}",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": "بطور فلٹر استعمال کریں",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": "شرکاء اس جواب کے ذریعے فہرست کو محدود کر سکتے ہیں۔",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": "منسوخ کریں",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirm": "جوابات دکھائیں",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2": "ہو سکتا ہے کہ شرکاء نے اس سوال کا جواب اس وقت دیا ہو جب یہ نجی تھا۔ اسے آن کرنے سے وہ جوابات بھی ظاہر ہوں گے، نہ کہ صرف وہ جو اب سے دیے جائیں گے۔",

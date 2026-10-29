@@ -300,6 +300,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Teitl y ffolder:",
   "app.components.FolderFolderCard.archived": "Wedi'i archifo",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# prosiect} one {# prosiect} other {# prosiect}}",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": "Defnyddio fel hidlydd",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": "Gall cyfranogwyr gyfyngu'r rhestr yn ôl yr ateb hwn.",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": "Canslo",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirm": "Dangos yr atebion",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2": "Mae'n bosibl bod cyfranogwyr wedi ateb y cwestiwn hwn pan oedd yn breifat. Mae troi hwn ymlaen hefyd yn dangos yr atebion hynny, nid dim ond y rhai a roddir o hyn ymlaen.",

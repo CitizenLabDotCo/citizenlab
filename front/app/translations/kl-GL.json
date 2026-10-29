@@ -300,6 +300,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Mappip taaguutaa:",
   "app.components.FolderFolderCard.archived": "Allagaasivimmut inissinneqarpoq",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {Suliassaqanngilaq} one {Suliassaq ataasiuvoq} other {Suliassat #}}",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": "Filteritut atuguk",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": "Peqataasut akissut una atorlugu allattorsimaffik killilersorsinnaavaat.",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": "Taamaatiguk",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirm": "Akissutit takutikkit",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2": "Peqataasut apeqqut una isertuussatut inissisimatillugu akereersimassagunarpaat. Una ammarukku akissutit taakku aamma takuneqarsinnaalissapput, akissutit maanna suliarineqartut kisimik pinnatik.",

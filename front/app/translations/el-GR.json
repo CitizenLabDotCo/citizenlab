@@ -300,6 +300,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Τίτλος φακέλου:",
   "app.components.FolderFolderCard.archived": "Αρχειοθετημένος",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# έργα} one {# έργο} other {# έργα}}",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": "Χρήση ως φίλτρο",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": "Οι συμμετέχοντες μπορούν να περιορίσουν τη λίστα με βάση αυτή την απάντηση.",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": "Ακύρωση",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirm": "Εμφάνιση των απαντήσεων",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2": "Οι συμμετέχοντες ενδέχεται να έχουν απαντήσει σε αυτή την ερώτηση ενώ ήταν ιδιωτική. Η ενεργοποίηση αυτής της επιλογής θα εμφανίσει επίσης αυτές τις απαντήσεις, όχι μόνο εκείνες που θα δοθούν από εδώ και στο εξής.",

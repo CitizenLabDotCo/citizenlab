@@ -300,6 +300,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Mapptitel:",
   "app.components.FolderFolderCard.archived": "Arkiverad",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projekt} one {# projekt} other {# projekt}}",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": "Använd som filter",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": "Deltagare kan begränsa listan utifrån detta svar.",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": "Avbryt",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirm": "Visa svaren",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2": "Deltagare kan ha besvarat denna fråga medan den var privat. Om du aktiverar detta visas även dessa svar, inte bara de som lämnas från och med nu.",

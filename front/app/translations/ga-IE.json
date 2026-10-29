@@ -300,6 +300,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Teideal an fhillteáin:",
   "app.components.FolderFolderCard.archived": "Cartlannaithe",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# tionscadal} one {# tionscadal} other {# tionscadal}}",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": "Úsáid mar scagaire",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": "Is féidir le rannpháirtithe an liosta a chúngú de réir an fhreagra seo.",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": "Cealaigh",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirm": "Taispeáin na freagraí",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2": "Is féidir gur fhreagair rannpháirtithe an cheist seo nuair a bhí sí príobháideach. Má chuirtear é seo ar siúl, taispeánfar na freagraí sin freisin, ní hamháin na cinn a thabharfar as seo amach.",

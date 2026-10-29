@@ -300,6 +300,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Kansion otsikko:",
   "app.components.FolderFolderCard.archived": "Arkistoitu",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projektia} one {# projektia} other {# projektia}}",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": "Käytä suodattimena",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": "Osallistujat voivat rajata listaa tämän vastauksen perusteella.",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": "Peruuta",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirm": "Näytä vastaukset",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2": "Osallistujat ovat saattaneet vastata tähän kysymykseen sen ollessa yksityinen. Tämän kytkeminen päälle näyttää myös kyseiset vastaukset, ei vain tästä lähtien annettuja vastauksia.",

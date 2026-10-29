@@ -300,6 +300,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Mappetittel:",
   "app.components.FolderFolderCard.archived": "Gjennomført",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {~ # prosjekter} one {# prosjekt} other {# prosjekter}}",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": "Bruk som filter",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": "Deltakere kan avgrense listen basert på dette svaret.",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": "Avbryt",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirm": "Vis svarene",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2": "Deltakere kan ha besvart dette spørsmålet mens det var privat. Ved å slå på dette vises også disse svarene, ikke bare de som gis fra nå av.",

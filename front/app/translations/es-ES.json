@@ -300,6 +300,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Título de la carpeta:",
   "app.components.FolderFolderCard.archived": "Archivado",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# proyectos} one {# proyecto} other {# proyectos}}",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": "Usar como filtro",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": "Los participantes pueden filtrar la lista por esta respuesta.",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": "Cancelar",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirm": "Mostrar las respuestas",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2": "Es posible que los participantes hayan respondido a esta pregunta mientras era privada. Al activar esta opción, también se mostrarán esas respuestas, no solo las que se den a partir de ahora.",
