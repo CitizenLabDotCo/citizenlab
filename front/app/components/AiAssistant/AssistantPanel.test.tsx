@@ -5,7 +5,7 @@ import {
   IAiAssistantConversationData,
 } from 'api/ai_assistant_conversations/types';
 
-import { render, screen } from 'utils/testUtils/rtl';
+import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
 
 import AssistantPanel from './AssistantPanel';
 
@@ -25,8 +25,17 @@ jest.mock('api/ai_assistant_conversations/useAiAssistantConversation', () =>
 jest.mock('api/ai_assistant_conversations/useAddAiAssistantConversation', () =>
   jest.fn(() => ({ mutateAsync: jest.fn(), isPending: false }))
 );
+const mockAddMessage = jest.fn();
 jest.mock('api/ai_assistant_messages/useAddAiAssistantMessage', () =>
-  jest.fn(() => ({ mutateAsync: jest.fn() }))
+  jest.fn(() => ({ mutateAsync: mockAddMessage }))
+);
+const mockAddFile = jest.fn();
+jest.mock('api/files/useAddFile', () =>
+  jest.fn(() => ({ mutateAsync: mockAddFile }))
+);
+const mockDeleteFile = jest.fn();
+jest.mock('api/files/useDeleteFile', () =>
+  jest.fn(() => ({ mutateAsync: mockDeleteFile }))
 );
 jest.mock('api/ai_assistant_tool_calls/useApproveAiAssistantToolCall', () =>
   jest.fn(() => ({ mutate: jest.fn(), isPending: false, error: null }))
@@ -165,6 +174,29 @@ describe('AssistantPanel', () => {
 
     expect(screen.getByText('90 seconds')).toBeInTheDocument();
     jest.useRealTimers();
+  });
+
+  it('deletes the uploaded files when the message could not be sent', async () => {
+    mockConversation = conversation({
+      ...baseAttributes,
+      status: 'idle',
+      last_error_code: null,
+    });
+    mockAddFile.mockResolvedValue({ data: { id: 'file-1' } });
+    mockAddMessage.mockRejectedValue(new Error('Request failed'));
+    const { container } = renderPanel();
+    const fileInput =
+      container.querySelector<HTMLInputElement>('input[type="file"]');
+    if (!fileInput) throw new Error('No file input');
+
+    await userEvent.type(screen.getByRole('textbox'), 'Use this brief.');
+    await userEvent.upload(
+      fileInput,
+      new File(['%PDF-1.4'], 'brief.pdf', { type: 'application/pdf' })
+    );
+    await userEvent.click(screen.getByRole('button', { name: 'Send' }));
+
+    await waitFor(() => expect(mockDeleteFile).toHaveBeenCalledWith('file-1'));
   });
 
   it('shows why the last turn failed', () => {
