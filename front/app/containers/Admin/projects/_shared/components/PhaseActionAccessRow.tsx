@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Text, Toggle } from '@citizenlab/cl2-component-library';
+import { Text } from '@citizenlab/cl2-component-library';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
 
@@ -17,24 +17,16 @@ interface Props extends AccessOnlyAction {
   phaseId: string;
 }
 
-// These actions can't be switched off for a phase, so their toggle only
-// shows that they are always on, next to the ones that can.
+const LABEL_INDENT = '36px';
+
 const PhaseActionAccessRow = ({ phaseId, action, label }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
     <ToggleActionAccess phaseId={phaseId} action={action}>
-      <Toggle
-        variant="bo"
-        checked
-        disabled
-        onChange={() => {}}
-        label={
-          <Text as="span" variant="boControl" m="0">
-            {formatMessage(label)}
-          </Text>
-        }
-      />
+      <Text as="span" variant="boControl" m="0" pl={LABEL_INDENT}>
+        {formatMessage(label)}
+      </Text>
     </ToggleActionAccess>
   );
 };
