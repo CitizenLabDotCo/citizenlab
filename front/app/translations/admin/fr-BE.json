@@ -1753,7 +1753,7 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.showAwaitingReply": "Afficher les contributions en attente de réponse",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.sourceImported": "Importée",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.sourceOnline": "En ligne",
-  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.statusChangeNotifies": "Les auteurs et les autres contributeurs reçoivent une notification du nouveau statut.",
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.statusChangeNotifies": "Les personnes qui suivent ces contributions seront notifiées du changement de statut.",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.statusColumn": "Statut",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.tagsColumn": "Étiquettes",
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.unassigned": "Non assignée",

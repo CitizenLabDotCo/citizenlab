@@ -8939,6 +8939,11 @@
     "verified_at": "2026-10-28T15:48:09.827382Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.statusChangeNotifies": {
+    "state": "verified",
+    "verified_at": "2026-10-29T21:02:45.660228Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.statusColumn": {
     "state": "verified",
     "verified_at": "2026-10-28T14:54:05.642161Z",
