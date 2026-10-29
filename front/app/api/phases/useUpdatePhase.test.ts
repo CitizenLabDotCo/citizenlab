@@ -78,4 +78,77 @@ describe('useUpdatePhase', () => {
     await waitFor(() => expect(result.current.isError).toBe(true));
     expect(result.current.error).toBeDefined();
   });
+
+  it('starts refetches for the survey and edited phases together and awaits both', async () => {
+    server.resetHandlers();
+    let finishTarget = () => {};
+    let finishOther = () => {};
+    const target = new Promise<void>((resolve) => {
+      finishTarget = resolve;
+    });
+    const other = new Promise<void>((resolve) => {
+      finishOther = resolve;
+    });
+    const started: string[] = [];
+    const { QueryClient } = await import('@tanstack/react-query');
+    const invalidate = jest
+      .spyOn(QueryClient.prototype, 'invalidateQueries')
+      .mockImplementation((filters) => {
+        const key = JSON.stringify(filters?.queryKey);
+        if (key.includes('target-phase')) {
+          started.push('target');
+          return target;
+        }
+        if (key.includes('other-phase')) {
+          started.push('other');
+          return other;
+        }
+        return Promise.resolve();
+      });
+    try {
+      const { result } = renderHook(() => useUpdatePhase(), {
+        wrapper: createQueryClientWrapper(),
+      });
+      act(() =>
+        result.current.mutate({
+          phaseId: 'target-phase',
+          timeline_phase_dates: [{ id: 'other-phase', end_at: '2026-06-10' }],
+        })
+      );
+      await waitFor(() => expect(started).toEqual(['target', 'other']));
+      expect(result.current.isPending).toBe(true);
+      await act(async () => {
+        finishTarget();
+        finishOther();
+      });
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    } finally {
+      finishTarget();
+      finishOther();
+      invalidate.mockRestore();
+    }
+  });
+  it('does not wait for background refetches after an ordinary phase edit', async () => {
+    server.resetHandlers();
+    let finishRefresh = () => {};
+    const refreshing = new Promise<void>((resolve) => {
+      finishRefresh = resolve;
+    });
+    const { QueryClient } = await import('@tanstack/react-query');
+    const invalidate = jest
+      .spyOn(QueryClient.prototype, 'invalidateQueries')
+      .mockReturnValue(refreshing);
+    try {
+      const { result } = renderHook(() => useUpdatePhase(), {
+        wrapper: createQueryClientWrapper(),
+      });
+      act(() =>
+        result.current.mutate({ phaseId: 'phase', end_at: '2026-06-10' })
+      );
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    } finally {
+      finishRefresh();
+      invalidate.mockRestore();
+    }
+  });
 });

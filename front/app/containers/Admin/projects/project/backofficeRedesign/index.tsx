@@ -5,11 +5,12 @@ import { Box, bo, colors } from '@citizenlab/cl2-component-library';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
+import { usePageSave } from 'components/admin/PageSaveContext';
+
 import { useLocation } from 'utils/router';
 
 import FeedbackNotice from '../earlyAccess/FeedbackNotice';
 
-import { usePageSave } from './_shared/PageSaveContext';
 import { sectionFromPathname } from './_shared/sections';
 import WorkspaceHeader from './Header';
 import { HeaderDropdownName } from './Header/HeaderDropdown';
