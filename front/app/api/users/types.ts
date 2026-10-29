@@ -52,6 +52,8 @@ export interface IUserAttributes {
   block_reason?: string;
   block_start_at?: string;
   blocked?: boolean;
+  email_bounced_at?: string | null;
+  email_bounce_reason?: string | null;
   registration_completed_at: string | null;
   created_at: string;
   updated_at: string;
@@ -136,7 +138,9 @@ export type Sort =
   | 'role'
   | '-role'
   | 'last_active_at'
-  | '-last_active_at';
+  | '-last_active_at'
+  | 'registration_completed_at'
+  | '-registration_completed_at';
 
 export interface IQueryParameters {
   pageNumber?: number;
@@ -148,6 +152,7 @@ export interface IQueryParameters {
   can_moderate?: true;
   admins_only?: boolean;
   only_blocked?: boolean;
+  only_email_bounced?: boolean;
   not_citizenlab_member?: boolean;
   include_inactive?: boolean;
   // Pass project/folder/space id to exclude all users who are

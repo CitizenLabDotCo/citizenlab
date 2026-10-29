@@ -49,12 +49,7 @@ export const ideationConfig: FormBuilderConfig = {
     'idea_images_attributes',
     'idea_files_attributes',
   ],
-  formCustomFields: undefined,
-
   showStatusBadge: false,
-  isLogicEnabled: false,
-  isParticipationPublic: true,
-  isFormPhaseSpecific: false,
   getWarningNotice: () => {
     return (
       <Box id="e2e-warning-notice" mb="16px">
@@ -107,13 +102,7 @@ export const proposalsConfig: FormBuilderConfig = {
     'idea_files_attributes',
     'cosponsor_ids',
   ],
-  formCustomFields: undefined,
-
   showStatusBadge: false,
-  isLogicEnabled: false,
-  isParticipationPublic: true,
-  isFormPhaseSpecific: true,
-
   getWarningNotice: () => {
     return (
       <Box id="e2e-warning-notice" mb="16px">

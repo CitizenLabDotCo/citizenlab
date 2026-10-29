@@ -35,11 +35,100 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
         .to match_array %w[option1 option2]
     end
 
+    it 'labels single-select answers with the option title' do
+      select_question.options.find_by!(key: 'option1').update!(title_multiloc: { 'en' => 'Yes' })
+      row = described_class.find_by!(input_id: response.id, question_id: select_question.id)
+
+      expect(row.value_label).to eq 'Yes'
+    end
+
+    it 'labels multi-select answers with the option title' do
+      multiselect_question.options.find_by!(key: 'option2').update!(title_multiloc: { 'en' => 'Cycling' })
+      row = described_class.find_by!(input_id: response.id, question_id: multiselect_question.id, value_text: 'option2')
+
+      expect(row.value_label).to eq 'Cycling'
+    end
+
+    it 'labels relabelled options with the current title, not the key' do
+      option = create(:custom_field_option, custom_field: select_question, key: 'no_opinion_540', title_multiloc: { 'en' => 'No opinion' })
+      option.update!(title_multiloc: { 'en' => 'Less than the proposed amount' })
+      create(:idea_status_proposed)
+      relabelled_response = create(:native_survey_response, project: project)
+      relabelled_response.custom_field_answers.create!(key: select_question.key, value: 'no_opinion_540')
+      row = described_class.find_by!(input_id: relabelled_response.id)
+
+      expect(row.value_text).to eq 'no_opinion_540'
+      expect(row.value_label).to eq 'Less than the proposed amount'
+    end
+
+    describe 'linear scale point labels' do
+      where(:value, :label) do
+        [
+          [4, 'Agree'],
+          [3, nil]
+        ]
+      end
+
+      with_them do
+        it 'labels the chosen point, or NULL when that point has no label' do
+          scale_question.update!(linear_scale_label_3_multiloc: {})
+          create(:idea_status_proposed)
+          scale_response = create(:native_survey_response, project: project)
+          scale_response.custom_field_answers.create!(key: scale_question.key, value: value)
+
+          expect(described_class.find_by!(input_id: scale_response.id).value_label).to eq label
+        end
+      end
+    end
+
+    it 'has no question_category outside the community monitor, as CustomField#question_category' do
+      row = described_class.find_by!(input_id: response.id, question_id: scale_question.id)
+
+      expect(row.question_category).to be_nil
+      expect(scale_question.reload.question_category).to be_nil
+    end
+
     it 'has no rows for skipped questions' do
       create(:idea_status_proposed)
       empty_response = create(:native_survey_response, project: project)
 
       expect(described_class.where(input_id: empty_response.id)).to be_empty
+    end
+  end
+
+  describe 'community monitor answers' do
+    let(:project) { create(:community_monitor_project) }
+    let(:form) { create(:custom_form, participation_context: project.phases.first) }
+
+    it 'gives the same question category as CustomField#question_category' do
+      categorised = create(:custom_field_sentiment_linear_scale, resource: form, question_category: 'governance_and_trust')
+      uncategorised = create(:custom_field_sentiment_linear_scale, resource: form)
+      create(:idea_status_proposed)
+      response = create(:native_survey_response, project: project)
+      response.custom_field_answers.create!(key: categorised.key, value: 2)
+      response.custom_field_answers.create!(key: uncategorised.key, value: 5)
+      view_categories = described_class.where(input_id: response.id).pluck(:question_id, :question_category).to_h
+      custom_field_categories = [categorised, uncategorised].to_h { |question| [question.id, question.reload.question_category] }
+
+      expect(view_categories).to eq custom_field_categories
+    end
+
+    # The view sets question_category only for community monitor survey
+    # questions. It names that method directly because the database can't run
+    # the Ruby check supports_custom_field_categories?. If another method starts
+    # supporting categories, this fails: add that method to the view too.
+    it 'categorises only the participation methods that support categories' do
+      supporting = ParticipationMethod::Base.all_methods
+        .select { |method| method.new(Phase.new).supports_custom_field_categories? }
+        .map(&:method_str)
+
+      expect(supporting).to eq ['community_monitor_survey']
+    end
+
+    it 'documents every question category' do
+      description = described_class.field_descriptions['question_category']
+
+      expect(CustomField::QUESTION_CATEGORIES).to all(satisfy { |category| description.include?("'#{category}'") })
     end
   end
 
@@ -57,14 +146,127 @@ RSpec.describe Analytics::Reporting::InputQuestionAnswer do
     end
   end
 
-  it 'excludes structurally complex question types' do
-    project = create(:single_phase_native_survey_project)
-    form = create(:custom_form, participation_context: project.phases.first)
-    ranking = create(:custom_field_ranking, :with_options, resource: form)
-    create(:idea_status_proposed)
-    response = create(:native_survey_response, project: project)
-    response.custom_field_answers.create!(key: ranking.key, value: %w[option1 option2])
+  describe 'structurally complex question types' do
+    let(:project) { create(:single_phase_native_survey_project) }
+    let(:form) { create(:custom_form, participation_context: project.phases.first) }
+    let(:response) do
+      create(:idea_status_proposed)
+      create(:native_survey_response, project: project)
+    end
 
-    expect(described_class.where(input_id: response.id)).to be_empty
+    it 'explodes ranking answers into one row per option, with its rank and title' do
+      ranking = create(:custom_field_ranking, :with_options, resource: form)
+      response.custom_field_answers.create!(key: ranking.key, value: %w[by_bike by_train])
+      rows = described_class.where(input_id: response.id).order(:value_numeric)
+
+      expect(rows.pluck(:value_text, :value_numeric, :value_label))
+        .to eq [['by_bike', 1, 'By bike'], ['by_train', 2, 'By train']]
+    end
+
+    it 'gives the same average ranks as the survey results page' do
+      ranking = create(:custom_field_ranking, :with_options, resource: form)
+      create(:idea_status_proposed)
+      [%w[by_bike by_train], %w[by_train by_bike], %w[by_bike by_train]].each do |value|
+        create(:native_survey_response, project: project).custom_field_answers.create!(custom_field: ranking, key: ranking.key, value: value)
+      end
+      view_averages = described_class.where(question_id: ranking.id).group(:value_text).average(:value_numeric)
+      results_page_averages = ranking.average_rankings(Idea.where(project: project))
+
+      expect(view_averages).to eq results_page_averages
+    end
+
+    it 'explodes matrix answers into one row per answered statement, with point and statement labels' do
+      matrix = create(:custom_field_matrix_linear_scale, resource: form)
+      response.custom_field_answers.create!(key: matrix.key, value: { 'send_more_animals_to_space' => 1, 'ride_bicycles_more_often' => 3 })
+      rows = described_class.where(input_id: response.id).order(:value_numeric)
+
+      expect(rows.pluck(:statement_key, :statement_label, :value_numeric, :value_label, :value_text)).to eq [
+        ['send_more_animals_to_space', 'We should send more animals into space', 1, 'Strongly disagree', nil],
+        ['ride_bicycles_more_often', 'We should ride our bicycles more often', 3, nil, nil]
+      ]
+    end
+
+    it 'gives the same matrix counts as the survey results page' do
+      matrix = create(:custom_field_matrix_linear_scale, resource: form)
+      create(:idea_status_proposed)
+      [
+        { 'send_more_animals_to_space' => 1, 'ride_bicycles_more_often' => 3 },
+        { 'send_more_animals_to_space' => 5, 'ride_bicycles_more_often' => 3, 'deleted_statement' => 2 },
+        { 'send_more_animals_to_space' => 7, 'ride_bicycles_more_often' => 2.5 },
+        { 'ride_bicycles_more_often' => 3.0 }
+      ].each do |value|
+        create(:native_survey_response, project: project).custom_field_answers.create!(custom_field: matrix, key: matrix.key, value: value)
+      end
+      view_counts = described_class.where(question_id: matrix.id).group(:statement_key, :value_numeric).count
+        .transform_keys { |statement_key, point| [statement_key, point.to_i] }
+
+      results_page = Surveys::ResultsGenerator.new(project.phases.first).generate_result_for_field(matrix.id)
+      results_page_counts = results_page[:linear_scales].flat_map do |statement_key, statement|
+        statement[:answers].select { |answer| answer[:answer] && answer[:count] > 0 }
+          .map { |answer| [[statement_key, answer[:answer]], answer[:count]] }
+      end.to_h
+
+      expect(view_counts).to eq results_page_counts
+    end
+
+    it 'labels a matrix point stored as a decimal like the whole point' do
+      matrix = create(:custom_field_matrix_linear_scale, resource: form)
+      response.custom_field_answers.create!(key: matrix.key, value: { 'send_more_animals_to_space' => 5.0 })
+
+      expect(described_class.find_by!(input_id: response.id).value_label).to eq 'Strongly agree'
+    end
+
+    # Matrix answers aren't type-checked on write, so the API can store any value.
+    it 'keeps filters on value_numeric working when a matrix answer is not a number' do
+      matrix = create(:custom_field_matrix_linear_scale, resource: form)
+      response.custom_field_answers.create!(key: matrix.key, value: { 'send_more_animals_to_space' => 'abc', 'ride_bicycles_more_often' => 4 })
+
+      expect(described_class.where('value_numeric >= 4').pluck(:statement_key)).to eq ['ride_bicycles_more_often']
+    end
+
+    # The view's point-label lookups have one WHEN per point. If scales can go
+    # higher, this fails: add the new points to both lookups.
+    it 'labels the top point of the largest scale allowed' do
+      top = CustomField::LINEAR_SCALE_MAX_RANGE.max
+      label_attribute = "linear_scale_label_#{top}_multiloc"
+      scale = create(:custom_field_linear_scale, resource: form, maximum: top, label_attribute => { 'en' => 'Top' })
+      matrix = create(:custom_field_matrix_linear_scale, resource: form, maximum: top, label_attribute => { 'en' => 'Top' })
+      response.custom_field_answers.create!(key: scale.key, value: top)
+      response.custom_field_answers.create!(key: matrix.key, value: { 'send_more_animals_to_space' => top })
+
+      expect(described_class.where(input_id: response.id).pluck(:value_label)).to eq %w[Top Top]
+    end
+
+    it 'records a file upload answer without the file name' do
+      file_upload = create(:custom_field_file_upload, resource: form)
+      response.custom_field_answers.create!(key: file_upload.key, value: { 'id' => create(:file_attachment).id, 'name' => 'jane_doe_cv.pdf' })
+      row = described_class.find_by!(input_id: response.id)
+
+      expect(row.question_type).to eq 'file_upload'
+      expect(row.attributes.values).not_to include(a_string_including('jane_doe'))
+    end
+
+    it 'counts the file uploads the survey results page counts' do
+      file_upload = create(:custom_field_file_upload, resource: form)
+      create(:idea_status_proposed)
+      kept, deleted = create_list(:file_attachment, 2)
+      [kept.id, deleted.id, create(:idea_file).id, 'not-a-uuid'].each do |id|
+        create(:native_survey_response, project: project)
+          .custom_field_answers.create!(custom_field: file_upload, key: file_upload.key, value: { 'id' => id, 'name' => 'upload.pdf' })
+      end
+      deleted.destroy!
+      view_count = described_class.where(question_id: file_upload.id).count
+      results_page_count = Surveys::ResultsGenerator.new(project.phases.first).generate_result_for_field(file_upload.id)[:questionResponseCount]
+
+      expect(view_count).to eq results_page_count
+      expect(results_page_count).to eq 2
+    end
+
+    it 'excludes mapping questions' do
+      point = create(:custom_field_point, resource: form)
+      response.custom_field_answers.create!(key: point.key, value: { 'type' => 'Point', 'coordinates' => [4.35, 50.85] })
+
+      expect(described_class.where(input_id: response.id)).to be_empty
+    end
   end
 end

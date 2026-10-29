@@ -205,6 +205,7 @@ export const focusRing = css`
 
 // Back office theme
 const BO_HEADER_FONT_SIZE = '13px';
+const BO_CONTROL_FONT_SIZE = 13;
 
 export const bo = {
   colors: {
@@ -219,6 +220,7 @@ export const bo = {
   borderRadius: '8px',
   panelBorderRadius: '12px',
   headerFontSize: BO_HEADER_FONT_SIZE,
+  controlFontSize: BO_CONTROL_FONT_SIZE,
   buttonMedium: {
     height: '32px',
     padding: '0 16px',
@@ -298,9 +300,9 @@ export const defaultInputStyle = css`
   &:disabled,
   &.disabled {
     opacity: 1;
-    color: #666;
-    background-color: #f9f9f9;
-    border-color: #ccc;
+    color: ${colors.grey700};
+    background-color: ${colors.grey100};
+    border-color: ${colors.grey400};
     cursor: not-allowed;
   }
   ${(props: { size?: InputSize }) =>
@@ -309,7 +311,6 @@ export const defaultInputStyle = css`
       font-size: ${fontSizes.s}px;
       padding: 10px;
     `}
-  }
 `;
 
 export const getFontWeightCSS = (fontWeight: FontWeight) => {

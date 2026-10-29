@@ -70,14 +70,50 @@ const deselectSurveyFields = [
   },
 ];
 
-// The next/submit buttons stay disabled until the page's last question has
-// been scrolled into view, so wait for the enabled state instead of
-// force-clicking — a force-click on a disabled button silently does nothing.
-const clickPageButton = (dataCy: 'e2e-next-page' | 'e2e-submit-form') => {
-  cy.get('[data-question-id]').last().scrollIntoView();
-  cy.dataCy(dataCy).should('be.visible').should('not.have.class', 'disabled');
-  cy.dataCy(dataCy).click();
-};
+// An optional single-choice question in each layout: unticking the radio and
+// clearing the dropdown used to store '' as the answer, which the one POST a
+// visitor's survey is sent in then failed to publish (TAN-8889).
+const RADIO_OPTION_KEY = 'radio_option_yes';
+const DROPDOWN_OPTION_KEY = 'dropdown_option_yes';
+
+const singleChoiceOption = (key: string, title: string) => ({
+  key,
+  title_multiloc: { en: title },
+  other: false,
+});
+
+const singleChoiceQuestion = (title: string, dropdownLayout: boolean) => ({
+  input_type: 'select',
+  logic: {},
+  required: false,
+  enabled: true,
+  title_multiloc: { en: title },
+  description_multiloc: {},
+  options: [
+    singleChoiceOption(
+      dropdownLayout ? DROPDOWN_OPTION_KEY : RADIO_OPTION_KEY,
+      'Yes'
+    ),
+    singleChoiceOption(
+      dropdownLayout ? 'dropdown_option_no' : 'radio_option_no',
+      'No'
+    ),
+  ],
+  maximum_select_count: null,
+  minimum_select_count: null,
+  random_option_ordering: false,
+  dropdown_layout: dropdownLayout,
+});
+
+const deselectSingleChoiceSurveyFields = [
+  deselectSurveyFields[0],
+  singleChoiceQuestion('If YES to any of the above:', false),
+  deselectSurveyFields[2],
+  singleChoiceQuestion('Pick one from the list', true),
+  deselectSurveyFields[2],
+  deselectSurveyFields[3],
+  deselectSurveyFields[4],
+];
 
 const scaleOption = () => cy.get(`#linear-scale-option-${SCALE_VALUE}`);
 
@@ -277,7 +313,7 @@ describe('Native survey data collection', () => {
     });
 
     const goToPageTwoAndBack = () => {
-      clickPageButton('e2e-next-page');
+      cy.clickInputFormPageButton('e2e-next-page');
       cy.dataCy('e2e-page-number-2').should('exist');
       cy.dataCy('e2e-previous-page').click();
       cy.dataCy('e2e-page-number-1').should('exist');
@@ -298,11 +334,11 @@ describe('Native survey data collection', () => {
         goToPageTwoAndBack();
         expectScaleChecked(false);
 
-        clickPageButton('e2e-next-page');
+        cy.clickInputFormPageButton('e2e-next-page');
         cy.get(`input#${textKey}`).type(TEXT_ANSWER);
 
         cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitSurvey');
-        clickPageButton('e2e-submit-form');
+        cy.clickInputFormPageButton('e2e-submit-form');
 
         cy.wait('@submitSurvey').then(({ request }) => {
           expect(request.body.idea).not.to.have.property(scaleKey);
@@ -334,7 +370,7 @@ describe('Native survey data collection', () => {
         cy.visit(`/projects/${projectSlug}/surveys/new`);
 
         scaleOption().click();
-        clickPageButton('e2e-next-page');
+        cy.clickInputFormPageButton('e2e-next-page');
 
         // The answer reaches the draft first, so the final payload dropping it
         // is what clears it rather than it never having been stored.
@@ -349,17 +385,95 @@ describe('Native survey data collection', () => {
         scaleOption().click();
         expectScaleChecked(false);
 
-        clickPageButton('e2e-next-page');
+        cy.clickInputFormPageButton('e2e-next-page');
         cy.wait('@updateDraft');
 
         cy.get(`input#${textKey}`).type(TEXT_ANSWER);
-        clickPageButton('e2e-submit-form');
+        cy.clickInputFormPageButton('e2e-submit-form');
 
         // A key missing from the payload tells the back end to clear the
         // stored value (CustomFieldParamsService#mark_custom_field_values_to_clear!).
         cy.wait('@updateDraft').then(({ request }) => {
           expect(request.body.idea).not.to.have.property(scaleKey);
           expect(request.body.idea[textKey]).to.eq(TEXT_ANSWER);
+        });
+
+        cy.dataCy('e2e-after-submission').should('exist');
+      });
+    });
+  });
+
+  describe('deselecting a single-choice answer', () => {
+    let projectId = '';
+    let projectSlug = '';
+    let radioKey = '';
+    let dropdownKey = '';
+    let textKey = '';
+
+    before(() => {
+      cy.createProjectWithNativeSurveyPhase().then((result) => {
+        projectId = result.projectId;
+        projectSlug = result.projectSlug;
+
+        return updatePermission({
+          phaseId: result.phaseId,
+          permitted_by: 'everyone',
+          user_fields_in_form: false,
+        }).then(() =>
+          setSurveyFields(
+            cy,
+            result.phaseId,
+            deselectSingleChoiceSurveyFields
+          ).then((response) => {
+            radioKey = response.body.data[1].attributes.key;
+            dropdownKey = response.body.data[3].attributes.key;
+            textKey = response.body.data[5].attributes.key;
+          })
+        );
+      });
+    });
+
+    after(() => {
+      cy.apiRemoveIdeas(projectId).then(() => cy.apiRemoveProject(projectId));
+    });
+
+    describe('as a visitor', () => {
+      it('leaves the cleared answers out and submits the survey', () => {
+        cy.visit(`/projects/${projectSlug}/surveys/new`);
+
+        // Tick the radio answer, then click it again to untick it
+        cy.get(`input#${RADIO_OPTION_KEY}`)
+          .parents('[data-testid="radio-container"]')
+          .click();
+        cy.get(`input#${RADIO_OPTION_KEY}`).should('be.checked');
+        cy.get(`input#${RADIO_OPTION_KEY}`)
+          .parents('[data-testid="radio-container"]')
+          .click();
+        cy.get(`input#${RADIO_OPTION_KEY}`).should('not.be.checked');
+
+        cy.clickInputFormPageButton('e2e-next-page');
+        cy.dataCy('e2e-page-number-2').should('exist');
+
+        // Pick the first dropdown option, then clear it again. The list is
+        // too short to be searchable, so the keyboard is the stable way in.
+        cy.get(`[id="${dropdownKey}"]`)
+          .focus()
+          .type('{downArrow}{enter}', { force: true });
+        cy.contains('Yes').should('exist');
+        cy.get(`[id="${dropdownKey}"]`).type('{backspace}', { force: true });
+        cy.contains('Yes').should('not.exist');
+
+        cy.clickInputFormPageButton('e2e-next-page');
+        cy.get(`input#${textKey}`).type(TEXT_ANSWER);
+
+        cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitSurvey');
+        cy.clickInputFormPageButton('e2e-submit-form');
+
+        cy.wait('@submitSurvey').then(({ request, response }) => {
+          expect(request.body.idea).not.to.have.property(radioKey);
+          expect(request.body.idea).not.to.have.property(dropdownKey);
+          expect(request.body.idea[textKey]).to.eq(TEXT_ANSWER);
+          expect(response?.statusCode).to.eq(201);
         });
 
         cy.dataCy('e2e-after-submission').should('exist');

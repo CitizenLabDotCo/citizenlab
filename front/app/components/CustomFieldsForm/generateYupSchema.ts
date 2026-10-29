@@ -62,10 +62,15 @@ const generateYupSchema = ({
   pageQuestions,
   formatMessage,
   localize,
+  otherTextOptional = false,
 }: {
   pageQuestions: IFlatCustomField[];
   formatMessage: FormatMessage;
   localize: Localize;
+  // When true, the "other" text is never required, even if "other" is selected.
+  // Used when reviewing imported (e.g. scanned paper) inputs, where a blank
+  // "please specify" answer is a legitimate, complete answer.
+  otherTextOptional?: boolean;
 }) => {
   const schema: Record<string, any> = {};
 
@@ -245,7 +250,7 @@ const generateYupSchema = ({
 
         // Other option
         const fieldSchemaOther = string().when(key, ([value], schema) => {
-          return value === 'other'
+          return value === 'other' && !otherTextOptional
             ? schema.required(formatMessage(messages.typeYourAnswerRequired))
             : schema.notRequired();
         });
@@ -290,7 +295,7 @@ const generateYupSchema = ({
         const fieldSchemaOther = string().when(key, ([value], schema) => {
           if (!Array.isArray(value)) return schema.notRequired();
 
-          return value.includes('other')
+          return value.includes('other') && !otherTextOptional
             ? schema.required(formatMessage(messages.typeYourAnswerRequired))
             : schema.notRequired();
         });

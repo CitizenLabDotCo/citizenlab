@@ -12,12 +12,14 @@ import messages from './messages';
 
 export interface Props {
   defaultValue?: string;
+  value?: string | null;
   placeholder?: string;
   ariaLabel?: string;
   debounce?: number;
   onChange: (arg: string | null) => void;
   className?: string;
   size?: SearchInputProps['size'];
+  variant?: SearchInputProps['variant'];
   labelColor?: string;
   // This prop will ensure that screen readers
   // get notified when the number of results have changed.
@@ -31,12 +33,14 @@ export interface Props {
 
 const SearchInputWrapper = ({
   defaultValue,
+  value,
   placeholder,
   ariaLabel,
   debounce,
   onChange,
   className,
   size,
+  variant,
   a11y_numberOfSearchResults,
   setInputRef,
   labelColor,
@@ -88,6 +92,7 @@ const SearchInputWrapper = ({
     <>
       <SearchInput
         defaultValue={defaultValue}
+        value={value}
         id="search-input"
         placeholder={placeholder || formatMessage(messages.searchPlaceholder)}
         ariaLabel={ariaLabel || formatMessage(messages.searchAriaLabel)}
@@ -96,6 +101,7 @@ const SearchInputWrapper = ({
         onChange={onChange}
         a11y_closeIconTitle={formatMessage(messages.removeSearchTerm)}
         size={size}
+        variant={variant}
         setInputRef={setInputRef}
         labelColor={labelColor}
         hideLabel={hideLabel}

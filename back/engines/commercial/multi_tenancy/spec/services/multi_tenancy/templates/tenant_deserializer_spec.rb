@@ -94,6 +94,41 @@ describe MultiTenancy::Templates::TenantDeserializer do
       expect(ProjectFolders::Folder.count).to eq 1
     end
 
+    it 'creates all records and resolves refs when the records span several transaction batches' do
+      stub_const("#{described_class}::TRANSACTION_BATCH_SIZE", 2)
+
+      template = YAML.load(<<~YAML, aliases: true)
+        ---
+        models:
+          project:
+          - &1
+            title_multiloc:
+              en: Project 1
+          - &2
+            title_multiloc:
+              en: Project 2
+          - &3
+            title_multiloc:
+              en: Project 3
+          admin_publication:
+          - publication_ref: *1
+            publication_status: published
+          - publication_ref: *2
+            publication_status: draft
+          - publication_ref: *3
+            publication_status: archived
+      YAML
+
+      service.deserialize(template)
+
+      statuses = Project.all.to_h { |project| [project.title_multiloc['en'], project.admin_publication.publication_status] }
+      expect(statuses).to eq(
+        'Project 1' => 'published',
+        'Project 2' => 'draft',
+        'Project 3' => 'archived'
+      )
+    end
+
     context 'with a reuse_by matcher' do
       let(:folder) { create(:project_folder, title_multiloc: { 'en' => 'Shared folder' }) }
       let(:reuse_by) do

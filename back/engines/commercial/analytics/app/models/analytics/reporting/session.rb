@@ -12,6 +12,8 @@
 #  highest_role :string
 #  device       :string
 #  referrer     :string
+#  browser      :string
+#  os           :string
 #
 module Analytics
   module Reporting
@@ -52,7 +54,9 @@ module Analytics
             to 'user' (or NULL) to measure resident traffic without platform staff.
           DOC
           'device' => "Device class: 'mobile', 'tablet', or 'desktop_or_other'. NULL when unknown.",
-          'referrer' => 'Full URL the visitor came from, or NULL for direct visits.'
+          'referrer' => 'Full URL the visitor came from, or NULL for direct visits.',
+          'browser' => "Browser name detected from the user agent, for example 'Chrome', 'Safari' or 'Firefox'. NULL when unknown.",
+          'os' => "Operating system detected from the user agent, for example 'Windows', 'macOS', 'iOS' or 'Android'. NULL when unknown."
         }
       end
 

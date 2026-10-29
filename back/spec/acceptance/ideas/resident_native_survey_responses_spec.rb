@@ -32,6 +32,23 @@ resource 'Ideas' do
       assert_status 200
       expect(response_data[:id]).to eq(input.id)
     end
+
+    context 'when the input is a draft of another resident' do
+      let!(:input) do
+        create(
+          :idea,
+          author: create(:user),
+          project: project,
+          creation_phase: creation_phase,
+          phases: [creation_phase],
+          publication_status: 'draft'
+        )
+      end
+
+      example_request '[error] Try to get a draft input of another resident', document: false do
+        assert_status 401
+      end
+    end
   end
 
   get 'web_api/v1/ideas/by_slug/:slug' do
@@ -430,6 +447,15 @@ resource 'Ideas' do
             assert_status 422
             expect(json_response_body.dig(:errors, :custom_field_values)).to be_present
             expect(project.reload.ideas).to be_empty
+          end
+
+          context 'when an optional select is left blank' do
+            let(:select_field) { '' }
+
+            example_request 'Create an input that leaves the blank answer out' do
+              assert_status 201
+              expect(project.reload.ideas.first.custom_field_answers.pluck(:key, :value)).to eq [%w[custom_field_name1 Cat]]
+            end
           end
 
           context 'with a draft input' do

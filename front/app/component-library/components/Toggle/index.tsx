@@ -1,7 +1,8 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { PureComponent, FormEvent, ReactNode } from 'react';
 
 import { hideVisually, darken } from 'polished';
 import styled, { css } from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
 
 import { colors, fontSizes, focusRing, isRtl } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
@@ -43,7 +44,7 @@ const StyledToggle = styled.i<{
   padding: ${padding}px;
   padding-right: ${(props) => props.sizeInPixels}px;
   border-radius: ${(props) => props.sizeInPixels + padding}px;
-  background-color: #ccc;
+  background-color: ${colors.grey400};
   border: solid 1px transparent;
   transition: padding 150ms cubic-bezier(0.165, 0.84, 0.44, 1),
     background-color 80ms ease-out;
@@ -94,13 +95,10 @@ const StyledToggleWrapper = styled.div<{
   }
 `;
 
-const Label = styled.label<{ labelTextColor?: string }>`
-  color: ${({ labelTextColor }) => labelTextColor || colors.textPrimary};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: normal;
+const LabelAndDescription = styled.div`
+  display: flex;
+  flex-direction: column;
   padding-left: 10px;
-  cursor: pointer;
 
   ${isRtl`
     padding-left: 0;
@@ -108,10 +106,25 @@ const Label = styled.label<{ labelTextColor?: string }>`
   `}
 `;
 
+const Label = styled.label<{ labelTextColor?: string }>`
+  color: ${({ labelTextColor }) => labelTextColor || colors.textPrimary};
+  font-size: ${fontSizes.base}px;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+`;
+
+const Description = styled.span`
+  display: block;
+  color: ${colors.textSecondary};
+  font-size: ${fontSizes.s}px;
+`;
+
 interface Props {
   checked: boolean;
   disabled?: boolean | undefined;
   label?: string | JSX.Element | null | undefined;
+  description?: ReactNode;
   labelTextColor?: string;
   size?: Size;
   onChange: (event: FormEvent) => void;
@@ -120,6 +133,9 @@ interface Props {
 }
 
 class Toggle extends PureComponent<Props> {
+  instanceId = uuidv4();
+  descriptionId = `toggle-description-${this.instanceId}`;
+
   handleOnClick = (event: FormEvent) => {
     if (!this.props.disabled) {
       event.preventDefault();
@@ -132,6 +148,7 @@ class Toggle extends PureComponent<Props> {
       checked,
       disabled,
       label,
+      description,
       labelTextColor,
       className,
       id,
@@ -140,6 +157,7 @@ class Toggle extends PureComponent<Props> {
     } = this.props;
 
     const sizeInPixels = SIZES[size];
+    const inputId = id ?? `toggle-${this.instanceId}`;
 
     return (
       <Container className={`${className || ''} ${label ? 'hasLabel' : ''}`}>
@@ -148,7 +166,8 @@ class Toggle extends PureComponent<Props> {
           checked={checked}
           disabled={disabled}
           tabIndex={0}
-          id={id}
+          id={inputId}
+          aria-describedby={description ? this.descriptionId : undefined}
         />
 
         <StyledToggleWrapper
@@ -167,14 +186,19 @@ class Toggle extends PureComponent<Props> {
         </StyledToggleWrapper>
 
         {label && (
-          <Label
-            htmlFor={id}
-            onClick={this.handleOnClick}
-            labelTextColor={labelTextColor}
-            data-cy={id}
-          >
-            {label}
-          </Label>
+          <LabelAndDescription>
+            <Label
+              htmlFor={inputId}
+              onClick={this.handleOnClick}
+              labelTextColor={labelTextColor}
+              data-cy={id}
+            >
+              {label}
+            </Label>
+            {description && (
+              <Description id={this.descriptionId}>{description}</Description>
+            )}
+          </LabelAndDescription>
         )}
       </Container>
     );

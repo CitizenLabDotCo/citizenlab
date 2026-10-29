@@ -1,4 +1,4 @@
-import { IFlatCustomFieldWithIndex } from './types';
+import { ICustomFieldInputType, IFlatCustomFieldWithIndex } from './types';
 
 const doesObjectHaveProperties = (
   element: unknown,
@@ -40,3 +40,14 @@ export const isNewCustomFieldObject = (
   element: unknown
 ): element is IFlatCustomFieldWithIndex =>
   doesObjectHaveProperties(element, properties);
+
+const PUBLIC_ANSWER_INPUT_TYPES: ICustomFieldInputType[] = [
+  'text',
+  'select',
+  'multiselect',
+];
+
+// Until every question shows its answers. Pages must stay excluded then,
+// since they take no answer and have no key.
+export const supportsPublicAnswers = (inputType: ICustomFieldInputType) =>
+  PUBLIC_ANSWER_INPUT_TYPES.includes(inputType);
