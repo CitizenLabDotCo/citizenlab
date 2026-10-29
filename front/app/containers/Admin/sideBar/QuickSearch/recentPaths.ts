@@ -48,14 +48,16 @@ const entryPath = (entry: QuickSearchEntry) =>
   );
 
 // Whether the entry's path is the given path or a whole-segment prefix of it.
-// A prefix followed by an id points at a specific record (e.g. a project under
-// /admin/projects), which is a different place, so it doesn't count.
+// An id further down the path points at a specific record (e.g. a campaign
+// under /admin/messaging), which is a different place, so it doesn't count.
 const isMatch = (path: string, candidate: string) => {
   if (path === candidate) return true;
   if (!path.startsWith(`${candidate}/`)) return false;
 
-  const nextSegment = path.slice(candidate.length + 1).split('/')[0];
-  return !isUUID(nextSegment);
+  return !path
+    .slice(candidate.length + 1)
+    .split('/')
+    .some(isUUID);
 };
 
 // The entry with the longest matching path, so a phase's sub-pages all match

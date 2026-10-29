@@ -117,6 +117,13 @@ export interface Props {
   hideLabel?: boolean;
   dataCy?: string;
   variant?: Variant;
+  // Makes the input the combobox of a listbox of results, so screen readers
+  // follow the highlighted result while focus stays in the input.
+  combobox?: {
+    listboxId: string;
+    expanded: boolean;
+    activeOptionId?: string;
+  };
 }
 
 const SearchInput = ({
@@ -135,6 +142,7 @@ const SearchInput = ({
   hideLabel = false,
   dataCy,
   variant = 'default',
+  combobox,
 }: Props) => {
   const [internalSearchTerm, setInternalSearchTerm] = useState(
     value ?? defaultValue ?? null
@@ -220,6 +228,11 @@ const SearchInput = ({
           onFocus={handleFocus}
           onBlur={handleBlur}
           variant={variant}
+          role={combobox && 'combobox'}
+          ariaControls={combobox?.listboxId}
+          ariaExpanded={combobox?.expanded}
+          ariaActiveDescendant={combobox?.activeOptionId}
+          ariaAutocomplete={combobox && 'list'}
         />
         <IconContainer variant={variant}>
           {internalSearchTerm ? (

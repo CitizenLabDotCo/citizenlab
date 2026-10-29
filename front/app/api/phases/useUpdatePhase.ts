@@ -3,6 +3,7 @@ import { CLErrors } from 'typings';
 
 import emailCampaignsKeys from 'api/campaigns/email/keys';
 import projectsKeys from 'api/projects/keys';
+import projectsMiniAdminKeys from 'api/projects_mini_admin/keys';
 import supportedCampaignNamesKeys from 'api/supported_campaign_names/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -31,6 +32,9 @@ const useUpdatePhase = () => {
       });
       queryClient.invalidateQueries({
         queryKey: phasesKeys.item({ phaseId: variables.phaseId }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: projectsMiniAdminKeys.lists(),
       });
       queryClient.invalidateQueries({ queryKey: emailCampaignsKeys.lists() });
       queryClient.invalidateQueries({

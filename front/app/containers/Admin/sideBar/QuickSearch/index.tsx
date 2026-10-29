@@ -43,6 +43,10 @@ const QuickSearch = ({ userId }: Props) => {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      // Rich text editors already use Cmd+K to add a link, and mark the event
+      // as handled when they do.
+      if (event.defaultPrevented) return;
+
       if (event.key.toLowerCase() === 'k' && (event.metaKey || event.ctrlKey)) {
         event.preventDefault();
         open();
@@ -67,6 +71,7 @@ const QuickSearch = ({ userId }: Props) => {
           onClick={open}
           aria-label={formatMessage(messages.find)}
           aria-keyshortcuts="Meta+K Control+K"
+          data-cy="e2e-quick-search-button"
         >
           <Icon name="search" fill={colors.coolGrey300} height="20px" />
           {!collapsed && (

@@ -9,6 +9,7 @@ import Link from 'utils/cl-router/Link';
 import { QuickSearchEntry } from './filterEntries';
 
 type Props = {
+  id: string;
   entry: QuickSearchEntry;
   active: boolean;
   onSelect: () => void;
@@ -16,8 +17,9 @@ type Props = {
 };
 
 const QuickSearchResult = forwardRef<HTMLAnchorElement, Props>(
-  ({ entry, active, onSelect, onHover }, ref) => (
+  ({ id, entry, active, onSelect, onHover }, ref) => (
     <Link
+      id={id}
       ref={ref}
       to={entry.link.to}
       params={entry.link.params}

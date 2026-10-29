@@ -95,11 +95,14 @@ describe('getRecentEntries', () => {
   });
 
   it('does not match a page to a specific record beneath it', () => {
-    const projectId = '62d9c1d7-fbaf-4ff4-ba6e-aac24ef2b00a';
+    const recordId = '62d9c1d7-fbaf-4ff4-ba6e-aac24ef2b00a';
 
     expect(
       getRecentEntries(
-        [`/admin/projects/${projectId}/phases/1`],
+        [
+          `/admin/projects/${recordId}/phases/1`,
+          `/admin/settings/branding/emails/${recordId}/edit`,
+        ],
         entries,
         '/admin/dashboard'
       )

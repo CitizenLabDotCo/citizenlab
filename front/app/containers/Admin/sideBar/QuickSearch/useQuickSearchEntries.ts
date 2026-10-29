@@ -1,9 +1,9 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
 import { IPhaseData } from 'api/phases/types';
-import useInfiniteProjectsMiniAdmin from 'api/projects_mini_admin/useInfiniteProjectsMiniAdmin';
+import useAllProjectsMiniAdmin from 'api/projects_mini_admin/useAllProjectsMiniAdmin';
 
 import { areFeaturesActive } from 'hooks/useFeatureFlags';
 import useLocalize from 'hooks/useLocalize';
@@ -16,8 +16,6 @@ import sidebarMessages from '../messages';
 import { QuickSearchEntry } from './filterEntries';
 import staticEntries from './staticEntries';
 
-const PAGE_SIZE = 250;
-
 const isPhase = (item: { type: string }): item is IPhaseData =>
   item.type === 'phase';
 
@@ -29,15 +27,7 @@ const useQuickSearchEntries = () => {
 
   // The endpoint only returns projects the current user can manage, so
   // moderators only get their own projects and phases.
-  const { data, hasNextPage, isFetchingNextPage, fetchNextPage } =
-    useInfiniteProjectsMiniAdmin({ sort: 'alphabetically_asc' }, PAGE_SIZE);
-
-  // Search needs the full list, so keep loading pages until there are none left.
-  useEffect(() => {
-    if (hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+  const { data } = useAllProjectsMiniAdmin({ sort: 'alphabetically_asc' });
 
   return useMemo(() => {
     const pageEntries: QuickSearchEntry[] = staticEntries
@@ -66,8 +56,7 @@ const useQuickSearchEntries = () => {
         keywords: entry.to.replace(/^\/admin\//, ''),
       }));
 
-    const pages = data?.pages ?? [];
-    const projects = pages.flatMap((page) => page.data);
+    const projects = data?.data ?? [];
     const projectsLabel = formatMessage(sidebarMessages.projects);
     const projectBreadcrumbs = new Map(
       projects.map((project) => {
@@ -93,8 +82,7 @@ const useQuickSearchEntries = () => {
       },
     }));
 
-    const phaseEntries: QuickSearchEntry[] = pages
-      .flatMap((page) => page.included ?? [])
+    const phaseEntries: QuickSearchEntry[] = (data?.included ?? [])
       .filter(isPhase)
       .map((phase) => {
         const projectId = phase.relationships.project.data.id;

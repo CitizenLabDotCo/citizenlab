@@ -126,6 +126,11 @@ export interface InputProps {
   ariaLabel?: string;
   ariaInvalid?: boolean;
   ariaDescribedBy?: string;
+  role?: 'combobox';
+  ariaControls?: string;
+  ariaExpanded?: boolean;
+  ariaActiveDescendant?: string;
+  ariaAutocomplete?: 'list';
   id?: string;
   label?: string | JSX.Element | null;
   labelTooltipText?: string | JSX.Element | null;
@@ -210,6 +215,11 @@ class Input extends PureComponent<InputProps> {
       onKeyDown,
       ariaInvalid,
       ariaDescribedBy,
+      role,
+      ariaControls,
+      ariaExpanded,
+      ariaActiveDescendant,
+      ariaAutocomplete,
     } = this.props;
     const {
       id,
@@ -308,6 +318,11 @@ class Input extends PureComponent<InputProps> {
           {...optionalProps}
           aria-invalid={ariaInvalid}
           aria-describedby={ariaDescribedBy}
+          role={role}
+          aria-controls={ariaControls}
+          aria-expanded={ariaExpanded}
+          aria-activedescendant={ariaActiveDescendant}
+          aria-autocomplete={ariaAutocomplete}
         />
 
         {maxCharCount && (
