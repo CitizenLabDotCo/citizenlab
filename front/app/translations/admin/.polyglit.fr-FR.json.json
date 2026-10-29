@@ -9069,14 +9069,89 @@
     "verified_at": "2026-09-16T19:26:50.578477Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.event.addDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.496875Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.addEndDate": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.496875Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.addEventName": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.496875Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.address": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.496875Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.addressDetails": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.496875Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.altText": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.496875Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.altTextPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.496875Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.attachments": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.496875Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.create": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.496875Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.crop": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.496875Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.event.delete": {
     "state": "verified",
     "verified_at": "2026-10-26T13:27:19.241589Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.event.deleteEvent": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.496875Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.eventSetup": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.496875Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.event.image": {
     "state": "verified",
     "verified_at": "2026-10-26T13:30:56.217722Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.platformTime": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.496875Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.registration": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.496875Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.removeEndDate": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.496875Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.event.untitledEvent": {
