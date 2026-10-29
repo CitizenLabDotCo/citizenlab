@@ -10544,6 +10544,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.allInputsApprovedHint": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:29:09.263680Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -10753,6 +10758,11 @@
     "state": "verified",
     "verified_at": "2026-04-21T08:31:07.835171Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApprovalDisabledEngagement": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:29:09.263680Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": {
     "state": "verified",
