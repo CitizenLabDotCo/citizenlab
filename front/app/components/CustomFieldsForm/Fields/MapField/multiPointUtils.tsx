@@ -68,6 +68,17 @@ export const getCoordinatesFromMultiPointData = (
     : data?.coordinates;
 };
 
+// setMapCursor
+// Description: Sets the cursor shown over the map. Esri leaves the map surface
+// without a cursor of its own unless it is panning, so the surface picks up
+// whatever the container is set to. Pass an empty string to give the cursor
+// back to the page.
+const setMapCursor = (mapView: MapView, cursor: string) => {
+  if (mapView.container) {
+    mapView.container.style.cursor = cursor;
+  }
+};
+
 // handlePointDrag
 // Description: Handles when a user-added point is then dragged (I.e. edited)
 export const setupPointDrag = ({
@@ -82,22 +93,42 @@ export const setupPointDrag = ({
 }: HandlePointDragProps) => {
   // Using the mapView on 'drag' event, we handle the dragging of the point & updating the form data
 
-  mapView?.on('drag', (event) => {
+  return mapView?.on('drag', (event) => {
     if (event.action === 'start') {
       // START ACTION: Store the point that the user is trying to drag
 
-      mapView.hitTest(event).then((response) => {
-        // Get the first element under the mouse click
-        const clickedElement = response.results[0];
-        if (
-          clickedElement.layer?.title === 'User Input' &&
-          clickedElement.type === 'graphic' &&
-          clickedElement.graphic.geometry?.type === 'point'
-        ) {
-          event.stopPropagation();
-          pointBeingDragged.current = clickedElement.graphic;
-        }
-      });
+      if (!getUserInputGraphicsLayer(mapView)) {
+        // Nothing has been added to the map yet, so there is nothing to drag
+        return;
+      }
+
+      // The hit test is async, so we hold the event up with defer() while it
+      // runs. Otherwise Esri's own drag handler gets the event first and
+      // starts a map pan which never finishes, keeping the view marked
+      // as navigating and the cursor as "grabbing" fist.
+      event.defer(() =>
+        mapView.hitTest(event).then((response) => {
+          if (response.results.length === 0) {
+            // The drag started on an empty part of the map
+            return;
+          }
+
+          // Get the first element under the mouse click
+          const clickedElement = response.results[0];
+          if (
+            clickedElement.layer?.title === 'User Input' &&
+            clickedElement.type === 'graphic' &&
+            clickedElement.graphic.geometry?.type === 'point'
+          ) {
+            event.stopPropagation();
+            pointBeingDragged.current = clickedElement.graphic;
+
+            // Esri doesn't show anymore a "grabbing" cursor while it pans the map,
+            // so we show one for our own drag
+            setMapCursor(mapView, 'grabbing');
+          }
+        })
+      );
     } else if (event.action === 'update') {
       // UPDATE ACTION: Create temporary graphics to show the drag "preview"
 
@@ -138,7 +169,15 @@ export const setupPointDrag = ({
       }
     } else if (event.action === 'end') {
       // END ACTION: Update the form data with the new coordinates and remove temporary graphics
+
+      if (!pointBeingDragged.current) {
+        // The user panned the map rather than dragging a point. Esri needs
+        // this event to end its own pan, so we leave it alone.
+        return;
+      }
+
       event.stopPropagation();
+
       if (temporaryDragGraphic.current) {
         // Remove the temporary drag graphic
         mapView.graphics.remove(temporaryDragGraphic.current);
@@ -175,11 +214,13 @@ export const setupPointDrag = ({
 
         handleMultiPointChange(newData);
 
-        // Reset the variables and remove graphics
+        // Remove the preview graphics
         mapView.graphics.removeAll();
-        pointBeingDragged.current = null;
-        temporaryDragGraphic.current = null;
       }
+
+      pointBeingDragged.current = null;
+      temporaryDragGraphic.current = null;
+      setMapCursor(mapView, '');
     }
   });
 };

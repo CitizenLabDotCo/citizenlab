@@ -226,18 +226,22 @@ const FullscreenMapInput = memo<Props>(
 
     // Attach behaviour for when a user edits a point by dragging it
     useEffect(() => {
-      isMultiPointInput(inputType) &&
-        handleMultiPointChange &&
-        setupPointDrag({
-          mapView,
-          handleMultiPointChange,
-          pointBeingDragged,
-          temporaryDragGraphic,
-          tenantSecondaryColor: theme.colors.tenantSecondary,
-          data,
-          inputType,
-          pointSymbolSize: 26,
-        });
+      if (!isMultiPointInput(inputType) || !handleMultiPointChange) {
+        return;
+      }
+
+      const dragHandle = setupPointDrag({
+        mapView,
+        handleMultiPointChange,
+        pointBeingDragged,
+        temporaryDragGraphic,
+        tenantSecondaryColor: theme.colors.tenantSecondary,
+        data,
+        inputType,
+        pointSymbolSize: 26,
+      });
+
+      return () => dragHandle?.remove();
     }, [data, handleMultiPointChange, inputType, mapView, theme]);
 
     return modalPortalElement
