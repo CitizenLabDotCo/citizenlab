@@ -15,8 +15,12 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import { IMapConfig } from 'api/map_config/types';
 import useAddProjectMapConfig from 'api/map_config/useAddProjectMapConfig';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
+import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
+
+import { useRegisterPageSaver } from 'containers/Admin/projects/_shared/PageSaveContext';
 
 import ConfigurationMap from 'components/ConfigurationMap/ConfigurationMap';
+import { goToMapLocation } from 'components/EsriMap/utils';
 import Centerer from 'components/UI/Centerer';
 import goBackMessages from 'components/UI/GoBackButton/messages';
 
@@ -27,7 +31,11 @@ import { useParams } from 'utils/router';
 import FeatureLayerUpload from './DataImportOptions/FeatureLayerUpload';
 import WebMapUpload from './DataImportOptions/WebMapUpload';
 import MapConfigOverview from './MapConfiguration/MapConfigOverview';
+import StagedCenterAndZoom, {
+  CenterAndZoomValues,
+} from './MapConfiguration/StagedCenterAndZoom';
 import messages from './messages';
+import { isValidCenterAndZoom } from './utils';
 
 const Container = styled.div`
   display: flex;
@@ -46,6 +54,8 @@ const MapWrapper = styled.div`
 `;
 
 export type ViewOptions = 'main' | 'featureLayerUpload' | 'webMapUpload';
+
+export const MAP_CONFIG_SAVER_KEY = 'map-config';
 
 interface Props {
   className?: string;
@@ -66,12 +76,62 @@ const CustomMapConfigPage = memo<Props>((props) => {
   const { data: projectMapConfig, isFetching } = useProjectMapConfig(projectId);
   const [view, setView] = useState<ViewOptions>('main');
   const [mapView, setMapView] = useState<MapView | null>(null);
+  // In the workspace, center and zoom edits wait for the page's save button.
+  const [staged, setStaged] = useState<CenterAndZoomValues | null>(null);
+  const [stagedInvalid, setStagedInvalid] = useState(false);
+  const { mutateAsync: updateMapConfig } = useUpdateMapConfig(projectId);
 
   const mapConfig = passedMapConfig || projectMapConfig;
   const defaultLatLng = getCenter(undefined, appConfig?.data, mapConfig?.data);
   const defaultLat = defaultLatLng[0];
   const defaultLng = defaultLatLng[1];
   const defaultZoom = getZoomLevel(undefined, appConfig?.data, mapConfig?.data);
+
+  const parseStaged = (values: CenterAndZoomValues) => {
+    const lat = parseFloat(values.lat);
+    const lng = parseFloat(values.lng);
+    const zoom = parseInt(values.zoom, 10);
+
+    return isValidCenterAndZoom(lat, lng, zoom)
+      ? {
+          center: { type: 'Point' as const, coordinates: [lng, lat] },
+          zoom,
+        }
+      : null;
+  };
+
+  const saveStaged = async () => {
+    if (!staged || !mapConfig) return;
+
+    const parsed = parseStaged(staged);
+    if (!parsed) {
+      setStagedInvalid(true);
+      throw new Error('Invalid map center or zoom');
+    }
+
+    await updateMapConfig({
+      mapConfigId: mapConfig.data.id,
+      center_geojson: parsed.center,
+      zoom_level: parsed.zoom.toString(),
+    });
+    setStaged(null);
+  };
+
+  useRegisterPageSaver(MAP_CONFIG_SAVER_KEY, {
+    dirty: !!staged,
+    save: saveStaged,
+  });
+
+  // The map follows typed values, so they can be checked before saving.
+  const stageTyped = (values: CenterAndZoomValues) => {
+    setStaged(values);
+    setStagedInvalid(false);
+
+    const parsed = parseStaged(values);
+    if (mapView && parsed) {
+      goToMapLocation(parsed.center, mapView, parsed.zoom);
+    }
+  };
 
   useEffect(() => {
     // Since we return {data: null}, that is not sent back here so the useEffect on the mapConfig will not
@@ -116,6 +176,16 @@ const CustomMapConfigPage = memo<Props>((props) => {
             mapView={mapView}
             mapConfig={mapConfig}
             variant={variant}
+            centerAndZoom={
+              variant === 'bo' && (
+                <StagedCenterAndZoom
+                  mapConfig={mapConfig}
+                  staged={staged}
+                  invalid={stagedInvalid}
+                  onChange={stageTyped}
+                />
+              )
+            }
           />
         )}
         {view === 'featureLayerUpload' && (
@@ -142,6 +212,14 @@ const CustomMapConfigPage = memo<Props>((props) => {
         mapConfig={mapConfig}
         setParentMapView={setMapView}
         height={variant === 'bo' ? '100%' : undefined}
+        onSaveZoom={
+          variant === 'bo'
+            ? ({ lat, lng, zoom }) => {
+                setStaged({ lat: lat.toString(), lng: lng.toString(), zoom });
+                setStagedInvalid(false);
+              }
+            : undefined
+        }
       />
     );
 

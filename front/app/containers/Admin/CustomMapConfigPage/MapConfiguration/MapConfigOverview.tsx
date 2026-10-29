@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react';
+import React, { memo, ReactNode, useState } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
 import { Box, Text } from '@citizenlab/cl2-component-library';
@@ -51,10 +51,19 @@ interface Props {
   className?: string;
   setView: (view: ViewOptions) => void;
   variant?: 'default' | 'bo';
+  /** Replaces the center and zoom form, which saves on its own. */
+  centerAndZoom?: ReactNode;
 }
 
 const MapConfigOverview = memo<Props>(
-  ({ className, mapConfig, setView, mapView, variant = 'default' }) => {
+  ({
+    className,
+    mapConfig,
+    setView,
+    mapView,
+    variant = 'default',
+    centerAndZoom,
+  }) => {
     const [editedMapLayerId, setEditedMapLayerId] = useState<string | null>(
       null
     );
@@ -108,11 +117,12 @@ const MapConfigOverview = memo<Props>(
               mapConfig={mapConfig}
               variant={variant}
             />
-            <StyledMapCenterAndZoomConfig
-              mapView={mapView}
-              mapConfig={mapConfig}
-              variant={variant}
-            />
+            {centerAndZoom ?? (
+              <StyledMapCenterAndZoomConfig
+                mapView={mapView}
+                mapConfig={mapConfig}
+              />
+            )}
           </>
         ) : (
           <MapLayerConfig

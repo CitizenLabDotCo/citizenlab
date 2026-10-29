@@ -6,8 +6,8 @@ import { usePageSave } from 'containers/Admin/projects/_shared/PageSaveContext';
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 
 import { useIntl } from 'utils/cl-intl';
-import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
+import returnToPhaseAfterSave from '../_shared/returnToPhaseAfterSave';
 import messages from '../messages';
 
 interface Props {
@@ -23,10 +23,9 @@ const SaveChangesButton = ({ label }: Props) => {
 
   const handleClick = async () => {
     setSaved(false);
-    const saved = await pageSave.saveAll('button');
-    setSaved(saved);
-    // The errors show in the phase panel, which the map configuration covers.
-    if (!saved) removeSearchParams(['map_config']);
+    const failed = await pageSave.saveAll('button');
+    setSaved(failed.length === 0);
+    returnToPhaseAfterSave(failed);
   };
 
   // A new edit makes the page dirty again, which brings the label back.

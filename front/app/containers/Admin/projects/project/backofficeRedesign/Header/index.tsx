@@ -1,6 +1,12 @@
 import React from 'react';
 
-import { Box, Tooltip, bo, colors } from '@citizenlab/cl2-component-library';
+import {
+  Box,
+  Button,
+  Tooltip,
+  bo,
+  colors,
+} from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { IPhaseData } from 'api/phases/types';
@@ -10,8 +16,10 @@ import useLocalize from 'hooks/useLocalize';
 
 import Breadcrumbs, { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+import goBackMessages from 'components/UI/GoBackButton/messages';
 
 import { useIntl } from 'utils/cl-intl';
+import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 
 import { ProjectSection } from '../_shared/sections';
 import messages from '../messages';
@@ -38,6 +46,8 @@ interface Props {
   draftParentLabel?: string;
   saveLabel?: string;
   activeView: PhaseViewKey;
+  /** The back button then returns from the map to the phase. */
+  editingMap?: boolean;
   section?: ProjectSection;
   openDropdown: HeaderDropdownName | null;
   onOpenDropdown: (dropdown: HeaderDropdownName | null) => void;
@@ -50,6 +60,7 @@ const WorkspaceHeader = ({
   draftParentLabel,
   saveLabel,
   activeView,
+  editingMap,
   section,
   openDropdown,
   onOpenDropdown,
@@ -111,16 +122,28 @@ const WorkspaceHeader = ({
       >
         {inPhase ? (
           <>
-            <ButtonWithLink
-              to="/admin/projects/$projectId"
-              params={{ projectId: project.id }}
-              buttonStyle="bo-secondary"
-              icon="arrow-left"
-              width={bo.buttonMedium.height}
-              height={bo.buttonMedium.height}
-              padding="0"
-              ariaLabel={formatMessage(messages.backToProjectSetup)}
-            />
+            {editingMap ? (
+              <Button
+                buttonStyle="bo-secondary"
+                icon="arrow-left"
+                width={bo.buttonMedium.height}
+                height={bo.buttonMedium.height}
+                padding="0"
+                ariaLabel={formatMessage(goBackMessages.goBack)}
+                onClick={() => removeSearchParams(['map_config'])}
+              />
+            ) : (
+              <ButtonWithLink
+                to="/admin/projects/$projectId"
+                params={{ projectId: project.id }}
+                buttonStyle="bo-secondary"
+                icon="arrow-left"
+                width={bo.buttonMedium.height}
+                height={bo.buttonMedium.height}
+                padding="0"
+                ariaLabel={formatMessage(messages.backToProjectSetup)}
+              />
+            )}
             <Breadcrumbs
               breadcrumbs={phaseCrumbs}
               separator={draftParentLabel ? 'chevron' : 'slash'}

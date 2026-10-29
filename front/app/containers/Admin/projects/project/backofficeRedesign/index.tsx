@@ -76,6 +76,10 @@ const ProjectWorkspace = ({
   const editingMap = inPhase && !!map_config;
   const showPanels =
     (!phase || activeView === 'build') && !editingEmail && !editingMap;
+  // Once opened, the map stays mounted, so its unsaved edits wait for the
+  // page's save button like the rest of the phase.
+  const [mapOpened, setMapOpened] = useState(false);
+  if (editingMap && !mapOpened) setMapOpened(true);
 
   const settingsPanel = draft ? (
     draft.methodSettings
@@ -148,16 +152,19 @@ const ProjectWorkspace = ({
       borderRadius={bo.panelBorderRadius}
       background={colors.grey100}
     >
-      {editingMap ? (
-        <Suspense fallback={<Spinner />}>
-          <CustomMapConfigPage
-            variant="bo"
-            onBack={() => removeSearchParams(['map_config'])}
-          />
-        </Suspense>
-      ) : (
-        children
+      {mapOpened && (
+        <Box display={editingMap ? 'block' : 'none'} h="100%">
+          <Suspense fallback={<Spinner />}>
+            <CustomMapConfigPage
+              // Discarding the changes drops its staged edits too.
+              key={pageSave?.revision}
+              variant="bo"
+              onBack={() => removeSearchParams(['map_config'])}
+            />
+          </Suspense>
+        </Box>
       )}
+      {!editingMap && children}
     </Box>
   );
 
@@ -179,6 +186,7 @@ const ProjectWorkspace = ({
         draftParentLabel={draft?.parentLabel}
         saveLabel={draft?.saveLabel}
         activeView={activeView}
+        editingMap={editingMap}
         section={section}
         openDropdown={openDropdown}
         onOpenDropdown={showDropdown}

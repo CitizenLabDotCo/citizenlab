@@ -11,16 +11,17 @@ import EsriMap from 'components/EsriMap';
 import { changeCursorOnHover, parseLayers } from 'components/EsriMap/utils';
 
 import LayerHoverLabel from './components/LayerHoverLabel';
-import MapHelperOptions from './components/MapHelperOptions';
+import MapHelperOptions, { MapViewValues } from './components/MapHelperOptions';
 
 export interface Props {
   mapConfig: IMapConfig;
   setParentMapView: (mapView: MapView) => void;
   height?: string;
+  onSaveZoom?: (view: MapViewValues) => void;
 }
 
 const ConfigurationMap = memo<Props>(
-  ({ mapConfig, setParentMapView, height = '700px' }: Props) => {
+  ({ mapConfig, setParentMapView, height = '700px', onSaveZoom }: Props) => {
     const localize = useLocalize();
     const [mapView, setMapView] = React.useState<MapView | null>(null);
     const [hoveredLayerId, setHoveredLayerId] = React.useState<string | null>(
@@ -81,7 +82,11 @@ const ConfigurationMap = memo<Props>(
             (layer) => layer?.id === hoveredLayerId
           )}
         />
-        <MapHelperOptions mapView={mapView} mapConfig={mapConfig} />
+        <MapHelperOptions
+          mapView={mapView}
+          mapConfig={mapConfig}
+          onSaveZoom={onSaveZoom}
+        />
       </>
     );
   }
