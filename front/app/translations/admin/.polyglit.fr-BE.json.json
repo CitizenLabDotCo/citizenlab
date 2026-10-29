@@ -9094,6 +9094,11 @@
     "verified_at": "2026-10-29T22:16:00.688577Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.event.goToProject": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:20:54.798824Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.event.image": {
     "state": "verified",
     "verified_at": "2026-10-26T13:30:56.416187Z",
@@ -9102,6 +9107,11 @@
   "app.containers.Admin.projects.project.event.platformTime": {
     "state": "verified",
     "verified_at": "2026-10-29T22:16:00.688577Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.previewEventName": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:20:54.798824Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.event.registration": {
