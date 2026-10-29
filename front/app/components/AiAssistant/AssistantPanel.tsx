@@ -14,6 +14,7 @@ import { AiAssistantSurfaceKey } from 'api/ai_assistant_conversations/types';
 import useAddAiAssistantConversation from 'api/ai_assistant_conversations/useAddAiAssistantConversation';
 import useAddAiAssistantMessage from 'api/ai_assistant_messages/useAddAiAssistantMessage';
 import useAddFile from 'api/files/useAddFile';
+import useDeleteFile from 'api/files/useDeleteFile';
 
 import useLocale from 'hooks/useLocale';
 
@@ -58,6 +59,7 @@ const AssistantPanel = ({
     useAddAiAssistantConversation();
   const { mutateAsync: addMessage } = useAddAiAssistantMessage();
   const { mutateAsync: addFile } = useAddFile();
+  const { mutateAsync: deleteFile } = useDeleteFile();
 
   const [prompt, setPrompt] = useState('');
   const [files, setFiles] = useState<File[]>([]);
@@ -71,9 +73,10 @@ const AssistantPanel = ({
     (conversation?.data.relationships.messages.data.length ?? 0) > 0;
 
   // Shares the attached files as project files the assistant may process.
-  const uploadFiles = async (): Promise<
-    { fileIds: string[] } | { failedFile: File }
-  > => {
+  const uploadFiles = async (): Promise<{
+    fileIds: string[];
+    failedFile?: File;
+  }> => {
     const uploads = await Promise.allSettled(
       files.map(async (file) =>
         addFile({
@@ -88,39 +91,41 @@ const AssistantPanel = ({
     const failedIndex = uploads.findIndex(
       (upload) => upload.status === 'rejected'
     );
-    if (failedIndex !== -1) return { failedFile: files[failedIndex] };
 
     return {
       fileIds: uploads.flatMap((upload) =>
         upload.status === 'fulfilled' ? [upload.value.data.id] : []
       ),
+      failedFile: failedIndex === -1 ? undefined : files[failedIndex],
     };
   };
+
+  // Files of a message that wasn't sent shouldn't stay in the project.
+  const deleteUploads = (fileIds: string[]) =>
+    Promise.allSettled(fileIds.map((fileId) => deleteFile(fileId)));
 
   const send = async () => {
     setSendError(undefined);
     setSending(true);
+    let uploadedFileIds: string[] = [];
     try {
       const id =
         conversationId ??
         (await addConversation({ surfaceKey, subjectId, locale })).data.id;
-      const upload = await uploadFiles();
-      if ('failedFile' in upload) {
+      const { fileIds, failedFile } = await uploadFiles();
+      uploadedFileIds = fileIds;
+      if (failedFile) {
+        await deleteUploads(uploadedFileIds);
         setSendError(
-          formatMessage(messages.errorUpload, {
-            fileName: upload.failedFile.name,
-          })
+          formatMessage(messages.errorUpload, { fileName: failedFile.name })
         );
         return;
       }
-      await addMessage({
-        conversationId: id,
-        content: prompt.trim(),
-        fileIds: upload.fileIds,
-      });
+      await addMessage({ conversationId: id, content: prompt.trim(), fileIds });
       setPrompt('');
       setFiles([]);
     } catch (error) {
+      await deleteUploads(uploadedFileIds);
       setSendError(formatMessage(getErrorMessage(getRequestErrorCode(error))));
     } finally {
       setSending(false);
