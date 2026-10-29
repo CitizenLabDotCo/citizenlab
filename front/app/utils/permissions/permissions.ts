@@ -52,18 +52,23 @@ const getPermissionRule = (resourceType: TResourceType, action: TAction) => {
   return permissionRules[resourceType][action];
 };
 
-const usePermission = ({
-  item,
-  action,
-  context,
-}: {
+type PermissionParams = {
   item: TPermissionItem | null;
   action: string;
   context?: any;
-}) => {
-  const { data: user } = useAuthUser();
-  const { data: appConfig } = useAppConfiguration();
+};
 
+// Non-hook version of usePermission, for checking many items at once.
+const hasPermission = ({
+  item,
+  action,
+  context,
+  user,
+  appConfig,
+}: PermissionParams & {
+  user: IUser | undefined | null;
+  appConfig: IAppConfigurationData | undefined;
+}) => {
   if (!item) {
     return false;
   }
@@ -74,10 +79,23 @@ const usePermission = ({
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (rule && appConfig) {
-    return rule(item, user, appConfig.data, context);
+    return rule(item, user, appConfig, context);
   } else {
     throw `No permission rule is specified on resource '${resourceType}' for action '${action}'`;
   }
 };
 
-export { definePermissionRule, usePermission };
+const usePermission = ({ item, action, context }: PermissionParams) => {
+  const { data: user } = useAuthUser();
+  const { data: appConfig } = useAppConfiguration();
+
+  return hasPermission({
+    item,
+    action,
+    context,
+    user,
+    appConfig: appConfig?.data,
+  });
+};
+
+export { definePermissionRule, hasPermission, usePermission };

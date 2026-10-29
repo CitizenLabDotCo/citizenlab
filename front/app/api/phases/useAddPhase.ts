@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import projectsKeys from 'api/projects/keys';
+import projectsMiniAdminKeys from 'api/projects_mini_admin/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -26,6 +27,9 @@ const useAddPhase = () => {
       });
       queryClient.invalidateQueries({
         queryKey: phasesKeys.list({ projectId }),
+      });
+      queryClient.invalidateQueries({
+        queryKey: projectsMiniAdminKeys.lists(),
       });
     },
   });

@@ -31,6 +31,7 @@ import MenuItem from './MenuItem';
 import messages from './messages';
 import defaultNavItems, { NavItem } from './navItems';
 import NotificationsPopup from './NotificationsPopup';
+import QuickSearch from './QuickSearch';
 import SidebarCollapsedContext from './SidebarCollapsedContext';
 import { SupportMenu } from './SupportMenu';
 import { UserMenu } from './UserMenu';
@@ -201,6 +202,8 @@ const Sidebar = ({ authUser }: Props) => {
               </Box>
             </Link>
           </Box>
+
+          <QuickSearch />
 
           {topNavItems.map((navItem) => (
             <MenuItem navItem={navItem} key={navItem.name} />

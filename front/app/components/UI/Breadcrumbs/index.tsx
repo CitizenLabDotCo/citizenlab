@@ -120,7 +120,8 @@ const Breadcrumbs = ({
 
         return (
           <Box
-            key={label}
+            // A project and its phase can share a title.
+            key={`${index}-${label}`}
             display="flex"
             alignItems="center"
             minWidth={isLastBreadcrumb ? '0' : undefined}

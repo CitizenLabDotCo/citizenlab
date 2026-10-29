@@ -154,7 +154,7 @@ const ModalContainer = styled(ClickOutside)<{
   `}
 `;
 
-const Overlay = styled.div<{ zIndex?: number }>`
+const Overlay = styled.div<{ zIndex?: number; fixedTop?: number }>`
   width: 100vw;
   height: 100vh;
   position: fixed;
@@ -172,6 +172,17 @@ const Overlay = styled.div<{ zIndex?: number }>`
 
   z-index: ${({ zIndex }) =>
     zIndex !== undefined ? zIndex.toString() : '1000001'};
+
+  ${({ fixedTop }) =>
+    fixedTop !== undefined &&
+    css`
+      align-items: flex-start;
+      padding-top: ${fixedTop}px;
+
+      ${ModalContainer} {
+        max-height: calc(100vh - ${fixedTop + 24}px);
+      }
+    `}
 
   ${media.phone`
     padding: 0px;
@@ -304,6 +315,11 @@ interface BaseProps {
   closeOnClickOutside?: boolean;
   children: React.ReactNode;
   zIndex?: number;
+  /**
+   * Pins the top of the modal this many pixels from the top of the window,
+   * instead of centering it. Keeps it still when its content changes height.
+   */
+  fixedTop?: number;
   hideCloseButton?: boolean;
   /**
    * Optional ref to return focus on close.
@@ -334,6 +350,7 @@ const Modal: React.FC<Props> = ({
   closeOnClickOutside = true,
   children,
   zIndex,
+  fixedTop,
   hideCloseButton,
   ariaLabelledBy,
   returnFocusRef,
@@ -498,6 +515,7 @@ const Modal: React.FC<Props> = ({
         id="e2e-modal-container"
         className={className}
         zIndex={zIndex}
+        fixedTop={fixedTop}
       >
         <ModalContentContainerSwitch width={width}>
           <ModalContainer
