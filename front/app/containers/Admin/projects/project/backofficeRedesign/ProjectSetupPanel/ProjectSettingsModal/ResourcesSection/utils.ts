@@ -6,3 +6,5 @@ export const getFileIcon = (mimeType: string): IconNames => {
   if (mimeType.startsWith('image/')) return 'image';
   return 'page';
 };
+
+export const FILE_MODAL_HEIGHT = 'min(640px, 88vh)';

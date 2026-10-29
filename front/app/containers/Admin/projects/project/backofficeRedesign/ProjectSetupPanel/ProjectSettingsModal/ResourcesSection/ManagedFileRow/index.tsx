@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Icon,
-  Text,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Button, Text, colors } from '@citizenlab/cl2-component-library';
 
 import { IFileData } from 'api/files/types';
 
@@ -20,8 +14,7 @@ import { useIntl } from 'utils/cl-intl';
 import { saveFileToDisk } from 'utils/fileUtils';
 
 import FileActionsMenu, { FileAction } from '../FileActionsMenu';
-import FileRow, { FILE_ROW_ACTION_CLASS } from '../FileRow';
-import { getFileIcon } from '../utils';
+import FileRow from '../FileRow';
 
 interface Props {
   file: IFileData;
@@ -56,24 +49,10 @@ const ManagedFileRow = ({ file, onDelete }: Props) => {
 
   return (
     <>
-      <FileRow>
-        <Icon
-          name={getFileIcon(mime_type)}
-          width="16px"
-          height="16px"
-          fill={colors.coolGrey500}
-        />
-        <Box flex="1" minWidth="0">
-          <Text
-            variant="boControl"
-            fontSize="xs"
-            m="0px"
-            overflow="hidden"
-            textOverflow="ellipsis"
-            whiteSpace="nowrap"
-          >
-            {name}
-          </Text>
+      <FileRow
+        name={name}
+        mimeType={mime_type}
+        meta={
           <Box display="flex" alignItems="center" gap="4px">
             <Text variant="boMicro" color="coolGrey500" m="0px">
               {formatDate(created_at, {
@@ -93,14 +72,14 @@ const ManagedFileRow = ({ file, onDelete }: Props) => {
               />
             )}
           </Box>
-        </Box>
-        <Box className={FILE_ROW_ACTION_CLASS}>
+        }
+        actions={
           <FileActionsMenu
             ariaLabel={formatMessage(messages.fileActions, { fileName: name })}
             actions={actions}
           />
-        </Box>
-      </FileRow>
+        }
+      />
       <Modal
         variant="bo"
         opened={deleteModalOpened}
