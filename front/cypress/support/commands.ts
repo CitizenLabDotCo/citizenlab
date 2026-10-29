@@ -1,6 +1,7 @@
 import 'cypress-file-upload';
 import './dnd';
 import './form-builder';
+import './input-form';
 import * as moment from 'moment';
 import { IUserUpdate } from '../../app/api/users/types';
 import { IUpdatedAppConfigurationProperties } from '../../app/api/app_configuration/types';
@@ -119,6 +120,9 @@ declare global {
       dragToolboxItemTo(
         toolboxSelector: string,
         targetSelector: string
+      ): Chainable<JQuery<HTMLElement>>;
+      clickInputFormPageButton(
+        dataCy: 'e2e-next-page' | 'e2e-submit-form'
       ): Chainable<JQuery<HTMLElement>>;
       selectReactSelectOption: typeof selectReactSelectOption;
       apiCreateInputTopic: typeof apiCreateInputTopic;
@@ -1397,8 +1401,6 @@ function apiCreatePhase({
   nativeSurveyButtonMultiloc?: Multiloc;
   nativeSurveyTitleMultiloc?: Multiloc;
   reacting_dislike_enabled?: boolean;
-  // Only settable on creation: 'standalone' phases are extra surveys that run
-  // in parallel with the timeline.
   placementType?: 'on_timeline' | 'standalone';
 }) {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {

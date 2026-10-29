@@ -10,6 +10,7 @@ import {
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import SettingToggleRow from 'components/admin/SettingToggleRow';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
@@ -23,6 +24,7 @@ interface AnonymousPostingToggleProps {
   ) => void;
   toggleLabel?: JSX.Element;
   disabledReason?: string;
+  variant?: 'default' | 'panel';
 }
 
 const AnonymousPostingToggle = ({
@@ -30,6 +32,7 @@ const AnonymousPostingToggle = ({
   handleAllowAnonymousParticipationOnChange,
   toggleLabel,
   disabledReason,
+  variant = 'default',
 }: AnonymousPostingToggleProps) => {
   const { formatMessage } = useIntl();
   const hasAnonymousParticipationEnabled = useFeatureFlag({
@@ -37,6 +40,27 @@ const AnonymousPostingToggle = ({
   });
 
   if (!hasAnonymousParticipationEnabled) return null;
+
+  if (variant === 'panel') {
+    return (
+      <Box display="flex" flexDirection="column" gap="8px">
+        <SettingToggleRow
+          title={formatMessage(messages.anonymousParticipation)}
+          description={formatMessage(
+            messages.anonymousParticipationDescription
+          )}
+          checked={allow_anonymous_participation || false}
+          disabled={!!disabledReason}
+          onChange={() =>
+            handleAllowAnonymousParticipationOnChange(
+              !allow_anonymous_participation
+            )
+          }
+        />
+        {disabledReason && <Warning variant="bo">{disabledReason}</Warning>}
+      </Box>
+    );
+  }
 
   return (
     <SectionField>

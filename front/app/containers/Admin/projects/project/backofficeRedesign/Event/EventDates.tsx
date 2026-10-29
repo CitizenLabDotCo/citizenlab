@@ -4,21 +4,17 @@ import {
   Box,
   Button,
   Icon,
-  Text,
   Tooltip,
   bo,
   colors,
-  fontSizes,
-  stylingConsts,
 } from '@citizenlab/cl2-component-library';
 import { addMinutes, isSameDay } from 'date-fns';
-import styled from 'styled-components';
 import { CLErrors } from 'typings';
 
 import { IEventProperties } from 'api/events/types';
 
+import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import useEventDateTimes from 'containers/Admin/projects/_shared/events/useEventDateTimes';
-import dateTimeMessages from 'containers/Admin/projects/project/events/components/DateTimeSelection/messages';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
 import DateSinglePicker from 'components/admin/DatePickers/DateSinglePicker';
@@ -26,10 +22,11 @@ import TimeInput from 'components/admin/TimeSelection/TimeInput';
 import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
-import { getGmtOffset } from 'utils/dateUtils';
 
+import DateFieldRow from './DateFieldRow';
+import DateFieldSegment from './DateFieldSegment';
 import messages from './messages';
-import SetupCard from './SetupCard';
+import PlatformTimeNote from './PlatformTimeNote';
 
 const withTimeOf = (date: Date, time: Date) => {
   const result = new Date(date);
@@ -45,57 +42,6 @@ const Arrow = () => (
     fill={bo.colors.crumbSeparator}
   />
 );
-
-// The date and time pickers render their own bordered trigger buttons. Inside
-// the row they read as plain text segments, so the row draws the only border.
-// Their popups mount inside the segment too, so the rules skip those.
-const FieldRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  height: 36px;
-  padding: 0 6px 0 12px;
-  box-sizing: border-box;
-  border: 1px solid ${colors.grey300};
-  border-radius: ${bo.borderRadius};
-  background: ${colors.white};
-
-  &:focus-within {
-    border-color: ${({ theme }) => theme.colors.tenantPrimary};
-  }
-`;
-
-const Segment = styled.div`
-  && button:not([data-tippy-root] button) {
-    height: 28px;
-    padding: 0 6px;
-    border: none;
-    border-radius: ${stylingConsts.borderRadius};
-    box-shadow: none;
-    background: transparent;
-    font-size: ${fontSizes.xs}px;
-    color: ${bo.colors.textHeadingStrong};
-    white-space: nowrap;
-
-    &:focus {
-      border: none;
-    }
-
-    &:hover,
-    &:focus-visible {
-      background: ${colors.grey100};
-      color: ${bo.colors.textHeadingStrong};
-    }
-
-    > div {
-      margin-right: 0;
-    }
-
-    svg {
-      display: none;
-    }
-  }
-`;
 
 interface Props {
   startAt: string;
@@ -135,34 +81,26 @@ const EventDates = ({ startAt, endAt, errors, setAttributeDiff }: Props) => {
 
   return (
     <SetupCard title={formatMessage(eventMessages.eventDates)}>
-      <FieldRow>
-        <Box display="flex" mr="4px">
-          <Icon
-            name="calendar"
-            width="16px"
-            height="16px"
-            fill={colors.coolGrey500}
-          />
-        </Box>
-        <Segment>
+      <DateFieldRow icon="calendar">
+        <DateFieldSegment>
           <DateSinglePicker
             id="event-start-date"
             selectedDate={startAtDate}
             formatDate={formatLongDate}
             onChange={(date) => updateStartAt(withTimeOf(date, startAtDate))}
           />
-        </Segment>
+        </DateFieldSegment>
         {multiDay && (
           <>
             <Arrow />
-            <Segment>
+            <DateFieldSegment>
               <DateSinglePicker
                 id="event-end-date"
                 selectedDate={endAtDate}
                 formatDate={formatLongDate}
                 onChange={(date) => updateEndAt(withTimeOf(date, endAtDate))}
               />
-            </Segment>
+            </DateFieldSegment>
             <Box ml="auto">
               <Tooltip
                 content={formatMessage(messages.removeEndDate)}
@@ -182,25 +120,17 @@ const EventDates = ({ startAt, endAt, errors, setAttributeDiff }: Props) => {
             </Box>
           </>
         )}
-      </FieldRow>
+      </DateFieldRow>
 
-      <FieldRow>
-        <Box display="flex" mr="4px">
-          <Icon
-            name="clock"
-            width="16px"
-            height="16px"
-            fill={colors.coolGrey500}
-          />
-        </Box>
-        <Segment>
+      <DateFieldRow icon="clock">
+        <DateFieldSegment>
           <TimeInput selectedTime={startAtDate} onChange={updateStartAt} />
-        </Segment>
+        </DateFieldSegment>
         <Arrow />
-        <Segment>
+        <DateFieldSegment>
           <TimeInput selectedTime={endAtDate} onChange={updateEndAt} />
-        </Segment>
-      </FieldRow>
+        </DateFieldSegment>
+      </DateFieldRow>
       <Error apiErrors={errors?.start_at} />
       <Error apiErrors={errors?.end_at} />
 
@@ -222,27 +152,7 @@ const EventDates = ({ startAt, endAt, errors, setAttributeDiff }: Props) => {
           </Button>
         )}
         {platformTimezone && (
-          <Tooltip
-            content={formatMessage(dateTimeMessages.timezoneInfo, {
-              timezone: platformTimezone.replace(/_/g, ' '),
-              gmtOffset: getGmtOffset(platformTimezone, tenantTimeNow),
-            })}
-            theme="dark"
-          >
-            <Box display="flex" alignItems="center" gap="6px" tabIndex={0}>
-              <Icon
-                name="globe"
-                width="14px"
-                height="14px"
-                fill={colors.coolGrey600}
-              />
-              <Text as="span" m="0" fontSize="xs" color="coolGrey600">
-                {formatMessage(messages.platformTime, {
-                  timezone: platformTimezone,
-                })}
-              </Text>
-            </Box>
-          </Tooltip>
+          <PlatformTimeNote timezone={platformTimezone} now={tenantTimeNow} />
         )}
       </Box>
     </SetupCard>

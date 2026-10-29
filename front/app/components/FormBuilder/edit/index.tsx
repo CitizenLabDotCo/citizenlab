@@ -45,7 +45,11 @@ import { DragAndDrop, Drop } from '../components/DragAndDrop';
 import { pageDNDType } from '../components/FormFields/constants';
 import FormStatus from '../components/FormStatus';
 import messages from '../messages';
-import { FormBuilderConfig } from '../utils';
+import {
+  FormBuilderConfig,
+  ResolvedFormBuilderConfig,
+  resolveFormBuilderConfig,
+} from '../utils';
 
 import {
   getReorderedFields,
@@ -66,7 +70,7 @@ type FormEditProps = {
   defaultValues: {
     customFields: IFlatCustomField[];
   };
-  builderConfig: FormBuilderConfig;
+  builderConfig: ResolvedFormBuilderConfig;
   totalSubmissions: number;
   viewFormLink: TypedLinkProps;
   phase: IPhaseData;
@@ -88,11 +92,10 @@ const FormEdit = ({
   >(undefined);
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(false);
   const [autosaveEnabled, setAutosaveEnabled] = useState(true);
-  const { isFormPhaseSpecific } = builderConfig;
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const { data: formCustomFields, isFetching } = useFormCustomFields({
     projectId,
-    phaseId: isFormPhaseSpecific ? phaseId : undefined,
+    phaseId,
   });
 
   const { data: customForm } = useCustomForm(phase);
@@ -232,7 +235,7 @@ const FormEdit = ({
         {
           projectId,
           customFields: finalResponseArray,
-          phaseId: isFormPhaseSpecific ? phaseId : undefined,
+          phaseId,
           customForm: {
             saveType: autosave ? 'auto' : 'manual',
             openedAt: formOpenedAt,
@@ -363,7 +366,7 @@ const FormEdit = ({
                   </Box>
                   <Box
                     flex="1.8"
-                    border="1px solid #ccc"
+                    border={`1px solid ${colors.grey400}`}
                     overflowY="auto"
                     zIndex="2"
                     margin="0px"
@@ -414,11 +417,15 @@ const FormEdit = ({
 
 type FormBuilderPageProps = {
   builderConfig: FormBuilderConfig;
+  formCustomFields: IFlatCustomField[] | undefined | Error;
+  goBackUrl: string;
   viewFormLink: TypedLinkProps;
 };
 
 const FormBuilderPage = ({
   builderConfig,
+  formCustomFields,
+  goBackUrl,
   viewFormLink,
 }: FormBuilderPageProps) => {
   const modalPortalElement = document.getElementById('modal-portal');
@@ -427,8 +434,6 @@ const FormBuilderPage = ({
     phaseId,
   });
   const { data: phase } = usePhase(phaseId);
-
-  const formCustomFields = builderConfig.formCustomFields;
 
   if (!phase) {
     return null;
@@ -443,7 +448,11 @@ const FormBuilderPage = ({
         <FormEdit
           defaultValues={{ customFields: formCustomFields }}
           phase={phase.data}
-          builderConfig={builderConfig}
+          builderConfig={resolveFormBuilderConfig(
+            builderConfig,
+            phase.data,
+            goBackUrl
+          )}
           totalSubmissions={submissionCount.data.attributes.totalSubmissions}
           viewFormLink={viewFormLink}
         />,

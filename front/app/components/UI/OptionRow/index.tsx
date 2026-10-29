@@ -21,7 +21,7 @@ const Row = styled(Box)`
 `;
 
 interface Props {
-  icon: IconNames;
+  icon?: IconNames;
   label: string;
   description?: string;
   selected: boolean;
@@ -46,13 +46,15 @@ const OptionRow = ({ icon, label, description, selected, onClick }: Props) => {
       borderRadius={stylingConsts.borderRadius}
       cursor="pointer"
     >
-      <Icon
-        name={icon}
-        width="20px"
-        height="20px"
-        fill={colors.textPrimary}
-        my="2px"
-      />
+      {icon && (
+        <Icon
+          name={icon}
+          width="20px"
+          height="20px"
+          fill={colors.textPrimary}
+          my="2px"
+        />
+      )}
       <Box flex="1 1 auto" minWidth="0">
         <Text variant="boLabel" textAlign="left">
           {label}

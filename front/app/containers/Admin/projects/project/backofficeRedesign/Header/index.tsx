@@ -8,6 +8,7 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { usePageSave } from 'components/admin/PageSaveContext';
 import Breadcrumbs, { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
@@ -20,6 +21,7 @@ import ViewSwitch from '../Phase/ViewSwitch';
 
 import { HeaderDropdownName } from './HeaderDropdown';
 import PublishDropdown from './PublishDropdown';
+import ReviewFlow from './ReviewFlow';
 import SaveChangesButton from './SaveChangesButton';
 import ShareDropdown from './ShareDropdown';
 
@@ -55,9 +57,13 @@ const WorkspaceHeader = ({
   onOpenDropdown,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const pageSave = usePageSave();
   const localize = useLocalize();
   const views = usePhaseViews(phase);
   const inPhase = !!(phase || draftLabel);
+  const saveButtonLabel = inPhase
+    ? saveLabel
+    : formatMessage(messages.saveProjectSetup);
 
   const phaseCrumbs: TBreadcrumbs = [
     {
@@ -157,8 +163,8 @@ const WorkspaceHeader = ({
         justifyContent="flex-end"
         gap="8px"
       >
-        {inPhase ? (
-          <SaveChangesButton label={saveLabel} />
+        {inPhase || pageSave?.dirty ? (
+          <SaveChangesButton key={phase?.id} label={saveButtonLabel} />
         ) : (
           <>
             <Tooltip
@@ -185,6 +191,13 @@ const WorkspaceHeader = ({
                 opened={openDropdown === 'share'}
                 onOpenChange={(opened) =>
                   onOpenDropdown(opened ? 'share' : null)
+                }
+              />
+              <ReviewFlow
+                project={project}
+                opened={openDropdown === 'review'}
+                onOpenChange={(opened) =>
+                  onOpenDropdown(opened ? 'review' : null)
                 }
               />
               <PublishDropdown

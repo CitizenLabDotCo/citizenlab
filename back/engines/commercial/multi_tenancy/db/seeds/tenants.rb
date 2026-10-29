@@ -89,10 +89,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            idea_author_change: {
-              enabled: true,
-              allowed: true
-            },
             machine_translations: {
               enabled: true,
               allowed: true
@@ -421,6 +417,10 @@ module MultiTenancy
               allowed: true
             },
             custom_page_builder: {
+              enabled: true,
+              allowed: true
+            },
+            llm_reporting: {
               enabled: true,
               allowed: true
             },

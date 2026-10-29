@@ -13,13 +13,13 @@ const Container = styled.div`
   flex-direction: column;
   align-items: stretch;
   border-radius: ${(props) => props.theme.borderRadius};
-  border: solid 1px #ccc;
+  border: solid 1px ${colors.grey400};
   box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.05);
   background: #fff;
   transition: all 100ms ease-out;
 
   &:hover {
-    border-color: ${darken(0.3, '#ccc')};
+    border-color: ${darken(0.3, colors.grey400)};
     box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.1);
   }
 `;

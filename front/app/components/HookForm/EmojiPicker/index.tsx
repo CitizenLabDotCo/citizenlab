@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Label, boLabelStyle } from '@citizenlab/cl2-component-library';
+import { Label, boInputLabelStyle } from '@citizenlab/cl2-component-library';
 import { Controller, useFormContext } from 'react-hook-form';
 import styled from 'styled-components';
 import { CLError, RHFErrors } from 'typings';
@@ -10,7 +10,7 @@ import Error, { TFieldName } from 'components/UI/Error';
 
 const Container = styled.div`
   &[data-variant='bo'] {
-    ${boLabelStyle}
+    ${boInputLabelStyle}
   }
 `;
 

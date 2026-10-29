@@ -36,6 +36,7 @@ fr-FR:
         project_participants: Aux participants du projet
         registered_users: Aux utilisateurs enregistrés
       recipient_segment:
+        admin_who_generated_the_report: L'administrateur qui a demandé le rapport
         admins: Administrateurs
         admins_and_managers: Administrateurs et gestionnaires
         admins_and_managers_assigned_to_the_input: Les administrateurs et les gestionnaires assignés à la contribution
@@ -109,6 +110,7 @@ fr-FR:
         proposal_is_upvoted_above_threshold: 'Une proposition dépasse le seuil de votes requis '
         proposal_status_changes: Changement du statut d'une proposition
         registration_to_event: Inscription à un événement
+        report_generated: La génération d'un rapport est terminée
         survey_1_day_after_draft_saved: 1 jour après la dernière sauvegarde du brouillon
         user_accepts_invitation_to_cosponsor_a_proposal: Un utilisateur accepte de soutenir une proposition
         user_changes_email: L'utilisateur change son adresse e-mail
@@ -209,6 +211,7 @@ fr-FR:
       project_review_request: Demande de révision d'un projet
       project_review_state_change: Projet approuvé
       proposal_expired_for_admin: Proposition expirée sans atteindre le seuil de vote
+      report_generated: Rapport généré
       screening_digest: Rappel hebdomadaire de modération
       sms_manual: Messages officiels
       space_moderation_rights_received: Droits de gestionnaire d'espace reçus
@@ -664,6 +667,13 @@ fr-FR:
       preheader: Une contribution a expiré sans atteindre le seuil
       subject: '"%{input_title}" a expiré sans atteindre le seuil'
       title: Une contribution a expiré sans atteindre le seuil de vote
+    report_generated:
+      cta_button: Ouvrir le rapport
+      event_description: Le rapport a été rédigé et est prêt à être révisé et modifié.
+      preheader: Votre rapport est prêt
+      stopped_early: "La rédaction s'est arrêtée avant que le rapport ne soit terminé. Tout ce qui a été écrit jusqu'à présent est enregistré — ouvrez-le et demandez la suite dans le chat."
+      subject: "Votre rapport pour '%{projectName}' est prêt"
+      title: Votre rapport est prêt
     schedules:
       quarterly: Le premier jour de chaque trimestre
       weekly:

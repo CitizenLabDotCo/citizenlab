@@ -9,7 +9,7 @@ import useAddPhase from 'api/phases/useAddPhase';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import useUpdatePhase from 'api/phases/useUpdatePhase';
-import { getPhaseLandingTab, isTimelinePhase } from 'api/phases/utils';
+import { getPhaseSaveRedirectTab, isTimelinePhase } from 'api/phases/utils';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
@@ -40,6 +40,7 @@ import { defaultAdminCardPadding } from 'utils/styleConstants';
 import DateSetup from './components/DateSetup';
 import PhaseParticipationConfig from './components/PhaseParticipationConfig';
 import { ideationDefaultConfig } from './components/PhaseParticipationConfig/utils/participationMethodConfigs';
+import PhasePlacement from './components/PhasePlacement';
 import messages from './messages';
 import { getNewPhaseDefaults, localizedDefaults } from './newPhaseDefaults';
 import { SubmitStateType, ValidationErrors } from './typings';
@@ -216,7 +217,7 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
     setSubmitState('success');
 
     if (redirectAfterSave) {
-      const redirectTab = getPhaseLandingTab(phaseResponse);
+      const redirectTab = getPhaseSaveRedirectTab(phaseResponse);
       window.scrollTo(0, 0);
       clHistory.push(
         `/admin/projects/${projectId}/phases/${phaseId}/${redirectTab}${window.location.search}`
@@ -231,14 +232,13 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
     setProcessing(true);
 
     if (phase) {
+      // Placement only changes through PhasePlacement, so the form never sends it.
+      const { placement_type: _placementType, ...phaseData } = formData;
+
       updatePhase(
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         {
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          phaseId: phase?.data.id,
-          ...formData,
+          phaseId: phase.data.id,
+          ...phaseData,
         },
         {
           onSuccess: (response) => {
@@ -313,6 +313,14 @@ const AdminPhaseEdit = ({ projectId, phase, standaloneSurvey }: Props) => {
             setValidationErrors={setValidationErrors}
             hideMethodPicker={standalone}
           />
+          {phase && (
+            <PhasePlacement
+              phase={phase.data}
+              hasUnsavedChanges={
+                submitState === 'enabled' || submitState === 'error'
+              }
+            />
+          )}
           <SectionField>
             <SubSectionTitle>
               <FormattedMessage {...messages.uploadAttachments} />

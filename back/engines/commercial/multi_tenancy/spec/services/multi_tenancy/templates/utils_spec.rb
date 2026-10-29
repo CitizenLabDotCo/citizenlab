@@ -106,6 +106,39 @@ describe MultiTenancy::Templates::Utils do
     end
   end
 
+  describe '#required_locales' do
+    it 'reads the locales of an external template from the manifest, without fetching its models' do
+      s3_client.stub_responses(:get_object, lambda { |context|
+        expect(context.params[:key]).to eq('foo/manifest.json')
+        { body: '{"template": {"required_locales": ["en", "nl-BE"]}}' }
+      })
+
+      expect(service.required_locales('template', external_subfolder: 'foo')).to eq(%w[en nl-BE])
+    end
+
+    it 'falls back to the models of an external template when the manifest does not list it' do
+      s3_client.stub_responses(:get_object, lambda { |context|
+        case context.params[:key]
+        when 'foo/manifest.json' then { body: '{"other": {"required_locales": ["en"]}}' }
+        when 'foo/template/models.yml' then { body: { 'models' => { 'user' => [{ 'locale' => 'fr-BE' }] } }.to_yaml }
+        end
+      })
+
+      expect(service.required_locales('template', external_subfolder: 'foo')).to eq(['fr-BE'])
+    end
+
+    it 'falls back to the models of an external template when there is no manifest' do
+      s3_client.stub_responses(:get_object, lambda { |context|
+        case context.params[:key]
+        when 'foo/manifest.json' then 'NoSuchKey'
+        when 'foo/template/models.yml' then { body: { 'models' => { 'user' => [{ 'locale' => 'fr-BE' }] } }.to_yaml }
+        end
+      })
+
+      expect(service.required_locales('template', external_subfolder: 'foo')).to eq(['fr-BE'])
+    end
+  end
+
   describe '.user_locales' do
     where(:case_name, :expected_locales, :serialized_models) do
       [

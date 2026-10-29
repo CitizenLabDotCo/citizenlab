@@ -21,6 +21,31 @@ export function isTimelinePhase(phase: IPhaseData) {
   return phase.attributes.placement_type === 'on_timeline';
 }
 
+// Mirrors TimelineService#previous_phase on the back end; keep the two in sync.
+export function getPreviousTimelinePhase(
+  phases: IPhaseData[],
+  phase: IPhaseData
+) {
+  const startAt = new Date(phase.attributes.start_at).getTime();
+
+  return phases
+    .filter(
+      (other) =>
+        other.id !== phase.id &&
+        isTimelinePhase(other) &&
+        new Date(other.attributes.start_at).getTime() < startAt
+    )
+    .reduce<IPhaseData | undefined>(
+      (latest, other) =>
+        !latest ||
+        new Date(other.attributes.start_at) >
+          new Date(latest.attributes.start_at)
+          ? other
+          : latest,
+      undefined
+    );
+}
+
 export function getCurrentPhase(phases: IPhaseData[] | undefined) {
   if (!isNilOrError(phases)) {
     return phases.find(isPhaseActive);
@@ -188,6 +213,12 @@ export function getPhaseLandingTab(
   }
 
   return 'setup';
+}
+
+export function getPhaseSaveRedirectTab(phase: IPhaseData) {
+  return phase.attributes.participation_method === 'native_survey'
+    ? 'survey-form'
+    : getPhaseLandingTab(phase);
 }
 
 export const INPUT_TERMS = [

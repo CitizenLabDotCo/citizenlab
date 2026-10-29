@@ -36,6 +36,7 @@ fi-FI:
         project_participants: Projektin osallistujille
         registered_users: Rekisteröityneille käyttäjille
       recipient_segment:
+        admin_who_generated_the_report: Raportin tilannut ylläpitäjä
         admins: Järjestelmänvalvojat
         admins_and_managers: Järjestelmänvalvojat ja johtajat
         admins_and_managers_assigned_to_the_input: Syötteeseen määritetyt järjestelmänvalvojat ja johtajat
@@ -109,6 +110,7 @@ fi-FI:
         proposal_is_upvoted_above_threshold: Ehdotus on hyväksytty yli kynnyksen
         proposal_status_changes: Ehdotuksen tila muuttuu
         registration_to_event: Ilmoittautuminen tapahtumaan
+        report_generated: Raportin luominen valmistui
         survey_1_day_after_draft_saved: 1 päivä sen jälkeen, kun käyttäjä viimeksi tallensi kyselyn luonnokseksi
         user_accepts_invitation_to_cosponsor_a_proposal: Käyttäjä hyväksyy kutsun yhteissponsoroida ehdotusta
         user_changes_email: Käyttäjä vaihtaa sähköpostiosoitettaan
@@ -206,6 +208,7 @@ fi-FI:
       project_review_request: Hankearviointipyyntö
       project_review_state_change: Projekti hyväksytty
       proposal_expired_for_admin: Ehdotus vanhentui saavuttamatta äänestyskynnystä
+      report_generated: Raportti on luotu
       screening_digest: Viikoittainen seulontamuistutus
       sms_manual: Viralliset tekstiviestit
       space_moderation_rights_received: Tilan hallinnointioikeudet vastaanotettu
@@ -661,6 +664,13 @@ fi-FI:
       preheader: Ehdotus vanhentui saavuttamatta kynnystä
       subject: '"%{input_title}" vanhentui saavuttamatta kynnystä'
       title: Ehdotus vanhentui saavuttamatta äänestyskynnystä
+    report_generated:
+      cta_button: Avaa raportti
+      event_description: Raportti on kirjoitettu ja se on valmis tarkistettavaksi ja muokattavaksi.
+      preheader: Raporttisi on valmis
+      stopped_early: Kirjoittaminen keskeytyi ennen kuin raportti valmistui. Kaikki tähän mennessä kirjoitettu on tallennettu — avaa se ja pyydä loput chatissa.
+      subject: "Raporttisi hankkeesta '%{projectName}' on valmis"
+      title: Raporttisi on valmis
     schedules:
       quarterly: Neljännesvuosittain, neljänneksen ensimmäisenä päivänä
       weekly:

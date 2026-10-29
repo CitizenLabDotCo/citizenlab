@@ -5,7 +5,6 @@ import {
   Button,
   Spinner,
   Text,
-  bo,
   colors,
 } from '@citizenlab/cl2-component-library';
 
@@ -94,9 +93,7 @@ const ProjectPage = () => {
           <Box w="100%" display="flex" justifyContent="flex-end">
             <Button
               buttonStyle="bo-primary"
-              height={bo.buttonMedium.height}
-              padding={bo.buttonMedium.padding}
-              fontSize={bo.buttonMedium.fontSize}
+              boSize="medium"
               onClick={closeGroupsFailed}
             >
               {formatMessage(messages.groupsNotAddedOk)}

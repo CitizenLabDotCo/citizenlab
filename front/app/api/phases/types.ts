@@ -1,4 +1,4 @@
-import { IRelationship, Multiloc } from 'typings';
+import { CLErrorsWrapper, IRelationship, Multiloc } from 'typings';
 
 import { UserDataCollection } from 'api/permissions/types';
 import { PhaseActionDescriptors } from 'api/projects/types';
@@ -92,6 +92,8 @@ export interface IPhaseAttributes {
   similarity_enabled?: boolean;
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
+  supports_form_logic: boolean;
+  supports_public_visibility: boolean;
   user_data_collection: UserDataCollection;
   user_fields_in_form_enabled: boolean;
   action_descriptors: PhaseActionDescriptors;
@@ -107,7 +109,7 @@ export interface IPhase {
 
 export interface IUpdatedPhaseProperties {
   project_id?: string;
-  placement_type?: PhasePlacementType; // Only settable on creation.
+  placement_type?: PhasePlacementType;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   draft_description_multiloc?: Multiloc;
@@ -158,6 +160,11 @@ export interface AddPhaseObject extends IUpdatedPhaseProperties {
 
 export interface UpdatePhaseObject extends IUpdatedPhaseProperties {
   phaseId: string;
+  timeline_phase_dates?: {
+    id: string;
+    start_at?: string;
+    end_at?: string | null;
+  }[];
 }
 
 export type TSurveyService =
@@ -228,3 +235,7 @@ export const presentationModes = ['card', 'map', 'feed'] as const;
 export type PresentationMode = (typeof presentationModes)[number];
 
 export type PrescreeningMode = 'flagged_only' | 'all';
+
+export interface PhaseUpdateError extends CLErrorsWrapper {
+  meta?: { phase_id: string };
+}

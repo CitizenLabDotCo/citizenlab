@@ -35,6 +35,15 @@ class CustomFieldAnswer < ApplicationRecord
   # companions, which also reference the field.
   scope :main_for, ->(field) { where(custom_field: field, key: field.key) }
 
+  # One row per chosen option, for single and multiple choice answers alike.
+  scope :per_selection, lambda {
+    joins(<<~SQL.squish)
+      CROSS JOIN jsonb_array_elements_text(
+        CASE WHEN jsonb_typeof(value) = 'array' THEN value ELSE jsonb_build_array(value) END
+      ) AS selections(selection)
+    SQL
+  }
+
   validates :answerable_type, inclusion: { in: ANSWERABLE_TYPES }
   validates :key, presence: true
   # presence would reject false/[]; this also checks arrays element-wise.

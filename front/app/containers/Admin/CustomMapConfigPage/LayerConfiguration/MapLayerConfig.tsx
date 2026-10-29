@@ -4,6 +4,7 @@ import {
   ColorPickerInput,
   IOption,
   Select,
+  colors,
 } from '@citizenlab/cl2-component-library';
 import { isEmpty, cloneDeep, forOwn } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
@@ -46,14 +47,14 @@ const Container = styled.div`
 const StyledSection = styled(Section)`
   margin-bottom: 10px;
   padding-top: 25px;
-  border-top: solid 1px #ccc;
+  border-top: solid 1px ${colors.grey400};
 `;
 
 const Footer = styled.div`
   display: flex;
   align-items: center;
   padding-bottom: 25px;
-  border-bottom: solid 1px #ccc;
+  border-bottom: solid 1px ${colors.grey400};
 `;
 
 const FooterLeft = styled.div`

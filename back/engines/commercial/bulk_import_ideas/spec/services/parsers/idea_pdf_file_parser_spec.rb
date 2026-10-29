@@ -82,6 +82,38 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
     end
   end
 
+  describe 'parse_rows with demographic questions asked in the survey' do
+    let(:survey_project) { create(:single_phase_native_survey_project, phase_attrs: { with_permissions: true }) }
+    let(:phase) { survey_project.phases.first }
+    let(:custom_form) { create(:custom_form, participation_context: phase) }
+    let(:gender) do
+      create(:custom_field_select, resource_type: 'User', key: 'gender', title_multiloc: { 'en' => 'Gender' }).tap do |field|
+        create(:custom_field_option, custom_field: field, key: 'woman', title_multiloc: { 'en' => 'Woman' })
+      end
+    end
+    let(:parser) { described_class.new(create(:admin), 'en', phase.id, false) }
+
+    before do
+      create(:custom_field_page, resource: custom_form)
+      create(:custom_field_text, resource: custom_form, key: 'missing', title_multiloc: { 'en' => 'What is missing?' })
+      create(:custom_field_form_end_page, resource: custom_form)
+
+      permission = phase.permissions.find_by(action: 'posting_idea')
+      permission.update!(permitted_by: 'users', custom_fields_behavior: 'custom', user_fields_in_form: true, user_data_collection: 'all_data')
+      create(:permissions_custom_field, permission: permission, custom_field: gender)
+
+      allow_any_instance_of(BulkImportIdeas::Parsers::Pdf::LLMFormParser)
+        .to receive(:parse)
+        .and_return({ 'question_1' => 'Fly fishing', 'question_2' => ['Woman'] })
+    end
+
+    it 'keeps the demographic answers for every file parsed in the same job' do
+      rows = 2.times.flat_map { parser.parse_rows(create(:idea_import_file, num_pages: 2)) }
+
+      expect(rows.pluck(:custom_field_values)).to all(eq({ missing: 'Fly fishing', u_gender: 'woman' }))
+    end
+  end
+
   describe 'create_files' do
     let(:service_with_split) { described_class.new create(:admin), 'en', project.phases.first&.id, false, pages_per_form: 2 }
 

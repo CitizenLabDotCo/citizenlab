@@ -6,6 +6,7 @@ import { Placement } from 'tippy.js';
 
 import {
   defaultInputStyle,
+  defaultStyles,
   colors,
   isRtl,
   stylingConsts,
@@ -14,7 +15,7 @@ import testEnv from '../../utils/testUtils/testEnv';
 import { IOption, InputSize } from '../../utils/typings';
 import Icon from '../Icon';
 import IconTooltip from '../IconTooltip';
-import { boInputStyle, boLabelStyle } from '../Input';
+import { boInputLabelStyle, boInputStyle } from '../Input';
 import Label from '../Label';
 
 type Variant = 'default' | 'bo';
@@ -38,7 +39,7 @@ const Container = styled.div<{ variant: Variant }>`
   position: relative;
   outline: none !important;
 
-  ${({ variant }) => variant === 'bo' && boLabelStyle}
+  ${({ variant }) => variant === 'bo' && boInputLabelStyle}
 
   &.enabled {
     &:hover {
@@ -56,7 +57,7 @@ const Container = styled.div<{ variant: Variant }>`
 
   &.disabled {
     ${SelectIcon} {
-      fill: #666;
+      fill: ${colors.grey700};
     }
   }
 
@@ -69,10 +70,10 @@ const Container = styled.div<{ variant: Variant }>`
   }
 `;
 
+const CHEVRON_SPACE = '36px';
+
 const boSelectStyle = css`
-  ${boInputStyle};
   padding-right: 32px;
-  cursor: pointer;
 
   ${isRtl`
     padding-right: 11px;
@@ -94,18 +95,22 @@ export const SelectWrapper = styled.div<{
   width: 100%;
   position: relative;
   select {
+    /* First, so the declarations below override its padding and cursor */
+    ${({ variant }) => (variant === 'bo' ? boInputStyle : defaultInputStyle)};
     width: 100%;
     margin: 0;
-    padding-right: 27px;
+    /* Keep the text clear of the chevron (24px wide, 11px from the edge) */
+    padding-right: ${CHEVRON_SPACE};
     cursor: pointer;
     outline: none !important;
 
     ${({ mr }) => (mr ? `margin-right: ${mr};` : '')}
 
     ${isRtl`
-    padding-right: 0;
-    padding-left: 27px;
-  `}
+      padding-right: ${({ size }) =>
+        size === 'small' ? '10px' : defaultStyles.inputPadding};
+      padding-left: ${CHEVRON_SPACE};
+    `}
     &::-ms-expand {
       display: none;
     }
@@ -113,7 +118,6 @@ export const SelectWrapper = styled.div<{
       variant === 'bo'
         ? boSelectStyle
         : css`
-            ${defaultInputStyle};
             height: ${height
               ? height
               : `${stylingConsts.inputHeight}px`} !important;

@@ -12,6 +12,8 @@ import messages from './messages';
 
 interface Props {
   opened: boolean;
+  aspectRatioWidth: number;
+  aspectRatioHeight: number;
   image: UploadFile | null;
   onCrop: (croppedImage: string) => void;
   onRemove: () => void;
@@ -20,6 +22,8 @@ interface Props {
 
 const ImageCropModal = ({
   opened,
+  aspectRatioWidth,
+  aspectRatioHeight,
   image,
   onCrop,
   onRemove,
@@ -45,8 +49,8 @@ const ImageCropModal = ({
         <ImageCropperContainer
           image={image}
           onComplete={onCrop}
-          aspectRatioWidth={3}
-          aspectRatioHeight={1}
+          aspectRatioWidth={aspectRatioWidth}
+          aspectRatioHeight={aspectRatioHeight}
           onRemove={() => {
             onRemove();
             onClose();

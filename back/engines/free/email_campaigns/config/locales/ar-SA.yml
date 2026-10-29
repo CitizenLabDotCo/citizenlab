@@ -36,6 +36,7 @@ ar-SA:
         project_participants: للمشاركين في المشروع
         registered_users: للمستخدمين المسجلين
       recipient_segment:
+        admin_who_generated_the_report: المسؤول الذي طلب التقرير
         admins: المشرفون
         admins_and_managers: المسؤولون والمديرون
         admins_and_managers_assigned_to_the_input: المسؤولون والمديرون المعينون للإدخال
@@ -109,6 +110,7 @@ ar-SA:
         proposal_is_upvoted_above_threshold: تم التصويت لصالح الاقتراح فوق الحد الأدنى
         proposal_status_changes: تغييرات حالة الاقتراح
         registration_to_event: التسجيل في هذا الحدث
+        report_generated: تم الانتهاء من إنشاء التقرير
         survey_1_day_after_draft_saved: يوم واحد بعد آخر حفظ للمستخدم للاستطلاع في المسودة
         user_accepts_invitation_to_cosponsor_a_proposal: يقبل المستخدم الدعوة للمشاركة في رعاية الاقتراح
         user_changes_email: المستخدم يغير عنوان بريده الإلكتروني
@@ -206,6 +208,7 @@ ar-SA:
       project_review_request: طلب مراجعة المشروع
       project_review_state_change: تمت الموافقة على المشروع
       proposal_expired_for_admin: انتهت صلاحية المقترح دون الوصول إلى الحد الأدنى للأصوات
+      report_generated: تم إنشاء التقرير
       screening_digest: تذكير بالفحص الأسبوعي
       sms_manual: رسائل نصية رسمية
       space_moderation_rights_received: تم استلام صلاحيات مدير المساحة
@@ -661,6 +664,13 @@ ar-SA:
       preheader: انتهت صلاحية مشاركة دون الوصول إلى الحد الأدنى
       subject: انتهت صلاحية "%{input_title}" دون الوصول إلى الحد الأدنى
       title: انتهت صلاحية مشاركة دون الوصول إلى الحد الأدنى للأصوات
+    report_generated:
+      cta_button: افتح التقرير
+      event_description: تمت كتابة التقرير وهو جاهز للمراجعة والتحرير.
+      preheader: تقريرك جاهز
+      stopped_early: توقفت الكتابة قبل اكتمال التقرير. تم حفظ كل ما كُتب حتى الآن — افتحه واطلب الباقي في الدردشة.
+      subject: "تقريرك الخاص بـ '%{projectName}' جاهز"
+      title: تقريرك جاهز
     schedules:
       quarterly: ربع سنوي، في اليوم الأول من الربع
       weekly:

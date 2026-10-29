@@ -47,7 +47,8 @@ export type Props = {
   defaultOpen?: boolean;
   // 'plain' drops the collapsible card, for a form that already sits under its
   // own heading, such as a modal titled with the action.
-  variant?: 'card' | 'plain';
+  /** 'data' shows only what is collected, without who can take part. */
+  variant?: 'card' | 'plain' | 'data';
   onChange: (changes: Changes) => Promise<void>;
   // Called when the admin opts the action out of the platform defaults, and
   // when they put it back. Omitted where the distinction doesn't apply (the

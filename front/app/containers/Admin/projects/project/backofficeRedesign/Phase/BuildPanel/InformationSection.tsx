@@ -1,10 +1,9 @@
 import React from 'react';
 
-import { Divider } from '@citizenlab/cl2-component-library';
-
 import usePhase from 'api/phases/usePhase';
 
 import ReportSection from '../ReportSection';
+import ReportSettings from '../ReportSettings';
 
 interface Props {
   projectId: string;
@@ -18,8 +17,8 @@ const InformationSection = ({ projectId, phaseId }: Props) => {
 
   return (
     <>
-      <Divider />
       <ReportSection projectId={projectId} phase={phase.data} />
+      <ReportSettings phase={phase.data} />
     </>
   );
 };

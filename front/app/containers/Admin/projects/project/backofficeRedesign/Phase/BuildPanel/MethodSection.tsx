@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ParticipationMethod } from 'api/phases/types';
+import { InputTerm, ParticipationMethod } from 'api/phases/types';
 
 import CausesSection from './CausesSection';
 import CommonGroundSection from './CommonGroundSection';
@@ -12,9 +12,15 @@ interface Props {
   projectId: string;
   participationMethod: ParticipationMethod;
   phaseId?: string;
+  inputTerm?: InputTerm;
 }
 
-const MethodSection = ({ projectId, participationMethod, phaseId }: Props) => {
+const MethodSection = ({
+  projectId,
+  participationMethod,
+  phaseId,
+  inputTerm,
+}: Props) => {
   switch (participationMethod) {
     case 'poll':
       return phaseId ? <PollSection phaseId={phaseId} /> : null;
@@ -34,6 +40,7 @@ const MethodSection = ({ projectId, participationMethod, phaseId }: Props) => {
           projectId={projectId}
           participationMethod={participationMethod}
           phaseId={phaseId}
+          inputTerm={inputTerm}
         />
       );
   }

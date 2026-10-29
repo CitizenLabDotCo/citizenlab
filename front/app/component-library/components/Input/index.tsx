@@ -29,11 +29,15 @@ const ringColor = (color: string) =>
   `0 0 0 3px color-mix(in srgb, ${color} 16%, transparent)`;
 
 export const boLabelStyle = css`
+  font-size: ${fontSizes.xs}px;
+  line-height: 1.4;
+  color: ${colors.coolGrey600};
+`;
+
+export const boInputLabelStyle = css`
   > label {
-    font-size: ${fontSizes.xs}px;
+    ${boLabelStyle}
     font-weight: 400;
-    line-height: 1.4;
-    color: ${colors.coolGrey600};
     margin-bottom: 4px;
   }
 `;
@@ -93,7 +97,7 @@ const Container = styled.div<ContainerProps>`
     ${({ variant }) => (variant === 'bo' ? boInputStyle : defaultInputStyle)};
   }
 
-  ${({ variant }) => variant === 'bo' && boLabelStyle}
+  ${({ variant }) => variant === 'bo' && boInputLabelStyle}
 `;
 
 const CharCount = styled.div<{ inputSize?: InputSize }>`

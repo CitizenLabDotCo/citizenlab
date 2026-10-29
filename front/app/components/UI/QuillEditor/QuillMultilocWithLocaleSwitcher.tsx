@@ -4,7 +4,7 @@ import {
   IconTooltip,
   LocaleSwitcher,
   Label,
-  boLabelStyle,
+  boInputLabelStyle,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 import { SupportedLocale, Multiloc } from 'typings';
@@ -30,7 +30,7 @@ const LabelContainer = styled.div`
   gap: 16px;
 
   &[data-variant='bo'] {
-    ${boLabelStyle}
+    ${boInputLabelStyle}
   }
 `;
 

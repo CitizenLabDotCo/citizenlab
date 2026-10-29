@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Label, Radio, Text } from '@citizenlab/cl2-component-library';
+import { Box, Label, Radio } from '@citizenlab/cl2-component-library';
 import { useNode } from '@craftjs/core';
 import { Multiloc } from 'typings';
 
@@ -29,7 +29,6 @@ const SourceSetting = () => {
   } = useNode((node) => ({ props: node.data.props as EventsProps }));
 
   const { customPageId } = useParams({ strict: false });
-  const advancedCustomPages = useFeatureFlag({ name: 'advanced_custom_pages' });
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
 
   const source = props.source ?? 'all';
@@ -47,12 +46,12 @@ const SourceSetting = () => {
   // widget that already filters still shows its filter, so it can be read and reset.
   if (!customPageId && source === 'all') return null;
 
-  const filteringOffered = !!customPageId && advancedCustomPages;
+  const filteringOffered = !!customPageId;
 
-  // A stored dimension stays listed once its feature is off: the widget still filters by it, so
-  // dropping it would read as unset, and picking another discards the ids.
-  const offers = (dimension: EventsSource, featureOn: boolean) =>
-    featureOn || source === dimension;
+  // A stored dimension stays listed once it is no longer offered: the widget still filters by it,
+  // so dropping it would read as unset, and picking another discards the ids.
+  const offers = (dimension: EventsSource, offered: boolean) =>
+    offered || source === dimension;
 
   const options: { value: EventsSource; label: string }[] = [
     { value: 'all', label: formatMessage(messages.everyProject) },
@@ -111,32 +110,26 @@ const SourceSetting = () => {
 
   return (
     <Box display="flex" flexDirection="column" gap="12px">
-      {options.length > 1 ? (
-        <Box>
-          <Label>{formatMessage(messages.whichProjects)}</Label>
-          {options.map((option) => (
-            <Radio
-              key={option.value}
-              onChange={() =>
-                setProp((p: EventsProps) => {
-                  p.source = option.value;
-                  // An area id read as a tag id filters silently and wrongly.
-                  p.ids = [];
-                })
-              }
-              currentValue={source}
-              id={`events-source-${option.value}`}
-              name="events-source"
-              value={option.value}
-              label={option.label}
-            />
-          ))}
-        </Box>
-      ) : (
-        <Text m="0px" color="textSecondary" fontSize="s">
-          {formatMessage(messages.everyProjectOnly)}
-        </Text>
-      )}
+      <Box>
+        <Label>{formatMessage(messages.whichProjects)}</Label>
+        {options.map((option) => (
+          <Radio
+            key={option.value}
+            onChange={() =>
+              setProp((p: EventsProps) => {
+                p.source = option.value;
+                // An area id read as a tag id filters silently and wrongly.
+                p.ids = [];
+              })
+            }
+            currentValue={source}
+            id={`events-source-${option.value}`}
+            name="events-source"
+            value={option.value}
+            label={option.label}
+          />
+        ))}
+      </Box>
 
       {selection && (
         <MultiSelect

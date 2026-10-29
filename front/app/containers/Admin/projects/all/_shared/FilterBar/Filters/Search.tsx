@@ -19,7 +19,7 @@ const Search = ({ placeholder }: Props) => {
 
   return (
     <SearchInput
-      defaultValue={searchValue}
+      value={searchValue ?? null}
       onChange={(search) => {
         setParam('search', search ?? undefined);
         trackEventByName(tracks.setSearch, { search });

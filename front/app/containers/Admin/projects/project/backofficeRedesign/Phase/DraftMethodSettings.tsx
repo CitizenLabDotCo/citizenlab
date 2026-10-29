@@ -32,7 +32,7 @@ const DraftMethodSettings = ({
   const { formatMessage } = useIntl();
 
   return (
-    <PanelSettings p="20px">
+    <PanelSettings p="0 18px 24px">
       {formData.participation_method !== 'information' && (
         <PhaseParticipationConfig
           formData={formData}

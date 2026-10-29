@@ -1,18 +1,12 @@
 import React from 'react';
 
-import {
-  Box,
-  IconTooltip,
-  Text,
-  Title,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Title, colors } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
 
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import { ResolvedFormBuilderConfig } from 'components/FormBuilder/utils';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
@@ -26,7 +20,7 @@ import LayoutFields from './LayoutFields';
 import ToolboxItem from './ToolboxItem';
 
 interface FormBuilderToolboxProps {
-  builderConfig: FormBuilderConfig;
+  builderConfig: ResolvedFormBuilderConfig;
 }
 
 const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
@@ -76,21 +70,6 @@ const FormBuilderToolbox = ({ builderConfig }: FormBuilderToolboxProps) => {
           >
             <FormattedMessage {...customToolBoxTitle} />
           </Title>
-          {builderConfig.isParticipationPublic && (
-            <IconTooltip
-              icon="info-solid"
-              iconColor={colors.coolGrey500}
-              placement="right-start"
-              ml="4px"
-              content={
-                <Box>
-                  <Text my="4px" color="white" fontSize="s">
-                    {formatMessage(messages.fieldIsNotVisibleTooltip)}
-                  </Text>
-                </Box>
-              }
-            />
-          )}
         </Box>
         <Drop id="toolbox" type={fieldAreaDNDType} isDropDisabled={true}>
           <ToolboxItem
