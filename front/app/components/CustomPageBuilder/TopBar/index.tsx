@@ -6,11 +6,13 @@ import { Multiloc, SupportedLocale } from 'typings';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { SaveError } from 'components/admin/ContentBuilder/saveError';
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import LocaleSelect from 'components/admin/ContentBuilder/TopBar/LocaleSelect';
 import PreviewToggle from 'components/admin/ContentBuilder/TopBar/PreviewToggle';
 import SaveButton from 'components/admin/ContentBuilder/TopBar/SaveButton';
+import SaveErrorMessage from 'components/admin/ContentBuilder/TopBar/SaveErrorMessage';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage } from 'utils/cl-intl';
@@ -31,7 +33,7 @@ type Props = {
   titleMultiloc: Multiloc;
   onSave: (nodes: SerializedNodes) => Promise<void>;
   isSaving: boolean;
-  saveHasError: boolean;
+  saveError: SaveError | null;
 };
 
 const CustomPageBuilderTopBar = ({
@@ -46,7 +48,7 @@ const CustomPageBuilderTopBar = ({
   titleMultiloc,
   onSave,
   isSaving,
-  saveHasError,
+  saveError,
 }: Props) => {
   const { query } = useEditor();
   const localize = useLocalize();
@@ -99,18 +101,11 @@ const CustomPageBuilderTopBar = ({
           isLoading={isSaving}
           onSave={handleSave}
         />
-        {saveHasError && (
-          <Text
-            color="error"
-            ml="20px"
-            position="absolute"
-            right="16px"
-            bottom="-18px"
-            fontSize="s"
-          >
-            <FormattedMessage {...messages.saveError} />
-          </Text>
-        )}
+        <SaveErrorMessage
+          saveError={saveError}
+          genericMessage={messages.saveError}
+          unauthorizedFileMessage={messages.saveErrorUnauthorizedFile}
+        />
       </Box>
     </Container>
   );

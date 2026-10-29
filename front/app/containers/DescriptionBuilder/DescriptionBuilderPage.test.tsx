@@ -16,6 +16,7 @@ const EDITED_NODES = {
     hidden: false,
     nodes: ['txt'],
     linkedNodes: {},
+    parent: null,
   },
   txt: {
     type: { resolvedName: 'TextMultiloc' },
@@ -28,14 +29,23 @@ const EDITED_NODES = {
     displayName: 'TextMultiloc',
     linkedNodes: {},
   },
-} as unknown as SerializedNodes;
+} satisfies SerializedNodes;
 
 jest.mock('components/DescriptionBuilder/DescriptionBuilderTopBar', () => ({
   __esModule: true,
-  default: ({ onSave }: { onSave: (nodes: SerializedNodes) => void }) => (
-    <button data-testid="mockSaveButton" onClick={() => onSave(EDITED_NODES)}>
-      save
-    </button>
+  default: ({
+    onSave,
+    saveError,
+  }: {
+    onSave: (nodes: SerializedNodes) => void;
+    saveError: string | null;
+  }) => (
+    <>
+      <button data-testid="mockSaveButton" onClick={() => onSave(EDITED_NODES)}>
+        save
+      </button>
+      <span data-testid="mockSaveError">{saveError}</span>
+    </>
   ),
 }));
 jest.mock(
@@ -80,11 +90,12 @@ jest.mock('utils/router', () => ({
 }));
 
 const mockAddContentBuilderLayout = jest.fn();
+let mockAddLayoutError: unknown = null;
 jest.mock('api/content_builder/useAddContentBuilderLayout', () =>
   jest.fn(() => ({
     mutate: mockAddContentBuilderLayout,
     isPending: false,
-    isError: false,
+    error: mockAddLayoutError,
   }))
 );
 
@@ -100,16 +111,17 @@ jest.mock('api/content_builder/useContentBuilderLayout', () => ({
   })),
 }));
 
-const defaultProps = {
+const defaultProps: React.ComponentProps<typeof DescriptionBuilderPage> = {
   contentBuildableId: 'folder-1',
   backPath: '/admin/projects/folders/folder-1/settings',
   previewLink: { to: '/folders/$slug', params: { slug: 'folder-1' } },
   titleMultiloc: { en: 'Folder one' },
-} as unknown as React.ComponentProps<typeof DescriptionBuilderPage>;
+};
 
 describe('DescriptionBuilderPage save contract', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockAddLayoutError = null;
   });
 
   it('saves the folder description layout directly', async () => {
@@ -124,5 +136,27 @@ describe('DescriptionBuilderPage save contract', () => {
       enabled: true,
       craftjs_json: EDITED_NODES,
     });
+  });
+
+  it('shows no save error before a save fails', () => {
+    render(<DescriptionBuilderPage {...defaultProps} />);
+
+    expect(screen.getByTestId('mockSaveError')).toBeEmptyDOMElement();
+  });
+
+  it('tells the top bar when a save is refused because of a file', () => {
+    mockAddLayoutError = { errors: { base: [{ error: 'unauthorized_file' }] } };
+    render(<DescriptionBuilderPage {...defaultProps} />);
+
+    expect(screen.getByTestId('mockSaveError')).toHaveTextContent(
+      'unauthorizedFile'
+    );
+  });
+
+  it('tells the top bar about any other failed save', () => {
+    mockAddLayoutError = new Error('Network error');
+    render(<DescriptionBuilderPage {...defaultProps} />);
+
+    expect(screen.getByTestId('mockSaveError')).toHaveTextContent('generic');
   });
 });

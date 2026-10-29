@@ -240,6 +240,47 @@ RSpec.describe ContentBuilder::Layout do
     end
   end
 
+  def craftjs_json_with_files(*file_ids)
+    nodes = file_ids.each_with_index.to_h do |file_id, i|
+      ["file#{i}", { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => file_id } }]
+    end
+    { 'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => nodes.keys } }.merge(nodes)
+  end
+
+  describe '#added_file_ids' do
+    it 'returns all referenced file IDs for a new layout' do
+      layout = build(:layout, craftjs_json: craftjs_json_with_files('file-1', 'file-2'))
+      expect(layout.added_file_ids).to match_array(%w[file-1 file-2])
+    end
+
+    it 'returns only the file IDs that are not in the saved layout' do
+      layout = create(:layout, craftjs_json: craftjs_json_with_files('file-1'))
+      layout.craftjs_json = craftjs_json_with_files('file-1', 'file-2')
+
+      expect(layout.added_file_ids).to eq(['file-2'])
+    end
+  end
+
+  describe '#remap_file_ids!' do
+    let(:old_file) { create(:file) }
+    let(:new_file) { create(:file) }
+    let(:other_file) { create(:file) }
+    let(:layout) { create(:layout, craftjs_json: craftjs_json_with_files(old_file.id, other_file.id)) }
+
+    it 'points the mapped widgets at the new files and syncs the attachments' do
+      expect { layout.remap_file_ids!({ old_file.id => new_file.id }) }
+        .to(change { layout.reload.updated_at })
+
+      expect(layout.reload.referenced_file_ids).to contain_exactly(new_file.id, other_file.id)
+      expect(layout.file_attachments.pluck(:file_id)).to contain_exactly(new_file.id, other_file.id)
+    end
+
+    it 'does nothing when no widget is mapped' do
+      expect { layout.remap_file_ids!({ 'unknown' => new_file.id }) }
+        .not_to(change { layout.reload.craftjs_json })
+    end
+  end
+
   describe 'file attachment sync on save' do
     let(:file) { create(:file) }
     let(:another_file) { create(:file) }

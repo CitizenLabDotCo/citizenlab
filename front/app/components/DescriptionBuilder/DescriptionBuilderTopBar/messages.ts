@@ -14,4 +14,9 @@ export default defineMessages({
     defaultMessage:
       'Something went wrong while saving the project description.',
   },
+  saveErrorUnauthorizedFile: {
+    id: 'app.containers.AdminPage.ProjectDescription.saveErrorUnauthorizedFile',
+    defaultMessage:
+      "The description wasn't saved because you can't use one of the files you added. Remove it, or ask an admin to add it.",
+  },
 });
