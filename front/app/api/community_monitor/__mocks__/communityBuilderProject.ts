@@ -48,6 +48,7 @@ export const project: IProjectData = {
     live_auto_input_topics_enabled: false,
     publication_email_enabled: true,
     global_publication_email_enabled: true,
+    track_participation_location: false,
   },
   relationships: {
     admin_publication: {

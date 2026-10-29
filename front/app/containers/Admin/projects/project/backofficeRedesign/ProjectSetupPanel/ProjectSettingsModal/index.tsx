@@ -8,6 +8,7 @@ import projectsKeys from 'api/projects/keys';
 import { IProjectData, IUpdatedProjectProperties } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
+import ParticipationLocationToggle from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ParticipationLocationToggle';
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import { useValidateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
 import generalMessages from 'containers/Admin/projects/project/general/messages';
@@ -132,6 +133,10 @@ const ProjectSettingsModal = ({ project, opened, onClose }: Props) => {
             apiErrors={apiErrors}
             onContextChange={handleContextChange}
             onSlugChange={handleSlugChange}
+          />
+          <ParticipationLocationToggle
+            checked={projectAttrs.track_participation_location}
+            onChange={applyDiff}
           />
           <Divider />
           <ResetSection projectId={projectId} />

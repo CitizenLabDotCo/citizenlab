@@ -1781,6 +1781,8 @@
   "app.containers.Admin.projects.project.filesCount": "{count, plural, one {# file} other {# files}}",
   "app.containers.Admin.projects.project.filesDescription": "Documents and recordings added to this project as extra input.",
   "app.containers.Admin.projects.project.filesSection": "360 Input",
+  "app.containers.Admin.projects.project.general.components.ParticipationLocationToggle.participationLocationLabel": "Record the approximate location (city, region and country) of participants when they take part in this project. IP addresses are not stored.",
+  "app.containers.Admin.projects.project.general.components.ParticipationLocationToggle.participationLocationTitle": "Participant location",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.pleaseSelectASpace": "Please select a space.",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.spaceSelectTitle": "Space",
   "app.containers.Admin.projects.project.general.components.SpaceSelectSection.tooltip3": "You can add the folder to a space",
