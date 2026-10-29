@@ -61,6 +61,12 @@ export type BaseResponseData =
   | { data: BaseData; included?: BaseData[] }
   | { data: BaseData[]; included?: BaseData[] };
 
+export class HttpError extends Error {
+  constructor(message: string, readonly status: number) {
+    super(message);
+  }
+}
+
 function fetcher<TResponseData extends BaseResponseData | null>(
   args: FetcherArgs
 ): FetcherArgs['action'] extends 'delete' ? null : Promise<TResponseData>;
@@ -152,7 +158,7 @@ async function fetcher({
     }
 
     reportError('Unsupported case. No valid JSON.');
-    throw new Error('Unsupported case. No valid JSON.');
+    throw new HttpError('Unsupported case. No valid JSON.', response.status);
   }
 
   if (!response.ok) {

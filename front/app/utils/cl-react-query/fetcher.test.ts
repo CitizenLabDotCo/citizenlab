@@ -1,6 +1,6 @@
 import { queryClient } from 'utils/cl-react-query/queryClient';
 
-import fetcher from './fetcher';
+import fetcher, { HttpError } from './fetcher';
 
 const baseDataArray = {
   data: [
@@ -96,6 +96,19 @@ describe('fetcher', () => {
       }
 
       expect(thrownError).toEqual(baseErrorObject);
+    });
+
+    it('throws an HttpError with the status when an error has no JSON body', async () => {
+      jest.mocked(global.fetch).mockResolvedValueOnce({
+        status: 404,
+        ok: false,
+        json: () => Promise.reject(new SyntaxError('Unexpected end of JSON')),
+      } as Response);
+
+      const request = fetcher({ path: '/path', action: 'get' });
+
+      await expect(request).rejects.toBeInstanceOf(HttpError);
+      await expect(request).rejects.toHaveProperty('status', 404);
     });
   });
   describe('POST', () => {

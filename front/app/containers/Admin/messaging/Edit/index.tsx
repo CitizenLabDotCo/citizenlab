@@ -19,6 +19,8 @@ import useSendEmailCampaignPreview from 'api/campaigns/email/useSendEmailCampaig
 import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
 import { isEmailCampaignDraft } from 'api/campaigns/email/util';
 
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
+
 import AutomatedCampaignForm from 'containers/Admin/messaging/AutomatedEmails/CampaignForm';
 import CustomCampaignForm from 'containers/Admin/messaging/CustomEmails/CampaignForm';
 import messages from 'containers/Admin/messaging/messages';
@@ -35,9 +37,17 @@ type EditProps = {
   campaignType: 'custom' | 'automated';
 };
 const Edit = ({ campaignType }: EditProps) => {
-  const { campaignId } = useParams({ strict: false }) as {
+  const { campaignId, projectId, phaseId } = useParams({ strict: false }) as {
     campaignId: string;
+    projectId?: string;
+    phaseId?: string;
   };
+  const backofficeRedesign = useProjectBackofficeRedesign();
+  // The redesigned workspace edits a phase's emails from its build view.
+  const phaseBuildPath =
+    backofficeRedesign && projectId && phaseId
+      ? `/admin/projects/${projectId}/phases/${phaseId}/setup`
+      : undefined;
   const { data: tenant } = useAppConfiguration();
   const { data: campaign } = useEmailCampaign(campaignId);
   const { mutateAsync: updateCampaign, isPending } = useUpdateEmailCampaign();
@@ -62,7 +72,9 @@ const Edit = ({ campaignType }: EditProps) => {
 
   const handleSubmit = async (values: EmailCampaignFormValues) => {
     await updateCampaign({ id: campaign.data.id, campaign: values });
-    if (campaignType === 'custom') {
+    if (phaseBuildPath) {
+      clHistory.push(phaseBuildPath);
+    } else if (campaignType === 'custom') {
       clHistory.push(
         `/admin/messaging/emails/custom/${campaign.data.id}?updated=true`
       );
@@ -72,7 +84,11 @@ const Edit = ({ campaignType }: EditProps) => {
   };
 
   const goBack = () => {
-    clHistory.goBack();
+    if (phaseBuildPath) {
+      clHistory.push(phaseBuildPath);
+    } else {
+      clHistory.goBack();
+    }
   };
   const timeZone = tenant?.data.attributes.settings.core.timezone;
 
