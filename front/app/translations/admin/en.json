@@ -3207,6 +3207,7 @@
   "app.containers.AdminPage.ProjectEdit.areasSelectionLabelDescription": "The project will show on selected area filter(s).",
   "app.containers.AdminPage.ProjectEdit.attendingEventAction": "Attending an event",
   "app.containers.AdminPage.ProjectEdit.availableViews": "Available views",
+  "app.containers.AdminPage.ProjectEdit.availableViewsSummary": "{defaultView} +{otherViewsCount}",
   "app.containers.AdminPage.ProjectEdit.cardDisplay": "Cards",
   "app.containers.AdminPage.ProjectEdit.commens_countSortingMethod": "Most discussed",
   "app.containers.AdminPage.ProjectEdit.communityMonitor.addSurveyContent2": "Add survey content",
