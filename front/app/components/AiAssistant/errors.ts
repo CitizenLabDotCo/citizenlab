@@ -34,6 +34,8 @@ export const getErrorMessage = (
       return messages.errorToolCallExpired2;
     case 'tool_call_not_awaiting_user':
       return messages.errorToolCallNotAwaitingApproval;
+    case 'not_in_project':
+      return messages.errorFileNotInProject;
     case 'ai_processing_not_allowed':
       return messages.errorAiProcessingNotAllowed;
     case 'unsupported_file_type':

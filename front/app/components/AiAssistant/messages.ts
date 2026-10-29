@@ -146,6 +146,10 @@ export default defineMessages({
     id: 'app.components.aiAssistant.errorToolCallNotAwaitingApproval',
     defaultMessage: 'A decision was already made on this proposed change.',
   },
+  errorFileNotInProject: {
+    id: 'app.components.aiAssistant.errorFileNotInProject',
+    defaultMessage: 'Only files of this project can be attached.',
+  },
   errorAiProcessingNotAllowed: {
     id: 'app.components.aiAssistant.errorAiProcessingNotAllowed',
     defaultMessage: 'One of the files may not be shared with AI.',
