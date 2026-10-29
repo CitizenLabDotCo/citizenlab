@@ -12234,6 +12234,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:41:18.598322Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",

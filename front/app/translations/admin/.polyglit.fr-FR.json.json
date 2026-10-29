@@ -6464,6 +6464,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:41:18.672149Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.messaging.addSmsCampaignButton": {
     "state": "verified",
     "verified_at": "2026-07-16T20:05:37.645036Z",
@@ -9593,6 +9598,11 @@
     "state": "verified",
     "verified_at": "2026-07-17T08:20:45.230747Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.inputResponseExport.renderingPdf": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:41:18.672149Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.inputResponseExport.reportSubtitleLabel": {
     "state": "verified",
