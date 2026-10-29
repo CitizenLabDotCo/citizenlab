@@ -5,8 +5,10 @@ import { randomString } from '../../support/commands';
 describe('Admin quick search', () => {
   const projectTitle = randomString();
   const phaseTitle = randomString();
+  const folderTitle = randomString();
   let projectId: string;
   let phaseId: string;
+  let folderId: string;
 
   before(() => {
     cy.apiCreateProject({ title: projectTitle })
@@ -23,10 +25,14 @@ describe('Admin quick search', () => {
       .then((phase) => {
         phaseId = phase.body.data.id;
       });
+    cy.apiCreateFolder({ title: folderTitle }).then((folder) => {
+      folderId = folder.body.data.id;
+    });
   });
 
   after(() => {
     cy.apiRemoveProject(projectId);
+    cy.apiRemoveFolder(folderId);
   });
 
   beforeEach(() => {
@@ -46,6 +52,20 @@ describe('Admin quick search', () => {
     cy.location('pathname').should(
       'include',
       `/admin/projects/${projectId}/phases/${phaseId}`
+    );
+  });
+
+  it('finds a folder and opens it', () => {
+    cy.visit('/admin/dashboard/overview');
+    cy.dataCy('e2e-quick-search-button').click();
+
+    cy.dataCy('e2e-quick-search-input').find('input').type(folderTitle);
+    cy.dataCy('e2e-quick-search-results').should('contain', folderTitle);
+    cy.dataCy('e2e-quick-search-input').find('input').type('{enter}');
+
+    cy.location('pathname').should(
+      'include',
+      `/admin/projects/folders/${folderId}`
     );
   });
 

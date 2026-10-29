@@ -16,10 +16,6 @@ import {
 } from 'api/projects/types';
 import { IUserData } from 'api/users/types';
 
-import { Keys } from 'utils/cl-react-query/types';
-
-import projectsMiniAdminKeys from './keys';
-
 export const projectSortableParams = [
   'recently_viewed',
   'phase_starting_or_ending_soon',
@@ -59,8 +55,6 @@ export type ParticipationState =
 export type Discoverability = 'listed' | 'unlisted';
 
 type Included = (IUserData | IProjectData | IGroupData | IPhaseData)[];
-
-export type ProjectsMiniAdminKeys = Keys<typeof projectsMiniAdminKeys>;
 
 export type ProjectsMiniAdmin = {
   data: ProjectMiniAdminData[];

@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import adminSearchKeys from 'api/admin_search/keys';
 import projectsKeys from 'api/projects/keys';
-import projectsMiniAdminKeys from 'api/projects_mini_admin/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -29,9 +29,7 @@ const useDeletePhase = () => {
       queryClient.invalidateQueries({
         queryKey: phasesKeys.list({ projectId: variables.projectId }),
       });
-      queryClient.invalidateQueries({
-        queryKey: projectsMiniAdminKeys.lists(),
-      });
+      queryClient.invalidateQueries({ queryKey: adminSearchKeys.all() });
     },
   });
 };

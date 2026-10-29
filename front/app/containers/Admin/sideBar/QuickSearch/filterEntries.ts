@@ -1,6 +1,11 @@
 import { TypedLinkProps, WrapperTo } from 'utils/cl-router/Link';
 
-export type QuickSearchGroup = 'pages' | 'projects' | 'phases';
+export type QuickSearchGroup =
+  | 'pages'
+  | 'spaces'
+  | 'folders'
+  | 'projects'
+  | 'phases';
 
 export type QuickSearchEntry = {
   id: string;

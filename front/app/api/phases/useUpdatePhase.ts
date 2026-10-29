@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import { invalidateAdminSearchIfShownChanged } from 'api/admin_search/utils';
 import emailCampaignsKeys from 'api/campaigns/email/keys';
 import projectsKeys from 'api/projects/keys';
-import projectsMiniAdminKeys from 'api/projects_mini_admin/keys';
 import supportedCampaignNamesKeys from 'api/supported_campaign_names/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -33,8 +33,9 @@ const useUpdatePhase = () => {
       queryClient.invalidateQueries({
         queryKey: phasesKeys.item({ phaseId: variables.phaseId }),
       });
-      queryClient.invalidateQueries({
-        queryKey: projectsMiniAdminKeys.lists(),
+      invalidateAdminSearchIfShownChanged(queryClient, {
+        id: data.data.id,
+        titleMultiloc: data.data.attributes.title_multiloc,
       });
       queryClient.invalidateQueries({ queryKey: emailCampaignsKeys.lists() });
       queryClient.invalidateQueries({

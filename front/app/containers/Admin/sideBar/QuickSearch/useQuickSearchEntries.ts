@@ -1,12 +1,19 @@
 import { useMemo } from 'react';
 
+import {
+  AdminSearchFolder,
+  AdminSearchItem,
+  AdminSearchProject,
+  AdminSearchSpace,
+} from 'api/admin_search/types';
+import useAdminSearch from 'api/admin_search/useAdminSearch';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
-import { IPhaseData } from 'api/phases/types';
-import useAllProjectsMiniAdmin from 'api/projects_mini_admin/useAllProjectsMiniAdmin';
 
 import { areFeaturesActive } from 'hooks/useFeatureFlags';
 import useLocalize from 'hooks/useLocalize';
+
+import projectsMessages from 'containers/Admin/projects/all/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import { hasPermission } from 'utils/permissions';
@@ -16,8 +23,12 @@ import sidebarMessages from '../messages';
 import { QuickSearchEntry } from './filterEntries';
 import staticEntries from './staticEntries';
 
-const isPhase = (item: { type: string }): item is IPhaseData =>
-  item.type === 'phase';
+const isProject = (item: AdminSearchItem): item is AdminSearchProject =>
+  item.type === 'project_admin_search';
+const isFolder = (item: AdminSearchItem): item is AdminSearchFolder =>
+  item.type === 'folder_admin_search';
+const isSpace = (item: AdminSearchItem): item is AdminSearchSpace =>
+  item.type === 'space_admin_search';
 
 const useQuickSearchEntries = () => {
   const { formatMessage } = useIntl();
@@ -25,9 +36,9 @@ const useQuickSearchEntries = () => {
   const { data: authUser } = useAuthUser();
   const { data: appConfiguration } = useAppConfiguration();
 
-  // The endpoint only returns projects the current user can manage, so
-  // moderators only get their own projects and phases.
-  const { data } = useAllProjectsMiniAdmin({ sort: 'alphabetically_asc' });
+  // The endpoint only returns what the current user manages, so moderators
+  // only get their own projects, phases, folders and spaces.
+  const { data } = useAdminSearch();
 
   return useMemo(() => {
     const pageEntries: QuickSearchEntry[] = staticEntries
@@ -56,51 +67,81 @@ const useQuickSearchEntries = () => {
         keywords: entry.to.replace(/^\/admin\//, ''),
       }));
 
-    const projects = data?.data ?? [];
+    const items = data?.data ?? [];
     const projectsLabel = formatMessage(sidebarMessages.projects);
-    const projectBreadcrumbs = new Map(
-      projects.map((project) => {
-        const folderTitle = project.attributes.folder_title_multiloc;
-        return [
-          project.id,
-          [
-            projectsLabel,
-            ...(folderTitle ? [localize(folderTitle)] : []),
-            localize(project.attributes.title_multiloc),
-          ],
-        ];
-      })
-    );
 
-    const projectEntries: QuickSearchEntry[] = projects.map((project) => ({
-      id: project.id,
-      group: 'projects',
-      breadcrumbs: projectBreadcrumbs.get(project.id) ?? [],
-      link: {
-        to: '/admin/projects/$projectId',
-        params: { projectId: project.id },
-      },
-    }));
+    const spaceEntries: QuickSearchEntry[] = items
+      .filter(isSpace)
+      .map((space) => ({
+        id: space.id,
+        group: 'spaces',
+        breadcrumbs: [
+          formatMessage(projectsMessages.spaces),
+          localize(space.attributes.title_multiloc),
+        ],
+        link: {
+          to: '/admin/projects/spaces/$spaceId',
+          params: { spaceId: space.id },
+        },
+      }));
 
-    const phaseEntries: QuickSearchEntry[] = (data?.included ?? [])
-      .filter(isPhase)
-      .map((phase) => {
-        const projectId = phase.relationships.project.data.id;
-        return {
-          id: phase.id,
-          group: 'phases',
-          breadcrumbs: [
-            ...(projectBreadcrumbs.get(projectId) ?? []),
-            localize(phase.attributes.title_multiloc),
-          ],
-          link: {
-            to: '/admin/projects/$projectId/phases/$phaseId',
-            params: { projectId, phaseId: phase.id },
-          },
-        };
+    const folderEntries: QuickSearchEntry[] = items
+      .filter(isFolder)
+      .map((folder) => ({
+        id: folder.id,
+        group: 'folders',
+        breadcrumbs: [
+          formatMessage(projectsMessages.folders),
+          localize(folder.attributes.title_multiloc),
+        ],
+        link: {
+          to: '/admin/projects/folders/$projectFolderId',
+          params: { projectFolderId: folder.id },
+        },
+      }));
+
+    const projects = items.filter(isProject);
+
+    const projectEntries: QuickSearchEntry[] = [];
+    const phaseEntries: QuickSearchEntry[] = [];
+    projects.forEach((project) => {
+      const folderTitle = project.attributes.folder_title_multiloc;
+      const breadcrumbs = [
+        projectsLabel,
+        ...(folderTitle ? [localize(folderTitle)] : []),
+        localize(project.attributes.title_multiloc),
+      ];
+
+      projectEntries.push({
+        id: project.id,
+        group: 'projects',
+        breadcrumbs,
+        link: {
+          to: '/admin/projects/$projectId',
+          params: { projectId: project.id },
+        },
       });
 
-    return [...pageEntries, ...projectEntries, ...phaseEntries];
+      project.attributes.phases.forEach((phase) => {
+        phaseEntries.push({
+          id: phase.id,
+          group: 'phases',
+          breadcrumbs: [...breadcrumbs, localize(phase.title_multiloc)],
+          link: {
+            to: '/admin/projects/$projectId/phases/$phaseId',
+            params: { projectId: project.id, phaseId: phase.id },
+          },
+        });
+      });
+    });
+
+    return [
+      ...pageEntries,
+      ...spaceEntries,
+      ...folderEntries,
+      ...projectEntries,
+      ...phaseEntries,
+    ];
   }, [data, authUser, appConfiguration, formatMessage, localize]);
 };
 

@@ -323,6 +323,8 @@ Rails.application.routes.draw do
         end
       end
 
+      resources :admin_search, only: %i[index]
+
       resources :spaces, only: %i[index show create update destroy] do
         resources :moderators, controller: 'moderators/space_moderators', except: %i[update]
       end

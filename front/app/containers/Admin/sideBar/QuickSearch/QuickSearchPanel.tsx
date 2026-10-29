@@ -11,22 +11,22 @@ import { useIntl } from 'utils/cl-intl';
 import filterEntries, { QuickSearchEntry } from './filterEntries';
 import messages from './messages';
 import QuickSearchResult from './QuickSearchResult';
-import { getRecentEntries } from './recentPaths';
+import { getRecentEntries } from './recents';
 
 const LISTBOX_ID = 'quick-search-results';
 const optionId = (index: number) => `quick-search-option-${index}`;
 
 type Props = {
   entries: QuickSearchEntry[];
-  recentPaths: string[];
-  currentPath: string | undefined;
+  recentKeys: string[];
+  currentKey: string | undefined;
   onSelect: () => void;
 };
 
 const QuickSearchPanel = ({
   entries,
-  recentPaths,
-  currentPath,
+  recentKeys,
+  currentKey,
   onSelect,
 }: Props) => {
   const { formatMessage } = useIntl();
@@ -36,8 +36,8 @@ const QuickSearchPanel = ({
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const recentEntries = useMemo(
-    () => getRecentEntries(recentPaths, entries, currentPath),
-    [recentPaths, entries, currentPath]
+    () => getRecentEntries(recentKeys, entries, currentKey),
+    [recentKeys, entries, currentKey]
   );
   // Recent places until the user starts typing.
   const results = query ? filterEntries(entries, query) : recentEntries;

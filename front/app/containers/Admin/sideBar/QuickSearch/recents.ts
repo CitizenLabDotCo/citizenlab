@@ -2,39 +2,36 @@ import { isUUID } from 'utils/helperUtils';
 
 import { QuickSearchEntry } from './filterEntries';
 
-// More paths are kept than shown, because several paths can lead to the same
-// entry (e.g. a phase's setup and ideas pages both show as that phase).
-const MAX_STORED = 30;
+// A few more are kept than shown, because the current page is hidden and the
+// user may have lost access to some places since.
+const MAX_STORED = 20;
 const MAX_SHOWN = 10;
 
 const storageKey = (userId: string) => `admin-quick-search-recent:${userId}`;
 
-export const readRecentPaths = (userId: string): string[] => {
+export const readRecentKeys = (userId: string): string[] => {
   try {
     const parsed: unknown = JSON.parse(
       localStorage.getItem(storageKey(userId)) ?? '[]'
     );
     return Array.isArray(parsed)
-      ? parsed.filter((path): path is string => typeof path === 'string')
+      ? parsed.filter((key): key is string => typeof key === 'string')
       : [];
   } catch {
     return [];
   }
 };
 
-export const writeRecentPaths = (userId: string, paths: string[]) => {
+export const writeRecentKeys = (userId: string, keys: string[]) => {
   try {
-    localStorage.setItem(storageKey(userId), JSON.stringify(paths));
+    localStorage.setItem(storageKey(userId), JSON.stringify(keys));
   } catch {
     return;
   }
 };
 
-export const addRecentPath = (paths: string[], path: string) =>
-  [path, ...paths.filter((recentPath) => recentPath !== path)].slice(
-    0,
-    MAX_STORED
-  );
+export const addRecentKey = (keys: string[], key: string) =>
+  [key, ...keys.filter((recentKey) => recentKey !== key)].slice(0, MAX_STORED);
 
 const trimTrailingSlash = (path: string) => path.replace(/\/+$/, '');
 
@@ -62,7 +59,7 @@ const isMatch = (path: string, candidate: string) => {
 
 // The entry with the longest matching path, so a phase's sub-pages all match
 // that phase.
-const matchEntry = (path: string, entries: QuickSearchEntry[]) => {
+export const matchEntry = (path: string, entries: QuickSearchEntry[]) => {
   const trimmedPath = trimTrailingSlash(path);
   let bestMatch: QuickSearchEntry | undefined;
   let bestLength = 0;
@@ -78,27 +75,22 @@ const matchEntry = (path: string, entries: QuickSearchEntry[]) => {
   return bestMatch;
 };
 
-const entryKey = (entry: QuickSearchEntry) => `${entry.group}-${entry.id}`;
+export const entryKey = (entry: QuickSearchEntry) =>
+  `${entry.group}-${entry.id}`;
 
-// Recent paths as entries, newest first. Leaves out the page the user is on
-// and anything they can no longer reach (it is not among the entries).
+// Recent keys as entries, newest first. Leaves out the current page and
+// anything the user can no longer reach (it is not among the entries).
 export const getRecentEntries = (
-  paths: string[],
+  keys: string[],
   entries: QuickSearchEntry[],
-  currentPath: string | undefined
+  currentKey: string | undefined
 ) => {
-  const currentEntry = currentPath && matchEntry(currentPath, entries);
-  const seen = new Set(currentEntry ? [entryKey(currentEntry)] : []);
-  const recentEntries: QuickSearchEntry[] = [];
+  const entriesByKey = new Map(
+    entries.map((entry) => [entryKey(entry), entry])
+  );
 
-  for (const path of paths) {
-    const entry = matchEntry(path, entries);
-    if (entry && !seen.has(entryKey(entry))) {
-      seen.add(entryKey(entry));
-      recentEntries.push(entry);
-    }
-    if (recentEntries.length === MAX_SHOWN) break;
-  }
-
-  return recentEntries;
+  return keys
+    .filter((key) => key !== currentKey)
+    .flatMap((key) => entriesByKey.get(key) ?? [])
+    .slice(0, MAX_SHOWN);
 };
