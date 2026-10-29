@@ -66,5 +66,38 @@ describe AIAssistant::Conversation do
 
       expect(conversation.reload.status).to eq('running')
     end
+
+    context 'while awaiting approval' do
+      let(:conversation) { create(:ai_assistant_conversation, status: 'awaiting_approval') }
+      let(:message) { create(:ai_assistant_message, conversation:, role: 'assistant', content: nil) }
+
+      where(:call_status, :age, :new_call_status, :new_conversation_status) do
+        'approved' | 11.minutes | 'failed'   | 'idle'
+        'approved' | 1.minute   | 'approved' | 'awaiting_approval'
+        'proposed' | 25.hours   | 'expired'  | 'idle'
+        'proposed' | 1.hour     | 'proposed' | 'awaiting_approval'
+      end
+
+      with_them do
+        it 'ends the decisions that nothing would end anymore' do
+          tool_call = create(:ai_assistant_tool_call, message:, status: call_status, created_at: age.ago, decided_at: age.ago)
+
+          conversation.recover_if_stuck!
+
+          expect(tool_call.reload.status).to eq(new_call_status)
+          expect(conversation.reload.status).to eq(new_conversation_status)
+        end
+      end
+
+      it 'keeps waiting for the other proposals after an interrupted approval' do
+        interrupted = create(:ai_assistant_tool_call, message:, status: 'approved', decided_at: 11.minutes.ago)
+        create(:ai_assistant_tool_call, message:, status: 'proposed')
+
+        conversation.recover_if_stuck!
+
+        expect(interrupted.reload.status).to eq('failed')
+        expect(conversation.reload.status).to eq('awaiting_approval')
+      end
+    end
   end
 end
