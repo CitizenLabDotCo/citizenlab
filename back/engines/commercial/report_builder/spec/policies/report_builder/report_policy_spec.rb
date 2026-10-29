@@ -345,6 +345,18 @@ RSpec.describe ReportBuilder::ReportPolicy do
 
         it { is_expected.not_to permit(:generate) }
       end
+
+      # A run reads the reporting views, which cover every project, so moderating
+      # the one being reported on is not enough to start one.
+      context 'when user moderates the project being reported on' do
+        let(:user) { create(:project_moderator, projects: [project]) }
+
+        it { is_expected.to permit(:update) }
+        it { is_expected.not_to permit(:generate) }
+        it { is_expected.not_to permit(:chat) }
+        it { is_expected.not_to permit(:chat_turn) }
+        it { is_expected.not_to permit(:cancel_generation) }
+      end
     end
 
     context 'with the llm_reporting feature deactivated' do

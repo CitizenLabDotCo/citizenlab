@@ -74,9 +74,14 @@ module ReportBuilder
     # Composing the report with an LLM. Everything write? requires, plus the feature
     # flag and a project to report on: the recipe writes about a project, so a report
     # tied to neither a project nor a phase has no subject.
+    #
+    # Admin on top of that, because a run reads the reporting views, and those cover
+    # the whole tenant rather than the project being reported on. ReportingQueryPolicy
+    # draws the same line. Scoping the views per moderator would move it.
     def generate?
       AppConfiguration.instance.feature_activated?('llm_reporting') &&
         record.reported_project.present? &&
+        active_admin? &&
         write?
     end
 
