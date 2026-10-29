@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { IProjectData } from 'api/projects/types';
 
-import { usePageSave } from 'containers/Admin/projects/_shared/PageSaveContext';
+import { usePageSave } from 'components/admin/PageSaveContext';
 
 import { useParams } from 'utils/router';
 

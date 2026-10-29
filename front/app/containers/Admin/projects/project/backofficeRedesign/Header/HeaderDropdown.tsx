@@ -9,7 +9,7 @@ import {
   bo,
 } from '@citizenlab/cl2-component-library';
 
-export type HeaderDropdownName = 'publish' | 'share';
+export type HeaderDropdownName = 'publish' | 'share' | 'review';
 
 interface Props {
   opened: boolean;
@@ -20,6 +20,7 @@ interface Props {
   id: string;
   width: string;
   content: JSX.Element;
+  disabled?: boolean;
 }
 
 const HeaderDropdown = ({
@@ -31,6 +32,7 @@ const HeaderDropdown = ({
   id,
   width,
   content,
+  disabled,
 }: Props) => {
   const triggerRef = useRef<HTMLDivElement>(null);
 
@@ -49,6 +51,7 @@ const HeaderDropdown = ({
           iconPos="right"
           onClick={() => onOpenChange(!opened)}
           id={id}
+          disabled={disabled}
         >
           {label}
         </Button>

@@ -9,11 +9,12 @@ import useCauses from 'api/causes/useCauses';
 import useDeleteCause from 'api/causes/useDeleteCause';
 import useUpdateCause from 'api/causes/useUpdateCause';
 
-import { useRegisterPageSaver } from 'containers/Admin/projects/_shared/PageSaveContext';
 import {
   CauseFormValues,
   toSubmitValues,
 } from 'containers/Admin/projects/project/volunteering/useCauseForm';
+
+import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 
 export interface StagedCause {
   key: string;

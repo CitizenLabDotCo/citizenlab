@@ -3,7 +3,7 @@ import React from 'react';
 import useFileAttachments from 'api/file_attachments/useFileAttachments';
 import { IPhaseData } from 'api/phases/types';
 
-import { usePageSave } from 'containers/Admin/projects/_shared/PageSaveContext';
+import { usePageSave } from 'components/admin/PageSaveContext';
 
 import BuildPanel from './BuildPanel';
 

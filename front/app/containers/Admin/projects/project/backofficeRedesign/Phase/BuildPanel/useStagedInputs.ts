@@ -8,7 +8,7 @@ import useAddIdea from 'api/ideas/useAddIdea';
 import useIdeas from 'api/ideas/useIdeas';
 import useUpdateIdea from 'api/ideas/useUpdateIdea';
 
-import { useRegisterPageSaver } from 'containers/Admin/projects/_shared/PageSaveContext';
+import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 

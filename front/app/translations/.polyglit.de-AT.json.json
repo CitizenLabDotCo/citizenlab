@@ -2344,6 +2344,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.PostCardsComponents.perspectives": {
+    "state": "verified",
+    "verified_at": "2026-10-29T11:59:06.175895Z",
+    "verified_by": "Jelena"
+  },
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -13848,6 +13853,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.errors.not_supported_in_standalone_phase": {
+    "state": "verified",
+    "verified_at": "2026-10-06T14:08:21.400022Z",
+    "verified_by": "Jelena"
   },
   "app.errors.number_invalid": {
     "state": "verified",

@@ -7,15 +7,16 @@ import useAddPhase from 'api/phases/useAddPhase';
 import usePhases from 'api/phases/usePhases';
 import { IProjectData } from 'api/projects/types';
 
-import {
-  SaveReason,
-  useRegisterPageSaver,
-} from 'containers/Admin/projects/_shared/PageSaveContext';
 import usePhaseFileAttachments, {
   fileAttachmentErrors,
 } from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import validate from 'containers/Admin/projects/project/phaseSetup/validate';
+
+import {
+  SaveReason,
+  useRegisterPageSaver,
+} from 'components/admin/PageSaveContext';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';

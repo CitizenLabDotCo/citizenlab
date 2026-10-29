@@ -12,12 +12,13 @@ import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import { AccessOnlyAction } from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
-import { useRegisterPageSaver } from 'containers/Admin/projects/_shared/PageSaveContext';
 import projectMessages from 'containers/Admin/projects/project/messages';
 import PhaseParticipationConfig from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig';
 import configMessages from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/messages';
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import { validateParticipation } from 'containers/Admin/projects/project/phaseSetup/validate';
+
+import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 
 import { useIntl } from 'utils/cl-intl';
 import { isCLErrorsWrapper } from 'utils/errorUtils';

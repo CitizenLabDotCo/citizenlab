@@ -30,6 +30,7 @@ RSpec.describe CitizenLab::Mixins::FeatureSpecification do
       it { expect(json_schema['title']).to eq(feature_spec.feature_title) }
       it { expect(json_schema).not_to have_key('required-settings') }
       it { expect(json_schema).not_to have_key('description') }
+      it { expect(json_schema).not_to have_key('development') }
       it { expect(json_schema['properties']).to eq(allowed_enabled_props) }
     end
 
@@ -78,6 +79,10 @@ RSpec.describe CitizenLab::Mixins::FeatureSpecification do
           false
         end
 
+        def self.development
+          true
+        end
+
         add_setting 'live_edit', required: true, schema: live_edit_schema_
         add_setting 'max_nb_authors', schema: max_nb_authors_schema_
       end
@@ -99,6 +104,7 @@ RSpec.describe CitizenLab::Mixins::FeatureSpecification do
       it { expect(json_schema['title']).to eq(feature_spec.feature_title) }
       it { expect(json_schema['required-settings']).to eq(['live_edit']) }
       it { expect(json_schema['description']).to eq(feature_spec.feature_description) }
+      it { expect(json_schema['development']).to be true }
 
       it { expect(json_schema['properties']).to include('max_nb_authors' => max_nb_authors_schema) }
       it { expect(json_schema['properties']).to include('live_edit' => live_edit_schema) }

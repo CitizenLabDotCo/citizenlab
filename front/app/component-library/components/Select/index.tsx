@@ -1,11 +1,12 @@
 import React, { PureComponent, FocusEvent, ChangeEvent } from 'react';
 
 import { isString, get, isNumber } from 'lodash-es';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { Placement } from 'tippy.js';
 
 import {
   defaultInputStyle,
+  defaultStyles,
   colors,
   isRtl,
   stylingConsts,
@@ -14,7 +15,7 @@ import testEnv from '../../utils/testUtils/testEnv';
 import { IOption, InputSize } from '../../utils/typings';
 import Icon from '../Icon';
 import IconTooltip from '../IconTooltip';
-import { boInputStyle, boLabelStyle } from '../Input';
+import { boInputLabelStyle, boInputStyle } from '../Input';
 import Label from '../Label';
 
 export const SelectIcon = styled(Icon)`
@@ -64,14 +65,10 @@ const Container = styled.div<{ variant?: 'bo' }>`
     color: ${colors.textPrimary};
   }
 
-  ${({ variant }) => variant === 'bo' && boLabelStyle}
+  ${({ variant }) => variant === 'bo' && boInputLabelStyle}
 `;
 
-const boSelectStyle = css`
-  ${boInputStyle};
-  padding-right: 27px;
-  cursor: pointer;
-`;
+const CHEVRON_SPACE = '36px';
 
 export const SelectWrapper = styled.div<{
   mr?: string;
@@ -82,22 +79,25 @@ export const SelectWrapper = styled.div<{
   width: 100%;
   position: relative;
   select {
+    /* First, so the declarations below override its padding and cursor */
+    ${({ variant }) => (variant === 'bo' ? boInputStyle : defaultInputStyle)};
     width: 100%;
     margin: 0;
-    padding-right: 27px;
+    /* Keep the text clear of the chevron (24px wide, 11px from the edge) */
+    padding-right: ${CHEVRON_SPACE};
     cursor: pointer;
     outline: none !important;
 
     ${({ mr }) => (mr ? `margin-right: ${mr};` : '')}
 
     ${isRtl`
-    padding-right: 0;
-    padding-left: 27px;
-  `}
+      padding-right: ${({ size }) =>
+        size === 'small' ? '10px' : defaultStyles.inputPadding};
+      padding-left: ${CHEVRON_SPACE};
+    `}
     &::-ms-expand {
       display: none;
     }
-    ${({ variant }) => (variant === 'bo' ? boSelectStyle : defaultInputStyle)};
     height: ${({ height, variant }) =>
       height ||
       (variant === 'bo'
