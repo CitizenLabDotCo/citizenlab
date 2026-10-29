@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Divider, Button } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import usePollQuestions from 'api/poll_questions/usePollQuestions';
 
@@ -25,12 +25,19 @@ const PollSection = ({ phaseId }: Props) => {
 
   return (
     <>
-      <Divider />
-      <PanelField label={formatMessage(messages.pollQuestions)}>
-        <Button buttonStyle="bo-secondary" onClick={() => setOpened(true)}>
-          {formatMessage(messages.addQuestions)}
-        </Button>
-      </PanelField>
+      <PanelField
+        label={formatMessage(messages.pollQuestions)}
+        action={
+          <Button
+            buttonStyle="bo-secondary"
+            boSize="medium"
+            width="auto"
+            onClick={() => setOpened(true)}
+          >
+            {formatMessage(messages.addQuestions)}
+          </Button>
+        }
+      />
 
       <Modal
         opened={opened}

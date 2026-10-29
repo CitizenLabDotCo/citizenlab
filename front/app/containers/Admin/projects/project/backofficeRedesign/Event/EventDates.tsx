@@ -13,6 +13,7 @@ import { CLErrors } from 'typings';
 
 import { IEventProperties } from 'api/events/types';
 
+import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import useEventDateTimes from 'containers/Admin/projects/_shared/events/useEventDateTimes';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
@@ -26,7 +27,6 @@ import DateFieldRow from './DateFieldRow';
 import DateFieldSegment from './DateFieldSegment';
 import messages from './messages';
 import PlatformTimeNote from './PlatformTimeNote';
-import SetupCard from './SetupCard';
 
 const withTimeOf = (date: Date, time: Date) => {
   const result = new Date(date);

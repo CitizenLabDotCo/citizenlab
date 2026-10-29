@@ -734,4 +734,8 @@ export default defineMessages({
     defaultMessage:
       "This participation method is in beta. We're gradually rolling it out to gather feedback and improve the experience.",
   },
+  configureMap: {
+    id: 'app.containers.AdminPage.ProjectEdit.configureMap',
+    defaultMessage: 'Configure map',
+  },
 });
