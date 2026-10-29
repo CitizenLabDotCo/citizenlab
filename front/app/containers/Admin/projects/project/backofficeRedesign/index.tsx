@@ -12,7 +12,6 @@ import { useLocation } from 'utils/router';
 import FeedbackNotice from '../earlyAccess/FeedbackNotice';
 
 import { sectionFromPathname } from './_shared/sections';
-import useMarkSetupStep from './_shared/useMarkSetupStep';
 import WorkspaceHeader from './Header';
 import { HeaderDropdownName } from './Header/HeaderDropdown';
 import MethodSettings from './Phase/MethodSettings';
@@ -50,13 +49,7 @@ const ProjectWorkspace = ({
   const [openDropdown, setOpenDropdown] = useState<HeaderDropdownName | null>(
     null
   );
-  const markSetupStep = useMarkSetupStep(project);
   const pageSave = usePageSave();
-
-  const showDropdown = (dropdown: HeaderDropdownName | null) => {
-    setOpenDropdown(dropdown);
-    if (dropdown === 'share') markSetupStep('share');
-  };
 
   const section = sectionFromPathname(pathname, project.id);
   const activeView = viewFromPathname(pathname);
@@ -76,7 +69,7 @@ const ProjectWorkspace = ({
       phase={phase}
     />
   ) : (
-    <ProjectSetupPanel project={project} onOpenDropdown={showDropdown} />
+    <ProjectSetupPanel project={project} />
   );
 
   // Each column is positioned so the visually hidden inputs of toggles and
@@ -161,7 +154,7 @@ const ProjectWorkspace = ({
         activeView={activeView}
         section={section}
         openDropdown={openDropdown}
-        onOpenDropdown={showDropdown}
+        onOpenDropdown={setOpenDropdown}
       />
 
       <Box

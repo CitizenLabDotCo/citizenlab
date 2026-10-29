@@ -61,6 +61,8 @@ const ImageCard = ({ form }: Props) => {
       )}
       <ImageCropModal
         opened={cropOpen && form.imageNeedsCrop}
+        aspectRatioWidth={3}
+        aspectRatioHeight={1}
         image={form.image}
         onCrop={form.cropImage}
         onRemove={form.removeImage}

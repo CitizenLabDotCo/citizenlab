@@ -107,26 +107,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.messagingSection',
     defaultMessage: 'Messaging',
   },
-  getStarted: {
-    id: 'app.containers.Admin.projects.project.getStarted',
-    defaultMessage: 'Get started',
-  },
-  stepsDone: {
-    id: 'app.containers.Admin.projects.project.stepsDone',
-    defaultMessage: '{done} of {total} done',
-  },
-  stepEditProjectPage: {
-    id: 'app.containers.Admin.projects.project.stepEditProjectPage',
-    defaultMessage: 'Edit the project page',
-  },
-  stepConfigureProjectSettings: {
-    id: 'app.containers.Admin.projects.project.stepConfigureProjectSettings',
-    defaultMessage: 'Configure project settings',
-  },
-  stepAddPhaseOrSurvey: {
-    id: 'app.containers.Admin.projects.project.stepAddPhaseOrSurvey',
-    defaultMessage: 'Add a phase or survey',
-  },
   nextActions: {
     id: 'app.containers.Admin.projects.project.nextActions',
     defaultMessage: 'Next actions',
@@ -134,6 +114,10 @@ export default defineMessages({
   collectingNow: {
     id: 'app.containers.Admin.projects.project.collectingNow',
     defaultMessage: 'Collecting now',
+  },
+  participation: {
+    id: 'app.containers.Admin.projects.project.participation',
+    defaultMessage: 'Participation',
   },
   participantsGraphLabel: {
     id: 'app.containers.Admin.projects.project.participantsGraphLabel',
@@ -150,10 +134,6 @@ export default defineMessages({
   actionMessageParticipants: {
     id: 'app.containers.Admin.projects.project.actionMessageParticipants',
     defaultMessage: 'Message participants',
-  },
-  stepPublishProject: {
-    id: 'app.containers.Admin.projects.project.stepPublishProject',
-    defaultMessage: 'Publish project',
   },
   newPhaseCrumb: {
     id: 'app.containers.Admin.projects.project.newPhaseCrumb',
@@ -237,11 +217,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.publishRestoreToDraftTitle',
     defaultMessage: 'Restore to draft?',
   },
-  publishRestoreToDraftBody: {
-    id: 'app.containers.Admin.projects.project.publishRestoreToDraftBody',
-    defaultMessage:
-      'The project goes back to draft and is no longer visible to residents.',
-  },
   publishCancel: {
     id: 'app.containers.Admin.projects.project.publishCancel',
     defaultMessage: 'Cancel',
@@ -258,15 +233,6 @@ export default defineMessages({
   publishArchiveTitle: {
     id: 'app.containers.Admin.projects.project.publishArchiveTitle',
     defaultMessage: 'Archive this project?',
-  },
-  publishArchiveBody: {
-    id: 'app.containers.Admin.projects.project.publishArchiveBody',
-    defaultMessage:
-      'The project moves to your Archive folder on the platform. Residents can no longer see it or take part, and it stops appearing on the homepage, but everything stays saved and you can restore it to draft at any time.',
-  },
-  stepSharePrivateLink: {
-    id: 'app.containers.Admin.projects.project.stepSharePrivateLink2',
-    defaultMessage: 'Share a private link',
   },
   shareInvitePeople: {
     id: 'app.containers.Admin.projects.project.shareInvitePeople',
@@ -320,10 +286,6 @@ export default defineMessages({
   settingsManagement: {
     id: 'app.containers.Admin.projects.project.settingsManagement',
     defaultMessage: 'Management',
-  },
-  listing: {
-    id: 'app.containers.Admin.projects.project.listing',
-    defaultMessage: 'Listing',
   },
   topicTags: {
     id: 'app.containers.Admin.projects.project.topicTags',
@@ -453,11 +415,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.discardChanges',
     defaultMessage: 'Discard changes',
   },
-  areaFilterDescription: {
-    id: 'app.containers.Admin.projects.project.areaFilterDescription',
-    defaultMessage:
-      'Where this project surfaces when residents filter by their area.',
-  },
   areaFilterAllAreas: {
     id: 'app.containers.Admin.projects.project.areaFilterAllAreas',
     defaultMessage: 'All areas',
@@ -465,10 +422,6 @@ export default defineMessages({
   areaFilterSelectedAreas: {
     id: 'app.containers.Admin.projects.project.areaFilterSelectedAreas',
     defaultMessage: 'Selected areas',
-  },
-  areaFilterChooseAreas: {
-    id: 'app.containers.Admin.projects.project.areaFilterChooseAreas',
-    defaultMessage: 'Choose which area filters it shows in',
   },
   noInputsYet: {
     id: 'app.containers.Admin.projects.project.noInputsYet',
@@ -492,6 +445,179 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.recommendedActionsHint',
     defaultMessage:
       'Recommended actions appear here once participants take part.',
+  },
+  beforeYouPublish: {
+    id: 'app.containers.Admin.projects.project.beforeYouPublish',
+    defaultMessage: 'Before you publish',
+  },
+  readyToPublish: {
+    id: 'app.containers.Admin.projects.project.readyToPublish',
+    defaultMessage: 'Ready to publish',
+  },
+  readyForReview: {
+    id: 'app.containers.Admin.projects.project.readyForReview',
+    defaultMessage: 'Ready for review',
+  },
+  itemsReady: {
+    id: 'app.containers.Admin.projects.project.itemsReady',
+    defaultMessage: '{ready} of {total} ready',
+  },
+  scheduledToPublish: {
+    id: 'app.containers.Admin.projects.project.scheduledToPublish',
+    defaultMessage: 'Scheduled to publish on {date}',
+  },
+  itemReady: {
+    id: 'app.containers.Admin.projects.project.itemReady',
+    defaultMessage: 'Ready',
+  },
+  itemNotReady: {
+    id: 'app.containers.Admin.projects.project.itemNotReady',
+    defaultMessage: 'Not ready',
+  },
+  projectPageItem: {
+    id: 'app.containers.Admin.projects.project.projectPageItem',
+    defaultMessage: 'Project page',
+  },
+  editProjectPage: {
+    id: 'app.containers.Admin.projects.project.editProjectPage',
+    defaultMessage: 'Edit project page',
+  },
+  homepageCard: {
+    id: 'app.containers.Admin.projects.project.homepageCard',
+    defaultMessage: 'Homepage card',
+  },
+  areaItem: {
+    id: 'app.containers.Admin.projects.project.areaItem',
+    defaultMessage: 'Area',
+  },
+  areasCount: {
+    id: 'app.containers.Admin.projects.project.areasCount',
+    defaultMessage: '{count, plural, one {# area} other {# areas}}',
+  },
+  topicTagsCount: {
+    id: 'app.containers.Admin.projects.project.topicTagsCount',
+    defaultMessage: '{count, plural, one {# tag} other {# tags}}',
+  },
+  participantsEmpty: {
+    id: 'app.containers.Admin.projects.project.participantsEmpty',
+    defaultMessage: 'Numbers appear here once participants take part',
+  },
+  phaseUnitInputs: {
+    id: 'app.containers.Admin.projects.project.phaseUnitInputs',
+    defaultMessage: 'inputs',
+  },
+  phaseUnitResponses: {
+    id: 'app.containers.Admin.projects.project.phaseUnitResponses',
+    defaultMessage: 'responses',
+  },
+  phaseUnitVotes: {
+    id: 'app.containers.Admin.projects.project.phaseUnitVotes',
+    defaultMessage: 'votes',
+  },
+  archivedExplanation: {
+    id: 'app.containers.Admin.projects.project.archivedExplanation',
+    defaultMessage:
+      'Residents can still see this project, but can no longer take part. Restore it to draft to keep working on it.',
+  },
+  finalRecord: {
+    id: 'app.containers.Admin.projects.project.finalRecord',
+    defaultMessage: 'Final record',
+  },
+  finalRecordRan: {
+    id: 'app.containers.Admin.projects.project.finalRecordRan',
+    defaultMessage: 'Ran',
+  },
+  finalRecordRanValue: {
+    id: 'app.containers.Admin.projects.project.finalRecordRanValue',
+    defaultMessage: '{start} to {end}',
+  },
+  finalRecordRanOpenEnded: {
+    id: 'app.containers.Admin.projects.project.finalRecordRanOpenEnded',
+    defaultMessage: 'Since {start}',
+  },
+  finalRecordPeople: {
+    id: 'app.containers.Admin.projects.project.finalRecordPeople',
+    defaultMessage: 'People',
+  },
+  finalRecordContributions: {
+    id: 'app.containers.Admin.projects.project.finalRecordContributions',
+    defaultMessage: 'Contributions',
+  },
+  finalRecordPhases: {
+    id: 'app.containers.Admin.projects.project.finalRecordPhases',
+    defaultMessage: 'Phases',
+  },
+  publishArchiveBody2: {
+    id: 'app.containers.Admin.projects.project.publishArchiveBody2',
+    defaultMessage:
+      'The project moves to the archive. Residents can still see it and its results, but can no longer take part. Everything stays saved and you can restore it to draft at any time.',
+  },
+  publishRestoreToDraftBody2: {
+    id: 'app.containers.Admin.projects.project.publishRestoreToDraftBody2',
+    defaultMessage:
+      'The project goes back to draft. Residents can no longer see it or take part. If projects need approval on this platform, it has to be approved again before you can publish it.',
+  },
+  homepageCardImage: {
+    id: 'app.containers.Admin.projects.project.homepageCardImage',
+    defaultMessage: 'Image',
+  },
+  homepageCardDescription: {
+    id: 'app.containers.Admin.projects.project.homepageCardDescription',
+    defaultMessage: 'Description',
+  },
+  homepageCardDescriptionPlaceholder: {
+    id: 'app.containers.Admin.projects.project.homepageCardDescriptionPlaceholder',
+    defaultMessage: 'Participants will see this on the homepage.',
+  },
+  areasSelectedCount: {
+    id: 'app.containers.Admin.projects.project.areasSelectedCount',
+    defaultMessage:
+      '{count, plural, one {# area selected} other {# areas selected}}',
+  },
+  topicTagsSearch: {
+    id: 'app.containers.Admin.projects.project.topicTagsSearch',
+    defaultMessage: 'Search tags...',
+  },
+  topicTagsNoMatch: {
+    id: 'app.containers.Admin.projects.project.topicTagsNoMatch',
+    defaultMessage: 'No matching tags',
+  },
+  saveProjectSetup: {
+    id: 'app.containers.Admin.projects.project.saveProjectSetup',
+    defaultMessage: 'Save',
+  },
+  publishMissingTitle: {
+    id: 'app.containers.Admin.projects.project.publishMissingTitle',
+    defaultMessage: 'Publish project',
+  },
+  publishMissingBody: {
+    id: 'app.containers.Admin.projects.project.publishMissingBody',
+    defaultMessage:
+      '{missing, plural, one {# of {total} essentials is not set yet. The project will go live without it, and you can add it later.} other {# of {total} essentials are not set yet. The project will go live without them, and you can add them later.}}',
+  },
+  publishMissingScheduleTitle: {
+    id: 'app.containers.Admin.projects.project.publishMissingScheduleTitle',
+    defaultMessage: 'Schedule project',
+  },
+  publishMissingScheduleConfirm: {
+    id: 'app.containers.Admin.projects.project.publishMissingScheduleConfirm',
+    defaultMessage: 'Continue to schedule',
+  },
+  publishMissingBack: {
+    id: 'app.containers.Admin.projects.project.publishMissingBack',
+    defaultMessage: 'Back to setup',
+  },
+  publishMissingConfirm: {
+    id: 'app.containers.Admin.projects.project.publishMissingConfirm',
+    defaultMessage: 'Publish',
+  },
+  generalInformation: {
+    id: 'app.containers.Admin.projects.project.generalInformation',
+    defaultMessage: 'General information',
+  },
+  projectDetails: {
+    id: 'app.containers.Admin.projects.project.projectDetails',
+    defaultMessage: 'Project details',
   },
   ideationSetup: {
     id: 'app.containers.Admin.projects.project.ideationSetup',

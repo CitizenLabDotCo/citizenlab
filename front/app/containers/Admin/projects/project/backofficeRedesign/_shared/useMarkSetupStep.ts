@@ -12,7 +12,7 @@ const useMarkSetupStep = (project: IProjectData) => {
 
     updateProject({
       projectId: project.id,
-      completed_setup_steps: [...goneThrough, step],
+      completed_setup_steps: [step],
     });
   };
 };
