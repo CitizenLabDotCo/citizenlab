@@ -30,6 +30,13 @@ module Analytics
           again later counts as two starts. "Completed" means the person
           confirmed their account (email or phone code, or a sign-in service);
           it says nothing about answering the sign-up questions.
+          There is no acquisition source here. To see where people came from,
+          take each user's earliest reporting_sessions row, which is normally
+          the visit in which they signed up, and group by the referrer's site.
+          Merge a site's variants, such as l.facebook.com and facebook.com. A
+          NULL referrer means unknown (email apps, QR codes, typed addresses),
+          often half of sign-ups or more. For sign-ups through a sign-in
+          service, the referrer is usually that service's login page.
           Data limits, say them when they matter: sign-ups before 2024-08-15
           have no method (sign_up_method NULL). Before October 2026,
           invitations nobody accepted read as 'email_confirmation' sign-ups
