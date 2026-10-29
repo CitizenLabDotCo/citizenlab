@@ -10559,6 +10559,16 @@
     "verified_at": "2026-03-27T13:20:26.620399Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approvedReadOnlyNotice": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:24:14.083153Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approvedTab": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:24:14.083153Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -10674,6 +10684,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noApprovedInputsYet": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:24:14.083153Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.553503Z",
@@ -10723,6 +10738,16 @@
     "state": "verified",
     "verified_at": "2026-03-27T13:20:26.620399Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:24:14.083153Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:24:14.083153Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": {
     "state": "verified",
