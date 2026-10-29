@@ -10264,6 +10264,11 @@
     "verified_at": "2026-09-16T19:26:50.773492Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.noAttachments": {
+    "state": "verified",
+    "verified_at": "2026-10-29T21:28:08.870222Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.noInputToAnalyse": {
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.773492Z",

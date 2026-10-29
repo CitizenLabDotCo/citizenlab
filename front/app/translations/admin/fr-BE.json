@@ -2071,7 +2071,7 @@
   "app.containers.Admin.projects.project.newSurvey": "Nouvelle enquête",
   "app.containers.Admin.projects.project.newSurveyCrumb": "Nouveau sondage",
   "app.containers.Admin.projects.project.nextActions": "Actions suivantes",
-  "app.containers.Admin.projects.project.noAttachments": "Aucune pièce jointe",
+  "app.containers.Admin.projects.project.noAttachments": "Aucun fichier",
   "app.containers.Admin.projects.project.noInputToAnalyse": "Cette phase ne recueille aucune contribution, il n'y a donc rien à analyser.",
   "app.containers.Admin.projects.project.noInputToManage": "Cette phase ne recueille aucune contribution, il n'y a donc rien à gérer.",
   "app.containers.Admin.projects.project.noInputsYet": "Pas encore de contributions",
