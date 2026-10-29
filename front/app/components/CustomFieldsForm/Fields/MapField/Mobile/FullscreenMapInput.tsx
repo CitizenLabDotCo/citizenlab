@@ -43,6 +43,7 @@ import messages from '../../../messages';
 import InstructionAnimation from '../components/InstructionAnimation';
 import UndoButton from '../components/UndoButton';
 import {
+  getCoordinatesFromMultiPointData,
   handleMapClickMultipoint,
   isMultiPointInput,
   setupPointDrag,
@@ -63,6 +64,7 @@ type Props = {
   inputType: MapInputType;
   mapViewSurveyPage?: MapView | null;
   questionPageMapView?: MapView | null;
+  maxPins?: number;
 };
 
 const FullscreenMapInput = memo<Props>(
@@ -74,6 +76,7 @@ const FullscreenMapInput = memo<Props>(
     handleMultiPointChange,
     inputType,
     questionPageMapView,
+    maxPins,
   }: Props) => {
     const theme = useTheme();
     const locale = useLocale();
@@ -188,6 +191,10 @@ const FullscreenMapInput = memo<Props>(
         clearPointData(mapView);
       }
     }, [data, inputType, locale, mapView, theme]);
+
+    const pinCount: number =
+      getCoordinatesFromMultiPointData(data, inputType)?.length ?? 0;
+    const limitReached = !!maxPins && pinCount >= maxPins;
 
     // Get map height by calculating the height of the bottom section
     const getMapHeight = () => {
@@ -311,9 +318,15 @@ const FullscreenMapInput = memo<Props>(
                         mr="4px"
                       />
                       <Box my="auto">
-                        {inputType === 'point'
-                          ? formatMessage(messages.tapOnFullscreenMapToAddPoint)
-                          : formatMessage(messages.tapOnFullscreenMapToAdd)}
+                        {limitReached
+                          ? formatMessage(messages.maximumPinsReachedTap, {
+                              maxPins,
+                            })
+                          : formatMessage(
+                              inputType === 'point'
+                                ? messages.tapOnFullscreenMapToAddPoint
+                                : messages.tapOnFullscreenMapToAdd
+                            )}
                       </Box>
                     </Box>
                   </Label>

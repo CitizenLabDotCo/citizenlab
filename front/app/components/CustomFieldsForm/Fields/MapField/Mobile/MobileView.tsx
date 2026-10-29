@@ -38,6 +38,7 @@ type Props = {
   handleMultiPointChange?: (points: number[][] | undefined) => void;
   inputType: MapInputType;
   data?: GeoJSON.Point | GeoJSON.LineString | GeoJSON.Polygon | undefined;
+  maxPins?: number;
 };
 
 const MobileView = ({
@@ -48,6 +49,7 @@ const MobileView = ({
   handleMultiPointChange,
   inputType,
   data,
+  maxPins,
 }: Props) => {
   const theme = useTheme();
   const locale = useLocale();
@@ -157,6 +159,7 @@ const MobileView = ({
           mapViewSurveyPage={mapView}
           questionPageMapView={mapView}
           data={data}
+          maxPins={maxPins}
         />
       )}
     </>

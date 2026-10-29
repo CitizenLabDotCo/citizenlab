@@ -36,6 +36,12 @@ export const isMultiPointInput = (inputType: MapInputType) => {
   return isLineOrPolygonInput(inputType) || inputType === 'multipoint';
 };
 
+// exceedsPinLimit
+// Description: Whether a number of pins is past the question's limit. A
+// question with no limit set takes any number of pins.
+export const exceedsPinLimit = (pinCount: number, maxPins?: number) =>
+  !!maxPins && pinCount > maxPins;
+
 // handleMapClickMultipoint
 // Description: Handles map click for line, polygon or multipoint input
 export const handleMapClickMultipoint = (

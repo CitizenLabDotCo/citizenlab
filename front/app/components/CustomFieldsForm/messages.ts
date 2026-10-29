@@ -228,6 +228,16 @@ export default defineMessages({
     defaultMessage:
       'Add no more than {maxPins, plural, one {# location} other {# locations}}.',
   },
+  maximumPinsReachedClick: {
+    id: 'app.components.CustomFieldsForm.maximumPinsReachedClick',
+    defaultMessage:
+      'You have added all {maxPins, plural, one {# location} other {# locations}}. To add another, remove one by clicking on the Undo button in the top right corner of the map.',
+  },
+  maximumPinsReachedTap: {
+    id: 'app.components.CustomFieldsForm.maximumPinsReachedTap',
+    defaultMessage:
+      'You have added all {maxPins, plural, one {# location} other {# locations}}. To add another, remove one with the Undo button.',
+  },
   fileSizeLimit: {
     id: 'app.components.CustomFieldsForm.fileSizeLimit',
     defaultMessage: 'The file size limit is {maxFileSize} MB.',

@@ -33,6 +33,8 @@ import {
   convertCoordinatesToGeoJSON,
   convertGeojsonToWKT,
   convertWKTToGeojson,
+  exceedsPinLimit,
+  getCoordinatesFromMultiPointData,
 } from './multiPointUtils';
 import { MapInputType } from './utils';
 
@@ -99,6 +101,11 @@ const MapField = ({
     ? convertWKTToGeojson({ point: watch(name) }).point
     : undefined;
 
+  const maxPins = question.maximum_select_count;
+  const pinCount: number =
+    getCoordinatesFromMultiPointData(value, question.input_type)?.length ?? 0;
+  const limitReached = !!maxPins && pinCount >= maxPins;
+
   const errors = get(formContextErrors, name) as RHFErrors;
   const validationError = errors?.message;
   const requiredError = errors?.type === 'required';
@@ -147,6 +154,10 @@ const MapField = ({
   const handleMultiPointChange = useCallback(
     (coordinates?: number[][]) => {
       if (coordinates) {
+        if (exceedsPinLimit(coordinates.length, maxPins)) {
+          return;
+        }
+
         const value = convertCoordinatesToGeoJSON(
           coordinates,
           question.input_type
@@ -165,10 +176,18 @@ const MapField = ({
         });
       }
     },
-    [setValue, name, question.input_type]
+    [setValue, name, question.input_type, maxPins]
   );
 
   const instruction = INSTRUCTION_MESSAGES[question.input_type];
+  const instructionText = limitReached
+    ? formatMessage(
+        isTabletOrSmaller
+          ? messages.maximumPinsReachedTap
+          : messages.maximumPinsReachedClick,
+        { maxPins }
+      )
+    : formatMessage(isTabletOrSmaller ? instruction.tap : instruction.click);
 
   return (
     <>
@@ -176,11 +195,7 @@ const MapField = ({
         <Label>
           <Box display="flex">
             <Icon name="info-outline" fill={colors.coolGrey600} mr="4px" />
-            <Box my="auto">
-              {formatMessage(
-                isTabletOrSmaller ? instruction.tap : instruction.click
-              )}
-            </Box>
+            <Box my="auto">{instructionText}</Box>
           </Box>
         </Label>
       </Box>
@@ -207,6 +222,7 @@ const MapField = ({
                 handleMultiPointChange={handleMultiPointChange}
                 inputType={question.input_type}
                 data={value}
+                maxPins={maxPins}
               />
             ) : (
               <DesktopTabletView

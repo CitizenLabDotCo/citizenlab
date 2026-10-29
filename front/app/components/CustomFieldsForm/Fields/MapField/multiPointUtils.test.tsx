@@ -2,6 +2,7 @@ import {
   convertCoordinatesToGeoJSON,
   convertGeojsonToWKT,
   convertWKTToGeojson,
+  exceedsPinLimit,
   isLineOrPolygonInput,
   isMultiPointInput,
 } from './multiPointUtils';
@@ -184,5 +185,17 @@ describe('input type predicates', () => {
     expect(isLineOrPolygonInput('multipoint')).toBe(false);
     expect(isLineOrPolygonInput('line')).toBe(true);
     expect(isLineOrPolygonInput('polygon')).toBe(true);
+  });
+});
+
+describe('exceedsPinLimit', () => {
+  it('allows pins up to the limit', () => {
+    expect(exceedsPinLimit(3, 3)).toBe(false);
+  });
+  it('blocks the pin that would pass the limit', () => {
+    expect(exceedsPinLimit(4, 3)).toBe(true);
+  });
+  it('allows any number of pins when there is no limit', () => {
+    expect(exceedsPinLimit(12, undefined)).toBe(false);
   });
 });
