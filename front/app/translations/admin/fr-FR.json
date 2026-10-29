@@ -1466,7 +1466,7 @@
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.headerImageTooltip1": "Cette image est affichée en haut de la page du dossier. Pour plus d'informations sur les résolutions d'image recommandées, {supportPageLink}.",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.imageSupportPageURL2": "https://support.govocal.com/fr/articles/527652-quelles-sont-les-dimensions-et-tailles-recommandees-pour-les-images-de-la-plate-forme",
   "app.containers.Admin.projectFolders.containers.settings.ProjectFolderForm.supportPageLinkText": "visitez notre centre d'assistance",
-  "app.containers.Admin.projects.NewProjectForm.chooseGroups": "Choisir des groupes",
+  "app.containers.Admin.projects.NewProjectForm.chooseGroups": "Ajouter des groupes",
   "app.containers.Admin.projects.NewProjectForm.context": "Contexte",
   "app.containers.Admin.projects.NewProjectForm.createError": "Une erreur est survenue. Veuillez réessayer.",
   "app.containers.Admin.projects.NewProjectForm.groupsRequired": "Veuillez sélectionner au moins un groupe.",

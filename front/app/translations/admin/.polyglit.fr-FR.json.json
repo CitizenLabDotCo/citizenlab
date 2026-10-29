@@ -7604,6 +7604,11 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.NewProjectForm.chooseGroups": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:49:24.818503Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.NewProjectForm.context": {
     "state": "verified",
     "verified_at": "2026-10-29T22:45:59.785934Z",
