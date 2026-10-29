@@ -63,4 +63,24 @@ describe('StatementList', () => {
     expect(screen.getAllByLabelText('Neutral')[0]).toBeChecked();
     expect(screen.getAllByLabelText('Neutral')[1]).not.toBeChecked();
   });
+
+  // Regression test: clicks near the edge of an option box used to do nothing.
+  it('selects a column when its box is clicked outside the label', async () => {
+    const onChange = jest.fn();
+    render(
+      <StatementList
+        id="matrix"
+        statements={statements}
+        columns={columns}
+        onChange={onChange}
+      />
+    );
+
+    const optionBox = screen.getAllByTestId('radio-container')[0];
+    expect(optionBox).toHaveStyle({ padding: '20px 20px 8px 20px' });
+
+    await userEvent.click(optionBox);
+
+    expect(onChange).toHaveBeenCalledWith({ statement_1: 1 });
+  });
 });

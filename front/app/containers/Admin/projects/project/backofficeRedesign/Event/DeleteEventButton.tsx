@@ -9,8 +9,9 @@ import {
 
 import useDeleteEvent from 'api/events/useDeleteEvent';
 
-import { usePageSave } from 'containers/Admin/projects/_shared/PageSaveContext';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
+
+import { usePageSave } from 'components/admin/PageSaveContext';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';

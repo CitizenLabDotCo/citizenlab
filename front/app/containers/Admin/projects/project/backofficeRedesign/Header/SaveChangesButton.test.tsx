@@ -3,7 +3,7 @@ import React from 'react';
 import {
   PageSaveProvider,
   useRegisterPageSaver,
-} from 'containers/Admin/projects/_shared/PageSaveContext';
+} from 'components/admin/PageSaveContext';
 
 import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
 

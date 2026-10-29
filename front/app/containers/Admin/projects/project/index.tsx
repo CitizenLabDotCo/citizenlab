@@ -9,7 +9,7 @@ import useProjectById from 'api/projects/useProjectById';
 
 import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
-import { PageSaveProvider } from 'containers/Admin/projects/_shared/PageSaveContext';
+import { PageSaveProvider } from 'components/admin/PageSaveContext';
 
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { Outlet as RouterOutlet, useMatchRoute, useParams } from 'utils/router';

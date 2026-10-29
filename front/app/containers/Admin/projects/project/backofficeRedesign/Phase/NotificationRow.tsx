@@ -11,8 +11,8 @@ import {
 import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import useCampaignRow from 'containers/Admin/messaging/AutomatedEmails/useCampaignRow';
 import messagingMessages from 'containers/Admin/messaging/messages';
-import { useRegisterPageSaver } from 'containers/Admin/projects/_shared/PageSaveContext';
 
+import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { useIntl } from 'utils/cl-intl';

@@ -1064,6 +1064,21 @@
     "verified_at": "2026-03-27T13:21:30.107106Z",
     "verified_by": "Cindy EB"
   },
+  "app.components.CustomPageBuilder.Widgets.CustomPageTitle.title": {
+    "state": "verified",
+    "verified_at": "2026-10-26T13:27:19.186136Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomPageBuilder.Widgets.CustomPageTitle.titleLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-26T13:27:19.186136Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.titleLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-26T13:27:19.186136Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ErrorBoundary.errorFormErrorFormEntry": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -2233,6 +2248,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.PostCardsComponents.perspectives": {
+    "state": "verified",
+    "verified_at": "2026-10-28T10:50:03.846569Z",
+    "verified_by": "Adrien"
   },
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": {
     "state": "verified",
@@ -13433,6 +13453,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.errors.not_supported_in_standalone_phase": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:41:31.321990Z",
+    "verified_by": "Cindy EB"
   },
   "app.errors.number_invalid": {
     "state": "verified",

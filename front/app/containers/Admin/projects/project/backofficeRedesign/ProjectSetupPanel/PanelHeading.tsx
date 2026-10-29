@@ -13,12 +13,16 @@ const PanelHeading = ({ title, meta }: Props) => (
     alignItems="baseline"
     justifyContent="space-between"
     gap="8px"
-    mb="6px"
+    mb="16px"
   >
-    <Text variant="boSection" color="textSecondary">
+    <Text variant="boSection" fontSize="xs" m="0">
       {title}
     </Text>
-    {meta && <Text variant="boMicro">{meta}</Text>}
+    {meta && (
+      <Text variant="boSection" fontSize="xs" color="coolGrey600" m="0">
+        {meta}
+      </Text>
+    )}
   </Box>
 );
 

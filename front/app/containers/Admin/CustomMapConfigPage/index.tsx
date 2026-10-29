@@ -17,8 +17,7 @@ import useAddProjectMapConfig from 'api/map_config/useAddProjectMapConfig';
 import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 
-import { useRegisterPageSaver } from 'containers/Admin/projects/_shared/PageSaveContext';
-
+import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 import ConfigurationMap from 'components/ConfigurationMap/ConfigurationMap';
 import { goToMapLocation } from 'components/EsriMap/utils';
 import Centerer from 'components/UI/Centerer';

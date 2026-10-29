@@ -63,13 +63,14 @@ export interface PillOption {
 }
 
 interface Props {
-  triggerRef: RefObject<HTMLButtonElement>;
+  triggerRef: RefObject<HTMLElement>;
   options: PillOption[];
   selected: string[];
   searchPlaceholder: string;
   noMatchLabel: string;
   onToggle: (value: string) => void;
   onClose: () => void;
+  width?: string;
 }
 
 const PillPickerPopover = ({
@@ -80,6 +81,7 @@ const PillPickerPopover = ({
   noMatchLabel,
   onToggle,
   onClose,
+  width = '328px',
 }: Props) => {
   const { formatMessage } = useIntl();
   const [search, setSearch] = useState('');
@@ -137,7 +139,7 @@ const PillPickerPopover = ({
       display="flex"
       flexDirection="column"
       zIndex="10"
-      w="328px"
+      w={width}
       p="12px"
       background={colors.white}
       border={`1px solid ${colors.grey300}`}

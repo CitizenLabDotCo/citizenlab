@@ -5,7 +5,7 @@ import { Box, Spinner, bo, colors } from '@citizenlab/cl2-component-library';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
-import { usePageSave } from 'containers/Admin/projects/_shared/PageSaveContext';
+import { usePageSave } from 'components/admin/PageSaveContext';
 
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
 import { useLocation, useSearch } from 'utils/router';
@@ -13,7 +13,6 @@ import { useLocation, useSearch } from 'utils/router';
 import FeedbackNotice from '../earlyAccess/FeedbackNotice';
 
 import { sectionFromPathname } from './_shared/sections';
-import useMarkSetupStep from './_shared/useMarkSetupStep';
 import WorkspaceHeader from './Header';
 import { HeaderDropdownName } from './Header/HeaderDropdown';
 import MethodSettings from './Phase/MethodSettings';
@@ -57,13 +56,7 @@ const ProjectWorkspace = ({
   const [openDropdown, setOpenDropdown] = useState<HeaderDropdownName | null>(
     null
   );
-  const markSetupStep = useMarkSetupStep(project);
   const pageSave = usePageSave();
-
-  const showDropdown = (dropdown: HeaderDropdownName | null) => {
-    setOpenDropdown(dropdown);
-    if (dropdown === 'share') markSetupStep('share');
-  };
 
   const section = sectionFromPathname(pathname, project.id);
   const activeView = viewFromPathname(pathname);
@@ -91,7 +84,7 @@ const ProjectWorkspace = ({
       phase={phase}
     />
   ) : (
-    <ProjectSetupPanel project={project} onOpenDropdown={showDropdown} />
+    <ProjectSetupPanel project={project} />
   );
 
   // Each column is positioned so the visually hidden inputs of toggles and
@@ -189,7 +182,7 @@ const ProjectWorkspace = ({
         editingMap={editingMap}
         section={section}
         openDropdown={openDropdown}
-        onOpenDropdown={showDropdown}
+        onOpenDropdown={setOpenDropdown}
       />
 
       <Box

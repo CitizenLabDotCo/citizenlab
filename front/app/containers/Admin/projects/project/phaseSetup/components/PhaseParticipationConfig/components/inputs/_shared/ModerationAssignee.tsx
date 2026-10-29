@@ -3,8 +3,7 @@ import React, { useState } from 'react';
 import usePhase from 'api/phases/usePhase';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
-import { useRegisterPageSaver } from 'containers/Admin/projects/_shared/PageSaveContext';
-
+import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 import Outlet from 'components/Outlet';
 
 interface Props {
