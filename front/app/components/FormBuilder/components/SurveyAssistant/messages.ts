@@ -40,4 +40,9 @@ export default defineMessages({
     id: 'app.components.formBuilder.surveyAssistant.required',
     defaultMessage: 'Required',
   },
+  editingLocked: {
+    id: 'app.components.formBuilder.surveyAssistant.editingLocked',
+    defaultMessage:
+      'You can edit the survey again once the assistant is done, or once you approve or reject its proposal.',
+  },
 });
