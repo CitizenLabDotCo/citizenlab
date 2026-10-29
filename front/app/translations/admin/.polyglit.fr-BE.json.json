@@ -12339,6 +12339,11 @@
     "verified_at": "2026-05-26T07:55:14.333552Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.Cover.subtitleLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-29T21:36:14.583219Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.Cover.titleLabel": {
     "state": "verified",
     "verified_at": "2026-10-26T13:27:19.471017Z",
