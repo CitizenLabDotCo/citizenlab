@@ -161,10 +161,10 @@ export default defineMessages({
     defaultMessage:
       'Click on the map to draw. Then, drag on points to move them.',
   },
-  clickOnMapToAddMultiplePins: {
-    id: 'app.components.CustomFieldsForm.clickOnMapToAddMultiplePins',
+  clickOnMapToAddMultiplePins2: {
+    id: 'app.components.CustomFieldsForm.clickOnMapToAddMultiplePins2',
     defaultMessage:
-      'Click on the map to add locations. Then, drag on points to move them.',
+      'Click on the map to add locations. Then, drag on points to move them. You can remove your last location by clicking on the Undo button in the top right corner of the map.',
   },
   minimumCoordinates: {
     id: 'app.components.CustomFieldsForm.minimumCoordinates2',

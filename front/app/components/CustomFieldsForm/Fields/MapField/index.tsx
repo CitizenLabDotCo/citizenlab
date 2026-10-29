@@ -47,7 +47,7 @@ const INSTRUCTION_MESSAGES: {
   },
   multipoint: {
     tap: messages.tapOnMapToAddMultiplePins,
-    click: messages.clickOnMapToAddMultiplePins,
+    click: messages.clickOnMapToAddMultiplePins2,
   },
   line: {
     tap: messages.tapOnMapMultipleToAdd,
