@@ -16,7 +16,7 @@ import useUpdateProjectImage from 'api/project_images/useUpdateProjectImage';
 import { IProjectData, IUpdatedProjectProperties } from 'api/projects/types';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
-import { useRegisterPageSaver } from '../_shared/PageSaveContext';
+import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 
 export type ProjectChanges = Partial<
   Omit<IUpdatedProjectProperties, 'projectId'>

@@ -8,12 +8,12 @@ import { IProjectData } from 'api/projects/types';
 
 import useLocalize from 'hooks/useLocalize';
 
+import { usePageSave } from 'components/admin/PageSaveContext';
 import Breadcrumbs, { TBreadcrumbs } from 'components/UI/Breadcrumbs';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
-import { usePageSave } from '../_shared/PageSaveContext';
 import { ProjectSection } from '../_shared/sections';
 import messages from '../messages';
 import usePhaseViews, { PhaseViewKey } from '../Phase/usePhaseViews';

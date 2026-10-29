@@ -10,9 +10,10 @@ import {
 
 import { IProjectData } from 'api/projects/types';
 
+import { usePageSave } from 'components/admin/PageSaveContext';
+
 import { useIntl } from 'utils/cl-intl';
 
-import { usePageSave } from '../_shared/PageSaveContext';
 import useMarkSetupStep from '../_shared/useMarkSetupStep';
 import messages from '../messages';
 
