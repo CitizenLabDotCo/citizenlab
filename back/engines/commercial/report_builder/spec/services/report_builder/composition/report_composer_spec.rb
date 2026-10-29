@@ -51,9 +51,15 @@ describe ReportBuilder::Composition::ReportComposer do
   let!(:phase) { create(:phase, project: project) }
   let(:client) { instance_double(Aws::BedrockRuntime::Client) }
   let(:composer) { described_class.new(project, locale: 'en', client: client) }
+  # Checking mints a data token, which BlockChecker only does for an author who may
+  # run reporting queries.
   let(:checking_composer) do
-    described_class.new(project, locale: 'en', client: client, layout_record: create(:layout))
+    described_class.new(
+      project, locale: 'en', client: client, layout_record: create(:layout), author: create(:admin)
+    )
   end
+
+  before { SettingsService.new.activate_feature!('llm_reporting') }
   let(:renderer) { instance_double(ContentBuilder::CustomBlocks::RendererClient) }
 
   # Just enough of a PNG for the checker to read its size off the header.
