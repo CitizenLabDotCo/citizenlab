@@ -104,6 +104,31 @@ describe ContentBuilder::SideFxLayoutService do
     end
   end
 
+  describe 'project page saved step' do
+    let(:project) { create(:project) }
+    let(:project_page_layout) { create(:layout, project: project, code: 'project_page') }
+
+    it 'marks the page step when the project page is saved, even unchanged' do
+      service.after_update(project_page_layout, user)
+
+      expect(project.reload.completed_setup_steps).to eq ['page']
+    end
+
+    it 'keeps the other steps and does not add the page step twice' do
+      project.update!(completed_setup_steps: ['settings'])
+
+      2.times { service.after_update(project_page_layout, user) }
+
+      expect(project.reload.completed_setup_steps).to eq %w[settings page]
+    end
+
+    it 'leaves the project alone for other layouts' do
+      service.after_update(layout, user)
+
+      expect(layout.content_buildable.reload.completed_setup_steps).to be_empty
+    end
+  end
+
   describe 'after_destroy' do
     it 'logs "deleted" activity' do
       expect(LogActivityJob).to receive(:perform_later).with(

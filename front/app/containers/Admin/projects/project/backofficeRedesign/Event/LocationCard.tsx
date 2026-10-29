@@ -12,6 +12,7 @@ import {
 import styled from 'styled-components';
 import { Multiloc } from 'typings';
 
+import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import { EventForm } from 'containers/Admin/projects/_shared/events/useEventForm';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
@@ -22,7 +23,6 @@ import LocationInput, { Option } from 'components/UI/LocationInput';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import SetupCard from './SetupCard';
 
 // Lazy so ArcGIS only loads once the event has a place on the map.
 const EventMap = lazy(

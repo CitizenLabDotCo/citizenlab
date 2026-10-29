@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
@@ -9,10 +9,18 @@ import PhaseActionAccess from './PhaseActionAccess';
 interface Props {
   phaseId: string;
   action: IPhasePermissionAction;
+  children: ReactNode;
 }
 
-const ToggleActionAccess = ({ phaseId, action }: Props) => (
-  <Box mt="-6px" mb="12px" ml="52px">
+const ToggleActionAccess = ({ phaseId, action, children }: Props) => (
+  <Box
+    display="flex"
+    alignItems="center"
+    justifyContent="space-between"
+    gap="12px"
+    minHeight="36px"
+  >
+    {children}
     <PhaseActionAccess phaseId={phaseId} action={action} />
   </Box>
 );

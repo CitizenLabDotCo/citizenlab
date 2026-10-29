@@ -10,6 +10,7 @@ import {
   Text,
   bo,
   colors,
+  fontSizes,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -77,7 +78,7 @@ export interface PickerOption<T extends string> {
   value: T;
   label: string;
   description?: string;
-  icon: IconNames;
+  icon?: IconNames;
 }
 
 interface Props<T extends string> {
@@ -92,6 +93,8 @@ interface Props<T extends string> {
   keepOpenFor?: T;
   onClose?: () => void;
   children?: React.ReactNode;
+  /** 'small' matches the summary pills in card headers. */
+  size?: 'medium' | 'small';
 }
 
 const OptionPicker = <T extends string>({
@@ -106,6 +109,7 @@ const OptionPicker = <T extends string>({
   keepOpenFor,
   onClose,
   children,
+  size = 'medium',
 }: Props<T>) => {
   const { formatMessage } = useIntl();
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -151,6 +155,7 @@ const OptionPicker = <T extends string>({
     triggerRef.current?.focus();
   };
 
+  const small = size === 'small';
   const selected = options.find((option) => option.value === value);
   const icon = triggerIcon ?? selected?.icon;
 
@@ -176,7 +181,13 @@ const OptionPicker = <T extends string>({
         buttonStyle="bo-picker"
         width="auto"
         maxWidth="100%"
-        bgColor={opened ? colors.grey200 : undefined}
+        bgColor={opened || small ? colors.grey200 : undefined}
+        height={small ? '22px' : undefined}
+        padding={small ? '0 8px 0 10px' : undefined}
+        fontSize={small ? `${fontSizes.xs}px` : undefined}
+        fontWeight={small ? '500' : undefined}
+        textColor={small ? colors.coolGrey700 : undefined}
+        iconSize={small ? '12px' : undefined}
         icon="chevron-down"
         iconPos="right"
         ariaExpanded={opened}
@@ -187,9 +198,9 @@ const OptionPicker = <T extends string>({
           {icon && (
             <Icon
               name={icon}
-              width="16px"
-              height="16px"
-              fill={colors.coolGrey500}
+              width={small ? '14px' : '16px'}
+              height={small ? '14px' : '16px'}
+              fill={small ? colors.coolGrey700 : colors.coolGrey500}
             />
           )}
           <Label>{triggerLabel ?? selected?.label}</Label>

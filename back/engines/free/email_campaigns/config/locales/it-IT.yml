@@ -257,7 +257,7 @@ it-IT:
         contribution: '%{authorName} ha commentato un contributo che segui'
         idea: "%{authorName} ha commentato un'idea che segui"
         initiative: "%{authorName} ha commentato un'iniziativa che segui"
-        issue: '%{authorName} ha commentato un parere che segui'
+        issue: '%{authorName} ha commentato una segnalazione che segui'
         observation: "%{authorName} ha commentato un'osservazione che segui"
         option: "%{authorName} ha commentato un'opzione che segui"
         petition: '%{authorName} ha commentato una petizione che segui'
@@ -332,7 +332,7 @@ it-IT:
         contribution: Vai a questo contributo
         idea: Vai a questa idea
         initiative: Vai a questa iniziativa
-        issue: Vai a questo parere
+        issue: Vai a questa segnalazione
         observation: Vai a questa osservazione
         option: Vai a questa opzione
         petition: Vai a questa petizione
@@ -353,7 +353,7 @@ it-IT:
         contribution: Vai al tuo contributo
         idea: Vai alla tua idea
         initiative: Vai alla tua iniziativa
-        issue: Vai al tuo parere
+        issue: Vai alla tua segnalazione
         observation: Vai alla tua osservazione
         option: Vai alla tua opzione
         petition: Vai alla tua petizione
@@ -388,7 +388,7 @@ it-IT:
         contribution: Il tuo contributo è stato pubblicato
         idea: La tua idea è stata pubblicata
         initiative: La tua iniziativa è stata pubblicata
-        issue: Il tuo parere è stato pubblicato
+        issue: La tua segnalazione è stata pubblicata
         observation: La tua osservazione è stata pubblicata
         option: La tua opzione è stata pubblicata
         petition: La tua petizione è stata pubblicata
@@ -800,7 +800,7 @@ it-IT:
         contribution: Il tuo contributo è in "%{prescreening_status_title}"
         idea: La tua idea è in "%{prescreening_status_title}"
         initiative: La tua iniziativa è in "%{prescreening_status_title}"
-        issue: Il tuo parere è in "%{prescreening_status_title}"
+        issue: La tua segnalazione è in "%{prescreening_status_title}"
         observation: La tua osservazione è in "%{prescreening_status_title}"
         option: La tua opzione è in "%{prescreening_status_title}"
         petition: La tua petizione è in "%{prescreening_status_title}"
