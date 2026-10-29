@@ -12,8 +12,6 @@ import { MessageDescriptor } from 'react-intl';
 
 import { AiAssistantSurfaceKey } from 'api/ai_assistant_conversations/types';
 import useAddAiAssistantConversation from 'api/ai_assistant_conversations/useAddAiAssistantConversation';
-import useAiAssistantConversation from 'api/ai_assistant_conversations/useAiAssistantConversation';
-import useAiAssistantConversations from 'api/ai_assistant_conversations/useAiAssistantConversations';
 import useAddAiAssistantMessage from 'api/ai_assistant_messages/useAddAiAssistantMessage';
 
 import useLocale from 'hooks/useLocale';
@@ -27,6 +25,7 @@ import { getErrorMessage, getRequestErrorCode } from './errors';
 import messages from './messages';
 import Transcript from './Transcript';
 import { AiAssistantToolViews } from './types';
+import useLatestConversation from './useLatestConversation';
 
 type Props = {
   surfaceKey: AiAssistantSurfaceKey;
@@ -46,13 +45,10 @@ const AssistantPanel = ({
 }: Props) => {
   const locale = useLocale();
   const { formatMessage } = useIntl();
-  const { data: conversations } = useAiAssistantConversations({
+  const { conversationId, conversation } = useLatestConversation({
     surfaceKey,
     subjectId,
-    pageSize: 1,
   });
-  const conversationId = conversations?.data.at(0)?.id;
-  const { data: conversation } = useAiAssistantConversation(conversationId);
   const { mutateAsync: addConversation, isPending: creatingConversation } =
     useAddAiAssistantConversation();
   const { mutateAsync: addMessage } = useAddAiAssistantMessage();
