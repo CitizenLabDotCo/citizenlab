@@ -1890,7 +1890,7 @@
   "app.containers.Admin.projects.project.inputResponseExport.coverSectionTitle": "Paramètres de la couverture",
   "app.containers.Admin.projects.project.inputResponseExport.dateLabel": "Date",
   "app.containers.Admin.projects.project.inputResponseExport.deselectAllFields": "Tout désélectionner",
-  "app.containers.Admin.projects.project.inputResponseExport.dontCloseWarning": "Veuillez garder cette fenêtre ouverte. Votre téléchargement commencera automatiquement lorsque le fichier sera prêt.",
+  "app.containers.Admin.projects.project.inputResponseExport.dontCloseWarning": "Laissez cette fenêtre ouverte. Le téléchargement démarrera automatiquement dès que le fichier sera prêt.",
   "app.containers.Admin.projects.project.inputResponseExport.excludeStatus": "Exclu",
   "app.containers.Admin.projects.project.inputResponseExport.exportError": "Une erreur est survenue lors de la génération du fichier. Veuillez réessayer.",
   "app.containers.Admin.projects.project.inputResponseExport.exportStartedBy": "Exportation lancée par {name}.",

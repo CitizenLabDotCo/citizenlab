@@ -9449,6 +9449,11 @@
     "verified_at": "2026-07-16T15:58:15.979193Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.inputResponseExport.collectingResponses": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:33:07.830359Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.inputResponseExport.consentLabel": {
     "state": "verified",
     "verified_at": "2026-07-17T08:20:45.430467Z",
@@ -9473,6 +9478,11 @@
     "state": "verified",
     "verified_at": "2026-07-17T08:20:45.430467Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.inputResponseExport.dontCloseWarning": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:33:07.830359Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.inputResponseExport.excludeStatus": {
     "state": "verified",
