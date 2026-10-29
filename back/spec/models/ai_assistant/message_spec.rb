@@ -58,6 +58,34 @@ describe AIAssistant::Message do
       expect(message.errors.details[:file_ids]).to include(error: :not_in_project)
     end
 
+    describe 'content matching the extension' do
+      using RSpec::Parameterized::TableSyntax
+
+      where(:name, :fixture, :accepted) do
+        'survey.pdf' | 'minimal_pdf.pdf'           | true
+        'notes.txt'  | 'common_passwords_test.txt' | true
+        'notes.md'   | 'common_passwords_test.txt' | true
+        'notes.pdf'  | 'common_passwords_test.txt' | false
+        'data.txt'   | 'favicon.png'               | false
+      end
+
+      with_them do
+        it 'only accepts files whose content is what their name says' do
+          file = create(
+            :file,
+            name:,
+            content: Rails.root.join('spec/fixtures', fixture).open,
+            ai_processing_allowed: true,
+            projects: [conversation.context.project]
+          )
+          message = build(:ai_assistant_message, conversation:, file_ids: [file.id])
+
+          expect(message.valid?).to be(accepted)
+          expect(message.errors.details[:file_ids]).to include(error: :unsupported_file_type) unless accepted
+        end
+      end
+    end
+
     it 'refuses unknown files' do
       message = build(:ai_assistant_message, conversation:, file_ids: [SecureRandom.uuid])
 
