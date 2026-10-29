@@ -40,12 +40,10 @@ class McpServer::Tools::UpdateDemoInput < McpServer::BaseTool
   end
 
   class Runner < McpServer::BaseTool::Runner
-    DEMO_ONLY_MESSAGE = 'Demo inputs can only be updated on demo and trial platforms.'
-
     def run
       idea = Idea.find_by(id: params[:idea_id])
       return not_found_error('Input', params[:idea_id]) unless idea
-      return error(DEMO_ONLY_MESSAGE) unless published_writable_platform?
+      return demo_only_error('Updating demo inputs') unless published_writable_platform?
 
       authorize(idea, :update?)
 

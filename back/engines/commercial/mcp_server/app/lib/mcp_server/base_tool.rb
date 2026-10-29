@@ -58,7 +58,9 @@ class McpServer::BaseTool
       # Set here, not in McpController, so the run_mcp_tool spec helper hits the same path.
       Current.activity_channel = 'mcp'
 
-      locale_error = McpServer::LocaleGuard.error_message(kwargs)
+      # Checks the stripped params: read-only multilocs echoed back from tool output
+      # are ignored anyway, so their locales must not fail the call.
+      locale_error = McpServer::LocaleGuard.error_message(params)
       locale_error ? runner.error(locale_error) : runner.run
     rescue Pundit::NotAuthorizedError => e
       runner.error(McpServer::BaseTool.unauthorized_message(e))

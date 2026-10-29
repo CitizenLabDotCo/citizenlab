@@ -38,10 +38,8 @@ class McpServer::Tools::UpdateHomepageLayout < McpServer::BaseTool
   class Runner < McpServer::BaseTool::Runner
     include McpServer::LayoutPatchable
 
-    DEMO_ONLY_MESSAGE = 'The homepage layout can only be updated on demo and trial platforms.'
-
     def run
-      return error(DEMO_ONLY_MESSAGE) unless published_writable_platform?
+      return demo_only_error('Updating the homepage layout') unless published_writable_platform?
 
       layout = ContentBuilder::Layout.find_by(content_buildable: nil, code: ContentBuilder::Layout::HOMEPAGE_CODE)
       if layout.nil?
