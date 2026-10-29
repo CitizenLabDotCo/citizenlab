@@ -13,12 +13,17 @@ import useSidebarCollapsed from '../useSidebarCollapsed';
 import messages from './messages';
 import QuickSearchPanel from './QuickSearchPanel';
 import useQuickSearchEntries from './useQuickSearchEntries';
+import useRecentPaths from './useRecentPaths';
 
 // Cmd+K on Mac and Ctrl+K elsewhere, as in most apps with a quick search.
 const isMac = /Mac|iPhone|iPad/.test(navigator.userAgent);
 const shortcutLabel = isMac ? '⌘K' : 'Ctrl K';
 
-const QuickSearch = () => {
+type Props = {
+  userId: string;
+};
+
+const QuickSearch = ({ userId }: Props) => {
   const { formatMessage } = useIntl();
   const collapsed = useSidebarCollapsed();
   const [opened, setOpened] = useState(false);
@@ -26,6 +31,7 @@ const QuickSearch = () => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   // Loaded with the sidebar rather than on open, so results show up instantly.
   const entries = useQuickSearchEntries();
+  const { recentPaths, currentPath } = useRecentPaths(userId);
 
   // Line the modal up with the Find item, and keep it there as results change.
   const open = useCallback(() => {
@@ -91,7 +97,12 @@ const QuickSearch = () => {
         fixedTop={modalTop}
       >
         <Box p="16px 24px 24px">
-          <QuickSearchPanel entries={entries} onSelect={close} />
+          <QuickSearchPanel
+            entries={entries}
+            recentPaths={recentPaths}
+            currentPath={currentPath}
+            onSelect={close}
+          />
         </Box>
       </Modal>
     </>

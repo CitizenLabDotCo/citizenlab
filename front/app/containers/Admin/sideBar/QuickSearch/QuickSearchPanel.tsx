@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 
 import { Box, SearchInput, Text } from '@citizenlab/cl2-component-library';
 
@@ -10,19 +10,32 @@ import { useIntl } from 'utils/cl-intl';
 import filterEntries, { QuickSearchEntry } from './filterEntries';
 import messages from './messages';
 import QuickSearchResult from './QuickSearchResult';
+import { getRecentEntries } from './recentPaths';
 
 type Props = {
   entries: QuickSearchEntry[];
+  recentPaths: string[];
+  currentPath: string | undefined;
   onSelect: () => void;
 };
 
-const QuickSearchPanel = ({ entries, onSelect }: Props) => {
+const QuickSearchPanel = ({
+  entries,
+  recentPaths,
+  currentPath,
+  onSelect,
+}: Props) => {
   const { formatMessage } = useIntl();
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
   const resultRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
-  const results = filterEntries(entries, query);
+  const recentEntries = useMemo(
+    () => getRecentEntries(recentPaths, entries, currentPath),
+    [recentPaths, entries, currentPath]
+  );
+  // Recent places until the user starts typing.
+  const results = query ? filterEntries(entries, query) : recentEntries;
 
   const handleChange = useCallback((value: string | null) => {
     setQuery(value ?? '');
@@ -76,8 +89,26 @@ const QuickSearchPanel = ({ entries, onSelect }: Props) => {
           {formatMessage(messages.noResults, { query })}
         </Text>
       )}
+      {!query && results.length > 0 && (
+        <Text
+          id="quick-search-recents"
+          color="coolGrey500"
+          fontSize="xs"
+          px="12px"
+          mt="12px"
+          mb="0px"
+        >
+          {formatMessage(messages.recents)}
+        </Text>
+      )}
       {results.length > 0 && (
-        <Box role="listbox" mt="12px" maxHeight="60vh" overflowY="auto">
+        <Box
+          role="listbox"
+          aria-labelledby={query ? undefined : 'quick-search-recents'}
+          mt={query ? '12px' : '4px'}
+          maxHeight="60vh"
+          overflowY="auto"
+        >
           {results.map((entry, index) => (
             <QuickSearchResult
               key={`${entry.group}-${entry.id}`}

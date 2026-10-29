@@ -203,7 +203,7 @@ const Sidebar = ({ authUser }: Props) => {
             </Link>
           </Box>
 
-          <QuickSearch />
+          <QuickSearch userId={authUser.data.id} />
 
           {topNavItems.map((navItem) => (
             <MenuItem navItem={navItem} key={navItem.name} />

@@ -7,7 +7,11 @@ export default defineMessages({
   },
   placeholder: {
     id: 'app.containers.AdminPage.SideBar.QuickSearch.placeholder',
-    defaultMessage: 'Find settings, projects and pages',
+    defaultMessage: 'Find settings, projects and phases',
+  },
+  recents: {
+    id: 'app.containers.AdminPage.SideBar.QuickSearch.recents',
+    defaultMessage: 'Recents',
   },
   noResults: {
     id: 'app.containers.AdminPage.SideBar.QuickSearch.noResults',

@@ -1,4 +1,4 @@
-import { TypedLinkProps } from 'utils/cl-router/Link';
+import { TypedLinkProps, WrapperTo } from 'utils/cl-router/Link';
 
 export type QuickSearchGroup = 'pages' | 'projects' | 'phases';
 
@@ -7,7 +7,7 @@ export type QuickSearchEntry = {
   group: QuickSearchGroup;
   // Shown as a breadcrumb trail, ending with the page the entry links to.
   breadcrumbs: string[];
-  link: TypedLinkProps;
+  link: TypedLinkProps & { to: NonNullable<WrapperTo> };
   // Extra text that matches the entry without being shown, e.g. its path.
   keywords?: string;
 };
