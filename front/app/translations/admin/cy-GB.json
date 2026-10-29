@@ -2067,7 +2067,7 @@
   "app.containers.Admin.projects.project.itemNotReady": "Ddim yn barod",
   "app.containers.Admin.projects.project.itemReady": "Parod",
   "app.containers.Admin.projects.project.itemsReady": "{ready} o {total} yn barod",
-  "app.containers.Admin.projects.project.listing": "Rhestriad",
+  "app.containers.Admin.projects.project.listing": "Rhestru",
   "app.containers.Admin.projects.project.manageFiles": "Rheoli ffeiliau",
   "app.containers.Admin.projects.project.manageView": "Rheoli",
   "app.containers.Admin.projects.project.messagingSection": "Negeseuon",

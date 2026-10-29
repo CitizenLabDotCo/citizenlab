@@ -2067,7 +2067,7 @@
   "app.containers.Admin.projects.project.itemNotReady": "Net prett",
   "app.containers.Admin.projects.project.itemReady": "Prett",
   "app.containers.Admin.projects.project.itemsReady": "{ready} vun {total} fäerdeg",
-  "app.containers.Admin.projects.project.listing": "Oplëschtung",
+  "app.containers.Admin.projects.project.listing": "Lëscht",
   "app.containers.Admin.projects.project.manageFiles": "Dateie verwalten",
   "app.containers.Admin.projects.project.manageView": "Verwalten",
   "app.containers.Admin.projects.project.messagingSection": "Messagerie",

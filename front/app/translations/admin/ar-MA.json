@@ -2067,7 +2067,7 @@
   "app.containers.Admin.projects.project.itemNotReady": "غير جاهز",
   "app.containers.Admin.projects.project.itemReady": "جاهز",
   "app.containers.Admin.projects.project.itemsReady": "{ready} من {total} جاهزة",
-  "app.containers.Admin.projects.project.listing": "قائمة",
+  "app.containers.Admin.projects.project.listing": "لائحة",
   "app.containers.Admin.projects.project.manageFiles": "إدارة الملفات",
   "app.containers.Admin.projects.project.manageView": "إدارة",
   "app.containers.Admin.projects.project.messagingSection": "المراسلة",

@@ -2067,7 +2067,7 @@
   "app.containers.Admin.projects.project.itemNotReady": "Inte klar",
   "app.containers.Admin.projects.project.itemReady": "Klar",
   "app.containers.Admin.projects.project.itemsReady": "{ready} av {total} klara",
-  "app.containers.Admin.projects.project.listing": "Listning",
+  "app.containers.Admin.projects.project.listing": "Lista",
   "app.containers.Admin.projects.project.manageFiles": "Hantera filer",
   "app.containers.Admin.projects.project.manageView": "Hantera",
   "app.containers.Admin.projects.project.messagingSection": "Meddelanden",
