@@ -3543,7 +3543,7 @@
   "app.containers.AdminPage.ProjectPages.deleteConfirmation": "Voulez-vous vraiment supprimer cette page ?",
   "app.containers.AdminPage.ProjectPages.editButton": "Modifier",
   "app.containers.AdminPage.ProjectPages.editPageInContentBuilder": "Modifier la page du projet dans l'éditeur de contenu",
-  "app.containers.AdminPage.ProjectPages.newPageButton3": "Ajouter une page de projet",
+  "app.containers.AdminPage.ProjectPages.newPageButton3": "Nouvelle page",
   "app.containers.AdminPage.ProjectPages.newPageTitle": "Nouvelle page",
   "app.containers.AdminPage.ProjectPages.noPagesTitle2": "Pas encore de pages de projet",
   "app.containers.AdminPage.ProjectPages.pagePreviewTitle": "Aperçu de la page du projet",
