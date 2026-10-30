@@ -106,20 +106,22 @@ module AIAssistant
     end
 
     def persist_assistant_message(message)
-      record = conversation.messages.create!(
-        role: 'assistant',
-        content: text_of(message.content),
-        input_tokens: message.input_tokens,
-        output_tokens: message.output_tokens
-      )
-
-      (message.tool_calls || {}).each_value do |tool_call|
-        @tool_calls_by_use_id[tool_call.id] = record.tool_calls.create!(
-          tool_use_id: tool_call.id,
-          name: tool_call.name,
-          arguments: tool_call.arguments || {},
-          status: 'pending'
+      conversation.transaction do
+        record = conversation.messages.create!(
+          role: 'assistant',
+          content: text_of(message.content),
+          input_tokens: message.input_tokens,
+          output_tokens: message.output_tokens
         )
+
+        (message.tool_calls || {}).each_value do |tool_call|
+          @tool_calls_by_use_id[tool_call.id] = record.tool_calls.create!(
+            tool_use_id: tool_call.id,
+            name: tool_call.name,
+            arguments: tool_call.arguments || {},
+            status: 'pending'
+          )
+        end
       end
     end
 
