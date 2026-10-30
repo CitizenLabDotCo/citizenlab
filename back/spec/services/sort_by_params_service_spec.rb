@@ -104,6 +104,29 @@ describe SortByParamsService do
           expect(result_record_ids).to eq expected_record_ids
         end
       end
+
+      describe 'status_priority' do
+        let(:sort) { 'status_priority' }
+        let(:expected_record_ids) { [ideas[1].id, ideas[2].id, ideas[0].id] }
+
+        it 'returns the sorted records' do
+          expect(result_record_ids).to eq expected_record_ids
+        end
+
+        context 'when inputs share a status' do
+          let(:ideas) do
+            proposed = IdeaStatus.find_by(code: 'proposed')
+            [2.days.ago, 1.hour.ago, 3.days.ago].map do |published_at|
+              create(:idea, project: timeline_project, idea_status: proposed, published_at: published_at)
+            end
+          end
+          let(:expected_record_ids) { [ideas[1].id, ideas[0].id, ideas[2].id] }
+
+          it 'returns the newest first' do
+            expect(result_record_ids).to eq expected_record_ids
+          end
+        end
+      end
     end
 
     describe 'trending' do

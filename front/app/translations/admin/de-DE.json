@@ -3321,6 +3321,7 @@
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Informationen teilen",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Snap Survey",
+  "app.containers.AdminPage.ProjectEdit.statusPrioritySortingMethod": "Status (vorgeschlagen zuerst)",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Richten Sie Ihr Projekt ein und personalisieren Sie es.",
   "app.containers.AdminPage.ProjectEdit.supportPageLinkText": "unserer Wissensdatenbank",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent2": "FRAGEN",

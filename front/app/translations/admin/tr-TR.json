@@ -3321,6 +3321,7 @@
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Bilgi paylaşın",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Snap Surveys",
+  "app.containers.AdminPage.ProjectEdit.statusPrioritySortingMethod": "Durum (önce önerilenler)",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Projenizi ayarlayın ve kişiselleştirin.",
   "app.containers.AdminPage.ProjectEdit.supportPageLinkText": "destek merkezimizi ziyaret edin",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent2": "Anket içeriği ekleme",

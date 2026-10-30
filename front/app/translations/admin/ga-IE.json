@@ -3321,6 +3321,7 @@
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Roinn faisnéis",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "Suirbhé Cliste",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Suirbhé Snap",
+  "app.containers.AdminPage.ProjectEdit.statusPrioritySortingMethod": "Stádas (molta ar dtús)",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Socraigh agus pearsanaigh do thionscadal.",
   "app.containers.AdminPage.ProjectEdit.supportPageLinkText": "tabhair cuairt ar ár n-ionad tacaíochta",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent2": "Cuir ábhar suirbhé leis",

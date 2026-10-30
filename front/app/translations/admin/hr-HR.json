@@ -3321,6 +3321,7 @@
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Podijelite informacije",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Brzi upitnik",
+  "app.containers.AdminPage.ProjectEdit.statusPrioritySortingMethod": "Status (prvo predloženi)",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Postavite i prilagodite svoj projekt.",
   "app.containers.AdminPage.ProjectEdit.supportPageLinkText": "posjetite naš centar za podršku",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent2": "Dodaj sadržaj upitnika",
