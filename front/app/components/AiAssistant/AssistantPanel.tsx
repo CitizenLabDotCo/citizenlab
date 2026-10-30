@@ -13,12 +13,15 @@ import { MessageDescriptor } from 'react-intl';
 import { AiAssistantSurfaceKey } from 'api/ai_assistant_conversations/types';
 import useAddAiAssistantConversation from 'api/ai_assistant_conversations/useAddAiAssistantConversation';
 import useAddAiAssistantMessage from 'api/ai_assistant_messages/useAddAiAssistantMessage';
+import useAddFile from 'api/files/useAddFile';
+import useDeleteFile from 'api/files/useDeleteFile';
 
 import useLocale from 'hooks/useLocale';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { getBase64FromFile } from 'utils/fileUtils';
 
 import Composer from './Composer';
 import { getErrorMessage, getRequestErrorCode } from './errors';
@@ -31,6 +34,8 @@ type Props = {
   surfaceKey: AiAssistantSurfaceKey;
   // The record the conversation is about, e.g. the phase of a survey.
   subjectId: string;
+  // Files are shared as files of this project.
+  projectId?: string;
   intro: MessageDescriptor;
   toolViews: AiAssistantToolViews;
   onToolExecuted: (toolName: string) => void;
@@ -39,6 +44,7 @@ type Props = {
 const AssistantPanel = ({
   surfaceKey,
   subjectId,
+  projectId,
   intro,
   toolViews,
   onToolExecuted,
@@ -52,8 +58,11 @@ const AssistantPanel = ({
   const { mutateAsync: addConversation, isPending: creatingConversation } =
     useAddAiAssistantConversation();
   const { mutateAsync: addMessage } = useAddAiAssistantMessage();
+  const { mutateAsync: addFile } = useAddFile();
+  const { mutateAsync: deleteFile } = useDeleteFile();
 
   const [prompt, setPrompt] = useState('');
+  const [files, setFiles] = useState<File[]>([]);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState<string>();
 
@@ -63,16 +72,60 @@ const AssistantPanel = ({
   const hasMessages =
     (conversation?.data.relationships.messages.data.length ?? 0) > 0;
 
+  // Shares the attached files as project files the assistant may process.
+  const uploadFiles = async (): Promise<{
+    fileIds: string[];
+    failedFile?: File;
+  }> => {
+    const uploads = await Promise.allSettled(
+      files.map(async (file) =>
+        addFile({
+          content: await getBase64FromFile(file),
+          name: file.name,
+          project: projectId,
+          category: 'other',
+          ai_processing_allowed: true,
+        })
+      )
+    );
+    const failedIndex = uploads.findIndex(
+      (upload) => upload.status === 'rejected'
+    );
+
+    return {
+      fileIds: uploads.flatMap((upload) =>
+        upload.status === 'fulfilled' ? [upload.value.data.id] : []
+      ),
+      failedFile: failedIndex === -1 ? undefined : files[failedIndex],
+    };
+  };
+
+  // Files of a message that wasn't sent shouldn't stay in the project.
+  const deleteUploads = (fileIds: string[]) =>
+    Promise.allSettled(fileIds.map((fileId) => deleteFile(fileId)));
+
   const send = async () => {
     setSendError(undefined);
     setSending(true);
+    let uploadedFileIds: string[] = [];
     try {
       const id =
         conversationId ??
         (await addConversation({ surfaceKey, subjectId, locale })).data.id;
-      await addMessage({ conversationId: id, content: prompt.trim() });
+      const { fileIds, failedFile } = await uploadFiles();
+      uploadedFileIds = fileIds;
+      if (failedFile) {
+        await deleteUploads(uploadedFileIds);
+        setSendError(
+          formatMessage(messages.errorUpload, { fileName: failedFile.name })
+        );
+        return;
+      }
+      await addMessage({ conversationId: id, content: prompt.trim(), fileIds });
       setPrompt('');
+      setFiles([]);
     } catch (error) {
+      await deleteUploads(uploadedFileIds);
       setSendError(formatMessage(getErrorMessage(getRequestErrorCode(error))));
     } finally {
       setSending(false);
@@ -148,9 +201,12 @@ const AssistantPanel = ({
         )}
         <Composer
           prompt={prompt}
+          files={files}
+          allowFiles={!!projectId}
           disabled={busy}
           sending={sending}
           onPromptChange={setPrompt}
+          onFilesChange={setFiles}
           onSend={send}
         />
         {sendError && (

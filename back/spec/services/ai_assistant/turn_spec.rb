@@ -219,5 +219,28 @@ describe AIAssistant::Turn do
       expect(messages.pluck('role')).to eq(%w[user assistant user])
       expect(messages[1]['content'].sole['text']).to eq(described_class::NO_REPLY_TEXT)
     end
+
+    it 'attaches the files of user messages', :active_job_que_adapter do
+      file = create(:file, projects: [phase.project], ai_processing_allowed: true)
+      user_message.update!(file_ids: [file.id])
+      stub_bedrock(bedrock_text('Thanks for the document.'))
+
+      turn.run
+
+      blocks = last_request_messages.first['content']
+      expect(blocks.first['text']).to eq('Create a survey about our park.')
+      expect(blocks.pluck('document').compact.sole).to include('format' => 'pdf')
+    end
+
+    it 'stops sending files once they may no longer be shared with AI', :active_job_que_adapter do
+      file = create(:file, projects: [phase.project], ai_processing_allowed: true)
+      user_message.update!(file_ids: [file.id])
+      file.update!(ai_processing_allowed: false)
+      stub_bedrock(bedrock_text('Which topics should the survey cover?'))
+
+      turn.run
+
+      expect(last_request_messages.first['content'].pluck('document').compact).to be_empty
+    end
   end
 end
