@@ -1,4 +1,8 @@
-import { useState, useEffect, KeyboardEvent } from 'react';
+import { useEffect } from 'react';
+
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import { object, string } from 'yup';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
@@ -9,6 +13,9 @@ interface Params {
   onConfirm: () => void;
 }
 
+const normalize = (value: string | undefined) =>
+  (value ?? '').trim().toLowerCase();
+
 const useTypedConfirmation = ({
   opened,
   confirmationWord,
@@ -16,37 +23,42 @@ const useTypedConfirmation = ({
   onConfirm,
 }: Params) => {
   const { formatMessage } = useIntl();
-  const [inputValue, setInputValue] = useState('');
-
   const confirmationText = formatMessage(confirmationWord);
-  const isConfirmationValid =
-    inputValue.toLowerCase().trim() === confirmationText.toLowerCase().trim();
+
+  // The disabled delete button is the only feedback, so the rule has no message.
+  const schema = object({
+    confirmation: string().test(
+      'matches-confirmation-word',
+      '',
+      (value) => normalize(value) === normalize(confirmationText)
+    ),
+  });
+
+  const methods = useForm({
+    mode: 'onChange',
+    resolver: yupResolver(schema),
+    defaultValues: { confirmation: '' },
+  });
+
+  const { reset } = methods;
 
   useEffect(() => {
     if (!opened) {
-      setInputValue('');
+      reset();
     }
-  }, [opened]);
+  }, [opened, reset]);
 
-  const handleConfirm = () => {
-    if (isConfirmationValid && !isDeleting) {
+  const onSubmit = methods.handleSubmit(() => {
+    if (!isDeleting) {
       onConfirm();
     }
-  };
-
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'Enter') {
-      handleConfirm();
-    }
-  };
+  });
 
   return {
-    inputValue,
-    setInputValue,
+    methods,
     confirmationText,
-    isConfirmationValid,
-    handleConfirm,
-    handleKeyDown,
+    isConfirmationValid: methods.formState.isValid,
+    onSubmit,
   };
 };
 
