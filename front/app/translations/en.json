@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "There was an issue unsubscribing from this campaign, please try again.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Your request is being processed, please wait...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "You have successfully unsubscribed from {campaignTitle}.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "You have successfully unsubscribed.",
   "UI.FormComponents.optional": "optional",
   "app.closeIconButton.a11y_buttonActionMessage": "Close",
   "app.components.Areas.areaUpdateError": "An error occurred while saving your area. Please try again.",

@@ -19,7 +19,6 @@ import { FormSection } from 'components/UI/FormComponents';
 
 import { trackEventByName } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
-import { isNilOrError } from 'utils/helperUtils';
 
 import ChannelConsentSection from './ChannelConsentSection';
 import Feedback from './feedback';
@@ -35,12 +34,15 @@ type Props = {
   trackEventName: string;
   runOnSave?: () => void;
   unsubscriptionToken?: string | null;
+  // Opens the group holding this consent, so the user sees what they just unsubscribed from.
+  unsubscribedConsentId?: string;
 };
 
 const CampaignConsentForm = ({
   trackEventName,
   runOnSave,
   unsubscriptionToken,
+  unsubscribedConsentId,
 }: Props) => {
   const localize = useLocalize();
   const isInternalCommentingEnabled = useFeatureFlag({
@@ -73,7 +75,7 @@ const CampaignConsentForm = ({
   const smsManualCampaignsEnabled = smsFFEnabled && smsManualCampaignsFFEnabled;
 
   useEffect(() => {
-    if (!isNilOrError(originalCampaignConsents)) {
+    if (originalCampaignConsents) {
       const campaignConsentsEntries = originalCampaignConsents.data
         .sort((a, b): number => a.id.localeCompare(b.id))
         .map((consent): [string, CampaignConsent] => [
@@ -98,7 +100,7 @@ const CampaignConsentForm = ({
     }
   }, [showFeedback, loading]);
 
-  if (isNilOrError(originalCampaignConsents)) return null;
+  if (!originalCampaignConsents) return null;
 
   const onChange = (id: string) => () => {
     setCampaignConsents({
@@ -186,6 +188,9 @@ const CampaignConsentForm = ({
         ...group,
         id: `${channel}-${contentType}`,
         contentType,
+        isOpenByDefault: group.children.some(
+          (consent) => consent.id === unsubscribedConsentId
+        ),
       }));
   };
 
