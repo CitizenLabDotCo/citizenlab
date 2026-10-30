@@ -4,12 +4,10 @@ import { IProjectData } from 'api/projects/types';
 
 import useNewPhaseDefaults from 'containers/Admin/projects/project/phaseSetup/useNewPhaseDefaults';
 
-import { useIntl } from 'utils/cl-intl';
 import Navigate from 'utils/cl-router/Navigate';
 import { useSearch } from 'utils/router';
 
 import ProjectWorkspace from '..';
-import messages from '../messages';
 import PhasePreview from '../Phase/PhasePreview';
 import SelectMethodModal from '../ProjectSetupPanel/SelectMethodModal';
 import ProjectTimeline from '../ProjectTimeline';
@@ -21,7 +19,6 @@ interface Props {
 }
 
 const NewPhase = ({ project }: Props) => {
-  const { formatMessage } = useIntl();
   const newPhaseDefaults = useNewPhaseDefaults();
   const { participation_method, placement } = useSearch({ strict: false });
   const [pickerClosed, setPickerClosed] = useState(false);
@@ -67,9 +64,6 @@ const NewPhase = ({ project }: Props) => {
       project={project}
       participationMethod={participationMethod}
       standalone={standalone}
-      label={formatMessage(
-        standalone ? messages.newSurveyCrumb : messages.newPhaseCrumb
-      )}
       initialFormData={newPhaseDefaults(participationMethod, standalone)}
       defaultsForMethod={newPhaseDefaults}
     />

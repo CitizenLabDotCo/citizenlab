@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
@@ -43,6 +43,7 @@ interface Props {
   standalone: boolean;
   files: ReturnType<typeof usePhaseFileAttachments>;
   surveyMethodSwitch: SurveyMethodSwitch;
+  surveyPlacement?: ReactNode;
   onChange: (newData: Partial<IUpdatedPhaseProperties>) => void;
   onDatesChange: (dates: Dates) => void;
 }
@@ -57,10 +58,12 @@ const BuildFields = ({
   standalone,
   files,
   surveyMethodSwitch,
+  surveyPlacement,
   onChange,
   onDatesChange,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const surveyOptionsShown = !standalone && isSurveyMethod(participationMethod);
   const hasAttachmentsBody =
     files.attachments.length > 0 || files.isUploadingFile || !!errors?.file;
 
@@ -71,6 +74,8 @@ const BuildFields = ({
           {formatMessage(setupTitle(participationMethod))}
         </Text>
       </Box>
+
+      {surveyPlacement}
 
       <PhaseDates
         formData={formData}
@@ -166,9 +171,15 @@ const BuildFields = ({
           />
         )}
 
-        {!standalone && isSurveyMethod(participationMethod) && (
+        {surveyOptionsShown && (
           <SurveyMethodSection
+            projectId={projectId}
+            phaseId={phaseId}
             selected={participationMethod}
+            surveyService={formData.survey_service}
+            surveyEmbedUrl={formData.survey_embed_url}
+            errors={errors}
+            onExternalSurveyChange={onChange}
             disabledReasons={surveyMethodSwitch.disabledReasons}
             onSelect={surveyMethodSwitch.onSelect}
           />
@@ -179,6 +190,7 @@ const BuildFields = ({
           participationMethod={participationMethod}
           phaseId={phaseId}
           inputTerm={formData.input_term}
+          formInSurveyOptions={surveyOptionsShown}
         />
       </Box>
 

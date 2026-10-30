@@ -30,11 +30,14 @@ import PanelSettings from './PanelSettings';
 import ParticipantActionsGroup from './ParticipantActionsGroup';
 import PhaseNotifications from './PhaseNotifications';
 
-const METHODS_WITH_ACTION_TOGGLES: ParticipationMethod[] = [
+const METHODS_WITH_ACTION_ROWS: ParticipationMethod[] = [
   'ideation',
   'proposals',
   'common_ground',
   'voting',
+  'native_survey',
+  'poll',
+  'survey',
 ];
 
 const ACCESS_ONLY_ACTIONS: Partial<
@@ -127,7 +130,7 @@ const MethodSettings = ({ phase }: Props) => {
       )}
 
       {!accessOnlyActions &&
-        !METHODS_WITH_ACTION_TOGGLES.includes(participationMethod) && (
+        !METHODS_WITH_ACTION_ROWS.includes(participationMethod) && (
           <EditAccessButton phaseId={phase.id} />
         )}
 

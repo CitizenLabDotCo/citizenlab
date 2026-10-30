@@ -5,12 +5,17 @@ import { CLErrors } from 'typings';
 
 import { TSurveyService } from 'api/phases/types';
 
+import PhaseActionAccessRow from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
+import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
+
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from '../../../../../messages';
+import configMessages from '../../messages';
 import { StyledA, StyledWarning, SurveyServiceRadio } from '../shared/styling';
 
 interface Props {
@@ -20,6 +25,9 @@ interface Props {
   surveyProviders: { [key in TSurveyService]: boolean };
   handleSurveyProviderChange: (survey_service: TSurveyService) => void;
   handleSurveyEmbedUrlChange: (survey_embed_url: string) => void;
+  layout?: 'page' | 'panel';
+  /** Only set in the panel, where access is edited per action. */
+  phaseId?: string;
 }
 
 const SurveyInputs = ({
@@ -29,8 +37,40 @@ const SurveyInputs = ({
   surveyProviders,
   handleSurveyProviderChange,
   handleSurveyEmbedUrlChange,
+  layout = 'page',
+  phaseId,
 }: Props) => {
   const { formatMessage } = useIntl();
+
+  // In the panel, the service and link are set from the build panel.
+  if (layout === 'panel') {
+    return (
+      <>
+        <Box mb="10px">
+          <PanelHeading label={formatMessage(configMessages.rulesGroup)} />
+        </Box>
+        <PanelGroup
+          label={formatMessage(configMessages.participantActionsGroup)}
+          defaultOpen
+        >
+          {phaseId && (
+            <>
+              <PhaseActionAccessRow
+                phaseId={phaseId}
+                action="taking_survey"
+                label={configMessages.takingSurveyAction}
+              />
+              <PhaseActionAccessRow
+                phaseId={phaseId}
+                action="attending_event"
+                label={messages.attendingEventAction}
+              />
+            </>
+          )}
+        </PanelGroup>
+      </>
+    );
+  }
 
   return (
     <>

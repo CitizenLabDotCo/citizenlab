@@ -39,6 +39,14 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction',
     defaultMessage: 'Voting on inputs',
   },
+  takingPollAction: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.takingPollAction',
+    defaultMessage: 'Taking the poll',
+  },
+  takingSurveyAction: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.takingSurveyAction',
+    defaultMessage: 'Taking the survey',
+  },
   volunteeringAction: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction',
     defaultMessage: 'Volunteering',
