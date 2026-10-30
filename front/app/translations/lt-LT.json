@@ -300,6 +300,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Aplankų pavadinimas:",
   "app.components.FolderFolderCard.archived": "Archyvuota",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projektai} one {# projektas} other {# projektai}}",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": "Naudoti kaip filtrą",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": "Dalyviai gali susiaurinti sąrašą pagal šį atsakymą.",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": "Atšaukti",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirm": "Rodyti atsakymus",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2": "Dalyviai galėjo atsakyti į šį klausimą, kol jis buvo privatus. Įjungus šį nustatymą, bus rodomi ir tie atsakymai, o ne tik tie, kurie bus pateikti nuo šiol.",

@@ -22,6 +22,7 @@ import Link from 'utils/cl-router/Link';
 import { useParams } from 'utils/router';
 
 import messages from '../../messages';
+import AnswerFilterToggle from '../AnswerFilterToggle';
 import AnswerVisibilityToggle from '../AnswerVisibilityToggle';
 import FieldTypeSwitcher from '../FieldTypeSwitcher';
 
@@ -117,6 +118,7 @@ const ContentSettings = ({ field, builderConfig }: ContentSettingsProps) => {
         </SectionField>
       )}
       <AnswerVisibilityToggle field={field} builderConfig={builderConfig} />
+      <AnswerFilterToggle field={field} />
     </Box>
   );
 };

@@ -2566,7 +2566,8 @@ CREATE TABLE public.custom_fields (
     include_in_printed_form boolean DEFAULT true NOT NULL,
     min_characters integer,
     max_characters integer,
-    answers_visible_to character varying DEFAULT 'moderators'::character varying NOT NULL
+    answers_visible_to character varying DEFAULT 'moderators'::character varying NOT NULL,
+    show_as_filter boolean DEFAULT false NOT NULL
 );
 
 
@@ -10517,6 +10518,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20261027120000'),
 ('20261028120100'),
 ('20261027120100'),
+('20261019100000'),
 ('20261014200000'),
 ('20261014130100'),
 ('20261014120100'),

@@ -364,7 +364,7 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def answer_facets
     CustomField.where(id: params[:custom_field_ids])
-      .select { |field| policy(field).show? && field.answers_visible_to_public? && field.supports_answer_facet? }
+      .select { |field| policy(field).show? && field.can_show_as_filter? }
       .map { |field| Facets::IdeaCustomFieldAnswer.new(field) }
   end
 

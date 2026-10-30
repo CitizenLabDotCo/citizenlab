@@ -300,6 +300,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Folder title:",
   "app.components.FolderFolderCard.archived": "Archived",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projects} one {# project} other {# projects}}",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": "Use as a filter",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": "Participants can narrow the list by this answer.",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": "Cancel",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirm": "Show the answers",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2": "Participants may have answered this question while it was private. Turning this on also shows those answers, not only the ones given from now on.",

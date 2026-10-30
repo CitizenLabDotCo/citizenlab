@@ -300,6 +300,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Mappa címe:",
   "app.components.FolderFolderCard.archived": "Archivált",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projekt} one {# projekt} other {# projekt}}",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": "Használat szűrőként",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": "A résztvevők ezen válasz alapján szűkíthetik a listát.",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": "Mégse",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirm": "Válaszok megjelenítése",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2": "A résztvevők már válaszolhattak erre a kérdésre, amíg az privát volt. Ennek bekapcsolásával ezek a válaszok is láthatóvá válnak, nem csak a mostantól érkezők.",

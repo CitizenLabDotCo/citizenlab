@@ -300,6 +300,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Maptitel:",
   "app.components.FolderFolderCard.archived": "Afgerond",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projecten} one {# project} other {# projecten}}",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": "Als filter gebruiken",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": "Deelnemers kunnen de lijst verfijnen op basis van dit antwoord.",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": "Annuleren",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirm": "Toon de antwoorden",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2": "Deelnemers kunnen deze vraag beantwoord hebben terwijl deze privé was. Als je dit inschakelt, worden ook die antwoorden getoond, niet alleen de antwoorden die vanaf nu worden gegeven.",

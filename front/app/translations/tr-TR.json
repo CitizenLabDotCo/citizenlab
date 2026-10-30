@@ -300,6 +300,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Klasör başlığı:",
   "app.components.FolderFolderCard.archived": "Arşivlenmiş",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, one {# proje} other {# proje}}",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": "Filtre olarak kullan",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": "Katılımcılar listeyi bu cevaba göre daraltabilir.",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": "İptal",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirm": "Yanıtları göster",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2": "Katılımcılar bu soruyu gizliyken yanıtlamış olabilir. Bunu açmak, sadece şu andan itibaren verilenleri değil, o yanıtları da gösterir.",

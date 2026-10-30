@@ -45,6 +45,7 @@
 #  min_characters                 :integer
 #  max_characters                 :integer
 #  answers_visible_to             :string           default("moderators"), not null
+#  show_as_filter                 :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -125,6 +126,7 @@ class CustomField < ApplicationRecord
   validate :max_characters_greater_than_min_characters, if: :supports_text?
   validate :maximum_select_count_greater_than_or_equal_to_minimum, if: :select_count_enabled_and_supported?
   validate :validate_answers_visible_to
+  validate :validate_show_as_filter
 
   enum :answers_visible_to, { public: 'public', moderators: 'moderators' }, prefix: true, validate: true
 
@@ -248,6 +250,10 @@ class CustomField < ApplicationRecord
 
   def custom_form_type?
     resource_type == 'CustomForm'
+  end
+
+  def can_show_as_filter?
+    answers_visible_to_public? && supports_answer_facet?
   end
 
   # The value of a built-in input field is an attribute of the input, not an answer.
@@ -415,6 +421,10 @@ class CustomField < ApplicationRecord
 
     fixed_value = custom_form_type? && supports_submission? ? 'public' : 'moderators'
     errors.add(:answers_visible_to, :inclusion, value: answers_visible_to) if answers_visible_to != fixed_value
+  end
+
+  def validate_show_as_filter
+    errors.add(:show_as_filter, :inclusion) if show_as_filter && !can_show_as_filter?
   end
 
   def generate_key

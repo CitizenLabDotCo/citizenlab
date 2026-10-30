@@ -300,6 +300,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Mappetitel:",
   "app.components.FolderFolderCard.archived": "Arkiveret",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projekter} one {# projekt} other {# projekter}}",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": "Brug som filter",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": "Deltagere kan indsnævre listen efter dette svar.",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": "Annuller",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirm": "Vis svarene",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2": "Deltagere kan have besvaret dette spørgsmål, mens det var privat. Hvis du slår dette til, vises disse svar også, ikke kun dem, der gives fra nu af.",

@@ -300,6 +300,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Titel vum Dossier: ",
   "app.components.FolderFolderCard.archived": "Archivéiert",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# Projeten} one {# Projet} other {# Projeten}}",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": "Als Filter benotzen",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": "Participante kënnen d'Lëscht mat dëser Äntwert aschränken.",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": "Ofbriechen",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirm": "D'Äntwerte weisen",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2": "Participante kéinten dës Fro geäntwert hunn, wärend se privat war. Wann Dir dëst aschalt, ginn och dës Äntwerte gewisen, an net nëmmen déi, déi vun elo un ofgi ginn.",

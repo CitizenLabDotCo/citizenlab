@@ -4,7 +4,10 @@ import { Box, Select, Tooltip } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
 
 import { IFlatCustomFieldWithIndex } from 'api/custom_fields/types';
-import { supportsPublicAnswers } from 'api/custom_fields/util';
+import {
+  supportsAnswerFilter,
+  supportsPublicAnswers,
+} from 'api/custom_fields/util';
 import useFormSubmissionsCount from 'api/submission_count/useSubmissionCount';
 
 import { useIntl } from 'utils/cl-intl';
@@ -80,6 +83,11 @@ const FieldTypeSwitcher = ({ field }: Props) => {
                   'moderators',
                   { shouldDirty: true }
                 );
+              }
+              if (!supportsAnswerFilter(value.value)) {
+                setValue(`customFields.${field.index}.show_as_filter`, false, {
+                  shouldDirty: true,
+                });
               }
             }}
             value={watch(inputTypeName)}

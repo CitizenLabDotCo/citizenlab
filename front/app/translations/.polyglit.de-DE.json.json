@@ -1529,6 +1529,16 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": {
+    "state": "verified",
+    "verified_at": "2026-10-29T14:21:20.325626Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-29T14:21:20.325626Z",
+    "verified_by": "Jelena"
+  },
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": {
     "state": "verified",
     "verified_at": "2026-10-14T11:50:15.715288Z",

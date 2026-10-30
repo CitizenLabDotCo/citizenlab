@@ -300,6 +300,8 @@
   "app.components.FolderFolderCard.a11y_folderTitle": "Mapes nosaukums:",
   "app.components.FolderFolderCard.archived": "Arhivēts",
   "app.components.FolderFolderCard.numberOfProjectsInFolder": "{numberOfProjectsInFolder, plural, no {# projekti} one {# projekts} other {# projekti}}",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": "Izmantot kā filtru",
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": "Dalībnieki var sašaurināt sarakstu pēc šīs atbildes.",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": "Atcelt",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirm": "Rādīt atbildes",
   "app.components.FormBuilder.components.AnswerVisibilityToggle.confirmExplanation2": "Dalībnieki varētu būt atbildējuši uz šo jautājumu, kamēr tas bija privāts. To ieslēdzot, tiks rādītas arī šīs atbildes, nevis tikai tās, kas tiks sniegtas turpmāk.",
