@@ -8,16 +8,16 @@ import { CLError, RHFErrors } from 'typings';
 import EmojiPickerInput from 'components/UI/EmojiPicker';
 import Error, { TFieldName } from 'components/UI/Error';
 
-const Container = styled.div`
-  &[data-variant='bo'] {
-    ${boInputLabelStyle}
-  }
+type Variant = 'default' | 'bo';
+
+const Container = styled.div<{ variant: Variant }>`
+  ${({ variant }) => variant === 'bo' && boInputLabelStyle}
 `;
 
 interface Props {
   name: string;
   label?: string;
-  variant?: 'default' | 'bo';
+  variant?: Variant;
 }
 
 const EmojiPicker = ({ name, label, variant = 'default' }: Props) => {
@@ -31,7 +31,7 @@ const EmojiPicker = ({ name, label, variant = 'default' }: Props) => {
   const apiError = errors?.error && ([errors] as CLError[]);
 
   return (
-    <Container data-variant={variant}>
+    <Container variant={variant}>
       {label && <Label htmlFor={name}>{label}</Label>}
       <Controller
         name={name}

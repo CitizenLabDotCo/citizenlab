@@ -21,7 +21,7 @@ import { sanitizeForClassname } from 'utils/JSONFormUtils';
 
 const Container = styled.div``;
 
-const LabelContainer = styled.div`
+const LabelContainer = styled.div<{ variant: QuillEditorProps['variant'] }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -29,9 +29,7 @@ const LabelContainer = styled.div`
   flex-wrap: wrap;
   gap: 16px;
 
-  &[data-variant='bo'] {
-    ${boInputLabelStyle}
-  }
+  ${({ variant }) => variant === 'bo' && boInputLabelStyle}
 `;
 
 const StyledLabel = styled(Label)`
@@ -114,7 +112,7 @@ const QuillMutilocWithLocaleSwitcher = memo<Props>((props) => {
 
   return (
     <Container id={props.id} ref={containerRef}>
-      <LabelContainer data-variant={quillProps.variant}>
+      <LabelContainer variant={quillProps.variant}>
         {label && (
           <StyledLabel
             id={`${sanitizeForClassname(props.id)}-label`}
