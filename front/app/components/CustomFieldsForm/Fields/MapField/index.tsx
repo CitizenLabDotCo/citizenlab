@@ -11,6 +11,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { get } from 'lodash-es';
 import { Controller, useFormContext } from 'react-hook-form';
+import { MessageDescriptor } from 'react-intl';
 import { CLError, RHFErrors } from 'typings';
 
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -32,14 +33,42 @@ import {
   convertCoordinatesToGeoJSON,
   convertGeojsonToWKT,
   convertWKTToGeojson,
+  exceedsPinLimit,
+  getCoordinatesFromMultiPointData,
 } from './multiPointUtils';
+import { MapInputType } from './utils';
+
+// Touch devices are told to tap, pointer devices to click, so each input type
+// needs both wordings.
+const INSTRUCTION_MESSAGES: {
+  [key in MapInputType]: { tap: MessageDescriptor; click: MessageDescriptor };
+} = {
+  point: {
+    tap: messages.tapOnMapToAddOrType,
+    click: messages.clickOnMapToAddOrType,
+  },
+  multipoint: {
+    tap: messages.tapOnMapToAddMultiplePins,
+    click: messages.clickOnMapToAddMultiplePins2,
+  },
+  line: {
+    tap: messages.tapOnMapMultipleToAdd,
+    click: messages.clickOnMapMultipleToAdd,
+  },
+  polygon: {
+    tap: messages.tapOnMapMultipleToAdd,
+    click: messages.clickOnMapMultipleToAdd,
+  },
+};
 
 const MapField = ({
   question,
   projectId,
   scrollErrorIntoView,
 }: {
-  question: IFlatCustomField & { input_type: 'point' | 'polygon' | 'line' };
+  question: IFlatCustomField & {
+    input_type: 'point' | 'polygon' | 'line' | 'multipoint';
+  };
   projectId?: string;
   scrollErrorIntoView?: boolean;
 }) => {
@@ -71,6 +100,11 @@ const MapField = ({
   const value = watch(name)
     ? convertWKTToGeojson({ point: watch(name) }).point
     : undefined;
+
+  const maxPins = question.maximum_select_count;
+  const pinCount: number =
+    getCoordinatesFromMultiPointData(value, question.input_type)?.length ?? 0;
+  const limitReached = !!maxPins && pinCount >= maxPins;
 
   const errors = get(formContextErrors, name) as RHFErrors;
   const validationError = errors?.message;
@@ -116,10 +150,14 @@ const MapField = ({
     [setValue, name]
   );
 
-  // Handler for when multiple point data changes (line/polygon)
+  // Handler for when multiple point data changes (line/polygon/multipoint)
   const handleMultiPointChange = useCallback(
     (coordinates?: number[][]) => {
       if (coordinates) {
+        if (exceedsPinLimit(coordinates.length, maxPins)) {
+          return;
+        }
+
         const value = convertCoordinatesToGeoJSON(
           coordinates,
           question.input_type
@@ -138,20 +176,18 @@ const MapField = ({
         });
       }
     },
-    [setValue, name, question.input_type]
+    [setValue, name, question.input_type, maxPins]
   );
 
-  const getInstructionMessage = () => {
-    if (isTabletOrSmaller) {
-      return question.input_type === 'point'
-        ? formatMessage(messages.tapOnMapToAddOrType)
-        : formatMessage(messages.tapOnMapMultipleToAdd);
-    } else {
-      return question.input_type === 'point'
-        ? formatMessage(messages.clickOnMapToAddOrType)
-        : formatMessage(messages.clickOnMapMultipleToAdd);
-    }
-  };
+  const instruction = INSTRUCTION_MESSAGES[question.input_type];
+  const instructionText = limitReached
+    ? formatMessage(
+        isTabletOrSmaller
+          ? messages.maximumPinsReachedTap
+          : messages.maximumPinsReachedClick,
+        { maxPins }
+      )
+    : formatMessage(isTabletOrSmaller ? instruction.tap : instruction.click);
 
   return (
     <>
@@ -159,12 +195,19 @@ const MapField = ({
         <Label>
           <Box display="flex">
             <Icon name="info-outline" fill={colors.coolGrey600} mr="4px" />
-            <Box my="auto">{getInstructionMessage()}</Box>
+            <Box my="auto">{instructionText}</Box>
           </Box>
         </Label>
       </Box>
       {isLoadingMapConfig && question.map_config_id && <Spinner />}
-
+      {validationError && (
+        <Error
+          marginTop="8px"
+          marginBottom="8px"
+          text={validationError}
+          scrollIntoView={requiredError ? scrollErrorIntoView : false}
+        />
+      )}
       <Controller
         name={name}
         control={control}
@@ -179,6 +222,7 @@ const MapField = ({
                 handleMultiPointChange={handleMultiPointChange}
                 inputType={question.input_type}
                 data={value}
+                maxPins={maxPins}
               />
             ) : (
               <DesktopTabletView
@@ -195,14 +239,6 @@ const MapField = ({
           </>
         )}
       />
-      {validationError && (
-        <Error
-          marginTop="8px"
-          marginBottom="8px"
-          text={validationError}
-          scrollIntoView={requiredError ? scrollErrorIntoView : false}
-        />
-      )}
       {apiError && (
         <Error
           fieldName={name as TFieldName}

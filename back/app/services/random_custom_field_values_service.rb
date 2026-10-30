@@ -72,6 +72,8 @@ class RandomCustomFieldValuesService
       generate_line_value
     when 'polygon'
       generate_polygon_value
+    when 'multipoint'
+      generate_multipoint_value
     end
     # Returns nil for unsupported types like file_upload, shapefile_upload, files, image_files
   end
@@ -188,6 +190,18 @@ class RandomCustomFieldValuesService
     ]
 
     { 'type' => 'Polygon', 'coordinates' => [coordinates] }
+  end
+
+  def generate_multipoint_value
+    base_lat = 50.5 + (rand * 1.0)
+    base_lng = 3.5 + (rand * 2.0)
+
+    # The pins are independent locations, so they are scattered rather than sequential.
+    coordinates = Array.new(rand(2..4)) do
+      [(base_lng + (rand * 0.05)).round(6), (base_lat + (rand * 0.05)).round(6)]
+    end
+
+    { 'type' => 'MultiPoint', 'coordinates' => coordinates }
   end
 
   def locale

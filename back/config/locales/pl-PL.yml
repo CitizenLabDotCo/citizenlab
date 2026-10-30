@@ -182,6 +182,7 @@ pl-PL:
       logic_no_further_questions: Na podstawie Twoich odpowiedzi <strong>nie musisz</strong> odpowiadać na dalsze pytania.
       logic_section: Sekcja %{letter}
       matrix_print_description: Dla każdego rzędu zaznacz jedno kółko krzyżykiem, aby wskazać swoje preferencje.
+      multipoint_print_description: Prosimy o zaznaczenie znakiem X na poniższej mapie każdej lokalizacji, którą chcesz dodać.
       optional: opcjonalny
       page: Strona
       permission: Zezwolenie

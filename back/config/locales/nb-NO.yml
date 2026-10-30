@@ -180,6 +180,7 @@ nb-NO:
       logic_no_further_questions: Basert på svarene dine trenger du <strong>ikke</strong> å besvare flere spørsmål.
       logic_section: Del %{letter}
       matrix_print_description: Marker en sirkel for hver rad med et kryss for å angi hva du foretrekker.
+      multipoint_print_description: Vennligst sett et kryss på kartet nedenfor for hvert sted du vil legge til.
       optional: valgfritt
       page: Side
       permission: Tillatelse

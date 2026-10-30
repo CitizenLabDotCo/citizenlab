@@ -9,6 +9,7 @@ import SurveyBarsHorizontal from 'components/admin/Graphs/SurveyBars/SurveyBarsH
 import SurveyBarsVertical from 'components/admin/Graphs/SurveyBars/SurveyBarsVertical';
 
 import LineLocationQuestion from '../MappingQuestions/LineLocationQuestion';
+import MultipointLocationQuestion from '../MappingQuestions/MultipointLocationQuestion';
 import PointLocationQuestion from '../MappingQuestions/PointLocationQuestion';
 import PolygonLocationQuestion from '../MappingQuestions/PolygonLocationQuestion';
 import StaticMapScreenshot from '../MappingQuestions/StaticMapScreenshot';
@@ -38,6 +39,7 @@ const FormResultQuestionValue = ({
     pointResponses,
     lineResponses,
     polygonResponses,
+    multipointResponses,
     numberResponses,
     customFieldId,
     mapConfigId,
@@ -120,6 +122,18 @@ const FormResultQuestionValue = ({
       return polygonResponses ? (
         <PolygonLocationQuestion
           polygonResponses={polygonResponses}
+          mapConfigId={mapConfigId}
+          customFieldId={customFieldId}
+        />
+      ) : null;
+    }
+    case 'multipoint': {
+      if (isPdfExport) {
+        return <StaticMapScreenshot customFieldId={customFieldId} />;
+      }
+      return multipointResponses ? (
+        <MultipointLocationQuestion
+          multipointResponses={multipointResponses}
           mapConfigId={mapConfigId}
           customFieldId={customFieldId}
         />
