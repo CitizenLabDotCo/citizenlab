@@ -26,7 +26,7 @@ module AIAssistant
 
     def run
       unless @surface.available?
-        fail_turn('surface_unavailable')
+        conversation.fail_turn!('surface_unavailable')
         return
       end
 
@@ -37,7 +37,7 @@ module AIAssistant
       end
       finish
     rescue ToolBudgetExceededError
-      fail_turn('tool_budget_exceeded')
+      conversation.fail_turn!('tool_budget_exceeded')
     end
 
     # Runs a call of +tool+ by the model right away, as the conversation's user.
@@ -150,10 +150,6 @@ module AIAssistant
 
     def finish
       conversation.update!(status: 'idle', last_error_code: nil)
-    end
-
-    def fail_turn(error_code)
-      conversation.update!(status: 'failed', last_error_code: error_code)
     end
 
     def text_of(content)

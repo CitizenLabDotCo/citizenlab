@@ -44,11 +44,18 @@ module AIAssistant
 
     validates :surface_key, :locale, presence: true
 
+    # Calls still pending when a turn fails never ran: the tool-call limit or a stopped
+    # worker cut the turn off before their tool did.
+    def fail_turn!(error_code)
+      tool_calls.pending.find_each { |tool_call| tool_call.update!(status: 'failed') }
+      update!(status: 'failed', last_error_code: error_code)
+    end
+
     # Gets the conversation out of a state that nothing would end anymore.
     def recover_if_stuck!
       return unless running? && updated_at < TURN_TIMEOUT.ago
 
-      update!(status: 'failed', last_error_code: 'turn_timed_out')
+      fail_turn!('turn_timed_out')
     end
   end
 end

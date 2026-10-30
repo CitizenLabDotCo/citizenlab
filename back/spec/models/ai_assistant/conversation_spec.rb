@@ -9,6 +9,21 @@ describe AIAssistant::Conversation do
     expect { conversation.subject.destroy! }.to change(described_class, :count).by(-1)
   end
 
+  describe '#fail_turn!' do
+    it 'also fails the calls that never ran' do
+      conversation = create(:ai_assistant_conversation, status: 'running')
+      message = create(:ai_assistant_message, conversation:, role: 'assistant', content: nil)
+      cut_off = create(:ai_assistant_tool_call, message:, status: 'pending')
+      done = create(:ai_assistant_tool_call, message:, status: 'auto_executed')
+
+      conversation.fail_turn!('turn_timed_out')
+
+      expect(conversation.reload).to have_attributes(status: 'failed', last_error_code: 'turn_timed_out')
+      expect(cut_off.reload.status).to eq('failed')
+      expect(done.reload.status).to eq('auto_executed')
+    end
+  end
+
   describe '#recover_if_stuck!' do
     using RSpec::Parameterized::TableSyntax
 

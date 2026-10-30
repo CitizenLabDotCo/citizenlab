@@ -73,12 +73,17 @@ describe AIAssistant::Turn do
   it 'stops the turn after too many tool calls' do
     stub_const("#{described_class}::MAX_TOOL_CALLS", 1)
     stub_bedrock(
-      bedrock_tool_use({ id: 'read_1', name: 'get_form_fields' }, { id: 'read_2', name: 'get_form_fields' })
+      bedrock_tool_use(
+        { id: 'read_1', name: 'get_form_fields' },
+        { id: 'read_2', name: 'get_form_fields' },
+        { id: 'read_3', name: 'get_form_fields' }
+      )
     )
 
     turn.run
 
-    expect(AIAssistant::ToolCall.order(:tool_use_id).pluck(:status)).to eq(%w[auto_executed failed])
+    # read_3 never ran: the limit stopped the turn at read_2.
+    expect(AIAssistant::ToolCall.order(:tool_use_id).pluck(:status)).to eq(%w[auto_executed failed failed])
     expect(conversation.reload).to have_attributes(status: 'failed', last_error_code: 'tool_budget_exceeded')
   end
 

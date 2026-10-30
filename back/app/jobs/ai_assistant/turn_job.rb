@@ -31,7 +31,7 @@ module AIAssistant
     private
 
     def expire
-      conversation.update!(status: 'failed', last_error_code: error_code(que_target.que_error))
+      conversation.fail_turn!(error_code(que_target.que_error))
       super
     end
 
