@@ -150,6 +150,7 @@ module McpServer
       McpServer::Tools::ListAttachedImages,
       McpServer::Tools::ListFileAttachments,
       McpServer::Tools::ListProjectFiles,
+      McpServer::Tools::GetFileTranscript,
 
       McpServer::Tools::GetReportingSqlSchema,
       McpServer::Tools::RunReportingSqlQuery

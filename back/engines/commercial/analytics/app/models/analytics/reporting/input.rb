@@ -23,6 +23,7 @@
 #  comments_count       :integer
 #  votes_count          :integer
 #  offline_votes_count  :integer
+#  body                 :text
 #
 module Analytics
   module Reporting
@@ -54,7 +55,7 @@ module Analytics
           'project_id' => 'The project the input was posted in.',
           'creation_phase_id' => <<~DOC.squish,
             The phase the input was created in, for phase-specific methods like
-            surveys. NULL for ideation and proposals inputs, which live across
+            surveys. NULL for ideation and voting inputs, which live across
             phases: reporting_input_phases lists every phase an input belongs to.
           DOC
           'participation_method' => <<~DOC.squish,
@@ -90,9 +91,17 @@ module Analytics
           DOC
           'likes_count' => 'Number of likes on the input.',
           'dislikes_count' => 'Number of dislikes on the input.',
-          'comments_count' => 'Number of published comments on the input.',
+          'comments_count' => 'Number of published comments on the input; their texts are in reporting_comments.',
           'votes_count' => 'Total online votes the input received in voting/budgeting phases.',
-          'offline_votes_count' => 'Manually registered offline votes, entered by administrators. 0 when none.'
+          'offline_votes_count' => 'Manually registered offline votes, entered by administrators. 0 when none.',
+          'body' => <<~DOC.squish
+            The input's description, resolved to the platform primary locale.
+            Stored as sanitized HTML (paragraphs, lists, links, ...): strip the
+            tags before quoting it. NULL for survey responses, whose answers are
+            in reporting_input_question_answers. Written by residents and not
+            screened for personal data: leave out names, contact details and
+            addresses when quoting it.
+          DOC
         }
       end
 
