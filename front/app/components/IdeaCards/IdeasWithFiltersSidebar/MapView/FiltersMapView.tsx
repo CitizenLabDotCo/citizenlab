@@ -14,6 +14,7 @@ interface Props extends InputFiltersProps {
 
 const FiltersMapView = ({
   ideaQueryParameters,
+  ideasFilterCounts,
   onClose,
   ...filtersProps
 }: Props) => {
@@ -24,6 +25,7 @@ const FiltersMapView = ({
         <Box p="16px">
           <InputFilters
             ideaQueryParameters={ideaQueryParameters}
+            ideasFilterCounts={ideasFilterCounts}
             // A reset button is available in the filters top bar
             showResetButton={false}
             // BE doesn't currently support filtering map markers by status.
@@ -33,7 +35,11 @@ const FiltersMapView = ({
           />
         </Box>
       </Box>
-      <BottomBar onClick={onClose} ideaQueryParameters={ideaQueryParameters} />
+      <BottomBar
+        onClick={onClose}
+        ideaQueryParameters={ideaQueryParameters}
+        ideasFilterCounts={ideasFilterCounts}
+      />
     </>
   );
 };

@@ -190,6 +190,16 @@ describe IdeasFinder do
       params[:custom_field_answers] = { private_field.id => %w[option1] }
       expect(result_record_ids).to match_array Idea.ids
     end
+
+    it 'ignores fields of projects the user cannot see' do
+      hidden_project = create(:private_admins_project)
+      hidden_form = create(:custom_form, participation_context: hidden_project)
+      hidden_field = create(:custom_field_select, :with_options, resource: hidden_form, answers_visible_to: 'public')
+      create(:custom_field_answer, answerable: create(:idea, project: hidden_project), key: hidden_field.key, value: 'option1')
+
+      params[:custom_field_answers] = { hidden_field.id => %w[option1] }
+      expect(result_record_ids).to match_array Idea.ids
+    end
   end
 
   describe '#project_publication_status_condition' do

@@ -113,6 +113,20 @@ resource 'Ideas' do
         expect(json_response.dig(:data, :attributes, :assignee_id)).to eq({ assignee.id.to_sym => 2 })
         expect(json_response.dig(:data, :attributes, :total)).to eq 3
       end
+
+      example 'Assignee counts ignore the assignee filter' do
+        assignee1 = create(:admin)
+        assignee2 = create(:admin)
+        create_list(:idea, 2, assignee: assignee1)
+        create(:idea, assignee: assignee2)
+
+        do_request assignee: assignee1.id
+
+        assert_status 200
+        json_attributes = json_parse(response_body).dig(:data, :attributes)
+        expect(json_attributes[:assignee_id]).to eq({ assignee1.id.to_sym => 2, assignee2.id.to_sym => 1 })
+        expect(json_attributes[:total]).to eq 2
+      end
     end
 
     post 'web_api/v1/phases/:phase_id/inputs' do

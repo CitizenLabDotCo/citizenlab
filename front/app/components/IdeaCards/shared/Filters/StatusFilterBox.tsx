@@ -2,8 +2,6 @@ import React from 'react';
 
 import { IdeaStatusParticipationMethod } from 'api/idea_statuses/types';
 import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
-import { IIdeasFilterCountsQueryParameters } from 'api/ideas_filter_counts/types';
-import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import { IPhase } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -17,7 +15,8 @@ import { capitalize } from 'utils/textUtils';
 
 interface Props {
   selectedStatusId: string | null | undefined;
-  ideaQueryParameters: IIdeasFilterCountsQueryParameters;
+  statusCounts: Partial<Record<string, number>> | undefined;
+  totalCount: number | undefined;
   onChange: (arg: string | null) => void;
   participationMethod?: IdeaStatusParticipationMethod;
   // Should be defined whenever this component is displayed within a project phase context.
@@ -27,8 +26,9 @@ interface Props {
 // TODO: All comments in this file indicate we should probably split this in an "all inputs" and "phase" version.
 const StatusFilterBox = ({
   selectedStatusId,
+  statusCounts,
+  totalCount,
   onChange,
-  ideaQueryParameters,
   participationMethod,
   phase,
 }: Props) => {
@@ -52,15 +52,13 @@ const StatusFilterBox = ({
       ...(!showScreeningStatus && { exclude_codes: ['prescreening'] }),
     },
   });
-  const { data: ideasFilterCounts } = useIdeasFilterCounts({
-    ...ideaQueryParameters,
-    idea_status: undefined,
-  });
 
-  if (ideaStatuses && ideaStatuses.data.length > 0 && ideasFilterCounts) {
-    const statusCounts: Partial<Record<string, number>> =
-      ideasFilterCounts.data.attributes.idea_status_id;
-
+  if (
+    ideaStatuses &&
+    ideaStatuses.data.length > 0 &&
+    statusCounts &&
+    totalCount !== undefined
+  ) {
     return (
       <SingleSelectFilter
         title={formatMessage(messages.statusTitle)}
@@ -70,7 +68,7 @@ const StatusFilterBox = ({
           count: statusCounts[status.id] ?? 0,
           color: status.attributes.color,
         }))}
-        totalCount={ideasFilterCounts.data.attributes.total}
+        totalCount={totalCount}
         selectedId={selectedStatusId}
         onChange={onChange}
       />

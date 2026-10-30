@@ -5,16 +5,13 @@ module Facets
   # numbers shown next to the options of a filter sidebar.
   # See https://yonik.com/multi-select-faceting/
   class CountsService
-    def initialize(records, facets)
-      # Counts need no order, and GROUP BY rejects a search ranking.
-      @records = records.reorder(nil)
-      @facets = facets
-    end
-
-    def counts
-      @facets
-        .reduce({}) { |result, facet| result.deep_merge(facet.key => facet.counts(@records)) }
-        .merge('total' => @records.count)
+    def counts(records, scopes_by_facet)
+      scopes_by_facet
+        .reduce({}) do |result, (facet, scope)|
+          # Counts need no order, and GROUP BY rejects a search ranking.
+          result.deep_merge(facet.key => facet.counts(scope.reorder(nil)))
+        end
+        .merge('total' => records.size)
     end
   end
 end

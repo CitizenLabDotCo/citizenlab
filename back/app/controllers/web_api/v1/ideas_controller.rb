@@ -86,8 +86,13 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def filter_counts
-    ideas = find_ideas(scope: policy_scope(Idea))
-    render json: raw_json(Facets::CountsService.new(ideas, filter_count_facets(ideas)).counts)
+    filtered_ideas = find_ideas(scope: policy_scope(Idea))
+    # A facet is counted with every filter applied except its own, so the
+    # numbers tell what choosing one of its options would yield.
+    scopes_by_facet = filter_count_facets(filtered_ideas).to_h.transform_values do |filter_path|
+      find_ideas(scope: policy_scope(Idea), finder_params: finder_params_without(filter_path))
+    end
+    render json: raw_json(Facets::CountsService.new.counts(filtered_ideas, scopes_by_facet))
   end
 
   def show
@@ -358,14 +363,28 @@ class WebApi::V1::IdeasController < ApplicationController
     IdeasFinder.new(finder_params, scope:, current_user:).find_records
   end
 
-  def filter_count_facets(_ideas)
-    [Facets::Column.new(:idea_status_id), Facets::IdeaInputTopic.new] + answer_facets
+  # Each facet with the request parameter it answers, as a key or a nested key path.
+  def filter_count_facets(_filtered_ideas)
+    [
+      [Facets::Column.new(:idea_status_id), :idea_status],
+      [Facets::IdeaInputTopic.new, :input_topics],
+      *answer_facets
+    ]
   end
 
   def answer_facets
-    CustomField.where(id: params[:custom_field_ids])
-      .select { |field| policy(field).show? && field.can_show_as_filter? }
-      .map { |field| Facets::IdeaCustomFieldAnswer.new(field) }
+    phase = Phase.find_by(id: params[:phase])
+    return [] if !phase
+
+    form = phase.pmethod.custom_form
+    fields = form.custom_fields.enabled.where(show_as_filter: true)
+    CustomFieldPolicy::Scope.new(pundit_user, fields, form).resolve
+      .map { |field| [Facets::IdeaCustomFieldAnswer.new(field), [:custom_field_answers, field.id]] }
+  end
+
+  def finder_params_without(filter_path)
+    *parents, key = Array(filter_path)
+    params.deep_dup.tap { |copy| (parents.empty? ? copy : copy.dig(*parents))&.delete(key) }
   end
 
   def phase
