@@ -9444,9 +9444,19 @@
     "verified_at": "2026-09-16T19:26:50.773492Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.groupsNotAdded2": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:38:53.184545Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.groupsNotAddedOk": {
     "state": "verified",
     "verified_at": "2026-10-30T12:31:32.615646Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.groupsNotAddedTitle": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:38:53.184545Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.homepageCard": {

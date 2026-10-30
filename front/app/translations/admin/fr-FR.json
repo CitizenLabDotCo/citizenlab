@@ -1854,7 +1854,7 @@
   "app.containers.Admin.projects.project.general.components.UnlistedInput.unlisted": "Non listé",
   "app.containers.Admin.projects.project.general.components.UnlistedInput.whoCanFindThisProject": "Qui peut trouver ce projet ?",
   "app.containers.Admin.projects.project.generalInformation": "Informations générales",
-  "app.containers.Admin.projects.project.groupsNotAdded2": "Projet créé. Ces groupes n'ont pas pu être ajoutés, veuillez les ajouter à nouveau : {groups}.",
+  "app.containers.Admin.projects.project.groupsNotAdded2": "Le projet a bien été créé, mais certains groupes n’ont pas pu être ajoutés. Veuillez réessayer d’ajouter les groupes suivants : {groups}.",
   "app.containers.Admin.projects.project.groupsNotAddedOk": "OK",
   "app.containers.Admin.projects.project.groupsNotAddedTitle": "Groupes non ajoutés",
   "app.containers.Admin.projects.project.homepageCard": "Carte de la page d'accueil",
