@@ -198,6 +198,51 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
           .to raise_error(Analysis::LLM::UnsupportedAttachmentError, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
       end
     end
+
+    context 'text files' do
+      it 'sends a markdown file with its own MIME type, since Azure OpenAI reads it' do
+        file = create(:global_file, name: 'notes.md')
+        message = Analysis::LLM::Message.new('Summarize this transcript', file)
+
+        expect(service.response_client)
+          .to receive(:create).with(parameters: hash_including(input: [{
+            role: 'user', content: [
+              { type: 'input_text', text: 'Summarize this transcript' },
+              { type: 'input_file', filename: 'notes.md', file_data: start_with('data:text/markdown;base64,') }
+            ]
+          }])).and_return(nil)
+
+        service.chat(message)
+      end
+
+      it 'sends the file itself, even when it has a completed preview' do
+        file = create(:global_file, name: 'notes.txt')
+        file.reload.preview.update!(
+          status: 'completed',
+          content: Rails.root.join('spec/fixtures/minimal_pdf.pdf').open
+        )
+        message = Analysis::LLM::Message.new('Summarize this transcript', file)
+
+        expect(service.response_client)
+          .to receive(:create).with(parameters: hash_including(input: [{
+            role: 'user', content: [
+              { type: 'input_text', text: 'Summarize this transcript' },
+              { type: 'input_file', filename: 'notes.txt', file_data: start_with('data:text/plain;base64,') }
+            ]
+          }])).and_return(nil)
+
+        service.chat(message)
+      end
+
+      it 'does not wait for a preview that is still pending' do
+        file = create(:global_file, name: 'notes.txt')
+        message = Analysis::LLM::Message.new('Summarize this transcript', file)
+
+        allow(service.response_client).to receive(:create).and_return(nil)
+
+        expect { service.chat(message) }.not_to raise_error
+      end
+    end
   end
 
   describe 'usable_context_window' do
