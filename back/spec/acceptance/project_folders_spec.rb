@@ -126,10 +126,25 @@ resource 'ProjectFolder' do
         parameter :number, 'Page number'
         parameter :size, 'Number of folders per page'
       end
+      parameter :space_ids, 'Only folders in these spaces', required: false
+      parameter :top_level, 'Only folders at the top of the level being viewed: not in a space the user can open, unless that space is in space_ids', required: false
+      parameter :sort, "'arranged' for the front-office order; newest first otherwise", required: false
 
       example_request 'List all folders for admin' do
         assert_status 200
         expect(response_data.size).to eq 2
+        expect(json_response_body.dig(:meta, :total)).to eq 2
+      end
+
+      example 'List the folders at the top level', document: false do
+        SettingsService.new.activate_feature!('spaces')
+        folder_in_space = create(:project_folder, space: create(:space))
+
+        do_request top_level: true
+
+        assert_status 200
+        expect(response_data.pluck(:id)).not_to include(folder_in_space.id)
+        expect(json_response_body.dig(:meta, :total)).to eq 2
       end
 
       example 'Includes folder moderators', document: false do

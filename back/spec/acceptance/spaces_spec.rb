@@ -108,6 +108,9 @@ resource 'Spaces' do
         project_ids = space1_data.dig(:relationships, :projects, :data).map { |project| project[:id] }
         expect(project_ids).to include(project_in_folder.id.to_s)
         expect(project_ids).to include(project_not_in_folder.id.to_s)
+
+        expect(space1_data[:attributes]).to include(folders_count: 1, projects_count: 2)
+        expect(response_data.find { |s| s[:id] == space2.id }[:attributes]).to include(folders_count: 0, projects_count: 0)
       end
 
       example 'Retrieving list of spaces with search' do
@@ -116,6 +119,24 @@ resource 'Spaces' do
         expect(status).to eq(200)
         expect(response_data.size).to eq(1)
         expect(response_data.first[:id]).to eq(space2.id)
+      end
+
+      example 'Searching orders spaces by relevance, not by age', document: false do
+        # More matches rank higher, so the newer space must come first.
+        older = create(:space, title_multiloc: { en: 'Mobility' })
+        newer = create(:space, title_multiloc: { en: 'Mobility, mobility and more mobility' })
+
+        do_request(search: 'mobility')
+        expect(response_data.pluck(:id)).to eq([newer.id, older.id])
+      end
+
+      example 'Searching finds spaces beyond the first page', document: false do
+        create_list(:space, 2)
+        space4 = create(:space, title_multiloc: { en: 'Blast off!' })
+
+        do_request(search: 'Blast', page: { size: 1 })
+        expect(status).to eq(200)
+        expect(response_data.pluck(:id)).to eq([space4.id])
       end
     end
 
