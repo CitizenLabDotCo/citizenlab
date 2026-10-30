@@ -13,7 +13,7 @@ describe AIAssistant::Surfaces::SurveyBuilder do
   end
 
   it 'hides the pinned arguments from the model' do
-    get_form_fields = context.tool('get_form_fields')
+    get_form_fields = surface.tool('get_form_fields')
 
     expect(get_form_fields.llm_schema).to include('properties' => {}, 'required' => [], 'additionalProperties' => false)
   end
