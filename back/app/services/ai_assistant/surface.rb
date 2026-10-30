@@ -41,7 +41,7 @@ module AIAssistant
     end
 
     def project_id
-      record.try(:project_id)
+      subject.try(:project_id)
     end
 
     def tools
