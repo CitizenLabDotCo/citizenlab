@@ -864,6 +864,11 @@
     "verified_at": "2026-10-08T12:35:33.580761Z",
     "verified_by": "stephanie"
   },
+  "app.components.CustomFieldsForm.clickOnMapToAddMultiplePins2": {
+    "state": "verified",
+    "verified_at": "2026-10-30T14:01:52.176611Z",
+    "verified_by": "Adrien"
+  },
   "app.components.CustomFieldsForm.clickOnMapToAddOrType": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -933,6 +938,16 @@
     "state": "verified",
     "verified_at": "2026-10-08T12:35:33.580761Z",
     "verified_by": "stephanie"
+  },
+  "app.components.CustomFieldsForm.maximumPinsReachedClick": {
+    "state": "verified",
+    "verified_at": "2026-10-30T14:01:52.176611Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomFieldsForm.maximumPinsReachedTap": {
+    "state": "verified",
+    "verified_at": "2026-10-30T14:01:52.176611Z",
+    "verified_by": "Adrien"
   },
   "app.components.CustomFieldsForm.minimumCoordinates2": {
     "state": "verified",
