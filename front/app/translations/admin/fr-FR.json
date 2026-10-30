@@ -1848,7 +1848,7 @@
   "app.containers.Admin.projects.project.general.components.UnlistedInput.notIndexed": "Non référencé par les moteurs de recherche",
   "app.containers.Admin.projects.project.general.components.UnlistedInput.notVisible": "Non visible sur la page d'accueil ni dans les widgets",
   "app.containers.Admin.projects.project.general.components.UnlistedInput.onlyAccessible": "Uniquement accessible via l'URL direct",
-  "app.containers.Admin.projects.project.general.components.UnlistedInput.selectHowDiscoverableProjectIs": "Sélectionnez le degré de découvrabilité de ce projet.",
+  "app.containers.Admin.projects.project.general.components.UnlistedInput.selectHowDiscoverableProjectIs": "Ce paramètre détermine où le projet apparaît, sans affecter les droits d'accès.",
   "app.containers.Admin.projects.project.general.components.UnlistedInput.thisProjectIsVisibleToEveryone": "Ce projet est visible par tous ceux qui y ont accès et apparaîtra sur la page d'accueil ainsi que dans les widgets.",
   "app.containers.Admin.projects.project.general.components.UnlistedInput.thisProjectWillBeHidden": "Ce projet ne sera pas diffusé publiquement et ne sera accessible qu’aux personnes disposant du lien.",
   "app.containers.Admin.projects.project.general.components.UnlistedInput.unlisted": "Non listé",
