@@ -13,12 +13,11 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 
 import useLocale from 'hooks/useLocale';
 
+import messages from 'components/admin/SlugInput/messages';
 import slugInputMessages from 'components/HookForm/SlugInput/messages';
 import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
-
-import messages from './messages';
 
 interface Props {
   slug: string;

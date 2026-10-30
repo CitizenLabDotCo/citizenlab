@@ -3,9 +3,9 @@ import React from 'react';
 import { CLErrors, Multiloc } from 'typings';
 
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
+import BoSlugInput from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/BoSlugInput';
 import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 
-import BoSlugInput from 'components/admin/SlugInput/BoSlugInput';
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
