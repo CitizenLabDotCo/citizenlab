@@ -20,11 +20,13 @@ export type AiAssistantErrorCode =
   | 'unexpected_error';
 
 type ConversationState =
+  | { status: 'idle'; last_error_code: null; turn_started_at: string | null }
+  | { status: 'running'; last_error_code: null; turn_started_at: string }
   | {
-      status: 'idle' | 'running';
-      last_error_code: null;
-    }
-  | { status: 'failed'; last_error_code: AiAssistantErrorCode };
+      status: 'failed';
+      last_error_code: AiAssistantErrorCode;
+      turn_started_at: string | null;
+    };
 
 export interface IAiAssistantConversationData {
   id: string;

@@ -42,7 +42,7 @@ const Transcript = ({ conversation }: Props) => {
         )
       )}
       {attributes.status === 'running' && (
-        <WorkingIndicator startedAt={attributes.updated_at} />
+        <WorkingIndicator startedAt={attributes.turn_started_at} />
       )}
       {attributes.status === 'failed' && (
         <Text m="0px" color="error">
