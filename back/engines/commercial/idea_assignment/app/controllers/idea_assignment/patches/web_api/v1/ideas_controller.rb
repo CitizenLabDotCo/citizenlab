@@ -20,7 +20,7 @@ module IdeaAssignment
 
             moderatable_projects = UserRoleService.new.moderatable_projects(current_user)
             if current_user.admin? || ideas.where.not(project: moderatable_projects).none?
-              super + [Facets::Column.new(:assignee_id)]
+              super + [[Facets::Column.new(:assignee_id), :assignee]]
             else
               super
             end

@@ -237,7 +237,6 @@ resource 'Ideas' do
         parameter :project_publication_status, "Filter by project publication_status. One of #{AdminPublication::PUBLICATION_STATUSES.join(', ')}", required: false
         parameter :feedback_needed, 'Filter out ideas that need feedback', required: false
         parameter :filter_trending, 'Filter out truly trending ideas', required: false
-        parameter :custom_field_ids, 'Count the answers per option of these public choice questions', required: false
 
         let(:projects) { [@project.id] }
 
@@ -254,22 +253,78 @@ resource 'Ideas' do
           expect(json_attributes[:total]).to eq 4
         end
 
-        example 'List idea counts per answer option of public choice questions' do
-          form = create(:custom_form, participation_context: @project)
-          public_field = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public')
-          private_field = create(:custom_field_select, :with_options, resource: form)
-          disabled_field = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public', enabled: false)
-          create(:custom_field_answer, answerable: @i1, key: public_field.key, value: 'option1')
-          create(:custom_field_answer, answerable: @i2, key: public_field.key, value: 'option1')
-          create(:custom_field_answer, answerable: @i3, key: public_field.key, value: 'option2')
-          create(:custom_field_answer, answerable: @i4, key: private_field.key, value: 'option1')
-          create(:custom_field_answer, answerable: @i4, key: disabled_field.key, value: 'option1')
-
-          do_request custom_field_ids: [public_field.id, private_field.id, disabled_field.id]
+        example 'Topic counts ignore the topic filter' do
+          do_request input_topics: [@t1.id]
 
           assert_status 200
-          answer_counts = json_parse(response_body).dig(:data, :attributes, :custom_field_answers)
-          expect(answer_counts).to eq({ public_field.id.to_sym => { option1: 2, option2: 1 } })
+          json_attributes = json_parse(response_body).dig(:data, :attributes)
+          expect(json_attributes[:input_topic_id]).to eq({ @t1.id.to_sym => 2, @t2.id.to_sym => 2 })
+          expect(json_attributes[:idea_status_id]).to eq({ @s1.id.to_sym => 1, @s2.id.to_sym => 1 })
+          expect(json_attributes[:total]).to eq 2
+        end
+
+        example 'Status counts ignore the status filter' do
+          do_request idea_status: @s2.id
+
+          assert_status 200
+          json_attributes = json_parse(response_body).dig(:data, :attributes)
+          expect(json_attributes[:idea_status_id]).to eq({ @s1.id.to_sym => 1, @s2.id.to_sym => 3 })
+          expect(json_attributes[:input_topic_id]).to eq({ @t1.id.to_sym => 1, @t2.id.to_sym => 1 })
+          expect(json_attributes[:total]).to eq 3
+        end
+
+        describe 'answer counts' do
+          let(:form) { create(:custom_form, participation_context: @project) }
+          let(:phase) { @project.phases.first.id }
+
+          example 'List idea counts per answer option of the public choice questions of the phase' do
+            public_field = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public', show_as_filter: true)
+            private_field = create(:custom_field_select, :with_options, resource: form)
+            disabled_field = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public', show_as_filter: true, enabled: false)
+            create(:custom_field_answer, answerable: @i1, key: public_field.key, value: 'option1')
+            create(:custom_field_answer, answerable: @i2, key: public_field.key, value: 'option1')
+            create(:custom_field_answer, answerable: @i3, key: public_field.key, value: 'option2')
+            create(:custom_field_answer, answerable: @i4, key: private_field.key, value: 'option1')
+            create(:custom_field_answer, answerable: @i4, key: disabled_field.key, value: 'option1')
+
+            do_request
+
+            assert_status 200
+            answer_counts = json_parse(response_body).dig(:data, :attributes, :custom_field_answers)
+            expect(answer_counts).to eq({ public_field.id.to_sym => { option1: 2, option2: 1 } })
+          end
+
+          example 'Answer counts ignore the filter on their own question, not the one on other questions' do
+            multiselect = create(:custom_field_multiselect, :with_options, resource: form, answers_visible_to: 'public', show_as_filter: true)
+            select = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public', show_as_filter: true)
+            create(:custom_field_answer, answerable: @i1, key: multiselect.key, value: %w[option1 option2])
+            create(:custom_field_answer, answerable: @i2, key: multiselect.key, value: ['option1'])
+            create(:custom_field_answer, answerable: @i3, key: multiselect.key, value: ['option1'])
+            create(:custom_field_answer, answerable: @i4, key: multiselect.key, value: ['option2'])
+            create(:custom_field_answer, answerable: @i1, key: select.key, value: 'option1')
+            create(:custom_field_answer, answerable: @i2, key: select.key, value: 'option1')
+            create(:custom_field_answer, answerable: @i3, key: select.key, value: 'option2')
+            create(:custom_field_answer, answerable: @i4, key: select.key, value: 'option2')
+
+            do_request custom_field_answers: { multiselect.id => ['option1'] }
+
+            assert_status 200
+            json_attributes = json_parse(response_body).dig(:data, :attributes)
+            expect(json_attributes[:custom_field_answers]).to eq({
+              multiselect.id.to_sym => { option1: 3, option2: 2 },
+              select.id.to_sym => { option1: 2, option2: 1 }
+            })
+            expect(json_attributes[:total]).to eq 3
+          end
+
+          example 'Without a phase there are no answer counts', document: false do
+            create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public', show_as_filter: true)
+
+            do_request phase: nil
+
+            assert_status 200
+            expect(json_parse(response_body).dig(:data, :attributes)).not_to have_key :custom_field_answers
+          end
         end
       end
     end
