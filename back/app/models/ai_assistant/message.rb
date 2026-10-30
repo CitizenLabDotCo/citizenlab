@@ -73,7 +73,7 @@ module AIAssistant
 
     # Fails closed for records that don't belong to a project.
     def in_conversation_project?(file)
-      project_id = conversation.context.try(:project_id)
+      project_id = conversation.subject.try(:project_id)
       project_id.present? && file.project_ids.include?(project_id)
     end
 
