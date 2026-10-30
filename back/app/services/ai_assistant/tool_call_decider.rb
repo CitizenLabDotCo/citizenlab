@@ -63,7 +63,7 @@ module AIAssistant
     end
 
     def run_tool
-      tool = context.tool(@tool_call.name)
+      tool = surface.tool(@tool_call.name)
       return { status: 'failed', result: { error: 'This tool is no longer available.' }.to_json } unless tool
 
       result = tool.call(@user, @tool_call.arguments.merge(@tool_call.pinned_arguments))
@@ -82,13 +82,13 @@ module AIAssistant
         @user,
         @tool_call.decided_at.to_i,
         payload: { name: @tool_call.name, conversation_id: @conversation.id, status: @tool_call.status, reason: @tool_call.reason }.compact,
-        project_id: context.project_id,
+        project_id: surface.project_id,
         channel: 'ai_assistant'
       )
     end
 
-    def context
-      @context ||= Context.for(@conversation)
+    def surface
+      @surface ||= Surface.for(@conversation)
     end
   end
 end

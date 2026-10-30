@@ -5,7 +5,7 @@ require 'rails_helper'
 describe AIAssistant::ToolCallDecider do
   let(:conversation) { create(:ai_assistant_conversation, status: 'awaiting_approval') }
   let(:user) { conversation.user }
-  let(:phase) { conversation.context }
+  let(:phase) { conversation.subject }
   let(:assistant_message) { create(:ai_assistant_message, conversation:, role: 'assistant', content: nil) }
   let(:fields) do
     [

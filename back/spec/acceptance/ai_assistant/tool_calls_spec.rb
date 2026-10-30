@@ -12,7 +12,7 @@ resource 'AI assistant tool calls' do
   end
 
   let(:conversation) { create(:ai_assistant_conversation, status: 'awaiting_approval') }
-  let(:phase) { conversation.context }
+  let(:phase) { conversation.subject }
   let(:tool_call) do
     create(
       :ai_assistant_tool_call,

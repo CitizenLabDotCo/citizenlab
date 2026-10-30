@@ -58,8 +58,8 @@ class WebApi::V1::AIAssistant::ConversationsController < ApplicationController
   def previous_conversations(conversation)
     ::AIAssistant::Conversation.awaiting_approval.where(
       user: conversation.user,
-      context: conversation.context,
-      context_key: conversation.context_key
+      subject: conversation.subject,
+      surface_key: conversation.surface_key
     )
   end
 
