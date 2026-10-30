@@ -13,7 +13,7 @@ class WebApi::V1::AIAssistant::MessagesController < ApplicationController
       next :busy if conversation.running?
       next :invalid unless message.save
 
-      conversation.update!(status: 'running', last_error_code: nil)
+      conversation.update!(status: 'running', last_error_code: nil, turn_started_at: Time.current)
       ::AIAssistant::TurnJob.perform_later(conversation)
       :created
     end

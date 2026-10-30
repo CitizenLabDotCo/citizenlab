@@ -1272,6 +1272,7 @@ CREATE TABLE public.ai_assistant_conversations (
     locale character varying NOT NULL,
     status character varying DEFAULT 'idle'::character varying NOT NULL,
     last_error_code character varying,
+    turn_started_at timestamp(6) without time zone,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );

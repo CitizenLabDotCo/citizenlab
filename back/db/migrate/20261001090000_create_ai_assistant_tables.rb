@@ -13,6 +13,7 @@ class CreateAIAssistantTables < ActiveRecord::Migration[7.2]
       t.string :locale, null: false
       t.string :status, null: false, default: 'idle'
       t.string :last_error_code
+      t.datetime :turn_started_at
 
       t.timestamps
     end

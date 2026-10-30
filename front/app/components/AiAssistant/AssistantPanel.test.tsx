@@ -72,6 +72,7 @@ const conversation = (
 const baseAttributes = {
   surface_key: 'survey_builder',
   locale: 'en',
+  turn_started_at: '2026-10-01T08:00:00.000Z',
   created_at: '2026-10-01T08:00:00.000Z',
   updated_at: '2026-10-01T08:00:00.000Z',
 } as const;
@@ -116,6 +117,21 @@ describe('AssistantPanel', () => {
     expect(
       screen.getByRole('button', { name: 'New chat' })
     ).not.toHaveAttribute('aria-disabled', 'true');
+  });
+
+  it('times the work from the start of the turn', () => {
+    jest.useFakeTimers({ now: new Date('2026-10-01T08:01:30.000Z') });
+    mockConversation = conversation({
+      ...baseAttributes,
+      status: 'running',
+      last_error_code: null,
+      // Every message the turn stores moves updated_at.
+      updated_at: '2026-10-01T08:01:20.000Z',
+    });
+    renderPanel();
+
+    expect(screen.getByText('90 seconds')).toBeInTheDocument();
+    jest.useRealTimers();
   });
 
   it('shows why the last turn failed', () => {

@@ -12,6 +12,7 @@
 #  locale          :string           not null
 #  status          :string           default("idle"), not null
 #  last_error_code :string
+#  turn_started_at :datetime
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #

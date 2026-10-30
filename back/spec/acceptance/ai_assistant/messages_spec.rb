@@ -28,7 +28,7 @@ resource 'AI assistant messages' do
 
         assert_status 201
         expect(response_data[:attributes]).to include(role: 'user', content: 'Create a survey about our park.', position: 1)
-        expect(conversation.reload.status).to eq('running')
+        expect(conversation.reload).to have_attributes(status: 'running', turn_started_at: be_within(1.minute).of(Time.current))
       end
 
       example '[error] Send a message while the assistant is busy', document: false do
