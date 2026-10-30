@@ -143,6 +143,12 @@ resource 'AI assistant conversations' do
         assert_status 422
         expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'surface_unavailable'
       end
+
+      example '[error] Start a conversation in a language the platform does not use', document: false do
+        do_request(ai_assistant_conversation: { surface_key:, subject_id:, locale: 'xx' })
+        assert_status 422
+        expect(json_response_body.dig(:errors, :locale, 0, :error)).to eq 'inclusion'
+      end
     end
 
     context 'when admin' do
