@@ -129,6 +129,11 @@ resource 'AI assistant conversations' do
         expect(json_response_body.dig(:errors, :surface_key, 0, :error)).to eq 'inclusion'
       end
 
+      # Rails answers it with a 400.
+      example '[error] Start a conversation without its attributes', document: false do
+        expect { do_request(ai_assistant_conversation: nil) }.to raise_error(ActionController::ParameterMissing)
+      end
+
       example '[error] Start a conversation about a phase that is not a native survey', document: false do
         do_request(ai_assistant_conversation: { surface_key:, subject_id: create(:phase).id, locale: })
         assert_status 422

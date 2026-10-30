@@ -40,7 +40,7 @@ class WebApi::V1::AIAssistant::ConversationsController < ApplicationController
       conversation.save!
       render json: serialize(conversation), status: :created
     end
-  rescue KeyError
+  rescue ::AIAssistant::Surface::UnknownKeyError
     skip_authorization
     render json: { errors: { surface_key: [{ error: 'inclusion' }] } }, status: :unprocessable_entity
   end
