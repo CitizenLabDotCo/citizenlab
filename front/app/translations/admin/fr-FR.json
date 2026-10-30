@@ -1808,7 +1808,7 @@
   "app.containers.Admin.projects.project.event.done": "Terminé",
   "app.containers.Admin.projects.project.event.dropImage": "Déposez une image ou cliquez pour la télécharger",
   "app.containers.Admin.projects.project.event.eventSetup": "Configuration de l'événement",
-  "app.containers.Admin.projects.project.event.fromProject": "De \"{project}\"",
+  "app.containers.Admin.projects.project.event.fromProject": "Projet : {project}",
   "app.containers.Admin.projects.project.event.goToProject": "Accéder au projet",
   "app.containers.Admin.projects.project.event.image": "Image",
   "app.containers.Admin.projects.project.event.linkToOnlineEvent": "Lien vers l'événement en ligne",

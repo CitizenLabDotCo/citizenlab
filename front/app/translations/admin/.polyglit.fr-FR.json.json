@@ -9184,6 +9184,11 @@
     "verified_at": "2026-10-29T22:16:00.496875Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.event.cropImage": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:23:34.944095Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.event.delete": {
     "state": "verified",
     "verified_at": "2026-10-26T13:27:19.241589Z",
@@ -9194,9 +9199,24 @@
     "verified_at": "2026-10-29T22:16:00.496875Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.event.deleteImage": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:23:34.944095Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.done": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:23:34.944095Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.event.eventSetup": {
     "state": "verified",
     "verified_at": "2026-10-29T22:16:00.496875Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.fromProject": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:23:34.944095Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.event.goToProject": {
@@ -9227,6 +9247,16 @@
   "app.containers.Admin.projects.project.event.removeEndDate": {
     "state": "verified",
     "verified_at": "2026-10-29T22:16:00.496875Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.replace": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:23:34.944095Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.replaceImage": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:23:34.944095Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.event.untitledEvent": {
