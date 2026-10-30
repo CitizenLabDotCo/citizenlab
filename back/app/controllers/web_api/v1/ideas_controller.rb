@@ -376,8 +376,9 @@ class WebApi::V1::IdeasController < ApplicationController
     phase = Phase.find_by(id: params[:phase])
     return [] if !phase
 
-    IdeaCustomFieldsService.new(phase.pmethod.custom_form).enabled_fields
-      .select { |field| policy(field).show? && field.can_show_as_filter? }
+    form = phase.pmethod.custom_form
+    fields = form.custom_fields.enabled.where(show_as_filter: true)
+    CustomFieldPolicy::Scope.new(pundit_user, fields, form).resolve
       .map { |field| [Facets::IdeaCustomFieldAnswer.new(field), [:custom_field_answers, field.id]] }
   end
 
