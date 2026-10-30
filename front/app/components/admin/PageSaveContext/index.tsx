@@ -18,7 +18,8 @@ interface PageSaveContextValue {
   setDirty: (key: string, dirty: boolean) => void;
   dirty: boolean;
   saving: boolean;
-  saveAll: (reason: SaveReason) => Promise<boolean>;
+  /** Resolves to the keys of the panels whose save failed. */
+  saveAll: (reason: SaveReason) => Promise<string[]>;
   discardAll: () => void;
   revision: number;
   leave: () => void;
@@ -67,14 +68,12 @@ export const PageSaveProvider = ({ children }: { children: ReactNode }) => {
   const saveAll = useCallback(
     async (reason: SaveReason) => {
       setSaving(true);
+      const keys = dirtyKeys.filter((key) => savers.current.has(key));
       const results = await Promise.allSettled(
-        dirtyKeys.flatMap((key) => {
-          const save = savers.current.get(key);
-          return save ? [save(reason)] : [];
-        })
+        keys.map((key) => savers.current.get(key)?.(reason))
       );
       setSaving(false);
-      return results.every(({ status }) => status === 'fulfilled');
+      return keys.filter((_key, i) => results[i].status === 'rejected');
     },
     [dirtyKeys]
   );

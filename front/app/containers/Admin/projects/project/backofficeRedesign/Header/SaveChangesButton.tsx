@@ -8,6 +8,7 @@ import { usePageSave } from 'components/admin/PageSaveContext';
 
 import { useIntl } from 'utils/cl-intl';
 
+import returnToPhaseAfterSave from '../_shared/returnToPhaseAfterSave';
 import messages from '../messages';
 
 interface Props {
@@ -23,7 +24,9 @@ const SaveChangesButton = ({ label }: Props) => {
 
   const handleClick = async () => {
     setSaved(false);
-    setSaved(await pageSave.saveAll('button'));
+    const failed = await pageSave.saveAll('button');
+    setSaved(failed.length === 0);
+    returnToPhaseAfterSave(failed);
   };
 
   // A new edit makes the page dirty again, which brings the label back.

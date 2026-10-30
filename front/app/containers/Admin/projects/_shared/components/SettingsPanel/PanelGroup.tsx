@@ -1,6 +1,6 @@
 import React, { ReactNode, useState } from 'react';
 
-import { Box, Button, colors } from '@citizenlab/cl2-component-library';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
@@ -44,22 +44,12 @@ const PanelGroup = ({
     <Box mb="10px">
       <SetupCard
         title={label}
-        action={
-          <Box display="flex" alignItems="center" gap="4px">
-            {summary && !open && <SummaryPill label={summary} />}
-            <Button
-              buttonStyle="bo-text"
-              icon={open ? 'chevron-up' : 'chevron-down'}
-              iconSize="16px"
-              width="28px"
-              height="28px"
-              padding="0"
-              ariaLabel={label}
-              ariaExpanded={open}
-              onClick={toggle}
-            />
-          </Box>
-        }
+        action={summary && !open && <SummaryPill label={summary} />}
+        button={{
+          icon: open ? 'chevron-up' : 'chevron-down',
+          expanded: open,
+          onClick: toggle,
+        }}
       >
         {open && children}
       </SetupCard>

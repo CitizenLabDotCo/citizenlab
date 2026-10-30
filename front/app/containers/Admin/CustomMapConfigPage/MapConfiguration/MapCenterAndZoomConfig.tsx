@@ -2,7 +2,7 @@ import React, { memo, useState, useEffect } from 'react';
 
 import MapView from '@arcgis/core/views/MapView';
 import { Input, IconTooltip, Icon } from '@citizenlab/cl2-component-library';
-import { isEmpty, inRange } from 'lodash-es';
+import { isEmpty } from 'lodash-es';
 import { WrappedComponentProps } from 'react-intl';
 import styled from 'styled-components';
 
@@ -21,6 +21,7 @@ import { useParams } from 'utils/router';
 
 import { getCenter, getZoomLevel } from '../../../../utils/mapUtils/map';
 import messages from '../messages';
+import { isValidCenterAndZoom } from '../utils';
 
 const Container = styled.div`
   display: flex;
@@ -158,15 +159,7 @@ const MapCenterAndZoomConfig = memo<Props & WrappedComponentProps>(
       const defaultLng = parseFloat(formValues.defaultLng as any);
       const defaultZoom = parseInt(formValues.defaultZoom as any, 10);
 
-      if (
-        inRange(defaultLng, -180, 180) &&
-        inRange(defaultLat, -90, 90) &&
-        inRange(defaultZoom, 0, 21)
-      ) {
-        return true;
-      }
-
-      return false;
+      return isValidCenterAndZoom(defaultLat, defaultLng, defaultZoom);
     };
 
     const formChange = (

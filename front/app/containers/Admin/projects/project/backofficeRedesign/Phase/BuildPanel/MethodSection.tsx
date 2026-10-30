@@ -7,7 +7,6 @@ import CommonGroundSection from './CommonGroundSection';
 import DemographicsCard from './DemographicsCard';
 import FormSection from './FormSection';
 import InformationSection from './InformationSection';
-import PollSection from './PollSection';
 import VotingOptionsSection from './VotingOptionsSection';
 
 interface Props {
@@ -15,6 +14,7 @@ interface Props {
   participationMethod: ParticipationMethod;
   phaseId?: string;
   inputTerm?: InputTerm;
+  formInSurveyOptions: boolean;
 }
 
 const MethodSection = ({
@@ -22,10 +22,12 @@ const MethodSection = ({
   participationMethod,
   phaseId,
   inputTerm,
+  formInSurveyOptions,
 }: Props) => {
   switch (participationMethod) {
     case 'poll':
-      return phaseId ? <PollSection phaseId={phaseId} /> : null;
+      // Poll questions are edited from the Quick poll option.
+      return null;
     case 'common_ground':
       return phaseId ? (
         <CommonGroundSection projectId={projectId} phaseId={phaseId} />
@@ -50,6 +52,7 @@ const MethodSection = ({
           participationMethod={participationMethod}
           phaseId={phaseId}
           inputTerm={inputTerm}
+          formInSurveyOptions={formInSurveyOptions}
         />
       );
   }

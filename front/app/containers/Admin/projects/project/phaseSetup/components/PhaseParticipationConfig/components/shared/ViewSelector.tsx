@@ -16,6 +16,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
 
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
+import viewNameMessages from 'components/PostCardsComponents/messages';
 import Error from 'components/UI/Error';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
@@ -29,6 +30,7 @@ import ViewRow from './ViewRow';
 interface ViewOption {
   value: PresentationMode;
   title: MessageDescriptor;
+  shortTitle: MessageDescriptor;
   description: MessageDescriptor;
   descriptionValues?: Record<string, React.ReactNode>;
   alwaysEnabled?: boolean;
@@ -85,12 +87,14 @@ const ViewSelector = ({
     {
       value: 'card',
       title: messages.listViewTitle,
+      shortTitle: viewNameMessages.list,
       description: messages.listViewDescription,
       alwaysEnabled: true,
     },
     {
       value: 'map',
       title: messages.mapViewTitle,
+      shortTitle: viewNameMessages.map,
       description: messages.mapViewDescription,
       descriptionValues: { inputFormLink },
     },
@@ -100,6 +104,7 @@ const ViewSelector = ({
           {
             value: 'feed' as const,
             title: messages.feedViewTitle,
+            shortTitle: viewNameMessages.perspectives,
             description: messages.feedViewDescription,
             descriptionValues: { inputTagsLink },
           },
@@ -130,11 +135,25 @@ const ViewSelector = ({
     const defaultView = viewOptions.find(
       (option) => option.value === presentation_mode
     );
+    const otherViewsCount = viewOptions.filter(
+      (option) =>
+        option.value !== presentation_mode &&
+        currentAvailableViews.includes(option.value)
+    ).length;
+    const defaultViewName =
+      defaultView && formatMessage(defaultView.shortTitle);
 
     return (
       <PanelGroup
         label={formatMessage(title || messages.availableViews)}
-        summary={defaultView && formatMessage(defaultView.title)}
+        summary={
+          defaultViewName && otherViewsCount > 0
+            ? formatMessage(messages.availableViewsSummary, {
+                defaultView: defaultViewName,
+                otherViewsCount,
+              })
+            : defaultViewName
+        }
       >
         <Box display="flex" flexDirection="column">
           {viewOptions.map((option, index) => (

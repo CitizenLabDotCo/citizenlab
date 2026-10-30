@@ -60,12 +60,12 @@ describe('PageSaveContext', () => {
       settings: { dirty: false, save: saveSettings },
     });
 
-    let saved: boolean | undefined;
+    let failed: string[] | undefined;
     await act(async () => {
-      saved = await result.current?.saveAll('button');
+      failed = await result.current?.saveAll('button');
     });
 
-    expect(saved).toBe(true);
+    expect(failed).toEqual([]);
     expect(saveBuild).toHaveBeenCalledWith('button');
     expect(saveSettings).not.toHaveBeenCalled();
   });
@@ -79,12 +79,12 @@ describe('PageSaveContext', () => {
       },
     });
 
-    let saved: boolean | undefined;
+    let failed: string[] | undefined;
     await act(async () => {
-      saved = await result.current?.saveAll('leave');
+      failed = await result.current?.saveAll('leave');
     });
 
-    expect(saved).toBe(false);
+    expect(failed).toEqual(['settings']);
     expect(result.current?.saving).toBe(false);
   });
 

@@ -17,6 +17,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
+import { usePollStyles } from '../PollVariantContext';
 
 /*
  * edit mode : titleMultiloc and optionId defined, question Id not used
@@ -37,6 +38,8 @@ const OptionFormRow = ({
   questionId,
   closeRow,
 }: Props) => {
+  const { buttonStyle, boSize, inputVariant } = usePollStyles();
+
   const { mutate: addPollOption } = useAddPollOption();
   const { mutate: updatePollOption } = useUpdatePollOption();
   const locale = useLocale();
@@ -101,6 +104,7 @@ const OptionFormRow = ({
       <TextCell>
         {selectedLocale && (
           <LocaleSwitcher
+            variant={inputVariant}
             onSelectedLocaleChange={onSelectedLocaleChange}
             locales={!isNilOrError(tenantLocales) ? tenantLocales : []}
             selectedLocale={selectedLocale}
@@ -112,6 +116,7 @@ const OptionFormRow = ({
       <TextCell className="expand">
         {selectedLocale && (
           <Input
+            variant={inputVariant}
             autoFocus
             value={newTitleMultiloc[selectedLocale]}
             locale={selectedLocale}
@@ -123,7 +128,8 @@ const OptionFormRow = ({
 
       <ButtonWithLink
         className="e2e-form-option-save"
-        buttonStyle="admin-dark"
+        buttonStyle={buttonStyle('admin-dark')}
+        boSize={boSize}
         onClick={onSave}
       >
         <FormattedMessage {...messages.saveOption} />
@@ -131,7 +137,8 @@ const OptionFormRow = ({
 
       <ButtonWithLink
         className="e2e-form-option-cancel"
-        buttonStyle="secondary-outlined"
+        buttonStyle={buttonStyle('secondary-outlined')}
+        boSize={boSize}
         onClick={closeRow}
       >
         <FormattedMessage {...messages.cancelOption} />

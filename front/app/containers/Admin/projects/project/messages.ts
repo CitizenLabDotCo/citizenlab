@@ -341,6 +341,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.availableViews',
     defaultMessage: 'Available views',
   },
+  availableViewsSummary: {
+    id: 'app.containers.AdminPage.ProjectEdit.availableViewsSummary',
+    defaultMessage: '{defaultView} +{otherViewsCount}',
+  },
   listViewTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.listViewTitle',
     defaultMessage: 'List view',

@@ -10,6 +10,7 @@ import Modal from 'components/UI/Modal';
 import { useIntl } from 'utils/cl-intl';
 import { useBlocker } from 'utils/router';
 
+import returnToPhaseAfterSave from './_shared/returnToPhaseAfterSave';
 import messages from './messages';
 
 const UnsavedChangesGuard = () => {
@@ -32,11 +33,12 @@ const UnsavedChangesGuard = () => {
   };
 
   const handleSave = async () => {
-    const saved = await pageSave.saveAll('leave');
-    if (saved) {
+    const failed = await pageSave.saveAll('leave');
+    if (failed.length === 0) {
       proceed();
     } else {
       blocker.reset();
+      returnToPhaseAfterSave(failed);
     }
   };
 

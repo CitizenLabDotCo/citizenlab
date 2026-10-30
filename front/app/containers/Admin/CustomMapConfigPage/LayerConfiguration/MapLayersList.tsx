@@ -4,8 +4,8 @@ import {
   Box,
   Icon,
   IconTooltip,
+  Text,
   colors,
-  fontSizes,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
@@ -36,6 +36,7 @@ import messages from '../messages';
 import addOrderingToLayers, {
   IMapLayerAttributesWithOrdering,
 } from './addOrderingToLayers';
+import LayerTitle from './LayerTitle';
 
 const Container = styled.div``;
 
@@ -59,16 +60,6 @@ const LayerIcon = styled(Icon)<{ color: string }>`
   margin-right: 10px;
 `;
 
-const LayerName = styled.div`
-  color: ${colors.primary};
-  font-size: ${fontSizes.m}px;
-  line-height: normal;
-  font-weight: 400;
-  flex: 1;
-  display: flex;
-  align-items: center;
-`;
-
 const Buttons = styled.div`
   display: flex;
   align-items: center;
@@ -88,6 +79,7 @@ interface Props {
   onEditLayer: (layerId: string) => void;
   className?: string;
   setView: (view: ViewOptions) => void;
+  variant?: 'default' | 'bo';
 }
 
 const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
@@ -98,7 +90,9 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
     intl: { formatMessage },
     setView,
     localize,
+    variant = 'default',
   }) => {
+    const isBo = variant === 'bo';
     const { projectId } = useParams({ strict: false }) as {
       projectId: string;
     };
@@ -166,23 +160,34 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       layers && layers.length > 0 ? addOrderingToLayers(layers) : null;
 
+    const layersTooltip = isEsriIntegrationEnabled && ( // TODO: Remove once Esri integration is released
+      <StyledIconTooltip
+        content={
+          <FormattedMessage
+            {...messages.layersTooltip}
+            values={{
+              supportArticle: supportArticleLink,
+            }}
+          />
+        }
+      />
+    );
+
     return (
       <Container className={className || ''}>
-        <SubSectionTitle>
-          <FormattedMessage {...messages.mapData} />
-          {isEsriIntegrationEnabled && ( // TODO: Remove once Esri integration is released
-            <StyledIconTooltip
-              content={
-                <FormattedMessage
-                  {...messages.layersTooltip}
-                  values={{
-                    supportArticle: supportArticleLink,
-                  }}
-                />
-              }
-            />
-          )}
-        </SubSectionTitle>
+        {isBo ? (
+          <Box as="h3" display="flex" alignItems="center" m="0" mb="12px">
+            <Text as="span" variant="boLabel" color="coolGrey600" m="0">
+              <FormattedMessage {...messages.mapData} />
+            </Text>
+            {layersTooltip}
+          </Box>
+        ) : (
+          <SubSectionTitle>
+            <FormattedMessage {...messages.mapData} />
+            {layersTooltip}
+          </SubSectionTitle>
+        )}
         {layersWithOrdering && (
           <StyledSortableList
             key={layersWithOrdering.length}
@@ -227,7 +232,9 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
                                 : layerColor
                             }
                           />
-                          <LayerName>{layerTitle}</LayerName>
+                          <LayerTitle variant={variant}>
+                            {layerTitle}
+                          </LayerTitle>
                           <Buttons>
                             {mapLayer.type === 'CustomMaps::GeojsonLayer' && (
                               <Tooltip
@@ -242,7 +249,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
                                   <EditButton
                                     icon="edit"
                                     iconSize="16px"
-                                    buttonStyle="text"
+                                    buttonStyle={isBo ? 'bo-text' : 'text'}
                                     padding="0px"
                                     onClick={toggleLayerConfig(mapLayer.id)}
                                   />
@@ -265,7 +272,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
                                   data-cy="e2e-admin-layer-remove-btn"
                                   icon="delete"
                                   iconSize="16px"
-                                  buttonStyle="text"
+                                  buttonStyle={isBo ? 'bo-text' : 'text'}
                                   padding="0px"
                                   onClick={removeLayer(mapLayer.id)}
                                 />
@@ -288,12 +295,12 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
             <Box mb="24px" ml="32px">
               <ListItem>
                 <LayerIcon name="map" color={colors.coolGrey600} />
-                <LayerName>
+                <LayerTitle variant={variant}>
                   {formatMessage(messages.esriWebMap)}:{' '}
                   {/* TODO: Fix this the next time the file is edited. */}
                   {/* eslint-disable-next-line @typescript-eslint/no-unnecessary-condition */}
                   {mapConfig?.data.attributes.esri_web_map_id}
-                </LayerName>
+                </LayerTitle>
                 <Buttons>
                   <Spacer />
                   <Tooltip
@@ -306,7 +313,7 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
                       <RemoveButton
                         icon="delete"
                         iconSize="16px"
-                        buttonStyle="text"
+                        buttonStyle={isBo ? 'bo-text' : 'text'}
                         padding="0px"
                         onClick={removeWebMap}
                       />
@@ -323,9 +330,13 @@ const MapLayersList = memo<Props & WrappedComponentProps & InjectedLocalized>(
         {mapConfig?.data?.id && (
           <>
             {isEsriIntegrationEnabled && ( // TODO: Remove hiding of buttons once Esri integration is released + internal training done
-              <EsriImportOptions setView={setView} mapConfig={mapConfig} />
+              <EsriImportOptions
+                setView={setView}
+                mapConfig={mapConfig}
+                variant={variant}
+              />
             )}
-            <GeoJsonImportButton mapConfig={mapConfig} />
+            <GeoJsonImportButton mapConfig={mapConfig} variant={variant} />
           </>
         )}
       </Container>

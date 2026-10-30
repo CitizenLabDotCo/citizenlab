@@ -11,6 +11,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../messages';
+import { usePollStyles } from '../PollVariantContext';
 
 const StyledButton = styled(ButtonWithLink)`
   display: inline-block;
@@ -26,30 +27,36 @@ const OptionRow = ({
   pollOptionTitle: Multiloc;
   deleteOption: () => void;
   editOption: () => void;
-}) => (
-  <Row key={pollOptionId}>
-    <TextCell className="expand">
-      <Box display="flex" alignItems="center">
-        <T value={pollOptionTitle} />
-      </Box>
-    </TextCell>
-    <ButtonWithLink
-      className="e2e-delete-option"
-      onClick={deleteOption}
-      buttonStyle="text"
-      icon="delete"
-    >
-      <FormattedMessage {...messages.deleteOption} />
-    </ButtonWithLink>
-    <StyledButton
-      className="e2e-edit-option"
-      onClick={editOption}
-      buttonStyle="secondary-outlined"
-      icon="edit"
-    >
-      <FormattedMessage {...messages.editOption} />
-    </StyledButton>
-  </Row>
-);
+}) => {
+  const { buttonStyle, boSize } = usePollStyles();
+
+  return (
+    <Row key={pollOptionId}>
+      <TextCell className="expand">
+        <Box display="flex" alignItems="center">
+          <T value={pollOptionTitle} />
+        </Box>
+      </TextCell>
+      <ButtonWithLink
+        className="e2e-delete-option"
+        onClick={deleteOption}
+        buttonStyle={buttonStyle('text')}
+        boSize={boSize}
+        icon="delete"
+      >
+        <FormattedMessage {...messages.deleteOption} />
+      </ButtonWithLink>
+      <StyledButton
+        className="e2e-edit-option"
+        onClick={editOption}
+        buttonStyle={buttonStyle('secondary-outlined')}
+        boSize={boSize}
+        icon="edit"
+      >
+        <FormattedMessage {...messages.editOption} />
+      </StyledButton>
+    </Row>
+  );
+};
 
 export default OptionRow;

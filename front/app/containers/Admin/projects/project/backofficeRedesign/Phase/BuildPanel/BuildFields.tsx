@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
 import { Box, Text } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
 
 import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
 
+import AttachmentsCard from 'containers/Admin/projects/_shared/components/AttachmentsCard';
 import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 import usePhaseFileAttachments from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
 import { PhaseDates as Dates } from 'containers/Admin/projects/project/phaseSetup/components/PhaseDatePicker';
@@ -13,8 +14,6 @@ import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/mes
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 
 import Error from 'components/UI/Error';
-import FileRepositorySelectAndUpload from 'components/UI/FileRepositorySelectAndUpload';
-import FileSelectOrUploadModal from 'components/UI/FileRepositorySelectAndUpload/components/FileSelectOrUploadModal';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
 import { useIntl } from 'utils/cl-intl';
@@ -25,7 +24,6 @@ import DescriptionField from './DescriptionField';
 import DocumentUrlCard from './DocumentUrlCard';
 import InputTermCard from './InputTermCard';
 import MethodSection from './MethodSection';
-import PanelField from './PanelField';
 import PhaseDates from './PhaseDates';
 import setupTitle from './setupTitle';
 import SurveyMethodSection, { SurveyMethodSwitch } from './SurveyMethodSection';
@@ -43,6 +41,7 @@ interface Props {
   standalone: boolean;
   files: ReturnType<typeof usePhaseFileAttachments>;
   surveyMethodSwitch: SurveyMethodSwitch;
+  surveyPlacement?: ReactNode;
   onChange: (newData: Partial<IUpdatedPhaseProperties>) => void;
   onDatesChange: (dates: Dates) => void;
 }
@@ -57,12 +56,12 @@ const BuildFields = ({
   standalone,
   files,
   surveyMethodSwitch,
+  surveyPlacement,
   onChange,
   onDatesChange,
 }: Props) => {
   const { formatMessage } = useIntl();
-  const hasAttachmentsBody =
-    files.attachments.length > 0 || files.isUploadingFile || !!errors?.file;
+  const surveyOptionsShown = !standalone && isSurveyMethod(participationMethod);
 
   return (
     <Box display="flex" flexDirection="column" gap="10px" p="16px 18px 10px">
@@ -71,6 +70,8 @@ const BuildFields = ({
           {formatMessage(setupTitle(participationMethod))}
         </Text>
       </Box>
+
+      {surveyPlacement}
 
       <PhaseDates
         formData={formData}
@@ -99,6 +100,7 @@ const BuildFields = ({
         {phaseId && (
           <DescriptionField
             projectId={projectId}
+            phaseId={phaseId}
             value={formData.description_multiloc}
             errors={errors}
             onChange={(description_multiloc) =>
@@ -109,35 +111,12 @@ const BuildFields = ({
       </Box>
 
       <Box display="flex" flexDirection="column" gap="10px">
-        <PanelField
-          label={formatMessage(messages.attachments)}
-          action={
-            <FileSelectOrUploadModal
-              fileAttachments={files.attachments}
-              onFileAdd={files.uploadFile}
-              onFileAttach={files.attachFile}
-              maxSizeMb={10}
-              isDisabled={files.isUploadingFile}
-              iconOnly
-            />
-          }
-        >
-          {hasAttachmentsBody && (
-            <FileRepositorySelectAndUpload
-              id="phase-build-panel-file-uploader"
-              variant="bo"
-              onFileAdd={files.uploadFile}
-              onFileRemove={files.removeFile}
-              onFileReorder={files.reorderFiles}
-              onFileAttach={files.attachFile}
-              fileAttachments={files.attachments}
-              apiErrors={errors}
-              maxSizeMb={10}
-              isUploadingFile={files.isUploadingFile}
-              hideTrigger
-            />
-          )}
-        </PanelField>
+        <AttachmentsCard
+          id="phase-build-panel-file-uploader"
+          title={formatMessage(messages.attachments)}
+          files={files}
+          errors={errors}
+        />
 
         {USES_INPUT_TERM.includes(participationMethod) && (
           <>
@@ -165,9 +144,15 @@ const BuildFields = ({
           />
         )}
 
-        {!standalone && isSurveyMethod(participationMethod) && (
+        {surveyOptionsShown && (
           <SurveyMethodSection
+            projectId={projectId}
+            phaseId={phaseId}
             selected={participationMethod}
+            surveyService={formData.survey_service}
+            surveyEmbedUrl={formData.survey_embed_url}
+            errors={errors}
+            onExternalSurveyChange={onChange}
             disabledReasons={surveyMethodSwitch.disabledReasons}
             onSelect={surveyMethodSwitch.onSelect}
           />
@@ -178,6 +163,7 @@ const BuildFields = ({
           participationMethod={participationMethod}
           phaseId={phaseId}
           inputTerm={formData.input_term}
+          formInSurveyOptions={surveyOptionsShown}
         />
       </Box>
 

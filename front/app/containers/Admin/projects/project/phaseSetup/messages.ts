@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel',
     defaultMessage: 'Preview',
   },
+  surveyTitleAndButtonGroup: {
+    id: 'app.containers.AdminPage.ProjectTimeline.surveyTitleAndButtonGroup',
+    defaultMessage: 'Survey title and button',
+  },
   allowMultipleResponsesLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel',
     defaultMessage: 'Allow multiple responses',

@@ -3,11 +3,12 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
 
+import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import PhaseDescription from 'containers/Admin/projects/project/phaseDescription';
+import DraftPhaseDescription from 'containers/Admin/projects/project/phaseDescription/DraftPhaseDescription';
 import descriptionMessages from 'containers/Admin/projects/project/phaseDescription/messages';
 
 import Error from 'components/UI/Error';
@@ -21,20 +22,45 @@ import messages from '../../messages';
 
 interface Props {
   projectId: string;
+  phaseId: string;
   value: Multiloc | undefined;
   errors: CLErrors | null;
   onChange: (description_multiloc: Multiloc) => void;
 }
 
-const DescriptionField = ({ projectId, value, errors, onChange }: Props) => {
+const DescriptionField = ({
+  projectId,
+  phaseId,
+  value,
+  errors,
+  onChange,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { data: phases } = usePhases(projectId);
+  const { data: phase } = usePhase(phaseId);
   const draftDescriptionEnabled = useFeatureFlag({
     name: 'draft_phase_description',
   });
 
   // Draft descriptions publish on their own, so they keep their own editor.
-  if (draftDescriptionEnabled) return <PhaseDescription />;
+  if (draftDescriptionEnabled) {
+    if (!phase) return null;
+
+    return (
+      <Box mt="8px">
+        <DraftPhaseDescription
+          key={phaseId}
+          variant="bo"
+          phaseId={phaseId}
+          descriptionMultiloc={phase.data.attributes.description_multiloc}
+          draftDescriptionMultiloc={
+            phase.data.attributes.draft_description_multiloc
+          }
+          placeholder={formatMessage(messages.addDescription)}
+        />
+      </Box>
+    );
+  }
 
   return (
     <Box>

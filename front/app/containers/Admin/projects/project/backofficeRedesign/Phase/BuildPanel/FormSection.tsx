@@ -28,6 +28,8 @@ interface Props {
   participationMethod: ParticipationMethod;
   phaseId?: string;
   inputTerm?: InputTerm;
+  /** Survey options already shows the form and offline collection. */
+  formInSurveyOptions: boolean;
 }
 
 const FormSection = ({
@@ -35,6 +37,7 @@ const FormSection = ({
   participationMethod,
   phaseId,
   inputTerm,
+  formInSurveyOptions,
 }: Props) => {
   const { formatMessage } = useIntl();
 
@@ -45,6 +48,10 @@ const FormSection = ({
 
   const survey = formEditor === 'surveyEditor';
   const title = formatMessage(getFormTitle(survey, inputTerm));
+
+  if (formInSurveyOptions) {
+    return phaseId ? <DemographicsCard phaseId={phaseId} /> : null;
+  }
 
   return (
     <>

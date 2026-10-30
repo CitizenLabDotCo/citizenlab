@@ -17,6 +17,7 @@ import { isNilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
 import QuestionDetailsFormRow from '../PollQuestions/QuestionDetailsFormRow';
+import { usePollStyles } from '../PollVariantContext';
 
 import OptionFormRow from './OptionFormRow';
 import OptionRow from './OptionRow';
@@ -33,6 +34,8 @@ interface Props {
 }
 
 const OptionForm = ({ question, collapse }: Props) => {
+  const { isBo, buttonStyle, boSize } = usePollStyles();
+
   const { data: pollOptions } = usePollOptions(question.id);
   const { mutate: deletePollOption } = useDeletePollOption();
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -53,20 +56,30 @@ const OptionForm = ({ question, collapse }: Props) => {
     deletePollOption({ optionId, questionId: question.id });
   };
 
+  const header = (
+    <FormattedMessage
+      {...messages.optionsFormHeader}
+      values={{
+        questionTitle: (
+          <Text display="inline" fontWeight="normal" as="span">
+            <T value={question.attributes.title_multiloc} />
+          </Text>
+        ),
+      }}
+    />
+  );
+
   return (
     <Container key={question.id} id={question.id} className="e2e-options-form">
-      <Title variant="h4" color="primary">
-        <FormattedMessage
-          {...messages.optionsFormHeader}
-          values={{
-            questionTitle: (
-              <Text display="inline" fontWeight="normal" as="span">
-                <T value={question.attributes.title_multiloc} />
-              </Text>
-            ),
-          }}
-        />
-      </Title>
+      {isBo ? (
+        <Text variant="boSection" fontSize="m" mt="0" mb="16px">
+          {header}
+        </Text>
+      ) : (
+        <Title variant="h4" color="primary">
+          {header}
+        </Title>
+      )}
       <Box>
         <List
           key={
@@ -113,7 +126,8 @@ const OptionForm = ({ question, collapse }: Props) => {
           ) : (
             <StyledButton
               className="e2e-add-option"
-              buttonStyle="admin-dark"
+              buttonStyle={buttonStyle('admin-dark')}
+              boSize={boSize}
               icon="plus-circle"
               onClick={addOption}
               autoFocus
