@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module AIAssistant
-  # One MCP tool that an assistant context lets the model use.
+  # One MCP tool that an assistant surface lets the model use.
   #
-  # +pinned+ arguments are set by the context, not the model (e.g. the phase): they are
+  # +pinned+ arguments are set by the surface, not the model (e.g. the phase): they are
   # hidden from the model and added when the tool runs, so the model can't target another
   # record.
   class Tool
@@ -28,7 +28,7 @@ module AIAssistant
       }
     end
 
-    # Runs the tool as +user+, whose access to the context is checked by the assistant's policies.
+    # Runs the tool as +user+, whose access to the subject is checked by the assistant's policies.
     def call(user, args)
       tool = tool(user)
       # Direct calls skip the argument validation that the MCP server does.
