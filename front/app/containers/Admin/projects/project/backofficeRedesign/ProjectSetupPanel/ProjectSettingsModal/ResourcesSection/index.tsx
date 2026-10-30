@@ -9,9 +9,8 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
+import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
 import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
-
-import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
 
 import { useIntl } from 'utils/cl-intl';
 

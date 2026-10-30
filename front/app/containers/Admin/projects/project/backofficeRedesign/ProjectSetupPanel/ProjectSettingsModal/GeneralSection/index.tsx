@@ -4,12 +4,12 @@ import { CLErrors, Multiloc } from 'typings';
 
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import BoSlugInput from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/BoSlugInput';
+import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
+import SettingsSections from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSections';
 import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 
 import Error from 'components/UI/Error';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
-import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
-import SettingsSections from 'components/UI/SettingsModal/SettingsSections';
 
 import { useIntl } from 'utils/cl-intl';
 

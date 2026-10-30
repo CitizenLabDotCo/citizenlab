@@ -11,11 +11,10 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { SpaceAndFolderId } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
 import { useValidateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
-import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
-
 import SettingsModal, {
   SettingsModalSection,
-} from 'components/UI/SettingsModal';
+} from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal';
+import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 
 import { useIntl } from 'utils/cl-intl';
 import { validateSlug } from 'utils/textUtils';

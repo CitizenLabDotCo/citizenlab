@@ -2,9 +2,8 @@ import React, { useId } from 'react';
 
 import { Box, Toggle } from '@citizenlab/cl2-component-library';
 
+import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
 import topicsMessages from 'containers/Admin/projects/project/topics/messages';
-
-import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
 
 import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';

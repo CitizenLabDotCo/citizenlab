@@ -16,6 +16,7 @@ import { IInputTopicData } from 'api/input_topics/types';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
+import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
 import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 import InputTopicModal, {
   InputTopicFormValues,
@@ -23,7 +24,6 @@ import InputTopicModal, {
 import topicsMessages from 'containers/Admin/projects/project/topics/messages';
 
 import Modal from 'components/UI/Modal';
-import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';

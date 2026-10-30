@@ -4,10 +4,10 @@ import { Button, bo } from '@citizenlab/cl2-component-library';
 
 import useResetProject from 'api/projects/useResetProject';
 
+import SettingsSection from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal/SettingsSection';
 import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 import dataMessages from 'containers/Admin/projects/project/data/messages';
 
-import SettingsSection from 'components/UI/SettingsModal/SettingsSection';
 import BoTypedDeleteConfirmationModal from 'components/UI/TypedDeleteConfirmationModal/BoTypedDeleteConfirmationModal';
 
 import { useIntl } from 'utils/cl-intl';
