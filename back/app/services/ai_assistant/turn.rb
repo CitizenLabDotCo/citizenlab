@@ -62,7 +62,7 @@ module AIAssistant
         .with_tools(*@surface.tools.map { |tool| LLMTool.new(tool, self) })
         .with_params(inferenceConfig: { maxTokens: MAX_OUTPUT_TOKENS })
         .after_message { |message| persist(message) }
-        .before_tool_call { |tool_call| start_tool_call(tool_call) }
+        .before_tool_call { |tool_call| count_tool_call!(tool_call) }
     end
 
     def replay(chat)
@@ -125,8 +125,8 @@ module AIAssistant
       end
     end
 
-    # Runs for every call, also to tools that don't exist, so the budget covers them all.
-    def start_tool_call(tool_call)
+    # Counts every call the model asks for, also to tools that don't exist, so the limit covers them all.
+    def count_tool_call!(tool_call)
       @tool_call_count += 1
       @current_tool_call = @tool_calls_by_use_id.fetch(tool_call.id)
       return if @tool_call_count <= MAX_TOOL_CALLS
