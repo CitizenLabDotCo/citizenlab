@@ -3,11 +3,11 @@
 class WebApi::V1::AIAssistant::ConversationsController < ApplicationController
   before_action { require_feature!('ai_assistant') }
 
-  # The current user's latest conversation in a context (e.g. the survey builder of a
+  # The current user's latest conversation on a surface (e.g. the survey builder of a
   # phase), if any.
   def index
     conversations = policy_scope(::AIAssistant::Conversation)
-      .where(context_key: params[:context_key], context_id: params[:context_id])
+      .where(surface_key: params[:surface_key], subject_id: params[:subject_id])
       .order(created_at: :desc)
       .limit(1)
 
@@ -22,18 +22,18 @@ class WebApi::V1::AIAssistant::ConversationsController < ApplicationController
 
   # Starts a new conversation ("New chat").
   def create
-    context_class = ::AIAssistant::Context.find!(conversation_params[:context_key])
-    record = context_class.record_class.find(conversation_params[:context_id])
+    surface_class = ::AIAssistant::Surface.find!(conversation_params[:surface_key])
+    subject = surface_class.subject_class.find(conversation_params[:subject_id])
     conversation = ::AIAssistant::Conversation.new(
       user: current_user,
-      context: record,
-      context_key: context_class.key,
+      subject:,
+      surface_key: surface_class.key,
       locale: conversation_params[:locale]
     )
     authorize(conversation)
 
-    if !context_class.new(record).available?
-      render json: { errors: { base: [{ error: 'context_unavailable' }] } }, status: :unprocessable_entity
+    if !surface_class.new(subject).available?
+      render json: { errors: { base: [{ error: 'surface_unavailable' }] } }, status: :unprocessable_entity
     elsif AppConfiguration.instance.settings('core', 'locales').exclude?(conversation.locale)
       render json: { errors: { locale: [{ error: 'inclusion' }] } }, status: :unprocessable_entity
     else
@@ -42,13 +42,13 @@ class WebApi::V1::AIAssistant::ConversationsController < ApplicationController
     end
   rescue KeyError
     skip_authorization
-    render json: { errors: { context_key: [{ error: 'inclusion' }] } }, status: :unprocessable_entity
+    render json: { errors: { surface_key: [{ error: 'inclusion' }] } }, status: :unprocessable_entity
   end
 
   private
 
   def conversation_params
-    params.require(:ai_assistant_conversation).permit(:context_key, :context_id, :locale)
+    params.require(:ai_assistant_conversation).permit(:surface_key, :subject_id, :locale)
   end
 
   def serialize(conversation)

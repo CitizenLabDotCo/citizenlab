@@ -1,31 +1,31 @@
 # frozen_string_literal: true
 
 module AIAssistant
-  module Contexts
+  module Surfaces
     # The form builder of a native survey phase.
-    class SurveyBuilder < Context
+    class SurveyBuilder < Surface
       def self.key
         'survey_builder'
       end
 
-      def self.record_class
+      def self.subject_class
         Phase
       end
 
       def available?
-        record.participation_method == 'native_survey'
+        subject.participation_method == 'native_survey'
       end
 
       private
 
-      def context_prompt(locale:)
+      def surface_prompt(locale:)
         multiloc_service = MultilocService.new
         ::Analysis::LLM::Prompt.new.fetch(
           'ai_assistant_survey_builder',
           locale:,
-          phase_title: multiloc_service.t(record.title_multiloc, locale),
-          project_title: multiloc_service.t(record.project.title_multiloc, locale),
-          responses_count: record.ideas_count.to_i,
+          phase_title: multiloc_service.t(subject.title_multiloc, locale),
+          project_title: multiloc_service.t(subject.project.title_multiloc, locale),
+          responses_count: subject.ideas_count.to_i,
           platform_locales: AppConfiguration.instance.settings('core', 'locales')
         )
       end

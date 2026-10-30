@@ -16,7 +16,7 @@ describe('useAiAssistantConversations', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
-  it('looks up the conversation of the context', async () => {
+  it('looks up the conversation on the surface', async () => {
     let requestUrl: URL | undefined;
     server.use(
       http.get(apiPath, ({ request }) => {
@@ -28,14 +28,14 @@ describe('useAiAssistantConversations', () => {
     const { result } = renderHook(
       () =>
         useAiAssistantConversations({
-          contextKey: 'survey_builder',
-          contextId: 'phase-1',
+          surfaceKey: 'survey_builder',
+          subjectId: 'phase-1',
         }),
       { wrapper: createQueryClientWrapper() }
     );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(requestUrl?.searchParams.get('context_key')).toBe('survey_builder');
-    expect(requestUrl?.searchParams.get('context_id')).toBe('phase-1');
+    expect(requestUrl?.searchParams.get('surface_key')).toBe('survey_builder');
+    expect(requestUrl?.searchParams.get('subject_id')).toBe('phase-1');
   });
 });

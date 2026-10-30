@@ -40,8 +40,8 @@ export default defineMessages({
     defaultMessage:
       'This chat has become too long. Start a new chat to continue.',
   },
-  errorContextUnavailable: {
-    id: 'app.components.aiAssistant.errorContextUnavailable',
+  errorSurfaceUnavailable: {
+    id: 'app.components.aiAssistant.errorSurfaceUnavailable',
     defaultMessage: 'The assistant is not available here.',
   },
   errorTurnTimedOut: {

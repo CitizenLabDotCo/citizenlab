@@ -10,7 +10,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 import { MessageDescriptor } from 'react-intl';
 
-import { AiAssistantContextKey } from 'api/ai_assistant_conversations/types';
+import { AiAssistantSurfaceKey } from 'api/ai_assistant_conversations/types';
 import useAddAiAssistantConversation from 'api/ai_assistant_conversations/useAddAiAssistantConversation';
 import useAiAssistantConversation from 'api/ai_assistant_conversations/useAiAssistantConversation';
 import useAiAssistantConversations from 'api/ai_assistant_conversations/useAiAssistantConversations';
@@ -28,18 +28,18 @@ import messages from './messages';
 import Transcript from './Transcript';
 
 type Props = {
-  contextKey: AiAssistantContextKey;
+  surfaceKey: AiAssistantSurfaceKey;
   // The record the conversation is about, e.g. the phase of a survey.
-  contextId: string;
+  subjectId: string;
   intro: MessageDescriptor;
 };
 
-const AssistantPanel = ({ contextKey, contextId, intro }: Props) => {
+const AssistantPanel = ({ surfaceKey, subjectId, intro }: Props) => {
   const locale = useLocale();
   const { formatMessage } = useIntl();
   const { data: conversations } = useAiAssistantConversations({
-    contextKey,
-    contextId,
+    surfaceKey,
+    subjectId,
   });
   const conversationId = conversations?.data.at(0)?.id;
   const { data: conversation } = useAiAssistantConversation(conversationId);
@@ -62,7 +62,7 @@ const AssistantPanel = ({ contextKey, contextId, intro }: Props) => {
     try {
       const id =
         conversationId ??
-        (await addConversation({ contextKey, contextId, locale })).data.id;
+        (await addConversation({ surfaceKey, subjectId, locale })).data.id;
       await addMessage({ conversationId: id, content: prompt.trim() });
       setPrompt('');
     } catch (error) {
@@ -75,7 +75,7 @@ const AssistantPanel = ({ contextKey, contextId, intro }: Props) => {
   const startNewChat = () => {
     setSendError(undefined);
     addConversation(
-      { contextKey, contextId, locale },
+      { surfaceKey, subjectId, locale },
       {
         onError: (error) =>
           setSendError(

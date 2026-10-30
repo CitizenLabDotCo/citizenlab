@@ -6,7 +6,7 @@ describe AIAssistant::Conversation do
   it 'is deleted with its phase' do
     conversation = create(:ai_assistant_conversation)
 
-    expect { conversation.context.destroy! }.to change(described_class, :count).by(-1)
+    expect { conversation.subject.destroy! }.to change(described_class, :count).by(-1)
   end
 
   describe '#recover_if_stuck!' do

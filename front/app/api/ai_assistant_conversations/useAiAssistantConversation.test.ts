@@ -18,7 +18,7 @@ const conversation = {
     id: 'conversation-1',
     type: 'ai_assistant_conversation',
     attributes: {
-      context_key: 'survey_builder',
+      surface_key: 'survey_builder',
       locale: 'en',
       status: 'idle',
       last_error_code: null,
@@ -71,8 +71,8 @@ describe('useAiAssistantConversation', () => {
     const { result: listResult } = renderHook(
       () =>
         useAiAssistantConversations({
-          contextKey: 'survey_builder',
-          contextId: 'phase-1',
+          surfaceKey: 'survey_builder',
+          subjectId: 'phase-1',
         }),
       { wrapper }
     );
