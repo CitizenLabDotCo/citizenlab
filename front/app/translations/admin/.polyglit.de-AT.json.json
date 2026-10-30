@@ -18234,6 +18234,11 @@
     "verified_at": "2026-03-30T12:57:38.437453Z",
     "verified_by": "Edwin Kato"
   },
+  "app.containers.AdminPage.ProjectEdit.statusPrioritySortingMethod": {
+    "state": "verified",
+    "verified_at": "2026-10-28T14:43:09.566223Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.437453Z",

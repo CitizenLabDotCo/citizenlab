@@ -18,6 +18,7 @@ const optionMessages: { [key in IdeaSortMethod]: MessageDescriptor } = {
   comments_count: messages.mostDiscussed,
   new: messages.newest,
   '-new': messages.oldest,
+  status_priority: messages.statusPriority,
 };
 
 type Props = {

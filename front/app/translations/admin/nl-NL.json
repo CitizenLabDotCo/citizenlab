@@ -3368,6 +3368,7 @@
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Informatie delen",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Snap Enquête",
+  "app.containers.AdminPage.ProjectEdit.statusPrioritySortingMethod": "Status (eerst ingediend)",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Maak je project aan en personaliseer het.",
   "app.containers.AdminPage.ProjectEdit.supportPageLinkText": "bekijk onze supportpagina",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent2": "Vragenlijst-inhoud toevoegen",

@@ -531,6 +531,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals',
     defaultMessage: 'Manage proposals, give feedback and assign topics.',
   },
+  status_prioritySortingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.statusPrioritySortingMethod',
+    defaultMessage: 'Status (proposed first)',
+  },
   hiddenFieldsTip2: {
     id: 'app.components.admin.PostManager.hiddenFieldsTip2',
     defaultMessage:

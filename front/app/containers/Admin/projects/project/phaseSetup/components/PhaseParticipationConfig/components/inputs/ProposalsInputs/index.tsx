@@ -305,6 +305,7 @@ const ProposalsInputs = ({
         { key: 'popular', value: 'popular' },
         { key: 'newest', value: 'new' },
         { key: 'oldest', value: '-new' },
+        { key: 'status_priority', value: 'status_priority' },
       ]}
       ideas_order={ideas_order}
       apiErrors={apiErrors}

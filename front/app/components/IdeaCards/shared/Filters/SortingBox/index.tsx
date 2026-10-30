@@ -28,6 +28,7 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
   const { sort } = useSearch({ strict: false });
   const sortFromUrl = ideaSortMethods.find((m) => m === sort);
   const currentSortType = sortFromUrl || phaseDefaultSort || 'trending';
+  const participationMethod = phase?.data.attributes.participation_method;
 
   return (
     <InputFilterCollapsible title={formatMessage(messages.sortBy)}>
@@ -62,6 +63,13 @@ const SortingBox = ({ handleSortOnChange, phaseId }: SortingBoxProps) => {
           handleSortOnChange={handleSortOnChange}
           isSelected={currentSortType === '-new'}
         />
+        {participationMethod === 'proposals' && (
+          <SortTypeButton
+            sortType="status_priority"
+            handleSortOnChange={handleSortOnChange}
+            isSelected={currentSortType === 'status_priority'}
+          />
+        )}
       </Box>
       <ScreenReaderOnly aria-live="polite">
         <FormattedMessage
