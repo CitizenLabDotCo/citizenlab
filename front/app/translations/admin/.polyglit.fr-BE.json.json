@@ -8534,6 +8534,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.activePhaseListItem": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:34:54.775447Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.activePhasesTitle": {
     "state": "verified",
     "verified_at": "2026-10-30T12:31:32.615646Z",
@@ -8563,6 +8568,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noActivePhase": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:34:54.775447Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noCurrentPhase": {
     "state": "verified",
@@ -11204,6 +11214,16 @@
     "verified_at": "2026-10-28T13:19:15.868690Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.phaseDone": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:34:54.775447Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.phaseInProgress": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:34:54.775447Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.phaseNoEndDate": {
     "state": "verified",
     "verified_at": "2026-07-17T08:20:45.430467Z",
@@ -11243,6 +11263,11 @@
     "state": "verified",
     "verified_at": "2026-10-28T13:09:38.242718Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.phaseUpcoming": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:34:54.775447Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.pollQuestions": {
     "state": "verified",
