@@ -752,6 +752,7 @@
   "app.components.TypedConfirmationModal.cancel": "يلغي",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "يمسح",
   "app.components.TypedConfirmationModal.typeToConfirm1": "لتأكيد حذف {entityName}، اكتب {confirmationWord} أدناه:",
+  "app.components.TypedConfirmationModal.typeToConfirmShort": "اكتب {confirmationWord} للتأكيد",
   "app.components.TypedConfirmationModal.warning": "هذا الإجراء دائم ولا يمكن التراجع عنه.",
   "app.components.UI.EmojiPicker.clear": "مسح",
   "app.components.UI.FeatureCallout.dismiss": "تجاهل",

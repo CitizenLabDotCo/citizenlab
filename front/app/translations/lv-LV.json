@@ -752,6 +752,7 @@
   "app.components.TypedConfirmationModal.cancel": "Atcelt",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "DELETE",
   "app.components.TypedConfirmationModal.typeToConfirm1": "Lai apstiprinātu {entityName}dzēšanu, tālāk ievadiet {confirmationWord} :",
+  "app.components.TypedConfirmationModal.typeToConfirmShort": "Ierakstiet {confirmationWord}, lai apstiprinātu",
   "app.components.TypedConfirmationModal.warning": "Šī darbība ir neatgriezeniska un nav atceļama.",
   "app.components.UI.EmojiPicker.clear": "Notīrīt",
   "app.components.UI.FeatureCallout.dismiss": "Aizvērt",

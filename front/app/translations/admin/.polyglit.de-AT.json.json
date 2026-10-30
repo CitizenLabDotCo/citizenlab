@@ -9569,6 +9569,11 @@
     "verified_at": "2026-10-28T15:55:52.060698Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects.project.dropFilesHereOr": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.earlyAccess.feedbackNoticeDescription": {
     "state": "verified",
     "verified_at": "2026-10-06T13:48:15.717669Z",
@@ -9854,14 +9859,39 @@
     "verified_at": "2026-08-04T07:50:55.640746Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects.project.fileActions": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.fileUploadFailed": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.fileUploading": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.filesCount": {
     "state": "verified",
     "verified_at": "2026-10-16T09:16:50.388595Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects.project.filesCountWithSize": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.filesDescription": {
     "state": "verified",
     "verified_at": "2026-10-16T09:16:50.388595Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.filesDescription2": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
     "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.project.filesSection": {
@@ -11042,6 +11072,11 @@
   "app.containers.Admin.projects.project.listing": {
     "state": "verified",
     "verified_at": "2026-10-16T09:16:50.388595Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.manageFiles": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
     "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.project.manageView": {
@@ -12239,6 +12274,16 @@
     "verified_at": "2026-10-16T09:16:50.388595Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects.project.removeFile": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.reorderTag": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.reportNotVisible": {
     "state": "verified",
     "verified_at": "2026-10-28T15:55:52.060698Z",
@@ -12257,6 +12302,26 @@
   "app.containers.Admin.projects.project.reportVisibleToParticipants": {
     "state": "verified",
     "verified_at": "2026-10-28T15:55:52.060698Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.resetDataButton": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.resetDataConfirmationWord": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.resetDataModalDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.resetDataModalTitle": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
     "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.project.responseFormTitle": {
@@ -12299,10 +12364,25 @@
     "verified_at": "2026-09-22T06:06:23.726692Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects.project.settingsAddTag": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.settingsCancel": {
     "state": "verified",
     "verified_at": "2026-09-17T11:58:59.483714Z",
     "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.settingsClearParticipationData": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.settingsCreateAndManageTags": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.project.settingsFrontOffice": {
     "state": "verified",
@@ -12314,10 +12394,20 @@
     "verified_at": "2026-09-17T11:58:59.483714Z",
     "verified_by": "eva@govocal.com"
   },
+  "app.containers.Admin.projects.project.settingsGeneral2": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.settingsIdeaTags": {
     "state": "verified",
     "verified_at": "2026-09-17T11:58:59.483714Z",
     "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.settingsInputsGroup": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.project.settingsManagement": {
     "state": "verified",
@@ -12329,6 +12419,31 @@
     "verified_at": "2026-07-16T09:55:33.006212Z",
     "verified_by": "eva@govocal.com"
   },
+  "app.containers.Admin.projects.project.settingsPerspectives": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.settingsProjectContext": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.settingsProjectGroup": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.settingsProjectName": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.settingsProjectUrl": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.settingsReset": {
     "state": "verified",
     "verified_at": "2026-09-17T11:58:59.483714Z",
@@ -12339,10 +12454,30 @@
     "verified_at": "2026-10-16T09:16:50.388595Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects.project.settingsSave": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.settingsSaveChanges": {
     "state": "verified",
     "verified_at": "2026-09-17T11:58:59.483714Z",
     "verified_by": "eva@govocal.com"
+  },
+  "app.containers.Admin.projects.project.settingsSaveFailed": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.settingsTags": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.settingsTitle": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.project.shareInvite": {
     "state": "verified",
@@ -12432,6 +12567,11 @@
   "app.containers.Admin.projects.project.suggestionFormTitle": {
     "state": "verified",
     "verified_at": "2026-10-28T15:55:52.060698Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.supportedFileTypes": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
     "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.project.survey.aiAnalysis2": {
@@ -12979,6 +13119,11 @@
     "verified_at": "2026-09-22T06:06:23.726692Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects.project.tagsRequiredInfo": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.takingPollAction": {
     "state": "verified",
     "verified_at": "2026-10-28T15:55:52.060698Z",
@@ -13002,6 +13147,11 @@
   "app.containers.Admin.projects.project.timelineEmptyDescription2": {
     "state": "verified",
     "verified_at": "2026-08-18T09:01:46.601700Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.toggleSubtags": {
+    "state": "verified",
+    "verified_at": "2026-10-28T09:59:35.685131Z",
     "verified_by": "Jelena"
   },
   "app.containers.Admin.projects.project.topicFormTitle": {

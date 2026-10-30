@@ -27,6 +27,15 @@ const Search = styled(Box)`
   }
 `;
 
+const TRIGGER_SIZES: Record<
+  'medium' | 'compact' | 'small',
+  { height?: string; fontSize?: string }
+> = {
+  medium: {},
+  compact: { height: '28px', fontSize: `${fontSizes.xs}px` },
+  small: { height: '22px', fontSize: `${fontSizes.xs}px` },
+};
+
 const GAP = 4;
 const MAX_HEIGHT = 320;
 const MIN_HEIGHT = 120;
@@ -92,9 +101,9 @@ interface Props<T extends string> {
   triggerIcon?: IconNames;
   keepOpenFor?: T;
   onClose?: () => void;
-  children?: React.ReactNode;
   /** 'small' matches the summary pills in card headers. */
-  size?: 'medium' | 'small';
+  size?: keyof typeof TRIGGER_SIZES;
+  children?: React.ReactNode;
 }
 
 const OptionPicker = <T extends string>({
@@ -108,8 +117,8 @@ const OptionPicker = <T extends string>({
   triggerIcon,
   keepOpenFor,
   onClose,
-  children,
   size = 'medium',
+  children,
 }: Props<T>) => {
   const { formatMessage } = useIntl();
   const triggerRef = useRef<HTMLButtonElement>(null);
@@ -181,10 +190,10 @@ const OptionPicker = <T extends string>({
         buttonStyle="bo-picker"
         width="auto"
         maxWidth="100%"
+        height={TRIGGER_SIZES[size].height}
+        fontSize={TRIGGER_SIZES[size].fontSize}
         bgColor={opened || small ? colors.grey200 : undefined}
-        height={small ? '22px' : undefined}
         padding={small ? '0 8px 0 10px' : undefined}
-        fontSize={small ? `${fontSizes.xs}px` : undefined}
         fontWeight={small ? '500' : undefined}
         textColor={small ? colors.coolGrey700 : undefined}
         iconSize={small ? '12px' : undefined}

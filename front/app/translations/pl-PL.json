@@ -752,6 +752,7 @@
   "app.components.TypedConfirmationModal.cancel": "Anuluj",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "USUŃ",
   "app.components.TypedConfirmationModal.typeToConfirm1": "Aby potwierdzić usunięcie {entityName}, wpisz {confirmationWord} poniżej:",
+  "app.components.TypedConfirmationModal.typeToConfirmShort": "Wpisz {confirmationWord}, aby potwierdzić",
   "app.components.TypedConfirmationModal.warning": "Działanie to jest trwałe i nie można go cofnąć.",
   "app.components.UI.EmojiPicker.clear": "Wyczyść",
   "app.components.UI.FeatureCallout.dismiss": "Zamknij",

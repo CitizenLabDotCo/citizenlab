@@ -125,9 +125,11 @@ const StyledFocusOn = styled(FocusOn)<{
 
 const ModalContainer = styled(ClickOutside)<{
   windowHeight: number;
+  height?: string;
 }>`
   width: 100%;
   max-height: 85vh;
+  ${({ height }) => height && `height: ${height};`}
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 24px 70px rgba(15, 20, 35, 0.35);
@@ -295,6 +297,7 @@ interface BaseProps {
   fixedHeight?: boolean;
   fillContent?: boolean;
   width?: number | string;
+  height?: string;
   close: () => void;
   className?: string;
   footer?: JSX.Element;
@@ -324,6 +327,7 @@ const Modal: React.FC<Props> = ({
   fixedHeight = false,
   fillContent = false,
   width = 650,
+  height,
   close,
   className,
   header,
@@ -504,6 +508,7 @@ const Modal: React.FC<Props> = ({
             className={`modalcontent ${fixedHeight ? 'fixedHeight' : ''}`}
             onClickOutside={clickOutsideModal}
             windowHeight={windowHeight}
+            height={height}
             ariaLabelledBy={header ? 'modal-header' : ariaLabelledBy}
             isModal
             role="dialog"

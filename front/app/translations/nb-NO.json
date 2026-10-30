@@ -752,6 +752,7 @@
   "app.components.TypedConfirmationModal.cancel": "Avbryt",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "SLETT",
   "app.components.TypedConfirmationModal.typeToConfirm1": "For å bekrefte slettingen av {entityName}, skriv inn {confirmationWord} nedenfor:",
+  "app.components.TypedConfirmationModal.typeToConfirmShort": "Skriv {confirmationWord} for å bekrefte",
   "app.components.TypedConfirmationModal.warning": "Denne handlingen er permanent og kan ikke gjøres ugjort.",
   "app.components.UI.EmojiPicker.clear": "Tøm",
   "app.components.UI.FeatureCallout.dismiss": "Lukk",

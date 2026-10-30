@@ -752,6 +752,7 @@
   "app.components.TypedConfirmationModal.cancel": "منسوخ کریں۔",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "حذف کریں۔",
   "app.components.TypedConfirmationModal.typeToConfirm1": "{entityName}کو حذف کرنے کی تصدیق کرنے کے لیے، نیچے {confirmationWord} ٹائپ کریں:",
+  "app.components.TypedConfirmationModal.typeToConfirmShort": "تصدیق کے لیے {confirmationWord} ٹائپ کریں",
   "app.components.TypedConfirmationModal.warning": "یہ عمل مستقل ہے اور اسے کالعدم نہیں کیا جا سکتا۔",
   "app.components.UI.EmojiPicker.clear": "صاف کریں",
   "app.components.UI.FeatureCallout.dismiss": "ہٹائیں",

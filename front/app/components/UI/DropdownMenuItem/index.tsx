@@ -22,22 +22,24 @@ const Item = styled(DropdownListItem)`
 `;
 
 interface Props {
-  icon: IconNames;
+  icon?: IconNames;
   label: string;
   onClick: () => void;
 }
 
-const NewProjectMenuItem = ({ icon, label, onClick }: Props) => (
+const DropdownMenuItem = ({ icon, label, onClick }: Props) => (
   <Item type="button" role="menuitem" onClick={onClick}>
-    <Icon
-      name={icon}
-      width="16px"
-      height="16px"
-      fill={colors.coolGrey500}
-      aria-hidden
-    />
+    {icon && (
+      <Icon
+        name={icon}
+        width="16px"
+        height="16px"
+        fill={colors.coolGrey500}
+        aria-hidden
+      />
+    )}
     {label}
   </Item>
 );
 
-export default NewProjectMenuItem;
+export default DropdownMenuItem;

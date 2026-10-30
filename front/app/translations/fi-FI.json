@@ -752,6 +752,7 @@
   "app.components.TypedConfirmationModal.cancel": "Peruuttaa",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "POISTAA",
   "app.components.TypedConfirmationModal.typeToConfirm1": "Vahvista {entityName}:n poisto kirjoittamalla {confirmationWord} alla olevaan kenttään:",
+  "app.components.TypedConfirmationModal.typeToConfirmShort": "Kirjoita {confirmationWord} vahvistaaksesi",
   "app.components.TypedConfirmationModal.warning": "Tämä toiminto on pysyvä eikä sitä voi perua.",
   "app.components.UI.EmojiPicker.clear": "Tyhjennä",
   "app.components.UI.FeatureCallout.dismiss": "Ohita",

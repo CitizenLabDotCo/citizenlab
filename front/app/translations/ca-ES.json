@@ -752,6 +752,7 @@
   "app.components.TypedConfirmationModal.cancel": "Cancel·la",
   "app.components.TypedConfirmationModal.confirmationWordDelete": "ELIMINAR",
   "app.components.TypedConfirmationModal.typeToConfirm1": "Per confirmar l'eliminació de {entityName}, escriviu {confirmationWord} a continuació:",
+  "app.components.TypedConfirmationModal.typeToConfirmShort": "Escriu {confirmationWord} per confirmar",
   "app.components.TypedConfirmationModal.warning": "Aquesta acció és permanent i no es pot desfer.",
   "app.components.UI.EmojiPicker.clear": "Neteja",
   "app.components.UI.FeatureCallout.dismiss": "Omet",
