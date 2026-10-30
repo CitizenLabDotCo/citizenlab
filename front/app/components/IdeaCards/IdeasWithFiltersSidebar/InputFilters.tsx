@@ -2,10 +2,14 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
+import useCustomFields from 'api/custom_fields/useCustomFields';
+import { supportsAnswerFilter } from 'api/custom_fields/util';
 import { IIdeaQueryParameters } from 'api/ideas/types';
 import { IIdeasFilterCounts } from 'api/ideas_filter_counts/types';
 import { IdeaSortMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
+
+import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import SearchInput from 'components/UI/SearchInput';
 
@@ -14,6 +18,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { isNilOrError, NilOrError } from 'utils/helperUtils';
 
 import messages from '../messages';
+import AnswerFilterBox from '../shared/Filters/AnswerFilterBox';
 import SortingBox from '../shared/Filters/SortingBox';
 import StatusFilterBox from '../shared/Filters/StatusFilterBox';
 import TopicFilterBox from '../shared/Filters/TopicFilterBox';
@@ -28,6 +33,7 @@ export interface InputFiltersProps {
   onSearch: (searchTerm: string) => void;
   onChangeStatus: (ideaStatus: string | null) => void;
   onChangeTopics: (topics: string[] | null) => void;
+  onChangeAnswer: (fieldId: string, optionKey: string | null) => void;
   handleSortOnChange: (sort: IdeaSortMethod) => void;
   phaseId?: string;
   projectId?: string;
@@ -49,10 +55,22 @@ const InputFilters = ({
   onSearch,
   onChangeStatus,
   onChangeTopics,
+  onChangeAnswer,
   handleSortOnChange,
 }: InputFiltersProps) => {
   const { formatMessage } = useIntl();
   const { data: phase } = usePhase(phaseId);
+  const answerFiltersEnabled = useFeatureFlag({
+    name: 'input_form_answer_filters',
+  });
+  // Without an id the fields are not fetched.
+  const { data: customFields } = useCustomFields({
+    phaseId: answerFiltersEnabled ? phaseId : undefined,
+    publicFields: true,
+  });
+  const answerFilterFields = customFields?.filter(
+    (field) => field.show_as_filter && supportsAnswerFilter(field.input_type)
+  );
   const participationMethod =
     phase?.data.attributes.participation_method || 'ideation'; // Ideation used as fallback here for All Ideas page.
   const isProposalsOrIdeation =
@@ -100,6 +118,18 @@ const InputFilters = ({
           />
         </Box>
       )}
+      {answerFilterFields?.map((field) => (
+        <Box key={field.id} mb="20px" data-cy="e2e-answer-filter-box">
+          <AnswerFilterBox
+            field={field}
+            ideaQueryParameters={ideaQueryParameters}
+            selectedOptionKey={
+              ideaQueryParameters.custom_field_answers?.[field.id]?.[0]
+            }
+            onChange={(optionKey) => onChangeAnswer(field.id, optionKey)}
+          />
+        </Box>
+      ))}
       {showStatusFilter && isProposalsOrIdeation && (
         <StatusFilterBox
           participationMethod={participationMethod}

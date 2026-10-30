@@ -17,6 +17,7 @@ resource 'Ideas' do
     parameter :basket_id, 'Filter by basket', required: false
     parameter :author, 'Filter by author (user id)', required: false
     parameter :idea_status, 'Filter by status (idea status id)', required: false
+    parameter :custom_field_answers, 'Filter by answers to public choice questions: { field_id: [option_key, ...] } (OR within a question, AND across questions)', required: false
     parameter :search, 'Filter by searching in title and body', required: false
     parameter :sort, "Either 'new', '-new', 'trending', '-trending', 'popular', '-popular', 'author_name', '-author_name', 'likes_count', '-likes_count', 'dislikes_count', '-dislikes_count', 'status', '-status', 'baskets_count', '-baskets_count', 'votes_count', '-votes_count', 'budget', '-budget', 'random'", required: false
     parameter :publication_status, 'Filter by publication status; returns all published ideas by default', required: false
@@ -227,6 +228,18 @@ resource 'Ideas' do
         json_response = json_parse(response_body)
         expect(json_response[:data].size).to eq 1
         expect(json_response[:data][0][:id]).to eq i.id
+      end
+
+      example 'List all ideas for an answer to a public choice question' do
+        i1, i2 = @ideas.first(2)
+        form = create(:custom_form, participation_context: i1.project)
+        field = create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public')
+        create(:custom_field_answer, answerable: i1, key: field.key, value: 'option1')
+        create(:custom_field_answer, answerable: i2, key: field.key, value: 'option2')
+
+        do_request custom_field_answers: { field.id => ['option1'] }
+        json_response = json_parse(response_body)
+        expect(json_response[:data].pluck(:id)).to eq [i1.id]
       end
 
       example 'List all ideas for a user' do

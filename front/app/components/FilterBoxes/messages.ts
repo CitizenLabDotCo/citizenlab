@@ -42,13 +42,13 @@ export default defineMessages({
     id: 'app.components.FilterBoxes.a11y_removeFilter',
     defaultMessage: 'Remove filter',
   },
-  a11y_allFilterSelected: {
-    id: 'app.components.FilterBoxes.a11y_allFilterSelected',
-    defaultMessage: 'Selected status filter: all',
+  a11y_allSelected: {
+    id: 'app.components.FilterBoxes.a11y_allSelected',
+    defaultMessage: 'Selected {filter} filter: all',
   },
-  a11y_selectedFilter: {
-    id: 'app.components.FilterBoxes.a11y_selectedFilter',
-    defaultMessage: 'Selected status filter: {filter}',
+  a11y_selectedOption: {
+    id: 'app.components.FilterBoxes.a11y_selectedOption',
+    defaultMessage: 'Selected {filter} filter: {option}',
   },
   a11y_selectedTopicFilters: {
     id: 'app.components.FilterBoxes.a11y_selectedTopicFilters',

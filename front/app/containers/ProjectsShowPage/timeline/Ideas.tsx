@@ -37,6 +37,7 @@ interface QueryParameters {
   sort: IdeaSortMethod;
   input_topics?: string[];
   idea_status?: string;
+  custom_field_answers?: Record<string, string[]>;
 }
 
 const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
@@ -45,13 +46,14 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
   // defaults. On the public project route the values resolve as before; the cast
   // restores the per-route search shape that the loose read widens.
   const { slug } = useParams({ strict: false });
-  const { sort, search, topics, idea_status } = useSearch({
+  const { sort, search, topics, idea_status, answers } = useSearch({
     strict: false,
   }) as {
     sort?: IdeaSortMethod;
     search?: string;
     topics?: string[];
     idea_status?: string;
+    answers?: Record<string, string[]>;
   };
   const config = getMethodConfig(phase.attributes.participation_method, {
     showIdeaFilters: phase.attributes.voting_filtering_enabled,
@@ -67,8 +69,9 @@ const IdeasContainer = ({ projectId, phase, className }: InnerProps) => {
       search: search ?? undefined,
       input_topics: topics,
       idea_status: idea_status ?? undefined,
+      custom_field_answers: answers,
     }),
-    [config, projectId, sort, search, phase, topics, idea_status]
+    [config, projectId, sort, search, phase, topics, idea_status, answers]
   );
 
   const participationMethod = phase.attributes.participation_method;

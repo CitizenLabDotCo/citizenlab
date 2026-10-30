@@ -3,6 +3,7 @@ export default {
   sortingFilter: 'Clicked idea cards sort filter',
   topicsFilter: 'Clicked idea cards topics filter',
   statusesFilter: 'Clicked idea cards statuses filter',
+  answersFilter: 'Clicked idea cards answers filter',
   openFiltersModalMobile: 'Opened idea cards filters modal',
   clearFiltersClicked: 'Clicked clear idea filters button',
   searchFilterUsedIdeas: 'Used search filter in idea cards',

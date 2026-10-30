@@ -7,14 +7,18 @@ import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import { IPhase } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
+import useLocalize from 'hooks/useLocalize';
 
-import StatusFilter from 'components/FilterBoxes/StatusFilter';
+import messages from 'components/FilterBoxes/messages';
+import SingleSelectFilter from 'components/FilterBoxes/SingleSelectFilter';
+
+import { useIntl } from 'utils/cl-intl';
+import { capitalize } from 'utils/textUtils';
 
 interface Props {
   selectedStatusId: string | null | undefined;
   ideaQueryParameters: IIdeasFilterCountsQueryParameters;
   onChange: (arg: string | null) => void;
-  className?: string;
   participationMethod?: IdeaStatusParticipationMethod;
   // Should be defined whenever this component is displayed within a project phase context.
   phase: IPhase | undefined;
@@ -24,11 +28,12 @@ interface Props {
 const StatusFilterBox = ({
   selectedStatusId,
   onChange,
-  className,
   ideaQueryParameters,
   participationMethod,
   phase,
 }: Props) => {
+  const localize = useLocalize();
+  const { formatMessage } = useIntl();
   const prescreeningIdeationEnabled = useFeatureFlag({
     name: 'prescreening_ideation',
   });
@@ -52,22 +57,23 @@ const StatusFilterBox = ({
     idea_status: undefined,
   });
 
-  const handleOnChange = (nextSelectedStatusId: string | null) => {
-    onChange(nextSelectedStatusId);
-  };
-
   if (ideaStatuses && ideaStatuses.data.length > 0 && ideasFilterCounts) {
+    const statusCounts: Partial<Record<string, number>> =
+      ideasFilterCounts.data.attributes.idea_status_id;
+
     return (
-      <div className={className}>
-        <StatusFilter
-          statuses={ideaStatuses.data}
-          // TODO: Fix this the next time the file is edited.
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-          filterCounts={ideasFilterCounts?.data.attributes}
-          selectedStatusId={selectedStatusId}
-          onChange={handleOnChange}
-        />
-      </div>
+      <SingleSelectFilter
+        title={formatMessage(messages.statusTitle)}
+        options={ideaStatuses.data.map((status) => ({
+          id: status.id,
+          label: capitalize(localize(status.attributes.title_multiloc)),
+          count: statusCounts[status.id] ?? 0,
+          color: status.attributes.color,
+        }))}
+        totalCount={ideasFilterCounts.data.attributes.total}
+        selectedId={selectedStatusId}
+        onChange={onChange}
+      />
     );
   }
 

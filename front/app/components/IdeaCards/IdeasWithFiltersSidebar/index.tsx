@@ -74,6 +74,7 @@ export interface QueryParametersUpdate {
   search?: string;
   idea_status?: string;
   topics?: string[];
+  answers?: Record<string, string[]>;
 }
 
 export interface Props {
@@ -184,6 +185,23 @@ const IdeasWithFiltersSidebar = ({
     [onUpdateQuery]
   );
 
+  const handleAnswerOnChange = useCallback(
+    (fieldId: string, optionKey: string | null) => {
+      trackEventByName(tracks.answersFilter, { fieldId, optionKey });
+
+      const answers = { ...ideaQueryParameters.custom_field_answers };
+      if (optionKey) {
+        answers[fieldId] = [optionKey];
+      } else {
+        delete answers[fieldId];
+      }
+      onUpdateQuery({
+        answers: Object.keys(answers).length > 0 ? answers : undefined,
+      });
+    },
+    [ideaQueryParameters.custom_field_answers, onUpdateQuery]
+  );
+
   const showInputFilterSidebar =
     biggerThanLargeTablet && selectedView === 'card';
 
@@ -194,6 +212,7 @@ const IdeasWithFiltersSidebar = ({
     onSearch: handleSearchOnChange,
     onChangeStatus: handleStatusOnChange,
     onChangeTopics: handleTopicsOnChange,
+    onChangeAnswer: handleAnswerOnChange,
     handleSortOnChange,
     phaseId,
     projectId,

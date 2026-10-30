@@ -152,6 +152,46 @@ describe IdeasFinder do
     end
   end
 
+  describe '#custom_field_answers_condition' do
+    let(:project) { create(:project) }
+    let(:form) { create(:custom_form, participation_context: project) }
+    let(:select_field) { create(:custom_field_select, :with_options, resource: form, answers_visible_to: 'public') }
+    let(:multiselect_field) { create(:custom_field_multiselect, :with_options, resource: form, answers_visible_to: 'public') }
+    let(:private_field) { create(:custom_field_select, :with_options, resource: form) }
+    let!(:idea1) { create(:idea, project: project) }
+    let!(:idea2) { create(:idea, project: project) }
+    let!(:idea3) { create(:idea, project: project) }
+
+    before do
+      create(:custom_field_answer, answerable: idea1, key: select_field.key, value: 'option1')
+      create(:custom_field_answer, answerable: idea2, key: select_field.key, value: 'option1')
+      create(:custom_field_answer, answerable: idea3, key: select_field.key, value: 'option2')
+      create(:custom_field_answer, answerable: idea1, key: multiselect_field.key, value: %w[option1 option2])
+      create(:custom_field_answer, answerable: idea2, key: multiselect_field.key, value: %w[option1])
+      create(:custom_field_answer, answerable: idea3, key: private_field.key, value: 'option1')
+    end
+
+    it 'returns the ideas with one of the given answers' do
+      params[:custom_field_answers] = { select_field.id => %w[option1] }
+      expect(result_record_ids).to contain_exactly(idea1.id, idea2.id)
+    end
+
+    it 'matches any chosen option of a multiple choice answer' do
+      params[:custom_field_answers] = { multiselect_field.id => %w[option2] }
+      expect(result_record_ids).to eq [idea1.id]
+    end
+
+    it 'combines the answers of several fields' do
+      params[:custom_field_answers] = { select_field.id => %w[option1], multiselect_field.id => %w[option2] }
+      expect(result_record_ids).to eq [idea1.id]
+    end
+
+    it 'ignores fields whose answers are not public' do
+      params[:custom_field_answers] = { private_field.id => %w[option1] }
+      expect(result_record_ids).to match_array Idea.ids
+    end
+  end
+
   describe '#project_publication_status_condition' do
     let(:publication_status) { 'draft' }
     let(:expected_record_ids) do
