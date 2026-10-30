@@ -5,6 +5,9 @@ module AIAssistant
   class TurnJob < ApplicationJob
     self.priority = 45
 
+    # The conversation was deleted, with its phase or user, while the turn was queued.
+    discard_on ActiveJob::DeserializationError
+
     # Someone is waiting for the reply, so don't retry for hours like other jobs do.
     MAX_RETRY_COUNT = 2
 

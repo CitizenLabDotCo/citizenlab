@@ -22,6 +22,13 @@ describe AIAssistant::TurnJob, :active_job_que_adapter do
     job.perform_now
   end
 
+  it 'drops a turn whose conversation was deleted while it was queued' do
+    serialized_job = described_class.new(conversation).serialize
+    conversation.destroy!
+
+    expect { ActiveJob::Base.execute(serialized_job) }.not_to raise_error
+  end
+
   describe '#handle_error' do
     using RSpec::Parameterized::TableSyntax
 
