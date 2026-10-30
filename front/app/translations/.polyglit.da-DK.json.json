@@ -7076,6 +7076,11 @@
     "verified_at": "2026-03-18T12:49:36.657470Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectDescription.saveErrorUnauthorizedFile": {
+    "state": "verified",
+    "verified_at": "2026-10-30T07:31:32.305003Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.AdminPage.ProjectDescription.toggleLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.657470Z",
@@ -7969,6 +7974,11 @@
   "app.containers.CustomPageBuilder.saveError": {
     "state": "verified",
     "verified_at": "2026-09-07T11:01:59.580839Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.CustomPageBuilder.saveErrorUnauthorizedFile": {
+    "state": "verified",
+    "verified_at": "2026-10-30T07:31:32.305003Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.CustomPageShow.editPage": {
@@ -11504,6 +11514,11 @@
   "app.containers.ProjectPageBuilder.saveError": {
     "state": "verified",
     "verified_at": "2026-07-08T14:05:02.878146Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.ProjectPageBuilder.saveErrorUnauthorizedFile": {
+    "state": "verified",
+    "verified_at": "2026-10-30T07:31:32.305003Z",
     "verified_by": "kielgast@govocal.com"
   },
   "app.containers.ProjectPageBuilder.toolboxLockedNote": {

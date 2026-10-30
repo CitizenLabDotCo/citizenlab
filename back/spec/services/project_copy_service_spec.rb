@@ -57,6 +57,22 @@ describe ProjectCopyService do
       end
     end
 
+    it 'points file widgets at the copied files after a YAML round trip' do
+      template_yaml = create(:tenant).switch do
+        project = create(:project)
+        file = create(:file, name: 'agenda.pdf', projects: [project])
+        create(:layout, content_buildable: project, code: 'project_page', craftjs_json: {
+          'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => ['file1'] },
+          'file1' => { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => file.id } }
+        })
+        service.export(project).to_yaml
+      end
+
+      project = service.import(MultiTenancy::Templates::Utils.parse_yml(template_yaml))
+
+      expect(project.content_builder_layouts.sole.referenced_file_ids).to eq [project.files.sole.id]
+    end
+
     it 'successfully copies over native surveys and responses' do
       create(:idea_status_proposed)
 

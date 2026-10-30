@@ -13,7 +13,7 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
         validate: false,
         local_copy: local_copy,
         reuse_by: { 'CustomField' => MultiTenancy::Templates::ReuseMatchers.registration_custom_field }
-      )
+      ).tap { |ids| remap_layout_file_ids!(template, ids) }
     end
 
     project = Project.find(created_objects_ids['Project'].first)
@@ -905,7 +905,11 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
   # project (Files::FilesProject), and any file attached to a project resource must belong
   # to that project, so the project's files are exactly those joined via files_projects.
   def yml_files(shift_timestamps: 0)
-    @project.files.map do |file|
+    files = @project.files.to_a
+    # In the same order as the file records, so #import can pair each source file with its copy.
+    @template['source_file_ids'] = files.map(&:id)
+
+    files.map do |file|
       yml_file = {
         'uploader_ref' => lookup_ref(file.uploader_id, :user),
         'name' => file.name,
@@ -973,6 +977,19 @@ class ProjectCopyService < TemplateService # rubocop:disable Metrics/ClassLength
           mappable: CustomField.where(resource: CustomForm.where(participation_context: [@project, *@project.phases]))
         )
       )
+  end
+
+  # Layouts are restored before files, so their FileAttachment widgets still hold the
+  # source files' IDs. Templates exported before +source_file_ids+ existed are left as is.
+  def remap_layout_file_ids!(template, created_objects_ids)
+    source_file_ids = template['source_file_ids']
+    copied_file_ids = created_objects_ids['Files::File']
+    return if source_file_ids.blank? || source_file_ids.size != copied_file_ids.size
+
+    file_id_mapping = source_file_ids.zip(copied_file_ids).to_h
+    ContentBuilder::Layout.where(id: created_objects_ids['ContentBuilder::Layout']).find_each do |layout|
+      layout.remap_file_ids!(file_id_mapping)
+    end
   end
 
   def fix_project_slugs_in_template!(template)

@@ -7046,6 +7046,11 @@
     "verified_at": "2026-03-18T11:49:32.481338Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectDescription.saveErrorUnauthorizedFile": {
+    "state": "verified",
+    "verified_at": "2026-10-30T14:04:22.252468Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.AdminPage.ProjectDescription.toggleLabel": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.481338Z",
@@ -7939,6 +7944,11 @@
   "app.containers.CustomPageBuilder.saveError": {
     "state": "verified",
     "verified_at": "2026-09-16T16:56:10.007859Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.CustomPageBuilder.saveErrorUnauthorizedFile": {
+    "state": "verified",
+    "verified_at": "2026-10-30T14:04:22.252468Z",
     "verified_by": "Luuc"
   },
   "app.containers.CustomPageShow.editPage": {
@@ -11474,6 +11484,11 @@
   "app.containers.ProjectPageBuilder.saveError": {
     "state": "verified",
     "verified_at": "2026-07-10T12:40:33.205456Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.ProjectPageBuilder.saveErrorUnauthorizedFile": {
+    "state": "verified",
+    "verified_at": "2026-10-30T14:04:22.252468Z",
     "verified_by": "Luuc"
   },
   "app.containers.ProjectPageBuilder.toolboxLockedNote": {

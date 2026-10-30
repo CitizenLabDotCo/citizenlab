@@ -35,7 +35,7 @@ const defaultProps: React.ComponentProps<typeof CustomPageBuilderTopBar> = {
   titleMultiloc: { en: 'About us' },
   onSave: jest.fn(() => Promise.resolve()),
   isSaving: false,
-  saveHasError: false,
+  saveError: null,
   hasError: false,
   hasPendingState: false,
 };
@@ -69,11 +69,29 @@ describe('CustomPageBuilderTopBar', () => {
     expect(push).toHaveBeenCalledWith('/admin/pages-menu/pages/page-1/content');
   });
 
+  it('shows no save error by default', () => {
+    renderTopBar();
+
+    expect(
+      screen.queryByText('There was an error saving the custom page.')
+    ).not.toBeInTheDocument();
+  });
+
   it('surfaces a save error', () => {
-    renderTopBar({ saveHasError: true });
+    renderTopBar({ saveError: 'generic' });
 
     expect(
       screen.getByText('There was an error saving the custom page.')
+    ).toBeInTheDocument();
+  });
+
+  it('explains a save refused because of a file', () => {
+    renderTopBar({ saveError: 'unauthorizedFile' });
+
+    expect(
+      screen.getByText(
+        "The custom page wasn't saved because you can't use one of the files you added. Remove it, or ask an admin to add it."
+      )
     ).toBeInTheDocument();
   });
 });
