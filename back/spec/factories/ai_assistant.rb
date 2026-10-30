@@ -3,8 +3,8 @@
 FactoryBot.define do
   factory :ai_assistant_conversation, class: 'AIAssistant::Conversation' do
     user factory: :super_admin
-    add_attribute(:context) { association :native_survey_phase, project: association(:project, :draft) }
-    context_key { 'survey_builder' }
+    subject { association :native_survey_phase, project: association(:project, :draft) }
+    surface_key { 'survey_builder' }
     locale { 'en' }
   end
 

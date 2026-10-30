@@ -21,7 +21,7 @@ describe('useAddAiAssistantConversation', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
-  it('starts a conversation about the context', async () => {
+  it('starts a conversation about the subject', async () => {
     let requestBody: unknown;
     server.use(
       http.post(apiPath, async ({ request }) => {
@@ -39,8 +39,8 @@ describe('useAddAiAssistantConversation', () => {
 
     act(() => {
       result.current.mutate({
-        contextKey: 'survey_builder',
-        contextId: 'phase-1',
+        surfaceKey: 'survey_builder',
+        subjectId: 'phase-1',
         locale: 'en',
       });
     });
@@ -48,8 +48,8 @@ describe('useAddAiAssistantConversation', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(requestBody).toEqual({
       ai_assistant_conversation: {
-        context_key: 'survey_builder',
-        context_id: 'phase-1',
+        surface_key: 'survey_builder',
+        subject_id: 'phase-1',
         locale: 'en',
       },
     });

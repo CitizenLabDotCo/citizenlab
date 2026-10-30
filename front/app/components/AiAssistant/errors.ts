@@ -22,8 +22,8 @@ export const getErrorMessage = (
       return messages.errorLlmRequestRejected;
     case 'context_too_long':
       return messages.errorContextTooLong;
-    case 'context_unavailable':
-      return messages.errorContextUnavailable;
+    case 'surface_unavailable':
+      return messages.errorSurfaceUnavailable;
     case 'turn_timed_out':
       return messages.errorTurnTimedOut;
     case 'conversation_busy':

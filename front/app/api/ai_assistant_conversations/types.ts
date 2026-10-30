@@ -10,13 +10,13 @@ export type AiAssistantConversationsKeys = Keys<
   typeof aiAssistantConversationsKeys
 >;
 
-export type AiAssistantContextKey = 'survey_builder';
+export type AiAssistantSurfaceKey = 'survey_builder';
 
 export type AiAssistantErrorCode =
   | 'llm_unavailable'
   | 'llm_request_rejected'
   | 'context_too_long'
-  | 'context_unavailable'
+  | 'surface_unavailable'
   | 'unexpected_error';
 
 type ConversationState =
@@ -30,7 +30,7 @@ export interface IAiAssistantConversationData {
   id: string;
   type: 'ai_assistant_conversation';
   attributes: ConversationState & {
-    context_key: AiAssistantContextKey;
+    surface_key: AiAssistantSurfaceKey;
     locale: SupportedLocale;
     created_at: string;
     updated_at: string;
@@ -50,7 +50,7 @@ export interface IAiAssistantConversations {
 }
 
 export interface IAiAssistantConversationAdd {
-  contextKey: AiAssistantContextKey;
-  contextId: string;
+  surfaceKey: AiAssistantSurfaceKey;
+  subjectId: string;
   locale: SupportedLocale;
 }

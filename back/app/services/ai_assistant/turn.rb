@@ -13,12 +13,12 @@ module AIAssistant
 
     def initialize(conversation)
       @conversation = conversation
-      @context = Context.for(conversation)
+      @surface = Surface.for(conversation)
     end
 
     def run
-      unless @context.available?
-        conversation.update!(status: 'failed', last_error_code: 'context_unavailable')
+      unless @surface.available?
+        conversation.update!(status: 'failed', last_error_code: 'surface_unavailable')
         return
       end
 
@@ -42,7 +42,7 @@ module AIAssistant
 
       llm.chat_context
         .chat(model: llm.model, **llm.chat_options)
-        .with_instructions(@context.system_prompt(locale: conversation.locale))
+        .with_instructions(@surface.system_prompt(locale: conversation.locale))
         .with_params(inferenceConfig: { maxTokens: MAX_OUTPUT_TOKENS })
         .after_message { |message| persist(message) }
     end

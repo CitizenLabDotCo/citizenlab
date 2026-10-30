@@ -7,8 +7,8 @@ import aiAssistantConversationsKeys from './keys';
 import { IAiAssistantConversation, IAiAssistantConversationAdd } from './types';
 
 const addConversation = ({
-  contextKey,
-  contextId,
+  surfaceKey,
+  subjectId,
   locale,
 }: IAiAssistantConversationAdd) =>
   fetcher<IAiAssistantConversation>({
@@ -16,8 +16,8 @@ const addConversation = ({
     action: 'post',
     body: {
       ai_assistant_conversation: {
-        context_key: contextKey,
-        context_id: contextId,
+        surface_key: surfaceKey,
+        subject_id: subjectId,
         locale,
       },
     },

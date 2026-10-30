@@ -526,7 +526,7 @@ DROP INDEX IF EXISTS public.index_ai_assistant_tool_calls_on_message_id;
 DROP INDEX IF EXISTS public.index_ai_assistant_tool_calls_on_decided_by_id;
 DROP INDEX IF EXISTS public.index_ai_assistant_messages_on_conversation_id_and_position;
 DROP INDEX IF EXISTS public.index_ai_assistant_conversations_on_user_id;
-DROP INDEX IF EXISTS public.index_ai_assistant_conversations_on_context;
+DROP INDEX IF EXISTS public.index_ai_assistant_conversations_on_subject;
 DROP INDEX IF EXISTS public.index_admin_publications_on_scheduled_transition;
 DROP INDEX IF EXISTS public.index_admin_publications_on_scheduled_by_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_rgt;
@@ -1266,9 +1266,9 @@ CREATE TABLE public.admin_publications (
 CREATE TABLE public.ai_assistant_conversations (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     user_id uuid NOT NULL,
-    context_type character varying NOT NULL,
-    context_id uuid NOT NULL,
-    context_key character varying NOT NULL,
+    subject_type character varying NOT NULL,
+    subject_id uuid NOT NULL,
+    surface_key character varying NOT NULL,
     locale character varying NOT NULL,
     status character varying DEFAULT 'idle'::character varying NOT NULL,
     last_error_code character varying,
@@ -6866,10 +6866,10 @@ CREATE INDEX index_admin_publications_on_scheduled_transition ON public.admin_pu
 
 
 --
--- Name: index_ai_assistant_conversations_on_context; Type: INDEX; Schema: public; Owner: -
+-- Name: index_ai_assistant_conversations_on_subject; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_ai_assistant_conversations_on_context ON public.ai_assistant_conversations USING btree (context_type, context_id);
+CREATE INDEX index_ai_assistant_conversations_on_subject ON public.ai_assistant_conversations USING btree (subject_type, subject_id);
 
 
 --

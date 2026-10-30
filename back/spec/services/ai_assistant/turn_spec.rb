@@ -6,7 +6,7 @@ describe AIAssistant::Turn do
   subject(:turn) { described_class.new(conversation) }
 
   let(:conversation) { create(:ai_assistant_conversation, status: 'running') }
-  let(:phase) { conversation.context }
+  let(:phase) { conversation.subject }
   let!(:user_message) { create(:ai_assistant_message, conversation:, content: 'Create a survey about our park.') }
 
   def last_request_messages
@@ -34,12 +34,12 @@ describe AIAssistant::Turn do
     expect(conversation.reload).to have_attributes(status: 'idle', last_error_code: nil)
   end
 
-  it 'fails when the context is no longer available' do
+  it 'fails when the surface is no longer available' do
     phase.update_columns(participation_method: 'information')
 
     turn.run
 
-    expect(conversation.reload).to have_attributes(status: 'failed', last_error_code: 'context_unavailable')
+    expect(conversation.reload).to have_attributes(status: 'failed', last_error_code: 'surface_unavailable')
   end
 
   describe 'replaying the conversation' do

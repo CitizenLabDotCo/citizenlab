@@ -10,8 +10,8 @@ type Props = {
 
 const SurveyAssistant = ({ phaseId }: Props) => (
   <AssistantPanel
-    contextKey="survey_builder"
-    contextId={phaseId}
+    surfaceKey="survey_builder"
+    subjectId={phaseId}
     intro={messages.intro}
   />
 );

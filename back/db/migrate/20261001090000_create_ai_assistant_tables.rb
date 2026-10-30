@@ -7,9 +7,9 @@ class CreateAIAssistantTables < ActiveRecord::Migration[7.2]
     create_table :ai_assistant_conversations, id: :uuid do |t|
       t.references :user, type: :uuid, null: false, foreign_key: { on_delete: :cascade }
       # The record the conversation is about (e.g. the phase of a survey), looked up together
-      # with the context key when the panel opens.
-      t.references :context, type: :uuid, null: false, polymorphic: true
-      t.string :context_key, null: false
+      # with the surface key when the panel opens.
+      t.references :subject, type: :uuid, null: false, polymorphic: true
+      t.string :surface_key, null: false
       t.string :locale, null: false
       t.string :status, null: false, default: 'idle'
       t.string :last_error_code

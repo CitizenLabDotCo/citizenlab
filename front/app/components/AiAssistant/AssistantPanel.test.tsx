@@ -70,7 +70,7 @@ const conversation = (
 });
 
 const baseAttributes = {
-  context_key: 'survey_builder',
+  surface_key: 'survey_builder',
   locale: 'en',
   created_at: '2026-10-01T08:00:00.000Z',
   updated_at: '2026-10-01T08:00:00.000Z',
@@ -79,8 +79,8 @@ const baseAttributes = {
 const renderPanel = () =>
   render(
     <AssistantPanel
-      contextKey="survey_builder"
-      contextId="phase-1"
+      surfaceKey="survey_builder"
+      subjectId="phase-1"
       intro={{ id: 'test.intro', defaultMessage: 'Describe your survey' }}
     />
   );

@@ -19,7 +19,7 @@ module AIAssistant
     end
 
     def create?
-      show? && record.context.present? && Context.for(record).accessible_by?(user)
+      show? && record.subject.present? && Surface.for(record).accessible_by?(user)
     end
 
     def update?
