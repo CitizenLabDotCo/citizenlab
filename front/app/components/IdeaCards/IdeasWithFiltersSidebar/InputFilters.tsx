@@ -76,14 +76,17 @@ const InputFilters = ({
   const isProposalsOrIdeation =
     participationMethod === 'ideation' || participationMethod === 'proposals';
   const isVoting = participationMethod === 'voting';
+  const counts = isNilOrError(ideasFilterCounts)
+    ? undefined
+    : ideasFilterCounts.data.attributes;
 
   return (
     <>
       <ScreenReaderOnly aria-live="polite">
-        {!isNilOrError(ideasFilterCounts) && (
+        {counts && (
           <FormattedMessage
             {...messages.a11y_totalItems}
-            values={{ ideasCount: ideasFilterCounts.data.attributes.total }}
+            values={{ ideasCount: counts.total }}
           />
         )}
       </ScreenReaderOnly>
@@ -113,7 +116,7 @@ const InputFilters = ({
           <TopicFilterBox
             projectId={projectId}
             selectedTopicIds={ideaQueryParameters.input_topics}
-            ideaQueryParameters={ideaQueryParameters}
+            filterCounts={counts}
             onChange={onChangeTopics}
           />
         </Box>
@@ -122,7 +125,8 @@ const InputFilters = ({
         <Box key={field.id} mb="20px" data-cy="e2e-answer-filter-box">
           <AnswerFilterBox
             field={field}
-            ideaQueryParameters={ideaQueryParameters}
+            optionCounts={counts?.custom_field_answers?.[field.id]}
+            totalCount={counts?.total}
             selectedOptionKey={
               ideaQueryParameters.custom_field_answers?.[field.id]?.[0]
             }
@@ -134,7 +138,8 @@ const InputFilters = ({
         <StatusFilterBox
           participationMethod={participationMethod}
           selectedStatusId={ideaQueryParameters.idea_status}
-          ideaQueryParameters={ideaQueryParameters}
+          statusCounts={counts?.idea_status_id}
+          totalCount={counts?.total}
           onChange={onChangeStatus}
           phase={phase}
         />

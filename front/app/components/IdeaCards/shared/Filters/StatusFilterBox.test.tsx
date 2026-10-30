@@ -4,26 +4,11 @@ import useIdeaStatuses from 'api/idea_statuses/useIdeaStatuses';
 import { phasesData } from 'api/phases/__mocks__/_mockServer';
 import { IPhase, IPhaseData } from 'api/phases/types';
 
-import { render } from 'utils/testUtils/rtl';
+import { render, screen } from 'utils/testUtils/rtl';
 
 import StatusFilterBox from './StatusFilterBox';
 
 jest.mock('api/idea_statuses/useIdeaStatuses');
-jest.mock('api/ideas_filter_counts/useIdeasFilterCounts', () =>
-  jest.fn(() => ({
-    data: {
-      data: {
-        type: 'filter_counts',
-        attributes: {
-          idea_status_id: {},
-          area_id: {},
-          input_topic_id: {},
-          total: 0,
-        },
-      },
-    },
-  }))
-);
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => true));
 
 const mockPhase = (attributes: Partial<IPhaseData['attributes']>): IPhase => ({
@@ -33,11 +18,16 @@ const mockPhase = (attributes: Partial<IPhaseData['attributes']>): IPhase => ({
   },
 });
 
-const renderStatusFilterBox = (phase: IPhase) =>
+const renderStatusFilterBox = (
+  phase: IPhase,
+  statusCounts: Partial<Record<string, number>> = {},
+  totalCount = 0
+) =>
   render(
     <StatusFilterBox
       selectedStatusId={null}
-      ideaQueryParameters={{}}
+      statusCounts={statusCounts}
+      totalCount={totalCount}
       onChange={jest.fn()}
       phase={phase}
     />
@@ -46,6 +36,20 @@ const renderStatusFilterBox = (phase: IPhase) =>
 describe('StatusFilterBox', () => {
   beforeEach(() => {
     jest.mocked(useIdeaStatuses).mockClear();
+  });
+
+  it('shows the given count next to each status and the total', () => {
+    renderStatusFilterBox(mockPhase({}), { 1: 3 }, 7);
+
+    expect(screen.getByRole('button', { name: /^all/i })).toHaveTextContent(
+      '7'
+    );
+    expect(
+      screen.getByRole('button', { name: /idea status 1/i })
+    ).toHaveTextContent('3');
+    expect(
+      screen.getByRole('button', { name: /idea status 2/i })
+    ).toHaveTextContent('0');
   });
 
   /*

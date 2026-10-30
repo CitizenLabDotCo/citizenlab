@@ -19,6 +19,7 @@ interface Props extends InputFiltersProps {
 const FiltersModal = ({
   opened,
   ideaQueryParameters,
+  ideasFilterCounts,
   onClose,
   ...filtersProps
 }: Props) => {
@@ -31,6 +32,7 @@ const FiltersModal = ({
         <BottomBar
           onClick={onClose}
           ideaQueryParameters={ideaQueryParameters}
+          ideasFilterCounts={ideasFilterCounts}
         />
       }
       contentBgColor="background"
@@ -38,6 +40,7 @@ const FiltersModal = ({
       <Box p="16px">
         <InputFilters
           ideaQueryParameters={ideaQueryParameters}
+          ideasFilterCounts={ideasFilterCounts}
           // We have a reset filters button in TopBar
           showResetButton={false}
           {...filtersProps}
