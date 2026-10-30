@@ -18314,6 +18314,11 @@
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectEdit.statusPrioritySortingMethod": {
+    "state": "verified",
+    "verified_at": "2026-10-28T14:43:09.308187Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
@@ -25783,6 +25788,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.382742Z",
     "verified_by": "Admin"
+  },
+  "front.app.containers.Admin.pagesAndMenu.containers.ContentBuilder.components.Widgets._shared.AdminPubsCarrousel.AdminPubCard.projects": {
+    "state": "verified",
+    "verified_at": "2026-10-29T11:59:06.008872Z",
+    "verified_by": "Jelena"
   },
   "pagesAndMenu.GenericHeroBannerForm.BannerImageFields.imageSupportPageText": {
     "state": "verified",

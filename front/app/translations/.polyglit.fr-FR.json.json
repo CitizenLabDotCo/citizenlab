@@ -1649,6 +1649,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.IdeaCards.filters.statusPriority": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:10:40.488770Z",
+    "verified_by": "Cindy EB"
+  },
   "app.components.IdeaCards.filters.trending": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -8129,6 +8134,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.containers.IdeaCards.statusPriority": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:10:40.488770Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.IdeaCards.statusTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -12238,6 +12248,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:41:18.598322Z",
+    "verified_by": "Adrien"
   },
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": {
     "state": "verified",

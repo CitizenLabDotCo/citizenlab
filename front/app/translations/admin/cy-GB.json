@@ -3349,6 +3349,7 @@
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Rhannu gwybodaeth",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "Arolwg Snap",
+  "app.containers.AdminPage.ProjectEdit.statusPrioritySortingMethod": "Statws (cynigwyd yn gyntaf)",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Sefydlu a phersonoli eich prosiect.",
   "app.containers.AdminPage.ProjectEdit.supportPageLinkText": "ymweld â'n canolfan gymorth",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent2": "Ychwanegu cynnwys yr arolwg",
