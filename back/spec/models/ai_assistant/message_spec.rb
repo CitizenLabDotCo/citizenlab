@@ -28,7 +28,7 @@ describe AIAssistant::Message do
   end
 
   describe 'files', :active_job_que_adapter do
-    let(:file) { create(:file, ai_processing_allowed: true, projects: [conversation.context.project]) }
+    let(:file) { create(:file, ai_processing_allowed: true, projects: [conversation.subject.project]) }
 
     it 'accepts PDF files that may be processed by AI' do
       expect(build(:ai_assistant_message, conversation:, file_ids: [file.id])).to be_valid
@@ -76,7 +76,7 @@ describe AIAssistant::Message do
             name:,
             content: Rails.root.join('spec/fixtures', fixture).open,
             ai_processing_allowed: true,
-            projects: [conversation.context.project]
+            projects: [conversation.subject.project]
           )
           message = build(:ai_assistant_message, conversation:, file_ids: [file.id])
 
