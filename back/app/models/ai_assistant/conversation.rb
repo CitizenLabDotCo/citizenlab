@@ -27,7 +27,8 @@
 #
 module AIAssistant
   # A chat between a user and the AI assistant about one record (the subject), e.g. the
-  # survey of a phase. +surface_key+ says where the assistant is used, which decides its prompt.
+  # survey of a phase. +surface_key+ says where the assistant is used, which decides its
+  # prompt and tools.
   class Conversation < ApplicationRecord
     STATUSES = %w[idle running failed].freeze
     # A running turn stores a message more often than this, unless its job was lost.
@@ -37,16 +38,24 @@ module AIAssistant
     belongs_to :subject, polymorphic: true
 
     has_many :messages, -> { order(:position) }, class_name: 'AIAssistant::Message', dependent: :destroy, inverse_of: :conversation
+    has_many :tool_calls, through: :messages
 
     enum :status, STATUSES.index_by(&:itself)
 
     validates :surface_key, :locale, presence: true
 
+    # Calls still pending when a turn fails never ran: the tool-call limit or a stopped
+    # worker cut the turn off before their tool did.
+    def fail_turn!(error_code)
+      tool_calls.pending.find_each { |tool_call| tool_call.update!(status: 'failed') }
+      update!(status: 'failed', last_error_code: error_code)
+    end
+
     # Gets the conversation out of a state that nothing would end anymore.
     def recover_if_stuck!
       return unless running? && updated_at < TURN_TIMEOUT.ago
 
-      update!(status: 'failed', last_error_code: 'turn_timed_out')
+      fail_turn!('turn_timed_out')
     end
   end
 end
