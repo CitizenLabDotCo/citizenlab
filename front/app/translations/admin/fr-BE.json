@@ -3547,7 +3547,7 @@
   "app.containers.AdminPage.ProjectPages.newPageTitle": "Nouvelle page",
   "app.containers.AdminPage.ProjectPages.noPagesTitle2": "Aucune page pour le moment",
   "app.containers.AdminPage.ProjectPages.pagePreviewTitle": "Aperçu de la page du projet",
-  "app.containers.AdminPage.ProjectPages.pagesDescription3": "Ajoutez une page pour partager le contexte de la consultation, une FAQ ou le fonctionnement du processus. Vous pouvez créer des liens vers ces pages dans la description du projet à l'aide du widget Lien vers la page. Les pages de projet sont limitées à ce projet et ne peuvent pas être ajoutées à la barre de navigation.",
+  "app.containers.AdminPage.ProjectPages.pagesDescription3": "Ajoutez une page pour présenter le contexte de la consultation, proposer une FAQ ou détailler le déroulement du processus. Vous pouvez renvoyer vers ces pages depuis la description du projet grâce au widget « Lien vers la page du projet ». Les pages de projet sont propres à chaque projet et ne peuvent pas être ajoutées à la barre de navigation.",
   "app.containers.AdminPage.ProjectPages.pagesTitle2": "Pages du projet",
   "app.containers.AdminPage.ProjectPages.saveButton": "Enregistrer",
   "app.containers.AdminPage.ProjectPages.saveSuccess": "Page enregistrée",
