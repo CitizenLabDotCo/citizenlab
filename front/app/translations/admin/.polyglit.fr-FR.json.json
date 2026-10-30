@@ -10469,6 +10469,11 @@
     "verified_at": "2026-10-28T13:09:38.034320Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.listing": {
+    "state": "verified",
+    "verified_at": "2026-10-30T14:13:55.267160Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.manageFiles": {
     "state": "verified",
     "verified_at": "2026-10-28T13:21:28.391277Z",
