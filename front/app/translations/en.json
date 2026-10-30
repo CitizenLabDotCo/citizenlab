@@ -932,6 +932,7 @@
   "app.components.aiAssistant.errorAiProcessingNotAllowed": "One of the files may not be shared with AI.",
   "app.components.aiAssistant.errorContextTooLong": "This chat has become too long. Start a new chat to continue.",
   "app.components.aiAssistant.errorConversationBusy": "The assistant is still working, or waiting for your decision on a proposed change.",
+  "app.components.aiAssistant.errorFileNotInProject": "Only files of this project can be attached.",
   "app.components.aiAssistant.errorGeneric": "Something went wrong. Please try again.",
   "app.components.aiAssistant.errorLlmRequestRejected": "The AI service could not handle this request. Try rephrasing it, or start a new chat.",
   "app.components.aiAssistant.errorLlmUnavailable": "The AI service is not available right now. Please try again in a few minutes.",
