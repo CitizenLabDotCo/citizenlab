@@ -931,7 +931,7 @@
   "app.components.aiAssistant.errorSurfaceUnavailable": "L'assistant n'est pas disponible ici.",
   "app.components.aiAssistant.errorTooLong": "Votre message est trop long.",
   "app.components.aiAssistant.errorTurnTimedOut": "L'assistant ne répond plus. Veuillez réessayer ou démarrer une nouvelle discussion.",
-  "app.components.aiAssistant.newChat": "Nouvelle discussion",
+  "app.components.aiAssistant.newChat": "Nouvelle conversation",
   "app.components.aiAssistant.placeholder": "Demander une modification…",
   "app.components.aiAssistant.send": "Envoyer",
   "app.components.aiAssistant.title": "Créer avec l'IA",
