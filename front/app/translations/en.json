@@ -930,6 +930,7 @@
   "app.components.aiAssistant.errorLlmUnavailable": "The AI service is not available right now. Please try again in a few minutes.",
   "app.components.aiAssistant.errorSurfaceUnavailable": "The assistant is not available here.",
   "app.components.aiAssistant.errorTooLong": "Your message is too long.",
+  "app.components.aiAssistant.errorTurnTimedOut": "The assistant stopped responding. Please try again, or start a new chat.",
   "app.components.aiAssistant.newChat": "New chat",
   "app.components.aiAssistant.placeholder": "Ask for a change…",
   "app.components.aiAssistant.send": "Send",
