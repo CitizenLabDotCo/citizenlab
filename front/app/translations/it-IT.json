@@ -816,6 +816,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "Hai già inviato il tuo bilancio. Per modificarlo, torna alla pagina del progetto e clicca su \"Modifica il tuo voto\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Il budget non è disponibile, poiché questa fase non è attiva.",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Hai votato per {votes, plural, =0 {# opzioni} one {# opzione} other {# opzioni}}",
+  "app.components.WeglotSwitcher.ariaLabel": "Traduci questa pagina. Lingua attuale: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "Questo significa che perderai tutti i dati associati a questo contributo, come i commenti, le reazioni e i voti. Questa azione non può essere annullata.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "Sei sicuro di voler eliminare questo contributo?",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "Annulla",

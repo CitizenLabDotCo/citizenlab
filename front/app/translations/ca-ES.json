@@ -816,6 +816,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "Ja has enviat el teu pressupost. Per modificar-lo, torna a la pàgina del projecte i fes clic a \"Modifica la teva sol·licitud\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "El pressupost no està disponible, ja que aquesta fase no està activa.",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Has votat {votes, plural, =0 {# opcions} one {#opció} other {# opcions}}",
+  "app.components.WeglotSwitcher.ariaLabel": "Tradueix aquesta pàgina. Idioma actual: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "Això vol dir que perdràs totes les dades associades amb aquesta entrada, com ara comentaris, reaccions i vots. Aquesta acció no es pot desfer.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "Esteu segur que voleu suprimir aquesta entrada?",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "Cancel · lar",

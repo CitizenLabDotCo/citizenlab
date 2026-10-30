@@ -7,6 +7,8 @@ import useAuthUser from 'api/me/useAuthUser';
 
 import { triggerAuthenticationFlow } from 'containers/Authentication/events';
 
+import WeglotSwitcher from 'components/WeglotSwitcher';
+
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError, isPage } from 'utils/helperUtils';
 
@@ -42,6 +44,17 @@ const RightContainer = styled(Box)`
     ${media.phone`
         margin-left: 20px;
     `}
+  `}
+`;
+
+// LanguageSelector spaces itself with a 16px left margin on phone; the Weglot
+// switcher sits beside it and needs the same, or the two render flush.
+const StyledWeglotSwitcher = styled(WeglotSwitcher)`
+  padding-left: 16px;
+
+  ${isRtl`
+    padding-left: 0;
+    padding-right: 16px;
   `}
 `;
 
@@ -91,6 +104,9 @@ const MobileNavbarContent = () => {
           <>
             <NavItem className="noLeftMargin">
               <LanguageSelector />
+            </NavItem>
+            <NavItem className="noLeftMargin">
+              <StyledWeglotSwitcher />
             </NavItem>
             {isNilOrError(authUser) ? (
               <NavItem className="login">

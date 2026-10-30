@@ -816,6 +816,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "You have already submitted your budget. To modify it, go back to the project page and click \"Modify your submission\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Budgeting is not available, since this phase is not active.",
   "app.components.VoteInputs.single.youHaveVotedForX2": "You have voted for {votes, plural, =0 {# options} one {# option} other {# options}}",
+  "app.components.WeglotSwitcher.ariaLabel": "Translate this page. Current language: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "This means you will lose all data associated with this input, like comments, reactions and votes. This action cannot be undone.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "Are you sure you want to delete this input?",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "Cancel",

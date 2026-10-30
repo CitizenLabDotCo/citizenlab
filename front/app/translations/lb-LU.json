@@ -816,6 +816,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "Dir hutt Äre Budget scho agereecht. Fir en z'änneren, gitt zeréck op d'Projetsäit a klickt op \"Är Areeche änneren\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Budgetéierung ass net verfügbar, well dës Phase net aktiv ass.",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Dir hutt gestëmmt {votes, plural, =0 {# Optiounen} one {#Optioun} other {# Optiounen}}",
+  "app.components.WeglotSwitcher.ariaLabel": "Dës Säit iwwersetzen. Aktuell Sprooch: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "Dëst bedeit datt Dir all Daten verléiert, déi mat dësem Input verbonne sinn, wéi Kommentaren, Reaktiounen a Stëmmen. Dës Aktioun kann net réckgängeg gemaach ginn.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "Sidd Dir sécher, Dir wëllt dësen Input läschen?",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "Ofbriechen",

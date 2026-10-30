@@ -816,6 +816,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "Bütçenizi zaten gönderdiniz. Değiştirmek için proje sayfasına geri dönün ve \"Gönderinizi değiştirin\" seçeneğine tıklayın.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Bu aşama aktif olmadığı için bütçeleme mevcut değildir.",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Oy verdiniz {votes, plural, =0 {# seçenekler} one {# seçenek} other {# seçenek}}",
+  "app.components.WeglotSwitcher.ariaLabel": "Bu sayfayı çevir. Geçerli dil: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "Bu, yorumlar, tepkiler ve oylar gibi bu girdiyle ilişkili tüm verileri kaybedeceğiniz anlamına gelir. Bu işlem geri alınamaz.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "Bu girdiyi silmek istediğinizden emin misiniz?",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "İptal",

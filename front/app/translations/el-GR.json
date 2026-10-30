@@ -816,6 +816,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "Έχετε ήδη υποβάλει τον προϋπολογισμό σας. Για να τον τροποποιήσετε, επιστρέψτε στη σελίδα του έργου και κάντε κλικ στην επιλογή \"Τροποποίηση της υποβολής σας\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Ο προϋπολογισμός δεν είναι διαθέσιμος, δεδομένου ότι η φάση αυτή δεν είναι ενεργή.",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Ψηφίσατε {votes, plural, =0 {# options} one {# option} other {# options}}",
+  "app.components.WeglotSwitcher.ariaLabel": "Μεταφράστε αυτή τη σελίδα. Τρέχουσα γλώσσα: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "Αυτό σημαίνει ότι θα χάσετε όλα τα δεδομένα που σχετίζονται με αυτή την εισαγωγή, όπως σχόλια, αντιδράσεις και ψήφους. Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "Είστε σίγουροι ότι θέλετε να διαγράψετε αυτή την είσοδο;",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "Ακύρωση",

@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
 
-import {
-  Icon,
-  Dropdown,
-  useBreakpoint,
-  colors,
-  fontSizes,
-  isRtl,
-} from '@citizenlab/cl2-component-library';
+import { Dropdown, useBreakpoint } from '@citizenlab/cl2-component-library';
 import styled, { useTheme } from 'styled-components';
 import { SupportedLocale } from 'typings';
 
@@ -16,6 +9,15 @@ import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useLocale from 'hooks/useLocale';
 
 import { shortenedAppLocalePairs } from 'containers/App/constants';
+
+import {
+  Container as SwitcherContainer,
+  DropdownButton,
+  DropdownButtonIcon,
+  DropdownButtonText,
+  ListItem,
+  ListItemText,
+} from 'components/LanguageSwitcherStyles/styles';
 
 import { isNilOrError, removeFocusAfterMouseClick } from 'utils/helperUtils';
 import { updateLocale } from 'utils/locale';
@@ -29,82 +31,9 @@ const StyledDropdown = styled(Dropdown)`
   }
 `;
 
-const DropdownButtonText = styled.span`
-  color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
-  font-size: ${fontSizes.base}px;
-  font-weight: 500;
-  line-height: ${fontSizes.base}px;
-  transition: all 100ms ease-out;
-`;
-
-const DropdownButtonIcon = styled(Icon)`
-  color: ${({ theme }) => theme.navbarTextColor || theme.colors.tenantText};
-  transition: all 100ms ease-out;
-  ${isRtl`
-    margin-left: 0;
-    margin-right: 4px;
-  `}
-`;
-
-const DropdownButton = styled.button`
+// The whole container is the click target here, not just the button in it.
+const Container = styled(SwitcherContainer)`
   cursor: pointer;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: center;
-
-  ${isRtl`
-    flex-direction: row-reverse;
-  `}
-`;
-
-const Container = styled.div`
-  height: 100%;
-  display: flex;
-  align-items: center;
-  position: relative;
-  cursor: pointer;
-
-  &:hover,
-  &:focus {
-    ${DropdownButtonText} {
-      text-decoration: underline;
-    }
-  }
-`;
-
-const ListItemText = styled.span`
-  color: ${colors.textSecondary};
-  font-size: ${fontSizes.base}px;
-  font-weight: 400;
-  line-height: 21px;
-  text-align: left;
-`;
-
-const ListItem = styled.button`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0px;
-  margin-bottom: 4px;
-  padding: 10px;
-  background: #fff;
-  border-radius: ${(props) => props.theme.borderRadius};
-  cursor: pointer;
-
-  &.last {
-    margin-bottom: 0px;
-  }
-
-  &:hover,
-  &:focus,
-  &.active {
-    background: ${colors.grey300};
-    ${ListItemText} {
-      color: #000;
-    }
-  }
 `;
 
 interface Props {

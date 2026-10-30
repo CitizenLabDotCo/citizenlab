@@ -816,6 +816,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "Olet jo lähettänyt budjettisi. Voit muokata sitä palaamalla projektisivulle ja napsauttamalla \"Muokkaa lähetystäsi\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Budjetointi ei ole käytettävissä, koska tämä vaihe ei ole aktiivinen.",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Olet äänestänyt {votes, plural, =0 {# vaihtoehtoa} one {# vaihtoehtoa} other {# vaihtoehtoa}}",
+  "app.components.WeglotSwitcher.ariaLabel": "Käännä tämä sivu. Nykyinen kieli: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "Tämä tarkoittaa, että menetät kaikki tähän syötteeseen liittyvät tiedot, kuten kommentit, reaktiot ja äänet. Tätä toimintoa ei voi kumota.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "Haluatko varmasti poistaa tämän syötteen?",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "Peruuta",

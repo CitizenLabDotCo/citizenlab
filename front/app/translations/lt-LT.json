@@ -816,6 +816,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "Jau pateikėte savo biudžetą. Norėdami jį pakeisti, grįžkite į projekto puslapį ir spustelėkite \"Modify your submission\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Biudžeto sudarymas negalimas, nes šis etapas nėra aktyvus.",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Jūs balsavote už {votes, plural, =0 {# parinktys} one {# parinktis} other {# parinktys}}",
+  "app.components.WeglotSwitcher.ariaLabel": "Išversti šį puslapį. Dabartinė kalba: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "Tai reiškia, kad prarasite visus su šia įvestimi susijusius duomenis, pavyzdžiui, komentarus, reakcijas ir balsus. Šio veiksmo atšaukti neįmanoma.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "Ar tikrai norite ištrinti šią įvestį?",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "Atšaukti",

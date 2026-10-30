@@ -816,6 +816,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "Már beküldted a költségvetésedet. A módosításához menj vissza a projekt oldalára, és kattints a „Beküldés módosítása” gombra.",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Költségvetés nem érhető el, mivel ez a fázis nem aktív.",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Ön a {votes, plural, =0 {# opcióra szavazott} one {# opció} other {# opció}}",
+  "app.components.WeglotSwitcher.ariaLabel": "Oldal lefordítása. Jelenlegi nyelv: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "Ez azt jelenti, hogy elveszíti az ehhez a bevitelhez kapcsolódó összes adatot, például a megjegyzéseket, reakciókat és szavazatokat. Ez a művelet nem vonható vissza.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "Biztosan törli ezt a bemenetet?",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "Mégsem",

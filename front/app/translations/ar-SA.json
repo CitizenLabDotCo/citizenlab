@@ -816,6 +816,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "لقد أرسلت ميزانيتك بالفعل. لتعديلها، ارجع إلى صفحة المشروع وانقر على \"تعديل ميزانيتك\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "الميزانية غير متاحة، لأن هذه المرحلة غير نشطة.",
   "app.components.VoteInputs.single.youHaveVotedForX2": "لقد صوتت ل {votes, plural, =0 {# خيارات} one {# خيار} other {# خيارات}}",
+  "app.components.WeglotSwitcher.ariaLabel": "ترجم هذه الصفحة. اللغة الحالية: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "وهذا يعني أنك ستفقد جميع البيانات المرتبطة بهذا الإدخال، مثل التعليقات وردود الفعل والتصويتات. لا يمكن التراجع عن هذا الإجراء.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "هل أنت متأكد أنك تريد حذف هذا الإدخال؟",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "يلغي",

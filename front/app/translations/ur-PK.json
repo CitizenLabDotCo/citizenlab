@@ -816,6 +816,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "آپ اپنا بجٹ پہلے ہی جمع کر چکے ہیں۔ اس میں ترمیم کرنے کے لیے، پراجیکٹ کے صفحہ پر واپس جائیں اور \"اپنی جمع کرانے میں ترمیم کریں\" پر کلک کریں۔",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "بجٹ دستیاب نہیں ہے، کیونکہ یہ مرحلہ فعال نہیں ہے۔",
   "app.components.VoteInputs.single.youHaveVotedForX2": "آپ نے {votes, plural, =0 {# اختیارات} one {# آپشن} other {# اختیارات}}کو ووٹ دیا ہے۔",
+  "app.components.WeglotSwitcher.ariaLabel": "اس صفحے کا ترجمہ کریں۔ موجودہ زبان: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "اس کا مطلب ہے کہ آپ اس ان پٹ سے وابستہ تمام ڈیٹا سے محروم ہو جائیں گے، جیسے تبصرے، ردعمل اور ووٹ۔ اس کارروائی کو کالعدم نہیں کیا جا سکتا۔",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "کیا آپ واقعی اس ان پٹ کو حذف کرنا چاہتے ہیں؟",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "منسوخ کریں۔",

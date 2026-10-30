@@ -816,6 +816,7 @@
   "app.components.VoteInputs.budgeting.AddToBasketButton.basketAlreadySubmittedIdeaPage1": "Przesłałeś już swój budżet. Aby go zmodyfikować, wróć do strony projektu i kliknij \"Modyfikuj swoje zgłoszenie\".",
   "app.components.VoteInputs.budgeting.AddToBasketButton.phaseNotActive": "Budżetowanie nie jest dostępne, ponieważ ta faza nie jest aktywna.",
   "app.components.VoteInputs.single.youHaveVotedForX2": "Głosowałeś na {votes, plural, =0 {# opcje} one {# opcje} other {# opcje}}",
+  "app.components.WeglotSwitcher.ariaLabel": "Przetłumacz tę stronę. Aktualny język: {language}",
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": "Oznacza to, że utracisz wszystkie dane powiązane z tymi danymi wejściowymi, takie jak komentarze, reakcje i głosy. Tego działania nie można cofnąć.",
   "app.components.admin.PostManager.components.ActionBar.deleteInputTitle": "Czy na pewno chcesz usunąć to wejście?",
   "app.components.admin.PostManager.components.PostTable.Row.cancel": "Anuluj",
