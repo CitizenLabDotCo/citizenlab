@@ -23,29 +23,27 @@ const MarkdownContainer = styled.div`
     padding-left: 20px;
   }
 
-  h1,
-  h2,
-  h3,
-  h4 {
-    font-size: ${fontSizes.m}px;
-    margin: 12px 0 4px;
-  }
-
   > :last-child {
     margin-bottom: 0;
   }
 `;
 
+// Only the formatting the prompt asks for. An image in a reply would load right away, so
+// text injected through an attached file could send the chat to the image's URL.
+const ALLOWED_ELEMENTS = ['p', 'strong', 'em', 'ul', 'ol', 'li', 'br', 'code'];
+
 type Props = {
   content: string;
 };
 
-// react-markdown escapes raw HTML and drops unsafe link protocols by default; don't add
-// rehype-raw here, the content comes from the model.
+// react-markdown escapes raw HTML; don't add rehype-raw here, the content comes from the
+// model.
 const AssistantMessage = ({ content }: Props) => (
   <Box maxWidth="100%">
     <MarkdownContainer>
-      <ReactMarkdown>{content}</ReactMarkdown>
+      <ReactMarkdown allowedElements={ALLOWED_ELEMENTS} unwrapDisallowed>
+        {content}
+      </ReactMarkdown>
     </MarkdownContainer>
   </Box>
 );
