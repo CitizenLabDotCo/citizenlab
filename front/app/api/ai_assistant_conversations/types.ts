@@ -1,4 +1,4 @@
-import { IRelationship, SupportedLocale } from 'typings';
+import { ILinks, IRelationship, SupportedLocale } from 'typings';
 
 import { IAiAssistantMessageData } from 'api/ai_assistant_messages/types';
 
@@ -45,8 +45,15 @@ export interface IAiAssistantConversation {
   included: IAiAssistantMessageData[];
 }
 
+export interface IAiAssistantConversationsParameters {
+  surfaceKey: AiAssistantSurfaceKey;
+  subjectId: string;
+  pageSize?: number;
+}
+
 export interface IAiAssistantConversations {
   data: IAiAssistantConversationData[];
+  links: ILinks;
 }
 
 export interface IAiAssistantConversationAdd {

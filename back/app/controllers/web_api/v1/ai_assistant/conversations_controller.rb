@@ -3,15 +3,15 @@
 class WebApi::V1::AIAssistant::ConversationsController < ApplicationController
   before_action { require_feature!('ai_assistant') }
 
-  # The current user's latest conversation on a surface (e.g. the survey builder of a
-  # phase), if any.
+  # The current user's conversations on a surface (e.g. the survey builder of a phase),
+  # newest first.
   def index
     conversations = policy_scope(::AIAssistant::Conversation)
       .where(surface_key: params[:surface_key], subject_id: params[:subject_id])
       .order(created_at: :desc)
-      .limit(1)
+    conversations = paginate(conversations)
 
-    render json: serializer.new(conversations, params: jsonapi_serializer_params).serializable_hash
+    render json: linked_json(conversations, serializer, params: jsonapi_serializer_params)
   end
 
   def show

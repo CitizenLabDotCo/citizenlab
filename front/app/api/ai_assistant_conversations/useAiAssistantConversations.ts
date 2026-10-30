@@ -5,22 +5,30 @@ import fetcher from 'utils/cl-react-query/fetcher';
 
 import aiAssistantConversationsKeys from './keys';
 import {
-  AiAssistantSurfaceKey,
   AiAssistantConversationsKeys,
   IAiAssistantConversations,
+  IAiAssistantConversationsParameters,
 } from './types';
 
-type Parameters = { surfaceKey: AiAssistantSurfaceKey; subjectId: string };
-
-const fetchConversations = ({ surfaceKey, subjectId }: Parameters) =>
+const fetchConversations = ({
+  surfaceKey,
+  subjectId,
+  pageSize,
+}: IAiAssistantConversationsParameters) =>
   fetcher<IAiAssistantConversations>({
     path: '/ai_assistant_conversations',
     action: 'get',
-    queryParams: { surface_key: surfaceKey, subject_id: subjectId },
+    queryParams: {
+      surface_key: surfaceKey,
+      subject_id: subjectId,
+      'page[size]': pageSize,
+    },
   });
 
-// The current user's latest conversation on the surface, if any (data[0]).
-const useAiAssistantConversations = (parameters: Parameters) => {
+// The current user's conversations on the surface, newest first.
+const useAiAssistantConversations = (
+  parameters: IAiAssistantConversationsParameters
+) => {
   return useQuery<
     IAiAssistantConversations,
     CLErrors,
