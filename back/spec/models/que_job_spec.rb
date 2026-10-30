@@ -83,6 +83,15 @@ RSpec.describe QueJob, :active_job_que_adapter do
         })
       end
 
+      it 'returns the error when a BulkImportIdeas error value contains a colon' do
+        que_job.update!(error_count: 1, last_error_message: 'BulkImportIdeas::Error: bulk_import_idea_not_valid##{"custom_field_answers.value": ["is not included in the list"]}##')
+        expect(que_job.last_error).to match({
+          error: 'bulk_import_idea_not_valid',
+          value: '{"custom_field_answers.value": ["is not included in the list"]}',
+          row: nil
+        })
+      end
+
       it 'returns for BulkImportIdeas errors without any additional values' do
         que_job.update!(error_count: 1, last_error_message: 'BulkImportIdeas::Error: bulk_import_no_values')
         expect(que_job.last_error).to eq({ error: 'bulk_import_no_values' })

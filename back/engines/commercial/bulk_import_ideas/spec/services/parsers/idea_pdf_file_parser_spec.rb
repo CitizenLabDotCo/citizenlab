@@ -82,35 +82,71 @@ describe BulkImportIdeas::Parsers::IdeaPdfFileParser do
     end
   end
 
-  describe 'parse_rows with demographic questions asked in the survey' do
+  describe 'parse_rows with user fields asked in the survey' do
     let(:survey_project) { create(:single_phase_native_survey_project, phase_attrs: { with_permissions: true }) }
     let(:phase) { survey_project.phases.first }
     let(:custom_form) { create(:custom_form, participation_context: phase) }
-    let(:gender) do
-      create(:custom_field_select, resource_type: 'User', key: 'gender', title_multiloc: { 'en' => 'Gender' }).tap do |field|
-        create(:custom_field_option, custom_field: field, key: 'woman', title_multiloc: { 'en' => 'Woman' })
-      end
-    end
     let(:parser) { described_class.new(create(:admin), 'en', phase.id, false) }
 
     before do
       create(:custom_field_page, resource: custom_form)
-      create(:custom_field_text, resource: custom_form, key: 'missing', title_multiloc: { 'en' => 'What is missing?' })
+      form_field
       create(:custom_field_form_end_page, resource: custom_form)
 
       permission = phase.permissions.find_by(action: 'posting_idea')
       permission.update!(permitted_by: 'users', custom_fields_behavior: 'custom', user_fields_in_form: true, user_data_collection: 'all_data')
-      create(:permissions_custom_field, permission: permission, custom_field: gender)
+      create(:permissions_custom_field, permission: permission, custom_field: user_field)
 
       allow_any_instance_of(BulkImportIdeas::Parsers::Pdf::LLMFormParser)
         .to receive(:parse)
-        .and_return({ 'question_1' => 'Fly fishing', 'question_2' => ['Woman'] })
+        .and_return(parsed_answers)
     end
 
-    it 'keeps the demographic answers for every file parsed in the same job' do
-      rows = 2.times.flat_map { parser.parse_rows(create(:idea_import_file, num_pages: 2)) }
+    context 'when a demographic question is asked' do
+      let(:form_field) { create(:custom_field_text, resource: custom_form, key: 'missing', title_multiloc: { 'en' => 'What is missing?' }) }
+      let(:user_field) do
+        create(:custom_field_select, resource_type: 'User', key: 'gender', title_multiloc: { 'en' => 'Gender' }).tap do |field|
+          create(:custom_field_option, custom_field: field, key: 'woman', title_multiloc: { 'en' => 'Woman' })
+        end
+      end
+      let(:parsed_answers) { { 'question_1' => 'Fly fishing', 'question_2' => ['Woman'] } }
 
-      expect(rows.pluck(:custom_field_values)).to all(eq({ missing: 'Fly fishing', u_gender: 'woman' }))
+      it 'keeps the demographic answers for every file parsed in the same job' do
+        rows = 2.times.flat_map { parser.parse_rows(create(:idea_import_file, num_pages: 2)) }
+
+        expect(rows.pluck(:custom_field_values)).to all(eq({ missing: 'Fly fishing', u_gender: 'woman' }))
+      end
+    end
+
+    context 'when the domicile question is asked' do
+      let(:form_field) do
+        create(:custom_field_select, resource: custom_form, key: 'transport', title_multiloc: { 'en' => 'How do you travel?' }).tap do |field|
+          create(:custom_field_option, custom_field: field, key: 'bike', title_multiloc: { 'en' => 'By bike' })
+        end
+      end
+      let!(:area) { create(:area, title_multiloc: { 'en' => 'Westside' }) }
+      let(:user_field) { create(:custom_field_domicile) }
+      let(:parsed_answers) { { 'question_1' => ['By bike'], 'question_2' => [answer] } }
+
+      context 'when the respondent picked an area' do
+        let(:answer) { 'Westside' }
+
+        it 'answers domicile with the area id, and other questions with the option key' do
+          rows = parser.parse_rows(create(:idea_import_file, num_pages: 2))
+
+          expect(rows.pluck(:custom_field_values)).to eq([{ transport: 'bike', u_domicile: area.id }])
+        end
+      end
+
+      context 'when the respondent picked the somewhere else option' do
+        let(:answer) { 'Somewhere else' }
+
+        it "answers domicile with 'outside'" do
+          rows = parser.parse_rows(create(:idea_import_file, num_pages: 2))
+
+          expect(rows.pluck(:custom_field_values)).to eq([{ transport: 'bike', u_domicile: 'outside' }])
+        end
+      end
     end
   end
 
