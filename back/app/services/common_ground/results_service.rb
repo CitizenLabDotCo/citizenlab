@@ -1,5 +1,8 @@
 module CommonGround
   class ResultsService
+    # thresholds for the consensus score
+    HIGHEST_CONSENSUS_MIN_SCORE = 0.75 # e.g. at least 75/25 in one direction
+    CLOSE_CALL_MAX_SCORE = 0.6         # e.g. between 40/60 and 60/40
     # @param [Boolean] exclude_admins_and_moderators Leave out the reactions of users
     #   with an admin or moderator role. Reactions without a known user are kept.
     def initialize(phase, exclude_admins_and_moderators: false)
@@ -13,8 +16,8 @@ module CommonGround
     def results(num_ideas = 5)
       Results.new(
         phase_id: @phase.id,
-        top_consensus_ideas: top_consensus_ideas(num_ideas),
-        top_controversial_ideas: top_consensus_ideas(num_ideas, reverse: true),
+        top_consensus_ideas: top_consensus_ideas(num_ideas, min_score: HIGHEST_CONSENSUS_MIN_SCORE),
+        top_controversial_ideas: top_consensus_ideas(num_ideas, reverse: true, max_score: CLOSE_CALL_MAX_SCORE),
         stats: stats
       )
     end
@@ -27,18 +30,24 @@ module CommonGround
     # counter caches on ideas, so that they respect exclude_admins_and_moderators. The returned ideas carry
     # the computed counts in place of their likes_count, dislikes_count and
     # neutral_reactions_count attributes.
-    def top_consensus_ideas(n, reverse: false)
-      consensus_score_sql = Arel.sql('greatest(reaction_counts.likes_count, reaction_counts.dislikes_count) * 1.0 / (reaction_counts.likes_count + reaction_counts.dislikes_count)')
-      # The votes counts (excluding neutral votes) are used to break ties.
+    def top_consensus_ideas(n, reverse: false, min_score: nil, max_score: nil)
+      # NULLIF guards the division, because Postgres does not guarantee the order
+      # in which WHERE conditions are evaluated.
+      consensus_score_sql = Arel.sql('greatest(reaction_counts.likes_count, reaction_counts.dislikes_count) * 1.0 / NULLIF(reaction_counts.likes_count + reaction_counts.dislikes_count, 0)')
       votes_count_sql = Arel.sql('(reaction_counts.likes_count + reaction_counts.dislikes_count)')
 
       idea_columns = (Idea.column_names - REACTION_COUNT_COLUMNS).map { |column| "ideas.#{column}" }
       reaction_count_columns = REACTION_COUNT_COLUMNS.map { |column| "reaction_counts.#{column}" }
 
-      ideas
-        .joins("INNER JOIN (#{reaction_counts_by_idea.to_sql}) reaction_counts ON reaction_counts.idea_id = ideas.id")
-        .select(*idea_columns, *reaction_count_columns)
-        .where('reaction_counts.likes_count + reaction_counts.dislikes_count > 0')
+      query = ideas
+                .joins("INNER JOIN (#{reaction_counts_by_idea.to_sql}) reaction_counts ON reaction_counts.idea_id = ideas.id")
+                .select(*idea_columns, *reaction_count_columns)
+                .where('reaction_counts.likes_count + reaction_counts.dislikes_count > 0')
+
+      query = query.where("#{consensus_score_sql} >= ?", min_score) if min_score
+      query = query.where("#{consensus_score_sql} <= ?", max_score) if max_score
+
+      query
         .order(reverse ? consensus_score_sql.asc : consensus_score_sql.desc, votes_count_sql.desc)
         .limit(n)
     end
