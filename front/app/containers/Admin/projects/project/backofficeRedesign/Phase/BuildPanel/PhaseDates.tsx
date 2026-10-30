@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 
-import { Box, Button } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import { IUpdatedPhaseProperties } from 'api/phases/types';
 
+import { CardButton } from 'containers/Admin/projects/_shared/components/SetupCardButton';
 import PhaseDatePicker, {
   PhaseDates as Dates,
 } from 'containers/Admin/projects/project/phaseSetup/components/PhaseDatePicker';
@@ -50,29 +50,24 @@ const PhaseDates = ({
     onChange(dates);
   };
 
+  const toggle: CardButton | undefined = forcedOpen
+    ? undefined
+    : {
+        icon: open ? 'chevron-up' : 'chevron-down',
+        expanded: open,
+        onClick: () => setExpanded((expanded) => !expanded),
+      };
+
   return (
     <PanelField
       label={label}
       action={
-        <Box display="flex" alignItems="center" gap="4px">
-          {formData.start_at && !open && (
-            <DatesSummary startAt={formData.start_at} endAt={formData.end_at} />
-          )}
-          {!forcedOpen && (
-            <Button
-              buttonStyle="bo-text"
-              icon={open ? 'chevron-up' : 'chevron-down'}
-              iconSize="16px"
-              width="28px"
-              height="28px"
-              padding="0"
-              ariaLabel={label}
-              ariaExpanded={open}
-              onClick={() => setExpanded((expanded) => !expanded)}
-            />
-          )}
-        </Box>
+        formData.start_at &&
+        !open && (
+          <DatesSummary startAt={formData.start_at} endAt={formData.end_at} />
+        )
       }
+      button={toggle}
     >
       {open && (
         <PhaseDatePicker
