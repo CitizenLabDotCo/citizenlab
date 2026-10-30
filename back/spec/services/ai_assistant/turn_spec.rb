@@ -44,6 +44,14 @@ describe AIAssistant::Turn do
     expect(conversation.messages.last.content).to eq('The survey has no questions yet.')
   end
 
+  it 'stores a message only together with its tool calls' do
+    # A tool call without an id can't be stored.
+    stub_bedrock(bedrock_tool_use({ id: '', name: 'get_form_fields' }))
+
+    expect { turn.run }.to raise_error(ActiveRecord::RecordInvalid)
+    expect(conversation.messages.assistant).to be_empty
+  end
+
   it 'runs read-only tools right away, pinned to the conversation record' do
     other_phase = create(:native_survey_phase)
     stub_bedrock(
