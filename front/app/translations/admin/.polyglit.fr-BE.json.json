@@ -6424,6 +6424,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.internalEarlyAccessLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:54:46.218472Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.internalEarlyAccessLabelExplanation": {
     "state": "verified",
     "verified_at": "2026-10-29T22:41:18.904934Z",
@@ -7897,6 +7902,21 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": {
     "state": "verified",
     "verified_at": "2026-08-03T09:08:41.665540Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:54:46.218472Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:54:46.218472Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:54:46.218472Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": {
