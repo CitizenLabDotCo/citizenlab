@@ -18089,6 +18089,21 @@
     "verified_at": "2026-03-18T11:50:36.553503Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectPages.attachmentsLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:47:36.908390Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.AdminPage.ProjectPages.contentLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:47:36.908390Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.AdminPage.ProjectPages.createButton": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:47:36.908390Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.AdminPage.ProjectPages.deleteButton": {
     "state": "verified",
     "verified_at": "2026-10-26T13:27:19.241589Z",
@@ -18109,9 +18124,34 @@
     "verified_at": "2026-10-30T12:42:34.026070Z",
     "verified_by": "Adrien"
   },
+  "app.containers.AdminPage.ProjectPages.newPageTitle": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:47:36.908390Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.AdminPage.ProjectPages.noPagesTitle2": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:47:36.908390Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.AdminPage.ProjectPages.pagesTitle2": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:47:36.908390Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.AdminPage.ProjectPages.saveButton": {
     "state": "verified",
     "verified_at": "2026-10-26T13:30:56.217722Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.AdminPage.ProjectPages.saveSuccess": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:47:36.908390Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.AdminPage.ProjectPages.titleError": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:47:36.908390Z",
     "verified_by": "Adrien"
   },
   "app.containers.AdminPage.ProjectPages.titleLabel": {
