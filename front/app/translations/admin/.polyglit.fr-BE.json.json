@@ -9194,9 +9194,24 @@
     "verified_at": "2026-10-29T22:16:00.688577Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.event.previewDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:28:15.076653Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.previewEventImage": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:28:15.076653Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.event.previewEventName": {
     "state": "verified",
     "verified_at": "2026-10-29T22:20:54.798824Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.previewLocation": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:28:15.076653Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.event.registration": {
