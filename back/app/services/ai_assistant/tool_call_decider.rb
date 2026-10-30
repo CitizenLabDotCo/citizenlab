@@ -71,7 +71,7 @@ module AIAssistant
     end
 
     def continue_conversation
-      @conversation.update!(status: 'running')
+      @conversation.update!(status: 'running', turn_started_at: Time.current)
       TurnJob.perform_later(@conversation)
     end
 

@@ -28,7 +28,7 @@ describe AIAssistant::ToolCallDecider do
       expect(tool_call.reload).to have_attributes(status: 'executed', decided_by: user, decided_at: be_present)
       expect(tool_call.result).to include('Replaced fields')
       expect(phase.reload.custom_form.custom_fields.map(&:input_type)).to eq(%w[page text page])
-      expect(conversation.reload.status).to eq('running')
+      expect(conversation.reload).to have_attributes(status: 'running', turn_started_at: be_within(1.minute).of(Time.current))
     end
 
     it 'fails without changes when the form changed since the proposal' do
