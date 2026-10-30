@@ -49,7 +49,7 @@ resource 'AI assistant messages' do
       end
 
       example '[error] Share a file that may not be processed by AI', :active_job_que_adapter, document: false do
-        file = create(:file, projects: [conversation.context.project], ai_processing_allowed: false)
+        file = create(:file, projects: [conversation.subject.project], ai_processing_allowed: false)
 
         do_request(ai_assistant_message: { content:, file_ids: [file.id] })
 
