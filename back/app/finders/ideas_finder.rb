@@ -61,6 +61,9 @@ class IdeasFinder < ApplicationFinder
     where(idea_status_id: idea_status)
   end
 
+  # keys_by_field maps a question id to the option keys picked for it. Keeps the
+  # ideas that gave one of the picked answers to every question, skipping the
+  # questions the user may not see or whose answers are not public.
   def custom_field_answers_condition(keys_by_field)
     return if keys_by_field.blank?
 
