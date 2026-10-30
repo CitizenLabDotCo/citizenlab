@@ -4,12 +4,14 @@ module AIAssistant
   # Where the assistant is used (e.g. the survey builder): which record it is about (the
   # subject), who may use it there, and its instructions.
   class Surface
+    class UnknownKeyError < StandardError; end
+
     def self.all
       [Surfaces::SurveyBuilder]
     end
 
     def self.find!(key)
-      all.find { |surface_class| surface_class.key == key } || raise(KeyError, "Unknown assistant surface: #{key}")
+      all.find { |surface_class| surface_class.key == key } || raise(UnknownKeyError, "Unknown assistant surface: #{key}")
     end
 
     def self.for(conversation)
