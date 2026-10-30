@@ -16,7 +16,7 @@ describe('useAiAssistantConversations', () => {
   beforeAll(() => server.listen());
   afterAll(() => server.close());
 
-  it('looks up the conversation on the surface', async () => {
+  it('looks up the conversations on the surface', async () => {
     let requestUrl: URL | undefined;
     server.use(
       http.get(apiPath, ({ request }) => {
@@ -30,6 +30,7 @@ describe('useAiAssistantConversations', () => {
         useAiAssistantConversations({
           surfaceKey: 'survey_builder',
           subjectId: 'phase-1',
+          pageSize: 1,
         }),
       { wrapper: createQueryClientWrapper() }
     );
@@ -37,5 +38,6 @@ describe('useAiAssistantConversations', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(requestUrl?.searchParams.get('surface_key')).toBe('survey_builder');
     expect(requestUrl?.searchParams.get('subject_id')).toBe('phase-1');
+    expect(requestUrl?.searchParams.get('page[size]')).toBe('1');
   });
 });

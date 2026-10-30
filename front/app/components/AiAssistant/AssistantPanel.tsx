@@ -40,6 +40,7 @@ const AssistantPanel = ({ surfaceKey, subjectId, intro }: Props) => {
   const { data: conversations } = useAiAssistantConversations({
     surfaceKey,
     subjectId,
+    pageSize: 1,
   });
   const conversationId = conversations?.data.at(0)?.id;
   const { data: conversation } = useAiAssistantConversation(conversationId);

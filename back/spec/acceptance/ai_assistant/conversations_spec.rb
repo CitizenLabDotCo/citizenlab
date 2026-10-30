@@ -17,6 +17,10 @@ resource 'AI assistant conversations' do
   get 'web_api/v1/ai_assistant_conversations' do
     parameter :surface_key, 'Where the assistant is used, e.g. survey_builder', required: true
     parameter :subject_id, 'The record the conversation is about', required: true
+    with_options scope: :page do
+      parameter :number, 'Page number'
+      parameter :size, 'Number of conversations per page'
+    end
 
     let(:surface_key) { 'survey_builder' }
     let(:subject_id) { phase.id }
@@ -24,15 +28,15 @@ resource 'AI assistant conversations' do
     context 'when super admin' do
       before { header_token_for(super_admin) }
 
-      example 'List the latest conversation of the current user on a surface' do
-        create(:ai_assistant_conversation, user: super_admin, subject: phase, created_at: 1.day.ago)
-        latest = create(:ai_assistant_conversation, user: super_admin, subject: phase)
+      example 'List the conversations of the current user on a surface, newest first' do
+        older = create(:ai_assistant_conversation, user: super_admin, subject: phase, created_at: 1.day.ago)
+        newer = create(:ai_assistant_conversation, user: super_admin, subject: phase)
         create(:ai_assistant_conversation, subject: phase)
 
         do_request
 
         assert_status 200
-        expect(response_data.pluck(:id)).to eq([latest.id])
+        expect(response_data.pluck(:id)).to eq([newer.id, older.id])
       end
     end
 
