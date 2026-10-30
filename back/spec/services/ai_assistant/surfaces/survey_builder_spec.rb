@@ -1,0 +1,49 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+describe AIAssistant::Surfaces::SurveyBuilder do
+  subject(:surface) { described_class.new(phase) }
+
+  let(:phase) { create(:native_survey_phase, project: create(:project, :draft)) }
+
+  it 'is only available for native surveys' do
+    expect(surface).to be_available
+    expect(described_class.new(create(:phase))).not_to be_available
+  end
+
+  it 'hides the pinned arguments from the model' do
+    get_form_fields, replace_form_fields = surface.tools
+
+    expect(get_form_fields).to be_read_only
+    expect(get_form_fields.llm_schema['properties']).to be_empty
+    expect(replace_form_fields).not_to be_read_only
+    expect(replace_form_fields.llm_schema).to include(
+      'properties' => { 'fields' => be_present },
+      'required' => ['fields'],
+      'additionalProperties' => false
+    )
+  end
+
+  it 'pins the form version to the proposed changes' do
+    form = create(:custom_form, participation_context: phase, fields_last_updated_at: 1.hour.ago)
+
+    expect(surface.tool('replace_form_fields').pinned).to eq(
+      'container_type' => 'phase',
+      'container_id' => phase.id,
+      'fields_last_updated_at' => form.fields_last_updated_at.iso8601
+    )
+  end
+
+  it 'describes the survey in the system prompt' do
+    prompt = surface.system_prompt(locale: 'en')
+
+    expect(prompt).to include(phase.title_multiloc['en'], phase.project.title_multiloc['en'], 'The survey questions can be changed.')
+  end
+
+  it 'tells the model when the survey cannot be changed' do
+    phase.project.admin_publication.update!(publication_status: 'published')
+
+    expect(surface.system_prompt(locale: 'en')).to include('cannot be changed')
+  end
+end

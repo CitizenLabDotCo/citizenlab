@@ -86,6 +86,13 @@ class LLMSelector
       description: 'Extract handwritten survey responses from scanned PDF forms',
       supported_models: [::Analysis::LLM::ClaudeSonnet46, ::Analysis::LLM::Gemini3Flash],
       default_model: ::Analysis::LLM::ClaudeSonnet46
+    ),
+    LLMUseCase.new(
+      key: 'ai_assistant',
+      description: 'In-app AI assistant that proposes changes through tools',
+      # Claude only: the Gemini adapter drops parts of the tool schemas.
+      supported_models: [::Analysis::LLM::ClaudeSonnet46],
+      default_model: ::Analysis::LLM::ClaudeSonnet46
     )
   ]
 
