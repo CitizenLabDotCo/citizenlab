@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Box,
@@ -12,6 +12,7 @@ import { CampaignData } from 'containers/Admin/messaging/AutomatedEmails/types';
 import useCampaignRow from 'containers/Admin/messaging/AutomatedEmails/useCampaignRow';
 import messagingMessages from 'containers/Admin/messaging/messages';
 
+import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { useIntl } from 'utils/cl-intl';
@@ -27,7 +28,7 @@ interface Props {
 const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
   const { formatMessage } = useIntl();
   const {
-    toggleEnabled,
+    saveEnabled,
     openEditor,
     isComingSoon,
     isOutsidePlan,
@@ -40,6 +41,13 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
       `/admin/projects/${projectId}/phases/${phaseId}/emails/${campaignId}/edit`,
   });
   const when = campaign.trigger || campaign.schedule;
+  const savedEnabled = !!campaign.attributes.enabled;
+  const [enabled, setEnabled] = useState(savedEnabled);
+
+  useRegisterPageSaver(`notification-${campaign.id}`, {
+    dirty: enabled !== savedEnabled,
+    save: () => saveEnabled(enabled),
+  });
 
   const editButton = (
     <Button
@@ -60,8 +68,8 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
       <Box alignSelf="flex-start" pt="2px">
         <Toggle
           variant="bo"
-          checked={!!campaign.attributes.enabled}
-          onChange={toggleEnabled}
+          checked={enabled}
+          onChange={() => setEnabled((enabled) => !enabled)}
           disabled={!canBeDisabled}
         />
       </Box>

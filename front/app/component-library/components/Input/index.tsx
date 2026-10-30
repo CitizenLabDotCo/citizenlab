@@ -34,7 +34,7 @@ export const boLabelStyle = css`
   color: ${colors.coolGrey600};
 `;
 
-const boInputLabelStyle = css`
+export const boInputLabelStyle = css`
   > label {
     ${boLabelStyle}
     font-weight: 400;

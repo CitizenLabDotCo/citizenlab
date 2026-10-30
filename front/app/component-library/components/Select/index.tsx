@@ -15,6 +15,7 @@ import testEnv from '../../utils/testUtils/testEnv';
 import { IOption, InputSize } from '../../utils/typings';
 import Icon from '../Icon';
 import IconTooltip from '../IconTooltip';
+import { boInputLabelStyle, boInputStyle } from '../Input';
 import Label from '../Label';
 
 export const SelectIcon = styled(Icon)`
@@ -32,7 +33,7 @@ export const SelectIcon = styled(Icon)`
   `}
 `;
 
-const Container = styled.div`
+const Container = styled.div<{ variant?: 'bo' }>`
   position: relative;
   outline: none !important;
 
@@ -63,6 +64,8 @@ const Container = styled.div`
   select.placeholder > option {
     color: ${colors.textPrimary};
   }
+
+  ${({ variant }) => variant === 'bo' && boInputLabelStyle}
 `;
 
 const CHEVRON_SPACE = '36px';
@@ -71,12 +74,13 @@ export const SelectWrapper = styled.div<{
   mr?: string;
   size?: InputSize;
   height?: string;
+  variant?: 'bo';
 }>`
   width: 100%;
   position: relative;
   select {
     /* First, so the declarations below override its padding and cursor */
-    ${defaultInputStyle};
+    ${({ variant }) => (variant === 'bo' ? boInputStyle : defaultInputStyle)};
     width: 100%;
     margin: 0;
     /* Keep the text clear of the chevron (24px wide, 11px from the edge) */
@@ -94,8 +98,11 @@ export const SelectWrapper = styled.div<{
     &::-ms-expand {
       display: none;
     }
-    height: ${({ height }) =>
-      height ? height : `${stylingConsts.inputHeight}px`} !important;
+    height: ${({ height, variant }) =>
+      height ||
+      (variant === 'bo'
+        ? '36px'
+        : `${stylingConsts.inputHeight}px`)} !important;
   }
 `;
 
@@ -122,6 +129,7 @@ export interface Props extends DefaultProps {
   setRef?: (arg: HTMLSelectElement | null) => void;
   ariaInvalid?: boolean;
   ariaDescribedBy?: string;
+  variant?: 'bo';
 }
 
 const DEFAULT_VALUE = 'DEFAULT_SELECT_VALUE';
@@ -184,6 +192,7 @@ class Select extends PureComponent<Props> {
       setRef,
       ariaInvalid,
       ariaDescribedBy,
+      variant,
     } = this.props;
 
     const safeValue =
@@ -196,6 +205,7 @@ class Select extends PureComponent<Props> {
     return (
       <Container
         className={`${className} ${disabled ? 'disabled' : 'enabled'}`}
+        variant={variant}
       >
         {label && (
           <Label htmlFor={id}>
@@ -208,7 +218,7 @@ class Select extends PureComponent<Props> {
             )}
           </Label>
         )}
-        <SelectWrapper mr={mr} size={size} height={height}>
+        <SelectWrapper mr={mr} size={size} height={height} variant={variant}>
           <select
             id={id}
             disabled={disabled}

@@ -38,9 +38,11 @@ interface FormValues {
 interface Props {
   open: boolean;
   onClose: () => void;
+  /** Called once the file is uploaded, after the modal closes. */
+  onUploaded?: () => void;
 }
 
-const ImportPdfModal = ({ open, onClose }: Props) => {
+const ImportPdfModal = ({ open, onClose, onUploaded }: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addOfflineIdeas, isPending } = useAddOfflineIdeasAsync();
   const locale = useLocale();
@@ -125,6 +127,7 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
 
       onClose();
       methods.reset();
+      onUploaded?.();
     } catch (e) {
       handleHookFormSubmissionError(e, methods.setError);
     }

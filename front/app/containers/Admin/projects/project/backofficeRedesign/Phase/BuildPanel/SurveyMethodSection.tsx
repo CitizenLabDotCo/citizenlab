@@ -11,12 +11,12 @@ import SurveyMethodChoices, {
 
 import { useIntl } from 'utils/cl-intl';
 
+import PanelField from './PanelField';
+
 export interface SurveyMethodSwitch {
   disabledReasons?: Partial<Record<SurveyMethod, string>>;
   onSelect: (method: SurveyMethod) => void;
 }
-
-import PanelField from './PanelField';
 
 interface Props extends SurveyMethodSwitch {
   selected: ParticipationMethod;

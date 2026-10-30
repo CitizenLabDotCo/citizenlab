@@ -56,4 +56,12 @@ export default defineMessages({
     defaultMessage:
       '{count, plural, =0 {0 inputs} one {1 input} other {# inputs}} will be imported from the selected project and phase. The import will run in the background, and the inputs will appear in the input manager once it is complete.',
   },
+  projectLabel: {
+    id: 'app.components.admin.PostManager.projectLabel',
+    defaultMessage: 'Project',
+  },
+  phaseLabel: {
+    id: 'app.components.admin.PostManager.phaseLabel',
+    defaultMessage: 'Phase',
+  },
 });

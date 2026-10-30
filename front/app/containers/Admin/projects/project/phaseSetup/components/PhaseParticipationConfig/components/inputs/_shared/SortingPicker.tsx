@@ -12,7 +12,16 @@ import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 import OptionPicker from 'components/UI/OptionPicker';
 
-import { FormattedMessage, useIntl } from 'utils/cl-intl';
+import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
+
+const SORTING_LABELS: Record<IdeaSortMethod, MessageDescriptor> = {
+  trending: messages.trendingSortingMethod,
+  comments_count: messages.comments_countSortingMethod,
+  random: messages.randomSortingMethod,
+  popular: messages.popularSortingMethod,
+  new: messages.newestSortingMethod,
+  '-new': messages.oldestSortingMethod,
+};
 
 interface Props {
   options: { key: string; value: IdeaSortMethod }[];
@@ -42,9 +51,9 @@ export default ({
             <OptionPicker
               title={title}
               description={formatMessage(messages.defaultPostSortingTooltip)}
-              options={options.map(({ key, value }) => ({
+              options={options.map(({ value }) => ({
                 value,
-                label: formatMessage(messages[`${key}SortingMethod`]),
+                label: formatMessage(SORTING_LABELS[value]),
               }))}
               value={ideas_order}
               onChange={handleIdeaDefaultSortMethodChange}
@@ -76,7 +85,7 @@ export default ({
           value={value}
           name="IdeaDefaultSortMethod"
           id={`ideas_order-${key}`}
-          label={<FormattedMessage {...messages[`${key}SortingMethod`]} />}
+          label={<FormattedMessage {...SORTING_LABELS[value]} />}
         />
       ))}
       <Error apiErrors={apiErrors && apiErrors.ideas_order} />

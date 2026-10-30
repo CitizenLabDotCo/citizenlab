@@ -365,26 +365,202 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.pollQuestions',
     defaultMessage: 'Poll questions',
   },
-  inputsSection: {
-    id: 'app.containers.Admin.projects.project.inputsSection',
-    defaultMessage: 'Inputs',
+  statementsSection: {
+    id: 'app.containers.Admin.projects.project.statementsSection',
+    defaultMessage: 'Statements',
+  },
+  addStatement: {
+    id: 'app.containers.Admin.projects.project.addStatement',
+    defaultMessage: 'Add',
+  },
+  importStatements: {
+    id: 'app.containers.Admin.projects.project.importStatements',
+    defaultMessage: 'Import',
+  },
+  addAStatement: {
+    id: 'app.containers.Admin.projects.project.addAStatement',
+    defaultMessage: 'Add a statement',
+  },
+  statementLabel: {
+    id: 'app.containers.Admin.projects.project.statementLabel',
+    defaultMessage: 'Statement',
+  },
+  statementPlaceholder: {
+    id: 'app.containers.Admin.projects.project.statementPlaceholder',
+    defaultMessage: 'e.g. The park needs more shade.',
+  },
+  emptyStatementError: {
+    id: 'app.containers.Admin.projects.project.emptyStatementError',
+    defaultMessage: 'Write the statement in at least one language',
+  },
+  statementProfileVisibility: {
+    id: 'app.containers.Admin.projects.project.statementProfileVisibility',
+    defaultMessage: 'Profile visibility',
+  },
+  statementAnonymousTooltip: {
+    id: 'app.containers.Admin.projects.project.statementAnonymousTooltip',
+    defaultMessage:
+      'By default the statement is linked to its author, unless you select this option.',
+  },
+  statementPostAnonymously: {
+    id: 'app.containers.Admin.projects.project.statementPostAnonymously',
+    defaultMessage: 'Post anonymously',
+  },
+  statementCancel: {
+    id: 'app.containers.Admin.projects.project.statementCancel',
+    defaultMessage: 'Cancel',
+  },
+  importingStatements: {
+    id: 'app.containers.Admin.projects.project.importingStatements',
+    defaultMessage: 'Importing {done}/{total}',
+  },
+  nStatements: {
+    id: 'app.containers.Admin.projects.project.nStatements',
+    defaultMessage: '{count, plural, one {# statement} other {# statements}}',
+  },
+  votingOptionsSection: {
+    id: 'app.containers.Admin.projects.project.votingOptionsSection',
+    defaultMessage: 'Options to vote on',
+  },
+  addVotingOption: {
+    id: 'app.containers.Admin.projects.project.addVotingOption',
+    defaultMessage: 'Add input',
+  },
+  importVotingOptions: {
+    id: 'app.containers.Admin.projects.project.importVotingOptions',
+    defaultMessage: 'Import options',
+  },
+  importFromPreviousPhase: {
+    id: 'app.containers.Admin.projects.project.importFromPreviousPhase',
+    defaultMessage: 'Import from previous phase',
+  },
+  linkPhaseDescription: {
+    id: 'app.containers.Admin.projects.project.linkPhaseDescription',
+    defaultMessage:
+      'Pick an earlier phase of this project. Its inputs become options to vote on, keeping their comments and reactions.',
+  },
+  linkPhaseLabel: {
+    id: 'app.containers.Admin.projects.project.linkPhaseLabel',
+    defaultMessage: 'Phase',
+  },
+  nInputsToLink: {
+    id: 'app.containers.Admin.projects.project.nInputsToLink',
+    defaultMessage:
+      '{count, plural, =0 {All inputs of this phase are already options} one {# input will be added} other {# inputs will be added}}',
+  },
+  linkCancel: {
+    id: 'app.containers.Admin.projects.project.linkCancel',
+    defaultMessage: 'Cancel',
+  },
+  linkInputs: {
+    id: 'app.containers.Admin.projects.project.linkInputs',
+    defaultMessage: 'Import',
+  },
+  createForm: {
+    id: 'app.containers.Admin.projects.project.createForm',
+    defaultMessage: 'Create form',
+  },
+  nVotingOptions: {
+    id: 'app.containers.Admin.projects.project.nVotingOptions',
+    defaultMessage: '{count, plural, one {# option} other {# options}}',
+  },
+  addAnOption: {
+    id: 'app.containers.Admin.projects.project.addAnOption',
+    defaultMessage: 'Add an option',
+  },
+  optionLabel: {
+    id: 'app.containers.Admin.projects.project.optionLabel',
+    defaultMessage: 'Title',
+  },
+  optionPlaceholder: {
+    id: 'app.containers.Admin.projects.project.optionPlaceholder',
+    defaultMessage: 'e.g. A new playground in the park',
+  },
+  emptyOptionError: {
+    id: 'app.containers.Admin.projects.project.emptyOptionError',
+    defaultMessage: 'Write the title in at least one language',
+  },
+  paperForms: {
+    id: 'app.containers.Admin.projects.project.paperForms',
+    defaultMessage: 'Paper forms',
+  },
+  paperFormsDescription: {
+    id: 'app.containers.Admin.projects.project.paperFormsDescription',
+    defaultMessage: 'Import inputs collected on paper',
+  },
+  spreadsheetImportDescription: {
+    id: 'app.containers.Admin.projects.project.spreadsheetImportDescription',
+    defaultMessage: 'Import inputs collected in another tool or on paper',
+  },
+  optionAnonymousTooltip: {
+    id: 'app.containers.Admin.projects.project.optionAnonymousTooltip',
+    defaultMessage:
+      'By default the input is linked to its author, unless you select this option.',
   },
   causesSection: {
     id: 'app.containers.Admin.projects.project.causesSection',
     defaultMessage: 'Causes',
   },
-  causesSectionDescription: {
-    id: 'app.containers.Admin.projects.project.causesSectionDescription',
-    defaultMessage: 'Set up the causes people can volunteer for.',
+  nCauses: {
+    id: 'app.containers.Admin.projects.project.nCauses',
+    defaultMessage: '{count, plural, one {# cause} other {# causes}}',
   },
-  addIdeasFromPreviousPhase: {
-    id: 'app.containers.Admin.projects.project.addIdeasFromPreviousPhase',
-    defaultMessage: 'Add ideas from previous phase',
+  nSignedUp: {
+    id: 'app.containers.Admin.projects.project.nSignedUp',
+    defaultMessage: '{count, plural, =0 {No sign-ups yet} other {# signed up}}',
   },
-  addIdeasFromPreviousPhaseDescription: {
-    id: 'app.containers.Admin.projects.project.addIdeasFromPreviousPhaseDescription',
+  showCauses: {
+    id: 'app.containers.Admin.projects.project.showCauses',
+    defaultMessage: 'Show causes',
+  },
+  hideCauses: {
+    id: 'app.containers.Admin.projects.project.hideCauses',
+    defaultMessage: 'Hide causes',
+  },
+  addACause: {
+    id: 'app.containers.Admin.projects.project.addACause',
+    defaultMessage: 'Add a cause',
+  },
+  deleteCause: {
+    id: 'app.containers.Admin.projects.project.deleteCause',
+    defaultMessage: 'Delete cause',
+  },
+  deleteCauseTitle: {
+    id: 'app.containers.Admin.projects.project.deleteCauseTitle',
+    defaultMessage: 'Delete this cause?',
+  },
+  deleteCauseDescription: {
+    id: 'app.containers.Admin.projects.project.deleteCauseDescription',
     defaultMessage:
-      'Pick a phase in the timeline, then drag its ideas onto this phase to use them as voting options.',
+      'The cause and its sign-ups are removed from this phase. This cannot be undone.',
+  },
+  downloadVolunteers: {
+    id: 'app.containers.Admin.projects.project.downloadVolunteers',
+    defaultMessage: 'Download volunteers',
+  },
+  nobodySignedUpYet: {
+    id: 'app.containers.Admin.projects.project.nobodySignedUpYet',
+    defaultMessage: 'Nobody has signed up yet',
+  },
+  causeTitlePlaceholder: {
+    id: 'app.containers.Admin.projects.project.causeTitlePlaceholder',
+    defaultMessage: 'e.g. Tree-planting weekends',
+  },
+  causeDescriptionPlaceholder: {
+    id: 'app.containers.Admin.projects.project.causeDescriptionPlaceholder',
+    defaultMessage: 'What the volunteer does, where and for how long.',
+  },
+  causeImageDrop: {
+    id: 'app.containers.Admin.projects.project.causeImageDrop',
+    defaultMessage: 'Drag an image here, or browse',
+  },
+  causeCancel: {
+    id: 'app.containers.Admin.projects.project.causeCancel',
+    defaultMessage: 'Cancel',
+  },
+  causeSaveChanges: {
+    id: 'app.containers.Admin.projects.project.causeSaveChanges',
+    defaultMessage: 'Save changes',
   },
   editAccess: {
     id: 'app.containers.Admin.projects.project.editAccess',

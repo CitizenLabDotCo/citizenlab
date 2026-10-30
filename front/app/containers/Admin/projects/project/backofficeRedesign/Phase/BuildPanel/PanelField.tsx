@@ -4,12 +4,13 @@ import SetupCard from 'containers/Admin/projects/_shared/components/SetupCard';
 
 interface Props {
   label: string;
+  labelTooltip?: JSX.Element;
   action?: ReactNode;
   children?: ReactNode;
 }
 
-const PanelField = ({ label, action, children }: Props) => (
-  <SetupCard title={label} action={action}>
+const PanelField = ({ label, labelTooltip, action, children }: Props) => (
+  <SetupCard title={label} titleTooltip={labelTooltip} action={action}>
     {children}
   </SetupCard>
 );

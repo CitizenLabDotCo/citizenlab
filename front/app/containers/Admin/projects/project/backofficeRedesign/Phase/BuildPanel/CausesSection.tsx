@@ -1,23 +1,28 @@
 import React, { useState } from 'react';
 
-import { Box, Button, Text } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 
-import useAddCause from 'api/causes/useAddCause';
-import useCauses from 'api/causes/useCauses';
+import { exportVolunteers } from 'api/causes/util';
 
-import CauseForm, {
-  SubmitValues,
-} from 'containers/Admin/projects/project/volunteering/CauseForm';
-import volunteeringMessages from 'containers/Admin/projects/project/volunteering/messages';
+import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 
-import T from 'components/T';
-import Modal from 'components/UI/Modal';
+import IconAction from 'components/UI/IconAction';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
 
+import CauseModal from './CauseModal';
+import CauseRow from './CauseRow';
+import DeleteCauseModal from './DeleteCauseModal';
 import PanelField from './PanelField';
+import useStagedCauses, {
+  StagedCause,
+  causeImageUrl,
+  causeTitle,
+} from './useStagedCauses';
+
+type ModalState = { cause?: StagedCause } | null;
 
 interface Props {
   phaseId: string;
@@ -25,70 +30,139 @@ interface Props {
 
 const CausesSection = ({ phaseId }: Props) => {
   const { formatMessage } = useIntl();
-  const [opened, setOpened] = useState(false);
-  const { data: causes } = useCauses({ phaseId });
-  const { mutateAsync: addCause } = useAddCause();
+  const [open, setOpen] = useState(false);
+  const [modal, setModal] = useState<ModalState>(null);
+  const [toDelete, setToDelete] = useState<StagedCause | null>(null);
+  const [exporting, setExporting] = useState(false);
+  const causes = useStagedCauses(phaseId);
 
-  const handleSubmit = async ({
-    title_multiloc,
-    description_multiloc,
-    image,
-  }: SubmitValues) => {
-    await addCause({
-      phase_id: phaseId,
-      title_multiloc,
-      description_multiloc,
-      image,
-    });
-    setOpened(false);
+  const causeList = causes.list;
+  const hasSignUps = causeList.some(
+    ({ saved }) => !!saved && saved.attributes.volunteers_count > 0
+  );
+  const label = formatMessage(messages.causesSection);
+  const addLabel = formatMessage(messages.addACause);
+  const downloadLabel = formatMessage(messages.downloadVolunteers);
+
+  const download = async () => {
+    setExporting(true);
+    try {
+      await exportVolunteers(phaseId);
+    } finally {
+      setExporting(false);
+    }
   };
+
+  const openAdd = () => setModal({});
 
   return (
     <>
-      <PanelField
-        label={formatMessage(messages.causesSection)}
-        action={
-          <Button
-            buttonStyle="bo-text"
-            icon="plus"
-            iconSize="16px"
-            width="32px"
-            height="32px"
-            padding="0"
-            ariaLabel={formatMessage(volunteeringMessages.addCauseButton)}
-            onClick={() => setOpened(true)}
-          />
-        }
-      >
-        <Text variant="boHelper" m="0">
-          {formatMessage(messages.causesSectionDescription)}
-        </Text>
-        {causes && causes.data.length > 0 && (
-          <Box as="ul" pl="20px" m="0">
-            {causes.data.map((cause) => (
-              <li key={cause.id}>
-                <Text variant="boLabel" my="2px">
-                  <T value={cause.attributes.title_multiloc} />
-                </Text>
-              </li>
-            ))}
+      {causeList.length > 0 ? (
+        <PanelField
+          label={label}
+          action={
+            <Box display="flex" alignItems="center" gap="4px">
+              <IconAction
+                icon="list"
+                tooltip={formatMessage(
+                  open ? messages.hideCauses : messages.showCauses
+                )}
+                ariaLabel={formatMessage(
+                  open ? messages.hideCauses : messages.showCauses
+                )}
+                ariaExpanded={open}
+                onClick={() => setOpen((open) => !open)}
+              />
+              <IconAction
+                icon="plus"
+                tooltip={addLabel}
+                ariaLabel={addLabel}
+                onClick={openAdd}
+              />
+              <IconAction
+                icon="download"
+                tooltip={
+                  hasSignUps
+                    ? downloadLabel
+                    : formatMessage(messages.nobodySignedUpYet)
+                }
+                ariaLabel={downloadLabel}
+                disabled={!hasSignUps || exporting}
+                onClick={download}
+              />
+              {!open && (
+                <SummaryPill
+                  label={formatMessage(messages.nCauses, {
+                    count: causeList.length,
+                  })}
+                />
+              )}
+            </Box>
+          }
+        >
+          {open && (
+            <Box as="ul" m="0" p="0" style={{ listStyle: 'none' }}>
+              {causeList.map((cause) => (
+                <CauseRow
+                  key={cause.key}
+                  title={causeTitle(cause)}
+                  imageUrl={causeImageUrl(cause)}
+                  volunteersCount={
+                    cause.saved?.attributes.volunteers_count ?? 0
+                  }
+                  onEdit={() => setModal({ cause })}
+                  onDelete={() => setToDelete(cause)}
+                />
+              ))}
+            </Box>
+          )}
+        </PanelField>
+      ) : (
+        <PanelField label={label}>
+          <Box display="flex" justifyContent="flex-end" gap="8px">
+            <Button
+              buttonStyle="bo-secondary"
+              boSize="medium"
+              width="auto"
+              disabled
+            >
+              {downloadLabel}
+            </Button>
+            <Button
+              buttonStyle="bo-primary"
+              boSize="medium"
+              width="auto"
+              onClick={openAdd}
+            >
+              {addLabel}
+            </Button>
           </Box>
-        )}
-      </PanelField>
+        </PanelField>
+      )}
 
-      <Modal
-        opened={opened}
-        close={() => setOpened(false)}
-        width={720}
-        header={formatMessage(volunteeringMessages.newCauseTitle)}
-      >
-        <Box p="24px">
-          <Text variant="boHelper" mb="16px">
-            {formatMessage(volunteeringMessages.newCauseSubtitle)}
-          </Text>
-          <CauseForm onSubmit={handleSubmit} submitPlacement="inline" />
-        </Box>
-      </Modal>
+      {modal && (
+        <CauseModal
+          // Each cause starts the form from its own values.
+          key={modal.cause?.key ?? 'new'}
+          cause={modal.cause}
+          onSubmit={(values) => {
+            const { cause } = modal;
+            if (cause) {
+              causes.update(cause.key, values);
+            } else {
+              causes.add(values);
+            }
+          }}
+          onClose={() => setModal(null)}
+        />
+      )}
+
+      {toDelete && (
+        <DeleteCauseModal
+          onConfirm={() => causes.remove(toDelete)}
+          onClose={() => setToDelete(null)}
+        />
+      )}
     </>
   );
 };

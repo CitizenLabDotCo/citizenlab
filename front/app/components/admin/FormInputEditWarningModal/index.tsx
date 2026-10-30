@@ -19,23 +19,39 @@ type Props = {
   showEditWarningModal: boolean;
   setShowEditWarningModal: (show: boolean) => void;
   editFormLink: string;
+  variant?: 'bo';
 };
 
 const FormInputEditWarningModal = ({
   showEditWarningModal,
   setShowEditWarningModal,
   editFormLink,
+  variant,
 }: Props) => {
   const { formatMessage } = useIntl();
+  const isBo = variant === 'bo';
+  const close = () => setShowEditWarningModal(false);
+  const goToForm = () => clHistory.push(editFormLink);
 
   return (
     <Modal
-      width={520}
+      width={isBo ? 560 : 520}
+      variant={variant}
       opened={showEditWarningModal}
-      close={() => {
-        setShowEditWarningModal(false);
-      }}
+      close={close}
       header={formatMessage(messages.title)}
+      footer={
+        isBo ? (
+          <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
+            <Button buttonStyle="bo-secondary" onClick={close}>
+              {formatMessage(messages.noCancel)}
+            </Button>
+            <Button buttonStyle="bo-delete" onClick={goToForm}>
+              {formatMessage(messages.yesContinue)}
+            </Button>
+          </Box>
+        ) : undefined
+      }
     >
       <Box m="24px" data-cy="e2e-form-input-edit-warning-modal">
         <Box mb="32px" display="flex">
@@ -86,26 +102,16 @@ const FormInputEditWarningModal = ({
           </Box>
         </Box>
 
-        <Box mt="40px" display="flex" justifyContent="space-between">
-          <Button
-            p="0px"
-            m="0px"
-            buttonStyle="text"
-            onClick={() => {
-              setShowEditWarningModal(false);
-            }}
-          >
-            {formatMessage(messages.noCancel)}
-          </Button>
-          <Button
-            bgColor={colors.error}
-            onClick={() => {
-              clHistory.push(editFormLink);
-            }}
-          >
-            {formatMessage(messages.yesContinue)}
-          </Button>
-        </Box>
+        {!isBo && (
+          <Box mt="40px" display="flex" justifyContent="space-between">
+            <Button p="0px" m="0px" buttonStyle="text" onClick={close}>
+              {formatMessage(messages.noCancel)}
+            </Button>
+            <Button bgColor={colors.error} onClick={goToForm}>
+              {formatMessage(messages.yesContinue)}
+            </Button>
+          </Box>
+        )}
       </Box>
     </Modal>
   );

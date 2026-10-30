@@ -34,6 +34,7 @@ const METHODS_WITH_ACTION_TOGGLES: ParticipationMethod[] = [
   'ideation',
   'proposals',
   'common_ground',
+  'voting',
 ];
 
 const ACCESS_ONLY_ACTIONS: Partial<
@@ -44,6 +45,10 @@ const ACCESS_ONLY_ACTIONS: Partial<
   ],
   volunteering: [
     { action: 'volunteering', label: configMessages.volunteeringAction },
+    { action: 'attending_event', label: projectMessages.attendingEventAction },
+  ],
+  document_annotation: [
+    { action: 'annotating_document', label: messages.annotatingDocumentAction },
     { action: 'attending_event', label: projectMessages.attendingEventAction },
   ],
 };

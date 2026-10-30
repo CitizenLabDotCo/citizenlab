@@ -18,7 +18,6 @@ import Modal from 'components/UI/Modal';
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import Link from 'utils/cl-router/Link';
 import { handleHookFormSubmissionError } from 'utils/errorUtils';
-import { useParams } from 'utils/router';
 import validateLocale from 'utils/yup/validateLocale';
 
 import { IDEA_IMPORT_FILE_MAX_SIZE_MB } from './constants';
@@ -31,17 +30,24 @@ interface FormValues {
 }
 
 interface Props {
+  projectId: string;
+  phaseId: string;
   open: boolean;
   onClose: () => void;
+  /** Called once the file is uploaded, after the modal closes. */
+  onUploaded?: () => void;
 }
 
-const ImportExcelModal = ({ open, onClose }: Props) => {
+const ImportExcelModal = ({
+  projectId,
+  phaseId,
+  open,
+  onClose,
+  onUploaded,
+}: Props) => {
   const { formatMessage } = useIntl();
   const { mutateAsync: addOfflineIdeas, isPending } = useAddOfflineIdeasAsync();
   const locale = useLocale();
-  const { projectId, phaseId } = useParams({
-    from: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
-  });
   const { data: phase } = usePhase(phaseId);
 
   const downloadFormLink =
@@ -85,6 +91,7 @@ const ImportExcelModal = ({ open, onClose }: Props) => {
 
       onClose();
       methods.reset();
+      onUploaded?.();
     } catch (e) {
       handleHookFormSubmissionError(e, methods.setError);
     }
