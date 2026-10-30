@@ -9,6 +9,14 @@ describe AIAssistant::Turn do
   let(:phase) { conversation.subject }
   let!(:user_message) { create(:ai_assistant_message, conversation:, content: 'Create a survey about our park.') }
 
+  let(:valid_fields) do
+    [
+      { input_type: 'page', page_layout: 'default', title_multiloc: {} },
+      { input_type: 'text', title_multiloc: { 'en' => 'What do you like about the park?' }, required: false, enabled: true },
+      { input_type: 'page', page_layout: 'default', key: 'form_end', title_multiloc: {} }
+    ]
+  end
+
   def last_request_messages
     bedrock_requests.last['messages']
   end
@@ -36,7 +44,7 @@ describe AIAssistant::Turn do
 
   it 'continues a turn whose last message asked for tools' do
     tool_message = create(:ai_assistant_message, conversation:, role: 'assistant', content: nil)
-    create(:ai_assistant_tool_call, message: tool_message, result: { fields: [] }.to_json)
+    create(:ai_assistant_tool_call, message: tool_message, status: 'auto_executed', result: { fields: [] }.to_json)
     stub_bedrock(bedrock_text('The survey has no questions yet.'))
 
     turn.run
@@ -50,6 +58,17 @@ describe AIAssistant::Turn do
 
     expect { turn.run }.to raise_error(ActiveRecord::RecordInvalid)
     expect(conversation.messages.assistant).to be_empty
+  end
+
+  it 'only finishes a turn that already stopped on proposals' do
+    tool_message = create(:ai_assistant_message, conversation:, role: 'assistant', content: nil)
+    create(:ai_assistant_tool_call, message: tool_message, name: 'replace_form_fields', status: 'proposed')
+    stub_bedrock
+
+    turn.run
+
+    expect(bedrock_requests).to be_empty
+    expect(conversation.reload.status).to eq('awaiting_approval')
   end
 
   it 'runs read-only tools right away, pinned to the conversation record' do
@@ -67,6 +86,43 @@ describe AIAssistant::Turn do
     expect(tool_call.result).not_to include(other_phase.id)
     tool_result = last_request_messages.last['content'].sole['toolResult']
     expect(tool_result).to include('toolUseId' => 'read_1')
+    expect(conversation.reload.status).to eq('idle')
+  end
+
+  it 'only proposes write tool calls, and stops the turn' do
+    stub_bedrock(bedrock_tool_use({ id: 'write_1', name: 'replace_form_fields', input: { fields: valid_fields } }, text: 'Here is a first draft.'))
+
+    expect { turn.run }.not_to change { phase.reload.custom_form }
+
+    tool_call = AIAssistant::ToolCall.find_by!(tool_use_id: 'write_1')
+    expect(tool_call).to have_attributes(status: 'proposed', result: nil)
+    expect(tool_call.arguments['fields'].size).to eq(3)
+    expect(tool_call.pinned_arguments).to eq('container_type' => 'phase', 'container_id' => phase.id)
+    expect(tool_call.message.content).to eq('Here is a first draft.')
+    expect(bedrock_requests.size).to eq(1)
+    expect(conversation.reload.status).to eq('awaiting_approval')
+  end
+
+  it 'pins the form version to the proposal' do
+    form = create(:custom_form, participation_context: phase, fields_last_updated_at: 1.hour.ago)
+    stub_bedrock(bedrock_tool_use({ id: 'write_1', name: 'replace_form_fields', input: { fields: valid_fields } }))
+
+    turn.run
+
+    expect(AIAssistant::ToolCall.sole.pinned_arguments['fields_last_updated_at']).to eq(form.fields_last_updated_at.iso8601)
+  end
+
+  it 'sends invalid write calls back to the model instead of proposing them' do
+    stub_bedrock(
+      bedrock_tool_use({ id: 'write_1', name: 'replace_form_fields', input: { fields: 'not a list' } }),
+      bedrock_text('Sorry, let me try again later.')
+    )
+
+    turn.run
+
+    expect(AIAssistant::ToolCall.sole).to have_attributes(status: 'failed', result: start_with('Error:'))
+    tool_result = last_request_messages.last['content'].sole['toolResult']
+    expect(tool_result['content'].sole['text']).to start_with('Error:')
     expect(conversation.reload.status).to eq('idle')
   end
 
@@ -110,6 +166,21 @@ describe AIAssistant::Turn do
     expect(conversation.reload).to have_attributes(status: 'failed', last_error_code: 'tool_budget_exceeded')
   end
 
+  it 'expires the proposals of a turn that went over the tool-call limit' do
+    stub_const("#{described_class}::MAX_TOOL_CALLS", 1)
+    stub_bedrock(
+      bedrock_tool_use(
+        { id: 'write_1', name: 'replace_form_fields', input: { fields: valid_fields } },
+        { id: 'read_1', name: 'get_form_fields' }
+      )
+    )
+
+    turn.run
+
+    expect(AIAssistant::ToolCall.find_by!(tool_use_id: 'write_1').status).to eq('expired')
+    expect(conversation.reload).to have_attributes(status: 'failed', last_error_code: 'tool_budget_exceeded')
+  end
+
   it 'fails when the surface is no longer available' do
     phase.update_columns(participation_method: 'information')
 
@@ -119,6 +190,25 @@ describe AIAssistant::Turn do
   end
 
   describe 'replaying the conversation' do
+    it 'continues after a decision with the outcome as tool result, without a new user message' do
+      assistant_message = create(:ai_assistant_message, conversation:, role: 'assistant', content: 'A first draft.')
+      create(
+        :ai_assistant_tool_call,
+        message: assistant_message,
+        tool_use_id: 'write_1',
+        status: 'rejected',
+        result: { denied: true, reason: 'Fewer questions' }.to_json
+      )
+      stub_bedrock(bedrock_text('I will make it shorter.'))
+
+      turn.run
+
+      messages = last_request_messages
+      expect(messages.pluck('role')).to eq(%w[user assistant user])
+      expect(messages[1]['content'].pluck('toolUse').compact.sole).to include('toolUseId' => 'write_1')
+      expect(messages[2]['content'].sole['toolResult']['content'].sole['text']).to include('Fewer questions')
+    end
+
     it 'adds a placeholder reply between two user messages' do
       create(:ai_assistant_message, conversation:, content: 'Are you there?')
       stub_bedrock(bedrock_text('Yes.'))

@@ -29,12 +29,16 @@ import useSubmissionsCount from 'api/submission_count/useSubmissionCount';
 import useLocale from 'hooks/useLocale';
 
 import useAiAssistantEnabled from 'components/AiAssistant/useAiAssistantEnabled';
+import useLatestConversation from 'components/AiAssistant/useLatestConversation';
+import EditingLock from 'components/FormBuilder/components/EditingLock';
 import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
 import FormBuilderToolbox from 'components/FormBuilder/components/FormBuilderToolbox';
 import FormBuilderTopBar from 'components/FormBuilder/components/FormBuilderTopBar';
 import FormFields from 'components/FormBuilder/components/FormFields';
 import SurveyAssistant from 'components/FormBuilder/components/SurveyAssistant';
+import surveyAssistantMessages from 'components/FormBuilder/components/SurveyAssistant/messages';
 import HelmetIntl from 'components/HelmetIntl';
+import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
 import { type TypedLinkProps } from 'utils/cl-router/Link';
@@ -97,6 +101,14 @@ const FormEdit = ({
   const assistantEnabled =
     useAiAssistantEnabled() &&
     phase.attributes.participation_method === 'native_survey';
+  const { conversation: assistantConversation } = useLatestConversation(
+    { surfaceKey: 'survey_builder', subjectId: phaseId },
+    { enabled: assistantEnabled }
+  );
+  const assistantStatus = assistantConversation?.data.attributes.status;
+  // Editing by hand meanwhile would make the assistant's proposal stale.
+  const lockedByAssistant =
+    assistantStatus === 'running' || assistantStatus === 'awaiting_approval';
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const { data: formCustomFields, isFetching } = useFormCustomFields({
     projectId,
@@ -362,12 +374,15 @@ const FormEdit = ({
               setAutosaveEnabled={setAutosaveEnabled}
               phaseId={phaseId}
               onFormSave={() => setIsUpdatingForm(true)}
+              locked={lockedByAssistant}
             />
             <DragAndDrop onDragEnd={reorderFields}>
               <Drop id="droppable" type={pageDNDType}>
                 <Box mt={`${stylingConsts.menuHeight}px`} display="flex">
                   <Box width="210px">
-                    <FormBuilderToolbox builderConfig={builderConfig} />
+                    <EditingLock locked={lockedByAssistant}>
+                      <FormBuilderToolbox builderConfig={builderConfig} />
+                    </EditingLock>
                   </Box>
                   <Box
                     flex="1.8"
@@ -388,14 +403,21 @@ const FormEdit = ({
                         projectId={projectId}
                         phaseId={phaseId}
                       />
-                      <FormFields
-                        onEditField={setSelectedField}
-                        selectedFieldId={selectedField?.id}
-                        handleDragEnd={reorderFields}
-                        builderConfig={builderConfig}
-                        closeSettings={closeSettings}
-                        fieldArrayOperations={{ insert, move, remove }}
-                      />
+                      {lockedByAssistant && (
+                        <Warning mb="16px">
+                          {formatMessage(surveyAssistantMessages.editingLocked)}
+                        </Warning>
+                      )}
+                      <EditingLock locked={lockedByAssistant}>
+                        <FormFields
+                          onEditField={setSelectedField}
+                          selectedFieldId={selectedField?.id}
+                          handleDragEnd={reorderFields}
+                          builderConfig={builderConfig}
+                          closeSettings={closeSettings}
+                          fieldArrayOperations={{ insert, move, remove }}
+                        />
+                      </EditingLock>
                     </Box>
                   </Box>
                   <Box
@@ -418,7 +440,13 @@ const FormEdit = ({
                     {/* Hidden, not unmounted, so a typed request survives editing a field. */}
                     {assistantEnabled && (
                       <Box display={selectedField ? 'none' : 'block'}>
-                        <SurveyAssistant phaseId={phaseId} />
+                        <SurveyAssistant
+                          phaseId={phaseId}
+                          onFormReplaced={() => {
+                            setSelectedField(undefined);
+                            setIsUpdatingForm(true);
+                          }}
+                        />
                       </Box>
                     )}
                   </Box>

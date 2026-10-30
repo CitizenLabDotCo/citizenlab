@@ -30,7 +30,7 @@ module AIAssistant
   # survey of a phase. +surface_key+ says where the assistant is used, which decides its
   # prompt and tools.
   class Conversation < ApplicationRecord
-    STATUSES = %w[idle running failed].freeze
+    STATUSES = %w[idle running awaiting_approval failed].freeze
     # A running turn stores a message more often than this, unless its job was lost.
     TURN_TIMEOUT = 10.minutes
 
@@ -51,11 +51,36 @@ module AIAssistant
       update!(status: 'failed', last_error_code: error_code)
     end
 
-    # Gets the conversation out of a state that nothing would end anymore.
+    # Gets the conversation out of a state that nothing would end anymore: a turn whose job
+    # was lost, an approved change whose request died, or proposals nobody decided on.
     def recover_if_stuck!
-      return unless running? && updated_at < TURN_TIMEOUT.ago
+      if running?
+        fail_turn!('turn_timed_out') if updated_at < TURN_TIMEOUT.ago
+      elsif awaiting_approval?
+        recover_stuck_decisions!
+      end
+    end
 
-      fail_turn!('turn_timed_out')
+    # The proposals can no longer be decided on: the model will see them as expired.
+    def expire_proposals!
+      transaction do
+        tool_calls.proposed.find_each do |tool_call|
+          tool_call.update!(status: 'expired', result: { expired: true }.to_json)
+        end
+        update!(status: 'idle') if awaiting_approval?
+      end
+    end
+
+    private
+
+    def recover_stuck_decisions!
+      return unless tool_calls.interrupted_approvals.exists? || tool_calls.overdue_proposals.exists?
+
+      transaction do
+        tool_calls.interrupted_approvals.find_each { |tool_call| tool_call.update!(status: 'failed') }
+        expire_proposals! if tool_calls.overdue_proposals.exists?
+        update!(status: 'idle') if tool_calls.where(status: ToolCall::UNDECIDED_STATUSES).none?
+      end
     end
   end
 end

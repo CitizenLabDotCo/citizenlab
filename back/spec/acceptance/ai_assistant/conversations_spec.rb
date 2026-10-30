@@ -72,7 +72,7 @@ resource 'AI assistant conversations' do
           'ai_assistant_message', 'ai_assistant_message', 'ai_assistant_tool_call'
         )
         tool_call = json_response_body[:included].find { |resource| resource[:type] == 'ai_assistant_tool_call' }
-        expect(tool_call[:attributes].keys).to contain_exactly(:name, :arguments, :status, :created_at)
+        expect(tool_call[:attributes].keys).to contain_exactly(:name, :arguments, :status, :reason, :decided_at, :created_at)
       end
 
       example 'Get a conversation whose turn stopped making progress', document: false do
@@ -129,6 +129,15 @@ resource 'AI assistant conversations' do
         expect(AIAssistant::Conversation.find(response_data[:id])).to have_attributes(
           user: super_admin, subject: phase, surface_key: 'survey_builder', locale: 'en', status: 'idle'
         )
+      end
+
+      example 'Expire the proposals of the previous conversation', document: false do
+        previous = create(:ai_assistant_tool_call, message: create(:ai_assistant_message, role: 'assistant', conversation: create(:ai_assistant_conversation, user: super_admin, subject: phase, status: 'awaiting_approval')))
+
+        do_request
+
+        assert_status 201
+        expect(previous.reload.status).to eq('expired')
       end
 
       example '[error] Start a conversation on an unknown surface', document: false do

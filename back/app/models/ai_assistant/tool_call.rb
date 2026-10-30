@@ -29,17 +29,32 @@
 #  fk_rails_...  (message_id => ai_assistant_messages.id) ON DELETE => cascade
 #
 module AIAssistant
-  # A tool call made by the model. The tool runs right away.
+  # A tool call made by the model. Read-only tools run right away; write tools are only
+  # proposed, and run once the user approves them.
   class ToolCall < ApplicationRecord
-    STATUSES = %w[pending auto_executed failed].freeze
+    STATUSES = %w[pending auto_executed proposed approved executed failed rejected expired].freeze
+    # Statuses that still wait for a decision or for the approved tool to finish.
+    UNDECIDED_STATUSES = %w[proposed approved].freeze
+    APPROVAL_TTL = 24.hours
+    # An approved change runs in the request that approves it, so one still approved after
+    # this was interrupted.
+    RUN_TIMEOUT = 10.minutes
 
     belongs_to :message, class_name: 'AIAssistant::Message', inverse_of: :tool_calls
+    belongs_to :decided_by, class_name: 'User', optional: true
 
     enum :status, STATUSES.index_by(&:itself)
+
+    scope :overdue_proposals, -> { proposed.where(created_at: ...APPROVAL_TTL.ago) }
+    scope :interrupted_approvals, -> { approved.where(decided_at: ...RUN_TIMEOUT.ago) }
 
     validates :tool_use_id, :name, presence: true
 
     delegate :conversation, to: :message
+
+    def expired?
+      proposed? && created_at < APPROVAL_TTL.ago
+    end
 
     # What the model gets back as the result of this call.
     def result_for_llm

@@ -40,6 +40,10 @@ module AIAssistant
       Pundit.policy!(user, subject).update?
     end
 
+    def project_id
+      subject.try(:project_id)
+    end
+
     def tools
       raise NotImplementedError
     end

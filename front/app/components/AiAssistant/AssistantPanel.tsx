@@ -12,8 +12,6 @@ import { MessageDescriptor } from 'react-intl';
 
 import { AiAssistantSurfaceKey } from 'api/ai_assistant_conversations/types';
 import useAddAiAssistantConversation from 'api/ai_assistant_conversations/useAddAiAssistantConversation';
-import useAiAssistantConversation from 'api/ai_assistant_conversations/useAiAssistantConversation';
-import useAiAssistantConversations from 'api/ai_assistant_conversations/useAiAssistantConversations';
 import useAddAiAssistantMessage from 'api/ai_assistant_messages/useAddAiAssistantMessage';
 
 import useLocale from 'hooks/useLocale';
@@ -27,6 +25,7 @@ import { getErrorMessage, getRequestErrorCode } from './errors';
 import messages from './messages';
 import Transcript from './Transcript';
 import { AiAssistantToolViews } from './types';
+import useLatestConversation from './useLatestConversation';
 
 type Props = {
   surfaceKey: AiAssistantSurfaceKey;
@@ -34,18 +33,22 @@ type Props = {
   subjectId: string;
   intro: MessageDescriptor;
   toolViews: AiAssistantToolViews;
+  onToolExecuted: (toolName: string) => void;
 };
 
-const AssistantPanel = ({ surfaceKey, subjectId, intro, toolViews }: Props) => {
+const AssistantPanel = ({
+  surfaceKey,
+  subjectId,
+  intro,
+  toolViews,
+  onToolExecuted,
+}: Props) => {
   const locale = useLocale();
   const { formatMessage } = useIntl();
-  const { data: conversations } = useAiAssistantConversations({
+  const { conversationId, conversation } = useLatestConversation({
     surfaceKey,
     subjectId,
-    pageSize: 1,
   });
-  const conversationId = conversations?.data.at(0)?.id;
-  const { data: conversation } = useAiAssistantConversation(conversationId);
   const { mutateAsync: addConversation, isPending: creatingConversation } =
     useAddAiAssistantConversation();
   const { mutateAsync: addMessage } = useAddAiAssistantMessage();
@@ -55,7 +58,8 @@ const AssistantPanel = ({ surfaceKey, subjectId, intro, toolViews }: Props) => {
   const [sendError, setSendError] = useState<string>();
 
   const status = conversation?.data.attributes.status;
-  const busy = sending || status === 'running';
+  const busy =
+    sending || status === 'running' || status === 'awaiting_approval';
   const hasMessages =
     (conversation?.data.relationships.messages.data.length ?? 0) > 0;
 
@@ -125,7 +129,11 @@ const AssistantPanel = ({ surfaceKey, subjectId, intro, toolViews }: Props) => {
       </Box>
       <Box flex="1" overflowY="auto">
         {conversation && hasMessages ? (
-          <Transcript conversation={conversation} toolViews={toolViews} />
+          <Transcript
+            conversation={conversation}
+            toolViews={toolViews}
+            onToolExecuted={onToolExecuted}
+          />
         ) : (
           <Text m="0px">
             <FormattedMessage {...intro} />
@@ -133,6 +141,11 @@ const AssistantPanel = ({ surfaceKey, subjectId, intro, toolViews }: Props) => {
         )}
       </Box>
       <Box mt="16px">
+        {status === 'awaiting_approval' && (
+          <Text m="0px" mb="8px" fontSize="s" color="textSecondary">
+            <FormattedMessage {...messages.awaitingApprovalHint} />
+          </Text>
+        )}
         <Composer
           prompt={prompt}
           disabled={busy}

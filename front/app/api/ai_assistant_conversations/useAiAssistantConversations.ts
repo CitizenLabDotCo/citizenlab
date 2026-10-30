@@ -27,7 +27,8 @@ const fetchConversations = ({
 
 // The current user's conversations on the surface, newest first.
 const useAiAssistantConversations = (
-  parameters: IAiAssistantConversationsParameters
+  parameters: IAiAssistantConversationsParameters,
+  { enabled = true }: { enabled?: boolean } = {}
 ) => {
   return useQuery<
     IAiAssistantConversations,
@@ -37,6 +38,7 @@ const useAiAssistantConversations = (
   >({
     queryKey: aiAssistantConversationsKeys.list(parameters),
     queryFn: () => fetchConversations(parameters),
+    enabled,
   });
 };
 

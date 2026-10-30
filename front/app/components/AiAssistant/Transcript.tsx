@@ -18,6 +18,7 @@ import WorkingIndicator from './WorkingIndicator';
 type Props = {
   conversation: IAiAssistantConversation;
   toolViews: AiAssistantToolViews;
+  onToolExecuted: (toolName: string) => void;
 };
 
 const isMessage = (
@@ -30,7 +31,7 @@ const isToolCall = (
 ): resource is IAiAssistantToolCallData =>
   resource.type === 'ai_assistant_tool_call';
 
-const Transcript = ({ conversation, toolViews }: Props) => {
+const Transcript = ({ conversation, toolViews, onToolExecuted }: Props) => {
   const { formatMessage } = useIntl();
   const endRef = useRef<HTMLDivElement>(null);
   const { attributes } = conversation.data;
@@ -66,7 +67,10 @@ const Transcript = ({ conversation, toolViews }: Props) => {
                 <ToolCallCard
                   key={id}
                   toolCall={toolCall}
+                  conversationId={conversation.data.id}
+                  decidable={attributes.status === 'awaiting_approval'}
                   view={toolViews[toolCall.attributes.name]}
+                  onExecuted={onToolExecuted}
                 />
               );
             })}
