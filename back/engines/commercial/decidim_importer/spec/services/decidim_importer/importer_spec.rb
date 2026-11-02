@@ -280,8 +280,8 @@ RSpec.describe DecidimImporter::Importer do
         .craftjs_json[ContentBuilder::CustomPageLayoutService::TOP_INFO_ID]['props']['text']['fr-FR']
     end
 
-    # A static page used to store the images in its body itself, on save. Its layout is saved by the
-    # deserializer, which skips the builder's save path, so the import stores them.
+    # The deserializer saves the layout without the builder's save path, which stores inline images,
+    # so the import stores them itself.
     it 'stores the images in an imported page body as text images of the page' do
       imported = page_with_image
       other = page_with_image # e.g. a page from an earlier import, not part of this one

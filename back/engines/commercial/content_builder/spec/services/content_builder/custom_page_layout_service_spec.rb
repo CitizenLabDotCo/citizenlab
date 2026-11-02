@@ -567,7 +567,7 @@ describe ContentBuilder::CustomPageLayoutService do
       expect(craftjs[top_id]['props']['text']).to eq plain_text
     end
 
-    # Imported pages then match the pages already moved onto the builder.
+    # An imported page gets the same layout as a page derived from its own columns.
     context 'when compared with a page holding the same body in its top section' do
       where(:body) do
         [
