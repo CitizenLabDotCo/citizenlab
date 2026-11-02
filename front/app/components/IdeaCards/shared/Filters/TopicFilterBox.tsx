@@ -3,6 +3,7 @@ import React, { memo } from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
 
+import useCustomFields from 'api/custom_fields/useCustomFields';
 import { IIdeasFilterCountsQueryParameters } from 'api/ideas_filter_counts/types';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import useInputTopics from 'api/input_topics/useInputTopics';
@@ -27,6 +28,11 @@ const TopicFilterBox = memo<Props>(
   }) => {
     const ideaFiltersWithoutTopics = omit(ideaQueryParameters, 'topics');
 
+    const { data: customFields } = useCustomFields({ projectId });
+    const topicsEnabled = customFields?.find(
+      (field) => field.key === 'topic_ids'
+    )?.enabled;
+
     const { data: topics } = useInputTopics(projectId, {
       sort: '-ideas_count',
       depth: 0,
@@ -37,7 +43,12 @@ const TopicFilterBox = memo<Props>(
       idea_status: ideaFiltersWithoutTopics.idea_status,
     });
 
-    if (!topics || topics.data.length === 0 || !ideasFilterCounts) {
+    if (
+      !topicsEnabled ||
+      !topics ||
+      topics.data.length === 0 ||
+      !ideasFilterCounts
+    ) {
       return null;
     }
 
