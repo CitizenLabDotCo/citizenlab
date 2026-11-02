@@ -6,7 +6,10 @@ require 'rails_helper'
 # lib/tasks/single_use/README.md.
 # rubocop:disable RSpec/DescribeClass
 describe 'single_use:migrate_custom_pages_to_content_builder' do
-  before { load_rake_tasks_if_not_loaded }
+  before do
+    load_rake_tasks_if_not_loaded
+    SettingsService.new.deactivate_feature!('custom_page_builder')
+  end
 
   let(:task) { Rake::Task['single_use:migrate_custom_pages_to_content_builder'] }
   let(:code) { ContentBuilder::CustomPageLayoutService::CODE }

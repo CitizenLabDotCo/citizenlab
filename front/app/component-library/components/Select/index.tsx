@@ -1,7 +1,7 @@
 import React, { PureComponent, FocusEvent, ChangeEvent } from 'react';
 
 import { isString, get, isNumber } from 'lodash-es';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Placement } from 'tippy.js';
 
 import {
@@ -15,7 +15,10 @@ import testEnv from '../../utils/testUtils/testEnv';
 import { IOption, InputSize } from '../../utils/typings';
 import Icon from '../Icon';
 import IconTooltip from '../IconTooltip';
+import { boInputLabelStyle, boInputStyle } from '../Input';
 import Label from '../Label';
+
+type Variant = 'default' | 'bo';
 
 export const SelectIcon = styled(Icon)`
   fill: #999;
@@ -32,9 +35,11 @@ export const SelectIcon = styled(Icon)`
   `}
 `;
 
-const Container = styled.div`
+const Container = styled.div<{ variant: Variant }>`
   position: relative;
   outline: none !important;
+
+  ${({ variant }) => variant === 'bo' && boInputLabelStyle}
 
   &.enabled {
     &:hover {
@@ -67,16 +72,31 @@ const Container = styled.div`
 
 const CHEVRON_SPACE = '36px';
 
+const boSelectStyle = css`
+  padding-right: 32px;
+
+  ${isRtl`
+    padding-right: 11px;
+    padding-left: 32px;
+  `}
+
+  & + ${SelectIcon} {
+    width: 16px;
+    fill: ${colors.coolGrey500};
+  }
+`;
+
 export const SelectWrapper = styled.div<{
   mr?: string;
   size?: InputSize;
   height?: string;
+  variant?: Variant;
 }>`
   width: 100%;
   position: relative;
   select {
     /* First, so the declarations below override its padding and cursor */
-    ${defaultInputStyle};
+    ${({ variant }) => (variant === 'bo' ? boInputStyle : defaultInputStyle)};
     width: 100%;
     margin: 0;
     /* Keep the text clear of the chevron (24px wide, 11px from the edge) */
@@ -94,8 +114,14 @@ export const SelectWrapper = styled.div<{
     &::-ms-expand {
       display: none;
     }
-    height: ${({ height }) =>
-      height ? height : `${stylingConsts.inputHeight}px`} !important;
+    ${({ variant, height }) =>
+      variant === 'bo'
+        ? boSelectStyle
+        : css`
+            height: ${height
+              ? height
+              : `${stylingConsts.inputHeight}px`} !important;
+          `}
   }
 `;
 
@@ -122,6 +148,7 @@ export interface Props extends DefaultProps {
   setRef?: (arg: HTMLSelectElement | null) => void;
   ariaInvalid?: boolean;
   ariaDescribedBy?: string;
+  variant?: Variant;
 }
 
 const DEFAULT_VALUE = 'DEFAULT_SELECT_VALUE';
@@ -184,6 +211,7 @@ class Select extends PureComponent<Props> {
       setRef,
       ariaInvalid,
       ariaDescribedBy,
+      variant = 'default',
     } = this.props;
 
     const safeValue =
@@ -196,6 +224,7 @@ class Select extends PureComponent<Props> {
     return (
       <Container
         className={`${className} ${disabled ? 'disabled' : 'enabled'}`}
+        variant={variant}
       >
         {label && (
           <Label htmlFor={id}>
@@ -208,7 +237,7 @@ class Select extends PureComponent<Props> {
             )}
           </Label>
         )}
-        <SelectWrapper mr={mr} size={size} height={height}>
+        <SelectWrapper mr={mr} size={size} height={height} variant={variant}>
           <select
             id={id}
             disabled={disabled}

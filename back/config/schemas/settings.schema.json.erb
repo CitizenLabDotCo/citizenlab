@@ -1496,13 +1496,13 @@
 
       "custom_page_builder": {
         "type": "object",
-        "title": "Custom page builder [DO NOT ENABLE]",
-        "description": "Edit custom pages with the content builder. Still under development, not ready for customer use.",
+        "title": "Custom page builder [DO NOT CHANGE!!]",
+        "description": "Feature flag used during development. Should be active for all platforms, and should remain so. Do not change these settings. DATA WILL BE LOST if this feature is deactivated.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
         }
       },
 
