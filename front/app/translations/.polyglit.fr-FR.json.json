@@ -1434,6 +1434,16 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": {
+    "state": "verified",
+    "verified_at": "2026-10-30T13:47:30.453836Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-30T13:47:30.453836Z",
+    "verified_by": "Adrien"
+  },
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": {
     "state": "verified",
     "verified_at": "2026-10-16T09:27:28.428851Z",
@@ -3959,6 +3969,11 @@
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
   },
+  "app.components.WeglotSwitcher.ariaLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:17:22.798717Z",
+    "verified_by": "Adrien"
+  },
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
@@ -4488,6 +4503,26 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.510849Z",
     "verified_by": "Admin"
+  },
+  "app.components.aiAssistant.errorGeneric": {
+    "state": "verified",
+    "verified_at": "2026-10-30T15:07:42.380952Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.aiAssistant.errorTooLong": {
+    "state": "verified",
+    "verified_at": "2026-10-30T15:07:42.380952Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.aiAssistant.newChat": {
+    "state": "verified",
+    "verified_at": "2026-10-30T15:07:42.380952Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.aiAssistant.send": {
+    "state": "verified",
+    "verified_at": "2026-10-30T15:07:42.380952Z",
+    "verified_by": "Adrien"
   },
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": {
     "state": "verified",
@@ -7017,6 +7052,11 @@
   "app.containers.Authentication.steps.EmailFlowStart.orLoginWith": {
     "state": "verified",
     "verified_at": "2026-07-17T08:20:45.182128Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Authentication.steps.FlowStart.signInWithEmployeeAccount": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:22:21.611959Z",
     "verified_by": "Cindy EB"
   },
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": {
