@@ -1885,6 +1885,8 @@
   "app.containers.Admin.projects.project.ideasAndParticipantData": "Idejas un dalībnieku dati",
   "app.containers.Admin.projects.project.ideationSetup": "Ideju apkopošanas iestatīšana",
   "app.containers.Admin.projects.project.importFromPreviousPhase": "Importēt no iepriekšējā posma",
+  "app.containers.Admin.projects.project.importPhaseLabel": "Posms",
+  "app.containers.Admin.projects.project.importProjectLabel": "Projekts",
   "app.containers.Admin.projects.project.importStatements": "Importēt",
   "app.containers.Admin.projects.project.importVotingOptions": "Importēt variantus",
   "app.containers.Admin.projects.project.importingStatements": "Importē {done}/{total}",

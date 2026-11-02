@@ -1885,6 +1885,8 @@
   "app.containers.Admin.projects.project.ideasAndParticipantData": "Ιδέες και δεδομένα συμμετεχόντων",
   "app.containers.Admin.projects.project.ideationSetup": "Ρύθμιση ιδεασμού",
   "app.containers.Admin.projects.project.importFromPreviousPhase": "Εισαγωγή από προηγούμενη φάση",
+  "app.containers.Admin.projects.project.importPhaseLabel": "Φάση",
+  "app.containers.Admin.projects.project.importProjectLabel": "Έργο",
   "app.containers.Admin.projects.project.importStatements": "Εισαγωγή",
   "app.containers.Admin.projects.project.importVotingOptions": "Εισαγωγή επιλογών",
   "app.containers.Admin.projects.project.importingStatements": "Εισαγωγή {done}/{total}",

@@ -1885,6 +1885,8 @@
   "app.containers.Admin.projects.project.ideasAndParticipantData": "ਵਿਚਾਰ ਅਤੇ ਭਾਗੀਦਾਰ ਡੇਟਾ",
   "app.containers.Admin.projects.project.ideationSetup": "ਵਿਚਾਰ ਸੈੱਟਅੱਪ",
   "app.containers.Admin.projects.project.importFromPreviousPhase": "ਪਿਛਲੇ ਪੜਾਅ ਤੋਂ ਇੰਪੋਰਟ ਕਰੋ",
+  "app.containers.Admin.projects.project.importPhaseLabel": "ਪੜਾਅ",
+  "app.containers.Admin.projects.project.importProjectLabel": "ਪ੍ਰੋਜੈਕਟ",
   "app.containers.Admin.projects.project.importStatements": "ਇੰਪੋਰਟ ਕਰੋ",
   "app.containers.Admin.projects.project.importVotingOptions": "ਵਿਕਲਪ ਇੰਪੋਰਟ ਕਰੋ",
   "app.containers.Admin.projects.project.importingStatements": "ਇੰਪੋਰਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ {done}/{total}",

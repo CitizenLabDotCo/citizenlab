@@ -1885,6 +1885,8 @@
   "app.containers.Admin.projects.project.ideasAndParticipantData": "Smaointe agus sonraí rannpháirtithe",
   "app.containers.Admin.projects.project.ideationSetup": "Socrú smaointeoireachta",
   "app.containers.Admin.projects.project.importFromPreviousPhase": "Iompórtáil ón gcéim roimhe seo",
+  "app.containers.Admin.projects.project.importPhaseLabel": "Céim",
+  "app.containers.Admin.projects.project.importProjectLabel": "Tionscadal",
   "app.containers.Admin.projects.project.importStatements": "Iompórtáil",
   "app.containers.Admin.projects.project.importVotingOptions": "Iompórtáil roghanna",
   "app.containers.Admin.projects.project.importingStatements": "Á iompórtáil {done}/{total}",

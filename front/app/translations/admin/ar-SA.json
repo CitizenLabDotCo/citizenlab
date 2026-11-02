@@ -1885,6 +1885,8 @@
   "app.containers.Admin.projects.project.ideasAndParticipantData": "الأفكار وبيانات المشاركين",
   "app.containers.Admin.projects.project.ideationSetup": "إعداد طرح الأفكار",
   "app.containers.Admin.projects.project.importFromPreviousPhase": "استيراد من مرحلة سابقة",
+  "app.containers.Admin.projects.project.importPhaseLabel": "مرحلة",
+  "app.containers.Admin.projects.project.importProjectLabel": "مشروع",
   "app.containers.Admin.projects.project.importStatements": "استيراد",
   "app.containers.Admin.projects.project.importVotingOptions": "استيراد الخيارات",
   "app.containers.Admin.projects.project.importingStatements": "جاري الاستيراد {done}/{total}",

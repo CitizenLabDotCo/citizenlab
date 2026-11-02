@@ -1885,6 +1885,8 @@
   "app.containers.Admin.projects.project.ideasAndParticipantData": "Syniadau a data cyfranogwyr",
   "app.containers.Admin.projects.project.ideationSetup": "Gosod creu syniadau",
   "app.containers.Admin.projects.project.importFromPreviousPhase": "Mewnforio o gyfnod blaenorol",
+  "app.containers.Admin.projects.project.importPhaseLabel": "Cam",
+  "app.containers.Admin.projects.project.importProjectLabel": "Prosiect",
   "app.containers.Admin.projects.project.importStatements": "Mewnforio",
   "app.containers.Admin.projects.project.importVotingOptions": "Mewnforio opsiynau",
   "app.containers.Admin.projects.project.importingStatements": "Wrthi'n mewnforio {done}/{total}",

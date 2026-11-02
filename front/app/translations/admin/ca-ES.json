@@ -1885,6 +1885,8 @@
   "app.containers.Admin.projects.project.ideasAndParticipantData": "Idees i dades dels participants",
   "app.containers.Admin.projects.project.ideationSetup": "Configuració de la ideació",
   "app.containers.Admin.projects.project.importFromPreviousPhase": "Importa d'una fase anterior",
+  "app.containers.Admin.projects.project.importPhaseLabel": "Fase",
+  "app.containers.Admin.projects.project.importProjectLabel": "Projecte",
   "app.containers.Admin.projects.project.importStatements": "Importa",
   "app.containers.Admin.projects.project.importVotingOptions": "Importa opcions",
   "app.containers.Admin.projects.project.importingStatements": "S'està important {done}/{total}",

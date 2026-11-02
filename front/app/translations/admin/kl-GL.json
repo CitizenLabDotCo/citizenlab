@@ -1885,6 +1885,8 @@
   "app.containers.Admin.projects.project.ideasAndParticipantData": "Isumassarsiat peqataasullu pillugit paasissutissat",
   "app.containers.Admin.projects.project.ideationSetup": "Isumassarsiornerup aaqqissuunnera",
   "app.containers.Admin.projects.project.importFromPreviousPhase": "Immikkoortumit siusinnerusumit eqqussigit",
+  "app.containers.Admin.projects.project.importPhaseLabel": "Immikkoortoq",
+  "app.containers.Admin.projects.project.importProjectLabel": "Suliniut",
   "app.containers.Admin.projects.project.importStatements": "Eqqussigit",
   "app.containers.Admin.projects.project.importVotingOptions": "Periarfissanik eqqussigit",
   "app.containers.Admin.projects.project.importingStatements": "Eqqussineq {done}/{total}",

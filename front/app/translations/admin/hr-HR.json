@@ -1885,6 +1885,8 @@
   "app.containers.Admin.projects.project.ideasAndParticipantData": "Ideje i podaci o sudionicima",
   "app.containers.Admin.projects.project.ideationSetup": "Postavke prikupljanja ideja",
   "app.containers.Admin.projects.project.importFromPreviousPhase": "Uvezi iz prethodne faze",
+  "app.containers.Admin.projects.project.importPhaseLabel": "Faza",
+  "app.containers.Admin.projects.project.importProjectLabel": "Projekt",
   "app.containers.Admin.projects.project.importStatements": "Uvezi",
   "app.containers.Admin.projects.project.importVotingOptions": "Uvezi opcije",
   "app.containers.Admin.projects.project.importingStatements": "Uvoz {done}/{total}",

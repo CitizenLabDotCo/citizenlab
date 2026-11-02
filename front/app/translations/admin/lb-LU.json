@@ -1885,6 +1885,8 @@
   "app.containers.Admin.projects.project.ideasAndParticipantData": "Iddien a Participantedaten",
   "app.containers.Admin.projects.project.ideationSetup": "Ideatioun-Astellungen",
   "app.containers.Admin.projects.project.importFromPreviousPhase": "Aus enger fréierer Phas importéieren",
+  "app.containers.Admin.projects.project.importPhaseLabel": "Phase",
+  "app.containers.Admin.projects.project.importProjectLabel": "Projet",
   "app.containers.Admin.projects.project.importStatements": "Importéieren",
   "app.containers.Admin.projects.project.importVotingOptions": "Optiounen importéieren",
   "app.containers.Admin.projects.project.importingStatements": "Importéiert {done}/{total}",

@@ -1885,6 +1885,8 @@
   "app.containers.Admin.projects.project.ideasAndParticipantData": "Ideeën en deelnemersgegevens",
   "app.containers.Admin.projects.project.ideationSetup": "Instellingen voor ideeënvorming",
   "app.containers.Admin.projects.project.importFromPreviousPhase": "Importeren uit vorige fase",
+  "app.containers.Admin.projects.project.importPhaseLabel": "Fase",
+  "app.containers.Admin.projects.project.importProjectLabel": "Project",
   "app.containers.Admin.projects.project.importStatements": "Importeren",
   "app.containers.Admin.projects.project.importVotingOptions": "Opties importeren",
   "app.containers.Admin.projects.project.importingStatements": "Bezig met importeren {done}/{total}",

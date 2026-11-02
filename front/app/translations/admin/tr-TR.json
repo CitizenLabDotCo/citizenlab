@@ -1885,6 +1885,8 @@
   "app.containers.Admin.projects.project.ideasAndParticipantData": "Fikirler ve katılımcı verileri",
   "app.containers.Admin.projects.project.ideationSetup": "Fikir toplama kurulumu",
   "app.containers.Admin.projects.project.importFromPreviousPhase": "Önceki aşamadan içe aktar",
+  "app.containers.Admin.projects.project.importPhaseLabel": "Aşama",
+  "app.containers.Admin.projects.project.importProjectLabel": "Proje",
   "app.containers.Admin.projects.project.importStatements": "İçe aktar",
   "app.containers.Admin.projects.project.importVotingOptions": "Seçenekleri içe aktar",
   "app.containers.Admin.projects.project.importingStatements": "{done}/{total} içe aktarılıyor",

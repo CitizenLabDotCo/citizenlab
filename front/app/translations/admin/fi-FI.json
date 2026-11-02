@@ -1885,6 +1885,8 @@
   "app.containers.Admin.projects.project.ideasAndParticipantData": "Ideat ja osallistujatiedot",
   "app.containers.Admin.projects.project.ideationSetup": "Ideoinnin asetukset",
   "app.containers.Admin.projects.project.importFromPreviousPhase": "Tuo aiemmasta vaiheesta",
+  "app.containers.Admin.projects.project.importPhaseLabel": "Vaihe",
+  "app.containers.Admin.projects.project.importProjectLabel": "Hanke",
   "app.containers.Admin.projects.project.importStatements": "Tuo",
   "app.containers.Admin.projects.project.importVotingOptions": "Tuo vaihtoehtoja",
   "app.containers.Admin.projects.project.importingStatements": "Tuodaan {done}/{total}",

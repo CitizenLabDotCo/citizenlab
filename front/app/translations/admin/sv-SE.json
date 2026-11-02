@@ -1885,6 +1885,8 @@
   "app.containers.Admin.projects.project.ideasAndParticipantData": "Idéer och deltagardata",
   "app.containers.Admin.projects.project.ideationSetup": "Inställningar för idésamling",
   "app.containers.Admin.projects.project.importFromPreviousPhase": "Importera från tidigare fas",
+  "app.containers.Admin.projects.project.importPhaseLabel": "Fas",
+  "app.containers.Admin.projects.project.importProjectLabel": "Projekt",
   "app.containers.Admin.projects.project.importStatements": "Importera",
   "app.containers.Admin.projects.project.importVotingOptions": "Importera alternativ",
   "app.containers.Admin.projects.project.importingStatements": "Importerar {done}/{total}",

@@ -1885,6 +1885,8 @@
   "app.containers.Admin.projects.project.ideasAndParticipantData": "Ötletek és résztvevői adatok",
   "app.containers.Admin.projects.project.ideationSetup": "Ötletgyűjtés beállítása",
   "app.containers.Admin.projects.project.importFromPreviousPhase": "Importálás korábbi szakaszból",
+  "app.containers.Admin.projects.project.importPhaseLabel": "Szakasz",
+  "app.containers.Admin.projects.project.importProjectLabel": "Projekt",
   "app.containers.Admin.projects.project.importStatements": "Importálás",
   "app.containers.Admin.projects.project.importVotingOptions": "Opciók importálása",
   "app.containers.Admin.projects.project.importingStatements": "Importálás: {done}/{total}",

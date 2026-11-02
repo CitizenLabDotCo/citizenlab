@@ -1885,6 +1885,8 @@
   "app.containers.Admin.projects.project.ideasAndParticipantData": "Ideer og deltakerdata",
   "app.containers.Admin.projects.project.ideationSetup": "Oppsett for idédugnad",
   "app.containers.Admin.projects.project.importFromPreviousPhase": "Importer fra tidligere fase",
+  "app.containers.Admin.projects.project.importPhaseLabel": "Fase",
+  "app.containers.Admin.projects.project.importProjectLabel": "Prosjekt",
   "app.containers.Admin.projects.project.importStatements": "Importer",
   "app.containers.Admin.projects.project.importVotingOptions": "Importer alternativer",
   "app.containers.Admin.projects.project.importingStatements": "Importerer {done}/{total}",

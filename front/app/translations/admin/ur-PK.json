@@ -1885,6 +1885,8 @@
   "app.containers.Admin.projects.project.ideasAndParticipantData": "خیالات اور شرکاء کا ڈیٹا",
   "app.containers.Admin.projects.project.ideationSetup": "آئیڈیشن کا سیٹ اپ",
   "app.containers.Admin.projects.project.importFromPreviousPhase": "پچھلے مرحلے سے درآمد کریں",
+  "app.containers.Admin.projects.project.importPhaseLabel": "مرحلہ",
+  "app.containers.Admin.projects.project.importProjectLabel": "منصوبہ",
   "app.containers.Admin.projects.project.importStatements": "درآمد کریں",
   "app.containers.Admin.projects.project.importVotingOptions": "انتخابات درآمد کریں",
   "app.containers.Admin.projects.project.importingStatements": "درآمد ہو رہا ہے {done}/{total}",
