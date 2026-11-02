@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "Det oppstod et problem med å avslutte abonnementet på denne kampanjen, vennligst prøv igjen.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Forespørselen din er under behandling, vennligst vent...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Du har meldt deg av {campaignTitle}.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "Du har meldt deg av.",
   "UI.FormComponents.optional": "valgfritt",
   "app.closeIconButton.a11y_buttonActionMessage": "Lukk",
   "app.components.Areas.areaUpdateError": "Det oppsto en feil under lagring av området ditt. Vennligst prøv igjen.",

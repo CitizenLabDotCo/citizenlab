@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "Si è verificato un problema durante l'annullamento dell'iscrizione a questa campagna. Riprova.",
   "EmailSettingsPage.initialUnsubscribeLoading": "La sua richiesta è in fase di elaborazione, la preghiamo di attendere...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "L'iscrizione a {campaignTitle} è stata annullata con successo.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "Ti sei disiscritto correttamente.",
   "UI.FormComponents.optional": "opzionale",
   "app.closeIconButton.a11y_buttonActionMessage": "Chiudere",
   "app.components.Areas.areaUpdateError": "Si è verificato un errore durante il salvataggio dell'area. Riprova.",

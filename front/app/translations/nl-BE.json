@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "Er was een probleem bij het uitschrijven van deze campagne, probeer het later alsjeblieft opnieuw.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Je verzoek wordt verwerkt, even geduld...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Je hebt je succesvol afgemeld voor {campaignTitle}.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "Je bent succesvol uitgeschreven.",
   "UI.FormComponents.optional": "optioneel",
   "app.closeIconButton.a11y_buttonActionMessage": "Sluiten",
   "app.components.Areas.areaUpdateError": "Er is een fout opgetreden tijdens het opslaan van je gebied. Probeer het opnieuw.",

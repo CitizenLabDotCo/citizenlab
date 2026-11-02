@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "Der var et problem med at afmelde dig fra denne kampagne, prøv venligst igen.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Din anmodning bliver behandlet, vent venligst...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Du har afmeldt dig fra {campaignTitle}.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "Du har nu afmeldt dig.",
   "UI.FormComponents.optional": "valgfri",
   "app.closeIconButton.a11y_buttonActionMessage": "Luk",
   "app.components.Areas.areaUpdateError": "Der opstod en fejl, da du gemte dit område. Prøv venligst igen.",

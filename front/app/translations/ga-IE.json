@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "Bhí fadhb ann ag díliostáil ón bhfeachtas seo, déan iarracht arís.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Tá d’iarratas á phróiseáil, fan le do thoil...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Tá díliostáil rathúil déanta agat ó {campaignTitle}.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "D’éirigh leat díliostáil.",
   "UI.FormComponents.optional": "roghnach",
   "app.closeIconButton.a11y_buttonActionMessage": "Dún",
   "app.components.Areas.areaUpdateError": "Tharla earráid agus do cheantar á shábháil. Déan iarracht arís.",

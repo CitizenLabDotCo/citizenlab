@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "Hiba történt a kampányról való leiratkozáskor. Kérjük, próbálja újra.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Kérésének feldolgozása folyamatban van, kérjük, várjon...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Sikeresen leiratkozott a {campaignTitle}csatornáról.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "Sikeresen leiratkozott.",
   "UI.FormComponents.optional": "választható",
   "app.closeIconButton.a11y_buttonActionMessage": "Közeli",
   "app.components.Areas.areaUpdateError": "Hiba történt a terület mentése közben. Kérjük, próbálja újra.",

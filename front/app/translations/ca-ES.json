@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "S'ha produït un problema en cancel·lar la subscripció d'aquesta campanya. Torneu-ho a provar.",
   "EmailSettingsPage.initialUnsubscribeLoading": "La vostra sol·licitud s'està processant, espereu...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Heu cancel·lat correctament la subscripció a {campaignTitle}.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "T'has donat de baixa correctament.",
   "UI.FormComponents.optional": "opcional",
   "app.closeIconButton.a11y_buttonActionMessage": "Tancar",
   "app.components.Areas.areaUpdateError": "S'ha produït un error en desar la vostra àrea. Siusplau torna-ho a provar.",

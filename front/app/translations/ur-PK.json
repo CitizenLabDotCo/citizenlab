@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "اس مہم سے ان سبسکرائب کرنے میں ایک مسئلہ تھا، براہ کرم دوبارہ کوشش کریں۔",
   "EmailSettingsPage.initialUnsubscribeLoading": "آپ کی درخواست پر کارروائی ہو رہی ہے، براہ کرم انتظار کریں...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "آپ نے کامیابی سے {campaignTitle}سے رکنیت ختم کر دی ہے۔",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "آپ کامیابی سے ان سبسکرائب ہو چکے ہیں۔",
   "UI.FormComponents.optional": "اختیاری",
   "app.closeIconButton.a11y_buttonActionMessage": "بند",
   "app.components.Areas.areaUpdateError": "آپ کے علاقے کو محفوظ کرتے وقت ایک خرابی پیش آگئی۔ براہ کرم دوبارہ کوشش کریں۔",

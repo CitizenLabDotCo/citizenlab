@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "Tämän kampanjan tilauksen peruuttamisessa ilmeni ongelma. Yritä uudelleen.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Pyyntöäsi käsitellään, odota...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Olet onnistuneesti peruuttanut tilauksen {campaignTitle}.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "Olet peruuttanut tilauksen onnistuneesti.",
   "UI.FormComponents.optional": "valinnainen",
   "app.closeIconButton.a11y_buttonActionMessage": "kiinni",
   "app.components.Areas.areaUpdateError": "Aluettasi tallennettaessa tapahtui virhe. Yritä uudelleen.",

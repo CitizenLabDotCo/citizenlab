@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "Roedd problem wrth ddad-danysgrifio o'r ymgyrch hon, ceisiwch eto.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Mae eich cais yn cael ei brosesu, arhoswch...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Rydych wedi llwyddo i ddad-danysgrifio o {campaignTitle}.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "Rydych wedi dad-danysgrifio’n llwyddiannus.",
   "UI.FormComponents.optional": "dewisol",
   "app.closeIconButton.a11y_buttonActionMessage": "Cau",
   "app.components.Areas.areaUpdateError": "Digwyddodd gwall wrth gadw eich ardal. Trio eto os gwelwch yn dda.",

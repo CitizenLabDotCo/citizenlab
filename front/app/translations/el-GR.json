@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "Υπήρξε ένα πρόβλημα με τη διαγραφή από αυτή την εκστρατεία, παρακαλούμε προσπαθήστε ξανά.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Το αίτημά σας βρίσκεται υπό επεξεργασία, παρακαλώ περιμένετε...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Η διαγραφή σας από το {campaignTitle} ολοκληρώθηκε με επιτυχία.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "Έχετε διαγραφεί με επιτυχία.",
   "UI.FormComponents.optional": "προαιρετικό",
   "app.closeIconButton.a11y_buttonActionMessage": "Κλείσιμο",
   "app.components.Areas.areaUpdateError": "Προέκυψε σφάλμα κατά την αποθήκευση της περιοχής σας. Προσπαθήστε ξανά.",

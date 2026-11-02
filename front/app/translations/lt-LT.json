@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "Nepavyko atsisakyti šios kampanijos prenumeratos, pabandykite dar kartą.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Jūsų užklausa apdorojama, palaukite...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Sėkmingai atsisakėte prenumeratos {campaignTitle}.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "Sėkmingai atsisakėte prenumeratos.",
   "UI.FormComponents.optional": "pasirinktinai",
   "app.closeIconButton.a11y_buttonActionMessage": "Uždaryti",
   "app.components.Areas.areaUpdateError": "Išsaugant sritį įvyko klaida. Bandykite dar kartą.",

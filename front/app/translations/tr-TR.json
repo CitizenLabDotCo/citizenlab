@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "Bu kampanya için aboneliğiniz iptal edilirken bir sorun oluştu. Lütfen yeniden deneyin.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Talebiniz işleniyor, lütfen bekleyin...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "{campaignTitle} adlı kampanya için aboneliğiniz başarıyla iptal edildi.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "Başarıyla abonelikten ayrıldınız.",
   "UI.FormComponents.optional": "isteğe bağlı",
   "app.closeIconButton.a11y_buttonActionMessage": "Kapat",
   "app.components.Areas.areaUpdateError": "Alanınızı kaydederken bir hata oluştu. Lütfen tekrar deneyin.",

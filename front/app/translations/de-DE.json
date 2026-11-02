@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "Beim Abmelden von diesem E-Mailverteiler ist ein Fehler aufgetreten.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Ihre Anfrage wird gerade bearbeitet, bitte haben Sie noch etwas Geduld...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Sie haben sich erfolgreich von {campaignTitle} abgemeldet.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "Sie haben sich erfolgreich abgemeldet.",
   "UI.FormComponents.optional": "optional",
   "app.closeIconButton.a11y_buttonActionMessage": "Schließen",
   "app.components.Areas.areaUpdateError": "Beim Speichern Ihres Gebiets ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",

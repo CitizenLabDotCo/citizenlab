@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "Il y a eu un problème lors de votre désabonnement à cette campagne, veuillez réessayer.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Votre demande est en cours de traitement, veuillez patienter...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Vous avez réussi à vous désabonner de {campaignTitle}.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "Vous vous êtes désabonné avec succès.",
   "UI.FormComponents.optional": "optionnel",
   "app.closeIconButton.a11y_buttonActionMessage": "Fermer",
   "app.components.Areas.areaUpdateError": "Une erreur s'est produite lors de l'enregistrement de votre zone. Veuillez réessayer.",

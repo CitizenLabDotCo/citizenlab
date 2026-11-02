@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "ਇਸ ਮੁਹਿੰਮ ਤੋਂ ਗਾਹਕੀ ਹਟਾਉਣ ਵਿੱਚ ਇੱਕ ਸਮੱਸਿਆ ਆਈ ਸੀ, ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",
   "EmailSettingsPage.initialUnsubscribeLoading": "ਤੁਹਾਡੀ ਬੇਨਤੀ 'ਤੇ ਕਾਰਵਾਈ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ, ਕਿਰਪਾ ਕਰਕੇ ਉਡੀਕ ਕਰੋ...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "ਤੁਸੀਂ ਸਫਲਤਾਪੂਰਵਕ {campaignTitle}ਤੋਂ ਗਾਹਕੀ ਹਟਾ ਦਿੱਤੀ ਹੈ।",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "ਤੁਸੀਂ ਸਫਲਤਾਪੂਰਵਕ ਗਾਹਕੀ ਰੱਦ ਕਰ ਦਿੱਤੀ ਹੈ।",
   "UI.FormComponents.optional": "ਵਿਕਲਪਿਕ",
   "app.closeIconButton.a11y_buttonActionMessage": "ਬੰਦ ਕਰੋ",
   "app.components.Areas.areaUpdateError": "ਤੁਹਾਡੇ ਖੇਤਰ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰਨ ਦੌਰਾਨ ਇੱਕ ਤਰੁੱਟੀ ਉਤਪੰਨ ਹੋਈ। ਕਿਰਪਾ ਕਰਕੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।",

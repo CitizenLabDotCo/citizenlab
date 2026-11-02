@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "Ocorreu um problema ao cancelar a inscrição desta campanha, por favor tente novamente.",
   "EmailSettingsPage.initialUnsubscribeLoading": "O seu pedido está sendo processado, por favor aguarde...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Você cancelou com sucesso a inscrição de {campaignTitle}.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "Sua inscrição foi cancelada com sucesso.",
   "UI.FormComponents.optional": "Campo opcional",
   "app.closeIconButton.a11y_buttonActionMessage": "Fechar",
   "app.components.Areas.areaUpdateError": "Ocorreu um erro ao guardar a sua área. Por favor, tente novamente.",

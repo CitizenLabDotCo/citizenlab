@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "Došlo je do pogreške prilikom otkazivanja pretplate na ovu kampanju. Pokušajte ponovo.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Vaš se zahtjev obrađuje, pričekajte...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Uspješno ste se odjavili s {campaignTitle}.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "Uspješno ste se odjavili.",
   "UI.FormComponents.optional": "opcijski",
   "app.closeIconButton.a11y_buttonActionMessage": "Zatvori",
   "app.components.Areas.areaUpdateError": "Došlo je do pogreške prilikom spremanja vašeg područja. Molim te pokušaj ponovno.",

@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "Zaistniał problem z wypisaniem się z tej kampanii, proszę spróbuj ponownie później.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Twoja prośba jest rozpatrywana, proszę poczekaj...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Pomyślnie wypisałeś się z {campaignTitle}.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "Pomyślnie wypisano Cię z subskrypcji.",
   "UI.FormComponents.optional": "opcjonalnie",
   "app.closeIconButton.a11y_buttonActionMessage": "Zamknij",
   "app.components.Areas.areaUpdateError": "Wystąpił błąd podczas zapisywania Twojego obszaru. Spróbuj ponownie.",

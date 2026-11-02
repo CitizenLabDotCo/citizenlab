@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "Uuminnga paasititsiniaanermit taamaatitsiniarnerit ajornartorsiuteqarpoq, misileqqilaaruk.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Qinnuiginninnerit suliarineqarpoq, utaqqilaarit...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "{campaignTitle}-mit taamaatitsivutit.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "Iluatsittumik nalunaaruteqartarunnaarputit.",
   "UI.FormComponents.optional": "nammineq toqqarsinnaasaq",
   "app.closeIconButton.a11y_buttonActionMessage": "Close",
   "app.components.Areas.areaUpdateError": "An error occurred while saving your area. Please try again.",

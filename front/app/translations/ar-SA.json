@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "حدث خطأ أثناء إلغاء الاشتراك في هذه الحملة، يُرجى المحاولة مجددًا.",
   "EmailSettingsPage.initialUnsubscribeLoading": "تتم معالجة طلبك، يُرجى الانتظار...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "تم إلغاء اشتراكك في {campaignTitle} بنجاح",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "لقد تم إلغاء اشتراكك بنجاح.",
   "UI.FormComponents.optional": "اختياري",
   "app.closeIconButton.a11y_buttonActionMessage": "إغلاق",
   "app.components.Areas.areaUpdateError": "حدث خطأ أثناء حفظ منطقتك. حاول مرة اخرى.",

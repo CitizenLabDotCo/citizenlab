@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "Det uppstod ett problem med att avsluta prenumerationen på denna kampanjen, vänligen försök igen.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Din begäran bearbetas, vänligen vänta...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Du har framgångsrikt avslutat prenumerationen på {campaignTitle}.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "Du har nu avregistrerats.",
   "UI.FormComponents.optional": "valfri",
   "app.closeIconButton.a11y_buttonActionMessage": "Stäng",
   "app.components.Areas.areaUpdateError": "Ett fel uppstod när du sparade ditt område. Vänligen försök igen.",

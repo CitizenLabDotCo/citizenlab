@@ -3,6 +3,7 @@
   "EmailSettingsPage.initialUnsubscribeError": "Radās problēma ar atteikšanos no šīs abonēšanas, lūdzu, mēģiniet vēlreiz.",
   "EmailSettingsPage.initialUnsubscribeLoading": "Jūsu pieprasījums tiek apstrādāts, lūdzu, uzgaidiet...",
   "EmailSettingsPage.initialUnsubscribeSuccess": "Jūs esat veiksmīgi atteicies no {campaignTitle}.",
+  "EmailSettingsPage.initialUnsubscribeSuccessWithoutCampaign": "Jūs esat veiksmīgi atrakstījies.",
   "UI.FormComponents.optional": "izvēles",
   "app.closeIconButton.a11y_buttonActionMessage": "Aizvērt",
   "app.components.Areas.areaUpdateError": "Saglabājot jūsu apgabalu, notika kļūda. Lūdzu, mēģiniet vēlreiz.",
