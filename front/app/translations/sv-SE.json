@@ -90,6 +90,8 @@
   "app.components.Comments.seeOriginal": "Se original",
   "app.components.Comments.seeTranslation": "Se översättning",
   "app.components.Comments.yourComment": "Din kommentar",
+  "app.components.CommonGroundResults.allStatementsDescription": "Samtliga påståenden, från de som flest instämmer i till de som flest inte instämmer i. Observera att påståenden som enbart fått röster för ”osäker” inte inkluderas i listan, då de inte visar på en tydlig ståndpunkt.",
+  "app.components.CommonGroundResults.allStatementsTitle": "Lista över påståenden",
   "app.components.CommonGroundResults.closeCallsDescription": "Dessa påståenden väckte mest oenighet, med röster för instämmer eller inte instämmer närmast en 50/50-fördelning.",
   "app.components.CommonGroundResults.closeCallsTitle": "Nära ögat",
   "app.components.CommonGroundResults.highestConsensusDescription": "Uttalanden med tydlig enighet - majoriteten av dem som röstade antingen instämmer eller inte instämmer valde samma ståndpunkt.",

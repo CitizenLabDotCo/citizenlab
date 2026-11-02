@@ -90,6 +90,8 @@
   "app.components.Comments.seeOriginal": "Veure original",
   "app.components.Comments.seeTranslation": "Veure Traducció",
   "app.components.Comments.yourComment": "El vostre comentari",
+  "app.components.CommonGroundResults.allStatementsDescription": "Totes les afirmacions, de la més acceptada a la més rebutjada. Tingueu en compte que les afirmacions que només han rebut vots de «no n'estic segur/a» no s'inclouen en aquesta llista, ja que no indiquen una posició clara.",
+  "app.components.CommonGroundResults.allStatementsTitle": "Llista d'afirmacions",
   "app.components.CommonGroundResults.closeCallsDescription": "Aquestes declaracions van provocar el major desacord, amb vots d'acord o en desacord que s'acostaven més a una divisió 50/50.",
   "app.components.CommonGroundResults.closeCallsTitle": "Crits a prop",
   "app.components.CommonGroundResults.highestConsensusDescription": "Afirmacions amb un acord clar: la majoria dels que van votar hi estaven d'acord o en desacord van triar la mateixa posició.",

@@ -90,6 +90,8 @@
   "app.components.Comments.seeOriginal": "Lásd az eredetit",
   "app.components.Comments.seeTranslation": "Lásd a fordítást",
   "app.components.Comments.yourComment": "Az Ön megjegyzése",
+  "app.components.CommonGroundResults.allStatementsDescription": "Minden állítás, a legnagyobb egyetértéstől a legnagyobb egyet nem értésig. Kérjük, vegye figyelembe, hogy a kizárólag „bizonytalan” szavazatot kapott állítások nem szerepelnek a listában, mivel ezek nem tükröznek egyértelmű álláspontot.",
+  "app.components.CommonGroundResults.allStatementsTitle": "Állítások listája",
   "app.components.CommonGroundResults.closeCallsDescription": "Ezek a kijelentések váltották ki a legtöbb nézeteltérést, az egyetértésre vagy egyet nem értésre leadott szavazatok aránya a legközelebb állt az 50/50-hez.",
   "app.components.CommonGroundResults.closeCallsTitle": "Záró hívások",
   "app.components.CommonGroundResults.highestConsensusDescription": "Egyértelmű egyetértést mutató kijelentések – a szavazók többsége vagy egyetért, vagy nem ért egyet ugyanazon álláspontot választotta.",

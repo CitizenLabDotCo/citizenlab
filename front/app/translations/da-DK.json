@@ -90,6 +90,8 @@
   "app.components.Comments.seeOriginal": "Vis original",
   "app.components.Comments.seeTranslation": "Se oversættelse",
   "app.components.Comments.yourComment": "Din kommentar",
+  "app.components.CommonGroundResults.allStatementsDescription": "Alle udsagn, fra dem med størst enighed til dem med størst uenighed. Bemærk venligst, at udsagn, der udelukkende har modtaget 'ved ikke'-stemmer, ikke er inkluderet i denne liste, da de ikke udtrykker en klar holdning.",
+  "app.components.CommonGroundResults.allStatementsTitle": "Liste over udsagn",
   "app.components.CommonGroundResults.closeCallsDescription": "Disse udsagn udløste den største uenighed, hvor stemmerne for enig eller uenig var tættest på en 50/50-fordeling.",
   "app.components.CommonGroundResults.closeCallsTitle": "Tæt på",
   "app.components.CommonGroundResults.highestConsensusDescription": "Udsagn med klar enighed - størstedelen af dem, der stemte, valgte den samme holdning.",

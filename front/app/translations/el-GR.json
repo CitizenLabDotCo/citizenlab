@@ -90,6 +90,8 @@
   "app.components.Comments.seeOriginal": "Δείτε το πρωτότυπο",
   "app.components.Comments.seeTranslation": "Δείτε τη μετάφραση",
   "app.components.Comments.yourComment": "Το σχόλιό σας",
+  "app.components.CommonGroundResults.allStatementsDescription": "Όλες οι δηλώσεις, από εκείνες με τη μεγαλύτερη συμφωνία έως εκείνες με τη μεγαλύτερη διαφωνία. Σημειώστε ότι οι δηλώσεις που έλαβαν μόνο ψήφους «δεν είμαι σίγουρος/η» δεν περιλαμβάνονται σε αυτή τη λίστα, καθώς δεν υποδεικνύουν μια σαφή θέση.",
+  "app.components.CommonGroundResults.allStatementsTitle": "Λίστα δηλώσεων",
   "app.components.CommonGroundResults.closeCallsDescription": "Αυτές οι δηλώσεις προκάλεσαν τις περισσότερες διαφωνίες, με τις ψήφους για το \"συμφωνώ\" ή \"διαφωνώ\" να μοιράζονται σε ποσοστό 50/50.",
   "app.components.CommonGroundResults.closeCallsTitle": "Κοντινές κλήσεις",
   "app.components.CommonGroundResults.highestConsensusDescription": "Δηλώσεις με σαφή συμφωνία - η πλειοψηφία όσων ψήφισαν είτε συμφωνούν είτε διαφωνούν επέλεξαν την ίδια θέση.",

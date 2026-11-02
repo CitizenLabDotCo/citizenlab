@@ -90,6 +90,8 @@
   "app.components.Comments.seeOriginal": "Ver original",
   "app.components.Comments.seeTranslation": "Ver traducción",
   "app.components.Comments.yourComment": "Tu comentario",
+  "app.components.CommonGroundResults.allStatementsDescription": "Todas las propuestas, de la que genera más acuerdo a la que genera más desacuerdo. Ten en cuenta que las propuestas que solo han recibido votos de «no estoy seguro» no se incluyen en esta lista, ya que no indican una postura clara.",
+  "app.components.CommonGroundResults.allStatementsTitle": "Lista de propuestas",
   "app.components.CommonGroundResults.closeCallsDescription": "Estas afirmaciones fueron las que suscitaron más desacuerdos, con los votos de acuerdo o desacuerdo más cercanos a una división del 50/50.",
   "app.components.CommonGroundResults.closeCallsTitle": "Por los pelos",
   "app.components.CommonGroundResults.highestConsensusDescription": "Declaraciones con un acuerdo claro: la mayoría de los que votaron estaban de acuerdo o en desacuerdo eligieron la misma postura.",
