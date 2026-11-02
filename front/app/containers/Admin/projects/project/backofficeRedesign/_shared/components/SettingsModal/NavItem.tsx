@@ -5,7 +5,9 @@ import {
   Icon,
   IconNames,
   Text,
+  bo,
   colors,
+  fontSizes,
 } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
@@ -13,8 +15,24 @@ import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
 const NavButton = styled(Box)`
   .label {
-    font-size: 13px;
+    font-size: ${fontSizes.xs}px;
     font-weight: 400;
+    color: ${colors.coolGrey700};
+  }
+
+  svg {
+    fill: ${colors.coolGrey700};
+  }
+
+  &[aria-selected='true'],
+  &:hover {
+    .label {
+      color: ${bo.colors.textHeadingStrong};
+    }
+
+    svg {
+      fill: ${bo.colors.textHeadingStrong};
+    }
   }
 
   &[aria-selected='true'] .label {
@@ -23,14 +41,6 @@ const NavButton = styled(Box)`
 
   &:not([aria-selected='true']):hover {
     background: ${colors.grey100};
-
-    .label {
-      color: ${colors.textPrimary};
-    }
-
-    svg {
-      fill: ${colors.textPrimary};
-    }
   }
 `;
 
@@ -67,24 +77,24 @@ const NavItem = ({
       alignItems="center"
       gap="10px"
       w="100%"
+      minHeight="36px"
       px="12px"
       py="8px"
       border="none"
-      borderRadius="8px"
-      background={selected ? colors.grey200 : 'transparent'}
+      borderRadius={bo.borderRadius}
+      background={selected ? colors.grey100 : 'transparent'}
       cursor="pointer"
     >
-      <Icon
-        name={icon}
-        width="16px"
-        height="16px"
-        fill={selected ? colors.textPrimary : colors.coolGrey700}
-      />
+      <Box display="flex" flexShrink={0}>
+        <Icon name={icon} width="16px" height="16px" />
+      </Box>
       <Text
         className="label"
         as="span"
         m="0px"
-        color={selected ? 'textPrimary' : 'coolGrey700'}
+        lineHeight="1.6"
+        textAlign="left"
+        whiteSpace="nowrap"
       >
         {formatMessage(label)}
       </Text>
