@@ -21,7 +21,8 @@
           "lifecycle_stage",
           "country_code",
           "authentication_token_lifetime_in_days",
-          "min_user_age"
+          "min_user_age",
+          "exclude_admins_and_moderators_from_statistics"
         ],
         "additionalProperties": false,
         "required": ["allowed", "enabled", "lifecycle_stage", "country_code"],
@@ -275,7 +276,7 @@
             "title": "Exclude admins and moderators from statistics",
             "description": "When enabled, the participation and visits of admins and moderators are left out of statistics and graphs.",
             "type": "boolean",
-            "default": false
+            "default": true
           },
           "projects_unlisted_by_default":  {
             "title": "Make new projects unlisted by default",
