@@ -96,7 +96,7 @@ module DecidimImporter
 
     # Rewrites Decidim's root-relative `<img src="/…">` to absolute URLs on the source domain, so the
     # rich-text handler can fetch them (a host-less path aborts the import). Absolute/`data:`/`//…` srcs and
-    # an unknown source domain are left as-is. Covers rich-text multilocs and layout craftjs `TextMultiloc`s.
+    # an unknown source domain are left as-is. Covers rich-text multilocs and layout craftjs text nodes.
     def absolutize_embedded_images!
       origin = original_domain.presence && "https://#{original_domain}"
       return unless origin
@@ -457,8 +457,8 @@ module DecidimImporter
       ).run
     end
 
-    # Every rich-text HTML string {Links::Map} scans for embedded links: the `TextMultiloc` blocks of the
-    # layouts (project descriptions) and the static pages' top info sections.
+    # Every rich-text HTML string {Links::Map} scans for embedded links: the text nodes of the layouts
+    # (project descriptions) and the static pages' top info sections.
     def correctable_html_texts
       ref_map.records.flat_map do |record|
         case record.model_name
@@ -474,7 +474,7 @@ module DecidimImporter
       return [] unless craftjs.is_a?(Hash)
 
       craftjs.values.flat_map do |node|
-        next [] unless TemplateCleaner.craftjs_resolved_name(node) == 'TextMultiloc'
+        next [] unless TemplateCleaner.craftjs_text_node?(node)
 
         multiloc_values(node.dig('props', 'text'))
       end

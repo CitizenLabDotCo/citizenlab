@@ -246,8 +246,8 @@ module DecidimImporter
       nil
     end
 
-    # Rewrites every rich-text `*_multiloc` HTML string through the block, including the `TextMultiloc`
-    # text inside a layout's `craftjs_json` (the project description is a craft block, not a top-level multiloc).
+    # Rewrites every rich-text `*_multiloc` HTML string through the block, including the text nodes
+    # inside a layout's `craftjs_json` (the project description is a craft block, not a top-level multiloc).
     def rewrite_multiloc_html!(template, &block)
       template['models'].each_value do |records|
         records.each do |attrs|
@@ -262,16 +262,22 @@ module DecidimImporter
       end
     end
 
-    # Rewrites the `text` multiloc HTML of every `TextMultiloc` node in a craftjs tree.
+    # Rewrites the `text` multiloc HTML of every text node in a craftjs tree.
     def rewrite_craftjs_text!(craftjs)
       craftjs.each_value do |node|
-        next unless craftjs_resolved_name(node) == 'TextMultiloc'
+        next unless craftjs_text_node?(node)
 
         text = node.dig('props', 'text')
         next unless text.is_a?(Hash)
 
         text.transform_values! { |html| html.is_a?(String) ? yield(html) : html }
       end
+    end
+
+    # Whether a craftjs node holds rich-text HTML in `props.text`: the native text widgets and the
+    # `RichTextMultiloc` bridge, which holds bodies with images, video or buttons.
+    def craftjs_text_node?(node)
+      ContentBuilder::Layout::TEXT_CRAFTJS_NODE_TYPES.include?(craftjs_resolved_name(node))
     end
 
     # The craft component name of a node, or nil (the ROOT node's `type` is the plain string `'div'`).

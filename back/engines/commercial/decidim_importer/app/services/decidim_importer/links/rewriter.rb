@@ -58,7 +58,7 @@ module DecidimImporter
         end
       end
 
-      # Applies the mapping to one layout's `TextMultiloc` fields. Returns `[changed?, broken_urls]`.
+      # Applies the mapping to one layout's text nodes. Returns `[changed?, broken_urls]`.
       # Reassigns `craftjs_json` (a deep dup) only on change, so ActiveRecord sees it dirty.
       def correct_layout_links(layout)
         craftjs = layout.craftjs_json
@@ -68,8 +68,7 @@ module DecidimImporter
         changed = false
         broken = []
         craftjs.each_value do |node|
-          # ROOT's `type` is the plain string 'div', so guard before treating it as a component hash.
-          next unless node.is_a?(Hash) && node['type'].is_a?(Hash) && node['type']['resolvedName'] == 'TextMultiloc'
+          next unless TemplateCleaner.craftjs_text_node?(node)
 
           text = node.dig('props', 'text')
           next unless text.is_a?(Hash)
