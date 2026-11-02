@@ -10169,6 +10169,16 @@
     "verified_at": "2026-10-29T14:22:26.100027Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Admin.projects.project.importPhaseLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-02T10:56:47.147653Z",
+    "verified_by": "Jelena"
+  },
+  "app.containers.Admin.projects.project.importProjectLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-02T10:56:47.147653Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Admin.projects.project.importStatements": {
     "state": "verified",
     "verified_at": "2026-10-29T14:22:26.100027Z",
