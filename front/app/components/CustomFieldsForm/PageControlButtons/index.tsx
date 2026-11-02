@@ -190,8 +190,10 @@ const PageControlButtons = ({
   const isButtonDisabled =
     !hasReachedBottom && pageVariant !== 'after-submission';
 
-  // The same footer renders inside the admin survey builder's preview, where
-  // a resident-facing translation control does not belong.
+  // This footer also renders in the back office, where a manager edits an
+  // input in the input manager. Weglot translates the whole document, so
+  // offering it there would machine-translate the back office around the
+  // form. Managers pick their platform language in the admin sidebar instead.
   const isAdminFormPage = isPage('admin', location.pathname);
 
   return (

@@ -19,6 +19,13 @@ export type WeglotDataOrEmpty = WeglotData | Record<string, never>;
 export const WEGLOT_READY_EVENT = 'weglot:ready';
 
 /**
+ * Weglot's own events, as its script names them. It emits `initialized` once
+ * its project settings have arrived, and `languageChanged` on every switch.
+ */
+export const WEGLOT_INITIALIZED_EVENT = 'initialized';
+export const WEGLOT_LANGUAGE_CHANGED_EVENT = 'languageChanged';
+
+/**
  * The languages offered by the tenant's Weglot project: the source language
  * followed by each enabled target. Empty until Weglot has loaded and
  * initialized, which it does asynchronously.

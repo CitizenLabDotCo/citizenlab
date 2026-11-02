@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Box, Button, media, isRtl } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 
@@ -47,17 +47,6 @@ const RightContainer = styled(Box)`
   `}
 `;
 
-// LanguageSelector spaces itself with a 16px left margin on phone; the Weglot
-// switcher sits beside it and needs the same, or the two render flush.
-const StyledWeglotSwitcher = styled(WeglotSwitcher)`
-  padding-left: 16px;
-
-  ${isRtl`
-    padding-left: 0;
-    padding-right: 16px;
-  `}
-`;
-
 const NavItem = styled(Box)`
   height: 100%;
   display: flex;
@@ -90,6 +79,7 @@ const NavItem = styled(Box)`
 const MobileNavbarContent = () => {
   const { data: authUser } = useAuthUser();
   const { formatMessage } = useIntl();
+  const theme = useTheme();
 
   const isEmailSettingsPage = isPage('email-settings', location.pathname);
 
@@ -106,7 +96,17 @@ const MobileNavbarContent = () => {
               <LanguageSelector />
             </NavItem>
             <NavItem className="noLeftMargin">
-              <StyledWeglotSwitcher />
+              {/* LanguageSelector spaces itself with a 16px margin here; the
+                  Weglot switcher needs the same or the two render flush. */}
+              <Box
+                display="flex"
+                alignItems="center"
+                h="100%"
+                pl={theme.isRtl ? undefined : '16px'}
+                pr={theme.isRtl ? '16px' : undefined}
+              >
+                <WeglotSwitcher />
+              </Box>
             </NavItem>
             {isNilOrError(authUser) ? (
               <NavItem className="login">

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {
+  Box,
   IconButton,
   colors,
   useBreakpoint,
@@ -54,22 +55,6 @@ const Right = styled.div`
 `;
 
 const StyledLanguageSelector = styled(LanguageSelector)`
-  padding-left: 20px;
-
-  ${media.phone`
-    padding-left: 15px;
-  `}
-
-  ${isRtl`
-    padding-left: 0px;
-    padding-right: 20px;
-  ${media.phone`
-    padding-right: 15px;
-  `}
-  `}
-`;
-
-const StyledWeglotSwitcher = styled(WeglotSwitcher)`
   padding-left: 20px;
 
   ${media.phone`
@@ -177,7 +162,17 @@ const DesktopNavbarContent = () => {
       </RightItem>
 
       <RightItem className="noLeftMargin">
-        <StyledWeglotSwitcher />
+        {/* Matches the gap StyledLanguageSelector gives itself, so the two
+            switchers are evenly spaced when both are shown. */}
+        <Box
+          display="flex"
+          alignItems="center"
+          h="100%"
+          pl={theme.isRtl ? undefined : '20px'}
+          pr={theme.isRtl ? '20px' : undefined}
+        >
+          <WeglotSwitcher />
+        </Box>
       </RightItem>
     </Right>
   );

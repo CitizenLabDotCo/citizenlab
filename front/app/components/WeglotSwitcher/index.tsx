@@ -23,6 +23,8 @@ import {
 import { useIntl } from 'utils/cl-intl';
 import { removeFocusAfterMouseClick } from 'utils/helperUtils';
 import {
+  WEGLOT_INITIALIZED_EVENT,
+  WEGLOT_LANGUAGE_CHANGED_EVENT,
   WEGLOT_READY_EVENT,
   getLanguageEndonym,
   getWeglotLanguages,
@@ -70,8 +72,8 @@ const WeglotSwitcher = ({
       // initialize() returns before the project settings have been fetched,
       // so the languages and current language are only readable once Weglot
       // reports itself initialized.
-      window.Weglot?.on('initialized', sync);
-      window.Weglot?.on('languageChanged', sync);
+      window.Weglot?.on(WEGLOT_INITIALIZED_EVENT, sync);
+      window.Weglot?.on(WEGLOT_LANGUAGE_CHANGED_EVENT, sync);
       sync();
     };
 
@@ -83,8 +85,8 @@ const WeglotSwitcher = ({
 
     return () => {
       window.removeEventListener(WEGLOT_READY_EVENT, attach);
-      window.Weglot?.off('initialized', sync);
-      window.Weglot?.off('languageChanged', sync);
+      window.Weglot?.off(WEGLOT_INITIALIZED_EVENT, sync);
+      window.Weglot?.off(WEGLOT_LANGUAGE_CHANGED_EVENT, sync);
     };
   }, []);
 
