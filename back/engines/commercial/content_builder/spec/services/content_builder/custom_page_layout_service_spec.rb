@@ -557,4 +557,33 @@ describe ContentBuilder::CustomPageLayoutService do
       end
     end
   end
+
+  describe '#craftjs_json_for_body' do
+    it 'shows the title, with the body below it' do
+      craftjs = service.craftjs_json_for_body(plain_text)
+
+      expect(craftjs[title_id]['props']).to eq({ 'showTitle' => true })
+      expect(craftjs[body_id]['nodes']).to eq [title_id, top_id]
+      expect(craftjs[top_id]['props']['text']).to eq plain_text
+    end
+
+    # Imported pages then match the pages already moved onto the builder.
+    context 'when compared with a page holding the same body in its top section' do
+      where(:body) do
+        [
+          [{ 'en' => '<p>Hello</p>' }],
+          [{ 'en' => '<p>Hello</p><img src="https://example.com/a.png">' }],
+          [{ 'en' => '<p></p>' }]
+        ]
+      end
+
+      with_them do
+        it 'builds the same graph' do
+          page = build_page(top_info_section_multiloc: body, top_info_section_enabled: true)
+
+          expect(service.craftjs_json_for_body(body)).to eq service.craftjs_json_for(page)
+        end
+      end
+    end
+  end
 end
