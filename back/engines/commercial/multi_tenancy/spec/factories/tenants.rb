@@ -49,7 +49,10 @@ FactoryBot.define do
             'fr-FR' => 'Liege'
           },
           organization_type: 'medium_city',
-          onboarding: true
+          onboarding: true,
+          # New platforms get this enabled by default, but most specs expect admins and
+          # moderators to be counted. Specs that need it call `enable_exclude_admins_and_moderators_from_statistics`.
+          exclude_admins_and_moderators_from_statistics: false
         },
         follow: {
           enabled: true,
