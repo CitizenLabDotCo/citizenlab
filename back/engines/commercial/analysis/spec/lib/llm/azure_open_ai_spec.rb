@@ -200,19 +200,33 @@ RSpec.describe Analysis::LLM::AzureOpenAI do
     end
 
     context 'text files' do
-      it 'sends a markdown file with its own MIME type, since Azure OpenAI reads it' do
-        file = create(:global_file, name: 'notes.md')
-        message = Analysis::LLM::Message.new('Summarize this transcript', file)
+      using RSpec::Parameterized::TableSyntax
 
-        expect(service.response_client)
-          .to receive(:create).with(parameters: hash_including(input: [{
-            role: 'user', content: [
-              { type: 'input_text', text: 'Summarize this transcript' },
-              { type: 'input_file', filename: 'notes.md', file_data: start_with('data:text/markdown;base64,') }
-            ]
-          }])).and_return(nil)
+      # Azure OpenAI reads these itself, so they are sent as they are. They used
+      # to go through a PDF preview instead — and a tsv has none, so it could not
+      # be analysed at all.
+      where(:case_name, :fixture, :mime_type) do
+        'markdown' | 'notes.md'  | 'text/markdown'
+        'plain'    | 'notes.txt' | 'text/plain'
+        'csv'      | 'notes.csv' | 'text/csv'
+        'tsv'      | 'notes.tsv' | 'text/tab-separated-values'
+      end
 
-        service.chat(message)
+      with_them do
+        it 'sends the file with its own MIME type' do
+          file = create(:global_file, name: fixture)
+          message = Analysis::LLM::Message.new('Summarize this transcript', file)
+
+          expect(service.response_client)
+            .to receive(:create).with(parameters: hash_including(input: [{
+              role: 'user', content: [
+                { type: 'input_text', text: 'Summarize this transcript' },
+                { type: 'input_file', filename: fixture, file_data: start_with("data:#{mime_type};base64,") }
+              ]
+            }])).and_return(nil)
+
+          service.chat(message)
+        end
       end
 
       it 'sends the file itself, even when it has a completed preview' do

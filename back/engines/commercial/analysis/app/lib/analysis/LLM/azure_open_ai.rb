@@ -16,14 +16,6 @@ module Analysis
         image/webp
       ].freeze
 
-      # File types Azure OpenAI reads itself. Anything else is sent as its PDF
-      # preview.
-      SUPPORTED_FILE_TYPES = %w[
-        application/pdf
-        text/markdown
-        text/plain
-      ].freeze
-
       class << self
         def gpt_model
           raise NotImplementedError
@@ -147,7 +139,9 @@ module Analysis
 
       # @param file [Files::File]
       def format_file(file)
-        content, mime_type = if file.mime_type.in?(SUPPORTED_FILE_TYPES)
+        # Azure reads text files and PDFs itself, and decodes legacy charsets on
+        # its own. Anything else is sent as its PDF preview.
+        content, mime_type = if file.text? || file.mime_type == 'application/pdf'
           [file.content.read, file.mime_type]
         else
           [pdf_preview_content(file), 'application/pdf']
