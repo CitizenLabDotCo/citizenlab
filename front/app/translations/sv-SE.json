@@ -1187,7 +1187,6 @@
   "app.components.formBuilder.supportArticleLinkText": "denna sida",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "Du kan redigera enkäten igen när assistenten är klar, eller när du har godkänt eller avvisat den föreslagna ändringen.",
   "app.components.formBuilder.surveyAssistant.endPage": "Slutsida",
-  "app.components.formBuilder.surveyAssistant.intro": "Beskriv vad du vill lära dig. Assistenten föreslår frågorna, och ingenting ändras förrän du godkänner.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# sida} other {# sidor}}, {questions, plural, one {# fråga} other {# frågor}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "Sida {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "den aktuella enkäten",

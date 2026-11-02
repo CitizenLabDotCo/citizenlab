@@ -1187,7 +1187,6 @@
   "app.components.formBuilder.supportArticleLinkText": "یہ صفحہ",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "اسسٹنٹ کا کام مکمل ہونے کے بعد، یا جب آپ اس کی مجوزہ تبدیلی کو منظور یا مسترد کر دیں گے، تو آپ سروے میں دوبارہ ترمیم کر سکیں گے۔",
   "app.components.formBuilder.surveyAssistant.endPage": "آخری صفحہ",
-  "app.components.formBuilder.surveyAssistant.intro": "بیان کریں کہ آپ کیا جاننا چاہتے ہیں۔ اسسٹنٹ سوالات تجویز کرے گا، اور جب تک آپ منظوری نہیں دیتے تب تک کچھ بھی تبدیل نہیں ہوگا۔",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# صفحہ} other {# صفحات}}، {questions, plural, one {# سوال} other {# سوالات}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "صفحہ {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "موجودہ سروے",

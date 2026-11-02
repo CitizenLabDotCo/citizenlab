@@ -1187,7 +1187,6 @@
   "app.components.formBuilder.supportArticleLinkText": "tämä sivu",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "Voit muokata kyselyä uudelleen, kun avustaja on valmis tai kun olet hyväksynyt tai hylännyt sen ehdottaman muutoksen.",
   "app.components.formBuilder.surveyAssistant.endPage": "Lopetussivu",
-  "app.components.formBuilder.surveyAssistant.intro": "Kuvaile, mitä haluat selvittää. Avustaja ehdottaa kysymyksiä, eikä mikään muutu ennen kuin hyväksyt ne.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# sivu} other {# sivua}}, {questions, plural, one {# kysymys} other {# kysymystä}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "Sivu {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "nykyinen kysely",

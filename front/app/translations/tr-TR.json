@@ -1187,7 +1187,6 @@
   "app.components.formBuilder.supportArticleLinkText": "bu sayfa",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "Asistan işlemini bitirdiğinde veya önerilen değişikliği onayladığınızda ya da reddettiğinizde anketi tekrar düzenleyebilirsiniz.",
   "app.components.formBuilder.surveyAssistant.endPage": "Bitiş sayfası",
-  "app.components.formBuilder.surveyAssistant.intro": "Neyi öğrenmek istediğinizi açıklayın. Asistan soruları önerir ve siz onaylayana kadar hiçbir şey değişmez.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# sayfa} other {# sayfa}}, {questions, plural, one {# soru} other {# soru}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "Sayfa {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "mevcut anket",

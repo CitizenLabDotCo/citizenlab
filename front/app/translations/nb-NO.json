@@ -1187,7 +1187,6 @@
   "app.components.formBuilder.supportArticleLinkText": "denne siden",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "Du kan redigere undersøkelsen igjen når assistenten er ferdig, eller når du har godkjent eller avvist den foreslåtte endringen.",
   "app.components.formBuilder.surveyAssistant.endPage": "Sluttside",
-  "app.components.formBuilder.surveyAssistant.intro": "Beskriv hva du ønsker å lære. Assistenten foreslår spørsmålene, og ingenting endres før du godkjenner.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# side} other {# sider}}, {questions, plural, one {# spørsmål} other {# spørsmål}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "Side {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "den gjeldende spørreundersøkelsen",

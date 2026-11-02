@@ -1187,7 +1187,6 @@
   "app.components.formBuilder.supportArticleLinkText": "denne side",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "Du kan redigere spørgeskemaet igen, når assistenten er færdig, eller når du har godkendt eller afvist dens foreslåede ændring.",
   "app.components.formBuilder.surveyAssistant.endPage": "Afslutningsside",
-  "app.components.formBuilder.surveyAssistant.intro": "Beskriv, hvad du ønsker at få viden om. Assistenten foreslår spørgsmålene, og intet ændres, før du godkender det.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# side} other {# sider}}, {questions, plural, one {# spørgsmål} other {# spørgsmål}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "Side {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "det nuværende spørgeskema",

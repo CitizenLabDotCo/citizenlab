@@ -1187,7 +1187,6 @@
   "app.components.formBuilder.supportArticleLinkText": "aquesta pàgina",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "Podràs tornar a editar l'enquesta quan l'assistent hagi acabat, o quan hagis aprovat o rebutjat el canvi proposat.",
   "app.components.formBuilder.surveyAssistant.endPage": "Pàgina final",
-  "app.components.formBuilder.surveyAssistant.intro": "Descriu què vols esbrinar. L'assistent proposarà les preguntes i no es canviarà res fins que ho aprovis.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# pàgina} other {# pàgines}}, {questions, plural, one {# pregunta} other {# preguntes}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "Pàgina {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "l'enquesta actual",

@@ -1187,7 +1187,6 @@
   "app.components.formBuilder.supportArticleLinkText": "cette page",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "Vous pourrez à nouveau modifier le sondage une fois que l'assistant aura terminé, ou une fois que vous aurez approuvé ou rejeté la modification proposée.",
   "app.components.formBuilder.surveyAssistant.endPage": "Page de fin",
-  "app.components.formBuilder.surveyAssistant.intro": "Décrivez ce que vous souhaitez apprendre. L'assistant propose les questions, et rien ne change sans votre approbation.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# page} other {# pages}}, {questions, plural, one {# question} other {# questions}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "Page {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "le sondage actuel",
