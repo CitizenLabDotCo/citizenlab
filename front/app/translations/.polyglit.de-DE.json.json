@@ -4799,6 +4799,11 @@
     "verified_at": "2026-11-02T07:29:11.714511Z",
     "verified_by": "Jelena"
   },
+  "app.components.aiAssistant.errorToolBudgetExceeded": {
+    "state": "verified",
+    "verified_at": "2026-11-02T08:13:57.268481Z",
+    "verified_by": "Jelena"
+  },
   "app.components.aiAssistant.errorTurnTimedOut": {
     "state": "verified",
     "verified_at": "2026-11-02T07:29:11.714511Z",
@@ -4817,6 +4822,21 @@
   "app.components.aiAssistant.send": {
     "state": "verified",
     "verified_at": "2026-11-02T07:29:11.714511Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.statusAutoExecuted": {
+    "state": "verified",
+    "verified_at": "2026-11-02T08:13:57.268481Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.statusFailed": {
+    "state": "verified",
+    "verified_at": "2026-11-02T08:13:57.268481Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.statusInProgress": {
+    "state": "verified",
+    "verified_at": "2026-11-02T08:13:57.268481Z",
     "verified_by": "Jelena"
   },
   "app.components.aiAssistant.title": {
@@ -5912,6 +5932,11 @@
   "app.components.formBuilder.surveyAssistant.intro": {
     "state": "verified",
     "verified_at": "2026-11-02T07:29:11.714511Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.formBuilder.surveyAssistant.readSurvey": {
+    "state": "verified",
+    "verified_at": "2026-11-02T08:13:57.268481Z",
     "verified_by": "Jelena"
   },
   "app.components.formBuilder.tags": {
