@@ -294,6 +294,18 @@ RSpec.describe DecidimImporter::Importer do
       expect(other.text_images.count).to eq(0)
     end
 
+    it 'runs as part of applying a template' do
+      template = YAML.load(DecidimImporter::TemplateCreator.from_directory(export_root).to_yaml, aliases: true)
+      page_layout = template['models']['content_builder/layout'].find { |l| l['code'] == 'custom_page' }
+      page_layout['craftjs_json'] = ContentBuilder::CustomPageLayoutService.new
+        .craftjs_json_for_body('fr-FR' => "<p>Texte</p><img src=\"#{png}\">")
+
+      described_class.apply_template(template, import_uploads: true)
+
+      page = StaticPage.find(page_layout['content_buildable_ref']['id'])
+      expect(page.text_images.count).to eq(1)
+    end
+
     it 'is a no-op when the import created no static pages' do
       expect { described_class.store_static_page_images!({}) }.not_to raise_error
     end
