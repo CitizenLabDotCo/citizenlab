@@ -86,7 +86,7 @@ module DecidimImporter
       TemplateBuilder.new(ref_map)
     end
 
-    # The old-URL → new-target mapping for links in the built layouts and static pages. Built from the
+    # The old-URL → new-target mapping for links in the built layouts. Built from the
     # registered records, so call after {#build_template}. Links aren't rewritten here — the mapping is
     # written beside the template and applied post-import by the `correct_links` task (see {Links::Map}).
     def link_map
@@ -458,14 +458,10 @@ module DecidimImporter
     end
 
     # Every rich-text HTML string {Links::Map} scans for embedded links: the text nodes of the layouts
-    # (project descriptions) and the static pages' top info sections.
+    # (project descriptions and static page bodies).
     def correctable_html_texts
       ref_map.records.flat_map do |record|
-        case record.model_name
-        when 'content_builder/layout' then layout_text_values(record)
-        when 'static_page' then multiloc_values(record.attributes['top_info_section_multiloc'])
-        else []
-        end
+        record.model_name == 'content_builder/layout' ? layout_text_values(record) : []
       end
     end
 

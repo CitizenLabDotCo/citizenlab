@@ -24,16 +24,27 @@ RSpec.describe DecidimImporter::Extractors::StaticPagesExtractor do
     }.merge(overrides)
   end
 
-  it 'builds a custom, project-scoped static page with the body as its top info section' do
+  it 'builds a custom, project-scoped static page' do
     page = extract([row]).first
 
     expect(page.model_name).to eq('static_page')
     attrs = page.attributes
     expect(attrs['title_multiloc']).to eq('fr-FR' => 'La concertation')
     expect(attrs['code']).to eq('custom')
-    expect(attrs['top_info_section_enabled']).to be(true)
-    expect(attrs['top_info_section_multiloc']['fr-FR']).to include('Contenu de la page')
     expect(attrs['project_ref']).to be(project.attributes)
+    expect(attrs).not_to include('top_info_section_enabled', 'top_info_section_multiloc')
+  end
+
+  it 'puts the body in a custom page layout for the page' do
+    page = extract([row]).first
+
+    layout = ref_map.fetch('decidim-component-1-layout')
+    expect(layout.model_name).to eq('content_builder/layout')
+    expect(layout.attributes).to include('code' => 'custom_page', 'enabled' => true)
+    expect(layout.attributes['content_buildable_ref']).to be(page.attributes)
+    expect(layout.attributes['craftjs_json']).to eq(
+      ContentBuilder::CustomPageLayoutService.new.craftjs_json_for_body('fr-FR' => '<p>Contenu de la page.</p>')
+    )
   end
 
   it 'registers the page under its component uid' do
