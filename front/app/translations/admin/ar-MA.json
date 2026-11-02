@@ -3321,6 +3321,7 @@
   "app.containers.AdminPage.ProjectEdit.shareInformation": "إتاحة المعلومات للمشاركة",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "SmartSurvey",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "استبيان سريع",
+  "app.containers.AdminPage.ProjectEdit.statusPrioritySortingMethod": "الحالة (المقترحة أولاً)",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "قم بإعداد مشروعك وتخصيصه.",
   "app.containers.AdminPage.ProjectEdit.supportPageLinkText": "زيارة مركز الدعم التابع لنا",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent2": "أضف محتوى الاستطلاع",

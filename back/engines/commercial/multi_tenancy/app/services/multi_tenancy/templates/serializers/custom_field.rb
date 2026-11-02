@@ -41,6 +41,7 @@ module MultiTenancy
           min_characters
           max_characters
           answers_visible_to
+          show_as_filter
         ]
 
         # Enigmatic comment from the previous implementation:

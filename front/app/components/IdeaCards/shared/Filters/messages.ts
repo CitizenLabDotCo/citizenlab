@@ -29,6 +29,10 @@ export default defineMessages({
     id: 'app.components.IdeaCards.filters.mostDiscussed',
     defaultMessage: 'Most discussed',
   },
+  statusPriority: {
+    id: 'app.components.IdeaCards.filters.statusPriority',
+    defaultMessage: 'Status (proposed first)',
+  },
   sortChangedScreenreaderMessage: {
     id: 'app.components.IdeaCards.filters.sortChangedScreenreaderMessage',
     defaultMessage: 'Sorting changed to: {currentSortType}',

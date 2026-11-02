@@ -3321,6 +3321,7 @@
   "app.containers.AdminPage.ProjectEdit.shareInformation": "Dalytis informacija",
   "app.containers.AdminPage.ProjectEdit.smart_survey": "\"SmartSurvey\"",
   "app.containers.AdminPage.ProjectEdit.snap_survey": "\"Snap\" apklausa",
+  "app.containers.AdminPage.ProjectEdit.statusPrioritySortingMethod": "Būsena (pirmiausia siūlomi)",
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": "Nustatykite ir suasmeninkite projektą.",
   "app.containers.AdminPage.ProjectEdit.supportPageLinkText": "apsilankykite mūsų pagalbos centre",
   "app.containers.AdminPage.ProjectEdit.survey.addSurveyContent2": "Pridėti apklausos turinį",
