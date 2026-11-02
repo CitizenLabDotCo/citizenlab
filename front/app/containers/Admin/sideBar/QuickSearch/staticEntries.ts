@@ -2,14 +2,15 @@ import { MessageDescriptor } from 'react-intl';
 
 import { TAppConfigurationSetting } from 'api/app_configuration/types';
 
+import dashboardMessages from 'containers/Admin/dashboard/messages';
+import invitationsMessages from 'containers/Admin/invitations/messages';
+import messagingMessages from 'containers/Admin/messaging/messages';
+import pagesMenuTabsMessages from 'containers/Admin/pagesAndMenu/components/PagesMenuTabs/messages';
+import settingsMessages from 'containers/Admin/settings/messages';
+import usersMessages from 'containers/Admin/users/messages';
+
 import { WrapperTo } from 'utils/cl-router/Link';
 
-import dashboardMessages from '../../dashboard/messages';
-import invitationsMessages from '../../invitations/messages';
-import messagingMessages from '../../messaging/messages';
-import pagesMenuTabsMessages from '../../pagesAndMenu/components/PagesMenuTabs/messages';
-import settingsMessages from '../../settings/messages';
-import usersMessages from '../../users/messages';
 import sidebarMessages from '../messages';
 import defaultNavItems from '../navItems';
 

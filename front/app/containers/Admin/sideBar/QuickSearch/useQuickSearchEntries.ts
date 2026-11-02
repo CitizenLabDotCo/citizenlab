@@ -8,7 +8,6 @@ import {
 } from 'api/admin_search/types';
 import useAdminSearch from 'api/admin_search/useAdminSearch';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useAuthUser from 'api/me/useAuthUser';
 
 import { areFeaturesActive } from 'hooks/useFeatureFlags';
 import useLocalize from 'hooks/useLocalize';
@@ -16,7 +15,7 @@ import useLocalize from 'hooks/useLocalize';
 import projectsMessages from 'containers/Admin/projects/all/messages';
 
 import { useIntl } from 'utils/cl-intl';
-import { hasPermission } from 'utils/permissions';
+import { usePermissionCheck } from 'utils/permissions';
 
 import sidebarMessages from '../messages';
 
@@ -33,7 +32,7 @@ const isSpace = (item: AdminSearchItem): item is AdminSearchSpace =>
 const useQuickSearchEntries = () => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const { data: authUser } = useAuthUser();
+  const can = usePermissionCheck();
   const { data: appConfiguration } = useAppConfiguration();
 
   // The endpoint only returns what the current user manages, so moderators
@@ -48,12 +47,7 @@ const useQuickSearchEntries = () => {
             names: entry.featureNames ?? [],
             onlyCheckAllowed: entry.onlyCheckAllowed,
           }) &&
-          hasPermission({
-            item: { type: 'route', path: entry.to },
-            action: 'access',
-            user: authUser,
-            appConfig: appConfiguration?.data,
-          })
+          can({ item: { type: 'route', path: entry.to }, action: 'access' })
       )
       .map((entry) => ({
         id: entry.name,
@@ -142,7 +136,7 @@ const useQuickSearchEntries = () => {
       ...projectEntries,
       ...phaseEntries,
     ];
-  }, [data, authUser, appConfiguration, formatMessage, localize]);
+  }, [data, can, appConfiguration, formatMessage, localize]);
 };
 
 export default useQuickSearchEntries;

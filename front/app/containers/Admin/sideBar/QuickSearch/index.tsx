@@ -59,7 +59,10 @@ const QuickSearch = ({ userId }: Props) => {
 
   return (
     <>
-      <RailTooltip label={formatMessage(messages.find)} disabled={!collapsed}>
+      <RailTooltip
+        label={formatMessage(messages.quickSearch)}
+        disabled={!collapsed}
+      >
         <StyledBox
           as="button"
           ref={buttonRef}
@@ -69,14 +72,14 @@ const QuickSearch = ({ userId }: Props) => {
           p={collapsed ? '10px 0' : '10px 8px 10px 16px'}
           justifyContent={collapsed ? 'center' : 'flex-start'}
           onClick={open}
-          aria-label={formatMessage(messages.find)}
+          aria-label={formatMessage(messages.quickSearch)}
           aria-keyshortcuts="Meta+K Control+K"
           data-cy="e2e-quick-search-button"
         >
           <Icon name="search" fill={colors.coolGrey300} height="20px" />
           {!collapsed && (
             <StyledText color="white" ml="15px" my="0px" textAlign="left">
-              {formatMessage(messages.find)}
+              {formatMessage(messages.quickSearch)}
             </StyledText>
           )}
           {!collapsed && (

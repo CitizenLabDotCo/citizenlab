@@ -1,6 +1,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  quickSearch: {
+    id: 'app.containers.AdminPage.SideBar.QuickSearch.quickSearch',
+    defaultMessage: 'Quick search',
+  },
   find: {
     id: 'app.containers.AdminPage.SideBar.QuickSearch.find',
     defaultMessage: 'Find',

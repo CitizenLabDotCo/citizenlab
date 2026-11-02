@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { isObject } from 'lodash-es';
 
 import { IAppConfigurationData } from 'api/app_configuration/types';
@@ -58,7 +60,6 @@ type PermissionParams = {
   context?: any;
 };
 
-// Non-hook version of usePermission, for checking many items at once.
 const hasPermission = ({
   item,
   action,
@@ -85,17 +86,20 @@ const hasPermission = ({
   }
 };
 
-const usePermission = ({ item, action, context }: PermissionParams) => {
+// Returns a function that checks a permission for the current user, for
+// checking many items at once (hooks can't be called once per item in a list).
+const usePermissionCheck = () => {
   const { data: user } = useAuthUser();
   const { data: appConfig } = useAppConfiguration();
 
-  return hasPermission({
-    item,
-    action,
-    context,
-    user,
-    appConfig: appConfig?.data,
-  });
+  return useCallback(
+    (params: PermissionParams) =>
+      hasPermission({ ...params, user, appConfig: appConfig?.data }),
+    [user, appConfig]
+  );
 };
 
-export { definePermissionRule, hasPermission, usePermission };
+const usePermission = (params: PermissionParams) =>
+  usePermissionCheck()(params);
+
+export { definePermissionRule, usePermission, usePermissionCheck };
