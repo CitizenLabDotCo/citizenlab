@@ -19,7 +19,6 @@ interface Props {
   showPastInputsModal: boolean;
   setShowPastInputsModal: (show: boolean) => void;
   currentPhaseid: string;
-  variant?: 'bo';
   onImport: (fromPhaseId: string, count: number) => void;
 }
 
@@ -27,7 +26,6 @@ const ImportInputsModal = ({
   showPastInputsModal,
   setShowPastInputsModal,
   currentPhaseid,
-  variant,
   onImport,
 }: Props) => {
   const { projectId: currentProjectId } = useParams({ strict: false });
@@ -66,12 +64,8 @@ const ImportInputsModal = ({
     }
   }, [copyInputs, currentPhaseid, phaseId]);
 
-  // The modal stays mounted, so it starts over by clearing its choices.
   const handleClose = useCallback(() => {
     setShowPastInputsModal(false);
-    setSelectedProjectId(undefined);
-    setPhaseId(undefined);
-    setNoOfInputs(undefined);
   }, [setShowPastInputsModal]);
 
   const handleImport = useCallback(() => {
@@ -81,93 +75,6 @@ const ImportInputsModal = ({
   }, [handleClose, noOfInputs, onImport, phaseId]);
 
   const currentPhaseStartDate = currentPhase?.data.attributes.start_at;
-  const isBo = variant === 'bo';
-  const importDisabled = !phaseId || isCopying || !noOfInputs;
-
-  const fields = (
-    <>
-      <Box mb="24px">
-        {isBo && (
-          <Text variant="boHelper" fontSize="xs" m="0" mb="4px">
-            {formatMessage(messages.projectLabel)}
-          </Text>
-        )}
-        <ProjectFilter
-          selectedProjectId={selectedProjectId}
-          emptyOptionMessage={messages.noProject}
-          onProjectFilter={handleProjectFilter}
-          placeholder={
-            isBo ? formatMessage(messages.selectAProject) : undefined
-          }
-          variant={variant}
-        />
-      </Box>
-      {selectedProjectId && (
-        <PhaseFilter
-          label={formatMessage(
-            isBo ? messages.phaseLabel : messages.selectAPhase
-          )}
-          projectId={selectedProjectId}
-          phaseId={phaseId}
-          participationMethods={['ideation', 'voting', 'common_ground']}
-          onPhaseFilter={handlePhaseFilter}
-          customPhaseFilter={
-            selectedProjectId === currentProjectId && currentPhaseStartDate
-              ? (phases) =>
-                  phases.filter(
-                    (phase) => phase.attributes.start_at < currentPhaseStartDate
-                  )
-              : undefined
-          }
-          variant={variant}
-        />
-      )}
-    </>
-  );
-
-  const inputsCount = !!phaseId && noOfInputs !== undefined && (
-    <Text
-      variant={isBo ? 'boHelper' : 'bodyS'}
-      color={isBo ? undefined : 'textSecondary'}
-      m="0"
-    >
-      {formatMessage(messages.noOfInputsToImport, { count: noOfInputs })}
-    </Text>
-  );
-
-  if (isBo) {
-    return (
-      <Modal
-        width={560}
-        variant="bo"
-        opened={showPastInputsModal}
-        close={handleClose}
-        header={formatMessage(messages.importInputs)}
-        footer={
-          <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
-            <Button buttonStyle="bo-secondary" onClick={handleClose}>
-              {formatMessage(messages.cancel)}
-            </Button>
-            <Button
-              buttonStyle="bo-primary"
-              disabled={importDisabled}
-              onClick={handleImport}
-            >
-              {formatMessage(messages.importInputs)}
-            </Button>
-          </Box>
-        }
-      >
-        <Box p="24px">
-          <Text variant="boLabel" m="0" mb="16px">
-            {formatMessage(messages.createInputsDescription)}
-          </Text>
-          {fields}
-          {inputsCount}
-        </Box>
-      </Modal>
-    );
-  }
 
   return (
     <Modal
@@ -181,10 +88,42 @@ const ImportInputsModal = ({
           {formatMessage(messages.createInputsDescription)}
         </Text>
         <Box py="5px" mt="0px" alignItems="center">
-          {fields}
+          <Box mb="24px">
+            <ProjectFilter
+              selectedProjectId={selectedProjectId}
+              emptyOptionMessage={messages.noProject}
+              onProjectFilter={handleProjectFilter}
+            />
+          </Box>
+          {selectedProjectId && (
+            <PhaseFilter
+              label={formatMessage(messages.selectAPhase)}
+              projectId={selectedProjectId}
+              phaseId={phaseId}
+              participationMethods={['ideation', 'voting', 'common_ground']}
+              onPhaseFilter={handlePhaseFilter}
+              customPhaseFilter={
+                selectedProjectId === currentProjectId && currentPhaseStartDate
+                  ? (phases) =>
+                      phases.filter(
+                        (phase) =>
+                          phase.attributes.start_at < currentPhaseStartDate
+                      )
+                  : undefined
+              }
+            />
+          )}
         </Box>
 
-        {inputsCount && <Box>{inputsCount}</Box>}
+        {typeof noOfInputs === 'number' && (
+          <Box>
+            <Text variant="bodyS" color="textSecondary">
+              {formatMessage(messages.noOfInputsToImport, {
+                count: noOfInputs,
+              })}
+            </Text>
+          </Box>
+        )}
 
         <Box mt="40px" display="flex" justifyContent="space-between">
           <Button buttonStyle="secondary-outlined" onClick={handleClose}>
@@ -192,7 +131,7 @@ const ImportInputsModal = ({
           </Button>
           <Button
             buttonStyle="admin-dark"
-            disabled={importDisabled}
+            disabled={!phaseId || isCopying || noOfInputs === 0}
             onClick={handleImport}
           >
             {formatMessage(messages.importInputs)}
