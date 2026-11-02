@@ -90,7 +90,7 @@
   "app.components.Comments.seeOriginal": "Veure original",
   "app.components.Comments.seeTranslation": "Veure Traducció",
   "app.components.Comments.yourComment": "El vostre comentari",
-  "app.components.CommonGroundResults.allStatementsDescription1": "Totes les declaracions, de la que genera més acord a la que genera més desacord. S'han exclòs les declaracions que només tenen vots d'indecisió o que no tenen cap vot.",
+  "app.components.CommonGroundResults.allStatementsDescription1": "Totes les afirmacions, de la que té més acords a la que té més desacords. S'han exclòs les afirmacions que només tenen vots de «no n'estic segur» o cap vot.",
   "app.components.CommonGroundResults.allStatementsTitle": "Llista d'afirmacions",
   "app.components.CommonGroundResults.closeCallsDescription": "Aquestes declaracions van provocar el major desacord, amb vots d'acord o en desacord que s'acostaven més a una divisió 50/50.",
   "app.components.CommonGroundResults.closeCallsTitle": "Crits a prop",

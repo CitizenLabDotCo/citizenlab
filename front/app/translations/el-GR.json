@@ -90,7 +90,7 @@
   "app.components.Comments.seeOriginal": "Δείτε το πρωτότυπο",
   "app.components.Comments.seeTranslation": "Δείτε τη μετάφραση",
   "app.components.Comments.yourComment": "Το σχόλιό σας",
-  "app.components.CommonGroundResults.allStatementsDescription1": "Όλες οι δηλώσεις, από εκείνες με τη μεγαλύτερη συμφωνία έως εκείνες με τη μεγαλύτερη διαφωνία. Οι δηλώσεις που έλαβαν μόνο αβέβαιες ψήφους ή καθόλου ψήφους παραλείπονται.",
+  "app.components.CommonGroundResults.allStatementsDescription1": "Όλες οι δηλώσεις, από αυτές με τη μεγαλύτερη συμφωνία έως αυτές με τη μεγαλύτερη διαφωνία. Δηλώσεις με ψήφους μόνο στην επιλογή «δεν είμαι σίγουρος/η» ή χωρίς καθόλου ψήφους δεν περιλαμβάνονται.",
   "app.components.CommonGroundResults.allStatementsTitle": "Λίστα δηλώσεων",
   "app.components.CommonGroundResults.closeCallsDescription": "Αυτές οι δηλώσεις προκάλεσαν τις περισσότερες διαφωνίες, με τις ψήφους για το \"συμφωνώ\" ή \"διαφωνώ\" να μοιράζονται σε ποσοστό 50/50.",
   "app.components.CommonGroundResults.closeCallsTitle": "Κοντινές κλήσεις",

@@ -90,7 +90,7 @@
   "app.components.Comments.seeOriginal": "رؤية الأصل أفضل.",
   "app.components.Comments.seeTranslation": "رؤية الترجمة الفورية",
   "app.components.Comments.yourComment": "تعليقك في محله.",
-  "app.components.CommonGroundResults.allStatementsDescription1": "كل العبارات، من الأكثر تأييداً إلى الأكثر معارضة. تم استبعاد العبارات التي حصلت فقط على أصوات \"غير متأكد\" أو التي لم تحصل على أي أصوات.",
+  "app.components.CommonGroundResults.allStatementsDescription1": "كل العبارات، من الأكثر تأييداً إلى الأكثر معارضة. يتم استبعاد العبارات التي حصلت فقط على أصوات \"غير متأكد\" أو التي لم تحصل على أي أصوات.",
   "app.components.CommonGroundResults.allStatementsTitle": "قائمة العبارات",
   "app.components.CommonGroundResults.closeCallsDescription": "وأثارت هذه التصريحات أكبر قدر من الخلاف، حيث وصلت نسبة التصويت بالموافقة أو الرفض إلى ما يقرب من 50/50.",
   "app.components.CommonGroundResults.closeCallsTitle": "مكالمات قريبة",

@@ -90,7 +90,7 @@
   "app.components.Comments.seeOriginal": "Afficher l'original",
   "app.components.Comments.seeTranslation": "Voir la traduction",
   "app.components.Comments.yourComment": "Votre commentaire",
-  "app.components.CommonGroundResults.allStatementsDescription1": "Toutes les propositions, de la plus approuvée à la plus contestée. Les propositions n'ayant reçu que des votes « indécis » ou aucun vote ne sont pas incluses.",
+  "app.components.CommonGroundResults.allStatementsDescription1": "Toutes les propositions, de la plus approuvée à la plus contestée. Les propositions n'ayant reçu que des votes « indécis » ou aucun vote sont exclues.",
   "app.components.CommonGroundResults.allStatementsTitle": "Liste des affirmations",
   "app.components.CommonGroundResults.closeCallsDescription": "Ces affirmations ont suscité le plus de désaccords, les votes d'accord ou de désaccord étant les plus proches d'une répartition 50/50.",
   "app.components.CommonGroundResults.closeCallsTitle": "Divergences",

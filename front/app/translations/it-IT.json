@@ -90,7 +90,7 @@
   "app.components.Comments.seeOriginal": "Vedi originale",
   "app.components.Comments.seeTranslation": "Vedere la traduzione",
   "app.components.Comments.yourComment": "Il tuo commento",
-  "app.components.CommonGroundResults.allStatementsDescription1": "Tutte le affermazioni, da quella con il maggior consenso a quella con il maggior dissenso. Le affermazioni che hanno ricevuto solo voti 'incerto' o nessun voto sono escluse.",
+  "app.components.CommonGroundResults.allStatementsDescription1": "Tutte le affermazioni, da quella con il maggior consenso a quella con il maggior dissenso. Le affermazioni con soli voti incerti o senza alcun voto sono escluse.",
   "app.components.CommonGroundResults.allStatementsTitle": "Elenco delle affermazioni",
   "app.components.CommonGroundResults.closeCallsDescription": "Queste affermazioni hanno suscitato il maggior disaccordo, con i voti che si sono avvicinati di più a un 50/50.",
   "app.components.CommonGroundResults.closeCallsTitle": "Chiamate ravvicinate",
