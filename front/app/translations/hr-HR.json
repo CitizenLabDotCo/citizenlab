@@ -1185,7 +1185,6 @@
   "app.components.formBuilder.supportArticleLinkText": "ova stranica",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "Anketu ćete moći ponovno uređivati nakon što asistent završi ili nakon što odobrite ili odbijete predloženu promjenu.",
   "app.components.formBuilder.surveyAssistant.endPage": "Završna stranica",
-  "app.components.formBuilder.surveyAssistant.intro": "Opišite što želite saznati. Asistent predlaže pitanja i ništa se ne mijenja dok ne odobrite.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# stranica} few {# stranice} other {# stranica}}, {questions, plural, one {# pitanje} few {# pitanja} other {# pitanja}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "Stranica {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "trenutačna anketa",

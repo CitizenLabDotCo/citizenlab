@@ -1185,7 +1185,6 @@
   "app.components.formBuilder.supportArticleLinkText": "šo lapu",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "Jūs varēsiet atkal rediģēt aptauju, kad asistents būs pabeidzis darbu vai kad būsiet apstiprinājis vai noraidījis tā ierosināto izmaiņu.",
   "app.components.formBuilder.surveyAssistant.endPage": "Beigu lapa",
-  "app.components.formBuilder.surveyAssistant.intro": "Aprakstiet, ko vēlaties uzzināt. Asistents ierosinās jautājumus, un nekas netiks mainīts, kamēr jūs to neapstiprināsiet.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# lapa} other {# lapas}}, {questions, plural, one {# jautājums} other {# jautājumi}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "Lapa {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "pašreizējā aptauja",

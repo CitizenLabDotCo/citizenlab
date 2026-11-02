@@ -1185,7 +1185,6 @@
   "app.components.formBuilder.supportArticleLinkText": "esta página",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "Podrás volver a editar la encuesta cuando el asistente haya terminado o cuando apruebes o rechaces el cambio propuesto.",
   "app.components.formBuilder.surveyAssistant.endPage": "Página final",
-  "app.components.formBuilder.surveyAssistant.intro": "Describe qué quieres averiguar. El asistente propondrá las preguntas y nada cambiará hasta que lo apruebes.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# página} other {# páginas}}, {questions, plural, one {# pregunta} other {# preguntas}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "Página {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "la encuesta actual",

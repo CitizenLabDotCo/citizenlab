@@ -1185,7 +1185,6 @@
   "app.components.formBuilder.supportArticleLinkText": "y dudalen hon",
   "app.components.formBuilder.surveyAssistant.editingLocked2": "Gallwch olygu'r arolwg eto unwaith y bydd y cynorthwyydd wedi gorffen, neu unwaith y byddwch yn cymeradwyo neu'n gwrthod y newid arfaethedig.",
   "app.components.formBuilder.surveyAssistant.endPage": "Tudalen ddiwedd",
-  "app.components.formBuilder.surveyAssistant.intro": "Disgrifiwch yr hyn rydych chi am ei ddysgu. Mae'r cynorthwyydd yn cynnig y cwestiynau, ac ni fydd dim yn newid nes i chi gymeradwyo.",
   "app.components.formBuilder.surveyAssistant.outlineSummary": "{pages, plural, one {# dudalen} other {# tudalen}}, {questions, plural, one {# cwestiwn} other {# cwestiwn}}",
   "app.components.formBuilder.surveyAssistant.pageNumber": "Tudalen {number}",
   "app.components.formBuilder.surveyAssistant.readSurvey": "yr arolwg cyfredol",
