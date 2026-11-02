@@ -90,6 +90,7 @@
   "app.components.Comments.seeOriginal": "Žr. originalą",
   "app.components.Comments.seeTranslation": "Žiūrėti vertimą",
   "app.components.Comments.yourComment": "Jūsų komentaras",
+  "app.components.CommonGroundResults.allStatementsDescription1": "Visi teiginiai – nuo tų, kuriems labiausiai pritarta, iki tų, kuriems labiausiai nepritarta. Teiginiai, surinkę tik „nežinau“ balsus arba visai nesulaukę balsų, neįtraukiami.",
   "app.components.CommonGroundResults.allStatementsTitle": "Teiginių sąrašas",
   "app.components.CommonGroundResults.closeCallsDescription": "Šie teiginiai sukėlė daugiausiai nesutarimų, o balsai \"sutinku\" ir \"nesutinku\" pasiskirstė beveik pusiau.",
   "app.components.CommonGroundResults.closeCallsTitle": "Artimi skambučiai",

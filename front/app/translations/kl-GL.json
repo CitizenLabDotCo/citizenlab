@@ -90,6 +90,7 @@
   "app.components.Comments.seeOriginal": "Allaqqaarnera takutiguk",
   "app.components.Comments.seeTranslation": "Nutsernera takujuk",
   "app.components.Comments.yourComment": "Illit oqaaseqaatit",
+  "app.components.CommonGroundResults.allStatementsDescription1": "Oqaaseqaatit tamarmik, isumaqatigineqarnerpaaniit isumaqatigineqannginnerpaanut. Oqaaseqaatit taamaallaat nalornissutinik taaguunneqarsimasut imaluunniit taaguunneqarsimanngivissut ilaatinneqanngillat.",
   "app.components.CommonGroundResults.allStatementsTitle": "Oqaaseqaatit allattorsimaffiat",
   "app.components.CommonGroundResults.closeCallsDescription": "These statements sparked the most disagreement, with votes for agree or disagree closest to a 50/50 split.",
   "app.components.CommonGroundResults.closeCallsTitle": "Close calls",

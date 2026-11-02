@@ -90,6 +90,7 @@
   "app.components.Comments.seeOriginal": "ਅਸਲੀ ਦੇਖੋ",
   "app.components.Comments.seeTranslation": "ਅਨੁਵਾਦ ਦੇਖੋ",
   "app.components.Comments.yourComment": "ਤੁਹਾਡੀ ਟਿੱਪਣੀ",
+  "app.components.CommonGroundResults.allStatementsDescription1": "ਹਰ ਕਥਨ, ਸਭ ਤੋਂ ਵੱਧ ਸਹਿਮਤੀ ਤੋਂ ਲੈ ਕੇ ਸਭ ਤੋਂ ਵੱਧ ਅਸਹਿਮਤੀ ਤੱਕ। ਸਿਰਫ਼ ਅਨਿਸ਼ਚਿਤ ਵੋਟਾਂ ਵਾਲੇ ਜਾਂ ਬਿਨਾਂ ਕਿਸੇ ਵੋਟ ਵਾਲੇ ਕਥਨਾਂ ਨੂੰ ਸ਼ਾਮਲ ਨਹੀਂ ਕੀਤਾ ਗਿਆ ਹੈ।",
   "app.components.CommonGroundResults.allStatementsTitle": "ਕਥਨਾਂ ਦੀ ਸੂਚੀ",
   "app.components.CommonGroundResults.closeCallsDescription": "ਇਹਨਾਂ ਬਿਆਨਾਂ ਨੇ ਸਭ ਤੋਂ ਵੱਧ ਅਸਹਿਮਤੀ ਪੈਦਾ ਕੀਤੀ, ਸਹਿਮਤ ਜਾਂ ਅਸਹਿਮਤ ਲਈ ਵੋਟਾਂ 50/50 ਵੰਡ ਦੇ ਸਭ ਤੋਂ ਨੇੜੇ ਸਨ।",
   "app.components.CommonGroundResults.closeCallsTitle": "ਕਾਲਾਂ ਬੰਦ ਕਰੋ",

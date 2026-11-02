@@ -90,6 +90,7 @@
   "app.components.Comments.seeOriginal": "Prikaži izvornu verziju",
   "app.components.Comments.seeTranslation": "Pogledajte prijevod",
   "app.components.Comments.yourComment": "Vaš komentar",
+  "app.components.CommonGroundResults.allStatementsDescription1": "Svaka izjava, od one s najvećim slaganjem do one s najvećim neslaganjem. Izjave sa samo neodlučnim glasovima ili bez ijednog glasa su izostavljene.",
   "app.components.CommonGroundResults.allStatementsTitle": "Popis izjava",
   "app.components.CommonGroundResults.closeCallsDescription": "Ove su izjave izazvale najviše neslaganja, a glasovi za slaganje ili neslaganje bili su najbliži omjeru 50/50.",
   "app.components.CommonGroundResults.closeCallsTitle": "Bliski pozivi",

@@ -90,6 +90,7 @@
   "app.components.Comments.seeOriginal": "اصل دیکھیں",
   "app.components.Comments.seeTranslation": "ترجمہ دیکھیں",
   "app.components.Comments.yourComment": "آپ کا تبصرہ",
+  "app.components.CommonGroundResults.allStatementsDescription1": "تمام بیانات، سب سے زیادہ اتفاق رائے سے لے کر سب سے زیادہ اختلاف رائے تک۔ وہ بیانات جن پر صرف غیر یقینی ووٹ ملے یا کوئی ووٹ نہیں ملا، انہیں شامل نہیں کیا گیا ہے۔",
   "app.components.CommonGroundResults.allStatementsTitle": "بیانات کی فہرست",
   "app.components.CommonGroundResults.closeCallsDescription": "ان بیانات نے سب سے زیادہ اختلاف کو جنم دیا، 50/50 کی تقسیم کے قریب ترین اتفاق یا اختلاف کے لیے ووٹوں کے ساتھ۔",
   "app.components.CommonGroundResults.closeCallsTitle": "کالیں بند کریں۔",
