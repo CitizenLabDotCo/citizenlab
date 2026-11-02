@@ -47,7 +47,7 @@ module AIAssistant
       :ok
     end
 
-    # Marks the call as decided, unless someone decided on it first.
+    # Claims the call for this decision. Returns whether it worked: false if someone decided on it first.
     def claim(approved:, reason:)
       claimed = ToolCall
         .where(id: @tool_call.id, status: 'proposed')
