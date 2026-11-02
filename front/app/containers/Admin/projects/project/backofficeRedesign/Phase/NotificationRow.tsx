@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
 import {
   Box,
@@ -27,6 +27,12 @@ interface Props {
 
 const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
   const { formatMessage } = useIntl();
+  const context = useMemo(() => ({ phaseId }), [phaseId]);
+  const editPath = useCallback(
+    (campaignId: string) =>
+      `/admin/projects/${projectId}/phases/${phaseId}/emails/${campaignId}/edit`,
+    [projectId, phaseId]
+  );
   const {
     saveEnabled,
     openEditor,
@@ -34,12 +40,7 @@ const NotificationRow = ({ campaign, projectId, phaseId }: Props) => {
     isOutsidePlan,
     isEditable,
     canBeDisabled,
-  } = useCampaignRow({
-    campaign,
-    context: { phaseId },
-    editPath: (campaignId) =>
-      `/admin/projects/${projectId}/phases/${phaseId}/emails/${campaignId}/edit`,
-  });
+  } = useCampaignRow({ campaign, context, editPath });
   const when = campaign.trigger || campaign.schedule;
   const savedEnabled = !!campaign.attributes.enabled;
   const [enabled, setEnabled] = useState(savedEnabled);
