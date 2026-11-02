@@ -76,9 +76,9 @@ export default defineMessages({
     id: 'app.components.CommonGroundResults.allStatementsTitle',
     defaultMessage: 'List of statements',
   },
-  allStatementsDescription: {
-    id: 'app.components.CommonGroundResults.allStatementsDescription',
+  allStatementsDescription1: {
+    id: 'app.components.CommonGroundResults.allStatementsDescription1',
     defaultMessage:
-      'Every statement, from the most agreed to the most disagreed. Please note that statements with unsure only votes are not included in this list, as they do not indicate a clear position.',
+      'Every statement, from the most agreed to the most disagreed. Statements with only unsure votes or no votes at all are left out.',
   },
 });

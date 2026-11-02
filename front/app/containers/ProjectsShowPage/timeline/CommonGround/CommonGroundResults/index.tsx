@@ -65,7 +65,7 @@ const CommonGroundResults = ({ phaseId }: Props) => {
       />
       <ResultList
         title={formatMessage(messages.allStatementsTitle)}
-        description={formatMessage(messages.allStatementsDescription)}
+        description={formatMessage(messages.allStatementsDescription1)}
         items={ideas_by_agreement}
       />
     </Box>
