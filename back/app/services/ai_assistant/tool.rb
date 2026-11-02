@@ -18,6 +18,7 @@ module AIAssistant
 
     delegate :name, :description, to: :definition
 
+    # Read-only tools run without approval, so a tool without annotations counts as a write tool.
     def read_only?
       definition.annotations&.dig(:read_only_hint) == true
     end
