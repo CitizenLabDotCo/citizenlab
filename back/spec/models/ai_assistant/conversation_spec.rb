@@ -76,6 +76,7 @@ describe AIAssistant::Conversation do
         'approved' | 1.minute   | 'approved' | 'awaiting_approval'
         'proposed' | 25.hours   | 'expired'  | 'idle'
         'proposed' | 1.hour     | 'proposed' | 'awaiting_approval'
+        'rejected' | 1.minute   | 'rejected' | 'idle'
       end
 
       with_them do

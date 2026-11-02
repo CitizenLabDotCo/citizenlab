@@ -56,7 +56,7 @@ module AIAssistant
     end
 
     # Gets the conversation out of a state that nothing would end anymore: a turn whose job
-    # was lost, an approved change whose request died, or proposals nobody decided on.
+    # was lost, a decision whose request died, or proposals nobody decided on.
     def recover_if_stuck!
       if running?
         fail_turn!('turn_timed_out') if updated_at < TURN_TIMEOUT.ago
@@ -78,7 +78,8 @@ module AIAssistant
     private
 
     def recover_stuck_decisions!
-      return unless tool_calls.interrupted_approvals.exists? || tool_calls.overdue_proposals.exists?
+      return unless tool_calls.where(status: ToolCall::UNDECIDED_STATUSES).none? ||
+                    tool_calls.interrupted_approvals.exists? || tool_calls.overdue_proposals.exists?
 
       transaction do
         tool_calls.interrupted_approvals.find_each { |tool_call| tool_call.update!(status: 'failed') }
