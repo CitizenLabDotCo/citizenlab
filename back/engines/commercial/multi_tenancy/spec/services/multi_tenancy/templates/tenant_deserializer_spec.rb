@@ -129,6 +129,88 @@ describe MultiTenancy::Templates::TenantDeserializer do
       )
     end
 
+    context 'with bulk: true' do
+      # The state that bulk insertion and deferred counter caches could get wrong.
+      def snapshot
+        {
+          counts: [Comment, CustomFieldAnswer, EmailCampaigns::Consent, Follower, Reaction].to_h { |k| [k.name, k.count] },
+          ideas: Idea.all.to_h do |idea|
+            [idea.title_multiloc['en'], idea.slice(:likes_count, :dislikes_count, :comments_count, :followers_count)]
+          end,
+          comments: Comment.all.to_h { |comment| [comment.body_multiloc['en'], comment.slice(:likes_count, :dislikes_count)] },
+          projects: Project.all.to_h { |project| [project.title_multiloc['en'], project.slice(:comments_count, :followers_count)] },
+          users: User.all.to_h { |user| [user.email, user.slice(:followings_count)] },
+          answers: CustomFieldAnswer.all.map { |answer| [answer.answerable_type, answer.key, answer.value] }.sort_by(&:to_s),
+          consents: EmailCampaigns::Consent.all.map { |consent| [consent.user.email, consent.campaign_type, consent.consented] }.sort
+        }
+      end
+
+      it 'creates the same records and counter caches as the source tenant' do
+        project = create(:project_with_active_ideation_phase, title_multiloc: { 'en' => 'Project' })
+        ideas = Array.new(2) do |i|
+          create(:idea, project: project, phases: project.phases, title_multiloc: { 'en' => "Idea #{i}" })
+        end
+        users = create_list(:user, 3)
+
+        comment = create(:comment, idea: ideas[0], body_multiloc: { 'en' => 'Comment' })
+        create(:comment, idea: ideas[0], parent: comment, body_multiloc: { 'en' => 'Reply' })
+        create(:comment, idea: ideas[1], body_multiloc: { 'en' => 'Other comment' })
+
+        create(:reaction, reactable: ideas[0], user: users[0])
+        create(:dislike, reactable: ideas[0], user: users[1])
+        create(:reaction, reactable: ideas[1], user: users[0])
+        create(:comment_reaction, reactable: comment, user: users[2])
+
+        create(:follower, followable: project, user: users[0])
+        create(:follower, followable: ideas[0], user: users[0])
+        create(:follower, followable: ideas[0], user: users[1])
+
+        field = create(:custom_field)
+        create(:custom_field_answer, answerable: users[0], key: field.key, value: 'blue')
+        create(:consent, user: users[1], consented: false)
+
+        expected = snapshot
+        expect(expected[:counts]).to include('Reaction' => 4, 'Follower' => 3, 'CustomFieldAnswer' => 1)
+        expect(expected[:ideas]['Idea 0']).to include('likes_count' => 1, 'dislikes_count' => 1, 'comments_count' => 2)
+
+        template = MultiTenancy::Templates::TenantSerializer.new(Tenant.current).run(deserializer_format: true)
+        tenant = create(:tenant, locales: AppConfiguration.instance.settings('core', 'locales'))
+
+        tenant.switch do
+          service.deserialize(template, bulk: true)
+          expect(snapshot).to eq(expected)
+        end
+      end
+
+      it 'defers the counter caches of all bulk inserted models, since insert_all skips callbacks' do
+        with_counter_caches = described_class::BULK_INSERT_MODELS.select do |model_name|
+          model_name.constantize.after_commit_counter_cache.present?
+        end
+
+        expect(described_class::DEFERRED_COUNTER_CACHE_MODELS.keys).to include(*with_counter_caches)
+      end
+
+      it 'inserts the bulk models in batches' do
+        stub_const("#{described_class}::BULK_INSERT_BATCH_SIZE", 2)
+        create_list(:reaction, 5)
+
+        template = MultiTenancy::Templates::TenantSerializer.new(Tenant.current).run(deserializer_format: true)
+        tenant = create(:tenant, locales: AppConfiguration.instance.settings('core', 'locales'))
+
+        tenant.switch do
+          inserts = 0
+          counter = ->(*, payload) { inserts += 1 if payload[:sql].start_with?('INSERT INTO "reactions"') }
+          ActiveSupport::Notifications.subscribed(counter, 'sql.active_record') do
+            service.deserialize(template, bulk: true)
+          end
+
+          expect(inserts).to eq 3
+          expect(Reaction.count).to eq 5
+          expect(Idea.sum(:likes_count)).to eq 5
+        end
+      end
+    end
+
     context 'with a reuse_by matcher' do
       let(:folder) { create(:project_folder, title_multiloc: { 'en' => 'Shared folder' }) }
       let(:reuse_by) do
