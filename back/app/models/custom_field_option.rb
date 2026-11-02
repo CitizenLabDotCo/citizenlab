@@ -54,6 +54,14 @@ class CustomFieldOption < ApplicationRecord
 
   delegate :project_id, to: :custom_field
 
+  # A domicile answer holds the id of the chosen area, or 'outside' for the
+  # "somewhere else" option, never the option key.
+  def answer_key
+    return key unless custom_field.domicile?
+
+    area&.id || 'outside'
+  end
+
   private
 
   def belongs_to_select_field
