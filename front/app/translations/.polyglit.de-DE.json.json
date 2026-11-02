@@ -1439,6 +1439,11 @@
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
   },
+  "app.components.FilterBoxes.a11y_allSelected": {
+    "state": "verified",
+    "verified_at": "2026-11-02T08:35:49.239756Z",
+    "verified_by": "Jelena"
+  },
   "app.components.FilterBoxes.a11y_numberOfInputs": {
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
@@ -1453,6 +1458,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T15:41:17.347666Z",
     "verified_by": "Admin"
+  },
+  "app.components.FilterBoxes.a11y_selectedOption": {
+    "state": "verified",
+    "verified_at": "2026-11-02T08:35:49.239756Z",
+    "verified_by": "Jelena"
   },
   "app.components.FilterBoxes.a11y_selectedTopicFilters": {
     "state": "verified",
