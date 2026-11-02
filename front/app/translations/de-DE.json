@@ -1148,7 +1148,7 @@
   "app.components.formBuilder.stronglyAgree": "Stimme voll und ganz zu",
   "app.components.formBuilder.stronglyDisagree": "Stimme überhaupt nicht zu",
   "app.components.formBuilder.supportArticleLinkText": "dieser Seite",
-  "app.components.formBuilder.surveyAssistant.intro": "Beschreiben Sie, was Sie erfahren möchten. Der Assistent schlägt die Fragen vor, und nichts wird geändert, bis Sie es freigeben.",
+  "app.components.formBuilder.surveyAssistant.intro": "Beschreiben Sie, was Sie wissen möchten. Der Assistent schlägt die Fragen vor, und nichts wird geändert, bis Sie es freigeben.",
   "app.components.formBuilder.tags": "Themen-Tags",
   "app.components.formBuilder.title": "Titel",
   "app.components.formBuilder.toLabel": "bis",
