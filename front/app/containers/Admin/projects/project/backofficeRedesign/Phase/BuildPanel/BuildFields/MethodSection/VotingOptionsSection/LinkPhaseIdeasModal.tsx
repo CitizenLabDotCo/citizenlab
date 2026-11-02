@@ -11,9 +11,8 @@ import PhaseFilter from 'components/UI/PhaseFilter';
 import { useIntl } from 'utils/cl-intl';
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
-import messages from '../../messages';
-
-import { LinkedIdea } from './useStagedInputs';
+import messages from '../../../../../messages';
+import { LinkedIdea } from '../useStagedInputs';
 
 interface Props {
   projectId: string;

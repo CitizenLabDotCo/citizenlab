@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { Box, Title, Text, Button } from '@citizenlab/cl2-component-library';
 
+import useCopyInputs from 'api/copy_inputs/useCopyInputs';
 import usePhase from 'api/phases/usePhase';
 import usePhases from 'api/phases/usePhases';
 import useProjectById from 'api/projects/useProjectById';
@@ -41,6 +42,7 @@ const AdminProjectIdeas = () => {
   const { data: phases } = usePhases(projectId);
   const { data: phase } = usePhase(phaseId);
   const [showPastInputsModal, setShowPastInputsModal] = useState(false);
+  const { mutate: copyInputs } = useCopyInputs();
   const isBackofficeRedesignEnabled = useProjectBackofficeRedesign();
   const isCommonGround =
     phase?.data.attributes.participation_method === 'common_ground';
@@ -147,6 +149,9 @@ const AdminProjectIdeas = () => {
             showPastInputsModal={showPastInputsModal}
             setShowPastInputsModal={setShowPastInputsModal}
             currentPhaseid={phaseId}
+            onImport={(fromPhaseId) =>
+              copyInputs({ toPhaseId: phaseId, fromPhaseId })
+            }
           />
         </>
       ) : (

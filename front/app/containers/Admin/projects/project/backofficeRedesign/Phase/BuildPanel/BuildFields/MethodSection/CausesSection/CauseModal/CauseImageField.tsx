@@ -11,8 +11,8 @@ import ImagesDropzone from 'components/UI/ImagesDropzone';
 
 import { useIntl } from 'utils/cl-intl';
 
-import ImageFileRow from '../../Event/ImageFileRow';
-import messages from '../../messages';
+import ImageFileRow from '../../../../../../Event/ImageFileRow';
+import messages from '../../../../../../messages';
 
 const CauseImageField = () => {
   const { formatMessage } = useIntl();

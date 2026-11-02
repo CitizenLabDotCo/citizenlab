@@ -7,18 +7,19 @@ import usePhases from 'api/phases/usePhases';
 
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 
+import FormInputEditWarningModal from 'components/admin/FormInputEditWarningModal';
 import IconAction from 'components/UI/IconAction';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import messages from '../../../../../messages';
+import PanelField from '../../../PanelField';
+import AddInputModal from '../AddInputModal';
+import useOpenInputForm from '../useOpenInputForm';
+import useStagedInputs from '../useStagedInputs';
 
-import AddInputModal from './AddInputModal';
 import InputImporterModal from './InputImporterModal';
 import LinkPhaseIdeasModal from './LinkPhaseIdeasModal';
-import PanelField from './PanelField';
-import useOpenInputForm from './useOpenInputForm';
-import useStagedInputs from './useStagedInputs';
 
 interface Props {
   projectId: string;
@@ -115,7 +116,12 @@ const VotingOptionsSection = ({ projectId, phaseId }: Props) => {
         }
       />
 
-      {inputForm.warningModal}
+      <FormInputEditWarningModal
+        variant="bo"
+        showEditWarningModal={inputForm.warningOpened}
+        setShowEditWarningModal={inputForm.setWarningOpened}
+        editFormLink={inputForm.editFormLink}
+      />
 
       {addOpened && (
         <AddInputModal

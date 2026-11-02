@@ -15,10 +15,10 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import messages from '../../../../../../messages';
+import { StagedCause } from '../useStagedCauses';
 
 import CauseImageField from './CauseImageField';
-import { StagedCause } from './useStagedCauses';
 
 interface Props {
   cause?: StagedCause;

@@ -14,8 +14,9 @@ import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/t
 
 import { useIntl } from 'utils/cl-intl';
 
+import PanelField from '../../PanelField';
+
 import DatesSummary from './DatesSummary';
-import PanelField from './PanelField';
 
 interface Props {
   formData: IUpdatedPhaseProperties;

@@ -2,8 +2,8 @@ import React from 'react';
 
 import usePhase from 'api/phases/usePhase';
 
-import ReportSection from '../ReportSection';
-import ReportSettings from '../ReportSettings';
+import ReportSection from '../../../ReportSection';
+import ReportSettings from '../../../ReportSettings';
 
 interface Props {
   projectId: string;

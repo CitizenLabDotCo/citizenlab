@@ -209,6 +209,7 @@ export const ideaSortMethods = [
   'popular',
   'new',
   '-new',
+  'status_priority',
 ] as const;
 
 export type IdeaSortMethod = (typeof ideaSortMethods)[number];

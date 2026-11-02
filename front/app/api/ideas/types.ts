@@ -41,6 +41,7 @@ export const ideaSortValues = [
   '-baskets_count',
   'status',
   '-status',
+  'status_priority',
   'votes_count',
   '-votes_count',
   'total_votes',

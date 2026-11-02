@@ -5,11 +5,11 @@ import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import messages from '../../../../../messages';
+import PanelField from '../../../PanelField';
 
 import DemographicsModal from './DemographicsModal';
 import DemographicsSummary from './DemographicsSummary';
-import PanelField from './PanelField';
 
 const ACTION_ORDER: IPhasePermissionAction[] = [
   'posting_idea',

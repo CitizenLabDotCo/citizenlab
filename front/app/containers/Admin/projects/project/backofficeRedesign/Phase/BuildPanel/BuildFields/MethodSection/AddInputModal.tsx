@@ -21,7 +21,7 @@ import Modal from 'components/UI/Modal';
 import { useIntl } from 'utils/cl-intl';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
-import messages from '../../messages';
+import messages from '../../../../messages';
 
 import { InputValues } from './useStagedInputs';
 

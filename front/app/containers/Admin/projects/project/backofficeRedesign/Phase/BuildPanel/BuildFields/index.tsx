@@ -18,7 +18,7 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import messages from '../../../messages';
 
 import DescriptionField from './DescriptionField';
 import DocumentUrlCard from './DocumentUrlCard';

@@ -247,6 +247,18 @@ class Idea < ApplicationRecord
       .order("idea_statuses.ordering #{direction}, ideas.id")
   }
 
+  # Participant-facing ordering by status asc with tie-breaker on published_at desc, then id asc.
+  # The ordering is read through a subquery rather than `joins(:idea_status)`: an order that
+  # references a joined table makes the index action's `includes` switch from preload to a single
+  # eager_load join, which takes seconds on a page of inputs.
+  scope :order_status_priority, lambda {
+    order(Arel.sql(<<~SQL.squish))
+      (SELECT ordering FROM idea_statuses WHERE idea_statuses.id = ideas.idea_status_id) ASC,
+      ideas.published_at DESC NULLS LAST,
+      ideas.id
+    SQL
+  }
+
   scope :activity_after, lambda { |time_ago|
     ideas = left_joins(:comments, :reactions)
       .where('ideas.updated_at >= ? OR comments.updated_at >= ? OR reactions.created_at >= ?', time_ago, time_ago, time_ago)

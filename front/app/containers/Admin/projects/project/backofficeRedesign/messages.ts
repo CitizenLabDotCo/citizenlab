@@ -377,6 +377,14 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.importStatements',
     defaultMessage: 'Import',
   },
+  importProjectLabel: {
+    id: 'app.containers.Admin.projects.project.importProjectLabel',
+    defaultMessage: 'Project',
+  },
+  importPhaseLabel: {
+    id: 'app.containers.Admin.projects.project.importPhaseLabel',
+    defaultMessage: 'Phase',
+  },
   addAStatement: {
     id: 'app.containers.Admin.projects.project.addAStatement',
     defaultMessage: 'Add a statement',

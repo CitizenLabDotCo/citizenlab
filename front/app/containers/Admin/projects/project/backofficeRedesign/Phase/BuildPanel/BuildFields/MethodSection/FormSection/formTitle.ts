@@ -2,7 +2,7 @@ import { InputTerm } from 'api/phases/types';
 
 import { getInputTermMessage } from 'utils/i18n';
 
-import messages from '../../messages';
+import messages from '../../../../../messages';
 
 const formTitle = (inputTerm: InputTerm) =>
   getInputTermMessage(inputTerm, {

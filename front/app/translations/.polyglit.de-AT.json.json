@@ -1744,6 +1744,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.IdeaCards.filters.statusPriority": {
+    "state": "verified",
+    "verified_at": "2026-10-28T14:43:09.490805Z",
+    "verified_by": "Jelena"
+  },
   "app.components.IdeaCards.filters.trending": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -8433,6 +8438,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.IdeaCards.statusPriority": {
+    "state": "verified",
+    "verified_at": "2026-10-28T14:43:09.490805Z",
+    "verified_by": "Jelena"
   },
   "app.containers.IdeaCards.statusTitle": {
     "state": "verified",

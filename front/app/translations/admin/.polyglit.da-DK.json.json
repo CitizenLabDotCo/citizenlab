@@ -10289,6 +10289,16 @@
     "verified_at": "2026-10-29T10:03:27.553887Z",
     "verified_by": "kielgast@govocal.com"
   },
+  "app.containers.Admin.projects.project.importPhaseLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-02T11:00:00.585189Z",
+    "verified_by": "kielgast@govocal.com"
+  },
+  "app.containers.Admin.projects.project.importProjectLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-02T11:00:00.585189Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.Admin.projects.project.importStatements": {
     "state": "verified",
     "verified_at": "2026-10-29T10:03:27.553887Z",
@@ -18368,6 +18378,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectEdit.statusPrioritySortingMethod": {
+    "state": "verified",
+    "verified_at": "2026-10-27T13:05:26.895879Z",
+    "verified_by": "kielgast@govocal.com"
   },
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": {
     "state": "verified",

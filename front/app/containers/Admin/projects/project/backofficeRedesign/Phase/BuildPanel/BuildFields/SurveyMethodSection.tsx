@@ -12,13 +12,12 @@ import { SurveyMethod } from 'containers/Admin/projects/project/phaseSetup/compo
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
-
-import ChoiceRadio from './ChoiceRadio';
-import ExternalSurveyFields from './ExternalSurveyFields';
-import NativeSurveyOption from './NativeSurveyOption';
-import PanelField from './PanelField';
-import PollOption from './PollOption';
+import messages from '../../../messages';
+import ChoiceRadio from '../ChoiceRadio';
+import ExternalSurveyFields from '../ExternalSurveyFields';
+import NativeSurveyOption from '../NativeSurveyOption';
+import PanelField from '../PanelField';
+import PollOption from '../PollOption';
 
 const NAME = 'survey-method';
 

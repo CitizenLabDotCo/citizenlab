@@ -9,14 +9,14 @@ import inputFormMessages from 'containers/Admin/projects/project/inputForm/messa
 import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
-import inputManagerMessages from '../../InputManager/messages';
-import OfflineFormsButton from '../../InputManager/RightColumn/OfflineFormsButton';
-import messages from '../../messages';
+import inputManagerMessages from '../../../../../InputManager/messages';
+import OfflineFormsButton from '../../../../../InputManager/RightColumn/OfflineFormsButton';
+import messages from '../../../../../messages';
+import PanelField from '../../../PanelField';
+import DemographicsCard from '../DemographicsCard';
 
-import DemographicsCard from './DemographicsCard';
 import FormQuestionsCard from './FormQuestionsCard';
 import formTitle from './formTitle';
-import PanelField from './PanelField';
 
 const getFormTitle = (survey: boolean, inputTerm: InputTerm | undefined) => {
   if (survey) return messages.surveyForm;

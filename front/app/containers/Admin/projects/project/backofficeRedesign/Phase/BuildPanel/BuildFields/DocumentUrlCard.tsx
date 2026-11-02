@@ -10,7 +10,7 @@ import Error from 'components/UI/Error';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import PanelField from './PanelField';
+import PanelField from '../PanelField';
 
 const DOT_SIZE = '6px';
 

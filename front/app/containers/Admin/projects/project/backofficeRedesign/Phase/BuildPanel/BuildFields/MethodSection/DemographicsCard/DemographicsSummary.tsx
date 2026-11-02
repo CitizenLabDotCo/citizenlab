@@ -9,7 +9,7 @@ import actionFormMessages from 'components/admin/ActionForm/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import messages from '../../../../../messages';
 
 interface Props {
   phaseId: string;

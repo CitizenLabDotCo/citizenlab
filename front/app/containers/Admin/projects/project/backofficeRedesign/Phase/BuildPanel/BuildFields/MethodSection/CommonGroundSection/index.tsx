@@ -4,16 +4,16 @@ import { Box, Button, Spinner } from '@citizenlab/cl2-component-library';
 
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 
-import ImportInputsModal from 'components/admin/PostManager/CommonGroundInputManager/ImportInputsModal';
 import IconAction from 'components/UI/IconAction';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import messages from '../../../../../messages';
+import PanelField from '../../../PanelField';
+import AddInputModal from '../AddInputModal';
+import useStagedInputs from '../useStagedInputs';
 
-import AddInputModal from './AddInputModal';
-import PanelField from './PanelField';
-import useStagedInputs from './useStagedInputs';
+import ImportInputsModal from './ImportInputsModal';
 
 interface Props {
   projectId: string;
@@ -103,13 +103,14 @@ const CommonGroundSection = ({ projectId, phaseId }: Props) => {
         />
       )}
 
-      <ImportInputsModal
-        showPastInputsModal={importOpened}
-        setShowPastInputsModal={setImportOpened}
-        currentPhaseid={phaseId}
-        variant="bo"
-        onImport={addImport}
-      />
+      {importOpened && (
+        <ImportInputsModal
+          projectId={projectId}
+          phaseId={phaseId}
+          onImport={addImport}
+          onClose={() => setImportOpened(false)}
+        />
+      )}
     </>
   );
 };

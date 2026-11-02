@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import useAddEmailCampaign from 'api/campaigns/email/useAddEmailCampaign';
 import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
 import { CampaignContext } from 'api/campaigns/types';
@@ -29,7 +31,7 @@ const useCampaignRow = ({ campaign, context, editPath }: Params) => {
   const unpersistedContextCampaign =
     context && !campaign.relationships.context?.data?.id;
 
-  const toggleEnabled = () => {
+  const toggleEnabled = useCallback(() => {
     if (unpersistedContextCampaign) {
       addCampaign({
         context,
@@ -44,21 +46,36 @@ const useCampaignRow = ({ campaign, context, editPath }: Params) => {
         },
       });
     }
-  };
+  }, [
+    addCampaign,
+    campaign,
+    context,
+    unpersistedContextCampaign,
+    updateCampaign,
+  ]);
 
-  const saveEnabled = async (enabled: boolean) => {
-    if (unpersistedContextCampaign) {
-      await addCampaignAsync({
-        context,
-        campaign_name: campaign.attributes.campaign_name,
-        enabled,
-      });
-    } else {
-      await updateCampaignAsync({ id: campaign.id, campaign: { enabled } });
-    }
-  };
+  const saveEnabled = useCallback(
+    async (enabled: boolean) => {
+      if (unpersistedContextCampaign) {
+        await addCampaignAsync({
+          context,
+          campaign_name: campaign.attributes.campaign_name,
+          enabled,
+        });
+      } else {
+        await updateCampaignAsync({ id: campaign.id, campaign: { enabled } });
+      }
+    },
+    [
+      addCampaignAsync,
+      campaign,
+      context,
+      unpersistedContextCampaign,
+      updateCampaignAsync,
+    ]
+  );
 
-  const openEditor = () => {
+  const openEditor = useCallback(() => {
     if (unpersistedContextCampaign) {
       addCampaign(
         {
@@ -75,7 +92,7 @@ const useCampaignRow = ({ campaign, context, editPath }: Params) => {
     } else {
       clHistory.push(editPath(campaign.id));
     }
-  };
+  }, [addCampaign, campaign, context, editPath, unpersistedContextCampaign]);
 
   const isComingSoon =
     (campaign.attributes.editable_regions || []).length === 0;

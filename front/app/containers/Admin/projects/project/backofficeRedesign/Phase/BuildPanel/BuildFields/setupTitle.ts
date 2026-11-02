@@ -1,6 +1,6 @@
 import { ParticipationMethod } from 'api/phases/types';
 
-import messages from '../../messages';
+import messages from '../../../messages';
 
 const setupTitle = (participationMethod: ParticipationMethod) => {
   switch (participationMethod) {

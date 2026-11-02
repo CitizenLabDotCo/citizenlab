@@ -21,6 +21,7 @@ const SORTING_LABELS: Record<IdeaSortMethod, MessageDescriptor> = {
   popular: messages.popularSortingMethod,
   new: messages.newestSortingMethod,
   '-new': messages.oldestSortingMethod,
+  status_priority: messages.status_prioritySortingMethod,
 };
 
 interface Props {
