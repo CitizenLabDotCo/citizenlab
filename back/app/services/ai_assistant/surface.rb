@@ -56,6 +56,11 @@ module AIAssistant
       false
     end
 
+    # Why the model can't propose this call yet, or nil. The error goes back to the model.
+    def proposal_error(_tool, _conversation)
+      nil
+    end
+
     def system_prompt(locale:)
       [
         ::Analysis::LLM::Prompt.new.fetch('ai_assistant_base', locale:),

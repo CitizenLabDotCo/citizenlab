@@ -46,6 +46,33 @@ describe AIAssistant::Surfaces::SurveyBuilder do
     expect(surface.changed_since_proposal?(tool_call)).to be(false)
   end
 
+  describe '#proposal_error' do
+    using RSpec::Parameterized::TableSyntax
+
+    let(:conversation) { create(:ai_assistant_conversation, subject: phase) }
+
+    where(:read_age, :form_age, :error) do
+      nil     | nil     | 'Call get_form_fields first'
+      1.hour  | nil     | nil
+      1.hour  | 2.hours | nil
+      2.hours | 1.hour  | 'The form changed since you last read it'
+    end
+
+    with_them do
+      it 'sends the proposal back to the model unless it builds on the current form' do
+        if read_age
+          message = create(:ai_assistant_message, conversation:, role: 'assistant', content: nil)
+          create(:ai_assistant_tool_call, message:, name: 'get_form_fields', status: 'auto_executed', created_at: read_age.ago)
+        end
+        create(:custom_form, participation_context: phase, fields_last_updated_at: form_age.ago) if form_age
+
+        result = surface.proposal_error(surface.tool('replace_form_fields'), conversation)
+
+        expect(result).to(error ? start_with(error) : be_nil)
+      end
+    end
+  end
+
   it 'describes the survey in the system prompt' do
     prompt = surface.system_prompt(locale: 'en')
 

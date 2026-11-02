@@ -32,6 +32,19 @@ module AIAssistant
         tool_call.pinned_arguments['fields_last_updated_at'].nil? && CustomForm.exists?(participation_context: subject)
       end
 
+      # A proposal must build on the current form, so the model reads it again once it changed.
+      def proposal_error(tool, conversation)
+        return unless tool.name == 'replace_form_fields'
+
+        last_read_at = conversation.tool_calls.auto_executed.where(name: 'get_form_fields').maximum(:created_at)
+        return 'Call get_form_fields first: a change must build on the current form.' unless last_read_at
+
+        form_version = CustomForm.where(participation_context: subject).pick(:fields_last_updated_at)
+        if form_version && form_version > last_read_at
+          'The form changed since you last read it: call get_form_fields again, then propose the change again.'
+        end
+      end
+
       private
 
       def container

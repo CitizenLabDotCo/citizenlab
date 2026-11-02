@@ -156,7 +156,7 @@ module AIAssistant
 
     def propose(tool, arguments)
       pinned = tool.pinned.compact
-      error = tool.validation_error(@user, arguments.merge(pinned))
+      error = @surface.proposal_error(tool, conversation) || tool.validation_error(@user, arguments.merge(pinned))
 
       if error
         # Sent back to the model, so it fixes the call before the user is asked.

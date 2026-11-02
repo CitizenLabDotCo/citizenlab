@@ -101,7 +101,13 @@ describe AIAssistant::Turn do
   end
 
   it 'only proposes write tool calls, and stops the turn' do
-    stub_bedrock(bedrock_tool_use({ id: 'write_1', name: 'replace_form_fields', input: { fields: valid_fields } }, text: 'Here is a first draft.'))
+    stub_bedrock(
+      bedrock_tool_use(
+        { id: 'read_1', name: 'get_form_fields' },
+        { id: 'write_1', name: 'replace_form_fields', input: { fields: valid_fields } },
+        text: 'Here is a first draft.'
+      )
+    )
 
     expect { turn.run }.not_to change { phase.reload.custom_form }
 
@@ -116,24 +122,40 @@ describe AIAssistant::Turn do
 
   it 'pins the form version to the proposal' do
     form = create(:custom_form, participation_context: phase, fields_last_updated_at: 1.hour.ago)
-    stub_bedrock(bedrock_tool_use({ id: 'write_1', name: 'replace_form_fields', input: { fields: valid_fields } }))
+    stub_bedrock(
+      bedrock_tool_use({ id: 'read_1', name: 'get_form_fields' }, { id: 'write_1', name: 'replace_form_fields', input: { fields: valid_fields } })
+    )
 
     turn.run
 
-    expect(AIAssistant::ToolCall.sole.pinned_arguments['fields_last_updated_at']).to eq(form.fields_last_updated_at.iso8601)
+    proposal = AIAssistant::ToolCall.find_by!(tool_use_id: 'write_1')
+    expect(proposal.pinned_arguments['fields_last_updated_at']).to eq(form.fields_last_updated_at.iso8601)
   end
 
   it 'sends invalid write calls back to the model instead of proposing them' do
     stub_bedrock(
+      bedrock_tool_use({ id: 'read_1', name: 'get_form_fields' }),
       bedrock_tool_use({ id: 'write_1', name: 'replace_form_fields', input: { fields: 'not a list' } }),
       bedrock_text('Sorry, let me try again later.')
     )
 
     turn.run
 
-    expect(AIAssistant::ToolCall.sole).to have_attributes(status: 'failed', result: start_with('Error:'))
+    expect(AIAssistant::ToolCall.find_by!(tool_use_id: 'write_1')).to have_attributes(status: 'failed', result: start_with('Error:'))
     tool_result = last_request_messages.last['content'].sole['toolResult']
     expect(tool_result['content'].sole['text']).to start_with('Error:')
+    expect(conversation.reload.status).to eq('idle')
+  end
+
+  it 'sends write calls back to the model until it read the form' do
+    stub_bedrock(
+      bedrock_tool_use({ id: 'write_1', name: 'replace_form_fields', input: { fields: valid_fields } }),
+      bedrock_text('Let me read the survey first.')
+    )
+
+    turn.run
+
+    expect(AIAssistant::ToolCall.sole).to have_attributes(status: 'failed', result: include('Call get_form_fields first'))
     expect(conversation.reload.status).to eq('idle')
   end
 
@@ -178,11 +200,12 @@ describe AIAssistant::Turn do
   end
 
   it 'expires the proposals of a turn that went over the tool-call limit' do
-    stub_const("#{described_class}::MAX_TOOL_CALLS", 1)
+    stub_const("#{described_class}::MAX_TOOL_CALLS", 2)
     stub_bedrock(
       bedrock_tool_use(
+        { id: 'read_1', name: 'get_form_fields' },
         { id: 'write_1', name: 'replace_form_fields', input: { fields: valid_fields } },
-        { id: 'read_1', name: 'get_form_fields' }
+        { id: 'read_2', name: 'get_form_fields' }
       )
     )
 
