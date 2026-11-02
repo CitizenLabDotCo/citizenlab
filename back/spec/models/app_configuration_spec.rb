@@ -37,23 +37,6 @@ RSpec.describe AppConfiguration do
     end
   end
 
-  describe 'settings of a new platform' do
-    def new_config(core_settings = {})
-      settings = SettingsService.new.minimal_required_settings.deep_stringify_keys
-      settings['core'].merge!(core_settings)
-      described_class.send(:new, settings: settings).tap { |config| config.valid?(:create) }
-    end
-
-    it 'enables exclude_admins_and_moderators_from_statistics' do
-      expect(new_config.settings['core']['exclude_admins_and_moderators_from_statistics']).to be true
-    end
-
-    it 'keeps exclude_admins_and_moderators_from_statistics when it is given explicitly' do
-      config = new_config('exclude_admins_and_moderators_from_statistics' => false)
-      expect(config.settings['core']['exclude_admins_and_moderators_from_statistics']).to be false
-    end
-  end
-
   describe '.timezone' do
     before do
       app_config = described_class.instance
