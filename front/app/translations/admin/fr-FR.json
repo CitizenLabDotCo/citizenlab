@@ -4360,6 +4360,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink2": "https://support.govocal.com/fr/articles/527598-personnaliser-la-description-de-vos-projets-avec-l-editeur-de-contenu-sur-mesure",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Saisissez une URL valide, par exemple https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Saisissez un rapport d'aspect valide, par exemple 16:10 ou 5:3.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.noUrlPrompt": "Aucune adresse de site web saisie.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "URL",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Section accordéon",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Ouvrir par défaut",

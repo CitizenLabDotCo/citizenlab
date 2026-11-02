@@ -4360,6 +4360,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink2": "https://support.govocal.com/en/articles/527598-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Introduïu una adreça web vàlida, per exemple https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Introduïu una relació d'aspecte vàlida, per exemple 16:10 o 5:3.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.noUrlPrompt": "No s'ha introduït cap adreça web.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Insereix",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Acordió",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Obert per defecte",

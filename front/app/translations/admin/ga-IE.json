@@ -4360,6 +4360,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink2": "https://support.govocal.com/en/articles/527598-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Cuir isteach seoladh gréasáin bailí, mar shampla https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Cuir isteach cóimheas gné bailí, mar shampla 16:10 nó 5:3.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.noUrlPrompt": "Níor iontráladh aon seoladh suímh gréasáin.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Leabaigh",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Accordion",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Oscail de réir réamhshocraithe",

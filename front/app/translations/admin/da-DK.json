@@ -4360,6 +4360,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink2": "{tenantName, select,  {https://matomo.org/} other {https://support.govocal.com/en/articles/527598-embedding-elements-in-the-content-builder-to-enrich-project-descriptions}}",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Indtast en gyldig webadresse, for eksempel https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Indtast et gyldigt billedformat, f.eks. 16:10 eller 5:3.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.noUrlPrompt": "Ingen webadresse indtastet.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Indlejr",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Harmonika",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Åbnes som standard",

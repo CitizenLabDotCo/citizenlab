@@ -4360,6 +4360,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink2": "https://support.govocal.com/en/articles/527598-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Gitt eng valabel Webadress an, zum Beispill https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Gitt e gültegt Säiteverhältnis an, zum Beispill 16:10 oder 5:3.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.noUrlPrompt": "Keng Websäit-Adress aginn.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Abannen",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Akkordeon",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Standardméisseg op",

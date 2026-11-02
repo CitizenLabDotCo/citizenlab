@@ -4360,6 +4360,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink2": "https://support.govocal.com/es/articles/527598-incrustar-elementos-en-el-generador-de-contenido-para-enriquecer-las-descripciones-de-los-proyectos",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Introduce una dirección web válida, por ejemplo https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Introduce una relación de aspecto válida, por ejemplo 16:10 o 5:3.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.noUrlPrompt": "No se ha introducido ninguna dirección web.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Incrustar Url",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Acordeón",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Abierto por defecto",

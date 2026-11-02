@@ -4360,6 +4360,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink2": "https://support.govocal.com/en/articles/527598-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Geçerli bir web adresi girin, örneğin https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Geçerli bir en boy oranı girin, örneğin 16:10 veya 5:3.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.noUrlPrompt": "Web sitesi adresi girilmedi.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Gömmek",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Akordeon",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Varsayılan olarak açık",

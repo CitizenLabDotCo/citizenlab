@@ -4360,6 +4360,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink2": "https://support.govocal.com/en/articles/527598-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Skriv inn en gyldig nettadresse, for eksempel https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Angi et gyldig sideforhold, for eksempel 16:10 eller 5:3.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.noUrlPrompt": "Ingen nettstedsadresse er oppgitt.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Embed",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Trekkspill",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Åpne som standard",

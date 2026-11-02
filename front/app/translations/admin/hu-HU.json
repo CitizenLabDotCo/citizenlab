@@ -4360,6 +4360,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink2": "https://support.govocal.com/en/articles/527598-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Adjon meg egy érvényes webcímet, például: https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Adjon meg egy érvényes képarányt, például 16:10 vagy 5:3.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.noUrlPrompt": "Nincs megadva weboldal címe.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Beágyazás",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Harmonika",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Alapértelmezés szerint nyitva",
