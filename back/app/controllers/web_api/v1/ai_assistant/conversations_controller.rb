@@ -15,9 +15,10 @@ class WebApi::V1::AIAssistant::ConversationsController < ApplicationController
   end
 
   def show
-    conversation = authorize(::AIAssistant::Conversation.includes(messages: :tool_calls).find(params[:id]))
+    conversation = authorize(::AIAssistant::Conversation.find(params[:id]))
     conversation.recover_if_stuck!
-    render json: serialize(conversation)
+    # Loaded after the recovery, which can change the tool calls.
+    render json: serialize(::AIAssistant::Conversation.includes(messages: :tool_calls).find(conversation.id))
   end
 
   # Starts a new conversation ("New chat"). Proposals left in the user's previous

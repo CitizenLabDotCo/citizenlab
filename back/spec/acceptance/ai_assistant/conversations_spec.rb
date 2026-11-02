@@ -83,6 +83,18 @@ resource 'AI assistant conversations' do
         assert_status 200
         expect(response_data[:attributes]).to include(status: 'failed', last_error_code: 'turn_timed_out')
       end
+
+      example 'Get a conversation whose proposal expired', document: false do
+        conversation.update_columns(status: 'awaiting_approval')
+        AIAssistant::ToolCall.update_all(created_at: 25.hours.ago)
+
+        do_request
+
+        assert_status 200
+        expect(response_data[:attributes][:status]).to eq('idle')
+        tool_call = json_response_body[:included].find { |resource| resource[:type] == 'ai_assistant_tool_call' }
+        expect(tool_call[:attributes][:status]).to eq('expired')
+      end
     end
 
     context 'when another super admin' do
