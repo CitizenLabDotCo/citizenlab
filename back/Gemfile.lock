@@ -768,7 +768,7 @@ GEM
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitest (5.27.0)
-    mjml-rails (4.11.0)
+    mjml-rails (5.0.0)
     mrml (1.10.0-aarch64-linux)
     mrml (1.10.0-arm64-darwin)
     mrml (1.10.0-x86_64-darwin)
@@ -1351,7 +1351,7 @@ DEPENDENCIES
   matomo!
   mcp_server!
   mini_magick (~> 4.13)
-  mjml-rails (~> 4.11)
+  mjml-rails (~> 5.0)
   moderation!
   mrml
   multi_tenancy!
