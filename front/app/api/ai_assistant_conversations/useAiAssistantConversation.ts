@@ -16,7 +16,7 @@ const fetchConversation = (id?: string) =>
     action: 'get',
   });
 
-// Polls while the assistant is working on a turn.
+// Polls while the assistant is working on a turn or waiting for a decision.
 const useAiAssistantConversation = (id?: string) => {
   return useQuery<
     IAiAssistantConversation,
@@ -29,8 +29,13 @@ const useAiAssistantConversation = (id?: string) => {
     enabled: !!id,
     // After "New chat", the previous conversation shouldn't show while the new one loads.
     placeholderData: NO_PLACEHOLDER_DATA,
-    refetchInterval: ({ state }) =>
-      state.data?.data.attributes.status === 'running' ? 2000 : false,
+    refetchInterval: ({ state }) => {
+      const status = state.data?.data.attributes.status;
+      if (status === 'running') return 2000;
+      // Loading the conversation recovers interrupted approvals and overdue proposals.
+      if (status === 'awaiting_approval') return 60000;
+      return false;
+    },
   });
 };
 
