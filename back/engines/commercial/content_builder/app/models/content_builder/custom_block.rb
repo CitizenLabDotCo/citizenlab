@@ -45,7 +45,7 @@ module ContentBuilder
     validate :validate_version_exists_when_published
 
     def published?
-      status == 'published'
+      status == 'published' # TRIGGER CI
     end
 
     # The newest version. Only used to offer a starting point when authoring; never
