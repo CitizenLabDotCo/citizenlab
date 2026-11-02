@@ -28,6 +28,7 @@ describe CommonGround::ResultsService do
         expect(results.phase_id).to eq(phase.id)
         expect(results.top_consensus_ideas).to be_empty
         expect(results.top_controversial_ideas).to be_empty
+        expect(results.ideas_by_agreement).to be_empty
         expect(results.stats[:num_participants]).to eq(0)
         expect(results.stats[:num_ideas]).to eq(0)
         expect(results.stats[:votes]).to eq({ up: 0, down: 0, neutral: 0 })
@@ -41,6 +42,7 @@ describe CommonGround::ResultsService do
         expect(results.phase_id).to eq(phase.id)
         expect(results.top_consensus_ideas).to be_empty
         expect(results.top_controversial_ideas).to be_empty
+        expect(results.ideas_by_agreement).to be_empty
         expect(results.stats[:num_participants]).to eq(0)
         expect(results.stats[:num_ideas]).to eq(3)
         expect(results.stats[:votes]).to eq({ up: 0, down: 0, neutral: 0 })
@@ -88,8 +90,8 @@ describe CommonGround::ResultsService do
         expect(results.phase_id).to eq(phase.id)
       end
 
-      it 'returns top consensus ideas ordered by consensus score (highest first)' do
-        expect(results.top_consensus_ideas).to eq [idea1, idea2]
+      it 'returns only the top consensus ideas that reach the consensus threshold' do
+        expect(results.top_consensus_ideas).to eq [idea1]
       end
 
       context 'when there are ties in consensus scores' do
@@ -104,8 +106,21 @@ describe CommonGround::ResultsService do
         end
       end
 
-      it 'returns top controversial ideas ordered by consensus score (lowest first)' do
-        expect(results.top_controversial_ideas).to eq [idea3, idea2]
+      it 'returns only the top controversial ideas that stay under the close call threshold' do
+        expect(results.top_controversial_ideas).to eq [idea3]
+      end
+
+      it 'leaves the ideas between the two thresholds out of both lists' do
+        expect(results.top_consensus_ideas).not_to include(idea2)
+        expect(results.top_controversial_ideas).not_to include(idea2)
+      end
+
+      it 'returns every reacted idea ordered by net agreement (most agreed first)' do
+        expect(results.ideas_by_agreement).to eq [idea1, idea2, idea3]
+      end
+
+      it 'does not limit the ideas ordered by net agreement' do
+        expect(service.results(1).ideas_by_agreement).to eq [idea1, idea2, idea3]
       end
 
       it 'respects the limit parameter' do
@@ -127,8 +142,9 @@ describe CommonGround::ResultsService do
       it 'can be converted into a hash' do
         expect(results.to_h).to include(
           phase_id: phase.id,
-          top_consensus_ideas: [idea1, idea2],
-          top_controversial_ideas: [idea3, idea2],
+          top_consensus_ideas: [idea1],
+          top_controversial_ideas: [idea3],
+          ideas_by_agreement: [idea1, idea2, idea3],
           stats: {
             num_participants: 5,
             num_ideas: 4,
@@ -139,7 +155,7 @@ describe CommonGround::ResultsService do
 
       it 'returns the vote counts on the top ideas' do
         expect(results.top_consensus_ideas.map { |idea| [idea.likes_count, idea.dislikes_count, idea.neutral_reactions_count] })
-          .to eq([[3, 0, 1], [2, 1, 0]])
+          .to eq([[3, 0, 1]])
       end
 
       context 'with reactions of admins and moderators' do
@@ -153,9 +169,10 @@ describe CommonGround::ResultsService do
         end
 
         it 'includes them by default' do
-          expect(results.top_consensus_ideas).to eq [idea2, idea1]
-          expect(results.top_controversial_ideas).to eq [idea3, idea1]
-          expect(results.top_consensus_ideas.last.dislikes_count).to eq 5
+          expect(results.top_consensus_ideas).to be_empty
+          expect(results.top_controversial_ideas).to eq [idea3]
+          expect(results.ideas_by_agreement).to eq [idea2, idea3, idea1]
+          expect(results.ideas_by_agreement.last.dislikes_count).to eq 5
           expect(results.stats).to eq({ num_participants: 10, num_ideas: 4, votes: { up: 6, down: 7, neutral: 3 } })
         end
 
@@ -163,10 +180,11 @@ describe CommonGround::ResultsService do
           subject(:service) { described_class.new(phase, exclude_admins_and_moderators: true) }
 
           it 'leaves their reactions out of the rankings, the vote counts and the stats' do
-            expect(results.top_consensus_ideas).to eq [idea1, idea2]
-            expect(results.top_controversial_ideas).to eq [idea3, idea2]
+            expect(results.top_consensus_ideas).to eq [idea1]
+            expect(results.top_controversial_ideas).to eq [idea3]
+            expect(results.ideas_by_agreement).to eq [idea1, idea2, idea3]
             expect(results.top_consensus_ideas.map { |idea| [idea.likes_count, idea.dislikes_count, idea.neutral_reactions_count] })
-              .to eq([[3, 0, 1], [2, 1, 0]])
+              .to eq([[3, 0, 1]])
             expect(results.stats).to eq({ num_participants: 5, num_ideas: 4, votes: { up: 6, down: 2, neutral: 3 } })
           end
         end

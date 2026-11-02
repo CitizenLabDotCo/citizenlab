@@ -41,6 +41,7 @@ const CommonGroundResults = ({ phaseId }: Props) => {
     stats: { num_participants, num_ideas, votes },
     top_consensus_ideas,
     top_controversial_ideas,
+    ideas_by_agreement,
   } = results.data.attributes;
   const totalVotes = votes.up + votes.down + votes.neutral;
 
@@ -61,6 +62,11 @@ const CommonGroundResults = ({ phaseId }: Props) => {
         title={formatMessage(messages.closeCallsTitle)}
         description={formatMessage(messages.closeCallsDescription)}
         items={top_controversial_ideas}
+      />
+      <ResultList
+        title={formatMessage(messages.allStatementsTitle)}
+        description={formatMessage(messages.allStatementsDescription)}
+        items={ideas_by_agreement}
       />
     </Box>
   );

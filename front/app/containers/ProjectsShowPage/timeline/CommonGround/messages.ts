@@ -72,4 +72,13 @@ export default defineMessages({
     defaultMessage:
       'These statements sparked the most disagreement, with votes for agree or disagree closest to a 50/50 split.',
   },
+  allStatementsTitle: {
+    id: 'app.components.CommonGroundResults.allStatementsTitle',
+    defaultMessage: 'List of statements',
+  },
+  allStatementsDescription: {
+    id: 'app.components.CommonGroundResults.allStatementsDescription',
+    defaultMessage:
+      'Every statement, from the most agreed to the most disagreed. Please note that statements with unsure only votes are not included in this list, as they do not indicate a clear position.',
+  },
 });
