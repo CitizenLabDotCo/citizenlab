@@ -41,6 +41,16 @@ describe AIAssistant::ToolCallDecider do
       expect(phase.custom_form.reload.custom_fields).to be_empty
     end
 
+    it 'fails without changes when a form was built since a proposal for a survey without one' do
+      form = create(:custom_form, participation_context: phase)
+      hand_built = create(:custom_field_page, resource: form)
+
+      described_class.new(tool_call, user).approve!
+
+      expect(tool_call.reload).to have_attributes(status: 'failed', result: include('stale_data'))
+      expect(form.reload.custom_fields).to eq([hand_built])
+    end
+
     it 'waits for the other proposals of the turn before continuing' do
       create(:ai_assistant_tool_call, message: assistant_message)
 

@@ -65,6 +65,7 @@ module AIAssistant
     def run_tool
       tool = surface.tool(@tool_call.name)
       return { status: 'failed', result: { error: 'This tool is no longer available.' }.to_json } unless tool
+      return { status: 'failed', result: { error: 'stale_data' }.to_json } if surface.changed_since_proposal?(@tool_call)
 
       result = tool.call(@user, @tool_call.arguments.merge(@tool_call.pinned_arguments))
       { status: result.error ? 'failed' : 'executed', result: result.text }

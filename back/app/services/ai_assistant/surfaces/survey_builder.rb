@@ -27,6 +27,11 @@ module AIAssistant
         ]
       end
 
+      # A form created after the proposal has no pinned version, so the tool's own stale check misses it.
+      def changed_since_proposal?(tool_call)
+        tool_call.pinned_arguments['fields_last_updated_at'].nil? && CustomForm.exists?(participation_context: subject)
+      end
+
       private
 
       def container

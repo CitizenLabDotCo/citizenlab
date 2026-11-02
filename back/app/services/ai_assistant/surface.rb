@@ -52,6 +52,10 @@ module AIAssistant
       tools.find { |tool| tool.name == name }
     end
 
+    def changed_since_proposal?(_tool_call)
+      false
+    end
+
     def system_prompt(locale:)
       [
         ::Analysis::LLM::Prompt.new.fetch('ai_assistant_base', locale:),

@@ -35,6 +35,17 @@ describe AIAssistant::Surfaces::SurveyBuilder do
     )
   end
 
+  it 'sees a form created since a proposal that pinned no version' do
+    tool_call = build(:ai_assistant_tool_call, pinned_arguments: { 'container_type' => 'phase', 'container_id' => phase.id })
+    expect(surface.changed_since_proposal?(tool_call)).to be(false)
+
+    create(:custom_form, participation_context: phase)
+    expect(surface.changed_since_proposal?(tool_call)).to be(true)
+
+    tool_call.pinned_arguments['fields_last_updated_at'] = 1.hour.ago.iso8601
+    expect(surface.changed_since_proposal?(tool_call)).to be(false)
+  end
+
   it 'describes the survey in the system prompt' do
     prompt = surface.system_prompt(locale: 'en')
 
