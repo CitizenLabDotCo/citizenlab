@@ -432,28 +432,6 @@
         }
       },
 
-      "integration_onze_stad_app": {
-        "type": "object",
-        "description":  "Allow posting ideas to Onze StadApp as news.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["app_id", "api_key"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false},
-          "app_id": {
-            "title": "App ID",
-            "type": "string",
-            "private": true
-          },
-          "api_key": {
-            "title": "API Key",
-            "type": "string",
-            "private": true
-          }
-        }
-      },
-
       "maps": {
         "type": "object",
         "title": "Maps Default Settings",
@@ -1224,30 +1202,6 @@
         "type": "object",
         "title": "Inspiration hub",
         "description": "Temporary feature flag we are using to be able to hide our work in progress from the live platforms. Do not enable this feature!",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true },
-          "enabled": { "type": "boolean", "default": true }
-        }
-      },
-
-      "pdf_export_responses": {
-        "type": "object",
-        "title": "PDF export of responses",
-        "description": "Temporary feature flag for the PDF export of survey/input responses, while the feature is in development. Do not enable on live platforms.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
-      "user_fields_in_surveys": {
-        "type": "object",
-        "title": "User fields in surveys",
-        "description": "Allow surveys to embed user fields directly in the survey form, instead of asking through registration.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
