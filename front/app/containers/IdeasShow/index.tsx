@@ -30,7 +30,6 @@ import { FormattedMessage } from 'utils/cl-intl';
 import { getInputTermMessage } from 'utils/i18n';
 import { usePermission } from 'utils/permissions';
 
-import AuthoringAssistanePrototype from './components/AuthoringAssistanePrototype';
 import IdeaSharingButton from './components/Buttons/IdeaSharingButton';
 import SharingButtonComponent from './components/Buttons/SharingButtonComponent';
 import Container from './components/Container';
@@ -155,7 +154,6 @@ export const IdeasShow = ({
             translateButtonClicked={translateButtonIsClicked}
           />
           <ProjectLink project={project.data} />
-          <AuthoringAssistanePrototype ideaId={idea.data.id} />
           {ideaImageLarge && (
             <Image src={ideaImageLarge} alt="" id="e2e-idea-image" />
           )}

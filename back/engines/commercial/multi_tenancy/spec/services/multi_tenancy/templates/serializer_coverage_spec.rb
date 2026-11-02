@@ -137,7 +137,6 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         Analysis::Summary
         Analysis::Tag
         Analysis::Tagging
-        AuthoringAssistanceResponse
         EmbeddingsSimilarity
       ],
 

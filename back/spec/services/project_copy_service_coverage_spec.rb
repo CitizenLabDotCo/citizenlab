@@ -130,7 +130,6 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         Analysis::Summary
         Analysis::Tag
         Analysis::Tagging
-        AuthoringAssistanceResponse
         EmbeddingsSimilarity
       ],
 

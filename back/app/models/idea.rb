@@ -149,7 +149,6 @@ class Idea < ApplicationRecord
   has_many :idea_files, -> { order(:ordering) }, dependent: :destroy, inverse_of: :idea
   has_one :idea_trending_info
   has_many :embeddings_similarities, as: :embeddable, dependent: :destroy
-  has_many :authoring_assistance_responses, dependent: :destroy
 
   has_many :idea_relations, dependent: :destroy
   has_many :related_ideas, through: :idea_relations
