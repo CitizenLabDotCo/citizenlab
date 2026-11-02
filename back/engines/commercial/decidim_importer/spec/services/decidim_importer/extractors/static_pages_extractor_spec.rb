@@ -47,6 +47,15 @@ RSpec.describe DecidimImporter::Extractors::StaticPagesExtractor do
     )
   end
 
+  it 'links bare URLs and drops empty trailing paragraphs in the body' do
+    extract([row('specific_data' => '{"body":{"fr":"<p>Voir https://example.org</p><p><br></p>"}}')])
+
+    text = ref_map.fetch('decidim-component-1-layout').attributes['craftjs_json']
+      .dig(ContentBuilder::CustomPageLayoutService::TOP_INFO_ID, 'props', 'text', 'fr-FR')
+    expect(text).to include('<a href="https://example.org"')
+    expect(text).not_to include('<br>')
+  end
+
   it 'registers the page under its component uid' do
     page = extract([row]).first
     expect(ref_map.fetch('decidim-component-1')).to be(page)

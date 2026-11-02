@@ -3,7 +3,8 @@
 module DecidimImporter
   module Links
     # Post-import step (runs in the applied tenant): rewrites Decidim back-links in the tenant's Content
-    # Builder layouts (project/folder descriptions) and static pages via a {Map}. File links resolve to
+    # Builder layouts (project/folder descriptions and static page bodies) and static pages' top info
+    # sections via a {Map}. File links resolve to
     # the imported file's `content.url`; unresolvable ones are returned as "broken" rows for a report.
     # Runs post-import because layouts, static pages and file URLs only exist once the template is
     # deserialized into the tenant.
@@ -30,7 +31,7 @@ module DecidimImporter
         ContentBuilder::Layout.find_each do |layout|
           changed, found = correct_layout_links(layout)
           save_changed(layout, changed)
-          # A layout's container is its buildable (a Project or folder) — that's the page to link to.
+          # A layout's container is its buildable (a Project, folder or static page) — that's the page to link to.
           found.each { |url| broken << broken_link_row(url, layout.content_buildable) }
         end
         StaticPage.find_each do |page|

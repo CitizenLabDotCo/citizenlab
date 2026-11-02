@@ -68,10 +68,17 @@ module DecidimImporter
         layout = Record.new('content_builder/layout', {
           'code' => ContentBuilder::CustomPageLayoutService::CODE,
           'enabled' => true,
-          'craftjs_json' => ContentBuilder::CustomPageLayoutService.new.craftjs_json_for_body(body)
+          'craftjs_json' => ContentBuilder::CustomPageLayoutService.new.craftjs_json_for_body(tidy_body(body))
         })
         layout.reference('content_buildable', page)
         ref_map.register("#{uid}-layout", layout)
+      end
+
+      # Layout text is neither trimmed nor linkified on save, so the body gets the same preparation as
+      # other rich text: empty trailing tags removed and bare URLs turned into links.
+      def tidy_body(body)
+        service = SanitizationService.new
+        service.linkify_multiloc(service.remove_multiloc_empty_trailing_tags(body))
       end
 
       # A multiloc translation of a `decidim_importer.<key>` back-end string, with English fallback
