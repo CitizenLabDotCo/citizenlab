@@ -44,10 +44,10 @@ module AIAssistant
 
     validates :surface_key, :locale, presence: true
 
-    # A failed turn's proposals can't be decided on anymore.
+    # A failed turn's calls awaiting approval can't be decided on anymore.
     def fail_turn!(error_code)
       transaction do
-        expire_proposals!
+        expire_calls_awaiting_approval!
         close_cut_off_tool_calls!
         update!(status: 'failed', last_error_code: error_code)
       end
@@ -60,7 +60,7 @@ module AIAssistant
     end
 
     # Gets the conversation out of a state that nothing would end anymore: a turn whose job
-    # was lost, a decision whose request died, or proposals nobody decided on.
+    # was lost, a decision whose request died, or calls awaiting approval nobody decided on.
     def recover_if_stuck!
       if running?
         fail_turn!('turn_timed_out') if updated_at < TURN_TIMEOUT.ago
@@ -69,10 +69,10 @@ module AIAssistant
       end
     end
 
-    # The proposals can no longer be decided on: the model will see them as expired.
-    def expire_proposals!
+    # These calls can no longer be decided on: the model will see them as expired.
+    def expire_calls_awaiting_approval!
       transaction do
-        tool_calls.proposed.find_each do |tool_call|
+        tool_calls.awaiting_approval.find_each do |tool_call|
           tool_call.update!(status: 'expired', result: { expired: true }.to_json)
         end
         update!(status: 'idle') if awaiting_approval?
@@ -83,11 +83,11 @@ module AIAssistant
 
     def recover_stuck_decisions!
       return unless tool_calls.where(status: ToolCall::UNDECIDED_STATUSES).none? ||
-                    tool_calls.interrupted_approvals.exists? || tool_calls.overdue_proposals.exists?
+                    tool_calls.interrupted_approvals.exists? || tool_calls.overdue_for_approval.exists?
 
       transaction do
         tool_calls.interrupted_approvals.find_each { |tool_call| tool_call.update!(status: 'failed') }
-        expire_proposals! if tool_calls.overdue_proposals.exists?
+        expire_calls_awaiting_approval! if tool_calls.overdue_for_approval.exists?
         update!(status: 'idle') if tool_calls.where(status: ToolCall::UNDECIDED_STATUSES).none?
       end
     end

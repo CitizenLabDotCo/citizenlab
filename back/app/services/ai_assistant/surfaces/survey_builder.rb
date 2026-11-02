@@ -27,13 +27,13 @@ module AIAssistant
         ]
       end
 
-      # A form created after the proposal has no pinned version, so the tool's own stale check misses it.
-      def changed_since_proposal?(tool_call)
+      # A form created after the call has no pinned version, so the tool's own stale check misses it.
+      def stale?(tool_call)
         tool_call.pinned_arguments['fields_last_updated_at'].nil? && CustomForm.exists?(participation_context: subject)
       end
 
-      # A proposal must build on the current form, so the model reads it again once it changed.
-      def proposal_error(tool, conversation)
+      # A change must build on the current form, so the model reads it again once it changed.
+      def write_call_error(tool, conversation)
         return unless tool.name == 'replace_form_fields'
 
         last_read_at = conversation.tool_calls.auto_executed.where(name: 'get_form_fields').maximum(:created_at)

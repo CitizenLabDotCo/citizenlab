@@ -52,12 +52,12 @@ module AIAssistant
       tools.find { |tool| tool.name == name }
     end
 
-    def changed_since_proposal?(_tool_call)
+    def stale?(_tool_call)
       false
     end
 
-    # Why the model can't propose this call yet, or nil. The error goes back to the model.
-    def proposal_error(_tool, _conversation)
+    # Why the model can't make this write call yet, or nil. The error goes back to the model.
+    def write_call_error(_tool, _conversation)
       nil
     end
 

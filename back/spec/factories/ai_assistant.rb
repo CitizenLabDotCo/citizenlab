@@ -19,6 +19,6 @@ FactoryBot.define do
     sequence(:tool_use_id) { |n| "tooluse_#{n}" }
     name { 'replace_form_fields' }
     arguments { { 'fields' => [] } }
-    status { 'proposed' }
+    status { 'awaiting_approval' }
   end
 end

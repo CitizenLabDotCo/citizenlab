@@ -28,8 +28,8 @@ class WebApi::V1::AIAssistant::ToolCallsController < ApplicationController
       render json: WebApi::V1::AIAssistant::ToolCallSerializer.new(@tool_call.reload, params: jsonapi_serializer_params).serializable_hash
     when :expired
       render json: { errors: { base: [{ error: 'tool_call_expired' }] } }, status: :unprocessable_entity
-    when :not_proposed
-      render json: { errors: { base: [{ error: 'tool_call_not_proposed' }] } }, status: :conflict
+    when :not_awaiting_approval
+      render json: { errors: { base: [{ error: 'tool_call_not_awaiting_approval' }] } }, status: :conflict
     else
       render json: { errors: { base: [{ error: 'conversation_busy' }] } }, status: :conflict
     end

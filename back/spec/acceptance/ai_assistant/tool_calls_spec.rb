@@ -48,10 +48,10 @@ resource 'AI assistant tool calls' do
         do_request
 
         assert_status 409
-        expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'tool_call_not_proposed'
+        expect(json_response_body.dig(:errors, :base, 0, :error)).to eq 'tool_call_not_awaiting_approval'
       end
 
-      example '[error] Approve an expired proposal', document: false do
+      example '[error] Approve an expired proposed change', document: false do
         tool_call.update!(created_at: 2.days.ago)
 
         do_request
@@ -64,7 +64,7 @@ resource 'AI assistant tool calls' do
     context 'when another super admin' do
       before { header_token_for(create(:super_admin)) }
 
-      example '[error] Approve the proposal of someone else', document: false do
+      example '[error] Approve the proposed change of someone else', document: false do
         do_request
         assert_status 401
         expect(phase.reload.custom_form).to be_nil

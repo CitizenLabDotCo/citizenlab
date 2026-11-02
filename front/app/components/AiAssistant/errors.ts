@@ -31,9 +31,9 @@ export const getErrorMessage = (
     case 'conversation_busy':
       return messages.errorConversationBusy;
     case 'tool_call_expired':
-      return messages.errorToolCallExpired;
-    case 'tool_call_not_proposed':
-      return messages.errorToolCallNotProposed;
+      return messages.errorToolCallExpired2;
+    case 'tool_call_not_awaiting_approval':
+      return messages.errorToolCallNotAwaitingApproval;
     case 'too_long':
       return messages.errorTooLong;
     default:

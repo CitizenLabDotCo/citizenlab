@@ -106,7 +106,7 @@ const FormEdit = ({
     { enabled: assistantEnabled }
   );
   const assistantStatus = assistantConversation?.data.attributes.status;
-  // Editing by hand meanwhile would make the assistant's proposal stale.
+  // Editing by hand meanwhile would make the assistant's proposed change stale.
   const lockedByAssistant =
     assistantStatus === 'running' || assistantStatus === 'awaiting_approval';
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
@@ -405,7 +405,9 @@ const FormEdit = ({
                       />
                       {lockedByAssistant && (
                         <Warning mb="16px">
-                          {formatMessage(surveyAssistantMessages.editingLocked)}
+                          {formatMessage(
+                            surveyAssistantMessages.editingLocked2
+                          )}
                         </Warning>
                       )}
                       <EditingLock locked={lockedByAssistant}>

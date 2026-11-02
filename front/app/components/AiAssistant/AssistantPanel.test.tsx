@@ -84,7 +84,7 @@ const conversation = (
       attributes: {
         name: 'replace_form_fields',
         arguments: { fields: [] },
-        status: 'proposed',
+        status: 'awaiting_approval',
         reason: null,
         decided_at: null,
         created_at: '2026-10-01T08:00:10.000Z',
@@ -120,7 +120,7 @@ describe('AssistantPanel', () => {
     expect(screen.getByText('Describe your survey')).toBeInTheDocument();
   });
 
-  it('blocks new messages until the proposal is decided on', () => {
+  it('blocks new messages until the proposed change is decided on', () => {
     mockConversation = conversation({
       ...baseAttributes,
       status: 'awaiting_approval',

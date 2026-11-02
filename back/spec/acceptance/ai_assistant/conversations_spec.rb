@@ -84,7 +84,7 @@ resource 'AI assistant conversations' do
         expect(response_data[:attributes]).to include(status: 'failed', last_error_code: 'turn_timed_out')
       end
 
-      example 'Get a conversation whose proposal expired', document: false do
+      example 'Get a conversation whose call awaiting approval expired', document: false do
         conversation.update_columns(status: 'awaiting_approval')
         AIAssistant::ToolCall.update_all(created_at: 25.hours.ago)
 
@@ -143,7 +143,7 @@ resource 'AI assistant conversations' do
         )
       end
 
-      example 'Expire the proposals of the previous conversation', document: false do
+      example 'Expire the calls awaiting approval in the previous conversation', document: false do
         previous = create(:ai_assistant_tool_call, message: create(:ai_assistant_message, role: 'assistant', conversation: create(:ai_assistant_conversation, user: super_admin, subject: phase, status: 'awaiting_approval')))
 
         do_request

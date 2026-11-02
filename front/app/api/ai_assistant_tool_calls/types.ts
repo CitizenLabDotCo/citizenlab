@@ -1,7 +1,7 @@
 export type AiAssistantToolCallStatus =
   | 'pending'
   | 'auto_executed'
-  | 'proposed'
+  | 'awaiting_approval'
   | 'approved'
   | 'executed'
   | 'failed'

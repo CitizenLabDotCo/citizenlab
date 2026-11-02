@@ -24,7 +24,7 @@ const toolCall = (
   attributes: {
     name: 'replace_form_fields',
     arguments: { fields: [] },
-    status: 'proposed',
+    status: 'awaiting_approval',
     reason: null,
     decided_at: null,
     created_at: '2026-10-01T08:00:00.000Z',
@@ -43,7 +43,7 @@ describe('ToolCallCard', () => {
     mockReject.mockReset();
   });
 
-  it('shows the preview of a proposal and approves it', () => {
+  it('shows the preview of a proposed change and approves it', () => {
     const onExecuted = jest.fn();
     mockApprove.mockImplementation((_variables, { onSuccess }) =>
       onSuccess({ data: toolCall({ status: 'executed' }) })

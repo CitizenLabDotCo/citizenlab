@@ -35,18 +35,18 @@ describe AIAssistant::Surfaces::SurveyBuilder do
     )
   end
 
-  it 'sees a form created since a proposal that pinned no version' do
+  it 'sees a form created since a call that pinned no version' do
     tool_call = build(:ai_assistant_tool_call, pinned_arguments: { 'container_type' => 'phase', 'container_id' => phase.id })
-    expect(surface.changed_since_proposal?(tool_call)).to be(false)
+    expect(surface.stale?(tool_call)).to be(false)
 
     create(:custom_form, participation_context: phase)
-    expect(surface.changed_since_proposal?(tool_call)).to be(true)
+    expect(surface.stale?(tool_call)).to be(true)
 
     tool_call.pinned_arguments['fields_last_updated_at'] = 1.hour.ago.iso8601
-    expect(surface.changed_since_proposal?(tool_call)).to be(false)
+    expect(surface.stale?(tool_call)).to be(false)
   end
 
-  describe '#proposal_error' do
+  describe '#write_call_error' do
     using RSpec::Parameterized::TableSyntax
 
     let(:conversation) { create(:ai_assistant_conversation, subject: phase) }
@@ -59,14 +59,14 @@ describe AIAssistant::Surfaces::SurveyBuilder do
     end
 
     with_them do
-      it 'sends the proposal back to the model unless it builds on the current form' do
+      it 'sends the write call back to the model unless it builds on the current form' do
         if read_age
           message = create(:ai_assistant_message, conversation:, role: 'assistant', content: nil)
           create(:ai_assistant_tool_call, message:, name: 'get_form_fields', status: 'auto_executed', created_at: read_age.ago)
         end
         create(:custom_form, participation_context: phase, fields_last_updated_at: form_age.ago) if form_age
 
-        result = surface.proposal_error(surface.tool('replace_form_fields'), conversation)
+        result = surface.write_call_error(surface.tool('replace_form_fields'), conversation)
 
         expect(result).to(error ? start_with(error) : be_nil)
       end

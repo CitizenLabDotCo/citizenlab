@@ -115,14 +115,14 @@ export default defineMessages({
     defaultMessage:
       'The assistant is still working, or waiting for your decision on a proposed change.',
   },
-  errorToolCallExpired: {
-    id: 'app.components.aiAssistant.errorToolCallExpired',
+  errorToolCallExpired2: {
+    id: 'app.components.aiAssistant.errorToolCallExpired2',
     defaultMessage:
-      'This proposal has expired. Ask the assistant again to get a new one.',
+      'This proposed change has expired. Ask the assistant again to get a new one.',
   },
-  errorToolCallNotProposed: {
-    id: 'app.components.aiAssistant.errorToolCallNotProposed',
-    defaultMessage: 'A decision was already made on this proposal.',
+  errorToolCallNotAwaitingApproval: {
+    id: 'app.components.aiAssistant.errorToolCallNotAwaitingApproval',
+    defaultMessage: 'A decision was already made on this proposed change.',
   },
   errorTooLong: {
     id: 'app.components.aiAssistant.errorTooLong',

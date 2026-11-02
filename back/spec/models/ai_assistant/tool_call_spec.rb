@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe AIAssistant::ToolCall do
   describe '#expired?' do
-    it 'is true for proposals older than the approval TTL' do
+    it 'is true for calls awaiting approval longer than the approval TTL' do
       expect(build(:ai_assistant_tool_call, created_at: 25.hours.ago)).to be_expired
       expect(build(:ai_assistant_tool_call, created_at: 1.hour.ago)).not_to be_expired
       expect(build(:ai_assistant_tool_call, status: 'executed', created_at: 25.hours.ago)).not_to be_expired

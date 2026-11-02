@@ -21,7 +21,7 @@ class WebApi::V1::AIAssistant::ConversationsController < ApplicationController
     render json: serialize(::AIAssistant::Conversation.includes(messages: :tool_calls).find(conversation.id))
   end
 
-  # Starts a new conversation ("New chat"). Proposals left in the user's previous
+  # Starts a new conversation ("New chat"). Calls awaiting approval in the user's previous
   # conversations about the same record can no longer be decided on.
   def create
     surface_class = ::AIAssistant::Surface.find!(conversation_params[:surface_key])
@@ -40,7 +40,7 @@ class WebApi::V1::AIAssistant::ConversationsController < ApplicationController
       render json: { errors: { locale: [{ error: 'inclusion' }] } }, status: :unprocessable_entity
     else
       ActiveRecord::Base.transaction do
-        previous_conversations(conversation).each(&:expire_proposals!)
+        previous_conversations(conversation).each(&:expire_calls_awaiting_approval!)
         conversation.save!
       end
       render json: serialize(conversation), status: :created

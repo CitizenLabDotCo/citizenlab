@@ -2,7 +2,7 @@
 
 module AIAssistant
   # One turn of a conversation: replays the stored messages to the model, lets it call tools,
-  # and stores what it does. The turn ends with a reply, or with proposals that wait for the
+  # and stores what it does. The turn ends with a reply, or with calls that wait for the
   # user's decision.
   class Turn
     # Stops RubyLLM's loop from a callback, which has no other way to end it.
@@ -10,10 +10,10 @@ module AIAssistant
 
     MAX_TOOL_CALLS = 10
     MAX_OUTPUT_TOKENS = 16_000
-    PROPOSED_TEXT = 'Proposed to the user, who will approve or reject it.'
+    AWAITING_APPROVAL_TEXT = 'Sent to the user, who will approve or reject it.'
     BUDGET_TEXT = { error: 'Too many tool calls in one turn. Stop and summarise for the user.' }.to_json
     # Bedrock refuses two user turns in a row, which happens when a turn failed or its
-    # proposals expired before the user wrote again.
+    # calls awaiting approval expired before the user wrote again.
     NO_REPLY_TEXT = '(No reply.)'
 
     attr_reader :conversation
@@ -43,24 +43,24 @@ module AIAssistant
     end
 
     # Read-only tools run right away, as the conversation's user. Write tools never run here:
-    # the call is stored as a proposal and the turn stops, until the user approves or rejects
-    # it (see ToolCallDecider).
+    # the call is stored to await approval and the turn stops, until the user approves or
+    # rejects it (see ToolCallDecider).
     def handle_tool_call(tool, args)
       arguments = args.except(*tool.pinned.keys)
 
       if tool.read_only?
         run_read_tool(tool, arguments)
       else
-        propose(tool, arguments)
+        request_approval(tool, arguments)
       end
     end
 
     private
 
-    # The turn already ended, with a reply or with proposals, but the worker stopped before
-    # saving the status.
+    # The turn already ended, with a reply or with calls awaiting approval, but the worker
+    # stopped before saving the status.
     def ended?
-      return true if conversation.tool_calls.proposed.exists?
+      return true if conversation.tool_calls.awaiting_approval.exists?
 
       last_message = conversation.messages.last
       last_message.assistant? && last_message.tool_calls.none?
@@ -154,9 +154,9 @@ module AIAssistant
       result.text
     end
 
-    def propose(tool, arguments)
+    def request_approval(tool, arguments)
       pinned = tool.pinned.compact
-      error = @surface.proposal_error(tool, conversation) || tool.validation_error(@user, arguments.merge(pinned))
+      error = @surface.write_call_error(tool, conversation) || tool.validation_error(@user, arguments.merge(pinned))
 
       if error
         # Sent back to the model, so it fixes the call before the user is asked.
@@ -164,8 +164,8 @@ module AIAssistant
         @current_tool_call.update!(status: 'failed', arguments:, result: text)
         text
       else
-        @current_tool_call.update!(status: 'proposed', arguments:, pinned_arguments: pinned)
-        RubyLLM::Tool::Halt.new(PROPOSED_TEXT)
+        @current_tool_call.update!(status: 'awaiting_approval', arguments:, pinned_arguments: pinned)
+        RubyLLM::Tool::Halt.new(AWAITING_APPROVAL_TEXT)
       end
     end
 
@@ -180,7 +180,7 @@ module AIAssistant
 
     def finish
       conversation.close_cut_off_tool_calls!
-      if conversation.tool_calls.proposed.exists?
+      if conversation.tool_calls.awaiting_approval.exists?
         conversation.update!(status: 'awaiting_approval', last_error_code: nil)
       else
         conversation.update!(status: 'idle', last_error_code: nil)

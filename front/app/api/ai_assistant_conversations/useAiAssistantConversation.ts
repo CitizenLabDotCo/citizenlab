@@ -32,7 +32,7 @@ const useAiAssistantConversation = (id?: string) => {
     refetchInterval: ({ state }) => {
       const status = state.data?.data.attributes.status;
       if (status === 'running') return 2000;
-      // Loading the conversation recovers interrupted approvals and overdue proposals.
+      // Loading the conversation recovers interrupted approvals and calls overdue for approval.
       if (status === 'awaiting_approval') return 60000;
       return false;
     },

@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 module AIAssistant
-  # Applies the user's decision on a proposed tool call. An approved call runs as the
-  # deciding user, through the tool's own authorization. Once every proposal of the turn is
+  # Applies the user's decision on a tool call awaiting approval. An approved call runs as
+  # the deciding user, through the tool's own authorization. Once every call of the turn is
   # decided, the conversation continues so the model can react to the outcome.
   #
   # Returns :ok, :busy (the conversation isn't waiting for a decision), :expired, or
-  # :not_proposed (already decided).
+  # :not_awaiting_approval (already decided).
   class ToolCallDecider
     def initialize(tool_call, user)
       @tool_call = tool_call
@@ -28,11 +28,11 @@ module AIAssistant
       return :busy unless @conversation.awaiting_approval?
 
       if @tool_call.expired?
-        @conversation.with_lock { @conversation.expire_proposals! }
+        @conversation.with_lock { @conversation.expire_calls_awaiting_approval! }
         return :expired
       end
 
-      return :not_proposed unless claim(approved:, reason:)
+      return :not_awaiting_approval unless claim(approved:, reason:)
 
       # Runs outside any transaction: the tool opens its own, which a surrounding one would
       # not roll back correctly.
@@ -50,7 +50,7 @@ module AIAssistant
     # Claims the call for this decision. Returns whether it worked: false if someone decided on it first.
     def claim(approved:, reason:)
       claimed = ToolCall
-        .where(id: @tool_call.id, status: 'proposed')
+        .where(id: @tool_call.id, status: 'awaiting_approval')
         .update_all(
           status: approved ? 'approved' : 'rejected',
           decided_by_id: @user.id,
@@ -65,7 +65,7 @@ module AIAssistant
     def run_tool
       tool = surface.tool(@tool_call.name)
       return { status: 'failed', result: { error: 'This tool is no longer available.' }.to_json } unless tool
-      return { status: 'failed', result: { error: 'stale_data' }.to_json } if surface.changed_since_proposal?(@tool_call)
+      return { status: 'failed', result: { error: 'stale_data' }.to_json } if surface.stale?(@tool_call)
 
       result = tool.call(@user, @tool_call.arguments.merge(@tool_call.pinned_arguments))
       { status: result.error ? 'failed' : 'executed', result: result.text }
