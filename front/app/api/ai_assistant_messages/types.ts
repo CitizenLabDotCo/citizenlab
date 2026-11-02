@@ -1,3 +1,5 @@
+import { IRelationship } from 'typings';
+
 export interface IAiAssistantMessageData {
   id: string;
   type: 'ai_assistant_message';
@@ -6,6 +8,9 @@ export interface IAiAssistantMessageData {
     content: string | null;
     position: number;
     created_at: string;
+  };
+  relationships: {
+    tool_calls: { data: IRelationship[] };
   };
 }
 
