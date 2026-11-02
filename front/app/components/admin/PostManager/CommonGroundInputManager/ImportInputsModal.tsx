@@ -4,7 +4,6 @@ import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import { IOption } from 'typings';
 
 import useCopyInputs from 'api/copy_inputs/useCopyInputs';
-import { IJob } from 'api/jobs/types';
 import usePhase from 'api/phases/usePhase';
 
 import Modal from 'components/UI/Modal';
@@ -21,8 +20,7 @@ interface Props {
   setShowPastInputsModal: (show: boolean) => void;
   currentPhaseid: string;
   variant?: 'bo';
-  /** When set, the import is handed back to run later instead of now. */
-  onImport?: (fromPhaseId: string, count: number) => void;
+  onImport: (fromPhaseId: string, count: number) => void;
 }
 
 const ImportInputsModal = ({
@@ -51,35 +49,22 @@ const ImportInputsModal = ({
     [setSelectedProjectId]
   );
 
-  const runCopyInputs = useCallback(
-    (
-      fromPhaseId: string,
-      dryRun: boolean,
-      onSuccess?: (response: IJob) => void
-    ) => {
-      copyInputs(
-        {
-          toPhaseId: currentPhaseid,
-          fromPhaseId,
-          dryRun,
-        },
-        onSuccess ? { onSuccess } : undefined
-      );
-    },
-    [copyInputs, currentPhaseid]
-  );
-
   const handlePhaseFilter = useCallback(({ value }: IOption) => {
     setPhaseId(value);
   }, []);
 
   useEffect(() => {
     if (phaseId) {
-      runCopyInputs(phaseId, true, (response) => {
-        setNoOfInputs(response.data.attributes.total);
-      });
+      copyInputs(
+        { toPhaseId: currentPhaseid, fromPhaseId: phaseId, dryRun: true },
+        {
+          onSuccess: (response) => {
+            setNoOfInputs(response.data.attributes.total);
+          },
+        }
+      );
     }
-  }, [phaseId, runCopyInputs]);
+  }, [copyInputs, currentPhaseid, phaseId]);
 
   // The modal stays mounted, so it starts over by clearing its choices.
   const handleClose = useCallback(() => {
@@ -91,13 +76,9 @@ const ImportInputsModal = ({
 
   const handleImport = useCallback(() => {
     if (!phaseId || noOfInputs === undefined) return;
-    if (onImport) {
-      onImport(phaseId, noOfInputs);
-    } else {
-      runCopyInputs(phaseId, false);
-    }
+    onImport(phaseId, noOfInputs);
     handleClose();
-  }, [handleClose, noOfInputs, onImport, phaseId, runCopyInputs]);
+  }, [handleClose, noOfInputs, onImport, phaseId]);
 
   const currentPhaseStartDate = currentPhase?.data.attributes.start_at;
   const isBo = variant === 'bo';
