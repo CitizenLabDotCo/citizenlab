@@ -29,14 +29,31 @@ RSpec.describe Analysis::LLM::RubyLLM do
         service.chat(message)
       end
 
-      it 'scrubs bytes that are not valid UTF-8, which the gem cannot JSON-encode' do
-        file = create(:global_file, name: 'notes_latin1.md')
-        message = Analysis::LLM::Message.new('Summarize this transcript', file)
+      # The gem interpolates text files into a <file> block that is JSON-encoded as
+      # UTF-8. So the tempfile must hold valid UTF-8, and hold the text the user
+      # uploaded rather than a row of replacement characters.
+      describe 'encodings' do
+        using RSpec::Parameterized::TableSyntax
 
-        service.chat(message)
+        where(:case_name, :fixture, :expected_texts) do
+          'UTF-8'                   | 'notes.md'                 | ['# Interview transcript', 'The bike lanes stop halfway.']
+          'CP1252'                  | 'notes_latin1.md'          | ['Entretien réalisé à Gand', 'la fréquence des bus']
+          'UTF-8 with CP1252 bytes' | 'notes_mixed_encodings.md' | ['# Compte rendu — réunion', 'Le coût estimé est de 12’000 €.']
+        end
 
-        expect(chat).to have_received(:ask) do |_text, with:|
-          expect(File.read(with.first)).to be_valid_encoding
+        with_them do
+          it 'writes the text to the tempfile as UTF-8' do
+            file = create(:global_file, name: fixture)
+            message = Analysis::LLM::Message.new('Summarize this transcript', file)
+
+            service.chat(message)
+
+            expect(chat).to have_received(:ask) do |_text, with:|
+              content = File.read(with.first)
+              expect(content).to be_valid_encoding
+              expected_texts.each { |text| expect(content).to include(text) }
+            end
+          end
         end
       end
     end

@@ -80,7 +80,7 @@ module Analysis
         file_content = if file.text?
           # RubyLLM inlines text files in a <file> block, which is JSON-encoded as
           # UTF-8, so invalid bytes have to go before the gem sees them.
-          file.content.read.force_encoding(Encoding::UTF_8).scrub
+          to_utf8(file.content.read)
         elsif file.mime_type == 'application/pdf' || file.image?
           file.content.read
         elsif file.preview.nil? || file.preview.status == 'failed'
@@ -97,6 +97,14 @@ module Analysis
         tempfile.write(file_content)
         tempfile.close
         tempfile.path
+      end
+
+      # Text files are regularly not UTF-8: Windows editors still write CP1252,
+      # which is a superset of Latin-1 on the printable bytes.
+      def to_utf8(bytes)
+        bytes.force_encoding(Encoding::UTF_8).scrub do |invalid|
+          invalid.encode(Encoding::UTF_8, Encoding::WINDOWS_1252, undef: :replace)
+        end
       end
     end
   end
