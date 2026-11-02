@@ -22,6 +22,7 @@ import useLocalize from 'hooks/useLocalize';
 import LanguageSelector from 'containers/MainHeader/Components/LanguageSelector';
 
 import ButtonWithLink from 'components/UI/ButtonWithLink';
+import WeglotSwitcher from 'components/WeglotSwitcher';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
@@ -198,7 +199,7 @@ const PageControlButtons = ({
       px={isSmallerThanPhone ? '16px' : '24px'}
       py={'16px'}
     >
-      <Box>
+      <Box display="flex" alignItems="center" gap="12px">
         {/* We wrap it in a Box here to maintain the spacing and keep the next buttons right-aligned when the language selector is empty, preventing the need to move the locale check logic here. */}
         <LanguageSelector
           dropdownClassName={'open-upwards'}
@@ -210,6 +211,9 @@ const PageControlButtons = ({
             window.location.reload();
           }}
         />
+        {/* These pages hide the navbar, so the switcher sits in the footer
+            beside the platform language selector instead. */}
+        <WeglotSwitcher openUpwards />
       </Box>
       <Box display="flex" justifyContent="center" alignItems="center">
         {hasPreviousPage && pageVariant !== 'after-submission' && (

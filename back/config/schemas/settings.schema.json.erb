@@ -21,7 +21,8 @@
           "lifecycle_stage",
           "country_code",
           "authentication_token_lifetime_in_days",
-          "min_user_age"
+          "min_user_age",
+          "exclude_admins_and_moderators_from_statistics"
         ],
         "additionalProperties": false,
         "required": ["allowed", "enabled", "lifecycle_stage", "country_code"],
@@ -97,6 +98,12 @@
             "title": "Weglot API key",
             "description": "Set the API key of Weglot to enable automatic page translations.",
             "type": "string"
+          },
+          "weglot_switcher_in_navbar": {
+            "title": "Weglot language switcher in the navigation bar",
+            "description": "Show the Weglot language switcher in the navigation bar instead of Weglot's own floating widget. Turn on 'Hide switcher' in this platform's Weglot project too, or both switchers appear. Not recommended on a platform with more than one platform language.",
+            "type": "boolean",
+            "default": false
           },
           "color_main": {
             "title": "Main Colour",
@@ -269,7 +276,7 @@
             "title": "Exclude admins and moderators from statistics",
             "description": "When enabled, the participation and visits of admins and moderators are left out of statistics and graphs.",
             "type": "boolean",
-            "default": false
+            "default": true
           },
           "projects_unlisted_by_default":  {
             "title": "Make new projects unlisted by default",
@@ -917,6 +924,18 @@
         "type": "object",
         "title": "Mapping features used in in-platform surveys",
         "description":  "Mapping questions (pin, route & area), Esri Shapefile upload, and map page.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "input_form_answer_filters": {
+        "type": "object",
+        "title": "Answer filters on input lists [DO NOT ENABLE]",
+        "description": "Lets managers offer a public choice question as a filter on the list of inputs. Still under development, not ready for customer use.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1648,6 +1667,19 @@
         "type": "object",
         "title": "Configurable dropdown",
         "description": "Allows grouping several navigation bar items together under a single dropdown menu.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "ai_assistant": {
+        "type": "object",
+        "title": "AI assistant [DO NOT ENABLE]",
+        "description": "An AI chat assistant in the back office that proposes changes, such as a survey's questions, for the admin to approve. Under development, not ready for customer use. Only available to super admins for now.",
+        "development": true,
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
