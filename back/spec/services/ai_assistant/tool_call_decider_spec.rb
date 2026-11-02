@@ -48,6 +48,20 @@ describe AIAssistant::ToolCallDecider do
       expect(conversation.reload.status).to eq('awaiting_approval')
     end
 
+    it 'does not continue a conversation that stopped waiting while the tool ran' do
+      surface = AIAssistant::Surface.for(conversation)
+      allow(AIAssistant::Surface).to receive(:for).and_return(surface)
+      allow(surface.tool('replace_form_fields')).to receive(:call).and_wrap_original do |call, *args|
+        # What "New chat" does to the previous conversation.
+        AIAssistant::Conversation.find(conversation.id).expire_proposals!
+        call.call(*args)
+      end
+
+      expect { described_class.new(tool_call, user).approve! }.not_to have_enqueued_job(AIAssistant::TurnJob)
+      expect(tool_call.reload.status).to eq('executed')
+      expect(conversation.reload.status).to eq('idle')
+    end
+
     it 'refuses a call that was already decided' do
       tool_call.update!(status: 'rejected')
 

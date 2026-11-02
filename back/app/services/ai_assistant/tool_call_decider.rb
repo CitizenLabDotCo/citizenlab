@@ -40,7 +40,7 @@ module AIAssistant
 
       @conversation.with_lock do
         @tool_call.update!(outcome)
-        continue_conversation if @conversation.tool_calls.where(status: ToolCall::UNDECIDED_STATUSES).none?
+        continue_conversation if @conversation.awaiting_approval? && @conversation.tool_calls.where(status: ToolCall::UNDECIDED_STATUSES).none?
       end
 
       log_activity(approved)
