@@ -190,6 +190,42 @@ describe MultiTenancy::Templates::TenantDeserializer do
         expect(described_class::DEFERRED_COUNTER_CACHE_MODELS.keys).to include(*with_counter_caches)
       end
 
+      # The BULK_INSERT_MODELS are inserted with `insert_all!` when applying a template, which
+      # skips all their callbacks. This spec makes sure that nobody adds a callback to one of
+      # these models without realising that it won't run when applying a template.
+      #
+      # If you are seeing this spec fail, it's because you added a callback to one of the
+      # listed models. Make sure that the tenants created from a template are still correct
+      # without that callback running for the records of the template (e.g. it only matters
+      # for records created by users, or its effect is recomputed after the template is
+      # applied). Only then add it to `allowed` below. Otherwise, remove the model from
+      # BULK_INSERT_MODELS, so that its records are saved one by one again.
+      it 'fails when a bulk inserted model gets a callback that bulk insertion would skip' do
+        # Callbacks added by Rails and gems, which are covered by the bulk insertion: the
+        # associations are resolved to ids and the counter caches are recomputed afterwards.
+        framework = /\A(autosave_associated_records_for_|_update_counts_|normalize_changed_in_place_attributes\z|generate_slug\z)/
+        allowed = {
+          # No-op when applying a template: there's no location data to track.
+          'Reaction' => %i[track_participation_location]
+        }
+
+        callback_kinds = %i[validation save create commit]
+
+        described_class::BULK_INSERT_MODELS.each do |model_name|
+          model = model_name.constantize
+          callbacks = callback_kinds.flat_map do |kind|
+            model.public_send(:"_#{kind}_callbacks").map(&:filter)
+          end
+          unexpected = callbacks.reject { |filter| filter.is_a?(Symbol) && filter.match?(framework) }
+          unexpected -= allowed.fetch(model_name, [])
+
+          expect(unexpected).to be_empty, <<~MSG.squish
+            #{model_name} has callbacks that are skipped when applying a template:
+            #{unexpected.inspect}. See the comment above this spec.
+          MSG
+        end
+      end
+
       it 'inserts the bulk models in batches' do
         stub_const("#{described_class}::BULK_INSERT_BATCH_SIZE", 2)
         create_list(:reaction, 5)
