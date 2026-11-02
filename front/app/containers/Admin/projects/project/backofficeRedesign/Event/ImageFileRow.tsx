@@ -32,6 +32,7 @@ interface Props {
   onCrop?: () => void;
   onReplace: (image: UploadFile) => void;
   onRemove: () => void;
+  stackActions?: boolean;
 }
 
 const ImageFileRow = ({
@@ -40,6 +41,7 @@ const ImageFileRow = ({
   onCrop,
   onReplace,
   onRemove,
+  stackActions = false,
 }: Props) => {
   const { formatMessage } = useIntl();
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -76,12 +78,35 @@ const ImageFileRow = ({
     );
   };
 
-  const meta = [
-    returnFileSize(image.size),
-    dimensions && `${dimensions.width} × ${dimensions.height}`,
-  ]
-    .filter(Boolean)
-    .join(' · ');
+  const actions = (
+    <Box
+      display="flex"
+      gap="4px"
+      ml={stackActions ? '-4px' : undefined}
+      mr={stackActions ? undefined : '-4px'}
+    >
+      {onCrop && (
+        <IconAction
+          icon="edit"
+          tooltip={formatMessage(messages.crop)}
+          ariaLabel={formatMessage(messages.cropImage)}
+          onClick={onCrop}
+        />
+      )}
+      <IconAction
+        icon="upload-file"
+        tooltip={formatMessage(messages.replace)}
+        ariaLabel={formatMessage(messages.replaceImage)}
+        onClick={() => inputRef.current?.click()}
+      />
+      <IconAction
+        icon="delete"
+        tooltip={formatMessage(messages.delete)}
+        ariaLabel={formatMessage(messages.deleteImage)}
+        onClick={onRemove}
+      />
+    </Box>
+  );
 
   return (
     <Box display="flex" flexDirection="column" gap="4px">
@@ -120,38 +145,22 @@ const ImageFileRow = ({
           >
             {image.name}
           </Text>
-          <Text
-            m="0"
-            fontSize="xs"
-            lineHeight="16px"
-            color="coolGrey600"
-            whiteSpace="nowrap"
-          >
-            {meta}
+          <Text m="0" fontSize="xs" lineHeight="16px" color="coolGrey600">
+            <Text as="span" m="0" fontSize="xs" whiteSpace="nowrap">
+              {returnFileSize(image.size)}
+            </Text>
+            {dimensions && (
+              <>
+                {' · '}
+                <Text as="span" m="0" fontSize="xs" whiteSpace="nowrap">
+                  {`${dimensions.width} × ${dimensions.height}`}
+                </Text>
+              </>
+            )}
           </Text>
+          {stackActions && actions}
         </Box>
-        <Box display="flex" gap="4px" mr="-4px">
-          {onCrop && (
-            <IconAction
-              icon="edit"
-              tooltip={formatMessage(messages.crop)}
-              ariaLabel={formatMessage(messages.cropImage)}
-              onClick={onCrop}
-            />
-          )}
-          <IconAction
-            icon="upload-file"
-            tooltip={formatMessage(messages.replace)}
-            ariaLabel={formatMessage(messages.replaceImage)}
-            onClick={() => inputRef.current?.click()}
-          />
-          <IconAction
-            icon="delete"
-            tooltip={formatMessage(messages.delete)}
-            ariaLabel={formatMessage(messages.deleteImage)}
-            onClick={onRemove}
-          />
-        </Box>
+        {!stackActions && actions}
         <input
           ref={inputRef}
           type="file"

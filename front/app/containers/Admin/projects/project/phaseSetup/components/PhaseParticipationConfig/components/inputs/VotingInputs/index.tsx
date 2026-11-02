@@ -13,8 +13,6 @@ import { CLErrors, IOption } from 'typings';
 import { PresentationMode, VoteTerm, VotingMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
 
-import ToggleActionAccess from 'containers/Admin/projects/_shared/components/ToggleActionAccess';
-
 import {
   SectionDescription,
   SectionField,
@@ -33,6 +31,7 @@ import { ValidationErrors } from '../../../../../typings';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import { ToggleRow } from '../../shared/styling';
 import ViewSelector from '../../shared/ViewSelector';
+import ActionToggleRow from '../_shared/ActionToggleRow';
 
 import VotingMethodChangeModal from './VotingMethodChangeModal';
 import BudgetingInputs from './votingMethodInputs/BudgetingInputs';
@@ -276,16 +275,17 @@ const VotingInputs = ({
           <StyledSectionDescription>
             <FormattedMessage {...messages.enabledActionsForUsersDescription} />
           </StyledSectionDescription>
-          <ToggleRow>
+          <ActionToggleRow
+            phaseId={panel ? phaseId : undefined}
+            action="commenting_idea"
+          >
             <Toggle
+              variant={panel ? 'bo' : undefined}
               checked={!!commenting_enabled}
               onChange={toggleCommentingEnabled}
               label={formatMessage(messages.inputCommentingEnabled)}
             />
-          </ToggleRow>
-          {panel && phaseId && (
-            <ToggleActionAccess phaseId={phaseId} action="commenting_idea" />
-          )}
+          </ActionToggleRow>
           <Text mb="0px" pb="0px" color={'textSecondary'} fontSize="s">
             {formatMessage(messages.commentingBias)}
           </Text>
@@ -328,6 +328,7 @@ const VotingInputs = ({
           handleAvailableViewsChange={handleAvailableViewsChange}
           title={messages.defaultViewOptions}
           hideFeed
+          variant={panel ? 'panel' : undefined}
         />
       </Box>
     </>

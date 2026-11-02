@@ -1224,6 +1224,7 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+
   "app.components.ErrorBoundary.reloadPage": {
     "state": "verified",
     "verified_at": "2026-10-02T14:09:45.404706Z",
@@ -1753,6 +1754,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.components.IdeaCards.filters.statusPriority": {
+    "state": "verified",
+    "verified_at": "2026-10-27T14:00:58.639246Z",
+    "verified_by": "Luuc"
   },
   "app.components.IdeaCards.filters.trending": {
     "state": "verified",
@@ -3879,6 +3885,7 @@
     "verified_at": "2026-07-07T14:52:42.215163Z",
     "verified_by": "Luuc"
   },
+
   "app.components.UI.FeatureCallout.dismiss": {
     "state": "verified",
     "verified_at": "2026-10-08T07:46:40.658208Z",
@@ -7269,6 +7276,11 @@
     "verified_at": "2026-07-10T12:33:54.948848Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Authentication.steps.FlowStart.signInWithEmployeeAccount": {
+    "state": "verified",
+    "verified_at": "2026-10-27T13:59:22.176173Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": {
     "state": "verified",
     "verified_at": "2026-08-20T12:11:02.511157Z",
@@ -8413,6 +8425,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.containers.IdeaCards.statusPriority": {
+    "state": "verified",
+    "verified_at": "2026-10-27T14:00:58.639246Z",
+    "verified_by": "Luuc"
   },
   "app.containers.IdeaCards.statusTitle": {
     "state": "verified",
@@ -12589,11 +12606,13 @@
     "verified_at": "2026-09-23T16:51:52.310206Z",
     "verified_by": "Luuc"
   },
+
   "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignDescription2": {
     "state": "verified",
     "verified_at": "2026-10-08T07:46:40.658208Z",
     "verified_by": "Pauline"
   },
+
   "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignTitle": {
     "state": "verified",
     "verified_at": "2026-10-08T07:46:40.658208Z",
@@ -13828,6 +13847,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.errors.not_supported_in_standalone_phase": {
+    "state": "verified",
+    "verified_at": "2026-10-08T07:50:56.067178Z",
+    "verified_by": "Pauline"
   },
   "app.errors.number_invalid": {
     "state": "verified",

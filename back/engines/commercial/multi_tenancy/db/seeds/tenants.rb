@@ -452,6 +452,10 @@ module MultiTenancy
             project_backoffice_redesign: {
               enabled: false,
               allowed: true
+            },
+            ai_assistant: {
+              enabled: true,
+              allowed: true
             }
           })
         )

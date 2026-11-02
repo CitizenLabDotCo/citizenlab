@@ -1754,6 +1754,11 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.IdeaCards.filters.statusPriority": {
+    "state": "verified",
+    "verified_at": "2026-10-28T14:43:09.490805Z",
+    "verified_by": "Jelena"
+  },
   "app.components.IdeaCards.filters.trending": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -2353,6 +2358,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.PostCardsComponents.perspectives": {
+    "state": "verified",
+    "verified_at": "2026-10-29T11:59:06.175895Z",
+    "verified_by": "Jelena"
   },
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": {
     "state": "verified",
@@ -4734,6 +4744,76 @@
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
   },
+  "app.components.aiAssistant.elapsed": {
+    "state": "verified",
+    "verified_at": "2026-11-02T07:29:11.927386Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.errorContextTooLong": {
+    "state": "verified",
+    "verified_at": "2026-11-02T07:29:11.927386Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.errorConversationBusy": {
+    "state": "verified",
+    "verified_at": "2026-11-02T07:29:11.927386Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.errorGeneric": {
+    "state": "verified",
+    "verified_at": "2026-11-02T07:29:11.927386Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.errorLlmRequestRejected": {
+    "state": "verified",
+    "verified_at": "2026-11-02T07:29:11.927386Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.errorLlmUnavailable": {
+    "state": "verified",
+    "verified_at": "2026-11-02T07:29:11.927386Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.errorSurfaceUnavailable": {
+    "state": "verified",
+    "verified_at": "2026-11-02T07:29:11.927386Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.errorTooLong": {
+    "state": "verified",
+    "verified_at": "2026-11-02T07:29:11.927386Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.errorTurnTimedOut": {
+    "state": "verified",
+    "verified_at": "2026-11-02T07:29:11.927386Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.newChat": {
+    "state": "verified",
+    "verified_at": "2026-11-02T07:29:11.927386Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.placeholder": {
+    "state": "verified",
+    "verified_at": "2026-11-02T07:29:11.927386Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.send": {
+    "state": "verified",
+    "verified_at": "2026-11-02T07:29:11.927386Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.title": {
+    "state": "verified",
+    "verified_at": "2026-11-02T07:29:11.927386Z",
+    "verified_by": "Jelena"
+  },
+  "app.components.aiAssistant.working": {
+    "state": "verified",
+    "verified_at": "2026-11-02T07:29:11.927386Z",
+    "verified_by": "Jelena"
+  },
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": {
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
@@ -5813,6 +5893,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.components.formBuilder.surveyAssistant.intro": {
+    "state": "verified",
+    "verified_at": "2026-11-02T07:29:11.927386Z",
+    "verified_by": "Jelena"
   },
   "app.components.formBuilder.tags": {
     "state": "verified",
@@ -7289,6 +7374,11 @@
     "verified_at": "2026-07-08T12:03:15.906621Z",
     "verified_by": "Jelena"
   },
+  "app.containers.Authentication.steps.FlowStart.signInWithEmployeeAccount": {
+    "state": "verified",
+    "verified_at": "2026-10-28T11:25:56.267639Z",
+    "verified_by": "Jelena"
+  },
   "app.containers.Authentication.steps.FlowStart.useEmailInstead": {
     "state": "verified",
     "verified_at": "2026-08-17T14:35:41.840831Z",
@@ -8438,6 +8528,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.containers.IdeaCards.statusPriority": {
+    "state": "verified",
+    "verified_at": "2026-10-28T14:43:09.490805Z",
+    "verified_by": "Jelena"
   },
   "app.containers.IdeaCards.statusTitle": {
     "state": "verified",
@@ -13858,6 +13953,11 @@
     "state": "verified",
     "verified_at": "2026-03-30T12:57:38.368694Z",
     "verified_by": "Edwin Kato"
+  },
+  "app.errors.not_supported_in_standalone_phase": {
+    "state": "verified",
+    "verified_at": "2026-10-06T14:08:21.400022Z",
+    "verified_by": "Jelena"
   },
   "app.errors.number_invalid": {
     "state": "verified",

@@ -5,6 +5,11 @@ module EmailCampaigns
     extend GroupOrderingHelper
     attributes :consented, :created_at, :updated_at
 
+    # Whether the owner may manage their other preferences too (e.g. not a pending invitee).
+    attribute :can_manage_preferences do |object|
+      ConsentPolicy.new(object.user, object).index?
+    end
+
     attribute :campaign_name do |object|
       object.campaign_type.safe_constantize&.campaign_name
     end
