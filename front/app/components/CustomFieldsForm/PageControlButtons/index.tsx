@@ -25,7 +25,6 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import WeglotSwitcher from 'components/WeglotSwitcher';
 
 import { FormattedMessage, MessageDescriptor, useIntl } from 'utils/cl-intl';
-import { isPage } from 'utils/helperUtils';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import messages from '../messages';
@@ -190,12 +189,6 @@ const PageControlButtons = ({
   const isButtonDisabled =
     !hasReachedBottom && pageVariant !== 'after-submission';
 
-  // This footer also renders in the back office, where a manager edits an
-  // input in the input manager. Weglot translates the whole document, so
-  // offering it there would machine-translate the back office around the
-  // form. Managers pick their platform language in the admin sidebar instead.
-  const isAdminFormPage = isPage('admin', location.pathname);
-
   return (
     <Box
       width="100%"
@@ -218,10 +211,9 @@ const PageControlButtons = ({
             window.location.reload();
           }}
         />
-        {/* These pages hide the navbar, so the Weglot switcher joins the
-            platform language selector here rather than floating over the
-            footer the two would otherwise share. */}
-        {!isAdminFormPage && <WeglotSwitcher openUpwards />}
+        {/* These pages hide the navbar, so the switcher sits in the footer
+            beside the platform language selector instead. */}
+        <WeglotSwitcher openUpwards />
       </Box>
       <Box display="flex" justifyContent="center" alignItems="center">
         {hasPreviousPage && pageVariant !== 'after-submission' && (
