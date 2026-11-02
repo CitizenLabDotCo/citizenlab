@@ -42,24 +42,10 @@ const InputImporterModal = ({ projectId, phaseId, opened, onClose }: Props) => {
   const [upload, setUpload] = useState<'pdf' | 'excel' | null>(null);
 
   // The upload replaces this modal.
-  const importButton = (
-    label: string,
-    format: 'pdf' | 'excel',
-    disabled: boolean
-  ) => (
-    <Button
-      buttonStyle="bo-secondary"
-      boSize="medium"
-      width="auto"
-      disabled={disabled}
-      onClick={() => {
-        onClose();
-        setUpload(format);
-      }}
-    >
-      {label}
-    </Button>
-  );
+  const startUpload = (format: 'pdf' | 'excel') => {
+    onClose();
+    setUpload(format);
+  };
 
   // Imported inputs wait for review on the importer page.
   const goToReview = () =>
@@ -91,11 +77,15 @@ const InputImporterModal = ({ projectId, phaseId, opened, onClose }: Props) => {
                 </Box>
               }
             >
-              {importButton(
-                formatMessage(formSyncMessages.importScans),
-                'pdf',
-                !printedFormsEnabled
-              )}
+              <Button
+                buttonStyle="bo-secondary"
+                boSize="medium"
+                width="auto"
+                disabled={!printedFormsEnabled}
+                onClick={() => startUpload('pdf')}
+              >
+                {formatMessage(formSyncMessages.importScans)}
+              </Button>
             </Tooltip>
           </ImporterRow>
           <Divider margin="0" />
@@ -104,11 +94,15 @@ const InputImporterModal = ({ projectId, phaseId, opened, onClose }: Props) => {
             description={formatMessage(messages.spreadsheetImportDescription)}
           >
             <UpsellTooltip disabled={inputImporterAllowed} theme="dark">
-              {importButton(
-                formatMessage(formSyncMessages.importFile),
-                'excel',
-                !inputImporterAllowed
-              )}
+              <Button
+                buttonStyle="bo-secondary"
+                boSize="medium"
+                width="auto"
+                disabled={!inputImporterAllowed}
+                onClick={() => startUpload('excel')}
+              >
+                {formatMessage(formSyncMessages.importFile)}
+              </Button>
             </UpsellTooltip>
           </ImporterRow>
         </Box>

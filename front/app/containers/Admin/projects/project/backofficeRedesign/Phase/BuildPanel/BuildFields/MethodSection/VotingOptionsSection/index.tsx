@@ -7,6 +7,7 @@ import usePhases from 'api/phases/usePhases';
 
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 
+import FormInputEditWarningModal from 'components/admin/FormInputEditWarningModal';
 import IconAction from 'components/UI/IconAction';
 
 import { useIntl } from 'utils/cl-intl';
@@ -115,7 +116,12 @@ const VotingOptionsSection = ({ projectId, phaseId }: Props) => {
         }
       />
 
-      {inputForm.warningModal}
+      <FormInputEditWarningModal
+        variant="bo"
+        showEditWarningModal={inputForm.warningOpened}
+        setShowEditWarningModal={inputForm.setWarningOpened}
+        editFormLink={inputForm.editFormLink}
+      />
 
       {addOpened && (
         <AddInputModal

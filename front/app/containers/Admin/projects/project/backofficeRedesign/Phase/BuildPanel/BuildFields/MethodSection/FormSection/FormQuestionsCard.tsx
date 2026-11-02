@@ -9,6 +9,7 @@ import useLocalize from 'hooks/useLocalize';
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 
 import actionFormMessages from 'components/admin/ActionForm/messages';
+import FormInputEditWarningModal from 'components/admin/FormInputEditWarningModal';
 import formBuilderMessages from 'components/FormBuilder/components/messages';
 import { getTranslatedStringKey } from 'components/FormBuilder/utils';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
@@ -131,7 +132,12 @@ const FormQuestionsCard = ({ projectId, phaseId, title, survey }: Props) => {
           </>
         )}
       </PanelField>
-      {inputForm.warningModal}
+      <FormInputEditWarningModal
+        variant="bo"
+        showEditWarningModal={inputForm.warningOpened}
+        setShowEditWarningModal={inputForm.setWarningOpened}
+        editFormLink={inputForm.editFormLink}
+      />
     </>
   );
 };
