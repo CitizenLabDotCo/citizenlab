@@ -44,7 +44,7 @@ const ChoiceRadio = ({
         label={
           <Box>
             <Box display="flex" alignItems="center" gap="8px">
-              <Text variant="boControl" m="0">
+              <Text variant="boControl" fontSize="xs" lineHeight="16px" m="0">
                 {title}
               </Text>
               {titleAdornment}

@@ -14,6 +14,8 @@ interface Props {
   method: Method | null | undefined;
   max: number | null | undefined;
   maxLabel: string;
+  /** Defaults to "Limited". */
+  limitedLabel?: string;
   error?: ReactNode;
   onMethodChange: (method: Method) => void;
   onMaxChange: (max: string) => void;
@@ -25,6 +27,7 @@ const ReactionLimitSettings = ({
   method,
   max,
   maxLabel,
+  limitedLabel,
   error,
   onMethodChange,
   onMaxChange,
@@ -32,11 +35,11 @@ const ReactionLimitSettings = ({
   const { formatMessage } = useIntl();
 
   return (
-    <Box display="flex" flexDirection="column" gap="8px" py="6px">
+    <Box display="flex" flexDirection="column" gap="6px" py="6px">
       <Text as="span" variant="boControl" m="0">
         {title}
       </Text>
-      <Box display="flex" gap="20px">
+      <Box display="flex" gap="24px">
         <Radio
           variant="bo"
           name={name}
@@ -59,7 +62,7 @@ const ReactionLimitSettings = ({
           onChange={onMethodChange}
           label={
             <Text as="span" variant="boControl" m="0">
-              {formatMessage(messages.limited)}
+              {limitedLabel ?? formatMessage(messages.limited)}
             </Text>
           }
         />

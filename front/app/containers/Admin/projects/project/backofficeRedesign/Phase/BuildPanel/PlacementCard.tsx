@@ -43,7 +43,7 @@ const PlacementCard = ({
 
   return (
     <PanelField label={formatMessage(messages.surveyPlacement)}>
-      <Box display="flex" gap="24px">
+      <Box display="flex" flexDirection="column" gap="20px">
         {OPTIONS.map((option) => (
           <ChoiceRadio
             key={option.value}

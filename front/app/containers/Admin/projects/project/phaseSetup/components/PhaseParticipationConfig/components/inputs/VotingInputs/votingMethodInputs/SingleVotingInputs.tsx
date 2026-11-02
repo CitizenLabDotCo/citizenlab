@@ -42,7 +42,7 @@ const SingleVotingInputs = ({
     <>
       <SectionField>
         <SubSectionTitleWithDescription>
-          <FormattedMessage {...messages.minimumOptions} />
+          <FormattedMessage {...messages.minimumOptions2} />
         </SubSectionTitleWithDescription>
         <StyledSectionDescription>
           <FormattedMessage {...messages.minimumOptionsDescription} />
@@ -64,7 +64,7 @@ const SingleVotingInputs = ({
       </SectionField>
       <SectionField>
         <SubSectionTitleWithDescription>
-          <FormattedMessage {...messages.maximumVotes} />
+          <FormattedMessage {...messages.maximumVotes2} />
         </SubSectionTitleWithDescription>
         <StyledSectionDescription>
           <FormattedMessage {...messages.maximumVotesDescription} />

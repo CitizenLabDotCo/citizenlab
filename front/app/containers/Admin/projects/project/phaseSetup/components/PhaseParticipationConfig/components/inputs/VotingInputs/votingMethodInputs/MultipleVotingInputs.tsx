@@ -79,7 +79,7 @@ const MultipleVotingInputs = ({
     <>
       <SectionField>
         <SubSectionTitle>
-          <FormattedMessage {...messages.voteCalled} />
+          <FormattedMessage {...messages.voteCalled2} />
           <IconTooltip
             content={<FormattedMessage {...messages.ifLeftEmpty} />}
           />
@@ -95,7 +95,7 @@ const MultipleVotingInputs = ({
 
       <SectionField>
         <SubSectionTitle>
-          <FormattedMessage {...messages.numberVotesPerUser} />
+          <FormattedMessage {...messages.numberVotesPerUser2} />
         </SubSectionTitle>
         <Box maxWidth="200px">
           <Input
@@ -112,7 +112,7 @@ const MultipleVotingInputs = ({
       </SectionField>
       <SectionField>
         <SubSectionTitle>
-          <FormattedMessage {...messages.maxVotesPerOption} />
+          <FormattedMessage {...messages.maxVotesPerOption2} />
         </SubSectionTitle>
         <Box maxWidth="200px">
           <Input
@@ -129,7 +129,7 @@ const MultipleVotingInputs = ({
       </SectionField>
       <SectionField>
         <SubSectionTitleWithDescription>
-          <FormattedMessage {...messages.minimumOptions} />
+          <FormattedMessage {...messages.minimumOptions2} />
         </SubSectionTitleWithDescription>
         <StyledSectionDescription>
           <FormattedMessage {...messages.minimumOptionsDescription} />

@@ -47,7 +47,7 @@ const SurveyInputs = ({
     return (
       <>
         <Box mb="10px">
-          <PanelHeading label={formatMessage(configMessages.rulesGroup)} />
+          <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
         </Box>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}

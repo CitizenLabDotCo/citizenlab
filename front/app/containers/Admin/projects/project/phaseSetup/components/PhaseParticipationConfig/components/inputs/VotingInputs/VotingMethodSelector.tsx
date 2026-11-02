@@ -23,17 +23,17 @@ const VOTING_METHODS = [
   {
     method: 'single_voting',
     title: messages.singleVotingMethodTitle,
-    subtitle: messages.singleVotingMethodSubtitle,
+    subtitle: messages.singleVotingMethodSubtitle2,
   },
   {
     method: 'multiple_voting',
     title: messages.multipleVotingMethodTitle,
-    subtitle: messages.multipleVotingMethodSubtitle,
+    subtitle: messages.multipleVotingMethodSubtitle2,
   },
   {
     method: 'budgeting',
     title: messages.budgetingVotingMethodTitle,
-    subtitle: messages.budgetingVotingMethodSubtitle,
+    subtitle: messages.budgetingVotingMethodSubtitle2,
   },
 ] as const;
 
@@ -53,7 +53,7 @@ const VotingMethodSelector = ({
 
   if (layout === 'panel') {
     return (
-      <Box display="flex" flexDirection="column" gap="16px">
+      <Box display="flex" flexDirection="column" gap="20px">
         {VOTING_METHODS.map(({ method, title, subtitle }) => (
           <Radio
             key={method}
@@ -65,10 +65,16 @@ const VotingMethodSelector = ({
             onChange={handleVotingMethodOnChange}
             label={
               <Box display="flex" flexDirection="column" gap="2px">
-                <Text as="span" variant="boControl" m="0">
+                <Text
+                  as="span"
+                  variant="boControl"
+                  fontSize="xs"
+                  lineHeight="16px"
+                  m="0"
+                >
                   {formatMessage(title)}
                 </Text>
-                <Text as="span" variant="boHelper" m="0">
+                <Text as="span" variant="boMicro" m="0" color="coolGrey500">
                   {formatMessage(subtitle)}
                 </Text>
               </Box>
@@ -103,7 +109,7 @@ const VotingMethodSelector = ({
             handleVotingMethodOnChange('single_voting');
           }}
           title={formatMessage(messages.singleVotingMethodTitle)}
-          subtitle={formatMessage(messages.singleVotingMethodSubtitle)}
+          subtitle={formatMessage(messages.singleVotingMethodSubtitle2)}
         />
         <CardButton
           selected={voting_method === 'multiple_voting'}
@@ -117,7 +123,7 @@ const VotingMethodSelector = ({
             handleVotingMethodOnChange('multiple_voting');
           }}
           title={formatMessage(messages.multipleVotingMethodTitle)}
-          subtitle={formatMessage(messages.multipleVotingMethodSubtitle)}
+          subtitle={formatMessage(messages.multipleVotingMethodSubtitle2)}
         />
         <CardButton
           selected={voting_method === 'budgeting'}
@@ -127,7 +133,7 @@ const VotingMethodSelector = ({
             handleVotingMethodOnChange('budgeting');
           }}
           title={formatMessage(messages.budgetingVotingMethodTitle)}
-          subtitle={formatMessage(messages.budgetingVotingMethodSubtitle)}
+          subtitle={formatMessage(messages.budgetingVotingMethodSubtitle2)}
         />
       </Box>
     </Box>

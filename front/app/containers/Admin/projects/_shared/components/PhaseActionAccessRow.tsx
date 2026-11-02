@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Icon, Text, colors } from '@citizenlab/cl2-component-library';
+import { Box, Icon, Text, bo, colors } from '@citizenlab/cl2-component-library';
 
 import { IPhasePermissionAction } from 'api/permissions/types';
 
@@ -17,19 +17,16 @@ interface Props extends AccessOnlyAction {
   phaseId: string;
 }
 
-// Matches the width of the bo toggle, so labels line up with toggle rows.
-const MARKER_WIDTH = '28px';
-
 const PhaseActionAccessRow = ({ phaseId, action, label }: Props) => {
   const { formatMessage } = useIntl();
 
   return (
     <ToggleActionAccess phaseId={phaseId} action={action}>
-      <Box display="flex" alignItems="center" gap="8px">
+      <Box display="flex" alignItems="center" gap={bo.toggleLabelGap}>
         <Box
           display="flex"
           justifyContent="center"
-          width={MARKER_WIDTH}
+          width={bo.toggleWidth}
           flexShrink={0}
         >
           <Icon

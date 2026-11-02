@@ -49,7 +49,7 @@ const DislikingSettings = ({
     <>
       <SectionField>
         <SubSectionTitle>
-          <FormattedMessage {...messages.dislikingPosts} />
+          <FormattedMessage {...messages.dislikingPosts2} />
           <IconTooltip
             content={<FormattedMessage {...messages.disableDislikingTooltip} />}
           />

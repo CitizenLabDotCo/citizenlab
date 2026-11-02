@@ -831,9 +831,9 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.volunteeringSetup',
     defaultMessage: 'Volunteering setup',
   },
-  documentAnnotationSetup: {
-    id: 'app.containers.Admin.projects.project.documentAnnotationSetup',
-    defaultMessage: 'Document annotation setup',
+  documentAnnotationSetup2: {
+    id: 'app.containers.Admin.projects.project.documentAnnotationSetup2',
+    defaultMessage: 'Document setup',
   },
   editReport: {
     id: 'app.containers.Admin.projects.project.editReport',
@@ -964,6 +964,18 @@ export default defineMessages({
   proposalsAndParticipantData: {
     id: 'app.containers.Admin.projects.project.proposalsAndParticipantData',
     defaultMessage: 'Proposals and participant data',
+  },
+  optionsAndParticipantData: {
+    id: 'app.containers.Admin.projects.project.optionsAndParticipantData',
+    defaultMessage: 'Options and participant data',
+  },
+  phaseTitle: {
+    id: 'app.containers.Admin.projects.project.phaseTitle',
+    defaultMessage: 'Phase title',
+  },
+  surveyDates: {
+    id: 'app.containers.Admin.projects.project.surveyDates',
+    defaultMessage: 'Survey dates',
   },
   addDescription: {
     id: 'app.containers.Admin.projects.project.addDescription',

@@ -32,11 +32,11 @@ const AssigneeRow = ({ projectId, assignee, onAssigneeChange }: Props) => {
       justifyContent="space-between"
       gap="12px"
     >
-      <Box display="flex" flexDirection="column" gap="2px">
+      <Box display="flex" flexDirection="column" gap="3px">
         <Text as="span" variant="boControl" m="0">
           {title}
         </Text>
-        <Text as="span" variant="boHelper" m="0">
+        <Text as="span" variant="boMicro" m="0">
           {description}
         </Text>
       </Box>

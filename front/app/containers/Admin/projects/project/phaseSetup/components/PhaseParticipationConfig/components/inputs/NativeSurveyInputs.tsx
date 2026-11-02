@@ -34,6 +34,7 @@ interface Props {
   ) => void;
   handleSurveyCTAChange: (value: Multiloc, locale: string | undefined) => void;
   handleAllowMultipleResponsesChange: (value: boolean) => void;
+  toggleSubmissionEnabled: () => void;
   layout?: 'page' | 'panel';
 }
 
@@ -44,6 +45,7 @@ const NativeSurveyInputs = ({
   handleSurveyTitleChange,
   handleSurveyCTAChange,
   handleAllowMultipleResponsesChange,
+  toggleSubmissionEnabled,
   layout = 'page',
 }: Props) => {
   const localize = useLocalize();
@@ -69,20 +71,21 @@ const NativeSurveyInputs = ({
     return (
       <>
         <Box mb="10px">
-          <PanelHeading label={formatMessage(configMessages.rulesGroup)} />
+          <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
         </Box>
         <PanelGroup
           label={formatMessage(configMessages.participantActionsGroup)}
           defaultOpen
         >
-          {phase && (
-            <PhaseActionAccessRow
-              phaseId={phase.data.id}
-              // Native surveys store their responses as ideas.
-              action="posting_idea"
-              label={configMessages.takingSurveyAction}
-            />
-          )}
+          <SettingToggleRow
+            title={formatMessage(configMessages.acceptNewResponses)}
+            description={formatMessage(
+              configMessages.acceptNewResponsesDescription
+            )}
+            checked={!!formData.submission_enabled}
+            onChange={toggleSubmissionEnabled}
+          />
+          <Error apiErrors={apiErrors && apiErrors.submission_enabled} />
           <SettingToggleRow
             title={formatMessage(parentMessages.allowMultipleResponsesLabel)}
             description={formatMessage(
@@ -92,6 +95,14 @@ const NativeSurveyInputs = ({
             onChange={toggleAllowMultipleResponses}
           />
           <Error apiErrors={apiErrors && apiErrors.allow_multiple_responses} />
+          {phase && (
+            <PhaseActionAccessRow
+              phaseId={phase.data.id}
+              // Native surveys store their responses as ideas.
+              action="posting_idea"
+              label={configMessages.takingSurveyAction}
+            />
+          )}
           {phase && (
             <PhaseActionAccessRow
               phaseId={phase.data.id}

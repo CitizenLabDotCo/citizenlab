@@ -8,9 +8,9 @@ import messages from '../../../../../../messages';
 const actionLabel = (action: IPhasePermissionAction) => {
   switch (action) {
     case 'posting_idea':
-      return projectMessages.inputPostingEnabled;
+      return projectMessages.inputPostingEnabled2;
     case 'commenting_idea':
-      return projectMessages.inputCommentingEnabled;
+      return projectMessages.inputCommentingEnabled2;
     case 'reacting_idea':
       return projectMessages.inputReactingEnabled;
     case 'attending_event':
@@ -18,7 +18,7 @@ const actionLabel = (action: IPhasePermissionAction) => {
     case 'voting':
       return configMessages.votingOnInputsAction;
     case 'volunteering':
-      return configMessages.volunteeringAction;
+      return configMessages.volunteeringAction2;
     case 'taking_survey':
       return messages.takingSurveyAction;
     case 'taking_poll':

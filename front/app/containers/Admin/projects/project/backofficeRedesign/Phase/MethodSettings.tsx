@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import {
@@ -12,8 +13,10 @@ import useUpdatePhase from 'api/phases/useUpdatePhase';
 
 import { AccessOnlyAction } from 'containers/Admin/projects/_shared/components/PhaseActionAccessRow';
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 import projectMessages from 'containers/Admin/projects/project/messages';
 import PhaseParticipationConfig from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig';
+import ModerationAssignee from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/inputs/_shared/ModerationAssignee';
 import configMessages from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/messages';
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import { validateParticipation } from 'containers/Admin/projects/project/phaseSetup/validate';
@@ -47,7 +50,7 @@ const ACCESS_ONLY_ACTIONS: Partial<
     { action: 'attending_event', label: projectMessages.attendingEventAction },
   ],
   volunteering: [
-    { action: 'volunteering', label: configMessages.volunteeringAction },
+    { action: 'volunteering', label: configMessages.volunteeringAction2 },
     { action: 'attending_event', label: projectMessages.attendingEventAction },
   ],
   document_annotation: [
@@ -112,10 +115,15 @@ const MethodSettings = ({ phase }: Props) => {
   return (
     <PanelSettings p="0 18px 24px">
       {accessOnlyActions ? (
-        <ParticipantActionsGroup
-          phaseId={phase.id}
-          actions={accessOnlyActions}
-        />
+        <>
+          <Box mb="10px">
+            <PanelHeading label={formatMessage(configMessages.settingsGroup)} />
+          </Box>
+          <ParticipantActionsGroup
+            phaseId={phase.id}
+            actions={accessOnlyActions}
+          />
+        </>
       ) : (
         <PhaseParticipationConfig
           phase={phaseWithRelationships}
@@ -137,6 +145,15 @@ const MethodSettings = ({ phase }: Props) => {
       <PanelGroup label={formatMessage(messages.notifications)}>
         <PhaseNotifications phase={phase} />
       </PanelGroup>
+
+      {participationMethod === 'voting' && (
+        <PanelGroup
+          label={formatMessage(configMessages.moderationGroup)}
+          defaultOpen
+        >
+          <ModerationAssignee phaseId={phase.id} />
+        </PanelGroup>
+      )}
     </PanelSettings>
   );
 };

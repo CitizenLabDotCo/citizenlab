@@ -222,6 +222,10 @@ export const bo = {
   panelBorderRadius: '12px',
   headerFontSize: BO_HEADER_FONT_SIZE,
   controlFontSize: BO_CONTROL_FONT_SIZE,
+  toggleWidth: '26px',
+  toggleLabelGap: '12px',
+  // Lines content up with the label of a bo toggle: toggleWidth + toggleLabelGap.
+  toggleLabelIndent: '38px',
   buttonMedium: {
     height: '32px',
     padding: '0 16px',

@@ -88,6 +88,7 @@ const BuildFields = ({
             type="text"
             variant="bo"
             ariaLabel={formatMessage(phaseSetupMessages.titleLabel)}
+            placeholder={formatMessage(messages.phaseTitle)}
             valueMultiloc={formData.title_multiloc}
             onChange={(title_multiloc: Multiloc) =>
               onChange({ title_multiloc })
@@ -132,6 +133,12 @@ const BuildFields = ({
               onChange={(input_term) => onChange({ input_term })}
             />
           </>
+        )}
+
+        {participationMethod === 'voting' && (
+          <PanelHeading
+            label={formatMessage(messages.optionsAndParticipantData)}
+          />
         )}
 
         {participationMethod === 'document_annotation' && (

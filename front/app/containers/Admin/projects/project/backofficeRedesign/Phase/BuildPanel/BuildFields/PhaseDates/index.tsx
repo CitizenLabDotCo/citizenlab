@@ -9,11 +9,13 @@ import PhaseDatePicker, {
   PhaseDates as Dates,
 } from 'containers/Admin/projects/project/phaseSetup/components/PhaseDatePicker';
 import usePhaseDateRanges from 'containers/Admin/projects/project/phaseSetup/components/PhaseDatePicker/usePhaseDateRanges';
+import { isSurveyMethod } from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/SurveyMethodChoices';
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 
 import { useIntl } from 'utils/cl-intl';
 
+import messages from '../../../../messages';
 import PanelField from '../../PanelField';
 
 import DatesSummary from './DatesSummary';
@@ -39,7 +41,12 @@ const PhaseDates = ({
 
   if (!ranges) return null;
 
-  const label = formatMessage(phaseSetupMessages.datesLabel);
+  const label = formatMessage(
+    formData.participation_method &&
+      isSurveyMethod(formData.participation_method)
+      ? messages.surveyDates
+      : phaseSetupMessages.datesLabel
+  );
   const hasError =
     !!errors?.start_at || !!errors?.end_at || !!validationErrors.phaseDateError;
   // Without a start date, or with an error, the picker must stay in sight.

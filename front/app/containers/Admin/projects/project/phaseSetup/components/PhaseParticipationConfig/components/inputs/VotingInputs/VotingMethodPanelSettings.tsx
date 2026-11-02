@@ -66,7 +66,7 @@ const VotingMethodPanelSettings = ({
   const minOptions = (
     <NumberSettingRow
       id="voting_min_selected_options"
-      label={formatMessage(messages.minimumOptions)}
+      label={formatMessage(messages.minimumOptions2)}
       value={voting_min_selected_options}
       min="0"
       onChange={handleMinVotingOptionsChange}
@@ -91,10 +91,11 @@ const VotingMethodPanelSettings = ({
       <>
         <ReactionLimitSettings
           name="maxVotes"
-          title={formatMessage(messages.maximumVotes)}
+          title={formatMessage(messages.maximumVotes2)}
           method={maxVotesType}
           max={voting_max_total}
-          maxLabel={formatMessage(messages.numberVotesPerUser)}
+          maxLabel={formatMessage(messages.numberVotesPerUser2)}
+          limitedLabel={formatMessage(messages.fixedAmount)}
           onMethodChange={(method) => {
             setMaxVotesType(method);
             handleVotingMaxTotalChange(method === 'limited' ? '1' : null);
@@ -114,7 +115,7 @@ const VotingMethodPanelSettings = ({
           <Select
             id="vote_term"
             variant="bo"
-            label={formatMessage(messages.voteCalled)}
+            label={formatMessage(messages.voteCalled2)}
             labelTooltipText={formatMessage(messages.ifLeftEmpty)}
             value={voteTerm}
             options={Object.entries(VOTE_TERMS).map(([value, label]) => ({
@@ -126,7 +127,7 @@ const VotingMethodPanelSettings = ({
         </Box>
         <NumberSettingRow
           id="voting_max_total"
-          label={formatMessage(messages.numberVotesPerUser)}
+          label={formatMessage(messages.numberVotesPerUser2)}
           value={voting_max_total}
           min="1"
           onChange={handleVotingMaxTotalChange}
@@ -134,7 +135,7 @@ const VotingMethodPanelSettings = ({
         />
         <NumberSettingRow
           id="voting_max_votes_per_idea"
-          label={formatMessage(messages.maxVotesPerOption)}
+          label={formatMessage(messages.maxVotesPerOption2)}
           value={voting_max_votes_per_idea}
           min="1"
           onChange={handleMaxVotesPerOptionAmountChange}

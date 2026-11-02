@@ -25,6 +25,7 @@ import {
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 import projectMessages from 'containers/Admin/projects/project/general/messages';
 
 import anonymousMessages from 'components/admin/AnonymousPostingToggle/messages';
@@ -480,12 +481,17 @@ const PhaseParticipationConfig = ({
         )}
         {participation_method === 'common_ground' &&
           (layout === 'panel' ? (
-            <PanelGroup
-              label={formatMessage(messages.participantActionsGroup)}
-              defaultOpen
-            >
-              {commonGroundActions}
-            </PanelGroup>
+            <>
+              <Box mb="10px">
+                <PanelHeading label={formatMessage(messages.settingsGroup)} />
+              </Box>
+              <PanelGroup
+                label={formatMessage(messages.participantActionsGroup)}
+                defaultOpen
+              >
+                {commonGroundActions}
+              </PanelGroup>
+            </>
           ) : (
             commonGroundActions
           ))}
@@ -686,6 +692,7 @@ const PhaseParticipationConfig = ({
             handleAllowMultipleResponsesChange={
               handleAllowMultipleResponsesChange
             }
+            toggleSubmissionEnabled={togglePostingEnabled}
             layout={layout}
           />
         )}
