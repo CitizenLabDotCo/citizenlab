@@ -90,7 +90,6 @@
   "app.components.Comments.seeOriginal": "Orijinali göster",
   "app.components.Comments.seeTranslation": "Çeviriyi göster",
   "app.components.Comments.yourComment": "Yorumunuz",
-  "app.components.CommonGroundResults.allStatementsDescription": "En çok katılınandan en çok karşı çıkılana kadar tüm görüşler. Sadece kararsız oyu alan görüşlerin net bir duruş belirtmediği için bu listeye dahil edilmediğini lütfen unutmayın.",
   "app.components.CommonGroundResults.allStatementsTitle": "Görüş listesi",
   "app.components.CommonGroundResults.closeCallsDescription": "Bu ifadeler, katılıyorum ya da katılmıyorum oylarının 50/50'ye yaklaşmasıyla en fazla anlaşmazlığa yol açan ifadeler oldu.",
   "app.components.CommonGroundResults.closeCallsTitle": "Yakın aramalar",

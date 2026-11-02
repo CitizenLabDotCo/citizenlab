@@ -90,7 +90,6 @@
   "app.components.Comments.seeOriginal": "Zobacz oryginał",
   "app.components.Comments.seeTranslation": "Zobacz tłumaczenie",
   "app.components.Comments.yourComment": "Twój komentarz",
-  "app.components.CommonGroundResults.allStatementsDescription": "Wszystkie stwierdzenia, od tych cieszących się największą zgodą do tych budzących największy sprzeciw. Uwaga: stwierdzenia, na które oddano wyłącznie głosy „nie mam zdania”, nie są uwzględnione na tej liście, ponieważ nie wskazują one na jasne stanowisko.",
   "app.components.CommonGroundResults.allStatementsTitle": "Lista stwierdzeń",
   "app.components.CommonGroundResults.closeCallsDescription": "Stwierdzenia te wywołały najwięcej nieporozumień, z głosami na \"zgadzam się\" lub \"nie zgadzam się\" zbliżonymi do podziału 50/50.",
   "app.components.CommonGroundResults.closeCallsTitle": "Bliskie połączenia",

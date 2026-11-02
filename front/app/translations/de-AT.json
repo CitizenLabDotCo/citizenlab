@@ -90,7 +90,6 @@
   "app.components.Comments.seeOriginal": "Original anzeigen",
   "app.components.Comments.seeTranslation": "Siehe Übersetzung",
   "app.components.Comments.yourComment": "Dein Kommentar",
-  "app.components.CommonGroundResults.allStatementsDescription": "Alle Aussagen, von der höchsten Zustimmung bis zur stärksten Ablehnung. Bitte beachten Sie, dass Aussagen, die ausschließlich „Unsicher“-Stimmen erhalten haben, nicht in dieser Liste enthalten sind, da sie keine eindeutige Position aufzeigen.",
   "app.components.CommonGroundResults.allStatementsTitle": "Liste der Aussagen",
   "app.components.CommonGroundResults.closeCallsDescription": "Diese Aussagen lösten die meisten Meinungsverschiedenheiten aus, wobei die Stimmen für \"dafür\" oder \"dagegen\" fast 50/50 waren.",
   "app.components.CommonGroundResults.closeCallsTitle": "Grenzfälle",

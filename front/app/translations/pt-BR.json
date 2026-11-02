@@ -90,7 +90,6 @@
   "app.components.Comments.seeOriginal": "Ver original",
   "app.components.Comments.seeTranslation": "Ver tradução",
   "app.components.Comments.yourComment": "O seu comentário",
-  "app.components.CommonGroundResults.allStatementsDescription": "Todas as afirmações, da com maior concordância para a com maior discordância. Observe que as afirmações que receberam apenas votos \"incerto\" não estão incluídas nesta lista, pois não indicam uma posição clara.",
   "app.components.CommonGroundResults.allStatementsTitle": "Lista de afirmações",
   "app.components.CommonGroundResults.closeCallsDescription": "Essas declarações provocaram a maior discordância, com votos para concordar ou discordar mais próximos de uma divisão de 50/50.",
   "app.components.CommonGroundResults.closeCallsTitle": "Chamadas próximas",

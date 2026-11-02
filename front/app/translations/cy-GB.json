@@ -90,7 +90,6 @@
   "app.components.Comments.seeOriginal": "Gweler y gwreiddiol",
   "app.components.Comments.seeTranslation": "Gweler cyfieithiad",
   "app.components.Comments.yourComment": "Eich sylw",
-  "app.components.CommonGroundResults.allStatementsDescription": "Pob datganiad, o'r rhai y cytunwyd arnynt fwyaf i'r rhai yr anghytunwyd arnynt fwyaf. Sylwch nad yw datganiadau sydd â phleidleisiau 'ansicr' yn unig wedi'u cynnwys yn y rhestr hon, gan nad ydynt yn nodi safle clir.",
   "app.components.CommonGroundResults.allStatementsTitle": "Rhestr o ddatganiadau",
   "app.components.CommonGroundResults.closeCallsDescription": "Y datganiadau hyn a ysgogodd y mwyaf o anghytundeb, gyda phleidleisiau dros gytuno neu anghytuno agosaf at raniad 50/50.",
   "app.components.CommonGroundResults.closeCallsTitle": "Galwadau agos",
