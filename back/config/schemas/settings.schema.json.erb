@@ -379,18 +379,6 @@
         }
       },
 
-      "jsonforms_custom_fields": {
-        "type": "object",
-        "title": "Rework of user custom fields (experimental)",
-        "description":  "Replaces react-json-forms with jsonforms for user custom fields form. Don't turn this on unless you know what you're doing.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
       "advanced_custom_pages": {
         "type": "object",
         "title": "Advanced Custom Pages",
@@ -1163,7 +1151,7 @@
       "management_feed": {
         "type": "object",
         "title": "Management Feed",
-        "description": "Experimental feature: A minimal list of selected actions performed by admins or managers in the last 30 days. Not all actions are included.",
+        "description": "A minimal list of selected actions performed by admins or managers in the last 30 days. Not all actions are included.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1372,7 +1360,7 @@
       "data_repository_transcription": {
         "type": "object",
         "title": "Data repository transcription",
-        "description": "Experimental. Automatically transcribe audio and video files uploaded to the data repository. Uses AssemblyAI behind the scenes.",
+        "description": "Automatically transcribe audio and video files uploaded to the data repository. Uses AssemblyAI behind the scenes.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1460,8 +1448,9 @@
 
       "spaces": {
         "type": "object",
-        "title": "Spaces (In development - do not enable)",
+        "title": "Spaces",
         "description": "A space is used to manage a group of projects and folders and the people that can work on them.",
+        "development": true,
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1484,8 +1473,9 @@
 
       "llm_reporting": {
         "type": "object",
-        "title": "LLM-generated reports [DO NOT ENABLE]",
+        "title": "LLM-generated reports",
         "description": "Generate a whole report with an LLM from the report builder, and iterate on it with a chat panel. Under development, not ready for customer use.",
+        "development": true,
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
