@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import { CLErrors } from 'typings';
 
-import { IUpdatedPhaseProperties } from 'api/phases/types';
+import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
 
 import { CardButton } from 'containers/Admin/projects/_shared/components/SetupCardButton';
 import PhaseDatePicker, {
@@ -21,6 +21,7 @@ import PanelField from '../../PanelField';
 import DatesSummary from './DatesSummary';
 
 interface Props {
+  participationMethod: ParticipationMethod;
   formData: IUpdatedPhaseProperties;
   errors: CLErrors | null;
   validationErrors: ValidationErrors;
@@ -29,6 +30,7 @@ interface Props {
 }
 
 const PhaseDates = ({
+  participationMethod,
   formData,
   errors,
   validationErrors,
@@ -42,8 +44,7 @@ const PhaseDates = ({
   if (!ranges) return null;
 
   const label = formatMessage(
-    formData.participation_method &&
-      isSurveyMethod(formData.participation_method)
+    isSurveyMethod(participationMethod)
       ? messages.surveyDates
       : phaseSetupMessages.datesLabel
   );

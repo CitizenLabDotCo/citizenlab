@@ -2,7 +2,6 @@ import { TSurveyService } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-/** Which external survey tools this platform can embed. */
 const useSurveyProviders = (): Record<TSurveyService, boolean> => {
   const typeform = useFeatureFlag({ name: 'typeform_surveys' });
   const googleForms = useFeatureFlag({ name: 'google_forms_surveys' });

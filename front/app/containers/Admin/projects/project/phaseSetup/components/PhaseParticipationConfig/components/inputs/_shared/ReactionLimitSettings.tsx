@@ -14,7 +14,6 @@ interface Props {
   method: Method | null | undefined;
   max: number | null | undefined;
   maxLabel: string;
-  /** Defaults to "Limited". */
   limitedLabel?: string;
   error?: ReactNode;
   onMethodChange: (method: Method) => void;

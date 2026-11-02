@@ -5,7 +5,7 @@ import { Box, Radio, Text, Tooltip } from '@citizenlab/cl2-component-library';
 interface Props {
   name: string;
   value: string;
-  currentValue: string;
+  currentValue?: string | null;
   title: string;
   /** Shown next to the title, like a summary pill. */
   titleAdornment?: ReactNode;

@@ -4,11 +4,11 @@ import { Box } from '@citizenlab/cl2-component-library';
 
 import { PhasePlacementType } from 'api/phases/types';
 
+import ChoiceRadio from 'containers/Admin/projects/_shared/components/ChoiceRadio';
 import messages from 'containers/Admin/projects/_shared/components/PhasePlacement/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
-import ChoiceRadio from './ChoiceRadio';
 import PanelField from './PanelField';
 
 const OPTIONS = [

@@ -4,11 +4,12 @@ import {
   Box,
   CardButton,
   IconTooltip,
-  Radio,
   Text,
 } from '@citizenlab/cl2-component-library';
 
 import { VotingMethod } from 'api/phases/types';
+
+import ChoiceRadio from 'containers/Admin/projects/_shared/components/ChoiceRadio';
 
 import { SubSectionTitle } from 'components/admin/Section';
 
@@ -55,30 +56,14 @@ const VotingMethodSelector = ({
     return (
       <Box display="flex" flexDirection="column" gap="20px">
         {VOTING_METHODS.map(({ method, title, subtitle }) => (
-          <Radio
+          <ChoiceRadio
             key={method}
-            variant="bo"
             name="voting_method"
-            id={`voting-method-${method}`}
             value={method}
             currentValue={voting_method}
-            onChange={handleVotingMethodOnChange}
-            label={
-              <Box display="flex" flexDirection="column" gap="2px">
-                <Text
-                  as="span"
-                  variant="boControl"
-                  fontSize="xs"
-                  lineHeight="16px"
-                  m="0"
-                >
-                  {formatMessage(title)}
-                </Text>
-                <Text as="span" variant="boMicro" m="0" color="coolGrey500">
-                  {formatMessage(subtitle)}
-                </Text>
-              </Box>
-            }
+            title={formatMessage(title)}
+            description={formatMessage(subtitle)}
+            onChange={() => handleVotingMethodOnChange(method)}
           />
         ))}
       </Box>

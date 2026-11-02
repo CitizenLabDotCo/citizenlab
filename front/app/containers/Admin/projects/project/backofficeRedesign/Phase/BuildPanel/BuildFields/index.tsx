@@ -74,6 +74,7 @@ const BuildFields = ({
       {surveyPlacement}
 
       <PhaseDates
+        participationMethod={participationMethod}
         formData={formData}
         errors={errors}
         validationErrors={validationErrors}
@@ -135,7 +136,7 @@ const BuildFields = ({
           </>
         )}
 
-        {participationMethod === 'voting' && (
+        {participationMethod === 'voting' && phaseId && (
           <PanelHeading
             label={formatMessage(messages.optionsAndParticipantData)}
           />

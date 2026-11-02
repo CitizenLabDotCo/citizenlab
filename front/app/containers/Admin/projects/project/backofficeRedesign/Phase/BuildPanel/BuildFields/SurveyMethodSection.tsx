@@ -7,13 +7,13 @@ import { ParticipationMethod, TSurveyService } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import ChoiceRadio from 'containers/Admin/projects/_shared/components/ChoiceRadio';
 import pickerMessages from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/messages';
 import { SurveyMethod } from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/SurveyMethodChoices';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../../messages';
-import ChoiceRadio from '../ChoiceRadio';
 import ExternalSurveyFields from '../ExternalSurveyFields';
 import NativeSurveyOption from '../NativeSurveyOption';
 import PanelField from '../PanelField';

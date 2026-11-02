@@ -206,6 +206,8 @@ export const focusRing = css`
 // Back office theme
 const BO_HEADER_FONT_SIZE = '13px';
 const BO_CONTROL_FONT_SIZE = 13;
+const BO_TOGGLE_WIDTH = 26;
+const BO_TOGGLE_LABEL_GAP = 12;
 
 export const bo = {
   colors: {
@@ -222,10 +224,10 @@ export const bo = {
   panelBorderRadius: '12px',
   headerFontSize: BO_HEADER_FONT_SIZE,
   controlFontSize: BO_CONTROL_FONT_SIZE,
-  toggleWidth: '26px',
-  toggleLabelGap: '12px',
-  // Lines content up with the label of a bo toggle: toggleWidth + toggleLabelGap.
-  toggleLabelIndent: '38px',
+  toggleWidth: `${BO_TOGGLE_WIDTH}px`,
+  toggleLabelGap: `${BO_TOGGLE_LABEL_GAP}px`,
+  // Lines content up with the label of a bo toggle.
+  toggleLabelIndent: `${BO_TOGGLE_WIDTH + BO_TOGGLE_LABEL_GAP}px`,
   buttonMedium: {
     height: '32px',
     padding: '0 16px',

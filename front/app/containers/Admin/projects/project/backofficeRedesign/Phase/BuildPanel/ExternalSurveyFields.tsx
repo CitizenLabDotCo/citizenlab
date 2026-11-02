@@ -21,7 +21,6 @@ interface Props {
   onEmbedUrlChange: (embedUrl: string) => void;
 }
 
-/** The tool and link an external survey phase embeds. */
 const ExternalSurveyFields = ({
   service,
   embedUrl,

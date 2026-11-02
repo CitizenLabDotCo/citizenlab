@@ -4,6 +4,7 @@ import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import usePollQuestions from 'api/poll_questions/usePollQuestions';
 
+import ChoiceRadio from 'containers/Admin/projects/_shared/components/ChoiceRadio';
 import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPill';
 import PollAdminForm from 'containers/Admin/projects/project/poll/PollAdminForm';
 
@@ -13,8 +14,6 @@ import Modal from 'components/UI/Modal';
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
-
-import ChoiceRadio from './ChoiceRadio';
 
 interface Props {
   phaseId: string;
