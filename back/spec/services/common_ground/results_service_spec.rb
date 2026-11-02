@@ -123,10 +123,29 @@ describe CommonGround::ResultsService do
         expect(service.results(1).ideas_by_agreement).to eq [idea1, idea2, idea3]
       end
 
-      it 'respects the limit parameter' do
-        limited_results = service.results(1)
-        expect(limited_results.top_consensus_ideas).to contain_exactly(idea1)
-        expect(limited_results.top_controversial_ideas).to contain_exactly(idea3)
+      context 'when more ideas pass the thresholds than the limit' do
+        # Both tie on consensus score with an idea of the base fixture, and win the tie on votes.
+        let!(:consensus_idea) do
+          idea = create(:idea, project: phase.project, phases: [phase])
+          create_list(:reaction, 4, reactable: idea, mode: 'up')
+          idea
+        end
+
+        let!(:close_call_idea) do
+          idea = create(:idea, project: phase.project, phases: [phase])
+          create_list(:reaction, 2, reactable: idea, mode: 'up')
+          create_list(:reaction, 2, reactable: idea, mode: 'down')
+          idea
+        end
+
+        it 'respects the limit parameter' do
+          expect(results.top_consensus_ideas).to eq [consensus_idea, idea1]
+          expect(results.top_controversial_ideas).to eq [close_call_idea, idea3]
+
+          limited_results = service.results(1)
+          expect(limited_results.top_consensus_ideas).to eq [consensus_idea]
+          expect(limited_results.top_controversial_ideas).to eq [close_call_idea]
+        end
       end
 
       it 'returns correct stats' do

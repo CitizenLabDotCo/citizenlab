@@ -3,6 +3,7 @@ module CommonGround
     # thresholds for the consensus score
     HIGHEST_CONSENSUS_MIN_SCORE = 0.75 # e.g. at least 75/25 in one direction
     CLOSE_CALL_MAX_SCORE = 0.6         # e.g. between 40/60 and 60/40
+
     # @param [Boolean] exclude_admins_and_moderators Leave out the reactions of users
     #   with an admin or moderator role. Reactions without a known user are kept.
     def initialize(phase, exclude_admins_and_moderators: false)
@@ -12,7 +13,7 @@ module CommonGround
       @exclude_admins_and_moderators = exclude_admins_and_moderators
     end
 
-    # @param [Integer] num_ideas Number of ideas to return for each category
+    # @param [Integer] num_ideas Max number of ideas per top list; the full list is not limited
     def results(num_ideas = 5)
       Results.new(
         phase_id: @phase.id,
@@ -37,13 +38,7 @@ module CommonGround
         .limit(n)
     end
 
-    # Net agreement runs from +1 (everyone who took a side agreed) to -1 (everyone disagreed)
     def ideas_by_agreement
-      net_agreement_sql = Arel.sql(<<~SQL.squish)
-        (reaction_counts.likes_count - reaction_counts.dislikes_count) * 1.0
-        / NULLIF(reaction_counts.likes_count + reaction_counts.dislikes_count, 0)
-      SQL
-
       ideas_with_reaction_counts.order(net_agreement_sql.desc, votes_count_sql.desc)
     end
 
@@ -61,11 +56,21 @@ module CommonGround
         .where('reaction_counts.likes_count + reaction_counts.dislikes_count > 0')
     end
 
-    # NULLIF guards the division, because Postgres does not guarantee the order in which WHERE conditions are evaluated.
+    # Runs from 1 (everyone who took a side agreed with each other) to 0.5 (a perfect split).
+    # NULLIF guards the division: this fragment also lands in a WHERE clause, and Postgres does not
+    # guarantee that the "took a side" filter of ideas_with_reaction_counts is evaluated first.
     def consensus_score_sql
       @consensus_score_sql ||= Arel.sql(<<~SQL.squish)
         greatest(reaction_counts.likes_count, reaction_counts.dislikes_count) * 1.0
-        / NULLIF(reaction_counts.likes_count + reaction_counts.dislikes_count, 0)
+        / NULLIF(#{votes_count_sql}, 0)
+      SQL
+    end
+
+    # Runs from +1 (everyone who took a side agreed) to -1 (everyone disagreed).
+    def net_agreement_sql
+      @net_agreement_sql ||= Arel.sql(<<~SQL.squish)
+        (reaction_counts.likes_count - reaction_counts.dislikes_count) * 1.0
+        / NULLIF(#{votes_count_sql}, 0)
       SQL
     end
 
