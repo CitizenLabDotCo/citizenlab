@@ -46,8 +46,10 @@ module AIAssistant
         )
       end
 
-      # Mirrors the draft-only rule of the MCP tools that change projects.
+      # Mirrors the rules of the MCP tools: no changes to a survey with responses, or to a project that isn't a draft.
       def writable?
+        return false if subject.ideas_count.to_i.positive?
+
         subject.project.admin_publication.draft? ||
           McpServer::BaseTool::Runner::PUBLISHED_WRITABLE_LIFECYCLES.include?(AppConfiguration.instance.lifecycle_stage)
       end

@@ -46,4 +46,10 @@ describe AIAssistant::Surfaces::SurveyBuilder do
 
     expect(surface.system_prompt(locale: 'en')).to include('cannot be changed')
   end
+
+  it 'tells the model when the survey already has responses' do
+    phase.update_columns(ideas_count: 2)
+
+    expect(surface.system_prompt(locale: 'en')).to include('cannot be changed')
+  end
 end
