@@ -151,6 +151,7 @@ module AIAssistant
     end
 
     def finish
+      conversation.close_cut_off_tool_calls!
       conversation.update!(status: 'idle', last_error_code: nil)
     end
 

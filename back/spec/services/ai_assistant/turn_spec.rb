@@ -44,6 +44,17 @@ describe AIAssistant::Turn do
     expect(conversation.messages.last.content).to eq('The survey has no questions yet.')
   end
 
+  it 'fails the calls a stopped worker cut off once the turn ends' do
+    tool_message = create(:ai_assistant_message, conversation:, role: 'assistant', content: nil)
+    cut_off = create(:ai_assistant_tool_call, message: tool_message, status: 'pending')
+    stub_bedrock(bedrock_text('I could not read the survey.'))
+
+    turn.run
+
+    expect(cut_off.reload.status).to eq('failed')
+    expect(conversation.reload).to have_attributes(status: 'idle', last_error_code: nil)
+  end
+
   it 'stores a message only together with its tool calls' do
     # A tool call without an id can't be stored.
     stub_bedrock(bedrock_tool_use({ id: '', name: 'get_form_fields' }))
