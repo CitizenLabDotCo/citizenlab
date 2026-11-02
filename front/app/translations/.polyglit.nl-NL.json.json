@@ -1224,7 +1224,6 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
-
   "app.components.ErrorBoundary.reloadPage": {
     "state": "verified",
     "verified_at": "2026-10-02T14:09:45.404706Z",
@@ -1440,6 +1439,11 @@
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
   },
+  "app.components.FilterBoxes.a11y_allSelected": {
+    "state": "verified",
+    "verified_at": "2026-11-02T08:58:50.386432Z",
+    "verified_by": "Luuc"
+  },
   "app.components.FilterBoxes.a11y_numberOfInputs": {
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
@@ -1454,6 +1458,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:49:32.340815Z",
     "verified_by": "Admin"
+  },
+  "app.components.FilterBoxes.a11y_selectedOption": {
+    "state": "verified",
+    "verified_at": "2026-11-02T08:58:50.386432Z",
+    "verified_by": "Luuc"
   },
   "app.components.FilterBoxes.a11y_selectedTopicFilters": {
     "state": "verified",
@@ -3885,7 +3894,6 @@
     "verified_at": "2026-07-07T14:52:42.215163Z",
     "verified_by": "Luuc"
   },
-
   "app.components.UI.FeatureCallout.dismiss": {
     "state": "verified",
     "verified_at": "2026-10-08T07:46:40.658208Z",
@@ -12606,13 +12614,11 @@
     "verified_at": "2026-09-23T16:51:52.310206Z",
     "verified_by": "Luuc"
   },
-
   "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignDescription2": {
     "state": "verified",
     "verified_at": "2026-10-08T07:46:40.658208Z",
     "verified_by": "Pauline"
   },
-
   "app.containers.UsersEditPage.EarlyAccess.projectBackofficeRedesignTitle": {
     "state": "verified",
     "verified_at": "2026-10-08T07:46:40.658208Z",
