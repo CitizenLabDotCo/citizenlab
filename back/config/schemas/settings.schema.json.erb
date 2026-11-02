@@ -900,8 +900,9 @@
 
       "input_form_answer_filters": {
         "type": "object",
-        "title": "Answer filters on input lists [DO NOT ENABLE]",
+        "title": "Answer filters on input lists",
         "description": "Lets managers offer a public choice question as a filter on the list of inputs. Still under development, not ready for customer use.",
+        "development": true,
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1378,7 +1379,7 @@
 
       "project_importer": {
         "type": "object",
-        "title": "Project importer [Alpha]",
+        "title": "Project importer",
         "description": "Super admin only feature to import project, phases and content from XLSX.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
@@ -1517,7 +1518,7 @@
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
-          "allowed": { "type": "boolean", "default": true },
+          "allowed": { "type": "boolean", "default": false },
           "enabled": { "type": "boolean", "default": false },
           "use_test_mode": {
             "type": "boolean",
@@ -1621,7 +1622,7 @@
 
       "ai_assistant": {
         "type": "object",
-        "title": "AI assistant [DO NOT ENABLE]",
+        "title": "AI assistant",
         "description": "An AI chat assistant in the back office that proposes changes, such as a survey's questions, for the admin to approve. Under development, not ready for customer use. Only available to super admins for now.",
         "development": true,
         "additionalProperties": false,
