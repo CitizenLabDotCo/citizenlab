@@ -443,6 +443,7 @@ const FormEdit = ({
                         <SurveyAssistant
                           phaseId={phaseId}
                           onFormReplaced={() => {
+                            resetCopyFrom();
                             setSelectedField(undefined);
                             setIsUpdatingForm(true);
                           }}
