@@ -1,6 +1,5 @@
 import React, { useRef, useState } from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
@@ -14,11 +13,15 @@ import usePhaseFileAttachments, {
 import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/typings';
 import validate from 'containers/Admin/projects/project/phaseSetup/validate';
 
+import {
+  SaveReason,
+  useRegisterPageSaver,
+} from 'components/admin/PageSaveContext';
+
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import ProjectWorkspace from '..';
-import { SaveReason, useRegisterPageSaver } from '../_shared/PageSaveContext';
 import BuildFields from '../Phase/BuildPanel/BuildFields';
 import DraftMethodSettings from '../Phase/DraftMethodSettings';
 import PhasePreview from '../Phase/PhasePreview';
@@ -124,31 +127,29 @@ const NewPhaseWorkspace = ({
         ),
       }}
       sidePanel={
-        <Box p="20px">
-          <BuildFields
-            projectId={projectId}
-            participationMethod={participationMethod}
-            formData={formData}
-            errors={errors}
-            validationErrors={validationErrors}
-            standalone={standalone}
-            files={files}
-            surveyMethodSwitch={{
-              onSelect: (method) => {
-                setParticipationMethod(method);
-                updateFormData(defaultsForMethod(method));
-              },
-            }}
-            onChange={updateFormData}
-            onDatesChange={(dates) => {
-              setValidationErrors((errors) => ({
-                ...errors,
-                phaseDateError: undefined,
-              }));
-              updateFormData(dates);
-            }}
-          />
-        </Box>
+        <BuildFields
+          projectId={projectId}
+          participationMethod={participationMethod}
+          formData={formData}
+          errors={errors}
+          validationErrors={validationErrors}
+          standalone={standalone}
+          files={files}
+          surveyMethodSwitch={{
+            onSelect: (method) => {
+              setParticipationMethod(method);
+              updateFormData(defaultsForMethod(method));
+            },
+          }}
+          onChange={updateFormData}
+          onDatesChange={(dates) => {
+            setValidationErrors((errors) => ({
+              ...errors,
+              phaseDateError: undefined,
+            }));
+            updateFormData(dates);
+          }}
+        />
       }
     >
       <PhasePreview projectId={projectId} />

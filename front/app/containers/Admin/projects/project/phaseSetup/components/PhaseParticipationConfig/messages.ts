@@ -27,14 +27,6 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.moderationGroup',
     defaultMessage: 'Moderation',
   },
-  displayGroup: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.displayGroup',
-    defaultMessage: 'Display',
-  },
-  submissionNameGroup: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.submissionNameGroup',
-    defaultMessage: 'Submission name',
-  },
   votingOnInputsAction: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.votingOnInputsAction',
     defaultMessage: 'Voting on inputs',
@@ -43,8 +35,21 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction',
     defaultMessage: 'Volunteering',
   },
-  votesGroup: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.votesGroup',
-    defaultMessage: 'Votes',
+  proposalRequirementsGroup: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.proposalRequirementsGroup',
+    defaultMessage: 'Proposal requirements',
+  },
+  proposalRequirementsNote: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.proposalRequirementsNote',
+    defaultMessage:
+      'Proposals that reach the minimum within the time limit get an official response; the rest expire.',
+  },
+  howIdeasAreShown: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.howIdeasAreShown',
+    defaultMessage: 'How ideas are shown',
+  },
+  rulesGroup: {
+    id: 'app.components.app.containers.AdminPage.ProjectEdit.rulesGroup',
+    defaultMessage: 'Rules',
   },
 });

@@ -1064,6 +1064,21 @@
     "verified_at": "2026-03-27T13:21:30.209348Z",
     "verified_by": "Cindy EB"
   },
+  "app.components.CustomPageBuilder.Widgets.CustomPageTitle.title": {
+    "state": "verified",
+    "verified_at": "2026-10-26T13:27:19.414501Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomPageBuilder.Widgets.CustomPageTitle.titleLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-26T13:27:19.414501Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.CustomPageBuilder.Widgets.ProjectsByFilter.titleLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-26T13:27:19.414501Z",
+    "verified_by": "Adrien"
+  },
   "app.components.ErrorBoundary.errorFormErrorFormEntry": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -1419,6 +1434,16 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilter": {
+    "state": "verified",
+    "verified_at": "2026-10-30T13:47:30.584536Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.FormBuilder.components.AnswerFilterToggle.useAsFilterDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-30T13:47:30.584536Z",
+    "verified_by": "Adrien"
+  },
   "app.components.FormBuilder.components.AnswerVisibilityToggle.cancel": {
     "state": "verified",
     "verified_at": "2026-10-16T09:27:28.591032Z",
@@ -1633,6 +1658,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.components.IdeaCards.filters.statusPriority": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:10:41.385275Z",
+    "verified_by": "Cindy EB"
   },
   "app.components.IdeaCards.filters.trending": {
     "state": "verified",
@@ -2233,6 +2263,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.components.PostCardsComponents.perspectives": {
+    "state": "verified",
+    "verified_at": "2026-10-28T10:50:04.094812Z",
+    "verified_by": "Adrien"
   },
   "app.components.PostComponents.OfficialFeedback.addOfficalUpdate": {
     "state": "verified",
@@ -3934,6 +3969,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.components.WeglotSwitcher.ariaLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:17:23.313081Z",
+    "verified_by": "Adrien"
+  },
   "app.components.admin.PostManager.components.ActionBar.deleteInputExplanation": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -4463,6 +4503,26 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.components.aiAssistant.errorGeneric": {
+    "state": "verified",
+    "verified_at": "2026-10-30T15:07:42.517367Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.aiAssistant.errorTooLong": {
+    "state": "verified",
+    "verified_at": "2026-10-30T15:07:42.517367Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.aiAssistant.newChat": {
+    "state": "verified",
+    "verified_at": "2026-10-30T15:07:42.517367Z",
+    "verified_by": "Adrien"
+  },
+  "app.components.aiAssistant.send": {
+    "state": "verified",
+    "verified_at": "2026-10-30T15:07:42.517367Z",
+    "verified_by": "Adrien"
   },
   "app.components.anonymousParticipationModal.anonymousParticipationWarning": {
     "state": "verified",
@@ -6994,6 +7054,11 @@
     "verified_at": "2026-07-17T08:20:45.379636Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Authentication.steps.FlowStart.signInWithEmployeeAccount": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:22:22.055417Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Authentication.steps.Invitation.pleaseEnterAToken": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -8103,6 +8168,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
+  },
+  "app.containers.IdeaCards.statusPriority": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:10:41.385275Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.IdeaCards.statusTitle": {
     "state": "verified",
@@ -12214,6 +12284,11 @@
     "verified_at": "2026-03-18T11:50:36.653533Z",
     "verified_by": "Admin"
   },
+  "app.containers.UsersEditPage.EarlyAccess.earlyAccessTitle": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:41:18.830484Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.UsersEditPage.a11y_imageDropzoneRemoveIconAriaTitle": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.653533Z",
@@ -13433,6 +13508,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T16:35:09.080991Z",
     "verified_by": "Admin"
+  },
+  "app.errors.not_supported_in_standalone_phase": {
+    "state": "verified",
+    "verified_at": "2026-10-16T09:41:31.553108Z",
+    "verified_by": "Cindy EB"
   },
   "app.errors.number_invalid": {
     "state": "verified",

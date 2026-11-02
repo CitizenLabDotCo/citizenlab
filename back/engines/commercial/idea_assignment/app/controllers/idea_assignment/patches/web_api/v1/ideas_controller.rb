@@ -15,12 +15,12 @@ module IdeaAssignment
             end
           end
 
-          def filter_counts_attributes(ideas)
+          def filter_count_facets(ideas)
             return super unless current_user
 
             moderatable_projects = UserRoleService.new.moderatable_projects(current_user)
             if current_user.admin? || ideas.where.not(project: moderatable_projects).none?
-              super + ['assignee_id']
+              super + [Facets::Column.new(:assignee_id)]
             else
               super
             end

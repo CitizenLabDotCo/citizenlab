@@ -42,4 +42,27 @@ describe('<Toggle />', () => {
     fireEvent.click(screen.getByTestId('toggle'));
     expect(handleOnChange).not.toHaveBeenCalled();
   });
+
+  it('centres the label by default', () => {
+    render(<Toggle checked={false} label="Public" onChange={jest.fn()} />);
+
+    expect(screen.getByTestId('toggle').parentElement).toHaveStyle({
+      'align-items': 'center',
+    });
+  });
+
+  it('aligns the label to the top with labelAlign="top"', () => {
+    render(
+      <Toggle
+        checked={false}
+        label="Public"
+        labelAlign="top"
+        onChange={jest.fn()}
+      />
+    );
+
+    expect(screen.getByTestId('toggle').parentElement).toHaveStyle({
+      'align-items': 'flex-start',
+    });
+  });
 });

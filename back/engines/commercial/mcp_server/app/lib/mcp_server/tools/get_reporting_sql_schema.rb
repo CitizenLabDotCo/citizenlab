@@ -24,7 +24,11 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
     Analytics::Reporting::InputImport,
     Analytics::Reporting::OfficialFeedback,
     Analytics::Reporting::Report,
+    Analytics::Reporting::StaffActivity,
+    Analytics::Reporting::EmailDelivery,
+    Analytics::Reporting::Invite,
     Analytics::Reporting::User,
+    Analytics::Reporting::Registration,
     Analytics::Reporting::UserQuestionAnswer,
     Analytics::Reporting::ReferenceDistribution,
     Analytics::Reporting::InputQuestionAnswer,
@@ -44,10 +48,11 @@ class McpServer::Tools::GetReportingSqlSchema < McpServer::BaseTool
       data (contributions and participants, inputs with their answers, tags, statuses
       and status history, imports, votes, reactions and official feedback,
       users with their demographics and the population base data to compare them
-      with, visitor sessions and pageviews, projects, phases, events, published
-      reports and community monitor scores). Call this before writing SQL; the
-      returned table and column comments carry the semantics queries should follow,
-      and the relationships map shows how the tables join.
+      with, the sign-up funnel, visitor sessions and pageviews, projects, phases,
+      events, published reports, community monitor scores, staff activity totals,
+      and email and invitation totals). Call this before writing SQL; the returned
+      table and column comments carry the semantics queries should follow, and the
+      relationships map shows how the tables join.
     DOC
   end
 

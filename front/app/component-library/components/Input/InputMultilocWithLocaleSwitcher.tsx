@@ -3,34 +3,43 @@ import React, { memo, useState, useCallback, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 
 import { isNilOrError } from '../../utils/helperUtils';
-import { colors, fontSizes } from '../../utils/styleUtils';
 import { Locale, Multiloc } from '../../utils/typings';
 import Box from '../Box';
 import IconTooltip from '../IconTooltip';
 import Label from '../Label';
 import LocaleSwitcher from '../LocaleSwitcher';
 
-import Input, { InputProps } from '.';
+import Input, { InputProps, boLabelStyle } from '.';
 
-const LabelContainer = styled.div`
+export const stackedLabelStyle = css`
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+
+  > label {
+    align-self: flex-start;
+  }
+`;
+
+const LabelContainer = styled.div<{ stacked: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-`;
 
-const boLabelStyle = css`
-  margin-bottom: 0;
-  font-size: ${fontSizes.xs}px;
-  line-height: 1.4;
-  color: ${colors.coolGrey600};
+  ${({ stacked }) => stacked && stackedLabelStyle}
 `;
 
 const StyledLabel = styled(Label)<{ variant: InputProps['variant'] }>`
   flex: 1;
   padding-bottom: 0px;
 
-  ${({ variant }) => variant === 'bo' && boLabelStyle}
+  ${({ variant }) =>
+    variant === 'bo' &&
+    css`
+      ${boLabelStyle}
+      margin-bottom: 0;
+    `}
 `;
 
 const Spacer = styled.div`
@@ -49,6 +58,7 @@ export interface Props extends Omit<InputProps, 'value' | 'onChange'> {
   errorMultiloc?: Multiloc | null;
   initiallySelectedLocale?: Locale;
   hideLocaleSwitcher?: boolean;
+  stackedLabel?: boolean;
 }
 
 const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
@@ -62,6 +72,7 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
     errorMultiloc,
     initiallySelectedLocale,
     hideLocaleSwitcher,
+    stackedLabel = false,
     ...inputProps
   } = props;
   const { id, className } = props;
@@ -121,7 +132,7 @@ const InputMultilocWithLocaleSwitcher = memo<Props>((props) => {
     return (
       <Box className={className}>
         <Box mb={props.variant === 'bo' ? '4px' : '10px'}>
-          <LabelContainer>
+          <LabelContainer stacked={stackedLabel}>
             {label ? (
               <StyledLabel htmlFor={id} variant={props.variant}>
                 <span>{label}</span>

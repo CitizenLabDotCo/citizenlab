@@ -467,6 +467,30 @@ RSpec.describe CustomField do
     end
   end
 
+  describe 'show_as_filter' do
+    it 'defaults to false' do
+      field = create(:custom_field_select, :for_custom_form)
+      expect(field.show_as_filter).to be false
+    end
+
+    it 'can be set for a public choice question' do
+      field = create(:custom_field_select, :for_custom_form, answers_visible_to: 'public', show_as_filter: true)
+      expect(field.reload.show_as_filter).to be true
+    end
+
+    it 'cannot be set for a private choice question' do
+      field = build(:custom_field_select, :for_custom_form, answers_visible_to: 'moderators', show_as_filter: true)
+      expect(field).to be_invalid
+      expect(field.errors.details[:show_as_filter]).to include(error: :inclusion)
+    end
+
+    it 'cannot be set for a public text question' do
+      field = build(:custom_field_text, :for_custom_form, answers_visible_to: 'public', show_as_filter: true)
+      expect(field).to be_invalid
+      expect(field.errors.details[:show_as_filter]).to include(error: :inclusion)
+    end
+  end
+
   describe 'maximum_select_count' do
     let(:field) { create(:custom_field_multiselect, :with_options) }
 

@@ -58,6 +58,21 @@ RSpec.describe UserConfirmationService do
       end
     end
 
+    context 'when the retry limit is reached' do
+      before do
+        5.times { service.public_send(method_name, user, 'failcode') }
+      end
+
+      it 'rejects the correct code' do
+        result = nil
+        expect { result = service.public_send(method_name, user, confirmation.reload.code) }
+          .not_to change { user.reload.public_send(confirmed_at_attr) }
+
+        expect(result.success?).to be false
+        expect(result.errors.details).to eq(code: [{ error: :too_many_retries }])
+      end
+    end
+
     context 'when the code has expired' do
       before do
         confirmation.update!(code_sent_at: 1.week.ago)

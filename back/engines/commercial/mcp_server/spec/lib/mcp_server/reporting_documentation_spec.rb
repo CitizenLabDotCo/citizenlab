@@ -19,7 +19,8 @@ RSpec.describe 'Reporting schema documentation' do # rubocop:disable RSpec/Descr
     'reporting_user_question_answers' => %w[question_id],
     'reporting_input_question_answers' => %w[question_id],
     'reporting_community_monitor_scores' => %w[question_id],
-    'reporting_reference_distributions' => %w[question_id]
+    'reporting_reference_distributions' => %w[question_id],
+    'reporting_email_deliveries' => %w[campaign_id]
   }
 
   reporting_tables = McpServer::Tools::GetReportingSqlSchema::REPORTING_TABLES

@@ -110,6 +110,14 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
         Analytics::DimensionType
       ],
 
+      # The AI assistant's chats with individual admins — per-user runtime data, never
+      # templated or copied.
+      ai_assistant: %w[
+        AIAssistant::Conversation
+        AIAssistant::Message
+        AIAssistant::ToolCall
+      ],
+
       # AI analysis, insights and embeddings — derived from user content.
       analysis: %w[
         Analysis::AdditionalCustomField
@@ -260,6 +268,9 @@ describe 'ProjectCopyService export coverage' do # rubocop:disable RSpec/Describ
       # a project. A query snapshot is a cached answer, rebuilt on demand. A chat and
       # a generation transcript record how a report was written, not the report.
       llm_reporting: %w[
+        ContentBuilder::CustomBlock
+        ContentBuilder::CustomBlockVersion
+        ContentBuilder::QuerySnapshot
         ReportBuilder::GenerationTranscript
       ],
 

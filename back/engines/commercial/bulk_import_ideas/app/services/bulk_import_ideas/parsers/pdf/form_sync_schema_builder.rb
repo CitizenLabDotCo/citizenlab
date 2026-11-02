@@ -4,10 +4,11 @@ module BulkImportIdeas::Parsers::Pdf
   class FormSyncSchemaBuilder
     NOT_FOUND = '_NOT_FOUND_'
 
-    def initialize(phase, locale, personal_data_enabled: false)
+    def initialize(phase, locale, personal_data_enabled: false, printable_fields: nil)
       @phase = phase
       @locale = locale
       @personal_data_enabled = personal_data_enabled
+      @printable_form_fields = printable_fields
       @key_mapping = {}
     end
 
@@ -196,12 +197,12 @@ module BulkImportIdeas::Parsers::Pdf
 
     def add_matrix_property(field, question_key, question_num, properties, required)
       title = field_title(field)
-      labels = (1..field.maximum).map do |label_num|
-        attr_name = :"linear_scale_label_#{label_num}_multiloc"
-        field[attr_name][@locale.to_s]&.squish
-      end.compact_blank
-
-      columns_description = labels.each_with_index.map { |label, i| "#{i + 1} = '#{label}'" }.join(', ')
+      # The printed form has one column per scale point, labelled or not
+      columns = (1..field.maximum).to_a
+      columns_description = columns.map do |column|
+        label = field.nth_linear_scale_multiloc(column)[@locale.to_s]&.squish
+        label.present? ? "#{column} = '#{label}'" : "#{column} = (no label)"
+      end.join(', ')
 
       sub_properties = {}
       sub_required = []
@@ -217,7 +218,7 @@ module BulkImportIdeas::Parsers::Pdf
                        "The columns from left to right are: #{columns_description}. " \
                        'Return 0 if the statement was left unanswered. ' \
                        'Return -1 if the question was not in the document.',
-          enum: (1..labels.length).to_a + [0, -1]
+          enum: columns + [0, -1]
         }
         sub_required << sub_key
         statement_mapping[sub_key] = statement.key

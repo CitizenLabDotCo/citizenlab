@@ -61,6 +61,16 @@ class IdeasFinder < ApplicationFinder
     where(idea_status_id: idea_status)
   end
 
+  def custom_field_answers_condition(keys_by_field)
+    return if keys_by_field.blank?
+
+    fields = CustomField.where(id: keys_by_field.keys)
+      .select { |field| Pundit.policy!(current_user, field).show? && field.can_show_as_filter? }
+    fields.reduce(records) do |ideas, field|
+      AnswerableFilter.new(field, ideas).one_of(Array(keys_by_field[field.id]))
+    end
+  end
+
   def project_publication_status_condition(project_publication_status)
     scope(:with_project_publication_status, project_publication_status) if project_publication_status.present?
   end

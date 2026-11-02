@@ -200,8 +200,10 @@ export const addPrefix = (customFieldValues: Record<string, any>) => {
   return newValues;
 };
 
+// Pages have no key, although the type says otherwise.
 export const isUserField = (field: IFlatCustomField) =>
-  field.key.startsWith(PREFIX);
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  !!field.key?.startsWith(PREFIX);
 
 // Tracks each page view after the first page - the first page is tracked when the form is opened
 export const trackFormPageView = (

@@ -53,8 +53,8 @@ const CustomFieldAnswers = ({ ideaId, project, compact }: Props) => {
   const rows = customFields.flatMap((field) => {
     if (
       field.code ||
-      isUserField(field) ||
-      !supportsPublicAnswers(field.input_type)
+      !supportsPublicAnswers(field.input_type) ||
+      isUserField(field)
     ) {
       return [];
     }
