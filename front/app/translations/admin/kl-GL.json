@@ -4388,6 +4388,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink2": "https://support.govocal.com/en/articles/527598-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Nittartakkap adressia eqqortoq allaguk, soorlu https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Isikkuata angissusia (aspect ratio) eqqortoq allaguk, soorlu 16:10 imaluunniit 5:3.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.noUrlPrompt": "Nittartakkap adressia allanneqanngilaq.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Ikkunniuk",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Accordion",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Ammareertarpoq",

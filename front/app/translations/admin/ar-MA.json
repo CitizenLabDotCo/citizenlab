@@ -4388,6 +4388,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink2": "https://support.govocal.com/en/articles/527598-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "أدخل عنوان ويب صالحاً، على سبيل المثال https://example.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "دخل نسبة عرض إلى ارتفاع صالحة، مثلا 16:10 ولا 5:3.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.noUrlPrompt": "ما تم إدخال حتى شي عنوان ديال الموقع الإلكتروني.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "تضمين",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "قائمة قابلة للطي",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "مفتوح افتراضياً",

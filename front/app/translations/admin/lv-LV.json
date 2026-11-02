@@ -4388,6 +4388,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink2": "https://support.govocal.com/en/articles/527598-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Ievadiet derīgu tīmekļa adresi, piemēram, https://example.com.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Ievadiet derīgu malu attiecību, piemēram, 16:10 vai 5:3.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.noUrlPrompt": "Nav ievadīta tīmekļa vietnes adrese.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Ievietot",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Akordeons",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Atvērt pēc noklusējuma",

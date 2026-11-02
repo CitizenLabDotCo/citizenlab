@@ -126,6 +126,7 @@ module IdeaCustomFields
         :question_category,
         :include_in_printed_form,
         :answers_visible_to,
+        :show_as_filter,
         :min_characters,
         :max_characters,
         { title_multiloc: CL2_SUPPORTED_LOCALES,

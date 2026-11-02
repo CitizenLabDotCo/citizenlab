@@ -237,6 +237,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            input_form_answer_filters: {
+              enabled: true,
+              allowed: true
+            },
             report_builder: {
               enabled: true,
               allowed: true
@@ -447,6 +451,10 @@ module MultiTenancy
             },
             project_backoffice_redesign: {
               enabled: false,
+              allowed: true
+            },
+            ai_assistant: {
+              enabled: true,
               allowed: true
             }
           })

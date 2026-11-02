@@ -4388,6 +4388,7 @@
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeSupportLink2": "https://support.govocal.com/en/articles/527598-embedding-elements-in-the-content-builder-to-enrich-project-descriptions",
   "app.containers.admin.ContentBuilder.IframeMultiloc.iframeUrlErrorMessage": "Inserisci un indirizzo web valido, ad esempio https://esempio.com",
   "app.containers.admin.ContentBuilder.IframeMultiloc.invalidAspectRatio": "Inserisci un rapporto d'aspetto valido, ad esempio 16:10 o 5:3.",
+  "app.containers.admin.ContentBuilder.IframeMultiloc.noUrlPrompt": "Nessun indirizzo del sito web inserito.",
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": "Incorpora",
   "app.containers.admin.ContentBuilder.accordionMultiloc": "Fisarmonica",
   "app.containers.admin.ContentBuilder.accordionMultilocDefaultOpenLabel": "Aperto per impostazione predefinita",
