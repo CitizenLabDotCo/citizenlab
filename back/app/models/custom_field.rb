@@ -443,12 +443,11 @@ class CustomField < ApplicationRecord
   def domicile_options
     return options.order(:ordering) unless domicile?
 
-    areas = Area.where(custom_field_option_id: options.pluck(:id))
-    area_id_map = areas.map { |a| { a.custom_field_option_id => { id: a.id, title: a.title_multiloc } } }.reduce({}, :merge)
+    outside_title = MultilocService.new.i18n_to_multiloc('custom_field_options.domicile.outside')
 
-    options.order(:ordering).map do |option|
-      option.key = area_id_map.dig(option.id, :id) || 'outside'
-      option.title_multiloc = area_id_map.dig(option.id, :title) || MultilocService.new.i18n_to_multiloc('custom_field_options.domicile.outside')
+    options.order(:ordering).includes(:area).map do |option|
+      option.title_multiloc = option.area&.title_multiloc || outside_title
+      option.key = option.answer_key
       option
     end
   end
