@@ -6,6 +6,7 @@ import {
   Label,
   colors,
   fontSizes,
+  boInputLabelStyle,
 } from '@citizenlab/cl2-component-library';
 import styled, { css } from 'styled-components';
 import { SupportedLocale, Multiloc } from 'typings';
@@ -29,6 +30,8 @@ const LabelContainer = styled.div<{ variant: QuillEditorProps['variant'] }>`
   margin-bottom: ${({ variant }) => (variant === 'bo' ? '4px' : '10px')};
   flex-wrap: wrap;
   gap: 16px;
+
+  ${({ variant }) => variant === 'bo' && boInputLabelStyle}
 `;
 
 const boLabelStyle = css`

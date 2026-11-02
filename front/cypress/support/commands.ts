@@ -722,6 +722,7 @@ type IdeaType = {
   budget?: number;
   anonymous?: boolean;
   topicIds?: string[];
+  customFieldValues?: Record<string, unknown>;
 };
 
 function apiCreateIdea({
@@ -734,6 +735,7 @@ function apiCreateIdea({
   budget,
   anonymous,
   topicIds,
+  customFieldValues,
 }: IdeaType) {
   const doRequest = (jwt: string) =>
     cy.request({
@@ -759,6 +761,7 @@ function apiCreateIdea({
           budget,
           anonymous,
           topic_ids: topicIds,
+          ...customFieldValues,
         },
       },
     });

@@ -76,6 +76,10 @@ RSpec.describe ContentBuilder::Layout do
       }] })
     end
 
+    it 'returns true for an iframe with no url yet' do
+      expect(build(:layout, craftjs_json: craftjson_with_iframe_url(''))).to be_valid
+    end
+
     it 'returns true otherwise' do
       expect(build(:layout, craftjs_json: craftjson_with_iframe_url('https://www.youtube.com/embed/gdfWFDcXut4'))).to be_valid
     end

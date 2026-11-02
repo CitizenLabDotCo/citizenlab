@@ -1,7 +1,7 @@
 import React, { PureComponent, FocusEvent, ChangeEvent } from 'react';
 
 import { isString, get, isNumber } from 'lodash-es';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Placement } from 'tippy.js';
 
 import {
@@ -18,6 +18,8 @@ import IconTooltip from '../IconTooltip';
 import { boInputLabelStyle, boInputStyle } from '../Input';
 import Label from '../Label';
 
+type Variant = 'default' | 'bo';
+
 export const SelectIcon = styled(Icon)`
   fill: #999;
   pointer-events: none;
@@ -33,9 +35,11 @@ export const SelectIcon = styled(Icon)`
   `}
 `;
 
-const Container = styled.div<{ variant?: 'bo' }>`
+const Container = styled.div<{ variant: Variant }>`
   position: relative;
   outline: none !important;
+
+  ${({ variant }) => variant === 'bo' && boInputLabelStyle}
 
   &.enabled {
     &:hover {
@@ -64,17 +68,29 @@ const Container = styled.div<{ variant?: 'bo' }>`
   select.placeholder > option {
     color: ${colors.textPrimary};
   }
-
-  ${({ variant }) => variant === 'bo' && boInputLabelStyle}
 `;
 
 const CHEVRON_SPACE = '36px';
+
+const boSelectStyle = css`
+  padding-right: 32px;
+
+  ${isRtl`
+    padding-right: 11px;
+    padding-left: 32px;
+  `}
+
+  & + ${SelectIcon} {
+    width: 16px;
+    fill: ${colors.coolGrey500};
+  }
+`;
 
 export const SelectWrapper = styled.div<{
   mr?: string;
   size?: InputSize;
   height?: string;
-  variant?: 'bo';
+  variant?: Variant;
 }>`
   width: 100%;
   position: relative;
@@ -98,11 +114,14 @@ export const SelectWrapper = styled.div<{
     &::-ms-expand {
       display: none;
     }
-    height: ${({ height, variant }) =>
-      height ||
-      (variant === 'bo'
-        ? '36px'
-        : `${stylingConsts.inputHeight}px`)} !important;
+    ${({ variant, height }) =>
+      variant === 'bo'
+        ? boSelectStyle
+        : css`
+            height: ${height
+              ? height
+              : `${stylingConsts.inputHeight}px`} !important;
+          `}
   }
 `;
 
@@ -129,7 +148,7 @@ export interface Props extends DefaultProps {
   setRef?: (arg: HTMLSelectElement | null) => void;
   ariaInvalid?: boolean;
   ariaDescribedBy?: string;
-  variant?: 'bo';
+  variant?: Variant;
 }
 
 const DEFAULT_VALUE = 'DEFAULT_SELECT_VALUE';
@@ -192,7 +211,7 @@ class Select extends PureComponent<Props> {
       setRef,
       ariaInvalid,
       ariaDescribedBy,
-      variant,
+      variant = 'default',
     } = this.props;
 
     const safeValue =

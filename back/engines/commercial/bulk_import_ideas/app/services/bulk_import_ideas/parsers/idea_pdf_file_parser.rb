@@ -91,7 +91,7 @@ module BulkImportIdeas::Parsers
               type: 'option',
               input_type: 'option',
               code: option[:code],
-              key: option[:key],
+              key: option.answer_key,
               parent_key: field[:key]
             }
           end
