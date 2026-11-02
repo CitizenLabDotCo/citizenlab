@@ -379,7 +379,7 @@ GEM
     acts_as_list (1.2.6)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
-    addressable (2.9.0)
+    addressable (2.9.2)
       public_suffix (>= 2.0.2, < 8.0)
     aes_key_wrap (1.1.0)
     afm (0.2.2)
@@ -499,7 +499,7 @@ GEM
       base64
       ssrf_filter (~> 1.5)
     csv (3.3.6)
-    dalli (3.2.13)
+    dalli (3.2.15)
       logger
     database_cleaner (2.1.0)
       database_cleaner-active_record (>= 2, < 3)
@@ -927,7 +927,7 @@ GEM
       base64 (>= 0.2)
     que (2.4.1)
     racc (1.8.1)
-    rack (2.2.23)
+    rack (2.2.25)
     rack-attack (6.8.0)
       rack (>= 1.0, < 4)
     rack-cors (2.0.2)
