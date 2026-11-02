@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 
+import { Box } from '@citizenlab/cl2-component-library';
 import { omit } from 'lodash-es';
 
 import { IIdeasFilterCountsQueryParameters } from 'api/ideas_filter_counts/types';
@@ -36,19 +37,21 @@ const TopicFilterBox = memo<Props>(
       idea_status: ideaFiltersWithoutTopics.idea_status,
     });
 
-    if (ideasFilterCounts) {
-      return (
+    if (!topics || topics.data.length === 0 || !ideasFilterCounts) {
+      return null;
+    }
+
+    return (
+      <Box mb="20px">
         <TopicsFilter
           className={className}
-          topics={topics?.data}
+          topics={topics.data}
           selectedTopicIds={selectedTopicIds}
           onChange={onChange}
           filterCounts={ideasFilterCounts.data.attributes}
         />
-      );
-    }
-
-    return null;
+      </Box>
+    );
   }
 );
 

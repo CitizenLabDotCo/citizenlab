@@ -79,7 +79,7 @@ const Count = styled.span`
 `;
 
 interface Props {
-  topics?: IInputTopicData[];
+  topics: IInputTopicData[];
   selectedTopicIds: string[] | null | undefined;
   onChange: (arg: string[] | null) => void;
   className?: string;
@@ -117,14 +117,13 @@ const TopicsFilter = memo<Props>(
       [selectedTopicIds]
     );
 
-    const selectedTopics = topics?.filter((topic) =>
+    const selectedTopics = topics.filter((topic) =>
       includes(selectedTopicIds, topic.id)
     );
-    const numberOfSelectedTopics = selectedTopics?.length;
-    const selectedTopicNames =
-      selectedTopics && getSelectedTopicNames(selectedTopics, localize);
+    const numberOfSelectedTopics = selectedTopics.length;
+    const selectedTopicNames = getSelectedTopicNames(selectedTopics, localize);
 
-    const topicsWithIdeas = topics && getTopicsWithIdeas(topics, filterCounts);
+    const topicsWithIdeas = getTopicsWithIdeas(topics, filterCounts);
 
     return (
       <InputFilterCollapsible
@@ -133,7 +132,7 @@ const TopicsFilter = memo<Props>(
         }
         className={className}
       >
-        {!topicsWithIdeas || topicsWithIdeas.length < 1 ? (
+        {topicsWithIdeas.length < 1 ? (
           <Box display="flex" justifyContent="center">
             <Text color="textSecondary">
               {formatMessage(messages.noValuesFound)}
