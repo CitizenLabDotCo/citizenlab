@@ -88,7 +88,7 @@ const Show = () => {
     useUpdateEmailCampaign();
 
   const { data: sender } = useUserById(
-    campaign?.data.relationships.author.data.id
+    campaign?.data.relationships.author.data?.id
   );
   const isLoading =
     isSendingCampaign || isSendingCampaignPreview || isUpdatingCampaign;
@@ -139,9 +139,7 @@ const Show = () => {
       senderName = getFullName(sender.data);
     } else if (senderType === 'organization' && tenant) {
       senderName = localize(
-        // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        tenant?.data.attributes.settings.core.organization_name
+        tenant.data.attributes.settings.core.organization_name
       );
     }
 
