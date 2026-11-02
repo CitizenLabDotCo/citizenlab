@@ -14,6 +14,7 @@ const ANIMATION_SPEED_IN = 400;
 const ANIMATION_SPEED_OUT = 150;
 
 const ChevronIcon = styled(Icon)`
+  flex-shrink: 0;
   transition: fill 80ms ease-out, transform 200ms ease-out;
 `;
 
@@ -23,6 +24,7 @@ const TitleButton = styled.button`
   justify-content: space-between;
   width: 100%;
   padding: 0;
+  text-align: left;
 
   &.expanded {
     ${ChevronIcon} {
