@@ -37,6 +37,16 @@ describe AIAssistant::Conversation do
       expect(cut_off.reload.status).to eq('failed')
       expect(done.reload.status).to eq('auto_executed')
     end
+
+    it 'expires the proposals' do
+      conversation = create(:ai_assistant_conversation, status: 'running')
+      proposal = create(:ai_assistant_tool_call, message: create(:ai_assistant_message, conversation:, role: 'assistant', content: nil))
+
+      conversation.fail_turn!('turn_timed_out')
+
+      expect(proposal.reload.status).to eq('expired')
+      expect(conversation.reload.status).to eq('failed')
+    end
   end
 
   describe '#recover_if_stuck!' do

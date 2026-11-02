@@ -44,9 +44,13 @@ module AIAssistant
 
     validates :surface_key, :locale, presence: true
 
+    # A failed turn's proposals can't be decided on anymore.
     def fail_turn!(error_code)
-      close_cut_off_tool_calls!
-      update!(status: 'failed', last_error_code: error_code)
+      transaction do
+        expire_proposals!
+        close_cut_off_tool_calls!
+        update!(status: 'failed', last_error_code: error_code)
+      end
     end
 
     # Calls still pending when a turn ends never ran: the tool-call limit or a stopped
