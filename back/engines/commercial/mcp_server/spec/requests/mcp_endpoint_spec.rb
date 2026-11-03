@@ -88,7 +88,7 @@ describe McpServer::McpController do
       )
 
       expect(response).to have_http_status(:not_found)
-      expect(response.parsed_body.dig('error', 'code')).to eq(-32_601)
+      expect(response.parsed_body.dig('error', 'code')).to eq(JsonRpcHandler::ErrorCode::METHOD_NOT_FOUND)
     end
   end
 
