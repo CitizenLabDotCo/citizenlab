@@ -26,7 +26,6 @@ import {
   shortDateRange,
 } from '../phaseRowUtils';
 
-// Timeline phases share the green of the line; spotlight surveys have no line.
 const LABEL_COLORS: Record<
   'timeline' | 'spotlight',
   Record<PhaseStatus, string>

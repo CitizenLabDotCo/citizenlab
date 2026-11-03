@@ -66,26 +66,6 @@ export const STATUS_LABELS: Record<PhaseStatus, MessageDescriptor> = {
 export const phaseStatus = (phase: IPhaseData): PhaseStatus =>
   pastPresentOrFuture([phase.attributes.start_at, phase.attributes.end_at]);
 
-export const formatDateRange = (
-  startAt: string,
-  endAt: string | null,
-  locale: Locale,
-  noEndLabel?: string
-): string => {
-  const start = new Date(startAt);
-  const dayMonth = (date: Date) => format(date, 'd MMM', { locale });
-
-  if (!endAt) {
-    return `${dayMonth(start)} – ${noEndLabel ?? ''}`;
-  }
-
-  const end = new Date(endAt);
-
-  return isSameMonth(start, end)
-    ? `${format(start, 'd', { locale })} – ${dayMonth(end)}`
-    : `${dayMonth(start)} – ${dayMonth(end)}`;
-};
-
 // Same-month ranges name the month once: "3 to 23 Oct".
 export const shortDateRange = (
   startAt: string,
@@ -101,6 +81,23 @@ export const shortDateRange = (
     }),
     endDate: format(end, 'd MMM', { locale }),
   };
+};
+
+export const formatDateRange = (
+  startAt: string,
+  endAt: string | null,
+  locale: Locale,
+  noEndLabel?: string
+): string => {
+  if (!endAt) {
+    return `${format(new Date(startAt), 'd MMM', { locale })} – ${
+      noEndLabel ?? ''
+    }`;
+  }
+
+  const { startDate, endDate } = shortDateRange(startAt, endAt, locale);
+
+  return `${startDate} – ${endDate}`;
 };
 
 const STEP_DOT_COLORS: Record<PhaseStatus, string> = {

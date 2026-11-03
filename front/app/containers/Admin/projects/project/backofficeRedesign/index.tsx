@@ -242,11 +242,13 @@ const ProjectWorkspace = ({
         minHeight="0"
         overflow="hidden"
       >
-        {inPhase && participationSlot}
+        {!inPhase && setupSlot}
 
-        {inPhase ? phaseSlot : setupSlot}
+        {/* Always in this slot, so moving between the project and a phase
+            keeps the same panel instead of mounting a new one. */}
+        {participationSlot}
 
-        {!inPhase && participationSlot}
+        {inPhase && phaseSlot}
 
         {phase && activeView !== 'build' ? (
           <ViewContent project={project} phase={phase} view={activeView}>

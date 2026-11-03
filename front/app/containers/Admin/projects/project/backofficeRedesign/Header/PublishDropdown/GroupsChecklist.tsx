@@ -15,6 +15,7 @@ import useProjectGroups from 'api/project_groups/useProjectGroups';
 
 import useLocalize from 'hooks/useLocalize';
 
+import Error from 'components/UI/Error';
 import CheckOption from 'components/UI/PillPicker/CheckOption';
 
 import { useIntl } from 'utils/cl-intl';
@@ -29,10 +30,17 @@ const GroupsChecklist = ({ projectId }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
   const { data: groups } = useGroups({});
-  const { data: projectGroups } = useProjectGroups({ projectId });
-  const { mutate: addProjectGroup, isPending: adding } = useAddProjectGroup();
-  const { mutate: deleteProjectGroup, isPending: deleting } =
-    useDeleteProjectGroup({ projectId });
+  const { data: projectGroups, isFetching } = useProjectGroups({ projectId });
+  const {
+    mutate: addProjectGroup,
+    isPending: adding,
+    isError: addFailed,
+  } = useAddProjectGroup();
+  const {
+    mutate: deleteProjectGroup,
+    isPending: deleting,
+    isError: deleteFailed,
+  } = useDeleteProjectGroup({ projectId });
 
   if (!groups || !projectGroups) return null;
 
@@ -42,6 +50,10 @@ const GroupsChecklist = ({ projectId }: Props) => {
       link.id,
     ])
   );
+
+  // Toggling decides between adding and removing from the list, so it waits
+  // until the list has caught up with the last change.
+  const busy = adding || deleting || isFetching;
 
   const toggle = (groupId: string) => {
     const linkId = linkIds.get(groupId);
@@ -74,12 +86,15 @@ const GroupsChecklist = ({ projectId }: Props) => {
             size="17px"
             checkedColor="primary"
             checked={linkIds.has(group.id)}
-            disabled={adding || deleting}
+            disabled={busy}
             onChange={() => toggle(group.id)}
             label={localize(group.attributes.title_multiloc)}
           />
         </CheckOption>
       ))}
+      {(addFailed || deleteFailed) && (
+        <Error text={formatMessage(messages.publishGroupsSaveFailed)} />
+      )}
     </Box>
   );
 };

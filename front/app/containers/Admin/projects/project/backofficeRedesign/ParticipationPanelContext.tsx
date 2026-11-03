@@ -19,7 +19,7 @@ interface Props {
 }
 
 export const ParticipationPanelProvider = ({ projectId, children }: Props) => {
-  const { data: phases } = usePhases(projectId);
+  const { data: phases, isPlaceholderData } = usePhases(projectId);
   const [choice, setChoice] = useState<{
     projectId: string;
     collapsed: boolean;
@@ -28,7 +28,10 @@ export const ParticipationPanelProvider = ({ projectId, children }: Props) => {
 
   // Until the admin toggles it, the panel stays closed while the project has
   // no methods, and opens on its own once the first one is added.
-  const collapsed = chosen ? chosen.collapsed : phases?.data.length === 0;
+  // Placeholder data still belongs to the previous project.
+  const collapsed = chosen
+    ? chosen.collapsed
+    : !isPlaceholderData && phases?.data.length === 0;
 
   return (
     <ParticipationPanelContext.Provider

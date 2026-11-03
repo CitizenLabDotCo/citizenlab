@@ -10,6 +10,7 @@ import projectPageMessages from 'containers/Admin/projects/project/projectPage/m
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
+import { useSearch } from 'utils/router';
 
 import messages from '../messages';
 
@@ -45,6 +46,7 @@ interface Props {
 // phase is created there once it has a title and dates.
 const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
   const { formatMessage } = useIntl();
+  const { participation_method } = useSearch({ strict: false });
 
   return (
     <SettingsModal
@@ -67,9 +69,11 @@ const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
               variant="bo"
               methods={methods}
               onSelect={(_event, method) =>
-                clHistory.push(
-                  `/admin/projects/${projectId}/phases/new?participation_method=${method}`
-                )
+                method === participation_method
+                  ? onClose()
+                  : clHistory.push(
+                      `/admin/projects/${projectId}/phases/new?participation_method=${method}`
+                    )
               }
             />
           </Box>

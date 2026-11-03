@@ -247,6 +247,10 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.publishChooseGroups',
     defaultMessage: 'Choose which groups can open it',
   },
+  publishGroupsSaveFailed: {
+    id: 'app.containers.Admin.projects.project.publishGroupsSaveFailed',
+    defaultMessage: "That change couldn't be saved. Please try again.",
+  },
   publishNoGroups: {
     id: 'app.containers.Admin.projects.project.publishNoGroups',
     defaultMessage: 'There are no user groups yet. Create them under Users.',
