@@ -2210,6 +2210,7 @@
   "app.containers.Admin.projects.project.publishFindPrivateDescription": "Hidden from those places. Only people with the link can reach it.",
   "app.containers.Admin.projects.project.publishFindPublic": "Public",
   "app.containers.Admin.projects.project.publishFindPublicDescription": "Appears on the homepage, in the project list and in search.",
+  "app.containers.Admin.projects.project.publishGroupsSaveFailed": "That change couldn't be saved. Please try again.",
   "app.containers.Admin.projects.project.publishMissingBack": "Back to setup",
   "app.containers.Admin.projects.project.publishMissingBody": "{missing, plural, one {# of {total} essentials is not set yet. The project will go live without it, and you can add it later.} other {# of {total} essentials are not set yet. The project will go live without them, and you can add them later.}}",
   "app.containers.Admin.projects.project.publishMissingConfirm": "Publish",
