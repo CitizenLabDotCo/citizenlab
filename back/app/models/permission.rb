@@ -170,6 +170,12 @@ class Permission < ApplicationRecord
     permitted_by == 'everyone' && everyone_tracking_enabled
   end
 
+  # Distinct from 'demographics_only', which also drops the user id but keeps
+  # the demographic answers.
+  def fully_anonymous?
+    user_data_collection == 'anonymous'
+  end
+
   # Attribute used in frontend to render access rights UI
   def user_fields_in_form_descriptor
     return UNSUPPORTED_DESCRIPTOR unless permission_scope.is_a?(Phase)

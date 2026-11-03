@@ -252,6 +252,11 @@ module ParticipationMethod
       'all_data'
     end
 
+    # Only implemented in native_survey and community monitor
+    def fully_anonymous?
+      false
+    end
+
     # Only implemented in native_survey, community monitor and ideation
     def user_fields_in_form_enabled?
       false

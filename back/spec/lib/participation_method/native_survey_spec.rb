@@ -165,6 +165,24 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
+  describe '#fully_anonymous?' do
+    let(:permission) { phase.permissions.find_by(action: 'posting_idea') }
+
+    it 'follows the posting permission' do
+      permission.update!(user_data_collection: 'anonymous')
+      expect(participation_method.fully_anonymous?).to be true
+    end
+
+    it 'is false when the demographics are still collected' do
+      permission.update!(user_data_collection: 'demographics_only')
+      expect(participation_method.fully_anonymous?).to be false
+    end
+
+    it 'is false without a posting permission' do
+      expect(described_class.new(nil).fully_anonymous?).to be false
+    end
+  end
+
   its(:additional_export_columns) { is_expected.to eq [] }
   its(:allowed_ideas_orders) { is_expected.to be_empty }
   its(:return_disabled_actions?) { is_expected.to be true }

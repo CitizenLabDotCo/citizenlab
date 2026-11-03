@@ -290,6 +290,25 @@ RSpec.describe Permission do
     end
   end
 
+  describe '#fully_anonymous?' do
+    let(:permission) { create(:permission, action: 'posting_idea', permission_scope: create(:native_survey_phase)) }
+
+    it 'is true when no user data is collected' do
+      permission.update!(user_data_collection: 'anonymous')
+      expect(permission.fully_anonymous?).to be true
+    end
+
+    it 'is false when only the demographics are collected' do
+      permission.update!(user_data_collection: 'demographics_only')
+      expect(permission.fully_anonymous?).to be false
+    end
+
+    it 'is false when all data is collected' do
+      permission.update!(user_data_collection: 'all_data')
+      expect(permission.fully_anonymous?).to be false
+    end
+  end
+
   describe '#user_fields_in_form_descriptor' do
     it 'returns locked: true and explanation if phase is not native_survey, community_monitor or ideation' do
       permission = create(:permission, action: 'taking_poll', permission_scope: create(:poll_phase))

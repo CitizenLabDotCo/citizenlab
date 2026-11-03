@@ -151,6 +151,12 @@ module ParticipationMethod
       posting_permission.user_fields_in_form_enabled?
     end
 
+    def fully_anonymous?
+      return false if posting_permission.nil?
+
+      posting_permission.fully_anonymous?
+    end
+
     private
 
     def start_page_field(custom_form)
