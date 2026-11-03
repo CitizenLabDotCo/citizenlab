@@ -18,6 +18,7 @@ import useProjectMapConfig from 'api/map_config/useProjectMapConfig';
 import useUpdateMapConfig from 'api/map_config/useUpdateMapConfig';
 
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
+import { MAP_CONFIG_SAVER_KEY } from 'components/admin/PageSaveContext/constants';
 import ConfigurationMap from 'components/ConfigurationMap/ConfigurationMap';
 import { goToMapLocation } from 'components/EsriMap/utils';
 import Centerer from 'components/UI/Centerer';
@@ -53,8 +54,6 @@ const MapWrapper = styled.div`
 `;
 
 export type ViewOptions = 'main' | 'featureLayerUpload' | 'webMapUpload';
-
-export const MAP_CONFIG_SAVER_KEY = 'map-config';
 
 interface Props {
   className?: string;

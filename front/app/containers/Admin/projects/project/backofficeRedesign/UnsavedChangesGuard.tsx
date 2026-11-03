@@ -10,12 +10,13 @@ import Modal from 'components/UI/Modal';
 import { useIntl } from 'utils/cl-intl';
 import { useBlocker } from 'utils/router';
 
-import returnToPhaseAfterSave from './_shared/returnToPhaseAfterSave';
+import useReturnToPhaseAfterSave from './_shared/useReturnToPhaseAfterSave';
 import messages from './messages';
 
 const UnsavedChangesGuard = () => {
   const { formatMessage } = useIntl();
   const pageSave = usePageSave();
+  const returnToPhaseAfterSave = useReturnToPhaseAfterSave();
   const dirty = !!pageSave?.dirty;
 
   const blocker = useBlocker({

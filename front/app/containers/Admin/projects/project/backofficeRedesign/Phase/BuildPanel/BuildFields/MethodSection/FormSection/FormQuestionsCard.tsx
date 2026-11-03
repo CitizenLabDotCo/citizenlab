@@ -11,7 +11,7 @@ import SummaryPill from 'containers/Admin/projects/_shared/components/SummaryPil
 import actionFormMessages from 'components/admin/ActionForm/messages';
 import FormInputEditWarningModal from 'components/admin/FormInputEditWarningModal';
 import formBuilderMessages from 'components/FormBuilder/components/messages';
-import { getTranslatedStringKey } from 'components/FormBuilder/utils';
+import { getTranslatedStringKey } from 'components/FormBuilder/fieldLabels';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';

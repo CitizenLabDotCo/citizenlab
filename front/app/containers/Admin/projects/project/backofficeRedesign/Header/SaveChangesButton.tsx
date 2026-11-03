@@ -8,7 +8,7 @@ import { usePageSave } from 'components/admin/PageSaveContext';
 
 import { useIntl } from 'utils/cl-intl';
 
-import returnToPhaseAfterSave from '../_shared/returnToPhaseAfterSave';
+import useReturnToPhaseAfterSave from '../_shared/useReturnToPhaseAfterSave';
 import messages from '../messages';
 
 interface Props {
@@ -18,6 +18,7 @@ interface Props {
 const SaveChangesButton = ({ label }: Props) => {
   const { formatMessage } = useIntl();
   const pageSave = usePageSave();
+  const returnToPhaseAfterSave = useReturnToPhaseAfterSave();
   const [saved, setSaved] = useState(false);
 
   if (!pageSave) return null;

@@ -2,7 +2,7 @@ import { IconNames } from '@citizenlab/cl2-component-library';
 
 import { ICustomFieldInputType } from 'api/custom_fields/types';
 
-import { builtInFieldKeys } from 'components/FormBuilder/utils';
+import { builtInFieldKeys } from 'components/FormBuilder/fieldLabels';
 
 export const communityMonitorDefaultPageKeys = [
   'page_quality_of_life',
