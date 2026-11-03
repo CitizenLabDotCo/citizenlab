@@ -5,7 +5,7 @@ module DecidimImporter
     # Decidim `blogs` posts (`04---posts.csv`) ──▶ Go Vocal project-level `StaticPage`.
     #
     # Go Vocal has no blog concept, so — like the `pages` component ({Extractors::StaticPagesExtractor}) —
-    # each post becomes a custom, project-scoped static page (title → page title, body → top info section).
+    # each post becomes a custom, project-scoped static page (title → page title, body → the page's layout).
     # Difference from a plain page is downstream: the importer feeds these page ids to
     # {Extractors::DescriptionLayoutExtractor}, which links them in their own "Blog" section.
     #
