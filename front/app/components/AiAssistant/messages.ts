@@ -159,6 +159,11 @@ export default defineMessages({
     defaultMessage:
       'Only PDF, Markdown (.md) and text (.txt) files of up to 4 MB can be used.',
   },
+  errorFileNotUtf8: {
+    id: 'app.components.aiAssistant.errorFileNotUtf8',
+    defaultMessage:
+      "One of the text files can't be read because of its encoding. Try attaching it in another format, such as PDF.",
+  },
   errorTooLong: {
     id: 'app.components.aiAssistant.errorTooLong',
     defaultMessage: 'Your message is too long.',

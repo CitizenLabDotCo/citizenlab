@@ -77,12 +77,12 @@ describe AIAssistant::Message do
     describe 'content matching the extension' do
       using RSpec::Parameterized::TableSyntax
 
-      where(:name, :fixture, :accepted) do
-        'survey.pdf' | 'minimal_pdf.pdf'           | true
-        'notes.txt'  | 'common_passwords_test.txt' | true
-        'notes.md'   | 'common_passwords_test.txt' | true
-        'notes.pdf'  | 'common_passwords_test.txt' | false
-        'data.txt'   | 'favicon.png'               | false
+      where(:name, :fixture, :error) do
+        'survey.pdf' | 'minimal_pdf.pdf'           | nil
+        'notes.txt'  | 'common_passwords_test.txt' | nil
+        'notes.md'   | 'common_passwords_test.txt' | nil
+        'notes.pdf'  | 'common_passwords_test.txt' | :unsupported_file_type
+        'data.txt'   | 'favicon.png'               | :not_utf8
       end
 
       with_them do
@@ -95,11 +95,22 @@ describe AIAssistant::Message do
             projects: [conversation.subject.project]
           )
           message = build(:ai_assistant_message, conversation:, file_ids: [file.id])
+          message.validate
 
-          expect(message.valid?).to be(accepted)
-          expect(message.errors.details[:file_ids]).to include(error: :unsupported_file_type) unless accepted
+          expect(message.errors.details[:file_ids]).to eq(error ? [{ error: }] : [])
         end
       end
+    end
+
+    it 'refuses text files not saved as UTF-8' do
+      content = Tempfile.new(['notes', '.txt'], binmode: true)
+      content.write('Les résidents aiment le café.'.encode(Encoding::ISO_8859_1))
+      content.rewind
+      file = create(:file, name: 'notes.txt', content:, ai_processing_allowed: true, projects: [conversation.subject.project])
+      message = build(:ai_assistant_message, conversation:, file_ids: [file.id])
+
+      expect(message).not_to be_valid
+      expect(message.errors.details[:file_ids]).to include(error: :not_utf8)
     end
 
     it 'refuses unknown files' do

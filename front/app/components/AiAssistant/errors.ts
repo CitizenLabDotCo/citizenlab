@@ -40,6 +40,8 @@ export const getErrorMessage = (
       return messages.errorAiProcessingNotAllowed;
     case 'unsupported_file_type':
       return messages.errorUnsupportedFileType;
+    case 'not_utf8':
+      return messages.errorFileNotUtf8;
     case 'too_long':
       return messages.errorTooLong;
     default:
