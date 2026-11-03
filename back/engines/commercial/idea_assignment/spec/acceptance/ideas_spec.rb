@@ -185,6 +185,13 @@ resource 'Ideas' do
         assert_status 200
         expect(json_parse(response_body).dig(:data, :attributes)).not_to have_key(:assignee_id)
       end
+
+      example 'Does not count ideas per assignee when the assignee filter matches nothing', document: false do
+        do_request assignee: SecureRandom.uuid
+
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :attributes)).not_to have_key(:assignee_id)
+      end
     end
 
     context 'when project moderator' do
@@ -199,6 +206,13 @@ resource 'Ideas' do
 
       example 'Does not count ideas per assignee across other projects', document: false do
         do_request
+
+        assert_status 200
+        expect(json_parse(response_body).dig(:data, :attributes)).not_to have_key(:assignee_id)
+      end
+
+      example 'Does not count ideas per assignee across other projects when filtering on an assignee', document: false do
+        do_request assignee: Idea.find_by(project: project).assignee_id
 
         assert_status 200
         expect(json_parse(response_body).dig(:data, :attributes)).not_to have_key(:assignee_id)

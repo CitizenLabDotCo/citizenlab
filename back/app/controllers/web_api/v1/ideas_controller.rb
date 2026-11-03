@@ -87,10 +87,8 @@ class WebApi::V1::IdeasController < ApplicationController
 
   def filter_counts
     filtered_ideas = find_ideas(scope: policy_scope(Idea))
-    # A facet is counted with every filter applied except its own, so the
-    # numbers tell what choosing one of its options would yield.
-    scopes_by_facet = filter_count_facets(filtered_ideas).to_h.transform_values do |filter_path|
-      find_ideas(scope: policy_scope(Idea), finder_params: finder_params_without(filter_path))
+    scopes_by_facet = filter_count_facets.to_h.transform_values do |filter_path|
+      ideas_without_filter(filter_path)
     end
     render json: raw_json(Facets::CountsService.new.counts(filtered_ideas, scopes_by_facet))
   end
@@ -364,7 +362,7 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   # Each facet with the request parameter it answers, as a key or a nested key path.
-  def filter_count_facets(_filtered_ideas)
+  def filter_count_facets
     [
       [Facets::Column.new(:idea_status_id), :idea_status],
       [Facets::IdeaInputTopic.new, :input_topics],
@@ -380,6 +378,12 @@ class WebApi::V1::IdeasController < ApplicationController
     fields = form.custom_fields.enabled.where(show_as_filter: true)
     CustomFieldPolicy::Scope.new(pundit_user, fields, form).resolve
       .map { |field| [Facets::IdeaCustomFieldAnswer.new(field), [:custom_field_answers, field.id]] }
+  end
+
+  # The ideas with every filter applied except the given one, so a facet
+  # counts what choosing one of its options would yield.
+  def ideas_without_filter(filter_path)
+    find_ideas(scope: policy_scope(Idea), finder_params: finder_params_without(filter_path))
   end
 
   def finder_params_without(filter_path)
