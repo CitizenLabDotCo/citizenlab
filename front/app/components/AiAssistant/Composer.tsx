@@ -97,15 +97,18 @@ const Composer = ({
 }: Props) => {
   const { formatMessage } = useIntl();
   const [filesRejected, setFilesRejected] = useState(false);
+  const canAttachFiles = allowFiles && !disabled;
 
+  // Never disabled: a disabled dropzone leaves drops to the browser, which opens the file.
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
     accept: ACCEPTED_FILES,
     maxSize: MAX_FILE_SIZE_MB * 1024 * 1024,
     validator: validateTextFileSize,
     noClick: true,
     noKeyboard: true,
-    disabled: disabled || !allowFiles,
     onDrop: (acceptedFiles, rejectedFiles) => {
+      if (!canAttachFiles) return;
+
       const nextFiles = [...files, ...acceptedFiles];
       setFilesRejected(
         rejectedFiles.length > 0 || nextFiles.length > MAX_FILES
@@ -124,7 +127,7 @@ const Composer = ({
   return (
     <Box {...getRootProps()} position="relative">
       <input {...getInputProps()} />
-      {isDragActive && (
+      {isDragActive && canAttachFiles && (
         <Box
           position="absolute"
           top="0"

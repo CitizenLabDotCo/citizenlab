@@ -5,7 +5,14 @@ import {
   IAiAssistantConversationData,
 } from 'api/ai_assistant_conversations/types';
 
-import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
+import {
+  act,
+  fireEvent,
+  render,
+  screen,
+  userEvent,
+  waitFor,
+} from 'utils/testUtils/rtl';
 
 import AssistantPanel from './AssistantPanel';
 
@@ -221,6 +228,33 @@ describe('AssistantPanel', () => {
       )
     ).toBeInTheDocument();
     expect(screen.queryByText('notes.txt')).not.toBeInTheDocument();
+  });
+
+  it('keeps files dropped while the assistant works from the browser and the chat', async () => {
+    mockConversation = conversation({
+      ...baseAttributes,
+      status: 'running',
+      last_error_code: null,
+    });
+    const { container } = renderPanel();
+    const dropzone =
+      container.querySelector('input[type="file"]')?.parentElement;
+    if (!dropzone) {
+      throw new Error('No dropzone');
+    }
+
+    const handledByBrowser = fireEvent.drop(dropzone, {
+      dataTransfer: {
+        files: [
+          new File(['%PDF-1.4'], 'brief.pdf', { type: 'application/pdf' }),
+        ],
+        types: ['Files'],
+      },
+    });
+    await act(async () => {});
+
+    expect(handledByBrowser).toBe(false);
+    expect(screen.queryByText('brief.pdf')).not.toBeInTheDocument();
   });
 
   it('shows why the last turn failed', () => {
