@@ -10319,6 +10319,16 @@
     "verified_at": "2026-11-02T08:57:12.676513Z",
     "verified_by": "Luuc"
   },
+  "app.containers.Admin.projects.project.importPhaseLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-03T16:10:20.389549Z",
+    "verified_by": "Luuc"
+  },
+  "app.containers.Admin.projects.project.importProjectLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-03T16:10:20.389549Z",
+    "verified_by": "Luuc"
+  },
   "app.containers.Admin.projects.project.importStatements": {
     "state": "verified",
     "verified_at": "2026-11-02T08:57:12.676513Z",
