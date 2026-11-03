@@ -164,6 +164,11 @@ export default defineMessages({
     defaultMessage:
       "One of the text files can't be read because of its encoding. Try attaching it in another format, such as PDF.",
   },
+  errorTooManyConversationFiles: {
+    id: 'app.components.aiAssistant.errorTooManyConversationFiles',
+    defaultMessage:
+      'A chat can use 5 files at most. Start a new chat to attach more.',
+  },
   errorTooLong: {
     id: 'app.components.aiAssistant.errorTooLong',
     defaultMessage: 'Your message is too long.',

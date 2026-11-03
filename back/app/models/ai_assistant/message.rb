@@ -28,6 +28,8 @@ module AIAssistant
     ROLES = %w[user assistant].freeze
     MAX_CONTENT_LENGTH = 5000
     MAX_FILES = 3
+    # Bedrock takes 5 documents per request, and every turn sends all files of the conversation.
+    MAX_CONVERSATION_FILES = 5
     # Every turn sends the files again, and text goes into the message as is, so it gets a lower cap.
     MAX_FILE_SIZE = 4.megabytes
     MAX_TEXT_FILE_SIZE = 100.kilobytes
@@ -43,6 +45,7 @@ module AIAssistant
     validates :file_ids, length: { maximum: MAX_FILES }
     validate :content_or_files_present, if: :user?
     validate :files_usable, on: :create, if: -> { file_ids.present? }
+    validate :conversation_files_within_limit, on: :create, if: -> { file_ids.present? }
 
     before_validation :assign_position, on: :create
 
@@ -58,6 +61,12 @@ module AIAssistant
 
     def content_or_files_present
       errors.add(:content, :blank) if content.blank? && file_ids.blank?
+    end
+
+    def conversation_files_within_limit
+      return if conversation.messages.sum('cardinality(file_ids)') + file_ids.size <= MAX_CONVERSATION_FILES
+
+      errors.add(:file_ids, :too_many_in_conversation)
     end
 
     def files_usable
