@@ -1097,5 +1097,67 @@ describe ProjectPolicy do
 
       it { is_expected.to be_empty }
     end
+
+    # The SQL scope reads UserRoles#moderatable_project_ids, while active_moderator?
+    # (which decides who may generate a report) reads
+    # UserRoleService#can_moderate_project?. If the two disagreed, a moderator could
+    # generate a report for a project their queries cannot read.
+    describe 'agreement with ProjectPolicy#active_moderator?' do
+      let!(:folder) { create(:project_folder) }
+      let!(:space) { create(:space) }
+      let!(:in_folder) { create(:project, folder: folder) }
+      let!(:in_space) { create(:project, space: space) }
+      let!(:in_space_folder) { create(:project, folder: create(:project_folder, space: space)) }
+      let!(:unrelated) { [create(:project, folder: create(:project_folder)), create(:project, space: create(:space))] }
+
+      shared_examples 'agrees with active_moderator?' do |moderates_something: true|
+        it 'resolves to exactly the projects the user may moderate' do
+          moderated = Project.all.select { |p| ProjectPolicy.new(user, p).active_moderator? }
+
+          expect(resolved).to match_array(moderated)
+          expect(moderated).not_to be_empty if moderates_something
+        end
+      end
+
+      context 'for a project moderator' do
+        let(:user) { create(:project_moderator, projects: [project, in_folder]) }
+
+        it_behaves_like 'agrees with active_moderator?'
+      end
+
+      context 'for a folder moderator' do
+        let(:user) { create(:project_folder_moderator, project_folders: [folder]) }
+
+        it_behaves_like 'agrees with active_moderator?'
+      end
+
+      context 'for a space moderator' do
+        let(:user) { create(:space_moderator, spaces: [space]) }
+
+        it_behaves_like 'agrees with active_moderator?'
+      end
+
+      context 'for a folder moderator after a project left the folder' do
+        let(:user) { create(:project_folder_moderator, project_folders: [folder]) }
+
+        before { in_folder.update!(folder_id: nil) }
+
+        it_behaves_like 'agrees with active_moderator?', moderates_something: false
+      end
+
+      context 'for a folder moderator after a project joined the folder' do
+        let(:user) { create(:project_folder_moderator, project_folders: [folder]) }
+
+        before { project.update!(folder_id: folder.id) }
+
+        it_behaves_like 'agrees with active_moderator?'
+      end
+
+      context 'for a blocked moderator' do
+        let(:user) { create(:space_moderator, spaces: [space], block_end_at: 1.day.from_now) }
+
+        it_behaves_like 'agrees with active_moderator?', moderates_something: false
+      end
+    end
   end
 end
