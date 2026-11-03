@@ -20,8 +20,12 @@
 module Analytics
   module Reporting
     class InputQuestionAnswer < Analytics::ApplicationRecordView
+      include ScopedView
+
       self.table_name = 'reporting_input_question_answers'
       self.primary_key = nil
+
+      def self.for_projects(project_ids) = where(input_id: Input.for_projects(project_ids).select(:id))
 
       def self.table_description
         <<~DOC.squish

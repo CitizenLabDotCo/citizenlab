@@ -19,8 +19,12 @@
 module Analytics
   module Reporting
     class Contribution < Analytics::ApplicationRecordView
+      include ScopedView
+
       self.table_name = 'reporting_contributions'
       self.primary_key = :id
+
+      def self.for_projects(project_ids) = where(project_id: project_ids)
       # The `type` column is the contribution kind, not Rails STI.
       self.inheritance_column = nil
 

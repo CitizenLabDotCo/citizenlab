@@ -13,8 +13,13 @@
 module Analytics
   module Reporting
     class Registration < Analytics::ApplicationRecordView
+      include ScopedView
+
       self.table_name = 'reporting_registrations'
       self.primary_key = nil
+
+      # Platform-wide totals with no project to limit them to.
+      def self.admin_only? = true
 
       def self.table_description
         <<~DOC.squish

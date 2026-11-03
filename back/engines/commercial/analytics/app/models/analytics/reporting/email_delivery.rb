@@ -21,8 +21,13 @@
 module Analytics
   module Reporting
     class EmailDelivery < Analytics::ApplicationRecordView
+      include ScopedView
+
       self.table_name = 'reporting_email_deliveries'
       self.primary_key = nil
+
+      # Platform-wide campaigns have no project_id, so they drop out.
+      def self.for_projects(project_ids) = where(project_id: project_ids)
 
       def self.table_description
         <<~DOC.squish

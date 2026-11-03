@@ -12,8 +12,13 @@
 module Analytics
   module Reporting
     class User < Analytics::ApplicationRecordView
+      include ScopedView
+
       self.table_name = 'reporting_users'
       self.primary_key = :id
+
+      # Only the people who took part in the projects.
+      def self.for_projects(project_ids) = where(id: Contribution.for_projects(project_ids).select(:user_id))
 
       def self.table_description
         <<~DOC.squish

@@ -15,8 +15,12 @@
 module Analytics
   module Reporting
     class OfficialFeedback < Analytics::ApplicationRecordView
+      include ScopedView
+
       self.table_name = 'reporting_official_feedbacks'
       self.primary_key = :id
+
+      def self.for_projects(project_ids) = where(input_id: Input.for_projects(project_ids).select(:id))
 
       def self.table_description
         <<~DOC.squish

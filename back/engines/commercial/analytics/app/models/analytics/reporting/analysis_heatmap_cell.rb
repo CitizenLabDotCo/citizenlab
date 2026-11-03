@@ -29,8 +29,12 @@
 module Analytics
   module Reporting
     class AnalysisHeatmapCell < Analytics::ApplicationRecordView
+      include ScopedView
+
       self.table_name = 'reporting_analysis_heatmap_cells'
       self.primary_key = :id
+
+      def self.for_projects(project_ids) = where(project_id: project_ids)
 
       def self.table_description
         <<~DOC.squish

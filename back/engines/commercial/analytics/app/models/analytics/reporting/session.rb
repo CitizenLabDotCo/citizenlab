@@ -18,8 +18,13 @@
 module Analytics
   module Reporting
     class Session < Analytics::ApplicationRecordView
+      include ScopedView
+
       self.table_name = 'reporting_sessions'
       self.primary_key = :id
+
+      # The visits with at least one pageview in the projects.
+      def self.for_projects(project_ids) = where(id: Pageview.for_projects(project_ids).select(:session_id))
 
       def self.table_description
         <<~DOC.squish

@@ -14,8 +14,13 @@
 module Analytics
   module Reporting
     class StaffActivity < Analytics::ApplicationRecordView
+      include ScopedView
+
       self.table_name = 'reporting_staff_activities'
       self.primary_key = nil
+
+      # What staff did, counted by role: admins only, at least for now.
+      def self.admin_only? = true
 
       ACTIVITIES = %w[
         project_created project_published project_changed project_deleted

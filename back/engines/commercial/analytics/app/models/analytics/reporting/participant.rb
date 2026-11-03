@@ -12,8 +12,12 @@
 module Analytics
   module Reporting
     class Participant < Analytics::ApplicationRecordView
+      include ScopedView
+
       self.table_name = 'reporting_participants'
       self.primary_key = :id
+
+      def self.for_projects(project_ids) = where(id: Contribution.for_projects(project_ids).select(:participant_id))
 
       def self.table_description
         <<~DOC.squish

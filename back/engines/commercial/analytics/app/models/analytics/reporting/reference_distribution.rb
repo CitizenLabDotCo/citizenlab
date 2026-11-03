@@ -17,8 +17,13 @@
 module Analytics
   module Reporting
     class ReferenceDistribution < Analytics::ApplicationRecordView
+      include ScopedView
+
       self.table_name = 'reporting_reference_distributions'
       self.primary_key = :id
+
+      # Census data, with nothing personal in it: the same for everyone.
+      def self.for_projects(_project_ids) = all
 
       # Must give the ages the representativeness dashboard uses
       # (UserCustomFields::AgeCounter#convert_to_age), or age R-scores will

@@ -18,8 +18,12 @@
 module Analytics
   module Reporting
     class CommunityMonitorScore < Analytics::ApplicationRecordView
+      include ScopedView
+
       self.table_name = 'reporting_community_monitor_scores'
       self.primary_key = nil
+
+      def self.for_projects(project_ids) = where(phase_id: Phase.for_projects(project_ids).select(:id))
 
       def self.table_description
         <<~DOC.squish

@@ -1,0 +1,24 @@
+# frozen_string_literal: true
+
+module Analytics
+  module Reporting
+    # A view the LLM can query. Each one either says how to limit it to a set of
+    # projects, or is admin only. There is no default rule: a view without one
+    # fails closed.
+    module ScopedView
+      extend ActiveSupport::Concern
+
+      class_methods do
+        # Each view overrides this with its rule, returning a relation with only
+        # the rows that belong to these projects. This default raises, so a view
+        # without a rule fails closed.
+        def for_projects(_project_ids)
+          raise NotImplementedError, "#{name} has no project scope rule"
+        end
+
+        # An admin-only view is left out of every query that is not for every row.
+        def admin_only? = false
+      end
+    end
+  end
+end
