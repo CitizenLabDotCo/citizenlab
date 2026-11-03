@@ -23,6 +23,25 @@ describe McpServer::InternalMcpController do
 
   before { SettingsService.new.activate_feature!('mcp_server') }
 
+  describe 'subscriptions/listen' do
+    it 'answers the method as unsupported' do
+      params = {
+        notifications: { toolsListChanged: true },
+        _meta: {
+          'io.modelcontextprotocol/protocolVersion' => '2026-07-28',
+          'io.modelcontextprotocol/clientCapabilities' => {}
+        }
+      }
+
+      post '/admin_api/mcp', params: rpc_body('subscriptions/listen', params), headers: headers.merge(
+        'Mcp-Protocol-Version' => '2026-07-28', 'Mcp-Method' => 'subscriptions/listen'
+      )
+
+      expect(response).to have_http_status(:not_found)
+      expect(response.parsed_body.dig('error', 'code')).to eq(-32_601)
+    end
+  end
+
   describe 'tools/list' do
     it 'returns the same tool set as the public MCP endpoint' do
       post '/admin_api/mcp', params: rpc_body('tools/list'), headers: headers
