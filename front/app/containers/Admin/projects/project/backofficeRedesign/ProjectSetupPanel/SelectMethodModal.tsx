@@ -1,23 +1,39 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import { Box, Text } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
-import { ParticipationMethod, PhasePlacementType } from 'api/phases/types';
+import { ParticipationMethod } from 'api/phases/types';
 
-import surveyImage from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/assets/survey.png';
-import pickerMessages from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/messages';
-import ParticipationMethodChoice from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/ParticipationMethodChoice';
-import ParticipationMethodPicker from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/ParticipationMethodPicker';
+import SettingsModal from 'containers/Admin/projects/project/backofficeRedesign/_shared/components/SettingsModal';
+import ParticipationMethodChoices from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/ParticipationMethodChoices';
 import projectPageMessages from 'containers/Admin/projects/project/projectPage/messages';
 
-import ButtonWithLink from 'components/UI/ButtonWithLink';
-import Modal from 'components/UI/Modal';
-
-import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import clHistory from 'utils/cl-router/history';
 
 import messages from '../messages';
 
-import PlacementTabs from './PlacementTabs';
+const METHOD_GROUPS: {
+  name: string;
+  label: MessageDescriptor;
+  methods: ParticipationMethod[];
+}[] = [
+  {
+    name: 'gather',
+    label: messages.methodGroupGatherInput,
+    methods: ['ideation', 'proposals', 'native_survey', 'document_annotation'],
+  },
+  {
+    name: 'decide',
+    label: messages.methodGroupShapeDecisions,
+    methods: ['proposals', 'common_ground', 'voting', 'document_annotation'],
+  },
+  {
+    name: 'inform',
+    label: messages.methodGroupInformAndRecruit,
+    methods: ['information', 'volunteering'],
+  },
+];
 
 interface Props {
   projectId: string;
@@ -25,72 +41,41 @@ interface Props {
   onClose: () => void;
 }
 
-// Picking a method only opens the build view of a phase that isn't saved yet:
-// the phase is created there once it has a title and dates. The picker needs a
-// confirm step because the survey card only reveals the poll option after it
-// is selected. An external survey is picked later, from the survey cards in the
-// build view.
+// Picking a method opens the build view of a phase that isn't saved yet: the
+// phase is created there once it has a title and dates.
 const SelectMethodModal = ({ projectId, opened, onClose }: Props) => {
   const { formatMessage } = useIntl();
-  const [placement, setPlacement] = useState<PhasePlacementType>('on_timeline');
-  const [participationMethod, setParticipationMethod] =
-    useState<ParticipationMethod>('ideation');
-
-  const standalone = placement === 'standalone';
 
   return (
-    <Modal
+    <SettingsModal
       opened={opened}
       close={onClose}
-      width={840}
-      padding="0px"
+      width="min(920px, 94vw)"
       header={formatMessage(projectPageMessages.newParticipationMethod)}
-      footer={
-        <Box display="flex" justifyContent="flex-end" width="100%">
-          <ButtonWithLink
-            buttonStyle="bo-primary"
-            to="/admin/projects/$projectId/phases/new"
-            params={{ projectId }}
-            search={
-              standalone
-                ? { placement: 'standalone' }
-                : { participation_method: participationMethod }
-            }
+      sections={METHOD_GROUPS.map(({ name, label, methods }) => ({
+        name,
+        label,
+        content: (
+          <Box
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '16px',
+            }}
           >
-            {formatMessage(messages.selectMethodContinue)}
-          </ButtonWithLink>
-        </Box>
-      }
-    >
-      <PlacementTabs selected={placement} onSelect={setPlacement} />
-      <Box p="24px">
-        <Text variant="boHelper" mb="16px">
-          {formatMessage(
-            standalone
-              ? messages.placementStandaloneDescription
-              : messages.placementTimelineDescription
-          )}
-        </Text>
-        {standalone ? (
-          <Box width="240px">
-            <ParticipationMethodChoice
-              selected
-              title={formatMessage(pickerMessages.surveyTitle)}
-              subtitle={formatMessage(pickerMessages.surveyDescription)}
-              image={surveyImage}
-              participation_method="native_survey"
+            <ParticipationMethodChoices
+              variant="bo"
+              methods={methods}
+              onSelect={(_event, method) =>
+                clHistory.push(
+                  `/admin/projects/${projectId}/phases/new?participation_method=${method}`
+                )
+              }
             />
           </Box>
-        ) : (
-          <ParticipationMethodPicker
-            participation_method={participationMethod}
-            showSurveys={false}
-            apiErrors={null}
-            handleParticipationMethodOnChange={setParticipationMethod}
-          />
-        )}
-      </Box>
-    </Modal>
+        ),
+      }))}
+    />
   );
 };
 

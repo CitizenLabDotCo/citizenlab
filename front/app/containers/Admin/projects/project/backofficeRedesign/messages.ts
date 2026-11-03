@@ -82,6 +82,18 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.newEvent',
     defaultMessage: 'New event',
   },
+  methodGroupGatherInput: {
+    id: 'app.containers.Admin.projects.project.methodGroupGatherInput',
+    defaultMessage: 'Gather input',
+  },
+  methodGroupShapeDecisions: {
+    id: 'app.containers.Admin.projects.project.methodGroupShapeDecisions',
+    defaultMessage: 'Shape decisions',
+  },
+  methodGroupInformAndRecruit: {
+    id: 'app.containers.Admin.projects.project.methodGroupInformAndRecruit',
+    defaultMessage: 'Inform and recruit',
+  },
   hidePanel: {
     id: 'app.containers.Admin.projects.project.hidePanel',
     defaultMessage: 'Hide panel',
@@ -180,10 +192,6 @@ export default defineMessages({
   newSurveyCrumb: {
     id: 'app.containers.Admin.projects.project.newSurveyCrumb',
     defaultMessage: 'New survey',
-  },
-  selectMethodContinue: {
-    id: 'app.containers.Admin.projects.project.selectMethodContinue',
-    defaultMessage: 'Continue',
   },
   addQuestions: {
     id: 'app.containers.Admin.projects.project.addQuestions',
@@ -421,22 +429,6 @@ export default defineMessages({
   settingsSaveChanges: {
     id: 'app.containers.Admin.projects.project.settingsSaveChanges',
     defaultMessage: 'Save changes',
-  },
-  placementTimeline: {
-    id: 'app.containers.Admin.projects.project.placementTimeline',
-    defaultMessage: 'Timeline',
-  },
-  placementStandalone: {
-    id: 'app.containers.Admin.projects.project.placementStandalone',
-    defaultMessage: 'Standalone',
-  },
-  placementTimelineDescription: {
-    id: 'app.containers.Admin.projects.project.placementTimelineDescription',
-    defaultMessage: 'Runs as a phase, in the order you set.',
-  },
-  placementStandaloneDescription: {
-    id: 'app.containers.Admin.projects.project.placementStandaloneDescription',
-    defaultMessage: 'Runs on its own, outside the timeline.',
   },
   switchLockedResponses: {
     id: 'app.containers.Admin.projects.project.switchLockedResponses',
