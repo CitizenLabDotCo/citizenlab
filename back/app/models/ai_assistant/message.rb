@@ -60,15 +60,11 @@ module AIAssistant
 
     def files_usable
       found = files.to_a
-      if found.size != file_ids.uniq.size
-        errors.add(:file_ids, :not_found)
-      elsif found.any? { |file| !in_conversation_project?(file) }
-        errors.add(:file_ids, :not_in_project)
-      elsif found.any? { |file| !file.ai_processing_allowed }
-        errors.add(:file_ids, :ai_processing_not_allowed)
-      elsif found.any? { |file| unsupported?(file) }
-        errors.add(:file_ids, :unsupported_file_type)
-      end
+      return errors.add(:file_ids, :not_found) if found.size != file_ids.uniq.size
+      return errors.add(:file_ids, :not_in_project) unless found.all? { |file| in_conversation_project?(file) }
+      return errors.add(:file_ids, :ai_processing_not_allowed) unless found.all?(&:ai_processing_allowed)
+
+      errors.add(:file_ids, :unsupported_file_type) if found.any? { |file| unsupported?(file) }
     end
 
     # Fails closed for records that don't belong to a project.
