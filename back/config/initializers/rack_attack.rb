@@ -276,7 +276,10 @@ class Rack::Attack
 
   # AI assistant turns (a new message, or a decision on a proposed change), which run LLM
   # calls.
-  AI_ASSISTANT_TURN_PATH = %r{\A/web_api/v1/ai_assistant_(conversations/[^/]+/messages|tool_calls/[^/]+/(approve|reject))\z}
+  AI_ASSISTANT_TURN_PATH = Regexp.union(
+    %r{\A/web_api/v1/ai_assistant_conversations/[^/]+/messages(\.[^/]+)?\z},
+    %r{\A/web_api/v1/ai_assistant_tool_calls/[^/]+/(approve|reject)(\.[^/]+)?\z}
+  )
 
   throttle('ai_assistant_turns/user', limit: 60, period: 1.hour) do |req|
     USER_ID_FROM_JWT.call(req) if req.post? && AI_ASSISTANT_TURN_PATH.match?(req.path)
