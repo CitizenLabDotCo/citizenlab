@@ -31,6 +31,12 @@ RSpec.describe ReportBuilder::Permissions::ReportPermissionsService do
     it 'returns no error' do
       expect(described_class.new.editing_disabled_reason_for_report(report, user)).to be_nil
     end
+
+    it 'returns no error for a chart answer read from every row' do
+      create(:query_snapshot, layout: report.layout, query_scope: 'all')
+
+      expect(described_class.new.editing_disabled_reason_for_report(report, user)).to be_nil
+    end
   end
 
   context 'when normal user' do
@@ -49,6 +55,24 @@ RSpec.describe ReportBuilder::Permissions::ReportPermissionsService do
 
       it 'returns no error' do
         expect(described_class.new.editing_disabled_reason_for_report(report, user)).to be_nil
+      end
+
+      it 'returns no error for a chart answer read from that project' do
+        create(:query_snapshot, layout: report.layout, query_scope: { 'project_ids' => [project_id] })
+
+        expect(described_class.new.editing_disabled_reason_for_report(report, user)).to be_nil
+      end
+
+      it 'returns error for a chart answer read from every row' do
+        create(:query_snapshot, layout: report.layout, query_scope: 'all')
+
+        expect(described_class.new.editing_disabled_reason_for_report(report, user)).to eq('report_has_unauthorized_data')
+      end
+
+      it 'returns error for a chart answer that also reads another project' do
+        create(:query_snapshot, layout: report.layout, query_scope: { 'project_ids' => [project_id, create(:project).id] })
+
+        expect(described_class.new.editing_disabled_reason_for_report(report, user)).to eq('report_has_unauthorized_data')
       end
 
       context 'when phase_is is not configured in widget' do

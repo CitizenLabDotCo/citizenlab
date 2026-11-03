@@ -25,6 +25,7 @@ class ReportBuilder::Permissions::ReportPermissionsService
   def report_has_unauthorized_data?(report, current_user)
     return false if current_user.admin?
     return true if current_user.normal_user?
+    return true if snapshot_wider_than_user?(report, current_user)
 
     project_ids = UserRoleService.new.moderatable_projects(current_user).ids
 
@@ -49,5 +50,14 @@ class ReportBuilder::Permissions::ReportPermissionsService
     end
 
     false
+  end
+
+  # The answers behind LLM-written charts are stored with the scope they were read
+  # with. One read from rows the user may not analyse is data they may not see.
+  def snapshot_wider_than_user?(report, user)
+    user_scope = McpServer::QueryScope.for(user)
+    report.layout.query_snapshots.any? do |snapshot|
+      !McpServer::QueryScope.from_stamp(snapshot.query_scope).within?(user_scope)
+    end
   end
 end
