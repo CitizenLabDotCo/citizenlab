@@ -1044,4 +1044,58 @@ describe ProjectPolicy do
       it_behaves_like 'does not permit space_id'
     end
   end
+
+  describe ProjectPolicy::ReportingScope do
+    subject(:resolved) { described_class.new(ApplicationPolicy::UserContext.new(user), Project).resolve }
+
+    let!(:project) { create(:project) }
+    let!(:other_project) { create(:project) }
+
+    context 'for an admin' do
+      let(:user) { create(:admin) }
+
+      it { is_expected.to contain_exactly(project, other_project) }
+    end
+
+    context 'for a moderator of the project' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it { is_expected.to contain_exactly(project) }
+    end
+
+    context 'for a blocked moderator of the project' do
+      let(:user) { create(:project_moderator, projects: [project], block_end_at: 1.day.from_now) }
+
+      it { is_expected.to be_empty }
+    end
+
+    context 'for a folder moderator' do
+      let(:folder) { create(:project_folder) }
+      let!(:project) { create(:project, folder: folder) }
+      let(:user) { create(:project_folder_moderator, project_folders: [folder]) }
+
+      it { is_expected.to contain_exactly(project) }
+    end
+
+    context 'for a space moderator' do
+      let(:space) { create(:space) }
+      let!(:project) { create(:project, space: space) }
+      let!(:project_in_folder) { create(:project, folder: create(:project_folder, space: space)) }
+      let(:user) { create(:space_moderator, spaces: [space]) }
+
+      it { is_expected.to contain_exactly(project, project_in_folder) }
+    end
+
+    context 'for a resident' do
+      let(:user) { create(:user) }
+
+      it { is_expected.to be_empty }
+    end
+
+    context 'for a visitor' do
+      let(:user) { nil }
+
+      it { is_expected.to be_empty }
+    end
+  end
 end
