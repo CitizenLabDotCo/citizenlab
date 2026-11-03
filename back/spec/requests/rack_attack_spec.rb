@@ -832,6 +832,16 @@ describe 'Rack::Attack' do
         expect(status).to eq(429) # Too many requests
       end
     end
+
+    it 'counts requests with a format suffix too' do
+      freeze_time do
+        120.times { post("#{message_path}.json", params: params, headers: json_headers(ip: '1.2.3.4')) }
+        expect(status).not_to eq(429)
+
+        post("#{approve_path}.json", headers: json_headers(ip: '1.2.3.4'))
+        expect(status).to eq(429) # Too many requests
+      end
+    end
   end
 
   describe 'spam reports' do
