@@ -2,14 +2,14 @@ import React from 'react';
 
 import { Select } from '@citizenlab/cl2-component-library';
 
-import { TSurveyService } from 'api/phases/types';
+import { surveyServices, TSurveyService } from 'api/phases/types';
 
 import projectMessages from 'containers/Admin/projects/project/messages';
 import useSurveyProviders from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/useSurveyProviders';
 
-import { useIntl } from 'utils/cl-intl';
+import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-const SURVEY_SERVICE_LABELS = {
+const SURVEY_SERVICE_LABELS: Record<TSurveyService, MessageDescriptor> = {
   typeform: projectMessages.typeform,
   survey_xact: projectMessages.survey_xact,
   survey_monkey: projectMessages.survey_monkey,
@@ -19,14 +19,12 @@ const SURVEY_SERVICE_LABELS = {
   smart_survey: projectMessages.smart_survey,
   microsoft_forms: projectMessages.microsoft_forms,
   snap_survey: projectMessages.snap_survey,
-} as const;
-
-const SURVEY_SERVICES = Object.keys(SURVEY_SERVICE_LABELS) as TSurveyService[];
+};
 
 /** The external survey tools this platform can embed, in display order. */
 export const useEnabledSurveyServices = () => {
   const surveyProviders = useSurveyProviders();
-  return SURVEY_SERVICES.filter((service) => surveyProviders[service]);
+  return surveyServices.filter((service) => surveyProviders[service]);
 };
 
 interface Props {
