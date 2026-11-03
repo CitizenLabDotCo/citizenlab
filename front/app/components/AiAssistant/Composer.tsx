@@ -8,7 +8,7 @@ import {
   fontSizes,
   stylingConsts,
 } from '@citizenlab/cl2-component-library';
-import { useDropzone } from 'react-dropzone';
+import { ErrorCode, useDropzone } from 'react-dropzone';
 import TextareaAutosize from 'react-textarea-autosize';
 import styled from 'styled-components';
 
@@ -27,7 +27,14 @@ const ACCEPTED_FILES = {
 // Mirror the limits of AIAssistant::Message on the backend.
 const MAX_FILES = 3;
 const MAX_FILE_SIZE_MB = 4;
+const MAX_TEXT_FILE_SIZE_KB = 100;
 const MAX_CONTENT_LENGTH = 5000;
+
+// The dropzone's maxSize applies to every file, and text files have a lower limit.
+const validateTextFileSize = (file: File) =>
+  file.type !== 'application/pdf' && file.size > MAX_TEXT_FILE_SIZE_KB * 1024
+    ? { code: ErrorCode.FileTooLarge, message: 'The text file is too large.' }
+    : null;
 
 // A chat-style input: one border around the text, the files and the actions.
 const Frame = styled.div`
@@ -94,6 +101,7 @@ const Composer = ({
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
     accept: ACCEPTED_FILES,
     maxSize: MAX_FILE_SIZE_MB * 1024 * 1024,
+    validator: validateTextFileSize,
     noClick: true,
     noKeyboard: true,
     disabled: disabled || !allowFiles,
@@ -193,8 +201,12 @@ const Composer = ({
       {filesRejected && (
         <Text m="0px" mt="8px" fontSize="s" color="error">
           <FormattedMessage
-            {...messages.filesRejected}
-            values={{ maxSizeMb: MAX_FILE_SIZE_MB, maxFiles: MAX_FILES }}
+            {...messages.filesRejected2}
+            values={{
+              maxSizeMb: MAX_FILE_SIZE_MB,
+              maxTextSizeKb: MAX_TEXT_FILE_SIZE_KB,
+              maxFiles: MAX_FILES,
+            }}
           />
         </Text>
       )}

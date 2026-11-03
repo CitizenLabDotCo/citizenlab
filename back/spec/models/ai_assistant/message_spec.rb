@@ -50,12 +50,30 @@ describe AIAssistant::Message do
       expect(message.errors.details[:file_ids]).to include(error: :unsupported_file_type)
     end
 
-    it 'refuses files above the size limit' do
-      file.update!(size: described_class::MAX_FILE_SIZE + 1)
-      message = build(:ai_assistant_message, conversation:, file_ids: [file.id])
+    describe 'size limits' do
+      using RSpec::Parameterized::TableSyntax
 
-      expect(message).not_to be_valid
-      expect(message.errors.details[:file_ids]).to include(error: :unsupported_file_type)
+      where(:name, :fixture, :max_size) do
+        'survey.pdf' | 'minimal_pdf.pdf'           | described_class::MAX_FILE_SIZE
+        'notes.txt'  | 'common_passwords_test.txt' | described_class::MAX_TEXT_FILE_SIZE
+      end
+
+      with_them do
+        it 'refuses files above the size limit of their type' do
+          file = create(
+            :file,
+            name:,
+            content: Rails.root.join('spec/fixtures', fixture).open,
+            ai_processing_allowed: true,
+            projects: [conversation.subject.project]
+          )
+          file.update!(size: max_size + 1)
+          message = build(:ai_assistant_message, conversation:, file_ids: [file.id])
+
+          expect(message).not_to be_valid
+          expect(message.errors.details[:file_ids]).to include(error: :unsupported_file_type)
+        end
+      end
     end
 
     it 'limits the number of files of a message' do

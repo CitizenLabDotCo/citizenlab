@@ -28,8 +28,9 @@ module AIAssistant
     ROLES = %w[user assistant].freeze
     MAX_CONTENT_LENGTH = 5000
     MAX_FILES = 3
-    # Keeps requests and their cost small, as every turn sends the files again.
+    # Every turn sends the files again, and text goes into the message as is, so it gets a lower cap.
     MAX_FILE_SIZE = 4.megabytes
+    MAX_TEXT_FILE_SIZE = 100.kilobytes
     TEXT_FILE_EXTENSIONS = %w[.md .txt].freeze
 
     # Touches the conversation, so a running turn shows its progress.
@@ -77,7 +78,11 @@ module AIAssistant
     end
 
     def unsupported?(file)
-      file.size.to_i > MAX_FILE_SIZE || !content_matches_extension?(file)
+      file.size.to_i > max_size(file) || !content_matches_extension?(file)
+    end
+
+    def max_size(file)
+      text?(file) ? MAX_TEXT_FILE_SIZE : MAX_FILE_SIZE
     end
 
     # The client picks the name, so the content must match it: otherwise every later turn
