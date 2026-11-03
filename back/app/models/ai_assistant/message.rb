@@ -30,6 +30,7 @@ module AIAssistant
     MAX_FILES = 3
     # Keeps requests and their cost small, as every turn sends the files again.
     MAX_FILE_SIZE = 4.megabytes
+    TEXT_FILE_EXTENSIONS = %w[.md .txt].freeze
 
     # Touches the conversation, so a running turn shows its progress.
     belongs_to :conversation, class_name: 'AIAssistant::Conversation', inverse_of: :messages, touch: true
@@ -63,8 +64,10 @@ module AIAssistant
       return errors.add(:file_ids, :not_found) if found.size != file_ids.uniq.size
       return errors.add(:file_ids, :not_in_project) unless found.all? { |file| in_conversation_project?(file) }
       return errors.add(:file_ids, :ai_processing_not_allowed) unless found.all?(&:ai_processing_allowed)
+      return errors.add(:file_ids, :unsupported_file_type) if found.any? { |file| unsupported?(file) }
 
-      errors.add(:file_ids, :unsupported_file_type) if found.any? { |file| unsupported?(file) }
+      text_files = found.select { |file| text?(file) }
+      errors.add(:file_ids, :not_utf8) unless text_files.all? { |file| utf8?(file) }
     end
 
     # Fails closed for records that don't belong to a project.
@@ -82,9 +85,18 @@ module AIAssistant
     def content_matches_extension?(file)
       case ::File.extname(file.name).downcase
       when '.pdf' then file.content.read.start_with?('%PDF-')
-      when '.md', '.txt' then file.content.read.dup.force_encoding(Encoding::UTF_8).valid_encoding?
+      when *TEXT_FILE_EXTENSIONS then true
       else false
       end
+    end
+
+    def text?(file)
+      TEXT_FILE_EXTENSIONS.include?(::File.extname(file.name).downcase)
+    end
+
+    # Text files go into the message itself, so they must be valid UTF-8.
+    def utf8?(file)
+      file.content.read.dup.force_encoding(Encoding::UTF_8).valid_encoding?
     end
   end
 end
