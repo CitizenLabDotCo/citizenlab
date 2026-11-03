@@ -67,6 +67,31 @@ describe McpServer::McpController do
     end
   end
 
+  context 'when a client asks to open a subscriptions/listen stream' do
+    it 'answers the method as unsupported' do
+      host! 'example.org'
+      body = {
+        jsonrpc: '2.0',
+        id: 'listen:1',
+        method: 'subscriptions/listen',
+        params: {
+          notifications: { toolsListChanged: true },
+          _meta: {
+            'io.modelcontextprotocol/protocolVersion' => '2026-07-28',
+            'io.modelcontextprotocol/clientCapabilities' => {}
+          }
+        }
+      }.to_json
+
+      post '/mcp', params: body, headers: headers.merge(
+        'Mcp-Protocol-Version' => '2026-07-28', 'Mcp-Method' => 'subscriptions/listen'
+      )
+
+      expect(response).to have_http_status(:not_found)
+      expect(response.parsed_body.dig('error', 'code')).to eq(-32_601)
+    end
+  end
+
   # Layer 1: McpController skips ApplicationController, so its own append_info_to_payload
   # adds tenant (previously missing), user and MCP method/tool to the CloudWatch log line.
   describe 'semantic-logger payload' do
