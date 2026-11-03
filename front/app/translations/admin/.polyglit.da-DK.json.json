@@ -23559,6 +23559,11 @@
     "verified_at": "2026-03-18T12:49:36.692536Z",
     "verified_by": "Admin"
   },
+  "app.containers.admin.ContentBuilder.IframeMultiloc.noUrlPrompt": {
+    "state": "verified",
+    "verified_at": "2026-11-03T09:17:34.907047Z",
+    "verified_by": "kielgast@govocal.com"
+  },
   "app.containers.admin.ContentBuilder.IframeMultiloc.url": {
     "state": "verified",
     "verified_at": "2026-03-18T12:49:36.692536Z",
