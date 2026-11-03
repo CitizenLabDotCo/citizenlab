@@ -32,7 +32,7 @@ module PublicApi
 
     def list_items(base_query, serializer, includes: [], root_key: nil)
       @items = base_query
-        .order(created_at: :desc)
+        .order(created_at: :desc, id: :desc) # id breaks created_at ties, so pages don't overlap
         .page(params[:page_number])
         .per(num_per_page)
       @items = common_date_filters @items
