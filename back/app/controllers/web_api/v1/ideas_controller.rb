@@ -86,7 +86,6 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def filter_counts
-    filtered_ideas = find_ideas(scope: policy_scope(Idea))
     scopes_by_facet = filter_count_facets.to_h.transform_values do |filter_path|
       ideas_without_filter(filter_path)
     end
@@ -380,9 +379,15 @@ class WebApi::V1::IdeasController < ApplicationController
       .map { |field| [Facets::IdeaCustomFieldAnswer.new(field), [:custom_field_answers, field.id]] }
   end
 
+  def filtered_ideas
+    @filtered_ideas ||= find_ideas(scope: policy_scope(Idea))
+  end
+
   # The ideas with every filter applied except the given one, so a facet
   # counts what choosing one of its options would yield.
   def ideas_without_filter(filter_path)
+    return filtered_ideas if params.dig(*Array(filter_path)).blank?
+
     find_ideas(scope: policy_scope(Idea), finder_params: finder_params_without(filter_path))
   end
 
