@@ -82,6 +82,14 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.project.newEvent',
     defaultMessage: 'New event',
   },
+  hidePanel: {
+    id: 'app.containers.Admin.projects.project.hidePanel',
+    defaultMessage: 'Hide panel',
+  },
+  showPanel: {
+    id: 'app.containers.Admin.projects.project.showPanel',
+    defaultMessage: 'Show panel',
+  },
   filesSection: {
     id: 'app.containers.Admin.projects.project.filesSection',
     defaultMessage: '360 Input',
