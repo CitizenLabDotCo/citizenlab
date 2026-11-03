@@ -15,6 +15,11 @@ describe 'Power BI files' do # rubocop:disable RSpec/DescribeClass
       'baskets' => PublicApi::V2::BasketSerializer,
       'basket_ideas' => PublicApi::V2::BasketIdeaSerializer,
       'comments' => PublicApi::V2::CommentSerializer,
+      'custom_field_answers' => PublicApi::V2::CustomFieldAnswerSerializer,
+      'custom_field_answer_options' => PublicApi::V2::CustomFieldAnswerSerializer, # dataflow only: one row per chosen option
+      'custom_field_matrix_statements' => PublicApi::V2::CustomFieldMatrixStatementSerializer,
+      'custom_field_options' => PublicApi::V2::CustomFieldOptionSerializer,
+      'custom_fields' => PublicApi::V2::CustomFieldSerializer,
       'email_campaigns' => PublicApi::V2::EmailCampaignSerializer,
       'email_campaign_deliveries' => PublicApi::V2::EmailCampaignDeliverySerializer,
       'event_attendances' => PublicApi::V2::EventAttendanceSerializer,
@@ -37,10 +42,11 @@ describe 'Power BI files' do # rubocop:disable RSpec/DescribeClass
   end
 
   # Columns the queries build themselves, so they have no API counterpart:
-  # ApiGET stamps every row with data_refreshed_at, and the queries duplicate a
-  # timestamp into a date column for the Calendar relationships.
+  # ApiGET stamps every row with data_refreshed_at, the queries duplicate a
+  # timestamp into a date column for the Calendar relationships, and
+  # custom_field_answers splits the scalar answer values into typed columns.
   def local_columns
-    %w[data_refreshed_at created_at_date registration_completed_at_date]
+    %w[data_refreshed_at created_at_date registration_completed_at_date value_text value_number]
   end
 
   def power_bi_dir
