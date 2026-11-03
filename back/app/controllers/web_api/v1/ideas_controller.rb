@@ -373,10 +373,10 @@ class WebApi::V1::IdeasController < ApplicationController
   end
 
   def answer_facets
-    phase = Phase.find_by(id: params[:phase])
-    return [] if !phase
+    filter_phase = Phase.find_by(id: params[:phase])
+    return [] if !filter_phase
 
-    form = phase.pmethod.custom_form
+    form = filter_phase.pmethod.custom_form
     fields = form.custom_fields.enabled.where(show_as_filter: true)
     CustomFieldPolicy::Scope.new(pundit_user, fields, form).resolve
       .map { |field| [Facets::IdeaCustomFieldAnswer.new(field), [:custom_field_answers, field.id]] }
