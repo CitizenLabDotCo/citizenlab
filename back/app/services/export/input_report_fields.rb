@@ -126,6 +126,9 @@ module Export
     end
 
     def author_report_fields
+      # A fully anonymous survey identifies nobody
+      return [] if participation_method.fully_anonymous?
+
       if include_private_attributes
         [
           author_name_report_field,
@@ -170,7 +173,8 @@ module Export
     end
 
     # The form questions. author_id is dropped here rather than filtered per
-    # caller: it is always reported as a computed author column instead.
+    # caller: it is reported as a computed author column instead, or not at all
+    # when the survey is fully anonymous.
     def question_fields
       @question_fields ||= @input_fields.form_fields.reject { |field| field.code == 'author_id' }
     end
