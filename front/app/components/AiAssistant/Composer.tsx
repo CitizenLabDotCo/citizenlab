@@ -109,7 +109,17 @@ const Composer = ({
     onDrop: (acceptedFiles, rejectedFiles) => {
       if (!canAttachFiles) return;
 
-      const nextFiles = [...files, ...acceptedFiles];
+      const nextFiles = [
+        ...files,
+        ...acceptedFiles.filter(
+          (file) =>
+            !files.some(
+              (otherFile) =>
+                otherFile.name === file.name &&
+                otherFile.lastModified === file.lastModified
+            )
+        ),
+      ];
       setFilesRejected(
         rejectedFiles.length > 0 || nextFiles.length > MAX_FILES
       );
