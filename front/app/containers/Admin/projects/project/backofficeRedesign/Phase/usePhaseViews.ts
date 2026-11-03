@@ -1,8 +1,7 @@
-import { IPhaseData, ParticipationMethod } from 'api/phases/types';
+import { IPhaseData } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import { supportsNativeSurvey } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
 import {
   PHASE_TAB_ROUTES,
   PhaseLandingTab,
@@ -19,9 +18,7 @@ export type PhaseViewKey = 'build' | 'manage' | 'insights';
 export type PhaseView = {
   key: PhaseViewKey;
   label: string;
-  /** Absent when the phase has no tab under this view, which makes it unreachable. */
-  to?: PhaseTabTarget;
-  lockedReason?: string;
+  to: PhaseTabTarget;
 };
 
 // Which view each linkable phase tab lands under. Keyed by the same union as
@@ -55,29 +52,6 @@ export const viewFromPathname = (pathname: string): PhaseViewKey => {
   return tab?.[1] ?? 'build';
 };
 
-const lockedReason = (
-  view: PhaseViewKey,
-  method: ParticipationMethod
-): MessageDescriptor | undefined => {
-  if (method === 'information') {
-    return view === 'manage'
-      ? messages.noInputToManage
-      : messages.noInputToAnalyse;
-  }
-
-  if (view === 'manage' && supportsNativeSurvey(method)) {
-    return messages.surveyResponsesInInsights;
-  }
-
-  if (method === 'survey' || method === 'document_annotation') {
-    return view === 'manage'
-      ? messages.externalToolToManage
-      : messages.externalToolToAnalyse;
-  }
-
-  return undefined;
-};
-
 const VIEW_LABELS: { key: PhaseViewKey; label: MessageDescriptor }[] = [
   { key: 'build', label: messages.buildView },
   { key: 'manage', label: messages.manageView },
@@ -85,9 +59,8 @@ const VIEW_LABELS: { key: PhaseViewKey; label: MessageDescriptor }[] = [
 ];
 
 /**
- * The three views a phase is worked on through. All three always show, so the
- * set of choices stays the same everywhere; each lands on the first tab that
- * belongs to it.
+ * The views a phase is worked on through. A view only shows when the phase has
+ * a tab under it, and lands on the first such tab.
  */
 const usePhaseViews = (phase: IPhaseData | undefined): PhaseView[] => {
   const { formatMessage } = useIntl();
@@ -103,19 +76,11 @@ const usePhaseViews = (phase: IPhaseData | undefined): PhaseView[] => {
     .map((tab) => tab.url)
     .filter(isLandingTab);
 
-  return VIEW_LABELS.map(({ key, label }) => {
+  return VIEW_LABELS.flatMap(({ key, label }) => {
     const tab = landingTabs.find((url) => VIEW_BY_TAB[url] === key);
-    const reason =
-      tab === undefined
-        ? lockedReason(key, phase.attributes.participation_method)
-        : undefined;
+    if (!tab) return [];
 
-    return {
-      key,
-      label: formatMessage(label),
-      to: tab && PHASE_TAB_ROUTES[tab],
-      lockedReason: reason && formatMessage(reason),
-    };
+    return [{ key, label: formatMessage(label), to: PHASE_TAB_ROUTES[tab] }];
   });
 };
 

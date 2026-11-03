@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { Box, colors, Tooltip } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import { Box, colors } from '@citizenlab/cl2-component-library';
 
 import Link, { typedStyled } from 'utils/cl-router/Link';
 
@@ -10,7 +9,7 @@ import { PhaseView } from './usePhaseViews';
 // A pill, so the radius is a shape rather than the card radius in
 // stylingConsts. The active segment is styled off aria-current so the state
 // lives in one place for both assistive tech and the eye.
-const segment = `
+const Segment = typedStyled(Link)`
   display: inline-flex;
   align-items: center;
   padding: 5px 14px;
@@ -18,10 +17,6 @@ const segment = `
   font-size: 12.5px;
   font-weight: 600;
   white-space: nowrap;
-`;
-
-const Segment = typedStyled(Link)`
-  ${segment}
   color: ${colors.coolGrey600};
 
   &:hover {
@@ -32,14 +27,6 @@ const Segment = typedStyled(Link)`
     background: ${colors.white};
     color: ${colors.textPrimary};
   }
-`;
-
-// A view the phase has no tab for. Not a <button disabled> so it stays part of
-// the reading order rather than being skipped over.
-const LockedSegment = styled.span`
-  ${segment}
-  color: ${colors.coolGrey500};
-  cursor: default;
 `;
 
 interface Props {
@@ -61,28 +48,16 @@ const ViewSwitch = ({ views, activeView, projectId, phaseId }: Props) => {
       borderRadius="999px"
       background={colors.grey100}
     >
-      {views.map((view) =>
-        view.to ? (
-          <Segment
-            key={view.key}
-            to={view.to}
-            params={{ projectId, phaseId }}
-            aria-current={view.key === activeView ? 'page' : undefined}
-          >
-            {view.label}
-          </Segment>
-        ) : (
-          <Tooltip
-            key={view.key}
-            content={view.lockedReason}
-            disabled={!view.lockedReason}
-            theme="dark"
-            appendTo={() => document.body}
-          >
-            <LockedSegment aria-disabled="true">{view.label}</LockedSegment>
-          </Tooltip>
-        )
-      )}
+      {views.map((view) => (
+        <Segment
+          key={view.key}
+          to={view.to}
+          params={{ projectId, phaseId }}
+          aria-current={view.key === activeView ? 'page' : undefined}
+        >
+          {view.label}
+        </Segment>
+      ))}
     </Box>
   );
 };
