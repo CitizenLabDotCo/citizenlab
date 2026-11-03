@@ -56,6 +56,17 @@ resource 'AI assistant messages' do
         assert_status 422
         expect(json_response_body.dig(:errors, :file_ids, 0, :error)).to eq 'ai_processing_not_allowed'
       end
+
+      example '[error] Share a file the user may not see', :active_job_que_adapter, document: false do
+        file = create(:file, projects: [conversation.subject.project], ai_processing_allowed: true)
+        # Only super admins can use the assistant for now, and they may see every file.
+        allow_any_instance_of(Files::FilePolicy).to receive(:show?).and_return(false)
+
+        do_request(ai_assistant_message: { content:, file_ids: [file.id] })
+
+        assert_status 401
+        expect(conversation.messages).to be_empty
+      end
     end
 
     context 'when another super admin' do

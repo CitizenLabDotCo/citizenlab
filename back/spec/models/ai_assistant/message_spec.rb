@@ -50,6 +50,22 @@ describe AIAssistant::Message do
       expect(message.errors.details[:file_ids]).to include(error: :unsupported_file_type)
     end
 
+    it 'refuses files above the size limit' do
+      file.update!(size: described_class::MAX_FILE_SIZE + 1)
+      message = build(:ai_assistant_message, conversation:, file_ids: [file.id])
+
+      expect(message).not_to be_valid
+      expect(message.errors.details[:file_ids]).to include(error: :unsupported_file_type)
+    end
+
+    it 'limits the number of files of a message' do
+      files = create_list(:file, described_class::MAX_FILES + 1, ai_processing_allowed: true, projects: [conversation.subject.project])
+      message = build(:ai_assistant_message, conversation:, file_ids: files.map(&:id))
+
+      expect(message).not_to be_valid
+      expect(message.errors.details[:file_ids]).to include(error: :too_long, count: described_class::MAX_FILES)
+    end
+
     it 'refuses files of another project' do
       file.update!(projects: [create(:project)])
       message = build(:ai_assistant_message, conversation:, file_ids: [file.id])
