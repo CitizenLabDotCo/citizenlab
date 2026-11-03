@@ -5,7 +5,7 @@ module Volunteering
     module V1
       class VolunteersController < VolunteeringController
         before_action :set_cause, only: %i[index create destroy]
-        before_action :set_phase, only: :index_xlsx
+        before_action :set_phase, only: %i[index_by_phase index_xlsx]
         skip_before_action :authenticate_user
 
         def index
@@ -19,6 +19,29 @@ module Volunteering
             params: jsonapi_serializer_params,
             include: [:user]
           )
+        end
+
+        # GET phases/:phase_id/volunteers
+        def index_by_phase
+          authorize %i[volunteering volunteer], :index_by_phase?
+
+          @volunteers = policy_scope(Volunteer)
+            .where(volunteering_causes: { phase_id: @phase })
+            .includes(:user)
+          @volunteers = @volunteers.where(cause_id: params[:causes]) if params[:causes].present?
+          @volunteers = @volunteers.where(user: User.search_by_all(params[:search])) if params[:search].present?
+          @volunteers = @volunteers.order(created_at: params[:sort] == 'created_at' ? :asc : :desc)
+          @volunteers = paginate @volunteers
+
+          render json: {
+            **linked_json(
+              @volunteers,
+              Volunteering::WebApi::V1::VolunteerSerializer,
+              params: jsonapi_serializer_params,
+              include: [:user]
+            ),
+            meta: { total: @volunteers.total_count }
+          }
         end
 
         # GET phases/:phase_id/volunteers/as_xlsx

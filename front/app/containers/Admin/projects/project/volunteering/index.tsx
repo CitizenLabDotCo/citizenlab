@@ -13,8 +13,7 @@ import { SectionDescription } from 'components/admin/Section';
 import { FormattedMessage } from 'utils/cl-intl';
 import { useParams } from 'utils/router';
 
-import Card from '../backofficeRedesign/InputManager/SideColumn/Card';
-import ManageLayout from '../backofficeRedesign/Phase/ManageLayout';
+import VolunteerManager from '../backofficeRedesign/VolunteerManager';
 
 import AllCauses from './AllCauses';
 import ExportVolunteersButton from './ExportVolunteersButton';
@@ -41,21 +40,7 @@ const AdminProjectVolunteering = () => {
   }
 
   if (isBackofficeRedesignEnabled) {
-    return (
-      <ManageLayout
-        side={
-          <Card>
-            <ExportVolunteersButton phaseId={phaseId} />
-          </Card>
-        }
-      >
-        <AllCauses
-          key={phase.data.id}
-          projectId={project.data.id}
-          phaseId={phaseId}
-        />
-      </ManageLayout>
-    );
+    return <VolunteerManager key={phase.data.id} phase={phase.data} />;
   }
 
   return (

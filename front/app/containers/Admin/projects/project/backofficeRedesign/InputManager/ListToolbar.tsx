@@ -68,6 +68,7 @@ const ListToolbar = ({
       )}
       <Box display="flex" alignItems="center" gap="8px">
         <SearchToggle
+          label={formatMessage(messages.searchInputs)}
           searchTerm={searchTerm}
           onChange={onSearch}
           resultCount={count ?? 0}
