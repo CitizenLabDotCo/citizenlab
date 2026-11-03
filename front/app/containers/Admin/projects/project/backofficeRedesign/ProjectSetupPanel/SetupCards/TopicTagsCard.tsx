@@ -1,55 +1,98 @@
-import React, { useState } from 'react';
+import React, { KeyboardEvent, useRef, useState } from 'react';
 
+import { Box, ClickOutside } from '@citizenlab/cl2-component-library';
+
+import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
+import { coreSettings } from 'api/app_configuration/utils';
+import useGlobalTopics from 'api/global_topics/useGlobalTopics';
 import { IProjectData } from 'api/projects/types';
-import useUpdateProject from 'api/projects/useUpdateProject';
 
-import TopicInputs from 'containers/Admin/projects/_shared/components/ProjectSetupForm/TopicInputs';
-import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import useLocalize from 'hooks/useLocalize';
+
+import PillPickerPopover from 'components/UI/PillPicker/PillPickerPopover';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../messages';
+import SetupCard from '../SetupCard';
+import { getDraftValues, useSetupDraft } from '../SetupDraftContext';
 
 interface Props {
   project: IProjectData;
+  ready?: boolean;
 }
 
-const TopicTagsCard = ({ project }: Props) => {
+const TopicTagsCard = ({ project, ready }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutate: updateProject, isPending } = useUpdateProject();
-  // Each click saves the whole list, so quick clicks must build on the
-  // previous pick rather than on project data that hasn't refetched yet.
-  const [pickedTopicIds, setPickedTopicIds] = useState<string[]>();
+  const localize = useLocalize();
+  const { data: topics } = useGlobalTopics({});
+  const { data: appConfiguration } = useAppConfiguration();
+  const { changes, changeProject } = useSetupDraft();
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [opened, setOpened] = useState(false);
 
-  const savedTopicIds = project.relationships.global_topics.data.map(
-    (topic) => topic.id
-  );
+  const { topicIds } = getDraftValues(project, changes);
 
-  // Once saving is done and the saved list matches the pick, drop the pick, so
-  // later changes made elsewhere show up here.
-  if (
-    !isPending &&
-    pickedTopicIds &&
-    pickedTopicIds.length === savedTopicIds.length &&
-    pickedTopicIds.every((id) => savedTopicIds.includes(id))
-  ) {
-    setPickedTopicIds(undefined);
-  }
+  const topicsTerm =
+    appConfiguration &&
+    localize(coreSettings(appConfiguration.data).topics_term);
+  const title = formatMessage(messages.topicTags);
 
-  const topicIds = pickedTopicIds ?? savedTopicIds;
+  const toggleTopic = (topicId: string) => {
+    changeProject({
+      global_topic_ids: topicIds.includes(topicId)
+        ? topicIds.filter((id) => id !== topicId)
+        : [...topicIds, topicId],
+    });
+  };
 
-  const handleChange = (global_topic_ids: string[]) => {
-    setPickedTopicIds(global_topic_ids);
-    updateProject(
-      { projectId: project.id, global_topic_ids },
-      { onError: () => setPickedTopicIds(undefined) }
-    );
+  const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key !== 'Escape' || !opened) return;
+    event.stopPropagation();
+    setOpened(false);
   };
 
   return (
-    <PanelGroup label={formatMessage(messages.topicTags)}>
-      <TopicInputs selectedTopicIds={topicIds} onChange={handleChange} />
-    </PanelGroup>
+    <ClickOutside
+      onClickOutside={() => setOpened(false)}
+      closeOnClickOutsideEnabled={opened}
+    >
+      <Box ref={cardRef} position="relative" onKeyDown={handleKeyDown}>
+        <SetupCard
+          id="e2e-setup-card-topics"
+          title={topicsTerm ? `${title} (${topicsTerm})` : title}
+          ready={ready}
+          summary={
+            topicIds.length > 0
+              ? formatMessage(messages.topicTagsCount, {
+                  count: topicIds.length,
+                })
+              : undefined
+          }
+          behaviour={{
+            kind: 'action',
+            icon: opened ? 'chevron-up' : 'chevron-down',
+            expanded: opened,
+            onClick: () => setOpened((opened) => !opened),
+          }}
+        />
+        {opened && (
+          <PillPickerPopover
+            triggerRef={cardRef}
+            width="100%"
+            options={(topics?.data ?? []).map((topic) => ({
+              value: topic.id,
+              label: localize(topic.attributes.title_multiloc),
+            }))}
+            selected={topicIds}
+            searchPlaceholder={formatMessage(messages.topicTagsSearch)}
+            noMatchLabel={formatMessage(messages.topicTagsNoMatch)}
+            onToggle={toggleTopic}
+            onClose={() => setOpened(false)}
+          />
+        )}
+      </Box>
+    </ClickOutside>
   );
 };
 

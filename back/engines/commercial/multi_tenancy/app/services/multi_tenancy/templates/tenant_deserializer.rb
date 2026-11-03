@@ -15,6 +15,8 @@ module MultiTenancy
 
       SKIP_IMAGE_PRESENCE_VALIDATION = %w[IdeaImage ContentBuilder::LayoutImage ProjectImage].freeze
 
+      TRANSACTION_BATCH_SIZE = 200
+
       # Attributes that were removed from the schema but may still be present in
       # templates serialized before their removal; assigning them would raise
       # ActiveModel::UnknownAttributeError and abort the whole template application.
@@ -73,67 +75,75 @@ module MultiTenancy
           model_class = model_name.classify.constantize
           uploaders_names = model_class.uploaders.keys.map(&:to_s)
 
-          records.each do |attributes|
-            minutes_spent = Time.zone.now - t1
-            if max_time && (minutes_spent > max_time)
-              raise "Template application exceed time limit of #{max_time / 1.minute} minutes"
-            end
-
-            attributes ||= {} # Avoid nil. Enables an empty model field to lead to creation of record with default values.
-            restored_attributes = restore_template_attributes(
-              attributes,
-              obj_to_id_and_class,
-              AppConfiguration.instance.settings,
-              model_class: model_class
-            )
-
-            # Reuse an existing record instead of inserting a duplicate (when `reuse_by` matches).
-            if (existing = reusable_record(reuse_by, model_class, restored_attributes))
-              register_reused_record(existing, attributes, obj_to_id_and_class)
-              next
-            end
-
-            remote_image_attributes, restored_attributes = restored_attributes.partition do |field_name, _field_value|
-              field_name.start_with?('remote_') && field_name.end_with?('_url') && field_name.exclude?('file')
-            end.map(&:to_h)
-
-            model = model_class.new(restored_attributes)
-            model.skip_image_presence = true if SKIP_IMAGE_PRESENCE_VALIDATION.include?(model_class.name)
-
-            begin
-              preserve_ordering(model) { save_model(model, validate) }
-
-              # Only upload attributes that are strings are copied verbatim using
-              # `update_columns` to bypass the CarrierWave uploader.
-              str_upload_attributes = restored_attributes
-                .slice(*uploaders_names)
-                .select { |_, v| v.is_a?(String) }
-              model.update_columns(str_upload_attributes) if str_upload_attributes.present?
-
-              # Assign images that were serialized as remote URLs (`remote_*_url`).
-              assign_images(model, remote_image_attributes) if remote_image_attributes.present?
-
-              # taking original attributes to get correct object ID
-              attributes.each do |field_name, field_value|
-                if field_name.end_with?('_attributes') && field_value.is_a?(Hash) # linking attribute refs (not supported for lists of attributes)
-                  submodel = model.send(field_name.chomp('_attributes'))
-                  obj_to_id_and_class[field_value] = [submodel.id, submodel.class]
+          # Records are saved in batches, each in a single transaction: one commit per batch
+          # instead of one per record. In production, the commit is the costly part of saving
+          # a record (it waits for the Multi-AZ standby). Batches are kept small to avoid
+          # long-running transactions.
+          records.each_slice(TRANSACTION_BATCH_SIZE) do |batch|
+            ActiveRecord::Base.transaction do
+              batch.each do |attributes|
+                minutes_spent = Time.zone.now - t1
+                if max_time && (minutes_spent > max_time)
+                  raise "Template application exceed time limit of #{max_time / 1.minute} minutes"
                 end
-              end
-            rescue StandardError => e
-              json_info = {
-                error_message: e.message,
-                model_class: model_class.name,
-                attributes: attributes,
-                error_backtrace: e.backtrace
-              }.to_json
-              message = "Failed to create instance during template application: #{json_info}"
-              ErrorReporter.report_msg(message)
-              raise message
-            end
 
-            obj_to_id_and_class[attributes] = [model.id, model_class]
-            created_objects_ids[model_class.name] << model.id
+                attributes ||= {} # Avoid nil. Enables an empty model field to lead to creation of record with default values.
+                restored_attributes = restore_template_attributes(
+                  attributes,
+                  obj_to_id_and_class,
+                  AppConfiguration.instance.settings,
+                  model_class: model_class
+                )
+
+                # Reuse an existing record instead of inserting a duplicate (when `reuse_by` matches).
+                if (existing = reusable_record(reuse_by, model_class, restored_attributes))
+                  register_reused_record(existing, attributes, obj_to_id_and_class)
+                  next
+                end
+
+                remote_image_attributes, restored_attributes = restored_attributes.partition do |field_name, _field_value|
+                  field_name.start_with?('remote_') && field_name.end_with?('_url') && field_name.exclude?('file')
+                end.map(&:to_h)
+
+                model = model_class.new(restored_attributes)
+                model.skip_image_presence = true if SKIP_IMAGE_PRESENCE_VALIDATION.include?(model_class.name)
+
+                begin
+                  preserve_ordering(model) { save_model(model, validate) }
+
+                  # Only upload attributes that are strings are copied verbatim using
+                  # `update_columns` to bypass the CarrierWave uploader.
+                  str_upload_attributes = restored_attributes
+                    .slice(*uploaders_names)
+                    .select { |_, v| v.is_a?(String) }
+                  model.update_columns(str_upload_attributes) if str_upload_attributes.present?
+
+                  # Assign images that were serialized as remote URLs (`remote_*_url`).
+                  assign_images(model, remote_image_attributes) if remote_image_attributes.present?
+
+                  # taking original attributes to get correct object ID
+                  attributes.each do |field_name, field_value|
+                    if field_name.end_with?('_attributes') && field_value.is_a?(Hash) # linking attribute refs (not supported for lists of attributes)
+                      submodel = model.send(field_name.chomp('_attributes'))
+                      obj_to_id_and_class[field_value] = [submodel.id, submodel.class]
+                    end
+                  end
+                rescue StandardError => e
+                  json_info = {
+                    error_message: e.message,
+                    model_class: model_class.name,
+                    attributes: attributes,
+                    error_backtrace: e.backtrace
+                  }.to_json
+                  message = "Failed to create instance during template application: #{json_info}"
+                  ErrorReporter.report_msg(message)
+                  raise message
+                end
+
+                obj_to_id_and_class[attributes] = [model.id, model_class]
+                created_objects_ids[model_class.name] << model.id
+              end
+            end
           end
         end
 

@@ -36,6 +36,7 @@ de-AT:
         project_participants: An Projektteilnehmende
         registered_users: An registrierte Nutzer*innen
       recipient_segment:
+        admin_who_generated_the_report: Der Admin, der den Bericht angefordert hat
         admins: Admins
         admins_and_managers: Admins und Manager*innen
         admins_and_managers_assigned_to_the_input: Admins & Manager*innen, die dem Beitrag zugewiesen sind
@@ -109,6 +110,7 @@ de-AT:
         proposal_is_upvoted_above_threshold: Vorschlag erreicht Schwellenwert
         proposal_status_changes: Status des Vorschlags wird geändert
         registration_to_event: Anmeldung zu einer Veranstaltung
+        report_generated: Ein Bericht wurde fertiggestellt
         survey_1_day_after_draft_saved: 1 Tag, nachdem der Nutzer / die Nutzer*in die Umfrage zuletzt als Entwurf gespeichert hat
         user_accepts_invitation_to_cosponsor_a_proposal: Nutzer*in nimmt Einladung zur Unterstützung eines Vorschlags an
         user_changes_email: Nutzer*in ändert ihre E-Mail-Adresse
@@ -206,6 +208,7 @@ de-AT:
       project_review_request: Antrag auf Projektfreigabe
       project_review_state_change: Projekt freigegeben
       proposal_expired_for_admin: Vorschlag abgelaufen, ohne die Abstimmungsschwelle zu erreichen
+      report_generated: Bericht erstellt
       screening_digest: Wöchentliche Überprüfungs-Erinnerung
       sms_manual: Offizielle SMS-Nachrichten
       space_moderation_rights_received: Space-Manager*innen-Rechte erhalten
@@ -661,6 +664,13 @@ de-AT:
       preheader: Ein Beitrag ist abgelaufen, ohne die Schwelle zu erreichen
       subject: '"%{input_title}" ist abgelaufen, ohne die Schwelle zu erreichen'
       title: Ein Beitrag ist abgelaufen, ohne die Abstimmungsschwelle zu erreichen
+    report_generated:
+      cta_button: Bericht öffnen
+      event_description: Der Bericht wurde erstellt und kann nun von Ihnen überprüft und bearbeitet werden.
+      preheader: Ihr Bericht ist fertig
+      stopped_early: Der Schreibvorgang wurde gestoppt, bevor der Bericht fertiggestellt wurde. Alles, was bisher geschrieben wurde, ist gespeichert – öffnen Sie ihn und fragen Sie im Chat nach dem Rest.
+      subject: "Ihr Bericht für '%{projectName}' ist fertig"
+      title: Ihr Bericht ist fertig
     schedules:
       quarterly: Vierteljährlich, am ersten Tag des Quartals
       weekly:

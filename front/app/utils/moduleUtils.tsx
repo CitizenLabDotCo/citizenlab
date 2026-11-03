@@ -31,6 +31,7 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.projects.all.createProject': {
     selectedTabValue: TTabName;
     onDone?: () => void;
+    variant?: 'default' | 'bo';
   };
   'app.containers.Admin.projects.all.createProject.tabs': {
     onData: (data: InsertConfigurationOptions<ITabItem>) => void;
@@ -67,6 +68,9 @@ export interface OutletsPropertyMap {
   'app.containers.Admin.project.edit.permissions.moderatorRights': {
     projectId: string;
     children: OutletRenderProps;
+  };
+  'app.containers.Admin.projects.phase.moderation': {
+    projectId: string;
   };
   'app.containers.Admin.ideas.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {

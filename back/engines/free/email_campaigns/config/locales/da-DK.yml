@@ -36,6 +36,7 @@ da-DK:
         project_participants: Til projektdeltagere
         registered_users: Til registrerede brugere
       recipient_segment:
+        admin_who_generated_the_report: Administratoren, der bad om rapporten
         admins: Administratorer
         admins_and_managers: Administratorer og projektledere
         admins_and_managers_assigned_to_the_input: Administratorer og projektledere, der er tildelt input
@@ -109,6 +110,7 @@ da-DK:
         proposal_is_upvoted_above_threshold: Forslaget er opstemt over tærsklen
         proposal_status_changes: Ændringer i forslagets status
         registration_to_event: Tilmelding til en begivenhed
+        report_generated: En rapport er færdig med at blive genereret
         survey_1_day_after_draft_saved: 1 dag efter at brugeren sidst gemte undersøgelsen i kladden
         user_accepts_invitation_to_cosponsor_a_proposal: Brugeren accepterer invitationen til at være medstiller på et forslag
         user_changes_email: Bruger ændrer sin e-mailadresse
@@ -206,6 +208,7 @@ da-DK:
       project_review_request: Anmodning om projektgennemgang
       project_review_state_change: Projekt godkendt
       proposal_expired_for_admin: Forslag udløbet uden at have nået stemmetærsklen
+      report_generated: Rapport genereret
       screening_digest: Ugentlig påmindelse om screening
       sms_manual: Officielle SMS-beskeder
       space_moderation_rights_received: Rettigheder som områdeprojektleder modtaget
@@ -661,6 +664,13 @@ da-DK:
       preheader: Et input er udløbet uden at have nået tærsklen
       subject: '"%{input_title}" er udløbet uden at have nået tærsklen'
       title: Et input er udløbet uden at have nået stemmetærsklen
+    report_generated:
+      cta_button: Åbn rapporten
+      event_description: Rapporten er skrevet og er klar til, at du kan gennemse og redigere den.
+      preheader: Din rapport er klar
+      stopped_early: Skrivningen stoppede, før rapporten var færdig. Alt, hvad der er skrevet indtil videre, er gemt — åbn den og bed om resten i chatten.
+      subject: "Din rapport for '%{projectName}' er klar"
+      title: Din rapport er klar
     schedules:
       quarterly: Kvartalsvis på den første dag i kvartalet
       weekly:

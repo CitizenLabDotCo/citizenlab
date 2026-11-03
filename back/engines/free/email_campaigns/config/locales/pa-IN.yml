@@ -36,6 +36,7 @@ pa-IN:
         project_participants: ਪ੍ਰੋਜੈਕਟ ਭਾਗੀਦਾਰਾਂ ਨੂੰ
         registered_users: ਰਜਿਸਟਰਡ ਉਪਭੋਗਤਾਵਾਂ ਨੂੰ
       recipient_segment:
+        admin_who_generated_the_report: ਉਹ ਐਡਮਿਨ ਜਿਸਨੇ ਰਿਪੋਰਟ ਮੰਗੀ ਸੀ
         admins: ਪ੍ਰਸ਼ਾਸਕ
         admins_and_managers: ਪ੍ਰਸ਼ਾਸਕ ਅਤੇ ਪ੍ਰਬੰਧਕ
         admins_and_managers_assigned_to_the_input: ਪ੍ਰਸ਼ਾਸਕਾਂ ਅਤੇ ਪ੍ਰਬੰਧਕਾਂ ਨੂੰ ਇਨਪੁਟ ਲਈ ਸੌਂਪਿਆ ਗਿਆ ਹੈ
@@ -109,6 +110,7 @@ pa-IN:
         proposal_is_upvoted_above_threshold: ਤਜਵੀਜ਼ ਨੂੰ ਥ੍ਰੈਸ਼ਹੋਲਡ ਤੋਂ ਉੱਪਰ ਵੋਟ ਦਿੱਤਾ ਗਿਆ ਹੈ
         proposal_status_changes: ਪ੍ਰਸਤਾਵ ਦੀ ਸਥਿਤੀ ਬਦਲਦੀ ਹੈ
         registration_to_event: ਇੱਕ ਘਟਨਾ ਲਈ ਰਜਿਸਟ੍ਰੇਸ਼ਨ
+        report_generated: ਇੱਕ ਰਿਪੋਰਟ ਤਿਆਰ ਹੋ ਗਈ ਹੈ
         survey_1_day_after_draft_saved: ਉਪਭੋਗਤਾ ਦੁਆਰਾ ਆਖਰੀ ਵਾਰ ਡਰਾਫਟ ਵਿੱਚ ਸਰਵੇਖਣ ਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰਨ ਤੋਂ 1 ਦਿਨ ਬਾਅਦ
         user_accepts_invitation_to_cosponsor_a_proposal: ਉਪਭੋਗਤਾ ਪ੍ਰਸਤਾਵ ਨੂੰ ਸਹਿ-ਸਪਾਂਸਰ ਕਰਨ ਲਈ ਸੱਦਾ ਸਵੀਕਾਰ ਕਰਦਾ ਹੈ
         user_changes_email: ਉਪਭੋਗਤਾ ਆਪਣਾ ਈਮੇਲ ਪਤਾ ਬਦਲਦਾ ਹੈ
@@ -206,6 +208,7 @@ pa-IN:
       project_review_request: ਪ੍ਰੋਜੈਕਟ ਸਮੀਖਿਆ ਬੇਨਤੀ
       project_review_state_change: ਪ੍ਰੋਜੈਕਟ ਨੂੰ ਮਨਜ਼ੂਰੀ ਦਿੱਤੀ ਗਈ
       proposal_expired_for_admin: ਪ੍ਰਸਤਾਵ ਵੋਟਿੰਗ ਥ੍ਰੈਸ਼ਹੋਲਡ ਤੱਕ ਪਹੁੰਚੇ ਬਿਨਾਂ ਐਕਸਪਾਇਰ ਹੋ ਗਿਆ
+      report_generated: ਰਿਪੋਰਟ ਤਿਆਰ ਕੀਤੀ ਗਈ
       screening_digest: ਹਫ਼ਤਾਵਾਰੀ ਸਕ੍ਰੀਨਿੰਗ ਰੀਮਾਈਂਡਰ
       sms_manual: ਅਧਿਕਾਰਤ SMS ਸੁਨੇਹੇ
       space_moderation_rights_received: ਸਪੇਸ ਮੈਨੇਜਰ ਦੇ ਅਧਿਕਾਰ ਪ੍ਰਾਪਤ ਹੋਏ
@@ -661,6 +664,13 @@ pa-IN:
       preheader: ਇੱਕ ਇਨਪੁਟ ਥ੍ਰੈਸ਼ਹੋਲਡ ਤੱਕ ਪਹੁੰਚੇ ਬਿਨਾਂ ਐਕਸਪਾਇਰ ਹੋ ਗਿਆ
       subject: '"%{input_title}" ਥ੍ਰੈਸ਼ਹੋਲਡ ਤੱਕ ਪਹੁੰਚੇ ਬਿਨਾਂ ਐਕਸਪਾਇਰ ਹੋ ਗਿਆ'
       title: ਇੱਕ ਇਨਪੁਟ ਵੋਟਿੰਗ ਥ੍ਰੈਸ਼ਹੋਲਡ ਤੱਕ ਪਹੁੰਚੇ ਬਿਨਾਂ ਐਕਸਪਾਇਰ ਹੋ ਗਿਆ
+    report_generated:
+      cta_button: ਰਿਪੋਰਟ ਖੋਲ੍ਹੋ
+      event_description: ਰਿਪੋਰਟ ਲਿਖੀ ਜਾ ਚੁੱਕੀ ਹੈ ਅਤੇ ਤੁਹਾਡੇ ਲਈ ਸਮੀਖਿਆ ਅਤੇ ਸੰਪਾਦਨ ਕਰਨ ਲਈ ਤਿਆਰ ਹੈ।
+      preheader: ਤੁਹਾਡੀ ਰਿਪੋਰਟ ਤਿਆਰ ਹੈ
+      stopped_early: ਰਿਪੋਰਟ ਪੂਰੀ ਹੋਣ ਤੋਂ ਪਹਿਲਾਂ ਲਿਖਣਾ ਰੁਕ ਗਿਆ। ਹੁਣ ਤੱਕ ਜੋ ਵੀ ਲਿਖਿਆ ਗਿਆ ਹੈ ਉਹ ਸੁਰੱਖਿਅਤ ਹੈ — ਇਸਨੂੰ ਖੋਲ੍ਹੋ ਅਤੇ ਚੈਟ ਵਿੱਚ ਬਾਕੀ ਹਿੱਸੇ ਲਈ ਪੁੱਛੋ।
+      subject: "'%{projectName}' ਲਈ ਤੁਹਾਡੀ ਰਿਪੋਰਟ ਤਿਆਰ ਹੈ"
+      title: ਤੁਹਾਡੀ ਰਿਪੋਰਟ ਤਿਆਰ ਹੈ
     schedules:
       quarterly: ਤਿਮਾਹੀ, ਤਿਮਾਹੀ ਦੇ ਪਹਿਲੇ ਦਿਨ
       weekly:

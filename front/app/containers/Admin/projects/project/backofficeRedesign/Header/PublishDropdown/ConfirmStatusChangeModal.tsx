@@ -31,11 +31,11 @@ const getBodyMessage = (
   target: ConfirmableStatus,
   current: PublicationStatus
 ): MessageDescriptor => {
-  if (target === 'archived') return messages.publishArchiveBody;
+  if (target === 'archived') return messages.publishArchiveBody2;
 
   return current === 'archived'
     ? messages.publishRestoreToDraftFromArchiveBody
-    : messages.publishRestoreToDraftBody;
+    : messages.publishRestoreToDraftBody2;
 };
 
 interface Props {

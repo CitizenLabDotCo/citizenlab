@@ -108,6 +108,11 @@ const DemographicsSection = ({ phase }: Props) => {
     phaseId: phase?.id || '',
   });
 
+  // A phase whose participants went unmeasured has no audience to describe.
+  // Undefined until the metrics land, so the section loads before it decides.
+  const showDemographics =
+    response?.data.attributes.metrics.participants !== null;
+
   const blankLabel = formatMessage(messages.noAnswer);
   const demographicsData = useMemo(() => {
     if (userDataCollection === 'anonymous') return null;
@@ -155,8 +160,9 @@ const DemographicsSection = ({ phase }: Props) => {
     { skip: isLoading || !!error || fields.length === 0 }
   );
 
-  // Hide demographics when private attributes export is disabled
-  if (!privateAttributesInExport) {
+  // Hidden when private attributes are kept out of exports, and when the phase
+  // has no audience to describe
+  if (!privateAttributesInExport || !showDemographics) {
     return null;
   }
 

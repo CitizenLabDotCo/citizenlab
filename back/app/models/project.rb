@@ -109,9 +109,9 @@ class Project < ApplicationRecord
   after_commit :clear_folder_changes, if: :folder_changed?
 
   INTERNAL_ROLES = %w[open_idea_box community_monitor].freeze
-  # Steps of the admin setup checklist that have no signal of their own, so
-  # opening them is what marks them done.
-  SETUP_STEPS = %w[settings share].freeze
+  # Steps of the admin setup checklist that have no signal of their own, so an
+  # admin action marks them done: opening them, or saving the project page.
+  SETUP_STEPS = %w[settings share page].freeze
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validates :description_preview_multiloc, multiloc: { presence: false }
@@ -394,3 +394,4 @@ Project.include(Analysis::Patches::Project)
 Project.include(EmailCampaigns::Extensions::Project)
 Project.include(BulkImportIdeas::Patches::Project)
 Project.include(Webhooks::Patches::Project)
+Project.include(ReportBuilder::Patches::Project)

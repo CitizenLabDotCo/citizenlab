@@ -45,6 +45,7 @@
 #  min_characters                 :integer
 #  max_characters                 :integer
 #  answers_visible_to             :string           default("moderators"), not null
+#  show_as_filter                 :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -61,7 +62,7 @@ class CustomField < ApplicationRecord
     :supports_single_selection?, :supports_multiple_selection?, :supports_selection?, :supports_select_count?, :supports_dropdown_layout?,
     :supports_free_text_value?, :supports_xlsx_export?, :supports_geojson?,
     :supports_printing?, :supports_pdf_import?, :supports_xlsx_import?,
-    :supports_reference_distribution?, :supports_file_upload?, :supports_logic?, to: :input_type_strategy
+    :supports_reference_distribution?, :supports_file_upload?, :supports_logic?, :supports_answer_facet?, to: :input_type_strategy
 
   acts_as_list column: :ordering, top_of_list: 0, scope: %i[resource_type resource_id], sequential_updates: true
   bulk_reorderable constraint_name: :custom_fields_resource_id_ordering_unique
@@ -125,6 +126,7 @@ class CustomField < ApplicationRecord
   validate :max_characters_greater_than_min_characters, if: :supports_text?
   validate :maximum_select_count_greater_than_or_equal_to_minimum, if: :select_count_enabled_and_supported?
   validate :validate_answers_visible_to
+  validate :validate_show_as_filter
 
   enum :answers_visible_to, { public: 'public', moderators: 'moderators' }, prefix: true, validate: true
 
@@ -248,6 +250,10 @@ class CustomField < ApplicationRecord
 
   def custom_form_type?
     resource_type == 'CustomForm'
+  end
+
+  def can_show_as_filter?
+    answers_visible_to_public? && supports_answer_facet?
   end
 
   # The value of a built-in input field is an attribute of the input, not an answer.
@@ -417,6 +423,10 @@ class CustomField < ApplicationRecord
     errors.add(:answers_visible_to, :inclusion, value: answers_visible_to) if answers_visible_to != fixed_value
   end
 
+  def validate_show_as_filter
+    errors.add(:show_as_filter, :inclusion) if show_as_filter && !can_show_as_filter?
+  end
+
   def generate_key
     return if key
     return if !supports_submission?
@@ -443,12 +453,11 @@ class CustomField < ApplicationRecord
   def domicile_options
     return options.order(:ordering) unless domicile?
 
-    areas = Area.where(custom_field_option_id: options.pluck(:id))
-    area_id_map = areas.map { |a| { a.custom_field_option_id => { id: a.id, title: a.title_multiloc } } }.reduce({}, :merge)
+    outside_title = MultilocService.new.i18n_to_multiloc('custom_field_options.domicile.outside')
 
-    options.order(:ordering).map do |option|
-      option.key = area_id_map.dig(option.id, :id) || 'outside'
-      option.title_multiloc = area_id_map.dig(option.id, :title) || MultilocService.new.i18n_to_multiloc('custom_field_options.domicile.outside')
+    options.order(:ordering).includes(:area).map do |option|
+      option.title_multiloc = option.area&.title_multiloc || outside_title
+      option.key = option.answer_key
       option
     end
   end

@@ -36,6 +36,7 @@ ca-ES:
         project_participants: Als participants del projecte
         registered_users: A usuaris registrats
       recipient_segment:
+        admin_who_generated_the_report: "L'administrador que ha demanat l'informe"
         admins: Administradors
         admins_and_managers: Administradors i gestors
         admins_and_managers_assigned_to_the_input: Administradors i gestors assignats a l'entrada
@@ -109,6 +110,7 @@ ca-ES:
         proposal_is_upvoted_above_threshold: La proposta es vota a favor per sobre del llindar
         proposal_status_changes: Canvis d'estat de la proposta
         registration_to_event: Inscripció a un esdeveniment
+        report_generated: S'ha acabat de generar un informe
         survey_1_day_after_draft_saved: "1 dia després que l'usuari hagi desat l'enquesta per darrera vegada com a esborrany"
         user_accepts_invitation_to_cosponsor_a_proposal: L'usuari accepta la invitació per copatrocinar una proposta
         user_changes_email: L'usuari canvia la seva adreça de correu electrònic
@@ -206,6 +208,7 @@ ca-ES:
       project_review_request: Sol·licitud de revisió del projecte
       project_review_state_change: Projecte aprovat
       proposal_expired_for_admin: La proposta ha caducat sense assolir el llindar de votació
+      report_generated: Informe generat
       screening_digest: Recordatori de cribratge setmanal
       sms_manual: Missatges SMS oficials
       space_moderation_rights_received: Drets de gestor d'espai rebuts
@@ -661,6 +664,13 @@ ca-ES:
       preheader: Una aportació ha caducat sense assolir el llindar
       subject: '"%{input_title}" ha caducat sense assolir el llindar'
       title: Una aportació ha caducat sense assolir el llindar de votació
+    report_generated:
+      cta_button: Obriu l'informe
+      event_description: "L'informe s'ha redactat i ja està a punt perquè el reviseu i l'editeu."
+      preheader: El vostre informe ja està a punt
+      stopped_early: "La redacció s'ha aturat abans que l'informe estigués enllestit. Tot el que s'ha escrit fins ara s'ha desat — obriu-lo i demaneu la resta al xat."
+      subject: "El vostre informe per a '%{projectName}' ja està a punt"
+      title: El vostre informe ja està a punt
     schedules:
       quarterly: Trimestral, el primer dia del trimestre
       weekly:

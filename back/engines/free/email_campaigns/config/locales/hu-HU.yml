@@ -36,6 +36,7 @@ hu-HU:
         project_participants: A projekt résztvevőinek
         registered_users: Regisztrált felhasználóknak
       recipient_segment:
+        admin_who_generated_the_report: A jelentést kérő adminisztrátor
         admins: Adminok
         admins_and_managers: Adminisztrátorok és menedzserek
         admins_and_managers_assigned_to_the_input: A bemenethez rendelt adminisztrátorok és kezelők
@@ -109,6 +110,7 @@ hu-HU:
         proposal_is_upvoted_above_threshold: A javaslatot a küszöb felett szavazták meg
         proposal_status_changes: Változások az ajánlat állapotában
         registration_to_event: Regisztráció egy eseményre
+        report_generated: Egy jelentés elkészült
         survey_1_day_after_draft_saved: 1 nappal azután, hogy a felhasználó utoljára elmentette a felmérést vázlatként
         user_accepts_invitation_to_cosponsor_a_proposal: A felhasználó elfogadja a felkérést egy ajánlat társszponzorálására
         user_changes_email: A felhasználó megváltoztatja az e-mail-címét
@@ -206,6 +208,7 @@ hu-HU:
       project_review_request: Projekt felülvizsgálati kérelem
       project_review_state_change: Projekt jóváhagyva
       proposal_expired_for_admin: A javaslat lejárt a szavazati küszöb elérése nélkül
+      report_generated: Jelentés elkészült
       screening_digest: Heti szűrővizsgálati emlékeztető
       sms_manual: Hivatalos SMS-üzenetek
       space_moderation_rights_received: Térkezelői jogosultságok megadva
@@ -661,6 +664,13 @@ hu-HU:
       preheader: Egy javaslat lejárt a küszöbérték elérése nélkül
       subject: '"%{input_title}" lejárt a küszöbérték elérése nélkül'
       title: Egy javaslat lejárt a szavazati küszöb elérése nélkül
+    report_generated:
+      cta_button: Jelentés megnyitása
+      event_description: A jelentés elkészült, és készen áll az áttekintésre és szerkesztésre.
+      preheader: A jelentése elkészült
+      stopped_early: Az írás leállt, mielőtt a jelentés befejeződött volna. Az eddig leírtak mentésre kerültek — nyissa meg, és kérje a folytatást a chaten.
+      subject: A(z) „%{projectName}” projekthez készült jelentése elkészült
+      title: A jelentése elkészült
     schedules:
       quarterly: Negyedévenként, a negyedév első napján
       weekly:

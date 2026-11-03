@@ -50,12 +50,6 @@ module ParticipationMethod
       phase.similarity_threshold_body ||= 0.4
     end
 
-    def author_in_form?(user)
-      AppConfiguration.instance.feature_activated?('idea_author_change') \
-      && !!user \
-      && UserRoleService.new.can_moderate_project?(phase.project, user)
-    end
-
     def budget_in_form?(user)
       phase.project.phases.any? do |phase|
         phase.participation_method == 'voting' && Factory.instance.voting_method_for(phase).budget_in_form?(user)
@@ -371,10 +365,6 @@ module ParticipationMethod
     end
 
     def supports_input_pdf_export?
-      true
-    end
-
-    def supports_input_topics?
       true
     end
 

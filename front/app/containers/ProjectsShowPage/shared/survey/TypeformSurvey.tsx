@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useBreakpoint, colors } from '@citizenlab/cl2-component-library';
 import { omitBy, isNil } from 'lodash-es';
 import { stringify } from 'qs';
 import styled from 'styled-components';
@@ -17,7 +17,7 @@ const Container = styled.div`
   flex-direction: column;
 
   iframe {
-    border: solid 1px #ccc;
+    border: solid 1px ${colors.grey400};
     border-radius: ${(props) => props.theme.borderRadius};
   }
 `;

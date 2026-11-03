@@ -26,6 +26,7 @@
 #  cosponsorship_id              :uuid
 #  project_review_id             :uuid
 #  space_id                      :uuid
+#  report_id                     :uuid
 #
 # Indexes
 #
@@ -42,6 +43,7 @@
 #  index_notifications_on_project_review_id              (project_review_id)
 #  index_notifications_on_recipient_id                   (recipient_id)
 #  index_notifications_on_recipient_id_and_read_at       (recipient_id,read_at)
+#  index_notifications_on_report_id                      (report_id)
 #  index_notifications_on_space_id                       (space_id)
 #  index_notifications_on_spam_report_id                 (spam_report_id)
 #
@@ -61,6 +63,7 @@
 #  fk_rails_...  (project_id => projects.id)
 #  fk_rails_...  (project_review_id => project_reviews.id)
 #  fk_rails_...  (recipient_id => users.id)
+#  fk_rails_...  (report_id => report_builder_reports.id)
 #  fk_rails_...  (space_id => spaces.id)
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #

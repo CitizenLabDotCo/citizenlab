@@ -79,8 +79,12 @@ class SimilarIdeasService
       .where(embedded_attributes:)
   end
 
+  # The embedding only depends on the text, so it's safe to share between
+  # users. Only cache caller-independent data here.
   def embedding_for_text(text)
-    CohereMultilingualEmbeddings.new.embedding(text)
+    Rails.cache.fetch("similar_ideas/embedding/#{Digest::SHA256.hexdigest(text)}", expires_in: 10.minutes) do
+      CohereMultilingualEmbeddings.new.embedding(text)
+    end
   end
 
   def locale

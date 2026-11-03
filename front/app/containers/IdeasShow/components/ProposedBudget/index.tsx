@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 
 import useCustomFields from 'api/custom_fields/useCustomFields';
 import useIdeaById from 'api/ideas/useIdeaById';
@@ -9,17 +8,9 @@ import useIdeaById from 'api/ideas/useIdeaById';
 import { FormattedMessage } from 'utils/cl-intl';
 
 import messages from '../../messages';
+import BodySectionTitle from '../BodySectionTitle';
 
 import IdeaProposedBudget from './IdeaProposedBudget';
-
-const BodySectionTitle = styled.h2`
-  font-size: ${(props) => props.theme.fontSizes.l}px;
-  font-weight: 500;
-  line-height: 28px;
-  padding: 0;
-  margin: 0;
-  margin-bottom: 15px;
-`;
 
 interface Props {
   projectId: string;

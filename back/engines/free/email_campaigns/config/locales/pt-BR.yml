@@ -36,6 +36,7 @@ pt-BR:
         project_participants: Aos participantes do projeto
         registered_users: Aos usuários registrados
       recipient_segment:
+        admin_who_generated_the_report: O administrador que solicitou o relatório
         admins: Administradores
         admins_and_managers: Administradores e gestores
         admins_and_managers_assigned_to_the_input: Administradores e gestores atribuídos à entrada
@@ -109,6 +110,7 @@ pt-BR:
         proposal_is_upvoted_above_threshold: A proposta foi votada positivamente acima do limiar
         proposal_status_changes: Alterações no status da proposta
         registration_to_event: Inscrição em um evento
+        report_generated: A geração de um relatório foi concluída
         survey_1_day_after_draft_saved: 1 dia após o usuário ter salvo o questionário pela última vez em rascunho
         user_accepts_invitation_to_cosponsor_a_proposal: O utilizador aceita o convite para co-patrocinar uma proposta
         user_changes_email: O usuário altera seu endereço de e-mail
@@ -206,6 +208,7 @@ pt-BR:
       project_review_request: Solicitação de revisão do projeto
       project_review_state_change: Projeto aprovado
       proposal_expired_for_admin: Proposta expirou sem atingir o limiar de votação
+      report_generated: Relatório gerado
       screening_digest: Lembrete semanal de triagem
       sms_manual: Mensagens SMS oficiais
       space_moderation_rights_received: Direitos de gerente de espaço recebidos
@@ -661,6 +664,13 @@ pt-BR:
       preheader: Uma contribuição expirou sem atingir o limiar
       subject: '"%{input_title}" expirou sem atingir o limiar'
       title: Uma contribuição expirou sem atingir o limiar de votação
+    report_generated:
+      cta_button: Abrir o relatório
+      event_description: O relatório foi redigido e está pronto para você revisar e editar.
+      preheader: Seu relatório está pronto
+      stopped_early: A redação parou antes de o relatório ser concluído. Tudo o que foi escrito até agora foi salvo — abra-o e peça o restante no chat.
+      subject: "Seu relatório de '%{projectName}' está pronto"
+      title: Seu relatório está pronto
     schedules:
       quarterly: Trimestralmente, no primeiro dia do trimestre
       weekly:

@@ -36,6 +36,7 @@ nb-NO:
         project_participants: Til prosjektdeltakerne
         registered_users: Til registrerte brukere
       recipient_segment:
+        admin_who_generated_the_report: Administratoren som ba om rapporten
         admins: Administratorer
         admins_and_managers: Administratorer og ledere
         admins_and_managers_assigned_to_the_input: Administratorer og ledere som er tilordnet inndataene
@@ -109,6 +110,7 @@ nb-NO:
         proposal_is_upvoted_above_threshold: Forslaget er stemt opp over terskelverdien
         proposal_status_changes: Endringer i forslagets status
         registration_to_event: Påmelding til et arrangement
+        report_generated: En rapport er ferdig generert
         survey_1_day_after_draft_saved: 1 dag etter at brukeren sist lagret undersøkelsen i utkast
         user_accepts_invitation_to_cosponsor_a_proposal: Bruker aksepterer invitasjon til å være medsponsor for et forslag
         user_changes_email: Bruker endrer e-postadressen sin
@@ -206,6 +208,7 @@ nb-NO:
       project_review_request: Forespørsel om prosjektgjennomgang
       project_review_state_change: Prosjektet er godkjent
       proposal_expired_for_admin: Forslag utløpt uten å nå stemmeterskelen
+      report_generated: Rapport generert
       screening_digest: Ukentlig påminnelse om screening
       sms_manual: Offisielle SMS-meldinger
       space_moderation_rights_received: Rettigheter som områdeansvarlig mottatt
@@ -661,6 +664,13 @@ nb-NO:
       preheader: Et innspill utløp uten å nå terskelen
       subject: '"%{input_title}" utløp uten å nå terskelen'
       title: Et innspill utløp uten å nå stemmeterskelen
+    report_generated:
+      cta_button: Åpne rapporten
+      event_description: Rapporten er skrevet og er klar til at du kan se gjennom og redigere den.
+      preheader: Rapporten din er klar
+      stopped_early: Skrivingen stoppet før rapporten var ferdig. Alt som er skrevet så langt er lagret – åpne den og be om resten i chatten.
+      subject: "Rapporten din for '%{projectName}' er klar"
+      title: Rapporten din er klar
     schedules:
       quarterly: Kvartalsvis, på den første dagen i kvartalet
       weekly:

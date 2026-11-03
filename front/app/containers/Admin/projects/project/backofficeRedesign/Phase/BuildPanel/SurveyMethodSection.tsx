@@ -1,19 +1,22 @@
 import React from 'react';
 
-import { Box, Divider } from '@citizenlab/cl2-component-library';
-
 import { ParticipationMethod } from 'api/phases/types';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import pickerMessages from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/messages';
 import SurveyMethodChoices, {
   SurveyMethod,
 } from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/SurveyMethodChoices';
+
+import { useIntl } from 'utils/cl-intl';
 
 export interface SurveyMethodSwitch {
   disabledReasons?: Partial<Record<SurveyMethod, string>>;
   onSelect: (method: SurveyMethod) => void;
 }
+
+import PanelField from './PanelField';
 
 interface Props extends SurveyMethodSwitch {
   selected: ParticipationMethod;
@@ -24,21 +27,19 @@ const SurveyMethodSection = ({
   disabledReasons,
   onSelect,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const surveysEnabled = useFeatureFlag({ name: 'surveys' });
 
   return (
-    <>
-      <Divider />
-      <Box display="flex" flexDirection="column" gap="12px" mb="16px">
-        <SurveyMethodChoices
-          selected={selected}
-          showExternalSurvey={surveysEnabled || selected === 'survey'}
-          disabledReasons={disabledReasons}
-          onSelect={(_event, method) => onSelect(method)}
-          cardWidth="100%"
-        />
-      </Box>
-    </>
+    <PanelField label={formatMessage(pickerMessages.surveyOptions)}>
+      <SurveyMethodChoices
+        selected={selected}
+        showExternalSurvey={surveysEnabled || selected === 'survey'}
+        disabledReasons={disabledReasons}
+        onSelect={(_event, method) => onSelect(method)}
+        cardWidth="100%"
+      />
+    </PanelField>
   );
 };
 

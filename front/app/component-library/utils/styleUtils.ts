@@ -78,6 +78,7 @@ export const themeColors = {
   teal300: '#40B8C5', // formerly clBlueLight
   teal200: '#80CFD8', // formerly clBlueLighter
   teal100: '#BEE7EB', // formerly clBlueLightest
+  teal75: '#E5F5F7',
   teal50: '#EDF8FA',
   /**
    * Red
@@ -205,6 +206,7 @@ export const focusRing = css`
 
 // Back office theme
 const BO_HEADER_FONT_SIZE = '13px';
+const BO_CONTROL_FONT_SIZE = 13;
 
 export const bo = {
   colors: {
@@ -214,11 +216,13 @@ export const bo = {
     stepHalo: '#D7E3E7',
     liveHalo: '#DAF2E7',
     stepBorder: '#D4D9DD',
+    stepDone: '#4A935E',
     crumbSeparator: '#8D9EAC',
   },
   borderRadius: '8px',
   panelBorderRadius: '12px',
   headerFontSize: BO_HEADER_FONT_SIZE,
+  controlFontSize: BO_CONTROL_FONT_SIZE,
   buttonMedium: {
     height: '32px',
     padding: '0 16px',
@@ -298,9 +302,9 @@ export const defaultInputStyle = css`
   &:disabled,
   &.disabled {
     opacity: 1;
-    color: #666;
-    background-color: #f9f9f9;
-    border-color: #ccc;
+    color: ${colors.grey700};
+    background-color: ${colors.grey100};
+    border-color: ${colors.grey400};
     cursor: not-allowed;
   }
   ${(props: { size?: InputSize }) =>
@@ -309,7 +313,6 @@ export const defaultInputStyle = css`
       font-size: ${fontSizes.s}px;
       padding: 10px;
     `}
-  }
 `;
 
 export const getFontWeightCSS = (fontWeight: FontWeight) => {

@@ -36,6 +36,7 @@ lt-LT:
         project_participants: Projekto dalyviams
         registered_users: Registruotiems naudotojams
       recipient_segment:
+        admin_who_generated_the_report: Ataskaitą užsakęs administratorius
         admins: Administratoriai
         admins_and_managers: Administratoriai ir vadovai
         admins_and_managers_assigned_to_the_input: Administratoriai ir vadovai, priskirti įvesties įrašui
@@ -109,6 +110,7 @@ lt-LT:
         proposal_is_upvoted_above_threshold: Už pasiūlymą balsuojama daugiau nei nustatyta riba
         proposal_status_changes: Pasiūlymo statuso pokyčiai
         registration_to_event: Registracija į renginį
+        report_generated: Ataskaitos generavimas baigtas
         survey_1_day_after_draft_saved: 1 diena po to, kai naudotojas paskutinį kartą išsaugojo apklausos juodraštį
         user_accepts_invitation_to_cosponsor_a_proposal: Naudotojas priima kvietimą tapti pasiūlymo bendraautoriumi
         user_changes_email: Naudotojas keičia savo el. pašto adresą
@@ -206,6 +208,7 @@ lt-LT:
       project_review_request: Projekto peržiūros prašymas
       project_review_state_change: Patvirtintas projektas
       proposal_expired_for_admin: Pasiūlymo galiojimo laikas pasibaigė nepasiekus balsavimo slenksčio
+      report_generated: Ataskaita sugeneruota
       screening_digest: Savaitinis priminimas apie patikrą
       sms_manual: Oficialios SMS žinutės
       space_moderation_rights_received: Suteiktos erdvės valdytojo teisės
@@ -661,6 +664,13 @@ lt-LT:
       preheader: Pasiūlymo galiojimo laikas pasibaigė nepasiekus slenksčio
       subject: „%{input_title}“ galiojimo laikas pasibaigė nepasiekus slenksčio
       title: Pasiūlymo galiojimo laikas pasibaigė nepasiekus balsavimo slenksčio
+    report_generated:
+      cta_button: Atidaryti ataskaitą
+      event_description: Ataskaita parašyta ir paruošta peržiūrai bei redagavimui.
+      preheader: Jūsų ataskaita paruošta
+      stopped_early: Rašymas nutrūko nebaigus ataskaitos. Viskas, kas parašyta iki šiol, išsaugota – atidarykite ją ir paprašykite likusios dalies pokalbių lange.
+      subject: Jūsų ataskaita projektui „%{projectName}“ paruošta
+      title: Jūsų ataskaita paruošta
     schedules:
       quarterly: Kas ketvirtį, pirmąją ketvirčio dieną
       weekly:

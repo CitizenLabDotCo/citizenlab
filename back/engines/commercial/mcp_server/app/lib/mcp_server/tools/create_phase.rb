@@ -71,7 +71,7 @@ class McpServer::Tools::CreatePhase < McpServer::BaseTool
             'standalone' runs the phase in parallel with the timeline (an extra
             survey): a standalone phase may overlap other phases and requires a
             participation method that supports standalone placement
-            (native_survey). Cannot be changed after creation.
+            (native_survey).
           DESC
         },
 

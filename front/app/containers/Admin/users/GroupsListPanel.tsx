@@ -12,6 +12,7 @@ import styled from 'styled-components';
 
 import useBlockedUsercount from 'api/blocked_users/useBlockedUsersCount';
 import useEmailBansCount from 'api/email_bans/useEmailBansCount';
+import useEmailBouncedUsersCount from 'api/email_bounced_users/useEmailBouncedUsersCount';
 import { IGroupData } from 'api/groups/types';
 import useGroups from 'api/groups/useGroups';
 import useUsersCount from 'api/users_count/useUsersCount';
@@ -180,6 +181,14 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
     name: 'user_blocking',
   });
   const spacesEnabled = useFeatureFlag({ name: 'spaces' });
+  const isCustomSmtpEnabled = useFeatureFlag({ name: 'custom_smtp' });
+  const { data: emailBouncedUsersCount } = useEmailBouncedUsersCount();
+  // Bounces are only recorded from Mailgun webhooks. A tenant on its own SMTP
+  // server only has the ones left from before it switched, and they still
+  // block sending, so the link stays until they're cleared.
+  const showEmailBounces =
+    !isCustomSmtpEnabled ||
+    (emailBouncedUsersCount?.data.attributes.count ?? 0) > 0;
 
   useEffect(() => {
     const subs: Subscription[] = [];
@@ -282,6 +291,21 @@ export const GroupsListPanel = ({ onCreateGroup, className }: Props) => {
           <MembersCount>{bannedEmailsCount.data.attributes.count}</MembersCount>
         )}
       </MenuLink>
+      {showEmailBounces && (
+        <MenuLink
+          to="/admin/users/email-bounces"
+          data-testid="email-bounces-link"
+        >
+          <GroupName>
+            <FormattedMessage {...messages.emailBounces} />
+          </GroupName>
+          {emailBouncedUsersCount && (
+            <MembersCount>
+              {emailBouncedUsersCount.data.attributes.count}
+            </MembersCount>
+          )}
+        </MenuLink>
+      )}
       <Separator />
       <MenuTitle className="intercom-users-groups-sidebar-section">
         <FormattedMessage tagName="h2" {...messages.groupsTitle} />

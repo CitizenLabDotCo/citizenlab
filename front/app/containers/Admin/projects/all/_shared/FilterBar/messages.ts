@@ -1,8 +1,8 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  clear: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Filters.clear',
-    defaultMessage: 'Clear',
+  clearFilters: {
+    id: 'app.containers.Admin.projects.all.new.Projects.Filters.clearFilters',
+    defaultMessage: 'Clear filters',
   },
 });

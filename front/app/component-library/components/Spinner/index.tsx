@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 
 import styled, { css, keyframes } from 'styled-components';
 
+import { colors } from '../../utils/styleUtils';
 import testEnv from '../../utils/testUtils/testEnv';
 
 const rotate = keyframes`
@@ -48,7 +49,7 @@ class Spinner extends PureComponent<Props> {
   static defaultProps: DefaultProps = {
     size: '32px',
     thickness: '3px',
-    color: '#666',
+    color: colors.grey700,
   };
 
   render() {

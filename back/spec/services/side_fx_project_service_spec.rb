@@ -65,7 +65,7 @@ describe SideFxProjectService do
     end
 
     it "logs a 'published' action when a draft project is published" do
-      project.admin_publication.update!(publication_status: 'draft')
+      project.admin_publication.update!(publication_status: 'draft', first_published_at: nil)
 
       project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
       service.before_update(project, user)
@@ -121,6 +121,19 @@ describe SideFxProjectService do
         expect { service.after_update(project, user) }
           .not_to change(EmailCampaigns::Campaigns::ProjectPublished, :count)
       end
+    end
+
+    it "does not log a 'published' action when a project that was published before is published again" do
+      project.admin_publication.update!(publication_status: 'published')
+      project.admin_publication.update!(publication_status: 'draft')
+
+      project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+      service.before_update(project, user)
+      project.save!
+
+      expect { service.after_update(project, user) }
+        .not_to have_enqueued_job(LogActivityJob)
+        .with(project, 'published', user, project.updated_at.to_i, anything)
     end
 
     it "does not log a 'published' action when a archived project is republished" do

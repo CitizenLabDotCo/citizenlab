@@ -36,6 +36,7 @@ hr-HR:
         project_participants: Sudionicima projekta
         registered_users: Registriranim korisnicima
       recipient_segment:
+        admin_who_generated_the_report: Administrator koji je zatražio izvješće
         admins: Administratori
         admins_and_managers: Administratori i upravitelji
         admins_and_managers_assigned_to_the_input: Administratori i upravitelji dodijeljeni unosu
@@ -109,6 +110,7 @@ hr-HR:
         proposal_is_upvoted_above_threshold: Za prijedlog se glasa iznad praga
         proposal_status_changes: Promjene statusa prijedloga
         registration_to_event: Prijava na događaj
+        report_generated: Generiranje izvješća je završeno
         survey_1_day_after_draft_saved: 1 dan nakon što je korisnik posljednji put spremio anketu u skicu
         user_accepts_invitation_to_cosponsor_a_proposal: Korisnik prihvaća poziv za susponzoriranje prijedloga
         user_changes_email: Korisnik mijenja svoju e-adresu
@@ -206,6 +208,7 @@ hr-HR:
       project_review_request: Zahtjev za pregled projekta
       project_review_state_change: Projekt odobren
       proposal_expired_for_admin: Prijedlog je istekao bez dostizanja praga za glasovanje
+      report_generated: Izvješće je generirano
       screening_digest: Podsjetnik na tjedni pregled
       sms_manual: Službene SMS poruke
       space_moderation_rights_received: Primljena prava voditelja prostora
@@ -661,6 +664,13 @@ hr-HR:
       preheader: Unos je istekao bez dostizanja praga
       subject: '"%{input_title}" je istekao bez dostizanja praga'
       title: Unos je istekao bez dostizanja praga za glasovanje
+    report_generated:
+      cta_button: Otvori izvješće
+      event_description: Izvješće je napisano i spremno je za vaš pregled i uređivanje.
+      preheader: Vaše izvješće je spremno
+      stopped_early: Pisanje je prekinuto prije nego što je izvješće dovršeno. Sve što je do sada napisano je spremljeno — otvorite ga i zatražite ostatak u chatu.
+      subject: "Vaše izvješće za '%{projectName}' je spremno"
+      title: Vaše izvješće je spremno
     schedules:
       quarterly: Tromjesečno, prvog dana tromjesečja
       weekly:

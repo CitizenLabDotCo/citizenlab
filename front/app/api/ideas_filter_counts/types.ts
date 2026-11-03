@@ -22,6 +22,11 @@ export interface IIdeasFilterCounts {
       assignee_id?: {
         [key: string]: number;
       };
+      custom_field_answers?: {
+        [fieldId: string]: {
+          [optionKey: string]: number;
+        };
+      };
       total: number;
     };
   };

@@ -14,16 +14,31 @@ module BulkImportIdeas::Patches::Idea
         idea_import && publication_status_changed?(from: 'draft', to: 'published')
       end
 
+      def import_approval_undone?
+        idea_import && publication_status_changed?(from: 'published', to: 'draft')
+      end
+
       def update_idea_import
+        # Clearing approved_at makes a re-approval behave like a first approval:
+        # the blank-author publication rule and the approved-records listing both
+        # read it as "is currently approved".
+        if import_approval_undone?
+          idea_import.update!(approved_at: nil)
+          return
+        end
+
         return unless import_approval?
 
         # Delete an author that was created but then replaced (either by another user or nil)
         User.find(author_id_was).destroy! if author_id_changed? && idea_import&.user_created == true
 
-        # Update the idea import record with the current changes
+        # Update the idea import record with the current changes. Content changes
+        # are merged, not replaced, so corrections from before an earlier approval
+        # survive an undo/re-approve cycle (latest diff wins per field).
         update_attributes = {
           approved_at: Time.now,
-          content_changes: changes.except('publication_status', 'published_at', 'submitted_at', 'updated_at'),
+          content_changes: (idea_import.content_changes || {})
+            .merge(changes.except('publication_status', 'published_at', 'submitted_at', 'updated_at')),
           user_consent: !!author
         }
 

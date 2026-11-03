@@ -36,6 +36,7 @@ nl-BE:
         project_participants: Aan projectdeelnemers
         registered_users: Aan geregistreerde gebruikers
       recipient_segment:
+        admin_who_generated_the_report: De platformbeheerder die om het rapport heeft gevraagd
         admins: Platformbeheerders
         admins_and_managers: Beheerders
         admins_and_managers_assigned_to_the_input: Aan de bijdrage toegewezen beheerders
@@ -109,6 +110,7 @@ nl-BE:
         proposal_is_upvoted_above_threshold: Voorstel wordt boven de drempel gestemd
         proposal_status_changes: Wijzigingen in de status van het voorstel
         registration_to_event: Registratie voor een activiteit
+        report_generated: Het genereren van een rapport is afgelopen
         survey_1_day_after_draft_saved: 1 dag nadat de gebruiker de vragenlijst voor het laatst in concept heeft opgeslagen
         user_accepts_invitation_to_cosponsor_a_proposal: Gebruiker accepteert uitnodiging om een voorstel te steunen
         user_changes_email: Gebruiker wijzigt zijn e-mailadres
@@ -206,6 +208,7 @@ nl-BE:
       project_review_request: Projectbeoordelingsverzoek
       project_review_state_change: Project goedgekeurd
       proposal_expired_for_admin: Voorstel verlopen zonder de stemdrempel te bereiken
+      report_generated: Rapport gegenereerd
       screening_digest: Wekelijkse screeningherinnering
       sms_manual: Officiële SMS-berichten
       space_moderation_rights_received: Ruimtebeheerdersrechten ontvangen
@@ -662,6 +665,13 @@ nl-BE:
       preheader: Een bijdrage is verlopen zonder de drempel te bereiken
       subject: '"%{input_title}" is verlopen zonder de drempel te bereiken'
       title: Een bijdrage is verlopen zonder de stemdrempel te bereiken
+    report_generated:
+      cta_button: Open het rapport
+      event_description: Het rapport is geschreven en is klaar voor jou om te bekijken en te bewerken.
+      preheader: Je rapport is klaar
+      stopped_early: Het schrijven is gestopt voordat het rapport afgelopen was. Alles wat tot nu toe is geschreven, is opgeslagen — open het en vraag om de rest in de chat.
+      subject: "Je rapport voor '%{projectName}' is klaar"
+      title: Je rapport is klaar
     schedules:
       quarterly: Per kwartaal, op de eerste dag van het kwartaal
       weekly:

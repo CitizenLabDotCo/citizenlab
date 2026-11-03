@@ -15,4 +15,5 @@ export interface Props extends CalendarProps {
   id?: string;
   disabled?: boolean;
   placement?: React.ComponentProps<typeof Tippy>['placement'];
+  formatDate?: (date: Date) => string;
 }

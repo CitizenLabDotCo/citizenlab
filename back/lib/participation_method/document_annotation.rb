@@ -5,5 +5,9 @@ module ParticipationMethod
     def self.method_str
       'document_annotation'
     end
+
+    def phase_insights_class
+      Insights::DocumentAnnotationPhaseInsightsService
+    end
   end
 end

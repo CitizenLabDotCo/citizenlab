@@ -91,6 +91,7 @@ kl-GL:
         project_participants: Suliassamut peqataasunut
         registered_users: Atuisunut nalunaarsorsimasunut
       recipient_segment:
+        admin_who_generated_the_report: Atuuffimmik aqutsisoq nalunaarusiamik piumasaqartoq
         admins: Aqutsisut
         admins_and_managers: Aqutsisut & pisortat
         admins_and_managers_assigned_to_the_input: Aqutsisut siunnersuummut inissitat
@@ -164,6 +165,7 @@ kl-GL:
         proposal_is_upvoted_above_threshold: Siunnersuut killiliussap sinnerlugu taperserneqarpoq
         proposal_status_changes: Siunnersuutip inissisimanerata allanngorneri
         registration_to_event: Pisussamut nalunaarneq
+        report_generated: Nalunaarusiaq suliarineqarluni naammassivoq
         survey_1_day_after_draft_saved: Atuisup misissuinermik missingiutitut toqqorterinerata kingorna ulloq ataaseq qaangiuttoq
         user_accepts_invitation_to_cosponsor_a_proposal: Atuisup siunnersuummut tapersersueqataanissaminut qaaqqusissut akueraa
         user_changes_email: Atuisup e-mailini allanngortippaa
@@ -289,6 +291,7 @@ kl-GL:
       project_review_request: Suliniutip misissorneqarnissaanik kissaat
       project_review_state_change: Suliniut akuerineqarpoq
       proposal_expired_for_admin: Siunnersuut piffissaa qaangiuppoq taasinerit amerlassusissaat angunngitsoorlugu
+      report_generated: Nalunaarusiaq suliarineqarpoq
       screening_digest: Sapaatip-akunneranut misissugassat pillugit eqqaasitsissut
       sms_manual: SMS-it pisortatigoortut
       space_moderation_rights_received: Immikkoortortami aqutsisutut pisinnaatitaaffiit tiguneqarput
@@ -956,6 +959,13 @@ kl-GL:
       preheader: Siunnersuut piffissaa qaangiuppoq amerlassusissaq angunngitsoorlugu
       subject: '"%{input_title}" piffissaa qaangiuppoq amerlassusissaq angunngitsoorlugu'
       title: Siunnersuut piffissaa qaangiuppoq taasinerit amerlassusissaat angunngitsoorlugu
+    report_generated:
+      cta_button: Nalunaarusiaq ammaruk
+      event_description: Nalunaarusiaq allanneqareerpoq misissornissaanullu aaqqissuunnissaanullu piareerluni.
+      preheader: Nalunaarusiat piareerpoq
+      stopped_early: Allattornera naammassitinnani unippoq. Maannamut allassimasut tamarmik toqqorsimapput — ammaruk sinneralu chat-imi piumasariuk.
+      subject: "'%{projectName}'-mut nalunaarusiat piareerpoq"
+      title: Nalunaarusiat piareerpoq
     schedules:
       quarterly: Ukiup sisamararterutikkaarlugu, sisamararterutip ulluani siullermi
       weekly:

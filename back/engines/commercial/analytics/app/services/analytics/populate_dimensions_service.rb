@@ -6,8 +6,6 @@ module Analytics
       def run
         populate_dates
         populate_types
-        populate_locales
-        populate_referrer_types
       end
 
       def populate_types
@@ -72,32 +70,6 @@ module Analytics
             Analytics::DimensionDate.insert_all(dates)
           end
         end
-      end
-
-      def populate_locales
-        locales = AppConfiguration.instance.settings('core', 'locales').map do |locale_name|
-          { name: locale_name }
-        end
-
-        current_locales = Analytics::DimensionLocale.all.as_json(only: %i[name])
-        return if current_locales.to_set == locales.as_json.to_set
-
-        Analytics::DimensionLocale.insert_all(locales)
-      end
-
-      def populate_referrer_types
-        types = [
-          { key: 'website', name: 'Websites' },
-          { key: 'social', name: 'Social Networks' },
-          { key: 'search', name: 'Search Engines' },
-          { key: 'campaigns', name: 'Campaigns' },
-          { key: 'direct', name: 'Direct Entry' }
-        ]
-
-        current_types = Analytics::DimensionReferrerType.all.as_json(only: %i[key name])
-        return if current_types.to_set == types.as_json.to_set
-
-        Analytics::DimensionReferrerType.insert_all(types)
       end
     end
   end

@@ -36,6 +36,7 @@ ar-MA:
         project_participants: للمشاركين في المشروع
         registered_users: للمستخدمين المسجلين
       recipient_segment:
+        admin_who_generated_the_report: المسؤول اللي طلب التقرير
         admins: المشرفون
         admins_and_managers: المسؤولون والمديرون
         admins_and_managers_assigned_to_the_input: المسؤولون والمديرون المعينون للإدخال
@@ -109,6 +110,7 @@ ar-MA:
         proposal_is_upvoted_above_threshold: تم التصويت لصالح الاقتراح فوق الحد الأدنى
         proposal_status_changes: تغييرات حالة الاقتراح
         registration_to_event: التسجيل في هذا الحدث
+        report_generated: التقرير كمل التوجاد ديالو
         survey_1_day_after_draft_saved: يوم واحد بعد آخر حفظ للمستخدم للاستطلاع في المسودة
         user_accepts_invitation_to_cosponsor_a_proposal: يقبل المستخدم الدعوة للمشاركة في رعاية الاقتراح
         user_changes_email: المستخدم يغير عنوان بريده الإلكتروني
@@ -206,6 +208,7 @@ ar-MA:
       project_review_request: طلب مراجعة المشروع
       project_review_state_change: تمت الموافقة على المشروع
       proposal_expired_for_admin: انتهت صلاحية المقترح دون الوصول إلى عتبة التصويت
+      report_generated: التقرير توجد
       screening_digest: تذكير بالفحص الأسبوعي
       sms_manual: رسائل SMS رسمية
       space_moderation_rights_received: تم استلام صلاحيات مسير فضاء
@@ -661,6 +664,13 @@ ar-MA:
       preheader: انتهت صلاحية مساهمة دون الوصول إلى العتبة
       subject: انتهت صلاحية "%{input_title}" دون الوصول إلى العتبة
       title: انتهت صلاحية مساهمة دون الوصول إلى عتبة التصويت
+    report_generated:
+      cta_button: حل التقرير
+      event_description: التقرير تكتب وهو واجد دابا باش تراجعه وتعدله.
+      preheader: التقرير ديالك واجد
+      stopped_early: الكتابة تحبسات قبل ما يكمل التقرير. كاع داكشي اللي تكتب حتى ل دابا راه تسجل — حله واطلب الباقي ف الشات.
+      subject: "التقرير ديالك على '%{projectName}' واجد"
+      title: التقرير ديالك واجد
     schedules:
       quarterly: ربع سنوي، في اليوم الأول من الربع
       weekly:

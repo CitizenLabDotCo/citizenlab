@@ -14,6 +14,7 @@ const AdminFolderModerators = lazy(() => import('./tabs/FolderModerators'));
 const AdminProjectModerators = lazy(() => import('./tabs/ProjectModerators'));
 const AdminBlockedUsers = lazy(() => import('./tabs/BlockedUsers'));
 const AdminBannedEmails = lazy(() => import('./tabs/BannedEmails'));
+const AdminEmailBounces = lazy(() => import('./tabs/EmailBounces'));
 const AdminUsersGroup = lazy(() => import('./UsersGroup'));
 const AdminSeatsOverview = lazy(() => import('./SeatsOverview'));
 
@@ -107,6 +108,16 @@ const bannedEmailsRoute = createRoute({
   ),
 });
 
+const emailBouncesRoute = createRoute({
+  getParentRoute: () => usersRoute,
+  path: 'email-bounces',
+  component: () => (
+    <PageLoading>
+      <AdminEmailBounces />
+    </PageLoading>
+  ),
+});
+
 const seatsRoute = createRoute({
   getParentRoute: () => usersRoute,
   path: 'seats',
@@ -127,6 +138,7 @@ const createAdminUsersRoutes = () => {
     groupRoute,
     blockedRoute,
     bannedEmailsRoute,
+    emailBouncesRoute,
     seatsRoute,
   ]);
 };

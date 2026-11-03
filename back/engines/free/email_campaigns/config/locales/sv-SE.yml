@@ -36,6 +36,7 @@ sv-SE:
         project_participants: Till projektdeltagare
         registered_users: Till registrerade användare
       recipient_segment:
+        admin_who_generated_the_report: Administratören som begärde rapporten
         admins: Administratörer
         admins_and_managers: Administratörer och projektledare
         admins_and_managers_assigned_to_the_input: Administratörer och projektledare som har tilldelats bidraget
@@ -109,6 +110,7 @@ sv-SE:
         proposal_is_upvoted_above_threshold: Förslaget har fått fler röster än tröskelvärdet
         proposal_status_changes: Statusändringar för förslag
         registration_to_event: Anmälan till ett evenemang
+        report_generated: En rapport har genererats
         survey_1_day_after_draft_saved: 1 dag efter att användaren senast sparade enkäten i utkast
         user_accepts_invitation_to_cosponsor_a_proposal: Användaren accepterar inbjudan att vara medsponsor för ett förslag
         user_changes_email: Användaren ändrar sin e-postadress
@@ -206,6 +208,7 @@ sv-SE:
       project_review_request: Begäran om projektgranskning
       project_review_state_change: Projekt godkänt
       proposal_expired_for_admin: Förslaget har löpt ut utan att nå rösttröskeln
+      report_generated: Rapporten har genererats
       screening_digest: Påminnelse om screening varje vecka
       sms_manual: Officiella SMS-meddelanden
       space_moderation_rights_received: Rättigheter som space-ansvarig mottagna
@@ -661,6 +664,13 @@ sv-SE:
       preheader: Ett bidrag har löpt ut utan att nå tröskeln
       subject: '"%{input_title}" har löpt ut utan att nå tröskeln'
       title: Ett bidrag har löpt ut utan att nå rösttröskeln
+    report_generated:
+      cta_button: Öppna rapporten
+      event_description: Rapporten har skrivits och är klar för dig att granska och redigera.
+      preheader: Din rapport är klar
+      stopped_early: Skrivandet avbröts innan rapporten var klar. Allt som skrivits hittills har sparats – öppna den och be om resten i chatten.
+      subject: Din rapport för ”%{projectName}” är klar
+      title: Din rapport är klar
     schedules:
       quarterly: Kvartalsvis, den första dagen i kvartalet
       weekly:
