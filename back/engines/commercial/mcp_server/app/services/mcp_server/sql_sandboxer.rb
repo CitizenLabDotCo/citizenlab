@@ -67,10 +67,12 @@ module McpServer
     # Raised internally to short-circuit validation; never escapes #validate.
     class Rejected < StandardError; end
 
-    def self.validate(sql) = new(sql).validate
+    # `tables` narrows the queryable tables, for a query that may not read them all.
+    def self.validate(sql, tables: nil) = new(sql, tables: tables).validate
 
-    def initialize(sql)
+    def initialize(sql, tables: nil)
       @sql = sql.to_s
+      @tables = tables
     end
 
     def validate
@@ -175,10 +177,10 @@ module McpServer
       )
     end
 
-    # The single source of truth for queryable tables, shared with the schema
-    # tool. Referenced lazily to avoid eager constant resolution at load time.
+    # By default the single source of truth for queryable tables, shared with the
+    # schema tool. Referenced lazily to avoid eager constant resolution at load time.
     def allowed_tables
-      McpServer::Tools::GetReportingSqlSchema::REPORTING_TABLE_NAMES
+      @tables || McpServer::Tools::GetReportingSqlSchema::REPORTING_TABLE_NAMES
     end
 
     def check_function!(func_call)
