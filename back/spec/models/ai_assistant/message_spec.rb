@@ -84,6 +84,16 @@ describe AIAssistant::Message do
       expect(message.errors.details[:file_ids]).to include(error: :too_long, count: described_class::MAX_FILES)
     end
 
+    it 'limits the number of files of a conversation' do
+      files = create_list(:file, 6, ai_processing_allowed: true, projects: [conversation.subject.project])
+      create(:ai_assistant_message, conversation:, file_ids: files[0..2].map(&:id))
+      create(:ai_assistant_message, conversation:, file_ids: files[3..4].map(&:id))
+      message = build(:ai_assistant_message, conversation:, file_ids: [files[5].id])
+
+      expect(message).not_to be_valid
+      expect(message.errors.details[:file_ids]).to include(error: :too_many_in_conversation)
+    end
+
     it 'refuses files of another project' do
       file.update!(projects: [create(:project)])
       message = build(:ai_assistant_message, conversation:, file_ids: [file.id])

@@ -42,6 +42,8 @@ export const getErrorMessage = (
       return messages.errorUnsupportedFileType2;
     case 'not_utf8':
       return messages.errorFileNotUtf8;
+    case 'too_many_in_conversation':
+      return messages.errorTooManyConversationFiles;
     case 'too_long':
       return messages.errorTooLong;
     default:
