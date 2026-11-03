@@ -14,6 +14,7 @@ import { useIntl } from 'utils/cl-intl';
 import messages from '../messages';
 
 import Card from './Card';
+import OfflineFormsButton from './OfflineFormsButton';
 
 interface Props {
   project: IProjectData;
@@ -41,6 +42,9 @@ const OfflineCollection = ({ project, phase }: Props) => {
           to="/projects/$slug/ideas/new"
           params={{ slug: project.attributes.slug }}
           search={{ phase_id: phase.id }}
+        />
+        <OfflineFormsButton
+          participationMethod={phase.attributes.participation_method}
         />
       </Box>
     </Card>

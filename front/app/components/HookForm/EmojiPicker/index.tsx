@@ -1,18 +1,26 @@
 import React from 'react';
 
-import { Box, Label } from '@citizenlab/cl2-component-library';
+import { Label, boInputLabelStyle } from '@citizenlab/cl2-component-library';
 import { Controller, useFormContext } from 'react-hook-form';
+import styled from 'styled-components';
 import { CLError, RHFErrors } from 'typings';
 
 import EmojiPickerInput from 'components/UI/EmojiPicker';
 import Error, { TFieldName } from 'components/UI/Error';
 
+type Variant = 'default' | 'bo';
+
+const Container = styled.div<{ variant: Variant }>`
+  ${({ variant }) => variant === 'bo' && boInputLabelStyle}
+`;
+
 interface Props {
   name: string;
   label?: string;
+  variant?: Variant;
 }
 
-const EmojiPicker = ({ name, label }: Props) => {
+const EmojiPicker = ({ name, label, variant = 'default' }: Props) => {
   const {
     formState: { errors: formContextErrors },
     control,
@@ -23,14 +31,19 @@ const EmojiPicker = ({ name, label }: Props) => {
   const apiError = errors?.error && ([errors] as CLError[]);
 
   return (
-    <Box>
+    <Container variant={variant}>
       {label && <Label htmlFor={name}>{label}</Label>}
       <Controller
         name={name}
         control={control}
         defaultValue={null}
         render={({ field: { value, onChange } }) => (
-          <EmojiPickerInput id={name} value={value} onChange={onChange} />
+          <EmojiPickerInput
+            id={name}
+            value={value}
+            onChange={onChange}
+            variant={variant}
+          />
         )}
       />
       {validationError && (
@@ -50,7 +63,7 @@ const EmojiPicker = ({ name, label }: Props) => {
           scrollIntoView={false}
         />
       )}
-    </Box>
+    </Container>
   );
 };
 
