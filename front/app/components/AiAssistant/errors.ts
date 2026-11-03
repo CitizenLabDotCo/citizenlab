@@ -39,7 +39,7 @@ export const getErrorMessage = (
     case 'ai_processing_not_allowed':
       return messages.errorAiProcessingNotAllowed;
     case 'unsupported_file_type':
-      return messages.errorUnsupportedFileType;
+      return messages.errorUnsupportedFileType2;
     case 'not_utf8':
       return messages.errorFileNotUtf8;
     case 'too_long':

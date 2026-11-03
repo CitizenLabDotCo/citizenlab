@@ -34,10 +34,10 @@ export default defineMessages({
     defaultMessage:
       "Attached files are added to this project's files and shared with AI.",
   },
-  filesRejected: {
-    id: 'app.components.aiAssistant.filesRejected',
+  filesRejected2: {
+    id: 'app.components.aiAssistant.filesRejected2',
     defaultMessage:
-      'Only PDF, Markdown (.md) and text (.txt) files of up to {maxSizeMb} MB can be attached, {maxFiles} at most.',
+      'Only PDF files of up to {maxSizeMb} MB and Markdown (.md) or text (.txt) files of up to {maxTextSizeKb} KB can be attached, {maxFiles} at most.',
   },
   awaitingApprovalHint: {
     id: 'app.components.aiAssistant.awaitingApprovalHint',
@@ -154,10 +154,10 @@ export default defineMessages({
     id: 'app.components.aiAssistant.errorAiProcessingNotAllowed',
     defaultMessage: 'One of the files may not be shared with AI.',
   },
-  errorUnsupportedFileType: {
-    id: 'app.components.aiAssistant.errorUnsupportedFileType',
+  errorUnsupportedFileType2: {
+    id: 'app.components.aiAssistant.errorUnsupportedFileType2',
     defaultMessage:
-      'Only PDF, Markdown (.md) and text (.txt) files of up to 4 MB can be used.',
+      'Only PDF files of up to 4 MB and Markdown (.md) or text (.txt) files of up to 100 KB can be used.',
   },
   errorFileNotUtf8: {
     id: 'app.components.aiAssistant.errorFileNotUtf8',

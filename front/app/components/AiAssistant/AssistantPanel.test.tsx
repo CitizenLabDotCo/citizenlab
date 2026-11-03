@@ -200,6 +200,29 @@ describe('AssistantPanel', () => {
     await waitFor(() => expect(mockDeleteFile).toHaveBeenCalledWith('file-1'));
   });
 
+  it('refuses text files above their size limit', async () => {
+    mockConversation = undefined;
+    const { container } = renderPanel();
+    const fileInput = container.querySelector('input[type="file"]');
+    if (!(fileInput instanceof HTMLInputElement)) {
+      throw new Error('No file input');
+    }
+
+    await userEvent.upload(
+      fileInput,
+      new File(['a'.repeat(100 * 1024 + 1)], 'notes.txt', {
+        type: 'text/plain',
+      })
+    );
+
+    expect(
+      screen.getByText(
+        'Only PDF files of up to 4 MB and Markdown (.md) or text (.txt) files of up to 100 KB can be attached, 3 at most.'
+      )
+    ).toBeInTheDocument();
+    expect(screen.queryByText('notes.txt')).not.toBeInTheDocument();
+  });
+
   it('shows why the last turn failed', () => {
     mockConversation = conversation({
       ...baseAttributes,
