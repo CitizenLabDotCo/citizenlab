@@ -15,7 +15,12 @@ interface Props {
 const AnswerValue = ({ field, answer }: Props) => {
   switch (field.input_type) {
     case 'text':
-      return typeof answer === 'string' ? <Text m="0px">{answer}</Text> : null;
+    case 'multiline_text':
+      return typeof answer === 'string' ? (
+        <Text m="0px" whiteSpace="pre-wrap">
+          {answer}
+        </Text>
+      ) : null;
     case 'select':
       return (
         <Box style={{ pointerEvents: 'none' }}>

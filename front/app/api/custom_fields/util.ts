@@ -43,6 +43,7 @@ export const isNewCustomFieldObject = (
 
 const PUBLIC_ANSWER_INPUT_TYPES: ICustomFieldInputType[] = [
   'text',
+  'multiline_text',
   'select',
   'multiselect',
 ];
