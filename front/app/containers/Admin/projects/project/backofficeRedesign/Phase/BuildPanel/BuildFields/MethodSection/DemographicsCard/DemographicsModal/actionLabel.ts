@@ -8,9 +8,9 @@ import messages from '../../../../../../messages';
 const actionLabel = (action: IPhasePermissionAction) => {
   switch (action) {
     case 'posting_idea':
-      return projectMessages.inputPostingEnabled2;
+      return projectMessages.inputPostingEnabled;
     case 'commenting_idea':
-      return projectMessages.inputCommentingEnabled2;
+      return projectMessages.inputCommentingEnabled;
     case 'reacting_idea':
       return projectMessages.inputReactingEnabled;
     case 'attending_event':

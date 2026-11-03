@@ -93,7 +93,7 @@ const UserActions = ({
             variant={panel ? 'bo' : undefined}
             checked={submission_enabled || false}
             onChange={togglePostingEnabled}
-            label={formatMessage(messages.inputPostingEnabled2)}
+            label={formatMessage(messages.inputPostingEnabled)}
           />
         </ActionToggleRow>
 
@@ -109,7 +109,7 @@ const UserActions = ({
               variant={panel ? 'bo' : undefined}
               checked={commenting_enabled || false}
               onChange={toggleCommentingEnabled}
-              label={formatMessage(messages.inputCommentingEnabled2)}
+              label={formatMessage(messages.inputCommentingEnabled)}
             />
           </ActionToggleRow>
         )}

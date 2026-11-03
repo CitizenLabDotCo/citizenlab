@@ -200,16 +200,16 @@ export default defineMessages({
     defaultMessage:
       'Participants cannot exceed this budget when submitting their basket.',
   },
-  inputPostingEnabled2: {
-    id: 'app.containers.AdminPage.ProjectEdit.inputPostingEnabled2',
+  inputPostingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputPostingEnabled',
     defaultMessage: 'Submitting inputs',
   },
   votingFilteringEnabled: {
     id: 'app.containers.AdminPage.ProjectEdit.Voting.votingFilteringEnabled',
     defaultMessage: 'Allow users to filter input during voting.',
   },
-  inputCommentingEnabled2: {
-    id: 'app.containers.AdminPage.ProjectEdit.inputCommentingEnabled2',
+  inputCommentingEnabled: {
+    id: 'app.containers.AdminPage.ProjectEdit.inputCommentingEnabled',
     defaultMessage: 'Commenting on inputs',
   },
   inputReactingEnabled: {
@@ -235,6 +235,10 @@ export default defineMessages({
   maxDislikes: {
     id: 'app.containers.AdminPage.ProjectEdit.maxDislikes',
     defaultMessage: 'Maximum dislikes',
+  },
+  dislikingPosts: {
+    id: 'app.containers.AdminPage.ProjectEdit.dislikingPosts',
+    defaultMessage: 'Enable disliking',
   },
   dislikingPosts2: {
     id: 'app.containers.AdminPage.ProjectEdit.dislikingPosts2',

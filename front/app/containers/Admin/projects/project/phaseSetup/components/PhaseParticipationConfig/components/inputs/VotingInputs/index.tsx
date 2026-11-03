@@ -276,7 +276,7 @@ const VotingInputs = ({
               variant="bo"
               checked={!!commenting_enabled}
               onChange={toggleCommentingEnabled}
-              label={formatMessage(messages.inputCommentingEnabled2)}
+              label={formatMessage(messages.inputCommentingEnabled)}
             />
           </ActionToggleRow>
           {phaseId && (
@@ -418,7 +418,7 @@ const VotingInputs = ({
             <Toggle
               checked={!!commenting_enabled}
               onChange={toggleCommentingEnabled}
-              label={formatMessage(messages.inputCommentingEnabled2)}
+              label={formatMessage(messages.inputCommentingEnabled)}
             />
           </ActionToggleRow>
           <Text mb="0px" pb="0px" color={'textSecondary'} fontSize="s">

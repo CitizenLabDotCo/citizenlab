@@ -94,7 +94,7 @@ const VotingMethodSelector = ({
             handleVotingMethodOnChange('single_voting');
           }}
           title={formatMessage(messages.singleVotingMethodTitle)}
-          subtitle={formatMessage(messages.singleVotingMethodSubtitle2)}
+          subtitle={formatMessage(messages.singleVotingMethodSubtitle)}
         />
         <CardButton
           selected={voting_method === 'multiple_voting'}
@@ -108,7 +108,7 @@ const VotingMethodSelector = ({
             handleVotingMethodOnChange('multiple_voting');
           }}
           title={formatMessage(messages.multipleVotingMethodTitle)}
-          subtitle={formatMessage(messages.multipleVotingMethodSubtitle2)}
+          subtitle={formatMessage(messages.multipleVotingMethodSubtitle)}
         />
         <CardButton
           selected={voting_method === 'budgeting'}
@@ -118,7 +118,7 @@ const VotingMethodSelector = ({
             handleVotingMethodOnChange('budgeting');
           }}
           title={formatMessage(messages.budgetingVotingMethodTitle)}
-          subtitle={formatMessage(messages.budgetingVotingMethodSubtitle2)}
+          subtitle={formatMessage(messages.budgetingVotingMethodSubtitle)}
         />
       </Box>
     </Box>
