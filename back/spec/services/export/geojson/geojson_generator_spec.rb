@@ -83,6 +83,19 @@ describe Export::Geojson::GeojsonGenerator do
         'user_data__field_for_registration_question' => nil
       })
     end
+
+    context 'when the survey is fully anonymous' do
+      before { phase.permissions.find_by(action: 'posting_idea').update!(user_data_collection: 'anonymous') }
+
+      # idea1 was submitted before the setting was turned on, so it still has an
+      # author whose profile carries the demographics.
+      it 'omits the user data from the properties' do
+        property_keys = parsed_json['features'].flat_map { |feature| feature['properties'].keys }
+
+        expect(property_keys).to include('field_for_text_question')
+        expect(property_keys.grep(/^user_data__/)).to be_empty
+      end
+    end
   end
 
   describe '#set_non_colliding_titles' do
