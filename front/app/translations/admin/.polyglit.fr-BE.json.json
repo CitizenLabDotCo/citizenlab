@@ -6424,6 +6424,16 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.internalEarlyAccessLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:54:46.218472Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.internalEarlyAccessLabelExplanation": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:41:18.904934Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.messaging.addSmsCampaignButton": {
     "state": "verified",
     "verified_at": "2026-07-16T20:05:37.821394Z",
@@ -7559,6 +7569,46 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.NewProjectForm.chooseGroups": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:49:25.008195Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.NewProjectForm.context": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:45:59.977039Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.NewProjectForm.createError": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:45:59.977039Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.NewProjectForm.groupsRequired": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:45:59.977039Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.NewProjectForm.noGroupsMatch": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:45:59.977039Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.NewProjectForm.searchGroups": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:45:59.977039Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.NewProjectForm.titlePlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:45:59.977039Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.NewProjectForm.titleRequired2": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:45:59.977039Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.PhasePlacement.changeDatesButton": {
     "state": "verified",
     "verified_at": "2026-10-16T09:41:31.623528Z",
@@ -7852,6 +7902,21 @@
   "app.containers.Admin.projects._shared.components.ProjectSetupForm.ProjectContextSection.spaceTooltip": {
     "state": "verified",
     "verified_at": "2026-08-03T09:08:41.665540Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.all.NewProjectButton.fromScratchMenuItem": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:54:46.218472Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.all.NewProjectButton.useTemplateMenuItem": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:54:46.218472Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.all.NewProjectModal.fromTemplate": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:54:46.218472Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.all.Spaces.Table.deleteSpaceButton": {
@@ -8489,6 +8554,16 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.activePhaseListItem": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:34:54.775447Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.activePhasesTitle": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:31:32.615646Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.currentPhase": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -8499,6 +8574,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.endDate": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:31:32.615646Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.extraPhaseListItem2": {
     "state": "verified",
     "verified_at": "2026-08-21T08:44:30.907597Z",
@@ -8508,6 +8588,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noActivePhase": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:34:54.775447Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.all.new.Timeline.ProjectGanttChart.noCurrentPhase": {
     "state": "verified",
@@ -8794,6 +8879,11 @@
     "verified_at": "2026-10-28T14:54:05.807062Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterAssignee": {
+    "state": "verified",
+    "verified_at": "2026-10-29T21:11:58.971626Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.filterPhase": {
     "state": "verified",
     "verified_at": "2026-10-26T13:27:19.471017Z",
@@ -8869,6 +8959,11 @@
     "verified_at": "2026-10-28T14:58:12.516324Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.replyAwaiting": {
+    "state": "verified",
+    "verified_at": "2026-10-29T21:11:58.971626Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.searchInputs": {
     "state": "verified",
     "verified_at": "2026-10-28T15:08:10.393830Z",
@@ -8897,6 +8992,11 @@
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.sourceOnline": {
     "state": "verified",
     "verified_at": "2026-10-28T15:48:10.010896Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.backofficeRedesign.InputManager.statusChangeNotifies": {
+    "state": "verified",
+    "verified_at": "2026-10-29T21:02:45.857648Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.backofficeRedesign.InputManager.statusColumn": {
@@ -8949,6 +9049,26 @@
     "verified_at": "2026-10-28T13:19:15.868690Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.contextNoFolder": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:45:59.977039Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.contextNoSpace": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:45:59.977039Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.contextSearchFolders": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:45:59.977039Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.contextSearchSpaces": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:45:59.977039Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.continueToTheForm": {
     "state": "verified",
     "verified_at": "2026-10-28T14:58:12.516324Z",
@@ -8977,6 +9097,11 @@
   "app.containers.Admin.projects.project.documentAnnotationSetup": {
     "state": "verified",
     "verified_at": "2026-10-28T13:19:15.868690Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.dropFilesHereOr": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
     "verified_by": "Cindy EB"
   },
   "app.containers.Admin.projects.project.edit": {
@@ -9014,14 +9139,144 @@
     "verified_at": "2026-09-16T19:26:50.773492Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.event.addDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.688577Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.addEndDate": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.688577Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.addEventName": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.688577Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.address": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.688577Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.addressDetails": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.688577Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.altText": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.688577Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.altTextPlaceholder": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.688577Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.attachments": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.688577Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.create": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.688577Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.crop": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.688577Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.cropImage": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:23:35.144972Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.event.delete": {
     "state": "verified",
     "verified_at": "2026-10-26T13:27:19.471017Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.event.deleteEvent": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.688577Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.deleteImage": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:23:35.144972Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.done": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:23:35.144972Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.eventSetup": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.688577Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.fromProject": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:23:35.144972Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.goToProject": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:20:54.798824Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.event.image": {
     "state": "verified",
     "verified_at": "2026-10-26T13:30:56.416187Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.platformTime": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.688577Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.previewDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:28:15.076653Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.previewEventImage": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:28:15.076653Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.previewEventName": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:20:54.798824Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.previewLocation": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:28:15.076653Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.registration": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.688577Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.removeEndDate": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:16:00.688577Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.replace": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:23:35.144972Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.event.replaceImage": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:23:35.144972Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.event.untitledEvent": {
@@ -9084,10 +9339,35 @@
     "verified_at": "2026-08-05T13:53:13.775492Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.fileActions": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.fileUploadFailed": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.fileUploading": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.projects.project.filesCount": {
     "state": "verified",
     "verified_at": "2026-10-28T15:03:05.163228Z",
     "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.filesCountWithSize": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.filesDescription2": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.Admin.projects.project.filesSection": {
     "state": "verified",
@@ -9213,6 +9493,21 @@
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.773492Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.groupsNotAdded2": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:38:53.184545Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.groupsNotAddedOk": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:31:32.615646Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.groupsNotAddedTitle": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:38:53.184545Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.homepageCard": {
     "state": "verified",
@@ -9349,6 +9644,11 @@
     "verified_at": "2026-07-16T15:58:15.979193Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.inputResponseExport.collectingResponses": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:33:07.830359Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.inputResponseExport.consentLabel": {
     "state": "verified",
     "verified_at": "2026-07-17T08:20:45.430467Z",
@@ -9373,6 +9673,11 @@
     "state": "verified",
     "verified_at": "2026-07-17T08:20:45.430467Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.inputResponseExport.dontCloseWarning": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:33:07.830359Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.inputResponseExport.excludeStatus": {
     "state": "verified",
@@ -9443,6 +9748,11 @@
     "state": "verified",
     "verified_at": "2026-07-17T08:20:45.430467Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.inputResponseExport.renderingPdf": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:41:18.904934Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.inputResponseExport.reportSubtitleLabel": {
     "state": "verified",
@@ -10219,6 +10529,16 @@
     "verified_at": "2026-10-28T13:09:38.242718Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.listing": {
+    "state": "verified",
+    "verified_at": "2026-10-30T14:13:55.461674Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.manageFiles": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.projects.project.manageView": {
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.773492Z",
@@ -10248,6 +10568,11 @@
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.773492Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.noAttachments": {
+    "state": "verified",
+    "verified_at": "2026-10-29T21:28:08.870222Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.noInputToAnalyse": {
     "state": "verified",
@@ -10399,6 +10724,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.allInputsApprovedHint": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:29:09.456722Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approve": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -10413,6 +10743,16 @@
     "state": "verified",
     "verified_at": "2026-03-27T13:20:26.758283Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approvedReadOnlyNotice": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:24:14.277082Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.approvedTab": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:24:14.277082Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.author": {
     "state": "verified",
@@ -10529,6 +10869,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noApprovedInputsYet": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:24:14.277082Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.noIdeasYet3": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -10579,10 +10924,25 @@
     "verified_at": "2026-03-27T13:20:26.758283Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.showMoreApprovedInputs": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:24:14.277082Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.toReviewTab": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:24:14.277082Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApproval": {
     "state": "verified",
     "verified_at": "2026-04-21T08:31:07.959339Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.offlineInputs.ReviewSection.undoApprovalDisabledEngagement": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:29:09.456722Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.offlineInputs.TopBar.noPhasesInProject": {
     "state": "verified",
@@ -10924,6 +11284,16 @@
     "verified_at": "2026-10-28T13:19:15.868690Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.phaseDone": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:34:54.775447Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.phaseInProgress": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:34:54.775447Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.phaseNoEndDate": {
     "state": "verified",
     "verified_at": "2026-07-17T08:20:45.430467Z",
@@ -10963,6 +11333,11 @@
     "state": "verified",
     "verified_at": "2026-10-28T13:09:38.242718Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.phaseUpcoming": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:34:54.775447Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.pollQuestions": {
     "state": "verified",
@@ -11234,6 +11609,16 @@
     "verified_at": "2026-10-28T13:09:38.242718Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.removeFile": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.reorderTag": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.projects.project.reportNotVisible": {
     "state": "verified",
     "verified_at": "2026-10-28T13:19:15.868690Z",
@@ -11254,6 +11639,26 @@
     "verified_at": "2026-10-28T13:19:15.868690Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.resetDataButton": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.resetDataConfirmationWord": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.resetDataModalDescription": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.resetDataModalTitle": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.projects.project.responseFormTitle": {
     "state": "verified",
     "verified_at": "2026-10-28T13:19:15.868690Z",
@@ -11262,6 +11667,11 @@
   "app.containers.Admin.projects.project.saveProjectSetup": {
     "state": "verified",
     "verified_at": "2026-10-28T13:09:38.242718Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.savedLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
     "verified_by": "Cindy EB"
   },
   "app.containers.Admin.projects.project.scheduledToPublish": {
@@ -11279,9 +11689,24 @@
     "verified_at": "2026-10-28T14:58:12.516324Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.settingsAddTag": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.projects.project.settingsCancel": {
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.773492Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.settingsClearParticipationData": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.settingsCreateAndManageTags": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
     "verified_by": "Cindy EB"
   },
   "app.containers.Admin.projects.project.settingsFrontOffice": {
@@ -11294,14 +11719,49 @@
     "verified_at": "2026-09-16T19:26:50.773492Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.settingsGeneral2": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.projects.project.settingsIdeaTags": {
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.773492Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.settingsInputsGroup": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.projects.project.settingsNav": {
     "state": "verified",
     "verified_at": "2026-07-17T08:20:45.430467Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.settingsPerspectives": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.settingsProjectContext": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.settingsProjectGroup": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.settingsProjectName": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.settingsProjectUrl": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
     "verified_by": "Cindy EB"
   },
   "app.containers.Admin.projects.project.settingsReset": {
@@ -11314,9 +11774,29 @@
     "verified_at": "2026-10-28T14:58:46.008842Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.settingsSave": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.projects.project.settingsSaveChanges": {
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.773492Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.settingsSaveFailed": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.settingsTags": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.settingsTitle": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
     "verified_by": "Cindy EB"
   },
   "app.containers.Admin.projects.project.shareInvite": {
@@ -11407,6 +11887,11 @@
   "app.containers.Admin.projects.project.suggestionFormTitle": {
     "state": "verified",
     "verified_at": "2026-10-28T13:19:15.868690Z",
+    "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.supportedFileTypes": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
     "verified_by": "Cindy EB"
   },
   "app.containers.Admin.projects.project.survey.aiAnalysis2": {
@@ -11809,6 +12294,11 @@
     "verified_at": "2026-10-28T15:08:10.393830Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.tagsRequiredInfo": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.Admin.projects.project.takingPollAction": {
     "state": "verified",
     "verified_at": "2026-10-28T13:19:15.868690Z",
@@ -11833,6 +12323,11 @@
     "state": "verified",
     "verified_at": "2026-08-21T08:46:15.261969Z",
     "verified_by": "Lydie"
+  },
+  "app.containers.Admin.projects.project.toggleSubtags": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:21:28.635652Z",
+    "verified_by": "Cindy EB"
   },
   "app.containers.Admin.projects.project.topicFormTitle": {
     "state": "verified",
@@ -12317,6 +12812,11 @@
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.ChartWidgets.messages.valueColumn": {
     "state": "verified",
     "verified_at": "2026-05-26T07:55:14.333552Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.reporting.components.ReportBuilder.Widgets.Cover.subtitleLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-29T21:36:14.583219Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.reporting.components.ReportBuilder.Widgets.Cover.titleLabel": {
@@ -16649,6 +17149,11 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectEdit.statusPrioritySortingMethod": {
+    "state": "verified",
+    "verified_at": "2026-10-28T13:10:41.548520Z",
+    "verified_by": "Cindy EB"
+  },
   "app.containers.AdminPage.ProjectEdit.subtitleGeneral": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -17719,9 +18224,29 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectPages.attachmentsLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:47:37.105722Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.AdminPage.ProjectPages.contentLabel": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:47:37.105722Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.AdminPage.ProjectPages.createButton": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:47:37.105722Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.AdminPage.ProjectPages.deleteButton": {
     "state": "verified",
     "verified_at": "2026-10-26T13:27:19.471017Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.AdminPage.ProjectPages.deleteConfirmation": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:42:34.223348Z",
     "verified_by": "Adrien"
   },
   "app.containers.AdminPage.ProjectPages.editButton": {
@@ -17729,9 +18254,44 @@
     "verified_at": "2026-10-26T13:30:56.416187Z",
     "verified_by": "Adrien"
   },
+  "app.containers.AdminPage.ProjectPages.newPageButton3": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:42:34.223348Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.AdminPage.ProjectPages.newPageTitle": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:47:37.105722Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.AdminPage.ProjectPages.noPagesTitle2": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:47:37.105722Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.AdminPage.ProjectPages.pagesDescription3": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:50:11.929834Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.AdminPage.ProjectPages.pagesTitle2": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:47:37.105722Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.AdminPage.ProjectPages.saveButton": {
     "state": "verified",
     "verified_at": "2026-10-26T13:30:56.416187Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.AdminPage.ProjectPages.saveSuccess": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:47:37.105722Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.AdminPage.ProjectPages.titleError": {
+    "state": "verified",
+    "verified_at": "2026-10-30T12:47:37.105722Z",
     "verified_by": "Adrien"
   },
   "app.containers.AdminPage.ProjectPages.titleLabel": {
@@ -19983,6 +20543,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.projects.all.createProject": {
+    "state": "verified",
+    "verified_at": "2026-10-29T22:45:59.977039Z",
+    "verified_by": "Adrien"
   },
   "app.containers.AdminPage.projects.all.createProjectFolder": {
     "state": "verified",

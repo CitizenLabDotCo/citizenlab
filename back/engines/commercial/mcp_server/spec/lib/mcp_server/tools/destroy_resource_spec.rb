@@ -87,6 +87,77 @@ describe McpServer::Tools::DestroyResource do
     expect(image.reload).to be_present
   end
 
+  it 'destroys an empty folder on a demo platform' do
+    change_lifecycle_stage('demo')
+    folder = create(:project_folder)
+
+    response = nil
+    expect { response = destroy('folder', folder.id) }
+      .to have_enqueued_job(LogActivityJob).at_least(:once)
+
+    expect(response).not_to be_error
+    expect { folder.reload }.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
+  it 'refuses to destroy a folder outside demo and trial platforms, even a draft one' do
+    folder = create(:project_folder, admin_publication_attributes: { publication_status: 'draft' })
+
+    response = destroy('folder', folder.id)
+
+    expect(response).to be_error
+    expect(response.content.sole[:text]).to include('demo and trial')
+    expect { folder.reload }.not_to raise_error
+  end
+
+  it 'refuses to destroy a folder that contains projects' do
+    change_lifecycle_stage('demo')
+    folder = create(:project_folder)
+    create(:project, folder_id: folder.id)
+
+    response = destroy('folder', folder.id)
+
+    expect(response).to be_unauthorized(/Cannot destroy folder/)
+    expect { folder.reload }.not_to raise_error
+  end
+
+  it 'destroys an area on a demo platform, detaching it from its projects' do
+    change_lifecycle_stage('demo')
+    area = create(:area)
+    project = create(:project, areas: [area])
+
+    response = nil
+    expect { response = destroy('area', area.id) }
+      .to have_enqueued_job(LogActivityJob).at_least(:once)
+
+    expect(response).not_to be_error
+    expect { area.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    expect(project.reload.areas).to be_empty
+  end
+
+  it 'refuses to destroy an area outside demo and trial platforms' do
+    area = create(:area)
+
+    response = destroy('area', area.id)
+
+    expect(response).to be_error
+    expect(response.content.sole[:text]).to include('demo and trial')
+    expect { area.reload }.not_to raise_error
+  end
+
+  it 'refuses to destroy an area used by a static page project filter, before any side effects' do
+    change_lifecycle_stage('demo')
+    create(:custom_field_domicile)
+    area = create(:area)
+    user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'domicile', value: area.id)])
+    create(:static_page, projects_filter_type: 'areas', areas: [area])
+
+    response = destroy('area', area.id)
+
+    expect(response).to be_unauthorized(/Cannot destroy area/)
+    expect { area.reload }.not_to raise_error
+    expect(user.reload.custom_field_answers.pluck(:key, :value)).to eq [['domicile', area.id]]
+  end
+
   it 'destroys a file attachment on a folder' do
     folder = create(:project_folder, admin_publication_attributes: { publication_status: 'draft' })
     attachment = create(:file_attachment, file: create(:file), attachable: folder)
