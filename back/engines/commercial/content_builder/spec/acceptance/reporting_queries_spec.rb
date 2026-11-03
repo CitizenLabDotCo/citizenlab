@@ -201,6 +201,7 @@ resource 'ReportingQueries' do
         assert_status 200
         expect(McpServer::ReportingQueryRunner).to have_received(:run)
           .with(anything, scope: McpServer::QueryScope.new(project_ids: [project.id]))
+        expect(layout.query_snapshots.sole.query_scope).to eq('project_ids' => [project.id])
       end
 
       example '[error] Try to read another layout with it', document: false do
@@ -233,6 +234,17 @@ resource 'ReportingQueries' do
         assert_status 200
         expect(response_data[:attributes][:refreshed]).to eq 1
         expect(snapshot.reload.executed_at).to be > 1.minute.ago
+      end
+
+      example 'Refresh a moderator\'s answer over the same rows', document: false do
+        project = create(:project)
+        snapshot.update!(query_scope: { 'project_ids' => [project.id] })
+
+        do_request
+
+        assert_status 200
+        expect(McpServer::ReportingQueryRunner).to have_received(:run)
+          .with(anything, scope: McpServer::QueryScope.new(project_ids: [project.id]))
       end
 
       # A query that ran once can fail later: the 10s timeout, or a view column that
@@ -284,9 +296,29 @@ resource 'ReportingQueries' do
 
       before { header_token_for create(:project_moderator, projects: [report.phase.project]) }
 
-      example_request 'Replace every stored answer the report holds' do
+      example 'Replace every stored answer the report holds' do
+        snapshot.update!(query_scope: { 'project_ids' => [report.phase.project_id] })
+
+        do_request
+
         assert_status 200
         expect(snapshot.reload.executed_at).to be > 1.minute.ago
+      end
+
+      example '[error] Try to refresh an answer read from every row', document: false do
+        do_request
+
+        assert_status 401
+        expect(snapshot.reload.executed_at).to be < 1.minute.ago
+      end
+
+      example '[error] Try to refresh an answer that reads a project they do not moderate', document: false do
+        snapshot.update!(query_scope: { 'project_ids' => [report.phase.project_id, create(:project).id] })
+
+        do_request
+
+        assert_status 401
+        expect(snapshot.reload.executed_at).to be < 1.minute.ago
       end
     end
 

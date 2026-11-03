@@ -2503,7 +2503,8 @@ CREATE TABLE public.content_builder_query_snapshots (
     data jsonb DEFAULT '{}'::jsonb NOT NULL,
     executed_at timestamp(6) without time zone NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    query_scope jsonb DEFAULT '"all"'::jsonb NOT NULL
 );
 
 
@@ -10862,6 +10863,7 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261103170100'),
 ('20261028180200'),
 ('20261028180100'),
 ('20261028170100'),

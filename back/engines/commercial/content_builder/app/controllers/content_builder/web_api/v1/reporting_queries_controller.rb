@@ -41,9 +41,16 @@ module ContentBuilder
           layout = Layout.find(params[:layout_id])
           authorize_editing(layout)
 
+          # A refresh asks the same questions of the same rows: it must not change what
+          # a report is about, so each snapshot runs again with the scope it was made
+          # with. Someone whose own scope does not cover that may not refresh it.
+          user_scope = McpServer::QueryScope.for(current_user)
+          stamps = layout.query_snapshots.index_with { |snapshot| McpServer::QueryScope.from_stamp(snapshot.query_scope) }
+          raise Pundit::NotAuthorizedError unless stamps.values.all? { |stamp| stamp.within?(user_scope) }
+
           refreshed = QuerySnapshot.transaction do
-            layout.query_snapshots.map do |snapshot|
-              result = McpServer::ReportingQueryRunner.run(snapshot.sql, scope: McpServer::QueryScope.all)
+            stamps.map do |snapshot, stamp|
+              result = McpServer::ReportingQueryRunner.run(snapshot.sql, scope: stamp)
               snapshot.update!(data: result_data(result), executed_at: Time.current)
               snapshot
             end
@@ -132,7 +139,7 @@ module ContentBuilder
             # and the loser keeps what the winner stored.
             snapshot = QuerySnapshot.create_or_find_by!(
               layout_id: layout.id, query_hash: QuerySnapshot.hash_for(sql)
-            ) { |s| s.assign_attributes(sql: sql, data: data, executed_at: executed_at) }
+            ) { |s| s.assign_attributes(sql: sql, data: data, executed_at: executed_at, query_scope: scope.to_stamp) }
             return render_result(snapshot.data, snapshot.executed_at, snapshot: true)
           end
 

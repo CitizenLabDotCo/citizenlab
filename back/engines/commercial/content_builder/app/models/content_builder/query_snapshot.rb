@@ -12,6 +12,7 @@
 #  executed_at :datetime         not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  query_scope :jsonb            not null
 #
 # Indexes
 #
