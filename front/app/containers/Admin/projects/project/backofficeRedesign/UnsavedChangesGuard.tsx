@@ -1,30 +1,25 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 
+import { usePageSave } from 'components/admin/PageSaveContext';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import { useBlocker } from 'utils/router';
 
-import { usePageSave } from './_shared/PageSaveContext';
 import messages from './messages';
 
 const UnsavedChangesGuard = () => {
   const { formatMessage } = useIntl();
   const pageSave = usePageSave();
   const dirty = !!pageSave?.dirty;
-  const leaving = useRef(false);
-
-  useEffect(() => {
-    if (!dirty) leaving.current = false;
-  }, [dirty]);
 
   const blocker = useBlocker({
     shouldBlockFn: ({ current, next }) =>
-      !leaving.current && dirty && current.pathname !== next.pathname,
+      !pageSave?.isLeaving() && dirty && current.pathname !== next.pathname,
     enableBeforeUnload: dirty,
     withResolver: true,
   });
@@ -32,7 +27,7 @@ const UnsavedChangesGuard = () => {
   if (!pageSave || blocker.status !== 'blocked') return null;
 
   const proceed = () => {
-    leaving.current = true;
+    pageSave.leave();
     blocker.proceed();
   };
 

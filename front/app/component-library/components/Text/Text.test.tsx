@@ -147,6 +147,16 @@ describe('<Text />', () => {
       });
     });
 
+    it('renders boControl at 13/400 heading-strong', () => {
+      render(<Text variant="boControl">Space</Text>);
+
+      expect(screen.getByText('Space')).toHaveStyle({
+        'font-size': `${bo.controlFontSize}px`,
+        'font-weight': '400',
+        color: bo.colors.textHeadingStrong,
+      });
+    });
+
     it('renders boHelper one colour below the label, at 14/400', () => {
       render(<Text variant="boHelper">Help residents</Text>);
 

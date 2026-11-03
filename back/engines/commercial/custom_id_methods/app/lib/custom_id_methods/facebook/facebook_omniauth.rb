@@ -67,7 +67,7 @@ module CustomIdMethods::Facebook
 
       gender = auth.extra.raw_info&.gender
       if gender
-        user_attrs[:gender] = gender
+        user_attrs[:custom_field_values] = { 'gender' => gender }
       else
         Rails.logger.info "Gender was not provided by facebook, auth instance was #{auth}"
       end

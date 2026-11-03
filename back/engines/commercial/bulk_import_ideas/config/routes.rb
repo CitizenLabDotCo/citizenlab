@@ -9,6 +9,7 @@ BulkImportIdeas::Engine.routes.draw do
         post 'importer/bulk_create_async/:model/:format', on: :member, to: 'bulk_import#bulk_create_async'
         get 'importer/export_form/:model/:format', on: :member, to: 'bulk_import#export_form'
         get 'importer/draft_records/:model', on: :member, to: 'bulk_import#draft_records'
+        get 'importer/approved_records/:model', on: :member, to: 'bulk_import#approved_records'
         patch 'importer/approve_all/:model', on: :member, to: 'bulk_import#approve_all'
         delete 'importer/delete_all/:model', on: :member, to: 'bulk_import#delete_all'
         post 'importer/create_user', on: :member, to: 'phase_users#create_user'

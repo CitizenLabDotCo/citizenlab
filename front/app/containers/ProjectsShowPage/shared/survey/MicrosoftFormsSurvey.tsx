@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Spinner } from '@citizenlab/cl2-component-library';
+import { Box, Spinner, colors } from '@citizenlab/cl2-component-library';
 
 type Props = {
   microsoftFormsUrl: string;
@@ -20,7 +20,7 @@ const MicrosoftFormsSurvey = ({ microsoftFormsUrl, className }: Props) => {
     <Box display="flex" justifyContent="center" className={className}>
       <Box
         as="iframe"
-        border="1px solid #ccc"
+        border={`1px solid ${colors.grey400}`}
         display={loading ? 'none' : 'block'}
         h="600px"
         w="100%"

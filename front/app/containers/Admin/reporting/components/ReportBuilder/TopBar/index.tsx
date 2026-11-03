@@ -19,6 +19,7 @@ import useProjectById from 'api/projects/useProjectById';
 import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
 
 import useLocalize from 'hooks/useLocalize';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
 import insightWordMessages from 'containers/Admin/projects/project/insights/word/messages';
@@ -92,6 +93,7 @@ const ContentBuilderTopBar = ({
     useReportWordExportContext();
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
+  const backofficeRedesign = useProjectBackofficeRedesign();
 
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -121,9 +123,11 @@ const ContentBuilderTopBar = ({
       return;
     }
 
+    // The redesigned workspace shows the phase preview on its setup page.
+    const phaseTab = backofficeRedesign ? 'setup' : 'report';
     const goBackUrl =
       projectId && phaseId
-        ? `/admin/projects/${projectId}/phases/${phaseId}/report`
+        ? `/admin/projects/${projectId}/phases/${phaseId}/${phaseTab}`
         : '/admin/reporting/report-builder';
 
     clHistory.push(goBackUrl);

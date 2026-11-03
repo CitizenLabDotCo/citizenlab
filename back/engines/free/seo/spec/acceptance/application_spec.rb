@@ -138,5 +138,13 @@ resource 'SEO' do
       expect(response_body).to include 'SITEMAP: https://'
       expect(response_body).not_to include 'malicious.com'
     end
+
+    example 'asks AI training crawlers not to download uploaded files', document: false do
+      do_request
+      expect(response_status).to eq 200
+      expect(response_body).to include "User-agent: *\nDisallow: /admin/\n\n"
+      expect(response_body).to include 'User-agent: meta-externalagent'
+      expect(response_body).to include 'Disallow: /uploads/*/files/'
+    end
   end
 end

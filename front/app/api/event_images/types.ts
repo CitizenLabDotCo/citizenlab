@@ -35,5 +35,5 @@ export interface AddEventImageObject {
 export interface UpdateEventImageObject {
   eventId: string;
   imageId: string;
-  image: ImageProps;
+  image: Partial<ImageProps>;
 }

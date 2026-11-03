@@ -9,6 +9,11 @@
 -- (multi)select questions, the point label for linear scales. Option keys are
 -- fixed when an option is created, so a key can read very differently from a
 -- label that was edited later.
+--
+-- reporting_community_monitor_scores selects from this view. Postgres won't
+-- drop a view that another view depends on, so changing it with update_view
+-- (drop and recreate) means dropping and recreating that view around it too;
+-- replace_view, which only appends columns, is unaffected.
 
 WITH form_inputs AS (
     SELECT

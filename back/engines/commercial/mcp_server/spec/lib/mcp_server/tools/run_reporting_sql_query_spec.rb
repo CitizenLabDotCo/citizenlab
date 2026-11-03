@@ -38,6 +38,18 @@ RSpec.describe McpServer::Tools::RunReportingSqlQuery do
       expect(response.structured_content[:columns]).to eq(['n'])
       expect(response.structured_content[:row_count]).to eq(1)
     end
+
+    it 'reports the truncation when the query returns more rows than the cap' do
+      stub_const('McpServer::ReportingQueryRunner::ROW_LIMIT', 2)
+      stub_const('McpServer::Tools::RunReportingSqlQuery::ROW_LIMIT', 2)
+
+      response = run('SELECT unnest(ARRAY[1, 2, 3]) AS n')
+
+      expect(response.error?).to be false
+      expect(response.content.first[:text]).to match(/truncated to 2/)
+      expect(response.structured_content[:truncated]).to be true
+      expect(response.structured_content[:row_count]).to eq(2)
+    end
   end
 
   # A table in REPORTING_TABLES is only usable when its view exists AND carries
@@ -85,12 +97,11 @@ RSpec.describe McpServer::Tools::RunReportingSqlQuery do
 
   describe 'tenant-context guard' do
     it 'refuses to run a sandbox-valid query outside a real tenant (e.g. the public schema)' do
-      response = Apartment::Tenant.switch('public') do
-        run('SELECT count(*) AS n FROM reporting_contributions')
-      end
-
-      expect(response.error?).to be true
-      expect(response.content.first[:text]).to match(/No tenant context/)
+      expect do
+        Apartment::Tenant.switch('public') do
+          run('SELECT count(*) AS n FROM reporting_contributions')
+        end
+      end.to raise_error(/No tenant context/)
     end
   end
 end

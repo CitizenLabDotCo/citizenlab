@@ -122,13 +122,7 @@ describe('Events widget', () => {
   let projectId = '';
   let projectSlug = '';
   let homepageLayout: Record<string, unknown>;
-  let filteringWasEnabled = false;
   let spacesWasEnabled = false;
-
-  const setFiltering = (enabled: boolean) =>
-    cy.apiUpdateAppConfiguration({
-      settings: { advanced_custom_pages: { allowed: enabled, enabled } },
-    });
 
   const setSpaces = (enabled: boolean) =>
     cy.apiUpdateAppConfiguration({
@@ -173,9 +167,6 @@ describe('Events widget', () => {
     cy.setAdminLoginCookie();
 
     cy.apiGetAppConfiguration().then((config) => {
-      filteringWasEnabled =
-        config.body.data.attributes.settings.advanced_custom_pages?.enabled ===
-        true;
       spacesWasEnabled =
         config.body.data.attributes.settings.spaces?.enabled === true;
     });
@@ -221,7 +212,6 @@ describe('Events widget', () => {
 
   after(() => {
     cy.apiUpdateHomepageLayout({ craftjs_json: homepageLayout });
-    setFiltering(filteringWasEnabled);
     setSpaces(spacesWasEnabled);
     if (projectId) cy.apiRemoveProject(projectId);
   });
@@ -310,7 +300,6 @@ describe('Events widget', () => {
   // pages. A project page offers nothing to choose either — its events widget is about that
   // project — not the dimensions, and not the archived-projects filter the widget ignores there.
   it('offers no source choice on the homepage or a project page', () => {
-    setFiltering(true);
     cy.apiUpdateHomepageLayout({ craftjs_json: homepageWithoutEvents() });
     goToHomepageBuilder();
 
@@ -340,7 +329,6 @@ describe('Events widget', () => {
   // A homepage widget that already filters, set before filtering left the homepage, keeps showing
   // its filter so the panel matches what the page does, and can be reset to every project.
   it('keeps a stored homepage filter visible until it is reset', () => {
-    setFiltering(false);
     setSpaces(false);
     const nodes = homepageWithoutEvents();
     cy.apiUpdateHomepageLayout({

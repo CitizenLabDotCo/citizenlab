@@ -89,10 +89,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            idea_author_change: {
-              enabled: true,
-              allowed: true
-            },
             machine_translations: {
               enabled: true,
               allowed: true
@@ -238,6 +234,10 @@ module MultiTenancy
               allowed: true
             },
             form_mapping: {
+              enabled: true,
+              allowed: true
+            },
+            input_form_answer_filters: {
               enabled: true,
               allowed: true
             },
@@ -424,6 +424,10 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
+            llm_reporting: {
+              enabled: true,
+              allowed: true
+            },
             sms: {
               enabled: true,
               allowed: true,
@@ -447,6 +451,10 @@ module MultiTenancy
             },
             project_backoffice_redesign: {
               enabled: false,
+              allowed: true
+            },
+            ai_assistant: {
+              enabled: true,
               allowed: true
             }
           })

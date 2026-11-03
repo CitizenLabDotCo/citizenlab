@@ -237,4 +237,8 @@ export default defineMessages({
     defaultMessage:
       'Once people take part, you can review and manage their inputs here.',
   },
+  paperAndExcelForms: {
+    id: 'app.containers.Admin.projects.project.backofficeRedesign.InputManager.paperAndExcelForms',
+    defaultMessage: 'Paper and Excel forms',
+  },
 });

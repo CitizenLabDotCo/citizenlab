@@ -16,6 +16,7 @@ module CitizenLab
           'required' => %w[allowed enabled],
           'required-settings' => required_settings.presence,
           'early_access' => early_access,
+          'development' => development.presence,
           'properties' => {
             'allowed' => { 'type' => 'boolean', 'default' => allowed_by_default },
             'enabled' => { 'type' => 'boolean', 'default' => enabled_by_default }
@@ -57,6 +58,15 @@ module CitizenLab
       # @return [String, nil]
       def early_access
         nil
+      end
+
+      # Marks the feature as still in development. Only Admin HQ uses it, to show the
+      # feature differently. Core features set it with a "development": true key in
+      # their JSON schema.
+      #
+      # @return [Boolean]
+      def development
+        false
       end
 
       # @return [Boolean]

@@ -86,6 +86,18 @@ describe('OptionPicker', () => {
     expect(screen.queryByRole('radiogroup')).toBeNull();
   });
 
+  it('keeps the Escape that closes it from reaching a surrounding modal', async () => {
+    const onWindowKeyDown = jest.fn();
+    window.addEventListener('keydown', onWindowKeyDown);
+    renderDropdown();
+
+    await userEvent.click(trigger());
+    await userEvent.keyboard('{Escape}');
+
+    expect(onWindowKeyDown).not.toHaveBeenCalled();
+    window.removeEventListener('keydown', onWindowKeyDown);
+  });
+
   describe('when it is searchable', () => {
     it('narrows the options down to what was typed', async () => {
       renderDropdown('public', true);

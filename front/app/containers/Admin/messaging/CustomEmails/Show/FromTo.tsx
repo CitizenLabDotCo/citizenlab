@@ -39,7 +39,7 @@ const FromTo = ({ campaign }: Props) => {
   const { data: project } = useProjectById(
     campaign.data.relationships.context?.data?.id
   );
-  const authorId = campaign.data.relationships.author.data.id;
+  const authorId = campaign.data.relationships.author.data?.id;
   const { data: sender } = useUserById(authorId);
   const localize = useLocalize();
   const { formatMessage } = useIntl();

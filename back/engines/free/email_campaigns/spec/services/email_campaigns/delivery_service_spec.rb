@@ -82,6 +82,16 @@ describe EmailCampaigns::DeliveryService do
       expect(delivery.user).to eq(user)
       expect(delivery.campaign).to eq(campaign)
     end
+
+    context 'when the recipient email bounced' do
+      let(:user) { create(:user, email_bounced_at: 1.day.ago) }
+
+      it 'neither sends the mail nor records a delivery' do
+        expect { service.send_now_to_user(campaign, user, { code: '1234' }) }
+          .to not_change { ActionMailer::Base.deliveries.count }
+          .and(not_change(EmailCampaigns::Delivery, :count))
+      end
+    end
   end
 
   describe 'send_on_schedule' do
@@ -104,6 +114,16 @@ describe EmailCampaigns::DeliveryService do
           user_id: admin.id,
           delivery_status: 'sent'
         })
+      end
+    end
+
+    it 'skips recipients whose email bounced' do
+      admin.update_columns(email_bounced_at: 1.day.ago)
+
+      travel_to campaign.ic_schedule.start_time do
+        expect { service.send_on_schedule(Time.now) }
+          .not_to have_enqueued_job(ActionMailer::MailDeliveryJob)
+        expect(campaign.deliveries).to be_empty
       end
     end
 
@@ -230,6 +250,15 @@ describe EmailCampaigns::DeliveryService do
     it 'creates deliveries for a Trackable campaign' do
       service.send_now(campaign)
       expect(EmailCampaigns::Delivery.count).to eq User.count
+    end
+
+    it 'leaves out users whose email bounced, so they get no delivery' do
+      bounced = users.first
+      bounced.update_columns(email_bounced_at: 1.day.ago)
+
+      expect { service.send_now(campaign) }
+        .to have_enqueued_job(ActionMailer::MailDeliveryJob).exactly(User.count - 1).times
+      expect(campaign.deliveries.pluck(:user_id)).to match_array(User.where.not(id: bounced.id).ids)
     end
   end
 

@@ -32,7 +32,7 @@ export const EventDate = styled.div`
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   background: #f5f6f7;
-  border: solid 1px #ccc;
+  border: solid 1px ${colors.grey400};
   border-bottom: none;
   color: ${(props) => props.theme.colors.tenantText};
 

@@ -29,6 +29,7 @@ module ContentBuilder
     HOMEPAGE_CODE = 'homepage'
 
     belongs_to :content_buildable, polymorphic: true, optional: true
+    has_many :query_snapshots, class_name: 'ContentBuilder::QuerySnapshot', dependent: :delete_all
 
     before_validation :swap_data_images, on: :create
     before_validation :set_craftjs_json, :sanitize_craftjs_json
@@ -95,7 +96,7 @@ module ContentBuilder
 
       LayoutService.new.select_craftjs_elements_for_types(craftjs_json, ['IframeMultiloc']).each do |elt|
         url = elt.dig 'props', 'url'
-        if url && url_starts.none? { |url_start| url.starts_with?(url_start) }
+        if url.present? && url_starts.none? { |url_start| url.starts_with?(url_start) }
           errors.add :craftjs_json, :iframe_url_invalid, url: url
         end
       end

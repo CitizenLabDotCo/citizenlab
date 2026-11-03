@@ -137,14 +137,16 @@ const UsersTable = ({
 
               <SortableTh
                 sortDirection={
-                  sort === 'created_at'
+                  sort === 'registration_completed_at'
                     ? 'descending'
-                    : sort === '-created_at'
+                    : sort === '-registration_completed_at'
                     ? 'ascending'
                     : undefined
                 }
                 onClick={handleSortingOnChange(
-                  sort === 'created_at' ? '-created_at' : 'created_at'
+                  sort === 'registration_completed_at'
+                    ? '-registration_completed_at'
+                    : 'registration_completed_at'
                 )}
               >
                 <FormattedMessage {...messages.joined} />

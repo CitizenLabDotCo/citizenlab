@@ -35,6 +35,7 @@ import SentimentScaleField from './Fields/SentimentScaleField';
 import SingleFileUploadField from './Fields/SingleFileUploadField';
 import SingleSelectField from './Fields/SingleSelectField';
 import InputIQ from './InputIQ';
+import ManagersOnlyAnswerNote from './ManagersOnlyAnswerNote';
 import messages from './messages';
 import { getInstructionMessage } from './util';
 
@@ -316,7 +317,8 @@ const CustomFields = ({
               data-question-id={question.id}
             >
               <FormLabel {...labelProps} />
-              <Text mt="4px" mb={answerNotPublic ? '4px' : '8px'} fontSize="s">
+              {answerNotPublic && <ManagersOnlyAnswerNote />}
+              <Text mt="4px" mb="8px" fontSize="s">
                 {getInstructionMessage({
                   minItems: question.minimum_select_count,
                   maxItems: question.maximum_select_count,
@@ -327,11 +329,6 @@ const CustomFields = ({
                   <FormattedMessage {...messages.uploadShapefileInstructions} />
                 )}
               </Text>
-              {answerNotPublic && (
-                <Text mt="0px" fontSize="s">
-                  <FormattedMessage {...messages.notPublic} />
-                </Text>
-              )}
               <Box display="flex" alignItems="center" gap="8px">
                 <Box w="100%">
                   {renderField({

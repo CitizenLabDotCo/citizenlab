@@ -128,10 +128,6 @@ module CustomIdMethods::Federa
       auth_to_persist.tap { |h| h[:extra].delete(:response_object) }
     end
 
-    def updateable_user_attrs
-      super + %i[first_name last_name]
-    end
-
     private
 
     # SAML attributes are inherently multi-valued, so ruby-saml exposes every
@@ -171,6 +167,9 @@ module CustomIdMethods::Federa
       unless query.key?('RelayState')
         qs = env['QUERY_STRING'] || ''
         env['QUERY_STRING'] = qs.empty? ? "RelayState=#{relay_state}" : "#{qs}&RelayState=#{relay_state}"
+        # OmniAuth reads the strategy's memoized request.params, which may have been
+        # parsed before this setup phase ran; update_param also clears that memo.
+        env['omniauth.strategy'].request.update_param('RelayState', relay_state)
       end
     end
 

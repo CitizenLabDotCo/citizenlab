@@ -35,6 +35,7 @@ import IdeaSharingButton from './components/Buttons/IdeaSharingButton';
 import SharingButtonComponent from './components/Buttons/SharingButtonComponent';
 import Container from './components/Container';
 import Cosponsorship from './components/Cosponsorship';
+import CustomFieldAnswers from './components/CustomFieldAnswers';
 import IdeaTitle from './components/IdeaTitle';
 import MetaInformation from './components/MetaInformation';
 import ProposalInfo from './components/ProposalInfo';
@@ -186,6 +187,11 @@ export const IdeasShow = ({
               translateButtonClicked={translateButtonIsClicked}
             />
           </Box>
+          <CustomFieldAnswers
+            ideaId={ideaId}
+            project={project.data}
+            compact={compact}
+          />
           {compact && <Cosponsorship ideaId={ideaId} />}
 
           {compact && statusId && (

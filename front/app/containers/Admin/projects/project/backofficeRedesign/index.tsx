@@ -5,19 +5,19 @@ import { Box, bo, colors } from '@citizenlab/cl2-component-library';
 import { IPhaseData } from 'api/phases/types';
 import { IProjectData } from 'api/projects/types';
 
+import { usePageSave } from 'components/admin/PageSaveContext';
+
 import { useLocation } from 'utils/router';
 
 import FeedbackNotice from '../earlyAccess/FeedbackNotice';
 
-import MethodSettings from './Phase/MethodSettings';
-import ProjectSetupPanel from './ProjectSetupPanel';
-import ViewContent from './Phase/ViewContent';
-import WorkspaceHeader from './Header';
-import useMarkSetupStep from './_shared/useMarkSetupStep';
-import { HeaderDropdownName } from './Header/HeaderDropdown';
 import { sectionFromPathname } from './_shared/sections';
-import { usePageSave } from './_shared/PageSaveContext';
+import WorkspaceHeader from './Header';
+import { HeaderDropdownName } from './Header/HeaderDropdown';
+import MethodSettings from './Phase/MethodSettings';
 import { viewFromPathname } from './Phase/usePhaseViews';
+import ViewContent from './Phase/ViewContent';
+import ProjectSetupPanel from './ProjectSetupPanel';
 
 const PROJECT_PANEL_WIDTH = '332px';
 const PHASE_PANEL_WIDTH = '560px';
@@ -25,7 +25,9 @@ const PANEL_GAP = '8px';
 
 interface Draft {
   label: string;
-  methodSettings: ReactNode;
+  parentLabel?: string;
+  saveLabel?: string;
+  methodSettings?: ReactNode;
 }
 
 interface Props {
@@ -47,19 +49,15 @@ const ProjectWorkspace = ({
   const [openDropdown, setOpenDropdown] = useState<HeaderDropdownName | null>(
     null
   );
-  const markSetupStep = useMarkSetupStep(project);
   const pageSave = usePageSave();
-
-  const showDropdown = (dropdown: HeaderDropdownName | null) => {
-    setOpenDropdown(dropdown);
-    if (dropdown === 'share') markSetupStep('share');
-  };
 
   const section = sectionFromPathname(pathname, project.id);
   const activeView = viewFromPathname(pathname);
 
   const inPhase = !!(phase || draft);
-  const showPanels = !phase || activeView === 'build';
+  // An open phase email takes the whole width, like the other views.
+  const editingEmail = /\/emails\/[^/]+\/edit$/.test(pathname);
+  const showPanels = (!phase || activeView === 'build') && !editingEmail;
 
   const settingsPanel = draft ? (
     draft.methodSettings
@@ -71,15 +69,19 @@ const ProjectWorkspace = ({
       phase={phase}
     />
   ) : (
-    <ProjectSetupPanel project={project} onOpenDropdown={showDropdown} />
+    <ProjectSetupPanel project={project} />
   );
 
+  // Each column is positioned so the visually hidden inputs of toggles and
+  // radios inside it are placed, and scrolled, within the column. Otherwise
+  // they hang below the page, and focusing one scrolls the whole workspace.
   const setupSlot = !section && (
     <Box
       flex={`0 0 ${PROJECT_PANEL_WIDTH}`}
       width={PROJECT_PANEL_WIDTH}
       minHeight="0"
       overflowY="auto"
+      position="relative"
       borderRadius={bo.panelBorderRadius}
       background={colors.white}
     >
@@ -92,6 +94,7 @@ const ProjectWorkspace = ({
       width={PROJECT_PANEL_WIDTH}
       minHeight="0"
       overflowY="auto"
+      position="relative"
       borderRadius={bo.panelBorderRadius}
       background={colors.white}
     >
@@ -106,11 +109,12 @@ const ProjectWorkspace = ({
       width={PHASE_PANEL_WIDTH}
       minHeight="0"
       overflowY="auto"
+      position="relative"
       borderRadius={bo.panelBorderRadius}
       background={colors.white}
     >
       {sidePanel}
-      <Box borderTop={`1px solid ${colors.grey200}`}>{settingsPanel}</Box>
+      {settingsPanel}
     </Box>
   );
 
@@ -120,6 +124,7 @@ const ProjectWorkspace = ({
       minWidth="0"
       minHeight="0"
       overflowY="auto"
+      position="relative"
       display="flex"
       flexDirection="column"
       borderRadius={bo.panelBorderRadius}
@@ -144,10 +149,12 @@ const ProjectWorkspace = ({
         project={project}
         phase={phase}
         draftLabel={draft?.label}
+        draftParentLabel={draft?.parentLabel}
+        saveLabel={draft?.saveLabel}
         activeView={activeView}
         section={section}
         openDropdown={openDropdown}
-        onOpenDropdown={showDropdown}
+        onOpenDropdown={setOpenDropdown}
       />
 
       <Box

@@ -19,6 +19,7 @@ class WebApi::V1::UsersController < ApplicationController
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.registered unless params[:include_inactive]
     @users = @users.blocked if params[:only_blocked]
+    @users = @users.email_bounced if params[:only_email_bounced]
     @users = @users.search_by_all(params[:search]) if params[:search].present?
 
     # Filter by project participants
@@ -114,6 +115,13 @@ class WebApi::V1::UsersController < ApplicationController
     end
 
     head :ok
+  end
+
+  def intercom_token
+    authorize :user, :intercom_token?
+
+    token = IntercomMessengerTokenService.new.token(current_user)
+    render json: raw_json({ token: })
   end
 
   def me
@@ -317,6 +325,11 @@ class WebApi::V1::UsersController < ApplicationController
     render json: raw_json({ count: User.all.blocked.count }, type: 'blocked_users_count'), status: :ok
   end
 
+  def email_bounced_count
+    authorize :user, :email_bounced_count?
+    render json: raw_json({ count: policy_scope(User).email_bounced.count }, type: 'email_bounced_users_count'), status: :ok
+  end
+
   def comments_count
     count = policy_scope(@user.comments.published).count
     render json: raw_json({ count: count }), status: :ok
@@ -368,6 +381,14 @@ class WebApi::V1::UsersController < ApplicationController
       @users.order(created_at: :asc)
     when '-created_at'
       @users.order(created_at: :desc)
+    # Without a tie-breaker the order of equal values is undefined, which makes
+    # paginated results non-deterministic
+    when 'registration_completed_at'
+      @users.order('registration_completed_at ASC NULLS LAST', created_at: :asc)
+    # NULLs only reach this branch when include_inactive is set (the admin and manager
+    # tabs), where a pending invite should read as the most recent.
+    when '-registration_completed_at'
+      @users.order('registration_completed_at DESC NULLS FIRST', created_at: :desc)
     when 'last_active_at'
       @users.order(Arel.sql('last_active_at IS NOT NULL, last_active_at ASC'))
     when '-last_active_at'
