@@ -26,13 +26,7 @@ module ContentBuilder
           )
           return render_result(snapshot.data, snapshot.executed_at, snapshot: true) if snapshot
 
-          # The custom block renderer's browser has no session, only a token good
-          # for this one layout's data. Everyone else has to be an admin.
-          unless scoped_token_permits?(layout)
-            authorize :reporting_query, policy_class: ReportingQueryPolicy
-          end
-
-          execute_and_store(query, layout)
+          execute_and_store(query, layout, query_scope_for(layout))
         rescue McpServer::ReportingQueryRunner::Rejected => e
           render json: { errors: { query: [{ error: 'rejected', detail: e.message }] } },
             status: :unprocessable_entity
@@ -84,6 +78,19 @@ module ContentBuilder
           report ? authorize(report, :write?) : authorize(layout, :update?)
         end
 
+        # The rows the query may read: those of whoever asks. The custom block
+        # renderer's browser has no session, only a token good for this one layout's
+        # data, so it asks for the person the token was minted for. Everyone else has
+        # to pass ReportingQueryPolicy.
+        def query_scope_for(layout)
+          if scoped_token_permits?(layout)
+            McpServer::QueryScope.for(ScopedReportingToken.user(params[:reporting_token]))
+          else
+            authorize :reporting_query, policy_class: ReportingQueryPolicy
+            McpServer::QueryScope.for(current_user)
+          end
+        end
+
         def scoped_token_permits?(layout)
           return false if layout.nil?
 
@@ -115,9 +122,9 @@ module ContentBuilder
           McpServer::ReportingQueryRunner.validate!(query)
         end
 
-        def execute_and_store(query, layout)
+        def execute_and_store(query, layout, scope)
           sql = normalized(query)
-          data = result_data(McpServer::ReportingQueryRunner.run(sql, scope: McpServer::QueryScope.all))
+          data = result_data(McpServer::ReportingQueryRunner.run(sql, scope: scope))
           executed_at = Time.current
 
           if layout

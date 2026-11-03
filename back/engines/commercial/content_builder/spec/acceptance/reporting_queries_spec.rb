@@ -53,6 +53,13 @@ resource 'ReportingQueries' do
         expect(layout.query_snapshots.count).to eq 1
       end
 
+      example 'Run it over every row', document: false do
+        do_request(query: sql, layout_id: layout.id)
+
+        assert_status 200
+        expect(McpServer::ReportingQueryRunner).to have_received(:run).with(anything, scope: McpServer::QueryScope.all)
+      end
+
       example 'Answer a repeated question from the stored answer', document: false do
         do_request(query: sql, layout_id: layout.id)
         stored = layout.query_snapshots.sole
@@ -181,6 +188,19 @@ resource 'ReportingQueries' do
         assert_status 200
         expect(response_data[:attributes][:snapshot]).to be true
         expect(layout.query_snapshots.count).to eq 1
+      end
+
+      example 'Run it over the rows of the person the token was minted for', document: false do
+        project = create(:project)
+        moderator_token = ContentBuilder::ScopedReportingToken.mint(
+          layout_id: layout.id, user_id: create(:project_moderator, projects: [project]).id
+        )
+
+        do_request(query: sql, layout_id: layout.id, reporting_token: moderator_token)
+
+        assert_status 200
+        expect(McpServer::ReportingQueryRunner).to have_received(:run)
+          .with(anything, scope: McpServer::QueryScope.new(project_ids: [project.id]))
       end
 
       example '[error] Try to read another layout with it', document: false do

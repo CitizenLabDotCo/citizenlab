@@ -80,4 +80,18 @@ RSpec.describe ContentBuilder::ScopedReportingToken do
       expect(described_class.permits?(token, layout_id: nil)).to be false
     end
   end
+
+  describe '.user' do
+    it 'gives the person the token was minted for' do
+      token = described_class.mint(layout_id: layout.id, user_id: user.id)
+
+      expect(described_class.user(token)).to eq user
+    end
+
+    it 'gives nobody for a forged token' do
+      forged = JWT.encode({ scope: described_class::SCOPE, user_id: user.id }, 'not-the-secret', 'HS256')
+
+      expect(described_class.user(forged)).to be_nil
+    end
+  end
 end
