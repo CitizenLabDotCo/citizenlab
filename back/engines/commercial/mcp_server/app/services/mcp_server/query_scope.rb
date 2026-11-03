@@ -7,8 +7,9 @@ module McpServer
   QueryScope = Data.define(:project_ids) do
     def self.all = new(project_ids: :all)
 
-    # Anyone who is not an active admin gets the projects they may analyse, which
-    # is none for a visitor or a resident.
+    # An active admin reads every row, not just the rows of every project: some
+    # rows belong to no project. Anyone else, a blocked admin included, gets the
+    # projects they may analyse, which is none for a visitor or a resident.
     def self.for(user)
       return all if user&.active? && user.admin?
 
@@ -23,7 +24,7 @@ module McpServer
 
     def to_stamp = all? ? 'all' : { 'project_ids' => project_ids }
 
-    # Whether this scope reads no row that `other` cannot read.
+    # Whether `other` can read every row this scope reads.
     def within?(other)
       other.all? || (!all? && (project_ids - other.project_ids).empty?)
     end

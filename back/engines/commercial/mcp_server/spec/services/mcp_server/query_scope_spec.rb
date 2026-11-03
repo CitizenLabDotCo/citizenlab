@@ -22,6 +22,20 @@ RSpec.describe McpServer::QueryScope do
       expect(scope.project_ids).to eq [project.id]
     end
 
+    it 'gives a folder moderator the projects in their folder' do
+      folder = create(:project_folder)
+      in_folder = create(:project, folder: folder)
+      scope = described_class.for(create(:project_folder_moderator, project_folders: [folder]))
+      expect(scope.project_ids).to eq [in_folder.id]
+    end
+
+    it 'gives a space moderator the projects in their space, sorted' do
+      space = create(:space)
+      in_space = [create(:project, space: space), create(:project, folder: create(:project_folder, space: space))]
+      scope = described_class.for(create(:space_moderator, spaces: [space]))
+      expect(scope.project_ids).to eq in_space.map(&:id).sort
+    end
+
     it 'gives a resident no rows' do
       expect(described_class.for(create(:user)).project_ids).to eq []
     end
@@ -50,22 +64,26 @@ RSpec.describe McpServer::QueryScope do
   end
 
   describe '#within?' do
+    using RSpec::Parameterized::TableSyntax
+
+    # A stored result's scope (its stamp), against the scope of the user who wants to
+    # reuse it. P1 and P2 are projects.
     def scope(ids) = ids == :all ? described_class.all : described_class.new(project_ids: ids)
 
-    where(:inner, :outer, :within) do
-      [
-        [:all, :all, true],
-        [%w[a], :all, true],
-        [:all, %w[a], false],
-        [%w[a], %w[a b], true],
-        [%w[a b], %w[a], false],
-        [[], %w[a], true],
-        [%w[a], [], false]
-      ]
+    where(:case_name, :stamp, :user_scope, :within) do
+      'an admin reuses an admin result'    | :all      | :all      | true
+      'an admin reuses a moderator result' | %w[P1]    | :all      | true
+      'a moderator reuses an admin result' | :all      | %w[P1]    | false
+      'a moderator gained a project since' | %w[P1]    | %w[P1 P2] | true
+      'a moderator lost a project since'   | %w[P1 P2] | %w[P1]    | false
+      'the result reads no project'        | []        | %w[P1]    | true
+      'the user may analyse no project'    | %w[P1]    | []        | false
     end
 
     with_them do
-      it { expect(scope(inner).within?(scope(outer))).to eq within }
+      it 'is true only when the user can read every row the result reads' do
+        expect(scope(stamp).within?(scope(user_scope))).to eq within
+      end
     end
   end
 end
