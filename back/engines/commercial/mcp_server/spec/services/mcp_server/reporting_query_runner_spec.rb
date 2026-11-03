@@ -118,6 +118,14 @@ RSpec.describe McpServer::ReportingQueryRunner do
         .to raise_error(described_class::Rejected, /reporting_staff_activities/)
     end
 
+    it 'refuses an admin-only view read through a CTE named after it' do
+      sql = 'WITH reporting_staff_activities AS (SELECT * FROM reporting_staff_activities) ' \
+            'SELECT count(*) FROM reporting_staff_activities'
+
+      expect { described_class.run(sql, scope: scope) }
+        .to raise_error(described_class::Rejected, /reporting_staff_activities/)
+    end
+
     it 'keeps the scope inside a CTE that reuses a view name' do
       sql = 'WITH reporting_inputs AS (SELECT * FROM reporting_inputs) SELECT DISTINCT project_id FROM reporting_inputs'
 

@@ -61,6 +61,8 @@ RSpec.describe McpServer::SqlSandboxer do
       'WITH a AS (WITH b AS (SELECT * FROM reporting_contributions) SELECT * FROM b) SELECT count(*) FROM a',
       'WITH a AS (SELECT count(*) AS c FROM reporting_contributions), ' \
       'b AS (SELECT count(*) AS c FROM reporting_users) SELECT a.c, b.c FROM a, b',
+      'WITH a AS (SELECT * FROM reporting_contributions), b AS (SELECT * FROM a) SELECT count(*) FROM b',
+      'WITH reporting_inputs AS (SELECT * FROM reporting_inputs) SELECT count(*) FROM reporting_inputs',
 
       # LATERAL + correlated subquery (scope inherited from the outer query).
       'SELECT c.project_id FROM reporting_contributions c, ' \
@@ -187,9 +189,24 @@ RSpec.describe McpServer::SqlSandboxer do
           /Table 'pg_user' is not queryable/],
       'CTE-name confusion leaking pg_database (nested WITH scope)' =>
         ['WITH dummy AS (WITH pg_database AS (SELECT 1 AS id) SELECT id FROM pg_database) SELECT * FROM pg_database',
-          /Table 'pg_database' is not queryable/]
+          /Table 'pg_database' is not queryable/],
+      # A CTE body cannot see its own name (outside WITH RECURSIVE) or a later
+      # sibling: Postgres resolves those to the real relation.
+      'a CTE that reads the catalog it is named after' =>
+        ['WITH pg_user AS (SELECT * FROM pg_user) SELECT * FROM pg_user', /Table 'pg_user' is not queryable/],
+      'a CTE that reads a later sibling named after a catalog' =>
+        ['WITH a AS (SELECT * FROM pg_class), pg_class AS (SELECT 1) SELECT * FROM a',
+          /Table 'pg_class' is not queryable/]
     }.each do |label, (sql, message)|
       it("rejects #{label}") { expect_rejected(sql, message) }
+    end
+
+    it 'rejects a CTE that reads a reporting table the query may not read, named after it' do
+      tables = McpServer::Tools::GetReportingSqlSchema::REPORTING_TABLE_NAMES - ['reporting_staff_activities']
+      sql = 'WITH reporting_staff_activities AS (SELECT * FROM reporting_staff_activities) ' \
+            'SELECT count(*) FROM reporting_staff_activities'
+
+      expect(described_class.validate(sql, tables: tables).error).to match(/Table 'reporting_staff_activities' is not queryable/)
     end
   end
 
