@@ -3963,77 +3963,87 @@ CREATE TABLE public.report_builder_reports (
 --
 
 CREATE VIEW public.reporting_analysis_heatmap_cells AS
- WITH sides AS (
-         SELECT 'Analysis::Tag'::text AS type,
-            t.id,
-            'tag'::text AS kind,
-            t.id AS tag_id,
-            t.name AS tag_label,
-            NULL::uuid AS question_id,
-            NULL::text AS question_label,
-            NULL::text AS answer_label
-           FROM public.analysis_tags t
-        UNION ALL
-         SELECT 'CustomFieldBin'::text AS type,
-            b.id,
-                CASE
-                    WHEN ((q.resource_type)::text = 'User'::text) THEN 'registration_question'::text
-                    ELSE 'form_question'::text
-                END AS kind,
-            NULL::uuid AS tag_id,
-            NULL::text AS tag_label,
-            q.id AS question_id,
-            COALESCE(NULLIF((q.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
-                   FROM public.app_configurations ac
-                 LIMIT 1)), ''::text), ( SELECT t.value
-                   FROM jsonb_each_text(q.title_multiloc) t(key, value)
-                  WHERE (t.value <> ''::text)
-                  ORDER BY t.key
-                 LIMIT 1)) AS question_label,
-                CASE
-                    WHEN ((b.type)::text = 'CustomFieldBins::OptionBin'::text) THEN COALESCE(NULLIF((o.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
-                       FROM public.app_configurations ac
-                     LIMIT 1)), ''::text), ( SELECT t.value
-                       FROM jsonb_each_text(o.title_multiloc) t(key, value)
-                      WHERE (t.value <> ''::text)
-                      ORDER BY t.key
-                     LIMIT 1))
-                    WHEN ((b.type)::text = 'CustomFieldBins::ValueBin'::text) THEN ( SELECT string_agg(v.value, ', '::text) AS string_agg
-                       FROM jsonb_array_elements_text(b."values") v(value))
-                    WHEN (lower(b.range) IS NULL) THEN (upper(b.range) || ' or less'::text)
-                    WHEN (upper(b.range) IS NULL) THEN (lower(b.range) || ' or more'::text)
-                    ELSE ((lower(b.range) || ' to '::text) || upper(b.range))
-                END AS answer_label
-           FROM ((public.custom_field_bins b
-             JOIN public.custom_fields q ON ((q.id = b.custom_field_id)))
-             LEFT JOIN public.custom_field_options o ON ((o.id = b.custom_field_option_id)))
-        )
  SELECT c.id,
     c.analysis_id,
     COALESCE(a.project_id, ph.project_id) AS project_id,
     a.phase_id,
     c.unit,
-    r.kind AS row_kind,
-    r.tag_id AS row_tag_id,
-    r.tag_label AS row_tag_label,
-    r.question_id AS row_question_id,
-    r.question_label AS row_question_label,
-    r.answer_label AS row_answer_label,
-    col.kind AS column_kind,
-    col.tag_id AS column_tag_id,
-    col.tag_label AS column_tag_label,
-    col.question_id AS column_question_id,
-    col.question_label AS column_question_label,
-    col.answer_label AS column_answer_label,
+        CASE
+            WHEN (rt.id IS NOT NULL) THEN 'tag'::text
+            WHEN ((rq.resource_type)::text = 'User'::text) THEN 'registration_question'::text
+            ELSE 'form_question'::text
+        END AS row_kind,
+    rt.id AS row_tag_id,
+    rt.name AS row_tag_label,
+    rq.id AS row_question_id,
+    COALESCE(NULLIF((rq.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(rq.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS row_question_label,
+        CASE
+            WHEN (rb.id IS NULL) THEN NULL::text
+            WHEN ((rb.type)::text = 'CustomFieldBins::OptionBin'::text) THEN COALESCE(NULLIF((ro.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+               FROM public.app_configurations ac
+             LIMIT 1)), ''::text), ( SELECT t.value
+               FROM jsonb_each_text(ro.title_multiloc) t(key, value)
+              WHERE (t.value <> ''::text)
+              ORDER BY t.key
+             LIMIT 1))
+            WHEN ((rb.type)::text = 'CustomFieldBins::ValueBin'::text) THEN ( SELECT string_agg(v.value, ', '::text) AS string_agg
+               FROM jsonb_array_elements_text(rb."values") v(value))
+            WHEN (lower(rb.range) IS NULL) THEN (upper(rb.range) || ' or less'::text)
+            WHEN (upper(rb.range) IS NULL) THEN (lower(rb.range) || ' or more'::text)
+            ELSE ((lower(rb.range) || ' to '::text) || upper(rb.range))
+        END AS row_answer_label,
+        CASE
+            WHEN (ct.id IS NOT NULL) THEN 'tag'::text
+            WHEN ((cq.resource_type)::text = 'User'::text) THEN 'registration_question'::text
+            ELSE 'form_question'::text
+        END AS column_kind,
+    ct.id AS column_tag_id,
+    ct.name AS column_tag_label,
+    cq.id AS column_question_id,
+    COALESCE(NULLIF((cq.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(cq.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS column_question_label,
+        CASE
+            WHEN (cb.id IS NULL) THEN NULL::text
+            WHEN ((cb.type)::text = 'CustomFieldBins::OptionBin'::text) THEN COALESCE(NULLIF((co.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+               FROM public.app_configurations ac
+             LIMIT 1)), ''::text), ( SELECT t.value
+               FROM jsonb_each_text(co.title_multiloc) t(key, value)
+              WHERE (t.value <> ''::text)
+              ORDER BY t.key
+             LIMIT 1))
+            WHEN ((cb.type)::text = 'CustomFieldBins::ValueBin'::text) THEN ( SELECT string_agg(v.value, ', '::text) AS string_agg
+               FROM jsonb_array_elements_text(cb."values") v(value))
+            WHEN (lower(cb.range) IS NULL) THEN (upper(cb.range) || ' or less'::text)
+            WHEN (upper(cb.range) IS NULL) THEN (lower(cb.range) || ' or more'::text)
+            ELSE ((lower(cb.range) || ' to '::text) || upper(cb.range))
+        END AS column_answer_label,
     c.count,
     c.lift,
     c.p_value,
     c.created_at
-   FROM ((((public.analysis_heatmap_cells c
+   FROM ((((((((((public.analysis_heatmap_cells c
      JOIN public.analysis_analyses a ON ((a.id = c.analysis_id)))
      LEFT JOIN public.phases ph ON ((ph.id = a.phase_id)))
-     JOIN sides r ON (((r.type = (c.row_type)::text) AND (r.id = c.row_id))))
-     JOIN sides col ON (((col.type = (c.column_type)::text) AND (col.id = c.column_id))));
+     LEFT JOIN public.analysis_tags rt ON ((((c.row_type)::text = 'Analysis::Tag'::text) AND (rt.id = c.row_id))))
+     LEFT JOIN public.custom_field_bins rb ON ((((c.row_type)::text = 'CustomFieldBin'::text) AND (rb.id = c.row_id))))
+     LEFT JOIN public.custom_fields rq ON ((rq.id = rb.custom_field_id)))
+     LEFT JOIN public.custom_field_options ro ON ((ro.id = rb.custom_field_option_id)))
+     LEFT JOIN public.analysis_tags ct ON ((((c.column_type)::text = 'Analysis::Tag'::text) AND (ct.id = c.column_id))))
+     LEFT JOIN public.custom_field_bins cb ON ((((c.column_type)::text = 'CustomFieldBin'::text) AND (cb.id = c.column_id))))
+     LEFT JOIN public.custom_fields cq ON ((cq.id = cb.custom_field_id)))
+     LEFT JOIN public.custom_field_options co ON ((co.id = cb.custom_field_option_id)))
+  WHERE (((rt.id IS NOT NULL) OR (rq.id IS NOT NULL)) AND ((ct.id IS NOT NULL) OR (cq.id IS NOT NULL)));
 
 
 --

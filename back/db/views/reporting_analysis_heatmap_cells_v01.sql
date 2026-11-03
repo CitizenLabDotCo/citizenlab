@@ -7,48 +7,11 @@
 -- Bin labels follow Analysis::HeatmapCellStatementGenerator#bin_to_answer_str,
 -- in English: the option title for option bins, the values for value bins, and
 -- 'min to max', 'min or more' or 'max or less' for range and age bins.
-WITH sides AS (
-    SELECT
-        'Analysis::Tag' AS type,
-        t.id,
-        'tag' AS kind,
-        t.id AS tag_id,
-        t.name AS tag_label,
-        NULL::uuid AS question_id,
-        NULL::text AS question_label,
-        NULL::text AS answer_label
-    FROM analysis_tags t
-
-    UNION ALL
-
-    SELECT
-        'CustomFieldBin' AS type,
-        b.id,
-        CASE WHEN q.resource_type = 'User' THEN 'registration_question' ELSE 'form_question' END AS kind,
-        NULL::uuid AS tag_id,
-        NULL::text AS tag_label,
-        q.id AS question_id,
-        COALESCE(
-            NULLIF(q.title_multiloc ->> (SELECT ac.settings -> 'core' -> 'locales' ->> 0 FROM app_configurations ac LIMIT 1), ''),
-            (SELECT t.value FROM jsonb_each_text(q.title_multiloc) t WHERE t.value <> '' ORDER BY t.key LIMIT 1)
-        ) AS question_label,
-        CASE
-            WHEN b.type = 'CustomFieldBins::OptionBin' THEN COALESCE(
-                NULLIF(o.title_multiloc ->> (SELECT ac.settings -> 'core' -> 'locales' ->> 0 FROM app_configurations ac LIMIT 1), ''),
-                (SELECT t.value FROM jsonb_each_text(o.title_multiloc) t WHERE t.value <> '' ORDER BY t.key LIMIT 1)
-            )
-            WHEN b.type = 'CustomFieldBins::ValueBin' THEN (
-                SELECT string_agg(v.value, ', ') FROM jsonb_array_elements_text(b.values) v
-            )
-            WHEN lower(b.range) IS NULL THEN upper(b.range) || ' or less'
-            WHEN upper(b.range) IS NULL THEN lower(b.range) || ' or more'
-            ELSE lower(b.range) || ' to ' || upper(b.range)
-        END AS answer_label
-    FROM custom_field_bins b
-    INNER JOIN custom_fields q ON q.id = b.custom_field_id
-    LEFT JOIN custom_field_options o ON o.id = b.custom_field_option_id
-)
-
+--
+-- Each side (row, column) joins its tag or bin directly rather than through a
+-- shared CTE: a CTE used twice is materialized, which labels every tag and bin
+-- in the tenant before a filter on analysis_id can apply. The row and column
+-- label expressions are therefore written out twice and must be kept in step.
 SELECT
     c.id,
     c.analysis_id,
@@ -56,18 +19,56 @@ SELECT
     COALESCE(a.project_id, ph.project_id) AS project_id,
     a.phase_id,
     c.unit,
-    r.kind AS row_kind,
-    r.tag_id AS row_tag_id,
-    r.tag_label AS row_tag_label,
-    r.question_id AS row_question_id,
-    r.question_label AS row_question_label,
-    r.answer_label AS row_answer_label,
-    col.kind AS column_kind,
-    col.tag_id AS column_tag_id,
-    col.tag_label AS column_tag_label,
-    col.question_id AS column_question_id,
-    col.question_label AS column_question_label,
-    col.answer_label AS column_answer_label,
+    CASE
+        WHEN rt.id IS NOT NULL THEN 'tag'
+        WHEN rq.resource_type = 'User' THEN 'registration_question'
+        ELSE 'form_question'
+    END AS row_kind,
+    rt.id AS row_tag_id,
+    rt.name AS row_tag_label,
+    rq.id AS row_question_id,
+    COALESCE(
+        NULLIF(rq.title_multiloc ->> (SELECT ac.settings -> 'core' -> 'locales' ->> 0 FROM app_configurations ac LIMIT 1), ''),
+        (SELECT t.value FROM jsonb_each_text(rq.title_multiloc) t WHERE t.value <> '' ORDER BY t.key LIMIT 1)
+    ) AS row_question_label,
+    CASE
+        WHEN rb.id IS NULL THEN NULL
+        WHEN rb.type = 'CustomFieldBins::OptionBin' THEN COALESCE(
+            NULLIF(ro.title_multiloc ->> (SELECT ac.settings -> 'core' -> 'locales' ->> 0 FROM app_configurations ac LIMIT 1), ''),
+            (SELECT t.value FROM jsonb_each_text(ro.title_multiloc) t WHERE t.value <> '' ORDER BY t.key LIMIT 1)
+        )
+        WHEN rb.type = 'CustomFieldBins::ValueBin' THEN (
+            SELECT string_agg(v.value, ', ') FROM jsonb_array_elements_text(rb.values) v
+        )
+        WHEN lower(rb.range) IS NULL THEN upper(rb.range) || ' or less'
+        WHEN upper(rb.range) IS NULL THEN lower(rb.range) || ' or more'
+        ELSE lower(rb.range) || ' to ' || upper(rb.range)
+    END AS row_answer_label,
+    CASE
+        WHEN ct.id IS NOT NULL THEN 'tag'
+        WHEN cq.resource_type = 'User' THEN 'registration_question'
+        ELSE 'form_question'
+    END AS column_kind,
+    ct.id AS column_tag_id,
+    ct.name AS column_tag_label,
+    cq.id AS column_question_id,
+    COALESCE(
+        NULLIF(cq.title_multiloc ->> (SELECT ac.settings -> 'core' -> 'locales' ->> 0 FROM app_configurations ac LIMIT 1), ''),
+        (SELECT t.value FROM jsonb_each_text(cq.title_multiloc) t WHERE t.value <> '' ORDER BY t.key LIMIT 1)
+    ) AS column_question_label,
+    CASE
+        WHEN cb.id IS NULL THEN NULL
+        WHEN cb.type = 'CustomFieldBins::OptionBin' THEN COALESCE(
+            NULLIF(co.title_multiloc ->> (SELECT ac.settings -> 'core' -> 'locales' ->> 0 FROM app_configurations ac LIMIT 1), ''),
+            (SELECT t.value FROM jsonb_each_text(co.title_multiloc) t WHERE t.value <> '' ORDER BY t.key LIMIT 1)
+        )
+        WHEN cb.type = 'CustomFieldBins::ValueBin' THEN (
+            SELECT string_agg(v.value, ', ') FROM jsonb_array_elements_text(cb.values) v
+        )
+        WHEN lower(cb.range) IS NULL THEN upper(cb.range) || ' or less'
+        WHEN upper(cb.range) IS NULL THEN lower(cb.range) || ' or more'
+        ELSE lower(cb.range) || ' to ' || upper(cb.range)
+    END AS column_answer_label,
     c.count,
     c.lift,
     c.p_value,
@@ -75,5 +76,15 @@ SELECT
 FROM analysis_heatmap_cells c
 INNER JOIN analysis_analyses a ON a.id = c.analysis_id
 LEFT JOIN phases ph ON ph.id = a.phase_id
-INNER JOIN sides r ON r.type = c.row_type AND r.id = c.row_id
-INNER JOIN sides col ON col.type = c.column_type AND col.id = c.column_id
+LEFT JOIN analysis_tags rt ON c.row_type = 'Analysis::Tag' AND rt.id = c.row_id
+LEFT JOIN custom_field_bins rb ON c.row_type = 'CustomFieldBin' AND rb.id = c.row_id
+LEFT JOIN custom_fields rq ON rq.id = rb.custom_field_id
+LEFT JOIN custom_field_options ro ON ro.id = rb.custom_field_option_id
+LEFT JOIN analysis_tags ct ON c.column_type = 'Analysis::Tag' AND ct.id = c.column_id
+LEFT JOIN custom_field_bins cb ON c.column_type = 'CustomFieldBin' AND cb.id = c.column_id
+LEFT JOIN custom_fields cq ON cq.id = cb.custom_field_id
+LEFT JOIN custom_field_options co ON co.id = cb.custom_field_option_id
+-- Cells have no foreign key to their tag or bin: leave out cells whose tag or
+-- bin was deleted.
+WHERE (rt.id IS NOT NULL OR rq.id IS NOT NULL)
+    AND (ct.id IS NOT NULL OR cq.id IS NOT NULL)
