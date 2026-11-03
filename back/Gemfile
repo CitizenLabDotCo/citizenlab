@@ -44,7 +44,7 @@ group :development, :test do
   gem 'rspec-parameterized'
   gem 'rspec-sqlimit'
   gem 'rspec-its'
-  gem 'rubocop', '~> 1.69', require: false
+  gem 'rubocop', '~> 1.92', require: false
   gem 'rubocop-ast', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
@@ -220,7 +220,7 @@ free_engines.each do |engine_name|
   gem engine_name, path: path if File.directory?(path)
 end
 
-gem 'ros-apartment', '~> 3.2', require: 'apartment'
+gem 'ros-apartment', '~> 3.4', require: 'apartment'
 
 commercial_engines = [
   'multi_tenancy',
