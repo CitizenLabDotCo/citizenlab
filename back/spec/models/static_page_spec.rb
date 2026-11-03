@@ -9,6 +9,11 @@ RSpec.describe StaticPage do
     end
   end
 
+  it_behaves_like 'a plain text multiloc', factory: :static_page
+  it_behaves_like 'a plain text multiloc', factory: :static_page, attribute: :banner_header_multiloc
+  it_behaves_like 'a plain text multiloc', factory: :static_page, attribute: :banner_subheader_multiloc
+  it_behaves_like 'a plain text multiloc', factory: :static_page, attribute: :banner_cta_button_multiloc
+
   describe 'validations' do
     it { is_expected.to validate_presence_of(:title_multiloc) }
 
@@ -152,6 +157,81 @@ RSpec.describe StaticPage do
       static_page.update(projects_filter_type: 'no_filter', global_topics: [topic], areas: [area])
       expect(static_page.reload.global_topics).to be_empty
       expect(static_page.reload.areas).to be_empty
+    end
+  end
+
+  describe 'project association' do
+    it 'is valid without a project (global page)' do
+      expect(build(:static_page)).to be_valid
+    end
+
+    it 'is valid with a project (project-scoped page)' do
+      expect(build(:static_page, :project_scoped)).to be_valid
+    end
+
+    it 'is destroyed when its project is destroyed' do
+      page = create(:static_page, :project_scoped)
+      expect { page.project.destroy! }.to change(described_class, :count).by(-1)
+    end
+
+    it 'is reported as project_scoped only when it has a project' do
+      expect(build(:static_page, :project_scoped).project_scoped?).to be(true)
+      expect(build(:static_page).project_scoped?).to be(false)
+    end
+  end
+
+  describe 'content builder layout association' do
+    # The layouts table is polymorphic, so it carries no foreign key and nothing else
+    # sweeps a layout whose page is gone.
+    it 'destroys the layout when the page is destroyed' do
+      page = create(:static_page)
+      create(
+        :layout,
+        content_buildable: page,
+        code: ContentBuilder::CustomPageLayoutService::CODE
+      )
+
+      expect { page.destroy! }.to change(ContentBuilder::Layout, :count).by(-1)
+    end
+  end
+
+  describe 'content builder pages' do
+    using RSpec::Parameterized::TableSyntax
+
+    where(:code, :content_builder_page) do
+      'custom'               | true
+      'about'                | true
+      'faq'                  | true
+      'terms-and-conditions' | false
+      'privacy-policy'       | false
+      'cookie-policy'        | false
+    end
+
+    with_them do
+      let!(:page) { create(:static_page, code: code) }
+
+      it { expect(page.content_builder_page?).to eq content_builder_page }
+      it { expect(described_class.content_builder_pages.include?(page)).to eq content_builder_page }
+    end
+
+    it 'includes a project-scoped page' do
+      page = create(:static_page, :project_scoped)
+
+      expect(page.content_builder_page?).to be true
+      expect(described_class.content_builder_pages).to include(page)
+    end
+  end
+
+  describe 'nav bar item restrictions' do
+    it 'cannot have a nav bar item when project-scoped' do
+      page = build(:static_page, :project_scoped, nav_bar_item: build(:nav_bar_item, code: 'custom'))
+      expect(page).to be_invalid
+      expect(page.errors[:nav_bar_item]).to be_present
+    end
+
+    it 'can have a nav bar item when global' do
+      page = build(:static_page, nav_bar_item: build(:nav_bar_item, code: 'custom'))
+      expect(page).to be_valid
     end
   end
 

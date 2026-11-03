@@ -65,7 +65,7 @@ const AiSummary = ({ phaseId, participationMethod }: Props) => {
   const analysis = analyses?.data[0];
   const analysisId = analysis?.id;
 
-  const { mutate: addAnalysis, isLoading: isCreatingAnalysis } =
+  const { mutate: addAnalysis, isPending: isCreatingAnalysis } =
     useAddAnalysis();
 
   const { data: insights, isLoading: isLoadingInsights } = useAnalysisInsights({
@@ -87,11 +87,11 @@ const AiSummary = ({ phaseId, participationMethod }: Props) => {
   });
   const inputCount = inputs?.pages[0].meta.filtered_count || 0;
 
-  const { mutate: preCheck, isLoading: isPreChecking } =
+  const { mutate: preCheck, isPending: isPreChecking } =
     useAddAnalysisSummaryPreCheck();
-  const { mutate: addSummary, isLoading: isAddingSummary } =
+  const { mutate: addSummary, isPending: isAddingSummary } =
     useAddAnalysisSummary();
-  const { mutate: regenerateSummary, isLoading: isRegenerating } =
+  const { mutate: regenerateSummary, isPending: isRegenerating } =
     useRegenerateAnalysisSummary();
 
   const missingInputsCount =

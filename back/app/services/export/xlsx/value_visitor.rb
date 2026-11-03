@@ -98,10 +98,6 @@ module Export
         '' # The field does not capture data, so there is no value.
       end
 
-      def visit_section(_field)
-        '' # The field does not capture data, so there is no value.
-      end
-
       def visit_file_upload(field)
         file_id = value_for(field)['id']
         return '' unless file_id
@@ -146,10 +142,10 @@ module Export
       end
 
       def value_for(field)
-        stored_value = if field.built_in?
+        stored_value = if field.stored_on_model?
           model.public_send field.key
         else
-          model.custom_field_values[field.key]
+          model.answer_for_key(field.key)&.value
         end
         stored_value.nil? ? '' : stored_value
       end

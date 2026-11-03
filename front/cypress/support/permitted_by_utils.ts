@@ -1,7 +1,10 @@
 import moment = require('moment');
 import { randomString } from './commands';
 import { ParticipationMethod } from '../../app/api/phases/types';
-import { IPhasePermissionAction } from '../../app/api/phase_permissions/types';
+import {
+  IPhasePermissionAction,
+  IPermissionUpdate,
+} from '../../app/api/phase_permissions/types';
 
 const withAdminJwt = (
   makeRequest: (adminJwt: string) => any,
@@ -42,7 +45,6 @@ export const setupProject = ({
       return cy.apiCreateProject({
         title: randomString(),
         descriptionPreview: randomString(),
-        description: randomString(),
         publicationStatus: 'published',
       });
     })
@@ -89,18 +91,15 @@ export const setupProject = ({
 export const updatePermission = ({
   adminJwt,
   phaseId,
-  permitted_by,
-  user_fields_in_form,
-  user_data_collection,
   permission = 'posting_idea',
+  ...permissionBody
 }: {
   adminJwt?: string;
   phaseId: string;
-  permitted_by?: string;
   user_fields_in_form?: boolean;
   user_data_collection?: string;
   permission?: IPhasePermissionAction;
-}) => {
+} & Partial<IPermissionUpdate>) => {
   const makeRequest = (adminJwt: string) => {
     return cy.request({
       headers: {
@@ -110,14 +109,15 @@ export const updatePermission = ({
       method: 'PATCH',
       url: `web_api/v1/phases/${phaseId}/permissions/${permission}`,
       body: {
-        permitted_by,
-        user_fields_in_form,
-        user_data_collection,
+        ...permissionBody,
       },
     });
   };
 
-  return withAdminJwt(makeRequest, adminJwt);
+  // The action has no permission of its own until it is overridden.
+  return cy
+    .apiOverridePhasePermission({ phaseId, action: permission })
+    .then(() => withAdminJwt(makeRequest, adminJwt));
 };
 
 export const addPermissionsCustomField = ({
@@ -146,8 +146,38 @@ export const addPermissionsCustomField = ({
     });
   };
 
-  return withAdminJwt(makeRequest, adminJwt);
+  // Nothing can be persisted against a permission that is still inherited.
+  return cy
+    .apiOverridePhasePermission({ phaseId, action: permission })
+    .then(() => withAdminJwt(makeRequest, adminJwt));
 };
+
+// A permission only accepts questions of its own once it has been switched to
+// asking custom ones.
+export const askOnlyDemographicQuestion = ({
+  adminJwt,
+  phaseId,
+  customFieldId,
+  permission = 'posting_idea',
+}: {
+  adminJwt?: string;
+  phaseId: string;
+  customFieldId: string;
+  permission?: IPhasePermissionAction;
+}) =>
+  updatePermission({
+    adminJwt,
+    phaseId,
+    permission,
+    custom_fields_behavior: 'custom',
+  }).then(() =>
+    addPermissionsCustomField({
+      adminJwt,
+      phaseId,
+      customFieldId,
+      permission,
+    })
+  );
 
 export const confirmUserCustomFieldHasValue = ({
   key,

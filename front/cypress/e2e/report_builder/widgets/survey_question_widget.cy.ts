@@ -42,7 +42,6 @@ describe('Survey question widget', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: randomString(),
-      description: randomString(),
       publicationStatus: 'published',
     })
       .then((project) => {
@@ -132,7 +131,7 @@ describe('Survey question widget', () => {
                   {
                     email,
                     password,
-                    project_id: projectId,
+                    phase_id: surveyPhaseId,
                     fields: {
                       [selectField.attributes.key]: selectAnswerKeys[0],
                       [multiSelectField.attributes.key]: [

@@ -19,12 +19,14 @@ import useProjectById from 'api/projects/useProjectById';
 import useUpdateReportLayout from 'api/report_layout/useUpdateReportLayout';
 
 import useLocalize from 'hooks/useLocalize';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import projectFilesMessages from 'containers/Admin/projects/project/files/components/messages';
 import insightWordMessages from 'containers/Admin/projects/project/insights/word/messages';
 import { useReportContext } from 'containers/Admin/reporting/context/ReportContext';
 import { useReportWordExportContext } from 'containers/Admin/reporting/word/ReportWordExportContext';
 
+import { getResolvedName } from 'components/admin/ContentBuilder/resolvedName';
 import Container from 'components/admin/ContentBuilder/TopBar/Container';
 import GoBackButton from 'components/admin/ContentBuilder/TopBar/GoBackButton';
 import LocaleSelect from 'components/admin/ContentBuilder/TopBar/LocaleSelect';
@@ -85,12 +87,13 @@ const ContentBuilderTopBar = ({
   const [showQuitModal, setShowQuitModal] = useState(false);
   const [downloadMenuOpened, setDownloadMenuOpened] = useState(false);
   const { query } = useEditor();
-  const { mutate: updateReportLayout, isLoading } = useUpdateReportLayout();
+  const { mutate: updateReportLayout, isPending } = useUpdateReportLayout();
   const { projectId, phaseId } = useReportContext();
   const { downloadWord, isDownloading, error, status, progress } =
     useReportWordExportContext();
   const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
+  const backofficeRedesign = useProjectBackofficeRedesign();
 
   const localize = useLocalize();
   const { formatMessage } = useIntl();
@@ -120,9 +123,11 @@ const ContentBuilderTopBar = ({
       return;
     }
 
+    // The redesigned workspace shows the phase preview on its setup page.
+    const phaseTab = backofficeRedesign ? 'setup' : 'report';
     const goBackUrl =
       projectId && phaseId
-        ? `/admin/projects/${projectId}/phases/${phaseId}/report`
+        ? `/admin/projects/${projectId}/phases/${phaseId}/${phaseTab}`
         : '/admin/reporting/report-builder';
 
     clHistory.push(goBackUrl);
@@ -209,11 +214,7 @@ const ContentBuilderTopBar = ({
       const firstNode = nodes.ROOT?.nodes[0];
       if (!firstNode) return;
 
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      const type = nodes?.[firstNode].type;
-      const resolvedName =
-        typeof type === 'object' ? type.resolvedName : undefined;
+      const resolvedName = getResolvedName(nodes[firstNode]);
 
       if (!isTemplateNode(resolvedName)) {
         // In theory this should not be possible, but handling
@@ -371,7 +372,7 @@ const ContentBuilderTopBar = ({
         )}
         <SaveButton
           isDisabled={disableSave}
-          isLoading={isLoading}
+          isLoading={isPending}
           isSaved={saved}
           onSave={handleSave}
         />

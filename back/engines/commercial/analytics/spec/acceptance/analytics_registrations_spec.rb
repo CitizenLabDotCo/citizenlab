@@ -41,6 +41,23 @@ resource 'Analytics - FactRegistrations model' do
         expect(response_data[:attributes]).to contain_exactly({ 'dimension_date_registration.month': '2022-08', count: 2 }, { 'dimension_date_registration.month': '2022-09', count: 1 })
       end
 
+      example 'group complete registrations by month, excluding admins and moderators' do
+        create_admins_and_moderators(registration_completed_at: '2022-08-15 16:30:00')
+
+        enable_exclude_admins_and_moderators_from_statistics
+        do_request({
+          query: {
+            fact: 'registration',
+            groups: 'dimension_date_registration.month',
+            aggregations: {
+              all: 'count'
+            }
+          }
+        })
+        assert_status 200
+        expect(response_data[:attributes]).to contain_exactly({ 'dimension_date_registration.month': '2022-08', count: 1 }, { 'dimension_date_registration.month': '2022-09', count: 1 })
+      end
+
       example 'filter complete registrations between dates and return citizens only' do
         do_request({
           query: {

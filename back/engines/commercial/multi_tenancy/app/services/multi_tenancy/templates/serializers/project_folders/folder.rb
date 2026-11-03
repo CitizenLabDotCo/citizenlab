@@ -6,7 +6,7 @@ module MultiTenancy
       module ProjectFolders
         class Folder < Base
           attributes %i[
-            description_multiloc description_preview_multiloc header_bg_alt_text_multiloc title_multiloc
+            description_preview_multiloc header_bg_alt_text_multiloc title_multiloc
           ]
           upload_attribute :header_bg
           ref_attribute :space

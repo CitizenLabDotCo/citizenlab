@@ -50,9 +50,9 @@ const EventAttendanceButton = ({ event }: EventAttendanceButtonProps) => {
 
   // Attendance API
   const { data: eventsAttending } = useEventsByUserId(user?.data.id);
-  const { mutate: addEventAttendance, isLoading: isAddingAttendance } =
+  const { mutate: addEventAttendance, isPending: isAddingAttendance } =
     useAddEventAttendance(event.id);
-  const { mutate: deleteEventAttendance, isLoading: isRemovingAttendance } =
+  const { mutate: deleteEventAttendance, isPending: isRemovingAttendance } =
     useDeleteEventAttendance(event.id, user?.data.id);
 
   // Attendance

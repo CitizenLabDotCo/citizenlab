@@ -18,6 +18,7 @@ import setPhaseURL from 'containers/ProjectsShowPage/timeline/setPhaseURL';
 import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
 
 import useCraftComponentDefaultPadding from 'components/admin/ContentBuilder/useCraftComponentDefaultPadding';
+import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
 
 import { FormattedMessage } from 'utils/cl-intl';
 import { usePermission } from 'utils/permissions';
@@ -25,7 +26,7 @@ import { useParams } from 'utils/router';
 
 import messages from '../messages';
 import SectionBackground from '../SectionBackground';
-import useWidgetProjectId from '../useWidgetProjectId';
+import useIsPageBodyChild from '../useIsPageBodyChild';
 
 import EmptyTimeline from './EmptyTimeline';
 
@@ -40,8 +41,13 @@ const Header = styled.div`
   `}
 `;
 
-const TimelineSection = () => {
+type Props = {
+  colored: boolean;
+};
+
+const TimelineSection = ({ colored }: Props) => {
   const projectId = useWidgetProjectId();
+  const isPageBodyChild = useIsPageBodyChild();
   const { slug, phaseNumber } = useParams({ strict: false }) as {
     slug?: string;
     phaseNumber?: string;
@@ -89,7 +95,11 @@ const TimelineSection = () => {
   };
 
   return (
-    <SectionBackground fullBleed={!!slug} py="40px">
+    <SectionBackground
+      colored={colored}
+      fullBleed={!!slug && isPageBodyChild}
+      py="40px"
+    >
       <Box
         id="e2e-project-page-timeline"
         maxWidth={`${maxPageWidth}px`}

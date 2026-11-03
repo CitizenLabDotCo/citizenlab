@@ -37,10 +37,10 @@ describe SideFxProjectService do
         .with(project, 'published', user, project.updated_at.to_i, anything)
     end
 
-    it 'provisions an enabled Content Builder description layout (content_builder patch)' do
+    it 'provisions an enabled project page layout (content_builder patch)' do
       service.after_create(project, user)
 
-      layout = project.content_builder_layouts.find_by(code: 'project_description')
+      layout = project.content_builder_layouts.find_by(code: 'project_page')
       expect(layout&.enabled).to be(true)
     end
   end
@@ -65,7 +65,7 @@ describe SideFxProjectService do
     end
 
     it "logs a 'published' action when a draft project is published" do
-      project.admin_publication.update!(publication_status: 'draft')
+      project.admin_publication.update!(publication_status: 'draft', first_published_at: nil)
 
       project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
       service.before_update(project, user)
@@ -123,6 +123,19 @@ describe SideFxProjectService do
       end
     end
 
+    it "does not log a 'published' action when a project that was published before is published again" do
+      project.admin_publication.update!(publication_status: 'published')
+      project.admin_publication.update!(publication_status: 'draft')
+
+      project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+      service.before_update(project, user)
+      project.save!
+
+      expect { service.after_update(project, user) }
+        .not_to have_enqueued_job(LogActivityJob)
+        .with(project, 'published', user, project.updated_at.to_i, anything)
+    end
+
     it "does not log a 'published' action when a archived project is republished" do
       project.admin_publication.update!(publication_status: 'archived')
 
@@ -164,6 +177,224 @@ describe SideFxProjectService do
       expect { service.after_update(project, user) }
         .not_to have_enqueued_job(ProcessScheduledPublicationTransitionsJob)
     end
+
+    context 'when the project has a pending review' do
+      let(:admin) { create(:admin) }
+      let!(:review) { create(:project_review, project: project, approved_at: nil) }
+
+      it 'approves the pending review when the project is published from draft' do
+        project.admin_publication.update!(publication_status: 'draft')
+
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+        service.before_update(project, admin)
+
+        project.save!
+        expect { service.after_update(project, admin) }
+          .to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', admin, anything, anything)
+        expect(project.review.reload.approved_at).not_to be_nil
+      end
+
+      it 'approves the pending review when the project is published from archived' do
+        project.admin_publication.update!(publication_status: 'archived')
+
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+        service.before_update(project, admin)
+
+        project.save!
+        expect { service.after_update(project, admin) }
+          .to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', admin, anything, anything)
+        expect(project.review.reload.approved_at).not_to be_nil
+      end
+
+      it 'does not approve the pending review when the project is already published' do
+        project.admin_publication.update!(publication_status: 'published')
+
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+        service.before_update(project, admin)
+
+        project.save!
+        expect { service.after_update(project, admin) }
+          .not_to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', admin, anything, anything)
+        expect(project.review.reload.approved_at).to be_nil
+      end
+
+      it 'does not approve the pending review when there is no publisher' do
+        # Happens on a scheduled publication whose `scheduled_by` user has been deleted
+        project.admin_publication.update!(publication_status: 'draft')
+
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+        service.before_update(project, nil)
+
+        project.save!
+        expect { service.after_update(project, nil) }
+          .not_to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', nil, anything, anything)
+
+        expect(project.review.reload.approved_at).to be_nil
+      end
+
+      it 'does not approve the pending review when a due scheduled publication has not been applied yet' do
+        project.admin_publication.update!(publication_status: 'draft')
+        # The transition is due, but the job has not materialized it yet, so the column is still 'draft'.
+        project.admin_publication.update_columns(
+          scheduled_status: 'published',
+          scheduled_at: 1.hour.ago,
+          scheduled_by_id: admin.id
+        )
+
+        project.assign_attributes(title_multiloc: { 'en' => 'An unrelated title change' })
+        service.before_update(project, admin)
+
+        project.save!
+        expect { service.after_update(project, admin) }
+          .not_to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', admin, anything, anything)
+        expect(project.review.reload.approved_at).to be_nil
+      end
+
+      it 'approves the pending review when the scheduled publication is applied' do
+        project.admin_publication.update!(publication_status: 'draft')
+        project.admin_publication.update_columns(
+          scheduled_status: 'published',
+          scheduled_at: 1.hour.ago,
+          scheduled_by_id: admin.id
+        )
+
+        ProcessScheduledPublicationTransitionsJob.perform_now(project.admin_publication)
+
+        review = project.review.reload
+        expect(review.approved_at).not_to be_nil
+        expect(review.reviewer_id).to eq(admin.id)
+      end
+
+      it 'does not approve the pending review when the publisher cannot review' do
+        moderator = create(:project_moderator, projects: [project])
+        project.admin_publication.update!(publication_status: 'archived')
+
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+        service.before_update(project, moderator)
+
+        project.save!
+        expect { service.after_update(project, moderator) }
+          .not_to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', moderator, anything, anything)
+
+        expect(project.review.reload.approved_at).to be_nil
+      end
+
+      it 'does not approve the pending review when the publisher only moderates an unrelated folder' do
+        moderator = create(:project_folder_moderator)
+        project.admin_publication.update!(publication_status: 'draft')
+
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+        service.before_update(project, moderator)
+
+        project.save!
+        expect { service.after_update(project, moderator) }
+          .not_to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', moderator, anything, anything)
+
+        expect(project.review.reload.approved_at).to be_nil
+      end
+
+      it 'does not approve the pending review when the publisher only moderates an unrelated space' do
+        moderator = create(:space_moderator)
+        project.admin_publication.update!(publication_status: 'draft')
+
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+        service.before_update(project, moderator)
+
+        project.save!
+        expect { service.after_update(project, moderator) }
+          .not_to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', moderator, anything, anything)
+
+        expect(project.review.reload.approved_at).to be_nil
+      end
+
+      it 'does not delete the pending review when the project is set back to draft' do
+        project.admin_publication.update!(publication_status: 'published')
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'draft' })
+        service.before_update(project, admin)
+
+        project.save!
+        expect { service.after_update(project, admin) }
+          .not_to have_enqueued_job(LogActivityJob)
+          .with(encode_frozen_resource(review), 'deleted', admin, anything, anything)
+
+        expect(project.reload.review).to eq(review)
+      end
+
+      context 'when the project is in a folder' do
+        let(:folder) { create(:project_folder) }
+        let(:project) { create(:project, admin_publication_attributes: { parent_id: folder.admin_publication.id }) }
+
+        it 'approves the pending review when the publisher moderates that folder' do
+          moderator = create(:project_folder_moderator, project_folders: [folder])
+          project.admin_publication.update!(publication_status: 'draft')
+
+          project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+          service.before_update(project, moderator)
+
+          project.save!
+          expect { service.after_update(project, moderator) }
+            .to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', moderator, anything, anything)
+
+          review = project.review.reload
+          expect(review.approved_at).not_to be_nil
+          expect(review.reviewer_id).to eq(moderator.id)
+        end
+      end
+
+      context 'when the project belongs to a space' do
+        let(:space) { create(:space) }
+        let(:project) { create(:project, space: space) }
+
+        it 'approves the pending review when the publisher moderates that space' do
+          moderator = create(:space_moderator, spaces: [space])
+          project.admin_publication.update!(publication_status: 'draft')
+
+          project.assign_attributes(admin_publication_attributes: { publication_status: 'published' })
+          service.before_update(project, moderator)
+
+          project.save!
+          expect { service.after_update(project, moderator) }
+            .to have_enqueued_job(LogActivityJob).with(project, 'project_review_approved', moderator, anything, anything)
+
+          review = project.review.reload
+          expect(review.approved_at).not_to be_nil
+          expect(review.reviewer_id).to eq(moderator.id)
+        end
+      end
+    end
+
+    context 'when the project has an approved review' do
+      let(:admin) { create(:admin) }
+      let!(:review) { create(:project_review, project: project, approved_at: Time.current, reviewer: admin) }
+
+      before do
+        project.admin_publication.update!(publication_status: 'published')
+      end
+
+      it 'deletes the approved review when the project is set back to draft' do
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'draft' })
+        service.before_update(project, admin)
+
+        project.save!
+        expect { service.after_update(project, admin) }
+          .to have_enqueued_job(LogActivityJob)
+          .with(encode_frozen_resource(review), 'deleted', admin, anything, anything)
+
+        expect(project.reload.review).to be_nil
+      end
+
+      it 'deletes the approved review when the project is set back to archived' do
+        project.assign_attributes(admin_publication_attributes: { publication_status: 'archived' })
+        service.before_update(project, admin)
+
+        project.save!
+        expect { service.after_update(project, admin) }
+          .to have_enqueued_job(LogActivityJob)
+          .with(encode_frozen_resource(review), 'deleted', admin, anything, anything)
+
+        expect(project.reload.review).to be_nil
+      end
+    end
   end
 
   describe 'after_destroy' do
@@ -175,10 +406,10 @@ describe SideFxProjectService do
       end
     end
 
-    it 'invokes ContentBuilder::LayoutService#clean_homepage_layout_when_publication_deleted' do
+    it 'invokes ContentBuilder::LayoutService#clean_layouts_when_publication_deleted' do
       layout_service = instance_double(ContentBuilder::LayoutService)
       allow(ContentBuilder::LayoutService).to receive(:new).and_return(layout_service)
-      expect(layout_service).to receive(:clean_homepage_layout_when_publication_deleted).with(instance_of(Project))
+      expect(layout_service).to receive(:clean_layouts_when_publication_deleted).with(instance_of(Project))
 
       frozen_project = project.destroy
       service.after_destroy(frozen_project, user)
@@ -260,21 +491,21 @@ describe SideFxProjectService do
       expect(UserRoleService.new.can_moderate?(copied_project, user)).to be true
     end
 
-    it 'wraps a carried-over description on the Content Builder rather than an empty frame' do
-      # Regression: a copy/import whose source had a description but no layout must
-      # not get an empty enabled layout (which would hide the description). Provisioning
-      # only ensures the description is on the builder — it adds no AboutBox (that is
-      # the one-time migration's concern).
-      copied_project.update!(description_multiloc: { 'en' => '<p>Carried over</p>' })
+    it 'leaves a copied project page layout untouched' do
+      # A copy carries its source's layouts over, so provisioning must not replace
+      # the copied page with a default one.
+      carried_over = create(
+        :layout,
+        content_buildable: copied_project,
+        code: 'project_page',
+        enabled: true,
+        craftjs_json: { 'ROOT' => { 'type' => 'div', 'nodes' => [], 'isCanvas' => true } }
+      )
 
       service.after_copy(source_project, copied_project, user, Time.now)
 
-      layout = copied_project.content_builder_layouts.find_by(code: 'project_description')
-      expect(layout&.enabled).to be(true)
-      node = layout.craftjs_json.values.find do |n|
-        n.is_a?(Hash) && n['type'].is_a?(Hash) && n['type']['resolvedName'] == 'TextMultiloc'
-      end
-      expect(node['props']['text']).to eq({ 'en' => '<p>Carried over</p>' })
+      expect(copied_project.content_builder_layouts.where(code: 'project_page').count).to eq(1)
+      expect(carried_over.reload.craftjs_json).to eq({ 'ROOT' => { 'type' => 'div', 'nodes' => [], 'isCanvas' => true } })
     end
   end
 end

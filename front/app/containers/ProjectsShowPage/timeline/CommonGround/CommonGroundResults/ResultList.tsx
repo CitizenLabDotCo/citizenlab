@@ -66,7 +66,7 @@ const ResultList = ({ title, description, items }: Props) => {
                   mb={isMobileOrSmaller ? '8px' : undefined}
                   mr={isMobileOrSmaller ? undefined : '16px'}
                 >
-                  <T value={item.title_multiloc} supportHtml />
+                  <T value={item.title_multiloc} />
                 </Box>
                 <Box width="166px" flexShrink={0}>
                   <OutcomeBreakdownBar

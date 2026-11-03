@@ -6,6 +6,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_topic_serie(limit = nil)
     ideas = policy_scope(Idea.published, policy_scope_class: StatIdeaPolicy::Scope)
     ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
+    ideas = apply_exclude_admins_and_moderators_filter(ideas, :author_id)
 
     serie = ideas
       .where(published_at: @start_at..@end_at)
@@ -15,7 +16,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
       .limit(limit)
       .count('id')
 
-    IdeasCountService.aggregate_child_input_topic_counts(serie)
+    add_child_counts_to_parents(serie)
   end
 
   def ideas_by_topic
@@ -47,6 +48,7 @@ class WebApi::V1::StatsIdeasController < WebApi::V1::StatsController
   def ideas_by_project_serie
     ideas = policy_scope(Idea.published, policy_scope_class: StatIdeaPolicy::Scope)
     ideas = IdeasFinder.new(params, scope: ideas, current_user: current_user).find_records
+    ideas = apply_exclude_admins_and_moderators_filter(ideas, :author_id)
 
     ideas
       .where(published_at: @start_at..@end_at)

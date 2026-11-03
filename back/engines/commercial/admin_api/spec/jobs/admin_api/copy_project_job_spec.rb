@@ -36,7 +36,8 @@ RSpec.describe AdminApi::CopyProjectJob do
       serialized_project = ProjectCopyService.new.export(project)
       model_counts = serialized_project['models'].transform_values(&:size)
       expected_model_counts = template['models'].transform_values(&:size)
-      expected_model_counts['content_builder/layout'] += 2
+      # The copy is provisioned with a project page layout.
+      expected_model_counts['content_builder/layout'] += 1
       expect(model_counts).to eq(expected_model_counts)
     end
 

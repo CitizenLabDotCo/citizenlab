@@ -73,12 +73,19 @@ describe XlsxService do
         title_multiloc: { 'en' => 'Option 2' }
       )
 
-      fields1 = { 'number_field' => 9, 'multiselect_field' => %w[option1 option2] }
-      fields2 = { 'number_field' => 22, 'date_field' => '19-05-2022', 'select_field' => 'hippopotamus' }
-      fields3 = { 'select_field' => 'fruitfly', 'multiselect_field' => %w[option1] }
-      @idea1 = create(:idea, project: @project, custom_field_values: fields1)
-      @idea2 = create(:idea, project: @project, custom_field_values: fields2)
-      @idea3 = create(:idea, project: @project, custom_field_values: fields3)
+      @idea1 = create(:idea, project: @project, custom_field_answers: [
+        build(:custom_field_answer, key: 'number_field', value: 9),
+        build(:custom_field_answer, key: 'multiselect_field', value: %w[option1 option2])
+      ])
+      @idea2 = create(:idea, project: @project, custom_field_answers: [
+        build(:custom_field_answer, key: 'number_field', value: 22),
+        build(:custom_field_answer, key: 'date_field', value: '19-05-2022'),
+        build(:custom_field_answer, key: 'select_field', value: 'hippopotamus')
+      ])
+      @idea3 = create(:idea, project: @project, custom_field_answers: [
+        build(:custom_field_answer, key: 'select_field', value: 'fruitfly'),
+        build(:custom_field_answer, key: 'multiselect_field', value: %w[option1])
+      ])
     end
 
     let(:xlsx) { service.generate_ideas_xlsx([@idea1, @idea2, @idea3], view_private_attributes: false) }
@@ -183,7 +190,7 @@ describe XlsxService do
           title_multiloc: { 'en' => 'How many sugars?' }
         )
         @idea1 = create(:idea, project: @project_no_form)
-        @idea2 = create(:idea, project: @project_with_form, custom_field_values: { 'number_field' => 5 })
+        @idea2 = create(:idea, project: @project_with_form, custom_field_answers: [build(:custom_field_answer, key: 'number_field', value: 5)])
       end
 
       let(:xlsx) { service.generate_ideas_xlsx([@idea1, @idea2], view_private_attributes: false) }

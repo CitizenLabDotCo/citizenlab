@@ -4,7 +4,7 @@ module ReportBuilder
     # @param start_at [String, Date] Beginning of analysis period (YYYY-MM-DD)
     # @param end_at [String, Date] End of analysis period (YYYY-MM-DD)
     # @param project_id [String] Optional project ID to filter participants
-    # @param exclude_roles [<String>] Flag to exclude certain roles from participant counts ('exclude_admins_and_moderators')
+    # @param exclude_admins_and_moderators [Boolean] Leave out admins and moderators from participant counts
     # @param resolution [String] Time grouping ('day', 'week', or 'month')
     # @return [Hash] Participant timeseries, counts and participation rates
     def run_query(
@@ -12,7 +12,7 @@ module ReportBuilder
       end_at: nil,
       project_id: nil,
       resolution: 'month',
-      exclude_roles: nil,
+      exclude_admins_and_moderators: false,
       compare_start_at: nil,
       compare_end_at: nil,
       **_other_props
@@ -25,7 +25,7 @@ module ReportBuilder
         start_at,
         end_at,
         project_id: project_id,
-        exclude_roles: exclude_roles
+        exclude_admins_and_moderators: exclude_admins_and_moderators
       )
 
       # Time series
@@ -54,7 +54,7 @@ module ReportBuilder
           start_at,
           end_at,
           project_id: project_id,
-          exclude_roles: exclude_roles
+          exclude_admins_and_moderators: exclude_admins_and_moderators
         )
       }
 
@@ -64,7 +64,7 @@ module ReportBuilder
           compare_start_at,
           compare_end_at,
           project_id: project_id,
-          exclude_roles: exclude_roles
+          exclude_admins_and_moderators: exclude_admins_and_moderators
         )
           .count('distinct participant_id')
 
@@ -74,7 +74,7 @@ module ReportBuilder
           compare_start_at,
           compare_end_at,
           project_id: project_id,
-          exclude_roles: exclude_roles
+          exclude_admins_and_moderators: exclude_admins_and_moderators
         )
       end
 
@@ -85,7 +85,7 @@ module ReportBuilder
       start_at,
       end_at,
       project_id: nil,
-      exclude_roles: nil
+      exclude_admins_and_moderators: false
     )
       participations = Analytics::FactParticipation
         .where(dimension_date_created_id: start_at...end_at)
@@ -95,19 +95,11 @@ module ReportBuilder
           .where(dimension_project_id: project_id)
       end
 
-      if exclude_roles == 'exclude_admins_and_moderators'
-        participations = participations
-          .joins('INNER JOIN users ON users.id = analytics_fact_participations.dimension_user_id')
-
-        # Normal users have a 'rules' attribute which is just an empty array.
-        participations = participations.where('jsonb_array_length(users.roles) = 0')
-      end
-
-      participations
+      exclude_admins_and_moderators_from_participations(participations, exclude_admins_and_moderators)
     end
 
-    def participation_rate_as_percent(participants, start_at, end_at, project_id: nil, exclude_roles: nil)
-      visits_service = Insights::VisitsService.new(project_id, start_at:, end_at:, exclude_roles:)
+    def participation_rate_as_percent(participants, start_at, end_at, project_id: nil, exclude_admins_and_moderators: false)
+      visits_service = Insights::VisitsService.new(project_id, start_at:, end_at:, exclude_admins_and_moderators:)
       visitors = visits_service.total_visits[:visitors]
       visitors.zero? ? 0 : (participants / visitors.to_f)
     end

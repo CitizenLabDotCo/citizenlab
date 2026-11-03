@@ -2,6 +2,7 @@
 
 class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   PRIVATE = proc { |object, params| view_private_attributes? object, params }
+  OWN_EARLY_ACCESS = proc { |object, params| own_early_access? object, params }
 
   # Public attributes
   attributes :locale,
@@ -41,16 +42,23 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   attribute :block_start_at, if: PRIVATE
   attribute :block_end_at, if: PRIVATE
   attribute :block_reason, if: PRIVATE
+  attribute :email_bounced_at, if: PRIVATE
+  attribute :email_bounce_reason, if: PRIVATE
   attribute :verified, if: PRIVATE
   attribute :followings_count, if: PRIVATE
   attribute :onboarding, if: PRIVATE
+  attribute :early_access_opt_ins, if: OWN_EARLY_ACCESS
+  attribute :offered_early_access_features, if: OWN_EARLY_ACCESS
 
   attribute :no_password, if: PRIVATE do |object|
     object.no_password?
   end
 
-  attribute :custom_field_values, if: PRIVATE do |object|
-    CustomFieldService.remove_hidden_custom_fields(object.custom_field_values)
+  attribute :custom_field_values do |object, params|
+    user = current_user(params)
+    object.custom_field_answers
+      .select { |answer| CustomFieldAnswerPolicy.new(user, answer).show? }
+      .to_h { [it.key, it.value] }
   end
 
   attribute :unread_notifications, if: PRIVATE do |object|
@@ -66,6 +74,11 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
   end
 
   attribute :new_email, if: PRIVATE
+  attribute :merge_target_email, if: PRIVATE
+
+  attribute :phone, if: PRIVATE
+  attribute :phone_confirmed_at, if: PRIVATE
+  attribute :new_phone, if: PRIVATE
 
   def self.name_service(params)
     UserDisplayNameService.new(AppConfiguration.instance, current_user(params))
@@ -73,5 +86,9 @@ class WebApi::V1::UserSerializer < WebApi::V1::BaseSerializer
 
   def self.view_private_attributes?(object, params = {})
     Pundit.policy!(user_context(params), object).view_private_attributes?
+  end
+
+  def self.own_early_access?(object, params = {})
+    Pundit.policy!(user_context(params), object).own_early_access?
   end
 end

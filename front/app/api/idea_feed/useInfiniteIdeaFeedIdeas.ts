@@ -1,8 +1,13 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import {
+  keepPreviousData as keepPreviousDataFn,
+  useInfiniteQuery,
+  InfiniteData,
+} from '@tanstack/react-query';
 import { uniqBy } from 'lodash-es';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
+import { NO_PLACEHOLDER_DATA } from 'utils/cl-react-query/queryClient';
 
 import ideaFeedKeys from './keys';
 import {
@@ -41,8 +46,9 @@ const useInfiniteIdeaFeedIdeas = (
   return useInfiniteQuery<
     IIdeaFeedIdeas,
     CLErrors,
-    IIdeaFeedIdeas,
-    IdeaFeedKeys
+    InfiniteData<IIdeaFeedIdeas>,
+    IdeaFeedKeys,
+    boolean
   >({
     queryKey: ideaFeedKeys.list({ phaseId, ...queryParams }),
     queryFn: () =>
@@ -51,6 +57,7 @@ const useInfiniteIdeaFeedIdeas = (
         pageSize: queryParams['page[size]'],
         topic: queryParams.topic,
       }),
+    initialPageParam: true,
     getNextPageParam: (_lastPage, allPages) => {
       // Check if the last page added any new unique ideas
       const allIdeas = allPages.flatMap((page) => page.data);
@@ -69,8 +76,10 @@ const useInfiniteIdeaFeedIdeas = (
 
       return true;
     },
-    keepPreviousData,
-    cacheTime: 0,
+    placeholderData: keepPreviousData
+      ? keepPreviousDataFn
+      : NO_PLACEHOLDER_DATA,
+    gcTime: 0,
   });
 };
 

@@ -71,12 +71,108 @@ describe McpServer::Tools::DestroyResource do
     expect { image.reload }.to raise_error(ActiveRecord::RecordNotFound)
   end
 
-  it 'destroys a file attachment' do
+  it 'destroys a folder image' do
+    folder = create(:project_folder, admin_publication_attributes: { publication_status: 'draft' })
+    image = create(:project_folder_image, project_folder: folder)
+    response = destroy('folder_image', image.id)
+    expect(response).not_to be_error
+    expect { image.reload }.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
+  it 'refuses when the target folder is published' do
+    folder = create(:project_folder)
+    image = create(:project_folder_image, project_folder: folder)
+    response = destroy('folder_image', image.id)
+    expect(response).to be_unauthorized_project
+    expect(image.reload).to be_present
+  end
+
+  it 'destroys an empty folder on a demo platform' do
+    change_lifecycle_stage('demo')
+    folder = create(:project_folder)
+
+    response = nil
+    expect { response = destroy('folder', folder.id) }
+      .to have_enqueued_job(LogActivityJob).at_least(:once)
+
+    expect(response).not_to be_error
+    expect { folder.reload }.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
+  it 'refuses to destroy a folder outside demo and trial platforms, even a draft one' do
+    folder = create(:project_folder, admin_publication_attributes: { publication_status: 'draft' })
+
+    response = destroy('folder', folder.id)
+
+    expect(response).to be_error
+    expect(response.content.sole[:text]).to include('demo and trial')
+    expect { folder.reload }.not_to raise_error
+  end
+
+  it 'refuses to destroy a folder that contains projects' do
+    change_lifecycle_stage('demo')
+    folder = create(:project_folder)
+    create(:project, folder_id: folder.id)
+
+    response = destroy('folder', folder.id)
+
+    expect(response).to be_unauthorized(/Cannot destroy folder/)
+    expect { folder.reload }.not_to raise_error
+  end
+
+  it 'destroys an area on a demo platform, detaching it from its projects' do
+    change_lifecycle_stage('demo')
+    area = create(:area)
+    project = create(:project, areas: [area])
+
+    response = nil
+    expect { response = destroy('area', area.id) }
+      .to have_enqueued_job(LogActivityJob).at_least(:once)
+
+    expect(response).not_to be_error
+    expect { area.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    expect(project.reload.areas).to be_empty
+  end
+
+  it 'refuses to destroy an area outside demo and trial platforms' do
+    area = create(:area)
+
+    response = destroy('area', area.id)
+
+    expect(response).to be_error
+    expect(response.content.sole[:text]).to include('demo and trial')
+    expect { area.reload }.not_to raise_error
+  end
+
+  it 'refuses to destroy an area used by a static page project filter, before any side effects' do
+    change_lifecycle_stage('demo')
+    create(:custom_field_domicile)
+    area = create(:area)
+    user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'domicile', value: area.id)])
+    create(:static_page, projects_filter_type: 'areas', areas: [area])
+
+    response = destroy('area', area.id)
+
+    expect(response).to be_unauthorized(/Cannot destroy area/)
+    expect { area.reload }.not_to raise_error
+    expect(user.reload.custom_field_answers.pluck(:key, :value)).to eq [['domicile', area.id]]
+  end
+
+  it 'destroys a file attachment on a folder' do
+    folder = create(:project_folder, admin_publication_attributes: { publication_status: 'draft' })
+    attachment = create(:file_attachment, file: create(:file), attachable: folder)
+    response = destroy('file_attachment', attachment.id)
+    expect(response).not_to be_error
+    expect { attachment.reload }.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
+  it 'destroys a file attachment but keeps the file in the project pool' do
     file = create(:file, projects: [draft_project])
     attachment = create(:file_attachment, file: file, attachable: draft_project)
     response = destroy('file_attachment', attachment.id)
     expect(response).not_to be_error
     expect { attachment.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    expect(file.reload.projects).to include(draft_project)
   end
 
   it 'refuses when the target project is published' do
@@ -85,6 +181,19 @@ describe McpServer::Tools::DestroyResource do
     response = destroy('phase', phase.id)
     expect(response).to be_unauthorized_project
     expect { phase.reload }.not_to raise_error
+  end
+
+  # Deliberate: lifting the draft-only rule on demo platforms extends to destruction.
+  # The inputs-present guards below still apply there.
+  it 'destroys a phase of a published project on a demo platform' do
+    change_lifecycle_stage('demo')
+    published_project = create(:project, admin_publication_attributes: { publication_status: 'published' })
+    phase = create(:phase, project: published_project)
+
+    response = destroy('phase', phase.id)
+
+    expect(response).not_to be_error
+    expect { phase.reload }.to raise_error(ActiveRecord::RecordNotFound)
   end
 
   it 'refuses to destroy a project that has inputs' do
@@ -119,7 +228,6 @@ describe McpServer::Tools::DestroyResource do
 
   it 'returns a not-found error when the record does not exist' do
     response = destroy('phase', SecureRandom.uuid)
-    expect(response).to be_error
-    expect(response.content.first[:text]).to match(/not found/i)
+    expect(response).to be_not_found('Resource (phase)')
   end
 end

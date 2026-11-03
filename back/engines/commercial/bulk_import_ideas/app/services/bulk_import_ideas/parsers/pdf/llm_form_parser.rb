@@ -2,10 +2,11 @@
 
 module BulkImportIdeas::Parsers::Pdf
   class LLMFormParser
-    def initialize(phase, locale, personal_data_enabled: false)
+    def initialize(phase, locale, personal_data_enabled: false, printable_fields: nil)
       @phase = phase
       @locale = locale
       @personal_data_enabled = personal_data_enabled
+      @printable_fields = printable_fields
     end
 
     # Return in format compatible with idea_to_idea_row
@@ -39,6 +40,10 @@ module BulkImportIdeas::Parsers::Pdf
         raise unless e.message.include?('grammar is too large')
 
         response = llm.chat(message)
+      rescue RubyLLM::ForbiddenError => e
+        raise unless e.message.include?('Signature expired')
+
+        raise BulkImportIdeas::Error.new 'bulk_import_pdf_parsing_timeout', value: file_uploader.url
       end
       parse_response(response)
     end
@@ -49,7 +54,12 @@ module BulkImportIdeas::Parsers::Pdf
       return response if response.is_a?(Hash)
 
       parsed = response.match(/\{.+\}/m)&.try(:[], 0)
-      parsed.present? ? JSON.parse(parsed) : nil
+      return nil if parsed.blank?
+
+      JSON.parse(parsed.squish)
+    rescue JSON::ParserError => e
+      ErrorReporter.report_msg("LLM form parser returned malformed JSON: #{e.message}")
+      nil
     end
 
     def map_response_to_fields(response)
@@ -107,7 +117,7 @@ module BulkImportIdeas::Parsers::Pdf
     end
 
     def schema_builder
-      @schema_builder ||= FormSyncSchemaBuilder.new(@phase, @locale, personal_data_enabled: @personal_data_enabled)
+      @schema_builder ||= FormSyncSchemaBuilder.new(@phase, @locale, personal_data_enabled: @personal_data_enabled, printable_fields: @printable_fields)
     end
 
     def llm

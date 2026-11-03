@@ -11,8 +11,4 @@ class IdMethodPolicy < ApplicationPolicy
   def first_enabled_verification_method?
     true
   end
-
-  def first_enabled_for_verified_actions?
-    true
-  end
 end

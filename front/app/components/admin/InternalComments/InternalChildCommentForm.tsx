@@ -91,7 +91,7 @@ const InternalChildCommentForm = ({
 
   const {
     mutate: addCommentToIdeaComment,
-    isLoading: isAddCommentToIdeaLoading,
+    isPending: isAddCommentToIdeaLoading,
   } = useAddInternalCommentToIdea();
 
   const [inputValue, setInputValue] = useState('');

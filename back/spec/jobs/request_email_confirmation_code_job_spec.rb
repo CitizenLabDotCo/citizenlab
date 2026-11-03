@@ -13,8 +13,19 @@ RSpec.describe RequestEmailConfirmationCodeJob do
         expect { job.perform(user) }.to enqueue_job(LogActivityJob).with(user, 'requested_confirmation_code', user, anything, payload: { new_email: nil })
       end
 
-      it 'changes the email confirmation code delivery timestamp' do
-        expect { job.perform(user) }.to change { user.email_confirmation.reload.code_sent_at }
+      it 'creates the email confirmation on demand and sets the code delivery timestamp' do
+        expect(user.email_confirmation).to be_nil
+
+        expect { job.perform(user) }.to change(EmailConfirmation, :count).by(1)
+        expect(user.reload.email_confirmation.code_sent_at).to be_present
+      end
+
+      it 'reuses an existing email confirmation instead of replacing it' do
+        confirmation = user.find_or_create_confirmation(:email_confirmation)
+
+        expect { job.perform(user) }.not_to change(EmailConfirmation, :count)
+        expect(user.reload.email_confirmation.id).to eq confirmation.id
+        expect(user.email_confirmation.code_reset_count).to eq 1
       end
 
       it 'sends the confirmation email' do
@@ -52,14 +63,15 @@ RSpec.describe RequestEmailConfirmationCodeJob do
       end
 
       it 'resets code_retry_count on the email_confirmation' do
-        user.email_confirmation.update!(code_retry_count: 3)
-        expect { job.perform(user) }.to change { user.email_confirmation.reload.code_retry_count }.to(0)
+        confirmation = user.find_or_create_confirmation(:email_confirmation)
+        confirmation.update!(code_retry_count: 3)
+        expect { job.perform(user) }.to change { confirmation.reload.code_retry_count }.to(0)
       end
     end
 
     context 'when the user has made too many reset requests' do
       let(:user) do
-        create(:unconfirmed_user).tap { |u| u.email_confirmation.update!(code_reset_count: 5) }
+        create(:unconfirmed_user).tap { |u| u.find_or_create_confirmation(:email_confirmation).update!(code_reset_count: 5) }
       end
 
       it 'raises a too many resets on code error' do

@@ -133,8 +133,7 @@ RSpec.shared_examples 'authenticates when the user was already registered with V
           configuration.settings['password_login'] = {
             allowed: true,
             enabled: true,
-            minimum_length: 8,
-            enable_signup: true
+            minimum_length: 8
           }
           configuration.save!
         end

@@ -65,7 +65,9 @@ module Analysis
 
         def find_users
           inputs = InputsFinder.new(@analysis, filters(params)).execute
-          User.where(id: inputs.select(:author_id))
+          users = User.where(id: inputs.select(:author_id))
+          users = users.normal_user if StatisticsRoleExclusion.new.exclude_admins_and_moderators?
+          users
         end
 
         class NotSupportedFieldTypeError < StandardError; end

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import {
   Title,
@@ -24,7 +24,7 @@ const StyledBox = styled(Box)`
 
 const StyledCloseIconButton = styled(CloseIconButton)`
   position: absolute;
-  right: 8px;
+  right: 28px;
 `;
 
 interface Props {
@@ -56,11 +56,15 @@ const Settings = ({ selectedNode, onClose, onDelete }: Props) => {
       />
       <Box h="100%" pr="8px" overflowY="auto">
         {selectedNode.title && (
-          <Title variant="h2" mt="-4px" mb="32px">
+          <Title variant="h2" mt="-4px" mb="32px" pr="48px">
             <FormattedMessage {...selectedNode.title} />
           </Title>
         )}
-        {selectedNode.settings && React.createElement(selectedNode.settings)}
+        {/* Some widgets load their settings lazily, so that public pages showing
+            the widget don't download editor code (e.g. the rich text editor). */}
+        <Suspense fallback={null}>
+          {selectedNode.settings && React.createElement(selectedNode.settings)}
+        </Suspense>
         {selectedNode.isDeletable ? (
           <Box display="flex">
             <ButtonWithLink

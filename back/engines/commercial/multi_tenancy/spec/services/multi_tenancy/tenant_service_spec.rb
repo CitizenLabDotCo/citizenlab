@@ -75,5 +75,17 @@ RSpec.describe MultiTenancy::TenantService do
       service.delete(tenant)
       expect(tenant.deleted_at).not_to be_nil
     end
+
+    # The soft-delete used to go through `update!`, so a record that was already invalid raised
+    # RecordInvalid and nothing was deleted at all. The tenant that surfaced this had an
+    # uppercase host; the name stands in for it here, as that leaves the schema reachable.
+    it 'marks a tenant that fails validation as deleted' do
+      invalid_tenant = create(:tenant, host: 'invalid.example.com')
+      invalid_tenant.update_column(:name, nil)
+      expect(invalid_tenant.reload).to be_invalid
+
+      expect { service.delete(invalid_tenant) }.to have_enqueued_job(MultiTenancy::Tenants::DeleteJob)
+      expect(invalid_tenant.reload.deleted_at).not_to be_nil
+    end
   end
 end

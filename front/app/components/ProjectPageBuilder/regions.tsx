@@ -1,24 +1,70 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
-import { Box, media } from '@citizenlab/cl2-component-library';
-import { UserComponent } from '@craftjs/core';
-import styled from 'styled-components';
+import { Box, colors } from '@citizenlab/cl2-component-library';
+import { Node, UserComponent, useEditor } from '@craftjs/core';
+import styled, { css } from 'styled-components';
 
-import ProjectCTABar from 'containers/ProjectsShowPage/ProjectCTABar';
+import DropZoneOutline from 'components/admin/ContentBuilder/DropFeedback/DropZoneOutline';
+import useWidgetProjectId from 'components/admin/ContentBuilder/useWidgetProjectId';
 
 import { useParams } from 'utils/router';
 
-import useWidgetProjectId from './Widgets/useWidgetProjectId';
+import CTABar from './CTABar';
+import EditableContentDivider from './EditableContentDivider';
+import LockedZonePill from './LockedZonePill';
 
 type RegionProps = {
   children?: React.ReactNode;
 };
 
-export const ProjectPageRoot: UserComponent<RegionProps> = ({ children }) => (
-  <Box id="e2e-content-builder-frame" w="100%">
-    {children}
-  </Box>
-);
+const BodyBackground = styled(Box)<{ $fullBleed: boolean }>`
+  background: ${colors.white};
+  ${({ $fullBleed }) =>
+    $fullBleed &&
+    css`
+      background: none;
+      position: relative;
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: calc(-50vw + 50%);
+        width: 100vw;
+        background: ${colors.white};
+        z-index: -1;
+      }
+    `}
+`;
+
+// Room at the top of the locked zone, so the pill never sits on the banner.
+const LOCKED_ZONE_PILL_STRIP = '34px';
+
+export const ProjectPageRoot: UserComponent<RegionProps> = ({ children }) => {
+  const { enabled: inEditor } = useEditor((state) => ({
+    enabled: state.options.enabled,
+  }));
+
+  // The zone's background only shows behind the banner and the title:
+  // ProjectPageBody paints white over everything below it, and
+  // normalizeProjectPageLayout keeps ROOT's children as [banner, title, body].
+  return (
+    <Box
+      id="e2e-content-builder-frame"
+      w="100%"
+      position="relative"
+      background={inEditor ? colors.grey200 : undefined}
+      pt={inEditor ? LOCKED_ZONE_PILL_STRIP : undefined}
+    >
+      {inEditor && (
+        <Box position="absolute" top="6px" right="8px" zIndex="1">
+          <LockedZonePill />
+        </Box>
+      )}
+      {children}
+    </Box>
+  );
+};
 
 ProjectPageRoot.craft = {
   rules: {
@@ -30,52 +76,47 @@ ProjectPageRoot.craft = {
   },
 };
 
-const CTA_BAR_CLASS = 'projectPageCtaBar';
-
-const BodyWithStickyCTABar = styled(Box)`
-  display: flex;
-  flex-direction: column;
-
-  & > .${CTA_BAR_CLASS} {
-    margin-left: calc(-50vw + 50%);
-    margin-right: calc(-50vw + 50%);
-  }
-
-  /* The description section, which directly follows the bar in the DOM. */
-  & > .${CTA_BAR_CLASS} + * {
-    order: -1;
-    /* The legacy page's breathing room above the bar, which the flushed header
-       and description section no longer provide. */
-    margin-bottom: 89px;
-    ${media.phone`
-      margin-bottom: 59px;
-    `}
-  }
-`;
-
 export const ProjectPageBody: UserComponent<RegionProps> = ({ children }) => {
-  const { slug } = useParams({ strict: false }) as { slug?: string };
   const projectId = useWidgetProjectId();
-
-  if (!slug || !projectId) {
-    return (
-      <Box id="e2e-project-page-body" w="100%" minHeight="60px">
-        {children}
-      </Box>
-    );
-  }
+  const { slug } = useParams({ strict: false }) as { slug?: string };
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const { enabled: inEditor } = useEditor((state) => ({
+    enabled: state.options.enabled,
+  }));
 
   return (
-    <BodyWithStickyCTABar id="e2e-project-page-body" w="100%">
-      <ProjectCTABar projectId={projectId} className={CTA_BAR_CLASS} />
-      {children}
-    </BodyWithStickyCTABar>
+    <BodyBackground
+      id="e2e-project-page-body"
+      data-project-page-body
+      w="100%"
+      minHeight={inEditor ? '60px' : undefined}
+      ref={containerRef}
+      $fullBleed={!!slug}
+    >
+      {inEditor && <EditableContentDivider />}
+      {inEditor ? (
+        // The divider labels the zone from the outside, so the outline frames
+        // the widgets alone rather than the whole body.
+        <Box position="relative">
+          <DropZoneOutline />
+          {children}
+        </Box>
+      ) : (
+        children
+      )}
+      {!inEditor && projectId && (
+        <CTABar projectId={projectId} containerRef={containerRef} />
+      )}
+    </BodyBackground>
   );
 };
 
+const HEADER_WIDGETS = ['ProjectBanner', 'ProjectTitle'];
+
 ProjectPageBody.craft = {
   rules: {
-    canMoveIn: () => false,
+    canMoveIn: (incoming: Node[]) =>
+      incoming.every((node) => !HEADER_WIDGETS.includes(node.data.name)),
   },
   custom: {
     region: true,

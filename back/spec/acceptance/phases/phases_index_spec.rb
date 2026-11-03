@@ -21,7 +21,13 @@ resource 'Phases' do
     let!(:phases) { create_list(:phase_sequence, 2, project: project) }
 
     context 'when visitor' do
-      before { Permissions::PermissionsUpdateService.new.update_all_permissions }
+      before do
+        Permissions::PermissionsUpdateService.new.update_all_permissions
+        # A phase's `permissions` relationship only holds its own rows: an
+        # action that still inherits the global 'visiting' permission has no
+        # record, so there is nothing for the relationship to link to.
+        phases.flatten.each { |phase| override_permissions!(phase) }
+      end
 
       example 'List all phases of a project' do
         do_request
@@ -94,7 +100,7 @@ resource 'Phases' do
     context 'filtering by placement_type' do
       before { admin_header_token }
 
-      let!(:standalone) { create(:phase, :standalone, project: project, start_at: phases.first.start_at, end_at: phases.first.end_at) }
+      let!(:standalone) { create(:phase, :standalone, project: project, with_permissions: true, start_at: phases.first.start_at, end_at: phases.first.end_at) }
 
       example 'returns only on_timeline phases by default' do
         do_request

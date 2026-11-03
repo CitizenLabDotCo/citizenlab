@@ -190,6 +190,7 @@ const Settings = () => {
           projectId={projectId}
           phaseId={phaseId}
           participationMethods={['native_survey', 'community_monitor_survey']}
+          placementType="all"
           onPhaseFilter={handlePhaseFilter}
         />
       )}

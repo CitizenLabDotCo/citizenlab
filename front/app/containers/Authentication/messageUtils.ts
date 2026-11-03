@@ -1,5 +1,5 @@
 import { IFollowingAction } from 'api/authentication/authentication_requirements/types';
-import { IPhasePermissionAction } from 'api/phase_permissions/types';
+import { IPhasePermissionAction } from 'api/permissions/types';
 
 import errorMessages from 'components/UI/Error/messages';
 
@@ -17,34 +17,43 @@ const HEADER_MESSAGES: Record<Step, MessageDescriptor | null> = {
   success: null,
   'access-denied': messages.youCantParticipate,
 
-  // email flow
-  'email:start': messages.beforeYouParticipate,
-  'email:policies': messages.beforeYouParticipate,
-  'email:password': messages.logIn,
-  'email:sso-policies': messages.signUp,
-  'email:confirmation': messages.confirmYourEmail,
+  // pre-auth steps
+  'pre-auth:start': messages.beforeYouParticipate,
+  'pre-auth:policies': messages.beforeYouParticipate,
+  'pre-auth:phone-policies': messages.beforeYouParticipate,
+  'pre-auth:password': messages.logIn,
+  'pre-auth:sso-policies': messages.signUp,
+  'pre-auth:unauthenticated-confirmation': messages.confirmYourEmail,
+  'pre-auth:unauthenticated-phone-confirmation':
+    messages.confirmYourPhoneNumber,
+
+  // confirmation steps (code entry for email / phone)
+  'confirmation:reconfirm-email': messages.confirmYourEmail,
+  'confirmation:new_email': messages.confirmYourEmail,
+  'confirmation:merge-account': messages.linkYourAccount,
+  'confirmation:reconfirm-phone': messages.confirmYourPhoneNumber,
+  'confirmation:new_phone': messages.confirmYourPhoneNumber,
 
   // invite flow
   'invite:email-password': messages.signUp,
   'invite:code': messages.signUp,
   'invite:taken': messages.signUp,
 
-  // missing data flow
+  // missing data (if signed in already)
+  'missing-data:change-new-email': messages.changeYourEmail,
+  'missing-data:new_phone': messages.enterYourPhoneNumber,
   'missing-data:built-in': messages.completeYourProfile,
-  'missing-data:email-confirmation': messages.confirmYourEmail,
   'missing-data:verification': messages.verifyYourIdentity,
   'missing-data:custom-fields': messages.completeYourProfile,
+
+  // missing data (if signed in already) for onboarding
   'missing-data:onboarding': messages.whatAreYouInterestedIn,
 
-  // verification only
+  // verification only (for onboarding and re-verification)
   'verification-only': messages.verifyYourIdentity,
   'verification-success': null,
 
-  // sso verification flow
-  'sso-verification:sso-providers': messages.verificationRequired,
-  'sso-verification:sso-providers-policies': messages.verificationRequired,
-
-  // post-participation flow
+  // post-participation flow (sign up after participation)
   'post-participation:email': messages.signUpOrLogIn,
 };
 
@@ -54,7 +63,12 @@ export const getHeaderMessage = (
 ) => {
   if (
     action === 'following' &&
-    ['email:start', 'emailemail-policies', 'email:sso-policies'].includes(step)
+    [
+      'pre-auth:start',
+      'pre-auth:policies',
+      'pre-auth:phone-policies',
+      'pre-auth:sso-policies',
+    ].includes(step)
   ) {
     return messages.beforeYouFollow;
   }
@@ -64,6 +78,7 @@ export const getHeaderMessage = (
 export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   account_creation_failed: messages.unknownError,
   wrong_confirmation_code: errorMessages.confirmation_code_invalid,
+  wrong_phone_confirmation_code: messages.phoneConfirmationCodeInvalid,
   sign_in_failed: messages.signInError,
   requirements_fetching_failed: messages.unknownError,
   unknown: messages.unknownError,
@@ -80,6 +95,7 @@ export const ERROR_CODE_MESSAGES: Record<ErrorCode, MessageDescriptor> = {
   auth_service_error: messages.serviceErrorAuthFailed,
   resending_code_failed: errorMessages.resending_code_failed,
   verification_taken: errorMessages.verification_taken,
+  account_merge_not_allowed: messages.accountMergeNotAllowed,
 };
 
 type HelperTextKey =
@@ -89,8 +105,8 @@ type HelperTextKey =
   | 'custom_fields_signup_helper_text';
 
 export const HELPER_TEXT_KEYS: Partial<Record<Step, HelperTextKey>> = {
-  'email:start': 'enter_email_helper_text',
-  'email:password': 'enter_password_helper_text',
+  'pre-auth:start': 'enter_email_helper_text',
+  'pre-auth:password': 'enter_password_helper_text',
   'missing-data:built-in': 'complete_your_profile_helper_text',
   'missing-data:custom-fields': 'custom_fields_signup_helper_text',
 };

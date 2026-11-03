@@ -61,6 +61,23 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::FormSyncSchemaBuilder do
       end
     end
 
+    context 'with labels containing extra whitespace' do
+      let!(:text_field) { create(:custom_field_text, resource: custom_form, key: 'text_field', title_multiloc: { 'en' => "   Your   \r\n name   \r\n" }) }
+      let!(:select_field) do
+        field = create(:custom_field_select, resource: custom_form, key: 'select_field', title_multiloc: { 'en' => "   Your   \r\n preference   \r\n" })
+        field.options.create!(key: 'opt_a', title_multiloc: { 'en' => '  Option   A  ' })
+        field.options.create!(key: 'opt_b', title_multiloc: { 'en' => 'Option   B' })
+        field
+      end
+
+      it 'normalizes field and option labels before building the schema' do
+        schema = builder.output_schema
+
+        expect(schema[:properties]['question_1'][:description]).to include("'Your name'")
+        expect(schema[:properties]['question_2'][:items][:enum]).to eq(['Option A', 'Option B'])
+      end
+    end
+
     context 'with scale fields' do
       let!(:rating_field) { create(:custom_field_rating, resource: custom_form, key: 'rating_field', title_multiloc: { 'en' => 'Rating field' }) }
 
@@ -123,6 +140,29 @@ RSpec.describe BulkImportIdeas::Parsers::Pdf::FormSyncSchemaBuilder do
 
         sub_prop2 = matrix_prop[:properties]['question_1.2']
         expect(sub_prop2[:description]).to include('We should ride our bicycles more often')
+      end
+    end
+
+    context 'with matrix_linear_scale field where only some columns are labelled' do
+      let!(:matrix_field) do
+        create(
+          :custom_field_matrix_linear_scale,
+          resource: custom_form,
+          key: 'matrix_field',
+          title_multiloc: { 'en' => 'Rate these statements' },
+          linear_scale_label_1_multiloc: { 'en' => 'Strongly disagree' },
+          linear_scale_label_5_multiloc: { 'en' => 'Strongly agree' },
+          maximum: 5
+        )
+      end
+
+      it 'keeps one column per scale point, so column numbers match the printed form' do
+        sub_prop = builder.output_schema[:properties]['question_1'][:properties]['question_1.1']
+
+        expect(sub_prop[:enum]).to eq([1, 2, 3, 4, 5, 0, -1])
+        expect(sub_prop[:description]).to include(
+          "1 = 'Strongly disagree', 2 = (no label), 3 = (no label), 4 = (no label), 5 = 'Strongly agree'"
+        )
       end
     end
 

@@ -3,6 +3,8 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { Helmet } from 'react-helmet-async';
 
+import useLocale from 'hooks/useLocale';
+
 import {
   Container,
   StyledContentContainer,
@@ -16,8 +18,16 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
 
+const DUTCH_REPORT_URL =
+  'https://toegankelijkheidsrapport.frameless.io/rapport/govocal-2026-06-26';
+const DEFAULT_REPORT_URL =
+  'https://toegankelijkheidsrapport.frameless.io/rapport/govocal-2026-06-26-en';
+
 const AccessibilityStatement = () => {
   const { formatMessage } = useIntl();
+  const locale = useLocale();
+  const isDutchLocale = locale === 'nl-NL' || locale === 'nl-BE';
+  const reportUrl = isDutchLocale ? DUTCH_REPORT_URL : DEFAULT_REPORT_URL;
 
   return (
     <>
@@ -96,11 +106,7 @@ const AccessibilityStatement = () => {
                       {...messages.assesmentText2022}
                       values={{
                         statusPageLink: (
-                          <a
-                            href={formatMessage(messages.statusPageUrl)}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
+                          <a href={reportUrl} target="_blank" rel="noreferrer">
                             {formatMessage(messages.statusPageText)}
                           </a>
                         ),

@@ -73,6 +73,7 @@ const PasswordInputComponent = ({
   ariaInvalid,
   ariaDescribedBy,
   required,
+  userInputs,
 }: Props & WrappedComponentProps) => {
   const locale = useLocale();
   const { data: appConfig } = useAppConfiguration();
@@ -164,7 +165,11 @@ const PasswordInputComponent = ({
             <div aria-hidden="true">
               <Suspense fallback={null}>
                 <PasswordStrengthBar
+                  // The bar only re-scores on `password` change, so key on
+                  // userInputs to remount it when the email/name are edited.
+                  key={userInputs?.join(' ')}
                   password={password || undefined}
+                  userInputs={userInputs}
                   minLength={minimumPasswordLength}
                   shortScoreWord={formatMessage(
                     messages.initialPasswordStrengthCheckerMessage,

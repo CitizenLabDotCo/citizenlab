@@ -35,9 +35,6 @@ import {
 import SlugInput from 'components/admin/SlugInput';
 import SpaceSelectSection from 'components/admin/SpaceSelectSection';
 import SubmitWrapper from 'components/admin/SubmitWrapper';
-import DescriptionBuilderLink from 'components/DescriptionBuilder/DescriptionBuilderLink';
-import Highlighter from 'components/Highlighter';
-import Error from 'components/UI/Error';
 import FileUploader from 'components/UI/FileUploader';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
@@ -46,7 +43,7 @@ import { FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 import { convertUrlToUploadFile } from 'utils/fileUtils';
 import { isNilOrError, isError } from 'utils/helperUtils';
-import { isSpaceModerator } from 'utils/permissions/roles';
+import { isAdmin, isSpaceModerator } from 'utils/permissions/roles';
 import { validateSlug } from 'utils/textUtils';
 
 import messages from '../../messages';
@@ -100,11 +97,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const { mutateAsync: addProjectFolder } = useAddProjectFolder();
   const { mutateAsync: updateProjectFolder } = useUpdateProjectFolder();
 
-  // A folder must exist before its description can be authored in the Content
-  // Builder, so the builder link only shows once the folder is created (edit
-  // mode). At creation the description is left empty and added afterwards.
-  const showDescriptionBuilder = projectFolder;
-
   /*
     ==============
     State
@@ -117,8 +109,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
   const [showSlugErrorMessage, setShowSlugErrorMessage] =
     useState<boolean>(false);
   const [shortDescriptionMultiloc, setShortDescriptionMultiloc] =
-    useState<Multiloc | null>(null);
-  const [descriptionMultiloc, setDescriptionMultiloc] =
     useState<Multiloc | null>(null);
   const [spaceId, setSpaceId] = useState<string | null>(null);
   const [headerBgBase64, setHeaderBgBase64] = useState<string | null>(null);
@@ -156,9 +146,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       if (mode === 'edit' && !isNilOrError(projectFolder)) {
         setTitleMultiloc(projectFolder.data.attributes.title_multiloc);
         setSlug(projectFolder.data.attributes.slug);
-        setDescriptionMultiloc(
-          projectFolder.data.attributes.description_multiloc
-        );
         setShortDescriptionMultiloc(
           projectFolder.data.attributes.description_preview_multiloc
         );
@@ -322,7 +309,10 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
       );
     }
 
-    if (isSpaceModerator(authUser) && !spaceId) {
+    // Mirrors ProjectFolders::FolderPolicy#create?: a space manager may only
+    // create folders inside their own space, but an admin may leave the space
+    // empty even when they also manage one.
+    if (!isAdmin(authUser) && isSpaceModerator(authUser) && !spaceId) {
       valid = false;
       setSpaceIdError(true);
     }
@@ -349,9 +339,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             const projectFolder = await addProjectFolder({
               title_multiloc: titleMultiloc,
               slug,
-              ...(descriptionMultiloc && {
-                description_multiloc: descriptionMultiloc,
-              }),
               description_preview_multiloc: shortDescriptionMultiloc,
               header_bg: headerBgBase64,
               header_bg_alt_text_multiloc: headerImageAltText,
@@ -447,10 +434,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
               titleMultiloc,
               projectFolder.data.attributes.title_multiloc
             );
-            const changedDescriptionMultiloc = !isEqual(
-              descriptionMultiloc,
-              projectFolder.data.attributes.description_multiloc
-            );
             const changedShortDescriptionMultiloc = !isEqual(
               shortDescriptionMultiloc,
               projectFolder.data.attributes.description_preview_multiloc
@@ -474,7 +457,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
             if (
               changedTitleMultiloc ||
               changedSlug ||
-              changedDescriptionMultiloc ||
               changedShortDescriptionMultiloc ||
               changedHeaderBg ||
               changedPublicationStatus ||
@@ -486,10 +468,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
                   ? titleMultiloc
                   : undefined,
                 slug: changedSlug ? slug : undefined,
-                description_multiloc:
-                  changedDescriptionMultiloc && descriptionMultiloc
-                    ? descriptionMultiloc
-                    : undefined,
                 description_preview_multiloc: changedShortDescriptionMultiloc
                   ? shortDescriptionMultiloc
                   : undefined,
@@ -591,20 +569,6 @@ const ProjectFolderForm = ({ mode, projectFolderId }: Props) => {
           />
         </SectionField>
         <SectionField>
-          {showDescriptionBuilder && (
-            <>
-              <SubSectionTitle>
-                <FormattedMessage {...messages.folderDescription} />
-              </SubSectionTitle>
-              <Highlighter fragmentId="description-multiloc">
-                <DescriptionBuilderLink contentBuildableType="folder" />
-              </Highlighter>
-              <Error
-                fieldName="description_multiloc"
-                apiErrors={errors.description_multiloc}
-              />
-            </>
-          )}
           <Box mt="35px" data-cy="e2e-project-folder-short-description">
             <TextAreaMultilocWithLocaleSwitcher
               valueMultiloc={shortDescriptionMultiloc}

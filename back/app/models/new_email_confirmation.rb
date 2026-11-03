@@ -37,13 +37,9 @@ class NewEmailConfirmation < Confirmation
         email_confirmed_at: Time.zone.now,
         confirmation_required: false
       )
-      clear_code!
       cancel_other_users_pending_email_change(new_email)
+      consume!
     end
     true
-  end
-
-  def pending?
-    user.new_email.present?
   end
 end

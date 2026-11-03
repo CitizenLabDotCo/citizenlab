@@ -98,19 +98,21 @@ module SmartGroups::Rules
     end
 
     def filter(users_scope)
+      custom_field = CustomField.registration.find_by!(code: 'domicile')
+      answer_filter = AnswerableFilter.new(custom_field, users_scope)
       case predicate
       when 'has_value'
-        users_scope.where("custom_field_values->>'domicile' = ?", value)
+        answer_filter.eq(value)
       when 'not_has_value'
-        users_scope.where("custom_field_values->>'domicile' IS NULL or custom_field_values->>'domicile' != ?", value)
+        answer_filter.not_eq(value)
       when 'is_one_of'
-        users_scope.where("custom_field_values->>'domicile' IN (?)", value)
+        answer_filter.one_of(value)
       when 'not_is_one_of'
-        users_scope.where("custom_field_values->>'domicile' IS NULL OR custom_field_values->>'domicile' NOT IN (?)", value)
+        answer_filter.not_one_of(value)
       when 'is_empty'
-        users_scope.where("custom_field_values->>'domicile' IS NULL")
+        answer_filter.absent
       when 'not_is_empty'
-        users_scope.where("custom_field_values->>'domicile' IS NOT NULL")
+        answer_filter.present
       else
         raise "Unsupported predicate #{predicate}"
       end

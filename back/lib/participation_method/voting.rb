@@ -17,6 +17,10 @@ module ParticipationMethod
       %w[random]
     end
 
+    def allowed_presentation_modes
+      %w[card map]
+    end
+
     def assign_defaults_for_phase
       super
       phase.ideas_order ||= 'random'
@@ -34,6 +38,12 @@ module ParticipationMethod
     end
 
     def supports_submission?
+      false
+    end
+
+    # Voting reuses ideation inputs but has no admin-fillable response form to
+    # export (overrides the `true` inherited from Ideation).
+    def supports_input_pdf_export?
       false
     end
 

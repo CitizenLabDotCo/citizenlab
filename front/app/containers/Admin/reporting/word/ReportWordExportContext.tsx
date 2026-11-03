@@ -15,6 +15,8 @@ import useReport from 'api/reports/useReport';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
 
+import { getResolvedName } from 'components/admin/ContentBuilder/resolvedName';
+
 import { useIntl } from 'utils/cl-intl';
 import { getLocalized } from 'utils/i18n';
 import { htmlToImageBuffer } from 'utils/word/utils/htmlToImage';
@@ -56,11 +58,20 @@ interface WordExportProviderProps {
 
 type ExportNode =
   | { type: 'text'; html: string }
+  | { type: 'pagebreak' }
   | { type: 'whitespace'; size?: 'small' | 'medium' | 'large' }
   | { type: 'iframe'; url: string; title?: string }
   | { type: 'image'; nodeId: string; widgetName: string };
 
-const EXPORTABLE_WIDGETS = new Set(Object.keys(WIDGET_TITLES));
+// Word paginates the document itself, so a captured contents list would carry a
+// column of page numbers that nothing ever fills in.
+const NON_EXPORTABLE_WIDGETS = new Set(['TableOfContents']);
+
+const EXPORTABLE_WIDGETS = new Set(
+  Object.keys(WIDGET_TITLES).filter(
+    (widget) => !NON_EXPORTABLE_WIDGETS.has(widget)
+  )
+);
 const CONTAINER_NODES = new Set([
   'Container',
   'Box',
@@ -71,7 +82,6 @@ const CONTAINER_NODES = new Set([
 ]);
 
 type SerializedNodeWithProps = SerializedNodes[string] & {
-  type?: string | { resolvedName?: string };
   props?: Record<string, any>;
   nodes: string[];
   linkedNodes: Record<string, string>;
@@ -97,8 +107,7 @@ const buildExportNodes = (
     const node = nodes[nodeId] as SerializedNodeWithProps | undefined;
     if (!node) return [];
 
-    const nodeName =
-      typeof node.type === 'object' ? node.type.resolvedName : node.type;
+    const nodeName = getResolvedName(node);
     const children = Array.from(
       new Set([...node.nodes, ...Object.values(node.linkedNodes)])
     );
@@ -110,6 +119,11 @@ const buildExportNodes = (
     if (nodeName === 'TextMultiloc') {
       const html = getTextFromMultiloc(node.props?.text, locale, tenantLocales);
       return html ? [{ type: 'text', html }] : [];
+    }
+
+    // Word has a page break of its own; a picture of the dashed line is not one.
+    if (nodeName === 'PageBreak') {
+      return [{ type: 'pagebreak' }];
     }
 
     if (nodeName === 'WhiteSpace') {
@@ -206,6 +220,11 @@ export const ReportWordExportProvider = ({
       for (const node of exportNodes) {
         if (node.type === 'text') {
           sections.push({ type: 'text', html: node.html });
+          continue;
+        }
+
+        if (node.type === 'pagebreak') {
+          sections.push({ type: 'pagebreak' });
           continue;
         }
 

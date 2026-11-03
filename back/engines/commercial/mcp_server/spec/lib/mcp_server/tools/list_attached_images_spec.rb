@@ -6,14 +6,14 @@ describe McpServer::Tools::ListAttachedImages do
   let(:current_user) { create(:super_admin) }
   let(:project) { create(:project, :draft) }
 
+  def list(params = {})
+    run_mcp_tool(described_class, params:, current_user:)
+  end
+
   it 'lists images on a project' do
     images = create_list(:project_image, 2, project:)
 
-    response = run_mcp_tool(
-      described_class,
-      params: { resource_type: 'project', resource_id: project.id },
-      current_user:
-    )
+    response = list(resource_type: 'project', resource_id: project.id)
 
     expect(response).not_to be_error
     ids = response.structured_content[:data].pluck(:id)
@@ -24,25 +24,31 @@ describe McpServer::Tools::ListAttachedImages do
     event = create(:event, project:)
     images = create_list(:event_image, 2, event:)
 
-    response = run_mcp_tool(
-      described_class,
-      params: { resource_type: 'event', resource_id: event.id },
-      current_user:
-    )
+    response = list(resource_type: 'event', resource_id: event.id)
 
     expect(response).not_to be_error
     ids = response.structured_content[:data].pluck(:id)
     expect(ids).to match_array(images.map(&:id))
   end
 
-  it 'returns a not-found error when the resource is missing' do
-    response = run_mcp_tool(
-      described_class,
-      params: { resource_type: 'project', resource_id: SecureRandom.uuid },
-      current_user:
-    )
+  it 'lists images on a folder' do
+    folder = create(:project_folder)
+    images = create_list(:project_folder_image, 2, project_folder: folder)
 
-    expect(response).to be_error
-    expect(response.content.first[:text]).to include('Resource (project) not found')
+    response = list(resource_type: 'folder', resource_id: folder.id)
+
+    expect(response).not_to be_error
+    ids = response.structured_content[:data].pluck(:id)
+    expect(ids).to match_array(images.map(&:id))
+  end
+
+  it_behaves_like 'a paginated list tool' do
+    let(:base_params) { { resource_type: 'project', resource_id: project.id } }
+  end
+
+  it 'returns a not-found error when the resource is missing' do
+    response = list(resource_type: 'project', resource_id: SecureRandom.uuid)
+
+    expect(response).to be_not_found('Resource (project)')
   end
 end

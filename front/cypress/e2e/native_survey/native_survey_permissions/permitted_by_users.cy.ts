@@ -2,8 +2,8 @@ import moment = require('moment');
 import { randomString, randomEmail } from '../../../support/commands';
 import {
   updatePermission,
+  askOnlyDemographicQuestion,
   confirmUserCustomFieldHasValue,
-  addPermissionsCustomField,
   setupProject,
 } from '../../../support/permitted_by_utils';
 
@@ -27,39 +27,24 @@ describe('Native survey permitted by: users', () => {
       phaseId = data.phaseId;
       fieldName = data.fieldName;
 
-      // Temporarily set permission to everyone_confirmed_email
-      // to make sure we clear out the global settings
+      // Set single custom field
       return cy
         .apiLogin('admin@govocal.com', 'democracy2.0')
         .then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission({
+          return askOnlyDemographicQuestion({
             adminJwt,
             phaseId,
-            permitted_by: 'everyone_confirmed_email',
+            customFieldId,
           }).then(() => {
-            // Add one permissions custom field
-            return addPermissionsCustomField({
-              adminJwt,
-              phaseId,
-              customFieldId,
-            }).then(() => {
-              // Set permission back to users
-              return updatePermission({
-                adminJwt,
-                phaseId,
-                permitted_by: 'users',
-              }).then(() => {
-                // Finally: go into the survey and save it
-                cy.setAdminLoginCookie();
-                cy.visit(
-                  `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
-                );
-                cy.get('form').submit();
-                cy.get('[data-testid="feedbackSuccessMessage"]');
-              });
-            });
+            // Finally: go into the survey and save it
+            cy.setAdminLoginCookie();
+            cy.visit(
+              `/admin/projects/${projectId}/phases/${phaseId}/survey-form/edit`
+            );
+            cy.get('form').submit();
+            cy.get('[data-testid="feedbackSuccessMessage"]');
           });
         });
     });
@@ -125,7 +110,7 @@ describe('Native survey permitted by: users', () => {
     cy.get('fieldset').first().find('input').first().check({ force: true });
 
     // Intercept submit request
-    cy.intercept('POST', '/web_api/v1/ideas').as('submitSurvey');
+    cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitSurvey');
 
     // Submit survey
     cy.dataCy('e2e-submit-form').click();

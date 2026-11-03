@@ -139,6 +139,11 @@ const Tooltip = ({
     }
   }, [setIsFocused, setKey]);
 
+  // Tippy is in "controlled mode" whenever `visible` (i.e. isFocused) is not
+  // undefined — that includes `false`, not just `true`. In controlled mode
+  // tippy warns if `hideOnClick` is set, so only forward it while uncontrolled.
+  const hideOnClick = isFocused === undefined ? rest.hideOnClick : undefined;
+
   if (useContentWrapper) {
     return (
       <Tippy
@@ -146,11 +151,13 @@ const Tooltip = ({
         plugins={PLUGINS}
         interactive={true}
         role={role}
+        aria={{ expanded: false }}
         visible={isFocused}
         // Ensures tippy works with both keyboard and mouse
         onHidden={handleOnHidden}
         theme={theme}
         {...rest}
+        hideOnClick={hideOnClick}
       >
         <Box as="span" id={tooltipId.current} w={width || 'fit-content'}>
           {children}
@@ -166,11 +173,13 @@ const Tooltip = ({
           plugins={PLUGINS}
           interactive={true}
           role={role}
+          aria={{ expanded: false }}
           visible={isFocused}
           // Ensures tippy works with both keyboard and mouse
           onHidden={handleOnHidden}
           theme={theme}
           {...rest}
+          hideOnClick={hideOnClick}
         >
           {children}
         </Tippy>

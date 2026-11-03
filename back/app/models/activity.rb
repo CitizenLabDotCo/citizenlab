@@ -13,11 +13,13 @@
 #  acted_at   :datetime         not null
 #  created_at :datetime         not null
 #  project_id :uuid
+#  channel    :string
 #
 # Indexes
 #
 #  index_activities_on_acted_at               (acted_at)
 #  index_activities_on_action                 (action)
+#  index_activities_on_item_type_and_action   (item_type,action)
 #  index_activities_on_item_type_and_item_id  (item_type,item_id)
 #  index_activities_on_project_id             (project_id)
 #  index_activities_on_user_id                (user_id)
@@ -27,6 +29,10 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Activity < ApplicationRecord
+  # Activity origin: 'mcp' for MCP-originated, 'ai_assistant' for tools run by the in-app
+  # AI assistant, nil for the web/API path.
+  CHANNELS = %w[mcp ai_assistant].freeze
+
   MANAGEMENT_FILTERS = [
     { item_type: 'Idea', actions: %w[created changed deleted] },
     { item_type: 'Phase', actions: %w[created changed deleted] },
@@ -39,6 +45,7 @@ class Activity < ApplicationRecord
   belongs_to :item, polymorphic: true, optional: true
 
   validates :action, :item_type, :item_id, presence: true
+  validates :channel, inclusion: { in: CHANNELS }, allow_nil: true
 
   scope :management, lambda {
     activities = where('acted_at > ?', 30.days.ago).where(user: User.admin_or_moderator)

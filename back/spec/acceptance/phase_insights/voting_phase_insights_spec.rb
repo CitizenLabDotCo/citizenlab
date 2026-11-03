@@ -63,8 +63,8 @@ resource 'Phase insights' do
       user2 = create(:user)
       user3 = create(:user)
       user4 = create(:user)
-      user5 = create(:user, custom_field_values: { gender: 'female', birthyear: 1980 })
-      user6 = create(:user, custom_field_values: { gender: 'male', birthyear: 1990 })
+      user5 = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'female'), build(:custom_field_answer, key: 'birthyear', value: 1980)])
+      user6 = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'male'), build(:custom_field_answer, key: 'birthyear', value: 1990)])
 
       # Comments
       create(:comment, idea: idea1, author: user1, created_at: 25.days.ago) # before voting phase (not counted)
@@ -379,8 +379,8 @@ resource 'Phase insights' do
 
             # Users
             user1 = create(:user)
-            user2 = create(:user, custom_field_values: { gender: 'female', birthyear: 1980 })
-            user3 = create(:user, custom_field_values: { gender: 'male', birthyear: 1990 })
+            user2 = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'female'), build(:custom_field_answer, key: 'birthyear', value: 1980)])
+            user3 = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'male'), build(:custom_field_answer, key: 'birthyear', value: 1990)])
 
             # Baskets and votes
             basket1 = create(:basket, phase: phase, user: user1, submitted_at: 20.days.ago) # before voting phase (still counts)

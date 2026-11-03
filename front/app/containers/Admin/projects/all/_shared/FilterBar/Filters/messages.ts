@@ -81,10 +81,6 @@ export default defineMessages({
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.participationMethodDocumentCommonGround',
     defaultMessage: 'Common ground',
   },
-  filterByCurrentPhaseMethod: {
-    id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationMethod.filterByCurrentPhaseMethod',
-    defaultMessage: 'Filter by the current phase participation method',
-  },
   notStarted: {
     id: 'app.containers.Admin.projects.all.new.Projects.Filters.ParticipationStates.notStarted',
     defaultMessage: 'Not started',

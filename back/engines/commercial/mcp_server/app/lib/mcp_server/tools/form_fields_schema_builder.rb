@@ -1,29 +1,28 @@
 # frozen_string_literal: true
 
-# Builds the JSON Schema for form fields, parametrized by mode (+:input+ or +:output+).
-# In +:output+ mode it includes read-only attrs (+created_at+, +updated_at+,
-# +resource_id+); in +:input+ mode it includes +temp_id+ for referencing new records
-# from logic rules before save.
+# Builds the JSON Schema for form fields. get_form_fields (output) and
+# replace_form_fields (input) use the same schema, so a fetched payload can be
+# echoed back as-is. Some keys only make sense in one direction; they are still
+# declared, just marked: `readOnly: true` = set by the server, ignored when sent
+# back; `writeOnly: true` = input-only, never present in responses.
 class McpServer::Tools::FormFieldsSchemaBuilder
-  MODES = %i[input output].freeze
-
-  def initialize(mode:, tenant_locales:)
-    raise ArgumentError, "invalid mode #{mode.inspect}, expected one of #{MODES.inspect}" unless mode.in?(MODES)
-
-    @mode = mode
-    @tenant_locales = tenant_locales
-  end
+  # `created_at`/`updated_at` are null for default forms (fields returned from
+  # `default_fields` are unsaved `CustomField.new(...)` objects).
+  TIMESTAMP_PROPERTIES = {
+    created_at: { type: %w[string null], readOnly: true, description: 'ISO 8601 timestamp.' },
+    updated_at: { type: %w[string null], readOnly: true, description: 'ISO 8601 timestamp.' }
+  }.freeze
 
   def field_schema
     @field_schema ||= {
       type: 'object',
       properties: {
         **id_properties,
-        **common_field_properties,
-        **output_only_field_properties,
+        **field_properties,
         options: { type: 'array', items: option_schema },
         matrix_statements: { type: 'array', items: matrix_statement_schema }
-      }
+      },
+      additionalProperties: false
     }
   end
 
@@ -32,6 +31,7 @@ class McpServer::Tools::FormFieldsSchemaBuilder
       type: 'object',
       properties: {
         **id_properties,
+        **TIMESTAMP_PROPERTIES,
         key: { type: 'string' },
         ordering: { type: 'integer' },
         title_multiloc: multiloc_schema,
@@ -48,7 +48,8 @@ class McpServer::Tools::FormFieldsSchemaBuilder
           type: 'boolean',
           description: 'Marks this as the "Other" free-text fallback option.'
         }
-      }
+      },
+      additionalProperties: false
     }
   end
 
@@ -57,60 +58,52 @@ class McpServer::Tools::FormFieldsSchemaBuilder
       type: 'object',
       properties: {
         **id_properties,
+        **TIMESTAMP_PROPERTIES,
         key: { type: 'string' },
         ordering: { type: 'integer' },
         title_multiloc: multiloc_schema
-      }
+      },
+      additionalProperties: false
     }
   end
 
   private
 
-  attr_reader :tenant_locales
-
-  def input? = @mode == :input
-
   def multiloc_schema
     @multiloc_schema ||= {
       type: 'object',
-      description: <<~DESC.squish,
-        Localized text. An object mapping locale codes to their translations. The tenant's
-        active locales are #{tenant_locales.join(', ')}.
-      DESC
+      description: 'Localized text. An object mapping locale codes to their translations. ' \
+                   'Keys must be locales that are active on the platform.',
       additionalProperties: { type: 'string' }
     }
   end
 
   def id_properties
-    if input?
-      {
-        id: { type: 'string', description: 'UUID for updates. Omit for new records.' },
-        temp_id: {
-          type: 'string',
-          description: 'Handle to reference new records from logic rules. Remapped to real IDs on save.'
-        }
-      }
-    else
-      { id: { type: 'string' } }
-    end
-  end
-
-  def output_only_field_properties
-    return {} if input?
-
-    # `created_at`/`updated_at` are null for default forms (fields returned from
-    # `default_fields` are unsaved `CustomField.new(...)` objects).`resource_id`
-    # is nil only when the parent `CustomForm` itself was never saved either
-    # (a never-touched form, before its first save).
     {
-      created_at: { type: %w[string null], description: 'ISO 8601 timestamp.' },
-      updated_at: { type: %w[string null], description: 'ISO 8601 timestamp.' },
-      resource_id: { type: %w[string null], description: 'UUID of the parent CustomForm.' }
+      id: {
+        type: 'string',
+        description: 'UUID. Identifies the record to update; omit for new records.'
+      },
+      temp_id: {
+        type: 'string',
+        writeOnly: true,
+        description: <<~DESC.squish
+          Handle to reference new records from logic rules before they have an id.
+          Remapped to real IDs on save.
+        DESC
+      }
     }
   end
 
-  def common_field_properties
-    @common_field_properties ||= {
+  def field_properties
+    @field_properties ||= {
+      # nil only when the parent CustomForm itself was never saved (a never-touched
+      # form, before its first save).
+      resource_id: {
+        type: %w[string null],
+        readOnly: true,
+        description: 'UUID of the parent CustomForm.'
+      },
       code: {
         type: %w[string null],
         # Also includes user-profile codes, but it should not be a problem. They just
@@ -124,8 +117,9 @@ class McpServer::Tools::FormFieldsSchemaBuilder
       key: {
         type: %w[string null],
         description: <<~DESC.squish
-          Stable slug. Auto-generated from title if omitted on new fields. null for page
-          break fields.
+          Stable slug. Auto-generated from title if omitted on new fields; echo it back
+          unchanged on existing fields (community-monitor pages and the form_end page
+          carry keys). May be null on plain page breaks.
         DESC
       },
       input_type: {
@@ -140,6 +134,7 @@ class McpServer::Tools::FormFieldsSchemaBuilder
           - ideation: page, number, linear_scale, rating, text, multiline_text,
             select, multiselect, multiselect_image, ranking, sentiment_linear_scale,
             matrix_linear_scale
+          - community_monitor_survey: page, sentiment_linear_scale
 
           The types text_multiloc, html_multiloc, image_files, files, topic_ids, and
           cosponsor_ids are reserved for built-in fields (identified by a non-null
@@ -221,6 +216,16 @@ class McpServer::Tools::FormFieldsSchemaBuilder
           follow-up input after selecting their sentiment.
         DESC
       },
+      question_category: {
+        type: %w[string null],
+        enum: [*CustomField::QUESTION_CATEGORIES, nil],
+        description: <<~DESC.squish
+          Community monitor only — any other participation method must omit it (validation
+          rejects it there). Reporting category the question is grouped under. Echo it back
+          unchanged for built-in questions; set it on a custom question to group it, or
+          omit it to report the question under 'Other'.
+        DESC
+      },
 
       # Scale family
       maximum: {
@@ -256,7 +261,9 @@ class McpServer::Tools::FormFieldsSchemaBuilder
           Only for point / line / polygon, and for map-layout pages. UUID of an existing
           CustomMaps::MapConfig. Must reference a MapConfig that already exists.
         DESC
-      }
+      },
+
+      **TIMESTAMP_PROPERTIES
     }
   end
 end

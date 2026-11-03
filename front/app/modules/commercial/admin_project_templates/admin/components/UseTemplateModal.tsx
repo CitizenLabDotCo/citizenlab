@@ -21,6 +21,8 @@ import useProjectFolders from 'api/project_folders/useProjectFolders';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocalize from 'hooks/useLocalize';
 
+import newProjectFormMessages from 'containers/Admin/projects/_shared/components/NewProjectForm/messages';
+
 import T from 'components/T';
 import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Error from 'components/UI/Error';
@@ -38,18 +40,20 @@ import {
   isProjectFolderModerator,
 } from 'utils/permissions/rules/projectFolderPermissions';
 import { useParams } from 'utils/router';
+import validateTitle from 'utils/validateTitle';
 
 import tracks from '../../tracks';
 import useApplyProjectTemplate from '../api/useApplyProjectTemplate';
 import useTemplateTitle from '../api/useTemplateTitle';
 
+import FolderPicker from './FolderPicker';
 import messages from './messages';
 
-const Content = styled.div`
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 35px;
-  padding-bottom: 50px;
+type Variant = 'default' | 'bo';
+
+const Content = styled.div<{ variant: Variant }>`
+  padding: ${({ variant }) =>
+    variant === 'bo' ? '24px' : '35px 30px 50px 30px'};
 `;
 
 const Success = styled.div`
@@ -90,10 +94,12 @@ const SuccessText = styled.div`
   }
 `;
 
-const Footer = styled.div`
+const Footer = styled.div<{ variant: Variant }>`
   width: 100%;
   display: flex;
   align-items: center;
+  justify-content: ${({ variant }) =>
+    variant === 'bo' ? 'flex-end' : 'flex-start'};
 `;
 
 const CreateProjectButton = styled(ButtonWithLink)`
@@ -108,6 +114,8 @@ export interface Props {
   emitSuccessEvent?: boolean;
   showGoBackLink?: boolean;
   close: () => void;
+  onCreated?: () => void;
+  variant?: Variant;
 }
 
 const noFolderOption = 'NO_FOLDER_OPTION';
@@ -120,6 +128,8 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
     emitSuccessEvent,
     showGoBackLink,
     close,
+    onCreated,
+    variant = 'default',
   }) => {
     const params = useParams({ strict: false });
     const templateId: string | undefined =
@@ -137,7 +147,7 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
     const [startDate, setStartDate] = useState<string | null>(null);
     const [folderId, setFolderId] = useState<string | null>(null);
     const [folderOptions, setFolderOptions] = useState<IOption[] | null>(null);
-    const [titleError, setTitleError] = useState<string | null>(null);
+    const [titleError, setTitleError] = useState<Multiloc | null>(null);
     const [startDateError, setStartDateError] = useState<string | null>(null);
     const [processing, setProcessing] = useState(false);
     const [success, setSuccess] = useState(false);
@@ -145,12 +155,8 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
 
     const onCreateProject = useCallback(async () => {
       const invalidTitle =
-        isEmpty(titleMultiloc) || // TODO: Fix this the next time the file is edited.
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        (titleMultiloc &&
-          Object.getOwnPropertyNames(titleMultiloc).every((key) =>
-            isEmpty(titleMultiloc[`${key}`])
-          ));
+        !titleMultiloc ||
+        Object.values(titleMultiloc).every((title) => isEmpty(title));
       const noDate = isEmpty(startDate);
       const invalidDate = !moment(
         startDate || '',
@@ -163,11 +169,17 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
       });
 
       if (invalidTitle && !isNilOrError(tenantLocales)) {
-        if (tenantLocales.length === 1) {
-          setTitleError(intl.formatMessage(messages.projectTitleError));
-        } else {
-          setTitleError(intl.formatMessage(messages.projectTitleMultilocError));
-        }
+        setTitleError(
+          validateTitle(
+            tenantLocales,
+            titleMultiloc ?? undefined,
+            intl.formatMessage(
+              tenantLocales.length === 1
+                ? messages.projectTitleError
+                : messages.projectTitleMultilocError
+            )
+          )
+        );
       }
 
       if (noDate) {
@@ -178,9 +190,7 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
         );
       }
 
-      // TODO: Fix this the next time the file is edited.
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-      if (!invalidTitle && !invalidDate && titleMultiloc && startDate) {
+      if (!invalidTitle && !invalidDate && startDate) {
         setResponseError(null);
         setTitleError(null);
         setStartDateError(null);
@@ -205,6 +215,7 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
 
           setProcessing(false);
           setSuccess(true);
+          onCreated?.();
         } catch (error) {
           setProcessing(false);
           setResponseError(error);
@@ -220,6 +231,7 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
       templateId,
       folderId,
       emitSuccessEvent,
+      onCreated,
     ]);
 
     const onClose = useCallback(() => {
@@ -301,9 +313,13 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
       folderOptions.length === 1
     );
 
+    const isBo = variant === 'bo';
+    const buttonStyle = isBo ? 'bo-primary' : 'secondary-outlined';
+
     return (
       <Modal
-        width={500}
+        width={isBo ? 560 : 500}
+        variant={variant}
         opened={opened}
         close={onClose}
         closeOnClickOutside={false}
@@ -314,11 +330,11 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
           />
         }
         footer={
-          <Footer>
+          <Footer variant={variant}>
             {!success ? (
               <>
                 <CreateProjectButton
-                  buttonStyle="secondary-outlined"
+                  buttonStyle={buttonStyle}
                   onClick={onCreateProject}
                   processing={processing}
                 >
@@ -334,27 +350,35 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
                 )}
               </>
             ) : (
-              <CloseButton buttonStyle="secondary-outlined" onClick={onClose}>
+              <CloseButton buttonStyle={buttonStyle} onClick={onClose}>
                 <FormattedMessage {...messages.close} />
               </CloseButton>
             )}
           </Footer>
         }
       >
-        <Content>
+        <Content variant={variant}>
           {!success ? (
             <>
               <InputMultilocWithLocaleSwitcher
                 id="project-title"
-                label={intl.formatMessage(messages.projectTitle)}
-                placeholder={intl.formatMessage(messages.typeProjectName)}
+                label={
+                  isBo ? undefined : intl.formatMessage(messages.projectTitle)
+                }
+                ariaLabel={intl.formatMessage(messages.projectTitle)}
+                placeholder={intl.formatMessage(
+                  isBo
+                    ? newProjectFormMessages.titlePlaceholder
+                    : messages.typeProjectName
+                )}
                 type="text"
                 valueMultiloc={titleMultiloc}
                 onChange={onTitleChange}
-                error={titleError}
+                errorMultiloc={titleError}
                 autoFocus={true}
+                variant={variant}
               />
-              <Box my="36px">
+              <Box my={isBo ? '24px' : '36px'}>
                 <Input
                   id="project-start-date"
                   label={intl.formatMessage(messages.projectStartDate)}
@@ -362,21 +386,33 @@ const UseTemplateModal = memo<Props & WrappedComponentProps>(
                   onChange={onStartDateChange}
                   value={startDate}
                   error={startDateError}
+                  variant={variant}
                 />
               </Box>
-              <Select
-                value={folderId}
-                label={intl.formatMessage(messages.projectFolder)}
-                options={folderOptions}
-                disabled={isSelectDisabled}
-                onChange={handleSelectFolderChange}
-              />
+              {isBo ? (
+                folderOptions && (
+                  <FolderPicker
+                    options={folderOptions}
+                    value={folderId}
+                    onChange={setFolderId}
+                  />
+                )
+              ) : (
+                <Select
+                  value={folderId}
+                  label={intl.formatMessage(messages.projectFolder)}
+                  options={folderOptions}
+                  disabled={isSelectDisabled}
+                  onChange={handleSelectFolderChange}
+                />
+              )}
             </>
           ) : (
             <Success>
               <SuccessIcon name="check-circle" />
               <SuccessText>
                 <FormattedMessage {...messages.successMessage} />
+                <FormattedMessage {...messages.findItInProjectsList} />
                 {showGoBackLink && (
                   <FormattedMessage
                     {...messages.goBackTo}

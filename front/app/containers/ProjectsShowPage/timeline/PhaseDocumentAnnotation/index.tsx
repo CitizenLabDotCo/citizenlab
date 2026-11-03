@@ -12,24 +12,17 @@ import messages from './messages';
 
 interface Props {
   phase: IPhaseData;
+  documentUrl: string;
 }
 
-const PhaseDocumentAnnotation = ({ phase }: Props) => {
-  const documentUrl = phase.attributes.document_annotation_embed_url;
+const PhaseDocumentAnnotation = ({ phase, documentUrl }: Props) => (
+  <Box position="relative" minHeight="500px">
+    <Title variant="h2" mt="0" color="tenantText">
+      <FormattedMessage {...messages.document} />
+    </Title>
 
-  if (documentUrl) {
-    return (
-      <Box position="relative" minHeight="500px">
-        <Title variant="h2" mt="0" color="tenantText">
-          <FormattedMessage {...messages.document} />
-        </Title>
-
-        <DocumentAnnotation phase={phase} documentUrl={documentUrl} />
-      </Box>
-    );
-  }
-
-  return null;
-};
+    <DocumentAnnotation phase={phase} documentUrl={documentUrl} />
+  </Box>
+);
 
 export default PhaseDocumentAnnotation;

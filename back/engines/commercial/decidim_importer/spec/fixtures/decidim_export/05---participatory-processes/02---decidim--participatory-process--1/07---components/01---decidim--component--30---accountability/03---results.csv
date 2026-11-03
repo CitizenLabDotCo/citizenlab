@@ -1,0 +1,3 @@
+uid,category,title,description,status,progress,created_at,updated_at
+decidim--result--1,,"{""fr"": ""Nouvelle place""}","{""fr"": ""<p>Une place rénovée</p>""}",decidim--status--1,100.0,2023-06-01 10:00:00 +0200,2023-06-15 10:00:00 +0200
+decidim--result--2,,"{""fr"": ""Étude en cours""}","{""fr"": ""<p>À analyser</p>""}",decidim--status--2,40.0,2023-06-10 10:00:00 +0200,2023-06-20 10:00:00 +0200

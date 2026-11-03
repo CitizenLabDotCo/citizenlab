@@ -11,7 +11,6 @@ export function getProject(
     type: 'project',
     attributes: {
       title_multiloc: { en: `${id} project Title` },
-      description_multiloc: { en: `${id} project description` },
       description_preview_multiloc: { en: `${id} project description preview` },
       slug: `${id}_slug`,
       input_term: 'idea',
@@ -24,7 +23,7 @@ export function getProject(
       created_at: 'yesterday',
       updated_at: 'yesterday but later', // should be a real time string
       visible_to: 'public', // 'public' | 'groups' | 'admins' cf real project.ts
-      timeline_active: 'present',
+      participation_status: 'active',
       participants_count: 13,
       participation_method: participationMethod || null,
       submission_enabled: true,

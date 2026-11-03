@@ -18,6 +18,7 @@ import useInfiniteIdeas from 'api/ideas/useInfiniteIdeas';
 import useIdeasFilterCounts from 'api/ideas_filter_counts/useIdeasFilterCounts';
 import { PresentationMode, IdeaSortMethod, InputTerm } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
+import { getSelectedView } from 'api/phases/utils';
 
 import ViewButtons from 'components/PostCardsComponents/ViewButtons';
 
@@ -73,6 +74,7 @@ export interface QueryParametersUpdate {
   search?: string;
   idea_status?: string;
   topics?: string[];
+  answers?: Record<string, string[]>;
 }
 
 export interface Props {
@@ -99,10 +101,15 @@ const IdeasWithFiltersSidebar = ({
   const smallerThanPhone = useBreakpoint('phone');
   const biggerThanLargeTablet = !useBreakpoint('tablet');
 
+  const { data: phase } = usePhase(phaseId);
+
   // Get data from searchParams
   const selectedIdeaMarkerId = searchParams.idea_map_id;
-  const selectedView =
-    searchParams.view ?? (selectedIdeaMarkerId ? 'map' : defaultView);
+  const selectedView = getSelectedView({
+    requestedView: searchParams.view,
+    availableViews: phase?.data.attributes.available_views,
+    defaultView: selectedIdeaMarkerId ? 'map' : defaultView,
+  });
 
   // Fetch ideas list & filter counts
   const {
@@ -113,8 +120,6 @@ const IdeasWithFiltersSidebar = ({
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteIdeas(ideaQueryParameters);
-
-  const { data: phase } = usePhase(phaseId);
 
   const list = data?.pages.map((page) => page.data).flat();
   const { data: ideasFilterCounts } = useIdeasFilterCounts(ideaQueryParameters);
@@ -180,6 +185,23 @@ const IdeasWithFiltersSidebar = ({
     [onUpdateQuery]
   );
 
+  const handleAnswerOnChange = useCallback(
+    (fieldId: string, optionKey: string | null) => {
+      trackEventByName(tracks.answersFilter, { fieldId, optionKey });
+
+      const answers = { ...ideaQueryParameters.custom_field_answers };
+      if (optionKey) {
+        answers[fieldId] = [optionKey];
+      } else {
+        delete answers[fieldId];
+      }
+      onUpdateQuery({
+        answers: Object.keys(answers).length > 0 ? answers : undefined,
+      });
+    },
+    [ideaQueryParameters.custom_field_answers, onUpdateQuery]
+  );
+
   const showInputFilterSidebar =
     biggerThanLargeTablet && selectedView === 'card';
 
@@ -190,6 +212,7 @@ const IdeasWithFiltersSidebar = ({
     onSearch: handleSearchOnChange,
     onChangeStatus: handleStatusOnChange,
     onChangeTopics: handleTopicsOnChange,
+    onChangeAnswer: handleAnswerOnChange,
     handleSortOnChange,
     phaseId,
     projectId,

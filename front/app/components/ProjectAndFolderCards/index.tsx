@@ -77,23 +77,18 @@ const ProjectAndFolderCards = ({
     )
   );
 
-  const {
-    data,
-    isInitialLoading,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = useAdminPublications({
-    pageSize: 6,
-    publicationStatusFilter: getPublicationStatuses(currentTab),
-    rootLevelOnly,
-    removeNotAllowedParents: true,
-    globalTopics,
-    areaIds,
-    search,
-    include_publications: true,
-    remove_all_unlisted: true,
-  });
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useAdminPublications({
+      pageSize: 6,
+      publicationStatusFilter: getPublicationStatuses(currentTab),
+      rootLevelOnly,
+      removeNotAllowedParents: true,
+      globalTopics,
+      areaIds,
+      search,
+      include_publications: true,
+      remove_all_unlisted: true,
+    });
 
   const adminPublications = data?.pages.map((page) => page.data).flat();
 
@@ -120,7 +115,7 @@ const ProjectAndFolderCards = ({
       showFilters={true}
       adminPublications={adminPublications || []}
       statusCountsWithoutFilters={allStatusCountsWithoutFilters}
-      loadingInitial={isInitialLoading}
+      loadingInitial={isLoading}
       hasMore={hasNextPage}
       loadingMore={isFetchingNextPage}
       searchTerm={search}

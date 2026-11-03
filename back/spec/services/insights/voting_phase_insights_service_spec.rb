@@ -7,7 +7,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
   let!(:idea1) { create(:idea, phases: [phase]) }
   let!(:idea2) { create(:idea, phases: [phase], manual_votes_amount: 10) }
 
-  let(:user) { create(:user, custom_field_values: { gender: 'male' }) }
+  let(:user) { create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'male')]) }
   let!(:basket1) { create(:basket, phase: phase, user: user, submitted_at: phase.start_at + 1.day) }
   let!(:baskets_idea1) { create(:baskets_idea, basket: basket1, idea: idea1, votes: 2) }
   let!(:baskets_idea2) { create(:baskets_idea, basket: basket1, idea: idea2, votes: 3) }
@@ -229,6 +229,46 @@ RSpec.describe Insights::VotingPhaseInsightsService do
   end
 
   describe '#vote_counts_with_user_custom_field_grouping' do
+    context 'with exclude_admins_and_moderators' do
+      before do
+        # 5 admins and moderators each give 12 votes to idea1
+        create_admins_and_moderators(project: phase.project).each do |user|
+          basket = create(:basket, phase: phase, user: user, submitted_at: phase.start_at + 1.day)
+          create(:baskets_idea, basket: basket, idea: idea1, votes: 12)
+        end
+        # As in production, the cached counter includes the votes of the admins and moderators
+        idea1.update_column(:votes_count, 62)
+      end
+
+      it 'includes the votes of admins and moderators by default' do
+        result = service.vote_counts_with_user_custom_field_grouping(nil)
+
+        expect(result[:online_votes]).to eq(107)
+        expect(result[:ideas].map { |idea| idea.slice(:id, :online_votes, :total_votes) }).to eq([
+          { id: idea1.id, online_votes: 62, total_votes: 62 },
+          { id: idea2.id, online_votes: 45, total_votes: 55 }
+        ])
+      end
+
+      it 'excludes the votes of admins and moderators and re-sorts the ideas' do
+        service = described_class.new(phase, exclude_admins_and_moderators: true)
+        result = service.vote_counts_with_user_custom_field_grouping(nil)
+
+        expect(result).to include(online_votes: 47, offline_votes: 10, total_votes: 57)
+        expect(result[:ideas]).to eq([
+          { id: idea2.id, title_multiloc: idea2.title_multiloc, online_votes: 45, offline_votes: 10, total_votes: 55, percentage: 96.5, series: nil },
+          { id: idea1.id, title_multiloc: idea1.title_multiloc, online_votes: 2, offline_votes: 0, total_votes: 2, percentage: 3.5, series: nil }
+        ])
+      end
+
+      it 'excludes admins and moderators from the voters metric' do
+        service = described_class.new(phase, exclude_admins_and_moderators: true)
+        participations = service.send(:filtered_phase_participations)
+
+        expect(service.send(:phase_participation_method_metrics, participations)).to include(online_votes: 47, voters: 2)
+      end
+    end
+
     it 'gives expected results when custom_field is nil' do
       result = service.vote_counts_with_user_custom_field_grouping(nil)
 
@@ -319,7 +359,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
       create(:custom_field_option, custom_field: custom_field, key: 'option_a', title_multiloc: { en: 'Option A' })
       create(:custom_field_option, custom_field: custom_field, key: 'option_b', title_multiloc: { en: 'Option B' })
 
-      user.update!(custom_field_values: { 'multiselect' => %w[option_a option_b] })
+      create(:custom_field_answer, answerable: user, key: 'multiselect', value: %w[option_a option_b])
 
       result = service.vote_counts_with_user_custom_field_grouping(custom_field)
 
@@ -366,7 +406,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
 
     it 'gives expected results when grouping by a checkbox custom field' do
       custom_field = create(:custom_field, resource_type: 'User', key: 'checkbox', input_type: 'checkbox', title_multiloc: { en: 'Checkbox' })
-      user.update!(custom_field_values: { 'checkbox' => true })
+      create(:custom_field_answer, answerable: user, key: 'checkbox', value: true)
 
       result = service.vote_counts_with_user_custom_field_grouping(custom_field)
 
@@ -420,7 +460,7 @@ RSpec.describe Insights::VotingPhaseInsightsService do
           counts: [50, 200, 400, 300, 50, 700] # Population in each bin
         )
 
-        user.update!(custom_field_values: { 'birthyear' => Date.current.year - 30 }) # Age 30
+        create(:custom_field_answer, answerable: user, key: 'birthyear', value: Date.current.year - 30) # Age 30
 
         result = service.vote_counts_with_user_custom_field_grouping(custom_field)
 

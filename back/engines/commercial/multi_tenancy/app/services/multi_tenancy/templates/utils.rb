@@ -10,11 +10,19 @@ module MultiTenancy
 
       delegate :parse_yml, :parse_yml_file, to: :class
 
+      # The templates bucket lives on GoVocal's AWS (eu-central-1): keep targeting it
+      # even when the deployment points its S3 env vars at another provider.
+      # TODO: NB: on such deployments, template operations are still expected to fail,
+      #   since the ambient credentials belong to the other provider and won't be valid
+      #   for AWS.
+      def self.s3_client
+        Aws::S3::Client.new(region: 'eu-central-1', ignore_configured_endpoint_urls: true)
+      end
+
       def initialize(
         internal_template_dir: Rails.root.join('config/tenant_templates'),
         template_bucket: ENV.fetch('TEMPLATE_BUCKET', nil),
-        # eu-central-1 is the default region for the template bucket
-        s3_client: Aws::S3::Client.new(region: 'eu-central-1')
+        s3_client: self.class.s3_client
       )
         @internal_template_dir = internal_template_dir
         @template_bucket = template_bucket

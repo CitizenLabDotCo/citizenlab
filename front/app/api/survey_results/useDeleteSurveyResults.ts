@@ -20,7 +20,9 @@ const useDeleteSurveyResults = () => {
   return useMutation({
     mutationFn: deleteSurveyResults,
     onSuccess: (_data, { phaseId }) => {
-      queryClient.invalidateQueries(submissionsCountKeys.item({ phaseId }));
+      queryClient.invalidateQueries({
+        queryKey: submissionsCountKeys.item({ phaseId }),
+      });
       queryClient.invalidateQueries({
         queryKey: surveyResultsKeys.items(),
       });

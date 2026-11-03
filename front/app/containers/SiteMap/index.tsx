@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { TCustomPageCode } from 'api/custom_pages/types';
 import useCustomPages from 'api/custom_pages/useCustomPages';
 import useAuthUser from 'api/me/useAuthUser';
+import { TDefaultNavbarItemCode } from 'api/navbar/types';
 import useNavbarItems from 'api/navbar/useNavbarItems';
 import { DEFAULT_PAGE_SLUGS } from 'api/navbar/util';
 
@@ -54,7 +55,7 @@ const Title = styled.h1`
 `;
 
 const TOC = styled.div`
-  border: 1px solid #ccc;
+  border: 1px solid ${colors.grey400};
   padding: 20px;
   margin-bottom: 30px;
 `;
@@ -164,13 +165,19 @@ const SiteMap = () => {
                           (navBarItem) =>
                             navBarItem.relationships.static_page.data ===
                               null &&
-                            navBarItem.relationships.project.data === null
+                            navBarItem.relationships.project.data === null &&
+                            // Only default items map to DEFAULT_PAGE_SLUGS;
+                            // 'custom' items (leaves and dropdowns) don't.
+                            navBarItem.attributes.code !== 'custom'
                         )
                         .map((navBarItem) => (
                           <li key={navBarItem.id}>
                             <Link
                               to={
-                                DEFAULT_PAGE_SLUGS[navBarItem.attributes.code]
+                                DEFAULT_PAGE_SLUGS[
+                                  navBarItem.attributes
+                                    .code as TDefaultNavbarItemCode
+                                ]
                               }
                             >
                               {localize(navBarItem.attributes.title_multiloc)}

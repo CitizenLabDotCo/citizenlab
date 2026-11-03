@@ -11,7 +11,6 @@ context 'etat_lu verification' do
       'info' => {
         'name' => 'Theo Musterman',
         'email' => 'Theo.Musterman@ctie.etat.lu',
-        'email_verified' => nil,
         'nickname' => 'ABC123',
         'first_name' => 'Theo',
         'last_name' => 'Musterman',

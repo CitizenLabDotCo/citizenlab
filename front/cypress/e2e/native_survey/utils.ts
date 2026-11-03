@@ -159,7 +159,11 @@ const custom_fields = [
   },
 ];
 
-export const setSurvey = (cy: Cypress.Chainable, phaseId: string) => {
+export const setSurveyFields = (
+  cy: Cypress.Chainable,
+  phaseId: string,
+  fields: Record<string, unknown>[]
+) => {
   return cy.apiLogin('admin@govocal.com', 'democracy2.0').then((response) => {
     const adminJwt = response.body.jwt;
 
@@ -171,10 +175,13 @@ export const setSurvey = (cy: Cypress.Chainable, phaseId: string) => {
       method: 'PATCH',
       url: `web_api/v1/phases/${phaseId}/custom_fields/update_all`,
       body: {
-        custom_fields,
+        custom_fields: fields,
         form_opened_at: new Date().toISOString(),
         form_save_type: 'manual',
       },
     });
   });
 };
+
+export const setSurvey = (cy: Cypress.Chainable, phaseId: string) =>
+  setSurveyFields(cy, phaseId, custom_fields);

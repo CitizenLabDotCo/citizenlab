@@ -63,6 +63,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.filesTab2',
     defaultMessage: '360 Input',
   },
+  pagesTab: {
+    id: 'app.containers.AdminPage.ProjectEdit.pagesTab',
+    defaultMessage: 'Pages',
+  },
   viewPublicProject: {
     id: 'app.containers.AdminPage.ProjectEdit.viewPublicProject',
     defaultMessage: 'View project',
@@ -211,6 +215,10 @@ export default defineMessages({
   inputReactingEnabled: {
     id: 'app.containers.AdminPage.ProjectEdit.inputReactingEnabled',
     defaultMessage: 'Reacting to inputs',
+  },
+  attendingEventAction: {
+    id: 'app.containers.AdminPage.ProjectEdit.attendingEventAction',
+    defaultMessage: 'Attending an event',
   },
   likingMethodTitle: {
     id: 'app.containers.AdminPage.ProjectEdit.likingMethodTitle',
@@ -523,6 +531,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectEdit.PostManager.subtitleInputProjectProposals',
     defaultMessage: 'Manage proposals, give feedback and assign topics.',
   },
+  status_prioritySortingMethod: {
+    id: 'app.containers.AdminPage.ProjectEdit.statusPrioritySortingMethod',
+    defaultMessage: 'Status (proposed first)',
+  },
   hiddenFieldsTip2: {
     id: 'app.components.admin.PostManager.hiddenFieldsTip2',
     defaultMessage:
@@ -725,5 +737,9 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.betaTooltip',
     defaultMessage:
       "This participation method is in beta. We're gradually rolling it out to gather feedback and improve the experience.",
+  },
+  configureMap: {
+    id: 'app.containers.AdminPage.ProjectEdit.configureMap',
+    defaultMessage: 'Configure map',
   },
 });

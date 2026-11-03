@@ -313,25 +313,57 @@ describe ProjectsFinderAdminService do
     end
   end
 
-  describe 'self.filter_current_phase_participation_method' do
+  describe 'self.filter_participation_methods' do
     let!(:project_ideation) { create(:ideation_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project }
     let!(:project_voting) { create(:single_voting_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project }
     let!(:project_information) { create(:information_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project }
     let!(:project_ideation_future) { create(:ideation_phase, start_at: 10.days.from_now, end_at: 20.days.from_now).project }
+    let!(:project_ideation_past) { create(:ideation_phase, start_at: 20.days.ago, end_at: 10.days.ago).project }
+
+    # A project whose current phase is information, but which also has a past
+    # voting phase and a future ideation phase.
+    let!(:project_multi_phase) do
+      project = create(:information_phase, start_at: 10.days.ago, end_at: 10.days.from_now).project
+      create(:single_voting_phase, project: project, start_at: 20.days.ago, end_at: 11.days.ago)
+      create(:ideation_phase, project: project, start_at: 11.days.from_now, end_at: 20.days.from_now)
+      project
+    end
 
     it 'returns all projects when no participation_methods specified' do
-      result = described_class.filter_current_phase_participation_method(Project.all, {})
-      expect(result.pluck(:id)).to contain_exactly(project_ideation.id, project_voting.id, project_information.id, project_ideation_future.id)
+      result = described_class.filter_participation_methods(Project.all, {})
+      expect(result.pluck(:id)).to contain_exactly(
+        project_ideation.id, project_voting.id, project_information.id,
+        project_ideation_future.id, project_ideation_past.id, project_multi_phase.id
+      )
     end
 
     it 'filters projects by a single participation method' do
-      result = described_class.filter_current_phase_participation_method(Project.all, { participation_methods: ['ideation'] })
-      expect(result.pluck(:id)).to eq([project_ideation.id])
+      result = described_class.filter_participation_methods(Project.all, { participation_methods: ['ideation'] })
+      expect(result.pluck(:id)).to contain_exactly(project_ideation.id, project_ideation_future.id, project_ideation_past.id, project_multi_phase.id)
     end
 
     it 'filters projects by multiple participation methods' do
-      result = described_class.filter_current_phase_participation_method(Project.all, { participation_methods: %w[ideation voting] })
-      expect(result.pluck(:id)).to contain_exactly(project_ideation.id, project_voting.id)
+      result = described_class.filter_participation_methods(Project.all, { participation_methods: %w[ideation voting] })
+      expect(result.pluck(:id)).to contain_exactly(
+        project_ideation.id, project_voting.id, project_ideation_future.id,
+        project_ideation_past.id, project_multi_phase.id
+      )
+    end
+
+    it 'matches on phases that are not current' do
+      result = described_class.filter_participation_methods(Project.all, { participation_methods: ['voting'] })
+      expect(result.pluck(:id)).to contain_exactly(project_voting.id, project_multi_phase.id)
+    end
+
+    it 'returns each matching project only once when several of its phases match' do
+      result = described_class.filter_participation_methods(Project.all, { participation_methods: %w[information voting] })
+      expect(result.pluck(:id)).to contain_exactly(project_information.id, project_voting.id, project_multi_phase.id)
+    end
+
+    it 'excludes projects without phases' do
+      project_without_phases = create(:project)
+      result = described_class.filter_participation_methods(Project.all, { participation_methods: ['ideation'] })
+      expect(result.pluck(:id)).not_to include(project_without_phases.id)
     end
   end
 
@@ -343,6 +375,83 @@ describe ProjectsFinderAdminService do
     it 'sorts projects alphabetically by title' do
       result = described_class.sort_alphabetically(Project.all, { locale: 'en', sort: 'alphabetically_asc' })
       expect(result.pluck(:id)).to eq([p1.id, p2.id, p3.id])
+    end
+
+    it 'sorts projects in reverse alphabetical order' do
+      result = described_class.sort_alphabetically(Project.all, { locale: 'en', sort: 'alphabetically_desc' })
+      expect(result.pluck(:id)).to eq([p3.id, p2.id, p1.id])
+    end
+
+    it 'falls back to en when the locale is not configured on the tenant' do
+      expect(AppConfiguration.instance.settings('core', 'locales')).not_to include('zz')
+
+      result = described_class.sort_alphabetically(Project.all, { locale: 'zz', sort: 'alphabetically_asc' })
+
+      expect(result.pluck(:id)).to eq([p1.id, p2.id, p3.id])
+    end
+
+    it 'still sorts on a configured non-default locale' do
+      # The whitelist must not break locales the tenant legitimately uses.
+      locale = (AppConfiguration.instance.settings('core', 'locales') - ['en']).first
+      # Deliberately ordered the other way round in en, so sorting on the other
+      # locale is what produces the expectation below.
+      other1 = create(:project, title_multiloc: { 'en' => 'Zeta', locale => 'Aap' })
+      other2 = create(:project, title_multiloc: { 'en' => 'Alpha B', locale => 'Zebra' })
+
+      result = described_class.sort_alphabetically(
+        Project.where(id: [other1.id, other2.id]),
+        { locale: locale, sort: 'alphabetically_asc' }
+      )
+
+      expect(result.pluck(:id)).to eq([other1.id, other2.id])
+    end
+
+    # The ORDER BY is built with Arel.sql, which opts out of ActiveRecord's
+    # protection against raw SQL in `order`, and params[:locale] reaches it
+    # straight from the query string. These cover the sanitising.
+    context 'when params[:locale] carries a SQL injection payload' do
+      # Interpolated verbatim, this closes the string literal and appends its
+      # own ordering; the trailing -- swallows the rest of the clause.
+      let(:reordering_payload) { "zz' , projects.title_multiloc->>'en' DESC --" }
+
+      it 'does not let the payload take over the ORDER BY' do
+        result = described_class.sort_alphabetically(
+          Project.all, { locale: reordering_payload, sort: 'alphabetically_asc' }
+        )
+
+        expect(result.pluck(:id)).to eq([p1.id, p2.id, p3.id])
+        # The order the payload would have produced.
+        expect(result.pluck(:id)).not_to eq([p3.id, p2.id, p1.id])
+      end
+
+      it 'does not emit the payload into the generated SQL' do
+        sql = described_class.sort_alphabetically(
+          Project.all, { locale: reordering_payload, sort: 'alphabetically_asc' }
+        ).to_sql
+
+        expect(sql).not_to include('DESC --')
+        expect(sql).to include("->>'en'")
+      end
+
+      it 'does not break on a locale containing a single quote' do
+        # Interpolated verbatim, this leaves an unterminated string literal and
+        # the query fails to parse.
+        expect do
+          described_class.sort_alphabetically(
+            Project.all, { locale: "en'", sort: 'alphabetically_asc' }
+          ).load
+        end.not_to raise_error
+      end
+
+      it 'does not let the payload reach the query planner' do
+        # Syntactically valid, so it gets past the parser; it only fails once
+        # the planner resolves identifiers. Treated as a literal it is inert.
+        expect do
+          described_class.sort_alphabetically(
+            Project.all, { locale: "zz' , projects.no_such_column --" }
+          ).load
+        end.not_to raise_error
+      end
     end
   end
 

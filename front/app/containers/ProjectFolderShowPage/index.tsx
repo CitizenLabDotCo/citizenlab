@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  Spinner,
-  media,
-  colors,
-  useBreakpoint,
-} from '@citizenlab/cl2-component-library';
+import { Box, Spinner } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
@@ -21,15 +15,14 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 import Unauthorized from 'components/Unauthorized';
 import VerticalCenterer from 'components/VerticalCenterer';
 
+import checkIfFramed from 'utils/checkIfFramed';
 import { FormattedMessage } from 'utils/cl-intl';
 import { isUnauthorizedRQ } from 'utils/errorUtils';
 import { userModeratesFolder } from 'utils/permissions/rules/projectFolderPermissions';
 import { useParams } from 'utils/router';
 
 import messages from './messages';
-import ProjectFolderDescription from './ProjectFolderDescription';
 import ProjectFolderHeader from './ProjectFolderHeader';
-import ProjectFolderProjectCards from './ProjectFolderProjectCards';
 import ProjectFolderShowPageMeta from './ProjectFolderShowPageMeta';
 
 const StyledContentContainer = styled(ContentContainer)`
@@ -41,76 +34,24 @@ const StyledContentContainer = styled(ContentContainer)`
   }
 `;
 
-const Content = styled.div`
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-  margin-bottom: 110px;
-
-  ${media.tablet`
-    flex-direction: column;
-    align-items: stretch;
-  `};
-`;
-
-const StyledProjectFolderDescription = styled(ProjectFolderDescription)`
-  flex: 1;
-
-  ${media.tablet`
-    margin-bottom: 40px;
-  `};
-`;
-
-const StyledProjectFolderProjectCards = styled(ProjectFolderProjectCards)`
-  flex: 0 1 800px;
-  flex-shrink: 0;
-  width: 800px;
-  padding: 20px;
-  padding-bottom: 0px;
-  margin-left: 80px;
-  margin-top: 4px;
-  background: ${colors.background};
-  border-radius: ${(props) => props.theme.borderRadius};
-
-  &.oneCardPerRow {
-    flex: 0 0 500px;
-    width: 500px;
-  }
-
-  ${media.tablet`
-    flex: 1;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    border-radius: 0;
-  `};
-`;
-
-const CardsWrapper = styled.div`
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background: ${colors.background};
-`;
-
 interface Props {
   projectFolder: IProjectFolderData;
 }
 
 const ProjectFolderShowPage = ({ projectFolder }: Props) => {
   const { data: authUser } = useAuthUser();
-  const isSmallerThanSmallDesktop = useBreakpoint('smallDesktop');
 
-  const userCanEditFolder = userModeratesFolder(authUser, projectFolder.id);
-  const descriptionBuilderEnabled =
-    projectFolder.attributes.uses_content_builder;
-  const maxPageWidth = descriptionBuilderEnabled ? '1166px' : '1480px';
+  // An admin preview shows this page in a frame, where the button would open the admin inside it.
+  const showEditButton =
+    userModeratesFolder(authUser, projectFolder.id) && !checkIfFramed();
+  const maxPageWidth = '1166px';
 
   return (
     <main id="e2e-folder-page">
       <StyledContentContainer maxWidth={maxPageWidth}>
         <Box display="flex" width="100%">
           <Box ml="auto" display="flex">
-            {userCanEditFolder && (
+            {showEditButton && (
               <Box
                 display="flex"
                 alignItems="center"
@@ -145,52 +86,13 @@ const ProjectFolderShowPage = ({ projectFolder }: Props) => {
         </Box>
       </StyledContentContainer>
       <Box>
-        {descriptionBuilderEnabled ? (
-          <StyledContentContainer maxWidth={maxPageWidth}>
-            <ProjectFolderHeader projectFolder={projectFolder} />
-            <FolderContentViewer
-              folderId={projectFolder.id}
-              folderTitle={projectFolder.attributes.title_multiloc}
-            />
-          </StyledContentContainer>
-        ) : (
-          <>
-            <StyledContentContainer maxWidth={maxPageWidth}>
-              <ProjectFolderHeader projectFolder={projectFolder} />
-              {!isSmallerThanSmallDesktop ? (
-                <Content>
-                  <StyledProjectFolderDescription
-                    folderId={projectFolder.id}
-                    folderTitle={projectFolder.attributes.title_multiloc}
-                    folderDescription={
-                      projectFolder.attributes.description_multiloc
-                    }
-                  />
-                  <StyledProjectFolderProjectCards
-                    folderId={projectFolder.id}
-                  />
-                </Content>
-              ) : (
-                <StyledProjectFolderDescription
-                  folderId={projectFolder.id}
-                  folderTitle={projectFolder.attributes.title_multiloc}
-                  folderDescription={
-                    projectFolder.attributes.description_multiloc
-                  }
-                />
-              )}
-            </StyledContentContainer>
-            {isSmallerThanSmallDesktop && (
-              <CardsWrapper>
-                <ContentContainer maxWidth={maxPageWidth}>
-                  <StyledProjectFolderProjectCards
-                    folderId={projectFolder.id}
-                  />
-                </ContentContainer>
-              </CardsWrapper>
-            )}
-          </>
-        )}
+        <StyledContentContainer maxWidth={maxPageWidth}>
+          <ProjectFolderHeader projectFolder={projectFolder} />
+          <FolderContentViewer
+            folderId={projectFolder.id}
+            folderTitle={projectFolder.attributes.title_multiloc}
+          />
+        </StyledContentContainer>
       </Box>
     </main>
   );
@@ -200,7 +102,7 @@ const ProjectFolderShowPageWrapper = () => {
   const { slug } = useParams({ from: '/$locale/folders/$slug' });
   const { data: projectFolder, status, error } = useProjectFolderBySlug(slug);
 
-  if (status === 'loading') {
+  if (status === 'pending') {
     return (
       <VerticalCenterer>
         <Spinner />
@@ -219,7 +121,7 @@ const ProjectFolderShowPageWrapper = () => {
   return (
     <>
       <ProjectFolderShowPageMeta projectFolder={projectFolder.data} />
-      <ProjectFolderShowPage projectFolder={projectFolder.data} />;
+      <ProjectFolderShowPage projectFolder={projectFolder.data} />
     </>
   );
 };

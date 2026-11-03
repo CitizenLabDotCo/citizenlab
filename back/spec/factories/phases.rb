@@ -33,7 +33,13 @@ FactoryBot.define do
     end
 
     after(:create) do |phase, evaluator|
-      Permissions::PermissionsUpdateService.new.update_permissions_for_scope(phase) if evaluator.with_permissions
+      # Phase permissions are only persisted once the action is overridden;
+      # until then it inherits the global 'visiting' permission. This trait
+      # overrides every supported action, so the phase owns all of them.
+      if evaluator.with_permissions
+        service = Permissions::PermissionInheritanceService.new
+        Permission.available_actions(phase).each { |action| service.override!(phase, action) }
+      end
       evaluator.permissions_config.each do |action, is_allowed|
         phase.permissions.find_or_initialize_by(action: action).tap do |permission|
           permission.permitted_by = is_allowed ? 'everyone' : 'admins_moderators'
@@ -166,6 +172,9 @@ FactoryBot.define do
 
     trait :standalone do
       placement_type { 'standalone' }
+      participation_method { 'native_survey' }
+      native_survey_title_multiloc { { 'en' => 'Survey' } }
+      native_survey_button_multiloc { { 'en' => 'Take the survey' } }
     end
   end
 end

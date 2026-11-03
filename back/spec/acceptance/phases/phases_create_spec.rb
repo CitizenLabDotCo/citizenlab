@@ -37,7 +37,7 @@ def phase_params(spec)
   spec.parameter :similarity_enabled, 'Enable searching for similar inputs during submission. Defaults to false.', scope: :phase
   spec.parameter :similarity_threshold_title, 'The similarity threshold for the title of the input. Defaults to 0.3', scope: :phase
   spec.parameter :similarity_threshold_body, 'The similarity threshold for the body of the input. Defaults to 0.4', scope: :phase
-  spec.parameter :placement_type, "Whether the phase is on the timeline or standalone (a detached phase, e.g. an extra survey). Either #{Phase::PLACEMENT_TYPES.join(', ')}. Defaults to 'on_timeline'. Can only be set on creation.", scope: :phase
+  spec.parameter :placement_type, "Whether the phase is on the timeline or standalone (a detached phase, e.g. an extra survey). Either #{Phase::PLACEMENT_TYPES.join(', ')}. Defaults to 'on_timeline'.", scope: :phase
 end
 
 resource 'Phases' do
@@ -117,6 +117,9 @@ resource 'Phases' do
         # in parallel and are not subject to the no-overlap rule.
         let(:timeline_phase) { phases.first }
         let(:placement_type) { 'standalone' }
+        let(:participation_method) { 'native_survey' }
+        let(:native_survey_title_multiloc) { { 'en' => 'Survey' } }
+        let(:native_survey_button_multiloc) { { 'en' => 'Take the survey' } }
         let(:start_at) { timeline_phase.start_at }
         let(:end_at) { timeline_phase.end_at }
 

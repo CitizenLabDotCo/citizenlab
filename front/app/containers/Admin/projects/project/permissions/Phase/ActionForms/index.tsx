@@ -1,18 +1,15 @@
 import React from 'react';
 
-import {
-  Title,
-  Box,
-  Accordion,
-  IconTooltip,
-} from '@citizenlab/cl2-component-library';
+import { IconTooltip, Box, Spinner } from '@citizenlab/cl2-component-library';
 
+import useInheritPhasePermission from 'api/phase_permissions/useInheritPhasePermission';
+import useOverridePhasePermission from 'api/phase_permissions/useOverridePhasePermission';
 import usePhasePermissions from 'api/phase_permissions/usePhasePermissions';
-import useResetPhasePermission from 'api/phase_permissions/useResetPhasePermission';
 import useUpdatePhasePermission from 'api/phase_permissions/useUpdatePhasePermission';
 import usePhase from 'api/phases/usePhase';
 
 import ActionForm from 'components/admin/ActionForm';
+import Centerer from 'components/UI/Centerer';
 
 import { useIntl, FormattedMessage } from 'utils/cl-intl';
 
@@ -26,66 +23,36 @@ type Props = {
 
 const ActionForms = ({ phaseId }: Props) => {
   const { formatMessage } = useIntl();
-  const { data: phase } = usePhase(phaseId);
-  const { data: permissions } = usePhasePermissions({ phaseId });
+  const { data: phase, isLoading: isLoadingPhase } = usePhase(phaseId);
+  const { data: permissions, isLoading: isLoadingPermissions } =
+    usePhasePermissions({ phaseId });
   const { mutateAsync: updatePhasePermission } = useUpdatePhasePermission();
-  const { mutate: resetPhasePermission } = useResetPhasePermission();
+  const { mutateAsync: overridePhasePermission } = useOverridePhasePermission();
+  const { mutateAsync: inheritPhasePermission } = useInheritPhasePermission();
+
+  if (isLoadingPermissions || isLoadingPhase) {
+    return (
+      <Centerer height="200px">
+        <Spinner />
+      </Centerer>
+    );
+  }
 
   if (!permissions || !phase) return null;
 
   const participationMethod = phase.data.attributes.participation_method;
+
   if (permissions.data.length === 0) {
     return (
       <p>
-        <FormattedMessage {...messages.noActionsCanBeTakenInThisProject} />
+        <FormattedMessage {...messages.noActionsCanBeTakenInThisPhase} />
       </p>
     );
   }
 
-  if (permissions.data.length === 1) {
-    const permission = permissions.data[0];
-    const permissionAction = permission.attributes.action;
-    return (
-      <Box>
-        <Box display="flex" alignItems="center">
-          <Title variant="h3" color="primary">
-            <FormattedMessage
-              {...getPermissionActionSectionSubtitle({
-                permissionAction,
-                participationMethod,
-              })}
-            />
-          </Title>
-          {permissionAction === 'attending_event' && (
-            <IconTooltip
-              content={formatMessage(
-                utilMessages.permissionAction_attending_event_tooltip
-              )}
-            />
-          )}
-        </Box>
-        <ActionForm
-          phaseId={phaseId}
-          permissionData={permission}
-          onChange={async (permissionChanges) => {
-            await updatePhasePermission({
-              permissionId: permission.id,
-              phaseId,
-              action: permissionAction,
-              permission: permissionChanges,
-            });
-          }}
-          onReset={() =>
-            resetPhasePermission({
-              permissionId: permission.id,
-              phaseId,
-              action: permission.attributes.action,
-            })
-          }
-        />
-      </Box>
-    );
-  }
+  // The ActionForm panel collapses on its own, so it starts open only when there
+  // is a single action to configure; with several, they all start collapsed.
+  const defaultOpen = permissions.data.length === 1;
 
   return (
     <>
@@ -93,29 +60,24 @@ const ActionForms = ({ phaseId }: Props) => {
         const permissionAction = permission.attributes.action;
 
         return (
-          <Accordion
-            className={`e2e-action-accordion-${permissionAction}`}
-            key={permission.id}
-            timeoutMilliseconds={1000}
-            transitionHeightPx={1700}
-            isOpenByDefault={false}
+          <ActionForm
+            // Not the id: an inherited permission has no record of its own, so
+            // its id is blank. The action is unique within the phase.
+            key={permissionAction}
+            phaseId={phaseId}
+            permissionData={permission}
+            defaultOpen={defaultOpen}
             title={
-              <Box display="flex" alignItems="center" gap="8px">
-                <Title
-                  variant="h3"
-                  color="primary"
-                  my="20px"
-                  style={{ fontWeight: 500 }}
-                >
-                  <FormattedMessage
-                    {...getPermissionActionSectionSubtitle({
-                      permissionAction,
-                      participationMethod,
-                    })}
-                  />
-                </Title>
+              <Box display="flex">
+                <FormattedMessage
+                  {...getPermissionActionSectionSubtitle({
+                    permissionAction,
+                    participationMethod,
+                  })}
+                />
                 {permissionAction === 'attending_event' && (
                   <IconTooltip
+                    ml="4px"
                     content={formatMessage(
                       utilMessages.permissionAction_attending_event_tooltip
                     )}
@@ -123,27 +85,27 @@ const ActionForms = ({ phaseId }: Props) => {
                 )}
               </Box>
             }
-          >
-            <ActionForm
-              phaseId={phaseId}
-              permissionData={permission}
-              onChange={async (permissionChanges) => {
-                await updatePhasePermission({
-                  permissionId: permission.id,
-                  phaseId,
-                  action: permissionAction,
-                  permission: permissionChanges,
-                });
-              }}
-              onReset={() =>
-                resetPhasePermission({
-                  permissionId: permission.id,
-                  phaseId,
-                  action: permission.attributes.action,
-                })
-              }
-            />
-          </Accordion>
+            onChange={async (permissionChanges) => {
+              await updatePhasePermission({
+                permissionId: permission.id,
+                phaseId,
+                action: permissionAction,
+                permission: permissionChanges,
+              });
+            }}
+            onOverride={async () => {
+              await overridePhasePermission({
+                phaseId,
+                action: permissionAction,
+              });
+            }}
+            onRevertToDefaults={async () => {
+              await inheritPhasePermission({
+                phaseId,
+                action: permissionAction,
+              });
+            }}
+          />
         );
       })}
     </>

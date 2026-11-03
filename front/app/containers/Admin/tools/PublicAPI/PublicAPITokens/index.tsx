@@ -26,6 +26,7 @@ import { useIntl, FormattedMessage } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import CreateTokenModal from './CreateTokenModal';
+import LastUsedCell from './LastUsedCell';
 import messages from './messages';
 
 const PublicAPITokens = () => {
@@ -97,8 +98,10 @@ const PublicAPITokens = () => {
                 <Td>{token.attributes.masked_secret}</Td>
                 <Td>{formatDate(token.attributes.created_at)}</Td>
                 <Td>
-                  {token.attributes.last_used_at &&
-                    formatDate(token.attributes.last_used_at)}
+                  <LastUsedCell
+                    lastUsedAt={token.attributes.last_used_at}
+                    lastUserAgent={token.attributes.last_user_agent}
+                  />
                 </Td>
                 <Td>
                   <IconButton

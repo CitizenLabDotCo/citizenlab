@@ -14,6 +14,20 @@ RSpec.describe Activity do
       end
     end
 
+    describe 'channel' do
+      it 'is valid when nil (the regular web/API path)' do
+        expect(build(:activity, channel: nil)).to be_valid
+      end
+
+      it "is valid when 'mcp'" do
+        expect(build(:activity, channel: 'mcp')).to be_valid
+      end
+
+      it 'is invalid for any other value' do
+        expect(build(:activity, channel: 'web')).to be_invalid
+      end
+    end
+
     describe '.management scope' do
       let(:admin) { create(:admin) }
       let(:moderator) { create(:user, roles: [{ type: 'project_moderator', project_id: SecureRandom.uuid }]) }

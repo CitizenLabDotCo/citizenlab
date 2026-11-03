@@ -10,16 +10,17 @@ import useUpdateCustomPage from 'api/custom_pages/useUpdateCustomPage';
 import useLocalize from 'hooks/useLocalize';
 
 import {
-  pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLink,
+  pagesBreadcrumb,
+  pagesBreadcrumbLink,
 } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 import ShownOnPageBadge from 'containers/Admin/pagesAndMenu/components/ShownOnPageBadge';
 import CTAButtonFields from 'containers/Admin/pagesAndMenu/containers/CustomPages/Edit/HeroBanner/CTAButtonFields';
-import BannerHeaderFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerHeaderFields';
-import BannerImageFields from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/BannerImageFields';
-import LayoutSettingField from 'containers/Admin/pagesAndMenu/containers/GenericHeroBannerForm/LayoutSettingField';
 import { adminCustomPageContentLink } from 'containers/Admin/pagesAndMenu/routes';
 
+import BannerHeaderFields from 'components/admin/BannerFields/BannerHeaderFields';
+import BannerImageFields from 'components/admin/BannerFields/BannerImageFields';
+import LayoutSettingField from 'components/admin/BannerFields/LayoutSettingField';
+import messages from 'components/admin/BannerFields/messages';
 import { ISubmitState } from 'components/admin/SubmitWrapper';
 import HelmetIntl from 'components/HelmetIntl';
 
@@ -28,7 +29,6 @@ import { isNilOrError, isNil } from 'utils/helperUtils';
 import { useParams } from 'utils/router';
 
 import GenericHeroBannerForm from '../../../GenericHeroBannerForm';
-import messages from '../../../GenericHeroBannerForm/messages';
 
 export type CustomPageBannerSettingKeyType = Extract<
   keyof ICustomPageAttributes,
@@ -226,8 +226,8 @@ const EditCustomPageHeroBannerForm = ({
           }}
           breadcrumbs={[
             {
-              label: formatMessage(pagesAndMenuBreadcrumb.label),
-              link: pagesAndMenuBreadcrumbLink,
+              label: formatMessage(pagesBreadcrumb.label),
+              link: pagesBreadcrumbLink,
             },
             {
               label: localize(customPage.data.attributes.title_multiloc),

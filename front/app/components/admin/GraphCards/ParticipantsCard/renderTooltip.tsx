@@ -11,7 +11,7 @@ import { IResolution } from 'components/admin/ResolutionControl';
 import { FormattedMessage } from 'utils/cl-intl';
 import { toFullMonth } from 'utils/dateUtils';
 
-import messages from './messages';
+import { SERIES, SeriesKey } from './series';
 
 type CustomTooltipProps = {
   label: TooltipContentProps<string, string>['label'];
@@ -19,7 +19,7 @@ type CustomTooltipProps = {
     | [
         {
           payload?: {
-            participants: number;
+            participants?: number;
             visitors?: number;
             date: string;
           };
@@ -27,14 +27,14 @@ type CustomTooltipProps = {
       ]
     | [];
   resolution: IResolution;
-  showVisitors?: boolean;
+  series: SeriesKey[];
 };
 
 const CustomTooltip = ({
   label,
   payload,
   resolution,
-  showVisitors = false,
+  series,
 }: CustomTooltipProps) => {
   if (!payload?.[0]?.payload || !label) return null;
 
@@ -42,37 +42,27 @@ const CustomTooltip = ({
 
   return (
     <TooltipOutline label={toFullMonth(String(label), resolution)}>
-      <Box py="0px">
-        <Icon
-          name="dot"
-          width="8px"
-          height="8px"
-          fill={colors.categorical01}
-          mr="6px"
-          mt="-2px"
-        />
-        <FormattedMessage {...messages.participants} />: {data.participants}
-      </Box>
-      {showVisitors && data.visitors !== undefined && (
-        <Box py="0px">
-          <Icon
-            name="dot"
-            width="8px"
-            height="8px"
-            fill={colors.categorical03}
-            mr="6px"
-            mt="-2px"
-          />
-          <FormattedMessage {...messages.visitors} />: {data.visitors}
-        </Box>
+      {series.map((key) =>
+        data[key] === undefined ? null : (
+          <Box key={key} py="0px">
+            <Icon
+              name="dot"
+              width="8px"
+              height="8px"
+              fill={SERIES[key].color}
+              mr="6px"
+              mt="-2px"
+            />
+            <FormattedMessage {...SERIES[key].label} />: {data[key]}
+          </Box>
+        )
       )}
     </TooltipOutline>
   );
 };
 
 const renderTooltip =
-  (resolution: IResolution, showVisitors = false) =>
-  (props) =>
+  (resolution: IResolution, series: SeriesKey[]) => (props) =>
     (
       <Tooltip
         {...props}
@@ -82,7 +72,7 @@ const renderTooltip =
             label={props.label}
             payload={props.payload as any}
             resolution={resolution}
-            showVisitors={showVisitors}
+            series={series}
           />
         )}
       />

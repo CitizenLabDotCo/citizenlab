@@ -22,3 +22,5 @@ class SideFxStaticPageService
     )
   end
 end
+
+SideFxStaticPageService.prepend(ContentBuilder::Patches::SideFxStaticPageService)

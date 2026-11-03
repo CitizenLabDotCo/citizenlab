@@ -22,6 +22,8 @@ import {
 } from 'components/smallForm';
 import { FormLabel } from 'components/UI/FormComponents';
 import GoBackButton from 'components/UI/GoBackButton';
+import { passwordUserInputs } from 'components/UI/PasswordInput';
+import { getPasswordSchema } from 'components/UI/PasswordInput/passwordSchema';
 import Warning from 'components/UI/Warning';
 
 import { useIntl } from 'utils/cl-intl';
@@ -55,30 +57,30 @@ const ChangePassword = () => {
 
   const minimumPasswordLength =
     tenant?.data.attributes.settings.password_login?.minimum_length || 0;
+  const minimumStrength =
+    tenant?.data.attributes.settings.password_login?.minimum_strength;
+  const userInputs = passwordUserInputs({
+    email: authUser?.data.attributes.email,
+    first_name: authUser?.data.attributes.first_name,
+    last_name: authUser?.data.attributes.last_name,
+  });
+
+  const passwordSchema = getPasswordSchema(formatMessage, {
+    minimumPasswordLength,
+    minimumStrength,
+    staticUserInputs: userInputs,
+    requiredMessage: messages.newPasswordRequired,
+  });
 
   const schemaPreviousPasswordExists = object({
     current_password: string().required(
       formatMessage(messages.currentPasswordRequired)
     ),
-    password: string()
-      .required(formatMessage(messages.newPasswordRequired))
-      .min(
-        minimumPasswordLength,
-        formatMessage(messages.minimumPasswordLengthError, {
-          minimumPasswordLength,
-        })
-      ),
+    password: passwordSchema,
   });
 
   const schemaNoPreviousPassword = object({
-    password: string()
-      .required(formatMessage(messages.newPasswordRequired))
-      .min(
-        minimumPasswordLength,
-        formatMessage(messages.minimumPasswordLengthError, {
-          minimumPasswordLength,
-        })
-      ),
+    password: passwordSchema,
   });
 
   const schema = userHasPreviousPassword
@@ -164,7 +166,11 @@ const ChangePassword = () => {
                 />
                 <StyledPasswordIconTooltip />
               </LabelContainer>
-              <PasswordInput name="password" autocomplete="new-password" />
+              <PasswordInput
+                name="password"
+                autocomplete="new-password"
+                userInputs={userInputs}
+              />
               <StyledButton
                 id="password-submit-button"
                 type="submit"

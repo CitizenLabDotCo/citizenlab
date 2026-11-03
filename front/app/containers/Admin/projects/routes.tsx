@@ -2,11 +2,8 @@ import React, { lazy } from 'react';
 
 import * as yup from 'yup';
 
-import { reviewStates } from 'api/admin_publications/types';
 import { ideaSortValues } from 'api/ideas/types';
-import { projectSortableParams } from 'api/projects_mini_admin/types';
-
-import useParallelParticipation from 'hooks/useParallelParticipation';
+import { participationMethods } from 'api/phases/types';
 
 import PageLoading from 'components/UI/PageLoading';
 
@@ -15,6 +12,8 @@ import { parseModuleRoutes, RouteConfiguration } from 'utils/moduleUtils';
 import { createRoute, useParams } from 'utils/router';
 
 import { adminRoute } from '../routes';
+
+import { projectsIndexSearchSchema } from './all/_shared/searchSchema';
 
 const AdminProjectIdeaPreviewIndex = lazy(
   () => import('./AdminProjectIdeaPreviewIndex')
@@ -33,8 +32,8 @@ const AdminProjectsAndFolders = lazy(() => import('.'));
 const AdminProjectsList = lazy(() => import('./all'));
 const AdminProjectNew = lazy(() => import('./new'));
 const AdminProjectsProjectIndex = lazy(() => import('./project'));
-const AdminProjectPageNewBackoffice = lazy(
-  () => import('./project/newBackoffice/ProjectPage')
+const AdminProjectPage = lazy(
+  () => import('./project/projectPage/ProjectPage')
 );
 const AdminProjectPhaseIndex = lazy(() => import('./project/phase'));
 const AdminProjectsProjectGeneral = lazy(() => import('./project/general'));
@@ -47,6 +46,9 @@ const AdminProjectsProjectAudience = lazy(
 const AdminPhaseNewAndEdit = lazy(() => import('./project/phaseSetup'));
 const AdminPhaseDescription = lazy(() => import('./project/phaseDescription'));
 const AdminProjectFiles = lazy(() => import('./project/files'));
+const AdminProjectPages = lazy(() => import('./project/pages'));
+const AdminProjectPageNew = lazy(() => import('./project/pages/New'));
+const AdminProjectPageEdit = lazy(() => import('./project/pages/Edit'));
 const AdminProjectEvents = lazy(() => import('./project/events'));
 const AdminProjectEventsEdit = lazy(() => import('./project/events/edit'));
 const AdminProjectPermissions = lazy(
@@ -149,32 +151,6 @@ const projectsRoute = createRoute({
   ),
 });
 
-// Projects index (list) - filter params for the project list page.
-// Multiselect params (status, managers, etc.) are stored as JSON-encoded
-// strings in the URL; the useParam/useParams hooks in _shared/params.ts
-// handle parsing.
-const projectsIndexSearchSchema = yup.object({
-  tab: yup
-    .string()
-    .oneOf(['calendar', 'folders', 'spaces', 'ordering'])
-    .optional(),
-  sort: yup.string().oneOf(projectSortableParams).optional(),
-  review_state: yup.string().oneOf(reviewStates).optional(),
-  search: yup.string().optional(),
-  min_start_date: yup.string().optional(),
-  max_start_date: yup.string().optional(),
-  // Array params encoded as ?key=["a","b"] in the URL — TanStack's default
-  // parser turns them into arrays before validation.
-  status: yup.array().of(yup.string().required()).optional(),
-  managers: yup.array().of(yup.string().required()).optional(),
-  participation_states: yup.array().of(yup.string().required()).optional(),
-  folder_ids: yup.array().of(yup.string().required()).optional(),
-  participation_methods: yup.array().of(yup.string().required()).optional(),
-  visibility: yup.array().of(yup.string().required()).optional(),
-  discoverability: yup.array().of(yup.string().required()).optional(),
-  space_ids: yup.array().of(yup.string().required()).optional(),
-});
-
 const projectsIndexRoute = createRoute({
   getParentRoute: () => projectsRoute,
   path: '/',
@@ -224,21 +200,10 @@ const ProjectIndexRedirect = () => {
   const { projectId } = useParams({
     from: '/$locale/admin/projects/$projectId',
   });
-  const parallelParticipation = useParallelParticipation();
-
-  if (parallelParticipation) {
-    return (
-      <Navigate
-        to="/admin/projects/$projectId/project-page"
-        params={{ projectId }}
-        replace
-      />
-    );
-  }
 
   return (
     <Navigate
-      to="/admin/projects/$projectId/phases/setup"
+      to="/admin/projects/$projectId/project-page"
       params={{ projectId }}
       replace
     />
@@ -251,12 +216,18 @@ const projectIndexRoute = createRoute({
   component: ProjectIndexRedirect,
 });
 
+const projectPageSearchSchema = yup.object({
+  groups_failed: yup.string().optional(),
+});
+
 const projectPageRoute = createRoute({
   getParentRoute: () => projectRoute,
   path: 'project-page',
+  validateSearch: (search: Record<string, unknown>) =>
+    projectPageSearchSchema.validateSync(search),
   component: () => (
     <PageLoading>
-      <AdminProjectPageNewBackoffice />
+      <AdminProjectPage />
     </PageLoading>
   ),
 });
@@ -455,6 +426,37 @@ const projectFilesRoute = createRoute({
   ),
 });
 
+// --- Pages routes ---
+const projectPagesRoute = createRoute({
+  getParentRoute: () => projectRoute,
+  path: 'pages',
+  component: () => (
+    <PageLoading>
+      <AdminProjectPages />
+    </PageLoading>
+  ),
+});
+
+const projectPageNewRoute = createRoute({
+  getParentRoute: () => projectRoute,
+  path: 'pages/new',
+  component: () => (
+    <PageLoading>
+      <AdminProjectPageNew />
+    </PageLoading>
+  ),
+});
+
+const projectPageEditRoute = createRoute({
+  getParentRoute: () => projectRoute,
+  path: 'pages/$customPageId',
+  component: () => (
+    <PageLoading>
+      <AdminProjectPageEdit />
+    </PageLoading>
+  ),
+});
+
 // --- Events routes ---
 const projectEventsRoute = createRoute({
   getParentRoute: () => projectRoute,
@@ -476,14 +478,24 @@ const projectEventsNewRoute = createRoute({
   ),
 });
 
+// Keyed by event so moving between events starts a fresh form instead of
+// carrying one event's unsaved edits over to the next.
+const ProjectEventEditPage = () => {
+  const { id } = useParams({
+    from: '/$locale/admin/projects/$projectId/events/$id',
+  });
+
+  return (
+    <PageLoading>
+      <AdminProjectEventsEdit key={id} />
+    </PageLoading>
+  );
+};
+
 const projectEventsEditRoute = createRoute({
   getParentRoute: () => projectRoute,
   path: 'events/$id',
-  component: () => (
-    <PageLoading>
-      <AdminProjectEventsEdit />
-    </PageLoading>
-  ),
+  component: ProjectEventEditPage,
 });
 
 // --- Phases layout ---
@@ -497,6 +509,7 @@ const phasesSearchSchema = yup.object({
   topics: yup.string().optional(),
   assignee: yup.string().optional(),
   feedback_needed: yup.string().oneOf(['true', 'false']).optional(),
+  source: yup.string().oneOf(['online', 'imported']).optional(),
   phase: yup.string().optional(),
   projects: yup.string().optional(),
   tab: yup
@@ -504,6 +517,10 @@ const phasesSearchSchema = yup.object({
     .oneOf(['topics', 'phases', 'projects', 'statuses'])
     .optional(),
   selected_idea_id: yup.string().optional(),
+  // Creates the phase as a standalone (detached) survey rather than a phase on
+  // the timeline.
+  placement: yup.string().oneOf(['standalone']).optional(),
+  participation_method: yup.string().oneOf(participationMethods).optional(),
 });
 
 const projectPhasesRoute = createRoute({
@@ -795,6 +812,9 @@ const createAdminProjectsRoutes = (moduleRoutes: RouteConfiguration[] = []) => {
       projectMessagingShowRoute,
       projectAnalysisRoute,
       projectFilesRoute,
+      projectPagesRoute,
+      projectPageNewRoute,
+      projectPageEditRoute,
       projectEventsRoute,
       projectEventsNewRoute,
       projectEventsEditRoute,

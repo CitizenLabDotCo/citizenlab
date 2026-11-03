@@ -8,25 +8,47 @@ import { IProjectData } from 'api/projects/types';
 import { pastPresentOrFuture } from 'utils/dateUtils';
 import { isNilOrError } from 'utils/helperUtils';
 import { hasTextInSpecifiedLocale } from 'utils/locale';
+import { isPhaseActive } from 'utils/projectUtils';
 
-import { IPhaseData, VoteTerm } from './types';
+import { IPhaseData, PresentationMode, VoteTerm } from './types';
 
 export function canContainIdeas(phase: IPhaseData) {
   const pm = phase.attributes.participation_method;
   return pm === 'ideation' || pm === 'voting';
 }
 
+export function isTimelinePhase(phase: IPhaseData) {
+  return phase.attributes.placement_type === 'on_timeline';
+}
+
+// Mirrors TimelineService#previous_phase on the back end; keep the two in sync.
+export function getPreviousTimelinePhase(
+  phases: IPhaseData[],
+  phase: IPhaseData
+) {
+  const startAt = new Date(phase.attributes.start_at).getTime();
+
+  return phases
+    .filter(
+      (other) =>
+        other.id !== phase.id &&
+        isTimelinePhase(other) &&
+        new Date(other.attributes.start_at).getTime() < startAt
+    )
+    .reduce<IPhaseData | undefined>(
+      (latest, other) =>
+        !latest ||
+        new Date(other.attributes.start_at) >
+          new Date(latest.attributes.start_at)
+          ? other
+          : latest,
+      undefined
+    );
+}
+
 export function getCurrentPhase(phases: IPhaseData[] | undefined) {
   if (!isNilOrError(phases)) {
-    const currentPhase = phases.find(
-      (phase) =>
-        pastPresentOrFuture([
-          phase.attributes.start_at,
-          phase.attributes.end_at,
-        ]) === 'present'
-    );
-
-    return currentPhase;
+    return phases.find(isPhaseActive);
   }
 
   return;
@@ -193,6 +215,12 @@ export function getPhaseLandingTab(
   return 'setup';
 }
 
+export function getPhaseSaveRedirectTab(phase: IPhaseData) {
+  return phase.attributes.participation_method === 'native_survey'
+    ? 'survey-form'
+    : getPhaseLandingTab(phase);
+}
+
 export const INPUT_TERMS = [
   'idea',
   'option',
@@ -213,3 +241,24 @@ export const INPUT_TERMS = [
 ];
 
 export const IdeaSortMethodFallback = 'trending';
+
+// The requested view is a URL search param, so a bookmarked ?view= link outlives the configuration
+// it was made under. Undefined availableViews means loading, or no phase: leave the request alone.
+export function getSelectedView({
+  requestedView,
+  availableViews,
+  defaultView,
+}: {
+  requestedView?: PresentationMode;
+  availableViews?: PresentationMode[];
+  defaultView: PresentationMode;
+}): PresentationMode {
+  if (!requestedView) return defaultView;
+  if (!availableViews || availableViews.includes(requestedView)) {
+    return requestedView;
+  }
+
+  // The backend keeps presentation_mode within available_views, so 'card' is only for a defaultView
+  // that came from elsewhere.
+  return availableViews.includes(defaultView) ? defaultView : 'card';
+}

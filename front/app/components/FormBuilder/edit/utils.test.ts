@@ -1,10 +1,16 @@
-import { IFlatCustomField } from 'api/custom_fields/types';
+import {
+  ICustomFieldInputType,
+  IFlatCustomField,
+} from 'api/custom_fields/types';
+
+import { LIST_LAYOUT_MAX_OPTIONS } from 'components/CustomFieldsForm/constants';
 
 import {
   LogicConflictType,
   detectConflictsByPage,
   getReorderedFields,
   NestedGroupingStructure,
+  transformFieldForSubmission,
 } from './utils';
 
 describe('getReorderedFields', () => {
@@ -341,5 +347,48 @@ describe('detectConflictsByPage', () => {
     const conflictTypes = conflicts['page1']?.map((c) => c.conflictType);
     expect(conflictTypes).toContain(LogicConflictType.QUESTION_VS_PAGE_LOGIC);
     expect(conflictTypes).toContain(LogicConflictType.INTER_QUESTION_CONFLICT);
+  });
+});
+
+describe('transformFieldForSubmission', () => {
+  const optionsField = (
+    inputType: ICustomFieldInputType,
+    optionCount: number,
+    dropdownLayout: boolean
+  ) =>
+    ({
+      id: 'field1',
+      input_type: inputType,
+      key: 'field1',
+      dropdown_layout: dropdownLayout,
+      options: Array.from({ length: optionCount }, (_, index) => ({
+        id: `option-${index}`,
+      })),
+    } as IFlatCustomField);
+
+  it('keeps the layout the admin picked for a short option list', () => {
+    const field = optionsField('select', LIST_LAYOUT_MAX_OPTIONS, false);
+
+    expect(transformFieldForSubmission(field, [field])).toMatchObject({
+      dropdown_layout: false,
+    });
+  });
+
+  // The question renders as a dropdown above the threshold whatever is stored,
+  // so what gets saved has to say the same.
+  it('saves the dropdown layout once the option list is too long', () => {
+    const field = optionsField('select', LIST_LAYOUT_MAX_OPTIONS + 1, false);
+
+    expect(transformFieldForSubmission(field, [field])).toMatchObject({
+      dropdown_layout: true,
+    });
+  });
+
+  it('leaves a long multiselect alone', () => {
+    const field = optionsField('multiselect', 50, false);
+
+    expect(transformFieldForSubmission(field, [field])).toMatchObject({
+      dropdown_layout: false,
+    });
   });
 });

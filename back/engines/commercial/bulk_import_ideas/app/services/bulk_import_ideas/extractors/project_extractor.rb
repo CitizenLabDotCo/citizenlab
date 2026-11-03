@@ -44,7 +44,8 @@ module BulkImportIdeas::Extractors
         {
           id: id,
           title_multiloc: multiloc(title),
-          description_multiloc: multiloc(description_html),
+          # Not a project attribute — the importer puts it on the project page layout.
+          description: multiloc(description_html),
           slug: SlugService.new.slugify(title),
           thumbnail_url: thumbnail_url,
           banner_url: banner_url,
@@ -186,7 +187,7 @@ module BulkImportIdeas::Extractors
     end
 
     def s3_client
-      @s3_client ||= Aws::S3::Client.new(region: ENV.fetch('AWS_REGION'))
+      @s3_client ||= Aws::S3::Client.new
     end
 
     def project_column(row, column_name)

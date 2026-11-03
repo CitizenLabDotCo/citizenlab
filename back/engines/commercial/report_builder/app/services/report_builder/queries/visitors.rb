@@ -4,7 +4,7 @@ module ReportBuilder
     # @param start_at [String, Date] Beginning of analysis period (YYYY-MM-DD)
     # @param end_at [String, Date] End of analysis period (YYYY-MM-DD)
     # @param project_id [String] Optional project ID to filter participants
-    # @param exclude_roles [<String>] Flag to exclude certain roles from participant counts ('exclude_admins_and_moderators')
+    # @param exclude_admins_and_moderators [Boolean] Leave out admins and moderators from visitor counts
     # @param resolution [String] Time grouping ('day', 'week', or 'month')
     # @return [Hash] Visitor timeseries and other statisticsrates
     def run_query(
@@ -12,14 +12,14 @@ module ReportBuilder
       end_at: nil,
       project_id: nil,
       resolution: 'month',
-      exclude_roles: nil,
+      exclude_admins_and_moderators: false,
       compare_start_at: nil,
       compare_end_at: nil,
       **_other_props
     )
       validate_resolution(resolution)
 
-      visits_service = Insights::VisitsService.new(project_id, start_at:, end_at:, exclude_roles:)
+      visits_service = Insights::VisitsService.new(project_id, start_at:, end_at:, exclude_admins_and_moderators:)
       visitors_timeseries = visits_service.visits_by_date(resolution)
       totals = visits_service.total_visits
       page_views = visits_service.all_page_views_query
@@ -35,7 +35,7 @@ module ReportBuilder
 
       # If compare_start_at and compare_end_at are present:
       if compare_start_at.present? && compare_end_at.present?
-        compare_visits_service = Insights::VisitsService.new(project_id, start_at: compare_start_at, end_at: compare_end_at, exclude_roles: exclude_roles)
+        compare_visits_service = Insights::VisitsService.new(project_id, start_at: compare_start_at, end_at: compare_end_at, exclude_admins_and_moderators: exclude_admins_and_moderators)
         compare_totals = compare_visits_service.total_visits
         compare_page_views = compare_visits_service.all_page_views_query
         compare_timings = calculate_timings(compare_page_views, compare_totals[:visits])

@@ -64,20 +64,21 @@ module BulkImportIdeas::Importers
               # Though they have to reset their password by email after import anyway
               custom_field_values = process_user_custom_field_values(platform_fields, user_row)
 
-              user = User.create!(
+              user = User.new(
                 email: user_row[USER_EMAIL],
                 first_name: user_row[USER_FIRST_NAME],
                 last_name: user_row[USER_LAST_NAME] || '',
-                custom_field_values: custom_field_values,
                 created_at: user_row[USER_CREATED_AT] ? user_row[USER_CREATED_AT].to_time : Time.now,
                 last_active_at: user_row[USER_LAST_ACTIVE_AT] ? user_row[USER_LAST_ACTIVE_AT].to_time : Time.now,
                 registration_completed_at: user_row[USER_CREATED_AT] ? user_row[USER_CREATED_AT].to_time : Time.now,
                 locale: @locale,
                 imported: true
               )
+              CustomFieldValuesTransitionService.new.assign(user, custom_field_values)
+              user.save!
 
               # Assume all imported users are confirmed and change date to created_at if it exists
-              user.email_confirmation.confirm!
+              user.find_or_create_confirmation(:email_confirmation).confirm!
               user.update!(email_confirmed_at: user_row[USER_CREATED_AT] ? user_row[USER_CREATED_AT].to_time : Time.now)
 
               # Ensure the user can unsubscribe
@@ -142,8 +143,7 @@ module BulkImportIdeas::Importers
             option = find_object_by_title(field.options, option_title)
             next unless option
 
-            # For domicile fields, we need to use the area ID as the option key, except for 'outside' option
-            option_keys << (field.domicile? && option.key != 'outside' ? option.area.id : option.key)
+            option_keys << option.answer_key
           end
 
           value = option_keys.compact.uniq
@@ -185,18 +185,20 @@ module BulkImportIdeas::Importers
         project_data = increment_title(project_data)
 
         # Create a new project only visible to admins
-        project_attributes = project_data.except(:phases, :thumbnail_url, :banner_url, :attachments)
+        # Job payloads enqueued before the rename carry :description_multiloc
+        project_data[:description] ||= project_data[:description_multiloc]
+        project_attributes = project_data.except(:phases, :thumbnail_url, :banner_url, :attachments, :description, :description_multiloc)
         project = Project.create!(project_attributes)
-
-        # Create the description content builder layout
-        create_description_content_builder_layout(project)
 
         # Create the project thumbnail and banner images if they exist
         create_project_thumbnail_image(project, project_data)
         create_project_banner_image(project, project_data)
 
-        # Add any attachments
+        # Add any attachments (before the page layout, so it gets their widgets)
         create_project_attachments(project, project_data)
+
+        # Put the imported description on the project page
+        create_project_page_layout(project, project_data[:description])
 
         log "Created new project: #{project_data[:slug]} (#{project.id})"
         project
@@ -353,41 +355,115 @@ module BulkImportIdeas::Importers
       project_data
     end
 
-    def create_description_content_builder_layout(project)
-      craftjs_json = {
-        ROOT: {
-          type: 'div',
-          nodes: %w[TEXT],
-          props: { id: 'e2e-content-builder-frame' },
-          custom: {},
-          hidden: false,
-          isCanvas: true,
-          displayName: 'div',
-          linkedNodes: {}
-        },
-        TEXT: {
-          type: { resolvedName: 'TextMultiloc' },
-          nodes: [],
-          props: { text: project.description_multiloc || {} },
-          custom: {},
-          hidden: false,
-          parent: 'ROOT',
-          isCanvas: false,
-          displayName: 'TextMultiloc',
-          linkedNodes: {}
-        }
-      }
+    # Builds the project page with the imported description as a text widget in its body. A project
+    # without a description falls back to the default page. Saved through the layout side effects so
+    # inline base64 images are extracted into image records rather than stored in the craftjs.
+    def create_project_page_layout(project, description_multiloc)
+      layout_service = ContentBuilder::ProjectPageLayoutService.new
+      craftjs_json = if description_multiloc.present?
+        layout_service.append_file_nodes(
+          layout_service.craftjs_json_from_body(description_body_craftjs(description_multiloc)),
+          project
+        )
+      else
+        layout_service.craftjs_json_for(project)
+      end
 
-      ContentBuilder::Layout.create!(
+      layout = ContentBuilder::Layout.new(
         content_buildable: project,
-        code: 'project_description',
+        code: ContentBuilder::ProjectPageLayoutService::CODE,
         craftjs_json: craftjs_json,
         enabled: true
       )
+      ContentBuilder::SideFxLayoutService.new.before_create(layout, @import_user)
+      layout.save!
 
-      log 'Created description builder layout for project description.'
+      log 'Created project page layout for project description.'
     rescue StandardError => e
-      log "ERROR: Creating description builder layout: #{e.message}"
+      log "ERROR: Creating project page layout: #{e.message}"
+    end
+
+    # Imported HTML can carry inline images and embeds, which only the RichTextMultiloc bridge
+    # widget renders losslessly (and whose images the layout side effects extract).
+    #
+    # The description shares a `2-1` TwoColumn with the participation box, the layout a project
+    # page built in the app has.
+    def description_body_craftjs(description_multiloc)
+      widget = description_has_media?(description_multiloc) ? 'RichTextMultiloc' : 'TextMultiloc'
+      {
+        'ROOT' => {
+          'type' => 'div',
+          'nodes' => %w[MAIN],
+          'props' => { 'id' => 'e2e-content-builder-frame' },
+          'custom' => {},
+          'hidden' => false,
+          'isCanvas' => true,
+          'displayName' => 'div',
+          'linkedNodes' => {}
+        },
+        'MAIN' => {
+          'type' => { 'resolvedName' => 'TwoColumn' },
+          'nodes' => [],
+          'props' => { 'columnLayout' => '2-1' },
+          'custom' => {
+            'title' => { 'id' => 'app.containers.admin.ContentBuilder.twoColumnLayout', 'defaultMessage' => '2 column' },
+            'hasChildren' => true
+          },
+          'hidden' => false,
+          'parent' => 'ROOT',
+          'isCanvas' => false,
+          'displayName' => 'TwoColumn',
+          'linkedNodes' => { 'left' => 'LEFT', 'right' => 'RIGHT' }
+        },
+        'LEFT' => container_node('MAIN', %w[TEXT]),
+        'RIGHT' => container_node('MAIN', %w[ABOUT]),
+        'TEXT' => {
+          'type' => { 'resolvedName' => widget },
+          'nodes' => [],
+          'props' => { 'text' => description_multiloc },
+          'custom' => {},
+          'hidden' => false,
+          'parent' => 'LEFT',
+          'isCanvas' => false,
+          'displayName' => widget,
+          'linkedNodes' => {}
+        },
+        'ABOUT' => {
+          'type' => { 'resolvedName' => 'AboutBox' },
+          'nodes' => [],
+          'props' => {},
+          'custom' => {
+            'title' => { 'id' => 'app.containers.admin.ContentBuilder.participationBox', 'defaultMessage' => 'Participation Box' },
+            'noPointerEvents' => true
+          },
+          'hidden' => false,
+          'parent' => 'RIGHT',
+          'isCanvas' => false,
+          'displayName' => 'AboutBox',
+          'linkedNodes' => {}
+        }
+      }
+    end
+
+    def container_node(parent_id, child_ids)
+      {
+        'type' => { 'resolvedName' => 'Container' },
+        'nodes' => child_ids,
+        'props' => {},
+        'custom' => {},
+        'hidden' => false,
+        'parent' => parent_id,
+        'isCanvas' => true,
+        'displayName' => 'Container',
+        'linkedNodes' => {}
+      }
+    end
+
+    def description_has_media?(description_multiloc)
+      description_multiloc.values.any? do |html|
+        fragment = Nokogiri::HTML.fragment(html.to_s)
+        fragment.at('img') || fragment.at('iframe') || fragment.at('.custom-button')
+      end
     end
 
     def create_project_thumbnail_image(project, project_data)
@@ -486,7 +562,7 @@ module BulkImportIdeas::Importers
     end
 
     def s3_client
-      @s3_client ||= Aws::S3::Client.new(region: ENV.fetch('AWS_REGION'))
+      @s3_client ||= Aws::S3::Client.new
     end
 
     def log(message)

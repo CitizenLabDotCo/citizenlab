@@ -10,10 +10,10 @@ import {
 const getAuthenticationRequirements = (
   authenticationContext: AuthenticationContext
 ) => {
-  return queryClient.fetchQuery(
-    requirementsKeys.item(authenticationContext),
-    () => fetchAuthenticationRequirements(authenticationContext)
-  );
+  return queryClient.fetchQuery({
+    queryKey: requirementsKeys.item(authenticationContext),
+    queryFn: () => fetchAuthenticationRequirements(authenticationContext),
+  });
 };
 
 export const fetchAuthenticationRequirements = (

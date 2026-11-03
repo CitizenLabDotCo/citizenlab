@@ -2,23 +2,24 @@ import React from 'react';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import messages from 'containers/DescriptionBuilder/messages';
-
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import AboutBox from 'components/admin/ContentBuilder/Widgets/AboutBox';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
 import FileAttachment from 'components/admin/ContentBuilder/Widgets/FileAttachment';
+import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
+import PageLink from 'components/admin/ContentBuilder/Widgets/PageLink';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
+import messages from 'components/DescriptionBuilder/messages';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
-import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
+import NewLabel from 'components/UI/NewLabel';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -26,6 +27,9 @@ const DescriptionToolboxSections = () => {
   const { formatMessage } = useIntl();
   const isHtmlBlockMultilocEnabled = useFeatureFlag({
     name: 'html_block_in_content_builder',
+  });
+  const projectStaticPagesEnabled = useFeatureFlag({
+    name: 'project_static_pages',
   });
 
   return (
@@ -77,6 +81,7 @@ const DescriptionToolboxSections = () => {
             component={<HtmlBlockMultiloc />}
             icon="code"
             label={formatMessage(HtmlBlockMultiloc.craft.custom.title)}
+            labelSuffix={<NewLabel expiryDate={new Date('2027-02-19')} />}
           />
         ) : null}
         <DraggableElement
@@ -95,9 +100,17 @@ const DescriptionToolboxSections = () => {
         <DraggableElement
           id="e2e-draggable-file-attachment"
           component={<FileAttachment />}
-          icon="file"
+          icon="paperclip"
           label={formatMessage(FileAttachment.craft.custom.title)}
         />
+        {projectStaticPagesEnabled && (
+          <DraggableElement
+            id="e2e-draggable-page-link"
+            component={<PageLink />}
+            icon="file"
+            label={formatMessage(PageLink.craft.custom.title)}
+          />
+        )}
         <DraggableElement
           id="e2e-draggable-image"
           component={<ImageMultiloc />}

@@ -113,6 +113,21 @@ describe UserRoleService do
       include_examples 'shared expectations for object related to project', :permission
     end
 
+    context 'for a project page' do
+      let(:project) { create(:project) }
+      let(:static_page) { create(:static_page, project: project) }
+
+      include_examples 'shared expectations for object related to project', :static_page
+    end
+
+    it 'for a global page' do
+      page = create(:static_page)
+
+      expect(service).to be_can_moderate(page, create(:admin))
+      expect(service).not_to be_can_moderate(page, create(:project_moderator))
+      expect(service).not_to be_can_moderate(page, create(:user))
+    end
+
     context 'for an official feedback' do
       let(:project) { create(:project) }
       let(:idea) { create(:idea, project: project) }

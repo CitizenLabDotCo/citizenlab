@@ -10,7 +10,11 @@ import {
 } from '../../typings';
 
 import { Step } from './typings';
-import { doesNotMeetGroupCriteria, checkMissingData } from './utils';
+import {
+  doesNotMeetGroupCriteria,
+  checkMissingData,
+  trackAuthenticated,
+} from './utils';
 
 export const inviteFlow = (
   getAuthenticationData: () => AuthenticationData,
@@ -26,15 +30,15 @@ export const inviteFlow = (
       SUBMIT: async (params: CreateAccountFromInviteParameters) => {
         try {
           await createAccountFromInvite(params);
+          trackAuthenticated('signup', 'invite');
 
           const { requirements } = await getRequirements();
           const authenticationData = getAuthenticationData();
 
-          const missingDataStep = checkMissingData(
+          const missingDataStep = await checkMissingData(
             requirements,
             authenticationData,
-            'signup',
-            true
+            'signup'
           );
 
           if (missingDataStep) {

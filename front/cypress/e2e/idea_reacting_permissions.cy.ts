@@ -1,9 +1,8 @@
 import { enterUserInfo, signUpEmailConformation } from '../support/auth';
 import { randomString, randomEmail } from '../support/commands';
 import {
-  updatePermission,
+  askOnlyDemographicQuestion,
   setupProject,
-  addPermissionsCustomField,
 } from '../support/permitted_by_utils';
 
 // OS-133
@@ -165,45 +164,29 @@ describe('idea reacting permissions for non-active users', () => {
       phaseId = data.phaseId;
       fieldName = data.fieldName;
 
-      // Temporarily set permission to everyone_confirmed_email
-      // to make sure we clear out the global settings
+      // Set single custom field
       return cy
         .apiLogin('admin@govocal.com', 'democracy2.0')
         .then((response) => {
           const adminJwt = response.body.jwt;
 
-          return updatePermission({
+          return askOnlyDemographicQuestion({
             adminJwt,
             phaseId,
-            permitted_by: 'everyone_confirmed_email',
+            customFieldId,
+            permission: 'reacting_idea',
           }).then(() => {
-            // Add one permissions custom field
-            return addPermissionsCustomField({
-              adminJwt,
-              phaseId,
-              customFieldId,
-              permission: 'reacting_idea',
-            }).then(() => {
-              // Set permission back to users
-              return updatePermission({
-                adminJwt,
-                phaseId,
-                permitted_by: 'users',
-                permission: 'reacting_idea',
-              }).then(() => {
-                return cy
-                  .apiSignup(firstName, lastName, email, password)
-                  .then((response) => {
-                    userId = response.body.data.id;
+            return cy
+              .apiSignup(firstName, lastName, email, password)
+              .then((response) => {
+                userId = response.body.data.id;
 
-                    return cy.apiCreateIdea({
-                      projectId,
-                      ideaTitle: randomString(),
-                      ideaContent: randomString(),
-                    });
-                  });
+                return cy.apiCreateIdea({
+                  phaseId,
+                  ideaTitle: randomString(),
+                  ideaContent: randomString(),
+                });
               });
-            });
           });
         });
     });

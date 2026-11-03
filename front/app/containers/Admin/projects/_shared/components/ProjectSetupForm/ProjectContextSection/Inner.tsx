@@ -1,109 +1,93 @@
 import React from 'react';
 
-import { Box, Error } from '@citizenlab/cl2-component-library';
-
-import useAuthUser from 'api/me/useAuthUser';
-
-import useFeatureFlag from 'hooks/useFeatureFlag';
+import { Box, Error, Select } from '@citizenlab/cl2-component-library';
+import { IOption } from 'typings';
 
 import { fragmentId as folderFragmentId } from 'containers/Admin/projects/project/projectHeader/FolderProjectDropdown';
 
 import Highlighter from 'components/Highlighter';
+import Warning from 'components/UI/Warning';
 
-import { useIntl } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
 import messages from './messages';
-import ProjectFolderSelect from './ProjectFolderSelect';
-import FolderRadio from './Radios/FolderRadio';
-import RootRadio from './Radios/RootRadio';
-import SpaceRadio from './Radios/SpaceRadio';
-import { Props, FormSituation } from './types';
+import { Props } from './types';
+import useProjectContext, { NONE } from './useProjectContext';
 
-const Inner = (
-  props: Props & {
-    formSituation: FormSituation;
-  }
-) => {
-  const { data: authUser } = useAuthUser();
+const Inner = ({
+  spaceId,
+  folderId,
+  projectInRoot,
+  error,
+  onChange,
+}: Props) => {
   const { formatMessage } = useIntl();
-  const spacesEnabled = useFeatureFlag({ name: 'spaces' });
-  if (!authUser) return null;
+  const projectContext = useProjectContext({
+    spaceId,
+    folderId,
+    projectInRoot,
+    onChange,
+  });
 
-  const { highest_role } = authUser.data.attributes;
-  const { formSituation } = props;
+  if (!projectContext) return null;
 
-  if (formSituation === 'creating') {
-    if (highest_role === 'space_moderator') {
-      return (
-        <>
-          <SpaceRadio {...props} />
-          <FolderRadio {...props} />
-          <RootRadio
-            {...props}
-            descriptionMessage={messages.rootDescriptionCreateWithSpaces}
-          />
-        </>
-      );
-    }
-
-    if (highest_role === 'project_folder_moderator') {
-      return (
-        <>
-          <SpaceRadio {...props} />
-          <FolderRadio {...props} />
-          <RootRadio
-            {...props}
-            descriptionMessage={messages.rootDescriptionCreateWithoutSpaces}
-          />
-        </>
-      );
-    }
-  }
-
-  if (formSituation === 'editing-project-not-in-root') {
-    if (highest_role === 'space_moderator') {
-      return (
-        <>
-          <SpaceRadio {...props} />
-          <FolderRadio {...props} />
-        </>
-      );
-    }
-
-    if (highest_role === 'project_folder_moderator') {
-      return (
-        <>
-          <Box mb="40px">
-            <Highlighter fragmentId={folderFragmentId}>
-              <ProjectFolderSelect
-                folder_id={props.folder_id}
-                onChange={(folder_id) => {
-                  props.onChangeFolder(folder_id);
-                }}
-              />
-            </Highlighter>
-            {props.error && (
-              <Error text={formatMessage(messages.folderError)} />
-            )}
-          </Box>
-        </>
-      );
-    }
-  }
+  const {
+    showSpaceSelect,
+    spaceOptions,
+    folderOptions,
+    handleSpaceChange,
+    handleFolderChange,
+    showApprovalWarning,
+  } = projectContext;
 
   return (
-    <>
-      {spacesEnabled && <SpaceRadio {...props} />}
-      <FolderRadio {...props} />
-      <RootRadio
-        {...props}
-        descriptionMessage={
-          spacesEnabled
-            ? messages.rootDescriptionWithSpaces
-            : messages.rootDescriptionWithoutSpaces
-        }
-      />
-    </>
+    <Box display="flex" flexDirection="column" gap="20px">
+      {showSpaceSelect && (
+        <Select
+          id="project-context-space-select"
+          label={formatMessage(messages.spaceLabel)}
+          labelTooltipText={formatMessage(messages.spaceTooltip)}
+          value={spaceId ?? NONE}
+          options={[
+            { value: NONE, label: formatMessage(messages.noSpace) },
+            ...spaceOptions,
+          ]}
+          onChange={({ value }: IOption) => handleSpaceChange(value)}
+          dataCy="space-select"
+        />
+      )}
+      <Highlighter fragmentId={folderFragmentId}>
+        <Select
+          id="project-context-folder-select"
+          label={formatMessage(messages.folderLabel)}
+          value={folderId ?? NONE}
+          options={[
+            { value: NONE, label: formatMessage(messages.noFolder) },
+            ...folderOptions,
+          ]}
+          onChange={({ value }: IOption) => handleFolderChange(value)}
+          dataCy="project-folder-select"
+        />
+      </Highlighter>
+      {error && (
+        <Error
+          text={formatMessage(
+            showSpaceSelect
+              ? messages.canOnlyMoveToManagedSpaceOrFolder
+              : messages.canOnlyMoveToManagedFolder
+          )}
+        />
+      )}
+      {showApprovalWarning && (
+        <Warning>
+          <FormattedMessage
+            {...(showSpaceSelect
+              ? messages.approvalNeededWithSpaces
+              : messages.approvalNeededWithoutSpaces)}
+          />
+        </Warning>
+      )}
+    </Box>
   );
 };
 

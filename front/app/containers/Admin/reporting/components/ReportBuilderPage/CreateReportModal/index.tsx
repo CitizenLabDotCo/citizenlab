@@ -38,7 +38,7 @@ interface Props {
 }
 
 const CreateReportModal = ({ open, onClose }: Props) => {
-  const { mutate: createReport, isLoading } = useAddReport();
+  const { mutate: createReport, isPending } = useAddReport();
 
   const [reportTitle, setReportTitle] = useState('');
   const [template, setTemplate] = useState<Template>('blank');
@@ -126,7 +126,7 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           type="text"
           label={formatMessage(messages.createReportModalInputLabel)}
           onChange={setReportTitle}
-          disabled={isLoading}
+          disabled={isPending}
         />
         <Box as="fieldset" border="0px" width="100%" p="0px" mt="28px">
           <Label>{formatMessage(messages.reportTemplate)}</Label>
@@ -184,8 +184,8 @@ const CreateReportModal = ({ open, onClose }: Props) => {
           width="auto"
           mt="40px"
           mb="40px"
-          disabled={blockSubmit || isLoading}
-          processing={isLoading}
+          disabled={blockSubmit || isPending}
+          processing={isPending}
           data-testid="create-report-button"
           onClick={onCreateReport}
         >

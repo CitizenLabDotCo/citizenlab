@@ -7,6 +7,7 @@ import { MessageDescriptor } from 'utils/cl-intl';
 import { FormatMessageValues } from 'utils/cl-intl/useIntl';
 import { isNilOrError, isEmptyMultiloc } from 'utils/helperUtils';
 
+import { LIST_LAYOUT_MAX_OPTIONS } from './constants';
 import messages from './messages';
 
 export type Pages = {
@@ -111,6 +112,11 @@ export function getFormCompletionPercentage({
   return Math.floor(percentage);
 }
 
+export const isDropdownLayoutForced = (
+  inputType: string,
+  optionCount: number
+) => inputType === 'select' && optionCount > LIST_LAYOUT_MAX_OPTIONS;
+
 export const extractOptions = (
   question: IFlatCustomField,
   localize: Localize,
@@ -193,6 +199,11 @@ export const addPrefix = (customFieldValues: Record<string, any>) => {
 
   return newValues;
 };
+
+// Pages have no key, although the type says otherwise.
+export const isUserField = (field: IFlatCustomField) =>
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  !!field.key?.startsWith(PREFIX);
 
 // Tracks each page view after the first page - the first page is tracked when the form is opened
 export const trackFormPageView = (

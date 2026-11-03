@@ -50,4 +50,12 @@ export default defineMessages({
     id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.participantsWidgetSince',
     defaultMessage: 'Participants timeline since {date}',
   },
+  internalAdoptionWidgetFromStart: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.internalAdoptionWidgetFromStart',
+    defaultMessage: 'Internal adoption since the start',
+  },
+  internalAdoptionWidgetSince: {
+    id: 'app.containers.Admin.reporting.components.ReportBuilder.Widgets.internalAdoptionWidgetSince',
+    defaultMessage: 'Internal adoption since {date}',
+  },
 });

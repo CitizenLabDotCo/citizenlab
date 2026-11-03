@@ -25,6 +25,7 @@
 #  fk_rails_...  (custom_field_option_id => custom_field_options.id)
 #
 class Area < ApplicationRecord
+  include PlainTextMultiloc
   acts_as_list column: :ordering, top_of_list: 0, sequential_updates: true
 
   has_many :areas_projects, dependent: :destroy
@@ -38,6 +39,7 @@ class Area < ApplicationRecord
   validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :include_in_onboarding, inclusion: { in: [true, false] }
 
+  plain_text_multiloc :title_multiloc
   before_validation :sanitize_description_multiloc
   before_validation :strip_title
 

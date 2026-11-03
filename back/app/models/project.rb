@@ -6,7 +6,6 @@
 #
 #  id                             :uuid             not null, primary key
 #  title_multiloc                 :jsonb
-#  description_multiloc           :jsonb
 #  slug                           :string
 #  created_at                     :datetime         not null
 #  updated_at                     :datetime         not null
@@ -28,6 +27,7 @@
 #  track_participation_location   :boolean          default(FALSE), not null
 #  live_auto_input_topics_enabled :boolean          default(FALSE), not null
 #  space_id                       :uuid
+#  completed_setup_steps          :jsonb            not null
 #
 # Indexes
 #
@@ -42,8 +42,10 @@
 class Project < ApplicationRecord
   include Files::FileAttachable
   include PgSearch::Model
+  include PlainTextMultiloc
 
   attribute :preview_token, :string, default: -> { generate_preview_token }
+  attribute :listed, :boolean, default: -> { !AppConfiguration.instance.settings('core', 'projects_unlisted_by_default') }
 
   VISIBLE_TOS = %w[public groups admins].freeze
 
@@ -51,7 +53,8 @@ class Project < ApplicationRecord
 
   mount_base64_uploader :header_bg, ProjectHeaderBgUploader
 
-  has_many_text_images from: :description_multiloc, as: :text_images
+  # Inline images of RichTextMultiloc bridge widgets in the project's layouts
+  has_many :text_images, as: :imageable, dependent: :destroy
   accepts_nested_attributes_for :text_images
 
   belongs_to :space, optional: true
@@ -85,14 +88,15 @@ class Project < ApplicationRecord
   has_many :files_projects, class_name: 'Files::FilesProject', dependent: :destroy
   has_many :files, through: :files_projects
 
-  before_validation :sanitize_description_multiloc, if: :description_multiloc
   before_validation :set_admin_publication, unless: proc { Current.loading_tenant_template }
   before_validation :set_visible_to, on: :create
+  plain_text_multiloc :title_multiloc, :header_bg_alt_text_multiloc, prepend: true
   before_validation :strip_title
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
 
   has_one :nav_bar_item, dependent: :destroy
+  has_many :static_pages, dependent: :destroy
   has_one :review, class_name: 'ProjectReview', dependent: :destroy
 
   has_one :admin_publication, as: :publication, inverse_of: :publication, dependent: :destroy
@@ -105,20 +109,23 @@ class Project < ApplicationRecord
   after_commit :clear_folder_changes, if: :folder_changed?
 
   INTERNAL_ROLES = %w[open_idea_box community_monitor].freeze
+  # Steps of the admin setup checklist that have no signal of their own, so an
+  # admin action marks them done: opening them, or saving the project page.
+  SETUP_STEPS = %w[settings share page].freeze
 
   validates :title_multiloc, presence: true, multiloc: { presence: true }
-  validates :description_multiloc, multiloc: { presence: false, html: true }
   validates :description_preview_multiloc, multiloc: { presence: false }
   validates :visible_to, presence: true, inclusion: { in: VISIBLE_TOS }
   validates :internal_role, inclusion: { in: INTERNAL_ROLES, allow_nil: true }
   validates :live_auto_input_topics_enabled, inclusion: { in: [true, false] }
+  validate :validate_completed_setup_steps
   validate :admin_publication_must_exist, unless: proc { Current.loading_tenant_template } # TODO: This should always be validated!
   validate :space_must_match_folder_space
 
   scope :not_hidden, -> { where(hidden: false) }
 
   pg_search_scope :search_by_all,
-    against: %i[title_multiloc description_multiloc description_preview_multiloc slug],
+    against: %i[title_multiloc description_preview_multiloc slug],
     using: { tsearch: { prefix: true } }
 
   pg_search_scope :search_by_title,
@@ -309,6 +316,10 @@ class Project < ApplicationRecord
     )
   end
 
+  def schedule
+    @schedule ||= ProjectSchedule.new(self)
+  end
+
   def refresh_preview_token
     self.preview_token = self.class.generate_preview_token
   end
@@ -318,6 +329,17 @@ class Project < ApplicationRecord
   end
 
   private
+
+  def validate_completed_setup_steps
+    unless completed_setup_steps.is_a?(Array)
+      errors.add(:completed_setup_steps, :invalid, message: 'must be an array')
+      return
+    end
+
+    unless completed_setup_steps.all? { |step| SETUP_STEPS.include?(step) }
+      errors.add(:completed_setup_steps, :invalid, message: 'contains unknown setup steps')
+    end
+  end
 
   def admin_publication_must_exist
     # Built-in presence validation does not work.
@@ -332,16 +354,6 @@ class Project < ApplicationRecord
     return unless folder.present? && folder.space_id != space_id
 
     errors.add(:space_id, 'project space must match the space of its folder')
-  end
-
-  def sanitize_description_multiloc
-    service = SanitizationService.new
-    self.description_multiloc = service.sanitize_multiloc(
-      description_multiloc,
-      %i[title alignment list decoration link image video]
-    )
-    self.description_multiloc = service.remove_multiloc_empty_trailing_tags(description_multiloc)
-    self.description_multiloc = service.linkify_multiloc(description_multiloc)
   end
 
   def set_visible_to
@@ -382,3 +394,4 @@ Project.include(Analysis::Patches::Project)
 Project.include(EmailCampaigns::Extensions::Project)
 Project.include(BulkImportIdeas::Patches::Project)
 Project.include(Webhooks::Patches::Project)
+Project.include(ReportBuilder::Patches::Project)

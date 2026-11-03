@@ -21,6 +21,7 @@
 #
 module Volunteering
   class Cause < ApplicationRecord
+    include PlainTextMultiloc
     mount_base64_uploader :image, CauseImageUploader
     acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: %i[phase_id]
 
@@ -31,6 +32,7 @@ module Volunteering
     validates :description_multiloc, multiloc: { presence: false, html: true }
     validate :phase_supports_causes, on: :create
 
+    plain_text_multiloc :title_multiloc
     before_validation :sanitize_description_multiloc
     before_validation :strip_title
 

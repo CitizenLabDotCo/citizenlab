@@ -45,7 +45,7 @@ class WebApi::V1::EventsController < ApplicationController
     attendees = User.where(id: event.attendances.pluck(:attendee_id))
 
     I18n.with_locale(current_user&.locale) do
-      xlsx = Export::Xlsx::AttendeesGenerator.new.generate_attendees_xlsx attendees, view_private_attributes: true
+      xlsx = Export::Xlsx::AttendeesGenerator.new.generate_attendees_xlsx attendees.includes(:custom_field_answers), view_private_attributes: true
       send_data xlsx, type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', filename: 'attendees.xlsx'
     end
 
@@ -159,14 +159,23 @@ class WebApi::V1::EventsController < ApplicationController
 
   def finder_params
     params.tap do |p|
-      if p.key?(:ongoing_during)
-        p[:ongoing_during] = parse_date_range(p[:ongoing_during])
-      end
+      p[:ongoing_during] = parse_date_range(p[:ongoing_during]) if p.key?(:ongoing_during)
+      # EventsFinder passes these straight into SQL, so parse them here (nil drops the
+      # filter) — otherwise a bad value reaches Postgres and 500s instead of 400ing.
+      parse_date_param!(p, :ends_before_date)
+      parse_date_param!(p, :ends_on_or_after_date)
     end
   end
 
+  def parse_date_param!(params, key)
+    return unless params.key?(key)
+
+    parsed = parse_date(params[key])
+    parsed ? params[key] = parsed : params.delete(key)
+  end
+
   def parse_date_range(date_range)
-    raise ArgumentError, 'date_range must be a String' unless date_range.is_a?(String)
+    raise ApiError.new(:invalid_date_parameter, status: 400) unless date_range.is_a?(String)
 
     date_range = date_range.reverse.chomp('[').reverse.chomp(']')
     # Ignore extra items if there are more than two. ("Be conservative in what you send,
@@ -179,12 +188,15 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   def parse_date(date_str)
-    return nil unless date_str
+    return nil unless date_str.is_a?(String)
 
     date_str = date_str.strip
     return nil if date_str.in?(['null', ''])
 
-    AppConfiguration.timezone.parse(date_str)
+    AppConfiguration.timezone.parse(date_str) || raise(ApiError.new(:invalid_date_parameter, status: 400))
+  rescue ArgumentError, RangeError
+    # Malformed input: too long (>128 chars), null byte, out-of-range, etc.
+    raise ApiError.new(:invalid_date_parameter, status: 400)
   end
 
   def default_locale
@@ -196,10 +208,11 @@ class WebApi::V1::EventsController < ApplicationController
   end
 
   def apply_projects_listed_scope(events, params)
-    # If we do not filter by project_ids, we hide events from unlisted projects
-    # This way, when people list all events, they don't see events from unlisted projects
-    # But if someone filters by an unlisted project we do want to show those events
-    if params[:project_ids].blank?
+    # We hide events of unlisted projects when listing all events, so they stay
+    # undiscoverable. Two filters opt out: project_ids (the caller already knows the
+    # project) and attendee_id (EventPolicy::Scope has authorized the caller, and the
+    # finder limits results to that attendee's registrations).
+    if params[:project_ids].blank? && params[:attendee_id].blank?
       # This 'show_unlisted_events_user_can_moderate' flag is needed in e.g.
       # the case of smart groups, where a moderator should be able to see unlisted
       # events of projects that they can moderate, but not other unlisted events.

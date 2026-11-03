@@ -1,22 +1,29 @@
 import React from 'react';
 
 import { Box, media } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { IEvents } from 'api/events/types';
 
 import EventCard from 'components/EventCards/EventCard';
 
-const StyledEventCard = styled(EventCard)`
-  flex: 0 0 32.3%;
+// The basis subtracts the 16px gaps the list sets between cards. A plain percentage leaves
+// them unaccounted for, so the last card of a row wraps once the container is narrow
+// enough — as it is in the content builder canvas.
+export const cardColumn = css`
+  flex: 0 0 calc((100% - 2 * 16px) / 3);
 
   ${media.tablet`
-    flex: 0 0 48.8%;
+    flex: 0 0 calc((100% - 16px) / 2);
   `}
 
   ${media.phone`
     flex: 0 0 100%;
   `}
+`;
+
+const StyledEventCard = styled(EventCard)`
+  ${cardColumn}
 `;
 
 interface Props {

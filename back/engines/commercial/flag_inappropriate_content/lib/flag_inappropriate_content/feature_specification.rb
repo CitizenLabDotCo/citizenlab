@@ -19,5 +19,11 @@ module FlagInappropriateContent
     def self.dependencies
       ['moderation']
     end
+
+    add_setting 'custom_guidelines', schema: {
+      type: 'string',
+      title: 'Additional moderation guidelines',
+      description: 'Plain-text participation guidelines specific to this platform. When present, content is also checked against them and violations are flagged with the guideline_violation label.'
+    }
   end
 end

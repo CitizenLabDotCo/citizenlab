@@ -36,6 +36,7 @@ da-DK:
         project_participants: Til projektdeltagere
         registered_users: Til registrerede brugere
       recipient_segment:
+        admin_who_generated_the_report: Administratoren, der bad om rapporten
         admins: Administratorer
         admins_and_managers: Administratorer og projektledere
         admins_and_managers_assigned_to_the_input: Administratorer og projektledere, der er tildelt input
@@ -77,6 +78,7 @@ da-DK:
         users_who_follow_the_proposal: Bruger der følger forslaget
       trigger:
         7_days_after_invite_is_sent: 7 dage efter at invitationen er sendt
+        7_days_before_phase_starts: 7 dage før en fase starter
         7_days_before_the_project_changes_phase: 7 dage før projektet ændre fase
         comment_is_deleted: Kommentar er slettet
         comment_is_flagged_as_spam: Kommentar er markeret som spam
@@ -95,6 +97,7 @@ da-DK:
         new_input_awaits_screening: Nye input venter på screening
         new_input_is_published: Nye input offentliggøres
         new_proposal_is_posted: Nyt borgerorslag er offentliggjort
+        phase_starts: En fase starter
         project_phase_changes: Ændringer i projektfasen
         project_published: Projekt offentliggjort
         project_review_request: Moderator anmodede om en projektgennemgang
@@ -107,6 +110,7 @@ da-DK:
         proposal_is_upvoted_above_threshold: Forslaget er opstemt over tærsklen
         proposal_status_changes: Ændringer i forslagets status
         registration_to_event: Tilmelding til en begivenhed
+        report_generated: En rapport er færdig med at blive genereret
         survey_1_day_after_draft_saved: 1 dag efter at brugeren sidst gemte undersøgelsen i kladden
         user_accepts_invitation_to_cosponsor_a_proposal: Brugeren accepterer invitationen til at være medstiller på et forslag
         user_changes_email: Bruger ændrer sin e-mailadresse
@@ -184,24 +188,29 @@ da-DK:
       manual_project_participants: Officielle meddelelser til projektdeltagerne
       mention_in_internal_comment: Nævnes i en intern kommentar
       mention_in_official_feedback: Nævnelse i en opdatering
+      merge_account_confirmation: Bekræftelseskode til sammenlægning af konti
       moderator_digest: Ugentlig oversigt for projektledere
       native_survey_not_submitted: Undersøgelse ikke indsendt
       new_comment_for_admin: Ny kommentar i et projekt jeg modererer
       new_email_confirmation: Ny bekræftelseskode til e-mail
       new_idea_for_admin_prescreening: Nyt input, der kræver godkendelse i et projekt jeg modererer
       new_idea_for_admin_published: Nyt offentliggjort input i et projekt jeg modererer
+      new_phone_confirmation: Ny bekræftelseskode til telefon
       official_feedback_on_idea_you_follow: Opdatering af en idé, som du følger
       password_reset: Nulstilling af adgangskode
+      phone_confirmation: Bekræftelseskode til telefon
       project_folder_moderation_rights_received: Projekt-mappens moderationsrettigheder modtaget
       project_manager_rights_received: Projektlederrettigheder modtaget
       project_moderation_rights_received: Rettigheder til projektmoderering modtaget
-      project_phase_started: Ny projektfase
-      project_phase_upcoming: Kommende ny projektfase
+      project_phase_started: Fasen er startet
+      project_phase_upcoming: Fasen starter snart
       project_published: Projekt offentliggjort
       project_review_request: Anmodning om projektgennemgang
       project_review_state_change: Projekt godkendt
       proposal_expired_for_admin: Forslag udløbet uden at have nået stemmetærsklen
+      report_generated: Rapport genereret
       screening_digest: Ugentlig påmindelse om screening
+      sms_manual: Officielle SMS-beskeder
       space_moderation_rights_received: Rettigheder som områdeprojektleder modtaget
       status_change_on_idea_you_follow: Statusændring af en idé, som du følger
       survey_submitted: Undersøgelse indsendt
@@ -356,6 +365,7 @@ da-DK:
         story: Gå til din historie
         suggestion: Gå til dit forslag
         topic: Gå til dit emne
+      phase_dates: Fra %{startDate} til %{endDate}
     idea_marked_as_spam:
       cta_button: Gennemgang
       preheader: Reagér på denne spamrapport
@@ -471,6 +481,15 @@ da-DK:
       preheader: '%{commentAuthor} nævnte dig i sin kommentar'
       subject: '%{organizationName} har nævnt dig i en kommentar'
       title: Du er blevet nævnt
+    merge_account_confirmation:
+      best_regards: Med venlig hilsen,
+      event_description: 'Nogen har logget ind på %{organizationName}s borgerinddragelsesplatform og anmodet om at tilknytte dette login til kontoen med denne e-mailadresse. Hvis det var dig, skal du indtaste denne bekræftelseskode for at fortsætte:'
+      expire_code: Denne kode udløber om
+      hours_24: 24 timer.
+      ignore_email: Hvis det ikke var dig, kan du roligt ignorere denne e-mail. Intet er ændret, og ingen kan bruge denne kode uden adgang til denne indbakke.
+      preheader: Bekræft din e-mailadresse til %{organizationName}
+      subject: Bekræft din e-mailadresse til %{organizationName}s borgerinddragelsesplatform
+      title: Bekræft din e-mailadresse
     moderator_digest:
       cta_button: Administrer dit projekt
       event_description: Vi har samlet en liste over de idéer, der har genereret mest aktivitet i den seneste uge. Find ud af hvad der sker i dit projekt!
@@ -534,6 +553,9 @@ da-DK:
       title: der er blevet offentliggjort et nyt input på jeres platform
       today: I dag
       yesterday: I går
+    new_phone_confirmation:
+      sms_body: Din bekræftelseskode er %{code}.
+      sms_body2: '%{organization_name}: Din bekræftelseskode er %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Gå til dette input
       event_description: "%{feedback_author_name} kom med en officiel opdatering på %{input_title}'."
@@ -546,6 +568,9 @@ da-DK:
       preheader: Nulstil din adgangskode til %{organizationName}
       subject: '%{organizationName}: Nulstil din adgangskode'
       title: Vælg en ny adgangskode
+    phone_confirmation:
+      sms_body: Din bekræftelseskode er %{code}.
+      sms_body2: '%{organization_name}: Din bekræftelseskode er %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -564,8 +589,9 @@ da-DK:
       input_status_description: Et eksempel på en status for et input (f.eks. accepteret, afvist, implementeret ...)
       input_status_title: Eksempel på status
       official_feedback_body: Eksempel på officiel feedback
+      phase_description: Dette er eksempler på faseindhold, der bruges til at forhåndsvise indholdet af e-mails. Dette er ikke rigtigt indhold.
       phase_title: Eksempel på fase
-      project_description_preview: Dette er et eksempel på faseindhold, der bruges til forhåndsvisning af indholdet i e-mails. Det er ikke rigtigt indhold.
+      project_description_preview: Dette er eksempelindhold til et projekt, der bruges til at forhåndsvise indholdet af e-mails. Dette er ikke rigtigt indhold.
       project_title: Eksempel på projekt
       proposal_title: Eksempel på forslag
       space_title: Eksempelområde
@@ -600,21 +626,21 @@ da-DK:
       title_what_can_you_do_moderator: Hvad kan du gøre som projektmoderator
       x_ideas: '%{numberOfIdeas} ideer'
     project_phase_started:
-      cta_button: Forstå den nye fase
-      event_description: Dette projekt er trådt ind i en ny fase på %{organizationName}s platform. Klik på linket nedenfor for at få mere at vide.
+      cta_button: Se hvad der er nyt
+      event_description: "Du kan nu deltage i '%{phaseTitle}' på %{organizationName}s platform."
       new_phase: Projektet nåede fasen "%{phaseTitle}"
-      preheader: Der er startet en ny fase for %{projectName}
-      subject: '%{projectName} er trådt ind i en ny fase'
+      preheader: "Du kan nu deltage i '%{phaseTitle}'"
+      subject: "'%{phaseTitle}' er startet i %{projectName}"
       subtitle: "Om '%{projectName}'"
-      title: En ny fase er startet på "%{projectName}"
+      title: "Der er noget nyt i '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Opsæt denne nye fase
-      event_description: 'Projektet "%{projectName}" vil snart gå ind i en ny fase. Sørg for at alt er opsat for denne fase: Er beskrivelsen tilstrækkelig? Overføres de indeholdte idéer til denne fase? Ønsker du at informere dine borgere omkring specifikationerne af denne fase, gennem en tilpasset e-mailkampagne?'
+      cta_button: Gennemse opsætningen
+      event_description: "'%{phaseTitle}' i projektet '%{projectName}' starter den %{startDate}. Brug et øjeblik på at tjekke, om alt er klar: Er beskrivelsen komplet? Er datoerne korrekte? Vil du informere dit lokalsamfund via en tilpasset e-mailkampagne?"
       new_phase: "Projektet træder ind i fasen '%{phaseTitle}'"
-      preheader: Der starter snart en ny fase for %{projectName}
-      subject: Få alt gjort klar til den nye fase i %{projectName}
+      preheader: Sørg for, at alt er klar før %{startDate}
+      subject: "%{projectName}: '%{phaseTitle}' starter den %{startDate}"
       subtitle: "Om '%{projectName}'"
-      title: '%{firstName}, et projekt træder snart ind i en ny fase'
+      title: "%{firstName}, '%{phaseTitle}' starter den %{startDate}"
     project_published:
       cta_button: Gå til dette projekt
       event_description: 'Inddragelsesplatformen for %{organizationName} har netop offentliggjort følgende projekt:'
@@ -638,6 +664,13 @@ da-DK:
       preheader: Et input er udløbet uden at have nået tærsklen
       subject: '"%{input_title}" er udløbet uden at have nået tærsklen'
       title: Et input er udløbet uden at have nået stemmetærsklen
+    report_generated:
+      cta_button: Åbn rapporten
+      event_description: Rapporten er skrevet og er klar til, at du kan gennemse og redigere den.
+      preheader: Din rapport er klar
+      stopped_early: Skrivningen stoppede, før rapporten var færdig. Alt, hvad der er skrevet indtil videre, er gemt — åbn den og bed om resten i chatten.
+      subject: "Din rapport for '%{projectName}' er klar"
+      title: Din rapport er klar
     schedules:
       quarterly: Kvartalsvis på den første dag i kvartalet
       weekly:

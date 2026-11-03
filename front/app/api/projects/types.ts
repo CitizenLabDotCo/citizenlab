@@ -69,9 +69,10 @@ export interface IProject {
   data: IProjectData;
 }
 
+export type ProjectSetupStep = 'settings' | 'share' | 'page';
+
 export interface IProjectAttributes {
   title_multiloc: Multiloc;
-  description_multiloc: Multiloc;
   description_preview_multiloc: Multiloc;
   slug: string;
   preview_token: string;
@@ -87,7 +88,7 @@ export interface IProjectAttributes {
   baskets_count: number;
   votes_count: number;
   visible_to: Visibility;
-  timeline_active?: 'past' | 'present' | 'future' | null;
+  participation_status?: 'active' | 'upcoming' | 'ended' | null;
   participants_count: number;
   internal_role: 'open_idea_box' | null;
   publication_status: PublicationStatus;
@@ -96,12 +97,13 @@ export interface IProjectAttributes {
   include_all_areas: boolean;
   folder_id?: string | null;
   action_descriptors: ProjectActionDescriptors;
-  uses_content_builder: boolean;
   listed: boolean;
   live_auto_input_topics_enabled: boolean;
   publication_email_enabled: boolean;
   global_publication_email_enabled: boolean;
   space_id?: string | null;
+  // Only serialized for users who can moderate the project.
+  completed_setup_steps?: ProjectSetupStep[];
 }
 
 export type PhaseActionDescriptors = {
@@ -144,6 +146,9 @@ export interface IProjectData {
     current_phase?: {
       data: IRelationship | null;
     };
+    highlighted_phase?: {
+      data: IRelationship | null;
+    };
     user_basket?: {
       data: IRelationship | null;
     };
@@ -154,6 +159,10 @@ export interface IProjectData {
       data: IRelationship | null;
     };
     user_follower: {
+      data: IRelationship | null;
+    };
+    // Only present while the llm_reporting feature is on.
+    report?: {
       data: IRelationship | null;
     };
     permissions?: {
@@ -184,7 +193,6 @@ export interface IUpdatedProjectProperties {
   header_bg?: string | ProjectHeaderBgImageSizes | null;
   header_bg_alt_text_multiloc?: Multiloc;
   title_multiloc?: Multiloc;
-  description_multiloc?: Multiloc;
   description_preview_multiloc?: Multiloc;
   area_ids?: string[];
   visible_to?: Visibility;
@@ -222,4 +230,5 @@ export interface IUpdatedProjectProperties {
   space_id?: string | null;
   scheduled_at?: string | null;
   publication_email_enabled?: boolean;
+  completed_setup_steps?: ProjectSetupStep[];
 }

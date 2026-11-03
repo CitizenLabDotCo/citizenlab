@@ -90,7 +90,7 @@ const ParentCommentForm = ({
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
   const isAdminPage = isPage('admin', pathname);
-  const { mutate: addCommentToIdea, isLoading: addCommentToIdeaIsLoading } =
+  const { mutate: addCommentToIdea, isPending: addCommentToIdeaIsLoading } =
     useAddCommentToIdea();
 
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);

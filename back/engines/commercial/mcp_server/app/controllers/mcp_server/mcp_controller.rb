@@ -6,21 +6,49 @@ module McpServer
     rescue_from(Pundit::NotAuthorizedError) { head :forbidden }
 
     around_action :authorize_mcp_access
+    # Declared after authorize_mcp_access, so it only runs for authenticated requests.
+    before_action :set_sentry_context
 
     def create
       authorize(%i[mcp_server mcp])
+
+      # Capture method/tool for the log line; reading params also rewinds the body for the
+      # transport. Best-effort — swallow parse errors so a malformed body still reaches it.
+      begin
+        @mcp_method = params[:method]
+        @mcp_tool = @mcp_method == 'tools/call' ? params.dig(:params, :name) : nil
+      rescue StandardError
+        @mcp_method = @mcp_tool = nil
+      end
+      Sentry.set_tags(mcp_tool: @mcp_tool) if @mcp_tool
 
       server = MCP::Server.new(
         name: 'go_vocal',
         title: "Go Vocal (#{AppConfiguration.instance.host})",
         version: '0.1.0',
-        tools: tools
+        tools: tools,
+        # Tool runners trust their input, so arguments must be validated against the
+        # tool's input_schema at dispatch (types, enums, required fields — including
+        # feature-gated enum values). Set explicitly rather than relying on the gem default.
+        configuration: MCP::Configuration.new(validate_tool_call_arguments: true)
       )
 
       transport = MCP::Server::Transports::StreamableHTTPTransport.new(
         server,
         stateless: true,
-        enable_json_response: true
+        enable_json_response: true,
+        # A subscriptions/listen request opens a long-lived stream, which this controller
+        # cannot hold open, and a stateless transport could never send a notification on
+        # it anyway. With this off, the method is answered as unsupported, and the server
+        # stops telling clients it supports listen streams.
+        serve_subscriptions_listen: false,
+        # mcp >= 0.23 validates the request Host header for DNS-rebinding protection,
+        # defaulting to loopback hosts only. Allow this tenant's canonical host so
+        # requests to the hosted endpoint aren't rejected. In production the endpoint
+        # is served at https://#{host} (see AppConfiguration#base_uri), so this matches
+        # the incoming Host. NOTE: does not cover proxy/LB rewrites, custom-domain
+        # aliases, or browser clients (Origin).
+        allowed_hosts: [AppConfiguration.instance.host]
       )
 
       status, headers, body = transport.handle_request(request)
@@ -30,6 +58,24 @@ module McpServer
     end
 
     private
+
+    # McpController skips ApplicationController, so it mirrors the tenant/user Sentry
+    # tagging from MultiTenancy::Patches::ApplicationController#set_sentry_context.
+    def set_sentry_context
+      Sentry.set_tags(tenant: Tenant.safe_current&.host)
+      Sentry.set_user(id: current_user.id) if current_user
+    end
+
+    # McpController skips ApplicationController, so it adds tenant/user tagging itself.
+    def append_info_to_payload(payload)
+      super
+      payload[:tenant_id]   = Tenant.safe_current&.id
+      payload[:tenant_host] = Tenant.safe_current&.host
+      # resource_owner_id avoids a User.find and is nil-safe when unauthenticated.
+      payload[:user_id]     = doorkeeper_token&.resource_owner_id
+      payload[:mcp_method]  = @mcp_method
+      payload[:mcp_tool]    = @mcp_tool
+    end
 
     # Authorize via Doorkeeper, and append the RFC 9728 resource_metadata parameter to the
     # WWW-Authenticate header on 401s so MCP clients can discover the OAuth authorization
@@ -57,24 +103,49 @@ module McpServer
       McpServer::Tools::CreateProject,
       McpServer::Tools::CreatePhase,
       McpServer::Tools::CreateEvent,
+      McpServer::Tools::CreateArea,
+      McpServer::Tools::CreateFolder,
+      McpServer::Tools::SetPublicationStatus,
+      McpServer::Tools::SetReferenceDistribution,
       McpServer::Tools::CreateCause,
       McpServer::Tools::CreatePollQuestion,
       McpServer::Tools::CreatePollOption,
+      McpServer::Tools::CreateDemoInputs,
+      McpServer::Tools::CreateDemoComments,
+      McpServer::Tools::SeedDemoVotes,
+      McpServer::Tools::SeedDemoReactions,
+      McpServer::Tools::SeedDemoAttendees,
+      McpServer::Tools::CreateDemoOfficialUpdates,
+      McpServer::Tools::UpdateDemoInput,
       McpServer::Tools::DestroyResource,
       McpServer::Tools::UpdateResource,
       McpServer::Tools::UpdateProject,
+      McpServer::Tools::UpdateFolder,
+      McpServer::Tools::UpdateArea,
       McpServer::Tools::UpdatePhase,
       McpServer::Tools::GetResource,
+      McpServer::Tools::GetPlatformConfig,
+      McpServer::Tools::UpdatePlatformConfig,
       McpServer::Tools::GetFormFields,
+      McpServer::Tools::GetProjectLayout,
+      McpServer::Tools::UpdateProjectLayout,
+      McpServer::Tools::GetHomepageLayout,
+      McpServer::Tools::UpdateHomepageLayout,
       McpServer::Tools::ReplaceFormFields,
+      McpServer::Tools::GetNavBarItems,
+      McpServer::Tools::ReplaceNavBarItems,
       McpServer::Tools::ListProjects,
       McpServer::Tools::ListPhases,
+      McpServer::Tools::ListInputs,
       McpServer::Tools::ListEvents,
       McpServer::Tools::ListCauses,
       McpServer::Tools::ListPollQuestions,
       McpServer::Tools::ListAreas,
       McpServer::Tools::ListGlobalTopics,
       McpServer::Tools::ListFolders,
+      McpServer::Tools::ListAdminPublications,
+      McpServer::Tools::ListCustomPages,
+      McpServer::Tools::ListSpaces,
       McpServer::Tools::ListUserCustomFields,
       McpServer::Tools::ListGroups,
 
@@ -88,7 +159,11 @@ module McpServer
       McpServer::Tools::AttachFile,
       McpServer::Tools::ListAttachedImages,
       McpServer::Tools::ListFileAttachments,
-      McpServer::Tools::ListProjectFiles
+      McpServer::Tools::ListProjectFiles,
+      McpServer::Tools::GetFileTranscript,
+
+      McpServer::Tools::GetReportingSqlSchema,
+      McpServer::Tools::RunReportingSqlQuery
     ].freeze
 
     def tools

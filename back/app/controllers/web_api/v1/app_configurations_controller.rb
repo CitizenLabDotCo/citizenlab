@@ -8,6 +8,15 @@ class WebApi::V1::AppConfigurationsController < ApplicationController
   end
 
   def update
+    # This admin sees these features as on whatever the tenant says, so a change based on
+    # what they see could silently switch the feature off for everyone else.
+    overridden = config_params.fetch(:settings, {}).keys & Current.early_access_overrides.to_a
+    if overridden.any?
+      app_configuration.errors.add(:settings, 'early_access_override', value: overridden)
+      render json: { errors: app_configuration.errors.details }, status: :unprocessable_entity
+      return
+    end
+
     update_configuration!(app_configuration, config_params)
     side_fx_service = SideFxAppConfigurationService.new
     side_fx_service.before_update(app_configuration, current_user)

@@ -29,28 +29,23 @@ module Permissions
 
     attr_reader :user, :user_requirements_service
 
+    # An inheritable action without a permission of its own inherits the global
+    # 'visiting' permission; the service resolves that, along with the persisted
+    # rows and the on-demand creation of the global permissions that don't
+    # inherit.
     def find_permission(action, scope: nil)
-      permission = scope&.permissions&.find { |p| p[:action] == action }
+      inheritance_service.find(scope, action) ||
+        raise("Unknown action '#{action}' for scope: #{scope}")
+    end
 
-      if permission.blank?
-        permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
-
-        if permission.blank? && Permission.available_actions(scope)
-          Permissions::PermissionsUpdateService.new.update_permissions_for_scope scope
-          permission = Permission.includes(:groups).find_by(permission_scope: scope, action: action)
-        end
-      end
-
-      raise "Unknown action '#{action}' for scope: #{scope}" if !permission
-
-      permission
+    def inheritance_service
+      @inheritance_service ||= Permissions::PermissionInheritanceService.new
     end
 
     def user_denied_reason(permission)
       return if permission.permitted_by == 'everyone'
       return USER_DENIED_REASONS[:user_not_signed_in] unless user
       return USER_DENIED_REASONS[:user_blocked] if user.blocked?
-      return USER_DENIED_REASONS[:user_missing_requirements] if user.confirmation_required?
       return USER_DENIED_REASONS[:user_not_active] unless user.active?
       return if UserRoleService.new.can_moderate? permission, user
       return USER_DENIED_REASONS[:user_not_permitted] if permission.permitted_by == 'admins_moderators'

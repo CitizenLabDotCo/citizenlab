@@ -2,10 +2,10 @@ module Insights
   class VisitsService
     # Definition of a visit - a session where a pageview happened
     # When filtered by date - a session where a pageview has a date in the period
-    def initialize(project_id, start_at: nil, end_at: nil, exclude_roles: nil)
+    def initialize(project_id, start_at: nil, end_at: nil, exclude_admins_and_moderators: false)
       @start_at, @end_at = TimeBoundaries.parse(start_at, end_at)
       @project_id = project_id
-      @exclude_roles = exclude_roles
+      @exclude_admins_and_moderators = exclude_admins_and_moderators
     end
 
     # Totals only needs the sessions
@@ -51,7 +51,7 @@ module Insights
 
     def filtered_page_views_query
       result = filtered_page_views_root_query.joins(:session)
-      result = exclude_session_roles(result) if @exclude_roles
+      result = exclude_session_roles(result) if @exclude_admins_and_moderators
       result
     end
 
@@ -69,11 +69,11 @@ module Insights
 
     # NOTE: An extra query is needed when excluding roles
     def session_ids_excluding_roles
-      @session_ids_excluding_roles ||= @exclude_roles ? filtered_sessions_query.pluck(:id).uniq : session_ids
+      @session_ids_excluding_roles ||= @exclude_admins_and_moderators ? filtered_sessions_query.pluck(:id).uniq : session_ids
     end
 
     def exclude_session_roles(query)
-      return query unless @exclude_roles == 'exclude_admins_and_moderators'
+      return query unless @exclude_admins_and_moderators
 
       query.where("highest_role IS NULL OR highest_role = 'user'")
     end

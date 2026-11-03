@@ -8,6 +8,10 @@ module Permissions
     # since group changes go through the groups_permissions join and don't show up
     # in permission.saved_changes.
     def after_update(permission, user, old_group_ids = nil)
+      # The global 'visiting' permission is cached for the duration of the
+      # request and every inherited permission is resolved from it.
+      Permissions::PermissionInheritanceService.clear_source_permission_cache
+
       change = sanitize_change(permission.saved_changes)
       group_change = group_ids_change(permission, old_group_ids)
       change['group_ids'] = group_change if group_change
@@ -32,6 +36,23 @@ module Permissions
       LogActivityJob.perform_later(
         permission, 'changed_permitted_by', user, acted_at,
         payload: { change: permission.saved_change_to_permitted_by },
+        project_id: project_id_for(permission)
+      )
+    end
+
+    def after_override(permission, user)
+      LogActivityJob.perform_later(
+        permission, 'overridden', user, Time.now.to_i,
+        payload: { permission: clean_time_attributes(permission.attributes) },
+        project_id: project_id_for(permission)
+      )
+    end
+
+    # Logged before the permission is destroyed, while it still has an id.
+    def before_inherit(permission, user)
+      LogActivityJob.perform_later(
+        encode_frozen_resource(permission), 'inherited', user, Time.now.to_i,
+        payload: { permission: clean_time_attributes(permission.attributes) },
         project_id: project_id_for(permission)
       )
     end

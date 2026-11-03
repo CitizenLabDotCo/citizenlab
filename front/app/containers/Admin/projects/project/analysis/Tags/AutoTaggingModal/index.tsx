@@ -30,7 +30,7 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
   });
   const {
     mutate: launchTagging,
-    isLoading,
+    isPending,
     variables,
   } = useLaunchAnalysisAutotagging();
   const currentFilters = useAnalysisFilterParams();
@@ -39,7 +39,7 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
     autoTaggingMethod: AutoTaggingMethod,
     tagsIds?: string[]
   ) => {
-    if (isLoading) return;
+    if (isPending) return;
 
     if (step === 'step1' && autoTaggingMethod === 'label_classification') {
       setStep('step2LabelClassification');
@@ -71,7 +71,7 @@ const AutotaggingModal = ({ onCloseModal }: { onCloseModal: () => void }) => {
       {step === 'step1' && (
         <Step1
           onSelectMethod={handleOnSelectMethod}
-          isLoading={isLoading}
+          isLoading={isPending}
           loadingMethod={variables?.autoTaggingMethod}
           autoTaggingTarget={autoTaggingTarget}
           onChangeAutoTaggingTarget={(target) => setAutoTaggingTarget(target)}

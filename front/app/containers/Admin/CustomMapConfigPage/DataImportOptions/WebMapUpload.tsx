@@ -35,7 +35,7 @@ const WebMapUpload = ({ mapConfigId, setView }: Props) => {
 
   const { formatMessage } = useIntl();
   const { data: appConfig } = useAppConfiguration();
-  const { mutateAsync: updateMapConfig, isLoading: apiCallLoading } =
+  const { mutateAsync: updateMapConfig, isPending: apiCallLoading } =
     useUpdateMapConfig(projectId);
 
   const [portalId, setPortalId] = useState('');

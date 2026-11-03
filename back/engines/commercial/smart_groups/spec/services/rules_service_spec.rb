@@ -12,21 +12,21 @@ describe SmartGroups::RulesService do
   let(:options) { create_list(:custom_field_option, 3, custom_field: cf3) }
   let!(:users) do
     users = build_list(:admin, 4)
-    users[0].custom_field_values[cf1.key] = 'one'
-    users[0].custom_field_values[cf2.key] = 'a'
-    users[0].custom_field_values[cf3.key] = options[0].key
+    users[0].custom_field_answers.build(key: cf1.key, value: 'one', custom_field: cf1)
+    users[0].custom_field_answers.build(key: cf2.key, value: 'a', custom_field: cf2)
+    users[0].custom_field_answers.build(key: cf3.key, value: options[0].key, custom_field: cf3)
 
-    users[1].custom_field_values[cf1.key] = 'three'
-    users[1].custom_field_values[cf2.key] = 'a'
-    users[1].custom_field_values[cf3.key] = options[0].key
+    users[1].custom_field_answers.build(key: cf1.key, value: 'three', custom_field: cf1)
+    users[1].custom_field_answers.build(key: cf2.key, value: 'a', custom_field: cf2)
+    users[1].custom_field_answers.build(key: cf3.key, value: options[0].key, custom_field: cf3)
 
-    users[2].custom_field_values[cf1.key] = 'three'
-    users[2].custom_field_values[cf2.key] = 'a'
-    users[2].custom_field_values[cf3.key] = options[1].key
+    users[2].custom_field_answers.build(key: cf1.key, value: 'three', custom_field: cf1)
+    users[2].custom_field_answers.build(key: cf2.key, value: 'a', custom_field: cf2)
+    users[2].custom_field_answers.build(key: cf3.key, value: options[1].key, custom_field: cf3)
 
-    users[3].custom_field_values[cf1.key] = 'four'
-    users[3].custom_field_values[cf2.key] = 'a'
-    users[3].custom_field_values[cf3.key] = options[2].key
+    users[3].custom_field_answers.build(key: cf1.key, value: 'four', custom_field: cf1)
+    users[3].custom_field_answers.build(key: cf2.key, value: 'a', custom_field: cf2)
+    users[3].custom_field_answers.build(key: cf3.key, value: options[2].key, custom_field: cf3)
 
     users.each(&:save)
   end

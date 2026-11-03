@@ -27,6 +27,10 @@ module ContentBuilder
     end
 
     def show?
+      # A page's layout holds a copy of its content, so it is no more visible than the page: a
+      # project's page follows its project. Other layouts stay public.
+      return policy_for(record.content_buildable).show? if record.content_buildable.is_a?(StaticPage)
+
       true
     end
 

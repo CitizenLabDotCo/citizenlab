@@ -13,6 +13,10 @@ module EmailCampaigns
       campaigns = campaigns_with_command.map { |(_command, campaign)| campaign }.uniq
 
       campaigns.each do |campaign|
+        # Examples are rendered email previews; campaigns without a mailer
+        # (e.g. SMS) have nothing to store.
+        next unless campaign.respond_to?(:mailer_class)
+
         base_scope = Example.where(campaign: campaign)
         recent_examples_n = base_scope.where('created_at > ?', RECENCY_THRESHOLD.ago).count
         n_lacking = EXAMPLES_PER_CAMPAIGN - recent_examples_n

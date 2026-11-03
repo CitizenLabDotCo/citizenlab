@@ -179,6 +179,24 @@ DEV_ID_METHOD_CONFIGS = {
     'client_id' => ENV.fetch('DEFAULT_HOPLR_CLIENT_ID', 'fake id'),
     'client_secret' => ENV.fetch('DEFAULT_HOPLR_CLIENT_SECRET', 'fake secret')
   },
+  # Needs HTTPS on the tenant's own host: use `make be-up-publik` / `make fe-up-publik`.
+  'publik' => {
+    'name' => 'publik',
+    'issuer' => ENV.fetch('DEFAULT_PUBLIK_ISSUER', 'https://connexion.meyzieu.fr/'),
+    'client_id' => ENV.fetch('DEFAULT_PUBLIK_CLIENT_ID', 'fake id'),
+    'client_secret' => ENV.fetch('DEFAULT_PUBLIK_CLIENT_SECRET', 'fake secret'),
+    'ui_method_name' => 'Connexion Meyzieu',
+    'logo_url' => 'https://mon.meyzieu.fr/media/uploads/2018/05/18/blason.png'
+  },
+  # Works on plain localhost against a free Okta developer org: use `make be-up-okta`.
+  'okta' => {
+    'name' => 'okta',
+    'issuer' => ENV.fetch('DEFAULT_OKTA_ISSUER', 'https://integrator-0000000.okta.com'),
+    'client_id' => ENV.fetch('DEFAULT_OKTA_CLIENT_ID', 'fake id'),
+    'client_secret' => ENV.fetch('DEFAULT_OKTA_CLIENT_SECRET', 'fake secret'),
+    'login_mechanism_name' => 'Okta',
+    'visibility' => 'show'
+  },
   'vienna_citizen' => {
     'name' => 'vienna_citizen',
     'environment' => 'test'
@@ -189,6 +207,15 @@ DEV_ID_METHOD_CONFIGS = {
   }
 }.freeze
 
+# Phase actions inherit from the global 'visiting' permission and have no row of
+# their own until overridden. The override copies visiting's questions across,
+# which this data replaces.
+def override_permission(phase, action)
+  permission = Permissions::PermissionInheritanceService.new.override!(phase, action)
+  permission.permissions_custom_fields.destroy_all
+  permission
+end
+
 # Create (or recreate) the verified-actions test data used to test the Fake SSO verification flow.
 def setup_verified_actions_test_data
   # Remove the existing project + group
@@ -197,7 +224,6 @@ def setup_verified_actions_test_data
 
   project = Project.create!(
     title_multiloc: { en: 'Verified actions test project' },
-    description_multiloc: { en: 'This project has verified actions enabled' },
     slug: 'verified-actions-project-test'
   )
   phase = project.phases.create!(
@@ -217,17 +243,17 @@ def setup_verified_actions_test_data
   Permissions::PermissionsUpdateService.new.update_permissions_for_scope(phase)
 
   # No fields for reacting_idea
-  permission = phase.reload.permissions.where(action: 'reacting_idea').first
-  permission.update!(permitted_by: 'verified', global_custom_fields: false)
+  permission = override_permission(phase, 'reacting_idea')
+  permission.update!(permitted_by: 'users', require_verification: true, custom_fields_behavior: 'disabled')
 
   # Politician field for posting_idea (other fields are locked to verification)
-  permission = phase.reload.permissions.where(action: 'posting_idea').first
-  permission.update!(permitted_by: 'verified', global_custom_fields: false)
+  permission = override_permission(phase, 'posting_idea')
+  permission.update!(permitted_by: 'users', require_verification: true, custom_fields_behavior: 'custom')
   PermissionsCustomField.create!(permission: permission, custom_field: CustomField.find_by(key: 'politician'), required: true)
 
   # Domicile field and verification by group for commenting_idea
-  permission = phase.reload.permissions.where(action: 'commenting_idea').first
-  permission.update!(global_custom_fields: false)
+  permission = override_permission(phase, 'commenting_idea')
+  permission.update!(custom_fields_behavior: 'custom')
   PermissionsCustomField.create!(permission: permission, custom_field: CustomField.find_by(key: 'domicile'), required: true)
 
   group = Group.create!(title_multiloc: { en: 'Verified actions test group' }, slug: 'verified-actions-group-test', rules: [{ ruleType: 'verified', predicate: 'is_verified' }])

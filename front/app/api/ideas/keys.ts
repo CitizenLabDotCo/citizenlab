@@ -9,7 +9,7 @@ const baseKey = {
 const ideasKeys = {
   all: () => [baseKey],
   lists: () => [{ ...baseKey, operation: 'list' }],
-  list: (parameters: IIdeaQueryParameters) => [
+  list: (parameters: IIdeaQueryParameters<string | string[]>) => [
     { ...baseKey, operation: 'list', parameters },
   ],
   items: () => [{ ...baseKey, operation: 'item' }],

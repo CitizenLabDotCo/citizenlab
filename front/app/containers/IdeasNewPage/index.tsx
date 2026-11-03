@@ -44,7 +44,7 @@ const IdeasNewPage = () => {
     TO DO: simplify these loading & auth checks, then if possible abstract and use the same the IdeasNewSurveyPage
   */
 
-  if (projectStatus === 'loading' || phasesStatus === 'loading') {
+  if (projectStatus === 'pending' || phasesStatus === 'pending') {
     return (
       <VerticalCenterer>
         <Spinner />

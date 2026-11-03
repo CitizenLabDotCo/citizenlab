@@ -1,0 +1,163 @@
+import React, { useState, useRef, useEffect, lazy, Suspense } from 'react';
+
+import { Box, Text, bo, colors } from '@citizenlab/cl2-component-library';
+import styled, { css } from 'styled-components';
+
+import useLocale from 'hooks/useLocale';
+
+import Emoji from 'components/UI/Emoji';
+
+import { useIntl } from 'utils/cl-intl';
+
+import { getEmojiMartLocale } from './localeMapping';
+import messages from './messages';
+
+const Picker = lazy(() => import('./Picker'));
+
+const PickerContainer = styled.div`
+  position: relative;
+`;
+
+type Variant = 'default' | 'bo';
+
+const EmojiButton = styled.button<{ hasValue: boolean; variant: Variant }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid ${colors.borderDark};
+  border-radius: 3px;
+  background: ${colors.white};
+  cursor: pointer;
+  min-height: 48px;
+  width: 80px;
+
+  &:hover {
+    border-color: ${colors.grey600};
+  }
+
+  &:focus {
+    outline: none;
+    border-color: ${colors.primary};
+    box-shadow: 0 0 0 2px ${colors.primary}20;
+  }
+
+  ${({ variant }) =>
+    variant === 'bo' &&
+    css`
+      min-height: 36px;
+      width: 56px;
+      padding: 0 12px;
+      border-color: ${colors.grey300};
+      border-radius: ${bo.borderRadius};
+    `}
+`;
+
+const ClearButton = styled.button`
+  background: none;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  color: ${colors.grey600};
+  font-size: 14px;
+
+  &:hover {
+    color: ${colors.red500};
+  }
+`;
+
+const PopoverContainer = styled.div<{ placement: 'top' | 'bottom' }>`
+  position: absolute;
+  right: 0;
+  z-index: 1000;
+  ${({ placement }) =>
+    placement === 'top' ? 'bottom: calc(100% + 8px);' : 'top: 56px;'}
+`;
+
+export interface Props {
+  value?: string | null;
+  onChange: (emoji: string | null) => void;
+  placement?: 'top' | 'bottom';
+  id?: string;
+  variant?: Variant;
+}
+
+const EmojiPickerInput = ({
+  value,
+  onChange,
+  placement = 'bottom',
+  id,
+  variant = 'default',
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const locale = useLocale();
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Handle click outside to close picker
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
+  return (
+    <PickerContainer ref={containerRef}>
+      <Box display="flex" alignItems="center" gap="8px">
+        <EmojiButton
+          type="button"
+          hasValue={!!value}
+          variant={variant}
+          onClick={() => setIsOpen((open) => !open)}
+          id={id}
+        >
+          {value ? (
+            <Emoji emoji={value} size="24px" />
+          ) : (
+            <Text as="span" color="coolGrey500" m="0px" fontSize="xl">
+              +
+            </Text>
+          )}
+        </EmojiButton>
+        {value && (
+          <ClearButton
+            type="button"
+            onClick={() => onChange(null)}
+            aria-label={formatMessage(messages.clear)}
+          >
+            {formatMessage(messages.clear)}
+          </ClearButton>
+        )}
+      </Box>
+      {isOpen && (
+        <PopoverContainer placement={placement}>
+          <Suspense fallback={null}>
+            <Picker
+              locale={getEmojiMartLocale(locale)}
+              onEmojiSelect={(emoji: { native: string }) => {
+                onChange(emoji.native);
+                setIsOpen(false);
+              }}
+            />
+          </Suspense>
+        </PopoverContainer>
+      )}
+    </PickerContainer>
+  );
+};
+
+export default EmojiPickerInput;

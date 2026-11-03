@@ -6,7 +6,7 @@ module EnforceUserSso
   private
 
   def sso_enforced?
-    return false unless AuthenticationService.sso_enforced_for_email?(email_param)
+    return false unless AuthenticationService.new.sso_enforced_for_email?(email_param)
 
     render json: { errors: { email: [{ error: 'sso_enforced_for_domain' }] } }, status: :unprocessable_entity
   end

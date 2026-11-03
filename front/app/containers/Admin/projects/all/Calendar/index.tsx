@@ -14,6 +14,7 @@ import { GanttItem } from 'components/UI/GanttChart/types';
 
 import { useIntl } from 'utils/cl-intl';
 
+import { DEFAULT_SORT } from '../_shared/constants';
 import FilterBar from '../_shared/FilterBar';
 import sharedMessages from '../_shared/messages';
 import { useParams } from '../_shared/params';
@@ -35,7 +36,7 @@ const Calendar = () => {
       {
         ...params,
         participation_methods: getParticipationMethods(participation_methods),
-        sort: sort ?? 'recently_viewed',
+        sort: sort ?? DEFAULT_SORT,
       },
       PAGE_SIZE
     );
@@ -79,8 +80,8 @@ const Calendar = () => {
     end: project.attributes.last_phase_end_date,
     folder: localize(project.attributes.folder_title_multiloc),
     highlight: {
-      start: project.attributes.current_phase_start_date,
-      end: project.attributes.current_phase_end_date,
+      start: project.attributes.active_phases_start_date,
+      end: project.attributes.active_phases_end_date,
     },
     color: getStatusColor(
       project.attributes.publication_status,

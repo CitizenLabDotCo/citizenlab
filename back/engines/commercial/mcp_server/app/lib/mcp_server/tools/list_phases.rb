@@ -3,7 +3,7 @@
 class McpServer::Tools::ListPhases < McpServer::BaseTool
   def name = 'list_phases'
   def annotations = READ_ANNOTATIONS
-  def description = 'Lists phases for a project, ordered by start date'
+  def description = 'Lists phases for a project: timeline phases first, ordered by start date, then standalone phases'
 
   def input_schema
     {
@@ -22,7 +22,7 @@ class McpServer::Tools::ListPhases < McpServer::BaseTool
 
       paginated_response(
         'phases',
-        project.phases.order(:start_at),
+        project.phases,
         **params.slice(:page, :per_page),
         serializer: McpServer::Serializers::PhaseSummary
       )

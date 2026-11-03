@@ -76,6 +76,10 @@ RSpec.describe ContentBuilder::Layout do
       }] })
     end
 
+    it 'returns true for an iframe with no url yet' do
+      expect(build(:layout, craftjs_json: craftjson_with_iframe_url(''))).to be_valid
+    end
+
     it 'returns true otherwise' do
       expect(build(:layout, craftjs_json: craftjson_with_iframe_url('https://www.youtube.com/embed/gdfWFDcXut4'))).to be_valid
     end
@@ -264,6 +268,30 @@ RSpec.describe ContentBuilder::Layout do
 
       expect { orphaned_attachment.reload }.to raise_error ActiveRecord::RecordNotFound
       expect(layout.file_attachments.where(file: file).count).to eq(1)
+    end
+
+    it 'keeps a single attachment while any widget still references the file' do
+      file_widget = { 'type' => { 'resolvedName' => 'FileAttachment' }, 'props' => { 'fileId' => file.id } }
+      layout = create(:layout, craftjs_json: {
+        'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => %w[node1 node2] },
+        'node1' => file_widget,
+        'node2' => file_widget
+      })
+
+      expect(layout.file_attachments.where(file: file).count).to eq(1)
+
+      layout.update!(craftjs_json: {
+        'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => ['node1'] },
+        'node1' => file_widget
+      })
+
+      expect(layout.file_attachments.where(file: file).count).to eq(1)
+
+      layout.update!(craftjs_json: {
+        'ROOT' => { 'type' => { 'resolvedName' => 'Container' }, 'nodes' => [] }
+      })
+
+      expect(layout.file_attachments.where(file: file)).to be_empty
     end
   end
 

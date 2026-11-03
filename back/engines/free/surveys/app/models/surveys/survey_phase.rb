@@ -51,7 +51,7 @@ module Surveys::SurveyPhase
         message: 'Not a valid SmartSurvey survey embed'
       }
       validates :survey_embed_url, if: %i[survey? microsoft_forms?], format: {
-        with: %r{\Ahttps://.*\.(microsoft|office)\.com/},
+        with: %r{\Ahttps://([\w-]+\.)+(microsoft\.com|office\.com|cloud\.microsoft)/},
         message: 'Not a valid Microsoft Forms survey embed'
       }
       before_validation :strip_survey_embed_url

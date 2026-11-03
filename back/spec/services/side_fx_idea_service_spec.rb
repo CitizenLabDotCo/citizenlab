@@ -505,7 +505,10 @@ describe SideFxIdeaService do
           project: phase.project,
           publication_status: 'draft',
           author: user,
-          custom_field_values: { 'field' => 'test', 'u_gender' => 'female' }
+          custom_field_answers: [
+            build(:custom_field_answer, key: 'field', value: 'test'),
+            build(:custom_field_answer, key: 'u_gender', value: 'female')
+          ]
         )
       end
 
@@ -515,13 +518,13 @@ describe SideFxIdeaService do
         phase.permissions.find_by(action: 'posting_idea').update!(user_fields_in_form: true)
         idea.update!(publication_status: 'published')
         service.after_update(idea, user)
-        expect(user.custom_field_values).to eq({ 'gender' => 'female' })
+        expect(user.custom_field_answers.pluck(:key, :value)).to eq [%w[gender female]]
       end
 
       it "does not update the user profile when 'user_fields_in_form' is turned off" do
         idea.update!(publication_status: 'published')
         service.after_update(idea, user)
-        expect(user.custom_field_values).to be_empty
+        expect(user.custom_field_answers).to be_empty
       end
 
       it "updates the user profile from the survey data when permitted_by = 'everyone' and there are permissions_custom_fields" do
@@ -540,7 +543,7 @@ describe SideFxIdeaService do
 
         idea.update!(publication_status: 'published')
         service.after_update(idea, user)
-        expect(user.custom_field_values).to eq({ 'gender' => 'female' })
+        expect(user.custom_field_answers.pluck(:key, :value)).to eq [%w[gender female]]
       end
 
       it 'updates user profile from the survey data when permitted_by = users and there are permissions_custom_fields' do
@@ -556,7 +559,7 @@ describe SideFxIdeaService do
 
         idea.update!(publication_status: 'published')
         service.after_update(idea, user)
-        expect(user.custom_field_values).to eq({ 'gender' => 'female' })
+        expect(user.custom_field_answers.pluck(:key, :value)).to eq [%w[gender female]]
       end
 
       it 'does not update user profile if user_fields_in_form = false' do
@@ -572,7 +575,7 @@ describe SideFxIdeaService do
 
         idea.update!(publication_status: 'published')
         service.after_update(idea, user)
-        expect(user.custom_field_values).to eq({})
+        expect(user.custom_field_answers).to be_empty
       end
     end
 

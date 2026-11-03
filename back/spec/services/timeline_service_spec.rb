@@ -172,95 +172,6 @@ describe TimelineService do
     end
   end
 
-  describe 'timeline_active' do
-    it 'returns nil for a project with no phases' do
-      project = create(:project)
-      expect(service.timeline_active(project)).to be_nil
-    end
-
-    it 'returns :present for a project with current phase' do
-      project = create(:project_with_current_phase)
-      expect(service.timeline_active(project)).to eq :present
-    end
-
-    it 'returns :present for a project with an current open ended last phase' do
-      project = create(:project)
-      create(:phase, project:, start_at: '2022-01-01', end_at: '2022-01-10')
-      create(:phase, project:, start_at: '2022-01-11', end_at: nil)
-
-      expect(service.timeline_active(project)).to eq :present
-    end
-
-    it 'returns :present for a project with a single current open ended phase' do
-      phase = create(:phase, start_at: '2022-01-01', end_at: nil)
-      expect(service.timeline_active(phase.project)).to eq :present
-    end
-
-    it 'returns :past for a project with only past phases' do
-      project = create(:project_with_past_phases)
-      expect(service.timeline_active(project)).to eq :past
-    end
-
-    it 'returns :future for a project with only future phases' do
-      project = create(:project_with_future_phases)
-      expect(service.timeline_active(project)).to eq :future
-    end
-
-    it 'returns :future for a project with a future open ended phase' do
-      phase = create(:phase, start_at: 5.days.from_now, end_at: nil)
-      expect(service.timeline_active(phase.project)).to eq :future
-    end
-  end
-
-  describe 'timeline_active_on_collection' do
-    it 'returns array of :past, :present, :future for each project' do
-      past_project = create(:project_with_past_phases)
-      present_project = create(:project_with_current_phase)
-      future_project = create(:project_with_future_phases)
-      projects = Project.where(id: [past_project, present_project, future_project])
-
-      result = nil
-      expect do
-        result = service.timeline_active_on_collection(projects)
-      end.not_to exceed_query_limit(3).with(/SELECT.*projects/)
-
-      expect(result).to match_array(
-        past_project.id => :past,
-        present_project.id => :present,
-        future_project.id => :future
-      )
-    end
-
-    it 'returns a mapping of project IDs to their active status (past, present, future)' do
-      present_project1 = create(:project).tap do |p|
-        create(:phase, project: p, start_at: 5.days.ago, end_at: 2.days.ago)
-        create(:phase, project: p, start_at: 1.day.ago, end_at: nil)
-      end
-
-      present_project2 = create(:project).tap do |p|
-        create(:phase, project: p, start_at: 1.day.ago, end_at: nil)
-      end
-
-      future_project1 = create(:project).tap do |p|
-        create(:phase, project: p, start_at: 1.day.from_now, end_at: 4.days.from_now)
-        create(:phase, project: p, start_at: 5.days.from_now, end_at: nil)
-      end
-
-      future_project2 = create(:project).tap do |p|
-        create(:phase, project: p, start_at: 5.days.from_now, end_at: nil)
-      end
-
-      projects = [present_project1, present_project2, future_project1, future_project2]
-
-      expect(service.timeline_active_on_collection(projects)).to match(
-        present_project1.id => :present,
-        present_project2.id => :present,
-        future_project1.id => :future,
-        future_project2.id => :future
-      )
-    end
-  end
-
   describe '#overlapping_phases' do
     let(:project) { create(:project) }
 
@@ -360,9 +271,8 @@ describe TimelineService do
       create(:phase, :standalone, project:, start_at: 1.day.ago, end_at: 1.day.from_now)
     end
 
-    it 'excludes them from current_phase, timeline_active and overlapping_phases' do
+    it 'excludes them from current_phase and overlapping_phases' do
       expect(service.current_phase(project)).to be_nil
-      expect(service.timeline_active(project)).to eq :past
 
       new_phase = build(:phase, project:, start_at: 1.day.ago, end_at: 1.day.from_now)
       expect(service.overlapping_phases(new_phase)).to be_empty

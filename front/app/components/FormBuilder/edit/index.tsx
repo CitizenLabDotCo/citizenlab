@@ -28,10 +28,12 @@ import useSubmissionsCount from 'api/submission_count/useSubmissionCount';
 
 import useLocale from 'hooks/useLocale';
 
+import useAiAssistantEnabled from 'components/AiAssistant/useAiAssistantEnabled';
 import FormBuilderSettings from 'components/FormBuilder/components/FormBuilderSettings';
 import FormBuilderToolbox from 'components/FormBuilder/components/FormBuilderToolbox';
 import FormBuilderTopBar from 'components/FormBuilder/components/FormBuilderTopBar';
 import FormFields from 'components/FormBuilder/components/FormFields';
+import SurveyAssistant from 'components/FormBuilder/components/SurveyAssistant';
 import HelmetIntl from 'components/HelmetIntl';
 
 import { useIntl } from 'utils/cl-intl';
@@ -45,7 +47,11 @@ import { DragAndDrop, Drop } from '../components/DragAndDrop';
 import { pageDNDType } from '../components/FormFields/constants';
 import FormStatus from '../components/FormStatus';
 import messages from '../messages';
-import { FormBuilderConfig } from '../utils';
+import {
+  FormBuilderConfig,
+  ResolvedFormBuilderConfig,
+  resolveFormBuilderConfig,
+} from '../utils';
 
 import {
   getReorderedFields,
@@ -66,7 +72,7 @@ type FormEditProps = {
   defaultValues: {
     customFields: IFlatCustomField[];
   };
-  builderConfig: FormBuilderConfig;
+  builderConfig: ResolvedFormBuilderConfig;
   totalSubmissions: number;
   viewFormLink: TypedLinkProps;
   phase: IPhaseData;
@@ -88,11 +94,13 @@ const FormEdit = ({
   >(undefined);
   const [successMessageIsVisible, setSuccessMessageIsVisible] = useState(false);
   const [autosaveEnabled, setAutosaveEnabled] = useState(true);
-  const { isFormPhaseSpecific } = builderConfig;
+  const assistantEnabled =
+    useAiAssistantEnabled() &&
+    phase.attributes.participation_method === 'native_survey';
   const { mutateAsync: updateFormCustomFields } = useUpdateCustomField();
   const { data: formCustomFields, isFetching } = useFormCustomFields({
     projectId,
-    phaseId: isFormPhaseSpecific ? phaseId : undefined,
+    phaseId,
   });
 
   const { data: customForm } = useCustomForm(phase);
@@ -232,7 +240,7 @@ const FormEdit = ({
         {
           projectId,
           customFields: finalResponseArray,
-          phaseId: isFormPhaseSpecific ? phaseId : undefined,
+          phaseId,
           customForm: {
             saveType: autosave ? 'auto' : 'manual',
             openedAt: formOpenedAt,
@@ -363,7 +371,7 @@ const FormEdit = ({
                   </Box>
                   <Box
                     flex="1.8"
-                    border="1px solid #ccc"
+                    border={`1px solid ${colors.grey400}`}
                     overflowY="auto"
                     zIndex="2"
                     margin="0px"
@@ -390,7 +398,13 @@ const FormEdit = ({
                       />
                     </Box>
                   </Box>
-                  <Box flex={!isNilOrError(selectedField) ? '1' : '0'}>
+                  <Box
+                    flex={
+                      !isNilOrError(selectedField) || assistantEnabled
+                        ? '1'
+                        : '0'
+                    }
+                  >
                     {selectedField && (
                       <Box>
                         <FormBuilderSettings
@@ -399,6 +413,12 @@ const FormEdit = ({
                           closeSettings={closeSettings}
                           builderConfig={builderConfig}
                         />
+                      </Box>
+                    )}
+                    {/* Hidden, not unmounted, so a typed request survives editing a field. */}
+                    {assistantEnabled && (
+                      <Box display={selectedField ? 'none' : 'block'}>
+                        <SurveyAssistant phaseId={phaseId} />
                       </Box>
                     )}
                   </Box>
@@ -414,11 +434,15 @@ const FormEdit = ({
 
 type FormBuilderPageProps = {
   builderConfig: FormBuilderConfig;
+  formCustomFields: IFlatCustomField[] | undefined | Error;
+  goBackUrl: string;
   viewFormLink: TypedLinkProps;
 };
 
 const FormBuilderPage = ({
   builderConfig,
+  formCustomFields,
+  goBackUrl,
   viewFormLink,
 }: FormBuilderPageProps) => {
   const modalPortalElement = document.getElementById('modal-portal');
@@ -427,8 +451,6 @@ const FormBuilderPage = ({
     phaseId,
   });
   const { data: phase } = usePhase(phaseId);
-
-  const formCustomFields = builderConfig.formCustomFields;
 
   if (!phase) {
     return null;
@@ -443,7 +465,11 @@ const FormBuilderPage = ({
         <FormEdit
           defaultValues={{ customFields: formCustomFields }}
           phase={phase.data}
-          builderConfig={builderConfig}
+          builderConfig={resolveFormBuilderConfig(
+            builderConfig,
+            phase.data,
+            goBackUrl
+          )}
           totalSubmissions={submissionCount.data.attributes.totalSubmissions}
           viewFormLink={viewFormLink}
         />,

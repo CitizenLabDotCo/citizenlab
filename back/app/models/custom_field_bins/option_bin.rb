@@ -30,16 +30,10 @@ module CustomFieldBins
     def in_bin?(value)
       return false if value.nil? || custom_field_option_value.nil?
 
-      value == custom_field_option_value || value.include?(custom_field_option_value)
-    end
-
-    def filter_by_bin(scope)
-      case custom_field.input_type
-      when 'select'
-        scope.where("custom_field_values->>'#{custom_field.key}' = ?", custom_field_option_value)
-      when 'multiselect'
-        scope.where("custom_field_values->'#{custom_field.key}' @> ?", custom_field_option_value.to_json)
-      end
+      # Multiselect answers are arrays of option keys; single select answers are
+      # one key. Compare a single key exactly: String#include? would match
+      # substrings, putting 'female' in the 'male' bin.
+      value.is_a?(Array) ? value.include?(custom_field_option_value) : value == custom_field_option_value
     end
 
     def self.generate_bins(custom_field)
@@ -58,7 +52,7 @@ module CustomFieldBins
 
     def custom_field_option_value
       if custom_field.domicile?
-        # For the domicile the value stores in custom_field_values is the area
+        # For the domicile the answer value is the area
         # id, whereas the custom_field_option this bin is associated to is an
         # instance that is kept in sync between the area and the custom field
         # options through code in the `area` model

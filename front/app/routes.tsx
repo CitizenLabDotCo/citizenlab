@@ -4,6 +4,7 @@ import {
   createRoute,
   createRootRoute,
   createRouter,
+  defaultStringifySearch,
   Outlet,
   retainSearchParams,
 } from '@tanstack/react-router';
@@ -30,6 +31,7 @@ const SiteMap = lazy(() => import('containers/SiteMap'));
 const UsersEditPage = lazy(() => import('containers/UsersEditPage'));
 const PasswordChange = lazy(() => import('containers/PasswordChange'));
 const EmailChange = lazy(() => import('containers/EmailChange'));
+const PhoneChange = lazy(() => import('containers/PhoneChange'));
 const IdeasEditPage = lazy(() => import('containers/IdeasEditPage'));
 const IdeasIndexPage = lazy(() => import('containers/IdeasIndexPage'));
 const IdeasShowPage = lazy(() => import('containers/IdeasShowPage'));
@@ -108,43 +110,19 @@ const rootSearchSchema = yup.object({
   // Used by LocationInput to pre-fill map coordinates (idea forms, survey forms, admin events)
   lat: yup.number().optional(),
   lng: yup.number().optional(),
-  // Enables `parallel_participation` without the feature flag —
-  // `?parallel_participation=true`. Retained across navigation by the root
-  // route's search middleware so it sticks while moving between pages; lives
-  // only in the URL (no cookie/localStorage). See useParallelParticipation.
-  parallel_participation: yup.string().optional(),
+  project_backoffice_redesign: yup.string().optional(),
 });
 
 export type RootSearchParams = yup.InferType<typeof rootSearchSchema>;
-
-const normalizeParallelParticipation = ({
-  search,
-  next,
-}: {
-  search: RootSearchParams;
-  next: (search: RootSearchParams) => RootSearchParams;
-}): RootSearchParams => {
-  const result = next(search);
-  const value = result.parallel_participation;
-
-  if (value !== undefined && value !== 'false' && value !== 'true') {
-    return { ...result, parallel_participation: 'true' };
-  }
-
-  return result;
-};
 
 // Root route
 const rootRoute = createRootRoute({
   validateSearch: (search: Record<string, unknown>): RootSearchParams =>
     rootSearchSchema.validateSync(search),
   search: {
-    // Keep `parallel_participation` in the URL across client-side navigations
-    // so it persists while moving between pages
-    middlewares: [
-      retainSearchParams(['parallel_participation']),
-      normalizeParallelParticipation,
-    ],
+    // Keep `project_backoffice_redesign` in the URL across client-side
+    // navigations, so it sticks while moving through the project's pages
+    middlewares: [retainSearchParams(['project_backoffice_redesign'])],
   },
   component: () => (
     <App>
@@ -286,7 +264,15 @@ const changeEmailRoute = createRoute({
   ),
 });
 
-// Ideas routes
+const changePhoneRoute = createRoute({
+  getParentRoute: () => localeRoute,
+  path: 'profile/change-phone',
+  component: () => (
+    <PageLoading>
+      <PhoneChange />
+    </PageLoading>
+  ),
+});
 const ideasEditSearchSchema = yup.object({
   idea_id: yup.string().optional(),
   selected_idea_id: yup.string().optional(),
@@ -436,6 +422,19 @@ const projectShowSearchSchema = yup.object({
   search: yup.string().optional(),
   topics: yup.array().of(yup.string().required()).optional(),
   idea_status: yup.string().optional(),
+  // Field ids are only known at runtime; stripUnknown drops every key of a shapeless object().
+  answers: yup
+    .lazy((value) =>
+      yup.object(
+        Object.fromEntries(
+          Object.keys(value ?? {}).map((fieldId) => [
+            fieldId,
+            yup.array().of(yup.string().required()).required(),
+          ])
+        )
+      )
+    )
+    .optional(),
   idea_map_id: yup.string().optional(),
   view: yup.string().oneOf(presentationModes).optional(),
 });
@@ -464,6 +463,16 @@ const projectPhaseRoute = createRoute({
   component: () => (
     <PageLoading>
       <ProjectsShowPage />
+    </PageLoading>
+  ),
+});
+
+const projectPageShowRoute = createRoute({
+  getParentRoute: () => projectShowRoute,
+  path: 'pages/$pageSlug',
+  component: () => (
+    <PageLoading>
+      <CustomPageShow />
     </PageLoading>
   ),
 });
@@ -673,6 +682,7 @@ const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
       profileEditRoute,
       changePasswordRoute,
       changeEmailRoute,
+      changePhoneRoute,
       createUserShowPageRoutes(),
       ideasEditRoute,
       ideasIndexRoute,
@@ -685,6 +695,7 @@ const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
         projectShowIndexRoute,
         projectPhaseRoute,
         projectIdeasFeedRoute,
+        projectPageShowRoute,
       ]),
       foldersShowRoute,
       eventsIndexRoute,
@@ -702,6 +713,17 @@ const buildRouteTree = (moduleRoutes: Partial<Routes> = {}) =>
     ]),
   ]);
 
+const stringifySearch = (search: Record<string, unknown>) => {
+  const { project_backoffice_redesign, ...rest } = search;
+  const searchStr = defaultStringifySearch(rest);
+
+  if (project_backoffice_redesign === undefined) return searchStr;
+
+  return searchStr
+    ? `${searchStr}&project_backoffice_redesign`
+    : '?project_backoffice_redesign';
+};
+
 // Create and export the router.
 // createAppRouter is called from root.tsx so that module routes can be
 // injected without creating a circular dependency.
@@ -709,6 +731,7 @@ export const createAppRouter = (moduleRoutes: Partial<Routes> = {}) =>
   createRouter({
     routeTree: buildRouteTree(moduleRoutes),
     trailingSlash: 'preserve',
+    stringifySearch,
     defaultNotFoundComponent: () => (
       <PageLoading>
         <PageNotFound />

@@ -29,7 +29,12 @@ CLAUDE.local.md
 # CLAUDE.md files are gitignored at any path: the citizenlab-claude private
 # overlay materializes them as file symlinks via bin/setup-claude.
 **/CLAUDE.md
+# Team-shared MCP config: a symlink into the private overlay, materialized
+# at the repo root by bin/setup-claude.
+/.mcp.json
 
 # MCP local files
 .serena/
 .playwright-mcp/
+# Compiled output of the custom block renderer (built into its image)
+/custom-block-renderer/dist

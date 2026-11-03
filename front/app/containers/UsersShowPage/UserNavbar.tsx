@@ -93,8 +93,7 @@ const UserNavbarButton = styled.button`
       height: 100%;
       width: 100%;
       z-index: -1;
-      background-color: ${({ theme }) =>
-        rgba(theme.colors.tenantPrimary, 0.05)};
+      background-color: ${({ theme }) => theme.colors.tenantPrimaryLighten95};
       pointer-events: none;
     }
   }

@@ -75,9 +75,9 @@ module Export
       attr_reader :model, :option_index, :multiloc_service
 
       def value_for(field)
-        return model.public_send field.key if field.built_in?
+        return model.public_send field.key if field.stored_on_model?
 
-        model.custom_field_values[field.key]
+        model.answer_for_key(field.key)&.value
       end
 
       def value_for_multiloc(maybe_multiloc)

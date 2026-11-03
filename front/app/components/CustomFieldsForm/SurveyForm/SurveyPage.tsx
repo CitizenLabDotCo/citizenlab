@@ -66,9 +66,16 @@ type SurveyPage = {
   projectId: string;
   onSubmit: ({
     formValues,
+    pageValues,
     isSubmitPage,
   }: {
+    // Validated by the yup resolver, which casts values to the types the API
+    // expects (a number input hands React Hook Form a string).
     formValues: FormValues;
+    // The same answers before validation. The resolver drops keys whose value
+    // is undefined, so a cleared answer is missing from formValues and the
+    // parent would carry the previous one forward. Here it is still present.
+    pageValues: FormValues;
     isSubmitPage: boolean;
   }) => Promise<void>;
   // Called when this page unmounts via the Previous button so the parent can
@@ -200,6 +207,7 @@ const SurveyPage = ({
       setShowSubmitConfirmation(false);
       await onSubmit({
         formValues,
+        pageValues: methods.getValues(),
         isSubmitPage: isSubmissionPage,
       });
       // Go to the next page
@@ -278,6 +286,12 @@ const SurveyPage = ({
   const handleFormKeyDown = (e: React.KeyboardEvent<HTMLFormElement>) => {
     if (e.key !== 'Enter') return;
     const target = e.target as HTMLInputElement;
+    // A dropdown's search box is a text input too, but Enter there belongs to
+    // the dropdown, whether or not it has an option to pick.
+    if (target.getAttribute('role') === 'combobox') {
+      e.preventDefault();
+      return;
+    }
     if (target.tagName.toLowerCase() !== 'input') return;
     const inputType = target.type;
     if (inputType !== 'text' && inputType !== 'number') return;
@@ -373,7 +387,13 @@ const SurveyPage = ({
                                 name: 'followProjectAndRedirect',
                                 params: {
                                   projectId: project.data.id,
-                                  path: `/projects/${project.data.attributes.slug}`,
+                                  // The community monitor project isn't meant to be
+                                  // browsed by residents, so send them home instead.
+                                  path:
+                                    phase?.attributes.participation_method ===
+                                    'community_monitor_survey'
+                                      ? '/'
+                                      : `/projects/${project.data.attributes.slug}`,
                                 },
                               });
                             }}

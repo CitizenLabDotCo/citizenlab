@@ -29,6 +29,10 @@ export const ideaSortValues = [
   '-popular',
   'author_name',
   '-author_name',
+  'title',
+  '-title',
+  'assignee',
+  '-assignee',
   'likes_count',
   '-likes_count',
   'dislikes_count',
@@ -37,6 +41,7 @@ export const ideaSortValues = [
   '-baskets_count',
   'status',
   '-status',
+  'status_priority',
   'votes_count',
   '-votes_count',
   'total_votes',
@@ -73,6 +78,7 @@ export interface IdeaQueryParameters {
   search?: string;
   idea_status?: string;
   input_topics?: string[];
+  custom_field_answers?: Record<string, string[]>;
 }
 
 export interface IIdeaData {
@@ -130,6 +136,10 @@ export interface IIdeaData {
     };
     anonymous: boolean;
     author_hash: string;
+    /** False for inputs that are not public contributions, such as survey
+     * responses. Those have no readable public page, so front-office actions
+     * like reporting as spam do not apply to them. */
+    supports_public_visibility: boolean;
     followers_count: number;
     reacting_threshold?: number;
     expires_at?: string;
@@ -158,6 +168,9 @@ export interface IIdeaData {
     phases: {
       data: IRelationship[];
     };
+    creation_phase: {
+      data: IRelationship | null;
+    };
     project: {
       data: IRelationship;
     };
@@ -183,9 +196,6 @@ export interface IIdeaData {
 }
 
 export interface IIdeaAdd {
-  // Required
-  project_id: string;
-  // Optional
   publication_status?: IdeaPublicationStatus;
   title_multiloc?: Multiloc;
   author_id?: string | null;
@@ -193,7 +203,6 @@ export interface IIdeaAdd {
   idea_status_id?: string | null;
   body_multiloc?: Multiloc;
   topic_ids?: string[] | null;
-  phase_ids?: string[] | null;
   location_point_geojson?: GeoJSON.Point | null;
   location_description?: string | null;
   budget?: number | null;
@@ -232,7 +241,7 @@ export interface IIdea {
   data: IIdeaData;
 }
 
-export interface IIdeaQueryParameters {
+export interface IIdeaQueryParameters<FilterValue = string> {
   sort?: Sort;
   'page[number]'?: number;
   'page[size]'?: number;
@@ -241,12 +250,15 @@ export interface IIdeaQueryParameters {
   author?: string;
   search?: string;
   input_topics?: string[];
-  idea_status?: string;
+  idea_status?: FilterValue;
+  custom_field_answers?: Record<string, string[]>;
   publication_status?: IdeaPublicationStatus;
   project_publication_status?: ProjectPublicationStatus;
   bounding_box?: number[];
-  assignee?: string;
+  assignee?: FilterValue;
   feedback_needed?: boolean;
+  official_feedback?: boolean;
+  imported?: boolean;
   filter_can_moderate?: boolean;
   basket_id?: string;
   transitive?: boolean;

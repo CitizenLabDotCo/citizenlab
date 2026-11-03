@@ -74,6 +74,8 @@ context 'hoplr authentication' do
       ]
     }
     configuration.save!
+    # SSO values are only stored for fields the platform has.
+    create(:custom_field, key: 'neighbourhood')
     host! 'example.org'
   end
 
@@ -88,11 +90,9 @@ context 'hoplr authentication' do
       first_name: 'Developer',
       last_name: 'Govocal',
       email: 'developers+sso@citizenlab.co',
-      locale: 'en',
-      custom_field_values: {
-        'neighbourhood' => '2133'
-      }
+      locale: 'en'
     })
+    expect(user.custom_field_answers.pluck(:key, :value)).to eq [%w[neighbourhood 2133]]
   end
 
   it 'successfully authenticates new user' do
@@ -112,11 +112,9 @@ context 'hoplr authentication' do
       first_name: 'Developer',
       last_name: 'Govocal',
       new_email: 'developers+sso@citizenlab.co',
-      locale: 'en',
-      custom_field_values: {
-        'neighbourhood' => '2133'
-      }
+      locale: 'en'
     })
+    expect(user.custom_field_answers.pluck(:key, :value)).to eq [%w[neighbourhood 2133]]
     expect(cookies[:cl2_jwt]).to be_present
 
     expect(user.confirmation_required?).to be(true)

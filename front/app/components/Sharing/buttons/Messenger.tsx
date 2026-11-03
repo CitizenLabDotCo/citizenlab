@@ -3,8 +3,8 @@ import React from 'react';
 import { Button, colors } from '@citizenlab/cl2-component-library';
 import { WrappedComponentProps } from 'react-intl';
 
-import { IDFacebookMethod } from 'api/id_methods/types';
 import useIdMethods from 'api/id_methods/useIdMethods';
+import { getFacebookConfig } from 'api/id_methods/utils';
 
 import { trackEventByName } from 'utils/analytics';
 import { injectIntl } from 'utils/cl-intl';
@@ -31,10 +31,7 @@ const Messenger = ({
     trackEventByName(tracks.shareButtonClicked, properties);
   };
 
-  const facebookMethod = idMethods?.data.find(
-    (method): method is IDFacebookMethod =>
-      method.attributes.name === 'facebook'
-  );
+  const facebookMethod = getFacebookConfig(idMethods);
   const facebookAppId = facebookMethod?.attributes.app_id;
   const messengerHref = facebookAppId
     ? `fb-messenger://share/?link=${url}&app_id=${facebookAppId}`

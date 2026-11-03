@@ -3,7 +3,27 @@
 class Current < ActiveSupport::CurrentAttributes
   attribute :tenant, :app_configuration
   attribute :location_headers
+
+  # Request origin ('mcp' or 'ai_assistant' during a tool run, else nil). Read by LogActivityJob.
+  attribute :activity_channel
+
+  # Per-request cache of the global 'visiting' permission, which every inherited
+  # permission is resolved from. See Permissions::PermissionInheritanceService.
+  attribute :global_visiting_permission
+
+  # Features switched on for the current user only, on top of the tenant settings. Set
+  # per request by ApplicationController. Queued jobs run in a worker where this is not
+  # set, so they only see the tenant settings. Pass the user to the job if it must
+  # behave like the request did.
+  attribute :early_access_overrides
+
   private :tenant=, :app_configuration=
+
+  NO_EARLY_ACCESS_OVERRIDES = Set.new.freeze
+
+  def early_access_overrides
+    super || NO_EARLY_ACCESS_OVERRIDES
+  end
 
   def app_configuration
     super or (cache_tenant and super)
@@ -16,6 +36,8 @@ class Current < ActiveSupport::CurrentAttributes
   def reset_tenant
     self.tenant = nil
     self.app_configuration = nil
+    self.global_visiting_permission = nil
+    self.early_access_overrides = nil
   end
 
   # This attribute is used to globally disable some model validations and callbacks that

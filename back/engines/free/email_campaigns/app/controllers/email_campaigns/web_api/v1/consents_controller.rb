@@ -25,6 +25,7 @@ module EmailCampaigns
       @consent.assign_attributes consent_params
       authorize @consent
       if @consent.save
+        SideFxConsentService.new.after_update(@consent, pundit_user)
         render json: WebApi::V1::ConsentSerializer.new(@consent, params: jsonapi_serializer_params).serializable_hash, status: :ok
       else
         render json: { errors: @consent.errors.details }, status: :unprocessable_entity
@@ -42,25 +43,7 @@ module EmailCampaigns
 
     def current_user_by_unsubscription_token
       token = UnsubscriptionToken.find_by(token: params[:unsubscription_token])
-      if token
-        token.user
-      else
-        unless params[:unsubscription_token].nil?
-          # Temporarily report the exception to Sentry to help us debug issue TAN-887.
-          # TODO: It can be removed after 2024-03-25.
-          extra = {
-            user_id: current_user&.id,
-            unsubscription_token: params[:unsubscription_token],
-            campaign_id: params[:campaign_id]
-          }
-
-          ErrorReporter.report_msg(<<~MSG, extra: extra)
-            Unsubscription token could not be found.
-          MSG
-        end
-
-        current_user
-      end
+      token ? token.user : current_user
     end
 
     def pundit_user

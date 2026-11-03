@@ -4,6 +4,12 @@ module EmailCampaigns
   module ContentConfigurable
     extend ActiveSupport::Concern
     included do
+      include PlainTextMultiloc
+
+      # The `text` editable regions (see `EditableWithPreview#editable_regions`). Only `body` and
+      # `intro` are rendered as HTML; these three are escaped, and a subject is a mail header.
+      plain_text_multiloc :subject_multiloc, :title_multiloc, :button_text_multiloc
+
       validates :subject_multiloc, presence: true, multiloc: { presence: true }
 
       # Manual campaigns only.

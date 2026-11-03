@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { Box, Spinner } from '@citizenlab/cl2-component-library';
 
@@ -11,14 +11,13 @@ import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useAuthUser from 'api/me/useAuthUser';
 import { ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
-import useProjectById from 'api/projects/useProjectById';
 
-import { trackEventByName } from 'utils/analytics';
+import useOnQuerySuccess from 'hooks/useOnQuerySuccess';
+
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 
 import { FormValues } from '../Page/types';
-import tracks from '../tracks';
 import { convertCustomFieldsToNestedPages } from '../util';
 
 import SurveyPage from './SurveyPage';
@@ -48,17 +47,33 @@ const SurveyForm = ({
   const [accumulatedValues, setAccumulatedValues] = useState<FormValues>({});
 
   const { data: authUser } = useAuthUser();
-  const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
-  const { data: draftIdea, isLoading } = useDraftIdeaByPhaseId(phaseId);
+  const draftIdeaQuery = useDraftIdeaByPhaseId(phaseId);
+  const { data: draftIdea, isLoading: isLoadingDraftIdea } = draftIdeaQuery;
+
+  // The draft refetches after every saved page; only the first load counts.
+  const hasTrackedStart = useRef(false);
+  useOnQuerySuccess(draftIdeaQuery, () => {
+    if (hasTrackedStart.current) return;
+    hasTrackedStart.current = true;
+
+    trackEventByName(customerAnalyticsEvents.surveyStarted, {
+      project_id: projectId,
+      phase_id: phaseId,
+      participation_method: participationMethod,
+      // Only a previously saved draft has an id.
+      resumed: !!draftIdea?.data.id,
+    });
+  });
 
   const { mutateAsync: addIdea } = useAddIdea();
   const { mutateAsync: updateIdea } = useUpdateIdea();
-  const { data: customFields } = useCustomFields({
-    projectId,
-    phaseId,
-    publicFields: true,
-  });
+  const { data: customFields, isLoading: isLoadingCustomFields } =
+    useCustomFields({
+      projectId,
+      phaseId,
+      publicFields: true,
+    });
 
   const nestedPagesData = convertCustomFieldsToNestedPages(customFields || []);
 
@@ -68,15 +83,22 @@ const SurveyForm = ({
 
   const onSubmit = async ({
     formValues,
+    pageValues,
     isSubmitPage,
   }: {
     formValues: FormValues;
+    pageValues: FormValues;
     isSubmitPage: boolean;
   }) => {
     // Carry the page's values forward across the next remount so anonymous
     // users don't lose answers from previous pages, and so the final submit
     // sends every answer from every visited page.
-    const mergedValues = { ...accumulatedValues, ...formValues };
+    // pageValues comes first so that an answer the user cleared ends up as
+    // undefined instead of keeping the value it had before: the yup resolver
+    // leaves such a key out of formValues, and a spread can only overwrite
+    // keys it has. formValues still wins for every answer it does carry,
+    // because its values are cast to the types the API expects.
+    const mergedValues = { ...accumulatedValues, ...pageValues, ...formValues };
     setAccumulatedValues(mergedValues);
 
     // The draft idea endpoint relies on the idea having a user id / being linked to a user
@@ -89,17 +111,12 @@ const SurveyForm = ({
 
     // The back-end initially returns a draft idea without an ID
     if (!draftIdea?.data.id) {
-      // If the user is an admin or project moderator, we allow them to post to a specific phase
-      const phase_ids =
-        project && phaseId && canModerateProject(project.data, authUser)
-          ? [phaseId]
-          : null;
-
       const idea = await addIdea({
-        ...mergedValues,
-        project_id: projectId,
-        phase_ids,
-        publication_status: isSubmitPage ? 'published' : 'draft',
+        phaseId: phase.data.id,
+        requestBody: {
+          ...mergedValues,
+          publication_status: isSubmitPage ? 'published' : 'draft',
+        },
       });
 
       updateSearchParams({ idea_id: isSubmitPage ? idea.data.id : undefined });
@@ -108,7 +125,6 @@ const SurveyForm = ({
         id: draftIdea.data.id,
         requestBody: {
           ...mergedValues,
-          project_id: projectId,
           publication_status: isSubmitPage ? 'published' : 'draft',
         },
       });
@@ -119,14 +135,24 @@ const SurveyForm = ({
 
     clearDraftIdea(phaseId);
     if (isSubmitPage) {
-      trackEventByName(tracks.surveyFormSubmitted);
+      trackEventByName(customerAnalyticsEvents.surveySubmitted, {
+        project_id: projectId,
+        phase_id: phase.data.id,
+        participation_method: participationMethod,
+      });
     }
   };
 
   const initialFormData = getInitialData(draftIdea, authUser, phase);
 
-  if (isLoading) {
-    return <Spinner />;
+  // The options of a select question are part of this response, so a question
+  // with thousands of them keeps the whole form waiting.
+  if (isLoadingDraftIdea || isLoadingCustomFields) {
+    return (
+      <Box mt="20px" display="flex" justifyContent="center" w="100%">
+        <Spinner />
+      </Box>
+    );
   }
 
   return (

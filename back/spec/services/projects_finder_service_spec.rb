@@ -49,10 +49,27 @@ describe ProjectsFinderService do
       active_project2.phases.first.update!(end_at: soonest_end_at + 1.day)
       active_project3 = create(:project_with_active_ideation_phase)
       active_project3.phases.first.update!(end_at: soonest_end_at + 2.days)
+      open_ended_project = create(:project_with_active_ideation_phase)
+      open_ended_project.phases.first.update!(end_at: nil)
 
-      expect(Project.count).to eq 5
-      expect(result.size).to eq 3
-      expect(result.map(&:id)).to eq [active_ideation_project.id, active_project2.id, active_project3.id]
+      expect(Project.count).to eq 6
+      expect(result.size).to eq 4
+      expect(result.map(&:id)).to eq [
+        active_ideation_project.id, active_project2.id, active_project3.id, open_ended_project.id
+      ]
+    end
+
+    # Without the created_at and id tiebreaks, projects would repeat across pages.
+    it 'orders projects by id when active phase end dates and creation dates are the same' do
+      projects = [active_ideation_project, *create_list(:project_with_active_ideation_phase, 3)]
+      end_at = 1.week.from_now
+      created_at = 1.day.ago
+      projects.each do |project|
+        project.phases.first.update!(end_at: end_at)
+        project.update!(created_at: created_at)
+      end
+
+      expect(result.map(&:id)).to eq Project.where(id: projects).order(:id).pluck(:id)
     end
 
     it "excludes projects where no action is permitted & no permission is 'fixable'" do
@@ -115,6 +132,38 @@ describe ProjectsFinderService do
       expect(Project.count).to eq 4
       expect(result.size).to eq 2
       expect(result.map(&:id)).to include(active_ideation_project.id, annotation_project.id)
+    end
+
+    it 'includes projects whose only active phase is a standalone phase' do
+      standalone_project = create(:project)
+      create(:phase, project: standalone_project, start_at: 2.months.ago, end_at: 1.month.ago)
+      create(:phase, :standalone, project: standalone_project, with_permissions: true, start_at: 1.week.ago, end_at: 1.week.from_now)
+
+      expect(result.map(&:id)).to include standalone_project.id
+    end
+
+    it 'returns a project with multiple active phases only once' do
+      create(:phase, :standalone, project: active_ideation_project, with_permissions: true, start_at: 1.week.ago, end_at: 1.week.from_now)
+
+      expect(result.map(&:id).count(active_ideation_project.id)).to eq 1
+    end
+
+    it 'includes a project when its timeline phase denies participation but an active standalone phase allows it' do
+      group = create(:group)
+      %w[posting_idea commenting_idea reacting_idea].each do |action|
+        permission = create(:permission, action:, permission_scope: active_ideation_project.phases.first, permitted_by: 'users')
+        create(:groups_permission, permission_id: permission.id, group: group)
+      end
+      create(:phase, :standalone, project: active_ideation_project, with_permissions: true, start_at: 1.week.ago, end_at: 1.week.from_now)
+
+      expect(result.map(&:id)).to include active_ideation_project.id
+    end
+
+    it 'includes a project whose active timeline phase is information when a standalone phase is active' do
+      info_project = create(:project_with_past_ideation_and_current_information_phase)
+      create(:phase, :standalone, project: info_project, with_permissions: true, start_at: 1.week.ago, end_at: 1.week.from_now)
+
+      expect(result.map(&:id)).to include info_project.id
     end
   end
 
@@ -322,6 +371,20 @@ describe ProjectsFinderService do
         expect(finished_project2.phases[1].end_at).to be_after(finished_project3.phases[1].end_at)
 
         expect(result).to eq [endless_project, finished_project2, finished_project3, finished_project1]
+      end
+
+      # Identical creation dates are possible when tenant templates are applied.
+      # Without the id tiebreak, projects would repeat across pages.
+      it 'orders projects by id when last phase end dates and creation dates are the same' do
+        projects = [finished_project1, *create_list(:project_with_two_past_ideation_phases, 3)]
+        end_at = 20.days.ago
+        created_at = 1.day.ago
+        projects.each do |project|
+          project.phases.last.update!(end_at: end_at)
+          project.update!(created_at: created_at)
+        end
+
+        expect(result.map(&:id)).to eq Project.where(id: projects).order(:id).pluck(:id)
       end
     end
 

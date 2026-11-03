@@ -86,13 +86,19 @@ describe('Idea submission form', () => {
 
     cy.dataCy('e2e-next-page').should('be.visible').click();
     cy.dataCy('e2e-next-page').should('be.visible').click();
-    cy.dataCy('e2e-submit-form').click();
+
+    cy.intercept('POST', '**/phases/*/inputs').as('submitIdea');
+    cy.clickInputFormPageButton('e2e-submit-form');
+    cy.wait('@submitIdea')
+      .its('response.statusCode')
+      .should('be.oneOf', [200, 201]);
+
     cy.dataCy('e2e-after-submission').should('exist').click();
     cy.contains(ideaTitle).should('exist');
   });
 
   it('saves correct location point when provided in URL', () => {
-    cy.intercept('POST', '**/ideas').as('submitIdea');
+    cy.intercept('POST', '**/phases/*/inputs').as('submitIdea');
 
     const ideaTitle = randomString(40);
     const ideaContent = randomString(60);

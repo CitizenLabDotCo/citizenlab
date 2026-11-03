@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 
-import styled from 'styled-components';
+import { Box } from '@citizenlab/cl2-component-library';
 
-import usePhase from 'api/phases/usePhase';
+import { IPhaseData, TSurveyService } from 'api/phases/types';
 
 import messages from 'containers/ProjectsShowPage/messages';
 
@@ -11,40 +11,27 @@ import { FormattedMessage } from 'utils/cl-intl';
 
 import Survey from '../shared/survey';
 
-const Container = styled.div`
-  position: relative;
-`;
-
 interface Props {
-  phaseId: string | null;
+  phase: IPhaseData;
+  surveyEmbedUrl: string;
+  surveyService: TSurveyService;
   className?: string;
 }
 
-const SurveyContainer = memo<Props>(({ phaseId, className }) => {
-  const { data: phase } = usePhase(phaseId);
-
-  if (
-    phase &&
-    phase.data.attributes.participation_method === 'survey' &&
-    phase.data.attributes.survey_embed_url &&
-    phase.data.attributes.survey_service
-  ) {
-    return (
-      <Container className={className || ''}>
-        <ScreenReaderOnly>
-          <FormattedMessage tagName="h3" {...messages.invisibleTitleSurvey} />
-        </ScreenReaderOnly>
-        <Survey
-          className={className}
-          phase={phase.data}
-          surveyEmbedUrl={phase.data.attributes.survey_embed_url}
-          surveyService={phase.data.attributes.survey_service}
-        />
-      </Container>
-    );
-  }
-
-  return null;
-});
+const SurveyContainer = memo<Props>(
+  ({ phase, surveyEmbedUrl, surveyService, className }) => (
+    <Box position="relative" className={className || ''}>
+      <ScreenReaderOnly>
+        <FormattedMessage tagName="h3" {...messages.invisibleTitleSurvey} />
+      </ScreenReaderOnly>
+      <Survey
+        className={className}
+        phase={phase}
+        surveyEmbedUrl={surveyEmbedUrl}
+        surveyService={surveyService}
+      />
+    </Box>
+  )
+);
 
 export default SurveyContainer;

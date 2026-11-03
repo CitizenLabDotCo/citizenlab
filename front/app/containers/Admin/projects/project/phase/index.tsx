@@ -9,15 +9,19 @@ import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useParallelParticipation from 'hooks/useParallelParticipation';
-
-import Timeline from 'containers/ProjectsShowPage/timeline/Timeline';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import { Outlet as RouterOutlet, useParams, useLocation } from 'utils/router';
+import {
+  Outlet as RouterOutlet,
+  useLocation,
+  useMatchRoute,
+  useParams,
+} from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
+import PhasePreview from '../backofficeRedesign/Phase/PhasePreview';
 import { FeatureFlags, getTabs, IPhaseTab } from '../tabs';
 
 import { PhaseHeader } from './PhaseHeader';
@@ -25,16 +29,13 @@ import { PhaseHeader } from './PhaseHeader';
 interface DataProps {
   project: IProjectData;
   selectedPhase?: IPhaseData;
-  setSelectedPhase: (phase: IPhaseData) => void;
 }
 
-const AdminProjectPhaseIndex = ({
-  project,
-  selectedPhase,
-  setSelectedPhase,
-}: DataProps) => {
+const AdminProjectPhaseIndex = ({ project, selectedPhase }: DataProps) => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
+  const matchRoute = useMatchRoute();
+  const isBackofficeRedesignEnabled = useProjectBackofficeRedesign();
   const featureFlags: FeatureFlags = {
     typeform_enabled: useFeatureFlag({
       name: 'typeform_surveys',
@@ -47,8 +48,6 @@ const AdminProjectPhaseIndex = ({
     }),
   };
 
-  const parallelParticipation = useParallelParticipation();
-
   const isNewPhaseLink = pathname.endsWith(
     `admin/projects/${project.id}/phases/new`
   );
@@ -59,34 +58,44 @@ const AdminProjectPhaseIndex = ({
       }))
     : [];
 
+  const onPhaseSetupRoute =
+    !!matchRoute({
+      to: '/$locale/admin/projects/$projectId/phases/$phaseId/setup',
+    }) ||
+    !!matchRoute({ to: '/$locale/admin/projects/$projectId/phases/$phaseId' });
+
+  const showPhasePreview =
+    isBackofficeRedesignEnabled && !!selectedPhase && onPhaseSetupRoute;
+
   return (
-    <Box display="flex" flexDirection="column" flexGrow={1}>
-      {!parallelParticipation && (
-        <Box mt="16px" px="24px">
-          <Timeline
-            projectId={project.id}
-            selectedPhase={selectedPhase}
-            setSelectedPhase={setSelectedPhase}
-            isBackoffice
-          />
-        </Box>
-      )}
+    <Box
+      display="flex"
+      flexDirection="column"
+      flexGrow={1}
+      minHeight={showPhasePreview ? '0' : undefined}
+    >
       <Box
-        p="8px 24px 24px 24px"
+        p={showPhasePreview ? '0' : '8px 24px 24px 24px'}
         display="flex"
         flexDirection="column"
         flexGrow={1}
+        minHeight={showPhasePreview ? '0' : undefined}
       >
-        {!isNewPhaseLink && selectedPhase && (
+        {!isNewPhaseLink && selectedPhase && !isBackofficeRedesignEnabled && (
           <PhaseHeader phase={selectedPhase} tabs={tabs} />
         )}
 
         <Box
-          p={`${defaultAdminCardPadding}px`}
-          background={colors.white}
+          p={showPhasePreview ? '0' : `${defaultAdminCardPadding}px`}
+          background={showPhasePreview ? undefined : colors.white}
           flexGrow={1}
+          minHeight={showPhasePreview ? '0' : undefined}
         >
-          <RouterOutlet />
+          {showPhasePreview ? (
+            <PhasePreview projectId={project.id} phase={selectedPhase} />
+          ) : (
+            <RouterOutlet />
+          )}
         </Box>
       </Box>
     </Box>
@@ -105,16 +114,22 @@ export default () => {
     isLoading: isLoadingPhases,
     isFetching: isFetchingPhases,
   } = usePhases(projectId);
+  const {
+    data: standalonePhases,
+    isLoading: isLoadingStandalonePhases,
+    isFetching: isFetchingStandalonePhases,
+  } = usePhases(projectId, 'standalone');
   const [selectedPhase, setSelectedPhase] = useState<IPhaseData | undefined>(
     undefined
   );
   const { pathname } = useLocation();
 
   useEffect(() => {
-    if (!phases) return;
+    if (!phases || !standalonePhases) return;
 
+    const allPhases = [...phases.data, ...standalonePhases.data];
     const phase = phaseId
-      ? phases.data.find((phase) => phase.id === phaseId)
+      ? allPhases.find((phase) => phase.id === phaseId)
       : undefined;
     let phaseShown: IPhaseData | undefined = phase;
     if (!phase && !pathname.endsWith('/phases/new')) {
@@ -133,7 +148,12 @@ export default () => {
       `/admin/projects/${projectId}/phases`
     );
 
-    if (stillOnPhasesPath && phases.data.length === 0 && !isFetchingPhases) {
+    if (
+      stillOnPhasesPath &&
+      allPhases.length === 0 &&
+      !isFetchingPhases &&
+      !isFetchingStandalonePhases
+    ) {
       clHistory.replace(
         `/admin/projects/${projectId}/phases/new${window.location.search}`
       );
@@ -145,9 +165,17 @@ export default () => {
     }
 
     setSelectedPhase(phaseShown);
-  }, [phaseId, phases, projectId, pathname, isFetchingPhases]);
+  }, [
+    phaseId,
+    phases,
+    standalonePhases,
+    projectId,
+    pathname,
+    isFetchingPhases,
+    isFetchingStandalonePhases,
+  ]);
 
-  if (isLoadingProject || isLoadingPhases) {
+  if (isLoadingProject || isLoadingPhases || isLoadingStandalonePhases) {
     return (
       <Box
         width="100%"
@@ -169,7 +197,6 @@ export default () => {
     <AdminProjectPhaseIndex
       project={project.data}
       selectedPhase={selectedPhase}
-      setSelectedPhase={setSelectedPhase}
     />
   );
 };

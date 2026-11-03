@@ -5,8 +5,8 @@ import { Box } from '@citizenlab/cl2-component-library';
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import {
-  pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLink,
+  pagesBreadcrumb,
+  pagesBreadcrumbLink,
 } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 import TabbedResource from 'components/admin/TabbedResource';
@@ -26,6 +26,10 @@ const CustomPagesNewSettings = () => {
     name: 'pages',
     onlyCheckAllowed: true,
   });
+  // Matches the edit page, which drops its tabs when the builder is on.
+  const customPageBuilderEnabled = useFeatureFlag({
+    name: 'custom_page_builder',
+  });
   return (
     <>
       <HelmetIntl title={messages.newCustomPageMetaTitle} />
@@ -33,8 +37,8 @@ const CustomPagesNewSettings = () => {
         <Breadcrumbs
           breadcrumbs={[
             {
-              label: formatMessage(pagesAndMenuBreadcrumb.label),
-              link: pagesAndMenuBreadcrumbLink,
+              label: formatMessage(pagesBreadcrumb.label),
+              link: pagesBreadcrumbLink,
             },
             { label: formatMessage(messages.newCustomPagePageTitle) },
           ]}
@@ -51,13 +55,17 @@ const CustomPagesNewSettings = () => {
           resource={{
             title: formatMessage(messages.newCustomPagePageTitle),
           }}
-          tabs={[
-            {
-              label: formatMessage(messages.pageSettingsTab),
-              name: 'settings',
-              url: '/admin/pages-menu/pages/new',
-            },
-          ]}
+          tabs={
+            customPageBuilderEnabled
+              ? []
+              : [
+                  {
+                    label: formatMessage(messages.pageSettingsTab),
+                    name: 'settings',
+                    url: '/admin/pages-menu/pages/new',
+                  },
+                ]
+          }
           contentWrapper={false}
         >
           <NewCustomPage />

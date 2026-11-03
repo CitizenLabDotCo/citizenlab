@@ -67,26 +67,26 @@ module SmartGroups::Rules
 
     def filter(users_scope)
       custom_field = CustomField.find(custom_field_id)
-      key = custom_field.key
       return unless custom_field.input_type == 'number'
 
+      answer_filter = AnswerableFilter.new(custom_field, users_scope)
       case predicate
       when 'is_equal'
-        users_scope.where("(custom_field_values->>'#{key}')::float = ?", value)
+        answer_filter.eq(value)
       when 'not_is_equal'
-        users_scope.where("custom_field_values->>'#{key}' IS NULL OR (custom_field_values->>'#{key}')::float != ?", value)
+        answer_filter.not_eq(value)
       when 'is_larger_than'
-        users_scope.where("(custom_field_values->>'#{key}')::float > ?", value)
+        answer_filter.gt(value)
       when 'is_larger_than_or_equal'
-        users_scope.where("(custom_field_values->>'#{key}')::float >= ?", value)
+        answer_filter.gteq(value)
       when 'is_smaller_than'
-        users_scope.where("(custom_field_values->>'#{key}')::float < ?", value)
+        answer_filter.lt(value)
       when 'is_smaller_than_or_equal'
-        users_scope.where("(custom_field_values->>'#{key}')::float <= ?", value)
+        answer_filter.lteq(value)
       when 'is_empty'
-        users_scope.where("custom_field_values->>'#{key}' IS NULL")
+        answer_filter.absent
       when 'not_is_empty'
-        users_scope.where("custom_field_values->>'#{key}' IS NOT NULL")
+        answer_filter.present
       else
         raise "Unsupported predicate #{predicate}"
       end

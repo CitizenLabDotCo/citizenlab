@@ -36,6 +36,7 @@ lt-LT:
         project_participants: Projekto dalyviams
         registered_users: Registruotiems naudotojams
       recipient_segment:
+        admin_who_generated_the_report: Ataskaitą užsakęs administratorius
         admins: Administratoriai
         admins_and_managers: Administratoriai ir vadovai
         admins_and_managers_assigned_to_the_input: Administratoriai ir vadovai, priskirti įvesties įrašui
@@ -77,6 +78,7 @@ lt-LT:
         users_who_follow_the_proposal: Naudotojai, kurie seka pasiūlymą
       trigger:
         7_days_after_invite_is_sent: 7 dienos po kvietimo išsiuntimo
+        7_days_before_phase_starts: Likus 7 dienoms iki etapo pradžios
         7_days_before_the_project_changes_phase: likus 7 dienoms iki projekto pokyčių etapo
         comment_is_deleted: Komentaras ištrintas
         comment_is_flagged_as_spam: Komentaras pažymėtas kaip šlamštas
@@ -95,6 +97,7 @@ lt-LT:
         new_input_awaits_screening: Naujų duomenų laukia atranka
         new_input_is_published: Skelbiami nauji duomenys
         new_proposal_is_posted: Paskelbtas naujas pasiūlymas
+        phase_starts: Prasideda etapas
         project_phase_changes: Projekto etapo pokyčiai
         project_published: Paskelbtas projektas
         project_review_request: Moderatorius paprašė peržiūrėti projektą
@@ -107,6 +110,7 @@ lt-LT:
         proposal_is_upvoted_above_threshold: Už pasiūlymą balsuojama daugiau nei nustatyta riba
         proposal_status_changes: Pasiūlymo statuso pokyčiai
         registration_to_event: Registracija į renginį
+        report_generated: Ataskaitos generavimas baigtas
         survey_1_day_after_draft_saved: 1 diena po to, kai naudotojas paskutinį kartą išsaugojo apklausos juodraštį
         user_accepts_invitation_to_cosponsor_a_proposal: Naudotojas priima kvietimą tapti pasiūlymo bendraautoriumi
         user_changes_email: Naudotojas keičia savo el. pašto adresą
@@ -184,24 +188,29 @@ lt-LT:
       manual_project_participants: Oficialūs pranešimai projekto dalyviams
       mention_in_internal_comment: Paminėjimas vidaus komentare
       mention_in_official_feedback: Paminėjimas atnaujinime
+      merge_account_confirmation: Paskyrų sujungimo patvirtinimo kodas
       moderator_digest: Savaitės apžvalga projektų vadovams
       native_survey_not_submitted: Nepateikta apklausa
       new_comment_for_admin: Naujas komentaras projekte, kurį moderuoju
       new_email_confirmation: Naujas el. pašto patvirtinimo kodas
       new_idea_for_admin_prescreening: Nauji duomenys, kuriuos reikia patvirtinti projekte, kurį moderuoju
       new_idea_for_admin_published: Naujai paskelbta informacija apie projektą, kuriam vadovauju
+      new_phone_confirmation: Naujas telefono patvirtinimo kodas
       official_feedback_on_idea_you_follow: Įvesties, kurią sekate, atnaujinimas
       password_reset: Slaptažodžio atkūrimas
+      phone_confirmation: Telefono patvirtinimo kodas
       project_folder_moderation_rights_received: Gautos aplankų tvarkytojo teisės
       project_manager_rights_received: Suteiktos projekto valdytojo teisės
       project_moderation_rights_received: Gautos projekto moderavimo teisės
-      project_phase_started: Naujas projekto etapas
-      project_phase_upcoming: Būsimas naujas projekto etapas
+      project_phase_started: Etapas prasidėjo
+      project_phase_upcoming: Etapas netrukus prasidės
       project_published: Paskelbtas projektas
       project_review_request: Projekto peržiūros prašymas
       project_review_state_change: Patvirtintas projektas
       proposal_expired_for_admin: Pasiūlymo galiojimo laikas pasibaigė nepasiekus balsavimo slenksčio
+      report_generated: Ataskaita sugeneruota
       screening_digest: Savaitinis priminimas apie patikrą
+      sms_manual: Oficialios SMS žinutės
       space_moderation_rights_received: Suteiktos erdvės valdytojo teisės
       status_change_on_idea_you_follow: Įvesties, kurią sekate, būsenos pasikeitimas
       survey_submitted: Pateikta apklausa
@@ -356,6 +365,7 @@ lt-LT:
         story: Eikite į savo istoriją
         suggestion: Eikite į savo pasiūlymą
         topic: Eikite į savo temą
+      phase_dates: Nuo %{startDate} iki %{endDate}
     idea_marked_as_spam:
       cta_button: Peržiūrėkite
       preheader: Veiksmai, susiję su šia nepageidaujamų laiškų ataskaita
@@ -471,6 +481,15 @@ lt-LT:
       preheader: '%{commentAuthor} paminėjo jus atsiliepimuose'
       subject: '%{organizationName} paminėjo jus savo atsiliepimuose'
       title: Buvote paminėtas
+    merge_account_confirmation:
+      best_regards: Pagarbiai,
+      event_description: 'Kažkas prisijungė prie „%{organizationName}“ dalyvavimo platformos ir paprašė susieti šį prisijungimą su paskyra, naudojančia šį el. pašto adresą. Jei tai buvote jūs, įveskite šį patvirtinimo kodą, kad tęstumėte:'
+      expire_code: Šio kodo galiojimo laikas baigsis po
+      hours_24: 24 valandos.
+      ignore_email: Jei tai buvote ne jūs, galite saugiai ignoruoti šį laišką. Nieko nebuvo pakeista, o šio kodo niekas negali panaudoti neturėdamas prieigos prie šios pašto dėžutės.
+      preheader: Patvirtinkite savo el. pašto adresą „%{organizationName}“
+      subject: Patvirtinkite savo el. pašto adresą „%{organizationName}“ dalyvavimo platformoje
+      title: Patvirtinkite savo el. pašto adresą
     moderator_digest:
       cta_button: Tvarkykite savo projektą
       event_description: Atrinkome jums informaciją, kuri per pastarąją savaitę sulaukė didžiausio susidomėjimo. Sužinokite, kas vyksta su jūsų projektu!
@@ -534,6 +553,9 @@ lt-LT:
       title: Jūsų platformoje paskelbta nauja įvestis
       today: Šiandien
       yesterday: Vakar
+    new_phone_confirmation:
+      sms_body: Jūsų patvirtinimo kodas yra %{code}.
+      sms_body2: '%{organization_name}: Jūsų patvirtinimo kodas yra %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Eikite į šią įvestį
       event_description: '%{feedback_author_name} pateikė naujausią informaciją apie "%{input_title}".'
@@ -546,6 +568,9 @@ lt-LT:
       preheader: Atstatykite savo %{organizationName} slaptažodį
       subject: '%{organizationName}: Atstatykite slaptažodį'
       title: Pasirinkite naują slaptažodį
+    phone_confirmation:
+      sms_body: Jūsų patvirtinimo kodas yra %{code}.
+      sms_body2: '%{organization_name}: Jūsų patvirtinimo kodas yra %{code}.'
     preview_data:
       author_display_name: Nepažįstama moteris
       author_first_name: Jane
@@ -564,8 +589,9 @@ lt-LT:
       input_status_description: Įvesties būsenos pavyzdys (pvz., priimta, atmesta, įgyvendinta...)
       input_status_title: Pavyzdys Būklė
       official_feedback_body: Oficialių atsiliepimų pavyzdys
+      phase_description: Tai yra pavyzdinis etapo turinys, naudojamas el. laiškų turinio peržiūrai. Tai nėra tikras turinys.
       phase_title: Pavyzdys fazė
-      project_description_preview: Tai tam tikras etapo turinio pavyzdys, naudojamas el. laiškų turiniui peržiūrėti. Tai nėra tikrasis turinys.
+      project_description_preview: Tai yra pavyzdinis projekto turinys, skirtas el. laiškų peržiūrai. Tai nėra tikras turinys.
       project_title: Projekto pavyzdys
       proposal_title: Pasiūlymo pavyzdys
       space_title: Pavyzdinė erdvė
@@ -600,21 +626,21 @@ lt-LT:
       title_what_can_you_do_moderator: Ką galite padaryti kaip projektų vadovas?
       x_ideas: '%{numberOfIdeas} idėjos'
     project_phase_started:
-      cta_button: Atraskite šį naują etapą
-      event_description: Šis projektas įžengė į naują etapą %{organizationName}platformoje. Spustelėkite toliau pateiktą nuorodą ir sužinokite daugiau!
+      cta_button: Sužinokite, kas naujo
+      event_description: Dabar galite dalyvauti etape „%{phaseTitle}“ %{organizationName} platformoje.
       new_phase: "Šis projektas perėjo į etapą '%{phaseTitle}'"
-      preheader: Prasidėjo naujas %{projectName}etapas.
-      subject: '%{projectName} prasidėjo naujas etapas.'
+      preheader: Dabar galite dalyvauti etape „%{phaseTitle}“
+      subject: „%{phaseTitle}“ prasidėjo projekte %{projectName}
       subtitle: "Apie '%{projectName}'"
-      title: Prasidėjo naujas projekto "%{projectName}" etapas
+      title: Projekte „%{projectName}“ yra naujienų
     project_phase_upcoming:
-      cta_button: Nustatykite šį naują etapą
-      event_description: 'Netrukus prasidės naujas projekto "%{projectName}" etapas. Pasirūpinkite, kad viskas būtų paruošta šiam etapui: Ar yra tinkamas aprašymas? Ar pasirinktos idėjos perkeltos į šį etapą? Ar norite informuoti savo piliečius apie šio etapo ypatumus naudodami pasirinktinę el. pašto kampaniją?'
+      cta_button: Peržiūrėkite sąranką
+      event_description: '„%{phaseTitle}“ projekte „%{projectName}“ prasideda %{startDate}. Skirkite akimirką ir patikrinkite, ar viskas paruošta: ar aprašymas išsamus? Ar datos teisingos? Ar norite informuoti savo bendruomenę naudodami pritaikytą el. pašto kampaniją?'
       new_phase: Projektas pereis į etapą "%{phaseTitle}".
-      preheader: Netrukus prasidės naujas %{projectName}etapas
-      subject: Pasirūpinkite, kad viskas būtų paruošta naujam %{projectName}etapui.
+      preheader: Įsitikinkite, kad viskas paruošta iki %{startDate}
+      subject: '%{projectName}: „%{phaseTitle}“ prasideda %{startDate}'
       subtitle: "Apie '%{projectName}'"
-      title: '%{firstName}, netrukus prasidės naujas projekto etapas'
+      title: '%{firstName}, „%{phaseTitle}“ prasideda %{startDate}'
     project_published:
       cta_button: Eikite į šį projektą
       event_description: 'Dalyvavimo platformoje %{organizationName} ką tik paskelbtas šis projektas:'
@@ -638,6 +664,13 @@ lt-LT:
       preheader: Pasiūlymo galiojimo laikas pasibaigė nepasiekus slenksčio
       subject: „%{input_title}“ galiojimo laikas pasibaigė nepasiekus slenksčio
       title: Pasiūlymo galiojimo laikas pasibaigė nepasiekus balsavimo slenksčio
+    report_generated:
+      cta_button: Atidaryti ataskaitą
+      event_description: Ataskaita parašyta ir paruošta peržiūrai bei redagavimui.
+      preheader: Jūsų ataskaita paruošta
+      stopped_early: Rašymas nutrūko nebaigus ataskaitos. Viskas, kas parašyta iki šiol, išsaugota – atidarykite ją ir paprašykite likusios dalies pokalbių lange.
+      subject: Jūsų ataskaita projektui „%{projectName}“ paruošta
+      title: Jūsų ataskaita paruošta
     schedules:
       quarterly: Kas ketvirtį, pirmąją ketvirčio dieną
       weekly:

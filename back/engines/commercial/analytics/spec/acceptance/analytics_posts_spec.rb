@@ -49,6 +49,27 @@ resource 'Analytics - FactPosts model' do
       expect(response_data[:attributes]).to contain_exactly({ 'dimension_date_created.month': '2022-09', count: 2 }, { 'dimension_date_created.month': '2022-10', count: 2 })
     end
 
+    example 'exclude posts of admins and moderators' do
+      create(:idea, created_at: @times[0], author: create(:user))
+      create(:idea, created_at: @times[0], author: create(:user), anonymous: true)
+      create_admins_and_moderators.each do |author|
+        create(:idea, created_at: @times[0], author: author)
+        create(:proposal, created_at: @times[0], author: author)
+      end
+
+      enable_exclude_admins_and_moderators_from_statistics
+      do_request({
+        query: {
+          fact: 'post',
+          aggregations: {
+            all: 'count'
+          }
+        }
+      })
+      assert_status 200
+      expect(response_data[:attributes]).to contain_exactly({ count: 2 })
+    end
+
     example 'does not return survey responses', document: false do
       # Create 2 posts inc 1 ignored survey
       create(:idea_status_proposed)

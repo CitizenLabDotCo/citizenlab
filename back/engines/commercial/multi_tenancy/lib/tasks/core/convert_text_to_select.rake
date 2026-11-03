@@ -8,25 +8,27 @@ namespace :fix_existing_tenants do
       max_distance = args[:max_distance].to_i
       custom_field_id = CustomField.where({ resource_type: User.name, key: args[:new_select_field] }).pick(:id)
       select_field_options = CustomFieldOption.where(custom_field_id: custom_field_id).pluck(:key)
+      user_answers = CustomFieldAnswer.where(answerable_type: 'User')
       users = User
-        .where('custom_field_values::jsonb ? :key', key: args[:old_text_field])
-        .where.not('custom_field_values::jsonb ? :key', key: args[:new_select_field])
+        .where(id: user_answers.where(key: args[:old_text_field]).select(:answerable_id))
+        .where.not(id: user_answers.where(key: args[:new_select_field]).select(:answerable_id))
 
       users_updates = []
       value_matches = []
 
       # find most similar option to each user's old text field
       users.each do |user|
+        old_value = user.answer_for_key(args[:old_text_field]).value
         options = []
         select_field_options.each do |option_text|
           option = { option: option_text }
-          text_value = user.custom_field_values[args[:old_text_field]].downcase.gsub(/\s+/, '')
+          text_value = old_value.downcase.gsub(/\s+/, '')
           option[:distance] = levenshtein_distance(text_value, option_text)
           options.push(option)
         end
         best_option = options.min_by { |opt| opt[:distance] }
         users_updates.push([user.id, best_option[:option], best_option[:distance] <= max_distance])
-        value_matches.push(["#{user.custom_field_values[args[:old_text_field]]} -> #{best_option[:option]}", best_option[:distance]])
+        value_matches.push(["#{old_value} -> #{best_option[:option]}", best_option[:distance]])
       end
 
       # provide a summary of the changes and ask for confirmation
@@ -53,7 +55,7 @@ namespace :fix_existing_tenants do
         next unless update
 
         user = User.find(user_id)
-        user.custom_field_values[args[:new_select_field]] = new_option
+        user.custom_field_answers.build(key: args[:new_select_field], value: new_option, custom_field_id:)
         user.save
       end
     end

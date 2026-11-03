@@ -1,4 +1,8 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  InfiniteData,
+  QueryKey,
+} from '@tanstack/react-query';
 
 import { graphqlFetcher } from '../../utils/graphqlFetcher';
 
@@ -109,7 +113,13 @@ const usePublishedProjectTemplates = ({
     }
   `;
 
-  return useInfiniteQuery({
+  return useInfiniteQuery<
+    PublishedProjectTemplatesResponse,
+    Error,
+    InfiniteData<PublishedProjectTemplatesResponse>,
+    QueryKey,
+    string | null
+  >({
     queryKey: [
       'publishedProjectTemplates',
       {
@@ -122,7 +132,7 @@ const usePublishedProjectTemplates = ({
         graphqlTenantLocales,
       },
     ],
-    queryFn: ({ pageParam = null }) =>
+    queryFn: ({ pageParam }) =>
       graphqlFetcher<PublishedProjectTemplatesResponse>({
         query: PUBLISHED_PROJECT_TEMPLATES_QUERY,
         variables: {
@@ -135,6 +145,7 @@ const usePublishedProjectTemplates = ({
           organizationTypes,
         },
       }),
+    initialPageParam: null,
     getNextPageParam: (lastPage) =>
       lastPage.publishedProjectTemplates.pageInfo.hasNextPage
         ? lastPage.publishedProjectTemplates.pageInfo.endCursor

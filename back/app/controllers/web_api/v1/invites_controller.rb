@@ -42,11 +42,11 @@ class WebApi::V1::InvitesController < ApplicationController
       when nil
         @invites
       else
-        raise 'Unsupported sort method'
+        raise ApiError.new(:unsupported_sort_parameter, status: 400)
       end
     end
 
-    @invites = paginate @invites
+    @invites = paginate(@invites).includes(invitee: { custom_field_answers: :custom_field })
     render json: linked_json(@invites, WebApi::V1::InviteSerializer, params: jsonapi_serializer_params, include: [:invitee])
   end
 

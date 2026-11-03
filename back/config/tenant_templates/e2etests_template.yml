@@ -416,9 +416,6 @@ models:
     last_name: Kalinoski
     locale: en
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     registration_completed_at: '2018-03-28 13:34:57'
     password: democracy2.0
     remote_avatar_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/avatars/initials_avatars/sk_avatar.png
@@ -432,9 +429,6 @@ models:
     last_name: Ankunding
     locale: en
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     password: democracy2.0
     remote_avatar_url:
     created_at: '2018-03-28 13:35:02'
@@ -446,9 +440,6 @@ models:
     last_name: Luettgen
     locale: en
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     password: democracy2.0
     remote_avatar_url:
     roles: []
@@ -461,9 +452,6 @@ models:
     last_name: Charles
     locale: fr-BE
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     password: democracy2.0
     remote_avatar_url:
     roles: []
@@ -476,9 +464,6 @@ models:
     last_name: Macejkovic
     locale: en
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     password: democracy2.0
     remote_avatar_url:
     roles: []
@@ -490,9 +475,6 @@ models:
     last_name: Collins
     locale: en
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     password_digest: "$2a$10$wSfT0drbbyCYYclUriA76u33HHMunpjkPoOh.dQWhJiJxx60ih/2e"
     remote_avatar_url:
     roles: []
@@ -504,9 +486,6 @@ models:
     last_name: Toy
     locale: en
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     password_digest: "$2a$10$I1S3K3nNuHuq8WzPCPyf..Xs0N6e8DLJh2QxIV5Ek.jwVvOtvup4K"
     remote_avatar_url:
     roles: []
@@ -518,9 +497,6 @@ models:
     last_name: Schaefer
     locale: en
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     password_digest: "$2a$10$CRh2rjLDeraWqqbUvFYg7.jKGhoe.CNBHQpPy2SfZhOKKGIQupx8e"
     remote_avatar_url:
     roles:
@@ -533,9 +509,6 @@ models:
     last_name: Blick
     locale: en
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     password_digest: "$2a$10$sZwQpPuMiJkkOOoc5ZvDxe48tpnA7EWNmoS7QvoMctD/uZROYrnz."
     remote_avatar_url:
     roles: []
@@ -547,9 +520,6 @@ models:
     last_name: Lowe
     locale: en
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     password_digest: "$2a$10$L4ekuM6mZl7qa4MLRQRHFetMnMMr7JACfWdDzZ2Moj..IZZI.PqDa"
     remote_avatar_url:
     roles: []
@@ -561,9 +531,6 @@ models:
     last_name: Kulas
     locale: en
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     password_digest: "$2a$10$cKr5m15WIbhsR1QJmdWZ8OUCQQ/oz1WDOzrh0TsOf/QnW2.4xFkxG"
     remote_avatar_url:
     roles: []
@@ -575,9 +542,6 @@ models:
     last_name:
     locale: en
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     password_digest: "$2a$10$W3AKY8LVvXlNrbf28tRLYul25b2oIcU/XBOCOSpgFzup3dgbTTjuS"
     remote_avatar_url:
     roles: []
@@ -589,9 +553,6 @@ models:
     last_name: Auer
     locale: en
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     password_digest: "$2a$10$NFU2JwunuN3vzp8AOGy76.XhbGVg3FgMLGoriCE4/NBnDdu13FRjC"
     remote_avatar_url:
     roles: []
@@ -603,9 +564,6 @@ models:
     last_name: Adams
     locale: en
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     password_digest: "$2a$10$u9mkhE/suGQlXcVb6bgf6.f5S/i39hycOOcLkd4qqRrIBbcRMkOLO"
     remote_avatar_url:
     roles: []
@@ -617,9 +575,6 @@ models:
     last_name: Strosin
     locale: en
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     password_digest: "$2a$10$.X258VC6KFXWZ1doF2rIy.2yjOvDYTC1EcW7KCeqjcqUWp8iFg/Fq"
     remote_avatar_url:
     roles:
@@ -632,9 +587,6 @@ models:
     last_name: Hayes
     locale: en
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     password_digest: "$2a$10$zFqLIiT/RRVC.wSQZ065xeTsxPlHxJ2HBYVWxpH2GikSkiUFv7QhC"
     remote_avatar_url:
     roles: []
@@ -646,9 +598,6 @@ models:
     last_name: Stehr
     locale: en
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     password_digest: "$2a$10$uR48yypIVWE6np2hRN4kceeFZeJc8hBOCB8534mK/oKU61fB1pVP."
     remote_avatar_url:
     roles: []
@@ -660,9 +609,6 @@ models:
     last_name: Flatley
     locale: en
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     password_digest: "$2a$10$L91ykn5UGZeZ59j57Ai.gOoLC/wQ3suSQ.Q6c9k.hIErR2TvY8s4a"
     remote_avatar_url:
     roles: []
@@ -674,9 +620,6 @@ models:
     last_name: Greenfelder
     locale: en
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     password_digest: "$2a$10$VTHFZHun6iy9HXhGPR/xyuz/DWyDeS4QkXrmArhmsKTLvMCNVgzjK"
     remote_avatar_url:
     roles: []
@@ -688,9 +631,6 @@ models:
     last_name: Schimmel
     locale: en
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     password_digest: "$2a$10$T9gaXQEjp3wctbZrWlr/U.VezpM31prSfL3P6Nk/Vx0oOmJLY4l7."
     remote_avatar_url:
     roles:
@@ -703,12 +643,55 @@ models:
     last_name:
     locale: en
     bio_multiloc: {}
-    gender:
-    birthyear:
-    domicile:
     password_digest: "$2a$10$xfxVN6QSwzMGy9/RsmYSs./iOUfz8tTZFiQEH5a/WsVxjgC4c9vCa"
     remote_avatar_url:
     roles: []
+    created_at: '2018-03-28 13:35:02'
+    updated_at: '2018-03-28 13:35:02'
+  # Confirmation expiry test users. The `_timediff` suffix is resolved by the
+  # deserializer as an offset in hours from the start of the day the template is
+  # applied, so these stay exactly 10 days stale on every `make e2e-setup`.
+  - &email_confirmed_10_days_ago
+    email: email_confirmed_10_days_ago@govocal.com
+    first_name: Emily
+    last_name: Expired
+    locale: en
+    bio_multiloc: {}
+    password: democracy2.0
+    remote_avatar_url:
+    roles: []
+    confirmation_required: false
+    email_confirmed_at_timediff: -240
+    created_at: '2018-03-28 13:35:02'
+    updated_at: '2018-03-28 13:35:02'
+  - &phone_confirmed_10_days_ago
+    email: phone_confirmed_10_days_ago@govocal.com
+    first_name: Phoebe
+    last_name: Expired
+    locale: en
+    bio_multiloc: {}
+    password: democracy2.0
+    remote_avatar_url:
+    roles: []
+    confirmation_required: false
+    email_confirmed_at: '2018-03-28 13:35:02'
+    phone: '+14155552671'
+    phone_confirmed_at_timediff: -240
+    created_at: '2018-03-28 13:35:02'
+    updated_at: '2018-03-28 13:35:02'
+  # Signed up with a phone number only, so no email address to fall back on.
+  # This is what makes the phone expiry apply to an 'either_email_or_phone'
+  # permission, which is otherwise satisfied by a still-valid email address.
+  - &phone_only_confirmed_10_days_ago
+    first_name: Paula
+    last_name: Phoneonly
+    locale: en
+    bio_multiloc: {}
+    password: democracy2.0
+    remote_avatar_url:
+    roles: []
+    phone: '+14155552672'
+    phone_confirmed_at_timediff: -240
     created_at: '2018-03-28 13:35:02'
     updated_at: '2018-03-28 13:35:02'
   email_campaigns/unsubscription_token:
@@ -760,9 +743,6 @@ models:
     title_multiloc:
       en: Some folder
       nl-BE: Some folder
-    description_multiloc:
-      en: "<p>That's a folder alright.</p>"
-      nl-BE: "<p>That's a folder alright.</p>"
     remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     created_at: '2018-03-28 13:35:04'
     updated_at: '2018-03-28 13:35:04'
@@ -777,11 +757,6 @@ models:
     title_multiloc:
       en: Test project 1 timeline with file
       nl-BE: Test project 1 timeline with file
-    description_multiloc:
-      en: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
@@ -795,11 +770,6 @@ models:
     title_multiloc:
       en: Participatory Budgeting
       nl-BE: Participatory Budgeting
-    description_multiloc:
-      en: "<p> Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     description_preview_multiloc:
       en: Test group permissions with me Let's renew the parc at the city border.
@@ -812,11 +782,6 @@ models:
     title_multiloc:
       en: Charlie Participatory Budgeting
       nl-BE: Charlie Participatory Budgeting
-    description_multiloc:
-      en: "<p>Charlie only. Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     description_preview_multiloc:
       en: Test group permissions with me Let's renew the parc at the city border.
@@ -829,11 +794,6 @@ models:
     title_multiloc:
       en: Verified Participatory Budgeting
       nl-BE: Verified Participatory Budgeting
-    description_multiloc:
-      en: "<p>Verified users only. Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     description_preview_multiloc:
       en: Test group permissions with me Let's renew the parc at the city border.
@@ -846,11 +806,6 @@ models:
     title_multiloc:
       en: Test project 2 timeline
       nl-BE: Test project 2 timeline
-    description_multiloc:
-      en: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
@@ -862,7 +817,6 @@ models:
     updated_at: '2018-03-28 13:35:04'
   - &76
     title_multiloc: projects.open_idea_project_title
-    description_multiloc: projects.open_idea_project_description
     description_preview_multiloc: projects.open_idea_project_description_preview
     internal_role: open_idea_box
     remote_header_bg_url: https://cl2-seed-and-template-assets.s3.eu-central-1.amazonaws.com/images/people_with_speech_bubbles.jpeg
@@ -871,11 +825,6 @@ models:
     title_multiloc:
       en: Continuous ideation map
       nl-BE: Continuous ideation map
-    description_multiloc:
-      en: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -889,11 +838,6 @@ models:
     title_multiloc:
       en: Verified Charlie poeple project
       nl-BE: Verified Charlie poeple project
-    description_multiloc:
-      en: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -906,11 +850,6 @@ models:
     title_multiloc:
       en: Verified Ideation
       nl-BE: Verified Ideation
-    description_multiloc:
-      en: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -922,11 +861,6 @@ models:
     title_multiloc:
       en: Charlie Crew Ideation
       nl-BE: Charlie Crew Ideation
-    description_multiloc:
-      en: "<p>Test group permissions with meLet's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Test group permissions with me Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -938,11 +872,6 @@ models:
     title_multiloc:
       en: Continuous survey
       nl-BE: Continuous survey
-    description_multiloc:
-      en: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -956,11 +885,6 @@ models:
     title_multiloc:
       en: Verified survey
       nl-BE: Verified survey
-    description_multiloc:
-      en: "<p>Test verification permissions with me Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Test verification permissions with me Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -973,11 +897,6 @@ models:
     title_multiloc:
       en: The big poll
       nl-BE: The big poll
-    description_multiloc:
-      en: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -989,11 +908,6 @@ models:
     title_multiloc:
       en: Verified poll
       nl-BE: Verified poll
-    description_multiloc:
-      en: "<p>Test verification permissions with me Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Test verification permissions with me Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -1005,11 +919,6 @@ models:
     title_multiloc:
       en: Charlie Crew survey
       nl-BE: Charlie Crew survey
-    description_multiloc:
-      en: "<p>Test group permissions with me Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Test group permissions with me Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -1022,11 +931,6 @@ models:
     title_multiloc:
       en: Charlie Crew poll
       nl-BE: Charlie Crew poll
-    description_multiloc:
-      en: "<p>Test group permissions with me Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Test group permissions with me Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -1039,11 +943,6 @@ models:
     title_multiloc:
       en: Timeline ideation map
       nl-BE: Timeline ideation map
-    description_multiloc:
-      en: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -1056,11 +955,6 @@ models:
     title_multiloc:
       en: Timeline ideation card
       nl-BE: Timeline ideation card
-    description_multiloc:
-      en: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -1073,11 +967,6 @@ models:
     title_multiloc:
       en: Archived project
       nl-BE: Archived project
-    description_multiloc:
-      en: "<p>Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Let's renew the parc at the city border.
       nl-BE: Laten we het park op de grend van de stad vernieuwen.
@@ -1089,11 +978,6 @@ models:
     title_multiloc:
       en: Custom idea fields project
       nl-BE: Custom idea fields project
-    description_multiloc:
-      en: "<p>Test idea custom fields. Let's renew the parc at the city border and make it an enjoyable place
-        for young and old.</p>"
-      nl-BE: "<p>Test idea custom fields. Laten we het park op de grens van de stad vernieuwen en er een aangename
-        plek van maken, voor jong en oud.</p>"
     description_preview_multiloc:
       en: Test idea custom fields. Let's renew the parc at the city border and make it an enjoyable place
         for young and old.
@@ -8208,7 +8092,7 @@ models:
       permission_scope_ref: *charliesIdeation_phase
     - &1113
       action: commenting_idea
-      permitted_by: everyone_confirmed_email
+      permitted_by: users
       permission_scope_ref: *charliesIdeation_phase
     - &1114
       action: voting
@@ -15857,6 +15741,17 @@ models:
     ordering: 2
     enabled: false
     code: domicile
+  - resource_type: User
+    key: postal_code
+    title_multiloc:
+      en: Postal code
+      fr-BE: Code postal
+      nl-BE: Postcode
+    input_type: text
+    required: false
+    ordering: 3
+    enabled: false
+    hidden: true
   custom_field_option:
   - custom_field_ref: *5
     key: male
@@ -15879,47 +15774,3 @@ models:
       year: '2022'
       month: '2022-08'
       week: '2022-08-01'
-  analytics/dimension_referrer_type:
-    - &web_ref_type
-      key: 'website'
-      name: 'Websites'
-  analytics/dimension_locale:
-    - name: 'en'
-    - name: 'fr-BE'
-  analytics/fact_visit:
-    - visitor_id: XX1
-      dimension_user_id:
-      dimension_referrer_type_ref: *web_ref_type
-      dimension_date_first_action_id: 2022-09-01
-      dimension_date_last_action_id: 2022-09-01
-      duration: 100
-      pages_visited: 1
-      returning_visitor: false
-      referrer_name: 'govocal.com'
-      referrer_url: 'https://www.govocal.com/a_page'
-      matomo_visit_id: 101
-      matomo_last_action_time: 2022-09-01 09:16:00 UTC
-    - visitor_id: XX1
-      dimension_user_id: ''
-      dimension_referrer_type_ref: *web_ref_type
-      dimension_date_first_action_id: 2022-09-01
-      dimension_date_last_action_id: 2022-09-01
-      duration: 200
-      pages_visited: 2
-      returning_visitor: false
-      referrer_name: 'govocal.com'
-      referrer_url: 'https://www.govocal.com/another_page'
-      matomo_visit_id: 102
-      matomo_last_action_time: 2022-09-01 17:25:00 UTC
-    - visitor_id: XX3
-      dimension_user_id: ''
-      dimension_referrer_type_ref: *web_ref_type
-      dimension_date_first_action_id: 2022-08-01
-      dimension_date_last_action_id: 2022-08-01
-      duration: 300
-      pages_visited: 3
-      returning_visitor: false
-      referrer_name: 'localcouncil.com'
-      referrer_url: 'https://www.localcouncil.com/campaign'
-      matomo_visit_id: 103
-      matomo_last_action_time: 2022-08-01 10:08:00 UTC

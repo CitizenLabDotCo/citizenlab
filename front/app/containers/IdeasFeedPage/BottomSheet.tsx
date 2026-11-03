@@ -6,6 +6,9 @@ import styled from 'styled-components';
 
 import { InputTerm } from 'api/phases/types';
 
+import { DragArea, DragHandle } from 'components/UI/Drawer/primitives';
+import useSheetDrag from 'components/UI/Drawer/useSheetDrag';
+
 import { useIntl } from 'utils/cl-intl';
 
 import SeeAllButton from './BottomSheet/SeeAllButton';
@@ -15,7 +18,6 @@ const COLLAPSED_HEIGHT = 60;
 const PEEK_DELAY_MS = 10000;
 const PEEK_DURATION_MS = 1000;
 const DRAG_AREA_HEIGHT = 28;
-const SWIPE_THRESHOLD = 50;
 
 const Container = styled.div<{ translateY: number; isDragging: boolean }>`
   position: fixed;
@@ -31,35 +33,6 @@ const Container = styled.div<{ translateY: number; isDragging: boolean }>`
   transition: ${({ isDragging }) =>
     isDragging ? 'none' : 'transform 0.3s ease-out'};
   z-index: 1050;
-`;
-
-const DragHandle = styled.div`
-  width: 40px;
-  height: 4px;
-  background: ${colors.grey400};
-  border-radius: 2px;
-  margin: 8px auto 0;
-`;
-
-const DragArea = styled.div`
-  position: relative;
-  width: 100%;
-  padding: 8px 0;
-  touch-action: none;
-  cursor: grab;
-
-  &:active {
-    cursor: grabbing;
-  }
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: -32px;
-    left: 0;
-    right: 0;
-    bottom: -32px;
-  }
 `;
 
 const ContentArea = styled(Box)<{ scrollable: boolean }>`
@@ -92,15 +65,10 @@ const BottomSheet = ({
   const isFullscreen = Boolean(expandToFullscreenOn);
 
   const [isPeeking, setIsPeeking] = useState(false);
-  const [dragOffset, setDragOffset] = useState<number | null>(null);
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
 
-  const sheetRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
-  const dragStartY = useRef<number | null>(null);
   const hasPeeked = useRef(false);
-  const hasDragged = useRef(false);
-  const touchHandled = useRef(false);
 
   // Update windowHeight on resize to keep handle position consistent
   useEffect(() => {
@@ -134,75 +102,16 @@ const BottomSheet = ({
 
   const getPeekY = () => windowHeight * 0.5;
 
-  const handleDragStart = (y: number) => {
-    dragStartY.current = y;
-    hasDragged.current = false;
-  };
-
-  const handleDragMove = (currentY: number) => {
-    if (dragStartY.current === null) return;
-
-    hasDragged.current = true;
-    const delta = currentY - dragStartY.current;
-    const baseY = isFullscreen ? 0 : getCollapsedY();
-    const maxY = getCollapsedY();
-    setDragOffset(Math.max(-baseY, Math.min(maxY - baseY, delta)));
-  };
-
-  const handleDragEnd = (endY: number) => {
-    if (dragStartY.current === null) return;
-
-    const delta = endY - dragStartY.current;
-    const hadDragged = hasDragged.current;
-
-    setDragOffset(null);
-    dragStartY.current = null;
-    hasDragged.current = false;
-
-    if (hadDragged && Math.abs(delta) >= SWIPE_THRESHOLD) {
-      const willBeFullscreen = delta < 0;
-      if (willBeFullscreen) {
-        onExpand?.();
-      } else {
-        onCollapse?.();
-      }
-    } else if (!hadDragged) {
-      // Tap detected
-      if (isFullscreen) {
-        onCollapse?.();
-      } else {
-        onExpand?.();
-      }
-    }
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchHandled.current = true;
-    handleDragStart(e.touches[0].clientY);
-  };
-  const handleTouchMove = (e: React.TouchEvent) =>
-    handleDragMove(e.touches[0].clientY);
-  const handleTouchEnd = (e: React.TouchEvent) =>
-    handleDragEnd(e.changedTouches[0].clientY);
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (touchHandled.current) {
-      touchHandled.current = false;
-      return;
-    }
-    e.preventDefault();
-    handleDragStart(e.clientY);
-
-    const onMove = (ev: MouseEvent) => handleDragMove(ev.clientY);
-    const onUp = (ev: MouseEvent) => {
-      handleDragEnd(ev.clientY);
-      document.removeEventListener('mousemove', onMove);
-      document.removeEventListener('mouseup', onUp);
-    };
-
-    document.addEventListener('mousemove', onMove);
-    document.addEventListener('mouseup', onUp);
-  };
+  const { dragOffset, isDragging, dragHandlers } = useSheetDrag({
+    clampOffset: (delta) => {
+      const baseY = isFullscreen ? 0 : getCollapsedY();
+      const maxY = getCollapsedY();
+      return Math.max(-baseY, Math.min(maxY - baseY, delta));
+    },
+    onSwipeUp: () => onExpand?.(),
+    onSwipeDown: () => onCollapse?.(),
+    onTap: () => (isFullscreen ? onCollapse?.() : onExpand?.()),
+  });
 
   const handleCollapse = () => {
     onCollapse?.();
@@ -214,7 +123,6 @@ const BottomSheet = ({
     ? getPeekY()
     : getCollapsedY();
   const translateY = baseTranslateY + (dragOffset ?? 0);
-  const isDragging = dragOffset !== null;
 
   return (
     <FocusOn
@@ -224,7 +132,6 @@ const BottomSheet = ({
       scrollLock={true}
     >
       <Container
-        ref={sheetRef}
         translateY={translateY}
         isDragging={isDragging}
         role="dialog"
@@ -234,10 +141,7 @@ const BottomSheet = ({
         <DragArea
           aria-expanded={isFullscreen}
           aria-label={isFullscreen ? a11y_collapseLabel : a11y_expandLabel}
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
-          onMouseDown={handleMouseDown}
+          {...dragHandlers}
         >
           <DragHandle aria-hidden="true" />
           {!isFullscreen && (

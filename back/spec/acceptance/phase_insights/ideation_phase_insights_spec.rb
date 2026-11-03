@@ -45,8 +45,8 @@ resource 'Phase insights' do
       user1 = create(:user)
       user2 = create(:user)
       user3 = create(:user)
-      user4 = create(:user, custom_field_values: { gender: 'female', birthyear: 1980 })
-      user5 = create(:user, custom_field_values: { gender: 'male', birthyear: 1990 })
+      user4 = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'female'), build(:custom_field_answer, key: 'birthyear', value: 1980)])
+      user5 = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'male'), build(:custom_field_answer, key: 'birthyear', value: 1990)])
 
       # Ideas
       create(:idea, phases: [phase], author: user1, created_at: 25.days.ago, published_at: 25.days.ago) # published before ideation phase (not counted)
@@ -123,5 +123,17 @@ resource 'Phase insights' do
     include_examples 'phase insights demographics',
       gender_blank: 1,
       birthyear_blank: 1
+
+    # Phase permissions only exist once an admin overrides them; until then the
+    # phase follows the global 'visiting' permission, and its demographic
+    # questions are the ones the insights report on.
+    # See Permissions::PermissionInheritanceService.
+    context 'when the phase has not overridden its permissions' do
+      before { ideation_phase.permissions.destroy_all }
+
+      include_examples 'phase insights demographics',
+        gender_blank: 1,
+        birthyear_blank: 1
+    end
   end
 end

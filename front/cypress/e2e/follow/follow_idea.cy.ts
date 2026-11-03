@@ -25,7 +25,6 @@ describe('Follow idea', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: '',
-      description: '',
       publicationStatus: 'published',
     })
       .then((project) => {
@@ -44,20 +43,18 @@ describe('Follow idea', () => {
       })
       .then((phase) => {
         cy.apiCreateIdea({
-          projectId,
+          phaseId: phase.body.data.id,
           ideaTitle: ideaTitle1,
           ideaContent: ideaContent1,
-          phaseIds: [phase.body.data.id],
         }).then((idea) => {
           ideaId1 = idea.body.data.id;
           ideaSlug1 = idea.body.data.attributes.slug;
         });
 
         cy.apiCreateIdea({
-          projectId,
+          phaseId: phase.body.data.id,
           ideaTitle: ideaTitle2,
           ideaContent: ideaContent2,
-          phaseIds: [phase.body.data.id],
         }).then((idea) => {
           ideaId2 = idea.body.data.id;
           ideaSlug2 = idea.body.data.attributes.slug;

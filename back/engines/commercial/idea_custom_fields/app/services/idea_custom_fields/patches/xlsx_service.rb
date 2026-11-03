@@ -14,7 +14,7 @@ module IdeaCustomFields
           next unless project.custom_form
 
           ::IdeaCustomFieldsService.new(project.custom_form)
-            .xlsx_exportable_fields
+            .exportable_fields
             .reject(&:built_in?)
         end
 
@@ -34,7 +34,7 @@ module IdeaCustomFields
           end
         else
           lambda do |idea|
-            idea && idea.custom_field_values[field.key]
+            idea&.answer_for_key(field.key)&.value
           end
         end
       end

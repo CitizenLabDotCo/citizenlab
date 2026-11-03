@@ -44,6 +44,7 @@ ALTER TABLE IF EXISTS ONLY public.projects DROP CONSTRAINT IF EXISTS fk_rails_d1
 ALTER TABLE IF EXISTS ONLY public.webhooks_subscriptions DROP CONSTRAINT IF EXISTS fk_rails_d182afe5ca;
 ALTER TABLE IF EXISTS ONLY public.email_bans DROP CONSTRAINT IF EXISTS fk_rails_d15949a47c;
 ALTER TABLE IF EXISTS ONLY public.jobs_trackers DROP CONSTRAINT IF EXISTS fk_rails_cfd1ddfa6b;
+ALTER TABLE IF EXISTS ONLY public.ai_assistant_tool_calls DROP CONSTRAINT IF EXISTS fk_rails_ce20ecefd4;
 ALTER TABLE IF EXISTS ONLY public.analytics_dimension_locales_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_cd2a592e7b;
 ALTER TABLE IF EXISTS ONLY public.analysis_taggings DROP CONSTRAINT IF EXISTS fk_rails_cc8b68bfb4;
 ALTER TABLE IF EXISTS ONLY public.analysis_insights DROP CONSTRAINT IF EXISTS fk_rails_cc6c7b26fc;
@@ -61,6 +62,7 @@ ALTER TABLE IF EXISTS ONLY public.analysis_background_tasks DROP CONSTRAINT IF E
 ALTER TABLE IF EXISTS ONLY public.ideas_phases DROP CONSTRAINT IF EXISTS fk_rails_bd36415a82;
 ALTER TABLE IF EXISTS ONLY public.project_folders_files DROP CONSTRAINT IF EXISTS fk_rails_bc5577641e;
 ALTER TABLE IF EXISTS ONLY public.polls_options DROP CONSTRAINT IF EXISTS fk_rails_bb813b4549;
+ALTER TABLE IF EXISTS ONLY public.report_builder_generation_transcripts DROP CONSTRAINT IF EXISTS fk_rails_b8de72b62d;
 ALTER TABLE IF EXISTS ONLY public.static_page_files DROP CONSTRAINT IF EXISTS fk_rails_b8d87c000f;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_b894d506a0;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_b82ab32ac2;
@@ -76,6 +78,7 @@ ALTER TABLE IF EXISTS ONLY public.maps_layers DROP CONSTRAINT IF EXISTS fk_rails
 ALTER TABLE IF EXISTS ONLY public.files_previews DROP CONSTRAINT IF EXISTS fk_rails_ab74281536;
 ALTER TABLE IF EXISTS ONLY public.memberships DROP CONSTRAINT IF EXISTS fk_rails_aaf389f138;
 ALTER TABLE IF EXISTS ONLY public.analytics_fact_visits DROP CONSTRAINT IF EXISTS fk_rails_a9aa810ecf;
+ALTER TABLE IF EXISTS ONLY public.sms_deliveries DROP CONSTRAINT IF EXISTS fk_rails_a7e0804608;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_a7a91f1df3;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS fk_rails_a5c3527604;
 ALTER TABLE IF EXISTS ONLY public.webhooks_deliveries DROP CONSTRAINT IF EXISTS fk_rails_a3793c8571;
@@ -92,7 +95,10 @@ ALTER TABLE IF EXISTS ONLY public.memberships DROP CONSTRAINT IF EXISTS fk_rails
 ALTER TABLE IF EXISTS ONLY public.authoring_assistance_responses DROP CONSTRAINT IF EXISTS fk_rails_98155ccbce;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_97eb4c3a35;
 ALTER TABLE IF EXISTS ONLY public.files_transcripts DROP CONSTRAINT IF EXISTS fk_rails_94bf1dac11;
+ALTER TABLE IF EXISTS ONLY public.static_pages DROP CONSTRAINT IF EXISTS fk_rails_938fbf3a5d;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_9268535f02;
+ALTER TABLE IF EXISTS ONLY public.content_builder_query_snapshots DROP CONSTRAINT IF EXISTS fk_rails_90d94ea8e1;
+ALTER TABLE IF EXISTS ONLY public.ai_assistant_tool_calls DROP CONSTRAINT IF EXISTS fk_rails_9096d5810e;
 ALTER TABLE IF EXISTS ONLY public.areas DROP CONSTRAINT IF EXISTS fk_rails_901fc7a65b;
 ALTER TABLE IF EXISTS ONLY public.areas_projects DROP CONSTRAINT IF EXISTS fk_rails_8fb43a173d;
 ALTER TABLE IF EXISTS ONLY public.phase_files DROP CONSTRAINT IF EXISTS fk_rails_8f9b3b56d6;
@@ -121,8 +127,11 @@ ALTER TABLE IF EXISTS ONLY public.groups_projects DROP CONSTRAINT IF EXISTS fk_r
 ALTER TABLE IF EXISTS ONLY public.oauth_access_tokens DROP CONSTRAINT IF EXISTS fk_rails_732cb83ab7;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_730408dafc;
 ALTER TABLE IF EXISTS ONLY public.email_campaigns_campaigns_groups DROP CONSTRAINT IF EXISTS fk_rails_712f4ad915;
+ALTER TABLE IF EXISTS ONLY public.sms_deliveries DROP CONSTRAINT IF EXISTS fk_rails_704e460729;
 ALTER TABLE IF EXISTS ONLY public.groups_permissions DROP CONSTRAINT IF EXISTS fk_rails_6fa6389d80;
 ALTER TABLE IF EXISTS ONLY public.ideas_input_topics DROP CONSTRAINT IF EXISTS fk_rails_6f51315d9b;
+ALTER TABLE IF EXISTS ONLY public.ai_assistant_conversations DROP CONSTRAINT IF EXISTS fk_rails_6df1511140;
+ALTER TABLE IF EXISTS ONLY public.content_builder_custom_block_versions DROP CONSTRAINT IF EXISTS fk_rails_6cbdf54e32;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_6c9ab6d4f8;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS fk_rails_6988c9886e;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_67f00886f9;
@@ -131,9 +140,12 @@ ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rail
 ALTER TABLE IF EXISTS ONLY public.internal_comments DROP CONSTRAINT IF EXISTS fk_rails_617a7ea994;
 ALTER TABLE IF EXISTS ONLY public.analysis_taggings DROP CONSTRAINT IF EXISTS fk_rails_604cfbcd8d;
 ALTER TABLE IF EXISTS ONLY public.idea_imports DROP CONSTRAINT IF EXISTS fk_rails_5ea1f11fd5;
+ALTER TABLE IF EXISTS ONLY public.ai_assistant_messages DROP CONSTRAINT IF EXISTS fk_rails_5ce890a954;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_5ac7668cd3;
+ALTER TABLE IF EXISTS ONLY public.content_builder_custom_blocks DROP CONSTRAINT IF EXISTS fk_rails_59b0c3817e;
 ALTER TABLE IF EXISTS ONLY public.event_files DROP CONSTRAINT IF EXISTS fk_rails_577d1fb456;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_575368d182;
+ALTER TABLE IF EXISTS ONLY public.custom_field_answers DROP CONSTRAINT IF EXISTS fk_rails_56fa027c1d;
 ALTER TABLE IF EXISTS ONLY public.idea_exposures DROP CONSTRAINT IF EXISTS fk_rails_55d2ba0ca8;
 ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_5471f55cd6;
 ALTER TABLE IF EXISTS ONLY public.identities DROP CONSTRAINT IF EXISTS fk_rails_5373344100;
@@ -149,11 +161,13 @@ ALTER TABLE IF EXISTS ONLY public.baskets_ideas DROP CONSTRAINT IF EXISTS fk_rai
 ALTER TABLE IF EXISTS ONLY public.custom_field_option_images DROP CONSTRAINT IF EXISTS fk_rails_3814d72daa;
 ALTER TABLE IF EXISTS ONLY public.analysis_comments_summaries DROP CONSTRAINT IF EXISTS fk_rails_37becdebb0;
 ALTER TABLE IF EXISTS ONLY public.files DROP CONSTRAINT IF EXISTS fk_rails_34e9f7c7ef;
+ALTER TABLE IF EXISTS ONLY public.export_result_files DROP CONSTRAINT IF EXISTS fk_rails_348350e0ea;
 ALTER TABLE IF EXISTS ONLY public.nav_bar_items DROP CONSTRAINT IF EXISTS fk_rails_34143a680f;
 ALTER TABLE IF EXISTS ONLY public.volunteering_volunteers DROP CONSTRAINT IF EXISTS fk_rails_33a154a9ba;
 ALTER TABLE IF EXISTS ONLY public.webhooks_deliveries DROP CONSTRAINT IF EXISTS fk_rails_333f76f79b;
 ALTER TABLE IF EXISTS ONLY public.oauth_access_grants DROP CONSTRAINT IF EXISTS fk_rails_330c32d8d9;
 ALTER TABLE IF EXISTS ONLY public.admin_publications DROP CONSTRAINT IF EXISTS fk_rails_2de8e52eff;
+ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS fk_rails_2db74936ca;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS fk_rails_2d026b99a2;
 ALTER TABLE IF EXISTS ONLY public.phases DROP CONSTRAINT IF EXISTS fk_rails_2c74f68dd3;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_2a92a64a56;
@@ -165,6 +179,7 @@ ALTER TABLE IF EXISTS ONLY public.areas_static_pages DROP CONSTRAINT IF EXISTS f
 ALTER TABLE IF EXISTS ONLY public.input_topics DROP CONSTRAINT IF EXISTS fk_rails_1843964cdc;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS fk_rails_16b3d1e637;
 ALTER TABLE IF EXISTS ONLY public.spam_reports DROP CONSTRAINT IF EXISTS fk_rails_121f3a2011;
+ALTER TABLE IF EXISTS ONLY public.notifications DROP CONSTRAINT IF EXISTS fk_rails_111fe5fcc3;
 ALTER TABLE IF EXISTS ONLY public.ideas DROP CONSTRAINT IF EXISTS fk_rails_0e5b472696;
 ALTER TABLE IF EXISTS ONLY public.invites DROP CONSTRAINT IF EXISTS fk_rails_0b6ac3e1da;
 ALTER TABLE IF EXISTS ONLY public.project_files DROP CONSTRAINT IF EXISTS fk_rails_092f3b7f98;
@@ -202,7 +217,10 @@ DROP INDEX IF EXISTS public.index_verification_verifications_on_hashed_uid;
 DROP INDEX IF EXISTS public.index_users_on_unique_code;
 DROP INDEX IF EXISTS public.index_users_on_token_expiry_key;
 DROP INDEX IF EXISTS public.index_users_on_slug;
+DROP INDEX IF EXISTS public.index_users_on_roles;
 DROP INDEX IF EXISTS public.index_users_on_registration_completed_at;
+DROP INDEX IF EXISTS public.index_users_on_phone;
+DROP INDEX IF EXISTS public.index_users_on_email_bounced_at;
 DROP INDEX IF EXISTS public.index_users_on_email;
 DROP INDEX IF EXISTS public.index_ucf_representativeness_ref_distributions_on_custom_field;
 DROP INDEX IF EXISTS public.index_tenants_on_host;
@@ -214,6 +232,7 @@ DROP INDEX IF EXISTS public.index_static_pages_spaces_on_static_page_id_and_spac
 DROP INDEX IF EXISTS public.index_static_pages_spaces_on_static_page_id;
 DROP INDEX IF EXISTS public.index_static_pages_spaces_on_space_id;
 DROP INDEX IF EXISTS public.index_static_pages_on_slug;
+DROP INDEX IF EXISTS public.index_static_pages_on_project_id;
 DROP INDEX IF EXISTS public.index_static_pages_on_code;
 DROP INDEX IF EXISTS public.index_static_pages_global_topics_on_static_page_id;
 DROP INDEX IF EXISTS public.index_static_pages_global_topics_on_global_topic_id;
@@ -221,13 +240,19 @@ DROP INDEX IF EXISTS public.index_static_page_files_on_static_page_id;
 DROP INDEX IF EXISTS public.index_static_page_files_on_migrated_file_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_user_id;
 DROP INDEX IF EXISTS public.index_spam_reports_on_reported_at;
+DROP INDEX IF EXISTS public.index_sms_deliveries_on_user_id;
+DROP INDEX IF EXISTS public.index_sms_deliveries_on_status;
+DROP INDEX IF EXISTS public.index_sms_deliveries_on_campaign_id;
+DROP INDEX IF EXISTS public.index_report_builder_reports_on_project_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_phase_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_owner_id;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_name_tsvector;
 DROP INDEX IF EXISTS public.index_report_builder_reports_on_name;
+DROP INDEX IF EXISTS public.index_report_builder_generation_transcripts_on_report_id;
 DROP INDEX IF EXISTS public.index_reactions_on_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id_and_user_id;
 DROP INDEX IF EXISTS public.index_reactions_on_reactable_type_and_reactable_id;
+DROP INDEX IF EXISTS public.index_query_snapshots_on_layout_id_and_query_hash;
 DROP INDEX IF EXISTS public.index_projects_on_space_id;
 DROP INDEX IF EXISTS public.index_projects_on_slug;
 DROP INDEX IF EXISTS public.index_projects_global_topics_on_project_id;
@@ -276,6 +301,7 @@ DROP INDEX IF EXISTS public.index_oauth_access_grants_on_resource_owner_id;
 DROP INDEX IF EXISTS public.index_oauth_access_grants_on_application_id;
 DROP INDEX IF EXISTS public.index_notifications_on_spam_report_id;
 DROP INDEX IF EXISTS public.index_notifications_on_space_id;
+DROP INDEX IF EXISTS public.index_notifications_on_report_id;
 DROP INDEX IF EXISTS public.index_notifications_on_recipient_id_and_read_at;
 DROP INDEX IF EXISTS public.index_notifications_on_recipient_id;
 DROP INDEX IF EXISTS public.index_notifications_on_project_review_id;
@@ -387,6 +413,8 @@ DROP INDEX IF EXISTS public.index_files_on_category;
 DROP INDEX IF EXISTS public.index_file_attachments_on_file_id;
 DROP INDEX IF EXISTS public.index_file_attachments_on_file_and_attachable;
 DROP INDEX IF EXISTS public.index_file_attachments_on_attachable;
+DROP INDEX IF EXISTS public.index_export_result_files_on_jobs_tracker_id;
+DROP INDEX IF EXISTS public.index_export_result_files_on_expires_at;
 DROP INDEX IF EXISTS public.index_events_on_project_id;
 DROP INDEX IF EXISTS public.index_events_on_maximum_attendees;
 DROP INDEX IF EXISTS public.index_events_on_location_point;
@@ -432,9 +460,15 @@ DROP INDEX IF EXISTS public.index_custom_field_matrix_statements_on_key;
 DROP INDEX IF EXISTS public.index_custom_field_matrix_statements_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_custom_field_bins_on_custom_field_option_id;
 DROP INDEX IF EXISTS public.index_custom_field_bins_on_custom_field_id;
+DROP INDEX IF EXISTS public.index_custom_field_answers_on_key_and_answerable_type;
+DROP INDEX IF EXISTS public.index_custom_field_answers_on_custom_field_id;
+DROP INDEX IF EXISTS public.index_custom_field_answers_on_answerable_and_key;
+DROP INDEX IF EXISTS public.index_custom_block_versions_on_custom_block_id_and_number;
 DROP INDEX IF EXISTS public.index_cosponsorships_on_user_id;
 DROP INDEX IF EXISTS public.index_cosponsorships_on_idea_id;
 DROP INDEX IF EXISTS public.index_content_builder_layouts_content_buidable_type_id_code;
+DROP INDEX IF EXISTS public.index_content_builder_custom_blocks_on_created_by_id;
+DROP INDEX IF EXISTS public.index_content_builder_custom_block_versions_on_custom_block_id;
 DROP INDEX IF EXISTS public.index_confirmations_on_user_id_and_type;
 DROP INDEX IF EXISTS public.index_confirmations_on_user_id;
 DROP INDEX IF EXISTS public.index_common_passwords_on_password;
@@ -488,6 +522,11 @@ DROP INDEX IF EXISTS public.index_analysis_analyses_on_main_custom_field_id;
 DROP INDEX IF EXISTS public.index_analysis_analyses_custom_fields;
 DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_custom_field_id;
 DROP INDEX IF EXISTS public.index_analysis_additional_custom_fields_on_analysis_id;
+DROP INDEX IF EXISTS public.index_ai_assistant_tool_calls_on_message_id;
+DROP INDEX IF EXISTS public.index_ai_assistant_tool_calls_on_decided_by_id;
+DROP INDEX IF EXISTS public.index_ai_assistant_messages_on_conversation_id_and_position;
+DROP INDEX IF EXISTS public.index_ai_assistant_conversations_on_user_id;
+DROP INDEX IF EXISTS public.index_ai_assistant_conversations_on_subject;
 DROP INDEX IF EXISTS public.index_admin_publications_on_scheduled_transition;
 DROP INDEX IF EXISTS public.index_admin_publications_on_scheduled_by_id;
 DROP INDEX IF EXISTS public.index_admin_publications_on_rgt;
@@ -500,6 +539,7 @@ DROP INDEX IF EXISTS public.index_admin_publications_on_depth;
 DROP INDEX IF EXISTS public.index_activities_on_user_id;
 DROP INDEX IF EXISTS public.index_activities_on_project_id;
 DROP INDEX IF EXISTS public.index_activities_on_item_type_and_item_id;
+DROP INDEX IF EXISTS public.index_activities_on_item_type_and_action;
 DROP INDEX IF EXISTS public.index_activities_on_action;
 DROP INDEX IF EXISTS public.index_activities_on_acted_at;
 DROP INDEX IF EXISTS public.inappropriate_content_flags_flaggable;
@@ -535,10 +575,12 @@ ALTER TABLE IF EXISTS ONLY public.static_pages_spaces DROP CONSTRAINT IF EXISTS 
 ALTER TABLE IF EXISTS ONLY public.static_pages_global_topics DROP CONSTRAINT IF EXISTS static_pages_global_topics_pkey;
 ALTER TABLE IF EXISTS ONLY public.spam_reports DROP CONSTRAINT IF EXISTS spam_reports_pkey;
 ALTER TABLE IF EXISTS ONLY public.spaces DROP CONSTRAINT IF EXISTS spaces_pkey;
+ALTER TABLE IF EXISTS ONLY public.sms_deliveries DROP CONSTRAINT IF EXISTS sms_deliveries_pkey;
 ALTER TABLE IF EXISTS ONLY public.schema_migrations DROP CONSTRAINT IF EXISTS schema_migrations_pkey;
 ALTER TABLE IF EXISTS public.admin_publications DROP CONSTRAINT IF EXISTS scheduled_fields_both_or_neither;
 ALTER TABLE IF EXISTS ONLY public.report_builder_reports DROP CONSTRAINT IF EXISTS report_builder_reports_pkey;
 ALTER TABLE IF EXISTS ONLY public.report_builder_published_graph_data_units DROP CONSTRAINT IF EXISTS report_builder_published_graph_data_units_pkey;
+ALTER TABLE IF EXISTS ONLY public.report_builder_generation_transcripts DROP CONSTRAINT IF EXISTS report_builder_generation_transcripts_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_values DROP CONSTRAINT IF EXISTS que_values_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_lockers DROP CONSTRAINT IF EXISTS que_lockers_pkey;
 ALTER TABLE IF EXISTS ONLY public.que_jobs DROP CONSTRAINT IF EXISTS que_jobs_pkey;
@@ -606,6 +648,7 @@ ALTER TABLE IF EXISTS ONLY public.files_projects DROP CONSTRAINT IF EXISTS files
 ALTER TABLE IF EXISTS ONLY public.files_previews DROP CONSTRAINT IF EXISTS files_previews_pkey;
 ALTER TABLE IF EXISTS ONLY public.files DROP CONSTRAINT IF EXISTS files_pkey;
 ALTER TABLE IF EXISTS ONLY public.file_attachments DROP CONSTRAINT IF EXISTS file_attachments_pkey;
+ALTER TABLE IF EXISTS ONLY public.export_result_files DROP CONSTRAINT IF EXISTS export_result_files_pkey;
 ALTER TABLE IF EXISTS ONLY public.experiments DROP CONSTRAINT IF EXISTS experiments_pkey;
 ALTER TABLE IF EXISTS ONLY public.events DROP CONSTRAINT IF EXISTS events_pkey;
 ALTER TABLE IF EXISTS ONLY public.events_attendances DROP CONSTRAINT IF EXISTS events_attendances_pkey;
@@ -630,9 +673,13 @@ ALTER TABLE IF EXISTS ONLY public.custom_field_option_images DROP CONSTRAINT IF 
 ALTER TABLE IF EXISTS ONLY public.custom_field_matrix_statements DROP CONSTRAINT IF EXISTS custom_field_matrix_statements_pkey;
 ALTER TABLE IF EXISTS ONLY public.custom_field_matrix_statements DROP CONSTRAINT IF EXISTS custom_field_matrix_statements_field_id_ordering_unique;
 ALTER TABLE IF EXISTS ONLY public.custom_field_bins DROP CONSTRAINT IF EXISTS custom_field_bins_pkey;
+ALTER TABLE IF EXISTS ONLY public.custom_field_answers DROP CONSTRAINT IF EXISTS custom_field_answers_pkey;
 ALTER TABLE IF EXISTS ONLY public.cosponsorships DROP CONSTRAINT IF EXISTS cosponsorships_pkey;
+ALTER TABLE IF EXISTS ONLY public.content_builder_query_snapshots DROP CONSTRAINT IF EXISTS content_builder_query_snapshots_pkey;
 ALTER TABLE IF EXISTS ONLY public.content_builder_layouts DROP CONSTRAINT IF EXISTS content_builder_layouts_pkey;
 ALTER TABLE IF EXISTS ONLY public.content_builder_layout_images DROP CONSTRAINT IF EXISTS content_builder_layout_images_pkey;
+ALTER TABLE IF EXISTS ONLY public.content_builder_custom_blocks DROP CONSTRAINT IF EXISTS content_builder_custom_blocks_pkey;
+ALTER TABLE IF EXISTS ONLY public.content_builder_custom_block_versions DROP CONSTRAINT IF EXISTS content_builder_custom_block_versions_pkey;
 ALTER TABLE IF EXISTS ONLY public.confirmations DROP CONSTRAINT IF EXISTS confirmations_pkey;
 ALTER TABLE IF EXISTS ONLY public.common_passwords DROP CONSTRAINT IF EXISTS common_passwords_pkey;
 ALTER TABLE IF EXISTS ONLY public.comments DROP CONSTRAINT IF EXISTS comments_pkey;
@@ -660,6 +707,9 @@ ALTER TABLE IF EXISTS ONLY public.analysis_comments_summaries DROP CONSTRAINT IF
 ALTER TABLE IF EXISTS ONLY public.analysis_background_tasks DROP CONSTRAINT IF EXISTS analysis_background_tasks_pkey;
 ALTER TABLE IF EXISTS ONLY public.analysis_analyses DROP CONSTRAINT IF EXISTS analysis_analyses_pkey;
 ALTER TABLE IF EXISTS ONLY public.analysis_additional_custom_fields DROP CONSTRAINT IF EXISTS analysis_analyses_custom_fields_pkey;
+ALTER TABLE IF EXISTS ONLY public.ai_assistant_tool_calls DROP CONSTRAINT IF EXISTS ai_assistant_tool_calls_pkey;
+ALTER TABLE IF EXISTS ONLY public.ai_assistant_messages DROP CONSTRAINT IF EXISTS ai_assistant_messages_pkey;
+ALTER TABLE IF EXISTS ONLY public.ai_assistant_conversations DROP CONSTRAINT IF EXISTS ai_assistant_conversations_pkey;
 ALTER TABLE IF EXISTS ONLY public.admin_publications DROP CONSTRAINT IF EXISTS admin_publications_pkey;
 ALTER TABLE IF EXISTS ONLY public.activities DROP CONSTRAINT IF EXISTS activities_pkey;
 ALTER TABLE IF EXISTS public.que_jobs ALTER COLUMN id DROP DEFAULT;
@@ -667,7 +717,6 @@ DROP TABLE IF EXISTS public.wise_voice_flags;
 DROP TABLE IF EXISTS public.webhooks_subscriptions;
 DROP TABLE IF EXISTS public.webhooks_deliveries;
 DROP TABLE IF EXISTS public.verification_verifications;
-DROP TABLE IF EXISTS public.user_custom_fields_representativeness_ref_distributions;
 DROP TABLE IF EXISTS public.text_images;
 DROP TABLE IF EXISTS public.tenants;
 DROP TABLE IF EXISTS public.surveys_responses;
@@ -677,9 +726,41 @@ DROP TABLE IF EXISTS public.static_pages;
 DROP TABLE IF EXISTS public.static_page_files;
 DROP TABLE IF EXISTS public.spam_reports;
 DROP TABLE IF EXISTS public.spaces;
+DROP TABLE IF EXISTS public.sms_deliveries;
 DROP TABLE IF EXISTS public.schema_migrations;
+DROP VIEW IF EXISTS public.reporting_user_question_answers;
+DROP VIEW IF EXISTS public.reporting_users;
+DROP VIEW IF EXISTS public.reporting_staff_activities;
+DROP VIEW IF EXISTS public.reporting_sessions;
+DROP VIEW IF EXISTS public.reporting_reports;
+DROP VIEW IF EXISTS public.reporting_registrations;
+DROP VIEW IF EXISTS public.reporting_reference_distributions;
+DROP TABLE IF EXISTS public.user_custom_fields_representativeness_ref_distributions;
+DROP VIEW IF EXISTS public.reporting_projects;
+DROP VIEW IF EXISTS public.reporting_phases;
+DROP VIEW IF EXISTS public.reporting_participants;
+DROP VIEW IF EXISTS public.reporting_pageviews;
+DROP VIEW IF EXISTS public.reporting_official_feedbacks;
+DROP VIEW IF EXISTS public.reporting_invites;
+DROP VIEW IF EXISTS public.reporting_inputs;
+DROP VIEW IF EXISTS public.reporting_input_votes;
+DROP VIEW IF EXISTS public.reporting_input_tags;
+DROP VIEW IF EXISTS public.reporting_input_status_changes;
+DROP VIEW IF EXISTS public.reporting_input_reactions;
+DROP VIEW IF EXISTS public.reporting_input_phases;
+DROP VIEW IF EXISTS public.reporting_input_imports;
+DROP VIEW IF EXISTS public.reporting_input_analysis_tags;
+DROP VIEW IF EXISTS public.reporting_events;
+DROP VIEW IF EXISTS public.reporting_email_deliveries;
+DROP VIEW IF EXISTS public.reporting_contributions;
+DROP VIEW IF EXISTS public.reporting_community_monitor_scores;
+DROP VIEW IF EXISTS public.reporting_input_question_answers;
+DROP VIEW IF EXISTS public.reporting_comments;
+DROP VIEW IF EXISTS public.reporting_analysis_insights;
+DROP VIEW IF EXISTS public.reporting_analysis_heatmap_cells;
 DROP TABLE IF EXISTS public.report_builder_reports;
 DROP TABLE IF EXISTS public.report_builder_published_graph_data_units;
+DROP TABLE IF EXISTS public.report_builder_generation_transcripts;
 DROP TABLE IF EXISTS public.que_values;
 DROP TABLE IF EXISTS public.que_lockers;
 DROP SEQUENCE IF EXISTS public.que_jobs_id_seq;
@@ -739,6 +820,7 @@ DROP TABLE IF EXISTS public.files_projects;
 DROP TABLE IF EXISTS public.files_previews;
 DROP TABLE IF EXISTS public.files;
 DROP TABLE IF EXISTS public.file_attachments;
+DROP TABLE IF EXISTS public.export_result_files;
 DROP TABLE IF EXISTS public.experiments;
 DROP TABLE IF EXISTS public.event_images;
 DROP TABLE IF EXISTS public.event_files;
@@ -756,9 +838,13 @@ DROP TABLE IF EXISTS public.custom_field_options;
 DROP TABLE IF EXISTS public.custom_field_option_images;
 DROP TABLE IF EXISTS public.custom_field_matrix_statements;
 DROP TABLE IF EXISTS public.custom_field_bins;
+DROP TABLE IF EXISTS public.custom_field_answers;
 DROP TABLE IF EXISTS public.cosponsorships;
+DROP TABLE IF EXISTS public.content_builder_query_snapshots;
 DROP TABLE IF EXISTS public.content_builder_layouts;
 DROP TABLE IF EXISTS public.content_builder_layout_images;
+DROP TABLE IF EXISTS public.content_builder_custom_blocks;
+DROP TABLE IF EXISTS public.content_builder_custom_block_versions;
 DROP TABLE IF EXISTS public.confirmations;
 DROP TABLE IF EXISTS public.common_passwords;
 DROP TABLE IF EXISTS public.claim_tokens;
@@ -769,6 +855,7 @@ DROP TABLE IF EXISTS public.areas_projects;
 DROP TABLE IF EXISTS public.areas;
 DROP TABLE IF EXISTS public.ar_internal_metadata;
 DROP TABLE IF EXISTS public.app_configurations;
+DROP TABLE IF EXISTS public.analytics_fact_visits;
 DROP VIEW IF EXISTS public.analytics_fact_sessions;
 DROP TABLE IF EXISTS public.impact_tracking_sessions;
 DROP VIEW IF EXISTS public.analytics_fact_registrations;
@@ -792,7 +879,6 @@ DROP TABLE IF EXISTS public.email_campaigns_deliveries;
 DROP TABLE IF EXISTS public.email_campaigns_campaigns;
 DROP VIEW IF EXISTS public.analytics_dimension_users;
 DROP TABLE IF EXISTS public.users;
-DROP TABLE IF EXISTS public.analytics_fact_visits;
 DROP TABLE IF EXISTS public.analytics_dimension_types;
 DROP VIEW IF EXISTS public.analytics_dimension_statuses;
 DROP TABLE IF EXISTS public.idea_statuses;
@@ -815,6 +901,9 @@ DROP TABLE IF EXISTS public.analysis_comments_summaries;
 DROP TABLE IF EXISTS public.analysis_background_tasks;
 DROP TABLE IF EXISTS public.analysis_analyses;
 DROP TABLE IF EXISTS public.analysis_additional_custom_fields;
+DROP TABLE IF EXISTS public.ai_assistant_tool_calls;
+DROP TABLE IF EXISTS public.ai_assistant_messages;
+DROP TABLE IF EXISTS public.ai_assistant_conversations;
 DROP TABLE IF EXISTS public.admin_publications;
 DROP TABLE IF EXISTS public.activities;
 DROP FUNCTION IF EXISTS public.que_state_notify();
@@ -1144,7 +1233,8 @@ CREATE TABLE public.activities (
     user_id uuid,
     acted_at timestamp without time zone NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    project_id uuid
+    project_id uuid,
+    channel character varying
 );
 
 
@@ -1170,6 +1260,64 @@ CREATE TABLE public.admin_publications (
     scheduled_status character varying,
     scheduled_at timestamp(6) without time zone,
     scheduled_by_id uuid
+);
+
+
+--
+-- Name: ai_assistant_conversations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ai_assistant_conversations (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    user_id uuid NOT NULL,
+    subject_type character varying NOT NULL,
+    subject_id uuid NOT NULL,
+    surface_key character varying NOT NULL,
+    locale character varying NOT NULL,
+    status character varying DEFAULT 'idle'::character varying NOT NULL,
+    last_error_code character varying,
+    turn_started_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: ai_assistant_messages; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ai_assistant_messages (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    conversation_id uuid NOT NULL,
+    "position" integer NOT NULL,
+    role character varying NOT NULL,
+    content text,
+    file_ids uuid[] DEFAULT '{}'::uuid[] NOT NULL,
+    input_tokens integer,
+    output_tokens integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: ai_assistant_tool_calls; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.ai_assistant_tool_calls (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    message_id uuid NOT NULL,
+    tool_use_id character varying NOT NULL,
+    name character varying NOT NULL,
+    arguments jsonb DEFAULT '{}'::jsonb NOT NULL,
+    pinned_arguments jsonb DEFAULT '{}'::jsonb NOT NULL,
+    status character varying NOT NULL,
+    result text,
+    decided_by_id uuid,
+    decided_at timestamp(6) without time zone,
+    reason text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -1421,7 +1569,6 @@ CREATE TABLE public.analytics_dimension_locales_fact_visits (
 CREATE TABLE public.projects (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     title_multiloc jsonb DEFAULT '{}'::jsonb,
-    description_multiloc jsonb DEFAULT '{}'::jsonb,
     slug character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -1442,7 +1589,8 @@ CREATE TABLE public.projects (
     listed boolean DEFAULT true NOT NULL,
     track_participation_location boolean DEFAULT false NOT NULL,
     live_auto_input_topics_enabled boolean DEFAULT false NOT NULL,
-    space_id uuid
+    space_id uuid,
+    completed_setup_steps jsonb DEFAULT '[]'::jsonb NOT NULL
 );
 
 
@@ -1519,27 +1667,6 @@ CREATE TABLE public.analytics_dimension_types (
 
 
 --
--- Name: analytics_fact_visits; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.analytics_fact_visits (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    visitor_id character varying NOT NULL,
-    dimension_user_id uuid,
-    dimension_referrer_type_id uuid NOT NULL,
-    dimension_date_first_action_id date NOT NULL,
-    dimension_date_last_action_id date NOT NULL,
-    duration integer NOT NULL,
-    pages_visited integer NOT NULL,
-    returning_visitor boolean DEFAULT false NOT NULL,
-    referrer_name character varying,
-    referrer_url character varying,
-    matomo_visit_id integer NOT NULL,
-    matomo_last_action_time timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1572,7 +1699,14 @@ CREATE TABLE public.users (
     unique_code character varying,
     last_active_at timestamp(6) without time zone,
     imported boolean DEFAULT false NOT NULL,
-    token_expiry_key character varying
+    token_expiry_key character varying,
+    phone character varying,
+    new_phone character varying,
+    phone_confirmed_at timestamp(6) without time zone,
+    early_access_opt_ins jsonb DEFAULT '[]'::jsonb NOT NULL,
+    merge_target_email character varying,
+    email_bounced_at timestamp(6) without time zone,
+    email_bounce_reason character varying
 );
 
 
@@ -1581,13 +1715,10 @@ CREATE TABLE public.users (
 --
 
 CREATE VIEW public.analytics_dimension_users AS
- SELECT u.id,
-    COALESCE(((u.roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
-    u.invite_status,
-    (users_with_visits.dimension_user_id IS NOT NULL) AS has_visits
-   FROM (public.users u
-     LEFT JOIN ( SELECT DISTINCT analytics_fact_visits.dimension_user_id
-           FROM public.analytics_fact_visits) users_with_visits ON ((users_with_visits.dimension_user_id = u.id)));
+ SELECT id,
+    COALESCE(((roles -> 0) ->> 'type'::text), 'citizen'::text) AS role,
+    invite_status
+   FROM public.users;
 
 
 --
@@ -1611,7 +1742,8 @@ CREATE TABLE public.email_campaigns_campaigns (
     title_multiloc jsonb DEFAULT '{}'::jsonb,
     intro_multiloc jsonb DEFAULT '{}'::jsonb,
     button_text_multiloc jsonb DEFAULT '{}'::jsonb,
-    context_type character varying
+    context_type character varying,
+    channel character varying DEFAULT 'email'::character varying NOT NULL
 );
 
 
@@ -1640,7 +1772,8 @@ CREATE VIEW public.analytics_fact_email_deliveries AS
     (ecd.sent_at)::date AS dimension_date_sent_id,
     ecd.campaign_id,
     p.id AS dimension_project_id,
-    ((ecc.type)::text <> ALL (ARRAY[('EmailCampaigns::Campaigns::Manual'::character varying)::text, ('EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying)::text])) AS automated
+    ((ecc.type)::text <> ALL (ARRAY[('EmailCampaigns::Campaigns::Manual'::character varying)::text, ('EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying)::text])) AS automated,
+    ecd.user_id AS dimension_user_id
    FROM ((public.email_campaigns_deliveries ecd
      JOIN public.email_campaigns_campaigns ecc ON ((ecc.id = ecd.campaign_id)))
      LEFT JOIN public.projects p ON ((p.id = ecc.context_id)));
@@ -1837,7 +1970,8 @@ CREATE TABLE public.phases (
     prescreening_mode character varying,
     available_views character varying[] DEFAULT '{card}'::character varying[] NOT NULL,
     draft_description_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    placement_type character varying DEFAULT 'on_timeline'::character varying NOT NULL
+    placement_type character varying DEFAULT 'on_timeline'::character varying NOT NULL,
+    allow_multiple_responses boolean DEFAULT false NOT NULL
 );
 
 
@@ -2132,6 +2266,27 @@ CREATE VIEW public.analytics_fact_sessions AS
 
 
 --
+-- Name: analytics_fact_visits; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.analytics_fact_visits (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    visitor_id character varying NOT NULL,
+    dimension_user_id uuid,
+    dimension_referrer_type_id uuid NOT NULL,
+    dimension_date_first_action_id date NOT NULL,
+    dimension_date_last_action_id date NOT NULL,
+    duration integer NOT NULL,
+    pages_visited integer NOT NULL,
+    returning_visitor boolean DEFAULT false NOT NULL,
+    referrer_name character varying,
+    referrer_url character varying,
+    matomo_visit_id integer NOT NULL,
+    matomo_last_action_time timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: app_configurations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2274,6 +2429,40 @@ CREATE TABLE public.confirmations (
 
 
 --
+-- Name: content_builder_custom_block_versions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_builder_custom_block_versions (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    custom_block_id uuid NOT NULL,
+    number integer NOT NULL,
+    sdk_version character varying DEFAULT 'v1'::character varying NOT NULL,
+    source text NOT NULL,
+    bundle text NOT NULL,
+    manifest jsonb DEFAULT '{}'::jsonb NOT NULL,
+    messages jsonb DEFAULT '{}'::jsonb NOT NULL,
+    toolchain jsonb DEFAULT '{}'::jsonb NOT NULL,
+    generation_transcript_id uuid,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: content_builder_custom_blocks; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_builder_custom_blocks (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    title_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
+    status character varying DEFAULT 'draft'::character varying NOT NULL,
+    created_by_id uuid,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: content_builder_layout_images; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2303,6 +2492,22 @@ CREATE TABLE public.content_builder_layouts (
 
 
 --
+-- Name: content_builder_query_snapshots; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.content_builder_query_snapshots (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    layout_id uuid NOT NULL,
+    query_hash character varying NOT NULL,
+    sql text NOT NULL,
+    data jsonb DEFAULT '{}'::jsonb NOT NULL,
+    executed_at timestamp(6) without time zone NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: cosponsorships; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -2311,6 +2516,22 @@ CREATE TABLE public.cosponsorships (
     status character varying DEFAULT 'pending'::character varying NOT NULL,
     user_id uuid NOT NULL,
     idea_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: custom_field_answers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.custom_field_answers (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    answerable_type character varying NOT NULL,
+    answerable_id uuid NOT NULL,
+    custom_field_id uuid,
+    key character varying NOT NULL,
+    value jsonb NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -2421,7 +2642,9 @@ CREATE TABLE public.custom_fields (
     question_category character varying,
     include_in_printed_form boolean DEFAULT true NOT NULL,
     min_characters integer,
-    max_characters integer
+    max_characters integer,
+    answers_visible_to character varying DEFAULT 'moderators'::character varying NOT NULL,
+    show_as_filter boolean DEFAULT false NOT NULL
 );
 
 
@@ -2606,6 +2829,21 @@ CREATE TABLE public.experiments (
     name character varying NOT NULL,
     treatment character varying NOT NULL,
     action character varying NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: export_result_files; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.export_result_files (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    jobs_tracker_id uuid NOT NULL,
+    name character varying NOT NULL,
+    content character varying,
+    expires_at timestamp(6) without time zone NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -2903,7 +3141,8 @@ CREATE TABLE public.idea_imports (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     user_consent boolean DEFAULT false NOT NULL,
-    content_changes jsonb DEFAULT '{}'::jsonb
+    content_changes jsonb DEFAULT '{}'::jsonb,
+    extra_info jsonb DEFAULT '{}'::jsonb
 );
 
 
@@ -3258,7 +3497,8 @@ CREATE TABLE public.notifications (
     basket_id uuid,
     cosponsorship_id uuid,
     project_review_id uuid,
-    space_id uuid
+    space_id uuid,
+    report_id uuid
 );
 
 
@@ -3362,12 +3602,19 @@ CREATE TABLE public.permissions (
     permission_scope_type character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    global_custom_fields boolean DEFAULT false NOT NULL,
     verification_expiry integer,
     access_denied_explanation_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
     everyone_tracking_enabled boolean DEFAULT false NOT NULL,
     user_fields_in_form boolean DEFAULT false NOT NULL,
-    user_data_collection character varying DEFAULT 'all_data'::character varying NOT NULL
+    user_data_collection character varying DEFAULT 'all_data'::character varying NOT NULL,
+    require_confirmed_email boolean DEFAULT true NOT NULL,
+    confirmed_email_expiry integer,
+    require_name boolean DEFAULT true NOT NULL,
+    require_password boolean DEFAULT true NOT NULL,
+    require_verification boolean DEFAULT false NOT NULL,
+    require_confirmed_phone_number boolean DEFAULT false NOT NULL,
+    confirmed_phone_number_expiry integer,
+    custom_fields_behavior character varying DEFAULT 'global'::character varying NOT NULL
 );
 
 
@@ -3508,7 +3755,6 @@ COMMENT ON COLUMN public.project_folders_files.migrated_file_id IS 'References t
 CREATE TABLE public.project_folders_folders (
     id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
     title_multiloc jsonb,
-    description_multiloc jsonb,
     description_preview_multiloc jsonb,
     header_bg character varying,
     slug character varying,
@@ -3606,7 +3852,8 @@ CREATE TABLE public.public_api_api_clients (
     updated_at timestamp without time zone NOT NULL,
     last_used_at timestamp(6) without time zone,
     secret_digest character varying NOT NULL,
-    secret_postfix character varying NOT NULL
+    secret_postfix character varying NOT NULL,
+    last_user_agent character varying
 );
 
 
@@ -3660,6 +3907,24 @@ WITH (fillfactor='90');
 
 
 --
+-- Name: report_builder_generation_transcripts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.report_builder_generation_transcripts (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    report_id uuid NOT NULL,
+    model character varying DEFAULT ''::character varying NOT NULL,
+    kind character varying DEFAULT 'generation'::character varying NOT NULL,
+    messages jsonb DEFAULT '[]'::jsonb NOT NULL,
+    usage jsonb DEFAULT '{}'::jsonb NOT NULL,
+    stopped_because character varying,
+    cancel_requested_at timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: report_builder_published_graph_data_units; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -3688,8 +3953,1382 @@ CREATE TABLE public.report_builder_reports (
     name_tsvector tsvector GENERATED ALWAYS AS (to_tsvector('simple'::regconfig, (name)::text)) STORED,
     year integer,
     quarter integer,
-    community_monitor boolean DEFAULT false NOT NULL
+    community_monitor boolean DEFAULT false NOT NULL,
+    project_id uuid
 );
+
+
+--
+-- Name: reporting_analysis_heatmap_cells; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_analysis_heatmap_cells AS
+ SELECT c.id,
+    c.analysis_id,
+    COALESCE(a.project_id, ph.project_id) AS project_id,
+    a.phase_id,
+    c.unit,
+        CASE
+            WHEN (rt.id IS NOT NULL) THEN 'tag'::text
+            WHEN ((rq.resource_type)::text = 'User'::text) THEN 'registration_question'::text
+            ELSE 'form_question'::text
+        END AS row_kind,
+    rt.id AS row_tag_id,
+    rt.name AS row_tag_label,
+    rq.id AS row_question_id,
+    COALESCE(NULLIF((rq.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(rq.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS row_question_label,
+        CASE
+            WHEN (rb.id IS NULL) THEN NULL::text
+            WHEN ((rb.type)::text = 'CustomFieldBins::OptionBin'::text) THEN COALESCE(NULLIF((ro.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+               FROM public.app_configurations ac
+             LIMIT 1)), ''::text), ( SELECT t.value
+               FROM jsonb_each_text(ro.title_multiloc) t(key, value)
+              WHERE (t.value <> ''::text)
+              ORDER BY t.key
+             LIMIT 1))
+            WHEN ((rb.type)::text = 'CustomFieldBins::ValueBin'::text) THEN ( SELECT string_agg(v.value, ', '::text) AS string_agg
+               FROM jsonb_array_elements_text(rb."values") v(value))
+            WHEN (lower(rb.range) IS NULL) THEN (upper(rb.range) || ' or less'::text)
+            WHEN (upper(rb.range) IS NULL) THEN (lower(rb.range) || ' or more'::text)
+            ELSE ((lower(rb.range) || ' to '::text) || upper(rb.range))
+        END AS row_answer_label,
+        CASE
+            WHEN (ct.id IS NOT NULL) THEN 'tag'::text
+            WHEN ((cq.resource_type)::text = 'User'::text) THEN 'registration_question'::text
+            ELSE 'form_question'::text
+        END AS column_kind,
+    ct.id AS column_tag_id,
+    ct.name AS column_tag_label,
+    cq.id AS column_question_id,
+    COALESCE(NULLIF((cq.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(cq.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS column_question_label,
+        CASE
+            WHEN (cb.id IS NULL) THEN NULL::text
+            WHEN ((cb.type)::text = 'CustomFieldBins::OptionBin'::text) THEN COALESCE(NULLIF((co.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+               FROM public.app_configurations ac
+             LIMIT 1)), ''::text), ( SELECT t.value
+               FROM jsonb_each_text(co.title_multiloc) t(key, value)
+              WHERE (t.value <> ''::text)
+              ORDER BY t.key
+             LIMIT 1))
+            WHEN ((cb.type)::text = 'CustomFieldBins::ValueBin'::text) THEN ( SELECT string_agg(v.value, ', '::text) AS string_agg
+               FROM jsonb_array_elements_text(cb."values") v(value))
+            WHEN (lower(cb.range) IS NULL) THEN (upper(cb.range) || ' or less'::text)
+            WHEN (upper(cb.range) IS NULL) THEN (lower(cb.range) || ' or more'::text)
+            ELSE ((lower(cb.range) || ' to '::text) || upper(cb.range))
+        END AS column_answer_label,
+    c.count,
+    c.lift,
+    c.p_value,
+    c.created_at
+   FROM ((((((((((public.analysis_heatmap_cells c
+     JOIN public.analysis_analyses a ON ((a.id = c.analysis_id)))
+     LEFT JOIN public.phases ph ON ((ph.id = a.phase_id)))
+     LEFT JOIN public.analysis_tags rt ON ((((c.row_type)::text = 'Analysis::Tag'::text) AND (rt.id = c.row_id))))
+     LEFT JOIN public.custom_field_bins rb ON ((((c.row_type)::text = 'CustomFieldBin'::text) AND (rb.id = c.row_id))))
+     LEFT JOIN public.custom_fields rq ON ((rq.id = rb.custom_field_id)))
+     LEFT JOIN public.custom_field_options ro ON ((ro.id = rb.custom_field_option_id)))
+     LEFT JOIN public.analysis_tags ct ON ((((c.column_type)::text = 'Analysis::Tag'::text) AND (ct.id = c.column_id))))
+     LEFT JOIN public.custom_field_bins cb ON ((((c.column_type)::text = 'CustomFieldBin'::text) AND (cb.id = c.column_id))))
+     LEFT JOIN public.custom_fields cq ON ((cq.id = cb.custom_field_id)))
+     LEFT JOIN public.custom_field_options co ON ((co.id = cb.custom_field_option_id)))
+  WHERE (((rt.id IS NOT NULL) OR (rq.id IS NOT NULL)) AND ((ct.id IS NOT NULL) OR (cq.id IS NOT NULL)));
+
+
+--
+-- Name: reporting_analysis_insights; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_analysis_insights AS
+ SELECT ins.id,
+    ins.analysis_id,
+    COALESCE(a.project_id, ph.project_id) AS project_id,
+    a.phase_id,
+        CASE ins.insightable_type
+            WHEN 'Analysis::Summary'::text THEN 'summary'::text
+            WHEN 'Analysis::Question'::text THEN 'question'::text
+            ELSE NULL::text
+        END AS kind,
+    q.question,
+    COALESCE(s.summary, q.answer) AS body,
+    ins.filters,
+    ins.inputs_ids AS input_ids,
+    COALESCE(s.accuracy, q.accuracy) AS accuracy,
+    COALESCE(s.generated_at, q.generated_at) AS generated_at,
+    ins.created_at
+   FROM (((((public.analysis_insights ins
+     JOIN public.analysis_analyses a ON ((a.id = ins.analysis_id)))
+     LEFT JOIN public.phases ph ON ((ph.id = a.phase_id)))
+     LEFT JOIN public.analysis_summaries s ON ((((ins.insightable_type)::text = 'Analysis::Summary'::text) AND (s.id = ins.insightable_id))))
+     LEFT JOIN public.analysis_questions q ON ((((ins.insightable_type)::text = 'Analysis::Question'::text) AND (q.id = ins.insightable_id))))
+     JOIN public.analysis_background_tasks task ON ((task.id = COALESCE(s.background_task_id, q.background_task_id))))
+  WHERE ((NULLIF(COALESCE(s.summary, q.answer), ''::text) IS NOT NULL) AND ((task.state)::text <> 'in_progress'::text));
+
+
+--
+-- Name: reporting_comments; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_comments AS
+ SELECT c.id,
+    c.idea_id AS input_id,
+    c.parent_id,
+    c.author_id AS user_id,
+    regexp_replace(COALESCE(NULLIF((c.body_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(c.body_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)), '<span[^>]*class="cl-mention-user"[^>]*>(?:[^<]|<(?!/span>))*</span>'::text, '@mention'::text, 'g'::text) AS body,
+    c.likes_count,
+    c.dislikes_count,
+    c.created_at
+   FROM (public.comments c
+     JOIN public.ideas i ON ((i.id = c.idea_id)))
+  WHERE (((c.publication_status)::text = 'published'::text) AND ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[])));
+
+
+--
+-- Name: reporting_input_question_answers; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_input_question_answers AS
+ WITH form_inputs AS (
+         SELECT i.id,
+            COALESCE(phase_form.id, project_form.id) AS form_id,
+            form_ph.participation_method AS form_participation_method
+           FROM (((public.ideas i
+             LEFT JOIN public.custom_forms phase_form ON ((((phase_form.participation_context_type)::text = 'Phase'::text) AND (phase_form.participation_context_id = i.creation_phase_id))))
+             LEFT JOIN public.custom_forms project_form ON ((((project_form.participation_context_type)::text = 'Project'::text) AND (project_form.participation_context_id = i.project_id))))
+             LEFT JOIN public.phases form_ph ON (((phase_form.id IS NOT NULL) AND (form_ph.id = i.creation_phase_id))))
+          WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]))
+        )
+ SELECT i.id AS input_id,
+    q.id AS question_id,
+    q.key AS question_key,
+    q.input_type AS question_type,
+    COALESCE(NULLIF((q.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(q.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS question_label,
+        CASE
+            WHEN ((q.input_type)::text = ANY ((ARRAY['number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying, 'file_upload'::character varying, 'shapefile_upload'::character varying, 'point'::character varying, 'line'::character varying, 'polygon'::character varying])::text[])) THEN NULL::text
+            ELSE (a.value #>> '{}'::text[])
+        END AS value_text,
+        CASE
+            WHEN (((q.input_type)::text = ANY ((ARRAY['number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying])::text[])) AND (jsonb_typeof(a.value) = 'number'::text)) THEN ((a.value #>> '{}'::text[]))::numeric
+            ELSE NULL::numeric
+        END AS value_numeric,
+    COALESCE(NULLIF((label.multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(label.multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS value_label,
+        CASE
+            WHEN ((i.form_participation_method)::text = 'community_monitor_survey'::text) THEN COALESCE(q.question_category, 'other'::character varying)
+            ELSE NULL::character varying
+        END AS question_category,
+    NULL::text AS statement_key,
+    NULL::text AS statement_label,
+        CASE
+            WHEN ((q.input_type)::text = ANY ((ARRAY['point'::character varying, 'line'::character varying, 'polygon'::character varying])::text[])) THEN a.value
+            ELSE NULL::jsonb
+        END AS value_geojson
+   FROM (((form_inputs i
+     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY ((ARRAY['text'::character varying, 'multiline_text'::character varying, 'select'::character varying, 'select_image'::character varying, 'checkbox'::character varying, 'date'::character varying, 'number'::character varying, 'linear_scale'::character varying, 'rating'::character varying, 'sentiment_linear_scale'::character varying, 'file_upload'::character varying, 'shapefile_upload'::character varying, 'point'::character varying, 'line'::character varying, 'polygon'::character varying])::text[])))))
+     JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
+     CROSS JOIN LATERAL ( SELECT
+                CASE
+                    WHEN ((q.input_type)::text = ANY ((ARRAY['select'::character varying, 'select_image'::character varying])::text[])) THEN ( SELECT o.title_multiloc
+                       FROM public.custom_field_options o
+                      WHERE ((o.custom_field_id = q.id) AND ((o.key)::text = (a.value #>> '{}'::text[]))))
+                    WHEN (((q.input_type)::text = ANY ((ARRAY['linear_scale'::character varying, 'sentiment_linear_scale'::character varying])::text[])) AND (jsonb_typeof(a.value) = 'number'::text)) THEN
+                    CASE (a.value #>> '{}'::text[])
+                        WHEN '1'::text THEN q.linear_scale_label_1_multiloc
+                        WHEN '2'::text THEN q.linear_scale_label_2_multiloc
+                        WHEN '3'::text THEN q.linear_scale_label_3_multiloc
+                        WHEN '4'::text THEN q.linear_scale_label_4_multiloc
+                        WHEN '5'::text THEN q.linear_scale_label_5_multiloc
+                        WHEN '6'::text THEN q.linear_scale_label_6_multiloc
+                        WHEN '7'::text THEN q.linear_scale_label_7_multiloc
+                        WHEN '8'::text THEN q.linear_scale_label_8_multiloc
+                        WHEN '9'::text THEN q.linear_scale_label_9_multiloc
+                        WHEN '10'::text THEN q.linear_scale_label_10_multiloc
+                        WHEN '11'::text THEN q.linear_scale_label_11_multiloc
+                        ELSE NULL::jsonb
+                    END
+                    ELSE NULL::jsonb
+                END AS multiloc) label)
+  WHERE (((q.input_type)::text <> ALL ((ARRAY['file_upload'::character varying, 'shapefile_upload'::character varying])::text[])) OR (EXISTS ( SELECT 1
+           FROM public.file_attachments fa
+          WHERE (fa.id =
+                CASE
+                    WHEN ((a.value ->> 'id'::text) ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'::text) THEN ((a.value ->> 'id'::text))::uuid
+                    ELSE NULL::uuid
+                END))) OR (EXISTS ( SELECT 1
+           FROM public.idea_files f
+          WHERE (f.id =
+                CASE
+                    WHEN ((a.value ->> 'id'::text) ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'::text) THEN ((a.value ->> 'id'::text))::uuid
+                    ELSE NULL::uuid
+                END))))
+UNION ALL
+ SELECT i.id AS input_id,
+    q.id AS question_id,
+    q.key AS question_key,
+    q.input_type AS question_type,
+    COALESCE(NULLIF((q.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(q.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS question_label,
+    selected.value AS value_text,
+    NULL::numeric AS value_numeric,
+    COALESCE(NULLIF((o.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(o.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS value_label,
+        CASE
+            WHEN ((i.form_participation_method)::text = 'community_monitor_survey'::text) THEN COALESCE(q.question_category, 'other'::character varying)
+            ELSE NULL::character varying
+        END AS question_category,
+    NULL::text AS statement_key,
+    NULL::text AS statement_label,
+    NULL::jsonb AS value_geojson
+   FROM ((((form_inputs i
+     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = ANY ((ARRAY['multiselect'::character varying, 'multiselect_image'::character varying])::text[])))))
+     JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
+     CROSS JOIN LATERAL jsonb_array_elements_text(a.value) selected(value))
+     LEFT JOIN public.custom_field_options o ON (((o.custom_field_id = q.id) AND ((o.key)::text = selected.value))))
+  WHERE (jsonb_typeof(a.value) = 'array'::text)
+UNION ALL
+ SELECT i.id AS input_id,
+    q.id AS question_id,
+    q.key AS question_key,
+    q.input_type AS question_type,
+    COALESCE(NULLIF((q.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(q.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS question_label,
+    ranked.value AS value_text,
+    (ranked.rank)::numeric AS value_numeric,
+    COALESCE(NULLIF((o.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(o.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS value_label,
+        CASE
+            WHEN ((i.form_participation_method)::text = 'community_monitor_survey'::text) THEN COALESCE(q.question_category, 'other'::character varying)
+            ELSE NULL::character varying
+        END AS question_category,
+    NULL::text AS statement_key,
+    NULL::text AS statement_label,
+    NULL::jsonb AS value_geojson
+   FROM ((((form_inputs i
+     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = 'ranking'::text))))
+     JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
+     CROSS JOIN LATERAL jsonb_array_elements_text(a.value) WITH ORDINALITY ranked(value, rank))
+     LEFT JOIN public.custom_field_options o ON (((o.custom_field_id = q.id) AND ((o.key)::text = ranked.value))))
+  WHERE (jsonb_typeof(a.value) = 'array'::text)
+UNION ALL
+ SELECT i.id AS input_id,
+    q.id AS question_id,
+    q.key AS question_key,
+    q.input_type AS question_type,
+    COALESCE(NULLIF((q.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(q.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS question_label,
+    NULL::text AS value_text,
+        CASE
+            WHEN (jsonb_typeof(answered.value) = 'number'::text) THEN ((answered.value #>> '{}'::text[]))::numeric
+            ELSE NULL::numeric
+        END AS value_numeric,
+    COALESCE(NULLIF((label.multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(label.multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS value_label,
+        CASE
+            WHEN ((i.form_participation_method)::text = 'community_monitor_survey'::text) THEN COALESCE(q.question_category, 'other'::character varying)
+            ELSE NULL::character varying
+        END AS question_category,
+    answered.key AS statement_key,
+    COALESCE(NULLIF((s.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(s.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS statement_label,
+    NULL::jsonb AS value_geojson
+   FROM (((((form_inputs i
+     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'CustomForm'::text) AND (q.resource_id = i.form_id) AND ((q.input_type)::text = 'matrix_linear_scale'::text))))
+     JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'Idea'::text) AND (a.answerable_id = i.id) AND ((a.key)::text = (q.key)::text))))
+     CROSS JOIN LATERAL jsonb_each(a.value) answered(key, value))
+     JOIN public.custom_field_matrix_statements s ON (((s.custom_field_id = q.id) AND ((s.key)::text = answered.key))))
+     CROSS JOIN LATERAL ( SELECT
+                CASE answered.value
+                    WHEN '1'::jsonb THEN q.linear_scale_label_1_multiloc
+                    WHEN '2'::jsonb THEN q.linear_scale_label_2_multiloc
+                    WHEN '3'::jsonb THEN q.linear_scale_label_3_multiloc
+                    WHEN '4'::jsonb THEN q.linear_scale_label_4_multiloc
+                    WHEN '5'::jsonb THEN q.linear_scale_label_5_multiloc
+                    WHEN '6'::jsonb THEN q.linear_scale_label_6_multiloc
+                    WHEN '7'::jsonb THEN q.linear_scale_label_7_multiloc
+                    WHEN '8'::jsonb THEN q.linear_scale_label_8_multiloc
+                    WHEN '9'::jsonb THEN q.linear_scale_label_9_multiloc
+                    WHEN '10'::jsonb THEN q.linear_scale_label_10_multiloc
+                    WHEN '11'::jsonb THEN q.linear_scale_label_11_multiloc
+                    ELSE NULL::jsonb
+                END AS multiloc) label)
+  WHERE ((jsonb_typeof(a.value) = 'object'::text) AND (answered.value IN ( SELECT to_jsonb(generate_series(1, q.maximum)) AS to_jsonb)));
+
+
+--
+-- Name: reporting_community_monitor_scores; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_community_monitor_scores AS
+ WITH responses AS (
+         SELECT ph.id AS phase_id,
+            ((i.created_at AT TIME ZONE 'UTC'::text) AT TIME ZONE COALESCE(( SELECT ((ac.settings -> 'core'::text) ->> 'timezone'::text)
+                   FROM public.app_configurations ac
+                 LIMIT 1), 'UTC'::text)) AS local_created_at,
+            a.question_id,
+            a.question_label,
+            a.question_category,
+            a.value_numeric,
+            COALESCE((u.roles <> '[]'::jsonb), false) AS staff
+           FROM (((((public.reporting_input_question_answers a
+             JOIN public.ideas i ON ((i.id = a.input_id)))
+             JOIN public.phases ph ON ((ph.id = i.creation_phase_id)))
+             JOIN public.ideas_phases ip ON (((ip.idea_id = i.id) AND (ip.phase_id = ph.id))))
+             JOIN public.custom_fields q ON ((q.id = a.question_id)))
+             LEFT JOIN public.users u ON ((u.id = i.author_id)))
+          WHERE (((ph.participation_method)::text = 'community_monitor_survey'::text) AND ((i.publication_status)::text = 'published'::text) AND ((a.question_type)::text = 'sentiment_linear_scale'::text) AND (a.value_numeric IS NOT NULL) AND q.enabled)
+        )
+ SELECT phase_id,
+    (EXTRACT(year FROM local_created_at))::integer AS year,
+    (EXTRACT(quarter FROM local_created_at))::integer AS quarter,
+    question_id,
+    question_label,
+    question_category,
+    staff,
+    (count(*))::integer AS answer_count,
+    sum(value_numeric) AS answer_sum,
+    round((sum(value_numeric) / (count(*))::numeric), 1) AS average
+   FROM responses
+  GROUP BY phase_id, ((EXTRACT(year FROM local_created_at))::integer), ((EXTRACT(quarter FROM local_created_at))::integer), question_id, question_label, question_category, staff;
+
+
+--
+-- Name: reporting_contributions; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_contributions AS
+ SELECT i.id,
+    'input'::text AS type,
+    NULL::text AS parent_type,
+    NULL::uuid AS parent_id,
+    i.contributed_at,
+    i.created_at,
+    COALESCE(creation_ph.participation_method, 'ideation'::character varying) AS participation_method,
+    i.project_id,
+    COALESCE(i.creation_phase_id, inferred_ph.id) AS phase_id,
+    i.author_id AS user_id,
+    COALESCE((i.author_id)::text, (i.author_hash)::text, (i.id)::text) AS participant_id
+   FROM ((( SELECT ideas.id,
+            ideas.title_multiloc,
+            ideas.body_multiloc,
+            ideas.publication_status,
+            ideas.published_at,
+            ideas.project_id,
+            ideas.author_id,
+            ideas.created_at,
+            ideas.updated_at,
+            ideas.likes_count,
+            ideas.dislikes_count,
+            ideas.location_point,
+            ideas.location_description,
+            ideas.comments_count,
+            ideas.idea_status_id,
+            ideas.slug,
+            ideas.budget,
+            ideas.baskets_count,
+            ideas.official_feedbacks_count,
+            ideas.assignee_id,
+            ideas.assigned_at,
+            ideas.proposed_budget,
+            ideas.custom_field_values,
+            ideas.creation_phase_id,
+            ideas.author_hash,
+            ideas.anonymous,
+            ideas.internal_comments_count,
+            ideas.votes_count,
+            ideas.followers_count,
+            ideas.submitted_at,
+            ideas.manual_votes_amount,
+            ideas.manual_votes_last_updated_by_id,
+            ideas.manual_votes_last_updated_at,
+            ideas.neutral_reactions_count,
+            ideas.weglot_data,
+            COALESCE(ideas.submitted_at, ideas.published_at, ideas.created_at) AS contributed_at
+           FROM public.ideas
+          WHERE ((ideas.publication_status)::text = 'published'::text)) i
+     LEFT JOIN public.phases creation_ph ON ((creation_ph.id = i.creation_phase_id)))
+     LEFT JOIN public.phases inferred_ph ON (((i.creation_phase_id IS NULL) AND (inferred_ph.project_id = i.project_id) AND ((inferred_ph.placement_type)::text = 'on_timeline'::text) AND (i.contributed_at >= inferred_ph.start_at) AND ((inferred_ph.end_at IS NULL) OR (i.contributed_at < inferred_ph.end_at)))))
+UNION ALL
+ SELECT c.id,
+    'comment'::text AS type,
+    'input'::text AS parent_type,
+    c.idea_id AS parent_id,
+    c.created_at AS contributed_at,
+    c.created_at,
+    COALESCE(inferred_ph.participation_method, input_creation_ph.participation_method, 'ideation'::character varying) AS participation_method,
+    i.project_id,
+    inferred_ph.id AS phase_id,
+    c.author_id AS user_id,
+    COALESCE((c.author_id)::text, (c.author_hash)::text, (c.id)::text) AS participant_id
+   FROM (((public.comments c
+     LEFT JOIN public.ideas i ON ((i.id = c.idea_id)))
+     LEFT JOIN public.phases input_creation_ph ON ((input_creation_ph.id = i.creation_phase_id)))
+     LEFT JOIN public.phases inferred_ph ON (((inferred_ph.project_id = i.project_id) AND ((inferred_ph.placement_type)::text = 'on_timeline'::text) AND (c.created_at >= inferred_ph.start_at) AND ((inferred_ph.end_at IS NULL) OR (c.created_at < inferred_ph.end_at)))))
+  WHERE ((c.publication_status)::text = 'published'::text)
+UNION ALL
+ SELECT r.id,
+    'reaction'::text AS type,
+    r.parent_type,
+    r.parent_id,
+    r.created_at AS contributed_at,
+    r.created_at,
+    COALESCE(inferred_ph.participation_method, input_creation_ph.participation_method, 'ideation'::character varying) AS participation_method,
+    r.project_id,
+    inferred_ph.id AS phase_id,
+    r.user_id,
+    COALESCE((r.user_id)::text, (r.id)::text) AS participant_id
+   FROM ((( SELECT reactions.id,
+            reactions.user_id,
+            reactions.created_at,
+                CASE
+                    WHEN ((reactions.reactable_type)::text = 'Idea'::text) THEN 'input'::text
+                    ELSE 'comment'::text
+                END AS parent_type,
+            reactions.reactable_id AS parent_id,
+            COALESCE(ri.project_id, rci.project_id) AS project_id,
+            COALESCE(ri.creation_phase_id, rci.creation_phase_id) AS input_creation_phase_id
+           FROM (((public.reactions
+             LEFT JOIN public.ideas ri ON ((((reactions.reactable_type)::text = 'Idea'::text) AND (ri.id = reactions.reactable_id))))
+             LEFT JOIN public.comments rc ON ((((reactions.reactable_type)::text = 'Comment'::text) AND (rc.id = reactions.reactable_id))))
+             LEFT JOIN public.ideas rci ON ((rci.id = rc.idea_id)))
+          WHERE ((reactions.reactable_type)::text = ANY (ARRAY[('Idea'::character varying)::text, ('Comment'::character varying)::text]))) r
+     LEFT JOIN public.phases input_creation_ph ON ((input_creation_ph.id = r.input_creation_phase_id)))
+     LEFT JOIN public.phases inferred_ph ON (((inferred_ph.project_id = r.project_id) AND ((inferred_ph.placement_type)::text = 'on_timeline'::text) AND (r.created_at >= inferred_ph.start_at) AND ((inferred_ph.end_at IS NULL) OR (r.created_at < inferred_ph.end_at)))))
+UNION ALL
+ SELECT bi.id,
+    'vote'::text AS type,
+    'input'::text AS parent_type,
+    bi.idea_id AS parent_id,
+    b.submitted_at AS contributed_at,
+    bi.created_at,
+    ph.participation_method,
+    ph.project_id,
+    b.phase_id,
+    b.user_id,
+    COALESCE((b.user_id)::text, (b.id)::text) AS participant_id
+   FROM ((public.baskets_ideas bi
+     JOIN public.baskets b ON ((b.id = bi.basket_id)))
+     LEFT JOIN public.phases ph ON ((ph.id = b.phase_id)))
+  WHERE (b.submitted_at IS NOT NULL)
+UNION ALL
+ SELECT vv.id,
+    'volunteering'::text AS type,
+    NULL::text AS parent_type,
+    NULL::uuid AS parent_id,
+    vv.created_at AS contributed_at,
+    vv.created_at,
+    ph.participation_method,
+    ph.project_id,
+    vc.phase_id,
+    vv.user_id,
+    COALESCE((vv.user_id)::text, (vv.id)::text) AS participant_id
+   FROM ((public.volunteering_volunteers vv
+     JOIN public.volunteering_causes vc ON ((vc.id = vv.cause_id)))
+     LEFT JOIN public.phases ph ON ((ph.id = vc.phase_id)))
+UNION ALL
+ SELECT pr.id,
+    'poll_response'::text AS type,
+    NULL::text AS parent_type,
+    NULL::uuid AS parent_id,
+    pr.created_at AS contributed_at,
+    pr.created_at,
+    ph.participation_method,
+    ph.project_id,
+    pr.phase_id,
+    pr.user_id,
+    COALESCE((pr.user_id)::text, (pr.id)::text) AS participant_id
+   FROM (public.polls_responses pr
+     LEFT JOIN public.phases ph ON ((ph.id = pr.phase_id)))
+UNION ALL
+ SELECT ea.id,
+    'attendance'::text AS type,
+    'event'::text AS parent_type,
+    ea.event_id AS parent_id,
+    ea.created_at AS contributed_at,
+    ea.created_at,
+    NULL::character varying AS participation_method,
+    e.project_id,
+    NULL::uuid AS phase_id,
+    ea.attendee_id AS user_id,
+    (ea.attendee_id)::text AS participant_id
+   FROM (public.events_attendances ea
+     LEFT JOIN public.events e ON ((e.id = ea.event_id)));
+
+
+--
+-- Name: reporting_email_deliveries; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_email_deliveries AS
+ SELECT c.id AS campaign_id,
+    lower(regexp_replace(regexp_replace("substring"((c.type)::text, '([^:]+)$'::text), '([A-Z]+)([A-Z][a-z])'::text, '\1_\2'::text, 'g'::text), '([a-z\d])([A-Z])'::text, '\1_\2'::text, 'g'::text)) AS campaign_type,
+    ((c.type)::text = ANY ((ARRAY['EmailCampaigns::Campaigns::Manual'::character varying, 'EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying])::text[])) AS manual,
+        CASE
+            WHEN ((c.type)::text = ANY ((ARRAY['EmailCampaigns::Campaigns::Manual'::character varying, 'EmailCampaigns::Campaigns::ManualProjectParticipants'::character varying])::text[])) THEN COALESCE(NULLIF((c.subject_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+               FROM public.app_configurations ac
+             LIMIT 1)), ''::text), ( SELECT t.value
+               FROM jsonb_each_text(c.subject_multiloc) t(key, value)
+              WHERE (t.value <> ''::text)
+              ORDER BY t.key
+             LIMIT 1))
+            ELSE NULL::text
+        END AS subject,
+        CASE c.context_type
+            WHEN 'Project'::text THEN c.context_id
+            WHEN 'Phase'::text THEN ph.project_id
+            ELSE NULL::uuid
+        END AS project_id,
+    (((d.sent_at AT TIME ZONE 'UTC'::text) AT TIME ZONE COALESCE(( SELECT ((ac.settings -> 'core'::text) ->> 'timezone'::text)
+           FROM public.app_configurations ac
+         LIMIT 1), 'UTC'::text)))::date AS sent_date,
+    (count(*))::integer AS sent_count,
+    (count(*) FILTER (WHERE ((d.delivery_status)::text = 'bounced'::text)))::integer AS bounced_count,
+    (count(*) FILTER (WHERE ((d.delivery_status)::text = 'failed'::text)))::integer AS failed_count,
+    (count(*) FILTER (WHERE ((d.delivery_status)::text = ANY ((ARRAY['accepted'::character varying, 'delivered'::character varying, 'opened'::character varying, 'clicked'::character varying])::text[]))))::integer AS accepted_count,
+    (count(*) FILTER (WHERE ((d.delivery_status)::text = ANY ((ARRAY['delivered'::character varying, 'opened'::character varying, 'clicked'::character varying])::text[]))))::integer AS delivered_count,
+    (count(*) FILTER (WHERE ((d.delivery_status)::text = ANY ((ARRAY['opened'::character varying, 'clicked'::character varying])::text[]))))::integer AS opened_count,
+    (count(*) FILTER (WHERE ((d.delivery_status)::text = 'clicked'::text)))::integer AS clicked_count
+   FROM ((public.email_campaigns_deliveries d
+     JOIN public.email_campaigns_campaigns c ON ((c.id = d.campaign_id)))
+     LEFT JOIN public.phases ph ON ((((c.context_type)::text = 'Phase'::text) AND (ph.id = c.context_id))))
+  GROUP BY c.id, c.type, c.subject_multiloc, c.context_type, c.context_id, ph.project_id, ((((d.sent_at AT TIME ZONE 'UTC'::text) AT TIME ZONE COALESCE(( SELECT ((ac.settings -> 'core'::text) ->> 'timezone'::text)
+           FROM public.app_configurations ac
+         LIMIT 1), 'UTC'::text)))::date);
+
+
+--
+-- Name: reporting_events; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_events AS
+ SELECT id,
+    project_id,
+    COALESCE(NULLIF((title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(e.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS title,
+    title_multiloc,
+    start_at,
+    end_at,
+    COALESCE(NULLIF((address_1)::text, ''::text), NULLIF((location_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(e.location_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS location,
+    COALESCE(NULLIF((address_2_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(e.address_2_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS location_details,
+    NULLIF((online_link)::text, ''::text) AS online_link,
+    NULLIF((using_url)::text, ''::text) AS external_registration_url,
+    attendees_count,
+    maximum_attendees,
+    created_at
+   FROM public.events e;
+
+
+--
+-- Name: reporting_input_analysis_tags; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_input_analysis_tags AS
+ SELECT tg.id,
+    tg.input_id,
+    a.id AS analysis_id,
+    COALESCE(a.project_id, ph.project_id) AS project_id,
+    a.phase_id,
+    t.id AS tag_id,
+    t.name AS tag_label,
+    t.tag_type,
+    (tg.background_task_id IS NOT NULL) AS auto_tagged,
+    tg.created_at
+   FROM ((((public.analysis_taggings tg
+     JOIN public.analysis_tags t ON ((t.id = tg.tag_id)))
+     JOIN public.analysis_analyses a ON ((a.id = t.analysis_id)))
+     LEFT JOIN public.phases ph ON ((ph.id = a.phase_id)))
+     JOIN public.ideas i ON ((i.id = tg.input_id)))
+  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
+
+
+--
+-- Name: reporting_input_imports; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_input_imports AS
+ SELECT ii.id,
+    ii.idea_id AS input_id,
+    f.import_type AS source,
+    (f.parsed_value ->> 'parser'::text) AS parser,
+    ii.import_user_id AS user_id,
+    ii.user_created,
+    ii.locale,
+    ii.approved_at,
+    ii.created_at
+   FROM ((public.idea_imports ii
+     JOIN public.ideas i ON ((i.id = ii.idea_id)))
+     LEFT JOIN public.idea_import_files f ON ((f.id = ii.file_id)))
+  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
+
+
+--
+-- Name: reporting_input_phases; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_input_phases AS
+ SELECT ip.id,
+    ip.idea_id AS input_id,
+    ip.phase_id,
+    ip.created_at
+   FROM (public.ideas_phases ip
+     JOIN public.ideas i ON ((i.id = ip.idea_id)))
+  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
+
+
+--
+-- Name: reporting_input_reactions; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_input_reactions AS
+ SELECT id,
+    reactable_id AS input_id,
+    user_id,
+    created_at AS reacted_at,
+    mode
+   FROM public.reactions r
+  WHERE ((reactable_type)::text = 'Idea'::text);
+
+
+--
+-- Name: reporting_input_status_changes; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_input_status_changes AS
+ WITH changes AS (
+         SELECT a.id,
+            a.item_id AS input_id,
+            a.action,
+                CASE
+                    WHEN ((a.action)::text = 'changed_status'::text) THEN ((a.payload -> 'change'::text) ->> 0)
+                    ELSE NULL::text
+                END AS from_id,
+                CASE
+                    WHEN ((a.action)::text = 'changed_status'::text) THEN ((a.payload -> 'change'::text) ->> 1)
+                    ELSE NULL::text
+                END AS to_id,
+            (a.payload ->> 'input_status_from_code'::text) AS from_code,
+            (a.payload ->> 'input_status_to_code'::text) AS to_code,
+            a.acted_at
+           FROM (public.activities a
+             JOIN public.ideas i ON ((i.id = a.item_id)))
+          WHERE (((a.item_type)::text = 'Idea'::text) AND ((a.action)::text = ANY ((ARRAY['changed_status'::character varying, 'changed_input_status'::character varying])::text[])) AND ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[])))
+        )
+ SELECT c.id,
+    c.input_id,
+    from_s.id AS from_status_id,
+    COALESCE(NULLIF((from_s.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(from_s.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS from_status_label,
+    COALESCE(from_s.code, (c.from_code)::character varying) AS from_status_code,
+    to_s.id AS to_status_id,
+    COALESCE(NULLIF((to_s.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(to_s.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS to_status_label,
+    COALESCE(to_s.code, (c.to_code)::character varying) AS to_status_code,
+    c.acted_at AS changed_at
+   FROM ((changes c
+     LEFT JOIN LATERAL ( SELECT s.id,
+            s.title_multiloc,
+            s.code
+           FROM public.idea_statuses s
+          WHERE ((((c.action)::text = 'changed_status'::text) AND ((s.id)::text = c.from_id)) OR (((c.action)::text = 'changed_input_status'::text) AND ((s.participation_method)::text = 'proposals'::text) AND ((s.code)::text = c.from_code)))
+          ORDER BY s.ordering
+         LIMIT 1) from_s ON (true))
+     LEFT JOIN LATERAL ( SELECT s.id,
+            s.title_multiloc,
+            s.code
+           FROM public.idea_statuses s
+          WHERE ((((c.action)::text = 'changed_status'::text) AND ((s.id)::text = c.to_id)) OR (((c.action)::text = 'changed_input_status'::text) AND ((s.participation_method)::text = 'proposals'::text) AND ((s.code)::text = c.to_code)))
+          ORDER BY s.ordering
+         LIMIT 1) to_s ON (true));
+
+
+--
+-- Name: reporting_input_tags; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_input_tags AS
+ SELECT iit.id,
+    iit.idea_id AS input_id,
+    iit.input_topic_id AS tag_id,
+    COALESCE(NULLIF((it.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(it.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS tag_label,
+    it.parent_id AS parent_tag_id
+   FROM ((public.ideas_input_topics iit
+     JOIN public.input_topics it ON ((it.id = iit.input_topic_id)))
+     JOIN public.ideas i ON ((i.id = iit.idea_id)))
+  WHERE ((i.publication_status)::text = ANY (ARRAY[('submitted'::character varying)::text, ('published'::character varying)::text]));
+
+
+--
+-- Name: reporting_input_votes; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_input_votes AS
+ SELECT bi.id,
+    bi.idea_id AS input_id,
+    b.user_id,
+    b.submitted_at AS voted_at,
+    bi.votes AS weight,
+    b.phase_id
+   FROM (public.baskets_ideas bi
+     JOIN public.baskets b ON ((b.id = bi.basket_id)))
+  WHERE (b.submitted_at IS NOT NULL);
+
+
+--
+-- Name: reporting_inputs; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_inputs AS
+ SELECT i.id,
+    COALESCE(NULLIF((i.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(i.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS title,
+    i.created_at,
+    i.submitted_at,
+    i.published_at,
+    i.author_id AS user_id,
+    i.project_id,
+    i.creation_phase_id,
+    COALESCE(creation_ph.participation_method, 'ideation'::character varying) AS participation_method,
+    s.id AS status_id,
+    COALESCE(NULLIF((s.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(s.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS status_label,
+    s.code AS status_code,
+    (EXISTS ( SELECT 1
+           FROM public.idea_imports ii
+          WHERE (ii.idea_id = i.id))) AS imported,
+    ((EXISTS ( SELECT 1
+           FROM public.official_feedbacks ofb
+          WHERE (ofb.idea_id = i.id))) OR (EXISTS ( SELECT 1
+           FROM public.activities a
+          WHERE (((a.item_type)::text = 'Idea'::text) AND ((a.action)::text = 'changed_status'::text) AND (a.item_id = i.id))))) AS received_feedback,
+    i.likes_count,
+    i.dislikes_count,
+    i.comments_count,
+    i.votes_count,
+    COALESCE(i.manual_votes_amount, 0) AS offline_votes_count,
+    COALESCE(NULLIF((i.body_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(i.body_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS body
+   FROM ((public.ideas i
+     LEFT JOIN public.phases creation_ph ON ((creation_ph.id = i.creation_phase_id)))
+     LEFT JOIN public.idea_statuses s ON ((s.id = i.idea_status_id)))
+  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
+
+
+--
+-- Name: reporting_invites; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_invites AS
+ WITH accepted_invites AS (
+         SELECT DISTINCT activities.item_id AS invite_id
+           FROM public.activities
+          WHERE (((activities.item_type)::text = 'Invite'::text) AND ((activities.action)::text = 'accepted'::text))
+        )
+ SELECT (((a.acted_at AT TIME ZONE 'UTC'::text) AT TIME ZONE COALESCE(( SELECT ((ac.settings -> 'core'::text) ->> 'timezone'::text)
+           FROM public.app_configurations ac
+         LIMIT 1), 'UTC'::text)))::date AS invited_date,
+        CASE
+            WHEN (u.id IS NULL) THEN NULL::text
+            WHEN (u.roles @> '[{"type": "admin"}]'::jsonb) THEN 'admin'::text
+            WHEN (u.roles @> '[{"type": "space_moderator"}]'::jsonb) THEN 'space_moderator'::text
+            WHEN (u.roles @> '[{"type": "project_folder_moderator"}]'::jsonb) THEN 'project_folder_moderator'::text
+            WHEN (u.roles @> '[{"type": "project_moderator"}]'::jsonb) THEN 'project_moderator'::text
+            ELSE 'former_staff'::text
+        END AS inviter_role,
+    COALESCE((((u.email)::text ~* 'citizenlab\.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'::text) OR ((u.email)::text ~* 'govocal\.(com|eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'::text)), false) AS govocal_staff,
+    (count(*))::integer AS invites_count,
+    (count(ai.invite_id))::integer AS accepted_count
+   FROM ((public.activities a
+     LEFT JOIN accepted_invites ai ON ((ai.invite_id = a.item_id)))
+     LEFT JOIN public.users u ON ((u.id = a.user_id)))
+  WHERE (((a.item_type)::text = 'Invite'::text) AND ((a.action)::text = 'created'::text))
+  GROUP BY ((((a.acted_at AT TIME ZONE 'UTC'::text) AT TIME ZONE COALESCE(( SELECT ((ac.settings -> 'core'::text) ->> 'timezone'::text)
+           FROM public.app_configurations ac
+         LIMIT 1), 'UTC'::text)))::date),
+        CASE
+            WHEN (u.id IS NULL) THEN NULL::text
+            WHEN (u.roles @> '[{"type": "admin"}]'::jsonb) THEN 'admin'::text
+            WHEN (u.roles @> '[{"type": "space_moderator"}]'::jsonb) THEN 'space_moderator'::text
+            WHEN (u.roles @> '[{"type": "project_folder_moderator"}]'::jsonb) THEN 'project_folder_moderator'::text
+            WHEN (u.roles @> '[{"type": "project_moderator"}]'::jsonb) THEN 'project_moderator'::text
+            ELSE 'former_staff'::text
+        END, COALESCE((((u.email)::text ~* 'citizenlab\.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'::text) OR ((u.email)::text ~* 'govocal\.(com|eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'::text)), false);
+
+
+--
+-- Name: reporting_official_feedbacks; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_official_feedbacks AS
+ SELECT ofb.id,
+    ofb.idea_id AS input_id,
+    regexp_replace(COALESCE(NULLIF((ofb.body_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(ofb.body_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)), '<span[^>]*class="cl-mention-user"[^>]*>(?:[^<]|<(?!/span>))*</span>'::text, '@mention'::text, 'g'::text) AS body,
+    COALESCE(NULLIF((ofb.author_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(ofb.author_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS author,
+    ofb.user_id,
+    ofb.created_at,
+    ofb.updated_at
+   FROM (public.official_feedbacks ofb
+     JOIN public.ideas i ON ((i.id = ofb.idea_id)))
+  WHERE ((i.publication_status)::text = ANY ((ARRAY['submitted'::character varying, 'published'::character varying])::text[]));
+
+
+--
+-- Name: reporting_pageviews; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_pageviews AS
+ SELECT id,
+    session_id,
+    created_at,
+    path,
+    project_id,
+        CASE
+            WHEN (split_part((path)::text, '/'::text, 2) IN ( SELECT jsonb_array_elements_text(((ac.settings -> 'core'::text) -> 'locales'::text)) AS jsonb_array_elements_text
+               FROM public.app_configurations ac)) THEN split_part((path)::text, '/'::text, 2)
+            ELSE NULL::text
+        END AS locale
+   FROM public.impact_tracking_pageviews pv;
+
+
+--
+-- Name: reporting_participants; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_participants AS
+ SELECT participant_id AS id,
+    (max((user_id)::text))::uuid AS user_id,
+    min(contributed_at) AS created_at,
+    bool_and((user_id IS NULL)) AS anonymous
+   FROM public.reporting_contributions c
+  GROUP BY participant_id;
+
+
+--
+-- Name: reporting_phases; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_phases AS
+ SELECT id,
+    project_id,
+    COALESCE(NULLIF((title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(ph.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS title,
+    title_multiloc,
+    start_at,
+    end_at,
+    participation_method,
+    created_at,
+        CASE
+            WHEN ((participation_method)::text = 'voting'::text) THEN baskets_count
+            ELSE 0
+        END AS online_voters_count,
+        CASE
+            WHEN ((participation_method)::text = 'voting'::text) THEN COALESCE(manual_voters_amount, 0)
+            ELSE 0
+        END AS offline_voters_count,
+        CASE
+            WHEN ((participation_method)::text = 'voting'::text) THEN manual_voters_last_updated_at
+            ELSE NULL::timestamp without time zone
+        END AS offline_voters_updated_at,
+    ( SELECT count(DISTINCT COALESCE((s.user_id)::text, (s.monthly_user_hash)::text)) AS count
+           FROM (public.impact_tracking_pageviews pv
+             JOIN public.impact_tracking_sessions s ON ((s.id = pv.session_id)))
+          WHERE ((pv.project_id = ph.project_id) AND (pv.created_at >= ph.start_at) AND ((ph.end_at IS NULL) OR (pv.created_at < ph.end_at)))) AS visitors_count,
+    ( SELECT count(DISTINCT COALESCE((s.user_id)::text, (s.monthly_user_hash)::text)) AS count
+           FROM (public.impact_tracking_pageviews pv
+             JOIN public.impact_tracking_sessions s ON ((s.id = pv.session_id)))
+          WHERE ((pv.project_id = ph.project_id) AND (pv.created_at >= ph.start_at) AND ((ph.end_at IS NULL) OR (pv.created_at < ph.end_at)) AND ((s.highest_role IS NULL) OR ((s.highest_role)::text = 'user'::text)))) AS non_staff_visitors_count
+   FROM public.phases ph;
+
+
+--
+-- Name: reporting_projects; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_projects AS
+ SELECT p.id,
+    COALESCE(NULLIF((p.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(p.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS title,
+    p.title_multiloc,
+    ap.publication_status,
+    phase_bounds.start_at,
+    phase_bounds.end_at,
+    folder_ap.publication_id AS folder_id,
+    p.hidden,
+    p.listed,
+    p.visible_to,
+    ap.first_published_at,
+    p.created_at,
+    COALESCE(NULLIF((f.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(f.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS folder_title,
+    ARRAY( SELECT COALESCE(NULLIF((gt.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+                   FROM public.app_configurations ac
+                 LIMIT 1)), ''::text), ( SELECT t.value
+                   FROM jsonb_each_text(gt.title_multiloc) t(key, value)
+                  WHERE (t.value <> ''::text)
+                  ORDER BY t.key
+                 LIMIT 1)) AS "coalesce"
+           FROM public.global_topics gt
+          WHERE (EXISTS ( SELECT 1
+                   FROM public.projects_global_topics pgt
+                  WHERE ((pgt.project_id = p.id) AND (pgt.global_topic_id = gt.id))))
+          ORDER BY gt.ordering) AS topics,
+    ARRAY( SELECT COALESCE(NULLIF((a.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+                   FROM public.app_configurations ac
+                 LIMIT 1)), ''::text), ( SELECT t.value
+                   FROM jsonb_each_text(a.title_multiloc) t(key, value)
+                  WHERE (t.value <> ''::text)
+                  ORDER BY t.key
+                 LIMIT 1)) AS "coalesce"
+           FROM public.areas a
+          WHERE (p.include_all_areas OR (EXISTS ( SELECT 1
+                   FROM public.areas_projects ap2
+                  WHERE ((ap2.project_id = p.id) AND (ap2.area_id = a.id)))))
+          ORDER BY a.ordering) AS areas,
+    (ARRAY( SELECT methods.participation_method
+           FROM ( SELECT ph.participation_method,
+                    min(ph.start_at) AS first_start_at
+                   FROM public.phases ph
+                  WHERE (ph.project_id = p.id)
+                  GROUP BY ph.participation_method) methods
+          ORDER BY methods.first_start_at, methods.participation_method))::text[] AS participation_methods
+   FROM ((((public.projects p
+     LEFT JOIN public.admin_publications ap ON (((ap.publication_id = p.id) AND ((ap.publication_type)::text = 'Project'::text))))
+     LEFT JOIN public.admin_publications folder_ap ON ((folder_ap.id = ap.parent_id)))
+     LEFT JOIN public.project_folders_folders f ON ((f.id = folder_ap.publication_id)))
+     LEFT JOIN ( SELECT ph.project_id,
+            min(ph.start_at) AS start_at,
+                CASE
+                    WHEN bool_or((ph.end_at IS NULL)) THEN NULL::timestamp without time zone
+                    ELSE max(ph.end_at)
+                END AS end_at
+           FROM public.phases ph
+          GROUP BY ph.project_id) phase_bounds ON ((phase_bounds.project_id = p.id)));
+
+
+--
+-- Name: user_custom_fields_representativeness_ref_distributions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_custom_fields_representativeness_ref_distributions (
+    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
+    custom_field_id uuid NOT NULL,
+    distribution jsonb NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    type character varying
+);
+
+
+--
+-- Name: reporting_reference_distributions; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_reference_distributions AS
+ WITH current_distributions AS (
+         SELECT DISTINCT ON (rd.custom_field_id) rd.id,
+            rd.custom_field_id,
+            rd.type,
+            rd.distribution,
+            rd.updated_at
+           FROM public.user_custom_fields_representativeness_ref_distributions rd
+          ORDER BY rd.custom_field_id, rd.created_at DESC
+        )
+ SELECT ((d.id || ':'::text) || o.id) AS id,
+    q.id AS question_id,
+    q.key AS question_key,
+        CASE
+            WHEN ((q.key)::text = 'domicile'::text) THEN (COALESCE((ar.id)::text, 'outside'::text))::character varying
+            ELSE o.key
+        END AS answer_value,
+    COALESCE(NULLIF((COALESCE(ar.title_multiloc, o.title_multiloc) ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(COALESCE(ar.title_multiloc, o.title_multiloc)) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS answer_label,
+    NULL::integer AS min_age,
+    NULL::integer AS max_age,
+    (counts.value)::integer AS population_count,
+    d.updated_at
+   FROM ((((current_distributions d
+     JOIN public.custom_fields q ON (((q.id = d.custom_field_id) AND q.enabled)))
+     CROSS JOIN LATERAL jsonb_each_text(d.distribution) counts(option_id, value))
+     JOIN public.custom_field_options o ON (((o.id)::text = counts.option_id)))
+     LEFT JOIN public.areas ar ON ((((q.key)::text = 'domicile'::text) AND (ar.custom_field_option_id = o.id))))
+  WHERE ((d.type)::text = 'UserCustomFields::Representativeness::CategoricalDistribution'::text)
+UNION ALL
+ SELECT ((d.id || ':'::text) || (bin.idx - 1)) AS id,
+    q.id AS question_id,
+    q.key AS question_key,
+    NULL::character varying AS answer_value,
+    NULL::text AS answer_label,
+    COALESCE((((d.distribution -> 'bins'::text) ->> ((bin.idx - 1))::integer))::integer, 0) AS min_age,
+    (((d.distribution -> 'bins'::text) ->> (bin.idx)::integer))::integer AS max_age,
+    (bin.count)::integer AS population_count,
+    d.updated_at
+   FROM ((current_distributions d
+     JOIN public.custom_fields q ON (((q.id = d.custom_field_id) AND q.enabled)))
+     CROSS JOIN LATERAL jsonb_array_elements_text((d.distribution -> 'counts'::text)) WITH ORDINALITY bin(count, idx))
+  WHERE ((d.type)::text = 'UserCustomFields::Representativeness::BinnedDistribution'::text);
+
+
+--
+-- Name: reporting_registrations; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_registrations AS
+ WITH sign_ups AS (
+         SELECT DISTINCT ON (a.item_id) a.item_id AS account_id,
+            a.acted_at,
+            (a.payload ->> 'flow'::text) AS flow,
+            (a.payload ->> 'method'::text) AS provider
+           FROM public.activities a
+          WHERE (((a.item_type)::text = 'User'::text) AND ((a.action)::text = 'created'::text) AND ((a.payload ->> 'flow'::text) IS DISTINCT FROM 'importer'::text))
+          ORDER BY a.item_id, a.acted_at
+        ), accepted_invitees AS (
+         SELECT DISTINCT activities.user_id AS account_id
+           FROM public.activities
+          WHERE (((activities.item_type)::text = 'Invite'::text) AND ((activities.action)::text = 'accepted'::text) AND (activities.user_id IS NOT NULL))
+        ), completed AS (
+         SELECT DISTINCT activities.item_id AS account_id
+           FROM public.activities
+          WHERE (((activities.item_type)::text = 'User'::text) AND ((activities.action)::text = 'completed_registration'::text))
+        )
+ SELECT (((s.acted_at AT TIME ZONE 'UTC'::text) AT TIME ZONE COALESCE(( SELECT ((ac.settings -> 'core'::text) ->> 'timezone'::text)
+           FROM public.app_configurations ac
+         LIMIT 1), 'UTC'::text)))::date AS started_date,
+        CASE
+            WHEN ((s.flow = 'invitation'::text) OR (ai.account_id IS NOT NULL)) THEN 'invitation'::text
+            ELSE s.flow
+        END AS sign_up_method,
+        CASE
+            WHEN ((s.flow = 'sso'::text) AND (ai.account_id IS NULL)) THEN s.provider
+            ELSE NULL::text
+        END AS sso_provider,
+    (count(*))::integer AS started_count,
+    (count(c.account_id))::integer AS completed_count
+   FROM ((sign_ups s
+     LEFT JOIN accepted_invitees ai ON ((ai.account_id = s.account_id)))
+     LEFT JOIN completed c ON ((c.account_id = s.account_id)))
+  GROUP BY ((((s.acted_at AT TIME ZONE 'UTC'::text) AT TIME ZONE COALESCE(( SELECT ((ac.settings -> 'core'::text) ->> 'timezone'::text)
+           FROM public.app_configurations ac
+         LIMIT 1), 'UTC'::text)))::date),
+        CASE
+            WHEN ((s.flow = 'invitation'::text) OR (ai.account_id IS NOT NULL)) THEN 'invitation'::text
+            ELSE s.flow
+        END,
+        CASE
+            WHEN ((s.flow = 'sso'::text) AND (ai.account_id IS NULL)) THEN s.provider
+            ELSE NULL::text
+        END;
+
+
+--
+-- Name: reporting_reports; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_reports AS
+ SELECT r.id,
+    r.name,
+    r.phase_id,
+    ph.project_id,
+    r.visible,
+    r.year,
+    r.quarter,
+    r.community_monitor,
+    r.created_at,
+    r.updated_at
+   FROM (public.report_builder_reports r
+     LEFT JOIN public.phases ph ON ((ph.id = r.phase_id)));
+
+
+--
+-- Name: reporting_sessions; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_sessions AS
+ SELECT id,
+    created_at AS started_at,
+    user_id,
+    monthly_user_hash AS anonymous_id,
+    COALESCE((user_id)::text, (monthly_user_hash)::text) AS visitor_id,
+    highest_role,
+    device_type AS device,
+    referrer,
+    browser_name AS browser,
+    os_name AS os
+   FROM public.impact_tracking_sessions s;
+
+
+--
+-- Name: reporting_staff_activities; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_staff_activities AS
+ WITH tracked_actions(item_type, action, activity) AS (
+         VALUES ('Project'::text,'created'::text,'project_created'::text), ('Project'::text,'published'::text,'project_published'::text), ('Project'::text,'changed'::text,'project_changed'::text), ('Project'::text,'deleted'::text,'project_deleted'::text), ('Project'::text,'project_review_requested'::text,'project_review_requested'::text), ('Project'::text,'project_review_approved'::text,'project_review_approved'::text), ('ProjectFolders::Folder'::text,'created'::text,'folder_created'::text), ('ProjectFolders::Folder'::text,'changed'::text,'folder_changed'::text), ('ProjectFolders::Folder'::text,'deleted'::text,'folder_deleted'::text), ('Phase'::text,'created'::text,'phase_created'::text), ('Phase'::text,'changed'::text,'phase_changed'::text), ('Phase'::text,'deleted'::text,'phase_deleted'::text), ('Permission'::text,'changed'::text,'permissions_changed'::text), ('Idea'::text,'changed_status'::text,'input_status_changed'::text), ('Idea'::text,'changed_assignee'::text,'input_assigned'::text), ('OfficialFeedback'::text,'created'::text,'official_feedback_posted'::text), ('InternalComment'::text,'created'::text,'internal_comment_posted'::text), ('Comment'::text,'marked_as_deleted'::text,'comment_removed'::text), ('Moderation::ModerationStatus'::text,'read'::text,'moderation_item_marked_read'::text)
+        )
+ SELECT (((a.acted_at AT TIME ZONE 'UTC'::text) AT TIME ZONE COALESCE(( SELECT ((ac.settings -> 'core'::text) ->> 'timezone'::text)
+           FROM public.app_configurations ac
+         LIMIT 1), 'UTC'::text)))::date AS activity_date,
+    a.project_id,
+        CASE
+            WHEN (u.id IS NULL) THEN NULL::text
+            WHEN (u.roles @> '[{"type": "admin"}]'::jsonb) THEN 'admin'::text
+            WHEN (u.roles @> '[{"type": "space_moderator"}]'::jsonb) THEN 'space_moderator'::text
+            WHEN (u.roles @> '[{"type": "project_folder_moderator"}]'::jsonb) THEN 'project_folder_moderator'::text
+            WHEN (u.roles @> '[{"type": "project_moderator"}]'::jsonb) THEN 'project_moderator'::text
+            ELSE 'former_staff'::text
+        END AS role,
+    COALESCE((((u.email)::text ~* 'citizenlab\.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'::text) OR ((u.email)::text ~* 'govocal\.(com|eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'::text)), false) AS govocal_staff,
+    t.activity,
+    (count(*))::integer AS activity_count
+   FROM ((public.activities a
+     JOIN tracked_actions t ON (((t.item_type = (a.item_type)::text) AND (t.action = (a.action)::text))))
+     LEFT JOIN public.users u ON ((u.id = a.user_id)))
+  WHERE (((a.item_type)::text <> 'Comment'::text) OR ((a.payload ->> 'reason_code'::text) IS NOT NULL))
+  GROUP BY ((((a.acted_at AT TIME ZONE 'UTC'::text) AT TIME ZONE COALESCE(( SELECT ((ac.settings -> 'core'::text) ->> 'timezone'::text)
+           FROM public.app_configurations ac
+         LIMIT 1), 'UTC'::text)))::date), a.project_id,
+        CASE
+            WHEN (u.id IS NULL) THEN NULL::text
+            WHEN (u.roles @> '[{"type": "admin"}]'::jsonb) THEN 'admin'::text
+            WHEN (u.roles @> '[{"type": "space_moderator"}]'::jsonb) THEN 'space_moderator'::text
+            WHEN (u.roles @> '[{"type": "project_folder_moderator"}]'::jsonb) THEN 'project_folder_moderator'::text
+            WHEN (u.roles @> '[{"type": "project_moderator"}]'::jsonb) THEN 'project_moderator'::text
+            ELSE 'former_staff'::text
+        END, COALESCE((((u.email)::text ~* 'citizenlab\.(eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'::text) OR ((u.email)::text ~* 'govocal\.(com|eu|be|ch|de|nl|co|uk|us|cl|dk|pl)$'::text)), false), t.activity;
+
+
+--
+-- Name: reporting_users; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_users AS
+ SELECT id,
+    registration_completed_at AS registered_at,
+    created_at,
+        CASE
+            WHEN (roles @> '[{"type": "admin"}]'::jsonb) THEN 'admin'::text
+            WHEN (roles @> '[{"type": "space_moderator"}]'::jsonb) THEN 'space_moderator'::text
+            WHEN (roles @> '[{"type": "project_folder_moderator"}]'::jsonb) THEN 'project_folder_moderator'::text
+            WHEN (roles @> '[{"type": "project_moderator"}]'::jsonb) THEN 'project_moderator'::text
+            ELSE 'user'::text
+        END AS highest_role
+   FROM public.users u
+  WHERE ((registration_completed_at IS NOT NULL) AND ((invite_status IS NULL) OR ((invite_status)::text <> 'pending'::text)) AND ((block_end_at IS NULL) OR (block_end_at < now())));
+
+
+--
+-- Name: reporting_user_question_answers; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.reporting_user_question_answers AS
+ SELECT u.id AS user_id,
+    q.id AS question_id,
+    q.key AS question_key,
+    q.input_type AS question_type,
+    COALESCE(NULLIF((q.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(q.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS question_label,
+    (a.value #>> '{}'::text[]) AS answer_value,
+    COALESCE(NULLIF((label.multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(label.multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS answer_label
+   FROM ((((public.reporting_users ru
+     JOIN public.users u ON ((u.id = ru.id)))
+     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'User'::text) AND q.enabled)))
+     JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'User'::text) AND (a.answerable_id = u.id) AND ((a.key)::text = (q.key)::text))))
+     CROSS JOIN LATERAL ( SELECT
+                CASE
+                    WHEN (((q.key)::text = 'domicile'::text) AND ((a.value #>> '{}'::text[]) = 'outside'::text)) THEN ( SELECT o.title_multiloc
+                       FROM public.custom_field_options o
+                      WHERE ((o.custom_field_id = q.id) AND (NOT (EXISTS ( SELECT 1
+                               FROM public.areas ar
+                              WHERE (ar.custom_field_option_id = o.id)))))
+                      ORDER BY o.ordering
+                     LIMIT 1)
+                    WHEN ((q.key)::text = 'domicile'::text) THEN ( SELECT ar.title_multiloc
+                       FROM public.areas ar
+                      WHERE ((ar.id)::text = (a.value #>> '{}'::text[])))
+                    WHEN ((q.input_type)::text = 'select'::text) THEN ( SELECT o.title_multiloc
+                       FROM public.custom_field_options o
+                      WHERE ((o.custom_field_id = q.id) AND ((o.key)::text = (a.value #>> '{}'::text[]))))
+                    ELSE NULL::jsonb
+                END AS multiloc) label)
+  WHERE ((q.input_type)::text <> 'multiselect'::text)
+UNION ALL
+ SELECT u.id AS user_id,
+    q.id AS question_id,
+    q.key AS question_key,
+    q.input_type AS question_type,
+    COALESCE(NULLIF((q.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(q.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS question_label,
+    selected.value AS answer_value,
+    COALESCE(NULLIF((o.title_multiloc ->> ( SELECT (((ac.settings -> 'core'::text) -> 'locales'::text) ->> 0)
+           FROM public.app_configurations ac
+         LIMIT 1)), ''::text), ( SELECT t.value
+           FROM jsonb_each_text(o.title_multiloc) t(key, value)
+          WHERE (t.value <> ''::text)
+          ORDER BY t.key
+         LIMIT 1)) AS answer_label
+   FROM (((((public.reporting_users ru
+     JOIN public.users u ON ((u.id = ru.id)))
+     JOIN public.custom_fields q ON ((((q.resource_type)::text = 'User'::text) AND q.enabled AND ((q.input_type)::text = 'multiselect'::text))))
+     JOIN public.custom_field_answers a ON ((((a.answerable_type)::text = 'User'::text) AND (a.answerable_id = u.id) AND ((a.key)::text = (q.key)::text))))
+     CROSS JOIN LATERAL jsonb_array_elements_text(a.value) selected(value))
+     LEFT JOIN public.custom_field_options o ON (((o.custom_field_id = q.id) AND ((o.key)::text = selected.value))))
+  WHERE (jsonb_typeof(a.value) = 'array'::text);
 
 
 --
@@ -3698,6 +5337,24 @@ CREATE TABLE public.report_builder_reports (
 
 CREATE TABLE public.schema_migrations (
     version character varying NOT NULL
+);
+
+
+--
+-- Name: sms_deliveries; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.sms_deliveries (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    user_id uuid,
+    campaign_id uuid,
+    body text NOT NULL,
+    message_sid character varying,
+    status character varying NOT NULL,
+    error_message character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    segments_count integer
 );
 
 
@@ -3783,7 +5440,8 @@ CREATE TABLE public.static_pages (
     events_widget_enabled boolean DEFAULT false NOT NULL,
     bottom_info_section_enabled boolean DEFAULT false NOT NULL,
     bottom_info_section_multiloc jsonb DEFAULT '{}'::jsonb NOT NULL,
-    header_bg character varying
+    header_bg character varying,
+    project_id uuid
 );
 
 
@@ -3847,7 +5505,8 @@ CREATE TABLE public.tenants (
     favicon character varying,
     style jsonb DEFAULT '{}'::jsonb,
     deleted_at timestamp without time zone,
-    creation_finalized_at timestamp without time zone
+    creation_finalized_at timestamp without time zone,
+    template_application_started_at timestamp(6) without time zone
 );
 
 
@@ -3864,20 +5523,6 @@ CREATE TABLE public.text_images (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     text_reference character varying NOT NULL
-);
-
-
---
--- Name: user_custom_fields_representativeness_ref_distributions; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.user_custom_fields_representativeness_ref_distributions (
-    id uuid DEFAULT shared_extensions.gen_random_uuid() NOT NULL,
-    custom_field_id uuid NOT NULL,
-    distribution jsonb NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    type character varying
 );
 
 
@@ -3970,6 +5615,30 @@ ALTER TABLE ONLY public.activities
 
 ALTER TABLE ONLY public.admin_publications
     ADD CONSTRAINT admin_publications_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ai_assistant_conversations ai_assistant_conversations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ai_assistant_conversations
+    ADD CONSTRAINT ai_assistant_conversations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ai_assistant_messages ai_assistant_messages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ai_assistant_messages
+    ADD CONSTRAINT ai_assistant_messages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ai_assistant_tool_calls ai_assistant_tool_calls_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ai_assistant_tool_calls
+    ADD CONSTRAINT ai_assistant_tool_calls_pkey PRIMARY KEY (id);
 
 
 --
@@ -4189,6 +5858,22 @@ ALTER TABLE ONLY public.confirmations
 
 
 --
+-- Name: content_builder_custom_block_versions content_builder_custom_block_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_builder_custom_block_versions
+    ADD CONSTRAINT content_builder_custom_block_versions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: content_builder_custom_blocks content_builder_custom_blocks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_builder_custom_blocks
+    ADD CONSTRAINT content_builder_custom_blocks_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: content_builder_layout_images content_builder_layout_images_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4205,11 +5890,27 @@ ALTER TABLE ONLY public.content_builder_layouts
 
 
 --
+-- Name: content_builder_query_snapshots content_builder_query_snapshots_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_builder_query_snapshots
+    ADD CONSTRAINT content_builder_query_snapshots_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: cosponsorships cosponsorships_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.cosponsorships
     ADD CONSTRAINT cosponsorships_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: custom_field_answers custom_field_answers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.custom_field_answers
+    ADD CONSTRAINT custom_field_answers_pkey PRIMARY KEY (id);
 
 
 --
@@ -4402,6 +6103,14 @@ ALTER TABLE ONLY public.events
 
 ALTER TABLE ONLY public.experiments
     ADD CONSTRAINT experiments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: export_result_files export_result_files_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.export_result_files
+    ADD CONSTRAINT export_result_files_pkey PRIMARY KEY (id);
 
 
 --
@@ -4941,6 +6650,14 @@ ALTER TABLE ONLY public.que_values
 
 
 --
+-- Name: report_builder_generation_transcripts report_builder_generation_transcripts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_builder_generation_transcripts
+    ADD CONSTRAINT report_builder_generation_transcripts_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: report_builder_published_graph_data_units report_builder_published_graph_data_units_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4970,6 +6687,14 @@ ALTER TABLE public.admin_publications
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: sms_deliveries sms_deliveries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sms_deliveries
+    ADD CONSTRAINT sms_deliveries_pkey PRIMARY KEY (id);
 
 
 --
@@ -5235,6 +6960,13 @@ CREATE INDEX index_activities_on_action ON public.activities USING btree (action
 
 
 --
+-- Name: index_activities_on_item_type_and_action; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_activities_on_item_type_and_action ON public.activities USING btree (item_type, action);
+
+
+--
 -- Name: index_activities_on_item_type_and_item_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5316,6 +7048,41 @@ CREATE INDEX index_admin_publications_on_scheduled_by_id ON public.admin_publica
 --
 
 CREATE INDEX index_admin_publications_on_scheduled_transition ON public.admin_publications USING btree (scheduled_at, scheduled_status) WHERE (scheduled_status IS NOT NULL);
+
+
+--
+-- Name: index_ai_assistant_conversations_on_subject; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ai_assistant_conversations_on_subject ON public.ai_assistant_conversations USING btree (subject_type, subject_id);
+
+
+--
+-- Name: index_ai_assistant_conversations_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ai_assistant_conversations_on_user_id ON public.ai_assistant_conversations USING btree (user_id);
+
+
+--
+-- Name: index_ai_assistant_messages_on_conversation_id_and_position; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_ai_assistant_messages_on_conversation_id_and_position ON public.ai_assistant_messages USING btree (conversation_id, "position");
+
+
+--
+-- Name: index_ai_assistant_tool_calls_on_decided_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ai_assistant_tool_calls_on_decided_by_id ON public.ai_assistant_tool_calls USING btree (decided_by_id);
+
+
+--
+-- Name: index_ai_assistant_tool_calls_on_message_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_ai_assistant_tool_calls_on_message_id ON public.ai_assistant_tool_calls USING btree (message_id);
 
 
 --
@@ -5690,6 +7457,20 @@ CREATE UNIQUE INDEX index_confirmations_on_user_id_and_type ON public.confirmati
 
 
 --
+-- Name: index_content_builder_custom_block_versions_on_custom_block_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_content_builder_custom_block_versions_on_custom_block_id ON public.content_builder_custom_block_versions USING btree (custom_block_id);
+
+
+--
+-- Name: index_content_builder_custom_blocks_on_created_by_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_content_builder_custom_blocks_on_created_by_id ON public.content_builder_custom_blocks USING btree (created_by_id);
+
+
+--
 -- Name: index_content_builder_layouts_content_buidable_type_id_code; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -5708,6 +7489,34 @@ CREATE INDEX index_cosponsorships_on_idea_id ON public.cosponsorships USING btre
 --
 
 CREATE INDEX index_cosponsorships_on_user_id ON public.cosponsorships USING btree (user_id);
+
+
+--
+-- Name: index_custom_block_versions_on_custom_block_id_and_number; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_custom_block_versions_on_custom_block_id_and_number ON public.content_builder_custom_block_versions USING btree (custom_block_id, number);
+
+
+--
+-- Name: index_custom_field_answers_on_answerable_and_key; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_custom_field_answers_on_answerable_and_key ON public.custom_field_answers USING btree (answerable_type, answerable_id, key);
+
+
+--
+-- Name: index_custom_field_answers_on_custom_field_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_custom_field_answers_on_custom_field_id ON public.custom_field_answers USING btree (custom_field_id);
+
+
+--
+-- Name: index_custom_field_answers_on_key_and_answerable_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_custom_field_answers_on_key_and_answerable_type ON public.custom_field_answers USING btree (key, answerable_type);
 
 
 --
@@ -6023,6 +7832,20 @@ CREATE INDEX index_events_on_maximum_attendees ON public.events USING btree (max
 --
 
 CREATE INDEX index_events_on_project_id ON public.events USING btree (project_id);
+
+
+--
+-- Name: index_export_result_files_on_expires_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_export_result_files_on_expires_at ON public.export_result_files USING btree (expires_at);
+
+
+--
+-- Name: index_export_result_files_on_jobs_tracker_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_export_result_files_on_jobs_tracker_id ON public.export_result_files USING btree (jobs_tracker_id);
 
 
 --
@@ -6803,6 +8626,13 @@ CREATE INDEX index_notifications_on_recipient_id_and_read_at ON public.notificat
 
 
 --
+-- Name: index_notifications_on_report_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notifications_on_report_id ON public.notifications USING btree (report_id);
+
+
+--
 -- Name: index_notifications_on_space_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7139,6 +8969,13 @@ CREATE INDEX index_projects_on_space_id ON public.projects USING btree (space_id
 
 
 --
+-- Name: index_query_snapshots_on_layout_id_and_query_hash; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_query_snapshots_on_layout_id_and_query_hash ON public.content_builder_query_snapshots USING btree (layout_id, query_hash);
+
+
+--
 -- Name: index_reactions_on_reactable_type_and_reactable_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -7157,6 +8994,13 @@ CREATE UNIQUE INDEX index_reactions_on_reactable_type_and_reactable_id_and_user_
 --
 
 CREATE INDEX index_reactions_on_user_id ON public.reactions USING btree (user_id);
+
+
+--
+-- Name: index_report_builder_generation_transcripts_on_report_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_report_builder_generation_transcripts_on_report_id ON public.report_builder_generation_transcripts USING btree (report_id);
 
 
 --
@@ -7185,6 +9029,34 @@ CREATE INDEX index_report_builder_reports_on_owner_id ON public.report_builder_r
 --
 
 CREATE INDEX index_report_builder_reports_on_phase_id ON public.report_builder_reports USING btree (phase_id);
+
+
+--
+-- Name: index_report_builder_reports_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_report_builder_reports_on_project_id ON public.report_builder_reports USING btree (project_id);
+
+
+--
+-- Name: index_sms_deliveries_on_campaign_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sms_deliveries_on_campaign_id ON public.sms_deliveries USING btree (campaign_id);
+
+
+--
+-- Name: index_sms_deliveries_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sms_deliveries_on_status ON public.sms_deliveries USING btree (status);
+
+
+--
+-- Name: index_sms_deliveries_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_sms_deliveries_on_user_id ON public.sms_deliveries USING btree (user_id);
 
 
 --
@@ -7234,6 +9106,13 @@ CREATE INDEX index_static_pages_global_topics_on_static_page_id ON public.static
 --
 
 CREATE INDEX index_static_pages_on_code ON public.static_pages USING btree (code);
+
+
+--
+-- Name: index_static_pages_on_project_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_static_pages_on_project_id ON public.static_pages USING btree (project_id);
 
 
 --
@@ -7314,10 +9193,31 @@ CREATE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
+-- Name: index_users_on_email_bounced_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_email_bounced_at ON public.users USING btree (email_bounced_at) WHERE (email_bounced_at IS NOT NULL);
+
+
+--
+-- Name: index_users_on_phone; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_users_on_phone ON public.users USING btree (phone) WHERE (phone IS NOT NULL);
+
+
+--
 -- Name: index_users_on_registration_completed_at; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_users_on_registration_completed_at ON public.users USING btree (registration_completed_at);
+
+
+--
+-- Name: index_users_on_roles; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_roles ON public.users USING gin (roles);
 
 
 --
@@ -7588,6 +9488,14 @@ ALTER TABLE ONLY public.ideas
 
 
 --
+-- Name: notifications fk_rails_111fe5fcc3; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notifications
+    ADD CONSTRAINT fk_rails_111fe5fcc3 FOREIGN KEY (report_id) REFERENCES public.report_builder_reports(id);
+
+
+--
 -- Name: spam_reports fk_rails_121f3a2011; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7676,6 +9584,14 @@ ALTER TABLE ONLY public.cosponsorships
 
 
 --
+-- Name: report_builder_reports fk_rails_2db74936ca; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_builder_reports
+    ADD CONSTRAINT fk_rails_2db74936ca FOREIGN KEY (project_id) REFERENCES public.projects(id) NOT VALID;
+
+
+--
 -- Name: admin_publications fk_rails_2de8e52eff; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7713,6 +9629,14 @@ ALTER TABLE ONLY public.volunteering_volunteers
 
 ALTER TABLE ONLY public.nav_bar_items
     ADD CONSTRAINT fk_rails_34143a680f FOREIGN KEY (static_page_id) REFERENCES public.static_pages(id);
+
+
+--
+-- Name: export_result_files fk_rails_348350e0ea; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.export_result_files
+    ADD CONSTRAINT fk_rails_348350e0ea FOREIGN KEY (jobs_tracker_id) REFERENCES public.jobs_trackers(id);
 
 
 --
@@ -7836,6 +9760,14 @@ ALTER TABLE ONLY public.idea_exposures
 
 
 --
+-- Name: custom_field_answers fk_rails_56fa027c1d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.custom_field_answers
+    ADD CONSTRAINT fk_rails_56fa027c1d FOREIGN KEY (custom_field_id) REFERENCES public.custom_fields(id) ON DELETE CASCADE;
+
+
+--
 -- Name: notifications fk_rails_575368d182; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7852,11 +9784,27 @@ ALTER TABLE ONLY public.event_files
 
 
 --
+-- Name: content_builder_custom_blocks fk_rails_59b0c3817e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_builder_custom_blocks
+    ADD CONSTRAINT fk_rails_59b0c3817e FOREIGN KEY (created_by_id) REFERENCES public.users(id) ON DELETE SET NULL;
+
+
+--
 -- Name: ideas fk_rails_5ac7668cd3; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.ideas
     ADD CONSTRAINT fk_rails_5ac7668cd3 FOREIGN KEY (project_id) REFERENCES public.projects(id);
+
+
+--
+-- Name: ai_assistant_messages fk_rails_5ce890a954; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ai_assistant_messages
+    ADD CONSTRAINT fk_rails_5ce890a954 FOREIGN KEY (conversation_id) REFERENCES public.ai_assistant_conversations(id) ON DELETE CASCADE;
 
 
 --
@@ -7924,6 +9872,22 @@ ALTER TABLE ONLY public.ideas
 
 
 --
+-- Name: content_builder_custom_block_versions fk_rails_6cbdf54e32; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_builder_custom_block_versions
+    ADD CONSTRAINT fk_rails_6cbdf54e32 FOREIGN KEY (custom_block_id) REFERENCES public.content_builder_custom_blocks(id) ON DELETE CASCADE;
+
+
+--
+-- Name: ai_assistant_conversations fk_rails_6df1511140; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ai_assistant_conversations
+    ADD CONSTRAINT fk_rails_6df1511140 FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: ideas_input_topics fk_rails_6f51315d9b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -7937,6 +9901,14 @@ ALTER TABLE ONLY public.ideas_input_topics
 
 ALTER TABLE ONLY public.groups_permissions
     ADD CONSTRAINT fk_rails_6fa6389d80 FOREIGN KEY (permission_id) REFERENCES public.permissions(id);
+
+
+--
+-- Name: sms_deliveries fk_rails_704e460729; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sms_deliveries
+    ADD CONSTRAINT fk_rails_704e460729 FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -8164,11 +10136,35 @@ ALTER TABLE ONLY public.areas
 
 
 --
+-- Name: ai_assistant_tool_calls fk_rails_9096d5810e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ai_assistant_tool_calls
+    ADD CONSTRAINT fk_rails_9096d5810e FOREIGN KEY (message_id) REFERENCES public.ai_assistant_messages(id) ON DELETE CASCADE;
+
+
+--
+-- Name: content_builder_query_snapshots fk_rails_90d94ea8e1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.content_builder_query_snapshots
+    ADD CONSTRAINT fk_rails_90d94ea8e1 FOREIGN KEY (layout_id) REFERENCES public.content_builder_layouts(id) ON DELETE CASCADE;
+
+
+--
 -- Name: notifications fk_rails_9268535f02; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.notifications
     ADD CONSTRAINT fk_rails_9268535f02 FOREIGN KEY (comment_id) REFERENCES public.comments(id);
+
+
+--
+-- Name: static_pages fk_rails_938fbf3a5d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.static_pages
+    ADD CONSTRAINT fk_rails_938fbf3a5d FOREIGN KEY (project_id) REFERENCES public.projects(id);
 
 
 --
@@ -8300,6 +10296,14 @@ ALTER TABLE ONLY public.ideas
 
 
 --
+-- Name: sms_deliveries fk_rails_a7e0804608; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.sms_deliveries
+    ADD CONSTRAINT fk_rails_a7e0804608 FOREIGN KEY (campaign_id) REFERENCES public.email_campaigns_campaigns(id);
+
+
+--
 -- Name: analytics_fact_visits fk_rails_a9aa810ecf; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -8417,6 +10421,14 @@ ALTER TABLE ONLY public.notifications
 
 ALTER TABLE ONLY public.static_page_files
     ADD CONSTRAINT fk_rails_b8d87c000f FOREIGN KEY (migrated_file_id) REFERENCES public.files(id);
+
+
+--
+-- Name: report_builder_generation_transcripts fk_rails_b8de72b62d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.report_builder_generation_transcripts
+    ADD CONSTRAINT fk_rails_b8de72b62d FOREIGN KEY (report_id) REFERENCES public.report_builder_reports(id) ON DELETE CASCADE;
 
 
 --
@@ -8553,6 +10565,14 @@ ALTER TABLE ONLY public.analysis_taggings
 
 ALTER TABLE ONLY public.analytics_dimension_locales_fact_visits
     ADD CONSTRAINT fk_rails_cd2a592e7b FOREIGN KEY (fact_visit_id) REFERENCES public.analytics_fact_visits(id);
+
+
+--
+-- Name: ai_assistant_tool_calls fk_rails_ce20ecefd4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.ai_assistant_tool_calls
+    ADD CONSTRAINT fk_rails_ce20ecefd4 FOREIGN KEY (decided_by_id) REFERENCES public.users(id) ON DELETE SET NULL;
 
 
 --
@@ -8842,13 +10862,90 @@ ALTER TABLE ONLY public.project_reviews
 SET search_path TO public,shared_extensions;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20261028180200'),
+('20261028180100'),
+('20261028170100'),
+('20261028160100'),
+('20261028150100'),
+('20261028141100'),
+('20261028140100'),
+('20261028130100'),
+('20261027120000'),
+('20261028120100'),
+('20261027120100'),
+('20261019100000'),
+('20261014200000'),
+('20261014130100'),
+('20261014120100'),
+('20261014110100'),
+('20261014100100'),
+('20261012130100'),
+('20261012120000'),
+('20261012100100'),
+('20261009200000'),
+('20261009150100'),
+('20261009140100'),
+('20261009130100'),
+('20261009120100'),
+('20261009110100'),
+('20261009100100'),
+('20261008120000'),
+('20261006190100'),
+('20261006180100'),
+('20261006170100'),
+('20261006160100'),
+('20261006140100'),
+('20261006120100'),
+('20261006090100'),
+('20261005100000'),
+('20261001090000'),
+('20260930100000'),
+('20260930090000'),
+('20260928120000'),
+('20260922150448'),
+('20260915134812'),
+('20260915120000'),
+('20260915103146'),
+('20260915081521'),
+('20260910082118'),
+('20260909100000'),
+('20260908144646'),
+('20260904074654'),
+('20260827120000'),
+('20260824210219'),
+('20260824210218'),
+('20260821210000'),
+('20260821090000'),
+('20260821000000'),
+('20260820000000'),
+('20260811145845'),
+('20260811105004'),
+('20260810100000'),
+('20260805000000'),
+('20260727100000'),
+('20260727000000'),
+('20260713000000'),
+('20260707190000'),
+('20260707185000'),
+('20260707171133'),
+('20260707170049'),
+('20260707164511'),
+('20260707161925'),
 ('20260701113056'),
+('20260630140754'),
+('20260625093937'),
+('20260623120000'),
 ('20260622120000'),
+('20260618120100'),
+('20260618120000'),
+('20260617131000'),
 ('20260617120000'),
 ('20260617090200'),
 ('20260617090100'),
 ('20260617090000'),
+('20260611120000'),
 ('20260611000000'),
+('20260605120000'),
 ('20260602120000'),
 ('20260528180000'),
 ('20260528120000'),

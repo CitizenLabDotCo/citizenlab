@@ -36,6 +36,7 @@ it-IT:
         project_participants: Ai partecipanti al progetto
         registered_users: Agli utenti registrati
       recipient_segment:
+        admin_who_generated_the_report: L'amministratore che ha richiesto il report
         admins: Amministratori
         admins_and_managers: Amministratori e manager
         admins_and_managers_assigned_to_the_input: Amministratori e manager assegnati al contributo
@@ -77,6 +78,7 @@ it-IT:
         users_who_follow_the_proposal: Gli utenti che seguono la proposta
       trigger:
         7_days_after_invite_is_sent: "7 giorni dopo l'invio dell'invito"
+        7_days_before_phase_starts: 7 giorni prima dell'inizio di una fase
         7_days_before_the_project_changes_phase: 7 giorni prima che il progetto cambi fase
         comment_is_deleted: Il commento viene eliminato
         comment_is_flagged_as_spam: Il commento viene segnalato come spam
@@ -95,6 +97,7 @@ it-IT:
         new_input_awaits_screening: Un nuovo contributo in attesa di essere vagliato
         new_input_is_published: Viene pubblicato un nuovo contributo
         new_proposal_is_posted: La nuova proposta è pubblicata
+        phase_starts: Inizio di una fase
         project_phase_changes: Cambiamenti di fase del progetto
         project_published: Progetto pubblicato
         project_review_request: Il moderatore ha richiesto una revisione del progetto
@@ -107,6 +110,7 @@ it-IT:
         proposal_is_upvoted_above_threshold: La proposta è votata oltre la soglia
         proposal_status_changes: Modifiche allo status della proposta
         registration_to_event: Registrazione ad un evento
+        report_generated: La generazione di un report è terminata
         survey_1_day_after_draft_saved: "1 giorno dopo l'ultima volta che l'utente ha salvato il sondaggio in bozza"
         user_accepts_invitation_to_cosponsor_a_proposal: "L'utente accetta l'invito a co-sponsorizzare una proposta"
         user_changes_email: L'utente modifica il proprio indirizzo email
@@ -184,24 +188,29 @@ it-IT:
       manual_project_participants: Messaggi ufficiali ai partecipanti al progetto
       mention_in_internal_comment: Menzione in un commento interno
       mention_in_official_feedback: Menzione in un aggiornamento
+      merge_account_confirmation: Codice di conferma per l'unione degli account
       moderator_digest: Panoramica settimanale per i project manager
       native_survey_not_submitted: Sondaggio non inviato
       new_comment_for_admin: Nuovo commento in un progetto che modero
       new_email_confirmation: Nuovo codice di conferma dell'email
       new_idea_for_admin_prescreening: Nuovo contributo da approvare in un progetto che modero
       new_idea_for_admin_published: Nuovo contributo pubblicato in un progetto che modero
+      new_phone_confirmation: Nuovo codice di conferma del telefono
       official_feedback_on_idea_you_follow: Aggiornamento su un contributo che seguo
       password_reset: Ripristino della password
+      phone_confirmation: Codice di conferma del telefono
       project_folder_moderation_rights_received: Diritti di gestione delle cartelle ricevuti
       project_manager_rights_received: Permessi di project manager ricevuti
       project_moderation_rights_received: Diritti di moderazione del progetto ricevuti
-      project_phase_started: Nuova fase del progetto
-      project_phase_upcoming: Nuova fase del progetto in arrivo
+      project_phase_started: Fase iniziata
+      project_phase_upcoming: La fase inizierà a breve
       project_published: Progetto pubblicato
       project_review_request: Richiesta di revisione del progetto
       project_review_state_change: Progetto approvato
       proposal_expired_for_admin: Proposta scaduta senza raggiungere la soglia di voto
+      report_generated: Report generato
       screening_digest: Promemoria settimanale per lo screening
+      sms_manual: Messaggi SMS ufficiali
       space_moderation_rights_received: Permessi di manager dello spazio ricevuti
       status_change_on_idea_you_follow: Cambiamento di status di un contributo che seguo
       survey_submitted: Sondaggio inviato
@@ -248,7 +257,7 @@ it-IT:
         contribution: '%{authorName} ha commentato un contributo che segui'
         idea: "%{authorName} ha commentato un'idea che segui"
         initiative: "%{authorName} ha commentato un'iniziativa che segui"
-        issue: '%{authorName} ha commentato un parere che segui'
+        issue: '%{authorName} ha commentato una segnalazione che segui'
         observation: "%{authorName} ha commentato un'osservazione che segui"
         option: "%{authorName} ha commentato un'opzione che segui"
         petition: '%{authorName} ha commentato una petizione che segui'
@@ -323,7 +332,7 @@ it-IT:
         contribution: Vai a questo contributo
         idea: Vai a questa idea
         initiative: Vai a questa iniziativa
-        issue: Vai a questo parere
+        issue: Vai a questa segnalazione
         observation: Vai a questa osservazione
         option: Vai a questa opzione
         petition: Vai a questa petizione
@@ -344,7 +353,7 @@ it-IT:
         contribution: Vai al tuo contributo
         idea: Vai alla tua idea
         initiative: Vai alla tua iniziativa
-        issue: Vai al tuo parere
+        issue: Vai alla tua segnalazione
         observation: Vai alla tua osservazione
         option: Vai alla tua opzione
         petition: Vai alla tua petizione
@@ -356,6 +365,7 @@ it-IT:
         story: Vai alla tua storia
         suggestion: Vai al tuo suggerimento
         topic: Vai al tuo argomento
+      phase_dates: Dal %{startDate} al %{endDate}
     idea_marked_as_spam:
       cta_button: Esamina
       preheader: Agisci su questa segnalazione di spam
@@ -378,7 +388,7 @@ it-IT:
         contribution: Il tuo contributo è stato pubblicato
         idea: La tua idea è stata pubblicata
         initiative: La tua iniziativa è stata pubblicata
-        issue: Il tuo parere è stato pubblicato
+        issue: La tua segnalazione è stata pubblicata
         observation: La tua osservazione è stata pubblicata
         option: La tua opzione è stata pubblicata
         petition: La tua petizione è stata pubblicata
@@ -471,6 +481,15 @@ it-IT:
       preheader: '%{commentAuthor} ti ha menzionato nel feedback'
       subject: '%{organizationName} ti ha menzionato nel suo aggiornamento'
       title: Sei stato menzionato
+    merge_account_confirmation:
+      best_regards: Cordiali saluti,
+      event_description: "Qualcuno ha effettuato l'accesso alla piattaforma di partecipazione di %{organizationName} e ha chiesto di collegare tale accesso all'account associato a questo indirizzo email. Se sei stato tu, inserisci questo codice di conferma per continuare:"
+      expire_code: Questo codice scadrà tra
+      hours_24: 24 ore.
+      ignore_email: Se non sei stato tu, puoi ignorare tranquillamente questa email. Non è stato modificato nulla e nessuno può utilizzare questo codice senza avere accesso a questa casella di posta.
+      preheader: Conferma il tuo indirizzo email per %{organizationName}
+      subject: Conferma il tuo indirizzo email per la piattaforma di partecipazione di %{organizationName}
+      title: Conferma il tuo indirizzo email
     moderator_digest:
       cta_button: Gestione del progetto
       event_description: Abbiamo selezionato per te i contributi che hanno generato più attività nell'ultima settimana. Scopri cosa sta succedendo nel tuo progetto!
@@ -534,6 +553,9 @@ it-IT:
       title: È stato pubblicato un nuovo contributo sulla tua piattaforma
       today: Oggi
       yesterday: Ieri
+    new_phone_confirmation:
+      sms_body: Il tuo codice di conferma è %{code}.
+      sms_body2: '%{organization_name}: Il tuo codice di conferma è %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Guarda il contributo
       event_description: "%{feedback_author_name} ha pubblicato un aggiornamento su '%{input_title}'."
@@ -546,6 +568,9 @@ it-IT:
       preheader: Reimposta la tua password per %{organizationName}
       subject: '%{organizationName}: Reimposta la tua password'
       title: Scegli una nuova password
+    phone_confirmation:
+      sms_body: Il tuo codice di conferma è %{code}.
+      sms_body2: '%{organization_name}: Il tuo codice di conferma è %{code}.'
     preview_data:
       author_display_name: Laura Bianchi
       author_first_name: Laura
@@ -564,8 +589,9 @@ it-IT:
       input_status_description: Un esempio di status per un contributo (ad esempio accettato, rifiutato, implementato...)
       input_status_title: Esempio di status
       official_feedback_body: Esempio di aggiornamento ufficiale
+      phase_description: Questo è un esempio di contenuto della fase utilizzato per l'anteprima del contenuto delle e-mail. Non si tratta di contenuto reale.
       phase_title: Esempio di fase
-      project_description_preview: Questo è un esempio di contenuto di una fase utilizzato per l'anteprima del contenuto delle e-mail. Non si tratta di contenuti reali.
+      project_description_preview: Questo è un esempio di contenuto del progetto utilizzato per l'anteprima delle email. Non si tratta di contenuto reale.
       project_title: Esempio di progetto
       proposal_title: Esempio di proposta
       space_title: Esempio di spazio
@@ -600,21 +626,21 @@ it-IT:
       title_what_can_you_do_moderator: Cosa puoi fare come project manager?
       x_ideas: '%{numberOfIdeas} idee'
     project_phase_started:
-      cta_button: Scopri la nuova fase
-      event_description: Questo progetto è entrato in una nuova fase sulla piattaforma di %{organizationName}. Clicca sul link qui sotto per saperne di più!
+      cta_button: Scopri le novità
+      event_description: "Ora puoi partecipare a '%{phaseTitle}' sulla piattaforma di %{organizationName}."
       new_phase: "Questo progetto è entrato nella fase '%{phaseTitle}'"
-      preheader: Una nuova fase è stata avviata per %{projectName}
-      subject: '%{projectName} è entrato in una nuova fase'
+      preheader: "Ora puoi partecipare a '%{phaseTitle}'"
+      subject: "'%{phaseTitle}' è iniziata in %{projectName}"
       subtitle: "Informazioni su '%{projectName}'"
-      title: "È iniziata una nuova fase per il progetto '%{projectName}'"
+      title: "C'è qualcosa di nuovo in '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Imposta la nuova fase
-      event_description: "Il progetto '%{projectName}' entrerà presto in una nuova fase. Assicurati che tutto sia pronto per questa fase: C'è una descrizione adeguata? Le idee selezionate sono state trasferite alla nuova fase? Vuoi informare i tuoi cittadini sui dettagli di questa fase attraverso una campagna email personalizzata?"
+      cta_button: Rivedi la configurazione
+      event_description: "'%{phaseTitle}' nel progetto '%{projectName}' inizia il %{startDate}. Prenditi un momento per verificare che tutto sia pronto: la descrizione è completa? Le date sono corrette? Vuoi informare la tua comunità attraverso una campagna email personalizzata?"
       new_phase: "Il progetto entrerà nella fase '%{phaseTitle}'"
-      preheader: Una nuova fase inizierà presto per %{projectName}
-      subject: Prepara tutto per la nuova fase di %{projectName}
+      preheader: Assicurati che tutto sia pronto prima del %{startDate}
+      subject: "%{projectName}: '%{phaseTitle}' inizia il %{startDate}"
       subtitle: "Informazioni su '%{projectName}'"
-      title: '%{firstName}, un progetto entrerà presto in una nuova fase'
+      title: "%{firstName}, '%{phaseTitle}' inizia il %{startDate}"
     project_published:
       cta_button: Vai a questo progetto
       event_description: 'La piattaforma partecipativa di %{organizationName} ha appena pubblicato il seguente progetto:'
@@ -638,6 +664,13 @@ it-IT:
       preheader: Un contributo è scaduto senza raggiungere la soglia
       subject: '"%{input_title}" è scaduto senza raggiungere la soglia'
       title: Un contributo è scaduto senza raggiungere la soglia di voto
+    report_generated:
+      cta_button: Apri il report
+      event_description: Il report è stato scritto ed è pronto per essere revisionato e modificato.
+      preheader: Il tuo report è pronto
+      stopped_early: 'La scrittura si è interrotta prima che il report fosse completato. Tutto ciò che è stato scritto finora è stato salvato: aprilo e richiedi la parte restante nella chat.'
+      subject: Il tuo report per "%{projectName}" è pronto
+      title: Il tuo report è pronto
     schedules:
       quarterly: Trimestralmente, il primo giorno del trimestre
       weekly:
@@ -767,7 +800,7 @@ it-IT:
         contribution: Il tuo contributo è in "%{prescreening_status_title}"
         idea: La tua idea è in "%{prescreening_status_title}"
         initiative: La tua iniziativa è in "%{prescreening_status_title}"
-        issue: Il tuo parere è in "%{prescreening_status_title}"
+        issue: La tua segnalazione è in "%{prescreening_status_title}"
         observation: La tua osservazione è in "%{prescreening_status_title}"
         option: La tua opzione è in "%{prescreening_status_title}"
         petition: La tua petizione è in "%{prescreening_status_title}"

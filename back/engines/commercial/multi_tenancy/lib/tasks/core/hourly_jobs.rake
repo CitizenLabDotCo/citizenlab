@@ -13,6 +13,7 @@ namespace :cl2back do
         IdeaFeed::TopicModelingSchedulerJob.perform_later
         DeleteInvitesJob.perform_later
         CleanupExpiredClaimTokensJob.perform_later
+        Export::CleanupExpiredResultsJob.perform_later
       end
     end
   end

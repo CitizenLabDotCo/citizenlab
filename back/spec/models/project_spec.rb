@@ -104,6 +104,30 @@ RSpec.describe Project do
     end
   end
 
+  describe 'completed_setup_steps validation' do
+    it 'is valid when every step is a known setup step' do
+      expect(build(:project, completed_setup_steps: Project::SETUP_STEPS)).to be_valid
+    end
+
+    it 'is valid when empty' do
+      expect(build(:project, completed_setup_steps: [])).to be_valid
+    end
+
+    it '[error] is invalid when it holds an unknown step' do
+      project = build(:project, completed_setup_steps: %w[share not-a-step])
+
+      expect(project).to be_invalid
+      expect(project.errors[:completed_setup_steps]).to include('contains unknown setup steps')
+    end
+
+    it '[error] is invalid when it is not an array' do
+      project = build(:project, completed_setup_steps: 'share')
+
+      expect(project).to be_invalid
+      expect(project.errors[:completed_setup_steps]).to include('must be an array')
+    end
+  end
+
   describe 'Project without admin publication' do
     it 'is invalid' do
       project = create(:project)
@@ -127,12 +151,19 @@ RSpec.describe Project do
     end
   end
 
-  describe 'description sanitizer' do
-    it 'sanitizes script tags in the description' do
-      project = create(:project, description_multiloc: {
-        'en' => '<p>Test</p><script>This should be removed!</script><h2>Title</h2><ul><li>A bullet</li></ul><ol type="1"><li>And a listing</li></ol>'
-      })
-      expect(project.description_multiloc).to eq({ 'en' => '<p>Test</p>This should be removed!<h2>Title</h2><ul><li>A bullet</li></ul><ol type="1"><li>And a listing</li></ol>' })
+  it_behaves_like 'a plain text multiloc', factory: :project
+  it_behaves_like 'a plain text multiloc', factory: :project, attribute: :header_bg_alt_text_multiloc
+
+  describe 'title sanitizer' do
+    it 'is not rewritten by a save that does not touch the title' do
+      project = create(:project)
+      # Bypass the callbacks to mimic a row stored before titles were sanitized.
+      project.update_columns(title_multiloc: { 'en' => 'Fish & chips' })
+      project.reload
+
+      project.update!(description_preview_multiloc: { 'en' => '<p>updated</p>' })
+
+      expect(project.reload.title_multiloc['en']).to eq 'Fish & chips'
     end
   end
 
@@ -171,6 +202,11 @@ RSpec.describe Project do
     it 'generates a slug based on the first non-empty locale' do
       project.update!(title_multiloc: { 'en' => 'my project', 'nl-BE' => 'mijn project', 'fr-BE' => 'mon projet' })
       expect(project.slug).to eq 'my-project'
+    end
+
+    it 'generates a slug from the sanitized title, not the raw one' do
+      project.update!(title_multiloc: { 'en' => '<b>Bold</b> project' })
+      expect(project.slug).to eq 'bold-project'
     end
   end
 
@@ -213,6 +249,30 @@ RSpec.describe Project do
 
       expect(project.preview_token).to be_present
       expect(project.preview_token).not_to eq(old_token)
+    end
+  end
+
+  describe 'listed default' do
+    it 'is listed by default' do
+      expect(described_class.new.listed).to be true
+    end
+
+    it 'is unlisted by default when the platform setting is enabled' do
+      config = AppConfiguration.instance
+      config.settings['core']['projects_unlisted_by_default'] = true
+      config.save!
+
+      expect(described_class.new.listed).to be false
+      expect(described_class.new(listed: true).listed).to be true
+    end
+
+    it 'keeps the stored value of existing projects' do
+      project = create(:project, listed: true)
+      config = AppConfiguration.instance
+      config.settings['core']['projects_unlisted_by_default'] = true
+      config.save!
+
+      expect(described_class.find(project.id).listed).to be true
     end
   end
 

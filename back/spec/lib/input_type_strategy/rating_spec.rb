@@ -19,6 +19,7 @@ RSpec.describe InputTypeStrategy::Rating do
   its(:supports_single_selection?) { is_expected.to be true }
   its(:supports_multiple_selection?) { is_expected.to be false }
   its(:supports_selection?) { is_expected.to be true }
+  its(:supports_answer_facet?) { is_expected.to be false }
   its(:supports_select_count?) { is_expected.to be false }
   its(:supports_dropdown_layout?) { is_expected.to be false }
   its(:supports_xlsx_export?) { is_expected.to be true }

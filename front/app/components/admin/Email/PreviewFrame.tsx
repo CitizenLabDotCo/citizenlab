@@ -4,7 +4,7 @@ import { Box, colors, Text } from '@citizenlab/cl2-component-library';
 import Frame from 'react-frame-component';
 import styled from 'styled-components';
 
-import useCampaignPreview from 'api/campaign_previews/useCampaignPreview';
+import useEmailCampaignPreview from 'api/campaigns/email/previews/useEmailCampaignPreview';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
@@ -31,7 +31,7 @@ const PreviewFrame = ({
   showHeaders,
   height = '450px',
 }: Props) => {
-  const { data: previewData } = useCampaignPreview(campaignId);
+  const { data: previewData } = useEmailCampaignPreview(campaignId);
   const { to, from, reply_to, subject, html } =
     previewData?.data.attributes || {};
 

@@ -16,9 +16,10 @@ import 'quill/dist/quill.snow.css';
 import '@enzedonline/quill-blot-formatter2/dist/css/quill-blot-formatter2.css';
 
 import { configureQuill, setEmbeddedVideoTitle } from './configureQuill';
-import { createQuill } from './createQuill';
+import { createQuill, detachQuillFromToolbar } from './createQuill';
+import ImageTooLargeModal from './ImageTooLargeModal';
 import messages from './messages';
-import StyleContainer from './StyleContainer';
+import StyleContainer, { QuillVariant } from './StyleContainer';
 import Toolbar from './Toolbar';
 import { getHTML, setHTML, getQuillPlainTextLength } from './utils';
 
@@ -44,6 +45,9 @@ export interface Props {
   ariaLabelledBy?: string;
   ariaDescribedBy?: string;
   ariaInvalid?: boolean;
+  ariaLabel?: string;
+  placeholder?: string;
+  variant?: QuillVariant;
 }
 
 configureQuill();
@@ -70,10 +74,15 @@ const QuillEditor = ({
   ariaLabelledBy,
   ariaDescribedBy,
   ariaInvalid,
+  ariaLabel,
+  placeholder,
+  variant,
 }: Props) => {
   const { formatMessage } = useIntl();
   const [editor, setEditor] = useState<Quill | null>(null);
   const [focussed, setFocussed] = useState(false);
+  const [imageTooLargeModalOpened, setImageTooLargeModalOpened] =
+    useState(false);
 
   const [isButtonsMenuVisible, setIsButtonsMenuVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -114,9 +123,12 @@ const QuillEditor = ({
       limitedTextFormatting,
       withCTAButton,
       onBlur: onBlurRef.current,
+      onImageTooLarge: () => setImageTooLargeModalOpened(true),
       altTextLabel: formatMessage(messages.altTextLabel),
       imageTitleLabel: formatMessage(messages.imageTitleLabel),
       ariaLabelledBy,
+      ariaLabel,
+      placeholder,
     });
 
     setHTML(quill, value);
@@ -141,6 +153,7 @@ const QuillEditor = ({
 
     return () => {
       observer.disconnect();
+      detachQuillFromToolbar(quill);
       container.innerHTML = '';
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -240,6 +253,7 @@ const QuillEditor = ({
       maxHeight={maxHeight}
       minHeight={minHeight}
       className={className}
+      variant={variant}
       onMouseLeave={saveLatestContent}
     >
       {label && (
@@ -263,6 +277,10 @@ const QuillEditor = ({
       <div>
         <div ref={containerRef} />
       </div>
+      <ImageTooLargeModal
+        opened={imageTooLargeModalOpened}
+        close={() => setImageTooLargeModalOpened(false)}
+      />
       {(maxCharCount || minCharCount) && editor && (
         <Box
           display="flex"

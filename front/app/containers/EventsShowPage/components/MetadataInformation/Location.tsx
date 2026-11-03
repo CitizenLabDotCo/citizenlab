@@ -11,6 +11,7 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
+import { isPrerender } from 'utils/prerender';
 
 import { Container, Content, StyledIcon } from './MetadataInformationStyles';
 
@@ -94,7 +95,8 @@ const Location = ({ event }: Props) => {
           )}
 
           {position &&
-            !isPhoneOrSmaller && ( // Negative margin extends the map outside the container
+            !isPhoneOrSmaller &&
+            !isPrerender() && ( // Negative margin extends the map outside the container
               <Box ml="-30px" width="300" mt="8px" id="e2e-location-map">
                 <LocationMap eventLocation={position} />
               </Box>

@@ -12,18 +12,13 @@ import {
   Success,
 } from '@citizenlab/cl2-component-library';
 import moment from 'moment';
-import GetGroup from 'resources/GetGroup';
 import styled from 'styled-components';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import useCampaign from 'api/campaigns/useCampaign';
-import useSendCampaign from 'api/campaigns/useSendCampaign';
-import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
-import { isDraft } from 'api/campaigns/util';
-import useProjectById from 'api/projects/useProjectById';
-import useUserById from 'api/users/useUserById';
-
-import useLocalize from 'hooks/useLocalize';
+import useEmailCampaign from 'api/campaigns/email/useEmailCampaign';
+import useSendEmailCampaign from 'api/campaigns/email/useSendEmailCampaign';
+import useSendEmailCampaignPreview from 'api/campaigns/email/useSendEmailCampaignPreview';
+import { isEmailCampaignDraft } from 'api/campaigns/email/util';
 
 import DraftCampaignDetails from 'components/admin/Email/DraftCampaignDetails';
 import EmailScheduling from 'components/admin/Email/Scheduling';
@@ -37,29 +32,17 @@ import Modal from 'components/UI/Modal';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
-import Link from 'utils/cl-router/Link';
 import { removeSearchParams } from 'utils/cl-router/removeSearchParams';
-import { isNilOrError } from 'utils/helperUtils';
 import { useParams, useSearch } from 'utils/router';
-import { getFullName } from 'utils/textUtils';
 
 import messages from '../../messages';
+
+import FromTo from './FromTo';
 
 const StampIcon = styled(Stamp)`
   margin-right: 20px;
 `;
 
-const FromTo = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  font-size: ${fontSizes.base}px;
-  margin-right: auto;
-`;
-
-const FromToHeader = styled.span`
-  font-weight: bold;
-`;
 const Buttons = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -67,15 +50,6 @@ const Buttons = styled.div`
     padding: 0 10px;
   }
   align-items: center;
-`;
-
-const GroupLink = styled.a`
-  color: inherit;
-  cursor: pointer;
-
-  &:hover {
-    text-decoration: underline;
-  }
 `;
 
 const ButtonsWrapper = styled.div`
@@ -99,22 +73,15 @@ const Show = () => {
   const { campaignId } = useParams({ strict: false }) as { campaignId: string };
 
   const { data: tenant } = useAppConfiguration();
-  const { data: campaign } = useCampaign(campaignId);
-  const { data: project } = useProjectById(
-    campaign?.data.relationships.context?.data?.id
-  );
-
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const authorId = campaign?.data.relationships.author.data?.id;
-  const { data: sender } = useUserById(authorId);
+  const { data: campaign } = useEmailCampaign(campaignId);
 
   const {
     mutate: sendCampaign,
-    isLoading: isSendingCampaign,
+    isPending: isSendingCampaign,
     error: apiSendErrors,
-  } = useSendCampaign();
-  const { mutate: sendCampaignPreview, isLoading: isSenndingCampaignPreview } =
-    useSendCampaignPreview();
+  } = useSendEmailCampaign();
+  const { mutate: sendCampaignPreview, isPending: isSenndingCampaignPreview } =
+    useSendEmailCampaignPreview();
   const searchParams = useSearch({
     from: '/$locale/admin/messaging/emails/custom/$campaignId',
   });
@@ -134,7 +101,6 @@ const Show = () => {
     created: messages.emailCreated,
   };
   const isLoading = isSendingCampaign || isSenndingCampaignPreview;
-  const localize = useLocalize();
   const { formatMessage } = useIntl();
 
   const [showSendConfirmationModal, setShowSendConfirmationModal] =
@@ -159,31 +125,6 @@ const Show = () => {
     });
   };
 
-  const handleGroupLinkClick =
-    (groupId?: string) => (event: React.FormEvent<any>) => {
-      event.preventDefault();
-      if (groupId) {
-        clHistory.push(`/admin/users/groups/${groupId}`);
-      } else {
-        clHistory.push('/admin/users');
-      }
-    };
-
-  const getSenderName = (senderType: string) => {
-    let senderName: string | null = null;
-
-    if (senderType === 'author' && sender) {
-      senderName = getFullName(sender.data);
-    } else if (senderType === 'organization' && tenant) {
-      senderName = localize(
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        tenant?.data.attributes.settings.core.organization_name
-      );
-    }
-
-    return senderName;
-  };
-
   const openSendConfirmationModal = () => {
     setShowSendConfirmationModal(true);
   };
@@ -205,8 +146,6 @@ const Show = () => {
     const groupIds: string[] = campaign.data.relationships.groups.data.map(
       (group) => group.id
     );
-    const senderType = campaign.data.attributes.sender;
-    const senderName = getSenderName(senderType);
     const noGroupsSelected = groupIds.length === 0;
 
     const goBack = () => {
@@ -221,13 +160,13 @@ const Show = () => {
             <Title mr="12px">
               <T value={campaign.data.attributes.subject_multiloc} />
             </Title>
-            {isDraft(campaign.data) && (
+            {isEmailCampaignDraft(campaign.data) && (
               <StatusLabel
                 backgroundColor={colors.brown}
                 text={<FormattedMessage {...messages.draft} />}
               />
             )}
-            {!isDraft(campaign.data) &&
+            {!isEmailCampaignDraft(campaign.data) &&
               !campaign.data.attributes.scheduled_at && (
                 <StatusLabel
                   backgroundColor={colors.success}
@@ -248,7 +187,7 @@ const Show = () => {
               </>
             )}
           </Box>
-          {(isDraft(campaign.data) ||
+          {(isEmailCampaignDraft(campaign.data) ||
             campaign.data.attributes.scheduled_at) && (
             <Buttons>
               <ButtonWithLink
@@ -304,63 +243,8 @@ const Show = () => {
           marginBottom="20px"
         >
           <StampIcon />
-          <FromTo>
-            <div>
-              <FromToHeader>
-                <FormattedMessage {...messages.campaignFrom} />
-                &nbsp;
-              </FromToHeader>
-              <span>{senderName}</span>
-            </div>
-            <div>
-              <FromToHeader>
-                <FormattedMessage {...messages.campaignTo} />
-                &nbsp;
-              </FromToHeader>
-              {campaign.data.attributes.campaign_name ===
-                'manual_project_participants' &&
-                project && (
-                  <span>
-                    <FormattedMessage {...messages.allParticipantsInProject} />{' '}
-                    <Link
-                      to="/admin/projects/$projectId"
-                      params={{ projectId: project.data.id }}
-                      target="_blank"
-                    >
-                      {localize(project.data.attributes.title_multiloc)}
-                    </Link>
-                  </span>
-                )}
-              {noGroupsSelected &&
-                campaign.data.attributes.campaign_name === 'manual' && (
-                  <GroupLink onClick={handleGroupLinkClick()}>
-                    {formatMessage(messages.allUsers)}
-                  </GroupLink>
-                )}
-              {groupIds.map((groupId, index) => (
-                <GetGroup key={groupId} id={groupId}>
-                  {(group) => {
-                    if (index < groupIds.length - 1) {
-                      return (
-                        <GroupLink onClick={handleGroupLinkClick(groupId)}>
-                          {!isNilOrError(group) &&
-                            localize(group.attributes.title_multiloc)}
-                          ,{' '}
-                        </GroupLink>
-                      );
-                    }
-                    return (
-                      <GroupLink onClick={handleGroupLinkClick(groupId)}>
-                        {!isNilOrError(group) &&
-                          localize(group.attributes.title_multiloc)}
-                      </GroupLink>
-                    );
-                  }}
-                </GetGroup>
-              ))}
-            </div>
-          </FromTo>
-          {(isDraft(campaign.data) ||
+          <FromTo campaign={campaign} />
+          {(isEmailCampaignDraft(campaign.data) ||
             campaign.data.attributes.scheduled_at) && (
             <Box>
               <Button
@@ -383,7 +267,8 @@ const Show = () => {
           )}
         </Box>
 
-        {isDraft(campaign.data) || campaign.data.attributes.scheduled_at ? (
+        {isEmailCampaignDraft(campaign.data) ||
+        campaign.data.attributes.scheduled_at ? (
           <DraftCampaignDetails campaign={campaign.data} />
         ) : (
           <SentCampaignDetails campaignId={campaign.data.id} />

@@ -10,7 +10,6 @@ describe('Admin: project input manager', () => {
     cy.apiCreateProject({
       title: randomString(),
       descriptionPreview: randomString(),
-      description: randomString(),
     }).then((project) => {
       const projectId = project.body.data.id;
 

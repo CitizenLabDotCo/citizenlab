@@ -1,8 +1,7 @@
 import React, { useMemo } from 'react';
 
-import { Box, colors } from '@citizenlab/cl2-component-library';
 import { useFormContext } from 'react-hook-form';
-import styled, { useTheme } from 'styled-components';
+import { useTheme } from 'styled-components';
 
 import useAreas from 'api/areas/useAreas';
 import { IFlatCustomField } from 'api/custom_fields/types';
@@ -12,21 +11,15 @@ import useLocalize from 'hooks/useLocalize';
 import Input from 'components/HookForm/Input';
 import RadioGroup from 'components/HookForm/RadioGroup';
 import Radio from 'components/HookForm/RadioGroup/Radio';
-import Select from 'components/HookForm/Select';
+import SearchSelect from 'components/HookForm/SearchSelect';
 
-import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 
+import { SEARCHABLE_OPTION_COUNT } from '../constants';
 import messages from '../messages';
-import { extractOptions } from '../util';
+import { extractOptions, isDropdownLayoutForced } from '../util';
 
-const StyledBox = styled(Box)<{ selected: boolean }>`
-  cursor: pointer;
-  &:hover {
-    box-shadow: 0 0 0 1px
-      ${({ selected }) => (selected ? 'undefined' : colors.borderDark)};
-  }
-`;
+import RadioOptionBox, { radioOptionPadding } from './_shared/RadioOptionBox';
 
 const SingleSelectField = ({
   question,
@@ -57,23 +50,25 @@ const SingleSelectField = ({
     return extractOptions(question, localize, question.random_option_ordering);
   }, [question, localize, areas, formatMessage]);
 
-  const selectOptions = useMemo(() => {
-    // Add empty option at the beginning if field is not required (only for dropdown)
-    if (!question.required) {
-      return [{ value: '', label: '' }, ...options];
-    }
-    return options;
-  }, [question.required, options]);
+  const isSearchable = options.length >= SEARCHABLE_OPTION_COUNT;
+  const dropdownLayout =
+    question.dropdown_layout ||
+    isDropdownLayoutForced(question.input_type, options.length);
 
   return (
     <>
-      {question.dropdown_layout ? (
-        <Select
+      {dropdownLayout ? (
+        <SearchSelect
           name={question.key}
-          options={selectOptions}
+          options={options}
+          isSearchable={isSearchable}
+          isClearable={!question.required}
+          required={question.required}
+          placeholder={
+            isSearchable ? formatMessage(messages.typeToSearch) : undefined
+          }
           scrollErrorIntoView={scrollErrorIntoView}
-          disabled={disabled}
-          aria-required={question.required}
+          isDisabled={disabled}
         />
       ) : (
         <RadioGroup
@@ -81,21 +76,9 @@ const SingleSelectField = ({
           padding="0px"
           aria-required={question.required}
         >
-          <ScreenReaderOnly>
-            <legend>{localize(question.title_multiloc)}</legend>
-          </ScreenReaderOnly>
           {options.map((option) => (
-            <StyledBox
-              style={{ cursor: 'pointer' }}
-              mb="12px"
-              padding="20px 20px 8px 20px"
-              border={
-                option.value === value
-                  ? `2px solid ${theme.colors.tenantPrimary}`
-                  : `1px solid ${theme.colors.borderDark}`
-              }
+            <RadioOptionBox
               key={option.value}
-              borderRadius="3px"
               selected={option.value === value}
             >
               <Radio
@@ -107,8 +90,9 @@ const SingleSelectField = ({
                 buttonColor={theme.colors.tenantPrimary}
                 canDeselect
                 disabled={disabled}
+                {...radioOptionPadding}
               />
-            </StyledBox>
+            </RadioOptionBox>
           ))}
         </RadioGroup>
       )}
@@ -117,6 +101,7 @@ const SingleSelectField = ({
           name={`${question.key}_other`}
           type="text"
           placeholder={formatMessage(messages.typeYourAnswer)}
+          disabled={disabled}
         />
       )}
     </>

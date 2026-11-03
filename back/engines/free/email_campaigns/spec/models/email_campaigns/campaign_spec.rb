@@ -3,6 +3,40 @@
 require 'rails_helper'
 
 RSpec.describe EmailCampaigns::Campaign do
+  it_behaves_like 'a plain text multiloc', factory: :welcome_campaign
+
+  describe 'plain text regions' do
+    it 'strips markup from the subject of a manual campaign' do
+      campaign = create(:manual_campaign, subject_multiloc: { 'en' => '<b>Almost</b> done' })
+      expect(campaign.subject_multiloc['en']).to eq 'Almost done'
+    end
+
+    it 'strips markup from the subject and button text of an automated campaign' do
+      campaign = create(
+        :welcome_campaign,
+        subject_multiloc: { 'en' => '<b>Welcome</b>' },
+        button_text_multiloc: { 'en' => '<i>Go</i>' }
+      )
+      expect(campaign.subject_multiloc['en']).to eq 'Welcome'
+      expect(campaign.button_text_multiloc['en']).to eq 'Go'
+    end
+
+    # The readers merge in the region defaults, so stripping the reader's value rather than the
+    # column would save a default as if an admin had typed it.
+    it 'does not write a merged default into the row' do
+      campaign = create(:welcome_campaign, subject_multiloc: { 'en' => '<b>Welcome</b>' })
+      expect(campaign.reload[:title_multiloc]).to be_blank
+    end
+  end
+
+  describe '#channel' do
+    it "defaults to 'email' and persists it" do
+      campaign = create(:welcome_campaign)
+      expect(campaign.channel).to eq('email')
+      expect(campaign.reload.channel).to eq('email')
+    end
+  end
+
   describe '#apply_recipient_filters' do
     let(:campaign) { create(:invite_received_campaign) }
     let(:invite) { create(:invite) }

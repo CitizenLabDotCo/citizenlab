@@ -26,7 +26,7 @@ class McpServer::Tools::ListUsers < McpServer::BaseTool
         'users',
         scope,
         **params.slice(:page, :per_page),
-        only: %i[id first_name last_name email roles]
+        serializer: McpServer::Serializers::User
       )
     end
   end

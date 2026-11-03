@@ -19,6 +19,7 @@ export type IAppConfigurationSettingsCore = {
   locales: SupportedLocale[];
   population: number | null;
   weglot_api_key: string | null;
+  weglot_switcher_in_navbar?: boolean;
   timezone: string;
   organization_name: Multiloc;
   organization_site?: string;
@@ -57,6 +58,7 @@ export type IAppConfigurationSettingsCore = {
   customer_portal_url?: string | null;
   anonymous_name_scheme?: string | null;
   private_attributes_in_export: boolean;
+  exclude_admins_and_moderators_from_statistics?: boolean;
   country_code: string | null;
 };
 
@@ -75,8 +77,8 @@ export interface IAppConfigurationSettings {
   password_login?: {
     allowed: boolean;
     enabled: boolean;
-    enable_signup: boolean;
     minimum_length?: number;
+    minimum_strength?: number;
   };
   custom_accessibility_statement_link: {
     allowed: boolean;
@@ -92,6 +94,11 @@ export interface IAppConfigurationSettings {
   verification?: {
     verification_methods: string[];
   };
+  sms?: AppConfigurationFeature & {
+    allowed_country_codes?: string[];
+  };
+  sms_login?: AppConfigurationFeature;
+  sms_manual_campaigns?: AppConfigurationFeature;
   smart_groups?: AppConfigurationFeature;
   typeform_surveys?: {
     allowed: boolean;
@@ -108,7 +115,6 @@ export interface IAppConfigurationSettings {
   survey_xact_surveys?: AppConfigurationFeature;
   snap_survey_surveys?: AppConfigurationFeature;
   project_preview_link?: AppConfigurationFeature;
-  granular_permissions?: AppConfigurationFeature;
   machine_translations?: AppConfigurationFeature;
   polls?: AppConfigurationFeature;
   moderation?: AppConfigurationFeature;
@@ -118,13 +124,11 @@ export interface IAppConfigurationSettings {
   blocking_profanity?: AppConfigurationFeature;
   anonymous_participation?: AppConfigurationFeature;
   form_mapping?: AppConfigurationFeature;
+  input_form_answer_filters?: AppConfigurationFeature;
   custom_idea_statuses?: AppConfigurationFeature;
   intercom?: AppConfigurationFeature;
   satismeter?: AppConfigurationFeature & {
     write_key: string;
-  };
-  google_analytics?: AppConfigurationFeature & {
-    tracking_id: string;
   };
   google_tag_manager?: AppConfigurationFeature & {
     destinations: string;
@@ -176,7 +180,6 @@ export interface IAppConfigurationSettings {
   prescreening_ideation?: AppConfigurationFeature;
   input_cosponsorship?: AppConfigurationFeature;
   project_review?: AppConfigurationFeature;
-  parallel_participation?: AppConfigurationFeature;
   input_iq?: AppConfigurationFeature;
   platform_templates?: AppConfigurationFeature;
   authoring_assistance_prototype?: AppConfigurationFeature;
@@ -202,8 +205,13 @@ export interface IAppConfigurationSettings {
   draft_phase_description?: AppConfigurationFeature;
   custom_smtp?: AppConfigurationFeature;
   hide_submission_removal_text?: AppConfigurationFeature;
+  project_static_pages?: AppConfigurationFeature;
+  project_backoffice_redesign?: AppConfigurationFeature;
   html_block_in_content_builder?: AppConfigurationFeature;
-  pdf_export_responses?: AppConfigurationFeature;
+  custom_page_builder?: AppConfigurationFeature;
+  configurable_dropdown?: AppConfigurationFeature;
+  llm_reporting?: AppConfigurationFeature;
+  ai_assistant?: AppConfigurationFeature;
 }
 
 export type TAppConfigurationSettingCore = keyof IAppConfigurationSettingsCore;

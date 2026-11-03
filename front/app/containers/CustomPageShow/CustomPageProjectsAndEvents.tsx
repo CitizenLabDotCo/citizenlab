@@ -71,23 +71,18 @@ const CustomPageProjectsAndEvents = ({
   // standalone project cards.
   const isSpaceFiltered = !!spaceIds;
 
-  const {
-    data,
-    isInitialLoading,
-    hasNextPage,
-    fetchNextPage,
-    isFetchingNextPage,
-  } = useAdminPublications({
-    pageSize: 6,
-    globalTopics,
-    areaIds,
-    spaceIds,
-    publicationStatusFilter: getPublicationStatuses(currentTab),
-    rootLevelOnly: isSpaceFiltered,
-    removeNotAllowedParents: true,
-    onlyProjects: !isSpaceFiltered,
-    remove_all_unlisted: true,
-  });
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } =
+    useAdminPublications({
+      pageSize: 6,
+      globalTopics,
+      areaIds,
+      spaceIds,
+      publicationStatusFilter: getPublicationStatuses(currentTab),
+      rootLevelOnly: isSpaceFiltered,
+      removeNotAllowedParents: true,
+      onlyProjects: !isSpaceFiltered,
+      remove_all_unlisted: true,
+    });
 
   const adminPublications = data?.pages.map((page) => page.data).flat();
 
@@ -117,7 +112,7 @@ const CustomPageProjectsAndEvents = ({
             adminPublications={adminPublications || []}
             statusCountsWithoutFilters={allStatusCountsWithoutFilters}
             layout="dynamic"
-            loadingInitial={isInitialLoading}
+            loadingInitial={isLoading}
             loadingMore={isFetchingNextPage}
             hasMore={hasNextPage}
             currentTab={currentTab}

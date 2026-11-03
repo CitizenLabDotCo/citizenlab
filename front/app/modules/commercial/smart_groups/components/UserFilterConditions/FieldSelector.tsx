@@ -58,6 +58,8 @@ const FieldSelector = memo(
         event_attendances: messages.field_event_attendances,
         lives_in: messages.field_lives_in,
         registration_completed_at: messages.field_registration_completed_at,
+        last_active_at: messages.field_last_active_at,
+        imported: messages.field_imported,
         role: messages.field_role,
         participated_in_project: messages.field_participated_in_project,
         participated_in_community_monitor:

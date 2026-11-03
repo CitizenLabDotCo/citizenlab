@@ -34,7 +34,11 @@ class WebApi::V1::CustomFormsController < ApplicationController
     container = container_class.find params[:id]
     authorize container
 
-    @custom_form = CustomForm.find_or_initialize_by participation_context: container
+    @custom_form = if params[:container_type] == 'Phase'
+      container.pmethod.custom_form
+    else
+      CustomForm.find_or_initialize_by(participation_context: container)
+    end
   end
 
   def update_params

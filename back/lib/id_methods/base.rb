@@ -17,6 +17,15 @@ module IdMethods
       raise NotImplementedError
     end
 
+    # True if this method is only available to employees.
+    # If true, method will be hidden in the access rights interface for
+    # platforms that have a SSO-only setup with more than 1 authentication method.
+    # In theory we could show both but requires a redesign of the whole interface,
+    # so for now we just hide the employee-only methods.
+    def employee_only?
+      false
+    end
+
     # @param [AppConfiguration] configuration
     def omniauth_setup(_configuration, _env)
       raise 'Subclass must implement this method'
@@ -60,10 +69,18 @@ module IdMethods
     end
 
     # @return [Array<Symbol>] Returns a list of user attributes that can be updated from the auth response hash
+    #
+    # Every locked attribute is updateable, and if there is at least 1 locked custom field,
+    # :custom_field_values will be included in the list of updateable attributes.
     def updateable_user_attrs
-      result = []
-      # If password_login is disabled, users cannot update their emails on UI,
-      # but we still want to keep their emails up to date.
+      result = respond_to?(:locked_attributes) ? locked_attributes.dup : []
+      result << :custom_field_values if respond_to?(:locked_custom_fields) && locked_custom_fields.any?
+
+      # :email is also the one attribute here that listing does not get written. Every
+      # other one lands as-is through the slice in UserService.update_in_sso!, whereas
+      # UserService#resolve_sso_email! takes the address from here and then decides for
+      # itself whether to write it, going by whether the SSO vouches for it and what the
+      # user already has.
       result << :email if !AppConfiguration.instance.feature_activated?('password_login')
       result
     end
@@ -78,13 +95,15 @@ module IdMethods
       raise NotImplementedError
     end
 
-    def email_always_present?
-      true
+    def confirmed_email_always_present?
+      false
     end
 
-    def email_confirmed?(_auth)
-      # TODO: (Luuc): should we set this to be auth.extra.raw_info.email_verified? by default?
-      true
+    def email_confirmed?(auth)
+      raw_info = auth&.dig(:extra, :raw_info)
+      email_verified = auth&.info&.email_verified
+      email_verified ||= raw_info[:email_verified] if raw_info.is_a?(Hash)
+      !!email_verified
     end
 
     def enforced_email_domains

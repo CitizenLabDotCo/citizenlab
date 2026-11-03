@@ -24,7 +24,7 @@ interface Props {
 const ActionsMenu = ({ space }: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const { mutate: deleteSpace, isLoading } = useDeleteSpace();
+  const { mutate: deleteSpace, isPending } = useDeleteSpace();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { data: authUser } = useAuthUser();
 
@@ -39,12 +39,12 @@ const ActionsMenu = ({ space }: Props) => {
       },
       label: formatMessage(messages.deleteSpaceButton),
       icon: 'delete' as const,
-      isLoading,
+      isLoading: isPending,
     },
   ];
 
   const handleCloseDeleteModal = () => {
-    if (!isLoading) {
+    if (!isPending) {
       setShowDeleteModal(false);
     }
   };
@@ -71,7 +71,7 @@ const ActionsMenu = ({ space }: Props) => {
           typedDeleteConfirmationMessages.confirmationWordDelete
         }
         deleteButtonText={messages.deleteSpaceButton}
-        isDeleting={isLoading}
+        isDeleting={isPending}
       />
     </>
   );

@@ -18,6 +18,9 @@ resource 'Events' do
   get 'web_api/v1/events' do
     parameter :project_ids, 'The ids of the project to filter events by', type: :array
     parameter :static_page_id, 'The id of the static page that shows events linked by projects', type: :string
+    parameter :areas, 'The ids of the areas whose projects to filter events by', type: :array
+    parameter :global_topics, 'The ids of the global topics whose projects to filter events by', type: :array
+    parameter :spaces, 'The ids of the spaces whose projects to filter events by', type: :array
     parameter :start_at_lt, 'Filter by maximum start at', type: :string
     parameter :start_at_gteq, 'Filter by minimum start at', type: :string
     parameter :project_publication_statuses, 'The publication statuses of the project to filter events by', type: :array
@@ -52,6 +55,18 @@ resource 'Events' do
       example_request 'List all events of a page' do
         assert_status 200
         expect(response_data.size).to eq 2
+        expect(response_ids).to match_array(@project.events.pluck(:id))
+      end
+    end
+
+    context 'passing areas' do
+      let(:area) { create(:area) }
+      let(:areas) { [area.id] }
+
+      before { @project.update!(areas: [area]) }
+
+      example_request 'List all events of projects in an area' do
+        assert_status 200
         expect(response_ids).to match_array(@project.events.pluck(:id))
       end
     end
@@ -97,6 +112,28 @@ resource 'Events' do
       example 'List events that overlap with the given range (both open-ended)', document: false do
         do_request(ongoing_during: '[null,null]')
         expect(response_data.size).to eq(Event.count)
+      end
+    end
+
+    context 'with malformed parameters' do
+      example 'returns 400 for an unsupported sort parameter', document: false do
+        do_request(sort: "start_at; WAITFOR DELAY '00:00:07'")
+        assert_status 400
+      end
+
+      example 'returns 400 for an unparseable ends_before_date', document: false do
+        do_request(ends_before_date: 'not-a-real-date')
+        assert_status 400
+      end
+
+      example 'returns 400 for an oversized ongoing_during value', document: false do
+        do_request(ongoing_during: "[#{'9' * 180},null]")
+        assert_status 400
+      end
+
+      example 'ignores a malformed nested page parameter instead of erroring', document: false do
+        do_request(page: { number: { injected: '1' } })
+        assert_status 200
       end
     end
 
@@ -178,6 +215,21 @@ resource 'Events' do
           assert_status 200
           expect(response_data.size).to eq 4
           expected_ids = @events.pluck(:id) + @unlisted_events.pluck(:id)
+          expect(response_ids.sort).to match_array(expected_ids.sort)
+        end
+      end
+
+      context 'when filtering by attendee ID' do
+        before do
+          @attendee = create(:user)
+          [@events.first, @unlisted_events.first].each { |event| event.attendees << @attendee }
+          header_token_for @attendee
+        end
+
+        example 'Does list unlisted project the attendee is registered to' do
+          do_request(attendee_id: @attendee.id)
+          assert_status 200
+          expected_ids = [@events.first.id, @unlisted_events.first.id]
           expect(response_ids.sort).to match_array(expected_ids.sort)
         end
       end
@@ -287,7 +339,9 @@ resource 'Events' do
   end
 
   get 'web_api/v1/events/:id' do
-    let(:event) { @events.first }
+    # Reload: counter_culture updates the in-memory attendees_count of the shared
+    # before_all records, which other examples' attendances would otherwise leak into.
+    let(:event) { @events.first.reload }
     let(:id) { event.id }
 
     example_request 'Get one event by id' do
@@ -595,11 +649,14 @@ resource 'Events' do
   get 'web_api/v1/users/:user_id/events' do
     route_summary 'List all events to which a user is registered'
 
+    let_it_be(:unlisted_project) { create(:project, listed: false) }
+    let_it_be(:unlisted_event) { create(:event, project: unlisted_project) }
+    let_it_be(:unattended_unlisted_event) { create(:event, project: unlisted_project) }
     let_it_be(:user) { create(:user) }
     let_it_be(:user_id) { user.id }
 
     let_it_be(:user_events) do
-      [@events.first, @other_events.first].tap do |events|
+      [@events.first, @other_events.first, unlisted_event].tap do |events|
         events.each { |event| event.attendees << user }
       end
     end
@@ -627,6 +684,18 @@ resource 'Events' do
       before { header_token_for(user) }
 
       include_examples 'authorized'
+    end
+
+    context 'when moderator' do
+      before do
+        moderator = create(:user, roles: [{ type: 'project_moderator', project_id: unlisted_project.id }])
+        header_token_for moderator
+      end
+
+      example_request 'Lists only the events of the projects the moderator moderates' do
+        assert_status 200
+        expect(response_ids).to contain_exactly(unlisted_event.id)
+      end
     end
 
     context "when 'user_id' does not correspond to the current user" do

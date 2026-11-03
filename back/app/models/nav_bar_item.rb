@@ -32,6 +32,7 @@
 #  fk_rails_...  (static_page_id => static_pages.id)
 #
 class NavBarItem < ApplicationRecord
+  include PlainTextMultiloc
   # The codes must be listed in the correct default ordering.
   CODES = %w[home projects events all_input custom].freeze
 
@@ -51,7 +52,9 @@ class NavBarItem < ApplicationRecord
   validates :project, presence: true, if: :project?
   validates :project_folder, presence: true, if: :project_folder?
   validate :dropdown_constraints
+  validate :static_page_not_project_scoped
 
+  plain_text_multiloc :title_multiloc
   before_validation :set_code, on: :create
 
   # Top-level items only; dropdown children live under their parent.
@@ -124,6 +127,14 @@ class NavBarItem < ApplicationRecord
 
     errors.add(:base, 'A nested navbar item must link to a page, project or folder') unless links_to_target?
     errors.add(:parent, 'must be a dropdown item') unless parent&.dropdown?
+  end
+
+  # Project-scoped static pages live inside a single project and must never be
+  # added to the global navigation.
+  def static_page_not_project_scoped
+    return unless static_page&.project_id.present? || static_page&.project.present?
+
+    errors.add(:static_page, :project_scoped_not_allowed, message: 'cannot be a project-scoped page')
   end
 
   def fallback_title_multiloc

@@ -36,6 +36,7 @@ ar-MA:
         project_participants: للمشاركين في المشروع
         registered_users: للمستخدمين المسجلين
       recipient_segment:
+        admin_who_generated_the_report: المسؤول اللي طلب التقرير
         admins: المشرفون
         admins_and_managers: المسؤولون والمديرون
         admins_and_managers_assigned_to_the_input: المسؤولون والمديرون المعينون للإدخال
@@ -77,6 +78,7 @@ ar-MA:
         users_who_follow_the_proposal: المستخدمون الذين يتابعون الاقتراح
       trigger:
         7_days_after_invite_is_sent: 7 أيام بعد إرسال الدعوة
+        7_days_before_phase_starts: 7 أيام قبل بداية المرحلة
         7_days_before_the_project_changes_phase: 7 أيام قبل مرحلة تغييرات المشروع
         comment_is_deleted: تم حذف التعليق
         comment_is_flagged_as_spam: تم وضع علامة على التعليق على أنه بريد عشوائي
@@ -95,6 +97,7 @@ ar-MA:
         new_input_awaits_screening: مدخلات جديدة تنتظر الفحص
         new_input_is_published: تم نشر مدخلات جديدة
         new_proposal_is_posted: تم نشر اقتراح جديد
+        phase_starts: تبدأ مرحلة
         project_phase_changes: تغييرات مرحلة المشروع
         project_published: تم نشر المشروع
         project_review_request: طلب المنسق مراجعة المشروع
@@ -107,6 +110,7 @@ ar-MA:
         proposal_is_upvoted_above_threshold: تم التصويت لصالح الاقتراح فوق الحد الأدنى
         proposal_status_changes: تغييرات حالة الاقتراح
         registration_to_event: التسجيل في هذا الحدث
+        report_generated: التقرير كمل التوجاد ديالو
         survey_1_day_after_draft_saved: يوم واحد بعد آخر حفظ للمستخدم للاستطلاع في المسودة
         user_accepts_invitation_to_cosponsor_a_proposal: يقبل المستخدم الدعوة للمشاركة في رعاية الاقتراح
         user_changes_email: المستخدم يغير عنوان بريده الإلكتروني
@@ -184,24 +188,29 @@ ar-MA:
       manual_project_participants: الرسائل الرسمية للمشاركين في المشروع
       mention_in_internal_comment: أذكر في تعليق داخلي
       mention_in_official_feedback: ذكر في تحديث
+      merge_account_confirmation: كود تأكيد دمج الحساب
       moderator_digest: نظرة عامة أسبوعية لمديري المشاريع
       native_survey_not_submitted: لم يتم إرسال الاستطلاع
       new_comment_for_admin: تعليق جديد في مشروع أُشرف عليه
       new_email_confirmation: رمز تأكيد البريد الإلكتروني الجديد
       new_idea_for_admin_prescreening: مدخلات جديدة تتطلب الموافقة في مشروع أقوم بإدارته
       new_idea_for_admin_published: مدخلات منشورة جديدة في مشروع أقوم بإدارته
+      new_phone_confirmation: رمز جديد لتأكيد رقم الهاتف
       official_feedback_on_idea_you_follow: تحديث على فكرة تتابعها
       password_reset: تمت إعادة تعيين كلمة المرور
+      phone_confirmation: رمز تأكيد الهاتف
       project_folder_moderation_rights_received: تم استلام حقوق الإشراف على مجلد المشروع
       project_manager_rights_received: تم استلام صلاحيات مسير مشروع
       project_moderation_rights_received: تم استلام حقوق الإشراف على المشروع
-      project_phase_started: مرحلة مشروع جديدة
-      project_phase_upcoming: مرحلة مشروع جديدة قادمة
+      project_phase_started: بدأت المرحلة
+      project_phase_upcoming: المرحلة ستبدأ قريباً
       project_published: تم نشر المشروع
       project_review_request: طلب مراجعة المشروع
       project_review_state_change: تمت الموافقة على المشروع
       proposal_expired_for_admin: انتهت صلاحية المقترح دون الوصول إلى عتبة التصويت
+      report_generated: التقرير توجد
       screening_digest: تذكير بالفحص الأسبوعي
+      sms_manual: رسائل SMS رسمية
       space_moderation_rights_received: تم استلام صلاحيات مسير فضاء
       status_change_on_idea_you_follow: تغيير حالة الفكرة التي تتابعها
       survey_submitted: تم تقديم الاستطلاع
@@ -356,6 +365,7 @@ ar-MA:
         story: انتقل إلى قصتك
         suggestion: انتقل إلى اقتراحك
         topic: انتقل إلى موضوعك
+      phase_dates: من %{startDate} إلى %{endDate}
     idea_marked_as_spam:
       cta_button: مراجعة
       preheader: تصرف بناءً على تقرير الإزعاج هذا
@@ -471,6 +481,15 @@ ar-MA:
       preheader: ذكرك %{commentAuthor} في ملاحظات
       subject: ذكرك %{organizationName} في الملاحظات
       title: لقد تم ذكرك
+    merge_account_confirmation:
+      best_regards: مع أطيب التحيات،
+      event_description: 'شي واحد دخل لمنصة المشاركة ديال %{organizationName} وطلب يربط هاد الدخول بالحساب اللي كيستعمل هاد البريد الإلكتروني. إلا كنتي نتا، دخل كود التأكيد باش تكمل:'
+      expire_code: هاد الكود غادي تسالي الصلاحية ديالو فـ
+      hours_24: 24 ساعة.
+      ignore_email: إلا ما كنتيش نتا، تقدر تجاهل هاد البريد الإلكتروني بكل أمان. حتى حاجة ما تبدلات، وما كاين حتى شي واحد يقدر يستعمل هاد الكود بلا ما يدخل لهاد البريد الإلكتروني.
+      preheader: أكد البريد الإلكتروني ديالك الخاص بـ %{organizationName}
+      subject: أكد البريد الإلكتروني ديالك فمنصة المشاركة ديال %{organizationName}
+      title: أكد البريد الإلكتروني ديالك
     moderator_digest:
       cta_button: إدارة مشروعك
       event_description: لقد جمعنا لك المشاركات التي حظيت بأكبر قدر من النشاط خلال الأسبوع الماضي. اكتشف ما يحدث في مشروعك!
@@ -534,6 +553,9 @@ ar-MA:
       title: تم نشر مدخلات جديدة على منصتك
       today: اليوم
       yesterday: أمس
+    new_phone_confirmation:
+      sms_body: رمز التأكيد الخاص بك هو %{code}.
+      sms_body2: '%{organization_name}: رمز التأكيد ديالك هو %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: انتقل إلى هذا الإدخال
       event_description: "%{feedback_author_name} أعطى تحديثًا حول '%{input_title}'."
@@ -546,6 +568,9 @@ ar-MA:
       preheader: إعادة تعيين كلمة المرور الخاصة بك لـ %{organizationName}
       subject: '%{organizationName}: إعادة تعيين كلمة المرور الخاصة بك'
       title: اختر كلمة مرور جديدة
+    phone_confirmation:
+      sms_body: رمز التأكيد الخاص بك هو %{code}.
+      sms_body2: '%{organization_name}: رمز التأكيد ديالك هو %{code}.'
     preview_data:
       author_display_name: جين دو
       author_first_name: جين
@@ -564,8 +589,9 @@ ar-MA:
       input_status_description: مثال على حالة الإدخال (على سبيل المثال مقبول، مرفوض، تم تنفيذه...)
       input_status_title: حالة المثال
       official_feedback_body: مثال على التعليقات الرسمية
+      phase_description: هذا مثال لمحتوى المرحلة يُستخدم لمعاينة محتوى رسائل البريد الإلكتروني. هذا ليس محتوى حقيقياً.
       phase_title: مرحلة المثال
-      project_description_preview: هذا مثال على محتوى المرحلة المستخدم لمعاينة محتوى رسائل البريد الإلكتروني. هذا ليس محتوى حقيقيًا.
+      project_description_preview: هذا مثال لمحتوى المشروع يُستخدم لمعاينة محتوى رسائل البريد الإلكتروني. هذا ليس محتوى حقيقياً.
       project_title: مشروع مثال
       proposal_title: مثال على الاقتراح
       space_title: فضاء تجريبي
@@ -600,21 +626,21 @@ ar-MA:
       title_what_can_you_do_moderator: ما الذي يمكنك القيام به بصفتك مدير المشروع؟
       x_ideas: '%{numberOfIdeas} أفكار'
     project_phase_started:
-      cta_button: اكتشف هذه المرحلة الجديدة
-      event_description: دخل هذا المشروع مرحلة جديدة على المنصة الخاصة بـ %{organizationName}. انقر على الرابط أدناه لمعرفة المزيد!
+      cta_button: اطلع على المستجدات
+      event_description: "يمكنك الآن المشاركة في '%{phaseTitle}' على منصة %{organizationName}."
       new_phase: "دخل هذا المشروع المرحلة '%{phaseTitle}'"
-      preheader: بدأت مرحلة جديدة لـ %{projectName}
-      subject: دخل %{projectName} مرحلة جديدة
+      preheader: "يمكنك الآن المشاركة في '%{phaseTitle}'"
+      subject: "بدأ '%{phaseTitle}' في %{projectName}"
       subtitle: "'%{projectName}' حول"
-      title: "بدأت مرحلة جديدة للمشروع '%{projectName}'"
+      title: "هناك جديد في '%{projectName}'"
     project_phase_upcoming:
-      cta_button: إعداد هذه المرحلة الجديدة
-      event_description: "سيدخل المشروع '%{projectName}' مرحلة جديدة عمّا قريب. تأكد من إعداد كل شيء في هذه المرحلة: هل الوصف كافٍ؟ هل تم نقل الأفكار المحدّدة إلى هذه المرحلة؟ هل ترغب في إعلام المواطنين بتفاصيل هذه المرحلة عبر حملة بريد إلكتروني مخصصة؟"
+      cta_button: مراجعة الإعدادات
+      event_description: "سيبدأ '%{phaseTitle}' في مشروع '%{projectName}' يوم %{startDate}. خصص لحظة للتأكد من أن كل شيء جاهز: هل الوصف مكتمل؟ هل التواريخ صحيحة؟ هل ترغب في إبلاغ مجتمعك من خلال حملة بريد إلكتروني مخصصة؟"
       new_phase: "سيدخل المشروع المرحلة '%{phaseTitle}'"
-      preheader: قريبًا ستبدأ مرحلة جديدة لـ %{projectName}
-      subject: قم بإعداد كل شيء للمرحلة الجديدة الخاصة بـ %{projectName}
+      preheader: تأكد من أن كل شيء جاهز قبل %{startDate}
+      subject: "%{projectName}: سيبدأ '%{phaseTitle}' يوم %{startDate}"
       subtitle: "'%{projectName}' حول"
-      title: '%{firstName}، سيدخل المشروع مرحلة جديدة قريبًا'
+      title: "%{firstName}، سيبدأ '%{phaseTitle}' يوم %{startDate}"
     project_published:
       cta_button: انتقل إلى هذا المشروع
       event_description: 'لقد نشرت منصة المشاركة %{organizationName} للتو المشروع التالي:'
@@ -638,6 +664,13 @@ ar-MA:
       preheader: انتهت صلاحية مساهمة دون الوصول إلى العتبة
       subject: انتهت صلاحية "%{input_title}" دون الوصول إلى العتبة
       title: انتهت صلاحية مساهمة دون الوصول إلى عتبة التصويت
+    report_generated:
+      cta_button: حل التقرير
+      event_description: التقرير تكتب وهو واجد دابا باش تراجعه وتعدله.
+      preheader: التقرير ديالك واجد
+      stopped_early: الكتابة تحبسات قبل ما يكمل التقرير. كاع داكشي اللي تكتب حتى ل دابا راه تسجل — حله واطلب الباقي ف الشات.
+      subject: "التقرير ديالك على '%{projectName}' واجد"
+      title: التقرير ديالك واجد
     schedules:
       quarterly: ربع سنوي، في اليوم الأول من الربع
       weekly:

@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 # After https://github.com/nsarno/knock/blob/master/app/controllers/knock/auth_token_controller.rb.
+#
+# Only used by the public API token endpoint. User tokens are issued by
+# WebApi::V1::UserTokenController, which does not go through here.
 module AuthToken
   class AuthTokenController < ActionController::API
     before_action :authenticate
@@ -14,11 +17,12 @@ module AuthToken
     private
 
     def authenticate
-      block_because_requires_confirmation = entity.try(:confirmation_required?)
+      # A blank secret is never a valid credential. The entity is expected to reject it as
+      # well, but we refuse it here too so that no entity implementation can ever hand out a
+      # token to a request that did not supply a password/secret.
+      raise ActiveRecord::RecordNotFound if auth_params[secret_param].blank?
 
-      return if entity.present? &&
-                entity.authenticate(auth_params[secret_param]) &&
-                !block_because_requires_confirmation
+      return if entity.present? && entity.authenticate(auth_params[secret_param])
 
       raise ActiveRecord::RecordNotFound
     end

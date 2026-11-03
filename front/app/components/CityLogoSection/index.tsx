@@ -57,7 +57,7 @@ const CityLogoSection = () => {
   const tenantImage = (
     <Image
       src={currentTenantLogo}
-      alt={localizedOrgName}
+      alt=""
       height="100px"
       marginBottom="20px"
       width="100%"
@@ -75,7 +75,8 @@ const CityLogoSection = () => {
           aria-label={formatMessage(
             isExternalSite
               ? messages.logoLinkAriaLabelExternal
-              : messages.logoLinkAriaLabelInternal
+              : messages.logoLinkAriaLabelInternal,
+            { orgName: localizedOrgName }
           )}
         >
           {tenantImage}

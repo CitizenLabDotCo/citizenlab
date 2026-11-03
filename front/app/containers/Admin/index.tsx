@@ -5,6 +5,12 @@ import styled from 'styled-components';
 
 import useAuthUser from 'api/me/useAuthUser';
 
+import {
+  CUSTOM_PAGE_BUILDER_PATH,
+  HOMEPAGE_BUILDER_PATH,
+  PROJECT_PAGE_BUILDER_PATH,
+} from 'components/admin/ContentBuilder/constants';
+
 import clHistory from 'utils/cl-router/history';
 import { usePermission } from 'utils/permissions';
 import { Outlet as RouterOutlet, useLocation } from 'utils/router';
@@ -61,6 +67,10 @@ export const RightColumn = styled.div`
     max-width: none;
   }
 
+  &.projectPage {
+    min-width: 0;
+  }
+
   &.noPadding {
     padding: 0;
     max-width: none;
@@ -114,20 +124,20 @@ const AdminPage = memo<Props>(({ className }) => {
   const isReportBuilderEditorRoute = pathname.match(
     /\/admin\/reporting\/report-builder\/[\w-]+\/editor$/
   );
-  const isHomePageBuilderRoute = pathname.match(
-    /\/admin\/pages-menu\/homepage-builder/
-  );
+  const isHomePageBuilderRoute = pathname.includes(HOMEPAGE_BUILDER_PATH);
   const isDescriptionBuilderRoute = pathname.match(
     /\/admin\/description-builder/
   );
-  const isProjectPageBuilderRoute = pathname.match(
-    /\/admin\/project-page-builder/
+  const isProjectPageBuilderRoute = pathname.includes(
+    PROJECT_PAGE_BUILDER_PATH
   );
+  const isCustomPageBuilderRoute = pathname.includes(CUSTOM_PAGE_BUILDER_PATH);
 
   const sidebarRendered =
     !isHomePageBuilderRoute &&
     !isDescriptionBuilderRoute &&
     !isProjectPageBuilderRoute &&
+    !isCustomPageBuilderRoute &&
     !isReportBuilderEditorRoute;
 
   const projectsExceptNewAndFoldersAndSpaces =
@@ -163,8 +173,9 @@ const AdminPage = memo<Props>(({ className }) => {
       {sidebarRendered && <Sidebar />}
       <RightColumn
         className={`
-          ${fullWidth ? 'fullWidth' : ''} 
+          ${fullWidth ? 'fullWidth' : ''}
           ${noPadding ? 'noPadding' : ''}
+          ${isProjectPage ? 'projectPage' : ''}
         `}
       >
         <RouterOutlet />

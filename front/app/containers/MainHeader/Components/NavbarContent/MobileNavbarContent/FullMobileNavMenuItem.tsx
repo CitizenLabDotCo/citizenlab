@@ -13,20 +13,17 @@ import Link, { typedStyled, type TypedLinkProps } from 'utils/cl-router/Link';
 
 const MenuItem = styled.li`
   font-size: ${fontSizes.base}px;
+  font-weight: 600;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  gap: 8px;
 `;
 
 const StyledLink = typedStyled(Link)`
   color: ${colors.textPrimary};
-  padding: 20px 10px;
-  border-radius: 5px;
   &:hover {
     color: ${darken(0.2, colors.textPrimary)};
-  }
-  &:active {
-    background: ${darken(0.05, '#fff')};
   }
   &.active {
     color: ${(props) => props.theme.colors.tenantPrimary};

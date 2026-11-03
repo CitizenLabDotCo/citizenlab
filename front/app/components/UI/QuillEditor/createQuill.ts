@@ -1,6 +1,13 @@
 import Quill, { Range } from 'quill';
+import Toolbar from 'quill/modules/toolbar';
+import Uploader from 'quill/modules/uploader';
+import BaseTheme from 'quill/themes/base';
 
-import type Toolbar from 'quill/modules/toolbar';
+// Matches the limit used by ImagesDropzone and our file uploaders. Note that
+// Quill inlines images as base64 data URLs, which adds roughly a third to the
+// payload that eventually gets sent to the server.
+export const MAX_IMAGE_SIZE_MB = 10;
+const MAX_IMAGE_SIZE_BYTES = MAX_IMAGE_SIZE_MB * 1000000;
 
 interface Params {
   id: string;
@@ -13,9 +20,12 @@ interface Params {
   noLinks: boolean;
   withGifSupport?: boolean;
   onBlur?: () => void;
+  onImageTooLarge?: () => void;
   altTextLabel?: string;
   imageTitleLabel?: string;
   ariaLabelledBy?: string;
+  ariaLabel?: string;
+  placeholder?: string;
 }
 
 export const createQuill = (
@@ -31,13 +41,17 @@ export const createQuill = (
     withGifSupport,
     withCTAButton,
     onBlur,
+    onImageTooLarge,
     altTextLabel,
     imageTitleLabel,
     ariaLabelledBy,
+    ariaLabel,
+    placeholder,
   }: Params
 ) => {
   const quill = new Quill(editorContainer, {
     theme: 'snow',
+    placeholder,
     formats: [
       'bold',
       'italic',
@@ -90,11 +104,32 @@ export const createQuill = (
           },
         },
       },
-      ...(withGifSupport && {
-        uploader: {
-          mimetypes: ['image/png', 'image/jpeg', 'image/gif'],
+      uploader: {
+        mimetypes: withGifSupport
+          ? ['image/png', 'image/jpeg', 'image/gif']
+          : ['image/png', 'image/jpeg'],
+        // Every upload path (toolbar button, drag & drop, paste) goes through
+        // Uploader.upload(), which calls this handler. Filtering here is the
+        // single place that catches oversized images before Quill inlines them
+        // as base64 data URLs.
+        handler(this: { quill: Quill }, range: Range, files: File[]) {
+          // With images disabled the image format isn't registered, so there
+          // is nothing to insert and nothing to warn about.
+          if (noImages) return;
+
+          const allowedFiles = files.filter(
+            (file) => file.size <= MAX_IMAGE_SIZE_BYTES
+          );
+
+          if (allowedFiles.length < files.length) {
+            onImageTooLarge?.();
+          }
+
+          if (allowedFiles.length > 0) {
+            Uploader.DEFAULTS.handler.call(this, range, allowedFiles);
+          }
         },
-      }),
+      },
       clipboard: {
         matchVisual: false,
       },
@@ -196,6 +231,9 @@ export const createQuill = (
   if (ariaLabelledBy) {
     editor.setAttribute('aria-labelledby', ariaLabelledBy);
   }
+  if (ariaLabel) {
+    editor.setAttribute('aria-label', ariaLabel);
+  }
   editor.setAttribute('aria-multiline', 'true');
   editor.setAttribute('role', 'textbox');
 
@@ -251,4 +289,21 @@ export const createQuill = (
   }
 
   return quill;
+};
+
+// Only matters in development, where StrictMode mounts the editor twice. The toolbar outlives
+// the first Quill, and Quill can't remove its listeners, so leave them nothing to act on.
+export const detachQuillFromToolbar = (quill: Quill) => {
+  const toolbar = quill.getModule('toolbar');
+  if (toolbar instanceof Toolbar) {
+    toolbar.controls = [];
+  }
+
+  if (quill.theme instanceof BaseTheme) {
+    quill.theme.pickers.forEach((picker) => {
+      picker.container.remove();
+      // The next picker copies the select's inline style, so it would be built hidden.
+      picker.select.style.display = '';
+    });
+  }
 };

@@ -10,6 +10,7 @@ import { getStepConfig } from './useSteps/stepConfig';
 export type ErrorCode =
   | 'account_creation_failed'
   | 'wrong_confirmation_code'
+  | 'wrong_phone_confirmation_code'
   | 'sign_in_failed'
   | 'requirements_fetching_failed'
   | 'invitation_error'
@@ -25,11 +26,16 @@ export type ErrorCode =
   | 'auth_no_match'
   | 'auth_service_error'
   | 'verification_taken'
-  | 'resending_code_failed';
+  | 'resending_code_failed'
+  | 'account_merge_not_allowed';
 
 export interface State {
   flow: 'signup' | 'signin';
   email: string | null;
+  phone: string | null;
+  new_email: string | null;
+  new_phone: string | null;
+  smsManualCampaignConsent: boolean;
   token: string | null;
   prefilledBuiltInFields: {
     first_name?: string;

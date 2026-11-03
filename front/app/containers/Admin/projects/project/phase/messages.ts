@@ -74,10 +74,6 @@ export default defineMessages({
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.registeredUsers',
     defaultMessage: 'Registered users',
   },
-  usersWithConfirmedEmail: {
-    id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.usersWithConfirmedEmail',
-    defaultMessage: 'Users with confirmed emails',
-  },
   mixedRights: {
     id: 'app.components.app.containers.AdminPage.ProjectEdit.phaseHeader.mixedRights',
     defaultMessage: 'Mixed rights',

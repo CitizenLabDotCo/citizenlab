@@ -4,7 +4,6 @@ import moment = require('moment');
 describe('Proposal edit page', () => {
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
-  const projectDescription = randomString();
   const oldTitle = randomString(40);
   const newTitle = randomString(40);
   const ideaContent = randomString(60);
@@ -30,7 +29,6 @@ describe('Proposal edit page', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -50,7 +48,7 @@ describe('Proposal edit page', () => {
           // Create a proposal with location
           return cy
             .apiCreateIdea({
-              projectId,
+              phaseId,
               ideaTitle: oldTitle,
               ideaContent: ideaContent,
               locationGeoJSON,
@@ -76,6 +74,8 @@ describe('Proposal edit page', () => {
 
     // Edit input form
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/form/edit`);
+    // A proposal has been published, so the builder warns about existing submissions
+    cy.get('#e2e-warning-notice').should('exist');
     // Delete the Details page
     cy.dataCy('e2e-form-fields')
       .contains('Details')

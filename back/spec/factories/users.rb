@@ -41,8 +41,14 @@ FactoryBot.define do
     end
 
     factory :user_with_demographics do
-      gender { ['male', 'female', 'unspecified', nil][rand(4)] }
-      birthyear { rand(2) == 0 ? (Time.now.year - 12 - rand(100)) : nil }
+      custom_field_answers do
+        gender = ['male', 'female', 'unspecified', nil][rand(4)]
+        birthyear = rand(2) == 0 ? (Time.now.year - 12 - rand(100)) : nil
+        [
+          gender && build(:custom_field_answer, key: 'gender', value: gender),
+          birthyear && build(:custom_field_answer, key: 'birthyear', value: birthyear)
+        ].compact
+      end
     end
 
     factory :sso_user do
@@ -50,6 +56,23 @@ FactoryBot.define do
         user.identities << create(:facebook_identity, user: user)
       end
     end
+  end
+
+  # Represents a user who verified a phone number through the confirmation flow,
+  # so SMS campaigns (which target confirmed numbers) reach this user.
+  trait :with_confirmed_phone do
+    sequence(:phone) { |n| "+1#{4_155_552_000 + n}" }
+    phone_confirmed_at { Time.zone.now }
+  end
+
+  # This is the phone equivalent of :unconfirmed_user: the state a user is in
+  # after entering their phone number, while they have not yet confirmed it and
+  # have not yet filled out any other fields.
+  factory :unconfirmed_phone_user, class: 'User' do
+    first_name { nil }
+    last_name { nil }
+    sequence(:phone) { |n| "+1#{4_155_553_000 + n}" }
+    locale { 'en' }
   end
 
   # This is an unconfirmed user. This is basically the state that a user is in

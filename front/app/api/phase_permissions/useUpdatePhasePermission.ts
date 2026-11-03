@@ -1,12 +1,14 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import { IPermission } from 'api/permissions/types';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import permissionsPhaseCustomFieldsKeys from '../permissions_phase_custom_fields/keys';
 
 import phasePermissionKeys from './keys';
-import { IPhasePermission, UpdatePermissionParams } from './types';
+import { UpdatePermissionParams } from './types';
 
 const updatePhasePermission = ({
   permissionId,
@@ -14,7 +16,7 @@ const updatePhasePermission = ({
   action,
   permission,
 }: UpdatePermissionParams) =>
-  fetcher<IPhasePermission>({
+  fetcher<IPermission>({
     path: `/phases/${phaseId}/permissions/${action}`,
     action: 'patch',
     body: { permissionId, permission },
@@ -22,12 +24,9 @@ const updatePhasePermission = ({
 
 const useUpdatePhasePermission = () => {
   const queryClient = useQueryClient();
-  return useMutation<IPhasePermission, CLErrors, UpdatePermissionParams>({
+  return useMutation<IPermission, CLErrors, UpdatePermissionParams>({
     mutationFn: updatePhasePermission,
     onSuccess: (_, { action, phaseId }) => {
-      queryClient.invalidateQueries({
-        queryKey: phasePermissionKeys.lists(),
-      });
       if (phaseId) {
         queryClient.invalidateQueries({
           queryKey: phasePermissionKeys.list({ phaseId }),

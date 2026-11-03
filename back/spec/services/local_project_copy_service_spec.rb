@@ -248,20 +248,19 @@ describe LocalProjectCopyService do
     end
 
     describe 'when source project has file attachments' do
-      before { create_list(:project_file, 2, project: open_ended_project) }
+      before do
+        create_list(:file, 2, projects: [open_ended_project]).each do |file|
+          create(:file_attachment, file: file, attachable: open_ended_project)
+        end
+      end
 
-      it 'creates associated copies of the file attachments' do
+      it 'creates associated copies of the files and their attachments' do
         copied_project = service.copy(open_ended_project)
 
-        expect(copied_project.project_files.count).to eq 2
-        expect(copied_project.project_files.first.file.url).to include(open_ended_project.project_files.first.name)
-
-        expect(copied_project.project_files.map do |record|
-          record.as_json(only: %i[ordering name])
-        end)
-          .to match_array(open_ended_project.project_files.map do |record|
-            record.as_json(only: %i[ordering name])
-          end)
+        expect(copied_project.files.count).to eq 2
+        expect(copied_project.file_attachments.count).to eq 2
+        expect(copied_project.attached_files.map(&:name))
+          .to match_array(open_ended_project.attached_files.map(&:name))
       end
     end
 
@@ -286,9 +285,8 @@ describe LocalProjectCopyService do
       let(:groups) { create_list(:group, 2) }
       let(:permission) do
         Permissions::PermissionsUpdateService.new.update_all_permissions
-        TimelineService.new
-          .current_phase_not_archived(source_project).permissions
-          .find_by(action: 'commenting_idea')
+        phase = TimelineService.new.current_phase_not_archived(source_project)
+        override_permissions!(phase, actions: ['commenting_idea']).first
       end
 
       it 'copies the action groups permission' do
@@ -297,32 +295,39 @@ describe LocalProjectCopyService do
         copied_project = service.copy(source_project)
         expect(copied_project.phases.first.permissions.find_by(action: 'commenting_idea').groups).to match_array(groups)
       end
+
+      it 'leaves the actions that inherit the global permission inherited' do
+        permission.update!(permitted_by: 'users', groups: groups)
+
+        copied_project = service.copy(source_project)
+        copied_phase = copied_project.phases.first
+        expect(copied_phase.permissions.pluck(:action)).to eq ['commenting_idea']
+        expect(Permissions::PermissionInheritanceService.new.find(copied_phase, 'posting_idea')).to be_inherited
+      end
     end
 
     describe 'when source project phase has file attachments' do
       let(:source_phase) { timeline_project.phases.order(:start_at).first }
 
-      before { create_list(:phase_file, 2, phase: source_phase) }
+      before do
+        files = create_list(:file, 2, projects: [timeline_project])
+        files.each { |file| create(:file_attachment, file: file, attachable: source_phase) }
+      end
 
-      it 'creates associated copies of the file attachments' do
+      it 'creates associated copies of the files and their attachments' do
         copied_project = service.copy(timeline_project)
         copied_phase = copied_project.phases.order(:start_at).first
 
-        expect(copied_phase.phase_files.count).to eq 2
-        expect(copied_phase.phase_files.first.file.url).to include(source_phase.phase_files.first.name)
-
-        expect(copied_phase.phase_files.map do |record|
-          record.as_json(only: %i[ordering name])
-        end)
-          .to match_array(source_phase.phase_files.map do |record|
-            record.as_json(only: %i[ordering name])
-          end)
+        expect(copied_phase.file_attachments.count).to eq 2
+        expect(copied_phase.attached_files.map(&:name))
+          .to match_array(source_phase.attached_files.map(&:name))
       end
     end
 
     it 'shifts timelines of phases to start first phase on day of copying' do
-      # Make sure to use a timeline that doesn't cross a DST boundary for this test.
-      freeze_time do
+      # Pin the date so that neither the original timeline nor the copied one (which
+      # starts today) crosses a DST boundary.
+      travel_to Time.zone.parse('2026-06-15 12:00') do
         project = create(:project)
         create(:phase, project: project, start_at: 10.days.ago, end_at: 5.days.ago)
         create(:phase, project: project, participation_method: 'information', start_at: 5.days.ago, end_at: 5.days.from_now)

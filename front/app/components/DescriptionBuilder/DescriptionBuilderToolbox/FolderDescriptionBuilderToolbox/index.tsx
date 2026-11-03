@@ -5,30 +5,27 @@ import { SupportedLocale } from 'typings';
 import useAppConfigurationLocales, {
   createMultiloc,
 } from 'hooks/useAppConfigurationLocales';
-
 import useFeatureFlag from 'hooks/useFeatureFlag';
-
-import Published from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Published';
-import Selection from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Selection';
-import Spotlight, {
-  spotlightTitle,
-} from 'containers/Admin/pagesAndMenu/containers/ContentBuilder/components/Widgets/Spotlight';
-import messages from 'containers/DescriptionBuilder/messages';
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
 import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
 import Section from 'components/admin/ContentBuilder/Toolbox/Section';
 import AccordionMultiloc from 'components/admin/ContentBuilder/Widgets/AccordionMultiloc';
 import ButtonMultiloc from 'components/admin/ContentBuilder/Widgets/ButtonMultiloc';
+import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
 import IframeMultiloc from 'components/admin/ContentBuilder/Widgets/IframeMultiloc';
 import ImageMultiloc from 'components/admin/ContentBuilder/Widgets/ImageMultiloc';
 import ImageTextCards from 'components/admin/ContentBuilder/Widgets/ImageTextCards';
+import Published from 'components/admin/ContentBuilder/Widgets/Published';
+import Selection from 'components/admin/ContentBuilder/Widgets/Selection';
+import Spotlight, {
+  spotlightTitle,
+} from 'components/admin/ContentBuilder/Widgets/Spotlight';
 import TextMultiloc from 'components/admin/ContentBuilder/Widgets/TextMultiloc';
 import ThreeColumn from 'components/admin/ContentBuilder/Widgets/ThreeColumn';
 import TwoColumn from 'components/admin/ContentBuilder/Widgets/TwoColumn';
 import WhiteSpace from 'components/admin/ContentBuilder/Widgets/WhiteSpace';
-import HtmlBlockMultiloc from 'components/admin/ContentBuilder/Widgets/HtmlBlockMultiloc';
-
+import messages from 'components/DescriptionBuilder/messages';
 import FolderFiles, {
   folderFilesTitle,
 } from 'components/DescriptionBuilder/Widgets/FolderFiles';
@@ -36,6 +33,7 @@ import FolderTitle, {
   folderTitleTitle,
 } from 'components/DescriptionBuilder/Widgets/FolderTitle';
 import InfoWithAccordions from 'components/DescriptionBuilder/Widgets/InfoWithAccordions';
+import NewLabel from 'components/UI/NewLabel';
 
 import {
   MessageDescriptor,
@@ -169,6 +167,7 @@ const FolderDescriptionBuilderToolbox = ({
             component={<HtmlBlockMultiloc />}
             icon="code"
             label={formatMessage(HtmlBlockMultiloc.craft.custom.title)}
+            labelSuffix={<NewLabel expiryDate={new Date('2027-02-19')} />}
           />
         )}
         <DraggableElement

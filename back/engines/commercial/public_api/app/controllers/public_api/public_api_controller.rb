@@ -4,6 +4,7 @@ module PublicApi
   class PublicApiController < ActionController::API
     include ::AuthToken::Authenticable
     include ::Pundit::Authorization
+    include CallerMetadata
 
     around_action :switch_locale
     before_action :authenticate_api_client
@@ -13,9 +14,7 @@ module PublicApi
 
     def append_info_to_payload(payload)
       super
-      payload[:tenant_id] = Tenant.safe_current&.id
-      payload[:tenant_host] = Tenant.safe_current&.host
-      payload[:api_client_id] = current_public_api_api_client&.id
+      append_caller_info(payload, current_public_api_api_client&.id)
     end
 
     def render_problem_details(exception)
@@ -103,7 +102,7 @@ module PublicApi
 
     def check_api_token
       if (api_client = current_public_api_api_client)
-        api_client.used!
+        api_client.used!(request.user_agent)
       else
         head :unauthorized
       end

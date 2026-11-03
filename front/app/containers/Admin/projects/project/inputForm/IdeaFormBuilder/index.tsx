@@ -9,6 +9,7 @@ import { FormBuilderConfig } from 'components/FormBuilder/utils';
 
 import { useParams } from 'utils/router';
 
+import useFormBuilderGoBackUrl from '../../../_shared/useFormBuilderGoBackUrl';
 import { ideationConfig, proposalsConfig } from '../utils';
 
 const configs: {
@@ -36,18 +37,16 @@ const IdeaFormBuilder = ({
 
   const { data: formCustomFields } = useFormCustomFields({
     projectId,
-    phaseId: config.isFormPhaseSpecific ? phaseId : undefined,
+    phaseId,
   });
 
-  const goBackUrl = `/admin/projects/${projectId}/phases/${phaseId}/form`;
+  const goBackUrl = useFormBuilderGoBackUrl(projectId, phaseId, 'form');
 
   return (
     <FormBuilder
-      builderConfig={{
-        ...config,
-        formCustomFields,
-        goBackUrl,
-      }}
+      builderConfig={config}
+      formCustomFields={formCustomFields}
+      goBackUrl={goBackUrl}
       viewFormLink={{
         to: '/projects/$slug/ideas/new',
         params: { slug: projectSlug },

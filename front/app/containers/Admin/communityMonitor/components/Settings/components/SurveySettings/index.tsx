@@ -11,6 +11,8 @@ import { downloadSurveyResults } from 'api/survey_results/utils';
 
 import useLocale from 'hooks/useLocale';
 
+import useInputResponseExport from 'containers/Admin/projects/project/inputResponseExport/useInputResponseExport';
+
 import DeleteModal from 'components/admin/SurveyDeleteModal/SurveyDeleteModal';
 import DropdownSettings from 'components/admin/SurveyDropdownSettings/DropdownSettings';
 import EditWarningModal from 'components/admin/SurveyEditWarningModal';
@@ -32,6 +34,14 @@ const SurveySettings = () => {
   const phaseId = project?.data.relationships.current_phase?.data?.id;
   const { data: phase } = usePhase(phaseId);
   const { mutate: updatePhase } = useUpdatePhase();
+
+  // The shared responses export flow (PDF/Excel with PII review). The empty
+  // fallbacks are unreachable: the modal can only be opened from UI that
+  // renders after the guard below.
+  const inputResponseExport = useInputResponseExport({
+    projectId: project?.data.id ?? '',
+    phaseId: phaseId ?? '',
+  });
 
   // Form hooks
   const { mutate: deleteFormResults } = useDeleteSurveyResults();
@@ -151,6 +161,8 @@ const SurveySettings = () => {
             <DropdownSettings
               haveSubmissionsComeIn={haveSubmissionsComeIn}
               handleDownloadResults={handleDownloadResults}
+              handleExportPdf={inputResponseExport.openPdfExportModal}
+              handleExportXlsx={inputResponseExport.openXlsxExportModal}
               setDropdownOpened={setDropdownOpened}
               isDropdownOpened={isDropdownOpened}
               setShowDeleteModal={setShowDeleteModal}
@@ -169,6 +181,7 @@ const SurveySettings = () => {
         closeDeleteModal={closeDeleteModal}
         deleteResults={deleteResults}
       />
+      {inputResponseExport.modal}
     </Box>
   );
 };

@@ -3,13 +3,14 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 
 import useCustomPageById from 'api/custom_pages/useCustomPageById';
+import { isContentBuilderPage } from 'api/custom_pages/util';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocalize from 'hooks/useLocalize';
 
 import {
-  pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLink,
+  pagesBreadcrumb,
+  pagesBreadcrumbLink,
 } from 'containers/Admin/pagesAndMenu/breadcrumbs';
 
 import TabbedResource from 'components/admin/TabbedResource';
@@ -23,6 +24,7 @@ import { Outlet as RouterOutlet, useParams } from 'utils/router';
 
 import messages from '../messages';
 
+import SettingsWithPreview from './SettingsWithPreview';
 import ViewCustomPageButton from './ViewCustomPageButton';
 
 const CustomPagesEditSettings = () => {
@@ -36,10 +38,18 @@ const CustomPagesEditSettings = () => {
     name: 'pages',
     onlyCheckAllowed: true,
   });
+  const customPageBuilderEnabled = useFeatureFlag({
+    name: 'custom_page_builder',
+  });
 
   if (isNilOrError(customPage)) {
     return null;
   }
+
+  // With the builder on, one page replaces the two tabs: the section editors on the content
+  // tab no longer change what the page shows.
+  const showSettingsWithPreview =
+    customPageBuilderEnabled && isContentBuilderPage(customPage.data);
 
   const pageTitleMultiloc = customPage.data.attributes.title_multiloc;
   return (
@@ -49,8 +59,8 @@ const CustomPagesEditSettings = () => {
         <Breadcrumbs
           breadcrumbs={[
             {
-              label: formatMessage(pagesAndMenuBreadcrumb.label),
-              link: pagesAndMenuBreadcrumbLink,
+              label: formatMessage(pagesBreadcrumb.label),
+              link: pagesBreadcrumbLink,
             },
             { label: localize(pageTitleMultiloc) },
           ]}
@@ -73,21 +83,25 @@ const CustomPagesEditSettings = () => {
               />
             ),
           }}
-          tabs={[
-            {
-              label: formatMessage(messages.pageSettingsTab),
-              name: 'settings',
-              url: `/admin/pages-menu/pages/${customPageId}/settings`,
-            },
-            {
-              label: formatMessage(messages.pageContentTab),
-              name: 'content',
-              url: `/admin/pages-menu/pages/${customPageId}/content`,
-            },
-          ]}
+          tabs={
+            showSettingsWithPreview
+              ? []
+              : [
+                  {
+                    label: formatMessage(messages.pageSettingsTab),
+                    name: 'settings',
+                    url: `/admin/pages-menu/pages/${customPageId}/settings`,
+                  },
+                  {
+                    label: formatMessage(messages.pageContentTab),
+                    name: 'content',
+                    url: `/admin/pages-menu/pages/${customPageId}/content`,
+                  },
+                ]
+          }
           contentWrapper={false}
         >
-          <RouterOutlet />
+          {showSettingsWithPreview ? <SettingsWithPreview /> : <RouterOutlet />}
         </TabbedResource>
       )}
     </>

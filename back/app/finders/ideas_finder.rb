@@ -61,12 +61,31 @@ class IdeasFinder < ApplicationFinder
     where(idea_status_id: idea_status)
   end
 
+  # keys_by_field maps a question id to the option keys picked for it. Keeps the
+  # ideas that gave one of the picked answers to every question, skipping the
+  # questions the user may not see or whose answers are not public.
+  def custom_field_answers_condition(keys_by_field)
+    return if keys_by_field.blank?
+
+    fields = CustomField.where(id: keys_by_field.keys)
+      .select { |field| Pundit.policy!(current_user, field).show? && field.can_show_as_filter? }
+    fields.reduce(records) do |ideas, field|
+      AnswerableFilter.new(field, ideas).one_of(Array(keys_by_field[field.id]))
+    end
+  end
+
   def project_publication_status_condition(project_publication_status)
     scope(:with_project_publication_status, project_publication_status) if project_publication_status.present?
   end
 
+  # A subquery, because the scope joins idea_statuses: referencing it here
+  # would turn the index's includes into one huge eager-load join.
   def feedback_needed_condition(feedback_needed)
-    scope(:feedback_needed) if feedback_needed
+    where(id: Idea.feedback_needed) if feedback_needed
+  end
+
+  def official_feedback_condition(official_feedback)
+    where('ideas.official_feedbacks_count > 0') if Utils.to_bool(official_feedback)
   end
 
   def search_condition(search)
@@ -105,14 +124,12 @@ class IdeasFinder < ApplicationFinder
     @records.where.not(location_point: nil)
   end
 
-  def filter_can_moderate_condition(can_moderate)
-    return unless can_moderate
+  def moderatable_records
+    current_user ? where(project: user_role_service.moderatable_projects(current_user)) : records.none
+  end
 
-    if current_user
-      where(project: user_role_service.moderatable_projects(current_user))
-    else
-      records.none
-    end
+  def filter_can_moderate_condition(can_moderate)
+    moderatable_records if can_moderate
   end
 
   def user_role_service
@@ -121,3 +138,4 @@ class IdeasFinder < ApplicationFinder
 end
 
 IdeasFinder.include(IdeaAssignment::Extensions::IdeasFinder)
+IdeasFinder.include(BulkImportIdeas::Extensions::IdeasFinder)

@@ -22,7 +22,9 @@ resource 'Idea Custom Fields' do
       logic: {},
       constraints: {},
       random_option_ordering: false,
-      include_in_printed_form: true
+      include_in_printed_form: true,
+      answers_visible_to: 'moderators',
+      show_as_filter: false
     }
   end
 
@@ -154,6 +156,34 @@ resource 'Idea Custom Fields' do
         assert_status 200
         json_response = json_parse(response_body)
         expect(json_response[:data][1][:attributes][:min_characters]).to eq 2
+      end
+
+      example 'Deleting a field deletes the answers of existing inputs', document: false do
+        delete_field = create(:custom_field_text, resource: custom_form, key: 'field_to_delete')
+        keep_field = create(:custom_field_text, resource: custom_form, key: 'field_to_keep')
+        input = create(
+          :idea,
+          project: context.project,
+          creation_phase: context,
+          phases: [context],
+          custom_field_answers: [
+            build(:custom_field_answer, key: 'field_to_delete', value: 'an answer', custom_field: delete_field),
+            build(:custom_field_answer, key: 'field_to_keep', value: 'another answer', custom_field: keep_field)
+          ]
+        )
+
+        request = {
+          custom_fields: [
+            { input_type: 'page', page_layout: 'default' },
+            { id: keep_field.id, title_multiloc: { 'en' => 'Kept field' } },
+            final_page
+          ]
+        }
+        do_request request
+
+        assert_status 200
+        expect(CustomField.where(id: delete_field).count).to eq 0
+        expect(input.reload.custom_field_answers.pluck(:key, :value)).to eq [['field_to_keep', 'another answer']]
       end
 
       example 'Add a custom field with options, including an "other" option and delete a field with options' do
@@ -1171,22 +1201,24 @@ resource 'Idea Custom Fields' do
       end
 
       context 'when CustomForm custom field has same key as User custom_field' do
-        example 'Deleting the CustomForm field does not cause deletion User custom_field_values key', document: false do
+        example 'Deleting the CustomForm field does not cause deletion of the User answer key', document: false do
           custom_field = create(:custom_field, resource: custom_form, title_multiloc: { 'en' => 'Some field' })
-          user1 = create(:user, custom_field_values: { custom_field.key => 'some value' })
+          user_field = create(:custom_field, resource_type: 'User', key: custom_field.key)
+          user1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: custom_field.key, value: 'some value', custom_field: user_field)])
 
           do_request({ custom_fields: [final_page] })
 
           assert_status 200
-          expect(user1.reload.custom_field_values).to eq({ custom_field.key => 'some value' })
+          expect(user1.reload.custom_field_answers.pluck(:key, :value)).to eq [[custom_field.key, 'some value']]
         end
       end
 
       context 'when CustomForm custom field option collides with User custom field option' do
-        example 'Deleting the CustomForm option does not delete the User custom_field_values value', document: false do
+        example 'Deleting the CustomForm option does not delete the User answer value', document: false do
           field_to_update = create(:custom_field, input_type: 'select', resource: custom_form)
           option = create(:custom_field_option, custom_field: field_to_update)
-          user1 = create(:user, custom_field_values: { field_to_update.key => option.key })
+          user_field = create(:custom_field, resource_type: 'User', key: field_to_update.key)
+          user1 = create(:user, custom_field_answers: [build(:custom_field_answer, key: field_to_update.key, value: option.key, custom_field: user_field)])
 
           request = {
             custom_fields: [
@@ -1205,7 +1237,7 @@ resource 'Idea Custom Fields' do
           do_request request
 
           assert_status 200
-          expect(user1.reload.custom_field_values).to eq({ field_to_update.key => option.key })
+          expect(user1.reload.custom_field_answers.pluck(:key, :value)).to eq [[field_to_update.key, option.key]]
         end
       end
 
@@ -1591,7 +1623,9 @@ resource 'Idea Custom Fields' do
               logic: { next_page_id: 'TEMP-ID-1' },
               constraints: {},
               random_option_ordering: false,
-              include_in_printed_form: true
+              include_in_printed_form: true,
+              answers_visible_to: 'moderators',
+              show_as_filter: false
             },
             {
               id: page2.id,

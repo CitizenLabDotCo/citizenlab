@@ -26,9 +26,11 @@ const ContentBuilderSettings = () => {
         // TODO: Fix this the next time the file is edited.
         // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         settings: state.nodes[currentNodeId].related?.settings,
+        // `locked` pins a node in place and keeps it; `deletable: false` only keeps it.
         isDeletable:
           query.node(currentNodeId).isDeletable() &&
-          !state.nodes[currentNodeId].data.custom?.locked,
+          !state.nodes[currentNodeId].data.custom?.locked &&
+          state.nodes[currentNodeId].data.custom?.deletable !== false,
         custom: state.nodes[currentNodeId].data.custom,
       };
     }

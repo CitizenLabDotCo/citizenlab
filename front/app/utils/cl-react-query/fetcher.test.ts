@@ -1,4 +1,6 @@
-import fetcher from './fetcher';
+import { queryClient } from 'utils/cl-react-query/queryClient';
+
+import fetcher, { HttpError } from './fetcher';
 
 const baseDataArray = {
   data: [
@@ -26,14 +28,15 @@ global.fetch = jest.fn(() =>
   } as Response)
 );
 
-let mockSetQueryData;
+// The mock fn is created inside the factory and read back off the mocked
+// module. Assigning to an outer `let` from the factory would throw: jest
+// hoists `jest.mock` above the imports, so the factory runs while `./fetcher`
+// is still being imported — before the declaration is initialised.
+jest.mock('utils/cl-react-query/queryClient', () => ({
+  queryClient: { setQueryData: jest.fn() },
+}));
 
-jest.mock('utils/cl-react-query/queryClient', () => {
-  mockSetQueryData = jest.fn();
-  return {
-    queryClient: { setQueryData: mockSetQueryData },
-  };
-});
+const mockSetQueryData = queryClient.setQueryData as jest.Mock;
 
 describe('fetcher', () => {
   describe('GET', () => {
@@ -93,6 +96,19 @@ describe('fetcher', () => {
       }
 
       expect(thrownError).toEqual(baseErrorObject);
+    });
+
+    it('throws an HttpError with the status when an error has no JSON body', async () => {
+      jest.mocked(global.fetch).mockResolvedValueOnce({
+        status: 404,
+        ok: false,
+        json: () => Promise.reject(new SyntaxError('Unexpected end of JSON')),
+      } as Response);
+
+      const request = fetcher({ path: '/path', action: 'get' });
+
+      await expect(request).rejects.toBeInstanceOf(HttpError);
+      await expect(request).rejects.toHaveProperty('status', 404);
     });
   });
   describe('POST', () => {

@@ -4,14 +4,7 @@ require 'rails_helper'
 
 RSpec.describe Analysis::QAndAMethod do
   describe 'OnePassLLM q_and_a' do
-    let(:analysis) do
-      create(:analysis, main_custom_field: create(
-        :custom_field,
-        :for_custom_form,
-        code: 'title_multiloc',
-        key: 'title_multiloc'
-      ))
-    end
+    let(:analysis) { create(:analysis, main_custom_field: create(:default_input_field)) }
     let(:question) { create(:analysis_question, q_and_a_method: 'one_pass_llm', question: 'What is the most popular theme?', insight_attributes: { analysis: analysis, filters: { comments_from: 5 } }) }
     let(:q_and_a_task) { create(:q_and_a_task, analysis: analysis, state: 'queued', question: question) }
     let(:inputs) do
@@ -58,6 +51,43 @@ RSpec.describe Analysis::QAndAMethod do
         state: 'succeeded',
         progress: nil
       })
+    end
+
+    describe 'with a custom prompt template' do
+      def prompt_for(template)
+        inputs # the prompt is built before chat_async is called, so the inputs must exist by then
+        SettingsService.new.activate_feature!('data_repository_ai_analysis', settings: { 'prompt_template' => template })
+
+        prompt = nil
+        mock_llm = instance_double(Analysis::LLM::GPT54).tap do |llm|
+          expect(llm).to receive(:chat_async) { |messages| prompt = messages.first.inputs.sole }
+        end
+
+        plan = Analysis::QAndAMethod::OnePassLLM.new(question).generate_plan
+        plan.llm = mock_llm
+        plan.q_and_a_method_class.new(question).execute(plan)
+
+        prompt
+      end
+
+      it 'substitutes the placeholders' do
+        prompt = prompt_for('Project %{project_title}. Answer %{question} in %{language}. %{inputs_text}')
+
+        expect(prompt).to include("Project #{analysis.project.title_multiloc.values.first}.")
+        expect(prompt).to include('Answer What is the most popular theme? in English.')
+        expect(prompt).to include(inputs[2].id)
+      end
+
+      it 'substitutes the comments instruction when comments are included' do
+        expect(prompt_for('%{comments_instruction}'))
+          .to include(Analysis::QAndAMethod::OnePassLLM::COMMENTS_INSTRUCTION)
+      end
+
+      it 'does not evaluate a template that contains code' do
+        prompt = prompt_for("<%= AppConfiguration.instance.host %> <% raise 'boom' %>")
+
+        expect(prompt).to eq "<%= AppConfiguration.instance.host %> <% raise 'boom' %>"
+      end
     end
 
     it 'includes the comments in the prompt' do

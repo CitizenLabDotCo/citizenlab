@@ -54,7 +54,7 @@ const AdminProjectEventsIndex = () => {
     sort: 'start_at',
   });
 
-  const { mutate: deleteEvent, isLoading } = useDeleteEvent();
+  const { mutate: deleteEvent, isPending } = useDeleteEvent();
 
   const createDeleteClickHandler =
     (eventId: string) => (event: React.FormEvent<any>) => {
@@ -178,7 +178,7 @@ const AdminProjectEventsIndex = () => {
                         buttonStyle="text"
                         icon="delete"
                         onClick={createDeleteClickHandler(event.id)}
-                        processing={isLoading}
+                        processing={isPending}
                       >
                         <FormattedMessage {...messages.deleteButtonLabel} />
                       </ButtonWithLink>

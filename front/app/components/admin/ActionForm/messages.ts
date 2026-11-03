@@ -1,87 +1,110 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  none: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.none',
-    defaultMessage: 'None',
-  },
-  noneSubtitle: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.noneSubtitle',
-    defaultMessage: 'Anyone can participate without signing up or logging in.',
-  },
-  emailConfirmation: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.emailConfirmation',
-    defaultMessage: 'Email confirmation',
-  },
-  emailConfirmationSubtitle: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.emailConfirmationSubtitle',
+  nQuestions: {
+    id: 'app.components.admin.ActionForm.nQuestions',
     defaultMessage:
-      'Participants need to confirm their email with a one-time code.',
+      '{nQuestions, plural, one {1 question} other {{nQuestions} questions}}',
   },
-  accountCreation: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreation',
-    defaultMessage: 'Account creation',
+  adminsManagersOnly: {
+    id: 'app.components.admin.ActionForm.adminsManagersOnly',
+    defaultMessage: 'Admins & managers only',
   },
-  accountCreationSubtitle: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.accountCreationSubtitle',
+  anyoneCanParticipate: {
+    id: 'app.components.admin.ActionForm.anyoneCanParticipate',
+    defaultMessage: 'Anyone can participate',
+  },
+  signInRequired: {
+    id: 'app.components.admin.ActionForm.signInRequired',
+    defaultMessage: 'Sign-in required',
+  },
+  nGroups: {
+    id: 'app.components.admin.ActionForm.nGroups',
+    defaultMessage: '{nGroups, plural, one {1 group} other {{nGroups} groups}}',
+  },
+  name: {
+    id: 'app.components.admin.ActionForm.name',
+    defaultMessage: 'Name',
+  },
+  requireUserToSetAPassword: {
+    id: 'app.components.admin.ActionForm.requireUserToSetAPassword2',
+    defaultMessage: 'Require users to set a password',
+  },
+  password: {
+    id: 'app.components.admin.ActionForm.password3',
+    defaultMessage: 'Password',
+  },
+  anonymous: {
+    id: 'app.components.admin.ActionForm.anonymous',
+    defaultMessage: 'Anonymous',
+  },
+  piiExcluded: {
+    id: 'app.components.admin.ActionForm.piiExcluded',
+    defaultMessage: 'PII excluded',
+  },
+  requireConfirmedEmail: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedEmail2',
+    defaultMessage: 'Require confirmed email from all users',
+  },
+  requireConfirmedPhoneNumber: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.requireConfirmedPhoneNumber2',
+    defaultMessage: 'Require confirmed phone number from all users',
+  },
+  requireIdentityVerification: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.requireIdentityVerification2',
+    defaultMessage: 'Require identity verification from all users',
+  },
+  // Short forms of the three security requirements above, for the summary chips
+  // and the collapsed section summary, where the full sentences don't fit.
+  confirmedEmail: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedEmail',
+    defaultMessage: 'Confirmed email',
+  },
+  confirmedPhone: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.confirmedPhone',
+    defaultMessage: 'Confirmed phone',
+  },
+  verification: {
+    id: 'front.app.components.admin.ActionForm.AccessSections.AccessSection.verification',
+    defaultMessage: 'Verification',
+  },
+  usingPlatformDefaults: {
+    id: 'app.components.admin.ActionForm.usingPlatformDefaults',
+    defaultMessage: 'Using <link>platform defaults</link>',
+  },
+  override: {
+    id: 'app.components.admin.ActionForm.override',
+    defaultMessage: 'Override',
+  },
+  platformDefaultsTooltip: {
+    id: 'app.components.admin.ActionForm.platformDefaultsTooltip',
     defaultMessage:
-      'Participants need to create a full account with their name, confirmed email and password.',
+      'This action follows the platform defaults. Override them to set who can take part in this phase only.',
   },
-  ssoVerification: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.ssoVerification',
-    defaultMessage: 'SSO verification',
+  revertToPlatformDefaults: {
+    id: 'app.components.admin.ActionForm.revertToPlatformDefaults',
+    defaultMessage: 'Revert to platform defaults',
   },
-  ssoVerificationSubtitle: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.ssoVerificationSubtitle2',
+  revertToPlatformDefaultsConfirmation: {
+    id: 'app.components.admin.ActionForm.revertToPlatformDefaultsConfirmation',
+    defaultMessage: 'Revert to platform defaults?',
+  },
+  revertToPlatformDefaultsInfo: {
+    id: 'app.components.admin.ActionForm.revertToPlatformDefaultsInfo2',
     defaultMessage:
-      'Participants need to verify their identify with {verificationMethod}.',
+      'This action will follow the platform defaults again. The settings you chose for it — including which groups and demographic questions apply — will be discarded.',
   },
-  restrictParticipation: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.restrictParticipation',
-    defaultMessage: 'Restrict participation to user group(s)',
+  revertToPlatformDefaultsConfirmButton: {
+    id: 'app.components.admin.ActionForm.revertToPlatformDefaultsConfirmButton',
+    defaultMessage: 'Revert',
   },
-  everyoneTracking: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTracking2',
-    defaultMessage: 'Advanced spam detection',
+  revertToPlatformDefaultsCancelButton: {
+    id: 'app.components.admin.ActionForm.revertToPlatformDefaultsCancelButton',
+    defaultMessage: 'Cancel',
   },
-  everyoneTrackingToggle: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingToggle',
-    defaultMessage: 'Enable advanced spam detection',
-  },
-  everyoneTrackingDescription: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingDescription',
+  adminsOnlyNoData: {
+    id: 'app.components.admin.ActionForm.adminsOnlyNoData',
     defaultMessage:
-      'This feature helps prevent duplicate survey submissions from logged-out users by analyzing IP addresses and device data. While not as precise as requiring login, it can help to reduce the number of duplicate responses.',
-  },
-  everyoneTrackingNote: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.everyoneTrackingNote',
-    defaultMessage:
-      'Note: On shared networks (like offices or public Wi-Fi), there is a small chance that different users could be flagged as duplicates.',
-  },
-  authentication: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.authentication',
-    defaultMessage: 'Authentication',
-  },
-  resetDemographicQuestionsAndGroups: {
-    id: 'app.containers.Admin.projects.project.permissions.components.PhasePermissionsNew.ActionsFormNew.resetDemographicQuestionsAndGroups',
-    defaultMessage: 'Reset demographic questions and groups',
-  },
-  permissionsAdminsAndCollaborators: {
-    id: 'app.containers.admin.project.permissions.permissionsAdminsAndCollaborators',
-    defaultMessage: 'Admins and collaborators only',
-  },
-  permissionsAdminsAndCollaboratorsTooltip: {
-    id: 'app.containers.admin.project.permissions.permissionsAdminsAndCollaboratorsTooltip',
-    defaultMessage:
-      'Only platform admins, folder managers and project managers can take the action',
-  },
-  granularPermissionsOffText: {
-    id: 'app.containers.AdminPage.groups.permissions.granularPermissionsOffText',
-    defaultMessage:
-      'Changing granular permissions is not part of your license. Please contact your GovSuccess Manager to learn more about it.',
-  },
-  selectGroups: {
-    id: 'app.containers.AdminPage.ProjectEdit.selectGroups',
-    defaultMessage: 'Select group(s)',
+      'Only admins and managers can do this, so no participant data is collected.',
   },
 });

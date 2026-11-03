@@ -21,11 +21,13 @@
 #
 module Polls
   class Option < ApplicationRecord
+    include PlainTextMultiloc
     acts_as_list column: :ordering, top_of_list: 0, add_new_at: :bottom, scope: [:question_id]
 
     belongs_to :question, class_name: 'Polls::Question'
     has_many :response_options, class_name: 'Polls::ResponseOption', dependent: :destroy
 
+    plain_text_multiloc :title_multiloc
     validates :title_multiloc, presence: true, multiloc: { presence: true }
 
     delegate :project, :project_id, to: :question

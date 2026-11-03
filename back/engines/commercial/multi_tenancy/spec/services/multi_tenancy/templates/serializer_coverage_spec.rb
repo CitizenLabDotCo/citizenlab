@@ -53,6 +53,10 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         parent_id
       ], # flat list; default topics carry no hierarchy
 
+      'EmailCampaigns::Campaign' => %w[
+        channel
+      ], # derived cache of `self.class.channel`; reconstructed from `type` on init
+
       'Idea' => %w[
         assigned_at
         assignee_id
@@ -68,23 +72,31 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
       ], # manual-vote operational state
 
       'Project' => %w[
+        completed_setup_steps
         default_assignee_id
         preview_token
-      ], # admin reference / regenerated token
+      ], # setup checklist progress / admin reference / regenerated token
 
       'User' => %w[
         block_end_at
         confirmation_required
+        early_access_opt_ins
+        email_bounce_reason
+        email_bounced_at
         email_confirmed_at
         imported
         invite_status
         last_active_at
+        merge_target_email
         new_email
+        new_phone
         onboarding
+        phone
+        phone_confirmed_at
         reset_password_token
         roles
         token_expiry_key
-      ] # auth/session/role state — deliberately not templated (privacy/security)
+      ] # auth/session/role/contact state and personal settings — deliberately not templated (privacy/security)
     }.freeze
   end
 
@@ -102,12 +114,15 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
       # rebuilt downstream — never seeded from a template.
       analytics: %w[
         Analytics::DimensionDate
-        Analytics::DimensionLocale
-        Analytics::DimensionLocalesFactVisits
-        Analytics::DimensionProjectsFactVisits
-        Analytics::DimensionReferrerType
         Analytics::DimensionType
-        Analytics::FactVisit
+      ],
+
+      # The AI assistant's chats with individual admins — per-user runtime data, never
+      # templated or copied.
+      ai_assistant: %w[
+        AIAssistant::Conversation
+        AIAssistant::Message
+        AIAssistant::ToolCall
       ],
 
       # AI analysis, insights and embeddings — derived from user content.
@@ -154,6 +169,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
 
       # Background-job / queue infrastructure.
       jobs: %w[
+        Export::ResultFile
         Jobs::Tracker
         Que::ActiveRecord::Model
       ],
@@ -197,6 +213,7 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         EmailCampaigns::CampaignEmailCommand
         EmailCampaigns::Delivery
         EmailCampaigns::Example
+        EmailCampaigns::Sms::Delivery
       ],
 
       # Experiment / AB-test runtime.
@@ -210,13 +227,33 @@ describe 'Tenant template serializer coverage' do # rubocop:disable RSpec/Descri
         UserCustomFields::Representativeness::RefDistribution
       ],
 
-      # Files
+      # AI-authored page builder blocks, the answers they cached and the record of
+      # the runs that wrote them. All of it stays in the tenant that made it: the
+      # feature is behind the `llm_reporting` flag and has no template story yet.
+      llm_reporting: %w[
+        ContentBuilder::CustomBlock
+        ContentBuilder::CustomBlockVersion
+        ContentBuilder::QuerySnapshot
+        ReportBuilder::GenerationTranscript
+      ],
+
+      # Files engine — Preview/Transcript are derived artifacts (generated from the file),
+      # not template content. File/FileAttachment/FilesProject ARE serialized.
       files: %w[
-        Files::File
-        Files::FileAttachment
-        Files::FilesProject
         Files::Preview
         Files::Transcript
+      ],
+
+      # Legacy per-resource file models, fully migrated to the Files engine and now
+      # templated via Files::File / Files::FileAttachment / Files::FilesProject. Kept as
+      # AR models but no longer serialized directly.
+      legacy_files: %w[
+        EventFile
+        IdeaFile
+        PhaseFile
+        ProjectFile
+        ProjectFolders::File
+        StaticPageFile
       ]
     }.freeze
   end

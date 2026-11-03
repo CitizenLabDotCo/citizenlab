@@ -10,6 +10,22 @@ describe MultiTenancy::Templates::Utils do
   let(:s3_client) { Aws::S3::Client.new(stub_responses: true) }
   let(:template_bucket) { 'template-bucket' }
 
+  describe '.s3_client' do
+    it 'stays pinned to AWS eu-central-1 even when endpoint env vars are set' do
+      stub_env(
+        'AWS_ACCESS_KEY_ID' => 'test-key',
+        'AWS_SECRET_ACCESS_KEY' => 'test-secret',
+        'AWS_ENDPOINT_URL_S3' => 'https://s3.fr-par.scw.cloud',
+        'AWS_ENDPOINT_URL' => 'https://s3.fr-par.scw.cloud'
+      )
+
+      client = described_class.s3_client
+
+      expect(client.config.endpoint.to_s).to eq('https://s3.eu-central-1.amazonaws.com')
+      expect(client.config.region).to eq('eu-central-1')
+    end
+  end
+
   describe '#internal_template_names' do
     it 'returns expected templates' do
       expect(service.internal_template_names)

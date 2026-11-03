@@ -1,12 +1,6 @@
 import { FormatMessage } from 'typings';
 
-import {
-  IPhasePermissionAction,
-  IPhasePermissionData,
-  PermittedBy,
-} from 'api/phase_permissions/types';
-
-import newMessages from 'components/admin/ActionForm/messages';
+import { Action, IPermissionData, PermittedBy } from 'api/permissions/types';
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
@@ -24,21 +18,15 @@ export const getPartipationRequirementMessage = (
     case 'admins_moderators':
       participantMessage = messages.adminsAndManagers;
       break;
-    case 'everyone_confirmed_email':
-      participantMessage = messages.usersWithConfirmedEmail;
-      break;
     case 'everyone':
       participantMessage = messages.everyone;
-      break;
-    case 'verified':
-      participantMessage = newMessages.ssoVerification;
       break;
   }
   return formatMessage(participantMessage);
 };
 
 export const getParticipantMessage = (
-  permissions: IPhasePermissionData[] | undefined,
+  permissions: IPermissionData[] | undefined,
   formatMessage: FormatMessage
 ) => {
   if (!permissions?.length) return null;
@@ -54,8 +42,12 @@ export const getParticipantMessage = (
   return formatMessage(messages.mixedRights);
 };
 
-export const getParticipationActionLabel = (action: IPhasePermissionAction) => {
+// Returns undefined for the actions that cannot occur in a phase.
+export const getParticipationActionLabel = (action: Action) => {
   switch (action) {
+    case 'visiting':
+    case 'following':
+      return undefined;
     case 'posting_idea':
       return messages.submitInputs;
     case 'reacting_idea':

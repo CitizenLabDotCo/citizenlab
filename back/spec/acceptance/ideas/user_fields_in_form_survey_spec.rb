@@ -13,7 +13,7 @@ resource 'Ideas' do
     @phase = @project.phases.first
     @permission = @phase.permissions.find_by(action: 'posting_idea')
     @permission.update!(
-      global_custom_fields: false
+      custom_fields_behavior: 'custom'
     )
 
     @custom_form = create(:custom_form, :with_default_fields, participation_context: @phase)
@@ -45,7 +45,9 @@ resource 'Ideas' do
   #   after filling out the first page.
   #
   # In this POST block, we are going to focus on 1 and 3. Below, we will tackle 2
-  post 'web_api/v1/ideas' do
+  post 'web_api/v1/phases/:phase_id/inputs' do
+    let(:phase_id) { @phase.id }
+
     context 'when visitor and permitted_by is everyone' do
       before do
         @permission.update!(
@@ -58,7 +60,6 @@ resource 'Ideas' do
         do_request({
           idea: {
             publication_status: 'published',
-            project_id: @project.id,
             @custom_field.key => 'option2',
             u_user_select_field: 'option1',
             u_nonexistent_field: 'whatever', # key has no custom field so should be filtered out
@@ -68,17 +69,16 @@ resource 'Ideas' do
 
         assert_status 201
         expect(Idea.count).to eq 1
-        expect(Idea.first.custom_field_values).to eq({
-          @custom_field.key => 'option2',
-          'u_user_select_field' => 'option1'
-        })
+        expect(Idea.first.custom_field_answers.pluck(:key, :value)).to contain_exactly(
+          [@custom_field.key, 'option2'],
+          %w[u_user_select_field option1]
+        )
       end
 
       it 'issues claim token' do
         do_request({
           idea: {
             publication_status: 'published',
-            project_id: @project.id,
             @custom_field.key => 'option2',
             u_user_select_field: 'option1'
           }
@@ -100,7 +100,6 @@ resource 'Ideas' do
           do_request({
             idea: {
               publication_status: 'published',
-              project_id: @project.id,
               @custom_field.key => 'option2',
               u_user_select_field: 'option1'
             }
@@ -119,7 +118,7 @@ resource 'Ideas' do
           permitted_by: 'users',
           user_fields_in_form: false
         )
-        @user = create(:user, custom_field_values: { @user_select_field.key => 'option1' })
+        @user = create(:user, custom_field_answers: [build(:custom_field_answer, key: @user_select_field.key, value: 'option1')])
         header_token_for @user
       end
 
@@ -134,7 +133,6 @@ resource 'Ideas' do
           do_request({
             idea: {
               publication_status: 'published',
-              project_id: @project.id,
               @custom_field.key => 'option2'
             }
           })
@@ -142,10 +140,10 @@ resource 'Ideas' do
           assert_status 201
           expect(Idea.count).to eq 1
           idea = Idea.first
-          expect(idea.custom_field_values).to eq({
-            @custom_field.key => 'option2',
-            'u_user_select_field' => 'option1'
-          })
+          expect(idea.custom_field_answers.pluck(:key, :value)).to contain_exactly(
+            [@custom_field.key, 'option2'],
+            %w[u_user_select_field option1]
+          )
           expect(idea.author_id).to eq(@user.id)
         end
       end
@@ -161,7 +159,6 @@ resource 'Ideas' do
           do_request({
             idea: {
               publication_status: 'published',
-              project_id: @project.id,
               @custom_field.key => 'option2'
             }
           })
@@ -169,10 +166,10 @@ resource 'Ideas' do
           assert_status 201
           expect(Idea.count).to eq 1
           idea = Idea.first
-          expect(idea.custom_field_values).to eq({
-            @custom_field.key => 'option2',
-            'u_user_select_field' => 'option1'
-          })
+          expect(idea.custom_field_answers.pluck(:key, :value)).to contain_exactly(
+            [@custom_field.key, 'option2'],
+            %w[u_user_select_field option1]
+          )
           expect(idea.author_id).to be_nil
         end
       end
@@ -188,7 +185,6 @@ resource 'Ideas' do
           do_request({
             idea: {
               publication_status: 'published',
-              project_id: @project.id,
               @custom_field.key => 'option2'
             }
           })
@@ -196,9 +192,7 @@ resource 'Ideas' do
           assert_status 201
           expect(Idea.count).to eq 1
           idea = Idea.first
-          expect(idea.custom_field_values).to eq({
-            @custom_field.key => 'option2'
-          })
+          expect(idea.custom_field_answers.pluck(:key, :value)).to eq [[@custom_field.key, 'option2']]
           expect(idea.author_id).to be_nil
         end
       end
@@ -230,14 +224,14 @@ resource 'Ideas' do
             project: @project,
             creation_phase: @phase,
             phases: [@phase],
-            custom_field_values: { @custom_field.key => 'option2' },
+            custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: 'option2')],
             publication_status: 'draft'
           )
         end
         let(:id) { idea.id }
 
         it 'updates the user profile with the provided custom field values and author_id' do
-          create(:idea, custom_field_values: { @custom_field.key => 'option2' })
+          create(:idea, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: 'option2')])
           do_request({
             idea: {
               publication_status: 'published',
@@ -248,15 +242,13 @@ resource 'Ideas' do
 
           assert_status 200
           idea = Idea.find(id)
-          expect(idea.reload.custom_field_values).to eq({
-            @custom_field.key => 'option2',
-            'u_user_select_field' => 'option1'
-          })
+          expect(idea.reload.custom_field_answers.pluck(:key, :value)).to contain_exactly(
+            [@custom_field.key, 'option2'],
+            %w[u_user_select_field option1]
+          )
           expect(idea.author_id).to eq(@user.id)
           user = User.find(@user.id)
-          expect(user.reload.custom_field_values).to eq({
-            'user_select_field' => 'option1'
-          })
+          expect(user.reload.custom_field_answers.pluck(:key, :value)).to eq [%w[user_select_field option1]]
         end
 
         context do
@@ -264,16 +256,15 @@ resource 'Ideas' do
             @gender_field = create(:custom_field_gender)
             @verification = create(:verification, method_name: 'bogus')
             @user = @verification.user
-            @user.update!(custom_field_values: { @gender_field.key => 'female' })
+            create(:custom_field_answer, answerable: @user, key: @gender_field.key, value: 'female')
+            @user.custom_field_answers.reset
 
             header_token_for @user
           end
 
           it 'does not update locked field' do
-            create(:idea, custom_field_values: { @custom_field.key => 'option2' })
-            expect(@user.custom_field_values).to eq({
-              @gender_field.key => 'female'
-            })
+            create(:idea, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: 'option2')])
+            expect(@user.custom_field_answers.pluck(:key, :value)).to eq [[@gender_field.key, 'female']]
 
             do_request({
               idea: {
@@ -286,10 +277,10 @@ resource 'Ideas' do
 
             assert_status 200
             user = User.find(@user.id)
-            expect(user.reload.custom_field_values).to eq({
-              'user_select_field' => 'option1',
-              @gender_field.key => 'female'
-            })
+            expect(user.reload.custom_field_answers.pluck(:key, :value)).to contain_exactly(
+              %w[user_select_field option1],
+              [@gender_field.key, 'female']
+            )
           end
         end
       end
@@ -308,14 +299,14 @@ resource 'Ideas' do
             project: @project,
             creation_phase: @phase,
             phases: [@phase],
-            custom_field_values: { @custom_field.key => 'option2' },
+            custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: 'option2')],
             publication_status: 'draft'
           )
         end
         let(:id) { idea.id }
 
         it 'updates the user profile with the provided custom field values but not author_id' do
-          create(:idea, custom_field_values: { @custom_field.key => 'option2' })
+          create(:idea, custom_field_answers: [build(:custom_field_answer, key: @custom_field.key, value: 'option2')])
           do_request({
             idea: {
               publication_status: 'published',
@@ -326,15 +317,13 @@ resource 'Ideas' do
 
           assert_status 200
           idea = Idea.find(id)
-          expect(idea.reload.custom_field_values).to eq({
-            @custom_field.key => 'option2',
-            'u_user_select_field' => 'option1'
-          })
+          expect(idea.reload.custom_field_answers.pluck(:key, :value)).to contain_exactly(
+            [@custom_field.key, 'option2'],
+            %w[u_user_select_field option1]
+          )
           expect(idea.author_id).to be_nil
           user = User.find(@user.id)
-          expect(user.reload.custom_field_values).to eq({
-            'user_select_field' => 'option1'
-          })
+          expect(user.reload.custom_field_answers.pluck(:key, :value)).to eq [%w[user_select_field option1]]
         end
       end
     end

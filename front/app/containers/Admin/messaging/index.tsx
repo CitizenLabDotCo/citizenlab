@@ -3,6 +3,8 @@ import React from 'react';
 import { Box } from '@citizenlab/cl2-component-library';
 import { ITab } from 'typings';
 
+import useFeatureFlag from 'hooks/useFeatureFlag';
+
 import NavigationTabs, {
   Tab,
   TabsPageLayout,
@@ -18,6 +20,12 @@ import messages from './messages';
 const MessagingDashboard = () => {
   const { formatMessage } = useIntl();
   const { pathname } = useLocation();
+  // The sms feature carries the Twilio settings manual campaigns send through.
+  const smsFFEnabled = useFeatureFlag({ name: 'sms' });
+  const smsManualCampaignsFFEnabled = useFeatureFlag({
+    name: 'sms_manual_campaigns',
+  });
+  const smsManualCampaignsEnabled = smsFFEnabled && smsManualCampaignsFFEnabled;
 
   const tabs: ITab[] = [
     {
@@ -32,6 +40,16 @@ const MessagingDashboard = () => {
       url: '/admin/messaging/emails/automated',
       className: 'intercom-messaging-automated-emails',
     },
+    ...(smsManualCampaignsEnabled
+      ? [
+          {
+            name: 'sms',
+            label: formatMessage(messages.tabSms),
+            url: '/admin/messaging/sms',
+            className: 'intercom-messaging-sms',
+          },
+        ]
+      : []),
   ];
 
   return (

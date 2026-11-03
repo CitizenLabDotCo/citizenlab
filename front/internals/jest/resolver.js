@@ -16,8 +16,8 @@ module.exports = (path, options) => {
       //
       // uuid used to be handled here too, but as of v14 it is ESM-only and no longer ships a
       // CommonJS "main", so deleting its exports leaves nothing to resolve. Instead we let its
-      // ESM resolve normally and have babel-jest transform it (see transformIgnorePatterns in
-      // jest.config.js).
+      // ESM resolve normally and have @swc/jest transform it (see
+      // transformIgnorePatterns in jest.config.js).
       if (pkg.name === 'nanoid') {
         delete pkg['exports'];
         delete pkg['module'];

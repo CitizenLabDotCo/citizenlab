@@ -79,8 +79,6 @@ resource 'Omniauth Callback', document: false do
 
   context 'when authenticating via OAuth' do
     before do
-      @user = create(:user, email: 'facebook_user@example.com')
-
       AppConfiguration.instance.settings['id_config'] = {
         allowed: true,
         enabled: true,
@@ -93,9 +91,9 @@ resource 'Omniauth Callback', document: false do
         provider: 'facebook',
         uid: '12345',
         info: {
-          email: @user.email,
-          first_name: @user.first_name,
-          last_name: @user.last_name
+          email: 'facebook_user@example.com',
+          first_name: 'Facebook',
+          last_name: 'User'
         },
         extra: {
           raw_info: {
@@ -297,6 +295,64 @@ resource 'Omniauth Callback', document: false do
           expect(existing_user.new_email).to be_nil
         end
       end
+
+      # Signed up with email only (no name), logged out, then logged in with SSO.
+      context 'when a passwordless user with a confirmed email but no name exists' do
+        let!(:existing_user) do
+          create(:user, email: 'billy_fixed@example.com', password: nil, first_name: nil, last_name: nil, avatar: nil)
+        end
+
+        example 'fills in the name the SSO method locks', document: false do
+          do_request
+
+          assert_status(302)
+          expect(User.count).to eq(1)
+
+          existing_user.reload
+          expect(existing_user.verified).to be true
+          expect(Verification::VerificationService.new.locked_attributes(existing_user)).to include(:first_name, :last_name)
+          expect(existing_user.first_name).to eq 'Billy'
+          expect(existing_user.last_name).to eq 'Fixed'
+        end
+      end
+
+      # Signed up through POST /web_api/v1/users, confirmed the email with the code,
+      # then logged in with an SSO that returns the same email.
+      context 'when a user signed up with email and confirmed it' do
+        before do
+          create(:custom_field_gender, :with_options)
+          create(:custom_field_birthyear)
+        end
+
+        example 'fills in the custom fields the SSO method locks', document: false do
+          client.post(
+            '/web_api/v1/users',
+            { user: { email: 'billy_fixed@example.com', password: 'democracy2.0', locale: 'en' } }.to_json,
+            headers
+          )
+          expect(client.status).to eq 201
+
+          user = User.find_by(email: 'billy_fixed@example.com')
+          client.post(
+            '/web_api/v1/user/confirm_code_email',
+            { confirmation: { email: user.email, code: user.email_confirmation.code } }.to_json,
+            headers
+          )
+          expect(client.status).to eq 200
+
+          do_request
+
+          assert_status(302)
+          expect(User.count).to eq(1)
+
+          user = User.find_by(email: 'billy_fixed@example.com')
+          expect(user.verified).to be true
+          expect(user.first_name).to eq 'Billy'
+          expect(user.last_name).to eq 'Fixed'
+          expect(Verification::VerificationService.new.locked_custom_fields(user)).to include(:gender, :birthyear)
+          expect(CustomFieldValuesTransitionService.new.custom_field_values(user)).to include('gender' => 'male', 'birthyear' => 1980)
+        end
+      end
     end
   end
 
@@ -408,6 +464,34 @@ resource 'Omniauth Callback', document: false do
         end
       end
 
+      # The new-account case one step worse: parking the address on new_email made
+      # update_in_sso! raise, locking an existing user out of signing in at all.
+      context 'when identity already exists and the SSO email is owned by somebody else' do
+        let!(:owner) { create(:user, email: 'billy_fixed@example.com') }
+        let!(:existing_user) do
+          user = build(:unconfirmed_user, email: nil)
+          user.identities.build(provider: 'fake_sso', uid: 'billy_fixed', auth_hash: {})
+          user.save!
+          user
+        end
+
+        # :email only reaches update_in_sso! when password_login is off - that is
+        # what puts it in updateable_user_attrs (IdMethods::Base#updateable_user_attrs).
+        before { SettingsService.new.deactivate_feature!('password_login') }
+
+        example 'signs the user in without claiming the address' do
+          do_request
+
+          assert_status(302)
+          expect(response_headers['Location']).not_to include('authentication_error=true')
+
+          existing_user.reload
+          expect(existing_user.email).to be_nil
+          expect(existing_user.new_email).to be_nil
+          expect(owner.reload.email).to eq 'billy_fixed@example.com'
+        end
+      end
+
       context 'when identity already exists and user does not have an email yet' do
         let!(:existing_user) do
           user = build(:unconfirmed_user, email: nil)
@@ -431,16 +515,32 @@ resource 'Omniauth Callback', document: false do
         end
       end
 
+      # Somebody else's address cannot go in new_email, so it is held as
+      # merge_target_email and the merge code is sent straight away.
       context 'when email is already taken by another confirmed user' do
         let!(:existing_user) { create(:user, email: 'billy_fixed@example.com') }
 
-        example 'Returns error' do
-          expect(User.count).to eq(1) # Only the existing user
+        example 'Signs the user in on a new account waiting to merge into it' do
           do_request
 
-          expect(response_headers['Location']).to include('authentication_error=true')
-          expect(User.count).to eq(1) # Still only the existing user
-          expect(User.first.identities.length).to eq(0) # No identity should be created for the existing user
+          expect(response_headers['Location']).not_to include('authentication_error=true')
+
+          created = User.where.not(id: existing_user.id).first
+          expect(created.email).to be_nil
+          expect(created.new_email).to be_nil
+          expect(created.merge_target_email).to eq 'billy_fixed@example.com'
+          expect(created.identities.pluck(:provider)).to eq ['fake_sso']
+          expect(delivery_service).to have_received(:send_now_to_user)
+            .with(an_instance_of(EmailCampaigns::Campaigns::MergeAccountConfirmation), created, hash_including(:code))
+            .once
+        end
+
+        example 'Leaves the account that owns the address untouched' do
+          do_request
+
+          existing_user.reload
+          expect(existing_user.email).to eq 'billy_fixed@example.com'
+          expect(existing_user.identities).to be_empty
         end
       end
     end

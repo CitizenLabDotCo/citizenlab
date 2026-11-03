@@ -2,7 +2,6 @@ import { randomString } from '../../../support/commands';
 
 describe('Admin: edit project', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString(30);
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
@@ -12,7 +11,6 @@ describe('Admin: edit project', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'draft',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -51,8 +49,14 @@ describe('Admin: edit project', () => {
     cy.visit(`admin/projects/${projectId}`);
     cy.get('#e2e-share-link').click();
     cy.get('#e2e-refresh-link').click();
+    // Wait for the token refresh to actually persist before visiting the
+    // old link — a fixed wait raced the request on slow backends, and the
+    // old token then still granted access.
+    cy.intercept('POST', '**/projects/*/refresh_preview_token').as(
+      'refreshToken'
+    );
     cy.get('#e2e-refresh-link-accept').click();
-    cy.wait(1000);
+    cy.wait('@refreshToken').its('response.statusCode').should('eq', 200);
     cy.logout();
 
     cy.visit(link);

@@ -9,6 +9,8 @@ import {
 
 import messages from './messages';
 
+// Keep in sync with FIXABLE_DENIED_REASONS in
+// back/app/services/permissions/phase_permissions_service.rb.
 const FIXABLE_REASONS = new Set<string>([
   'user_not_signed_in',
   'user_not_active', // means "not registered or blocked or confirmation still required, see user.rb"
@@ -18,6 +20,23 @@ const FIXABLE_REASONS = new Set<string>([
 
 export const isFixableByAuthentication = (disabledReason: string) => {
   return FIXABLE_REASONS.has(disabledReason);
+};
+
+// The phase's participation method has no such action, rather than the user being
+// unable to perform it. No Permission record exists for these (Permission::ACTIONS).
+const ACTION_NOT_SUPPORTED_REASONS = new Set<string>([
+  'posting_not_supported',
+  'commenting_not_supported',
+  'reacting_not_supported',
+  'not_voting',
+  'not_survey',
+  'not_poll',
+  'not_document_annotation',
+  'not_volunteering',
+] satisfies DisabledReason[]);
+
+export const isActionNotSupported = (disabledReason: string) => {
+  return ACTION_NOT_SUPPORTED_REASONS.has(disabledReason);
 };
 
 // Fall back messages for disabled reasons

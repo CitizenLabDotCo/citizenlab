@@ -12,6 +12,7 @@ export interface IAPIClients {
       name: string;
       created_at: string;
       last_used_at: string | null;
+      last_user_agent: string | null;
       masked_secret: string;
     };
   }[];

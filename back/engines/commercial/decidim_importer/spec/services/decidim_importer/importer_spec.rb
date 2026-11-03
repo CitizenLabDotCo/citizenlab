@@ -1,0 +1,371 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+require 'tempfile'
+require_relative '../../fixtures/decidim_export_fixture'
+
+RSpec.describe DecidimImporter::Importer do
+  let(:export_root) { DecidimImporter::DecidimExportFixture.csv_root }
+
+  # The imported proposals land in ideation phases, so the tenant needs the matching ideation
+  # idea_statuses (a real tenant seeds these at creation; resolve them by code at apply time).
+  before do
+    %w[proposed under_consideration accepted rejected].each do |code|
+      next if IdeaStatus.exists?(code: code, participation_method: 'ideation')
+
+      create(:idea_status, code: code, participation_method: 'ideation')
+    end
+  end
+
+  describe '.apply_template_file' do
+    # The create → import split: dump the template to a file, then import that file independently of
+    # the CSV pipeline.
+    it 'imports a dumped tenant-template YAML file into the tenant' do
+      yaml = DecidimImporter::TemplateCreator.from_directory(export_root).to_yaml
+      file = Tempfile.new(['decidim', '.template.yml'])
+      file.write(yaml)
+      file.close
+
+      described_class.apply_template_file(file.path, import_uploads: false)
+
+      expect(ProjectFolders::Folder.count).to eq(2)
+      expect(User.where(unique_code: %w[decidim-user-1]).count).to eq(1)
+      expect(CustomField.registration.find_by(key: 'phone_number')).to be_present
+    ensure
+      file&.unlink
+    end
+  end
+
+  describe '.apply_template reuse (default on)' do
+    it 'reuses a pre-existing user instead of duplicating it, resolving authors to it' do
+      existing = create(:user)
+      existing.update_columns(unique_code: 'decidim-user-1') # the same Decidim id the template carries
+      template = YAML.load(DecidimImporter::TemplateCreator.from_directory(export_root).to_yaml, aliases: true)
+
+      # reuse is always applied
+      described_class.apply_template(template, import_uploads: false)
+
+      # not duplicated — the pre-existing user is reused
+      expect(User.where(unique_code: 'decidim-user-1').count).to eq(1)
+      expect(User.find_by(unique_code: 'decidim-user-1')).to eq(existing)
+      # and the proposal authored by decidim-user-1 resolves to that existing user
+      accepted = Idea.find_by(title_multiloc: { 'fr-FR' => "Plus d'arbres" })
+      expect(accepted.author).to eq(existing)
+    end
+  end
+
+  describe "layout reuse (reuse_matchers['ContentBuilder::Layout'])" do
+    let(:matcher) { described_class.reuse_matchers['ContentBuilder::Layout'] }
+
+    it 'reuses the layout the content buildable already has under that code' do
+      folder = create(:project_folder)
+      existing = create(:layout, content_buildable: folder, code: 'project_folder_description')
+
+      found = matcher.call({ 'content_buildable' => folder, 'code' => 'project_folder_description' }, ContentBuilder::Layout)
+      expect(found).to eq(existing)
+    end
+
+    it 'returns nil when the buildable has no layout under that code, so one is created' do
+      folder = create(:project_folder)
+      create(:layout, content_buildable: folder, code: 'project_folder_description')
+
+      expect(matcher.call({ 'content_buildable' => folder, 'code' => 'project_page' }, ContentBuilder::Layout)).to be_nil
+      expect(matcher.call({ 'content_buildable' => create(:project), 'code' => 'project_page' }, ContentBuilder::Layout)).to be_nil
+      expect(matcher.call({}, ContentBuilder::Layout)).to be_nil
+    end
+
+    # Folders are reused by slug, so importing into a tenant that already holds them re-stages their
+    # description layout against a folder that already has one — and `(content_buildable, code)` is unique.
+    it 'imports into a tenant whose folders already carry a description layout' do
+      template = YAML.load(DecidimImporter::TemplateCreator.from_directory(export_root).to_yaml, aliases: true)
+      title_multiloc = template['models']['project_folders/folder'].first['title_multiloc']
+      # Folders are reused by title slug, so the pre-existing one has to carry that slug.
+      folder = create(
+        :project_folder,
+        title_multiloc: title_multiloc,
+        slug: DecidimImporter::Slug.sanitize(title_multiloc.values.find(&:present?))
+      )
+      create(:layout, content_buildable: folder, code: 'project_folder_description')
+
+      expect { described_class.apply_template(template, import_uploads: false) }.not_to raise_error
+
+      # The pre-existing folder was reused (the fixture holds 2), and kept its single layout.
+      expect(ProjectFolders::Folder.count).to eq(2)
+      expect(ContentBuilder::Layout.where(content_buildable: folder, code: 'project_folder_description').count).to eq(1)
+    end
+  end
+
+  describe "user reuse fallback by email (reuse_matchers['User'])" do
+    let(:matcher) { described_class.reuse_matchers['User'] }
+
+    it 'reuses a user created outside the import (no unique_code) by case-insensitive email' do
+      manual = create(:user, email: 'jane@example.com') # e.g. created manually, so no Decidim unique_code
+      found = matcher.call({ 'unique_code' => 'decidim-user-99', 'email' => 'JANE@Example.com' }, User)
+      expect(found).to eq(manual)
+    end
+
+    it 'prefers the unique_code match over the email fallback' do
+      by_code = create(:user)
+      by_code.update_columns(unique_code: 'decidim-user-1')
+      create(:user, email: 'shared@example.com')
+      found = matcher.call({ 'unique_code' => 'decidim-user-1', 'email' => 'shared@example.com' }, User)
+      expect(found).to eq(by_code)
+    end
+
+    it 'returns nil when neither unique_code nor email matches' do
+      expect(matcher.call({ 'unique_code' => 'nope', 'email' => 'nobody@example.com' }, User)).to be_nil
+      expect(matcher.call({}, User)).to be_nil
+    end
+
+    # Regression guard: reuse must not issue a query per user row — that N+1 (against a table growing as
+    # the import inserts) made a 20k-user production import quadratic. The matcher preloads once, then
+    # matches in memory.
+    it 'preloads existing users once, then matches with no further queries' do
+      create(:user).update_columns(unique_code: 'decidim-user-1')
+      matcher.call({ 'unique_code' => 'decidim-user-1' }, User) # first call warms the in-memory maps
+
+      queries = 0
+      counter = lambda do |*, payload|
+        queries += 1 unless payload[:name] == 'SCHEMA' || payload[:sql].match?(/\A\s*(BEGIN|COMMIT|ROLLBACK|SAVEPOINT|RELEASE)/i)
+      end
+      ActiveSupport::Notifications.subscribed(counter, 'sql.active_record') do
+        20.times { |i| matcher.call({ 'unique_code' => "missing-#{i}" }, User) }
+      end
+      expect(queries).to eq(0)
+    end
+  end
+
+  describe "custom idea-status reuse (reuse_matchers['IdeaStatus'])" do
+    let(:matcher) { described_class.reuse_matchers['IdeaStatus'] }
+
+    def custom_status(title_multiloc)
+      create(:idea_status, code: 'custom', participation_method: 'ideation', title_multiloc: title_multiloc)
+    end
+
+    it 'matches an existing custom ideation status that shares any locale title' do
+      status = custom_status('fr-FR' => 'Idée faisable', 'en' => 'Feasible')
+      # different locale keys, but the English label matches
+      expect(matcher.call({ 'title_multiloc' => { 'nl-NL' => 'x', 'en' => 'Feasible' } }, IdeaStatus)).to eq(status)
+    end
+
+    it 'does not match a distinct title, so a genuinely new status is created' do
+      custom_status('fr-FR' => 'Idée faisable')
+      expect(matcher.call({ 'title_multiloc' => { 'fr-FR' => 'Idée non retenue' } }, IdeaStatus)).to be_nil
+    end
+
+    it 'ignores standard-code and proposals-method statuses even with a matching title' do
+      create(:idea_status, code: 'viewed', participation_method: 'ideation', title_multiloc: { 'en' => 'Same' })
+      create(:idea_status, code: 'custom', participation_method: 'proposals', title_multiloc: { 'en' => 'Same' })
+      expect(matcher.call({ 'title_multiloc' => { 'en' => 'Same' } }, IdeaStatus)).to be_nil
+    end
+
+    it 'returns nil for a blank or missing title' do
+      expect(matcher.call({ 'title_multiloc' => { 'en' => '' } }, IdeaStatus)).to be_nil
+      expect(matcher.call({}, IdeaStatus)).to be_nil
+    end
+
+    it 'reuses the matched status on apply instead of duplicating it' do
+      status = custom_status('fr-FR' => 'Idée faisable')
+      template = { 'models' => { 'idea_status' => [
+        { 'code' => 'custom', 'participation_method' => 'ideation', 'ordering' => 1000, 'color' => '#123456',
+          'title_multiloc' => { 'fr-FR' => 'Idée faisable' }, 'description_multiloc' => { 'fr-FR' => 'Réalisable' } }
+      ] } }
+
+      expect { described_class.apply_template(template, import_uploads: false) }
+        .not_to change(IdeaStatus, :count)
+      expect(IdeaStatus.where(code: 'custom').pluck(:id)).to eq([status.id])
+    end
+  end
+
+  describe '.resolve_area_orderings!' do
+    it "offsets imported area orderings past the tenant's existing areas" do
+      create(:area)
+      base = Area.maximum(:ordering) + 1
+      template = { 'models' => { 'area' => [{ 'ordering' => 0 }, { 'ordering' => 3 }] } }
+
+      described_class.resolve_area_orderings!(template)
+
+      expect(template['models']['area'].map { |a| a['ordering'] }).to eq([base, base + 3])
+    end
+
+    it 'is a no-op when there are no areas in the template' do
+      expect { described_class.resolve_area_orderings!({ 'models' => {} }) }.not_to raise_error
+    end
+  end
+
+  describe '.resolve_scope_areas!' do
+    it 'rewrites each idea import’s parked scope pointer to the imported area’s id and title' do
+      area = create(:area, title_multiloc: { 'en' => 'Utah' })
+      scoped = create(:idea_import)
+      plain = create(:idea_import)
+      area_attrs = { 'title_multiloc' => { 'en' => 'Utah' } }
+      template = {
+        'models' => {
+          'area' => [area_attrs],
+          # The scoped import's pointer is the *same* area attributes hash (a YAML anchor/alias in practice).
+          'bulk_import_ideas/idea_import' => [{ 'extra_info' => { 'decidim_scope' => area_attrs } }, { 'extra_info' => {} }]
+        }
+      }
+      created = { 'Area' => [area.id], 'BulkImportIdeas::IdeaImport' => [scoped.id, plain.id] }
+
+      described_class.resolve_scope_areas!(template, created)
+
+      expect(scoped.reload.extra_info['decidim_scope']).to eq(
+        'area_id' => area.id, 'title_multiloc' => { 'en' => 'Utah' }
+      )
+      expect(plain.reload.extra_info).to eq({})
+    end
+
+    it 'skips the pass when idea-import/area counts do not line up with the created ids' do
+      idea_import = create(:idea_import, extra_info: { 'decidim_scope' => { 'title_multiloc' => {} } })
+      template = { 'models' => { 'area' => [{}], 'bulk_import_ideas/idea_import' => [idea_import.attributes.slice('extra_info')] } }
+
+      described_class.resolve_scope_areas!(template, { 'Area' => [], 'BulkImportIdeas::IdeaImport' => [idea_import.id] })
+
+      expect(idea_import.reload.extra_info['decidim_scope']).to eq('title_multiloc' => {})
+    end
+
+    it 'is a no-op when the template has no idea imports or areas' do
+      expect { described_class.resolve_scope_areas!({ 'models' => {} }, {}) }.not_to raise_error
+    end
+  end
+
+  describe '.provision_project_pages!' do
+    let(:stale) { { 'ROOT' => { 'type' => 'div', 'isCanvas' => true, 'nodes' => [], 'props' => {} } } }
+
+    def project_page(project)
+      ContentBuilder::Layout.find_by(content_buildable: project, code: 'project_page')
+    end
+
+    it 'gives an imported project without a page a default one, leaving existing pages untouched' do
+      without_page = create(:project)
+      imported = create(:project)
+      other = create(:project) # e.g. a pre-existing demo project, not part of the import
+      imported_page = ContentBuilder::Layout.create!(
+        content_buildable: imported, code: 'project_page', enabled: true, craftjs_json: stale
+      )
+      other_page = ContentBuilder::Layout.create!(
+        content_buildable: other, code: 'project_page', enabled: true, craftjs_json: stale
+      )
+
+      described_class.provision_project_pages!('Project' => [without_page.id, imported.id])
+
+      # the project the extractor built no page for gets the canonical default one
+      expect(project_page(without_page).craftjs_json).to include('PROJECT_PAGE_BODY')
+      # the page the extractor imported is kept as-is
+      expect(project_page(imported)).to eq(imported_page)
+      expect(imported_page.reload.craftjs_json).to eq(stale)
+      # the non-imported project is left exactly as it was
+      expect(project_page(other)).to eq(other_page)
+      expect(other_page.reload.craftjs_json).to eq(stale)
+    end
+
+    it 'is a no-op when the import created no projects' do
+      expect { described_class.provision_project_pages!({}) }.not_to raise_error
+    end
+  end
+
+  describe '.store_static_page_images!' do
+    let(:png) { 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==' }
+
+    def page_with_image
+      page = create(:static_page)
+      craftjs = ContentBuilder::CustomPageLayoutService.new.craftjs_json_for_body('fr-FR' => "<p>Texte</p><img src=\"#{png}\">")
+      ContentBuilder::Layout.create!(content_buildable: page, code: 'custom_page', enabled: true, craftjs_json: craftjs)
+      page
+    end
+
+    def body_html(page)
+      ContentBuilder::Layout.find_by(content_buildable: page, code: 'custom_page')
+        .craftjs_json[ContentBuilder::CustomPageLayoutService::TOP_INFO_ID]['props']['text']['fr-FR']
+    end
+
+    # The deserializer saves the layout without the builder's save path, which stores inline images,
+    # so the import stores them itself.
+    it 'stores the images in an imported page body as text images of the page' do
+      imported = page_with_image
+      other = page_with_image # e.g. a page from an earlier import, not part of this one
+
+      described_class.store_static_page_images!('StaticPage' => [imported.id])
+
+      expect(imported.text_images.count).to eq(1)
+      expect(body_html(imported)).to include('data-cl2-text-image-text-reference')
+      expect(body_html(imported)).not_to include('data:image')
+      expect(other.text_images.count).to eq(0)
+    end
+
+    it 'runs as part of applying a template' do
+      template = YAML.load(DecidimImporter::TemplateCreator.from_directory(export_root).to_yaml, aliases: true)
+      page_layout = template['models']['content_builder/layout'].find { |l| l['code'] == 'custom_page' }
+      page_layout['craftjs_json'] = ContentBuilder::CustomPageLayoutService.new
+        .craftjs_json_for_body('fr-FR' => "<p>Texte</p><img src=\"#{png}\">")
+
+      described_class.apply_template(template, import_uploads: true)
+
+      page = StaticPage.find(page_layout['content_buildable_ref']['id'])
+      expect(page.text_images.count).to eq(1)
+    end
+
+    it 'is a no-op when the import created no static pages' do
+      expect { described_class.store_static_page_images!({}) }.not_to raise_error
+    end
+  end
+
+  describe '.apply_import_app_config_file' do
+    def app_config_json(settings)
+      file = Tempfile.new(['decidim', '.app_config.json'])
+      file.write({ 'settings' => settings }.to_json)
+      file.close
+      file
+    end
+
+    def flags
+      {
+        'project_static_pages' => { 'allowed' => true, 'enabled' => true }
+      }
+    end
+
+    it 'adds the export locales the tenant lacks, keeping its existing ones (additive union)' do
+      existing = AppConfiguration.instance.settings('core', 'locales')
+      missing = (CL2_SUPPORTED_LOCALES.map(&:to_s) - existing).first
+      # order in the patch shouldn't drop the tenant's own
+      file = app_config_json({ 'core' => { 'locales' => [missing] + existing } }.merge(flags))
+
+      added = described_class.apply_import_app_config_file(file.path)
+
+      expect(added).to eq([missing])
+      locales = AppConfiguration.instance.reload.settings('core', 'locales')
+      expect(locales).to include(*existing, missing) # existing kept, missing appended — nothing replaced
+    ensure
+      file&.unlink
+    end
+
+    it 'allows and enables the import feature flags without disturbing the rest of the config' do
+      name_before = AppConfiguration.instance.settings('core', 'organization_name')
+      file = app_config_json({ 'core' => { 'locales' => AppConfiguration.instance.settings('core', 'locales') } }
+        .merge(flags))
+
+      described_class.apply_import_app_config_file(file.path)
+
+      config = AppConfiguration.instance.reload
+      expect(config.feature_activated?('project_static_pages')).to be(true)
+      expect(config.settings('core', 'organization_name')).to eq(name_before) # untouched
+    ensure
+      file&.unlink
+    end
+
+    it 'returns [] (locales) when the tenant already has every export locale, still enabling the flags' do
+      file = app_config_json({ 'core' => { 'locales' => [AppConfiguration.instance.settings('core', 'locales').first] } }
+        .merge(flags))
+
+      expect(described_class.apply_import_app_config_file(file.path)).to eq([])
+      expect(AppConfiguration.instance.reload.feature_activated?('project_static_pages')).to be(true)
+    ensure
+      file&.unlink
+    end
+
+    it 'is a no-op returning [] when the file is absent' do
+      expect(described_class.apply_import_app_config_file('/no/such.app_config.json')).to eq([])
+    end
+  end
+end

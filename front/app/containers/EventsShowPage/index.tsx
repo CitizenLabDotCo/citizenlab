@@ -80,7 +80,7 @@ const EventsShowPage = () => {
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const largeImage = eventImage?.data.attributes?.versions?.large;
 
-  if (status === 'loading') {
+  if (status === 'pending') {
     return (
       <VerticalCenterer>
         <Spinner />

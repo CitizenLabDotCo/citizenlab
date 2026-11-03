@@ -118,9 +118,9 @@ describe CustomIdMethods::Federa::FederaOmniauth do
     end
   end
 
-  describe '#email_always_present?' do
+  describe '#confirmed_email_always_present?' do
     it 'returns false' do
-      expect(omniauth.email_always_present?).to be false
+      expect(omniauth.confirmed_email_always_present?).to be false
     end
   end
 

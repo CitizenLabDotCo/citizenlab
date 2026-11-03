@@ -65,7 +65,7 @@ const IdeasShowPage = () => {
 
   if (!project) return <PageNotFound />;
 
-  if (status === 'loading') {
+  if (status === 'pending') {
     return (
       <VerticalCenterer>
         <Spinner />

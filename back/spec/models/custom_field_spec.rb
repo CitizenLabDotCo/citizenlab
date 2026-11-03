@@ -159,6 +159,18 @@ RSpec.describe CustomField do
     end
   end
 
+  describe '#user_field_in_form?' do
+    it 'returns true for fields with the user-field-in-form key prefix' do
+      field = build(:custom_field, key: UserFieldsInFormService.prefix_key('gender'))
+      expect(field.user_field_in_form?).to be true
+    end
+
+    it 'returns false for fields without the prefix' do
+      expect(build(:custom_field, key: 'gender').user_field_in_form?).to be false
+      expect(build(:custom_field, key: nil).user_field_in_form?).to be false
+    end
+  end
+
   describe '#clear_logic_unless_supported' do
     it 'saves logic when the field supports logic' do
       field = create(:custom_field, resource: create(:custom_form), input_type: 'select')
@@ -301,6 +313,16 @@ RSpec.describe CustomField do
       cf = create(:custom_field, key: nil, title_multiloc: { 'ar-SA': 'الرئيسية' })
       expect(cf.key).to be_present
     end
+
+    it 'generates a key from the title with its markup already stripped' do
+      cf = create(:custom_field, key: nil, title_multiloc: { 'en' => '<b>Age</b>' })
+      expect(cf.key).to start_with 'age_'
+    end
+
+    it 'generates a key from a title carrying a payload without keeping any of it' do
+      cf = create(:custom_field, key: nil, title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
+      expect(cf.key).to start_with 'hi_'
+    end
   end
 
   context 'when domicile field is created' do
@@ -326,14 +348,13 @@ RSpec.describe CustomField do
     end
   end
 
-  describe 'description sanitizer' do
-    it 'sanitizes script tags in the description' do
-      custom_field = create(:custom_field, description_multiloc: {
-        'en' => '<p>Test</p><script>This content will stay</script><p>This content will also stay</p><a href="http://www.citizenlab.co" rel="nofollow">Click</a>'
-      })
-      expect(custom_field.description_multiloc).to eq({ 'en' => '<p>Test</p>This content will stay<p>This content will also stay</p><a href="http://www.citizenlab.co" rel="nofollow">Click</a>' })
-    end
+  it_behaves_like 'a sanitized html_multiloc', factory: :custom_field
+  it_behaves_like 'a plain text multiloc', factory: :custom_field
+  it_behaves_like 'a plain text multiloc', factory: :custom_field, attribute: :page_button_label_multiloc
+  it_behaves_like 'a plain text multiloc', factory: :custom_field, attribute: :linear_scale_label_1_multiloc
+  it_behaves_like 'a plain text multiloc', factory: :custom_field, attribute: :linear_scale_label_11_multiloc
 
+  describe 'description sanitizer' do
     it 'does not sanitize allowed tags in the description' do
       description_multiloc = { 'en' => <<-DESC
       <h2> This is fine ! </h2>
@@ -410,45 +431,63 @@ RSpec.describe CustomField do
     end
   end
 
-  describe 'visible_to_public?' do
-    it 'returns true for a default input field' do
-      field = build(:custom_field, :for_custom_form, input_type: 'text_multiloc', code: 'title_multiloc')
-      expect(field.visible_to_public?).to be true
+  describe 'answers_visible_to' do
+    it 'defaults to moderators' do
+      field = create(:custom_field, :for_custom_form)
+      expect(field.answers_visible_to_moderators?).to be true
     end
 
-    it 'returns false for a custom input field' do
-      field = build(:custom_field, :for_custom_form, input_type: 'number')
-      expect(field.visible_to_public?).to be false
+    it 'can be set to public' do
+      field = create(:custom_field, :for_custom_form, answers_visible_to: 'public')
+      expect(field.reload.answers_visible_to_public?).to be true
     end
 
-    it 'returns true for a custom input page' do
-      field = build(:custom_field_page, :for_custom_form)
-      expect(field.visible_to_public?).to be true
+    it 'rejects unknown values' do
+      field = build(:custom_field, :for_custom_form, answers_visible_to: 'everyone')
+      expect(field).to be_invalid
+      expect(field.errors.details[:answers_visible_to]).to include(error: :inclusion, value: 'everyone')
     end
 
-    it 'returns true for a custom input end page' do
-      field = build(:custom_field_form_end_page, :for_custom_form)
-      expect(field.visible_to_public?).to be true
+    it 'must be public for a built-in input field' do
+      field = build(:default_input_field, answers_visible_to: 'moderators')
+      expect(field).to be_invalid
+      expect(field.errors.details[:answers_visible_to]).to include(error: :inclusion, value: 'moderators')
     end
 
-    it 'returns false for a default registration field' do
-      field = build(:custom_field_birthyear)
-      expect(field.visible_to_public?).to be false
+    it 'must be moderators for a registration field' do
+      field = build(:custom_field, :for_registration, answers_visible_to: 'public')
+      expect(field).to be_invalid
+      expect(field.errors.details[:answers_visible_to]).to include(error: :inclusion, value: 'public')
     end
 
-    it 'returns false for a custom registration field' do
-      field = build(:custom_field_select, :for_registration)
-      expect(field.visible_to_public?).to be false
+    it 'must be moderators for a page' do
+      field = build(:custom_field_page, :for_custom_form, answers_visible_to: 'public')
+      expect(field).to be_invalid
+      expect(field.errors.details[:answers_visible_to]).to include(error: :inclusion, value: 'public')
+    end
+  end
+
+  describe 'show_as_filter' do
+    it 'defaults to false' do
+      field = create(:custom_field_select, :for_custom_form)
+      expect(field.show_as_filter).to be false
     end
 
-    it 'returns true for a custom registration page' do
-      field = build(:custom_field_page, :for_registration)
-      expect(field.visible_to_public?).to be true
+    it 'can be set for a public choice question' do
+      field = create(:custom_field_select, :for_custom_form, answers_visible_to: 'public', show_as_filter: true)
+      expect(field.reload.show_as_filter).to be true
     end
 
-    it 'returns true for a custom registration end page' do
-      field = build(:custom_field_form_end_page, :for_registration)
-      expect(field.visible_to_public?).to be true
+    it 'cannot be set for a private choice question' do
+      field = build(:custom_field_select, :for_custom_form, answers_visible_to: 'moderators', show_as_filter: true)
+      expect(field).to be_invalid
+      expect(field.errors.details[:show_as_filter]).to include(error: :inclusion)
+    end
+
+    it 'cannot be set for a public text question' do
+      field = build(:custom_field_text, :for_custom_form, answers_visible_to: 'public', show_as_filter: true)
+      expect(field).to be_invalid
+      expect(field.errors.details[:show_as_filter]).to include(error: :inclusion)
     end
   end
 
@@ -582,19 +621,25 @@ RSpec.describe CustomField do
   end
 
   describe '#average_rankings' do
-    let!(:field) { create(:custom_field_ranking) }
+    let!(:custom_form) { create(:custom_form) }
+    let!(:field) { create(:custom_field_ranking, resource: custom_form) }
     let!(:option1) { create(:custom_field_option, custom_field: field, key: 'by_foot') }
     let!(:option2) { create(:custom_field_option, custom_field: field, key: 'by_bike') }
     let!(:option3) { create(:custom_field_option, custom_field: field, key: 'by_train') }
     let!(:option4) { create(:custom_field_option, custom_field: field, key: 'by_horse') }
 
+    def create_idea(ranking = nil)
+      answers = ranking ? [build(:custom_field_answer, key: field.key, value: ranking, custom_field: field)] : []
+      create(:idea, project: custom_form.participation_context, custom_field_answers: answers)
+    end
+
     it 'calculates average rankings for field options' do
-      create(:idea, custom_field_values: { field.key => %w[by_bike by_horse by_train by_foot] })
-      create(:idea, custom_field_values: { field.key => %w[by_train by_bike by_foot by_horse] })
-      create(:idea, custom_field_values: {})
-      create(:idea, custom_field_values: { field.key => %w[by_horse by_foot by_train by_bike] })
-      create(:idea, custom_field_values: { field.key => %w[by_bike by_foot by_train by_horse] })
-      excluded_idea = create(:idea, custom_field_values: { field.key => %w[by_bike by_horse by_foot by_train] })
+      create_idea(%w[by_bike by_horse by_train by_foot])
+      create_idea(%w[by_train by_bike by_foot by_horse])
+      create_idea
+      create_idea(%w[by_horse by_foot by_train by_bike])
+      create_idea(%w[by_bike by_foot by_train by_horse])
+      excluded_idea = create_idea(%w[by_bike by_horse by_foot by_train])
 
       expect(field.average_rankings(Idea.where.not(id: [excluded_idea.id]))).to eq({
         'by_bike' => 2,
@@ -612,13 +657,18 @@ RSpec.describe CustomField do
     let!(:option3) { create(:custom_field_option, custom_field: field, key: 'by_train') }
     let!(:option4) { create(:custom_field_option, custom_field: field, key: 'by_horse') }
 
+    def create_user(ranking = nil)
+      answers = ranking ? [build(:custom_field_answer, key: field.key, value: ranking, custom_field: field)] : []
+      create(:user, custom_field_answers: answers)
+    end
+
     it 'returns ranking position counts for each option' do
-      create(:user, custom_field_values: { field.key => %w[by_bike by_horse by_train by_foot] })
-      create(:user, custom_field_values: { field.key => %w[by_train by_bike by_foot by_horse] })
-      create(:user, custom_field_values: {})
-      create(:user, custom_field_values: { field.key => %w[by_horse by_foot by_train by_bike] })
-      create(:user, custom_field_values: { field.key => %w[by_bike by_foot by_train by_horse] })
-      excluded_user = create(:user, custom_field_values: { field.key => %w[by_bike by_horse by_foot by_train] })
+      create_user(%w[by_bike by_horse by_train by_foot])
+      create_user(%w[by_train by_bike by_foot by_horse])
+      create_user
+      create_user(%w[by_horse by_foot by_train by_bike])
+      create_user(%w[by_bike by_foot by_train by_horse])
+      excluded_user = create_user(%w[by_bike by_horse by_foot by_train])
 
       expect(field.rankings_counts(User.where.not(id: [excluded_user.id]))).to eq({
         'by_foot' => {

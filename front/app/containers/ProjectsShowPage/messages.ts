@@ -167,6 +167,10 @@ export default defineMessages({
     id: 'app.containers.Projects.takeThePoll',
     defaultMessage: 'Take the poll',
   },
+  castYourVote: {
+    id: 'app.containers.Projects.castYourVote',
+    defaultMessage: 'Cast your vote',
+  },
   // #input_term_copy
   ideas: {
     id: 'app.containers.Projects.ideas',
@@ -256,6 +260,10 @@ export default defineMessages({
     id: 'app.containers.Projects.readLess',
     defaultMessage: 'Read less',
   },
+  seeTheResults: {
+    id: 'app.containers.Projects.seeTheResults',
+    defaultMessage: 'See the results',
+  },
   seeTheIdeas: {
     id: 'app.containers.Projects.seeTheIdeas',
     defaultMessage: 'See the ideas',
@@ -320,6 +328,10 @@ export default defineMessages({
     id: 'app.containers.Projects.seeTheObservations',
     defaultMessage: 'See the observations',
   },
+  seeVolunteering: {
+    id: 'app.containers.Projects.seeVolunteering',
+    defaultMessage: 'Volunteer',
+  },
   meetMinBudgetRequirement: {
     id: 'app.containers.Projects.meetMinBudgetRequirement',
     defaultMessage: 'Meet the minimum budget to submit your basket.',
@@ -374,5 +386,17 @@ export default defineMessages({
     id: 'app.containers.Projects.liveDataMessage',
     defaultMessage:
       "You're viewing real-time data. Participant counts are continuously updated for administrators. Please note that regular users see cached data, which may result in slight differences in the numbers.",
+  },
+  participate: {
+    id: 'app.containers.Projects.participate',
+    defaultMessage: 'Participate',
+  },
+  waysToParticipate: {
+    id: 'app.containers.Projects.waysToParticipate',
+    defaultMessage: 'Ways to participate',
+  },
+  openNowInTotal: {
+    id: 'app.containers.Projects.openNowInTotal',
+    defaultMessage: '{openCount} open now · {totalCount} in total',
   },
 });

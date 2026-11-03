@@ -14,7 +14,7 @@ RSpec.describe UserCustomFields::FieldValueCounter do
 
       before do
         # Create user with invalid value for gender custom field.
-        user = build(:user, gender: 'unicorn')
+        user = build(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'unicorn')])
         user.save!(validate: false)
       end
 
@@ -33,7 +33,7 @@ RSpec.describe UserCustomFields::FieldValueCounter do
         # Domicile field must be created before the user, otherwise the user is not
         # valid.
         @domicile_field = create(:custom_field_domicile)
-        create(:user, domicile: area.id)
+        create(:user, custom_field_answers: [build(:custom_field_answer, key: 'domicile', value: area.id)])
       end
 
       context 'and custom field is domicile' do
@@ -57,9 +57,9 @@ RSpec.describe UserCustomFields::FieldValueCounter do
 
       it 'do not report about inconsistent option keys to Sentry' do
         # Regression test. For the test to be effective, we need at least one user with
-        # domicile. The code expected option keys, while domicile field uses area ids in
-        # custom_field_values. This resulted in warnings about unknown option keys.
-        create(:user, domicile: areas.first.id)
+        # domicile. The code expected option keys, while domicile field uses area ids as
+        # answer values. This resulted in warnings about unknown option keys.
+        create(:user, custom_field_answers: [build(:custom_field_answer, key: 'domicile', value: areas.first.id)])
         expect(ErrorReporter).not_to receive(:report)
         counts
       end
@@ -69,6 +69,23 @@ RSpec.describe UserCustomFields::FieldValueCounter do
         expect(counts.keys).to match_array(expected_keys)
         expect(counts.values).to all eq(0)
       end
+
+      context 'with values referencing a deleted area' do
+        let(:options) { { record_type: 'ideas' } }
+        let(:records) { Idea.all }
+
+        it 'counts them as blank instead of raising', :aggregate_failures do
+          create(:idea_status_proposed)
+          create(:idea, author: nil, custom_field_answers: [build(:custom_field_answer, key: 'u_domicile', value: areas.first.id, custom_field: custom_field)])
+          deleted_area = create(:area)
+          create(:idea, author: nil, custom_field_answers: [build(:custom_field_answer, key: 'u_domicile', value: deleted_area.id, custom_field: custom_field)])
+          deleted_area.destroy!
+
+          expect(counts[areas.first.custom_field_option.key]).to eq 1
+          expect(counts[described_class::UNKNOWN_VALUE_LABEL]).to eq 1
+          expect(counts.keys).not_to include(deleted_area.id)
+        end
+      end
     end
 
     context 'when user fields are stored in ideas' do
@@ -76,14 +93,43 @@ RSpec.describe UserCustomFields::FieldValueCounter do
       let(:options) { { record_type: 'ideas' } }
       let(:records) do
         create(:idea_status_proposed)
-        create(:idea, author: nil, custom_field_values: { "u_#{custom_field.key}" => 'male' })
-        create(:idea, author: nil, custom_field_values: { "u_#{custom_field.key}" => 'female' })
-        create(:idea, author: nil, custom_field_values: {})
+        create(:idea, author: nil, custom_field_answers: [build(:custom_field_answer, key: "u_#{custom_field.key}", value: 'male', custom_field: custom_field)])
+        create(:idea, author: nil, custom_field_answers: [build(:custom_field_answer, key: "u_#{custom_field.key}", value: 'female', custom_field: custom_field)])
+        create(:idea, author: nil)
         Idea.all
       end
 
       it 'adds counts from user fields stored in ideas' do
         expect(counts).to match('male' => 1, 'female' => 1, 'unspecified' => 0, described_class::UNKNOWN_VALUE_LABEL => 1)
+      end
+    end
+
+    context 'when passing an array of custom field values instead of a relation' do
+      let(:select_field) { create(:custom_field_select, :with_options) }
+      let(:multiselect_field) { create(:custom_field_multiselect, :with_options) }
+
+      before do
+        create(:user, custom_field_answers: [
+          build(:custom_field_answer, key: select_field.key, value: 'option1'),
+          build(:custom_field_answer, key: multiselect_field.key, value: %w[option1 option2])
+        ])
+        create(:user, custom_field_answers: [
+          build(:custom_field_answer, key: select_field.key, value: 'option2'),
+          build(:custom_field_answer, key: multiselect_field.key, value: %w[option2])
+        ])
+        create(:user)
+      end
+
+      it 'returns the same counts as the SQL implementation' do
+        [select_field, multiselect_field].each do |field|
+          sql_counts = described_class.counts_by_field_option(User.all, field)
+          in_memory_counts = described_class.counts_by_field_option(User.all.map { |user| user.custom_field_answers.to_h { [it.key, it.value] } }, field)
+
+          expect(in_memory_counts).to eq(sql_counts)
+        end
+
+        expect(described_class.counts_by_field_option(User.all, select_field))
+          .to match('option1' => 1, 'option2' => 1, described_class::UNKNOWN_VALUE_LABEL => 1)
       end
     end
   end

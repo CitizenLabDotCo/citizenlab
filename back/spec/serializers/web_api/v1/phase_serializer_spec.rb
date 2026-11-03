@@ -71,6 +71,18 @@ describe WebApi::V1::PhaseSerializer do
     end
   end
 
+  context 'for an ideation phase' do
+    let(:user) { create(:user) }
+    let(:phase) { create(:ideation_phase) }
+
+    it 'includes what its participation method supports' do
+      expect(result.dig(:data, :attributes)).to include(
+        supports_form_logic: false,
+        supports_public_visibility: true
+      )
+    end
+  end
+
   context 'for a native survey phase' do
     let(:user) { create(:user) }
     let(:phase) { create(:native_survey_phase, with_permissions: true) }
@@ -81,6 +93,26 @@ describe WebApi::V1::PhaseSerializer do
         :native_survey_button_multiloc
       )
       expect(result.dig(:data, :attributes, :supports_survey_form)).to be true
+      expect(result.dig(:data, :attributes)).to include(
+        supports_form_logic: true,
+        supports_public_visibility: false
+      )
+    end
+  end
+
+  # The raw `prescreening_mode` is configuration data, serialized verbatim;
+  # `effective_prescreening_mode` is what the platform's features actually permit, so the
+  # front end can rely on it without duplicating the flag logic. Which modes are effective
+  # under which flags is specced in phase_spec.rb.
+  # A proposals phase, since its `prescreening` feature is enabled by default and the
+  # mode is therefore effective without any flag setup.
+  context 'for a phase with a prescreening mode' do
+    let(:user) { create(:user) }
+    let(:phase) { create(:proposals_phase, prescreening_mode: 'all') }
+
+    it 'includes both the configured and the effective mode' do
+      expect(result.dig(:data, :attributes, :prescreening_mode)).to eq 'all'
+      expect(result.dig(:data, :attributes, :effective_prescreening_mode)).to eq 'all'
     end
   end
 
@@ -94,6 +126,10 @@ describe WebApi::V1::PhaseSerializer do
         :native_survey_button_multiloc
       )
       expect(result.dig(:data, :attributes, :supports_survey_form)).to be true
+      expect(result.dig(:data, :attributes)).to include(
+        supports_form_logic: false,
+        supports_public_visibility: false
+      )
     end
   end
 end

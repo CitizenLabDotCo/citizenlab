@@ -15,6 +15,10 @@ module CustomIdMethods::ViennaSaml
       true
     end
 
+    def employee_only?
+      true
+    end
+
     def verification_method_type
       :omniauth
     end
@@ -93,6 +97,18 @@ module CustomIdMethods::ViennaSaml
     # @return [Array<Symbol>] Returns a list of attributes that can be updated from the auth response hash
     def updateable_user_attrs
       super + %i[first_name last_name]
+    end
+
+    def confirmed_email_always_present?
+      true
+    end
+
+    # Vienna uses SAML, which does not have an email_verified attribute.
+    # We assume that the email provided by Vienna is always confirmed.
+    # In any case, Vienna does not support log in by email so the
+    # security risk of an unverified email is mitigated.
+    def email_confirmed?(_auth)
+      true
     end
 
     # Removes the response object because it produces a Stacklevel too deep error when converting to JSON

@@ -97,6 +97,100 @@ RSpec.describe ContentBuilder::LayoutPolicy do
     end
   end
 
+  # Unstubbed, unlike the contexts above, so these exercise UserRoleService#can_moderate?'s
+  # StaticPage branch: a global page's layout is admin-only.
+  context 'for a custom page layout' do
+    let(:layout) do
+      create(:layout, content_buildable: create(:static_page), code: ContentBuilder::CustomPageLayoutService::CODE)
+    end
+
+    context 'for a visitor' do
+      let(:user) { nil }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.not_to permit(:upsert) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.not_to permit(:destroy) }
+    end
+
+    context 'for a regular user' do
+      let(:user) { create(:user) }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.not_to permit(:upsert) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.not_to permit(:destroy) }
+    end
+
+    context 'for a project moderator' do
+      let(:user) { create(:project_moderator) }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.not_to permit(:upsert) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.not_to permit(:destroy) }
+    end
+
+    context 'for an admin' do
+      let(:user) { create(:admin) }
+
+      it { is_expected.to permit(:show) }
+      it { is_expected.to permit(:upsert) }
+      it { is_expected.to permit(:update) }
+      it { is_expected.to permit(:destroy) }
+    end
+  end
+
+  # A project's page follows its project, as StaticPagePolicy does for the page itself.
+  context 'for a project page layout' do
+    let(:project) { create(:project) }
+    let(:layout) do
+      create(
+        :layout,
+        content_buildable: create(:static_page, project: project),
+        code: ContentBuilder::CustomPageLayoutService::CODE
+      )
+    end
+
+    context 'for a moderator of the page\'s project' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it { is_expected.to permit(:upsert) }
+      it { is_expected.to permit(:update) }
+      it { is_expected.to permit(:destroy) }
+    end
+
+    context 'for a moderator of another project' do
+      let(:user) { create(:project_moderator) }
+
+      it { is_expected.not_to permit(:upsert) }
+      it { is_expected.not_to permit(:update) }
+      it { is_expected.not_to permit(:destroy) }
+    end
+
+    context 'when the project is a draft' do
+      let(:project) { create(:project, :draft) }
+
+      context 'for a visitor' do
+        let(:user) { nil }
+
+        it { is_expected.not_to permit(:show) }
+      end
+
+      context 'for a moderator of the page\'s project' do
+        let(:user) { create(:project_moderator, projects: [project]) }
+
+        it { is_expected.to permit(:show) }
+      end
+
+      context 'for an admin' do
+        let(:user) { create(:admin) }
+
+        it { is_expected.to permit(:show) }
+      end
+    end
+  end
+
   describe 'Scope' do
     subject(:resolved_scope) { described_class::Scope.new(user, ContentBuilder::Layout).resolve }
 

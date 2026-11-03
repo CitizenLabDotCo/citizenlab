@@ -36,7 +36,6 @@ interface Props {
   loading: boolean;
   setError: SetError;
   onSubmit: (
-    email: string,
     password: string,
     rememberMe: boolean,
     tokenLifetime: number,
@@ -79,8 +78,11 @@ const Password = ({ state, loading, setError, onSubmit, onClose }: Props) => {
 
   if (isNilOrError(appConfiguration)) return null;
 
-  const { email } = state;
-  if (email === null) return null;
+  // The user got here by identifying themselves with either an email address or
+  // a phone number; we only show which account they are logging in to.
+  const { email, phone } = state;
+  const account = email ?? phone;
+  if (account === null) return null;
 
   const handleSubmit = async ({ password, rememberMe }: FormValues) => {
     const tokenLifetime =
@@ -89,7 +91,6 @@ const Password = ({ state, loading, setError, onSubmit, onClose }: Props) => {
 
     try {
       await onSubmit(
-        email,
         password,
         rememberMe,
         tokenLifetime,
@@ -120,11 +121,12 @@ const Password = ({ state, loading, setError, onSubmit, onClose }: Props) => {
           <FormattedMessage
             {...messages.logInToYourAccount}
             values={{
-              account: <strong>{state.email}</strong>,
+              account: <strong>{account}</strong>,
             }}
           />
         </Text>
-        <Input type="hidden" value={email} autocomplete="email" />
+        <Input type="hidden" value={account} autocomplete="username" />
+
         <Box>
           <PasswordInput
             id="e2e-password-input"

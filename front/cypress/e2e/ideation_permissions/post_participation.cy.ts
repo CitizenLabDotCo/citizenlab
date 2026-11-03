@@ -3,7 +3,7 @@ import { signUpEmailConformation, enterUserInfo } from '../../support/auth';
 import {
   updatePermission,
   setupProject,
-  addPermissionsCustomField,
+  askOnlyDemographicQuestion,
   confirmUserCustomFieldHasValue,
 } from '../../support/permitted_by_utils';
 import { fillOutTitleAndBody } from './_utils';
@@ -37,7 +37,7 @@ describe('Post Participation Signup: ideation', () => {
             phaseId,
             permitted_by: 'everyone',
           }).then(() => {
-            return addPermissionsCustomField({
+            return askOnlyDemographicQuestion({
               adminJwt,
               phaseId,
               customFieldId,
@@ -79,7 +79,7 @@ describe('Post Participation Signup: ideation', () => {
     cy.get('form').find('input').first().type(answer);
 
     // Intercept submit request
-    cy.intercept('POST', '/web_api/v1/ideas').as('submitSurvey');
+    cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitSurvey');
 
     // Submit survey
     cy.dataCy('e2e-submit-form').click();

@@ -53,10 +53,8 @@ formEditor: We currently have 2 UIs for admins to edit the form definition. This
 getFormTitle?:  Gets the title of the input form
 getModalContent: Returns modal content to be displayed on project page.
 showInputManager: Returns whether the input manager should be shown in the admin view.
-postType: Returns the type of input that is being posted.
 renderCTABar: Returns whether the CTA bar should be rendered.
 postSortingOptions?: Returns the sorting options for posts.
-showInputCount: Returns the input count to be used on project cards.
 inputsPageSize?: Returns the page size the ideas endpoint should use.
 */
 
@@ -69,10 +67,8 @@ export type ParticipationMethodConfig = {
   getFormTitle?: (props: FormTitleMethodProps) => React.ReactNode;
   showInputManager: boolean;
   inputManagerName?: string;
-  postType: 'defaultInput' | 'nativeSurvey';
   renderCTABar: (props: CTABarProps) => ReactNode | JSX.Element | null;
   postSortingOptions?: PostSortingOptionType[];
-  showInputCount: boolean;
   hideAuthorOnIdeas?: boolean; // Hides the author on the idea pages/cards
   showIdeaFilters?: boolean; // Shows filters on the idea list
   inputsPageSize?: number;
@@ -84,10 +80,11 @@ export type ParticipationMethodConfig = {
   supportsComments: boolean;
   /** Does this method support having the topic field in its form? */
   supportsTopicsCustomField: boolean;
+  /** Does this method offer a map view, and so have a map to configure? */
+  supportsMapView: boolean;
 };
 
 const ideationConfig: ParticipationMethodConfig = {
-  showInputCount: true,
   showIdeaFilters: true,
   formEditor: 'simpleFormEditor',
   inputsPageSize: 24,
@@ -95,7 +92,7 @@ const ideationConfig: ParticipationMethodConfig = {
   supportsVotes: true,
   supportsComments: true,
   supportsTopicsCustomField: true,
-  postType: 'defaultInput',
+  supportsMapView: true,
   getModalContent: (props: ModalContentMethodProps) => {
     if (props.ideaId && props.title && props.subtitle) {
       return (
@@ -142,7 +139,6 @@ const ideationConfig: ParticipationMethodConfig = {
 };
 
 const commonGroundConfig: ParticipationMethodConfig = {
-  showInputCount: true,
   showIdeaFilters: true,
   formEditor: null,
   inputsPageSize: 24,
@@ -150,7 +146,7 @@ const commonGroundConfig: ParticipationMethodConfig = {
   supportsVotes: false, // Check analysis if we need to support them
   supportsComments: false,
   supportsTopicsCustomField: false,
-  postType: 'defaultInput',
+  supportsMapView: false,
   getModalContent: null,
   showInputManager: true,
   inputManagerName: 'ideas',
@@ -161,7 +157,6 @@ const commonGroundConfig: ParticipationMethodConfig = {
 };
 
 const proposalsConfig: ParticipationMethodConfig = {
-  showInputCount: true,
   showIdeaFilters: true,
   formEditor: 'simpleFormEditor',
   inputsPageSize: 24,
@@ -169,7 +164,7 @@ const proposalsConfig: ParticipationMethodConfig = {
   supportsVotes: false,
   supportsComments: true,
   supportsTopicsCustomField: true,
-  postType: 'defaultInput',
+  supportsMapView: true,
   getModalContent: (props: ModalContentMethodProps) => {
     if (props.ideaId && props.title && props.subtitle) {
       return (
@@ -216,9 +211,7 @@ const proposalsConfig: ParticipationMethodConfig = {
 };
 
 const nativeSurveyConfig: ParticipationMethodConfig = {
-  showInputCount: true,
   formEditor: 'surveyEditor',
-  postType: 'nativeSurvey',
   getModalContent: null,
   showInputManager: false,
   renderCTABar: (props: CTABarProps) => {
@@ -228,16 +221,15 @@ const nativeSurveyConfig: ParticipationMethodConfig = {
   supportsVotes: false,
   supportsComments: false,
   supportsTopicsCustomField: false,
+  supportsMapView: false,
 };
 
 const informationConfig: ParticipationMethodConfig = {
-  showInputCount: false,
   formEditor: null,
   getModalContent: () => {
     return null;
   },
 
-  postType: 'defaultInput',
   showInputManager: false,
   renderCTABar: (props: CTABarProps) => (
     <EventsCTABar project={props.project} phases={props.phases} />
@@ -246,15 +238,14 @@ const informationConfig: ParticipationMethodConfig = {
   supportsVotes: false,
   supportsComments: false,
   supportsTopicsCustomField: false,
+  supportsMapView: false,
 };
 
 const surveyConfig: ParticipationMethodConfig = {
-  showInputCount: false,
   formEditor: null,
   getModalContent: () => {
     return null;
   },
-  postType: 'defaultInput',
   showInputManager: false,
   renderCTABar: (props: CTABarProps) => {
     return (
@@ -265,16 +256,15 @@ const surveyConfig: ParticipationMethodConfig = {
   supportsVotes: false,
   supportsComments: false,
   supportsTopicsCustomField: false,
+  supportsMapView: false,
 };
 
 const documentAnnotationConfig: ParticipationMethodConfig = {
-  showInputCount: false,
   formEditor: null,
   getModalContent: () => {
     return null;
   },
 
-  postType: 'defaultInput',
   showInputManager: false,
   renderCTABar: (props: CTABarProps) => {
     return (
@@ -285,10 +275,10 @@ const documentAnnotationConfig: ParticipationMethodConfig = {
   supportsVotes: false,
   supportsComments: false,
   supportsTopicsCustomField: false,
+  supportsMapView: false,
 };
 
 const votingConfig: ParticipationMethodConfig = {
-  showInputCount: false,
   formEditor: 'simpleFormEditor',
   inputsPageSize: 100,
   supportsReactions: false,
@@ -297,7 +287,6 @@ const votingConfig: ParticipationMethodConfig = {
   getModalContent: () => {
     return null;
   },
-  postType: 'defaultInput',
   getFormTitle: (props: FormTitleMethodProps) => {
     return (
       <FormattedMessage
@@ -332,16 +321,15 @@ const votingConfig: ParticipationMethodConfig = {
   ),
   hideAuthorOnIdeas: true,
   supportsTopicsCustomField: true,
+  supportsMapView: true,
 };
 
 const pollConfig: ParticipationMethodConfig = {
-  showInputCount: false,
   formEditor: null,
   getModalContent: () => {
     return null;
   },
 
-  postType: 'defaultInput',
   showInputManager: false,
   renderCTABar: (props: CTABarProps) => {
     return <PollCTABar project={props.project} phases={props.phases} />;
@@ -350,15 +338,14 @@ const pollConfig: ParticipationMethodConfig = {
   supportsVotes: false,
   supportsComments: false,
   supportsTopicsCustomField: false,
+  supportsMapView: false,
 };
 
 const volunteeringConfig: ParticipationMethodConfig = {
-  showInputCount: false,
   formEditor: null,
   getModalContent: () => {
     return null;
   },
-  postType: 'defaultInput',
   showInputManager: false,
   renderCTABar: (props: CTABarProps) => {
     return <VolunteeringCTABar project={props.project} phases={props.phases} />;
@@ -367,6 +354,7 @@ const volunteeringConfig: ParticipationMethodConfig = {
   supportsVotes: false,
   supportsComments: false,
   supportsTopicsCustomField: false,
+  supportsMapView: false,
 };
 
 const methodToConfig: {

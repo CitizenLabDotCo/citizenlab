@@ -19,10 +19,10 @@ jest.mock('api/app_configuration/useAppConfiguration');
 
 const mockAddAnalysis = jest.fn();
 jest.mock('api/analyses/useAddAnalysis', () =>
-  jest.fn(() => ({ mutate: mockAddAnalysis, isLoading: false }))
+  jest.fn(() => ({ mutate: mockAddAnalysis, isPending: false }))
 );
 jest.mock('api/analyses/useUpdateAnalysis', () =>
-  jest.fn(() => ({ mutate: jest.fn(), isLoading: false }))
+  jest.fn(() => ({ mutate: jest.fn(), isPending: false }))
 );
 jest.mock('api/analysis_summaries/useAnalysisSummaries', () =>
   jest.fn(() => [])

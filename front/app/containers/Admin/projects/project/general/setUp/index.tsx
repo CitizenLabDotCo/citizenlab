@@ -4,33 +4,24 @@ import { Box, colors, IconTooltip } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
 
-import { IFileAttachmentData } from 'api/file_attachments/types';
-import useFileAttachments from 'api/file_attachments/useFileAttachments';
 import useProjectImages, {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
 } from 'api/project_images/useProjectImages';
-import projectPermissionKeys from 'api/project_permissions/keys';
 import projectsKeys from 'api/projects/keys';
 import { IUpdatedProjectProperties, IProject } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
-import { useSyncFiles } from 'hooks/files/useSyncFiles';
-import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
-import useParallelParticipation from 'hooks/useParallelParticipation';
 
-import FileUploader from 'containers/Admin/projects/_shared/components/ProjectSetupForm/FileUploader';
 import ProjectContextSection from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection';
-import { ProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/types';
-import { validateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
+import { useValidateProjectContext } from 'containers/Admin/projects/_shared/components/ProjectSetupForm/ProjectContextSection/utils';
 import useSyncProjectImages from 'containers/Admin/projects/_shared/useSyncProjectImages';
 import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
 
 import ImageCropperContainer from 'components/admin/ImageCropper/Container';
-import HeaderBgUploader from 'components/admin/ProjectableHeaderBgUploader';
 import {
   Section,
   SectionTitle,
@@ -40,7 +31,6 @@ import {
 } from 'components/admin/Section';
 import SlugInput from 'components/admin/SlugInput';
 import SubmitWrapper, { ISubmitState } from 'components/admin/SubmitWrapper';
-import DescriptionBuilderLink from 'components/DescriptionBuilder/DescriptionBuilderLink';
 import Highlighter from 'components/Highlighter';
 import Error from 'components/UI/Error';
 import TextAreaMultilocWithLocaleSwitcher from 'components/UI/TextAreaMultilocWithLocaleSwitcher';
@@ -50,7 +40,6 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import Link from 'utils/cl-router/Link';
 import { convertUrlToUploadFile, isUploadFile } from 'utils/fileUtils';
-import { isNilOrError } from 'utils/helperUtils';
 import { useParams, useLocation } from 'utils/router';
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 import { validateSlug } from 'utils/textUtils';
@@ -59,17 +48,13 @@ import { TOnProjectAttributesDiffChangeFunction } from '..';
 import GeographicAreaInputs from '../../../_shared/components/ProjectSetupForm/GeographicAreaInputs';
 import ProjectCardImageDropzone from '../../../_shared/components/ProjectSetupForm/ProjectCardImageDropzone';
 import ProjectCardImageTooltip from '../../../_shared/components/ProjectSetupForm/ProjectCardImageTooltip';
-import ProjectHeaderImageTooltip from '../../../_shared/components/ProjectSetupForm/ProjectHeaderImageTooltip';
-import ProjectNameInput from '../../../_shared/components/ProjectSetupForm/ProjectNameInput';
 import {
   StyledForm,
   StyledInputMultiloc,
   StyledSectionField,
 } from '../../../_shared/components/ProjectSetupForm/styling';
 import TopicInputs from '../../../_shared/components/ProjectSetupForm/TopicInputs';
-import { fragmentId } from '../../projectHeader';
 import messages from '../messages';
-import validateTitle from '../utils/validateTitle';
 
 interface Props {
   project: IProject;
@@ -80,8 +65,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const projectId = project.data.id;
 
   const isProjectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
-  const parallelParticipation = useParallelParticipation();
-  const appConfigLocales = useAppConfigurationLocales();
   const { width, containerRef } = useContainerWidthAndHeight();
   const { pathname } = useLocation();
   const showStickySaveButton = pathname.endsWith(
@@ -91,19 +74,7 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const { data: remoteProjectImages } = useProjectImages(projectId);
   const { mutateAsync: updateProject } = useUpdateProject();
 
-  const syncProjectFiles = useSyncFiles();
   const syncProjectImages = useSyncProjectImages();
-
-  // File Attachments
-  const { data: remoteProjectFileAttachments } = useFileAttachments({
-    attachable_id: projectId,
-    attachable_type: 'Project',
-  });
-  const [projectFileAttachments, setProjectFileAttachments] = useState<
-    IFileAttachmentData[] | undefined
-  >(remoteProjectFileAttachments?.data);
-  const [projectFileAttachmentsToRemove, setProjectFileAttachmentsToRemove] =
-    useState<IFileAttachmentData[]>([]);
 
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
 
@@ -111,7 +82,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const [apiErrors, setApiErrors] = useState<CLErrors>({});
   const [projectAttributesDiff, setProjectAttributesDiff] =
     useState<IUpdatedProjectProperties>({});
-  const [titleError, setTitleError] = useState<Multiloc | null>(null);
   const [projectContextError, setProjectContextError] = useState(false);
 
   // We should probably not have slug, publicationStatus, etc.
@@ -140,21 +110,10 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
       project.data.attributes.description_preview_multiloc
     );
 
-  const [projectContext, setProjectContext] = useState<ProjectContext>(() => {
-    // folder needs to be checked before space_id,
-    // because if a project is in a folder that is in a space,
-    // the project ALSO has a space_id.
-    // But in this case we want to show the folder as context, not the space.
-    if (project.data.attributes.folder_id) return 'folder';
-    if (project.data.attributes.space_id) return 'space';
-    return 'root';
-  });
+  const validateProjectContext = useValidateProjectContext();
 
-  useEffect(() => {
-    if (remoteProjectFileAttachments) {
-      setProjectFileAttachments(remoteProjectFileAttachments.data);
-    }
-  }, [remoteProjectFileAttachments]);
+  const projectInRoot =
+    !project.data.attributes.space_id && !project.data.attributes.folder_id;
 
   useEffect(() => {
     (async () => {
@@ -195,24 +154,9 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
       setSubmitState(submitState);
     };
 
-  const handleTitleMultilocOnChange = (titleMultiloc: Multiloc) => {
-    handleProjectAttributeDiffOnChange({ title_multiloc: titleMultiloc });
-    setTitleError(null);
-  };
-
   const handleAltTextMultilocOnChange = (altTextMultiloc: Multiloc) => {
     setSubmitState('enabled');
     setProjectCardImageAltText(altTextMultiloc);
-  };
-
-  const handleHeaderBgChange = (newImageBase64: string | null) => {
-    handleProjectAttributeDiffOnChange({ header_bg: newImageBase64 });
-  };
-
-  const handleHeaderBgAltTextChange = (altText: Multiloc) => {
-    handleProjectAttributeDiffOnChange({
-      header_bg_alt_text_multiloc: altText,
-    });
   };
 
   const handleProjectCardImageOnAdd = (projectImages: UploadFile[]) => {
@@ -270,7 +214,7 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
         });
       }
 
-      const projectImagesPromise = syncProjectImages({
+      await syncProjectImages({
         croppedProjectCardBase64,
         projectCardImageAltText,
         projectCardImageToUpdate: projectCardImage,
@@ -278,36 +222,10 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
         projectId,
       });
 
-      const initialFileAttachmentOrdering: Record<string, number | undefined> =
-        Object.fromEntries(
-          remoteProjectFileAttachments?.data
-            .filter((file) => file.id)
-            .map((file) => [file.id!, file.attributes.position]) ?? []
-        );
-
-      const projectFilesPromise = projectFileAttachments
-        ? syncProjectFiles({
-            attachableId: projectId,
-            attachableType: 'Project',
-            fileAttachments: projectFileAttachments,
-            fileAttachmentsToRemove: projectFileAttachmentsToRemove,
-            fileAttachmentOrdering: initialFileAttachmentOrdering,
-          })
-        : undefined;
-
-      await Promise.all([
-        projectImagesPromise,
-        projectFilesPromise,
-      ] as Promise<any>[]);
-
       setSubmitState('success');
       setProjectCardImageToRemove(null);
-      setProjectFileAttachmentsToRemove([]);
       setProcessing(false);
 
-      queryClient.invalidateQueries({
-        queryKey: projectPermissionKeys.list({ projectId }),
-      });
       queryClient.invalidateQueries({
         queryKey: projectsKeys.item({ slug: project.data.attributes.slug }),
       });
@@ -345,27 +263,18 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   };
 
   const validateForm = () => {
-    let formIsValid = true;
-
-    if (!parallelParticipation) {
-      const titleError = !isNilOrError(appConfigLocales)
-        ? validateTitle(
-            appConfigLocales,
-            projectAttrs.title_multiloc,
-            formatMessage(messages.noTitleErrorMessage)
-          )
-        : null;
-      const hasTitleError = !isEmpty(titleError);
-      setTitleError(hasTitleError ? titleError : null);
-      formIsValid = !hasTitleError;
-    }
-
-    if (!validateProjectContext(projectContext, projectAttrs)) {
+    if (
+      !validateProjectContext({
+        spaceId: projectAttrs.space_id,
+        folderId: projectAttrs.folder_id,
+        projectInRoot,
+      })
+    ) {
       setProjectContextError(true);
       return false;
     }
 
-    return formIsValid;
+    return true;
   };
 
   const selectedTopicIds = getSelectedTopicIds(
@@ -376,9 +285,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
   const projectCardImageShouldBeSaved = projectCardImage
     ? !projectCardImage.remote
     : false;
-
-  const projectIsInRoot =
-    !project.data.attributes.space_id && !project.data.attributes.folder_id;
 
   return (
     <Box ref={containerRef}>
@@ -396,44 +302,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
               <SectionDescription>
                 <FormattedMessage {...messages.subtitleGeneral} />
               </SectionDescription>
-            </>
-          )}
-
-          {!parallelParticipation && (
-            <>
-              <Highlighter fragmentId={fragmentId}>
-                <ProjectNameInput
-                  titleMultiloc={projectAttrs.title_multiloc}
-                  titleError={titleError}
-                  apiErrors={apiErrors}
-                  handleTitleMultilocOnChange={handleTitleMultilocOnChange}
-                />
-              </Highlighter>
-
-              {/* Project Description Section */}
-              <Section>
-                <SubSectionTitle>
-                  <FormattedMessage
-                    {...messages.projectDescriptionSectionTitle}
-                  />
-                </SubSectionTitle>
-                <SectionDescription>
-                  <FormattedMessage
-                    {...messages.projectDescriptionSectionDescription}
-                  />
-                </SectionDescription>
-              </Section>
-
-              {/* Main Description */}
-              <SectionField>
-                <Highlighter fragmentId="description-multiloc">
-                  <DescriptionBuilderLink contentBuildableType="project" />
-                </Highlighter>
-                <Error
-                  fieldName="description_multiloc"
-                  apiErrors={apiErrors.description_multiloc}
-                />
-              </SectionField>
             </>
           )}
 
@@ -503,47 +371,15 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
           />
 
           <ProjectContextSection
-            projectContext={projectContext}
-            space_id={projectAttrs.space_id}
-            folder_id={projectAttrs.folder_id}
-            formSituation={
-              projectIsInRoot
-                ? 'editing-project-in-root'
-                : 'editing-project-not-in-root'
-            }
+            spaceId={projectAttrs.space_id}
+            folderId={projectAttrs.folder_id}
+            projectInRoot={projectInRoot}
             error={projectContextError}
-            onSetContext={(context) => {
-              handleProjectAttributeDiffOnChange({
-                space_id: null,
-                folder_id: null,
-              });
-              setProjectContext(context);
-              setProjectContextError(false);
-            }}
-            onChangeSpace={(spaceAndFolderId) => {
-              handleProjectAttributeDiffOnChange(spaceAndFolderId);
-              setProjectContextError(false);
-            }}
-            onChangeFolder={(spaceAndFolderId) => {
+            onChange={(spaceAndFolderId) => {
               handleProjectAttributeDiffOnChange(spaceAndFolderId);
               setProjectContextError(false);
             }}
           />
-
-          {!parallelParticipation && (
-            <SectionField className="intercom-product-tour-project-header-image-field">
-              <SubSectionTitle>
-                <FormattedMessage {...messages.headerImageInputLabel} />
-                <ProjectHeaderImageTooltip />
-              </SubSectionTitle>
-              <HeaderBgUploader
-                imageUrl={project.data.attributes.header_bg.large}
-                headerImageAltText={projectAttrs.header_bg_alt_text_multiloc}
-                onImageChange={handleHeaderBgChange}
-                onHeaderImageAltTextChange={handleHeaderBgAltTextChange}
-              />
-            </SectionField>
-          )}
 
           <StyledSectionField>
             <SubSectionTitle>
@@ -588,29 +424,6 @@ const AdminProjectsProjectGeneral = ({ project }: Props) => {
               />
             </StyledSectionField>
           )}
-          <StyledSectionField>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.fileUploadLabel} />
-              <IconTooltip
-                content={
-                  <FormattedMessage {...messages.fileUploadLabelTooltip} />
-                }
-              />
-            </SubSectionTitle>
-            <FileUploader
-              projectId={projectId}
-              projectFileAttachments={projectFileAttachments}
-              setProjectFileAttachments={(...args) => {
-                setSubmitState('enabled');
-                setProjectFileAttachments(...args);
-              }}
-              setProjectFileAttachmentsToRemove={(...args) => {
-                setSubmitState('enabled');
-                setProjectFileAttachmentsToRemove(...args);
-              }}
-              apiErrors={apiErrors}
-            />
-          </StyledSectionField>
         </Section>
         <Box
           {...(showStickySaveButton && {

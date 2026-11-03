@@ -16,8 +16,6 @@ describe CommentReactionPolicy do
 
     it { is_expected.not_to permit(:show) }
     it { is_expected.not_to permit(:create) }
-    it { is_expected.not_to permit(:up) }
-    it { is_expected.not_to permit(:down) }
     it { is_expected.not_to permit(:destroy) }
 
     it 'does not index the reaction' do
@@ -31,8 +29,6 @@ describe CommentReactionPolicy do
 
     it { is_expected.not_to permit(:show) }
     it { is_expected.not_to permit(:create) }
-    it { is_expected.not_to permit(:up) }
-    it { is_expected.not_to permit(:down) }
     it { is_expected.not_to permit(:destroy) }
 
     it 'does not index the reaction' do
@@ -46,13 +42,22 @@ describe CommentReactionPolicy do
 
     it { is_expected.to     permit(:show) }
     it { is_expected.to     permit(:create) }
-    it { is_expected.to     permit(:up) }
-    it { is_expected.not_to permit(:down) }
     it { is_expected.to     permit(:destroy) }
 
     it 'indexes the reaction' do
       expect(scope.resolve.size).to eq 1
     end
+  end
+
+  context 'for a mortal user who owns a dislike' do
+    let!(:reaction) { create(:dislike, reactable: comment) }
+    let(:user) { reaction.user }
+
+    it { is_expected.not_to permit(:create) }
+
+    # Disliking is not supported, but dislikes that predate this rule
+    # (e.g. imported ones) must remain deletable.
+    it { is_expected.to permit(:destroy) }
   end
 
   context 'for blocked reaction owner' do
@@ -68,8 +73,6 @@ describe CommentReactionPolicy do
 
     it { is_expected.to     permit(:show) }
     it { is_expected.not_to permit(:create) }
-    it { is_expected.not_to permit(:up) }
-    it { is_expected.not_to permit(:down) }
     it { is_expected.not_to permit(:destroy) }
 
     it 'indexes the reaction' do
@@ -84,8 +87,6 @@ describe CommentReactionPolicy do
 
     it { is_expected.to permit(:show) }
     it { is_expected.not_to permit(:create) }
-    it { is_expected.not_to permit(:up) }
-    it { is_expected.not_to permit(:down) }
     it { is_expected.not_to permit(:destroy) }
 
     it 'does not index the reaction' do
@@ -100,8 +101,6 @@ describe CommentReactionPolicy do
 
     it { is_expected.to permit(:show) }
     it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
-    it { expect { policy.up? }.to raise_error(Pundit::NotAuthorizedError) }
-    it { is_expected.not_to permit(:down) }
     it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
 
     it 'indexes the reaction' do
@@ -122,8 +121,6 @@ describe CommentReactionPolicy do
 
     it { is_expected.to permit(:show) }
     it { expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError) }
-    it { expect { policy.up? }.to raise_error(Pundit::NotAuthorizedError) }
-    it { is_expected.not_to permit(:down) }
     it { expect { policy.destroy? }.to raise_error(Pundit::NotAuthorizedError) }
 
     it 'indexes the reaction' do

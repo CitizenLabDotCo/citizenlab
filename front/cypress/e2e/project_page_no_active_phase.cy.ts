@@ -12,7 +12,6 @@ describe('Project page without an active phase', () => {
       cy.apiCreateProject({
         title: randomString(),
         descriptionPreview: randomString(),
-        description: randomString(),
         publicationStatus: 'published',
       }).then((project) => {
         projectId = project.body.data.id;
@@ -54,7 +53,6 @@ describe('Project page without an active phase', () => {
       cy.apiCreateProject({
         title: randomString(),
         descriptionPreview: randomString(),
-        description: randomString(),
         publicationStatus: 'archived',
       }).then((project) => {
         projectId = project.body.data.id;
@@ -91,7 +89,7 @@ describe('Project page without an active phase', () => {
       cy.visit(`/en/projects/${projectSlug}`);
 
       // The events section still shows the upcoming event
-      cy.get('#e2e-events-section-project-page');
+      cy.get('#e2e-project-page-events');
 
       cy.get('#e2e-ideation-cta-button').should('not.exist');
       cy.get('.e2e-idea-button').should('not.exist');

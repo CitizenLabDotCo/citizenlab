@@ -1,6 +1,6 @@
-import React, { PureComponent, FormEvent } from 'react';
+import React, { PureComponent, FormEvent, lazy, Suspense } from 'react';
 
-import { ChromePicker, ColorResult } from 'react-color';
+import type { ColorResult } from 'react-color';
 import styled from 'styled-components';
 
 import { colors } from '../../utils/styleUtils';
@@ -8,6 +8,8 @@ import testEnv from '../../utils/testUtils/testEnv';
 import IconTooltip from '../IconTooltip';
 import Input from '../Input';
 import Label from '../Label';
+
+const ChromePicker = lazy(() => import('./ChromePicker'));
 
 const Container = styled.div``;
 
@@ -141,12 +143,9 @@ class ColorPickerInput extends PureComponent<Props, State> {
           {opened && (
             <Popover data-testid={testEnv('popover')}>
               <Cover onClick={this.close} data-testid={testEnv('cover')} />
-              <ChromePicker
-                disableAlpha={true}
-                color={value}
-                onChange={this.change}
-                onChangeComplete={this.change}
-              />
+              <Suspense fallback={null}>
+                <ChromePicker color={value} onChange={this.change} />
+              </Suspense>
             </Popover>
           )}
         </InputWrapper>

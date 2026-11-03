@@ -112,6 +112,7 @@ module IdeaCustomFields
           field.code == create_params['code']
         end
         create_params['key'] = default_field.key
+        create_params['answers_visible_to'] = default_field.answers_visible_to
       end
 
       field = CustomField.new(create_params.merge(resource: @custom_form))

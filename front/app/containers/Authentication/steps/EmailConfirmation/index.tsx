@@ -14,14 +14,14 @@ import {
   handleHookFormSubmissionError,
 } from 'utils/errorUtils';
 
-import { State, SetError } from '../../typings';
+import { SetError } from '../../typings';
 
 import CodeSentMessage from './CodeSentMessage';
 import FooterNotes from './FooterNotes';
 import messages from './messages';
 
 interface Props {
-  state: State;
+  email: string | null;
   loading: boolean;
   setError: SetError;
   onConfirm: (email: string, code: string) => void;
@@ -41,8 +41,14 @@ const isWrongConfirmationCodeError = (e: any) => {
   return e?.code?.[0]?.error === 'invalid';
 };
 
+// Only confirm_code_merge_account returns this: the code was right, but that account
+// may not be linked to. Which rule refused is not disclosed, so one message covers all.
+const isMergeNotAllowedError = (e: any) => {
+  return e?.base?.[0]?.error === 'merge_not_allowed';
+};
+
 const EmailConfirmation = ({
-  state,
+  email,
   loading,
   setError,
   onConfirm,
@@ -59,8 +65,12 @@ const EmailConfirmation = ({
     () =>
       object({
         code: string()
-          .required(formatMessage(messages.codeMustHaveFourDigits))
-          .matches(/^\d{4}$/, formatMessage(messages.codeMustHaveFourDigits)),
+          .required(formatMessage(messages.codeMustHaveSixDigits))
+          // 4 digits stays accepted until codes sent before the switch have expired.
+          .matches(
+            /^(?:\d{4}|\d{6})$/,
+            formatMessage(messages.codeMustHaveSixDigits)
+          ),
       }),
     [formatMessage]
   );
@@ -71,7 +81,6 @@ const EmailConfirmation = ({
     resolver: yupResolver(schema),
   });
 
-  const email = state.email;
   if (!email) return null;
 
   const handleConfirm = async ({ code }: FormValues) => {
@@ -88,6 +97,11 @@ const EmailConfirmation = ({
 
       if (isWrongConfirmationCodeError(e)) {
         setError('wrong_confirmation_code');
+        return;
+      }
+
+      if (isMergeNotAllowedError(e)) {
+        setError('account_merge_not_allowed');
         return;
       }
 
@@ -128,7 +142,7 @@ const EmailConfirmation = ({
             name="code"
             type="text"
             label={formatMessage(messages.codeInput)}
-            maxCharCount={4}
+            maxCharCount={6}
           />
         </Box>
         <Box w="100%" display="flex" mt="32px">

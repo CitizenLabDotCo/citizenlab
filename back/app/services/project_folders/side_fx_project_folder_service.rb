@@ -16,6 +16,8 @@ module ProjectFolders
 
     def before_update(_folder, _user); end
 
+    def before_destroy(_folder, _user); end
+
     def after_update(folder, user)
       change = folder.saved_changes
 
@@ -42,7 +44,7 @@ module ProjectFolders
     end
 
     def after_destroy(frozen_folder, user)
-      ContentBuilder::LayoutService.new.clean_homepage_layout_when_publication_deleted(frozen_folder)
+      ContentBuilder::LayoutService.new.clean_layouts_when_publication_deleted(frozen_folder)
 
       serialized_folder = clean_time_attributes(frozen_folder.attributes)
 

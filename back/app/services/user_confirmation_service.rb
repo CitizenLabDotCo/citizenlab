@@ -5,7 +5,7 @@
 #
 # @example
 #   service = UserConfirmationService.new
-#   result = service.validate_and_confirm_unauthenticated!(user, '1234')
+#   result = service.validate_and_confirm_email!(user, '1234')
 #
 #   if result.success?
 #     # User confirmed successfully
@@ -34,23 +34,111 @@ class UserConfirmationService
     end
   end
 
-  def validate_and_confirm_unauthenticated!(user, code)
+  def validate_and_confirm_email!(user, code)
     # Ensure that password login (i.e. 'normal', non-SSO login)
-    # feature is enabled for unauthenticated confirmation
+    # feature is enabled for email confirmation
     validate_password_login_enabled!
     validate_user!(user)
     validate_email!(user.email)
-    validate_and_confirm!(user, user.email_confirmation, code)
+    validate_and_confirm!(user.email_confirmation, code)
+    ClaimTokenService.complete(user)
 
     success_result(user)
   rescue ValidationError => e
     failure_result(e)
   end
 
-  def validate_and_confirm_email_change!(user, code)
+  # Re-confirmation of the user's own `email` by an authenticated caller. Unlike
+  # validate_and_confirm_email!, it isn't gated by password_login: an account
+  # created through SSO must still be able to re-confirm.
+  def validate_and_reconfirm_email!(user, code)
+    validate_user!(user)
+    validate_email!(user.email)
+    validate_and_confirm!(user.email_confirmation, code)
+    ClaimTokenService.complete(user)
+
+    success_result(user)
+  rescue ValidationError => e
+    failure_result(e)
+  end
+
+  def validate_and_confirm_new_email!(user, code)
     validate_user!(user)
     validate_email!(user.new_email)
-    validate_and_confirm!(user, user.new_email_confirmation, code)
+    validate_and_confirm!(user.new_email_confirmation, code)
+    ClaimTokenService.complete(user)
+
+    success_result(user)
+  rescue ValidationError => e
+    failure_result(e)
+  end
+
+  # Unlike its siblings this confirms nothing on +user+: it hands +user+'s identity,
+  # verification and participation to the account owning the confirmed address and
+  # deletes +user+. The result carries the survivor, who the caller must become.
+  def validate_and_confirm_merge_account!(user, code)
+    validate_user!(user)
+    validate_email!(user.merge_target_email)
+    confirmation = user.merge_account_confirmation
+    validate_code!(confirmation, code)
+
+    # merge_target_email is only set when another account owns the address, so target is
+    # nil only in a rare edge case: that account was deleted or changed its email between
+    # the code being sent and being entered (a window of at most CODE_DURATION).
+    target = User.find_by_cimail(user.merge_target_email)
+    survivor = if target.nil?
+      promote_merge_target_email!(user, confirmation)
+    else
+      AccountMergeService.new.merge!(source: user, target: target, proof: :email_code)
+    end
+    # On the survivor: a merged-away user is deleted, and its activities have moved
+    # to the target. No payload, like the merge flow's requested_confirmation_code.
+    log_confirmed_code(survivor)
+
+    success_result(survivor)
+  rescue ValidationError => e
+    failure_result(e)
+  rescue AccountMergeService::IneligibleError
+    # Never say which rule refused: that would be an oracle for which addresses
+    # belong to admins.
+    failure_result(ValidationError.new(:base, :merge_not_allowed))
+  end
+
+  def validate_and_confirm_phone!(user, code)
+    # Ensure that password login (i.e. 'normal', non-SSO login)
+    # feature is enabled for phone confirmation
+    validate_password_login_enabled!
+    validate_sms_enabled!
+    validate_user!(user)
+    validate_phone!(user.phone)
+    validate_and_confirm!(user.phone_confirmation, code)
+    ClaimTokenService.complete(user)
+
+    success_result(user)
+  rescue ValidationError => e
+    failure_result(e)
+  end
+
+  # The phone mirror of validate_and_reconfirm_email!. The sms feature is still
+  # required, since it carries the settings the code is sent through.
+  def validate_and_reconfirm_phone!(user, code)
+    validate_sms_enabled!
+    validate_user!(user)
+    validate_phone!(user.phone)
+    validate_and_confirm!(user.phone_confirmation, code)
+    ClaimTokenService.complete(user)
+
+    success_result(user)
+  rescue ValidationError => e
+    failure_result(e)
+  end
+
+  # Confirms a pending phone-number change for an authenticated user.
+  # On success, NewPhoneConfirmation#confirm! promotes new_phone -> phone.
+  def validate_and_confirm_new_phone!(user, code)
+    validate_user!(user)
+    validate_phone!(user.new_phone)
+    validate_and_confirm!(user.new_phone_confirmation, code)
 
     success_result(user)
   rescue ValidationError => e
@@ -59,17 +147,51 @@ class UserConfirmationService
 
   private
 
-  def validate_and_confirm!(user, confirmation, code)
-    validate_retry_count!(confirmation, code)
+  def validate_and_confirm!(confirmation, code)
+    validate_code!(confirmation, code)
+    confirm_user!(confirmation)
+  end
+
+  # The code checks without the confirm! that follows them elsewhere - the merge
+  # flow's "confirm" is a multi-table operation, not a model method.
+  def validate_code!(confirmation, code)
+    raise ValidationError.new(:code, :invalid) if confirmation.nil?
+    # An expired (or not yet issued) code is nil: nothing can match it, so bail out
+    # before a submitted blank or nil code could be compared against it.
+    raise ValidationError.new(:code, :expired) unless confirmation.code_outstanding?
+
+    validate_retry_count!(confirmation)
     validate_code_value!(confirmation, code)
     validate_code_expiration!(confirmation)
-    confirm_user!(user, confirmation)
+  end
+
+  # Nobody owns the address any more, so there is nothing to merge into. The code
+  # still proved the user reads that inbox, so it becomes their email, as a confirmed
+  # new_email would.
+  def promote_merge_target_email!(user, confirmation)
+    ActiveRecord::Base.transaction do
+      user.update!(
+        email: user.merge_target_email,
+        merge_target_email: nil,
+        email_confirmed_at: Time.zone.now,
+        confirmation_required: false
+      )
+      confirmation.consume!
+    end
+
+    user
   end
 
   def validate_password_login_enabled!
     return if app_configuration.feature_activated?('password_login')
 
     raise ValidationError.new(:base, :password_login_feature_disabled)
+  end
+
+  def validate_sms_enabled!
+    return if app_configuration.feature_activated?('sms')
+
+    raise ValidationError.new(:base, :sms_feature_disabled)
   end
 
   def validate_user!(user)
@@ -80,13 +202,20 @@ class UserConfirmationService
     raise ValidationError.new(:user, :no_email) if email.blank?
   end
 
-  def validate_retry_count!(confirmation, code)
-    return if confirmation.code == code # don't increment unless code is wrong
+  def validate_phone!(phone)
+    raise ValidationError.new(:user, :no_phone) if phone.blank?
+  end
 
-    confirmation.code_retry_count += 1
-    return if confirmation.save
+  # Every attempt uses up a retry, also the correct one, and the count happens
+  # before the code is compared. One atomic UPDATE does the check and the count,
+  # so after the limit no code is accepted, also not by parallel requests.
+  def validate_retry_count!(confirmation)
+    counted = confirmation.class
+      .where(id: confirmation.id)
+      .where(code_retry_count: ...max_retries)
+      .update_all('code_retry_count = code_retry_count + 1')
 
-    raise ValidationError.new(:code, :too_many_retries)
+    raise ValidationError.new(:code, :too_many_retries) if counted.zero?
   end
 
   def validate_code_value!(confirmation, code)
@@ -98,7 +227,8 @@ class UserConfirmationService
   end
 
   def validate_code_expiration!(confirmation)
-    return unless confirmation.expiration_at < Time.zone.now
+    # A code that was never sent (no code_sent_at, so no expiration_at) can't be confirmed.
+    return if confirmation.expiration_at && confirmation.expiration_at >= Time.zone.now
 
     raise ValidationError.new(:code, :expired)
   end
@@ -109,13 +239,31 @@ class UserConfirmationService
     raise ValidationError.new(:base, :confirmation_not_required)
   end
 
-  def confirm_user!(user, confirmation)
-    if confirmation.confirm!
-      ClaimTokenService.complete(user)
-    else
+  def confirm_user!(confirmation)
+    # Built before confirming: confirm! promotes new_email / new_phone and clears them.
+    payload = confirmed_code_activity_payload(confirmation)
+
+    unless confirmation.confirm!
       raise ValidationError.new(
         :user, :confirmation, message: 'Something went wrong.'
       )
+    end
+
+    log_confirmed_code(confirmation.user, payload: payload)
+  end
+
+  def log_confirmed_code(user, **)
+    LogActivityJob.perform_later(user, 'confirmed_confirmation_code', user, Time.now.to_i, **)
+  end
+
+  # The same payload as the requested_confirmation_code and received_confirmation_code
+  # activities logged by the Request*ConfirmationCodeJobs.
+  def confirmed_code_activity_payload(confirmation)
+    case confirmation
+    when EmailConfirmation then { new_email: nil }
+    when NewEmailConfirmation then { new_email: confirmation.user.new_email }
+    when PhoneConfirmation then { new_phone: nil }
+    when NewPhoneConfirmation then { new_phone: confirmation.user.new_phone }
     end
   end
 
@@ -144,5 +292,9 @@ class UserConfirmationService
 
   def app_configuration
     @app_configuration ||= AppConfiguration.instance
+  end
+
+  def max_retries
+    ENV.fetch('EMAIL_CONFIRMATION_MAX_RETRIES', 5).to_i
   end
 end

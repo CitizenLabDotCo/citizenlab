@@ -1,4 +1,4 @@
-import { IUpdatedPhaseProperties } from 'api/phases/types';
+import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
 
 export const defaultParticipationConfig: IUpdatedPhaseProperties = {
   participation_method: 'ideation',
@@ -51,6 +51,7 @@ export const nativeSurveyDefaultConfig: IUpdatedPhaseProperties = {
   ...defaultParticipationConfig,
   participation_method: 'native_survey',
   allow_anonymous_participation: false,
+  allow_multiple_responses: false,
   submission_enabled: true,
   reacting_enabled: true,
   reacting_like_method: 'unlimited',
@@ -99,3 +100,17 @@ export const proposalsDefaultConfig: IUpdatedPhaseProperties = {
   reacting_threshold: 300,
   prescreening_mode: null,
 };
+
+export const defaultConfigForMethod = (
+  participation_method: ParticipationMethod
+): IUpdatedPhaseProperties => ({
+  ...defaultParticipationConfig,
+  participation_method,
+  ...(participation_method === 'ideation' ? ideationDefaultConfig : {}),
+  ...(participation_method === 'voting' ? votingDefaultConfig : {}),
+  ...(participation_method === 'survey' ? surveyDefaultConfig : {}),
+  ...(participation_method === 'native_survey'
+    ? nativeSurveyDefaultConfig
+    : {}),
+  ...(participation_method === 'proposals' ? proposalsDefaultConfig : {}),
+});

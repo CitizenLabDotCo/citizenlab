@@ -9,13 +9,14 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
+import { UploadStatus } from 'containers/Admin/projects/_shared/fileUploads/types';
+
 import Feedback from 'components/HookForm/Feedback';
 import Error from 'components/UI/Error';
 
 import { useIntl } from 'utils/cl-intl';
 
 import messages from '../../../../messages';
-import { UploadStatus } from '../../../types';
 
 type Props = {
   status: UploadStatus;

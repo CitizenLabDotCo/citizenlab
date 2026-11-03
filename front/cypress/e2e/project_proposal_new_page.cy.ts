@@ -9,7 +9,6 @@ describe('Project proposal new page', () => {
 
   const projectTitle = randomString();
   const projectDescriptionPreview = randomString();
-  const projectDescription = randomString();
 
   const phasePastTitle = randomString();
 
@@ -26,7 +25,6 @@ describe('Project proposal new page', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;

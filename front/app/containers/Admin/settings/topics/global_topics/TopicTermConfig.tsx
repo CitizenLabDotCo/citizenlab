@@ -15,7 +15,7 @@ interface Props {
 
 const TopicTermConfig = ({ className }: Props) => {
   const { data: appConfiguration } = useAppConfiguration();
-  const { mutate: updateAppConfiguration, isLoading } =
+  const { mutate: updateAppConfiguration, isPending } =
     useUpdateAppConfiguration();
   if (isNilOrError(appConfiguration)) return null;
 
@@ -35,7 +35,7 @@ const TopicTermConfig = ({ className }: Props) => {
 
   return (
     <TerminologyConfig
-      isLoading={isLoading}
+      isLoading={isPending}
       className={className}
       terminologyMessage={messages.subtitleTerminology}
       tooltipMessage={messages.terminologyTooltip}

@@ -13,11 +13,13 @@ import {
 import moment from 'moment';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { CampaignFormValues } from 'api/campaigns/types';
-import useCampaign from 'api/campaigns/useCampaign';
-import useSendCampaignPreview from 'api/campaigns/useSendCampaignPreview';
-import useUpdateCampaign from 'api/campaigns/useUpdateCampaign';
-import { isDraft } from 'api/campaigns/util';
+import { EmailCampaignFormValues } from 'api/campaigns/email/types';
+import useEmailCampaign from 'api/campaigns/email/useEmailCampaign';
+import useSendEmailCampaignPreview from 'api/campaigns/email/useSendEmailCampaignPreview';
+import useUpdateEmailCampaign from 'api/campaigns/email/useUpdateEmailCampaign';
+import { isEmailCampaignDraft } from 'api/campaigns/email/util';
+
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
 import AutomatedCampaignForm from 'containers/Admin/messaging/AutomatedEmails/CampaignForm';
 import CustomCampaignForm from 'containers/Admin/messaging/CustomEmails/CampaignForm';
@@ -35,17 +37,25 @@ type EditProps = {
   campaignType: 'custom' | 'automated';
 };
 const Edit = ({ campaignType }: EditProps) => {
-  const { campaignId } = useParams({ strict: false }) as {
+  const { campaignId, projectId, phaseId } = useParams({ strict: false }) as {
     campaignId: string;
+    projectId?: string;
+    phaseId?: string;
   };
+  const backofficeRedesign = useProjectBackofficeRedesign();
+  // The redesigned workspace edits a phase's emails from its build view.
+  const phaseBuildPath =
+    backofficeRedesign && projectId && phaseId
+      ? `/admin/projects/${projectId}/phases/${phaseId}/setup`
+      : undefined;
   const { data: tenant } = useAppConfiguration();
-  const { data: campaign } = useCampaign(campaignId);
-  const { mutateAsync: updateCampaign, isLoading } = useUpdateCampaign();
+  const { data: campaign } = useEmailCampaign(campaignId);
+  const { mutateAsync: updateCampaign, isPending } = useUpdateEmailCampaign();
 
   const [previewSent, setPreviewSent] = useState(false);
 
-  const { mutate: sendCampaignPreview, isLoading: isSendingCampaignPreview } =
-    useSendCampaignPreview();
+  const { mutate: sendCampaignPreview, isPending: isSendingCampaignPreview } =
+    useSendEmailCampaignPreview();
   const { formatMessage } = useIntl();
 
   const handleSendPreviewEmail = () => {
@@ -60,9 +70,11 @@ const Edit = ({ campaignType }: EditProps) => {
     return null;
   }
 
-  const handleSubmit = async (values: CampaignFormValues) => {
+  const handleSubmit = async (values: EmailCampaignFormValues) => {
     await updateCampaign({ id: campaign.data.id, campaign: values });
-    if (campaignType === 'custom') {
+    if (phaseBuildPath) {
+      clHistory.push(phaseBuildPath);
+    } else if (campaignType === 'custom') {
       clHistory.push(
         `/admin/messaging/emails/custom/${campaign.data.id}?updated=true`
       );
@@ -72,7 +84,11 @@ const Edit = ({ campaignType }: EditProps) => {
   };
 
   const goBack = () => {
-    clHistory.goBack();
+    if (phaseBuildPath) {
+      clHistory.push(phaseBuildPath);
+    } else {
+      clHistory.goBack();
+    }
   };
   const timeZone = tenant?.data.attributes.settings.core.timezone;
 
@@ -84,7 +100,7 @@ const Edit = ({ campaignType }: EditProps) => {
           <Title mr="12px">
             <T value={campaign.data.attributes.subject_multiloc} />
           </Title>
-          {isDraft(campaign.data) && (
+          {isEmailCampaignDraft(campaign.data) && (
             <StatusLabel
               backgroundColor={colors.brown}
               text={<FormattedMessage {...messages.draft} />}
@@ -124,13 +140,13 @@ const Edit = ({ campaignType }: EditProps) => {
         <Box width="50%" mr="36px">
           {campaignType === 'automated' ? (
             <AutomatedCampaignForm
-              isLoading={isLoading}
+              isLoading={isPending}
               onSubmit={handleSubmit}
               campaign={campaign}
             />
           ) : (
             <CustomCampaignForm
-              isLoading={isLoading}
+              isLoading={isPending}
               onSubmit={handleSubmit}
               campaignContextId={campaign.data.relationships.context?.data?.id}
               defaultValues={{

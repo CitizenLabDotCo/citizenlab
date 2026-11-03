@@ -77,6 +77,7 @@ export const ideaDataWithVotes: IIdeaData[] = [
       },
       anonymous: false,
       author_hash: 'abc123',
+      supports_public_visibility: true,
       followers_count: 8,
       manual_votes_amount: 0,
     },
@@ -98,6 +99,7 @@ export const ideaDataWithVotes: IIdeaData[] = [
         ],
       },
       phases: { data: [] },
+      creation_phase: { data: null },
       author: {
         data: {
           id: '8ea3a61c-e1bd-4756-a54d-c092553abccd',
@@ -196,6 +198,7 @@ export const ideaDataWithVotes: IIdeaData[] = [
       },
       anonymous: false,
       author_hash: 'abc123',
+      supports_public_visibility: true,
       followers_count: 7,
       manual_votes_amount: 0,
     },
@@ -211,6 +214,7 @@ export const ideaDataWithVotes: IIdeaData[] = [
       ideas_phases: { data: [] },
       idea_images: { data: [] },
       phases: { data: [] },
+      creation_phase: { data: null },
       author: {
         data: {
           id: '8ea3a61c-e1bd-4756-a54d-c092553abccd',
@@ -309,6 +313,7 @@ export const ideaData: IIdeaData[] = [
       },
       anonymous: false,
       author_hash: 'abc123',
+      supports_public_visibility: true,
       followers_count: 8,
       manual_votes_amount: 0,
     },
@@ -330,6 +335,7 @@ export const ideaData: IIdeaData[] = [
         ],
       },
       phases: { data: [] },
+      creation_phase: { data: null },
       author: {
         data: {
           id: '8ea3a61c-e1bd-4756-a54d-c092553abccd',
@@ -428,6 +434,7 @@ export const ideaData: IIdeaData[] = [
       },
       anonymous: false,
       author_hash: 'abc123',
+      supports_public_visibility: true,
       followers_count: 7,
       manual_votes_amount: 0,
     },
@@ -443,6 +450,7 @@ export const ideaData: IIdeaData[] = [
       ideas_phases: { data: [] },
       idea_images: { data: [] },
       phases: { data: [] },
+      creation_phase: { data: null },
       author: {
         data: {
           id: '8ea3a61c-e1bd-4756-a54d-c092553abccd',
@@ -512,6 +520,7 @@ const votingIdea = {
       votes_count: 1,
       anonymous: false,
       author_hash: '5d78eb7936e_d99f2f3b7518aeddde3d45d78eb7936ed99f2f3b75',
+      supports_public_visibility: true,
       author_name: 'Citizenlab Hermansen',
       action_descriptors: {
         commenting_idea: {

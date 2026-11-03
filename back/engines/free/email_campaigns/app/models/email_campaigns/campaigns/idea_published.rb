@@ -21,6 +21,7 @@
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
 #  context_type         :string
+#  channel              :string           default("email"), not null
 #
 # Indexes
 #
@@ -92,6 +93,9 @@ module EmailCampaigns
       idea = activity.item
       return [] if !idea.participation_method_on_creation.supports_public_visibility?
 
+      # check if the idea_images field is present and enabled in the custom form
+      image_field_presence = IdeaCustomFieldsService.new(idea.custom_form).enabled_fields.any? { |f| f.code == 'idea_images_attributes' }
+
       [{
         event_payload: {
           idea_id: idea.id,
@@ -105,7 +109,8 @@ module EmailCampaigns
             }
           end,
           input_term: idea.input_term,
-          project_title_multiloc: idea.project.title_multiloc
+          project_title_multiloc: idea.project.title_multiloc,
+          image_field_presence: image_field_presence
         }
       }]
     end

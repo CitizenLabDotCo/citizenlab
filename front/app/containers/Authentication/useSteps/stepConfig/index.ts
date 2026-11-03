@@ -7,13 +7,13 @@ import {
   SSOProviderWithoutVienna,
 } from '../../typings';
 
-import { emailFlow } from './emailFlow';
+import { confirmationSteps } from './confirmationSteps';
 import { inviteFlow } from './inviteFlow';
 import { missingDataFlow } from './missingDataFlow';
+import { preAuthSteps } from './preAuthSteps';
 import { sharedSteps } from './sharedSteps';
-import { ssoVerificationFlow } from './ssoVerificationFlow';
 import { Step } from './typings';
-import { handleSubmitEmail, handleSSOClick } from './utils';
+import { handleSubmitEmail, handleSubmitPhone, handleSSOClick } from './utils';
 
 export const getStepConfig = (
   getAuthenticationData: () => AuthenticationData,
@@ -24,11 +24,18 @@ export const getStepConfig = (
   state: State
 ) => {
   return {
-    ...emailFlow(
+    ...preAuthSteps(
       getAuthenticationData,
       getRequirements,
       setCurrentStep,
       updateState,
+      state
+    ),
+
+    ...confirmationSteps(
+      getAuthenticationData,
+      getRequirements,
+      setCurrentStep,
       state
     ),
 
@@ -55,13 +62,6 @@ export const getStepConfig = (
       updateState
     ),
 
-    ...ssoVerificationFlow(
-      getAuthenticationData,
-      getRequirements,
-      setCurrentStep,
-      updateState
-    ),
-
     'verification-only': {
       CLOSE: () => setCurrentStep('closed'),
       CONTINUE: () => setCurrentStep('verification-success'),
@@ -75,8 +75,13 @@ export const getStepConfig = (
       CLOSE: () => setCurrentStep('closed'),
 
       SUBMIT_EMAIL: async (email: string) => {
-        updateState({ email });
+        updateState({ email, phone: null });
         await handleSubmitEmail(email, setCurrentStep, updateState);
+      },
+
+      SUBMIT_PHONE: async (phone: string) => {
+        updateState({ phone, email: null });
+        await handleSubmitPhone(phone, setCurrentStep, updateState);
       },
 
       CONTINUE_WITH_SSO: async (ssoProvider: SSOProviderWithoutVienna) => {

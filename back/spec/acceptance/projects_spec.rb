@@ -16,7 +16,6 @@ resource 'Projects' do
   shared_context 'PATCH project parameters' do
     with_options scope: :project do
       parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
-      parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
       parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
       parameter :slug, 'The unique slug of the project'
       parameter :header_bg, 'Base64 encoded header image'
@@ -26,6 +25,7 @@ resource 'Projects' do
       parameter :default_assignee_id, 'The user id of the admin or moderator that gets assigned to ideas by default. Set to null to default to unassigned', required: false
       parameter :folder_id, 'The ID of the project folder (can be set to nil for top-level projects)'
       parameter :live_auto_input_topics_enabled, 'Whether the project should automatically detect topics and assign inputs to them. Defaults to false.', required: false
+      parameter :completed_setup_steps, "Steps of the admin setup checklist the manager has been through, a subset of #{Project::SETUP_STEPS.join(', ')}. Added to the steps already stored; steps can't be removed.", required: false
     end
 
     with_options scope: %i[project admin_publication_attributes] do
@@ -52,7 +52,6 @@ resource 'Projects' do
   shared_context 'POST project parameters' do
     with_options scope: :project do
       parameter :title_multiloc, 'The title of the project, as a multiloc string', required: true
-      parameter :description_multiloc, 'The description of the project, as a multiloc HTML string', required: true
       parameter :description_preview_multiloc, 'The description preview of the project, as a multiloc string'
       parameter :slug, 'The unique slug of the project. If not given, it will be auto generated'
       parameter :header_bg, 'Base64 encoded header image'
@@ -201,7 +200,7 @@ resource 'Projects' do
         expect(json_response.dig(:data, :type)).to eq 'project'
         expect(json_response.dig(:data, :attributes)).to include(
           slug: @projects.first.slug,
-          timeline_active: nil,
+          participation_status: nil,
           action_descriptors: {
             attending_event: { enabled: true, disabled_reason: nil }
           },
@@ -224,12 +223,14 @@ resource 'Projects' do
         expect(json_response.dig(:data, :relationships, :user_follower, :data, :id)).to eq followers.first.id
       end
 
-      example 'Get a project on a timeline project includes the current_phase', document: false do
+      example 'Get a project on a timeline project includes the current and highlighted phase', document: false do
         project = create(:project_with_current_phase)
         current_phase = project.phases[2]
         do_request id: project.id
         assert_status 200
+        expect(json_response.dig(:data, :attributes, :participation_status)).to eq 'active'
         expect(json_response.dig(:data, :relationships, :current_phase, :data, :id)).to eq current_phase.id
+        expect(json_response.dig(:data, :relationships, :highlighted_phase, :data, :id)).to eq current_phase.id
         expect(json_response[:included].pluck(:id)).to include(current_phase.id)
       end
 
@@ -274,7 +275,6 @@ resource 'Projects' do
 
         let(:project) { build(:project) }
         let(:title_multiloc) { project.title_multiloc }
-        let(:description_multiloc) { project.description_multiloc }
         let(:description_preview_multiloc) { project.description_preview_multiloc }
         let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
         let(:area_ids) { create_list(:area, 2).map(&:id) }
@@ -291,7 +291,6 @@ resource 'Projects' do
 
           expect(response_data[:attributes]).to include(
             title_multiloc: title_multiloc.symbolize_keys,
-            description_multiloc: description_multiloc.symbolize_keys,
             description_preview_multiloc: description_preview_multiloc.symbolize_keys,
             visible_to: visible_to,
             first_published_at: new_project.admin_publication.first_published_at.iso8601(3),
@@ -335,14 +334,6 @@ resource 'Projects' do
           expect(project.folder_id).to eq folder.id
           expect(project.space_id).to eq folder.space.id
         end
-
-        context 'when project description contains text images' do
-          let(:description_multiloc) { { 'en' => html_with_base64_image } }
-
-          it_behaves_like 'creates record with text images',
-            model_class: Project,
-            field: :description_multiloc
-        end
       end
     end
 
@@ -354,7 +345,6 @@ resource 'Projects' do
 
         let(:id) { @project.id }
         let(:title_multiloc) { { 'en' => 'Changed title' } }
-        let(:description_multiloc) { { 'en' => 'Changed body' } }
         let(:description_preview_multiloc) { @project.description_preview_multiloc }
         let(:slug) { 'changed-title' }
         let(:header_bg) { file_as_base64 'header.jpg', 'image/jpeg' }
@@ -373,7 +363,6 @@ resource 'Projects' do
           # admin publications should not be replaced, but rather should be updated
           expect(AdminPublication.ids).to match_array old_publcation_ids
           expect(json_response.dig(:data, :attributes, :title_multiloc, :en)).to eq 'Changed title'
-          expect(json_response.dig(:data, :attributes, :description_multiloc, :en)).to eq 'Changed body'
           expect(json_response.dig(:data, :attributes, :description_preview_multiloc).stringify_keys).to match description_preview_multiloc
           expect(json_response.dig(:data, :attributes, :slug)).to eq 'changed-title'
           expect(json_response.dig(:data, :relationships, :areas, :data).pluck(:id)).to match_array area_ids
@@ -382,6 +371,28 @@ resource 'Projects' do
           expect(json_response[:included].find { |inc| inc[:type] == 'admin_publication' }.dig(:attributes, :publication_status)).to eq 'archived'
           expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to eq default_assignee_id
           expect(json_response.dig(:data, :attributes, :live_auto_input_topics_enabled)).to be true
+        end
+
+        example 'Mark a setup step as gone through' do
+          do_request(project: { completed_setup_steps: %w[share] })
+
+          assert_status 200
+          expect(json_response.dig(:data, :attributes, :completed_setup_steps)).to eq ['share']
+          expect(@project.reload.completed_setup_steps).to eq ['share']
+        end
+
+        example 'Marking a setup step keeps the steps already done', document: false do
+          @project.update!(completed_setup_steps: %w[page])
+          do_request(project: { completed_setup_steps: %w[settings] })
+
+          assert_status 200
+          expect(@project.reload.completed_setup_steps).to eq %w[page settings]
+        end
+
+        example '[error] Mark an unknown setup step as gone through', document: false do
+          do_request(project: { completed_setup_steps: %w[not-a-step] })
+
+          assert_status 422
         end
 
         example 'Add a project to a folder' do
@@ -651,14 +662,6 @@ resource 'Projects' do
           expect(json_response.dig(:data, :relationships, :default_assignee, :data, :id)).to be_nil
         end
 
-        context 'when description_multiloc contains images' do
-          let(:description_multiloc) { { 'en' => html_with_base64_image } }
-
-          it_behaves_like 'updates record with text images',
-            model_class: Project,
-            field: :description_multiloc
-        end
-
         describe do
           example 'The header image can be removed' do
             @project.update!(header_bg: Rails.root.join('spec/fixtures/header.jpg').open)
@@ -669,7 +672,7 @@ resource 'Projects' do
         end
 
         example 'Logs `published` activity when going from draft to published', document: false do
-          @project.admin_publication.update!(publication_status: 'draft')
+          @project.admin_publication.update!(publication_status: 'draft', first_published_at: nil)
           expect { do_request project: { admin_publication_attributes: { publication_status: 'published' } } }
             .to have_enqueued_job(LogActivityJob)
             .with(@project, 'published', anything, anything, anything)
@@ -764,6 +767,7 @@ resource 'Projects' do
         example 'Updates materializes due status transition first' do
           project.admin_publication.update_columns(
             publication_status: 'draft',
+            first_published_at: nil,
             scheduled_status: 'published',
             scheduled_at: 1.hour.ago,
             scheduled_by_id: @user.id
@@ -1075,7 +1079,7 @@ resource 'Projects' do
 
         @ideation_response = create(
           :idea,
-          custom_field_values: { @extra_idea_field.key => 'Answer' },
+          custom_field_answers: [build(:custom_field_answer, key: @extra_idea_field.key, value: 'Answer')],
           phases: [ideation_phase, single_voting_phase],
           manual_votes_amount: 24
         )
@@ -1084,7 +1088,7 @@ resource 'Projects' do
           :idea,
           creation_phase: native_survey_phase,
           phases: [native_survey_phase],
-          custom_field_values: { @linear_scale_field.key => 2 }
+          custom_field_answers: [build(:custom_field_answer, key: @linear_scale_field.key, value: 2)]
         )
       end
 
@@ -1712,7 +1716,7 @@ resource 'Projects' do
           allow(Export::Xlsx::InputSheetGenerator).to receive(:new)
             .and_return(Export::Xlsx::InputSheetGenerator.new(*expected_params))
           do_request
-          expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params)
+          expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params, redacted_field_keys: [])
           assert_status 200
 
           expect(xlsx_contents(response_body)).to match([
@@ -1784,7 +1788,6 @@ resource 'Projects' do
       describe do
         let(:project) { build(:project) }
         let(:title_multiloc) { project.title_multiloc }
-        let(:description_multiloc) { project.description_multiloc }
         let(:description_preview_multiloc) { project.description_preview_multiloc }
         let(:header_bg) { png_image_as_base64('header.jpg') }
         let(:area_ids) { create_list(:area, 2).map(&:id) }
@@ -2024,7 +2027,6 @@ resource 'Projects' do
       let(:moderator) { create(:project_moderator) }
       let(:project_attrs) { attributes_for(:project) }
       let(:title_multiloc) { project_attrs[:title_multiloc] }
-      let(:description_multiloc) { project_attrs[:description_multiloc] }
 
       # can create a draft project
       example 'Create a draft project', document: false do
@@ -2056,7 +2058,6 @@ resource 'Projects' do
       let(:space) { create(:space) }
       let(:project_attrs) { attributes_for(:project) }
       let(:title_multiloc) { project_attrs[:title_multiloc] }
-      let(:description_multiloc) { project_attrs[:description_multiloc] }
       let(:publication_status) { 'draft' }
       let(:other_space) { create(:space) }
       let(:moderator) { create(:space_moderator, spaces: [space]) }

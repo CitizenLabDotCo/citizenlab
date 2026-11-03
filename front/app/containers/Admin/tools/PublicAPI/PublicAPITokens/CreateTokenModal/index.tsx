@@ -38,7 +38,7 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
   const [success, setSuccess] = useState(false);
   const [secret, setSecret] = useState<string>('');
   const [tokenIsCopied, setTokenIsCopied] = useState(false);
-  const { mutateAsync: addApiToken, isLoading } = useAddApiClient();
+  const { mutateAsync: addApiToken, isPending } = useAddApiClient();
   const { formatMessage } = useIntl();
   const schema = object({
     name: string().required(formatMessage(messages.createTokenModalError)),
@@ -91,12 +91,12 @@ const CreateTokenModal = ({ onClose }: CreateTokenModalProps) => {
                 <Button
                   buttonStyle="secondary-outlined"
                   onClick={onClose}
-                  disabled={isLoading}
+                  disabled={isPending}
                   type="button"
                 >
                   {formatMessage(messages.createTokenModalCancel)}
                 </Button>
-                <Button type="submit" processing={isLoading}>
+                <Button type="submit" processing={isPending}>
                   {formatMessage(messages.createTokenButton)}
                 </Button>
               </Box>

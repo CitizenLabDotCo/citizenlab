@@ -29,6 +29,8 @@ import { getLeaveFormDestination } from '../utils';
 
 import messages from './messages';
 
+const LEAVE_FALLBACK_TIMEOUT = 150;
+
 const StyledSurveyTitle = styled(Text)`
   text-overflow: ellipsis;
   overflow: hidden;
@@ -104,7 +106,15 @@ const SurveyHeading = ({ titleText, phaseId }: Props) => {
         // to. If we arrived here from within the app (go_back), return there;
         // otherwise fall back to the homepage.
         if (goBack) {
+          const hrefBeforeLeaving = window.location.href;
           clHistory.back();
+
+          // back() is a silent no-op if the previous entry is this same page.
+          setTimeout(() => {
+            if (window.location.href === hrefBeforeLeaving) {
+              clHistory.push('/');
+            }
+          }, LEAVE_FALLBACK_TIMEOUT);
         } else {
           clHistory.push('/');
         }

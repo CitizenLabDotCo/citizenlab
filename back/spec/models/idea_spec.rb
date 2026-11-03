@@ -11,6 +11,7 @@ RSpec.describe Idea do
 
   it_behaves_like 'claimable_participation'
   it_behaves_like 'location_trackable_participation'
+  it_behaves_like 'a plain text multiloc', factory: :idea
 
   describe 'title validation' do
     it 'requires title_multiloc when title_multiloc_required? is true' do
@@ -60,7 +61,7 @@ RSpec.describe Idea do
       it 'can publish an idea without custom fields' do
         project = create(:project)
         project.custom_form&.destroy!
-        idea = build(:idea, project: project, custom_field_values: {})
+        idea = build(:idea, project: project)
         expect(idea.save(context: :publication)).to be true
       end
     end
@@ -294,7 +295,7 @@ RSpec.describe Idea do
       %i[create publication].each do |validation_context|
         context "on #{validation_context}" do
           it 'can persist an idea with invalid field values' do
-            idea.custom_field_values = { 'nonexisting_field' => 22 }
+            idea.custom_field_answers.build(key: 'nonexisting_field', value: 22)
             expect(idea.valid?(validation_context)).to be true
           end
         end
@@ -307,88 +308,10 @@ RSpec.describe Idea do
       %i[update publication].each do |validation_context|
         context "on #{validation_context}" do
           it 'can persist an idea with invalid field values' do
-            idea.custom_field_values = { 'nonexisting_field' => 65 }
+            idea.custom_field_answers.build(key: 'nonexisting_field', value: 65)
             expect(idea.valid?(validation_context)).to be true
           end
         end
-      end
-    end
-
-    describe '#convert_wkt_geo_custom_field_values_to_geojson' do
-      let(:project) { create(:project_with_active_native_survey_phase) }
-      let(:active_phase) { project.phases.first }
-      let(:custom_form) { create(:custom_form, participation_context: active_phase) }
-      let!(:point_field) { create(:custom_field_point, key: 'point_field', resource: custom_form) }
-      let!(:line_field) { create(:custom_field_line, key: 'line_field', resource: custom_form) }
-      let!(:polygon_field) { create(:custom_field_polygon, key: 'polygon_field', resource: custom_form) }
-      let(:idea) { build(:idea, creation_phase: active_phase) }
-
-      it 'converts valid wkt strings to GeoJSON' do
-        idea.custom_field_values = {
-          point_field: 'POINT (4.31 50.85)',
-          line_field: 'LINESTRING (4.30 50.85, 4.660 51.15)',
-          polygon_field: 'POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86, 4.3 50.85))'
-        }
-        idea.send(:convert_wkt_geo_custom_field_values_to_geojson)
-        expect(idea.custom_field_values).to eq({
-          'point_field' => { 'type' => 'Point', 'coordinates' => [4.31, 50.85] },
-          'line_field' => { 'type' => 'LineString', 'coordinates' => [[4.3, 50.85], [4.66, 51.15]] },
-          'polygon_field' => {
-            'type' => 'Polygon',
-            'coordinates' => [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]]
-          }
-        })
-      end
-
-      it 'does not mutate non-string values (e.g. GeoJSON)' do
-        idea.custom_field_values = {
-          polygon_field: {
-            type: 'Polygon',
-            coordinates: [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]]
-          }
-        }
-
-        idea.send(:convert_wkt_geo_custom_field_values_to_geojson)
-
-        expect(idea.custom_field_values).to eq({
-          'polygon_field' => {
-            'type' => 'Polygon',
-            'coordinates' => [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]]
-          }
-        })
-      end
-
-      it 'adds closing coordinates to polygon if not in wkt string' do
-        idea.custom_field_values = { polygon_field: 'POLYGON ((4.3 50.85, 4.31 50.85, 4.31 50.86))' }
-        idea.send(:convert_wkt_geo_custom_field_values_to_geojson)
-
-        expect(idea.custom_field_values).to eq({
-          'polygon_field' => {
-            'type' => 'Polygon',
-            'coordinates' => [[[4.3, 50.85], [4.31, 50.85], [4.31, 50.86], [4.3, 50.85]]]
-          }
-        })
-      end
-
-      it 'raises error for an invalid coordinate in wkt string' do
-        idea.custom_field_values = { point_field: 'POINT (4.31)' }
-
-        expect { idea.send(:convert_wkt_geo_custom_field_values_to_geojson) }
-          .to raise_error(RGeo::Error::ParseError, 'Numeric expected but :end found.')
-      end
-
-      it 'raises error for an insufficient coordinates in wkt string' do
-        idea.custom_field_values = { line_field: 'LINESTRING (4.30 50.85)' }
-
-        expect { idea.send(:convert_wkt_geo_custom_field_values_to_geojson) }
-          .to raise_error(RGeo::Error::InvalidGeometry, 'LineString Cannot Have 1 Point')
-      end
-
-      it 'raises error for missing parentheses in wkt string' do
-        idea.custom_field_values = { polygon_field: 'POLYGON (4.3 50.85, 4.31 50.85, 4.31 50.86)' }
-
-        expect { idea.send(:convert_wkt_geo_custom_field_values_to_geojson) }
-          .to raise_error(RGeo::Error::ParseError, ':begin expected but 4.3 found.')
       end
     end
   end
@@ -455,6 +378,26 @@ RSpec.describe Idea do
     it 'generates a slug on creation' do
       idea = create(:idea, slug: nil)
       expect(idea.slug).to be_present
+    end
+
+    it 'generates a slug from the sanitized title, not the raw one' do
+      idea = create(:idea, slug: nil, title_multiloc: { 'en' => '<b>Bold</b> idea' })
+      expect(idea.title_multiloc['en']).to eq 'Bold idea'
+      expect(idea.slug).to eq 'bold-idea'
+    end
+
+    it 'does not leak a stripped payload into the slug' do
+      idea = create(:idea, slug: nil, title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
+      expect(idea.slug).to eq 'hi'
+    end
+
+    # A title that is nothing but markup has to be refused, not saved blank: `title_multiloc` is
+    # required here, so a blank one leaves the idea unable to save any field afterwards.
+    it 'rejects a title that strips to nothing' do
+      idea = build(:idea, title_multiloc: { 'en' => '<img src=x onerror=alert(1)>' })
+
+      expect(idea).not_to be_valid
+      expect(idea.errors[:title_multiloc]).to be_present
     end
 
     it 'generates a slug when there is no current phase' do
@@ -589,6 +532,32 @@ RSpec.describe Idea do
     end
   end
 
+  describe 'order_status_priority' do
+    let(:proposed) { create(:proposals_status, code: 'proposed', ordering: 0) }
+    let(:expired) { create(:proposal_status_expired, ordering: 1) }
+
+    it 'sorts from low status to high status' do
+      expired_idea = create(:proposal, idea_status: expired)
+      proposed_idea = create(:proposal, idea_status: proposed)
+
+      expect(described_class.order_status_priority.map(&:id)).to eq [proposed_idea.id, expired_idea.id]
+    end
+
+    it 'sorts the newest first within a status' do
+      older = create(:proposal, idea_status: proposed, published_at: 2.days.ago)
+      newer = create(:proposal, idea_status: proposed, published_at: 1.hour.ago)
+
+      expect(described_class.order_status_priority.map(&:id)).to eq [newer.id, older.id]
+    end
+
+    it 'puts inputs without a published_at last within a status' do
+      published = create(:proposal, idea_status: proposed, published_at: 2.days.ago)
+      submitted = create(:proposal, idea_status: proposed, publication_status: 'submitted', published_at: nil)
+
+      expect(described_class.order_status_priority.map(&:id)).to eq [published.id, submitted.id]
+    end
+  end
+
   describe 'activity_after' do
     let_it_be(:recent_idea) { create(:idea).tap { |idea| idea.update!(updated_at: 1.day.ago) } }
     let_it_be(:old_idea) { create(:idea).tap { |idea| idea.update!(updated_at: 30.days.ago) } }
@@ -627,6 +596,12 @@ RSpec.describe Idea do
       srx_results = described_class.all.search_by_all 'Bomen'
       expect(srx_results.size).to be > 0
     end
+
+    it 'returns results matching custom field values' do
+      create(:idea, custom_field_answers: [build(:custom_field_answer, key: 'a_field_key', value: 'flabbergasted')])
+      srx_results = described_class.all.search_by_all 'flabbergasted'
+      expect(srx_results.size).to eq 1
+    end
   end
 
   describe 'body sanitizer' do
@@ -651,12 +626,62 @@ RSpec.describe Idea do
       })
       expect(idea.body_multiloc).to eq({ 'en' => '<iframe class="ql-video" frameborder="0" allowfullscreen="true" src="https://www.youtube.com/embed/Bu2wNKlVRzE?showinfo=0" height="242.5" width="485" data-blot-formatter-unclickable-bound="true"></iframe>' })
     end
+
+    it 'sanitizes script tags in a draft body' do
+      idea = create(:idea, publication_status: 'draft', body_multiloc: {
+        'en' => '<p>Test</p><script>This should be removed!</script>'
+      })
+      expect(idea.body_multiloc['en']).to eq '<p>Test</p>This should be removed!'
+    end
+
+    it 'strips event-handler attributes from a draft body' do
+      ti_service = instance_double(TextImageService).as_null_object
+      allow(TextImageService).to receive(:new).and_return(ti_service)
+
+      idea = create(:idea, publication_status: 'draft', body_multiloc: { 'en' => '... <img src=x onerror=alert(1)>' })
+      expect(idea.body_multiloc['en']).to eq '... <img src="x">'
+    end
+
+    # The handler goes; the text-image reference stays, since the image itself is real content.
+    it 'strips onload from a draft body that carries a text-image reference (reported payload shape)' do
+      ti_service = instance_double(TextImageService).as_null_object
+      allow(TextImageService).to receive(:new).and_return(ti_service)
+
+      idea = create(:idea, publication_status: 'draft', body_multiloc: {
+        'en' => '<p>poc</p><img onload="alert(document.cookie)" data-cl2-text-image-text-reference="0a808204-4e40-4fe4-9733-0fd88581e2ae">'
+      })
+      expect(idea.body_multiloc['en']).to eq(
+        '<p>poc</p><img data-cl2-text-image-text-reference="0a808204-4e40-4fe4-9733-0fd88581e2ae">'
+      )
+    end
   end
 
   describe 'title' do
     it 'is stripped from spaces at beginning and ending' do
       idea = create(:idea, title_multiloc: { 'en' => ' my fantastic idea  ' })
       expect(idea.title_multiloc['en']).to eq 'my fantastic idea'
+    end
+
+    it 'strips HTML from a draft title (stored XSS regression)' do
+      idea = create(:idea, publication_status: 'draft', title_multiloc: { 'en' => '<img src=x onerror=alert(1)>hi' })
+      expect(idea.title_multiloc['en']).to eq 'hi'
+    end
+
+    it 'is idempotent across repeated saves' do
+      idea = create(:idea, title_multiloc: { 'en' => 'Fish & chips' })
+      expect { idea.save! }.not_to change { idea.reload.title_multiloc['en'] }
+    end
+
+    it 'is not rewritten by a save that does not touch the title' do
+      idea = create(:idea)
+      # Bypass the callbacks to mimic a row stored before titles were sanitized.
+      idea.update_columns(title_multiloc: { 'en' => 'Fish & chips' })
+      idea.reload
+
+      idea.update!(budget: 123)
+
+      expect(idea.reload.title_multiloc['en']).to eq 'Fish & chips'
+      expect(idea.title_multiloc_previously_changed?).to be false
     end
   end
 
@@ -747,6 +772,36 @@ RSpec.describe Idea do
       idea_with_both = create(:idea)
 
       expect(described_class.with_content).to contain_exactly(idea_with_only_title, idea_with_only_body, idea_with_both)
+    end
+  end
+
+  describe 'excluding_admin_and_moderator_authors scope' do
+    let_it_be(:project) { create(:single_phase_ideation_project) }
+    let_it_be(:user_idea) { create(:idea, project: project, author: create(:user)) }
+    let_it_be(:anonymous_idea) { create(:idea, project: project, author: create(:user), anonymous: true) }
+    let_it_be(:authorless_idea) { create(:idea, project: project, author: nil) }
+
+    before_all do
+      create_admins_and_moderators(project: project).each do |author|
+        create(:idea, project: project, author: author)
+      end
+      create(:idea, project: project, author: create(:admin, :project_reviewer))
+    end
+
+    it 'excludes ideas of admins and moderators, but keeps ideas without a known author' do
+      expect(anonymous_idea.reload.author_id).to be_nil
+      expect(described_class.excluding_admin_and_moderator_authors)
+        .to contain_exactly(user_idea, anonymous_idea, authorless_idea)
+    end
+
+    it 'can be chained with other scopes and associations' do
+      phase = project.phases.first
+      draft_idea = create(:idea, project: project, author: create(:user), publication_status: 'draft')
+
+      expect(phase.ideas.excluding_admin_and_moderator_authors)
+        .to contain_exactly(user_idea, anonymous_idea, authorless_idea, draft_idea)
+      expect(phase.ideas.published.excluding_admin_and_moderator_authors)
+        .to contain_exactly(user_idea, anonymous_idea, authorless_idea)
     end
   end
 end

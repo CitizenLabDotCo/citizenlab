@@ -95,6 +95,18 @@ module CustomIdMethods::ViennaSaml
       env['omniauth.strategy'].options.merge!(metadata)
     end
 
+    def confirmed_email_always_present?
+      true
+    end
+
+    # Vienna uses SAML, which does not have an email_verified attribute.
+    # We assume that the email provided by Vienna is always confirmed.
+    # In any case, Vienna does not support log in by email so the
+    # security risk of an unverified email is mitigated.
+    def email_confirmed?(_auth)
+      true
+    end
+
     # Removes the response object because it produces a Stacklevel too deep error when converting to JSON
     # @param [OmniAuth::AuthHash] auth
     # @return [Hash] The filtered hash that will be persisted in the database

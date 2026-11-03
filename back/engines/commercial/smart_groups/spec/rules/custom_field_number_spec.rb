@@ -28,11 +28,11 @@ describe SmartGroups::Rules::CustomFieldNumber do
 
       let!(:users) do
         users = build_list(:user, 5)
-        users[0].custom_field_values[custom_field.key] = 42
-        users[1].custom_field_values[custom_field.key] = 3.14
-        users[2].custom_field_values[custom_field.key] = 43
-        users[3].custom_field_values[custom_field.key] = -72.6
-        # users[4].custom_field_values[custom_field.key] = nil
+        users[0].custom_field_answers.build(key: custom_field.key, value: 42, custom_field: custom_field)
+        users[1].custom_field_answers.build(key: custom_field.key, value: 3.14, custom_field: custom_field)
+        users[2].custom_field_answers.build(key: custom_field.key, value: 43, custom_field: custom_field)
+        users[3].custom_field_answers.build(key: custom_field.key, value: -72.6, custom_field: custom_field)
+        # users[4] has no answer
         users.each(&:save!)
       end
 

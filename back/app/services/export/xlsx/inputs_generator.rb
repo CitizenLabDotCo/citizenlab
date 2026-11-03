@@ -1,10 +1,10 @@
 module Export
   module Xlsx
     class InputsGenerator
-      def generate_inputs_for_phase(phase_id)
+      def generate_inputs_for_phase(phase_id, redacted_field_keys: [])
         phase = eager_load_phase(phase_id)
         create_stream do |workbook|
-          generate_phase_sheet(workbook, phase)
+          generate_phase_sheet(workbook, phase, redacted_field_keys: redacted_field_keys)
         end
       end
 
@@ -43,17 +43,7 @@ module Export
       end
 
       def eager_load_inputs(inputs)
-        inputs.includes(
-          :project,
-          :author,
-          :ideas_input_topics,
-          :input_topics,
-          :idea_files,
-          :file_attachments,
-          :attached_files,
-          :idea_status,
-          :assignee
-        ).order(:created_at)
+        inputs.includes(*Export::InputReportFields::EAGER_LOADS).order(:created_at)
       end
 
       def generate_for_timeline_project(workbook, project)
@@ -64,19 +54,16 @@ module Export
         end
       end
 
-      def generate_phase_sheet(workbook, phase)
-        inputs = eager_load_inputs(phase.ideas.submitted_or_published)
-        inputs = inputs.with_content unless phase.pmethod.supports_survey_form?
-
-        generate_sheet(workbook, inputs, phase)
+      def generate_phase_sheet(workbook, phase, redacted_field_keys: [])
+        generate_sheet(workbook, eager_load_inputs(phase.inputs_for_export), phase, redacted_field_keys: redacted_field_keys)
       end
 
       def generate_input_sheet(workbook, input)
         generate_sheet(workbook, [input], input.creation_phase)
       end
 
-      def generate_sheet(workbook, inputs, phase)
-        sheet_generator = InputSheetGenerator.new inputs, phase
+      def generate_sheet(workbook, inputs, phase, redacted_field_keys: [])
+        sheet_generator = InputSheetGenerator.new(inputs, phase, redacted_field_keys: redacted_field_keys)
         sheet_name = MultilocService.new.t phase.title_multiloc
         sheet_generator.generate_sheet(workbook, sheet_name)
       end

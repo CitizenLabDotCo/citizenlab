@@ -1,6 +1,6 @@
-import requirementKeys from 'api/authentication/authentication_requirements/keys';
-import { confirmEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/confirmEmailConfirmationCode';
-import { requestEmailConfirmationCodeChangeEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import { requestCodeForEmail } from 'api/authentication/confirm_email/requestEmailConfirmationCode';
+import { requestCodeNewPhone } from 'api/authentication/confirm_phone/requestPhoneConfirmationCode';
+import { tooSoonRetryAfter } from 'api/authentication/confirm_phone/resendCooldown';
 import { OnboardingType } from 'api/users/types';
 import {
   updateUser,
@@ -46,39 +46,24 @@ export const missingDataFlow = (
   state: State
 ) => {
   return {
-    'missing-data:email-confirmation': {
+    'missing-data:new_phone': {
       CLOSE: () => setCurrentStep('closed'),
-      CHANGE_EMAIL: async () => {
-        setCurrentStep('missing-data:built-in');
-      },
-      SUBMIT_CODE: async (_: string, code: string) => {
-        await confirmEmailConfirmationCodeChangeEmail(code);
-        await queryClient.invalidateQueries(requirementKeys.all());
+      SUBMIT: async (new_phone: string, smsManualCampaignConsent: boolean) => {
+        updateState({ new_phone, smsManualCampaignConsent });
 
-        const { requirements } = await getRequirements();
-        const authenticationData = getAuthenticationData();
-
-        const missingDataStep = checkMissingData(
-          requirements,
-          authenticationData,
-          state.flow,
-          true
-        );
-
-        if (missingDataStep) {
-          setCurrentStep(missingDataStep);
-          return;
+        try {
+          await requestCodeNewPhone(new_phone);
+        } catch (e) {
+          // A refused resend is not a failure: it means a code for this very
+          // number is still outstanding, which is what happens when the user
+          // comes back through 'wrong number' and submits the same number
+          // again. The code they were sent still works, so carry on to the
+          // confirmation step instead of leaving them on the input.
+          if (tooSoonRetryAfter(e) === undefined) throw e;
         }
 
-        if (doesNotMeetGroupCriteria(requirements)) {
-          setCurrentStep('access-denied');
-          return;
-        }
-
-        setCurrentStep('success');
-      },
-      RESEND_CODE: async () => {
-        await requestEmailConfirmationCodeChangeEmail();
+        invalidateCacheAfterUpdateUser(queryClient);
+        setCurrentStep('confirmation:new_phone');
       },
     },
 
@@ -89,7 +74,7 @@ export const missingDataFlow = (
         { email, ...restBuiltInFieldUpdate }: BuiltInFieldsUpdate
       ) => {
         if (email) {
-          await requestEmailConfirmationCodeChangeEmail(email);
+          await requestCodeForEmail(email);
         }
 
         if (!isEmpty(restBuiltInFieldUpdate)) {
@@ -104,18 +89,13 @@ export const missingDataFlow = (
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
-        const missingDataStep = checkMissingData(
+        const missingDataStep = await checkMissingData(
           requirements,
           authenticationData,
-          state.flow,
-          true
+          state.flow
         );
 
         if (missingDataStep) {
-          if (missingDataStep === 'missing-data:email-confirmation' && email) {
-            updateState({ email });
-          }
-
           setCurrentStep(missingDataStep);
           return;
         }
@@ -129,17 +109,35 @@ export const missingDataFlow = (
       },
     },
 
+    // The user has a pending new_email or merge_target_email but wants to enter a
+    // different one.
+    // We cannot handle this by going back to missing-data:built-in because
+    // the email is already marked by requirements API as provided,
+    // so the field would never show up in that step.
+    'missing-data:change-new-email': {
+      CLOSE: () => setCurrentStep('closed'),
+      SUBMIT: async (new_email: string) => {
+        const confirmationType = await requestCodeForEmail(new_email);
+        updateState({ new_email });
+        invalidateCacheAfterUpdateUser(queryClient);
+        setCurrentStep(
+          confirmationType === 'merge_account'
+            ? 'confirmation:merge-account'
+            : 'confirmation:new_email'
+        );
+      },
+    },
+
     'missing-data:verification': {
       CLOSE: () => setCurrentStep('closed'),
       CONTINUE: async () => {
         const { requirements } = await getRequirements();
         const authenticationData = getAuthenticationData();
 
-        const missingDataStep = checkMissingData(
+        const missingDataStep = await checkMissingData(
           requirements,
           authenticationData,
-          state.flow,
-          true
+          state.flow
         );
 
         if (missingDataStep) {

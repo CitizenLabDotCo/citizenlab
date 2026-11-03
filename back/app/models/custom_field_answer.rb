@@ -1,0 +1,69 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: custom_field_answers
+#
+#  id              :uuid             not null, primary key
+#  answerable_type :string           not null
+#  answerable_id   :uuid             not null
+#  custom_field_id :uuid
+#  key             :string           not null
+#  value           :jsonb            not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+# Indexes
+#
+#  index_custom_field_answers_on_answerable_and_key       (answerable_type,answerable_id,key) UNIQUE
+#  index_custom_field_answers_on_custom_field_id          (custom_field_id)
+#  index_custom_field_answers_on_key_and_answerable_type  (key,answerable_type)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (custom_field_id => custom_fields.id) ON DELETE => cascade
+#
+class CustomFieldAnswer < ApplicationRecord
+  ANSWERABLE_TYPES = %w[Idea User].freeze
+
+  belongs_to :answerable, polymorphic: true
+  # nil for legacy answers, for answers of an input moved to another project, and for
+  # unknown keys written by the MCP demo tools.
+  belongs_to :custom_field, optional: true
+
+  # Only the answers under the field's own key, not its _other and _follow_up
+  # companions, which also reference the field.
+  scope :main_for, ->(field) { where(custom_field: field, key: field.key) }
+
+  # One row per chosen option, for single and multiple choice answers alike.
+  scope :per_selection, lambda {
+    joins(<<~SQL.squish)
+      CROSS JOIN jsonb_array_elements_text(
+        CASE WHEN jsonb_typeof(value) = 'array' THEN value ELSE jsonb_build_array(value) END
+      ) AS selections(selection)
+    SQL
+  }
+
+  validates :answerable_type, inclusion: { in: ANSWERABLE_TYPES }
+  validates :key, presence: true
+  # presence would reject false/[]; this also checks arrays element-wise.
+  validate :value_has_no_nils
+  validate :validate_built_in_value
+
+  private
+
+  def value_has_no_nils
+    errors.add(:value, 'must not be or contain nil') if value.nil? || (value.is_a?(Array) && value.include?(nil))
+  end
+
+  def validate_built_in_value
+    case custom_field&.code
+    when 'gender'
+      errors.add(:value, :inclusion) if User::GENDERS.exclude?(value)
+    when 'birthyear'
+      errors.add(:value, :invalid) if !value.is_a?(Integer) || !(1900...Time.zone.now.year).cover?(value)
+    when 'domicile'
+      errors.add(:value, :inclusion) if value != 'outside' && !Area.exists?(id: value)
+    end
+  end
+end

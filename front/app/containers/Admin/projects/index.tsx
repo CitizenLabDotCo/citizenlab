@@ -19,6 +19,7 @@ const AdminProjectsAndFolders = () => (
       display="flex"
       flexDirection="column"
       flexGrow={1}
+      minWidth="0"
     >
       <RouterOutlet />
     </Box>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
+import { Box } from '@citizenlab/cl2-component-library';
 
 import { ParticipationMethod } from 'api/phases/types';
 
@@ -83,11 +83,6 @@ const ParticipationMethods = ({ onClear }: Props) => {
         openedDefaultValue={participationMethods.length === 0}
         onChange={handleOnChange}
         onClear={onClear}
-      />
-      <IconTooltip
-        content={formatMessage(messages.filterByCurrentPhaseMethod)}
-        placement="top"
-        ml="4px"
       />
     </Box>
   );

@@ -167,6 +167,34 @@ describe MultiTenancy::Templates::TenantSerializer do
       end
     end
 
+    it 'successfully copies over Files engine files, projects and attachments' do
+      project = create(:single_phase_ideation_project)
+      phase = project.phases.first
+      idea = create(:idea, project: project, phases: [phase])
+
+      project_file = create(:file, name: 'project.pdf', projects: [project])
+      create(:file_attachment, file: project_file, attachable: project)
+      phase_file = create(:file, name: 'phase.pdf', projects: [project])
+      create(:file_attachment, file: phase_file, attachable: phase)
+      idea_file = create(:file, name: 'idea.pdf', projects: [project])
+      create(:file_attachment, file: idea_file, attachable: idea)
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant)
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        new_project = Project.sole
+        expect(new_project.files.pluck(:name)).to match_array(%w[project.pdf phase.pdf idea.pdf])
+        expect(new_project.attached_files.sole.content.file).to be_present
+
+        expect(new_project.file_attachments.count).to eq 1
+        expect(new_project.phases.sole.file_attachments.count).to eq 1
+        expect(Idea.sole.file_attachments.count).to eq 1
+      end
+    end
+
     it 'successfully copies over project global topics' do
       project = create(:project)
       global_topic = create(:global_topic)
@@ -181,6 +209,42 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(Project.count).to be 1
         new_project = Project.first
         expect(new_project.global_topics.map(&:title_multiloc)).to eq [global_topic.title_multiloc]
+      end
+    end
+
+    it 'successfully copies over a project report with its project link' do
+      project = create(:project)
+      create(:report, project: project, name: 'Project report')
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant)
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        expect(Project.count).to be 1
+        report = ReportBuilder::Report.find_by(name: 'Project report')
+        expect(report).to be_present
+        expect(report.project).to eq Project.first
+      end
+    end
+
+    it 'successfully copies over a project-scoped static page with its project link' do
+      project = create(:project)
+      create(:static_page, :project_scoped, project: project, title_multiloc: { 'en' => 'Project about' },
+        top_info_section_multiloc: { 'en' => '<p>About this project</p>' })
+
+      template = tenant_serializer.run(deserializer_format: true)
+
+      tenant = create(:tenant)
+      tenant.switch do
+        MultiTenancy::Templates::TenantDeserializer.new.deserialize(template)
+
+        expect(Project.count).to be 1
+        page = StaticPage.find_by("title_multiloc->>'en' = 'Project about'")
+        expect(page).to be_present
+        expect(page.project).to eq Project.first
+        expect(page.top_info_section_multiloc['en']).to include('About this project')
       end
     end
 
@@ -218,7 +282,7 @@ describe MultiTenancy::Templates::TenantSerializer do
       field = create(:custom_field, :for_custom_form, resource: form)
 
       create(:idea, project: timeline_project, phases: [ideation_phase])
-      create(:idea, project: timeline_project, phases: [survey_phase], creation_phase: survey_phase, custom_field_values: { field.key => 'My value' })
+      create(:idea, project: timeline_project, phases: [survey_phase], creation_phase: survey_phase, custom_field_answers: [build(:custom_field_answer, key: field.key, value: 'My value')])
 
       template = tenant_serializer.run(deserializer_format: true)
 
@@ -238,7 +302,7 @@ describe MultiTenancy::Templates::TenantSerializer do
         expect(new_survey_phase.custom_form.custom_fields.pluck(:input_type)).to eq ['text']
         new_field = new_survey_phase.custom_form.custom_fields.first
         expect(new_survey_phase.ideas_count).to eq 1
-        expect(new_survey_phase.ideas.first.custom_field_values[new_field.key]).to eq 'My value'
+        expect(new_survey_phase.ideas.first.answer_for_key(new_field.key)&.value).to eq 'My value'
       end
     end
 
@@ -306,23 +370,20 @@ describe MultiTenancy::Templates::TenantSerializer do
       unsupported_field = create(:custom_field, :for_custom_form, input_type: 'file_upload', resource: custom_form)
       create(:idea_status_proposed)
       response = create(:native_survey_response, project: project)
-      custom_field_values = {
-        supported_fields[0].key => 7,
-        supported_fields[1].key => 1,
-        unsupported_field.key => create(:file_upload, idea: response).id,
-        supported_fields[2].key => false
-      }
-      response.update! custom_field_values: custom_field_values
+      response.custom_field_answers.build(key: supported_fields[0].key, value: 7, custom_field: supported_fields[0])
+      response.custom_field_answers.build(key: supported_fields[1].key, value: 1, custom_field: supported_fields[1])
+      response.custom_field_answers.build(key: unsupported_field.key, value: create(:file_upload, idea: response).id, custom_field: unsupported_field)
+      response.custom_field_answers.build(key: supported_fields[2].key, value: false, custom_field: supported_fields[2])
+      response.save!
 
       template = tenant_serializer.run(deserializer_format: true)
 
-      expected_custom_field_values = {
-        supported_fields[0].key => 7,
-        supported_fields[1].key => 1,
-        supported_fields[2].key => false
-      }
       expect(template['models']['idea'].size).to eq 1
-      expect(template['models']['idea'].first['custom_field_values']).to match expected_custom_field_values
+      expect(template['models']['custom_field_answer'].map { |answer| answer.values_at('key', 'value') }).to contain_exactly(
+        [supported_fields[0].key, 7],
+        [supported_fields[1].key, 1],
+        [supported_fields[2].key, false]
+      )
     end
 
     it 'copies exact :ordering values of records for models that use acts_as_list gem' do

@@ -6,6 +6,7 @@ import {
 } from '@citizenlab/cl2-component-library';
 
 import { ProjectMiniAdminData } from 'api/projects_mini_admin/types';
+import { HighestRole } from 'api/users/types';
 
 import { TRole } from 'utils/permissions/roles';
 import { render, screen, userEvent } from 'utils/testUtils/rtl';
@@ -13,6 +14,8 @@ import { render, screen, userEvent } from 'utils/testUtils/rtl';
 import Row from './Row';
 
 let mockAuthUserRoles: TRole[] = [];
+let mockAuthUserHighestRole: HighestRole = 'user';
+let mockSpacesEnabled = true;
 
 jest.mock('api/me/useAuthUser', () => () => ({
   data: {
@@ -23,7 +26,7 @@ jest.mock('api/me/useAuthUser', () => () => ({
         first_name: 'Test',
         last_name: 'User',
         roles: mockAuthUserRoles,
-        highest_role: 'user',
+        highest_role: mockAuthUserHighestRole,
       },
     },
   },
@@ -33,15 +36,21 @@ jest.mock('api/project_images/useProjectImage', () => () => ({
   data: undefined,
 }));
 
+// usePermission() reads the app configuration; use the standard manual mock.
+jest.mock('api/app_configuration/useAppConfiguration');
+
+jest.mock('hooks/useFeatureFlag', () => () => mockSpacesEnabled);
+
 const project: ProjectMiniAdminData = {
   id: 'project-1',
   type: 'project_mini_admin',
   attributes: {
-    current_phase_start_date: null,
-    current_phase_end_date: null,
+    active_phases_start_date: null,
+    active_phases_end_date: null,
     first_phase_start_date: null,
     first_published_at: null,
     folder_title_multiloc: { en: 'Test folder' },
+    space_title_multiloc: { en: 'Test space' },
     last_phase_end_date: null,
     listed: true,
     publication_status: 'published',
@@ -74,10 +83,13 @@ const findRowLink = () =>
 describe('Projects table Row — folder link', () => {
   beforeEach(() => {
     mockAuthUserRoles = [];
+    mockAuthUserHighestRole = 'user';
+    mockSpacesEnabled = true;
   });
 
   it('does not link to the folder when the user cannot moderate it', async () => {
     mockAuthUserRoles = [];
+    mockAuthUserHighestRole = 'user';
     renderRow();
 
     await userEvent.hover(screen.getByText('Test folder'));
@@ -95,6 +107,7 @@ describe('Projects table Row — folder link', () => {
     mockAuthUserRoles = [
       { type: 'project_folder_moderator', project_folder_id: 'other-folder' },
     ];
+    mockAuthUserHighestRole = 'project_folder_moderator';
     renderRow();
 
     await userEvent.hover(screen.getByText('Test folder'));
@@ -108,6 +121,7 @@ describe('Projects table Row — folder link', () => {
     mockAuthUserRoles = [
       { type: 'project_folder_moderator', project_folder_id: 'folder-1' },
     ];
+    mockAuthUserHighestRole = 'project_folder_moderator';
     renderRow();
 
     await userEvent.hover(screen.getByText('Test folder'));
@@ -120,6 +134,7 @@ describe('Projects table Row — folder link', () => {
 
   it('links to the folder when the user is an admin', async () => {
     mockAuthUserRoles = [{ type: 'admin' }];
+    mockAuthUserHighestRole = 'admin';
     renderRow();
 
     await userEvent.hover(screen.getByText('Test folder'));
@@ -132,6 +147,7 @@ describe('Projects table Row — folder link', () => {
 
   it("links to the folder when the user is a space moderator of the folder's space", async () => {
     mockAuthUserRoles = [{ type: 'space_moderator', space_id: 'space-1' }];
+    mockAuthUserHighestRole = 'space_moderator';
     renderRow();
 
     await userEvent.hover(screen.getByText('Test folder'));
@@ -144,6 +160,7 @@ describe('Projects table Row — folder link', () => {
 
   it('does not link to the folder for a space moderator of a different space', async () => {
     mockAuthUserRoles = [{ type: 'space_moderator', space_id: 'other-space' }];
+    mockAuthUserHighestRole = 'space_moderator';
     renderRow();
 
     await userEvent.hover(screen.getByText('Test folder'));
@@ -151,5 +168,70 @@ describe('Projects table Row — folder link', () => {
     expect(findRowLink().getAttribute('href')).not.toContain(
       'folders/folder-1'
     );
+  });
+});
+
+describe('Projects table Row — space link', () => {
+  beforeEach(() => {
+    mockAuthUserRoles = [];
+    mockAuthUserHighestRole = 'user';
+    mockSpacesEnabled = true;
+  });
+
+  it('does not link to the space when the user cannot moderate it', async () => {
+    mockAuthUserRoles = [];
+    mockAuthUserHighestRole = 'user';
+    renderRow();
+
+    await userEvent.hover(screen.getByText('Test space'));
+
+    expect(findRowLink()).toHaveAttribute(
+      'href',
+      expect.stringContaining(`/admin/projects/${project.id}`)
+    );
+    expect(findRowLink().getAttribute('href')).not.toContain('spaces/space-1');
+  });
+
+  it('links to the space when the user is a space moderator of that space', async () => {
+    mockAuthUserRoles = [{ type: 'space_moderator', space_id: 'space-1' }];
+    mockAuthUserHighestRole = 'space_moderator';
+    renderRow();
+
+    await userEvent.hover(screen.getByText('Test space'));
+
+    expect(findRowLink()).toHaveAttribute(
+      'href',
+      expect.stringContaining('/admin/projects/spaces/space-1')
+    );
+  });
+
+  it('links to the space when the user is an admin', async () => {
+    mockAuthUserRoles = [{ type: 'admin' }];
+    mockAuthUserHighestRole = 'admin';
+    renderRow();
+
+    await userEvent.hover(screen.getByText('Test space'));
+
+    expect(findRowLink()).toHaveAttribute(
+      'href',
+      expect.stringContaining('/admin/projects/spaces/space-1')
+    );
+  });
+
+  it('does not link to the space for a moderator of a different space', async () => {
+    mockAuthUserRoles = [{ type: 'space_moderator', space_id: 'other-space' }];
+    mockAuthUserHighestRole = 'space_moderator';
+    renderRow();
+
+    await userEvent.hover(screen.getByText('Test space'));
+
+    expect(findRowLink().getAttribute('href')).not.toContain('spaces/space-1');
+  });
+
+  it('does not show the space when the spaces feature flag is disabled', () => {
+    mockSpacesEnabled = false;
+    renderRow();
+
+    expect(screen.queryByText('Test space')).not.toBeInTheDocument();
   });
 });

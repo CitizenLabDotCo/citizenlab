@@ -19,12 +19,12 @@ describe Permissions::UserRequirementsService do
         first_name: 'Jane',
         last_name: 'Jacobs',
         email: 'jane@jacobs.com',
-        custom_field_values: {
-          'gender' => 'female',
-          'birthyear' => 1975,
-          'extra_required_field' => false,
-          'extra_optional_field' => 29
-        },
+        custom_field_answers: [
+          build(:custom_field_answer, key: 'gender', value: 'female'),
+          build(:custom_field_answer, key: 'birthyear', value: 1975),
+          build(:custom_field_answer, key: 'extra_required_field', value: false),
+          build(:custom_field_answer, key: 'extra_optional_field', value: 29)
+        ],
         password: 'supersecret',
         email_confirmed_at: Time.now
       )
@@ -34,13 +34,15 @@ describe Permissions::UserRequirementsService do
       before { create(:topic, include_in_onboarding: true) }
 
       context 'when permitted_by is set to everyone' do
-        let(:permission) { create(:permission, permitted_by: 'everyone', global_custom_fields: false) }
+        let(:permission) { create(:permission, permitted_by: 'everyone') }
 
         let(:expected_requirements) do
           {
             authentication: {
               permitted_by: 'everyone',
-              missing_user_attributes: []
+              missing_user_attributes: [],
+              email_action_required: nil,
+              phone_action_required: nil
             },
             verification: false,
             custom_fields: {},
@@ -76,11 +78,16 @@ describe Permissions::UserRequirementsService do
         end
       end
 
-      context 'when permitted_by is set to everyone_confirmed_email' do
-        let(:permission) { create(:permission, permitted_by: 'everyone_confirmed_email') }
+      # Formerly the 'everyone_confirmed_email' permitted_by. It is now a 'users'
+      # permission that only requires a confirmed email (require_name and
+      # require_password are false). Note that, unlike the old everyone_confirmed_email
+      # behaviour, onboarding is no longer forced off - these are plain 'users'
+      # permissions and follow the normal onboarding rule.
+      context 'when permitted_by is users and only a confirmed email is required' do
+        let(:permission) { create(:permission, :by_everyone_confirmed_email) }
 
         before do
-          permission.update!(global_custom_fields: false)
+          permission.update!(custom_fields_behavior: 'custom')
           field = CustomField.find_by code: 'birthyear'
           create(:permissions_custom_field, permission: permission, custom_field: field, required: false)
         end
@@ -90,12 +97,14 @@ describe Permissions::UserRequirementsService do
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
             authentication: {
-              permitted_by: 'everyone_confirmed_email',
-              missing_user_attributes: %i[email confirmation]
+              permitted_by: 'users',
+              missing_user_attributes: [],
+              email_action_required: :provide_email,
+              phone_action_required: nil
             },
             verification: false,
             custom_fields: { 'birthyear' => 'optional' },
-            onboarding: false,
+            onboarding: true,
             group_membership: false
           })
         end
@@ -106,28 +115,33 @@ describe Permissions::UserRequirementsService do
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
             authentication: {
-              permitted_by: 'everyone_confirmed_email',
-              missing_user_attributes: [:confirmation]
+              permitted_by: 'users',
+              missing_user_attributes: [],
+              email_action_required: :confirm_email,
+              phone_action_required: nil
             },
             verification: false,
             custom_fields: { 'birthyear' => 'optional' },
-            onboarding: false,
+            onboarding: true,
             group_membership: false
           })
         end
 
         it 'permits a light confirmed resident' do
-          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
+          user.custom_field_answers.destroy_all
+          user.update!(password_digest: nil, identity_ids: [], first_name: nil)
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be true
           expect(requirements).to eq({
             authentication: {
-              permitted_by: 'everyone_confirmed_email',
-              missing_user_attributes: []
+              permitted_by: 'users',
+              missing_user_attributes: [],
+              email_action_required: nil,
+              phone_action_required: nil
             },
             verification: false,
             custom_fields: { 'birthyear' => 'optional' },
-            onboarding: false,
+            onboarding: true,
             group_membership: false
           })
         end
@@ -138,12 +152,14 @@ describe Permissions::UserRequirementsService do
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
             authentication: {
-              permitted_by: 'everyone_confirmed_email',
-              missing_user_attributes: [:confirmation]
+              permitted_by: 'users',
+              missing_user_attributes: [],
+              email_action_required: :confirm_email,
+              phone_action_required: nil
             },
             verification: false,
             custom_fields: {},
-            onboarding: false,
+            onboarding: true,
             group_membership: false
           })
         end
@@ -153,12 +169,14 @@ describe Permissions::UserRequirementsService do
           expect(service.permitted?(requirements)).to be true
           expect(requirements).to eq({
             authentication: {
-              permitted_by: 'everyone_confirmed_email',
-              missing_user_attributes: []
+              permitted_by: 'users',
+              missing_user_attributes: [],
+              email_action_required: nil,
+              phone_action_required: nil
             },
             verification: false,
             custom_fields: {},
-            onboarding: false,
+            onboarding: true,
             group_membership: false
           })
         end
@@ -170,12 +188,14 @@ describe Permissions::UserRequirementsService do
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
             authentication: {
-              permitted_by: 'everyone_confirmed_email',
-              missing_user_attributes: [:confirmation]
+              permitted_by: 'users',
+              missing_user_attributes: [],
+              email_action_required: :confirm_email,
+              phone_action_required: nil
             },
             verification: false,
             custom_fields: {},
-            onboarding: false,
+            onboarding: true,
             group_membership: false
           })
         end
@@ -186,8 +206,10 @@ describe Permissions::UserRequirementsService do
           expect(service.permitted?(requirements)).to be true
           expect(requirements).to eq({
             authentication: {
-              permitted_by: 'everyone_confirmed_email',
-              missing_user_attributes: []
+              permitted_by: 'users',
+              missing_user_attributes: [],
+              email_action_required: nil,
+              phone_action_required: nil
             },
             verification: false,
             custom_fields: {},
@@ -196,39 +218,40 @@ describe Permissions::UserRequirementsService do
           })
         end
 
+        # The old behaviour escalated a 'following' permission to full 'users'
+        # registration when password_login was disabled. That fallback is gone:
+        # the requirements are now driven purely by the require_* flags, so they
+        # are the same regardless of whether password_login is enabled.
         context 'when the action is following' do
           before { permission.update!(permission_scope: nil, action: 'following') }
 
-          it 'does not permit a visitor when password login is enabled' do
-            requirements = service.requirements(permission, nil)
-            expect(service.permitted?(requirements)).to be false
-            expect(requirements).to eq({
-              authentication: {
-                permitted_by: 'everyone_confirmed_email',
-                missing_user_attributes: %i[email confirmation]
-              },
-              verification: false,
-              custom_fields: { 'birthyear' => 'optional' },
-              onboarding: false,
-              group_membership: false
-            })
-          end
-
-          it 'does not permit a visitor and returns the requirements for "users" instead when password login is NOT enabled' do
-            SettingsService.new.deactivate_feature! 'password_login'
-
-            requirements = service.requirements(permission, nil)
-            expect(service.permitted?(requirements)).to be false
-            expect(requirements).to eq({
+          let(:expected_visitor_requirements) do
+            {
               authentication: {
                 permitted_by: 'users',
-                missing_user_attributes: %i[first_name last_name email confirmation password]
+                missing_user_attributes: [],
+                email_action_required: :provide_email,
+                phone_action_required: nil
               },
               verification: false,
               custom_fields: { 'birthyear' => 'optional' },
               onboarding: true,
               group_membership: false
-            })
+            }
+          end
+
+          it 'does not permit a visitor when password login is enabled' do
+            requirements = service.requirements(permission, nil)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements).to eq(expected_visitor_requirements)
+          end
+
+          it 'has the same requirements when password login is NOT enabled' do
+            SettingsService.new.deactivate_feature! 'password_login'
+
+            requirements = service.requirements(permission, nil)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements).to eq(expected_visitor_requirements)
           end
         end
       end
@@ -238,7 +261,7 @@ describe Permissions::UserRequirementsService do
         let(:permission) do
           permission = survey_phase.permissions.find { |p| p.action == 'posting_idea' }
           permission.permitted_by = 'users'
-          permission.global_custom_fields = true
+          permission.custom_fields_behavior = 'global'
           permission.save!
           permission
         end
@@ -254,7 +277,9 @@ describe Permissions::UserRequirementsService do
           expect(requirements).to eq({
             authentication: {
               permitted_by: 'users',
-              missing_user_attributes: %i[first_name last_name email confirmation password]
+              missing_user_attributes: %i[first_name last_name password],
+              email_action_required: :provide_email,
+              phone_action_required: nil
             },
             verification: false,
             custom_fields: {
@@ -269,13 +294,16 @@ describe Permissions::UserRequirementsService do
         end
 
         it 'does not permit a light confirmed resident' do
-          user.update!(password_digest: nil, identity_ids: [], first_name: nil, custom_field_values: {})
+          user.custom_field_answers.destroy_all
+          user.update!(password_digest: nil, identity_ids: [], first_name: nil)
           requirements = service.requirements(permission, user)
           expect(service.permitted?(requirements)).to be false
           expect(requirements).to eq({
             authentication: {
               permitted_by: 'users',
-              missing_user_attributes: %i[first_name password]
+              missing_user_attributes: %i[first_name password],
+              email_action_required: nil,
+              phone_action_required: nil
             },
             verification: false,
             custom_fields: {
@@ -296,7 +324,9 @@ describe Permissions::UserRequirementsService do
           expect(requirements).to eq({
             authentication: {
               permitted_by: 'users',
-              missing_user_attributes: [:confirmation]
+              missing_user_attributes: [],
+              email_action_required: :confirm_email,
+              phone_action_required: nil
             },
             verification: false,
             custom_fields: {},
@@ -311,7 +341,9 @@ describe Permissions::UserRequirementsService do
           expect(requirements).to eq({
             authentication: {
               permitted_by: 'users',
-              missing_user_attributes: []
+              missing_user_attributes: [],
+              email_action_required: nil,
+              phone_action_required: nil
             },
             verification: false,
             custom_fields: {},
@@ -330,7 +362,9 @@ describe Permissions::UserRequirementsService do
           expect(requirements).to eq({
             authentication: {
               permitted_by: 'users',
-              missing_user_attributes: []
+              missing_user_attributes: [],
+              email_action_required: nil,
+              phone_action_required: nil
             },
             verification: false,
             custom_fields: {},
@@ -347,7 +381,9 @@ describe Permissions::UserRequirementsService do
           expect(requirements).to eq({
             authentication: {
               permitted_by: 'users',
-              missing_user_attributes: [:confirmation]
+              missing_user_attributes: [],
+              email_action_required: :confirm_email,
+              phone_action_required: nil
             },
             verification: false,
             custom_fields: {},
@@ -365,7 +401,9 @@ describe Permissions::UserRequirementsService do
           expect(requirements).to eq({
             authentication: {
               permitted_by: 'users',
-              missing_user_attributes: []
+              missing_user_attributes: [],
+              email_action_required: nil,
+              phone_action_required: nil
             },
             verification: false,
             custom_fields: {},
@@ -385,7 +423,9 @@ describe Permissions::UserRequirementsService do
             expect(requirements).to eq({
               authentication: {
                 permitted_by: 'users',
-                missing_user_attributes: []
+                missing_user_attributes: [],
+                email_action_required: nil,
+                phone_action_required: nil
               },
               verification: false,
               custom_fields: {},
@@ -401,7 +441,9 @@ describe Permissions::UserRequirementsService do
             expect(requirements).to eq({
               authentication: {
                 permitted_by: 'users',
-                missing_user_attributes: []
+                missing_user_attributes: [],
+                email_action_required: nil,
+                phone_action_required: nil
               },
               verification: false,
               custom_fields: {},
@@ -421,7 +463,9 @@ describe Permissions::UserRequirementsService do
             expect(requirements).to eq({
               authentication: {
                 permitted_by: 'users',
-                missing_user_attributes: []
+                missing_user_attributes: [],
+                email_action_required: nil,
+                phone_action_required: nil
               },
               verification: false,
               custom_fields: {},
@@ -452,7 +496,7 @@ describe Permissions::UserRequirementsService do
 
     context 'when onboarding is not possible (there are no topics or areas assigned to projects)' do
       context 'when permitted_by is set to users' do
-        let(:permission) { create(:permission, permitted_by: 'users', global_custom_fields: true) }
+        let(:permission) { create(:permission, permitted_by: 'users', custom_fields_behavior: 'global') }
 
         before do
           field = CustomField.find_by code: 'birthyear'
@@ -465,7 +509,9 @@ describe Permissions::UserRequirementsService do
           expect(requirements).to eq({
             authentication: {
               permitted_by: 'users',
-              missing_user_attributes: []
+              missing_user_attributes: [],
+              email_action_required: nil,
+              phone_action_required: nil
             },
             verification: false,
             custom_fields: {},
@@ -480,6 +526,13 @@ describe Permissions::UserRequirementsService do
       context 'when permission has groups and permission has a verification group' do
         let(:groups) { [create(:group), create(:smart_group, rules: [{ ruleType: 'verified', predicate: 'is_verified' }])] }
         let(:group_permission) { create(:permission, permitted_by: 'users', groups: groups) }
+
+        before do
+          # A verification group only asks for verification where verifying is possible.
+          AppConfiguration.instance.settings['id_config'] =
+            { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+          AppConfiguration.instance.save!
+        end
 
         context 'there is no user' do
           it 'requires verification' do
@@ -535,11 +588,11 @@ describe Permissions::UserRequirementsService do
       end
     end
 
-    context 'verification via permitted_by "verified"' do
-      let(:verified_permission) { create(:permission, permitted_by: 'verified') }
+    context 'verification via require_verification' do
+      let(:verified_permission) { create(:permission, :by_verified) }
 
       before do
-        # To allow permitted_by 'verified' we need to enable at least one verification method
+        # Enable a verification method so that verifications can be created and checked
         AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
         AppConfiguration.instance.save!
       end
@@ -548,7 +601,7 @@ describe Permissions::UserRequirementsService do
         it 'requires verification' do
           requirements = service.requirements(verified_permission, nil)
           expect(service.permitted?(requirements)).to be false
-          expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+          expect(requirements[:authentication][:permitted_by]).to eq 'users'
           expect(requirements[:verification]).to be true
         end
       end
@@ -559,14 +612,19 @@ describe Permissions::UserRequirementsService do
         it 'requires verification' do
           requirements = service.requirements(verified_permission, user)
           expect(service.permitted?(requirements)).to be false
-          expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+          expect(requirements[:authentication][:permitted_by]).to eq 'users'
           expect(requirements[:verification]).to be true
         end
 
         it 'does not remove missing authentication requirements if not verified' do
           user.update!(unique_code: '1234abcd', email: nil, password: nil)
           requirements = service.requirements(verified_permission, user)
-          expect(requirements[:authentication][:missing_user_attributes]).to eq %i[email password]
+          # A verification-only permission requires neither name, password nor a
+          # confirmed email (require_confirmed_email is false), so no built-in
+          # attributes and no email action are asked - verification is the only
+          # outstanding requirement.
+          expect(requirements[:authentication][:missing_user_attributes]).to eq []
+          expect(requirements[:authentication][:email_action_required]).to be_nil
         end
       end
 
@@ -580,18 +638,29 @@ describe Permissions::UserRequirementsService do
           it 'verification is satisfied' do
             requirements = service.requirements(verified_permission, user)
             expect(service.permitted?(requirements)).to be true
-            expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+            expect(requirements[:authentication][:permitted_by]).to eq 'users'
             expect(requirements[:verification]).to be false
           end
 
-          it 'removes all missing authentication requirements if verified' do
-            user.update!(unique_code: '1234abcd', email: nil, password: nil)
+          it 'does not treat verification as satisfying an email requirement' do
+            # Being verified does not stand in for a required confirmed email:
+            # the still-missing email is asked for independently of verification.
+            verified_permission.update!(require_confirmed_email: true)
+            user.update!(unique_code: '1234abcd', email: nil, new_email: nil, password: nil)
             requirements = service.requirements(verified_permission, user)
-            expect(requirements[:authentication][:missing_user_attributes]).to be_empty
+            expect(requirements[:authentication][:email_action_required]).to eq :provide_new_email
+          end
+
+          it 'asks for the merge code while a merge into another account is pending' do
+            verified_permission.update!(require_confirmed_email: true)
+            user.update!(unique_code: '1234abcd', email: nil, new_email: nil, password: nil)
+            user.update_columns(merge_target_email: 'existing@example.org')
+            requirements = service.requirements(verified_permission, user)
+            expect(requirements[:authentication][:email_action_required]).to eq :confirm_merge_account
           end
 
           it 'removes locked custom fields if verified' do
-            verified_permission.update!(global_custom_fields: false)
+            verified_permission.update!(custom_fields_behavior: 'custom')
             create(:permissions_custom_field, custom_field: CustomField.find_by(key: 'gender'), permission: verified_permission, required: true) # locked
             create(:permissions_custom_field, custom_field: CustomField.find_by(key: 'birthyear'), permission: verified_permission, required: true) # locked
             create(:permissions_custom_field, custom_field: create(:custom_field_domicile), permission: verified_permission, required: true) # not locked
@@ -607,7 +676,7 @@ describe Permissions::UserRequirementsService do
             travel_to Time.now + 15.minutes do
               requirements = service.requirements(verified_permission, user)
               expect(service.permitted?(requirements)).to be true
-              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:authentication][:permitted_by]).to eq 'users'
               expect(requirements[:verification]).to be false
             end
           end
@@ -616,7 +685,7 @@ describe Permissions::UserRequirementsService do
             travel_to Time.now + 30.minutes + 1.second do
               requirements = service.requirements(verified_permission, user)
               expect(service.permitted?(requirements)).to be false
-              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:authentication][:permitted_by]).to eq 'users'
               expect(requirements[:verification]).to be true
             end
           end
@@ -628,7 +697,7 @@ describe Permissions::UserRequirementsService do
             travel_to Time.now + 1.day + 1.second do
               requirements = service.requirements(verified_permission, user)
               expect(service.permitted?(requirements)).to be false
-              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:authentication][:permitted_by]).to eq 'users'
               expect(requirements[:verification]).to be true
             end
           end
@@ -638,17 +707,19 @@ describe Permissions::UserRequirementsService do
             travel_to Time.now + 23.hours do
               requirements = service.requirements(verified_permission, user)
               expect(service.permitted?(requirements)).to be true
-              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:authentication][:permitted_by]).to eq 'users'
               expect(requirements[:verification]).to be false
             end
           end
 
           it 'requires verification again after more than 30 days' do
             verified_permission.update!(verification_expiry: 30)
-            travel_to Time.now + 30.days + 1.second do
+            # from_now, not Time.now + 30.days: adding days to a zoned time spans the extra hour
+            # of a DST fall-back, as the service's expiry arithmetic does.
+            travel_to (30.days + 1.second).from_now do
               requirements = service.requirements(verified_permission, user)
               expect(service.permitted?(requirements)).to be false
-              expect(requirements[:authentication][:permitted_by]).to eq 'verified'
+              expect(requirements[:authentication][:permitted_by]).to eq 'users'
               expect(requirements[:verification]).to be true
             end
           end
@@ -659,10 +730,366 @@ describe Permissions::UserRequirementsService do
         let(:user) { create(:unconfirmed_user, verified: true) }
 
         it 'requires email confirmation' do
+          verified_permission.update!(require_confirmed_email: true)
           expect(user.confirmation_required?).to be true
           requirements = service.requirements(verified_permission, user)
           expect(service.permitted?(requirements)).to be false
-          expect(requirements[:authentication][:missing_user_attributes]).to eq ['confirmation']
+          expect(requirements[:authentication][:missing_user_attributes]).to eq []
+          expect(requirements[:authentication][:email_action_required]).to eq :confirm_email
+        end
+      end
+    end
+
+    # A verification method is what makes a user verifiable at all, so a permission that kept
+    # require_verification after the platform's last method was removed must not ask for it.
+    # See Permission#require_verification.
+    context 'verification via require_verification without a configured verification method' do
+      let(:verified_permission) { create(:permission, :by_verified) }
+
+      it 'does not require verification when there is no user' do
+        requirements = service.requirements(verified_permission, nil)
+        expect(requirements[:verification]).to be false
+      end
+
+      it 'does not require verification for an unverified user' do
+        user.update!(verified: false)
+        requirements = service.requirements(verified_permission, user)
+        expect(requirements[:verification]).to be false
+        expect(service.permitted?(requirements)).to be true
+      end
+    end
+
+    context 'when a confirmed phone number is required' do
+      include_context 'with sms feature enabled'
+
+      # Only a confirmed phone number is required (no confirmed email), so the
+      # phone requirement is expressed entirely through :phone_action_required
+      # and no built-in attributes or email action are asked.
+      let(:permission) do
+        create(
+          :permission,
+          permitted_by: 'users',
+          require_confirmed_email: false,
+          require_name: false,
+          require_password: false,
+          require_confirmed_phone_number: true
+        )
+      end
+
+      it 'requires a phone number to be provided when there is no user' do
+        requirements = service.requirements(permission, nil)
+        expect(service.permitted?(requirements)).to be false
+        expect(requirements[:authentication][:missing_user_attributes]).to eq []
+        expect(requirements[:authentication][:phone_action_required]).to eq :provide_new_phone
+      end
+
+      it 'requires a phone number to be provided for a user without a phone number' do
+        user.update!(phone: nil, phone_confirmed_at: nil)
+        requirements = service.requirements(permission, user)
+        expect(service.permitted?(requirements)).to be false
+        expect(requirements[:authentication][:phone_action_required]).to eq :provide_new_phone
+      end
+
+      it 'requires confirmation of a pending new_phone' do
+        user.update!(phone: nil, new_phone: '+3212345678', phone_confirmed_at: nil)
+        requirements = service.requirements(permission, user)
+        expect(service.permitted?(requirements)).to be false
+        expect(requirements[:authentication][:phone_action_required]).to eq :confirm_new_phone
+      end
+
+      it 'requires re-confirmation of an existing but unconfirmed phone number' do
+        user.update!(phone: '+3212345678', phone_confirmed_at: nil)
+        requirements = service.requirements(permission, user)
+        expect(service.permitted?(requirements)).to be false
+        expect(requirements[:authentication][:phone_action_required]).to eq :confirm_phone
+      end
+
+      it 'is satisfied for a user with a confirmed phone number' do
+        user.update!(phone: '+3212345678', phone_confirmed_at: Time.now)
+        requirements = service.requirements(permission, user)
+        expect(service.permitted?(requirements)).to be true
+        expect(requirements[:authentication][:phone_action_required]).to be_nil
+      end
+
+      it 'does not require a phone number when require_confirmed_phone_number is false' do
+        permission.update!(require_confirmed_email: true, require_confirmed_phone_number: false)
+        requirements = service.requirements(permission, user)
+        expect(requirements[:authentication][:phone_action_required]).to be_nil
+      end
+    end
+
+    # The sms feature is what makes a phone number addable and confirmable at all,
+    # so a permission that kept require_confirmed_phone_number after it was switched
+    # off must not ask for one. See Permission#require_confirmed_phone_number.
+    context 'when a confirmed phone number is required but the sms feature is off' do
+      let(:permission) do
+        create(
+          :permission,
+          permitted_by: 'users',
+          require_confirmed_email: false,
+          require_name: false,
+          require_password: false,
+          require_confirmed_phone_number: true
+        )
+      end
+
+      it 'asks nothing of a user without a phone number' do
+        user.update!(phone: nil, new_phone: nil, phone_confirmed_at: nil)
+        requirements = service.requirements(permission, user)
+        expect(requirements[:authentication][:phone_action_required]).to be_nil
+        expect(service.permitted?(requirements)).to be true
+      end
+
+      it 'asks nothing of a user with an unconfirmed phone number' do
+        user.update!(phone: '+3212345678', phone_confirmed_at: nil)
+        requirements = service.requirements(permission, user)
+        expect(requirements[:authentication][:phone_action_required]).to be_nil
+        expect(service.permitted?(requirements)).to be true
+      end
+
+      it 'asks nothing when there is no user yet' do
+        requirements = service.requirements(permission, nil)
+        expect(requirements[:authentication][:phone_action_required]).to be_nil
+      end
+    end
+
+    # Re-confirmation of an already-confirmed email once confirmed_email_expiry has
+    # elapsed. The top-level `user` has a confirmed email (email_confirmed_at: Time.now,
+    # confirmation_required? false), so the only thing that can put them back into a
+    # :reconfirm_email state here is the expiry window. Mirrors verification_expiry.
+    context 'when a confirmed email is required with confirmed_email_expiry set' do
+      let(:permission) do
+        create(:permission, permitted_by: 'users', require_confirmed_email: true)
+      end
+
+      it 'is satisfied and email_confirmed_at is set on the user' do
+        expect(user.confirmation_required?).to be false
+        expect(user.email_confirmed_at).to be_present
+      end
+
+      context 'when confirmed_email_expiry is nil' do
+        it 'never requires re-confirmation' do
+          travel_to Time.now + 10.years do
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be true
+            expect(requirements[:authentication][:email_action_required]).to be_nil
+          end
+        end
+      end
+
+      context 'when confirmed_email_expiry is 0' do
+        before { permission.update!(confirmed_email_expiry: 0) }
+
+        it 'does not require re-confirmation before 30 minutes' do
+          travel_to Time.now + 15.minutes do
+            requirements = service.requirements(permission, user)
+            expect(requirements[:authentication][:email_action_required]).to be_nil
+          end
+        end
+
+        it 'requires re-confirmation after 30 minutes' do
+          user # confirm the email at the real current time, before traveling past the expiry window
+          travel_to Time.now + 30.minutes + 1.second do
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements[:authentication][:email_action_required]).to eq :reconfirm_email
+          end
+        end
+      end
+
+      context 'when confirmed_email_expiry is greater than 0' do
+        before { permission.update!(confirmed_email_expiry: 30) }
+
+        it 'does not require re-confirmation before the expiry window' do
+          travel_to Time.now + 29.days do
+            requirements = service.requirements(permission, user)
+            expect(requirements[:authentication][:email_action_required]).to be_nil
+          end
+        end
+
+        it 'requires re-confirmation after the expiry window' do
+          user # confirm the email at the real current time, before traveling past the expiry window
+          # from_now, not Time.now + 30.days: adding days to a zoned time spans the extra hour
+          # of a DST fall-back, as the service's expiry arithmetic does.
+          travel_to (30.days + 1.second).from_now do
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements[:authentication][:email_action_required]).to eq :reconfirm_email
+          end
+        end
+      end
+    end
+
+    # Re-confirmation of an already-confirmed phone number once
+    # confirmed_phone_number_expiry has elapsed. Mirrors the email variant above.
+    context 'when a confirmed phone number is required with confirmed_phone_number_expiry set' do
+      include_context 'with sms feature enabled'
+
+      before do
+        user.update!(phone: '+3212345678', phone_confirmed_at: Time.now)
+      end
+
+      let(:permission) do
+        create(
+          :permission,
+          permitted_by: 'users',
+          require_confirmed_email: false,
+          require_name: false,
+          require_password: false,
+          require_confirmed_phone_number: true
+        )
+      end
+
+      context 'when confirmed_phone_number_expiry is nil' do
+        it 'never requires re-confirmation' do
+          travel_to Time.now + 10.years do
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be true
+            expect(requirements[:authentication][:phone_action_required]).to be_nil
+          end
+        end
+      end
+
+      context 'when confirmed_phone_number_expiry is 0' do
+        before { permission.update!(confirmed_phone_number_expiry: 0) }
+
+        it 'does not require re-confirmation before 30 minutes' do
+          travel_to Time.now + 15.minutes do
+            requirements = service.requirements(permission, user)
+            expect(requirements[:authentication][:phone_action_required]).to be_nil
+          end
+        end
+
+        it 'requires re-confirmation after 30 minutes' do
+          travel_to Time.now + 30.minutes + 1.second do
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements[:authentication][:phone_action_required]).to eq :reconfirm_phone
+          end
+        end
+      end
+
+      context 'when confirmed_phone_number_expiry is greater than 0' do
+        before { permission.update!(confirmed_phone_number_expiry: 30) }
+
+        it 'does not require re-confirmation before the expiry window' do
+          travel_to Time.now + 29.days do
+            requirements = service.requirements(permission, user)
+            expect(requirements[:authentication][:phone_action_required]).to be_nil
+          end
+        end
+
+        it 'requires re-confirmation after the expiry window' do
+          # from_now, not Time.now + 30.days: adding days to a zoned time spans the extra hour
+          # of a DST fall-back, as the service's expiry arithmetic does.
+          travel_to (30.days + 1.second).from_now do
+            requirements = service.requirements(permission, user)
+            expect(service.permitted?(requirements)).to be false
+            expect(requirements[:authentication][:phone_action_required]).to eq :reconfirm_phone
+          end
+        end
+      end
+    end
+
+    # A password is not a credential anyone can log in with once password_login is off, and the
+    # admin UI stops offering the toggle. See Permission#require_password.
+    context 'when a password is required but password_login is off' do
+      let(:permission) do
+        create(:permission, permitted_by: 'users', require_name: false, require_password: true)
+      end
+
+      before { SettingsService.new.deactivate_feature!('password_login') }
+
+      it 'does not ask for a password from a user without one' do
+        user.update!(password_digest: nil)
+        requirements = service.requirements(permission, user)
+        expect(requirements[:authentication][:missing_user_attributes]).not_to include(:password)
+        expect(service.permitted?(requirements)).to be true
+      end
+
+      it 'does not ask for a password when there is no user' do
+        requirements = service.requirements(permission, nil)
+        expect(requirements[:authentication][:missing_user_attributes]).not_to include(:password)
+      end
+    end
+
+    # These specs document a deliberate quirk: for a user who signed up via SSO
+    # (i.e. has a linked identity), the service NEVER asks for a password, even
+    # when the permission has require_password enabled. In other words, the
+    # require_password setting is effectively ignored for SSO sign-ups.
+    #
+    # This is admittedly a little weird - you would expect require_password to be
+    # honoured regardless of how the account was created - but it is intentional
+    # for now. In practice, 9 times out of 10, an admin who configures an SSO
+    # login method does NOT want to additionally prompt those users to pick a
+    # password. If we honoured require_password here it would be far too easy for
+    # an admin to overlook the setting and accidentally leave it enabled, forcing
+    # an unwanted password step onto every SSO user. So we drop the password
+    # requirement for SSO users unconditionally.
+    #
+    # See UserRequirementsService#ignore_password_for_sso!.
+    context 'when the user signed up via SSO (has a linked identity)' do
+      let(:permission) do
+        create(:permission, permitted_by: 'users', require_name: true, require_password: true)
+      end
+
+      # An SSO user: has a name and (confirmed) email from the provider, a linked
+      # identity (so #sso? is true), and no password of their own.
+      let(:sso_user) do
+        user = create(
+          :user,
+          first_name: 'Jane',
+          last_name: 'Jacobs',
+          email: 'jane@jacobs.com',
+          email_confirmed_at: Time.now
+        )
+        user.update!(password_digest: nil)
+        create(:identity, user: user, provider: 'fake_sso')
+        user.reload
+      end
+
+      it 'does not require a password, even though require_password is true' do
+        expect(permission.require_password).to be true
+        expect(sso_user.sso?).to be true
+
+        requirements = service.requirements(permission, sso_user)
+        expect(requirements[:authentication][:missing_user_attributes]).not_to include(:password)
+      end
+
+      it 'DOES require a password from an equivalent non-SSO user (proving the SSO exception is what drops it)' do
+        # Same permission, same missing password - but this user has no linked
+        # identity, so the SSO exception does not apply and the password is asked.
+        non_sso_user = create(
+          :user,
+          first_name: 'Jane',
+          last_name: 'Jacobs',
+          email: 'jane@jacobs.com',
+          email_confirmed_at: Time.now
+        )
+        non_sso_user.update!(password_digest: nil)
+        expect(non_sso_user.sso?).to be false
+
+        requirements = service.requirements(permission, non_sso_user)
+        expect(requirements[:authentication][:missing_user_attributes]).to include(:password)
+      end
+
+      context 'and require_confirmed_email is disabled (verification then backs the account)' do
+        before do
+          AppConfiguration.instance.settings['id_config'] = { 'allowed' => true, 'enabled' => true, 'id_methods' => [{ name: 'fake_sso', enabled_for_verified_actions: true }] }
+          AppConfiguration.instance.save!
+          permission.update!(require_verification: true, require_confirmed_email: false)
+        end
+
+        it 'leaves no missing authentication attributes at all - the SSO user is never prompted for a password' do
+          requirements = service.requirements(permission, sso_user)
+          # Why the list is empty:
+          # - :confirmation is dropped because require_confirmed_email is false
+          # - :first_name / :last_name / :email are provided by the SSO identity
+          # - :password is dropped by the SSO exception, despite require_password
+          # Nothing is left to ask, which is exactly why the require_password
+          # setting silently has no effect for SSO sign-ups. (Verification is a
+          # separate requirement key and is unaffected by this.)
+          expect(requirements[:authentication][:missing_user_attributes]).to be_empty
         end
       end
     end
@@ -680,17 +1107,17 @@ describe Permissions::UserRequirementsService do
     end
     let(:requirements_custom_fields) { service.requirements_custom_fields permission }
 
-    context 'when global_custom_fields is true' do
+    context "when custom_fields_behavior is 'global'" do
       it 'returns default fields' do
-        permission.update!(global_custom_fields: true)
+        permission.update!(custom_fields_behavior: 'global')
         expect(requirements_custom_fields.map(&:id)).to eq custom_fields.map(&:id)
         expect(requirements_custom_fields.map(&:required)).to eq [true, false, false]
       end
     end
 
-    context 'when global_custom_fields is false' do
+    context "when custom_fields_behavior is 'custom'" do
       it 'returns only the permissions fields' do
-        permission.update!(global_custom_fields: false)
+        permission.update!(custom_fields_behavior: 'custom')
         expect(requirements_custom_fields.map(&:id)).to eq custom_fields.take(2).map(&:id)
         expect(requirements_custom_fields.map(&:required)).to eq [false, true]
       end
@@ -698,7 +1125,7 @@ describe Permissions::UserRequirementsService do
 
     context 'when user fields are hidden' do
       it 'does not return hidden fields' do
-        permission.update!(global_custom_fields: false)
+        permission.update!(custom_fields_behavior: 'custom')
         hidden_field = custom_fields.first
         hidden_field.update!(hidden: true)
         expect(requirements_custom_fields.map(&:id)).to eq [custom_fields.second.id]

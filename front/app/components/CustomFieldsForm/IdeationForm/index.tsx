@@ -10,17 +10,14 @@ import useUpdateIdea from 'api/ideas/useUpdateIdea';
 import useAuthUser from 'api/me/useAuthUser';
 import { ParticipationMethod } from 'api/phases/types';
 import usePhase from 'api/phases/usePhase';
-import useProjectById from 'api/projects/useProjectById';
 
 import useLocale from 'hooks/useLocale';
 
-import { trackEventByName } from 'utils/analytics';
+import { customerAnalyticsEvents, trackEventByName } from 'utils/analytics';
 import { updateSearchParams } from 'utils/cl-router/updateSearchParams';
-import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
 import { weglotTranslateIdeaSubmission } from 'utils/weglot';
 
 import { FormValues } from '../Page/types';
-import tracks from '../tracks';
 import { convertCustomFieldsToNestedPages } from '../util';
 
 import IdeationPage from './IdeationPage';
@@ -44,7 +41,6 @@ const IdeationForm = ({
 
   const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
-  const { data: project } = useProjectById(projectId);
   const { data: phase } = usePhase(phaseId);
   const locale = useLocale();
 
@@ -52,10 +48,7 @@ const IdeationForm = ({
   const { mutateAsync: updateIdea } = useUpdateIdea();
   const { data: customFields } = useCustomFields({
     projectId,
-    phaseId:
-      participationMethod !== 'ideation' && participationMethod !== 'voting'
-        ? phaseId
-        : undefined,
+    phaseId,
     publicFields: true,
   });
 
@@ -98,22 +91,21 @@ const IdeationForm = ({
       };
 
       if (!idea) {
-        // If the user is an admin or project moderator, we allow them to post to a specific phase
-        const phase_ids =
-          project && phaseId && canModerateProject(project.data, authUser)
-            ? [phaseId]
-            : null;
-
         const idea = await addIdea({
-          ...translatedFormValues,
-          project_id: projectId,
-          phase_ids,
-          publication_status:
-            participationMethod === 'common_ground' ? 'published' : undefined,
-          weglot_data: weglotData,
+          phaseId: phase.data.id,
+          requestBody: {
+            ...translatedFormValues,
+            publication_status:
+              participationMethod === 'common_ground' ? 'published' : undefined,
+            weglot_data: weglotData,
+          },
         });
         updateSearchParams({ idea_id: idea.data.id });
-        trackEventByName(tracks.ideaFormSubmitted);
+        trackEventByName(customerAnalyticsEvents.ideaSubmitted, {
+          project_id: projectId,
+          phase_id: phase.data.id,
+          participation_method: participationMethod,
+        });
       } else {
         // Strip away idea_files_attributes from the form values
         // as they are handled via separate API calls
@@ -124,11 +116,16 @@ const IdeationForm = ({
           weglot_data: weglotData,
         };
         // Keep location_point_geojson consistent with location_description:
-        // if there is no description, force the geojson to null so a stale
-        // value from the idea's initial state can't ride through unchanged
-        // (e.g. when the location field is disabled in the form config and
-        // the LocationInput never mounts to clear it).
-        if (!requestBody.location_description) {
+        // null it when the user cleared the description, and also when the
+        // form config no longer contains an enabled location field. In that
+        // second case the LocationInput never mounts, but defaultValues
+        // spread all idea attributes (getInitialData), so the idea's old
+        // location_description sits in form state anyway and the idea would
+        // invisibly keep a location its form can no longer show or edit.
+        const formHasLocationField = customFields?.some(
+          (field) => field.key === 'location_description' && field.enabled
+        );
+        if (!requestBody.location_description || !formHasLocationField) {
           requestBody.location_point_geojson = null;
         }
         await updateIdea({

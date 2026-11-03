@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import { colors } from '@citizenlab/cl2-component-library';
 import {
@@ -7,7 +7,12 @@ import {
   Resolver,
 } from '@craftjs/core';
 
-import RenderNode from './RenderNode';
+import { ScopedDndContext } from 'components/admin/ResourceList/SortableList';
+
+// Only the builder renders nodes through RenderNode; previews use PlainDiv.
+// A static import would ship the builder's node chrome to citizen pages, which
+// render the same widgets in preview mode.
+const RenderNode = lazy(() => import('./RenderNode'));
 
 type EditorProps = {
   isPreview: boolean;
@@ -20,6 +25,12 @@ type EditorProps = {
 const PlainDiv = ({ render }) => {
   return <div>{render}</div>;
 };
+
+const LazyRenderNode = ({ render }: { render: React.ReactNode }) => (
+  <Suspense fallback={null}>
+    <RenderNode render={render} />
+  </Suspense>
+);
 
 const Editor: React.FC<EditorProps> = ({
   isPreview,
@@ -35,12 +46,14 @@ const Editor: React.FC<EditorProps> = ({
         error: 'red',
         transition: 'none',
       }}
-      onRender={isPreview ? PlainDiv : RenderNode}
+      onRender={isPreview ? PlainDiv : LazyRenderNode}
       onNodesChange={(data) => {
         onNodesChange && onNodesChange(data.getSerializedNodes());
       }}
     >
-      {children}
+      <ScopedDndContext.Provider value={!isPreview}>
+        {children}
+      </ScopedDndContext.Provider>
     </CraftEditor>
   );
 };

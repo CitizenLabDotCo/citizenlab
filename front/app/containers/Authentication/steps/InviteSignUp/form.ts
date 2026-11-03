@@ -3,7 +3,7 @@ import { string, object, boolean } from 'yup';
 
 import authProvidersMessages from 'containers/Authentication/steps/_components/AuthProviderButton/messages';
 
-import passwordInputMessages from 'components/UI/PasswordInput/messages';
+import { getPasswordSchema } from 'components/UI/PasswordInput/passwordSchema';
 
 import { isValidEmail } from 'utils/validate';
 
@@ -14,8 +14,7 @@ export interface FormValues {
   last_name: string;
   email: string;
   password: string;
-  termsAndConditionsAccepted: boolean;
-  privacyPolicyAccepted: boolean;
+  policiesAccepted: boolean;
 }
 
 export const DEFAULT_VALUES: Partial<FormValues> = {
@@ -23,8 +22,7 @@ export const DEFAULT_VALUES: Partial<FormValues> = {
   last_name: undefined,
   email: undefined,
   password: undefined,
-  termsAndConditionsAccepted: false,
-  privacyPolicyAccepted: false,
+  policiesAccepted: false,
 };
 
 const isTruthy = (value?: boolean) => !!value;
@@ -35,29 +33,16 @@ export const getEmailSchema = (formatMessage: FormatMessage) =>
     .email(formatMessage(sharedMessages.emailFormatError))
     .test('', formatMessage(sharedMessages.emailFormatError), isValidEmail);
 
-export const getPasswordSchema = (
-  minimumPasswordLength: number,
-  formatMessage: FormatMessage
-) =>
-  string()
-    .required(formatMessage(sharedMessages.noPasswordError))
-    .test(
-      '',
-      formatMessage(passwordInputMessages.minimumPasswordLengthError, {
-        minimumPasswordLength,
-      }),
-      (value) => !!(value && value.length >= minimumPasswordLength)
-    );
-
 export const getSchema = (
   minimumPasswordLength: number,
-  formatMessage: FormatMessage
+  formatMessage: FormatMessage,
+  minimumStrength?: number
 ) => {
   const emailSchema = getEmailSchema(formatMessage);
-  const passwordSchema = getPasswordSchema(
+  const passwordSchema = getPasswordSchema(formatMessage, {
     minimumPasswordLength,
-    formatMessage
-  );
+    minimumStrength,
+  });
 
   const schema = object({
     first_name: string().required(
@@ -68,13 +53,10 @@ export const getSchema = (
     ),
     email: emailSchema,
     password: passwordSchema,
-    termsAndConditionsAccepted: boolean()
-      .test('', formatMessage(authProvidersMessages.tacError), isTruthy)
-      .required(),
-    privacyPolicyAccepted: boolean()
+    policiesAccepted: boolean()
       .test(
         '',
-        formatMessage(authProvidersMessages.privacyPolicyNotAcceptedError),
+        formatMessage(authProvidersMessages.policiesNotAcceptedError),
         isTruthy
       )
       .required(),

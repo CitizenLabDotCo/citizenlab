@@ -20,10 +20,10 @@ const mockPreCheck = jest.fn(
 );
 
 jest.mock('api/analysis_summaries/useAddAnalysisSummary', () =>
-  jest.fn(() => ({ mutate: mockAddSummary, isLoading: false }))
+  jest.fn(() => ({ mutate: mockAddSummary, isPending: false }))
 );
 jest.mock('api/analysis_summary_pre_check/useAddAnalysisSummaryPreCheck', () =>
-  jest.fn(() => ({ mutate: mockPreCheck, isLoading: false }))
+  jest.fn(() => ({ mutate: mockPreCheck, isPending: false }))
 );
 jest.mock('hooks/useFeatureFlag', () => jest.fn(() => false));
 jest.mock('utils/router', () => ({

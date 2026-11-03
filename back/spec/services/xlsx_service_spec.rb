@@ -33,13 +33,10 @@ describe XlsxService do
       select_option = create(:custom_field_option, custom_field: custom_select, title_multiloc: { 'en' => 'Option 1' })
       multiselect_option = create(:custom_field_option, custom_field: custom_multiselect, title_multiloc: { 'en' => 'Option 2' })
       area = create(:area, title_multiloc: { 'en' => 'Center' })
-      users.first.update!(
-        custom_field_values: {
-          'domicile' => area.id,
-          custom_select.key => select_option.key,
-          custom_multiselect.key => [multiselect_option.key]
-        }
-      )
+      create(:custom_field_answer, answerable: users.first, key: 'domicile', value: area.id)
+      create(:custom_field_answer, answerable: users.first, key: custom_select.key, value: select_option.key)
+      create(:custom_field_answer, answerable: users.first, key: custom_multiselect.key, value: [multiselect_option.key])
+      users.first.custom_field_answers.reset
 
       custom_fields_headers = %w[domicile Select Multiselect]
       title_row = worksheet[0].cells.map(&:value)
@@ -60,6 +57,53 @@ describe XlsxService do
       ).to eq ['Center', 'Option 1', 'Option 2']
     end
 
+    describe 'sso_methods and verifications columns' do
+      let(:id_methods) { [] }
+      let(:title_row) { worksheet[0].cells.map(&:value) }
+
+      before do
+        configuration = AppConfiguration.instance
+        configuration.settings['id_config'] = { allowed: true, enabled: true, id_methods: id_methods }
+        configuration.save!
+      end
+
+      context 'when both sso and verification methods are configured' do
+        let(:id_methods) { [{ name: 'google' }, { name: 'cow' }] }
+
+        it 'lists the methods of every user, deduped and sorted alphabetically' do
+          user = users.first
+          create(:identity, user: user, provider: 'google')
+          create(:identity, user: user, provider: 'facebook')
+          create(:identity, user: user, provider: 'google')
+          create(:verification, user: user, method_name: 'id_card_lookup')
+          create(:verification, user: user, method_name: 'cow')
+          create(:verification, user: user, method_name: 'bogus', active: false)
+
+          sso_index = title_row.find_index 'sso_methods'
+          verifications_index = title_row.find_index 'verifications'
+          user_row = worksheet.map { |row| row.cells.map(&:value) }.find { |values| values.include? user.id }
+
+          expect([user_row[sso_index], user_row[verifications_index]]).to eq ['facebook, google', 'cow, id_card_lookup']
+        end
+      end
+
+      context 'when only verification methods are configured' do
+        let(:id_methods) { [{ name: 'cow' }] }
+
+        it 'omits the sso_methods column' do
+          expect(title_row).not_to include 'sso_methods'
+          expect(title_row).to include 'verifications'
+        end
+      end
+
+      context 'when no id methods are configured' do
+        it 'omits both columns' do
+          expect(title_row).not_to include 'sso_methods'
+          expect(title_row).not_to include 'verifications'
+        end
+      end
+    end
+
     it 'includes hidden custom fields' do
       create(:custom_field, hidden: true, title_multiloc: { 'en' => 'Hidden field' })
       headers = worksheet[0].cells.map(&:value)
@@ -73,12 +117,8 @@ describe XlsxService do
       option1 = create(:custom_field_option, custom_field: select1, title_multiloc: { 'en' => 'Option 1' })
       option2 = create(:custom_field_option, custom_field: select2, title_multiloc: { 'en' => 'Option 2' })
 
-      users.first.update!(
-        custom_field_values: {
-          select1.key => option1.key,
-          select2.key => option2.key
-        }
-      )
+      create(:custom_field_answer, answerable: users.first, key: select1.key, value: option1.key)
+      create(:custom_field_answer, answerable: users.first, key: select2.key, value: option2.key)
 
       title_row = worksheet[0].cells.map(&:value)
       expect(title_row).to include('gender (1)', 'gender (2)')

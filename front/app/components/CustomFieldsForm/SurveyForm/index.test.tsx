@@ -1,6 +1,9 @@
 import React from 'react';
 
+import { trackEventByName } from 'utils/analytics';
 import { render, screen, userEvent, waitFor } from 'utils/testUtils/rtl';
+
+import { SEARCHABLE_OPTION_COUNT } from '../constants';
 
 import SurveyForm from './index';
 
@@ -34,10 +37,28 @@ const mockUpdateIdea = jest.fn();
 // Anonymous user (permitted_by: 'everyone' flow)
 jest.mock('api/me/useAuthUser', () => () => ({ data: undefined }));
 
+jest.mock('utils/analytics', () => ({
+  ...jest.requireActual('utils/analytics'),
+  trackEventByName: jest.fn(),
+}));
+
 // No server-side draft for anonymous users — intermediate page submits no-op
+let mockDraftIdeaQuery: {
+  data?: { data: { id?: string } };
+  isLoading: boolean;
+  isSuccess: boolean;
+  isPlaceholderData: boolean;
+  dataUpdatedAt: number;
+} = {
+  data: undefined,
+  isLoading: false,
+  isSuccess: true,
+  isPlaceholderData: false,
+  dataUpdatedAt: 1,
+};
 jest.mock('api/ideas/useDraftIdeaByPhaseId', () => ({
   __esModule: true,
-  default: () => ({ data: undefined, isLoading: false }),
+  default: () => mockDraftIdeaQuery,
   clearDraftIdea: () => undefined,
 }));
 
@@ -147,9 +168,16 @@ const customFields = [
   },
 ];
 
-jest.mock('api/custom_fields/useCustomFields', () => () => ({
-  data: customFields,
-}));
+let mockCustomFieldsQuery: { data?: typeof customFields; isLoading: boolean } =
+  {
+    data: customFields,
+    isLoading: false,
+  };
+
+jest.mock(
+  'api/custom_fields/useCustomFields',
+  () => () => mockCustomFieldsQuery
+);
 
 jest.mock('utils/router', () => ({
   useLocation: () => ({ pathname: '/projects/my-project/survey' }),
@@ -180,6 +208,24 @@ describe('SurveyForm — anonymous multi-page persistence', () => {
   beforeEach(() => {
     mockAddIdea.mockClear();
     mockUpdateIdea.mockClear();
+    mockCustomFieldsQuery = { data: customFields, isLoading: false };
+  });
+
+  // A select question carries its options in the custom_fields response, so a
+  // question with thousands of them leaves the form blank for seconds.
+  it('shows a spinner while the questions are still loading', () => {
+    mockCustomFieldsQuery = { data: undefined, isLoading: true };
+
+    render(
+      <SurveyForm
+        projectId="project-1"
+        phaseId="phase-1"
+        participationMethod="native_survey"
+      />
+    );
+
+    expect(screen.getByTestId('spinner')).toBeInTheDocument();
+    expect(screen.queryByText(/Question One/i)).not.toBeInTheDocument();
   });
 
   // Regression test for the bug introduced by adding `key={currentPageIndex}`
@@ -228,9 +274,189 @@ describe('SurveyForm — anonymous multi-page persistence', () => {
     // page-1 form state was destroyed by the page-transition remount.
     expect(mockAddIdea).toHaveBeenCalledWith(
       expect.objectContaining({
-        question_one: 'page-1-answer',
-        question_two: 'page-2-answer',
+        phaseId: 'phase-1',
+        requestBody: expect.objectContaining({
+          question_one: 'page-1-answer',
+          question_two: 'page-2-answer',
+        }),
       })
+    );
+  });
+
+  const renderWithDropdown = (inputType: string) => {
+    mockCustomFieldsQuery = {
+      data: [
+        customFields[0],
+        {
+          ...customFields[1],
+          input_type: inputType,
+          required: false,
+          dropdown_layout: true,
+          options: Array.from(
+            { length: SEARCHABLE_OPTION_COUNT },
+            (_, index) => ({
+              id: `option-${index}`,
+              key: `option_${index + 1}`,
+              title_multiloc: { en: `Option ${index + 1}` },
+            })
+          ),
+        },
+        ...customFields.slice(2),
+      ] as typeof customFields,
+      isLoading: false,
+    };
+
+    render(
+      <SurveyForm
+        projectId="project-1"
+        phaseId="phase-1"
+        participationMethod="native_survey"
+      />
+    );
+  };
+
+  // A dropdown's search box is a text input, and the form submits the page on
+  // Enter in a text input. Enter has to reach the dropdown only.
+  it.each(['select', 'multiselect'])(
+    'does not advance the page when Enter picks an option in a %s dropdown',
+    async (inputType) => {
+      const user = userEvent.setup();
+      renderWithDropdown(inputType);
+
+      await user.click(screen.getByRole('combobox'));
+      await user.keyboard('{Enter}');
+
+      expect(screen.getByRole('combobox')).toBeInTheDocument();
+      expect(screen.queryByText(/Question Two/i)).not.toBeInTheDocument();
+    }
+  );
+
+  // A search that matches nothing leaves the dropdown with no option to pick,
+  // so it does nothing with the Enter it is given.
+  it.each(['select', 'multiselect'])(
+    'does not advance the page when a %s dropdown search matches nothing',
+    async (inputType) => {
+      const user = userEvent.setup();
+      renderWithDropdown(inputType);
+
+      await user.click(screen.getByRole('combobox'));
+      await user.keyboard('no such option{Enter}');
+
+      expect(screen.getByRole('combobox')).toBeInTheDocument();
+      expect(screen.queryByText(/Question Two/i)).not.toBeInTheDocument();
+    }
+  );
+
+  // The yup resolver leaves out keys whose value is undefined, so an answer the
+  // user cleared is missing from what handleSubmit hands to onSubmit. Merging
+  // that into the values accumulated so far brings the old answer back.
+  it('keeps an answer cleared after leaving the page and coming back', async () => {
+    const user = userEvent.setup();
+    mockCustomFieldsQuery = {
+      data: [
+        customFields[0],
+        {
+          ...customFields[1],
+          input_type: 'linear_scale',
+          required: false,
+          maximum: 5,
+        },
+        ...customFields.slice(2),
+      ] as typeof customFields,
+      isLoading: false,
+    };
+
+    render(
+      <SurveyForm
+        projectId="project-1"
+        phaseId="phase-1"
+        participationMethod="native_survey"
+      />
+    );
+
+    // Answer, then leave the page and come back, so that the answer is part of
+    // the values the form carries between pages.
+    await user.click(await screen.findByRole('radio', { name: '3' }));
+    await user.click(screen.getByRole('button', { name: /next/i }));
+    await user.click(await screen.findByRole('button', { name: /previous/i }));
+    expect(await screen.findByRole('radio', { name: '3' })).toHaveAttribute(
+      'aria-checked',
+      'true'
+    );
+
+    // Clear the answer and make the same round trip.
+    await user.click(screen.getByRole('radio', { name: '3' }));
+    await user.click(screen.getByRole('button', { name: /next/i }));
+    await user.click(await screen.findByRole('button', { name: /previous/i }));
+
+    expect(await screen.findByRole('radio', { name: '3' })).toHaveAttribute(
+      'aria-checked',
+      'false'
+    );
+  });
+});
+
+describe('SurveyForm — survey_started', () => {
+  beforeEach(() => {
+    jest.mocked(trackEventByName).mockClear();
+    mockCustomFieldsQuery = { data: customFields, isLoading: false };
+  });
+
+  it('tracks the start once, even when the draft refetches', () => {
+    mockDraftIdeaQuery = {
+      data: { data: {} },
+      isLoading: false,
+      isSuccess: true,
+      isPlaceholderData: false,
+      dataUpdatedAt: 1,
+    };
+
+    const { rerender } = render(
+      <SurveyForm
+        projectId="project-1"
+        phaseId="phase-1"
+        participationMethod="native_survey"
+      />
+    );
+
+    mockDraftIdeaQuery = { ...mockDraftIdeaQuery, dataUpdatedAt: 2 };
+    rerender(
+      <SurveyForm
+        projectId="project-1"
+        phaseId="phase-1"
+        participationMethod="native_survey"
+      />
+    );
+
+    expect(trackEventByName).toHaveBeenCalledTimes(1);
+    expect(trackEventByName).toHaveBeenCalledWith('survey_started', {
+      project_id: 'project-1',
+      phase_id: 'phase-1',
+      participation_method: 'native_survey',
+      resumed: false,
+    });
+  });
+
+  it('marks the start as resumed when a saved draft exists', () => {
+    mockDraftIdeaQuery = {
+      data: { data: { id: 'draft-1' } },
+      isLoading: false,
+      isSuccess: true,
+      isPlaceholderData: false,
+      dataUpdatedAt: 1,
+    };
+
+    render(
+      <SurveyForm
+        projectId="project-1"
+        phaseId="phase-1"
+        participationMethod="native_survey"
+      />
+    );
+
+    expect(trackEventByName).toHaveBeenCalledWith(
+      'survey_started',
+      expect.objectContaining({ resumed: true })
     );
   });
 });

@@ -2,7 +2,7 @@ import { randomString, randomEmail } from '../../../support/commands';
 import {
   updatePermission,
   confirmUserCustomFieldHasValue,
-  addPermissionsCustomField,
+  askOnlyDemographicQuestion,
   setupProject,
 } from '../../../support/permitted_by_utils';
 
@@ -38,7 +38,7 @@ describe('Native survey permitted by: everyone', () => {
             user_data_collection: 'all_data',
           }).then(() => {
             // Add one permissions custom field
-            return addPermissionsCustomField({
+            return askOnlyDemographicQuestion({
               adminJwt,
               phaseId,
               customFieldId,
@@ -86,7 +86,7 @@ describe('Native survey permitted by: everyone', () => {
       cy.get('form').find('input').first().type(answer);
 
       // Intercept submit request
-      cy.intercept('POST', '/web_api/v1/ideas').as('submitSurvey');
+      cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitSurvey');
 
       // Submit survey
       cy.dataCy('e2e-submit-form').click();

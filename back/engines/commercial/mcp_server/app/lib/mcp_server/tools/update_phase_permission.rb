@@ -15,9 +15,11 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
 
   def description
     <<~DESC.squish
-      Updates a phase permission (auto-created with the phase). Sets who can perform an action,
-      with optional group restrictions, demographic-question requirements, verification recency,
-      and a custom rejection message.
+      Updates a phase permission. Sets who can perform an action, with optional group
+      restrictions, demographic-question requirements, verification recency, and a custom
+      rejection message. An action the phase has not customised yet follows the platform-wide
+      sign-in settings (inherited: true in list_phase_permissions); updating it gives the phase
+      settings of its own, starting from the ones it was inheriting.
     DESC
   end
 
@@ -35,11 +37,32 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
           enum: Permission::PERMITTED_BIES.sort,
           description: <<~DESC
             - everyone: anyone, no sign-in or email needed.
-            - everyone_confirmed_email: must confirm an email address (no account required).
-            - users: must have an account (default).
-            - verified: must have completed identity verification. Requires a verification method to be configured.
-            - admins_moderators: project admins/moderators only. When set, group_ids, demographic_questions, and verification_expiry have no effect.
+            - users: must have an account (default). Combine with require_name, require_password,
+              require_confirmed_email, require_verification and require_confirmed_phone_number to
+              fine-tune what an account needs.
+            - admins_moderators: project admins/moderators only. When set, group_ids,
+              demographic_questions, and the require_* flags have no effect.
           DESC
+        },
+        require_name: {
+          type: 'boolean',
+          description: 'Whether the participant must provide a first and last name. Only applies when permitted_by is "users". Defaults to true.'
+        },
+        require_password: {
+          type: 'boolean',
+          description: 'Whether the participant must set a password. Only applies when permitted_by is "users". Defaults to true.'
+        },
+        require_confirmed_email: {
+          type: 'boolean',
+          description: 'Whether the participant must confirm their email address. Only applies when permitted_by is "users". Requires the password_login feature (with signup) to be enabled. Defaults to true.'
+        },
+        confirmed_email_expiry: {
+          type: %w[integer null],
+          description: 'Number of days before email reconfirmation is required; null means never reconfirm.'
+        },
+        require_verification: {
+          type: 'boolean',
+          description: 'Whether the participant must complete identity verification. Only applies when permitted_by is "users". Requires a verification method to be configured. Defaults to false.'
         },
         group_ids: {
           type: 'array',
@@ -72,16 +95,30 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
           type: %w[integer null],
           enum: [nil, 0, 7, 30],
           description: <<~DESC
-            Only used when permitted_by is "verified". How recent verification must be:
+            Only used when require_verification is true. How recent verification must be:
             - null: verify once, never expires
             - 0: re-verify if older than 30 minutes
             - 7: within last 7 days
             - 30: within last 30 days
           DESC
         },
+        require_confirmed_phone_number: {
+          type: 'boolean',
+          description: 'Whether the participant must confirm a phone number by SMS. Only applies when permitted_by is "users". Requires the sms feature to be enabled. Defaults to false.'
+        },
+        confirmed_phone_number_expiry: {
+          type: %w[integer null],
+          description: 'Number of days before phone-number reconfirmation is required; null means never reconfirm. Only used when require_confirmed_phone_number is true.'
+        },
         access_denied_explanation_multiloc: {
           **multiloc_schema,
-          description: 'Custom message shown to denied users (e.g. "You must be 18 or older to vote").'
+          type: %w[object null],
+          description: <<~DESC.squish
+            Custom message shown to denied users (e.g. "You must be 18 or older to vote").
+            Merged per locale: locales in the payload are overwritten, absent locales
+            keep their current value. Pass null to remove the custom message
+            (participants then see the default explanation).
+          DESC
         }
       },
       required: %w[phase_id action permitted_by]
@@ -95,20 +132,36 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
 
       authorize_project!(phase.project)
 
-      permission = phase.permissions.find_by(action: params[:action])
+      # Resolves to the row the phase owns or, for an action it has not
+      # customised, to the copy of the global 'visiting' permission it follows.
+      # See Permissions::PermissionInheritanceService.
+      permission = inheritance_service.find(phase, params[:action])
       return invalid_action_response(phase, params[:action]) unless permission
 
       authorize(permission, :update?)
 
-      attributes = {
-        permitted_by: params[:permitted_by],
-        group_ids: params[:group_ids],
-        verification_expiry: params[:verification_expiry],
-        access_denied_explanation_multiloc: params[:access_denied_explanation_multiloc]
-      }.compact
+      # slice keeps explicit nulls
+      # (an absent key leaves the field unchanged)
+      attributes = params.slice(
+        :permitted_by,
+        :group_ids,
+        :require_name,
+        :require_password,
+        :require_confirmed_email,
+        :confirmed_email_expiry,
+        :require_verification,
+        :verification_expiry,
+        :require_confirmed_phone_number,
+        :confirmed_phone_number_expiry,
+        :access_denied_explanation_multiloc
+      )
 
       ActiveRecord::Base.transaction do
-        permission.update!(attributes)
+        # Customising an action means detaching it from the global 'visiting'
+        # permission first: a no-op once the phase owns the action. Inside the
+        # transaction so that a rejected update leaves no override behind.
+        permission = inheritance_service.override!(phase, params[:action])
+        permission.update!(merge_multilocs(permission, attributes))
         replace_demographic_questions(permission, params[:demographic_questions]) if params.key?(:demographic_questions)
       end
 
@@ -122,6 +175,10 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
 
     private
 
+    def inheritance_service
+      @inheritance_service ||= Permissions::PermissionInheritanceService.new
+    end
+
     def invalid_action_response(phase, action)
       valid_actions = Permission.available_actions(phase) || []
       error(
@@ -130,7 +187,7 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
       )
     end
 
-    # Sets global_custom_fields and the permissions_custom_fields rows on the permission.
+    # Sets custom_fields_behavior and the permissions_custom_fields rows on the permission.
     # Three cases:
     #
     # - nil: reset to tenant defaults (all enabled user fields)
@@ -141,7 +198,7 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
     # approach, but much simpler, and recreating gives us correct ordering for free
     # (acts_as_list assigns position on insert).
     def replace_demographic_questions(permission, demographic_questions)
-      permission.update!(global_custom_fields: demographic_questions.nil?)
+      permission.update!(custom_fields_behavior: behavior_for(demographic_questions))
       permission.permissions_custom_fields.destroy_all
 
       demographic_questions.to_a.each do |entry|
@@ -150,6 +207,12 @@ class McpServer::Tools::UpdatePhasePermission < McpServer::BaseTool
           required: entry.fetch(:required, true)
         )
       end
+    end
+
+    def behavior_for(demographic_questions)
+      return 'global' if demographic_questions.nil?
+
+      demographic_questions.empty? ? 'disabled' : 'custom'
     end
   end
 end

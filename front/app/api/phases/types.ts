@@ -1,6 +1,6 @@
-import { IRelationship, Multiloc } from 'typings';
+import { CLErrorsWrapper, IRelationship, Multiloc } from 'typings';
 
-import { UserDataCollection } from 'api/phase_permissions/types';
+import { UserDataCollection } from 'api/permissions/types';
 import { PhaseActionDescriptors } from 'api/projects/types';
 
 import { Keys } from 'utils/cl-react-query/types';
@@ -36,6 +36,7 @@ export interface IPhaseData {
 
 export interface IPhaseAttributes {
   voting_filtering_enabled: boolean;
+  placement_type: PhasePlacementType;
   title_multiloc: Multiloc;
   description_multiloc: Multiloc;
   draft_description_multiloc: Multiloc;
@@ -79,11 +80,20 @@ export interface IPhaseAttributes {
   report_public: boolean;
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
+  allow_multiple_responses?: boolean;
   prescreening_mode?: PrescreeningMode;
+  /** The prescreening_mode reduced to what the platform's feature flags permit. A phase
+   * can carry a prescreening_mode on a platform without the screening feature (tenant
+   * templates and project copies bring the value across), in which case the back end
+   * ignores it and this is null. Use this, not prescreening_mode, to decide whether
+   * screening is in effect. */
+  effective_prescreening_mode?: PrescreeningMode | null;
   manual_voters_amount?: number;
   similarity_enabled?: boolean;
   similarity_threshold_title?: number | null;
   similarity_threshold_body?: number | null;
+  supports_form_logic: boolean;
+  supports_public_visibility: boolean;
   user_data_collection: UserDataCollection;
   user_fields_in_form_enabled: boolean;
   action_descriptors: PhaseActionDescriptors;
@@ -99,6 +109,7 @@ export interface IPhase {
 
 export interface IUpdatedPhaseProperties {
   project_id?: string;
+  placement_type?: PhasePlacementType;
   title_multiloc?: Multiloc;
   description_multiloc?: Multiloc;
   draft_description_multiloc?: Multiloc;
@@ -133,6 +144,7 @@ export interface IUpdatedPhaseProperties {
   document_annotation_embed_url?: string | null;
   native_survey_title_multiloc?: Multiloc;
   native_survey_button_multiloc?: Multiloc;
+  allow_multiple_responses?: boolean;
   prescreening_mode?: PrescreeningMode | null;
   allow_anonymous_participation?: boolean;
   expire_days_limit?: number;
@@ -148,6 +160,11 @@ export interface AddPhaseObject extends IUpdatedPhaseProperties {
 
 export interface UpdatePhaseObject extends IUpdatedPhaseProperties {
   phaseId: string;
+  timeline_phase_dates?: {
+    id: string;
+    start_at?: string;
+    end_at?: string | null;
+  }[];
 }
 
 export type TSurveyService =
@@ -161,18 +178,25 @@ export type TSurveyService =
   | 'microsoft_forms'
   | 'snap_survey';
 
-export type ParticipationMethod =
-  | 'ideation'
-  | 'common_ground'
-  | 'information'
-  | 'native_survey'
-  | 'community_monitor_survey'
-  | 'survey'
-  | 'voting'
-  | 'poll'
-  | 'volunteering'
-  | 'document_annotation'
-  | 'proposals';
+export const participationMethods = [
+  'ideation',
+  'common_ground',
+  'information',
+  'native_survey',
+  'community_monitor_survey',
+  'survey',
+  'voting',
+  'poll',
+  'volunteering',
+  'document_annotation',
+  'proposals',
+] as const;
+
+export type ParticipationMethod = (typeof participationMethods)[number];
+
+export type PhasePlacementType = 'on_timeline' | 'standalone';
+
+export type PhasePlacementFilter = PhasePlacementType | 'all';
 
 export type VotingMethod = 'budgeting' | 'multiple_voting' | 'single_voting';
 
@@ -185,6 +209,7 @@ export const ideaSortMethods = [
   'popular',
   'new',
   '-new',
+  'status_priority',
 ] as const;
 
 export type IdeaSortMethod = (typeof ideaSortMethods)[number];
@@ -211,3 +236,7 @@ export const presentationModes = ['card', 'map', 'feed'] as const;
 export type PresentationMode = (typeof presentationModes)[number];
 
 export type PrescreeningMode = 'flagged_only' | 'all';
+
+export interface PhaseUpdateError extends CLErrorsWrapper {
+  meta?: { phase_id: string };
+}

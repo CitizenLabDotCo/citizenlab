@@ -19,6 +19,23 @@ resource 'Comments' do
     end
     parameter :sort, 'Either new, -new, likes_count or -likes_count. Defaults to -new. Only applies to the top-level comments, children are always returned chronologically.'
 
+    describe 'answers of the authors' do
+      before do
+        admin_header_token
+        create_list(:comment, 3, idea: @idea).each do |comment|
+          field = create(:custom_field, :for_registration)
+          create(:custom_field_answer, answerable: comment.author, custom_field: field, key: field.key)
+        end
+      end
+
+      let(:idea_id) { @idea.id }
+
+      example 'preloads the answers and their fields', document: false do
+        expect { do_request }.not_to exceed_query_limit(2).with(/FROM "custom_field_answers"/)
+        expect { do_request }.not_to exceed_query_limit(2).with(/FROM "custom_fields"/)
+      end
+    end
+
     describe 'default sorting' do
       before do
         @c1 = create(:comment, idea: @idea)

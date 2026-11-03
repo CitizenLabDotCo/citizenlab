@@ -35,14 +35,27 @@ class UserPolicy < ApplicationPolicy
     active_admin?
   end
 
+  def intercom_token?
+    active? &&
+      UserRoleService.new.moderates_something?(user) &&
+      AppConfiguration.instance.feature_activated?('intercom') &&
+      IntercomMessengerTokenService.new.configured?
+  end
+
   def index_xlsx?
     active_admin?
   end
 
   def create?
-    app_config = AppConfiguration.instance
-    allow_signup = app_config.feature_activated?('password_login') && app_config.settings('password_login', 'enable_signup')
-    allow_signup || active_admin?
+    AppConfiguration.instance.feature_activated?('password_login') || active_admin?
+  end
+
+  # Signing up with a phone number is part of the password_login (i.e. non-SSO)
+  # flow, and additionally needs the sms feature to send the confirmation code.
+  def create_phone?
+    return false if user.nil? && !AppConfiguration.instance.feature_activated?('sms_login')
+
+    AppConfiguration.instance.feature_activated?('sms') && create?
   end
 
   def show?
@@ -53,8 +66,17 @@ class UserPolicy < ApplicationPolicy
     record&.invite_pending?
   end
 
-  def check?
+  def check_email?
     true
+  end
+
+  # Unlike check_email, which stays available to super admins when password_login
+  # is off, there is no phone equivalent of the super admin escape hatch.
+  def check_phone?
+    app_config = AppConfiguration.instance
+    return false if user.nil? && !app_config.feature_activated?('sms_login')
+
+    app_config.feature_activated?('sms') && app_config.feature_activated?('password_login')
   end
 
   def update?
@@ -74,6 +96,10 @@ class UserPolicy < ApplicationPolicy
   end
 
   def blocked_count?
+    index?
+  end
+
+  def email_bounced_count?
     index?
   end
 
@@ -107,14 +133,23 @@ class UserPolicy < ApplicationPolicy
     !!((user && (instance&.id == user.id || user.admin?)) || instance&.invite_pending?)
   end
 
+  def own_early_access?
+    !!user && admin? && record.id == user.id
+  end
+
   def permitted_attributes_for_create
     %i[email locale]
+  end
+
+  def permitted_attributes_for_create_phone
+    %i[phone locale]
   end
 
   def permitted_attributes_for_update
     # avatar is allowed even if the feature "user_avatars" is not activated to allow
     # users to remove their avatar.
     shared = [:first_name, :last_name, :password, :avatar, :locale, { onboarding: [:topics_and_areas], custom_field_values: allowed_custom_field_keys, bio_multiloc: CL2_SUPPORTED_LOCALES }]
+    shared += [{ early_access_opt_ins: [] }] if own_early_access?
     attributes = admin? ? shared + [roles: %i[type project_id project_folder_id project_reviewer]] : shared
     attributes - verification_service.locked_attributes(record) # locked attributes cannot be updated
   end

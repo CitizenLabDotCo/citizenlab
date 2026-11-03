@@ -27,9 +27,7 @@ export const contentBuilderlayoutPath = (
   contentBuildableType: ContentBuildableType,
   contentBuildableId: string
 ) => {
-  if (contentBuildableType === 'project') {
-    return `/projects/${contentBuildableId}/content_builder_layouts/project_description`;
-  } else if (contentBuildableType === 'folder') {
+  if (contentBuildableType === 'folder') {
     return `/project_folders/${contentBuildableId}/content_builder_layouts/project_folder_description`;
   } else {
     // Return homepage layout by default

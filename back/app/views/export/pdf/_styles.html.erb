@@ -78,7 +78,6 @@
     border-radius: 6px;
     overflow: hidden;
     margin-bottom: 14px;
-    page-break-inside: avoid;
   }
   .card-header {
     background: <%= colors[:primary] %>;
@@ -87,6 +86,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    /* Keep the header attached to the card's first question. */
+    page-break-after: avoid;
   }
   .card-header-label {
     font-size: 9px;
@@ -96,7 +97,9 @@
   }
   .card-header-date { font-size: 8px; color: <%= colors[:on_primary_muted] %>; }
   .card-body { padding: 10px 12px; }
-  .qa { margin-bottom: 8px; }
+  /* Cards flow across pages (avoiding splits leaves big blank gaps); only
+     keep each question/answer pair together. */
+  .qa { margin-bottom: 8px; page-break-inside: avoid; }
   .qa:last-child { margin-bottom: 0; }
   .qa-question {
     background: <%= colors[:primary_tint] %>;

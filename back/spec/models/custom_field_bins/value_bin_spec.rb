@@ -37,38 +37,6 @@ RSpec.describe CustomFieldBins::ValueBin do
     end
   end
 
-  describe '#filter_by_bin' do
-    let(:scope) { Idea.all }
-
-    context 'with a custom field of type checkbox' do
-      let(:bin) { create(:value_bin, custom_field: create(:custom_field_checkbox), values: [true]) }
-
-      it 'filters the scope by the bin values' do
-        idea1 = create(:idea, custom_field_values: { bin.custom_field.key => true })
-        idea2 = create(:idea, custom_field_values: { bin.custom_field.key => false })
-
-        filtered_scope = bin.filter_by_bin(scope)
-
-        expect(filtered_scope).to include(idea1)
-        expect(filtered_scope).not_to include(idea2)
-      end
-    end
-
-    context 'with a custom field of type linear_scale' do
-      let(:bin) { create(:value_bin, custom_field: create(:custom_field_linear_scale), values: [1]) }
-
-      it 'filters the scope by the bin values' do
-        idea1 = create(:idea, custom_field_values: { bin.custom_field.key => 1 })
-        idea2 = create(:idea, custom_field_values: { bin.custom_field.key => 2 })
-
-        filtered_scope = bin.filter_by_bin(scope)
-
-        expect(filtered_scope).to include(idea1)
-        expect(filtered_scope).not_to include(idea2)
-      end
-    end
-  end
-
   describe '#generate_bins' do
     let(:custom_field) { create(:custom_field_linear_scale) }
 

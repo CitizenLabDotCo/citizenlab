@@ -38,7 +38,7 @@ module CustomIdMethods::FakeSso
     end
 
     def locked_custom_fields
-      %i[gender birthyear]
+      %i[gender birthyear postal_code]
     end
 
     def other_custom_fields

@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -21,10 +21,17 @@ const fetchInfiniteIdeas = (queryParameters: IIdeaQueryParameters) =>
   });
 
 const useInfiniteIdeas = (queryParams: IIdeaQueryParameters) => {
-  return useInfiniteQuery<IIdeas, CLErrors, IIdeas, IdeasKeys>({
+  return useInfiniteQuery<
+    IIdeas,
+    CLErrors,
+    InfiniteData<IIdeas>,
+    IdeasKeys,
+    number
+  >({
     queryKey: ideasKeys.list(queryParams),
     queryFn: ({ pageParam }) =>
       fetchInfiniteIdeas({ ...queryParams, 'page[number]': pageParam }),
+    initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

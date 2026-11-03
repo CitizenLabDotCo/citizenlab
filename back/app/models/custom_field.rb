@@ -44,6 +44,8 @@
 #  include_in_printed_form        :boolean          default(TRUE), not null
 #  min_characters                 :integer
 #  max_characters                 :integer
+#  answers_visible_to             :string           default("moderators"), not null
+#  show_as_filter                 :boolean          default(FALSE), not null
 #
 # Indexes
 #
@@ -53,13 +55,14 @@
 #
 class CustomField < ApplicationRecord
   include BulkReorderable
+  include PlainTextMultiloc
 
   delegate :page?, :supports_submission?, :supports_average?, :supports_options?, :supports_other_option?, :supports_option_images?,
     :supports_follow_up?, :supports_text?, :supports_linear_scale?, :supports_linear_scale_labels?, :supports_matrix_statements?,
     :supports_single_selection?, :supports_multiple_selection?, :supports_selection?, :supports_select_count?, :supports_dropdown_layout?,
     :supports_free_text_value?, :supports_xlsx_export?, :supports_geojson?,
     :supports_printing?, :supports_pdf_import?, :supports_xlsx_import?,
-    :supports_reference_distribution?, :supports_file_upload?, :supports_logic?, to: :input_type_strategy
+    :supports_reference_distribution?, :supports_file_upload?, :supports_logic?, :supports_answer_facet?, to: :input_type_strategy
 
   acts_as_list column: :ordering, top_of_list: 0, scope: %i[resource_type resource_id], sequential_updates: true
   bulk_reorderable constraint_name: :custom_fields_resource_id_ordering_unique
@@ -122,8 +125,26 @@ class CustomField < ApplicationRecord
   validates :max_characters, comparison: { greater_than: 0 }, if: :supports_text?, allow_nil: true
   validate :max_characters_greater_than_min_characters, if: :supports_text?
   validate :maximum_select_count_greater_than_or_equal_to_minimum, if: :select_count_enabled_and_supported?
+  validate :validate_answers_visible_to
+  validate :validate_show_as_filter
+
+  enum :answers_visible_to, { public: 'public', moderators: 'moderators' }, prefix: true, validate: true
 
   before_validation :set_default_enabled
+  # Declared ahead of `generate_key`, which builds the key from the first title value.
+  plain_text_multiloc :title_multiloc,
+    :page_button_label_multiloc,
+    :linear_scale_label_1_multiloc,
+    :linear_scale_label_2_multiloc,
+    :linear_scale_label_3_multiloc,
+    :linear_scale_label_4_multiloc,
+    :linear_scale_label_5_multiloc,
+    :linear_scale_label_6_multiloc,
+    :linear_scale_label_7_multiloc,
+    :linear_scale_label_8_multiloc,
+    :linear_scale_label_9_multiloc,
+    :linear_scale_label_10_multiloc,
+    :linear_scale_label_11_multiloc
   before_validation :generate_key, on: :create
   before_validation :sanitize_description_multiloc
   before_validation :clear_logic_unless_supported
@@ -164,28 +185,29 @@ class CustomField < ApplicationRecord
   end
 
   def average_rankings(scope)
-    # This basically starts from all combinations of scope ID, option key (value)
-    # and position (ordinality) and then calculates the average position for each
-    # option. "#>> '{}'" is used to unescape the double quotes in the JSONB value.
+    # This basically starts from all combinations of answerable ID, option key
+    # (value) and position (ordinality) and then calculates the average position
+    # for each option. "#>> '{}'" is used to unescape the double quotes in the
+    # JSONB value.
     return {} if input_type != 'ranking'
 
-    scope
-      .where.not("custom_field_values ->> '#{key}' IS NULL")
-      .joins("CROSS JOIN jsonb_array_elements(custom_field_values->'#{key}') WITH ORDINALITY AS elem(value, ordinality)")
+    CustomFieldAnswer.main_for(self)
+      .where(answerable_id: scope)
+      .joins('CROSS JOIN jsonb_array_elements(value) WITH ORDINALITY AS elem(value, ordinality)')
       .group("elem.value #>> '{}'")
       .average('elem.ordinality')
   end
 
   def rankings_counts(scope)
-    # This basically starts from all combinations of scope ID, option key (value)
-    # and position (ordinality) and then calculates the count for each option and
-    # position. "#>> '{}'" is used to unescape the double quotes in the JSONB
-    # value.
+    # This basically starts from all combinations of answerable ID, option key
+    # (value) and position (ordinality) and then calculates the count for each
+    # option and position. "#>> '{}'" is used to unescape the double quotes in
+    # the JSONB value.
     return {} if input_type != 'ranking'
 
-    query_result = scope
-      .where.not("custom_field_values ->> '#{key}' IS NULL")
-      .joins("CROSS JOIN jsonb_array_elements(custom_field_values->'#{key}') WITH ORDINALITY AS elem(value, ordinality)")
+    query_result = CustomFieldAnswer.main_for(self)
+      .where(answerable_id: scope)
+      .joins('CROSS JOIN jsonb_array_elements(value) WITH ORDINALITY AS elem(value, ordinality)')
       .group("elem.value #>> '{}'", 'elem.ordinality')
       .count
 
@@ -213,14 +235,6 @@ class CustomField < ApplicationRecord
     required
   end
 
-  def visible_to_public?
-    return true if %w[author_id budget].include?(code)
-    return true if page? # It's possible that this line can be removed (but we would need to properly test to be sure)
-    return true if custom_form_type? && built_in?
-
-    false
-  end
-
   def domicile?
     s = UserFieldsInFormService
     (key == 'domicile' && code == 'domicile') || key == s.prefix_key('domicile')
@@ -238,8 +252,23 @@ class CustomField < ApplicationRecord
     resource_type == 'CustomForm'
   end
 
+  def can_show_as_filter?
+    answers_visible_to_public? && supports_answer_facet?
+  end
+
+  # The value of a built-in input field is an attribute of the input, not an answer.
+  def stored_on_model?
+    built_in? && custom_form_type?
+  end
+
   def user_type?
     resource_type == 'User'
+  end
+
+  # A user (registration) field embedded in an input form, identified by the
+  # key prefix added in UserFieldsInFormService#add_user_fields_to_form.
+  def user_field_in_form?
+    key&.start_with?(UserFieldsInFormService.prefix) || false
   end
 
   def items_claz
@@ -289,7 +318,8 @@ class CustomField < ApplicationRecord
       resource: resource,
       title_multiloc: title_multiloc,
       required: true,
-      enabled: true
+      enabled: true,
+      answers_visible_to: answers_visible_to
     )
   end
 
@@ -306,7 +336,8 @@ class CustomField < ApplicationRecord
       input_type: 'multiline_text',
       title_multiloc: title_multiloc,
       required: false,
-      enabled: true
+      enabled: true,
+      answers_visible_to: answers_visible_to
     )
   end
 
@@ -384,6 +415,18 @@ class CustomField < ApplicationRecord
     self.enabled = true if enabled.nil?
   end
 
+  # Only the custom questions of an input form choose who sees their answers.
+  def validate_answers_visible_to
+    return if custom_form_type? && supports_submission? && !built_in?
+
+    fixed_value = custom_form_type? && supports_submission? ? 'public' : 'moderators'
+    errors.add(:answers_visible_to, :inclusion, value: answers_visible_to) if answers_visible_to != fixed_value
+  end
+
+  def validate_show_as_filter
+    errors.add(:show_as_filter, :inclusion) if show_as_filter && !can_show_as_filter?
+  end
+
   def generate_key
     return if key
     return if !supports_submission?
@@ -410,12 +453,11 @@ class CustomField < ApplicationRecord
   def domicile_options
     return options.order(:ordering) unless domicile?
 
-    areas = Area.where(custom_field_option_id: options.pluck(:id))
-    area_id_map = areas.map { |a| { a.custom_field_option_id => { id: a.id, title: a.title_multiloc } } }.reduce({}, :merge)
+    outside_title = MultilocService.new.i18n_to_multiloc('custom_field_options.domicile.outside')
 
-    options.order(:ordering).map do |option|
-      option.key = area_id_map.dig(option.id, :id) || 'outside'
-      option.title_multiloc = area_id_map.dig(option.id, :title) || MultilocService.new.i18n_to_multiloc('custom_field_options.domicile.outside')
+    options.order(:ordering).includes(:area).map do |option|
+      option.title_multiloc = option.area&.title_multiloc || outside_title
+      option.key = option.answer_key
       option
     end
   end

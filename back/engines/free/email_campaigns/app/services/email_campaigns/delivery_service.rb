@@ -27,6 +27,7 @@ module EmailCampaigns
       Campaigns::ManualProjectParticipants,
       Campaigns::MentionInInternalComment,
       Campaigns::MentionInOfficialFeedback,
+      Campaigns::MergeAccountConfirmation,
       Campaigns::ModeratorDigest,
       Campaigns::NativeSurveyNotSubmitted,
       Campaigns::NewCommentForAdmin,
@@ -59,26 +60,72 @@ module EmailCampaigns
       Campaigns::YourInputInScreening
     ].freeze
 
+    # Campaign classes that only join `campaign_classes` when the feature that exposes
+    # them is activated. They still exist in the codebase when it isn't, so they are part
+    # of `all_campaign_classes`.
+    FEATURE_GATED_CAMPAIGN_CLASSES = [
+      Campaigns::CommunityMonitorReport,
+      Campaigns::ReportGenerated,
+      Campaigns::SmsManual,
+      Campaigns::PhoneConfirmation,
+      Campaigns::NewPhoneConfirmation
+    ].freeze
+
+    # The campaigns that may act right now: send, be offered for consent, be created.
     def campaign_classes
       @campaign_classes ||= begin
         classes = CAMPAIGN_CLASSES.deep_dup
         classes << Campaigns::CommunityMonitorReport if AppConfiguration.instance.feature_activated?('community_monitor')
+        classes << Campaigns::ReportGenerated if AppConfiguration.instance.feature_activated?('llm_reporting')
+        # The sms feature carries the Twilio settings every SMS campaign sends through, so
+        # sms_manual_campaigns only takes effect on top of it.
+        if AppConfiguration.instance.feature_activated?('sms')
+          classes << Campaigns::SmsManual if AppConfiguration.instance.feature_activated?('sms_manual_campaigns')
+          classes << Campaigns::PhoneConfirmation
+          classes << Campaigns::NewPhoneConfirmation
+        end
         classes
       end
+    end
+
+    # Every campaign class that exists in the codebase, whether or not the feature that
+    # exposes it is currently activated. A campaign whose feature is switched off is
+    # dormant, not deprecated: its records must survive (deleting them would destroy
+    # admin-authored content that should come back the moment the feature returns).
+    # Derived from `campaign_classes` so that engine patches feed both lists.
+    def all_campaign_classes
+      campaign_classes | FEATURE_GATED_CAMPAIGN_CLASSES
     end
 
     def campaign_types
       campaign_classes.map(&:name)
     end
 
+    def all_campaign_types
+      all_campaign_classes.map(&:name)
+    end
+
+    # Whether a campaign is manual is a property of its class, not of the feature flag,
+    # so this covers dormant campaigns too. `Campaign.automatic` negates this list: were
+    # it feature-dependent, a dormant manual campaign would count as automatic.
     def manual_campaign_types
-      campaign_classes.select { |campaign| campaign.new.manual? }.map(&:name)
+      all_campaign_classes.select { |campaign| campaign.new.manual? }.map(&:name)
+    end
+
+    # Campaign types that should never surface in the admin campaigns UI
+    # (e.g. transactional/internal campaigns like the phone-confirmation OTP).
+    # Feature-independent for the same reason as `manual_campaign_types`: a dormant
+    # OTP campaign must stay hidden rather than appear once its feature is switched off.
+    def hidden_from_admin_campaign_types
+      all_campaign_classes.select { |campaign| campaign.new.hidden_from_admin? }.map(&:name)
     end
 
     def consentable_campaign_types_for(user)
       consentable_types = Consentable.consentable_campaign_types(campaign_classes, user, self)
       disabled_types = Disableable.enabled_campaign_types(Campaign.where(type: campaign_types))
-      consentable_types - disabled_types
+      # Transactional campaigns (e.g. the phone-confirmation OTP) record consent for
+      # audit but are never user-managed, so they stay out of the consent list.
+      consentable_types - disabled_types - hidden_from_admin_campaign_types
     end
 
     # called every hour
@@ -100,21 +147,18 @@ module EmailCampaigns
       apply_send_pipeline([campaign])
     end
 
-    # Sends one campaign to one recipient immediately (synchronously) with a
-    # caller-supplied event_payload. For transactional emails that must arrive
-    # right away (e.g. confirmation codes). Runs Trackable hooks so a Delivery
-    # record is saved, but bypasses the recipient-filter pipeline.
+    # Sends one campaign to one recipient immediately, bypassing the
+    # recipient-filter pipeline. For transactional messages that must go out
+    # right away (e.g. confirmation codes).
     def send_now_to_user(campaign, recipient, event_payload = {})
-      command = { recipient: recipient, event_payload: event_payload, time: Time.zone.now }
-      campaign.run_before_send_hooks(command)
-      campaign.mailer_class
-        .with(campaign: campaign, command: command)
-        .campaign_mail
-        .deliver_now
-      campaign.run_after_send_hooks(command)
+      if campaign.sms?
+        send_sms_now_to_user(campaign, recipient, event_payload)
+      else
+        send_email_now_to_user(campaign, recipient, event_payload)
+      end
     end
 
-    def send_preview(campaign, recipient)
+    def send_email_preview(campaign, recipient)
       commands = if campaign.manual?
         generate_commands(campaign, recipient)
       else
@@ -127,7 +171,16 @@ module EmailCampaigns
       end
     end
 
+    def send_sms_preview(campaign, recipient)
+      command = generate_commands(campaign, recipient).first
+      return unless command
+
+      campaign.deliver_preview(command)
+    end
+
     def preview_email(campaign, recipient)
+      return {} if campaign.sms?
+
       command = if campaign.manual?
         generate_commands(campaign, recipient).first
       else
@@ -153,6 +206,29 @@ module EmailCampaigns
 
     private
 
+    # Renders and delivers the campaign's email synchronously. Runs Trackable
+    # hooks so a Delivery record is saved. Sends nothing if the recipient's
+    # email bounced.
+    def send_email_now_to_user(campaign, recipient, event_payload = {})
+      return if campaign.mailer_class.undeliverable_to?(recipient)
+
+      command = { recipient: recipient, event_payload: event_payload, time: Time.zone.now }
+      campaign.run_before_send_hooks(command)
+      campaign.mailer_class
+        .with(campaign: campaign, command: command)
+        .campaign_mail
+        .deliver_now
+      campaign.run_after_send_hooks(command)
+    end
+
+    # Sends a transactional one-off SMS synchronously, in-process (e.g. the
+    # phone-confirmation OTP). The campaign owns rendering, destination and the
+    # synchronous send.
+    def send_sms_now_to_user(campaign, recipient, event_payload = {})
+      command = { recipient: recipient, event_payload: event_payload, time: Time.zone.now }
+      campaign.deliver_now(command)
+    end
+
     # Takes options, either
     # * time: Time object when the sending command happened
     # * activity: Activity object which activity happened
@@ -160,6 +236,7 @@ module EmailCampaigns
       valid_campaigns           = filter_campaigns(campaign_candidates, options)
       campaigns_with_recipients = assign_campaigns_recipients(valid_campaigns, options)
       campaigns_with_command    = assign_campaigns_command(campaigns_with_recipients, options)
+      campaigns_with_command    = reject_undeliverable(campaigns_with_command)
 
       ExamplesService.new.save_examples(campaigns_with_command)
       process_send_campaigns(campaigns_with_command)
@@ -183,6 +260,13 @@ module EmailCampaigns
       end
     end
 
+    # Before the send hooks, so no delivery is recorded for an email that is never sent.
+    def reject_undeliverable(campaigns_with_command)
+      campaigns_with_command.reject do |(command, campaign)|
+        campaign.respond_to?(:mailer_class) && campaign.mailer_class.undeliverable_to?(command[:recipient])
+      end
+    end
+
     def process_send_campaigns(campaigns_with_command)
       campaigns_with_command.each do |(command, campaign)|
         campaign.run_before_send_hooks(command)
@@ -200,16 +284,26 @@ module EmailCampaigns
     #   delay: # Integer in seconds, optional
     # }
     def process_command(campaign, command)
-      send_command_internal(campaign, command) if campaign.respond_to? :mailer_class
+      if campaign.sms?
+        send_sms_command(campaign, command)
+      else
+        send_email_command(campaign, command)
+      end
     end
 
-    # This method is triggered when the given sending command should be sent
-    # out through the interal Rails mailing stack
-    def send_command_internal(campaign, command)
+    # Sends the command through the internal Rails mailing stack. Campaigns
+    # without a mailer (nothing to email) are a no-op.
+    def send_email_command(campaign, command)
+      return unless campaign.respond_to?(:mailer_class)
+
       campaign.mailer_class
         .with(campaign: campaign, command: command)
         .campaign_mail
         .deliver_later(wait: command[:delay] || 0)
+    end
+
+    def send_sms_command(campaign, command)
+      campaign.deliver_later(command)
     end
 
     def generate_commands(campaign, recipient, options = {})

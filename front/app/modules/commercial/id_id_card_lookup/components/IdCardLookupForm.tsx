@@ -73,9 +73,9 @@ const VerificationFormLookup = memo<Props & WrappedComponentProps>(
             await verifyIDLookup(cardId);
 
             if (!isNilOrError(authUser)) {
-              queryClient.invalidateQueries(
-                usersKeys.item({ id: authUser.data.id })
-              );
+              queryClient.invalidateQueries({
+                queryKey: usersKeys.item({ id: authUser.data.id }),
+              });
             }
 
             queryClient.invalidateQueries({ queryKey: meKeys.all() });

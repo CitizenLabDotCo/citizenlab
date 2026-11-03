@@ -11,6 +11,7 @@ import { AppConfigurationMapSettings } from 'api/app_configuration/types';
 
 import { calculateScaleFromZoom } from 'utils/mapUtils/map';
 
+import { MAP_LEGEND_EXPAND_ID } from './constants';
 import messages from './messages';
 import { InitialData } from './types';
 
@@ -138,7 +139,9 @@ export const addMapLegend = (
 ) => {
   // Check if legend already exists and return to prevent duplicates
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-  const existingLegend = mapView.ui?.find('mapLegendExpand') as Expand | null; // Esri has incorrect types here
+  const existingLegend = mapView.ui?.find(
+    MAP_LEGEND_EXPAND_ID
+  ) as Expand | null; // Esri has incorrect types here
   if (existingLegend) return;
 
   const legend = new Expand({
@@ -147,7 +150,7 @@ export const addMapLegend = (
       hideLayersNotInCurrentView: false,
       style: { type: 'classic', layout: 'stack' },
     }),
-    id: 'mapLegendExpand',
+    id: MAP_LEGEND_EXPAND_ID,
     view: mapView,
     expanded:
       showLegendExpanded === undefined

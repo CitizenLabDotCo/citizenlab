@@ -95,9 +95,9 @@ class McpServer::Tools::AttachFile < McpServer::BaseTool
         structured: McpServer::Serializers::FileAttachment.serialize(attachment)
       )
     rescue ActiveRecord::RecordInvalid => e
+      # Download failures also land here: CarrierWave captures them as
+      # :carrierwave_download_error validation errors on assignment.
       invalid_record_error(e.record)
-    rescue CarrierWave::DownloadError, CarrierWave::IntegrityError => e
-      error("Could not fetch #{params[:remote_url]}: #{e.message}")
     end
 
     private

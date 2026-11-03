@@ -8,10 +8,10 @@ import { object, string } from 'yup';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import {
-  CampaignFormValues,
-  EditableRegion,
-  ICampaign,
-} from 'api/campaigns/types';
+  EmailCampaignFormValues,
+  IEmailEditableRegion,
+  IEmailCampaign,
+} from 'api/campaigns/email/types';
 import useAuthUser from 'api/me/useAuthUser';
 
 import messages from 'containers/Admin/messaging/messages';
@@ -30,8 +30,10 @@ const StyledSection = styled(Section)`
 `;
 
 type CampaignFormProps = {
-  onSubmit: (formValues: Partial<CampaignFormValues>) => void | Promise<void>;
-  campaign: ICampaign;
+  onSubmit: (
+    formValues: Partial<EmailCampaignFormValues>
+  ) => void | Promise<void>;
+  campaign: IEmailCampaign;
   isLoading: boolean;
 };
 
@@ -109,7 +111,7 @@ const EditCampaignForm = ({
       </>
     );
 
-  const regionFieldLabel = (region: EditableRegion) => {
+  const regionFieldLabel = (region: IEmailEditableRegion) => {
     const messageKey = messages[`editRegion_${region.key}`];
     return formatMessage(messageKey);
   };

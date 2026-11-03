@@ -259,27 +259,95 @@ RSpec.describe User do
     end
   end
 
-  describe 'authentication without password' do
-    it 'is allowed if the user has no password and confirmation is required' do
-      u = described_class.new(email: 'bob@citizenlab.co')
-      expect(!!u.authenticate('')).to be(true)
+  describe '#authenticate' do
+    # Authentication ALWAYS requires a non-blank password matching the stored digest.
+    # A user without a password (email-only, SSO or invited account) has no credential to log
+    # in with, and a blank password is not a credential. These specs must never be relaxed:
+    # every case below has to stay `false`, whatever the confirmation state of the user.
+    describe 'authentication without a password' do
+      # Anything that is not an actual password supplied by the requester.
+      blank_secrets = ['', ' ', "\t", nil]
+
+      it 'is NOT allowed for a user with no password who requires confirmation' do
+        user = create(:unconfirmed_user)
+        expect(user.password_digest).to be_nil
+        expect(user.confirmation_required?).to be true
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+        expect(user.authenticate('any_string')).to be(false)
+      end
+
+      it 'is NOT allowed for a user with no password who does not require confirmation' do
+        user = create(:unconfirmed_user)
+        user.find_or_create_confirmation(:email_confirmation).confirm!
+        expect(user.reload.confirmation_required?).to be false
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+        expect(user.authenticate('any_string')).to be(false)
+      end
+
+      it 'is NOT allowed for an unpersisted user with no password' do
+        user = described_class.new(email: 'bob@citizenlab.co', locale: 'en')
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+        expect(user.authenticate('any_string')).to be(false)
+      end
+
+      it 'is NOT allowed for an SSO user who never set a password' do
+        user = create(:unconfirmed_user)
+        user.identities << create(:facebook_identity, user: user)
+        user.find_or_create_confirmation(:email_confirmation).confirm!
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+      end
+
+      it 'is NOT allowed for an invited user who has not accepted their invite' do
+        user = create(:invited_user)
+        expect(user.password_digest).to be_nil
+        expect(user.invite_pending?).to be true
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+        expect(user.authenticate('any_string')).to be(false)
+      end
+
+      it 'is NOT allowed for a super admin with no password' do
+        user = create(:unconfirmed_user, email: 'hello@citizenlab.co', roles: [{ type: 'admin' }])
+        expect(user.super_admin?).to be true
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+      end
+
+      it 'is NOT allowed for a user who does have a password' do
+        user = create(:user, password: 'democracy2.0')
+
+        blank_secrets.each do |secret|
+          expect(user.authenticate(secret)).to be(false), "authenticate(#{secret.inspect}) must be false"
+        end
+      end
     end
 
-    it 'is not allowed if a password has been supplied in the request' do
-      u = described_class.new(email: 'bob@citizenlab.co')
-      expect(!!u.authenticate('any_string')).to be(false)
-    end
+    describe 'authentication with a password' do
+      let(:user) { create(:user, password: 'democracy2.0') }
 
-    it 'is not allowed if a password has been set' do
-      u = described_class.new(email: 'bob@citizenlab.co', password: 'democracy2.0')
-      expect(!!u.authenticate('')).to be(false)
-    end
+      it 'returns the user when the password matches' do
+        expect(user.authenticate('democracy2.0')).to eq user
+      end
 
-    it 'is not allowed if confirmation is not required' do
-      u = described_class.new(email: 'bob@citizenlab.co', locale: 'en')
-      u.save!
-      u.email_confirmation.confirm!
-      expect(!!u.authenticate('')).to be(false)
+      it 'returns false when the password does not match' do
+        expect(user.authenticate('democracy2.1')).to be(false)
+      end
     end
   end
 
@@ -354,6 +422,26 @@ RSpec.describe User do
     it 'is not required when a unique code is present' do
       u1 = build(:user, email: nil, unique_code: '1234abcd')
       expect(u1).to be_valid
+    end
+  end
+
+  describe 'email bounce' do
+    let(:user) { create(:user, email: 'bounced@example.com', email_bounced_at: 1.day.ago, email_bounce_reason: '550 No such user') }
+
+    it 'is cleared when the email changes' do
+      user.update_columns(new_email: 'fixed@example.com')
+      user.update!(email: 'fixed@example.com')
+      expect(user.reload).to have_attributes(email_bounced_at: nil, email_bounce_reason: nil)
+    end
+
+    it 'is kept when the email only changes case' do
+      user.update!(email: 'Bounced@Example.com')
+      expect(user.reload.email_bounced_at).to be_present
+    end
+
+    it 'is kept when other attributes change' do
+      user.update!(first_name: 'Someone')
+      expect(user.reload).to be_email_bounced
     end
   end
 
@@ -476,7 +564,6 @@ RSpec.describe User do
       settings['password_login'] = {
         'enabled' => true,
         'allowed' => true,
-        'enable_signup' => true,
         'minimum_length' => 5
       }
       AppConfiguration.instance.update! settings: settings
@@ -490,7 +577,6 @@ RSpec.describe User do
       settings['password_login'] = {
         'enabled' => true,
         'allowed' => true,
-        'enable_signup' => true,
         'minimum_length' => 5
       }
       AppConfiguration.instance.update! settings: settings
@@ -502,6 +588,32 @@ RSpec.describe User do
       AppConfiguration.instance.update! settings: settings
 
       expect(u).to be_invalid
+    end
+
+    # NOTE: These tests match the frontend tests found in front/app/components/UI/PasswordInput/passwordMeetsStrength.test.ts
+    it 'does not enforce password strength when minimum_strength is 0 (default)' do
+      # A long but weak password passes when the strength check is disabled.
+      u = build(:user, password: 'aaaaaaaaaaaaaaaa')
+      expect(u).to be_valid
+    end
+
+    it 'is invalid when weaker than the configured minimum strength' do
+      settings = AppConfiguration.instance.settings
+      settings['password_login'] = settings['password_login'].merge('minimum_strength' => 3)
+      AppConfiguration.instance.update! settings: settings
+
+      u = build(:user, password: 'aaaaaaaaaaaaaaaa')
+      expect(u).to be_invalid
+      expect(u.errors.details[:password]).to include(a_hash_including(error: :too_weak))
+    end
+
+    it 'is valid when at least as strong as the configured minimum strength' do
+      settings = AppConfiguration.instance.settings
+      settings['password_login'] = settings['password_login'].merge('minimum_strength' => 3)
+      AppConfiguration.instance.update! settings: settings
+
+      u = build(:user, password: 'correct horse battery staple')
+      expect(u).to be_valid
     end
   end
 
@@ -570,49 +682,19 @@ RSpec.describe User do
       create(:custom_field_domicile)
     end
 
-    it '(gender) is valid when male, female or unspecified' do
-      expect(build(:user, gender: 'male')).to be_valid
-      expect(build(:user, gender: 'female')).to be_valid
-      expect(build(:user, gender: 'unspecified')).to be_valid
+    def user_with_answer(key, value)
+      build(:user, custom_field_answers: [build(:custom_field_answer, key: key, value: value)])
     end
 
-    it '(gender) is invalid when not male, female or unspecified' do
-      user = build(:user, gender: 'somethingelse')
-      expect { user.valid? }.to(change { user.errors[:gender] })
+    it 'is valid with valid built-in answers' do
+      expect(user_with_answer('gender', 'male')).to be_valid
+      expect(user_with_answer('birthyear', Time.now.year - 13)).to be_valid
+      expect(user_with_answer('domicile', 'outside')).to be_valid
     end
 
-    it '(birthyear) is valid when in realistic range' do
-      expect(build(:user, birthyear: (Time.now.year - 117))).to be_valid
-      expect(build(:user, birthyear: (Time.now.year - 13))).to be_valid
-    end
-
-    it '(birthyear) is invalid when unrealistic' do
-      user = build(:user, birthyear: Time.now.year + 1)
-      expect { user.valid? }.to(change { user.errors[:birthyear] })
-      user = build(:user, birthyear: 1850)
-      expect { user.valid? }.to(change { user.errors[:birthyear] })
-      user = build(:user, birthyear: 'eighteen hundred')
-      expect { user.valid? }.to(change { user.errors[:birthyear] })
-    end
-
-    it '(birthyear) is invalid when not an integer' do
-      user = build(:user, birthyear: 'eighteen hundred')
-      expect { user.valid? }.to(change { user.errors[:birthyear] })
-      user = build(:user, birthyear: 1930.4)
-      expect { user.valid? }.to(change { user.errors[:birthyear] })
-    end
-
-    it "(domicile) is valid when an area id or 'outside'" do
-      create_list(:area, 5)
-      expect(build(:user, domicile: Area.offset(rand(5)).first.id)).to be_valid
-      expect(build(:user, domicile: 'outside')).to be_valid
-    end
-
-    it "(domicile) is invalid when not an area id or 'outside'" do
-      user = build(:user, domicile: 'somethingelse')
-      expect { user.valid? }.to(change { user.errors[:domicile] })
-      user = build(:user, domicile: 5)
-      expect { user.valid? }.to(change { user.errors[:domicile] })
+    it 'is invalid with an invalid built-in answer' do
+      user = user_with_answer('gender', 'somethingelse')
+      expect { user.valid? }.to(change { user.errors[:'custom_field_answers.value'] })
     end
   end
 
@@ -961,24 +1043,96 @@ RSpec.describe User do
     end
   end
 
-  describe 'custom_field_values' do
-    # TODO: Allow light users without required fields
-    # it 'validates when custom_field_values have changed' do
-    #   u = create(:user)
-    #   u.custom_field_values = {
-    #     somekey: 'somevalue'
-    #   }
-    #   expect { u.save }.to(change { u.errors[:custom_field_values] })
-    # end
-
-    it "doesn't validate on creation without form submission" do
-      u = build(:user, custom_field_values: { somekey: 'somevalue' })
-      expect { u.save }.not_to(change { u.errors[:custom_field_values] })
+  describe 'early_access_opt_ins' do
+    before do
+      allow(AppConfiguration::Settings).to receive(:early_access_tiers)
+        .and_return({ 'general_feature' => 'general', 'internal_feature' => 'internal' })
     end
 
-    it 'validates on form submission' do
-      u = build(:user, custom_field_values: { somekey: 'somevalue' })
-      expect { u.save(context: :form_submission) }.to(change { u.errors[:custom_field_values] })
+    it 'is empty by default' do
+      expect(create(:admin).early_access_opt_ins).to eq []
+    end
+
+    it 'accepts a feature offered to the user' do
+      expect(build(:admin, early_access_opt_ins: ['general_feature'])).to be_valid
+    end
+
+    it 'is invalid when the feature is not in early access' do
+      expect(build(:admin, early_access_opt_ins: ['analysis'])).to be_invalid
+    end
+
+    it 'is invalid when the feature is only offered to Go Vocal staff' do
+      expect(build(:admin, early_access_opt_ins: ['internal_feature'])).to be_invalid
+    end
+
+    it 'accepts an internal feature for a Go Vocal admin' do
+      expect(build(:super_admin, early_access_opt_ins: ['internal_feature'])).to be_valid
+    end
+
+    it 'is invalid when the same feature is listed twice' do
+      expect(build(:admin, early_access_opt_ins: %w[general_feature general_feature])).to be_invalid
+    end
+
+    it 'accepts a change that carries a feature which left early access' do
+      admin = create(:admin, early_access_opt_ins: ['general_feature'])
+      allow(AppConfiguration::Settings).to receive(:early_access_tiers)
+        .and_return({ 'other_feature' => 'general' })
+
+      admin.early_access_opt_ins = %w[general_feature other_feature]
+
+      expect(admin).to be_valid
+    end
+
+    describe '#early_access_tiers' do
+      it 'offers the general tier to an admin' do
+        expect(build(:admin).early_access_tiers).to eq %w[general]
+      end
+
+      it 'offers both tiers to a Go Vocal admin' do
+        expect(build(:super_admin).early_access_tiers).to match_array(%w[general internal])
+      end
+
+      it 'offers nothing to a resident' do
+        expect(build(:user).early_access_tiers).to be_empty
+      end
+    end
+
+    describe '#offered_early_access_features' do
+      it 'does not offer a feature the platform already has on' do
+        allow(AppConfiguration::Settings).to receive(:early_access_tiers)
+          .and_return({ 'analysis' => 'general', 'general_feature' => 'general' })
+        SettingsService.new.activate_feature!('analysis')
+
+        expect(build(:admin).offered_early_access_features).to eq({ 'general_feature' => 'general' })
+      end
+    end
+
+    describe '#early_access_overrides' do
+      it 'returns what an admin opted into' do
+        admin = build(:admin, early_access_opt_ins: ['general_feature'])
+        expect(admin.early_access_overrides).to eq Set.new(['general_feature'])
+      end
+
+      it 'returns nothing for a resident' do
+        resident = build(:user)
+        resident.early_access_opt_ins = ['general_feature']
+
+        expect(resident.early_access_overrides).to be_empty
+      end
+
+      it 'drops an internal feature an admin is no longer eligible for' do
+        admin = build(:super_admin, early_access_opt_ins: ['internal_feature'])
+        admin.email = 'someone@example.com'
+
+        expect(admin.early_access_overrides).to be_empty
+      end
+
+      it 'drops a stored feature that left early access' do
+        admin = build(:admin, early_access_opt_ins: ['general_feature'])
+        allow(AppConfiguration::Settings).to receive(:early_access_tiers).and_return({})
+
+        expect(admin.early_access_overrides).to be_empty
+      end
     end
   end
 
@@ -997,7 +1151,7 @@ RSpec.describe User do
   describe 'active?' do
     it 'returns true when the user has completed signup' do
       u = create(:unconfirmed_user)
-      u.email_confirmation.confirm!
+      u.find_or_create_confirmation(:email_confirmation).confirm!
       expect(u.active?).to be true
     end
 
@@ -1008,7 +1162,24 @@ RSpec.describe User do
 
     it 'returns false when the user is blocked' do
       u = create(:unconfirmed_user, block_end_at: 5.days.from_now)
-      u.email_confirmation.confirm!
+      u.find_or_create_confirmation(:email_confirmation).confirm!
+      expect(u.active?).to be false
+    end
+
+    it 'returns true when the user has confirmed their phone number' do
+      u = create(:unconfirmed_phone_user)
+      u.find_or_create_confirmation(:phone_confirmation).confirm!
+      expect(u.active?).to be true
+    end
+
+    it 'returns false when the user has a phone number they have not confirmed' do
+      u = create(:unconfirmed_phone_user)
+      expect(u.active?).to be false
+    end
+
+    it 'returns false when the user confirmed their phone number but is blocked' do
+      u = create(:unconfirmed_phone_user, block_end_at: 5.days.from_now)
+      u.find_or_create_confirmation(:phone_confirmation).confirm!
       expect(u.active?).to be false
     end
   end
@@ -1021,7 +1192,18 @@ RSpec.describe User do
 
     it 'is set when a user is confirmed' do
       u = create(:unconfirmed_user)
-      u.email_confirmation.confirm!
+      u.find_or_create_confirmation(:email_confirmation).confirm!
+      expect(u.registration_completed_at).not_to be_nil
+    end
+
+    it 'is not set when a phone user is created' do
+      u = create(:unconfirmed_phone_user)
+      expect(u.registration_completed_at).to be_nil
+    end
+
+    it 'is set when a user confirms their phone number' do
+      u = create(:unconfirmed_phone_user)
+      u.find_or_create_confirmation(:phone_confirmation).confirm!
       expect(u.registration_completed_at).not_to be_nil
     end
 
@@ -1100,6 +1282,24 @@ RSpec.describe User do
     end
   end
 
+  describe '.find_by_phone_number' do
+    it 'finds a user with the same number in a different format' do
+      some_user = create(:user, :with_confirmed_phone, phone: '+14155552671')
+
+      expect(described_class.find_by_phone_number('+1 (415) 555-2671')&.id).to eq some_user.id
+    end
+
+    it 'returns nil if no user record with that phone number was found' do
+      expect(described_class.find_by_phone_number('+14155552671')).to be_nil
+    end
+
+    it 'does not match users without a phone number when the number is unparseable' do
+      create(:user)
+
+      expect(described_class.find_by_phone_number('not-a-number')).to be_nil
+    end
+  end
+
   context 'user confirmation' do
     subject(:user) { build(:unconfirmed_user) }
 
@@ -1107,25 +1307,91 @@ RSpec.describe User do
       user.clear_changes_information
     end
 
-    it 'is initialized without a confirmation code' do
+    it 'is created without any confirmation record' do
       user.save!
-      expect(user.email_confirmation.code).to be_nil
+      expect(user.confirmations).to be_empty
+    end
+
+    it 'creates the confirmation on demand, without a code' do
+      user.save!
+      expect(user.find_or_create_confirmation(:email_confirmation).code).to be_nil
+      expect(user.confirmations.pluck(:type)).to eq ['EmailConfirmation']
+    end
+
+    describe '#find_or_create_confirmation' do
+      it 'reuses the confirmation instead of creating a second one' do
+        user.save!
+        confirmation = user.find_or_create_confirmation(:email_confirmation)
+
+        expect { user.find_or_create_confirmation(:email_confirmation) }.not_to change(EmailConfirmation, :count)
+        expect(user.find_or_create_confirmation(:email_confirmation)).to eq confirmation
+      end
+
+      # Two concurrent requests can both find no confirmation and both try to insert.
+      it 'returns the row inserted by a concurrent request instead of raising' do
+        user.save!
+        expect(user.email_confirmation).to be_nil # caches the miss, as the loser of the race would
+        concurrent = EmailConfirmation.create!(user: described_class.find(user.id))
+
+        expect(user.find_or_create_confirmation(:email_confirmation)).to eq concurrent
+      end
+
+      it 'leaves the surrounding transaction usable after losing the race' do
+        user.save!
+        expect(user.email_confirmation).to be_nil
+        EmailConfirmation.create!(user: described_class.find(user.id))
+
+        ActiveRecord::Base.transaction do
+          user.find_or_create_confirmation(:email_confirmation)
+          user.update!(first_name: 'Raced')
+        end
+
+        expect(user.reload.first_name).to eq 'Raced'
+      end
+    end
+
+    describe '#confirmation_pending?' do
+      it 'answers for the phone before any confirmation record exists' do
+        user.save!
+        expect(user.confirmations).to be_empty
+
+        expect(user.confirmation_pending?(:phone_confirmation)).to be false
+
+        user.update!(phone: '+14155552671')
+        expect(user.confirmation_pending?(:phone_confirmation)).to be true
+
+        user.update!(phone_confirmed_at: Time.zone.now)
+        expect(user.confirmation_pending?(:phone_confirmation)).to be false
+      end
+
+      it 'is true for the email as long as the user has not confirmed' do
+        user.save!
+        expect(user.confirmation_pending?(:email_confirmation)).to be true
+
+        user.find_or_create_confirmation(:email_confirmation).confirm!
+        expect(user.confirmation_pending?(:email_confirmation)).to be false
+      end
+
+      it 'is true for a change confirmation only while a new value is pending' do
+        user.save!
+        expect(user.confirmation_pending?(:new_email_confirmation)).to be false
+        expect(user.confirmation_pending?(:new_phone_confirmation)).to be false
+
+        user.update!(new_email: 'new@email.com', new_phone: '+14155552671')
+        expect(user.confirmation_pending?(:new_email_confirmation)).to be true
+        expect(user.confirmation_pending?(:new_phone_confirmation)).to be true
+      end
     end
 
     describe '#confirmation_required?' do
       it 'returns false if the user already confirmed their account' do
         user.save!
-        user.email_confirmation.confirm!
+        user.find_or_create_confirmation(:email_confirmation).confirm!
         expect(user.reload.confirmation_required?).to be false
       end
 
       it 'returns true if the user has not yet confirmed their account' do
         expect(user.confirmation_required?).to be true
-      end
-
-      it 'returns false when the user is a verified SSO user with no email' do
-        u = build(:unconfirmed_user, identities: [build(:franceconnect_identity)], email: nil, verified: true)
-        expect(u.confirmation_required?).to be false
       end
 
       it 'returns true when the user is an unverified SSO user with no email' do
@@ -1169,22 +1435,22 @@ RSpec.describe User do
     describe '#email_confirmation#confirm!' do
       it 'sets email confirmed at' do
         user.save!
-        expect { user.email_confirmation.confirm! }.to change(user, :saved_change_to_email_confirmed_at?)
+        expect { user.find_or_create_confirmation(:email_confirmation).confirm! }.to change(user, :saved_change_to_email_confirmed_at?)
       end
 
       it 'cancels any pending email change initiated with the same email' do
         target_email = 'shared-email@provider.org'
         user2 = create(:user, new_email: target_email)
         user1 = create(:user, email: target_email)
-        user2.new_email_confirmation.update!(code: '9999')
+        user2.find_or_create_confirmation(:new_email_confirmation).update!(code: '9999')
 
-        user1.email_confirmation.update!(code: '1234')
+        user1.find_or_create_confirmation(:email_confirmation).update!(code: '1234')
         user1.update!(confirmation_required: true)
-        user1.email_confirmation.confirm!
+        user1.find_or_create_confirmation(:email_confirmation).confirm!
 
         user2.reload
         expect(user2.new_email).to be_nil
-        expect(user2.new_email_confirmation.reload.code).to be_nil
+        expect(user2.new_email_confirmation).to be_nil
       end
     end
   end
@@ -1242,6 +1508,20 @@ RSpec.describe User do
       expect(user.first_name).to eq 'Terry'
     end
 
+    it 'does not entity-encode punctuation in a valid name' do
+      user = described_class.new
+      user.first_name = "Ann-Sofie O'Brien"
+      user.validate
+      expect(user.first_name).to eq "Ann-Sofie O'Brien"
+    end
+
+    it 'neutralises a payload hidden behind entity encoding' do
+      user = described_class.new
+      user.first_name = '&lt;img src=x onerror=alert(1)&gt;Bob'
+      user.validate
+      expect(user.first_name).to eq 'Bob'
+    end
+
     it 'is invalid when it contains @' do
       user = build(:user, first_name: 'foo@example.com')
       expect(user).not_to be_valid
@@ -1262,6 +1542,26 @@ RSpec.describe User do
     it 'is valid when blank' do
       user = build(:user, first_name: '')
       expect(user).to be_valid
+    end
+  end
+
+  describe 'slug generated from the name' do
+    it 'keeps markup in the name out of the slug' do
+      user = create(:user, slug: nil, first_name: '<b>Bob</b>', last_name: 'Smith')
+
+      expect(user.slug).to eq 'bob-smith'
+    end
+
+    it 'keeps a payload in the name out of the slug' do
+      user = create(:user, slug: nil, first_name: '<img src=x onerror=alert(1)>Bob', last_name: 'Smith')
+
+      expect(user.slug).to eq 'bob-smith'
+    end
+
+    it 'is still valid when the name is nothing but markup' do
+      user = create(:user, slug: nil, first_name: '<b></b>', last_name: '<i></i>')
+
+      expect(user.slug).to match(Sluggable::SLUG_REGEX)
     end
   end
 

@@ -75,6 +75,9 @@ describe('Native survey project page actions', () => {
     it('tests actions when unregistered users may submit survey responses', () => {
       // Login as admin
       cy.setAdminLoginCookie();
+      // The action follows the platform defaults until it is overridden, and
+      // the panel only offers its settings once it has been.
+      cy.apiOverridePhasePermission({ phaseId, action: 'posting_idea' });
       // Visit admin phase permissions page
       cy.visit(
         `admin/projects/${projectIdWithOneOpenEndedPhase}/phases/${phaseId}/access-rights`
@@ -83,8 +86,8 @@ describe('Native survey project page actions', () => {
       // Select that unregistered users may submit surveys
       cy.get('.e2e-action-accordion-posting_idea').click();
       cy.get('.e2e-action-form-posting_idea').within(() => {
-        cy.contains('Anyone').should('be.visible');
-        cy.contains('Anyone').click({ force: true });
+        cy.get('.e2e-permission-anyone').should('exist');
+        cy.get('.e2e-permission-anyone').first().click();
       });
       // Logout
       cy.clearCookies();
@@ -176,16 +179,12 @@ describe('Native survey project page actions', () => {
       cy.setLoginCookie(userEmail, userPassword);
       // Visit timeline project
       cy.visit(`/projects/${projectSlugWithFutureSurvey}`);
-      // Check that correct text and actions shown
-      cy.get('.e2e-idea-button')
-        .first()
-        .find('div')
-        .first()
-        .should('be.visible')
-        .trigger('mouseenter');
-      cy.contains('New submissions can only be added in active phases.').should(
-        'exist'
+      // Wait for the phase to load before asserting the button's absence
+      cy.get('.e2e-phase-description').contains(
+        `description ${phaseFutureTitle}`
       );
+      // There's no primary CTA while no phase is running
+      cy.get('.e2e-idea-button').should('not.exist');
     });
   });
 

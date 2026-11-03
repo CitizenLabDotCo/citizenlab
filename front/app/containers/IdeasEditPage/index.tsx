@@ -22,7 +22,7 @@ const IdeasEditPage = () => {
     action: 'edit',
   });
 
-  if (status === 'loading') {
+  if (status === 'pending') {
     return (
       <VerticalCenterer>
         <Spinner />

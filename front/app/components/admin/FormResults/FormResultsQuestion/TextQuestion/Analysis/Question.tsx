@@ -39,7 +39,7 @@ const Question = ({
     phaseId: string;
   };
 
-  const { mutate: regenerateQuestion, isLoading: isLoadingRegenerateQuestion } =
+  const { mutate: regenerateQuestion, isPending: isLoadingRegenerateQuestion } =
     useRegenerateAnalysisQuestion();
 
   const question = data?.data.attributes.question;

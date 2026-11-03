@@ -19,7 +19,7 @@ class UserFieldsInFormService
       # Confirm that the idea belongs to the current user
       return false unless idea.author_id == current_user.id
 
-      permission = phase.permissions.find_by(action: 'posting_idea')
+      permission = posting_permission(phase)
       return false unless permission
 
       # Confirm that user fields are asked in registration process
@@ -35,7 +35,7 @@ class UserFieldsInFormService
       return false if IDEATIONLIKE_METHODS.include?(pmethod) && idea.anonymous
 
       # Finally, confirm that the idea doesn't already have user fields
-      return false if idea.custom_field_values&.keys&.any? { |key| key.start_with?(prefix) }
+      return false if idea.custom_field_answers.any? { |answer| answer.key.start_with?(prefix) }
 
       true
     end
@@ -51,7 +51,7 @@ class UserFieldsInFormService
       return idea_custom_field_values unless current_user
       return idea_custom_field_values if phase.blank?
 
-      permission = phase.permissions.find_by(action: 'posting_idea')
+      permission = posting_permission(phase)
 
       # Use PermissionsCustomFieldsService to get fields, which handles both persisted and non-persisted (global) fields
       permissions_custom_fields_service = Permissions::PermissionsCustomFieldsService.new
@@ -59,8 +59,7 @@ class UserFieldsInFormService
 
       allowed_keys = permissions_custom_fields.map { |pcf| pcf.custom_field.key }.uniq
 
-      user_values = current_user
-        .custom_field_values
+      user_values = CustomFieldValuesTransitionService.new.custom_field_values(current_user)
         .select { |key, _value| allowed_keys.include?(key) }
         .transform_keys do |key|
           prefix_key(key)
@@ -78,7 +77,7 @@ class UserFieldsInFormService
       # Confirm that the idea belongs to the current user
       return false unless idea.author_id == user.id
 
-      permission = phase.permissions.find_by(action: 'posting_idea')
+      permission = posting_permission(phase)
       return false unless permission
 
       # Confirm that user fields are asked in form
@@ -96,11 +95,11 @@ class UserFieldsInFormService
     def merge_user_fields_from_idea_into_user!(idea, user)
       return unless user
 
-      user_values_from_idea = idea.custom_field_values
+      user_values_from_idea = CustomFieldValuesTransitionService.new.custom_field_values(idea)
         .select { |key, _value| key.start_with?(prefix) }
         .transform_keys { |key| key[prefix.length..] }
 
-      user.update!(custom_field_values: user.custom_field_values.merge(user_values_from_idea))
+      UserService.assign_merging_custom_fields(user, 'custom_field_values' => user_values_from_idea).save!
     end
 
     # Append user custom fields to form
@@ -108,12 +107,12 @@ class UserFieldsInFormService
       return fields unless participation_method.user_fields_in_form_enabled?
 
       phase = participation_method.phase
-      permission = phase.permissions.find_by(action: 'posting_idea')
+      permission = posting_permission(phase)
       user_fields = Permissions::UserRequirementsService.new.requirements_custom_fields(permission)
 
       return fields unless user_fields.any?
 
-      ActiveRecord::Associations::Preloader.new(records: user_fields, associations: [options: :image]).call
+      ActiveRecord::Associations::Preloader.new(records: user_fields, associations: [options: %i[image area]]).call
 
       fields = fields.to_a # sometimes array passed in, sometimes active record relations
 
@@ -177,6 +176,12 @@ class UserFieldsInFormService
     end
 
     private
+
+    # Falls back to the permission inherited from the global 'visiting'
+    # permission when the phase has no posting_idea permission of its own.
+    def posting_permission(phase)
+      Permissions::PermissionInheritanceService.new.find(phase, 'posting_idea')
+    end
 
     def user_fields_in_form_descriptor_surveylike(permission)
       if permission.permitted_by == 'everyone'

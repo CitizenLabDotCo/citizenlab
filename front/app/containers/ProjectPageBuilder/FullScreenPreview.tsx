@@ -7,13 +7,13 @@ import useProjectPageLayout from 'api/project_page_layout/useProjectPageLayout';
 
 import useLocale from 'hooks/useLocale';
 
+import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
 import ContentBuilderFrame from 'components/admin/ContentBuilder/Frame';
 import FullScreenWrapper from 'components/admin/ContentBuilder/FullscreenPreview/Wrapper';
 import LanguageProvider from 'components/admin/ContentBuilder/LanguageProvider';
 import { normalizeProjectPageLayout } from 'components/ProjectPageBuilder/defaultLayout';
 import Editor from 'components/ProjectPageBuilder/Editor';
 
-import { isNilOrError } from 'utils/helperUtils';
 import { useSearch } from 'utils/router';
 
 type Props = {
@@ -37,10 +37,6 @@ export const FullScreenPreview = ({ projectId }: Props) => {
     [layout]
   );
 
-  if (isNilOrError(platformLocale)) {
-    return null;
-  }
-
   const isLoading = layout === undefined;
   const editorData = draftData || savedEditorData;
 
@@ -53,9 +49,11 @@ export const FullScreenPreview = ({ projectId }: Props) => {
         {isLoading && <Spinner />}
         {!isLoading && editorData && (
           <Box ref={(el: HTMLElement | null) => el?.setAttribute('inert', '')}>
-            <Editor isPreview={true}>
-              <ContentBuilderFrame editorData={editorData} />
-            </Editor>
+            <ContentBuilderLayoutProvider layoutId={layout.data.id}>
+              <Editor isPreview={true}>
+                <ContentBuilderFrame editorData={editorData} />
+              </Editor>
+            </ContentBuilderLayoutProvider>
           </Box>
         )}
       </FullScreenWrapper>

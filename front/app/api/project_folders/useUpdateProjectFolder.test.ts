@@ -31,12 +31,6 @@ describe('useUpdateProjectFolder', () => {
           'nl-BE': 'new folder',
           'nl-NL': 'new folder',
         },
-        description_multiloc: {
-          en: '<p>test</p>',
-          'fr-BE': '<p>test</p>',
-          'nl-BE': '<p>test</p>',
-          'nl-NL': '<p>test</p>',
-        },
         admin_publication_attributes: {
           publication_status: 'published',
         },

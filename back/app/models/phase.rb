@@ -64,6 +64,7 @@
 #
 class Phase < ApplicationRecord
   include Polls::PollPhase
+  include PlainTextMultiloc
   include Surveys::SurveyPhase
   include Volunteering::VolunteeringPhase
   include DocumentAnnotation::DocumentAnnotationPhase
@@ -92,6 +93,7 @@ class Phase < ApplicationRecord
   has_one :custom_form, as: :participation_context, dependent: :destroy # native_survey only
 
   has_many :baskets, dependent: :destroy
+  has_many :ai_assistant_conversations, class_name: 'AIAssistant::Conversation', as: :subject, dependent: :destroy
   has_many :permissions, as: :permission_scope, dependent: :destroy
   has_many :ideas_phases, dependent: :destroy
   has_many :ideas, through: :ideas_phases
@@ -102,6 +104,7 @@ class Phase < ApplicationRecord
 
   before_validation :sanitize_description_multiloc
   before_validation :sanitize_draft_description_multiloc
+  plain_text_multiloc :title_multiloc, :native_survey_title_multiloc, :native_survey_button_multiloc
   before_validation :strip_title
   before_validation :set_participation_method_defaults, on: :create
   before_validation :set_participation_method_defaults_on_method_change, on: :update
@@ -119,6 +122,7 @@ class Phase < ApplicationRecord
   validate :validate_duration
   validate :validate_previous_phase_can_be_closed # see also Phase#close_previous_open_phase
   validate :validate_no_other_overlapping_phases
+  validate :validate_standalone_participation_method
   validates :manual_voters_amount, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
   # This is a counter cache column, but it was too complex to implement it with counter_culture. It's
   # therefore updated manually by calling update_manual_votes_count! through the idea sidefx service.
@@ -129,7 +133,6 @@ class Phase < ApplicationRecord
   validates :participation_method, inclusion: { in: PARTICIPATION_METHODS }
   validates :placement_type, inclusion: { in: PLACEMENT_TYPES }
   validates :prescreening_mode, inclusion: { in: PRESCREENING_MODES }, allow_nil: true
-  validate :validate_prescreening_mode, if: :prescreening_mode_changed?
 
   with_options if: ->(phase) { phase.pmethod.supports_public_visibility? } do
     validates :presentation_mode, inclusion: { in: PRESENTATION_MODES }
@@ -208,6 +211,7 @@ class Phase < ApplicationRecord
   with_options if: ->(phase) { phase.pmethod.supports_survey_form? } do
     validates :native_survey_title_multiloc, presence: true, multiloc: { presence: true }
     validates :native_survey_button_multiloc, presence: true, multiloc: { presence: true }
+    validates :allow_multiple_responses, inclusion: { in: [true, false] }
   end
 
   validate :validate_no_inputs_on_participation_method_change, on: :update
@@ -237,6 +241,11 @@ class Phase < ApplicationRecord
 
   def complete?
     ends_before?(Time.zone.now)
+  end
+
+  def active?(time = Time.now)
+    time = time.in_time_zone
+    start_at <= time && (end_at.nil? || time < end_at)
   end
 
   def permission_scope
@@ -283,6 +292,14 @@ class Phase < ApplicationRecord
     participation_method == 'ideation'
   end
 
+  # The inputs that belong in an export/report of this phase: submitted or
+  # published inputs, minus content-less rows for methods that keep drafts
+  # (ideation/proposals). Survey methods keep every submission.
+  def inputs_for_export
+    scope = ideas.submitted_or_published
+    pmethod.supports_survey_form? ? scope : scope.with_content
+  end
+
   def pmethod
     @pmethod = case participation_method
     when 'information'
@@ -312,11 +329,10 @@ class Phase < ApplicationRecord
     end
   end
 
-  def placement_strategy
-    @placement_strategy ||= case placement_type
-    when 'standalone' then PhasePlacementStrategy::Standalone.new
-    else PhasePlacementStrategy::OnTimeline.new
-    end
+  # Whether the phase is placed on the project timeline, as opposed to running
+  # in parallel with it (e.g. an extra survey).
+  def on_timeline?
+    placement_type == 'on_timeline'
   end
 
   def set_manual_voters(amount, user)
@@ -344,29 +360,25 @@ class Phase < ApplicationRecord
     available_views&.include?('feed')
   end
 
-  def prescreening_enabled? = prescreening_mode.present?
-  def prescreening_flagged_only? = prescreening_mode == 'flagged_only'
-  def prescreening_all? = prescreening_mode == 'all'
+  def prescreening_enabled? = effective_prescreening_mode.present?
+  def prescreening_flagged_only? = effective_prescreening_mode == 'flagged_only'
+  def prescreening_all? = effective_prescreening_mode == 'all'
 
-  private
-
-  def validate_prescreening_mode
+  # The configured `prescreening_mode`, reduced to what this platform's features permit.
+  # The column is configuration data and is stored verbatim: tenant templates and project
+  # copies carry it between platforms whose features differ, so it can be set on a
+  # platform where prescreening is not available. It only takes effect where it is.
+  def effective_prescreening_mode
     return if prescreening_mode.nil?
 
     prescreening_flag = participation_method == 'proposals' ? 'prescreening' : 'prescreening_ideation'
+    return unless AppConfiguration.instance.feature_activated?(prescreening_flag)
+    return if prescreening_mode == 'flagged_only' && !AppConfiguration.instance.feature_activated?('flag_inappropriate_content')
 
-    # Any prescreening mode requires the prescreening feature to be enabled.
-    unless AppConfiguration.instance.feature_activated?(prescreening_flag)
-      errors.add(:prescreening_mode, "requires the #{prescreening_flag} feature to be enabled")
-      return
-    end
-
-    # 'flagged_only' mode requires the flag_inappropriate_content feature to be enabled.
-    return unless prescreening_mode == 'flagged_only'
-    return if AppConfiguration.instance.feature_activated?('flag_inappropriate_content')
-
-    errors.add(:prescreening_mode, 'requires the flag_inappropriate_content feature to be enabled')
+    prescreening_mode
   end
+
+  private
 
   def sanitize_description_multiloc
     self.description_multiloc = sanitize_html_multiloc(description_multiloc)
@@ -379,7 +391,7 @@ class Phase < ApplicationRecord
   end
 
   def validate_end_at
-    return if !placement_strategy.sequential?
+    return if !on_timeline?
     return if end_at.present? || TimelineService.new.last_phase?(self)
 
     errors.add(:end_at, message: 'cannot be blank unless it is the last phase')
@@ -392,7 +404,7 @@ class Phase < ApplicationRecord
   end
 
   def validate_no_other_overlapping_phases
-    return if !placement_strategy.sequential?
+    return if !on_timeline?
 
     TimelineService.new.overlapping_phases(self).each do |other_phase|
       # Skip open-ended phases that start before this phase as they have their own
@@ -405,7 +417,7 @@ class Phase < ApplicationRecord
   end
 
   def validate_previous_phase_can_be_closed
-    return if !placement_strategy.sequential?
+    return if !on_timeline?
 
     previous_phase = TimelineService.new.previous_phase(self)
     return unless previous_phase && previous_phase.end_at.nil?
@@ -417,7 +429,7 @@ class Phase < ApplicationRecord
   end
 
   def close_previous_open_phase
-    return if !placement_strategy.sequential?
+    return if !on_timeline?
 
     previous_phase = TimelineService.new.previous_phase(self)
     return unless previous_phase && previous_phase.end_at.nil?
@@ -476,7 +488,22 @@ class Phase < ApplicationRecord
 
     unless available_views.include?(presentation_mode)
       errors.add(:available_views, :invalid, message: 'must include the default presentation mode')
+      return
     end
+
+    # The rest is narrower: some methods do not offer every view. It only applies when the views or
+    # the method are written, so a phase left holding a view its method no longer offers can still
+    # be saved for unrelated edits until the data has been migrated. The method is part of that
+    # condition because switching it can invalidate views that were fine a moment before.
+    return unless presentation_mode_changed? || available_views_changed? || participation_method_changed?
+
+    disallowed = (available_views + [presentation_mode]).compact.uniq - pmethod.allowed_presentation_modes
+    return if disallowed.empty?
+
+    errors.add(
+      :available_views, :invalid,
+      message: "#{disallowed.join(', ')} not available for the #{participation_method} method"
+    )
   end
 
   def validate_no_inputs_on_participation_method_change
@@ -495,6 +522,13 @@ class Phase < ApplicationRecord
   # Delegate any rules specific to a method to the participation method itself
   def validate_phase_participation_method
     pmethod.validate_phase
+  end
+
+  def validate_standalone_participation_method
+    return if on_timeline?
+    return if pmethod.supports_standalone_placement?
+
+    errors.add(:participation_method, :not_supported_in_standalone_phase, message: 'is not supported in standalone phases')
   end
 
   def sanitize_html_multiloc(multiloc)

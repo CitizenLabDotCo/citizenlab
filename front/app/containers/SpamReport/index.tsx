@@ -17,7 +17,7 @@ const SpamReportForm = ({ targetType, targetId }: Props) => {
 
   const {
     mutate: addSpamReport,
-    isLoading,
+    isPending,
     isSuccess,
     error,
     reset,
@@ -72,7 +72,7 @@ const SpamReportForm = ({ targetType, targetId }: Props) => {
         onReasonChange={handleSelectionChange}
         onTextChange={handleReasonTextUpdate}
         onSubmit={handleSubmit}
-        loading={isLoading}
+        loading={isPending}
         saved={isSuccess}
         errors={error?.errors || null}
       />

@@ -24,7 +24,6 @@ import useDeleteSelf from 'api/users/useDeleteSelf';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 import useLocale from 'hooks/useLocale';
-import useParallelParticipation from 'hooks/useParallelParticipation';
 
 import {
   appLocalesMomentPairs,
@@ -34,8 +33,10 @@ import {
 import Authentication from 'containers/Authentication';
 import MainHeader from 'containers/MainHeader';
 
+import { HOMEPAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/constants';
 import ConsentManager from 'components/ConsentManager';
 import ErrorBoundary from 'components/ErrorBoundary';
+import WeglotSwitcher from 'components/WeglotSwitcher';
 
 import { trackPage } from 'utils/analytics';
 import { useIntl } from 'utils/cl-intl';
@@ -48,6 +49,7 @@ import patchMomentDeAtJanuary from 'utils/patchMomentDeAtJanuary';
 import { usePermission } from 'utils/permissions';
 import { isAdmin, isModerator } from 'utils/permissions/roles';
 import { useLocation } from 'utils/router';
+import { WEGLOT_READY_EVENT } from 'utils/weglot';
 
 import messages from './messages';
 import Meta from './Meta';
@@ -82,6 +84,9 @@ interface Props {
 }
 
 const importedLocales = new Set();
+
+const ADMIN_PROJECT_PAGE_REGEX =
+  /\/admin\/projects\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
 async function importMomentLocaleFilePromise(momentLocale: string) {
   try {
     await localeGetter(momentLocale);
@@ -112,13 +117,11 @@ const App = ({ children }: Props) => {
   const appContainerClassName =
     isAdmin(authUser) || isModerator(authUser) ? 'admin-user-view' : '';
 
-  const parallelParticipation = useParallelParticipation();
-  const projectSlug = pathname.match(/\/admin\/projects\/([^/]+)/)?.[1];
-  const lockViewport =
-    parallelParticipation &&
-    !!projectSlug &&
-    projectSlug !== 'new' &&
-    projectSlug !== 'folders';
+  // A project page scrolls its own panes, so it locks the viewport. The other
+  // sections under /admin/projects/ (new, folders, spaces) are ordinary pages
+  // that have to keep scrolling, so match the project id rather than listing
+  // the section names — a name left off that list silently stops scrolling.
+  const lockViewport = ADMIN_PROJECT_PAGE_REGEX.test(pathname);
   const [
     userDeletedSuccessfullyModalOpened,
     setUserDeletedSuccessfullyModalOpened,
@@ -201,6 +204,7 @@ const App = ({ children }: Props) => {
             appConfiguration.data.attributes.settings.core.weglot_api_key;
           if (window.Weglot && apiKey) {
             window.Weglot.initialize({ api_key: apiKey });
+            window.dispatchEvent(new Event(WEGLOT_READY_EVENT));
           }
         };
 
@@ -330,9 +334,7 @@ const App = ({ children }: Props) => {
 
   const isAdminPage = isPage('admin', pathname);
   const isPagesAndMenuPage = isPage('pages_menu', pathname);
-  const isHomePageBuilderRoute = pathname.match(
-    /\/admin\/pages-menu\/homepage-builder/
-  );
+  const isHomePageBuilderRoute = pathname.includes(HOMEPAGE_BUILDER_PATH);
   const isIdeaFormPage = isPage('idea_form', pathname);
   const isIdeaEditPage = isPage('idea_edit', pathname);
   const isNativeSurveyPage = isPage('native_survey', pathname);
@@ -427,6 +429,14 @@ const App = ({ children }: Props) => {
             {showFrontOfficeNavbar() && (
               <ErrorBoundary>
                 <MainHeader />
+              </ErrorBoundary>
+            )}
+            {/* The navbar carries the switcher, and the survey and idea forms
+                carry it in their own footer. The ideas feed hides the navbar
+                and has no footer, so there it floats. */}
+            {isIdeasFeedPage && (
+              <ErrorBoundary>
+                <WeglotSwitcher floating />
               </ErrorBoundary>
             )}
             {!isAuthenticationPending && (

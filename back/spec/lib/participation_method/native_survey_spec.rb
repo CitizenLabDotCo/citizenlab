@@ -101,13 +101,6 @@ RSpec.describe ParticipationMethod::NativeSurvey do
     end
   end
 
-  describe '#author_in_form?' do
-    it 'returns false for a moderator when idea_author_change is activated' do
-      SettingsService.new.activate_feature! 'idea_author_change'
-      expect(participation_method.author_in_form?(create(:admin))).to be false
-    end
-  end
-
   describe '#budget_in_form?' do
     it 'returns false for a moderator' do
       expect(participation_method.budget_in_form?(create(:admin))).to be false
@@ -187,12 +180,15 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   its(:supports_public_visibility?) { is_expected.to be false }
   its(:supports_reacting?) { is_expected.to be false }
   its(:supports_status?) { is_expected.to be false }
+  its(:supports_standalone_placement?) { is_expected.to be true }
   its(:supports_submission?) { is_expected.to be true }
+  its(:supports_input_pdf_export?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be false }
   its(:use_reactions_as_votes?) { is_expected.to be false }
   its(:transitive?) { is_expected.to be false }
   its(:destroy_ideas_on_phase_destroy?) { is_expected.to be true }
-  its(:form_logic_enabled?) { is_expected.to be true }
+  its(:supports_form_logic?) { is_expected.to be true }
+  its(:form_editable_after_responses?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be false }
   its(:supports_custom_field_categories?) { is_expected.to be false }
   its(:supports_multiple_phase_reports?) { is_expected.to be false }
@@ -202,6 +198,17 @@ RSpec.describe ParticipationMethod::NativeSurvey do
   describe 'proposed_budget_in_form?' do # private method
     it 'is expected to be false' do
       expect(participation_method.send(:proposed_budget_in_form?)).to be false
+    end
+  end
+
+  describe '#allow_posting_again_after' do
+    # The nil (single response) case is covered by the `its` example above.
+    context 'when the phase allows multiple responses' do
+      let(:phase) { create(:native_survey_phase, allow_multiple_responses: true) }
+
+      it 'returns 0.seconds so the posting limit is lifted' do
+        expect(participation_method.allow_posting_again_after).to eq 0.seconds
+      end
     end
   end
 end

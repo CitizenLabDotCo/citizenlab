@@ -60,7 +60,7 @@ describe Permissions::SideFxPermissionService do
     end
 
     it "does not log a 'changed_permitted_by' job when permitted_by is unchanged" do
-      permission.update!(global_custom_fields: true)
+      permission.update!(custom_fields_behavior: 'disabled')
 
       expect { service.after_update(permission, user) }
         .not_to have_enqueued_job(LogActivityJob)

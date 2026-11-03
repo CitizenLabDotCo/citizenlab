@@ -36,6 +36,7 @@ sv-SE:
         project_participants: Till projektdeltagare
         registered_users: Till registrerade användare
       recipient_segment:
+        admin_who_generated_the_report: Administratören som begärde rapporten
         admins: Administratörer
         admins_and_managers: Administratörer och projektledare
         admins_and_managers_assigned_to_the_input: Administratörer och projektledare som har tilldelats bidraget
@@ -77,6 +78,7 @@ sv-SE:
         users_who_follow_the_proposal: Användare som följer förslaget
       trigger:
         7_days_after_invite_is_sent: 7 dagar efter att inbjudan skickats
+        7_days_before_phase_starts: 7 dagar innan en fas startar
         7_days_before_the_project_changes_phase: 7 dagar innan projektet byter fas
         comment_is_deleted: Kommentaren tas bort.
         comment_is_flagged_as_spam: Kommentaren flaggas som skräppost
@@ -95,6 +97,7 @@ sv-SE:
         new_input_awaits_screening: Mitt bidrag väntar på bedömning
         new_input_is_published: Ny input publiceras
         new_proposal_is_posted: Ett nytt förslag har lagts fram.
+        phase_starts: En fas startar
         project_phase_changes: Förändringar i projektfas
         project_published: Projekt publicerat
         project_review_request: Moderator begärde en projektgenomgång
@@ -107,6 +110,7 @@ sv-SE:
         proposal_is_upvoted_above_threshold: Förslaget har fått fler röster än tröskelvärdet
         proposal_status_changes: Statusändringar för förslag
         registration_to_event: Anmälan till ett evenemang
+        report_generated: En rapport har genererats
         survey_1_day_after_draft_saved: 1 dag efter att användaren senast sparade enkäten i utkast
         user_accepts_invitation_to_cosponsor_a_proposal: Användaren accepterar inbjudan att vara medsponsor för ett förslag
         user_changes_email: Användaren ändrar sin e-postadress
@@ -184,24 +188,29 @@ sv-SE:
       manual_project_participants: Officiella meddelanden till projektdeltagare
       mention_in_internal_comment: Omnämnande i en intern kommentar
       mention_in_official_feedback: Nämnd i en uppdatering
+      merge_account_confirmation: Bekräftelsekod för sammanslagning av konton
       moderator_digest: Veckoöversikt för projektledare
       native_survey_not_submitted: Enkät ej inlämnad
       new_comment_for_admin: Ny kommentar i ett projekt jag modererar
       new_email_confirmation: Ny bekräftelsekod för e-postadress
       new_idea_for_admin_prescreening: Ny input som kräver godkännande i ett projekt I måttlig
       new_idea_for_admin_published: Ny publicerad input i ett projekt som jag modererar
+      new_phone_confirmation: Ny bekräftelsekod för telefon
       official_feedback_on_idea_you_follow: Uppdatering av en idé som du följer
       password_reset: Återställning av lösenord
+      phone_confirmation: Bekräftelsekod för telefonnummer
       project_folder_moderation_rights_received: Rättigheter som mapphanterare har erhållits
       project_manager_rights_received: Rättigheter som projektledare mottagna
       project_moderation_rights_received: Rättigheter för projektmoderering har erhållits
-      project_phase_started: Ny projektfas
-      project_phase_upcoming: Kommande ny projektfas
+      project_phase_started: Fasen har startat
+      project_phase_upcoming: Fasen startar snart
       project_published: Projekt publicerat
       project_review_request: Begäran om projektgranskning
       project_review_state_change: Projekt godkänt
       proposal_expired_for_admin: Förslaget har löpt ut utan att nå rösttröskeln
+      report_generated: Rapporten har genererats
       screening_digest: Påminnelse om screening varje vecka
+      sms_manual: Officiella SMS-meddelanden
       space_moderation_rights_received: Rättigheter som space-ansvarig mottagna
       status_change_on_idea_you_follow: Statusförändring av en idé som du följer
       survey_submitted: Undersökning inlämnad
@@ -356,6 +365,7 @@ sv-SE:
         story: Gå till din berättelse
         suggestion: Gå till ditt förslag
         topic: Gå till ditt ämne
+      phase_dates: Från %{startDate} till %{endDate}
     idea_marked_as_spam:
       cta_button: Granskning
       preheader: Agera på den här skräppostrapporten
@@ -471,6 +481,15 @@ sv-SE:
       preheader: '%{commentAuthor} nämnde dig i återkoppling'
       subject: '%{organizationName} nämnde dig i sin återkoppling'
       title: Du har blivit omnämnd
+    merge_account_confirmation:
+      best_regards: Med vänliga hälsningar,
+      event_description: 'Någon har loggat in på %{organizationName}s plattform för medborgarinflytande och bett om att koppla inloggningen till kontot med den här e-postadressen. Om det var du, ange den här bekräftelsekoden för att fortsätta:'
+      expire_code: Den här koden går ut om
+      hours_24: 24 timmar.
+      ignore_email: Om det inte var du kan du bortse från det här e-postmeddelandet. Ingenting har ändrats och ingen kan använda koden utan tillgång till den här inkorgen.
+      preheader: Bekräfta din e-postadress för %{organizationName}
+      subject: Bekräfta din e-postadress för %{organizationName}s plattform för medborgarinflytande
+      title: Bekräfta din e-postadress
     moderator_digest:
       cta_button: Hantera ditt projekt
       event_description: Vi har sammanställt den input som har genererat mest aktivitet under den senaste veckan. Ta reda på vad som händer med ditt projekt!
@@ -534,6 +553,9 @@ sv-SE:
       title: Ett nytt inlägg har publicerats på din plattform
       today: I dag
       yesterday: Igår
+    new_phone_confirmation:
+      sms_body: Din bekräftelsekod är %{code}.
+      sms_body2: '%{organization_name}: Din bekräftelsekod är %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Gå till denna ingång
       event_description: '%{feedback_author_name} gav en uppdatering om "%{input_title}".'
@@ -546,6 +568,9 @@ sv-SE:
       preheader: Återställ ditt lösenord för %{organizationName}
       subject: '%{organizationName}: Återställ ditt lösenord'
       title: Välj ett nytt lösenord
+    phone_confirmation:
+      sms_body: Din bekräftelsekod är %{code}.
+      sms_body2: '%{organization_name}: Din bekräftelsekod är %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -564,8 +589,9 @@ sv-SE:
       input_status_description: Ett exempel på status för en inmatning (t.ex. accepterad, avvisad, implementerad...)
       input_status_title: Exempel Status
       official_feedback_body: Exempel på officiell feedback
+      phase_description: Detta är ett exempel på fasinnehåll som används för att förhandsgranska innehållet i e-postmeddelanden. Detta är inte verkligt innehåll.
       phase_title: Exempel på fas
-      project_description_preview: Det här är ett exempel på fasinnehåll som används för att förhandsgranska innehållet i e-postmeddelanden. Det här är inte riktigt innehåll.
+      project_description_preview: Detta är exempel på projektinnehåll som används för att förhandsgranska innehållet i e-postmeddelanden. Detta är inte verkligt innehåll.
       project_title: Exempel på projekt
       proposal_title: Exempel på förslag
       space_title: Exempel-space
@@ -600,21 +626,21 @@ sv-SE:
       title_what_can_you_do_moderator: Vad kan du göra som projektledare?
       x_ideas: '%{numberOfIdeas} idéer'
     project_phase_started:
-      cta_button: Upptäck denna nya fas
-      event_description: Det här projektet gick in i en ny fas på plattformen för %{organizationName}. Klicka på länken nedan för att lära dig mer!
+      cta_button: Se vad som är nytt
+      event_description: "Du kan nu delta i '%{phaseTitle}' på %{organizationName}s plattform."
       new_phase: Det här projektet gick in i fasen %{phaseTitle}
-      preheader: En ny fas har startats för %{projectName}
-      subject: '%{projectName} gick in i en ny fas'
+      preheader: "Du kan nu delta i '%{phaseTitle}'"
+      subject: "'%{phaseTitle}' har startat i %{projectName}"
       subtitle: "Om '%{projectName}'"
-      title: "En ny fas har inletts för projektet '%{projectName}'"
+      title: "Det finns något nytt i '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Starta den nya fasen
-      event_description: 'Projektet %{projectName} går snart in i en ny fas. Se till att allt är inställt för den här fasen: Finns det en adekvat beskrivning? Överförs utvalda idéer till den här fasen? Vill du informera dina medborgare om detaljerna i den här fasen genom en anpassad e-postkampanj?'
+      cta_button: Granska inställningarna
+      event_description: "'%{phaseTitle}' i projektet '%{projectName}' startar den %{startDate}. Ta en stund för att kontrollera att allt är klart: Är beskrivningen fullständig? Stämmer datumen? Vill du informera ditt community genom en anpassad e-postkampanj?"
       new_phase: Projektet går in i fasen %{phaseTitle}
-      preheader: En ny fas startar snart för %{projectName}
-      subject: Få allt konfigurerat för den nya fasen av %{projectName}
+      preheader: Se till att allt är klart före %{startDate}
+      subject: "%{projectName}: '%{phaseTitle}' startar den %{startDate}"
       subtitle: "Om '%{projectName}'"
-      title: '%{firstName}, ett projekt kommer snart att gå in i en ny fas'
+      title: "%{firstName}, '%{phaseTitle}' startar den %{startDate}"
     project_published:
       cta_button: Gå till detta projekt
       event_description: 'Deltagarplattformen på %{organizationName} har just publicerat följande projekt:'
@@ -638,6 +664,13 @@ sv-SE:
       preheader: Ett bidrag har löpt ut utan att nå tröskeln
       subject: '"%{input_title}" har löpt ut utan att nå tröskeln'
       title: Ett bidrag har löpt ut utan att nå rösttröskeln
+    report_generated:
+      cta_button: Öppna rapporten
+      event_description: Rapporten har skrivits och är klar för dig att granska och redigera.
+      preheader: Din rapport är klar
+      stopped_early: Skrivandet avbröts innan rapporten var klar. Allt som skrivits hittills har sparats – öppna den och be om resten i chatten.
+      subject: Din rapport för ”%{projectName}” är klar
+      title: Din rapport är klar
     schedules:
       quarterly: Kvartalsvis, den första dagen i kvartalet
       weekly:

@@ -22,14 +22,12 @@ describe('Space moderator: permissions', () => {
 
       cy.apiCreateFolder({
         title: folderName,
-        description: randomString(),
         spaceId,
       }).then((response) => {
         folderId = response.body.data.id;
 
         cy.apiCreateProject({
           title: randomString(),
-          description: randomString(),
           publicationStatus: 'published',
           folderId,
         }).then((response) => {
@@ -74,13 +72,16 @@ describe('Space moderator: permissions', () => {
     cy.setLoginCookie(spaceModEmail, spaceModPassword);
     cy.visit(`/admin/projects/${projectId}/general`);
 
-    cy.get('#e2e-project-title-setting-field').clear().type('New project name');
+    cy.get('.e2e-project-general-form textarea')
+      .first()
+      .clear()
+      .type('New project homepage description');
     cy.get('.e2e-submit-wrapper-button > button').click();
     cy.get('.e2e-submit-wrapper-button').contains('Success!');
     cy.reload();
-    cy.dataCy('e2e-project-title-preview-link-to-settings').contains(
-      'New project name'
-    );
+    cy.get('.e2e-project-general-form textarea')
+      .first()
+      .should('have.value', 'New project homepage description');
   });
 
   it('Can create and delete folder in space', () => {
@@ -128,9 +129,8 @@ describe('Space moderator: permissions', () => {
       const folderId = folderAdminUrl.split('/folders/')[1].split(/[/?#]/)[0];
 
       cy.visit(`/admin/projects/folders/${folderId}/settings`);
-      cy.get('#e2e-project-description-builder-link')
-        .should('be.visible')
-        .click();
+      // The button only shows while the preview is hovered, which Cypress cannot do.
+      cy.dataCy('e2e-edit-page-content').click({ force: true });
       cy.get('.e2e-text-box').click('center');
       cy.get('.ql-editor').click();
       cy.get('.ql-editor').type(folderDescription, { force: true });
@@ -219,9 +219,10 @@ describe('Space moderator: permissions', () => {
     const projectName = randomString();
     enterProjectName(projectName);
 
-    // Select folder
-    cy.dataCy('project-context-folder-radio').click();
+    // Select folder. The space follows from the folder, so it is not selected
+    // separately here.
     cy.dataCy('project-folder-select').select(folderId);
+    cy.dataCy('space-select').should('have.value', spaceId);
 
     // Submit
     cy.get('.e2e-submit-wrapper-button button').click();
@@ -248,8 +249,9 @@ describe('Space moderator: permissions', () => {
     const projectName = randomString();
     enterProjectName(projectName);
 
-    // Select root
-    cy.dataCy('project-context-root-radio').click();
+    // Leave both selects empty: no space, no folder.
+    cy.dataCy('space-select').should('have.value', '/');
+    cy.dataCy('project-folder-select').should('have.value', '/');
 
     // Submit
     cy.get('.e2e-submit-wrapper-button button').click();

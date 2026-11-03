@@ -15,6 +15,7 @@ export const Widget = () => {
 
   return (
     <Box
+      className="intercom-admin-tools-widget-card"
       background={colors.white}
       display="flex"
       p="20px"

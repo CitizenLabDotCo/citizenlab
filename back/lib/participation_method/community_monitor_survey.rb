@@ -41,12 +41,16 @@ module ParticipationMethod
       }
     end
 
-    def form_logic_enabled?
+    def form_editable_after_responses?
+      true
+    end
+
+    def supports_form_logic?
       false
     end
 
     def everyone_tracking_enabled?
-      permission = phase.permissions&.find_by(action: 'posting_idea')
+      permission = Permissions::PermissionInheritanceService.new.find(phase, 'posting_idea')
       return false unless permission
 
       permission.everyone_tracking_enabled?
@@ -71,6 +75,10 @@ module ParticipationMethod
     end
 
     def supports_event_attendance?
+      false
+    end
+
+    def supports_standalone_placement?
       false
     end
 

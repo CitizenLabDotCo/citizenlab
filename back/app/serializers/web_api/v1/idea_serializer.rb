@@ -43,6 +43,13 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
     Permissions::IdeaPermissionsService.new(object, current_user(params), user_requirements_service: user_requirements_service).action_descriptors
   end
 
+  # Whether this input is a public contribution (ideation, proposals, voting,
+  # common ground) rather than e.g. a survey response. Drives which actions the
+  # front-office offers on it.
+  attribute :supports_public_visibility do |input|
+    input.participation_method_on_creation.supports_public_visibility?
+  end
+
   attribute :reacting_threshold, if: proc { |input|
     input.participation_method_on_creation.supports_serializing_input?(:reacting_threshold)
   } do |input|
@@ -58,6 +65,7 @@ class WebApi::V1::IdeaSerializer < WebApi::V1::BaseSerializer
   belongs_to :author, record_type: :user, serializer: WebApi::V1::UserSerializer
   belongs_to :project
   belongs_to :idea_status
+  belongs_to :creation_phase, serializer: WebApi::V1::PhaseSerializer
 
   has_one :user_reaction, if: proc { |object, params|
     signed_in? object, params

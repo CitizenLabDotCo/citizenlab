@@ -29,7 +29,7 @@ const BannedEmails = () => {
     isLoading: isCheckingBan,
     error: checkError,
   } = useCheckEmailBan(searchedEmail);
-  const { mutate: unban, isLoading: isUnbanning } = useUnbanEmail();
+  const { mutate: unban, isPending: isUnbanning } = useUnbanEmail();
 
   const handleCheck = () => {
     if (emailToCheck.trim()) {

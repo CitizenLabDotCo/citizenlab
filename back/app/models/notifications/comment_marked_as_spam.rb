@@ -28,6 +28,7 @@
 #  cosponsorship_id              :uuid
 #  project_review_id             :uuid
 #  space_id                      :uuid
+#  report_id                     :uuid
 #
 # Indexes
 #
@@ -44,6 +45,7 @@
 #  index_notifications_on_project_review_id              (project_review_id)
 #  index_notifications_on_recipient_id                   (recipient_id)
 #  index_notifications_on_recipient_id_and_read_at       (recipient_id,read_at)
+#  index_notifications_on_report_id                      (report_id)
 #  index_notifications_on_space_id                       (space_id)
 #  index_notifications_on_spam_report_id                 (spam_report_id)
 #
@@ -63,6 +65,7 @@
 #  fk_rails_...  (project_id => projects.id)
 #  fk_rails_...  (project_review_id => project_reviews.id)
 #  fk_rails_...  (recipient_id => users.id)
+#  fk_rails_...  (report_id => report_builder_reports.id)
 #  fk_rails_...  (space_id => spaces.id)
 #  fk_rails_...  (spam_report_id => spam_reports.id)
 #
@@ -76,25 +79,26 @@ module Notifications
     def self.make_notifications_on(activity)
       spam_report = activity.item
       initiator_id = spam_report&.user_id
-      if spam_report.spam_reportable_type == 'Comment' && initiator_id
-        attributes = {
-          initiating_user_id: initiator_id,
-          spam_report: spam_report,
-          comment_id: spam_report.spam_reportable.id,
-          idea: spam_report.spam_reportable.idea,
-          reason_code: activity.payload['reason_code'],
-          other_reason: activity.payload['other_reason'],
-          project_id: spam_report.spam_reportable.idea.project_id
-        }
+      return [] unless spam_report.spam_reportable_type == 'Comment' && initiator_id
 
-        recipient_ids(initiator_id, attributes[:project_id]).map do |recipient_id|
-          new(
-            recipient_id: recipient_id,
-            **attributes
-          )
-        end
-      else
-        []
+      comment = spam_report.spam_reportable
+      return [] unless notify?(comment, where(comment_id: comment.id).maximum(:created_at))
+
+      attributes = {
+        initiating_user_id: initiator_id,
+        spam_report: spam_report,
+        comment_id: comment.id,
+        idea: comment.idea,
+        reason_code: activity.payload['reason_code'],
+        other_reason: activity.payload['other_reason'],
+        project_id: comment.idea.project_id
+      }
+
+      recipient_ids(initiator_id, attributes[:project_id]).map do |recipient_id|
+        new(
+          recipient_id: recipient_id,
+          **attributes
+        )
       end
     end
   end

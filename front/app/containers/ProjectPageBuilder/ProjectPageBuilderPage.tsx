@@ -11,9 +11,10 @@ import useUpdateProject from 'api/projects/useUpdateProject';
 
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useLocale from 'hooks/useLocale';
-import useParallelParticipation from 'hooks/useParallelParticipation';
 
+import { PROJECT_PAGE_BUILDER_PATH } from 'components/admin/ContentBuilder/constants';
 import { ContentBuilderLayoutProvider } from 'components/admin/ContentBuilder/context/ContentBuilderLayoutContext';
+import DropPlacementOverlay from 'components/admin/ContentBuilder/DropFeedback/DropPlacementOverlay';
 import FullscreenContentBuilder from 'components/admin/ContentBuilder/FullscreenContentBuilder';
 import { ContentBuilderErrors } from 'components/admin/ContentBuilder/typings';
 import DescriptionBuilderContent from 'components/DescriptionBuilder/DescriptionBuilderContent';
@@ -48,7 +49,6 @@ const ProjectPageBuilderPage = ({
   titleMultiloc,
 }: Props) => {
   const locale = useLocale();
-  const parallelParticipation = useParallelParticipation();
   const [previewEnabled, setPreviewEnabled] = useState(false);
   const [selectedLocale, setSelectedLocale] = useState(locale);
   const { pathname } = useLocation();
@@ -72,8 +72,7 @@ const ProjectPageBuilderPage = ({
     [layout]
   );
 
-  const builderVisible =
-    parallelParticipation && pathname.includes('admin/project-page-builder');
+  const builderVisible = pathname.includes(PROJECT_PAGE_BUILDER_PATH);
 
   // DO NOT REMOVE THESE useCallbacks, without them the content builder
   // becomes horribly slow
@@ -133,6 +132,10 @@ const ProjectPageBuilderPage = ({
         projectId,
         craftjs_json: stripProjectAttributeDrafts(nodes),
       });
+      iframeRef.current?.contentWindow?.postMessage(
+        { layoutSaved: true },
+        window.location.href
+      );
 
       return true;
     } catch {
@@ -190,6 +193,7 @@ const ProjectPageBuilderPage = ({
               editorData={editorData}
             />
             <ContentBuilderSettings />
+            <DropPlacementOverlay />
           </Box>
         </Editor>
         <Box justifyContent="center" display={previewEnabled ? 'flex' : 'none'}>

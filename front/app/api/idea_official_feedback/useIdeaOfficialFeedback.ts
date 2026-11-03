@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -25,13 +25,15 @@ const useIdeaOfficialFeedback = (params: IParameters) => {
   return useInfiniteQuery<
     IOfficialFeedbacks,
     CLErrors,
-    IOfficialFeedbacks,
-    IdeaOfficialFeedbackKeys
+    InfiniteData<IOfficialFeedbacks>,
+    IdeaOfficialFeedbackKeys,
+    number
   >({
     queryKey: ideaOfficialFeedbackKeys.list(params),
     queryFn: ({ pageParam }) => {
       return fetchOfficialFeedback({ ...params, pageNumber: pageParam });
     },
+    initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       // TODO: Fix this the next time the file is edited.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition

@@ -10,10 +10,7 @@ import { useIntl } from 'utils/cl-intl';
 import { isNilOrError } from 'utils/helperUtils';
 import { useParams } from 'utils/router';
 
-import {
-  pagesAndMenuBreadcrumb,
-  pagesAndMenuBreadcrumbLink,
-} from '../../breadcrumbs';
+import { pagesBreadcrumb, pagesBreadcrumbLink } from '../../breadcrumbs';
 import SectionFormWrapper from '../../components/SectionFormWrapper';
 import ShownOnPageBadge from '../../components/ShownOnPageBadge';
 import { adminCustomPageContentLink } from '../../routes';
@@ -35,11 +32,22 @@ const ProjectList = () => {
     return null;
   }
 
+  // Folders can only be listed when filtering by space: areas and tags are
+  // project-level associations, so the list is projects-only in those cases.
+  const showsFolders =
+    customPage.data.attributes.projects_filter_type === 'spaces';
+  const pageTitle = showsFolders
+    ? messages.pageTitle
+    : messages.projectsPageTitle;
+  const pageMetaTitle = showsFolders
+    ? messages.pageMetaTitle
+    : messages.projectsPageMetaTitle;
+
   return (
     <>
-      <HelmetIntl title={messages.pageMetaTitle} />
+      <HelmetIntl title={pageMetaTitle} />
       <SectionFormWrapper
-        title={formatMessage(messages.pageTitle)}
+        title={formatMessage(pageTitle)}
         badge={
           <ShownOnPageBadge
             shownOnPage={customPage.data.attributes.projects_enabled}
@@ -47,15 +55,15 @@ const ProjectList = () => {
         }
         breadcrumbs={[
           {
-            label: formatMessage(pagesAndMenuBreadcrumb.label),
-            link: pagesAndMenuBreadcrumbLink,
+            label: formatMessage(pagesBreadcrumb.label),
+            link: pagesBreadcrumbLink,
           },
           {
             label: localize(customPage.data.attributes.title_multiloc),
             link: adminCustomPageContentLink(customPageId),
           },
           {
-            label: formatMessage(messages.pageTitle),
+            label: formatMessage(pageTitle),
           },
         ]}
         rightSideCTA={

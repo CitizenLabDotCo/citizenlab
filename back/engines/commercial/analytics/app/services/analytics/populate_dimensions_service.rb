@@ -6,8 +6,6 @@ module Analytics
       def run
         populate_dates
         populate_types
-        populate_locales
-        populate_referrer_types
       end
 
       def populate_types
@@ -41,12 +39,14 @@ module Analytics
         tenant_creation = AppConfiguration.instance.created_at
         first_idea = Idea.order(:created_at).limit(1).pluck(:created_at)[0]
         first_activity_date = [tenant_creation, first_idea].compact.min.to_date
+        first_dimension_date, last_dimension_date = Analytics::DimensionDate.pick(
+          Arel.sql('MIN(date)'),
+          Arel.sql('MAX(date)')
+        )
 
-        if Analytics::DimensionDate.none?
+        if first_dimension_date.nil?
           from = first_activity_date
         else
-          first_dimension_date = Analytics::DimensionDate.order(date: :asc).first.date
-          last_dimension_date = Analytics::DimensionDate.order(date: :desc).first.date
           from = last_dimension_date + 1.day
           if first_activity_date < first_dimension_date
             # Back fill any earlier dates that may have been missed due to previous issue with population
@@ -70,32 +70,6 @@ module Analytics
             Analytics::DimensionDate.insert_all(dates)
           end
         end
-      end
-
-      def populate_locales
-        locales = AppConfiguration.instance.settings('core', 'locales').map do |locale_name|
-          { name: locale_name }
-        end
-
-        current_locales = Analytics::DimensionLocale.all.as_json(only: %i[name])
-        return if current_locales.to_set == locales.as_json.to_set
-
-        Analytics::DimensionLocale.insert_all(locales)
-      end
-
-      def populate_referrer_types
-        types = [
-          { key: 'website', name: 'Websites' },
-          { key: 'social', name: 'Social Networks' },
-          { key: 'search', name: 'Search Engines' },
-          { key: 'campaigns', name: 'Campaigns' },
-          { key: 'direct', name: 'Direct Entry' }
-        ]
-
-        current_types = Analytics::DimensionReferrerType.all.as_json(only: %i[key name])
-        return if current_types.to_set == types.as_json.to_set
-
-        Analytics::DimensionReferrerType.insert_all(types)
       end
     end
   end

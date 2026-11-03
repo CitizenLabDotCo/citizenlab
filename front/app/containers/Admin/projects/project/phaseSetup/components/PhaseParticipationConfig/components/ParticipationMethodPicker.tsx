@@ -8,7 +8,6 @@ import {
   colors,
   Tooltip,
 } from '@citizenlab/cl2-component-library';
-import styled from 'styled-components';
 import { CLErrors } from 'typings';
 
 import { ParticipationMethod } from 'api/phases/types';
@@ -32,23 +31,8 @@ import surveyImage from './assets/survey.png';
 import volunteeringImage from './assets/volunteering.png';
 import votingImage from './assets/voting.png';
 import messages2 from './messages';
-import ParticipationMethodChoice, {
-  ChildText,
-} from './ParticipationMethodChoice';
-
-const LeftAlignedList = styled.ul`
-  text-align: left;
-`;
-
-const ParticipationMethodDescriptionWrapper = styled.div<{ selected: boolean }>`
-  width: 100%;
-  color: ${({ selected }) => (selected ? colors.primary : colors.coolGrey500)};
-
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  text-align: left;
-  line-height: 21px;
-`;
+import ParticipationMethodChoice from './ParticipationMethodChoice';
+import SurveyMethodChoices from './SurveyMethodChoices';
 
 interface Props {
   participation_method: ParticipationMethod;
@@ -79,9 +63,6 @@ const ParticipationMethodPicker = ({
   });
   const documentAnnotationEnabled = useFeatureFlag({
     name: 'konveio_document_annotation',
-  });
-  const pollsEnabled = useFeatureFlag({
-    name: 'polls',
   });
   const commonGroundEnabled = useFeatureFlag({
     name: 'common_ground',
@@ -295,72 +276,11 @@ const ParticipationMethodPicker = ({
                   </SubSectionTitle>
                 </Box>
 
-                <ParticipationMethodChoice
-                  onClick={(event) =>
-                    handleMethodSelect(event, 'native_survey')
-                  }
-                  title={formatMessage(messages2.survey)}
-                  selected={selectedMethod === 'native_survey'}
-                  key="native_survey"
-                  participation_method="native_survey"
-                >
-                  <ParticipationMethodDescriptionWrapper
-                    selected={selectedMethod === 'native_survey'}
-                  >
-                    <LeftAlignedList>
-                      <li>
-                        <FormattedMessage {...messages2.aiPoweredInsights} />
-                      </li>
-                      <li>
-                        <FormattedMessage {...messages2.manyQuestionTypes} />
-                      </li>
-                      <li>
-                        <FormattedMessage {...messages2.logic} />
-                      </li>
-                      <li>
-                        <FormattedMessage
-                          {...messages2.linkWithReportBuilder}
-                        />
-                      </li>
-                    </LeftAlignedList>
-                  </ParticipationMethodDescriptionWrapper>
-                </ParticipationMethodChoice>
-
-                {pollsEnabled && (
-                  <ParticipationMethodChoice
-                    onClick={(event) => handleMethodSelect(event, 'poll')}
-                    title={formatMessage(messages2.quickPoll)}
-                    selected={selectedMethod === 'poll'}
-                    participation_method="poll"
-                  >
-                    <ChildText selected={selectedMethod === 'poll'}>
-                      {formatMessage(messages2.quickPollDescription)}
-                    </ChildText>
-                  </ParticipationMethodChoice>
-                )}
-
-                {showSurveys && (
-                  <ParticipationMethodChoice
-                    onClick={(event) => handleMethodSelect(event, 'survey')}
-                    title={formatMessage(messages2.externalSurvey)}
-                    selected={selectedMethod === 'survey'}
-                    participation_method="survey"
-                  >
-                    <ParticipationMethodDescriptionWrapper
-                      selected={selectedMethod === 'survey'}
-                    >
-                      <FormattedMessage {...messages2.embedSurvey} />
-                      <LeftAlignedList>
-                        <li>
-                          <FormattedMessage {...messages2.lacksAIText} />
-                        </li>
-                        <li>
-                          <FormattedMessage {...messages2.lacksReportingText} />
-                        </li>
-                      </LeftAlignedList>
-                    </ParticipationMethodDescriptionWrapper>
-                  </ParticipationMethodChoice>
-                )}
+                <SurveyMethodChoices
+                  selected={selectedMethod ?? participation_method}
+                  showExternalSurvey={showSurveys}
+                  onSelect={handleMethodSelect}
+                />
               </>
             )}
           </Box>

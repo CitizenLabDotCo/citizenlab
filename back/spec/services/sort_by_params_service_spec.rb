@@ -104,6 +104,29 @@ describe SortByParamsService do
           expect(result_record_ids).to eq expected_record_ids
         end
       end
+
+      describe 'status_priority' do
+        let(:sort) { 'status_priority' }
+        let(:expected_record_ids) { [ideas[1].id, ideas[2].id, ideas[0].id] }
+
+        it 'returns the sorted records' do
+          expect(result_record_ids).to eq expected_record_ids
+        end
+
+        context 'when inputs share a status' do
+          let(:ideas) do
+            proposed = IdeaStatus.find_by(code: 'proposed')
+            [2.days.ago, 1.hour.ago, 3.days.ago].map do |published_at|
+              create(:idea, project: timeline_project, idea_status: proposed, published_at: published_at)
+            end
+          end
+          let(:expected_record_ids) { [ideas[1].id, ideas[0].id, ideas[2].id] }
+
+          it 'returns the newest first' do
+            expect(result_record_ids).to eq expected_record_ids
+          end
+        end
+      end
     end
 
     describe 'trending' do
@@ -143,6 +166,61 @@ describe SortByParamsService do
 
       it 'returns the sorted records' do
         expect(result_record_ids).to eq expected_record_ids
+      end
+    end
+
+    describe do
+      let(:user) { create(:user, locale: 'en') }
+      let(:ideas) do
+        [
+          { 'en' => 'banana', 'nl-BE' => 'appel' },
+          { 'nl-BE' => 'zonder engelse titel' },
+          { 'en' => 'Apple' },
+          { 'en' => 'cherry' }
+        ].map do |title_multiloc|
+          create(:idea, project: timeline_project, title_multiloc: title_multiloc)
+        end
+      end
+
+      describe 'title' do
+        let(:sort) { 'title' }
+
+        it 'orders by the title in the user locale, missing titles last' do
+          expect(result_record_ids).to eq [ideas[3], ideas[0], ideas[2], ideas[1]].map(&:id)
+        end
+      end
+
+      describe '-title' do
+        let(:sort) { '-title' }
+
+        it 'orders by the title in the user locale, missing titles last' do
+          expect(result_record_ids).to eq [ideas[2], ideas[0], ideas[3], ideas[1]].map(&:id)
+        end
+      end
+    end
+
+    describe do
+      let(:admin_named) { ->(first_name) { create(:admin, first_name: first_name, last_name: 'Smith') } }
+      let(:ideas) do
+        [admin_named.call('bea'), nil, admin_named.call('Adam')].map do |assignee|
+          create(:idea, project: timeline_project, assignee: assignee)
+        end
+      end
+
+      describe 'assignee' do
+        let(:sort) { 'assignee' }
+
+        it 'orders by the assignee name, unassigned last' do
+          expect(result_record_ids).to eq [ideas[0], ideas[2], ideas[1]].map(&:id)
+        end
+      end
+
+      describe '-assignee' do
+        let(:sort) { '-assignee' }
+
+        it 'orders by the assignee name, unassigned last' do
+          expect(result_record_ids).to eq [ideas[2], ideas[0], ideas[1]].map(&:id)
+        end
       end
     end
 
@@ -478,6 +556,16 @@ describe SortByParamsService do
         expect(result_record_ids).to eq expected_record_ids
       end
     end
+
+    describe 'an unsupported sort parameter' do
+      let(:sort) { "start_at; WAITFOR DELAY '00:00:07'" }
+
+      it 'raises a 400 ApiError instead of a bare RuntimeError' do
+        expect { result_record_ids }.to raise_error(ApiError) do |error|
+          expect(error.status).to eq 400
+        end
+      end
+    end
   end
 
   describe 'sort_activities' do
@@ -512,6 +600,16 @@ describe SortByParamsService do
 
       it 'returns the sorted records' do
         expect(result_record_ids).to eq expected_record_ids
+      end
+    end
+
+    describe 'an unsupported sort parameter' do
+      let(:sort) { 'nonsense' }
+
+      it 'raises a 400 ApiError instead of a bare RuntimeError' do
+        expect { result_record_ids }.to raise_error(ApiError) do |error|
+          expect(error.status).to eq 400
+        end
       end
     end
   end

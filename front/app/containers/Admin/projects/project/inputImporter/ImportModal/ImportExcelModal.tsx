@@ -1,12 +1,6 @@
 import React from 'react';
 
-import {
-  Box,
-  Button,
-  colors,
-  Text,
-  Title,
-} from '@citizenlab/cl2-component-library';
+import { Box, Button, colors, Text } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider } from 'react-hook-form';
 import { SupportedLocale } from 'typings';
@@ -43,7 +37,7 @@ interface Props {
 
 const ImportExcelModal = ({ open, onClose }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeasAsync();
+  const { mutateAsync: addOfflineIdeas, isPending } = useAddOfflineIdeasAsync();
   const locale = useLocale();
   const { projectId, phaseId } = useParams({
     from: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
@@ -101,12 +95,7 @@ const ImportExcelModal = ({ open, onClose }: Props) => {
       width="780px"
       opened={open}
       close={onClose}
-      header={
-        <Title variant="h2" color="primary" px="24px" m="0">
-          <FormattedMessage {...messages.importExcelFileTitle} />
-        </Title>
-      }
-      niceHeader
+      header={<FormattedMessage {...messages.importExcelFileTitle} />}
     >
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(submitFile)}>
@@ -148,8 +137,8 @@ const ImportExcelModal = ({ open, onClose }: Props) => {
                 bgColor={colors.primary}
                 width="auto"
                 type="submit"
-                processing={isLoading}
-                disabled={isLoading}
+                processing={isPending}
+                disabled={isPending}
               >
                 <FormattedMessage {...messages.upload} />
               </Button>

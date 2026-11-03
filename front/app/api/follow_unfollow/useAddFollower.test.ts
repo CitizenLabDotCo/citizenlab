@@ -1,11 +1,17 @@
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 
+import { trackEventByName } from 'utils/analytics';
 import createQueryClientWrapper from 'utils/testUtils/queryClientWrapper';
 import { renderHook, waitFor, act } from 'utils/testUtils/rtl';
 
 import { followersData } from './__mocks__/useFollowers';
 import useAddFollower from './useAddFollower';
+
+jest.mock('utils/analytics', () => ({
+  ...jest.requireActual('utils/analytics'),
+  trackEventByName: jest.fn(),
+}));
 
 const apiPath = '*followers';
 
@@ -33,6 +39,40 @@ describe('useAddFollower', () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data?.data).toEqual(followersData[0]);
+  });
+
+  it.each([
+    ['ideas', 'idea_followed', { idea_id: '1' }],
+    ['projects', 'project_followed', { project_id: '1' }],
+  ] as const)(
+    'tracks following %s as %s',
+    async (followableType, eventName, properties) => {
+      jest.mocked(trackEventByName).mockClear();
+      const { result } = renderHook(() => useAddFollower(), {
+        wrapper: createQueryClientWrapper(),
+      });
+
+      act(() => {
+        result.current.mutate({ followableType, followableId: '1' });
+      });
+
+      await waitFor(() => expect(result.current.isSuccess).toBe(true));
+      expect(trackEventByName).toHaveBeenCalledWith(eventName, properties);
+    }
+  );
+
+  it('does not track following other types', async () => {
+    jest.mocked(trackEventByName).mockClear();
+    const { result } = renderHook(() => useAddFollower(), {
+      wrapper: createQueryClientWrapper(),
+    });
+
+    act(() => {
+      result.current.mutate({ followableType: 'areas', followableId: '1' });
+    });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(trackEventByName).not.toHaveBeenCalled();
   });
 
   it('returns error correctly', async () => {

@@ -58,6 +58,11 @@ module InputTypeStrategy
       false
     end
 
+    # Whether the answers can be counted per option, as a filter facet.
+    def supports_answer_facet?
+      false
+    end
+
     def supports_selection?
       supports_single_selection? || supports_multiple_selection?
     end
@@ -106,6 +111,29 @@ module InputTypeStrategy
 
     def supports_logic?
       false
+    end
+
+    # The JSON schema for a single value, permissive by default.
+    def json_schema
+      {}
+    end
+
+    def cast_xlsx_value(value)
+      String(value)
+    end
+
+    def normalize_value(value)
+      value
+    end
+
+    def answers_present(answers)
+      answers
+    end
+
+    %w[eq one_of matching gt gteq lt lteq before after on].each do |condition|
+      define_method(:"answers_#{condition}") do |_answers, _value|
+        raise NotImplementedError, "#{self.class.name} does not support the #{condition} answers condition"
+      end
     end
 
     protected

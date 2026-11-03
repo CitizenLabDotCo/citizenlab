@@ -2,58 +2,86 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useAuthUser from 'api/me/useAuthUser';
+import usePhase from 'api/phases/usePhase';
 import { IProjectData } from 'api/projects/types';
 import useProjectById from 'api/projects/useProjectById';
 
-import useParallelParticipation from 'hooks/useParallelParticipation';
+import useProjectBackofficeRedesign from 'hooks/useProjectBackofficeRedesign';
 
-import NavigationTabs from 'components/admin/NavigationTabs';
-import Tab from 'components/admin/NavigationTabs/Tab';
-import NewLabel from 'components/UI/NewLabel';
+import { PageSaveProvider } from 'components/admin/PageSaveContext';
 
-import { useIntl } from 'utils/cl-intl';
 import { canModerateProject } from 'utils/permissions/rules/projectPermissions';
-import { Outlet as RouterOutlet, useLocation, useParams } from 'utils/router';
+import { Outlet as RouterOutlet, useMatchRoute, useParams } from 'utils/router';
 
-import messages from './messages';
-import ProjectSidebar from './newBackoffice/ProjectSidebar';
+import ProjectWorkspace from './backofficeRedesign';
+import Event from './backofficeRedesign/Event';
+import NewPhase from './backofficeRedesign/NewPhase';
+import PhaseSetup from './backofficeRedesign/Phase/PhaseSetup';
+import ProjectTimeline from './backofficeRedesign/ProjectTimeline';
+import UnsavedChangesGuard from './backofficeRedesign/UnsavedChangesGuard';
+import TurnOnNotice from './earlyAccess/TurnOnNotice';
 import ProjectHeader from './projectHeader';
+import ProjectSidebar from './projectPage/ProjectSidebar';
+
+type WorkspacePage = 'newPhase' | 'event' | 'project';
+
+const workspacePage = (
+  onNewPhaseRoute: boolean,
+  onEventRoute: boolean
+): WorkspacePage => {
+  if (onNewPhaseRoute) return 'newPhase';
+  if (onEventRoute) return 'event';
+  return 'project';
+};
 
 const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
-  const { formatMessage } = useIntl();
-  const { pathname } = useLocation();
-  const { data: appConfiguration } = useAppConfiguration();
   const { data: authUser } = useAuthUser();
-  const newBackoffice = useParallelParticipation();
+  const { phaseId } = useParams({ strict: false });
+  const { data: phase } = usePhase(phaseId);
+  const workspaceEnabled = useProjectBackofficeRedesign();
+  const matchRoute = useMatchRoute();
+  const onNewPhaseRoute = !!matchRoute({
+    to: '/$locale/admin/projects/$projectId/phases/new',
+  });
+  const onEventRoute = !!matchRoute({
+    to: '/$locale/admin/projects/$projectId/events/$id',
+  });
   const projectId = project.id;
+  const page = workspacePage(onNewPhaseRoute, onEventRoute);
+
+  const selectedPhase = phaseId ? phase?.data : undefined;
 
   if (!canModerateProject(project, authUser)) {
     return null;
   }
 
-  const privateAttributesInExport =
-    appConfiguration?.data.attributes.settings.core
-      .private_attributes_in_export !== false;
-
-  if (newBackoffice) {
+  if (workspaceEnabled) {
     return (
-      <Box
-        data-cy="e2e-admin-projects-project-index"
-        display="flex"
-        flexDirection="column"
-        height="100vh"
-        overflow="hidden"
-      >
-        <ProjectHeader projectId={projectId} />
-        <Box display="flex" flexGrow={1} minHeight="0" overflow="hidden">
-          <ProjectSidebar projectId={projectId} />
-          <Box flexGrow={1} minWidth="0" overflowY="auto">
+      <PageSaveProvider>
+        <UnsavedChangesGuard />
+        {page === 'newPhase' && <NewPhase project={project} />}
+        {page === 'event' && <Event project={project} />}
+        {page === 'project' && (
+          <ProjectWorkspace
+            project={project}
+            phase={selectedPhase}
+            sidePanel={
+              selectedPhase ? (
+                <PhaseSetup
+                  key={selectedPhase.id}
+                  projectId={projectId}
+                  phase={selectedPhase}
+                />
+              ) : (
+                <ProjectTimeline projectId={projectId} />
+              )
+            }
+          >
             <RouterOutlet />
-          </Box>
-        </Box>
-      </Box>
+          </ProjectWorkspace>
+        )}
+      </PageSaveProvider>
     );
   }
 
@@ -62,61 +90,17 @@ const AdminProjectsProjectIndex = ({ project }: { project: IProjectData }) => {
       data-cy="e2e-admin-projects-project-index"
       display="flex"
       flexDirection="column"
-      flexGrow={1}
+      height="100vh"
+      overflow="hidden"
     >
+      <TurnOnNotice />
       <ProjectHeader projectId={projectId} />
-      <NavigationTabs
-        position="relative"
-        className="intercom-admin-project-level-settings"
-      >
-        <Tab
-          className="intercom-admin-project-general-tab"
-          label={formatMessage(messages.generalTab)}
-          url={`/admin/projects/${projectId}/general`}
-          active={pathname.includes(`/admin/projects/${projectId}/general`)}
-        />
-        <Tab
-          data-cy="e2e-admin-project-timeline-tab"
-          className="intercom-admin-project-timeline-tab"
-          label={formatMessage(messages.timelineTab)}
-          url={`/admin/projects/${projectId}/phases/setup`}
-          active={pathname.includes(`/admin/projects/${projectId}/phases`)}
-        />
-        <Tab
-          className="intercom-admin-project-participants-tab"
-          label={formatMessage(messages.audienceTab)}
-          url={
-            privateAttributesInExport
-              ? `/admin/projects/${projectId}/audience`
-              : `/admin/projects/${projectId}/audience/demographics`
-          }
-          active={pathname.includes(`/admin/projects/${projectId}/audience`)}
-        />
-        <Tab
-          className="intercom-admin-project-messaging-tab"
-          label={formatMessage(messages.messagingTab)}
-          url={`/admin/projects/${projectId}/messaging`}
-          active={pathname.includes(`/admin/projects/${projectId}/messaging`)}
-        />
-        <Tab
-          className="intercom-admin-project-events-tab"
-          label={formatMessage(messages.eventsTab)}
-          url={`/admin/projects/${projectId}/events`}
-          active={pathname.includes(`/admin/projects/${projectId}/events`)}
-        />
-        <Tab
-          className="intercom-admin-project-files-tab"
-          label={
-            <Box display="flex" alignItems="center" gap="8px">
-              {formatMessage(messages.filesTab)}
-              <NewLabel />
-            </Box>
-          }
-          url={`/admin/projects/${projectId}/files`}
-          active={pathname.includes(`/admin/projects/${projectId}/files`)}
-        />
-      </NavigationTabs>
-      <RouterOutlet />
+      <Box display="flex" flexGrow={1} minHeight="0" overflow="hidden">
+        <ProjectSidebar projectId={projectId} />
+        <Box flexGrow={1} minWidth="0" overflowY="auto">
+          <RouterOutlet />
+        </Box>
+      </Box>
     </Box>
   );
 };

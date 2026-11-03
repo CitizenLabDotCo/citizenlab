@@ -1,4 +1,8 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  InfiniteData,
+  QueryKey,
+} from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import fetcher from 'utils/cl-react-query/fetcher';
@@ -28,15 +32,20 @@ const useInfiniteProjectFoldersAdmin = (
   params: Omit<Parameters, 'page[number]' | 'page[size]'>,
   pageSize: number = DEFAULT_PAGE_SIZE
 ) =>
-  useInfiniteQuery<MiniProjectFolders, CLErrors>(
-    projectFoldersMiniKeys.list(params),
-    ({ pageParam = 1 }) => fetchPage(params, pageParam, pageSize),
-    {
-      getNextPageParam: (lastPage) => {
-        const nextLink = lastPage.links?.next;
-        return nextLink ? getPageNumberFromUrl(nextLink) : undefined;
-      },
-    }
-  );
+  useInfiniteQuery<
+    MiniProjectFolders,
+    CLErrors,
+    InfiniteData<MiniProjectFolders>,
+    QueryKey,
+    number
+  >({
+    queryKey: projectFoldersMiniKeys.list(params),
+    queryFn: ({ pageParam }) => fetchPage(params, pageParam, pageSize),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      const nextLink = lastPage.links?.next;
+      return nextLink ? getPageNumberFromUrl(nextLink) : undefined;
+    },
+  });
 
 export default useInfiniteProjectFoldersAdmin;

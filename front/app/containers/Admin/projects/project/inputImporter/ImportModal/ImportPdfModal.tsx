@@ -1,12 +1,6 @@
 import React, { useEffect } from 'react';
 
-import {
-  Box,
-  Text,
-  Title,
-  Button,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, Button, colors } from '@citizenlab/cl2-component-library';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm, FormProvider, Resolver } from 'react-hook-form';
 import { SupportedLocale } from 'typings';
@@ -48,7 +42,7 @@ interface Props {
 
 const ImportPdfModal = ({ open, onClose }: Props) => {
   const { formatMessage } = useIntl();
-  const { mutateAsync: addOfflineIdeas, isLoading } = useAddOfflineIdeasAsync();
+  const { mutateAsync: addOfflineIdeas, isPending } = useAddOfflineIdeasAsync();
   const locale = useLocale();
   const { projectId, phaseId } = useParams({
     strict: false,
@@ -143,12 +137,7 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
         methods.reset();
         onClose();
       }}
-      header={
-        <Title variant="h2" color="primary" px="24px" m="0">
-          <FormattedMessage {...messages.importPDFFileTitle} />
-        </Title>
-      }
-      niceHeader
+      header={<FormattedMessage {...messages.importPDFFileTitle} />}
     >
       <FormProvider {...methods}>
         <form onSubmit={methods.handleSubmit(submitFile)}>
@@ -218,7 +207,7 @@ const ImportPdfModal = ({ open, onClose }: Props) => {
                 bgColor={colors.primary}
                 width="auto"
                 type="submit"
-                processing={isLoading}
+                processing={isPending}
                 disabled={!file?.base64}
               >
                 <FormattedMessage {...messages.upload} />

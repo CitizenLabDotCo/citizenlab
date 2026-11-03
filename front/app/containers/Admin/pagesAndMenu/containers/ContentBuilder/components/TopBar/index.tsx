@@ -42,7 +42,7 @@ const BuilderTopBar = ({
   const {
     mutate: updateHomepage,
     isError,
-    isLoading,
+    isPending,
   } = useAddContentBuilderLayout();
   const { formatMessage } = useIntl();
   const disableSave = hasError || hasPendingState;
@@ -97,7 +97,7 @@ const BuilderTopBar = ({
         />
         <SaveButton
           isDisabled={!!(disableSave || hasPendingState)}
-          isLoading={isLoading}
+          isLoading={isPending}
           onSave={handleSave}
         />
         {isError && (

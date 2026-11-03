@@ -19,6 +19,7 @@ RSpec.describe InputTypeStrategy::Number do
   its(:supports_single_selection?) { is_expected.to be false }
   its(:supports_multiple_selection?) { is_expected.to be false }
   its(:supports_selection?) { is_expected.to be false }
+  its(:supports_answer_facet?) { is_expected.to be false }
   its(:supports_select_count?) { is_expected.to be false }
   its(:supports_dropdown_layout?) { is_expected.to be false }
   its(:supports_xlsx_export?) { is_expected.to be true }
@@ -29,4 +30,16 @@ RSpec.describe InputTypeStrategy::Number do
   its(:supports_reference_distribution?) { is_expected.to be false }
   its(:supports_file_upload?) { is_expected.to be false }
   its(:supports_logic?) { is_expected.to be false }
+
+  describe '#cast_xlsx_value' do
+    it 'casts a whole number to an integer, whether the cell was text or numeric' do
+      expect(input_type_strategy.cast_xlsx_value('1990')).to be 1990
+      expect(input_type_strategy.cast_xlsx_value(1990)).to be 1990
+    end
+
+    it 'keeps a fractional number' do
+      expect(input_type_strategy.cast_xlsx_value('666.34')).to eq 666.34
+      expect(input_type_strategy.cast_xlsx_value(666.34)).to eq 666.34
+    end
+  end
 end

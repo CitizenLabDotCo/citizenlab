@@ -32,6 +32,36 @@ resource 'EventImage' do
         expect(json_response.dig(:data, :attributes, :versions).keys).to match %i[small medium large fb]
       end
     end
+
+    post 'web_api/v1/events/:event_id/images' do
+      with_options scope: :image do
+        parameter :image, 'The base64 encoded image', required: true
+      end
+      let(:image) { png_image_as_base64 'image13.jpg' }
+
+      example 'Unauthorized (401) when not signed in', document: false do
+        expect { do_request }.not_to change(EventImage, :count)
+        assert_status 401
+      end
+    end
+  end
+
+  context 'as a resident' do
+    before do
+      resident_header_token
+    end
+
+    post 'web_api/v1/events/:event_id/images' do
+      with_options scope: :image do
+        parameter :image, 'The base64 encoded image', required: true
+      end
+      let(:image) { png_image_as_base64 'image13.jpg' }
+
+      example 'Unauthorized (401) when adding an image to an event', document: false do
+        expect { do_request }.not_to change(EventImage, :count)
+        assert_status 401
+      end
+    end
   end
 
   context 'as an admin' do

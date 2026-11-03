@@ -39,6 +39,11 @@ export default defineMessages({
     defaultMessage:
       'This password can be easily guessed. Please choose a stronger password.',
   },
+  too_weak: {
+    id: 'app.errors.too_weak',
+    defaultMessage:
+      'This password can be easily guessed. Please choose a stronger password, for example by making it longer or using several unrelated words.',
+  },
   confirmation_code_invalid: {
     id: 'app.errors.confirmation_code_invalid',
     defaultMessage:
@@ -83,6 +88,16 @@ export default defineMessages({
   no_invites_specified: {
     id: 'app.errors.no_invites_specified',
     defaultMessage: 'Could not find any email addresses.',
+  },
+  unexpected_invite_error: {
+    id: 'app.errors.unexpected_invite_error',
+    defaultMessage:
+      'Something went wrong while processing your invitations. Check the "All invitations" tab before trying again.',
+  },
+  unexpected_seats_count_error: {
+    id: 'app.errors.unexpected_seats_count_error',
+    defaultMessage:
+      'Something went wrong while checking how many seats these invitations need. No invitations were sent. Please try again.',
   },
   unknown_group: {
     id: 'app.errors.unknown_group',
@@ -146,6 +161,11 @@ export default defineMessages({
   has_other_overlapping_phases: {
     id: 'app.errors.has_other_overlapping_phases',
     defaultMessage: 'Projects cannot have overlapping phases.',
+  },
+  not_supported_in_standalone_phase: {
+    id: 'app.errors.not_supported_in_standalone_phase',
+    defaultMessage:
+      'Only surveys can run alongside the timeline. This participation method needs to be a phase on the timeline.',
   },
   group_ids_unauthorized_choice_moderator: {
     id: 'app.errors.group_ids_unauthorized_choice_moderator',
@@ -281,6 +301,11 @@ export default defineMessages({
     defaultMessage:
       'The uploaded PDF file appears to be malformed. Try exporting the PDF again from your source and then upload again.',
   },
+  bulk_import_pdf_parsing_timeout: {
+    id: 'app.errors.bulk_import_pdf_parsing_timeout',
+    defaultMessage:
+      'The uploaded PDF is taking too long to process. Try exporting the PDF again from your source and then upload again.',
+  },
   bulk_import_maximum_pdf_pages_exceeded: {
     id: 'app.errors.bulk_import_maximum_pdf_pages_exceeded',
     defaultMessage: 'The maximum of {value} pages in a PDF has been exceeded.',
@@ -396,6 +421,21 @@ export default defineMessages({
     defaultMessage:
       "The campaign can't be sent out because there are no recipients. The group you're sending to is either empty, or nobody has consented to receiving emails.",
   },
+  insufficient_sms_balance: {
+    id: 'app.errors.insufficient_sms_balance',
+    defaultMessage:
+      'There are not enough SMS credits left to send this message. To purchase more credits, contact your GovSuccess Manager.',
+  },
+  sms_not_configured: {
+    id: 'app.errors.sms_not_configured',
+    defaultMessage:
+      'Some of the SMS configuration is missing. Contact your GovSuccess Manager to have it completed.',
+  },
+  no_previewer_phone: {
+    id: 'app.errors.no_previewer_phone',
+    defaultMessage:
+      'A preview goes to your own phone. Add a phone number to your profile first.',
+  },
   verification_taken: {
     id: 'app.errors.verification_taken',
     defaultMessage:
@@ -418,5 +458,23 @@ export default defineMessages({
   duration_too_short: {
     id: 'app.errors.phase_too_short',
     defaultMessage: 'The phase is too short. It must be at least 24 hours.',
+  },
+  new_phone_blank: {
+    id: 'app.errors.new_phone_blank',
+    defaultMessage: 'Please enter your phone number.',
+  },
+  new_phone_invalid: {
+    id: 'app.errors.new_phone_invalid',
+    defaultMessage: 'Please enter a valid phone number.',
+  },
+  new_phone_taken: {
+    id: 'app.errors.new_phone_taken',
+    defaultMessage:
+      'This phone number is already taken. Please try another one.',
+  },
+  file_too_large: {
+    id: 'app.errors.file_too_large',
+    defaultMessage:
+      '"{value}" is too large. The maximum file size is {max_size_mb} MB. Please remove it and upload a smaller file.',
   },
 });

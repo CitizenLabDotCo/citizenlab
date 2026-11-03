@@ -67,7 +67,7 @@ module CustomIdMethods::Facebook
 
       gender = auth.extra.raw_info&.gender
       if gender
-        user_attrs[:gender] = gender
+        user_attrs[:custom_field_values] = { 'gender' => gender }
       else
         Rails.logger.info "Gender was not provided by facebook, auth instance was #{auth}"
       end
@@ -77,6 +77,13 @@ module CustomIdMethods::Facebook
 
     def updateable_user_attrs
       super + %i[remote_avatar_url]
+    end
+
+    # Facebook does not use the email_verified attribute,
+    # but only returns emails if they are verified. Source:
+    # https://stackoverflow.com/questions/14280535/is-it-possible-to-check-if-an-email-is-confirmed-on-facebook
+    def email_confirmed?(auth)
+      auth.info['email'].present?
     end
 
     private

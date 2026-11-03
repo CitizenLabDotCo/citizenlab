@@ -29,7 +29,9 @@ class AppConfiguration < ApplicationRecord
   }
 
   validates :host, presence: true
-  validate :validate_host_format
+  # Only on change, for the same reason as the twin check on `Tenant`: an
+  # already-invalid host must not block saves that have nothing to do with it.
+  validate :validate_host_format, if: :host_changed?
   validate :validate_locales, on: :update
   validate :validate_singleton, on: :create
 
@@ -65,6 +67,20 @@ class AppConfiguration < ApplicationRecord
 
     def self.extension_features
       extension_features_hash.keys
+    end
+
+    EARLY_ACCESS_TIERS = %w[general internal].freeze
+
+    # @return [Hash{String => String}] feature name => early access tier, for every feature open to early access
+    def self.early_access_tiers
+      core = core_settings_json_schema['properties'].filter_map do |name, feature|
+        [name, feature['early_access']] if feature['early_access']
+      end
+      extensions = extension_features_specs.filter_map do |spec|
+        [spec.feature_name, spec.early_access] if spec.early_access
+      end
+
+      (core + extensions).to_h
     end
 
     # @param [CitizenLab::Mixins::FeatureSpecification] specification
@@ -141,6 +157,12 @@ class AppConfiguration < ApplicationRecord
   end
 
   def feature_activated?(setting_name)
+    return true if Current.early_access_overrides.include?(setting_name)
+
+    feature_activated_on_platform?(setting_name)
+  end
+
+  def feature_activated_on_platform?(setting_name)
     settings[setting_name]&.values_at('enabled', 'allowed')&.all?
   end
 
@@ -151,7 +173,14 @@ class AppConfiguration < ApplicationRecord
   end
 
   def public_settings
-    @public_settings ||= SettingsService.new.format_for_front_end(settings, Settings.json_schema)
+    overrides = Current.early_access_overrides
+    return base_public_settings if overrides.empty?
+
+    base_public_settings.deep_dup.tap do |res|
+      overrides.each do |feature|
+        res[feature] = (res[feature] || {}).merge('allowed' => true, 'enabled' => true)
+      end
+    end
   end
 
   def location
@@ -180,7 +209,7 @@ class AppConfiguration < ApplicationRecord
 
   def base_asset_host_uri
     if Rails.env.development? && ENV['USE_AWS_S3_IN_DEV'] == 'true'
-      "https://#{ENV.fetch('AWS_S3_BUCKET')}.s3.#{ENV.fetch('AWS_REGION')}.amazonaws.com"
+      Aws::S3::Bucket.new(ENV.fetch('AWS_S3_BUCKET'), client: Aws::S3::Client.new).url
     else
       # ASSET_HOST_URI env var can be used for:
       # - e2e tests (see e2e/docker-compose.yml)
@@ -210,6 +239,10 @@ class AppConfiguration < ApplicationRecord
   end
 
   private
+
+  def base_public_settings
+    @base_public_settings ||= SettingsService.new.format_for_front_end(settings, Settings.json_schema)
+  end
 
   def timezone_changed?
     saved_change_to_settings? &&

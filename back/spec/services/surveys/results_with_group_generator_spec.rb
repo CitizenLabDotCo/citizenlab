@@ -711,17 +711,20 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
     end
 
     let_it_be(:anon_responses) do
-      male_user = create(:user, custom_field_values: { gender: 'male' })
-      female_user = create(:user, custom_field_values: { gender: 'female' })
+      male_user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'male')])
+      female_user = create(:user, custom_field_answers: [build(:custom_field_answer, key: 'gender', value: 'female')])
 
       # Anonymous responses - author_id becomes NULL, but demographic
-      # data is merged into idea custom_field_values with u_ prefix
+      # data is merged into idea answers with u_-prefixed keys
       # (simulating what the controller does via UserFieldsInFormService)
       create(
         :native_survey_response,
         project: anon_project,
         phases: [anon_phase],
-        custom_field_values: { favourite_animal_field.key => 'godzilla', 'u_gender' => 'male' },
+        custom_field_answers: [
+          build(:custom_field_answer, key: favourite_animal_field.key, value: 'godzilla'),
+          build(:custom_field_answer, key: 'u_gender', value: 'male', custom_field: gender_user_custom_field)
+        ],
         author: male_user,
         anonymous: true
       )
@@ -729,7 +732,10 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
         :native_survey_response,
         project: anon_project,
         phases: [anon_phase],
-        custom_field_values: { favourite_animal_field.key => 'godzilla', 'u_gender' => 'female' },
+        custom_field_answers: [
+          build(:custom_field_answer, key: favourite_animal_field.key, value: 'godzilla'),
+          build(:custom_field_answer, key: 'u_gender', value: 'female', custom_field: gender_user_custom_field)
+        ],
         author: female_user,
         anonymous: true
       )
@@ -737,7 +743,10 @@ RSpec.describe Surveys::ResultsWithGroupGenerator do
         :native_survey_response,
         project: anon_project,
         phases: [anon_phase],
-        custom_field_values: { favourite_animal_field.key => 'gremlin', 'u_gender' => 'female' },
+        custom_field_answers: [
+          build(:custom_field_answer, key: favourite_animal_field.key, value: 'gremlin'),
+          build(:custom_field_answer, key: 'u_gender', value: 'female', custom_field: gender_user_custom_field)
+        ],
         author: female_user,
         anonymous: true
       )

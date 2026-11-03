@@ -10,10 +10,8 @@ describe('New timeline project with ideation phase with default map view', () =>
     cy.setAdminLoginCookie();
 
     cy.apiCreateProject({
-      withAboutBox: true,
       title: projectTitle,
       descriptionPreview: 'Description preview',
-      description: 'Description full',
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -59,10 +57,8 @@ describe('New timeline project with active ideation phase', () => {
       })
       .then(() => {
         return cy.apiCreateProject({
-          withAboutBox: true,
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
-          description: randomString(),
           publicationStatus: 'published',
         });
       })
@@ -102,9 +98,9 @@ describe('New timeline project with active ideation phase', () => {
           canReact: true,
         });
       })
-      .then(() => {
+      .then((phase) => {
         return cy.apiCreateIdea({
-          projectId,
+          phaseId: phase.body.data.id,
           ideaTitle,
           ideaContent,
         });
@@ -122,7 +118,7 @@ describe('New timeline project with active ideation phase', () => {
 
   // TODO: Improve this test
   it('shows the correct project header', () => {
-    cy.get('[data-testid="descriptionBuilderProjectPreviewContent"]');
+    cy.get('[data-testid="projectPageBuilderContent"]');
     cy.get('#e2e-project-sidebar');
   });
 
@@ -187,10 +183,8 @@ describe('Archived timeline project with ideation phase', () => {
       })
       .then(() => {
         return cy.apiCreateProject({
-          withAboutBox: true,
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
-          description: randomString(),
           publicationStatus: 'draft',
         });
       })
@@ -219,8 +213,12 @@ describe('Archived timeline project with ideation phase', () => {
           canReact: true,
         });
       })
-      .then(() => {
-        return cy.apiCreateIdea({ projectId, ideaTitle, ideaContent });
+      .then((phase) => {
+        return cy.apiCreateIdea({
+          phaseId: phase.body.data.id,
+          ideaTitle,
+          ideaContent,
+        });
       })
       .then((idea) => {
         ideaId = idea.body.data.id;
@@ -272,10 +270,8 @@ describe('timeline project with no active ideation phase', () => {
   before(() => {
     return cy
       .apiCreateProject({
-        withAboutBox: true,
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
-        description: randomString(),
         publicationStatus: 'draft',
       })
       .then((project) => {
@@ -301,12 +297,16 @@ describe('timeline project with no active ideation phase', () => {
   it('allows admin users to add an idea via the map for a non-active phase', () => {
     // Select map view
     cy.get('#view-tab-2').click();
-    cy.wait(2000);
+    // The map (and the whole ArcGIS bundle) is lazy-loaded on first
+    // selection, and the Esri view swallows clicks until its rendering
+    // canvas is up — the fixed waits this replaces fired the one-shot
+    // click below too early. The surface div itself mounts synchronously
+    // with the MapView, so the canvas inside it is the readiness signal.
+    cy.get('#e2e-ideas-map .esri-view-surface canvas', {
+      timeout: 30000,
+    }).should('be.visible');
     // Click map to open popup
-    cy.get('#e2e-ideas-map').should('exist');
-    cy.wait(1000);
     cy.get('#e2e-ideas-map').click('center');
-    cy.wait(1000);
     // Add idea button should appear, click it
     cy.get('#e2e-idea-from-map-button').click();
     // Shold redirect to new idea page with phase id in URL
@@ -350,10 +350,8 @@ describe('Ideation CTA bar', () => {
       })
       .then(() => {
         cy.apiCreateProject({
-          withAboutBox: true,
           title: projectTitle,
           descriptionPreview: description,
-          description,
           publicationStatus: 'published',
         })
           .then((project) => {
@@ -373,10 +371,9 @@ describe('Ideation CTA bar', () => {
           .then((phase) => {
             firstPhaseId = phase.body.data.id;
             return cy.apiCreateIdea({
-              projectId,
+              phaseId: firstPhaseId,
               ideaTitle,
               ideaContent,
-              phaseIds: [firstPhaseId],
             });
           })
           .then((idea) => {
@@ -384,10 +381,8 @@ describe('Ideation CTA bar', () => {
           })
           .then(() => {
             return cy.apiCreateProject({
-              withAboutBox: true,
               title: projectTitle,
               descriptionPreview: description,
-              description,
               publicationStatus: 'published',
             });
           })
@@ -406,12 +401,11 @@ describe('Ideation CTA bar', () => {
               votingMaxTotal: 100,
             });
           })
-          .then((anotherPhase) => {
+          .then(() => {
             return cy.apiCreateIdea({
-              projectId,
+              phaseId: firstPhaseId,
               ideaTitle,
               ideaContent,
-              phaseIds: [firstPhaseId],
             });
           })
           .then((idea) => {

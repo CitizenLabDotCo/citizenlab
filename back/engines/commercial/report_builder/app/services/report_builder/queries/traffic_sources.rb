@@ -31,10 +31,10 @@ module ReportBuilder
       start_at: nil,
       end_at: nil,
       project_id: nil,
-      exclude_roles: nil,
+      exclude_admins_and_moderators: false,
       **_other_props
     )
-      visits_service = Insights::VisitsService.new(project_id, start_at:, end_at:, exclude_roles:)
+      visits_service = Insights::VisitsService.new(project_id, start_at:, end_at:, exclude_admins_and_moderators:)
       sessions = visits_service.filtered_sessions_query
 
       cases = DIRECT_ENTRY_CASES

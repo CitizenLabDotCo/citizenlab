@@ -22,4 +22,8 @@ export default defineMessages({
     id: 'app.containers.admin.ContentBuilder.error',
     defaultMessage: 'error',
   },
+  lockedNodeLabel: {
+    id: 'app.containers.admin.ContentBuilder.lockedNodeLabel',
+    defaultMessage: "{widgetName} - click to edit — can't be moved or removed",
+  },
 });

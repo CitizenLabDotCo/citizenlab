@@ -36,6 +36,7 @@ cy-GB:
         project_participants: I gyfranogwyr y prosiect
         registered_users: I ddefnyddwyr cofrestredig
       recipient_segment:
+        admin_who_generated_the_report: Y gweinyddwr a ofynnodd am yr adroddiad
         admins: Gweinyddwyr
         admins_and_managers: Gweinyddwyr a rheolwyr
         admins_and_managers_assigned_to_the_input: "Gweinyddwyr a rheolwyr wedi'u neilltuo i'r mewnbwn"
@@ -77,6 +78,7 @@ cy-GB:
         users_who_follow_the_proposal: Defnyddwyr sy'n dilyn y cynnig
       trigger:
         7_days_after_invite_is_sent: 7 diwrnod ar ôl anfon gwahoddiad
+        7_days_before_phase_starts: 7 diwrnod cyn i gyfnod ddechrau
         7_days_before_the_project_changes_phase: 7 diwrnod cyn i'r prosiect newid cyfnod
         comment_is_deleted: Sylw yn cael ei ddileu
         comment_is_flagged_as_spam: Sylw yn cael ei fflagio fel sbam
@@ -95,6 +97,7 @@ cy-GB:
         new_input_awaits_screening: Mae mewnbwn newydd yn aros am sgrinio
         new_input_is_published: Mewnbwn newydd yn cael ei gyhoeddi
         new_proposal_is_posted: Cynnig newydd yn cael ei bostio
+        phase_starts: Cyfnod yn dechrau
         project_phase_changes: Newidiadau cyfnod y prosiect
         project_published: Cyhoeddi'r prosiect
         project_review_request: Gofynnodd y safonwr am adolygiad o'r prosiect
@@ -107,6 +110,7 @@ cy-GB:
         proposal_is_upvoted_above_threshold: "Mae'r cynnig yn uwch na'r trothwy"
         proposal_status_changes: Newidiadau i statws cynigion
         registration_to_event: Cofrestru i ddigwyddiad
+        report_generated: Mae adroddiad wedi gorffen cael ei gynhyrchu
         survey_1_day_after_draft_saved: 1 diwrnod ar ôl i'r defnyddiwr arbed yr arolwg ar ffurf drafft ddiwethaf
         user_accepts_invitation_to_cosponsor_a_proposal: Defnyddiwr yn derbyn gwahoddiad i gyd-noddi cynnig
         user_changes_email: Defnyddiwr yn newid eu cyfeiriad e-bost
@@ -184,24 +188,29 @@ cy-GB:
       manual_project_participants: Negeseuon swyddogol i gyfranogwyr y prosiect
       mention_in_internal_comment: Crybwyll mewn sylw mewnol
       mention_in_official_feedback: Soniwch mewn diweddariad
+      merge_account_confirmation: Cod cadarnhau uno cyfrifon
       moderator_digest: Trosolwg wythnosol ar gyfer rheolwyr prosiect
       native_survey_not_submitted: Arolwg heb ei gyflwyno
       new_comment_for_admin: Sylw newydd mewn prosiect dwi'n ei gymedroli
       new_email_confirmation: Cod cadarnhau e-bost newydd
       new_idea_for_admin_prescreening: Mewnbwn newydd sydd angen cymeradwyaeth mewn prosiect rwy'n ei gymedroli
       new_idea_for_admin_published: Mewnbwn cyhoeddedig newydd mewn prosiect rwy'n ei gymedroli
+      new_phone_confirmation: Cod cadarnhau ffôn newydd
       official_feedback_on_idea_you_follow: Diweddariad ar syniad rydych chi'n ei ddilyn
       password_reset: Ailosod cyfrinair
+      phone_confirmation: Cod cadarnhau ffôn
       project_folder_moderation_rights_received: Hawliau rheolwr ffolder wedi'u derbyn
       project_manager_rights_received: Hawliau rheolwr prosiect wedi'u derbyn
       project_moderation_rights_received: Hawliau cymedroli prosiect wedi'u derbyn
-      project_phase_started: Cyfnod prosiect newydd
-      project_phase_upcoming: Cyfnod prosiect newydd sydd ar ddod
+      project_phase_started: Cam wedi dechrau
+      project_phase_upcoming: Cam yn dechrau yn fuan
       project_published: Cyhoeddi'r prosiect
       project_review_request: Cais am adolygiad prosiect
       project_review_state_change: Prosiect wedi'i gymeradwyo
       proposal_expired_for_admin: Cynnig wedi dod i ben heb gyrraedd y trothwy pleidleisio
+      report_generated: Cynhyrchwyd yr adroddiad
       screening_digest: Nodyn atgoffa sgrinio wythnosol
+      sms_manual: Negeseuon SMS swyddogol
       space_moderation_rights_received: Hawliau rheolwr gofod wedi'u derbyn
       status_change_on_idea_you_follow: Newid statws syniad rydych chi'n ei ddilyn
       survey_submitted: Arolwg wedi'i gyflwyno
@@ -356,6 +365,7 @@ cy-GB:
         story: Ewch i'ch stori
         suggestion: Ewch i'ch awgrym
         topic: Ewch i'ch pwnc
+      phase_dates: O %{startDate} i %{endDate}
     idea_marked_as_spam:
       cta_button: Adolygiad
       preheader: Gweithredu ar yr adroddiad sbam hwn
@@ -471,6 +481,15 @@ cy-GB:
       preheader: '%{commentAuthor} sôn amdanoch chi mewn adborth'
       subject: '%{organizationName} sôn amdanoch chi yn eu hadborth'
       title: Rydych chi wedi cael eich crybwyll
+    merge_account_confirmation:
+      best_regards: Cofion gorau,
+      event_description: "Mae rhywun wedi mewngofnodi i blatfform cyfranogi %{organizationName} ac wedi gofyn am gysylltu'r mewngofnodi hwnnw â'r cyfrif sy'n defnyddio'r cyfeiriad e-bost hwn. Os chi oedd hwnnw, nodwch y cod cadarnhau hwn i barhau:"
+      expire_code: Bydd y cod hwn yn dod i ben ymhen
+      hours_24: 24 awr.
+      ignore_email: "Os nad chi oedd hwn, gallwch anwybyddu'r e-bost hwn yn ddiogel. Nid oes dim wedi newid, ac ni all neb ddefnyddio'r cod hwn heb fynediad i'r mewnflwch hwn."
+      preheader: Cadarnhewch eich cyfeiriad e-bost ar gyfer %{organizationName}
+      subject: Cadarnhewch eich cyfeiriad e-bost ar gyfer platfform cyfranogi %{organizationName}
+      title: Cadarnhewch eich cyfeiriad e-bost
     moderator_digest:
       cta_button: Rheoli eich prosiect
       event_description: "Rydyn ni wedi curadu i chi'r mewnbwn sydd wedi creu'r gweithgaredd mwyaf dros yr wythnos ddiwethaf. Darganfyddwch beth sy'n digwydd gyda'ch prosiect!"
@@ -534,6 +553,9 @@ cy-GB:
       title: Mae mewnbwn newydd wedi'i gyhoeddi ar eich platfform
       today: Heddiw
       yesterday: Ddoe
+    new_phone_confirmation:
+      sms_body: Eich cod cadarnhau yw %{code}.
+      sms_body2: '%{organization_name}: Eich cod cadarnhau yw %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Ewch i'r mewnbwn hwn
       event_description: "Rhoddodd %{feedback_author_name} ddiweddariad ar '%{input_title}'."
@@ -546,6 +568,9 @@ cy-GB:
       preheader: Ailosodwch eich cyfrinair ar gyfer %{organizationName}
       subject: '%{organizationName}: Ailosodwch eich cyfrinair'
       title: Dewiswch gyfrinair newydd
+    phone_confirmation:
+      sms_body: Eich cod cadarnhau yw %{code}.
+      sms_body2: '%{organization_name}: Eich cod cadarnhau yw %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -564,8 +589,9 @@ cy-GB:
       input_status_description: Enghraifft o statws ar gyfer mewnbwn (e.e. derbyniwyd, gwrthodwyd, gweithredwyd...)
       input_status_title: Statws Enghraifft
       official_feedback_body: Enghraifft o adborth swyddogol
+      phase_description: Dyma rywfaint o gynnwys cyfnod enghreifftiol a ddefnyddir i gael rhagolwg o gynnwys e-byst. Nid yw hwn yn gynnwys go iawn.
       phase_title: Cyfnod enghreifftiol
-      project_description_preview: Dyma rai enghreifftiau o gynnwys cyfnod a ddefnyddir ar gyfer rhagolwg cynnwys negeseuon e-bost. Nid cynnwys go iawn yw hwn.
+      project_description_preview: Dyma rywfaint o gynnwys prosiect enghreifftiol a ddefnyddir ar gyfer rhagolwg cynnwys e-byst. Nid yw hwn yn gynnwys go iawn.
       project_title: Prosiect enghreifftiol
       proposal_title: Cynnig Enghraifft
       space_title: Gofod enghreifftiol
@@ -600,21 +626,21 @@ cy-GB:
       title_what_can_you_do_moderator: Beth allwch chi ei wneud fel rheolwr prosiect?
       x_ideas: '%{numberOfIdeas} syniadau'
     project_phase_started:
-      cta_button: Darganfyddwch y cyfnod newydd hwn
-      event_description: Dechreuodd y prosiect hwn ar gam newydd ar lwyfan %{organizationName}. Cliciwch ar y ddolen isod i ddysgu mwy!
+      cta_button: Gweld beth sy'n newydd
+      event_description: "Gallwch nawr gymryd rhan yn '%{phaseTitle}' ar blatfform %{organizationName}."
       new_phase: "Dechreuodd y prosiect hwn y cam '%{phaseTitle}'"
-      preheader: Mae cyfnod newydd wedi cychwyn ar gyfer %{projectName}
-      subject: Aeth %{projectName} i mewn i gyfnod newydd
+      preheader: "Gallwch nawr gymryd rhan yn '%{phaseTitle}'"
+      subject: "Mae '%{phaseTitle}' wedi dechrau yn %{projectName}"
       subtitle: "Ynglŷn â '%{projectName}'"
-      title: "Dechreuodd cyfnod newydd ar gyfer prosiect '%{projectName}'"
+      title: "Mae rhywbeth newydd yn '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Gosodwch y cyfnod newydd hwn
-      event_description: "Bydd y prosiect '%{projectName}' yn dechrau cam newydd yn fuan. Sicrhewch fod popeth wedi'i drefnu ar gyfer y cam hwn: A oes disgrifiad digonol? A yw syniadau dethol yn cael eu trosglwyddo i'r cam hwn? Ydych chi am roi gwybod i'ch dinasyddion am fanylion y cam hwn trwy ymgyrch e-bost wedi'i theilwra?"
+      cta_button: Adolygu'r gosodiad
+      event_description: "Mae '%{phaseTitle}' yn y prosiect '%{projectName}' yn dechrau ar %{startDate}. Cymerwch eiliad i wirio bod popeth yn barod: A yw'r disgrifiad yn gyflawn? A yw'r dyddiadau'n gywir? A ydych am hysbysu eich cymuned drwy ymgyrch e-bost bwrpasol?"
       new_phase: "Bydd y prosiect yn dechrau ar y cam '%{phaseTitle}'"
-      preheader: Bydd cyfnod newydd yn cychwyn yn fuan ar gyfer %{projectName}
-      subject: Trefnwch bopeth ar gyfer y cyfnod newydd o %{projectName}
+      preheader: Gwnewch yn siŵr bod popeth yn barod cyn %{startDate}
+      subject: "%{projectName}: mae '%{phaseTitle}' yn dechrau ar %{startDate}"
       subtitle: "Ynglŷn â '%{projectName}'"
-      title: '%{firstName}, bydd prosiect yn mynd i gyfnod newydd yn fuan'
+      title: "%{firstName}, mae '%{phaseTitle}' yn dechrau ar %{startDate}"
     project_published:
       cta_button: Ewch i'r prosiect hwn
       event_description: "Mae platfform cyfranogiad %{organizationName} newydd gyhoeddi'r prosiect canlynol:"
@@ -638,6 +664,13 @@ cy-GB:
       preheader: Daeth mewnbwn i ben heb gyrraedd y trothwy
       subject: Daeth "%{input_title}" i ben heb gyrraedd y trothwy
       title: Daeth mewnbwn i ben heb gyrraedd y trothwy pleidleisio
+    report_generated:
+      cta_button: Agor yr adroddiad
+      event_description: "Mae'r adroddiad wedi'i ysgrifennu ac mae'n barod i chi ei adolygu a'i olygu."
+      preheader: Mae eich adroddiad yn barod
+      stopped_early: "Daeth yr ysgrifennu i ben cyn i'r adroddiad gael ei orffen. Mae popeth a ysgrifennwyd hyd yn hyn wedi'i gadw — agorwch ef a gofynnwch am y gweddill yn y sgwrs."
+      subject: "Mae eich adroddiad ar gyfer '%{projectName}' yn barod"
+      title: Mae eich adroddiad yn barod
     schedules:
       quarterly: Chwarterol, ar y dydd cyntaf o'r chwarter
       weekly:

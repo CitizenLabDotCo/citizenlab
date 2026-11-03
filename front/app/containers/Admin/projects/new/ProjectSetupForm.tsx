@@ -4,17 +4,13 @@ import { Box, IconTooltip } from '@citizenlab/cl2-component-library';
 import { isEmpty } from 'lodash-es';
 import { Multiloc, UploadFile, CLErrors } from 'typings';
 
-import { IFileAttachmentData } from 'api/file_attachments/types';
 import {
   CARD_IMAGE_ASPECT_RATIO_HEIGHT,
   CARD_IMAGE_ASPECT_RATIO_WIDTH,
 } from 'api/project_images/useProjectImages';
-import projectPermissionKeys from 'api/project_permissions/keys';
 import { IUpdatedProjectProperties } from 'api/projects/types';
 import useAddProject from 'api/projects/useAddProject';
-import { IUser } from 'api/users/types';
 
-import { useSyncFiles } from 'hooks/files/useSyncFiles';
 import useAppConfigurationLocales from 'hooks/useAppConfigurationLocales';
 import useContainerWidthAndHeight from 'hooks/useContainerWidthAndHeight';
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -32,7 +28,6 @@ import {
 import TopicInputs from 'containers/Admin/projects/_shared/components/ProjectSetupForm/TopicInputs';
 import { getSelectedTopicIds } from 'containers/Admin/projects/_shared/utils/getSelectedTopicIds';
 import messages from 'containers/Admin/projects/project/general/messages';
-import validateTitle from 'containers/Admin/projects/project/general/utils/validateTitle';
 import { fragmentId } from 'containers/Admin/projects/project/projectHeader';
 import { adminProjectsProjectPath } from 'containers/Admin/projects/routes';
 
@@ -48,23 +43,17 @@ import Highlighter from 'components/Highlighter';
 import Warning from 'components/UI/Warning';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
-import { queryClient } from 'utils/cl-react-query/queryClient';
 import clHistory from 'utils/cl-router/history';
 import Link from 'utils/cl-router/Link';
 import { isNilOrError } from 'utils/helperUtils';
+import validateTitle from 'utils/validateTitle';
 
-import FileUploader from '../_shared/components/ProjectSetupForm/FileUploader';
 import ProjectContextSection from '../_shared/components/ProjectSetupForm/ProjectContextSection';
-import { ProjectContext } from '../_shared/components/ProjectSetupForm/ProjectContextSection/types';
-import { validateProjectContext } from '../_shared/components/ProjectSetupForm/ProjectContextSection/utils';
+import { useValidateProjectContext } from '../_shared/components/ProjectSetupForm/ProjectContextSection/utils';
 import { TOnProjectAttributesDiffChangeFunction } from '../_shared/types';
 import useSyncProjectImages from '../_shared/useSyncProjectImages';
 
-interface Props {
-  authUser: IUser;
-}
-
-const ProjectSetupForm = ({ authUser }: Props) => {
+const ProjectSetupForm = () => {
   const { formatMessage } = useIntl();
 
   const isProjectLibraryEnabled = useFeatureFlag({ name: 'project_library' });
@@ -73,15 +62,7 @@ const ProjectSetupForm = ({ authUser }: Props) => {
 
   const { mutateAsync: addProject } = useAddProject();
 
-  const syncProjectFiles = useSyncFiles();
   const syncProjectImages = useSyncProjectImages();
-
-  // File Attachments
-  const [projectFileAttachments, setProjectFileAttachments] = useState<
-    IFileAttachmentData[] | undefined
-  >();
-  const [projectFileAttachmentsToRemove, setProjectFileAttachmentsToRemove] =
-    useState<IFileAttachmentData[]>([]);
 
   const [submitState, setSubmitState] = useState<ISubmitState>('disabled');
 
@@ -109,13 +90,7 @@ const ProjectSetupForm = ({ authUser }: Props) => {
     string | null
   >(null);
 
-  const { highest_role } = authUser.data.attributes;
-
-  const [projectContext, setProjectContext] = useState<ProjectContext>(() => {
-    if (highest_role === 'space_moderator') return 'space';
-    if (highest_role === 'project_folder_moderator') return 'folder';
-    return 'root';
-  });
+  const validateProjectContext = useValidateProjectContext();
 
   const handleProjectAttributeDiffOnChange: TOnProjectAttributesDiffChangeFunction =
     (
@@ -203,7 +178,7 @@ const ProjectSetupForm = ({ authUser }: Props) => {
       const response = await addProject(nextProjectAttributesDiff);
       const projectId = response.data.id;
 
-      const projectImagesPromise = syncProjectImages({
+      await syncProjectImages({
         croppedProjectCardBase64,
         projectCardImageAltText,
         projectCardImageToUpdate: projectCardImage,
@@ -211,24 +186,8 @@ const ProjectSetupForm = ({ authUser }: Props) => {
         projectId,
       });
 
-      const projectFilesPromise = projectFileAttachments
-        ? syncProjectFiles({
-            attachableId: projectId,
-            attachableType: 'Project',
-            fileAttachments: projectFileAttachments,
-            fileAttachmentsToRemove: projectFileAttachmentsToRemove,
-            fileAttachmentOrdering: {},
-          })
-        : undefined;
-
-      await Promise.all([
-        projectImagesPromise,
-        projectFilesPromise,
-      ] as Promise<any>[]);
-
       setSubmitState('success');
       setProjectCardImageToRemove(null);
-      setProjectFileAttachmentsToRemove([]);
       setProcessing(false);
 
       setTimeout(() => {
@@ -236,10 +195,6 @@ const ProjectSetupForm = ({ authUser }: Props) => {
           pathname: `${adminProjectsProjectPath(projectId)}/general`,
         });
       }, 1000);
-
-      queryClient.invalidateQueries({
-        queryKey: projectPermissionKeys.list({ projectId }),
-      });
     } catch (errors) {
       setSubmitState('error');
       setApiErrors((errors as any).errors);
@@ -264,7 +219,13 @@ const ProjectSetupForm = ({ authUser }: Props) => {
     setTitleError(hasTitleError ? titleError : null);
     const formIsValid = !hasTitleError;
 
-    if (!validateProjectContext(projectContext, projectAttrs)) {
+    if (
+      !validateProjectContext({
+        spaceId: projectAttrs.space_id,
+        folderId: projectAttrs.folder_id,
+        projectInRoot: true,
+      })
+    ) {
       setProjectContextError(true);
       return false;
     }
@@ -332,24 +293,11 @@ const ProjectSetupForm = ({ authUser }: Props) => {
           />
 
           <ProjectContextSection
-            projectContext={projectContext}
-            space_id={projectAttrs.space_id}
-            folder_id={projectAttrs.folder_id}
-            formSituation="creating"
+            spaceId={projectAttrs.space_id}
+            folderId={projectAttrs.folder_id}
+            projectInRoot
             error={projectContextError}
-            onSetContext={(context) => {
-              handleProjectAttributeDiffOnChange({
-                space_id: null,
-                folder_id: null,
-              });
-              setProjectContext(context);
-              setProjectContextError(false);
-            }}
-            onChangeSpace={(spaceAndFolderId) => {
-              handleProjectAttributeDiffOnChange(spaceAndFolderId);
-              setProjectContextError(false);
-            }}
-            onChangeFolder={(spaceAndFolderId) => {
+            onChange={(spaceAndFolderId) => {
               handleProjectAttributeDiffOnChange(spaceAndFolderId);
               setProjectContextError(false);
             }}
@@ -411,28 +359,6 @@ const ProjectSetupForm = ({ authUser }: Props) => {
               />
             </StyledSectionField>
           )}
-          <StyledSectionField>
-            <SubSectionTitle>
-              <FormattedMessage {...messages.fileUploadLabel} />
-              <IconTooltip
-                content={
-                  <FormattedMessage {...messages.fileUploadLabelTooltip} />
-                }
-              />
-            </SubSectionTitle>
-            <FileUploader
-              projectFileAttachments={projectFileAttachments}
-              setProjectFileAttachments={(...args) => {
-                setSubmitState('enabled');
-                setProjectFileAttachments(...args);
-              }}
-              setProjectFileAttachmentsToRemove={(...args) => {
-                setSubmitState('enabled');
-                setProjectFileAttachmentsToRemove(...args);
-              }}
-              apiErrors={apiErrors}
-            />
-          </StyledSectionField>
         </Section>
         <Box py="8px">
           <SubmitWrapper

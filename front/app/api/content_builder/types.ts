@@ -27,4 +27,4 @@ export interface IAddContentBuilderLayout {
   enabled?: boolean;
 }
 
-export type ContentBuildableType = 'project' | 'folder' | 'homepage';
+export type ContentBuildableType = 'folder' | 'homepage';

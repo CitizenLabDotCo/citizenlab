@@ -24,6 +24,7 @@
 #  fk_rails_...  (custom_field_id => custom_fields.id)
 #
 class CustomFieldOption < ApplicationRecord
+  include PlainTextMultiloc
   include BulkReorderable
 
   # non-persisted attribute to enable form copying
@@ -40,6 +41,7 @@ class CustomFieldOption < ApplicationRecord
   validates :title_multiloc, presence: true, multiloc: { presence: true }
   validate :belongs_to_select_field
 
+  plain_text_multiloc :title_multiloc
   before_validation :generate_key, on: :create
 
   # Options of the domicile custom field are associated with an area.
@@ -51,6 +53,14 @@ class CustomFieldOption < ApplicationRecord
   has_many :custom_field_bins, dependent: :destroy, class_name: 'CustomFieldBins::OptionBin', inverse_of: :custom_field_option
 
   delegate :project_id, to: :custom_field
+
+  # A domicile answer holds the id of the chosen area, or 'outside' for the
+  # "somewhere else" option, never the option key.
+  def answer_key
+    return key unless custom_field.domicile?
+
+    area&.id || 'outside'
+  end
 
   private
 

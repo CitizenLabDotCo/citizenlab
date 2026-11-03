@@ -21,7 +21,8 @@
           "lifecycle_stage",
           "country_code",
           "authentication_token_lifetime_in_days",
-          "min_user_age"
+          "min_user_age",
+          "exclude_admins_and_moderators_from_statistics"
         ],
         "additionalProperties": false,
         "required": ["allowed", "enabled", "lifecycle_stage", "country_code"],
@@ -97,6 +98,12 @@
             "title": "Weglot API key",
             "description": "Set the API key of Weglot to enable automatic page translations.",
             "type": "string"
+          },
+          "weglot_switcher_in_navbar": {
+            "title": "Weglot language switcher in the navigation bar",
+            "description": "Show the Weglot language switcher in the navigation bar instead of Weglot's own floating widget. Turn on 'Hide switcher' in this platform's Weglot project too, or both switchers appear. Not recommended on a platform with more than one platform language.",
+            "type": "boolean",
+            "default": false
           },
           "color_main": {
             "title": "Main Colour",
@@ -265,6 +272,18 @@
             "type": "boolean",
             "default": true
           },
+          "exclude_admins_and_moderators_from_statistics":  {
+            "title": "Exclude admins and moderators from statistics",
+            "description": "When enabled, the participation and visits of admins and moderators are left out of statistics and graphs.",
+            "type": "boolean",
+            "default": true
+          },
+          "projects_unlisted_by_default":  {
+            "title": "Make new projects unlisted by default",
+            "description": "When enabled, new projects are unlisted when created: they are only reachable by direct link and don't show up in project listings. Admins can still change this per project.",
+            "type": "boolean",
+            "default": false
+          },
           "min_user_age": {
             "title": "Minimum user age",
             "description": "Used to determine the available birthyears in the birthyear registration question",
@@ -402,16 +421,10 @@
         "description": "Allow users to register with an email and password.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
-        "required-settings": ["minimum_length", "enable_signup"],
+        "required-settings": ["minimum_length"],
         "properties": {
           "allowed": { "type": "boolean", "default": true},
           "enabled": { "type": "boolean", "default": true},
-          "enable_signup": {
-            "type": "boolean",
-            "title": "Enable sign-up",
-            "description": "If unchecked, only login via password is allowed for existing users; sign-up via password is disabled for new users.",
-            "default": true
-          },
           "minimum_length": {
             "type": "number",
             "title": "Minimum password length",
@@ -419,6 +432,14 @@
             "minimum": 5,
             "maximum": 72,
             "default": 8
+          },
+          "minimum_strength": {
+            "type": "number",
+            "title": "Minimum password strength",
+            "description": "The minimum password strength score required for a password (0-4 - reflecting the strength bar on signup). The default value is 0 - this disables enforcement and makes password strength meter only a recommendation. A value of at least 3 is recommended for stronger security in line with NCSC guidance. Changes only apply to users that create a new account or update their existing password (existing accounts remain the same).",
+            "minimum": 0,
+            "maximum": 4,
+            "default": 0
           }
         }
       },
@@ -564,25 +585,6 @@
             "type": "string",
             "description": "The write key the front-end send its data to.",
             "default": "<%= ENV.fetch('DEFAULT_SATISMETER_WRITE_KEY', '')%>"
-          }
-        }
-      },
-
-      "google_analytics": {
-        "type": "object",
-        "title": "Google Analytics Integration",
-        "description":  "Integrates Google Analytics data collection to the front-end",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "required-settings": ["tracking_id"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true},
-          "tracking_id": {
-            "type": "string",
-            "description": "The tracking ID the front-end send it's data to. Format UA-XXXXXXXXX-XX",
-            "pattern": "^(UA|YT|MO)-[0-9]+-[0-9]+$",
-            "default": "<%= ENV.fetch('DEFAULT_GA_TRACKING_ID', '')%>"
           }
         }
       },
@@ -830,18 +832,6 @@
         }
       },
 
-      "granular_permissions": {
-        "type": "object",
-        "title": "Granular Permissions",
-        "description": "Admin can specify permissions for specific projects and project phases (e.g., who can post, react, etc.).",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": true},
-          "enabled": { "type": "boolean", "default": true}
-        }
-      },
-
       "pages": {
         "type": "object",
         "title": "Custom Pages",
@@ -854,11 +844,38 @@
         }
       },
 
+      "project_backoffice_redesign": {
+        "type": "object",
+        "title": "Project Backoffice Redesign",
+        "description": "Show the project back office as a single three-pane workspace instead of a page per setting.",
+        "early_access": "internal",
+        "development": true,
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
+      "project_static_pages": {
+        "type": "object",
+        "title": "Project Static Pages",
+        "description": "Allow static pages to be created and added to individual projects.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false},
+          "enabled": { "type": "boolean", "default": false}
+        }
+      },
+
       "redirects": {
         "type": "object",
         "title": "URL redirection rules",
         "description":  "Define redirection rules on certain targets",
         "additionalProperties": false,
+        "early_access": "general",
         "required": ["allowed", "enabled"],
         "properties": {
           "allowed": { "type": "boolean", "default": false },
@@ -891,18 +908,6 @@
         }
       },
 
-      "idea_author_change": {
-        "type": "object",
-        "title": "Idea Author Change",
-        "description": "Allows city admins to create ideas and assign users as their authors.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false},
-          "enabled": { "type": "boolean", "default": false}
-        }
-      },
-
       "disable_user_bios": {
         "type": "object",
         "title": "Disable User Biographies",
@@ -919,6 +924,18 @@
         "type": "object",
         "title": "Mapping features used in in-platform surveys",
         "description":  "Mapping questions (pin, route & area), Esri Shapefile upload, and map page.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "input_form_answer_filters": {
+        "type": "object",
+        "title": "Answer filters on input lists [DO NOT ENABLE]",
+        "description": "Lets managers offer a public choice question as a filter on the list of inputs. Still under development, not ready for customer use.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {
@@ -1179,18 +1196,6 @@
         }
       },
 
-      "parallel_participation": {
-        "type": "object",
-        "title": "Parallel participation",
-        "description": "In development: the redesigned project back office with parallel participation and a content-builder driven project page.",
-        "additionalProperties": false,
-        "required": ["allowed", "enabled"],
-        "properties": {
-          "allowed": { "type": "boolean", "default": false },
-          "enabled": { "type": "boolean", "default": false }
-        }
-      },
-
       "authoring_assistance_prototype": {
         "type": "object",
         "title": "Experimental feature: Authoring assistance prototype",
@@ -1205,7 +1210,7 @@
 
       "input_iq": {
         "type": "object",
-        "title": "InputIQ",
+        "title": "Similar Inputs",
         "description":	"Help the user with writing better ideas and proposals through AI assistance while typing in the input form. Inputs posted while the feature was disabled will not be listed as similar inputs.",
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
@@ -1387,7 +1392,7 @@
           "enabled": { "type": "boolean", "default": false },
           "prompt_template": {
             "title": "Custom AI analysis prompt",
-            "description": "Optional custom prompt template (ERB format) to override the default Q&A prompt. Available variables: project_title, question, inputs_text, language, include_comments.",
+            "description": "Optional custom prompt template to override the default Q&A prompt. Insert a value by writing its name between %{ and }, e.g. %{project_title}. Available placeholders: %{project_title}, %{question}, %{inputs_text}, %{language}, %{comments_instruction}. No other syntax is supported: anything else is sent to the model as-is.",
             "type": "string"
           }
         }
@@ -1477,6 +1482,30 @@
         }
       },
 
+      "llm_reporting": {
+        "type": "object",
+        "title": "LLM-generated reports [DO NOT ENABLE]",
+        "description": "Generate a whole report with an LLM from the report builder, and iterate on it with a chat panel. Under development, not ready for customer use.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "custom_page_builder": {
+        "type": "object",
+        "title": "Custom page builder [DO NOT CHANGE!!]",
+        "description": "Feature flag used during development. Should be active for all platforms, and should remain so. Do not change these settings. DATA WILL BE LOST if this feature is deactivated.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": true },
+          "enabled": { "type": "boolean", "default": true }
+        }
+      },
+
       "custom_smtp": {
         "type": "object",
         "title": "Custom SMTP Server",
@@ -1537,10 +1566,120 @@
         }
       },
 
+      "sms": {
+        "type": "object",
+        "title": "SMS",
+        "description": "Send SMS messages to users via the tenant's own Twilio account. ONLY ENABLE IF YOU HAVE CONFIGURED TWILIO CORRECTLY.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false },
+          "use_test_mode": {
+            "type": "boolean",
+            "title": "Use test mode (NEVER USE IN PRODUCTION)",
+            "default": false,
+            "private": true
+          },
+          "twilio_account_sid": {
+            "type": "string",
+            "title": "Twilio Account SID",
+            "private": true
+          },
+          "twilio_auth_token": {
+            "type": "string",
+            "title": "Twilio Auth Token",
+            "private": true
+          },
+          "twilio_confirmation_codes_messaging_service_sid": {
+            "type": "string",
+            "title": "Twilio Confirmation Codes Messaging Service SID",
+            "description": "The Twilio Messaging Service SID used to send phone confirmation codes.",
+            "private": true
+          },
+          <% sms_country_codes = CountryCodesService.new %>
+          "allowed_country_codes": {
+            "title": "Allowed SMS country codes",
+            "description": "ISO 3166-1 alpha-2 country codes whose phone numbers may receive SMS. Empty means all countries are allowed.",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": <%= sms_country_codes.codes_in_name_order.to_json %>,
+              "enumNames": <%= sms_country_codes.names_in_name_order.to_json %>
+            },
+            "uniqueItems": true,
+            "default": []
+          }
+        }
+      },
+
+      "sms_login": {
+        "type": "object",
+        "title": "SMS login",
+        "description": "Allow users to log in or sign up via SMS as an alternative to email. ONLY USE IF SMS FEATURE FLAG IS ENABLED.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "sms_manual_campaigns": {
+        "type": "object",
+        "title": "SMS manual campaigns",
+        "description": "Allow admins to send manual SMS campaigns. ONLY USE IF SMS FEATURE FLAG IS ENABLED. ONLY USE IF twilio_manual_campaigns_messaging_service_sid IS CONFIGURED.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false },
+          "twilio_manual_campaigns_messaging_service_sid": {
+            "type": "string",
+            "title": "Twilio Manual Campaigns Messaging Service SID",
+            "description": "The Twilio Messaging Service SID used to send manual SMS campaigns.",
+            "private": true
+          },
+          "messages_purchased": {
+            "type": "integer",
+            "title": "SMS credits (segments) purchased (cumulative, all time)",
+            "description": "The total number of billable SMS credits (segments) the tenant has EVER purchased. Cumulative: when a new bundle is sold, ADD it to this number, never replace it. The remaining balance shown to admins is this number minus every SMS segment handed to the provider since the platform started. Long messages may consume multiple segments.",
+            "minimum": 0,
+            "default": 0,
+            "private": true
+          }
+        }
+      },
+
       "hide_submission_removal_text": {
         "type": "object",
         "title": "Hide submission removal text",
         "description": "Do not give users the option to remove survey submissions (post survey & in email confirmation). WARNING: Should only be used where GPDR does not apply.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "configurable_dropdown": {
+        "type": "object",
+        "title": "Configurable dropdown",
+        "description": "Allows grouping several navigation bar items together under a single dropdown menu.",
+        "additionalProperties": false,
+        "required": ["allowed", "enabled"],
+        "properties": {
+          "allowed": { "type": "boolean", "default": false },
+          "enabled": { "type": "boolean", "default": false }
+        }
+      },
+
+      "ai_assistant": {
+        "type": "object",
+        "title": "AI assistant [DO NOT ENABLE]",
+        "description": "An AI chat assistant in the back office that proposes changes, such as a survey's questions, for the admin to approve. Under development, not ready for customer use. Only available to super admins for now.",
+        "development": true,
         "additionalProperties": false,
         "required": ["allowed", "enabled"],
         "properties": {

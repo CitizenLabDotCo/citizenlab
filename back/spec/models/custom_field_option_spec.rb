@@ -5,6 +5,8 @@ require 'rails_helper'
 RSpec.describe CustomFieldOption do
   subject(:option) { create(:custom_field_option) }
 
+  it_behaves_like 'a plain text multiloc', factory: :custom_field_option
+
   it { is_expected.to be_valid }
   it { is_expected.to have_one(:area).dependent(:nullify) }
 
@@ -36,6 +38,29 @@ RSpec.describe CustomFieldOption do
       cf = create(:custom_field_select)
       cfo = create(:custom_field_option, key: nil, custom_field: cf, other: true)
       expect(cfo.key).to eq 'other'
+    end
+  end
+
+  describe '#answer_key' do
+    it 'returns the option key' do
+      expect(create(:custom_field_option, key: 'bike').answer_key).to eq 'bike'
+    end
+
+    context 'for the domicile field' do
+      # The domicile field creates an option per existing area on creation, and
+      # each later area creates its own.
+      let!(:domicile) { create(:custom_field_domicile) }
+      let!(:area) { create(:area) }
+
+      it "returns the area id for an area's option" do
+        expect(area.custom_field_option.answer_key).to eq area.id
+      end
+
+      it "returns 'outside' for the somewhere else option" do
+        somewhere_else = domicile.options.reload.find { |option| option.area.nil? }
+
+        expect(somewhere_else.answer_key).to eq 'outside'
+      end
     end
   end
 

@@ -83,11 +83,6 @@ export default defineMessages({
     id: 'app.components.CustomFieldsForm.adminFieldTooltip',
     defaultMessage: 'Field only visible to admins',
   },
-  notPublic: {
-    id: 'app.components.CustomFieldsForm.notPublic1',
-    defaultMessage:
-      '*This answer will only be shared with project managers, and not to the public.',
-  },
   selectBetween: {
     id: 'app.components.CustomFieldsForm.selectBetween',
     defaultMessage: '*Select between { minItems } and { maxItems } options',
@@ -113,6 +108,10 @@ export default defineMessages({
   typeYourAnswerRequired: {
     id: 'app.components.CustomFieldsForm.typeYourAnswerRequired',
     defaultMessage: 'It is required to type your answer',
+  },
+  typeToSearch: {
+    id: 'app.components.CustomFieldsForm.typeToSearch',
+    defaultMessage: 'Type to search',
   },
   authorFieldPlaceholder: {
     id: 'app.components.CustomFieldsForm.authorFieldPlaceholder',

@@ -333,11 +333,20 @@ export default defineMessages({
   },
   projectPhaseStarted: {
     id: 'app.containers.NotificationMenu.projectPhaseStarted',
-    defaultMessage: '{projectTitle} entered a new phase',
+    defaultMessage: '{phaseTitle} has started in {projectTitle}',
   },
   projectPhaseUpcoming: {
     id: 'app.containers.NotificationMenu.projectPhaseUpcoming',
-    defaultMessage: '{projectTitle} will enter a new phase on {phaseStartAt}',
+    defaultMessage: '{phaseTitle} starts on {phaseStartAt} in {projectTitle}',
+  },
+  reportGenerated: {
+    id: 'app.containers.NotificationMenu.reportGenerated',
+    defaultMessage: 'Your report for {projectTitle} is ready',
+  },
+  reportGeneratedStoppedEarly: {
+    id: 'app.containers.NotificationMenu.reportGeneratedStoppedEarly',
+    defaultMessage:
+      'Your report for {projectTitle} stopped before it was finished. What was written is saved.',
   },
   projectPublished: {
     id: 'app.containers.NotificationMenu.projectPublished',

@@ -123,17 +123,9 @@ module CustomIdMethods::Federa
       "#{base_url}?#{params.to_query}"
     end
 
-    def email_always_present?
-      false
-    end
-
     def filter_auth_to_persist(auth)
       auth_to_persist = auth.deep_dup
       auth_to_persist.tap { |h| h[:extra].delete(:response_object) }
-    end
-
-    def updateable_user_attrs
-      super + %i[first_name last_name]
     end
 
     private
@@ -175,6 +167,9 @@ module CustomIdMethods::Federa
       unless query.key?('RelayState')
         qs = env['QUERY_STRING'] || ''
         env['QUERY_STRING'] = qs.empty? ? "RelayState=#{relay_state}" : "#{qs}&RelayState=#{relay_state}"
+        # OmniAuth reads the strategy's memoized request.params, which may have been
+        # parsed before this setup phase ran; update_param also clears that memo.
+        env['omniauth.strategy'].request.update_param('RelayState', relay_state)
       end
     end
 

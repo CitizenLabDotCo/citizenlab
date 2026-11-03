@@ -14,6 +14,10 @@ hr-HR:
       subject: Potvrdite svoju e-mail adresu za platformu %{organizationName}
       thanks_for_signing_up1: 'Zahvaljujemo se na sudjelovanju. Unesite ovaj kod za potvrdu u prozor na platformi za sudjelovanje %{organizationName}:'
       the_link_is_valid_for: Ovaj poveznica vrijedi 24 sata. Ako istekne, možete <a href="%{link}">zatražiti novi kod</a>.
+  content_builder:
+    project_page:
+      details_placeholder: <p>Ovaj prostor iskoristite za više detalja — pozadinske informacije, što se događa s doprinosima ili koga kontaktirati.</p>
+      intro_placeholder: <p>Ovdje dodajte kratki uvod — recite stanovnicima o čemu se radi u ovom projektu i kako mogu sudjelovati.</p>
   custom_field_options:
     domicile:
       outside: Negdje drugdje
@@ -271,6 +275,15 @@ hr-HR:
     proposals:
       title: Prijedlozi
   pdf_export:
+    input_responses:
+      date: Datum
+      no_answer: (Bez odgovora)
+      prepared_by: Pripremio/la
+      report_label: Izvješće o odgovorima
+      respondent: Ispitanik %{number}
+      response_count:
+        one: '%{count} odgovor'
+        other: '%{count} odgovora'
     survey_responses:
       date: Datum
       no_answer: (Nema odgovora)

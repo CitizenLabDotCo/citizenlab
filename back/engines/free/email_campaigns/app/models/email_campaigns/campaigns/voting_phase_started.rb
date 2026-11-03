@@ -21,6 +21,7 @@
 #  intro_multiloc       :jsonb
 #  button_text_multiloc :jsonb
 #  context_type         :string
+#  channel              :string           default("email"), not null
 #
 # Indexes
 #
@@ -85,7 +86,7 @@ module EmailCampaigns
     end
 
     def self.trigger_multiloc_key
-      'email_campaigns.admin_labels.trigger.project_phase_changes'
+      'email_campaigns.admin_labels.trigger.phase_starts'
     end
 
     def generate_commands(recipient:, activity:, time: nil)

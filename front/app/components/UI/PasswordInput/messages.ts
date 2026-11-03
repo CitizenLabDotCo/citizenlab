@@ -70,6 +70,15 @@ export default defineMessages({
     id: 'app.components.PasswordInput.passwordEmptyError',
     defaultMessage: 'Enter your password',
   },
+  passwordRequiredError: {
+    id: 'app.components.PasswordInput.passwordRequiredError',
+    defaultMessage: 'Please enter your password',
+  },
+  passwordStrengthError: {
+    id: 'app.components.PasswordInput.passwordStrengthError',
+    defaultMessage:
+      'This password can be easily guessed. Please choose a stronger password, for example by making it longer or using several unrelated words.',
+  },
   passwordStrengthTooltip1: {
     id: 'app.components.PasswordInput.passwordStrengthTooltip1',
     defaultMessage: 'To make your password stronger:',

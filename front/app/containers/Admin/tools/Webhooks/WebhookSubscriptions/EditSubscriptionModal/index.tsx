@@ -46,7 +46,7 @@ const EditSubscriptionModal = ({
   subscriptionId,
   onClose,
 }: EditSubscriptionModalProps) => {
-  const { mutateAsync: updateSubscription, isLoading: isUpdating } =
+  const { mutateAsync: updateSubscription, isPending: isUpdating } =
     useUpdateWebhookSubscription();
   const { data: subscription, isLoading: isLoadingSubscription } =
     useWebhookSubscription(subscriptionId);

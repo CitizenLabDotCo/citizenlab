@@ -13,13 +13,29 @@ module MultiTenancy
         Comment
       ].to_set.freeze
 
-      SKIP_IMAGE_PRESENCE_VALIDATION = %w[IdeaImage ContentBuilder::LayoutImage].freeze
+      SKIP_IMAGE_PRESENCE_VALIDATION = %w[IdeaImage ContentBuilder::LayoutImage ProjectImage].freeze
+
+      TRANSACTION_BATCH_SIZE = 200
+
+      # Attributes that were removed from the schema but may still be present in
+      # templates serialized before their removal; assigning them would raise
+      # ActiveModel::UnknownAttributeError and abort the whole template application.
+      REMOVED_ATTRIBUTES = {
+        'Project' => %w[description_multiloc],
+        'ProjectFolders::Folder' => %w[description_multiloc],
+        'User' => %w[custom_field_values gender birthyear domicile],
+        'Idea' => %w[custom_field_values]
+      }.freeze
 
       def initialize(save_temp_remote_urls: false)
         @save_temp_remote_urls = save_temp_remote_urls
       end
 
-      def deserialize(template, validate: true, max_time: nil, local_copy: false)
+      # @param reuse_by [Hash{String=>#call}] per-model matchers, `model_name => ->(restored_attributes,
+      #   model_class) { existing_record_or_nil }`. A returned record is reused instead of inserted — its id
+      #   (and its nested `*_attributes` submodels' ids) registered for `*_ref` resolution. Empty by default,
+      #   so a normal apply is unaffected. See engines/decidim_importer for an example of this in use.
+      def deserialize(template, validate: true, max_time: nil, local_copy: false, reuse_by: {})
         # To ensure that `CurrentAttributes` is not unexpectedly reset during the
         # application of a template, we need to make sure that the template is wrapped by
         # the executor before setting the `CurrentAttributes` value. This is because
@@ -34,7 +50,7 @@ module MultiTenancy
         # Note: It's safe to call wrap multiple times because the executor is re-entrant.
         ::Rails.application.executor.wrap do
           Current.set(loading_tenant_template: true) do
-            _deserialize(template, validate, max_time, local_copy)
+            _deserialize(template, validate, max_time, local_copy, reuse_by)
           end
         end
 
@@ -43,7 +59,7 @@ module MultiTenancy
 
       private
 
-      def _deserialize(template, validate, max_time, local_copy)
+      def _deserialize(template, validate, max_time, local_copy, reuse_by = {})
         t1 = Time.zone.now
         obj_to_id_and_class = {}.compare_by_identity
         created_objects_ids = Hash.new { |h, k| h[k] = [] } # Hash with empty arrays as default values
@@ -59,73 +75,108 @@ module MultiTenancy
           model_class = model_name.classify.constantize
           uploaders_names = model_class.uploaders.keys.map(&:to_s)
 
-          records.each do |attributes|
-            minutes_spent = Time.zone.now - t1
-            if max_time && (minutes_spent > max_time)
-              raise "Template application exceed time limit of #{max_time / 1.minute} minutes"
-            end
-
-            attributes ||= {} # Avoid nil. Enables an empty model field to lead to creation of record with default values.
-            restored_attributes = restore_template_attributes(
-              attributes,
-              obj_to_id_and_class,
-              AppConfiguration.instance.settings,
-              model_class: model_class
-            )
-
-            remote_image_attributes, restored_attributes = restored_attributes.partition do |field_name, _field_value|
-              field_name.start_with?('remote_') && field_name.end_with?('_url') && field_name.exclude?('file')
-            end.map(&:to_h)
-
-            model = model_class.new(restored_attributes)
-            model.skip_image_presence = true if SKIP_IMAGE_PRESENCE_VALIDATION.include?(model_class.name)
-
-            begin
-              preserve_ordering(model) { save_model(model, validate) }
-
-              # Only upload attributes that are strings are copied verbatim using
-              # `update_columns` to bypass the CarrierWave uploader.
-              str_upload_attributes = restored_attributes
-                .slice(*uploaders_names)
-                .select { |_, v| v.is_a?(String) }
-              model.update_columns(str_upload_attributes) if str_upload_attributes.present?
-
-              # Assign images that were serialized as remote URLs (`remote_*_url`).
-              assign_images(model, remote_image_attributes) if remote_image_attributes.present?
-
-              # taking original attributes to get correct object ID
-              attributes.each do |field_name, field_value|
-                if field_name.end_with?('_attributes') && field_value.is_a?(Hash) # linking attribute refs (not supported for lists of attributes)
-                  submodel = model.send(field_name.chomp('_attributes'))
-                  obj_to_id_and_class[field_value] = [submodel.id, submodel.class]
+          # Records are saved in batches, each in a single transaction: one commit per batch
+          # instead of one per record. In production, the commit is the costly part of saving
+          # a record (it waits for the Multi-AZ standby). Batches are kept small to avoid
+          # long-running transactions.
+          records.each_slice(TRANSACTION_BATCH_SIZE) do |batch|
+            ActiveRecord::Base.transaction do
+              batch.each do |attributes|
+                minutes_spent = Time.zone.now - t1
+                if max_time && (minutes_spent > max_time)
+                  raise "Template application exceed time limit of #{max_time / 1.minute} minutes"
                 end
-              end
-            rescue StandardError => e
-              json_info = {
-                error_message: e.message,
-                model_class: model_class.name,
-                attributes: attributes,
-                error_backtrace: e.backtrace
-              }.to_json
-              message = "Failed to create instance during template application: #{json_info}"
-              ErrorReporter.report_msg(message)
-              raise message
-            end
 
-            obj_to_id_and_class[attributes] = [model.id, model_class]
-            created_objects_ids[model_class.name] << model.id
+                attributes ||= {} # Avoid nil. Enables an empty model field to lead to creation of record with default values.
+                restored_attributes = restore_template_attributes(
+                  attributes,
+                  obj_to_id_and_class,
+                  AppConfiguration.instance.settings,
+                  model_class: model_class
+                )
+
+                # Reuse an existing record instead of inserting a duplicate (when `reuse_by` matches).
+                if (existing = reusable_record(reuse_by, model_class, restored_attributes))
+                  register_reused_record(existing, attributes, obj_to_id_and_class)
+                  next
+                end
+
+                remote_image_attributes, restored_attributes = restored_attributes.partition do |field_name, _field_value|
+                  field_name.start_with?('remote_') && field_name.end_with?('_url') && field_name.exclude?('file')
+                end.map(&:to_h)
+
+                model = model_class.new(restored_attributes)
+                model.skip_image_presence = true if SKIP_IMAGE_PRESENCE_VALIDATION.include?(model_class.name)
+
+                begin
+                  preserve_ordering(model) { save_model(model, validate) }
+
+                  # Only upload attributes that are strings are copied verbatim using
+                  # `update_columns` to bypass the CarrierWave uploader.
+                  str_upload_attributes = restored_attributes
+                    .slice(*uploaders_names)
+                    .select { |_, v| v.is_a?(String) }
+                  model.update_columns(str_upload_attributes) if str_upload_attributes.present?
+
+                  # Assign images that were serialized as remote URLs (`remote_*_url`).
+                  assign_images(model, remote_image_attributes) if remote_image_attributes.present?
+
+                  # taking original attributes to get correct object ID
+                  attributes.each do |field_name, field_value|
+                    if field_name.end_with?('_attributes') && field_value.is_a?(Hash) # linking attribute refs (not supported for lists of attributes)
+                      submodel = model.send(field_name.chomp('_attributes'))
+                      obj_to_id_and_class[field_value] = [submodel.id, submodel.class]
+                    end
+                  end
+                rescue StandardError => e
+                  json_info = {
+                    error_message: e.message,
+                    model_class: model_class.name,
+                    attributes: attributes,
+                    error_backtrace: e.backtrace
+                  }.to_json
+                  message = "Failed to create instance during template application: #{json_info}"
+                  ErrorReporter.report_msg(message)
+                  raise message
+                end
+
+                obj_to_id_and_class[attributes] = [model.id, model_class]
+                created_objects_ids[model_class.name] << model.id
+              end
+            end
           end
         end
 
         created_objects_ids
       end
 
+      # The already-existing record a `reuse_by` matcher points this template row at, or nil to create it.
+      def reusable_record(reuse_by, model_class, restored_attributes)
+        reuse_by[model_class.name]&.call(restored_attributes, model_class)
+      end
+
+      # Registers a reused record's id (and its nested `*_attributes` submodels' ids) in the ref table so
+      # `*_ref`/`*_attributes_ref`s pointing at this row resolve to it. Mirrors creation-time registration.
+      def register_reused_record(existing, attributes, obj_to_id_and_class)
+        obj_to_id_and_class[attributes] = [existing.id, existing.class]
+        attributes.each do |field_name, field_value|
+          next unless field_name.end_with?('_attributes') && field_value.is_a?(Hash)
+
+          submodel = existing.public_send(field_name.chomp('_attributes'))
+          obj_to_id_and_class[field_value] = [submodel.id, submodel.class] if submodel
+        end
+      end
+
       def restore_template_attributes(attributes, obj_to_id_and_class, app_settings, model_class: nil)
         start_of_day = AppConfiguration.timezone.now.beginning_of_day
         locales = USER_INPUT_CLASSES.include?(model_class) ? app_settings.dig('core', 'locales') : all_supported_locales
 
+        removed_attributes = REMOVED_ATTRIBUTES[model_class&.name] || []
+
         new_attributes = {}
         attributes.each do |field_name, field_value|
+          next if removed_attributes.include?(field_name)
+
           if multiloc?(field_name)
             new_attributes[field_name] = restore_multiloc_attribute(field_value, locales)
 
@@ -155,19 +206,23 @@ module MultiTenancy
           end
         end
 
-        # Required to make templates tests work in which case file storage is used
-        if Rails.env.test?
-          keys = new_attributes.keys.select do |key|
-            key.start_with?('remote_') && key.end_with?('_url') && new_attributes[key]&.start_with?('/')
-          end
-          keys.each do |key|
-            new_key = key.gsub('remote_', '').gsub('_url', '')
-            new_attributes[new_key] = File.open "public#{new_attributes[key]}"
-            new_attributes.delete key
-          end
-        end
+        localize_remote_files_for_test!(new_attributes)
 
         new_attributes
+      end
+
+      # Required to make templates tests work in which case file storage is used
+      def localize_remote_files_for_test!(new_attributes)
+        return if !Rails.env.test?
+
+        keys = new_attributes.keys.select do |key|
+          key.start_with?('remote_') && key.end_with?('_url') && new_attributes[key]&.start_with?('/')
+        end
+        keys.each do |key|
+          new_key = key.gsub('remote_', '').gsub('_url', '')
+          new_attributes[new_key] = File.open "public#{new_attributes[key]}"
+          new_attributes.delete key
+        end
       end
 
       def restore_multiloc_attribute(field_value, locales)

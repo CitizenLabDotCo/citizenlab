@@ -42,6 +42,7 @@ const VotingResults = ({ phaseId, votingMethod }: Props) => {
 
   return (
     <Box
+      id="voting-results"
       mt={smallerThanPhone ? '4px' : '8px'}
       w="100%"
       display="flex"

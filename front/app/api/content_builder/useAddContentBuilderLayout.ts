@@ -3,7 +3,6 @@ import { CLErrors } from 'typings';
 
 import fileAttachmentsKeys from 'api/file_attachments/keys';
 import foldersKeys from 'api/project_folders/keys';
-import projectsKeys from 'api/projects/keys';
 
 import fetcher from 'utils/cl-react-query/fetcher';
 
@@ -46,18 +45,15 @@ const useAddContentBuilderLayout = () => {
           }),
         });
 
-        // We invalidate the project or folder if `enabled` changes
+        // We invalidate the folder if `enabled` changes
         // because the `uses_content_builder` attribute will also change on the model
-        if (Object.prototype.hasOwnProperty.call(variables, 'enabled')) {
-          const type = variables.contentBuildableType;
-          if (type !== 'homepage') {
-            queryClient.invalidateQueries({
-              queryKey:
-                type === 'folder'
-                  ? foldersKeys.item({ id: variables.contentBuildableId })
-                  : projectsKeys.item({ id: variables.contentBuildableId }),
-            });
-          }
+        if (
+          variables.contentBuildableType === 'folder' &&
+          Object.prototype.hasOwnProperty.call(variables, 'enabled')
+        ) {
+          queryClient.invalidateQueries({
+            queryKey: foldersKeys.item({ id: variables.contentBuildableId }),
+          });
         }
       },
     }

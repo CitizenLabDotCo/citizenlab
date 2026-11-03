@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import {
   Icon,
@@ -8,8 +8,10 @@ import {
   colors,
 } from '@citizenlab/cl2-component-library';
 
-import useCampaigns from 'api/campaigns/useCampaigns';
-import { isDraft } from 'api/campaigns/util';
+import useEmailCampaigns from 'api/campaigns/email/useEmailCampaigns';
+import { isEmailCampaignDraft } from 'api/campaigns/email/util';
+
+import useInfinitePagination from 'hooks/useInfinitePagination';
 
 import DraftCampaignRow from 'components/admin/Email/DraftCampaignRow';
 import SentCampaignRow from 'components/admin/Email/SentCampaignRow';
@@ -27,11 +29,14 @@ import NewCampaignButton from './NewCampaignButton';
 
 const CustomEmails = () => {
   const { projectId } = useParams({ strict: false }) as { projectId: string };
-  const [currentPage, setCurrentPage] = useState(1);
-  const { data: campaigns, fetchNextPage } = useCampaigns({
+  const { data: campaigns, fetchNextPage } = useEmailCampaigns({
     context: { projectId },
     pageSize: 10,
     manual: true,
+  });
+  const { currentPage, goToPage } = useInfinitePagination({
+    pages: campaigns?.pages,
+    fetchNextPage,
   });
 
   const campaignsList = campaigns?.pages[currentPage - 1];
@@ -41,11 +46,6 @@ const CustomEmails = () => {
   // TODO: Fix this the next time the file is edited.
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   const lastPage = getPageNumberFromUrl(campaigns?.pages[0].links.last) || 1;
-
-  const goToPage = (page: number) => {
-    setCurrentPage(page);
-    fetchNextPage({ pageParam: page });
-  };
 
   if (campaignsList.data.length === 0) {
     return (
@@ -95,7 +95,8 @@ const CustomEmails = () => {
         <Box background={colors.white} p="40px">
           <List key={campaignsList.data.map((c) => c.id).join()}>
             {campaignsList.data.map((campaign) =>
-              isDraft(campaign) || campaign.attributes.scheduled_at ? (
+              isEmailCampaignDraft(campaign) ||
+              campaign.attributes.scheduled_at ? (
                 <DraftCampaignRow
                   key={campaign.id}
                   campaign={campaign}

@@ -28,9 +28,9 @@ const SummarizeButton = ({
 }) => {
   const { formatMessage } = useIntl();
   const summarizeAllowed = useFeatureFlag({ name: 'analysis' });
-  const { mutate: addSummary, isLoading: isLoadingSummary } =
+  const { mutate: addSummary, isPending: isLoadingSummary } =
     useAddAnalysisSummary();
-  const { mutate: addSummaryPreCheck, isLoading: isLoadingPreCheck } =
+  const { mutate: addSummaryPreCheck, isPending: isLoadingPreCheck } =
     useAddAnalysisSummaryPreCheck();
   const filters = useAnalysisFilterParams();
 

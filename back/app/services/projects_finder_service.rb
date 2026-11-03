@@ -8,61 +8,23 @@ class ProjectsFinderService
     @areas = params[:areas]
   end
 
-  # Returns an ActiveRecord collection of published projects that are
-  # in an active participatory phase (where user can probably do something),
-  # ordered by the end date of the current phase, soonest first (nulls last).
-  # Also returns action descriptors for each project, to avoid getting them again when serializing.
-  # => { projects: [Project], descriptor_pairs: { <project.id>: { <action_descriptors> }, ... } }
+  # Returns an ActiveRecord collection of published projects with an active
+  # participatory phase in which the user can (probably) participate, ordered
+  # by the end date of that phase, soonest first (nulls last).
   def participation_possible
-    subquery = @projects
-      .not_in_draft_folder
-      .where(admin_publication: AdminPublication.published)
-
-    # Projects with active participatory (not information) phase & include the phases.end_at column
-    subquery = projects_with_active_phase(subquery)
-      .joins('INNER JOIN phases AS active_phases ON active_phases.project_id = projects.id')
-      .where.not(phases: { participation_method: 'information' })
-      .select('projects.created_at AS projects_created_at, projects.id AS projects_id')
-
-    # Perform the SELECT DISTINCT on the outer query and order first by the end date of the active phase,
-    # second by project created_at, and third by project ID.
-    # Secondary & ternary orderings prevent duplicates when paginating, when prior ordering involves equivalent values
-    projects = Project
-      .from(subquery, :projects)
-      .distinct
-      .order('phase_end_at ASC NULLS LAST, projects_created_at ASC, projects_id ASC')
-      .preload(phases: { permissions: [:groups] })
-
-    # Projects user can participate in, or where such participation could (probably) be made possible by user
-    # (e.g. user not signed in).
-    # Unfortunately, this breaks the query chain, so we have to start a new one after this.
-    #
-    # Step 1: Collect the ids of projects whose current phase allows participation.
-    # Since this is the last filtering step, we will keep going, until we reach the limit required for pagination.
-    pagination_limit = @page_size * @page_number
     project_ids = []
 
-    projects.each do |project|
-      phase = TimelineService.new.current_phase_not_archived(project)
-      next if phase.nil?
+    active_participatory_phases.each do |phase|
+      next if project_ids.include?(phase.project_id)
+      next if !participation_possible_for?(phase)
 
-      phase.project = project # Performance optimization (keep preloaded relationships)
-      action_descriptors = Permissions::PhasePermissionsService.new(
-        phase, @user, user_requirements_service: user_requirements_service
-      ).action_descriptors
-      next if !Permissions::ActionDescriptorsService.new(action_descriptors).participation_possible?
-
-      project_ids << project.id
-      break if project_ids.size >= pagination_limit + 1 # +1 needed to produce pagination link to next page
+      project_ids << phase.project_id
+      break if project_ids.size >= max_needed_projects
     end
 
-    # Step 2: Use the collected project IDs to filter projects
-    projects = Project.where(id: project_ids)
+    return Project.none if project_ids.empty?
 
-    # We join with active phases again, to reorder by phases.end_at first, projects.created_at second, project ID third.
-    # Secondary & ternary orderings prevent duplicates when paginating, when prior ordering involves equivalent values.
-    projects_with_active_phase(projects)
-      .order('phase_end_at ASC NULLS LAST, projects.created_at ASC, projects.id ASC')
+    Project.in_order_of(:id, project_ids)
   end
 
   # Returns an ActiveRecord collection of published projects that are also
@@ -167,14 +129,29 @@ class ProjectsFinderService
 
   private
 
-  def projects_with_active_phase(projects)
-    now = Time.zone.now
+  def participation_possible_for?(phase)
+    Permissions::PhasePermissionsService.new(
+      phase, @user, user_requirements_service: user_requirements_service
+    ).participation_possible?
+  end
 
-    projects
-      .joins(:phases)
-      .where(phases: { start_at: ..now })
-      .where('phases.end_at IS NULL OR phases.end_at > ?', now)
-      .select('projects.*, phases.end_at AS phase_end_at')
+  def active_participatory_phases
+    candidates = @projects
+      .not_in_draft_folder
+      .where(admin_publication: AdminPublication.published)
+
+    Phase.current
+      .where.not(participation_method: 'information')
+      .joins(:project)
+      .where(project_id: candidates.select(:id))
+      .order(Arel.sql('phases.end_at ASC NULLS LAST, projects.created_at ASC, projects.id ASC'))
+      .preload(permissions: [:groups], project: :admin_publication)
+  end
+
+  # One more project than fits the requested page, so pagination can tell
+  # whether there is a next page.
+  def max_needed_projects
+    (@page_size * @page_number) + 1
   end
 
   def order_by_created_at_and_id_with_distinct_on(projects)

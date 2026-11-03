@@ -174,6 +174,10 @@ export default defineMessages({
     id: 'app.containers.Admin.Invitations.inviteStatusAccepted',
     defaultMessage: 'Accepted',
   },
+  inviteStatusEmailBounced: {
+    id: 'app.containers.Admin.Invitations.inviteStatusEmailBounced',
+    defaultMessage: 'Email bounced',
+  },
   currentlyNoInvitesThatMatchSearch: {
     id: 'app.containers.Admin.Invitations.currentlyNoInvitesThatMatchSearch',
     defaultMessage: 'There are no invites that match your search',
@@ -185,6 +189,11 @@ export default defineMessages({
   unknownError: {
     id: 'app.containers.Admin.Invitations.unknownError',
     defaultMessage: 'Something went wrong. Please try again later.',
+  },
+  processingNotStartedError: {
+    id: 'app.containers.Admin.Invitations.processingNotStartedError',
+    defaultMessage:
+      'The system is busy and your invitations have not been processed yet. No invitations were sent. Please try again in a few minutes.',
   },
   invitesSupportPageURL2: {
     id: 'app.containers.Admin.Invitations.invitesSupportPageURL2',

@@ -204,7 +204,6 @@ context 'clave_unica verification' do
       configuration.settings['password_login'] = {
         'allowed' => true,
         'enabled' => true,
-        'enable_signup' => true,
         'minimum_length' => 8
       }
       configuration.save!
@@ -219,19 +218,19 @@ context 'clave_unica verification' do
         expect_to_create_verified_and_identified_user(user)
         expect(user.email).to be_nil
         expect(user.active?).to be(true)
-        expect(user.confirmation_required?).to be(false)
+        expect(user.confirmation_required?).to be(true)
         expect(ActionMailer::Base.deliveries.count).to eq(0)
 
         headers = { 'Authorization' => authorization_header(user) }
 
-        post '/web_api/v1/user/request_code_email_change', params: { request_code: { new_email: 'newcoolemail@example.org' } }, headers: headers
+        post '/web_api/v1/user/request_code_new_email', params: { request_code: { new_email: 'newcoolemail@example.org' } }, headers: headers
         expect(response).to have_http_status(:ok)
         expect(user.reload).to have_attributes({ new_email: 'newcoolemail@example.org' })
         expect(user.confirmation_required?).to be(true)
-        expect(user.active?).to be(false)
+        expect(user.active?).to be(true)
         expect(ActionMailer::Base.deliveries.count).to eq(1)
 
-        post '/web_api/v1/user/confirm_code_email_change', params: { confirmation: { code: user.new_email_confirmation.code } }, headers: headers
+        post '/web_api/v1/user/confirm_code_new_email', params: { confirmation: { code: user.new_email_confirmation.code } }, headers: headers
         expect(response).to have_http_status(:ok)
         expect(user.reload.confirmation_required?).to be(false)
         expect(user.active?).to be(true)
@@ -246,15 +245,15 @@ context 'clave_unica verification' do
         user = User.order(created_at: :asc).last
         headers = { 'Authorization' => authorization_header(user) }
 
-        post '/web_api/v1/user/request_code_email_change', params: { request_code: { new_email: '1@example.org' } }, headers: headers
+        post '/web_api/v1/user/request_code_new_email', params: { request_code: { new_email: '1@example.org' } }, headers: headers
         expect(response).to have_http_status(:ok)
         expect(user.reload).to have_attributes({ new_email: '1@example.org' })
 
-        post '/web_api/v1/user/request_code_email_change', params: { request_code: { new_email: '2@example.org' } }, headers: headers
+        post '/web_api/v1/user/request_code_new_email', params: { request_code: { new_email: '2@example.org' } }, headers: headers
         expect(response).to have_http_status(:ok)
         expect(user.reload).to have_attributes({ new_email: '2@example.org' })
 
-        post '/web_api/v1/user/confirm_code_email_change', params: { confirmation: { code: user.new_email_confirmation.code } }, headers: headers
+        post '/web_api/v1/user/confirm_code_new_email', params: { confirmation: { code: user.new_email_confirmation.code } }, headers: headers
         expect(response).to have_http_status(:ok)
         expect(user.reload.confirmation_required?).to be(false)
         expect(user).to have_attributes({ email: '2@example.org' })
@@ -271,13 +270,16 @@ context 'clave_unica verification' do
         user = User.order(created_at: :asc).last
         expect_to_create_verified_and_identified_user(user)
         expect(user.email).to be_nil
-        expect(user.confirmation_required?).to be(false)
+        expect(user.confirmation_required?).to be(true)
         expect(user.active?).to be(true)
       end
     end
   end
 
   context 'when checking against list of verified RUTs registered in municipality' do
+    # SSO values are only stored for fields the platform has.
+    before { create(:custom_field, key: 'rut_verified') }
+
     context 'when RUT is added to list' do
       before { CustomIdMethods::IdCardLookup::IdCard.create!(card_id: '44.444.444-4') }
 
@@ -285,7 +287,7 @@ context 'clave_unica verification' do
         get "/auth/clave_unica?token=#{@token}"
         follow_redirect!
 
-        expect(@user.reload.custom_field_values).to eq({ 'rut_verified' => true })
+        expect(@user.reload.custom_field_answers.pluck(:key, :value)).to eq [['rut_verified', true]]
       end
     end
 
@@ -296,7 +298,7 @@ context 'clave_unica verification' do
         get "/auth/clave_unica?token=#{@token}"
         follow_redirect!
 
-        expect(@user.reload.custom_field_values).to eq({})
+        expect(@user.reload.custom_field_answers).to be_empty
       end
     end
   end

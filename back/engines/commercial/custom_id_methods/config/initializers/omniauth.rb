@@ -8,7 +8,7 @@ FACEBOOK_SETUP_PROC = lambda do |env|
   CustomIdMethods::Facebook::FacebookOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
 end
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :facebook, setup: FACEBOOK_SETUP_PROC
+  provider :facebook, setup: FACEBOOK_SETUP_PROC, name: 'facebook'
 end
 
 GOOGLE_SETUP_PROC = lambda do |env|
@@ -23,7 +23,7 @@ AZURE_AD_SETUP_PROC = lambda do |env|
   CustomIdMethods::AzureActiveDirectory::AzureActiveDirectoryOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
 end
 Rails.application.config.middleware.use OmniAuth::Builder do
-  provider :azure_activedirectory, setup: AZURE_AD_SETUP_PROC
+  provider :azure_activedirectory, setup: AZURE_AD_SETUP_PROC, name: 'azureactivedirectory'
 end
 
 AZURE_AD_B2C_SETUP_PROC = lambda do |env|
@@ -122,6 +122,20 @@ NEMLOG_IN_SAML_SETUP_PROC = lambda do |env|
 end
 Rails.application.config.middleware.use OmniAuth::Builder do
   provider :saml, setup: NEMLOG_IN_SAML_SETUP_PROC, name: 'nemlog_in'
+end
+
+PUBLIK_SETUP_PROC = lambda do |env|
+  CustomIdMethods::Publik::PublikOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
+end
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :openid_connect, setup: PUBLIK_SETUP_PROC, name: 'publik', issuer: CustomIdMethods::Publik::PublikOmniauth.new.method(:issuer)
+end
+
+OKTA_SETUP_PROC = lambda do |env|
+  CustomIdMethods::Okta::OktaOmniauth.new.omniauth_setup(AppConfiguration.instance, env)
+end
+Rails.application.config.middleware.use OmniAuth::Builder do
+  provider :openid_connect, setup: OKTA_SETUP_PROC, name: 'okta', issuer: CustomIdMethods::Okta::OktaOmniauth.new.method(:issuer)
 end
 
 TWODAY_SETUP_PROC = lambda do |env|

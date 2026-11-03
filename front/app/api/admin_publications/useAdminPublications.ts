@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, InfiniteData } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
 import useDebouncedValue from 'hooks/useDebouncedValue';
@@ -59,8 +59,9 @@ const useAdminPublications = (
   return useInfiniteQuery<
     IAdminPublications,
     CLErrors,
-    IAdminPublications,
-    AdminPublicationsKeys
+    InfiniteData<IAdminPublications>,
+    AdminPublicationsKeys,
+    number
   >({
     queryKey: adminPublicationsKeys.list(debouncedQueryParams),
     queryFn: ({ pageParam }) =>
@@ -68,6 +69,7 @@ const useAdminPublications = (
         ...debouncedQueryParams,
         pageNumber: pageParam,
       }),
+    initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       const hasNextPage = lastPage.links.next;
       const pageNumber = getPageNumberFromUrl(lastPage.links.self);

@@ -1,0 +1,94 @@
+import React from 'react';
+
+import { Box, Text, Title } from '@citizenlab/cl2-component-library';
+
+import usePhaseMini from 'api/phases_mini/usePhaseMini';
+import useProjectImage from 'api/project_images/useProjectImage';
+import { getProjectLinkProps } from 'api/projects/utils';
+import { MiniProjectData } from 'api/projects_mini/types';
+import useReport from 'api/reports/useReport';
+
+import useLocalize from 'hooks/useLocalize';
+
+import getCTAMessage from 'components/ProjectCard/getCTAMessage';
+
+import { useIntl } from 'utils/cl-intl';
+
+import { CardContainer, CardImage, CardLink } from '../../BaseCard';
+import { CARD_WIDTH } from '../constants';
+
+import TimeIndicator from './TimeIndicator';
+
+interface Props {
+  project: MiniProjectData;
+  ml?: string;
+  mr?: string;
+  onKeyDown?: React.KeyboardEventHandler<HTMLAnchorElement> &
+    React.KeyboardEventHandler<HTMLElement>;
+  onFocus?: React.FocusEventHandler<HTMLElement>;
+}
+
+const LightProjectCard = ({ project, ml, mr, onKeyDown, onFocus }: Props) => {
+  const localize = useLocalize();
+  const { formatMessage } = useIntl();
+
+  const imageId = project.relationships.project_images.data[0]?.id;
+  const { data: image } = useProjectImage({
+    projectId: project.id,
+    imageId,
+  });
+
+  const participationStatus = project.attributes.participation_status;
+  const phaseId = project.relationships.highlighted_phase?.data?.id;
+  const { data: phase } = usePhaseMini(
+    participationStatus === 'active' ? phaseId : undefined
+  );
+  const { data: report } = useReport(
+    phase?.data.relationships.report?.data?.id
+  );
+  const hasPublicReport = !!report?.data.attributes.visible;
+
+  const title = localize(project.attributes.title_multiloc);
+  const imageVersions = image?.data.attributes.versions;
+  const imageUrl = imageVersions?.large ?? imageVersions?.medium;
+  const imageAltText = localize(image?.data.attributes.alt_text_multiloc);
+
+  const projectLink = getProjectLinkProps(project.attributes.slug);
+
+  return (
+    <CardLink
+      scrollToTop
+      {...projectLink}
+      onKeyDown={onKeyDown}
+      onFocus={onFocus}
+      data-cy="e2e-light-project-card"
+    >
+      <CardContainer w={`${CARD_WIDTH}px`} ml={ml} mr={mr} display="block">
+        <CardImage imageUrl={imageUrl ?? undefined} alt={imageAltText} />
+        <Title variant="h3" fontSize="m" mt="8px" mb="0px" color="tenantText">
+          {title}
+        </Title>
+        <Box mt="8px">
+          <TimeIndicator
+            currentPhaseEndsAt={phase?.data.attributes.end_at}
+            projectStartsInDays={project.attributes.days_until_start}
+            projectEndedDaysAgo={project.attributes.days_since_end}
+          />
+          {participationStatus === 'active' && phase && (
+            <Text mt="2px" mb="0px" color="textSecondary">
+              {getCTAMessage({
+                phase: phase.data,
+                actionDescriptors: phase.data.attributes.action_descriptors,
+                localize,
+                formatMessage,
+                hasPublicReport,
+              })}
+            </Text>
+          )}
+        </Box>
+      </CardContainer>
+    </CardLink>
+  );
+};
+
+export default LightProjectCard;

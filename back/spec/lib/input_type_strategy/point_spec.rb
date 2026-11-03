@@ -21,6 +21,7 @@ RSpec.describe InputTypeStrategy::Point do
   its(:supports_single_selection?) { is_expected.to be false }
   its(:supports_multiple_selection?) { is_expected.to be false }
   its(:supports_selection?) { is_expected.to be false }
+  its(:supports_answer_facet?) { is_expected.to be false }
   its(:supports_select_count?) { is_expected.to be false }
   its(:supports_dropdown_layout?) { is_expected.to be false }
   its(:supports_xlsx_export?) { is_expected.to be true }
@@ -31,4 +32,17 @@ RSpec.describe InputTypeStrategy::Point do
   its(:supports_reference_distribution?) { is_expected.to be false }
   its(:supports_file_upload?) { is_expected.to be false }
   its(:supports_logic?) { is_expected.to be false }
+
+  describe '#normalize_value' do
+    it 'converts a WKT string to GeoJSON' do
+      expect(input_type_strategy.normalize_value('POINT (4.31 50.85)')).to eq(
+        'type' => 'Point', 'coordinates' => [4.31, 50.85]
+      )
+    end
+
+    it 'leaves other values unchanged' do
+      geojson = { 'type' => 'Point', 'coordinates' => [4.31, 50.85] }
+      expect(input_type_strategy.normalize_value(geojson)).to eq(geojson)
+    end
+  end
 end

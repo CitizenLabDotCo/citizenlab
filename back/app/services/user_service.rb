@@ -7,15 +7,22 @@
 class UserService
   class << self
     def upsert_in_web_api(new_or_existing_user, user_params, &)
+      custom_field_values = user_params.delete(:custom_field_values)
       new_or_existing_user.assign_attributes(user_params)
-      yield
+      yield if block_given?
+      add_custom_field_values_schema_errors(new_or_existing_user, custom_field_values)
+      return false if new_or_existing_user.errors.any?
+
+      CustomFieldValuesTransitionService.new.assign(new_or_existing_user, custom_field_values) if custom_field_values
       # `on: :create` and `on: :update` callbacks/validations are not called
       new_or_existing_user.save(context: :form_submission)
     end
 
     def create_in_admin_api(user_params, confirm_user)
+      custom_field_values = user_params.delete(:custom_field_values)
       user = User.new(user_params)
       user.locale ||= AppConfiguration.instance.settings('core', 'locales').first
+      CustomFieldValuesTransitionService.new.assign(user, custom_field_values) if custom_field_values
       build_user_confirmation(user) if confirm_user
       user.save
 
@@ -23,20 +30,24 @@ class UserService
     end
 
     def update_in_admin_api(user, user_params, confirm_user)
+      custom_field_values = user_params.delete(:custom_field_values)
       build_user_confirmation(user) if confirm_user
+      CustomFieldValuesTransitionService.new.assign(user, custom_field_values) if custom_field_values
       user.update(user_params)
     end
 
     def build_in_sso(user_params, confirm_user, locale)
-      # If the SSO returns an unconfirmed email, we still need to
-      # confirm it. This is done by putting the email in new_email and leaving email blank.
-      # Putting an unconfirmed email directly in email is only done
-      # when creating a user in the normal email sign up flow.
+      # An unconfirmed SSO email is held as a pending address, leaving email blank, so it
+      # still has to be confirmed: in merge_target_email when another account owns it,
+      # otherwise in new_email. Only the normal email signup puts an unconfirmed address
+      # straight into email.
       if user_params[:email].present? && !confirm_user
-        user_params = user_params.except(:email).merge(new_email: user_params[:email])
+        email = user_params[:email]
+        pending = merge_target?(email) ? :merge_target_email : :new_email
+        user_params = user_params.except(:email).merge(pending => email)
       end
 
-      user = User.new(user_params)
+      user = assign_merging_custom_fields(User.new, with_known_custom_field_values(user_params))
       user.locale = locale
 
       build_user_confirmation(user) if confirm_user && user.email.present?
@@ -51,12 +62,22 @@ class UserService
     def update_in_sso!(user, auth, authver_method)
       attrs = authver_method.updateable_user_attrs
       sso_user_attrs = authver_method.profile_to_user_attrs(auth)
-      user_params = sso_user_attrs.slice(*attrs).compact
+      user_params = with_known_custom_field_values(sso_user_attrs.slice(*attrs).compact)
       user_params.delete(:remote_avatar_url) if user.avatar.present? # don't overwrite avatar if already present
 
       resolve_sso_email!(user, user_params, sso_user_attrs[:email], authver_method.email_confirmed?(auth))
 
-      user.update_merging_custom_fields!(user_params)
+      assign_merging_custom_fields(user, user_params).save!
+    end
+
+    def assign_merging_custom_fields(user, attributes)
+      attributes = attributes.to_h.deep_stringify_keys
+      incoming_values = (attributes.delete('custom_field_values') || {})
+        .merge(attributes.extract!('gender', 'birthyear', 'domicile').compact)
+      transition_service = CustomFieldValuesTransitionService.new
+      transition_service.assign(user, transition_service.custom_field_values(user).merge(incoming_values))
+      user.assign_attributes(attributes)
+      user
     end
 
     def assign_params_in_accept_invite(user, user_params, confirm_user: false)
@@ -66,14 +87,15 @@ class UserService
       #
       # If the user's email came from/matches the authver one, and the provider
       # says it was confirmed: we mark the user's email as confirmed.
-      user.email_confirmation.confirm! if confirm_user
-      user.assign_attributes(user_params.merge(invite_status: 'accepted'))
-      user
+      user.find_or_create_confirmation(:email_confirmation).confirm! if confirm_user
+      assign_merging_custom_fields(user, user_params.merge('invite_status' => 'accepted'))
     end
 
     # User can also be updated in input importer by PATCH /users/:id (`update_in_web_api` is called)
     def build_in_input_importer(user_params, new_user = User.new)
+      custom_field_values = user_params.delete(:custom_field_values)
       new_user.assign_attributes(user_params)
+      CustomFieldValuesTransitionService.new.assign(new_user, custom_field_values) if custom_field_values
       if new_user.email.blank?
         new_user.unique_code = SecureRandom.uuid
       end
@@ -104,6 +126,16 @@ class UserService
     #   - an unconfirmed SSO email is ignored when the user already has a
     #     confirmed email, otherwise it goes into `new_email` to be confirmed
     #     later (mirroring `build_in_sso`).
+    #
+    # This makes email the exception among the updateable attrs: the others are written
+    # as-is by the slice in #update_in_sso!, so for them "updateable" means "written".
+    # Here it only means "considered". `user_params.key?(:email)` is the first gate, and
+    # it is open only where IdMethods::Base#updateable_user_attrs put :email in, i.e.
+    # where password_login is disabled; the rules above are the second. With
+    # password_login enabled the SSO therefore never fills in an email the user does not
+    # already have, not even a vouched-for one - the user owns their address and can add
+    # it themselves. See the 'identity already exists' examples in
+    # spec/acceptance/omniauth_callback_spec.rb.
     def resolve_sso_email!(user, user_params, sso_email, sso_email_confirmed)
       return if sso_email.blank?
 
@@ -120,16 +152,53 @@ class UserService
         user_params.delete(:email)
       else
         user_params.delete(:email)
-        user_params[:new_email] = sso_email
+        # Same reason as build_in_sso, except that here the failure would lock an
+        # existing user out of signing in rather than refusing to create one.
+        user_params[:new_email] = sso_email unless owned_by_other?(sso_email, user)
       end
     end
 
+    # Somebody else's address cannot go in new_email (validate_not_duplicate_new_email
+    # rejects it), so it is held as merge_target_email and confirming it merges the two
+    # accounts. Invitees keep the old refusal: the invite flow owns claiming those.
+    def merge_target?(email)
+      owner = User.find_by_cimail(email)
+      owner.present? && !owner.invite_pending?
+    end
+
+    def owned_by_other?(email, user)
+      owner = User.find_by_cimail(email)
+      owner.present? && owner.id != user.id
+    end
+
     # In-memory equivalent of the old `user.confirm` from UserConfirmation concern.
-    # Used by build-then-save flows that can't call EmailConfirmation#confirm!
-    # because the email_confirmation row doesn't exist until after_create.
+    # Used by build-then-save flows, where the user isn't persisted yet so there is
+    # nothing to hang an EmailConfirmation#confirm! on.
     def build_user_confirmation(user)
       user.email_confirmed_at = Time.zone.now
       user.confirmation_required = false
+    end
+
+    # An identity provider can return values for fields this platform does not have.
+    def with_known_custom_field_values(user_params)
+      return user_params unless user_params.key?(:custom_field_values)
+
+      user_params.merge(
+        custom_field_values: CustomFieldService.remove_unknown_registration_custom_fields(user_params[:custom_field_values])
+      )
+    end
+
+    def add_custom_field_values_schema_errors(user, values)
+      return if values.nil?
+
+      values = values.to_h
+      errors = CustomFieldValuesValidationService.new.json_schema_validation_errors(
+        CustomField.registration.includes(:options),
+        values
+      )
+      errors.each do |error|
+        user.errors.add(:custom_field_values, error, value: values)
+      end
     end
   end
 end

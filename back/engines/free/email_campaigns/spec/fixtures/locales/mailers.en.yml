@@ -26,8 +26,8 @@ en:
       "project_manager_rights_received": Project manager rights received
       "project_folder_moderation_rights_received": Project folder moderation rights received
       "space_moderation_rights_received": Space manager rights received
-      "project_phase_started": New project phase
-      "project_phase_upcoming": Upcoming new project phase
+      "project_phase_started": Phase started
+      "project_phase_upcoming": Phase starting soon
       "project_published": Project published
       "status_change_on_idea_you_follow": Status change of an input that you follow
       "threshold_reached_for_admin": Proposal reached the voting threshold
@@ -45,6 +45,7 @@ en:
     general:
       by_author: 'by %{authorName}'
       author_wrote: '%{authorName} wrote:'
+      phase_dates: 'From %{startDate} to %{endDate}'
       cta_goto_idea: 'Go to this idea'
       cta_goto_input: 'Go to this input'
       cta_goto_proposal: 'Go to this proposal'
@@ -349,21 +350,17 @@ en:
       title: 'You''ve been added as a folder manager'
       x_projects: '%{numberOfProjects} projects'
     project_phase_started:
-      cta_button: 'Discover this new phase'
-      event_description: 'This project entered a new phase on the platform of %{organizationName}. Click on the link below to learn more!'
-      title: 'A new phase started for project ''%{projectName}'''
-      subtitle: 'About ''%{projectName}'''
-      new_phase: 'This project entered the phase ''%{phaseTitle}'''
-      subject: '%{projectName} entered a new phase'
-      preheader: 'A new phase has been started for %{projectName}'
+      cta_button: 'See what''s new'
+      event_description: 'You can now take part in ''%{phaseTitle}'' on the platform of %{organizationName}.'
+      title: 'There''s something new in ''%{projectName}'''
+      subject: '''%{phaseTitle}'' has started in %{projectName}'
+      preheader: 'You can now take part in ''%{phaseTitle}'''
     project_phase_upcoming:
-      cta_button: 'Set this new phase up'
-      event_description: 'The project ''%{projectName}'' will be entering a new phase soon. Make sure everything is set up for this phase: Is there an adequate description? Are selected ideas transferred to this phase? Do you want to inform your citizens on the specifics of this phase through a custom email campaign?'
-      title: '%{firstName}, a project will enter a new phase soon'
-      subtitle: 'About ''%{projectName}'''
-      new_phase: 'The project will enter the phase ''%{phaseTitle}'''
-      subject: 'Get everything set up for the new phase of %{projectName}'
-      preheader: 'A new phase will start soon for %{projectName}'
+      cta_button: 'Review the setup'
+      event_description: '''%{phaseTitle}'' in the project ''%{projectName}'' starts on %{startDate}. Take a moment to check that everything is ready: Is the description complete? Are the dates correct? Do you want to inform your community through a custom email campaign?'
+      title: '%{firstName}, ''%{phaseTitle}'' starts on %{startDate}'
+      subject: '%{projectName}: ''%{phaseTitle}'' starts on %{startDate}'
+      preheader: 'Make sure everything is ready before %{startDate}'
     project_published:
       subject: 'A new project was published on the platform of %{organizationName}'
       title: 'A new project was published'
@@ -600,7 +597,7 @@ en:
         new_input_is_published: 'New input is published'
         new_input_awaits_screening: 'New input awaits screening'
         new_proposal_is_posted: 'New proposal is posted'
-        project_phase_changes: 'Project phase changes'
+        phase_starts: 'A phase starts'
         project_published: 'Project published'
         proposal_gets_reported_as_spam: 'Proposal gets reported as spam'
         proposal_is_assigned_to_admin: 'Proposal is assigned to admin'
@@ -625,4 +622,4 @@ en:
         voting_phase_ended: 'Voting phase ended'
         voting_basket_submitted: 'Votes are submitted'
         7_days_after_invite_is_sent: '7 days after invite is sent'
-        7_days_before_the_project_changes_phase: '7 days before the project changes phase'
+        7_days_before_phase_starts: '7 days before a phase starts'

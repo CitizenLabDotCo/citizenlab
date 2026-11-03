@@ -4,16 +4,30 @@ import { Icon, colors } from '@citizenlab/cl2-component-library';
 import styled from 'styled-components';
 
 import { Row } from 'components/admin/ResourceList';
+import {
+  handleColumnStyles,
+  HANDLE_ICON_HEIGHT,
+  HANDLE_ICON_WIDTH,
+} from 'components/admin/ResourceList/SortableRow';
+
+// The lock reads better a bit larger than the drag arrows, so rather than box it
+// into the handle column it is centred on the column's axis and allowed to
+// overhang. Locked and sortable rows sit in the same list, so this keeps both
+// icons on one vertical line and every row title at the same offset.
+const LOCK_ICON_WIDTH = 20;
 
 const LockedDragHandle = styled.div`
   cursor: not-allowed;
-  padding: 1rem 0;
-  height: 100%;
-  margin-right: 16px !important;
-`;
+  ${handleColumnStyles}
+  width: ${HANDLE_ICON_WIDTH}px;
+  display: flex;
+  justify-content: center;
 
-const LockIcon = styled(Icon)`
-  transform: translate(2px, -3px);
+  /* Being wider than the column, the lock has to be allowed to overhang it —
+     without this it is shrunk down to the column's width instead. */
+  > svg {
+    flex-shrink: 0;
+  }
 `;
 
 interface Props {
@@ -32,10 +46,12 @@ export default ({
   <div className={className} data-testid={dataTestId}>
     <Row isLastItem={isLastItem}>
       <LockedDragHandle className="sortablerow-draghandle">
-        <LockIcon
+        {/* The shared icon-box height is what puts the lock on the drag
+            handle's baseline; only the width differs. */}
+        <Icon
           name="lock"
-          width="20px"
-          height="20px"
+          width={`${LOCK_ICON_WIDTH}px`}
+          height={`${HANDLE_ICON_HEIGHT}px`}
           fill={colors.textSecondary}
         />
       </LockedDragHandle>

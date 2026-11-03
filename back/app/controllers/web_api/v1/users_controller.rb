@@ -5,9 +5,9 @@ class WebApi::V1::UsersController < ApplicationController
   include UserCookies
   include EnforceUserSso
 
-  before_action :sso_enforced?, only: %i[check create]
+  before_action :sso_enforced?, only: %i[check_email create]
   before_action :set_user, only: %i[show update destroy ideas_count comments_count block unblock participation_stats]
-  skip_before_action :authenticate_user, only: %i[create show check by_invite ideas_count comments_count]
+  skip_before_action :authenticate_user, only: %i[create create_phone show check_email check_phone by_invite ideas_count comments_count]
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -19,6 +19,7 @@ class WebApi::V1::UsersController < ApplicationController
     @users = @users.in_group(Group.find(params[:group])) if params[:group]
     @users = @users.registered unless params[:include_inactive]
     @users = @users.blocked if params[:only_blocked]
+    @users = @users.email_bounced if params[:only_email_bounced]
     @users = @users.search_by_all(params[:search]) if params[:search].present?
 
     # Filter by project participants
@@ -50,9 +51,9 @@ class WebApi::V1::UsersController < ApplicationController
     sort_by_sort_param if params[:search].blank?
 
     @users = paginate @users
+    @users = @users.includes(custom_field_answers: :custom_field)
 
     LogActivityJob.perform_later(current_user, 'searched_users', current_user, Time.now.to_i, payload: { search_query: params[:search] }) if params[:search].present?
-
     render json: linked_json(@users, WebApi::V1::UserSerializer, params: jsonapi_serializer_params)
   end
 
@@ -68,13 +69,13 @@ class WebApi::V1::UsersController < ApplicationController
 
   def billed_admins
     authorize :user, :billed_admins?
-    @users = paginate User.billed_admins
+    @users = paginate(User.billed_admins).includes(custom_field_answers: :custom_field)
     render json: linked_json(@users, WebApi::V1::UserSerializer, params: jsonapi_serializer_params)
   end
 
   def billed_moderators
     authorize :user, :billed_moderators?
-    @users = paginate User.billed_moderators
+    @users = paginate(User.billed_moderators).includes(custom_field_answers: :custom_field)
     render json: linked_json(@users, WebApi::V1::UserSerializer, params: jsonapi_serializer_params)
   end
 
@@ -97,7 +98,7 @@ class WebApi::V1::UsersController < ApplicationController
       @users = @users.where(id: participant_ids)
     end
     @users = @users.where(id: params[:users]) if params[:users]
-    xlsx = XlsxService.new.generate_users_xlsx @users, view_private_attributes: view_private_attributes?
+    xlsx = XlsxService.new.generate_users_xlsx @users.includes(:identities, :verifications), view_private_attributes: view_private_attributes?
 
     LogActivityJob.perform_later(current_user, 'exported_users_sheet', current_user, Time.now.to_i)
 
@@ -114,6 +115,13 @@ class WebApi::V1::UsersController < ApplicationController
     end
 
     head :ok
+  end
+
+  def intercom_token
+    authorize :user, :intercom_token?
+
+    token = IntercomMessengerTokenService.new.token(current_user)
+    render json: raw_json({ token: })
   end
 
   def me
@@ -139,8 +147,8 @@ class WebApi::V1::UsersController < ApplicationController
   end
 
   # To validate an email without creating a user and return which action to go to next
-  def check
-    authorize :user, :check?
+  def check_email
+    authorize :user, :check_email?
     email = params[:user][:email]
 
     unless User::EMAIL_REGEX.match?(email)
@@ -156,32 +164,41 @@ class WebApi::V1::UsersController < ApplicationController
       return
     end
 
-    if @user.nil?
-      render json: raw_json({ action: 'terms' })
-      return
-    end
-
-    if @user.invite_pending?
+    if @user&.invite_pending?
       render json: { errors: { email: [{ error: 'taken_by_invite', value: email, inviter_email: @user.invitee_invite&.inviter&.email }] } }, status: :unprocessable_entity
       return
     end
 
-    if @user.confirmation_required?
-      request_code_if_first_time(@user)
-      render json: raw_json({ action: 'confirm' })
+    RequestEmailConfirmationCodeJob.perform_now(@user) if auto_send_code?(@user, :email_confirmation)
+    render_check_action(@user, :email_confirmation)
+  end
+
+  # The phone counterpart of check_email: validates a phone number without
+  # creating a user and returns which action to go to next. Invites are never
+  # sent to a phone number, so there is no taken_by_invite case here.
+  def check_phone
+    authorize :user, :check_phone?
+    phone = params[:user][:phone]
+    parsed = Phonelib.parse(phone)
+
+    if parsed.invalid?
+      render json: { errors: { phone: [{ error: 'invalid', value: phone }] } }, status: :unprocessable_entity
       return
     end
 
-    user_has_password = !@user.no_password?
-
-    if user_has_password
-      render json: raw_json({ action: 'password' })
+    unless EmailCampaigns::Sms::AllowedCountries.allowed?(parsed.country)
+      render json: { errors: { phone: [{ error: 'unsupported_country', value: phone }] } }, status: :unprocessable_entity
       return
     end
 
-    # Any other case, we send a code
-    request_code_if_first_time(@user)
-    render json: raw_json({ action: 'confirm' })
+    @user = User.find_by_phone_number(parsed.e164)
+
+    RequestPhoneConfirmationCodeJob.issue_code_and_deliver_later(@user) if auto_send_code?(@user, :phone_confirmation)
+    render_check_action(
+      @user,
+      :phone_confirmation,
+      code_retry_after: @user&.phone_confirmation&.seconds_until_resend_allowed.to_i
+    )
   end
 
   def create
@@ -190,6 +207,40 @@ class WebApi::V1::UsersController < ApplicationController
       authorize @user
     end
     if saved
+      claim_tokens = params.dig(:user, :claim_tokens)
+      SideFxUserService.new.after_create(@user, current_user, claim_tokens:)
+
+      render json: WebApi::V1::UserSerializer.new(
+        @user,
+        params: jsonapi_serializer_params
+      ).serializable_hash, status: :created
+    else
+      SideFxUserService.new.after_error(@user, request&.remote_ip)
+
+      render json: { errors: @user.errors.details }, status: :unprocessable_entity
+    end
+  end
+
+  # The phone counterpart of create. Kept separate from create so the email
+  # signup flow (and its SSO enforcement, which is email-based) is untouched.
+  def create_phone
+    @user = User.new
+    authorize @user, :create_phone?
+
+    phone = params.dig(:user, :phone)
+    parsed = Phonelib.parse(phone)
+
+    if parsed.invalid?
+      render json: { errors: { phone: [{ error: 'invalid', value: phone }] } }, status: :unprocessable_entity
+      return
+    end
+
+    unless EmailCampaigns::Sms::AllowedCountries.allowed?(parsed.country)
+      render json: { errors: { phone: [{ error: 'unsupported_country', value: phone }] } }, status: :unprocessable_entity
+      return
+    end
+
+    if UserService.upsert_in_web_api(@user, permitted_attributes(@user))
       claim_tokens = params.dig(:user, :claim_tokens)
       SideFxUserService.new.after_create(@user, current_user, claim_tokens:)
 
@@ -274,6 +325,11 @@ class WebApi::V1::UsersController < ApplicationController
     render json: raw_json({ count: User.all.blocked.count }, type: 'blocked_users_count'), status: :ok
   end
 
+  def email_bounced_count
+    authorize :user, :email_bounced_count?
+    render json: raw_json({ count: policy_scope(User).email_bounced.count }, type: 'email_bounced_users_count'), status: :ok
+  end
+
   def comments_count
     count = policy_scope(@user.comments.published).count
     render json: raw_json({ count: count }), status: :ok
@@ -287,6 +343,8 @@ class WebApi::V1::UsersController < ApplicationController
   def update_password
     @user = current_user
     authorize @user
+    # `no_password?` users (email-only, SSO) have no current password to confirm, so they can
+    # set a first one. This is not a login: they are already authenticated as `current_user`.
     if @user.no_password? || @user.authenticate(params[:user][:current_password])
       if @user.update(password: params[:user][:password])
         reset_jwt_cookie
@@ -323,6 +381,14 @@ class WebApi::V1::UsersController < ApplicationController
       @users.order(created_at: :asc)
     when '-created_at'
       @users.order(created_at: :desc)
+    # Without a tie-breaker the order of equal values is undefined, which makes
+    # paginated results non-deterministic
+    when 'registration_completed_at'
+      @users.order('registration_completed_at ASC NULLS LAST', created_at: :asc)
+    # NULLs only reach this branch when include_inactive is set (the admin and manager
+    # tabs), where a pending invite should read as the most recent.
+    when '-registration_completed_at'
+      @users.order('registration_completed_at DESC NULLS FIRST', created_at: :desc)
     when 'last_active_at'
       @users.order(Arel.sql('last_active_at IS NOT NULL, last_active_at ASC'))
     when '-last_active_at'
@@ -342,7 +408,7 @@ class WebApi::V1::UsersController < ApplicationController
     when nil
       @users
     else
-      raise 'Unsupported sort method'
+      raise ApiError.new(:unsupported_sort_parameter, status: 400)
     end
   end
 
@@ -353,7 +419,8 @@ class WebApi::V1::UsersController < ApplicationController
   def update_params
     @update_params ||= permitted_attributes(@user).tap do |attrs|
       attrs[:onboarding] = @user.onboarding.merge(attrs[:onboarding].to_h)
-      attrs[:custom_field_values] = params_service.updated_custom_field_values(@user.custom_field_values, attrs[:custom_field_values].to_h)
+      stored_values = CustomFieldValuesTransitionService.new.custom_field_values(@user)
+      attrs[:custom_field_values] = params_service.updated_custom_field_values(stored_values, attrs[:custom_field_values].to_h)
       CustomFieldService.new.compact_custom_field_values!(attrs[:custom_field_values])
 
       first_name = attrs[:first_name]
@@ -383,14 +450,35 @@ class WebApi::V1::UsersController < ApplicationController
     params.permit(:seat_type, :user_id, :user_email)
   end
 
-  def request_code_if_first_time(user)
+  # Shared by check_email and check_phone: given the account that owns the
+  # submitted identifier (nil when there is none) and the name of the confirmation
+  # that covers that identifier, tell the frontend which step to go to next.
+  # code_retry_after is passed for phone only: only SMS codes have a minimum
+  # interval between requests, and the confirmation step counts it down instead
+  # of offering a resend the backend would reject.
+  def render_check_action(user, confirmation_name, code_retry_after: nil)
+    render json: raw_json({ action: check_action(user, confirmation_name), code_retry_after: code_retry_after }.compact)
+  end
+
+  def check_action(user, confirmation_name)
+    return 'terms' if user.nil?
+    return 'password' if !user.confirmation_pending?(confirmation_name) && !user.no_password?
+
+    'confirm'
+  end
+
+  # Users who still have to confirm, and users without a password, get a code sent
+  # automatically. The callers send it themselves, because email codes are sent
+  # inline while SMS codes are only issued inline and delivered from a job.
+  def auto_send_code?(user, confirmation_name)
+    return false if check_action(user, confirmation_name) != 'confirm'
+
     # If users already have a code_reset_count > 0,
     # they tried to log in previously and failed. In this case, we don't
     # automatically resend the code, because otherwise we
     # might too easily reach the retry limit. So they will
     # have to request it themselves
-    if user.email_confirmation.code_reset_count == 0
-      RequestEmailConfirmationCodeJob.perform_now(user)
-    end
+    reset_count = user.public_send(confirmation_name)&.code_reset_count || 0
+    reset_count == 0
   end
 end

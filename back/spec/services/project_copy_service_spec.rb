@@ -63,7 +63,7 @@ describe ProjectCopyService do
       open_ended_project = create(:single_phase_native_survey_project, title_multiloc: { en: 'open ended' })
       form1 = create(:custom_form, participation_context: open_ended_project.phases.first)
       field1 = create(:custom_field_linear_scale, :for_custom_form, resource: form1)
-      create(:idea, project: open_ended_project, custom_field_values: { field1.key => 1 }, phases: open_ended_project.phases, creation_phase: open_ended_project.phases.first)
+      create(:idea, project: open_ended_project, custom_field_answers: [build(:custom_field_answer, key: field1.key, value: 1, custom_field: field1)], phases: open_ended_project.phases, creation_phase: open_ended_project.phases.first)
 
       two_phase_project = create(:project_with_future_native_survey_phase, title_multiloc: { en: 'two phase' })
       survey_phase = two_phase_project.phases.last
@@ -72,7 +72,7 @@ describe ProjectCopyService do
       form2 = create(:custom_form, participation_context: survey_phase)
       field2 = create(:custom_field, :for_custom_form, resource: form2)
       create(:idea, project: two_phase_project, phases: [ideation_phase])
-      create(:idea, project: two_phase_project, phases: [survey_phase], creation_phase: survey_phase, custom_field_values: { field2.key => 'My value' })
+      create(:idea, project: two_phase_project, phases: [survey_phase], creation_phase: survey_phase, custom_field_answers: [build(:custom_field_answer, key: field2.key, value: 'My value', custom_field: field2)])
 
       template1 = service.export open_ended_project, include_ideas: true
       template2 = service.export two_phase_project, include_ideas: true
@@ -94,7 +94,7 @@ describe ProjectCopyService do
         expect(new_open_ended_project.phases.first.custom_form.custom_fields.pluck(:input_type)).to eq ['linear_scale']
         new_field1 = new_open_ended_project.phases.first.custom_form.custom_fields.first
         expect(new_open_ended_project.ideas_count).to eq 1
-        expect(new_open_ended_project.ideas.first.custom_field_values[new_field1.key]).to eq 1
+        expect(new_open_ended_project.ideas.first.answer_for_key(new_field1.key)&.value).to eq 1
 
         new_two_phase_project = Project.find_by(title_multiloc: { en: 'two phase' })
         new_survey_phase = new_two_phase_project.phases.order(:start_at).last
@@ -102,7 +102,7 @@ describe ProjectCopyService do
         expect(new_survey_phase.custom_form.custom_fields.pluck(:input_type)).to eq ['text']
         new_field2 = new_survey_phase.custom_form.custom_fields.first
         expect(new_survey_phase.ideas_count).to eq 1
-        expect(new_survey_phase.ideas.first.custom_field_values[new_field2.key]).to eq 'My value'
+        expect(new_survey_phase.ideas.first.answer_for_key(new_field2.key)&.value).to eq 'My value'
       end
     end
 
@@ -129,6 +129,20 @@ describe ProjectCopyService do
       )
     end
 
+    it 'exports project text images, so bridge widget images survive the copy' do
+      project = create(:project)
+      text_image = create(:text_image, imageable: project, imageable_field: 'craftjs_json')
+
+      template = service.export project
+
+      expect(template['models']['project'].first['text_images_attributes']).to match [
+        hash_including(
+          'imageable_field' => 'craftjs_json',
+          'text_reference' => text_image.text_reference
+        )
+      ]
+    end
+
     it 'successfully exports custom field option images' do
       field = create(:custom_field_select, :for_custom_form)
       option = create(:custom_field_option, custom_field: field, image: create(:custom_field_option_image))
@@ -142,6 +156,54 @@ describe ProjectCopyService do
         'remote_image_url' => an_instance_of(String),
         'ordering' => option.image.ordering
       )
+    end
+
+    describe 'project images whose file cannot be resolved' do
+      let(:project) { create(:project) }
+      let!(:project_image) { create(:project_image, project: project) }
+
+      it 'exports a surviving version when the original file is gone' do
+        File.delete(project_image.image.path)
+
+        template = service.export project
+
+        expect(template['models']['project_image'].size).to eq 1
+        expect(template['models']['project_image'].first['remote_image_url']).to end_with(
+          File.basename(project_image.image.large.path)
+        )
+      end
+
+      it 'does not export the image when no file is left' do
+        File.delete(project_image.image.path)
+        File.delete(project_image.image.large.path)
+
+        template = service.export project
+
+        expect(template['models']['project_image']).to be_empty
+      end
+
+      it 'exports the image and reports the error when the storage cannot be reached' do
+        allow_any_instance_of(CarrierWave::SanitizedFile)
+          .to receive(:exists?).and_raise(Errno::ECONNRESET)
+        expect(ErrorReporter).to receive(:report).at_least(:once)
+
+        template = service.export project
+
+        expect(template['models']['project_image'].size).to eq 1
+        expect(template['models']['project_image'].first['remote_image_url']).to end_with(
+          File.basename(project_image.image.path)
+        )
+      end
+
+      it 'exports the source URL when the image is still a pending temp remote URL' do
+        project_image.update_column(:image, 'https://cdn.example.com/an-image.jpg')
+
+        template = service.export project
+
+        expect(template['models']['project_image'].size).to eq 1
+        expect(template['models']['project_image'].first['remote_image_url'])
+          .to eq 'https://cdn.example.com/an-image.jpg'
+      end
     end
 
     it 'successfully exports matrix custom fields' do
@@ -171,24 +233,20 @@ describe ProjectCopyService do
       unsupported_field1 = create(:custom_field, :for_custom_form, input_type: 'file_upload', resource: custom_form)
       unsupported_field2 = create(:custom_field, :for_custom_form, input_type: 'shapefile_upload', resource: custom_form)
       response = create(:native_survey_response, project: project)
-      custom_field_values = {
-        supported_fields[0].key => 7,
-        supported_fields[1].key => 1,
-        unsupported_field1.key => create(:file_upload, idea: response).id,
-        unsupported_field2.key => create(:file_upload, idea: response).id,
-        supported_fields[2].key => false
-      }
-      response.update! custom_field_values: custom_field_values
+      create(:custom_field_answer, answerable: response, key: supported_fields[0].key, value: 7, custom_field: supported_fields[0])
+      create(:custom_field_answer, answerable: response, key: supported_fields[1].key, value: 1, custom_field: supported_fields[1])
+      create(:custom_field_answer, answerable: response, key: unsupported_field1.key, value: create(:file_upload, idea: response).id, custom_field: unsupported_field1)
+      create(:custom_field_answer, answerable: response, key: unsupported_field2.key, value: create(:file_upload, idea: response).id, custom_field: unsupported_field2)
+      create(:custom_field_answer, answerable: response, key: supported_fields[2].key, value: false, custom_field: supported_fields[2])
 
       template = service.export project.reload, include_ideas: true
 
-      expected_custom_field_values = {
-        supported_fields[0].key => 7,
-        supported_fields[1].key => 1,
-        supported_fields[2].key => false
-      }
       expect(template['models']['idea'].size).to eq 1
-      expect(template['models']['idea'].first['custom_field_values']).to match expected_custom_field_values
+      expect(template['models']['custom_field_answer'].pluck('key', 'value')).to contain_exactly(
+        [supported_fields[0].key, 7],
+        [supported_fields[1].key, 1],
+        [supported_fields[2].key, false]
+      )
     end
 
     it 'successfully copies map_configs associated with phase-level form custom_fields, and their layers' do
@@ -363,6 +421,105 @@ describe ProjectCopyService do
       expect(template['models']['user'].map { |u| u['email'] }).to include(cosponsor.email)
     end
 
+    it 'includes Files engine files, their project join and attachments' do
+      idea = create(:idea)
+      project = idea.project
+      project_file = create(:file, name: 'proj.pdf', projects: [project])
+      create(:file_attachment, file: project_file, attachable: project)
+      idea_file = create(:file, name: 'idea.pdf', projects: [project])
+      create(:file_attachment, file: idea_file, attachable: idea)
+
+      # Imports into the same tenant, so anonymize users to avoid email collisions.
+      template = service.export project, include_ideas: true
+
+      expect(template['models']['files/file'].size).to eq 2
+      expect(template['models']['files/files_project'].size).to eq 2
+      expect(template['models']['files/file_attachment'].size).to eq 2
+
+      create(:idea_status_proposed) # the copied idea re-derives its (uncopied) status on import
+      copied_project = service.import template
+
+      expect(copied_project.files.pluck(:name)).to match_array(%w[proj.pdf idea.pdf])
+      expect(copied_project.file_attachments.count).to eq 1
+      expect(copied_project.ideas.first.file_attachments.count).to eq 1
+      # The uploader (unrelated to the idea graph) is pulled in so its ref resolves.
+      expect(copied_project.files.filter_map(&:uploader)).to be_present
+    end
+
+    it 'copies anonymized users with demographic answers reusing the registration fields' do
+      gender_field = create(:custom_field_gender, :with_options)
+      birthyear_field = create(:custom_field_birthyear)
+      author = create(:user, custom_field_answers: [
+        build(:custom_field_answer, key: 'gender', value: 'female', custom_field: gender_field),
+        build(:custom_field_answer, key: 'birthyear', value: 1984, custom_field: birthyear_field),
+        build(:custom_field_answer, key: 'postal_code', value: '1000')
+      ])
+      idea = create(:idea, author: author)
+
+      template = service.export idea.project, include_ideas: true
+
+      yml_author = template['models']['user'].first
+      author_answers = template['models']['custom_field_answer'].select { |answer| answer['answerable_ref'].equal?(yml_author) }
+      expect(author_answers.map { |answer| answer.values_at('key', 'value') }).to contain_exactly(
+        %w[gender female],
+        ['birthyear', 1984]
+      )
+      registration_codes = template['models']['custom_field'].filter_map { |field| field['code'] if field['resource_type'] == 'User' }
+      expect(registration_codes).to contain_exactly('gender', 'birthyear')
+
+      create(:idea_status_proposed)
+      copied_project = nil
+      expect { copied_project = service.import template }.not_to change(CustomField.registration, :count)
+      copied_author = copied_project.ideas.first.author
+      expect(copied_author.custom_field_answers.pluck(:custom_field_id, :key, :value)).to contain_exactly(
+        [gender_field.id, 'gender', 'female'],
+        [birthyear_field.id, 'birthyear', 1984]
+      )
+    end
+
+    it 'drops the demographic answers when the target has no matching registration fields' do
+      create(:custom_field_gender, :with_options)
+      create(:custom_field_birthyear)
+      idea = create(:idea, author: create(:user))
+
+      template = service.export idea.project, include_ideas: true
+
+      CustomField.registration.destroy_all
+      create(:idea_status_proposed)
+      copied_project = nil
+      expect { copied_project = service.import template }.not_to change(CustomField.registration, :count)
+      expect(copied_project.ideas.first.author.custom_field_answers).to be_empty
+    end
+
+    it 'copies non-anonymized users with their registration answers, reusing the registration fields' do
+      gender_field = create(:custom_field_gender, :with_options)
+      postal_code_field = create(:custom_field, resource_type: 'User', key: 'postal_code')
+      create(:custom_field, resource_type: 'User', key: 'unanswered')
+      author = create(:user, custom_field_answers: [
+        build(:custom_field_answer, key: 'gender', value: 'female', custom_field: gender_field),
+        build(:custom_field_answer, key: 'postal_code', value: '1000', custom_field: postal_code_field)
+      ])
+      idea = create(:idea, author: author)
+
+      template = service.export idea.project, anonymize_users: false, include_ideas: true
+
+      registration_keys = template['models']['custom_field'].filter_map { |field| field['key'] if field['resource_type'] == 'User' }
+      expect(registration_keys).to contain_exactly('gender', 'postal_code', 'unanswered')
+
+      create(:tenant).switch do
+        create(:idea_status_proposed)
+        target_gender_field = create(:custom_field_gender, :with_options)
+        target_postal_code_field = create(:custom_field, resource_type: 'User', key: 'postal_code')
+        copied_project = nil
+        expect { copied_project = service.import template }.not_to change(CustomField.registration, :count)
+        copied_author = copied_project.ideas.first.author
+        expect(copied_author.custom_field_answers.pluck(:custom_field_id, :key, :value)).to contain_exactly(
+          [target_gender_field.id, 'gender', 'female'],
+          [target_postal_code_field.id, 'postal_code', '1000']
+        )
+      end
+    end
+
     it 'includes phases with no end date' do
       project = create(:project_with_active_ideation_phase)
       project.phases.last.update!(end_at: nil)
@@ -399,7 +556,7 @@ describe ProjectCopyService do
     end
 
     it 'can limit the number of ideas copied' do
-      project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT', 'fr-FR': 'FRENCH PROJECT' }, description_multiloc: {})
+      project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT', 'fr-FR': 'FRENCH PROJECT' })
       create_list(:idea, 5, project: project, phases: project.phases)
 
       template = service.export project, anonymize_users: false, include_ideas: true, max_ideas: 2
@@ -421,7 +578,7 @@ describe ProjectCopyService do
         # Single locale setup
         configure_platform_locales ['en']
 
-        project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT' }, description_multiloc: { en: '' })
+        project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT' })
         create(:idea, project: project, phases: project.phases, author: create(:user, locale: 'en', bio_multiloc: { en: 'ENGLISH BIO' }))
         template = service.export project, anonymize_users: false, include_ideas: true
 
@@ -433,9 +590,6 @@ describe ProjectCopyService do
 
           copied_project = service.import template
           expect(copied_project.title_multiloc).to eq({ 'fr-FR' => 'TRANSLATED: ENGLISH PROJECT' })
-
-          # Does nothing with empty multiloc values
-          expect(copied_project.description_multiloc).to eq({ 'fr-FR' => '' })
 
           # Changes the locale of users, but removes their bios
           expect(copied_project.ideas.first.author.locale).to eq 'fr-FR'
@@ -457,7 +611,7 @@ describe ProjectCopyService do
         # Single locale setup
         configure_platform_locales ['en']
 
-        project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT' }, description_multiloc: {})
+        project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT' })
         create(:idea, project: project, phases: project.phases, author: create(:user, locale: 'en', bio_multiloc: { en: 'ENGLISH BIO' }))
         template = service.export project, anonymize_users: false, include_ideas: true
 
@@ -480,7 +634,7 @@ describe ProjectCopyService do
         # Set config to two locales
         configure_platform_locales %w[en fr-FR]
 
-        project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT', 'fr-FR': 'FRENCH PROJECT' }, description_multiloc: {})
+        project = create(:project_with_active_ideation_phase, title_multiloc: { en: 'ENGLISH PROJECT', 'fr-FR': 'FRENCH PROJECT' })
         create(:idea, title_multiloc: { 'fr-FR' => 'FRENCH IDEA' }, author: create(:user, locale: 'en'), project: project, phases: project.phases)
 
         template = service.export project, anonymize_users: false, include_ideas: true
@@ -515,6 +669,39 @@ describe ProjectCopyService do
         copied_project = service.import template, local_copy: false
 
         expect(copied_project.space_id).to be_nil
+      end
+    end
+
+    # A project can be copied onto a platform whose features differ from the source's.
+    # The prescreening_mode travels with the phase, but only takes effect where the
+    # target platform has the corresponding feature.
+    describe 'a phase with a prescreening_mode' do
+      let(:project) do
+        SettingsService.new.activate_feature!('prescreening_ideation')
+        create(:project).tap do |project|
+          create(:phase, project: project, prescreening_mode: 'all')
+        end
+      end
+
+      it 'copies the mode, without it taking effect where the target lacks the feature' do
+        template = service.export project, local_copy: false
+        SettingsService.new.deactivate_feature!('prescreening_ideation')
+
+        copied_project = service.import template, local_copy: false
+
+        copied_phase = copied_project.phases.first
+        expect(copied_phase.prescreening_mode).to eq 'all'
+        expect(copied_phase.prescreening_all?).to be false
+      end
+
+      it 'copies the mode, and it takes effect where the target has the feature' do
+        template = service.export project, local_copy: false
+
+        copied_project = service.import template, local_copy: false
+
+        copied_phase = copied_project.phases.first
+        expect(copied_phase.prescreening_mode).to eq 'all'
+        expect(copied_phase.prescreening_all?).to be true
       end
     end
   end

@@ -41,6 +41,7 @@ describe MultiTenancy::Templates::TenantDeserializer do
               description_multiloc:
                 nl-BE: Debitis expedita qui nostrum.
               code: body_multiloc
+              answers_visible_to: public
             - resource_type: CustomForm
               resource_ref: *2
               key: title_multiloc
@@ -50,6 +51,7 @@ describe MultiTenancy::Templates::TenantDeserializer do
               description_multiloc:
                 nl-BE: Minima et ipsa debitis.
               code: title_multiloc
+              answers_visible_to: public
       YAML
 
       template = YAML.load(yml, aliases: true)
@@ -59,6 +61,112 @@ describe MultiTenancy::Templates::TenantDeserializer do
       expect(CustomForm.count).to eq 2
       expect(CustomField.count).to eq 2
       expect(CustomField.all.map(&:resource)).to match_array CustomForm.all
+    end
+
+    it 'ignores removed attributes still present in templates serialized before their removal' do
+      yml = <<~YAML
+        ---
+        models:
+          project:
+          - &1
+            title_multiloc:
+              en: Legacy project
+            description_multiloc:
+              en: "<p>Legacy description</p>"
+          project_folders/folder:
+          - &2
+            title_multiloc:
+              en: Legacy folder
+            description_multiloc:
+              en: "<p>Legacy folder description</p>"
+          admin_publication:
+          - publication_ref: *1
+            publication_status: published
+          - publication_ref: *2
+            publication_status: published
+      YAML
+
+      template = YAML.load(yml, aliases: true)
+
+      service.deserialize(template)
+
+      expect(Project.count).to eq 1
+      expect(ProjectFolders::Folder.count).to eq 1
+    end
+
+    it 'creates all records and resolves refs when the records span several transaction batches' do
+      stub_const("#{described_class}::TRANSACTION_BATCH_SIZE", 2)
+
+      template = YAML.load(<<~YAML, aliases: true)
+        ---
+        models:
+          project:
+          - &1
+            title_multiloc:
+              en: Project 1
+          - &2
+            title_multiloc:
+              en: Project 2
+          - &3
+            title_multiloc:
+              en: Project 3
+          admin_publication:
+          - publication_ref: *1
+            publication_status: published
+          - publication_ref: *2
+            publication_status: draft
+          - publication_ref: *3
+            publication_status: archived
+      YAML
+
+      service.deserialize(template)
+
+      statuses = Project.all.to_h { |project| [project.title_multiloc['en'], project.admin_publication.publication_status] }
+      expect(statuses).to eq(
+        'Project 1' => 'published',
+        'Project 2' => 'draft',
+        'Project 3' => 'archived'
+      )
+    end
+
+    context 'with a reuse_by matcher' do
+      let(:folder) { create(:project_folder, title_multiloc: { 'en' => 'Shared folder' }) }
+      let(:reuse_by) do
+        { 'ProjectFolders::Folder' => ->(attrs, klass) { klass.find_by("title_multiloc->>'en' = ?", attrs.dig('title_multiloc', 'en')) } }
+      end
+      let(:template) do
+        YAML.load(<<~YAML, aliases: true)
+          ---
+          models:
+            project_folders/folder:
+            - title_multiloc:
+                en: Shared folder
+              admin_publication_attributes: &folderpub
+                publication_status: published
+            project:
+            - title_multiloc:
+                en: Child project
+              admin_publication_attributes:
+                publication_status: published
+                parent_attributes_ref: *folderpub
+        YAML
+      end
+
+      it 'reuses the matched record instead of duplicating it, resolving refs (incl. nested) to it' do
+        folder # create the existing folder first
+
+        expect { service.deserialize(template, reuse_by: reuse_by) }.to change(Project, :count).by(1)
+        expect(ProjectFolders::Folder.count).to eq(1) # reused, not re-created
+
+        # the child project's admin_publication parent resolves to the *existing* folder's admin_publication
+        child = Project.find_by("title_multiloc->>'en' = 'Child project'")
+        expect(child.admin_publication.parent).to eq(folder.admin_publication)
+      end
+
+      it 'creates the record normally when the matcher finds nothing' do
+        expect { service.deserialize(template, reuse_by: reuse_by) }
+          .to change(ProjectFolders::Folder, :count).by(1) # no existing "Shared folder" → created
+      end
     end
 
     describe 'filtering of template multiloc attributes' do
@@ -124,6 +232,55 @@ describe MultiTenancy::Templates::TenantDeserializer do
 
         idea = Idea.first
         expect(idea.body_multiloc.keys).to contain_exactly('nl-BE')
+      end
+    end
+
+    # Templates carry model data but no feature flags (AppConfiguration is not serialized),
+    # so a template derived from a platform with screening enabled records a
+    # `prescreening_mode` that the target platform may have no feature for. Applying it
+    # must succeed regardless; the mode simply has no effect where the feature is off.
+    describe 'a phase with a prescreening_mode' do
+      let(:template) do
+        YAML.load(<<~YAML, permitted_classes: [Time], aliases: true)
+          models:
+            project:
+              - &project
+                title_multiloc:
+                  en: Project
+            admin_publication:
+              - publication_ref: *project
+                publication_status: published
+            phase:
+              - project_ref: *project
+                title_multiloc:
+                  en: Ideation phase
+                participation_method: ideation
+                start_at: '2026-01-01'
+                end_at: '2026-12-31'
+                prescreening_mode: all
+        YAML
+      end
+
+      context 'when the target platform does not have the prescreening feature' do
+        it 'applies the template, storing the mode but leaving it without effect' do
+          expect { service.deserialize(template) }.not_to raise_error
+
+          phase = Phase.first
+          expect(phase.prescreening_mode).to eq 'all'
+          expect(phase.prescreening_all?).to be false
+        end
+      end
+
+      context 'when the target platform has the prescreening feature' do
+        before { SettingsService.new.activate_feature!('prescreening_ideation') }
+
+        it 'applies the template, and the mode takes effect' do
+          service.deserialize(template)
+
+          phase = Phase.first
+          expect(phase.prescreening_mode).to eq 'all'
+          expect(phase.prescreening_all?).to be true
+        end
       end
     end
   end

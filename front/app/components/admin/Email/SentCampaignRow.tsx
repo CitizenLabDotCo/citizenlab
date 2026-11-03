@@ -10,7 +10,7 @@ import {
 import moment from 'moment';
 
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
-import { ICampaignData } from 'api/campaigns/types';
+import { IEmailCampaignData } from 'api/campaigns/email/types';
 import useProjectById from 'api/projects/useProjectById';
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
@@ -25,7 +25,7 @@ import { FormattedMessage, useIntl } from 'utils/cl-intl';
 import messages from './messages';
 
 interface Props {
-  campaign: ICampaignData;
+  campaign: IEmailCampaignData;
   context?: 'global' | 'project';
 }
 

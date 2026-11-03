@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'app.containers.NewAuthModal.confirmYourEmail',
     defaultMessage: 'Confirm your email',
   },
+  changeYourEmail: {
+    id: 'app.containers.NewAuthModal.changeYourEmail',
+    defaultMessage: 'Change your email',
+  },
   signUp: {
     id: 'app.containers.SignUp.signUp2',
     defaultMessage: 'Sign up',
@@ -55,6 +59,15 @@ export default defineMessages({
     id: 'app.containers.AuthProviders.emailTakenAndUserCanBeVerified',
     defaultMessage:
       'An account with this email already exists. You can sign out, log in with this email address and verify your account on the settings page.',
+  },
+  linkYourAccount: {
+    id: 'app.containers.Authentication.linkYourAccount',
+    defaultMessage: 'Link your account',
+  },
+  accountMergeNotAllowed: {
+    id: 'app.containers.Authentication.accountMergeNotAllowed',
+    defaultMessage:
+      'This account cannot be linked. Use a different email address, or sign out and log in with this email instead.',
   },
   franceConnectMergingFailed: {
     id: 'app.components.AuthProviders.franceConnectMergingFailed',
@@ -114,5 +127,18 @@ export default defineMessages({
   authenticationDialog: {
     id: 'app.containers.Authentication.authenticationDialog',
     defaultMessage: 'Authentication',
+  },
+  enterYourPhoneNumber: {
+    id: 'app.containers.Authentication.enterYourPhoneNumber',
+    defaultMessage: 'Enter your phone number',
+  },
+  confirmYourPhoneNumber: {
+    id: 'app.containers.Authentication.confirmYourPhoneNumber',
+    defaultMessage: 'Confirm your phone number',
+  },
+  phoneConfirmationCodeInvalid: {
+    id: 'app.containers.Authentication.phoneConfirmationCodeInvalid',
+    defaultMessage:
+      "Invalid confirmation code. Please check your phone for the correct code or try 'Send New Code'.",
   },
 });

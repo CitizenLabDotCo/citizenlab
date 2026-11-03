@@ -25,11 +25,9 @@ describe('Admin: survey analysis', () => {
   before(() => {
     const projectTitle = randomString();
     const projectDescriptionPreview = randomString();
-    const projectDescription = randomString();
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project?.body.data.id;
@@ -61,7 +59,7 @@ describe('Admin: survey analysis', () => {
 
               surveyQuestionResponses.forEach((response) => {
                 cy.apiCreateSurveyResponse({
-                  project_id: projectId,
+                  phase_id: phaseId,
                   fields: {
                     [surveyFields[1].attributes.key]: response,
                   },

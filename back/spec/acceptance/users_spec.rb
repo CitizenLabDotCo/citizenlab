@@ -47,7 +47,8 @@ resource 'Users' do
       DESC
 
       parameter :sort, <<~DESC, required: false
-        Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'
+        Sort user by 'created_at', '-created_at', 'registration_completed_at', '-registration_completed_at',
+        'last_name', '-last_name', 'email', '-email', 'role', '-role'
       DESC
 
       example_request '[error] List all users' do
@@ -73,7 +74,6 @@ resource 'Users' do
         settings['password_login'] = {
           'allowed' => true,
           'enabled' => true,
-          'enable_signup' => true,
           'minimum_length' => 6
         }
       end
@@ -89,7 +89,7 @@ resource 'Users' do
       end
     end
 
-    post 'web_api/v1/users/check' do
+    post 'web_api/v1/users/check_email' do
       with_options scope: :user do
         parameter :email, 'E-mail address to check', required: true
       end
@@ -112,7 +112,7 @@ resource 'Users' do
           context 'when the user has not requested any codes yet' do
             before do
               @user = create(:unconfirmed_user, email: 'test@test.com')
-              @user.email_confirmation.confirm!
+              @user.find_or_create_confirmation(:email_confirmation).confirm!
 
               allow(RequestEmailConfirmationCodeJob).to receive(:perform_now)
             end
@@ -309,6 +309,179 @@ resource 'Users' do
       end
     end
 
+    post 'web_api/v1/users/check_phone' do
+      with_options scope: :user do
+        parameter :phone, 'Phone number to check', required: true
+      end
+
+      context 'when the sms and password_login features are turned on' do
+        include_context 'with sms feature enabled'
+
+        before do
+          SettingsService.new.activate_feature! 'password_login'
+          SettingsService.new.activate_feature! 'sms_login'
+        end
+
+        context 'when a user does not exist' do
+          let(:phone) { '+1 415 555 2671' }
+
+          example_request 'Returns "terms"' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('terms')
+            expect(json_response_body[:data][:attributes][:code_retry_after]).to eq 0
+          end
+        end
+
+        # The confirmation step counts this down instead of offering a resend that
+        # the backend would reject.
+        context 'when a code was sent moments ago', document: false do
+          before do
+            @user = create(:unconfirmed_phone_user, phone: '+14155552671')
+            RequestPhoneConfirmationCodeJob.issue_code!(@user)
+          end
+
+          let(:phone) { '+14155552671' }
+
+          example_request 'Returns how long until a new code can be requested' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:code_retry_after]).to be_between(1, 60)
+          end
+        end
+
+        context 'when a user exists without a password and has not confirmed their phone' do
+          before do
+            @user = create(:unconfirmed_phone_user, phone: '+14155552671')
+            allow(RequestPhoneConfirmationCodeJob).to receive(:issue_code_and_deliver_later)
+          end
+
+          let(:phone) { '+1 415 555 2671' }
+
+          example_request 'Returns "confirm" and sends a code' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+            expect(RequestPhoneConfirmationCodeJob).to have_received(:issue_code_and_deliver_later).with(@user)
+          end
+        end
+
+        context 'when the user has already requested a code', document: false do
+          before do
+            @user = create(:unconfirmed_phone_user, phone: '+14155552671')
+            @user.find_or_create_confirmation(:phone_confirmation).reset_code! # as if a code had already been requested
+
+            allow(RequestPhoneConfirmationCodeJob).to receive(:issue_code_and_deliver_later)
+          end
+
+          let(:phone) { '+14155552671' }
+
+          example_request 'Returns "confirm" without resending a code' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+            expect(RequestPhoneConfirmationCodeJob).not_to have_received(:issue_code_and_deliver_later).with(@user)
+          end
+        end
+
+        context 'when a user exists without a password and has confirmed their phone', document: false do
+          before do
+            @user = create(:unconfirmed_phone_user, phone: '+14155552671')
+            @user.find_or_create_confirmation(:phone_confirmation).confirm!
+            allow(RequestPhoneConfirmationCodeJob).to receive(:issue_code_and_deliver_later)
+          end
+
+          let(:phone) { '+14155552671' }
+
+          example_request 'Returns "confirm"' do
+            expect(@user.password_digest).to be_nil
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+            expect(RequestPhoneConfirmationCodeJob).to have_received(:issue_code_and_deliver_later).with(@user)
+          end
+        end
+
+        context 'when a user exists with a password and has confirmed their phone' do
+          before { @user = create(:user, :with_confirmed_phone, phone: '+14155552671') }
+
+          let(:phone) { '+14155552671' }
+
+          example_request 'Returns "password"' do
+            expect(@user.password_digest).not_to be_nil
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('password')
+          end
+        end
+
+        context 'when a user exists with a password but has not confirmed their phone', document: false do
+          before do
+            @user = create(:user, phone: '+14155552671')
+            allow(RequestPhoneConfirmationCodeJob).to receive(:issue_code_and_deliver_later)
+          end
+
+          let(:phone) { '+14155552671' }
+
+          example_request 'Returns "confirm"' do
+            expect(@user.password_digest).not_to be_nil
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('confirm')
+            expect(RequestPhoneConfirmationCodeJob).to have_received(:issue_code_and_deliver_later).with(@user)
+          end
+        end
+
+        context 'when the number is submitted in a different format' do
+          before { create(:user, :with_confirmed_phone, phone: '+14155552671') }
+
+          let(:phone) { '+1 (415) 555-2671' }
+
+          example_request 'Returns "password" for the same number in E.164 form' do
+            assert_status 200
+            expect(json_response_body[:data][:attributes][:action]).to eq('password')
+          end
+        end
+
+        context 'when an invalid phone number is used', document: false do
+          let(:phone) { 'not-a-number' }
+
+          example_request '[error] Invalid phone number' do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :phone, 0, :error)).to eq('invalid')
+          end
+        end
+
+        context 'when the country is not allowed', document: false do
+          before do
+            SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['BE'] })
+          end
+
+          let(:phone) { '+1 415 555 2671' }
+
+          example_request '[error] Unsupported country' do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :phone, 0, :error)).to eq('unsupported_country')
+          end
+        end
+      end
+
+      context 'when the sms feature is turned off' do
+        before { SettingsService.new.activate_feature! 'password_login' }
+
+        let(:phone) { '+14155552671' }
+
+        example_request 'It does not work' do
+          assert_status 401
+        end
+      end
+
+      context 'when password_login is turned off' do
+        include_context 'with sms feature enabled'
+
+        before { SettingsService.new.deactivate_feature! 'password_login' }
+
+        let(:phone) { '+14155552671' }
+
+        example_request 'It does not work' do
+          assert_status 401
+        end
+      end
+    end
+
     post 'web_api/v1/users' do
       with_options scope: 'user' do
         parameter :email, 'E-mail address', required: true
@@ -388,7 +561,7 @@ resource 'Users' do
           context 'when there is an existing user that has no password' do
             example 'email taken error is returned and confirmation requirement is not reset' do
               existing_user = create(:unconfirmed_user, email: email)
-              existing_user.email_confirmation.confirm!
+              existing_user.find_or_create_confirmation(:email_confirmation).confirm!
 
               do_request
               assert_status 422
@@ -401,7 +574,7 @@ resource 'Users' do
 
               example 'email taken error is returned and confirmation requirement is not reset' do
                 existing_user = create(:unconfirmed_user, email: email)
-                existing_user.email_confirmation.confirm!
+                existing_user.find_or_create_confirmation(:email_confirmation).confirm!
 
                 do_request
                 assert_status 422
@@ -421,6 +594,133 @@ resource 'Users' do
               expect(existing_user.confirmation_required?).to be(false)
             end
           end
+        end
+      end
+    end
+
+    post 'web_api/v1/users/create_phone' do
+      with_options scope: 'user' do
+        parameter :phone, 'Phone number', required: true
+        parameter :locale, 'Locale (must be one of the tenant locales)', required: true
+        parameter :claim_tokens, <<~DESC
+          Tokens used to claim anonymous participation data (e.g., ideas) created before registration.
+          They are marked as pending until the phone number is confirmed.
+        DESC
+      end
+
+      ValidationErrorHelper.new.error_fields(self, User)
+
+      let(:locale) { 'en' }
+
+      context 'when the sms and password_login features are turned on' do
+        include_context 'with sms feature enabled'
+
+        before do
+          SettingsService.new.activate_feature! 'password_login'
+          SettingsService.new.activate_feature! 'sms_login'
+          allow(RequestPhoneConfirmationCodeJob).to receive(:issue_code_and_deliver_later)
+        end
+
+        let(:phone) { '+1 415 555 2671' }
+
+        example_request 'User successfully created, gets an SMS code and requires confirmation' do
+          assert_status 201
+          user = User.order(:created_at).last
+          expect(user.phone).to eq '+14155552671'
+          expect(user.phone_confirmed_at).to be_nil
+          expect(user.registration_completed_at).to be_nil
+          expect(RequestPhoneConfirmationCodeJob).to have_received(:issue_code_and_deliver_later).with(user).once
+        end
+
+        example 'No email confirmation code is sent' do
+          allow(RequestEmailConfirmationCodeJob).to receive(:perform_now)
+          allow(RequestNewEmailConfirmationCodeJob).to receive(:perform_now)
+
+          do_request
+          assert_status 201
+          expect(RequestEmailConfirmationCodeJob).not_to have_received(:perform_now)
+          expect(RequestNewEmailConfirmationCodeJob).not_to have_received(:perform_now)
+        end
+
+        describe 'with claim_tokens' do
+          let!(:claim_token) { create(:claim_token) }
+          let(:claim_tokens) { [claim_token.token] }
+
+          example_request 'Claim tokens are marked as pending until the phone is confirmed' do
+            assert_status 201
+            user = User.order(:created_at).last
+            expect(claim_token.reload.pending_claimer_id).to eq(user.id)
+          end
+        end
+
+        context 'when the phone number is invalid' do
+          let(:phone) { 'not-a-number' }
+
+          example_request '[error] Invalid phone number' do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :phone, 0, :error)).to eq('invalid')
+            expect(User.count).to eq 0
+          end
+        end
+
+        context 'when the phone number is not a real number' do
+          let(:phone) { '+1 000 000 0000' }
+
+          example_request '[error] Invalid phone number', document: false do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :phone, 0, :error)).to eq('invalid')
+            expect(User.count).to eq 0
+          end
+        end
+
+        context 'when the phone number is blank' do
+          let(:phone) { '' }
+
+          example_request '[error] Invalid phone number', document: false do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :phone, 0, :error)).to eq('invalid')
+            expect(User.count).to eq 0
+          end
+        end
+
+        context 'when the phone number is missing' do
+          let(:phone) { nil }
+
+          example_request '[error] Invalid phone number', document: false do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :phone, 0, :error)).to eq('invalid')
+            expect(User.count).to eq 0
+          end
+        end
+
+        context 'when the phone number is already taken' do
+          before { create(:user, :with_confirmed_phone, phone: '+14155552671') }
+
+          example_request '[error] Phone number taken' do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :phone, 0, :error)).to eq('taken')
+          end
+        end
+
+        context 'when the country is not allowed' do
+          before do
+            SettingsService.new.activate_feature!('sms', settings: { 'allowed_country_codes' => ['BE'] })
+          end
+
+          example_request '[error] Unsupported country' do
+            assert_status 422
+            expect(json_response_body.dig(:errors, :phone, 0, :error)).to eq('unsupported_country')
+          end
+        end
+      end
+
+      context 'when the sms feature is turned off' do
+        before { SettingsService.new.activate_feature! 'password_login' }
+
+        let(:phone) { '+14155552671' }
+
+        example_request 'It does not work' do
+          assert_status 401
         end
       end
     end
@@ -450,7 +750,10 @@ resource 'Users' do
           parameter :size, 'Number of users per page'
         end
         parameter :search, 'Filter by searching in first_name, last_name and email', required: false
-        parameter :sort, "Sort user by 'created_at', '-created_at', 'last_name', '-last_name', 'email', '-email', 'role', '-role'", required: false
+        parameter :sort, <<~DESC, required: false
+          Sort user by 'created_at', '-created_at', 'registration_completed_at', '-registration_completed_at',
+          'last_name', '-last_name', 'email', '-email', 'role', '-role'
+        DESC
         parameter :group, 'Filter by group_id', required: false
         parameter :project, 'Filter by users who participated in the project (by project id)', required: false
         parameter :can_moderate_project, 'Filter by users (and admins) who can moderate the project (by id)', required: false
@@ -458,6 +761,7 @@ resource 'Users' do
         parameter :admins_only, 'Return only admins', required: false
         parameter :project_reviewer, 'Return only admins that are project reviewers', required: false
         parameter :blocked, 'Return only blocked users', required: false
+        parameter :only_email_bounced, 'Return only users whose email permanently bounced', required: false
 
         example 'List all users' do
           %w[Bednar Cole Hagenes MacGyver Oberbrunner].each { |l| create(:user, last_name: l) }
@@ -475,6 +779,18 @@ resource 'Users' do
           expect(json_response[:data][0][:attributes]).to have_key(:block_start_at)
           expect(json_response[:data][0][:attributes]).to have_key(:block_end_at)
           expect(json_response[:data][0][:attributes]).to have_key(:block_reason)
+        end
+
+        example 'List users whose email bounced, including pending invitees' do
+          bounced = create(:user, email_bounced_at: 1.day.ago)
+          bounced_invitee = create(:invited_user, email_bounced_at: 1.day.ago)
+          create(:user)
+
+          do_request only_email_bounced: true, include_inactive: true
+
+          expect(status).to eq 200
+          expect(response_data.pluck(:id)).to contain_exactly(bounced.id, bounced_invitee.id)
+          expect(response_data.first[:attributes]).to include(:email_bounced_at, :email_bounce_reason)
         end
 
         example 'Get all users on the second page with fixed page size' do
@@ -582,6 +898,74 @@ resource 'Users' do
           json_response = json_parse(response_body)
 
           expect(json_response[:data].map { |u| u.dig(:attributes, :email) }.last).to eq inactive_user.email
+        end
+
+        # Backdates every user, the admin from the outer context included, so they
+        # all have distinct dates and the expected order is unambiguous.
+        def create_users_registered_on_distinct_days
+          %w[Bednar Cole Hagenes].each { |l| create(:user, last_name: l) }
+          User.all.each_with_index do |user, i|
+            user.update!(registration_completed_at: Time.now - i.days)
+          end
+        end
+
+        example 'List all users sorted by registration_completed_at' do
+          create_users_registered_on_distinct_days
+
+          do_request sort: 'registration_completed_at'
+
+          assert_status 200
+          expect(response_data.pluck(:id)).to eq User.order(:registration_completed_at).pluck(:id)
+        end
+
+        example 'List all users sorted by -registration_completed_at' do
+          create_users_registered_on_distinct_days
+
+          do_request sort: '-registration_completed_at'
+
+          assert_status 200
+          expect(response_data.pluck(:id)).to eq User.order(registration_completed_at: :desc).pluck(:id)
+        end
+
+        # Users without a registration date are only returned when include_inactive is set,
+        # since the index applies the `registered` scope otherwise. A pending invite has no
+        # date and sorts as the most recent: first when descending, last when ascending.
+        {
+          'registration_completed_at' => :last,
+          '-registration_completed_at' => :first
+        }.each do |sort_param, nil_position|
+          example "List all users sorted by #{sort_param} lists nil values #{nil_position}", document: false do
+            create_users_registered_on_distinct_days
+            invitee = create(:invited_user)
+
+            do_request sort: sort_param, include_inactive: true
+
+            assert_status 200
+            expect(response_data.pluck(:id).public_send(nil_position)).to eq invitee.id
+          end
+        end
+
+        # Both invitees lack a registration date, so only the tie-breaker decides their order.
+        example 'List all users sorted by -registration_completed_at breaks ties on created_at', document: false do
+          older, newer = create_list(:invited_user, 2)
+          older.update!(created_at: 2.days.ago)
+          newer.update!(created_at: 1.day.ago)
+
+          do_request sort: '-registration_completed_at', include_inactive: true
+
+          assert_status 200
+          expect(response_data.pluck(:id).first(2)).to eq [newer.id, older.id]
+        end
+
+        example 'List all users sorted by registration_completed_at breaks ties on created_at', document: false do
+          older, newer = create_list(:invited_user, 2)
+          older.update!(created_at: 2.days.ago)
+          newer.update!(created_at: 1.day.ago)
+
+          do_request sort: 'registration_completed_at', include_inactive: true
+
+          assert_status 200
+          expect(response_data.pluck(:id).last(2)).to eq [older.id, newer.id]
         end
 
         example 'List all users in group' do
@@ -1239,6 +1623,18 @@ resource 'Users' do
         end
       end
 
+      get 'web_api/v1/users/email_bounced_count' do
+        example 'Get count of users whose email bounced' do
+          create_list(:user, 2, email_bounced_at: 1.day.ago)
+          create(:user)
+
+          do_request
+
+          expect(status).to eq 200
+          expect(response_data.dig(:attributes, :count)).to eq 2
+        end
+      end
+
       patch 'web_api/v1/users/:id/block' do
         with_options scope: 'user' do
           parameter :block_reason, 'Reason for blocking & any additional information', required: false
@@ -1301,6 +1697,73 @@ resource 'Users' do
 
         let(:id) { @user.id }
         let(:first_name) { 'Edmond' }
+
+        describe 'early access' do
+          # Stand-ins for whatever is in early access at the time: the registry is
+          # stubbed, so only the tier each name is offered in matters here.
+          let(:feature) { 'spaces' }
+          let(:internal_feature) { 'project_planning_calendar' }
+
+          before do
+            allow(AppConfiguration::Settings).to receive(:early_access_tiers)
+              .and_return({ feature => 'general', internal_feature => 'internal' })
+          end
+
+          example 'Opt into an early access feature' do
+            do_request(user: { early_access_opt_ins: [feature] })
+
+            assert_status 200
+            expect(response_data.dig(:attributes, :early_access_opt_ins)).to eq [feature]
+            expect(@user.reload.early_access_opt_ins).to eq [feature]
+          end
+
+          example 'Opt out of an early access feature again', document: false do
+            @user.update!(early_access_opt_ins: [feature])
+            do_request(user: { early_access_opt_ins: [] })
+
+            assert_status 200
+            expect(@user.reload.early_access_opt_ins).to eq []
+          end
+
+          example '[error] Opt into a feature that is not in early access', document: false do
+            do_request(user: { early_access_opt_ins: ['analysis'] })
+
+            assert_status 422
+            expect(@user.reload.early_access_opt_ins).to eq []
+          end
+
+          example '[error] Opt into a feature reserved for Go Vocal staff', document: false do
+            do_request(user: { early_access_opt_ins: [internal_feature] })
+
+            assert_status 422
+            expect(@user.reload.early_access_opt_ins).to eq []
+          end
+
+          example 'Opt into a Go Vocal only feature as a Go Vocal admin', document: false do
+            govocal_admin = create(:super_admin)
+            header_token_for govocal_admin
+            do_request(id: govocal_admin.id, user: { early_access_opt_ins: [internal_feature] })
+
+            assert_status 200
+            expect(govocal_admin.reload.early_access_opt_ins).to eq [internal_feature]
+          end
+
+          example 'Silently ignore opting another admin into an early access feature', document: false do
+            other_admin = create(:admin)
+            do_request(id: other_admin.id, user: { early_access_opt_ins: [feature] })
+
+            assert_status 200
+            expect(other_admin.reload.early_access_opt_ins).to eq []
+          end
+
+          example "Does not report another admin's opt-ins", document: false do
+            other_admin = create(:admin, early_access_opt_ins: [feature])
+            do_request(id: other_admin.id)
+
+            assert_status 200
+            expect(response_data[:attributes]).not_to have_key(:early_access_opt_ins)
+          end
+        end
 
         describe do
           let(:custom_field_values) { { birthyear: 1984 } }
@@ -1574,6 +2037,12 @@ resource 'Users' do
         end
       end
 
+      get 'web_api/v1/users/email_bounced_count' do
+        example_request '[error] Get count of users whose email bounced' do
+          assert_status :unauthorized
+        end
+      end
+
       get 'web_api/v1/users/:id/participation_stats' do
         let(:other_user) { create(:user) }
         let(:id) { other_user.id }
@@ -1624,7 +2093,7 @@ resource 'Users' do
           example "Clear out a user's custom field value if set to nil" do
             cf = create(:custom_field)
             cf2 = create(:custom_field)
-            @user.update!(custom_field_values: { cf.key => 'somevalue' })
+            create(:custom_field_answer, answerable: @user, key: cf.key, value: 'somevalue')
 
             do_request(user: { custom_field_values: {
               cf.key => nil,
@@ -1632,28 +2101,28 @@ resource 'Users' do
             } })
 
             expect(response_status).to eq 200
-            expect(@user.reload.custom_field_values).to eq({
-              cf2.key => 'another_value'
-            })
+            expect(@user.reload.custom_field_answers.pluck(:key, :value)).to contain_exactly(
+              [cf2.key, 'another_value']
+            )
           end
 
           example "Add to user's existing custom field values" do
             cf = create(:custom_field)
             cf2 = create(:custom_field)
-            @user.update!(custom_field_values: { cf.key => 'somevalue' })
+            create(:custom_field_answer, answerable: @user, key: cf.key, value: 'somevalue')
 
             do_request(user: { custom_field_values: { cf2.key => 'another_value' } })
             expect(response_status).to eq 200
-            expect(@user.reload.custom_field_values).to eq({
-              cf.key => 'somevalue',
-              cf2.key => 'another_value'
-            })
+            expect(@user.reload.custom_field_answers.pluck(:key, :value)).to contain_exactly(
+              [cf.key, 'somevalue'],
+              [cf2.key, 'another_value']
+            )
           end
 
           example "Replace a user's existing custom field value" do
             cf = create(:custom_field)
             cf2 = create(:custom_field)
-            @user.update!(custom_field_values: { cf.key => 'somevalue' })
+            create(:custom_field_answer, answerable: @user, key: cf.key, value: 'somevalue')
 
             do_request(user: { custom_field_values: {
               cf.key => 'new_value',
@@ -1661,34 +2130,34 @@ resource 'Users' do
             } })
 
             expect(response_status).to eq 200
-            expect(@user.reload.custom_field_values).to eq({
-              cf.key => 'new_value',
-              cf2.key => 'another_value'
-            })
+            expect(@user.reload.custom_field_answers.pluck(:key, :value)).to contain_exactly(
+              [cf.key, 'new_value'],
+              [cf2.key, 'another_value']
+            )
           end
 
           example 'Cannot modify values of hidden custom fields' do
             cf = create(:custom_field, hidden: true, enabled: true)
             some_value = 'some_value'
-            @user.update!(custom_field_values: { cf.key => some_value })
+            create(:custom_field_answer, answerable: @user, key: cf.key, value: some_value)
 
             do_request(user: { custom_field_values: { cf.key => 'another_value' } })
             json_response = json_parse(response_body)
 
             expect(json_response.dig(:data, :attributes, :custom_field_values)).not_to include(cf.key.to_sym)
-            expect(@user.custom_field_values[cf.key]).to eq(some_value)
+            expect(@user.reload.answer_for_key(cf.key)&.value).to eq(some_value)
           end
 
           example 'Can modify values of disabled custom fields' do
             cf = create(:custom_field, hidden: false, enabled: false)
             some_value = 'some_value'
-            @user.update!(custom_field_values: { cf.key => some_value })
+            create(:custom_field_answer, answerable: @user, key: cf.key, value: some_value)
 
             do_request(user: { custom_field_values: { cf.key => 'another_value' } })
             json_response = json_parse(response_body)
 
             expect(json_response.dig(:data, :attributes, :custom_field_values)).to include(cf.key.to_sym)
-            expect(@user.custom_field_values[cf.key]).to eq(some_value)
+            expect(@user.reload.answer_for_key(cf.key)&.value).to eq('another_value')
           end
 
           # To allow for custom fields to be required or not depending on the action
@@ -1738,6 +2207,11 @@ resource 'Users' do
         end
 
         describe do
+          before do
+            AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'franceconnect' }] }
+            AppConfiguration.instance.save!
+          end
+
           let(:cf) { create(:custom_field) }
           let(:birthyear_cf) { create(:custom_field_birthyear) }
           let(:custom_field_values) do
@@ -1753,11 +2227,12 @@ resource 'Users' do
 
           example "Can't change some attributes of a user verified with FranceConnect", document: false do
             create(:verification, method_name: 'franceconnect', user: @user)
-            @user.update!(custom_field_values: { cf.key => 'original value', birthyear_cf.key => 1950 })
+            create(:custom_field_answer, answerable: @user, key: cf.key, value: 'original value')
+            create(:custom_field_answer, answerable: @user, key: birthyear_cf.key, value: 1950)
             do_request
             expect(response_status).to eq 200
             @user.reload
-            expect(@user.custom_field_values[cf.key]).to eq 'new value'
+            expect(@user.answer_for_key(cf.key)&.value).to eq 'new value'
             expect(@user.first_name).not_to eq first_name
             expect(@user.last_name).not_to eq last_name
           end
@@ -1768,11 +2243,16 @@ resource 'Users' do
             expect(response_status).to eq 200
             @user.reload
             expect(@user.locale).to eq locale
-            expect(@user.birthyear).to eq birthyear
+            expect(@user.answer_for_code('birthyear')&.value).to eq birthyear
           end
         end
 
         describe do
+          before do
+            AppConfiguration.instance.settings['id_config'] = { allowed: true, enabled: true, id_methods: [{ name: 'bogus' }] }
+            AppConfiguration.instance.save!
+          end
+
           let(:cf) { create(:custom_field) }
           let(:gender_cf) { create(:custom_field_gender) }
           let(:custom_field_values) do
@@ -1784,12 +2264,13 @@ resource 'Users' do
 
           example "Can't change gender of a user verified with Bogus", document: false do
             create(:verification, method_name: 'bogus', user: @user)
-            @user.update!(custom_field_values: { cf.key => 'original value', gender_cf.key => 'male' })
+            create(:custom_field_answer, answerable: @user, key: cf.key, value: 'original value')
+            create(:custom_field_answer, answerable: @user, key: gender_cf.key, value: 'male')
             do_request
             expect(response_status).to eq 200
             @user.reload
-            expect(@user.custom_field_values[cf.key]).to eq 'new value'
-            expect(@user.custom_field_values[gender_cf.key]).to eq 'male'
+            expect(@user.answer_for_key(cf.key)&.value).to eq 'new value'
+            expect(@user.answer_for_key(gender_cf.key)&.value).to eq 'male'
           end
         end
 
@@ -1808,6 +2289,17 @@ resource 'Users' do
             expect(user.reload.first_name).to eq 'NewFirstName'
             expect(user.reload.last_name).to eq 'NewLastName'
             expect(user.reload.slug).to eq 'newfirstname-newlastname'
+          end
+
+          # The slug is built from the request here, not from the stored name.
+          context 'when the name carries markup' do
+            let(:first_name) { '<b>NewFirstName</b>' }
+
+            example_request 'Keeps the markup out of both the name and the slug', document: false do
+              assert_status 200
+              expect(user.reload.first_name).to eq 'NewFirstName'
+              expect(user.reload.slug).to eq 'newfirstname-newlastname'
+            end
           end
         end
       end

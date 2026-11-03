@@ -11,8 +11,6 @@ describe('New project with native survey', () => {
       projectId = result.projectId;
       projectSlug = result.projectSlug;
 
-      cy.apiAddAboutBox(projectId);
-
       cy.apiCreateEvent({
         projectId,
         title: eventTitle,
@@ -33,7 +31,7 @@ describe('New project with native survey', () => {
 
   // TODO: Improve this test
   it('shows the correct project header', () => {
-    cy.get('[data-testid="descriptionBuilderProjectPreviewContent"]');
+    cy.get('[data-testid="projectPageBuilderContent"]');
     cy.get('#e2e-project-sidebar');
   });
 
@@ -79,7 +77,6 @@ describe('Project with native survey phase but not active', () => {
 
 describe('Native survey CTA bar', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString();
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
   let projectSlug: string;
@@ -97,10 +94,8 @@ describe('Native survey CTA bar', () => {
       })
       .then(() => {
         cy.apiCreateProject({
-          withAboutBox: true,
           title: projectTitle,
           descriptionPreview: projectDescriptionPreview,
-          description: projectDescription,
           publicationStatus: 'published',
         }).then((project) => {
           projectId = project.body.data.id;
@@ -134,6 +129,10 @@ describe('Native survey CTA bar', () => {
     cy.visit(`/en/projects/${projectSlug}`);
 
     cy.setAdminLoginCookie();
+
+    // The action follows the platform defaults until it is overridden, and the
+    // panel only offers its settings once it has been.
+    cy.apiOverridePhasePermission({ phaseId, action: 'posting_idea' });
 
     cy.visit(`admin/projects/${projectId}/phases/${phaseId}/access-rights`);
 

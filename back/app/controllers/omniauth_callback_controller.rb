@@ -335,6 +335,12 @@ class OmniauthCallbackController < ApplicationController
           verification_failure_redirect('taken')
         rescue Verification::VerificationService::NotEntitledError => e
           verification_failure_redirect(not_entitled_error(e))
+        rescue AccountMergeService::IneligibleError, AccountMergeService::IncompleteMergeError => e
+          # The source account could not be merged, so the verification is still on
+          # it - which is what 'taken' says. Reported, not swallowed:
+          # IncompleteMergeError means a surface is missing from MOVES.
+          ErrorReporter.report(e)
+          verification_failure_redirect('taken')
         end
       end
     rescue ActiveRecord::RecordNotFound
@@ -345,6 +351,12 @@ class OmniauthCallbackController < ApplicationController
   def verified_for_sso?(auth, user, user_created)
     handle_verification(auth, user)
     true
+  rescue AccountMergeService::IneligibleError, AccountMergeService::IncompleteMergeError => e
+    # The same merge failure as in verification_callback, on the sign-in path.
+    ErrorReporter.report(e)
+    user.destroy if user_created
+    signin_failure_redirect
+    false
   rescue Verification::VerificationService::NotEntitledError => e
     # In some cases, it may be fine not to verify during SSO, so we enable this specifically in the method
     return true unless verification_method.respond_to?(:check_entitled_on_sso?) && verification_method.check_entitled_on_sso?

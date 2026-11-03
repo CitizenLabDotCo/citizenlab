@@ -8,6 +8,26 @@ RSpec.describe Analytics::FactProjectStatus do
   it { is_expected.to belong_to(:dimension_project) }
   it { is_expected.to belong_to(:dimension_date) }
 
+  describe 'primary key' do
+    let!(:projects) { create_list(:project, 2) }
+
+    it 'is the natural key of the view, which holds one row per project' do
+      expect(described_class.primary_key).to eq('dimension_project_id')
+      expect(described_class.count).to eq(described_class.distinct.count(:dimension_project_id))
+    end
+
+    # Without a primary key this interpolates an Arel::Table into the SQL.
+    it 'counts an eager-loaded relation without a syntax error' do
+      relation = described_class
+        .includes(:dimension_project)
+        .where.not(dimension_project: { id: nil })
+
+      expect(relation).to be_eager_loading
+      expect { relation.count }.not_to raise_error
+      expect(relation.count).to eq(projects.size)
+    end
+  end
+
   shared_examples 'project can have status' do |status|
     it "the project can have the #{status} status", :aggregate_failures do
       project.update!({ admin_publication_attributes: { publication_status: status } })

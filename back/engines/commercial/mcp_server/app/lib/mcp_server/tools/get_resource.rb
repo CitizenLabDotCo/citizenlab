@@ -9,6 +9,7 @@ class McpServer::Tools::GetResource < McpServer::BaseTool
     'area' => { model: Area, serializer: McpServer::Serializers::Area },
     'global_topic' => { model: GlobalTopic, serializer: McpServer::Serializers::GlobalTopic },
     'cause' => { model: Volunteering::Cause, serializer: McpServer::Serializers::Cause },
+    'input' => { model: Idea, serializer: McpServer::Serializers::Input },
     'poll_question' => { model: Polls::Question, serializer: McpServer::Serializers::PollQuestion },
     'poll_option' => { model: Polls::Option, serializer: McpServer::Serializers::PollOption }
   }.freeze

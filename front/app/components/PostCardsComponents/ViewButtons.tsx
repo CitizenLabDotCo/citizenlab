@@ -213,7 +213,7 @@ const ViewButtons = ({
           active={selectedView === 'feed'}
         >
           <StyledIcon name="idea" />
-          <FormattedMessage {...messages.feed} />
+          <FormattedMessage {...messages.perspectives} />
         </ViewButton>
       )}
     </Box>

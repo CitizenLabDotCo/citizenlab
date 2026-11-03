@@ -60,10 +60,6 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     object.admin_publication.first_published_at
   end
 
-  attribute :description_multiloc do |object|
-    TextImageService.new.render_data_images_multiloc object.description_multiloc, field: :description_multiloc, imageable: object
-  end
-
   attribute :header_bg do |object|
     object.header_bg && object.header_bg.versions.to_h { |k, v| [k.to_s, v.url] }
   end
@@ -87,15 +83,12 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
     end
   end
 
-  attribute :timeline_active do |object, params|
-    if params[:timeline_active]
-      params.dig(:timeline_active, object.id)
-    else
-      TimelineService.new.timeline_active object
-    end
+  attribute :participation_status do |object|
+    object.schedule.participation_status
   end
 
   attribute :preview_token, if: proc { |object, params| can_moderate? object, params }
+  attribute :completed_setup_steps, if: proc { |object, params| can_moderate? object, params }
 
   has_one :admin_publication
 
@@ -114,6 +107,18 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 
   has_one :current_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase do |project|
     phase = TimelineService.new.current_phase(project)
+    phase.project = project if phase # Performance optimization (keep preloaded relationships)
+    phase
+  end
+
+  # Only while the flag is on: the linkage costs a query per project, and every
+  # projects listing pays it.
+  has_one :report, serializer: ReportBuilder::WebApi::V1::ReportSerializer, if: proc {
+    AppConfiguration.instance.feature_activated?('llm_reporting')
+  }
+
+  has_one :highlighted_phase, serializer: WebApi::V1::PhaseSerializer, record_type: :phase do |project|
+    phase = project.schedule.highlighted_phase
     phase.project = project if phase # Performance optimization (keep preloaded relationships)
     phase
   end
@@ -142,4 +147,3 @@ class WebApi::V1::ProjectSerializer < WebApi::V1::BaseSerializer
 end
 
 WebApi::V1::ProjectSerializer.include(IdeaAssignment::Extensions::WebApi::V1::ProjectSerializer)
-WebApi::V1::ProjectSerializer.include(ContentBuilder::Extensions::WebApi::V1::ProjectSerializer)

@@ -11,17 +11,8 @@ describe IdeaFeed::TopicModelingService do
     let!(:custom_form) { create(:custom_form, :with_default_fields, participation_context: project) }
 
     context 'when no topics exist yet' do
-      it 'contains the project description in the prompt when not using the ContentBuilder' do
-        project.update!(description_multiloc: { 'en' => 'This is a test project about urban development.' })
-        expect_any_instance_of(Analysis::LLM::ClaudeOpus46).to receive(:chat) do |_, prompt|
-          expect(prompt).to include('This is a test project about urban development.')
-          []
-        end
-        service.rebalance_topics!
-      end
-
-      it 'contains the ContentBuilder project description in the prompt when available' do
-        ContentBuilder::Layout.create!(content_buildable: project, code: 'project_description', enabled: true, craftjs_json:       {
+      it 'contains the project page description in the prompt' do
+        ContentBuilder::Layout.create!(content_buildable: project, code: 'project_page', enabled: true, craftjs_json: {
           'ROOT' => {
             'type' => 'div',
             'nodes' => ['-02FjXHWIf'],

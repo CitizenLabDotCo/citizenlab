@@ -58,6 +58,7 @@ module MultiTenancy
       tenant.switch do
         EmailCampaigns::AssureCampaignsService.new.assure_campaigns # fix campaigns
         Permissions::PermissionsUpdateService.new.update_all_permissions # fix permissions
+        McpServer::AnalyticsReaderProvisioner.provision_safely # reporting read grants (the clone strips them)
         TrackTenantJob.perform_later tenant
       end
 
@@ -87,7 +88,10 @@ module MultiTenancy
     # @param [ActiveSupport::Duration,nil] retry_interval
     def delete(tenant, retry_interval: nil)
       tenant_side_fx.before_destroy(tenant)
-      tenant.update!(deleted_at: Time.zone.now)
+      # Deliberately not `update!`: a tenant must not become undeletable because of the state of
+      # the record being deleted. `update_column` writes the one column, skipping validation and
+      # the app configuration sync — which ignores `deleted_at` anyway (see `attributes_delta`).
+      tenant.update_column(:deleted_at, Time.zone.now)
 
       # Users must be removed before the tenant to ensure PII is removed from
       # third-party services.

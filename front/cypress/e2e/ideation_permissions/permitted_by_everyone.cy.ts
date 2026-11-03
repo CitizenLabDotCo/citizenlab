@@ -3,7 +3,7 @@ import { randomString, randomEmail } from '../../support/commands';
 import {
   updatePermission,
   confirmUserCustomFieldHasValue,
-  addPermissionsCustomField,
+  askOnlyDemographicQuestion,
   setupProject,
 } from '../../support/permitted_by_utils';
 import { fillOutTitleAndBody } from './_utils';
@@ -38,7 +38,7 @@ describe('Ideation permitted by: everyone', () => {
             phaseId,
             permitted_by: 'everyone',
           }).then(() => {
-            return addPermissionsCustomField({
+            return askOnlyDemographicQuestion({
               adminJwt,
               phaseId,
               customFieldId,
@@ -86,7 +86,7 @@ describe('Ideation permitted by: everyone', () => {
       cy.get('form').find('input').first().type(answer);
 
       // Intercept submit request
-      cy.intercept('POST', '/web_api/v1/ideas').as('submitSurvey');
+      cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitSurvey');
 
       // Submit survey
       cy.dataCy('e2e-submit-form').click();
@@ -149,7 +149,7 @@ describe('Ideation permitted by: everyone', () => {
         cy.get('form').find('input').first().type(answer);
 
         // Intercept submit request
-        cy.intercept('POST', '/web_api/v1/ideas').as('submitIdea');
+        cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitIdea');
 
         // Submit survey
         cy.dataCy('e2e-submit-form').click();
@@ -178,7 +178,7 @@ describe('Ideation permitted by: everyone', () => {
         cy.get('#e2e-continue-anonymous-participation-btn').click();
 
         // Intercept submit request
-        cy.intercept('POST', '/web_api/v1/ideas').as('submitIdea');
+        cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitIdea');
 
         // Submit survey
         cy.dataCy('e2e-submit-form').click();

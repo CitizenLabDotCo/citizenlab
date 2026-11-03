@@ -36,6 +36,7 @@ el-GR:
         project_participants: Για τους συμμετέχοντες στο έργο
         registered_users: Για εγγεγραμμένους χρήστες
       recipient_segment:
+        admin_who_generated_the_report: Ο διαχειριστής που ζήτησε την αναφορά
         admins: Διαχειριστές
         admins_and_managers: Διαχειριστές και διευθυντές
         admins_and_managers_assigned_to_the_input: Διαχειριστές & διαχειριστές που έχουν οριστεί για την είσοδο
@@ -77,6 +78,7 @@ el-GR:
         users_who_follow_the_proposal: Χρήστες που ακολουθούν την πρόταση
       trigger:
         7_days_after_invite_is_sent: 7 ημέρες μετά την αποστολή της πρόσκλησης
+        7_days_before_phase_starts: 7 ημέρες πριν την έναρξη μιας φάσης
         7_days_before_the_project_changes_phase: 7 ημέρες πριν από τη φάση αλλαγής του έργου
         comment_is_deleted: Το σχόλιο διαγράφεται
         comment_is_flagged_as_spam: Το σχόλιο επισημαίνεται ως spam
@@ -95,6 +97,7 @@ el-GR:
         new_input_awaits_screening: Η νέα εισροή αναμένει την προβολή
         new_input_is_published: Δημοσιεύονται νέες εισροές
         new_proposal_is_posted: Αναρτήθηκε νέα πρόταση
+        phase_starts: Μια φάση ξεκινά
         project_phase_changes: Αλλαγές φάσης έργου
         project_published: Δημοσιευμένο έργο
         project_review_request: Ο συντονιστής ζήτησε επανεξέταση του έργου
@@ -107,6 +110,7 @@ el-GR:
         proposal_is_upvoted_above_threshold: Η πρόταση υπερκαλύπτει το όριο
         proposal_status_changes: Αλλαγές στην κατάσταση της πρότασης
         registration_to_event: Εγγραφή σε μια εκδήλωση
+        report_generated: Η δημιουργία μιας αναφοράς ολοκληρώθηκε
         survey_1_day_after_draft_saved: 1 ημέρα μετά την τελευταία αποθήκευση της έρευνας σε προσχέδιο
         user_accepts_invitation_to_cosponsor_a_proposal: Ο χρήστης αποδέχεται την πρόσκληση να συνυπογράψει μια πρόταση
         user_changes_email: Ο χρήστης αλλάζει τη διεύθυνση email του
@@ -184,24 +188,29 @@ el-GR:
       manual_project_participants: Επίσημα μηνύματα προς τους συμμετέχοντες στο έργο
       mention_in_internal_comment: Αναφορά σε εσωτερικό σχόλιο
       mention_in_official_feedback: Αναφορά σε μια ενημέρωση
+      merge_account_confirmation: Κωδικός επιβεβαίωσης συγχώνευσης λογαριασμών
       moderator_digest: Εβδομαδιαία επισκόπηση για τους διαχειριστές έργων
       native_survey_not_submitted: Η έρευνα δεν υποβλήθηκε
       new_comment_for_admin: Νέο σχόλιο σε ένα έργο που συντονίζω
       new_email_confirmation: Νέος κωδικός επιβεβαίωσης email
       new_idea_for_admin_prescreening: Νέες εισροές που απαιτούν έγκριση σε ένα έργο που μετριάζω
       new_idea_for_admin_published: Νέα δημοσιευμένη συνεισφορά σε ένα έργο που συντονίζω
+      new_phone_confirmation: Νέος κωδικός επιβεβαίωσης τηλεφώνου
       official_feedback_on_idea_you_follow: Ενημέρωση για μια ιδέα που ακολουθείτε
       password_reset: Επαναφορά κωδικού πρόσβασης
+      phone_confirmation: Κωδικός επιβεβαίωσης τηλεφώνου
       project_folder_moderation_rights_received: Δικαιώματα διαχειριστή φακέλων
       project_manager_rights_received: Λήφθηκαν δικαιώματα διαχειριστή έργου
       project_moderation_rights_received: Δικαιώματα συντονισμού έργου που ελήφθησαν
-      project_phase_started: Νέα φάση του έργου
-      project_phase_upcoming: Επόμενη νέα φάση έργου
+      project_phase_started: Η φάση ξεκίνησε
+      project_phase_upcoming: Η φάση ξεκινά σύντομα
       project_published: Δημοσιευμένο έργο
       project_review_request: Αίτημα αξιολόγησης του έργου
       project_review_state_change: Το έργο εγκρίθηκε
       proposal_expired_for_admin: Η πρόταση έληξε χωρίς να συμπληρώσει το όριο ψήφων
+      report_generated: Η αναφορά δημιουργήθηκε
       screening_digest: Εβδομαδιαία υπενθύμιση ελέγχου
+      sms_manual: Επίσημα μηνύματα SMS
       space_moderation_rights_received: Λήφθηκαν δικαιώματα διαχειριστή χώρου
       status_change_on_idea_you_follow: Αλλαγή κατάστασης μιας ιδέας που ακολουθείτε
       survey_submitted: Υποβληθείσα έρευνα
@@ -356,6 +365,7 @@ el-GR:
         story: Πηγαίνετε στην ιστορία σας
         suggestion: Πηγαίνετε στην πρότασή σας
         topic: Πηγαίνετε στο θέμα σας
+      phase_dates: Από %{startDate} έως %{endDate}
     idea_marked_as_spam:
       cta_button: Ανασκόπηση
       preheader: Ενεργήστε βάσει αυτής της έκθεσης spam
@@ -471,6 +481,15 @@ el-GR:
       preheader: '%{commentAuthor} σας ανέφερα στα σχόλια'
       subject: '%{organizationName} σας ανέφεραν στα σχόλιά τους'
       title: Έχετε αναφερθεί
+    merge_account_confirmation:
+      best_regards: Με εκτίμηση,
+      event_description: 'Κάποιος συνδέθηκε στην πλατφόρμα συμμετοχής του οργανισμού %{organizationName} και ζήτησε να συνδέσει αυτή τη σύνδεση με τον λογαριασμό που χρησιμοποιεί αυτή τη διεύθυνση email. Αν ήσασταν εσείς, εισαγάγετε αυτόν τον κωδικό επιβεβαίωσης για να συνεχίσετε:'
+      expire_code: Αυτός ο κωδικός θα λήξει σε
+      hours_24: 24 ώρες.
+      ignore_email: Αν δεν ήσασταν εσείς, μπορείτε να αγνοήσετε με ασφάλεια αυτό το email. Τίποτα δεν έχει αλλάξει και κανείς δεν μπορεί να χρησιμοποιήσει αυτόν τον κωδικό χωρίς πρόσβαση σε αυτά τα εισερχόμενα.
+      preheader: Επιβεβαιώστε τη διεύθυνση email σας για τον οργανισμό %{organizationName}
+      subject: Επιβεβαιώστε τη διεύθυνση email σας για την πλατφόρμα συμμετοχής του οργανισμού %{organizationName}
+      title: Επιβεβαιώστε τη διεύθυνση email σας
     moderator_digest:
       cta_button: Διαχειριστείτε το έργο σας
       event_description: Έχουμε συγκεντρώσει για εσάς τα σχόλια / πληροφορίες που έχουν τη μεγαλύτερη δραστηριότητα την τελευταία εβδομάδα. Μάθετε τι συμβαίνει στην πλατφόρμα!
@@ -534,6 +553,9 @@ el-GR:
       title: Μια νέα είσοδος έχει δημοσιευτεί στην πλατφόρμα σας
       today: Σήμερα
       yesterday: Χθες
+    new_phone_confirmation:
+      sms_body: Ο κωδικός επιβεβαίωσής σας είναι %{code}.
+      sms_body2: '%{organization_name}: Ο κωδικός επιβεβαίωσής σας είναι %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Πηγαίνετε σε αυτή την είσοδο
       event_description: "%{feedback_author_name} ενημέρωσε για το '%{input_title}'."
@@ -546,6 +568,9 @@ el-GR:
       preheader: Επαναφορά του κωδικού πρόσβασής σας για το %{organizationName}
       subject: '%{organizationName}: Επαναφορά του κωδικού πρόσβασής σας'
       title: Επιλέξτε έναν νέο κωδικό πρόσβασης
+    phone_confirmation:
+      sms_body: Ο κωδικός επιβεβαίωσής σας είναι %{code}.
+      sms_body2: '%{organization_name}: Ο κωδικός επιβεβαίωσής σας είναι %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -564,8 +589,9 @@ el-GR:
       input_status_description: Ένα παράδειγμα κατάστασης για μια είσοδο (π.χ. αποδεκτή, απορριφθείσα, υλοποιημένη...)
       input_status_title: Παράδειγμα Κατάσταση
       official_feedback_body: Παράδειγμα επίσημης ανατροφοδότησης
+      phase_description: Αυτό είναι ένα παράδειγμα περιεχομένου φάσης που χρησιμοποιείται για την προεπισκόπηση του περιεχομένου των email. Αυτό δεν είναι πραγματικό περιεχόμενο.
       phase_title: Παράδειγμα φάσης
-      project_description_preview: Αυτό είναι κάποιο παράδειγμα περιεχομένου φάσης που χρησιμοποιείται για την προεπισκόπηση του περιεχομένου των μηνυμάτων ηλεκτρονικού ταχυδρομείου. Δεν πρόκειται για πραγματικό περιεχόμενο.
+      project_description_preview: Αυτό είναι ένα παράδειγμα περιεχομένου έργου που χρησιμοποιείται για την προεπισκόπηση του περιεχομένου των email. Αυτό δεν είναι πραγματικό περιεχόμενο.
       project_title: Παράδειγμα έργου
       proposal_title: Παράδειγμα πρότασης
       space_title: Παράδειγμα χώρου
@@ -600,21 +626,21 @@ el-GR:
       title_what_can_you_do_moderator: Τι μπορείτε να κάνετε ως διαχειριστής έργων;
       x_ideas: '%{numberOfIdeas} ιδέες'
     project_phase_started:
-      cta_button: Ανακαλύψτε αυτή τη νέα φάση
-      event_description: Το έργο αυτό εισήλθε σε νέα φάση με την πλατφόρμα %{organizationName}. Κάντε κλικ στον παρακάτω σύνδεσμο για να μάθετε περισσότερα!
+      cta_button: Δείτε τι νέο υπάρχει
+      event_description: "Μπορείτε πλέον να συμμετάσχετε στη φάση '%{phaseTitle}' στην πλατφόρμα του οργανισμού %{organizationName}."
       new_phase: "Το έργο αυτό εισήλθε στη φάση '%{phaseTitle}'"
-      preheader: Μια νέα φάση έχει ξεκινήσει για το %{projectName}
-      subject: '%{projectName} εισήλθε σε νέα φάση'
+      preheader: "Μπορείτε πλέον να συμμετάσχετε στη φάση '%{phaseTitle}'"
+      subject: "Η φάση '%{phaseTitle}' ξεκίνησε στο %{projectName}"
       subtitle: "Σχετικά με '%{projectName}'"
-      title: "Μια νέα φάση ξεκίνησε για το έργο '%{projectName}'"
+      title: "Υπάρχει κάτι νέο στο '%{projectName}'"
     project_phase_upcoming:
-      cta_button: Ορίστε αυτή τη νέα φάση
-      event_description: "Το έργο '%{projectName}' θα εισέλθει σύντομα σε μια νέα φάση. Βεβαιωθείτε ότι όλα είναι έτοιμα για αυτή τη φάση: Υπάρχει επαρκής περιγραφή; Μεταφέρονται επιλεγμένες ιδέες σε αυτή τη φάση; Θέλετε να ενημερώσετε τους πολίτες σας για τις ιδιαιτερότητες αυτής της φάσης μέσω μιας προσαρμοσμένης εκστρατείας ηλεκτρονικού ταχυδρομείου;"
+      cta_button: Ελέγξτε τη διαμόρφωση
+      event_description: "Η φάση '%{phaseTitle}' στο έργο '%{projectName}' ξεκινά στις %{startDate}. Αφιερώστε λίγο χρόνο για να βεβαιωθείτε ότι όλα είναι έτοιμα: Είναι η περιγραφή πλήρης; Είναι οι ημερομηνίες σωστές; Θέλετε να ενημερώσετε την κοινότητά σας μέσω μιας προσαρμοσμένης καμπάνιας email;"
       new_phase: Το έργο θα εισέλθει στη φάση "%{phaseTitle}".
-      preheader: Μια νέα φάση θα ξεκινήσει σύντομα για το %{projectName}
-      subject: Ετοιμάστε τα πάντα για τη νέα φάση του %{projectName}
+      preheader: Βεβαιωθείτε ότι όλα είναι έτοιμα πριν από τις %{startDate}
+      subject: "%{projectName}: Η φάση '%{phaseTitle}' ξεκινά στις %{startDate}"
       subtitle: "Σχετικά με '%{projectName}'"
-      title: '%{firstName}, ένα έργο θα εισέλθει σύντομα σε νέα φάση'
+      title: "%{firstName}, η φάση '%{phaseTitle}' ξεκινά στις %{startDate}"
     project_published:
       cta_button: Πηγαίνετε σε αυτό το έργο
       event_description: 'Η πλατφόρμα συμμετοχής του %{organizationName} μόλις δημοσίευσε το ακόλουθο έργο:'
@@ -638,6 +664,13 @@ el-GR:
       preheader: Μια συμμετοχή έληξε χωρίς να συμπληρώσει το όριο
       subject: Το "%{input_title}" έληξε χωρίς να συμπληρώσει το όριο
       title: Μια συμμετοχή έληξε χωρίς να συμπληρώσει το όριο ψήφων
+    report_generated:
+      cta_button: Άνοιγμα της αναφοράς
+      event_description: Η αναφορά έχει συνταχθεί και είναι έτοιμη για έλεγχο και επεξεργασία.
+      preheader: Η αναφορά σας είναι έτοιμη
+      stopped_early: Η σύνταξη διακόπηκε πριν ολοκληρωθεί η αναφορά. Ό,τι έχει γραφτεί μέχρι στιγμής έχει αποθηκευτεί — ανοίξτε την και ζητήστε τα υπόλοιπα στη συνομιλία.
+      subject: "Η αναφορά σας για το έργο '%{projectName}' είναι έτοιμη"
+      title: Η αναφορά σας είναι έτοιμη
     schedules:
       quarterly: Τριμηνιαία, την πρώτη ημέρα του τριμήνου
       weekly:

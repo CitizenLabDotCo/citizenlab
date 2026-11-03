@@ -115,10 +115,10 @@ const ProjectsTimelineCard = ({
     end: item.end_date,
     folder: localize(item.folder_title_multiloc),
     color: getStatusColor(item.publication_status),
-    highlight: item.current_phase_start_date
+    highlight: item.active_phases_start_date
       ? {
-          start: item.current_phase_start_date,
-          end: item.current_phase_end_date,
+          start: item.active_phases_start_date,
+          end: item.active_phases_end_date,
         }
       : undefined,
   }));

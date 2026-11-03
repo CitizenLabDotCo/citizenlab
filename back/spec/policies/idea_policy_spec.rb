@@ -8,6 +8,79 @@ describe IdeaPolicy do
   let(:scope) { IdeaPolicy::Scope.new(user, project.ideas) }
   let(:editing_idea_disabled_reason) { Permissions::IdeaPermissionsService.new(idea, user).denied_reason_for_action('editing_idea') }
 
+  # runs for a method that supports public visibility and for one that
+  # does not. The host context defines `author`, `idea` and `project`.
+  shared_examples 'show on a draft input' do
+    context 'for the author' do
+      let(:user) { author }
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:by_slug)
+        is_expected.to permit(:draft_by_phase)
+      end
+    end
+
+    context 'for the author who did not complete registration' do
+      let(:user) do
+        author.update!(registration_completed_at: nil)
+        author
+      end
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:by_slug)
+        is_expected.to permit(:draft_by_phase)
+      end
+    end
+
+    context 'for a resident who is not the author' do
+      let(:user) { create(:user) }
+
+      it do
+        is_expected.not_to permit(:show)
+        is_expected.not_to permit(:by_slug)
+      end
+    end
+
+    context 'for a visitor' do
+      let(:user) { nil }
+
+      it do
+        is_expected.not_to permit(:show)
+        is_expected.not_to permit(:by_slug)
+      end
+    end
+
+    context 'for an admin' do
+      let(:user) { create(:admin) }
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:by_slug)
+        is_expected.not_to permit(:draft_by_phase)
+      end
+    end
+
+    context 'for a project moderator who can moderate' do
+      let(:user) { create(:project_moderator, projects: [project]) }
+
+      it do
+        is_expected.to permit(:show)
+        is_expected.to permit(:by_slug)
+      end
+    end
+
+    context 'for a project moderator who cannot moderate' do
+      let(:user) { create(:project_moderator) }
+
+      it do
+        is_expected.not_to permit(:show)
+        is_expected.not_to permit(:by_slug)
+      end
+    end
+  end
+
   context 'on an idea in a public project' do
     let!(:space) { create(:space) }
     let(:project) { create(:single_phase_ideation_project, space: space) }
@@ -48,7 +121,7 @@ describe IdeaPolicy do
 
     context 'for a resident who did not complete registration who is the idea author' do
       let :user do
-        idea.author.update(registration_completed_at: nil)
+        idea.author.update!(registration_completed_at: nil)
         idea.author
       end
 
@@ -257,6 +330,26 @@ describe IdeaPolicy do
         end
       end
     end
+
+    context 'when the idea is in draft status' do
+      let(:author) { create(:user) }
+      let!(:idea) { create(:idea, project: project, phases: project.phases, publication_status: 'draft', author: author) }
+
+      describe 'show' do
+        it_behaves_like 'show on a draft input'
+
+        context 'for a cosponsor of the idea' do
+          let(:user) { create(:user) }
+
+          before { idea.cosponsors << user }
+
+          it do
+            is_expected.to permit(:show)
+            is_expected.to permit(:by_slug)
+          end
+        end
+      end
+    end
   end
 
   context 'on a published native survey response in a public project' do
@@ -316,6 +409,18 @@ describe IdeaPolicy do
         it do
           is_expected.to permit(:create)
         end
+      end
+    end
+
+    context 'for the response author who did not complete registration' do
+      let(:user) do
+        idea.author.update!(registration_completed_at: nil)
+        idea.author
+      end
+
+      it do
+        is_expected.not_to permit(:show)
+        is_expected.not_to permit(:by_slug)
       end
     end
 
@@ -392,6 +497,112 @@ describe IdeaPolicy do
       let(:user) { create(:space_moderator) }
 
       it_behaves_like 'moderator on native survey response outside their scope'
+    end
+  end
+
+  context 'on a draft native survey response' do
+    let(:phase) { create(:active_native_survey_phase, with_permissions: true) }
+    let(:project) { phase.project }
+    let(:permission) { phase.permissions.find_by(action: 'posting_idea') }
+    let(:idea) do
+      create(
+        :native_survey_response,
+        publication_status: 'draft',
+        project: project,
+        creation_phase: phase,
+        author: user
+      )
+    end
+
+    context 'for a visitor when posting requires sign-in' do
+      let(:user) { nil }
+
+      before { permission.update!(permitted_by: 'users') }
+
+      it 'raises, since an author-less draft could never be published' do
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError, /user_not_signed_in/)
+      end
+    end
+
+    context 'for a visitor when posting is open to everyone' do
+      let(:user) { nil }
+
+      before { permission.update!(permitted_by: 'everyone') }
+
+      it { is_expected.to permit(:create) }
+    end
+
+    context 'for a user who has not met the requirements yet' do
+      let(:user) { create(:user) }
+
+      before do
+        permission.update!(permitted_by: 'users', custom_fields_behavior: 'global')
+        create(:custom_field_gender, required: true)
+      end
+
+      it { is_expected.to permit(:create) }
+    end
+
+    context 'for a resident when posting is limited to admins and moderators' do
+      let(:user) { create(:user) }
+
+      before { permission.update!(permitted_by: 'admins_moderators') }
+
+      it 'raises' do
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError, /user_not_permitted/)
+      end
+    end
+
+    context 'for a resident outside the permitted group' do
+      let(:user) { create(:user) }
+
+      before { permission.update!(permitted_by: 'users', groups: [create(:group)]) }
+
+      it 'raises' do
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError, /user_not_in_group/)
+      end
+    end
+
+    describe 'show' do
+      let(:author) { create(:user) }
+      let(:idea) do
+        create(
+          :native_survey_response,
+          publication_status: 'draft',
+          project: project,
+          creation_phase: phase,
+          author: author
+        )
+      end
+
+      it_behaves_like 'show on a draft input'
+    end
+
+    context 'when submission is disabled on the phase' do
+      let(:user) { create(:user) }
+
+      before { phase.update!(submission_enabled: false) }
+
+      it 'raises' do
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError, /posting_disabled/)
+      end
+    end
+
+    context 'for a resident when the project is not visible to them' do
+      let(:user) { create(:user) }
+
+      before { project.update!(visible_to: 'admins') }
+
+      it { is_expected.not_to permit(:create) }
+    end
+
+    context 'when the phase is over' do
+      let(:phase) { create(:native_survey_phase, start_at: 2.months.ago, end_at: 1.month.ago) }
+      let(:user) { create(:user) }
+
+      it 'raises with the context denied reason' do
+        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
+      end
     end
   end
 
@@ -516,6 +727,24 @@ describe IdeaPolicy do
 
       it_behaves_like 'moderator on private admins idea outside their scope'
     end
+
+    context 'when the idea is in draft status' do
+      let!(:idea) { create(:idea, project: project, publication_status: 'draft') }
+
+      describe 'show' do
+        # A draft is only ever readable by its author, so the project visibility
+        # check that applies to published inputs adds nothing here.
+        context "for the author, who can no longer see the idea's project" do
+          let(:user) { idea.author }
+
+          it do
+            is_expected.to permit(:show)
+            is_expected.to permit(:by_slug)
+            is_expected.to permit(:draft_by_phase)
+          end
+        end
+      end
+    end
   end
 
   context 'for a visitor on an idea in a private groups project' do
@@ -591,7 +820,7 @@ describe IdeaPolicy do
   end
 
   context 'on idea in a draft project' do
-    let(:project) { create(:project, admin_publication_attributes: { publication_status: 'draft' }) }
+    let(:project) { create(:project_with_active_ideation_phase, admin_publication_attributes: { publication_status: 'draft' }) }
     let(:author) { create(:user) }
     let!(:idea) { create(:idea, project: project, author: author) }
 
@@ -617,7 +846,7 @@ describe IdeaPolicy do
       it do
         is_expected.not_to permit(:show)
         is_expected.not_to permit(:by_slug)
-        expect { policy.create? }.to raise_error(Pundit::NotAuthorizedError)
+        is_expected.not_to permit(:create)
         is_expected.not_to permit(:update)
         expect(editing_idea_disabled_reason).to be_present
         is_expected.not_to permit(:destroy)

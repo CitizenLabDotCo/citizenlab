@@ -37,7 +37,7 @@ type CreateSubscriptionModalProps = {
 
 const CreateSubscriptionModal = ({ onClose }: CreateSubscriptionModalProps) => {
   const [secret, setSecret] = useState<string>('');
-  const { mutateAsync: addSubscription, isLoading } =
+  const { mutateAsync: addSubscription, isPending } =
     useAddWebhookSubscription();
   const { data: projects } = useProjects({
     pageSize: 1000,
@@ -184,12 +184,12 @@ const CreateSubscriptionModal = ({ onClose }: CreateSubscriptionModalProps) => {
                 <Button
                   buttonStyle="secondary-outlined"
                   onClick={onClose}
-                  disabled={isLoading}
+                  disabled={isPending}
                   type="button"
                 >
                   {formatMessage(messages.cancel)}
                 </Button>
-                <Button type="submit" processing={isLoading}>
+                <Button type="submit" processing={isPending}>
                   {formatMessage(messages.createButton)}
                 </Button>
               </Box>

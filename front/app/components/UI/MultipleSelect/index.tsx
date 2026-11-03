@@ -10,7 +10,9 @@ import ReactSelect, { SelectInstance } from 'react-select';
 import { useTheme } from 'styled-components';
 import { IOption } from 'typings';
 
-import selectStyles from 'components/UI/MultipleSelect/styles';
+import useA11yMessages from 'components/UI/ReactSelect/useA11yMessages';
+
+import selectStyles from './styles';
 
 export type Props = {
   id?: string;
@@ -27,6 +29,8 @@ export type Props = {
   setRef?: (arg: SelectInstance<IOption, true> | null) => void;
   ariaInvalid?: boolean;
   ariaDescribedBy?: string;
+  fontSize?: number;
+  minHeight?: number;
 };
 
 const MultipleSelect = ({
@@ -44,8 +48,12 @@ const MultipleSelect = ({
   setRef,
   ariaInvalid,
   ariaDescribedBy,
+  fontSize = fontSizes.base,
+  minHeight,
 }: Props) => {
   const theme = useTheme();
+  const { ariaLiveMessages, noOptionsMessage, screenReaderStatus } =
+    useA11yMessages<IOption, true>();
   const selectRef = useRef<SelectInstance<IOption, true>>(null);
   const handleOnChange = (newValue: IOption[]) => {
     onChange(newValue);
@@ -116,6 +124,9 @@ const MultipleSelect = ({
         isSearchable={isSearchable}
         aria-invalid={ariaInvalid}
         aria-describedby={ariaDescribedBy}
+        ariaLiveMessages={ariaLiveMessages}
+        noOptionsMessage={noOptionsMessage}
+        screenReaderStatus={screenReaderStatus}
         blurInputOnSelect={typeof autoBlur === 'boolean' ? autoBlur : false}
         backspaceRemovesValue={true}
         menuShouldScrollIntoView={false}
@@ -127,18 +138,12 @@ const MultipleSelect = ({
         onChange={handleOnChange}
         isDisabled={disabled}
         styles={{
-          ...selectStyles(theme),
-          menuPortal: (base) => ({
-            ...base,
-            // zIndex needed so dropdown is not overlapped by
-            // subsequent dropdown questions (see TAN-4671).
-            zIndex: 1001,
-          }),
+          ...selectStyles(theme, { fontSize, minHeight }),
           option: (base, state) => ({
             ...base,
             cursor: state.isDisabled ? 'not-allowed' : 'pointer',
             opacity: state.isDisabled ? 0.8 : 1,
-            fontSize: `${fontSizes.base}px`,
+            fontSize: `${fontSize}px`,
             color: state.isFocused ? colors.textPrimary : colors.textSecondary,
             backgroundColor: state.isFocused
               ? colors.grey300

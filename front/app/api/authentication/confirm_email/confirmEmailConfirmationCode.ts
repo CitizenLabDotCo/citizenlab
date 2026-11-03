@@ -7,7 +7,8 @@ import fetcher from 'utils/cl-react-query/fetcher';
 import { queryClient } from 'utils/cl-react-query/queryClient';
 import { invalidateQueryCache } from 'utils/cl-react-query/resetQueryCache';
 
-type Response = {
+// Returned by both confirm_code_email and confirm_code_phone.
+export type ConfirmCodeResponse = {
   data: {
     type: 'create';
     attributes: {
@@ -25,13 +26,10 @@ type Response = {
   };
 };
 
-export const confirmEmailConfirmationCodeUnauthenticated = async (
-  email: string,
-  code: string
-) => {
+export const confirmCodeEmail = async (email: string, code: string) => {
   try {
-    const res = await fetcher<Response>({
-      path: `/user/confirm_code_unauthenticated`,
+    const res = await fetcher<ConfirmCodeResponse>({
+      path: `/user/confirm_code_email`,
       action: 'post',
       body: {
         confirmation: { email, code },
@@ -47,10 +45,53 @@ export const confirmEmailConfirmationCodeUnauthenticated = async (
   }
 };
 
-export const confirmEmailConfirmationCodeChangeEmail = async (code: string) => {
+// Re-confirmation of the signed-in user's own email. The caller keeps the token
+// it already has, so - unlike confirmCodeEmail - no JWT is set here.
+export const reconfirmCodeEmail = async (code: string) => {
   try {
     await fetcher({
-      path: `/user/confirm_code_email_change`,
+      path: `/user/reconfirm_code_email`,
+      action: 'post',
+      body: {
+        confirmation: { code },
+      },
+    });
+
+    queryClient.invalidateQueries({ queryKey: meKeys.all() });
+    queryClient.invalidateQueries({ queryKey: requirementsKeys.all() });
+
+    return true;
+  } catch (errors) {
+    throw errors.errors;
+  }
+};
+
+// On success the requesting account no longer exists, so the response carries a
+// token for the survivor. The whole cache is reset rather than a few keys: the
+// signed-in user is now a different person.
+export const confirmCodeMergeAccount = async (code: string) => {
+  try {
+    const res = await fetcher<ConfirmCodeResponse>({
+      path: `/user/confirm_code_merge_account`,
+      action: 'post',
+      body: {
+        confirmation: { code },
+      },
+    });
+
+    setJwt(res.data.attributes.auth_token.token, false);
+    invalidateQueryCache();
+
+    return true;
+  } catch (errors) {
+    throw errors.errors;
+  }
+};
+
+export const confirmCodeNewEmail = async (code: string) => {
+  try {
+    await fetcher({
+      path: `/user/confirm_code_new_email`,
       action: 'post',
       body: {
         confirmation: { code },

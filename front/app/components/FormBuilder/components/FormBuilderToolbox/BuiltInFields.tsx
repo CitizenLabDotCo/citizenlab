@@ -9,7 +9,7 @@ import useFeatureFlag from 'hooks/useFeatureFlag';
 
 import { Drop } from 'components/FormBuilder/components/DragAndDrop';
 import { fieldAreaDNDType } from 'components/FormBuilder/components/FormFields/constants';
-import { FormBuilderConfig } from 'components/FormBuilder/utils';
+import { ResolvedFormBuilderConfig } from 'components/FormBuilder/utils';
 
 import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
@@ -18,7 +18,7 @@ import messages from '../messages';
 import ToolboxItem from './ToolboxItem';
 
 interface BuiltInFieldsProps {
-  builderConfig: FormBuilderConfig;
+  builderConfig: ResolvedFormBuilderConfig;
 }
 
 const BuiltInFields = ({ builderConfig }: BuiltInFieldsProps) => {

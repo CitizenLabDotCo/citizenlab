@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import {
   Box,
+  bo,
   media,
   colors,
   fontSizes,
@@ -15,7 +16,7 @@ import { FocusOn } from 'react-focus-on';
 import CSSTransition from 'react-transition-group/CSSTransition';
 import { fromEvent } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import CloseIconButton from 'components/UI/CloseIconButton';
 
@@ -36,32 +37,47 @@ const mobileEasing = 'cubic-bezier(0.19, 1, 0.22, 1)';
 
 export const ModalContentContainer = styled.div<{
   padding?: string;
+  fillContent?: boolean;
 }>`
   flex: 1 1 auto;
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  padding: ${({ padding }) => padding || '30px'};
+  padding: ${({ padding }) => padding || '8px 24px 24px'};
+
+  /* Children scroll on their own, so this box stops being the scroller and
+     becomes their flex parent, which gives them a definite height to fill. */
+  ${({ fillContent }) =>
+    fillContent &&
+    `
+      display: flex;
+      overflow: hidden;
+    `}
 
   ${media.phone`
-    padding: ${({ padding }) => padding || '20px'};
+    padding: ${({ padding }) => padding || '8px 20px 20px'};
   `}
 `;
 
-const StyledCloseIconButton = styled(CloseIconButton)`
+type Variant = 'default' | 'bo';
+
+const StyledCloseIconButton = styled(CloseIconButton)<{ variant: Variant }>`
   position: absolute;
-  top: 12px;
-  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 18px;
   z-index: 2000;
-  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
   border: solid 1px transparent;
   transition: all 100ms ease-out;
   outline: none !important;
-  padding: 10px;
+  padding: 0px;
 
   &:hover {
-    background: #e0e0e0;
+    background: rgba(15, 20, 35, 0.05);
   }
 
   /* This button forces outline:none, so the global outline ring can't apply —
@@ -70,44 +86,31 @@ const StyledCloseIconButton = styled(CloseIconButton)`
     ${focusRingBorder}
   }
 
+  &.no-header {
+    top: 12px;
+    transform: none;
+
+    ${media.phone`
+      top: 13px;
+    `}
+  }
+
   ${isRtl`
     right: auto;
     left: 25px;
   `}
 
   ${media.phone`
-    top: 13px;
     right: 15px;
   `}
-`;
 
-const StyledCloseIconButton2 = styled(CloseIconButton)`
-  position: absolute;
-  top: 17px;
-  z-index: 2000;
-  border-radius: 50%;
-  border: solid 1px transparent;
-  transition: all 100ms ease-out;
-  outline: none !important;
-  padding: 10px;
-  right: 22px;
-
-  ${media.phone`
-    right: 6px;
-  `}
-
-  &:hover {
-    background: #e0e0e0;
-  }
-
-  &.focus-visible {
-    ${focusRingBorder}
-  }
-
-  ${isRtl`
-    right: auto;
-    left: 25px;
-  `}
+  ${({ variant }) =>
+    variant === 'bo' &&
+    css`
+      right: 20px;
+      width: 28px;
+      height: 28px;
+    `}
 `;
 
 const StyledFocusOn = styled(FocusOn)<{
@@ -122,12 +125,14 @@ const StyledFocusOn = styled(FocusOn)<{
 
 const ModalContainer = styled(ClickOutside)<{
   windowHeight: number;
+  height?: string;
 }>`
   width: 100%;
   max-height: 85vh;
-  margin-top: 50px;
+  ${({ height }) => height && `height: ${height};`}
   background: #fff;
-  border-radius: ${({ theme }) => theme.borderRadius};
+  border-radius: 12px;
+  box-shadow: 0 24px 70px rgba(15, 20, 35, 0.35);
   display: flex;
   flex-direction: column;
   outline: none;
@@ -140,14 +145,9 @@ const ModalContainer = styled(ClickOutside)<{
     max-height: 600px;
   }
 
-  @media (min-height: 1200px) {
-    margin-top: 120px;
-  }
-
   ${media.phone`
     max-width: calc(100vw - 30px);
     max-height: calc(${({ windowHeight }) => windowHeight}px - 30px);
-    margin-top: 15px;
 
     &.fixedHeight {
       height: auto;
@@ -165,11 +165,10 @@ const Overlay = styled.div<{ zIndex?: number }>`
   right: 0;
   bottom: 0;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.75);
-  padding-left: 30px;
-  padding-right: 30px;
+  background: rgba(15, 20, 35, 0.35);
+  padding: 24px 30px;
   overflow: hidden;
   will-change: opacity, transform;
 
@@ -214,68 +213,40 @@ const Overlay = styled.div<{ zIndex?: number }>`
   }
 `;
 
-const HeaderContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  padding-left: 28px;
-  padding-right: 28px;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  border-bottom: solid 1px #e0e0e0;
-  background: transparent;
-
-  ${media.phone`
-    padding-top: 16px;
-    padding-bottom: 16px;
-    padding-left: 20px;
-    padding-right: 20px;
-  `}
-`;
-
-const HeaderTitle = styled.h1`
+const HeaderTitle = styled.h1<{ variant: Variant }>`
   color: ${({ theme }) => theme.colors.tenantText};
-  font-size: ${fontSizes.xl}px;
-  font-weight: 600;
-  line-height: normal;
+  font-size: ${fontSizes.l}px;
+  font-weight: 400;
+  letter-spacing: -0.25px;
+  line-height: 24px;
   margin: 0;
-  margin-right: 45px;
+  margin-right: 74px;
   padding: 0;
 
   ${media.phone`
-    margin-right: 35px;
+    margin-right: 74px;
   `}
 
   ${isRtl`
     text-align: right;
     margin: 0;
-    margin-left: 45px;
+    margin-left: 74px;
 
     ${media.phone`
-      margin-left: 35px;
+      margin-left: 74px;
     `}
   `}
-`;
 
-const FooterContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-shrink: 0;
-  flex-direction: row;
-  align-items: center;
-  padding-left: 28px;
-  padding-right: 28px;
-  padding-top: 16px;
-  padding-bottom: 16px;
-  border-top: solid 1px ${colors.divider};
-  background: #fff;
-
-  ${media.phone`
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
-  `}
+  ${({ variant }) =>
+    variant === 'bo' &&
+    css`
+      color: ${bo.colors.textHeadingStrong};
+      font-size: ${fontSizes.s}px;
+      font-weight: 500;
+      letter-spacing: normal;
+      line-height: 28px;
+      margin-right: 48px;
+    `}
 `;
 
 const Skip = styled.div`
@@ -321,12 +292,14 @@ const ModalContentContainerSwitch = ({
 
 interface BaseProps {
   'data-testid'?: string;
+  variant?: Variant;
   opened: boolean;
   fixedHeight?: boolean;
+  fillContent?: boolean;
   width?: number | string;
+  height?: string;
   close: () => void;
   className?: string;
-  niceHeader?: boolean;
   footer?: JSX.Element;
   hasSkipButton?: boolean;
   skipText?: JSX.Element;
@@ -349,13 +322,15 @@ type Props =
 
 const Modal: React.FC<Props> = ({
   'data-testid': dataTestId,
+  variant = 'default',
   opened,
   fixedHeight = false,
+  fillContent = false,
   width = 650,
+  height,
   close,
   className,
   header,
-  niceHeader,
   footer,
   hasSkipButton,
   skipText,
@@ -367,7 +342,7 @@ const Modal: React.FC<Props> = ({
   ariaLabelledBy,
   returnFocusRef,
 }) => {
-  const nodeRef = useRef(null); // Needed to fix React StrictMode warning
+  const nodeRef = useRef<HTMLDivElement>(null); // Needed to fix React StrictMode warning
   const [modalHasBeenOpened, setModalHasBeenOpened] = useState(false);
   const [windowDimensions, setWindowDimensions] = useState({
     windowWidth: window.innerWidth,
@@ -386,14 +361,30 @@ const Modal: React.FC<Props> = ({
     close();
   }, [close]);
 
+  // Modals portal into one shared container as siblings, so a dismiss aimed at
+  // a modal stacked on top of this one also reaches this one. Only the topmost
+  // modal may act on it.
+  const isTopmostModal = useCallback(() => {
+    const openModals = document
+      .getElementById('modal-portal')
+      ?.querySelectorAll('[aria-modal="true"]');
+
+    if (!openModals?.length) return true;
+
+    const topmost = openModals[openModals.length - 1];
+    return nodeRef.current?.contains(topmost) ?? true;
+  }, []);
+
   const handleKeypress = useCallback(
     (event: KeyboardEvent) => {
       if (event.type === 'keydown' && event.key === 'Escape') {
+        if (!isTopmostModal()) return;
+
         event.preventDefault();
         close();
       }
     },
-    [close]
+    [close, isTopmostModal]
   );
 
   const cleanup = useCallback(() => {
@@ -443,11 +434,13 @@ const Modal: React.FC<Props> = ({
   }, [opened, handleResize, handlePopstateEvent, handleKeypress, cleanup]);
 
   const clickOutsideModal = useCallback(() => {
+    if (!isTopmostModal()) return;
+
     if (closeOnClickOutside) {
       trackEventByName(tracks.clickOutsideModal);
       close();
     }
-  }, [closeOnClickOutside, close]);
+  }, [closeOnClickOutside, close, isTopmostModal]);
 
   const clickCloseButton = useCallback(
     (event: React.MouseEvent<any>) => {
@@ -459,8 +452,27 @@ const Modal: React.FC<Props> = ({
     [close]
   );
 
+  const isBo = variant === 'bo';
+  const closeButtonClassName = `e2e-modal-close-button${
+    header ? '' : ' no-header'
+  }`;
+
+  const closeButton = hideCloseButton ? null : (
+    <StyledCloseIconButton
+      className={closeButtonClassName}
+      variant={variant}
+      onClick={clickCloseButton}
+      iconColor={colors.textSecondary}
+      iconColorOnHover={colors.textSecondary}
+      iconWidth="20px"
+      iconHeight="20px"
+      a11y_buttonActionMessage={messages.closeWindow}
+    />
+  );
+
   const { windowHeight, windowWidth } = windowDimensions;
   const smallerThanSmallTablet = windowWidth <= viewportWidths.tablet;
+  const isPhone = windowWidth <= viewportWidths.phone;
   let calculatedPadding = padding;
 
   if (header !== undefined || footer !== undefined) {
@@ -496,69 +508,54 @@ const Modal: React.FC<Props> = ({
             className={`modalcontent ${fixedHeight ? 'fixedHeight' : ''}`}
             onClickOutside={clickOutsideModal}
             windowHeight={windowHeight}
+            height={height}
             ariaLabelledBy={header ? 'modal-header' : ariaLabelledBy}
             isModal
             role="dialog"
           >
-            {!niceHeader && (
-              <>
-                {header && (
-                  <HeaderContainer>
-                    <HeaderTitle id="modal-header">{header}</HeaderTitle>
-                  </HeaderContainer>
-                )}
-
-                {!hideCloseButton && (
-                  <StyledCloseIconButton
-                    className="e2e-modal-close-button"
-                    onClick={clickCloseButton}
-                    iconColor={colors.textSecondary}
-                    iconColorOnHover={colors.grey800}
-                    a11y_buttonActionMessage={messages.closeWindow}
-                  />
-                )}
-              </>
+            {header ? (
+              <Box
+                position="relative"
+                display="flex"
+                flexDirection="column"
+                alignItems="stretch"
+                justifyContent="center"
+                minHeight={isBo ? undefined : '65px'}
+                padding={isBo ? '16px 24px 12px' : '14px 18px'}
+                borderBottom={`solid 1px ${
+                  isBo ? colors.grey100 : colors.grey200
+                }`}
+              >
+                <HeaderTitle id="modal-header" variant={variant}>
+                  {header}
+                </HeaderTitle>
+                {closeButton}
+              </Box>
+            ) : (
+              closeButton
             )}
 
-            {header && niceHeader && (
-              <>
-                <Box
-                  display="flex"
-                  flexDirection="row"
-                  alignItems="center"
-                  w="100%"
-                  py="8px"
-                  borderBottom={`solid 1px ${colors.divider}`}
-                >
-                  <Box
-                    w="100%"
-                    h="100%"
-                    display="flex"
-                    alignItems="center"
-                    minHeight="66px"
-                  >
-                    {header}
-                  </Box>
-                </Box>
-                {!hideCloseButton && (
-                  <Box mr={smallerThanSmallTablet ? '0px' : '8px'}>
-                    <StyledCloseIconButton2
-                      className="e2e-modal-close-button"
-                      iconColor={colors.textSecondary}
-                      iconColorOnHover={colors.black}
-                      a11y_buttonActionMessage={messages.closeWindow}
-                      onClick={clickCloseButton}
-                    />
-                  </Box>
-                )}
-              </>
-            )}
-
-            <ModalContentContainer padding={calculatedPadding}>
+            <ModalContentContainer
+              padding={calculatedPadding}
+              fillContent={fillContent}
+            >
               {children}
             </ModalContentContainer>
 
-            {footer && <FooterContainer>{footer}</FooterContainer>}
+            {footer && (
+              <Box
+                w="100%"
+                display="flex"
+                flexShrink={0}
+                flexDirection="row"
+                alignItems="center"
+                padding={isPhone ? '12px 20px' : '12px 24px'}
+                borderTop={`solid 1px ${colors.grey100}`}
+                background={colors.grey50}
+              >
+                {footer}
+              </Box>
+            )}
 
             {hasSkipButton && skipText && (
               <Skip onClick={clickCloseButton}>{skipText}</Skip>

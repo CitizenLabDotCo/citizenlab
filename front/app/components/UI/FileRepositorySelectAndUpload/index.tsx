@@ -12,6 +12,7 @@ import { List } from 'components/admin/ResourceList';
 import SortableRow from 'components/admin/ResourceList/SortableRow';
 import Error from 'components/UI/Error';
 
+import BoFileAttachmentDisplay from './BoFileAttachmentDisplay';
 import FileSelectOrUploadModal from './components/FileSelectOrUploadModal';
 import ScreenReaderFilesList from './components/ScreenReaderFilesList';
 import FileAttachmentDisplay from './FileAttachmentDisplay';
@@ -29,6 +30,9 @@ export interface Props {
   maxSizeMb?: number;
   dataCy?: string;
   isUploadingFile?: boolean;
+  disabled?: boolean;
+  hideTrigger?: boolean;
+  variant?: 'default' | 'bo';
 }
 
 const FileRepositorySelectAndUpload = ({
@@ -44,6 +48,9 @@ const FileRepositorySelectAndUpload = ({
   maxSizeMb,
   dataCy,
   isUploadingFile,
+  disabled = false,
+  hideTrigger = false,
+  variant = 'default',
 }: Props) => {
   const [fileAttachments, setFileAttachments] = useState(
     initialFileAttachments
@@ -124,54 +131,77 @@ const FileRepositorySelectAndUpload = ({
       data-cy="e2e-file-uploader-container"
       w="100%"
     >
-      <FileSelectOrUploadModal
-        fileAttachments={fileAttachments}
-        onFileAdd={handleFileOnAdd}
-        onFileAttach={handleFileOnAttach}
-        maxSizeMb={maxSizeMb}
-        dataCy={dataCy}
-        isDisabled={isUploadingFile}
-      />
+      {!hideTrigger && (
+        <FileSelectOrUploadModal
+          fileAttachments={fileAttachments}
+          onFileAdd={handleFileOnAdd}
+          onFileAttach={handleFileOnAttach}
+          maxSizeMb={maxSizeMb}
+          dataCy={dataCy}
+          isDisabled={isUploadingFile || disabled}
+        />
+      )}
 
       <Error fieldName="file" apiErrors={apiErrors?.file} />
 
-      <List key={fileAttachments?.length} className="files-list e2e-files-list">
-        {fileAttachments?.map(
-          (fileAttachment: IFileAttachmentData, index: number) =>
-            enableDragAndDrop ? (
-              <SortableRow
-                key={`item-${fileAttachment.id}-row`}
-                id={fileAttachment.id}
-                index={index}
-                moveRow={handleDragRow}
-                dropRow={handleDragEnd}
-                isLastItem={index === fileAttachments.length - 1}
-              >
-                <Box w="100%">
+      {variant === 'bo' ? (
+        <Box display="flex" flexDirection="column" gap="12px">
+          {fileAttachments?.map((fileAttachment, index) => (
+            <BoFileAttachmentDisplay
+              key={fileAttachment.id}
+              fileAttachment={fileAttachment}
+              index={index}
+              moveRow={handleDragRow}
+              dropRow={handleDragEnd}
+              onDeleteClick={handleFileOnRemove(fileAttachment)}
+              disabled={disabled}
+            />
+          ))}
+        </Box>
+      ) : (
+        <List
+          key={fileAttachments?.length}
+          className="files-list e2e-files-list"
+        >
+          {fileAttachments?.map(
+            (fileAttachment: IFileAttachmentData, index: number) =>
+              enableDragAndDrop ? (
+                <SortableRow
+                  key={`item-${fileAttachment.id}-row`}
+                  id={fileAttachment.id}
+                  index={index}
+                  moveRow={handleDragRow}
+                  dropRow={handleDragEnd}
+                  isLastItem={index === fileAttachments.length - 1}
+                >
+                  <Box w="100%">
+                    <FileAttachmentDisplay
+                      key={`item-${fileAttachment.id}-display`}
+                      onDeleteClick={handleFileOnRemove(fileAttachment)}
+                      fileAttachment={fileAttachment}
+                    />
+                  </Box>
+                </SortableRow>
+              ) : (
+                <Box key={`item-${fileAttachment.id}-display`} w="100%">
                   <FileAttachmentDisplay
-                    key={`item-${fileAttachment.id}-display`}
                     onDeleteClick={handleFileOnRemove(fileAttachment)}
                     fileAttachment={fileAttachment}
                   />
                 </Box>
-              </SortableRow>
-            ) : (
-              <Box key={`item-${fileAttachment.id}-display`} w="100%">
-                <FileAttachmentDisplay
-                  onDeleteClick={handleFileOnRemove(fileAttachment)}
-                  fileAttachment={fileAttachment}
-                />
-              </Box>
-            )
-        )}
-      </List>
-      {isUploadingFile && <Spinner />}
+              )
+          )}
+        </List>
+      )}
+      {isUploadingFile && (
+        <Spinner size={variant === 'bo' ? '20px' : undefined} />
+      )}
 
       <ScreenReaderFilesList fileAttachments={fileAttachments} />
     </Box>
   );
 
-  return enableDragAndDrop ? (
+  return enableDragAndDrop || variant === 'bo' ? (
     <DndProvider backend={HTML5Backend}>{content}</DndProvider>
   ) : (
     content

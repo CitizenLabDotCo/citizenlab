@@ -3,7 +3,7 @@ import { randomString } from '../../../support/commands';
 import {
   updatePermission,
   setupProject,
-  addPermissionsCustomField,
+  askOnlyDemographicQuestion,
   confirmUserCustomFieldHasValue,
 } from '../../../support/permitted_by_utils';
 
@@ -36,7 +36,7 @@ describe('Post Participation Signup: survey', () => {
             phaseId,
             permitted_by: 'everyone',
           }).then(() => {
-            return addPermissionsCustomField({
+            return askOnlyDemographicQuestion({
               adminJwt,
               phaseId,
               customFieldId,
@@ -79,7 +79,7 @@ describe('Post Participation Signup: survey', () => {
     cy.get('form').find('input').first().type(answer);
 
     // Intercept submit request
-    cy.intercept('POST', '/web_api/v1/ideas').as('submitSurvey');
+    cy.intercept('POST', '/web_api/v1/phases/*/inputs').as('submitSurvey');
 
     // Submit survey
     cy.dataCy('e2e-submit-form').click();

@@ -219,14 +219,16 @@ RSpec.describe ReportBuilder::Queries::Visitors do
     end
 
     it 'excludes roles' do
-      # Create session december (admin)
-      session = create(:session, created_at: Date.new(2022, 12, 2), highest_role: 'admin')
-      create(:pageview, session_id: session.id, path: '/en/', created_at: DateTime.new(2022, 12, 2, 10, 0, 0))
+      # Create sessions in december by all kinds of admins and moderators
+      admin_and_moderator_highest_roles.each do |highest_role|
+        session = create(:session, created_at: Date.new(2022, 12, 2), highest_role: highest_role)
+        create(:pageview, session_id: session.id, path: '/en/', created_at: DateTime.new(2022, 12, 2, 10, 0, 0))
+      end
 
       params = {
         start_at: Date.new(2022, 8, 1),
         end_at: Date.new(2023, 1, 1),
-        exclude_roles: 'exclude_admins_and_moderators'
+        exclude_admins_and_moderators: true
       }
 
       expect(query.run_query(**params)).to eq({

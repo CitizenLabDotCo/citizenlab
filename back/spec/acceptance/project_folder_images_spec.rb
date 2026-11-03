@@ -54,6 +54,20 @@ resource 'ProjectFolderImage' do
       expect(json_response.dig(:data, :attributes, :alt_text_multiloc).stringify_keys).to match alt_text_multiloc
     end
 
+    example 'Unauthorized (401) when not signed in', document: false do
+      header 'Authorization', nil
+
+      expect { do_request }.not_to change(ProjectFolders::Image, :count)
+      assert_status 401
+    end
+
+    example 'Unauthorized (401) for a resident', document: false do
+      resident_header_token
+
+      expect { do_request }.not_to change(ProjectFolders::Image, :count)
+      assert_status 401
+    end
+
     describe do
       let(:ordering) { 'five' }
       let(:image) { nil }

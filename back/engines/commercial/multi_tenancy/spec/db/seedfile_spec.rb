@@ -48,10 +48,7 @@ describe 'db/seeds.rb' do
       expect(Volunteering::Cause.count).to be 5
       expect(Volunteering::Volunteer.count).to be > 10
       expect(Analytics::DimensionDate.count).to be > 0
-      expect(Analytics::DimensionLocale.count).to be > 0
       expect(Analytics::DimensionType.count).to be > 0
-      expect(Analytics::DimensionReferrerType.count).to be > 0
-      expect(Analytics::FactVisit.count).to be 3
       expect(Project.find_by(slug: 'community-monitor')).not_to be_nil
     end
   end

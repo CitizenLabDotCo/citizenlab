@@ -32,6 +32,8 @@ en:
       not_ends_on: "%{property} doesn't end on %{value}"
     email:
       property: "e-mail"
+      is_one_of: "%{property} is one of: %{value}"
+      not_is_one_of: "%{property} is not one of: %{value}"
     event_attendances:
       attends_something: "User is registered for at least one event"
       attends_nothing: "User is not registered for any event"
@@ -105,6 +107,11 @@ en:
       not_reacted_comment_in: "Did not react to a comment on an idea with topic %{value}"
     registration_completed_at:
       property: "registration"
+    last_active_at:
+      property: "last activity"
+    imported:
+      is_imported: "User was imported"
+      not_is_imported: "User was not imported"
     role:
       is_admin: "Role is admin"
       not_is_admin: "Role is not admin"

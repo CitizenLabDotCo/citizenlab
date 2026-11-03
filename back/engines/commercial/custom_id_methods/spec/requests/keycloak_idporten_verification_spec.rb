@@ -11,7 +11,7 @@ context 'keycloak verification (ID-Porten - Oslo)' do
       'info' => {
         'name' => 'UNØY-AKTIG KOST NOST',
         'email' => 'test@govocal.com',
-        'email_verified' => false,
+        'email_verified' => true,
         'nickname' => '21929974805',
         'first_name' => 'UNØY-AKTIG',
         'last_name' => 'KOST NOST',
@@ -36,7 +36,7 @@ context 'keycloak verification (ID-Porten - Oslo)' do
         'raw_info' => {
           'sub' => 'b045a9a9-cf7e-4add-acc7-1f606eb1e9e0',
           'address' => {},
-          'email_verified' => false,
+          'email_verified' => true,
           'amr' => 'TestID',
           'pid' => '21929974805',
           'preferred_username' => '21929974805',
@@ -93,9 +93,9 @@ context 'keycloak verification (ID-Porten - Oslo)' do
     expect(user.reload).to have_attributes({
       verified: true,
       first_name: 'Unøy-Aktig',
-      last_name: 'Kost Nost',
-      custom_field_values: {}
+      last_name: 'Kost Nost'
     })
+    expect(user.custom_field_answers).to be_empty
     expect(user.verifications.first).to have_attributes({
       method_name: 'keycloak',
       user_id: user.id,
@@ -191,13 +191,33 @@ context 'keycloak verification (ID-Porten - Oslo)' do
     end
   end
 
+  context 'when the auth response says the email is not verified' do
+    let(:auth_hash) do
+      super().tap do |hash|
+        hash['info']['email_verified'] = false
+        hash['extra']['raw_info']['email_verified'] = false
+      end
+    end
+
+    it 'creates a new user whose email still has to be confirmed' do
+      get '/auth/keycloak'
+      follow_redirect!
+
+      user = User.order(created_at: :asc).last
+      expect(user).to have_attributes({
+        email: nil,
+        new_email: 'test@govocal.com'
+      })
+      expect(user.confirmation_required?).to be(true)
+    end
+  end
+
   context 'email NOT provided in auth response' do
     before do
       configuration = AppConfiguration.instance
       configuration.settings['password_login'] = {
         'allowed' => true,
         'enabled' => true,
-        'enable_signup' => true,
         'minimum_length' => 8
       }
       configuration.save!
@@ -256,19 +276,19 @@ context 'keycloak verification (ID-Porten - Oslo)' do
       expect_user_to_be_verified_and_identified(user)
       expect(user.email).to be_nil
       expect(user.active?).to be(true)
-      expect(user.confirmation_required?).to be(false)
+      expect(user.confirmation_required?).to be(true)
       expect(ActionMailer::Base.deliveries.count).to eq(0)
 
       headers = { 'Authorization' => authorization_header(user) }
 
-      post '/web_api/v1/user/request_code_email_change', params: { request_code: { new_email: 'newcoolemail@example.org' } }, headers: headers
+      post '/web_api/v1/user/request_code_new_email', params: { request_code: { new_email: 'newcoolemail@example.org' } }, headers: headers
       expect(response).to have_http_status(:ok)
       expect(user.reload).to have_attributes({ new_email: 'newcoolemail@example.org' })
       expect(user.confirmation_required?).to be(true)
-      expect(user.active?).to be(false)
+      expect(user.active?).to be(true)
       expect(ActionMailer::Base.deliveries.count).to eq(1)
 
-      post '/web_api/v1/user/confirm_code_email_change', params: { confirmation: { code: user.new_email_confirmation.code } }, headers: headers
+      post '/web_api/v1/user/confirm_code_new_email', params: { confirmation: { code: user.new_email_confirmation.code } }, headers: headers
       expect(response).to have_http_status(:ok)
       expect(user.reload.confirmation_required?).to be(false)
       expect(user.active?).to be(true)
@@ -286,7 +306,7 @@ context 'keycloak verification (ID-Porten - Oslo)' do
       user = User.order(created_at: :asc).last
       expect_user_to_be_verified_and_identified(user)
       expect(user.email).to be_nil
-      expect(user.confirmation_required?).to be(false)
+      expect(user.confirmation_required?).to be(true)
       expect(user.active?).to be(true)
     end
 

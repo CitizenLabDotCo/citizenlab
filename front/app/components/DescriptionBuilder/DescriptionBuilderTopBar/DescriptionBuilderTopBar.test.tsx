@@ -65,7 +65,6 @@ const defaultProps = {
   onSelectLocale: () => {},
   previewEnabled: false,
   setPreviewEnabled: () => {},
-  contentBuildableType: 'project',
   backPath: '/projects',
   titleMultiloc: { en: 'Test Project' },
   previewLink: { to: '/projects/preview' },

@@ -27,13 +27,9 @@ class EmailConfirmation < Confirmation
   def confirm!
     transaction do
       user.update!(email_confirmed_at: Time.zone.now, confirmation_required: false)
-      clear_code!
       cancel_other_users_pending_email_change(user.email) if user.email.present?
+      consume!
     end
     true
-  end
-
-  def pending?
-    user.confirmation_required?
   end
 end

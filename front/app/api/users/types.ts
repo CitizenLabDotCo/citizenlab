@@ -1,5 +1,7 @@
 import { ImageSizes, SupportedLocale, Multiloc } from 'typings';
 
+import { TAppConfigurationSetting } from 'api/app_configuration/types';
+
 import { Keys } from 'utils/cl-react-query/types';
 import { TRole } from 'utils/permissions/roles';
 
@@ -7,11 +9,19 @@ import usersKeys from './keys';
 
 export type UsersKeys = Keys<typeof usersKeys>;
 
+export type EarlyAccessTier = 'general' | 'internal';
+
+export type OfferedEarlyAccessFeatures = Partial<
+  Record<TAppConfigurationSetting, EarlyAccessTier>
+>;
+
 export interface UserCheckResponse {
   data: {
     type: 'check';
     attributes: {
       action: Action;
+      // Only returned by check_phone: seconds until a new SMS code may be requested.
+      code_retry_after?: number;
     };
   };
 }
@@ -42,6 +52,8 @@ export interface IUserAttributes {
   block_reason?: string;
   block_start_at?: string;
   blocked?: boolean;
+  email_bounced_at?: string | null;
+  email_bounce_reason?: string | null;
   registration_completed_at: string | null;
   created_at: string;
   updated_at: string;
@@ -50,6 +62,8 @@ export interface IUserAttributes {
   confirmation_required: boolean;
   custom_field_values?: Record<string, any>;
   onboarding?: OnboardingType;
+  early_access_opt_ins?: TAppConfigurationSetting[];
+  offered_early_access_features?: OfferedEarlyAccessFeatures;
   avatar?: ImageSizes;
   roles?: TRole[];
   email?: string;
@@ -63,6 +77,10 @@ export interface IUserAttributes {
   followings_count: number;
   last_active_at?: string | null;
   new_email?: string | null;
+  merge_target_email?: string | null;
+  phone?: string | null;
+  phone_confirmed_at?: string | null;
+  new_phone?: string | null;
 }
 
 export interface IUserData {
@@ -101,6 +119,8 @@ export interface IUserUpdate {
   bio_multiloc?: Multiloc;
   custom_field_values?: Record<string, any>;
   onboarding?: OnboardingType;
+  early_access_opt_ins?: TAppConfigurationSetting[];
+  phone?: string;
 }
 
 export interface IChangePassword {
@@ -118,7 +138,9 @@ export type Sort =
   | 'role'
   | '-role'
   | 'last_active_at'
-  | '-last_active_at';
+  | '-last_active_at'
+  | 'registration_completed_at'
+  | '-registration_completed_at';
 
 export interface IQueryParameters {
   pageNumber?: number;
@@ -130,6 +152,7 @@ export interface IQueryParameters {
   can_moderate?: true;
   admins_only?: boolean;
   only_blocked?: boolean;
+  only_email_bounced?: boolean;
   not_citizenlab_member?: boolean;
   include_inactive?: boolean;
   // Pass project/folder/space id to exclude all users who are

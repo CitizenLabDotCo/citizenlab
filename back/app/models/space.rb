@@ -9,10 +9,14 @@
 #  updated_at           :datetime         not null
 #
 class Space < ApplicationRecord
+  include PlainTextMultiloc
   include PgSearch::Model
 
   has_many :projects, dependent: :nullify
   has_many :folders, dependent: :nullify, class_name: 'ProjectFolders::Folder'
+
+  plain_text_multiloc :title_multiloc
+  before_validation :sanitize_description_multiloc, if: :description_multiloc
 
   before_destroy :remove_notifications # Must occur before has_many :notifications (see https://github.com/rails/rails/issues/5205)
   has_many :notifications, dependent: :nullify
@@ -27,6 +31,13 @@ class Space < ApplicationRecord
     using: { tsearch: { prefix: true } }
 
   private
+
+  def sanitize_description_multiloc
+    self.description_multiloc = SanitizationService.new.sanitize_body_multiloc(
+      description_multiloc,
+      %i[title alignment list decoration link image video]
+    )
+  end
 
   def remove_notifications
     notifications.each do |notification|

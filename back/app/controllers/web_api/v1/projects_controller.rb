@@ -60,7 +60,6 @@ class WebApi::V1::ProjectsController < ApplicationController
 
     instance_options = {
       user_followers: user_followers,
-      timeline_active: TimelineService.new.timeline_active_on_collection(@projects.to_a),
       visible_children_count_by_parent_id: {}, # projects don't have children
       publication_email_enabled_per_project: publication_email_enabled_per_project,
       # Cannot use `find_sole_by` here: the global ProjectPublished campaign is normally seeded by
@@ -73,7 +72,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       @projects,
       WebApi::V1::ProjectSerializer,
       params: project_serializer_params(instance_options),
-      include: %i[admin_publication project_images current_phase]
+      include: %i[admin_publication project_images current_phase highlighted_phase]
     )
   end
 
@@ -174,7 +173,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     projects = ProjectsFinderAdminService.execute(projects, params, current_user: current_user)
 
     projects = paginate projects
-    projects = projects.includes(phases: [:report, :custom_form, { permissions: [:groups], project: :admin_publication }], admin_publication: [:parent], project_images: [], groups: [])
+    projects = projects.includes(:space, phases: [:report, :custom_form, { permissions: [:groups], project: :admin_publication }], admin_publication: [:parent], project_images: [], groups: [])
 
     moderators_per_project = UserRoleService.new.moderators_per_project(
       projects.pluck(:id)
@@ -196,7 +195,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     render json: WebApi::V1::ProjectSerializer.new(
       @project,
       params: jsonapi_serializer_params.merge(use_cache: params[:use_cache], request: request),
-      include: %i[admin_publication project_images current_phase avatars]
+      include: %i[admin_publication project_images current_phase highlighted_phase avatars]
     ).serializable_hash
   end
 
@@ -279,6 +278,7 @@ class WebApi::V1::ProjectsController < ApplicationController
     process_due_status_transition(@project)
     policy_context[:prior_record] = Project.find(@project.id)
     @project.assign_attributes(update_params)
+    keep_completed_setup_steps(@project)
     remove_image_if_requested!(@project, update_params, :header_bg)
 
     # Authorize again here (in addition to the :authorize_project before_action)
@@ -466,6 +466,13 @@ class WebApi::V1::ProjectsController < ApplicationController
     end
   end
 
+  # Merge, so a client with a stale copy can't drop steps the server added.
+  def keep_completed_setup_steps(project)
+    return unless project.completed_setup_steps_changed?
+
+    project.completed_setup_steps = project.completed_setup_steps_was | project.completed_setup_steps
+  end
+
   def assign_scheduled_by(admin_publication_attrs)
     attrs = admin_publication_attrs.slice(:scheduled_status, :scheduled_at)
     return if attrs.keys.blank?
@@ -486,7 +493,7 @@ class WebApi::V1::ProjectsController < ApplicationController
       @projects,
       WebApi::V1::ProjectMiniSerializer,
       params: project_serializer_params,
-      include: %i[project_images current_phase]
+      include: %i[project_images highlighted_phase]
     )
   end
 end

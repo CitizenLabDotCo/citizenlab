@@ -15,8 +15,13 @@ class SortByParamsService
     when '-popular' then scope.order_popular(:asc)
     when 'author_name' then scope.order_author_name(:desc)
     when '-author_name' then scope.order_author_name(:asc)
+    when 'title' then scope.order_title(sort_locale(current_user), :desc)
+    when '-title' then scope.order_title(sort_locale(current_user), :asc)
+    when 'assignee' then scope.order_assignee(:desc)
+    when '-assignee' then scope.order_assignee(:asc)
     when 'status' then scope.order_status(:desc)
     when '-status' then scope.order_status(:asc)
+    when 'status_priority' then scope.order_status_priority
     when 'trending'
       ids = TrendingIdeaService.new.sort_trending(scope).map(&:id)
       Idea.unscoped.where(id: ids).order_as_specified(id: ids)
@@ -42,7 +47,7 @@ class SortByParamsService
     when 'budget' then scope.order(budget: :desc)
     when '-budget' then scope.order(budget: :asc)
     else
-      raise "Unsupported sorting parameter #{params[:sort]}"
+      raise ApiError.new(:unsupported_sort_parameter, status: 400)
     end
   end
   # rubocop:enable Metrics/CyclomaticComplexity
@@ -52,7 +57,7 @@ class SortByParamsService
     when 'start_at' then scope.order(start_at: :desc)
     when '-start_at' then scope.order(start_at: :asc)
     else
-      raise "Unsupported sorting parameter #{params[:sort]}"
+      raise ApiError.new(:unsupported_sort_parameter, status: 400)
     end
   end
 
@@ -61,11 +66,15 @@ class SortByParamsService
     when 'acted_at' then scope.order(acted_at: :desc)
     when '-acted_at' then scope.order(acted_at: :asc)
     else
-      raise "Unsupported sorting parameter #{params[:sort]}"
+      raise ApiError.new(:unsupported_sort_parameter, status: 400)
     end
   end
 
   private
+
+  def sort_locale(current_user)
+    current_user&.locale || AppConfiguration.instance.settings('core', 'locales').first
+  end
 
   def idea_voting_count_sort(scope, sort, phase_id, direction: :asc, add_column: nil)
     if phase_id

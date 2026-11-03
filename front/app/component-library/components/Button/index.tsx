@@ -5,6 +5,7 @@ import { darken, transparentize, opacify, rgba } from 'polished';
 import styled from 'styled-components';
 
 import {
+  bo,
   colors,
   invisibleA11yText,
   fontSizes,
@@ -19,6 +20,7 @@ import Box, {
   BoxPositionProps,
   BoxWidthProps,
   BoxHeightProps,
+  BoxFlexProps,
 } from '../Box';
 import Icon, { IconProps } from '../Icon';
 import Spinner from '../Spinner';
@@ -34,7 +36,13 @@ export type ButtonStyles =
   | 'admin-dark'
   | 'admin-dark-outlined'
   | 'admin-dark-text'
-  | 'delete';
+  | 'delete'
+  | 'bo-primary'
+  | 'bo-secondary'
+  | 'bo-text'
+  | 'bo-delete'
+  | 'bo-status'
+  | 'bo-picker';
 
 type DefaultStyleValues = {
   [key in ButtonStyles]: {
@@ -49,7 +57,35 @@ type DefaultStyleValues = {
     iconColor?: string;
     iconHoverColor?: string;
     padding?: string;
+    borderRadius?: string;
+    borderThickness?: string;
+    height?: string;
+    fontSize?: string;
+    fontWeight?: string;
+    lineHeight?: string;
+    iconSize?: string;
   };
+};
+
+// The back office design system sizes every button the same way and only
+// varies the colours: https://govocal.augur.page/ux-ui-audit/design-system
+const BO_GEOMETRY = {
+  height: '36px',
+  padding: '0 16px',
+  borderRadius: bo.borderRadius,
+  fontSize: `${fontSizes.s}px`,
+  fontWeight: '500',
+  lineHeight: '20px',
+  iconSize: '16px',
+  borderThickness: '0',
+};
+
+const BO_PICKER_GEOMETRY = {
+  ...BO_GEOMETRY,
+  height: '30px',
+  padding: '0 10px 0 12px',
+  borderRadius: '999px',
+  fontWeight: '400',
 };
 
 function getFontSize(props: ButtonContainerProps & { theme: MainThemeProps }) {
@@ -105,6 +141,11 @@ function getLineHeight(
 function getButtonStyle(
   props: ButtonContainerProps & { theme: MainThemeProps }
 ) {
+  const boGeometry =
+    props.boSize === 'medium'
+      ? { ...BO_GEOMETRY, ...bo.buttonMedium }
+      : BO_GEOMETRY;
+
   const defaultStyleValues: DefaultStyleValues = {
     primary: {
       bgColor: get(props.theme.colors, 'tenantPrimary'),
@@ -181,6 +222,60 @@ function getButtonStyle(
       iconColor: '#fff',
       iconHoverColor: '#fff',
     },
+
+    'bo-primary': {
+      ...boGeometry,
+      bgColor: colors.primary,
+      textColor: '#fff',
+      textHoverColor: '#fff',
+      iconColor: '#fff',
+      iconHoverColor: '#fff',
+    },
+    'bo-secondary': {
+      ...boGeometry,
+      borderThickness: '1px',
+      bgColor: colors.white,
+      bgHoverColor: colors.grey50,
+      borderColor: colors.grey300,
+      borderHoverColor: colors.coolGrey500,
+      textColor: bo.colors.textHeadingStrong,
+      textHoverColor: bo.colors.textHeadingStrong,
+      iconColor: bo.colors.textHeadingStrong,
+      iconHoverColor: bo.colors.textHeadingStrong,
+    },
+    'bo-text': {
+      ...boGeometry,
+      bgColor: 'transparent',
+      bgHoverColor: 'transparent',
+      textColor: colors.textSecondary,
+      iconColor: colors.textSecondary,
+    },
+    'bo-delete': {
+      ...boGeometry,
+      bgColor: colors.red600,
+      textColor: '#fff',
+      textHoverColor: '#fff',
+      iconColor: '#fff',
+      iconHoverColor: '#fff',
+    },
+    'bo-status': {
+      ...boGeometry,
+      bgColor: bo.colors.statusFill,
+      bgHoverColor: colors.greenMint,
+      textColor: colors.green700,
+      textHoverColor: colors.green700,
+      iconColor: colors.green700,
+      iconHoverColor: colors.green700,
+    },
+    'bo-picker': {
+      ...BO_PICKER_GEOMETRY,
+      bgColor: colors.grey100,
+      bgHoverColor: colors.grey200,
+      textColor: bo.colors.textHeadingStrong,
+      textHoverColor: bo.colors.textHeadingStrong,
+      iconColor: colors.coolGrey500,
+      iconHoverColor: colors.coolGrey500,
+    },
   };
 
   const backgroundColor =
@@ -250,8 +345,6 @@ function getButtonStyle(
     'none';
   const borderRadius =
     props.borderRadius ||
-    // TODO: Fix this the next time the file is edited.
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     get(defaultStyleValues, `${props.buttonStyle}.borderRadius`) ||
     props.theme.borderRadius;
   const textDecoration =
@@ -267,14 +360,32 @@ function getButtonStyle(
     get(defaultStyleValues, `${props.buttonStyle}.textDecorationHover`) ||
     'none';
   const padding =
+    props.padding ||
+    props.p ||
     get(defaultStyleValues, `${props.buttonStyle}.padding`) ||
     getPadding(props);
-  const fontSize = getFontSize(props);
-  const lineHeight = getLineHeight(props);
-  const fontWeight = props.fontWeight || 'normal';
-  const borderWidth = props.borderThickness || '1px';
+  const fontSize =
+    props.fontSize ||
+    get(defaultStyleValues, `${props.buttonStyle}.fontSize`) ||
+    getFontSize(props);
+  const lineHeight =
+    props.lineHeight ||
+    get(defaultStyleValues, `${props.buttonStyle}.lineHeight`) ||
+    getLineHeight(props);
+  const fontWeight =
+    props.fontWeight ||
+    get(defaultStyleValues, `${props.buttonStyle}.fontWeight`) ||
+    'normal';
+  const borderWidth =
+    props.borderThickness ||
+    get(defaultStyleValues, `${props.buttonStyle}.borderThickness`) ||
+    '1px';
   const display = !props.width ? 'inline-flex' : 'flex';
-  const height = props.height || props.h || 'auto';
+  const height =
+    props.height ||
+    props.h ||
+    get(defaultStyleValues, `${props.buttonStyle}.height`) ||
+    'auto';
   const minHeight = props.minHeight || 'initial';
   const maxHeight = props.maxHeight || 'initial';
   const justifyContent = props.justify || 'center';
@@ -283,7 +394,10 @@ function getButtonStyle(
   const width = props.width || props.w || '100%';
   const buttonTextOpacity = props.processing ? 0 : 1;
   const iconOpacity = props.processing ? 0 : 1;
-  const iconSize = props.iconSize ? props.iconSize : '24px';
+  const iconSize =
+    props.iconSize ||
+    get(defaultStyleValues, `${props.buttonStyle}.iconSize`) ||
+    '24px';
   const whiteSpace = props.whiteSpace || 'nowrap';
   const opacityDisabled = props.opacityDisabled || '0.37';
   const flexDirection = props.theme.isRtl ? 'row-reverse' : 'row';
@@ -451,6 +565,13 @@ const Container = styled(Box)<ButtonContainerProps>`
   ${StyledButton} {
     ${(props) => getButtonStyle(props)}
   }
+
+  /* The trigger is sized by its shape, not its text, so a label too long for
+     it truncates rather than spilling outside the fill. */
+  ${StyledButton}.bo-picker ${ButtonText} {
+    min-width: 0;
+    overflow: hidden;
+  }
 `;
 
 const SpinnerWrapper = styled.span`
@@ -473,6 +594,7 @@ type Size = 's' | 'm' | 'l' | 'xl' | undefined;
 export type ButtonContainerProps = {
   buttonStyle?: ButtonStyles;
   size?: Size;
+  boSize?: 'medium';
   width?: string;
   height?: string;
   fullWidth?: boolean;
@@ -511,6 +633,7 @@ export type ButtonContainerProps = {
   BoxPositionProps &
   BoxWidthProps &
   BoxHeightProps &
+  BoxFlexProps &
   React.HTMLAttributes<HTMLDivElement> &
   React.HTMLAttributes<HTMLElement>;
 

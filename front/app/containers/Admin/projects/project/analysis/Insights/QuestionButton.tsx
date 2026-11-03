@@ -21,7 +21,7 @@ const QuestionButton = ({ onClick }: { onClick: () => void }) => {
   });
 
   const { formatMessage } = useIntl();
-  const { mutate: addQuestionPreCheck, isLoading: isLoadingPreCheck } =
+  const { mutate: addQuestionPreCheck, isPending: isLoadingPreCheck } =
     useAddAnalysisQuestionPreCheck();
   const { analysisId } = useParams({
     from: '/$locale/admin/projects/$projectId/analysis/$analysisId',

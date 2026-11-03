@@ -73,6 +73,21 @@ RSpec.describe ParticipationMethod::Proposals do
           expect(proposal.idea_status).to eq custom_status
         end
       end
+
+      # A phase can carry a prescreening_mode on a platform without the feature: tenant
+      # templates and project copies bring the value across from platforms that have it.
+      context 'when prescreening_mode is all but the prescreening feature is disabled' do
+        before { SettingsService.new.deactivate_feature!('prescreening') }
+
+        let(:phase) { create(:proposals_phase, prescreening_mode: 'all') }
+
+        it 'ignores the mode: assigns the default "proposed" status' do
+          proposal = build(:proposal, idea_status: nil, creation_phase: phase, project: phase.project)
+          participation_method.assign_defaults proposal
+          expect(proposal.idea_status).to eq proposed_status
+          expect(proposal.publication_status).to eq 'published'
+        end
+      end
     end
 
     context 'when the proposed status is not available' do
@@ -169,28 +184,6 @@ RSpec.describe ParticipationMethod::Proposals do
     end
   end
 
-  describe '#author_in_form?' do
-    it 'returns false for a visitor when idea_author_change is activated' do
-      SettingsService.new.activate_feature! 'idea_author_change'
-      expect(participation_method.author_in_form?(nil)).to be false
-    end
-
-    it 'returns false for a resident when idea_author_change is activated' do
-      SettingsService.new.activate_feature! 'idea_author_change'
-      expect(participation_method.author_in_form?(create(:user))).to be false
-    end
-
-    it 'returns false for a moderator when idea_author_change is deactivated' do
-      SettingsService.new.deactivate_feature! 'idea_author_change'
-      expect(participation_method.author_in_form?(create(:admin))).to be false
-    end
-
-    it 'returns true for a moderator when idea_author_change is activated' do
-      SettingsService.new.activate_feature! 'idea_author_change'
-      expect(participation_method.author_in_form?(create(:admin))).to be true
-    end
-  end
-
   describe '#budget_in_form?' do
     it 'returns false' do
       expect(participation_method.budget_in_form?(create(:admin))).to be false
@@ -242,7 +235,7 @@ RSpec.describe ParticipationMethod::Proposals do
   end
 
   its(:additional_export_columns) { is_expected.to eq %w[manual_votes] }
-  its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new comments_count] }
+  its(:allowed_ideas_orders) { is_expected.to eq %w[trending random popular -new new comments_count status_priority] }
   its(:return_disabled_actions?) { is_expected.to be false }
   its(:supports_assignment?) { is_expected.to be true }
   its(:built_in_title_required?) { is_expected.to be(true) }
@@ -255,13 +248,15 @@ RSpec.describe ParticipationMethod::Proposals do
   its(:supports_permitted_by_everyone?) { is_expected.to be true }
   its(:supports_public_visibility?) { is_expected.to be true }
   its(:supports_status?) { is_expected.to be true }
+  its(:supports_standalone_placement?) { is_expected.to be false }
   its(:supports_submission?) { is_expected.to be true }
+  its(:supports_input_pdf_export?) { is_expected.to be true }
   its(:supports_toxicity_detection?) { is_expected.to be true }
   its(:use_reactions_as_votes?) { is_expected.to be true }
   its(:transitive?) { is_expected.to be false }
   its(:destroy_ideas_on_phase_destroy?) { is_expected.to be true }
   its(:supports_private_attributes_in_export?) { is_expected.to be true }
-  its(:form_logic_enabled?) { is_expected.to be false }
+  its(:supports_form_logic?) { is_expected.to be false }
   its(:follow_idea_on_idea_submission?) { is_expected.to be true }
   its(:supports_custom_field_categories?) { is_expected.to be false }
   its(:user_fields_in_form_enabled?) { is_expected.to be false }

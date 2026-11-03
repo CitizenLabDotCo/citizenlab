@@ -36,6 +36,7 @@ hu-HU:
         project_participants: A projekt résztvevőinek
         registered_users: Regisztrált felhasználóknak
       recipient_segment:
+        admin_who_generated_the_report: A jelentést kérő adminisztrátor
         admins: Adminok
         admins_and_managers: Adminisztrátorok és menedzserek
         admins_and_managers_assigned_to_the_input: A bemenethez rendelt adminisztrátorok és kezelők
@@ -77,6 +78,7 @@ hu-HU:
         users_who_follow_the_proposal: A javaslatot követő felhasználók
       trigger:
         7_days_after_invite_is_sent: 7 nappal a meghívó elküldése után
+        7_days_before_phase_starts: 7 nappal egy szakasz kezdete előtt
         7_days_before_the_project_changes_phase: 7 nappal a projektváltási szakasz előtt
         comment_is_deleted: A megjegyzés törölve
         comment_is_flagged_as_spam: A megjegyzés spamként van megjelölve
@@ -95,6 +97,7 @@ hu-HU:
         new_input_awaits_screening: Új bemenet vár a vetítésre
         new_input_is_published: Megjelent az új bemenet
         new_proposal_is_posted: Új ajánlatot tettek közzé
+        phase_starts: Szakasz kezdődik
         project_phase_changes: Változások a projekt fázisában
         project_published: A projekt megjelent
         project_review_request: A moderátor a projekt felülvizsgálatát kérte
@@ -107,6 +110,7 @@ hu-HU:
         proposal_is_upvoted_above_threshold: A javaslatot a küszöb felett szavazták meg
         proposal_status_changes: Változások az ajánlat állapotában
         registration_to_event: Regisztráció egy eseményre
+        report_generated: Egy jelentés elkészült
         survey_1_day_after_draft_saved: 1 nappal azután, hogy a felhasználó utoljára elmentette a felmérést vázlatként
         user_accepts_invitation_to_cosponsor_a_proposal: A felhasználó elfogadja a felkérést egy ajánlat társszponzorálására
         user_changes_email: A felhasználó megváltoztatja az e-mail-címét
@@ -184,24 +188,29 @@ hu-HU:
       manual_project_participants: Hivatalos üzenetek a projekt résztvevőinek
       mention_in_internal_comment: Említse meg egy belső megjegyzésben
       mention_in_official_feedback: Említse meg a frissítésben
+      merge_account_confirmation: Fiókösszevonási megerősítő kód
       moderator_digest: Heti áttekintés projektmenedzsereknek
       native_survey_not_submitted: A felmérés nem került benyújtásra
       new_comment_for_admin: Új megjegyzés egy általam moderált projektben
       new_email_confirmation: Új e-mail-megerősítő kód
       new_idea_for_admin_prescreening: Új bemenet, amely jóváhagyást igényel egy moderált projektben
       new_idea_for_admin_published: Új közzétett hozzászólás egy általam moderált projektben
+      new_phone_confirmation: Új telefonszám-megerősítő kód
       official_feedback_on_idea_you_follow: Frissítse a követett bemenetet
       password_reset: Jelszó visszaállítása
+      phone_confirmation: Telefonos megerősítő kód
       project_folder_moderation_rights_received: Mappakezelői jogok megérkeztek
       project_manager_rights_received: Projektmenedzseri jogosultságok megadva
       project_moderation_rights_received: A projekt moderálási jogai megkapták
-      project_phase_started: Új projekt fázis
-      project_phase_upcoming: Közelgő új projektszakasz
+      project_phase_started: A szakasz elindult
+      project_phase_upcoming: Hamarosan kezdődő szakasz
       project_published: A projekt megjelent
       project_review_request: Projekt felülvizsgálati kérelem
       project_review_state_change: Projekt jóváhagyva
       proposal_expired_for_admin: A javaslat lejárt a szavazati küszöb elérése nélkül
+      report_generated: Jelentés elkészült
       screening_digest: Heti szűrővizsgálati emlékeztető
+      sms_manual: Hivatalos SMS-üzenetek
       space_moderation_rights_received: Térkezelői jogosultságok megadva
       status_change_on_idea_you_follow: A követett bemenet állapotának változása
       survey_submitted: Felmérés benyújtva
@@ -356,6 +365,7 @@ hu-HU:
         story: Menj a történetedhez
         suggestion: Ugrás a javaslatodra
         topic: Menj a témádhoz
+      phase_dates: '%{startDate} és %{endDate} között'
     idea_marked_as_spam:
       cta_button: Véleményezés
       preheader: Cselekedjen a spamjelentés alapján
@@ -471,6 +481,15 @@ hu-HU:
       preheader: '%{commentAuthor} megemlítette Önt visszajelzésében'
       subject: '%{organizationName} megemlítette Önt visszajelzésében'
       title: Megemlítettek téged
+    merge_account_confirmation:
+      best_regards: Üdvözlettel,
+      event_description: 'Valaki bejelentkezett a(z) %{organizationName} részvételi platformjára, és kérte a bejelentkezés összekapcsolását az ezzel az e-mail-címmel rendelkező fiókkal. Ha Ön volt az, a folytatáshoz adja meg ezt a megerősítő kódot:'
+      expire_code: 'Ez a kód lejár:'
+      hours_24: 24 óra.
+      ignore_email: Ha nem Ön volt az, nyugodtan hagyja figyelmen kívül ezt az e-mailt. Semmi sem változott, és senki sem tudja használni ezt a kódot a beérkező leveleihez való hozzáférés nélkül.
+      preheader: Erősítse meg e-mail-címét a(z) %{organizationName} számára
+      subject: Erősítse meg e-mail-címét a(z) %{organizationName} részvételi platformján
+      title: E-mail-cím megerősítése
     moderator_digest:
       cta_button: Projekt kezelése
       event_description: Összegyűjtöttük azokat a hozzászólásokat, amelyek az elmúlt héten a legtöbb aktivitást generálták. Tudd meg, mi újság a projekteddel!
@@ -534,6 +553,9 @@ hu-HU:
       title: Új bejegyzés jelent meg a platformodon.
       today: Ma
       yesterday: Tegnap
+    new_phone_confirmation:
+      sms_body: 'A megerősítő kódod: %{code}.'
+      sms_body2: '%{organization_name}: Az Ön megerősítő kódja: %{code}.'
     official_feedback_on_idea_you_follow:
       cta_button: Ugrás erre a bemenetre
       event_description: "%{feedback_author_name} frissítést adott a(z) '%{input_title}' témában."
@@ -546,6 +568,9 @@ hu-HU:
       preheader: Állítsa vissza jelszavát a(z) %{organizationName} platformon
       subject: '%{organizationName}: Jelszó visszaállítása'
       title: Válasszon új jelszót
+    phone_confirmation:
+      sms_body: 'Az Ön megerősítő kódja: %{code}.'
+      sms_body2: '%{organization_name}: Az Ön megerősítő kódja: %{code}.'
     preview_data:
       author_display_name: Jane Doe
       author_first_name: Jane
@@ -564,8 +589,9 @@ hu-HU:
       input_status_description: Példa egy bemenet állapotára (pl. elfogadva, elutasítva, megvalósítva...)
       input_status_title: Példa állapot
       official_feedback_body: Példa hivatalos visszajelzésre
+      phase_description: Ez egy példa szakasztartalom, amely az e-mailek tartalmának előnézetéhez használható. Ez nem valódi tartalom.
       phase_title: Példa fázis
-      project_description_preview: Ez egy példa egy fázistartalomra, amelyet e-mailek tartalmának előnézetére használnak. Ez nem valódi tartalom.
+      project_description_preview: Ez egy példa projekttartalom az e-mailek tartalmának előnézetéhez. Ez nem valódi tartalom.
       project_title: Példaprojekt
       proposal_title: Példaajánlat
       space_title: Példa tér
@@ -600,21 +626,21 @@ hu-HU:
       title_what_can_you_do_moderator: Mit tehet projektmenedzserként?
       x_ideas: '%{numberOfIdeas} ötletek'
     project_phase_started:
-      cta_button: Fedezd fel ezt az új fázist
-      event_description: Ez a projekt új szakaszba lépett a %{organizationName}platformon. További információért kattintson az alábbi linkre!
+      cta_button: Megnézem az újdonságokat
+      event_description: Most már részt vehet a(z) „%{phaseTitle}” szakaszban a(z) %{organizationName} platformján.
       new_phase: "Ez a projekt a '%{phaseTitle}' fázisba lépett"
-      preheader: Új szakasz kezdődött a %{projectName}számára
-      subject: '%{projectName} új szakaszba lépett'
+      preheader: Most már részt vehet a(z) „%{phaseTitle}” szakaszban
+      subject: A(z) „%{phaseTitle}” szakasz elindult a(z) %{projectName} projektben
       subtitle: "Körülbelül '%{projectName}'"
-      title: "Új fázis kezdődött a(z) '%{projectName}' projektben."
+      title: Újdonság történt a(z) „%{projectName}” projektben
     project_phase_upcoming:
-      cta_button: Állítsa be ezt az új fázist
-      event_description: "A '%{projectName}' projekt hamarosan új szakaszba lép. Győződjön meg arról, hogy minden be van állítva ehhez a fázishoz: Van megfelelő leírás? A kiválasztott ötletek átkerülnek ebbe a fázisba? Egyéni e-mail kampányon keresztül szeretné tájékoztatni polgárait ennek a szakasznak a sajátosságairól?"
+      cta_button: Beállítások áttekintése
+      event_description: 'A(z) „%{projectName}” projekt „%{phaseTitle}” szakasza %{startDate} napon kezdődik. Kérjük, ellenőrizze, hogy minden készen áll-e: Teljes a leírás? Helyesek a dátumok? Szeretné tájékoztatni a közösséget egy egyedi e-mail kampányon keresztül?'
       new_phase: "A projekt a '%{phaseTitle}' fázisba lép"
-      preheader: Hamarosan új szakasz kezdődik a %{projectName}számára
-      subject: Mindent beállíthat a %{projectName}új szakaszához
+      preheader: Győződjön meg róla, hogy minden készen áll %{startDate} előtt
+      subject: '%{projectName}: a(z) „%{phaseTitle}” szakasz %{startDate} napon kezdődik'
       subtitle: "Körülbelül '%{projectName}'"
-      title: '%{firstName}, egy projekt hamarosan új fázisba lép'
+      title: '%{firstName}, a(z) „%{phaseTitle}” szakasz %{startDate} napon kezdődik'
     project_published:
       cta_button: Ugrás erre a projektre
       event_description: 'A %{organizationName} részvételi platformja nemrég tette közzé a következő projektet:'
@@ -638,6 +664,13 @@ hu-HU:
       preheader: Egy javaslat lejárt a küszöbérték elérése nélkül
       subject: '"%{input_title}" lejárt a küszöbérték elérése nélkül'
       title: Egy javaslat lejárt a szavazati küszöb elérése nélkül
+    report_generated:
+      cta_button: Jelentés megnyitása
+      event_description: A jelentés elkészült, és készen áll az áttekintésre és szerkesztésre.
+      preheader: A jelentése elkészült
+      stopped_early: Az írás leállt, mielőtt a jelentés befejeződött volna. Az eddig leírtak mentésre kerültek — nyissa meg, és kérje a folytatást a chaten.
+      subject: A(z) „%{projectName}” projekthez készült jelentése elkészült
+      title: A jelentése elkészült
     schedules:
       quarterly: Negyedévenként, a negyedév első napján
       weekly:

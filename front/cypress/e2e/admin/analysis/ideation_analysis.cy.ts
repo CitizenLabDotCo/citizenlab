@@ -10,11 +10,9 @@ describe('Admin: ideation analysis', () => {
   before(() => {
     const projectTitle = randomString();
     const projectDescriptionPreview = randomString();
-    const projectDescription = randomString();
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project?.body.data.id;
@@ -38,24 +36,21 @@ describe('Admin: ideation analysis', () => {
 
           const ideaContent = randomString();
           cy.apiCreateIdea({
-            projectId,
+            phaseId,
             ideaTitle: ideaTitle1,
             ideaContent: ideaContent,
-            phaseIds: [phaseId],
           }).then((idea) => {
             cy.apiAddComment(idea.body.data.id, 'The first comment');
           });
           cy.apiCreateIdea({
-            projectId,
+            phaseId,
             ideaTitle: ideaTitle2,
             ideaContent: ideaContent,
-            phaseIds: [phaseId],
           });
           cy.apiCreateIdea({
-            projectId,
+            phaseId,
             ideaTitle: ideaTitle3,
             ideaContent: ideaContent,
-            phaseIds: [phaseId],
           });
         });
     });

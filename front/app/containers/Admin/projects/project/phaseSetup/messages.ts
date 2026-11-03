@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'app.containers.AdminPage.ProjectTimeline.newPhaseTitle',
     defaultMessage: 'New Phase',
   },
+  newSurveyTitle: {
+    id: 'app.containers.AdminPage.ProjectTimeline.newSurveyTitle',
+    defaultMessage: 'New survey',
+  },
   titleLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.titleLabel',
     defaultMessage: 'Title',
@@ -28,6 +32,15 @@ export default defineMessages({
   previewSurveyCTALabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.previewSurveyCTALabel',
     defaultMessage: 'Preview',
+  },
+  allowMultipleResponsesLabel: {
+    id: 'app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesLabel',
+    defaultMessage: 'Allow multiple responses',
+  },
+  allowMultipleResponsesDescription: {
+    id: 'app.containers.AdminPage.ProjectTimeline.allowMultipleResponsesDescription',
+    defaultMessage:
+      'When enabled, a participant can submit this survey more than once. When disabled, each participant can only respond once.',
   },
   defaultSurveyTitleLabel: {
     id: 'app.containers.AdminPage.ProjectTimeline.defaultSurveyTitleLabel',
@@ -106,5 +119,18 @@ export default defineMessages({
   startDate: {
     id: 'app.containers.AdminPage.ProjectTimeline.startDate',
     defaultMessage: 'Start date',
+  },
+  placementLabel: {
+    id: 'app.containers.AdminPage.ProjectTimeline.placementLabel2',
+    defaultMessage: 'Timeline or spotlight survey',
+  },
+  placementOnTimelineDescription: {
+    id: 'app.containers.AdminPage.ProjectTimeline.placementOnTimelineDescription2',
+    defaultMessage: 'This survey is a phase on the project timeline.',
+  },
+  placementSpotlightDescription: {
+    id: 'app.containers.AdminPage.ProjectTimeline.placementSpotlightDescription',
+    defaultMessage:
+      'This is a spotlight survey. It runs alongside the timeline and can overlap other phases.',
   },
 });

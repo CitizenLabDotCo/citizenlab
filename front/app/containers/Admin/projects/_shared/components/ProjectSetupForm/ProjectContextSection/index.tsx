@@ -2,27 +2,19 @@ import React from 'react';
 
 import { Box } from '@citizenlab/cl2-component-library';
 
-import useAuthUser from 'api/me/useAuthUser';
-
 import { SubSectionTitle } from 'components/admin/Section';
 
 import { FormattedMessage } from 'utils/cl-intl';
 
 import Inner from './Inner';
 import messages from './messages';
-import { Props, FormSituation } from './types';
+import { Props } from './types';
+import { useCanEditProjectContext } from './utils';
 
-const ProjectContextSection = (
-  props: Props & {
-    formSituation: FormSituation;
-  }
-) => {
-  const { data: authUser } = useAuthUser();
+const ProjectContextSection = (props: Props) => {
+  const canEditProjectContext = useCanEditProjectContext();
 
-  if (!authUser) return null;
-  if (authUser.data.attributes.highest_role === 'project_moderator') {
-    return null;
-  }
+  if (!canEditProjectContext) return null;
 
   return (
     <Box mb="40px">

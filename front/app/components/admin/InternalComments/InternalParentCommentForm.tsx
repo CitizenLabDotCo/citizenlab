@@ -97,7 +97,7 @@ const InternalParentCommentForm = ({ ideaId, className }: Props) => {
   const smallerThanTablet = useBreakpoint('tablet');
   const {
     mutate: addInternalCommentToIdea,
-    isLoading: addCommentToIdeaIsLoading,
+    isPending: addCommentToIdeaIsLoading,
   } = useAddInternalCommentToIdea();
 
   const textareaElement = useRef<HTMLTextAreaElement | null>(null);

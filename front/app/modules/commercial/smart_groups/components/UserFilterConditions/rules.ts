@@ -3,6 +3,7 @@ import AreaValuesSelector from './ValueSelector/AreaValuesSelector';
 import CustomFieldOptionValueSelector from './ValueSelector/CustomFieldOptionValueSelector';
 import CustomFieldOptionValuesSelector from './ValueSelector/CustomFieldOptionValuesSelector';
 import DateValueSelector from './ValueSelector/DateValueSelector';
+import EmailListValueSelector from './ValueSelector/EmailListValueSelector';
 import EventValuesSelector from './ValueSelector/EventValuesSelector';
 import GlobalTopicValueSelector from './ValueSelector/GlobalTopicValueSelector';
 import GlobalTopicValuesSelector from './ValueSelector/GlobalTopicValuesSelector';
@@ -42,6 +43,8 @@ export type TStaticRuleType =
   | 'follow'
   | 'lives_in'
   | 'registration_completed_at'
+  | 'last_active_at'
+  | 'imported'
   | 'role'
   | 'participated_in_project'
   | 'participated_in_topic'
@@ -65,6 +68,8 @@ type TStaticPredicate =
   | TEventAttendancePredicate
   | TResidencePredicate
   | TRegistrationCompletedPredicate
+  | TLastActivePredicate
+  | TImportedPredicate
   | TParticipatedInProjectPredicate
   | TParticipatedInTopicPredicate
   | TParticipatedInStatusPredicate
@@ -108,7 +113,9 @@ type TEmailPredicate =
   | 'begins_with'
   | 'not_begins_with'
   | 'ends_on'
-  | 'not_ends_on';
+  | 'not_ends_on'
+  | 'is_one_of'
+  | 'not_is_one_of';
 
 type TEventAttendancePredicate =
   | 'attends_something'
@@ -130,6 +137,15 @@ type TRegistrationCompletedPredicate =
   | 'is_before'
   | 'is_exactly'
   | 'is_after';
+
+type TLastActivePredicate =
+  | 'is_empty'
+  | 'not_is_empty'
+  | 'is_before'
+  | 'is_exactly'
+  | 'is_after';
+
+type TImportedPredicate = 'is_imported' | 'not_is_imported';
 
 type TParticipatedInProjectPredicate =
   | 'commented_in'
@@ -367,6 +383,14 @@ export type TRule =
       value?: string;
     }
   | {
+      ruleType?: 'email';
+      predicate?: 'is_one_of' | 'not_is_one_of';
+      /**
+       * A list of email addresses
+       */
+      value?: string[];
+    }
+  | {
       ruleType?: 'event_attendances';
       predicate?: 'attends_something' | 'attends_nothing';
       value?: undefined;
@@ -409,6 +433,23 @@ export type TRule =
       ruleType?: 'registration_completed_at';
       predicate?: 'is_empty' | 'not_is_empty';
       value?: undefined;
+    }
+  | {
+      ruleType?: 'last_active_at';
+      predicate?: 'is_before' | 'is_exactly' | 'is_after';
+      /**
+       * The date formatted as yyyy-mm-dd
+       */
+      value?: string;
+    }
+  | {
+      ruleType?: 'last_active_at';
+      predicate?: 'is_empty' | 'not_is_empty';
+      value?: undefined;
+    }
+  | {
+      ruleType?: 'imported';
+      predicate?: 'is_imported' | 'not_is_imported';
     }
   | {
       ruleType?: 'participated_in_project';
@@ -597,6 +638,8 @@ export const ruleTypeConstraints = {
     not_begins_with: TextValueSelector,
     ends_on: TextValueSelector,
     not_ends_on: TextValueSelector,
+    is_one_of: EmailListValueSelector,
+    not_is_one_of: EmailListValueSelector,
   },
   event_attendances: {
     attends_something: null,
@@ -632,6 +675,17 @@ export const ruleTypeConstraints = {
     is_after: DateValueSelector,
     is_empty: null,
     not_is_empty: null,
+  },
+  last_active_at: {
+    is_before: DateValueSelector,
+    is_exactly: DateValueSelector,
+    is_after: DateValueSelector,
+    is_empty: null,
+    not_is_empty: null,
+  },
+  imported: {
+    is_imported: null,
+    not_is_imported: null,
   },
   role: {
     is_admin: null,
@@ -710,5 +764,18 @@ export const ruleTypeConstraints = {
     not_taken_survey: null,
   },
 };
+
+// Mirrors SmartGroups::Rules::Email::MAX_VALUES, which the API enforces.
+export const MAX_EMAIL_LIST_SIZE = 5000;
+
+export type TEmailListRule = {
+  ruleType: 'email';
+  predicate: 'is_one_of' | 'not_is_one_of';
+  value?: string[];
+};
+
+export const isEmailListRule = (rule: TRule): rule is TEmailListRule =>
+  rule.ruleType === 'email' &&
+  (rule.predicate === 'is_one_of' || rule.predicate === 'not_is_one_of');
 
 // Extract rule types (ruleType) and their predicates from TRule

@@ -71,9 +71,9 @@ const ReactionControl = ({
   const { formatMessage } = useIntl();
   const [screenReaderMessage, setScreenReaderMessage] = useState<string>('');
   const { data: idea } = useIdeaById(ideaId);
-  const { mutate: addReaction, isLoading: addReactionIsLoading } =
+  const { mutate: addReaction, isPending: addReactionIsLoading } =
     useAddIdeaReaction();
-  const { mutate: deleteReaction, isLoading: deleteReactionIsLoading } =
+  const { mutate: deleteReaction, isPending: deleteReactionIsLoading } =
     useDeleteIdeaReaction();
   const { data: authUser } = useAuthUser();
   const { data: phases } = usePhases(idea?.data.relationships.project.data.id);

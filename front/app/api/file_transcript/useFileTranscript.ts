@@ -22,8 +22,8 @@ const useFileTranscript = (fileId?: string) => {
     queryKey: fileTranscriptKeys.item({ id: fileId }),
     queryFn: () => fetchFileTranscriptByFileId(fileId),
     enabled: !!fileId,
-    refetchInterval: (data) => {
-      const status = data?.data.attributes.status;
+    refetchInterval: ({ state }) => {
+      const status = state.data?.data.attributes.status;
       // Poll every 2 seconds if status is pending/processing, otherwise stop polling
       return status === 'pending' || status === 'processing' ? 2000 : false;
     },

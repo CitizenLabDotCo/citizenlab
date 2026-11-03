@@ -184,6 +184,26 @@ describe('CustomPageSettingsForm', () => {
       });
     });
 
+    it('saves with hidden linked items that are no longer valid', async () => {
+      const { container } = render(
+        <CustomPageSettingsForm
+          mode={mode}
+          {...defaultProps}
+          // An area filter whose area was deleted.
+          defaultValues={{
+            ...defaultProps.defaultValues,
+            projects_filter_type: 'areas',
+          }}
+          hideLinkedItems
+        />
+      );
+
+      fireEvent.click(container.querySelector('button[type="submit"]'));
+      await waitFor(() => {
+        expect(defaultProps.onSubmit).toHaveBeenCalled();
+      });
+    });
+
     it('keeps showing the slug input when field is erased', async () => {
       const user = userEvent.setup();
       render(<CustomPageSettingsForm mode={mode} {...defaultProps} />);

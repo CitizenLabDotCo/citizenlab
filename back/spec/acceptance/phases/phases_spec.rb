@@ -64,6 +64,10 @@ resource 'Phases' do
     example 'Get one phase by id' do
       create_list(:idea, 2, project: phase.project, phases: [phase])
       Permissions::PermissionsUpdateService.new.update_all_permissions
+      # A phase's `permissions` relationship only holds its own rows: an action
+      # that still inherits the global 'visiting' permission has no record, so
+      # there is nothing for the relationship to link to.
+      override_permissions!(phase)
       phase.update!(report: build(:report))
       do_request
       assert_status 200
@@ -91,17 +95,54 @@ resource 'Phases' do
   end
 
   get 'web_api/v1/phases/:id/submission_count' do
-    let(:phase) { create(:native_survey_phase) }
     let(:id) { phase.id }
 
-    before do
-      create(:idea_status_proposed)
-      create_list(:native_survey_response, 2, creation_phase: phase, project: phase.project, phases: [phase])
-      create_list(:idea, 3, project: phase.project, phases: [phase])
-    end
+    before { create(:idea_status_proposed) }
 
     context 'native survey' do
+      let(:phase) { create(:native_survey_phase) }
+
+      before do
+        create_list(:native_survey_response, 2, creation_phase: phase, project: phase.project, phases: [phase])
+        create_list(:idea, 3, project: phase.project, phases: [phase])
+      end
+
       example 'Get count when native survey phase (ignores ideas)' do
+        do_request
+        assert_status 200
+        expect(response_data[:attributes]).to eq({ totalSubmissions: 2 })
+      end
+    end
+
+    context 'proposals' do
+      let(:phase) { create(:proposals_phase) }
+
+      before do
+        create_list(:proposal, 2, project: phase.project, creation_phase: phase, phases: [phase])
+        create(:proposal, project: phase.project, creation_phase: phase, phases: [phase], publication_status: 'submitted')
+        create(:proposal, project: phase.project, creation_phase: phase, phases: [phase], publication_status: 'draft')
+      end
+
+      example 'Get count when proposals phase (counts screened proposals, ignores drafts)' do
+        do_request
+        assert_status 200
+        expect(response_data[:attributes]).to eq({ totalSubmissions: 3 })
+      end
+    end
+
+    context 'ideation' do
+      let(:project) { create(:project_with_two_past_ideation_phases) }
+      let(:ideation_phases) { project.phases.where(participation_method: 'ideation').order(:start_at) }
+      let(:phase) { ideation_phases.last }
+
+      before do
+        earlier_phase = ideation_phases.first
+        create_list(:idea, 2, project: project, phases: [earlier_phase])
+        survey_phase = create(:native_survey_phase, project: project, start_at: 10.days.ago, end_at: 5.days.ago)
+        create(:native_survey_response, project: project, creation_phase: survey_phase, phases: [survey_phase])
+      end
+
+      example 'Get count when ideation phase (counts the whole project form, ignores survey responses)' do
         do_request
         assert_status 200
         expect(response_data[:attributes]).to eq({ totalSubmissions: 2 })
@@ -186,6 +227,233 @@ resource 'Phases' do
 
       do_request
       assert_status 401
+    end
+  end
+
+  get 'web_api/v1/phases/:id/input_response_fields' do
+    let(:phase) { create(:native_survey_phase) }
+    let(:id) { phase.id }
+
+    before do
+      form = create(:custom_form, participation_context: phase)
+      create(:custom_field, resource: form, key: 'q1', title_multiloc: { 'en' => 'Favourite colour' })
+      # Stub the PII LLM classification so the endpoint makes no network call.
+      llm = instance_double(Analysis::LLM::ClaudeHaiku45, chat: [])
+      allow_any_instance_of(LLMSelector).to receive(:llm_class_for_use_case)
+        .and_return(class_double(Analysis::LLM::ClaudeHaiku45, new: llm))
+    end
+
+    context 'when visitor' do
+      example '[error] Unauthorized (401)', document: false do
+        do_request
+        assert_status 401
+      end
+    end
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      example_request 'List the fields available for the responses exports' do
+        assert_status 200
+        expect(response_data.pluck(:id)).to include('q1', 'input_id', 'author_email', 'submitted_at')
+        expect(response_data).to all(include(type: 'input_response_field'))
+
+        by_id = response_data.index_by { |field| field[:id] }
+        expect(by_id['q1'][:attributes]).to include(title: 'Favourite colour', personal_data: false)
+        # Author columns are flagged structurally, without the LLM.
+        expect(by_id['author_email'][:attributes]).to include(personal_data: true)
+        expect(by_id['submitted_at'][:attributes]).to include(personal_data: false)
+      end
+
+      context 'when the phase does not support the export' do
+        let(:id) { create(:information_phase).id }
+
+        example 'Unprocessable (422)', document: false do
+          do_request
+          assert_status 422
+        end
+      end
+    end
+  end
+
+  post 'web_api/v1/phases/:id/input_responses_pdf' do
+    parameter :cover_only, 'Render only the cover page, synchronously (used by the live preview)', required: false
+
+    let(:phase) { create(:native_survey_phase) }
+    let(:id) { phase.id }
+
+    context 'when visitor' do
+      example '[error] Unauthorized (401)', document: false do
+        do_request
+        assert_status 401
+      end
+    end
+
+    context 'when admin' do
+      before { header_token_for(current_user) }
+
+      let(:current_user) { create(:admin) }
+
+      example 'Start a background job that generates the responses PDF', :active_job_que_adapter do
+        expect { do_request }
+          .to change { QueJob.by_job_class(Export::Pdf::InputResponsesJob).count }.by(1)
+
+        assert_status 202
+        expect(response_data).to include(
+          type: 'job',
+          attributes: hash_including(
+            job_type: 'Export::Pdf::InputResponsesJob',
+            progress: 0,
+            completed_at: nil
+          ),
+          relationships: hash_including(
+            owner: { data: { id: current_user.id, type: 'user' } },
+            context: { data: { id: id, type: 'phase' } }
+          )
+        )
+      end
+
+      example 'Refuse to start a second export while one is running', :active_job_que_adapter, document: false do
+        do_request
+        assert_status 202
+
+        # Reusing the running job would apply the first requester's redaction choices.
+        expect { do_request }
+          .not_to change { QueJob.by_job_class(Export::Pdf::InputResponsesJob).count }
+
+        assert_status 409
+        expect(json_response.dig(:errors, :base, 0, :error)).to eq 'export_in_progress'
+      end
+
+      example 'Generate the cover preview synchronously', document: false do
+        # Stub the Gotenberg-backed generation; the rendering itself is covered
+        # by the export service specs.
+        allow_any_instance_of(Export::Pdf::InputResponsesGenerator)
+          .to receive(:generate_pdf).and_return(StringIO.new('%PDF-1.4'))
+
+        do_request(cover_only: true)
+        assert_status 200
+        expect(response_body).to eq '%PDF-1.4'
+      end
+
+      context 'when the phase does not support the export' do
+        let(:id) { create(:information_phase).id }
+
+        example 'Unprocessable (422)', document: false do
+          do_request
+          assert_status 422
+        end
+      end
+    end
+  end
+
+  get 'web_api/v1/phases/:id/input_responses_pdf_result' do
+    parameter :tracker_id, 'The Jobs::Tracker id of the export job (returned when starting the export)', required: true
+
+    let(:phase) { create(:native_survey_phase) }
+    let(:id) { phase.id }
+    let(:tracker_id) { tracker.id }
+    let(:tracker) do
+      create(
+        :jobs_tracker,
+        context: phase,
+        root_job_type: 'Export::Pdf::InputResponsesJob',
+        owner: current_user,
+        completed_at: Time.current
+      )
+    end
+    let(:current_user) { create(:admin) }
+
+    context 'when visitor' do
+      let(:tracker_id) { nil }
+
+      example '[error] Unauthorized (401)', document: false do
+        do_request
+        assert_status 401
+      end
+    end
+
+    context 'when admin' do
+      before { header_token_for(current_user) }
+
+      example 'Download the PDF produced by the export job' do
+        create(:export_result_file, tracker: tracker)
+
+        do_request
+        assert_status 200
+        expect(response_headers['Content-Type']).to eq 'application/pdf'
+        expect(response_body).to start_with '%PDF'
+      end
+
+      example 'Not found while no export result is ready', document: false do
+        tracker
+
+        do_request
+        assert_status 404
+      end
+
+      example 'Not found when the export result expired', document: false do
+        create(:export_result_file, tracker: tracker, expires_at: 1.hour.ago)
+
+        do_request
+        assert_status 404
+      end
+
+      example "Not found for another user's export (the file reflects the owner's redaction choices)", document: false do
+        other_admin_tracker = create(
+          :jobs_tracker,
+          context: phase,
+          root_job_type: 'Export::Pdf::InputResponsesJob',
+          owner: create(:admin),
+          completed_at: Time.current
+        )
+        create(:export_result_file, tracker: other_admin_tracker)
+
+        do_request(tracker_id: other_admin_tracker.id)
+        assert_status 404
+      end
+    end
+  end
+
+  post 'web_api/v1/phases/:id/input_responses_xlsx' do
+    parameter :redacted_field_keys, 'Keys of fields to exclude from the export', required: false
+
+    let(:phase) { create(:native_survey_phase) }
+    let(:id) { phase.id }
+
+    before do
+      form = create(:custom_form, participation_context: phase)
+      create(:custom_field, resource: form, key: 'q_secret', title_multiloc: { 'en' => 'Secret question' })
+      create(:custom_field, resource: form, key: 'q_public', title_multiloc: { 'en' => 'Public question' })
+    end
+
+    context 'when visitor' do
+      example '[error] Unauthorized (401)', document: false do
+        do_request
+        assert_status 401
+      end
+    end
+
+    context 'when admin' do
+      before { admin_header_token }
+
+      example 'Generate the responses xlsx without the redacted fields' do
+        do_request(redacted_field_keys: ['q_secret'])
+        assert_status 200
+
+        headers = xlsx_contents(response_body).first[:column_headers]
+        expect(headers).to include('Public question')
+        expect(headers).not_to include('Secret question')
+      end
+
+      context 'when the phase does not support the export' do
+        let(:id) { create(:information_phase).id }
+
+        example 'Unprocessable (422)', document: false do
+          do_request
+          assert_status 422
+        end
+      end
     end
   end
 
@@ -278,7 +546,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_values: { multiselect_field.key => %w[cat dog] }
+          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog])]
         )
       end
       let!(:survey_response2) do
@@ -287,7 +555,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_values: { multiselect_field.key => %w[cat] }
+          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat])]
         )
       end
 
@@ -387,6 +655,30 @@ resource 'Phases' do
           )
         end
 
+        context 'with reactions of admins and moderators' do
+          before do
+            # Unless admins and moderators are excluded from statistics, these would be counted in the stats and in the votes of i1
+            create_admins_and_moderators(project: phase.project).each do |user|
+              create(:reaction, reactable: i1, user: user, mode: 'down')
+            end
+          end
+
+          example 'Get common ground results excluding admins and moderators' do
+            enable_exclude_admins_and_moderators_from_statistics
+            do_request
+            assert_status 200
+
+            expect(response_data.dig(:attributes, :stats)).to eq({
+              num_participants: 9,
+              num_ideas: 4,
+              votes: { up: 3, down: 3, neutral: 3 }
+            })
+            expect(response_data.dig(:attributes, :top_consensus_ideas).pluck(:id)).to eq [i2.id, i1.id, i3.id]
+            expect(response_data.dig(:attributes, :top_controversial_ideas).pluck(:id)).to eq [i3.id, i1.id, i2.id]
+            expect(response_data.dig(:attributes, :top_consensus_ideas, 1, :votes)).to eq({ up: 2, down: 1, neutral: 0 })
+          end
+        end
+
         context 'when the phase is not "common ground"' do
           let(:id) { create(:phase).id }
 
@@ -412,7 +704,10 @@ resource 'Phases' do
           :native_survey_response,
           project: project,
           creation_phase: active_phase,
-          custom_field_values: { sentiment_question1.key => 2, sentiment_question2.key => 4 },
+          custom_field_answers: [
+            build(:custom_field_answer, key: sentiment_question1.key, value: 2),
+            build(:custom_field_answer, key: sentiment_question2.key, value: 4)
+          ],
           created_at: Time.new(2025, 1, 1)
         )
       end
@@ -421,7 +716,10 @@ resource 'Phases' do
           :native_survey_response,
           project: project,
           creation_phase: active_phase,
-          custom_field_values: { sentiment_question1.key => 3, sentiment_question2.key => 1 },
+          custom_field_answers: [
+            build(:custom_field_answer, key: sentiment_question1.key, value: 3),
+            build(:custom_field_answer, key: sentiment_question2.key, value: 1)
+          ],
           created_at: Time.new(2025, 4, 1)
         )
       end
@@ -456,6 +754,72 @@ resource 'Phases' do
           }
         })
       end
+
+      context 'with survey responses of admins and moderators' do
+        before do
+          create_admins_and_moderators(project: project).each do |author|
+            create(
+              :native_survey_response,
+              project: project,
+              creation_phase: active_phase,
+              author: author,
+              custom_field_answers: [
+                build(:custom_field_answer, key: sentiment_question1.key, value: 5),
+                build(:custom_field_answer, key: sentiment_question2.key, value: 5)
+              ],
+              created_at: Time.new(2025, 1, 1)
+            )
+          end
+        end
+
+        example 'Get survey sentiment by quarter excluding admins and moderators' do
+          enable_exclude_admins_and_moderators_from_statistics
+          do_request
+          expect(status).to eq 200
+          expect(response_data.dig(:attributes, :overall)).to eq({
+            averages: { '2025-1': 3.0, '2025-2': 2.0 },
+            totals: {
+              '2025-1': { '1': 0, '2': 1, '3': 0, '4': 1, '5': 0 },
+              '2025-2': { '1': 1, '2': 0, '3': 1, '4': 0, '5': 0 }
+            }
+          })
+        end
+      end
+    end
+
+    get 'web_api/v1/phases/:id/survey_results' do
+      let!(:proposed_idea_status) { create(:idea_status_proposed) }
+
+      let(:project) { create(:community_monitor_project) }
+      let(:active_phase) { project.phases.first }
+      let(:form) { create(:custom_form, participation_context: active_phase) }
+      let(:sentiment_question) { create(:custom_field_sentiment_linear_scale, resource: form, question_category: 'quality_of_life') }
+      let(:id) { active_phase.id }
+
+      let!(:survey_responses) do
+        [create(:user), *create_admins_and_moderators(project: project)].map do |author|
+          create(
+            :native_survey_response,
+            project: project,
+            creation_phase: active_phase,
+            author: author,
+            custom_field_answers: [build(:custom_field_answer, key: sentiment_question.key, value: 3)]
+          )
+        end
+      end
+
+      example 'Get community monitor survey results includes admins and moderators by default', document: false do
+        do_request
+        expect(status).to eq 200
+        expect(response_data.dig(:attributes, :totalSubmissions)).to eq 6
+      end
+
+      example 'Get community monitor survey results excluding admins and moderators' do
+        enable_exclude_admins_and_moderators_from_statistics
+        do_request
+        expect(status).to eq 200
+        expect(response_data.dig(:attributes, :totalSubmissions)).to eq 1
+      end
     end
 
     get 'web_api/v1/phases/:id/submission_count' do
@@ -483,7 +847,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_values: { multiselect_field.key => %w[cat dog] }
+          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog])]
         )
       end
       let!(:survey_response2) do
@@ -492,7 +856,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_values: { multiselect_field.key => %w[cat] }
+          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat])]
         )
       end
       let!(:survey_response3) do
@@ -501,7 +865,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_values: { multiselect_field.key => %w[dog] }
+          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[dog])]
         )
       end
 
@@ -550,7 +914,7 @@ resource 'Phases' do
               project: project,
               creation_phase: active_phase,
               phases: [active_phase],
-              custom_field_values: { multiselect_field.key => %w[cat dog] }
+              custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog])]
             )
           end
           let!(:survey_response2) do
@@ -559,7 +923,7 @@ resource 'Phases' do
               project: project,
               creation_phase: active_phase,
               phases: [active_phase],
-              custom_field_values: { multiselect_field.key => %w[cat] }
+              custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat])]
             )
           end
 
@@ -567,7 +931,7 @@ resource 'Phases' do
             expected_params = [[survey_response1, survey_response2], active_phase]
             allow(Export::Xlsx::InputSheetGenerator).to receive(:new).and_return(Export::Xlsx::InputSheetGenerator.new(*expected_params))
             do_request
-            expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params)
+            expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params, redacted_field_keys: [])
 
             assert_status 200
             expect(xlsx_contents(response_body)).to match([
@@ -696,7 +1060,7 @@ resource 'Phases' do
           project: project,
           creation_phase: active_phase,
           phases: [active_phase],
-          custom_field_values: { multiselect_field.key => %w[cat dog] }
+          custom_field_answers: [build(:custom_field_answer, key: multiselect_field.key, value: %w[cat dog])]
         )
       end
 
@@ -707,7 +1071,7 @@ resource 'Phases' do
         expected_params = [[survey_response], active_phase]
         allow(Export::Xlsx::InputSheetGenerator).to receive(:new).and_return(Export::Xlsx::InputSheetGenerator.new(*expected_params))
         do_request
-        expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params)
+        expect(Export::Xlsx::InputSheetGenerator).to have_received(:new).with(*expected_params, redacted_field_keys: [])
         assert_status 200
         expect(xlsx_contents(response_body)).to match([
           {

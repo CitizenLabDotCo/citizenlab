@@ -6,10 +6,10 @@ module Permissions
       # We do not support user fields for 'everyone' unless the participation method supports it and it is turned on
       return [] if permission.permitted_by == 'everyone' && !permission.user_fields_in_form_enabled?
 
-      fields = if permission.global_custom_fields
-        default_fields(permission)
-      else
-        permission.permissions_custom_fields.to_a
+      fields = case permission.custom_fields_behavior
+      when 'global' then default_fields(permission)
+      when 'disabled' then []
+      else permission.permissions_custom_fields.to_a
       end
 
       fields = add_related_group_fields(permission, fields)
@@ -19,25 +19,9 @@ module Permissions
       fields
     end
 
-    # To create fields for the custom permitted_by - we copy the defaults from the previous value of permitted_by
-    def persist_default_fields(permission)
-      return unless permission.global_custom_fields && permission.permissions_custom_fields.empty?
-
-      # First update global custom fields to false
-      permission.update!(global_custom_fields: false)
-
-      # Now create the default fields
-      fields = default_fields(permission)
-      return if fields.blank?
-
-      fields.each(&:save!)
-    end
-
     private
 
     def default_fields(permission)
-      return [] unless permission.allow_global_custom_fields?
-
       platform_custom_fields.each_with_index.map do |field, index|
         PermissionsCustomField.new(id: SecureRandom.uuid, custom_field: field, required: field.required, ordering: index, permission: permission)
       end

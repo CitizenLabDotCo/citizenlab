@@ -91,6 +91,7 @@ export interface Props {
   'data-cy'?: string;
   onClick?: (event: React.MouseEvent) => void;
   ideaTitle?: string;
+  menuRight?: string;
 }
 
 const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
@@ -104,6 +105,7 @@ const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
       id,
       onClick,
       ideaTitle,
+      menuRight = '0px',
     } = props;
     const { formatMessage } = useIntl();
     const [visible, setVisible] = useState(false);
@@ -162,7 +164,7 @@ const MoreActionsMenu = forwardRef<HTMLButtonElement, Props>(
           opened={visible}
           onClickOutside={hide}
           className="e2e-more-actions-list"
-          right="0px"
+          right={menuRight}
           mobileRight="0px"
           content={
             <Box role="menu">

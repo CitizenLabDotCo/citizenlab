@@ -17,11 +17,6 @@ export default defineMessages({
     id: 'app.containers.ChangePassword.titleAddPassword',
     defaultMessage: 'Add a password',
   },
-  minimumPasswordLengthError: {
-    id: 'app.containers.ChangePassword.password.minimumPasswordLengthError',
-    defaultMessage:
-      'Provide a password that is at least {minimumPasswordLength} characters long',
-  },
   passwordEmptyError: {
     id: 'app.containers.ChangePassword.passwordEmptyError',
     defaultMessage: 'Enter your password',

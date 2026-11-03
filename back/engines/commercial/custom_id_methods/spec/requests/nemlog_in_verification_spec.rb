@@ -67,6 +67,8 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
       }]
     }
     configuration.save!
+    # SSO values are only stored for fields the platform has.
+    %w[municipality_code birthyear].each { |key| create(:custom_field, key: key) }
     host! 'example.org'
   end
 
@@ -81,7 +83,7 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
       first_name: 'Rudolphi',
       last_name: 'Raindeari'
     })
-    expect(user.custom_field_values).to have_key('municipality_code')
+    expect(user.answer_for_key('municipality_code')).to be_nil
     expect(user.verifications.first).to have_attributes({
       method_name: 'nemlog_in',
       user_id: user.id,
@@ -106,6 +108,37 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
     get "/auth/nemlog_in?token=#{token}"
     follow_redirect!
     expect(response).to redirect_to('/en?verification_success=true')
+  end
+
+  # An email-less SSO account holding this identity is merged in rather than blocking
+  # the verification. If that merge hits its own safety guard, the whole thing rolls
+  # back, so the verification is still on the other account - which is what
+  # 'taken' tells the user. It is reported rather than swallowed, because it means
+  # a participation surface is missing from AccountMergeService::MOVES.
+  it 'fails gracefully when the account holding the identity cannot be merged' do
+    source = create(:user).tap do |u|
+      u.update_columns(email: nil, password_digest: nil)
+      create(:identity, user: u, provider: 'nemlog_in', uid: 'source-uid')
+    end
+    create(
+      :verification,
+      user: source,
+      method_name: 'nemlog_in',
+      hashed_uid: Verification::VerificationService.new.send(:hashed_uid, saml_auth_response[:uid], 'nemlog_in')
+    )
+    allow_any_instance_of(AccountMergeService)
+      .to receive(:merge!).and_raise(AccountMergeService::IncompleteMergeError)
+    allow(ErrorReporter).to receive(:report)
+
+    get "/auth/nemlog_in?token=#{token}&verification_pathname=/some-page"
+    follow_redirect!
+
+    expect(response).to redirect_to('/some-page?verification_error=true&error_code=taken')
+    expect(ErrorReporter).to have_received(:report)
+      .with(instance_of(AccountMergeService::IncompleteMergeError))
+    # Rolled back: neither account changed hands.
+    expect(user.reload.verified).to be false
+    expect(source.reload.verifications.active.count).to eq 1
   end
 
   it 'fails when the cprUuid has already been used' do
@@ -165,7 +198,7 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
         get "/auth/nemlog_in?token=#{token}&verification_pathname=/some-page"
         follow_redirect!
 
-        expect(user.reload.custom_field_values['birthyear']).to eq(1944)
+        expect(user.reload.answer_for_key('birthyear')&.value).to eq(1944)
       end
     end
 
@@ -181,7 +214,7 @@ describe CustomIdMethods::NemlogIn::NemlogInOmniauth do
         get "/auth/nemlog_in?token=#{token}&verification_pathname=/some-page"
         follow_redirect!
 
-        expect(user.reload.custom_field_values['birthyear']).to be_nil
+        expect(user.reload.answer_for_key('birthyear')).to be_nil
       end
     end
   end

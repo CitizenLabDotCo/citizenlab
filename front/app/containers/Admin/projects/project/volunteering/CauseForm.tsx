@@ -39,9 +39,15 @@ type PageFormProps = {
   onSubmit: (formValues: SubmitValues) => void | Promise<void>;
   defaultValues?: Partial<FormValues>;
   imageUrl?: string | null;
+  submitPlacement?: 'fixed' | 'inline';
 };
 
-const CauseForm = ({ onSubmit, defaultValues, imageUrl }: PageFormProps) => {
+const CauseForm = ({
+  onSubmit,
+  defaultValues,
+  imageUrl,
+  submitPlacement = 'fixed',
+}: PageFormProps) => {
   const { formatMessage } = useIntl();
   const { width, containerRef } = useContainerWidthAndHeight();
   const schema = object({
@@ -86,6 +92,12 @@ const CauseForm = ({ onSubmit, defaultValues, imageUrl }: PageFormProps) => {
     }
   };
 
+  const submitButton = (
+    <ButtonWithLink type="submit" processing={methods.formState.isSubmitting}>
+      {formatMessage(messages.saveCause)}
+    </ButtonWithLink>
+  );
+
   return (
     <Box ref={containerRef}>
       <FormProvider {...methods}>
@@ -121,25 +133,24 @@ const CauseForm = ({ onSubmit, defaultValues, imageUrl }: PageFormProps) => {
               inputLabel={formatMessage(messages.causeImageLabel)}
             />
           </SectionField>
-          <Box
-            position="fixed"
-            borderTop={`1px solid ${colors.divider}`}
-            bottom="0"
-            w={`calc(${width}px + ${defaultAdminCardPadding * 2}px)`}
-            ml={`-${defaultAdminCardPadding}px`}
-            background={colors.white}
-            display="flex"
-            justifyContent="flex-start"
-          >
-            <Box py="8px" px={`${defaultAdminCardPadding}px`}>
-              <ButtonWithLink
-                type="submit"
-                processing={methods.formState.isSubmitting}
-              >
-                {formatMessage(messages.saveCause)}
-              </ButtonWithLink>
+          {submitPlacement === 'inline' ? (
+            <Box display="flex">{submitButton}</Box>
+          ) : (
+            <Box
+              position="fixed"
+              borderTop={`1px solid ${colors.divider}`}
+              bottom="0"
+              w={`calc(${width}px + ${defaultAdminCardPadding * 2}px)`}
+              ml={`-${defaultAdminCardPadding}px`}
+              background={colors.white}
+              display="flex"
+              justifyContent="flex-start"
+            >
+              <Box py="8px" px={`${defaultAdminCardPadding}px`}>
+                {submitButton}
+              </Box>
             </Box>
-          </Box>
+          )}
         </form>
       </FormProvider>
     </Box>

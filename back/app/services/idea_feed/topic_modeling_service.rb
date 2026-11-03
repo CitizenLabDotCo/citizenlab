@@ -300,12 +300,14 @@ module IdeaFeed
     end
 
     def project_description
-      description_multiloc = if (layout = ContentBuilder::Layout.find_by(content_buildable: @project, code: 'project_description', enabled: true))
-        ContentBuilder::Craftjs::VisibleTextualMultilocs.new(layout.craftjs_json).extract_and_join
-      else
-        @project.description_multiloc
-      end
-      multiloc_service.t(description_multiloc)
+      layout = ContentBuilder::Layout.find_by(
+        content_buildable: @project,
+        code: ContentBuilder::ProjectPageLayoutService::CODE,
+        enabled: true
+      )
+      return '' unless layout
+
+      multiloc_service.t(ContentBuilder::Craftjs::VisibleTextualMultilocs.new(layout.craftjs_json).extract_and_join)
     end
 
     def log_topics_rebalanced_activity(update_log: [], creation_log: [], removal_log: [])

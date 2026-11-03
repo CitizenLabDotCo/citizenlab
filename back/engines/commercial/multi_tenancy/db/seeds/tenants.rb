@@ -40,10 +40,13 @@ module MultiTenancy
             password_login: {
               allowed: true,
               enabled: true,
-              enable_signup: true,
               minimum_length: 8
             },
             pages: {
+              allowed: true,
+              enabled: true
+            },
+            project_static_pages: {
               allowed: true,
               enabled: true
             },
@@ -86,14 +89,6 @@ module MultiTenancy
               enabled: true,
               allowed: true
             },
-            idea_author_change: {
-              enabled: true,
-              allowed: true
-            },
-            granular_permissions: {
-              enabled: true,
-              allowed: true
-            },
             machine_translations: {
               enabled: true,
               allowed: true
@@ -114,11 +109,6 @@ module MultiTenancy
               enabled: true,
               allowed: true,
               write_key: ENV.fetch('DEFAULT_SATISMETER_WRITE_KEY')
-            },
-            google_analytics: {
-              enabled: true,
-              allowed: true,
-              tracking_id: ENV.fetch('DEFAULT_GA_TRACKING_ID')
             },
             google_tag_manager: {
               enabled: true,
@@ -244,6 +234,10 @@ module MultiTenancy
               allowed: true
             },
             form_mapping: {
+              enabled: true,
+              allowed: true
+            },
+            input_form_answer_filters: {
               enabled: true,
               allowed: true
             },
@@ -423,6 +417,43 @@ module MultiTenancy
               allowed: true
             },
             html_block_in_content_builder: {
+              enabled: true,
+              allowed: true
+            },
+            custom_page_builder: {
+              enabled: true,
+              allowed: true
+            },
+            llm_reporting: {
+              enabled: true,
+              allowed: true
+            },
+            sms: {
+              enabled: true,
+              allowed: true,
+              use_test_mode: true
+            },
+            sms_login: {
+              enabled: true,
+              allowed: true
+            },
+            sms_manual_campaigns: {
+              enabled: true,
+              allowed: true
+            },
+            decidim_importer: {
+              enabled: true,
+              allowed: true
+            },
+            configurable_dropdown: {
+              enabled: true,
+              allowed: true
+            },
+            project_backoffice_redesign: {
+              enabled: false,
+              allowed: true
+            },
+            ai_assistant: {
               enabled: true,
               allowed: true
             }

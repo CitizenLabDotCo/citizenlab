@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Input, IOption } from '@citizenlab/cl2-component-library';
+import { Box, Input, IOption, Text } from '@citizenlab/cl2-component-library';
 import { CLErrors } from 'typings';
 
 import {
@@ -12,17 +12,23 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
+import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
+import messages from 'containers/Admin/projects/project/messages';
+
 import AnonymousPostingToggle from 'components/admin/AnonymousPostingToggle';
 import { SectionField, SubSectionTitle } from 'components/admin/Section';
 import Error from 'components/UI/Error';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { FormattedMessage, useIntl } from 'utils/cl-intl';
 
-import messages from '../../../../../../messages';
+import configMessages from '../../../messages';
 import CustomFieldPicker from '../../shared/CustomFieldPicker';
 import SimilarityDetectionConfig from '../../shared/SimilarityDetectionConfig';
 import ViewSelector from '../../shared/ViewSelector';
+import ModerationAssignee from '../_shared/ModerationAssignee';
+import NumberSettingRow from '../_shared/NumberSettingRow';
 import PrescreeningModeSelector from '../_shared/PrescreeningModeSelector';
+import ReactionLimitSettings from '../_shared/ReactionLimitSettings';
 import SortingPicker from '../_shared/SortingPicker';
 import UserActions from '../_shared/UserActions';
 
@@ -68,6 +74,8 @@ interface Props {
   similarity_enabled?: boolean | null;
   similarity_threshold_title: number | null | undefined;
   similarity_threshold_body: number | null | undefined;
+  layout?: 'page' | 'panel';
+  phaseId?: string;
   handleSimilarityEnabledChange: (value: boolean) => void;
   handleThresholdChange: (
     field: 'similarity_threshold_title' | 'similarity_threshold_body',
@@ -112,109 +120,240 @@ const ProposalsInputs = ({
   similarity_threshold_body,
   handleSimilarityEnabledChange,
   handleThresholdChange,
+  layout = 'page',
+  phaseId,
 }: Props) => {
+  const { formatMessage } = useIntl();
   const prescreeningFeatureEnabled = useFeatureFlag({
     name: 'prescreening',
   });
 
+  const inputTerm = (
+    <CustomFieldPicker
+      input_term={input_term}
+      handleInputTermChange={handleInputTermChange}
+    />
+  );
+
+  const expiry = (
+    <SectionField>
+      <SubSectionTitle>
+        <FormattedMessage {...messages.expireDaysLimit} />
+      </SubSectionTitle>
+      <Input
+        id="expire_days_limit"
+        type="number"
+        min="1"
+        placeholder=""
+        value={expire_days_limit ? expire_days_limit.toString() : null}
+        onChange={handleDaysLimitChange}
+      />
+      <Error
+        text={expireDateLimitError}
+        apiErrors={apiErrors && apiErrors.expire_days_limit}
+      />
+    </SectionField>
+  );
+
+  const threshold = (
+    <SectionField>
+      <SubSectionTitle>
+        <FormattedMessage {...messages.reactingThreshold} />
+      </SubSectionTitle>
+      <Input
+        id="reacting_threshold"
+        type="number"
+        min="2"
+        placeholder=""
+        value={reacting_threshold ? reacting_threshold.toString() : null}
+        onChange={handleReactingThresholdChange}
+      />
+      <Error
+        text={reactingThresholdError}
+        apiErrors={apiErrors && apiErrors.reacting_threshold}
+      />
+    </SectionField>
+  );
+
+  const requirements = (
+    <PanelGroup
+      label={formatMessage(configMessages.proposalRequirementsGroup)}
+      defaultOpen
+    >
+      <NumberSettingRow
+        id="reacting_threshold"
+        label={formatMessage(messages.reactingThreshold)}
+        value={reacting_threshold}
+        min="2"
+        onChange={handleReactingThresholdChange}
+        error={
+          <Error
+            text={reactingThresholdError}
+            apiErrors={apiErrors && apiErrors.reacting_threshold}
+          />
+        }
+      />
+      <NumberSettingRow
+        id="expire_days_limit"
+        label={formatMessage(messages.expireDaysLimit)}
+        value={expire_days_limit}
+        min="1"
+        onChange={handleDaysLimitChange}
+        error={
+          <Error
+            text={expireDateLimitError}
+            apiErrors={apiErrors && apiErrors.expire_days_limit}
+          />
+        }
+      />
+      <Text variant="boHelper" fontSize="xs" m="0">
+        {formatMessage(configMessages.proposalRequirementsNote)}
+      </Text>
+    </PanelGroup>
+  );
+
+  const anonymity = (
+    <AnonymousPostingToggle
+      variant={layout === 'panel' ? 'panel' : undefined}
+      allow_anonymous_participation={allow_anonymous_participation}
+      handleAllowAnonymousParticipationOnChange={
+        handleAllowAnonymousParticipationOnChange
+      }
+      disabledReason={toggleAnonymousPostingDisabledReason}
+    />
+  );
+
+  const screening = prescreeningFeatureEnabled ? (
+    <PrescreeningModeSelector
+      variant={layout === 'panel' ? 'panel' : undefined}
+      prescreening_mode={prescreening_mode}
+      onPrescreeningModeChange={onPrescreeningModeChange}
+    />
+  ) : null;
+
+  const userActions = (
+    <UserActions
+      submission_enabled={submission_enabled || false}
+      commenting_enabled={commenting_enabled || false}
+      reacting_enabled={reacting_enabled || false}
+      togglePostingEnabled={togglePostingEnabled}
+      toggleCommentingEnabled={toggleCommentingEnabled}
+      toggleReactingEnabled={toggleReactingEnabled}
+      apiErrors={apiErrors}
+      reacting_like_method={reacting_like_method}
+      reacting_like_limited_max={reacting_like_limited_max}
+      noLikingLimitError={noLikingLimitError}
+      handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
+      handleLikingLimitOnChange={handleLikingLimitOnChange}
+      phaseId={phaseId}
+      layout={layout}
+    />
+  );
+
+  const likes = reacting_enabled && (
+    <ReactionLimitSettings
+      name="likingmethod"
+      title={formatMessage(messages.likingMethodTitle)}
+      method={reacting_like_method}
+      max={reacting_like_limited_max}
+      maxLabel={formatMessage(messages.maxLikes)}
+      onMethodChange={handleReactingLikeMethodOnChange}
+      onMaxChange={handleLikingLimitOnChange}
+      error={
+        <>
+          <Error apiErrors={apiErrors && apiErrors.reacting_method} />
+          <Error
+            text={noLikingLimitError}
+            apiErrors={apiErrors && apiErrors.reacting_limit}
+          />
+        </>
+      }
+    />
+  );
+
+  const similarity = (
+    <SimilarityDetectionConfig
+      variant={layout === 'panel' ? 'panel' : undefined}
+      apiErrors={apiErrors}
+      similarity_enabled={similarity_enabled}
+      similarity_threshold_title={similarity_threshold_title}
+      similarity_threshold_body={similarity_threshold_body}
+      handleSimilarityEnabledChange={handleSimilarityEnabledChange}
+      handleThresholdChange={handleThresholdChange}
+    />
+  );
+
+  const views = (
+    <ViewSelector
+      variant={layout === 'panel' ? 'panel' : undefined}
+      presentation_mode={presentation_mode}
+      available_views={available_views}
+      apiErrors={apiErrors}
+      handleIdeasDisplayChange={handleIdeasDisplayChange}
+      handleAvailableViewsChange={handleAvailableViewsChange}
+      hideFeed
+    />
+  );
+
+  const sorting = (
+    <SortingPicker
+      variant={layout === 'panel' ? 'panel' : undefined}
+      options={[
+        { key: 'trending', value: 'trending' },
+        { key: 'comments_count', value: 'comments_count' },
+        { key: 'random', value: 'random' },
+        { key: 'popular', value: 'popular' },
+        { key: 'newest', value: 'new' },
+        { key: 'oldest', value: '-new' },
+        { key: 'status_priority', value: 'status_priority' },
+      ]}
+      ideas_order={ideas_order}
+      apiErrors={apiErrors}
+      handleIdeaDefaultSortMethodChange={handleIdeaDefaultSortMethodChange}
+    />
+  );
+
+  if (layout === 'panel') {
+    return (
+      <>
+        <Box pt="22px">
+          <PanelGroup
+            label={formatMessage(configMessages.participantActionsGroup)}
+            defaultOpen
+          >
+            {userActions}
+            {likes}
+          </PanelGroup>
+        </Box>
+        {requirements}
+        <PanelGroup
+          label={formatMessage(configMessages.moderationGroup)}
+          defaultOpen
+        >
+          <Box display="flex" flexDirection="column" gap="16px">
+            <ModerationAssignee phaseId={phaseId} />
+            {screening}
+            {anonymity}
+            {similarity}
+          </Box>
+        </PanelGroup>
+        {views}
+        {sorting}
+      </>
+    );
+  }
+
   return (
     <>
-      <CustomFieldPicker
-        input_term={input_term}
-        handleInputTermChange={handleInputTermChange}
-      />
-      <SectionField>
-        <SubSectionTitle>
-          <FormattedMessage {...messages.expireDaysLimit} />
-        </SubSectionTitle>
-        <Input
-          id="expire_days_limit"
-          type="number"
-          min="1"
-          placeholder=""
-          value={expire_days_limit ? expire_days_limit.toString() : null}
-          onChange={handleDaysLimitChange}
-        />
-        <Error
-          text={expireDateLimitError}
-          apiErrors={apiErrors && apiErrors.expire_days_limit}
-        />
-      </SectionField>
-      <SectionField>
-        <SubSectionTitle>
-          <FormattedMessage {...messages.reactingThreshold} />
-        </SubSectionTitle>
-        <Input
-          id="reacting_threshold"
-          type="number"
-          min="2"
-          placeholder=""
-          value={reacting_threshold ? reacting_threshold.toString() : null}
-          onChange={handleReactingThresholdChange}
-        />
-        <Error
-          text={reactingThresholdError}
-          apiErrors={apiErrors && apiErrors.reacting_threshold}
-        />
-      </SectionField>
-      <AnonymousPostingToggle
-        allow_anonymous_participation={allow_anonymous_participation}
-        handleAllowAnonymousParticipationOnChange={
-          handleAllowAnonymousParticipationOnChange
-        }
-        disabledReason={toggleAnonymousPostingDisabledReason}
-      />
-      {prescreeningFeatureEnabled && (
-        <PrescreeningModeSelector
-          prescreening_mode={prescreening_mode}
-          onPrescreeningModeChange={onPrescreeningModeChange}
-        />
-      )}
-      <UserActions
-        submission_enabled={submission_enabled || false}
-        commenting_enabled={commenting_enabled || false}
-        reacting_enabled={reacting_enabled || false}
-        togglePostingEnabled={togglePostingEnabled}
-        toggleCommentingEnabled={toggleCommentingEnabled}
-        toggleReactingEnabled={toggleReactingEnabled}
-        apiErrors={apiErrors}
-        reacting_like_method={reacting_like_method}
-        reacting_like_limited_max={reacting_like_limited_max}
-        noLikingLimitError={noLikingLimitError}
-        handleReactingLikeMethodOnChange={handleReactingLikeMethodOnChange}
-        handleLikingLimitOnChange={handleLikingLimitOnChange}
-      />
-
-      <SimilarityDetectionConfig
-        apiErrors={apiErrors}
-        similarity_enabled={similarity_enabled}
-        similarity_threshold_title={similarity_threshold_title}
-        similarity_threshold_body={similarity_threshold_body}
-        handleSimilarityEnabledChange={handleSimilarityEnabledChange}
-        handleThresholdChange={handleThresholdChange}
-      />
-
-      <ViewSelector
-        presentation_mode={presentation_mode}
-        available_views={available_views}
-        apiErrors={apiErrors}
-        handleIdeasDisplayChange={handleIdeasDisplayChange}
-        handleAvailableViewsChange={handleAvailableViewsChange}
-      />
-
-      <SortingPicker
-        options={[
-          { key: 'trending', value: 'trending' },
-          { key: 'comments_count', value: 'comments_count' },
-          { key: 'random', value: 'random' },
-          { key: 'popular', value: 'popular' },
-          { key: 'newest', value: 'new' },
-          { key: 'oldest', value: '-new' },
-        ]}
-        ideas_order={ideas_order}
-        apiErrors={apiErrors}
-        handleIdeaDefaultSortMethodChange={handleIdeaDefaultSortMethodChange}
-      />
+      {inputTerm}
+      {expiry}
+      {threshold}
+      {anonymity}
+      {screening}
+      {userActions}
+      {similarity}
+      {views}
+      {sorting}
     </>
   );
 };

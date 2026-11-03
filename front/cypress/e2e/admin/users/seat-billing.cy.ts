@@ -200,7 +200,6 @@ describe.skip('Seat based billing', () => {
 
   describe('with moderator seats (project moderator)', () => {
     const projectTitle = randomString();
-    const projectDescription = randomString();
     const projectDescriptionPreview = randomString(30);
     let projectId: string;
     let phaseId: string;
@@ -247,7 +246,6 @@ describe.skip('Seat based billing', () => {
       cy.apiCreateProject({
         title: projectTitle,
         descriptionPreview: projectDescriptionPreview,
-        description: projectDescription,
         publicationStatus: 'published',
       })
         .then((project) => {

@@ -195,9 +195,9 @@ export default defineMessages({
     id: 'app.components.formBuilder.requiredToggleLabel',
     defaultMessage: 'Make answering this question required',
   },
-  showResponseToUsersToggleLabel: {
-    id: 'app.components.formBuilder.showResponseToUsersToggleLabel',
-    defaultMessage: 'Show response to users',
+  requiredToggleDescription: {
+    id: 'app.components.formBuilder.requiredToggleDescription',
+    defaultMessage: 'Participants must answer to continue.',
   },
   deleteButtonLabel: {
     id: 'app.components.formBuilder.deleteButtonLabel',
@@ -279,10 +279,9 @@ export default defineMessages({
     id: 'app.components.formBuilder.questionCannotBeDeleted',
     defaultMessage: "This question can't be deleted.",
   },
-  fieldIsNotVisibleTooltip: {
-    id: 'app.components.formBuilder.fieldIsNotVisibleTooltip',
-    defaultMessage:
-      'Currently, answers to these questions are only available in the exported excel file on Input Manager, and not visible to the users.',
+  managersOnly: {
+    id: 'app.components.formBuilder.managersOnly',
+    defaultMessage: 'Managers only',
   },
   leaveBuilderConfirmationQuestion: {
     id: 'app.components.formBuilder.leaveBuilderConfirmationQuestion',

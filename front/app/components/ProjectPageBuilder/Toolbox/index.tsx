@@ -1,15 +1,50 @@
 import React from 'react';
 
 import Container from 'components/admin/ContentBuilder/Toolbox/Container';
+import DraggableElement from 'components/admin/ContentBuilder/Toolbox/DraggableElement';
+import Section from 'components/admin/ContentBuilder/Toolbox/Section';
+import EventsList from 'components/admin/ContentBuilder/Widgets/Events';
 import DescriptionToolboxSections from 'components/DescriptionBuilder/DescriptionBuilderToolbox/DescriptionToolboxSections';
-import builderMessages from 'components/ProjectPageBuilder/messages';
-import LockedNote from 'components/ProjectPageBuilder/Widgets/LockedNote';
+import widgetMessages from 'components/ProjectPageBuilder/Widgets/messages';
+import PhasesWidget from 'components/ProjectPageBuilder/Widgets/Phases';
+import SpotlightSurveysWidget from 'components/ProjectPageBuilder/Widgets/SpotlightSurveys';
+import NewLabel from 'components/UI/NewLabel';
+
+import { useIntl } from 'utils/cl-intl';
 
 const ProjectPageBuilderToolbox = () => {
+  const { formatMessage } = useIntl();
+
   return (
     <Container>
-      <LockedNote message={builderMessages.toolboxLockedNote} />
       <DescriptionToolboxSections />
+      <Section>
+        <DraggableElement
+          id="e2e-draggable-phases"
+          component={<PhasesWidget />}
+          icon="timeline"
+          label={formatMessage(widgetMessages.phasesWidgetTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-events"
+          component={
+            <EventsList
+              source="currentProject"
+              timeFilters={['upcoming', 'past']}
+              limit="all"
+            />
+          }
+          icon="calendar"
+          label={formatMessage(widgetMessages.eventsWidgetTitle)}
+        />
+        <DraggableElement
+          id="e2e-draggable-spotlight-surveys"
+          component={<SpotlightSurveysWidget />}
+          icon="survey"
+          label={formatMessage(widgetMessages.extraSurveysWidgetTitle)}
+          labelSuffix={<NewLabel expiryDate={new Date('2026-11-24')} />}
+        />
+      </Section>
     </Container>
   );
 };

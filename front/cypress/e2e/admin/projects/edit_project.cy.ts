@@ -2,7 +2,6 @@ import { randomString } from '../../../support/commands';
 
 describe('Admin: edit project', () => {
   const projectTitle = randomString();
-  const projectDescription = randomString(30);
   const projectDescriptionPreview = randomString(30);
   let projectId: string;
 
@@ -14,7 +13,6 @@ describe('Admin: edit project', () => {
     cy.apiCreateProject({
       title: projectTitle,
       descriptionPreview: projectDescriptionPreview,
-      description: projectDescription,
       publicationStatus: 'published',
     }).then((project) => {
       projectId = project.body.data.id;
@@ -41,6 +39,8 @@ describe('Admin: edit project', () => {
   });
 
   it('changes project publication status', () => {
+    cy.intercept('PATCH', `**/projects/${projectId}`).as('updateProject');
+
     // Set sort
     cy.dataCy('projects-overview-sort-select').select('recently_created_desc');
 
@@ -58,6 +58,9 @@ describe('Admin: edit project', () => {
     cy.get('#e2e-publish').click();
     cy.get('.e2e-projectstatus-archived').click();
     cy.get('#e2e-change-status-submit').click();
+    // Wait for the status update to be saved before leaving the page, so
+    // the navigation doesn't cancel the request.
+    cy.wait('@updateProject');
 
     cy.visit('/admin/projects?status=%5B"archived"%5D');
 
@@ -77,6 +80,9 @@ describe('Admin: edit project', () => {
     cy.get('#e2e-publish').click();
     cy.get('.e2e-projectstatus-draft').click();
     cy.get('#e2e-change-status-submit').click();
+    // Wait for the status update to be saved before leaving the page, so
+    // the navigation doesn't cancel the request.
+    cy.wait('@updateProject');
 
     cy.visit('/admin/projects?status=%5B"draft"%5D');
 
