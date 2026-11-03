@@ -230,6 +230,25 @@ describe('AssistantPanel', () => {
     expect(screen.queryByText('notes.txt')).not.toBeInTheDocument();
   });
 
+  it('attaches a file only once when it is picked twice', async () => {
+    mockConversation = undefined;
+    const { container } = renderPanel();
+    const fileInput = container.querySelector('input[type="file"]');
+    if (!(fileInput instanceof HTMLInputElement)) {
+      throw new Error('No file input');
+    }
+    const brief = () =>
+      new File(['%PDF-1.4'], 'brief.pdf', {
+        type: 'application/pdf',
+        lastModified: 1,
+      });
+
+    await userEvent.upload(fileInput, brief());
+    await userEvent.upload(fileInput, brief());
+
+    expect(screen.getAllByText('brief.pdf')).toHaveLength(1);
+  });
+
   it('keeps files dropped while the assistant works from the browser and the chat', async () => {
     mockConversation = conversation({
       ...baseAttributes,
