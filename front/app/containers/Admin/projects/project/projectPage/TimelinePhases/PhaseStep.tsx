@@ -1,12 +1,7 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 
-import {
-  Box,
-  Color,
-  Text,
-  bo,
-  colors,
-} from '@citizenlab/cl2-component-library';
+import { Box, Text, bo, colors } from '@citizenlab/cl2-component-library';
+import { format } from 'date-fns';
 
 import { IPhaseData } from 'api/phases/types';
 
@@ -15,88 +10,105 @@ import useLocalize from 'hooks/useLocalize';
 
 import { getLocale } from 'components/admin/DatePickers/_shared/locales';
 
-import { MessageDescriptor, useIntl } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
 import messages from '../messages';
 import {
+  METHOD_LABELS,
   PhaseStatus,
+  STATUS_LABELS,
   StepDot,
   StepLine,
   StepMeta,
   StepRow,
   StepTitle,
-  formatDatePair,
   phaseStatus,
+  shortDateRange,
 } from '../phaseRowUtils';
 
-const STATUS_STYLES: Record<
-  PhaseStatus,
-  {
-    label: MessageDescriptor;
-    labelColor: Color;
-    labelWeight: number;
-    titleColor: string;
-  }
+// Timeline phases share the green of the line; spotlight surveys have no line.
+const LABEL_COLORS: Record<
+  'timeline' | 'spotlight',
+  Record<PhaseStatus, string>
 > = {
-  past: {
-    label: messages.phaseDone,
-    labelColor: 'green600',
-    labelWeight: 400,
-    titleColor: bo.colors.textHeadingStrong,
+  timeline: {
+    past: bo.colors.stepDone,
+    present: bo.colors.stepDone,
+    future: colors.coolGrey600,
   },
-  present: {
-    label: messages.phaseInProgress,
-    labelColor: 'primary',
-    labelWeight: 500,
-    titleColor: bo.colors.textHeadingStrong,
-  },
-  future: {
-    label: messages.phaseUpcoming,
-    labelColor: 'textSecondary',
-    labelWeight: 400,
-    titleColor: colors.coolGrey700,
+  spotlight: {
+    past: colors.green600,
+    present: colors.primary,
+    future: colors.coolGrey600,
   },
 };
 
 interface Props {
   phase: IPhaseData;
+  placement: 'timeline' | 'spotlight';
   selected: boolean;
-  isLast: boolean;
+  withLine: boolean;
   withOptions: boolean;
+  extraMeta?: ReactNode;
 }
 
-const PhaseStep = ({ phase, selected, isLast, withOptions }: Props) => {
+const PhaseStep = ({
+  phase,
+  placement,
+  selected,
+  withLine,
+  withOptions,
+  extraMeta,
+}: Props) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
-  const dateLocale = getLocale(useLocale());
+  const locale = getLocale(useLocale());
   const status = phaseStatus(phase);
-  const { label, labelColor, labelWeight, titleColor } = STATUS_STYLES[status];
+  const { start_at, end_at, participation_method } = phase.attributes;
+
+  const dates = end_at
+    ? formatMessage(
+        messages.phaseDateRange,
+        shortDateRange(start_at, end_at, locale)
+      )
+    : formatMessage(messages.phaseOpenEnded, {
+        startDate: format(new Date(start_at), 'd MMM', { locale }),
+      });
 
   return (
     <StepRow selected={selected}>
-      {!isLast && <StepLine status={status} />}
+      {withLine && <StepLine status={status} />}
       <StepDot status={status} />
-      <Box flexGrow={1} pr={withOptions ? '24px' : '0'}>
-        <StepTitle style={{ color: titleColor }}>
+      <Box flexGrow={1} minWidth="0" pr={withOptions ? '24px' : '0'}>
+        <StepTitle
+          style={{
+            color:
+              status === 'future'
+                ? bo.colors.stepUpcomingTitle
+                : bo.colors.textHeadingStrong,
+          }}
+        >
           {localize(phase.attributes.title_multiloc)}
         </StepTitle>
-        <StepMeta color="textSecondary">
+        <StepMeta
+          m={status === 'future' ? '2px 0 0 0' : '8px 0 0 0'}
+          color="textSecondary"
+        >
           <Text
             as="span"
             m="0"
-            color={labelColor}
-            style={{ fontWeight: labelWeight }}
+            style={{
+              color: LABEL_COLORS[placement][status],
+              fontWeight: status === 'present' ? 500 : 400,
+            }}
           >
-            {formatMessage(label)}
+            {formatMessage(STATUS_LABELS[status])}
           </Text>
           {' · '}
-          {formatDatePair(
-            phase.attributes.start_at,
-            phase.attributes.end_at,
-            'd MMMM',
-            dateLocale,
-            formatMessage(messages.phaseNoEndDate)
-          )}
+          {dates}
+          {' · '}
+          {formatMessage(METHOD_LABELS[participation_method])}
+          {extraMeta}
         </StepMeta>
       </Box>
     </StepRow>

@@ -11,6 +11,7 @@ import {
 import usePhases from 'api/phases/usePhases';
 
 import projectPageMessages from 'containers/Admin/projects/project/projectPage/messages';
+import { SectionLabel } from 'containers/Admin/projects/project/projectPage/phaseRowUtils';
 import SpotlightSurveys from 'containers/Admin/projects/project/projectPage/SpotlightSurveys';
 import TimelinePhases from 'containers/Admin/projects/project/projectPage/TimelinePhases';
 
@@ -31,18 +32,24 @@ const ProjectTimeline = ({ projectId }: Props) => {
   const hasPhases = !!phases && phases.data.length > 0;
 
   return (
-    <Box pt="16px" pb="24px" px="12px">
+    <Box pt="18px" pb="24px" px="8px">
       <Box
         display="flex"
         alignItems="center"
         justifyContent="space-between"
         h="32px"
-        pl="12px"
-        mb="16px"
+        pl="10px"
+        mb="17px"
       >
         <Box as="h4" m="0">
-          <Text as="span" variant="boSection" m="0">
-            {formatMessage(messages.participationMethods)}
+          <Text
+            as="span"
+            variant="boSection"
+            fontSize="xs"
+            lineHeight="16px"
+            m="0"
+          >
+            {formatMessage(messages.participation)}
           </Text>
         </Box>
         <Tooltip
@@ -70,10 +77,10 @@ const ProjectTimeline = ({ projectId }: Props) => {
           variant="backofficeRedesign"
           heading={
             hasPhases && (
-              <Box px="12px" mb="8px">
-                <Text variant="boHelper" color="textSecondary" m="0">
+              <Box as="h4" px="10px" m="0 0 12px 0">
+                <SectionLabel as="span">
                   {formatMessage(projectPageMessages.timeline)}
-                </Text>
+                </SectionLabel>
               </Box>
             )
           }
@@ -85,7 +92,12 @@ const ProjectTimeline = ({ projectId }: Props) => {
         variant="backofficeRedesign"
         withPhaseOptions
       />
-      <Box mx="8px" my="24px" borderTop={`1px solid ${colors.grey200}`} />
+      <Box
+        mx="10px"
+        mt="12px"
+        mb="8px"
+        borderTop={`1px solid ${colors.grey200}`}
+      />
       <TimelineEvents projectId={projectId} />
       <SelectMethodModal
         projectId={projectId}
