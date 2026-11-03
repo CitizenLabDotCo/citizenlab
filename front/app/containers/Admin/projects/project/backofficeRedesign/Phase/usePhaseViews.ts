@@ -29,7 +29,7 @@ const VIEW_BY_TAB: Record<PhaseLandingTab, PhaseViewKey> = {
   setup: 'build',
   ideas: 'manage',
   proposals: 'manage',
-  polls: 'manage',
+  polls: 'build',
   volunteering: 'manage',
   insights: 'insights',
   'survey-results': 'insights',
