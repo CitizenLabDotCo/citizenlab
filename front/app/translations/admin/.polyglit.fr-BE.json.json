@@ -8789,6 +8789,21 @@
     "verified_at": "2026-09-16T19:26:50.773492Z",
     "verified_by": "Cindy EB"
   },
+  "app.containers.Admin.projects.project.addACause": {
+    "state": "verified",
+    "verified_at": "2026-11-04T21:34:00.492998Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.addAStatement": {
+    "state": "verified",
+    "verified_at": "2026-11-04T21:34:00.492998Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.addAnOption": {
+    "state": "verified",
+    "verified_at": "2026-11-04T21:34:00.492998Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.addDescription": {
     "state": "verified",
     "verified_at": "2026-10-28T13:19:15.868690Z",
@@ -8802,6 +8817,11 @@
   "app.containers.Admin.projects.project.addStatement": {
     "state": "verified",
     "verified_at": "2026-11-04T20:50:15.551076Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.addVotingOption": {
+    "state": "verified",
+    "verified_at": "2026-11-04T21:34:00.492998Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.analysis.Comments.aiSummary": {
@@ -9113,6 +9133,16 @@
     "state": "verified",
     "verified_at": "2026-10-28T13:19:15.868690Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.deleteCause": {
+    "state": "verified",
+    "verified_at": "2026-11-04T21:34:00.492998Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.deleteCauseTitle": {
+    "state": "verified",
+    "verified_at": "2026-11-04T21:34:00.492998Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.deleteReport": {
     "state": "verified",
@@ -10628,6 +10658,21 @@
     "state": "verified",
     "verified_at": "2026-09-16T19:26:50.773492Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.nCauses": {
+    "state": "verified",
+    "verified_at": "2026-11-04T21:34:00.492998Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.nStatements": {
+    "state": "verified",
+    "verified_at": "2026-11-04T21:34:00.492998Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.nVotingOptions": {
+    "state": "verified",
+    "verified_at": "2026-11-04T21:34:00.492998Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.nativeSurveyOptionDescription": {
     "state": "verified",
@@ -16204,10 +16249,20 @@
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
   },
+  "app.containers.AdminPage.ProjectEdit.Voting.maxVotesPerOption2": {
+    "state": "verified",
+    "verified_at": "2026-11-04T21:34:00.492998Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotes": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectEdit.Voting.maximumVotes2": {
+    "state": "verified",
+    "verified_at": "2026-11-04T21:34:00.492998Z",
+    "verified_by": "Adrien"
   },
   "app.containers.AdminPage.ProjectEdit.Voting.maximumVotesDescription": {
     "state": "verified",
@@ -16218,6 +16273,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectEdit.Voting.minimumOptions2": {
+    "state": "verified",
+    "verified_at": "2026-11-04T21:34:00.492998Z",
+    "verified_by": "Adrien"
   },
   "app.containers.AdminPage.ProjectEdit.Voting.minimumOptionsDescription2": {
     "state": "verified",
@@ -16243,6 +16303,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectEdit.Voting.numberVotesPerUser2": {
+    "state": "verified",
+    "verified_at": "2026-11-04T21:34:00.492998Z",
+    "verified_by": "Adrien"
   },
   "app.containers.AdminPage.ProjectEdit.Voting.optionAnalysisLinkText": {
     "state": "verified",
@@ -16293,6 +16358,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.containers.AdminPage.ProjectEdit.Voting.voteCalled2": {
+    "state": "verified",
+    "verified_at": "2026-11-04T21:34:00.492998Z",
+    "verified_by": "Adrien"
   },
   "app.containers.AdminPage.ProjectEdit.Voting.voteCalledPlaceholderPlural2": {
     "state": "verified",
