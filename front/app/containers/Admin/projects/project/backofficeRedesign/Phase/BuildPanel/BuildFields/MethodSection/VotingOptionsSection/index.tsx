@@ -12,14 +12,15 @@ import IconAction from 'components/UI/IconAction';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../../../../messages';
 import PanelField from '../../../PanelField';
 import AddInputModal from '../AddInputModal';
+import methodSectionMessages from '../messages';
 import useOpenInputForm from '../useOpenInputForm';
 import useStagedInputs from '../useStagedInputs';
 
 import InputImporterModal from './InputImporterModal';
 import LinkPhaseIdeasModal from './LinkPhaseIdeasModal';
+import messages from './messages';
 
 interface Props {
   projectId: string;
@@ -48,7 +49,7 @@ const VotingOptionsSection = ({ projectId, phaseId }: Props) => {
   const addLabel = formatMessage(messages.addVotingOption);
   const importLabel = formatMessage(messages.importVotingOptions);
   const previousPhaseLabel = formatMessage(messages.importFromPreviousPhase);
-  const editFormLabel = formatMessage(messages.editForm);
+  const editFormLabel = formatMessage(methodSectionMessages.editForm);
   const inputForm = useOpenInputForm(projectId, phaseId);
   const hasOptions = count > 0;
 

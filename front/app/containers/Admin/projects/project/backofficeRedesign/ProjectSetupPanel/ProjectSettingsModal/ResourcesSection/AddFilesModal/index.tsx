@@ -15,7 +15,6 @@ import {
   MAX_FILES,
   MAX_FILE_SIZE,
 } from 'containers/Admin/projects/_shared/fileUploads/utils';
-import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
 
 import Modal from 'components/UI/Modal';
@@ -23,9 +22,12 @@ import Modal from 'components/UI/Modal';
 import { useIntl } from 'utils/cl-intl';
 import { returnFileSize } from 'utils/fileUtils';
 
+import resourcesSectionMessages from '../messages';
 import UploadingFileRow from '../UploadingFileRow';
 import { FilesDraft, Upload } from '../useFilesDraft';
 import { FILE_MODAL_HEIGHT } from '../utils';
+
+import messages from './messages';
 
 interface Props {
   draft: FilesDraft;
@@ -87,7 +89,7 @@ const AddFilesModal = ({ draft, opened, onClose }: Props) => {
       close={handleClose}
       width={560}
       height={selected.length > 0 ? FILE_MODAL_HEIGHT : undefined}
-      header={formatMessage(messages.addFiles)}
+      header={formatMessage(resourcesSectionMessages.addFiles)}
       footer={
         <Box display="flex" justifyContent="flex-end" width="100%">
           <Button
@@ -99,7 +101,7 @@ const AddFilesModal = ({ draft, opened, onClose }: Props) => {
             disabled={queued.length === 0}
             onClick={handleAdd}
           >
-            {formatMessage(messages.addFiles)}
+            {formatMessage(resourcesSectionMessages.addFiles)}
           </Button>
         </Box>
       }

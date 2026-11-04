@@ -7,7 +7,7 @@ import { PARTICIPATION_METHOD_LABELS } from 'containers/Admin/inspirationHub/con
 
 import { MessageDescriptor } from 'utils/cl-intl';
 
-import messages from '../messages';
+import messages from './messages';
 
 export interface PhaseResult {
   id: string;

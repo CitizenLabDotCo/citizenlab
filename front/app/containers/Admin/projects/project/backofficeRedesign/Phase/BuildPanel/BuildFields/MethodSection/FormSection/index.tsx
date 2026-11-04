@@ -11,12 +11,12 @@ import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import inputManagerMessages from '../../../../../InputManager/messages';
 import OfflineFormsButton from '../../../../../InputManager/RightColumn/OfflineFormsButton';
-import messages from '../../../../../messages';
 import PanelField from '../../../PanelField';
 import DemographicsCard from '../DemographicsCard';
 
 import FormQuestionsCard from './FormQuestionsCard';
 import formTitle from './formTitle';
+import messages from './messages';
 
 const getFormTitle = (survey: boolean, inputTerm: InputTerm | undefined) => {
   if (survey) return messages.surveyForm;

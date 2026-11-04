@@ -13,7 +13,7 @@ import ProjectFilter from 'components/UI/ProjectFilter';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../../../../messages';
+import messages from './messages';
 
 interface Props {
   projectId: string;

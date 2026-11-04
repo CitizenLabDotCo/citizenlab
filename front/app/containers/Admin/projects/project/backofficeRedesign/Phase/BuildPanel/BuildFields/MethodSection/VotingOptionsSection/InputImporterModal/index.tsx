@@ -20,9 +20,8 @@ import UpsellTooltip from 'components/UpsellTooltip';
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-import messages from '../../../../../../messages';
-
 import ImporterRow from './ImporterRow';
+import messages from './messages';
 
 interface Props {
   projectId: string;

@@ -9,11 +9,11 @@ import Navigate from 'utils/cl-router/Navigate';
 import { useSearch } from 'utils/router';
 
 import ProjectWorkspace from '..';
-import messages from '../messages';
 import PhasePreview from '../Phase/PhasePreview';
 import SelectMethodModal from '../ProjectSetupPanel/SelectMethodModal';
 import ProjectTimeline from '../ProjectTimeline';
 
+import messages from './messages';
 import NewPhaseWorkspace from './NewPhaseWorkspace';
 
 interface Props {

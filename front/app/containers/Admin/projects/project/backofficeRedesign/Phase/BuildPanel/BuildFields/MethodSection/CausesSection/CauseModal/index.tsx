@@ -15,10 +15,11 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../../../../../messages';
+import causesSectionMessages from '../messages';
 import { StagedCause } from '../useStagedCauses';
 
 import CauseImageField from './CauseImageField';
+import messages from './messages';
 
 interface Props {
   cause?: StagedCause;
@@ -52,12 +53,14 @@ const CauseModal = ({ cause, onSubmit, onClose }: Props) => {
       width={560}
       variant="bo"
       header={formatMessage(
-        cause ? volunteeringMessages.editCauseTitle : messages.addACause
+        cause
+          ? volunteeringMessages.editCauseTitle
+          : causesSectionMessages.addACause
       )}
       footer={
         <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">
           <Button buttonStyle="bo-text" onClick={onClose}>
-            {formatMessage(messages.causeCancel)}
+            {formatMessage(causesSectionMessages.causeCancel)}
           </Button>
           <Button
             buttonStyle="bo-primary"

@@ -4,7 +4,6 @@ import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
 import useFiles from 'api/files/useFiles';
 
-import messages from 'containers/Admin/projects/project/backofficeRedesign/messages';
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
 
 import Pagination from 'components/Pagination';
@@ -14,6 +13,7 @@ import SearchInput from 'components/UI/SearchInput';
 import { useIntl } from 'utils/cl-intl';
 
 import ManagedFileRow from '../ManagedFileRow';
+import messages from '../messages';
 import UploadingFileRow from '../UploadingFileRow';
 import useFilesCount from '../useFilesCount';
 import { FilesDraft } from '../useFilesDraft';

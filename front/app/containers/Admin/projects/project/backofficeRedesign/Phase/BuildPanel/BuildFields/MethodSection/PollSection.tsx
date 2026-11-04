@@ -10,8 +10,9 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../../../messages';
 import PanelField from '../../PanelField';
+
+import messages from './messages';
 
 interface Props {
   phaseId: string;

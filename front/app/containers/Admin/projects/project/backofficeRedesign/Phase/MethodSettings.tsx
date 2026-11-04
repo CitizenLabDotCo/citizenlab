@@ -23,9 +23,8 @@ import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
 import { useIntl } from 'utils/cl-intl';
 import { isCLErrorsWrapper } from 'utils/errorUtils';
 
-import messages from '../messages';
-
 import EditAccessButton from './EditAccessButton';
+import messages from './messages';
 import PanelSettings from './PanelSettings';
 import ParticipantActionsGroup from './ParticipantActionsGroup';
 import PhaseNotifications from './PhaseNotifications';

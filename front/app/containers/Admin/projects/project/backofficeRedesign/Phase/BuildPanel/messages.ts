@@ -1,0 +1,50 @@
+import { defineMessages } from 'react-intl';
+
+export default defineMessages({
+  switchLockedResponses: {
+    id: 'app.containers.Admin.projects.project.switchLockedResponses',
+    defaultMessage:
+      'This phase already has responses, so the kind of survey can no longer change.',
+  },
+  switchLockedPollQuestions: {
+    id: 'app.containers.Admin.projects.project.switchLockedPollQuestions',
+    defaultMessage:
+      'This poll already has questions. Delete them first to use another kind of survey.',
+  },
+  switchSurveyMethodTitle: {
+    id: 'app.containers.Admin.projects.project.switchSurveyMethodTitle',
+    defaultMessage: 'Change the kind of survey?',
+  },
+  switchSurveyMethodIntro: {
+    id: 'app.containers.Admin.projects.project.switchSurveyMethodIntro',
+    defaultMessage:
+      'The phase stays, but some of its setup does not carry over:',
+  },
+  switchLosesAccessSettings: {
+    id: 'app.containers.Admin.projects.project.switchLosesAccessSettings',
+    defaultMessage:
+      'Access settings you changed for taking part in this phase are removed. The new kind of survey starts from the platform defaults.',
+  },
+  switchHidesSurveyForm: {
+    id: 'app.containers.Admin.projects.project.switchHidesSurveyForm',
+    defaultMessage:
+      'The survey questions are hidden. They come back if you switch back to a survey.',
+  },
+  switchClearsEmbedUrl: {
+    id: 'app.containers.Admin.projects.project.switchClearsEmbedUrl',
+    defaultMessage: 'The external survey link is removed.',
+  },
+  switchChangesNotifications: {
+    id: 'app.containers.Admin.projects.project.switchChangesNotifications',
+    defaultMessage:
+      'Notifications, insights and reports follow the new kind of survey.',
+  },
+  switchCancel: {
+    id: 'app.containers.Admin.projects.project.switchCancel',
+    defaultMessage: 'Cancel',
+  },
+  switchConfirm: {
+    id: 'app.containers.Admin.projects.project.switchConfirm',
+    defaultMessage: 'Change',
+  },
+});

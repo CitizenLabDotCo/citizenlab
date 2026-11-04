@@ -17,7 +17,7 @@ import Warning from 'components/UI/Warning';
 import { useIntl } from 'utils/cl-intl';
 import { isEmptyMultiloc } from 'utils/helperUtils';
 
-import messages from '../../../messages';
+import messages from './messages';
 
 interface Props {
   projectId: string;

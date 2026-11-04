@@ -5,7 +5,7 @@ import { Box, Icon, bo, colors } from '@citizenlab/cl2-component-library';
 import { ScreenReaderOnly } from 'utils/a11y';
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
+import messages from './messages';
 
 interface Props {
   ready: boolean;

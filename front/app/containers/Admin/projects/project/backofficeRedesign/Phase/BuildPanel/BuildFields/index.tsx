@@ -19,12 +19,12 @@ import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLoca
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../../messages';
 import PanelField from '../PanelField';
 
 import DescriptionField from './DescriptionField';
 import DocumentUrlCard from './DocumentUrlCard';
 import InputTermCard from './InputTermCard';
+import messages from './messages';
 import MethodSection from './MethodSection';
 import PhaseDates from './PhaseDates';
 import setupTitle from './setupTitle';

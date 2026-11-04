@@ -16,8 +16,8 @@ import ButtonWithLink from 'components/UI/ButtonWithLink';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../../../../messages';
 import PanelField from '../../../PanelField';
+import messages from '../messages';
 import useOpenInputForm from '../useOpenInputForm';
 
 interface Props {

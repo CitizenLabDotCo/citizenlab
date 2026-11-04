@@ -1,9 +1,10 @@
 import { IPhasePermissionAction } from 'api/permissions/types';
 
+import phaseMessages from 'containers/Admin/projects/project/backofficeRedesign/Phase/messages';
 import projectMessages from 'containers/Admin/projects/project/messages';
 import configMessages from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/messages';
 
-import messages from '../../../../../../messages';
+import messages from './messages';
 
 const actionLabel = (action: IPhasePermissionAction) => {
   switch (action) {
@@ -24,7 +25,7 @@ const actionLabel = (action: IPhasePermissionAction) => {
     case 'taking_poll':
       return messages.takingPollAction;
     case 'annotating_document':
-      return messages.annotatingDocumentAction;
+      return phaseMessages.annotatingDocumentAction;
   }
 };
 

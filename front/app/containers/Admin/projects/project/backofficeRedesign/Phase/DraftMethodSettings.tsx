@@ -10,8 +10,7 @@ import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/t
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
-
+import messages from './messages';
 import PanelSettings from './PanelSettings';
 
 // Information has nothing to set here, and document annotation's Konveio link

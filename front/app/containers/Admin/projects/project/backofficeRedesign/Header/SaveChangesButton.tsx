@@ -8,7 +8,7 @@ import { usePageSave } from 'components/admin/PageSaveContext';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../messages';
+import messages from './messages';
 
 interface Props {
   label?: string;
