@@ -1662,7 +1662,7 @@
   "app.containers.IdeaCards.responseTerm": "Pareri",
   "app.containers.IdeaCards.searchContributions": "Cerca contributi",
   "app.containers.IdeaCards.searchPosts": "Cerca post",
-  "app.containers.IdeaCards.showXResults": "Mostra {ideasCount, plural, one {# risultato} other {# risultato}}",
+  "app.containers.IdeaCards.showXResults": "Mostra {ideasCount, plural, one {# risultato} other {# risultati}}",
   "app.containers.IdeaCards.sortTitle": "Ordinamento",
   "app.containers.IdeaCards.statusPriority": "Stato (proposte per prime)",
   "app.containers.IdeaCards.statusTitle": "Status",
