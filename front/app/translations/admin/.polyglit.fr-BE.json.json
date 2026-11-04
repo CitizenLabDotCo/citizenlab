@@ -11959,9 +11959,19 @@
     "verified_at": "2026-11-04T16:14:08.011677Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.statementLabel": {
+    "state": "verified",
+    "verified_at": "2026-11-04T21:13:44.796447Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.statementPostAnonymously": {
     "state": "verified",
     "verified_at": "2026-11-04T20:50:15.551076Z",
+    "verified_by": "Adrien"
+  },
+  "app.containers.Admin.projects.project.statementsSection": {
+    "state": "verified",
+    "verified_at": "2026-11-04T21:13:44.796447Z",
     "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.stepAddPhaseOrSurvey": {
