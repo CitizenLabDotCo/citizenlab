@@ -24,10 +24,3 @@ FactoryBot.define do
     end
   end
 end
-
-FactoryBot.define do
-  factory :report_chat, class: 'ReportBuilder::ReportChat' do
-    report
-    transcript { [] }
-  end
-end

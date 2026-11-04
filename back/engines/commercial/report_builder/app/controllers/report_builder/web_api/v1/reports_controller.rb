@@ -148,7 +148,7 @@ module ReportBuilder
         # was written up to then is saved.
         def cancel_generation
           authorize report, :cancel_generation?
-          run = report.generation_transcripts.running.newest_first.first
+          run = report.runs.running.newest_first.first
 
           if run.nil?
             return render json: { errors: { base: [{ error: 'not_running' }] } }, status: :not_found
@@ -176,20 +176,20 @@ module ReportBuilder
         # and that is what the model revises. Without it a turn would silently discard
         # whatever the admin had changed but not yet saved.
         def chat_turn
-          chat = report.chat || report.create_chat!
+          chat = report.chat!(locale: current_user.locale.to_s)
 
           # Authorize first (reading `report` does that), then look at the input.
-          # Not `require`: a blank message is a 422 with a code the panel can read,
-          # not a raised ParameterMissing.
+          # Not `require`: a blank or too long message is a 422 with a code the panel
+          # can read, not a raised ParameterMissing.
           message = params[:message].to_s.strip
-          if message.blank?
-            return render json: { errors: { message: [{ error: 'blank' }] } },
-              status: :unprocessable_entity
-          end
+          error = message_error(message)
+          return render json: { errors: { message: [{ error: error }] } }, status: :unprocessable_entity if error
 
-          chat.update!(transcript: chat.transcript + [
-            { 'role' => 'user', 'text' => message, 'at' => Time.current.iso8601 }
-          ])
+          # Shown in the panel only. The model is sent the admin's words inside a
+          # prompt that carries the report, which the run records itself.
+          chat.with_lock do
+            chat.messages.create!(role: 'user', content: message, replayed: false)
+          end
 
           ReportBuilder::ReviseReportJob
             .with_tracking(owner: current_user)
@@ -205,10 +205,20 @@ module ReportBuilder
 
         private
 
-        # The transcript is the whole resource: a turn is a role, a line of text and a
-        # timestamp. `pending` is true while the model still owes an answer.
+        def message_error(message)
+          if message.blank?
+            'blank'
+          elsif message.length > ::AIAssistant::Message::MAX_CONTENT_LENGTH
+            'too_long'
+          end
+        end
+
+        # The chat as the panel shows it: a turn is a role, a line of text and a
+        # timestamp. `pending` is true while the model still owes an answer, and
+        # `changed_layout` tells the panel to pull the new layout into the editor —
+        # only then, or it would overwrite edits the admin has not saved.
         def chat_json(chat)
-          turns = chat&.transcript || []
+          turns = chat_turns(chat)
           {
             data: {
               id: chat&.id || report.id,
@@ -219,6 +229,19 @@ module ReportBuilder
               }
             }
           }
+        end
+
+        def chat_turns(chat)
+          return [] if chat.nil?
+
+          runs = report.runs.where.not(first_position: nil).to_a
+          chat.messages.where(displayed: true).map do |message|
+            turn = { 'role' => message.role, 'text' => message.content, 'at' => message.created_at.iso8601 }
+            next turn if message.user?
+
+            run = runs.find { |r| (r.first_position..r.last_position).cover?(message.position) }
+            turn.merge('changed_layout' => run&.saved_the_report? || false)
+          end
         end
 
         # A generation that is still running for this report, if any. Failed jobs

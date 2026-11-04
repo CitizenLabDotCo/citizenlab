@@ -26,4 +26,17 @@ describe AIAssistant::Message do
     expect(build(:ai_assistant_message, conversation:, content: long_content)).not_to be_valid
     expect(build(:ai_assistant_message, conversation:, role: 'assistant', content: long_content)).to be_valid
   end
+
+  # A prompt the app writes carries the context the model needs, and nobody typed it.
+  it 'does not limit the length of a user message only the model is sent' do
+    long_content = 'a' * (described_class::MAX_CONTENT_LENGTH + 1)
+
+    expect(build(:ai_assistant_message, conversation:, content: long_content, displayed: false)).to be_valid
+  end
+
+  it 'is shown in the chat, sent to the model, or both' do
+    expect(build(:ai_assistant_message, conversation:)).to have_attributes(displayed: true, replayed: true)
+    expect(build(:ai_assistant_message, conversation:, replayed: false)).to be_valid
+    expect(build(:ai_assistant_message, conversation:, displayed: false, replayed: false)).not_to be_valid
+  end
 end

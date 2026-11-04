@@ -40,6 +40,21 @@ describe AIAssistant::ConversationPolicy do
     end
   end
 
+  # The report builder keeps each report's chat here without an owner. The assistant's
+  # endpoints must not reach it.
+  context 'for a conversation without an owner' do
+    let(:owner) { nil }
+    let(:user) { create(:super_admin) }
+
+    it { is_expected.not_to permit(:show) }
+    it { is_expected.not_to permit(:create) }
+
+    it 'scopes it out' do
+      conversation.save!
+      expect(described_class::Scope.new(user, AIAssistant::Conversation).resolve).to be_empty
+    end
+  end
+
   context 'for a visitor' do
     let(:user) { nil }
 

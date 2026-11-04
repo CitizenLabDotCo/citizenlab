@@ -2,17 +2,14 @@
 
 module ReportBuilder
   module Composition
-    # Converting between the Bedrock Converse structs and the plain hashes the
-    # composer keeps its transcript in.
+    # Converting between the Bedrock Converse structs, the plain hashes the composer
+    # keeps its transcript in, and the conversation rows a report's runs are stored as.
     #
-    # Plain hashes, not the SDK's structs, because the transcript is stored and read
-    # back long after the run: a record of what was said should not need the provider's
-    # object model to make sense of it. Images are kept as base64 text for the same
-    # reason, and turned into bytes only on the way to the provider.
+    # Plain hashes, not the SDK's structs, so that a transcript can be written down and
+    # read back without the provider's object model. Images are kept as base64 text and
+    # turned into bytes only on the way to the provider.
     module Messages
       module_function
-
-      SCREENSHOT_OMITTED = '[screenshot omitted from history]'
 
       # @param message [Struct] an assistant message from the Converse response.
       def serialize(message)
@@ -91,21 +88,20 @@ module ReportBuilder
         block.merge(image: block[:image].merge(source: { bytes: Base64.strict_decode64(block[:image][:source][:bytes]) }))
       end
 
-      # Stored messages, made fit to continue from.
+      # A report's stored conversation, made fit to continue from.
       #
-      # Read back from the database the keys are strings; the composer works in symbols.
-      # Screenshots are dropped: they cost thousands of tokens each and were about a
-      # version of the chart that has since been fixed or replaced. A run that died
-      # mid-round leaves an assistant message whose tool calls were never answered, and
-      # the provider rejects a conversation that continues past one, so that tail goes.
-      # Two user messages in a row (a run stopped on tool results, then the next turn)
-      # are merged, because turns must alternate.
+      # Each assistant message is followed by the results of its tool calls, read back
+      # from the calls themselves. A call that never got a result — its run was cut off
+      # mid-round — is answered as interrupted, because the provider rejects a
+      # conversation that continues past an unanswered call. Two user messages in a row
+      # (a run stopped on tool results, then the next turn) are merged, because turns
+      # must alternate.
       #
-      # @param messages [Array<Hash>] as stored, string or symbol keys.
-      # @return [Array<Hash>] symbol keys, images omitted, ending on a complete round.
-      def history(messages)
-        shaped = messages.map { |message| strip_images(symbolize(message)) }
-        shaped.pop while shaped.any? && unanswered?(shaped.last)
+      # @param rows [Array<AIAssistant::Message>] replayed messages, oldest first, with
+      #   their tool calls.
+      # @return [Array<Hash>] starting on a user turn, roles alternating.
+      def history(rows)
+        shaped = from_rows(rows)
         shaped.shift while shaped.any? && shaped.first[:role] != 'user'
 
         shaped.each_with_object([]) do |message, merged|
@@ -117,47 +113,28 @@ module ReportBuilder
         end
       end
 
-      def symbolize(message)
-        role = message[:role] || message['role']
-        content = (message[:content] || message['content'] || []).map { |block| symbolize_block(block) }
-        { role: role, content: content }
-      end
-
-      # Keys are symbolized one level at a time by hand: a tool's input is payload and
-      # keeps its string keys, which deep_symbolize_keys would not respect.
-      def symbolize_block(block)
-        block = block.transform_keys(&:to_sym)
-        if block[:tool_use]
-          use = block[:tool_use].transform_keys(&:to_sym)
-          block[:tool_use] = use.merge(input: (use[:input] || {}).to_h.deep_stringify_keys)
-        end
-        if block[:tool_result]
-          result = block[:tool_result].transform_keys(&:to_sym)
-          result[:content] = (result[:content] || []).map(&:deep_symbolize_keys)
-          block[:tool_result] = result
-        end
-        block
-      end
-
       # How much of these messages reaches a prompt that replays them, in characters.
-      #
-      # Measured through the same shaping the replay does, because a screenshot is
-      # stored here in full as base64 and sent as a one-line placeholder. Counted as
-      # stored, a single picture can be larger than the whole history budget, and the
-      # run holding it would push every earlier turn out of the conversation.
-      def replayed_size(messages)
-        messages.sum { |message| strip_images(symbolize(message)).to_json.size }
+      def replayed_size(rows)
+        from_rows(rows).sum { |message| message.to_json.size }
       end
 
-      def strip_images(message)
-        content = message[:content].map do |block|
-          block[:image] ? { text: SCREENSHOT_OMITTED } : block
+      def from_rows(rows)
+        rows.flat_map do |row|
+          next [{ role: 'user', content: [{ text: row.content }] }] if row.user?
+
+          calls = row.tool_calls.to_a
+          content = []
+          content << { text: row.content } if row.content.present?
+          content += calls.map do |call|
+            { tool_use: { tool_use_id: call.tool_use_id, name: call.name, input: call.arguments } }
+          end
+          next [] if content.empty?
+
+          results = calls.map do |call|
+            tool_result(call.tool_use_id, text: call.result_for_llm, error: !call.auto_executed?)
+          end
+          [{ role: 'assistant', content: content }] + (results.empty? ? [] : [{ role: 'user', content: results }])
         end
-        message.merge(content: content)
-      end
-
-      def unanswered?(message)
-        message[:role] == 'assistant' && message[:content].any? { |block| block[:tool_use] }
       end
     end
   end

@@ -49,8 +49,9 @@ module ReportBuilder
       # @param locale [String] the locale the report text is written in.
       # @param phase [Phase, nil] the one phase to report on, for a phase report.
       # @param author [User, nil] who the authored blocks are attributed to.
-      # @param run_record [GenerationTranscript, nil] this run's row. The versions it
-      #   writes point back at it, and it carries the cancel flag the loop reads.
+      # @param run_record [Run, nil] this run's row. Its messages are written to the
+      #   report's conversation as they happen, the versions it writes point back at
+      #   it, and it carries the cancel flag the loop reads.
       def initialize(project, locale:, phase: nil, author: nil, client: nil, layout_record: nil, run_record: nil)
         @project = project
         @locale = locale
@@ -61,15 +62,15 @@ module ReportBuilder
         # to scope its data token to.
         @layout_record = layout_record
         @run_record = run_record
+        @recorder = Recorder.new(run_record)
         @authored_blocks = []
         # What the report held when this run started, and the graph as it stands now.
         @current_layout = nil
         @layout = {}
-        # What the model was told and what it said, for whoever has to work out why a
-        # run went the way it did. A chat turn starts from the stored conversation;
-        # +turn_messages+ is the part this run added.
+        # What the model was told and what it said, kept in memory for a caller that has
+        # no run record to read it from (the evals). For a chat turn it starts with the
+        # history the turn continued from.
         @transcript = []
-        @history_size = 0
         @usage = Hash.new(0)
         @stopped_because = 'failed'
         @turn_started_at = nil
@@ -77,10 +78,6 @@ module ReportBuilder
 
       # The run's record: every message in order, what it cost, and why it stopped.
       attr_reader :transcript, :usage, :stopped_because
-
-      # The messages this run added to the conversation, which is what gets stored
-      # for a chat turn: the history before them is already on record.
-      def turn_messages = @transcript.drop(@history_size)
 
       # Which model wrote this run, for the record.
       def model_name = model_id
@@ -152,7 +149,6 @@ module ReportBuilder
         # Charts already in the report stay placeable; the model keeps what it keeps.
         # So do charts an earlier run wrote but never placed — this turn continues it.
         @authored_blocks |= block_ids_in(current_layout) | blocks_from_earlier_runs
-        @history_size = history.size
 
         messages = history + [{ role: 'user', content: [{ text: revision_turn(instruction, history.empty?) }] }]
         result = run_loop(messages, allow_answer_only: true)
@@ -162,11 +158,14 @@ module ReportBuilder
 
       private
 
+      # @param messages [Array<Hash>] the conversation so far, ending on the prompt
+      #   this loop answers. Only that prompt is new: anything before it is on record.
       # @return [Hash] { layout:, reply:, stopped: } — stopped is one of
-      #   GenerationTranscript::STOP_REASONS; the caller decides what it means.
+      #   Run::STOP_REASONS; the caller decides what it means.
       def run_loop(messages, allow_answer_only: false, max_rounds: MAX_ROUNDS)
         reply = nil
         patched = false
+        @recorder.record(messages.last)
 
         max_rounds.times do
           return finish(patched, reply, 'cancelled') if cancel_requested?
@@ -175,7 +174,7 @@ module ReportBuilder
           response = converse(messages)
           record_usage(response)
           assistant = Messages.serialize(response.output.message)
-          messages << assistant
+          add(messages, assistant, usage: response.usage)
           reply = Messages.assistant_text(assistant) || reply
 
           calls = Messages.tool_calls(assistant)
@@ -186,7 +185,7 @@ module ReportBuilder
           # most of the report deleted, and the model would then be told its own
           # good work was invalid. Answer the truncation instead.
           if response.stop_reason.to_s == 'max_tokens'
-            messages << truncation_response(calls)
+            add(messages, truncation_response(calls))
             next
           end
 
@@ -197,14 +196,14 @@ module ReportBuilder
             done = response.stop_reason.to_s == 'end_turn' && (patched || allow_answer_only)
             return finish(patched, reply, 'done') if done
 
-            messages << nudge(response.stop_reason)
+            add(messages, nudge(response.stop_reason))
             next
           end
 
           outcomes = calls.map { |call| [call, execute(call)] }
           patched ||= outcomes.any? { |_call, outcome| outcome[:patched] }
 
-          messages << Messages.results_message(outcomes)
+          add(messages, Messages.results_message(outcomes))
         end
 
         # Out of rounds. Every patch was validated before it landed, so what is here
@@ -215,6 +214,11 @@ module ReportBuilder
         # Appended, not assigned: the review pass is a second conversation in the same
         # run, and the record has to hold both.
         @transcript.concat(messages)
+      end
+
+      def add(messages, message, usage: nil)
+        messages << message
+        @recorder.record(message, usage: usage)
       end
 
       def start_turn
@@ -249,7 +253,7 @@ module ReportBuilder
 
         # A run cut short had not finished choosing what to place, and the next turn
         # continues from its charts. Only a run that ended of its own accord tidies up.
-        discard_unplaced_blocks(@layout) unless GenerationTranscript::STOPPED_EARLY.include?(stopped)
+        discard_unplaced_blocks(@layout) unless Run::STOPPED_EARLY.include?(stopped)
         { layout: @layout, reply: reply, stopped: stopped }
       end
 
@@ -260,13 +264,12 @@ module ReportBuilder
       end
 
       # Every chart written for this report, placed or not: a version records the run
-      # that wrote it, and the run records the report.
+      # that wrote it, and the runs of a report share its conversation.
       def blocks_from_earlier_runs
-        report_id = @run_record&.report_id
-        return [] if report_id.blank?
+        return [] if @run_record.nil?
 
         ContentBuilder::CustomBlockVersion
-          .where(generation_transcript_id: GenerationTranscript.where(report_id: report_id).select(:id))
+          .where(report_run_id: Run.where(conversation_id: @run_record.conversation_id).select(:id))
           .distinct
           .pluck(:custom_block_id)
       end
