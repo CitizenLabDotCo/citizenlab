@@ -2604,6 +2604,11 @@
     "verified_at": "2026-10-28T13:19:15.868690Z",
     "verified_by": "Cindy EB"
   },
+  "app.components.app.containers.AdminPage.ProjectEdit.howProposalsAreShown": {
+    "state": "verified",
+    "verified_at": "2026-11-04T22:08:36.242344Z",
+    "verified_by": "Adrien"
+  },
   "app.components.app.containers.AdminPage.ProjectEdit.ideaTerm": {
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
@@ -3323,6 +3328,11 @@
     "state": "verified",
     "verified_at": "2026-03-18T11:50:36.691309Z",
     "verified_by": "Admin"
+  },
+  "app.components.app.containers.AdminPage.ProjectEdit.volunteeringAction2": {
+    "state": "verified",
+    "verified_at": "2026-11-04T22:08:36.242344Z",
+    "verified_by": "Adrien"
   },
   "app.components.app.containers.AdminPage.ProjectEdit.votesGroup": {
     "state": "verified",
@@ -9633,6 +9643,11 @@
     "state": "verified",
     "verified_at": "2026-10-28T13:19:15.868690Z",
     "verified_by": "Cindy EB"
+  },
+  "app.containers.Admin.projects.project.importFromPreviousPhase": {
+    "state": "verified",
+    "verified_at": "2026-11-04T22:08:36.242344Z",
+    "verified_by": "Adrien"
   },
   "app.containers.Admin.projects.project.importPhaseLabel": {
     "state": "verified",
