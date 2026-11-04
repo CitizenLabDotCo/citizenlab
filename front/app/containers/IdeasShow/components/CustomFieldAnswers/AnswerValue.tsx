@@ -33,6 +33,8 @@ const AnswerValue = ({ field, answer }: Props) => {
           {answer}
         </Text>
       ) : null;
+    case 'number':
+      return typeof answer === 'number' ? <Text m="0px">{answer}</Text> : null;
     case 'select':
       return (
         <Box style={{ pointerEvents: 'none' }}>
