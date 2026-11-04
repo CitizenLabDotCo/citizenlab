@@ -24,6 +24,9 @@ const Panel = styled(Box)`
   box-shadow: -2px 0px 1px 0px rgba(0, 0, 0, 0.06);
 `;
 
+// The longest message the backend accepts (AIAssistant::Message::MAX_CONTENT_LENGTH).
+const MAX_MESSAGE_LENGTH = 5000;
+
 interface Props {
   reportId: string;
   setSaved: (savedNodes: SerializedNodes) => void;
@@ -78,7 +81,9 @@ const ChatPanel = ({ reportId, setSaved }: Props) => {
 
   const submit = () => {
     const message = draft.trim();
-    if (!message || pending || sending) return;
+    if (!message || message.length > MAX_MESSAGE_LENGTH || pending || sending) {
+      return;
+    }
 
     // Send the layout as it stands in the editor, so unsaved edits are what the
     // model revises rather than what it overwrites.
@@ -120,6 +125,7 @@ const ChatPanel = ({ reportId, setSaved }: Props) => {
           value={draft}
           rows={3}
           disabled={pending}
+          maxCharCount={MAX_MESSAGE_LENGTH}
           placeholder={formatMessage(messages.placeholder)}
           onChange={setDraft}
         />
@@ -129,7 +135,11 @@ const ChatPanel = ({ reportId, setSaved }: Props) => {
           buttonStyle="primary"
           icon="stars"
           size="s"
-          disabled={pending || draft.trim().length === 0}
+          disabled={
+            pending ||
+            draft.trim().length === 0 ||
+            draft.trim().length > MAX_MESSAGE_LENGTH
+          }
           processing={sending}
           onClick={submit}
         >

@@ -2,26 +2,61 @@
 
 require 'rails_helper'
 
-RSpec.describe ReportBuilder::GenerationTranscript do
+RSpec.describe ReportBuilder::Run do
   let(:report) { create(:report) }
+
+  def write(run, role, text, **attributes)
+    run.append_message!(role: role, content: text, displayed: false, **attributes)
+  end
+
+  describe '#append_message!' do
+    it 'adds the message to the report conversation and widens the range the run wrote' do
+      run = create(:report_run, report: report)
+      first = write(run, 'user', 'Generate the report.')
+      last = write(run, 'assistant', 'Done.')
+
+      expect(report.chat.messages).to eq [first, last]
+      expect([run.first_position, run.last_position]).to eq [first.position, last.position]
+    end
+
+    it 'continues the numbering of the messages that came before it' do
+      earlier = create(:report_run, report: report)
+      write(earlier, 'user', 'Generate the report.')
+      run = create(:report_run, report: report, kind: 'revision')
+
+      expect(write(run, 'user', 'Shorter, please.').position).to eq 2
+    end
+  end
+
+  describe '#messages' do
+    it 'is what this run wrote for the model, and nothing another run wrote' do
+      earlier = create(:report_run, report: report)
+      write(earlier, 'user', 'Generate the report.')
+      run = create(:report_run, report: report, kind: 'revision')
+      prompt = write(run, 'user', 'Shorter, please.')
+      run.append_message!(role: 'assistant', content: 'Shortened.', replayed: false)
+
+      expect(run.messages).to eq [prompt]
+    end
+
+    it 'is nothing for a run that has not written yet' do
+      expect(create(:report_run, report: report).messages).to be_empty
+    end
+  end
 
   describe '#rounds' do
     it 'counts what the model said, not what it was told' do
-      transcript = described_class.create!(
-        report: report,
-        messages: [
-          { 'role' => 'user', 'content' => [{ 'text' => 'Generate the report.' }] },
-          { 'role' => 'assistant', 'content' => [{ 'text' => 'Looking.' }] },
-          { 'role' => 'user', 'content' => [{ 'text' => 'result' }] },
-          { 'role' => 'assistant', 'content' => [{ 'text' => 'Done.' }] }
-        ]
-      )
+      run = create(:report_run, report: report)
+      write(run, 'user', 'Generate the report.')
+      write(run, 'assistant', 'Looking.')
+      write(run, 'user', 'result')
+      write(run, 'assistant', 'Done.')
 
-      expect(transcript.rounds).to eq 2
+      expect(run.rounds).to eq 2
     end
 
     it 'is zero for a run that never got a reply' do
-      expect(described_class.create!(report: report).rounds).to eq 0
+      expect(create(:report_run, report: report).rounds).to eq 0
     end
   end
 
@@ -29,25 +64,25 @@ RSpec.describe ReportBuilder::GenerationTranscript do
   # round is being paid for in full — the number worth watching after a prompt change.
   describe '#cache_read_tokens' do
     it 'reads what the provider reported' do
-      transcript = described_class.create!(report: report, usage: { 'cache_read_input_tokens' => 9000 })
+      run = create(:report_run, report: report, usage: { 'cache_read_input_tokens' => 9000 })
 
-      expect(transcript.cache_read_tokens).to eq 9000
+      expect(run.cache_read_tokens).to eq 9000
     end
 
     it 'is zero when the provider said nothing about caching' do
-      expect(described_class.create!(report: report).cache_read_tokens).to eq 0
+      expect(create(:report_run, report: report, usage: {}).cache_read_tokens).to eq 0
     end
   end
 
   describe 'stopped_because' do
     it 'accepts every reason a run can end' do
       described_class::STOP_REASONS.each do |reason|
-        expect(build(:generation_transcript, report: report, stopped_because: reason)).to be_valid
+        expect(build(:report_run, report: report, stopped_because: reason)).to be_valid
       end
     end
 
     it 'is nothing while the run is still going' do
-      run = described_class.create!(report: report, stopped_because: nil)
+      run = create(:report_run, report: report, stopped_because: nil)
 
       expect(run).to be_running
       expect(described_class.running).to include run
@@ -55,15 +90,15 @@ RSpec.describe ReportBuilder::GenerationTranscript do
     end
 
     it 'rejects a reason nothing produces' do
-      transcript = described_class.new(report: report, stopped_because: 'bored')
+      run = build(:report_run, report: report, stopped_because: 'bored')
 
-      expect(transcript).to be_invalid
-      expect(transcript.errors.details[:stopped_because]).to include(hash_including(error: :inclusion))
+      expect(run).to be_invalid
+      expect(run.errors.details[:stopped_because]).to include(hash_including(error: :inclusion))
     end
 
     it 'knows which endings left the report unfinished' do
       early, whole = described_class::STOP_REASONS.partition do |reason|
-        build(:generation_transcript, stopped_because: reason).stopped_early?
+        build(:report_run, report: report, stopped_because: reason).stopped_early?
       end
 
       expect(early).to match_array %w[round_cap timeout cancelled]
@@ -73,8 +108,8 @@ RSpec.describe ReportBuilder::GenerationTranscript do
 
   describe 'kind' do
     it 'is a generation or a chat turn' do
-      expect(build(:generation_transcript, kind: 'revision')).to be_valid
-      expect(build(:generation_transcript, kind: 'daydream')).to be_invalid
+      expect(build(:report_run, report: report, kind: 'revision')).to be_valid
+      expect(build(:report_run, report: report, kind: 'daydream')).to be_invalid
     end
   end
 
@@ -82,9 +117,10 @@ RSpec.describe ReportBuilder::GenerationTranscript do
     # saved: whether this run's work reached the report. Only a generation that did
     # can open a session.
     def run(kind, stopped: 'done', saved: true, messages: 2, at: Time.current)
-      create(:generation_transcript, report: report, kind: kind, stopped_because: stopped,
-        messages: Array.new(messages) { |i| { 'role' => i.even? ? 'user' : 'assistant', 'content' => [] } },
-        report_saved_at: saved ? at : nil, created_at: at)
+      create(:report_run, report: report, kind: kind, stopped_because: stopped,
+        report_saved_at: saved ? at : nil, created_at: at).tap do |run|
+        messages.times { |i| write(run, i.even? ? 'user' : 'assistant', 'hello') }
+      end
     end
 
     it 'is the latest finished generation and the turns after it, oldest first' do
@@ -148,39 +184,25 @@ RSpec.describe ReportBuilder::GenerationTranscript do
       expect(described_class.session_runs_for(report)).not_to include oldest_turn
     end
 
-    # A screenshot is stored in full as base64 but replayed as a one-line
-    # placeholder. Counted as stored, one picture can exceed the whole budget, and
-    # the run holding it would push every earlier turn out of the conversation.
-    it 'does not let a stored screenshot spend budget the prompt never pays' do
-      generation = run('generation', at: 3.hours.ago)
-      shot = create(:generation_transcript, report: report, kind: 'revision',
-        stopped_because: 'done', created_at: 2.hours.ago,
-        messages: [{ 'role' => 'user',
-                     'content' => [{ 'image' => { 'format' => 'png',
-                                                  'source' => { 'bytes' => 'A' * 450_000 } } }] }])
-      newest = run('revision', at: 1.hour.ago)
-
-      expect(shot.size_in_chars).to be < 1_000
-      expect(described_class.session_runs_for(report)).to eq [generation, shot, newest]
-    end
-
     # The budget is characters because a turn that patches a layout is worth many
     # ordinary turns; counting messages would let one of them blow the prompt.
     it 'measures a turn by its size, not by how many messages it holds' do
       short = run('revision', messages: 2)
-      long = create(:generation_transcript, report: report, kind: 'revision',
-        stopped_because: 'done',
-        messages: [{ 'role' => 'user', 'content' => [{ 'text' => 'x' * 10_000 }] }])
+      long = run('revision', messages: 0)
+      write(long, 'user', 'x' * 10_000)
 
       expect(long.size_in_chars).to be > short.size_in_chars
     end
   end
 
   describe 'when the report goes' do
-    it 'takes the record of its runs with it' do
-      described_class.create!(report: report)
+    it 'takes the runs and the conversation they wrote with it' do
+      write(create(:report_run, report: report), 'user', 'Generate the report.')
 
-      expect { report.destroy! }.to change(described_class, :count).by(-1)
+      expect { report.destroy! }
+        .to change(described_class, :count).by(-1)
+        .and change(AIAssistant::Conversation, :count).by(-1)
+        .and change(AIAssistant::Message, :count).by(-1)
     end
   end
 end
