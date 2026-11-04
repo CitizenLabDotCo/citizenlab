@@ -148,6 +148,7 @@ module ReportBuilder
         # was written up to then is saved.
         def cancel_generation
           authorize report, :cancel_generation?
+          report.recover_lost_runs!
           run = report.runs.running.newest_first.first
 
           if run.nil?
@@ -166,16 +167,22 @@ module ReportBuilder
 
         # The report chat: the conversation and what it changed.
         def chat
+          report.recover_lost_runs!
           render json: chat_json(report.chat)
         end
 
         # Adds the admin's turn and starts the model's. The turn itself runs in the
         # background; the panel follows it by polling #chat.
         #
+        # Refuses with 409 while a turn is running, which another admin of the report
+        # may have started: two turns would revise the same layout at once, and both
+        # are paid model calls.
+        #
         # The panel sends the layout as it stands in the editor, unsaved edits and all,
         # and that is what the model revises. Without it a turn would silently discard
         # whatever the admin had changed but not yet saved.
         def chat_turn
+          report.recover_lost_runs!
           chat = report.chat!(locale: current_user.locale.to_s)
 
           # Authorize first (reading `report` does that), then look at the input.
@@ -185,22 +192,24 @@ module ReportBuilder
           error = message_error(message)
           return render json: { errors: { message: [{ error: error }] } }, status: :unprocessable_entity if error
 
-          # Shown in the panel only. The model is sent the admin's words inside a
-          # prompt that carries the report, which the run records itself.
-          chat.with_lock do
+          started = chat.with_lock do
+            next false if chat.running?
+
+            # Shown in the panel only. The model is sent the admin's words inside a
+            # prompt that carries the report, which the run records itself.
             chat.messages.create!(role: 'user', content: message, replayed: false)
+            chat.update!(status: 'running', last_error_code: nil, turn_started_at: Time.current)
+            # In the same transaction, so a turn is never marked running without a
+            # job to end it.
+            enqueue_revise_report_job(message)
+            true
           end
 
-          ReportBuilder::ReviseReportJob
-            .with_tracking(owner: current_user)
-            .perform_later(
-              report,
-              instruction: message,
-              locale: current_user.locale.to_s,
-              craftjs_json: params[:craftjs_json]&.to_unsafe_h
-            )
-
-          render json: chat_json(chat), status: :created
+          if started
+            render json: chat_json(chat), status: :created
+          else
+            render json: { errors: { base: [{ error: 'conversation_busy' }] } }, status: :conflict
+          end
         end
 
         private
@@ -218,17 +227,27 @@ module ReportBuilder
         # `changed_layout` tells the panel to pull the new layout into the editor —
         # only then, or it would overwrite edits the admin has not saved.
         def chat_json(chat)
-          turns = chat_turns(chat)
           {
             data: {
               id: chat&.id || report.id,
               type: 'report_chat',
               attributes: {
-                turns: turns,
-                pending: turns.last&.dig('role') == 'user'
+                turns: chat_turns(chat),
+                pending: chat&.running? || false
               }
             }
           }
+        end
+
+        def enqueue_revise_report_job(message)
+          ReportBuilder::ReviseReportJob
+            .with_tracking(owner: current_user)
+            .perform_later(
+              report,
+              instruction: message,
+              locale: current_user.locale.to_s,
+              craftjs_json: params[:craftjs_json]&.to_unsafe_h
+            )
         end
 
         def chat_turns(chat)

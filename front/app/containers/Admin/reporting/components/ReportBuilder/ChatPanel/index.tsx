@@ -25,6 +25,7 @@ const Panel = styled(Box)`
 `;
 
 // The longest message the backend accepts (AIAssistant::Message::MAX_CONTENT_LENGTH).
+// The text area stops typing at this length, so a longer message is never sent.
 const MAX_MESSAGE_LENGTH = 5000;
 
 interface Props {
@@ -81,14 +82,16 @@ const ChatPanel = ({ reportId, setSaved }: Props) => {
 
   const submit = () => {
     const message = draft.trim();
-    if (!message || message.length > MAX_MESSAGE_LENGTH || pending || sending) {
-      return;
-    }
+    if (!message || pending || sending) return;
 
     // Send the layout as it stands in the editor, so unsaved edits are what the
     // model revises rather than what it overwrites.
-    sendMessage({ reportId, message, craftjsJson: query.getSerializedNodes() });
-    setDraft('');
+    // The draft is only cleared once the turn is accepted, so a refused message
+    // can be sent again.
+    sendMessage(
+      { reportId, message, craftjsJson: query.getSerializedNodes() },
+      { onSuccess: () => setDraft('') }
+    );
   };
 
   return (
@@ -135,11 +138,7 @@ const ChatPanel = ({ reportId, setSaved }: Props) => {
           buttonStyle="primary"
           icon="stars"
           size="s"
-          disabled={
-            pending ||
-            draft.trim().length === 0 ||
-            draft.trim().length > MAX_MESSAGE_LENGTH
-          }
+          disabled={pending || draft.trim().length === 0}
           processing={sending}
           onClick={submit}
         >

@@ -70,6 +70,13 @@ module ReportBuilder
 
     CHAT_SURFACE_KEY = 'report_builder'
 
+    # How long a run is believed to be still going. A run's own clock stops it after
+    # an hour, read between rounds, so this leaves room for the round under way and
+    # for time spent waiting in the queue. Past it, the job is taken to be lost.
+    RUN_ASSUMED_LOST_AFTER = 90.minutes
+
+    FAILED_TURN_REPLY = 'Something went wrong on my side. Please try again.'
+
     # How long an unfinished run is believed to be still running. Past that the
     # report is listed again even with the tracker open, so a worker that died
     # without completing its tracker cannot hide a report for good.
@@ -137,6 +144,28 @@ module ReportBuilder
 
     def runs
       Run.where(conversation_id: ::AIAssistant::Conversation.where(subject: self, surface_key: CHAT_SURFACE_KEY).select(:id))
+    end
+
+    # Ends the chat turn the model still owes an answer to, telling the admin it
+    # failed so they can ask again.
+    def fail_chat_turn!(error_code)
+      return if chat.nil?
+
+      chat.with_lock do
+        next unless chat.running?
+
+        chat.messages.create!(role: 'assistant', content: FAILED_TURN_REPLY, replayed: false)
+        chat.fail_turn!(error_code)
+      end
+    end
+
+    # A worker that dies without failing its job leaves a run that never stops, and
+    # a chat that waits for it forever: the admin could neither ask again nor stop it.
+    def recover_lost_runs!
+      runs.running.where(created_at: ...RUN_ASSUMED_LOST_AFTER.ago).update_all(stopped_because: 'failed', updated_at: Time.current)
+
+      turn_started_at = chat&.running? && chat.turn_started_at
+      fail_chat_turn!('turn_timed_out') if turn_started_at && turn_started_at < RUN_ASSUMED_LOST_AFTER.ago
     end
 
     # The run that wrote what the report holds now, if a model wrote it. A run that

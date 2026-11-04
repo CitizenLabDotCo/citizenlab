@@ -296,6 +296,19 @@ class Rack::Attack
     end
   end
 
+  # Report chat turns. Each one can be dozens of paid model rounds. A report runs one
+  # turn at a time, so this bounds an admin working across many reports. Keyed on the
+  # user first; the IP limit is looser, since an office shares one.
+  REPORT_CHAT_TURN = %r{\A/web_api/v1/reports/[^/]+/chat\z}
+
+  throttle('report_chat/user', limit: 30, period: 1.hour) do |req|
+    USER_ID_FROM_JWT.call(req) if REPORT_CHAT_TURN.match?(req.path) && req.post?
+  end
+
+  throttle('report_chat/ip', limit: 60, period: 1.hour) do |req|
+    req.remote_ip if REPORT_CHAT_TURN.match?(req.path) && req.post?
+  end
+
   # OAuth Dynamic Client Registration by IP.
   throttle('oauth_registrations/ip', limit: 5, period: 1.minute) do |req|
     if req.path == '/oauth/registrations' && req.post?

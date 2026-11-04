@@ -12,10 +12,11 @@ RSpec.describe ReportBuilder::ReviseReportJob do
   let(:owner) { create(:admin) }
   let(:phase) { create(:phase) }
   let(:report) { create(:report, phase: phase) }
-  # As the controller leaves it: the admin's words, for the panel only.
+  # As the controller leaves it: the admin's words, for the panel only, and a turn running.
   let!(:chat) do
     report.chat!(locale: 'en').tap do |chat|
       chat.messages.create!(role: 'user', content: 'make it shorter', replayed: false)
+      chat.update!(status: 'running', turn_started_at: Time.current)
     end
   end
   let(:revised_layout) do
@@ -113,6 +114,7 @@ RSpec.describe ReportBuilder::ReviseReportJob do
       expect(changed.last_position).to eq shown.last.position
 
       stub_revision({ layout: nil, reply: 'It shows weekly participants.' })
+      chat.update!(status: 'running')
       described_class.with_tracking(owner: owner)
         .perform_later(report, instruction: 'what is that', locale: 'en', craftjs_json: nil)
         .perform_now
@@ -142,6 +144,23 @@ RSpec.describe ReportBuilder::ReviseReportJob do
         .and_return({ layout: nil, reply: 'ok' })
 
       enqueue_job.perform_now
+    end
+
+    it 'ends the turn, so the admin can ask again' do
+      stub_revision({ layout: nil, reply: 'ok' })
+
+      enqueue_job.perform_now
+
+      expect(chat.reload).to be_idle
+    end
+
+    # The admin was told it failed, and may have asked again since.
+    it 'does nothing for a turn that was given up on while it waited' do
+      chat.fail_turn!('turn_timed_out')
+      job = enqueue_job
+
+      expect { job.perform_now }.not_to change(ReportBuilder::Run, :count)
+      expect(job.tracker.reload).to be_completed
     end
 
     it 'records the turn as a run of its own, so the next turn can continue it' do
@@ -180,6 +199,7 @@ RSpec.describe ReportBuilder::ReviseReportJob do
       job.send(:expire)
 
       expect(shown.last).to have_attributes(role: 'assistant', replayed: false)
+      expect(chat.reload).to have_attributes(status: 'failed', last_error_code: 'turn_failed')
       expect(job.tracker).to be_completed
     end
   end
