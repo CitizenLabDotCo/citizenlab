@@ -27,9 +27,10 @@ import OptionRow from 'components/UI/OptionRow';
 
 import { MessageDescriptor, useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import backofficeRedesignMessages from '../../messages';
 
 import { ConfirmableStatus } from './ConfirmStatusChangeModal';
+import messages from './messages';
 import { MissingEssentialsIntent } from './MissingEssentialsModal';
 import getPublicationState, { PublicationState } from './publicationState';
 import usePublishNow from './usePublishNow';
@@ -210,7 +211,9 @@ const PublishPanel = ({
                 width="100%"
                 onClick={() => onConfirmStatusChange('draft')}
               >
-                {formatMessage(messages.publishRestoreToDraft)}
+                {formatMessage(
+                  backofficeRedesignMessages.publishRestoreToDraft
+                )}
               </Button>
             </Box>
             <Box flex="1">
@@ -232,7 +235,7 @@ const PublishPanel = ({
               width="100%"
               onClick={() => onConfirmStatusChange('draft')}
             >
-              {formatMessage(messages.publishRestoreToDraft)}
+              {formatMessage(backofficeRedesignMessages.publishRestoreToDraft)}
             </Button>
           </Box>
         )}

@@ -15,12 +15,12 @@ import { usePageSave } from 'components/admin/PageSaveContext';
 import { useIntl } from 'utils/cl-intl';
 
 import useMarkSetupStep from '../_shared/useMarkSetupStep';
-import messages from '../messages';
 
 import ArchivedPanel from './ArchivedPanel';
 import BeforeYouPublish from './BeforeYouPublish';
 import getPanelStage from './getPanelStage';
 import LivePanel from './LivePanel';
+import messages from './messages';
 import PanelDivider from './PanelDivider';
 import ProjectDetails from './ProjectDetails';
 import ProjectSettingsModal from './ProjectSettingsModal';

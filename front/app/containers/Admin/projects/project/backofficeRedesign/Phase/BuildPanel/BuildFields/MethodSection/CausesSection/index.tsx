@@ -10,12 +10,12 @@ import IconAction from 'components/UI/IconAction';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../../../../messages';
 import PanelField from '../../../PanelField';
 
 import CauseModal from './CauseModal';
 import CauseRow from './CauseRow';
 import DeleteCauseModal from './DeleteCauseModal';
+import messages from './messages';
 import useStagedCauses, {
   StagedCause,
   causeImageUrl,

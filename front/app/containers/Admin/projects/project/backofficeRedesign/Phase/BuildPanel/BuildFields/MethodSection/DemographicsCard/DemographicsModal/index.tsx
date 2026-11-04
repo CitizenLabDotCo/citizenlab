@@ -10,9 +10,10 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../../../../../messages';
+import demographicsCardMessages from '../messages';
 
 import ActionTabs from './ActionTabs';
+import messages from './messages';
 
 interface Props {
   phaseId: string;
@@ -31,7 +32,7 @@ const DemographicsModal = ({ phaseId, actions, opened, onClose }: Props) => {
       opened={opened}
       close={onClose}
       width="720px"
-      header={formatMessage(messages.collectDemographicData)}
+      header={formatMessage(demographicsCardMessages.collectDemographicData)}
     >
       <Box p="24px" display="flex" flexDirection="column" gap="20px">
         <Text variant="boHelper" m="0">

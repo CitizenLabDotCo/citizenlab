@@ -4,8 +4,9 @@ import { Box, Text, colors } from '@citizenlab/cl2-component-library';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
 import { StatCard } from '../StatCardLink';
+
+import messages from './messages';
 
 const EmptyCard = () => {
   const { formatMessage, formatNumber } = useIntl();

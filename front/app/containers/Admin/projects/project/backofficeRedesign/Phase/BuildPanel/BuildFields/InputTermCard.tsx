@@ -11,8 +11,9 @@ import OptionPicker from 'components/UI/OptionPicker';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../../messages';
 import PanelField from '../PanelField';
+
+import messages from './messages';
 
 const TERM_ICONS: Record<InputTerm, IconNames> = {
   idea: 'idea',

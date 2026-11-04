@@ -16,13 +16,12 @@ import AuthorField from 'components/CustomFieldsForm/Fields/AuthorField';
 import fieldMessages from 'components/CustomFieldsForm/messages';
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
-import Modal from 'components/UI/Modal';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import validateAtLeastOneLocale from 'utils/yup/validateAtLeastOneLocale';
 
-import messages from '../../../../messages';
-
+import messages from './messages';
 import { InputValues } from './useStagedInputs';
 
 const COPY = {
@@ -97,7 +96,7 @@ const AddInputModal = ({ phaseId, kind, onSubmit, onClose }: Props) => {
     <Modal
       opened
       close={onClose}
-      width={560}
+      width={MEDIUM_MODAL_WIDTH}
       variant="bo"
       header={formatMessage(copy.header)}
       footer={

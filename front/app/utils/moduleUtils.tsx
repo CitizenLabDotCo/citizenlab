@@ -69,12 +69,6 @@ export interface OutletsPropertyMap {
     projectId: string;
     children: OutletRenderProps;
   };
-  'app.containers.Admin.projects.phase.moderation': {
-    projectId: string;
-    /** The staged assignee, null for none; undefined when unchanged. */
-    assignee?: string | null;
-    onAssigneeChange: (assignee: string | null) => void;
-  };
   'app.containers.Admin.ideas.tabs': ITabsOutlet;
   'app.containers.Admin.sideBar.navItems': {
     onData: (data: InsertConfigurationOptions<NavItem>) => void;

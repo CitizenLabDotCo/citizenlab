@@ -422,6 +422,19 @@ const projectShowSearchSchema = yup.object({
   search: yup.string().optional(),
   topics: yup.array().of(yup.string().required()).optional(),
   idea_status: yup.string().optional(),
+  // Field ids are only known at runtime; stripUnknown drops every key of a shapeless object().
+  answers: yup
+    .lazy((value) =>
+      yup.object(
+        Object.fromEntries(
+          Object.keys(value ?? {}).map((fieldId) => [
+            fieldId,
+            yup.array().of(yup.string().required()).required(),
+          ])
+        )
+      )
+    )
+    .optional(),
   idea_map_id: yup.string().optional(),
   view: yup.string().oneOf(presentationModes).optional(),
 });

@@ -11,7 +11,7 @@ import actionFormMessages from 'components/admin/ActionForm/messages';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import methodSectionMessages from './BuildFields/MethodSection/messages';
 
 import SurveySetupModal from './SurveySetupModal';
 
@@ -66,7 +66,7 @@ const NativeSurveyOption = ({
           width="100%"
           onClick={() => setOpened(true)}
         >
-          {formatMessage(messages.addQuestions)}
+          {formatMessage(methodSectionMessages.addQuestions)}
         </Button>
       )}
       <SurveySetupModal

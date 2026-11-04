@@ -22,7 +22,7 @@ import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import ProjectWorkspace from '..';
-import messages from '../messages';
+import messages from './messages';
 import BuildFields from '../Phase/BuildPanel/BuildFields';
 import PlacementCard from '../Phase/BuildPanel/PlacementCard';
 import DraftMethodSettings from '../Phase/DraftMethodSettings';

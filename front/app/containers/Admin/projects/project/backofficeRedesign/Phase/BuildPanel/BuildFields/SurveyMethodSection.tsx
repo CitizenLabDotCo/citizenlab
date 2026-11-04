@@ -13,7 +13,8 @@ import { SurveyMethod } from 'containers/Admin/projects/project/phaseSetup/compo
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../../messages';
+import formSectionMessages from './MethodSection/FormSection/messages';
+import messages from './messages';
 import ExternalSurveyFields from '../ExternalSurveyFields';
 import NativeSurveyOption from '../NativeSurveyOption';
 import PanelField from '../PanelField';
@@ -128,7 +129,7 @@ const SurveyMethodSection = ({
                 />
                 {method === selected && method !== 'survey' && (
                   <Text variant="boHelper" m="0">
-                    {formatMessage(messages.saveToEditForm)}
+                    {formatMessage(formSectionMessages.saveToEditForm)}
                   </Text>
                 )}
                 {method === selected && method === 'survey' && (

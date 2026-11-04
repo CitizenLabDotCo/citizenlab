@@ -5,7 +5,7 @@ import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 
 import { usePageSave } from 'components/admin/PageSaveContext';
-import Modal from 'components/UI/Modal';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import { useBlocker } from 'utils/router';
@@ -47,7 +47,7 @@ const UnsavedChangesGuard = () => {
     <Modal
       opened
       close={blocker.reset}
-      width={560}
+      width={MEDIUM_MODAL_WIDTH}
       header={formatMessage(messages.unsavedChangesTitle)}
       footer={
         <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">

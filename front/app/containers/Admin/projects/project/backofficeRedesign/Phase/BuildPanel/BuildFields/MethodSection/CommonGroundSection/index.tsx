@@ -8,12 +8,13 @@ import IconAction from 'components/UI/IconAction';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../../../../messages';
 import PanelField from '../../../PanelField';
 import AddInputModal from '../AddInputModal';
+import methodSectionMessages from '../messages';
 import useStagedInputs from '../useStagedInputs';
 
 import ImportInputsModal from './ImportInputsModal';
+import messages from './messages';
 
 interface Props {
   projectId: string;
@@ -29,7 +30,7 @@ const CommonGroundSection = ({ projectId, phaseId }: Props) => {
     phaseId
   );
 
-  const addLabel = formatMessage(messages.addStatement);
+  const addLabel = formatMessage(methodSectionMessages.addStatement);
   const importLabel = formatMessage(messages.importStatements);
 
   return (

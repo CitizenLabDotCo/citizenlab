@@ -4,17 +4,19 @@ import { Box, colors, stylingConsts } from '@citizenlab/cl2-component-library';
 import { createPortal } from 'react-dom';
 import { FocusOn } from 'react-focus-on';
 
+import ImportExcelModal from 'components/admin/InputImporterModals/ImportExcelModal';
+import ImportPdfModal from 'components/admin/InputImporterModals/ImportPdfModal';
+
 import { useParams } from 'utils/router';
 
-import ImportExcelModal from './ImportModal/ImportExcelModal';
-import ImportPdfModal from './ImportModal/ImportPdfModal';
 import ReviewSection from './ReviewSection';
 import TopBar from './TopBar';
 
 const InputImporter = () => {
-  const { projectId, phaseId } = useParams({
-    from: '/$locale/admin/projects/$projectId/phases/$phaseId/input-importer',
-  });
+  const { projectId, phaseId } = useParams({ strict: false }) as {
+    projectId: string;
+    phaseId: string;
+  };
   const [importPdfModalOpen, setImportPdfModalOpen] = useState(false);
   const [importExcelModalOpen, setImportExcelModalOpen] = useState(false);
 
@@ -57,7 +59,12 @@ const InputImporter = () => {
         open={importExcelModalOpen}
         onClose={closeImportExcelModal}
       />
-      <ImportPdfModal open={importPdfModalOpen} onClose={closeImportPdfModal} />
+      <ImportPdfModal
+        projectId={projectId}
+        phaseId={phaseId}
+        open={importPdfModalOpen}
+        onClose={closeImportPdfModal}
+      />
     </>
   );
 };

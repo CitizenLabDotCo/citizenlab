@@ -11,11 +11,11 @@ import { SurveyMethod } from 'containers/Admin/projects/project/phaseSetup/compo
 import useNewPhaseDefaults from 'containers/Admin/projects/project/phaseSetup/useNewPhaseDefaults';
 
 import Error from 'components/UI/Error';
-import Modal from 'components/UI/Modal';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import messages from './messages';
 
 import ExternalSurveyFields from './ExternalSurveyFields';
 import { useEnabledSurveyServices } from './SurveyServiceSelect';
@@ -93,7 +93,7 @@ const SwitchSurveyMethodModal = ({ phase, method, onClose }: Props) => {
     <Modal
       opened={method !== null}
       close={close}
-      width={560}
+      width={MEDIUM_MODAL_WIDTH}
       header={formatMessage(messages.switchSurveyMethodTitle)}
       footer={
         <Box display="flex" justifyContent="flex-end" gap="8px" width="100%">

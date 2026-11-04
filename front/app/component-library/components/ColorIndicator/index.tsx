@@ -13,6 +13,7 @@ const ColorIndicator = ({ bgColor }: Props) => {
   return (
     <Box
       width="1rem"
+      minWidth="1rem"
       height="1rem"
       bgColor={bgColor}
       borderRadius={theme.borderRadius}

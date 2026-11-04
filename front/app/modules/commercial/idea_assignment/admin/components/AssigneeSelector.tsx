@@ -7,8 +7,7 @@ import { IOption } from 'typings';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
 import { UNASSIGNED } from 'components/admin/PostManager/useAssigneeOptions';
-
-import useProjectAssignee from './useProjectAssignee';
+import useProjectAssignee from 'components/admin/ProjectAssignee/useProjectAssignee';
 
 const StyledSelect = styled(Select)`
   width: 300px;

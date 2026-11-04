@@ -13,7 +13,7 @@ import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../messages';
+import methodSectionMessages from './BuildFields/MethodSection/messages';
 
 interface Props {
   phaseId: string;
@@ -57,7 +57,7 @@ const PollOption = ({ phaseId, name, title, description }: Props) => {
           width="100%"
           onClick={() => setOpened(true)}
         >
-          {formatMessage(messages.addQuestions)}
+          {formatMessage(methodSectionMessages.addQuestions)}
         </Button>
       )}
       <Modal
@@ -65,7 +65,7 @@ const PollOption = ({ phaseId, name, title, description }: Props) => {
         close={() => setOpened(false)}
         width={900}
         variant="bo"
-        header={formatMessage(messages.pollQuestions)}
+        header={formatMessage(methodSectionMessages.pollQuestions)}
       >
         <Box p="24px">
           <PollAdminForm

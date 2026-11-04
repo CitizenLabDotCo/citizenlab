@@ -7,13 +7,13 @@ import useCopyInputs from 'api/copy_inputs/useCopyInputs';
 import usePhase from 'api/phases/usePhase';
 
 import inputManagerMessages from 'components/admin/PostManager/CommonGroundInputManager/messages';
-import Modal from 'components/UI/Modal';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 import PhaseFilter from 'components/UI/PhaseFilter';
 import ProjectFilter from 'components/UI/ProjectFilter';
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../../../../messages';
+import messages from './messages';
 
 interface Props {
   projectId: string;
@@ -67,7 +67,7 @@ const ImportInputsModal = ({
     <Modal
       opened
       close={onClose}
-      width={560}
+      width={MEDIUM_MODAL_WIDTH}
       variant="bo"
       header={formatMessage(inputManagerMessages.importInputs)}
       footer={

@@ -16,7 +16,7 @@ import { CLError, Multiloc } from 'typings';
 import { IAppConfiguration } from 'api/app_configuration/types';
 import useAppConfiguration from 'api/app_configuration/useAppConfiguration';
 import useIdMethods from 'api/id_methods/useIdMethods';
-import { getAzureConfig } from 'api/id_methods/utils';
+import { getEmployeeSsoConfigs } from 'api/id_methods/utils';
 import { IInviteError } from 'api/invites/types';
 
 import useLocalize, { Localize } from 'hooks/useLocalize';
@@ -225,8 +225,8 @@ export const getApiErrorValues = (
 };
 
 // Allow custom error messages (configured on a verification method) for specific
-// API errors. The Azure AD SSO method can define a custom message for users who
-// must sign in via SSO because of their email domain.
+// API errors. The staff SSO methods (Azure AD, Okta) can define a custom message
+// for users who must sign in via SSO because of their email domain.
 const findCustomErrorMessage = (
   error: string,
   ssoEnforcedForDomainMultiloc: Multiloc | undefined,
@@ -247,8 +247,9 @@ const Error = (props: ErrorProps) => {
   const { formatMessage } = useIntl();
   const localize = useLocalize();
 
-  const ssoEnforcedForDomainMultiloc =
-    getAzureConfig(idMethods)?.attributes.enforced_email_domain_error_multiloc;
+  const ssoEnforcedForDomainMultiloc = getEmployeeSsoConfigs(idMethods).find(
+    (method) => method.attributes.enforced_email_domain_error_multiloc
+  )?.attributes.enforced_email_domain_error_multiloc;
 
   const {
     text,

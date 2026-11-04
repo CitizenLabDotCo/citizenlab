@@ -11,9 +11,8 @@ import useAddProjectImportAsync from 'api/project_imports/useAddProjectImportAsy
 
 import useLocale from 'hooks/useLocale';
 
-import LocalePicker from 'containers/Admin/projects/project/inputImporter/ImportModal/LocalePicker';
-import messages from 'containers/Admin/projects/project/inputImporter/ImportModal/messages';
-
+import LocalePicker from 'components/admin/InputImporterModals/LocalePicker';
+import messages from 'components/admin/InputImporterModals/messages';
 import CheckboxWithLabel from 'components/HookForm/CheckboxWithLabel';
 import Feedback from 'components/HookForm/Feedback';
 import SingleFileUploader from 'components/HookForm/SingleFileUploader';

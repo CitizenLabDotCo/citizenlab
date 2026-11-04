@@ -2,6 +2,8 @@
 
 module CustomIdMethods::AzureActiveDirectory
   class AzureActiveDirectoryOmniauth < IdMethods::Base
+    include CustomIdMethods::EmployeeSso
+
     def name
       'azureactivedirectory'
     end
@@ -14,10 +16,6 @@ module CustomIdMethods::AzureActiveDirectory
       true
     end
 
-    def employee_only?
-      true
-    end
-
     def verification_method_type
       :omniauth
     end
@@ -27,7 +25,7 @@ module CustomIdMethods::AzureActiveDirectory
     end
 
     def config_parameters
-      %i[tenant client_id logo_url login_mechanism_name visibility enforced_email_domains enforced_email_domain_error_multiloc]
+      %i[tenant client_id] + EMPLOYEE_SSO_CONFIG_PARAMETERS
     end
 
     def config_parameters_schema
@@ -42,42 +40,8 @@ module CustomIdMethods::AzureActiveDirectory
           description: "Sometimes also called 'application_id'",
           type: 'string',
           private: true
-        },
-        logo_url: {
-          title: 'Logo',
-          type: 'string',
-          pattern: '^https://.+',
-          description: 'The full URL to the logo image that is shown on the authentication button. Logo should be approx. 25px in height.'
-        },
-        login_mechanism_name: {
-          title: 'Login Mechanism Name',
-          type: 'string',
-          description: 'The Login Mechanism Name is used for user-facing copy. For instance, "Sign up with {login_mechanism_name}.".'
-        },
-        visibility: {
-          title: 'Visibility',
-          type: 'string',
-          enum: %w[show link hide],
-          default: 'show',
-          description: "Should this login mechanism be shown with other options to everyone, be hidden but available at /sign-in/admin or linked from the login modal via an 'admin options' link?"
-        },
-        enforced_email_domains: {
-          title: 'Enforced Domains',
-          type: 'string',
-          description: "Comma-separated list of email domains (e.g. 'example.com,company.org'). Users with these email domains must sign in via Azure AD."
-        },
-        enforced_email_domain_error_multiloc: {
-          title: 'Enforce Email Domain Error Message',
-          '$ref': '#/definitions/multiloc_string',
-          description: 'Custom error message shown to users who must sign in via Azure AD due to their email domain.'
         }
-      }
-    end
-
-    # Exposed publicly via the /id_methods endpoint so the frontend can
-    # render the SSO button (logo, label) and enforce visibility / domain rules.
-    def exposed_config_parameters
-      %i[logo_url login_mechanism_name visibility enforced_email_domain_error_multiloc]
+      }.merge(employee_sso_config_parameters_schema)
     end
 
     # @param [AppConfiguration] configuration
@@ -96,18 +60,6 @@ module CustomIdMethods::AzureActiveDirectory
         remote_avatar_url: remote_avatar_url(auth),
         locale: AppConfiguration.instance.closest_locale_to(auth.extra.raw_info.locale)
       }
-    end
-
-    def enforced_email_domains
-      # Called on every login attempt (via AuthenticationService.new.sso_enforced_for_email?),
-      # including on tenants that have no verification configured. Guard before
-      # reading #config, which assumes the verification setting is present.
-      return [] unless IdMethodService.new.configured?(AppConfiguration.instance, name)
-
-      domains_str = config[:enforced_email_domains]
-      return [] if domains_str.blank?
-
-      domains_str.split(',').map { |d| d.strip.downcase }.compact_blank
     end
 
     def updateable_user_attrs

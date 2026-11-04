@@ -15,7 +15,7 @@ import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/t
 
 import { useIntl } from 'utils/cl-intl';
 
-import messages from '../../../../messages';
+import messages from './messages';
 import PanelField from '../../PanelField';
 
 import DatesSummary from './DatesSummary';

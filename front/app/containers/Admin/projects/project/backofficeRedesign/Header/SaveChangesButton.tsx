@@ -9,7 +9,8 @@ import { usePageSave } from 'components/admin/PageSaveContext';
 import { useIntl } from 'utils/cl-intl';
 
 import useReturnToPhaseAfterSave from '../_shared/useReturnToPhaseAfterSave';
-import messages from '../messages';
+
+import messages from './messages';
 
 interface Props {
   label?: string;

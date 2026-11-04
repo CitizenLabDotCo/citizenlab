@@ -9,20 +9,19 @@ import {
 
 import useFeatureFlag from 'hooks/useFeatureFlag';
 
-import ImportExcelModal from 'containers/Admin/projects/project/inputImporter/ImportModal/ImportExcelModal';
-import ImportPdfModal from 'containers/Admin/projects/project/inputImporter/ImportModal/ImportPdfModal';
 import inputImporterMessages from 'containers/Admin/projects/project/inputImporter/messages';
 
 import formSyncMessages from 'components/admin/FormSync/messages';
-import Modal from 'components/UI/Modal';
+import ImportExcelModal from 'components/admin/InputImporterModals/ImportExcelModal';
+import ImportPdfModal from 'components/admin/InputImporterModals/ImportPdfModal';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-import messages from '../../../../../../messages';
-
 import ImporterRow from './ImporterRow';
+import messages from './messages';
 
 interface Props {
   projectId: string;
@@ -58,7 +57,7 @@ const InputImporterModal = ({ projectId, phaseId, opened, onClose }: Props) => {
       <Modal
         opened={opened}
         close={onClose}
-        width={560}
+        width={MEDIUM_MODAL_WIDTH}
         variant="bo"
         header={formatMessage(inputImporterMessages.inputImporter)}
       >
@@ -108,6 +107,8 @@ const InputImporterModal = ({ projectId, phaseId, opened, onClose }: Props) => {
         </Box>
       </Modal>
       <ImportPdfModal
+        projectId={projectId}
+        phaseId={phaseId}
         open={upload === 'pdf'}
         onClose={() => setUpload(null)}
         onUploaded={goToReview}

@@ -4,7 +4,7 @@ import usePhase from 'api/phases/usePhase';
 import useUpdateProject from 'api/projects/useUpdateProject';
 
 import { useRegisterPageSaver } from 'components/admin/PageSaveContext';
-import Outlet from 'components/Outlet';
+import ProjectAssignee from 'components/admin/ProjectAssignee';
 
 interface Props {
   phaseId?: string;
@@ -28,8 +28,7 @@ const ModerationAssignee = ({ phaseId }: Props) => {
   if (!projectId) return null;
 
   return (
-    <Outlet
-      id="app.containers.Admin.projects.phase.moderation"
+    <ProjectAssignee
       projectId={projectId}
       assignee={assignee}
       onAssigneeChange={setAssignee}

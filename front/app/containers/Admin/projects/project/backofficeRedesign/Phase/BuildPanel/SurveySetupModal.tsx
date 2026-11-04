@@ -6,19 +6,20 @@ import usePhase from 'api/phases/usePhase';
 import useSubmissionCount from 'api/submission_count/useSubmissionCount';
 
 import PanelGroup from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelGroup';
-import ImportExcelModal from 'containers/Admin/projects/project/inputImporter/ImportModal/ImportExcelModal';
-import ImportPdfModal from 'containers/Admin/projects/project/inputImporter/ImportModal/ImportPdfModal';
 import { isPDFUploadSupported } from 'containers/Admin/projects/project/inputImporter/ReviewSection/utils';
 import CopySurveyModal from 'containers/Admin/projects/project/surveyFormAssets/CopySurveyModal';
 
 import ImportInputsSection from 'components/admin/FormSync/ImportInputsSection';
+import ImportExcelModal from 'components/admin/InputImporterModals/ImportExcelModal';
+import ImportPdfModal from 'components/admin/InputImporterModals/ImportPdfModal';
 import Modal from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
-import messages from '../../messages';
-
+import formSectionMessages from './BuildFields/MethodSection/FormSection/messages';
+import methodSectionMessages from './BuildFields/MethodSection/messages';
+import messages from './messages';
 import NavCard from './NavCard';
 
 interface Props {
@@ -64,7 +65,9 @@ const SurveySetupModal = ({
         close={onClose}
         width="720px"
         header={formatMessage(
-          hasQuestions ? messages.surveyForm : messages.addQuestions
+          hasQuestions
+            ? formSectionMessages.surveyForm
+            : methodSectionMessages.addQuestions
         )}
       >
         <Box p="24px" display="flex" flexDirection="column" gap="10px">
@@ -73,7 +76,9 @@ const SurveySetupModal = ({
           </Text>
           <NavCard
             label={formatMessage(
-              hasQuestions ? messages.editForm : messages.startFromScratch
+              hasQuestions
+                ? methodSectionMessages.editForm
+                : messages.startFromScratch
             )}
             onClick={() => {
               onClose();
@@ -107,6 +112,8 @@ const SurveySetupModal = ({
         surveyFormPersisted={!!phase?.data.attributes.custom_form_persisted}
       />
       <ImportPdfModal
+        projectId={projectId}
+        phaseId={phaseId}
         open={upload === 'pdf'}
         onClose={() => setUpload(null)}
         onUploaded={goToReview}
