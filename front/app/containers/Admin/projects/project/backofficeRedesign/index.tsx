@@ -128,7 +128,8 @@ const ProjectWorkspace = ({
       display="flex"
       flexDirection="column"
       borderRadius={bo.panelBorderRadius}
-      background={colors.grey100}
+      // Manage views bring their own white panels.
+      background={phase && activeView === 'manage' ? undefined : colors.grey100}
     >
       {children}
     </Box>

@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CLErrors } from 'typings';
 
+import volunteersKeys from 'api/volunteers/keys';
+
 import fetcher from 'utils/cl-react-query/fetcher';
 
 import causeKeys from './keys';
@@ -25,6 +27,9 @@ const useDeleteVolunteer = () => {
     onSuccess: (_data, variables) => {
       queryClient.invalidateQueries({
         queryKey: causeKeys.lists(),
+      });
+      queryClient.invalidateQueries({
+        queryKey: volunteersKeys.lists(),
       });
       queryClient.invalidateQueries({
         queryKey: causeKeys.item({ id: variables.causeId }),

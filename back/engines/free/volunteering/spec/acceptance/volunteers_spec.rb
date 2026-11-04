@@ -136,6 +136,52 @@ resource 'Volunteering Volunteers' do
       end
     end
 
+    get 'web_api/v1/phases/:phase_id/volunteers' do
+      with_options scope: :page do
+        parameter :number, 'Page number'
+        parameter :size, 'Number of volunteers per page'
+      end
+      parameter :causes, 'Filter by cause ids', type: :array, required: false
+      parameter :search, 'Filter by the volunteer\'s name or email', required: false
+      parameter :sort, 'Either created_at or -created_at (default)', required: false
+
+      let(:phase_id) { @phase.id }
+      let(:phase_volunteers) { [@volunteer1, *@other_volunteers, *@volunteers2] }
+
+      example_request 'List all volunteers of a phase, newest first' do
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].pluck(:id)).to eq phase_volunteers.sort_by(&:created_at).reverse.map(&:id)
+        expect(json_response[:included].pluck(:id)).to match_array phase_volunteers.map(&:user_id)
+        expect(json_response[:included].first[:attributes]).to have_key :email
+        expect(json_response.dig(:meta, :total)).to eq phase_volunteers.size
+      end
+
+      example 'List the volunteers of one cause, oldest first' do
+        do_request(causes: [@cause2.id], sort: 'created_at')
+        assert_status 200
+        expect(json_parse(response_body)[:data].pluck(:id)).to eq @volunteers2.sort_by(&:created_at).map(&:id)
+      end
+
+      example 'Search volunteers by name' do
+        @volunteer1.user.update!(first_name: 'Zebulon')
+        do_request(search: 'zebul')
+        assert_status 200
+        json_response = json_parse(response_body)
+        expect(json_response[:data].pluck(:id)).to eq [@volunteer1.id]
+        expect(json_response.dig(:meta, :total)).to eq 1
+      end
+
+      describe 'when resident' do
+        before { resident_header_token }
+
+        example '[error] List the volunteers of a phase', document: false do
+          do_request
+          assert_status 401
+        end
+      end
+    end
+
     get 'web_api/v1/phases/:phase_id/volunteers/as_xlsx' do
       let(:phase_id) { @phase.id }
 

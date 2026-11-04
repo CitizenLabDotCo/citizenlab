@@ -11,10 +11,11 @@ import { IProjectData } from 'api/projects/types';
 
 import { useIntl } from 'utils/cl-intl';
 
-import OfflineCollection from '../InputManager/RightColumn/OfflineCollection';
+import OfflineCollection from '../InputManager/SideColumn/OfflineCollection';
 import messages from '../messages';
 
 import EmptyState from './EmptyState';
+import ManageLayout from './ManageLayout';
 import { PhaseViewKey } from './usePhaseViews';
 
 const SIDE_PANEL_WIDTH = 'clamp(320px, 30vw, 384px)';
@@ -110,6 +111,23 @@ const ViewContent = ({ project, phase, view, children }: Props) => {
   }
 
   const copy = EMPTY_COPY[view];
+  const emptyState = (
+    <EmptyState
+      size="large"
+      title={formatMessage(copy.title)}
+      description={formatMessage(copy.description)}
+    />
+  );
+
+  if (view === 'manage') {
+    return (
+      <ManageLayout
+        side={<OfflineCollection project={project} phase={phase} />}
+      >
+        {emptyState}
+      </ManageLayout>
+    );
+  }
 
   return (
     <>
@@ -121,11 +139,7 @@ const ViewContent = ({ project, phase, view, children }: Props) => {
         borderRadius={bo.panelBorderRadius}
         background={colors.white}
       >
-        <EmptyState
-          size="large"
-          title={formatMessage(copy.title)}
-          description={formatMessage(copy.description)}
-        />
+        {emptyState}
       </Box>
       <Box
         flex={`0 0 ${SIDE_PANEL_WIDTH}`}
@@ -135,16 +149,10 @@ const ViewContent = ({ project, phase, view, children }: Props) => {
         borderRadius={bo.panelBorderRadius}
         background={colors.white}
       >
-        {view === 'manage' ? (
-          <Box p="16px">
-            <OfflineCollection project={project} phase={phase} />
-          </Box>
-        ) : (
-          <EmptyState
-            size="small"
-            description={formatMessage(messages.recommendedActionsHint)}
-          />
-        )}
+        <EmptyState
+          size="small"
+          description={formatMessage(messages.recommendedActionsHint)}
+        />
       </Box>
     </>
   );

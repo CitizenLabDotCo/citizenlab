@@ -22,6 +22,7 @@ import {
 import { defaultAdminCardPadding } from 'utils/styleConstants';
 
 import PhasePreview from '../backofficeRedesign/Phase/PhasePreview';
+import { viewFromPathname } from '../backofficeRedesign/Phase/usePhaseViews';
 import { FeatureFlags, getTabs, IPhaseTab } from '../tabs';
 
 import { PhaseHeader } from './PhaseHeader';
@@ -66,6 +67,19 @@ const AdminProjectPhaseIndex = ({ project, selectedPhase }: DataProps) => {
 
   const showPhasePreview =
     isBackofficeRedesignEnabled && !!selectedPhase && onPhaseSetupRoute;
+
+  // Manage views lay out their own panels.
+  if (
+    isBackofficeRedesignEnabled &&
+    selectedPhase &&
+    viewFromPathname(pathname) === 'manage'
+  ) {
+    return (
+      <Box display="flex" flexDirection="column" flexGrow={1} minHeight="0">
+        <RouterOutlet />
+      </Box>
+    );
+  }
 
   return (
     <Box

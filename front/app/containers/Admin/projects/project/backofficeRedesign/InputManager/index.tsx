@@ -18,13 +18,15 @@ import NoPost from 'components/admin/PostManager/components/PostTable/NoPost';
 
 import { getPageNumberFromUrl } from 'utils/paginationUtils';
 
+import ManageLayout from '../Phase/ManageLayout';
+
 import { ColumnKey, getColumns } from './columns';
 import EmptyState from './EmptyState';
 import FilterChips from './FilterMenu/FilterChips';
 import useFilterCategories from './FilterMenu/useFilterCategories';
 import IdeaTable from './IdeaTable';
 import ListToolbar from './ListToolbar';
-import RightColumn from './RightColumn';
+import SideColumn from './SideColumn';
 import SidePanel from './SidePanel';
 import useManagerParams from './useManagerParams';
 import usePanelNavigation from './usePanelNavigation';
@@ -149,76 +151,9 @@ const InputManager = ({ project, phase }: Props) => {
     categories.some((category) => category.isActive) || !!searchTerm;
 
   return (
-    <Box display="flex" gap="24px" alignItems="flex-start">
-      <Box flex="1 1 auto" minWidth="0">
-        <AnalysisBanner projectId={project.id} phaseId={phase.id} />
-        <ListToolbar
-          type={type}
-          projectId={project.id}
-          count={filteredTotal}
-          selectedIdeas={selectedIdeas}
-          onUpdated={refreshSelected}
-          onEdit={(ideaId) => openPanel(ideaId, 'edit')}
-          onClearSelection={() => setSelection(new Map())}
-          searchTerm={searchTerm}
-          onSearch={setSearchTerm}
-          categories={categories}
-          onClearFilters={clearFilters}
-        />
-        <FilterChips categories={categories} onClearAll={clearFilters} />
-        <Box position="relative">
-          {!ideas ? (
-            <Box display="flex" justifyContent="center" py="80px">
-              <Spinner />
-            </Box>
-          ) : (
-            <Box opacity={isChangingList ? 0.4 : 1}>
-              {counts?.total === 0 && !hasFilters ? (
-                <EmptyState />
-              ) : pageIdeas.length === 0 ? (
-                <NoPost handleSeeAll={clearFilters} />
-              ) : (
-                <IdeaTable
-                  ideas={pageIdeas}
-                  columns={columns}
-                  availableColumns={available}
-                  onChangeColumns={setChosenColumns}
-                  sort={sort}
-                  onSort={setSort}
-                  statuses={statuses}
-                  tagLabels={
-                    new Map(
-                      tagOptions.map((option) => [option.value, option.label])
-                    )
-                  }
-                  selectedIds={new Set(selection.keys())}
-                  onToggleSelect={toggleSelect}
-                  onToggleSelectPage={toggleSelectPage}
-                  openIdeaId={selectedIdeaId}
-                  onOpen={openPanel}
-                  currentPage={page}
-                  lastPage={lastPage}
-                  onChangePage={setPage}
-                />
-              )}
-            </Box>
-          )}
-          {ideas && isChangingList && (
-            <Box
-              position="absolute"
-              top="80px"
-              left="0"
-              right="0"
-              display="flex"
-              justifyContent="center"
-            >
-              <Spinner />
-            </Box>
-          )}
-        </Box>
-      </Box>
-      <Box flex="0 0 340px" width="340px" position="sticky" top="0">
-        <RightColumn
+    <ManageLayout
+      side={
+        <SideColumn
           type={type}
           project={project}
           phase={phase}
@@ -227,6 +162,72 @@ const InputManager = ({ project, phase }: Props) => {
           selectedIds={[...selection.keys()]}
           onShowAwaitingReply={() => setFilters({ reply: 'awaiting' })}
         />
+      }
+    >
+      <AnalysisBanner projectId={project.id} phaseId={phase.id} />
+      <ListToolbar
+        type={type}
+        projectId={project.id}
+        count={filteredTotal}
+        selectedIdeas={selectedIdeas}
+        onUpdated={refreshSelected}
+        onEdit={(ideaId) => openPanel(ideaId, 'edit')}
+        onClearSelection={() => setSelection(new Map())}
+        searchTerm={searchTerm}
+        onSearch={setSearchTerm}
+        categories={categories}
+        onClearFilters={clearFilters}
+      />
+      <FilterChips categories={categories} onClearAll={clearFilters} />
+      <Box position="relative">
+        {!ideas ? (
+          <Box display="flex" justifyContent="center" py="80px">
+            <Spinner />
+          </Box>
+        ) : (
+          <Box opacity={isChangingList ? 0.4 : 1}>
+            {counts?.total === 0 && !hasFilters ? (
+              <EmptyState />
+            ) : pageIdeas.length === 0 ? (
+              <NoPost handleSeeAll={clearFilters} />
+            ) : (
+              <IdeaTable
+                ideas={pageIdeas}
+                columns={columns}
+                availableColumns={available}
+                onChangeColumns={setChosenColumns}
+                sort={sort}
+                onSort={setSort}
+                statuses={statuses}
+                tagLabels={
+                  new Map(
+                    tagOptions.map((option) => [option.value, option.label])
+                  )
+                }
+                selectedIds={new Set(selection.keys())}
+                onToggleSelect={toggleSelect}
+                onToggleSelectPage={toggleSelectPage}
+                openIdeaId={selectedIdeaId}
+                onOpen={openPanel}
+                currentPage={page}
+                lastPage={lastPage}
+                onChangePage={setPage}
+              />
+            )}
+          </Box>
+        )}
+        {ideas && isChangingList && (
+          <Box
+            position="absolute"
+            top="80px"
+            left="0"
+            right="0"
+            display="flex"
+            justifyContent="center"
+          >
+            <Spinner />
+          </Box>
+        )}
       </Box>
       <SidePanel
         ideaId={selectedIdeaId}
@@ -240,7 +241,7 @@ const InputManager = ({ project, phase }: Props) => {
         }
         onClose={() => setSelectedIdeaId(undefined)}
       />
-    </Box>
+    </ManageLayout>
   );
 };
 

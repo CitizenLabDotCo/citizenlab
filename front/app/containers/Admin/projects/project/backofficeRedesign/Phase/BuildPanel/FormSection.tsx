@@ -10,7 +10,7 @@ import { useIntl } from 'utils/cl-intl';
 import { getMethodConfig } from 'utils/configs/participationMethodConfig';
 
 import inputManagerMessages from '../../InputManager/messages';
-import OfflineFormsButton from '../../InputManager/RightColumn/OfflineFormsButton';
+import OfflineFormsButton from '../../InputManager/SideColumn/OfflineFormsButton';
 import messages from '../../messages';
 
 import AddPreviousPhaseIdeasModal from './AddPreviousPhaseIdeasModal';
