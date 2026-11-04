@@ -330,4 +330,100 @@ describe ContentBuilder::LayoutService do
         .not_to(change { layout.reload.craftjs_json })
     end
   end
+
+  describe 'clean_project_page_when_survey_phase_removed' do
+    let(:project) { create(:project) }
+    let(:survey) { create(:phase, :standalone, project: project) }
+    let(:other_survey) { create(:phase, :standalone, project: project) }
+    let(:craftjs) do
+      {
+        'ROOT' => node('ProjectPageRoot', parent: nil, nodes: %w[BODY], is_canvas: true),
+        'BODY' => node('ProjectPageBody', parent: 'ROOT', nodes: %w[COLUMNS SURVEY_OTHER], is_canvas: true),
+        'COLUMNS' => node('TwoColumn', parent: 'BODY', linked_nodes: { 'left' => 'LEFT', 'right' => 'RIGHT' }),
+        'LEFT' => node('Container', parent: 'COLUMNS', nodes: %w[SURVEY], is_canvas: true),
+        'RIGHT' => node('Container', parent: 'COLUMNS', is_canvas: true),
+        'SURVEY' => survey_widget('LEFT', survey),
+        'SURVEY_OTHER' => survey_widget('BODY', other_survey)
+      }
+    end
+    let!(:layout) do
+      create(:layout, code: ContentBuilder::ProjectPageLayoutService::CODE, content_buildable: project, craftjs_json: craftjs)
+    end
+
+    def survey_widget(parent, phase)
+      node('ExtraSurveysWidget', parent: parent, props: { 'surveyPhaseId' => phase.id })
+    end
+
+    it 'removes the widgets showing the survey from their own parent, and keeps the others' do
+      service.clean_project_page_when_survey_phase_removed(survey)
+
+      json = layout.reload.craftjs_json
+      expect(json).not_to have_key('SURVEY')
+      expect(json['LEFT']['nodes']).to eq []
+      expect(json).to have_key('SURVEY_OTHER')
+    end
+
+    it 'cleans the layout even when an unrelated widget fails validation' do
+      invalid = craftjs.merge('EMBED' => node('IframeMultiloc', parent: 'BODY', props: { 'url' => '' }))
+      invalid['BODY']['nodes'] += %w[EMBED]
+      layout.update_column(:craftjs_json, invalid)
+
+      expect { service.clean_project_page_when_survey_phase_removed(survey) }.not_to raise_error
+      expect(layout.reload.craftjs_json).not_to have_key('SURVEY')
+      expect(layout.reload.craftjs_json).to have_key('EMBED')
+    end
+
+    it 'drops a widget whose parent is missing from the graph, without raising' do
+      layout.update_column(:craftjs_json, craftjs.merge('SURVEY' => survey_widget('GONE', survey)))
+
+      expect { service.clean_project_page_when_survey_phase_removed(survey) }.not_to raise_error
+      expect(layout.reload.craftjs_json).not_to have_key('SURVEY')
+    end
+
+    it 'leaves the project pages of other projects alone' do
+      other_layout = create(
+        :layout,
+        code: ContentBuilder::ProjectPageLayoutService::CODE,
+        content_buildable: create(:project),
+        craftjs_json: craftjs
+      )
+
+      expect { service.clean_project_page_when_survey_phase_removed(survey) }
+        .not_to(change { other_layout.reload.craftjs_json })
+    end
+
+    describe 'as a side effect of the phase lifecycle' do
+      let(:user) { create(:admin) }
+
+      it 'runs when the survey moves onto the timeline' do
+        survey.update!(placement_type: 'on_timeline')
+        SideFxPhaseService.new.after_update(survey, user)
+
+        expect(layout.reload.craftjs_json).not_to have_key('SURVEY')
+      end
+
+      it 'does not run when the placement did not change' do
+        survey.update!(title_multiloc: { 'en' => 'Renamed' })
+        SideFxPhaseService.new.after_update(survey, user)
+
+        expect(layout.reload.craftjs_json).to have_key('SURVEY')
+      end
+
+      it 'does not run when a survey moves off the timeline' do
+        timeline_survey = create(:native_survey_phase, project: project)
+        layout.update_column(:craftjs_json, craftjs.merge('SURVEY' => survey_widget('LEFT', timeline_survey)))
+        timeline_survey.update!(placement_type: 'standalone')
+        SideFxPhaseService.new.after_update(timeline_survey, user)
+
+        expect(layout.reload.craftjs_json).to have_key('SURVEY')
+      end
+
+      it 'runs when the survey is deleted' do
+        survey.destroy!
+        SideFxPhaseService.new.after_destroy(survey, user)
+
+        expect(layout.reload.craftjs_json).not_to have_key('SURVEY')
+      end
+    end
+  end
 end

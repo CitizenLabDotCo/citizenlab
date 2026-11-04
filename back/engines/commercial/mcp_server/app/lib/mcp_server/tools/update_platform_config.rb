@@ -52,8 +52,6 @@ class McpServer::Tools::UpdatePlatformConfig < McpServer::BaseTool
   end
 
   class Runner < McpServer::BaseTool::Runner
-    DEMO_ONLY_MESSAGE = 'Platform config can only be updated on demo and trial platforms.'
-
     # MCP param key => core settings key.
     CORE_KEYS = {
       organization_name_multiloc: 'organization_name',
@@ -64,7 +62,7 @@ class McpServer::Tools::UpdatePlatformConfig < McpServer::BaseTool
     }.freeze
 
     def run
-      return error(DEMO_ONLY_MESSAGE) unless published_writable_platform?
+      return demo_only_error('Updating the platform config') unless published_writable_platform?
 
       config = AppConfiguration.instance
       authorize(config, :update?)

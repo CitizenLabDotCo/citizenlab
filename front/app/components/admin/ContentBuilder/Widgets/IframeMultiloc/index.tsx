@@ -1,11 +1,14 @@
 import React from 'react';
 
 import { Box, useBreakpoint } from '@citizenlab/cl2-component-library';
+import { useEditor } from '@craftjs/core';
 
 import useLocalize from 'hooks/useLocalize';
 
 import { BUILDER_CONTENT_MAX_WIDTH } from 'components/admin/ContentBuilder/constants';
+import WidgetPlaceholder from 'components/admin/ContentBuilder/Widgets/WidgetPlaceholder';
 
+import { FormattedMessage } from 'utils/cl-intl';
 import { isYouTubeEmbedLink } from 'utils/urlUtils';
 
 import useCraftComponentDefaultPadding from '../../useCraftComponentDefaultPadding';
@@ -30,6 +33,9 @@ const IframeMultiloc = ({
   const isMobile = useBreakpoint('phone');
   const isTablet = useBreakpoint('tablet');
   const componentDefaultPadding = useCraftComponentDefaultPadding();
+  const { enabled } = useEditor((state) => ({
+    enabled: state.options.enabled,
+  }));
 
   const responsiveHeight = getResponsiveHeight(
     embedMode,
@@ -55,6 +61,13 @@ const IframeMultiloc = ({
       margin="0 auto"
       px={componentDefaultPadding}
     >
+      {enabled && !url && (
+        <Box data-cy="e2e-iframe-placeholder">
+          <WidgetPlaceholder iconName="code">
+            <FormattedMessage {...messages.noUrlPrompt} />
+          </WidgetPlaceholder>
+        </Box>
+      )}
       {!hasError &&
         url &&
         (embedMode === 'aspectRatio' ? (

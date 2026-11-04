@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Divider, Button, Text } from '@citizenlab/cl2-component-library';
+import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
 import useAddCause from 'api/causes/useAddCause';
 import useCauses from 'api/causes/useCauses';
@@ -45,13 +45,26 @@ const CausesSection = ({ phaseId }: Props) => {
 
   return (
     <>
-      <Divider />
-      <PanelField label={formatMessage(messages.causesSection)}>
-        <Text variant="boHelper" mb="12px">
+      <PanelField
+        label={formatMessage(messages.causesSection)}
+        action={
+          <Button
+            buttonStyle="bo-text"
+            icon="plus"
+            iconSize="16px"
+            width="32px"
+            height="32px"
+            padding="0"
+            ariaLabel={formatMessage(volunteeringMessages.addCauseButton)}
+            onClick={() => setOpened(true)}
+          />
+        }
+      >
+        <Text variant="boHelper" m="0">
           {formatMessage(messages.causesSectionDescription)}
         </Text>
         {causes && causes.data.length > 0 && (
-          <Box as="ul" pl="20px" mt="0" mb="12px">
+          <Box as="ul" pl="20px" m="0">
             {causes.data.map((cause) => (
               <li key={cause.id}>
                 <Text variant="boLabel" my="2px">
@@ -61,9 +74,6 @@ const CausesSection = ({ phaseId }: Props) => {
             ))}
           </Box>
         )}
-        <Button buttonStyle="bo-secondary" onClick={() => setOpened(true)}>
-          {formatMessage(volunteeringMessages.addCauseButton)}
-        </Button>
       </PanelField>
 
       <Modal

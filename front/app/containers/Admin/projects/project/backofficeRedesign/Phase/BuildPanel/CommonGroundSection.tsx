@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { Box, Divider, Button } from '@citizenlab/cl2-component-library';
+import { Box, Button } from '@citizenlab/cl2-component-library';
 
 import useProjectById from 'api/projects/useProjectById';
 
@@ -27,28 +27,37 @@ const CommonGroundSection = ({ projectId, phaseId }: Props) => {
 
   return (
     <>
-      <Divider />
-      <PanelField label={formatMessage(messages.inputsSection)}>
-        <Box display="flex" gap="8px" flexWrap="wrap">
-          <ButtonWithLink
-            buttonStyle="bo-secondary"
-            width="auto"
-            to={slug ? '/projects/$slug/ideas/new' : undefined}
-            params={slug ? { slug } : undefined}
-            search={{ phase_id: phaseId }}
-            disabled={!slug}
+      <PanelField
+        label={formatMessage(messages.inputsSection)}
+        action={
+          <Box
+            display="flex"
+            gap="8px"
+            flexWrap="wrap"
+            justifyContent="flex-end"
           >
-            {formatMessage(commonGroundMessages.createInput)}
-          </ButtonWithLink>
-          <Button
-            buttonStyle="bo-primary"
-            width="auto"
-            onClick={() => setImportOpened(true)}
-          >
-            {formatMessage(commonGroundMessages.startFromPastInputs)}
-          </Button>
-        </Box>
-      </PanelField>
+            <ButtonWithLink
+              buttonStyle="bo-secondary"
+              boSize="medium"
+              width="auto"
+              to={slug ? '/projects/$slug/ideas/new' : undefined}
+              params={slug ? { slug } : undefined}
+              search={{ phase_id: phaseId }}
+              disabled={!slug}
+            >
+              {formatMessage(commonGroundMessages.createInput)}
+            </ButtonWithLink>
+            <Button
+              buttonStyle="bo-primary"
+              boSize="medium"
+              width="auto"
+              onClick={() => setImportOpened(true)}
+            >
+              {formatMessage(commonGroundMessages.startFromPastInputs)}
+            </Button>
+          </Box>
+        }
+      />
 
       <ImportInputsModal
         showPastInputsModal={importOpened}

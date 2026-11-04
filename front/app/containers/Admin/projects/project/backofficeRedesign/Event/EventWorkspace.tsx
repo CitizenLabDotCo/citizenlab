@@ -7,11 +7,15 @@ import useLocalize from 'hooks/useLocalize';
 import useEventForm from 'containers/Admin/projects/_shared/events/useEventForm';
 import eventMessages from 'containers/Admin/projects/project/events/messages';
 
+import {
+  usePageSave,
+  useRegisterPageSaver,
+} from 'components/admin/PageSaveContext';
+
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
 
 import ProjectWorkspace from '..';
-import { usePageSave, useRegisterPageSaver } from '../_shared/PageSaveContext';
 import projectMessages from '../messages';
 
 import EventPreview from './EventPreview';

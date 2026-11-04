@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 
-import { Button, bo } from '@citizenlab/cl2-component-library';
+import { Button } from '@citizenlab/cl2-component-library';
 
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
 
+import { usePageSave } from 'components/admin/PageSaveContext';
+
 import { useIntl } from 'utils/cl-intl';
 
-import { usePageSave } from '../_shared/PageSaveContext';
 import messages from '../messages';
 
 interface Props {
@@ -31,9 +32,7 @@ const SaveChangesButton = ({ label }: Props) => {
   return (
     <Button
       buttonStyle="bo-primary"
-      height={bo.buttonMedium.height}
-      padding={bo.buttonMedium.padding}
-      fontSize={bo.buttonMedium.fontSize}
+      boSize="medium"
       width="auto"
       icon={showSaved ? 'check' : undefined}
       disabled={!pageSave.dirty}

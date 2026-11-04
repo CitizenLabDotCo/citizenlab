@@ -141,6 +141,11 @@ function getLineHeight(
 function getButtonStyle(
   props: ButtonContainerProps & { theme: MainThemeProps }
 ) {
+  const boGeometry =
+    props.boSize === 'medium'
+      ? { ...BO_GEOMETRY, ...bo.buttonMedium }
+      : BO_GEOMETRY;
+
   const defaultStyleValues: DefaultStyleValues = {
     primary: {
       bgColor: get(props.theme.colors, 'tenantPrimary'),
@@ -219,7 +224,7 @@ function getButtonStyle(
     },
 
     'bo-primary': {
-      ...BO_GEOMETRY,
+      ...boGeometry,
       bgColor: colors.primary,
       textColor: '#fff',
       textHoverColor: '#fff',
@@ -227,7 +232,7 @@ function getButtonStyle(
       iconHoverColor: '#fff',
     },
     'bo-secondary': {
-      ...BO_GEOMETRY,
+      ...boGeometry,
       borderThickness: '1px',
       bgColor: colors.white,
       bgHoverColor: colors.grey50,
@@ -239,14 +244,14 @@ function getButtonStyle(
       iconHoverColor: bo.colors.textHeadingStrong,
     },
     'bo-text': {
-      ...BO_GEOMETRY,
+      ...boGeometry,
       bgColor: 'transparent',
       bgHoverColor: 'transparent',
       textColor: colors.textSecondary,
       iconColor: colors.textSecondary,
     },
     'bo-delete': {
-      ...BO_GEOMETRY,
+      ...boGeometry,
       bgColor: colors.red600,
       textColor: '#fff',
       textHoverColor: '#fff',
@@ -254,7 +259,7 @@ function getButtonStyle(
       iconHoverColor: '#fff',
     },
     'bo-status': {
-      ...BO_GEOMETRY,
+      ...boGeometry,
       bgColor: bo.colors.statusFill,
       bgHoverColor: colors.greenMint,
       textColor: colors.green700,
@@ -589,6 +594,7 @@ type Size = 's' | 'm' | 'l' | 'xl' | undefined;
 export type ButtonContainerProps = {
   buttonStyle?: ButtonStyles;
   size?: Size;
+  boSize?: 'medium';
   width?: string;
   height?: string;
   fullWidth?: boolean;

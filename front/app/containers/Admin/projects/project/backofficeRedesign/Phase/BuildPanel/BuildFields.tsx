@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { Box } from '@citizenlab/cl2-component-library';
+import { Box, Text } from '@citizenlab/cl2-component-library';
 import { CLErrors, Multiloc } from 'typings';
 
 import { IUpdatedPhaseProperties, ParticipationMethod } from 'api/phases/types';
 
+import PanelHeading from 'containers/Admin/projects/_shared/components/SettingsPanel/PanelHeading';
 import usePhaseFileAttachments from 'containers/Admin/projects/_shared/usePhaseFileAttachments';
-import PhaseDescription from 'containers/Admin/projects/project/phaseDescription';
 import { PhaseDates as Dates } from 'containers/Admin/projects/project/phaseSetup/components/PhaseDatePicker';
 import { isSurveyMethod } from 'containers/Admin/projects/project/phaseSetup/components/PhaseParticipationConfig/components/SurveyMethodChoices';
 import phaseSetupMessages from 'containers/Admin/projects/project/phaseSetup/messages';
@@ -14,14 +14,22 @@ import { ValidationErrors } from 'containers/Admin/projects/project/phaseSetup/t
 
 import Error from 'components/UI/Error';
 import FileRepositorySelectAndUpload from 'components/UI/FileRepositorySelectAndUpload';
+import FileSelectOrUploadModal from 'components/UI/FileRepositorySelectAndUpload/components/FileSelectOrUploadModal';
 import InputMultilocWithLocaleSwitcher from 'components/UI/InputMultilocWithLocaleSwitcher';
 
-import { FormattedMessage } from 'utils/cl-intl';
+import { useIntl } from 'utils/cl-intl';
 
+import messages from '../../messages';
+
+import DescriptionField from './DescriptionField';
+import InputTermCard from './InputTermCard';
 import MethodSection from './MethodSection';
 import PanelField from './PanelField';
 import PhaseDates from './PhaseDates';
+import setupTitle from './setupTitle';
 import SurveyMethodSection, { SurveyMethodSwitch } from './SurveyMethodSection';
+
+const USES_INPUT_TERM: ParticipationMethod[] = ['ideation', 'proposals'];
 
 interface Props {
   projectId: string;
@@ -50,66 +58,121 @@ const BuildFields = ({
   surveyMethodSwitch,
   onChange,
   onDatesChange,
-}: Props) => (
-  <>
-    <PhaseDates
-      formData={formData}
-      errors={errors}
-      validationErrors={validationErrors}
-      standalone={standalone}
-      onChange={onDatesChange}
-    />
+}: Props) => {
+  const { formatMessage } = useIntl();
+  const hasAttachmentsBody =
+    files.attachments.length > 0 || files.isUploadingFile || !!errors?.file;
 
-    <PanelField label={<FormattedMessage {...phaseSetupMessages.titleLabel} />}>
-      <InputMultilocWithLocaleSwitcher
-        id="phase-build-panel-title"
-        type="text"
-        valueMultiloc={formData.title_multiloc}
-        onChange={(title_multiloc: Multiloc) => onChange({ title_multiloc })}
-        className="intercom-admin-phase-name"
-      />
-      <Error apiErrors={errors?.title_multiloc} />
-    </PanelField>
-
-    {phaseId && (
-      <Box mb="16px">
-        <PhaseDescription />
+  return (
+    <Box display="flex" flexDirection="column" gap="10px" p="16px 18px 10px">
+      <Box display="flex" alignItems="center" minHeight="32px" mb="6px">
+        <Text variant="boSection" fontSize="m" m="0">
+          {formatMessage(setupTitle(participationMethod))}
+        </Text>
       </Box>
-    )}
 
-    <PanelField
-      label={<FormattedMessage {...phaseSetupMessages.uploadAttachments} />}
-    >
-      <FileRepositorySelectAndUpload
-        id="phase-build-panel-file-uploader"
-        onFileAdd={files.uploadFile}
-        onFileRemove={files.removeFile}
-        onFileReorder={files.reorderFiles}
-        onFileAttach={files.attachFile}
-        fileAttachments={files.attachments}
-        enableDragAndDrop
-        apiErrors={errors}
-        maxSizeMb={10}
-        isUploadingFile={files.isUploadingFile}
+      <PhaseDates
+        formData={formData}
+        errors={errors}
+        validationErrors={validationErrors}
+        standalone={standalone}
+        onChange={onDatesChange}
       />
-    </PanelField>
 
-    {!standalone && isSurveyMethod(participationMethod) && (
-      <SurveyMethodSection
-        selected={participationMethod}
-        disabledReasons={surveyMethodSwitch.disabledReasons}
-        onSelect={surveyMethodSwitch.onSelect}
-      />
-    )}
+      <Box display="flex" flexDirection="column" gap="10px">
+        <Box>
+          <InputMultilocWithLocaleSwitcher
+            id="phase-build-panel-title"
+            type="text"
+            variant="bo"
+            ariaLabel={formatMessage(phaseSetupMessages.titleLabel)}
+            valueMultiloc={formData.title_multiloc}
+            onChange={(title_multiloc: Multiloc) =>
+              onChange({ title_multiloc })
+            }
+            className="intercom-admin-phase-name"
+          />
+          <Error apiErrors={errors?.title_multiloc} />
+        </Box>
 
-    <MethodSection
-      projectId={projectId}
-      participationMethod={participationMethod}
-      phaseId={phaseId}
-    />
+        {phaseId && (
+          <DescriptionField
+            projectId={projectId}
+            value={formData.description_multiloc}
+            errors={errors}
+            onChange={(description_multiloc) =>
+              onChange({ description_multiloc })
+            }
+          />
+        )}
+      </Box>
 
-    {errors?.base && <Error apiErrors={errors.base} />}
-  </>
-);
+      <Box display="flex" flexDirection="column" gap="10px">
+        <PanelField
+          label={formatMessage(messages.attachments)}
+          action={
+            <FileSelectOrUploadModal
+              fileAttachments={files.attachments}
+              onFileAdd={files.uploadFile}
+              onFileAttach={files.attachFile}
+              maxSizeMb={10}
+              isDisabled={files.isUploadingFile}
+              iconOnly
+            />
+          }
+        >
+          {hasAttachmentsBody && (
+            <FileRepositorySelectAndUpload
+              id="phase-build-panel-file-uploader"
+              variant="bo"
+              onFileAdd={files.uploadFile}
+              onFileRemove={files.removeFile}
+              onFileReorder={files.reorderFiles}
+              onFileAttach={files.attachFile}
+              fileAttachments={files.attachments}
+              apiErrors={errors}
+              maxSizeMb={10}
+              isUploadingFile={files.isUploadingFile}
+              hideTrigger
+            />
+          )}
+        </PanelField>
+
+        {USES_INPUT_TERM.includes(participationMethod) && (
+          <>
+            <PanelHeading
+              label={formatMessage(
+                participationMethod === 'proposals'
+                  ? messages.proposalsAndParticipantData
+                  : messages.ideasAndParticipantData
+              )}
+            />
+            <InputTermCard
+              value={formData.input_term}
+              onChange={(input_term) => onChange({ input_term })}
+            />
+          </>
+        )}
+
+        {!standalone && isSurveyMethod(participationMethod) && (
+          <SurveyMethodSection
+            selected={participationMethod}
+            disabledReasons={surveyMethodSwitch.disabledReasons}
+            onSelect={surveyMethodSwitch.onSelect}
+          />
+        )}
+
+        <MethodSection
+          projectId={projectId}
+          participationMethod={participationMethod}
+          phaseId={phaseId}
+          inputTerm={formData.input_term}
+        />
+      </Box>
+
+      <Error apiErrors={errors?.base} />
+    </Box>
+  );
+};
 
 export default BuildFields;

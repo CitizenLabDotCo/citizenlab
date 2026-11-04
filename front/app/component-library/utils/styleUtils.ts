@@ -78,6 +78,7 @@ export const themeColors = {
   teal300: '#40B8C5', // formerly clBlueLight
   teal200: '#80CFD8', // formerly clBlueLighter
   teal100: '#BEE7EB', // formerly clBlueLightest
+  teal75: '#E5F5F7',
   teal50: '#EDF8FA',
   /**
    * Red
@@ -215,6 +216,7 @@ export const bo = {
     stepHalo: '#D7E3E7',
     liveHalo: '#DAF2E7',
     stepBorder: '#D4D9DD',
+    stepDone: '#4A935E',
     crumbSeparator: '#8D9EAC',
   },
   borderRadius: '8px',

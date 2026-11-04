@@ -48,6 +48,25 @@ describe('TurnOnNotice', () => {
     ).toBeInTheDocument();
   });
 
+  it('says the redesign is for Go Vocal staff when it is offered internally', () => {
+    mockAuthUser = buildUser({ offered: OFFERED });
+    render(<TurnOnNotice />);
+
+    expect(
+      screen.getByText(/internal early access for Go Vocal staff only/)
+    ).toBeInTheDocument();
+  });
+
+  it('does not mention Go Vocal staff when it is offered to all admins', () => {
+    mockAuthUser = buildUser({
+      offered: { project_backoffice_redesign: 'general' },
+    });
+    render(<TurnOnNotice />);
+
+    expect(screen.getByText(/It is in early access\./)).toBeInTheDocument();
+    expect(screen.queryByText(/Go Vocal staff/)).not.toBeInTheDocument();
+  });
+
   it('renders nothing when the redesign is not offered', () => {
     mockAuthUser = buildUser({ offered: {} });
     render(<TurnOnNotice />);
