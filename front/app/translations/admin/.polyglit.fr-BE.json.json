@@ -9179,6 +9179,11 @@
     "verified_at": "2026-11-04T21:34:00.492998Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.deleteCauseDescription": {
+    "state": "verified",
+    "verified_at": "2026-11-04T23:13:15.265503Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.deleteCauseTitle": {
     "state": "verified",
     "verified_at": "2026-11-04T21:34:00.492998Z",

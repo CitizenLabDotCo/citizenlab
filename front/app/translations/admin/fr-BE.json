@@ -1790,7 +1790,7 @@
   "app.containers.Admin.projects.project.contributionFormTitle": "Formulaire de contribution",
   "app.containers.Admin.projects.project.createForm": "Créer le formulaire",
   "app.containers.Admin.projects.project.deleteCause": "Supprimer",
-  "app.containers.Admin.projects.project.deleteCauseDescription": "La cause et ses inscriptions sont supprimées de cette phase. Cette action est irréversible.",
+  "app.containers.Admin.projects.project.deleteCauseDescription": "a cause et les inscriptions associées seront supprimées de cette phase. Cette action est irréversible.",
   "app.containers.Admin.projects.project.deleteCauseTitle": "Supprimer cette cause ?",
   "app.containers.Admin.projects.project.deleteReport": "Supprimer le rapport",
   "app.containers.Admin.projects.project.demographicsNotSet": "Non défini",
