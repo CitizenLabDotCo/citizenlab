@@ -12069,6 +12069,11 @@
     "verified_at": "2026-11-04T20:50:15.551076Z",
     "verified_by": "Adrien"
   },
+  "app.containers.Admin.projects.project.statementAnonymousTooltip": {
+    "state": "verified",
+    "verified_at": "2026-11-04T22:55:29.111612Z",
+    "verified_by": "Adrien"
+  },
   "app.containers.Admin.projects.project.statementCancel": {
     "state": "verified",
     "verified_at": "2026-11-04T16:14:08.011677Z",
