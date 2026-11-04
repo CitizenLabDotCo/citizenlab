@@ -81,7 +81,13 @@ const CustomFieldAnswers = ({ ideaId, project, compact }: Props) => {
             borderTop={`1px solid ${colors.divider}`}
             data-cy="e2e-custom-field-answer"
           >
-            <Text m="0px" mb="4px" fontSize="s" color="textSecondary">
+            <Text
+              m="0px"
+              mb="4px"
+              fontSize="s"
+              fontWeight="semi-bold"
+              color="textSecondary"
+            >
               {localize(field.title_multiloc)}
             </Text>
             {field.answers_visible_to !== 'public' && (
