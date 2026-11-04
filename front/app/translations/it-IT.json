@@ -1688,7 +1688,7 @@
   "app.containers.IdeaCards.xProposals2": "{ideasCount, plural, no {{ideasCount} proposte} one {{ideasCount} proposta} other {{ideasCount} proposte}}",
   "app.containers.IdeaCards.xQuestion2": "{ideasCount, plural, no {{ideasCount} domande} one {{ideasCount} domanda} other {{ideasCount} domande}}",
   "app.containers.IdeaCards.xResponses": "{ideasCount, plural, no {{ideasCount} risposte} one {{ideasCount} risposta} other {{ideasCount} risposte}}",
-  "app.containers.IdeaCards.xResults": "{ideasCount, plural, one {# risultato} other {# risultato}}",
+  "app.containers.IdeaCards.xResults": "{ideasCount, plural, one {# risultato} other {# risultati}}",
   "app.containers.IdeaCards.xStories": "{ideasCount, plural, no {{ideasCount} storie} one {{ideasCount} storia} other {{ideasCount} storie}}",
   "app.containers.IdeaCards.xSuggestions": "{ideasCount, plural, no {{ideasCount} suggerimenti} one {{ideasCount} suggerimenti} other {{ideasCount} suggerimenti}}",
   "app.containers.IdeaCards.xTopics": "{ideasCount, plural, no {{ideasCount} argomenti} one {{ideasCount} argomenti} other {{ideasCount} argomenti}}",
