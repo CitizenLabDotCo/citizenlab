@@ -79,14 +79,11 @@ const Edit = ({ campaignType }: EditProps) => {
 
   const handleSubmit = async (values: EmailCampaignFormValues) => {
     await updateCampaign({ id: campaign.data.id, campaign: values });
-    if (phaseBuildPath) {
-      clHistory.push(phaseBuildPath);
-    } else if (campaignType === 'custom') {
+    // Automated emails stay on the page, so the admin sees the saved changes in the preview.
+    if (campaignType === 'custom') {
       clHistory.push(
         `/admin/messaging/emails/custom/${campaign.data.id}?updated=true`
       );
-    } else {
-      clHistory.push('/admin/messaging/emails/automated');
     }
   };
 
