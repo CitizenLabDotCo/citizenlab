@@ -1,0 +1,119 @@
+{
+  "component": "Toggle",
+  "reviewedAt": "2026-10-23",
+  "reviewer": "agent",
+  "criteria": [
+    {
+      "id": "1.3.1",
+      "name": "Info and relationships",
+      "result": "fail",
+      "confidence": "high",
+      "evidence": "axe label (critical) on Default, Checked and Disabled: with no label prop the checkbox has no name, and the component takes no aria-label",
+      "note": "Heal (a11y): accept an aria-label for toggles without visible text."
+    },
+    {
+      "id": "1.4.3",
+      "name": "Contrast (minimum)",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "axe color-contrast passes on the labelled stories",
+      "note": ""
+    },
+    {
+      "id": "1.4.10",
+      "name": "Reflow",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "screenshots and scroll width at 1280, 390 and 320: no horizontal scroll",
+      "note": ""
+    },
+    {
+      "id": "1.4.11",
+      "name": "Non-text contrast",
+      "result": "fail",
+      "confidence": "high",
+      "evidence": "computed: the off track is #CBCBCB on white, 1.62:1; the on track #04884C is 4.5:1",
+      "note": "The off state is the one that fails. Heal (a11y): a darker off track or a 3:1 border."
+    },
+    {
+      "id": "1.4.12",
+      "name": "Text spacing",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "text spacing override (line height 1.5, letter 0.12em, word 0.16em, paragraph 2em) on Default and LongContent: no clipped text",
+      "note": ""
+    },
+    {
+      "id": "2.1.1",
+      "name": "Keyboard",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "Keyboard story (play): Tab focuses the switch, Space calls onChange",
+      "note": ""
+    },
+    {
+      "id": "2.4.7",
+      "name": "Focus visible",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "keyboard run and screenshot: 2px #000 outline with a white ring round the track when the hidden checkbox has focus",
+      "note": ""
+    },
+    {
+      "id": "2.4.11",
+      "name": "Focus not obscured (minimum)",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "screenshots: nothing in the component covers the focused switch",
+      "note": ""
+    },
+    {
+      "id": "2.5.7",
+      "name": "Dragging movements",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "source: no drag interaction",
+      "note": ""
+    },
+    {
+      "id": "2.5.8",
+      "name": "Target size (minimum)",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "measured: the track (inside the label) is 47x29; the input itself is visually hidden",
+      "note": ""
+    },
+    {
+      "id": "3.2.6",
+      "name": "Consistent help",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "page level: the component offers no help mechanism",
+      "note": ""
+    },
+    {
+      "id": "3.3.7",
+      "name": "Redundant entry",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: the component asks for no data",
+      "note": ""
+    },
+    {
+      "id": "3.3.8",
+      "name": "Accessible authentication (minimum)",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: the component is not part of a login step",
+      "note": ""
+    },
+    {
+      "id": "4.1.2",
+      "name": "Name, role, value",
+      "result": "fail",
+      "confidence": "high",
+      "evidence": "axe: no name without a label (see 1.3.1); role is checkbox, state follows checked",
+      "note": "A switch role would match the look; checkbox is acceptable once it has a name."
+    }
+  ]
+}

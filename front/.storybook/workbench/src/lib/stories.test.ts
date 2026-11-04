@@ -1,0 +1,319 @@
+import type { ScanOutput, StoryIndex } from './data';
+import { controlOf, controlsOf } from './preview';
+import {
+  ALL,
+  areaOf,
+  buildGroups,
+  byArea,
+  designWords,
+  filterGroups,
+  groupOfStory,
+  officeOf,
+  sectionOf,
+  statusOf,
+} from './stories';
+
+const entry = (
+  id: string,
+  title: string,
+  name: string,
+  extra: Record<string, unknown> = {}
+) => ({
+  id,
+  title,
+  name,
+  exportName: name.replace(/\s/g, ''),
+  importPath: `./${title}.stories.tsx`,
+  type: 'story',
+  tags: ['dev'],
+  ...extra,
+});
+
+const index: StoryIndex = {
+  entries: Object.fromEntries(
+    [
+      entry('b--primary', 'Components/Actions/Button', 'Primary', {
+        componentPath: './app/component-library/components/Button/index.tsx',
+        tags: ['dev', 'shared'],
+      }),
+      entry('b--rtl', 'Components/Actions/Button', 'RTL'),
+      entry('b--default', 'Components/Actions/Button', 'Default'),
+      entry('b--hover', 'Components/Actions/Button', 'Hover'),
+      entry('a--basic', 'Components/Accordion', 'Basic'),
+      entry('card--x', 'Cards/IdeaCard', 'Default'),
+      entry('p--form', 'Patterns/Forms/Sign in', 'Default'),
+    ].map((e) => [e.id, e])
+  ),
+};
+
+const score = (component: string, file: string, routes: string[]) => ({
+  component,
+  file,
+  score: 0.5,
+  counts: {} as never,
+  usageCount: 3,
+  routes,
+  status: 'partly' as const,
+});
+
+const scan = {
+  components: [
+    score('Button', 'app/component-library/components/Button/index.tsx', [
+      'admin/x',
+    ]),
+    score('Accordion', 'elsewhere/Accordion.tsx', ['admin/y', 'projects']),
+  ],
+} as unknown as ScanOutput;
+
+const design = (token: number, legacy = 0, literal = 0) => ({
+  token,
+  legacy,
+  literal,
+  prop: 0,
+  unknown: 0,
+});
+
+const files = {
+  'app/component-library/components/Button/index.tsx': {
+    templates: 9,
+    decls: 40,
+    design: design(2, 5, 3),
+  },
+  'elsewhere/Accordion.tsx': { templates: 1, decls: 2, design: design(0) },
+};
+
+describe('buildGroups', () => {
+  const groups = buildGroups(index, scan, files);
+  const button = groups.find((g) => g.name === 'Button');
+
+  it('makes one group per title, sorted by name', () => {
+    expect(groups.map((g) => g.name)).toEqual([
+      'Accordion',
+      'Button',
+      'IdeaCard',
+      'Sign in',
+    ]);
+  });
+
+  it('puts states first in convention order, then variants', () => {
+    expect(button?.stories.map((s) => s.exportName)).toEqual([
+      'Default',
+      'Hover',
+      'RTL',
+      'Primary',
+    ]);
+    expect(button?.stories.map((s) => s.state)).toEqual([
+      true,
+      true,
+      true,
+      false,
+    ]);
+    expect(button?.defaultId).toBe('b--default');
+  });
+
+  it('reads section and category from the title', () => {
+    expect(button?.section).toBe('components');
+    expect(button?.category).toBe('Actions');
+    expect(groups.find((g) => g.name === 'IdeaCard')?.section).toBeNull();
+    expect(groups.find((g) => g.name === 'IdeaCard')?.category).toBe('Cards');
+    expect(groups.find((g) => g.name === 'Sign in')?.section).toBe('patterns');
+  });
+
+  it('joins the scan by component file, then by name', () => {
+    expect(button?.file).toBe(
+      'app/component-library/components/Button/index.tsx'
+    );
+    const acc = groups.find((g) => g.name === 'Accordion');
+    expect(acc?.score?.file).toBe('elsewhere/Accordion.tsx');
+    expect(acc?.defaultId).toBe('a--basic');
+  });
+
+  it("takes the status from the index's counts of the file", () => {
+    expect(button?.status).toBe('partly');
+    expect(button?.onTokens).toBe(0.2);
+    expect(designWords(button?.design ?? design(0))).toBe(
+      '10 design values: 2 on tokens, 5 theme or constant, 3 written values'
+    );
+    // A file with no design values of its own, and a story with no file.
+    expect(groups.find((g) => g.name === 'Accordion')?.status).toBe(
+      'no-styles'
+    );
+    expect(groups.find((g) => g.name === 'IdeaCard')?.status).toBe('no-file');
+    expect(
+      statusOf('a.tsx', {
+        'a.tsx': { templates: 1, decls: 1, design: design(1) },
+      }).status
+    ).toBe('on-tokens');
+    expect(
+      statusOf('a.tsx', {
+        'a.tsx': { templates: 1, decls: 1, design: design(0, 1) },
+      }).status
+    ).toBe('off-tokens');
+    expect(statusOf('a.tsx', null).status).toBe('no-index');
+    expect(statusOf('a.tsx', undefined).status).toBe('pending');
+  });
+
+  it('builds the same groups before the scan, every status pending', () => {
+    const early = buildGroups(index, null);
+    expect(early.map((g) => g.title)).toEqual(groups.map((g) => g.title));
+    expect(early.every((g) => g.status === 'pending' && !g.score)).toBe(true);
+  });
+
+  it('takes the office from tags, else from routes', () => {
+    expect(button?.office).toBe('shared');
+    expect(groups.find((g) => g.name === 'Accordion')?.office).toBe('shared');
+    expect(officeOf([], ['admin/x'])).toBe('bo');
+    expect(officeOf([], ['admin', 'projects'])).toBe('shared');
+    expect(officeOf([], ['projects'])).toBe('fo');
+    expect(officeOf([], [])).toBe('unknown');
+    expect(officeOf(['fo'], ['admin'])).toBe('fo');
+  });
+
+  it('finds the group of a story', () => {
+    expect(groupOfStory(groups, 'b--rtl')?.name).toBe('Button');
+    expect(groupOfStory(groups, 'nope')).toBeUndefined();
+  });
+
+  it('filters by office, status and text', () => {
+    expect(
+      filterGroups(groups, { ...ALL, query: 'act' }).map((g) => g.name)
+    ).toEqual(['Button']);
+    expect(
+      filterGroups(groups, { ...ALL, office: 'bo' }).map((g) => g.name)
+    ).toEqual(['Accordion', 'Button']);
+    expect(
+      filterGroups(groups, { ...ALL, status: 'no-file' }).map((g) => g.name)
+    ).toEqual(['IdeaCard', 'Sign in']);
+  });
+
+  it('marks the redesign and files it by area', () => {
+    const redesign = buildGroups(
+      {
+        entries: Object.fromEntries(
+          [
+            entry(
+              'r--card',
+              'Components/Redesigned/Events/Image card',
+              'Default',
+              { tags: ['dev', 'bo', 'redesigned'] }
+            ),
+            entry('r--ws', 'Pages/Project workspace', 'Default', {
+              tags: ['dev', 'bo', 'redesigned'],
+            }),
+            entry(
+              'r--hdr',
+              'Components/Redesigned/Project header/Workspace header',
+              'Default',
+              { tags: ['dev', 'bo', 'redesigned'] }
+            ),
+          ].map((e) => [e.id, e])
+        ),
+      },
+      scan
+    );
+    const groups = [
+      ...redesign,
+      ...buildGroups(index, scan).filter((g) => g.name === 'Button'),
+    ];
+    const card = groups.find((g) => g.name === 'Image card');
+    expect(card?.redesigned).toBe(true);
+    expect(card?.area).toBe('Events');
+    expect(groups.find((g) => g.name === 'Button')?.redesigned).toBe(false);
+    expect(areaOf('Pages/Project workspace', true)).toBe('Pages');
+    expect(areaOf('Components/Forms/Input', false)).toBe('Forms');
+    expect(
+      filterGroups(groups, { ...ALL, set: 'redesigned' }).map((g) => g.name)
+    ).toEqual(['Image card', 'Project workspace', 'Workspace header']);
+    expect(
+      byArea(filterGroups(groups, { ...ALL, set: 'redesigned' })).map(
+        (a) => a.area
+      )
+    ).toEqual(['Pages', 'Project header', 'Events']);
+  });
+
+  it('knows the sections', () => {
+    expect(sectionOf('Pages/Home')).toBe('pages');
+    expect(sectionOf('HomepageBuilder/Spotlight')).toBeNull();
+  });
+});
+
+describe('controlOf', () => {
+  it('maps control types', () => {
+    expect(controlOf('a', { control: { type: 'boolean' } })?.kind).toBe(
+      'boolean'
+    );
+    expect(controlOf('a', { control: { type: 'color' } })).toEqual({
+      name: 'a',
+      kind: 'string',
+      colour: true,
+      description: undefined,
+    });
+    expect(controlOf('a', { control: { type: 'range' } })?.kind).toBe('number');
+    expect(
+      controlOf('a', { control: { type: 'radio' }, options: ['s', 'm'] })
+    ).toEqual({
+      name: 'a',
+      kind: 'select',
+      options: [
+        { label: 's', value: 's' },
+        { label: 'm', value: 'm' },
+      ],
+      description: undefined,
+    });
+  });
+
+  it('falls back to the TypeScript type', () => {
+    expect(controlOf('a', { type: { name: 'boolean' } })?.kind).toBe('boolean');
+    expect(
+      controlOf('a', { type: { name: 'enum', value: ['x', 'y'] } })
+    ).toMatchObject({
+      kind: 'select',
+      options: [{ value: 'x' }, { value: 'y' }],
+    });
+  });
+
+  it('keeps number and boolean options typed', () => {
+    expect(
+      controlOf('a', { control: { type: 'select' }, options: [1, 2, true] })
+    ).toMatchObject({
+      options: [
+        { label: '1', value: 1 },
+        { label: '2', value: 2 },
+        { label: 'true', value: true },
+      ],
+    });
+  });
+
+  it('skips what needs code', () => {
+    expect(controlOf('a', { control: { type: 'object' } })).toBeNull();
+    expect(controlOf('a', { type: { name: 'function' } })).toBeNull();
+    expect(controlOf('a', { control: false })).toBeNull();
+    expect(controlOf('a', { control: { type: 'select' } })).toBeNull();
+  });
+
+  it('lists set args first and counts the skipped ones', () => {
+    const { controls, skipped } = controlsOf({
+      id: 's',
+      args: { b: true },
+      argTypes: {
+        a: { control: { type: 'text' } },
+        b: { control: { type: 'boolean' } },
+        c: { control: { type: 'object' } },
+        children: { control: { type: 'object' }, type: { name: 'other' } },
+      },
+    });
+    expect(controls.map((c) => c.name)).toEqual(['b', 'a']);
+    expect(skipped).toBe(2);
+  });
+
+  it('gives a node prop that holds text a text input', () => {
+    const { controls } = controlsOf({
+      id: 's',
+      args: { children: 'Save' },
+      argTypes: { children: { control: { type: 'object' } } },
+    });
+    expect(controls).toEqual([
+      { name: 'children', kind: 'string', colour: false },
+    ]);
+  });
+});

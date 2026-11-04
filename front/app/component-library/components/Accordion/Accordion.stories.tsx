@@ -9,7 +9,9 @@ import Title from '../Title';
 import Accordion from '.';
 
 const meta = {
-  title: 'Components/Accordion',
+  title: 'Components/Layout/Accordion',
+  tags: ['shared'],
+  parameters: { gv: {} },
   component: Accordion,
 } satisfies Meta<typeof Accordion>;
 
@@ -34,5 +36,45 @@ export const Default: Story = {
     isOpenByDefault: false,
     children: 'Content for the section.',
     width: '800px',
+  },
+};
+
+// The title button carries the hover style (the chevron turns black).
+export const Hover: Story = {
+  args: Default.args,
+  parameters: { pseudo: { hover: ['button[aria-expanded]'] } },
+};
+
+export const Focus: Story = {
+  args: Default.args,
+  parameters: { pseudo: { focusVisible: ['button[aria-expanded]'] } },
+};
+
+export const Open: Story = {
+  args: { ...Default.args, isOpenByDefault: true },
+};
+
+export const LongContent: Story = {
+  args: {
+    ...Default.args,
+    isOpenByDefault: true,
+    width: '400px',
+    title: (
+      <Title variant="h3">
+        How the participatory budget is divided between the districts this year
+      </Title>
+    ),
+    children:
+      'Every district receives a base amount. The rest is divided by the number of residents, so larger districts receive more. The council checks the division each spring before the voting phase starts.',
+  },
+};
+
+export const RTL: Story = {
+  globals: { lang: 'ar' },
+  args: {
+    ...Default.args,
+    isOpenByDefault: true,
+    title: <Title variant="h3">عنوان القسم</Title>,
+    children: 'محتوى القسم.',
   },
 };

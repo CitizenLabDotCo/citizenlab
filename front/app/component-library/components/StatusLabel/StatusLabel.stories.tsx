@@ -1,10 +1,14 @@
+import React from 'react';
+
 import { Meta, StoryObj } from '@storybook/react';
 import { colors } from 'component-library/utils/styleUtils';
 
 import StatusLabel from './';
 
 const meta = {
-  title: 'Components/StatusLabel',
+  title: 'Components/Data display/StatusLabel',
+  tags: ['bo'],
+  parameters: { gv: {} },
   component: StatusLabel,
 } satisfies Meta<typeof StatusLabel>;
 
@@ -23,4 +27,21 @@ export const WithIconProp: Story = {
     ...Default.args,
     icon: 'lock',
   },
+};
+
+export const LongContent: Story = {
+  args: {
+    ...Default.args,
+    text: 'Accepted and planned for implementation next year',
+  },
+  render: (args) => (
+    <div style={{ width: '240px' }}>
+      <StatusLabel {...args} />
+    </div>
+  ),
+};
+
+export const RTL: Story = {
+  globals: { lang: 'ar' },
+  args: { ...Default.args, icon: 'lock', text: 'قيد الدراسة' },
 };

@@ -3,7 +3,9 @@ import { Meta, StoryObj } from '@storybook/react';
 import ColorIndicator from '.';
 
 const meta = {
-  title: 'Components/ColorIndicator',
+  title: 'Components/Data display/ColorIndicator',
+  tags: ['shared'],
+  parameters: { gv: {} },
   component: ColorIndicator,
 } satisfies Meta<typeof ColorIndicator>;
 

@@ -1,11 +1,18 @@
 import React from 'react';
 
+import { expect, fn, userEvent, within } from 'storybook/test';
+// eslint-plugin-storybook 0.8 knows expect from @storybook/test, not from
+// storybook/test (Storybook 10), so it flags every expect here.
+/* eslint-disable storybook/use-storybook-expect */
+
 import Input from '.';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
 const meta = {
-  title: 'Components/Input',
+  title: 'Components/Forms/Input',
+  tags: ['shared'],
+  parameters: { gv: {} },
   render: (props) => {
     return (
       <div style={{ width: '300px' }}>
@@ -71,5 +78,59 @@ export const Password: Story = {
     ...Default.args,
     type: 'password',
     value: 'password',
+  },
+};
+
+export const Hover: Story = {
+  args: Default.args,
+  parameters: { pseudo: { hover: ['input'] } },
+};
+
+export const Focus: Story = {
+  args: Default.args,
+  parameters: { pseudo: { focus: ['input'], focusVisible: ['input'] } },
+};
+
+export const Disabled: Story = {
+  args: { ...Default.args, disabled: true },
+};
+
+export const Error: Story = {
+  args: {
+    ...Default.args,
+    label: 'Email address',
+    value: 'email@',
+    error: 'Enter a valid email address.',
+    ariaInvalid: true,
+  },
+};
+
+export const LongContent: Story = {
+  args: {
+    ...Default.args,
+    value:
+      'Replace the parking spaces along the main street with a wide cycle lane, benches and trees for the whole neighbourhood',
+  },
+};
+
+export const RTL: Story = {
+  globals: { lang: 'ar' },
+  args: { ...Default.args, label: 'عنوان الفكرة', value: 'نص تجريبي' },
+  render: (props) => (
+    <div style={{ width: '300px' }}>
+      <Input {...props} />
+    </div>
+  ),
+};
+
+// Tab reaches the field; typing reaches onChange.
+export const Keyboard: Story = {
+  args: { ...WithLabel.args, value: '', onChange: fn() },
+  play: async ({ canvasElement, args }) => {
+    const input = within(canvasElement).getByRole('textbox');
+    await userEvent.tab();
+    await expect(input).toHaveFocus();
+    await userEvent.keyboard('Ab');
+    await expect(args.onChange).toHaveBeenCalled();
   },
 };

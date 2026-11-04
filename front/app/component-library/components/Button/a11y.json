@@ -1,0 +1,111 @@
+{
+  "component": "Button",
+  "reviewedAt": "2026-10-23",
+  "reviewer": "agent",
+  "criteria": [
+    {
+      "id": "1.4.3",
+      "name": "Contrast (minimum)",
+      "result": "fail",
+      "confidence": "high",
+      "evidence": "axe color-contrast on 8 of 27 stories (Primary, PrimaryWithIcon, PrimaryOutlined, ButtonLink, Default, Focus, LongContent, Keyboard): #FFFFFF on #EF0071 is 4.27:1 at 16px normal, 4.5:1 needed; the same in today and redesign",
+      "note": "The fill is the city primary colour of the story city, used as is. Heal (a11y): pick the text colour against the tenant colour, or darken the fill until the pair reaches 4.5:1."
+    },
+    {
+      "id": "1.4.10",
+      "name": "Reflow",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "screenshots and scroll width at 1280, 390 and 320: no horizontal scroll; LongContent wraps inside the button",
+      "note": ""
+    },
+    {
+      "id": "1.4.11",
+      "name": "Non-text contrast",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "screenshots: outlined variants keep a border in the text colour; the focus outline is 2px #000 on white (21:1)",
+      "note": ""
+    },
+    {
+      "id": "1.4.12",
+      "name": "Text spacing",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "text spacing override (line height 1.5, letter 0.12em, word 0.16em, paragraph 2em) on Default and LongContent: no clipped text",
+      "note": ""
+    },
+    {
+      "id": "2.1.1",
+      "name": "Keyboard",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "Keyboard story (play): Tab focuses the button, Enter and Space each call onClick; Playwright Tab run on Default, Primary and RTL at 1280, 390 and 320",
+      "note": ""
+    },
+    {
+      "id": "2.4.7",
+      "name": "Focus visible",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "keyboard run: outline goes from none to solid 2px rgb(0, 0, 0) on Tab, in all variants checked",
+      "note": ""
+    },
+    {
+      "id": "2.4.11",
+      "name": "Focus not obscured (minimum)",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "screenshots: nothing in the component covers the focused button",
+      "note": ""
+    },
+    {
+      "id": "2.5.7",
+      "name": "Dragging movements",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "source: no drag interaction",
+      "note": ""
+    },
+    {
+      "id": "2.5.8",
+      "name": "Target size (minimum)",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "measured: smallest target 71x36 (BackOfficeSecondary), front office 84x45",
+      "note": ""
+    },
+    {
+      "id": "3.2.6",
+      "name": "Consistent help",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "page level: the component offers no help mechanism",
+      "note": ""
+    },
+    {
+      "id": "3.3.7",
+      "name": "Redundant entry",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: the component asks for no data",
+      "note": ""
+    },
+    {
+      "id": "3.3.8",
+      "name": "Accessible authentication (minimum)",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: the component is not part of a login step",
+      "note": ""
+    },
+    {
+      "id": "4.1.2",
+      "name": "Name, role, value",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "axe button-name passes on all 27 stories; processing sets aria-disabled; aria-expanded, aria-pressed and aria-controls pass through",
+      "note": "Icon-only buttons get their name from the caller (BackOfficeIconOnly does)."
+    }
+  ]
+}

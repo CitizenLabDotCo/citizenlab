@@ -1,0 +1,103 @@
+{
+  "component": "Box",
+  "reviewedAt": "2026-10-23",
+  "reviewer": "agent",
+  "criteria": [
+    {
+      "id": "1.3.1",
+      "name": "Info and relationships",
+      "result": "needs-human",
+      "confidence": "low",
+      "evidence": "source: renders a div unless as sets another element",
+      "note": "Whether a page uses the right element (list, section, nav) is for a person to judge."
+    },
+    {
+      "id": "1.4.3",
+      "name": "Contrast (minimum)",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "source: colours come from the caller",
+      "note": ""
+    },
+    {
+      "id": "1.4.10",
+      "name": "Reflow",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "screenshots and scroll width at 1280, 390 and 320: no horizontal scroll for normal text; in LongContent an unbroken 80 character string runs past 390 (602px)",
+      "note": "Box sets no overflow-wrap; long unbroken strings (links, ids) need one from the caller."
+    },
+    {
+      "id": "1.4.12",
+      "name": "Text spacing",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "text spacing override (line height 1.5, letter 0.12em, word 0.16em, paragraph 2em) on Default and LongContent: no clipped text",
+      "note": ""
+    },
+    {
+      "id": "2.1.1",
+      "name": "Keyboard",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "axe and keyboard run: a layout primitive with no interactive element, Tab finds nothing to focus",
+      "note": ""
+    },
+    {
+      "id": "2.4.7",
+      "name": "Focus visible",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "axe and keyboard run: a layout primitive with no interactive element, Tab finds nothing to focus",
+      "note": ""
+    },
+    {
+      "id": "2.4.11",
+      "name": "Focus not obscured (minimum)",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "axe and keyboard run: a layout primitive with no interactive element, Tab finds nothing to focus",
+      "note": ""
+    },
+    {
+      "id": "2.5.7",
+      "name": "Dragging movements",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "source: no drag interaction",
+      "note": ""
+    },
+    {
+      "id": "2.5.8",
+      "name": "Target size (minimum)",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "axe and keyboard run: a layout primitive with no interactive element, Tab finds nothing to focus",
+      "note": ""
+    },
+    {
+      "id": "3.2.6",
+      "name": "Consistent help",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "page level: the component offers no help mechanism",
+      "note": ""
+    },
+    {
+      "id": "3.3.7",
+      "name": "Redundant entry",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: the component asks for no data",
+      "note": ""
+    },
+    {
+      "id": "3.3.8",
+      "name": "Accessible authentication (minimum)",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: the component is not part of a login step",
+      "note": ""
+    }
+  ]
+}

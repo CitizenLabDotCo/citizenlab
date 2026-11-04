@@ -1,0 +1,111 @@
+{
+  "component": "Icon",
+  "reviewedAt": "2026-10-23",
+  "reviewer": "agent",
+  "criteria": [
+    {
+      "id": "1.1.1",
+      "name": "Non-text content",
+      "result": "needs-human",
+      "confidence": "low",
+      "evidence": "source: aria-hidden by default; with ariaHidden false a title is required by the type; axe svg-img-alt passes on all 4 stories",
+      "note": "Whether an icon is decorative or carries meaning on a page is for a person to judge."
+    },
+    {
+      "id": "1.4.3",
+      "name": "Contrast (minimum)",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "source: no text",
+      "note": ""
+    },
+    {
+      "id": "1.4.10",
+      "name": "Reflow",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "screenshots and scroll width at 1280, 390 and 320: no horizontal scroll (the AllIcons gallery wraps)",
+      "note": ""
+    },
+    {
+      "id": "1.4.11",
+      "name": "Non-text contrast",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "computed: default fill #000 on white; other colours are the caller's",
+      "note": ""
+    },
+    {
+      "id": "1.4.12",
+      "name": "Text spacing",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "source: no text",
+      "note": ""
+    },
+    {
+      "id": "2.1.1",
+      "name": "Keyboard",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "axe and keyboard run: no interactive element, Tab finds nothing to focus",
+      "note": ""
+    },
+    {
+      "id": "2.4.7",
+      "name": "Focus visible",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "axe and keyboard run: no interactive element, Tab finds nothing to focus",
+      "note": ""
+    },
+    {
+      "id": "2.4.11",
+      "name": "Focus not obscured (minimum)",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "axe and keyboard run: no interactive element, Tab finds nothing to focus",
+      "note": ""
+    },
+    {
+      "id": "2.5.7",
+      "name": "Dragging movements",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "source: no drag interaction",
+      "note": ""
+    },
+    {
+      "id": "2.5.8",
+      "name": "Target size (minimum)",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "axe and keyboard run: no interactive element, Tab finds nothing to focus",
+      "note": ""
+    },
+    {
+      "id": "3.2.6",
+      "name": "Consistent help",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "page level: the component offers no help mechanism",
+      "note": ""
+    },
+    {
+      "id": "3.3.7",
+      "name": "Redundant entry",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: the component asks for no data",
+      "note": ""
+    },
+    {
+      "id": "3.3.8",
+      "name": "Accessible authentication (minimum)",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: the component is not part of a login step",
+      "note": ""
+    }
+  ]
+}

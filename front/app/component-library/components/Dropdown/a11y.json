@@ -1,0 +1,111 @@
+{
+  "component": "Dropdown",
+  "reviewedAt": "2026-10-23",
+  "reviewer": "agent",
+  "criteria": [
+    {
+      "id": "1.4.3",
+      "name": "Contrast (minimum)",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "axe color-contrast passes on all 6 stories",
+      "note": ""
+    },
+    {
+      "id": "1.4.10",
+      "name": "Reflow",
+      "result": "fail",
+      "confidence": "medium",
+      "evidence": "scroll width: the open panel (260px, default offsets) runs past the viewport, 360px at 320 wide and 395px at 390",
+      "note": "Heal (a11y): use mobileWidth and mobile offsets by default so the panel stays on screen."
+    },
+    {
+      "id": "1.4.12",
+      "name": "Text spacing",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "text spacing override (line height 1.5, letter 0.12em, word 0.16em, paragraph 2em) on Default and LongContent: no clipped text",
+      "note": ""
+    },
+    {
+      "id": "2.1.1",
+      "name": "Keyboard",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "Keyboard story (play): Tab moves through the items in order, Shift+Tab back; source: Escape (keyup) closes through ClickOutside",
+      "note": ""
+    },
+    {
+      "id": "2.4.3",
+      "name": "Focus order",
+      "result": "needs-human",
+      "confidence": "medium",
+      "evidence": "source: opening does not move focus into the panel and closing does not return it to the trigger",
+      "note": "Whether that order works depends on the trigger each page uses; a person should try one real menu."
+    },
+    {
+      "id": "2.4.7",
+      "name": "Focus visible",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "keyboard run: each item gets a 2px #000 outline",
+      "note": ""
+    },
+    {
+      "id": "2.4.11",
+      "name": "Focus not obscured (minimum)",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "screenshots: the panel does not cover its own focused item",
+      "note": ""
+    },
+    {
+      "id": "2.5.7",
+      "name": "Dragging movements",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "source: no drag interaction",
+      "note": ""
+    },
+    {
+      "id": "2.5.8",
+      "name": "Target size (minimum)",
+      "result": "pass",
+      "confidence": "high",
+      "evidence": "measured: items 240x38",
+      "note": ""
+    },
+    {
+      "id": "3.2.6",
+      "name": "Consistent help",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "page level: the component offers no help mechanism",
+      "note": ""
+    },
+    {
+      "id": "3.3.7",
+      "name": "Redundant entry",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: the component asks for no data",
+      "note": ""
+    },
+    {
+      "id": "3.3.8",
+      "name": "Accessible authentication (minimum)",
+      "result": "n/a",
+      "confidence": "high",
+      "evidence": "flow level: the component is not part of a login step",
+      "note": ""
+    },
+    {
+      "id": "4.1.2",
+      "name": "Name, role, value",
+      "result": "pass",
+      "confidence": "medium",
+      "evidence": "axe passes on all 6 stories: items are buttons named by their text",
+      "note": "No menu or list role; the trigger's aria-expanded is the caller's."
+    }
+  ]
+}

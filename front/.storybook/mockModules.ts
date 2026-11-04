@@ -4,9 +4,16 @@ const appFolder = path.join(process.cwd(), 'app');
 const rel = (...args: string[]) => path.resolve(path.join(appFolder, ...args));
 
 const mockModules = {
-  'utils/locale': rel('utils', '__mocks__', 'locale'),
+  // The shared test mock, plus what the language selector needs.
+  'utils/locale': path.join(process.cwd(), '.storybook', 'mocks', 'locale'),
   modules: rel('modules', '__mocks__', 'index'),
-  'utils/cl-router/Link': rel('utils', 'cl-router', '__mocks__', 'Link'),
+  // The shared test mock, with typedStyled applying the styles.
+  'utils/cl-router/Link': path.join(
+    process.cwd(),
+    '.storybook',
+    'mocks',
+    'Link'
+  ),
   'components/admin/ContentBuilder/useCraftComponentDefaultPadding': rel(
     'components',
     'admin',
