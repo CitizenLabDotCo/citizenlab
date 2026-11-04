@@ -11,7 +11,7 @@ import useCauseForm, {
 import Feedback from 'components/HookForm/Feedback';
 import InputMultilocWithLocaleSwitcher from 'components/HookForm/InputMultilocWithLocaleSwitcher';
 import QuillMultilocWithLocaleSwitcher from 'components/HookForm/QuillMultilocWithLocaleSwitcher';
-import Modal from 'components/UI/Modal';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -50,7 +50,7 @@ const CauseModal = ({ cause, onSubmit, onClose }: Props) => {
     <Modal
       opened
       close={onClose}
-      width={560}
+      width={MEDIUM_MODAL_WIDTH}
       variant="bo"
       header={formatMessage(
         cause

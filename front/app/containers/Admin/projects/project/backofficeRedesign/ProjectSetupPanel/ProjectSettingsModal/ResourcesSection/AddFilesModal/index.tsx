@@ -17,7 +17,7 @@ import {
 } from 'containers/Admin/projects/_shared/fileUploads/utils';
 import filesMessages from 'containers/Admin/projects/project/files/components/messages';
 
-import Modal from 'components/UI/Modal';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import { returnFileSize } from 'utils/fileUtils';
@@ -87,7 +87,7 @@ const AddFilesModal = ({ draft, opened, onClose }: Props) => {
       variant="bo"
       opened={opened}
       close={handleClose}
-      width={560}
+      width={MEDIUM_MODAL_WIDTH}
       height={selected.length > 0 ? FILE_MODAL_HEIGHT : undefined}
       header={formatMessage(resourcesSectionMessages.addFiles)}
       footer={

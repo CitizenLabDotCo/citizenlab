@@ -5,7 +5,7 @@ import { Box, Button, Spinner, Text } from '@citizenlab/cl2-component-library';
 import useIdeas from 'api/ideas/useIdeas';
 import usePhase from 'api/phases/usePhase';
 
-import Modal from 'components/UI/Modal';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 import PhaseFilter from 'components/UI/PhaseFilter';
 
 import { useIntl } from 'utils/cl-intl';
@@ -70,7 +70,7 @@ const LinkPhaseIdeasModal = ({
     <Modal
       opened
       close={onClose}
-      width={560}
+      width={MEDIUM_MODAL_WIDTH}
       variant="bo"
       header={formatMessage(messages.importFromPreviousPhase)}
       footer={

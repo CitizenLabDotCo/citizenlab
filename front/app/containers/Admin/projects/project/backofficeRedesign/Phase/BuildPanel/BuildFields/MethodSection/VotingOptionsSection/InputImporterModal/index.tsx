@@ -14,7 +14,7 @@ import inputImporterMessages from 'containers/Admin/projects/project/inputImport
 import formSyncMessages from 'components/admin/FormSync/messages';
 import ImportExcelModal from 'components/admin/InputImporterModals/ImportExcelModal';
 import ImportPdfModal from 'components/admin/InputImporterModals/ImportPdfModal';
-import Modal from 'components/UI/Modal';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 import UpsellTooltip from 'components/UpsellTooltip';
 
 import { useIntl } from 'utils/cl-intl';
@@ -57,7 +57,7 @@ const InputImporterModal = ({ projectId, phaseId, opened, onClose }: Props) => {
       <Modal
         opened={opened}
         close={onClose}
-        width={560}
+        width={MEDIUM_MODAL_WIDTH}
         variant="bo"
         header={formatMessage(inputImporterMessages.inputImporter)}
       >

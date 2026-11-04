@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Button, Text } from '@citizenlab/cl2-component-library';
 
-import Modal from 'components/UI/Modal';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 
@@ -21,7 +21,7 @@ const VotingMethodChangeModal = ({ opened, onClose, onConfirm }: Props) => {
     <Modal
       opened={opened}
       close={onClose}
-      width={560}
+      width={MEDIUM_MODAL_WIDTH}
       variant="bo"
       header={formatMessage(messages.changeVotingMethodTitle)}
       footer={

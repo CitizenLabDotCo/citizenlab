@@ -8,7 +8,7 @@ import {
   Icon,
 } from '@citizenlab/cl2-component-library';
 
-import Modal from 'components/UI/Modal';
+import Modal, { MEDIUM_MODAL_WIDTH } from 'components/UI/Modal';
 
 import { useIntl } from 'utils/cl-intl';
 import clHistory from 'utils/cl-router/history';
@@ -35,7 +35,7 @@ const FormInputEditWarningModal = ({
 
   return (
     <Modal
-      width={isBo ? 560 : 520}
+      width={isBo ? MEDIUM_MODAL_WIDTH : 520}
       variant={variant}
       opened={showEditWarningModal}
       close={close}
