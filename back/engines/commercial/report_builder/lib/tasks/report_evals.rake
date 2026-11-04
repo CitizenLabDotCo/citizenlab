@@ -71,7 +71,7 @@ class ReportEvalRun
     examples.each do |name, source|
       sql = '`SELECT 1 AS label, 2 AS count, 3 AS month, 4 AS participants FROM reporting_contributions LIMIT 1`'
       result = builder.call(source: source.sub('`SELECT ...`', sql), manifest: manifest, messages: messages, locales: [locale])
-      puts "prompt example (#{name}): #{result.ok? ? 'builds' : "DOES NOT BUILD\n#{result.diagnostics_text}"}"
+      puts "prompt example (#{name}): #{result.succeeded ? 'builds' : "DOES NOT BUILD\n#{result.diagnostics_text}"}"
     end
   rescue ContentBuilder::CustomBlocks::RendererClient::Unavailable => e
     puts "prompt examples: not checked, #{e.message}"

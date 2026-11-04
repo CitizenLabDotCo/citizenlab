@@ -160,7 +160,7 @@ module ReportBuilder
           messages: catalogues,
           locales: [locale]
         )
-        return result if result.ok?
+        return result if result.succeeded
 
         raise Rejected, "The block does not build yet:\n#{result.diagnostics_text}"
       rescue ContentBuilder::CustomBlocks::RendererClient::Unavailable => e
