@@ -245,6 +245,7 @@
   "app.components.admin.ContentBuilder.Widgets.Events.selectSpaces": "Spaces",
   "app.components.admin.ContentBuilder.Widgets.Events.selectTopics": "Tags",
   "app.components.admin.ContentBuilder.Widgets.Events.showAllPaginated2": "All of them, across pages",
+  "app.components.admin.ContentBuilder.Widgets.Events.showEmptyMessage": "Show a message when there are no events",
   "app.components.admin.ContentBuilder.Widgets.Events.showLimited": "A limited number",
   "app.components.admin.ContentBuilder.Widgets.Events.upcomingEvents": "Upcoming and ongoing",
   "app.components.admin.ContentBuilder.Widgets.Events.whichEvents2": "Include events which are",
