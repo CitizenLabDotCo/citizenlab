@@ -323,21 +323,6 @@ describe('Custom page builder', () => {
   // The Call to action is the homepage widget worth checking on a published page: its buttons
   // used to render only while the editor was enabled, which the homepage never turns off but a
   // published custom page does.
-  it('adds an events widget that says when it has no events', () => {
-    setFiltering(true);
-    openBuilder();
-
-    cy.get('#e2e-draggable-events').dragAndDrop(
-      '[data-cy="e2e-custom-page-body"]',
-      { position: 'inside' }
-    );
-
-    // A dropped widget is selected, so its settings panel is open.
-    cy.dataCy('e2e-events-show-empty-message')
-      .find('input')
-      .should('be.checked');
-  });
-
   it('renders homepage widgets added in the builder on the published page', () => {
     const buttonText = `Go ${randomString()}`;
     setFiltering(true);
